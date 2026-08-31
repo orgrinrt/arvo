@@ -1,0 +1,77 @@
+### 1. the split, against every committed entry
+  entries: 527
+  entries the new grammar reads differently from the old one: 0
+  entries neither grammar can split: 0
+
+### 2. the planted cases
+  [ok] an unmarked entry is read exactly as it is read today
+        expected []
+        got      []
+  [ok] a warrant token nobody declared is refused
+        expected ["warrant-is-not-a-known-token"]
+        got      ["warrant-is-not-a-known-token"]
+  [ok] a proof token with no construction is refused
+        expected ["warrant-has-no-clause"]
+        got      ["warrant-has-no-clause"]
+  [ok] a proof whose clause only asserts proofhood is reported
+        expected ["warrant-clause-is-a-bare-relabel"]
+        got      ["warrant-clause-is-a-bare-relabel"]
+  [ok] exhaustive over an unbounded span is refused
+        expected ["exhaustive-over-an-unbounded-span"]
+        got      ["exhaustive-over-an-unbounded-span"]
+  [ok] exhaustive with no container named is refused
+        expected ["exhaustive-names-no-container"]
+        got      ["exhaustive-names-no-container"]
+  [ok] a span carrying a colon is refused
+        expected ["warrant-is-not-a-known-token"]
+        got      ["warrant-is-not-a-known-token"]
+  [ok] a theorem row with a per-axis proof is not reported
+        expected []
+        got      []
+  [ok] a theorem row over a three-width sweep is reported
+        expected ["a-proof-asserted-only-at-row-level"]
+        got      ["a-proof-asserted-only-at-row-level"]
+
+### 3. CONTROL. Every arm must be reachable, or a green run means nothing.
+  [reached] warrant-is-not-a-known-token
+  [reached] warrant-has-no-clause
+  [reached] warrant-clause-is-a-bare-relabel
+  [reached] exhaustive-over-an-unbounded-span
+  [reached] exhaustive-names-no-container
+  [reached] a-proof-asserted-only-at-row-level
+  note: the arm drafted as `a-span-carrying-a-colon` was deleted. The control above
+        found it could never fire: `read` splits at the second colon, so a span
+        never contains one, and the case it was drafted for is refused by the
+        token arm instead. One arm, not two.
+
+### 4. the committed canon under these arms
+  a-proof-asserted-only-at-row-level: 8
+      proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `W in {4, 5, 6}`.
+      proposal::a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `ABSENT`.
+      proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `6`.
+      proposal::inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `W in 1..=65`.
+      proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `W in 3..=7`.
+      proposal::the_join_over_demands_is_union_and_it_is_free :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `ABSENT`.
+      proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `W = 4`.
+      proposal::the_model_band_transfer_is_defeated_in_both_fragments :: `sentence_kind` is `theorem` and no predicate entry carries a `proof` warrant. Its width span is `W any`.
+
+### 5. what an empty registry does to the arms that already ship
+    Found by pointing this spike's `canon()` at the wrong directory. `load`
+    returns Ok(empty) for a path that is not a directory, so `canon()`'s
+    `.expect("mock/registry is readable")` never fires and every arm goes
+    quiet at once. Reported, not fixed: the shipped crate is code tier and
+    the round is at TOPIC.
+  predicate::undeclared_dimensions: empty registry -> 0, committed canon -> 0
+  predicate::repeated_dimensions: empty registry -> 0, committed canon -> 0
+  shape::predicate_disagrees_with_the_sentence_kind: empty registry -> 0, committed canon -> 0
+  shape::measured_without_evidence: empty registry -> 0, committed canon -> 6
+  shape::rulings_with_no_verbatim: empty registry -> 0, committed canon -> 6
+  shape::rows_with_no_keywords: empty registry -> 0, committed canon -> 0
+  citation::citations_with_no_target: empty registry -> 0, committed canon -> 0
+  provenance::standing_claims_more_arrivals_than_it_cites: empty registry -> 0, committed canon -> 29
+  arms that say nothing about an empty registry: 8 of 8
+  CONTROL: at least one arm must speak about the committed canon, or this
+           section is comparing two silences.
+  arms that speak about the committed canon: 3
+
+### exit: every case behaved

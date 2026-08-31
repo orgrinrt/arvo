@@ -1,0 +1,20 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p3_does_precision_count_the_sign_digit.rs
+
+### compiled clean
+
+### p3. does the precision coordinate count the sign digit?
+### criterion, from the question's own bound: take the reading under which the
+### three sign domains form a structure a const predicate can gate on rather
+### than one leaving a domain incomparable.
+
+CONTROLS
+  C1  some reading leaves a pair incomparable          as required  required=incomparable seen
+  C2  some reading produces a chain                    as required  required=a chain seen
+  C3a the comparator can report equal                  *** VOID ***  required=equal seen
+  C3b the comparator can report strict inclusion       as required  required=inclusion seen
+  C4  reading A at P=1 makes symmetric the zero set    as required  required={0}
+
+*** A CONTROL DID NOT REPORT ITS REQUIRED VERDICT. NOTHING BELOW COUNTS. ***
+
+### exit 1

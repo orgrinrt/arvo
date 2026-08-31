@@ -1,0 +1,4 @@
+# A spike. Its build output and lock are not the evidence; the source and the
+# committed .out are.
+/target/
+/Cargo.lock

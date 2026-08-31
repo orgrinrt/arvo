@@ -1,0 +1,90 @@
+### Q1 (reproduces 219). total predicate entries, and how many write the universal
+  entries: 527   219 says 527
+  universal entries: 41   219 says 38
+        5  F any
+        5  W any
+        5  any
+        2  arity any
+        1  chain length any
+        1  container any
+        1  emission in {metadata only, full codegen}, debug-assertions any
+        1  operation any
+        1  overflow policy any
+        2  rounding any
+       11  target features any
+        1  threads = 1 for the timed instance and threads any for the compile-time artifacts
+        3  threads any
+        1  threads any, the equalities being decided at compile time
+        1  threads any, the refusal being a type-check outcome that precedes execution
+
+### Q2 (reproduces 219). rows carrying a universal and a bounded entry together
+  mixed rows: 28   219 says 25
+  their sentence_kind: {"(none)": 7, "argument": 7, "measured": 10, "theorem": 4}
+  219 says {"(none)": 7, "argument": 7, "measured": 7, "theorem": 4}
+
+### Q3 (reproduces 219). slug sides that are not a bare lowercase slug
+  dirty slugs: 0   219 says 0
+
+### Q4 (ATTACK). the whole-domain range, literal against parameterised
+  219 searched for `1..=64` and `0..=63`, found zero, and concluded the
+  registry holds no whole-container range at all. The literal search is
+  right. Here is every range entry, so the class can be judged rather than
+  the two spellings.
+  range entries: 35
+  matching 219's two literals: 0
+  ranges whose upper bound is itself an axis or a formula, which is what a
+  whole domain looks like when the domain is parameterised:
+      proposal::a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none :: predicate :: fraction_width => F = 0 for the end-to-end run, and F in 0..=W for the absorption sweep
+      proposal::where_fusion_changes_the_answer_it_is_not_a_lowering :: predicate :: fraction_width => in 0..=W-1
+      law::the_falling_factorial_family_vanishes_modulo_two_to_the_width :: holds :: total_width => W in 1..=k - s2(k), where s2 is the binary digit sum of k
+      law::the_fused_and_the_stepwise_multiply_add_denote_one_function :: holds :: fraction_width => in 0..=W-1
+      law::the_saturating_exponent_absorbing_identity :: holds :: total_width => W in 1..=d
+      law::rounding_retraction_is_the_identity :: fails :: fraction_width => F in 1..=W
+      law::the_fused_and_the_stepwise_multiply_add_denote_one_function :: fails :: fraction_width => in 0..=W-1
+  parameterised-bound ranges: 7
+
+### Q5 (ATTACK). is `construction` already a word in service in the registry?
+  219 rejects `proof` partly on the ground that it is a claim about the
+  sentence. The counter-question is whether its own token collides.
+      law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f::gap ...  a port may answer.**  No witness quoted. The construction is named in the governing f
+      law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f::note ... arries a fraction width and nothing else: the construction is parametric in F and prod
+      law::multiplicative_associativity_under_wrapping::gap ... nd below the shipped width can be defeated by construction, so no row of this law tran
+      law::the_falling_factorial_family_vanishes_modulo_two_to_the_width::note ... he instrument shown able to fail. This is the construction that killed model-band tran
+      law::the_falling_factorial_family_vanishes_modulo_two_to_the_width::witness ... d have disagreed. `L_16` run through the band construction gives band agreement green,
+      obligation::a_spectral_partition_of_a_dependency_graph::gap ... **This row briefly demanded the Laplacian construction, the power iteration and bo
+      probe::a_domain_widening_with_a_control_that_can_fire::establishes ... nal part is the value minus its truncation, a construction claimed to hold over any am
+      probe::a_mutant_the_encoding_must_reject::note ...  compile checks here record that the intended construction built and nothing about wha
+      probe::a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_at_compile_time::control ... A second construction (probe3_negative_check.rs) 
+      probe::absorption_and_coherence_ext_agree_exactly_when_the_second_operand_is_representable::note ... lready an element of the representable set by construction, so a real fold operand alw
+      probe::additions_chain_error_is_zero_by_closure_while_multiplications_plateaus_at_twice_one_step::control ... hout bound. The wide strategy's zero-error-by-construction column is the negative cont
+      probe::additions_chain_error_is_zero_by_closure_while_multiplications_plateaus_at_twice_one_step::establishes ... umulator pays zero extra error for every n by construction, one rounding cost at the e
+  fields whose text contains `construction`: 80
+  row ids containing `construction`: 7
+
+### Q6 (ATTACK). what 219's Arm 1 would cost: does a citation target exist?
+  Arm 1 requires a `construction` field naming a registry row or a probe.
+  Where a row carrying an unmarked universal has no outbound reference at
+  all, its author must first create a target before the warrant is
+  writable. That is the friction the ruling's `because` blames for the gap.
+  distinct rows carrying an unmarked universal: 31
+  of those, carrying at least one outbound reference: 20
+  carrying none, so Arm 1 makes them write a new row first: 11
+      proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container
+      proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type
+      proposal::the_rationalisability_counts_on_the_committed_carrier_table
+      proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder
+      law::additive_associativity_under_saturation
+      law::additive_associativity_under_wrapping
+      law::distributivity_of_multiplication_over_addition
+      law::equation_truth_sets_are_initial_segments_in_the_width
+      law::associativity_of_a_composed_saturating_add_and_subtract
+      law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f
+      law::existence_of_a_translation_invariant_total_order
+
+### CONTROL. Every arm above must be able to return something other than its
+    committed answer, or the reproductions are a fixture agreeing with itself.
+  planted entries: 4 (want 4)
+  planted universals: 2 (want 2)
+  planted dirty slugs: 1 (want 1, where the committed answer is 0)
+  planted mixed rows: 1 (want 1)
+  controls held: every arm returned a non-committed value on a planted tree.

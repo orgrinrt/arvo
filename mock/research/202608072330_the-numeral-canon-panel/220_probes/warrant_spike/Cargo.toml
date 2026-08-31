@@ -1,0 +1,20 @@
+# A spike, not shipping code. It exists to find out whether the warrant grammar
+# can be read by an extension of the arm the canon already runs, and whether the
+# arms it makes possible fire on planted inputs and on the committed canon.
+#
+# Its own workspace, so the mock workspace does not adopt it. Nothing here is a
+# member of anything.
+[workspace]
+
+[package]
+name = "warrant-spike"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "warrant-spike"
+path = "src/main.rs"
+
+[dependencies]
+arvo-checks = { path = "../../../../checks" }
