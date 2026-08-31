@@ -94,7 +94,10 @@ fn parse(text: &str, namespace: &str) -> Vec<Row> {
             }
             continue;
         }
-        let Some(rest) = line.strip_prefix(|c: char| c.is_ascii_lowercase()).map(|_| line) else {
+        let Some(rest) = line
+            .strip_prefix(|c: char| c.is_ascii_lowercase())
+            .map(|_| line)
+        else {
             continue;
         };
         let Some((key, value)) = rest.split_once(" = ") else {
@@ -191,7 +194,9 @@ fn flatten(s: &str) -> String {
 /// resolve the same way, while anything else this arm simply does not reach and
 /// says so rather than counting it either way.
 fn provenance_file(root: &Path, prov: &str) -> Option<PathBuf> {
-    let inner = prov.trim().trim_matches(|c| c == '[' || c == ']' || c == '"');
+    let inner = prov
+        .trim()
+        .trim_matches(|c| c == '[' || c == ']' || c == '"');
     let first = inner.split("\", \"").next()?;
     let parts: Vec<&str> = first.split("::").collect();
     if parts.len() < 3 || parts[0] != "panel" {
@@ -291,7 +296,11 @@ rung = "stated"
     assert_eq!(c.stated_without_quote, vec!["stated_without_words"]);
     assert_eq!(c.stated_by_kind.get("process"), Some(&1));
     assert_eq!(c.stated_by_kind.get("ruling"), Some(&1));
-    assert_eq!(c.stated_by_kind.get("intent"), None, "a ratified row was counted as stated");
+    assert_eq!(
+        c.stated_by_kind.get("intent"),
+        None,
+        "a ratified row was counted as stated"
+    );
     println!("control A: census reproduces a planted registry exactly");
 }
 
@@ -335,7 +344,10 @@ fn control_fidelity(root: &Path, rows: &[Row]) -> usize {
         planted = true;
         break;
     }
-    assert!(planted, "no matching row was reachable to mangle, so the control never ran");
+    assert!(
+        planted,
+        "no matching row was reachable to mangle, so the control never ran"
+    );
 
     let dirty = fidelity(root, &mangled).misses.len();
     assert_eq!(
@@ -367,7 +379,10 @@ fn main() {
         println!("  rung {rung}: {n}");
     }
     println!("stated rows carrying a quote: {}", c.stated_with_quote);
-    println!("stated rows carrying none:    {}", c.stated_without_quote.len());
+    println!(
+        "stated rows carrying none:    {}",
+        c.stated_without_quote.len()
+    );
     for id in &c.stated_without_quote {
         println!("    {id}");
     }
@@ -379,7 +394,10 @@ fn main() {
     println!();
     println!("== arm B, quote against the file its provenance names ==");
     println!("quotes checked against a panel file: {}", f.checked);
-    println!("quotes the arm could not reach:      {}", f.unreachable.len());
+    println!(
+        "quotes the arm could not reach:      {}",
+        f.unreachable.len()
+    );
     for u in &f.unreachable {
         println!("    {u}");
     }
