@@ -1366,3 +1366,88 @@ and work. If it's a real thing that constrains the work and is needed to know, i
 answers = ["may_the_canon_carry_an_unpredicated_proposition", "is_the_rounding_candidates_pairing_section_canon_or_design"]
 provenance = ["panel::202608072330_the-numeral-canon-panel::206_op_the_canon_test_and_the_standards_bound::#what-makes-a-thing-canon"]
 keywords = ["canon form", "constrains the work", "law", "cannot be designed away", "needed to know", "predicate", "imposed", "established", "canon or design", "the test"]
+
+[[ruling]]
+id = "two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate"
+kind = "process"
+rung = "ratified"
+ratified_by = "op"
+topic = "panel_conduct"
+says = "Panel-derived propositions do not wait on op. Where several experts converge heavily and can reason and spell it out, and the coordinator judges the reasoning, the evidence and the stated region sufficient, the proposition is promoted to canon. That promotion is a ratification and is treated as one, and it is recorded as distinct from a proposition op has stamped. Op's stamp is a marker that he has read it. The experts propose; the coordinator holds the gate; convergence is the bar rather than the trigger."
+quote = '''
+I stamp them but all of these are subject to being changed if the experts themselves end up
+disagreeing or finding a better solution or wording or bound. These make sense to me, but I'm not a
+domain expert. So if two experts agree on this, it is equal to my blessing. With my blessing on top
+of it, it's basically not really worth much, because these get so theoretical I can't possibly
+understand the implications and all that plays into it. So let's change the wording so that if two
+separate experts agree on it heavily and can reason and spell it out, that is a ratification for
+canon, though distinct from something I've blessed. But ratification never the less and should be
+treated as such, and not reserved for me to stamp because this is not my speciality and I can't
+really add anything to it. The stamp is just a marker that I've read it, no matter if I understand
+it or not...
+'''
+because = "The requirement that ratification carry both expert convergence and his blessing is what left 122 panel propositions with no exit and not one of them ratified, while every ratified row in the namespace was him blessing his own words. The bottleneck was never his availability; it was a rule that reserved for him a judgement he says he cannot make."
+instead = "He answers intent, fundamental design direction and broad strokes. Specifics are out of his depth by his own statement, and a panel exists precisely because they are."
+note = "Two things this is not. It is not automatic promotion on a count of agreeing experts: he was explicit afterwards that the coordinator remains the gatekeeper, so the experts still only propose and somebody has to judge that a proposition is justified, reasoned and demonstrated enough to deserve canon. And it is not permanent: his own condition is that a promoted proposition stays open to change if the experts later disagree or find a better solution, wording or bound. A promotion carries the reasoning that justified it, so it can be argued with rather than merely counted."
+provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-format"]
+keywords = ["ratification", "two experts", "convergence", "gatekeeper", "promotion", "stamp", "canon", "authority", "bottleneck"]
+
+[[ruling]]
+id = "an_expert_asks_its_peers_before_it_asks_op"
+kind = "process"
+rung = "ratified"
+ratified_by = "op"
+topic = "panel_conduct"
+says = "An expert that cannot settle something asks the other experts in the panel first. Where they converge heavily, that convergence is the answer and op is not in the loop. He is reached for intent, fundamental design direction and broad strokes, and for nothing else."
+quote = '''
+It's fine, but they should first ask their peers in the panel and if they converge heavily, if they
+agree, then that is the answer, and shouldn't need me in the loop. They are the experts, the domain
+specialists. Not me. I can pretty much only answer things of intent, the fundamental design
+directions and broad strokes, but anything that concerns specifics, is out of my depth, and is the
+exact reason a panel or you managing them exist in the first place...
+'''
+because = "Said after observing that the experts avoid work unless they have absolute answers to everything, which he noted is their job. A question filed rather than derived is the avoidance, and filing it at him rather than at a peer is what made the avoidance look like diligence."
+note = "This is why a panel is a small pool argued across rounds rather than a relay of single opinions: asking a peer requires there to be a peer holding the context, which a fresh dispatch per question does not provide."
+provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#parking-questions"]
+keywords = ["peers", "convergence", "escalation", "intent", "specifics", "out of depth", "panel", "avoidance"]
+
+[[ruling]]
+id = "the_format_spine_is_canon"
+kind = "ruling"
+rung = "ratified"
+ratified_by = "both"
+topic = "the_format"
+ratifies = [
+  "a_format_is_identified_by_its_ambient_domain_and_its_representable_set",
+  "membership_of_the_representable_set_is_one_affine_predicate",
+  "arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation",
+  "the_concept_is_closed_and_the_inventory_is_open",
+]
+says = "Four propositions become canon together and they are the format topic's spine. A format is identified by its ambient domain and its representable set, and that set is a constant of the type. Membership in it is one affine predicate over one parameterisation, of which integers, fixed point, scaled integers and floats are points. Arithmetic on a format is an exact operation in the ambient domain composed with a named total adaptation onto that set, and the adaptation is a first-class object with its own laws. The concept is closed and the inventory of admitted instances is open."
+quote = '''
+I stamp them but all of these are subject to being changed if the experts themselves end up
+disagreeing or finding a better solution or wording or bound. These make sense to me, but I'm not a
+domain expert. So if two experts agree on this, it is equal to my blessing.
+'''
+because = "Each stood at two independent experts before it was put to him, and the four are one shape rather than four claims: the identity fixes what a format is, the predicate says what is in it, the factoring says what an operation on it does, and the closed-concept clause says how a new instance joins without amending the canon."
+note = "The first panel-derived propositions ever ratified in this registry. Marked `both` because he stamped them and the expert convergence was already there; under the ruling he made in the same breath, the convergence alone would have sufficed. His condition travels with them: subject to change if the experts later disagree or find a better solution, wording or bound."
+provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-format"]
+keywords = ["format", "identity", "representable set", "ambient domain", "affine predicate", "adaptation", "closed concept", "open inventory"]
+
+[[ruling]]
+id = "arms_over_regions_are_the_fundamental_heart"
+kind = "intent"
+rung = "ratified"
+ratified_by = "both"
+topic = "the_strategy_axis"
+ratifies = ["arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached"]
+says = "The full space is filled by small arms and spans that hold where they are optimal and nowhere else, composed, rather than by one or a few general statements uniform across the dimensions. Each arm carries a const predicate over the region it holds in."
+quote = '''
+Option 1 is exactly the paradigm. We fill the full space, but instead of one or a couple of general
+statements that are uniform across the dimensions, we have small arms and spans that work where they
+are optimal, and nowhere else. It's the fundamental heart within arvo.
+'''
+because = "Four topics reached this independently and the earliest reached it before the rule that would have required it existed, which is convergence rather than a shared premise. He calls it the fundamental heart within arvo, which is the strongest framing he has given any structural claim."
+note = "This is `I13` stated as a positive shape rather than as a rejection of universals. It is why a finding carries the region it holds in: an arm without a predicate has nothing to be gated on, and a universal claim is not what this design produces."
+provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-organising-shape"]
+keywords = ["arms", "predicates", "regions", "composition", "optimal", "fundamental heart", "I13", "universal"]
