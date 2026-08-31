@@ -1,0 +1,15 @@
+# Compiled outputs of this probe. The sources, the scripts, every captured
+# stderr and the run's own output are tracked; the binaries are not, because
+# they are reproducible in a second by `matrix.sh` and are megabytes.
+ctlbin_*
+rt_on
+rt_off
+bin_on
+bin_off
+c_add_on
+c_add_off
+c_sub_on
+c_sub_off
+c_shl_on
+c_shl_off
+out/
