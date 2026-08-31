@@ -541,3 +541,212 @@ canon_rows = [
 ]
 ported_this_pass = true
 note = "This file rewarded direct reading exactly as flagged when it was still unopened; it is the second entailment-check file this pass (after 64) to yield genuine, previously-uncaptured content on direct inspection, which is worth naming as a pattern: entailment-check files in this panel are consistently higher-value to open directly than their low citation counts suggest, because their whole purpose is finding what a consolidation dropped, which is precisely the content most likely to be missing from the registry."
+
+[[item]]
+path = "76_willsey_derived_laws_derived_cold.md"
+unit = "derived_laws"
+claims = [
+  "A law belongs to a pair (strategy, set of operations composed under it), never to a bare type.",
+  "Three tiers: entailments, convenience facts, explicitly refused laws.",
+  "Congruence-closure reading of what a law is.",
+  "Chain-machinery closure mechanism, adopted from 77 in phase two.",
+  "Human legibility as a second obligation distinct from machine-checkability.",
+  "Defect/benefit pair for I5-licensed refusals as a falsifiable claim, sharpened from 77.",
+  "Self-flagged shared blind spot: neither cold derivation tested the runtime-per-datum reading of 'validate' for a law.",
+]
+verdict = "mixed"
+confidence = 0.9
+reason = "Two-commit phase-one/phase-two structure, fully read. Core tier taxonomy and law-is-a-pair claim absorbed by consolidation 90 (R1). Chain-machinery closure mechanism and the shared-blind-spot gap had no row before this port; both ported this pass."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics",
+  "proposal::whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra",
+  "proposal::validation_is_two_acts_keyed_by_boundary_and_it_validates_maps",
+]
+ported_this_pass = true
+note = "The mechanism agreement with 77 (representability construction) is genuine (separately compiled); the choice-of-motivating-bug agreement is shared drift from one memorised project fact wearing two hats, flagged honestly by the file itself. Checkpoint 81 independently confirms both the rung-correction and the shared-blind-spot findings, without either being new by the time 81 was written."
+
+[[item]]
+path = "77_amin_derived_laws_derived_cold.md"
+unit = "derived_laws"
+claims = [
+  "A law is a property of a judgment between expression forms of arbitrary finite length.",
+  "The chain-machinery closure mechanism: addition needs none, multiplication needs a widened accumulator, error is non-monotone.",
+  "Probe 3: a two-axis strategy-resolution rule checked as a semilattice join (commutative, associative, idempotent) at compile time, with a negative control.",
+  "The resolved strategy dominates rather than inherits: a monotonicity meta-law for cross-strategy composition.",
+  "One instance meeting another with 76, not confirmation (its own framing of the rung question later corrected further by 79).",
+]
+verdict = "mixed"
+confidence = 0.9
+reason = "Two-commit structure, fully read. The chain-error mechanism and the strategy-resolution probe (probe 3) were genuinely uncaptured before this port; both ported with their own probe and proposal rows, plus a new question row (Q66) for the cross-strategy-laws question this file's own text says should be filed rather than folded silently into 42's vocabulary."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_at_compile_time",
+  "proposal::a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically",
+  "question::which_strategys_laws_govern_a_cross_strategy_operation",
+  "probe::additions_chain_error_is_zero_by_closure_while_multiplications_plateaus_at_twice_one_step",
+  "proposal::whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra",
+]
+ported_this_pass = true
+note = "Its own 130-rounding-step spike figure for a near-one-magnitude input is reported honestly here as weaker evidence: hand-transcribed in a markdown table rather than backed by a separate committed probe output file, unlike the decaying-input plateau result which is."
+
+[[item]]
+path = "78_aaltonen_the_thread_axis.md"
+unit = "the_thread_axis"
+claims = [
+  "The write hazard is real and distinct from the read hazard OPTIONS.md Q32 previously conflated.",
+  "A naive parallel write to a packed column corrupts output 16.6 to 19.2% of the time at a misaligned split.",
+  "An atomic guard on the shared boundary byte restores correctness at 6-9% overhead.",
+  "Register correction: Q32's opening sentence ('every instrument runs on one thread') was false when written.",
+]
+verdict = "live"
+confidence = 0.95
+reason = "Fully read, 14 pre-existing citations confirmed accurate. The register correction and the exact percentages are captured verbatim in retirement::the_register_stated_every_instrument_this_panel_has_built_runs_on_one_thread (or equivalent id), including the honest note that it was left standing per the panel's discipline against rewriting a committed entry rather than edited in place."
+superseded_by = []
+supersedes = []
+conflicts_with = ["OPTIONS.md Q32's original opening sentence, explicitly and by name"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["retirement::options_q32_every_instrument_runs_on_one_thread"]
+ported_this_pass = false
+note = "Confirmed by content match: 16.6-19.2%, 6-9%, Q32. No new gap found; alternatives-not-taken in section 12 are explicitly future work, not findings."
+
+[[item]]
+path = "79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md"
+unit = "derived_laws"
+claims = [
+  "P4 is a necessary-not-sufficient predicate on the panel's own measured cube (section 5).",
+  "76 goes further than 77 does; 63's schedule concept sharpens both (section 6).",
+  "Rung correction: self-agreement is not the corroboration 76 reads it as; honest tally is two independent instances plus one same-author weaker instance (section 7).",
+  "The self-collapsed-ambient-domain failure mode should be named separately from an unvalidated convenience fact (section 8).",
+  "Candidate canon sentence for Q25 offered at one-expert, provisional confidence (section 10).",
+]
+verdict = "mixed"
+confidence = 0.9
+reason = "Fully read. The rung correction (section 7) is verbatim-captured in proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics's note, via consolidation 90. The section-10 candidate sentence for Q25 had no home before this port; enriched into Q25's note this pass."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = ["76's own framing of self-agreement as corroboration, named and corrected in section 7"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics", "question::how_the_law_inventory_is_named"]
+ported_this_pass = true
+note = "Section 8's suggestion to name the self-collapsed-domain failure mode as a fourth risk tier distinct from an unvalidated convenience fact is offered as 'I think' rather than a settled finding; judged too thin and too hedged to warrant its own row, and the underlying N11 material it draws on is already thoroughly captured."
+
+[[item]]
+path = "80_rompf_when_the_deriving_happens.md"
+unit = "derived_laws"
+claims = [
+  "Validate-by-sweep bound collapses with arity and falls on the wrong side (section 4).",
+  "The select stage is where a law does its only work.",
+  "76 and 77 agree exactly on the static-schedule region and diverge exactly at its edge (section 7).",
+  "The fold's compile-time refusal is the staging boundary (capacity stage zero, length stage one) reporting its own position, not a type-system limitation.",
+  "Self-flagged: the stage-minus-one framing is the author's own synthesis, not op's words.",
+]
+verdict = "mixed"
+confidence = 0.88
+reason = "Section 7 and its staging-boundary reading, cited by 90 as explaining Q11/Q12 'from this unit's side', had no row of its own before this port. R11 (chain lifting/schedule split) was already ported; this is a distinct, broader finding about why the fold refusal exists at all."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_folds_compile_time_refusal_is_the_staging_boundary_reporting_its_own_position", "proposal::chain_laws_split_by_whether_a_lifting_theorem_exists"]
+ported_this_pass = true
+note = "Its own section 12 lists six explicit uncertainty items; the staging framing (item 4) is honestly marked as the author's synthesis rather than op's words, which the new proposal row's standing = one_expert reflects."
+
+[[item]]
+path = "81_persona_checkpoint_seven.md"
+unit = "derived_laws"
+claims = [
+  "A rate quoted without its arity does not transfer: unstable-features.md's per-bit const-eval cost ratio was corrected from a bare constant to 2^k for arity k.",
+  "Confirms 79's rung correction and 76's self-flagged shared blind spot as the unit's real corrections, nothing further to add.",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Fully read. Triangulates and confirms the two findings this pass already ported (rung correction, shared blind spot on 'validate'); adds nothing new to the registry. The unstable-features.md correction is a workspace-rule fix, not canon content, and is out of scope for a registry row."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "A four-day gap separates this file's commit date from 76-80's (2026-08-09), consistent with normal panel cadence (op review between units) rather than an abandoned-then-resumed panel."
+
+[[item]]
+path = "82_jhala_lifting_a_measured_region_into_a_declaration.md"
+unit = "derived_laws"
+claims = [
+  "Route two: which const-available operands decide P4.",
+  "Route three: a region that does lift, distinct from P4's.",
+  "A trajectory condition lifts into a declaration over the operand set exactly when it survives the set's closure under the operations the law ranges over.",
+  "The maximal lifted box is 21.98% of the holding set; every non-degenerate holding box is clamp-free, at zero residue against a live control.",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Header structure and title checked directly; core finding (closure criterion, 21.98% figure) confirmed thoroughly captured in probe::a_trajectory_condition... and proposal R8. Not read section by section given the strength of this match; confidence reflects that partial-read caveat."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure"]
+ported_this_pass = false
+note = "canon_rows id is approximate (matched by content: 21.98%, closure, degenerate box), not re-confirmed by exact grep this pass. Lower confidence than fully-read files in this unit reflects that only the header and the register cross-check were done, not a full read."
+
+[[item]]
+path = "90_giesen_consolidation_derived_algebraic_laws.md"
+unit = "derived_laws"
+claims = ["The unit's consolidation, R1 through R13 plus the corrections chain and the const-gate material."]
+verdict = "live"
+confidence = 0.92
+reason = "Extensively cross-checked this pass rather than read start to finish: sections 3 (R11), 5, 7 and 12 read in full, 4 (110), 12 (the deepest correction chain) and the sourcing-honesty section (801) spot-checked. Consistently the highest-citation file in its unit, matching the pattern already confirmed for consolidations 63 and 74."
+superseded_by = []
+supersedes = ["76_willsey_derived_laws_derived_cold.md", "77_amin_derived_laws_derived_cold.md", "78_aaltonen_the_thread_axis.md", "79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md", "80_rompf_when_the_deriving_happens.md", "81_persona_checkpoint_seven.md", "82_jhala_lifting_a_measured_region_into_a_declaration.md"]
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics", "proposal::chain_laws_split_by_whether_a_lifting_theorem_exists", "proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container", "many others across R1-R13, not individually re-verified this pass"]
+ported_this_pass = false
+note = "This unit's chain-machinery closure mechanism (R11's citation of 76/77) and 80's staging-boundary finding both had no row of their own despite being named explicitly in this file's own text; both ported this pass as separate rows rather than folded into R11's existing row, since they are distinct claims R11's row does not carry."
+
+[[item]]
+path = "91_ringer_entailment_check_on_the_derived_laws_consolidation.md"
+unit = "derived_laws"
+claims = ["Entailment check on 90, per the pattern established by 64 and 75."]
+verdict = "exploration"
+confidence = 0.4
+reason = "Not read this pass. Given the established pattern that entailment-check files are the highest-value files to read directly (found genuine gaps in both 64 and 75), this is flagged as the single highest-priority unread file remaining in the 76-99 range at the point this pass ended."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "GENUINE GAP IN THIS PASS'S COVERAGE, not a judgement that the file is low-value. Recommended as the first file for whoever continues this catalogue past file 90."
+
+[[item]]
+path = "92_fog_pricing_the_reassociation.md"
+unit = "derived_laws"
+claims = ["Pricing work for reassociation, per the original brief's 0-cited note."]
+verdict = "exploration"
+confidence = 0.3
+reason = "Not read this pass. 0 citations per the original brief, consistent with unabsorbed pricing/bench work rather than a claim awaiting a row, but not independently confirmed this pass."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not read. Lower priority than 91 given the original brief's citation count, but still unverified."
