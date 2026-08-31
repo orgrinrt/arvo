@@ -169,7 +169,7 @@ pub fn measurements_resting_on_an_unusable_instrument(reg: &Registry) -> Vec<Fin
                 ));
                 continue;
             }
-            if standing == "uncontrolled" || names_no_control(probe.get("control").unwrap_or("")) {
+            if standing == "uncontrolled" {
                 out.push(Finding::new(
                     "measurement-rests-on-an-uncontrolled-instrument",
                     row.addr(),
@@ -186,77 +186,45 @@ pub fn measurements_resting_on_an_unusable_instrument(reg: &Registry) -> Vec<Fin
     out
 }
 
-/// Whether a `control` field is an admission that none was run.
-///
-/// Read from the text because that is where the corpus puts it, and the field
-/// is required precisely so the admission has somewhere to go.
-///
-/// **The first version matched five fixed phrases and caught one admission in
-/// five.** The seat writing the rows predicted that before its own run and then
-/// measured it: five rows open their `control` with the word None and one
-/// matched, the misses being the natural phrasings, "None stated in the
-/// material read" and "None, and none is needed". It also reported that it had
-/// written its own admission in the form the matcher could see, and **named
-/// that as adopting an unstated convention rather than letting it pass**, which
-/// is the half worth keeping: a `control` field says what is true, not what a
-/// substring can find.
-///
-/// So the rule is the opening word, with one carve-out. A field beginning
-/// "None" is an admission unless it reports something happening, because "None
-/// of the arms disagreed, and that is the control firing" begins identically
-/// and means the opposite.
-///
-/// **The second reader this asked for has come back and the rule loses.** Two
-/// probes open their control with the identical sentence, "None was run as a
-/// case that had to fail", and this catches one: the other contains the word
-/// `reported` inside a **counterfactual** about what a different outcome would
-/// have meant, which clears the carve-out. That is not a gap in the word list.
-/// **A word list cannot tell a report from a counterfactual**, so lengthening
-/// it moves the false negative rather than removing it.
-///
-/// **The repair is `standing = "uncontrolled"`**, which is data rather than
-/// prose and is read directly by the arm above. This function stays as the
-/// backstop for a row not yet triaged onto that value, and it stays labelled as
-/// what it is: a guess that is right about half the time, kept only because
-/// half is more than nothing while the triage runs. **Delete it when the rows
-/// carry the value.**
-fn names_no_control(control: &str) -> bool {
-    let c = control.trim().to_ascii_lowercase();
-
-    // Stated anywhere in the field, because these are admissions wherever they
-    // sit rather than only at the front.
-    const PLAINLY: &[&str] = &["no control", "nothing was run", "no case that had to fail"];
-    if PLAINLY.iter().any(|p| c.contains(p)) {
-        return true;
-    }
-
-    // Opening with the word, which is how this corpus actually writes it.
-    let Some(rest) = c.strip_prefix("none") else {
-        return false;
-    };
-    if rest.starts_with(|ch: char| ch.is_alphanumeric()) {
-        return false; // `nonetheless`, and whatever else begins that way
-    }
-    // Unless the field somewhere reports a case that did come out one way.
-    //
-    // **Read over the whole field rather than the opening clause**, which is
-    // what the first attempt did and what its own test caught: "None of the
-    // four cells matched; the control fired on the fifth" puts the firing after
-    // a semicolon, and a clause-bounded read called it an admission. Widening
-    // it costs nothing measurable here, because none of the six admissions this
-    // corpus actually writes contains any of these words anywhere.
-    const FIRED: &[&str] = &[
-        "fired",
-        "disagreed",
-        "refused",
-        "failed",
-        "reported",
-        "caught",
-        "flagged",
-    ];
-    !FIRED.iter().any(|v| rest.contains(v))
-}
-
+// There used to be a function here that read a `control` field and guessed
+// whether it was an admission that no case had to fail. It is gone, and the
+// three versions it went through are the argument for why the answer is a
+// declared value rather than a better parser.
+//
+// **Version one, five fixed phrases: one admission caught in five.** The seat
+// writing the rows predicted that before its own run and then measured it per
+// row. The misses were the natural phrasings, "None stated in the material
+// read" and "None, and none is needed". The same seat reported it had written
+// its own admission in the form the matcher could see, and named that as
+// adopting an unstated convention rather than letting it pass. A `control`
+// field says what is true, not what a substring can find.
+//
+// **Version two, the opening word with a carve-out for a control that fired:
+// six in nine.** A second reader found the first hole: two probes open with the
+// identical sentence, "None was run as a case that had to fail", and the
+// matcher caught one, because the other contained `reported` inside a
+// counterfactual about what a different outcome would have meant. Reading all
+// seventy-five fields in full then found two more, failing the other way:
+// "no single one of them carries a case that had to fail" and "Neither arm
+// carries a planted case that had to fail" open with neither word and carry
+// neither phrase, because **the negation sits on a different noun.**
+//
+// So: a word list cannot tell a report from a counterfactual, and cannot see a
+// negation it is not adjacent to. Both directions of failure, on record, from
+// two independent reads. Lengthening the list moves the false negative.
+//
+// **Version three is `standing = "uncontrolled"`**, which is data, is read
+// directly, and parses no sentence. Every row now carries a standing somebody
+// set by reading its field in full, so there is nothing left to back-stop and
+// the guess is deleted rather than kept at half accuracy.
+//
+// The measurement that closed it: nine of seventy-nine ran with no case that
+// had to fail, sixty-seven carry one. **The prose instrument's set is a strict
+// subset of the declared one**, which is what says the triage missed nothing
+// rather than merely disagreeing with the parser.
+//
+// ---
+//
 /// A region on an imposed proposition inverts it, and its absence anywhere else
 /// hides one.
 ///

@@ -76,10 +76,39 @@ fn the_committed_canon_stamps_nothing_on_an_ack() {
     assert!(found.is_empty(), "{found:#?}");
 }
 
+/// Two measurements rest on an instrument that ran no case that had to fail,
+/// pinned by name.
+///
+/// **This is the check working rather than a hole in it.** Both edges were
+/// written from a committed map, both probes had already been named in prose as
+/// thin, and the register saying so changed nothing because prose is not a
+/// gate. Declaring `standing = "uncontrolled"` moved the statement to where the
+/// gate reads, and these two turned red the moment it did.
+///
+/// **Neither is repaired by a checker and neither is repaired here.** A claim
+/// resting on an uncontrolled instrument is not a measurement, so the honest
+/// repairs are marking the sentence as the argument it is, or building the case
+/// that had to fail and rerunning. Both are edits to somebody's row and both
+/// change what the canon claims, so they are a dispatch rather than a line.
+///
+/// What this pins is that a third does not appear.
 #[test]
-fn the_committed_canon_rests_no_measurement_on_an_unusable_instrument() {
-    let found = shape::measurements_resting_on_an_unusable_instrument(&canon());
-    assert!(found.is_empty(), "{found:#?}");
+fn the_measurements_on_an_uncontrolled_instrument_are_the_two_already_named() {
+    const KNOWN: &[&str] = &[
+        "proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body",
+        "proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times",
+    ];
+    let mut found: Vec<String> = shape::measurements_resting_on_an_unusable_instrument(&canon())
+        .into_iter()
+        .map(|f| f.at)
+        .collect();
+    found.sort();
+    found.dedup();
+    assert_eq!(
+        found, KNOWN,
+        "a claim rests on an instrument that cannot be refuted. Mark the sentence as the \
+         argument it is, or build the case that had to fail; adding it here is neither."
+    );
 }
 
 /// The three ways an instrument cannot be used, and the one way it can.
@@ -111,7 +140,7 @@ control = "the author retracted it before reporting"
 
 [[probe]]
 id = "the_uncontrolled_one"
-standing = "sound"
+standing = "uncontrolled"
 control = "no control was run"
 
 [[proposal]]
@@ -220,108 +249,18 @@ evidence = ["declared_sound"]
     );
 }
 
-/// The admissions the corpus actually writes, which a phrase list missed.
-///
-/// The first matcher caught one of five. The seat writing the probe rows
-/// predicted that before its own run and then measured it per row: five open
-/// their `control` with the word None and one matched. These are the real
-/// phrasings, copied from the rows.
-#[test]
-fn the_ways_this_corpus_says_none_are_all_read_as_none() {
-    let admissions = [
-        "None stated in the material read. The instrument counts vocabulary occurrences.",
-        "None stated as a must-fail arm. What stands in its place is a trace.",
-        "None run, and the shape does not admit an obvious one.",
-        "None, and none is needed for what it establishes.",
-        "None. It is a structural argument with no failing case to plant.",
-        "None was run as a case that had to fail.",
-        "no control was run",
-        "nothing was run against it",
-    ];
-    for (i, control) in admissions.iter().enumerate() {
-        let reg = parse(
-            "planted.toml",
-            &format!(
-                r#"
-[[probe]]
-id = "p{i}"
-standing = "sound"
-control = "{control}"
-
-[[proposal]]
-id = "rests_on_p{i}"
-sentence_kind = "measured"
-evidence = ["p{i}"]
-"#
-            ),
-        );
-        let found = shape::measurements_resting_on_an_unusable_instrument(&reg);
-        assert_eq!(
-            found.len(),
-            1,
-            "`{control}` is an admission that none was run and was not read as one"
-        );
-    }
-}
-
-/// The carve-out, and it is why the rule is not simply a prefix test.
-///
-/// A control that fired can be written starting with the same word. Reading
-/// that as an admission would report the best-controlled probes in the corpus.
-#[test]
-fn a_control_that_fired_may_open_with_the_same_word() {
-    let fired = [
-        "None of the arms disagreed until the planted row, which the check reported.",
-        "None of the four cells matched; the control fired on the fifth.",
-        "Nonetheless the wrap arm had to disagree with clamp at width 5, and it did.",
-    ];
-    for (i, control) in fired.iter().enumerate() {
-        let reg = parse(
-            "planted.toml",
-            &format!(
-                r#"
-[[probe]]
-id = "q{i}"
-standing = "sound"
-control = "{control}"
-
-[[proposal]]
-id = "rests_on_q{i}"
-sentence_kind = "measured"
-evidence = ["q{i}"]
-"#
-            ),
-        );
-        assert!(
-            shape::measurements_resting_on_an_unusable_instrument(&reg).is_empty(),
-            "`{control}` reports a control that came out one way and was read as an admission"
-        );
-    }
-}
-
-/// The control on the control-detector, which is a phrase match and could
-/// easily report every probe that uses the word.
-#[test]
-fn a_probe_describing_a_control_that_fired_is_not_read_as_having_none() {
-    let reg = parse(
-        "planted.toml",
-        r#"
-[[probe]]
-id = "a_real_one"
-standing = "sound"
-control = "a planted anchor that must be reported; it fired on the first run"
-
-[[proposal]]
-id = "rests_on_it"
-sentence_kind = "measured"
-evidence = ["a_real_one"]
-"#,
-    );
-    assert!(
-        shape::measurements_resting_on_an_unusable_instrument(&reg).is_empty(),
-        "the word `control` appearing is not an admission that none was run"
-    );
-}
+// Three tests that exercised a prose matcher used to sit here, one for the
+// admissions it had to catch, one for the controls it had to leave alone, and
+// one control on the control. They are gone with the function, and what they
+// established is kept in the comment where it stood in `shape.rs`: a word list
+// caught one admission in five, then six in nine, and failed in both directions
+// for reasons no longer list can fix. It cannot tell a report from a
+// counterfactual and it cannot see a negation on a different noun.
+//
+// The test that replaces all three is the one above, which plants two probes
+// with **identical** control text differing only in `standing`, and asserts
+// that exactly one is reported. That is the whole property in one arm: the
+// value decides and the prose does not.
 
 #[test]
 fn the_committed_canon_defines_no_term_twice() {
