@@ -39,3 +39,18 @@
 ### carries 'any accumulator statement derived from a capacity is an
 ### additive-only mechanism' with a predicate and an answers edge to Q11.
 ### A figure search cannot see either. That is the bound above, live.
+
+### A FALSE POSITIVE IN THIS FILE'S OWN OUTPUT, kept rather than tuned away.
+### Section 3.7's '87.5' reports present. It is NOT 35's distributivity
+### failure rate. The hit is proposal.toml:1374, a gap field on a row about
+### composed add-and-subtract associativity under box lifting, whose own
+### keywords carry 21.98 and R8. A three-character decimal is not
+### distinctive, which is the defect 191 found in its own 43 arm and fixed
+### by printing context. The context is printed above; the reader has to
+### read it. I did not, for one draft.
+###
+### 35 section 3.7's result DID reach the canon, and not by its figures:
+### law.toml:145 distributivity_of_multiplication_over_addition carries a
+### holds region, a fails region, a witness at 47.72 and 34.52 from two
+### independently written later models, and a note naming 35:311 as one of
+### three places the F = 0 qualifier was lost. Open the row.
