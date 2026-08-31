@@ -135,8 +135,21 @@ pub fn repo() -> PathBuf {
 }
 
 /// The committed canon.
+///
+/// Refuses an empty result rather than returning one. Most arms here assert
+/// that a sweep over the canon finds nothing, so a registry that failed to load
+/// reads exactly like a registry with nothing wrong in it, and the whole suite
+/// goes green over no rows at all.
 pub fn canon() -> Registry {
-    load(&repo().join("mock/registry")).expect("mock/registry is readable")
+    let dir = repo().join("mock/registry");
+    let reg = load(&dir).expect("mock/registry is readable");
+    assert!(
+        !reg.rows.is_empty(),
+        "no rows loaded from {}. Every arm asserting the canon is clean would pass on this, so \
+         it fails here instead.",
+        dir.display()
+    );
+    reg
 }
 
 /// Every `*.toml` under a directory, parsed into rows.
@@ -145,6 +158,17 @@ pub fn canon() -> Registry {
 /// its path, which is what lets the canon be filed by subject and still be
 /// queried by kind. Nested directories are walked.
 pub fn load(dir: &Path) -> std::io::Result<Registry> {
+    // A path that is not a directory is an error at the top level and silence
+    // inside the walk. `walk` returns `Ok` for one so that a stray file among
+    // the entries is skipped rather than fatal; here it means the caller named
+    // somewhere that does not exist, and returning an empty registry for that
+    // is how a wrong path becomes a clean bill of health.
+    if !dir.is_dir() {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::NotFound,
+            format!("{} is not a directory", dir.display()),
+        ));
+    }
     let mut reg = Registry::default();
     walk(dir, &mut reg)?;
     reg.rows
