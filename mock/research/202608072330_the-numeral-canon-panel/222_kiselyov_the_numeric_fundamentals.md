@@ -1003,3 +1003,226 @@ rather than an argument for one global choice.
 
 So the question is answered without op, and the part the bound worried was his
 turns out to be the part that dissolves.
+
+### 7.10 The concept fixes coordinates and their order, and commits to no count of levels
+
+`question::are_the_level_hierarchies_the_same_cut` (Q19). The question offers a
+three-level cut and a five-level cut and asks whether one refines the other. Its
+note names the instrument that would decide it, applying each cut's own change-test
+to the other's levels, and the change-tests are not in the registry, so I could not
+run it.
+
+What ratified text does decide is narrower and enough. The ratified identity
+clause commits to which coordinates exist and to what each decides: the ambient
+domain and the representable set identify, adaptation choice and encoding are
+realisation. It commits to no grouping of them and to no count. A level is a
+grouping, so a count of levels is a claim about a partition rather than about the
+concept, and two different partitions can both be faithful to the same coordinates.
+
+So the answer is that the question has no answer of the shape it asks for, and the
+concept commits to its choices and their order and to nothing about levels. This
+agrees with `the_concept_commits_to_its_choices_and_to_no_count_of_levels`
+(`proposal.toml:512` block), which I read first, so the conclusion is confirmed
+rather than corroborated. The route is not shared: that row argues from two
+instruments producing partitions that do not refine each other, and this argues
+from what the ratified sentence commits to, which is a different premise reaching
+the same place.
+
+### 7.11 The role concept is closed and the role inventory is open
+
+`question::is_the_role_set_closed` (Q23). Ratified text settles the same fork one
+level up, at `the_concept_is_closed_and_the_inventory_is_open`, and the reasoning
+transfers exactly: a closed inventory of roles would put every new role through a
+canon amendment, and an open concept of a role would make the word mean nothing.
+
+The concept is available and is already written:
+`roles_derive_representations_and_a_realisation_variant_computes_nothing_new`
+says roles "differ in who re-establishes the invariant", which is a definition
+rather than a list. So the concept closes on that definition and the inventory of
+roles satisfying it stays open, at storage, compute and interchange and whatever
+else supplies it.
+
+**The proposed fourth is refused as a category error rather than voted down.** The
+same row says a chain's extent "is not a role at all but a schedule", and
+`conversion_and_resolution_are_one_obligation_at_two_arities` independently makes
+schedules a property of an expression rather than of a representation. A schedule
+does not re-establish an invariant, so it cannot be a role under the definition
+that closes the concept.
+
+Derived by transferring a ratified sentence one level down, and the transfer is the
+weak link: nothing ratified says the role axis is the same kind of thing as the
+system concept. If somebody wants to attack this, that is where.
+
+### 7.12 Interoperation is one obligation at two arities, which is none of the three words offered
+
+`question::is_interoperation_conversion_or_resolution` (Q27). The option set is
+three bare words with no elaboration, which the row's own note admits: "each is
+named and none is described, which is as symmetric as the source allows".
+
+Ratified `arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation`
+answers it directly and the answer is not among the three. Moving one value into a
+declared system is an exact operation of arity one in a common ambient composed
+with an adaptation onto the target's representable set. Combining several values
+from disagreeing systems is the same sentence with the arity raised. The three
+things each owes are identical, and 6.4 fixes the third of them.
+
+So this is an entailment rather than a derivation, and it agrees with
+`conversion_and_resolution_are_one_obligation_at_two_arities`, read first. The
+useful output is not the agreement, it is that the option set cannot hold the
+answer, which is 8.2.
+
+### 7.13 The ownership key is adopted, and its stated cost is already paid
+
+`question::the_ownership_key_as_a_structural_axis` (Q35). Ratified
+`never_a_runtime_check_and_one_lowered_path` makes what resolves before runtime the
+axis the whole design turns on: "invalids are caught at compile time and unused
+paths are cleared when lowered". Resolution time is therefore already load-bearing,
+and ownership is the other half of the same fact, since a choice cannot resolve
+without something owning it.
+
+Two of my own results need the key to be stateable at all. 6.6 makes a
+platform-width numeral a family owned by the compilation and resolved at
+monomorphisation, and 5.3 makes the footprint an axis resolved at const time. Both
+are ownership-and-resolution-time claims and neither is expressible without the
+key.
+
+**Adopt.** The row's stated cost, that every per-value canon sentence acquires an
+implicit whose-components rider, is real and is not a new cost: the canon already
+requires every sentence about numerals to name the prefix it quantifies over, per
+`every_canon_sentence_names_the_prefix_it_quantifies_over` (`proposal.toml`, the
+`canon_form` row following the sequence). A rider that a discipline already demands
+be explicit is not implicit.
+
+Agrees with `each_choice_in_the_sequence_has_an_owner_and_a_resolution_time`
+(`proposal.toml:521`), read first.
+
+### 7.14 Name all five crossing classes, and owe an order only where the crossing loses
+
+`question::does_the_canon_name_crossing_classes` (Q37, first half) and
+`question::when_is_an_order_owed_at_a_crossing` (Q37, second half).
+
+**Five names.** The argument is the predicate discipline rather than taste. A
+crossing's law obligation differs by which coordinate moves, and ratified text
+makes some of those coordinates identity and others realisation, so a sentence
+about "a crossing" that does not say which coordinate moved is quantifying over a
+set whose members obey different laws. Under `ruling::a_predicate_lists_only_what_holds`
+such a sentence claims nothing anybody can gate on. Naming the classes is what
+makes the sentence writable, and the cost the option lists, five names plus a rule
+that a composite names its intermediate, is the cost of being able to say anything.
+
+**An order only where lossy.** Where a crossing loses nothing, composition commutes
+with the endpoints, so an order names a choice with one outcome. Under
+`ruling::arms_over_regions_are_the_fundamental_heart` that is an arm over an empty
+region, which is not an arm. Where it loses, the two candidate orders give
+different answers and something outside the typestate has to say which, and 6.4
+says which. So the second option, and the third option's global order is refused
+because 6.4 makes the answer depend on which endpoint is the target.
+
+Both agree with `an_order_is_named_exactly_where_a_crossing_is_lossy`
+(`proposal.toml:393` block) and `a_crossing_carries_two_relations_and_a_verdict_per_law_family`,
+read first. What 6.4 adds is closing that row's own recorded gap.
+
+### 7.15 Mixed-numeral addition exists, and its existence has a cost the register should carry
+
+`question::mixed_numeral_addition` (Q3). Two independent things refuse the first
+option, that no such addition exists.
+
+Ratified `arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation`
+makes it expressible without any new machinery: lift both operands into a common
+ambient domain, add exactly there, adapt onto a declared target representable set.
+Nothing in that sentence requires the operands to have come from one format, and
+7.12 is the same construction at arity two.
+
+And `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`
+is an adequacy test rather than a preference: a convention that cannot be written
+as an alias is a gap in the primitives. Both conventions op named carry an addition
+across differing formats, so a design in which no such addition exists cannot write
+either alias and fails the test.
+
+Between the second and third options, `ruling::there_is_no_universal_answer_take_the_win_and_gate_it`
+gives both: the explicit conversion is always available, and the inferred form
+exists wherever the target numeral is derivable by a const predicate. That is a
+composition rather than a winner, and it is what the arms ruling asks for.
+
+**The cost, which I would rather state than let a consolidation discover.** The
+row's note records that unit two's one unconditional result rests on this question
+staying open, because "under the second option addition aligns scales, alignment is
+a shift, and a shift is the coarsening that kills multiplication". My answer admits
+the inferred form in a gated region, so that unconditional result becomes
+conditional on the gate, and somebody has to restate it with the predicate the gate
+supplies. I did not do that work and it is real.
+
+### 7.16 The shape space is not a lattice, so no design may rely on a computed join
+
+`question::one_numeral_family_or_several` (Q8). Op's instinct is one family and he
+said explicitly not to act on it, so the instinct is not evidence and I have not
+used it.
+
+`probe::closing_the_family_under_intersection_is_priced_and_does_not_reach_tapered_formats`
+measures the join of a fixed-point numeral and a float numeral as having two
+incomparable minimal upper bounds and no least one, and no admission of more
+fixed-point shapes repairing it, on two instruments by two authors where the second
+attacked the first's scope. That is the whole structural content available, and it
+settles what a design may rely on: not a computed unique join, at any point,
+anywhere.
+
+The question as posed asks for a universal structural verdict over the whole shape
+space, which is the shape `ruling::the_work_is_predicated_arms_composed` rejects by
+premise. What survives of it is the third option's content, reached from the
+measurement rather than from a taste for totality: stop requiring a unique least
+upper bound, return the set of minimal upper bounds, and let a stated rule pick
+where a caller needs one. The row's own note records that the no-determiner cell is
+empty and coherence says it must be, so the rule has few callers and each can name
+its own.
+
+**I did not find the fifth option**, a route to one family surviving all three
+conditions. I looked for one for about as long as it was honest to, from the
+step-set reading of the fourth option, and the step-set relation is nested for the
+fixed-point family alone and is not nested across the float boundary, which is the
+same incomparability in different words. So the fourth option looks to me like a
+restatement of the measured obstruction rather than a way past it, and I am
+reporting that rather than proposing it.
+
+### 7.17 The width surface wants the alias to carry the const and the algebra to key on nats
+
+`question::the_width_surface_crossing` (Q9). **This is the least certain thing in
+this file** and I would rather it be attacked than adopted.
+
+Three constraints narrow the seven options and none of them is a preference.
+
+`obligation::a_primitive_for_every_position_a_bare_number_would_take` carries op's
+own words, "No bare usize other than in const generics for smoother and more
+ergonomic api, and even there, only when truly painful otherwise". The const
+generic position is the excepted one, so an option that removes the const surface
+entirely is not required by that constraint and an option that keeps it is not
+forbidden. What the second clause does forbid is a spelling chosen when a less
+painful one exists, and option two's hand-written binary digit tower is the painful
+one by any reading.
+
+`obligation::the_unstable_machinery_does_not_reach_a_consumer` says "A consumer
+naming arvo's types needs no unstable compiler features, no nightly-only attributes
+and no feature gates of its own, whatever arvo uses internally to build them", and
+names `kolli` as having stated it as a property adoption rests on. Any arrangement
+whose consumer-facing spelling needs an unstable feature is refused outright rather
+than priced.
+
+The row's own sharpest finding is that the ceiling belongs to neither the bridge
+nor the const surface but to the price of crossing back, and that a table is the
+only known implementation of either direction.
+
+Those three select the fifth option: a consumer-facing type alias carries the const
+parameter, the numeral is keyed on structural nats, and the bridge fires once at
+the alias so the algebra never re-enters it. The const surface survives where op
+excepted it, the consumer writes a literal rather than a tower, the unstable
+machinery stays inside, and the crossing that is expensive happens once per named
+type rather than once per operation.
+
+**Why I am unsure, stated so a later seat starts from it.** The bar I reasoned
+from was written about bare primitives at API positions, and reading it as
+governing how a width literal becomes a type-level natural is a widening of exactly
+the kind I rejected at 7.9. It may be one widening too far. The sixth option, where
+the literal is what a consumer sees and the structural nat is a hidden projection,
+satisfies every constraint I named just as well, and I separate it from the fifth
+only on the crossing-back argument, which is the row's finding rather than mine and
+which I did not re-measure. A seat that measures the crossing-back price on the two
+arrangements would settle it, and nothing else I can think of would.
