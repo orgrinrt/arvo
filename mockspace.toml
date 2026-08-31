@@ -906,6 +906,12 @@ description = "`ratified` where the experts converged and he blessed that conver
 values = ["ratified", "in_force", "stated", "open"]
 
 [[registry.namespace.field]]
+name = "ratification"
+type = "string"
+required = false
+description = "How a row reached `ratified`: what was put to him, the options it was chosen among, and his answer verbatim. Present on a `ratified` row and absent otherwise, which is what separates a blessing from somebody having typed the word. The options belong here because an answer recorded without them says a choice was made and not which one, and that has already sent a settled question back to him. Where he answered something other than what was asked, which is common and is usually the most valuable part, say so: the gap between the question and the answer is a finding about how the question was framed."
+
+[[registry.namespace.field]]
 name = "topic"
 type = "topic"
 required = true
