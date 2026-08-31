@@ -200,3 +200,70 @@ pub fn an_imposition_resting_on_an_instrument(reg: &Registry) -> Vec<Finding> {
     }
     out
 }
+
+/// The tiers a `ruling` may sit at, weakest first.
+///
+/// `open` is a question wearing a ruling's clothes and `in_force` is a process
+/// call nobody stamped, so both sit below the two that matter. What the order
+/// is for is the one comparison below, and it does not rank anything else.
+const RUNGS: &[&str] = &["open", "in_force", "stated", "ratified"];
+
+/// Where a rung sits, or `None` for a spelling the schema has not seen.
+fn rung_rank(rung: &str) -> Option<usize> {
+    RUNGS.iter().position(|known| *known == rung)
+}
+
+/// A ruling superseding one that outranks it.
+///
+/// `supersedes` says the named row is dead. Only op can retire what op
+/// ratified, so a row he never stamped cannot carry that edge into one he did,
+/// and a graph that says otherwise reports a ratified decision as retired on
+/// the authority of an unratified one. That is the provenance ladder inverted
+/// inside the namespace built to hold it.
+///
+/// Chronology is not the test and deliberately so. Both instances that produced
+/// this arm were the later row of their pair, which is what made them look
+/// ordinary: a newer statement replacing an older one is the shape `supersedes`
+/// is for. What neither of them did was contradict its target. One confirmed
+/// its target when op was asked the same question a second time, and the other
+/// extended its target's horizon from one night to a hundred stretches. An
+/// edge is earned by disagreeing, and both of those agreed.
+pub fn a_ruling_superseding_one_that_outranks_it(reg: &Registry) -> Vec<Finding> {
+    let mut out = Vec::new();
+    for row in reg.of("ruling") {
+        let Some(rung) = row.get("rung") else {
+            continue;
+        };
+        let Some(mine) = rung_rank(rung) else {
+            continue;
+        };
+        for target in row.list("supersedes") {
+            let Some(dead) = reg
+                .of("ruling")
+                .find(|r| r.get("id") == Some(target.as_str()))
+            else {
+                continue;
+            };
+            let Some(theirs) = dead.get("rung").and_then(rung_rank) else {
+                continue;
+            };
+            if theirs <= mine {
+                continue;
+            }
+            let their_rung = dead.get("rung").unwrap_or("");
+            out.push(Finding::new(
+                "a-ruling-supersedes-one-that-outranks-it",
+                row.addr(),
+                format!(
+                    "`rung` is `{rung}` and `supersedes` names `{target}`, whose `rung` is \
+                     `{their_rung}`. This row therefore reports a decision he stamped as \
+                     retired, on the authority of one he did not. Only he retires what he \
+                     ratified. If this row genuinely disagrees with that one, the \
+                     disagreement is a finding for him rather than an edge; if it confirms \
+                     or extends it, which is the usual case, drop the edge."
+                ),
+            ));
+        }
+    }
+    out
+}

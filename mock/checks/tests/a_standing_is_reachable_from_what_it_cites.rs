@@ -374,3 +374,80 @@ sentence_kind = "normative"
     );
     assert!(provenance::an_imposition_resting_on_an_instrument(&reg).is_empty());
 }
+
+/// The committed rulings, against the rung the edge would have to outrank.
+///
+/// Two rows failed this when it was written, both found by seat 218's
+/// supersession sweep and both the same shape: a `stated` row carrying an edge
+/// into a `ratified` one it agreed with. `the_question_was_already_answered_by_an_intent`
+/// held one into `the_d_numbered_decisions_are_dead`, which it confirms, since
+/// op was asked what becomes of the numbered decisions a second time and said
+/// it was already answered. `the_explore_mode_runs_for_the_first_hundred_stretches`
+/// held one into `nothing_settles_during_the_breadth_pass`, whose horizon it
+/// extends from a night to a hundred stretches. Both edges are gone and each
+/// row's `note` records what it carried.
+#[test]
+fn no_committed_ruling_supersedes_one_that_outranks_it() {
+    let found = provenance::a_ruling_superseding_one_that_outranks_it(&canon());
+    assert!(
+        found.is_empty(),
+        "a ruling reports a higher-ranked one as retired: {found:#?}"
+    );
+}
+
+/// The planted control, because the arm above is green and green proves nothing
+/// on its own.
+///
+/// A `stated` row superseding a `ratified` one is the exact shape that was
+/// found twice, so it is the shape asserted to fire.
+#[test]
+fn a_stated_ruling_superseding_a_ratified_one_is_reported() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[ruling]]
+id = "he_never_stamped_this"
+rung = "stated"
+supersedes = ["he_stamped_this"]
+
+[[ruling]]
+id = "he_stamped_this"
+rung = "ratified"
+"#,
+    );
+    let found = provenance::a_ruling_superseding_one_that_outranks_it(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+}
+
+/// The other direction is the ordinary correct shape and must not fire.
+///
+/// A ratified row retiring a stated one is op replacing his own earlier
+/// wording, which is what `supersedes` exists for. So is an edge between two
+/// rows at the same rung. An arm refusing either would be refusing the
+/// namespace rather than checking it.
+#[test]
+fn a_ratified_ruling_superseding_a_stated_one_is_fine() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[ruling]]
+id = "he_stamped_this_later"
+rung = "ratified"
+supersedes = ["he_only_said_this"]
+
+[[ruling]]
+id = "he_only_said_this"
+rung = "stated"
+
+[[ruling]]
+id = "one_stated_row"
+rung = "stated"
+supersedes = ["another_stated_row"]
+
+[[ruling]]
+id = "another_stated_row"
+rung = "stated"
+"#,
+    );
+    assert!(provenance::a_ruling_superseding_one_that_outranks_it(&reg).is_empty());
+}

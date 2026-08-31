@@ -165,8 +165,7 @@ quote = '''
 Already answered.
 '''
 because = "His ack rule is a general statement about the status of his own prior calls, so it answers every question of the form \"is this old call of yours still binding\" without being asked again."
-note = "The options put to him were: premature, discard; still his, fold into the catalogue; mixed, needs a pass. The pre-ask filter drawn from this (\"is the answer already implied by an intent he has stated\") is the coordinator's wording rather than his."
-supersedes = ["the_d_numbered_decisions_are_dead"]
+note = "The options put to him were: premature, discard; still his, fold into the catalogue; mixed, needs a pass. The pre-ask filter drawn from this (\"is the answer already implied by an intent he has stated\") is the coordinator's wording rather than his.\n\nThis row carried `supersedes = [\"the_d_numbered_decisions_are_dead\"]` and the edge said the opposite of what happened. He was asked a second time what becomes of the numbered decisions and answered that it was already answered, which **confirms** that ratified row rather than replacing it. The graph therefore recorded a row he stamped as dead, killed by a row he never stamped, which inverts the provenance ladder in the one namespace that exists to hold it. Found by seat 218's supersession sweep."
 provenance = ["panel::202608072330_the-numeral-canon-panel::104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::#4-the-21-numbered-decisions-outside-the-intent-catalogue"]
 keywords = ["already answered", "pre-ask", "filter", "queue", "derivable", "D-number"]
 
@@ -214,8 +213,7 @@ says = "The explore-and-do-not-settle mode extends from one night to roughly the
 quote = '''
 We will adopt the very same "explore, don't settle" angle for the first 100 expert stretches I think
 '''
-note = "He words the number as approximate (\"I think\"), so it is a horizon rather than a counter. He was asked nothing further at the time; this was volunteered after the eight answers."
-supersedes = ["nothing_settles_during_the_breadth_pass"]
+note = "He words the number as approximate (\"I think\"), so it is a horizon rather than a counter. He was asked nothing further at the time; this was volunteered after the eight answers.\n\nThis row carried `supersedes = [\"nothing_settles_during_the_breadth_pass\"]`, which read the extension as a replacement. Saying the mode runs a hundred stretches rather than one night **extends** that ratified row's reach; it does not retire the rule that nothing slips in as ratified while the mode runs. As written the graph said a row he stamped was dead, on the authority of a row he did not. Found by seat 218's supersession sweep, alongside one other of the same shape."
 provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#the-horizon-stated-after-the-eight-answers"]
 keywords = ["explore", "do not settle", "hundred", "horizon", "stretches", "mode", "scope"]
 
