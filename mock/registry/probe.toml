@@ -1065,3 +1065,60 @@ control = "None was run as a case that had to fail. The two instruments are at d
 standing = "sound"
 note = "Marked sound on a judgement and it is one of the two thinnest sound rows here. The agreement across two widths is real corroboration and it is not a control: both instruments could share a modelling assumption about what an intermediate must hold, and nothing in either would report that."
 keywords = ["chain", "accuracy", "intermediate width", "linear growth", "operand type", "closed", "exactness", "demands", "closure"]
+
+[[probe]]
+id = "the_four_const_available_constructions_bind_at_four_times"
+establishes = "Const-available is not one moment. Four constructions bind at four different times, and the lattice among them is computed rather than asserted."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p6_const_availability_lattice.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p6_output.txt::1",
+]
+control = "None was run as a case that had to fail, and the shape is a compiled lattice over four constructions where the four outcomes differ from one another, which is itself the separation: four constructions reported as binding at one time would say the instrument cannot distinguish them. That is weaker than a planted case and it is what there is."
+standing = "sound"
+note = "Marked sound rather than defective on a judgement, and this is the row in this file whose control I would most expect a second reader to call insufficient. The four outcomes differing is a fact about the four constructions and does not establish that the instrument would have reported a fifth binding time had one existed."
+keywords = ["const available", "binding time", "lattice", "four constructions", "compile time", "dead code", "structural bound", "crate-level const"]
+
+[[probe]]
+id = "the_cost_coordinate_census_and_its_calibration_control"
+establishes = "What cost coordinates this repository actually carries, counted rather than assumed: three had been used across three members, being the median of one timing series, a bytes-per-element figure typed into a probe by hand, and the interquartile range of the same timing samples the first is a median of."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p1_the_coordinate_census.py::1",
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p1_the_coordinate_census.out::1",
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p0_control_identity_on_every_pair.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p0_control_identity_on_every_pair.out::1",
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p0_before_the_adrp_normalisation.out::1",
+]
+control = "A calibration control run before everything else in the directory, and it is the best-designed control in this corpus. The bench declares pairs of arms that compile to the same machine code, and every reading in the directory treats a measured difference between such a pair as the instrument rather than the arms. That reading is only as good as the pair actually being byte-identical, so the arm checks it in every family that declares one, before any measurement is taken. A pre-normalisation run is kept beside it."
+standing = "sound"
+note = "Two coordinates of the three are functions of one sample series, which is the finding a census produces and an argument does not: the corpus believed it had three coordinates and two of them are a median and a spread of the same numbers."
+keywords = ["cost coordinate", "census", "calibration", "noise floor", "control pair", "byte-identical", "interquartile", "median", "adrp"]
+
+[[probe]]
+id = "the_argmin_mechanism_has_never_run_on_arms_that_disagree"
+establishes = "Every committed family's arm set is answer-equivalent, so the argmin-over-a-cost-table mechanism has only ever been run where the arms compute one value and the measurement compares cost. The accuracy intents range over arms that disagree, which is a region the mechanism has not been run on."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p1_the_corpus_compares_cost_at_a_fixed_answer.py::1",
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p1_the_corpus_compares_cost_at_a_fixed_answer.out::1",
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p5_a_measured_coordinate_over_answer_differing_arms.py::1",
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p5_a_measured_coordinate_over_answer_differing_arms.out::1",
+]
+control = "The first arm establishes the premise the second one needs, that the committed families are answer-equivalent, so the absence is a measured property of the corpus rather than an impression. Neither arm carries a planted case that had to fail, and the second is a construction over a region rather than a sweep."
+standing = "sound"
+note = "The barrier is the absent coordinate rather than the arm sets, which is the part a design acts on: an accuracy intent needs a coordinate that moves when the answer moves, and the corpus's coordinates are all cost at a fixed answer. Composes with the census row above, which is what says how many coordinates there are and what they are made of."
+keywords = ["argmin", "answer-equivalent", "accuracy intent", "coordinate", "absent", "cost table", "arms disagree", "region never run"]
+
+[[probe]]
+id = "the_multiplicative_rescale_saving_is_adaptation_fusion"
+establishes = "The multiplicative fold's guard saves exactly one rescale, at the exact-sum width less the fraction width and constant in fold length, and the saving is adaptation fusion in the schedule rather than a property of the guard: at that width every per-step narrowing except the last is exact and the last is adjacent to the final narrowing, so the two compose into one. The saving therefore exists under truncation, which composes, and shrinks or vanishes under round-to-nearest-even, which does not."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::60_probes::p_d_rescale_saving_is_adaptation_fusion.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::60_probes::p_d.out::1",
+  "panel::202608072330_the-numeral-canon-panel::62_probes::p4_signed_multiplicative_accumulator.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::62_probes::p4_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::63_probes::rerun::60_pd.rerun.txt::1",
+]
+control = "The rounding split is the arm and it was registered as a prediction before the run: truncation composes so the saving must survive, nearest does not compose so it must shrink or vanish, and a saving present under both would mean the mechanism is not fusion. A separate result on narrowing composition predicts the same split from the other side, which is two routes to one prediction rather than one."
+standing = "sound"
+reproduced = "Re-run by the consolidation that cites it, committed as its own artifact under `63_probes/rerun/`, which is a rerun of the same code rather than an independent rebuild and is worth less than the second author's accumulator instrument beside it."
+note = "Its header states what it did not sweep and why: an earlier file asked for fold lengths five and six before trusting the pattern, five is swept here and six is not, on cost, and the omission is written down rather than left to be discovered. That is the shape a bounded sweep should take."
+keywords = ["multiplicative", "guard", "rescale", "adaptation fusion", "fold length", "truncation", "nearest even", "double rounding", "schedule", "linear"]

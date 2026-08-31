@@ -1,4 +1,4 @@
-=== p1 what is blocked, 2026-08-31T00:08:24Z
+=== p1 what is blocked, 2026-08-31T00:21:06Z
 
 ## C3: the five phrases the checker reads, taken from shape.rs
   no control
@@ -41,6 +41,7 @@ C2 PASS: 1 such rows exist and are correctly absent from list A
 
 ## LIST B: probe rows the checker reads as having no control
   the_bench_tree_was_built_at_the_undocumented_profile     matched: none run
+  chain_accuracy_needs_an_intermediate_wider_than_the_operand_type matched: none was run
 
 ## C4: a row describing a control that fired must not be in list B
 C4 PASS: not matched
