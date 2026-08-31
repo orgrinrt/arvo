@@ -67,7 +67,6 @@ const STANDING: &str = "rung";
 /// The value meaning he said it and has not ruled on it.
 const AWAITING: &str = "stated";
 
-
 pub struct AwaitingARuling;
 
 impl Tool for AwaitingARuling {
@@ -130,7 +129,11 @@ impl AwaitingARuling {
     ///
     /// Ordered by that count, descending, then by slug so the output is stable
     /// across runs and a diff of two reports means something.
-    fn waiting(&self, ctx: &ToolContext<'_>, rows: &[String]) -> Vec<(String, usize, Option<String>)> {
+    fn waiting(
+        &self,
+        ctx: &ToolContext<'_>,
+        rows: &[String],
+    ) -> Vec<(String, usize, Option<String>)> {
         let mut out: Vec<(String, usize, Option<String>)> = rows
             .iter()
             .filter(|q| ctx.registry.field(q, STANDING) == Some(AWAITING))
@@ -235,9 +238,10 @@ impl AwaitingARuling {
             "topic", "quote", "says", "because", "instead", "note", "gap",
         ] {
             if let Some(v) = ctx.registry.field(q, field)
-                && !v.trim().is_empty() {
-                    s.push_str(&format!("\n  {field}:\n    {}\n", v.trim()));
-                }
+                && !v.trim().is_empty()
+            {
+                s.push_str(&format!("\n  {field}:\n    {}\n", v.trim()));
+            }
         }
 
         let citers = citers(ctx, q);
@@ -259,9 +263,7 @@ impl AwaitingARuling {
 
         let later = op_files_after(ctx, q);
         if !later.is_empty() {
-            s.push_str(
-                "\n  Op files that postdate this row. Read them before promoting it:\n",
-            );
+            s.push_str("\n  Op files that postdate this row. Read them before promoting it:\n");
             for f in &later {
                 s.push_str(&format!("    {f}\n"));
             }
@@ -304,9 +306,10 @@ fn retired_by(ctx: &ToolContext<'_>, q: &str) -> Option<String> {
         .referrers(q)
         .iter()
         .find(|who| {
-            ctx.registry
-                .field(who, SUPERSEDES)
-                .is_some_and(|dead| dead.split(|c: char| !(c.is_alphanumeric() || c == '_')).any(|named| named == slug))
+            ctx.registry.field(who, SUPERSEDES).is_some_and(|dead| {
+                dead.split(|c: char| !(c.is_alphanumeric() || c == '_'))
+                    .any(|named| named == slug)
+            })
         })
         .map(|who| who.rsplit("::").next().unwrap_or(who).to_string())
 }
@@ -347,11 +350,7 @@ mockspace::lint_pack! {
 /// do with the row, so a hit is a thing to read and not a refusal, and there is
 /// no threshold here to tune.
 fn op_files_after(ctx: &ToolContext<'_>, q: &str) -> Vec<String> {
-    let Some(after) = ctx
-        .registry
-        .field(q, "provenance")
-        .and_then(panel_number)
-    else {
+    let Some(after) = ctx.registry.field(q, "provenance").and_then(panel_number) else {
         // No provenance, or none this can order. Reporting every op file would
         // be noise dressed as diligence, so it reports none and says nothing.
         return Vec::new();
@@ -372,9 +371,10 @@ fn op_files_after(ctx: &ToolContext<'_>, q: &str) -> Vec<String> {
                 continue;
             }
             if let Some(n) = leading_number(&name)
-                && n > after {
-                    out.push((n, name));
-                }
+                && n > after
+            {
+                out.push((n, name));
+            }
         }
     }
     out.sort();
@@ -388,10 +388,7 @@ fn op_files_after(ctx: &ToolContext<'_>, q: &str) -> Vec<String> {
 /// would take the panel directory's timestamp instead, which is the same for
 /// every row and would order nothing.
 fn panel_number(provenance: &str) -> Option<u32> {
-    provenance
-        .split("::")
-        .nth(2)
-        .and_then(leading_number)
+    provenance.split("::").nth(2).and_then(leading_number)
 }
 
 fn leading_number(s: &str) -> Option<u32> {
@@ -411,6 +408,8 @@ fn leading_number(s: &str) -> Option<u32> {
 /// not his is one nobody reads, which puts it back where it started.
 fn is_op_file(name: &str) -> bool {
     let rest = name.trim_start_matches(|c: char| c.is_ascii_digit());
-    let rest = rest.strip_prefix(|c: char| c.is_ascii_alphabetic()).unwrap_or(rest);
+    let rest = rest
+        .strip_prefix(|c: char| c.is_ascii_alphabetic())
+        .unwrap_or(rest);
     rest.starts_with("_op_")
 }
