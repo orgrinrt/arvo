@@ -167,3 +167,86 @@ mode in the set has that parameter and none of them is ambiguous because of it.
 One caveat I want stated rather than buried. `half_even` on a decimal format is the same rule
 applied to a decimal grid, and I measured only at `radix = 2`. The predicate below says `radix = 2`
 and therefore claims nothing about decimal, per the notation.
+
+### `half_up`, two operations
+
+Nearest, with a tie going up. "Up" is the whole problem, because on a signed domain it means two
+different things and both are shipped.
+
+**Reading one, ties toward positive infinity.** `floor(x + 1/2)`. This is what `java.lang.Math.round`
+computes, and it is what hardware and DSP practice mean by round-half-up, because adding a half and
+truncating needs no comparison and is therefore the cheap form. The DSP literature calls it the
+asymmetric form and says so in those words.
+
+**Reading two, ties away from zero.** This is IEEE 754's `roundTiesToAway`, `java.math.RoundingMode.HALF_UP`,
+`decimal.ROUND_HALF_UP`, and `MidpointRounding.AwayFromZero`. It is what school arithmetic and
+commercial rounding mean.
+
+The two agree everywhere except at a negative tie, where reading one gives the neighbour toward
+zero and reading two gives the neighbour away from it. Probe A counts the disagreement over the
+whole domain and finds `2^(W-1-F)` values at every width and fraction width it sweeps, which is 64
+of 256 at `W = 8, F = 1`, 8 of 256 at `W = 8, F = 4`, and 1024 of 4096 at `W = 12, F = 1`. On an
+unsigned domain the count is 0 everywhere, and at `F = 0` it is 0 because no tie exists.
+
+That last sentence is the ratified ruling's own criterion, met exactly. The retired word named two
+operations that agree on unsigned rows and differ on signed ones. Probe A prints every pair with
+that property at `W = 8, F = 4`, and there are four: floor against toward-zero, ceil against
+away-from-zero, toward-zero against bit-drop, and the two readings of `half_up` at 8 of 256. Three
+of the four are the retirement the ruling already made. The fourth is a name the ruling kept.
+
+**This is not a criticism of the ruling and nothing here reopens it.** The ruling closed which names
+exist and attached a note pinning a hardware operation to one of them, which is precisely the
+instrument this finding calls for: a note per name saying which operation it denotes. What is
+missing is one sentence, not a seventh name and not a rename.
+
+### `stochastic`, a family, and not a function
+
+The other five names denote functions. This one cannot, because two invocations on the same input
+are permitted to differ, so the object it names is a distribution rather than a value. Every
+comparison below is therefore of distributions, and probe D computes them exactly by enumerating
+the whole draw space.
+
+Four readings, all real, and they are not interchangeable.
+
+**Proportional.** Round up with probability equal to the discarded fraction. Parker's definition,
+the one the numerical literature builds on, and unbiased at every value: probe D reports a worst
+per-value bias of exactly `0/1` over the whole domain at `W = 8, F = 2`.
+
+**Equal probability.** Round up or down with probability one half whenever the value is off the
+grid. This is a named mode in the current literature, called SR-up-or-down where the proportional
+one is called SR-nearness, and it is not the same operation: probe D finds the two distributions
+differing on 128 of 256 values at `W = 8, F = 2`, with a worst per-value bias of `4/16`. Its
+aggregate bias over a uniformly swept domain is zero, which probe G measures, and that is a
+different and weaker property than being unbiased at each value. Conflating the two is easy and I
+nearly did.
+
+**Add a random draw, then drop the bits.** The hardware realisation. Probe D's control is that this
+must produce the proportional distribution exactly, and it does, on every value of every row swept,
+which is what licenses treating the hardware form and the mathematical definition as one operation.
+
+**Add a random draw, then round toward zero.** The same realisation with the other reading of the
+word the canon retired, and it is a badly different operation. At `W = 8, F = 2` it returns 0 with
+certainty for every value in the open interval between minus one and zero: probe D's worked table
+shows `-3/4`, `-2/4` and `-1/4` all mapping to `0` with weight `4/4`. Its worst per-value bias is
+`12/16` against the proportional reading's `0/1`.
+
+**The canon already excludes that fourth reading, and I did not have to decide it.**
+`law::rounding_retraction_is_the_identity` says a value already on the grid comes back unchanged.
+Probe D checks retraction for all five readings and finds add-then-toward-zero failing at 64 signed
+on-grid values at `W = 8, F = 1`, 32 at `F = 2`, 16 at `F = 3` and 8 at `F = 4`, and failing at
+none of the unsigned ones. Every other reading retracts everywhere. So a canon law, stated for a
+different purpose, rules out one of the four readings on the signed domain and leaves three.
+
+**A fifth axis, not a reading but a parameter.** How wide the random draw is. Probe D models a draw
+one bit narrower than the discarded field and gets a distribution that is neither the proportional
+one nor the equal-probability one, with an aggregate bias of `-512` where the proportional reading
+has `0`. Any implementation whose draw is narrower than the field it is choosing within is
+approximating the proportional definition rather than computing it, and the name says nothing about
+which.
+
+**And the seed.** Without one, `stochastic` does not denote a repeatable computation at all, so
+equality of two results under this name is not even a well-formed question.
+`question::does_a_consumer_supplied_seed_surface_exist` has that reserved, with the call recorded
+as the coordinator's and explicitly overturnable, and I have not touched it. What I can say is that
+the reservation is load-bearing for this question rather than adjacent to it: until it is settled,
+`stochastic` names something whose observable behaviour is not determined by the canon.
