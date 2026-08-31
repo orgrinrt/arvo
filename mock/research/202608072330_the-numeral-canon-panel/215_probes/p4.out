@@ -1,0 +1,36 @@
+seat 215, probe 4.
+
+== 1. the composed add-and-subtract count, recomputed at W = 8 ==
+
+  unsigned SATURATING, (a+b)-c against a+(b-c):
+    13882880 of 16777216 triples fail, 82.7484%
+  the cited figure at 79:27 is 13882880 of 16777216, 82.7484%
+    RECOMPUTED EXACTLY. the count and the denominator both agree.
+
+  the negative control, the same composition under WRAPPING:
+    0 of 16777216 triples fail
+    zero, as a group requires. the harness is not simply reporting failure.
+
+  worth stating plainly: the composition fails on 82.7% of triples while BOTH
+  its parts are associative on their own at this exact coordinate. probe 1
+  measures unsigned saturating addition associative on every one of the same
+  16777216 triples. so this is the composite failing where the parts hold, and
+  it is a second independent witness for that direction beside probe 1's own.
+
+== 2. the absorbing top, over the whole rectangle rather than one cell ==
+
+  W in 2..=10, F in 0..=W, unsigned. F does not change the raw arithmetic here,
+  so it is swept to match the cited region rather than because it can move the
+  answer, and saying that is cheaper than implying it was a free variable.
+
+  cells swept: 63
+  saturating, the top absorbs: 63 cells; fails to absorb: 0
+  wrapping, ANY absorbing element exists: 0 cells
+
+  63 cells, absorption at every saturating one and at no wrapping one. that
+  reproduces the cited sweep's shape independently, and 63 is the cited cell
+  count as well, which is a coincidence worth checking rather than assuming:
+  sum over W in 2..=10 of (W+1) = 9*2 + (2+..+10) = 18 + 54 = 63. it matches
+  because the rectangle is the same rectangle.
+
+== every control: PASSED ==

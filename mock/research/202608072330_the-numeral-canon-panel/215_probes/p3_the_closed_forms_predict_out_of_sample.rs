@@ -253,9 +253,7 @@ fn section_1() -> bool {
     let add_sym = measure(Op::Add, Policy::Sat, sym, 0);
     let mul_sym = measure(Op::Mul, Policy::Sat, sym, 0);
     println!("  on ONE range, [-127,127], saturating, F = 0:");
-    println!(
-        "    multiplication: {mul_sym} bad. addition: {add_sym} bad."
-    );
+    println!("    multiplication: {mul_sym} bad. addition: {add_sym} bad.");
     println!("  the two operations SPLIT on the same range, which is exactly what the two");
     println!("  closed forms require: mirror-symmetric is a multiplicative congruence and");
     println!("  is not sign-confined, so it is not an additive one. no account that keys on");
@@ -314,7 +312,11 @@ fn clamp_at(num: i64, scale: u32, f: u32, r: Range) -> i64 {
 /// Coarsening-free left association: clamp(clamp(a*b) * c).
 fn clamp_only_left(a: i64, b: i64, c: i64, f: u32, r: Range, clamp_on: bool) -> i64 {
     let ab = a * b;
-    let ab = if clamp_on { clamp_at(ab, 2 * f, f, r) } else { ab };
+    let ab = if clamp_on {
+        clamp_at(ab, 2 * f, f, r)
+    } else {
+        ab
+    };
     let abc = ab * c;
     if clamp_on {
         clamp_at(abc, 3 * f, f, r)
@@ -326,7 +328,11 @@ fn clamp_only_left(a: i64, b: i64, c: i64, f: u32, r: Range, clamp_on: bool) -> 
 /// Coarsening-free right association: clamp(a * clamp(b*c)).
 fn clamp_only_right(a: i64, b: i64, c: i64, f: u32, r: Range, clamp_on: bool) -> i64 {
     let bc = b * c;
-    let bc = if clamp_on { clamp_at(bc, 2 * f, f, r) } else { bc };
+    let bc = if clamp_on {
+        clamp_at(bc, 2 * f, f, r)
+    } else {
+        bc
+    };
     let abc = a * bc;
     if clamp_on {
         clamp_at(abc, 3 * f, f, r)
