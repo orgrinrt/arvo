@@ -180,7 +180,8 @@ fn main() {
         for f in 1..w {
             for signed in [true, false] {
                 for k in domain(w, signed) {
-                    if distribution(Sr::Proportional, k, f) != distribution(Sr::AddThenBitDrop, k, f)
+                    if distribution(Sr::Proportional, k, f)
+                        != distribution(Sr::AddThenBitDrop, k, f)
                     {
                         c1 += 1;
                     }
@@ -188,7 +189,10 @@ fn main() {
             }
         }
     }
-    println!("    differing values over W in {{4,6,8}}, F in 1..W, both: {}", c1);
+    println!(
+        "    differing values over W in {{4,6,8}}, F in 1..W, both: {}",
+        c1
+    );
     println!();
 
     println!("== CONTROL 2 (the case that must fail) ==");
@@ -242,7 +246,11 @@ fn main() {
             "  {:24} signed F=1..4 then unsigned F=1..4:{}   {}",
             sr_name(sr),
             row,
-            if tot == 0 { "RETRACTS" } else { "DOES NOT RETRACT" }
+            if tot == 0 {
+                "RETRACTS"
+            } else {
+                "DOES NOT RETRACT"
+            }
         );
     }
     println!();
@@ -262,8 +270,14 @@ fn main() {
     }
 
     println!("== VERDICTS ==");
-    println!("  control 1 (bit-drop SR is proportional): {}", if c1 == 0 { "PASS" } else { "FAIL" });
-    println!("  control 2 (equal probability differs):   {}", if c2 > 0 { "PASS" } else { "FAIL" });
+    println!(
+        "  control 1 (bit-drop SR is proportional): {}",
+        if c1 == 0 { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 2 (equal probability differs):   {}",
+        if c2 > 0 { "PASS" } else { "FAIL" }
+    );
     let sound = c1 == 0 && c2 > 0;
     println!("  instrument: {}", if sound { "sound" } else { "INVALID" });
     if !sound {

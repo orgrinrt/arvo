@@ -1,0 +1,63 @@
+PROBE F: every nearest mode over the domain, by enumerating tie rules
+
+== FIXTURE ==
+  34 of 34 fixture rows correct
+
+== W = 6, F = 2 ==
+  ties in the domain: 16, so 65536 nearest modes exist over it
+  translation equivariant: 2
+  zero mean error:         12870
+  BOTH:                    0
+  the equivariant rules, as tie bitmasks: 0b0000000000000000 0b1111111111111111 
+  half_up[toward +inf]     rule 0b1111111111111111  equivariant true   unbiased false  reconstructed
+  half_up[away from 0]     rule 0b1111111100000000  equivariant false  unbiased true   reconstructed
+  half_down[toward -inf]   rule 0b0000000000000000  equivariant true   unbiased false  reconstructed
+  half_even                rule 0b1010101010101010  equivariant false  unbiased true   reconstructed
+
+== W = 6, F = 3 ==
+  ties in the domain: 8, so 256 nearest modes exist over it
+  translation equivariant: 2
+  zero mean error:         70
+  BOTH:                    0
+  the equivariant rules, as tie bitmasks: 0b00000000 0b11111111 
+  half_up[toward +inf]     rule 0b11111111  equivariant true   unbiased false  reconstructed
+  half_up[away from 0]     rule 0b11110000  equivariant false  unbiased true   reconstructed
+  half_down[toward -inf]   rule 0b00000000  equivariant true   unbiased false  reconstructed
+  half_even                rule 0b10101010  equivariant false  unbiased true   reconstructed
+
+== W = 8, F = 4 ==
+  ties in the domain: 16, so 65536 nearest modes exist over it
+  translation equivariant: 2
+  zero mean error:         12870
+  BOTH:                    0
+  the equivariant rules, as tie bitmasks: 0b0000000000000000 0b1111111111111111 
+  half_up[toward +inf]     rule 0b1111111111111111  equivariant true   unbiased false  reconstructed
+  half_up[away from 0]     rule 0b1111111100000000  equivariant false  unbiased true   reconstructed
+  half_down[toward -inf]   rule 0b0000000000000000  equivariant true   unbiased false  reconstructed
+  half_even                rule 0b1010101010101010  equivariant false  unbiased true   reconstructed
+
+== W = 8, F = 5 ==
+  ties in the domain: 8, so 256 nearest modes exist over it
+  translation equivariant: 2
+  zero mean error:         70
+  BOTH:                    0
+  the equivariant rules, as tie bitmasks: 0b00000000 0b11111111 
+  half_up[toward +inf]     rule 0b11111111  equivariant true   unbiased false  reconstructed
+  half_up[away from 0]     rule 0b11110000  equivariant false  unbiased true   reconstructed
+  half_down[toward -inf]   rule 0b00000000  equivariant true   unbiased false  reconstructed
+  half_even                rule 0b10101010  equivariant false  unbiased true   reconstructed
+
+== CONTROLS ==
+  Each property must be satisfiable on its own, or an empty
+  intersection would say nothing.
+    some rule is equivariant: PASS
+    some rule is unbiased:    PASS
+    named modes reconstructed inside the enumeration: PASS
+
+== RESULT ==
+  No deterministic nearest mode over these domains is both
+  translation equivariant and unbiased. The two sets are disjoint
+  at every point swept, so the trade is forced rather than a
+  property of the two readings that happen to be current.
+
+  instrument: sound

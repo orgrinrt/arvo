@@ -59,7 +59,10 @@ fn main() {
             c1 += conjugacy_failures(Mode::TowardZero, Mode::TowardZero, w, f, true);
         }
     }
-    println!("    failures over W in {{4,6,8}}, F in 0..W, signed: {}", c1);
+    println!(
+        "    failures over W in {{4,6,8}}, F in 0..W, signed: {}",
+        c1
+    );
     println!();
 
     println!("== CONTROL 2 (the case that must fail) ==");
@@ -136,7 +139,12 @@ fn main() {
         }
         let named_in_vocabulary = matches!(
             conj,
-            "floor" | "ceil" | "toward_zero" | "half_even" | "half_up[toward +inf]" | "half_up[away from 0]"
+            "floor"
+                | "ceil"
+                | "toward_zero"
+                | "half_even"
+                | "half_up[toward +inf]"
+                | "half_up[away from 0]"
         );
         println!(
             "  {:22} conjugate {:24} in the six? {}",
@@ -148,8 +156,14 @@ fn main() {
     println!();
 
     println!("== VERDICTS ==");
-    println!("  control 1 (toward_zero is odd):  {}", if c1 == 0 { "PASS" } else { "FAIL" });
-    println!("  control 2 (floor is not):        {}", if c2 > 0 { "PASS" } else { "FAIL" });
+    println!(
+        "  control 1 (toward_zero is odd):  {}",
+        if c1 == 0 { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 2 (floor is not):        {}",
+        if c2 > 0 { "PASS" } else { "FAIL" }
+    );
     let sound = c1 == 0 && c2 > 0;
     println!("  instrument: {}", if sound { "sound" } else { "INVALID" });
     if !sound {
