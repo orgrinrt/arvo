@@ -1393,3 +1393,36 @@ unblocks = "The askable-family count the strategy object's dominance gate produc
 note = "Decided by stating which the design means, a definitional call rather than a measurement: both readings are internally coherent and differ only in how many families they let through."
 provenance = ["panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-7-contested-each-with-what-would-decide-it"]
 keywords = ["dominance gate", "symmetric", "conservative", "F144-18", "askable families", "strategy object"]
+
+# --- two more one-file items from the strategy-axis consolidation's own droplist
+# (`106` §13.2), neither of them absorbed by a later candidate because both
+# concern the weighting mechanism itself rather than a specific axis a later
+# candidate (119/132/146) inherited and re-argued -------------------------------
+
+[[question]]
+id = "is_a_profitability_predicate_resolved_pessimistically_when_not_const_available"
+asks = "When a profitability predicate (choosing a reassociated arm the law does not always hold for, but which is right for runs long enough to matter) cannot be evaluated at const time, is it resolved pessimistically (treated as false, arm not chosen, no lie possible), or does the design leave that condition unhandled?"
+options = [
+  "Resolved pessimistically: unavailable evaluates to false, the arm is not chosen, correctness is preserved at the cost of a missed optimisation.",
+  "Left unhandled: the design states no answer for a non-const-available profitability condition.",
+]
+decider = "op"
+topic = "the_strategy_axis"
+unblocks = "Whether a profitability predicate that is not const-available at a given call site silently degrades to the arm being skipped, or is an undefined case the design has to close before it can be relied on."
+note = "The distinction the question rests on: a correctness predicate must be const (an arm chosen where the law does not hold is wrong at every length, and cannot be resolved by falling back on 'usually right'); a profitability predicate merely wants to be const, and where it is not, resolving it pessimistically is slow but never wrong. Op's ruling `83` is cited by the source as leaving open what happens to a non-const-available condition, and nothing in this panel has touched it since."
+provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::#13-2-options-living-in-exactly-one-file-which-is-where-a-consolidation-loses-them"]
+keywords = ["correctness predicate", "profitability predicate", "const", "pessimistic", "reassociation", "83"]
+
+[[question]]
+id = "is_the_strategy_weighting_objective_linear_or_log_scale"
+asks = "Is the strategy weighting's objective function linear (a weighted sum of the coordinates as measured), or log-scale (a weighted sum of logarithms, equivalently a weighted geometric mean, scale-invariant per coordinate)?"
+options = [
+  "Linear: the objective sums the coordinates directly, as every existing weighting in this panel assumes without stating it.",
+  "Log-scale: the objective sums logarithms of the coordinates, which would dissolve the units question (`do_arvos_consumers_want_value_keying_or_position_keying` and its neighbours) rather than answering it, since a geometric mean is scale-invariant per coordinate.",
+]
+decider = "measurement"
+topic = "the_strategy_axis"
+unblocks = "Which laws the strategy weighting obeys, and every cell count in the weighting-ceiling section of whichever candidate states it, since a different objective is a different computation over the same table rather than a re-derivation of the same one."
+note = "Explicitly untested. The linear objective is what every weighting in this panel has assumed, including the source that raises this question, without anyone stating the assumption. Deciding this before the weighting-ceiling counts are treated as settled matters because the two objectives are not two readings of one computation; they produce different laws and every count would have to be recomputed under the log-scale reading."
+provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::#13-2-options-living-in-exactly-one-file-which-is-where-a-consolidation-loses-them"]
+keywords = ["log-scale", "geometric mean", "linear objective", "weighting", "scale-invariant", "units"]
