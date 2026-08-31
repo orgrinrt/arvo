@@ -319,7 +319,9 @@ mod tests {
         let added = f
             .iter()
             .find(|m| m.contains("not rostered"))
-            .unwrap_or_else(|| panic!("the rostered id was read as covering the longer one: {f:?}"));
+            .unwrap_or_else(|| {
+                panic!("the rostered id was read as covering the longer one: {f:?}")
+            });
         assert!(added.contains("signedness_of_the_accumulator"), "{added}");
     }
 
