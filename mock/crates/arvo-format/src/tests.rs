@@ -478,3 +478,124 @@ fn the_widest_admitted_width_is_where_the_count_stops_fitting() {
     assert!(slot_count::<Unsigned<62>>() > 0);
     assert_eq!(slot_count::<Unsigned<62>>(), at_bound as i64);
 }
+
+// --- what an outside implementor owes, and the construction that does not ----
+
+/// A slot range from outside this crate that does not meet the contract.
+///
+/// The reviewer's construction, values verbatim, kept permanently rather than in
+/// a scratch file. It **compiles**, which is the point: the trait is open and
+/// nothing stops it being written. What it does not do is pass the law below, and
+/// using it does not build, which the `trybuild` case records.
+struct RogueRange;
+
+impl Slots for RogueRange {
+    const MIN: i64 = 4611686018427387904;
+    const MAX: i64 = -4611686018427387905;
+    const WIDTH: Width = Width::bits(63);
+}
+
+/// A width of zero, which admits nothing.
+struct EmptyRange;
+
+impl Slots for EmptyRange {
+    const MIN: i64 = 0;
+    const MAX: i64 = -1;
+    const WIDTH: Width = Width::bits(0);
+}
+
+#[test]
+fn the_law_rejects_a_range_that_does_not_meet_the_contract() {
+    // The law returns a verdict, so the wrong construction can be reported on
+    // without forcing the const that refuses it. Asserting that it rejects is the
+    // shape a construction that compiles and is wrong wants.
+    assert!(
+        !crate::slots::is_admissible::<RogueRange>(),
+        "an inverted range was admitted, which is the finding returning"
+    );
+    assert!(
+        !crate::slots::is_admissible::<EmptyRange>(),
+        "a zero-width range was admitted"
+    );
+}
+
+#[test]
+fn the_law_admits_every_range_this_crate_ships() {
+    // The control. A law that rejected everything would pass the test above and
+    // establish nothing, so it has to accept the shipped set.
+    macro_rules! admits {
+        ($($w:literal),+ $(,)?) => {
+            $(
+                assert!(
+                    crate::slots::is_admissible::<Unsigned<$w>>(),
+                    "unsigned {} was refused by the law", $w
+                );
+                assert!(
+                    crate::slots::is_admissible::<Signed<$w>>(),
+                    "signed {} was refused by the law", $w
+                );
+            )+
+        };
+    }
+    admits!(
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
+    );
+}
+
+#[test]
+fn the_law_separates_the_two_constructions_rather_than_answering_one_way() {
+    // Both directions in one place, so a law stuck at `true` or at `false` fails
+    // here rather than passing one of the two tests above.
+    let shipped = crate::slots::is_admissible::<Unsigned<13>>();
+    let rogue = crate::slots::is_admissible::<RogueRange>();
+    assert_ne!(
+        shipped, rogue,
+        "the law gives the same verdict to a shipped range and an inverted one"
+    );
+}
+
+/// A range that meets the first three obligations and still cannot be counted.
+///
+/// `MIN <= MAX` holds and the width is in range, so an obligation checking only
+/// those admits it. Its span is 2^63, which is what `slot_count` cannot carry.
+/// Measured before the obligation was strengthened: under `overflow-checks` it
+/// panicked at runtime, and without it `slot_count` returned
+/// `-9223372036854775808`.
+struct SpanTooWide;
+
+impl Slots for SpanTooWide {
+    const MIN: i64 = -4611686018427387904;
+    const MAX: i64 = 4611686018427387903;
+    const WIDTH: Width = Width::bits(62);
+}
+
+/// A range whose declared width cannot address it.
+struct WidthTooNarrow;
+
+impl Slots for WidthTooNarrow {
+    const MIN: i64 = 0;
+    const MAX: i64 = 1000;
+    const WIDTH: Width = Width::bits(4);
+}
+
+#[test]
+fn the_law_rejects_a_range_that_passes_the_easy_obligations() {
+    // The case a weaker obligation admitted. Kept permanently because it is the
+    // one that looks admissible: nothing about it is inverted and its width is in
+    // range, and it still breaks the only thing the range is for.
+    assert!(
+        !crate::slots::is_admissible::<SpanTooWide>(),
+        "a span of 2^63 was admitted, so counting it overflows"
+    );
+    assert!(
+        !crate::slots::is_admissible::<WidthTooNarrow>(),
+        "a width that cannot address its own range was admitted"
+    );
+
+    // And the reasons are distinct from the inverted case, so the law is not
+    // rejecting everything that is not a shipped shape.
+    assert!(<SpanTooWide as Slots>::MIN <= <SpanTooWide as Slots>::MAX);
+    assert!(<WidthTooNarrow as Slots>::MIN <= <WidthTooNarrow as Slots>::MAX);
+}

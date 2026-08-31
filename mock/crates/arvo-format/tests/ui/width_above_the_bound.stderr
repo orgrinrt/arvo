@@ -5,7 +5,7 @@ error[E0277]: `Signed<63>` is not an admitted slot range
    |              ^^^^^^^^^^ no slot range exists for this width
    |
    = help: the trait `Slots` is not implemented for `Signed<63>`
-   = note: declared widths run from 1 to 62 bits. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one.
+   = note: this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
    = help: the following other types implement trait `Slots`:
              Signed<10>
              Signed<11>
