@@ -1991,3 +1991,20 @@ evidence = ["a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_a
 note = "Offered as a direction rather than a settlement; its author explicitly declines to resolve, in the same file, whether the strategy space is a single ranking or a genuine multi-axis lattice, saying I8's 'they weigh different measurements differently' is compatible with either reading. This meta-law is what the probe's associativity check demonstrates one level abstracted: a property of the join operator itself, not of the operations it composes."
 provenance = ["panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::295"]
 keywords = ["resolution", "cross-strategy", "monotonicity", "join", "inheritance", "meta-law", "Q27"]
+
+[[proposal]]
+id = "whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra"
+kind = "finding"
+sentence_kind = "argument"
+standing = "two_experts"
+topic = "algebraic_laws"
+says = "Whether an operation needs chain-level accumulator machinery is a fact about whether that operation's rounding step is closed under the algebraic structure its own outputs feed back into. Addition's outputs stay in the same additive coset of quantized values, so a chain of additions is exact whenever it does not overflow and needs no chain machinery. Multiplication's outputs do not stay in the same multiplicative structure without widening, because the exact product needs 2F bits and a naive per-step round-back discards information every step."
+because = "Two authors reached this independently: one built the mechanism-level chain-error measurement (probe1_chain_error.py), the other derived the closure framing from it as a correction to a weaker prior claim ('the unit is (strategy, {operations composed})'), adopting the sharper version explicitly rather than restating the weaker one. Both derivations happened before either read the other's phase one."
+predicate = ["operation: operations {add, mul}", "fraction_width: F > 0", "chain_length: chain length in 1..=256", "threads: threads any", "target_features: target features any"]
+evidence = ["additions_chain_error_is_zero_by_closure_while_multiplications_plateaus_at_twice_one_step"]
+note = "Consolidated into R11 of `90` alongside the grouping-versus-schedule split, but R11's own registry row (`chain_laws_split_by_whether_a_lifting_theorem_exists`) carries only the grouping/schedule content; this closure-mechanism sub-finding had no row of its own before this port despite being cited by name at `90:457-462`."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::76_willsey_derived_laws_derived_cold::363",
+  "panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::213",
+]
+keywords = ["chain", "closure", "addition", "multiplication", "rounding", "accumulator", "widening", "R11"]
