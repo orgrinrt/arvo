@@ -1,0 +1,29 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p4_what_the_const_width_surface_can_carry.rs
+
+### compiled clean
+
+### p4. what a const generic width surface carries on the pinned nightly
+### the bar is the ungated column: `the_unstable_machinery_does_not_reach_a_consumer`
+
+arm  what                                                 ungated   gated    
+A1   const generic as a value in a body (baseline)        compiles  compiles 
+A2   arithmetic on const widths in a TYPE position: N<{W + F}> REFUSED   compiles 
+A3   comparison of const widths in a where clause: W >= F REFUSED   compiles 
+A4   arithmetic in an associated const, used as a value   compiles  compiles 
+A5   an associated const used as a const generic argument REFUSED   compiles 
+A6   a consumer-facing alias fixing the const (option 5's shape) compiles  compiles 
+A7   a const assertion in an associated const (option 7's shape) compiles  compiles 
+C5   option 7's assertion on a VIOLATING width (must be refused) compiles  compiles 
+C4   a deliberately broken arm (must fail in both columns) REFUSED   REFUSED  
+
+CONTROLS
+  C1  the baseline compiles ungated                  as required  required=compiles
+  C2  some arm is refused ungated                    as required  required=a refusal
+  C3  some ungated refusal is rescued by the gate    as required  required=rescued
+  C4  the broken arm fails in both columns           as required  required=refused twice
+  C5  option 7's assertion refuses a violating width *** VOID ***  required=refused twice
+
+*** A CONTROL DID NOT REPORT ITS REQUIRED VERDICT. NOTHING ABOVE COUNTS. ***
+
+### exit 1
