@@ -1,0 +1,28 @@
+### source: /Users/orgrinrt/Dev/clause-work/numeric-stack/tarina/DESIGN.md  (     513 lines)
+
+######## ARM 1. how derivation runs
+  120:sources by a checked-in conversion step so the derivation is reproducible.
+  236:Derivation is an ordered fold. Each stage consumes the record and the output of
+  412:Design is whole; construction is staged. Each stage produces something that
+
+######## ARM 2. what a disabled pack does
+  190:is what it is, and because a pack that is later disabled has to withdraw exactly
+  191:its own contributions.
+
+######## ARM 3. the vocabulary of in-place maintenance
+  incremental  0
+  recompute    1
+      399:own, because MPMB's own scripts recompute from the `Stringified` state, so a
+  invalidat    0
+  cache        2
+      125:Packs are fetched separately, cached in IndexedDB, and passed to the engine per
+      327:mode. And ingested packs cache permanently, so the cost is paid once per pack
+  memo         0
+  dirty        0
+  in place     0
+  maintain     0
+
+######## CONTROLS
+  fold                       1
+  withdraw                   1
+  zzz_not_in_this_document   0
