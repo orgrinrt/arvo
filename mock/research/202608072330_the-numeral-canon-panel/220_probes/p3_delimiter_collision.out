@@ -1,0 +1,72 @@
+### spans read: 527
+
+### occurrences of each candidate delimiter inside a span
+  :    0
+  ;    0
+  |    0
+  @    0
+  ~    0
+  ::   0
+  --   0
+  =>   0
+
+### spans containing a comma followed by an explanatory clause
+    (these are where a warrant is already being written as prose)
+   F = 0 for the end-to-end run, and F in 0..=W for the absorption sweep
+   W in 1..=19, the widest evaluable width per arity
+   W in 1..=k - s2(k), where s2 is the binary digit sum of k
+   W in {3, 4} for the end-to-end run, and W in 2..=10 for the absorption sweep
+   aligned, straddling
+   arity = 3 for the grouping kind, and arity in 2..=5 for the schedule kind
+   const gates on the pinned toolchain, no_std, no feature gates
+   default const-eval guard, and guard-allowed for the three-bit measurement
+   emission in {metadata only, full codegen}, debug-assertions any
+   encode, add, mul
+   encode, add, mul, xor
+   host aarch64-apple-darwin, rustc 1.98.0-nightly 57d06900f
+   host aarch64-apple-darwin, rustc nightly-2026-05-28
+   in {floor, ceiling, nearest-half-up}
+   in {floor, ceiling, toward zero, away from zero, nearest-half-up, nearest-half-even}
+   in {floor, ceiling, toward zero, away from zero, nearest-half-up}
+   in {toward zero, away from zero, nearest-half-even}
+   in {unsigned, signed}
+   in {wrap, saturating}
+   no feature gates anywhere, main arm at exit 0
+   no feature gates, opt level 3
+   no_std, feature gates = 0, opt level = 3
+   no_std, zero feature gates, on the pinned toolchain
+   op pair {add, sub} composed
+   operation = none (this is a classificatory instrument, not an arithmetic operation)
+   operation in {add, mul}
+   operations {add, min, max}
+   operations {add, mul}
+   operations {add, sub, mul, neg} with integer constants
+   operations {add, sub, mul, neg} with integer constants for the wrapping fragment, and {saturating add, saturating mul} with nonnegative clamp-embedded constants for the saturating one
+   operations {add, sub, mul}
+   operations {saturating add, saturating mul} with nonnegative clamp-embedded constants
+   operations {sub, mul}
+   overflow policy in {saturate, clamp}
+   overflow policy in {wrap, saturate, exact}
+   overflow policy in {wrap, saturate, wrapping below a reserved absorbing top}
+   overflow policy in {wrap, saturate}
+   rounding = nearest, against a phase-zero mutant
+   rounding in {truncate, floor, round to nearest even}
+   rounding in {truncate, nearest}
+   rustc 1.98.0-nightly (57d06900f 2026-05-27), edition 2021
+   signed, or unsigned with signed intermediates
+   signedness in {unsigned, signed}
+   strategy = product order over two independent axes, generic labels rather than Hot/Warm/Cold/Precise
+   target aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f), edition 2024, opt-level 3, panic = abort
+   threads = 1, the splits being computed rather than executed on lanes
+   threads any, the equalities being decided at compile time
+   threads any, the refusal being a type-check outcome that precedes execution
+   three sign domains, unsigned and signed two's complement and signed symmetric range
+   u16, u32
+   u16, u32, and the rung tables the two candidate rules generate
+   wrap, sat
+
+### CONTROL. A delimiter known to be present must report non-zero.
+  ',' occurs 144 times
+
+### CONTROL. A string known absent must report zero.
+  'zzqq' occurs 0 times
