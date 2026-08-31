@@ -1,4 +1,10 @@
-# 199. Re-deriving the demand side from statements of need
+# 200. Re-deriving the demand side from statements of need
+
+*Renumbered from 199 by the dispatcher. Two seats ran in parallel and both took
+the next free number, so both deliverables and both probe directories landed as
+199. Nothing collided by filename and the merge was clean, which is exactly why
+it needed catching: the number, not the file, is what every later citation says.
+Numbers are assigned in the brief from now on.*
 
 ## The gates
 
@@ -17,7 +23,7 @@ and the report would read clean, and that is exactly the case it plants.
 **No obligation cites a consumer. Ten cite `184`. Three cite op.**
 
 ```
-$ 199_probes/whose_words_is_each_obligation.sh
+$ 200_probes/whose_words_is_each_obligation.sh
   consumer 0   op 3   summary 10   none 0
 ```
 
