@@ -362,3 +362,121 @@ same nonzero bias, which is the ordinary reason to prefer it.
 Where a design needs both, no deterministic mode exists, and `stochastic` under its proportional
 reading is the only thing in the vocabulary that supplies it. That is a real answer to why the
 sixth name is in the set, arrived at from the mathematics rather than from fashion.
+
+## The predicates
+
+Every finding here shares a region on most axes, so the common part is stated once and each finding
+carries only what differs. An axis absent from a predicate is a claim that the finding holds
+nowhere that axis exists, per `every-finding-carries-its-predicate`, and I have written no hedge
+into any of them.
+
+**The common region.**
+
+```
+radix = 2
+ambient domain = the dyadic rationals with denominator 2^F, closed under negation
+operation = quantise
+arity = 1
+chain length = 1
+accumulator width = declared
+operand window = full range
+container = i64, every intermediate strictly inside it at the widths swept
+occupancy any
+alignment any
+access pattern any
+threads = 1
+target features = host aarch64-apple-darwin
+rustc = 1.98.0-nightly 57d06900f, edition = 2015
+debug-assertions = off, opt level = 2
+```
+
+`occupancy any`, `alignment any` and `access pattern any` are written with the structural warrant
+`dimension::access_pattern` states for exactly this case: a correctness claim untouched by the axis
+writes `any`. Nothing here places a value in a carrier or reads one from anywhere, so no result can
+move along those three.
+
+**Finding 1. `floor`, `ceil`, `toward_zero` and `half_even` each denote one operation.**
+Common region, with `total_width: W in {4, 6, 8, 10, 12}`, `fraction_width: F in 0..=W-1`,
+`signedness in {signed, unsigned}`, `overflow policy = none applied, the quantised representative
+is read before any range reduction`, `rounding in {floor, ceil, toward_zero, half_even}`. The
+positive part of this finding is a survey of standards and implementations rather than a
+measurement, and what the probes establish is the negative half: that the competing readings I
+considered and discarded are genuinely different operations, at the counts probe A prints.
+
+**Finding 2. `half_up` denotes two operations, disagreeing on `2^(W-1-F)` values.**
+Common region, with `total_width: W in {4, 6, 8, 10, 12}`, `fraction_width: F in 1..=W-1`,
+`signedness = signed`, `overflow policy = none applied, the quantised representative is read before
+any range reduction`, `rounding in {half_up as ties toward positive infinity, half_up as ties away
+from zero}`. Evidence `229_probes/a_output.txt`.
+
+**Finding 3. The two readings of `half_up` are one operation on an unsigned domain and at `F = 0`.**
+Common region, with `total_width: W in {4, 6, 8, 10, 12}`, `fraction_width: F in 0..=W-1`,
+`signedness = unsigned`, plus the row `fraction_width: F = 0, signedness = signed`, same overflow
+policy and rounding entries as finding 2. Evidence `229_probes/a_output.txt`, control 4.
+
+**Finding 4. Under ties toward positive infinity, and only under it, the equivariant position
+counts reproduce the two canon fusion rows.**
+Common region, with `total_width: W = 6`, `fraction_width: F in 1..=5`,
+`signedness in {signed, unsigned}`, `overflow policy any`,
+`rounding in {floor, ceil, toward_zero, away_from_zero, half_up as ties toward positive infinity,
+half_up as ties away from zero, half_even}`. `overflow policy any` is admissible here and nowhere
+else in this file, because probe B restricts to translations whose endpoints are both representable,
+so no policy is ever reached and every policy agrees. Evidence `229_probes/b_output.txt`.
+
+**Finding 5. No deterministic nearest mode over the domain is both translation equivariant and
+zero mean error.**
+Common region, with `total_width: W in {6, 8}`, `fraction_width: F in {2, 3}` at `W = 6` and
+`F in {4, 5}` at `W = 8`, `signedness = signed`, `overflow policy = none applied`,
+`rounding in {every assignment of a direction to each tie of the domain}`, which is 65536 modes at
+two of the points and 256 at the other two. Evidence `229_probes/f_output.txt`.
+
+**Finding 6. `stochastic` denotes at least four distinguishable readings, of which the canon's
+retraction law excludes one on the signed domain.**
+Common region, with `total_width: W in {4, 6, 8}`, `fraction_width: F in 1..=4`,
+`signedness in {signed, unsigned}`, `overflow policy = none applied`,
+`rounding in {stochastic proportional, stochastic equal probability, stochastic as add-then-bit-drop,
+stochastic as add-then-toward-zero, stochastic with a draw one bit narrower than the discarded
+field}`. Evidence `229_probes/d_output.txt` and `229_probes/g_output.txt`.
+
+**Finding 7. Stochastic under the proportional reading is equivariant, pointwise unbiased and
+retracting together.**
+Common region, with `total_width: W = 8`, `fraction_width: F in 1..=4`, `signedness = signed`,
+`overflow policy = none applied`, `rounding = stochastic proportional`. Evidence
+`229_probes/g_output.txt` and `229_probes/d_output.txt`.
+
+### Two axes I could not write, and what I did about it
+
+**`strategy` has no admissible spelling for a claim established before a strategy is selected.**
+`dimension::strategy` says `S any` is not admissible, because it quantifies over a set op has
+stated is open, and that is right. But every finding above is a statement about what two named
+functions compute, which no strategy moves: a strategy selects among arms, and both readings of
+`half_up` are arms, so whichever strategy selects the `half_up` arm still has to select one of the
+two. Naming a strategy I did not run under would be false, and naming none makes every finding here
+hold nowhere a strategy exists, which is absurd for a fact about integer arithmetic.
+
+I attacked this rather than leaving it. The canon has the shape of the repair three times already:
+`dimension::rounding` says `rounding = exact` "names the case where nothing is discarded, which is a
+value of the axis rather than its absence", `dimension::accumulator_width` has `accumulator width =
+declared` for the no-widening case, and `dimension::container` has `container = declared width`. In
+each, a distinguished value carries what `any` cannot. **The strategy axis needs the same thing: a
+named value for the case where no strategy has been selected because the claim is prior to
+selection.** That is a canon edit and it is not mine to make. It is offered as a proposal owing two
+independent agreements, and until then every finding above is written without a strategy entry and
+is, under the notation as it stands, narrower than it is. I would rather say that plainly than
+write a value I did not measure.
+
+**`overflow_policy` has no named value for a result read before any range reduction.**
+`dimension::overflow_policy` lists `wrap`, `saturate`, `saturate-both-ends`, `clamp` and `panic`.
+None of them is what these findings sit at, because no reduction is performed: the quantised
+representative is read directly, exactly the level `law::quantise_then_reduce_commutes` distinguishes
+in its note when it says "before that reduction, at the representative level". `ceil` of the largest
+representable value at `W = 8, F = 4` is 8 where the integer grid stops at 7, so this is not a
+technicality. The same repair applies, and the same precedent supports it. I have written
+`overflow policy = none applied, the quantised representative is read before any range reduction`,
+which is honest and is not currently a value of the axis.
+
+These are two more instances of the class `question::what_region_does_a_predicate_naming_no_mode_state`
+is about, reached from a different direction: that question found a predicate whose values side was
+prose and therefore passed every check while stating no region. Mine are predicates whose values
+side cannot be written at all. I have not filled that question and I am not proposing an answer to
+it here.
