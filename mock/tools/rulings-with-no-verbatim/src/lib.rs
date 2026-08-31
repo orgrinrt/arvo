@@ -57,8 +57,8 @@ impl Tool for RulingsWithNoVerbatim {
 
     fn args(&self) -> &'static [ArgSpec] {
         &[ArgSpec {
-            name:        "slug",
-            required:    false,
+            name: "slug",
+            required: false,
             description: "report one ruling in full, by its slug, before quoting it",
         }]
     }
@@ -140,7 +140,7 @@ impl RulingsWithNoVerbatim {
         );
         ToolReport {
             outcome: Outcome::Clean { examined: total },
-            output:  s,
+            output: s,
         }
     }
 
@@ -169,7 +169,7 @@ impl RulingsWithNoVerbatim {
         }
         ToolReport {
             outcome: Outcome::Clean { examined: 1 },
-            output:  s,
+            output: s,
         }
     }
 }

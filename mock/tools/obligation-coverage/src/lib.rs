@@ -52,8 +52,8 @@
 
 use std::collections::BTreeMap;
 
-use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
 use mockspace::RegistryView;
+use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
 
 /// The namespace holding the demand side.
 const OBLIGATION: &str = "obligation";
@@ -201,8 +201,8 @@ impl Tool for ObligationCoverage {
 
     fn args(&self) -> &'static [ArgSpec] {
         &[ArgSpec {
-            name:        "slug",
-            required:    false,
+            name: "slug",
+            required: false,
             description: "report one obligation in full, by its slug",
         }]
     }
@@ -267,7 +267,7 @@ impl ObligationCoverage {
 
         s.push_str("\nBy obligation, weakest first:\n\n");
         let mut ordered: Vec<(&String, &(Reach, Vec<String>))> = reached.iter().collect();
-        ordered.sort_by(|a, b| b.1 .0.cmp(&a.1 .0).then_with(|| a.0.cmp(b.0)));
+        ordered.sort_by(|a, b| b.1.0.cmp(&a.1.0).then_with(|| a.0.cmp(b.0)));
         for (id, (tier, by)) in ordered {
             let deps = pre.get(id).map_or(0, Vec::len);
             let mark = match deps {
@@ -312,7 +312,7 @@ impl ObligationCoverage {
 
         ToolReport {
             outcome: Outcome::Clean { examined: total },
-            output:  s,
+            output: s,
         }
     }
 
@@ -359,7 +359,7 @@ impl ObligationCoverage {
         }
         ToolReport {
             outcome: Outcome::Clean { examined: 1 },
-            output:  s,
+            output: s,
         }
     }
 }
