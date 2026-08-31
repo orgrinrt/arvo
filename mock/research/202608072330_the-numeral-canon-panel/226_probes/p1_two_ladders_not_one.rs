@@ -33,7 +33,11 @@ const NATIVE: [u32; 5] = [8, 16, 32, 64, 128];
 const MAX_W: u32 = 128;
 
 fn gcd(a: u32, b: u32) -> u32 {
-    if b == 0 { a } else { gcd(b, a % b) }
+    if b == 0 {
+        a
+    } else {
+        gcd(b, a % b)
+    }
 }
 
 fn smallest_native_at_least(bits: u32) -> Option<u32> {
@@ -79,7 +83,11 @@ fn report(name: &str, f: impl Fn(u32) -> Option<u32> + Copy, base: &[u32]) -> us
     let differs: Vec<u32> = (1..=MAX_W).filter(|&w| f(w) != carrier(w)).collect();
     println!("  {name}");
     println!("    jump points ({}): {:?}", j.len(), j);
-    println!("    shared with the carrier ladder: {} {:?}", shared.len(), shared);
+    println!(
+        "    shared with the carrier ladder: {} {:?}",
+        shared.len(),
+        shared
+    );
     println!(
         "    widths where it differs from the carrier: {} of {MAX_W}, first {:?}",
         differs.len(),
@@ -148,6 +156,13 @@ fn main() {
     println!("  tight shares {tight_shared} carrier jump points");
     println!("  loose shares {loose_shared} carrier jump points");
     let pass = ok_c1 && ok_c2 && ok_c3 && tight_shared == 0 && loose_shared == 0;
-    println!("\n  RESULT: {}", if pass { "two ladders, not one" } else { "INCONCLUSIVE" });
+    println!(
+        "\n  RESULT: {}",
+        if pass {
+            "two ladders, not one"
+        } else {
+            "INCONCLUSIVE"
+        }
+    );
     std::process::exit(if pass { 0 } else { 1 });
 }

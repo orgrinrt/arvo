@@ -34,27 +34,51 @@
 
 const NATIVE: [u32; 5] = [8, 16, 32, 64, 128];
 
-fn carriers(w: u32) -> Vec<u32> { NATIVE.iter().copied().filter(|&c| c >= w).collect() }
-fn mask(bits: u32) -> u128 { if bits >= 128 { u128::MAX } else { (1u128 << bits) - 1 } }
+fn carriers(w: u32) -> Vec<u32> {
+    NATIVE.iter().copied().filter(|&c| c >= w).collect()
+}
+fn mask(bits: u32) -> u128 {
+    if bits >= 128 {
+        u128::MAX
+    } else {
+        (1u128 << bits) - 1
+    }
+}
 
 /// An operation is a rule from (declared width, carrier, inputs) to an answer.
 /// The declared-width ones ignore `c`; the two controls do not.
 type Op = (&'static str, fn(u32, u32, u128, u128) -> u128);
 
-fn op_encode(w: u32, _c: u32, a: u128, _b: u128) -> u128 { a & mask(w) }
-fn op_add(w: u32, _c: u32, a: u128, b: u128) -> u128 { (a + b) & mask(w) }
-fn op_mul(w: u32, _c: u32, a: u128, b: u128) -> u128 { (a * b) & mask(w) }
-fn op_xor(w: u32, _c: u32, a: u128, b: u128) -> u128 { (a ^ b) & mask(w) }
+fn op_encode(w: u32, _c: u32, a: u128, _b: u128) -> u128 {
+    a & mask(w)
+}
+fn op_add(w: u32, _c: u32, a: u128, b: u128) -> u128 {
+    (a + b) & mask(w)
+}
+fn op_mul(w: u32, _c: u32, a: u128, b: u128) -> u128 {
+    (a * b) & mask(w)
+}
+fn op_xor(w: u32, _c: u32, a: u128, b: u128) -> u128 {
+    (a ^ b) & mask(w)
+}
 /// A fifth operation, still a function of the declared width: a multiply-add
 /// whose intermediate is declared exact and projected once at the end.
-fn op_fma(w: u32, _c: u32, a: u128, b: u128) -> u128 { (a * b + a) & mask(w) }
+fn op_fma(w: u32, _c: u32, a: u128, b: u128) -> u128 {
+    (a * b + a) & mask(w)
+}
 
 /// C1: reads the carrier and nothing else.
-fn op_footprint(_w: u32, c: u32, _a: u128, _b: u128) -> u128 { c as u128 }
+fn op_footprint(_w: u32, c: u32, _a: u128, _b: u128) -> u128 {
+    c as u128
+}
 /// C2, growth one bit.
-fn op_add_unprojected(_w: u32, c: u32, a: u128, b: u128) -> u128 { (a + b) & mask(c) }
+fn op_add_unprojected(_w: u32, c: u32, a: u128, b: u128) -> u128 {
+    (a + b) & mask(c)
+}
 /// C2, growth W bits. This is the arm that can fire.
-fn op_mul_unprojected(_w: u32, c: u32, a: u128, b: u128) -> u128 { (a * b) & mask(c) }
+fn op_mul_unprojected(_w: u32, c: u32, a: u128, b: u128) -> u128 {
+    (a * b) & mask(c)
+}
 
 const DECLARED: [Op; 5] = [
     ("encode", op_encode),
@@ -77,7 +101,9 @@ fn classes(w: u32, ops: &[Op]) -> usize {
                 }
             }
         }
-        if !sigs.contains(&sig) { sigs.push(sig); }
+        if !sigs.contains(&sig) {
+            sigs.push(sig);
+        }
     }
     sigs.len()
 }
@@ -86,13 +112,19 @@ fn main() {
     let widths: Vec<u32> = (3..=10).collect();
 
     println!("== the declared set, one operation at a time ==");
-    println!("  W  carriers  classes after each prefix of [{}]",
-        DECLARED.iter().map(|o| o.0).collect::<Vec<_>>().join(", "));
+    println!(
+        "  W  carriers  classes after each prefix of [{}]",
+        DECLARED.iter().map(|o| o.0).collect::<Vec<_>>().join(", ")
+    );
     let mut constant = true;
     for &w in &widths {
         let n = carriers(w).len();
-        let counts: Vec<usize> = (1..=DECLARED.len()).map(|k| classes(w, &DECLARED[..k])).collect();
-        if counts.iter().any(|&c| c != 1) { constant = false; }
+        let counts: Vec<usize> = (1..=DECLARED.len())
+            .map(|k| classes(w, &DECLARED[..k]))
+            .collect();
+        if counts.iter().any(|&c| c != 1) {
+            constant = false;
+        }
         println!("  {w:<3}{n:<10}{counts:?}");
     }
 
@@ -103,7 +135,9 @@ fn main() {
         ops.push(("footprint", op_footprint));
         let k = classes(w, &ops);
         let n = carriers(w).len();
-        if k != n { c1 = false; }
+        if k != n {
+            c1 = false;
+        }
         println!("  W={w:<4}classes {k}, admissible carriers {n}");
     }
 
@@ -123,8 +157,12 @@ fn main() {
         let headroom = carriers(w)[0] - w;
         let split_add = ka >= 2;
         let split_mul = km >= 2;
-        if split_add != (1 > headroom) { c2 = false; }
-        if split_mul != (w > headroom) { c2 = false; }
+        if split_add != (1 > headroom) {
+            c2 = false;
+        }
+        if split_mul != (w > headroom) {
+            c2 = false;
+        }
         println!(
             "  {w:<3}{ka:<5}{km:<5}{headroom:<10}add {} / mul {}",
             1 > headroom,
@@ -137,8 +175,13 @@ fn main() {
     println!("  C1 the footprint observation splits to the carrier count:  {c1}");
     println!("  C2 both arms split exactly where growth exceeds headroom: {c2}");
     let pass = constant && c1 && c2;
-    println!("\n  RESULT: {}", if pass {
-        "the class count does not move as declared-width operations are added"
-    } else { "INCONCLUSIVE, see which arm failed above" });
+    println!(
+        "\n  RESULT: {}",
+        if pass {
+            "the class count does not move as declared-width operations are added"
+        } else {
+            "INCONCLUSIVE, see which arm failed above"
+        }
+    );
     std::process::exit(if pass { 0 } else { 1 });
 }

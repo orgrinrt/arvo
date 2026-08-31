@@ -1,16 +1,16 @@
 error[E0277]: the trait bound `u32: Same<u64>` is not satisfied
-   --> p2b_negctl_one_cell_disagrees.rs:120:16
+   --> p2b_negctl_one_cell_disagrees.rs:132:16
     |
-120 |         same::<OrderA<W<$w>, Cold>, OrderB<W<$w>, Cold>>();
+132 |         same::<OrderA<W<$w>, Cold>, OrderB<W<$w>, Cold>>();
     |                ^^^^^^^^^^^^^^^^^^^ the trait `Same<u64>` is not implemented for `u32`
 ...
-127 |     agree!(3, 4, 8, 9, 13, 16, 17, 32, 33, 64);
+139 |     agree!(3, 4, 8, 9, 13, 16, 17, 32, 33, 64);
     |     ------------------------------------------ in this macro invocation
     |
 note: required by a bound in `same`
-   --> p2b_negctl_one_cell_disagrees.rs:116:16
+   --> p2b_negctl_one_cell_disagrees.rs:128:16
     |
-116 | pub fn same<A: Same<B>, B>() {}
+128 | pub fn same<A: Same<B>, B>() {}
     |                ^^^^^^^ required by this bound in `same`
     = note: this error originates in the macro `agree` (in Nightly builds, run with -Z macro-backtrace for more info)
 

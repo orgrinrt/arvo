@@ -35,17 +35,40 @@
 const NATIVE: [u32; 5] = [8, 16, 32, 64, 128];
 const MAX_W: u32 = 128;
 
-fn gcd(a: u32, b: u32) -> u32 { if b == 0 { a } else { gcd(b, a % b) } }
-fn nat(bits: u32) -> u32 { NATIVE.iter().copied().find(|&n| n >= bits).unwrap_or(0) }
+fn gcd(a: u32, b: u32) -> u32 {
+    if b == 0 {
+        a
+    } else {
+        gcd(b, a % b)
+    }
+}
+fn nat(bits: u32) -> u32 {
+    NATIVE.iter().copied().find(|&n| n >= bits).unwrap_or(0)
+}
 
-fn carrier(w: u32) -> u32 { nat(w) }
-fn access_tight(w: u32) -> u32 { nat(((8 - gcd(w, 8)) + w).div_ceil(8) * 8) }
-fn access_loose(w: u32) -> u32 { nat((w + 7).div_ceil(8) * 8) }
+fn carrier(w: u32) -> u32 {
+    nat(w)
+}
+fn access_tight(w: u32) -> u32 {
+    nat(((8 - gcd(w, 8)) + w).div_ceil(8) * 8)
+}
+fn access_loose(w: u32) -> u32 {
+    nat((w + 7).div_ceil(8) * 8)
+}
 
-fn access_clone(w: u32) -> u32 { carrier(w) }          // C1
-fn access_const(_w: u32) -> u32 { 8 }                   // C2
-fn access_planted(w: u32) -> u32 {                      // C3: violates only in the u8 class
-    if w == 5 { 64 } else { carrier(w) }
+fn access_clone(w: u32) -> u32 {
+    carrier(w)
+} // C1
+fn access_const(_w: u32) -> u32 {
+    8
+} // C2
+fn access_planted(w: u32) -> u32 {
+    // C3: violates only in the u8 class
+    if w == 5 {
+        64
+    } else {
+        carrier(w)
+    }
 }
 
 /// Every pair (W1, W2) with g(W1) == g(W2) and f(W1) != f(W2).
@@ -106,9 +129,14 @@ fn main() {
     let separated = !t.is_empty() && !l.is_empty() && !rt.is_empty() && !rl.is_empty();
     println!("  neither determines the other, under both packing rules: {separated}");
     let pass = ok_c1 && ok_c2 && ok_c3 && separated;
-    println!("\n  RESULT: {}", if pass {
-        "carrier and access width are two independent facts of the declared width"
-    } else { "INCONCLUSIVE" });
+    println!(
+        "\n  RESULT: {}",
+        if pass {
+            "carrier and access width are two independent facts of the declared width"
+        } else {
+            "INCONCLUSIVE"
+        }
+    );
     std::process::exit(if pass { 0 } else { 1 });
 }
 

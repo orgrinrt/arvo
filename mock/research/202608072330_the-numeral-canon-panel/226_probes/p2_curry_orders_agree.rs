@@ -31,9 +31,9 @@
 pub struct W<const N: usize>;
 
 // The three placement objectives, which are what the ladder is really keyed on.
-pub struct Packed;      // the machine type one packed-column load must touch
-pub struct Standalone;  // the smallest native type holding a lone value
-pub struct Widened;     // the next native type above Standalone
+pub struct Packed; // the machine type one packed-column load must touch
+pub struct Standalone; // the smallest native type holding a lone value
+pub struct Widened; // the next native type above Standalone
 
 // The strategies, as names bound to objectives.
 pub struct Cold;
@@ -42,12 +42,22 @@ pub struct Hot;
 
 // ---- order A: the strategy selects an objective; the ladder never sees it ----
 
-pub trait Selects { type Obj; }
-impl Selects for Cold { type Obj = Packed; }
-impl Selects for Warm { type Obj = Standalone; }
-impl Selects for Hot  { type Obj = Widened; }
+pub trait Selects {
+    type Obj;
+}
+impl Selects for Cold {
+    type Obj = Packed;
+}
+impl Selects for Warm {
+    type Obj = Standalone;
+}
+impl Selects for Hot {
+    type Obj = Widened;
+}
 
-pub trait LadderFor<O> { type Carrier; }
+pub trait LadderFor<O> {
+    type Carrier;
+}
 pub type OrderA<Wd, S> = <Wd as LadderFor<<S as Selects>::Obj>>::Carrier;
 
 macro_rules! table_a {
@@ -73,7 +83,9 @@ table_a! {
 
 // ---- order B: one ladder keyed on the width and the strategy together ----
 
-pub trait Ladder<S> { type Carrier; }
+pub trait Ladder<S> {
+    type Carrier;
+}
 pub type OrderB<Wd, S> = <Wd as Ladder<S>>::Carrier;
 
 macro_rules! table_b {
@@ -124,9 +136,9 @@ pub fn the_objectives_are_distinguishable() {
     // At W = 3 the three objectives give three shapes, two of which coincide.
     same::<OrderA<W<3>, Cold>, u16>();
     same::<OrderA<W<3>, Warm>, u8>();
-    same::<OrderA<W<3>, Hot>,  u16>();
+    same::<OrderA<W<3>, Hot>, u16>();
     // At W = 4 Cold and Warm coincide and Hot does not, which is the other
     // pattern, so the table is not one column wearing three names.
     same::<OrderA<W<4>, Cold>, u8>();
-    same::<OrderA<W<4>, Hot>,  u16>();
+    same::<OrderA<W<4>, Hot>, u16>();
 }
