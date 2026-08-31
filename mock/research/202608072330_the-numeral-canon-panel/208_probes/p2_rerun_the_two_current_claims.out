@@ -1,0 +1,17 @@
+== p2. re-running the two current-evidence claims, plus the archive's own controls ==
+date    : 2026-08-31 11:30:25 UTC
+rustc   : rustc 1.98.0-nightly (57d06900f 2026-05-27)
+pin     : channel="nightly-2026-05-28"
+archive : /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat208/mock/research/202607301300_formalization-spec-panel
+
+-- controls, run first --
+b1b            refuses   exit 1   as required
+b1c            refuses   exit 1   as required
+
+-- the two claims --
+T2 b1          compiles  exit 0   as required
+T1 p5          compiles  exit 0   as required
+
+RESULT: all four arms behaved as the archive recorded. Both compile facts
+reproduce on the pin today, and the two negative controls still refuse,
+so the compiler was doing work and the positives are not vacuous.
