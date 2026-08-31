@@ -1,0 +1,52 @@
+### V1, the population
+  entries: 527
+  PASS
+
+### V2, a construction nobody writes
+  PASS, 0
+
+### entries whose values side carries a second region
+  hits: 10
+131:"rounding: rounding = nearest, against a phase-zero mutant"
+170:"total_width: W in {3, 4} for the end-to-end run, and W in 2..=10 for the absorption sweep"
+171:"fraction_width: F = 0 for the end-to-end run, and F in 0..=W for the absorption sweep"
+35:"build_profile: default const-eval guard, and guard-allowed for the three-bit measurement"
+47:"operation: operations {add, sub, mul, neg} with integer constants for the wrapping fragment, and {saturating add, saturating mul} with nonnegative clamp-embedded constants
+525:"signedness: signed, or unsigned with signed intermediates"
+55:"arity: arity = 3 for the grouping kind, and arity in 2..=5 for the schedule kind"
+60:"threads: threads = 1 for the timed instance and threads any for the compile-time artifacts"
+70:"arity: arity = 3 for the algebraic family and 2 for the order family"
+74:"arity: arity in {2, 3} for the asserted join laws"
+
+### by the axis whose slug they sit on
+     3 arity
+     1 total_width
+     1 threads
+     1 signedness
+     1 rounding
+     1 operation
+     1 fraction_width
+     1 build_profile
+
+### V3, a single-region entry must not be reported
+  PASS
+
+### V4, the known instance
+  PASS, found, and it is in the committed canon rather than only in the panel
+../../../registry/law-the-later-topics.toml:203:  "signedness: signed, or unsigned with signed intermediates",
+
+### what each shape is, stated rather than counted
+  , or         a UNION over two axes. The product a per-axis reading gives is wider.
+  against      a PAIRING of two axes. Same.
+  for the      a region attached to a sub-case that is not an axis at all,
+               usually which run it came from, which is coverage in the region slot.
+  , and        two regions on ONE axis inside one entry, which is exactly what
+               a-predicate-names-an-axis-once forbids across two entries.
+
+### where the known instance landed
+  law::quantise_then_reduce_commutes, in its `fails` field.
+  230 argues from 132/136/138 that the span is NOT portable, because the
+  value is a disjunction over the declared signedness and the intermediate's
+  and no axis exists for the second. It is right. It was ported anyway, and
+  the row is in the canon now, and nothing can see it: the two shipped
+  predicate lints read the slug side, and the slug is a declared axis.
