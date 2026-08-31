@@ -123,14 +123,19 @@ impl Dither {
 /// `slot + 1` and every mode is one comparison. The sign cases live in the modes
 /// that care about sign rather than in the representation.
 #[must_use]
-pub const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i64 {
+const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
     if exact.num == 0 {
-        return exact.slot;
+        return exact.slot as i128;
     }
-    let up = exact.slot + 1;
-    let down = exact.slot;
-    // `2 * num` against `den` decides which side of the midpoint the position is.
-    let twice = exact.num * 2;
+    // The exact step happens here, in a carrier wide enough to hold it. A slot
+    // one past `i64::MAX` is a real position and the completion below lands it;
+    // computing it in the target carrier is what made the map wrong.
+    let down = exact.slot as i128;
+    let up = down + 1;
+    // `2 * num` against `den` decides which side of the midpoint the position is,
+    // cross-multiplied in the wide carrier so no operand can leave its type.
+    let twice = (exact.num as i128) * 2;
+    let den = exact.den as i128;
     match mode {
         Mode::Floor => down,
         Mode::Ceil => up,
@@ -144,9 +149,9 @@ pub const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i64 {
             }
         }
         Mode::HalfUp => {
-            if twice > exact.den {
+            if twice > den {
                 up
-            } else if twice < exact.den {
+            } else if twice < den {
                 down
             } else if exact.slot < 0 {
                 // A tie on a negative position goes away from zero, which is down.
@@ -156,9 +161,9 @@ pub const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i64 {
             }
         }
         Mode::HalfEven => {
-            if twice > exact.den {
+            if twice > den {
                 up
-            } else if twice < exact.den {
+            } else if twice < den {
                 down
             } else if down % 2 == 0 {
                 down
@@ -170,7 +175,7 @@ pub const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i64 {
         // probability of rounding up equal to that offset when the dither is
         // uniform. Cross-multiplied so no division happens.
         Mode::Stochastic => {
-            if dither.num * exact.den < exact.num * dither.den {
+            if (dither.num as i128) * den < (exact.num as i128) * (dither.den as i128) {
                 up
             } else {
                 down
@@ -184,14 +189,20 @@ pub const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i64 {
 /// The identity on a slot already inside it, which is what makes the two regions
 /// separable rather than one pass that always touches the value.
 #[must_use]
-pub const fn complete_slot(policy: Policy, slot: i64, min: i64, max: i64) -> i64 {
-    if slot >= min && slot <= max {
-        return slot;
+const fn complete_slot(policy: Policy, slot: i128, min: i64, max: i64) -> i64 {
+    let lo = min as i128;
+    let hi = max as i128;
+    if slot >= lo && slot <= hi {
+        // In range, so it fits the target carrier by construction.
+        return slot as i64;
     }
     match policy {
         Policy::Wrap => {
-            let span = max - min + 1;
-            min + (slot - min).rem_euclid(span)
+            // Every term in the wide carrier. The span of an admitted range fits
+            // an `i64`, and the remainder is below it, so the sum lands in range
+            // and the narrowing cannot lose anything.
+            let span = hi - lo + 1;
+            (lo + (slot - lo).rem_euclid(span)) as i64
         }
         // `Clamp` is documented as pinning to a declared bound that need not be
         // the range's own end, and the declared signature carries nowhere to put
@@ -200,11 +211,7 @@ pub const fn complete_slot(policy: Policy, slot: i64, min: i64, max: i64) -> i64
         // separate them is missing, which is the admission rule's own diagnosis
         // rather than a shortcut taken in this function.
         Policy::Saturate | Policy::Clamp => {
-            if slot < min {
-                min
-            } else {
-                max
-            }
+            if slot < lo { min } else { max }
         }
     }
 }
@@ -218,6 +225,10 @@ pub const fn complete_slot(policy: Policy, slot: i64, min: i64, max: i64) -> i64
 pub const fn adapt<S: DeclaredSignature>(exact: Exact, dither: Dither) -> i64 {
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     let policy = <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY;
+    // Forces the contract's obligation. Reading `MIN` and `MAX` does not force it
+    // on its own, so without this line the completion would work over a range
+    // that merely arrived rather than one that was admitted.
+    let () = <<S::Format as Format>::Slots as Slots>::ADMITTED;
     let min = <<S::Format as Format>::Slots as Slots>::MIN;
     let max = <<S::Format as Format>::Slots as Slots>::MAX;
     let rounded = round_slot(mode, exact, dither);

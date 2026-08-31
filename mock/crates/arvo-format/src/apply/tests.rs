@@ -12,6 +12,12 @@
 //! confirmed by a sibling that states the same thing.
 
 use crate::adapt::{Adapt, Signature};
+
+/// Test shim. The exact step is carried wide, and the tests write narrow values,
+/// so the widening happens once here rather than at thirty call sites.
+fn complete(policy: Policy, slot: i64, min: i64, max: i64) -> i64 {
+    complete_slot(policy, slot as i128, min, max)
+}
 use crate::apply::{
     adapt, complete_slot, panic_on_inexact, panic_on_overflow, round_slot, Dither, Exact,
 };
@@ -132,7 +138,7 @@ identity_over_the_matrix!(TowardZero, Floor, Ceil, HalfUp, HalfEven, Stochastic)
 fn completion_transports_order(policy: Policy) -> bool {
     for a in -40i64..=40 {
         for b in a..=40 {
-            if complete_slot(policy, a, MIN5, MAX5) > complete_slot(policy, b, MIN5, MAX5) {
+            if complete(policy, a, MIN5, MAX5) > complete(policy, b, MIN5, MAX5) {
                 return false;
             }
         }
@@ -166,8 +172,8 @@ fn order_transport_is_measured_from_the_map_rather_than_declared() {
 fn wrapping_inverts_a_specific_pair_and_the_witness_is_named() {
     // A single witness, so the property above is not resting on a loop nobody
     // can point inside. The top of the window and one past it.
-    let hi = complete_slot(Policy::Wrap, MAX5, MIN5, MAX5);
-    let over = complete_slot(Policy::Wrap, MAX5 + 1, MIN5, MAX5);
+    let hi = complete(Policy::Wrap, MAX5, MIN5, MAX5);
+    let over = complete(Policy::Wrap, MAX5 + 1, MIN5, MAX5);
     assert_eq!(hi, MAX5);
     assert_eq!(over, MIN5);
     assert!(
@@ -239,8 +245,8 @@ fn each_directed_mode_moves_every_off_grid_position_its_own_way() {
         if e.is_on_grid() {
             continue;
         }
-        let down = e.slot();
-        let up = e.slot() + 1;
+        let down = e.slot() as i128;
+        let up = down + 1;
 
         assert_eq!(round_slot(Mode::Floor, e, Dither::UNUSED), down);
         assert_eq!(round_slot(Mode::Ceil, e, Dither::UNUSED), up);
@@ -309,11 +315,11 @@ fn rounding_is_reachable_without_completion_and_completion_without_rounding() {
     // Inside the window, off grid: rounding acts, completion does not.
     let inside = Exact::between(3, 1, 4);
     assert_eq!(adapt::<S>(inside, Dither::UNUSED), 4);
-    assert_eq!(complete_slot(Policy::Saturate, 4, MIN5, MAX5), 4);
+    assert_eq!(complete(Policy::Saturate, 4, MIN5, MAX5), 4);
 
     // On the grid, outside the window: completion acts, rounding does not.
     let outside = Exact::on_grid(MAX5 + 7);
-    assert_eq!(round_slot(Mode::Ceil, outside, Dither::UNUSED), MAX5 + 7);
+    assert_eq!(round_slot(Mode::Ceil, outside, Dither::UNUSED), (MAX5 + 7) as i128);
     assert_eq!(adapt::<S>(outside, Dither::UNUSED), MAX5);
 }
 
@@ -324,7 +330,7 @@ fn rounding_happens_before_completion_and_the_order_is_observable() {
     // nothing, and the answer would be the rounded slot, which is out of range.
     type S = Signature<Integer<5>, Adapt<Ceil, Saturate>>;
     let e = Exact::between(MAX5, 1, 2);
-    assert_eq!(round_slot(Mode::Ceil, e, Dither::UNUSED), MAX5 + 1);
+    assert_eq!(round_slot(Mode::Ceil, e, Dither::UNUSED), (MAX5 + 1) as i128);
     assert_eq!(
         adapt::<S>(e, Dither::UNUSED),
         MAX5,
@@ -343,8 +349,8 @@ fn clamp_and_saturate_compute_the_same_function_because_a_coordinate_is_missing(
     // than read later as a property of the policies.
     for slot in -40i64..=40 {
         assert_eq!(
-            complete_slot(Policy::Clamp, slot, MIN5, MAX5),
-            complete_slot(Policy::Saturate, slot, MIN5, MAX5)
+            complete(Policy::Clamp, slot, MIN5, MAX5),
+            complete(Policy::Saturate, slot, MIN5, MAX5)
         );
     }
 
@@ -352,8 +358,8 @@ fn clamp_and_saturate_compute_the_same_function_because_a_coordinate_is_missing(
     // from both outside the window, so the agreement above is about these two.
     let out = MAX5 + 1;
     assert_ne!(
-        complete_slot(Policy::Wrap, out, MIN5, MAX5),
-        complete_slot(Policy::Saturate, out, MIN5, MAX5)
+        complete(Policy::Wrap, out, MIN5, MAX5),
+        complete(Policy::Saturate, out, MIN5, MAX5)
     );
 }
 
@@ -413,4 +419,102 @@ fn a_remainder_outside_the_unit_interval_is_normalised_into_the_slot() {
     // A non-positive denominator is treated as a grid point rather than dividing.
     assert!(Exact::between(7, 3, 0).is_on_grid());
     assert_eq!(Exact::between(7, 3, 0).slot(), 7);
+}
+
+// --- the edges of the type, which every arm above stays away from ------------
+//
+// Thirty references to one small window meant the arithmetic could never leave
+// `i64`, so the breaking path was never entered and five review passes found
+// what the suite did not. These arms feed the edges.
+
+/// The wrapping answer, as a verdict rather than an assertion, so a case can be
+/// reported on and compared rather than only passing or failing.
+fn wrap_of(slot: i64, min: i64, max: i64) -> i64 {
+    let span = (max as i128) - (min as i128) + 1;
+    ((min as i128) + ((slot as i128) - (min as i128)).rem_euclid(span)) as i64
+}
+
+/// Signature over the slot range `[-4, 3]`, span 8, which `Integer<3>` declares.
+type Edge = Signature<Integer<3>, Adapt<Floor, Wrap>>;
+const EDGE_MIN: i64 = -4;
+const EDGE_MAX: i64 = 3;
+
+#[test]
+fn the_control_the_edges_are_outside_the_window_the_other_arms_use() {
+    // If `i64::MAX` were inside the window these arms would be testing the
+    // in-range path under another name.
+    assert!(i64::MAX > EDGE_MAX);
+    assert!(i64::MIN < EDGE_MIN);
+    assert!(i64::MAX > MAX5 && i64::MIN < MIN5);
+}
+
+#[test]
+fn adapting_at_the_edges_of_the_type_gives_the_arithmetic_answer() {
+    // Computed independently by `wrap_of` in a carrier that holds the step, and
+    // asserted against what the crate returns. Before the exact step moved to a
+    // wide carrier the crate returned a value inside the range that was simply
+    // wrong, which no assertion comparing it to itself could have caught.
+    for slot in [i64::MAX, i64::MIN, i64::MAX - 1, i64::MIN + 1, 0, 7, -9] {
+        let got = adapt::<Edge>(Exact::on_grid(slot), Dither::UNUSED);
+        let want = wrap_of(slot, EDGE_MIN, EDGE_MAX);
+        assert_eq!(got, want, "adapting {slot} disagreed with the arithmetic");
+        assert!(
+            got >= EDGE_MIN && got <= EDGE_MAX,
+            "adapting {slot} left the declared range"
+        );
+    }
+}
+
+#[test]
+fn the_edge_answers_are_the_ones_worked_out_by_hand() {
+    // Two values written down rather than derived by the same expression the
+    // crate uses, so the test does not agree with the code by construction.
+    //
+    // `i64::MAX` into `[-4, 3]`: (i64::MAX + 4) mod 8 = 3, so -4 + 3 = -1.
+    // `i64::MIN` into `[-4, 3]`: (i64::MIN + 4) mod 8 = 4, so -4 + 4 = 0.
+    assert_eq!(adapt::<Edge>(Exact::on_grid(i64::MAX), Dither::UNUSED), -1);
+    assert_eq!(adapt::<Edge>(Exact::on_grid(i64::MIN), Dither::UNUSED), 0);
+}
+
+#[test]
+fn rounding_at_the_top_of_the_type_does_not_leave_the_carrier() {
+    // `Ceil` on an off-grid position at `i64::MAX` rounds to one past the top of
+    // `i64`, which is a real position the completion has to land. Computing that
+    // step in `i64` is what made the map wrong.
+    type Up = Signature<Integer<3>, Adapt<Ceil, Wrap>>;
+    let e = Exact::between(i64::MAX, 1, 4);
+    let got = adapt::<Up>(e, Dither::UNUSED);
+    assert!(got >= EDGE_MIN && got <= EDGE_MAX);
+    assert_eq!(got, wrap_of_i128((i64::MAX as i128) + 1, EDGE_MIN, EDGE_MAX));
+}
+
+/// The same verdict for a position that has already left `i64`.
+fn wrap_of_i128(slot: i128, min: i64, max: i64) -> i64 {
+    let span = (max as i128) - (min as i128) + 1;
+    ((min as i128) + (slot - (min as i128)).rem_euclid(span)) as i64
+}
+
+#[test]
+fn saturating_at_the_edges_pins_to_the_declared_ends() {
+    type Sat = Signature<Integer<3>, Adapt<Floor, Saturate>>;
+    assert_eq!(
+        adapt::<Sat>(Exact::on_grid(i64::MAX), Dither::UNUSED),
+        EDGE_MAX
+    );
+    assert_eq!(
+        adapt::<Sat>(Exact::on_grid(i64::MIN), Dither::UNUSED),
+        EDGE_MIN
+    );
+}
+
+#[test]
+fn a_dither_at_the_edges_still_selects_between_two_neighbours() {
+    // The stochastic mode cross-multiplies, which is the other site that could
+    // leave the type. A large denominator with a large slot exercises both.
+    let e = Exact::between(i64::MAX - 1, 3, 4);
+    let low = adapt::<Edge>(e, Dither::at(1, 1_000_000_000));
+    let high = adapt::<Edge>(e, Dither::at(999_999_999, 1_000_000_000));
+    for got in [low, high] {
+        assert!(got >= EDGE_MIN && got <= EDGE_MAX, "left the declared range");
+    }
 }
