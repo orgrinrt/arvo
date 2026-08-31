@@ -1,0 +1,40 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p3_clause9_witness_quantifier.rs
+
+### compiled clean
+
+### p3. clause 9's witness quantifier, and what the container premise's knob toggles
+
+PART A. the ambient observation, as a language fact rather than a modelled flag
+  size_of::<Cold13>()    = 2   (Hot/Cold rule: minimum native)
+  size_of::<Precise13>() = 4   (Warm/Precise rule: rung(rung_bits(13)+1))
+  align_of               = 2 against 4
+  the ambient observation separates the pair: true   required=true   as required
+  reading: the footprint-internal branch does not describe a design arvo could
+  ship. It describes a host language in which `size_of` is unavailable on a
+  `Sized` type.
+
+PART B. clause 9 under witness set InputsOnly
+  THE CARRIER PAIR   Cold<13> / Precise<13>         dirs=2 witness=none                           got=Refused     required=Refused     as required
+  G1 spurious ctl    AliasA<13> / AliasB<13>        dirs=2 witness=none                           got=Refused     required=Refused     as required
+  G2 refinement ctl  Cold<13> / Cold<13>[0,99]      dirs=1 witness=none                           got=Refinement  required=Refinement  as required
+  G4 policy ctl      Cold<13> / Warm<13>wrap        dirs=0 witness=add(1, 8191)                   got=Separated   required=Separated   as required
+  G4 width ctl       Cold<13> / Cold<14>            dirs=0 witness=value sets differ: W=13 against W=14 got=Separated   required=Separated   as required
+
+PART B. clause 9 under witness set InputsAndNullary
+  THE CARRIER PAIR   Cold<13> / Precise<13>         dirs=2 witness=size_of 2 against 4            got=Separated   required=Separated   as required
+  G1 spurious ctl    AliasA<13> / AliasB<13>        dirs=2 witness=none                           got=Refused     required=Refused     as required
+  G2 refinement ctl  Cold<13> / Cold<13>[0,99]      dirs=1 witness=none                           got=Refinement  required=Refinement  as required
+  G4 policy ctl      Cold<13> / Warm<13>wrap        dirs=0 witness=add(1, 8191)                   got=Separated   required=Separated   as required
+  G4 width ctl       Cold<13> / Cold<14>            dirs=0 witness=value sets differ: W=13 against W=14 got=Separated   required=Separated   as required
+
+### reading
+### G3 holds: under InputsOnly the carrier pair is REFUSED, which is `163` p1
+### reproduced rather than contradicted. G1 holds: widening the witness set does
+### NOT separate the genuinely spurious pair, so clause 9 keeps its teeth. What
+### moves is one pair, and it moves because the observation separating it is
+### nullary, which clause 9's wording quantifies past.
+
+### overall: every arm as required
+
+### exit 0
