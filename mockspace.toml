@@ -142,6 +142,18 @@ commit = "error"
 build = "error"
 push = "error"
 
+# --- arvo canon lints (mock/lints/*.rs, registry side) ---------------------
+#
+# These read `mock/registry/` rather than source, so they implement `RepoLint`
+# where the six above implement `CrateLint`. They are the checks that used to
+# live in a `mock/checks` crate and be run by hand, which is not one of the two
+# mechanisms mockspace has.
+
+[lints.refusal-owes-an-instead]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- Layer enforcement via forbidden-imports -------------------------------
 #
 # The per-crate layering rules were removed when mock/crates was
