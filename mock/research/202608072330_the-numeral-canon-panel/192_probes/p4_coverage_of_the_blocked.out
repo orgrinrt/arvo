@@ -1,0 +1,23 @@
+=== p4 coverage of the blocked, 2026-08-31T00:24:51Z
+
+## C1: every named row must exist in probe.toml
+C1 PASS: every named row resolves
+
+## C2: the claim column must be exactly the twenty-one
+C2 PASS: the two lists are identical
+
+## C3: at least one NONE
+C3 PASS: 1 claims still have no row
+
+## the count
+blocked claims:                    21
+now served by an instrument row:   20
+still with none:                   1
+
+still with none:
+  the_four_consolidations_contradict_each_other_nowhere
+
+NOT DONE HERE. No `evidence` edge is written. Whether a given row is the
+right instrument for a given claim is the call of whoever holds the
+proposal rows, and this mapping is an input to that rather than a
+substitute for it.

@@ -1,0 +1,76 @@
+=== p8 the control ratio over the committed probe rows, 2026-08-31T00:25:31Z
+
+## the ratio
+rows:                                          75
+carrying a control field (schema requires it): 75
+whose control field opens with None:           7
+naming a case that was run:                    68
+share naming a run case: 91%
+
+## C1: the classes must partition
+C1 PASS: 68 + 7 = 75, and every row carries the field
+
+## C2: both classes non-empty
+C2 PASS
+
+## C3: standing, over the three schema values and no fourth
+   2 "defective"
+  72 "sound"
+   1 "withdrawn"
+C3 PASS: no value outside the declared enum
+
+## rows carrying a recorded defect
+rows with a `defect` field: 22
+rows with a `reproduced` field: 10
+
+## the rows whose control field opens with None
+  id = "chain_the_third_definition_is_not_observation_bounded"
+  id = "no_dependent_survives_the_rounding_units_defects"
+  id = "the_bench_tree_was_built_at_the_undocumented_profile"
+  id = "the_debug_release_gap_that_retired_a_true_finding"
+  id = "an_equivalence_checker_that_skips_panics_certifies_a_definedness_difference"
+  id = "chain_accuracy_needs_an_intermediate_wider_than_the_operand_type"
+  id = "the_four_const_available_constructions_bind_at_four_times"
+
+## is 90 percent a fact about the corpus or about the selection
+Almost certainly the selection: the rows here were chosen as the
+instruments a live claim needs plus every instrument whose defect the
+corpus records, and both populations are files whose authors were
+paying attention. Checked rather than assumed, by splitting p4 own
+per-file classification on whether the directory has a row here.
+
+not_represented   220 of  735 state a control  (29.9%)
+represented       206 of  398 state a control  (51.8%)
+
+C4: the two groups must both be non-empty and must sum to p4 total,
+or the split is dropping files.
+p4 files: 1133
+
+WHAT THIS DOES NOT SAY. It counts what the field claims, not what the
+instrument did. A row saying a control fired is only as good as the
+reading behind it, and four defects in this corpus were controls that
+could not fail and would be counted here as fired.
+
+--- appended by 192, reading this run against 185's ---
+
+Same instrument, same controls, run over a probe.toml that has grown from 48
+rows in 27 directories to 75 in 48. Nothing in the script changed; it is
+committed at 185_probes/p8_the_rows_control_ratio.sh and this file is its
+output on the larger input.
+
+                        185's run        this run
+  rows                        48              75
+  represented set          75.0%           51.8%
+  not_represented set      30.0%           29.9%
+
+185 said its 90 percent was a fact about its selection rather than about the
+corpus, and predicted the selection was the cause. That is now measured rather
+than argued: the covered set fell 23 points toward the baseline as coverage
+went from 27 directories to 48, and the uncovered set did not move at all.
+
+The first pass chose the instruments a live claim needed AND the ones whose
+defects the corpus records, and the second population is by construction the
+work of authors who were paying attention. This pass had no such freedom: the
+directories are whichever ones the 21 blocked claims happen to rest on, and
+those are ordinary. 51.8 percent is what the corpus looks like when the
+selection is made by what is blocked rather than by what is well built.
