@@ -18,19 +18,27 @@
 //! written absence becomes nonsense, and both fail silently: the corpus still
 //! reads, and the sentence it now says is a different one.
 //!
-//! **The mechanism is a roster.** Every id that has ever been declared is
-//! written down here, and each must still resolve to a row. Adding an axis
-//! leaves the roster a subset and the lint silent; deleting or renaming one
-//! leaves an id resolving to nothing and the lint red. A rename is a deletion
-//! and an addition, so it fires on the deletion half, which is the half that
-//! does the damage.
+//! **The mechanism is a roster**, and it is read in both directions. Every id
+//! that has ever been declared is written down here, and each must still
+//! resolve to a row, which is the arm that refuses a deletion. Every row in the
+//! namespace must appear on the roster, which is the arm that keeps the first
+//! one complete. A rename trips both, the deletion half naming what stopped
+//! resolving and the addition half naming what nothing would catch next time.
+//!
+//! The second arm is there because the first one alone is only append-only over
+//! the part somebody remembered to list. An axis declared and never rostered is
+//! invisible to it in either direction, so its deletion months later is silent,
+//! and the omission happens at the one moment nobody is thinking about
+//! deletion, which is the commit that declares the axis. Read the two arms
+//! together and the roster is complete by construction rather than by memory.
 //!
 //! **No ceiling and no threshold.** The refused state is not a population that
-//! grew, it is one entry that stopped resolving, and there is no number to
-//! grandfather because the committed registry satisfies this exactly today.
+//! grew, it is one entry that stopped resolving or one row nobody listed, and
+//! there is no number to grandfather because the committed registry satisfies
+//! both arms exactly today.
 //!
-//! **Growing the roster is what an addition costs**, one line, and that is the
-//! whole of the ceremony. Shrinking it is the thing to refuse: an author who
+//! **Growing the roster is what an addition costs**, one line, in the commit
+//! that declares the row. Shrinking it is the thing to refuse: an author who
 //! deletes an axis and deletes its roster entry to match has made the lint
 //! green by removing the check, so the roster is append-only for the same
 //! reason the registry is.
@@ -123,22 +131,44 @@ impl RepoLint for TheAxisSetIsAppendOnly {
                 !rows.iter().any(|q| *q == qualified.as_str())
             })
             .collect();
-        if gone.is_empty() {
-            return Vec::new();
+        let unrostered: Vec<&str> = rows
+            .iter()
+            .filter_map(|q| q.strip_prefix(NAMESPACE).and_then(|r| r.strip_prefix("::")))
+            .filter(|id| !self.roster.contains(id))
+            .collect();
+
+        let mut out = Vec::new();
+        if !gone.is_empty() {
+            out.push(finding(
+                LINT,
+                None,
+                format!(
+                    "{} declared axes no longer resolve to a row: {gone:?}. The set is \
+                     append-only, because a span written over an axis becomes unparseable when \
+                     the axis goes and a written absence becomes nonsense, and both fail \
+                     silently. Restore the row under its original id. A rename is a deletion and \
+                     needs the old id kept, or every predicate written in it stops parsing. \
+                     Deleting the roster entry instead removes the check rather than satisfying \
+                     it.",
+                    gone.len()
+                ),
+            ));
         }
-        vec![finding(
-            LINT,
-            None,
-            format!(
-                "{} declared axes no longer resolve to a row: {gone:?}. The set is append-only, \
-                 because a span written over an axis becomes unparseable when the axis goes and a \
-                 written absence becomes nonsense, and both fail silently. Restore the row under \
-                 its original id. A rename is a deletion and needs the old id kept, or every \
-                 predicate written in it stops parsing. Deleting the roster entry instead removes \
-                 the check rather than satisfying it.",
-                gone.len()
-            ),
-        )]
+        if !unrostered.is_empty() {
+            out.push(finding(
+                LINT,
+                None,
+                format!(
+                    "{} axes are declared and not rostered: {unrostered:?}. Nothing would catch \
+                     their deletion, so the arm above cannot see them and the set is append-only \
+                     only over the part somebody remembered to list. Add each id to `ROSTER` in \
+                     the commit that declares it, which is the one moment nobody is thinking \
+                     about deletion.",
+                    unrostered.len()
+                ),
+            ));
+        }
+        out
     }
 }
 #[cfg(test)]
@@ -213,27 +243,46 @@ mod tests {
     }
 
     #[test]
-    fn an_axis_added_beyond_the_roster_is_not_a_finding() {
-        // The whole asymmetry. Declaring reveals a narrowness rather than
-        // creating one, so growth is free and only loss is refused. A check
-        // written as "the roster equals the registry" would refuse every
-        // addition, which is the opposite of append-only.
-        assert!(plant(&["radix", "signedness", "an_axis_declared_later"]).is_empty());
+    fn an_axis_declared_and_not_rostered_is_reported_as_unprotected() {
+        // Growth is still free in the sense that matters: an addition is not
+        // refused and nothing has to be undone. What it is not is invisible.
+        // A roster the deletion arm reads is append-only only over the part
+        // somebody remembered to list, so an unrostered axis could be deleted
+        // later in silence. This says so at the one moment the omission is
+        // cheap to repair, which is the commit that declares it.
+        let f = plant(&["radix", "signedness", "an_axis_declared_later"]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("an_axis_declared_later"), "{}", f[0]);
+        assert!(
+            f[0].contains("not rostered"),
+            "the unprotected arm did not fire; this may be the deletion arm: {}",
+            f[0]
+        );
+        assert!(
+            !f[0].contains("no longer resolve"),
+            "an addition was reported as a deletion: {}",
+            f[0]
+        );
     }
 
     #[test]
-    fn a_rename_fires_on_the_half_that_does_the_damage() {
-        // A rename is a deletion and an addition. The addition is free; the
-        // deletion is what turns a written span unparseable, and it is the
-        // deletion this reports.
+    fn a_rename_fires_on_both_halves_and_says_which_is_which() {
+        // A rename is a deletion and an addition, and both arms now have
+        // something to say about it. The deletion is what turns a written span
+        // unparseable; the addition is what nothing would catch next time.
         let f = plant(&["radix", "signedness_but_renamed"]);
-        assert_eq!(f.len(), 1, "{f:?}");
-        assert!(f[0].contains("signedness"), "{}", f[0]);
-        assert!(
-            f[0].contains("rename"),
-            "the repair is not stated: {}",
-            f[0]
-        );
+        assert_eq!(f.len(), 2, "both halves are reported: {f:?}");
+        let gone = f
+            .iter()
+            .find(|m| m.contains("no longer resolve"))
+            .unwrap_or_else(|| panic!("no deletion finding: {f:?}"));
+        assert!(gone.contains("signedness"), "{gone}");
+        assert!(gone.contains("rename"), "the repair is not stated: {gone}");
+        let added = f
+            .iter()
+            .find(|m| m.contains("not rostered"))
+            .unwrap_or_else(|| panic!("no unprotected finding: {f:?}"));
+        assert!(added.contains("signedness_but_renamed"), "{added}");
     }
 
     #[test]
@@ -257,9 +306,21 @@ mod tests {
         // A predicate written with `contains` rather than equality passes on
         // `dimension::signedness_of_the_accumulator`, which is a different
         // axis and leaves every span written over the old id unparseable.
+        // Both arms discriminate, and both have to: the deletion arm must not
+        // read the longer id as the rostered one, and the reverse arm must not
+        // read the rostered one as covering the longer id.
         let f = plant(&["radix", "signedness_of_the_accumulator"]);
-        assert_eq!(f.len(), 1, "{f:?}");
-        assert!(f[0].contains("signedness"), "{}", f[0]);
+        assert_eq!(f.len(), 2, "{f:?}");
+        let gone = f
+            .iter()
+            .find(|m| m.contains("no longer resolve"))
+            .unwrap_or_else(|| panic!("the longer id was read as the rostered axis: {f:?}"));
+        assert!(gone.contains("\"signedness\""), "{gone}");
+        let added = f
+            .iter()
+            .find(|m| m.contains("not rostered"))
+            .unwrap_or_else(|| panic!("the rostered id was read as covering the longer one: {f:?}"));
+        assert!(added.contains("signedness_of_the_accumulator"), "{added}");
     }
 
     #[test]
@@ -274,12 +335,26 @@ mod tests {
     }
 
     #[test]
-    fn control_an_empty_roster_is_silent_whatever_the_registry_holds() {
-        // The vacuous case, stated so it is visible rather than assumed. An
-        // empty roster pins nothing, which is why the shipped one is asserted
-        // non-empty below.
+    fn an_empty_roster_is_loud_rather_than_vacuously_silent() {
+        // This arm used to assert the opposite, and pinning that was the
+        // defect: with only the deletion arm, an empty roster passed over any
+        // registry at all, so the emptier the roster the quieter the lint. The
+        // reverse arm inverts that, and an empty roster is now the loudest
+        // state rather than the safest.
         const NONE: &[&str] = &[];
-        assert!(found(&[("dimension::radix", &[("what", "an axis")])], NONE).is_empty());
+        let f = found(&[("dimension::radix", &[("what", "an axis")])], NONE);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("radix"), "{}", f[0]);
+        assert!(f[0].contains("not rostered"), "{}", f[0]);
+    }
+
+    #[test]
+    fn control_nothing_declared_and_nothing_rostered_is_the_one_silent_vacuum() {
+        // The genuine vacuous case, kept so the arm above is read as a real
+        // finding rather than as the lint firing on everything. With no rows
+        // and no roster there is nothing to lose and nothing unprotected.
+        const NONE: &[&str] = &[];
+        assert!(found(&[], NONE).is_empty());
     }
 
     #[test]
