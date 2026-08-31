@@ -44,7 +44,10 @@ const SOUND: &str = "[[item]]\nid = \"a\"\nconfidence = 0.5\n\n[[item]]\nid = \"
 
 #[test]
 fn a_catalogue_that_does_not_parse_is_reported() {
-    let k = kinds("parse", &[("broken.toml", "[[item]]\nid = \"unterminated\n")]);
+    let k = kinds(
+        "parse",
+        &[("broken.toml", "[[item]]\nid = \"unterminated\n")],
+    );
     assert_eq!(k, [Some("a-catalogue-does-not-parse")], "{k:?}");
 }
 
@@ -55,7 +58,10 @@ fn control_a_sound_catalogue_is_silent() {
 
 #[test]
 fn a_row_carrying_none_of_the_identity_keys_is_reported() {
-    let k = kinds("anonymous", &[("c.toml", "[[item]]\nverdict = \"absorbed\"\n")]);
+    let k = kinds(
+        "anonymous",
+        &[("c.toml", "[[item]]\nverdict = \"absorbed\"\n")],
+    );
     assert_eq!(k, [Some("a-catalogue-row-cannot-be-named")], "{k:?}");
 }
 
@@ -75,7 +81,10 @@ fn every_identity_key_names_a_row_rather_than_only_the_first() {
 
 #[test]
 fn two_rows_claiming_one_id_are_reported() {
-    let k = kinds("dup", &[("c.toml", "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n")]);
+    let k = kinds(
+        "dup",
+        &[("c.toml", "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n")],
+    );
     assert_eq!(k, [Some("two-rows-claim-one-identifier")], "{k:?}");
 }
 
@@ -187,11 +196,14 @@ fn every_declared_root_is_walked() {
 
 #[test]
 fn several_defects_in_one_tree_are_all_reported() {
-    let k = kinds("several", &[
-        ("broken.toml", "[[item]]\nid = \"unterminated\n"),
-        ("dup.toml", "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n"),
-        ("conf.toml", "[[item]]\nid = \"b\"\nconfidence = 9\n"),
-    ]);
+    let k = kinds(
+        "several",
+        &[
+            ("broken.toml", "[[item]]\nid = \"unterminated\n"),
+            ("dup.toml", "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n"),
+            ("conf.toml", "[[item]]\nid = \"b\"\nconfidence = 9\n"),
+        ],
+    );
     assert_eq!(k.len(), 3, "{k:?}");
     assert!(k.contains(&Some("a-catalogue-does-not-parse")), "{k:?}");
     assert!(k.contains(&Some("two-rows-claim-one-identifier")), "{k:?}");
@@ -202,7 +214,9 @@ fn several_defects_in_one_tree_are_all_reported() {
 fn the_reader_finds_the_rows_a_document_holds() {
     // The walk itself, so a reader that returned nothing could not make every
     // arm above pass by finding no rows to complain about.
-    let doc = SOUND.parse::<toml_edit::DocumentMut>().expect("the fixture parses");
+    let doc = SOUND
+        .parse::<toml_edit::DocumentMut>()
+        .expect("the fixture parses");
     assert_eq!(rows(&doc).len(), 2);
 }
 
@@ -210,7 +224,10 @@ fn the_reader_finds_the_rows_a_document_holds() {
 fn its_findings_block_every_gate() {
     // The severity that decides a refusal is the one the finding carries, not
     // the one `default_severity` returns.
-    let found = check(&tree("severity", &[("broken.toml", "[[item]]\nid = \"x\n")]));
+    let found = check(&tree(
+        "severity",
+        &[("broken.toml", "[[item]]\nid = \"x\n")],
+    ));
     assert!(!found.is_empty(), "nothing was found, so this says nothing");
     for e in &found {
         assert_eq!(
@@ -233,7 +250,10 @@ fn it_is_not_declared_off_so_it_runs_at_all() {
 
 #[test]
 fn it_answers_to_the_name_the_gate_and_the_config_use() {
-    assert_eq!(APanelCatalogueIsReadable.name(), "a-panel-catalogue-is-readable");
+    assert_eq!(
+        APanelCatalogueIsReadable.name(),
+        "a-panel-catalogue-is-readable"
+    );
 }
 
 #[test]

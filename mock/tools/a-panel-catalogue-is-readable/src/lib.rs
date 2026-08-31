@@ -248,11 +248,11 @@ fn confidence_out_of_range(t: &toml_edit::Table) -> Option<String> {
         Some(Value::Float(f)) => {
             let n = *f.value();
             (!(0.0..=1.0).contains(&n)).then(|| format!("confidence {n}"))
-        },
+        }
         Some(Value::Integer(i)) => {
             let n = *i.value();
             (!(0..=1).contains(&n)).then(|| format!("confidence {n}"))
-        },
+        }
         _ => Some("a confidence that is not a number".to_string()),
     }
 }

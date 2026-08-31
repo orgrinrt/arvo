@@ -145,9 +145,16 @@ push = "error"
 # --- arvo canon lints (mock/lints/*.rs, registry side) ---------------------
 #
 # These read `mock/registry/` rather than source, so they implement `RepoLint`
-# where the six above implement `CrateLint`. They are the checks that used to
-# live in a `mock/checks` crate and be run by hand, which is not one of the two
-# mechanisms mockspace has.
+# where the six above implement `CrateLint`. A check is a lint or a tool and
+# there is no third kind, so each of these gates at every commit rather than
+# running when somebody remembers.
+#
+# Several carry a ceiling: a count measured over the committed corpus, below
+# which the population is grandfathered and above which every offending row is
+# named. That is for a backlog whose rows cannot be repaired by editing, either
+# because the file is the record or because the repair is a re-run. The number
+# lives in the lint, where the lint can read it. Lower it as rows are fixed and
+# never raise it.
 
 [lints.refusal-owes-an-instead]
 commit = "error"
@@ -500,8 +507,10 @@ mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavit
 # living ledgers in the same tree (`AGREEMENTS.md`, `OPTIONS.md`, `DROPLIST.md`
 # and their siblings) are the exception, and freezing the root would permit a
 # line citation into those too. So the exception is checked rather than
-# declared: `mock/checks` refuses a line citation into a living ledger by name,
-# and a heading anchor into one is fine because a rename fails loudly.
+# declared: `no-line-citation-into-a-living-ledger` refuses one inside a row and
+# `no-line-citation-into-a-living-ledger-in-prose` refuses one in the panel's own
+# prose, both by name. A heading anchor into one is fine, because a rename fails
+# loudly.
 #
 # Internal, so it never reaches a generated document. A reader of the design
 # cannot open the research tree, so a provenance column that reads the same on
@@ -588,9 +597,9 @@ description = "The words somebody would search for to find this row, especially 
 # because nobody knew to look for it.
 #
 # A `predicate` field elsewhere is `string[]`, one entry per axis, written
-# `<dimension slug>: <values>`. The pairing is checked in `mock/checks` rather
-# than by the schema, because a schema can constrain a string and cannot parse
-# one.
+# `<dimension slug>: <values>`. The pairing is checked by
+# `every-predicate-names-a-declared-axis` rather than by the schema, because a
+# schema can constrain a string and cannot parse one.
 
 [[registry.namespace]]
 key = "dimension"
@@ -1306,7 +1315,7 @@ description = "The region it was established in, one entry per dimension, writte
 name = "evidence"
 type = "probe[]"
 required = false
-description = "The committed instruments behind it. Required in spirit for a row that ran something, which is `measured` and `enumeration` alike, and checked as such in `mock/checks` rather than by the schema, since the schema cannot read `sentence_kind`. A proof owes its route rather than a run, so `theorem` is outside it; a walk whose full list is printed inline is a proof by exhaustion and is one, while a walk performed by code owes the walker."
+description = "The committed instruments behind it. Required in spirit for a row that ran something, which is `measured` and `enumeration` alike, and checked as such by `measured-claim-cites-no-probe` rather than by the schema, since the schema cannot read `sentence_kind`. A proof owes its route rather than a run, so `theorem` is outside it; a walk whose full list is printed inline is a proof by exhaustion and is one, while a walk performed by code owes the walker."
 
 [[registry.namespace.field]]
 name = "defines"
