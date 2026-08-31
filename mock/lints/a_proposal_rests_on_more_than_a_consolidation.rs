@@ -169,9 +169,16 @@ mod tests {
             ("proposal::a", &[("provenance", &p)]),
             ("proposal::b", &[("provenance", &p)]),
         ];
-        assert!(at_a_ceiling_of(2, &two).is_empty(), "two under a ceiling of two");
+        assert!(
+            at_a_ceiling_of(2, &two).is_empty(),
+            "two under a ceiling of two"
+        );
         let over = at_a_ceiling_of(1, &two);
-        assert_eq!(over.len(), 2, "every row is named, not the surplus: {over:?}");
+        assert_eq!(
+            over.len(),
+            2,
+            "every row is named, not the surplus: {over:?}"
+        );
         assert!(over.iter().any(|m| m.contains("proposal::a")), "{over:?}");
         assert!(over.iter().any(|m| m.contains("proposal::b")), "{over:?}");
     }
@@ -268,12 +275,17 @@ mod tests {
     fn its_findings_block_every_gate() {
         let p = format!("{ROOT}::{CONSOLIDATION}::475");
         let v = view(&[("proposal::a", &[("provenance", &p)])], &[]);
-        assert_findings_block(&super::AProposalRestsOnMoreThanAConsolidation { ceiling: 0 }, &v);
+        assert_findings_block(
+            &super::AProposalRestsOnMoreThanAConsolidation { ceiling: 0 },
+            &v,
+        );
     }
 
     #[test]
     fn it_is_not_declared_off_so_it_runs_at_all() {
-        assert_not_declared_off(&super::AProposalRestsOnMoreThanAConsolidation { ceiling: super::CEILING });
+        assert_not_declared_off(&super::AProposalRestsOnMoreThanAConsolidation {
+            ceiling: super::CEILING,
+        });
     }
 
     #[test]

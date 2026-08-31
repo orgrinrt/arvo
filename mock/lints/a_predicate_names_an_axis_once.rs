@@ -48,28 +48,12 @@
 //! every gate.
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-use crate::canon_rows::{finding, predicate_entries, split_axis};
+use crate::canon_rows::{finding, predicate_entries, split_axis, PREDICATE_FIELDS};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(APredicateNamesAnAxisOnce)
 }
 
 const LINT: &str = "a-predicate-names-an-axis-once";
-
-/// The fields that hold a predicate, and which namespace each belongs to.
-///
-/// Named rather than discovered, because a field's type is `string[]` and a
-/// walker over every `string[]` would check `keywords` and `options` too, and
-/// a repeated bare word in one of those is not a repeated axis.
-///
-/// The same three pairs are spelled in `every_predicate_names_a_declared_axis.rs`.
-/// They belong beside `predicate_entries` in `canon_rows.rs`, which is the
-/// reader written for them, and moving them there is an edit to a shared module
-/// this port does not make.
-const PREDICATE_FIELDS: [(&str, &str); 3] = [
-    ("proposal", "predicate"),
-    ("law", "holds"),
-    ("law", "fails"),
-];
 
 struct APredicateNamesAnAxisOnce;
 impl Lint for APredicateNamesAnAxisOnce {

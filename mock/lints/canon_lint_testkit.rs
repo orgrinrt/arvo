@@ -315,6 +315,103 @@ fn declared_lint_files() -> BTreeSet<String> {
         .collect()
 }
 
+/// The namespaces `mockspace.toml` declares a field of this name on.
+///
+/// A text scan rather than a parse, because the generated pack's manifest is
+/// engine-written and no lint file can add a TOML reader to it. The shape it
+/// relies on is the one the file carries and the engine's own loader relies on
+/// too: an array-of-tables header opens a namespace, `key = "..."` on the line
+/// after it names the namespace, and every `name = "..."` after that belongs to
+/// that namespace until the next namespace header.
+///
+/// Returns `None` where the scan found no namespace at all, which means the
+/// shape moved and the scan is measuring nothing rather than reporting a clean
+/// disagreement.
+fn namespaces_declaring(field: &str) -> Option<BTreeSet<String>> {
+    let text = std::fs::read_to_string(repo_root().join("mockspace.toml")).ok()?;
+    let wanted = format!("name = \"{field}\"");
+    let mut seen_any = false;
+    let mut here: Option<String> = None;
+    let mut out = BTreeSet::new();
+    for line in text.lines() {
+        let line = line.trim();
+        if line == "[[registry.namespace]]" {
+            here = None;
+            seen_any = true;
+        } else if here.is_none()
+            && let Some(rest) = line.strip_prefix("key = \"")
+            && let Some(key) = rest.strip_suffix('"')
+        {
+            here = Some(key.to_string());
+        } else if line == wanted
+            && let Some(ns) = &here
+        {
+            out.insert(ns.clone());
+        }
+    }
+    seen_any.then_some(out)
+}
+
+#[test]
+fn a_lint_naming_the_namespaces_it_reads_agrees_with_the_schema() {
+    // The guard `refusal_owes_an_instead.rs` says exists and, until this was
+    // written, did not. That file hand-writes the namespaces it reads, because
+    // nothing a lint is handed carries a field declaration, and its own
+    // paragraph warns that a written list goes stale in silence. The sentence
+    // claiming a guard already caught that was the shape
+    // `a-claim-of-totality-names-what-enforces-it.md` names: a claim of
+    // coverage naming an enforcer that was not there.
+    //
+    // What is compared is the `instead` field, since that is the half of the
+    // schema the lint's own documentation says decides which namespaces it
+    // reads. The `kind`-with-`refusal` half is not compared: a value set is
+    // written as an array across several lines and reading it would need the
+    // parser this cannot have. Said here rather than left for somebody to
+    // discover.
+    let declared = namespaces_declaring("instead")
+        .expect("mockspace.toml declares at least one registry namespace");
+    assert!(
+        declared.len() >= 2,
+        "the scan found {} namespace(s) declaring `instead`, which means the file's shape \
+         moved and this is measuring nothing: {declared:?}",
+        declared.len()
+    );
+
+    let file = repo_root().join("mock/lints/refusal_owes_an_instead.rs");
+    let text = std::fs::read_to_string(&file)
+        .unwrap_or_else(|e| panic!("read {}: {e}", file.display()));
+    let written: BTreeSet<String> = declared
+        .iter()
+        .filter(|ns| text.contains(&format!("\"{ns}\"")))
+        .cloned()
+        .collect();
+    assert_eq!(
+        written, declared,
+        "`refusal_owes_an_instead.rs` reads {written:?} and the schema declares `instead` \
+         on {declared:?}. A namespace the schema gained is one the lint does not check, and \
+         nothing else would say so."
+    );
+}
+
+#[test]
+fn the_schema_scan_can_report_a_disagreement_rather_than_only_agreement() {
+    // The control on the guard above. It compares two sets built from two
+    // files, and a scan returning nothing would make them agree perfectly. This
+    // asks the scan for a field no namespace declares, which has to come back
+    // empty while the scan itself still reports having read the file.
+    assert_eq!(
+        namespaces_declaring("no_namespace_declares_this_field"),
+        Some(BTreeSet::new()),
+        "the scan read the file and found no namespace declaring a field nothing declares"
+    );
+    let declared = namespaces_declaring("instead").expect("the file reads");
+    assert!(
+        !declared.contains("mechanism"),
+        "the scan attributes a field to the namespace that declares it rather than to \
+         every namespace in the file: {declared:?}"
+    );
+}
+
 #[test]
 fn every_declared_lint_is_registered_under_the_name_its_file_carries() {
     // `assert_registered` is called *by* a lint's own test module, so it says

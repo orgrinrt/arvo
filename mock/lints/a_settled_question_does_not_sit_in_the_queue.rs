@@ -139,7 +139,9 @@ fn answered_by(reg: &RegistryView) -> BTreeMap<String, BTreeSet<String>> {
     for ruling in reg.rows_in("ruling") {
         let name = slug(ruling).to_string();
         for question in list(reg, ruling, "answers") {
-            out.entry(question.to_string()).or_default().insert(name.clone());
+            out.entry(question.to_string())
+                .or_default()
+                .insert(name.clone());
         }
         if text(reg, ruling, "rung") != Some(RATIFIED) {
             continue;
@@ -147,7 +149,9 @@ fn answered_by(reg: &RegistryView) -> BTreeMap<String, BTreeSet<String>> {
         for stamped in list(reg, ruling, "ratifies") {
             let proposal = format!("proposal::{stamped}");
             for question in list(reg, &proposal, "answers") {
-                out.entry(question.to_string()).or_default().insert(name.clone());
+                out.entry(question.to_string())
+                    .or_default()
+                    .insert(name.clone());
             }
         }
     }
@@ -286,24 +290,32 @@ mod tests {
     fn a_ruling_answering_a_question_that_does_not_exist_is_reported() {
         let a = cited(&["a_real_one", "a_ghost"]);
         let f = found(&[
-            ("question::a_real_one", &[("asks", "Is it?"), ("answered", "yes")]),
+            (
+                "question::a_real_one",
+                &[("asks", "Is it?"), ("answered", "yes")],
+            ),
             ("ruling::he_said_so", &[("answers", &a)]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert_eq!(f[0].0, Some("answers-names-no-question"));
-        assert!(f[0].1.contains("a_ghost"), "the report names which one: {}", f[0].1);
+        assert!(
+            f[0].1.contains("a_ghost"),
+            "the report names which one: {}",
+            f[0].1
+        );
         assert!(f[0].1.contains("ruling::he_said_so"), "{}", f[0].1);
     }
 
     #[test]
     fn control_a_ruling_answering_only_real_questions_is_silent() {
-        assert!(
-            kinds(&[
-                ("question::a_real_one", &[("asks", "Is it?"), ("answered", "yes")]),
-                ("ruling::he_said_so", &[("answers", "a_real_one")]),
-            ])
-            .is_empty()
-        );
+        assert!(kinds(&[
+            (
+                "question::a_real_one",
+                &[("asks", "Is it?"), ("answered", "yes")]
+            ),
+            ("ruling::he_said_so", &[("answers", "a_real_one")]),
+        ])
+        .is_empty());
     }
 
     #[test]
@@ -337,22 +349,26 @@ mod tests {
         // simply not been asked yet, and a row carrying a `bound` and naming
         // somebody else is the repair. An arm reporting either would be
         // refusing the namespace rather than checking it.
-        assert!(
-            kinds(&[
-                ("question::not_yet_asked", &[("asks", "?"), ("decider", "op")]),
-                (
-                    "question::handed_on",
-                    &[("asks", "?"), ("decider", "panel"), ("bound", "returned")],
-                ),
-            ])
-            .is_empty()
-        );
+        assert!(kinds(&[
+            (
+                "question::not_yet_asked",
+                &[("asks", "?"), ("decider", "op")]
+            ),
+            (
+                "question::handed_on",
+                &[("asks", "?"), ("decider", "panel"), ("bound", "returned")],
+            ),
+        ])
+        .is_empty());
     }
 
     #[test]
     fn a_question_a_ruling_answers_whose_row_says_nothing_is_reported() {
         let f = found(&[
-            ("question::open_looking", &[("asks", "?"), ("decider", "op")]),
+            (
+                "question::open_looking",
+                &[("asks", "?"), ("decider", "op")],
+            ),
             ("ruling::he_said_so", &[("answers", "open_looking")]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
@@ -400,7 +416,10 @@ mod tests {
                 "question::still_open",
                 &[
                     ("asks", "?"),
-                    ("note", "a further item folds in here rather than being answered on its own"),
+                    (
+                        "note",
+                        "a further item folds in here rather than being answered on its own",
+                    ),
                 ],
             ),
             ("ruling::he_said_so", &[("answers", "still_open")]),
@@ -471,13 +490,11 @@ mod tests {
         // it is correct: a proposal does not settle what it names while it is a
         // proposal. Without this arm the second hop would collapse into
         // following every `proposal.answers`, which is the opposite rule.
-        assert!(
-            kinds(&[
-                ("question::still_open", &[("asks", "?")]),
-                ("proposal::a_claim", &[("answers", "still_open")]),
-            ])
-            .is_empty()
-        );
+        assert!(kinds(&[
+            ("question::still_open", &[("asks", "?")]),
+            ("proposal::a_claim", &[("answers", "still_open")]),
+        ])
+        .is_empty());
     }
 
     #[test]
@@ -502,16 +519,14 @@ mod tests {
 
     #[test]
     fn a_ratifies_edge_naming_no_proposal_reaches_nothing_rather_than_panicking() {
-        assert!(
-            kinds(&[
-                ("question::still_open", &[("asks", "?")]),
-                (
-                    "ruling::he_said_so",
-                    &[("rung", "ratified"), ("ratifies", "a_ghost")],
-                ),
-            ])
-            .is_empty()
-        );
+        assert!(kinds(&[
+            ("question::still_open", &[("asks", "?")]),
+            (
+                "ruling::he_said_so",
+                &[("rung", "ratified"), ("ratifies", "a_ghost")],
+            ),
+        ])
+        .is_empty());
     }
 
     #[test]
@@ -581,7 +596,10 @@ mod tests {
 
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
-        assert_eq!(super::ASettledQuestionDoesNotSitInTheQueue.name(), super::LINT);
+        assert_eq!(
+            super::ASettledQuestionDoesNotSitInTheQueue.name(),
+            super::LINT
+        );
     }
 
     #[test]

@@ -108,6 +108,21 @@ pub fn slug(qualified: &str) -> &str {
     qualified.rsplit("::").next().unwrap_or(qualified)
 }
 
+/// The fields that hold a predicate, and which namespace each belongs to.
+///
+/// Named rather than discovered, because a field's type is `string[]` and a
+/// walker over every `string[]` would read `keywords` and `options` too, and
+/// report every bare word in them as a malformed entry.
+///
+/// Here rather than in either lint that reads it, because both do and a written
+/// list spelled twice is a list that will disagree with itself. It sits beside
+/// [`predicate_entries`], the reader written for exactly these fields.
+pub const PREDICATE_FIELDS: [(&str, &str); 3] = [
+    ("proposal", "predicate"),
+    ("law", "holds"),
+    ("law", "fails"),
+];
+
 /// The predicate entries of one field, recovered from the joined string.
 ///
 /// **An entry begins where an axis name and a colon follow the separator**, and
