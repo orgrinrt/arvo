@@ -2008,3 +2008,16 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::213",
 ]
 keywords = ["chain", "closure", "addition", "multiplication", "rounding", "accumulator", "widening", "R11"]
+
+[[proposal]]
+id = "a_folds_compile_time_refusal_is_the_staging_boundary_reporting_its_own_position"
+kind = "finding"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_chain"
+says = "A chain law's derivability is a staging question, not a limitation of the type system to work around. A chain whose shape (schedule, length) is known at stage zero is one static object that a set-of-composed-operations reading and a judgment-over-expression-forms reading both describe identically; a chain whose length is known only at stage one has no stage-zero object for either reading to be a property of. Capacity is stage zero and length is stage one, which is why a capacity-keyed accumulator relation compiles gate-free while the same relation keyed on length is refused: the refusal is the staging boundary reporting its own position, not an artefact of the fold construction."
+because = "Two independent derivations (76's set-of-operations-composed and 77's judgment-over-expression-chains) were shown to agree exactly on the static-schedule region and diverge exactly at its edge, once read through the staging lens rather than compared as competing formalisms. The register's own fold refusal (`35`, four formulations, four negative controls) and the capacity/length aggregate boundary (`43`) are two independent prior findings read as the same mechanism from other directions."
+answers = ["what_a_numeral_guarantees_to_a_fold"]
+note = "The staging framing does not resolve either of `76`/`77`'s underlying claims; it explains where they agree and where they stop applying. Cited by the unit's own consolidation as explaining Q11 and Q12 from this unit's side, but had no row of its own before this port."
+provenance = ["panel::202608072330_the-numeral-canon-panel::80_rompf_when_the_deriving_happens::552"]
+keywords = ["staging", "stage zero", "stage one", "fold", "accumulator", "capacity", "length", "chain", "compile-time refusal", "Q11", "Q12"]

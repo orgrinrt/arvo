@@ -217,7 +217,7 @@ options = [
 ]
 decider = "panel"
 topic = "the_chain"
-note = "Added from `35`, which calls it the most valuable single item it found: Q1 through Q10 are without exception about a single value or a single binary operation and none is about arity-n or about laws under reassociation. `60` later undercuts the accumulator-derivation option as an additive-only mechanism, since the multiplicative fold needs linear growth with no closed form against addition's width-plus-log-of-capacity."
+note = "Added from `35`, which calls it the most valuable single item it found: Q1 through Q10 are without exception about a single value or a single binary operation and none is about arity-n or about laws under reassociation. `60` later undercuts the accumulator-derivation option as an additive-only mechanism, since the multiplicative fold needs linear growth with no closed form against addition's width-plus-log-of-capacity. Why option 3 is const-derivable while its length-keyed sibling is refused is a staging fact: capacity resolves at stage zero, length only at stage one, per `a_folds_compile_time_refusal_is_the_staging_boundary_reporting_its_own_position`."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q11-what-does-the-numeral-guarantee-to-a-fold-and-what-does-a-composition-supply"]
 keywords = ["fold", "accumulator", "capacity", "algebraic structure", "monoid", "absorbing top", "arity", "reduction", "loop-carried", "trip count"]
 
