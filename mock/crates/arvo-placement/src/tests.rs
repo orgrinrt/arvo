@@ -355,7 +355,10 @@ fn the_two_objectives_derive_two_placements_at_shared_occupancy() {
         !f.access.equals(f.carrier).get(),
         "a packed element that can straddle needs a read wider than its carrier"
     );
-    assert_eq!(a.access, a.carrier, "an unpacked element needs one native read");
+    assert_eq!(
+        a.access, a.carrier,
+        "an unpacked element needs one native read"
+    );
 
     // The carrier is the one output they agree on, which is why the difference
     // lives in the other two.

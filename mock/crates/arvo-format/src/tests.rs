@@ -434,8 +434,14 @@ fn the_bound_is_where_the_count_stops_fitting_and_the_arithmetic_says_so() {
     // one above it does not.
     let at_bound = 1u128 << crate::slots::MAX_DECLARED_WIDTH;
     let one_over = 1u128 << (crate::slots::MAX_DECLARED_WIDTH + 1);
-    assert!(at_bound <= i64::MAX as u128, "the bound does not fit, so it is wrong");
-    assert!(one_over > i64::MAX as u128, "one above the bound fits, so the bound is too low");
+    assert!(
+        at_bound <= i64::MAX as u128,
+        "the bound does not fit, so it is wrong"
+    );
+    assert!(
+        one_over > i64::MAX as u128,
+        "one above the bound fits, so the bound is too low"
+    );
 }
 
 /// A width above the bound is refused at compile time, not at runtime.
