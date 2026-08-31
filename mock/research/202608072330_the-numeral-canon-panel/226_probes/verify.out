@@ -13,4 +13,7 @@ p2c_negctl_false_distinguishability.rs        refused  ok (2 errors)
 -- the operation set --
 p3_the_count_is_constant_in_the_operation_set.rsexit 0  ok
 
+-- the placement axes --
+p4_the_placement_reads_only_the_total_width.rsexit 0  ok
+
 VERIFIED

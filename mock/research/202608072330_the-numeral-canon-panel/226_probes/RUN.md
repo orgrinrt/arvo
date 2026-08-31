@@ -92,3 +92,25 @@ in every one.
 `p3`'s first draft checked only that the unprojected add splits, and it did not
 below width 8. The reason is the finding rather than a broken control, and it is
 what the headroom column now reports.
+
+**`p4`.** Exists to earn two entries in `p1b`'s predicate and nothing else.
+`p1b` names the total width, the container set and the alignment, and under the
+predicate discipline an axis it does not name is one the finding holds nowhere
+across. Signedness and fraction width exist for every numeral arvo declares, so
+`p1b` unamended holds nowhere, which is not what its instrument shows.
+
+Over 16512 cells, total width 1 to 128 by fraction width 0 to W-1 by both
+signednesses, the carrier rule and both access rules move in none. A control
+rule that reads the sign bit and the fraction digits moves in 2457, first at
+width 8 unsigned against signed, so the comparison can see a difference.
+
+**Its weakness, stated rather than left to be found.** A differential control
+over functions that syntactically ignore two of their three arguments is weak
+evidence. What it certifies is that these candidate placement rules do not read
+those axes, which is what
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` obliges an
+instrument to show. It does not establish that no correct placement rule could
+read them, and one family plausibly would: an encoding that is not two's
+complement, sign-magnitude or offset binary, might want a placement the sign
+participates in. That is the hole in the `signedness: any` entry and it is named
+in the deliverable rather than buried here.

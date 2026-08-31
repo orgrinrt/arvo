@@ -57,5 +57,9 @@ echo "-- the operation set --"
 run p3_the_count_is_constant_in_the_operation_set p3_the_count_is_constant_in_the_operation_set.rs 0
 
 echo
+echo "-- the placement axes --"
+run p4_the_placement_reads_only_the_total_width p4_the_placement_reads_only_the_total_width.rs 0
+
+echo
 if [ "$fail" -eq 0 ]; then echo "VERIFIED"; else echo "VERIFICATION FAILED"; fi
 exit $fail
