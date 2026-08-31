@@ -1,0 +1,32 @@
+### the declared grammar
+  grammar = "`threads = 1`, `threads = <n>`, or `threads any`."
+
+### every threads entry, conforming or not
+  [conforms]  16  threads = 1
+  [DEPARTS ]  13  1
+  [conforms]   3  threads any
+  [DEPARTS ]   1  threads any, the refusal being a type-check outcome that precedes execution
+  [DEPARTS ]   1  threads any, the equalities being decided at compile time
+  [DEPARTS ]   1  threads = 1, the splits being computed rather than executed on lanes
+  [DEPARTS ]   1  threads = 1 for the timed instance and threads any for the compile-time artifacts
+
+### counts
+  threads entries: 36
+  conforming to the declared grammar: 19
+  departing: 17
+
+### CONTROL. The matcher must accept a known-good form and refuse a known-bad one.
+  known-good accepted: 2 of 2
+  known-bad accepted:  0 of 2
+  controls held.
+
+### where the departures live, by file
+  law-the-later-topics.toml                     71 of  71 entries write a span naming nothing from their slug
+  law.toml                                      68 of 162 entries write a span naming nothing from their slug
+  proposal-the-later-topics.toml                68 of  68 entries write a span naming nothing from their slug
+  proposal.toml                                 69 of 226 entries write a span naming nothing from their slug
+
+### CONTROL for the file breakdown.
+  a span naming its own axis must not be counted, and one that does not must be.
+  'threads any'  contains 'threads' -> not counted
+  '1'            contains no slug word -> counted

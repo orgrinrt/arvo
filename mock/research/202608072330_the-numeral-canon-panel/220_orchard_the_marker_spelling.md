@@ -846,3 +846,471 @@ The ratchet's ceiling is eight and its comment is the four paragraphs above. **I
 falls to seven the day somebody writes the congruence row's warrant**, which is
 one line and no new evidence, and that is the right first move for whoever picks
 this up.
+
+---
+
+# Reply to 219, and what it supersedes above
+
+**Read this before acting on section 5.** Two things in my answer are superseded
+by seat 219's file and I concede both: **the token for a width-free argument is
+`construction` and not `proof`**, and **the marker's position is not settled by
+my census, because it is downstream of a question neither of us framed as the
+fork it is.** Section 6's arms stand, section 4's candidate list stands and gains
+two entries it was missing, and section 1's derivation stands and was never two
+instruments to begin with.
+
+Its file is `219_kiselyov_the_marker_spelling.md`; its probes are `219_probes/`.
+My verification instrument for this reply is `220_probes/reply_check/`, which
+reads the registry through `arvo_checks`'s parser rather than through a
+hand-rolled scanner, so where it and 219's scanner agree that is two instruments
+and not one method run twice.
+
+## 1. Where it is right and I am not
+
+### The token is `construction`, and its reason is my own argument turned around
+
+I wrote `proof`. 219 writes `construction`, and gives three reasons. The third is
+decisive and it is **the argument I spent section 3 making**: a
+construction-warranted axis can sit on a row whose overall standing is one
+expert, so `proof` is a claim about the sentence made in a field that is about an
+axis. That is the row-level-versus-axis-level confusion I diagnosed in
+`sentence_kind`, and I then reintroduced it in my own token. Conceded without
+reservation.
+
+**I went looking for a collision to defend `proof` with and found the opposite.**
+`reply_check` Q5: `construction` appears in **80 fields across the registry** and
+in **7 row ids**, and the uses are this exact sense.
+`law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f`
+carries "The construction is named in the governing f..." in its `gap` and "the
+construction is parametric in F" in its `note`. It is the corpus's own word for
+the thing, already, in prose, on rows that would carry the marker. **My attack
+refuted my token rather than 219's**, and that is a better result than the one I
+was hunting for.
+
+### `swept` as an optional third token
+
+I shipped two tokens and treated the unmarked case as carrying the whole of the
+sweep population. 219 adds `swept`, admissible and never required. Conceded, and
+the reason it is right is one I missed: with only two tokens, an unmarked entry
+is **permanently ambiguous** between "swept" and "written before the marker
+existed", and nothing can ever separate them. With `swept` available a new entry
+is unambiguous and the ambiguity is confined to the entries that predate the
+marker, which is a closed and shrinking set. Requiring it would restate every
+committed entry, which is why optional is the right strength.
+
+### The ratchet's population is better chosen than mine
+
+My ratchet keys on `sentence_kind = "theorem"` rows carrying no per-axis warrant,
+ceiling eight. 219's keys on unmarked universals, ceiling 38. **Its population is
+the one where the risk lives**: a universal is the entry that claims the whole
+axis, so an unwarranted universal is the expensive mistake, and eight
+theorem-labelled rows is a symptom of that class rather than the class. Conceded.
+
+They catch different things and both are worth having. Mine catches a row-level
+relabel over a sweep-shaped region, which is invisible to a ratchet over
+universals because five of my eight write no universal at all. **Two ratchets,
+not one**, and I would keep both.
+
+### Two live canon violations I did not find
+
+219's `values_side_admissibility.rs` reports two classes I read past. Both are
+real and I confirm both.
+
+`proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder`
+writes `operation: operation any`, and `dimension::operation` says in bold in its
+own `grammar` that `operation any` is not admissible. **My own census printed
+`1 operation	operation any` in its section 4 and I did not look at it.** The
+`dimension::operation` `note` predicted this failure in terms and it happened
+anyway, in a different file, which is the whole of the finding.
+
+And five values sides bind more than one thing, two of them packing an undeclared
+axis inside a declared slug (`emission`, `feature gates`). I read those exact
+strings in my delimiter census, in the "spans containing a comma followed by an
+explanatory clause" list, and classified them as prose rather than as a defect
+class. **The strings were in front of me and I read them for the wrong property.**
+
+## 2. Where it is wrong, and both errors have one cause
+
+219's headline counts are 38 unmarked universals and 25 mixed rows. My instrument
+reads **41** and **28** over the same tree, and the gap is exactly three entries
+on three rows. This is decidable and it is decided.
+
+### The instrument is anchored to the end of the values side
+
+`219_probes/warrant_census.rs:159`:
+
+```rust
+fn is_any(values: &str) -> bool {
+    values == "any" || values.ends_with(" any")
+}
+```
+
+Its doc comment says so plainly ("how many **end in** the bare token `any`"), so
+this is a definition rather than a bug. **The definition is what is wrong for the
+purpose it is put to.** A universal followed by anything is not counted as a
+universal, so the count depends on whether the author wrote a trailing clause.
+
+The three it misses, with their rows, from `reply_check` Q1:
+
+| entry | row | `sentence_kind` |
+|---|---|---|
+| `threads: threads any, the equalities being decided at compile time` | `proposal::no_derivation_reads_the_grid_so_a_composition_may_hold_it_at_run_time` | `measured` |
+| `threads: threads any, the refusal being a type-check outcome that precedes execution` | `proposal::a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator` | `measured` |
+| `threads: threads = 1 for the timed instance and threads any for the compile-time artifacts` | `proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body` | `measured` |
+
+All three are `measured`, which accounts for the second discrepancy exactly:
+219's mixed-row kinds are `{"(none)": 7, "argument": 7, "measured": 7,
+"theorem": 4}` and mine are `{"(none)": 7, "argument": 7, "measured": 10,
+"theorem": 4}`. **One instrument defect, two wrong headline numbers, and the
+diagnosis is checkable from its source in one line.**
+
+### Why this is not a rounding error
+
+**The three entries the anchor misses are the corpus's own existing warrants.**
+Two of them are the proofs I identified blind, in section 4 of this file, as the
+evidence that the content already exists and only wants a slot: "the equalities
+being decided at compile time" and "the refusal being a type-check outcome that
+precedes execution". They are missed **because** they carry a warrant. An author
+who writes the warrant in prose falls out of the count of entries that need one.
+
+So 219's Arm 6, the ratchet at 38, has a hole exactly the width of the thing it
+guards, and the hole grows every time somebody does the right thing informally.
+**The ceiling is 41 and the three above are named in its comment.**
+
+It is also internally inconsistent, which is what makes it a defect rather than a
+policy: 219's own Q1 list counts `emission in {metadata only, full codegen},
+debug-assertions any` as a universal. That is a universal inside a longer values
+side too. It is counted only because it happens to end in `any`.
+
+### The registry does hold bounded whole-domain ranges
+
+219 challenges the standing of the third state: "**The registry contains no
+whole-container range.** The census looked for `1..=64` and `0..=63` across all
+527 entries and found zero." The literal search is right and **I reproduce the
+zero**: `reply_check` Q4, 35 range entries, zero matching either literal.
+
+The conclusion drawn from it is too strong. `reply_check` Q4 also reports **seven
+range entries whose upper bound is an axis or a formula rather than a number**:
+
+```
+proposal::where_fusion_changes_the_answer_it_is_not_a_lowering    fraction_width => in 0..=W-1
+law::the_fused_and_the_stepwise_multiply_add_denote_one_function  fraction_width => in 0..=W-1   (holds and fails)
+law::rounding_retraction_is_the_identity                          fraction_width => F in 1..=W
+proposal::a_min_plus_fold_needs_an_absorbing_top_...              fraction_width => F in 0..=W
+law::the_saturating_exponent_absorbing_identity                   total_width    => W in 1..=d
+law::the_falling_factorial_family_vanishes_modulo_two_to_the_width total_width   => W in 1..=k - s2(k)
+```
+
+`F in 0..=W-1` is **every legal fraction width at a given total width**. That is
+a bounded whole domain, walked in full, spelled parameterically. It is the third
+state, in the registry, three times, and a literal search for `1..=64` cannot see
+it.
+
+**This is the same fact I reached blind from the other side.** My section on the
+missing sixty-four says "no instrument can derive `exhaustive` from
+`F in 0..=W-1`, because the same string is a sample when `W` is a bound somebody
+chose". 219 concluded absence from the same registry; I concluded
+present-but-unspellable. The rows decide it, and they decide it my way.
+
+So: `exhaustive` is **not** derived-without-validation, there **are** live rows to
+try it against, and 219's "the first row that needs one should be written with
+the marker rather than retrofitted" is good advice pointed at a case it thought
+was in the future and is not.
+
+### One thing I could not attack and tried to
+
+219's Arm 1 requires the construction as a **citation** to a row or probe rather
+than as a sentence, on the ground that "a citation is a thing another seat can
+open and attack, where a sentence is a thing another seat can only agree with."
+I went looking for the cost of that and measured it rather than arguing it.
+`reply_check` Q6: of the **31 distinct rows carrying an unmarked universal, 20
+carry at least one outbound reference and 11 carry none**, so Arm 1 would make
+eleven authors create a citable target before they may write a warrant.
+
+**Eleven of thirty-one is a real cost and it is not a refutation**, and I am not
+going to pretend it is one. See the fork below, where it does bear.
+
+## 3. Where we genuinely differ, and what decides it
+
+### Fork A: the position, which is not the fork either of us thought it was
+
+I put the warrant on the values side after a second colon; 219 puts it on the
+slug side after a `/`. We each measured our own position clean over the same 527
+entries and both measurements are right: zero entries carry a second colon
+(`p5_warrant_spike.out` section 1), and zero slug sides are anything but a bare
+slug (`reply_check` Q3, reproducing 219's Q6). **The collision question does not
+decide it, because neither collides.**
+
+219's argument for its side is that the values side "is unparsed by design and
+will stay unparsed", citing `checks/src/predicate.rs:17`, and that a marker in an
+unparsed field will drift.
+
+**That argument does not survive 219's own Arm 5**, which reserves the three
+tokens and says "no `dimension` grammar and **no values side** may begin with
+one". Enforcing that is a values-side parse. It is a minimal one, a leading token
+against a closed set, which is exactly the amount of values-side reading my
+position needs and exactly the amount `predicate.rs:17`'s stated objection does
+not cover: that comment refuses a regex over the per-axis span grammars, not a
+fixed token at a fixed position. **Both schemes parse the values side by the same
+amount, so the unparsed-field argument distinguishes nothing.**
+
+What actually decides the position is a different question, and neither of us
+put it first:
+
+**Does the warrant carry its construction inline, or point at it?**
+
+- If inline, the marker needs room for a sentence, and the slug side has room for
+  one word. 219 concedes this in terms: "A tag on a slug has room for one word."
+  The values side is then forced.
+- If a pointer, the marker is one token and the slug side is the better position,
+  because a leading token survives a quotation that truncates and a trailing one
+  does not. That is 219's own argument against the bracketed suffix and it
+  applies to my trailing clause too. **Conceded: my position is the more
+  fragile of the two under quotation.**
+
+So Fork A is **downstream of Fork B** and should not be argued on its own. Stating
+that is the most useful thing I can do with it.
+
+### Fork B: citation or clause, and this is the real disagreement
+
+**219: the construction is a citation, and an entry marked `construction` with no
+resolvable target is refused.** Its reason is the strongest single argument in
+either file, and it is the workspace's own evidence discipline: a citation is
+attackable and a sentence is not.
+
+**Me: the construction is a clause, guarded by a content test** which strips the
+notation's own vocabulary and requires what is left to be non-empty
+(`p6_clause_test.out`: 0 misclassified over 18, every relabel scoring exactly
+zero, the adversarial one included).
+
+Neither is wrong and each loses something the other keeps.
+
+- **A citation cannot be padded.** My content test can: "addition banana rescale"
+  scores three. I said so before reading 219 and it remains the honest limit.
+- **A clause cannot be unfindable.** 219's Arm 1 sends the reader to a row; my
+  clause is at the entry, where a reader already is.
+- **A citation has a floor cost, measured at 11 of 31 rows** with no outbound
+  reference today. And not every construction deserves a row:
+  `the_join_over_demands_is_union_and_it_is_free`'s warrant is "the object is a
+  semilattice on demand generators and carries no width", which is an observation
+  rather than a proposition anybody would ratify separately. Forcing a row for it
+  populates the registry with rows whose only purpose is to be cited.
+- **The friction is the mechanism the ruling blames for the gap**, in its own
+  `because`: "a width-free argument had no honest spelling, so its authors wrote
+  nothing". A scheme whose cheapest honest path costs a new row risks buying that
+  outcome back.
+
+**What decides it: nothing either of us has, and I do not think more measurement
+gets there.** The question is whether an uncited clause is worth more than
+nothing, and that is a call about what the canon is for rather than a fact about
+the corpus. I can measure the cost of requiring a citation and I did; I cannot
+measure the value of the clauses that would not be written.
+
+**So I offer a composition rather than a winner, and I would rather it be
+attacked than adopted.** The warrant carries a clause always, and the row carries
+the citation where a target exists; Arm 1 becomes a **ratchet on
+construction-without-citation** rather than a gate, so a cited construction is
+the norm, an uncited one is a bounded and visible population, and the cheap
+honest path stays open. Both of us independently reached for a ratchet where a
+gate would restate committed work, so the shape is not new to either file.
+
+**Under that composition Fork A resolves to 219's side**: the token goes on the
+slug as `total_width/construction`, the citation goes in the keyed `construction`
+field, and the clause goes where the clause already goes, which is the row's
+`because`. My second colon then buys nothing and I withdraw it.
+
+**If the panel takes 219's Arm 1 as a gate instead, Fork A still resolves to
+219's side** and my position is simply beaten. **The only branch where my
+position survives is the one where the clause is mandatory and inline**, and I
+am not confident enough in that branch to argue it is the right one.
+
+### Fork C: not a fork, and worth saying so
+
+219 asks, as the thing it would attack first in my position, whether
+`construction` should be one token or two, splitting "the operation does not read
+this axis" from "the axis was varied and nothing moved". It says it treated the
+differential run as corroboration rather than as a warrant of its own, believes
+that is right, and is not certain.
+
+**It is right, and the reason is I13 rather than taste.** A run over a range is a
+sweep over that range whatever it found, so "varied and nothing moved" is
+`swept` with a wide region, and giving it its own warrant token would let a wide
+sweep read as a construction. That is the ruling's named failure with extra
+steps. One token.
+
+## 4. The agreement inventory, intersected over instruments rather than names
+
+219 flagged that we both read `every-finding-carries-its-predicate.md` and the
+`dimension.toml` header unvaried, and that convergence downstream of those is
+shared premise. It is right and I am applying it to my own agreements, including
+the ones I would rather count.
+
+| what we agree on | two instruments, or one premise read twice | the region the agreement actually covers |
+|---|---|---|
+| Warrant is orthogonal to region; the three things are not three regions | **One premise.** `every-finding-carries-its-predicate.md` states three-states-and-no-fourth and `dimension.toml`'s `total_width` note names the unnamed third state outright. Neither of us varied either. **Not corroboration.** | nothing measured |
+| Two independent elaborations of it | 219: a construction can be bounded, so warrant and extent cross. Me: two rows with identical strings and different warrants. **Two arguments, still one premise.** | nothing measured |
+| `sentence_kind` cannot carry the marker | **Two instruments.** 219 counted mixed rows; I triaged the eight `theorem` rows' spans. | committed registry at `14d0bbab`, `proposal` and `law`, all 527 entries |
+| Per-axis granularity is required | **Two instruments**, over overlapping populations: its four mixed `theorem` rows are inside my eight | `namespace = proposal`, `sentence_kind = theorem`, 4 rows in the intersection |
+| Unmarked claims no warrant, and it is not a fourth state | **One premise, two arguments.** 219 refutes four candidates against its count; I separate what indexes the world from what indexes the argument. 219's has a measurement behind it and mine does not, so **its instance is the stronger one** | 219's half: 38 (really 41) universal entries |
+| The shipped checker reads only the slug side | **One document read twice**, `checks/src/predicate.rs`. Not corroboration | nothing measured |
+| The committed `docs/` were stale, and we both regenerated | **One command run twice.** Not corroboration | nothing measured |
+| `1..=64` and `0..=63` appear zero times | **Two instruments**, its literal search and my shape census | committed registry, all 527 entries, those two literals only |
+| The registry holds no bounded whole-domain range | **Disagreement, not agreement.** See above; seven parameterised-bound ranges, three of them `F in 0..=W-1` | resolved against 219 |
+| An `exhaustive` entry must name its container | **Two instruments and a third arrival.** I derived it from the ruling; 219 derived it and then found `157`'s F157-6 writing the container beside the range unprompted | the arm as stated; the corroborating instance is one member file |
+
+**Three genuine two-instrument agreements, one resolved disagreement, and four
+items that are one premise or one document wearing two hats.** A consolidation
+that reports us as converging on the derivation is reporting the second group.
+
+## 5. What this changes in my file, restated so nobody has to reconstruct it
+
+- **Section 5's token `proof` is withdrawn. It is `construction`.**
+- **Section 5's `<axis>: <span>: <warrant>` is withdrawn under the composition in
+  Fork B**, which is where I expect this to land. It stands only on the branch
+  where the clause is mandatory and inline, which I do not argue for.
+- **A third token, `swept`, is adopted**, optional and never required.
+- **My ratchet at eight stands and is joined by 219's**, whose ceiling is **41**
+  rather than 38, with the three entries above named in its comment.
+- **Sections 1, 2 and 3 stand**, and section 1 was never two instruments: it is
+  one premise elaborated twice, and I have marked it so.
+- **Section 6's arms stand**, with `warrant-clause-names-no-mechanism` demoted
+  from the guarantee to the fallback that guards the uncited path.
+- **Section 4's candidate list gains two entries it missed**: the slug-side
+  suffix, which is 219's answer and which I did not consider, and the bracketed
+  prose tag already in interim use across the member files, which 219 found and I
+  did not.
+
+## 6. The probe
+
+`220_probes/reply_check/` and `p7_reply_check.out`. It reads the registry through
+`arvo_checks` rather than through a hand-rolled scanner, so its agreements with
+219 are two instruments. Six questions: three reproduce 219's headline numbers,
+three attack. Its control plants a tree where every arm returns a value different
+from the committed one, including the dirty-slug arm whose committed answer is
+zero and which would otherwise be a check that has never fired.
+
+## 7. What attacking 219's count turned up, which neither of us had
+
+Its matcher is `values == "any" || values.ends_with(" any")` and its doc comment
+justifies it: "Every declared grammar spells it as a trailing bare `any`, which
+is what Q1 checks rather than assumes." **That sentence is true of the grammars
+and false of the corpus**, and chasing why produced a bigger finding than the
+three-entry gap that started it.
+
+### The `threads` axis conforms to its own declared grammar 19 times in 36
+
+`dimension::threads` declares exactly `threads = 1`, `threads = <n>`, or
+`threads any`. `220_probes/p8_threads_grammar.out` walks all 36 threads entries
+against that:
+
+```
+[conforms]  16  threads = 1
+[DEPARTS ]  13  1
+[conforms]   3  threads any
+[DEPARTS ]   1  threads any, the refusal being a type-check outcome that precedes execution
+[DEPARTS ]   1  threads any, the equalities being decided at compile time
+[DEPARTS ]   1  threads = 1, the splits being computed rather than executed on lanes
+[DEPARTS ]   1  threads = 1 for the timed instance and threads any for the compile-time artifacts
+```
+
+**Seventeen of thirty-six depart.** 219's Arm 7 refuses a values side writing a
+spelling its axis's grammar declares **inadmissible**, and found one. The wider
+arm, refusing a values side that does not write a spelling its axis's grammar
+**declares at all**, finds seventeen on one axis. That is the same arm with the
+quantifier the other way round and it is worth far more.
+
+### And thirteen of those seventeen are a second dialect, which is two whole files
+
+The bare `1` is not a slip. `p8_threads_grammar.out`, second section:
+
+```
+law-the-later-topics.toml         71 of  71 entries write a span naming nothing from their slug
+proposal-the-later-topics.toml    68 of  68 entries write a span naming nothing from their slug
+law.toml                          68 of 162
+proposal.toml                     69 of 226
+```
+
+The two later-topics files are **total**, and I checked them by eye rather than
+trusting the heuristic. Side by side, the same axes, same tree:
+
+```
+proposal.toml                    proposal-the-later-topics.toml
+"total_width: W in 3..=7"        "total_width: 6"
+"signedness: signedness in {…}"  "signedness: in {unsigned, signed}"
+"arity: arity = 3"               "arity: 3"
+"threads: threads = 1"           "threads: 1"
+```
+
+**139 of 527 entries, 26 percent of the corpus, in a second dialect that drops
+the axis word from the values side entirely.**
+
+The counts for the two main files are a heuristic and carry false positives
+(`container: interval numerals containing zero` names no slug word and is fine).
+**The two hundred-percent figures are not a heuristic**, and they are the finding.
+
+### This corrects my own blind file
+
+Section 10 of this file reports
+`fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` as writing
+"its predicate in a different dialect from every other row". **That is wrong. It
+is not one row, it is two entire files.** I named the instance the census handed
+me and did not grep for the class, which is precisely the failure
+`fix-the-class-not-the-instance-named.md` describes, committed in a file that
+spends a section complaining about instruments that stop at the first hit. The
+class is 139 entries and the correction is here rather than in section 10,
+because that section is the blind record.
+
+### What it does to the two schemes, and it is not symmetric
+
+**It hands 219's position a much stronger argument than the one 219 gave**, and I
+would rather supply it than win the fork.
+
+219 argues the values side is untrustworthy from five prose entries. The real
+number is that **the values side is written in two dialects, one of which drops
+the axis word in 139 entries**, while the slug side is uniform across both:
+`reply_check` Q3 reports **zero** non-bare slugs in all 527, spanning both
+dialects. So the slug side is the only half of the entry that means the same
+thing everywhere, and a one-word tag placed there is the only marker position
+that does not have to know which dialect it is sitting in.
+
+My trailing-colon position survives this on its own terms, because it splits on
+the colon rather than on the span, and a second colon is absent from both
+dialects. **But 219's Arm 5, the reserved leading token, does not**: a token in
+front of a bare `6` has no dialect-independent reading, and Arm 5 is the arm I
+used above to argue that both schemes parse the values side equally. They do, and
+now both of those parses are standing on a field that is not uniform.
+
+**So the conclusion moves further toward 219 than my Fork A analysis had it**, and
+for a reason neither file contained: the slug side is uniform and the values side
+is not, measured, at 527 entries and two dialects.
+
+### The arm I would land before either warrant arm
+
+**A values side writes a spelling its axis's declared grammar admits.** Not
+"is not declared inadmissible", which is 219's Arm 7 and finds one. The positive
+form, which finds seventeen on the one axis I walked and would be worth walking
+across all twenty-one. **The dialect is the thing to settle before a marker is
+placed anywhere**, because both candidate positions are parses of a field whose
+shape nobody has pinned, and a marker added on top of an unpinned field inherits
+whatever the next dialect does.
+
+I did not walk the other twenty axes. That is the obvious next measurement and it
+is cheap; `p8_threads_grammar.sh` is one axis wide and generalises by changing a
+string. **`threads = 1` at 16 of 36 is a fact about the threads axis and I claim
+nothing about the other twenty from it**, beyond the two-dialect count, which is
+whole-corpus and is measured.
+
+## Predicates for the reply
+
+```
+the 41 universals, 28 mixed rows, 0 dirty slugs, 35 range entries, 7 parameterised bounds,
+80 `construction` fields, 31 universal-bearing rows of which 11 have no outbound edge:
+  holds for: mock/registry/*.toml at 14d0bbab, all 12 files, all 3 predicate-bearing
+             fields, 527 entries, read through arvo_checks, threads = 1
+the threads-axis grammar conformance, 19 of 36:
+  holds for: mock/registry/*.toml at 14d0bbab, axis = threads only, 36 entries, threads = 1
+the two-dialect count, 139 of 527:
+  holds for: mock/registry/*.toml at 14d0bbab, all 12 files, 527 entries, threads = 1
+```
+
+The other twenty axes are not claimed about. One axis walked is one axis walked.

@@ -1,0 +1,21 @@
+# A spike for the reply phase. It re-measures seat 219's headline numbers with a
+# different instrument from the one that produced them, and tests the two places
+# I think its reading of the corpus is wrong.
+#
+# 219's scanners are hand-rolled TOML readers over the registry text. This one
+# goes through `arvo_checks`'s parser, so an agreement between them is two
+# instruments rather than one method run twice.
+[workspace]
+
+[package]
+name = "reply-check"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "reply-check"
+path = "src/main.rs"
+
+[dependencies]
+arvo-checks = { path = "../../../../checks" }
