@@ -37,6 +37,7 @@ keywords = ["validate", "validation", "admissibility", "usage", "self-validation
 
 [[question]]
 id = "which_width_coordinates_a_consumer_writes"
+answered = "The fourth reading, and it dissolves the first three rather than choosing among them. `ruling::the_format_spine_is_canon` is ratified and ratifies `proposal::membership_of_the_representable_set_is_one_affine_predicate`: membership is one predicate over one parameterisation, an affine slot function with a quantum per magnitude and a phase, of which integers, fixed point, scaled integers and floats are points. So a width pair is not a definition of anything. It is what that one object is called in the constant-canonical-exponent case, which is exactly what option four says and what the register carried as a reading rather than a rival.\n\n**What that leaves is a projection choice, and it is not a canon question.** Which pair a consumer writes at the surface, or whether both surfaces exist with each declaring which it speaks, is a decision about the shape of an API over a definition the canon has already fixed. It belongs to the design round for the format, not here, and it is recorded as such rather than left sitting in the canon's queue looking unsettled.\n\nReached through the same unfollowed two-hop edge as its siblings."
 key = "Q2"
 asks = "Which pair of width coordinates does a consumer write at the surface?"
 options = [
@@ -519,6 +520,7 @@ keywords = ["wrapping", "wrap", "saturation", "reduction", "retraction", "cohere
 
 [[question]]
 id = "adaptation_in_identity_or_realisation"
+answered = "Realisation. Settled already by `ruling::the_format_spine_is_canon`, which is ratified and ratifies `proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set`, whose own words are that adaptation choice and encoding are realisation, observable in computed values and in pattern-level properties respectively, and not part of identity. Nothing was decided here to close this; the edge was already in the registry and nothing followed it, because it runs `ruling.ratifies` into `proposal.answers` and every reader of the settled set read `ruling.answers` alone."
 key = "Q18"
 asks = "Does a number system's selected adaptation belong to its identity or to its realisation?"
 options = [
@@ -548,6 +550,7 @@ keywords = ["levels", "hierarchy", "cut", "refinement", "granularity", "change t
 
 [[question]]
 id = "is_the_number_system_inventory_open"
+answered = "Open. Settled already by `ruling::the_format_spine_is_canon`, which is ratified and ratifies `proposal::the_concept_is_closed_and_the_inventory_is_open`: the canon defines once what a number system is and what admission requires, the set of admitted instances is open, and a new one earns admission by supplying the concept's obligations rather than by amending the canon. The concept being closed is the other half of the same sentence and is what keeps an open inventory from meaning anything goes. Reached through the same two-hop edge as its siblings, unfollowed until now."
 key = "Q20"
 asks = "Is the inventory of number systems open or closed?"
 options = [
