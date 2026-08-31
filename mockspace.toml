@@ -214,6 +214,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.a-settled-question-does-not-sit-in-the-queue]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-measurement-owes-a-usable-instrument]
 commit = "error"
 build = "error"
