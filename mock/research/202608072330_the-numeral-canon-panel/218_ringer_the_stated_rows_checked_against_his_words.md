@@ -25,7 +25,8 @@ govern how I did it: `an_ack_is_not_a_ratification` and `the_intent_is_not_every
 the second of which is itself one of the fifty-two and which I read first, as instructed.
 
 **The test gate passed, and I read the bodies rather than the count.** `cargo test -p arvo-checks
---no-fail-fast` from `mock/`: 143 passed, 0 failed, 0 ignored, 0 warnings, exit 0. Summed off the `test
+--no-fail-fast` from `mock/`: 143 passed, 0 failed, 0 ignored, 0 warnings, exit 0, before the work and again
+after it. Summed off the `test
 result:` lines rather than by counting `ok`, per the brief. A green suite is the weakest signal in the room,
 so I audited the arms in the surface I touch, which is the `ruling` namespace and its `quote` field:
 
@@ -54,6 +55,15 @@ he decided". **That is false for all four.** `the_canon_is_written_once_at_the_e
 The distinction the comment draws between the first four and the last two does not exist in the registry it
 reads. The test is correct; its explanation of what it is testing is wrong, and it is the kind of wrong that
 gets quoted.
+
+**And the suite caught me, which is worth recording rather than quietly repairing.** The first draft of this
+file cited three registry rows by line number, naming the namespace file and a line in it. That took
+`no_line_citation_into_the_registry.rs`'s member-file arm from 45 to 48 against a ceiling of 45, whose message
+says in as many words "Brief the next seat to write slugs; do not raise this". It is right and the reason is
+the one this whole file is about: a registry gains rows constantly, every insertion moves the lines under it,
+and a line citation keeps resolving while naming something else. I repointed all three at row slugs, which
+survive every insertion, and the suite is back at 143 green. **I am the seat that should have been briefed and
+was not, so the brief is written here instead: cite a registry row by its slug, never by its line.**
 
 ## The standard I applied, and where I refused to apply it mechanically
 
@@ -353,18 +363,18 @@ at all.** I checked: `grep -n "212_op" mock/registry/` returns three hits and al
 
 - **"It becomes your intent"**, on whether the licence clause about unobserved stretches is his. **He
   designated that an intent, in those words**, and it has no row in the namespace whose header says one row
-  per statement. It sits at `question.toml:1314`.
+  per statement. It is the `answered` field of `question::does_the_observability_principle_become_an_intent`.
 - **"It's a rule of thumb that absolutes will fit but not itself an absolute. There must be exceptions. But
   as a general rule. Otherwise yes, demoted a bit, but not entirely. My calls and remarks and statements are
-  still valid for the time, and valuable as precedence"**, at `question.toml:1475`. **This directly qualifies
+  still valid for the time, and valuable as precedence"**, on the `answered` field of `question::which_closed_panel_statements_the_absolute_framing_carve_out_reaches`. **This directly qualifies
   one of my fifty-two.** `his_voice_is_demoted_except_where_he_frames_it_absolute` states the demotion as a
   binary with one carve-out. He has since said it is partial, that the carve-out is a rule of thumb admitting
   exceptions, and that his prior statements remain valid and carry precedent value. Nothing points at that
   row: `grep -c` finds its id exactly once in `ruling.toml`, which is its own `id` line. I judged the row
   faithful to its quote and it is. It is also, as canon, out of date, and a reader has no way to learn that
   from the ruling namespace.
-- **"Let's start with the two named, and reserve the rest named for future, so it can't close them out"**, at
-  `question.toml:1801`.
+- **"Let's start with the two named, and reserve the rest named for future, so it can't close them out"**, on
+  the `answered` field of `question::which_standards_the_alias_obligation_covers`.
 
 I am not proposing where these should live; that is a schema question and it is the coordinator's. **What I
 am reporting is that the ruling namespace's own stated contract, one row per statement of his, is not met for
