@@ -1226,3 +1226,119 @@ satisfies every constraint I named just as well, and I separate it from the fift
 only on the crossing-back argument, which is the row's finding rather than mine and
 which I did not re-measure. A seat that measures the crossing-back price on the two
 arrangements would settle it, and nothing else I can think of would.
+
+## 8. Option sets that cannot hold their own answers
+
+A question retired as wrongly posed is as good an outcome as one answered, and
+four of these are wrongly posed in a way that will survive being answered, because
+the option array is what a consolidation compresses rather than the prose beneath
+it.
+
+**8.1 The eight at 3.4 ask for one policy over a category.** Three of them already
+carry a `bound` saying so, and the option arrays still read as live forks. The
+repair is not an answer, it is rewriting each option set as a region and a
+predicate, which is what `ruling::there_is_no_universal_answer_take_the_win_and_gate_it`
+asks and what `never-ask-which-single-rule-governs` in the workspace rules states
+as a reflex. I have not rewritten them, because an option set is the source's and
+editing one is not a reader's call.
+
+**8.2 Q27's three options are three bare words and the answer is a fourth thing.**
+`is_interoperation_conversion_or_resolution` offers "Conversion", "Resolution" and
+"Neither", each named and none described, which the row's own note concedes. 7.12
+shows ratified text gives an answer that is none of the three and that the third
+option, "neither", is true only in the uselessly weak sense of not being the first
+two. The row should carry the unification as an option or carry no options.
+
+**8.3 Q26's option set is missing its answer.** `what_a_platform_width_type_is`
+offers storage, a degenerate instance, an orthogonal axis, and a different kind of
+thing. 6.6 shows the answer is a family of instances of the same kind indexed by a
+parameter resolved at compile time, which is none of the four. The row's own note
+already warns that the first option is "named once, in passing, in a file about a
+different topic", which is a warning about weight rather than about completeness,
+and the completeness problem is the larger one.
+
+**8.4 Q4's third option is not a rival to its first.**
+`what_a_datum_stands_for` lists "a constructor-level clause" alongside "a point",
+"an absorbing top" and "a set". 6.3 shows the third is a diagnosis of why the
+question reads ambiguously and is compatible with the first, so listing it as a
+fourth alternative makes the space look wider than it is. Op explicitly refused to
+bound this option set, which is a refusal to say what is admissible and not a
+statement that everything listed is a rival.
+
+## 9. What I could not settle, and where the wall is
+
+**`question::what_the_double_rounding_mechanism_is` (Q57). I concede it, and the
+concession is structural rather than a failure of effort: the question cannot be
+answered from the canon, because the sentence whose reading it disambiguates was
+never admitted to the canon.**
+
+The row asks "which reading of 'the grid' does the double-rounding clause carry
+once grids chain?", and offers two options described only by how many cells they
+differ on, 32 to 94 in one comparison and 124 to 170 in the other. Neither option
+says what either reading is.
+
+What I tried, in order, with what closed each:
+
+1. **The registry, in the words the answer would use.** Grepped `double rounding`,
+   `staged`, `direct`, `narrowing`, `chained grids`, `the grid` and `reading`
+   across all twelve registry files. The phrase appears in
+   `law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f`,
+   which is the closed half and states that no intermediate width strictly between
+   `F` and `2F` makes double rounding innocuous at any `F`. That is a different
+   claim from the one in question and does not name either reading.
+2. **The clause itself.** Grepped for the arms as the corpus paraphrases them:
+   `defer.*root`, `range part`, `at every node`, `leaves the grid`. **One hit in
+   the entire registry, and it is inside Q57's own `note`.** So the clause that the
+   two readings are readings *of* has no row anywhere in the canon.
+3. **The probe corpus**, which the brief licenses as greppable. Found
+   `131_probes/v2_the_vocabulary_and_which_equality_double_rounding_threatens.py`,
+   which is the instrument that located the problem, and read its header. It
+   describes the clause as belonging to `122` section 4.6 and paraphrases it as an
+   equality between two arms that both round at every node, one applying the range
+   part at each node and the other deferring it to the root while applying the grid
+   part at every node whose result leaves the grid. It does not state the two
+   readings of "the grid" either, because at the time it was written the ambiguity
+   had not been found.
+4. **`167_probes/doubleround/doubleround.rs`**, which is a clean exhaustive
+   instrument on the adjacent question and shows per-operation correct rounding not
+   composing. Its case that must fail is present and correct. It is about
+   staged-versus-direct narrowing, which the row's note already says is what is
+   actually at risk, and not about the ambiguity.
+5. **One `awk` range over `OPTIONS.md`** covering Q57's heading alone, which is the
+   nearest thing to a source the brief permits me. It adds that "once grids chain,
+   4.6's 'the grid' is genuinely ambiguous" and repeats the two cell counts. It
+   still does not state either reading, and it points at `122` section 4.6, which
+   is a numbered member file I may not open.
+
+**The wall, stated exactly.** The two readings exist only inside an unratified
+member file. The registry is the canon by `mockspace.toml:32`, and under the
+provenance ladder a member file is agent output presumed wrong where it conflicts
+with the canon. So there are two ways to answer Q57 and both are bad: read the
+member file, which means resolving a canon question by reasoning from the tier the
+canon-design-code chain declares dead, or guess the readings from their cell
+counts, which is manufacturing an answer to fill the slot.
+
+**What would move it, and it is one act rather than a research question.** Port
+the clause. A `law` or `proposal` row stating the equality `122` section 4.6
+claims, with its two arms written out, would make the ambiguity a question about a
+row in the canon, and only then is a fourth construction worth building. Until
+then a fourth construction has nothing to reproduce, which is why the three that
+were tried were wrong: they were reproducing a paraphrase.
+
+**What I am not doing, deliberately.** The row's `decider` is `measurement` and its
+note invites a fourth construction starting from the three dead routes. I could
+build one. It would be a construction over a sentence I reconstructed from a
+paraphrase of a file I may not read, and it would produce a number, and the number
+would enter the record. That is the shape
+`conceding-is-an-answer-and-expert-code-is-a-spike` names: an artifact produced in
+service of an answer, mistaken for the answer. So the honest output is this
+paragraph and the port request above.
+
+**One further thing about that row, which is not the concession.** Its two options
+are not options. "The first reading, which differs from the second on 32 to 94
+cells" and "The second reading, which differs from the first on 124 to 170 cells"
+name nothing a reader can choose between, and the asymmetry of the two counts is
+the only content either carries. Under
+`record-the-options-a-decision-chose-among` an answer recorded against that set
+would say a choice was made and not which, which is the failure that rule exists to
+prevent. So the row needs restating whether or not anybody answers it.
