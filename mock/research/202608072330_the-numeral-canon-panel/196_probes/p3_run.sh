@@ -22,7 +22,7 @@ run() { # $1 label  $2 required (COMPILE|REFUSE)  $3.. cfgs
   for c in "$@"; do args="$args --cfg $c"; done
   # shellcheck disable=SC2086
   if $RUSTC +nightly-2026-05-28 --edition 2021 --crate-type lib \
-       --out-dir "$out" $args "$src" > "$out/$lbl.log" 2>&1; then
+       --out-dir "$(mktemp -d)" $args "$src" > "$out/$lbl.log" 2>&1; then
     got=COMPILE
   else
     got=REFUSE

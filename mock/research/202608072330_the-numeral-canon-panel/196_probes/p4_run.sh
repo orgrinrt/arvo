@@ -11,7 +11,7 @@ run() {
   lbl=$1; req=$2; shift 2
   args=""; for c in "$@"; do args="$args --cfg $c"; done
   # shellcheck disable=SC2086
-  if $RUSTC +nightly-2026-05-28 --edition 2021 --crate-type lib --out-dir "$out" \
+  if $RUSTC +nightly-2026-05-28 --edition 2021 --crate-type lib --out-dir "$(mktemp -d)" \
        $args "$src" > "$out/$lbl.log" 2>&1; then got=COMPILE; else got=REFUSE; fi
   if [ "$got" = "$req" ]; then v="as required"; else v="*** NOT AS REQUIRED ***"; fi
   printf "%-8s %-12s required=%-8s got=%-8s %s\n" "$lbl" "${*:-<none>}" "$req" "$got" "$v"

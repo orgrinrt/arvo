@@ -26,12 +26,27 @@ use core::marker::PhantomData;
 
 pub struct One;
 pub struct Twice<N>(PhantomData<N>);
-pub trait PosVal { const VAL: u64; }
-impl PosVal for One { const VAL: u64 = 1; }
-impl<N: PosVal> PosVal for Twice<N> { const VAL: u64 = 2 * N::VAL; }
+pub trait PosVal {
+    const VAL: u64;
+}
+impl PosVal for One {
+    const VAL: u64 = 1;
+}
+impl<N: PosVal> PosVal for Twice<N> {
+    const VAL: u64 = 2 * N::VAL;
+}
 
-pub struct Both<T, const K: usize, C> { pub items: [T; K], pub cap: PhantomData<C> }
+pub struct Both<T, const K: usize, C> {
+    pub items: [T; K],
+    pub cap: PhantomData<C>,
+}
 
 pub fn c2_consistent<T, const K: usize, C>(items: [T; K]) -> Both<T, K, C>
-where C: PosVal<VAL = { K as u64 }>,
-{ Both { items, cap: PhantomData } }
+where
+    C: PosVal<VAL = { K as u64 }>,
+{
+    Both {
+        items,
+        cap: PhantomData,
+    }
+}

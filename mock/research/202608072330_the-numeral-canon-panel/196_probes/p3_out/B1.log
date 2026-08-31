@@ -1,7 +1,7 @@
 error: generic parameters may not be used in const operations
-   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3_composing_p7_and_p8.rs:185:23
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3_composing_p7_and_p8.rs:284:23
     |
-185 |     type Out = <Cap<{ K / 2 }> as ToBinary>::Out;
+284 |     type Out = <Cap<{ K / 2 }> as ToBinary>::Out;
     |                       ^ cannot perform const operation using `K`
     |
     = help: const parameters may only be used as standalone arguments here, i.e. `K`

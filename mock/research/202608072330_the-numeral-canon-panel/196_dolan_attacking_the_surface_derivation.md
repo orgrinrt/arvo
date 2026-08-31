@@ -866,3 +866,175 @@ after drafting and both of the exact class this file attacks.**
 
 Both were found by opening every citation in the draft before committing it, which took a few minutes
 and is the whole of the remedy. Neither would have been caught by reading the file.
+
+---
+
+## 8. The blocker in 3.2, attacked
+
+Section 3.2 proposed a row on `35`'s accumulator formula and section 6 said "whoever writes the row
+runs [`p7` and `p8`]". Reporting a blocker and leaving it is not a deliverable, so I ran them, and the
+run found something neither `35` nor `191` records.
+
+### 8.1 `35`'s two probes were never composed, and the composition is the wall `191` hit
+
+`35` supports `acc_width(W, C) = W + ceil(log2 C)` with `p7`, which builds the `SumAccum` derivation,
+and `p8`, which supplies `ceil(log2)` inductively with no table. `35` says of the first: "`p7`'s first
+version was inadmissible and I say so before anyone else has to. Its `ceil(log2)` was one impl per
+capacity, which is exactly the enumeration `SETTLED.md:110` refuses."
+
+**The committed `p7.out` is still that version.** Its arm-5 diagnostic prints the enumeration:
+
+```
+help: the following other types implement trait `Log2Ceil`:
+          Cap<1024>  Cap<16>  Cap<1>  Cap<256>  Cap<2>  Cap<3>  Cap<4>  Cap<8>
+```
+
+And `p8` never mentions `SumAccum`. So "expressible gate-free" is the conjunction of two artifacts
+using **different capacity representations**: `p7` a const generic `Cap<const K: usize>`, `p8` a
+type-level binary `One / Twice<N> / TwiceP1<N>`. Joining them needs a map from a const to a type,
+which is the direction Rust refuses, and **that is the same wall `191` section 2.5 hit from the other
+side.** `191` reached it going from a const capacity toward a definition-site refusal; `35` reached it
+going from an inductive log toward a usable derivation. Neither noticed the other was there.
+
+`196_probes/p3_composing_p7_and_p8.rs` and `p3b_const_to_type_bridge.rs`, `rustc 1.98.0-nightly
+(57d06900f)`, every arm landing on its required verdict:
+
+| arm | shape | required | got |
+|---|---|---|---|
+| A1 | `SumAccum` keyed on the binary capacity, folded over a slice | COMPILE | COMPILE |
+| A2 | derived widths asserted against integer arithmetic at capacities 1, 2, 3, 4, 5, 7, 16, 256, plus a tightness control | COMPILE | COMPILE |
+| A2m | the `TwiceP1` recurrence's increment dropped | REFUSE | REFUSE, at C3 and C5 |
+| B1 | a blanket bridge `Cap<K>` to the binary type | REFUSE | REFUSE, "generic parameters may not be used in const operations" |
+| B2 | array storage `[T; C::VAL as usize]` | REFUSE | REFUSE, same diagnostic |
+| C1 | both a const `K` and a capacity type `C`, instantiated as `Both<Num<N4>, 4, C256>` | COMPILE | **COMPILE** |
+| C2a | the agreement asked for by associated-const equality, no feature | REFUSE | REFUSE, wants `min_generic_const_args` |
+| C2b | the same with `#![feature(associated_const_equality)]` | REFUSE | REFUSE, **E0557 feature has been removed** |
+
+**A2m is the case that had to fail** and it fails at exactly the odd capacities, which is where the
+dropped increment changes the answer. Without it every COMPILE above would mean only that nothing was
+checked.
+
+**C1 is `191`'s landmine, reproduced from `35`'s side.** `Both<Num<N4>, 4, C256>` says the storage
+holds four and the capacity is 256, nothing relates them, and it is a nameable, storable, returnable
+type that compiles. `191` found the same shape at its `p1` arms G1 to G3 and called it a landmine; it
+is the same landmine and it arrives whenever a const and a type are both carried with no relation.
+
+**And C2b is a droplist entry that has moved.** `191`'s arm D and `35`'s section-6 droplist both
+record `generic_const_exprs` as the refused route. `associated_const_equality`, the other spelling
+somebody would reach for, is not merely unstable on the pinned toolchain: **it has been removed**, and
+the diagnostic redirects to `min_generic_const_args`. Anything in the corpus that names it as an
+available-behind-a-gate option is naming a feature that no longer exists.
+
+**One thing that had to be split out and is a result of its own.** The C2 bound cannot share a file
+with the other arms. `C: PosVal<VAL = { K as u64 }>` is gated at **parse** time, so merely writing it
+under a `#[cfg]` that is off makes every other item in the file unbuildable. That is why `35`'s `p7`
+and `191`'s `p1` could each stay gate-free while the composition of the two cannot be tested inside
+either, and it is a trap for the next person who tries.
+
+### 8.2 So drop the const. The storage derives from the capacity type too
+
+B1, B2 and C1 all exist for one reason: the storage wanted `[T; K]`. Nobody asked whether the storage
+could come from the same induction as the width. `196_probes/p4_storage_from_the_capacity_type.rs`:
+
+```
+One          ->  Slot<T>
+Twice<N>     ->  Pair<N::Shape, N::Shape>
+TwiceP1<N>   ->  Pair<Pair<N::Shape, N::Shape>, Slot<T>>
+```
+
+Three impls, pairwise disjoint by the same construction that makes `Log2Ceil` three impls, holding
+exactly `PosVal::VAL` slots by construction, with **no array length and no arithmetic in a type
+position**.
+
+| arm | required | got |
+|---|---|---|
+| S1 the storage exists at capacities 1, 2, 3, 4, 5, 7, 13, 16 | COMPILE | COMPILE |
+| S2 slot count and `size_of` of the laid-out shape both equal the capacity | COMPILE | COMPILE |
+| S2m the odd constructor forgets its extra slot | REFUSE | REFUSE, at C3, C5, C7, C13 |
+| S3 a structural fold over the shape into the `p3`-derived accumulator | COMPILE | COMPILE |
+| S4 a capacity with no storage row, used | REFUSE | REFUSE, `NoRow: Store<u8>` not satisfied |
+| S5 the shape's size and alignment against a flat array, at `u8` and at `u64` | COMPILE | COMPILE |
+
+**S2 is deliberately not two declarations checking each other.** The slot count is asserted against
+`core::mem::size_of` of the shape the compiler actually laid out, so a shape with a missing slot is a
+smaller type and the arithmetic catches it. S2m proves it: with the extra slot dropped, both the count
+assertion and the `size_of` assertion fail, at every odd capacity and at none of the even ones.
+
+**S5 is the result I did not expect.** The nested `Pair` tree is `repr(Rust)`, so its layout is
+unspecified and the odd nesting `Pair<Pair<X, X>, Slot<T>>` is where padding would appear.
+`size_of::<Shape>() == C * size_of::<T>()` and `align_of::<Shape>() == align_of::<T>()` hold at all
+eight capacities, four of them odd, for a one-byte element and an eight-byte one. **The derived shape
+is size- and alignment-identical to `[T; C]` on this toolchain.**
+
+### 8.3 What this composes to, with the costs stated in both directions
+
+**The const never has to exist.** With the storage derived, there is nothing for a const to disagree
+with, so B1's missing bridge, B2's refused array length and C1's landmine all stop being problems
+rather than being solved. That is the shape worth having: the fork disappears rather than being
+decided.
+
+**What it costs, and none of it is free:**
+
+- **The consumer writes the capacity as a binary type.** `C16` is `Twice<Twice<Twice<Twice<One>>>>`.
+  This is `191`'s own recorded cost for its `p2` and it is the same cost here.
+- **The capacity must be named once at each fold.** The shape does not determine it: `Pair<Slot<T>,
+  Slot<T>>` is the storage for capacity 2 and is structurally a sub-shape of the storage for 4, so
+  inference reports E0283. One turbofish per fold, not per element. Recorded in the probe at the line
+  where it bit.
+- **The storage is a nested tree, not a slice.** It is the same size and alignment as `[T; C]` and it
+  is **not** contiguous-by-guarantee, cannot be indexed by an integer, and cannot be handed to
+  anything wanting `&[T]`. **An algorithm crate wanting random access cannot use this shape**, and
+  most of the plan chain's class A wants exactly that. So this is an arm over a region, not a
+  replacement.
+- **Unpriced.** Compile time, trait-solver depth, and behaviour at capacities near the pointer width.
+  `35` flagged the same for its own `ceil(log2)` and called it unpriced; this is unpriced on the same
+  terms, and pricing it needs the bench harness rather than another compile spike.
+
+**The composition, which is the deliverable rather than a winner:**
+
+| capacity carried as | width derivation | storage | refuses a mismatch at | costs |
+|---|---|---|---|---|
+| a const `K` alone | enumerated per capacity, `p7` as committed | `[T; K]`, natural | nothing; there is no mismatch to have | the enumeration a ratified rule refuses |
+| a const `K` and a type `C`, unrelated | inductive, gate-free | `[T; K]`, natural | **nothing**, and the type compiles wrong: `p3` C1 | a landmine, `191`'s G1-G3 at a second site |
+| a const `K` and a type `C`, related | inductive | `[T; K]` | would refuse at the definition site | unavailable: `p3b` C2a and C2b, and the feature is removed |
+| a type `C` alone, slice storage | inductive, gate-free | `&[T]` with a runtime length | the capacity, not the length | the length is unchecked, which is where a runtime check would go back in |
+| a type `C` alone, derived storage | inductive, gate-free | `Pair` tree, same size and alignment as `[T; C]` | every position that names the shape | the binary spelling, one turbofish per fold, no indexing, no slice interop |
+
+### 8.4 What this changes in section 3.2, and what it opens
+
+**The row I proposed in 3.2 is writable and its region is narrower than I wrote it.** The formula and
+the inductive `ceil(log2)` are established; what is established **gate-free as one artifact** is the
+derivation over a capacity carried as a type. Whoever writes the row states that, and does not write
+"expressible gate-free" unqualified, because on the obvious spelling with a const capacity it is not.
+
+**And it opens one thing that is the panel's rather than op's**, so I state it as work with a
+decision procedure rather than as a question: *a bounded aggregate's capacity is a type, a const, or
+both, and the three differ in what they refuse rather than in what they express.* The evidence for
+picking is in the table above; the missing input is a measurement of what the type spelling costs at
+compile time, which is a bench and not another compile spike. **Do not put this to op as a fork.**
+Both arms are right in their own region: class A of the plan chain wants indexable storage and
+therefore a const, and a fold wanting a definition-site refusal wants a type. That is two arms and a
+predicate, which is what I13 says the work is.
+
+Probes for section 8, committed with their logs and every arm's required verdict printed beside what
+it got:
+
+| probe | what it establishes | the case that had to fail |
+|---|---|---|
+| `p3_composing_p7_and_p8.rs` + `p3_run.sh` | `35`'s two accumulator probes compose only with a type-carried capacity; the const-to-type bridge, the type-to-array-length map and the both-carried agreement are refused; carrying both unrelated compiles wrong | A2m, the recurrence's increment dropped, which fails at C3 and C5 and nowhere else |
+| `p3b_const_to_type_bridge.rs` + `p3b_run.sh` | the associated-const-equality bridge is refused, and the feature has been **removed** rather than being unstable | C2b, which had to be reachable: if it had compiled the finding would be "gated" rather than "unavailable" |
+| `p4_storage_from_the_capacity_type.rs` + `p4_run.sh` | the storage derives from the capacity type by the same three-impl induction, with slot count tied to `size_of` of the laid-out shape, and packs identically to `[T; C]` at eight capacities and two element alignments | S2m, the odd constructor forgetting its slot, which fails at C3, C5, C7 and C13 |
+
+**Three of my own defects in these three, all caught by a control or by a base arm that had to
+compile, all recorded here rather than tuned away.**
+
+- `p3`'s base arm failed on the first run with `E0658: associated const equality is incomplete`,
+  pointing at a line inside a `#[cfg]` that was off. Diagnosis: the bound is parse-gated. Fix: split
+  it into `p3b`. **The base arm is what caught it**, exactly as `191` records for its own `-o
+  /dev/null` run, and had the base arm not been required to compile I would have read six refusals as
+  six results.
+- `p4`'s `FoldInto` was parameterised by the accumulator where it needed the capacity, so the compiler
+  asked for `Num<Su<...>>: Log2Ceil`, which is nonsense. Caught by the base arm again.
+- `p4`'s fold then failed with `E0283`, which I first read as a defect and which is a **finding**: the
+  derived shape does not determine its capacity, so the capacity has to be named at the fold. It is
+  recorded as a cost in 8.3 and as a comment at the line where it bit.
