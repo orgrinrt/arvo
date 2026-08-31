@@ -1,0 +1,70 @@
+# p1 output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O, aarch64-apple-darwin
+
+p1: the rounding algebra
+    scaled integers x in -512..=512, grid spacing d = 2^3 = 8
+    exhaustive over x; translations n in -8..=8
+
+## 1. translation equivariance: R(x + n*d) == R(x) + n
+
+mode                   verdict        first witness against
+floor                  EQUIVARIANT    -
+ceil                   EQUIVARIANT    -
+toward_zero            not equivariant x=-63 n=8: R(x+n*d)=0, R(x)+n=1
+half_up(ties->+inf)    EQUIVARIANT    -
+half_up(ties->away)    not equivariant x=-60 n=8: R(x+n*d)=1, R(x)+n=0
+half_even              not equivariant x=-508 n=-7: R(x+n*d)=-70, R(x)+n=-71
+away_from_zero         not equivariant x=-63 n=8: R(x+n*d)=1, R(x)+n=0
+
+half_even restricted to even translations:
+  half_even is EQUIVARIANT under even translations
+
+## 2. do modes coincide on the non-negative domain (unsigned)?
+
+  x >= 0:  away_from_zero == ceil   (no disagreement in 0..=512)
+  x >= 0:  toward_zero == floor   (no disagreement in 0..=512)
+  x >= 0:  half_up(ties->+inf) == half_up(ties->away)   (no disagreement in 0..=512)
+
+## 3. the same pairs on the signed domain
+
+  signed:  away_from_zero != ceil   at x=-511: -64 vs -63
+  signed:  toward_zero != floor   at x=-511: -63 vs -64
+  signed:  half_up(ties->+inf) != half_up(ties->away)   at x=-508: -63 vs -64
+
+## 4. pairwise distinctness of every named mode, signed domain
+
+  0 coinciding pair(s) out of 21 on the signed domain
+
+  and on the non-negative domain:
+  COINCIDE: floor == toward_zero
+  COINCIDE: ceil == away_from_zero
+  COINCIDE: half_up(ties->+inf) == half_up(ties->away)
+  3 coinciding pair(s) out of 21
+
+## 5. every mode is the identity on grid points (the retraction property)
+
+  floor                  off-grid results on grid points: 0
+  ceil                   off-grid results on grid points: 0
+  toward_zero            off-grid results on grid points: 0
+  half_up(ties->+inf)    off-grid results on grid points: 0
+  half_up(ties->away)    off-grid results on grid points: 0
+  half_even              off-grid results on grid points: 0
+  away_from_zero         off-grid results on grid points: 0
+
+  and at s = 0, where the grid is the whole value set:
+  floor                  non-identity results at d = 1: 0
+  ceil                   non-identity results at d = 1: 0
+  toward_zero            non-identity results at d = 1: 0
+  half_up(ties->+inf)    non-identity results at d = 1: 0
+  half_up(ties->away)    non-identity results at d = 1: 0
+  half_even              non-identity results at d = 1: 0
+  away_from_zero         non-identity results at d = 1: 0
+
+## controls. Each must find a witness. A clean line here voids the file.
+
+  C1 EXPECTED-FAIL ok: away_from_zero not equivariant, x=-63 n=8 1 vs 0
+  C2 EXPECTED-FAIL ok: away_from_zero != ceil signed, x=-511: -64 vs -63
+  C3 EXPECTED-FAIL ok: floor_plus_one is not the identity on 129 grid points
+  C4 EXPECTED-PASS ok: floor is equivariant, so the checker can say both
+
+controls: all four behaved as required
