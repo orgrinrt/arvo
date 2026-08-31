@@ -177,3 +177,33 @@ edited_after_supersessor = false
 canon_rows = ["proposal::absorption_decides_associativity_of_a_clamped_reduction", "proposal::a_coherent_reduction_needs_no_accumulator", "proposal::an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit"]
 ported_this_pass = ["probe::the_reachable_interval_composes_exactly_where_width_does_not", "proposal::the_reachable_interval_is_the_true_grade_and_width_is_its_lax_abstraction"]
 note = "canon_rows above is this pass's best guess at the matching row ids from a keyword search; not independently confirmed field-by-field beyond the spot checks in `reason`. A full audit of this file's sixteen citation sites against every claim in its ~700 lines was not performed; the file is large and well-covered, and the residue found (Minkowski-sum grading) came from reading its own section headers for anything not obviously matched by a grep."
+
+[[item]]
+path = "58_wronski_the_fraction_boundary.md"
+unit = "the_format_concept"
+claims = [
+  "additive verdict is F-independent by construction (probe source never reads the fraction shift), not merely by sweep",
+  "multiplicative associativity failure's MAGNITUDE, not existence, moves under the rounding rule (round-half-up vs truncation, every row still fails)",
+  "57_probes/p4's ClampOnly arm is F=0 relabelled, not a genuine isolation of range-clamping at F>0; the corrected instrument shows a range clamp alone (zero coarsening) is independently sufficient to break multiplicative associativity",
+  "the F=0 multiplicative boundary is structural (finite-width multiply necessarily discards info every step) not a fact about which sweep has run so far",
+  "the multiplicative accumulator grade has no closed form and Q11's width-plus-log-of-capacity option is additive-only with no multiplicative analogue",
+]
+verdict = "mixed"
+confidence = 0.8
+reason = "Four of five claims are superseded, cleanly and with better instruments, by later work already in the registry baseline (predates this seat's branch point, commit 20ee3000 and earlier): claim 1 by proposal::an_additive_verdict_is_independent_of_the_fraction_width (standing=three_or_more, ported from 63's consolidation, already states the by-construction/inspection argument); claim 2 (rounding) and claim 4 (F=0 structural boundary) are both subsumed by law::multiplicative_associativity_under_wrapping's witness field, which cites 61_probes/q2 and 62_probes/p2 'under both rounding spellings' at 54 of 54 signed rows, a later and more exhaustive rounding-mode sweep than this file's own p1; claim 5 (Q11 additive-only) is fully captured by proposal.toml's multiplicative-grading rows and question.toml's Q11 note, which explicitly names file 60 as the source that 'undercuts the accumulator-derivation option'. Claim 3 (the ClampOnly mislabelling correction, and the new clamp-alone-is-independently-sufficient positive result) was genuinely uncaptured: no proposal or law row cited probe::which_factor_of_a_reduction_breaks_the_semiring as evidence, so nothing in the registry asserted the wrong 'clamp is clean' reading, but nothing had recorded the corrected, controlled positive finding either. Ported this pass. This file is the identification stage of a unit whose measurement was completed by later files (60-62) inside this same slice; it is evidence of a real, working multi-file resumption rather than an abandoned or superseded panel, matching the re-brief's framing that a topic-per-panel workflow closes deliberately once its resumption instructions (section 4) are picked up."
+superseded_by = [
+  "60 (multiplicative grading measurement, per question.toml Q11 note)",
+  "61 (wrap-policy ring collapse re-measurement, per law::multiplicative_associativity_under_wrapping witness)",
+  "62 (signed rounding-spelling re-measurement, per same witness field)",
+  "63 (format-concept consolidation, ports the F-independence-by-construction argument as proposal::an_additive_verdict_is_independent_of_the_fraction_width)",
+]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::an_intermediate_range_clamp_alone_breaks_multiplicative_associativity_at_full_precision",
+  "proposal::a_range_clamp_and_a_coarsening_are_two_independent_sufficient_causes_of_multiplicative_non_associativity",
+]
+ported_this_pass = true
+note = "The confidence is 0.8 rather than higher because the supersession attribution for claims 1, 2, 4 and 5 rests on reading the citing rows' `witness`/`note`/`because` fields for which panel files fed them, not on reopening 60, 61 and 62 themselves (outside a strict reading of this file's own resumption target list in its section 4, which was not read this pass). The single-file git history (one commit, no post-hoc edits) rules out an abandoned-mid-panel discontinuity for this file specifically; it does not by itself establish that 60-63 actually did resume from 58, only that the citing registry rows say so."

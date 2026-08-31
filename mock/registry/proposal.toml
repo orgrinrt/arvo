@@ -1869,3 +1869,30 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::#3-job-two-the-grading-second-read",
 ]
 keywords = ["grading", "reachable interval", "Minkowski sum", "width", "accumulator", "interval arithmetic", "lax abstraction", "associativity"]
+
+[[proposal]]
+id = "a_range_clamp_and_a_coarsening_are_two_independent_sufficient_causes_of_multiplicative_non_associativity"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "Coarsening alone (a fixed-width rescale with no clamp) and an intermediate range clamp alone (at full fractional precision, zero coarsening loss) are each independently sufficient to break multiplicative associativity in a fold of length three or more. Neither needs the other. Where both are present the composite fails less than coarsening alone, because the clamp can absorb distinct wrong values onto a shared bound by accident, which is evidence the two mechanisms interact rather than evidence that either is clean at F > 0."
+because = "Coarsening-alone sufficiency was established in `57_probes/p4`'s `CoarsenOnly` arm (unbounded range, no clamp, still breaks). Clamp-alone sufficiency is the new half: `58_probes/p2` section 2 holds coarsening at zero (full guard width, matching `exact_once`'s own shape) and adds an intermediate clamp back in, and the with-clamp fold still diverges (448 of 4096 triples at fold length 3, 11528 of 65536 at fold length 4) against zero for the no-clamp control at the same precision. The masking direction (composite fails less than coarsening alone, 398 against 1160 at the row `57` itself measured) was noticed by `57` without its mechanism being named; naming it is that two independent lossy maps compose to a joint failure count that is neither the sum nor the maximum of either alone."
+predicate = [
+  "total_width: total width = 4 (M = 15)",
+  "fraction_width: F in {1, 3}",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy = clamp",
+  "operation: operation = mul",
+  "arity: arity in {3, 4}",
+]
+evidence = ["an_intermediate_range_clamp_alone_breaks_multiplicative_associativity_at_full_precision", "which_factor_of_a_reduction_breaks_the_semiring"]
+law = ["multiplicative_associativity_under_wrapping"]
+note = "`total_width`, `fraction_width` and `arity` are the two instruments' own stated parameters and nothing wider; neither instrument varied signedness, rounding mode, or overflow policy in the clamp-alone arm, so this predicate does not transfer to the signed or saturate rows the neighbouring law row separately establishes at `F > 0` by other means. `threads` and `target_features` are absent because neither instrument names them, so under I13 this holds in no situation where threads exist. The relation to `multiplicative_associativity_under_wrapping` is that this refines its `witness` field's attribution of the mechanism from 'a representable-width multiply discards F bits' to 'two independent lossy mechanisms exist, coarsening and clamping, either alone sufficient'; the existing witness is not wrong, it names the mechanism this proposal's predicate does not reach (unbounded fold, wrap policy, not clamp), so the two are complementary rather than competing accounts."
+gap = "Whether an intermediate SATURATING clamp (rather than the hard clamp measured here) shows the same independent-sufficiency behaviour is untested; the mechanism argument (an intermediate bound applied mid-fold, before the final narrowing, is itself a lossy step regardless of what happens at the bound) suggests it would, but suggestion is not the standing this registry records."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::58_wronski_the_fraction_boundary::226",
+  "panel::202608072330_the-numeral-canon-panel::58_wronski_the_fraction_boundary::276",
+  "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::399",
+]
+keywords = ["range clamp", "coarsening", "independent mechanisms", "multiplicative", "associativity", "masking", "absorption", "composite"]
