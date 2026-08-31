@@ -38,7 +38,7 @@ fn main() {
     println!("rows in the empty registry: {}", empty.rows.len());
     println!("rows in the committed canon: {}", real.rows.len());
     assert_eq!(empty.rows.len(), 0, "control: the empty side must be empty");
-    assert!(real.rows.len() > 0, "control: the real side must not be");
+    assert!(!real.rows.is_empty(), "control: the real side must not be");
     println!();
 
     let mut vacuous = 0usize;
