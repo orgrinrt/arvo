@@ -1,0 +1,15 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p2d_diagnose_c1.rs
+
+### compiled clean
+
+### p2d. diagnosis of the C1 failure, constant-quantum family only
+  pairs with a unique meet                       374
+  pairs with NO lower bound, intersection empty  256
+  pairs with NO lower bound, intersection small  0
+  pairs with SEVERAL maximal lower bounds        0
+
+  example of the no-lower-bound case:  const step=2/16 half=16/16 phase=0/16 /\ const step=2/16 half=16/16 phase=1/16 = {}
+  example of the several case:         none
+
+### exit 0
