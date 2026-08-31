@@ -189,20 +189,59 @@ pub fn measurements_resting_on_an_unusable_instrument(reg: &Registry) -> Vec<Fin
 /// Whether a `control` field is an admission that none was run.
 ///
 /// Read from the text because that is where the corpus puts it, and the field
-/// is required precisely so the admission has somewhere to go. Deliberately
-/// narrow: it matches a probe saying plainly that nothing was run, and not one
-/// describing a control that did.
+/// is required precisely so the admission has somewhere to go.
+///
+/// **The first version matched five fixed phrases and caught one admission in
+/// five.** The seat writing the rows predicted that before its own run and then
+/// measured it: five rows open their `control` with the word None and one
+/// matched, the misses being the natural phrasings, "None stated in the
+/// material read" and "None, and none is needed". It also reported that it had
+/// written its own admission in the form the matcher could see, and **named
+/// that as adopting an unstated convention rather than letting it pass**, which
+/// is the half worth keeping: a `control` field says what is true, not what a
+/// substring can find.
+///
+/// So the rule is the opening word, with one carve-out. A field beginning
+/// "None" is an admission unless its first clause reports something happening,
+/// because "None of the arms disagreed, and that is the control firing" begins
+/// identically and means the opposite. **The carve-out is why this is not
+/// simply a prefix test**, and an opening-word rule is blunt enough that a
+/// second reader is owed on it.
 fn names_no_control(control: &str) -> bool {
-    let c = control.to_ascii_lowercase();
-    [
-        "no control",
-        "none was run",
-        "none run",
-        "nothing was run",
-        "no case",
-    ]
-    .iter()
-    .any(|phrase| c.contains(phrase))
+    let c = control.trim().to_ascii_lowercase();
+
+    // Stated anywhere in the field, because these are admissions wherever they
+    // sit rather than only at the front.
+    const PLAINLY: &[&str] = &["no control", "nothing was run", "no case that had to fail"];
+    if PLAINLY.iter().any(|p| c.contains(p)) {
+        return true;
+    }
+
+    // Opening with the word, which is how this corpus actually writes it.
+    let Some(rest) = c.strip_prefix("none") else {
+        return false;
+    };
+    if rest.starts_with(|ch: char| ch.is_alphanumeric()) {
+        return false; // `nonetheless`, and whatever else begins that way
+    }
+    // Unless the field somewhere reports a case that did come out one way.
+    //
+    // **Read over the whole field rather than the opening clause**, which is
+    // what the first attempt did and what its own test caught: "None of the
+    // four cells matched; the control fired on the fifth" puts the firing after
+    // a semicolon, and a clause-bounded read called it an admission. Widening
+    // it costs nothing measurable here, because none of the six admissions this
+    // corpus actually writes contains any of these words anywhere.
+    const FIRED: &[&str] = &[
+        "fired",
+        "disagreed",
+        "refused",
+        "failed",
+        "reported",
+        "caught",
+        "flagged",
+    ];
+    !FIRED.iter().any(|v| rest.contains(v))
 }
 
 /// A region on an imposed proposition inverts it, and its absence anywhere else

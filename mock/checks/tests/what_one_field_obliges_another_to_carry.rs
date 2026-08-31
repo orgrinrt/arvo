@@ -151,6 +151,85 @@ evidence = ["the_defective_one"]
     );
 }
 
+/// The admissions the corpus actually writes, which a phrase list missed.
+///
+/// The first matcher caught one of five. The seat writing the probe rows
+/// predicted that before its own run and then measured it per row: five open
+/// their `control` with the word None and one matched. These are the real
+/// phrasings, copied from the rows.
+#[test]
+fn the_ways_this_corpus_says_none_are_all_read_as_none() {
+    let admissions = [
+        "None stated in the material read. The instrument counts vocabulary occurrences.",
+        "None stated as a must-fail arm. What stands in its place is a trace.",
+        "None run, and the shape does not admit an obvious one.",
+        "None, and none is needed for what it establishes.",
+        "None. It is a structural argument with no failing case to plant.",
+        "None was run as a case that had to fail.",
+        "no control was run",
+        "nothing was run against it",
+    ];
+    for (i, control) in admissions.iter().enumerate() {
+        let reg = parse(
+            "planted.toml",
+            &format!(
+                r#"
+[[probe]]
+id = "p{i}"
+standing = "sound"
+control = "{control}"
+
+[[proposal]]
+id = "rests_on_p{i}"
+sentence_kind = "measured"
+evidence = ["p{i}"]
+"#
+            ),
+        );
+        let found = shape::measurements_resting_on_an_unusable_instrument(&reg);
+        assert_eq!(
+            found.len(),
+            1,
+            "`{control}` is an admission that none was run and was not read as one"
+        );
+    }
+}
+
+/// The carve-out, and it is why the rule is not simply a prefix test.
+///
+/// A control that fired can be written starting with the same word. Reading
+/// that as an admission would report the best-controlled probes in the corpus.
+#[test]
+fn a_control_that_fired_may_open_with_the_same_word() {
+    let fired = [
+        "None of the arms disagreed until the planted row, which the check reported.",
+        "None of the four cells matched; the control fired on the fifth.",
+        "Nonetheless the wrap arm had to disagree with clamp at width 5, and it did.",
+    ];
+    for (i, control) in fired.iter().enumerate() {
+        let reg = parse(
+            "planted.toml",
+            &format!(
+                r#"
+[[probe]]
+id = "q{i}"
+standing = "sound"
+control = "{control}"
+
+[[proposal]]
+id = "rests_on_q{i}"
+sentence_kind = "measured"
+evidence = ["q{i}"]
+"#
+            ),
+        );
+        assert!(
+            shape::measurements_resting_on_an_unusable_instrument(&reg).is_empty(),
+            "`{control}` reports a control that came out one way and was read as an admission"
+        );
+    }
+}
+
 /// The control on the control-detector, which is a phrase match and could
 /// easily report every probe that uses the word.
 #[test]
