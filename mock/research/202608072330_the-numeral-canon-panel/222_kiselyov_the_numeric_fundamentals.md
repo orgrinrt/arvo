@@ -29,14 +29,14 @@ nobody had built.
 
 **The canon gate passes.** I checked the assigned work against
 `mock/registry/ruling.toml` and specifically against
-`ruling::the_panel_finishes_the_canon_without_him` (`ruling.toml:1626`), which
+`ruling::the_panel_finishes_the_canon_without_him` (`ruling::the_panel_finishes_the_canon_without_him`), which
 says every remaining canon question is the panel's, that a question filed as op's
 is now derived from what he has already said, and that nothing is parked awaiting
 him. Deriving answers to open question rows is exactly what that licenses. Two
 things in the brief's own framing I did have to test and both held: the registry
-is the canon by `canon_paths` in `mockspace.toml:32`, and the questions were
+is the canon by `canon_paths` in `mockspace.toml:31`, and the questions were
 ported without answers by that file's own stated policy, which
-`question.toml:17` records in the header.
+`question.toml`'s own header comment records, in the paragraph beginning "No answer is recorded here".
 
 **The test gate passes and the suite is real.** `cargo test --manifest-path
 mock/checks/Cargo.toml` runs 152 tests across nineteen files and all pass. I read
@@ -50,7 +50,7 @@ declaration class the workspace's test gate warns about is absent here: no test
 asserts a constant against the literal its own definition sets, and the predicate
 checker's assertions reach through to the parsed rows rather than to another
 declaration. I found one gap and it is already recorded rather than hidden:
-`predicate.rs:19` states outright that the values side of a predicate is not
+`predicate.rs:17` states outright that the values side of a predicate is not
 checked and gives the reason, and
 `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` names two live
 violations that the slug-side-only arm cannot see. That is a known hole with a
@@ -75,7 +75,7 @@ which is the finding in section 9.
 Two things the coordinator flagged as having landed on the trunk while I worked
 turn out to have been in my tree already, so neither changes anything here.
 `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` is at
-`rung = "ratified"`, `ratified_by = "experts"` at `ruling.toml:1544` in the tree I
+`rung = "ratified"`, `ratified_by = "experts"` at `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` in the tree I
 cut, and I wrote every predicate below under it. The three questions closed
 through `ruling::the_format_spine_is_canon` I found by walking the same two hops
 myself, before the message arrived; that walk is section 3.1 and it is the first
@@ -98,7 +98,7 @@ roster built by topic, which is worth somebody's attention.
 **What "no `answered` field" means is weaker than it reads**, and this matters for
 how the thirty-seven should be understood. `what_then_validate_requires` (Q1) has
 no `answered` field and is nonetheless closed: `ruling::validate_means_all_three_readings`
-(`ruling.toml:1185`) carries op's verbatim answer, names the row in its `answers`
+(`ruling::validate_means_all_three_readings`) carries op's verbatim answer, names the row in its `answers`
 edge, and the question's own `note` says "Recorded as answered at `28` batch one".
 So the field's absence marks rows the schema's newer answer mechanism has not
 reached rather than rows nobody has answered. Reading the count as thirty-seven
@@ -111,16 +111,16 @@ before any derivation starts, and the fourth changes the shape of eight more.
 
 ### 3.1 Three questions are closed at the governing tier and the queue cannot see it
 
-`ruling::the_format_spine_is_canon` (`ruling.toml:1436`) is ratified, marked
+`ruling::the_format_spine_is_canon` (`ruling::the_format_spine_is_canon`) is ratified, marked
 `ratified_by = "both"`, and carries a `ratifies` list of four propositions. Three
 of those four carry `answers` edges, and every one of the three lands in my
 assignment:
 
 | ratified proposition | line | closes |
 |---|---|---|
-| `a_format_is_identified_by_its_ambient_domain_and_its_representable_set` | `proposal.toml:65` | `adaptation_in_identity_or_realisation` (Q18) |
-| `membership_of_the_representable_set_is_one_affine_predicate` | `proposal.toml:82` | `which_width_coordinates_a_consumer_writes` (Q2) |
-| `the_concept_is_closed_and_the_inventory_is_open` | `proposal.toml:576` | `is_the_number_system_inventory_open` (Q20) |
+| `a_format_is_identified_by_its_ambient_domain_and_its_representable_set` | `proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set` | `adaptation_in_identity_or_realisation` (Q18) |
+| `membership_of_the_representable_set_is_one_affine_predicate` | `proposal::membership_of_the_representable_set_is_one_affine_predicate` | `which_width_coordinates_a_consumer_writes` (Q2) |
+| `the_concept_is_closed_and_the_inventory_is_open` | `proposal::the_concept_is_closed_and_the_inventory_is_open` | `is_the_number_system_inventory_open` (Q20) |
 
 **The mechanism that hides them is one line of the checker.**
 `checks/tests/a_settled_question_does_not_sit_in_the_queue.rs:80` defines
@@ -140,7 +140,7 @@ which it must not.
 
 **A fourth row is in the same class and I am less sure of it**, so it is
 separate. `staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`
-(`proposal.toml:1579`) answers `does_narrowing_compose` at `standing =
+(`proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`) answers `does_narrowing_compose` at `standing =
 "three_or_more"` with an exact predicate and a named instrument. That is not a
 ratified proposition, so it does not close the question the way the three above
 do; what it does is make the question's binary option set false, which is section
@@ -148,14 +148,14 @@ do; what it does is make the question's binary option set false, which is sectio
 
 ### 3.2 A live self-contradiction in the registry, about the general form of a rounding law
 
-`proposal.toml:1603` names the instrument
-`07_probes/p4_composition_and_forced_adjoint.py` and line 1604 says of it, in
+`proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even` has a `note` naming the instrument
+`07_probes/p4_composition_and_forced_adjoint.py` and says of it, in
 the same sentence, "and no `probe` row names it, so the general form is not
 writable and what is written is the one instance whose instrument is
 registered". The preceding line says, in bold, "**The general rule behind it is
 in the corpus and cannot be written here.**"
 
-`probe.toml:982` is a row with `id =
+`probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points` is a row with `id =
 "narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points"`,
 whose `lives` list at line 987 is exactly
 `07_probes/p4_composition_and_forced_adjoint.py`, and whose `establishes` states
@@ -192,12 +192,12 @@ that nothing audits.
 
 The canon names this shape and rejects it.
 `ruling::there_is_no_universal_answer_take_the_win_and_gate_it`
-(`ruling.toml:909`) carries op's words: "we don't need to settle for one
+(`ruling::there_is_no_universal_answer_take_the_win_and_gate_it`) carries op's words: "we don't need to settle for one
 universal solution, it's the anti-pattern I've already named. Case by case ...
 Take the win where it applies, gate it out from where it does not. No single
 one-fits-all solutions, it's impossible." The ratified
-`ruling::the_work_is_predicated_arms_composed` (`ruling.toml:847`) and
-`ruling::arms_over_regions_are_the_fundamental_heart` (`ruling.toml:1459`) say
+`ruling::the_work_is_predicated_arms_composed` (`ruling::the_work_is_predicated_arms_composed`) and
+`ruling::arms_over_regions_are_the_fundamental_heart` (`ruling::arms_over_regions_are_the_fundamental_heart`) say
 the same thing positively.
 
 The eight, and what each is really asking once the shape is removed:
@@ -227,7 +227,7 @@ which option it selects, because a question whose answer is already ratified wan
 reading rather than answering. None carries a predicate: all four are normative,
 and a normative sentence has no region because there is nothing an instrument
 could refute. That is the same reading the number-system block states about itself
-at `proposal.toml:256`.
+in the header comment above its own block in `proposal.toml`.
 
 **Q18, `adaptation_in_identity_or_realisation`. Answer: realisation.** The ratified
 `a_format_is_identified_by_its_ambient_domain_and_its_representable_set` says
@@ -267,7 +267,7 @@ obligations rather than by amending the canon", and I use that as a test twice, 
 6.2 and 6.3.
 
 **Q1, `what_then_validate_requires`. Answer: all three readings.**
-`ruling::validate_means_all_three_readings` (`ruling.toml:1185`) carries op's
+`ruling::validate_means_all_three_readings` (`ruling::validate_means_all_three_readings`) carries op's
 verbatim words, "Usage, Admissibility, Self-validation, All that makes sense", and
 names the question in `answers`. It is `stated` rather than ratified, so it binds
 as direction. Its challenge bar is his own phrase, "truly not worth it", and the
@@ -348,8 +348,8 @@ accumulates in an unbounded integer, so the moment an accumulator can overflow o
 saturate, neither form is the variance. `signedness` is unlisted because the probe
 is parameterised by a residue rather than by a value and never instantiated a
 signed numeral. The dropped-bit count, `Ff - Fc`, is the axis the sweep actually
-walked and no `dimension` row declares it; the same gap is already recorded at
-`proposal.toml:1616` about a staged narrowing's intermediate width, so this is a
+walked and no `dimension` row declares it; the same gap is already recorded in
+`proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`'s `note`, about a staged narrowing's intermediate width, so this is a
 second instance of one missing axis rather than a new complaint.
 
 ### 5.2 The two keyed rounding members do differ, and the direction is not uniform
@@ -449,9 +449,9 @@ forward.** `core::mem::size_of` is a const function, so the footprint is availab
 where a predicated arm is allowed to read. The probe compiles two `const` items
 whose values came from `size_of`, so the claim is a compile result rather than an
 argument, and `ruling::the_predicate_is_whatever_is_available_at_const_time`
-(`ruling.toml:892`) is the sentence that makes it decisive rather than a
+(`ruling::the_predicate_is_whatever_is_available_at_const_time`) is the sentence that makes it decisive rather than a
 curiosity: under it, an axis available at const time is a predicate, and under
-`ruling::never_a_runtime_check_and_one_lowered_path` (`ruling.toml:949`) reading
+`ruling::never_a_runtime_check_and_one_lowered_path` (`ruling::never_a_runtime_check_and_one_lowered_path`) reading
 it costs nothing at runtime. So the container premise does not merely decide
 whether a sentence about identity is true; it hands the design a gateable axis.
 
@@ -537,8 +537,8 @@ cardinality coincidence and not a set equality, so a design keying anything on
 cardinality alone would merge two domains there.
 
 **The limit of the answer, which is the important part.** The corpus writes the
-third domain as "signed symmetric range" (`proposal.toml:153` and
-`proposal.toml:1220`) and does not say which construction that is. Two answer to
+third domain as "signed symmetric range" (`proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy` and
+`proposal::the_law_frame_was_attacked_from_another_topic_and_held`) and does not say which construction that is. Two answer to
 the phrase and they are different sets: sign-magnitude, which is two's complement
 with the extra negative removed, and balanced radix, which is the centred digit
 set. Under the balanced model **neither** reading gives a chain, at 0 of 15 and 0
@@ -597,10 +597,10 @@ a stipulation is part of the stipulation.
 compose, yes or no. Both options are false, and the canon holds the true sentence
 in two places that do not know about each other.
 
-`proposal.toml:1579` measures the instance: staged narrowing disagrees with direct
+`proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even` measures the instance: staged narrowing disagrees with direct
 narrowing under round to nearest even, first at `-247/16` on a nine-bit signed grid
 staged from four fraction bits through two to zero, at `standing = "three_or_more"`
-with three named witnesses. `probe.toml:982` holds the general form: narrowing
+with three named witnesses. `probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points` holds the general form: narrowing
 composes exactly when the mode's direction switches only at coarser-grid points,
 tested through two consequences of an adjunction rather than through its defining
 biconditional, at zero failures on-grid and seven off-grid.
@@ -616,9 +616,9 @@ So the answer is a predicate on the rounding mode, which is what
 Both arms exist, both are reachable, and the design owes a gate rather than a
 choice. The row's second option, "the canon owes the sentence that narrowing twice
 is not narrowing once", is owed only on the second arm and is already written at
-`proposal.toml:1585`.
+that row's `because`.
 
-The blocker recorded at `proposal.toml:1604` is stale, per 3.2, and the general
+The blocker recorded in that row's `note` is stale, per 3.2, and the general
 form is writable today.
 
 ### 6.2 The ambient operation family is a parameter, and the concept is therefore broad
@@ -650,7 +650,7 @@ Q21 follows without further argument. The two-element Boolean algebra and the
 vector space over the two-element field are ambient domains over ordinary
 representable sets, so they are members under a parametric family and unadmittable
 under a fixed one. This agrees with `the_concepts_edge_is_not_an_order_and_wrapping_is_the_test`
-(`proposal.toml:471`) and I read that row first, so my agreement is confirmation.
+(`proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test`) and I read that row first, so my agreement is confirmation.
 What is new is the route: that row argues from the measured emptiness of the
 order-shaped discriminator, and this one argues from the ratified admission
 mechanism, so the two do not share a premise even though they share an author's
@@ -674,7 +674,7 @@ and floats are points". An interval is a pair of grid points and is not a point 
 that parameterisation. So a set-valued carrier is not a format, and Q22's answer is
 scoped out **of the format concept**, which is not the same as scoped out of the
 design. `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`
-(`proposal.toml:241`) already places them: intervals and error-carrying values are
+(`proposal::the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`) already places them: intervals and error-carrying values are
 compositions over formats that consume the width algebra, the named adaptation and
 the exactness predicate, and owe their own laws. That row is one expert and I read
 it first; the ratified clause is what does the excluding, and the row is what says
@@ -724,7 +724,7 @@ Option 1's cost, that "the target's declared policy does not govern values enter
 it", is the one the factoring forbids.
 
 One row cuts the other way and it loses on provenance.
-`conversion_and_resolution_are_one_obligation_at_two_arities` (`proposal.toml:411`)
+`conversion_and_resolution_are_one_obligation_at_two_arities` (`proposal::conversion_and_resolution_are_one_obligation_at_two_arities`)
 lists "which reduction governs the loss" as a third thing a crossing must name,
 which reads as though it were free. It is `one_expert` and the factoring is
 ratified. What survives of it is that the crossing must **say** which reduction
@@ -735,7 +735,7 @@ governs, and the answer to what it says is fixed.
 `question::what_the_admission_contract_asks_a_candidate_to_expose` (Q29). Option
 one's sufficient direction is already refuted by
 `an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing`
-(`proposal.toml:1490`), a measured row with a control that asks whether the
+(`proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing`), a measured row with a control that asks whether the
 collapsed verdict can be made to fail at all and finds it cannot.
 
 Between the surviving two, ratified text decides. Option three makes admission
@@ -755,7 +755,7 @@ A platform-width numeral's value set depends on the compilation target, which is
 fixed before anything runs, so per compilation its representable set is a constant
 of the type and the exclusion does not reach it.
 `each_choice_in_the_sequence_has_an_owner_and_a_resolution_time`
-(`proposal.toml:521`) states the positive form, that it is "a target-indexed family
+(`proposal::each_choice_in_the_sequence_has_an_owner_and_a_resolution_time`) states the positive form, that it is "a target-indexed family
 of formats whose exclusion grounds apply only to dependence that survives to
 runtime", and I read that row first, so the positive half is a confirmation and the
 refusal of option one is the entailment.
@@ -771,11 +771,11 @@ missing its answer, which is 8.3 below.
 `arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation` says "the
 adaptation is a first-class object with its own laws". One object, one slot,
 members classified by which laws they satisfy. Wrap is a member of that slot and
-not an axis value with an exception list, because an exception list is what you get
+not an axis value with an exception list, because an exception list is what appears
 when a member is filed outside the structure that classifies it.
 
 **Option one**, agreeing with `the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation`
-(`proposal.toml:98`), which I read first. The row's own `because` carries the part
+(`proposal::the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation`), which I read first. The row's own `because` carries the part
 I cannot improve on: expelling wrapping while retaining saturation "has no
 criterion that does not empty the slot".
 
@@ -790,7 +790,7 @@ is the measurement behind it.
 clamps. The premise is that a strategy fixes the mode, and ratified text says the
 declaration fixes it.
 
-`ruling::the_overflow_panic_is_permitted_and_bounded` (`ruling.toml:1052`), which
+`ruling::the_overflow_panic_is_permitted_and_bounded` (`ruling::the_overflow_panic_is_permitted_and_bounded`), which
 is ratified in op's own words and at his own request kept as loose as he stated
 them, says that on a release build "what stands in its place is the guarantee plus
 an explicit declaration of the mode, saturate or wrap or whatever applies to the
@@ -804,7 +804,7 @@ different seam than the one that option names. What is left of it is two smaller
 things, and both have answers:
 
 - **What the default declaration is where a consumer writes nothing.** Ratified
-  `warms_objective_is_the_intuitive_best_choice` (`ruling.toml:606`) says being a
+  `warms_objective_is_the_intuitive_best_choice` (`ruling::warms_objective_is_the_intuitive_best_choice`) says being a
   Rust crate makes Rust's way "the baseline for intuition", and a native Rust
   primitive panics under debug assertions and wraps without them. So the Warm
   default is panic on debug and wrap on release, and the ratified preset table's
@@ -814,7 +814,7 @@ things, and both have answers:
 - **Whether the mimicry survives measurement.** Ratified text supplies the escape:
   mimicry "does not make it absolutely required, if mimicking is consistently just
   worse choice". Whether it is worse is what op's own deferral
-  `wrap_or_clamp_stays_open_and_both_get_priced` (`ruling.toml:1038`) sends to the
+  `wrap_or_clamp_stays_open_and_both_get_priced` (`ruling::wrap_or_clamp_stays_open_and_both_get_priced`) sends to the
   bench, in his words "Option 1 but see previous answer too", with `instead`
   reading "It goes back to the bench: both readings are written and both are
   priced, and the measurement decides rather than he does". **That is not my
@@ -847,7 +847,7 @@ target and not at another, and an unscoped hosting predicate would have to call 
 both. **Option three**, and the cost the row names, a quantifier over compilations,
 is what the platform-width case needs anyway.
 
-Agrees with `membership_and_hosting_are_two_questions` (`proposal.toml:422`) on the
+Agrees with `membership_and_hosting_are_two_questions` (`proposal::membership_and_hosting_are_two_questions`) on the
 split, which I read first. The target-scoping half is where this goes further than
 that row, and it goes there on 6.6 rather than on taste.
 
@@ -864,7 +864,7 @@ rest may carry on a named target, which is a predicate returning yes or no.
 The row's note is the supporting evidence and it is measured rather than argued:
 most of the disputed cases, a Gray code, two's complement and a stride, are
 coordinate choices rather than rejections. Agrees with
-`admission_returns_a_coordinate_rather_than_a_verdict` (`proposal.toml:479` block),
+`admission_returns_a_coordinate_rather_than_a_verdict` (`proposal::admission_returns_a_coordinate_rather_than_a_verdict`),
 read first.
 
 ### 7.3 Soundness is the canon sentence and tightness is an arm
@@ -944,7 +944,7 @@ different question and 7.8 does not answer it either.
 op's stead, also marked overturnable, and this is my own reading formed from canon
 text.
 
-`ruling::the_operating_constraints_are_intents_and_rules` (`ruling.toml:935`) is
+`ruling::the_operating_constraints_are_intents_and_rules` (`ruling::the_operating_constraints_are_intents_and_rules`) is
 `in_force` and lists **no platform dependency** among constraints that "are not to
 be questioned". Sourcing entropy is a platform dependency. So arvo cannot produce
 randomness, and a stochastic member is either fed from outside or is not
@@ -1022,7 +1022,7 @@ concept, and two different partitions can both be faithful to the same coordinat
 So the answer is that the question has no answer of the shape it asks for, and the
 concept commits to its choices and their order and to nothing about levels. This
 agrees with `the_concept_commits_to_its_choices_and_to_no_count_of_levels`
-(`proposal.toml:512` block), which I read first, so the conclusion is confirmed
+(`proposal::the_concept_commits_to_its_choices_and_to_no_count_of_levels`), which I read first, so the conclusion is confirmed
 rather than corroborated. The route is not shared: that row argues from two
 instruments producing partitions that do not refine each other, and this argues
 from what the ratified sentence commits to, which is a different premise reaching
@@ -1094,7 +1094,7 @@ requires every sentence about numerals to name the prefix it quantifies over, pe
 be explicit is not implicit.
 
 Agrees with `each_choice_in_the_sequence_has_an_owner_and_a_resolution_time`
-(`proposal.toml:521`), read first.
+(`proposal::each_choice_in_the_sequence_has_an_owner_and_a_resolution_time`), read first.
 
 ### 7.14 Name all five crossing classes, and owe an order only where the crossing loses
 
@@ -1119,7 +1119,7 @@ says which. So the second option, and the third option's global order is refused
 because 6.4 makes the answer depend on which endpoint is the target.
 
 Both agree with `an_order_is_named_exactly_where_a_crossing_is_lossy`
-(`proposal.toml:393` block) and `a_crossing_carries_two_relations_and_a_verdict_per_law_family`,
+(`proposal::an_order_is_named_exactly_where_a_crossing_is_lossy`) and `a_crossing_carries_two_relations_and_a_verdict_per_law_family`,
 read first. What 6.4 adds is closing that row's own recorded gap.
 
 ### 7.15 Mixed-numeral addition exists, and its existence has a cost the register should carry
@@ -1222,7 +1222,7 @@ from was written about bare primitives at API positions, and reading it as
 governing how a width literal becomes a type-level natural is a widening of exactly
 the kind I rejected at 7.9. It may be one widening too far. The sixth option, where
 the literal is what a consumer sees and the structural nat is a hidden projection,
-satisfies every constraint I named just as well, and I separate it from the fifth
+satisfies every constraint I named equally well, and I separate it from the fifth
 only on the crossing-back argument, which is the row's finding rather than mine and
 which I did not re-measure. A seat that measures the crossing-back price on the two
 arrangements would settle it, and nothing else I can think of would.
@@ -1311,7 +1311,7 @@ What I tried, in order, with what closed each:
    is a numbered member file I may not open.
 
 **The wall, stated exactly.** The two readings exist only inside an unratified
-member file. The registry is the canon by `mockspace.toml:32`, and under the
+member file. The registry is the canon by `mockspace.toml:31`, and under the
 provenance ladder a member file is agent output presumed wrong where it conflicts
 with the canon. So there are two ways to answer Q57 and both are bad: read the
 member file, which means resolving a canon question by reasoning from the tier the
@@ -1460,7 +1460,7 @@ worse than guarding neither, because the essay is what a reader trusts instead o
 checking.
 
 **The registry contradicts itself about whether a general rounding law is
-writable**, at `proposal.toml:1604` against `probe.toml:982`. One of them is stale
+writable**, between `proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`'s `note` and `probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points`. One of them is stale
 and no check can tell which, because nothing cross-reads a `note` against the rows
 it describes. That is the same class as
 `no_note_describes_a_row_it_is_not_on.rs`, which exists and does not reach this.
@@ -1473,7 +1473,7 @@ the ratification gate's own note names.
 
 **Four axes the corpus reasons about are not declared and cannot be written in a
 predicate**, so every finding about them is silently unpredicated: the dropped-bit
-count of a narrowing (mine at 5.1, and `proposal.toml:1616` records the same gap
+count of a narrowing (mine at 5.1, and `proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even` records the same gap
 for a staged narrowing's intermediate width), occupancy (recorded by
 `at_shared_occupancy_no_per_element_footprint_observation_exists` as wanted and not
 created), precision (5.4), and the ramp geometry at 5.2. Under
@@ -1482,7 +1482,7 @@ notation's strongest negative statement into a shrug, which `predicate.rs:12` sa
 in its own words.
 
 **`dimension::signedness` declares two values and the corpus writes three.**
-`proposal.toml:153` and `proposal.toml:1220` both carry "three sign domains,
+`proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy` and `proposal::the_law_frame_was_attacked_from_another_topic_and_held` both carry "three sign domains,
 unsigned and signed two's complement and signed symmetric range" on the values
 side, which the declared grammar does not admit. The values side is unchecked by
 construction, so nothing catches it, and 5.4's answer had to be written in the same
@@ -1509,3 +1509,17 @@ Where I agree with an existing `one_expert` proposal I read that proposal first,
 and I have marked every such case `confirmed` rather than letting it read as a
 second instance. Agreement reached by starting from somebody else's answer is
 confirmation and it does not move a standing.
+
+**One thing I did wrong and repaired, recorded because the repair is the point.**
+The first draft of this file cited registry rows by line, about thirty times.
+`checks/tests/no_line_citation_into_the_registry.rs` exists precisely for that, its
+ceiling on member files is 45, and its assertion message says "Brief the next seat
+to write slugs; do not raise this". I would have pushed it well past the ceiling.
+Every citation here now names a row slug, and the two remaining line citations
+point at `mockspace.toml`, which that check's own control establishes is not a
+registry file.
+
+The mechanism proved itself while I worked rather than in the abstract: five of my
+line citations were already wrong when I checked them, because rows had moved under
+me between reading and writing. A slug cannot go wrong that way, which is the whole
+argument and it took an afternoon to feel.
