@@ -1,0 +1,146 @@
+== p1. STP sections 2-8, archive citations, resolved against the tree ==
+archive: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat208/mock/research/202607301300_formalization-spec-panel
+entries in archive: 320
+
+-- controls --
+OLD_999_not_a_file.md              unresolved     control 1 ok
+OLD_SETTLED_laws.md:5521           out-of-range   control 2 ok (file is 521 lines)
+124                                RESOLVED       control 3 ok -> OLD_124_consolidation_twelve.md
+
+-- named archive files (OLD_*) --
+OLD_110_consolidation_eleven.md    resolved       OLD_110_consolidation_eleven.md
+OLD_112_the_op_material_sweep.md   resolved       OLD_112_the_op_material_sweep.md
+OLD_124_consolidation_twelve.md    resolved       OLD_124_consolidation_twelve.md
+OLD_13c_op_the_standard_and_the_mode.md resolved       OLD_13c_op_the_standard_and_the_mode.md
+OLD_SETTLED.md                     resolved       OLD_SETTLED.md
+OLD_SETTLED.md:130-133             resolved       in range of 147
+OLD_SETTLED_container.md:29-31     resolved       in range of 465
+OLD_SETTLED_container.md:33-37     resolved       in range of 465
+OLD_SETTLED_container.md:385-420   resolved       in range of 465
+OLD_SETTLED_container.md:410-420   resolved       in range of 465
+OLD_SETTLED_container.md:416-419   resolved       in range of 465
+OLD_SETTLED_container.md:436-445   resolved       in range of 465
+OLD_SETTLED_container.md:45-72     resolved       in range of 465
+OLD_SETTLED_container.md:58-62     resolved       in range of 465
+OLD_SETTLED_container.md:91-100    resolved       in range of 465
+OLD_SETTLED_laws.md:103-133        resolved       in range of 521
+OLD_SETTLED_laws.md:138-160        resolved       in range of 521
+OLD_SETTLED_laws.md:254-276        resolved       in range of 521
+OLD_SETTLED_laws.md:315-334        resolved       in range of 521
+OLD_SETTLED_laws.md:336-353        resolved       in range of 521
+OLD_SETTLED_laws.md:355-370        resolved       in range of 521
+OLD_SETTLED_laws.md:374-405        resolved       in range of 521
+OLD_SETTLED_laws.md:448-459        resolved       in range of 521
+OLD_SETTLED_laws.md:471-498        resolved       in range of 521
+OLD_SETTLED_laws.md:75-101         resolved       in range of 521
+OLD_SETTLED_strategy.md            resolved       OLD_SETTLED_strategy.md
+OLD_SETTLED_surface.md:322-394     resolved       in range of 551
+OLD_SETTLED_surface.md:449-458     resolved       in range of 551
+OLD_SETTLED_surface.md:462-469     resolved       in range of 551
+
+-- named probe directories and files --
+OLD_128_probes                     resolved       exists
+OLD_128a_probes                    resolved       exists
+OLD_129_probes                     resolved       exists
+OLD_137_probes/p5_total_ladder.rs  resolved       exists
+OLD_76_probes/b1_structural_array.rs resolved       exists
+
+-- bare file numbers in backticks (`124:1157-1159`, `137b`) --
+01                                 resolved       OLD_01_knuth_mathematical_rigour.md
+03                                 resolved       OLD_03_jhala_what_is_provable.md
+07                                 resolved       OLD_07_spj_is_the_type_story_sound.md
+08                                 resolved       OLD_08_fog_the_union_and_what_it_costs.md
+17                                 resolved       OLD_17_orchard_are_these_all_grades.md
+26                                 resolved       OLD_26_consolidation_two.md
+27                                 resolved       OLD_27_carmack_what_a_number_is.md
+30b                                resolved       OLD_30b_op_checkpoint_seven.md
+39b                                resolved       OLD_39b_op_checkpoint_nine.md
+59                                 resolved       OLD_59_fog_the_lowering_door.md
+63                                 resolved       OLD_63_consolidation_six.md
+70b                                resolved       OLD_70b_op_checkpoint_seventeen.md
+82b                                resolved       OLD_82b_op_checkpoint_twenty.md
+107                                resolved       OLD_107_lattner_is_a_or_contains_a.md
+108                                resolved       OLD_108_spj_the_truth_contracts_exit.md
+108b                               resolved       OLD_108b_op_checkpoint_twentysix.md
+109                                resolved       OLD_109_the_consolidation_drop_audit.md
+111                                resolved       OLD_111_leroy_what_the_restoration_actually_carries.md
+112                                resolved       OLD_112_the_op_material_sweep.md
+113                                resolved       OLD_113_the_decision_register_diff.md
+123                                resolved       OLD_123_dolan_the_width_ceiling.md
+124                                resolved       OLD_124_consolidation_twelve.md
+124:644-668                        resolved       in range of 7099
+124:986-991                        resolved       in range of 7099
+124:1049-1110                      resolved       in range of 7099
+124:1157-1159                      resolved       in range of 7099
+124:1160-1187                      resolved       in range of 7099
+124:1207-1233                      resolved       in range of 7099
+124:1281-1353                      resolved       in range of 7099
+124:1470-1517                      resolved       in range of 7099
+124:1552-1561                      resolved       in range of 7099
+124:1627-1702                      resolved       in range of 7099
+124:1651-1658                      resolved       in range of 7099
+124:1791-1845                      resolved       in range of 7099
+124:1847-1959                      resolved       in range of 7099
+124:1961-2045                      resolved       in range of 7099
+124:2135-2233                      resolved       in range of 7099
+124:2245-2313                      resolved       in range of 7099
+124:2315-2404                      resolved       in range of 7099
+124:2406-2440                      resolved       in range of 7099
+124:2460-2525                      resolved       in range of 7099
+124:2628-2641                      resolved       in range of 7099
+124:2666-2672                      resolved       in range of 7099
+124:2674-2795                      resolved       in range of 7099
+124:2799-2816                      resolved       in range of 7099
+124:2804-2816                      resolved       in range of 7099
+124:2839-2846                      resolved       in range of 7099
+124:2847-2853                      resolved       in range of 7099
+124:2860-2866                      resolved       in range of 7099
+124:2873-3024                      resolved       in range of 7099
+124:2928-3003                      resolved       in range of 7099
+124:3026-3033                      resolved       in range of 7099
+124:3041-3058                      resolved       in range of 7099
+124:3079-3082                      resolved       in range of 7099
+124:3473-3480                      resolved       in range of 7099
+124:3494-3506                      resolved       in range of 7099
+124:3527-3575                      resolved       in range of 7099
+124:3821-3829                      resolved       in range of 7099
+124:3831-3841                      resolved       in range of 7099
+124:3949-3998                      resolved       in range of 7099
+124:4010-4200                      resolved       in range of 7099
+124:4134-4145                      resolved       in range of 7099
+124:4202-4317                      resolved       in range of 7099
+124:4319-4516                      resolved       in range of 7099
+124:4518-4615                      resolved       in range of 7099
+124:4714-4929                      resolved       in range of 7099
+124:5075-5174                      resolved       in range of 7099
+124:5134-5143                      resolved       in range of 7099
+124:5207-5215                      resolved       in range of 7099
+124:5217-5230                      resolved       in range of 7099
+124:5564-5575                      resolved       in range of 7099
+124:5586-5696                      resolved       in range of 7099
+125                                resolved       OLD_125_rompf_does_the_surface_need_a_const_at_all.md
+126                                resolved       OLD_126_dolan_only_the_widths_that_are_used.md
+127b                               resolved       OLD_127b_op_checkpoint_twentyseven.md
+128                                resolved       OLD_128_the_generic_const_args_vetting.md
+129                                resolved       OLD_129_jhala_canonicity_settled.md
+130                                resolved       OLD_130_kiselyov_the_surface_without_compromise.md
+130b                               resolved       OLD_130b_op_checkpoint_twentyeight.md
+135b:12-16                         resolved       in range of 117
+135b:65-68                         resolved       in range of 117
+137b                               resolved       OLD_137b_op_checkpoint_thirty.md
+137b:10-26                         resolved       in range of 117
+139b                               resolved       OLD_139b_op_checkpoint_thirtytwo.md
+140                                resolved       OLD_140_fog_warm_without_widening.md
+140b                               resolved       OLD_140b_op_checkpoint_thirtythree.md
+140b:69-71                         resolved       in range of 136
+141                                resolved       OLD_141_xu_the_container_fork_benched.md
+142                                resolved       OLD_142_giesen_excel_everywhere.md
+142b                               resolved       OLD_142b_op_checkpoint_thirtyfour.md
+142b:60-64                         resolved       in range of 94
+146                                resolved       OLD_146_chlipala_the_order_and_the_cast.md
+151                                resolved       OLD_151_rompf_what_replaces_the_two_refutations.md
+
+== totals ==
+named archive files : resolved 29, unresolved 0, out-of-range 0
+probe paths         : resolved 5, unresolved 0
+bare file numbers   : resolved 93, unresolved 0, out-of-range 0
