@@ -1,0 +1,42 @@
+### V-b, warrant tokens on the values side
+  entries: 527
+  values sides matched: 529
+  carrying a warrant token after a second colon: 0
+### P2, the matcher must find a planted token
+  PASS, the planted token is found
+
+### V-c, declared axes named by no predicate entry
+  UNUSED   access_pattern
+  UNUSED   ambient_domain
+  UNUSED   occupancy
+### P3, an axis in constant use must not be reported unused
+  PASS, total_width at 65
+
+### V-d, does anything enforce append-only on dimension.toml
+  files/lines mentioning 'append' under mock/lints and mock/tools: 0
+### P4, the same grep on a word that is there
+  PASS, 'keywords' found in 4 files, so the grep works
+
+### P1, the entry total against a count from a third reader
+  PASS, 527 matches the ratified note's 527
+
+### V-d2, an independent route to the same question: which checks read the
+###       dimension namespace at all, and does any of them compare the set
+###       against a previous state. A grep for one word is one instrument;
+###       this asks what the checks over that namespace actually do.
+  lints naming the dimension namespace:
+    every_predicate_names_a_declared_axis.rs
+    panel_corpus.rs
+  of those, any reading a stored or previous set (git, a baseline file, a
+  snapshot), which is what an append-only check needs:
+    1
+### P5, the same search on a lint that demonstrably reads history-like
+###     state, so a zero above is not a fact about this pipeline.
+  PASS, ratchet-style state exists in the pack and the pattern finds it:
+    no_line_citation_into_a_registry_file.rs
+    measured_claim_cites_no_probe.rs
+    a_standing_is_reachable_from_what_it_cites.rs
+    a_proposal_rests_on_more_than_a_consolidation.rs
+    no_unprefixed_archive_citation.rs
+    no_line_citation_into_a_living_ledger_in_prose.rs
+    a_probe_reads_the_tree_it_sits_in.rs
