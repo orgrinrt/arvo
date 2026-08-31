@@ -1,0 +1,41 @@
+### registry: /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/registry
+### source:   35_mcsherry_what_the_layers_above_need_from_the_numeral.md
+
+######## 191 SAMPLED THESE THREE ########
+  3.4      ABSENT  63 of 63                   reg=0   top absorbs under saturation
+  3.5      ABSENT  33 of 33                   reg=0   monotonicity split
+  3.5a     present 560 of 2176                reg=1   reserved top monotonicity failures
+             retirement.toml:1147:why = "Proposed and closed in the same file by its own probe. It absorbs co
+
+######## 191 SAMPLED NONE OF THESE SEVEN ########
+  3.1      ABSENT  runtime trip count         reg=0   the fold/chain boundary as 35 words it
+  3.2      ABSENT  log2                       reg=0   the accumulator formula W + ceil(log2 C)
+  3.2      ABSENT  accfit                     reg=0   the bench arm 20 says wins at every arity
+  3.3      ABSENT  18 of 126                  reg=0   shapes with no multiplicative identity
+  3.6      present strided                    reg=2   a split reduction changes association order
+             dimension.toml:166:keywords = ["access pattern", "sequential", "random", "strided", "contended",
+             question.toml:131:note = "Op answered the regime half at `32` and the register records it as dis
+  3.7      ABSENT  6 of 33                    reg=0   mul-assoc holds only at F == 0
+  3.7      present 87.5                       reg=1   worst distributivity failure rate
+             proposal.toml:1374:gap = "Stated as one-directional sufficiency by its own author. The length-aw
+  3.8      present per-aggregate              reg=4   the two-output container derivation
+             proposal.toml:454:says = "Each choice in the sequence has an owner and a resolution time: a type
+             question.toml:180:  "Two outputs, the carrier and the stride, answering a per-value question and
+             question.toml:641:  "Adopt the key: every chain component carries an owner and a resolution time
+  3.9      ABSENT  49.6                       reg=0   retraction lost under saturation
+  3.10     ABSENT  EMA                        reg=0   the named downstream invariant
+
+######## CONTROLS ########
+  POS-A  PASS  476 present (5)
+  POS-A  PASS  897 present (2)
+  POS-B  PASS  12.6 present (6)
+  NEG    PASS  999999999 absent
+  REPRO  PASS  '63 of 63' absent, reproducing 191 section 2.1
+
+### Read the ABSENTs as claims about 35's figures. Section 3.2's substance
+### is in the registry under other words: question.toml Q11 carries the
+### capacity-keyed accumulator as an option, and
+### the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion
+### carries 'any accumulator statement derived from a capacity is an
+### additive-only mechanism' with a predicate and an answers edge to Q11.
+### A figure search cannot see either. That is the bound above, live.

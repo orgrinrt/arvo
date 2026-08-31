@@ -1,0 +1,187 @@
+### registry: /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/registry
+
+======== ARM 1. distinct panel targets the registry cites ========
+   01_op_answers
+   04_op_no_settlements_tonight
+   06_probes
+   07_orchard_the_adjunction_frame
+   07_probes
+   08_probes
+   100_probes
+   101_probes
+   102_probes
+   103_probes
+   104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle
+   105_op_notko_renames
+   106_giesen_consolidation_the_strategy_axis
+   106_probes
+   107_probes
+   108_lamport_the_pair_attacked
+   109_bellard_the_primitive_derived_cold
+   113_op_steer_them_and_make_them_build_it_together
+   117_dispatcher_note_the_bench_profile_and_the_tests_that_cannot_run
+   119_leroy_the_canon_candidate_for_the_realisation_map
+   122_leroy_the_candidate_revised_against_two_partial_signatures
+   125_probes
+   131_probes
+   132_leroy_the_canon_candidate_for_the_rounding_axis
+   136_leroy_the_candidate_revised_against_three_signatures
+   136_probes
+   137_probes
+   138_leroy_the_restoration_pass
+   139_probes
+   140_probes
+   141_probes
+   142_probes
+   144_probes
+   146_leroy_the_canon_candidate_for_the_strategy_object
+   147_probes
+   149_probes
+   151_leroy_the_candidate_revised_against_four_signatures
+   151_probes
+   154_kiselyov_the_primitive_derived_cold
+   156_checkpoint_nine_the_queue_for_ops_seat
+   161_leroy_the_canon_candidate_for_the_primitive
+   163_lamport_signature_in_part
+   164_leroy_the_candidate_revised_against_two_signatures
+   168_mcsherry_the_chain_derived_cold
+   168_probes
+   169_probes
+   170_probes
+   171_probes
+   172_leroy_formalising_the_chain
+   172_probes
+   173_leroy_the_canon_candidate_for_the_chain
+   174_probes
+   175_probes
+   176_leroy_the_candidate_revised_against_two_signatures
+   177_probes
+   178_leroy_the_restoration_pass
+   179_lamport_porting_ops_rulings_into_the_registry
+   17_leroy_what_would_actually_certify_this
+   17_probes
+   180_probes
+   181_op_the_canon_becomes_a_registry_and_the_contracts_hold
+   183_probes
+   184_dispatcher_note_the_demand_side
+   185_probes
+   186_spj_the_notation_calls_derived_cold
+   28_op_answers_two
+   32_op_arvo_adapts_to_the_cores_it_finds
+   34_op_hot_may_sacrifice_soundness_for_proven_gain
+   36_op_the_intent_behind_each_strategy
+   37_op_warm_imitates_rust_and_strategy_is_not_orthogonal
+   38_op_the_strategies_weigh_measurements_differently
+   39_op_the_strategy_set_is_not_closed
+   40_probes
+   47_probes
+   47_wingo_one_richer_output
+   53_leroy_consolidation_the_container_derivation
+   56_probes
+   57_probes
+   60_probes
+   62_probes
+   63_probes
+   63_spj_consolidation_the_format_concept
+   73_probes
+   74_giesen_consolidation_the_number_system_concept
+   80_probes
+   82_probes
+   83_op_the_predicate_is_whatever_is_const
+   85_op_no_runtime_checks_ever_and_stop_policing_law_shapes
+   87_op_the_canon_is_written_once_at_the_end
+   88_op_the_intent_is_not_every_clause_and_there_is_no_universal
+   90_giesen_consolidation_derived_algebraic_laws
+   93_probes
+   94_probes
+   95_op_the_panel_runs_to_ratification_and_units_must_converge
+   97_dolan_the_strategy_space_attacked
+   97_probes
+   98_probes
+
+   distinct numbered targets: 97
+
+======== ARM 2. do 35 and 43 appear in any provenance ========
+   35  absent  neither the file nor its probe directory is cited anywhere
+   43  absent  neither the file nor its probe directory is cited anywhere
+
+======== ARM 3. who carried them, and is the carrier cited ========
+   panel file                                                  ->35  ->43   registry-cited
+   100_xu_generating_the_table_attacked                           1     0   no
+   106_giesen_consolidation_the_strategy_axis                     2     0   YES
+   107_arntzen_entailment_check_on_the_strategy_consolidati       4     0   no
+   108_lamport_the_pair_attacked                                  1     0   YES
+   110_willsey_the_primitive_derived_cold                         0     5   no
+   111_jhala_the_primitive_attacked                               2     0   no
+   135_dolan_signature_in_part                                    3     0   no
+   136_leroy_the_candidate_revised_against_three_signatures       4     0   YES
+   137_arntzen_entailment_check_on_the_rounding_revision          2     0   no
+   138_leroy_the_restoration_pass                                 1     0   YES
+   143_mcsherry_reply_the_scope_the_wording_and_one_claim_i       0     7   no
+   144_fog_the_weighting_half_measured                            0     4   no
+   146_leroy_the_canon_candidate_for_the_strategy_object          0     5   YES
+   152_chlipala_independent_check_on_the_strategy_object_re       0     1   no
+   155_dolan_the_primitive_derived_cold                           1     0   no
+   166_dispatcher_note_opening_the_tenth_unit                     0     1   no
+   167_rompf_the_chain_derived_cold                               0     2   no
+   168_mcsherry_the_chain_derived_cold                            4    20   YES
+   172_leroy_formalising_the_chain                                0     4   YES
+   173_leroy_the_canon_candidate_for_the_chain                    0    16   YES
+   174_mcsherry_signature_in_part                                 0     1   no
+   177_lamport_independent_check_on_the_chain_revision            0     2   no
+   182_orchard_porting_the_four_consolidations                    0     1   no
+   185_fog_the_instruments_and_what_each_could_have_shown         0     1   no
+   188_ringer_entailment_check_on_the_consolidation_port          2     0   no
+   191_leijen_the_surface_above_the_numeral_derived_cold         31     9   no
+   40_leijen_what_the_axes_actually_are                          21     0   no
+   42_willsey_the_law_layer                                      46     0   no
+   44_arntzen_the_two_outputs_re_derived                         11    23   no
+   45_fallin_is_the_widening_forced                              18     3   no
+   46_dolan_the_carrier_collision_attacked                        2     3   no
+   47_wingo_one_richer_output                                     4     2   YES
+   48_persona_checkpoint_four                                     0     3   no
+   50_lamport_which_criterion_is_in_use                           2     1   no
+   51_fog_the_packed_sequence_erasure_arm                         0     8   no
+   52_chlipala_the_fixpoint_claim_second_read                     0     2   no
+   53_leroy_consolidation_the_container_derivation                7     5   YES
+   54_ringer_entailment_check_on_the_consolidation                8     2   no
+   55_smith_the_format_concept_derived_cold                       3     1   no
+   55b_smith_reply                                                1     1   no
+   56_knuth_the_four_choice_model_attacked                        4     2   no
+   57_orchard_the_grading_and_the_refutation                      3     3   no
+   57b_orchard_reply                                              3     3   no
+   58_wronski_the_fraction_boundary                               6     3   no
+   59_persona_checkpoint_five                                     7     2   no
+   60_stam_the_chain_derived_cold                                 1     2   no
+   61_absorption_against_coherence                                3     3   no
+   62_carmack_the_signed_cell                                    11     2   no
+   63_spj_consolidation_the_format_concept                        7     2   YES
+   65_knuth_number_systems_derived_cold                           2     0   no
+   67_kiselyov_which_prefix_earns_the_word                        8     1   no
+   70_lattner_levels_are_clients_not_facts                        1     0   no
+   71_orchard_what_crosses_between_two_systems                    1     0   no
+   73_leijen_the_membership_test_and_how_wide                     2     0   no
+   74_giesen_consolidation_the_number_system_concept              1     0   YES
+   76_willsey_derived_laws_derived_cold                           2     0   no
+   77_amin_derived_laws_derived_cold                             10     0   no
+   79_fallin_attacking_the_two_cold_derivations_on_derived_       3     1   no
+   80_rompf_when_the_deriving_happens                             4     3   no
+   82_jhala_lifting_a_measured_region_into_a_declaration          6     0   no
+   84_leroy_what_the_model_band_actually_certifies                2     0   no
+   86_knuth_how_far_the_verdict_reaches_and_the_saturating_       1     0   no
+   89_the_saturating_verdict_as_a_const_gate                      1     0   no
+   90_giesen_consolidation_derived_algebraic_laws                 1     0   YES
+   91_ringer_entailment_check_on_the_derived_laws_consolida       2     0   no
+   93_orchard_the_strategy_axis_derived_cold                      1     0   no
+   97_dolan_the_strategy_space_attacked                          20     0   YES
+   98_spj_what_the_strategy_axis_settles                          1     0   no
+   AGREEMENTS                                                     1     1   YES
+   DROPLIST                                                       2     0   YES
+   HANDLES                                                        1     1   no
+   OPTIONS                                                       12     7   YES
+   RULES                                                          1     2   no
+   SEED_THEORY_00_45                                              2     1   no
+
+======== CONTROLS ========
+   POS  PASS  the most-cited consolidation is read out of provenance
+   NEG  PASS  a nonexistent slug is not reported
