@@ -1870,7 +1870,8 @@ lossy crossing without an explicit narrowing already in view.
 ## Unit four: the derived-algebraic-laws topic
 
 Added by `80`. The register was last extended for unit three, so unit four's options lived only in
-member files until now, which is the loss mechanism `RULES.md:189-210` records three times.
+member files until now, which is the loss mechanism `RULES.md` records three times under
+"A consolidation loses live options, structurally, and both of them have".
 
 `79`'s own additions are listed in its section 10 and are **not transcribed here**: they are fits
 against existing entries (Q11, Q12, Q25) plus one candidate canon sentence, rather than new option
@@ -1911,7 +1912,8 @@ both predicates: typestate predicates (`F == 0`, sign domain, policy, representa
 at monomorphisation, and trajectory predicates (no clamp event occurred, an operand is zero, the
 running accumulator did not reach an endpoint), known only at runtime. `79`'s P4 (`79:72-74`) is the
 second kind; `42`'s reachability condition over a fold's **declared** operand range
-(`OPTIONS.md:1113-1115`) is the first, and the word "declared" is what moves it.
+(this file, under "Q12. Is the reduction order specified, or is associativity required?") is the
+first, and the word "declared" is what moves it.
 
 **(a) Typestate only**, which is I13 read literally, since it says const predicates. Cost: every
 trajectory predicate this panel has measured is a characterisation rather than an arm, until somebody

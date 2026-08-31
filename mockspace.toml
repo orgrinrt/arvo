@@ -487,6 +487,13 @@ required = false
 description = "What goes wrong for that consumer without it, where somebody established that rather than asserted it."
 
 [[registry.namespace.field]]
+name = "quote"
+type = "string"
+required = false
+visibility = "internal"
+description = "The consumer's own words, verbatim, with the file they are in. **The one thing that makes a row here checkable.** `need` is a restatement, and a restatement is mechanically indistinguishable from an invention: the `ruling` namespace carries a verbatim beside its `says` for exactly that reason and a check reports rows lacking one. This namespace had neither, and three of its rows turned out to state a need the consumer never expressed, each written by a different seat, each entering at the same seam. It is internal because the words belong to another repository and quoting them into a generated document is not this canon's to do; the reference system resolves within one repository, so a citation cannot reach them and the quotation is what stands in its place. **Absent where a need is op's rather than a consumer document's**, which is a different provenance and says so through `provenance`."
+
+[[registry.namespace.field]]
 name = "topic"
 type = "topic"
 required = false

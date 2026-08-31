@@ -339,3 +339,72 @@ fn collect_md(dir: &Path, out: &mut Vec<PathBuf>) {
         }
     }
 }
+
+/// A line citation into a living ledger, from the panel's own prose.
+///
+/// **The gap three repaired probes walked into at once.** The registry's own
+/// arm refuses these inside a row, and nothing looked at the prose those rows
+/// are drawn from. A ledger is rewritten as the panel moves, so a line number
+/// into one names different text every time somebody edits above it, and the
+/// citation keeps resolving the whole way.
+///
+/// Found the hard way rather than by reading: three independently written
+/// citation checkers, once pointed at the tree they sit in rather than at a
+/// clone where the old line numbers still matched, each reported the same
+/// ledger's citations failing. None of them could see it before, and neither
+/// could any committed check.
+pub fn line_citations_into_living_ledgers_in_prose(dir: &Path) -> Vec<Finding> {
+    let stems: Vec<&str> = LIVING_LEDGERS
+        .iter()
+        .map(|l| l.trim_end_matches(".md"))
+        .collect();
+    let mut out = Vec::new();
+    let mut files = Vec::new();
+    collect_md(dir, &mut files);
+    files.sort();
+    for path in files {
+        let Ok(text) = fs::read_to_string(&path) else {
+            continue;
+        };
+        let shown = path
+            .strip_prefix(dir)
+            .unwrap_or(&path)
+            .display()
+            .to_string();
+        for (n, line) in text.lines().enumerate() {
+            for cite in ledger_line_citations(line, &stems) {
+                out.push(Finding::new(
+                    "line-citation-into-a-living-ledger-in-prose",
+                    format!("{shown}:{}", n + 1),
+                    format!(
+                        "cites `{cite}`. That ledger is still being written, so an edit above \
+                         the line moves the target and the citation still resolves, naming text \
+                         nobody wrote there. Cite the heading, which fails loudly when renamed."
+                    ),
+                ));
+            }
+        }
+    }
+    out
+}
+
+/// Every `<LEDGER>.md:<line>` a line mentions.
+fn ledger_line_citations(line: &str, stems: &[&str]) -> Vec<String> {
+    let mut out = Vec::new();
+    for (at, _) in line.match_indices(".md:") {
+        let after = &line[at + ".md:".len()..];
+        let digits: String = after.chars().take_while(char::is_ascii_digit).collect();
+        if digits.is_empty() {
+            continue;
+        }
+        let before = &line[..at];
+        let start = before
+            .rfind(|c: char| !c.is_ascii_alphanumeric() && c != '_')
+            .map_or(0, |i| i + 1);
+        let stem = &before[start..];
+        if stems.contains(&stem) {
+            out.push(format!("{stem}.md:{digits}"));
+        }
+    }
+    out
+}
