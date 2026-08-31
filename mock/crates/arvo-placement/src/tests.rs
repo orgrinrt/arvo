@@ -15,7 +15,7 @@
 
 use crate::{
     declared_width, derive_shared, derive_sole, narrowest_carrier, Carrier, Objective, Occupancy,
-    Placement, C16, C32, C64, C8, LADDER,
+    Placement, Carrier16, Carrier32, Carrier64, Carrier8, LADDER,
 };
 use arvo_format::overflow::Wrap;
 use arvo_format::points::{Integer, UFixed};
@@ -39,10 +39,10 @@ fn the_control_the_ladder_rungs_are_distinct_and_ordered() {
             "the ladder has to be ordered or `narrowest_carrier` is picking arbitrarily"
         );
     }
-    assert_eq!(<C8 as Carrier>::BITS, Width::bits(8));
-    assert_eq!(<C16 as Carrier>::BITS, Width::bits(16));
-    assert_eq!(<C32 as Carrier>::BITS, Width::bits(32));
-    assert_eq!(<C64 as Carrier>::BITS, Width::bits(64));
+    assert_eq!(<Carrier8 as Carrier>::BITS, Width::bits(8));
+    assert_eq!(<Carrier16 as Carrier>::BITS, Width::bits(16));
+    assert_eq!(<Carrier32 as Carrier>::BITS, Width::bits(32));
+    assert_eq!(<Carrier64 as Carrier>::BITS, Width::bits(64));
 }
 
 // --- the output count moves with occupancy, and that is the axis -------------

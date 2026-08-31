@@ -54,24 +54,24 @@ pub trait Carrier {
 }
 
 /// An eight-bit container.
-pub struct C8;
+pub struct Carrier8;
 /// A sixteen-bit container.
-pub struct C16;
+pub struct Carrier16;
 /// A thirty-two-bit container.
-pub struct C32;
+pub struct Carrier32;
 /// A sixty-four-bit container.
-pub struct C64;
+pub struct Carrier64;
 
-impl Carrier for C8 {
+impl Carrier for Carrier8 {
     const BITS: Width = Width::bits(8);
 }
-impl Carrier for C16 {
+impl Carrier for Carrier16 {
     const BITS: Width = Width::bits(16);
 }
-impl Carrier for C32 {
+impl Carrier for Carrier32 {
     const BITS: Width = Width::bits(32);
 }
-impl Carrier for C64 {
+impl Carrier for Carrier64 {
     const BITS: Width = Width::bits(64);
 }
 
