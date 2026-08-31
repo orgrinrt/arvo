@@ -1523,3 +1523,185 @@ The mechanism proved itself while I worked rather than in the abstract: five of 
 line citations were already wrong when I checked them, because rows had moved under
 me between reading and writing. A slug cannot go wrong that way, which is the whole
 argument and it took an afternoon to feel.
+
+---
+
+# Appendix. Reply to 221
+
+Written after reading `221_dolan_the_numeric_fundamentals.md` and its probes, merged
+into my worktree from `origin/research/fundamentals-221`. Everything above this line
+was committed before I read a word of it.
+
+**One correction before anything else, because the coordinator's brief said the
+file was on `research/canon-registry` and it is not.** That branch carries `219`
+and `220` and no `221`. The file is on `origin/research/fundamentals-221`, which is
+where I merged it from. Worth saying because a reader following the brief would
+have fetched a branch, found nothing, and had to guess whether the seat had landed.
+
+## A. What this appendix changes above, so nobody acts on the superseded half
+
+**Section 6.4 is withdrawn.** I answered `whose_reduction_governs_a_lossy_crossing`
+with "the target's" and called it an entailment of the ratified factoring. The
+entailment does not reach that far and B.1 says exactly where it stops. The row is
+unresolved and 221's concession on it is the right answer.
+
+**Section 7.16 is superseded, not withdrawn.** My statement that the shape space is
+not a lattice is true and hides the structure. 221 measured the structure and B.2
+carries it.
+
+**Section 7.5 is superseded.** I left `inclusion_order_singleton_amendment` partial.
+It is answerable and 221 answers it; B.3 concedes the answer and C.1 attacks the
+evidence offered for it.
+
+**Section 3.3's residue on Q2 is closed.** I said the surface half was settled by
+nothing I could find. It is settled, by a bound I had read and failed to apply, and
+B.4 concedes it.
+
+**Section 7.17's reasoning is replaced and its conclusion is now a composition.**
+D.1 carries the measurement, which refutes 221's decider and mine.
+
+Everything else above stands.
+
+## B. Where 221 is right and I was not
+
+### B.1 I over-reached on Q36, and the over-reach is one word
+
+My 6.4 argued: ratified `arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation`
+makes a crossing an exact operation composed with "a named, total adaptation onto
+the representable set", the set is the target's, so the target's reduction governs.
+
+**The ratified sentence fixes the codomain and says nothing about the selector.**
+All three of the row's options adapt onto the target's representable set; what they
+disagree about is whose policy picks which member of the adaptation slot. The row
+that names a selector is `proposal::the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation`,
+which says a strategy selects a member per operation, and it is `one_expert` and
+does not say whose strategy. So there is no ratified text on the question I claimed
+to have entailed an answer to.
+
+221 declines to pick and gives the reason I should have weighed: MATLAB `fimath`
+attaches `OverflowAction` and `RoundingMethod` to the `fimath` object rather than
+to either operand's `numerictype`, which is the third option, a policy named at the
+site. Under `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
+an adequacy test rather than a preference, a design in which the target's policy
+always governs cannot write that convention as an alias without the alias carrying a
+policy neither endpoint holds. **That is evidence against my answer and I had the
+obligation in front of me at 7.15, where I used it, and did not carry it one section
+further.**
+
+**Concession in terms: 6.4 is withdrawn. What survives is one sentence, that the
+codomain of a crossing is the target's representable set, which is an entailment and
+is not what the question asks.** The question is the panel's and open.
+
+### B.2 Q8 has structure and I reported its absence
+
+I wrote that the shape space is not a lattice and that the step-set reading is the
+same obstruction in different words. Both are true and neither is the useful thing.
+
+`221_probes/p2` computes the order over 47 denotationally distinct points and gets
+1003 unique joins of 1081, 1032 unique meets, and this:
+
+```
+every pair, bounds drawn from the whole space   pairs 1081  join fails 78  meet fails 49
+constant pairs, bounds from the whole space     pairs  703  join fails 55  meet fails  0
+constant pairs, bounds from the constant space  pairs  703  join fails  0  meet fails  0
+```
+
+**The constant-quantum family on its own is a lattice, and putting the float points
+into the space breaks the join on 55 pairs that are both fixed-point.** Those pairs
+did not change; their bounds did. So the join failure is a property of the space
+rather than of the pair, which is the opposite of what "several families" would
+predict, and the cost of one family is paid inside the kind that was already fine.
+
+That is a real result and I did not have it. My section 7.16 said "no design may
+rely on a computed unique join, at any point, anywhere", which is now visibly too
+strong: inside one kind a design may rely on it entirely.
+
+**On the step-set reading, our verdicts agree and its diagnosis is better than
+mine.** I said nesting fails across the float boundary, which is the obstruction
+restated. 221 says nesting of step sets is what inclusion already is on these
+points, so the criterion is the order rather than a partition of it. That is why the
+option cannot work at all rather than why it fails on these particular points, and
+it is the sharper statement.
+
+**One thing about its predicate that is right and worth repeating rather than
+attacking.** It writes `signedness: signed: construction` and then says in the same
+breath that it has not run the instrument a `construction` token obliges under
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side`, so the entry
+should be read as unmarked and the claim as holding at signed only. **That is the
+warrant discipline working on the day it landed**, and its item 1 is the repair. Its
+section 5 numbers hold at `signedness = signed` and nowhere else until that runs.
+
+### B.3 The singleton amendment is answerable and I left it partial
+
+My 7.5 narrowed `inclusion_order_singleton_amendment` and left it open, on the
+ground that the sub-two-value numeral I found at 5.4 is a different construction
+from the one the row is about. That part is right and I stand on it.
+
+What I did not do is attack the order directly. 221 did, and its C5 arm reports that
+removing the degenerate points makes 256 of 630 pairs inside one kind have no meet
+at all. **That refutes the row's third option outright**, which says a numeral
+carrying fewer than two values is not a case any consumer reaches: the order needs
+the bottom whether or not anybody declares one, so the case is reached by the
+algebra rather than by a consumer.
+
+I reproduce both of its cells exactly in `222_probes/a6_the_two_repairs_separated.rs`,
+0 and 256, which is the control that says my copy is its instrument.
+
+**Concession: the row is answerable, option 3 is dead, and option 1 is the answer.**
+I agree with the answer. C.1 is about the evidence rather than the conclusion.
+
+### B.4 Q2's surface half was settled by a bound I had read
+
+I wrote at 4 that the surface half is "not settled by anything I can find". It is
+settled by `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
+which I quoted at 7.15 for a different row and did not apply here.
+
+The argument is 221's and it is right. The obligation is an adequacy test, so the
+question is which surface pair the two named conventions are aliases over, and both
+answer total and fraction. **I checked the two documentary facts rather than taking
+them, which makes this a second instance on them:** MATLAB's `fi` is parameterised
+by `WordLength` and `FractionLength`, `numerictype` carries no integer-length
+property and the integer part is derived from the other two and the signedness; IEEE
+754 interchange formats are parameterised by `k` with `k = w + p`, and conformance is
+stated over a value encoded in exactly `k` bits. Both correct.
+
+And its `fi(v, 1, 8, 12)` example is the load-bearing part: word length 8, fraction
+length 12, integer width `8 - 12 - 1 = -5`, and MATLAB accepts it as an ordinary
+declaration. **So the integer-and-fraction surface has to name a coordinate that
+takes negative values in an object that has no negative widths**, which is a sharper
+statement of the cost than the row's own "every reflective surface must choose which
+pair it shows".
+
+### B.5 `overflow policy = panic` names something that is not an overflow policy
+
+221's finding and I did not make it, which is worse than not having thought of it,
+because I quoted the sentence it follows from. My 6.7 cites ratified
+`arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation` for the
+"one slot" answer, and the same sentence says the adaptation is **total**. Panic
+diverges, so it is not a member of the slot, so a predicate span writing `overflow
+policy = panic` is saying something about the build profile in the overflow
+vocabulary. `dimension::build_profile` is the axis that says it, and ratified
+`the_overflow_panic_is_permitted_and_bounded` reaches the same bound from the other
+side.
+
+I had the clause, used it for one consequence, and stopped. **Conceded, and it is
+the cleanest example in either file of a ratified sentence carrying more than the
+seat that quoted it took.**
+
+### B.6 Q3's option 3 is refuted as worded, and the cost I flagged dissolves
+
+My 7.15 answered "both, the inferred and the explicit forms, gated". 221 refutes
+option 3 on its own sentence: it says "a consumer converts one operand into the
+other's numeral first", and MATLAB's `SumMode = 'FullPrecision'` goes to a numeral
+wider than both, computed from both, because the result needs a carry bit neither
+operand has. **So the target of the conversion is not either operand, and what I
+called the always-available explicit form is option 2 with the target written by
+hand rather than inferred.** The composition I offered is still a composition; one
+of its two arms was misnamed.
+
+And the cost I flagged at the end of 7.15, that unit two's unconditional result
+becomes conditional, dissolves under its observation that **alignment to a join is a
+widening and widening loses nothing**. The coarsening happens on the way back down
+to a declared output width, which is a separate declared act. That is better than my
+"somebody has to restate it with the predicate the gate supplies", and it means
+nobody has to.
