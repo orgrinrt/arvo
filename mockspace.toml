@@ -914,8 +914,21 @@ values = ["intent", "ruling", "refusal", "deferral", "process"]
 name = "rung"
 type = "string"
 required = true
-description = "`ratified` where the experts converged and he blessed that convergence, which needs both halves and which almost nothing has; `in_force` where the workspace and this repo's own lints enforce it independently of convergence; `stated` where it is his direction and an ack rather than a ruling; `open` where he has explicitly not settled it."
+description = "`ratified` where it is canon, by either route named in `ratified_by`; `in_force` where the workspace and this repo's own lints enforce it independently of convergence; `stated` where it is his direction and an ack rather than a ruling; `open` where he has explicitly not settled it. This used to say ratification needed both expert convergence and his blessing, and that both-halves reading is what left 122 panel propositions with no exit and none of them ratified."
 values = ["ratified", "in_force", "stated", "open"]
+
+[[registry.namespace.field]]
+name = "ratified_by"
+type = "string"
+required = false
+description = "Which route made it canon. `op` where he stated it and it is his to state, which is intent, design direction and broad strokes. `experts` where a proposal converged and was promoted. `both` where he has also read it. Required on a `ratified` row and meaningless elsewhere. Kept as a field rather than folded into the tier because the distinction is provenance and stays useful later: when something turns out wrong, which route admitted it is the first thing worth knowing. His words on why his own stamp is not the higher of the two: \"these get so theoretical I can't possibly understand the implications... The stamp is just a marker that I've read it, no matter if I understand it or not\"."
+values = ["op", "experts", "both"]
+
+[[registry.namespace.field]]
+name = "promotion"
+type = "string"
+required = false
+description = "Why a proposal was judged demonstrated enough to become canon, written by whoever promoted it. Present on `ratified_by = experts` and absent otherwise. **Convergence between two experts is the bar, not the trigger**: the experts propose, and the coordinator decides whether the reasoning is spelled out, the evidence real and the region stated well enough to promote. So this field carries that judgement and can be argued with, which a bare count of agreeing experts cannot. A promotion is revisable: op's own condition is that these stay \"subject to being changed if the experts themselves end up disagreeing or finding a better solution or wording or bound\"."
 
 [[registry.namespace.field]]
 name = "ratification"
