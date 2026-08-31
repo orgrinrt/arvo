@@ -6,12 +6,20 @@
 //! Nothing reads `decider`, nothing reads `bound`, and nothing reads a ruling's
 //! `answers` backward.
 //!
-//! Three fields carry the whole of who owes an answer, and no arm anywhere in
-//! this crate, in the lints or in the tools mentions any of them. Measured by
-//! grep across `checks`, `lints` and `tools`: `decider` zero hits, `bound` zero
-//! hits, `answers` six and all six incidental prose. The control for that zero
-//! is the same grep for `rung`, which returns twenty-five, so the instrument
-//! reaches the tree it was pointed at.
+//! Three fields carry the whole of who owes an answer, and at the commit this
+//! was written against no check, no lint and no tool named any of them.
+//! Measured by `209_probes/which_registry_fields_the_tooling_reads.sh`, which
+//! searches the quoted literal a check would use, over `mock/checks`,
+//! `mock/lints` and `mock/tools`, at that commit and at HEAD: `decider` 0,
+//! `bound` 0, `unblocks` 0, `answers` 0. The control in the same run is the
+//! fields already read there, `rung` 25, `keywords` 1 and `provenance` 1, so
+//! the instrument reaches the trees it was pointed at.
+//!
+//! An earlier wording here put `answers` at six and called them incidental
+//! prose. That figure came from grepping the bare word, which also matches
+//! ordinary sentences; `bound` scores nine at the same commit from "bounded"
+//! and "boundary" alone, which is a measurement of English rather than of the
+//! tooling. The probe searches the literal for that reason.
 //!
 //! What that leaves unguarded is a queue that cannot tell a settled question
 //! from an open one. The `question` namespace is defined as "Something the canon

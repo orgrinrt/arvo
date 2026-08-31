@@ -4,8 +4,8 @@
 
 use std::collections::BTreeMap;
 
-use mockspace::RegistryView;
 use mockspace::tool::{Outcome, Tool, ToolContext};
+use mockspace::RegistryView;
 
 use super::UnaskedQuestions;
 

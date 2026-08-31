@@ -1,0 +1,13 @@
+trees: mock/checks mock/lints mock/tools
+base:  791a2d5a
+
+FIELD          BEFORE   AFTER
+decider        0        11
+bound          0        6
+unblocks       0        6
+answers        0        2
+
+--- control: fields already read at the base ---
+rung           25       28
+keywords       1        1
+provenance     1        1
