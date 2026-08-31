@@ -13,7 +13,7 @@ list imagined. I say at the end what would refute each, and I open one new
 question that I decline to answer because it is a naming call and naming is not
 mine.
 
-Five probes, all committed in `228_probes/` with their output beside them, all
+Six probes, all committed in `228_probes/` with their output beside them, all
 carrying the case that must fail. Two of my own controls fired and one of them
 took a premise of mine down with it; that is recorded in place rather than
 tidied away, and `p2_output.v1_control_fired.txt` is kept for it.
@@ -200,6 +200,15 @@ and `F` in 0 to 5 under both signednesses:
 ```
   84 cells under wrap, 0 mismatch(es) between the prediction and the measurement
 ```
+
+`p6` then runs the same comparison at `W` in 3 to 7, which the rows are not
+written at, and the prediction survives all of it:
+
+```
+  350 cells across five widths, 0 mismatch(es)
+```
+
+with the free set identical at every width, six modes unsigned and three signed.
 
 and reproduces the published rates it was checked against:
 
@@ -505,11 +514,11 @@ the fraction width across 21 cells at three widths and finds the paired counts
 identical at every one.
 
 **F2. Translation equivariance on the domain the cell reaches predicts the fusion
-arm exactly, over seven modes.**
+arm exactly, over seven modes and five widths.**
 
 ```
-total_width: 6
-fraction_width: in 0..=5
+total_width: in 3..=7: exhaustive, every width the run covered
+fraction_width: in 0..=W-1: exhaustive, every fraction width below the declared width
 signedness: in {unsigned, signed}
 overflow_policy: wrap
 rounding: in {floor, ceil, toward_zero, away_from_zero, half_up as floor(x+1/2),
@@ -530,12 +539,22 @@ target_features: host aarch64-apple-darwin
 build_profile: opt level = 2, debug-assertions = off
 ```
 
-84 cells, 0 mismatches. `228_probes/p2_fusion_over_both_half_up_readings.rs`.
+350 cells across the five widths, 0 mismatches.
+`228_probes/p6_the_prediction_across_widths.rs`, with
+`228_probes/p2_fusion_over_both_half_up_readings.rs` carrying the `W = 6` slice
+and the faithfulness check against the published rates.
 
 **`overflow_policy: wrap` and not `in {wrap, saturating}`.** The prediction was
 run under wrap only, and under saturating every mode fails at every fraction
 width including zero, so the prediction is known not to extend and I do not
 claim it does.
+
+**F7. The free set does not depend on the declared width.** At `W` in 3 to 7,
+under wrap, the set of modes free at every fraction width is identical: six
+unsigned and three signed, the same six and the same three at every width. So
+the two fusion law rows' `total_width: 6` is narrower than their evidence now
+supports, and the widening belongs in a consolidation rather than in either row.
+Predicate as F2. `228_probes/p6`.
 
 **F3. The two readings of `half_up` give opposite verdicts on the signed wrapping
 fusion law.**
@@ -720,11 +739,16 @@ than a lint because the answer is a list somebody has to judge rather than a
 verdict. `mock/tools/` is where it goes and I did not build it, because the brief
 put `mock/tools/` off limits and another agent is working under `mock/lints/`.
 
-**Measuring the fusion arm at widths other than 6.** Everything in section 2 is
-at `W = 6`, which is where the rows are. The equivariance argument is
-width-independent by construction and I did not build the differential control
-that would let me write `total_width any`, so I did not claim it. That control is
-cheap and is the first thing I would do with another hour.
+**Measuring the fusion arm at widths other than 6.** I listed this as not taken
+and then took it, which is why F7 exists. `p6` runs the prediction at `W` in 3 to
+7 and finds 350 cells with no mismatch and an identical free set at every width.
+What that buys is `total_width: in 3..=7` rather than a fixed 6, and what it
+still does not buy is `total_width any`: the argument is width-free as an
+argument, but a run over five widths is a run over five widths, and I would want
+a construction warrant with a real differential control before writing `any`.
+The five widths are also small ones. A refutation, if there is one, most likely
+lives where the product `A*B` stops fitting the reasoning at a width the run did
+not reach.
 
 ## 8. Standing
 
@@ -742,6 +766,6 @@ F3, F5 and F6 I did not find anywhere in the corpus and did not expect to, since
 no instrument had reason to run the second reading of a name it was not asking
 about.
 
-Task, branch and probes: `research/rounding-vocabulary-228`, five probes in
+Task, branch and probes: `research/rounding-vocabulary-228`, six probes in
 `228_probes/`, each committed with its output as it ran, and `p2`'s superseded
 output kept beside it because its controls fired honestly.

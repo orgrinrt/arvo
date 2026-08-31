@@ -20,47 +20,121 @@
 // Run: rustc --edition 2024 -O p6_the_prediction_across_widths.rs -o /tmp/p6 && /tmp/p6
 
 #[derive(Copy, Clone, PartialEq)]
-enum Mode { Floor, Ceiling, TowardZero, AwayFromZero, HalfUpPinf, HalfUpAway, HalfEven }
+enum Mode {
+    Floor,
+    Ceiling,
+    TowardZero,
+    AwayFromZero,
+    HalfUpPinf,
+    HalfUpAway,
+    HalfEven,
+}
 use Mode::*;
-const MODES: [Mode; 7] = [Floor, Ceiling, TowardZero, AwayFromZero, HalfUpPinf, HalfUpAway, HalfEven];
+const MODES: [Mode; 7] = [
+    Floor,
+    Ceiling,
+    TowardZero,
+    AwayFromZero,
+    HalfUpPinf,
+    HalfUpAway,
+    HalfEven,
+];
 
 fn name(m: Mode) -> &'static str {
     match m {
-        Floor => "floor", Ceiling => "ceil", TowardZero => "toward_zero",
-        AwayFromZero => "away_from_zero", HalfUpPinf => "half_up(+inf)",
-        HalfUpAway => "half_up(away)", HalfEven => "half_even",
+        Floor => "floor",
+        Ceiling => "ceil",
+        TowardZero => "toward_zero",
+        AwayFromZero => "away_from_zero",
+        HalfUpPinf => "half_up(+inf)",
+        HalfUpAway => "half_up(away)",
+        HalfEven => "half_even",
     }
 }
 
 fn rnd(p: i128, f: u32, m: Mode) -> i128 {
-    if f == 0 { return p; }
+    if f == 0 {
+        return p;
+    }
     let d = 1i128 << f;
     let q = p.div_euclid(d);
     let r = p.rem_euclid(d);
     match m {
         Floor => q,
-        Ceiling => if r == 0 { q } else { q + 1 },
-        TowardZero => if p >= 0 || r == 0 { q } else { q + 1 },
-        AwayFromZero => if p >= 0 { if r == 0 { q } else { q + 1 } } else { q },
-        HalfUpPinf => if 2 * r >= d { q + 1 } else { q },
-        HalfUpAway => if p >= 0 { if 2 * r >= d { q + 1 } else { q } }
-                      else if 2 * r > d { q + 1 } else { q },
+        Ceiling => {
+            if r == 0 {
+                q
+            } else {
+                q + 1
+            }
+        }
+        TowardZero => {
+            if p >= 0 || r == 0 {
+                q
+            } else {
+                q + 1
+            }
+        }
+        AwayFromZero => {
+            if p >= 0 {
+                if r == 0 {
+                    q
+                } else {
+                    q + 1
+                }
+            } else {
+                q
+            }
+        }
+        HalfUpPinf => {
+            if 2 * r >= d {
+                q + 1
+            } else {
+                q
+            }
+        }
+        HalfUpAway => {
+            if p >= 0 {
+                if 2 * r >= d {
+                    q + 1
+                } else {
+                    q
+                }
+            } else if 2 * r > d {
+                q + 1
+            } else {
+                q
+            }
+        }
         HalfEven => {
-            if 2 * r > d { q + 1 } else if 2 * r < d { q }
-            else if q % 2 == 0 { q } else { q + 1 }
+            if 2 * r > d {
+                q + 1
+            } else if 2 * r < d {
+                q
+            } else if q % 2 == 0 {
+                q
+            } else {
+                q + 1
+            }
         }
     }
 }
 
 fn bounds(w: u32, signed: bool) -> (i128, i128) {
-    if signed { (-(1i128 << (w - 1)), (1i128 << (w - 1)) - 1) } else { (0, (1i128 << w) - 1) }
+    if signed {
+        (-(1i128 << (w - 1)), (1i128 << (w - 1)) - 1)
+    } else {
+        (0, (1i128 << w) - 1)
+    }
 }
 
 fn wrap(v: i128, signed: bool, w: u32) -> i128 {
     let (_, hi) = bounds(w, signed);
     let m = 1i128 << w;
     let mut r = v.rem_euclid(m);
-    if signed && r > hi { r -= m; }
+    if signed && r > hi {
+        r -= m;
+    }
     r
 }
 
@@ -82,7 +156,9 @@ fn free(w: u32, f: u32, m: Mode, signed: bool) -> bool {
 }
 
 fn equivariant(w: u32, f: u32, m: Mode, signed: bool) -> bool {
-    if f == 0 { return true; }
+    if f == 0 {
+        return true;
+    }
     let (lo, hi) = bounds(w, signed);
     let scale = 1i128 << f;
     for a in lo..=hi {
@@ -90,7 +166,9 @@ fn equivariant(w: u32, f: u32, m: Mode, signed: bool) -> bool {
             let p = a * b;
             let base = rnd(p, f, m);
             for c in lo..=hi {
-                if rnd(p + c * scale, f, m) != base + c { return false; }
+                if rnd(p + c * scale, f, m) != base + c {
+                    return false;
+                }
             }
         }
     }
@@ -101,7 +179,10 @@ fn main() {
     println!("p6: the equivariance prediction at widths other than six");
     println!("    overflow policy wrap; exhaustive over every triple at each width");
     println!();
-    println!("{:>3} {:>6} {:>8} {:>10} {:>12}", "W", "cells", "agree", "mismatch", "verdict");
+    println!(
+        "{:>3} {:>6} {:>8} {:>10} {:>12}",
+        "W", "cells", "agree", "mismatch", "verdict"
+    );
 
     let mut total = 0;
     let mut total_mm = 0;
@@ -117,13 +198,22 @@ fn main() {
                     cells += 1;
                     if eq != fr {
                         mm += 1;
-                        println!("    MISMATCH W={w} signed={signed} F={f} mode={} eq={eq} free={fr}", name(m));
+                        println!(
+                            "    MISMATCH W={w} signed={signed} F={f} mode={} eq={eq} free={fr}",
+                            name(m)
+                        );
                     }
                 }
             }
         }
-        println!("{:>3} {:>6} {:>8} {:>10} {:>12}", w, cells, cells - mm, mm,
-            if mm == 0 { "agrees" } else { "REFUTED" });
+        println!(
+            "{:>3} {:>6} {:>8} {:>10} {:>12}",
+            w,
+            cells,
+            cells - mm,
+            mm,
+            if mm == 0 { "agrees" } else { "REFUTED" }
+        );
         total += cells;
         total_mm += mm;
         per_width.push((w, cells, mm));
@@ -136,12 +226,17 @@ fn main() {
     // read off at widths they were not written at.
     println!("## the free set at each width, under wrap");
     println!();
-    println!("{:>3} {:<9} {}", "W", "signed", "free at every F below the width");
+    println!(
+        "{:>3} {:<9} {}",
+        "W", "signed", "free at every F below the width"
+    );
     for w in [3u32, 4, 5, 6, 7] {
         for &signed in [false, true].iter() {
             let mut fs = Vec::new();
             for m in MODES {
-                if (0..w).all(|f| free(w, f, m, signed)) { fs.push(name(m)); }
+                if (0..w).all(|f| free(w, f, m, signed)) {
+                    fs.push(name(m));
+                }
             }
             println!("{:>3} {:<9} {}", w, signed, fs.join(", "));
         }
@@ -160,25 +255,43 @@ fn main() {
         let any_free = MODES.iter().any(|&m| free(w, 1, m, true));
         let any_not = MODES.iter().any(|&m| !free(w, 1, m, true));
         println!("     W={w} signed F=1: some mode free {any_free}, some mode not free {any_not}");
-        if !(any_free && any_not) { c1 = false; }
+        if !(any_free && any_not) {
+            c1 = false;
+        }
     }
-    if c1 { println!("  C1 EXPECTED-PASS ok: both verdicts occur at every width"); }
-    else { println!("  C1 BROKEN: a width produced only one verdict"); ok = false; }
+    if c1 {
+        println!("  C1 EXPECTED-PASS ok: both verdicts occur at every width");
+    } else {
+        println!("  C1 BROKEN: a width produced only one verdict");
+        ok = false;
+    }
 
     // C2 mutation: break the prediction on purpose by declaring half_even
     // equivariant, and check the comparison notices.
     let mut caught = 0;
     for w in [3u32, 4, 5, 6, 7] {
         for f in 1..w {
-            if free(w, f, HalfEven, false) != true { caught += 1; }
+            if free(w, f, HalfEven, false) != true {
+                caught += 1;
+            }
         }
     }
     if caught > 0 {
         println!("  C2 EXPECTED-FAIL ok: asserting half_even free unsigned is refuted in {caught} cell(s)");
-    } else { println!("  C2 BROKEN"); ok = false; }
+    } else {
+        println!("  C2 BROKEN");
+        ok = false;
+    }
 
     println!();
-    println!("controls: {}", if ok && total_mm == 0 {
-        "clean, and the prediction is unrefuted at every width run"
-    } else if ok { "clean, and the prediction is REFUTED somewhere above" } else { "BROKEN" });
+    println!(
+        "controls: {}",
+        if ok && total_mm == 0 {
+            "clean, and the prediction is unrefuted at every width run"
+        } else if ok {
+            "clean, and the prediction is REFUTED somewhere above"
+        } else {
+            "BROKEN"
+        }
+    );
 }
