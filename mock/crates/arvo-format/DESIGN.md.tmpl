@@ -400,3 +400,38 @@ where nothing can delete it.
 **The bound is a property of this representation rather than a statement about how wide arvo goes.**
 `question::arbitrary_width_demands_in_the_canon` is open and its second option leaves width families
 to the design tier; this design states what it admits and does not answer the open question.
+
+## Where the exact step happens, which is not in the set it lands in
+
+The ratified factoring says arithmetic on a format is an exact operation in an ambient domain composed
+with a named total adaptation onto the representable set. **Those are two acts in two places**, and
+reading them as one is how a map ends up computing the exact step in the carrier its result has to fit
+rather than in one wide enough to hold the step.
+
+So the map performs the exact step in a domain chosen to hold it, and the adaptation lands the result
+in the representable set. The step's intermediate is not a slot index and is not required to be one;
+only the answer is.
+
+**This is what makes the map total without a check.** Wrapping a very large exact position into a small
+range has a correct answer, and the only reason a design would refuse or guard there is that it chose
+a carrier too narrow for the intermediate. Widening it removes the case rather than catching it, which
+is what `ruling::never_a_runtime_check_and_one_lowered_path` asks for: no check on the value path, and
+no arm that only holds under a build flag.
+
+A guard would have been the wrong answer twice over. Under `overflow-checks` it is a runtime check the
+canon forbids; without it, it is nothing at all, and the wrong value it lets through lands **inside**
+the representable range where no consumer can tell it from a right one.
+
+### The two regions are internal
+
+The map is one map with two regions and not two mechanisms, so the regions are not two functions a
+consumer selects between. `adapt` is the surface; rounding and completion are how it is written.
+
+Publishing them separately invites the use the sentence above says is not the shape, and it is what put
+a range on the public surface as loose parameters rather than as the declared thing it comes from.
+
+### The adaptation forces the admission obligation
+
+`adapt` reads a slot range from the declared signature. Reading an associated const does not force the
+contract's obligation on its own, so `adapt` forces it, and the range the completion works over is one
+that has been admitted rather than one that merely arrived.
