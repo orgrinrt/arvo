@@ -2176,3 +2176,32 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::208_probes::p3_bench_artifacts.out::1",
 ]
 keywords = ["57", "triples", "warm-container", "bench", "CSV", "meta", "findings", "count", "headroom", "container fork", "141"]
+
+# --- the container premise, seat 210 -----------------------------------------
+
+[[retirement]]
+id = "r210_the_shipped_suite_asserts_two_markers_share_a_realisation_map"
+claim = "The shipped corpus already asserts exactly that agreement: `warm-container-shared`'s `all_four_arms_agree_with_each_other_and_with_the_oracle_on_every_key` requires every arm over every carrier rule to produce the byte-identical result against an independent oracle on every declared key. So on the shipped evidence the pair `163` constructs has identical denotation by test, and reading 2 (a strategy separates them arithmetically) is, for this crate's swept keys, measured false rather than open."
+why = "Measured false, and false in the direction that narrowed a live question. The semantics is a component of the bench's key, so every assertion in that test holds the semantics fixed and varies only the carrier rule: four carrier rules under one semantics is not two markers under one realisation map, and the test never compares two of them. Run against the shipped oracle by path rather than against a copy of it, the four arms agree at all 57 keys, and on all 28 keys whose semantics field is comparable the wrapping and saturating readings disagree, first at key 80003 where they give 159 against 255. So the axis the paragraph cited the suite as having tested is the axis the suite holds constant, and every place it could have been tested it comes out the other way."
+kind = "wrong"
+replacement = "The suite establishes that the container is invisible to arithmetic under a fixed semantics, which is a real and useful result and is cited for that. It establishes nothing about two markers sharing a realisation map. The escape the paragraph tried to close stays exactly as open as the signature that raised it left it."
+topic = "the_container_premise"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#1-4-what-the-reproductions-caught-that-the-signatures-did-not-state",
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#3-route-two-closed-x3-and-what-op-has-already-said-about-it",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p1.out::1",
+]
+keywords = ["oracle", "agreement test", "carrier rule", "semantics", "marker", "realisation map", "X3", "reading 2", "quantifier", "warm-container-shared"]
+
+[[retirement]]
+id = "r210_the_container_premise_is_upstream_of_the_operation_set_question"
+claim = "It is downstream of `the_container_premise`, which is itself now the panel's under a stated bound, so the chain that ends here is workable from end to end without him."
+why = "The dependency runs the other way, and the row asserting this asserts the reverse three fields earlier: its own `unblocks` says the operation-set question 'also decides whether footprint is observable'. Both sentences are live, both are cited, and between them they license reasoning in a loop. The direction that survives is the one the primitive candidate's own clause 4 states, which puts the premise as whether an observation of the container is in the design's operation set: that is one coordinate of which operation set ships, and a coordinate cannot be upstream of the thing it is a coordinate of. Retiring this sentence rather than its neighbour is what that settles."
+kind = "wrong"
+replacement = "The container premise is a projection of the operation-set question onto one operation, so it is answered by naming the signature rather than by ruling on a representation. Nothing about the second half of the retired sentence changes: the chain is still workable without op, and it is workable from the operation-set question downward rather than upward."
+topic = "the_container_premise"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#7-the-container-premise-now-blocks-a-clause-of-the-candidate-not-just-an-option",
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#1-what-i-did-first-which-was-try-to-break-the-question",
+]
+keywords = ["container premise", "operation set", "downstream", "upstream", "circular", "dependency", "Q61", "clause 4", "coordinate", "loop"]

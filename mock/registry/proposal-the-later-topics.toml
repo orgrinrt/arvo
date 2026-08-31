@@ -549,3 +549,246 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::214",
 ]
 keywords = ["membership", "identity", "two criteria", "type", "const-available", "denotation", "isomorphism", "collapse", "axis"]
+
+# --- the container premise, seat 210 -----------------------------------------
+#
+# The six below answer `question::the_container_premise` together and none of
+# them answers it alone, which is the shape of the answer rather than an
+# accident of filing: the question conflates three observations with three
+# different answers, so a single row saying yes or no would be the fork restated
+# rather than settled.
+#
+# **None of these names a strategy, and that is deliberate.** The set is open on
+# op's own word and `ruling::the_strategy_intents_are_not_clear_cut` forbids
+# writing the per-strategy statements as settled, so a finding quantified over
+# `Hot` and `Warm` would be resting on a concrete that was never his. What the
+# runs varied is `container` and `overflow_policy`, which are the axes with the
+# behaviour in them, and the predicates say so. The `strategy` axis is therefore
+# absent from every predicate here, which under the notation says these findings
+# do not extend to a claim about any named strategy. That is the intended
+# severity: the answer survives the set being reshaped, resized or renamed,
+# which is what `strategy::cold`'s own note records op requiring of it.
+
+[[proposal]]
+id = "observability_is_relative_to_a_declared_signature"
+kind = "answer"
+sentence_kind = "definition"
+standing = "one_expert"
+topic = "the_container_premise"
+defines = "observable"
+says = "A property of a realisation is observable relative to a declared signature, and not otherwise: it is observable exactly when some operation in that signature gives different answers for two realisations that agree on the value set and the realisation map. So whether a numeral's footprint is observable is not a fact about the numeral awaiting discovery or a ruling. It is a theorem schema whose parameter is the operation set, and it has no truth value until the signature is named."
+because = "The candidate's own clause 4 already states the premise this way, as whether an observation of the container is in the design's operation set, and clause 2 already relativises identity to the declared operation set in those words. A question posed over an unfixed parameter cannot converge, which is what nine units of argument over it demonstrates from the other side: every derivation was correct about its own model and none could reach the others, because there was no shared object for them to reach."
+answers = ["the_container_premise"]
+note = """
+Filed as a definition rather than as a finding, so it carries no region: it \
+stipulates what the word means rather than claiming where anything holds.
+
+The consequence for the two numbers the corpus carries is that they were never \
+in tension. Thirty-two primitives under one reading and sixty-four under the \
+other are the extension of one parametric definition at two values of its \
+parameter, and clause 2 says the definition is parametric in words.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#1-what-i-did-first-which-was-try-to-break-the-question",
+]
+keywords = ["observable", "observability", "signature", "operation set", "footprint", "container premise", "parametric", "relative", "theorem schema", "extension"]
+
+[[proposal]]
+id = "every_operation_arvo_declares_is_a_function_of_the_declared_width"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_container_premise"
+says = "Every operation arvo declares, and every operation either standard op named declares, is a function of the declared width and never of the machine carrier. The encoding is the case that decides it: MATLAB `fi` requires `bin` to return exactly WordLength characters and `storedInteger` to return the type its documented mapping gives from the word length, and IEEE 754-2019 requires an interchange format to be encoded in exactly k bits and a conforming implementation to read and write it in that encoding. Arithmetic is the same, bought rather than given: two carriers over one declared width compute the same function exactly where the result is projected back to the declared width after every step."
+because = "It is forced by the adequacy test rather than chosen. A convention that cannot be written as an alias over the primitives is a gap in the primitives, so the two standards refute a candidate rather than merely preferring one, and only the declared-width statement survives both. Stated over the shipped Warm and Precise container the MATLAB surface is unwritable at 12 of 12 swept widths and the IEEE surface at every scored interchange width; stated over the minimum native container the MATLAB `bin` surface is still unwritable at 8 of 12, so the result does not depend on which container rule ships."
+predicate = [
+  "integer_width: 3, 8, 13, 14, 16, 23, 27, 31, 32, 47, 60, 64",
+  "fraction_width: 0",
+  "signedness: unsigned",
+  "radix: 2",
+  "container: u16, u32, and the rung tables the two candidate rules generate",
+  "operation: encode, add, mul, xor",
+  "overflow_policy: wrap, sat",
+  "arity: 2",
+  "chain_length: 1, 4",
+  "threads: 1",
+  "target_features: any",
+  "toolchain: nightly-2026-05-28",
+  "build_profile: release",
+]
+evidence = [
+  "container_premise_standards_alias_adequacy",
+  "container_premise_three_observation_classes_over_one_carrier_pair",
+]
+answers = ["the_container_premise"]
+obligation = ["every_standard_convention_expressible_as_an_alias_over_the_primitives"]
+note = """
+The arithmetic half is an obligation with a stated trigger rather than a \
+property the design has for free. The projection back to the declared width is \
+required exactly where an unprojected intermediate can exceed the narrower \
+carrier's range, and where it can and the projection is omitted the carrier \
+becomes arithmetically observable, measured on five arms. So a design writing \
+the projection lazily is choosing to put the carrier into the value \
+observation, and this claim does not cover it.
+
+The signed half of the predicate is unmeasured and therefore absent: every \
+sweep here is unsigned. So is every fraction width above zero, which is the \
+limit worth reading twice, because a fractional format is where arvo's float \
+side lives and nothing here reaches it.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#42-the-standards-bound-which-forces-the-other-half-and-forces-it-the-other-way",
+]
+keywords = ["declared width", "encoding", "MATLAB", "fi", "bin", "storedInteger", "IEEE 754", "interchange", "projection", "carrier", "alias", "adequacy"]
+
+[[proposal]]
+id = "the_carrier_is_observable_through_the_ambient_layout_observation_alone"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_container_premise"
+says = "A numeral's footprint is observable, through exactly one observation, and it is the one the design does not own: the host language's layout observation on a sized type. Every operation the design declares reads the declared width, so the carrier is invisible to all of them; the layout observation reads the carrier and cannot be withheld, because the language supplies it for every sized type. Two realisations agreeing on the value set and the realisation map and differing in the carrier are therefore distinct in layout and identical in denotation, which are two of the three sameness relations the candidate already names and separates."
+because = "Measured on both halves over one shipped-shaped pair: the layout observation separates 2 bytes against 4, and neither the declared-width encoding nor projected arithmetic separates anything, exhaustively over all 8192 values and all 8192 x 8192 ordered pairs. That the layout half is not a design choice is a compile result rather than a model: two repr-transparent types over different carriers compile and report different sizes, so a reading under which nothing observes the footprint describes a host language rather than a design. And it must be observable through something, or a ratified intent about footprint denotes nothing: an intent whose subject no signature can distinguish is not a weak intent, it is not an intent."
+predicate = [
+  "integer_width: 13",
+  "fraction_width: 0",
+  "signedness: unsigned",
+  "container: u16, u32",
+  "operation: encode, add, mul, xor",
+  "overflow_policy: wrap, sat",
+  "arity: 2",
+  "chain_length: 1, 4",
+  "alignment: aligned",
+  "threads: 1",
+  "target_features: any",
+  "toolchain: nightly-2026-05-28",
+  "build_profile: release",
+]
+evidence = [
+  "container_premise_three_observation_classes_over_one_carrier_pair",
+  "container_premise_clause_nine_witness_quantifier",
+]
+answers = ["the_container_premise"]
+note = """
+`alignment: aligned` is written rather than omitted because this claim is about \
+a sole occupant of its own carrier allocation and does not reach a packed \
+placement. The neighbouring row on shared occupancy is where the other half \
+goes, and it goes the other way.
+
+The intent half of the argument is deliberately written over the intent and \
+over no concrete. It needs there to be an intent about footprint, which \
+`strategy::cold` records, and it does not need that strategy to exist under \
+that name, does not need the set to have four members, and does not name a \
+container rule. `ruling::what_is_ratifiable_is_the_intent_not_the_concretes` is \
+why it is written that way.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#5-the-answer",
+]
+keywords = ["footprint", "observable", "carrier", "layout", "size_of", "align_of", "denotational", "representational", "ambient", "sized", "host language"]
+
+[[proposal]]
+id = "the_realisation_is_not_part_of_denotational_identity"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_primitive"
+says = "The realisation is not part of denotational identity, and is emphatically part of the surface. The carrier is a coordinate of representational sameness, which licenses memory reinterpretation, and of no other relation; it licenses nothing about substitution inside a composite, which is what denotational sameness licenses and what makes it the congruence."
+because = "The clause it repairs was refused as unwritable on either branch of the container premise, and the refusal rests on reading identity as unqualified. The candidate's own preceding clause already fixes which of three sameness relations identity names, and already assigns memory reinterpretation to the representational one. So the observable-footprint reading was never a rival reading of this sentence: it is a statement about the neighbouring relation, which the statement had named and separated two clauses earlier. Qualified, the sentence is true on both of what used to be branches, and the disjunctive form is unnecessary."
+answers = ["the_container_premise"]
+supersedes = ["an_axis_the_realisation_map_does_not_read_is_not_a_type_parameter"]
+note = """
+This restores the first sentence that the superseded row had to leave out, and \
+leaves that row's second and third parts standing: its own note records that it \
+dropped the first sentence only because no wording of it was true on both \
+branches, and that the rest was untouched by the premise and signed. So what \
+`supersedes` names here is the omission rather than the content.
+
+Normative and therefore regionless, because it is a repair to a stipulation \
+rather than a claim about where anything holds. The measured claims it rests on \
+are the two neighbouring rows and carry their own regions.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#5-the-answer",
+]
+keywords = ["realisation", "identity", "denotational", "representational", "nominal", "carrier", "congruence", "substitution", "memory reinterpretation", "clause 6"]
+
+[[proposal]]
+id = "a_completeness_obligation_quantifying_over_inputs_misses_a_nullary_witness"
+kind = "refusal"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "the_primitive"
+says = "A completeness obligation whose separating witness is an input cannot see an observation that takes no input, so it refuses a pair of instantiations that a consumer can distinguish in one call. The candidate's adequacy clause is stated that way and refuses the pair two carrier rules create over one declared width, on the reading that nothing separates them; the layout observation separates them and is nullary, so the refusal is an artifact of the quantifier rather than a verdict about the pair."
+because = "Run both ways over five pairs. Under an input-only witness set the carrier pair comes out connected in two weakening directions with no witness and is refused, which reproduces the refusal exactly as the file that found it reported. Under a witness set including the ambient nullary observations the same pair separates, a refinement pair stays a refinement pair, and the pair of two names over one carrier, one value set and one realisation map stays refused. That last one is what says the widening is a repair rather than a disarming: it moves one pair, and that pair is the one a consumer can separate by calling a function."
+instead = "State the completeness obligation over contexts rather than over inputs: two shipped instantiations are separated when some context in the declared signature distinguishes them, with the signature including the ambient observations the host language supplies and cannot withhold. Nullary observations then fall out rather than being added, and the pair the current wording refuses separates on both of what used to be the premise's branches."
+predicate = [
+  "integer_width: 13, 14",
+  "fraction_width: 0",
+  "signedness: unsigned",
+  "container: u16, u32",
+  "operation: encode, add, mul",
+  "overflow_policy: wrap, sat",
+  "arity: 2",
+  "threads: 1",
+  "target_features: any",
+  "toolchain: nightly-2026-05-28",
+  "build_profile: release",
+]
+evidence = ["container_premise_clause_nine_witness_quantifier"]
+answers = ["the_container_premise"]
+note = """
+The refusal is of a wording and not of a mechanism, and it is independent of \
+the container premise: the quantifier is too narrow on either branch, and \
+fixing it is what lets the clause be satisfiable without the premise being \
+ruled at all.
+
+The `instead` is the narrow repair. A wider one is worth someone's time and is \
+not proposed here: rewriting the obligation as a contextual equivalence from \
+the start would very likely subsume the discharged-at-any-width branch as well, \
+and replacing a clause under signature is a larger act than repairing what is \
+wrong with it.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#5-the-answer",
+]
+keywords = ["completeness", "adequacy", "witness", "nullary", "quantifier", "spurious split", "weakening", "context", "contextual equivalence", "clause 9"]
+
+[[proposal]]
+id = "at_shared_occupancy_no_per_element_footprint_observation_exists"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "the_container_premise"
+says = "The layout observation exists only where the value is the sole logical occupant of its carrier allocation. At a shared placement the element is reached through its carrier and no size-bounded contract ranges over it, so there is no per-element footprint to observe, and two selections differing only in the carrier over one packed column are one primitive with two placements rather than two primitives. What is observable there is the allocation's stride, which is a property of the column and not of the element."
+because = "The lens clause already draws exactly this boundary and already states the condition in terms of sole occupancy, and the condition it states is the same one under which the host language supplies a standalone sized type. So the arm boundary is not new machinery: it is the existing clause read at its two placements, and the footprint answer is one rule evaluated at each of them rather than two rules."
+predicate = [
+  "integer_width: 13",
+  "fraction_width: 0",
+  "signedness: unsigned",
+  "container: u16, u32",
+  "alignment: aligned, straddling",
+  "threads: 1",
+  "target_features: any",
+  "toolchain: nightly-2026-05-28",
+  "build_profile: release",
+]
+answers = ["the_container_premise"]
+note = """
+Argued from the lens clause rather than measured, and the predicate says where \
+the argument was made rather than where an instrument ran. Nothing here \
+instantiates a packed column; what is established is that the clause the canon \
+already carries has this consequence, and a probe that builds the shared \
+placement and shows no per-element size observation exists would raise it.
+
+The axis this really wants is occupancy, sole against shared, and no dimension \
+row declares one. `alignment` is adjacent and covers the packed side at a \
+different granularity, and whether these are one axis or two is a call one seat \
+should not make alone, so the condition is stated in the sentence rather than \
+declared as a region. That is the narrower thing to do and it is flagged rather \
+than hidden.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#6-the-arm-boundary-which-the-candidate-already-contains",
+]
+keywords = ["occupancy", "sole occupant", "shared", "packed", "lens", "stride", "column", "placement", "sized", "arm boundary", "footprint"]
