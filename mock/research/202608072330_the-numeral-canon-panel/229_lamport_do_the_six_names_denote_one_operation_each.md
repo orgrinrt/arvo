@@ -577,7 +577,8 @@ It is now a fact about it: the instrument says in its own prose which operation 
 the one my measurement predicted. Two independent arrivals at the same reading, one in `125` from
 the algebra and one in `142` from the fusion partition, and my probes are a third.
 
-**And the count is the finding.** Twenty-eight files in this directory mention `half_up`. Two of
+**And the count is the finding.** Twenty-seven files in this directory other than this one mention
+`half_up`, at `grep -ln "half_up\\|half-up" *.md | grep -v "^229_" | wc -l`. Two of
 them state which operation it is. The ratified ruling states none:
 `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` carries the six names and
 no definition of any of them, and a grep of the whole registry for a definition of `half_up`
@@ -663,3 +664,14 @@ I am not writing that note. It touches a ratified row's subject matter, `questio
 is open on a neighbouring question, and one expert's word is not how a call about the canon gets
 made here. What I have is the measurement, the count of files, and the two places the choice is
 already written down.
+
+### One correction to this file, made after it was pushed
+
+The file count above went out as twenty-eight. That measurement included this file, which mentions
+`half_up` throughout and is not evidence of anything about the panel. The number is twenty-seven and
+the command that produces it now sits beside it, so the next reader checks it rather than trusting
+it. Corrected forward rather than by amending the commit, so the wrong number stays in the history
+where it belongs.
+
+Nothing else moved, and the finding is unchanged: two files state the reading, and the canon states
+none.
