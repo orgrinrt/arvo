@@ -456,7 +456,9 @@ ratifies = ["p"]
     // together hides whether they agree.
     let by_answered: BTreeSet<String> = reg
         .of("question")
-        .filter(|q| q.has(ANSWER_FIELD) && q.scalar(ANSWER_FIELD).is_some_and(|t| !t.trim().is_empty()))
+        .filter(|q| {
+            q.has(ANSWER_FIELD) && q.scalar(ANSWER_FIELD).is_some_and(|t| !t.trim().is_empty())
+        })
         .map(|q| q.id.clone())
         .collect();
     let by_phrase: BTreeSet<String> = reg
@@ -484,9 +486,7 @@ ratifies = ["p"]
         ("an incoming ruling.answers edge", &by_ruling),
         ("an incoming proposal.answers edge", &by_proposal),
     ];
-    let all_equal = named
-        .iter()
-        .all(|(_, s)| **s == *named[0].1);
+    let all_equal = named.iter().all(|(_, s)| **s == *named[0].1);
     println!(
         "  C5  the four settled criteria are not one criterion            {:>9}  required=not all equal",
         if all_equal { "*** VOID ***" } else { "as required" }
