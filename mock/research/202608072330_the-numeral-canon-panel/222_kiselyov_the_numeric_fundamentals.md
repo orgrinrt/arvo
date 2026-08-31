@@ -219,3 +219,135 @@ done is change the `options` arrays, so each still reads as a live fork to anyon
 who reads the row rather than the bound, and the option arrays are what a
 consolidation compresses. Rewriting an option set is not a port's call and is not
 mine either, so I am naming them rather than editing them.
+
+## 4. Already closed at the governing tier, with what the answer is
+
+Four rows. I am not deriving these, I am reporting what the ratified text says and
+which option it selects, because a question whose answer is already ratified wants
+reading rather than answering. None carries a predicate: all four are normative,
+and a normative sentence has no region because there is nothing an instrument
+could refute. That is the same reading the number-system block states about itself
+at `proposal.toml:256`.
+
+**Q18, `adaptation_in_identity_or_realisation`. Answer: realisation.** The ratified
+`a_format_is_identified_by_its_ambient_domain_and_its_representable_set` says
+"Adaptation choice and encoding are realisation, observable in computed values and
+in pattern-level properties respectively, and not part of identity". The row's
+`answers` edge names this question. Its option two is that answer, word for word.
+
+One qualification travels with it and comes from a later row rather than from the
+ratified one. `the_realisation_is_not_part_of_denotational_identity`
+(`proposal-the-later-topics.toml`, `topic = "the_primitive"`) narrows the word
+`identity` to denotational identity, and assigns the carrier to representational
+sameness, which licenses memory reinterpretation and licenses nothing about
+substitution inside a composite. Unqualified, the ratified sentence is ambiguous
+between the two relations and the container premise makes the ambiguity bite.
+Qualified, it is true on both branches of that premise. A reader taking Q18's
+answer should take it qualified.
+
+**Q2, `which_width_coordinates_a_consumer_writes`. Answer: the definitional half
+only, and the surface half is a narrower question still open.** Per 3.3 above. The
+ratified `membership_of_the_representable_set_is_one_affine_predicate` selects the
+fourth option's reading: the numeral is one object, the width pair is what it is
+called, and the question is what projection to show. Which projection is not
+settled by anything I can find, and the honest residue is one sentence rather than
+the four-option fork the row carries.
+
+**Q20, `is_the_number_system_inventory_open`. Answer: open, with the concept
+closed.** The ratified `the_concept_is_closed_and_the_inventory_is_open` is the
+answer and names the question in its `answers` edge. Its option one, "closed,
+which is checkable and lets a canon enumerate what it covers", is refused by
+ratified text.
+
+That refusal is load-bearing three sections below, so it is worth stating as a
+rule rather than as a fact about this row: **any answer that would require a new
+instance to be admitted by amending the canon contradicts a ratified sentence.**
+The ratified clause says a new one "earns admission by supplying the concept's
+obligations rather than by amending the canon", and I use that as a test twice, at
+6.2 and 6.3.
+
+**Q1, `what_then_validate_requires`. Answer: all three readings.**
+`ruling::validate_means_all_three_readings` (`ruling.toml:1185`) carries op's
+verbatim words, "Usage, Admissibility, Self-validation, All that makes sense", and
+names the question in `answers`. It is `stated` rather than ratified, so it binds
+as direction. Its challenge bar is his own phrase, "truly not worth it", and the
+row's note is careful that his stated prior about robustness is not part of the
+call. Nothing in my scope challenges any of the three.
+
+## 5. Settled by an instrument, with the instrument committed
+
+Four probes, in `222_probes/`, sources and outputs committed together with
+`RUN.md`. Each prints its predictions before its result and each prints its
+controls firing rather than asserting that they would. Two of them caught me
+predicting wrongly, which is recorded in the probe source rather than tidied away,
+because a control that has never fired has established nothing.
+
+### 5.1 The rounding variance forms hold at every fraction width, in ulp units, and only there
+
+`question::does_the_rounding_variance_form_hold_at_a_second_fraction_width`. The
+row says the forms were "stated as algebraic in the fraction width from a check at
+one fraction" and that one sweep at a second fraction is cheap and unrun.
+
+**Answer: yes in units of the coarse quantum, at every fraction width, and no in
+absolute units, where the forms carry a factor of `4^-Fc`.** The corpus does not
+state which unit it means, and that is the defect rather than the arithmetic.
+`a1_output.txt` Part 3 prints the same `45/32` at `Fc` of 0, 1, 3, 8, 16 and 31 in
+ulp units, beside the absolute column moving from `45/32` to
+`45/147573952589676412928`.
+
+**And neither prior instrument stood on the fraction-width axis at all.**
+`128_probes/r3_output.txt` and `130_probes/y1_output.txt` both report
+`f(1-f) = 2/9`, which forces `f = 1/3` or `f = 2/3`. Neither is a binary rational,
+so neither is the residue of any narrowing between two binary fixed-point grids.
+`a1` Part 0 walks every `j/2^d` for `d` in 1 to 24 and finds no such residue, with
+a positive control on the same walk finding `1/2` at all twenty-four widths, so the
+zero is a fact about the residue set rather than about a loop that never matches.
+This does not falsify the forms. It says the axis was never varied, which is
+exactly what the question suspected.
+
+Three routes compute the independent coupling's variance and none may assume the
+answer: full enumeration of all `2^n` outcome vectors with exact rational weights,
+the binomial closed form over `k`, and an integer-only second central moment.
+The third is written the way it is on purpose: using additivity of variance across
+independent summands to check a claim that additivity encodes would be circular,
+so that route computes `(M2*T - M1^2) / T^2` from integer moments and never touches
+the identity. Zero disagreements among the three over 300 cells, and zero
+mismatches against both closed forms over 1657 further cells.
+
+The controls fire: a deterministic nearest rounding gives variance 0 against forms
+of 60 and 240; an antithetic pair at `n = 2` gives 12 against 30 and 60; a scheme
+rounding up with probability `f^2` has mean `-15/2` rather than 0; and the mutated
+predictor, which offers the comonotone form against independent data, disagrees on
+182 of 182 cells, so the zeros above are the output of a comparison that can report
+a difference.
+
+```
+holds for: fraction_width: F any: construction, the per-rounding error is defined
+             in units of the quantum and the fraction width is what sets the
+             quantum, so no fraction width can appear in the expression
+             k*m - n*j that the whole result is about
+           chain_length: chain length in 1..=10: exhaustive, every chain length in
+             the band, at every attainable residue, at four values of the dropped-bit
+             count
+           rounding: rounding = stochastic
+           radix: radix = 2
+           threads: threads = 1
+           toolchain: rustc = 1.98.0-nightly (57d06900f 2026-05-27)
+           toolchain: edition = 2024
+           build_profile: debug-assertions = off
+evidence:  222_probes/a1_the_variance_forms_across_fraction_widths.rs, Part 3,
+           which varies the coarse fraction width over six values and reports the
+           ulp-unit variance identical at all six
+```
+
+**What the absences mean, said out loud because they are the sharp part.**
+`total_width` and `overflow_policy` are unlisted, so under
+`ruling::a_predicate_lists_only_what_holds` the forms hold in no situation where
+either exists. That is correct and it is the useful half of the finding: the model
+accumulates in an unbounded integer, so the moment an accumulator can overflow or
+saturate, neither form is the variance. `signedness` is unlisted because the probe
+is parameterised by a residue rather than by a value and never instantiated a
+signed numeral. The dropped-bit count, `Ff - Fc`, is the axis the sweep actually
+walked and no `dimension` row declares it; the same gap is already recorded at
+`proposal.toml:1616` about a staged narrowing's intermediate width, so this is a
+second instance of one missing axis rather than a new complaint.
