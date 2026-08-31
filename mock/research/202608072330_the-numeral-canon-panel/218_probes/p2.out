@@ -1,0 +1,112 @@
+control C: one backward edge of four, the forward and the flat one left alone
+control C: the edge naming nothing is reported as dangling, not as backward
+control D: 0 / 1-absent-nowhere / 1-absent-in-source all reported as planted
+
+== arm C, supersession and correction edges ==
+edges naming a row that is not there: 0
+edges from an unratified row at a ratified one: 4
+    the_intent_is_not_every_clause_of_the_quotation (stated) corrects the_strategies_weigh_measurements_differently (ratified)
+    the_question_was_already_answered_by_an_intent (stated) supersedes the_d_numbered_decisions_are_dead (ratified)
+    the_explore_mode_runs_for_the_first_hundred_stretches (stated) supersedes nothing_settles_during_the_breadth_pass (ratified)
+    the_panic_bound_names_a_concern_not_a_marker (stated) corrects the_overflow_panic_is_permitted_and_bounded (ratified)
+
+== arm D, stated rows ranked by how far the says travels ==
+(words in `says` absent from `quote`, and how many of those the source file carries)
+  18 of 19  the_imitation_is_ergonomics_not_an_arithmetic_boundary
+           answered arithmetic boundaries container declared expected experience imitation land overflow policy primitive rust targets type unsurprising using width
+  15 of 18  a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon
+           avoided away belongs decided designed established form imposed kind order question sentence statement test tier
+  13 of 17  the_intent_is_not_every_clause_of_the_quotation
+           answer back handed inside marked open provenance question quotation quoting second verbatim words
+  10 of 13  the_question_was_already_answered_by_an_intent
+           answer asked decisions implied intent numbered question second stated time
+  10 of 10  ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up
+           boundary consumer conversion data ends entering outside program ship written
+   9 of 11  steer_aggressively_to_convergence_without_rushing_it
+           argued constraints formed inside months settling side somewhere theoretical
+   9 of 10  a_queue_batch_inherits_the_scope_of_the_work_in_flight
+           batch belong flight list panel parked question questions work
+   9 of 10  which_half_of_the_pair_i9_attaches_to_is_not_his
+           call correct describes half implementation owes policy stated strategy
+   9 of  9  a_strategy_is_a_preset_naming_a_point_with_a_weighting_in_it
+           axes independent measurements mixed point preset space strategy weighting
+   9 of  9  the_container_derivation_needs_fresh_eyes
+           accept container derivation establishes mechanism standing trade unchanged working
+   8 of 11  the_attacker_owes_several_solutions_to_the_party_it_refuted
+           addressed attacker attacking party refutation refuted required stopping
+   8 of 11  precise_on_inexact_is_an_arm_question
+           direction first inexact profile reading result selects written
+   8 of  9  prior_calls_are_a_historical_log_not_calls
+           answered arvo design earlier failed history infer lineage
+   7 of  9  there_is_no_universal_answer_take_the_win_and_gate_it
+           answer asking category governs policy question whole
+   7 of  7  the_panic_bound_names_a_concern_not_a_marker
+           concern excluded first infer panic speed wording
+   7 of  7  the_trait_contract_structure_is_a_primary_paradigm
+           arvo implementations lets progress still upholds work
+   6 of  8  the_option_set_is_not_a_boundary
+           admissible asking down nobody shape written
+   6 of  6  the_canon_candidate_is_formalised_and_established_together
+           attack hands join once reply survives
+   5 of  8  consider_all_options_and_do_not_get_married
+           adopt explore open option question
+   5 of  7  what_is_ratifiable_is_the_intent_not_the_concretes
+           conclusions ratifiable ratified strategy were
+   5 of  5  the_next_unit_is_chosen_bottom_up
+           order settles strictly topic unblocking
+   4 of  9  work_autonomously_and_batch_the_questions_for_him
+           collected commented length steered
+   4 of  8  steering_the_experts_is_the_coordinators_job
+           coordinator dispatches manning push
+   4 of  7  his_voice_is_demoted_except_where_he_frames_it_absolute
+           across panel times twice
+   4 of  6  the_persona_has_no_authority
+           none offers standing steers
+   4 of  6  the_explore_mode_runs_for_the_first_hundred_stretches
+           hundred night panel roughly
+   4 of  5  the_run_continues_topic_after_topic
+           coordinator next unit work
+   4 of  5  the_predicate_is_whatever_is_available_at_const_time
+           admissible category inside predicate
+   4 of  5  the_canon_converts_to_a_mockspace_registry
+           built example live repository
+   4 of  4  do_not_escalate_a_measurement_dispute
+           contested deniable measurement question
+   3 of  6  the_stack_to_borrow_from_is_wider_than_three_repositories
+           hilavitkutin hold wider
+   3 of  5  port_what_exists_into_the_registry_then_comb_the_rest
+           agreement convergence work
+   3 of  4  notko_renames_and_strategy_is_arvos_name
+           arvo side strategy
+   3 of  4  validate_means_all_three_readings
+           covers reading three
+   3 of  3  warm_behaves_as_a_native_rust_primitive_would
+           compromise intuitive strategy
+   2 of  6  precise_is_accurate_across_chains_not_only_per_operation
+           accuracy strategy
+   2 of  4  the_selection_criterion_is_what_serves_the_rest_of_arvo
+           among isolation
+   2 of  4  the_standing_rules_are_in_the_rules_directory
+           reached sibling
+   2 of  4  throughput_wins_are_the_speed_first_strategys
+           first strategy
+   2 of  4  the_core_adaptation_intent_is_canon_bound
+           cores found
+   2 of  3  the_prior_strategy_split_was_well_enough_defined
+           concept worth
+   2 of  3  the_canon_does_not_police_what_shape_a_law_takes
+           requirement whole
+   2 of  2  panel_work_only_with_one_named_exception
+           exception shape
+   2 of  2  the_canon_is_settled_in_full_then_he_reviews_it
+           reviews runs
+   1 of  4  the_tools_concept_is_the_coordinators_call
+           repository
+   1 of  3  the_canon_must_support_a_full_design_and_impl
+           review
+   1 of  2  the_strategy_is_what_makes_an_answer_correct
+           chosen
+   1 of  2  a_predicate_lists_only_what_holds
+           means
+   1 of  2  the_strategy_descriptions_may_go_into_the_canon
+           breath
