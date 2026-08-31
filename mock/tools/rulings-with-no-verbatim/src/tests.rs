@@ -27,13 +27,13 @@ fn run(v: &RegistryView, args: &[&str]) -> (Outcome, String) {
     let crates = Default::default();
     let dirs: Vec<std::path::PathBuf> = Vec::new();
     let ctx = ToolContext {
-        mock_dir:   std::path::Path::new("."),
-        repo_root:  std::path::Path::new("."),
+        mock_dir: std::path::Path::new("."),
+        repo_root: std::path::Path::new("."),
         all_crates: &crates,
-        src_dirs:   &dirs,
+        src_dirs: &dirs,
         args,
-        stdin:      None,
-        registry:   v,
+        stdin: None,
+        registry: v,
     };
     let rep = RulingsWithNoVerbatim.run(&ctx);
     let text = match &rep.outcome {
@@ -49,20 +49,23 @@ fn holed(fields: &[(&str, &str)]) -> bool {
     let crates = Default::default();
     let dirs: Vec<std::path::PathBuf> = Vec::new();
     let ctx = ToolContext {
-        mock_dir:   std::path::Path::new("."),
-        repo_root:  std::path::Path::new("."),
+        mock_dir: std::path::Path::new("."),
+        repo_root: std::path::Path::new("."),
         all_crates: &crates,
-        src_dirs:   &dirs,
-        args:       &[],
-        stdin:      None,
-        registry:   &v,
+        src_dirs: &dirs,
+        args: &[],
+        stdin: None,
+        registry: &v,
     };
     has_no_verbatim(&ctx, "ruling::subject")
 }
 
 #[test]
 fn a_row_carrying_his_words_is_not_a_hole_and_one_without_is() {
-    assert!(!holed(&[("says", "he took the third"), ("quote", "the third one")]));
+    assert!(!holed(&[
+        ("says", "he took the third"),
+        ("quote", "the third one")
+    ]));
     assert!(holed(&[("says", "he took the third")]));
 }
 
@@ -82,7 +85,10 @@ fn control_a_ruling_the_experts_ratified_is_out_of_scope() {
     // no verbatim to have lost, and a tool reporting it would be listing the
     // ratification route rather than a hole. Every other arm here plants a row
     // with no `ratified_by` and would pass through this defect.
-    assert!(!holed(&[("says", "the experts converged"), ("ratified_by", "experts")]));
+    assert!(!holed(&[
+        ("says", "the experts converged"),
+        ("ratified_by", "experts")
+    ]));
     // And the other values do not get the carve-out.
     assert!(holed(&[("says", "he stamped it"), ("ratified_by", "both")]));
     assert!(holed(&[("says", "he stamped it"), ("ratified_by", "op")]));
@@ -123,7 +129,10 @@ fn the_report_shows_whether_somebody_has_already_looked() {
     let v = view(&[
         (
             "ruling::examined",
-            &[("says", "x"), ("note", "The corpus holds no verbatim; this is the record.")],
+            &[
+                ("says", "x"),
+                ("note", "The corpus holds no verbatim; this is the record."),
+            ],
         ),
         ("ruling::unexamined", &[("says", "y")]),
     ]);
@@ -151,7 +160,10 @@ fn a_registry_with_no_rulings_is_inconclusive_rather_than_clean() {
 #[test]
 fn one_row_can_be_read_in_full_by_its_slug() {
     let v = view(&[
-        ("ruling::a", &[("says", "the thing"), ("note", "the reason")]),
+        (
+            "ruling::a",
+            &[("says", "the thing"), ("note", "the reason")],
+        ),
         ("ruling::b", &[("says", "another")]),
     ]);
     let (outcome, text) = run(&v, &["a"]);

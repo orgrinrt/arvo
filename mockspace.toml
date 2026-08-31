@@ -219,6 +219,18 @@ commit = "error"
 build = "error"
 push = "error"
 
+# Declared by a tool crate rather than by a file under `mock/lints/`, and it
+# gates like any other repo lint. Its first refusal is a catalogue that does not
+# parse, which nothing short of a parser can establish, and the generated lint
+# pack's manifest is engine-written so no lint file can add one. A tool crate has
+# its own manifest and `lint_pack!` registers a `RepoLint` from one. That is a
+# gap in the lint contract rather than a third kind of check, and the honest fix
+# upstream is a way for a repository to declare a dependency for its own pack.
+[lints.a-panel-catalogue-is-readable]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-measurement-owes-a-usable-instrument]
 commit = "error"
 build = "error"

@@ -164,19 +164,40 @@ pub fn findings(lint: &dyn RepoLint, registry: &RegistryView) -> Vec<String> {
 /// file present but unregistered is not silently read as covered, and a lint
 /// registered under a name matching no file fails loudly here rather than being
 /// skipped.
+/// **A repo lint may also be declared by a tool crate, and one is.** The
+/// generated pack's manifest is engine-written, so a lint under `mock/lints/`
+/// reaches `std` and the lint-rules crate and nothing else. A check that has to
+/// parse TOML to do its job cannot live there, and
+/// `a-panel-catalogue-is-readable` is one: its first refusal is a file that does
+/// not parse, which no scan short of a parser can establish. A tool crate has
+/// its own manifest, so it can take the parser, and `lint_pack!` lets it
+/// register a `RepoLint` alongside its tools. So the lint lives at
+/// `mock/tools/<name>/src/lib.rs` and gates exactly like the others.
+///
+/// That is a gap in the lint contract rather than a third kind of check, and it
+/// is named here rather than worked around silently: the honest fix upstream is
+/// a way for a repository to declare a dependency for its own lint pack.
 pub fn lint_sources() -> Vec<(String, String)> {
-    let dir = repo_root().join("mock/lints");
+    let root = repo_root();
     registered_repo_lints()
         .into_iter()
         .map(|name| {
-            let file = dir.join(format!("{}.rs", name.replace('-', "_")));
-            let text = std::fs::read_to_string(&file).unwrap_or_else(|e| {
-                panic!(
-                    "`{name}` is registered and {} does not read: {e}. A lint's file is \
-                     named after the lint it declares.",
-                    file.display()
-                )
-            });
+            let stem = name.replace('-', "_");
+            let candidates = [
+                root.join("mock/lints").join(format!("{stem}.rs")),
+                root.join("mock/tools").join(&name).join("src/lib.rs"),
+            ];
+            let text = candidates
+                .iter()
+                .find_map(|p| std::fs::read_to_string(p).ok())
+                .unwrap_or_else(|| {
+                    panic!(
+                        "`{name}` is registered and none of {candidates:?} reads. A lint's \
+                         file is named after the lint it declares, either as \
+                         `mock/lints/<name>.rs` or as the root of the tool crate at \
+                         `mock/tools/<name>/`."
+                    )
+                });
             (name, text)
         })
         .collect()
@@ -445,16 +466,18 @@ fn every_registered_lint_has_tests_in_the_file_that_declares_it() {
     // one that catches that is
     // `every_registered_lint_asks_whether_it_reaches_the_gate_at_all` below,
     // and the two together are the whole of it.
-    let dir = repo_root().join("mock/lints");
-    let untested: Vec<String> = registered_repo_lints()
+    // Read through `lint_sources`, which knows a repo lint may be declared by a
+    // tool crate as well as by a file under `mock/lints/`. Joining the path here
+    // instead is how the tool-declared one would pass this by not being found.
+    let untested: Vec<String> = lint_sources()
         .into_iter()
-        .filter(|name| {
-            let file = dir.join(format!("{}.rs", name.replace('-', "_")));
-            // The brace is load-bearing. Without it `mod tests_whatever` reads
-            // as a test module, which is how the first version of this passed
-            // its own mutation: a module renamed out of the way still matched.
-            !std::fs::read_to_string(&file).is_ok_and(|t| t.contains("mod tests {"))
-        })
+        // The brace is load-bearing. Without it `mod tests_whatever` reads as a
+        // test module, which is how the first version of this passed its own
+        // mutation: a module renamed out of the way still matched. A tool crate
+        // keeps its tests in a `mod tests;` beside the lint, so the declaration
+        // rather than the body is what is looked for there.
+        .filter(|(_, text)| !text.contains("mod tests {") && !text.contains("mod tests;"))
+        .map(|(name, _)| name)
         .collect();
     assert!(
         untested.is_empty(),
@@ -482,8 +505,42 @@ fn every_registered_lint_asks_whether_it_reaches_the_gate_at_all() {
         "assert_findings_block",
     ];
 
+    // **A lint declared by a tool crate cannot call any of them**, because they
+    // live here and it is a different crate. Two of the three are answered by
+    // this test instead, directly and for every registered lint whatever
+    // declares it: it is in the pack the engine is handed, which is the whole of
+    // what `assert_registered` establishes, and it does not declare itself off,
+    // which is `assert_not_declared_off`. What is left is whether a finding
+    // blocks, which needs an input only that crate can build, so its own tests
+    // are required to name the severity they assert.
+    let mut pack = LintPack::default();
+    crate::__mockspace_collect_lints(&mut pack);
     let mut unasked: Vec<String> = Vec::new();
     for (name, text) in lint_sources() {
+        let lint = pack
+            .repo_lints
+            .iter()
+            .find(|l| l.name() == name)
+            .expect("the name came out of the pack");
+        assert!(
+            !lint.default_severity().is_off(),
+            "`{name}` declares itself off, so it never runs and its predicate is dead code \
+             however good it is"
+        );
+        if text.contains("mockspace::lint_pack!") {
+            let beside = repo_root()
+                .join("mock/tools")
+                .join(&name)
+                .join("src/tests.rs");
+            let tests = std::fs::read_to_string(&beside).unwrap_or_default();
+            if !tests.contains("Severity::HARD_ERROR") {
+                unasked.push(format!(
+                    "{name}: its own tests never assert what a finding's severity is, and \
+                     the helpers here are in another crate"
+                ));
+            }
+            continue;
+        }
         let missing: Vec<&str> = OWED
             .iter()
             .copied()
