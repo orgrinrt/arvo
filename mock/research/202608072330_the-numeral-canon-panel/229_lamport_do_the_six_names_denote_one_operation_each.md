@@ -547,3 +547,119 @@ Four of the six names denote one operation. `half_up` denotes two, which differ 
 the ratified ruling retired a word for, and one canon law row is true under one of them and false
 under the other. `stochastic` denotes a family of at least four, of which the canon's own retraction
 law already excludes one, and it names no function at all until the seed question is settled.
+
+---
+
+## Phase two. Reconciliation against the panel directory
+
+Written after the phase-one file was committed and pushed. Nothing above this line was edited.
+
+**Seat 228's file is not in the tree.** `228_leroy_the_rounding_vocabulary.md` and `228_probes/` do
+not exist here, so there is nothing of its to agree or disagree with, and I have not guessed at what
+it will say. The reconciliation below is against the rounding unit the panel already ran, files 125
+through 138, plus `142`, which turns out to be the load-bearing one.
+
+### Where the panel already had my central fact, and where it kept it
+
+**`125_knuth_rounding_cold_derivation.md` fixed the reading, in a parenthesis.** Line 53 names the
+vocabulary and writes `half_up` as "(nearest, ties toward positive infinity)". Line 110 gives the
+formula, `half_up(x) = floor(x + q/2)`. So the panel did choose, and it chose my reading one.
+
+**`142_muratori_reply_the_repair_was_dead_on_arrival.md` fixed the same reading independently**, at
+line 158, and recorded it as a prediction made before running: "Nearest-half-up is equivariant,
+because it is `floor(x + 1/2)` and floor is, which puts a nearest mode on floor's side of the
+partition." That file is the instrument behind the two fusion law rows.
+
+That second one changes the status of my finding 4 and I am glad to have found it. I had inferred
+from probe B that the canon's fusion rows are true only under the toward-positive-infinity reading,
+and called it evidence about what the instrument must have computed rather than a fact about it.
+It is now a fact about it: the instrument says in its own prose which operation it ran, and it is
+the one my measurement predicted. Two independent arrivals at the same reading, one in `125` from
+the algebra and one in `142` from the fusion partition, and my probes are a third.
+
+**And the count is the finding.** Twenty-eight files in this directory mention `half_up`. Two of
+them state which operation it is. The ratified ruling states none:
+`ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` carries the six names and
+no definition of any of them, and a grep of the whole registry for a definition of `half_up`
+returns nothing but sweep membership lists. So the panel knew, twice, and the canon does not carry
+it. That is the gap, stated more precisely than I could state it in phase one: not that nobody
+chose, but that the choice lives in two parentheses in unratified files while the name that
+inherits it is ratified.
+
+### Where I agree, and how I got there
+
+**`125`'s property table at line 165 and my probes B and C agree row for row.** It reports
+translation equivariance by one quantum for floor, ceil and half_up, not for half_even, not for
+toward_zero; and negation equivariance for toward_zero and half_even, not for floor, ceil or
+half_up. Probe B and probe C produce exactly that, at 0 failures where it says yes and nonzero
+where it says no.
+
+**I reached that in phase one, without reading `125`.** The instruments were built from the two
+canon law rows' own counts, which is a different route to the same table, and I did not know the
+table existed. I record it as an independent instance rather than as agreement, since I had nothing
+to agree with at the time.
+
+**What I add to it.** `125` writes "no" in half_up's negation column. Probe C names what the mirror
+actually is: the nearest mode whose ties go toward negative infinity, which is not one of the six.
+So under the reading `125` chose, the vocabulary cannot express the mirror of a claim it can
+express, and that is a fact about the set rather than about the mode.
+
+### Where I differ from something the panel wrote
+
+**`125`'s coverage bound carries a conjecture, flagged as unverified, and it is half right.** Line
+493: "I did not sweep `half_down` or ties-away-from-zero (their T5 rows would mirror half_up's and
+half_even's respectively, and I did not verify that)."
+
+I swept both. The conjecture holds on the signed domain and fails on the unsigned one.
+
+`half_down` mirrors `half_up`: probe B puts both at 0 equivariance failures across `F` in 1 to 5 at
+`W = 6` under both signednesses, and probe C identifies them as each other's negation conjugate.
+Confirmed.
+
+Ties-away-from-zero mirrors `half_even` on the signed domain exactly, and the numbers are identical
+rather than merely similar: probe B gives 512, 128, 32, 8, 2 across `F` in 1 to 5 for both, total
+682 each. Confirmed there. **On the unsigned domain it fails.** Ties-away-from-zero is equivariant
+at 0 failures, and `half_even` is not, at the same 682. The two modes part company exactly where
+the tie rule stops being sign-dependent and parity keeps being parity.
+
+That is a small correction to a conjecture its author marked as unverified, which is the discipline
+working rather than a defect. I would not have looked for it if the file had not named the gap.
+
+### What my instruments covered that the unit's did not
+
+`125`'s coverage bound says it did not sweep `half_down` or ties-away-from-zero, and it did not
+settle whether stochastic commutes with wrapping in distribution, leaving that absent rather than
+hedged. So the whole of my finding 2, the count of values on which the two readings of `half_up`
+disagree, sits outside what the rounding unit measured. It was named as unmeasured and it stayed
+unmeasured.
+
+Three further things I believe are new to this directory, and I would rather be corrected than
+claim them:
+
+Probe F's enumeration of the entire space of nearest modes over a domain, which turns the trade
+between equivariance and zero mean error from a property of two named modes into an emptiness
+result over all 65536 of them at two of its four points. `125` proves the individual rows; nothing
+I found asks whether anything else could fill both.
+
+Probe D's exact-distribution treatment of the four readings of `stochastic`, and specifically that
+`law::rounding_retraction_is_the_identity` already excludes the add-then-toward-zero realisation on
+the signed domain at 64, 32, 16 and 8 on-grid values for `F` of 1 through 4. `125` left the
+stochastic-versus-wrap question absent on purpose; this is a different question about the same name
+and it is answered by a law the canon already carries.
+
+Probe G's finding that the proportional reading of `stochastic` is the only thing in the vocabulary
+that is equivariant, pointwise unbiased and retracting together, which is what gives the sixth name
+a mathematical reason to exist rather than a fashionable one.
+
+### What I would now say to the panel
+
+The gap is one sentence in one row, and the ruling itself supplies the shape of it. It already
+attached a note pinning a hardware operation to `floor` so the operation is not read back into the
+name. The same instrument, applied to `half_up`, would say which of two shipped operations the name
+denotes. Two panel files already answer it the same way and the instrument behind the fusion rows is
+one of them, so this is recording a choice the panel made rather than making one.
+
+I am not writing that note. It touches a ratified row's subject matter, `question::is_the_rounding_vocabulary_complete_at_six`
+is open on a neighbouring question, and one expert's word is not how a call about the canon gets
+made here. What I have is the measurement, the count of files, and the two places the choice is
+already written down.
