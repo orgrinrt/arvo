@@ -381,3 +381,52 @@ fn a_row_is_addressable_by_slug_or_by_qualified_name() {
     let (_, by_qualified) = run(&v, &["question::open_one"]);
     assert_eq!(by_slug, by_qualified);
 }
+
+#[test]
+fn a_question_answered_on_its_own_row_is_settled() {
+    // The defect this closes, and it is the tool's own subject one level up: it
+    // detected settlement only through a ruling's `answers` edge, and not every
+    // answer of his mints a ruling. Three were settled in one round where one
+    // refined a bound, one reshaped the question rather than picking any option
+    // it was given, and one was a plain yes. All three would have gone back to
+    // him in the next batch, from the tool built to stop exactly that.
+    let v = view(
+        &[
+            (
+                "question::settled_on_the_row",
+                &[
+                    ("decider", "op"),
+                    ("answered", "he reshaped it rather than picking an option"),
+                ],
+            ),
+            ("question::still_open", &[("decider", "op")]),
+        ],
+        &[],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(out.contains("still_open"), "{out}");
+    assert!(
+        !out.contains("settled_on_the_row") || out.contains("Excluded"),
+        "an answered row is excluded rather than offered: {out}"
+    );
+}
+
+#[test]
+fn an_empty_answered_field_does_not_settle_anything() {
+    // The control, and it is the one that matters: a field present but blank is
+    // how a half-written repair reads, and treating that as settled would drop a
+    // live question out of the queue silently, which is worse than offering one
+    // twice.
+    let v = view(
+        &[(
+            "question::hollow",
+            &[("decider", "op"), ("answered", "   ")],
+        )],
+        &[],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(
+        out.contains("hollow"),
+        "a blank `answered` is not an answer: {out}"
+    );
+}

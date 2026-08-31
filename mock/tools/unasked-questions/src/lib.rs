@@ -51,6 +51,14 @@ const QUESTION: &str = "question";
 /// `question`, so a referrer from this namespace means settled.
 const RULING: &str = "ruling";
 
+/// The field a question carries once it is settled on its own row.
+///
+/// Some answers do not mint a ruling: a bound refined, a question reshaped
+/// rather than answered as posed, a plain yes. Those are settled and have no
+/// incoming `answers` edge, so a roster reading only that edge offers them
+/// again.
+const ANSWERED: &str = "answered";
+
 /// The field naming whose call it is.
 const DECIDER: &str = "decider";
 
@@ -315,12 +323,32 @@ impl UnaskedQuestions {
 /// waiting on him, and that is exactly the case a namespace-blind reading would
 /// hide.
 fn answered_by(ctx: &ToolContext<'_>, q: &str) -> Vec<String> {
-    ctx.registry
+    let mut out: Vec<String> = ctx
+        .registry
         .referrers(q)
         .iter()
         .filter(|r| r.starts_with(&format!("{RULING}::")))
         .cloned()
-        .collect()
+        .collect();
+
+    // A question answered on its own row rather than by a ruling.
+    //
+    // Not every answer of his mints a ruling. Three were settled in one round
+    // where one refined a bound, one reshaped the question rather than picking
+    // any option it was given, and one was a plain yes; none of the three is a
+    // ruling about arvo, and all three are answered.
+    //
+    // Reading only the `answers` edge misses them, and the tool would then have
+    // offered him, in the next batch, the three he had just answered. That is
+    // the defect this tool exists to catch, one level up and in the tool itself.
+    if ctx
+        .registry
+        .field(q, ANSWERED)
+        .is_some_and(|a| !a.trim().is_empty())
+    {
+        out.push("(answered on the row itself)".to_string());
+    }
+    out
 }
 
 /// The bare slug of a qualified identifier.

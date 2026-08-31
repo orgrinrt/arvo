@@ -555,6 +555,12 @@ description = "`op` where it is his intent and nobody else's; `measurement` wher
 values = ["op", "measurement", "panel", "coordinator"]
 
 [[registry.namespace.field]]
+name = "answered"
+type = "string"
+required = false
+description = "What settled the question, in the answerer's own words, with where the round is recorded whole. Written when it is answered and absent otherwise, which is what lets a roster tell a live question from a settled one sitting in the queue: six were doing exactly that, four saying so only in prose and two saying nothing, and two of those would have gone back to op in the next batch. An `answered` question is kept rather than deleted, because the options it chose among are worth as much as the answer and a deleted row takes them with it. Where the answer reshapes the question rather than picking an option, say so here: that is the most valuable kind and the one a bare option-index cannot record."
+
+[[registry.namespace.field]]
 name = "bound"
 type = "string"
 required = false
