@@ -1,5 +1,8 @@
 import io, os, re, glob, sys
-D = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel"
+# Resolved from this file's own location. It was absolute, naming a checkout
+# that still exists on this host, so it did not fail when the arc moved: it
+# resolved against a different tree and said nothing.
+D = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 F = os.path.join(D, "23_spj_the_sentences_a_canon_could_carry.md")
 s = io.open(F, encoding="utf-8").read()
 
@@ -10,7 +13,10 @@ for fp in glob.glob(os.path.join(D, "*.md")):
     m = re.match(r"^(\d\d)_", b)
     if m:
         files[m.group(1)] = fp
-files["SETTLED.md"] = os.path.join(D, "SETTLED.md")
+# `SETTLED.md` was archived and prefixed after this probe was written. Pointing
+# at where it went rather than where it was is the reading rule the archive
+# convention states; the file's content is unchanged, so what this checks is.
+files["SETTLED.md"] = os.path.join(D, "archive", "OLD_SETTLED.md")
 files["RULES.md"] = os.path.join(D, "RULES.md")
 
 cites = set()

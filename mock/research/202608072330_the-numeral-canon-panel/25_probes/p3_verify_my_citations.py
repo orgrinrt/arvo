@@ -6,9 +6,12 @@
 # the real test: a citation that resolves to the wrong content still "resolves".
 import io, os
 
-PANEL = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel"
-PRIOR = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202607301300_formalization-spec-panel"
-ARVO = "/Users/orgrinrt/Dev/clause-dev/arvo"
+# Resolved from this file's own location. All three were absolute, naming a
+# checkout that still exists on this host, so they did not fail when the arc
+# moved: they resolved against a different tree and said nothing.
+PANEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PRIOR = os.path.normpath(os.path.join(PANEL, "../202607301300_formalization-spec-panel"))
+ARVO = os.path.normpath(os.path.join(PANEL, "../../.."))
 
 F = {
     "06": PANEL + "/06_kiselyov_where_a_numeral_is_inferred.md",
@@ -18,14 +21,18 @@ F = {
     "23": PANEL + "/23_spj_the_sentences_a_canon_could_carry.md",
     "01": PANEL + "/01_op_answers.md",
     "RULES": PANEL + "/RULES.md",
-    "SETTLED": PANEL + "/SETTLED.md",
-    "MORNING": PANEL + "/MORNING.md",
-    "CANDIDATE": PANEL + "/CANON_CANDIDATE.md",
-    "142c": PRIOR + "/142c_op_checkpoint_thirtyfive.md",
-    "143b": PRIOR + "/143b_op_checkpoint_thirtysix.md",
-    "144b": PRIOR + "/144b_op_checkpoint_thirtyseven.md",
+    # Archived and prefixed after this probe was written; the content is
+    # unchanged, so pointing at where it went is what keeps the check honest.
+    "SETTLED": PANEL + "/archive/OLD_SETTLED.md",
+    "MORNING": PANEL + "/archive/OLD_MORNING.md",
+    "CANDIDATE": PANEL + "/archive/OLD_CANON_CANDIDATE.md",
+    # The prior panel is archived in full, every file `OLD_` prefixed, which
+    # happened after this probe was written. The reading rule is to prepend it.
+    "142c": PRIOR + "/OLD_142c_op_checkpoint_thirtyfive.md",
+    "143b": PRIOR + "/OLD_143b_op_checkpoint_thirtysix.md",
+    "144b": PRIOR + "/OLD_144b_op_checkpoint_thirtyseven.md",
     "impl": ARVO + "/.claude/rules/implementation.md",
-    "toolbox": "/Users/orgrinrt/Dev/clause-dev/.claude/rules/arvo-toolbox-not-policer.md",
+    "toolbox": os.path.join(PANEL, "../../../../.claude/rules/arvo-toolbox-not-policer.md"),
 }
 
 CITES = [

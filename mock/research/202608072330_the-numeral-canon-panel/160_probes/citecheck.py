@@ -11,8 +11,12 @@ import re, sys, os
 
 PANEL = os.path.dirname(os.path.abspath(__file__)) + "/.."
 ROOTS = [PANEL, PANEL + "/../../..", PANEL + "/../../../mock/benches/variants",
-         PANEL + "/../../../mock/benches", "/Users/orgrinrt/Dev/clause-dev/.claude/rules",
-         "/Users/orgrinrt/Dev/clause-dev"]
+         PANEL + "/../../../mock/benches", PANEL + "/../../../../.claude/rules",
+         PANEL + "/../../../.."]
+# The two workspace roots were absolute, naming a checkout that still exists on
+# this host, so they did not fail when the arc moved: they resolved against a
+# different tree and said nothing. A citation checker verifying somebody else's
+# clone reports clean and means nothing.
 
 PAT = re.compile(r'`([A-Za-z0-9_./-]+\.(?:md|rs|py|toml|sh|err|out|txt)):(\d+)(?:-(\d+))?`')
 BARE = re.compile(r'`(\d{2,3}):(\d+)(?:-(\d+))?`')

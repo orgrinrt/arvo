@@ -16,11 +16,16 @@ at the wrong section. Both MUST be reported as failures. If the checker reports
 zero failures overall, it is not checking, and the script exits non-zero.
 """
 
+import os
 import re
 import sys
 
-PANEL = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel"
-BENCH = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/benches"
+# Resolved from this file's own location. Both were absolute, naming a checkout
+# that still exists on this host, so they did not fail when the arc moved: they
+# resolved against a different tree and said nothing. A checker verifying
+# somebody else's clone reports clean and means nothing.
+PANEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BENCH = os.path.normpath(os.path.join(PANEL, "../../benches"))
 
 # (label, path, lo, hi, must_contain, is_deliberate_control_failure)
 CITES = [

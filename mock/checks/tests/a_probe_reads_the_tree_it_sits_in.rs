@@ -31,18 +31,31 @@ use std::fs;
 
 use arvo_checks::corpus;
 
-/// The catalogue, and it is red on purpose.
+/// The catalogue, now down to less than half of what it was.
 ///
-/// The 31 sit in landed probe directories, which are the record and are not
-/// edited. Repairing them means re-running each against the tree it should
-/// have read, which changes what they establish and is a dispatch rather than
-/// an edit. What this pins in the meantime is that nobody writes a new one:
-/// the ceiling is the measurement, and raising it is not the fix for a failure.
+/// **This comment said repairing them was a dispatch rather than an edit,
+/// because it would change what they establish. That was wrong in a way worth
+/// keeping**: the repair is one line per root and it does not change what a
+/// probe establishes at all. It changes which tree the probe establishes it
+/// about, and the tree it was reading is not the one it was written for.
+///
+/// Fifteen were repaired by hand and every one was re-run afterwards, which is
+/// where the value turned out to be. Pointed at the right tree they do not
+/// report clean: three independently written citation checkers each report the
+/// same living ledger's line citations no longer resolving, one reports seven
+/// failures of forty-one, and two were reaching for files that had since been
+/// archived and prefixed. **All of that was invisible while they read a clone
+/// where the old paths still resolved.** A probe reading the wrong tree does
+/// not merely prove nothing; it hides what it would have proved.
+///
+/// What is left sits in landed probe directories and is pinned rather than
+/// repaired. The ceiling is the measurement, and raising it is not the fix for
+/// a failure.
 #[test]
 fn no_new_probe_reads_another_tree() {
     /// Measured by this arm over the committed tree. Lower it as probes are
-    /// repaired; never raise it.
-    const CEILING: usize = 69;
+    /// repaired; never raise it. Was 69.
+    const CEILING: usize = 31;
 
     let found = corpus::probes_reading_another_tree(&corpus::panel_dir());
     let mut files: Vec<&str> = found.iter().map(|f| f.at.as_str()).collect();

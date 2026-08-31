@@ -14,11 +14,19 @@
 # belong to the harness run that produced them, not to this probe.
 import io, os, re, glob, subprocess
 
-BENCH = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/benches"
+# Resolved from this file's own location. Both were absolute, naming a checkout
+# that still exists on this host, so they did not fail when the arc moved: they
+# resolved against a different tree and said nothing. This one asks git whether
+# a file is tracked, so reading the wrong tree gives the wrong answer from a
+# command that succeeds.
+ARVO = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "../../..")
+)
+BENCH = os.path.join(ARVO, "mock/benches")
 
 def tracked(path):
-    r = subprocess.run(["git", "ls-files", "--error-unmatch", os.path.relpath(path, "/Users/orgrinrt/Dev/clause-dev/arvo")],
-                       cwd="/Users/orgrinrt/Dev/clause-dev/arvo",
+    r = subprocess.run(["git", "ls-files", "--error-unmatch", os.path.relpath(path, ARVO)],
+                       cwd=ARVO,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return r.returncode == 0
 
