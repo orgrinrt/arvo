@@ -74,12 +74,17 @@ fn the_member_files_line_citations_do_not_grow() {
     );
 }
 
-/// A numbered member file, which is written once and is the record.
+/// Whether the citation sits in something written once rather than something edited.
+///
+/// **Classified by what the file is, not by what it is called.** The first
+/// version asked whether the basename began with digits, and a probe's own
+/// `FINDINGS.md` two directories down inside a landed probe directory then
+/// counted as editable, where it is exactly as much the record as the member
+/// file that produced it. The only editable files are the ledgers and they sit
+/// at the panel root.
 fn in_a_member_file(at: &str) -> bool {
-    at.split('/')
-        .next_back()
-        .and_then(|f| f.split('_').next())
-        .is_some_and(|n| !n.is_empty() && n.chars().all(|c| c.is_ascii_digit()))
+    let file = at.split(':').next().unwrap_or(at);
+    !(!file.contains('/') && corpus::LIVING_LEDGERS.contains(&file))
 }
 
 /// The control, and both directions.

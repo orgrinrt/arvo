@@ -1,0 +1,91 @@
+=== p2. closing the cells exhaustion cannot reach ===
+
+V3, the extremal family against the whole tuple space:
+
+   W    L             tuples       family family / tuples
+   3    4               4096           64       1.562e-2
+   4    6           16777216          192       1.144e-5
+   5    8      1099511627776          512      4.657e-10
+   6    8    281474976710656         1024      3.638e-12
+   7    9 9223372036854775808         2304      2.498e-16
+  10   16                  0        32768            inf
+
+  the family is a vanishing fraction of the space, so Route B is a search
+
+V1, both routes against the exhaustive answer, on every affordable cell:
+
+     sign    W    L  exhaustive    extremal   predicted    agree
+   signed    3    2           3           3           3      yes
+   signed    3    3           4           4           4      yes
+   signed    3    4           4           4           4      yes
+   signed    3    5           5           5           5      yes
+   signed    3    6           5           5           5      yes
+   signed    3    7           5           5           5      yes
+   signed    3    8           5           5           5      yes
+   signed    4    2           4           4           4      yes
+   signed    4    3           5           5           5      yes
+   signed    4    4           5           5           5      yes
+   signed    4    5           6           6           6      yes
+   signed    4    6           6           6           6      yes
+   signed    5    2           5           5           5      yes
+   signed    5    3           6           6           6      yes
+   signed    5    4           6           6           6      yes
+   signed    5    5           7           7           7      yes
+   signed    6    2           6           6           6      yes
+   signed    6    3           7           7           7      yes
+   signed    6    4           7           7           7      yes
+   signed    7    2           7           7           7      yes
+   signed    7    3           8           8           8      yes
+ unsigned    3    2           3           3           3      yes
+ unsigned    3    3           3           3           3      yes
+ unsigned    3    4           3           3           3      yes
+ unsigned    3    5           3           3           3      yes
+ unsigned    3    6           3           3           3      yes
+ unsigned    3    7           3           3           3      yes
+ unsigned    3    8           3           3           3      yes
+ unsigned    4    2           4           4           4      yes
+ unsigned    4    3           4           4           4      yes
+ unsigned    4    4           4           4           4      yes
+ unsigned    4    5           4           4           4      yes
+ unsigned    4    6           4           4           4      yes
+ unsigned    5    2           5           5           5      yes
+ unsigned    5    3           5           5           5      yes
+ unsigned    5    4           5           5           5      yes
+ unsigned    5    5           5           5           5      yes
+ unsigned    6    2           6           6           6      yes
+ unsigned    6    3           6           6           6      yes
+ unsigned    6    4           6           6           6      yes
+ unsigned    7    2           7           7           7      yes
+ unsigned    7    3           7           7           7      yes
+
+  cells validated against exhaustion        : 42
+  extremal search reproduced the answer     : 42
+  derived predictor reproduced the answer   : 42
+  V2 control, an off-by-one predictor, agreed: 11
+
+  V1 passes (both routes reproduce every cell) : true
+  V2 passes (the wrong predictor is rejected)  : true
+
+=== the cells exhaustion could not reach, by the validated routes ===
+
+  These are NOT exhaustive results and must not be reported as such. They
+  are the extremal search and the derived predictor, both of which
+  reproduced every one of the 42 cells exhaustion could check.
+
+     sign    W    L    extremal   predicted     exact    gap
+   signed    3    9           5           5         7      2  GAP IS NOT ONE
+   signed    3   17           6           6         8      2  GAP IS NOT ONE
+   signed    3   18           6           6         8      2  GAP IS NOT ONE
+   signed    4   17           7           7         9      2  GAP IS NOT ONE
+
+  signed cells extended beyond exhaustion        : 283
+  the two routes agreed on every one of them     : true
+  the gap was one bit in every one of them       : false
+
+  What this does and does not establish. It does not make the extended
+  cells exhaustive results, and they are not to be written into a
+  predicate as though they were. It does say that two instruments which
+  agree with exhaustion everywhere exhaustion runs also agree with each
+  other, and with the one-bit rule, out to W = 12 and fold length 32.
+
+P2 WORKS

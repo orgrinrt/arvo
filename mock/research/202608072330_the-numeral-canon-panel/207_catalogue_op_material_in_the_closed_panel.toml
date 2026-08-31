@@ -1,0 +1,523 @@
+# Op's material in the closed formalization panel, one row per statement, with
+# what became of it and how that was established.
+#
+# This is not the canon and not a registry namespace. `canon_paths` names
+# `mock/registry/*.toml` and nothing here is loaded by the schema check. It is an
+# audit surface, built so nobody sweeps this archive a fourth time.
+#
+# ## What a row is
+#
+# One statement of op's, keyed on what he said rather than on what any document
+# carried, because a ledger keyed on what was carried cannot find an item no
+# ledger ever held. That is the same key `OLD_112_the_op_material_sweep.md`
+# section 6.2 specified and it is the reason this file exists at all.
+#
+# ## The four verdicts, and they are not interchangeable
+#
+# `superseded`  something later replaced it, and the row names what.
+# `carried`     it is in the registry now, and the row names the row.
+# `lost`        it is in no registry row and nothing replaced it.
+# `exploration` op was thinking aloud, so there is nothing to carry.
+#
+# `why_dropped` is separate from the verdict on purpose. **"No reason found" is a
+# different finding from "superseded" and is never written as one.** Where a
+# document records the decision not to carry something, the row cites it; where
+# nothing does, the row says so in those words.
+#
+# ## Confidence
+#
+# How directly the verdict was checked, never how strongly it is believed.
+#
+# 0.9 and up  the source file and the deciding document both opened at source
+# 0.7 to 0.9  source opened, disposition established by a controlled search
+# below 0.7   established by search alone, or the reading is contestable
+#
+# ## The instruments, committed beside this file
+#
+# `207_probes/roster.sh`, which establishes the population.
+# `207_probes/archive_citation_gap.sh`, which carries a mutation control.
+# `207_probes/registry_coverage.sh`, whose CARRIED rows are the control on its
+# own vocabulary: the closed panel's sweep recorded six occasions where a first
+# vocabulary returned nothing and a second found the idea, so a zero from an
+# uncontrolled grep decides nothing.
+
+# --- the frame, which decides most of the rows below ---------------------------
+#
+# Three of op's own statements govern how everything in the closed panel is read,
+# and all three are already registry rows. They are restated here because a
+# reader who does not hold them will misread every verdict in this file.
+#
+# `ruling::prior_calls_are_a_historical_log_not_calls` demotes his prior design
+# calls: collected for reference, not calls, not ratified intents, not canon,
+# because they belong to a lineage that failed. Its own note says porting one
+# would restore the authority he removed. **So absence is the correct state for
+# that material, and a row below saying `superseded` on this ground is recording
+# the mechanism working rather than a defect.**
+#
+# `ruling::the_d_numbered_decisions_are_dead` does the same for every numbered
+# decision, D1 to D75, and it is why five items below are closed in one line.
+#
+# `ruling::his_voice_is_demoted_except_where_he_frames_it_absolute` is the carve-
+# out, and it is the one nobody applied. In his words the demotion covers "this
+# panels transcripts and checkpoints **or other files**" **except** where "I
+# explicitly frame something I say as absolute", of which he recalls two, "both
+# of those were very abstract intents only, not specific calls of concrete
+# things". The closed panel is an "other file" and a handful of its statements
+# are framed as absolute in exactly that sense. **Which statements those are, and
+# whether the carve-out licenses porting them, is not settled here and is not
+# mine to settle.** It is filed as `question::whether_the_absolute_framing_carve_
+# out_reaches_the_closed_panel`.
+
+[[item]]
+id = "the_standard_optimal_and_representative_of_the_mathematics"
+claim = "The standard every design question is answered against: optimal and ideal rather than adequate or conventional; representative of the mathematics' own structure rather than a structure adjacent to it that encodes more easily; and the consequence he draws from the three together, that the abstractions are what truly matter, the typestate, with packaging following."
+source = "panel::202607301300_formalization-spec-panel::OLD_13c_op_the_standard_and_the_mode::#the-standard-everything-is-measured-against"
+stated = "2026-07-31"
+verdict = "lost"
+confidence = 0.9
+why_dropped = "No reason found. No document records a decision not to carry it. It is named as new in `SEED_TALKING_POINTS.md` section 1.1, which is the archaeology's own flag for op material the live panel's binding file does not hold, and no registry row was ever built from that section."
+evidence = [
+  "`OLD_13c` opened at source; the quotation is op's and is read out there into the three parts.",
+  "`207_probes/registry_coverage.out` row `1.1a`: zero hits across all twelve registry files on three independent phrasings, with four CARRIED controls returning non-zero in the same run.",
+]
+related = [
+  "Its third leg is a separate row below and is carried, because op re-invoked that leg himself in the live panel. The first two legs he has not restated.",
+  "`ruling::a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon` is the test this would be measured against, and a selection standard for every design question is squarely inside it.",
+]
+keywords = ["standard", "optimal", "ideal", "representative", "mathematics", "abstraction", "typestate", "selection"]
+
+[[item]]
+id = "the_conventions_are_the_adequacy_test"
+claim = "arvo has to be able to represent MATLAB, IEEE 754, SystemC and the rest, as a test rather than an inspiration, so an abstraction that cannot express one of them is defective rather than merely bounded."
+source = "panel::202607301300_formalization-spec-panel::OLD_13c_op_the_standard_and_the_mode::#the-standard-everything-is-measured-against"
+stated = "2026-07-31"
+verdict = "carried"
+confidence = 0.95
+why_dropped = "Not dropped. It is the one item in this file that travelled the licensed route end to end."
+evidence = [
+  "`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives` carries it, quoting both op's live sentence and the verification mandate.",
+  "`207_probes/registry_coverage.out` row `1.1c`: thirteen hits.",
+]
+related = [
+  "**This is the mechanism by which dead material legitimately returns, and it is worth stating because it is the answer to most of this file.** Op re-invoked it himself in the live panel, at `206`, as \"the rule that demands we provide first-class matlab and ieee754 compatible apis as aliases over arvo primitives and such\". It came back through his own mouth rather than by being mined, which is exactly what the demotion permits and what porting would not have been.",
+  "The same content is `D67` in the decision register, which is dead as a D-number. It is alive here because of the restatement and for no other reason.",
+]
+keywords = ["MATLAB", "IEEE 754", "SystemC", "convention", "alias", "adequacy", "expressible", "test"]
+
+[[item]]
+id = "the_stopping_condition_op_says_when_it_is_done"
+claim = "Do not poll it; he will literally say when the review is done."
+source = "panel::202607301300_formalization-spec-panel::OLD_13c_op_the_standard_and_the_mode::#how-the-review-runs-from-here"
+stated = "2026-07-31"
+verdict = "superseded"
+confidence = 0.9
+why_dropped = "Superseded by restatement. He said it again in the live panel and the live saying is what governs."
+evidence = [
+  "`ruling::the_run_ends_at_ratification_or_when_he_clears_it` carries it in his current words: the goal is not met until the full canon is ratified by him, or until he clears it himself.",
+  "`207_probes/registry_coverage.out` row `1.3a`: four hits.",
+]
+related = ["The bar attached to it in the same breath is a separate row and did not travel."]
+keywords = ["stopping", "poll", "done", "terminate", "ratification", "goal"]
+
+[[item]]
+id = "the_bar_nothing_less_will_we_stop_for"
+claim = "The review runs until the design is concrete, valid and critically ideal, optimal, the dream achieved, and nothing less is a stopping condition, so running long is not a reason to converge early."
+source = "panel::202607301300_formalization-spec-panel::OLD_13c_op_the_standard_and_the_mode::#how-the-review-runs-from-here"
+stated = "2026-07-31"
+verdict = "lost"
+confidence = 0.75
+why_dropped = "No reason found. The clause it shares a sentence with was restated and carried; this half was not, and nothing records a decision about it."
+evidence = [
+  "`OLD_13c` opened at source.",
+  "`ruling::the_run_ends_at_ratification_or_when_he_clears_it` states where the run ends and says nothing about the bar it must clear before ending there.",
+]
+related = [
+  "`ruling::the_canon_must_support_a_full_design_and_impl` is a bar and is checkable, and it is a different bar: exhaustive enough to design and implement from, rather than optimal and ideal. A reader could reasonably argue it absorbs this one, which is why the confidence is not higher.",
+  "`ruling::a_unit_ends_in_agreement_or_it_has_not_ended` covers the do-not-converge-early half at unit granularity.",
+]
+keywords = ["bar", "ideal", "optimal", "converge early", "stopping condition", "dream"]
+
+[[item]]
+id = "the_fresh_read_with_the_transcripts_withheld"
+claim = "The review is a repeating cycle whose third step is a fresh read: a member given only the consolidation, with the transcripts withheld, so the next area is chosen by somebody not carrying the last one's assumptions."
+source = "panel::202607301300_formalization-spec-panel::OLD_13c_op_the_standard_and_the_mode::#how-the-review-runs-from-here"
+stated = "2026-07-31"
+verdict = "superseded"
+confidence = 0.8
+why_dropped = "Migrated across the artifact boundary rather than dropped. It is process, and op has said where process lives."
+evidence = [
+  "`ruling::the_standing_rules_are_in_the_rules_directory` is op instructing that the standing rules are read from the rules directory, which is where this instrument now sits.",
+  "The workspace rule `how-to-run-a-panel.md` carries the blind cold open, the prohibition on the panel directory by name, and the phase-one commit as the evidence of blindness.",
+  "`207_probes/registry_coverage.out` row `1.3b`: zero registry hits, which is the correct state for material that belongs in the rules directory.",
+]
+related = [
+  "**The migration is not exact and the difference is worth one line.** The workspace rule schedules a blind derivation at the *opening* of a unit. Op's instrument is a blind read of the *consolidation*, which chooses what the next unit is. Those answer different questions, and only the second is an acceptance test on a consolidation.",
+]
+keywords = ["fresh read", "transcripts withheld", "blind", "cold open", "consolidation", "cycle"]
+
+[[item]]
+id = "what_happens_after_the_canon"
+claim = "The sequence after the canon settles: a design round creating the taxonomy and its documents, then source stubs, then design rounds going through the settled canon piece by piece to implement it into the stubs. Stated twice, three checkpoints apart."
+source = "panel::202607301300_formalization-spec-panel::OLD_68b_op_checkpoint_sixteen::#the-scope-correction-stated-first"
+stated = "2026-08-04"
+verdict = "lost"
+confidence = 0.85
+why_dropped = "No reason found. Named as new in `SEED_TALKING_POINTS.md` section 1.4 and never ported."
+evidence = [
+  "`OLD_68b` and `OLD_79b` both opened at source; the second states the same phases and binds the verification mandate to the last two.",
+  "`207_probes/registry_coverage.out` row `1.4`: zero hits on three phrasings.",
+]
+related = [
+  "`ruling::the_branch_waits_for_the_canon` and `ruling::the_canon_must_support_a_full_design_and_impl` are adjacent and neither states a sequence.",
+  "The prohibition half, that the panel produces canon and not source, is carried in full. It is the *sequence* that is absent, so the record says what may not happen now and not what happens next.",
+]
+keywords = ["after the canon", "sequence", "design round", "stub", "taxonomy", "implement", "phases"]
+
+[[item]]
+id = "the_end_state_invisible_and_lowering_to_optimal_instructions"
+claim = "The finished spec is proven, valid, and importantly efficient and ergonomic: invisible for the most part to downstream consumers while doing real work underneath and lowering transparently to optimal instructions."
+source = "panel::202607301300_formalization-spec-panel::OLD_70b_op_checkpoint_seventeen::#the-rhythm-and-where-it-points-next"
+stated = "2026-08-04"
+verdict = "lost"
+confidence = 0.85
+why_dropped = "No reason found. Named as new in `SEED_TALKING_POINTS.md` section 1.5."
+evidence = [
+  "`OLD_70b` opened at source.",
+  "`207_probes/registry_coverage.out` row `1.5`: zero hits on three phrasings.",
+]
+related = [
+  "It is the consumer-facing half of the same standard whose abstraction-facing half is the first row in this file, and the two were read as one pair by the panel that recorded them.",
+  "`ruling::the_imitation_is_ergonomics_not_an_arithmetic_boundary` is about ergonomics and is a different claim, about what the Warm imitation targets.",
+  "The same intent in a later form is in `OLD_142c`, where op states it as writing implicitly and almost invisibly as if through bare Rust primitives. That later statement is also unported.",
+]
+keywords = ["end state", "invisible", "ergonomic", "lowering", "optimal instructions", "downstream", "transparent"]
+
+[[item]]
+id = "the_pricing_pillar_compile_time_is_nothing"
+claim = "Compile time is nothing and may be literal minutes; the measurement that matters is runtime and lowered code. Long compile times are wanted where they resolve to snappy optimal runtime with the soundness, safety and numeric machinery amortised fully at compile. And the sharper half: always amortise runtime cost into compile and const time, absolutely always, no matter the strategy, never letting a strategy defer a cost to runtime that it can avoid."
+source = "panel::202607301300_formalization-spec-panel::OLD_77b_op_checkpoint_nineteen::#the-pricing-pillar-becomes-the-fourth-design-rule"
+stated = "2026-08-04"
+verdict = "lost"
+confidence = 0.95
+why_dropped = "**A reason is recorded and it is the most useful document in this whole sweep.** `179_lamport_porting_ops_rulings_into_the_registry.md` section 17 is the porting seat refusing to carry any `PRIOR_CALLS.md` substance into `ruling.toml`. It built this row as its candidate, chose not to commit it, and gave three grounds: `rung` has no honest value, the quotation in the ledger is elided so a verbatim field would carry an agent's edit, and the ledger's coverage statement means a row built from most of the file would quote a compression. It then named this same item as the single best argument against itself and wrote that it has no clean answer to it."
+evidence = [
+  "`OLD_77b` opened at source; both halves are op verbatim there and neither is elided at source, which removes one of the three grounds for this item specifically.",
+  "`179` section 17 read in full, including the candidate row it declined to commit.",
+  "`207_probes/registry_coverage.out` row `1.6`: zero hits on three phrasings.",
+]
+related = [
+  "The workspace rule `arvo-compile-time-last.md` carries the posture and **quotes nobody and cites nothing**, so the op-voiced form and the no-matter-the-strategy clause exist in no current file.",
+  "`ruling::never_a_runtime_check_and_one_lowered_path` is the nearest registry row and is a different statement: it governs runtime checks and branching, not the exchange rate between compile time and runtime cost.",
+  "`179` section 18 item one asks for exactly this to go to a second reader. This file is that second read and it agrees with `179` about the general refusal and disagrees about this item; see the question row.",
+]
+keywords = ["compile time", "runtime", "amortise", "pricing", "pillar", "cost", "strategy", "exchange"]
+
+[[item]]
+id = "the_four_part_erasure_gate"
+claim = "The acceptance criterion, four parts holding at once with no caveats left: the consumer expresses usage in bits and bytes, the typestate derives the matching container and numeral representation, it validates, and it erases on lowering. Anything less is unacceptable for this design and canon."
+source = "panel::202607301300_formalization-spec-panel::OLD_135b_op_checkpoint_twentynine::#the-gate-stated-first-because-everything-else-in-this-file-is-subordinate-to-it"
+stated = "2026-08-07"
+verdict = "lost"
+confidence = 0.9
+why_dropped = "No reason found for the absence of a ruling row. The material was not dropped from the panel: it reached the live panel verbatim through the seed archive and is quoted in six live member files. What never happened is a row in the namespace that holds what op has said."
+evidence = [
+  "`OLD_135b` opened at source, where op frames it as the standard the canon is judged against before promotion and as not negotiable.",
+  "`question::what_then_validate_requires` carries the criterion's phrase \"no caveats left\" inside its note, which is the only place any registry file holds it.",
+  "`207_probes/registry_coverage.out` row `135b`: one hit, in `question.toml`, and none in `ruling.toml`.",
+]
+related = [
+  "**The filing inverts the provenance.** The gate is op's statement and the registry holds it only as the framing of a question the panel is still answering, so a reader of `ruling.toml` cannot find the acceptance criterion for the thing that namespace exists to build.",
+  "It is one of the strongest candidates for `ruling::his_voice_is_demoted_except_where_he_frames_it_absolute`, since \"unacceptable\" is about as explicit as absolute framing gets and the gate is an abstract intent rather than a concrete call.",
+]
+keywords = ["erasure", "gate", "acceptance", "no caveats", "bits and bytes", "derive", "validate", "unacceptable"]
+
+[[item]]
+id = "a_constant_is_a_function_and_everything_varies_granularly"
+claim = "A function can also be a constant, so the two are not alternatives; and all things change and act granularly rather than only Warm. Being constant is therefore the special case and is a claim about a function's behaviour over a domain, so a design sentence stating a fixed value without naming its domain is underspecified by construction, and every stated fact owes both halves: what it varies over, and where it is constant."
+source = "panel::202607301300_formalization-spec-panel::OLD_143b_op_checkpoint_thirtysix::#the-ruling"
+stated = "2026-08-07"
+verdict = "lost"
+confidence = 0.95
+why_dropped = "**A reason is recorded and it is a handoff nobody took.** `SEED_TALKING_POINTS.md` section 1.16 lists this among rulings already carried, and then says in the same entry that it is quoted inside `OPTIONS.md` **only by its first clause**, and that whether the panel wants the full statement re-ratified is open. It was filed as carried and flagged as partial in one sentence, the flag was never turned into a question anybody could see, and the port that built the registry read `OPTIONS.md` rather than that flag."
+evidence = [
+  "`OLD_143b` opened at source. Op's words are \"I call this as intent, settled canon, right now. This small bit in this association now governs future talks\", which is the only place in the closed panel where he uses the word canon of his own statement.",
+  "`SEED_TALKING_POINTS.md` section 1.16 read at source for the partial-carry flag.",
+  "`207_probes/registry_coverage.out` row `143b`: zero hits across all twelve registry files on three phrasings.",
+]
+related = [
+  "**It is not superseded by `ruling::the_work_is_predicated_arms_composed` and the difference is load-bearing.** I13 governs *findings* and requires each to name the region it holds in. This governs *design statements*, and requires each stated value to name the domain it holds over. They are the same shape on two different objects, and I13's own note fixes its scope to the two paragraphs op ratified and says the elaboration around it is not part of what was ratified. So I13 cannot be stretched to cover this without doing the thing its note forbids.",
+  "This is the sharpest item in the file: op used the word canon, framed it as governing future talks, and it is absent from the canon.",
+]
+keywords = ["constant", "function", "granular", "domain", "varies", "underspecified", "settled canon", "intent"]
+
+[[item]]
+id = "the_families_are_convenience_aliases_over_one_representation"
+claim = "The named families are kept, and they remain convenience aliases to the one underlying representation they all are. He mandated keeping the aliases; what is wrong is treating them as the subject rather than as spellings. And the instruction attached: this has been established and written down before and does not stick, so find a form that makes it stick."
+source = "panel::202607301300_formalization-spec-panel::OLD_138b_op_checkpoint_thirtyone::#the-aliases-are-aliases-and-this-is-the-thing-that-must-stop-slipping"
+stated = "2026-08-07"
+verdict = "lost"
+confidence = 0.9
+why_dropped = "No reason found. This statement sits in one of the fourteen op checkpoints the roster never listed, so no sweep's population contained it and no document records a decision about it."
+evidence = [
+  "`OLD_138b` opened at source.",
+  "`207_probes/registry_coverage.out` row `138b`: zero hits on two phrasings, and the neighbouring probe run returns zero for `aliases are aliases`, `convenience alias` and `one numeric type` across every registry file.",
+  "`207_probes/roster.out`: `OLD_138b` is one of the fourteen op files outside the stated roster of twenty-three.",
+]
+related = [
+  "**It bears directly on a question the registry currently records as open.** `ruling::the_family_question_wants_the_comparison_first` is op declining to rule on whether the numeral space is one family or several until a written comparison is laid out. He answered a version of that question in the closed panel and the comparison's inputs do not include it.",
+  "Under `ruling::prior_calls_are_a_historical_log_not_calls` the licensed use of this is precisely to give experts something to test, and the comparison op asked for is that test. So this is an input to the comparison rather than an answer to it, and writing it in as an answer would be the drift the demotion exists to prevent.",
+  "The same content is `D53` in the decision register and is dead in that form.",
+]
+keywords = ["alias", "family", "families", "one representation", "spelling", "stick", "presentation"]
+
+[[item]]
+id = "find_a_form_that_makes_an_intent_stick"
+claim = "A fact that has been established, written down, and then re-derived from scratch by a later member is a presentation failure in the document that was supposed to carry it. The instruction is not to state it again but to find a form that makes it stick, and whoever writes that section owes an account of why a reader keeps forming the wrong model."
+source = "panel::202607301300_formalization-spec-panel::OLD_140b_op_checkpoint_thirtythree::#op-has-now-told-the-panel-twice-in-two-days-that-something-is-already-written-and-does-not-stick"
+stated = "2026-08-07"
+verdict = "lost"
+confidence = 0.8
+why_dropped = "No reason found. It sits in the unswept range and is an instruction about the canon's form rather than its content, which is a category no sweep was looking for."
+evidence = [
+  "`OLD_138b` and `OLD_140b` both opened at source; op says a version of it in each, two days apart, which is what makes it a pattern rather than an aside.",
+  "`207_probes/registry_coverage.out`: `make it stick` and `does not stick` return zero across every registry file.",
+]
+related = [
+  "`ruling::warm_behaves_as_a_native_rust_primitive_would` has a note recording that he restated it at least four times because it kept failing to stick, and calling that a presentation defect. **So the registry holds the observation as an aside on one row and not the obligation it was stated as.**",
+  "It is an obligation on the canon rather than a ruling about arvo, and `obligation.toml` is where it would sit.",
+]
+keywords = ["stick", "presentation", "re-derive", "form", "canon", "intent", "restate"]
+
+[[item]]
+id = "the_container_is_never_written_by_a_consumer"
+claim = "Naming the container at the surface is explicitly wrong. The entire idea of arvo is that the strategy guides container selection and the user does not: the user writes the strategy and arvo optimises accordingly. The second half binds beyond arvo, since the same semantics and typestate are read by downstream optimisation steps."
+source = "panel::202607301300_formalization-spec-panel::OLD_130b_op_checkpoint_twentyeight::#the-container-is-never-written-by-a-consumer"
+stated = "2026-08-07"
+verdict = "lost"
+confidence = 0.9
+why_dropped = "No reason found. It reached the live panel verbatim through the seed archive and is quoted in `OPTIONS.md` and in live member files; no registry row was built from it."
+evidence = [
+  "`OLD_130b` opened at source.",
+  "`207_probes/registry_coverage.out` row `1.10b`: three hits and all three in `probe.toml`, which is instrument metadata rather than a statement of the intent.",
+]
+related = [
+  "`ruling::the_container_derivation_needs_fresh_eyes` is op on the derivation *mechanism* and presupposes this without stating it.",
+  "It is a statement of what arvo is for, which is the category `ruling.toml` calls `intent`, and the topic `the_realisation_map` is where it would sit.",
+]
+keywords = ["container", "consumer", "strategy", "selection", "projection", "surface", "optimises"]
+
+[[item]]
+id = "no_enumerations_if_we_can_help_it"
+claim = "No enumerations if it can be helped, on the ground that the information is present in the heavy typestate and what is missing is the spelling. Refused across four separate sites, with the standing instruction that finding the answer is the job rather than settling for a solution already ruled out."
+source = "panel::202607301300_formalization-spec-panel::OLD_137b_op_checkpoint_thirty::#no-enumerations-and-this-is-the-same-finding-a-seventh-time"
+stated = "2026-08-07"
+verdict = "carried"
+confidence = 0.85
+why_dropped = "Carried, and narrowed. The registry holds the refusal scoped to one derivation rather than as the general standing refusal op applied four times in four places."
+evidence = [
+  "`OLD_137b`, `OLD_139b` and `OLD_145b` opened at source; the refusal recurs in all three.",
+  "`ruling::the_container_derivation_needs_fresh_eyes` carries op's live words that the good attempt \"did not contain any enumeration\", which is the refusal applied to the container derivation.",
+  "`207_probes/registry_coverage.out` row `1.10a`: forty-seven hits, so the vocabulary is well represented; the narrowing is a reading of the rows rather than a count.",
+]
+related = [
+  "The general form and the \"finding it is the job\" instruction are what did not travel. A reader of the registry learns that one derivation must avoid an enumeration, not that an enumeration anywhere is a standing refusal.",
+  "Because the general form was restated by op inside the live panel's own seed material and is not merely a prior call, the narrowing is a porting decision rather than a demotion.",
+]
+keywords = ["enumeration", "table", "typestate", "spelling", "refusal", "implicit", "derivation"]
+
+[[item]]
+id = "the_d_numbered_decision_register"
+claim = "The seventy-five numbered decisions in the formalization talk, including the axis-sorting test at D54, the no-gratuitous-abbreviation rule with op's own applied table at D56, the one-numeric-type spine at D53 and D52, and the fixed literal surface at D48 and D31."
+source = "panel::202607301300_formalization-spec-panel::OLD_112_the_op_material_sweep::#6-two-things-outside-the-question-asked"
+stated = "2026-07-30"
+verdict = "superseded"
+confidence = 0.9
+why_dropped = "Op closed the whole register in one act. He was offered three options, chose the first, and confirmed it later with \"Already answered.\""
+evidence = [
+  "`ruling::the_d_numbered_decisions_are_dead`: dead, not to be mined, nothing promoted from them, the panel re-derives anything it needs.",
+  "`207_probes/registry_coverage.out` rows `1.7`, `1.8`, `1.9`: zero hits each, which is the intended state.",
+]
+related = [
+  "**This closes five items other sweeps carried as open, and it closes them correctly.** `SEED_TALKING_POINTS.md` sections 1.2, 1.7, 1.8, 1.9 and 1.11 all mark D-numbered material as new or as sharpening a live question. They were written before the port and the port applied op's ruling, which is the right order.",
+  "D67 is the exception and is a separate row above: its content is live because op restated it, not because it was mined.",
+  "The row's own note records that no verbatim exists and that the corpus holds only an agent's sentence reading \"He took the third\", which `checks` pins by name. That is a real weakness in a load-bearing row and it is already written down.",
+]
+keywords = ["D-number", "decision register", "D54", "D56", "D53", "D48", "dead", "mined"]
+
+[[item]]
+id = "the_fused_versus_split_call_op_reserved"
+claim = "Whether the numeral carries one fused strategy parameter or a split, and whether the split is worth its cost, are op's calls and are downstream of whether enforcement is possible."
+source = "panel::202607301300_formalization-spec-panel::OLD_08b_op_checkpoint_three::#what-is-not-being-asked"
+stated = "2026-07-30"
+verdict = "superseded"
+confidence = 0.9
+why_dropped = "Op released the reservation himself, nineteen checkpoints later, applying his own staleness principle: the reservation was made under evidence that has since moved, so the panel converges it rather than escalating it."
+evidence = [
+  "`OLD_127b` opened at source, section on the earlier part of the same session, which records him declining to rule and handing it back.",
+  "`OLD_08b` opened at source for the original reservation.",
+]
+related = [
+  "**This corrects `SEED_TALKING_POINTS.md` section 1.13**, which records the call as reserved and never made and marks it new for the current panel. That section reached the later checkpoints through `OLD_112` and `OLD_124`, and `OLD_112` stops at `108b` while the release is at `127b`. The archaeology's own coverage statement says the remaining op checkpoints were skimmed through those two documents, so this is the stated limitation producing exactly the miss it predicted.",
+]
+keywords = ["fused", "split", "reserved", "enforcement", "Number", "strategy parameter", "staleness"]
+
+[[item]]
+id = "the_licence_to_argue_against_a_ratified_call"
+claim = "Any member is free to argue against any ratified call, including ones just reaffirmed, provided the argument is made rather than asserted."
+source = "panel::202607301300_formalization-spec-panel::OLD_04b_op_checkpoint_and_directions::#one-standing-note-on-authority-from-op"
+stated = "2026-07-30"
+verdict = "superseded"
+confidence = 0.8
+why_dropped = "Migrated across the artifact boundary. It is panel conduct, and op has said the standing rules are read from the rules directory."
+evidence = [
+  "`OLD_04b` opened at source.",
+  "The workspace rule `panels-argue-the-intent-not-the-wording.md` carries both halves: only op's calls are final and even those go stale, a member encountering a call it believes wrong says so with its reasoning, and decided is not the same as right.",
+  "`207_probes/registry_coverage.out` row `1.15`: zero registry hits, which is the correct state for material in the rules directory.",
+]
+related = [
+  "`ruling::an_ack_is_not_a_ratification` carries the authority half from the live panel.",
+  "The qualifier, that the argument must be made rather than asserted, is the operative clause and it is the half most easily lost in a paraphrase. It survives in the workspace rule.",
+]
+keywords = ["argue", "ratified", "licence", "asserted", "reopen", "authority"]
+
+[[item]]
+id = "the_checkpoint_cadence"
+claim = "A checkpoint with op after every two experts."
+source = "panel::202607301300_formalization-spec-panel::OLD_04b_op_checkpoint_and_directions::#what-op-said-in-op-s-words"
+stated = "2026-07-30"
+verdict = "superseded"
+confidence = 0.9
+why_dropped = "Superseded by op's own later instructions, which set a different cadence for a different panel. The closed panel's own sweep measured the period drifting from two to four and then to four-then-consolidate with no record of whose drift it was."
+evidence = [
+  "`OLD_112` section 3.8 read at source for the drift measurement.",
+  "`ruling::steer_aggressively_to_convergence_without_rushing_it` and `ruling::a_unit_ends_in_agreement_or_it_has_not_ended` are the live panel's cadence in op's current words.",
+]
+related = ["The cadence is the one item in this file where being superseded is uncontroversial, and it is listed so the file's population is the whole roster rather than the interesting part of it."]
+keywords = ["cadence", "checkpoint", "every two", "rhythm", "drift"]
+
+[[item]]
+id = "the_downstream_evidence_correction"
+claim = "That existing consumers do things one way may be only because nothing better existed, so it should be irrelevant: the focus is the optimal, what consumers would ideally deal with and in."
+source = "panel::202607301300_formalization-spec-panel::OLD_06b_op_checkpoint_two::#the-correction-and-it-is-the-important-part-of-this-checkpoint"
+stated = "2026-07-30"
+verdict = "lost"
+confidence = 0.85
+why_dropped = "No reason found. Named as new in `SEED_TALKING_POINTS.md` section 1.14 and never ported."
+evidence = [
+  "`OLD_06b` opened at source.",
+  "`207_probes/registry_coverage.out` row `1.14`: zero hits on two phrasings.",
+]
+related = [
+  "It is an evidence-weighting rule rather than a design call: it says what a survey of downstream usage is evidence *of*. That makes it closer to the panel-conduct rows than to the intent rows, and it has no counterpart among them.",
+  "`ruling::arvo_is_a_library_and_the_value_composes_on_top` is the nearest live statement about consumers and is about what arvo is, not about how consumer behaviour is read as evidence.",
+]
+keywords = ["downstream", "consumer", "evidence", "optimal", "ideally", "existing usage"]
+
+[[item]]
+id = "the_notko_profile_relation"
+claim = "That the notko optimisation profiles roughly translate to arvo strategies, that a profile attribute above arvo-using code rewrites the strategy, and that none of the table items or strategies are the same through profiles."
+source = "panel::202607301300_formalization-spec-panel::OLD_142c_op_checkpoint_thirtyfive::#op-s-words"
+stated = "2026-08-07"
+verdict = "superseded"
+confidence = 0.95
+why_dropped = "Op voided the reading himself two checkpoints later, twice in one round: notko and hv are not directly associated with arvo, the concepts need not align, they are different things in different projects with synergy but no continuity."
+evidence = [
+  "`OLD_144b` opened at source, including its own account of what the correction voids.",
+  "`OLD_142c` opened at source for the original.",
+]
+related = [
+  "The workspace rule `arvo-always-optimal-internals.md` carries the corrected mechanical form, that the attribute is `#[profile]`, is lexical rather than a build-profile switch, and that its three tiers leave `Precise` without one.",
+  "**This is the cleanest supersession in the file and it is worth reading as the model.** Op stated something, the panel built on it, op read the result and withdrew the premise by name, and the correcting file records what dissolves rather than what was answered.",
+]
+keywords = ["notko", "profile", "optimize_for", "strategy", "synergy", "continuity", "alignment"]
+
+[[item]]
+id = "the_three_consumer_tiers_and_the_domain_alias_bar"
+claim = "Three tiers of consumer: one who never adopts arvo and meets it through trait bounds on the public APIs, one who takes arvo wholesale and writes its own domain aliases, and one who spells the typestate explicitly. With the bar that the ergonomics of the alias-able types are crucial and perhaps more important than the plumbing, because a domain alias is only worth writing if the type it aliases is easy and intuitive to write."
+source = "panel::202607301300_formalization-spec-panel::OLD_142c_op_checkpoint_thirtyfive::#second-clarification-the-three-tiers-and-where-the-typestate-is-actually-written"
+stated = "2026-08-07"
+verdict = "lost"
+confidence = 0.8
+why_dropped = "No reason found for the tiers. The ergonomics bar partially survives: `question::the_width_surface_crossing` carries `ergonomics bar` among its keywords, which is the concept without op's statement of it."
+evidence = [
+  "`OLD_142c` opened at source.",
+  "`207_probes/registry_coverage.out`: `three tiers`, `domain alias`, `wholesale`, `plumbing` and `laborious` all return zero in `ruling.toml`.",
+]
+related = [
+  "`SEED_TALKING_POINTS.md` section 1.5 records that the live register's ergonomics-bar entries rest on the seed's `142c` quotes alone, so the bar's only support is a quotation of a demoted file.",
+  "It survives op's own `144b` correction, which voids the notko-alignment reading in the same file and leaves the consumer-tier material untouched.",
+  "This is the least crisp row here: the tiers are a description rather than a ruling, and a reader could reasonably file them as exploration.",
+]
+keywords = ["tiers", "consumer", "domain alias", "ergonomics", "plumbing", "wholesale", "inference"]
+
+[[item]]
+id = "the_convergence_pressure_and_downstream_halt"
+claim = "That convergence should be forced onto an accurate enough, valid, efficient shape, that compromises might have to be made, and that downstream consumers are halted waiting on this work."
+source = "panel::202607301300_formalization-spec-panel::OLD_127b_op_checkpoint_twentyseven::#the-governing-pressure-stated-first"
+stated = "2026-08-06"
+verdict = "exploration"
+confidence = 0.7
+why_dropped = "Not a design statement and time-bound by construction. It is op describing the pressure on a panel that has since been closed, in a lineage whose crate tree was nuked the following week, and reading it forward would import urgency from a situation that no longer obtains."
+evidence = [
+  "`OLD_127b` opened at source.",
+  "`207_probes/registry_coverage.out`: `downstream work is currently halted` returns zero on every live surface.",
+]
+related = [
+  "`ruling::steer_aggressively_to_convergence_without_rushing_it` is the live panel's version of the same pressure in op's current words, and it carries the counterweight the closed-panel statement does not.",
+  "Listed rather than omitted because the honest population is every op statement, and a row saying \"this one is time-bound\" is worth more than silence, which a later sweep would read as an oversight.",
+]
+keywords = ["convergence", "pressure", "compromise", "downstream", "halted", "urgency"]
+
+[[item]]
+id = "the_shared_premise_instruction"
+claim = "That every dispatch brief should carry an instruction to attack the premise the agreeing experts shared, added to the existing trust-nothing framing rather than made a hard gate, because the process is iterative and neither humans nor machines are infallible."
+source = "panel::202607301300_formalization-spec-panel::OLD_127b_op_checkpoint_twentyseven::#the-process-finding-and-op-s-answer-to-it"
+stated = "2026-08-06"
+verdict = "superseded"
+confidence = 0.85
+why_dropped = "Migrated across the artifact boundary, per the standing-rules ruling."
+evidence = [
+  "`OLD_127b` opened at source.",
+  "The workspace rule `expert-dispatch-defends-the-canon.md` carries it: several unratified artifacts agreeing is not corroboration but evidence of shared drift, and it is stated as a framing every dispatch carries rather than as a gate, which is the strength op asked for.",
+]
+related = [
+  "Op's own qualifier, that he would not make it too strict, is the part most easily lost when a framing is turned into a check, and the workspace rule keeps it as framing.",
+]
+keywords = ["shared premise", "drift", "corroboration", "two experts", "brief", "framing"]
+
+[[item]]
+id = "conceding_is_a_valid_answer_and_expert_code_is_a_spike"
+claim = "That an expert must concede when it cannot find the answer, that saying so is a valid and honest deliverable rather than a failure, and that any code a prior expert wrote is a spike rather than canon, to be cited for what it proved and never for how it was written."
+source = "panel::202607301300_formalization-spec-panel::OLD_139b_op_checkpoint_thirtytwo::#conceding-is-a-valid-answer-and-it-is-now-a-standing-instruction"
+stated = "2026-08-07"
+verdict = "superseded"
+confidence = 0.95
+why_dropped = "Migrated across the artifact boundary on op's own explicit instruction, which names where it was to go: the persona files, the rules for how these flows work, and the panel's own briefs."
+evidence = [
+  "`OLD_139b` opened at source, including op's instruction to encode it.",
+  "The workspace rule `conceding-is-an-answer-and-expert-code-is-a-spike.md` carries both halves with his words quoted.",
+]
+related = [
+  "**This is the one item in the file where the migration is documented at both ends**, and it is the reason the standing-rules route is a real answer rather than a convenient one: op said where it should go, and it went there.",
+  "It is also the calibration for every other process row here. Where a process statement has no such instruction and no rule carries it, the migration reading is weaker.",
+]
+keywords = ["concede", "spike", "probe", "canon", "persona", "standing instruction", "deliverable"]
+
+[[item]]
+id = "the_verification_mandate_exhaustive_in_both_directions"
+claim = "Parity suites running the same computation through arvo and through the namesake implementations and asserting the same answer; and exhaustiveness in both directions, so what should be expressible passes and what should be inexpressible in the typestate and contracts actually fails to compile, starting from a large body of red tests."
+source = "panel::202607301300_formalization-spec-panel::OLD_79b_op_the_verification_mandate::#exhaustiveness-on-the-mathematical-side-in-both-directions"
+stated = "2026-08-04"
+verdict = "carried"
+confidence = 0.85
+why_dropped = "Half carried and half migrated, and neither half is lost. The parity-suite half is a registry obligation; the compile-fail and red-tests half is workspace discipline."
+evidence = [
+  "`OLD_79b` opened at source.",
+  "`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives` quotes the parity-suite sentence directly, attributing it to the verification mandate.",
+  "The workspace rules `strict-by-design-quality-pressure.md` and `a-test-that-cannot-compile-is-the-finding.md` carry the both-directions exhaustiveness and the red-as-starting-state discipline.",
+]
+related = [
+  "The obligation row's own `gap` field records that the parity suite is unbuilt and that which conventions are in scope is unstated, so the mandate is carried as a demand with no artifact behind it. That is the honest state and the row says so.",
+  "The binding half, which phases of the post-canon sequence the mandate applies to, went with the sequence and is lost; see the post-canon row.",
+]
+keywords = ["parity", "verification", "exhaustive", "inexpressible", "fail to compile", "red tests", "mandate"]

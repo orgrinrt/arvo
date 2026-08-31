@@ -64,6 +64,35 @@ fn no_new_measurement_lands_without_an_instrument() {
     );
 }
 
+/// The ratchet above is green, and this is what says the green means anything.
+///
+/// A ceiling passes two ways: the finder found few, or the finder found none
+/// because it stopped working. The second is silent, survives a refactor of the
+/// field names it reads, and leaves a check that can never fail again sitting in
+/// the suite looking like coverage.
+///
+/// So the finder is asserted non-empty. That is the reverse of what a check
+/// usually wants and it is correct here: while any row is stuck, an empty result
+/// is evidence about the instrument rather than about the canon. The day the
+/// last one is wired this test is what fails, which is the right moment to
+/// notice, and the repair is to drop the ceiling and this control together.
+///
+/// Run by hand first, by setting the ceiling to zero and reading what it named:
+/// six rows, which is the ceiling exactly. A header elsewhere in the registry
+/// had claimed the check was red on purpose because no probe rows existed, and
+/// that is what sent somebody to look.
+#[test]
+fn the_measured_without_evidence_finder_still_finds_the_stuck_rows() {
+    let found = shape::measured_without_evidence(&canon());
+    assert!(
+        !found.is_empty(),
+        "the finder reports nothing, so the ceiling beside it is passing \
+         vacuously. Either every stuck row was wired, in which case drop the \
+         ceiling and this control, or the finder stopped reading the fields it \
+         means to read."
+    );
+}
+
 #[test]
 fn the_committed_canon_agrees_with_itself_about_regions() {
     let found = shape::predicate_disagrees_with_the_sentence_kind(&canon());
@@ -433,17 +462,31 @@ fn the_committed_canon_leaves_no_row_unfindable() {
 /// The rulings with nothing verbatim behind them, pinned by name.
 ///
 /// This one does not assert an empty list, because the list is not empty and
-/// will not become empty: for these four the corpus itself holds no words of
-/// op's, only somebody's report of which option he took. Asserting zero would
-/// be a red test nobody can fix, and ignoring it would stop the arm reporting a
-/// fifth.
+/// will not become empty: for every row named here the corpus holds no words of
+/// op's, only a record of which option he took. Asserting zero would be a red
+/// test nobody can fix, and ignoring it would stop the arm reporting the next
+/// one.
 ///
-/// So the known hole is written down and anything else fails. The most
-/// consequential of the four governs when anything becomes canon at all, and
-/// its only record is an agent's sentence reading "He took the third."
+/// So the known hole is written down and anything else fails.
+///
+/// **Every row on the list carries the options it chose among**, four of them on
+/// `note` and two on `ratification`, each naming the ones he did not take. He
+/// selected from a list rather than writing prose, so what is missing is his
+/// wording and not the decision: a later reader sees the alternatives and can
+/// judge the call. That is the shape every option-selected answer should have,
+/// and a row reaching this list without it is a defect in the asking rather than
+/// a gap in the corpus.
+///
+/// This comment used to split the list into a bad kind and a tolerable kind,
+/// saying of four rows that the choice was gone and nobody could reconstruct
+/// what he decided. That was false of all four and the split does not exist in
+/// the registry this test reads. The assertion below was correct throughout,
+/// which is how the prose stayed wrong long enough to be quoted.
 #[test]
-fn the_rulings_with_no_verbatim_are_the_four_the_corpus_has_no_words_for() {
+fn the_rulings_with_no_verbatim_are_the_ones_the_corpus_has_no_words_for() {
     const KNOWN: &[&str] = &[
+        "ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked",
+        "ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names",
         "ruling::the_branch_waits_for_the_canon",
         "ruling::the_canon_is_written_once_at_the_end",
         "ruling::the_d_numbered_decisions_are_dead",
@@ -458,6 +501,96 @@ fn the_rulings_with_no_verbatim_are_the_four_the_corpus_has_no_words_for() {
         found, KNOWN,
         "a ruling claims op's authority with no words of his behind it. Either quote the \
          source, or add it here with the reason the corpus holds none."
+    );
+}
+
+/// A quoteless ruling is only readable if the options survived, so this asserts
+/// they did.
+///
+/// The claim sat in the comment above as prose for a while and was wrong there,
+/// splitting the list into rows that carried their options and rows that had
+/// lost them. Checked by hand, all six carried them. A hand check answers once
+/// and then evaporates, so it is here instead: the next row added to `KNOWN`
+/// fails this until somebody writes down what he was choosing among.
+///
+/// Deliberately loose about where the options live, because two fields carry
+/// them for two honest reasons: `ratification` where he selected from a list
+/// put to him, `note` where the source recorded the outcome and the options
+/// separately. Pinning the field would fail rows that are fine.
+#[test]
+fn every_quoteless_ruling_records_what_he_was_choosing_among() {
+    let reg = canon();
+    let mut missing: Vec<String> = Vec::new();
+
+    for row in reg.of("ruling") {
+        // Same carve-out as `rulings_with_no_verbatim`, for the same reason: a
+        // row the experts promoted was never a choice he was offered, so there
+        // is no option set to have lost.
+        if row.get("ratified_by") == Some("experts") {
+            continue;
+        }
+        if row.get("quote").is_none_or(str::is_empty) {
+            let carries = ["note", "ratification"].iter().any(|field| {
+                row.get(field)
+                    .is_some_and(|text| text.to_lowercase().contains("option"))
+            });
+            if !carries {
+                missing.push(row.addr());
+            }
+        }
+    }
+
+    missing.sort();
+    assert!(
+        missing.is_empty(),
+        "a ruling carries no words of his and no record of the alternatives, so it says a \
+         choice was made and not which one. Write the options into `note`, or into \
+         `ratification` where he selected from a list: {missing:#?}"
+    );
+}
+
+/// The control for the arm above, because a sweep that has never reported
+/// anything has not been shown to work.
+#[test]
+fn a_quoteless_ruling_with_no_options_anywhere_is_caught() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[ruling]]
+id = "he_took_the_third"
+says = "he took the third"
+note = "The source records the outcome and nothing else."
+
+[[ruling]]
+id = "he_took_the_third_and_it_is_written_down"
+says = "he took the third"
+note = "The options were: keep it, drop it, or defer it. He took the third."
+
+[[ruling]]
+id = "his_own_words_need_no_options"
+says = "the strategy set is not closed at four"
+quote = "the strategy set is not closed at exactly four"
+"#,
+    );
+
+    let caught: Vec<String> = reg
+        .of("ruling")
+        .filter(|row| row.get("quote").is_none_or(str::is_empty))
+        .filter(|row| {
+            !["note", "ratification"].iter().any(|field| {
+                row.get(field)
+                    .is_some_and(|text| text.to_lowercase().contains("option"))
+            })
+        })
+        .map(|row| row.addr())
+        .collect();
+
+    assert_eq!(caught.len(), 1, "{caught:#?}");
+    assert!(caught[0].contains("he_took_the_third"), "{}", caught[0]);
+    assert!(
+        !caught[0].contains("written_down"),
+        "the row that records its options was reported: {}",
+        caught[0]
     );
 }
 

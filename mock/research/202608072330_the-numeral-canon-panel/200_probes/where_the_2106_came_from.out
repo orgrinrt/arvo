@@ -1,0 +1,19 @@
+184 landed at c962834d
+
+SCOPE                                          OCCURRENCES FILES
+mock/research/202608072330_the-numeral-canon-panel/*.md 1440      155
+mock/research/202608072330_the-numeral-canon-panel/ 2100      446
+
+reported by 184:                               2106      436
+
+file types carrying the hits at that commit, all-types scope:
+   166 rs
+   155 md
+    45 py
+    27 out
+    24 txt
+     8 sh
+     8 meta
+     6 log
+     4 s
+     3 json

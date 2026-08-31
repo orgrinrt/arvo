@@ -1,0 +1,117 @@
+control: passed, and it can fail: every arm above returned a non-zero.
+
+== PLANTED CONTROL ==
+Q1  entries: 8
+Q1  entries whose values are the axis universal: 5
+Q1  spellings of the universal seen:
+           2  W any
+           1  any
+           1  construction W any
+           1  threads any
+Q2  rows carrying a universal AND a bounded entry together: 2
+        proposal::planted_mixed
+        law::planted_law
+Q2  sentence_kind of those rows: {"(none)": 1, "argument": 1}
+Q3  values sides beginning with a reserved warrant token: 2 (a collision in the unmarked corpus, a marker in the control)
+        proposal::planted_marked::predicate::total_width => construction W any
+        law::planted_law::fails::container => exhaustive u8
+Q4  entries naming a whole-container range: 1
+        proposal::planted_container_range::predicate::total_width => W in 1..=64
+Q6  slug sides that are not a bare lowercase slug: 1
+        proposal::planted_dirty_slug::predicate::Total Width => slug side is `Total Width`
+Q7  axes writing the universal as a bare `any`: {"threads": 1}
+Q5  entries a `swept may not carry any` arm fires on today: 4
+        proposal::planted_mixed::predicate::total_width
+        law::planted_law::holds::threads
+        proposal::planted_dirty_slug::predicate::Total Width
+        proposal::planted_bare_any::predicate::threads
+
+read 12 files, 677 rows
+
+== COMMITTED REGISTRY ==
+Q1  entries: 527
+Q1  entries whose values are the axis universal: 38
+Q1  spellings of the universal seen:
+           5  F any
+           5  W any
+           5  any
+           2  arity any
+           1  chain length any
+           1  container any
+           1  emission in {metadata only, full codegen}, debug-assertions any
+           1  operation any
+           1  overflow policy any
+           2  rounding any
+          11  target features any
+           3  threads any
+Q2  rows carrying a universal AND a bounded entry together: 25
+        law::additive_associativity_under_wrapping
+        law::additive_associativity_under_saturation
+        law::distributivity_of_multiplication_over_addition
+        law::associativity_of_a_composed_saturating_add_and_subtract
+        law::existence_of_a_translation_invariant_total_order
+        law::equation_truth_sets_are_initial_segments_in_the_width
+        law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness
+        proposal::every_operation_arvo_declares_is_a_function_of_the_declared_width
+        proposal::the_carrier_is_observable_through_the_ambient_layout_observation_alone
+        proposal::a_completeness_obligation_quantifying_over_inputs_misses_a_nullary_witness
+        proposal::at_shared_occupancy_no_per_element_footprint_observation_exists
+        proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width
+        proposal::an_additive_verdict_is_independent_of_the_fraction_width
+        proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing
+        proposal::the_model_band_transfer_is_defeated_in_both_fragments
+        proposal::inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width
+        proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container
+        proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type
+        proposal::no_total_join_exists_over_the_observable_axes_so_the_operation_reports
+        proposal::the_rationalisability_counts_on_the_committed_carrier_table
+        proposal::generation_relocates_the_check_rather_than_removing_it
+        proposal::one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both
+        proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains
+        proposal::a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically
+        proposal::whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra
+Q2  sentence_kind of those rows: {"(none)": 7, "argument": 7, "measured": 7, "theorem": 4}
+Q3  values sides beginning with a reserved warrant token: 0 (a collision in the unmarked corpus, a marker in the control)
+Q4  entries naming a whole-container range: 0
+Q6  slug sides that are not a bare lowercase slug: 0
+Q7  axes writing the universal as a bare `any`: {"fraction_width": 1, "target_features": 4}
+Q5  entries a `swept may not carry any` arm fires on today: 38
+        law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f::fails::fraction_width
+        law::additive_associativity_under_wrapping::holds::fraction_width
+        law::additive_associativity_under_saturation::holds::fraction_width
+        law::additive_associativity_under_saturation::fails::fraction_width
+        law::distributivity_of_multiplication_over_addition::holds::target_features
+        law::distributivity_of_multiplication_over_addition::fails::target_features
+        law::associativity_of_a_composed_saturating_add_and_subtract::fails::threads
+        law::associativity_of_a_composed_saturating_add_and_subtract::fails::target_features
+        law::existence_of_a_translation_invariant_total_order::fails::total_width
+        law::equation_truth_sets_are_initial_segments_in_the_width::holds::total_width
+        law::equation_truth_sets_are_initial_segments_in_the_width::holds::arity
+        law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness::holds::total_width
+        proposal::every_operation_arvo_declares_is_a_function_of_the_declared_width::predicate::target_features
+        proposal::the_carrier_is_observable_through_the_ambient_layout_observation_alone::predicate::target_features
+        proposal::a_completeness_obligation_quantifying_over_inputs_misses_a_nullary_witness::predicate::target_features
+        proposal::at_shared_occupancy_no_per_element_footprint_observation_exists::predicate::target_features
+        proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width::predicate::rounding
+        proposal::an_additive_verdict_is_independent_of_the_fraction_width::predicate::total_width
+        proposal::an_additive_verdict_is_independent_of_the_fraction_width::predicate::fraction_width
+        proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing::predicate::target_features
+        proposal::the_model_band_transfer_is_defeated_in_both_fragments::predicate::total_width
+        proposal::inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width::predicate::arity
+        proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times::predicate::build_profile
+        proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times::predicate::target_features
+        proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container::predicate::container
+        proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type::predicate::chain_length
+        proposal::no_total_join_exists_over_the_observable_axes_so_the_operation_reports::predicate::target_features
+        proposal::the_rationalisability_counts_on_the_committed_carrier_table::predicate::target_features
+        proposal::generation_relocates_the_check_rather_than_removing_it::predicate::target_features
+        proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder::predicate::operation
+        proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder::predicate::overflow_policy
+        proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder::predicate::rounding
+        proposal::one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both::predicate::fraction_width
+        proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains::predicate::target_features
+        proposal::a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically::predicate::threads
+        proposal::a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically::predicate::target_features
+        proposal::whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra::predicate::threads
+        proposal::whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra::predicate::target_features
+

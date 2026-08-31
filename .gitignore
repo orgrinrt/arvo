@@ -36,3 +36,8 @@ __pycache__/
 # tests/, and research sketches. A leading-slash /target would miss those.
 target/
 # === end mockspace-managed build artifacts ===
+
+# Panel probe rustc output dirs. Each `p<N>_run.sh` recreates its own on every
+# run, so the binary and the build log are regenerable and the committed `.out`
+# beside them is the evidence.
+mock/research/*/[0-9]*_probes/p*_out/

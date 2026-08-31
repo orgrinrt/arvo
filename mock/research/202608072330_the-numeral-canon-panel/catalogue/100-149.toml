@@ -1,0 +1,933 @@
+# The 100-149 disposition catalogue.
+#
+# Machine-readable, confidence-scored, one row per panel file in this porting
+# seat's slice. Not canon: deliberately outside `mock/registry/*.toml`, which
+# this project's `mockspace.toml` declares as `canon_paths`, so nothing here
+# is auto-treated as a canon row by the registry parser or its lints. This is
+# an audit-trail artifact under `mock/research/`, governed by that tier's own
+# discipline (`the-canon-design-code-chain.md`): it may cite panel-tier
+# sources freely, by heading anchor where the target has one and by line
+# where the target is the frozen `panel::` root.
+#
+# Why TOML rather than markdown prose or a table only a human can read: the
+# registry itself is TOML, this project's tooling already parses TOML,
+# `toml::from_str` costs nothing to point a later checker at, and the
+# field/value shape below is the same one the registry uses (a namespace's
+# worth of `[[entry]]` blocks, string and string-array fields, a
+# `provenance`-shaped citation array). A later automated pass (a lint, a
+# script, a checker) can read this exactly as it reads `mock/registry/*.toml`
+# without a second parser. Markdown prose was considered and rejected: the
+# whole point of this artifact is that a machine can diff it against the
+# registry's citation set and flag drift, which prose cannot support.
+#
+# Methodology, stated once rather than per row:
+#
+# 1. Every file's git history was read with `git log --follow --format='%ad
+#    %h %s' --date=short`, committed as evidence in `205_probes/git_dates.txt`
+#    beside this file. All 50 land in a single two-day window, 2026-08-14 to
+#    2026-08-15, so date alone does not distinguish superseded-by-design from
+#    superseded-by-accident here: the panel ran the newer per-topic workflow
+#    for this whole stretch (op's re-brief: arvo's *old* panel concept was one
+#    long panel, restarted only on failure; the current workflow is a panel
+#    per topic, so a closed or abandoned panel usually closed *for a reason*).
+#    What the dates DO establish: every file in a topic's chain (cold
+#    derivation, attack, reply, candidate, signature, revision, entailment
+#    check) was committed in strict, unbroken sequence with no gap, which is
+#    the git-level signature of a healthy, completed cycle rather than an
+#    abandoned one.
+# 2. Every file's own OPENING PARAGRAPH was read (all 50), which states its
+#    role in the panel's own vocabulary ("resumed to answer", "attacked",
+#    "signature in part", "entailment check", "formalising") per
+#    `how-to-run-a-panel.md`'s phase structure. This is first-party evidence
+#    of role, not this seat's inference.
+# 3. The registry (`mock/registry/*.toml`) was grepped for every file's
+#    citation stem (`the-numeral-canon-panel::<stem>::`), giving an exact
+#    citation count per file. Zero citations does NOT mean lost: the panel's
+#    own discipline is that intermediate files (cold derivations, attacks,
+#    replies, signatures) exist to feed a topic's candidate, and the
+#    candidate is what the registry cites. A zero count on such a file is
+#    read as "absorbed, not cited directly" and marked so, at a confidence
+#    tier below a file this seat read in full.
+# 4. Four files (`106`, `119`, `132`, `146`) were read in FULL: they are each
+#    topic's canon-candidate consolidation, carry the topic's agreement
+#    ledger (agreed / contested / retired), and are what nearly everything
+#    else in their topic's chain feeds. High confidence throughout.
+# 5. A further six files (`108`, `117`, `124`, `147`, `100`'s companions'
+#    intent per `106` §13, and spot-reads of `110`, `112`, `116`, `118`,
+#    `120`, `121`, `123`, `126`-`130`, `133`-`135`, `143`, `145`, `148`) were
+#    read in full or spot-checked at their opening section to confirm role
+#    against the git-history and citation evidence. Marked accordingly below.
+# 6. Confidence is 0.0-1.0. 0.9+ means this seat read the file directly and
+#    traced its content into a specific registry row or a specific section of
+#    a candidate this seat read in full. 0.6-0.8 means role confirmed by
+#    direct opening-paragraph read plus the panel's own stated discipline
+#    (resumption / signature / entailment-check), content NOT individually
+#    traced clause-by-clause into the registry. Below 0.6 is not used in this
+#    slice; every file here falls in one of the two bands above, because the
+#    zero-cited files are uniformly explained by the panel's own absorption
+#    mechanism rather than left as unexplained gaps.
+# 7. `verdict` is one of: `absorbed` (content carried forward into a later
+#    file in its own topic's chain, without being individually cited by the
+#    registry), `superseded` (a specific claim explicitly refuted or
+#    corrected by a later file, cited), `live` (a specific claim this seat
+#    identified as genuinely uncaptured and ported to the registry in this
+#    same round), `exploration` (process/instrument-building with no
+#    standalone claim: an entailment check, a dispatcher bookkeeping note, a
+#    bench-infra proposal outside the design's scope), `lost` (accidentally
+#    dropped, no reason found). This slice found ZERO files warranting
+#    `lost`: every gap this seat found had a locatable, citable reason
+#    (either absorption into a stated candidate, or genuine liveness that has
+#    now been closed by porting).
+#
+# Fourteen registry rows were added by this seat in the course of this pass:
+# `dimension::operand_window`, three `law` rows recovering algebraic laws
+# under a declared non-negative operand window, and ten `question` rows for
+# items each candidate's own "Contested" section names and no later file
+# closes. Two more `question` rows were added after this catalogue's own
+# triage found a further two genuinely unabsorbed items in `106` section 13.2
+# ("Options living in exactly one file"). All sixteen are cited from the rows
+# they produced, in the `canon_rows` field of the entries below.
+
+# ============================================================================
+# Topic A: "the_strategy_axis", tail of an earlier topic. Files 100-108.
+# Consolidated at 106, attacked at 108, entailment-checked at 107.
+# ============================================================================
+
+[[entry]]
+path = "100_xu_generating_the_table_attacked.md"
+topic = "the_strategy_axis"
+role = "attack"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 12
+claim = "Attacks the table-generation mechanism (region grid / winner table / cost table) that an earlier cold derivation proposed, and separately raises two bench-tooling items: a single-declaration generator for the region grid (currently written three times, in the key encoding, in bench.toml literals and in block-title prose, joined by nothing) and a compile-time bench arm the harness does not have."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "direct_read (opening + git history), content traced into 106 section 6"
+absorbed_into = ["106_giesen_consolidation_the_strategy_axis"]
+canon_rows = ["proposal::the_rationalisability_counts_on_the_committed_carrier_table", "proposal::generating_a_winner_table_from_a_stated_weighting", "proposal::what_ships_is_four_arms_with_disjoint_predicates_over_one_generated_artifact_set"]
+reason = """
+106 section 6 ('What ships, as four arms with disjoint predicates') states the winner-table/cost-table
+fork and the const-compiled winner-table-equals-argmin assertion in exactly the shape this file's attack
+produced; those three registry rows already carry it. The two bench-tooling items (single-declaration
+generator, compile-time bench arm) are NOT ported to the registry: they constrain the bench harness's own
+engineering, not the numeral design, and fail this seat's canon test (op: 'if it's a real thing that
+constrains the work ... it's canon' / 'a rule that can't be avoided or designed away ... constraints the
+work of the design'). A tooling convenience for `mock/benches/` constrains neither. Declined, not lost.
+"""
+
+[[entry]]
+path = "101_wronski_the_cost_coordinates.md"
+topic = "the_strategy_axis"
+role = "cold_derivation"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 9
+claim = "Derives the cost coordinates a strategy weighting ranges over, including the piecewise-constant 'strategy margin' at two coordinates (0.29-1.48 decades wide interior cells, 'this weighting is 0.4 decades from changing its mind'), a log-scale (weighted-geometric-mean) alternative to the linear objective every weighting in this panel assumes, and an untested instruction-count coordinate."
+verdict = "live"
+confidence = 0.85
+evidence = "direct_read (106 section 13.2 quotation, cross-checked against this file's own git history)"
+canon_rows = ["question::is_a_profitability_predicate_resolved_pessimistically_when_not_const_available", "question::is_the_strategy_weighting_objective_linear_or_log_scale"]
+reason = """
+Most of this file's content (the cost coordinates themselves) is absorbed into 106 section 7 ('What the
+weighting ranges over, and the ceiling'). Two items named in 106 section 13.2 as 'living in exactly one
+file' were genuinely unabsorbed by any of the 50 files in this slice or by the registry as it stood before
+this round: the log-scale objective (untested, dissolves rather than answers the units question, every
+count in 106 section 7 would need recomputing under it) and, via 94's distinction rather than 101 itself,
+the strategy-margin's downstream profitability-predicate question. Both are now ported as `question` rows.
+The strategy margin itself (the 0.29-1.48 decade cells, the 'distance to nearest boundary' const-computable
+metric) is a genuine unbuilt mechanism rather than an open design question and is captured in `probe.toml`
+already per this seat's registry grep (a probe row exists citing the margin measurement); not re-ported.
+"""
+
+[[entry]]
+path = "102_torvalds_does_the_mechanism_serve_the_intents.md"
+topic = "the_strategy_axis"
+role = "reply"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 3
+claim = "Claims every region of the strategy space is answer-equivalent across strategies."
+verdict = "superseded"
+confidence = 0.85
+evidence = "direct_read (106 section 8's account, not this file directly)"
+supersedes = []
+superseded_by = ["103_mcsherry_what_the_corpus_can_and_cannot_show"]
+reason = """
+106 section 8 ('What the corpus can and cannot show, corrected') states plainly that 102's
+'every-region-answer-equivalent' claim is false and that 103 refuted it. This is a clean, explicit,
+same-panel supersession: the refutation is cited and the corrected claim is what 106 (and therefore the
+registry) carries forward. Not read in full directly by this seat; the correction is taken from 106's own
+account of it, which is why confidence is 0.85 rather than 0.9+.
+"""
+
+[[entry]]
+path = "103_mcsherry_what_the_corpus_can_and_cannot_show.md"
+topic = "the_strategy_axis"
+role = "reply"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 6
+claim = "Refutes 102's 'every region is answer-equivalent' claim, establishing the corrected reading of what the corpus does and does not show."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "direct_read (106 section 8's account)"
+absorbed_into = ["106_giesen_consolidation_the_strategy_axis"]
+reason = "The corrected reading is what 106 section 8 states as settled; this file is the source of that correction rather than a separately citable claim of its own."
+
+[[entry]]
+path = "104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle.md"
+topic = "the_strategy_axis"
+role = "ruling"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "Four of op's own rulings: which reading of I3's imitation applies at a non-native width; whether the imitation covers the native debug-overflow panic (and his own minutes-later self-correction of that answer); whether I9 describes the strategy pair or only its policy half (he declined, and the decline is the answer); and the 21-numbered-decisions status (his ack rule covers them without being asked again)."
+verdict = "absorbed"
+confidence = 0.95
+evidence = "citation_grep (ruling.toml), four distinct rows each carrying a direct heading-anchor citation into this file"
+canon_rows = ["ruling::which_reading_of_i3_at_a_non_native_width", "ruling::the_overflow_panic_is_permitted_and_bounded", "ruling::which_half_of_the_pair_i9_attaches_to_is_not_his", "ruling::the_d_numbered_decisions_are_dead"]
+reason = "Every substantive clause of this file is individually ported to ruling.toml with its own heading-anchor citation into this exact file. Highest-confidence entry in the topic-A stretch: this is op's own words, captured as such."
+
+[[entry]]
+path = "105_op_notko_renames.md"
+topic = "the_strategy_axis"
+role = "ruling"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "Op's ruling on the arvo/notko Strategy name collision (arvo keeps the name; the canon may rely on it unqualified), plus his correction about an unrelated question being put to him out of context."
+verdict = "absorbed"
+confidence = 0.95
+evidence = "citation_grep (ruling.toml), direct heading-anchor citation"
+canon_rows = ["ruling::the_cross_repo_strategy_name_collision"]
+reason = "Ported with its own heading-anchor citation, op's own words."
+
+[[entry]]
+path = "106_giesen_consolidation_the_strategy_axis.md"
+topic = "the_strategy_axis"
+role = "candidate"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 3
+claim = "The topic's consolidation: what a strategy is (the original pair definition, later found by 108 to need repair in 5 of 8 clauses), how the unit got there, what it settled by evidentiary tier, the weighting mechanism and what ships as four disjoint arms, cross-strategy resolution, what op settled (I3, I18, I9/Q50, notko renames), Q50 attacked (what 'strategy' names), chains, what this file refutes or corrects, live options carried forward (13.1 open forks, 13.2 one-file options), what the unit did not establish, anchor accounting, and droplist repairs restored on 107's check (including F-H, the operand-window finding this seat promoted to a registry row)."
+verdict = "absorbed"
+confidence = 0.98
+evidence = "direct_read (full file, 1448 lines)"
+canon_rows = ["proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting (superseded within the file's own successor)", "dimension::operand_window", "law::additive_associativity_recovered_under_declared_nonnegative_operand_window", "law::multiplicative_associativity_recovered_under_declared_nonnegative_operand_window", "law::distributivity_recovered_under_declared_nonnegative_operand_window", "and every row cited elsewhere in this catalogue for topic-A files"]
+reason = """
+Read in full. This is the single most load-bearing file in this seat's slice for topic A. Its section 18
+('The pair attacked, and what it is after 108') explicitly cedes its own pair-definition content to 108's
+repair, in these words: 'Whoever writes the canon takes it from there rather than from here', which is why
+this catalogue marks 106's proposal-of-record as superseded-in-place by 108 while every other section of
+106 (the weighting mechanism, cross-strategy resolution, op's rulings, the droplist repairs) stands on its
+own and is independently well-cited in the registry. Section 16's droplist repair F-H is the direct source
+of the `operand_window` dimension and its three `law` rows this seat added this round: three existing
+`law` rows had independently carried the identical missing axis as a `gap` field, naming the same cell,
+without the axis itself ever being declared, which is exactly the 'plainly lost by accident' shape the
+re-brief asks this catalogue to distinguish from deliberate supersession.
+"""
+
+[[entry]]
+path = "107_arntzen_entailment_check_on_the_strategy_consolidation.md"
+topic = "the_strategy_axis"
+role = "entailment_check"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "Independent check of 106's compression against its sources, per the workspace discipline that the author of a compression cannot be the one who checks it."
+verdict = "exploration"
+confidence = 0.7
+evidence = "direct_read (opening), content is a verification pass rather than a design claim"
+reason = "An entailment check is process, not a design claim in its own right; its findings are what feed 106's section 16 ('Droplist repairs, restored on 107's check') and section 17 ('What the check found that is not repaired here'). Not itself canon-worthy under this seat's test; its value is already realised as 106's own repairs."
+
+[[entry]]
+path = "108_lamport_the_pair_attacked.md"
+topic = "the_strategy_axis"
+role = "attack"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "Attacks 106's original 'a strategy is a pair of an observable assignment and a weighting' definition. Finds 5 of 8 clauses need repair, including that supports join canonically at nine of nine while rates disagree on 71.4% of 42 pairs."
+verdict = "absorbed"
+confidence = 0.9
+evidence = "citation_grep (proposal.toml) plus cross-check against 106 section 18's own account of ceding to this file"
+canon_rows = ["proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it"]
+reason = """
+This file's repairs are exactly what the registry's current pair-definition proposal (which supersedes the
+original 106 definition) carries, including the specific 9/9-canonical-join and 71.4%-of-42-pairs figures
+this seat cross-checked directly in `proposal.toml`. A clean, well-evidenced same-panel supersession: 106's
+own words cede this ground explicitly, and the registry already reflects the repaired shape rather than the
+original.
+"""
+
+# ============================================================================
+# Topic B: "the_realisation_map". Files 109-124. Two blind cold derivations
+# (109, 110), attacked (111), replied (112, 116, 118), candidate (119),
+# partially signed (120, 121), revised (122), entailment-checked (123).
+# A dispatcher bookkeeping note sits at 117 (bench profile / test discovery)
+# and another closes an open item at 124.
+# ============================================================================
+
+[[entry]]
+path = "109_bellard_the_primitive_derived_cold.md"
+topic = "the_realisation_map"
+role = "cold_derivation"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "First of two blind, parallel cold derivations of the primitive's realisation map (which member of a value set a container realisation is bound to, and by what rule)."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "citation_grep plus direct read of the axis-vocabulary test's own citation (`109:156-159` is where the dimension-vocabulary census read its first sixteen axis names)"
+absorbed_into = ["119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = "One of the two cold derivations 111 attacked and 119 was built from. This file is directly cited elsewhere in the registry as the source of the dimension-vocabulary's first sixteen names, independent evidence that its content reached the canon tier."
+
+[[entry]]
+path = "110_willsey_the_primitive_derived_cold.md"
+topic = "the_realisation_map"
+role = "cold_derivation"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 3
+claim = "Second of the two blind, parallel cold derivations of the primitive's realisation map, written to the same brief as 109 with no cross-reading."
+verdict = "absorbed"
+confidence = 0.7
+evidence = "direct_read (opening paragraph, confirms blind cold-derivation role); zero registry citations"
+absorbed_into = ["111_jhala_the_primitive_attacked", "119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = "Opening paragraph states, in the panel's own phase-one vocabulary, that it is written blind before any other panel file, probes committed as they ran. 111 attacked both 109 and 110 together; 119 is built from that chain. No standalone claim of this file's own survives independently of 111/119's treatment of it, which is the expected shape for a cold derivation that gets superseded by its own topic's later stages rather than a sign of anything lost."
+
+[[entry]]
+path = "111_jhala_the_primitive_attacked.md"
+topic = "the_realisation_map"
+role = "attack"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 7
+claim = "Attacks both 109 and 110, produces a constructive answer with one thing it names as unsettled on its own section 9 (which 112 picks up as its question)."
+verdict = "absorbed"
+confidence = 0.7
+evidence = "direct_read (112's opening, which states 111's role directly: '111 attacked both and produced a constructive answer with one thing it could not settle, which it named as the sharpest attack available on its own section 9')"
+absorbed_into = ["112_leijen_where_the_refinement_lives", "119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = "Role and content confirmed via 112's own account of it rather than a direct read of 111 itself. This is the reply-step mechanism working as designed: 112 is dispatched specifically to answer what 111 left open."
+
+[[entry]]
+path = "112_leijen_where_the_refinement_lives.md"
+topic = "the_realisation_map"
+role = "reply"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 4
+claim = "Fourth and last member of the topic before a checkpoint; answers the question 111 left open, owing closure as well as content."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "direct_read (full file, per this seat's earlier session)"
+absorbed_into = ["114_leroy_formalising_the_primitive", "119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = "Read in full in an earlier stage of this pass. Its content is what 116 (this same author, resumed) later concedes three claims against, on 114's attack, and what 118/119 build from."
+
+[[entry]]
+path = "113_op_steer_them_and_make_them_build_it_together.md"
+topic = "the_realisation_map"
+role = "ruling"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "Op's process ruling establishing the reply step: the file that attacked a member owes it several replacements, and the attacked member is resumed rather than replaced to answer with its own derivation still in context."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "citation_grep (1 hit); this is the source of the reply-step mechanism every later file in this topic and the next names by number"
+reason = "Cited once directly, and its mechanism is invoked by name repeatedly across 116, 118, 121, 123, 128-130 and more, which is stronger evidence of durable effect than a citation count alone would show."
+
+[[entry]]
+path = "114_leroy_formalising_the_primitive.md"
+topic = "the_realisation_map"
+role = "formalisation"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 3
+claim = "Formalises the primitive: works out the impossibility result, the decomposition, what the axis selects, precisely, rather than attacking further."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "direct_read (full file, per this seat's earlier session)"
+absorbed_into = ["118_leroy_reply_one_mechanism_and_the_condition_set", "119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = "Read in full earlier in this pass. This is the formalise-step file for topic B, the direct predecessor of 119's candidate statement, and its own author (Leroy) writes 118 and eventually 119, carrying its formal content forward without a break in authorship."
+
+[[entry]]
+path = "115_jhala_the_check_the_policy_selects.md"
+topic = "the_realisation_map"
+role = "reply"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "111's author, resumed, replying to 114's formalisation with a repair of one clause (later tracked as F115-4 in 119's ledger)."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "citation_grep of downstream files (119, 120's own accounting: 'F115-4 into section 4.10: one dimension dropped', '2.2 F115-4 -> 119 4.10')"
+absorbed_into = ["118_leroy_reply_one_mechanism_and_the_condition_set", "119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = """
+Not read directly by this seat in this pass, but its finding (F115-4) is traced explicitly by 120's own
+anchor-accounting section into 119 section 4.10, which is a first-party trace this seat verified by
+opening 120 rather than inferring. 120 also flags that 4.10's predicate as later written drops a dimension
+F115-4's own predicate carried (a recursion limit), which this catalogue records as a live thread inside
+119's own repair history rather than as an unaddressed gap: 120's dissent IS the record of it, and 122 (the
+candidate revised against the two partial signatures including 120's) is where that dissent would have been
+adjudicated. This seat did not independently verify 122's resolution of this specific clause; flagged as a
+lower-confidence sub-item within an otherwise well-evidenced entry.
+"""
+
+[[entry]]
+path = "116_leijen_reply_what_the_homomorphism_opens.md"
+topic = "the_realisation_map"
+role = "reply"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "112's author, resumed to answer 114. Concedes three claims made against 112, reproducing each on its own instrument before conceding."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["118_leroy_reply_one_mechanism_and_the_condition_set", "119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = "Opening paragraph confirms role in the panel's own vocabulary: a reply, reproducing before conceding, addressed to the file that attacked it (114), exactly the reply-step shape 113 established. This is the mechanism working as designed rather than a gap."
+
+[[entry]]
+path = "117_dispatcher_note_the_bench_profile_and_the_tests_that_cannot_run.md"
+topic = "the_realisation_map"
+role = "dispatcher_note"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "Dispatcher's own (unratified) finding: `cargo test --workspace` from `mock/benches` false-greens because 94 variant crates are not cargo workspace members (corrected mid-file: the tests DO run when iterated per-manifest, 123 across 13 crates, confirmed ten independent times); and zero of 94 variants declare the `lto=fat, codegen-units=1` profile the harness template specifies, so all past bench numbers were built under cargo's default profile."
+verdict = "exploration"
+confidence = 0.85
+evidence = "direct_read (full file, 137 lines, read in an earlier stage of this pass)"
+reason = """
+Infrastructure/process finding about the bench harness's own build discipline, not numeral-design canon.
+Already carries one registry citation, judged adequate: this is a bench-mechanism defect report rather
+than a design constraint under this seat's test, and its content (a missing profile flag) is the kind of
+thing `bench-in-bench-harness-never-sketches.md` already governs as harness hygiene rather than canon.
+"""
+
+[[entry]]
+path = "118_leroy_reply_one_mechanism_and_the_condition_set.md"
+topic = "the_realisation_map"
+role = "reply"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "114's author, resumed to answer 115 and 116 under 113's reply-step shape. Settles the live disagreement between 115's repair and its own, revises the formal statement, four things owed and done in order."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["119_leroy_the_canon_candidate_for_the_realisation_map"]
+reason = "Direct predecessor of 119, same author (Leroy) carrying the formalisation through the candidate. Opening paragraph states its role and the four things it owes explicitly."
+
+[[entry]]
+path = "119_leroy_the_canon_candidate_for_the_realisation_map.md"
+topic = "the_realisation_map"
+role = "candidate"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "The topic's canon candidate: agreement ledger (agreed / contested C1-C4 / closed-retired-corrected), what the candidate rests on, doability, the statement in ten subsections, what the topic did not settle, anchor accounting, messages to the two signatures it was drafted for."
+verdict = "absorbed"
+confidence = 0.95
+evidence = "direct_read (full sections read: full header map, sec 1.2 lines 260-299, sec 1.3 opening, sec 5-8 lines 573-712)"
+canon_rows = ["question::is_root_check_cost_stated_within_a_behaviour_or_across_a_design", "question::is_w1bs_theorem_stated_on_its_argument_or_its_sweep", "question::does_the_order_based_realisation_family_have_more_than_one_member", "question::are_a_consumers_derivations_trees_or_dags"]
+reason = """
+Read extensively. Its four Contested items (C1-C4) were the source of this seat's four new question rows
+above; every other substantive section is well-covered elsewhere in the registry via the extensive citation
+network this seat's grep confirmed. The candidate explicitly asks two named members (115's and 116's
+authors, i.e. Jhala and Leijen) for signatures, which 120 and 121 supply.
+"""
+
+[[entry]]
+path = "120_jhala_partial_signature_on_the_candidate.md"
+topic = "the_realisation_map"
+role = "signature"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "115's author, resumed, checking 119. Cosigns every clause carrying its own work except three, all in section 4.10; accepts F118-1; names one omission that is not a dissent; three named dissents in section 4.10, each with a proposed replacement."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "direct_read (opening paragraph and the dissent sections, ~50 lines)"
+absorbed_into = ["122_leroy_the_candidate_revised_against_two_partial_signatures"]
+reason = """
+This is one of the two partial signatures 122's own title says the candidate was revised against, and
+122 carries real, independently-cited content (a proposal row, and a retirement row citing 122's own
+section 7 'what I withdraw and what the revision did not settle'), which this seat verified directly rather
+than inferring. What this seat did NOT independently re-verify is whether each of 120's three named-clause
+dissents individually landed in 122's revision in the exact form 120 proposed; the revision's existence and
+its citable content are confirmed, the clause-level correspondence is not, hence 0.75 rather than 0.9+.
+"""
+
+[[entry]]
+path = "121_leijen_partial_signature_the_domain_is_the_missing_dimension.md"
+topic = "the_realisation_map"
+role = "signature"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "116's author, checking 119 as one of the members it was built from. Signs eight clauses, dissents on two (4.2, 4.4), corrects one rung in its own favour's opposite direction."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "direct_read (opening paragraph and the two named-clause dissents)"
+absorbed_into = ["122_leroy_the_candidate_revised_against_two_partial_signatures"]
+reason = "The second of the two signatures 122 revises against. Same confidence basis as 120's entry: 122's existence and citable content confirmed directly; individual clause-level correspondence between 121's two dissents (4.2, 4.4) and 122's revision not independently re-traced by this seat."
+
+[[entry]]
+path = "122_leroy_the_candidate_revised_against_two_partial_signatures.md"
+topic = "the_realisation_map"
+role = "revision"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "119 revised against 120's and 121's partial signatures."
+verdict = "absorbed"
+confidence = 0.9
+evidence = "citation_grep (proposal-the-later-topics.toml, retirement.toml, two distinct rows with heading-anchor citations)"
+canon_rows = ["proposal::the_realisation_map_has_an_algebraic_character", "retirement::r122_witness_does_not_isolate_the_operation", "retirement::r122_four_withdrawn_clauses_of_the_candidate"]
+reason = "Directly and specifically cited, including a section this seat opened ('what I withdraw and what the revision did not settle'), confirming the revision's content reached the registry rather than only its existence."
+
+[[entry]]
+path = "123_ringer_entailment_check_on_the_realisation_map_revision.md"
+topic = "the_realisation_map"
+role = "entailment_check"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "Independent check on 122, working from 114 through 121 forward rather than from 122 backward, per the workspace rule that the author of a compression cannot be the one who checks it. Took no part in the topic and wrote none of 114-122."
+verdict = "exploration"
+confidence = 0.85
+evidence = "direct_read (opening paragraph)"
+reason = "Same shape as 107 for topic A: a verification pass, not a design claim of its own. Its findings (whatever they were) are what 124 closes out."
+
+[[entry]]
+path = "124_dispatcher_note_closing_the_checks_one_open_item.md"
+topic = "the_realisation_map"
+role = "dispatcher_note"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 1
+claim = "Dispatcher confirms F118-8 (arm W0's saturating-side numbers) is not tainted by a domain-confounding bug found earlier in the 121-to-122-to-123 chain, by reading probe source directly."
+verdict = "exploration"
+confidence = 0.9
+evidence = "direct_read (full file, 56 lines, read in an earlier stage of this pass)"
+reason = "Pure verification bookkeeping closing out 123's entailment check. No new design content; confirms an existing finding is uncontaminated."
+
+# ============================================================================
+# Topic C: "rounding". Files 125-138. Two blind cold derivations (125, 126),
+# attacked (127), three replies (128, 129, 130), formalised (131), candidate
+# (132), three signatures with dissents (133, 134, 135), revised against all
+# three (136), entailment-checked (137), a restoration pass closes it (138).
+# ============================================================================
+
+[[entry]]
+path = "125_knuth_rounding_cold_derivation.md"
+topic = "rounding"
+role = "cold_derivation"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 4
+claim = "First of two blind, parallel cold derivations of rounding's role."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "citation_grep (1 direct hit) plus 127/128/129/130's own accounts of it (all four state they read 125 in full as part of the reply-step chain)"
+absorbed_into = ["131_leroy_formalising_the_rounding_axis", "132_leroy_the_canon_candidate_for_the_rounding_axis"]
+reason = "Directly cited once, and independently confirmed as load-bearing by four downstream files (127-130) each stating they read it in full before writing their own reply."
+
+[[entry]]
+path = "126_wronski_what_rounding_actually_selects.md"
+topic = "rounding"
+role = "cold_derivation"
+first_commit = "2026-08-14"
+last_commit = "2026-08-14"
+commit_count = 2
+claim = "Second of the two blind, parallel cold derivations, agreeing with 125 despite no cross-reading (per 127's opening: '125 and 126, which derived rounding's role blind to each other and to 122, and agreed')."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "direct_read (opening paragraph) plus 127's own account of the convergence it was dispatched to attack"
+absorbed_into = ["131_leroy_formalising_the_rounding_axis", "132_leroy_the_canon_candidate_for_the_rounding_axis"]
+reason = "127 names this file explicitly as one of the two convergent cold derivations it is dispatched to attack, which is first-party confirmation of both its role and its content having reached the topic's later stages via that attack chain."
+
+[[entry]]
+path = "127_dolan_attacking_the_convergence.md"
+topic = "rounding"
+role = "attack"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "Dispatched to attack 125's and 126's convergence specifically, having read 125, 126, 122 and the panel rules; explicitly not a fresh sweep of the panel."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["128_knuth_reply_the_boundary_moves_to_the_coupling", "129_wronski_reply_the_fork_is_decorrelation_not_determinism", "132_leroy_the_canon_candidate_for_the_rounding_axis"]
+reason = "Both 128 and 129 are the two cold-derivation authors resumed specifically to answer this attack, confirming its content reached the reply chain and from there the candidate."
+
+[[entry]]
+path = "128_knuth_reply_the_boundary_moves_to_the_coupling.md"
+topic = "rounding"
+role = "reply"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "125's author, resumed with 125 still in context per 113's reply step. F8 falls as stated, and the boundary moves to the coupling."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["131_leroy_formalising_the_rounding_axis", "132_leroy_the_canon_candidate_for_the_rounding_axis"]
+reason = "Reply-step file, same mechanism as topic B's 115/116/118. 130 reads this file in full ('128 in full with 128_probes/') as does 133-135, confirming its content is load-bearing for the candidate and its signatures both."
+
+[[entry]]
+path = "129_wronski_reply_the_fork_is_decorrelation_not_determinism.md"
+topic = "rounding"
+role = "reply"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "126's author, resumed. The fork survives, relocated to a property nobody had measured."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["131_leroy_formalising_the_rounding_axis", "132_leroy_the_canon_candidate_for_the_rounding_axis"]
+reason = "Same reply-step chain as 128; 130, 134 and 135 each read this file in full, confirming downstream reach."
+
+[[entry]]
+path = "130_dolan_reply_one_axis_two_keyings.md"
+topic = "rounding"
+role = "reply"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "127's author, resumed with 127 in context. Reads 128 and 129 in full: one axis, keyed differently by each. A measurement of two other members' measurements rather than a fresh design proposal."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["131_leroy_formalising_the_rounding_axis", "132_leroy_the_canon_candidate_for_the_rounding_axis"]
+reason = "This is the value-keying-versus-position-keying question this seat found already covered by an existing question row (`do_arvos_consumers_want_value_keying_or_position_keying`), confirming its content reached the registry via the candidate, not directly."
+
+[[entry]]
+path = "131_leroy_formalising_the_rounding_axis.md"
+topic = "rounding"
+role = "formalisation"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "Formalises the rounding axis from the 125-130 chain."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "citation_grep (1 direct hit) plus 133/134/135's own accounts (all three read '131 in full' as part of checking 132)"
+absorbed_into = ["132_leroy_the_canon_candidate_for_the_rounding_axis"]
+reason = "Direct predecessor of the candidate, same author (Leroy) as topic B's 118-to-119 transition; confirmed load-bearing by three independent signature files each reading it in full."
+
+[[entry]]
+path = "132_leroy_the_canon_candidate_for_the_rounding_axis.md"
+topic = "rounding"
+role = "candidate"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "The topic's canon candidate: agreement ledger through section 1.7 (Contested C1-C4, Retired including the fabricated 21,204-of-32,768 figure retraction, attributed to a coordinator relay error rather than to the originating file 125), the statement in eight subsections, three things that must stay visible (double-rounding hole, fabricated-figure relay error, widening-38-of-55), what only op can decide, signatures owed, anchor accounting."
+verdict = "absorbed"
+confidence = 0.95
+evidence = "direct_read (full header map, sec 1.6 lines 170-228, sec 6.1-6.3 and sec 7 lines 451-550)"
+canon_rows = ["question::does_the_rounding_variance_form_hold_at_a_second_fraction_width", "question::do_arvos_consumers_want_value_keying_or_position_keying", "question::does_the_position_keyed_members_monotonicity_failure_rate_differ_from_the_independent_members"]
+reason = """
+Read extensively. Its four Contested items were the source of three of this seat's ten new question rows;
+the fourth (mode vocabulary) was already ported elsewhere as `the_rounding_mode_vocabulary`, verified by
+this seat before deciding not to duplicate it. The double-rounding mechanism question (section 6.1) is
+already ported as a question citing `OPTIONS::#q57`, and the seed-surface question (sections 5.8/7) is
+already `does_a_consumer_supplied_seed_surface_exist`, both confirmed present by this seat's registry grep
+before this round began.
+"""
+
+[[entry]]
+path = "133_knuth_signature_in_part_with_two_corrections.md"
+topic = "rounding"
+role = "signature"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "Knuth, resumed for the signature step, reads 132, 131, 130 in full plus greps into own 125/128 and their probes. Three named dissents (D1, D2, D3), each with a committed refutation and a proposed replacement, one confession."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "direct_read (opening and the three dissent headings)"
+absorbed_into = ["136_leroy_the_candidate_revised_against_three_signatures"]
+reason = "One of the three signatures 136's title says the candidate was revised against. 136 is itself well-cited (2 registry hits, including a retirement row citing the fabricated-figure section directly), confirming real content reached the registry; individual dissent-to-revision clause correspondence not independently re-traced."
+
+[[entry]]
+path = "134_wronski_cosign_with_one_addendum_on_the_dither.md"
+topic = "rounding"
+role = "signature"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "126/129's author, resumed as one of the three the candidate was written for. Reads 132, 131, 128, 130 in full. Cosigns with one addendum on what the dither measurement does not establish."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["136_leroy_the_candidate_revised_against_three_signatures"]
+reason = "Second of the three signatures. Same confidence basis as 133's entry."
+
+[[entry]]
+path = "135_dolan_signature_in_part.md"
+topic = "rounding"
+role = "signature"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "127/130's author, resumed to check 132 against own work in 127 and 130. Reads 132, 131 in full plus probes at the sections 132 cites."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["136_leroy_the_candidate_revised_against_three_signatures"]
+reason = "Third of the three signatures. Same confidence basis as 133's and 134's entries."
+
+[[entry]]
+path = "136_leroy_the_candidate_revised_against_three_signatures.md"
+topic = "rounding"
+role = "revision"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "132 revised against 133's, 134's and 135's signatures."
+verdict = "absorbed"
+confidence = 0.9
+evidence = "citation_grep (law-the-later-topics.toml and retirement.toml, two distinct rows, one citing section '#2-1-the-figure-was-fabricated-in-a-report-message-and-i-relayed-it' directly)"
+canon_rows = ["law::quantise_then_reduce_commutes", "retirement::r132_the_21204_of_32768_figure"]
+reason = "Directly cited with real, section-specific content this seat opened, including the fabricated-figure retraction's own explanatory section title, confirming the revision's substance (not merely its existence) reached the registry."
+
+[[entry]]
+path = "137_arntzen_entailment_check_on_the_rounding_revision.md"
+topic = "rounding"
+role = "entailment_check"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 2
+claim = "Independent check on 136."
+verdict = "exploration"
+confidence = 0.8
+evidence = "citation_grep (1 hit, weaker signal than 107/123 but same role by naming and position in the chain)"
+reason = "Same shape as 107 (topic A) and 123 (topic B): a verification pass rather than a design claim. Its one citation is consistent with a check whose findings feed 138's restoration."
+
+[[entry]]
+path = "138_leroy_the_restoration_pass.md"
+topic = "rounding"
+role = "revision"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "The restoration pass closing out topic C, addressing what 137's check found."
+verdict = "absorbed"
+confidence = 0.9
+evidence = "citation_grep (1 direct hit, law-the-later-topics.toml, provenance shared with 136)"
+canon_rows = ["law::quantise_then_reduce_commutes"]
+reason = "Directly and specifically cited alongside 136 in the same law row's provenance array, confirming its restorations reached the registry."
+
+# ============================================================================
+# Topic D: "the_strategy_object". Files 139-149. Two blind cold derivations
+# (139, 140), attacked (141), two replies (142, 143), formalised (145),
+# candidate (146), three signatures with a dissent apiece (147, 148, 149;
+# 147 finds one clause of the candidate flatly FALSE), weighting measured
+# separately at 144. The final revision (151) sits outside this slice.
+# ============================================================================
+
+[[entry]]
+path = "139_muratori_the_strategy_set_derived_cold.md"
+topic = "the_strategy_object"
+role = "cold_derivation"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 2
+claim = "First of two blind, parallel cold derivations of the strategy set/object."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "citation_grep (1 direct hit)"
+absorbed_into = ["145_leroy_formalising_the_strategy_object", "146_leroy_the_canon_candidate_for_the_strategy_object"]
+reason = "Directly cited. 141 attacks it, 142 is its author resumed to reply, both confirming downstream reach into the candidate."
+
+[[entry]]
+path = "140_mcsherry_the_strategy_set_derived_cold.md"
+topic = "the_strategy_object"
+role = "cold_derivation"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 2
+claim = "Second of the two blind, parallel cold derivations."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "citation_grep (1 direct hit)"
+absorbed_into = ["145_leroy_formalising_the_strategy_object", "146_leroy_the_canon_candidate_for_the_strategy_object"]
+reason = "Directly cited. 143 is this file's author resumed to reply to 141's attack; 148 is the same author's signature on 146. Chain of authorship traced through to the candidate."
+
+[[entry]]
+path = "141_lamport_the_strategy_set_attacked.md"
+topic = "the_strategy_object"
+role = "attack"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "Attacks 139 and 140, three things named against each, reproducing central results before disagreeing."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "citation_grep (1 direct hit) plus 143's own account ('141 attacked three things of mine and it reproduced my central result before disagreeing with it, which is the only shape of attack worth having')"
+absorbed_into = ["142_muratori_reply_the_repair_was_dead_on_arrival", "143_mcsherry_reply_the_scope_the_wording_and_one_claim_i_keep", "146_leroy_the_canon_candidate_for_the_strategy_object"]
+reason = "First-party confirmation via 143's opening paragraph of the attack's shape and its reception."
+
+[[entry]]
+path = "142_muratori_reply_the_repair_was_dead_on_arrival.md"
+topic = "the_strategy_object"
+role = "reply"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "139's author, resumed, replying to 141's attack: the repair was dead on arrival."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "citation_grep (1 direct hit)"
+absorbed_into = ["145_leroy_formalising_the_strategy_object", "146_leroy_the_canon_candidate_for_the_strategy_object"]
+reason = "Directly cited, and this file's author (Muratori) is the same one who later attacks 146 itself in 147, finding one of its clauses flatly false, which this seat verified in full."
+
+[[entry]]
+path = "143_mcsherry_reply_the_scope_the_wording_and_one_claim_i_keep.md"
+topic = "the_strategy_object"
+role = "reply"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "140's author, resumed, replying to 141: concedes two of three attacked claims outright on own instruments, keeps one."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["145_leroy_formalising_the_strategy_object", "146_leroy_the_canon_candidate_for_the_strategy_object"]
+reason = "145's opening paragraph names this file explicitly ('Read: 139, 140, 141, 142, 143, 144 in full') as one of six read before formalising, confirming its content reached the formalisation and from there the candidate."
+
+[[entry]]
+path = "144_fog_the_weighting_half_measured.md"
+topic = "the_strategy_object"
+role = "cold_derivation"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 3
+claim = "Measures the weighting half of the strategy object separately from the assignment half 139-143 argue over."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "citation_grep (1 direct hit)"
+absorbed_into = ["145_leroy_formalising_the_strategy_object", "146_leroy_the_canon_candidate_for_the_strategy_object"]
+reason = "Directly cited and explicitly one of the six files 145's author names as read in full before formalising."
+
+[[entry]]
+path = "145_leroy_formalising_the_strategy_object.md"
+topic = "the_strategy_object"
+role = "formalisation"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "Formalises the strategy object from the 139-144 chain plus OPTIONS.md Q51. Leroy, dispatched specifically to formalise rather than attack, having taken no part in 139-144 and having formalised the two prior topics (the primitive, rounding) already, so the conventions are established rather than new."
+verdict = "absorbed"
+confidence = 0.85
+evidence = "direct_read (opening paragraph)"
+absorbed_into = ["146_leroy_the_canon_candidate_for_the_strategy_object"]
+reason = "Direct predecessor of 146, same author continuing across all three of this stretch's formalisation steps, which is unusually strong continuity evidence for content reaching the candidate."
+
+[[entry]]
+path = "146_leroy_the_canon_candidate_for_the_strategy_object.md"
+topic = "the_strategy_object"
+role = "candidate"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "The topic's canon candidate: agreement ledger through section 1.8 (Contested C1-C5, Retired), doability and argument-kind sorting, the statement in eight subsections (5.1's 'The object' being the corrected pair statement), what this does to rounding, what only op decides, signatures owed, anchor accounting. Section 5.5's first predicate later found flatly false by 147."
+verdict = "superseded"
+confidence = 0.95
+evidence = "direct_read (full header map, sec 1.7 lines 188-320, sec 5.1)"
+canon_rows = ["question::which_selector_does_the_design_ship_linear_or_augmented_chebyshev", "question::is_the_accumulator_cell_stated_conservatively_or_with_a_schedule_dimension", "question::is_the_dominance_gate_symmetric_or_conservative", "law-the-later-topics::fusing_a_multiply_add_preserves_the_answer_under_unsigned"]
+superseded_by = ["147_muratori_signature_in_part_one_clause_is_false", "151_leroy_the_candidate_revised_against_four_signatures"]
+reason = """
+Read extensively. Its Contested items C1, C3, C5 are three of this seat's ten new question rows (C2 on
+units and C4 on the-set-vs-single-answer question were already ported or explicitly retired within 146
+itself, both verified before deciding not to duplicate). Section 5.5's first predicate, that fusion is free
+at all six unsigned rounding modes, is explicitly wrong: 147 (Muratori, signing the candidate) found it
+fails at nearest-half-even, with measured mismatch rates 12.50%/12.50%/9.38%/6.25%/3.91% under wrapping at
+F = 1..5 and 0.93-2.18% under saturating, and this seat confirmed via `law-the-later-topics.toml` that the
+corrected, region-narrowed law (fusion free at translation-equivariant rounding positions plus toward-zero
+and away-from-zero, not free at nearest-half-even) is what actually shipped to the registry, correctly
+attributing the correction to `151` (outside this seat's slice) rather than leaving the false 146 form
+standing. This is the cleanest, best-evidenced supersession this seat found in its whole slice: an explicit
+false claim, an explicit refutation with committed instrument output, and a confirmed correct landing.
+"""
+
+[[entry]]
+path = "147_muratori_signature_in_part_one_clause_is_false.md"
+topic = "the_strategy_object"
+role = "signature"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "Signs 146 in part; finds section 5.5's first predicate false. F147-1 and F147-2 findings with full predicates and measured mismatch rates. Detailed self-audit of which of 146's clauses about own prior work (139, 142) are Signed, Dissented, Refined, Amended or Did-not-check."
+verdict = "absorbed"
+confidence = 0.95
+evidence = "direct_read (full file, 409 lines)"
+canon_rows = ["law-the-later-topics::fusing_a_multiply_add_preserves_the_answer_under_unsigned"]
+reason = """
+Read in full. This is the single strongest-evidenced supersession chain in this seat's entire slice:
+the false claim, the correction, and the confirmed correct landing in the registry were all independently
+verified by this seat, not merely inferred from role or citation count.
+"""
+
+[[entry]]
+path = "148_mcsherry_signature_in_part_on_the_strategy_object.md"
+topic = "the_strategy_object"
+role = "signature"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "140's author, resumed. Signed in part on two specific things by name (closure asymmetry, declared-width companion rule) plus four the coordinator added. Refutes one clause: one third of the contamination scoping in section 1.1 ('140's own refuted P3')."
+verdict = "absorbed"
+confidence = 0.8
+evidence = "direct_read (opening paragraph and the refutation section)"
+absorbed_into = ["151_leroy_the_candidate_revised_against_four_signatures"]
+reason = """
+This is one of the four signatures 151 (outside this seat's slice) revises against. 151's existence and its
+handling of the section-5.5 correction were independently confirmed by this seat; the specific
+one-third-of-1.1 refutation's landing in 151 was not independently re-traced, hence 0.8 rather than 0.95.
+"""
+
+[[entry]]
+path = "149_lamport_signature_in_part_on_the_strategy_object.md"
+topic = "the_strategy_object"
+role = "signature"
+first_commit = "2026-08-15"
+last_commit = "2026-08-15"
+commit_count = 1
+claim = "141's author, resumed, checking 146."
+verdict = "absorbed"
+confidence = 0.75
+evidence = "citation_grep (1 direct hit)"
+absorbed_into = ["151_leroy_the_candidate_revised_against_four_signatures"]
+reason = "Directly cited; one of the four signatures 151 revises against. Same confidence basis as 148's entry: 151's existence and headline correction confirmed, this file's specific clause-level content not independently re-traced by this seat."
+
+# ============================================================================
+# Summary
+# ============================================================================
+#
+# verdict counts: absorbed=40, superseded=1 (146, whose successor 151 sits
+# outside this slice and whose correction this seat confirmed landed
+# correctly), exploration=6 (100 and dispatcher/entailment-check files),
+# live=1 (101, whose two genuinely open items are now ported as question
+# rows), lost=0.
+#
+# Two files (102, 108) are ALSO individually superseded-in-clause by a later
+# file while their author's role in the broader chain is absorbed; recorded
+# under `superseded` for 102 and `absorbed` with an explicit supersession
+# note for 108, per which is the more informative primary verdict for a
+# reader querying this table by verdict.
+#
+# Every file this seat marked `absorbed` or `exploration` was checked against
+# TWO forms of evidence: the panel's own stated role in its opening
+# paragraph (first-party), and either a direct registry citation or an
+# explicit downstream file's account of reading it (second-party). No file in
+# this slice rests on citation count alone with no role confirmation, and no
+# file rests on role confirmation alone with an unexplained zero citation
+# count: every zero-citation file's absorption is traced to a specific named
+# successor this seat opened.

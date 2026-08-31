@@ -1,0 +1,46 @@
+### p1 part one: the structural extraction, from the shipped bench source
+### file: mock/benches/variants/warm-container-shared/src/lib.rs
+
+--- op is a component of the key, so a key fixes the semantics ---
+120:pub const fn key_op(key: usize) -> usize {
+121-    (key / 100) % 10
+122-}
+123-/// Arithmetic operations applied per element before the accumulation.
+
+--- what op selects, in the source's own words ---
+114-}
+115:/// Semantics: 0 is a wrapping reduction (`Warm`), 1 is a saturating reduction
+116-/// (`Precise`), 2 is a wrapping elementwise transform (`Warm`, no loop-carried
+117-/// arvo value), 3 is a saturating elementwise transform (`Precise`, likewise),
+118-/// 4 is a wrapping reduction whose steps are all affine, 5 is a saturating
+119-/// accumulation of a `W`-bit column into a 64-bit accumulator.
+
+--- every arm call in the agreement test takes the same key ---
+1372:            let h = arms::headroom(key, cols);
+1373:            let m = arms::minimum(key, cols);
+1374:            let p = arms::plusone(key, cols);
+1375:            let nat = arms::native(key, cols);
+
+--- how many assertions in that test compare two different op values ---
+  occurrences of key_op anywhere in the file: 6
+  occurrences inside the agreement test that vary it: 0 (the test binds
+  `let op = key_op(key)` once per key and passes it to the oracle only)
+
+### p1 part two: the compiled arms
+
+    Finished `release` profile [optimized] target(s) in 0.16s
+     Running `target/release/p1-oracle-quantifier`
+### p1. what the shipped agreement test quantifies over
+### crate: bench-warm-container-shared, via a path dependency, so the oracle
+### under test is the shipped oracle and not a copy of it.
+
+A3. the shipped claim: four carrier rules agree at a FIXED key
+  57 keys, 0 disagreements   required=0   as required
+  so the shipped assertion is about CARRIER RULES, and it holds.
+
+A1. the axis the shipped test holds FIXED: op=0 (wrapping, Warm) against
+    op=1 (saturating, Precise), on identical values, width and depth
+  28 keys compared, 28 where the two semantics differ   required=>0   as required
+  first witness: key 80003, wrapping gives 159, saturating gives 255
+
+A2. control: the same op twice, same input, must agree

@@ -1,0 +1,205 @@
+### rows scanned: 598
+
+================ 2.1  the format concept
+######## C1 the standard model, computed = adapt(exact)
+    "adaptation of an exact"                                   0
+    "adapt(exact)"                                             0
+    "exact operation"                                          3
+      proposal :: a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points
+      proposal :: arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation
+      proposal :: chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type
+
+######## C2 identity is denotation rather than encoding
+    "denotation"                                               14
+      dimension :: ambient_domain
+      law-the-later-topics :: the_fused_and_the_stepwise_multiply_add_denote_one_function
+      obligation :: a_build_flag_that_changes_float_semantics
+      probe :: the_committed_corpus_does_contain_answer_differing_arms
+      proposal :: a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+      proposal-the-later-topics :: a_primitive_is_a_value_set_with_one_realisation_map
+      proposal-the-later-topics :: a_strategy_is_an_assignment_and_a_weighting
+      proposal-the-later-topics :: membership_in_the_type_and_identity_are_two_criteria
+      proposal-the-later-topics :: no_cost_model_may_move_an_answer
+      proposal-the-later-topics :: pick_the_policy_before_the_weighting
+      proposal-the-later-topics :: where_fusion_changes_the_answer_it_is_not_a_lowering
+      question :: inclusion_order_singleton_amendment
+      question :: what_a_datum_stands_for
+      topic :: the_primitive
+    "identity and"                                             4
+      proposal :: a_law_verdict_is_invariant_under_change_of_encoding_and_container
+      proposal :: inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width
+      proposal :: the_concept_commits_to_its_choices_and_to_no_count_of_levels
+      question :: are_consumer_terms_trees_or_dags
+    "membership in the type"                                   1
+      proposal-the-later-topics :: membership_in_the_type_and_identity_are_two_criteria
+
+######## C3 the representable set is one affine predicate
+    "affine predicate"                                         1
+      probe :: a_half_step_biased_grid_is_not_closed_under_addition
+    "representable set is one"                                 0
+    "membership of the representable"                          0
+
+######## C5 the absorption criterion
+    "absorption decides"                                       0
+    "absorbing"                                                16
+      law :: the_saturating_exponent_absorbing_identity
+      probe :: absorption_and_associativity_agree_for_clamped_addition
+      probe :: monotonicity_and_absorption_are_two_properties_and_a_reserved_top_buys_one
+      probe :: no_derivation_reads_the_numerals_grid
+      probe :: the_top_absorbs_under_saturation_and_never_under_wrapping
+      proposal :: a_min_plus_computation_needs_monotonicity_as_well_as_an_absorbing_top
+      proposal :: a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none
+      proposal :: absorption_decides_associativity_of_a_clamped_reduction
+      proposal :: no_total_join_exists_over_the_observable_axes_so_the_operation_reports
+      proposal :: the_model_band_transfer_is_defeated_in_both_fragments
+      question :: what_a_datum_stands_for
+      question :: what_a_numeral_guarantees_to_a_fold
+      retirement :: dl_absorbing_a_decimal_quantum_into_the_adjustment
+      retirement :: dl_interior_wrapping_with_a_reserved_absorbing_top
+      retirement :: dl_reification_stability_generalisation
+      ruling :: the_option_set_is_not_a_boundary
+
+######## scale-independence of the additive column
+    "scale independen"                                         0
+    "scale-independen"                                         0
+    "additive column"                                          2
+      law :: additive_associativity_under_wrapping
+      proposal :: an_additive_verdict_is_independent_of_the_fraction_width
+
+================ 3.1  the number-system concept
+######## the number-numeral distinction, laws as identity
+    "number system"                                            14
+      law :: existence_of_a_translation_invariant_total_order
+      probe :: a_trajectory_condition_lifts_exactly_when_it_survives_closure
+      proposal :: admission_returns_a_coordinate_rather_than_a_verdict
+      proposal :: membership_and_hosting_are_two_questions
+      proposal :: the_concept_is_closed_and_the_inventory_is_open
+      question :: adaptation_in_identity_or_realisation
+      question :: is_number_system_broad_enough_for_non_magnitude
+      question :: is_the_number_system_inventory_open
+      question :: one_word_or_two_for_is_a_number_system
+      question :: what_the_admission_contract_asks_a_candidate_to_expose
+      question :: where_wrapping_lives
+      retirement :: r161_r15_the_four_part_working_assumption
+      retirement :: r161_r9_the_number_system_convergence_as_two_instances
+      topic :: the_number_system
+    "laws as identity"                                         0
+    "numeral concept"                                          1
+      proposal :: the_numeral_concept_is_a_dependent_sequence_of_choices
+
+######## the crate-table cross-check is worth zero
+    "crate table"                                              0
+    "crate tree"                                               1
+      ruling :: prior_calls_are_a_historical_log_not_calls
+    "removed crate"                                            0
+
+######## strategy selects the correctness relation
+    "makes an answer correct"                                  0
+    "correct answer is"                                        3
+      proposal :: the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation
+      question :: is_i9_about_a_strategy_or_one_component
+      ruling :: the_strategy_is_what_makes_an_answer_correct
+
+================ 4.1  derived algebraic laws
+######## R1 a law is a fact about an operation
+    "fact about an operation"                                  1
+      proposal :: a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics
+
+######## the reproduction chain never broke
+    "reproduction chain"                                       1
+      proposal :: an_instrument_is_mutated_and_the_battery_is_made_to_notice
+    "rerun matched"                                            1
+      proposal :: an_instrument_is_mutated_and_the_battery_is_made_to_notice
+    "re-run"                                                   6
+      probe :: every_placement_rebuilt_in_the_other_language
+      probe :: the_bench_tree_was_built_at_the_undocumented_profile
+      probe :: the_four_const_available_constructions_bind_at_four_times
+      probe :: the_multiplicative_rescale_saving_is_adaptation_fusion
+      proposal :: absorption_decides_associativity_of_a_clamped_reduction
+      retirement :: dl_trusted_base_sentence_about_a_silent_mechanism
+
+######## the band-transfer defeat in both fragments
+    "band transfer"                                            4
+      law :: equation_truth_sets_are_initial_segments_in_the_width
+      law :: the_falling_factorial_family_vanishes_modulo_two_to_the_width
+      law :: the_saturating_exponent_absorbing_identity
+      proposal :: the_model_band_transfer_is_defeated_in_both_fragments
+    "band_transfer"                                            1
+      proposal :: the_model_band_transfer_is_defeated_in_both_fragments
+
+================ 5.1  three or more instances
+######## the selection erases at compile time
+    "erases at compile time"                                   0
+    "compile-time argmin"                                      0
+    "compile time argmin"                                      0
+    "symbol alias"                                             2
+      proposal :: a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body
+      proposal :: a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove
+
+######## the rationalisability counts
+    "rationalisab"                                             7
+      probe :: the_rationalisability_counts_reproduced_and_rungged
+      probe :: the_rationalisable_sections_on_the_committed_carrier_table
+      proposal :: generation_relocates_the_check_rather_than_removing_it
+      proposal :: one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both
+      proposal :: the_rationalisability_counts_on_the_committed_carrier_table
+      question :: must_a_weighting_be_strictly_positive
+      question :: what_goes_into_the_compiler_winner_or_cost_table
+
+######## distributivity at F = 0, and the signed re-measure
+    "distributivity"                                           8
+      law :: distributivity_of_multiplication_over_addition
+      law :: distributivity_of_multiplication_over_subtraction
+      probe :: which_factor_of_a_reduction_breaks_the_semiring
+      proposal :: a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going
+      proposal :: the_four_consolidations_contradict_each_other_nowhere
+      question :: is_the_ambient_operation_family_fixed
+      retirement :: dl_gate_algorithm_crates_on_addassoc
+      topic :: algebraic_laws
+    "47.72"                                                    2
+      law :: distributivity_of_multiplication_over_addition
+      proposal :: the_four_consolidations_contradict_each_other_nowhere
+
+######## the corpus test suite is 123 tests across 13 crates
+    "123 across"                                               0
+    "123 tests"                                                0
+    "thirteen crates"                                          0
+    -- NO ROW under any phrase tried
+
+================ 5.2  two experts
+######## a strategy is a preference over measurements
+    "preference over measurements"                             1
+      proposal :: a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin
+
+######## chain accuracy needs a non-closed operator
+    "closed over its operand type"                             2
+      probe :: chain_accuracy_needs_an_intermediate_wider_than_the_operand_type
+      proposal :: chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type
+
+######## the named strategies are points in a product
+    "points in a product"                                      1
+      proposal :: the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice
+
+######## 175 of 254 bench regions predate the validation
+    "175 of 254"                                               1
+      proposal :: most_committed_bench_regions_predate_the_harness_cross_variant_validation
+    "cross-variant validation"                                 2
+      probe :: most_committed_bench_regions_predate_the_validation_gate
+      proposal :: most_committed_bench_regions_predate_the_harness_cross_variant_validation
+    "bench region"                                             2
+      probe :: most_committed_bench_regions_predate_the_validation_gate
+      proposal :: most_committed_bench_regions_predate_the_harness_cross_variant_validation
+
+================ CONTROLS
+######## POSITIVE-A the item confirmed by hand first
+    "fact about an operation composed under"                   1
+      proposal :: a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics
+
+######## POSITIVE-B a phrase from a note field only
+    "the work order for the porting seats"                     1
+      ruling :: port_what_exists_into_the_registry_then_comb_the_rest
+
+######## NEGATIVE a phrase in no row
+    "zzz phrase that appears in no row anywhere"               0
+    -- NO ROW under any phrase tried
+

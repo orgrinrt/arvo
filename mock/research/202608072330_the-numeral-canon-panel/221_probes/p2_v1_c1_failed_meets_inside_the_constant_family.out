@@ -1,0 +1,18 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p2_joins_exist_meets_do_not.rs
+
+### compiled clean
+
+### p2. joins and meets of representable sets under inclusion
+### catalogue: 45 shapes, distinct by denotation
+###   constant quantum 36, exponential quantum 9
+
+CONTROLS
+  C1  meet is unique inside the constant-quantum family        *** VOID ***  required=0 bad, got 256
+  C2  some pair's intersection is outside the catalogue        as required  required=>0, got 125
+  C3  every pair has at least one upper bound                  as required  required=0 bad, got 0
+  C4  some exponential point denotes no constant point's set   as required  required=>0, got 9
+
+*** A CONTROL DID NOT REPORT ITS REQUIRED VERDICT. NOTHING BELOW COUNTS. ***
+
+### exit 1

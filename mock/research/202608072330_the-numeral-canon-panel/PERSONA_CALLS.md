@@ -44,9 +44,11 @@ paraphrased, are:
   promoting `07`'s self-flagged inherited claim to independent corroboration; and the cross-kind F2
   witness being the stretch's one three-instance result and having its meaning overturned by `08` in
   the same stretch.
-- "The TWO EXPERTS rung is currently unreachable by construction", because `RULES.md:163` mandates
-  cumulative sequential reading and `RULES.md:28-30` requires derivation before reading. Proposed fix
-  is a dispatch shape change, not a rule change.
+- "The TWO EXPERTS rung is currently unreachable by construction", because `RULES.md` mandates
+  cumulative sequential reading under "Panel mechanics" and requires derivation before reading in
+  its TWO EXPERTS rung. Proposed fix is a dispatch shape change, not a rule change. **Both were
+  line citations and both had rotted**: one pointed at a blank line and the other at text that
+  still happened to support the claim, which is the worse of the two failures.
 - Four refusals: `08`'s question one should not go to op without the compile-time measurement `08:540-550`
   names, on the strength of op's own words at `01:96-98`; the Moore completion should be marked as
   closing an operation with no caller rather than left neutral with a percentage beside it; the

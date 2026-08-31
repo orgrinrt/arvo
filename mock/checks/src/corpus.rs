@@ -10,10 +10,10 @@
 //! a member file cites the ledger it was written against, the ledger's headings
 //! move, and the citation keeps reading as a citation.
 //!
-//! Three arms. Two are about the seed archive and the third is about what a
-//! probe reads.
+//! Three arms. Two are about the archives and the third is about what a probe
+//! reads.
 //!
-//! The seed directory was renamed so every dead file carries an `OLD_` prefix
+//! An archive directory is renamed so every dead file carries an `OLD_` prefix
 //! and reads as dead at a glance. The pass that landed it repointed five files
 //! and wrote into `RULES.md` that no unprefixed archive citation remained,
 //! which was a claim over the whole tree made from a check over five files.
@@ -22,6 +22,16 @@
 //! to nothing. So the first two arms are the two halves that sentence promised:
 //! nothing unprefixed in a file still being written, and no `OLD_` citation
 //! naming a file that is not there.
+//!
+//! **Both arms are written over `ARCHIVES` rather than over one archive, and
+//! that is a repair rather than a generalisation nobody needed.** They were
+//! written against the literal string `seed/`, which is one archive of four
+//! files, while the same rename had been applied to a second archive of 203.
+//! The arm names claimed "the archive" over a corpus that has two, and the
+//! second was invisible to them: seven citations into it were written in the
+//! dead spelling, three of those in living ledgers, every one resolving to
+//! nothing, with nothing reporting any of it. A law asserted over one of the
+//! shapes it covers reports clean over the shape it never reached.
 //!
 //! **The landed member files are out of scope on purpose.** Nearly all of the
 //! remaining citations are in numbered files, which are written once and are
@@ -40,6 +50,38 @@ use crate::{repo, Finding};
 
 /// The panel whose corpus these arms walk.
 const PANEL: &str = "mock/research/202608072330_the-numeral-canon-panel";
+
+/// A directory of dead files, every one prefixed `OLD_`, and how a citation
+/// into it is spelled.
+///
+/// `at` is relative to the panel directory, so a planted tree can carry either
+/// archive and the arms need no absolute path.
+pub struct Archive {
+    /// What this archive is called when a report has to name it.
+    pub name: &'static str,
+    /// The string a citation into it begins with.
+    pub prefix: &'static str,
+    /// Where the files sit, relative to the panel directory.
+    pub at: &'static str,
+}
+
+/// Every archive the rename covers.
+///
+/// **Adding one here is the whole of what it takes to cover it**, which is the
+/// point: the second archive existed for as long as the first and was reachable
+/// only by editing two functions, so nobody did.
+pub const ARCHIVES: &[Archive] = &[
+    Archive {
+        name: "seed",
+        prefix: "seed/",
+        at: "seed",
+    },
+    Archive {
+        name: "closed formalization panel",
+        prefix: "formalization-spec-panel/",
+        at: "../202607301300_formalization-spec-panel",
+    },
+];
 
 /// The ledgers that are still being written, and are therefore read as current.
 ///
@@ -62,7 +104,7 @@ pub fn panel_dir() -> PathBuf {
     repo().join(PANEL)
 }
 
-/// An unprefixed citation into the seed archive, in a file still being written.
+/// An unprefixed citation into an archive, in a file still being written.
 pub fn unprefixed_archive_citations_in_living_ledgers(dir: &Path) -> Vec<Finding> {
     let mut out = Vec::new();
     for name in LIVING_LEDGERS {
@@ -71,21 +113,25 @@ pub fn unprefixed_archive_citations_in_living_ledgers(dir: &Path) -> Vec<Finding
             continue; // a ledger a panel does not have is not this arm's finding
         };
         for (n, line) in text.lines().enumerate() {
-            for cite in seed_citations(line) {
-                let file = cite.trim_start_matches("seed/");
-                if file.starts_with("OLD_") {
-                    continue;
+            for archive in ARCHIVES {
+                for cite in archive_citations(line, archive.prefix) {
+                    let file = cite.trim_start_matches(archive.prefix);
+                    if file.starts_with("OLD_") {
+                        continue;
+                    }
+                    let prefix = archive.prefix;
+                    let archive_name = archive.name;
+                    out.push(Finding::new(
+                        "unprefixed-archive-citation-in-a-living-ledger",
+                        format!("{name}:{}", n + 1),
+                        format!(
+                            "cites `{cite}`, which does not exist: the {archive_name} archive \
+                             is prefixed, so the file is `{prefix}OLD_{file}`. This is a ledger \
+                             a reader treats as current, so a citation in it that resolves to \
+                             nothing is read as provenance that was checked."
+                        ),
+                    ));
                 }
-                out.push(Finding::new(
-                    "unprefixed-archive-citation-in-a-living-ledger",
-                    format!("{name}:{}", n + 1),
-                    format!(
-                        "cites `{cite}`, which does not exist: the seed archive is prefixed, \
-                         so the file is `seed/OLD_{file}`. This is a ledger a reader treats \
-                         as current, so a citation in it that resolves to nothing is read as \
-                         provenance that was checked."
-                    ),
-                ));
             }
         }
     }
@@ -94,7 +140,7 @@ pub fn unprefixed_archive_citations_in_living_ledgers(dir: &Path) -> Vec<Finding
 
 /// An `OLD_`-prefixed citation naming a file that is not in the archive.
 ///
-/// The other half of the sentence, and the half that would fail if the archive
+/// The other half of the sentence, and the half that would fail if an archive
 /// were tidied again. Walks the whole panel rather than the ledgers, because an
 /// `OLD_` citation is written deliberately and a dangling one is wrong wherever
 /// it sits.
@@ -113,21 +159,23 @@ pub fn archive_citations_naming_nothing(dir: &Path) -> Vec<Finding> {
             .display()
             .to_string();
         for (n, line) in text.lines().enumerate() {
-            for cite in seed_citations(line) {
-                let file = cite.trim_start_matches("seed/");
-                if !file.starts_with("OLD_") {
-                    continue; // the arm above owns those
-                }
-                if !dir.join("seed").join(file).exists() {
-                    out.push(Finding::new(
-                        "archive-citation-names-nothing",
-                        format!("{shown}:{}", n + 1),
-                        format!(
-                            "cites `{cite}`, and the archive holds no such file. An `OLD_` \
-                             citation is written deliberately, so a dangling one is a \
-                             rename nobody followed rather than a typo."
-                        ),
-                    ));
+            for archive in ARCHIVES {
+                for cite in archive_citations(line, archive.prefix) {
+                    let file = cite.trim_start_matches(archive.prefix);
+                    if !file.starts_with("OLD_") {
+                        continue; // the arm above owns those
+                    }
+                    if !dir.join(archive.at).join(file).exists() {
+                        out.push(Finding::new(
+                            "archive-citation-names-nothing",
+                            format!("{shown}:{}", n + 1),
+                            format!(
+                                "cites `{cite}`, and the archive holds no such file. An `OLD_` \
+                                 citation is written deliberately, so a dangling one is a \
+                                 rename nobody followed rather than a typo."
+                            ),
+                        ));
+                    }
                 }
             }
         }
@@ -295,21 +343,27 @@ fn collect_scripts(dir: &Path, out: &mut Vec<PathBuf>) {
     }
 }
 
-/// Every `seed/<file>.md` a line mentions.
+/// Every `<prefix><file>.md` a line mentions, for one archive's prefix.
 ///
 /// Reads the bare path rather than a reference expression, because the corpus
 /// writes these in prose and in backticks rather than as `{{ seed::... }}`.
 /// Anything after the `.md` (a line number, a range, a section) is dropped: the
 /// question here is only whether the file is there.
-fn seed_citations(line: &str) -> Vec<String> {
+///
+/// **A citation naming a subdirectory is not matched**, since the extension
+/// finder stops at the first `.md` and a path with a directory component in it
+/// keeps its slashes. That is a known residue rather than an oversight: two
+/// citations into a probe directory of the closed panel are outside every arm
+/// here, and both name a directory rather than a file.
+fn archive_citations(line: &str, prefix: &str) -> Vec<String> {
     let mut out = Vec::new();
     let bytes = line.as_bytes();
     let mut i = 0;
-    while let Some(at) = line[i..].find("seed/") {
+    while let Some(at) = line[i..].find(prefix) {
         let start = i + at;
-        // A `seed/` that is part of a longer word is somebody else's path.
+        // A prefix that is part of a longer word is somebody else's path.
         if start > 0 && (bytes[start - 1].is_ascii_alphanumeric() || bytes[start - 1] == b'/') {
-            i = start + 5;
+            i = start + prefix.len();
             continue;
         }
         let rest = &line[start..];
@@ -321,7 +375,7 @@ fn seed_citations(line: &str) -> Vec<String> {
         if cite.ends_with(".md") {
             out.push(cite);
         }
-        i = start + end.max(5);
+        i = start + end.max(prefix.len());
     }
     out
 }
@@ -338,4 +392,73 @@ fn collect_md(dir: &Path, out: &mut Vec<PathBuf>) {
             out.push(path);
         }
     }
+}
+
+/// A line citation into a living ledger, from the panel's own prose.
+///
+/// **The gap three repaired probes walked into at once.** The registry's own
+/// arm refuses these inside a row, and nothing looked at the prose those rows
+/// are drawn from. A ledger is rewritten as the panel moves, so a line number
+/// into one names different text every time somebody edits above it, and the
+/// citation keeps resolving the whole way.
+///
+/// Found the hard way rather than by reading: three independently written
+/// citation checkers, once pointed at the tree they sit in rather than at a
+/// clone where the old line numbers still matched, each reported the same
+/// ledger's citations failing. None of them could see it before, and neither
+/// could any committed check.
+pub fn line_citations_into_living_ledgers_in_prose(dir: &Path) -> Vec<Finding> {
+    let stems: Vec<&str> = LIVING_LEDGERS
+        .iter()
+        .map(|l| l.trim_end_matches(".md"))
+        .collect();
+    let mut out = Vec::new();
+    let mut files = Vec::new();
+    collect_md(dir, &mut files);
+    files.sort();
+    for path in files {
+        let Ok(text) = fs::read_to_string(&path) else {
+            continue;
+        };
+        let shown = path
+            .strip_prefix(dir)
+            .unwrap_or(&path)
+            .display()
+            .to_string();
+        for (n, line) in text.lines().enumerate() {
+            for cite in ledger_line_citations(line, &stems) {
+                out.push(Finding::new(
+                    "line-citation-into-a-living-ledger-in-prose",
+                    format!("{shown}:{}", n + 1),
+                    format!(
+                        "cites `{cite}`. That ledger is still being written, so an edit above \
+                         the line moves the target and the citation still resolves, naming text \
+                         nobody wrote there. Cite the heading, which fails loudly when renamed."
+                    ),
+                ));
+            }
+        }
+    }
+    out
+}
+
+/// Every `<LEDGER>.md:<line>` a line mentions.
+fn ledger_line_citations(line: &str, stems: &[&str]) -> Vec<String> {
+    let mut out = Vec::new();
+    for (at, _) in line.match_indices(".md:") {
+        let after = &line[at + ".md:".len()..];
+        let digits: String = after.chars().take_while(char::is_ascii_digit).collect();
+        if digits.is_empty() {
+            continue;
+        }
+        let before = &line[..at];
+        let start = before
+            .rfind(|c: char| !c.is_ascii_alphanumeric() && c != '_')
+            .map_or(0, |i| i + 1);
+        let stem = &before[start..];
+        if stems.contains(&stem) {
+            out.push(format!("{stem}.md:{digits}"));
+        }
+    }
+    out
 }

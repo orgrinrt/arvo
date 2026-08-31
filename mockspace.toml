@@ -142,6 +142,18 @@ commit = "error"
 build = "error"
 push = "error"
 
+# --- arvo canon lints (mock/lints/*.rs, registry side) ---------------------
+#
+# These read `mock/registry/` rather than source, so they implement `RepoLint`
+# where the six above implement `CrateLint`. They are the checks that used to
+# live in a `mock/checks` crate and be run by hand, which is not one of the two
+# mechanisms mockspace has.
+
+[lints.refusal-owes-an-instead]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- Layer enforcement via forbidden-imports -------------------------------
 #
 # The per-crate layering rules were removed when mock/crates was
@@ -487,6 +499,13 @@ required = false
 description = "What goes wrong for that consumer without it, where somebody established that rather than asserted it."
 
 [[registry.namespace.field]]
+name = "quote"
+type = "string"
+required = false
+visibility = "internal"
+description = "The consumer's own words, verbatim, with the file they are in. **The one thing that makes a row here checkable.** `need` is a restatement, and a restatement is mechanically indistinguishable from an invention: the `ruling` namespace carries a verbatim beside its `says` for exactly that reason and a check reports rows lacking one. This namespace had neither, and three of its rows turned out to state a need the consumer never expressed, each written by a different seat, each entering at the same seam. It is internal because the words belong to another repository and quoting them into a generated document is not this canon's to do; the reference system resolves within one repository, so a citation cannot reach them and the quotation is what stands in its place. **Absent where a need is op's rather than a consumer document's**, which is a different provenance and says so through `provenance`."
+
+[[registry.namespace.field]]
 name = "topic"
 type = "topic"
 required = false
@@ -546,6 +565,18 @@ type = "string"
 required = true
 description = "`op` where it is his intent and nobody else's; `measurement` where the harness settles it and asking anybody is the wrong move; `panel` where it is derivable and wants argument; `coordinator` where it was answered in op's stead and is overturnable in a sentence."
 values = ["op", "measurement", "panel", "coordinator"]
+
+[[registry.namespace.field]]
+name = "answered"
+type = "string"
+required = false
+description = "What settled the question, in the answerer's own words, with where the round is recorded whole. Written when it is answered and absent otherwise, which is what lets a roster tell a live question from a settled one sitting in the queue: six were doing exactly that, four saying so only in prose and two saying nothing, and two of those would have gone back to op in the next batch. An `answered` question is kept rather than deleted, because the options it chose among are worth as much as the answer and a deleted row takes them with it. Where the answer reshapes the question rather than picking an option, say so here: that is the most valuable kind and the one a bare option-index cannot record."
+
+[[registry.namespace.field]]
+name = "bound"
+type = "string"
+required = false
+description = "The constraint a question is to be answered inside, and how it got one. Written when a question filed as op's is put to him and he returns it: what he owed was the bound rather than the answer, so the row records his words, the constraints they impose, and that `decider` moved off him. It is the record that stops the same question going back a second time, which has already cost him a round trip. A `decider = op` row carrying no `bound` has simply not been asked yet; one carrying a `bound` and still naming him is a filing error."
 
 [[registry.namespace.field]]
 name = "unblocks"
@@ -895,8 +926,27 @@ values = ["intent", "ruling", "refusal", "deferral", "process"]
 name = "rung"
 type = "string"
 required = true
-description = "`ratified` where the experts converged and he blessed that convergence, which needs both halves and which almost nothing has; `in_force` where the workspace and this repo's own lints enforce it independently of convergence; `stated` where it is his direction and an ack rather than a ruling; `open` where he has explicitly not settled it."
+description = "`ratified` where it is canon, by either route named in `ratified_by`; `in_force` where the workspace and this repo's own lints enforce it independently of convergence; `stated` where it is his direction and an ack rather than a ruling; `open` where he has explicitly not settled it. This used to say ratification needed both expert convergence and his blessing, and that both-halves reading is what left 122 panel propositions with no exit and none of them ratified."
 values = ["ratified", "in_force", "stated", "open"]
+
+[[registry.namespace.field]]
+name = "ratified_by"
+type = "string"
+required = false
+description = "Which route made it canon. `op` where he stated it and it is his to state, which is intent, design direction and broad strokes. `experts` where a proposal converged and was promoted. `both` where he has also read it. Required on a `ratified` row and meaningless elsewhere. Kept as a field rather than folded into the tier because the distinction is provenance and stays useful later: when something turns out wrong, which route admitted it is the first thing worth knowing. His words on why his own stamp is not the higher of the two: \"these get so theoretical I can't possibly understand the implications... The stamp is just a marker that I've read it, no matter if I understand it or not\"."
+values = ["op", "experts", "both"]
+
+[[registry.namespace.field]]
+name = "promotion"
+type = "string"
+required = false
+description = "Why a proposal was judged demonstrated enough to become canon, written by whoever promoted it. Present on `ratified_by = experts` and absent otherwise. **Convergence between two experts is the bar, not the trigger**: the experts propose, and the coordinator decides whether the reasoning is spelled out, the evidence real and the region stated well enough to promote. So this field carries that judgement and can be argued with, which a bare count of agreeing experts cannot. A promotion is revisable: op's own condition is that these stay \"subject to being changed if the experts themselves end up disagreeing or finding a better solution or wording or bound\"."
+
+[[registry.namespace.field]]
+name = "ratification"
+type = "string"
+required = false
+description = "How a row reached `ratified`: what was put to him, the options it was chosen among, and his answer verbatim. Present on a `ratified` row and absent otherwise, which is what separates a blessing from somebody having typed the word. The options belong here because an answer recorded without them says a choice was made and not which one, and that has already sent a settled question back to him. Where he answered something other than what was asked, which is common and is usually the most valuable part, say so: the gap between the question and the answer is a finding about how the question was framed."
 
 [[registry.namespace.field]]
 name = "topic"
@@ -1046,6 +1096,12 @@ type = "string"
 required = true
 description = "How many independent instances reached it, over the region they share. `one_expert`; `two_experts`, each deriving before reading the other; `three_or_more`; `cross_topic` where separate topics arrived at it without citing each other, which is the strongest thing this panel produces; `contested` where it is stated because somebody stated it and somebody else disagrees."
 values = ["one_expert", "two_experts", "three_or_more", "cross_topic", "contested"]
+
+[[registry.namespace.field]]
+name = "gate"
+type = "string"
+required = false
+description = "Why the coordinator refused to promote it, where one did. Present on a proposal that met the convergence bar and did not clear the gate, absent otherwise. The bar and the gate are two different things: convergence says several experts reached it, and the gate asks whether the reasoning, the evidence and the stated region are enough for canon. A proposal at `two_experts` with no `gate` has not been looked at yet; one carrying a `gate` has, and was refused with a reason somebody can argue with. Refusals concentrate in one place: the prose reaching past the predicate. Every mechanism here audits predicates and none audits the sentence beside them, and that sentence is what a later reader quotes."
 
 [[registry.namespace.field]]
 name = "topic"

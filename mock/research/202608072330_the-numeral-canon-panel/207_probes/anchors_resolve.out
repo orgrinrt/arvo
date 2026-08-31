@@ -1,0 +1,30 @@
+=== catalogue citations ===
+  ok      OLD_04b_op_checkpoint_and_directions#one-standing-note-on-authority-from-op
+  ok      OLD_04b_op_checkpoint_and_directions#what-op-said-in-op-s-words
+  ok      OLD_06b_op_checkpoint_two#the-correction-and-it-is-the-important-part-of-this-checkpoint
+  ok      OLD_08b_op_checkpoint_three#what-is-not-being-asked
+  ok      OLD_112_the_op_material_sweep#6-two-things-outside-the-question-asked
+  ok      OLD_127b_op_checkpoint_twentyseven#the-governing-pressure-stated-first
+  ok      OLD_127b_op_checkpoint_twentyseven#the-process-finding-and-op-s-answer-to-it
+  ok      OLD_130b_op_checkpoint_twentyeight#the-container-is-never-written-by-a-consumer
+  ok      OLD_135b_op_checkpoint_twentynine#the-gate-stated-first-because-everything-else-in-this-file-is-subordinate-to-it
+  ok      OLD_137b_op_checkpoint_thirty#no-enumerations-and-this-is-the-same-finding-a-seventh-time
+  ok      OLD_138b_op_checkpoint_thirtyone#the-aliases-are-aliases-and-this-is-the-thing-that-must-stop-slipping
+  ok      OLD_139b_op_checkpoint_thirtytwo#conceding-is-a-valid-answer-and-it-is-now-a-standing-instruction
+  ok      OLD_13c_op_the_standard_and_the_mode#how-the-review-runs-from-here
+  ok      OLD_13c_op_the_standard_and_the_mode#the-standard-everything-is-measured-against
+  ok      OLD_140b_op_checkpoint_thirtythree#op-has-now-told-the-panel-twice-in-two-days-that-something-is-already-written-and-does-not-stick
+  ok      OLD_142c_op_checkpoint_thirtyfive#op-s-words
+  ok      OLD_142c_op_checkpoint_thirtyfive#second-clarification-the-three-tiers-and-where-the-typestate-is-actually-written
+  ok      OLD_143b_op_checkpoint_thirtysix#the-ruling
+  ok      OLD_68b_op_checkpoint_sixteen#the-scope-correction-stated-first
+  ok      OLD_70b_op_checkpoint_seventeen#the-rhythm-and-where-it-points-next
+  ok      OLD_77b_op_checkpoint_nineteen#the-pricing-pillar-becomes-the-fourth-design-rule
+  ok      OLD_79b_op_the_verification_mandate#exhaustiveness-on-the-mathematical-side-in-both-directions
+checked: 22   dangling: 0
+
+=== CONTROL: an anchor that does not exist must be rejected ===
+  rejected, as it must be
+
+=== CONTROL: a real anchor in the same file must be accepted ===
+  accepted, so the matcher is not simply rejecting everything

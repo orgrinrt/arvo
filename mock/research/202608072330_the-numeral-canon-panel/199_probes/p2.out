@@ -1,0 +1,80 @@
+### registry: /Users/orgrinrt/Dev/clause-work/numeric-stack/reply/mock/registry
+
+######## ARM 1. every declared dimension and the values its grammar admits
+  integer_width      `I = <n>`, `I in <range>`, `I in {<set>}`, or `I any`. `n` is a count of bits and the corpus sta
+  fraction_width     `F = <n>`, `F in <range>`, `F in {<set>}`, or `F any`. `F = 0` names the exact-integer case.
+  total_width        `W = <n>`, `W in <range>`, `W in {<set>}`, or `W any`. `W in 1..=64` is the whole domain of a `u
+  signedness         `signedness = unsigned`, `signedness = signed`, `signedness in {unsigned, signed}`, or `signedne
+  overflow_policy    `overflow policy = <name>`, `overflow policy in {<set>}`, or `overflow policy any`. Named values
+  rounding           `rounding = <mode>`, `rounding in {<set>}`, or `rounding any`. `rounding = exact` names the case
+  operation          `operation = <op>` or `operation in {<set>}`. Values are the operations the design ships, which 
+  arity              `arity = <n>`, `arity in {<set>}`, or `arity any`.
+  chain_length       `chain length = <n>`, `chain length in {<set>}`, or `chain length any`.
+  container          `container = <type>`, `container in {<set>}`, or `container any`. Values seen: a machine integer
+  alignment          `alignment = aligned`, `alignment = straddling`, `alignment in {aligned, straddling}`, or `align
+  access_pattern     `access pattern = <name>` or `access pattern any`.
+  target_features    `target features any`, `target features = host default`, or a named feature set.
+  threads            `threads = 1`, `threads = <n>`, or `threads any`.
+  strategy           `S = <name>` or `S in {<set>}`. **`S any` is not admissible**, because it quantifies over a set 
+  ambient_domain     `ambient domain = <domain>`, `ambient domain in {<set>}`, or `ambient domain any`. Values name a
+  radix              `radix = <n>`, `radix in {<set>}`, or `radix any`.
+  accumulator_width  `accumulator width = <n>`, `accumulator width in {<set>}`, or `accumulator width any`. `accumula
+  toolchain          `rustc = <version>` and `edition = <year>`, written as separate entries where both were fixed. `
+  build_profile      `debug-assertions = on`, `debug-assertions = off`, or `debug-assertions in {on, off}`. Where opt
+  -- count: 20
+
+######## ARM 2. every value written on chain_length and arity, across all namespaces
+  --- chain_length
+      chain_length: 2
+      chain_length: chain length any
+      chain_length: chain length in 2..=5
+      chain_length: chain length in 2..=8
+      chain_length: column lengths in {1, 2, 3, 4, 8, 16, 32, 64, 128, 1024}
+      chain_length: fold length in {4, 8}
+      (occurrences: 15)
+  --- arity
+      arity: 3
+      arity: arity = 1
+      arity: arity = 2
+      arity: arity = 3
+      arity: arity = 3 for the algebraic family and 2 for the order family
+      arity: arity = 3 for the grouping kind, and arity in 2..=5 for the schedule kind
+      arity: arity = 4
+      arity: arity any
+      arity: arity in {1, 2, 3, 5, 8}
+      arity: arity in {2, 3}
+      arity: arity in {2, 3} for the asserted join laws
+      (occurrences: 43)
+  --- accumulator_width
+      (occurrences: 0)
+
+######## ARM 3. the concept searched for under words that are not 191's
+  compile time   dimension.toml lines: 0
+  static         dimension.toml lines: 0
+  runtime        dimension.toml lines: 0
+  dynamic        dimension.toml lines: 0
+  bound          dimension.toml lines: 5
+        56:# final paragraph bounds its scope to two paragraphs and says the dimension list
+        61:# still bound where a claim holds, which is what a predicate is for.
+        153:what = "Whether a packed value sits on a container boundary or straddles one."
+        157:keywords = ["alignment", "aligned", "straddling", "boundary", "packed", "bitpack", "unaligned"]
+        246:moves = "Whether a binding-free distinguishing channel exists at all. One licence is false at `debug-assertions = on` and true at `off`, because t
+  capacity       dimension.toml lines: 0
+  count          dimension.toml lines: 5
+        69:grammar = "`I = <n>`, `I in <range>`, `I in {<set>}`, or `I any`. `n` is a count of bits and the corpus stays inside 1..=64."
+        121:moves = "Nearly everything. A law is a statement relating operations, and a claim about addition transfers to multiplication only where somebody s
+        181:note = "arvo takes no stance on core count and runs at one, two or any finite n, so a `threads = 1` corpus is a body of real findings over a real 
+        183:keywords = ["threads", "thread count", "cores", "parallel", "single threaded", "concurrency"]
+        189:moves = "What counts as the correct answer. The strategies weigh measurements differently, so a claim about which arm is best is a claim about one
+  unbounded      dimension.toml lines: 0
+  fold           dimension.toml lines: 5
+        138:moves = "Accuracy, and which arm wins. Multiplicative chains need width growing linearly in fold length with no logarithmic closed form, and the c
+        140:keywords = ["chain", "chain length", "fold", "fold length", "reduction", "depth", "accumulate", "sequence"]
+        229:moves = "Whether a chain's intermediate overflows, and therefore whether a fold's result depends on its order. It is a design choice an implementa
+        231:keywords = ["accumulator", "accumulator width", "intermediate", "widening", "staged narrowing", "fold", "headroom", "chain"]
+        238:note = "Distinct from `target_features`, which is what the machine offers, and from `build_profile`, which is how the compiler was asked to optimi
+  known at       dimension.toml lines: 0
+  trip           dimension.toml lines: 0
+
+######## CONTROL NEGATIVE: a dimension that does not exist
+  no_such_dimension_at_all: 0  (must be 0)

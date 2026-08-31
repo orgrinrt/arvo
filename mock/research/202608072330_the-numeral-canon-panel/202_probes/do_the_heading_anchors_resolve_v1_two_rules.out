@@ -1,0 +1,73 @@
+### headings slugified: 8856 entries over 215 files
+### heading-anchor citations: 182
+
+  UNRESOLVED  OLD_124_consolidation_twelve
+              #6-the-droplist-cumulative
+  UNRESOLVED  01_op_answers
+              #3-warm-s-headroom-rule
+  UNRESOLVED  04_op_no_settlements_tonight
+              #op-s-instruction
+  UNRESOLVED  104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle
+              #1-what-i3-s-imitation-targets-at-a-width-rust-has-no-primitive-for
+  UNRESOLVED  105_op_notko_renames
+              #the-queue-being-drained-is-arvo-s-and-that-is-a-correction-of-the-dispatcher
+  UNRESOLVED  156_checkpoint_nine_the_queue_for_ops_seat
+              #3-whether-the-rounding-candidate-s-section-5-is-canon-or-design
+  UNRESOLVED  164_leroy_the_candidate_revised_against_two_signatures
+              #5-3-r17-new-the-register-s-literal-sentence-on-rounding-observability
+  UNRESOLVED  164_leroy_the_candidate_revised_against_two_signatures
+              #5-4-r18-new-added-after-165-161-s-own-accounting-sentence
+  UNRESOLVED  178_leroy_the_restoration_pass
+              #5-f177-4-the-legend-s-third-mark-position
+  UNRESOLVED  178_leroy_the_restoration_pass
+              #7-f177-6-the-canon-gate-s-enumeration-completed
+  UNRESOLVED  178_leroy_the_restoration_pass
+              #8-f177-7-the-instrument-s-docstring-repaired-numbers-unchanged
+  UNRESOLVED  17_leroy_what_would_actually_certify_this
+              #4-2-below-o2-the-instrument-fails-and-the-design-does-not
+  UNRESOLVED  28_op_answers_two
+              #q7-which-carrier-is-the-substrate-s-packing-claim-about
+  UNRESOLVED  37_op_warm_imitates_rust_and_strategy_is_not_orthogonal
+              #first-the-part-that-is-about-this-panel-s-competence-rather-than-about-arvo
+  UNRESOLVED  87_op_the_canon_is_written_once_at_the_end
+              #4-cold-s-intent-survives-the-strategy-set-being-reshaped
+  UNRESOLVED  88_op_the_intent_is_not_every_clause_and_there_is_no_universal
+              #3-ingest-is-the-consumer-s-and-the-c-abi-is-where-it-all-ends-up-anyway
+  UNRESOLVED  INTENTS
+              #i4-warm-s-objective-is-the-intuitive-best-choice-and-imitation-serves-it-rather-than-defines-it
+  UNRESOLVED  OPTIONS
+              #q10-is-the-inclusion-order-s-own-predicate-amended-to-identify-shapes-denoting-the-same-value-set
+  UNRESOLVED  OPTIONS
+              #q14-at-what-exchange-rate-does-a-strategy-s-preference-yield
+  UNRESOLVED  OPTIONS
+              #q18-does-a-system-s-selected-adaptation-belong-to-its-identity-or-to-its-realisation
+  UNRESOLVED  OPTIONS
+              #q33-to-q37-five-options-that-lived-only-in-member-files-until-the-unit-s-consolidation
+  UNRESOLVED  OPTIONS
+              #q38-where-a-law-verdict-s-truth-is-established
+  UNRESOLVED  OPTIONS
+              #q39-whether-an-arm-s-predicate-may-read-data
+  UNRESOLVED  OPTIONS
+              #q41-addendum-the-register-s-own-question-answered-and-then-partly-overturned
+  UNRESOLVED  OPTIONS
+              #q50-closed-as-not-op-s-and-returned-to-the-panel
+  UNRESOLVED  OPTIONS
+              #q54-whether-a-consumer-s-terms-are-trees-or-dags
+  UNRESOLVED  OPTIONS
+              #q62-whether-the-firewall-s-unpredicated-form-is-what-the-canon-carries
+  UNRESOLVED  OPTIONS
+              #q65-whether-this-panel-s-own-findings-satisfy-the-notation-it-ratified
+  UNRESOLVED  OPTIONS
+              #q9-what-should-the-crossing-at-the-width-surface-be-between-a-consumer-s-written-number-and-the
+  UNRESOLVED  OPTIONS
+              #the-derivation-s-outputs
+  UNRESOLVED  PRIOR_CALLS
+              #the-status-of-everything-below-in-op-s-own-words
+
+### unresolved: 31 of 182
+
+######## CONTROLS
+  POSITIVE-A   #6-cross-topic-agreements                      -> STRICT           (want both)
+  POSITIVE-B   #4-1-multi-instance-per-the-consolidations-own-account -> LOOSE            (want LOOSE only)
+  POSITIVE-B   #41-multi-instance-per-the-consolidations-own-account -> STRICT           (want STRICT only)
+  NEGATIVE     #zzz-no-such-heading-anywhere                  -> (none)           (want none)

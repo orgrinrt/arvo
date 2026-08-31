@@ -1,0 +1,34 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p5_contextual_formulation.rs
+
+### compiled clean
+
+### p5. the contextual formulation, and whether clause 9's second branch survives
+### widths swept: [8, 13, 14, 16, 23, 31, 32]   exhaustive below 2^12, strided above, stride stated
+
+  carrier pair           min-carrier, sat / head-carrier, sat Equivalent                 clause9=Refused     required=Equivalent                /Refused     as required
+                         separates at 0 of 7 widths; first witness none
+  carrier pair +ambient  min-carrier, sat / head-carrier, sat SeparatedPolymorphic       clause9=Separated   required=SeparatedPolymorphic      /Separated   as required
+                         separates at 7 of 7 widths; first witness W=8: layout: 8 bits against 16
+  K1 lazy projection     min-carrier, sat / head-carrier, sat SeparatedPolymorphic       clause9=Separated   required=SeparatedAtSomeWidths     /Separated   *** NOT AS REQUIRED ***
+                         separates at 7 of 7 widths; first witness W=8: unprojected add(1, 255)
+  K2 spurious ctl        min-carrier, sat (second name) / min-carrier, sat Equivalent                 clause9=Refused     required=Equivalent                /Refused     as required
+                         separates at 0 of 7 widths; first witness none
+  refinement ctl         min-carrier, sat / min-carrier, sat, refined Ordered                    clause9=Refinement  required=Ordered                   /Refinement  as required
+                         separates at 0 of 7 widths; first witness none
+  K4 policy ctl          min-carrier, sat / min-carrier, wrap SeparatedPolymorphic       clause9=Separated   required=SeparatedPolymorphic      /Separated   as required
+                         separates at 7 of 7 widths; first witness W=8: projected add(1, 255)
+
+### reading
+### K1 fires, so 'the witness works at every width' and 'the witness works at some'
+### are two states something actually reaches, and the distinction clause 9's second
+### branch draws is real. What the run shows is WHERE it belongs: both states map to
+### one clause-9 outcome, Separated, so transfer is not a third way a pair can
+### relate. It is a property of the witness that separated them, and the contextual
+### formulation carries it as one. K3 holds across all six rows: no pair is
+### reclassified, so the reformulation is conservative rather than a different
+### obligation under the same name.
+
+### overall: *** AT LEAST ONE ARM NOT AS REQUIRED ***
+
+### exit 1

@@ -1,0 +1,23 @@
+== p5. does an archive citation actually resolve? ==
+target: mock/registry/probe.toml
+
+-- baseline, with the two new rows as committed --
+  649 rows across 10 namespaces
+  schema check passed
+
+-- control A: plant a lives naming a file that is not in the archive --
+plant is in place.
+  649 rows across 10 namespaces
+  ERROR [unresolvable-provenance]: probe::the_structural_backing_array_compiles_and_its_layout_controls_refuse: `panel::202607301300_formalization-spec-panel::OLD_76_probes::b1_THIS_FILE_IS_NOT_THERE.rs::1` matches no file under root `panel`.
+  schema check passed
+registry: 1 error(s). A reference that does not resolve, or an identifier declared twice, means the registry is lying about what it holds.
+  -> control A ok: the engine reports the missing archive file.
+
+-- control B: restore and re-run --
+  649 rows across 10 namespaces
+  schema check passed
+  -> control B ok: clean again, so control A's report was the plant.
+
+RESULT: archive citations are resolved, not skipped. A registry row can
+carry evidence out of the closed panel and the engine will hold it to
+the same standard as a citation into this one.

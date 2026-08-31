@@ -1,0 +1,26 @@
+files matching OLD_*_op_*.md         : 38
+  of which the sweep itself (agent)  : 1
+op-authored checkpoint files         : 37
+persona stand-in files (not op)      : 10
+roster stated by OLD_112 and by STP  : 23
+shortfall                            : 14
+
+the op files the stated roster of 23 does not contain:
+  OLD_127b_op_checkpoint_twentyseven.md
+  OLD_130b_op_checkpoint_twentyeight.md
+  OLD_135b_op_checkpoint_twentynine.md
+  OLD_137b_op_checkpoint_thirty.md
+  OLD_138b_op_checkpoint_thirtyone.md
+  OLD_139b_op_checkpoint_thirtytwo.md
+  OLD_140b_op_checkpoint_thirtythree.md
+  OLD_142b_op_checkpoint_thirtyfour.md
+  OLD_142c_op_checkpoint_thirtyfive.md
+  OLD_143b_op_checkpoint_thirtysix.md
+  OLD_144b_op_checkpoint_thirtyseven.md
+  OLD_144c_op_checkpoint_thirtyeight.md
+  OLD_145b_op_checkpoint_thirtynine.md
+  OLD_145c_op_checkpoint_forty.md
+
+and the dates, because a file written after the sweep could not have been swept:
+  2026-08-05 docs: panel file 112, the op-material sweep
+  2026-08-07 research: narrow the shipped-source prohibition to citing, not reading
