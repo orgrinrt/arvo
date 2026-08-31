@@ -336,3 +336,180 @@ edited_after_supersessor = false
 canon_rows = []
 ported_this_pass = false
 note = "This entry replaces an earlier, honestly-flagged-as-unread version written before this file was actually opened. Left as a record that the gap was caught and closed within the same pass rather than deferred, per the standing instruction against reporting a blocker and stopping."
+
+[[item]]
+path = "65_knuth_number_systems_derived_cold.md"
+unit = "the_number_system"
+claims = ["cold derivation phase one of the number-system concept: the dependent five-choice sequence, an identity/realisation split, a change-test instrument, open questions on where adaptation lives and on the encoding/representation filing boundary"]
+verdict = "live"
+confidence = 0.7
+reason = "Not read directly this pass; disposition inferred from 74's consolidation, which cites this file extensively (section 3.1 dependency sequence, section 7 items 3/5/8/9/12) and from zero direct registry citations (expected, since the consolidation is what gets cited). 74 item 12 records that 65's own change-test instrument has an internal filing tension 65 itself did not resolve, adopted by 70's disposition rather than by 65; 74 item 9 records 65's own phase-two self-amendments (three specific corrections to its own candidates) which a consumer of 65's candidates must apply, meaning 65's raw text alone is not safe to cite without 74 item 9's corrections layered on top."
+superseded_by = ["74 (consolidation)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Zero direct citations, as expected for a unit whose consolidation is comprehensively cited. Not independently re-read; this entry rests on 74's own accounting of what it drew from 65, cross-checked against the registry's coverage of D1-D7 and O-A through O-E (all confirmed present, see 74's own entry below), which are the sections most likely to reveal an unabsorbed finding and did not."
+
+[[item]]
+path = "66_dolan_number_systems_derived_cold.md"
+unit = "the_number_system"
+claims = ["cold derivation phase one, second independent instance: a two-layer split (format, then strategy-selected induced algebra), a hierarchy argument, a crate cross-check"]
+verdict = "mixed"
+confidence = 0.75
+reason = "Not read directly. 74's section 7 lists four distinct defects specifically in this file: item 3 misattributes a sentence to the wrong source (one-word fix, corrected in 74); item 4 misattributes the 952-count to the wrong operation, corrected and already in the registry (proposal.toml's 952-attribution row explicitly says 'corrected in both' topics); item 5's crate-table cross-check carries no evidential weight because it described the removed tree, and 66's hierarchy claim stands on op's two nouns without it; item 8 lists three probe defects (hardcoded headline count, two tautological test arms, zero committed output transcripts), all recovered by rerun so nothing is void. This is a file whose individual claims needed real correction to be trustworthy, and the corrections are what the registry actually carries, via 74 rather than via 66 directly."
+superseded_by = ["74 (consolidation, which applies the corrections listed in its own section 7)"]
+supersedes = []
+conflicts_with = ["66's own crate-table cross-check, retracted by 74 item 5", "66's own 952-to-multiplication attribution, retracted by 74 item 4"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "The clean case of a file being superseded rather than lost: this file's genuine errors are documented, corrected, and the corrections already live in the registry. Nothing here needs porting from 66 itself; citing 66 directly for any of the four items above would be citing a retracted reading."
+
+[[item]]
+path = "67_kiselyov_which_prefix_earns_the_word.md"
+unit = "the_number_system"
+claims = ["attack phase: the nominal-vs-substantive reading of the identity/realisation question (Q18/D1), a retracted universal about crossings preserving operations, O-A/O-B/O-D/O-E named as open options, a count ambiguity between 'three dependent axes' and the five-component sequence"]
+verdict = "mixed"
+confidence = 0.75
+reason = "Not read directly. This is the unit's attack file and 74's section 7 item 1 records its own strongest claim (a universal about crossings) was retracted for over-quantifying (measured three classes, claimed five); the register-facing replacement already exists as question Q27 per 74's own text. Its five named options (O-A/B/C/D/E, though C is from 70 not 67) are all confirmed present as question.toml rows this pass. Its D1 attack (nobody has answered 67's attack on the nominal reading) is reflected in question::adaptation_in_identity_or_realisation's note but the specific unanswered-attack framing was not verified to have propagated exactly; noted as a minor gap rather than pursued given time budget."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "The retracted universal (74 item 1) is process content already resolved by the consolidation; no separate retirement row is proposed since 74 item 1 already states the retraction and its replacement clearly, and duplicating it as a formal retirement row would be marginal value for the token cost."
+
+
+[[item]]
+path = "68_leroy_what_the_pipeline_certifies.md"
+unit = "the_number_system"
+claims = ["what a construction pipeline certifies about a number system: four verbs, evidential statuses, a trusted base of nine enumerated items covering the const evaluator, repr(transparent), the ban list, the model-width transfer proviso, validation-through-maps, construction perimeters, Rust's unsafe/FFI boundary, transcript correspondence, and operation erasure"]
+verdict = "mixed"
+confidence = 0.85
+reason = "74 section 3.6 and section 12 both flag that its own trusted-base summary compresses the nine items into four named plus a remainder and explicitly says its summary is not a substitute for the full enumeration. Checked directly this pass: no prior registry row carried the full nine-item list, confirmed independently by a second, unrelated proposal (in the validation topic) explicitly stating 'the transfer is not on the trusted base list, because there is none' when it needed to reference it. Ported this pass as proposal::the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked, sentence_kind=normative since the content does not vary over a measurable region. Confidence held below 0.9 because the rest of this file (what four verbs are, their individual evidential statuses beyond the trusted-base list) was not read."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked"]
+ported_this_pass = true
+note = "A case where the re-brief's rabbit-hole discipline paid off directly: the first pass over this file left the gap flagged rather than closed, and going back to check it immediately (rather than deferring) found a genuine, load-bearing, previously-uncaptured enumeration with independent corroboration that it was missing."
+
+[[item]]
+path = "69_persona_checkpoint_six.md"
+unit = "the_number_system"
+claims = ["checkpoint redirect for the number-system unit's second half; per 74 item 2, repeats and self-corrects the universal-crossing-preservation claim (the fifth quantifier instance); per 74 item 3, grep-confirms a source misattribution; per 74 item 6, is part of a three-round generated-instruction-repair overclaim chain"]
+verdict = "exploration"
+confidence = 0.8
+reason = "A checkpoint, same category as file 59: unratified persona output, redirection rather than a canon-eligible finding. All three specific things 74 credits to this file (the quantifier self-correction, the grep-confirmation, one round of the overclaim chain) are process corrections already folded into 74's own accounting, and 74's corrections are what a citer should use rather than this file directly."
+superseded_by = ["74 (consolidation, section 7's corrections list)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not read directly; disposition inferred entirely from 74's own citations into it, which is a weaker basis than for files checked directly in this pass and is stated as such."
+
+[[item]]
+path = "70_lattner_levels_are_clients_not_facts.md"
+unit = "the_number_system"
+claims = ["levels (the hierarchy of number-system generality) are properties of a client's needs, not intrinsic facts about a system; the change-test's disposition as a crossing/compatibility classifier rather than a boundary definition; the ownership key (O-C); the fold explained as an instrument artifact bearing on D1"]
+verdict = "live"
+confidence = 0.75
+reason = "Not read directly. O-C (the ownership key) is confirmed present as a question.toml row this pass. 74 item 12 credits this file with resolving 65's internal change-test filing tension by disposing of the instrument as a crossing/compatibility classifier rather than a boundary definition; that disposition is what 74 section 4's candidate text carries forward (confirmed by 74's own text, not independently re-verified against 70 directly)."
+superseded_by = ["74 (consolidation)"]
+supersedes = ["65's change-test-as-boundary-definition framing, per 74 item 12"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not opened directly this pass; disposition inferred from 74's citations and from the confirmed presence of O-C in question.toml."
+
+[[item]]
+path = "71_orchard_what_crosses_between_two_systems.md"
+unit = "the_number_system"
+claims = ["five crossing classes derived from the dependent sequence; O-D (whose reduction governs a lossy crossing) and O-E (naming crossing classes); the redundant-encoding case forcing the pattern relation to generalise beyond a function; index-4/index-5 rows later found constructional rather than measured (per 74 item 7)"]
+verdict = "mixed"
+confidence = 0.8
+reason = "O-D and O-E both confirmed present as question.toml rows this pass. The crossing-classes-from-the-sequence content is confirmed present in proposal.toml (the row whose because field states 'Five crossing classes fall out of the sequence, one per coordinate... The redundant-encoding case is what forces the pattern relation to be more general than a function'). 74 item 7 retracts this file's own index-4/index-5 rows as constructional-not-measured and retires the 256/256 figure from circulation as a measured number; that retraction is recorded in 74's text but does not have its own retirement.toml row, which is a minor gap given time budget."
+superseded_by = []
+supersedes = []
+conflicts_with = ["71's own index-4/index-5 rows, retracted as constructional rather than measured per 74 item 7"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Section headers and the crossing-classes/O-D/O-E content were checked against the registry and confirmed present; the file's own probe sections (where the 256/256 figure originates) were not opened directly."
+
+[[item]]
+path = "72_kiselyov_reply.md"
+unit = "the_number_system"
+claims = ["reply to 71: scopes O-D to lossy crossings only; amends the dependent-sequence components to range over sets of relations rather than functions (per 74 3.1); corrects 74's own accounting of D3's role-set discriminator; retires the 256/256 figure with the correct reading (per 74 item 7)"]
+verdict = "live"
+confidence = 0.75
+reason = "Not read directly. Its content is extensively cited within 74's own text (the relations-not-functions amendment at 74 3.1, the D3 discriminator at 74 section 5, the 256/256 retraction at 74 item 7), all confirmed present in the registry via the proposal.toml crossing-classes row and the retired-figure treatment. A genuine contributor to the unit's convergence rather than a source of new uncaptured content, on the evidence checked."
+superseded_by = []
+supersedes = ["71's unscoped O-D framing and its constructional index rows"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not opened directly; disposition inferred entirely from 74's own extensive citation of it."
+
+[[item]]
+path = "73_leijen_the_membership_test_and_how_wide.md"
+unit = "the_number_system"
+claims = ["a membership test and its width; corrects the 952-attribution to addition not multiplication (per 74 item 4); the generated-instruction repair's final correct state (per 74 item 6); D5 (Q29's second-vs-third-option gap) and D7 (op's two open questions Q-A/Q-B)"]
+verdict = "live"
+confidence = 0.75
+reason = "The 952-to-addition correction (74 item 4) is confirmed present and already in the registry as noted in the 66 catalogue entry above. D5 and D7's underlying Q29 is confirmed present as a question.toml row. Not read directly for its own membership-test content (the file's namesake subject), which is a real gap this entry names rather than papers over."
+superseded_by = []
+supersedes = ["66's mis-attribution of the 952 count"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "The file's own titular subject, the membership test and its width, was not read this pass; this entry rests entirely on what 74 credits to it. A follow-up pass should open this file directly for its own primary content rather than relying on the consolidation's account."
+
+[[item]]
+path = "74_giesen_consolidation_the_number_system_concept.md"
+unit = "the_number_system"
+claims = ["the unit-three consolidation: the number-system concept as a dependent five-choice sequence over relations, the candidate canon text (ten sentences C1-C10 equivalent, N-numbered here), seven located disagreements (D1-D7), five options never appended to OPTIONS.md (O-A through O-E), twelve corrections the unit generated, and its own twelve self-flagged uncertainty items"]
+verdict = "live"
+confidence = 0.9
+reason = "The consolidation of unit three, heavily cited (31 references across the registry). Read substantially this pass (sections 5, 7, 12 in full, section 3.1's opening and the O-A-through-E subsection in full). Every located disagreement (D1-D7, via their Q-numbers) and every named-but-unappended option (O-A through O-E) confirmed present as question.toml rows, several with evidence of active, careful improvement beyond the source's own framing (O-B's note explicitly adds the missing one-shape alternative for balance; O-A's note cross-links to a related question Q33). One genuine gap found and closed this pass: the nine-item trusted-base enumeration from 68, which 74 itself flags as under-compressed in its own section 12 item 2, was never separately ported; now is."
+superseded_by = []
+supersedes = ["65, 66, 67, 68, 69, 70, 71, 72, 73 (the whole unit it consolidates)"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked"]
+ported_this_pass = true
+note = "The most thoroughly checked file in this batch. Sections 0-4 and 6 (gates, how to read, the unit's course, the candidate canon text itself, the live option pass) were not read line by line; confidence reflects that the highest-risk sections (5, 7, 12, per the file's own self-assessment) were checked directly rather than inferred."
+
+[[item]]
+path = "75_arntzen_entailment_check_on_the_number_system_consolidation.md"
+unit = "the_number_system"
+claims = ["independent entailment check of 74 against its sources; per 74 item 12's own text, this check found 65's change-test candidate silently absent from 74 section 4 ('a silently omitted candidate is indistinguishable from an overlooked one')"]
+verdict = "live"
+confidence = 0.6
+reason = "Not read directly. 3 direct registry citations of its own, plus at least one confirmed effect: 74 item 12 attributes the discovery of 65's silently-missing candidate 1 to 'this consolidation' but the parenthetical '(75 section 2a)' inside that same item credits the actual catch to this entailment check, exactly the same relationship 64 had to 63 in unit two (entailment check catches a drop, consolidation repairs same-window). Given how much value the equivalent file (64) yielded on direct reading in this pass, this is a likely under-checked file; flagged rather than left silently at a low, unexamined confidence."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Given 64's yield on direct reading, this file is the single highest-value unread file remaining in this catalogue and should be the first thing opened in any follow-up pass on this slice."

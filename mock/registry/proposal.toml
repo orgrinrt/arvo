@@ -1942,3 +1942,17 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::60_stam_the_chain_derived_cold::122",
 ]
 keywords = ["window", "chain", "multiplicative", "fold", "cost", "adaptation", "typestate", "capacity"]
+
+[[proposal]]
+id = "the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked"
+kind = "finding"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_number_system"
+says = "The construction pipeline's soundness claim rests on nine named trust items, walked in full: (1) rustc's const evaluator and trait solver, trusted rather than proved, gated by its own evaluation budget; (2) the repr(transparent) layout guarantee, a language semantics fact with size assertions as regression pins; (3) the ban list holding (dyn, TypeId, full specialization), which makes monomorphisation the dispatch, trusted but known insufficient for width transfer alone; (4) the model-width transfer proviso (no law-relevant path keyed on width), an unchecked prose discipline with a recorded counterexample class and the single most load-bearing unchecked item on the list; (5) validation-through-the-maps rather than through declarations, since validation reading declared constants checks paper against paper and cannot see an overstatement; (6) the construction perimeter of every erased type (private fields, doors establishing membership, no path to a value that skips them), an obligation this unit's own probe discharges nowhere because it has no doors at all; (7) Rust's soundness boundary, since any unsafe or FFI crossing anywhere in the shipped program sits outside every guarantee the typestate states; (8) transcript-to-source correspondence, broken once in this unit by a transcript of an uncommitted scratch file and repaired, kept on the list because the class recurs; (9) operation erasure per instance, demonstrated at trivial instances, refuted at a nontrivial one, unpriced everywhere else."
+because = "Walked deliberately as a list, one item per named trust boundary in the pipeline from consumer-stated usage to the erased runtime value, rather than asserted as a single blanket guarantee. Each item's own checked-or-not status is stated alongside it rather than presented uniformly, which is the discipline this row preserves: a later reader citing 'the trusted base' without this enumeration has no way to know which of the nine is the one that is currently unchecked and load-bearing."
+gap = "Items 4 and 6 are stated as currently unaddressed rather than merely unchecked: item 4 has a recorded counterexample class and is called the single most load-bearing unchecked item; item 6 is discharged nowhere in this unit's own probe because that probe has no doors at all. A second, independently written proposal in a different topic (the degree-box law-transfer material) explicitly notes 'the transfer is not on the trusted base list, because there is none', confirming from an unrelated direction that no prior registry row carried this enumeration for a citer to find."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::68_leroy_what_the_pipeline_certifies::226",
+]
+keywords = ["trusted base", "construction pipeline", "soundness", "erasure", "model-width transfer", "construction perimeter", "unsafe", "FFI", "operation erasure"]
