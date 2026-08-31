@@ -1,0 +1,16 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+expected:  rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+-- the two ladders --
+p1_two_ladders_not_one.rs                     exit 1  ok
+p1b_access_is_not_a_function_of_the_carrier.rsexit 0  ok
+
+-- the curry orders, and the two files that must refuse --
+p2_curry_orders_agree.rs                      compiled ok
+p2b_negctl_one_cell_disagrees.rs              refused  ok (2 errors)
+p2c_negctl_false_distinguishability.rs        refused  ok (2 errors)
+
+-- the operation set --
+p3_the_count_is_constant_in_the_operation_set.rsexit 0  ok
+
+VERIFIED
