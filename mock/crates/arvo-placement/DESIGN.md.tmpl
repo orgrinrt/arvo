@@ -139,3 +139,40 @@ these, and that binding is `arvo-strategy`'s.
 `declared_width` reads the declared signature's slot range and nothing else, which
 is the mechanical form of the rule that the derivation is a function of the
 declaration. `derive_sole` and `derive_shared` are the two arms.
+
+## What the objective selects, which is nothing at sole occupancy and the packing at shared
+
+The derivation ladder is keyed on the objective, and this states what the two objectives actually
+differ in, because a key that selects one answer everywhere is not a key.
+
+**At sole occupancy they coincide, and that is a result rather than a collapse.** The value is the
+sole logical occupant of its allocation, so there is no other element to trade against: the narrowest
+carrier that holds the declared width is both the smallest footprint and the widest native access. One
+answer for both objectives, asserted as an equality rather than left to look like an oversight.
+
+**At shared occupancy they differ, and the difference is the packing.**
+
+| Objective | Stride | Access | What it is doing |
+|---|---|---|---|
+| `Footprint` | the declared width | wide enough to cover an element that straddles a carrier boundary | packing, so elements share carriers and no bits are spent on alignment |
+| `Access` | the carrier | the carrier | one element per carrier, padding rather than straddling, so every read is a single native access |
+
+The footprint arm is derived from `ruling::cold_is_for_cold_paths_and_cold_storage`, which is ratified
+and says the storage-minimising objective aggressively minimises and bitpacks. The access arm is what
+not bitpacking means: an element that never crosses a boundary needs no wider read and no shift pair
+to assemble.
+
+**The three outputs at shared occupancy are what make the difference expressible.** With one output
+there would be nothing for the objectives to disagree about, which is why this is stated here and not
+in the sole-occupancy arm.
+
+## The objective is a const parameter and not an argument
+
+The typestate holds the objective as a compile-time fact, so the derivation takes it as a const
+generic parameter rather than as a value. The branch between the arms resolves at monomorphisation and
+is gone before the backend sees it, which is what
+`ruling::never_a_runtime_check_and_one_lowered_path` asks for: branching done with const-time ifs
+erased by monomorphisation, and unused paths cleared when lowered.
+
+Passing it as an argument would put a match on a runtime value in front of a decision the type system
+had already made, and would leave an arm unable to gate on it.

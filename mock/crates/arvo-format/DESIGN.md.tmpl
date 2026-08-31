@@ -325,3 +325,33 @@ against a list of three names.
 rounding and not completion; a position on the grid and outside the range exercises completion and not
 rounding. Both are asserted, because the claim that the map has two regions is a claim that each can be
 reached without the other.
+
+## The slot range carries the declared width, and where it stops
+
+`Slots` carries three coordinates: the lowest admitted slot index, the highest, and **the declared
+width itself**.
+
+The width is a coordinate rather than something recovered from the other two. A declaration of
+thirteen bits knows it is thirteen bits, and reconstructing that by counting the slots and taking a
+base-two logarithm is a computation over a quantity nobody needs, done at the one place in the chain
+where the arithmetic can leave the range it is carried in. **The width is known at declaration, so it
+is read rather than derived.**
+
+### The bound, and what happens above it
+
+Slot indices are carried as signed 64-bit integers, so the design supports declared widths of **1
+through 62 bits**.
+
+The count of representable slots is `radix^width`, and it is what runs out first: at 62 bits that is
+4611686018427387904 and fits, and at 63 it is 9223372036854775808 and does not. A design forming that
+count wraps it negative and derives nonsense from it.
+
+**Above the bound the design refuses at compile time**, naming the width and the bound, because
+`ruling::never_a_runtime_check_and_one_lowered_path` is ratified and says invalids are caught at
+compile time. A width whose range cannot be represented is an invalid, and a refusal that arrives as a
+raw arithmetic overflow in a constant is a refusal a reader cannot act on.
+
+**The bound is a property of this representation rather than a statement about how wide arvo goes.**
+`question::arbitrary_width_demands_in_the_canon` is open and its second option leaves width families
+to the design tier; this design states what it supports and what it does outside that, and does not
+answer the open question.
