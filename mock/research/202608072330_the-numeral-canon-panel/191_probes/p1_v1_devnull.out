@@ -1,0 +1,59 @@
+/Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/191_probes/p1_run.sh: line 7: ${(%):-%x}: bad substitution
+### rustc: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+######## BASE  A, C, E: fitting capacities   required=COMPILED  got=REFUSED    *** NOT AS REQUIRED ***
+    error: couldn't create a temp dir: Operation not permitted (os error 1) at path "/dev/rmetakbgzm4"
+    
+    error: aborting due to 1 previous error
+
+######## B     monomorphic, 300 into 8 bits   required=REFUSED   got=REFUSED    as required
+    error[E0080]: evaluation panicked: capacity exceeds id width
+      --> p1_capacity_against_id_width.rs:71:24
+       |
+    71 |     const _CHECK: () = assert!(fits(Id::<8>::NAMES, 300), "capacity exceeds id width");
+       |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `PlanB::_CHECK` failed here
+    
+    note: erroneous constant encountered
+      --> p1_capacity_against_id_width.rs:72:30
+       |
+    72 |     pub fn touch() { let _ = Self::_CHECK; }
+       |                              ^^^^^^^^^^^^
+    
+    error: aborting due to 1 previous error
+    
+    For more information about this error, try `rustc --explain E0080`.
+
+######## C-bad generic instantiated at 300 / 8   required=REFUSED   got=REFUSED    as required
+    error: couldn't create a temp dir: Operation not permitted (os error 1) at path "/dev/rmetaazi1je"
+    
+    error: aborting due to 1 previous error
+
+######## D     the where-clause spelling   required=REFUSED   got=REFUSED    as required
+    error: generic parameters may not be used in const operations
+      --> p1_capacity_against_id_width.rs:93:11
+       |
+    93 |     [(); (N <= Id::<W>::NAMES) as usize - 1]:,
+       |           ^ cannot perform const operation using `N`
+       |
+       = help: const parameters may only be used as standalone arguments here, i.e. `N`
+       = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+    
+    error: generic parameters may not be used in const operations
+      --> p1_capacity_against_id_width.rs:93:21
+       |
+    93 |     [(); (N <= Id::<W>::NAMES) as usize - 1]:,
+       |                     ^ cannot perform const operation using `W`
+       |
+       = help: const parameters may only be used as standalone arguments here, i.e. `W`
+       = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+    
+    error[E0747]: unresolved item provided when a constant was expected
+      --> p1_capacity_against_id_width.rs:93:21
+       |
+    93 |     [(); (N <= Id::<W>::NAMES) as usize - 1]:,
+
+######## F     associated-const gate at 300 / 8   required=REFUSED   got=REFUSED    as required
+    error: couldn't create a temp dir: Operation not permitted (os error 1) at path "/dev/rmeta8kYYkP"
+    
+    error: aborting due to 1 previous error
+

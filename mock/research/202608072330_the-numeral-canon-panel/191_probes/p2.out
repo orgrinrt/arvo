@@ -1,0 +1,99 @@
+### rustc: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+######## BASE  no arms
+         required=COMPILED  got=COMPILED   as required
+
+######## H1    capacity 200 in 8 bits  (POSITIVE CONTROL)
+         required=COMPILED  got=COMPILED   as required
+
+######## H3    capacity 300 in 9 bits  (POSITIVE CONTROL)
+         required=COMPILED  got=COMPILED   as required
+
+######## H2    capacity 300 in 8 bits, in a signature
+         required=REFUSED   got=REFUSED    as required
+    error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
+      --> p2_definition_site_refusal.rs:90:16
+       |
+    90 | pub fn h2() -> Plan<C300, W8> { Plan(PhantomData) }
+       |                ^^^^^^^^^^^^^^ unsatisfied trait bound
+       |
+    help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
+          but trait `FitsIn<S<_>>` is implemented for it
+      --> p2_definition_site_refusal.rs:68:1
+       |
+    68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+       = help: for that trait implementation, expected `S<_>`, found `Z`
+    note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`
+
+######## H4    capacity 300 in 8 bits, only in a field
+         required=REFUSED   got=REFUSED    as required
+    error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
+      --> p2_definition_site_refusal.rs:96:30
+       |
+    96 | pub struct HoldsBad { inner: Plan<C300, W8> }
+       |                              ^^^^^^^^^^^^^^ unsatisfied trait bound
+       |
+    help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
+          but trait `FitsIn<S<_>>` is implemented for it
+      --> p2_definition_site_refusal.rs:68:1
+       |
+    68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+       = help: for that trait implementation, expected `S<_>`, found `Z`
+    note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`
+
+######## H5    capacity 300 in 8 bits, only aliased
+         required=REFUSED   got=COMPILED   *** NOT AS REQUIRED ***
+
+######## H6    the alias then held in a field
+         required=REFUSED   got=REFUSED    as required
+    error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
+       --> p2_definition_site_refusal.rs:111:31
+        |
+    111 | pub struct UsesAlias { inner: H5Alias }
+        |                               ^^^^^^^ unsatisfied trait bound
+        |
+    help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
+          but trait `FitsIn<S<_>>` is implemented for it
+       --> p2_definition_site_refusal.rs:68:1
+        |
+     68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        = help: for that trait implementation, expected `S<_>`, found `Z`
+    note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`
+
+######## H7    the alias then used in a signature
+         required=REFUSED   got=REFUSED    as required
+    error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
+       --> p2_definition_site_refusal.rs:116:16
+        |
+    116 | pub fn h7() -> H7Alias { Plan(PhantomData) }
+        |                ^^^^^^^ unsatisfied trait bound
+        |
+    help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
+          but trait `FitsIn<S<_>>` is implemented for it
+       --> p2_definition_site_refusal.rs:68:1
+        |
+     68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        = help: for that trait implementation, expected `S<_>`, found `Z`
+    note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`
+
+### Reading H5, which is left failing on purpose.
+###
+### H5 is the one arm that does not do what the ideal wants: a bare `type`
+### alias naming an ill-fitting shape compiles. That is Rust's general
+### `type_alias_bounds` behaviour rather than anything about this relation, and
+### H6 and H7 bound it: the moment the alias is used, in a field or in a
+### signature, the refusal arrives with the same diagnostic. So the residue is a
+### deferral to the use site and not a hole, and the arm is left red rather than
+### relabelled, because relabelling it would hide the one place the mechanism is
+### weaker than "refuses at the definition site" claims.
+###
+### The composition this run establishes, against `p1`:
+###   const assertion        refuses only where the const is forced. Naming,
+###                          returning, aliasing and holding all compile. (p1 G)
+###   type-level relation    refuses at every position that uses the type,
+###                          through an alias included. (p2 H2, H4, H6, H7)
+###   where-clause const     refused terminally, names generic_const_exprs. (p1 D)
