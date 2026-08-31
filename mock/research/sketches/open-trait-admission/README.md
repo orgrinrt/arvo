@@ -45,3 +45,32 @@ them is reaching around them.
 ## Toolchain
 
 `rustc --edition 2021 -O`, the pinned nightly, no cargo and no dependencies.
+
+## The limitation, found while trying to pin this and sharper than the fix
+
+**The refusal fires at codegen and not at `cargo check`.** Measured on a real consumer crate:
+
+```
+cargo check   ->  Finished, no error
+cargo build   ->  error[E0080]: evaluation panicked: slot range is inverted ...
+```
+
+A post-monomorphisation const assertion is evaluated when the instantiation is codegened, and
+`cargo check` skips codegen. So a consumer whose editor and CI run `check` sees nothing, and only a
+real build refuses.
+
+**Two consequences, both recorded rather than worked around.**
+
+`trybuild` cannot pin this case. It checks rather than builds, so it reports the case as compiling and
+its own diagnostic is that the test succeeded when it should have failed. The compile-fail case for
+this was written, found not to work, and removed rather than left as a green test asserting nothing.
+The width-above-the-bound case stays, because a missing impl is a type error and does fire at check.
+
+**And the claim has to be qualified.** "Refused at compile time" is true of a build and false of a
+check, and writing it unqualified would be the same shape as the three totality sentences this round
+is removing. What is pinned instead is the law: `is_admissible` reports on a construction without
+forcing the const, so a permanent unit test asserts the design can tell the two apart, at check time
+and at build time both.
+
+**What the guarantee actually is**, stated exactly: an inadmissible range cannot reach a produced
+binary, and it can reach a passing `cargo check`.
