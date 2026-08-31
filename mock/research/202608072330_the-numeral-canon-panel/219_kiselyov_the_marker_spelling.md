@@ -446,3 +446,121 @@ Every registry citation in this file is by row slug rather than by line, per
 `tests/no_line_citation_into_the_registry.rs`, which carries a ceiling of 45 on member-file line
 citations and an instruction not to raise it. The repair it names is briefing the seat to write slugs.
 Consider this seat briefed.
+
+---
+
+# Reconciliation, written after the blind commit
+
+Everything above was committed at `0d107632` before I opened a single panel file.
+This section is what changed after reading, and it is three corrections and one
+piece of corroboration strong enough that I would have written the derivation
+differently had I seen it first.
+
+## The one thing I got wrong: the third state is not anticipatory
+
+I wrote that `exhaustive` is being spelled for a case the registry does not hold,
+and that its spelling is therefore derived rather than validated. The first half
+is true and the second is not.
+
+The registry holds no whole-container range, which my census measured correctly.
+**The panel corpus holds several**, in five member files, and the registry simply
+has not received them. So the state is real, has authors, and has a practice
+already, and my "no live row to try it against" was an artefact of looking at one
+of the two places it could be.
+
+Worse for me and better for the design: the practice those authors settled on is
+the one Arm 4 demands. `157`'s F157-6 writes its region as
+
+```
+W in 1..=64, container = u64/u128 exact intermediates, F = 0, signedness = unsigned,
+overflow policy in {wrap, sat}, ...
+```
+
+The container sits beside the range, unprompted, because the finding is
+unreadable without it. Arm 4 obliges exactly that and I derived it from the
+ruling's own words rather than from this file, which I had not read. Op's summary
+in `217` puts it more plainly than the registry row does: a bounded whole-container
+range says "every value of a container, exhaustively, **at that container's
+width**". The container is inside the claim. Arm 4 is that sentence with a
+checker behind it, and the corpus's most careful author was already writing it.
+
+That is the corroboration, and I want to be exact about what it is worth. It is
+not a second independent derivation of Arm 4, because I derived the arm and then
+went looking. It is evidence that the arm is descriptive of good practice here
+rather than imposed on it, which is a weaker and still useful thing.
+
+## The second correction: there is an interim spelling and I should have said so
+
+`161` says in its own words that it "uses prose tags (`[argument]` via the
+ledger's wording, sweeps via predicates) as interim practice, not as a
+settlement", and `160` before it says the same. Across the panel's member files
+the tags run `[measured]` 42 times, `[argument]` 13, `[sweep]` 4.
+
+So a spelling exists and is in use, and my list of five candidate positions
+missed it. The sixth position is **a bracketed tag in prose, per clause**.
+
+Two things about it, and neither is a criticism of the seats that wrote it, who
+labelled it interim on the same page.
+
+It is per clause, which is the row-level granularity, and the vocabulary is
+`[theorem]`, `[measured]`, `[enumeration]`, `[argument]`, which is
+`sentence_kind`'s vocabulary exactly. So it inherits the defect my census
+measures: 25 registry rows carry a universal and a bounded region together and no
+per-clause tag can describe one of them. The interim practice is the cheap answer
+I refuted, already in the tree, already labelled as not the answer.
+
+And it lives in prose, which is the one place this corpus has established that
+nothing checks. `proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width`'s
+`gate` says every mechanism here audits predicates and prose escapes all of them,
+and it says so about a sentence that reached past its own predicate. A tag in
+prose is a warrant in the place warrants go to stop being checkable.
+
+## The third correction: my token choice departs from the interim word, and that is forced
+
+The interim pair is `[argument]` against `[sweep]`. I chose `construction`
+against `swept`, and the `swept` half agrees with the corpus while the other half
+does not.
+
+I rejected `argued` in the blind derivation on the ground that it is the register
+in which a hedge and a proof look alike, which is the failure the ruling names.
+That reason stands and there is now a second one that is structural rather than
+aesthetic. `argument` is already a `sentence_kind` value, in use on 12 rows. An
+axis-level marker spelled `argument` would collide with a row-level field spelled
+`argument`, and the entire finding of my section on granularity is that those two
+levels are different and get confused. Reusing the word would guarantee the
+confusion it is the marker's job to remove. The same argument retires `measured`,
+which I had already refused for the same collision.
+
+So: `swept` keeps faith with `[sweep]`, `construction` deliberately does not keep
+faith with `[argument]`, and the reason is that the interim tag sits at the level
+the marker is moving away from.
+
+## What did not change
+
+The orthogonality of warrant and extent, the per-axis granularity, the
+unmarked-claims-no-warrant reading, the slug-side position, and all eight arms
+stand as committed. Nothing I read bears against any of them, and the question
+row `question::what_a_proof_marker_is_against_a_measurement` confirms the marker
+question was left open rather than answered somewhere I had not looked.
+
+One line in that question row is worth carrying forward because it corroborates
+Arm 8 from a direction I did not reach. Its `note` records that the corpus count
+behind the ruling was corrected, because "one file writes a width universal as
+two separately quantified widths that the instrument could not see". That is my
+multi-binding finding, in the panel files rather than the registry, found by
+somebody else's instrument failing on it. Two independent arrivals at the same
+structural defect, one in prose and one in the registry, and the registry half is
+the one a checker can hold.
+
+## What a consolidation should intersect
+
+My instruments are two scanners over the committed registry, so every number I
+give holds for the registry and says nothing about the panel's member files. The
+Q4 zero is the sharp case: it is true of the registry, and reading it as a fact
+about the corpus is what I did in the blind file and what this section corrects.
+
+If the parallel seat's instrument read the member files instead, our regions do
+not overlap and a consolidation that reports us as agreeing about the corpus is
+reporting an intersection that is empty. We would agree about the ruling and the
+rule file, which we both read and neither varied, and that is shared premise.
+Intersect the instruments, not the conclusions.
