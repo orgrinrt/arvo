@@ -1,0 +1,38 @@
+# arvo-format
+
+The declared signature of a number: which values exist, and what happens to a result that is not one
+of them.
+
+A format here is not a container. It is a representable set together with the domain that set sits
+in, and membership in it is one predicate rather than a family of them. You give a phase, a quantum
+per magnitude and a slot range, and integers, fixed point, scaled integers and floating point all
+come out as points of that one thing. Subnormals are not a special case, they fall out of taking the
+maximum at the smallest magnitude, which is the test that the unification is doing real work and not
+just presenting four things in one table.
+
+Arithmetic is stated the same way throughout: an exact operation in the ambient domain, composed with
+a named total adaptation back onto the representable set. The adaptation is a thing you can name and
+reason about, not a flag hanging off an operation, and it has two independent coordinates.
+
+The rounding mode says what happens between grid points, and there are six of them:
+`toward_zero`, `floor`, `ceil`, `half_up`, `half_even` and `stochastic`. The word truncation is not
+one of them and does not appear anywhere in this crate, because on a signed domain it names two
+operations that genuinely differ, and a reader coming from the hardware and a reader coming from C
+would each have been sure they knew which. Do note that dropping bits off a two's complement value is
+`floor`, not `toward_zero`.
+
+The overflow policy says what happens outside the range, and that one is open rather than fixed at
+three. Wrapping, saturating and clamping are what is here; another joins by supplying what the concept
+asks for.
+
+There is no machine container anywhere in this crate and you cannot reach one from here. Every
+operation is a function of the width you declared, never of whatever the value happens to sit in, and
+the way that is kept true is that this crate does not depend on the crate that has containers in it.
+Where the bits actually go is `arvo-placement`.
+
+`no_std`, no allocation, and everything a type knows is known at compile time.
+
+## Status
+
+Design phase. The documents are written and the source is being built from them, so the surface here
+describes what is being implemented rather than what you can call today.
