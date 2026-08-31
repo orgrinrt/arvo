@@ -1730,3 +1730,27 @@ note = "One expert. The operations do not all agree with the derivations and the
 gap = "It says the grid may be held dynamically and does not say what holds it, nor what a consumer writes to say so. Whether arvo ships the container that would is a separate question its own source declines to settle."
 provenance = ["panel::202608072330_the-numeral-canon-panel::43_rompf_what_a_composition_is::#52-no-derivation-reads-the-grid-and-that-is-compiled"]
 keywords = ["grid", "binding time", "composition", "run time", "adjustment", "bias", "phase", "canonical exponent", "shared scale", "frame of reference", "stride"]
+
+[[proposal]]
+id = "a_min_plus_computation_needs_monotonicity_as_well_as_an_absorbing_top"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "A min-plus shortest path needs two properties from the numeral's addition and having one of them is not most of the way to having both. It needs a top that absorbs, so infinity behaves, and it needs monotonicity, so extending a path never shortens it. The two are separable and a numeral can hold either alone. Measured over three overflow policies on identical instance sets: wrapping fails both and is wrong on 48.08% of 621,961,320 in-range instances; saturation holds both and is wrong on none of them; and a numeral wrapping in its interior below a reserved absorbing top holds absorption at 0 of 16 cells, fails monotonicity at 560 of 2176 triples, and is still wrong on 12.57% of the same instances."
+because = "The relaxation's greedy argument rests on a path never getting shorter by being extended, which is monotonicity and not absorption. Absorption only makes the sentinel behave. So a shape buying the sentinel alone buys about three quarters of the improvement and gets the answer wrong on one instance in eight, which is a different thing from getting it nearly right."
+predicate = [
+  "total_width: W in {3, 4}",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy in {wrap, saturate, wrapping below a reserved absorbing top}",
+  "operation: operation = add",
+  "arity: arity = 2",
+  "threads: threads = 1",
+]
+evidence = ["monotonicity_and_absorption_are_two_properties_and_a_reserved_top_buys_one"]
+supersedes = ["a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none"]
+note = "**The absorption half was filed and this half was not, and the pair is the point.** The canon carried a row establishing that the top absorbs under saturation and never under wrapping, whose own `gap` field said monotonicity was measured in the same file and not filed. So the canon stood at exactly the position this measurement rules out: absorption established, monotonicity absent, which is the reserved-top row of the table and is wrong 12.57% of the time. It does not supersede that row's content, which stands; it supersedes the state of having only that row. Reported by a seat replying to an attack on a neighbouring derivation, which found the gap belonged to neither party in the argument."
+gap = "Unsigned integers only, at two widths, on one thread, over one graph shape of four nodes and six edges. Whether the same separation holds signed, at a non-zero fraction width, or on a larger graph is not established here. The reserved-top policy is not a shipped shape and is in the predicate because it is the only measured point holding one property without the other."
+provenance = ["panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#3-5a-the-two-properties-are-two-and-conflating-them-cost-me-an-option"]
+keywords = ["monotonicity", "absorbing top", "min-plus", "shortest path", "relaxation", "reserved top", "wrapping", "saturation", "two properties", "semiring", "infinity"]

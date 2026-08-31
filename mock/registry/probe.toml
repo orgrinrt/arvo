@@ -1261,3 +1261,16 @@ control = "Three negative arms, each of which must fail to build and each of whi
 standing = "sound"
 note = "The outputs live in `RUN.md` rather than in a `.out` file beside the source, because the result of a compile arm is its diagnostic. Both are committed."
 keywords = ["grid", "adjustment", "bias", "phase", "canonical exponent", "binding time", "derivation", "type equality", "negative control", "composition", "dynamic coordinate"]
+
+[[probe]]
+id = "monotonicity_and_absorption_are_two_properties_and_a_reserved_top_buys_one"
+establishes = "A min-plus shortest path needs two properties from the arithmetic and a numeral can have one without the other. Over the same instance sets, at unsigned integer widths 3 and 4, three overflow policies are compared on all three questions at once: whether the top absorbs, whether addition is monotone, and whether the routine returns the exact answer. Wrapping fails absorption at 15 of 16 cells and monotonicity at 680 of 2176 triples, and is wrong on 48.08% of 621,961,320 in-range instances. Saturation reports zero on all three. A numeral wrapping in its interior below a reserved absorbing top buys absorption outright, at 0 of 16, and still fails monotonicity at 560 of 2176 and returns a wrong answer on 12.57% of the same instances."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p9_reserved_top.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p9.out::1",
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p9.err::1",
+]
+control = "Saturation is the arm that had to come out differently and does, reporting zero on all three questions at both widths while the other two report non-zero on all three. So the instrument can separate the properties rather than measuring one thing three ways. The in-range control is the same one the neighbouring sweep uses: an instance counts only where the exact answer and every intermediate fit in range, so a disagreement cannot be range exhaustion. **The probe was written to refute its own author's proposal**, by the author, and its header says so before the code."
+standing = "sound"
+note = "The reserved-top policy is not a shipped shape and never was. It was offered in an earlier draft as a way to serve two consumers with one spent value, offered without being built, and this is the instrument that killed it. Its corpse is what makes the row worth keeping: it is the only measured point separating the two properties, because it is the only policy that has one and not the other."
+keywords = ["monotonicity", "absorbing top", "min-plus", "shortest path", "reserved top", "wrapping", "saturation", "relaxation", "infinity", "two properties"]
