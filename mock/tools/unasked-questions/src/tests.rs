@@ -250,7 +250,10 @@ fn a_question_naming_what_it_unblocks_sorts_above_one_that_does_not() {
     );
     let a = text.find("names_something").expect("both are listed");
     let b = text.find("names_nothing").expect("both are listed");
-    assert!(a < b, "the one naming what it unblocks comes first:\n{text}");
+    assert!(
+        a < b,
+        "the one naming what it unblocks comes first:\n{text}"
+    );
     assert!(
         text.contains("unblocks nothing named"),
         "and the other says why it is last:\n{text}"

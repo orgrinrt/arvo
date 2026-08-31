@@ -325,7 +325,11 @@ fn answered_by(ctx: &ToolContext<'_>, q: &str) -> Vec<String> {
 
 /// The bare slug of a qualified identifier.
 fn slug(qualified: &str) -> String {
-    qualified.rsplit("::").next().unwrap_or(qualified).to_string()
+    qualified
+        .rsplit("::")
+        .next()
+        .unwrap_or(qualified)
+        .to_string()
 }
 
 #[cfg(test)]
