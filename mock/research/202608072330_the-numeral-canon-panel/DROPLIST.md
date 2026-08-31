@@ -1,6 +1,6 @@
 # The cumulative droplist, carried forward
 
-Extracted verbatim from `202607301300_formalization-spec-panel/124_consolidation_twelve.md`, sections 6 and 7, at the moment that panel closed. Section 6 is the cumulative droplist; section 7 is reversals inside a stretch, kept under a separate name because a same-stretch reversal is not a real removal and conflating the two made an earlier droplist report on material that had never left the base.
+Extracted verbatim from `202607301300_formalization-spec-panel/OLD_124_consolidation_twelve.md`, sections 6 and 7, at the moment that panel closed. Section 6 is the cumulative droplist; section 7 is reversals inside a stretch, kept under a separate name because a same-stretch reversal is not a real removal and conflating the two made an earlier droplist report on material that had never left the base.
 
 ## 6. The droplist, cumulative
 
