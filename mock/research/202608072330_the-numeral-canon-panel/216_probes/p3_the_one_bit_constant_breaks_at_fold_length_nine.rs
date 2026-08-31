@@ -41,7 +41,13 @@ fn hi(w: u32) -> i64 {
 
 #[inline(always)]
 fn adapt(x: i64, l: i64, h: i64) -> i64 {
-    if x < l { l } else if x > h { h } else { x }
+    if x < l {
+        l
+    } else if x > h {
+        h
+    } else {
+        x
+    }
 }
 
 fn exact_sum_width(w: u32, l: u32) -> u32 {
@@ -86,7 +92,11 @@ fn exhaustive_min(w: u32, l: u32) -> (u32, Option<Vec<i64>>) {
     let ceiling = exact_sum_width(w, l);
     for a in w..=ceiling {
         if exhaustive_divergence(w, l, a).is_none() {
-            let wit = if a > w { exhaustive_divergence(w, l, a - 1) } else { None };
+            let wit = if a > w {
+                exhaustive_divergence(w, l, a - 1)
+            } else {
+                None
+            };
             return (a, wit);
         }
     }
@@ -220,10 +230,7 @@ fn main() {
             if r == m {
                 rival_hits += 1;
             }
-            println!(
-                "{w:>4} {l:>4} {ex:>9} {m:>9} {:>6} {c:>11} {r:>9}",
-                ex - m
-            );
+            println!("{w:>4} {l:>4} {ex:>9} {m:>9} {:>6} {c:>11} {r:>9}", ex - m);
         }
         println!();
     }
@@ -259,7 +266,10 @@ fn main() {
             let (m, _) = exhaustive_min(w, l);
             if candidate(w, l) != m {
                 cand_ok = false;
-                println!("  candidate misses at W={w} L={l}: {} vs {m}", candidate(w, l));
+                println!(
+                    "  candidate misses at W={w} L={l}: {} vs {m}",
+                    candidate(w, l)
+                );
             }
             if rival(w, l) != m {
                 rival_ok = false;
@@ -270,7 +280,10 @@ fn main() {
     for (w, l, _, m) in &s1 {
         if candidate(*w, *l) != *m {
             cand_ok = false;
-            println!("  candidate misses at W={w} L={l}: {} vs {m}", candidate(*w, *l));
+            println!(
+                "  candidate misses at W={w} L={l}: {} vs {m}",
+                candidate(*w, *l)
+            );
         }
         if rival(*w, *l) != *m {
             rival_ok = false;

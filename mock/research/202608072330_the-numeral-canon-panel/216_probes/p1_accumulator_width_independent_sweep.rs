@@ -52,10 +52,18 @@ struct Fmt {
 
 impl Fmt {
     const fn lo(&self) -> i64 {
-        if self.signed { -(1i64 << (self.w - 1)) } else { 0 }
+        if self.signed {
+            -(1i64 << (self.w - 1))
+        } else {
+            0
+        }
     }
     const fn hi(&self) -> i64 {
-        if self.signed { (1i64 << (self.w - 1)) - 1 } else { (1i64 << self.w) - 1 }
+        if self.signed {
+            (1i64 << (self.w - 1)) - 1
+        } else {
+            (1i64 << self.w) - 1
+        }
     }
     const fn card(&self) -> u64 {
         1u64 << self.w
@@ -69,7 +77,13 @@ impl Fmt {
 /// Saturation onto a representable set, at the raw level.
 #[inline(always)]
 fn adapt(x: i64, lo: i64, hi: i64) -> i64 {
-    if x < lo { lo } else if x > hi { hi } else { x }
+    if x < lo {
+        lo
+    } else if x > hi {
+        hi
+    } else {
+        x
+    }
 }
 
 /// Wrapping onto the same set. Negative control N2 only.
@@ -100,7 +114,11 @@ fn exact_sum_width(fmt: Fmt, l: u32) -> u32 {
     let hi = fmt.hi() * l as i64;
     let mut a = fmt.w;
     loop {
-        let g = Fmt { signed: fmt.signed, w: a, f: fmt.f };
+        let g = Fmt {
+            signed: fmt.signed,
+            w: a,
+            f: fmt.f,
+        };
         if g.lo() <= lo && hi <= g.hi() {
             return a;
         }
@@ -124,7 +142,11 @@ fn first_divergence(
     wrapping_acc: bool,
     broken_ref: bool,
 ) -> Option<Vec<i64>> {
-    let acc = Fmt { signed: fmt.signed, w: a, f: fmt.f };
+    let acc = Fmt {
+        signed: fmt.signed,
+        w: a,
+        f: fmt.f,
+    };
     let (flo, fhi) = (fmt.lo(), fmt.hi());
     let (alo, ahi) = (acc.lo(), acc.hi());
     let acard = acc.card() as i64;
@@ -177,7 +199,10 @@ fn locate(fmt: Fmt, l: u32, ceiling: u32) -> Cell {
             } else {
                 None
             };
-            return Cell { min_sufficient: a, witness_below: witness };
+            return Cell {
+                min_sufficient: a,
+                witness_below: witness,
+            };
         }
     }
     panic!("no sufficient width at or below the exact-sum width");
@@ -209,7 +234,11 @@ fn locate_rescaled(fmt: Fmt, l: u32, ceiling: u32, r: i64) -> u32 {
     let total: u64 = 1u64 << (fmt.w * l);
 
     for a in fmt.w..=ceiling {
-        let acc = Fmt { signed: fmt.signed, w: a, f: fmt.f };
+        let acc = Fmt {
+            signed: fmt.signed,
+            w: a,
+            f: fmt.f,
+        };
         let (alo, ahi) = (acc.lo() * r, acc.hi() * r);
         let mut diverged = false;
         'outer: for counter in 0..total {
@@ -266,16 +295,25 @@ fn main() {
     // N3 first. A wrong reference must be detected.
     // -------------------------------------------------------------------------------
     {
-        let fmt = Fmt { signed: true, w: 3, f: 0 };
+        let fmt = Fmt {
+            signed: true,
+            w: 3,
+            f: 0,
+        };
         let l = 4u32;
         let a = exact_sum_width(fmt, l) - 1;
         let d = first_divergence(fmt, l, a, false, true);
         println!("N3 wrong-reference control (signed W=3 L=4 at A=exact-1={a}):");
         match &d {
-            Some(v) => println!("    a reference clamped to the accumulator is detected at {v:?}  PASS"),
+            Some(v) => {
+                println!("    a reference clamped to the accumulator is detected at {v:?}  PASS")
+            }
             None => println!("    NOT DETECTED  FAIL"),
         }
-        assert!(d.is_some(), "N3: the comparison cannot tell two references apart");
+        assert!(
+            d.is_some(),
+            "N3: the comparison cannot tell two references apart"
+        );
         println!();
     }
 
@@ -336,11 +374,20 @@ fn main() {
     let unsigned_all_format = unsigned_cells.iter().all(|(w, _, _, m)| m == w);
 
     println!("=== Q2, the two verdicts, counted ===\n");
-    println!("  signed cells measured                              : {}", signed_cells.len());
-    println!("  signed cells at fold length above two              : {}", locating.len());
+    println!(
+        "  signed cells measured                              : {}",
+        signed_cells.len()
+    );
+    println!(
+        "  signed cells at fold length above two              : {}",
+        locating.len()
+    );
     println!("  every one of those at a gap of exactly one bit      : {all_one}");
     println!("  any signed cell at gap zero, which would refute it  : {any_zero}");
-    println!("  unsigned cells measured                            : {}", unsigned_cells.len());
+    println!(
+        "  unsigned cells measured                            : {}",
+        unsigned_cells.len()
+    );
     println!("  unsigned: the format's own width sufficed in all    : {unsigned_all_format}");
     println!();
 
@@ -354,7 +401,11 @@ fn main() {
     let mut n2_moved = false;
     for w in 3..=4u32 {
         for l in 3..=5u32 {
-            let fmt = Fmt { signed: true, w, f: 0 };
+            let fmt = Fmt {
+                signed: true,
+                w,
+                f: 0,
+            };
             if tuples(fmt, l) > budget {
                 continue;
             }
@@ -380,7 +431,10 @@ fn main() {
         }
     }
     println!("\n  the accumulator's adaptation moves the answer: {n2_moved}");
-    assert!(n2_moved, "N2: swapping the accumulator's adaptation changed nothing");
+    assert!(
+        n2_moved,
+        "N2: swapping the accumulator's adaptation changed nothing"
+    );
     println!();
 
     // -------------------------------------------------------------------------------
@@ -396,7 +450,11 @@ fn main() {
     let mut q3_checked = 0u32;
     for w in 3..=5u32 {
         for l in 2..=6u32 {
-            let fmt = Fmt { signed: true, w, f: 0 };
+            let fmt = Fmt {
+                signed: true,
+                w,
+                f: 0,
+            };
             if tuples(fmt, l) > budget {
                 continue;
             }
@@ -425,15 +483,32 @@ fn main() {
     println!("  whatever the truth. A rescaling operation must show F moving a width.\n");
     let mut n4_moved = false;
     for fbits in 0..=3u32 {
-        let fmt = Fmt { signed: false, w: 8, f: fbits };
+        let fmt = Fmt {
+            signed: false,
+            w: 8,
+            f: fbits,
+        };
         let extra = product_extra_fraction_bits(fmt, 3);
         println!("  W=8 F={fbits}: a three-operand product needs {extra} fraction bits beyond the declared ones");
-        if fbits > 0 && extra != product_extra_fraction_bits(Fmt { signed: false, w: 8, f: 0 }, 3) {
+        if fbits > 0
+            && extra
+                != product_extra_fraction_bits(
+                    Fmt {
+                        signed: false,
+                        w: 8,
+                        f: 0,
+                    },
+                    3,
+                )
+        {
             n4_moved = true;
         }
     }
     println!("\n  the fraction width moves a width requirement for multiplication: {n4_moved}");
-    assert!(n4_moved, "N4: the harness never sees F, so Q3 establishes nothing");
+    assert!(
+        n4_moved,
+        "N4: the harness never sees F, so Q3 establishes nothing"
+    );
     println!();
 
     // -------------------------------------------------------------------------------
@@ -451,7 +526,13 @@ fn main() {
 
     assert!(all_one, "the signed gap is not uniformly one bit");
     assert!(!any_zero, "a signed cell reported gap zero");
-    assert!(unsigned_all_format, "an unsigned cell needed more than the format width");
-    assert!(q3_disagreements == 0, "the fraction width moved addition's answer");
+    assert!(
+        unsigned_all_format,
+        "an unsigned cell needed more than the format width"
+    );
+    assert!(
+        q3_disagreements == 0,
+        "the fraction width moved addition's answer"
+    );
     println!("P1 WORKS");
 }

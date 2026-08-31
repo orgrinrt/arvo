@@ -41,15 +41,29 @@
 // ---------------------------------------------------------------------------------------
 
 fn lo(signed: bool, w: u32) -> i64 {
-    if signed { -(1i64 << (w - 1)) } else { 0 }
+    if signed {
+        -(1i64 << (w - 1))
+    } else {
+        0
+    }
 }
 fn hi(signed: bool, w: u32) -> i64 {
-    if signed { (1i64 << (w - 1)) - 1 } else { (1i64 << w) - 1 }
+    if signed {
+        (1i64 << (w - 1)) - 1
+    } else {
+        (1i64 << w) - 1
+    }
 }
 
 #[inline(always)]
 fn adapt(x: i64, l: i64, h: i64) -> i64 {
-    if x < l { l } else if x > h { h } else { x }
+    if x < l {
+        l
+    } else if x > h {
+        h
+    } else {
+        x
+    }
 }
 
 fn exact_sum_width(signed: bool, w: u32, l: u32) -> u32 {
@@ -204,7 +218,10 @@ fn main() {
     // V3 first: the family must be small, or Route B is exhaustive search renamed.
     // -------------------------------------------------------------------------------
     println!("V3, the extremal family against the whole tuple space:\n");
-    println!("{:>4} {:>4} {:>18} {:>12} {:>14}", "W", "L", "tuples", "family", "family / tuples");
+    println!(
+        "{:>4} {:>4} {:>18} {:>12} {:>14}",
+        "W", "L", "tuples", "family", "family / tuples"
+    );
     for (w, l) in [(3u32, 4u32), (4, 6), (5, 8), (6, 8), (7, 9), (10, 16)] {
         let tuples = (1u128 << w).pow(l);
         let fam = (l as u128) * (1u128 << w) * 2;
