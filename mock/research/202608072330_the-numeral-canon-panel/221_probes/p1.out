@@ -109,6 +109,29 @@ THE WIDER SET (proposal edge, unread)
   question::which_width_coordinates_a_consumer_writes
       <- proposal::membership_of_the_representable_set_is_one_affine_predicate
 
+  C5  the four settled criteria are not one criterion            as required  required=not all equal
+
+FOUR NOTIONS OF SETTLED
+  an `answered` field                  7
+  a settled phrase in note/bound       7
+  an incoming ruling.answers edge      12
+  an incoming proposal.answers edge    31
+  union 45   intersection 0
+
+  pairwise, |A minus B|:
+    an `answered` field                  minus a settled phrase in note/bound       7
+    an `answered` field                  minus an incoming ruling.answers edge      1
+    an `answered` field                  minus an incoming proposal.answers edge    7
+    a settled phrase in note/bound       minus an `answered` field                  7
+    a settled phrase in note/bound       minus an incoming ruling.answers edge      1
+    a settled phrase in note/bound       minus an incoming proposal.answers edge    7
+    an incoming ruling.answers edge      minus an `answered` field                  6
+    an incoming ruling.answers edge      minus a settled phrase in note/bound       6
+    an incoming ruling.answers edge      minus an incoming proposal.answers edge    12
+    an incoming proposal.answers edge    minus an `answered` field                  31
+    an incoming proposal.answers edge    minus a settled phrase in note/bound       31
+    an incoming proposal.answers edge    minus an incoming ruling.answers edge      31
+
 REFERENTIAL INTEGRITY ON THE UNREAD EDGE
   `proposal.answers` entries naming no declared question: 0
 

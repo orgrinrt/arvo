@@ -38,6 +38,9 @@
 //   C3  On a planted registry carrying NO `proposal.answers` edge at all,
 //       RULE_B minus RULE_A must be empty. Without this, RULE_B is reporting
 //       something other than the proposal edge.
+//   C5  The four settled-criteria populations below must not all be equal. If
+//       they are, there is one notion of settled and the partition arm is
+//       reporting the same set four times.
 //   C4  On a planted registry where a proposal answers an unanswered question
 //       and no ruling does, RULE_A must MISS it and RULE_B must CATCH it. This
 //       is the case that must fail for the finding to exist at all: if RULE_A
@@ -231,6 +234,14 @@ impl Reg {
     fn questions(&self) -> BTreeSet<String> {
         self.of("question").map(|q| q.id.clone()).collect()
     }
+}
+
+/// The ruling-edge criterion as a set over declared questions.
+fn by_ruling_map_keys(reg: &Reg, questions: &BTreeSet<String>) -> BTreeSet<String> {
+    reg.answered_by_ruling()
+        .into_keys()
+        .filter(|q| questions.contains(q))
+        .collect()
 }
 
 fn root() -> PathBuf {
@@ -438,6 +449,78 @@ ratifies = ["p"]
             }
         }
     }
+    // --- four notions of settled -------------------------------------------
+    //
+    // The measurement above compares two RULES. This compares the four
+    // CRITERIA those rules are built from, because a rule that ORs them
+    // together hides whether they agree.
+    let by_answered: BTreeSet<String> = reg
+        .of("question")
+        .filter(|q| q.has(ANSWER_FIELD) && q.scalar(ANSWER_FIELD).is_some_and(|t| !t.trim().is_empty()))
+        .map(|q| q.id.clone())
+        .collect();
+    let by_phrase: BTreeSet<String> = reg
+        .of("question")
+        .filter(|q| {
+            PROSE_FIELDS.iter().any(|f| {
+                q.scalar(f).is_some_and(|t| {
+                    let l = t.to_lowercase();
+                    SETTLED_PHRASES.iter().any(|p| l.contains(p))
+                })
+            })
+        })
+        .map(|q| q.id.clone())
+        .collect();
+    let by_ruling: BTreeSet<String> = by_ruling_map_keys(&reg, &questions);
+    let by_proposal: BTreeSet<String> = by_prop
+        .keys()
+        .filter(|q| questions.contains(*q))
+        .cloned()
+        .collect();
+
+    let named: [(&str, &BTreeSet<String>); 4] = [
+        ("an `answered` field", &by_answered),
+        ("a settled phrase in note/bound", &by_phrase),
+        ("an incoming ruling.answers edge", &by_ruling),
+        ("an incoming proposal.answers edge", &by_proposal),
+    ];
+    let all_equal = named
+        .iter()
+        .all(|(_, s)| **s == *named[0].1);
+    println!(
+        "  C5  the four settled criteria are not one criterion            {:>9}  required=not all equal",
+        if all_equal { "*** VOID ***" } else { "as required" }
+    );
+    if all_equal {
+        println!("*** C5 VOIDED. THE PARTITION BELOW MEANS NOTHING. ***");
+        std::process::exit(1);
+    }
+    println!();
+
+    println!("FOUR NOTIONS OF SETTLED");
+    for (label, set) in named {
+        println!("  {label:<36} {}", set.len());
+    }
+    let mut union: BTreeSet<String> = BTreeSet::new();
+    for (_, s) in named {
+        union.extend(s.iter().cloned());
+    }
+    let mut inter: BTreeSet<String> = named[0].1.clone();
+    for (_, s) in &named[1..] {
+        inter = inter.intersection(s).cloned().collect();
+    }
+    println!("  union {}   intersection {}", union.len(), inter.len());
+    println!();
+    println!("  pairwise, |A minus B|:");
+    for (la, a) in named {
+        for (lb, b) in named {
+            if la != lb {
+                println!("    {la:<36} minus {lb:<36} {}", a.difference(b).count());
+            }
+        }
+    }
+    println!();
+
     println!("REFERENTIAL INTEGRITY ON THE UNREAD EDGE");
     println!(
         "  `proposal.answers` entries naming no declared question: {}",
