@@ -319,7 +319,10 @@ fn rounding_is_reachable_without_completion_and_completion_without_rounding() {
 
     // On the grid, outside the window: completion acts, rounding does not.
     let outside = Exact::on_grid(MAX5 + 7);
-    assert_eq!(round_slot(Mode::Ceil, outside, Dither::UNUSED), (MAX5 + 7) as i128);
+    assert_eq!(
+        round_slot(Mode::Ceil, outside, Dither::UNUSED),
+        (MAX5 + 7) as i128
+    );
     assert_eq!(adapt::<S>(outside, Dither::UNUSED), MAX5);
 }
 
@@ -330,7 +333,10 @@ fn rounding_happens_before_completion_and_the_order_is_observable() {
     // nothing, and the answer would be the rounded slot, which is out of range.
     type S = Signature<Integer<5>, Adapt<Ceil, Saturate>>;
     let e = Exact::between(MAX5, 1, 2);
-    assert_eq!(round_slot(Mode::Ceil, e, Dither::UNUSED), (MAX5 + 1) as i128);
+    assert_eq!(
+        round_slot(Mode::Ceil, e, Dither::UNUSED),
+        (MAX5 + 1) as i128
+    );
     assert_eq!(
         adapt::<S>(e, Dither::UNUSED),
         MAX5,
@@ -485,7 +491,10 @@ fn rounding_at_the_top_of_the_type_does_not_leave_the_carrier() {
     let e = Exact::between(i64::MAX, 1, 4);
     let got = adapt::<Up>(e, Dither::UNUSED);
     assert!(got >= EDGE_MIN && got <= EDGE_MAX);
-    assert_eq!(got, wrap_of_i128((i64::MAX as i128) + 1, EDGE_MIN, EDGE_MAX));
+    assert_eq!(
+        got,
+        wrap_of_i128((i64::MAX as i128) + 1, EDGE_MIN, EDGE_MAX)
+    );
 }
 
 /// The same verdict for a position that has already left `i64`.
@@ -515,6 +524,9 @@ fn a_dither_at_the_edges_still_selects_between_two_neighbours() {
     let low = adapt::<Edge>(e, Dither::at(1, 1_000_000_000));
     let high = adapt::<Edge>(e, Dither::at(999_999_999, 1_000_000_000));
     for got in [low, high] {
-        assert!(got >= EDGE_MIN && got <= EDGE_MAX, "left the declared range");
+        assert!(
+            got >= EDGE_MIN && got <= EDGE_MAX,
+            "left the declared range"
+        );
     }
 }

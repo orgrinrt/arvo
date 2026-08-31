@@ -211,7 +211,11 @@ const fn complete_slot(policy: Policy, slot: i128, min: i64, max: i64) -> i64 {
         // separate them is missing, which is the admission rule's own diagnosis
         // rather than a shortcut taken in this function.
         Policy::Saturate | Policy::Clamp => {
-            if slot < lo { min } else { max }
+            if slot < lo {
+                min
+            } else {
+                max
+            }
         }
     }
 }
