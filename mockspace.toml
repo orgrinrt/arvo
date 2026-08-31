@@ -283,6 +283,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.ruling-carries-no-verbatim]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-canon-that-loads-nothing-is-not-a-clean-canon]
 commit = "error"
 build = "error"
