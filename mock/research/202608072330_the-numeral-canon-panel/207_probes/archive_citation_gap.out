@@ -1,0 +1,28 @@
+=== 1. unprefixed citations into the closed panel, which no checker reads ===
+research/202608072330_the-numeral-canon-panel/02_carried_what_replaces_the_two_refutations.md:3:formalization-spec-panel/151_rompf_what_replaces_the_two_refutations.md
+research/202608072330_the-numeral-canon-panel/10_lattner_fresh_eyes_on_the_container_derivation.md:36:formalization-spec-panel/137_aaltonen_erasure_without_a_condition.md
+research/202608072330_the-numeral-canon-panel/180_kiselyov_porting_the_options_register_and_the_droplist.md:352:formalization-spec-panel/124_consolidation_twelve.md
+research/202608072330_the-numeral-canon-panel/19_persona_checkpoint_three.md:919:formalization-spec-panel/141_xu_the_container_fork_benched.md
+research/202608072330_the-numeral-canon-panel/DROPLIST.md:3:formalization-spec-panel/124_consolidation_twelve.md
+research/202608072330_the-numeral-canon-panel/PRIOR_CALLS.md:145:formalization-spec-panel/13c_op_the_standard_and_the_mode.md
+research/202608072330_the-numeral-canon-panel/PRIOR_CALLS.md:80:formalization-spec-panel/112_the_op_material_sweep.md
+count: 7
+
+=== 2. each one resolves to nothing, and the OLD_ form exists ===
+  112_the_op_material_sweep.md                   bare:NO  OLD_:yes
+  124_consolidation_twelve.md                    bare:NO  OLD_:yes
+  137_aaltonen_erasure_without_a_condition.md    bare:NO  OLD_:yes
+  13c_op_the_standard_and_the_mode.md            bare:NO  OLD_:yes
+  141_xu_the_container_fork_benched.md           bare:NO  OLD_:yes
+  151_rompf_what_replaces_the_two_refutations.md bare:NO  OLD_:yes
+
+=== 3. why the checker cannot see them: it keys on the literal seed/ ===
+75:                let file = cite.trim_start_matches("seed/");
+84:                         so the file is `seed/OLD_{file}`. This is a ledger a reader treats \
+117:                let file = cite.trim_start_matches("seed/");
+298:/// Every `seed/<file>.md` a line mentions.
+citations above containing the string 'seed/': 0
+
+=== 4. CONTROL: plant the covered form and require the arm to fail ===
+  control fired: the arm catches an unprefixed citation into the archive it covers
+  ledger restored: ok
