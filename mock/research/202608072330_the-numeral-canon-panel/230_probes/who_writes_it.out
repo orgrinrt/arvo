@@ -1,0 +1,33 @@
+### 372 holds-for paragraphs, from 60 files
+
+lP   lF   kP   kF    phrase                                     where (loose)
+19   54   18   46    threads                                    100 xu;101 wronski;102 torvalds;103 mcsherry;106 giesen;108 lamport;116 leijen;119 leroy;121 leijen;122 leroy;125 knuth;127 dolan;128 knuth;129 wronski;130 dolan;131 leroy;132 leroy;136 leroy;137 arntzen;138 leroy;139 muratori;140 mcsherry;141 lamport;142 muratori;143 mcsherry;144 fog;145 leroy;146 leroy;147 muratori;149 lamport;150 fog;151 leroy;154 kiselyov;157 lamport;160 leroy;167 rompf;169 kiselyov;170 mcsherry;171 rompf;172 leroy;174 mcsherry;175 rompf;178 leroy;182 orchard;216 lamport;219 kiselyov;220 orchard;221 dolan;222 kiselyov;225 peyton;78 aaltonen;93 orchard;97 dolan;98 spj;
+14   20   9    10    arms                                       100 xu;101 wronski;102 torvalds;103 mcsherry;106 giesen;108 lamport;139 muratori;140 mcsherry;141 lamport;144 fog;145 leroy;146 leroy;150 fog;216 lamport;219 kiselyov;220 orchard;78 aaltonen;93 orchard;97 dolan;98 spj;
+8    10   7    9     cost coordinates                           100 xu;101 wronski;106 giesen;108 lamport;139 muratori;144 fog;145 leroy;146 leroy;150 fog;98 spj;
+4    6    3    5     selector                                   139 muratori;144 fog;145 leroy;146 leroy;150 fog;225 peyton;
+2    5    2    5     coupling                                   128 knuth;131 leroy;132 leroy;136 leroy;138 leroy;
+7    12   6    9     feature gates                              100 xu;101 wronski;106 giesen;108 lamport;119 leroy;122 leroy;131 leroy;132 leroy;144 fog;145 leroy;216 lamport;97 dolan;
+2    3    1    1     observation set                            144 fog;146 leroy;150 fog;
+2    3    1    2     assignment set                             143 mcsherry;145 leroy;146 leroy;
+2    3    2    3     term shape                                 116 leijen;119 leroy;122 leroy;
+2    3    2    3     declarations                               116 leijen;119 leroy;122 leroy;
+1    2    1    2     restrictions                               119 leroy;122 leroy;
+1    2    1    2     discharge check                            119 leroy;122 leroy;
+4    7    0    0     overflow limit read at the declared width  140 mcsherry;141 lamport;143 mcsherry;144 fog;145 leroy;146 leroy;150 fog;
+1    3    1    3     F_intermediate                             131 leroy;132 leroy;136 leroy;
+5    7    2    4     radix                                      103 mcsherry;116 leijen;119 leroy;121 leijen;122 leroy;221 dolan;222 kiselyov;
+0    0    0    0     occupancy                                  ;
+2    2    2    2     ambient domain                             121 leijen;122 leroy;
+4    4    3    3     operand window                             106 giesen;107 arntzen;182 orchard;97 dolan;
+13   28   0    0     const                                      102 torvalds;103 mcsherry;107 arntzen;108 lamport;119 leroy;122 leroy;125 knuth;127 dolan;129 wronski;130 dolan;131 leroy;132 leroy;136 leroy;138 leroy;139 muratori;144 fog;145 leroy;146 leroy;167 rompf;169 kiselyov;170 mcsherry;172 leroy;201 mcsherry;216 lamport;221 dolan;222 kiselyov;93 orchard;97 dolan;
+8    8    0    0     compile                                    100 xu;101 wronski;106 giesen;108 lamport;160 leroy;225 peyton;93 orchard;97 dolan;
+0    0    0    0     phase_of_the_moon                          ;
+
+### A1, a declared axis every topic uses must show many personas
+  PASS, threads at 19 personas
+### A2, a phrase nobody wrote must show zero
+  PASS
+### A3, a one-author phrase must not saturate
+  PASS, discharge check at 1 persona
+### A4, the keyed arm must be a subset of the loose arm on every phrase
+  PASS on all 21 phrases

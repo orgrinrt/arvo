@@ -1,0 +1,76 @@
+### files swept: narrow 12, wide 60
+### distinct keys: narrow 115, wide 220
+
+### keys the wide sweep finds that the twelve-file sweep does not,
+### undeclared ones only, by occurrence in the wide sweep
+     5  > rounding
+     4  grid
+     3  op
+     3  > threads
+     2  target > features
+     2  rustc
+     2  ..
+     1  window [-7q, 7q]
+     1  which is immediate from the definition of Q_U and the > definitions of floor
+     1  which for a > compile-time fact is exactly right under the omission rule
+     1  values exhaustive
+     1  value
+     1  uniqueness and the Fréchet impossibility
+     1  toward_zero × wrap not commuting
+     1  toward_zero × > saturate commuting
+     1  threads >
+     1  the position-keyed > deterministic family (rounding
+     1  the per-element or position-keyed families (keyed on position)
+     1  that > is a question for the panel rather than a finding of mine
+     1  target
+     1  stated on valuation additivity
+     1  stated on the scalar-multiple and
+     1  stated on the equivariance argument. For the non-commutation
+     1  stated on distribution algebra with the linear system shown
+     1  stated on an argument. For the failure
+     1  so its selection predicate is not fully const-available
+     1  signedness ∈ {signed, unsigned} as stated per clause
+     1  shared/global family (keyed on nothing)
+     1  shared-threshold family (rounding
+     1  selection by associated const
+     1  same table population
+     1  rustc 1.98.0-nightly 57d06900f
+     1  rounding ∈ {floor, toward_zero} (the pair > exhibited; other pairs differ too where the probe says so)
+     1  rounding ∈ {floor, ceil, toward_zero, > half_up, half_even}
+     1  rounding ∈ {floor, > ceil, toward_zero, half_up, half_even}
+     1  per-cell-independent family (keyed on > value/frac)
+     1  parametrisation is exact and definitional
+     1  overflow ∈ {wrap, saturate}
+     1  overflow ∈ {wrap > (untested directly, monotonicity argument applies regardless since it is about the rounding step > alone), saturate (tested, composition stays monotone)}
+     1  opt-level
+     1  operations {add, mul}
+     1  one
+     1  not re-established here
+     1  no threads axis is listed > because the claims hold only where threads do not exist
+     1  no sweep needed beyond confirming the two > endpoints and the midpoint algebraically
+     1  no float types
+     1  no feature gates beyond the stable language
+     1  n ∈ 1..10 enumerated exactly and the closed forms proved by the enumeration matching > them at every n
+     1  n
+     1  monotonicity measured across a value-varying-with-position sequence within one pass
+     1  measured with the witness 125 T7 names
+     1  measured at 16 to 32 mismatches of 129 points per row
+     1  measured
+     1  integer weights and
+     1  including every member of the stochastic family
+     1  identification is definitional
+     1  half_up already given
+     1  fracs
+     1  fails for every non-uniform baseline tried
+     1  exhaustive over the representable set
+  ...
+  total new undeclared keys: 99
+
+### W1, the narrow arm must reproduce 183_probes/keys.txt exactly
+  PASS, byte identical
+### W2, the wide arm must sweep more files and find at least one new key
+  PASS, 60 > 12 files and 105 keys the narrow arm never saw
+### W3, a key nobody wrote appears in neither
+  PASS
+### W4, no key present in the narrow arm is lost in the wide one
+  PASS, 0 lost

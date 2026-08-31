@@ -1,0 +1,32 @@
+### registry prose asserting an axis is undeclared
+LIVE   dimension.toml:254  names no declared axis
+STALE  dimension.toml:264  names `container`, which dimension.toml declares
+STALE  law.toml:170  names `strategy`, which dimension.toml declares
+STALE  law.toml:385  names `operand_window`, which dimension.toml declares
+STALE  proposal-the-later-topics.toml:252  names `ambient_domain`, which dimension.toml declares
+
+### S1, a planted sentence naming a declared axis must read STALE
+  STALE  s1.toml:1  names `operand_window`, which dimension.toml declares
+  PASS
+### S2, a planted sentence naming an undeclared axis must read LIVE
+  LIVE   s2.toml:1  names no declared axis
+  PASS
+### S3, a file with no such sentence must produce nothing
+  PASS, strategy.toml silent
+
+### S4, the tense arm, which is what actually separates the five hits.
+###     The attribution arm above is unreliable and its failure is left in
+###     view: it reads the first declared axis name appearing anywhere on the
+###     line, and a TOML value is one long line, so law.toml:170 is
+###     attributed to strategy because its sentence also says 'the strategy
+###     unit records'. Two of the five attributions are wrong. The verdict
+###     column is not: what separates a false sentence from a correct
+###     historical one is TENSE. "no axis existed" is a past-tense account of
+###     why a row was written and stays true. "is not a declared axis" is a
+###     present-tense claim about this file's contents and is false the
+###     moment the axis is declared.
+  PAST     dimension.toml:254
+  PAST     dimension.toml:264
+  PRESENT  law.toml:170  <- false against the current dimension set
+  PRESENT  law.toml:385  <- false against the current dimension set
+  PRESENT  proposal-the-later-topics.toml:252  <- false against the current dimension set

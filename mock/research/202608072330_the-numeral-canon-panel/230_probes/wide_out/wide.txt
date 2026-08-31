@@ -1,0 +1,220 @@
+ 105 threads
+  77 signedness
+  76 F
+  65 W
+  54 rounding
+  53 target features
+  23 overflow
+  23 domain
+  23 arity
+  22 operations
+  19 operation
+  17 radix
+  16 overflow behaviour
+  14 container width
+  13 cost coordinates
+  12 arms
+  11 domain closed under negation
+  11 I
+   9 coupling
+   8 term shapes
+   8 declarations
+   8 chain length
+   5 weight grid resolution
+   5 selector
+   5 range policy
+   5 inputs exhaustive over the declared range
+   5 cost tables drawn uniformly from
+   5 > rounding
+   4 value set finite with at least two elements
+   4 toolchain
+   4 overflow limit read at the declared width
+   4 grid
+   4 feature gates
+   4 edition 2021
+   4 crate type
+   4 baseline
+   3 unchanged
+   3 overflow policy
+   3 or unsigned with signed
+   3 op
+   3 observation sets
+   3 fraction
+   3 fold length
+   3 element count
+   3 edition
+   3 decision procedure
+   3 assignment set
+   3 ambient domain
+   3 accumulator width varied above the declared width
+   3 accumulator width
+   3 F_intermediate
+   3 F_final
+   3 > threads
+   2 weights
+   2 threshold
+   2 term
+   2 target > features
+   2 same construction and same condition (136_probes/x2 P3)
+   2 rustc
+   2 restrictions
+   2 reference point
+   2 positions 0 to 255
+   2 no exact duplicate arms
+   2 keying axis
+   2 keying
+   2 inputs exhaustive
+   2 everything 132 5.8's predicate lists
+   2 every translation-equivariant member against wrapping
+   2 every deterministic member against saturation
+   2 discharge check
+   2 construction
+   2 certificate weight proportional to the reciprocal deviation
+   2 baseline uniform across coordinates
+   2 augmentation coefficient
+   2 arm set
+   2 F_exact
+   2 F and signedness: OPEN
+   2 120 tables per cell
+   2 ..
+   2 #![no_std]
+   1 {mul, madd}
+   1 {madd}
+   1 {add, sub, mul, madd, msub}
+   1 window [-7q, 7q]
+   1 which is immediate from the definition of Q_U and the > definitions of floor
+   1 which for a > compile-time fact is exactly right under the omission rule
+   1 values exhaustive
+   1 value
+   1 uniqueness and the Fréchet impossibility
+   1 toward_zero × wrap not commuting
+   1 toward_zero × > saturate commuting
+   1 threads >
+   1 the same domain dimension added
+   1 the position-keyed > deterministic family (rounding
+   1 the per-element or position-keyed families (keyed on position)
+   1 the clause claims nothing until it is stated
+   1 that > is a question for the panel rather than a finding of mine
+   1 target
+   1 structure constants
+   1 stochastic members
+   1 stated on valuation additivity
+   1 stated on the scalar-multiple and
+   1 stated on the equivariance argument. For the non-commutation
+   1 stated on distribution algebra with the linear system shown
+   1 stated on an argument. For the failure
+   1 staged narrowing F_exact
+   1 so its selection predicate is not fully const-available
+   1 signedness ∈ {signed, unsigned} as stated per clause
+   1 shared/global family (keyed on nothing)
+   1 shared-threshold family (rounding
+   1 selection by associated const
+   1 same table population
+   1 same population
+   1 same assignment set at W
+   1 rustc 1.98.0-nightly 57d06900f
+   1 rounding ∈ {floor, toward_zero} (the pair > exhibited; other pairs differ too where the probe says so)
+   1 rounding ∈ {floor, ceil, toward_zero, > half_up, half_even}
+   1 rounding ∈ {floor, > ceil, toward_zero, half_up, half_even}
+   1 recursion limit
+   1 pi
+   1 per-cell-independent family (keyed on > value/frac)
+   1 parametrisation is exact and definitional
+   1 overflow ∈ {wrap, saturate}
+   1 overflow ∈ {wrap > (untested directly, monotonicity argument applies regardless since it is about the rounding step > alone), saturate (tested, composition stays monotone)}
+   1 overflow and
+   1 opt-level
+   1 ops
+   1 operations {multiply-add, sum fold}
+   1 operations {add, mul}
+   1 operand window
+   1 one-signed
+   1 one
+   1 numeral fixed-point signed
+   1 not re-established here
+   1 non-conforming pair
+   1 no threads axis is listed > because the claims hold only where threads do not exist
+   1 no sweep needed beyond confirming the two > endpoints and the midpoint algebraically
+   1 no float types
+   1 no feature gates beyond the stable language
+   1 n ∈ 1..10 enumerated exactly and the closed forms proved by the enumeration matching > them at every n
+   1 n
+   1 multiplier schedules {[1,-1,2], [2,-1,1]}
+   1 monotonicity measured across a value-varying-with-position sequence within one pass
+   1 measured with the witness 125 T7 names
+   1 measured at 16 to 32 mismatches of 129 points per row
+   1 measured
+   1 integer weights and
+   1 inputs exhaustive over 0..=255
+   1 input shape
+   1 including every member of the stochastic family
+   1 identification is definitional
+   1 half_up already given
+   1 given a floor-based cell coordinate
+   1 fracs
+   1 float types
+   1 fails for every non-uniform baseline tried
+   1 f
+   1 exhaustive over the representable set
+   1 exhaustive at W
+   1 established by the construction reading only frac(x) and never the cell
+   1 equality read
+   1 enumerated at 8 tie and 435 non-tie points
+   1 each claimed and proved separately
+   1 domain: OPEN
+   1 domain ∈ {ℚ, ℚ≥0} (the first closed under negation, > the second one-signed, claimed separately and each proved)
+   1 domain containing a complete residue system and the
+   1 domain > containing a complete residue system and the
+   1 divergence between the > value-keyed and position-keyed members confirmed on 129's own worst-case
+   1 dispatch
+   1 dimension
+   1 decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions
+   1 decorrelation > measured both as summed-error variance for n same-frac elements (128's witness, closed form > confirmed for n
+   1 decorrelation > measured as the count of distinct outputs for a repeated identical
+   1 declared grid step
+   1 coupling ∈ {comonotone within cells: monotone on every realisation; >
+   1 container
+   1 conforming pair
+   1 composition claim
+   1 commutations
+   1 closed under negation or one-signed alike
+   1 ceil
+   1 carriers 8..=24 > and 120
+   1 assignments
+   1 assignment sets and observation sets as
+   1 assignment set of rounding
+   1 arity 3
+   1 any cell pair for > the cross-cell clause
+   1 an exhaustive control at F
+   1 ambient domain one-signed
+   1 ambient domain closed under negation for the saturating arm
+   1 ambient domain closed under negation
+   1 all 2^(depth-1) placements
+   1 W ≥ 1
+   1 W ∈ {3} for the wrap sweeps and the five-cell window at E
+   1 The non-homomorphic half alone holds for: as 119 4.7's second predicate
+   1 S
+   1 I13's
+   1 F_src
+   1 F_mid
+   1 F_dst
+   1 F ≥ 1 (bits exist to drop)
+   1 F > 0 or op ∉ {+, -, ×-at-F=0} (where rounding fires at all)
+   1 > toolchain
+   1 > target features
+   1 > signedness
+   1 > rustc
+   1 > rounding ∈ {floor, toward_zero}
+   1 > rounding ∈ {floor, ceil, half_up, half_even} × overflow ∈ {wrap, saturate} commuting
+   1 > overflow ∈ {wrap, saturate}
+   1 > overflow policy
+   1 > declared lower bound
+   1 > declarations
+   1 > coupling ∈ {comonotone,
+   1 > chain length
+   1 > E
+   1 > C
+   1 > 600 chains of depth 3..=5
+   1 >
+   1 200
+   1 141's and 143's own axis sets
