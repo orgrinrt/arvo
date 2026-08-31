@@ -907,3 +907,84 @@ control = "Label normalisation before comparison, which is the arm that stops tw
 standing = "sound"
 note = "Marked sound on a judgement and it is the thinnest of the sound rows in this file. What each arm does is compile two forms and compare the emitted bodies, and a comparison of two bodies has no natural failing case unless somebody supplies a form that must differ. None of the four does. The finding is corroborated across three authors rather than controlled, and a reader who wants it controlled should ask for an arm whose selection genuinely cannot be resolved at compile time and must therefore leave a branch."
 keywords = ["compile time", "residue", "argmin", "const fn", "emitted body", "assembly", "label normalisation", "tail branch", "selection"]
+
+# --- the eight settled claims the corpus could not write --------------------
+#
+# Named in `189` section 6, each with a committed instrument and no row. This is
+# the whole of that list except the withdrawn Pareto arm, which already has one.
+
+[[probe]]
+id = "the_axes_are_not_independently_resolvable"
+establishes = "The overflow policy changes which container a time objective prefers. Over widths 8, 16, 32, 60 and 64 the container ranking under wrapping and under saturating differ at every width, so the best value on one axis depends on the value taken on another and a resolver may not settle them one at a time."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::40_probes::p7_does_overflow_move_the_container_answer.py::1",
+  "panel::202608072330_the-numeral-canon-panel::40_probes::p7.out::1",
+]
+control = "The two policies are run over the identical container set and the identical widths, so a ranking that came out the same would be the case that refutes the claim, and the output prints both rankings per width side by side rather than reporting a verdict. A reader disagreeing can read the orderings off the run."
+standing = "sound"
+note = "The distinction the instrument was built for is the useful part and it is stated in its header: independently stateable is a claim about what the cells say and was already established; independently resolvable is a claim about whether the answers interact, and nobody had tested it. Two axes can be separate questions and still not be separately answerable."
+keywords = ["axes", "independence", "resolvable", "stateable", "overflow", "container", "ranking", "time objective", "resolver"]
+
+[[probe]]
+id = "the_design_closed_forms_are_not_the_tightest_numeral"
+establishes = "The design's natural closed forms are not the least numeral containing the exact result: multiplication is tight on 1099 of 1296 cases, addition on 1175 of 1296 and the subtraction candidate on 751 of 1296. The mechanism of the overshoot is then located rather than left as a count."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::06_probes::p1_site_enumeration.py::1",
+  "panel::202608072330_the-numeral-canon-panel::06_probes::p1.out::1",
+  "panel::202608072330_the-numeral-canon-panel::06_probes::p2_overshoot_mechanism.py::1",
+  "panel::202608072330_the-numeral-canon-panel::06_probes::p2.out::1",
+  "panel::202608072330_the-numeral-canon-panel::06_probes::p3_formula_vs_extremum.rs::1",
+]
+control = "The three operations are counted against one another over the same 1296 cases, so a count identical across all three would say the enumeration is not reading the operation. They differ, 1099 against 1175 against 751. The successor is the arm that matters more: its own header says the formula overshoots identifies a question rather than answering one, and it goes after the mechanism."
+standing = "sound"
+note = "Its assembly capture `06_probes/p3_asm.out` is committed at zero bytes and is therefore uncitable: a probe citation carries a terminal line number and a zero-byte file has no line one. Measured in `panel::202608072330_the-numeral-canon-panel::192_probes::p3_empty_artifacts.out::1`. The tightness fractions are the citable part and the mechanism is what a design would act on. A reader taking only the fractions has the finding and not the reason, and the reason is what says whether a tighter formula exists."
+keywords = ["tightness", "closed form", "least numeral", "overshoot", "1296", "multiplication", "addition", "subtraction", "extremum", "mechanism"]
+
+[[probe]]
+id = "closing_the_family_under_intersection_is_priced_and_does_not_reach_tapered_formats"
+establishes = "The join of a fixed-point numeral and a float numeral has two incomparable minimal upper bounds and no least one, and no admission of more fixed-point shapes repairs it. Closing the family under intersection costs a 16 to 34 percent enlargement, every added shape a segmented grid neither family names, and the closure does not reach tapered formats."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p2_moore_family.py::1",
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p2.out::1",
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p3_best_abstraction_closed_form.py::1",
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p3.out::1",
+  "panel::202608072330_the-numeral-canon-panel::08_probes::i2_lattice.py::1",
+  "panel::202608072330_the-numeral-canon-panel::08_probes::i2.out::1",
+  "panel::202608072330_the-numeral-canon-panel::08_probes::i2b.out::1",
+]
+control = "The later instrument asks the same question one level up, at the general concept rather than at the two named families, which is the arm that decides whether the failure is about those families or about the construction. A closure result that held at one level and not the other would locate it; the run is what says which."
+standing = "sound"
+note = "Two instruments in two files by two authors, and the second was built to attack the first's scope rather than to confirm its number. The percentage band is a price rather than a verdict, and the tapered-format gap is the part a design has to answer."
+keywords = ["closure", "intersection", "moore family", "join", "incomparable", "least upper bound", "tapered", "segmented grid", "price", "16 to 34"]
+
+[[probe]]
+id = "a_single_richer_output_suffices_only_as_a_type"
+establishes = "A single richer output from a container derivation suffices if and only if it is an associated type. Eleven files on the pinned nightly with zero feature gates: six compile and five are refused, and the value spelling is refused in three syntactic positions, naming the forbidden feature each time. The native rung partition and the access rung partition of widths 1 to 128 share no jump point, so one ladder cannot key both."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::47_probes::RUN.md::1",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::verify.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::p1_single_type_output.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::p1b_negctl_distinctness.err::1",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::p2_scalar_single_output_refused.err::1",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::p4b_negctl_joint_distinctness.err::1",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::p5b_negctl_forcings.err::1",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::p6_two_ladders_not_one.rs::1",
+]
+control = "Five negative controls, each a separate committed file whose refusal is committed as a `.err` beside it, and the runner reports each refusal's error count rather than only that it refused. Two arms are sharper than a refusal: one asserts three false type equalities to show a bridge is not vacuous, and one carries two must-refuse claims together with a must-not-refuse claim, where the absence of the third from the error list is stated as half the result. The toolchain is pinned in the runner and the gate-free property is checked by the runner rather than asserted."
+standing = "sound"
+note = "The best-documented probe directory in this corpus: a table of every file with its expected outcome and error count, a runner that rebuilds the lot, and a stated cross-check that names its own weakness, that reproducing a figure from a transcribed closed form is one instance of agreement between two codings rather than two independent derivations."
+keywords = ["single output", "associated type", "value spelling", "refused", "negative control", "compile-fail", "generic_const_exprs", "ladder", "access width", "eleven files"]
+
+[[probe]]
+id = "narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points"
+establishes = "Narrowing composes exactly when the mode's direction switches only at coarser-grid points, tested through two consequences of an adjunction rather than through its defining biconditional: the forced adjoint is unique and equals the maximum below the value, and the composition law holds on a grid triple exactly where the failure count is zero."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p1_rounding_adjunction.py::1",
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p1.out::1",
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p4_composition_and_forced_adjoint.py::1",
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p4.out::1",
+]
+control = "The method is the control and its header says so: the predecessor tested the defining biconditional pointwise, and this one tests two consequences by a route that does not use that biconditional at all, so a mode passing one and failing the other is a real disagreement between two methods rather than a repetition. The three outcomes are separated in the output, zero failures with the adjoint equal to the embedding, zero with a different adjoint, and nonzero, so a zero cannot be read as the wrong one of the three."
+standing = "sound"
+note = "Two methods that would agree trivially are one method. This is the clearest case in the corpus of an author paying for independence by choosing a harder route, and it is worth copying wherever a second instrument is being built to confirm a first."
+keywords = ["narrowing", "composition", "adjunction", "forced adjoint", "biconditional", "grid", "rounding mode", "independence", "method", "embedding"]

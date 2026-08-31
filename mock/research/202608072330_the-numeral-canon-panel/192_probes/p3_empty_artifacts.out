@@ -1,0 +1,83 @@
+=== p3 empty artifacts, 2026-08-31T00:19:00Z
+
+## C1: can an empty artifact be cited at all
+  non-empty (must resolve)     06_probes/p1.out                               resolves
+  zero bytes (must refuse)     06_probes/p3_asm.out                           ERROR [unresolvable-provenance]
+
+## C2: the empty set is a subset
+C2 PASS: 79 empty of 2701 artifact files
+
+## C3: what the empty ones are
+naming build, compile, link, meta or asm: 15
+everything else:                         64
+
+the ones that are NOT a build or compile capture:
+  02_probes/p1.out
+  02_probes/p3.out
+  02_probes/p5.out
+  06_probes/p4_arm2.out
+  10_probes/out/p01_assoc_const_in_array_len_nogate.out
+  10_probes/out/p02_assoc_const_min_gca.out
+  10_probes/out/p03_type_const_rhs.out
+  10_probes/out/p04_type_const_block.out
+  10_probes/out/p05_const_arg_from_param.out
+  10_probes/out/p06_type_const_forward_only.err
+  10_probes/out/p06_type_const_forward_only.out
+  10_probes/out/p07_structural_type_const_array.out
+  10_probes/out/p08a_alias_nat_diag.out
+  10_probes/out/p08b_opaque_nat_diag.out
+  10_probes/out/p09a_lawsite_control.out
+  10_probes/out/p09b_lawsite_named_relation.out
+  10_probes/out/p09c_lawsite_named_clean.err
+  10_probes/out/p09c_lawsite_named_clean.out
+  10_probes/out/p10_bridge_diag.out
+  10_probes/out/p11_suppress_table.out
+  10_probes/out/p12_improved_full.err
+  10_probes/out/p12_improved_full.out
+  10_probes/out/p13_diag_showcase.out
+  10_probes/out/p14_bridge_laziness.err
+  10_probes/out/p14_bridge_laziness.out
+  10_probes/out/p15_dense_bridge.err
+  10_probes/out/p15_dense_bridge.out
+  10_probes/out/p16_single_bound.err
+  10_probes/out/p16_single_bound.out
+  10_probes/out/p4_structural_wide.rs.err
+  10_probes/out/p5_total_ladder.rs.err
+  10_probes/out/p6_surface_end_to_end.rs.err
+  10_probes/out/p7_law_site.rs.err
+  11_probes/out/a01.log
+  11_probes/out/a02.log
+  11_probes/out/b03.log
+  11_probes/out/b03_the_ceiling_is_the_const_surface.log
+  11_probes/out/c01b.log
+  11_probes/out/consumer_ok.log
+  11_probes/out/d01_bare_parameter_carrier.log
+  11_probes/out/e01.log
+  11_probes/out/e01_enumeration_free_bridge.log
+  12_probes/out/p02.log
+  12_probes/out/p03.log
+  12_probes/out/p04.log
+  12_probes/out/p08.log
+  12_probes/out/p09.log
+  12_probes/out/p10.log
+  12_probes/out/p15.log
+  13_probes/p06_nat_algebra.out
+  13_probes/p07_matrix.out
+  13_probes/p10_full.out
+  13_probes/p13_surface_bounded.out
+  13_probes/p14_multiply_past_the_table.out
+  13_probes/p17_alias_only_no_error.out
+  13_probes/p21_named_widths.out
+  13_probes/p25_declared_output.out
+  13_probes/p29_extension_without_towers.out
+  157_probes/p8_soundness_is_not_enforced/warn_base.txt
+  15_probes/q05_subtraction_matrix.out
+  15_probes/q06_shape_matrix.out
+  15_probes/q07_three_input_map.out
+  15_probes/q08_map_matrix.out
+  71_probes/p4_positive.txt
+
+READING. A captured stdout from a clean build is legitimately empty and
+most of these are that. The count is not a defect count and is not
+reported as one. What it bounds is how much committed evidence the
+citation grammar cannot reach.
