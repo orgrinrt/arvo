@@ -1,0 +1,4 @@
+research/202608072330_the-numeral-canon-panel/02_carried_what_replaces_the_two_refutations.md:3:formalization-spec-panel/151_rompf_what_replaces_the_two_refutations.md
+research/202608072330_the-numeral-canon-panel/10_lattner_fresh_eyes_on_the_container_derivation.md:36:formalization-spec-panel/137_aaltonen_erasure_without_a_condition.md
+research/202608072330_the-numeral-canon-panel/180_kiselyov_porting_the_options_register_and_the_droplist.md:352:formalization-spec-panel/124_consolidation_twelve.md
+research/202608072330_the-numeral-canon-panel/19_persona_checkpoint_three.md:919:formalization-spec-panel/141_xu_the_container_fork_benched.md
