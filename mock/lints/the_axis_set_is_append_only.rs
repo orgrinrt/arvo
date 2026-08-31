@@ -196,7 +196,11 @@ mod tests {
         let f = plant(&["radix"]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("signedness"), "{}", f[0]);
-        assert!(!f[0].contains("radix"), "the surviving axis was named: {}", f[0]);
+        assert!(
+            !f[0].contains("radix"),
+            "the surviving axis was named: {}",
+            f[0]
+        );
     }
 
     #[test]
@@ -225,7 +229,11 @@ mod tests {
         let f = plant(&["radix", "signedness_but_renamed"]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("signedness"), "{}", f[0]);
-        assert!(f[0].contains("rename"), "the repair is not stated: {}", f[0]);
+        assert!(
+            f[0].contains("rename"),
+            "the repair is not stated: {}",
+            f[0]
+        );
     }
 
     #[test]
@@ -258,7 +266,11 @@ mod tests {
     fn control_an_empty_registry_names_the_whole_roster_rather_than_panicking() {
         let f = found(&[], ROSTER_TWO);
         assert_eq!(f.len(), 1, "{f:?}");
-        assert!(f[0].contains("radix") && f[0].contains("signedness"), "{}", f[0]);
+        assert!(
+            f[0].contains("radix") && f[0].contains("signedness"),
+            "{}",
+            f[0]
+        );
     }
 
     #[test]
@@ -293,13 +305,18 @@ mod tests {
 
     #[test]
     fn it_is_not_declared_off_so_it_runs_at_all() {
-        assert_not_declared_off(&AppendOnly { roster: super::ROSTER });
+        assert_not_declared_off(&AppendOnly {
+            roster: super::ROSTER,
+        });
     }
 
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
         assert_eq!(
-            AppendOnly { roster: super::ROSTER }.name(),
+            AppendOnly {
+                roster: super::ROSTER
+            }
+            .name(),
             "the-axis-set-is-append-only"
         );
     }
