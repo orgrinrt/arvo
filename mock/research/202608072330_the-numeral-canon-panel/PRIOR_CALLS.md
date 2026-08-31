@@ -77,7 +77,7 @@ are known:
   to D4 of its own, and `202607290500` patched around a collision with `D18b`.
 - The closed panel's own audit found 28 of the 47 D-numbers in the two register topic files absent
   from its standing base by number, and two colliding `D1`-`D4` sequences in one frozen file
-  (`mock/research/202607301300_formalization-spec-panel/112_the_op_material_sweep.md`, section 6.1).
+  (`mock/research/202607301300_formalization-spec-panel/OLD_112_the_op_material_sweep.md`, section 6.1).
 
 **Every D-number below is round-qualified.** Unqualified numbers in other documents should be treated
 as unresolved references until qualified.
@@ -142,7 +142,7 @@ representing MATLAB, IEEE 754, SystemC and the rest, as a test rather than an in
 abstractions are what truly matter, the typestate."
 **Answering:** where should the algebraic laws sit (op refused the question as not his).
 **Provenance:** op verbatim,
-`mock/research/202607301300_formalization-spec-panel/13c_op_the_standard_and_the_mode.md`.
+`mock/research/202607301300_formalization-spec-panel/OLD_13c_op_the_standard_and_the_mode.md`.
 **Register:** bears on Q1 (the representability half of his acceptance criterion has this as its
 ancestor) and on every expressibility question; see section 9 for the in-flight caution.
 
