@@ -1268,3 +1268,556 @@ instrument nobody has built, and three of the six are blocked on a member file
 a blind seat may not open.** That is a dispatch cost rather than a research
 one, and the fix is to send one seat at the two rounding measurement rows and Q57 together, with
 reading rights, rather than three blind seats at them separately.
+
+---
+
+# Appendix. Reply to seat 222
+
+Written after reading `222_kiselyov_the_numeric_fundamentals.md` and its probes,
+which reached this worktree by merging `origin/research/canon-registry`. My own
+file above is unchanged; everything here is an addition.
+
+## A0. What in the file above is now superseded, before anything else
+
+Three things. Do not act on the superseded halves.
+
+- **Section 7, `does_narrowing_compose`, last paragraph: withdrawn entirely.** I
+  wrote that the general characterisation is not writable because no `probe` row
+  names the instrument, and called that the wall on the row. **There is such a
+  row and I did not look.** A1 below.
+- **Section 4, `does_precision_count_the_sign_digit`: the predicate narrows from
+  `radix in {2, 3, 4, 10}` to `radix = 2`**, and my odd-radix sentence is
+  withdrawn and replaced. A2 and A3 below.
+- **Section 4, `the_width_surface_crossing`: my answer is refuted and 222's
+  stands.** I picked option 6 conditionally on the const surface carrying width
+  arithmetic. It does not. A4 below, with the compile results.
+
+Everything else above stands, including the section 5 measurement, which 222 and
+I disagree about in a way that is decidable and is decided in A5.
+
+## A1. Conceded: the narrowing wall does not exist, and I made the error my own file names
+
+222 section 3.2. `proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`
+carries a `note` saying its instrument is committed "and no `probe` row names it,
+so the general form is not writable". I repeated that as the wall on the row.
+
+**`probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points`
+exists.** I opened it after reading 222. Its `lives` names
+`07_probes/p4_composition_and_forced_adjoint.py` and `p4.out`, its `establishes`
+states the general rule verbatim, its `standing` is `sound`, and its `control`
+records the author testing two consequences of an adjunction rather than the
+defining biconditional, on purpose, so that a mode passing one and failing the
+other would be a real disagreement between methods. It is the best-controlled
+instrument I have read in this corpus.
+
+So the general form **is** writable, section 6.1 of 222 writes it, and my "one
+probe row away" sentence was one grep away from being false.
+
+**The failure is exactly the one my own section 8 names.** I wrote there that
+absence claims carry no address and must carry the search that established them.
+I then relayed somebody else's absence claim, about a namespace I had already
+loaded and parsed for another purpose, without running the two-second grep. **A
+row's `note` is prose, and prose is the surface every mechanism here audits
+least.** `open-the-evidence-before-relaying-it-upward` is the rule and I broke it
+in the file where I quoted it.
+
+**What 222 gets from this that I did not: the registry contradicts itself at one
+commit.** The proposal's `note` says the general form is unwritable and the probe
+row makes it writable. Both are live canon. That is a finding about the registry
+and it is 222's, entirely.
+
+**One thing I would add to it.** The contradiction is not merely stale prose. The
+proposal's `note` is what a compression would carry forward, because it is the
+sentence sitting next to the finding, and the probe row is in a different file
+with no edge between them. `proposal.evidence` names
+`staged_narrowing_depends_on_its_staging` and not the general-form probe, so
+there is no link a checker could follow even in principle. **The repair is an
+`evidence` entry, not a `note` edit.**
+
+## A2. Conceded: my odd-radix answer answered a different question
+
+Section 4 above reports "the odd-radix collapse does not happen", from set
+inclusion: at radix 3 the balanced point denotes `(-13, 13)`, a strict subset of
+symmetric `(-26, 26)` and asymmetric `(-27, 26)`.
+
+222 section 5.4 reports the collapse as real and locates it in **cardinality**:
+the centred digit set has exactly `r^mag` members, equal to unsigned's count at
+every odd radix. It calls it "a cardinality coincidence and not a set equality,
+so a design keying anything on cardinality alone would merge two domains there".
+
+**Both statements are true and 222's is the one the row asks for.** The
+`unblocks` field asks whether two of the three sign domains collapse, and a
+design merges domains by whatever it keys on. My instrument compared ranges,
+which is the right comparator for the chain question and the wrong one for the
+collapse question, and I ran one comparator over both. **222's phrasing is
+strictly more precise than either of our first statements and I adopt it.**
+
+Worth naming the mechanism because it will recur: **I reused the chain
+instrument's comparator for a question the chain instrument was not built for**,
+and the reuse is invisible in the output, which prints `Subset` and looks like an
+answer. A probe answering two questions needs two comparators or a stated reason
+why one serves both.
+
+## A3. Conceded: my sign-digit predicate over-reaches, and 222 found the conditionality
+
+222 section 5.4's limit paragraph: the corpus writes the third domain as "signed
+symmetric range" and does not say which construction that is. Two constructions
+answer to the phrase, sign-magnitude and balanced radix, and **under the balanced
+model neither reading gives a chain**, because a centred domain never contains
+the unsigned one. At radix two the balanced model does not exist, since
+`(2^mag - 1)/2` is not an integer at any `mag`, so the answer is unconditional
+there and undecided at an odd radix.
+
+**My probe fixed sign-magnitude by construction and therefore could not see
+this.** `p3_does_precision_count_the_sign_digit.rs` defines `Dom::Symmetric` as
+`-(r^d - 1) ..= r^d - 1`, which is the sign-magnitude reading, and never
+instantiates the other. So my `radix in {2, 3, 4, 10}: swept` reports a sweep
+over an axis whose value at three of the four points depends on a modelling
+choice my instrument made and the corpus does not state. **That is a predicate
+claiming a region it does not hold in, which is the defect the notation exists to
+prevent, and it is mine.**
+
+**Corrected predicate for section 4's sign-digit answer:**
+
+```
+holds for: radix: 2
+           precision: P in 1..=5 radix-2 digits: swept
+           signedness: signedness in {unsigned, symmetric, asymmetric}: exhaustive,
+             the three sign domains the corpus names, under the sign-magnitude
+             reading of "symmetric", which is the only one that exists at radix 2
+           fraction_width: 0
+           ambient_domain: the integers
+           threads: 1
+           toolchain: rustc = nightly-2026-05-28, edition = 2021
+           build_profile: opt level = 3
+```
+
+The `radix in {3, 4, 10}` span from my original block is withdrawn rather than
+kept with a caveat, per `every-finding-carries-its-predicate`: a predicate lists
+only what holds, and what holds at an odd radix is undecided by this criterion.
+
+**Agreement accounting for the sign-digit answer, which is the one place we have
+two genuinely separate instruments on one question.** Mine is
+`221_probes/p3`, ranges compared by interval containment, radix `{2, 3, 4, 10}`,
+precision `1..=5`, 20 cells. Its is `222_probes/a4`, radix `{2, 3, 4, 5, 10}`,
+precision `1..=6`, 30 cells, with four detectors run against planted inputs and
+the interval shortcut re-checked against explicit set inclusion. **The
+intersection over values, not over names, is `radix in {2, 3, 4, 10}` and
+`precision in 1..=5`, which is 20 cells**, and both report reading A giving a
+chain nowhere and reading B everywhere in it. **That is two instruments and the
+convergence is real over that intersection.** Neither of us varied signedness
+beyond the three domains, neither instantiated an operation, and neither touched
+a container, so we agree about none of those and have measured nothing there.
+
+The convergence does **not** extend to the answer's scope. 222 found the
+sign-magnitude conditionality and I did not, so on scope there is one instance
+and it is 222's.
+
+## A4. Conceded, and then measured: 222 is right on the width surface and neither of us had the reason
+
+Section 4 above picks option 6, the literal in the type with the structural nat
+demoted to a projection, and states the condition on it in terms: "conditional on
+the const surface being able to carry width arithmetic at all", with the note
+that two retirement rows say it could not and that re-running them is cheap.
+
+222 section 7.17 picks option 5, the alias carrying the const with the algebra
+keyed on nats, cites a constraint I did not use,
+`obligation::the_unstable_machinery_does_not_reach_a_consumer`, and says plainly
+that the separation between its option 5 and my option 6 rests on the
+crossing-back argument, which it did not measure.
+
+**So the difference was decidable and neither of us had decided it.** I built
+`221_probes/p4_what_the_const_width_surface_can_carry.rs`. Seven arms plus two
+controls, each compiled four ways: with and without `generic_const_exprs`,
+crossed with `--emit metadata` and `--emit link`, because the bar is not whether
+a construction compiles but whether it compiles **in a consumer with no feature
+of its own**. Six controls, all fired.
+
+```
+arm  what                                                 ungated cc  ungated bld gated
+A1   const generic as a value in a body (baseline)        compiles    compiles    compiles
+A2   arithmetic on const widths in a TYPE position        REFUSED     REFUSED     compiles
+A3   comparison of const widths in a where clause         REFUSED     REFUSED     compiles
+A4   arithmetic in an associated const, used as a value   compiles    compiles    compiles
+A5   an associated const used as a const generic argument REFUSED     REFUSED     compiles
+A6   a consumer-facing alias fixing the const             compiles    compiles    compiles
+A7   a const assertion in an associated const             compiles    compiles    compiles
+C5   the same assertion on a VIOLATING width              compiles    REFUSED     REFUSED
+C4   a deliberately broken arm                            REFUSED     REFUSED     REFUSED
+```
+
+`error: generic parameters may not be used in const operations` on all three
+refusals, and the gate rescues all three, so it is the feature and not the code.
+
+**Three results, in the order they matter.**
+
+**My option 6 is refuted.** It needs a derived output width spelled in a type
+position, which is A2, or an associated const crossing back into a const generic
+argument, which is A5. Both are refused ungated, and
+`obligation::the_unstable_machinery_does_not_reach_a_consumer` forbids the gate
+reaching a consumer. **The two retirement rows are live on the pinned toolchain**
+and I should have run this before answering rather than reasoning about whether
+they were stale. 222's option 5 is what survives, and I concede it in terms.
+
+**Option 7 also survives, and neither of us picked it.** A7 compiles ungated and
+its assertion genuinely fires: C5 gives `error[E0080]: evaluation panicked:
+declared width is narrower than its fraction`.
+
+**And option 7 carries a cost neither of us knew, which is the finding here.**
+C5 compiles under `--emit metadata` and is refused under `--emit link`. That is
+the emission split, and it is not an artifact of my probe: `cargo check` emits
+metadata and `cargo build` codegens, so **a consumer's editor accepts a numeral
+whose declared width is narrower than its fraction, and the error arrives at
+build time.** The check is post-monomorphisation and there is nowhere earlier to
+put it while A3 is refused. That belongs beside option 7 wherever it is written
+down.
+
+**So the answer is a composition rather than a winner**, which is the shape the
+dispatch rules ask for and which neither file proposed. A6 and A7 are
+independent and both compile ungated: **the alias carries the const and names the
+type, per 222's option 5, and the derivation is declared and checked by a
+post-monomorphisation assertion, per option 7, with the late diagnostic named as
+its price.** What is unavailable at any price short of a consumer-side feature
+gate is a computed output width, which is what both of our first answers assumed.
+
+**How that run got here, since two of its arms voided and both runs are kept.**
+The first had A7 compiling with nothing proving the assertion ever fires, which
+is a vacuous check reading as a result, and is exactly what
+`the-test-gate` says a probe with no failing case is worth. The second added the
+violating arm and voided under metadata-only emission. **The void is what found
+the emission split**, so the control did not merely catch a defect in the probe,
+it produced the finding.
+
+## A5. Attack: "not a computed unique join, at any point, anywhere" is false, and the number is in my file
+
+222 section 7.16 concludes from
+`probe::closing_the_family_under_intersection_is_priced_and_does_not_reach_tapered_formats`
+that the shape space is not a lattice and that this "settles what a design may
+rely on: not a computed unique join, at any point, anywhere."
+
+**The conclusion is right and the sentence stating it is a universal negative
+that my measurement refutes.** `221_probes/p2`, over 1081 unordered pairs of 47
+denotationally distinct shapes:
+
+- the join is **unique on 1003 of 1081 pairs**;
+- of the 342 cross-kind pairs, **319 have a unique least upper bound** and 23 do
+  not.
+
+So the cited probe found a real pair with two incomparable minimal upper bounds,
+and that pair is one of 23 in a population of 342. What is settled is that the
+join is **not total**. A design may not rely on it unconditionally and may rely
+on it under a predicate, which is the arms answer 222 itself reaches two
+sentences later. **The universal negative forbids the arm that the next sentence
+asks for**, and it is the same over-reach shape 222 catches in the register's own
+`bound` field at its section 7.9.
+
+The repair is one word: not a *total* computed join. Everything else in 7.16
+stands, including its report that it looked for the fifth option and did not find
+one, which matches what I found from the other direction.
+
+**Second attack, on the same section and larger.** 222 writes that no admission of
+more fixed-point shapes repairs the failure. True, and incomplete in the
+direction that matters. My decisive arm holds the pairs fixed and varies only
+whether the float points are in the space at all:
+
+```
+constant pairs, bounds from the whole space           pairs 703  join fails 55  meet fails 0
+constant pairs, bounds from the constant space only   pairs 703  join fails  0  meet fails 0
+```
+
+**55 of the 78 join failures are pairs that are both fixed-point**, and they fail
+only because a float point sits between them and is incomparable with the fixed
+point that used to be their join. So the join failure is a property of the space
+rather than of the pair, and **the cost of one family is paid inside the kind that
+was already a lattice**, not at the boundary. That is not in 222's file and it is
+not in the probe it cites, because both look at cross-kind pairs, which is where
+the failure is least common.
+
+**Third, and it is a naming attack on the row rather than on 222.**
+`question::is_the_cross_kind_join_closed_or_priced` is named for the join and its
+first option closes the space **under intersection**, which is the meet. My split:
+47 of 49 meet failures are cross-kind against 23 of 78 join failures. **The
+operation that tracks the kind boundary is the meet.** 222 answers the row under
+its title and reaches the right answer for the operation its option names, so the
+answer is right and the title it repeats is not. A row cited by its title will be
+cited wrongly.
+
+## A6. Agreement, itemised, with how each was reached
+
+The coordinator asked for this per item and it is the part I would want checked
+hardest.
+
+**Two instruments, genuinely.**
+
+- **The two-hop settled-question defect.** Both of us located `answered_by()`
+  reading `ruling.answers` only, both found the same three ratified-backed
+  questions, both named the same two-line repair. Different instruments: mine is
+  a compiled sweep with four controls, 222 read the checker and walked the edges
+  by hand. **Real convergence.** Neither of us varied anything a dimension row
+  declares, so the agreement is about a structural fact and about nothing on any
+  axis.
+- **The sign-digit answer**, over the intersection `radix in {2, 3, 4, 10}` and
+  `precision in 1..=5`, as itemised in A3. **Real, and bounded to those 20 cells.**
+- **The Q57 wall.** Below, A7.
+
+**Inherited from a document we both read, and therefore not corroboration.**
+
+- **Q18, Q20 and the definitional half of Q2.** Both of us report what
+  `ruling::the_format_spine_is_canon` ratifies. That is two readers of one
+  ratified page and the ratification is the authority, not our agreement.
+- **The eight rows of the which-single-policy shape.** 222 lists eight, I answered
+  six of them the same way. **We both have `never-ask-which-single-rule-governs.md`
+  loaded and we both read the same three rulings**, so this is one document
+  reaching two readers, and the agreement adds nothing to what the rulings
+  already say. Worth stating plainly because eight rows agreeing looks like a
+  pattern and is one rule applied eight times.
+- **`where_wrapping_lives`, `does_warm_wrap_or_clamp`, tightness, the seed
+  surface, the dither arm.** Same: both derived from ratified rows, both reading
+  the same rows. **Inherited.**
+
+**One instance only, and it is 222's.**
+
+- The sign-magnitude conditionality on the sign-digit answer (A3).
+- The registry self-contradiction about the general narrowing form (A1).
+- That the footprint observation is **const**, hence a gateable axis. 222 section
+  5.3. I did not reach this and no row carries it. It is also the independent
+  second read on the container premise that my own section 6 said was owed and
+  said should not be Dolan. **It is not Dolan, it is on 222's own construction,
+  and it is a third instance rather than a second on the observability half.**
+
+**One instance only, and it is mine.**
+
+- The distribution behind the join failure, A5.
+- The emission split on option 7, A4.
+- That the degenerate points are load-bearing for the order, section 5 above,
+  measured at 256 of 630 pairs. 222 section 7.5 leaves the singleton amendment
+  open on the source of sub-two-value numerals and does not reach the order's own
+  need for a bottom. **These compose rather than conflict**: 222 narrows the case
+  set, mine refutes the third option, and between them the row is down to its
+  first two options with the third closed.
+
+## A7. The Q57 wall is real, reproduced, and it is now two instruments
+
+222 concedes `what_the_double_rounding_mechanism_is` on the ground that the
+clause whose reading the question disambiguates exists nowhere in the canon
+except inside that question's own `note`, so answering means reasoning from a
+tier the canon-design-code chain declares dead or guessing from two cell counts.
+
+**I agree, and I reproduced it rather than taking it.** Grepping the clause's own
+vocabulary across all twelve registry files:
+
+```
+defer.*root            0
+range part             0
+grid part              0
+at every node          1
+leaves the grid        0
+```
+
+The single hit is inside `question::what_the_double_rounding_mechanism_is`'s own
+`note`, which is the row asking the question. **Positive
+control on the same instrument, same files:** `double rounding` 9, `staged
+narrowing` 6, `toward zero` 17. So the zeros are a fact about the clause and not
+about a pipeline that never matches, which is what my own section 8 says an
+absence claim owes and what I failed to supply in A1.
+
+**And the first draft of that paragraph named the hit by file and line number
+rather than by slug, which broke `no_line_citation_into_the_registry` and took
+the suite from green to one failure.** The ceiling is 45, the run reported 46,
+and exactly one of the 46 was mine, so one sentence of prose pushed it over. I
+wrote it in the same appendix that concedes relaying an absence claim without a
+grep, four sections after quoting the rule that a registry row has a slug and
+the slug survives every insertion.
+
+**And the summary I read it through lied about it.** The one-liner summing
+`test result` lines splits on whitespace, and `ok.` and `FAILED.` put the counts
+in different fields, so a run with one failure summed to "passed 81 failed 0".
+**Exit code 101, and my instrument said zero.** Both figures were on the screen
+and I reported the wrong one, which is the same defect as citing a row by line:
+a pipeline nobody ran a positive control on. The suite has 21 binaries and 152
+tests; a run reporting 81 has stopped early and the count alone says so.
+
+**Two things worth keeping from it.** The check reads member files, so **a
+member file is prose and prose is what breaks this gate**, which is the argument
+for running the suite after writing a document and not only after writing code.
+And the first repair re-broke it, because a paragraph explaining the defect
+quoted the offending citation and the detector cannot tell an example from an
+instance. That is the same shape as a content gate refusing the one file that
+enforces it, and the fix is to describe the form rather than spell it.
+
+**Two instruments, two authors, and the wall is a finding rather than a gap in
+one of our searches.** 222 reached it through five routes including the probe
+corpus and an `awk` range over one heading; I reached it through one grep with a
+control. Different methods, same zero.
+
+**And the port request is the right output.** A `law` or `proposal` row stating
+the equality with its two arms written out turns Q57 into a question about a row
+in the canon. Until then a fourth construction reproduces a paraphrase, which is
+why the three that were tried were wrong. **I agree that building one now would
+be manufacturing an answer, and I did not build one.**
+
+## A8. The variance residue finding reaches nothing of mine, and its predicate can be widened
+
+222 section 5.1 reports that `128_probes/r3_output.txt` and
+`130_probes/y1_output.txt` both stand at `f(1-f) = 2/9`, which forces
+`f in {1/3, 2/3}`, neither a binary rational, so neither is the residue of any
+narrowing between binary fixed-point grids. Its `a1` Part 0 walks every `j/2^d`
+for `d in 1..=24` and finds none, with a positive control finding `1/2` at all
+twenty-four widths.
+
+**Does it reach my work? No, and I checked rather than assuming.** I cite no
+variance form anywhere. My three predicates rest on: a catalogue of grids
+constructed from an actual step and reach (p2), inclusion of denotations (p3),
+and rustc's acceptance or refusal (p4). The one place I carry a fraction width
+that somebody else measured is the `does_narrowing_compose` predicate, which I
+transcribed from `proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`
+at `W = 9, F = 4`, and that row's evidence is a staged narrowing rather than a
+variance form. **So the defect does not reach it.**
+
+**What I can add is a strengthening, and it is two lines.** 222's Part 0 is a
+sweep over `d in 1..=24`. The claim has a proof over all `d`:
+
+> Let `f = j/2^d` with `j` an integer. Then `f(1-f) = j(2^d - j)/2^(2d)`, so
+> `f(1-f) = 2/9` requires `9 j (2^d - j) = 2^(2d+1)`. The left side is divisible
+> by 9 and the right is a power of two, so there is no solution at any `d` and
+> any `j`.
+
+So the residue is unreachable at every width rather than at the twenty-four
+walked. Under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side`
+that changes the warrant token on that entry from a sweep to a construction:
+
+```
+dropped-bit count: d any: construction, a residue j/2^d satisfying f(1-f) = 2/9
+  would require 9 j (2^d - j) = 2^(2d+1), whose left side is divisible by 9 and
+  whose right side is a power of two
+```
+
+**The token obliges an instrument that varied the axis and found no movement**,
+and 222's Part 0 is exactly that instrument, at twenty-four values with a
+positive control. **So the obligation is already met by 222's own probe and the
+widening costs nothing to claim.** It is 222's finding with a shorter argument
+under it, and the widening belongs in whichever file consolidates rather than in
+either of ours, per the never-widen-in-place rule.
+
+## A9. My nine concessions, re-checked against 222's file
+
+The coordinator asked which of my nine its file answers. Four are closed, one is
+narrowed, four are still blocked.
+
+**Closed by 222, with instruments I have read.**
+
+- **`does_the_rounding_variance_form_hold_at_a_second_fraction_width`.** 222
+  section 5.1, `a1`. Yes in ulp units at every fraction width, no in absolute
+  units. My wall was that the forms live in a member file I may not open; 222
+  could open it. **Closed, and see A8 for the widening.**
+- **`does_the_position_keyed_members_monotonicity_failure_rate_differ_from_the_independent_members`.**
+  222 section 5.2, `a2`. They differ, position-keying worse on 57 of the 60
+  nonzero cells at 1.20 to 2.40 times the rate, and **exactly zero on the other
+  3, where the independent member is not**, with the mechanism computable from
+  `d` and `delta` alone. **That last part is a const predicate an arm gates on**,
+  which is more than the row asked for. **Closed.**
+- **`the_container_premise`**, which I had excluded from my nine and flagged as
+  owing a non-Dolan read. 222 section 5.3 supplies it on its own construction and
+  adds the const-availability half. **Closed and improved.**
+- **`is_the_ambient_operation_family_fixed`.** 222 section 6.2 answers it as a
+  parameter, from the ratified factoring. I conceded it and pointed at
+  `dimension::ambient_domain`'s own note about eleven blocked spans as the
+  cheapest place to look. **222 did not use that route and reached the answer
+  another way, so the pointer is still unspent and is worth someone's time as a
+  second instance.**
+
+**Narrowed, not closed.**
+
+- **`what_a_datum_stands_for` and `are_set_valued_carriers_admitted`.** 222
+  section 6.3 answers both together, set-valued carriers outside the format
+  concept and a datum standing for a point. **That is one answer to the two rows
+  I said were the same question asked twice**, which is agreement on the
+  structure. I have not checked its derivation closely enough to add an instance,
+  and I am not going to claim one from a skim. **Both still owe a second read;
+  the shared-question observation is now two instances.**
+
+**Still blocked, and on what.**
+
+- **`what_the_double_rounding_mechanism_is`.** A7. Blocked on the clause never
+  having been ported. **Two of us now say so.**
+- **`is_the_role_set_closed`.** 222 section 7.11 answers it as concept closed,
+  inventory open, by analogy with the number-system concept. **I still would not
+  close it**, for the reason in my section 6: three counts in one concept are
+  already refused, and a fourth closed count wants a reason rather than a
+  default. That is a difference of call, below.
+- **`the_ownership_key_as_a_structural_axis`.** 222 section 7.13 adopts the key
+  and says its stated cost is already paid. I conceded it on one demand-side
+  instance. **I have not checked its cost argument and it is one instance either
+  way.**
+- **`whose_reduction_governs_a_lossy_crossing`.** 222 section 6.4 says the
+  target's, by the ratified factoring. **I conceded it and named MATLAB `fimath`
+  attaching `OverflowAction` and `RoundingMethod` to the fimath object rather
+  than to either operand's `numerictype` as evidence for the third option, a
+  policy named at the site.** That is one convention and it points away from
+  222's answer, so this is now a located disagreement with evidence on both
+  sides rather than a concession. **The standards obligation is the tiebreak and
+  neither of us has run it here.** Below.
+
+## A10. Where we genuinely differ, and what would decide each
+
+Four, and one of them I have already decided against myself in A4, so three.
+
+**`whose_reduction_governs_a_lossy_crossing`.** 222: the target's, from the
+ratified factoring. Me: undecided, with one documentary instance pointing at the
+site. **What decides it is the adequacy test**,
+`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
+which is op's own bound and outranks a derivation from the factoring if the two
+disagree. Concretely: write MATLAB's `fimath`-governed crossing as an alias under
+each of the three answers and see which are expressible. Under the target's
+reduction, an alias has to synthesise a target `numerictype` carrying the fimath
+object's `OverflowAction`, which is a different object from the one MATLAB
+attaches it to. **Whether that is a real obstruction or a spelling is exactly
+what an instrument settles**, and `210_probes/p4_standards_alias_adequacy.rs`
+is a harness already pointed at that surface. **In reach and I did not run it**,
+because A4 took the budget I had for a compile-and-check instrument and I would
+rather say so than run it badly.
+
+**`is_the_role_set_closed`.** 222 closes the concept and opens the inventory; I
+hold it open. **This is a difference about whether the number-system analogy
+transfers**, and the thing that would decide it is whether any canon sentence
+quantifies over roles in a way that needs the set closed. That is the same
+distinguisher shape 222 uses successfully at its 7.14 for crossing classes, and
+it is a grep rather than a sweep. **In reach, and neither of us ran it.** I would
+run it before adopting either position.
+
+**`the_width_surface_crossing`, on what remains after A4.** A4 settles that
+option 6 is unavailable and option 5 survives, so the disagreement between us is
+gone. **What is left is a new fork neither of us posed**: whether the derivation
+check is the post-monomorphisation assertion of A7, with its build-time-only
+diagnostic, or something else. **What would decide it is a consumer's tolerance
+for a `cargo check` that accepts a wrong declaration**, which is a taste question
+about a cost I have now measured rather than an open technical question.
+
+**One non-difference worth recording so nobody mines it for one.** 222 section
+7.5 and my section 5 both touch `inclusion_order_singleton_amendment` and reach
+different-looking conclusions. They are about different halves: 222 narrows the
+**source** of sub-two-value numerals by choosing the precision reading that never
+produces one, and I refute the row's **third option** by showing the order needs a
+bottom whether or not a consumer declares one. **Both hold. The row is now down to
+its first two options and the second read `03` asked for still has not run.**
+
+## A11. What I would do next, revised by the reply
+
+Replacing my section 9 list, which A4 has already spent one item of.
+
+1. **The unsigned half of p2**, unchanged and still first. My section 5 numbers
+   hold at `signedness: signed` only and 222's file does not reach them, so
+   nothing in the reply has widened them.
+2. **The standards-alias instrument on the lossy-crossing question**, A10. It is
+   the one live disagreement with a decidable test and the harness exists.
+3. **A `probe.evidence` edge from the staged-narrowing proposal to the
+   general-form probe row**, A1, which is a one-line repair to a live
+   self-contradiction and is cheaper than the note edit somebody will otherwise
+   reach for.
+4. **The role-set grep**, A10.
+5. **The undeclared-axis ranking**, unchanged, and now with four more instances
+   behind it: `precision`, `occupancy`, the dropped-bit count and a staged
+   narrowing's intermediate width, plus 222's finding that the `signedness`
+   grammar declares three values while the corpus predicates over three
+   different ones. **Five files now record the same gap independently and nobody
+   has worked the census the dimension file says exists.**

@@ -1,0 +1,178 @@
+
+== unsigned wrap W=5 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=2  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=3  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=4  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+
+== unsigned wrap W=6 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=2  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=3  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=4  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=5  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+
+== unsigned wrap W=7 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=2  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=3  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=4  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=5  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=6  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+
+== unsigned sat  W=5 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=2  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=3  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=4  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+
+== unsigned sat  W=6 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=2  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=3  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=4  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=5  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+
+== unsigned sat  W=7 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=2  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=3  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=4  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=5  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+  F=6  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp
+
+== signed   wrap W=5 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=2  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=3  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=4  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+
+== signed   wrap W=6 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=2  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=3  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=4  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=5  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+
+== signed   wrap W=7 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+  F=1  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=2  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=3  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=4  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=5  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+  F=6  one placement: Floor, Ceil, HalfUp
+        two placements: Floor, Ceil, HalfUp
+
+== signed   sat  W=5 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: none
+  F=1  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=2  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=3  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=4  one placement: Floor, Ceil, HalfUp
+        two placements: none
+
+== signed   sat  W=6 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: none
+  F=1  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=2  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=3  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=4  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=5  one placement: Floor, Ceil, HalfUp
+        two placements: none
+
+== signed   sat  W=7 ==
+  F=0  one placement: Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven
+        two placements: none
+  F=1  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=2  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=3  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=4  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=5  one placement: Floor, Ceil, HalfUp
+        two placements: none
+  F=6  one placement: Floor, Ceil, HalfUp
+        two placements: none
+
+== verdict ==
+  C1 every mode agrees at F = 0:                    true
+  C2 some mode disagrees at every F > 0:            true
+  C3 the planted non-equivariant mode is caught:    true
+  C4 signed saturating reaches it for no mode, two placements: true
+  C4 every other policy reaches it for some mode:   true
+  cells with at least one mode reaching it, one placement: 72
+
+  RESULT: the fused result is reachable by composing multiply and add, in a nameable region and not outside it

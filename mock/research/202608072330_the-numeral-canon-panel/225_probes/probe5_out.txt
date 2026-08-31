@@ -1,0 +1,14 @@
+arm A: keyed and selector agree pointwise over the whole box
+  2048 cells, zero disagreements: one map, two spellings
+
+arm B: at shared occupancy the extent is not k * carrier bytes
+  80 of 128 cells differ, so the aggregate fact is not a function of the carrier there
+
+arm C (negative control, MUST FAIL): the mutant with one exceptional cell
+  FAILED AS REQUIRED: first witness at Cold W=24: the sweep separates assignments
+
+arm D (negative control, MUST FAIL): shared extent == k * carrier bytes at W=13, k=5
+  FAILED AS REQUIRED: extent 9 bytes against k * carrier = 10
+  producing the packed extent applies the strategy's packing rule, so the
+  ownership clause carries it; the sole-occupancy stride is size_of(carrier)
+  and is recomputed.

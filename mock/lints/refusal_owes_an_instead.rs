@@ -28,9 +28,23 @@
 //! test, since the testkit stubs `repo_root` to `"."`, and it would duplicate a
 //! parse the engine has already done and could disagree with it.
 //!
-//! A written list goes stale in silence, so the schema guard in
-//! `canon_lint_testkit.rs` reads this file and `mockspace.toml` and fails when
-//! the two disagree.
+//! A written list goes stale in silence, so
+//! `canon_lint_testkit::a_lint_naming_the_namespaces_it_reads_agrees_with_the_schema`
+//! reads this file and `mockspace.toml` and fails when the two disagree about
+//! which namespaces declare `instead`.
+//!
+//! **That guard did not exist when this paragraph first claimed it did**, which
+//! is the shape `a-claim-of-totality-names-what-enforces-it.md` names: a claim
+//! of coverage naming an enforcer that was not there, sitting above a list the
+//! same paragraph warned would go stale in silence. Two independent readers
+//! found it within an hour of each other. It exists now.
+//!
+//! **What it compares is `instead` and not the `kind`-with-`refusal` half.** A
+//! value set is written as an array across several lines and reading it would
+//! need the TOML parser the generated pack has no route to depend on. So a
+//! namespace that gained `instead` is caught and one that gained `refusal` to an
+//! existing `kind` is not, which is stated here rather than left for somebody to
+//! discover.
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(RefusalOwesAnInstead)

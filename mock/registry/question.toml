@@ -272,6 +272,7 @@ keywords = ["width surface", "const generic", "type-level nat", "bridge", "typen
 
 [[question]]
 id = "container_derivation_output_count"
+answered = "Not a single count, because the derivation is a placement rather than a semantics and the fact set differs by occupancy: one output at sole occupancy, the carrier; three at shared, the carrier, the access width and the stride. Two arms over a region, which is what the ratified arms-over-regions intent asks for, and the axis they gate on is now declared as `dimension::occupancy`.\n\n**The standing selector-versus-key disagreement does not survive the floor's dissolution.** Selector and key are one function curried two ways, and the floor removed the only thing that made the difference observable. One seat argued it from the identity clause, two factorings separated by no declared signature being one design; the other compiled both orders and showed they resolve identically with both negative controls refusing. Constructively, both readings name the wrong key: the ladder is keyed on the placement objective and the strategy-to-objective map is the selector.\n\nSettled by `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule` on two independent instances. The option list was the category-binary shape a third time in this topic family."
 asks = "How many outputs does the container derivation have, and what is each one for?"
 options = [
   "One output, the carrier alone, which occupies more memory than the strategy promises because the map from width and strategy to carrier is not injective.",
@@ -1084,6 +1085,7 @@ keywords = ["double rounding", "grid", "staged", "direct", "narrowing", "chained
 
 [[question]]
 id = "which_operation_set_the_design_ships"
+answered = "The design ships an admission rule rather than a list: an operation is admitted exactly when it is a function of the declared signature, and where two realisations of one name disagree, the signature is missing a coordinate. That is the format spine's closed-concept-open-inventory shape one tier down, so it is derived rather than decided. Settled by `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule` on two independent instances.\n\n**What this row's `bound` and `note` presume is superseded.** Both were written when the standards bound was read as constraining arvo's operation inventory. Op corrected that: the bound is parity in output rather than in the internals, and a standard may ship with marked holes because the framework is what has to ship. See `ruling::the_standard_is_parity_in_output_not_in_the_internals`.\n\n**So the four-of-five warning in `note` is retired in the form it is written.** The fused multiply-add's result is reachable by composing multiply and add everywhere except at signed saturating, measured with controls across widths 5 to 7. It is not a required inventory member; it is a required arm at signed saturating. `ruling::the_fused_result_is_composable_except_at_signed_saturating`.\n\n**Membership above the floor stays open** and is better posed now: what the framework must be able to express, and which of those ship now against marked later."
 key = "Q61"
 asks = "Which operation set does the design ship?"
 options = [
@@ -1274,6 +1276,7 @@ keywords = ["truncation", "trunc", "floor", "toward zero", "mode vocabulary", "n
 
 [[question]]
 id = "the_container_premise"
+answered = "Neither branch, because the question is malformed as a binary and both branches are false. Behaviour is stated per declared signature: every operation the design declares is a function of the declared width and never of the machine carrier, while the footprint stays observable through the one observation the design does not own, the host language's layout observation on a sized type, and that observation exists only where the value is the sole logical occupant of its allocation. Settled by `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`, which ratifies the four propositions on two independent instances each.\n\n**The container branch is refuted against op's own standards bound**, returning 8192 where MATLAB `fi` at thirteen bits under wrap documents 0, swept exhaustively per width. **The unobservable-carrier reading of the other branch does not compile**, failing const evaluation on the footprint contract with the stderr committed.\n\nThe option list above was the shape op has refused three times, a single policy over a whole category, so it is closed by dissolution rather than by picking a letter."
 asks = "Is a declared numeral's footprint observable, so that behaviour is stated over the container rather than over the declared width?"
 options = [
   "Footprint is observable, under which the clause saying the realisation is not part of identity is false as written and is rewritten on that branch.",
@@ -1871,3 +1874,33 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::1",
 ]
 keywords = ["ingest", "C ABI", "helper", "cast", "convert", "boundary", "consumer", "blessing", "declined", "elaboration"]
+
+[[question]]
+id = "what_stops_two_files_by_one_persona_reading_as_two_experts"
+asks = "The two-expert tier is the strongest standing a proposition can hold, and nothing mechanical distinguishes two files by two personas from two files by the same persona wearing two seat numbers. What closes that?"
+options = [
+  "A seat records its persona in the registry and the standing check reads it, so the count is over distinct personas rather than distinct files. Cost: a field somebody has to fill honestly, and a persona that changes its mind between sittings still counts once when arguably it should not.",
+  "Nothing mechanical, and the requirement moves to the dispatching side: a coordinator checks persona history before pairing a seat, and records the check with the promotion. Cost: it is a discipline rather than a gate, and the incident that produced this question was a coordinator failing exactly that check.",
+  "Independence is not a property of the author at all but of the instruments, so the check is over what each file actually varied. Cost: it is the honest reading and no instrument in this repository can compute it today.",
+]
+decider = "panel"
+topic = "panel_conduct"
+unblocks = "Whether any two_experts standing in the registry can be trusted without a human reading both files and recognising the authors."
+note = "**Filed because the corpus currently reads as though this were solved.** The mechanical check verifies a `two_experts` or `three_or_more` row cites more than one file, and its own text says plainly that it cannot tell whether two authors arrived separately and does not pretend to. That honesty is inside the check and invisible to anybody reading the registry, where the standing just says `two_experts`.\n\n**It has already happened once and was caught only by self-disclosure.** Seats 210 and 221 are the same persona, and 221 reported the collision itself rather than any instrument finding it. Nothing in the registry rests on that pair as though it were two, which is luck plus one honest author rather than a mechanism working.\n\nThe third option is what `expert-dispatch-defends-the-canon` already says in the workspace: two agreeing instances agree about the intersection of the dimensions they each varied, which is sometimes empty. That framing makes persona identity a proxy rather than the thing itself."
+provenance = ["panel::202608072330_the-numeral-canon-panel::221_dolan_the_numeric_fundamentals::#1-what-i-read-when-and-where-my-blindness-is-thin"]
+keywords = ["two experts", "standing", "persona", "independence", "seat", "provenance", "promotion", "collision", "self-disclosure", "instrument"]
+
+[[question]]
+id = "can_a_claim_about_the_canons_own_structure_carry_a_region"
+asks = "All declared dimensions are numeric or machine axes, so a reasoned claim about the canon's own contents has no expressible region and can only be filed `normative` or `definition`. Is that the intended shape or a gap in the notation?"
+options = [
+  "A gap: the dimension vocabulary grows an axis over the canon's own structure, so a structural claim can say where it holds the way every other claim does. Cost: an axis whose values are topics or namespaces, which is a different kind of thing from a width, and the notation would then range over two kinds.",
+  "Intended: claims about the canon are governance rather than findings, so `normative` is the right filing and the absence of a region is correct rather than missing. Cost: a reasoned structural claim and an imposed one become indistinguishable once filed, and the reasoning stops being checkable.",
+  "Neither: such a claim does not belong in the registry at all, and the canon should carry claims about arvo while claims about the canon live in the workspace rules. Cost: the layering derivation and its siblings move out, and the registry loses the ability to state what it rests on.",
+]
+decider = "panel"
+topic = "the_predicate_notation"
+unblocks = "Whether `normative` is currently doing duty for a third thing nobody named, and therefore whether any structural claim in the registry is checkable."
+note = "**Filed rather than left inside one proposal's prose, so something forces it to be revisited.** The twenty-one declared dimensions are integer width, fraction width, total width, signedness, overflow policy, rounding, operation, arity, chain length, container, alignment, access pattern, target features, threads, strategy, ambient domain, radix, accumulator width, toolchain, build profile and operand window. Every one is about a number or a machine.\n\n**So the check that refuses an `argument` carrying no region is right to fire on a structural claim, and the only way past it is to file the claim as something it may not be.** Three rows hit this in one sitting and were refiled `normative`, which is defensible for a claim that imposes an order and wrong for one that reasons its way to a conclusion. The notation gives no way to tell those apart afterwards.\n\nThe second option is not a concession. A canon sentence about how the canon is written may genuinely be governance, in which case nothing is broken and this closes."
+provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#its-standing"]
+keywords = ["predicate", "region", "dimension", "structural", "normative", "definition", "sentence kind", "governance", "notation", "gap"]

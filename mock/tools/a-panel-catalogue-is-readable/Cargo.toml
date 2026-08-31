@@ -1,0 +1,38 @@
+# A lint that lives in a tool crate, because it needs a parser.
+#
+# Its first refusal is a catalogue that does not parse, and nothing short of a
+# parser can establish that. The generated lint pack's manifest is written by the
+# engine, so a lint under `mock/lints/` reaches `std` and the lint-rules crate
+# and nothing else, and no lint file can add a dependency to it. A tool crate has
+# its own manifest, and `lint_pack!` registers a `RepoLint` from one, so the
+# check gates exactly like the others while reaching the reader it needs.
+#
+# That is a gap in the lint contract rather than a third kind of check. The
+# honest fix upstream is a way for a repository to declare a dependency for its
+# own lint pack; until then this is where the check can live and still refuse.
+#
+# Its own workspace root. This crate sits inside the mock workspace directory
+# and is not a member, and cargo refuses that outright: "current package
+# believes it is in a workspace when it is not". Membership is the wrong fix,
+# since it would put a cdylib into the consumer's dependency graph.
+[workspace]
+
+[package]
+name = "arvo-a-panel-catalogue-is-readable"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+# The URL spelling has to match the one the engine pins, character for
+# character. Cargo keys a git source by its URL, so `https://` here against
+# `ssh://` there is two copies of the same crate in one graph and a type
+# mismatch across the boundary, with nothing in the error saying so.
+mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+# Comment-preserving, and the same reader the engine's own registry loader uses,
+# so a file this accepts is one the engine accepts too.
+toml_edit = "0.22"
+
+[lib]
+crate-type = ["cdylib", "rlib"]

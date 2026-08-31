@@ -28,19 +28,41 @@ be permitted. That has already happened twice.
 
 ## Where the authority actually is
 
-The canon is being written at
-`mock/research/202608072330_the-numeral-canon-panel/`. Two files there
-carry what binds:
+**The canon is the registry**: typed rows under `mock/registry/*.toml`,
+declared as `canon_paths` in `mockspace.toml`. Query it with `cargo mock
+query`, never from memory, and cite a row by its slug rather than by
+line, because the registry gains rows constantly and a line citation
+keeps resolving while naming something else.
 
-- `INTENTS.md` is op's stated intents, quoted with provenance. Op is
-  the lead designer and the only ratifying human. This is the material
-  that graduates into the canon.
-- `RULES.md` is how that panel works, including the provenance ladder.
+What binds, in order:
 
-Everything else in that directory is agent output produced without a
-recorded human decision. Presume it wrong where it conflicts with op,
-and treat agreement between two unratified files as shared drift rather
-than corroboration.
+- **`ruling` rows at `rung = "ratified"` govern.** `ratified_by = "op"`
+  means the lead designer stamped it. `ratified_by = "experts"` means
+  two independent experts converged and the coordinator gated it, which
+  is a ratification and is treated as one.
+- **`rung = "stated"` is his direction**, carrying his own words in a
+  `quote` field. It binds as direction and is not yet canon.
+- **`proposal` rows are not canon**, whatever their `standing` says.
+  `standing` records how many independent instances back the claim, and
+  a claim with two is still a proposal until a ruling stamps it.
+
+**`mock/research/` is the argument behind the canon, not the canon.**
+Everything in it is agent output produced without a recorded human
+decision, `INTENTS.md` included: op's intents live there as the panel
+recorded them and reach the canon as `ruling` rows carrying their `key`.
+Read the tree for evidence and provenance; reason from the registry.
+
+Presume unratified material wrong where it conflicts with the canon, and
+**treat agreement between two unratified files as shared drift rather
+than corroboration**, since agents copy each other's framing.
+
+**Op has left the canon work.** `ruling::the_panel_finishes_the_canon_without_him`
+carries his words: it should be solvable and fully fillable from what he
+has already said. So a canon question does not go to him. Derive it from
+the intent inside its spirit, put it through two independent agreements,
+and remember that **his silence is not permission**. Where the canon
+explicitly holds a question open and reserves the call, that is not
+silence and it may not be filled inside a design.
 
 ## The constraints that are not open, and are not to be questioned
 
@@ -67,7 +89,8 @@ inherited rather than intended. Finding an older copy of a rule does not demote 
 authority was this workspace's rules and this repo's own mockspace configuration the whole time, both
 live and both enforced.
 
-Cite them freely. Build on them. They are in `INTENTS.md`.
+Cite them freely. Build on them. They are `ruling` rows in the registry,
+several of them ratified, and `cargo mock query` will find them.
 
 ## What is open, including things that used to read as settled
 
@@ -83,7 +106,8 @@ presumes their meanings are fixed.
 
 What each strategy weighs is likewise intent rather than rule. They are
 all decided by measurement; what differs is which measurements each one
-weighs most. Read `INTENTS.md` for op's own statement of each, and do
+weighs most. Read the `ruling` rows on `topic = "the_strategy_axis"` for
+op's own statement of each, in his words in their `quote` fields, and do
 not compress those statements into a table of absolutes.
 
 ## Consumers

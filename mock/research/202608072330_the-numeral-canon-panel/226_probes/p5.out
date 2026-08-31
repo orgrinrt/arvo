@@ -1,0 +1,28 @@
+== the free chain length, both routes ==
+  W  headroom  longest free chain, exact / closed form
+  3  5         35      31
+  4  4         16      15
+  5  3         7       7
+  6  2         3       3
+  7  1         1       1
+  8  0         0       0
+  9  7         127     127
+  10 6         63      63
+  11 5         31      31
+  12 4         15      15
+  13 3         7       7
+  14 2         3       3
+  15 1         1       1
+  16 0         0       0
+
+== C1 control: the same form with one bit of slack it does not have ==
+  cells where the optimistic form disagrees with the exact: 313
+  of those, unsound (form says free, exact says it splits):  313
+
+== verdict ==
+  cells where the closed form disagrees with the exact: 5
+  of those, unsound:                                    0
+  C1 the optimistic form is caught, and caught unsound:  true
+  C2 both outcomes where there is headroom, split only where there is none: true
+
+  RESULT: the closed form is sound and conservative; the exact condition is the wider arm
