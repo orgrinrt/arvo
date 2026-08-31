@@ -1397,3 +1397,8 @@ arvo-bits-contracts = ["numeric"]
 arvo-mask-contracts = ["numeric"]
 arvo-bits = ["numeric"]
 arvo-hash = ["numeric"]
+
+[lints.the-axis-set-is-append-only]
+commit = "error"
+build = "error"
+push = "error"
