@@ -812,3 +812,98 @@ control = "The whole instrument is a control, and its header is the clearest sta
 standing = "sound"
 note = "The finding is about a test rather than about a numeral. It refutes the sufficient direction of a standing admission test, which is the useful shape: the test was passed by something that computes nothing, so passing it says nothing."
 keywords = ["collapse", "mutation", "cannot fail", "exposure test", "ambient domain", "self-declaration", "admission", "sufficiency", "refuted"]
+
+# --- the strategy axis, files 92 to 107 -------------------------------------
+#
+# Nine of the twenty-one blocked claims sit here. The instruments are unusually
+# strong: two carry a closed form predicted before the sweep, one carries a
+# mutant as a separate committed file, and one is a join over harness metadata
+# that a second author redid independently rather than accepting.
+
+[[probe]]
+id = "the_rationalisable_sections_on_the_committed_carrier_table"
+establishes = "On the committed carrier-width table, of 15625 sections 9 are rationalisable by a non-negative weighting at zero tolerance, rising to 134 at one percent. So a section and an argmin under a weighting are different objects and the gap between the two definitions is a number rather than an argument."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p1_rationalisable_sections.py::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p1_rationalisable_sections.out::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p1b_the_gap_is_structural.out::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p1b_the_gap_is_structural.py::1",
+]
+control = "The tolerance sweep is the arm: a count that does not move as the tolerance widens would be measuring the parser rather than the table, and it moves from 9 to 134 at one percent. The successor asks separately whether the gap is structural rather than an artifact of the particular table."
+standing = "sound"
+note = "Built because two files had been recorded as reaching one proposition by two experts when they state different propositions, one that a strategy is a named section and one that it is a preference whose argmin produces that section. This instrument is what turns that into a countable difference."
+keywords = ["rationalisable", "section", "argmin", "weighting", "carrier table", "15625", "tolerance", "two experts", "strategy"]
+
+[[probe]]
+id = "one_congruence_property_predicts_every_law_verdict"
+establishes = "Where the realisation map respects an operation, the representable set with its induced operations is a quotient of the exact structure, so every identity of exact arithmetic transfers at every arity. Measured against the per-law verdict tables the panel had been collecting one law at a time: zero soundness mismatches and zero conservative mismatches."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p2_congruence_predicts_the_laws.py::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p2_congruence_predicts_the_laws.out::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p2b_the_subtraction_control_is_arithmetic.py::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p2b_the_subtraction_control_is_arithmetic.out::1",
+]
+control = "The two mismatch directions are counted apart, soundness against conservative, so a predictor that simply says yes everywhere shows up as conservative mismatches rather than as a clean sheet. And the companion arm derives a closed-form failure rate for one cell before measuring it, `1 - 2^(1-W)`, and prints predicted against measured per width. A prediction written before the sweep is the strongest control shape in this corpus and it appears twice."
+standing = "sound"
+note = "The companion also removes a cell from evidence rather than adding one: wrapping subtraction failing to associate is integer arithmetic, since `(a - b) - c` and `a - (b - c)` differ by `2c` in the integers, so the cell says nothing about the policy and cannot support the independence claim it was offered for."
+keywords = ["congruence", "quotient", "law verdict", "predictor", "identity", "transfer", "closed form", "subtraction", "arity", "552"]
+
+[[probe]]
+id = "no_conservatism_order_exists_on_the_overflow_axis"
+establishes = "Two candidate orders on the overflow axis, both computed exhaustively for signed and unsigned side by side, disagree. Under the law order wrapping and saturating are incomparable, so a join over it does not exist; under the fidelity order they are ranked, and that order itself splits into two metrics which disagree and tie wrapping against saturating."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p3_does_a_conservatism_order_exist.py::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p3_does_a_conservatism_order_exist.out::1",
+]
+control = "Computing both candidate orders rather than one is the arm. A single order computed alone comes back with an answer whichever it is, and only the disagreement between two independently motivated candidates shows that the phrase naming the order does not name one."
+standing = "sound"
+note = "The finding is that a documented behaviour is under-specified rather than wrong: resolving toward the more conservative side is a phrase that does not say which order is meant, and the two available readings disagree on the pair the documentation uses as its own example."
+keywords = ["conservatism", "order", "join", "overflow", "wrap", "saturate", "incomparable", "fidelity", "resolve", "underspecified"]
+
+[[probe]]
+id = "the_demand_closure_is_generated_rather_than_enumerated"
+establishes = "The closure priced as a cost is the free join-semilattice on its own generators, so it is generated rather than enumerated and costs no names, against a prior report that four markers carrying one demand each leave twelve of sixteen ordered pairs unresolvable and that the smallest closed set has fifteen elements."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p4_demand_lattice.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p4_demand_lattice.out::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p4_mutant_dropped_demand.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p4_generate_pairs.py::1",
+]
+control = "A mutant with a demand dropped, committed as its own file, which the construction must reject. A generated lattice that accepts a mutant is generating something other than the closure, and the mutant is the only thing that separates the two."
+standing = "sound"
+note = "The second mutant in this corpus kept as a separate committed file rather than described. The other is in the strategy-set topic and both are in the same shape: the correct construction beside the wrong one, so the check is that the machinery separates them."
+keywords = ["demand", "closure", "join-semilattice", "generated", "enumerated", "mutant", "markers", "resolution", "free"]
+
+[[probe]]
+id = "most_committed_bench_regions_predate_the_validation_gate"
+establishes = "Of 254 committed bench regions, 175 were produced before the harness driver called cross-variant validation at all and 79 after. Of the 79, all are answer-pinning routines and none was unresolvable."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::103_probes::p8_when_the_gate_was_actually_running.py::1",
+  "panel::202608072330_the-numeral-canon-panel::103_probes::p8_when_the_gate_was_actually_running.out::1",
+  "panel::202608072330_the-numeral-canon-panel::103_probes::p4_the_harness_gate_refuses_a_committed_family.out::1",
+  "panel::202608072330_the-numeral-canon-panel::106_probes::p3_prewiring_join.py::1",
+  "panel::202608072330_the-numeral-canon-panel::106_probes::p3_prewiring_join.out::1",
+]
+control = "The preceding arm is what makes the join worth computing: a committed region taking the harness default would be refused by that comparison at all four of its sizes on all one hundred of the harness's own validation seeds, so the comparison cannot have been running when that region was produced. The join then dates every region against the wiring commit and turns one region's impossibility into a count."
+standing = "sound"
+reproduced = "Redone independently by a second author who resolved each meta file's commit against the wiring commit's time rather than accepting the first result, because the first author had named it as the finding it most wanted re-derived."
+note = "This is the row every claim about the bench corpus's validation should cite, and it composes with the profile rows already here: the regions were built at an undocumented profile and most of them predate the validation gate as well."
+keywords = ["bench", "regions", "cross-variant", "validation", "gate", "wiring", "175", "254", "prewiring", "harness", "join"]
+
+[[probe]]
+id = "a_compile_time_strategy_selection_leaves_no_residue"
+establishes = "A strategy resolved at compile time leaves no residue in the emitted body, on four instruments: a const-fn argmin over a cost table against the hand-written arm at nine instructions each and identical after label normalisation; entry bodies carrying a single tail branch with zero conditionals; and both encodings compiled and compared."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p4_preference_erases.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p4_preference_erases.s::1",
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p4_asm_comparison.out::1",
+  "panel::202608072330_the-numeral-canon-panel::94_probes::a_choice_function.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::94_probes::a_choice_function.s::1",
+  "panel::202608072330_the-numeral-canon-panel::94_probes::b_unbundled.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::94_probes::b_unbundled.s::1",
+  "panel::202608072330_the-numeral-canon-panel::94_probes::f_where_carried.out.txt::1",
+]
+control = "Label normalisation before comparison, which is the arm that stops two identical bodies reading as different, and the emitted assembly is committed beside each source so the comparison can be redone rather than believed. Four instruments across three files agreeing is the corroboration; no single one of them carries a case that had to fail."
+standing = "sound"
+note = "Marked sound on a judgement and it is the thinnest of the sound rows in this file. What each arm does is compile two forms and compare the emitted bodies, and a comparison of two bodies has no natural failing case unless somebody supplies a form that must differ. None of the four does. The finding is corroborated across three authors rather than controlled, and a reader who wants it controlled should ask for an arm whose selection genuinely cannot be resolved at compile time and must therefore leave a branch."
+keywords = ["compile time", "residue", "argmin", "const fn", "emitted body", "assembly", "label normalisation", "tail branch", "selection"]
