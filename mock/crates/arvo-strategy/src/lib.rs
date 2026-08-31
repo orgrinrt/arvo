@@ -3,6 +3,9 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
+#![no_std]
+#![forbid(unsafe_op_in_unsafe_fn)]
+
 //! A name bound to what you are optimising for.
 //!
 //! A strategy is a binding and not a switch. It maps a name onto a placement
@@ -11,21 +14,26 @@
 //!
 //! The set is open. Four presets ship and they are implementors of a concept
 //! rather than members of an enumeration, so a fifth needs no edit to anything
-//! here. What each is for is carried as an intent and not as a table of
-//! behaviours, because the canon says the per-strategy statements are not to be
-//! written down as clear cut and settled.
+//! here.
+//!
+//! **What each preset is for is written as rustdoc on the preset and is not a
+//! trait item.** An intent is something a reader reads and nothing a compiler
+//! gates on, so it is documentation; a `const` in a trait is the opposite of
+//! that, and carrying one made a per-preset compile-time item keyed on the
+//! preset, which is nearer the behaviour table the canon forbids than prose is.
 //!
 //! Which overflow mode each preset names is not written here. That question is
 //! open in the registry, and filling it inside a design is how an open question
 //! gets closed where nobody can see it happen.
 
-#![no_std]
-#![forbid(unsafe_op_in_unsafe_fn)]
-
 use arvo_format::Adaptation;
 use arvo_placement::Objective;
 
 /// A name bound to an objective and an adaptation selection.
+///
+/// Two items and no third. A third keyed on which preset this is would be the
+/// behaviour table again, and the compiler is what enforces the count: adding an
+/// item breaks every impl with `E0046` before any test runs.
 ///
 /// Open: an implementor outside this crate is a strategy this crate does not know
 /// about, which is the intended shape and not a gap.
@@ -49,38 +57,25 @@ pub const fn objective_of<S: Strategy>() -> Objective {
     S::OBJECTIVE
 }
 
-/// The intent behind a preset, in the words the canon has for it.
-///
-/// Carried as prose on purpose. The canon says these are not to be written down
-/// as clear cut and settled, so there is no table of behaviours keyed on a name
-/// and this is what stands in its place: something a reader can read and nothing
-/// a compiler can gate on.
-///
-/// Debug builds only. A static string is not part of this stack's release
-/// surface, and an intent is documentation rather than something the lowered
-/// program needs, so gating it is what the shape asks for rather than a
-/// concession to a lint.
-#[cfg(debug_assertions)]
-pub trait StatedIntent {
-    /// What this preset is for, as an intent rather than a rule.
-    const INTENT: &'static str;
-}
-
 /// The presets the corpus carries.
 ///
 /// Kept because a prior design can name the parts well and go wrong in execution,
 /// and nothing here has found these four wrong. They are instances, not the
 /// inventory.
 pub mod presets {
-    #[cfg(debug_assertions)]
-    use super::StatedIntent;
     use super::Strategy;
+    use arvo_format::Adapt;
     use arvo_format::overflow::{Saturate, Wrap};
     use arvo_format::rounding::{HalfEven, TowardZero};
-    use arvo_format::Adapt;
     use arvo_placement::Objective;
 
     /// The speed-first binding.
+    ///
+    /// Performance and efficiency, even at the cost of accuracy or soundness.
+    /// Sacrificing soundness is its explicit purpose rather than a tolerated
+    /// defect, but it should not lose soundness for nothing: the price is a
+    /// provable meaningful gain. What counts as meaningful is unset and nobody
+    /// has set it.
     pub struct Hot;
 
     impl Strategy for Hot {
@@ -88,15 +83,14 @@ pub mod presets {
         type Adaptation = Adapt<TowardZero, Wrap>;
     }
 
-    #[cfg(debug_assertions)]
-    impl StatedIntent for Hot {
-        const INTENT: &'static str = "Performance and efficiency, even at the cost of accuracy or \
-             soundness. Sacrificing soundness is its explicit purpose rather than a tolerated \
-             defect, but it should not lose soundness for nothing: the price is a provable \
-             meaningful gain. What counts as meaningful is unset and nobody has set it.";
-    }
-
     /// The storage-minimising binding.
+    ///
+    /// Cold paths and cold storage. It aggressively minimises and bitpacks and
+    /// stays small for memory or disk. Because the path is cold it has leeway to
+    /// be inefficient, and it is not obliged to take it: it may use the same
+    /// paths the speed-first binding uses wherever nothing in its intent fights
+    /// them. It is not deprioritised, and that survives the set being reshaped,
+    /// renamed or resized.
     pub struct Cold;
 
     impl Strategy for Cold {
@@ -104,16 +98,13 @@ pub mod presets {
         type Adaptation = Adapt<TowardZero, Wrap>;
     }
 
-    #[cfg(debug_assertions)]
-    impl StatedIntent for Cold {
-        const INTENT: &'static str = "Cold paths and cold storage. It aggressively minimises and \
-             bitpacks and stays small for memory or disk. Because the path is cold it has leeway \
-             to be inefficient, and it is not obliged to take it: it may use the same paths the \
-             speed-first binding uses wherever nothing in its intent fights them. It is not \
-             deprioritised, and that survives the set being reshaped, renamed or resized.";
-    }
-
     /// The accuracy-first binding.
+    ///
+    /// Sacrifices as much performance and efficiency as makes sense to reach the
+    /// most precise answer, throwing out both the speed and the footprint
+    /// optimisations, and especially within chains rather than only per
+    /// operation. Its objective had no measurement in the panel and that gap is
+    /// recorded rather than papered over.
     pub struct Precise;
 
     impl Strategy for Precise {
@@ -121,30 +112,18 @@ pub mod presets {
         type Adaptation = Adapt<HalfEven, Saturate>;
     }
 
-    #[cfg(debug_assertions)]
-    impl StatedIntent for Precise {
-        const INTENT: &'static str =
-            "Sacrifices as much performance and efficiency as makes sense \
-             to reach the most precise answer, throwing out both the speed and the footprint \
-             optimisations, and especially within chains rather than only per operation. Its \
-             objective had no measurement in the panel and that gap is recorded rather than \
-             papered over.";
-    }
-
     /// The compromise binding, meant as the sensible default.
+    ///
+    /// The intuitive best choice for most every use case. The intuitive part
+    /// demands it mimics, and being a Rust crate makes Rust's way the baseline
+    /// for what a reader finds intuitive, but that is a baseline and not a
+    /// definition: mimicry is dropped where following it is consistently the
+    /// worse choice.
     pub struct Warm;
 
     impl Strategy for Warm {
         const OBJECTIVE: Objective = Objective::Access;
         type Adaptation = Adapt<HalfEven, Wrap>;
-    }
-
-    #[cfg(debug_assertions)]
-    impl StatedIntent for Warm {
-        const INTENT: &'static str = "The intuitive best choice for most every use case. The \
-             intuitive part demands it mimics, and being a Rust crate makes Rust's way the \
-             baseline for what a reader finds intuitive, but that is a baseline and not a \
-             definition: mimicry is dropped where following it is consistently the worse choice.";
     }
 }
 

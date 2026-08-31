@@ -5,16 +5,18 @@
 
 //! The laws the design names, over every preset rather than the one that was
 //! convenient.
+//!
+//! Every test here runs in both build profiles. Nothing in this file is behind a
+//! `cfg`, which is the property the round that wrote it was fixing: a test that
+//! exists in one profile and not the other is a coverage claim that changes with
+//! the build while the runner reports `0 ignored` either way.
 
 use crate::presets::{Cold, Hot, Precise, Warm};
-use crate::{objective_of, Strategy};
+use crate::{Strategy, objective_of};
 use arvo_format::overflow::{Policy, Wrap};
 use arvo_format::rounding::{Mode, TowardZero};
-use arvo_format::{overflow_of, rounding_of, Adapt};
-use arvo_placement::{derive_sole, Objective};
-
-#[cfg(debug_assertions)]
-use crate::StatedIntent;
+use arvo_format::{Adapt, overflow_of, rounding_of};
+use arvo_placement::{Objective, derive_sole};
 
 // --- the control -------------------------------------------------------------
 
@@ -92,11 +94,6 @@ impl Strategy for Bespoke {
     type Adaptation = Adapt<TowardZero, Wrap>;
 }
 
-#[cfg(debug_assertions)]
-impl StatedIntent for Bespoke {
-    const INTENT: &'static str = "A consumer's own binding, admitted by supplying the obligations.";
-}
-
 #[test]
 fn the_strategy_inventory_admits_a_member_this_crate_does_not_know_about() {
     assert_eq!(objective_of::<Bespoke>(), Objective::Footprint);
@@ -122,62 +119,45 @@ fn a_new_strategy_reaches_the_ladder_the_same_way_a_preset_does() {
     assert_eq!(from_preset, from_bespoke);
 }
 
-// --- the presets carry intents and not behaviour tables ----------------------
-
-#[cfg(debug_assertions)]
-#[test]
-fn every_preset_states_an_intent() {
-    for intent in [
-        <Hot as StatedIntent>::INTENT,
-        <Cold as StatedIntent>::INTENT,
-        <Warm as StatedIntent>::INTENT,
-        <Precise as StatedIntent>::INTENT,
-    ] {
-        assert!(!intent.is_empty());
-        assert!(
-            intent.len() > 80,
-            "an intent that fits in a label is a behaviour table with the columns \
-             removed, which is the shape the canon says not to write"
-        );
-    }
-}
-
-#[cfg(debug_assertions)]
-#[test]
-fn the_intents_are_four_distinct_statements() {
-    let intents = [
-        <Hot as StatedIntent>::INTENT,
-        <Cold as StatedIntent>::INTENT,
-        <Warm as StatedIntent>::INTENT,
-        <Precise as StatedIntent>::INTENT,
-    ];
-    for i in 0..intents.len() {
-        for j in 0..intents.len() {
-            if i != j {
-                assert_ne!(intents[i], intents[j]);
-            }
-        }
-    }
-}
+// --- both items are reachable uniformly, which is what this can assert ------
 
 #[test]
-fn no_preset_carries_a_behaviour_keyed_on_its_own_name() {
-    // Structural. `Strategy` has exactly two items, an objective and an
-    // adaptation, and neither is keyed on which preset this is. A third item
-    // naming a per-strategy behaviour would break this file.
+fn every_preset_resolves_both_items_through_one_generic_path() {
+    // This test used to claim it would break if a third item keyed on the preset
+    // were added to `Strategy`. It would not: a third item breaks every impl with
+    // `E0046`, four errors before any test runs, and that is the compiler's job
+    // rather than this file's. Verified by adding `const NAME: &str` to the trait
+    // and to all five impls, at which point the old version of this test passed
+    // while the construction it forbade was present.
     //
-    // Asserted by exercising both items on every preset through the same generic
-    // path: if a preset had behaviour of its own, this function could not be
-    // written once and applied to all four.
+    // What it can honestly assert is uniform access: every preset resolves both
+    // items through the same generic path, and the values that come back are the
+    // ones the preset declares. That fails if any preset ever gets a privileged
+    // route, which is a property a consumer actually depends on.
     fn both_items<S: Strategy>() -> (Objective, Mode) {
         (objective_of::<S>(), rounding_of::<S::Adaptation>())
     }
 
-    let _ = both_items::<Hot>();
-    let _ = both_items::<Cold>();
-    let _ = both_items::<Warm>();
-    let _ = both_items::<Precise>();
-    let _ = both_items::<Bespoke>();
+    assert_eq!(both_items::<Hot>(), (Objective::Access, Mode::TowardZero));
+    assert_eq!(
+        both_items::<Cold>(),
+        (Objective::Footprint, Mode::TowardZero)
+    );
+    assert_eq!(both_items::<Warm>(), (Objective::Access, Mode::HalfEven));
+    assert_eq!(both_items::<Precise>(), (Objective::Access, Mode::HalfEven));
+    assert_eq!(
+        both_items::<Bespoke>(),
+        (Objective::Footprint, Mode::TowardZero)
+    );
+
+    // And the generic path agrees with reaching each item directly, which is what
+    // makes "uniform" mean something rather than "the generic path is consistent
+    // with itself".
+    assert_eq!(both_items::<Hot>().0, <Hot as Strategy>::OBJECTIVE);
+    assert_eq!(
+        both_items::<Hot>().1,
+        rounding_of::<<Hot as Strategy>::Adaptation>()
+    );
 }
 
 // --- the selection is const --------------------------------------------------
