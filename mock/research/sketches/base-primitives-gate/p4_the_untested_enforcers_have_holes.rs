@@ -57,7 +57,11 @@ fn no_alloc_enforcer_fires(line: &str) -> bool {
         return true;
     }
     let line_body = line;
-    for (token, _display) in [("Vec<", "Vec<T>"), (" String", "String"), ("Box<", "Box<T>")] {
+    for (token, _display) in [
+        ("Vec<", "Vec<T>"),
+        (" String", "String"),
+        ("Box<", "Box<T>"),
+    ] {
         if line_body.contains(token) {
             if trimmed.starts_with("///") || trimmed.starts_with("//!") {
                 continue;
@@ -84,7 +88,9 @@ fn the_controls_catch_what_the_lints_do_catch() {
     assert!(no_alloc_enforcer_fires("use alloc::vec::Vec;"));
     assert!(no_alloc_enforcer_fires("extern crate alloc;"));
     assert!(no_alloc_enforcer_fires("    let v: Vec<u8> = todo!();"));
-    assert!(no_alloc_enforcer_fires("    let b: Box<dyn Trait> = todo!();"));
+    assert!(no_alloc_enforcer_fires(
+        "    let b: Box<dyn Trait> = todo!();"
+    ));
     assert!(no_alloc_enforcer_fires("    let s: String = todo!();"));
     assert!(!no_alloc_enforcer_fires("// Vec<u8> in a comment"));
 }
@@ -121,7 +127,9 @@ fn no_std_enforcer_misses_a_renaming_import_and_a_braced_one() {
     // Whitespace inside the path defeats the prefix.
     assert!(!no_std_enforcer_fires("use std :: fmt;"));
     // An attribute in front of the import defeats it.
-    assert!(!no_std_enforcer_fires("#[cfg(feature = \"x\")] use std::fmt;"));
+    assert!(!no_std_enforcer_fires(
+        "#[cfg(feature = \"x\")] use std::fmt;"
+    ));
 }
 
 // --- hole 2: the space before the word ----------------------------------------
