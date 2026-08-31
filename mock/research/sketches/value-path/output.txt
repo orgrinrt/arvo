@@ -1,0 +1,10 @@
+=== overflow-checks=true ===
+in range   2
+ordinary   1
+i64::MAX   -1
+i64::MIN   0
+=== overflow-checks=false ===
+in range   2
+ordinary   1
+i64::MAX   -1
+i64::MIN   0
