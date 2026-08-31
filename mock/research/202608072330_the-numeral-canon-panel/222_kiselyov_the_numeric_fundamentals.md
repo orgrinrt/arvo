@@ -1342,3 +1342,170 @@ the only content either carries. Under
 `record-the-options-a-decision-chose-among` an answer recorded against that set
 would say a choice was made and not which, which is the failure that rule exists to
 prevent. So the row needs restating whether or not anybody answers it.
+
+## 10. The roster
+
+All thirty-seven, with the tier each answer sits at. The tier is what matters for
+what happens next: `ratified` needs nothing, `entailed` needs nothing because it is
+an application of a ratified sentence, `measured` needs a second instrument if
+somebody doubts it, `derived` needs a second independent expert before it goes
+anywhere, and `confirmed` adds nothing to the row it agrees with because I read
+that row first.
+
+| question | topic | verdict | tier | section |
+|---|---|---|---|---|
+| `adaptation_in_identity_or_realisation` | number system | realisation, qualified to denotational identity | ratified | 4 |
+| `are_the_level_hierarchies_the_same_cut` | number system | no count of levels is canon | confirmed | 7.10 |
+| `is_the_number_system_inventory_open` | number system | open, concept closed | ratified | 4 |
+| `is_number_system_broad_enough_for_non_magnitude` | number system | broad | entailed | 6.2 |
+| `are_set_valued_carriers_admitted` | number system | outside the format concept, placed as compositions | entailed | 6.3 |
+| `is_the_role_set_closed` | number system | concept closed, inventory open, chain extent refused | derived | 7.11 |
+| `is_interoperation_conversion_or_resolution` | number system | none of the three; one obligation at two arities | entailed | 7.12 |
+| `what_the_admission_contract_asks_a_candidate_to_expose` | number system | option two, with the ambient law inventory | entailed | 6.5 |
+| `is_admission_a_predicate_or_a_location` | number system | location for membership, predicate for hosting | derived | 7.2 |
+| `one_word_or_two_for_is_a_number_system` | number system | two words, hosting scoped to a target | derived | 7.1 |
+| `is_the_ambient_operation_family_fixed` | number system | a parameter | entailed | 6.2 |
+| `the_ownership_key_as_a_structural_axis` | number system | adopt | derived | 7.13 |
+| `whose_reduction_governs_a_lossy_crossing` | number system | the target's | entailed | 6.4 |
+| `does_the_canon_name_crossing_classes` | number system | name all five | derived | 7.14 |
+| `when_is_an_order_owed_at_a_crossing` | number system | only where lossy | derived | 7.14 |
+| `what_then_validate_requires` | format | all three readings | ratified | 4 |
+| `which_width_coordinates_a_consumer_writes` | format | definitional half closed, surface half open | ratified | 4, 3.3 |
+| `mixed_numeral_addition` | format | exists; both the inferred and explicit forms, gated | entailed | 7.15 |
+| `one_numeral_family_or_several` | format | not a lattice; minimal upper bounds and a stated rule | derived | 7.16 |
+| `the_width_surface_crossing` | format | the fifth option, and it is my least certain | derived | 7.17 |
+| `inclusion_order_singleton_amendment` | format | narrowed, still open | partial | 7.5 |
+| `is_the_derived_numeral_required_to_be_tightest` | format | soundness in canon, tightness as arms | derived | 7.3 |
+| `does_precision_count_the_sign_digit` | format | it does not, at radix two | measured | 5.4 |
+| `is_the_cross_kind_join_closed_or_priced` | format | unclosed and priced | derived | 7.4 |
+| `what_a_platform_width_type_is` | format | a target-indexed family, a fifth option | entailed | 6.6 |
+| `does_narrowing_compose` | rounding | a predicate on the mode; both arms exist | entailed | 6.1 |
+| `what_the_double_rounding_mechanism_is` | rounding | conceded; the clause is not in the canon | conceded | 9 |
+| `why_the_default_rounding_position_is_chosen` | rounding | no single default; per concern | derived | 7.9 |
+| `does_the_position_keyed_dither_arm_ship` | rounding | it ships | derived | 7.6 |
+| `does_a_consumer_supplied_seed_surface_exist` | rounding | it exists | derived | 7.7 |
+| `does_the_rounding_variance_form_hold_at_a_second_fraction_width` | rounding | yes in ulp, no in absolute units | measured | 5.1 |
+| `do_arvos_consumers_want_value_keying_or_position_keying` | rounding | both, gated, with part of the gate measured | derived | 7.8 |
+| `does_the_position_keyed_members_monotonicity_failure_rate_differ_from_the_independent_members` | rounding | they differ, and not in one direction | measured | 5.2 |
+| `does_warm_wrap_or_clamp` | overflow | the mode is declared; the premise fails | entailed | 6.8 |
+| `where_wrapping_lives` | overflow | one derived slot | entailed | 6.7 |
+| `what_a_datum_stands_for` | primitive | a point | entailed | 6.3 |
+| `the_container_premise` | container premise | observable, and observable at const time | measured | 5.3 |
+
+Three ratified, nine entailed, four measured, fourteen derived, one confirmed, one
+partial, one conceded, and four option sets flagged for restatement in section 8.
+
+## 11. The alternatives I found and did not take
+
+Listing these is most of what a next seat can use, because a dispatch that found
+four routes and shipped one has thrown away three quarters of what it learned.
+
+**On the container premise, an occupancy axis rather than a const axis.** 5.3 makes
+the footprint gateable through `size_of`. The other way to reach the same place is
+to declare occupancy, sole against shared, as a `dimension` row, which
+`at_shared_occupancy_no_per_element_footprint_observation_exists` says it wants and
+does not create, filing the condition in its sentence instead. That route makes the
+answer a region rather than a const read, and it is better if the shared-occupancy
+half turns out to need arms of its own. I did not take it because declaring an axis
+is not a reader's call and because the const route needed no new vocabulary. A seat
+that builds a packed column and measures whether a per-element size observation
+exists would settle which route is right, and that probe does not exist.
+
+**On the variance forms, a distributional route rather than a moment route.** I
+computed the second central moment three ways. A fourth route computes the whole
+distribution of the scaled error and compares distributions rather than moments,
+which would catch a coupling that matched both moments and differed in shape.
+Nothing in the question needs it, and it would cost an exponential enumeration
+where the moment route is polynomial, so I stopped. It is the route to take if
+somebody wants a claim about the error's tail rather than its variance, which the
+chain topic may eventually want.
+
+**On the monotonicity comparison, a different dither.** I measured the golden-ratio
+additive recurrence because that is the one `129_probes/x1` used and comparability
+demanded the same construction. Every low-discrepancy sequence with a fixed
+increment has the same two-value increment structure, so the result at 5.2
+generalises to that whole family by the mechanism rather than by measurement. A
+dither whose increment varies, a bit-reversal permutation or a scrambled sequence,
+would not, and I did not run one. That is the obvious next arm and it is cheap: the
+probe takes a key function as a parameter already.
+
+**On the precision reading, a route through the affine parameterisation.** Instead
+of building the three sign domains and ordering them, one could ask which reading
+makes the ratified affine predicate's phase term behave, since a sign domain is a
+choice of where the grid sits relative to zero. I tried this first and abandoned it
+because the ratified clause fixes the parameterisation and not the convention for
+counting its digits, so the phase term is silent about the question. That is a dead
+route and it is dead for a reason worth knowing: the ratified spine does not reach
+naming conventions at all.
+
+**On Q8, the step-set reading.** The fourth option says two numerals are in one
+family exactly when their admitted step sets are nested. I chased it and it
+collapses into the same obstruction: step sets are nested within the fixed-point
+family and are not nested across the float boundary, which is the incomparability
+the closure probe already measured, restated in the vocabulary of steps. I report
+it as a restatement rather than as a route, and I could be wrong about that, which
+is why it is here rather than deleted.
+
+## 12. What I noticed that nobody asked me about
+
+Reported harshly where it deserves it, per the standing instruction.
+
+**The settled-question checker guards one of the two edges that close a question,
+and the file it lives in states the failure it half-guards.**
+`checks/tests/a_settled_question_does_not_sit_in_the_queue.rs:82` walks rulings
+only. Three questions in my scope alone are closed by ratified propositions and
+render as open. The module doc at the top of that file is a careful, correct essay
+about exactly this failure mode. Writing the essay and then guarding one edge is
+worse than guarding neither, because the essay is what a reader trusts instead of
+checking.
+
+**The registry contradicts itself about whether a general rounding law is
+writable**, at `proposal.toml:1604` against `probe.toml:982`. One of them is stale
+and no check can tell which, because nothing cross-reads a `note` against the rows
+it describes. That is the same class as
+`no_note_describes_a_row_it_is_not_on.rs`, which exists and does not reach this.
+
+**Nothing audits an `answers` edge's scope.** 3.3 shows one reaching past its own
+`says` by three of a question's four options. Every mechanism in this registry
+audits predicates and regions; an edge is a claim about what a sentence settles and
+it escapes all of them, which is the same shape as the prose-versus-predicate gap
+the ratification gate's own note names.
+
+**Four axes the corpus reasons about are not declared and cannot be written in a
+predicate**, so every finding about them is silently unpredicated: the dropped-bit
+count of a narrowing (mine at 5.1, and `proposal.toml:1616` records the same gap
+for a staged narrowing's intermediate width), occupancy (recorded by
+`at_shared_occupancy_no_per_element_footprint_observation_exists` as wanted and not
+created), precision (5.4), and the ramp geometry at 5.2. Under
+`ruling::a_predicate_lists_only_what_holds` an undeclared axis converts the
+notation's strongest negative statement into a shrug, which `predicate.rs:12` says
+in its own words.
+
+**`dimension::signedness` declares two values and the corpus writes three.**
+`proposal.toml:153` and `proposal.toml:1220` both carry "three sign domains,
+unsigned and signed two's complement and signed symmetric range" on the values
+side, which the declared grammar does not admit. The values side is unchecked by
+construction, so nothing catches it, and 5.4's answer had to be written in the same
+inadmissible dialect to say anything at all.
+
+**Three question rows carry no topic**, listed at the count in section 2. A
+topicless question is invisible to any roster built by topic, which is how every
+roster here is built.
+
+## 13. Provenance of this file
+
+Nothing here was ratified by anybody. Sections 4 and the `ratified` rows of the
+roster report what ratified text already says and are as strong as that text.
+Sections 6 and the `entailed` rows are applications of ratified sentences and stand
+or fall on whether the entailment is valid, which is a thing to attack rather than
+to count instances of. Sections 5 and the `measured` rows rest on four probes
+committed in `222_probes/` with their outputs and a `RUN.md`, each with its
+controls printed firing; they are one instrument each and one instance decides
+nothing, so a second instrument on any of them is worth having and I have named
+what it would be. Everything at `derived` is one expert's reading, which is mine,
+and needs a second before it goes into a consolidation.
+
+Where I agree with an existing `one_expert` proposal I read that proposal first,
+and I have marked every such case `confirmed` rather than letting it read as a
+second instance. Agreement reached by starting from somebody else's answer is
+confirmation and it does not move a standing.
