@@ -57,7 +57,10 @@ provenance = ["panel::x"]
     let found = shape::retirements_too_short_to_find(&reg);
     assert_eq!(found.len(), 1, "only the abbreviation: {found:#?}");
     assert!(found[0].at.contains("an_abbreviation"), "{found:#?}");
-    assert!(found[0].says.contains("2 word"), "the count is reported: {found:#?}");
+    assert!(
+        found[0].says.contains("2 word"),
+        "the count is reported: {found:#?}"
+    );
 }
 
 /// A short claim reports no live row, which is the other half of the defect.
@@ -112,7 +115,11 @@ says = "A component is an output of the derivation when the consumer did not wri
 "#,
     );
     let found = shape::rows_restating_a_retired_claim(&reg);
-    assert_eq!(found.len(), 1, "the run still matches through a reworded tail: {found:#?}");
+    assert_eq!(
+        found.len(),
+        1,
+        "the run still matches through a reworded tail: {found:#?}"
+    );
     assert!(found[0].at.contains("a_row_restating_it"), "{found:#?}");
 }
 
