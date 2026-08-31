@@ -2107,3 +2107,19 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q32-addendum-from-78",
 ]
 keywords = ["one thread", "instrument", "threads", "contention", "packing", "write hazard", "read-modify-write", "absence claim", "Q32"]
+
+[[retirement]]
+id = "r22_r1_the_wide_rung_item_14_instruction_and_byte_claim"
+claim = "Above the native rungs a wide payload is ragged for Cold and Precise, sized to the exact bits, and word-rounded to whole 64-bit limbs for Hot and Warm. Measured at one numeral: ragged is fourteen instructions and twenty-five bytes, word-rounded is eleven and thirty-two. Three instructions per operation against seven bytes per value is exactly the trade the strategy axis exists to carry."
+why = "Measured at 6 widths (129, 160, 192, 200, 232, 256), multiple arms and two element counts, both halves fail as stated. The instruction claim is wrong: the gap is zero at 5 of 6 swept widths and 4 of 9 tail-residue widths, and where it is nonzero it is exactly 3 * max(0, popcount(rag_bytes(W) mod 8) - 1) instructions per element, flat across operation counts one through eight, not a fixed three-per-operation figure. The byte claim is arithmetically correct but is not the throughput quantity it was used as: across every measured configuration the byte-count difference (up to 41% more bytes for word-rounded) never converts into a speed disadvantage, and word-rounded runs 0 to 7.5% faster than ragged in the main sweep. The one large effect found (a 1.353x gap at W=129) is identical to three decimal places whether the working set is cache-resident or past L2, which rules out footprint as its cause; its real mechanism, a roughly 2.1x core-side effect between W=129 and W=192, was attacked and not closed."
+kind = "wrong"
+replacement = "The gap is a per-element tail-residue effect, 3 * max(0, popcount(rag_bytes(W) mod 8) - 1) instructions, flat across operation density, and it does not decide the trade: no measured configuration shows the byte-count difference costing throughput. A separate width-dependent effect between W=129 and W=192 is real, roughly 2.1x, and its mechanism is unresolved; that is the open lead for whoever picks this back up."
+topic = "the_container_premise"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::seed::OLD_SETTLED_container.md::#14-the-wide-payload-above-the-native-rungs-is-a-strategy-axis-consequence-ragged-byte-exact-for-cold-and-precise-word-rounded-whole-64-bit-limbs-for-hot-and-warm",
+  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#four-the-instruction-half-of-the-ratified-claim-in-its-own-units",
+  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#five-the-footprint-half-past-l2-and-why-it-does-not-pay-either",
+  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#six-attacking-the-mechanism-and-where-it-led",
+  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#what-i-could-not-close",
+]
+keywords = ["wide rung", "ragged", "word-rounded", "item 14", "instruction count", "byte count", "footprint", "tail residue", "popcount", "137b"]
