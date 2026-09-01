@@ -437,7 +437,10 @@ fn a_negative_denominator_is_the_same_phase_with_the_sign_moved() {
     // defined rather than somewhere nobody looked.
     type Positive = Grid<BinaryRationals, Constant<0>, Signed<8>, 4, 2>;
     type Negated = Grid<BinaryRationals, Constant<0>, Signed<8>, -4, -2>;
-    assert_eq!(cancelling_slot::<Positive>(0), cancelling_slot::<Negated>(0));
+    assert_eq!(
+        cancelling_slot::<Positive>(0),
+        cancelling_slot::<Negated>(0)
+    );
 
     // And moving only one of the two flips the slot rather than losing it.
     type Flipped = Grid<BinaryRationals, Constant<0>, Signed<8>, 4, -2>;
