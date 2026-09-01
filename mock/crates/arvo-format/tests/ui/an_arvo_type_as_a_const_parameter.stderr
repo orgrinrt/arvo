@@ -1,0 +1,11 @@
+error: `Width` is forbidden as the type of a const generic parameter
+  --> tests/ui/an_arvo_type_as_a_const_parameter.rs:14:31
+   |
+14 | pub struct Signed<const BITS: Width>;
+   |                               ^^^^^
+   |
+   = note: the only supported types are integers, `bool`, and `char`
+help: add `#![feature(min_adt_const_params)]` to the crate attributes to enable more complex and user defined types
+   |
+12 + #![feature(min_adt_const_params)]
+   |

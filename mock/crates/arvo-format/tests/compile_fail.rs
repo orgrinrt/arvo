@@ -15,10 +15,15 @@
 //! asserted from inside a running test. That argument was wrong and this is what
 //! it should have been.
 //!
-//! The other three pin what the coordinates buy. Each was well-typed while the
+//! Three of the rest pin what the coordinates buy. Each was well-typed while the
 //! contract was spelled in the host's own types, so none of them could have been
 //! written down before, and each names a way a caller could have been wrong with
 //! nothing to say so.
+//!
+//! The last one runs the other way. It pins the refusal the const generic
+//! parameters are spelled around: a coordinate type cannot sit in that position,
+//! which is why the declared widths carry a machine integer there and nowhere
+//! else.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -42,4 +47,16 @@ fn an_index_and_an_extent_do_not_convert_into_each_other() {
 fn the_two_ratios_are_two_coordinates() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_phase_is_not_a_fraction.rs");
+}
+
+/// The refusal every const generic parameter in this crate is spelled around.
+///
+/// `Width` is the crate's own count of bits and cannot be the type of a const
+/// generic parameter, which is the reason the declared widths carry a machine
+/// integer instead. Established once by compiling a file by hand, and a hand
+/// check that answers and then goes away leaves the next reader to redo it.
+#[test]
+fn an_arvo_type_as_a_const_parameter_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/an_arvo_type_as_a_const_parameter.rs");
 }
