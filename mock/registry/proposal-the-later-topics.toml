@@ -368,7 +368,7 @@ predicate = [
   "fraction_width: in 0..=5",
   "signedness: in {unsigned, signed}",
   "overflow_policy: in {wrap, saturating}",
-  "rounding: in {floor, ceiling, toward zero, away from zero, nearest-half-up, nearest-half-even}",
+  "rounding: in {floor, ceil, toward_zero, away from zero, half_up, half_even}",
   "operation: multiply-add",
   "arity: 3",
   "chain_length: 2",

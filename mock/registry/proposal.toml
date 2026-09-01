@@ -1410,7 +1410,7 @@ predicate = [
   "signedness: signedness in {unsigned, signed}",
   "operation: operation = mul",
   "chain_length: chain length in 2..=5",
-  "rounding: rounding in {truncate, floor, round to nearest even}",
+  "rounding: rounding in {truncate, floor, half_even}",
 ]
 answers = ["what_a_numeral_guarantees_to_a_fold"]
 evidence = ["the_multiplicative_rescale_saving_is_adaptation_fusion"]
@@ -1587,7 +1587,7 @@ predicate = [
   "total_width: W = 9",
   "fraction_width: F = 4",
   "signedness: signedness = signed",
-  "rounding: rounding = round to nearest even",
+  "rounding: rounding = half_even",
   "radix: radix = 2",
   "threads: threads = 1",
 ]
