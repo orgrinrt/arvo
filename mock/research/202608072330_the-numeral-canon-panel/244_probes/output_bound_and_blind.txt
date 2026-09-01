@@ -1,0 +1,56 @@
+======== 1. The bound and answered fields on topic = the_number_system
+  adaptation_in_identity_or_realisation                    bound=0 unblocks=0 answered=1
+  are_the_level_hierarchies_the_same_cut                   bound=0 unblocks=0 answered=0
+  is_the_number_system_inventory_open                      bound=0 unblocks=0 answered=1
+  is_number_system_broad_enough_for_non_magnitude          bound=0 unblocks=0 answered=0
+  are_set_valued_carriers_admitted                         bound=0 unblocks=0 answered=0
+  is_the_role_set_closed                                   bound=0 unblocks=1 answered=0
+  is_interoperation_conversion_or_resolution               bound=0 unblocks=0 answered=0
+  what_the_admission_contract_asks_a_candidate_to_expose   bound=0 unblocks=0 answered=0
+  is_admission_a_predicate_or_a_location                   bound=0 unblocks=0 answered=0
+  one_word_or_two_for_is_a_number_system                   bound=0 unblocks=0 answered=0
+  is_the_ambient_operation_family_fixed                    bound=0 unblocks=0 answered=0
+  the_ownership_key_as_a_structural_axis                   bound=0 unblocks=0 answered=0
+  whose_reduction_governs_a_lossy_crossing                 bound=0 unblocks=0 answered=0
+  does_the_canon_name_crossing_classes                     bound=0 unblocks=0 answered=0
+  when_is_an_order_owed_at_a_crossing                      bound=0 unblocks=0 answered=0
+  is_the_rounding_vocabulary_complete_at_six               bound=0 unblocks=1 answered=0
+  which_of_the_six_a_retired_word_names_on_each_row        bound=0 unblocks=1 answered=0
+  which_tie_direction_an_unqualified_nearest_names         bound=0 unblocks=1 answered=0
+
+  rows = 18, bound = 0, unblocks = 4, answered = 2
+
+  CONTROL: bounds do exist in this file, so a zero above is about the topic
+  rows carrying a bound, whole file : 22
+  question rows, whole file         : 105
+  control passes.
+
+  NOTE: 241's erratum says the four it miscounted were `note` fields.
+  Every row carries a note; exactly the four above carry an `unblocks`,
+  and four is the number it counted. The field it misread is `unblocks`.
+
+======== 2. Was the cold cut blind
+  shared base of the two seats            : 87ab5d70875cc6305dc866eca5ff71d48d15c24f
+  241 stage 1 is an ancestor of 242 blind : NO
+  242 blind is an ancestor of 241 stage 1 : NO
+  CONTROL, a pair whose answer is known to be YES:
+    the shared base is an ancestor of 241 stage 1 : YES
+
+  Stronger than ancestry: what each blind tree actually holds.
+    panel files matching 24[123]_ at 241 stage 1: 1
+      mock/research/202608072330_the-numeral-canon-panel/241_kiselyov_admission_is_a_resolution_not_a_verdict.md
+    panel files matching 24[123]_ at 242 blind : 7
+      mock/research/202608072330_the-numeral-canon-panel/242_probes/admission/.gitignore
+      mock/research/202608072330_the-numeral-canon-panel/242_probes/admission/Cargo.lock
+      mock/research/202608072330_the-numeral-canon-panel/242_probes/admission/Cargo.toml
+      mock/research/202608072330_the-numeral-canon-panel/242_probes/admission/output.txt
+      mock/research/202608072330_the-numeral-canon-panel/242_probes/admission/run.sh
+      mock/research/202608072330_the-numeral-canon-panel/242_probes/admission/src/main.rs
+      mock/research/202608072330_the-numeral-canon-panel/242_what-admits-a-number-system.md
+
+======== 3. FINDING
+  Zero of the eighteen the_number_system rows carry a bound; two carry an
+  answered; four carry an unblocks, which is the field 241's erratum names
+  as note. Third instance on the zero, after 241's erratum and 242's own awk.
+  The blind cut holds: one shared base, neither blind commit an ancestor of
+  the other, and neither tree holds the other seat's file.

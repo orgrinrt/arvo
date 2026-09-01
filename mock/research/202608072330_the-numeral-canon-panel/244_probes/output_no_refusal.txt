@@ -1,0 +1,30 @@
+======== 1. The coordinates, taken from the trait declarations
+  ambient   2  RADIX SIGNED 
+  quantum   3  BASE SLOPE MAGNITUDES 
+  slots     3  MIN MAX WIDTH 
+  format    2  PHASE_NUM PHASE_DEN 
+  total required coordinates = 10
+  the refusing trait, Slots, fixes: MIN|MAX|WIDTH
+  (ADMITTED is excluded: it carries a default body, so no candidate chooses it)
+
+======== 2. CONTROLS, both required, run before the census is believed
+  A (must flag)     : Self::MIN <= Self::MAX && Self::PHASE_DEN != 0 refs[MAX MIN PHASE_DEN] unfixed[PHASE_DEN]
+  B (must not flag) : Self::MIN <= Self::MAX                         refs[MAX MIN] unfixed[]
+  both controls pass: the classifier separates the two cases.
+
+======== 3. Every assertion in Slots::ADMITTED, exhaustively
+  a1  refs [MAX MIN         ] -> a condition on the values of coordinates Slots already fixes
+  a2  refs [WIDTH           ] -> a condition on the values of coordinates Slots already fixes
+  a3  refs [WIDTH           ] -> a condition on the values of coordinates Slots already fixes
+  a4  refs [MAX MIN         ] -> a condition on the values of coordinates Slots already fixes
+  a5  refs [MAX MIN WIDTH   ] -> a condition on the values of coordinates Slots already fixes
+
+======== 4. FINDING
+  assertions in the block = 5
+  of which name a coordinate the trait does not fix = 0
+
+  So the shipped admission mechanism has 5 ways to refuse and none of them
+  reports an unfixed coordinate. Every one is a condition on values already
+  fixed, which is what a const item on a trait can be: it evaluates only for
+  an impl, and an impl missing a required item does not exist (243, E0046).
+  Bounded whole-container over the assertions in the block, exhaustively.
