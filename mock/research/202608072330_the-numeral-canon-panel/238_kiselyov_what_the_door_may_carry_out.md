@@ -675,6 +675,6 @@ All in `238_probes/`, each with its raw output beside it.
 | `k3_the_class_the_row_names_ten_of` | The exemption carries 128 lines in `arvo-format`; both checked crates at zero. |
 | `k4_the_public_positions.sh` | 59 public positions in non-test declaration syntax; the ten trait constants at their exact lines. |
 | `k5_the_shape_built` | The answer built: a door of ten coordinates, a crate outside it declaring a format with no machine type on any line, the shipped answers reproduced, a mutation refused, and zero lint findings outside. |
-| `k6_which_gate_the_second_option_needs` | `adt_const_params` admits a private-field newtype as a const parameter; `min_adt_const_params` does not. |
+| `k6_which_gate_the_second_option_needs` (`run.sh`, `k6_out.txt`) | `adt_const_params` admits a private-field newtype as a const parameter; `min_adt_const_params` does not. |
 | `k7_does_the_const_param_gate_leak` | An `adt_const_params` parameter in a public signature does not reach a consumer, with the control that the consumer is genuinely ungated. |
 | `k8_the_open_inventory_test_on_the_other_side` | The open-inventory test moved to a checked crate produces two findings as written and ten for a format that borrows nothing. |
