@@ -35,7 +35,10 @@ const HALF_STEP: bool = proposed(1, 2, -8, 7);
 const ZERO_DEN: bool = proposed(1, 0, -8, 7);
 
 fn main() {
-    assert!(WELL_FORMED, "unbiased grid should carry an additive identity");
+    assert!(
+        WELL_FORMED,
+        "unbiased grid should carry an additive identity"
+    );
     assert!(!HALF_STEP, "half-step grid should not carry one");
     println!("control: the predicate evaluates and separates the two shipped phases.");
 

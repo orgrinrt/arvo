@@ -17,4 +17,4 @@ note: inside `proposed`
    |     ^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
 
 note: erroneous constant encountered
-  --> proposed_phase_predicate.rs:43:38
+  --> proposed_phase_predicate.rs:46:38

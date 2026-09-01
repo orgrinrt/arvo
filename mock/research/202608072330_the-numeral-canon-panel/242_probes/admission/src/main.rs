@@ -11,11 +11,11 @@
 //! Each feature is one negative control. A control that BUILDS is a coordinate
 //! with no obligation on it.
 
-use arvo_format::{
-    contains, exponent_at, has_additive_identity, is_constant_family,
-    magnitude_in_range, radix, slot_count, slot_in_range, Ambient, Format, Quantum, Slots,
-};
 use arvo_format::Width;
+use arvo_format::{
+    contains, exponent_at, has_additive_identity, is_constant_family, magnitude_in_range, radix,
+    slot_count, slot_in_range, Ambient, Format, Quantum, Slots,
+};
 // NOT re-exported at the crate root, unlike `slot_count` and `slot_in_range`
 // declared beside it. Reached through the module.
 use arvo_format::slots::is_admissible;
@@ -84,8 +84,10 @@ fn positive_arm() {
     assert!(contains::<Outsider>(0, 0));
     assert!(!contains::<Outsider>(0, 4));
 
-    println!("POSITIVE ARM: an outside crate wrote all ten coordinates and every derived \
-              quantity resolved. The inventory is open in fact, not only in prose.");
+    println!(
+        "POSITIVE ARM: an outside crate wrote all ten coordinates and every derived \
+              quantity resolved. The inventory is open in fact, not only in prose."
+    );
 }
 
 // ------------------------------------------------------- negative control: phase
@@ -109,8 +111,10 @@ mod phase_den_zero {
         assert!(contains::<ZeroDen>(0, 0));
         assert!(!has_additive_identity::<ZeroDen>());
         assert_eq!(radix::<ZeroDen>(), 7);
-        println!("CONTROL phase_den_zero: BUILT. PHASE_DEN = 0 is admitted. \
-                  Every law over the format passed with a phase of 1/0.");
+        println!(
+            "CONTROL phase_den_zero: BUILT. PHASE_DEN = 0 is admitted. \
+                  Every law over the format passed with a phase of 1/0."
+        );
     }
 }
 
@@ -175,8 +179,10 @@ mod magnitudes_zero {
         assert!(!any, "expected an empty representable set");
         // And it still claims an additive identity it cannot hold.
         assert!(has_additive_identity::<Empty>());
-        println!("CONTROL magnitudes_zero: BUILT. An empty representable set is admitted, \
-                  and `has_additive_identity` says true of a set with no members.");
+        println!(
+            "CONTROL magnitudes_zero: BUILT. An empty representable set is admitted, \
+                  and `has_additive_identity` says true of a set with no members."
+        );
     }
 }
 
@@ -198,8 +204,10 @@ mod inverted_slots {
         assert!(!is_admissible::<Inverted>());
         // Forcing the obligation is what must refuse at codegen.
         let () = <Inverted as Slots>::ADMITTED;
-        println!("CONTROL inverted_slots: BUILT. The instrument cannot detect a refusal; \
-                  every other result in this probe is void.");
+        println!(
+            "CONTROL inverted_slots: BUILT. The instrument cannot detect a refusal; \
+                  every other result in this probe is void."
+        );
     }
 }
 

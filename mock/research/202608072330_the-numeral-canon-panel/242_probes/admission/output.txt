@@ -29,9 +29,9 @@ error[E0080]: evaluation panicked: slot range is inverted: its lowest index exce
    | |_________- in this macro invocation
 
 note: erroneous constant encountered
-   --> src/main.rs:200:18
+   --> src/main.rs:206:18
     |
-200 |         let () = <Inverted as Slots>::ADMITTED;
+206 |         let () = <Inverted as Slots>::ADMITTED;
     |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For more information about this error, try `rustc --explain E0080`.
