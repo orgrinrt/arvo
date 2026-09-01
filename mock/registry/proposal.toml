@@ -1,8 +1,15 @@
 # What the four topic consolidations established, as rows op has not seen.
 #
-# Nothing here is canon. A row in this namespace carries no standing by
-# construction: being here is the whole of its provenance claim, and it becomes
-# canon only when a `ruling` names it under `ratifies`. Nothing does.
+# A row in this namespace carries no standing by construction: being here is the
+# whole of its provenance claim, and it becomes canon only when a `ruling` names
+# it under `ratifies`.
+#
+# This said "Nothing does", and it was false: four rulings name eleven rows
+# between them, and `ruling::the_format_spine_is_canon` alone ratifies three.
+# **The count is not written here**, because a number in a comment is a second
+# copy of something the registry already answers and this one had gone stale in
+# the direction that matters, telling every reader no row had been stamped.
+# `grep -h '^ratifies' ruling.toml` is the answer that cannot drift.
 #
 # Four things a reader has to know before quoting any row.
 #
