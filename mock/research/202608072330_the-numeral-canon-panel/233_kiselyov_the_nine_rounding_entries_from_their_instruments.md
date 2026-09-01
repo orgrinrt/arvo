@@ -449,7 +449,105 @@ it costs either way is section 8.
 
 ## 7. Group three: `away from zero`
 
-To be written: entries 5, 6 and 7.
+Three entries name `away from zero`, and
+`question::is_the_rounding_vocabulary_complete_at_six` asks whether the six are
+short a name or whether these rows swept a mode the design does not ship. It
+lists three options: gain `away_from_zero`; take the entry out of each predicate;
+or read it as one of the six under another reading, since away-from-zero and
+toward-zero are two directions of one axis and a design shipping one reaches the
+other by negation.
+
+**The answer is not one of the three, because the three entries do not have one
+answer between them. Two of them are spellings and one is a name the set lacks,
+and which is which is decided by the signedness of the row.**
+
+**Entry 6. `law::..._under_unsigned`, `holds`: `away from zero` is `ceil`.**
+
+Measured. `k1`'s K1 predicts three coincidences on a non-negative domain and
+names them before the run; `233_probes/k1_out.txt` reports
+`ceil == away_from_zero` holding at every `p in [0, 255]` and every
+`f in {1, 2, 3, 4}`, alongside `floor == toward_zero`. Control C2 requires each
+coincidence to break once negatives are admitted and reports the witness at
+`p = -255, f = 1`, so the equality is a property of the domain rather than a
+failure of the comparison, and control C3 refutes the deliberately false
+`floor == ceil` on both domains so the test is testing equality at all.
+
+The row's predicate says `signedness: unsigned`, so this is that domain. The two
+instruments behind the row say the same thing independently:
+`147_probes/r1:29-31` predicts it in prose before running, and
+`149_probes/y2_out.txt` measures the restricted equivariance test true for both
+toward-zero and away-from-zero on the non-negative half.
+
+So the entry is mechanical, in the same class as `ceiling -> ceil`, and the
+holds set `in {floor, ceiling, toward zero, away from zero, nearest-half-up}`
+restates as `rounding in {floor, ceil, toward_zero, half_up}`: four ratified
+names denoting three distinct functions on that domain, no seventh name needed
+and no region moved.
+
+**This is not the question's third option and the difference matters.** That
+option says the mode is reachable from another by negation and grants that this
+is a claim about realisation rather than about vocabulary, and it is right to
+distrust it: a mode reachable by composition is still a different mode. The
+reason here is stronger and does not need that argument. On this row's own
+domain the two are **the same function**, so a claim about one is already a claim
+about the other, and nothing is being derived by composition.
+
+**Entry 7. `law::..._under_signed_wrapping`, `fails`: `away from zero` is not
+any of the six.**
+
+`k1`'s K2 predicts, before the run, that on a signed domain all seven candidates
+are pairwise distinct, and the committed output reports 21 of 21 pairs distinct
+with a witness printed for `away_from_zero` against each of the six ratified
+names: against `floor` at `p = 1, f = 1`; against `ceil`, `toward_zero` and
+`half_up(+inf)` at `p = -255, f = 1`; against `half_up(away)` at `p = -253,
+f = 2`; against `half_even` at `p = -253, f = 1`. `stochastic` is not a function
+and is not a candidate.
+
+And the difference is not idle. `k2` part B measures the fusion divergence at
+`W = 6` signed wrapping over exhaustive triples: `away_from_zero` diverges on
+1.64, 5.54, 12.34, 22.22 and 33.40 percent of triples at `F = 1` through `5`,
+against 0.00 percent at every `F` for `floor`, `ceil` and `half_up(+inf)`. So the
+mode decides the row's verdict. Control R3 requires those columns to reproduce
+`149_probes/y2_out.txt` on the six modes it swept at both signednesses, and it
+passes, so this is the same experiment rather than a new one.
+
+**One trap here, and it is the reason distinctness had to be decided pointwise.**
+`toward_zero` and `away_from_zero` produce **identical** divergence rates on the
+signed domain, 33.40 percent at `F = 5` for both, and y2's own published table
+shows the same. A reader comparing columns would conclude they are one mode. They
+are not, and K2's witness settles it. A rate is a summary over a symmetric domain
+and two mirror-image functions summarise alike.
+
+So for this entry the answer is the question's **first** option: the vocabulary
+is short a name and gains `away_from_zero`. I do not minimise its stated cost,
+which is that the ruling closing the set was ratified and widening it is a
+correction to a ratified row rather than an addition to an open one. But the
+question's own note is right that the second option is not the safe one: taking
+the entry out narrows a correctly measured region, and under the notation an
+absent value claims the finding holds nowhere on that axis, which destroys
+evidence rather than relabelling it. And the third option is refuted by
+measurement rather than declined on principle: the sweep distinguishes the two
+functions, so whatever can be reached by negation, this row did not reach it that
+way.
+
+**Entry 5. `proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`,
+`predicate`: the entry splits, and cannot be given one value.**
+
+Its predicate carries `signedness: in {unsigned, signed}` and a single rounding
+set spanning both. On the unsigned half `away from zero` is `ceil`, by entry 6.
+On the signed half it is a name the six lack, by entry 7. So one entry on one
+axis has two different answers over its own declared region, and no single value
+in the six is correct for it.
+
+That is a finding about the row's shape rather than about the mode. The two law
+rows underneath it are already split by signedness, and
+`law::..._under_signed_wrapping`'s note says why: one law row carries one region
+per field, and two disjoint regions differing on signedness and on the mode set
+cannot both be written without naming an axis twice. The proposal is the unsplit
+parent of two rows that took that medicine, and it needs the same. Until it does,
+its rounding axis and its signedness axis are not independent and the predicate
+reads as a product of things that were not measured as a product, which is the
+same defect entry 2's row carries.
 
 ## 8. The finding that outranks all nine
 
