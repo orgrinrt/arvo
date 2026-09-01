@@ -1,0 +1,14 @@
+format                              shipped   enumerated  witness
+Integer<4>                             true         true  Some((0               , 0               )) 
+UFixed<4,-2>                           true         true  Some((0               , 0               )) 
+Biased<4,0,1> (1/2)                   false        false  None 
+Biased<4,0,2> (1)                      true         true  Some((-1              , 0               )) 
+Floating<4,-2,3>                       true         true  Some((0               , 0               )) 
+Indexed + Signed<2>, phase 4          false         true  Some((-2              , 1               )) <- disagree
+shrinking quantum, phase 1/2          false         true  Some((-1              , 1               )) <- disagree
+no magnitudes, phase 0                 true        false  None <- disagree
+
+disagreements: 3
+control: the enumerator separates a zero phase from a half-step phase
+control: the two agree on all five shipped points
+control: moving BASE by seven moves no answer, so BASE cancels
