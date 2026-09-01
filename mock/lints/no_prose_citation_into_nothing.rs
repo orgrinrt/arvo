@@ -27,9 +27,9 @@
 //!
 //! # What the standing population is, measured
 //!
-//! Sixteen occurrences over fourteen distinct slugs, all fourteen in numbered
-//! member files and none in a ledger, so the ledger arm starts at zero and
-//! refuses the first one written.
+//! Fifteen occurrences over thirteen distinct slugs across seven files, all of
+//! them numbered member files and none a ledger, so the ledger arm starts at
+//! zero and refuses the first one written.
 //!
 //! **Seven are deliberate**, planted by seats testing citation checkers of
 //! their own: `control_broken_file`, `control_broken_topic`,
@@ -40,16 +40,17 @@
 //! is a statement about what the corpus holds rather than about what deserves
 //! to be there.
 //!
-//! **Seven are real, and they are three kinds.**
+//! **Six are real, and they are three kinds.**
 //!
-//! **Three stop part way through a slug that does exist**, so each is a strict
-//! prefix of a real id: `ruling::the_warrant_is_a_token_and_a_clause_on_the_values`
-//! against a row ending `_side`, `proposal::a_min_plus_fold_needs_an_absorbing_top_`
+//! **Two stop part way through a slug that does exist**, so each is a strict
+//! prefix of a real id: `proposal::a_min_plus_fold_needs_an_absorbing_top_`
 //! against one ending `_and_wrapping_supplies_none`, and
 //! `proposal::the_multiplicative_guard` against one ending
-//! `_grows_linearly_and_the_saving_is_adaptation_fusion`. The third reads as a
+//! `_grows_linearly_and_the_saving_is_adaptation_fusion`. The second reads as a
 //! clean concept name rather than as a cut-off one, which is why it was filed
-//! among the paraphrases until somebody measured it against the ids.
+//! among the paraphrases until somebody measured it against the ids. Both are
+//! written with a trailing `...` in the prose, so the author shortened them on
+//! purpose and the scanner stops at the first dot.
 //!
 //! **Two name a slug that exists under a different namespace.**
 //! `proposal::staged_narrowing_depends_on_its_staging` is a `probe` row, and
@@ -72,6 +73,32 @@
 //! drops a trailing separator has guessed at what a writer meant, and the guess
 //! is wrong wherever a slug legitimately continues past that point. A defect
 //! that disappears into a passing check is the failure this lint is about.
+//!
+//! # A line break inside a slug is a wrap rather than a truncation
+//!
+//! These ids run to ninety characters and the prose wraps at eighty-five, so a
+//! citation starting anywhere but the left margin gets cut by the break. The
+//! scanner read one line at a time and reported the first half, which names no
+//! row and reads exactly like the near miss above. **The writer had written the
+//! whole slug.**
+//!
+//! So where a token runs to the very end of its line and the next line opens
+//! with the rest of a real id, the citation resolves and is not reported. The
+//! guard is that the token has to reach the line's end: a slug the writer cut
+//! himself is followed by a backtick, a dot or a space, which ends the token
+//! before the break and leaves the near-miss arm untouched. That is the whole
+//! of the difference between the two, and both arms are pinned by tests.
+//!
+//! It stayed invisible because the count is what anybody reads. Two of the
+//! standing population were wrapped citations of rows that exist, and one of
+//! them was written up in this file as a writer's near miss against a row
+//! ending `_side`. Nobody opened the line.
+//!
+//! **What this does not fix is the rendered document.** A code span broken
+//! across a source line renders with a space in the middle of the slug, so the
+//! citation reads wrong on the page even though it resolves here. Repairing
+//! that means reflowing a member file, which is the record, so it is left and
+//! said rather than done.
 use std::path::Path;
 
 use mockspace::{Lint, LintError, RegistryView, RepoContext, RepoLint, Severity};
@@ -86,10 +113,11 @@ const NAME: &str = "no-prose-citation-into-nothing";
 /// The standing count in files that are the record, measured over the committed
 /// tree.
 ///
-/// Sixteen occurrences over fourteen slugs when the class was first measured.
-/// It falls when a slug is declared under the id the prose already used. **Do
-/// not raise it.**
-const CEILING: usize = 16;
+/// Fifteen occurrences over thirteen slugs across seven files. It falls when a
+/// slug is declared under the id the prose already used, and it fell by two
+/// when the scanner stopped cutting a citation at a line break. **Do not raise
+/// it.**
+const CEILING: usize = 15;
 
 struct NoProseCitationIntoNothing;
 impl Lint for NoProseCitationIntoNothing {
@@ -166,15 +194,30 @@ fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String
             continue;
         };
         let at = shown(&path, dir);
-        for (n, line) in text.lines().enumerate() {
+        let lines: Vec<&str> = text.lines().collect();
+        for (n, line) in lines.iter().enumerate() {
+            let carry = lines.get(n + 1).copied().map(leading_slug_run).unwrap_or("");
             for cited in tokens(line, namespaces) {
-                if reg.row(&cited).is_none() {
-                    out.push((at.clone(), n + 1, cited));
+                if reg.row(&cited).is_some() {
+                    continue;
                 }
+                if line.ends_with(&cited) && reg.row(&format!("{cited}{carry}")).is_some() {
+                    continue;
+                }
+                out.push((at.clone(), n + 1, cited));
             }
         }
     }
     out
+}
+
+/// The run of slug characters a line opens with, which is what a wrapped
+/// citation leaves on the second line.
+fn leading_slug_run(line: &str) -> &str {
+    let end = line
+        .find(|c: char| !is_slug_byte(c as u8) || !c.is_ascii())
+        .unwrap_or(line.len());
+    &line[..end]
 }
 
 /// Every qualified slug on one line, read to its own boundaries.
@@ -287,6 +330,80 @@ mod tests {
             "the truncation was reported as the row it is missing a word from: {}",
             f[0]
         );
+    }
+
+    #[test]
+    fn a_slug_wrapped_across_a_line_break_resolves_rather_than_reading_as_a_prefix() {
+        // The corpus wraps at eighty-five columns and these ids run to ninety,
+        // so this is the ordinary shape rather than an edge. Read one line at a
+        // time it is indistinguishable from the truncation above, and the whole
+        // slug is there.
+        let f = findings(
+            "prose-cite-wrapped",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "That is what `ruling::the_warrant_is_a_token_and_a_clause_on_the_values\n\
+                 _side` defines the token for.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "a wrapped citation of a real row fired: {f:?}");
+    }
+
+    #[test]
+    fn a_wrapped_slug_that_still_names_no_row_fires() {
+        // The case that must fail, and without it the arm above is satisfied by
+        // a scanner that stopped reporting wrapped citations altogether.
+        let f = findings(
+            "prose-cite-wrapped-dangling",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "See `ruling::the_warrant_is_a_token_and_a_clause_on_the_values\n\
+                 _but_no_such_row` here.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("_on_the_values"), "{}", f[0]);
+    }
+
+    #[test]
+    fn a_slug_the_writer_closed_is_not_joined_with_the_next_line() {
+        // What keeps the near-miss arm alive. The backtick ends the token
+        // before the break, so what follows is a new sentence rather than the
+        // rest of the id, and joining the two would resolve a citation the
+        // writer really did cut short. The guard is that the token has to run
+        // to the line's last byte.
+        let f = findings(
+            "prose-cite-closed-then-continues",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "See `ruling::the_warrant_is_a_token_and_a_clause_on_the_values`.\n\
+                 _side is a phrase that happens to open this line.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "the closed truncation stopped firing: {f:?}");
+        assert!(f[0].contains("_on_the_values"), "{}", f[0]);
+    }
+
+    #[test]
+    fn a_citation_ending_the_file_has_no_continuation_to_read() {
+        // There is no next line to carry, and reaching for one is how this
+        // arrives as a panic in a lint rather than as a finding.
+        let f = findings(
+            "prose-cite-last-line",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "ends at `ruling::the_warrant_is_a_token_and_a_clause_on_the_values",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
     }
 
     #[test]
