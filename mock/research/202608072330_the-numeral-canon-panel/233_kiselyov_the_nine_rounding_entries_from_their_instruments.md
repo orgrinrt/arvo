@@ -110,7 +110,45 @@ question rather than on any answer.
 
 ## 2. The nine, and a correction to the grouping I was given
 
-To be written: the enumeration, and the miscount in my brief.
+`cargo mock rounding-vocabulary` reports 33 modes across 33 entries, 9 of them
+already spelled as the canon spells them, and sorts the rest into four kinds. The
+nine are the union of its last three sections, and they are these.
+
+The retired word, two entries:
+
+1. `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`, `predicate`, `truncate`
+2. `proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion`, `predicate`, `truncate`
+
+Names a distinction it does not make, two entries:
+
+3. `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`, `predicate`, `nearest`
+4. `proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity`, `predicate`, `nearest`
+
+Outside the six, five entries:
+
+5. `proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`, `predicate`, `away from zero`
+6. `law::fusing_a_multiply_add_preserves_the_answer_under_unsigned`, `holds`, `away from zero`
+7. `law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`, `fails`, `away from zero`
+8. `law::rounding_retraction_is_the_identity`, `holds`, `both rounding modes as swept by the instrument`
+9. `law::rounding_retraction_is_the_identity`, `fails`, `both rounding modes as swept by the instrument`
+
+**My brief miscounted these and the miscount is worth naming, because it would
+have sent me to the wrong instruments.** It gave me three groups of two, four and
+five, and said of the third that its five entries "across three rows" all name
+`away from zero`. They do not. Only three entries name `away from zero`, at rows
+5, 6 and 7 above. The other two of the tool's five are the retraction row's, which
+the same brief had already assigned to its group one. So the true shape is two,
+four and three, and the brief reached nine by counting the retraction row's pair
+twice.
+
+Nothing turns on it for the answers, because the union is the same nine either
+way. It is worth stating for two reasons. A brief that says a set of five all
+name one mode is a claim about a report anybody can run in one command, and it is
+the kind of claim `expert-dispatch-defends-the-canon.md` asks a dispatcher to
+check before sending. And had I taken it as given, I would have gone looking for
+two more `away from zero` sweeps that do not exist, and the honest thing to
+report on failing to find them would have been that two claims are void, which
+would have been wrong.
 
 ## 3. Method, and why no conclusion here rests on what a probe called a mode
 
