@@ -305,7 +305,12 @@ mod tests {
 
     #[test]
     fn a_history_agreeing_with_the_rows_is_silent() {
-        assert!(run(&["radix", "signedness"], Some(&["radix", "signedness"]), ONE_FILE).is_empty());
+        assert!(run(
+            &["radix", "signedness"],
+            Some(&["radix", "signedness"]),
+            ONE_FILE
+        )
+        .is_empty());
     }
 
     #[test]
@@ -371,8 +376,14 @@ mod tests {
         // reads exactly like a complete one. An answer nobody could obtain
         // counts as shallow for the same reason: a check that cannot establish
         // it read the whole history may not claim it did.
-        assert!(super::is_shallow(Some("true\n")), "shallow was not detected");
-        assert!(super::is_shallow(None), "an unobtainable answer was trusted");
+        assert!(
+            super::is_shallow(Some("true\n")),
+            "shallow was not detected"
+        );
+        assert!(
+            super::is_shallow(None),
+            "an unobtainable answer was trusted"
+        );
         assert!(
             super::is_shallow(Some("something unexpected")),
             "an answer that is not `false` was trusted"
