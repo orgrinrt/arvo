@@ -63,6 +63,29 @@
 //! and `retirement::dl_the_associativity_gate_on_the_algorithm_crates`, whose
 //! `dl_` is the spelling a retirement id carries, against no such row.
 //!
+//! # Two things a line-at-a-time scanner reads as a near miss and are not
+//!
+//! A citation is not always confined to one line and is not always written in
+//! full, and reading a line at a time turns both into dangling slugs. Neither
+//! misleads a reader, so neither is the failure above, and both arrived in the
+//! corpus and put the count over its ceiling with nothing wrong in either file.
+//!
+//! **A slug wrapped through a line break is one citation.** The ids here run to
+//! sixty characters and a markdown file wraps at a column, so the break lands
+//! inside the slug and the first half names no row. The whole id is in the
+//! file. So a token that ends a line is joined with the slug characters the
+//! next line opens with, and where the join is a row the citation resolves.
+//! **A truncation that happens to end a line is still reported**, because the
+//! join then names nothing either.
+//!
+//! **An elided citation says it is elided.** `proposal::a_law_is_inherited...`
+//! is the writer telling the reader the rest is cut, which is the opposite of
+//! a slug one word short reading as whole. It resolves where the written part
+//! is a prefix of exactly one row, at a word boundary. **Two candidates is not
+//! a resolution**: the reader cannot supply the rest either, so that is the
+//! near miss again and is reported. So is a prefix matching no row, and so is
+//! an elision stopping mid-word.
+//!
 //! # A trailing underscore is kept rather than trimmed
 //!
 //! The token runs to the first character that cannot be in a slug, so
@@ -159,6 +182,11 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
 }
 
 /// Every `<namespace>::<slug>` the panel's prose carries that names no row.
+///
+/// A citation is not always confined to one line and is not always written in
+/// full, and the two shapes that follow from that are read here rather than in
+/// `tokens`, because both need something the line itself does not carry: the
+/// next line, or the registry.
 fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String, usize, String)> {
     let mut out = Vec::new();
     for path in markdown(dir) {
@@ -166,15 +194,72 @@ fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String
             continue;
         };
         let at = shown(&path, dir);
-        for (n, line) in text.lines().enumerate() {
+        let lines: Vec<&str> = text.lines().collect();
+        for (n, line) in lines.iter().enumerate() {
             for cited in tokens(line, namespaces) {
-                if reg.row(&cited).is_none() {
-                    out.push((at.clone(), n + 1, cited));
+                if reg.row(&cited.qualified).is_some() {
+                    continue;
+                }
+                let resolved = match cited.tail {
+                    Tail::Bounded => false,
+                    Tail::RanToEndOfLine => {
+                        let next = lines.get(n + 1).copied().unwrap_or("");
+                        let joined = format!("{}{}", cited.qualified, leading_slug_run(next));
+                        reg.row(&joined).is_some()
+                    }
+                    Tail::Elided => elision_resolves(&cited.qualified, reg),
+                };
+                if !resolved {
+                    out.push((at.clone(), n + 1, cited.qualified));
                 }
             }
         }
     }
     out
+}
+
+/// How a citation ended, which decides what it takes to resolve it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Tail {
+    /// It stopped at a character that cannot be in a slug, so it is the whole
+    /// of what the writer wrote and it stands or falls on its own.
+    Bounded,
+    /// It ran to the end of the line, so the line break may be sitting inside
+    /// it. A markdown file wraps at a column and a slug here is long enough to
+    /// be wrapped through.
+    RanToEndOfLine,
+    /// It stopped at an ellipsis, which is the writer saying the rest is cut.
+    Elided,
+}
+
+/// One qualified slug and how it ended.
+#[derive(Debug, Clone)]
+struct Cited {
+    qualified: String,
+    tail: Tail,
+}
+
+/// The slug characters a continuation line opens with, if any.
+fn leading_slug_run(line: &str) -> &str {
+    let end = line
+        .find(|c: char| !is_slug_byte(c as u8) || !c.is_ascii())
+        .unwrap_or(line.len());
+    &line[..end]
+}
+
+/// Whether an elided citation names exactly one row and so cites it.
+///
+/// The elision has to land on a word boundary and has to leave one candidate.
+/// Several candidates is not a resolution: a reader cannot supply the rest
+/// either, which is the same failure as a truncation and is reported as one.
+fn elision_resolves(qualified: &str, reg: &RegistryView) -> bool {
+    let Some((ns, _)) = qualified.split_once("::") else {
+        return false;
+    };
+    let prefix = format!("{qualified}_");
+    let rows = reg.rows_in(ns);
+    let mut hits = rows.iter().filter(|q| q.starts_with(&prefix));
+    hits.next().is_some() && hits.next().is_none()
 }
 
 /// Every qualified slug on one line, read to its own boundaries.
@@ -184,7 +269,7 @@ fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String
 /// are load-bearing: without the left boundary
 /// `arvo_proposal::a_row` reports the wrong namespace, and without the right
 /// one a truncated slug is read as the longer row it is missing a word from.
-fn tokens(line: &str, namespaces: &[&str]) -> Vec<String> {
+fn tokens(line: &str, namespaces: &[&str]) -> Vec<Cited> {
     let bytes = line.as_bytes();
     let mut out = Vec::new();
     for ns in namespaces {
@@ -202,7 +287,18 @@ fn tokens(line: &str, namespaces: &[&str]) -> Vec<String> {
             if end == 0 {
                 continue;
             }
-            out.push(format!("{ns}::{}", &rest[..end]));
+            let after = &rest[end..];
+            let tail = if after.is_empty() {
+                Tail::RanToEndOfLine
+            } else if after.starts_with("...") || after.starts_with('\u{2026}') {
+                Tail::Elided
+            } else {
+                Tail::Bounded
+            };
+            out.push(Cited {
+                qualified: format!("{ns}::{}", &rest[..end]),
+                tail,
+            });
         }
     }
     out
@@ -287,6 +383,129 @@ mod tests {
             "the truncation was reported as the row it is missing a word from: {}",
             f[0]
         );
+    }
+
+    /// The row the wrap and elision arms are read against.
+    ///
+    /// Spelled long on purpose: a slug this length is one a markdown file wraps
+    /// through, which is the whole of why the wrap arm exists.
+    const LONG_ROW: &[(&str, &[(&str, &str)])] = &[(
+        "proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence",
+        &[("says", "a thing")],
+    )];
+
+    #[test]
+    fn a_slug_wrapped_across_a_line_break_is_one_citation_rather_than_two_halves() {
+        // The file holds the whole id and the line break sits inside it, so the
+        // reader is not misled and there is nothing to report. Before this the
+        // scanner read a line at a time and the first half dangled.
+        let f = findings(
+            "prose-cite-wrapped",
+            LONG_ROW,
+            &[(
+                "42_member.md",
+                "and `proposal::a_law_is_inherited_where_the_realisation_map_is_a\n\
+                 _congruence` is a row in the canon.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "the wrapped citation was reported: {f:?}");
+    }
+
+    #[test]
+    fn a_truncation_at_the_end_of_a_line_is_still_named() {
+        // The control for the arm above, and the case that would be lost to it.
+        // The token ends the line and the next line does not continue it, so
+        // joining produces no row and the truncation is reported as before.
+        let f = findings(
+            "prose-cite-wrapped-control",
+            LONG_ROW,
+            &[(
+                "42_member.md",
+                "and `proposal::a_law_is_inherited_where_the_realisation_map_is_a\n\
+                 which is a row in the canon.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("realisation_map_is_a"), "{}", f[0]);
+    }
+
+    #[test]
+    fn an_elided_citation_naming_exactly_one_row_resolves() {
+        // The writer wrote the ellipsis, so the reader is told the rest is cut
+        // and cannot mistake the short form for a whole id. That is the
+        // opposite of the near miss this lint exists for.
+        let f = findings(
+            "prose-cite-elided",
+            LONG_ROW,
+            &[(
+                "42_member.md",
+                "`proposal::a_law_is_inherited...` already states that.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "the elided citation was reported: {f:?}");
+    }
+
+    #[test]
+    fn an_elided_citation_naming_two_rows_is_named() {
+        // The control that keeps the arm above a resolution rather than a
+        // waiver. Where the elision leaves two candidates a reader cannot
+        // supply the rest either, which is the failure the lint is about.
+        let rows: &[(&str, &[(&str, &str)])] = &[
+            (
+                "proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence",
+                &[("says", "a thing")],
+            ),
+            (
+                "proposal::a_law_is_inherited_where_the_nesting_is_flat",
+                &[("says", "another thing")],
+            ),
+        ];
+        let f = findings(
+            "prose-cite-elided-ambiguous",
+            rows,
+            &[(
+                "42_member.md",
+                "`proposal::a_law_is_inherited...` says so.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("a_law_is_inherited"), "{}", f[0]);
+    }
+
+    #[test]
+    fn an_elided_citation_naming_no_row_is_named() {
+        // The other control. An ellipsis is not a licence: where nothing starts
+        // with the written prefix the sentence still cites nothing.
+        let f = findings(
+            "prose-cite-elided-nothing",
+            LONG_ROW,
+            &[(
+                "42_member.md",
+                "`proposal::a_claim_nobody_wrote...` says so.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("a_claim_nobody_wrote"), "{}", f[0]);
+    }
+
+    #[test]
+    fn an_elision_that_stops_mid_word_does_not_resolve() {
+        // The elision has to land on a word boundary. Stopping inside a word
+        // leaves a prefix a reader completes by guessing, and guessing is what
+        // the trailing-underscore case below already refuses.
+        let f = findings(
+            "prose-cite-elided-midword",
+            LONG_ROW,
+            &[("42_member.md", "`proposal::a_law_is_inherit...` says so.\n")],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("a_law_is_inherit"), "{}", f[0]);
     }
 
     #[test]
