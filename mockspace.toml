@@ -293,6 +293,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.the-write-hook-excepts-what-the-canon-excepts]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.no-registry-comment-counts-its-own-rows]
 commit = "error"
 build = "error"

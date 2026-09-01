@@ -9,9 +9,14 @@
 # exist in arvo. Not in public fn sigs, not in private fields, not in
 # `let` bindings, not in cast expressions (`as u32`), not in literal
 # suffixes (`0u32`), not in tuple-struct fields, not in trait method
-# parameter types. Wrap through arvo types (`UFixed` / `IFixed` /
-# `FastFloat` / `StrictFloat` / `USize` / `Cap` / `Bool` /
-# `ContentHash` / ...) or notko's `Maybe` / `Outcome` / `Just`.
+# parameter types. Wrap in an arvo type, or a domain alias grounded on
+# one, or notko's `Maybe` / `Outcome` / `Just`.
+#
+# One position is excepted, and it is op's own call carried in the
+# canon: the type of a const generic parameter, where the language
+# accepts only integers, `bool` and `char` without a feature gate the
+# stack does not hand downstream. An item constant is a different
+# position and is not excepted.
 #
 # Escape hatch: `// lint:allow(<rule>) reason: ...; tracked: #N` on
 # the offending line. The rule name matches the violation
@@ -51,6 +56,21 @@ fi
 # Primitive tokens we block. Word-boundary matches via grep -w.
 BARE_NUMS='u8|u16|u32|u64|u128|i8|i16|i32|i64|i128|f32|f64|usize|isize|bool'
 
+# The type of a const generic parameter is the one position that takes a
+# bare primitive, and the canon says so in op's own words at
+# `obligation::a_primitive_for_every_position_a_bare_number_would_take`.
+# A line scanner cannot see the grammar, so the position is recognised
+# by where the annotation sits: after the `<` that opens a generic list,
+# after a `,` inside one, or alone on its own line inside a list broken
+# over several. An item constant is not excepted and keeps its type,
+# which is what the closing `;` distinguishes.
+_without_const_generic_types() {
+    printf '%s' "$1" | sed -E \
+        -e "s/(<[[:space:]]*const[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*:[[:space:]]*)($BARE_NUMS)([^A-Za-z0-9_]|\$)/\1\3/g" \
+        -e "s/(,[[:space:]]*const[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*:[[:space:]]*)($BARE_NUMS)([^A-Za-z0-9_]|\$)/\1\3/g" \
+        -e "s/^([[:space:]]*const[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*:[[:space:]]*)($BARE_NUMS)([[:space:]]*[,>]?[[:space:]]*)\$/\1\3/"
+}
+
 while IFS= read -r LINE; do
     # Skip empty, skip comments, skip lines with an explicit allow.
     case "$LINE" in
@@ -66,9 +86,11 @@ while IFS= read -r LINE; do
     # the scanner doesn't false-positive on primitive names in text.
     STRIPPED=$(printf '%s' "$LINE" | sed -e 's/"[^"]*"//g' -e "s/'[^']*'//g")
 
-    # Bare numeric or bool token (word boundary).
-    if printf '%s' "$STRIPPED" | grep -qE "(^|[^a-zA-Z0-9_])($BARE_NUMS)([^a-zA-Z0-9_]|$)"; then
-        deny "arvo has no bare numeric/bool primitives. Line: \`$TRIMMED\`. Use UFixed / IFixed / FastFloat / StrictFloat / USize / Cap / Bool or a domain alias. Escape: \`// lint:allow(no-bare-numeric) reason: ...; tracked: #N\`."
+    # Bare numeric or bool token (word boundary), with the excepted
+    # position taken out of the line first.
+    SCANNED=$(_without_const_generic_types "$STRIPPED")
+    if printf '%s' "$SCANNED" | grep -qE "(^|[^a-zA-Z0-9_])($BARE_NUMS)([^a-zA-Z0-9_]|$)"; then
+        deny "arvo has no bare numeric/bool primitives outside the type of a const generic parameter. Line: \`$TRIMMED\`. Wrap in an arvo type, or a domain alias grounded on one. Escape: \`// lint:allow(no-bare-numeric) reason: ...; tracked: #N\`."
     fi
 
     # Bare Option / Result tokens. Accept fmt::Result, io::Result.
