@@ -459,3 +459,146 @@ them: they are compile-time and registry facts.
 **Nothing under `mock/research/` and nothing under `mock/design_rounds/`. No other branch. No
 `git log` beyond my own two commits and `git rev-parse` on `HEAD` and `origin/dev`.**
 
+
+---
+
+# Reconciliation, written after reading `mock/research/`
+
+Everything above was committed at `64ab711e` before this directory was opened. This section is
+later and says what I found, what I would change, and what I would not.
+
+## What I would withdraw as new, and keep as a second instance
+
+**`PHASE_DEN` is read by no function in the crate.** Seat 237 found this first, at
+`237_the_format_proposals_against_the_ratification_gate.md:459-465`, and found it the same way and
+filed it under the same rule, down to the sentence "ask what value would make it fail, and the
+answer is none". I withdraw any claim of priority. What survives is that it is now **two
+independent instances**: 237 reached it by grepping the crate for uses, I reached it by compiling a
+`PHASE_DEN = 0` impl from outside and watching every law pass. Different instruments, same fact,
+and under the three-instances preference that is worth recording as a count rather than as a
+discovery.
+
+**The obligation exists at `Slots` and at no tier above it.** Seat 240 reached this independently,
+at `240_the_format_layer_derived_from_its_denotation.md:572`: "The two coordinates are checked at
+one tier and unchecked at the tier above it", and its `q4` probe calls its own proposal "the
+format-level analogue of `Slots::ADMITTED`, which the crate does carry at the slot level". Same
+structural finding, and again a different instrument: 240 swept 16728 coordinate tuples against a
+raggedness oracle with two mutants; I compiled four negative controls with one refusing positive
+control. **Two instruments, disjoint methods, same conclusion.**
+
+They are complementary rather than competing, and the ordering matters. 240's obligation is that
+the denoted set be a clean geometric ladder rather than a ragged union. Mine are that the
+coordinates denote a set at all. **Mine are prior**: a format at `MAGNITUDES = 0` has no set to be
+ragged, so 240's oracle has nothing to range over, and a format at `RADIX = 1` has `R = radix^SLOPE
+= 1`, which makes "a power of `R`" true of exactly one distance and 240's tiling condition
+degenerate. Whoever writes the format-level obligation wants both, with the well-formedness half
+checked first. I did not verify the radix-one degeneracy against 240's oracle and state it as
+arithmetic rather than as a measurement.
+
+## What I would add, because it is new and it corrects a prior seat
+
+**Seat 237's proposed repair does not survive the value that motivated it.** 237 writes, at `:464`:
+
+> The correct predicate is `PHASE_NUM % PHASE_DEN == 0 && slot_in_range(0)`, and writing it is what
+> would make `PHASE_DEN` load-bearing.
+
+`242_probes/fix_check/` measures what that predicate does at `PHASE_DEN = 0`, which is the value
+237's own finding says compiles today. Two arms, with the control that the predicate must evaluate
+and separate the two shipped phases first, which it does.
+
+- **In a const context** it does not return a verdict. It fails const evaluation:
+  `attempt to calculate the remainder of 1_i64 with a divisor of zero`. That refuses, which is the
+  right outcome, but by an arithmetic error rather than by a named obligation, which is the
+  distinction `Slots::ADMITTED`'s own doc goes to some length to preserve.
+- **Called at runtime it is worse, and this is the finding.** `has_additive_identity` is a free
+  `pub const fn`, so it is also an ordinary function, and const evaluation never looks at a call
+  that is not in a const context. `runtime_call.rs` builds clean and **panics at run time**:
+  `attempt to calculate the remainder with a divisor of zero`. That is a runtime check on a lowered
+  path, which `ruling::never_a_runtime_check_and_one_lowered_path` (ratified) forbids.
+
+So the repair and the obligation are **ordered, and 237 proposed the second without the first**.
+`PHASE_DEN != 0` has to be an admission obligation before `PHASE_NUM % PHASE_DEN` may appear
+anywhere, or the change converts a silent unconstrained declaration into a runtime panic, which is
+a worse state than the one it fixes. I do not read this as a defect in 237's work: it found the
+class, filed it correctly, and proposed a repair in one clause at the end of a long file. The
+repair simply has a precondition, and the precondition is the thing my probe was built to find.
+
+**`MAGNITUDES = 0` and `RADIX = 1` appear nowhere in this directory.** Greps for `MAGNITUDES = 0`,
+`empty representable set`, `RADIX = 1`, `radix of one` and `radix 1` return my own files and
+nothing else. I offer them as new, with the caveat that a grep for a phrase is weak evidence of
+absence and I did not read all 442 files.
+
+Of the two, **`MAGNITUDES = 0` is the one I would put in front of a canon reader**, because its
+failure is inside a ratified sentence rather than beside it: the spine identifies a format *by* its
+representable set, the set is empty, and `has_additive_identity` returns true of it. A format with
+no members that reports containing zero is not a marginal case of the concept, it is the concept
+returning a wrong answer about itself.
+
+## What I would change in my own derivation
+
+**Section 6 on Q22 was written without knowing the consolidation had answered it, and I would now
+put it more strongly rather than less.** `74_giesen_consolidation_the_number_system_concept.md:749`
+records Q22 with both options live and says of the scoped-out reading that `65` withdrew its
+version "in favour of the composition filing carried from unit two ... which is one read of that
+filing, not a closure; the register entry stays live". Fair at the time.
+
+But **the sentence I rely on was ratified afterwards.** `ruling::the_format_spine_is_canon` carries
+"a value set that depends on other data is not a format but storage", and its provenance is seat
+213; the consolidation is seat 74. So the governing sentence postdates the consolidation by well
+over a hundred seats, and nobody has applied it to the row. That is the shape
+`a-governing-claim-is-applied-where-it-hurts` names: a ratified claim gets applied to the gaps it
+closes and not to the standing claims it falsifies, and the falsified ones announce nothing because
+they read as settled.
+
+I still do not resolve Q22, and my reason is unchanged and now sharper. The ratified sentence bears
+on **reading A** (an interval value is a pair of runtime data, hence storage) and does not by itself
+kill **reading B** (the format is "intervals over grid G", a constant of the type). My discriminator
+stands and is the contribution: **the ratified affine predicate has exactly one slot coordinate**,
+so reading B cannot be expressed without widening the ratified parameterisation and reading A costs
+nothing today. That is checkable by counting, where the register's own stated discriminator is a
+preference. The consolidation's `67`-derived note that "a point composition and a shared-parameter
+aggregate are different things, and intervals are the first kind" points the same way from a
+different direction, which I did not have and which strengthens A.
+
+**Section 5 on Q30 stands and I would add one thing.** The consolidation files Q30 as "As appended"
+with no derivation, so there is no prior position to reconcile against. The part I would now press
+harder is the cost claim: the row says a location "presumes a coordinate count the canon may not
+want to commit to", and
+`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon` is
+ratified and commits to the coordinate set. Seat 238 and seat 239 are the two instances behind that
+ruling and they disagree about the number of **types**, which the ruling says explicitly it does not
+resolve. A reader who takes "the count is open" from that ruling and applies it to Q30's coordinate
+count has moved a disagreement about types onto a question about coordinates. **The ten is not in
+dispute in either seat.**
+
+## What I would not change
+
+Sections 0, 1, 3, 4, 7 and 8 stand as written. Section 9's claim, that four of the six read hard
+because one word spans two tiers and the place that belongs is Q19, I still hold, and I now hold it
+with one piece of support I did not have: the consolidation's own treatment of Q23 says the unit
+"reshaped the question", that the closure question is "well formed for realisation roles and
+malformed for a mixed set". That is the same shape as my claim about the other four, arrived at
+independently on a question outside my six, by an author who did not frame it as a tier problem.
+Whether it is the same problem is worth somebody attacking rather than my asserting.
+
+## Predicates on the reconciliation's own findings
+
+- **Seat 237's proposed phase predicate fails const evaluation at `PHASE_DEN = 0` and panics at run
+  time when called outside a const context.** Established by construction, two arms plus a
+  separating control. `rustc = 1.98.0-nightly (57d06900f 2026-05-27)`, `edition = 2024`,
+  `opt level = 3`, `debug-assertions = off`, tree at `27ac9476`.
+- **`MAGNITUDES = 0` and `RADIX = 1` are not named in this panel directory.** Absence claim, from
+  five greps over 442 files at tree `27ac9476`, and weak on that account.
+- **Two independent instruments converge that the admission obligation exists at `Slots` and at no
+  tier above it**: seat 240's 16728-tuple sweep and seat 242's compile-and-run controls. The
+  intersection is the tier claim. They do not intersect on which obligation belongs above it, and
+  nothing here ratifies a count.
+
+## Paths I opened after the blind commit
+
+`ls` of the panel directory; `240_probes/q4_output.txt` and the head of
+`240_probes/q4_the_obligation_the_format_does_not_carry.rs`; lines 455-470 of `237_...gate.md`;
+lines 744-772 and greps of `74_giesen_consolidation_the_number_system_concept.md`; grep hits across
+the directory for `PHASE_DEN`, `ADMITTED`, `MAGNITUDES = 0`, `RADIX = 1`, `set-valued`, `two tiers`
+and the obligation-namespace phrases. I did not read `65`, `66`, `OPTIONS.md`, or the bulk of the
+442 files, and my absence claims are bounded by that.
