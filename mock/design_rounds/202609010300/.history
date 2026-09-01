@@ -1,0 +1,50 @@
+91c4f2f6 chore: lock the round's src changelist
+0b227889 feat: say how far the stated-row ordering actually reached
+8a17c3ad chore: file the src changelist for the ordering sentence
+19f8be02 chore: lock the round's doc changelist
+de62ec7a chore: file the round's empty doc changelist
+36e20a06 chore: open a round on the ordering that ranked nothing
+c2dd7cb7 feat: refuse a prose citation that resolves to no registry row
+792f1588 chore: track the 23 bench variant lockfiles that had none
+e82ee607 fix: serialise the shared write pool so two concurrent passes cannot wedge
+12d899aa Merge pull request #38 from orgrinrt/canon/two-axes-and-the-check-that-pins-them
+49fad70c fix: walk the axis file's history by its path at each commit
+7a30d4ff fix: an unreadable blob makes the whole walk unread, not a skipped commit
+5421f152 Merge remote-tracking branch 'origin/dev' into canon/two-axes-and-the-check-that-pins-them
+49fde6e0 chore: hook reformat of the history arm
+dad162b4 fix: refuse a history the walk cannot vouch for, and drop the roster
+7df8a913 fix: read git for the axis set, so one commit cannot erase the check
+691d494f Merge pull request #28 from orgrinrt/design/base-primitives
+5f35bc04 chore: hook reformat of the roster arm
+29f578d3 fix: read the roster in both directions so it stays complete
+39c15a58 style: take the formatter's output on the new lint
+4674eb03 feat: declare association and leaf aliasing, and pin the axis set
+99bad30e chore: close design round 202609010115
+4b28b6f3 chore: lock the src changelist for the value-path round
+9c7950d2 chore: hook reformat, suite re-run and unchanged
+45e0e564 fix: move the exact step to a carrier that holds it, and close the surface
+77df4d1b docs: reproduce the value-path defect and its fix across the flag matrix
+54df602d Merge pull request #37 from orgrinrt/research/attack-229
+9a490763 panel: attack both readings, settle association against leaf aliasing
+3a1a0054 chore: lock the doc changelist for the value-path round
+210296e1 docs: say where the exact step happens and that the regions are internal
+9f6e4173 docs: bring the value-path finding into the round and say what changed
+507dfc95 panel: census the entries whose values side carries a second region
+35b17c13 Merge pull request #36 from orgrinrt/research/attack-230
+0a362991 feat: gate a ruling that claims op with nothing of his behind it
+7e0cea22 panel: record the probe build line and take the formatter's reflow
+46401626 panel: settle association against leaf aliasing by exhaustive enumeration
+f51c7e5a research: attack the other reading of the axis question
+06560140 panel: cross-check the uptake vector and census non-rectangular regions
+241b2403 chore: enumerate which regions a product-form predicate can denote
+01706e07 chore: vary association and leaf aliasing in one probe
+6b6b1a6a docs: file the adaptation's bare arithmetic as its own round
+8299b376 chore: close design round 202609010001
+1e894fff chore: lock the src changelist for the admission round
+c2370eca fix: check admission on the contract, with an obligation that holds in both profiles
+c8b773e9 docs: qualify the admission claim to the build it actually holds in
+5a9b78fa Merge pull request #35 from orgrinrt/research/declare-the-blocking-axes-2
+6cc22838 docs: record that the admission check fires at codegen and not at check
+c0df428f research: read whether the blocking phrases are axes
+a14aafd7 Merge pull request #34 from orgrinrt/research/declare-the-blocking-axes
+d1d8f3d2 chore: lock the doc changelist for the admission round
