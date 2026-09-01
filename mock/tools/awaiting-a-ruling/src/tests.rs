@@ -404,3 +404,166 @@ fn only_ops_own_files_count_as_his() {
         "the convention leads with a number"
     );
 }
+
+#[test]
+fn an_ordering_that_ranked_nothing_says_so_rather_than_reading_as_ranked() {
+    // The corpus is this shape: a `stated` row is his raw direction, and the
+    // prose cites the `ruling` that came out of it rather than the ack under
+    // it, so almost nothing cites a row this tool prints. The sort then falls
+    // through to the slug tiebreak and the list is alphabetical, while the
+    // closing sentence still describes an ordering.
+    let v = view(
+        &[
+            ("ruling::alpha", &[("rung", "stated")]),
+            ("ruling::beta", &[("rung", "stated")]),
+            ("ruling::gamma", &[("rung", "stated")]),
+        ],
+        &[],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(
+        out.contains("ranked nothing"),
+        "a run where no two rows differ says the ordering ranked nothing: {out}"
+    );
+    assert!(
+        out.contains("alphabetical"),
+        "and says what the list is instead: {out}"
+    );
+    assert!(
+        !out.contains("which is a suggestion and not a ranking"),
+        "the wording for a run that did rank must not also appear: {out}"
+    );
+}
+
+#[test]
+fn counts_that_are_equal_and_non_zero_rank_nothing_either() {
+    // The arm an implementation testing `every count is zero` gets wrong. Three
+    // rows each cited once are ordered by slug exactly as three rows cited by
+    // nobody are, so the ordering said the same nothing in both.
+    let v = view(
+        &[
+            ("ruling::alpha", &[("rung", "stated")]),
+            ("ruling::beta", &[("rung", "stated")]),
+            ("ruling::gamma", &[("rung", "stated")]),
+        ],
+        &[
+            ("ruling::alpha", &["proposal::x"]),
+            ("ruling::beta", &["proposal::y"]),
+            ("ruling::gamma", &["proposal::z"]),
+        ],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(
+        out.contains("(1 row cites it)"),
+        "the counts are still printed per row: {out}"
+    );
+    assert!(
+        out.contains("ranked nothing"),
+        "equal non-zero counts rank nothing: {out}"
+    );
+}
+
+#[test]
+fn an_ordering_that_did_rank_keeps_the_wording_for_one_that_did() {
+    // The control for both arms above. Counts that differ are the only case the
+    // sort has anything to say about, and the degenerate wording must be absent
+    // there or it says nothing at all.
+    let v = view(
+        &[
+            ("ruling::lonely", &[("rung", "stated")]),
+            ("ruling::popular", &[("rung", "stated")]),
+        ],
+        &[("ruling::popular", &["proposal::x", "question::y"])],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(
+        out.contains("which is a suggestion and not a ranking"),
+        "a run that ranked keeps the original wording: {out}"
+    );
+    assert!(
+        !out.contains("ranked nothing"),
+        "and must not claim it ranked nothing: {out}"
+    );
+    assert!(
+        !out.contains("alphabetical"),
+        "nor that the list is alphabetical, which it is not: {out}"
+    );
+}
+
+#[test]
+fn one_row_alone_ranks_nothing_because_there_is_no_pair_to_order() {
+    // The boundary. A single row cannot be out of order, so the ordering has
+    // said nothing about it whatever its count, and the report should not imply
+    // a position was earned.
+    let v = view(
+        &[("ruling::only", &[("rung", "stated")])],
+        &[("ruling::only", &["proposal::x", "question::y"])],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(
+        out.contains("(2 rows cite it)"),
+        "the count is still reported: {out}"
+    );
+    assert!(
+        out.contains("ranked nothing"),
+        "one row is no pair, so nothing was ordered: {out}"
+    );
+}
+
+#[test]
+fn a_partial_ordering_says_how_far_it_actually_reached() {
+    // The shape the corpus is in, and the reason a bare ranked-or-not flag is
+    // not enough: the sort separates the top of the list and says nothing about
+    // the long tail underneath, which reads as ranked because a ranked list and
+    // an alphabetical one look the same.
+    let v = view(
+        &[
+            ("ruling::popular", &[("rung", "stated")]),
+            ("ruling::alpha", &[("rung", "stated")]),
+            ("ruling::beta", &[("rung", "stated")]),
+            ("ruling::gamma", &[("rung", "stated")]),
+        ],
+        &[("ruling::popular", &["proposal::x"])],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(
+        out.contains("reached 1 of 4"),
+        "one row was separated from four: {out}"
+    );
+    assert!(
+        out.contains("the other 3 share the lowest count"),
+        "and the tail is named as unordered: {out}"
+    );
+    assert!(
+        !out.contains("ranked nothing"),
+        "it did rank one of them, so not nothing: {out}"
+    );
+}
+
+#[test]
+fn the_tail_is_counted_by_the_lowest_count_rather_than_by_zero() {
+    // Reading the tail as `the rows nobody cites` gives the right answer only
+    // where the lowest count happens to be zero. Here it is one, and the two
+    // rows tied at one are as unordered as two rows tied at zero would be.
+    let v = view(
+        &[
+            ("ruling::popular", &[("rung", "stated")]),
+            ("ruling::alpha", &[("rung", "stated")]),
+            ("ruling::beta", &[("rung", "stated")]),
+        ],
+        &[
+            ("ruling::popular", &["proposal::x", "question::y"]),
+            ("ruling::alpha", &["proposal::z"]),
+            ("ruling::beta", &["proposal::w"]),
+        ],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(
+        out.contains("reached 1 of 3"),
+        "the tail is the two tied at one, not the zero rows there are none of: {out}"
+    );
+    assert!(
+        out.contains("the other 2 share the lowest count"),
+        "and it says share rather than claiming nothing cites them: {out}"
+    );
+}
