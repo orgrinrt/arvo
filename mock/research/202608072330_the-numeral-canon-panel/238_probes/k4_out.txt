@@ -1,0 +1,32 @@
+=== controls: the crates checked at every gate today ===
+  crates/arvo-placement/src  -> 0 public position(s) with a bare primitive
+  crates/arvo-strategy/src  -> 0 public position(s) with a bare primitive
+
+=== control: the scan can find something at all ===
+  crates/arvo-format/src -> 76, so the scan does match.
+
+=== the introducing crate, per file, non-test source only ===
+    1  crates/arvo-format/src/adapt.rs
+    8  crates/arvo-format/src/ambient.rs
+    9  crates/arvo-format/src/apply.rs
+    7  crates/arvo-format/src/format.rs
+    8  crates/arvo-format/src/lib.rs
+   12  crates/arvo-format/src/quantum.rs
+   10  crates/arvo-format/src/slots.rs
+    4  crates/arvo-format/src/width.rs
+  ---
+   59  public positions carrying a bare primitive, tests excluded
+
+=== of those, the ones an outside implementor must write ===
+  crates/arvo-format/src/adapt.rs:95:    const ARITY: u32;
+  crates/arvo-format/src/ambient.rs:18:    const RADIX: u32;
+  crates/arvo-format/src/ambient.rs:25:    const SIGNED: bool;
+  crates/arvo-format/src/format.rs:41:    const PHASE_NUM: i64;
+  crates/arvo-format/src/format.rs:46:    const PHASE_DEN: i64;
+  crates/arvo-format/src/quantum.rs:27:    const BASE: i32;
+  crates/arvo-format/src/quantum.rs:30:    const SLOPE: i32;
+  crates/arvo-format/src/quantum.rs:34:    const MAGNITUDES: u32;
+  crates/arvo-format/src/slots.rs:54:    const MIN: i64;
+  crates/arvo-format/src/slots.rs:57:    const MAX: i64;
+  ---
+   10  trait associated constants declared with a bare primitive

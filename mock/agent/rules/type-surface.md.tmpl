@@ -32,12 +32,25 @@ alias grounded on one, never the bare primitive.
 **Scope is physical, not API-visibility.** Bare `u8..u128`, `i8..i128`,
 `f32`, `f64`, `usize`, `isize`, `bool` do not appear anywhere in
 source: not in public fn signatures, not in private fields, not in
-`let` bindings, not in cast expressions, not in literal suffixes
-(`0u32`, `1_usize`), not in array element types, not in const
-declarations, not in trait method parameter types, not in tuple-
-struct fields, not in `where` clauses. The `arvo-types-only` and
-`no-bare-numeric` lints scan every line of every `.rs` file; both
-fire on any physical occurrence of a bare primitive identifier.
+`let` bindings, not in cast expressions, not in array element types,
+not in const declarations, not in trait method parameter types, not
+in tuple-struct fields, not in `where` clauses.
+
+**One position is excepted and it is the type of a const generic
+parameter**, which is op's own call carried in the canon. So
+`pub struct Signed<const BITS: u32>;` passes while an associated
+constant, an item constant, a field and a cast are all still refused,
+including on the same line as a parameter that passed. His call
+carries a second bound no scan can judge, that the bare form belongs
+there only where the alternative is genuinely painful, and that one
+stays with whoever reviews the code.
+
+**A literal suffix is not reached, and this rule said it was.** The
+lints scan lines and want a non-identifier byte on each side of the
+name, and a suffix always carries a digit in front of it, so `0u32`,
+`1_usize` and `0.0_f32` go unreported. Closing that wants the parse
+rather than the line. Everything else above is caught on any physical
+occurrence.
 
 Escape hatch: `// lint:allow(<rule>) reason: ...; tracked: #N`
 only when a foreign crate's contract or an unavoidable language

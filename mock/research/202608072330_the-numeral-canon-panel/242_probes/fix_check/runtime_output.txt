@@ -1,0 +1,9 @@
+======== rustc
+-------- build exit: 0
+======== run
+control: reached main, so nothing refused at compile time.
+
+thread 'main' (2675585) panicked at runtime_call.rs:15:5:
+attempt to calculate the remainder with a divisor of zero
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+-------- run exit: 101

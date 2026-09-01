@@ -1,0 +1,13 @@
+# A crate outside the door, declaring a format of its own.
+#
+# This is the crate the question is about: the one that has no exemption, that
+# the ratified open-inventory clause says must be able to join, and that today
+# takes ten hard errors for trying. Nothing here may name a machine type.
+[package]
+name = "outside"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+door = { path = "../door" }
