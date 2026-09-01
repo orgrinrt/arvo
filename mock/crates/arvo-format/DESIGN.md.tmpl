@@ -202,15 +202,18 @@ them with no edit to anything below.
 
 | Contract | What an implementor supplies | Shipped members |
 |---|---|---|
-| `Format` | `Ambient`, `Quantum`, `Slots`, and the phase as `PHASE_NUM` over `PHASE_DEN` | `Integer`, `UFixed`, `Biased`, `Floating`, in `points` |
-| `Ambient` | the `RADIX` and whether the domain is `SIGNED` | `BinaryRationals`, `UnsignedBinaryRationals`, `DecimalRationals` |
-| `Quantum` | `BASE`, `SLOPE`, `MAGNITUDES`, the affine step law | `Constant`, `Indexed` |
-| `Slots` | `MIN` and `MAX`, inclusive | `Signed`, `Unsigned` |
-| `Rounding` | which of the six, as `MODE` | `TowardZero`, `Floor`, `Ceil`, `HalfUp`, `HalfEven`, `Stochastic` |
-| `Overflow` | which policy, as `POLICY` | `Wrap`, `Saturate`, `Clamp` |
+| `Format` | `Ambient`, `Quantum`, `Slots`, and `PHASE`, a `Phase` | `Integer`, `UFixed`, `Biased`, `Floating`, in `points` |
+| `Ambient` | `RADIX`, a `Radix`, and `SIGNED`, a `Bool` | `BinaryRationals`, `UnsignedBinaryRationals`, `DecimalRationals` |
+| `Quantum` | `BASE` and `SLOPE`, both an `Exponent`, and `MAGNITUDES`, a `MagnitudeCount` | `Constant`, `Indexed` |
+| `Slots` | `MIN` and `MAX`, both a `Slot`, inclusive, and `WIDTH`, a `Width` | `Signed`, `Unsigned` |
+| `Rounding` | which of the six, as `MODE`, a `Mode` | `TowardZero`, `Floor`, `Ceil`, `HalfUp`, `HalfEven`, `Stochastic` |
+| `Overflow` | which policy, as `POLICY`, a `Policy` | `Wrap`, `Saturate`, `Clamp` |
 | `Adaptation` | a `Rounding` and an `Overflow` | `Adapt` |
 | `DeclaredSignature` | a `Format` and an `Adaptation` | `Signature` |
-| `Operation` | the `Signature` it is a function of, and its `ARITY` | none; consumers declare their own |
+| `Operation` | the `Signature` it is a function of, and `ARITY`, an `Arity` | none; consumers declare their own |
+
+**Not one coordinate in that table is a host primitive, and that is the contract rather than a
+preference about spelling.** The reason is the section after next.
 
 `Mode` and `Policy` are the two value enumerations a const predicate compares
 against, and `ALL_MODES` and `SHIPPED_POLICIES` are what a test sweeps so a law is
@@ -221,7 +224,9 @@ The membership predicate and its neighbours are free functions rather than trait
 methods, for the staging reason above: `contains`, `has_additive_identity`,
 `step_exponent`, `smallest_step_exponent`, `radix`, `exponent_at`,
 `magnitude_in_range`, `is_constant_family`, `slot_in_range`, `slot_count`,
-`rounding_of`, `overflow_of`, `operation_rounding`, `operation_overflow`.
+`rounding_of`, `overflow_of`, `operation_rounding`, `operation_overflow`. Each
+takes a coordinate and returns one, and the ones that answer a yes or no return a
+`Bool` rather than the host's truth value, on the same reading as the table above.
 
 ### The two primitives, and why they are here
 
@@ -233,7 +238,79 @@ so the observation surface is exactly what the type establishes and nothing
 widens it.
 
 The door is kept narrow on purpose: two types, no arithmetic beyond what a width
-derivation needs, and everything else built from a `Format` instead of added here.
+derivation needs, and nothing else added beside them. The coordinates in the next
+section are built through the door rather than widening it, so they are the stack's
+own types without the crate having a third primitive.
+
+### The coordinates, and why they are types at all
+
+A format's coordinates are what an implementor writes, and until this round every
+one of them was declared with a host integer or a host `bool` as its type. That
+is what a design that named the coordinates and never named their types permits,
+and it had a consequence nobody intended.
+
+**The bare-primitive lints run at error level in every crate, and `arvo-format` is
+the only one exempt**, because it introduces the numeric category. So a crate
+elsewhere that implements `Format` is refused at the gate for every coordinate it
+supplies, and the only way it lands is by turning a lint off.
+`proposal::the_concept_is_closed_and_the_inventory_is_open`, ratified through
+`ruling::the_format_spine_is_canon`, says a new instance earns admission by
+supplying the concept's obligations, and that closing the concept while opening
+the inventory is what makes admission a check rather than a negotiation. A
+contract nobody outside can supply without editing a lint config has made it a
+negotiation with the lint config, which is not the same thing.
+
+**The floor is two, measured rather than argued.** An outside format reusing every
+shipped `Ambient`, `Quantum` and `Slots`, and supplying only what `Format` itself
+demands, still had to write two host integers. There was no arrangement of the
+shipped parts that got past the gate, which is what makes this a defect in the
+contract rather than an inconvenience at one call site.
+
+An associated const takes any type at all. Only a const generic parameter is
+restricted to the host's own, and `obligation::a_primitive_for_every_position_a_bare_number_would_take`
+excepts that position in op's own words. So the repair needs no mechanism: it
+needs each coordinate to be named for what it is and given a type that says so.
+
+| Coordinate type | What it is | Declared with |
+|---|---|---|
+| `Radix` | the base a positional notation counts in | `Ambient` |
+| `Exponent` | a signed power of the radix, which is what both the step law's intercept and its rate are | `Quantum` |
+| `Magnitude` | an index into a quantum law's magnitudes | `Quantum` |
+| `MagnitudeCount` | how many magnitudes a law ranges over | `Quantum` |
+| `Slot` | an index of a multiple of the quantum, never a value | `Slots` |
+| `SlotCount` | how many slots a range admits | `Slots` |
+| `Phase` | the grid's offset, as a ratio in units of the quantum at magnitude zero | `Format` |
+| `Arity` | how many operands an operation takes | `Operation` |
+| `Fraction` | a ratio with a positive denominator, which is a position between two grid points | the applied map |
+
+**Each lives in the file that declares the contract it is a coordinate of**, rather
+than in one coordinates module. One file is one topic, a coordinate is part of the
+topic its contract is, and a module gathering all nine would drag every contract
+into a reader's view of any one of them.
+
+**An index and a count of the same thing are two types.** `Magnitude` against
+`MagnitudeCount`, `Slot` against `SlotCount`. The off-by-one between an index and
+an extent is the class this design already worries about where it says the slot
+range is inclusive at both ends because the alternative is an error nobody can see
+in a const, and carrying both as one host integer is that worry with nothing done
+about it.
+
+**The phase is one coordinate and is now one const.** The ratified parameterisation
+carries a phase, singular, and the crate carried a numerator and a denominator as
+two independent associated consts with the denominator's never-zero condition
+written in a doc comment where nothing enforced it. `Phase` carries the pair, its
+constructors cannot produce a zero denominator, and the condition is a property of
+the type rather than a sentence asking for one.
+
+Each of these is `repr(transparent)` where it wraps one value, carries a private
+field, and has exactly one declared unwrap accessor, on the same reading as `Width`
+and `Bool`: a type whose fields are public has not carried the property its
+constructors establish.
+
+**Nothing here touches a const generic parameter.** They are excepted, and
+`question::the_width_surface_crossing` is open on exactly that surface with the
+panel as its decider, so this design states its coordinates and leaves that
+question where it is.
 
 ## Applying the adaptation, which is the verb the earlier round left out
 
@@ -251,9 +328,14 @@ remainder within one step:
 value = phase + (slot + remainder) * quantum(magnitude)
 ```
 
-`Exact` carries the slot, and the remainder as a numerator over a denominator so an exactly-half case
-is representable rather than approximated. A remainder of zero is a position already on the grid, and
-the map is the identity on it whatever the mode says, which is the first law below.
+`Exact` carries a `Slot` and the remainder as a `Fraction`, a numerator over a denominator, so an
+exactly-half case is representable rather than approximated. A remainder of zero is a position already
+on the grid, and the map is the identity on it whatever the mode says, which is the first law below.
+
+The `Fraction` a caller hands `Exact::between` may be any ratio at all, and `Exact` normalises it into
+the slot, so a caller computing an exact result does not carry the remainder invariant. What `Exact`
+holds afterwards is in `[0, 1)`, which is what lets the rounding modes be stated once rather than once
+per sign.
 
 ### One map with two regions, not two mechanisms
 
@@ -279,10 +361,14 @@ names. It is also why a panic is not a policy.
 Five of the six modes are a function of the position alone. The sixth is not, and the questions about
 how it is seeded and whether it is keyed on value or position are open in the register.
 
-So `adapt` takes a `Dither`, a fraction the stochastic mode compares the remainder against, supplied by
-the caller. The crate stays a function of its inputs, the mode is expressible, and nothing here answers
-the seeding question or the keying question. A caller with no stochastic mode in its adaptation passes
-`Dither::UNUSED` and the parameter is erased at monomorphisation with the branch that reads it.
+So `adapt` takes a `Dither`, which is a `Fraction` the stochastic mode compares the remainder against,
+supplied by the caller. The crate stays a function of its inputs, the mode is expressible, and nothing
+here answers the seeding question or the keying question. A caller with no stochastic mode in its
+adaptation passes `Dither::UNUSED` and the parameter is erased at monomorphisation with the branch that
+reads it.
+
+`adapt` returns a `Slot`, which is the coordinate the format is stated in, and not a host integer that
+a caller would then have to know the meaning of.
 
 ### The panic is a build-profile behaviour and still not a policy
 
@@ -411,6 +497,11 @@ rather than in one wide enough to hold the step.
 So the map performs the exact step in a domain chosen to hold it, and the adaptation lands the result
 in the representable set. The step's intermediate is not a slot index and is not required to be one;
 only the answer is.
+
+That is also why the intermediate is not a coordinate and carries no coordinate type. It is a private
+value inside two private functions, it exists to be wider than a `Slot` on purpose, and giving it a
+name in the surface would put a quantity on the public API that nothing outside has any business
+holding.
 
 **This is what makes the map total without a check.** Wrapping a very large exact position into a small
 range has a correct answer, and the only reason a design would refuse or guard there is that it chose
