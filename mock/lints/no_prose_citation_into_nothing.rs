@@ -196,7 +196,11 @@ fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String
         let at = shown(&path, dir);
         let lines: Vec<&str> = text.lines().collect();
         for (n, line) in lines.iter().enumerate() {
-            let carry = lines.get(n + 1).copied().map(leading_slug_run).unwrap_or("");
+            let carry = lines
+                .get(n + 1)
+                .copied()
+                .map(leading_slug_run)
+                .unwrap_or("");
             for cited in tokens(line, namespaces) {
                 if reg.row(&cited).is_some() {
                     continue;
@@ -348,7 +352,10 @@ mod tests {
             )],
             0,
         );
-        assert!(f.is_empty(), "a wrapped citation of a real row fired: {f:?}");
+        assert!(
+            f.is_empty(),
+            "a wrapped citation of a real row fired: {f:?}"
+        );
     }
 
     #[test]
