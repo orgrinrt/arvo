@@ -194,9 +194,32 @@ impl AwaitingARuling {
              the coordinator gating that, and the batch of four he once named is \
              spent. Read each with `awaiting-a-ruling <slug>` before promoting it: \
              the work is usually the gap between his quote and the prose written on \
-             top of it, not the row's subject.\n\n\
-             Ordering is by what cites a row, which is a suggestion and not a \
-             ranking. And retirement is the only blocked state this can see: a row \
+             top of it, not the row's subject.\n\n",
+        );
+        // The sort ranks only where rows disagree about the count, and the rows
+        // sharing the lowest one are in slug order among themselves. On a corpus
+        // where almost nothing cites a `stated` row that tail is nearly the whole
+        // list, which reads exactly like a ranked one, so the report says how far
+        // the ordering actually reached rather than describing the sort in the
+        // abstract.
+        let unordered = tied_at_the_bottom(waiting);
+        s.push_str(&match unordered {
+            n if n == waiting.len() => "Ordering is by what cites a row, and on \
+                                        this run it ranked nothing: no two rows \
+                                        here differ in that count, so what you \
+                                        are reading is alphabetical."
+                .to_string(),
+            n => format!(
+                "Ordering is by what cites a row, which is a suggestion and not \
+                 a ranking, and here it reached {} of {}: the other {n} share the \
+                 lowest count and stand in slug order rather than in any order \
+                 this earned.",
+                waiting.len() - n,
+                waiting.len()
+            ),
+        });
+        s.push_str(
+            " And retirement is the only blocked state this can see: a row \
              he was asked to bless and declined, or one deliberately held, looks \
              exactly like a ready one here, because neither has a field to be \
              written in.",
@@ -278,6 +301,25 @@ impl AwaitingARuling {
             outcome: Outcome::Clean { examined: 1 },
             output: s,
         }
+    }
+}
+
+/// How many rows the ordering left in slug order rather than ranking.
+///
+/// The sort is by citation count and then by slug, so every row sharing the
+/// lowest count sits in a block the ordering said nothing about. Counting that
+/// block is what separates an ordering that reached two rows out of fifty-eight
+/// from one that reached all of them, which the sort itself cannot report and
+/// which a reader cannot see, since a ranked list and an alphabetical one look
+/// identical.
+///
+/// Equal to the whole slice exactly when no two rows differ, which covers counts
+/// that are all zero, counts that are all equal and non-zero, and a single row
+/// that is no pair to order.
+fn tied_at_the_bottom(waiting: &[(String, usize, Option<String>)]) -> usize {
+    match waiting.iter().map(|(_, c, _)| *c).min() {
+        None => 0,
+        Some(low) => waiting.iter().filter(|(_, c, _)| *c == low).count(),
     }
 }
 
