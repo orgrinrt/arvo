@@ -338,8 +338,14 @@ mod tests {
         // both resolving. Both namespaces hold a row, so nothing here is caught
         // by the undeclared-namespace arm below.
         let rows: &[(&str, &[(&str, &str)])] = &[
-            ("probe::staged_narrowing_depends_on_its_staging", &[("establishes", "a thing")]),
-            ("proposal::a_row_so_the_namespace_exists", &[("says", "a thing")]),
+            (
+                "probe::staged_narrowing_depends_on_its_staging",
+                &[("establishes", "a thing")],
+            ),
+            (
+                "proposal::a_row_so_the_namespace_exists",
+                &[("says", "a thing")],
+            ),
         ];
         let f = findings(
             "prose-cite-wrong-ns",
