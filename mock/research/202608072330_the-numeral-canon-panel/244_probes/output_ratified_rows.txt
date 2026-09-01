@@ -1,0 +1,47 @@
+======== 1. The whole namespace, by rung
+  rung in_force   1
+  rung open       5
+  rung ratified   32
+  rung stated     58
+  total rows 96
+
+======== 2. The ratified rows, partitioned by whether they name a ratifier
+  ratified with no ratified_by : 18
+  ratified_by = op              : 7
+  ratified_by = both            : 2
+  ratified_by = experts         : 5
+
+======== 3. CONTROL: can the classifier report a row carrying no op-verbatim field
+  (a quote field, or a ratification field, is op's own words on the row)
+  ratified rows with a quote            : 24
+  ratified rows with only a ratification: 3
+  ratified rows with NEITHER            : 5
+  Both columns of the control must be nonzero for the census to mean anything:
+    quote=1 rows: 24   quote=0 rows: 8
+    CONTROL PASSES: the classifier distinguishes.
+
+======== 4. The eighteen, listed, with kind and what op-verbatim they carry
+  an_ack_is_not_a_ratification                                           kind=process  quote=1 ratification=1
+  the_strategy_intents_are_not_clear_cut                                 kind=process  quote=1 ratification=1
+  the_d_numbered_decisions_are_dead                                      kind=process  quote=0 ratification=1
+  nothing_settles_during_the_breadth_pass                                kind=process  quote=1 ratification=1
+  a_unit_ends_in_agreement_or_it_has_not_ended                           kind=process  quote=1 ratification=1
+  arvo_is_a_library_and_the_value_composes_on_top                        kind=intent   quote=1 ratification=1
+  arvo_takes_no_stance_on_how_many_cores_it_runs_on                      kind=intent   quote=1 ratification=1
+  adaptation_is_conditional_on_proof_and_on_soundness                    kind=intent   quote=1 ratification=1
+  each_preset_names_a_stated_intent                                      kind=intent   quote=1 ratification=1
+  warms_objective_is_the_intuitive_best_choice                           kind=intent   quote=1 ratification=1
+  hot_may_sacrifice_soundness_for_a_proven_meaningful_gain               kind=intent   quote=1 ratification=1
+  cold_is_for_cold_paths_and_cold_storage                                kind=intent   quote=1 ratification=1
+  cold_is_not_obliged_to_be_slow                                         kind=intent   quote=1 ratification=1
+  the_strategies_weigh_measurements_differently                          kind=intent   quote=1 ratification=1
+  cold_is_not_to_be_deprioritised                                        kind=intent   quote=1 ratification=1
+  the_work_is_predicated_arms_composed                                   kind=intent   quote=1 ratification=0
+  never_a_runtime_check_and_one_lowered_path                             kind=intent   quote=1 ratification=1
+  the_overflow_panic_is_permitted_and_bounded                            kind=ruling   quote=1 ratification=1
+
+======== 5. FINDING
+  of the 18 ratified rows naming no ratifier, 0 carry no op-verbatim field at all.
+  A row carrying op's own verbatim words does not need a ratified_by: the quote
+  is the ratification. ratified_by records how a PANEL-DERIVED proposition was
+  ratified, which is why the rows carrying it are the ones with a panel origin.
