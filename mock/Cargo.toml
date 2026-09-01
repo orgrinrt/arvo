@@ -1,20 +1,17 @@
-# arvo's mock workspace, deliberately empty.
+# arvo's mock workspace.
 #
-# `mock/crates` was deleted on 2026-08-08 while the canon is written. This is the
-# mutation order the canon/design/code chain requires rather than housekeeping:
-# canon work is licensed by the lower tiers being declared dead, and an agent
-# that consults the shipped source during it is reattaching the tier that had to
-# be detached for the work to be permitted.
+# `mock/crates` was deleted on 2026-08-08 while the canon was written, and this
+# file said "deliberately empty" for as long as that was true. It is no longer
+# true: the canon settled its floor, a design was derived from it, and the three
+# crates below are the first source written from that design.
 #
-# Nothing is lost. Git history holds every byte, and `origin/dev` still carries
-# the full tree for consumers pinned to it. That is precisely why it could leave
-# the working tree.
-#
-# Do not restore a crate here to make something build. The canon comes first,
-# then designs derived from it, then code written from those. Source that
-# predates the canon is not a starting point; it is the thing being replaced.
+# The order that emptied this list is the same order that refills it. Canon first,
+# then designs derived from it, then code written from those. What is forbidden is
+# restoring a crate to make something build, or bringing back source that predates
+# the canon; source written from a locked design changelist is the opposite of
+# that and is how the tree is meant to grow.
 
-# There are no members, and there is no `checks` member.
+# There is no `checks` member and there will not be one.
 #
 # A crate here once held the checks over the canon, on the reasoning that it was
 # neither source nor a tool but a harness above the canon. That third category
@@ -25,7 +22,11 @@
 # test is run.
 [workspace]
 resolver = "2"
-members = []
+members = [
+    "crates/arvo-format",
+    "crates/arvo-placement",
+    "crates/arvo-strategy",
+]
 # `benches` (and every crate under `benches/variants/`) is excluded rather than
 # listed as a member. The deletion commit that emptied `members` above (929c46ed)
 # dropped every `benches*` entry along with the crate list, even though its own
@@ -37,7 +38,7 @@ members = []
 # including ones the panel had already run and cited, from that commit forward.
 # `exclude` keeps bench crates buildable as their own free-standing tree without
 # re-listing them as workspace members, which would be the wrong fix: they are
-# not governed by the canon/design/code chain the empty member list protects.
+# not governed by the canon/design/code chain the member list protects.
 exclude = ["benches"]
 
 [workspace.package]
@@ -47,6 +48,8 @@ license = "MPL-2.0"
 
 [workspace.dependencies]
 notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const", "try_trait_v2"] }
+arvo-format = { path = "crates/arvo-format" }
+arvo-placement = { path = "crates/arvo-placement" }
 
 # Incremental compilation is off here, deliberately.
 #

@@ -1,0 +1,8 @@
+=== without the check, which is the shipped shape ===
+-9223372036854775808
+
+=== with the check ===
+error[E0080]: evaluation panicked: slot range is inverted: MIN exceeds MAX
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<Rogue as Slots>::ADMITTED` failed here
+error: aborting due to 1 previous error
+For more information about this error, try `rustc --explain E0080`.

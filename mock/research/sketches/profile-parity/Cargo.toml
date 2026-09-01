@@ -1,0 +1,17 @@
+# A downstream consumer, by path dependency, exactly as op's merge condition
+# describes: downstream pins the trunk and builds what it finds there.
+#
+# Its own `[workspace]` table so it is a standalone tree and cargo does not walk
+# up into the mock workspace.
+[workspace]
+
+[package]
+name = "profile-parity-probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-strategy = { path = "../../../crates/arvo-strategy" }
+arvo-format = { path = "../../../crates/arvo-format" }
+arvo-placement = { path = "../../../crates/arvo-placement" }
