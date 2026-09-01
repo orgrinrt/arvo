@@ -56,15 +56,30 @@
 //! **There are four routes to a walk that claims more than it read, and every
 //! one of them lands in that same report.** Git unavailable. The repository
 //! shallow. No commit touching the file at all, which returns nothing and reads
-//! as nothing lost. And a commit in the walk whose blob will not read, which
-//! `--follow` makes reachable by finding pre-rename commits where the current
-//! path does not exist.
+//! as nothing lost. And a commit in the walk giving up neither a readable blob
+//! nor a path to read one at.
 //!
 //! Three of the four were found one inside the fix for another, which is the
 //! pattern worth naming rather than the four accidents: each time an early exit
 //! treated "could not read this" as "nothing here". **So every route out of the
 //! walk now either establishes the whole history or says it could not**, and
 //! the function cannot report which without meaning it.
+//!
+//! # A refusal a reader cannot act on is worse than the pass it replaced
+//!
+//! There were five routes, and the fifth was an ordinary rename of this file.
+//! `--follow` finds the commits from before it, the blob does not exist at the
+//! current path in any of them, and the walk refused. **That refusal could not
+//! be lifted**: the offending commit is immutable, this repository does not
+//! rewrite history, and the message told the reader to get a full checkout,
+//! which is what they were already in.
+//!
+//! So the path is read per commit rather than assumed. **A rename is now
+//! history the walk reads**, which is what `--follow` was reached for in the
+//! first place, and the report is left describing only environments a reader
+//! can repair. The general shape is worth keeping: closing a silent pass by
+//! refusing is right only where the refusal names something the reader can
+//! change, and three of these four do while the fifth never did.
 //!
 //! # The premise is checked rather than assumed
 //!
@@ -180,10 +195,16 @@ fn check(live: &[String], ever: Option<&[String]>, declaring: &[String]) -> Vec<
             None,
             format!(
                 "the history of `{FILE}` could not be read, or could not be established as \
-                 complete, so the only check on the axis set did not run. A shallow or \
-                 partial clone reaches this: `git log` on a truncated history succeeds and \
-                 returns fewer commits, so believing it would report a deleted axis as fine. \
-                 Run this in a full checkout."
+                 complete, so the only check on the axis set did not run. Four things reach \
+                 this and each has its own repair. Git did not answer, so run this inside a \
+                 git checkout with `git` on the path. The clone is shallow or partial, where \
+                 `git log` on a truncated history succeeds and returns fewer commits, so \
+                 fetch it whole with `git fetch --unshallow`. No commit touches the file, so \
+                 commit it before the axes it declares can be protected. Or a commit in the \
+                 walk gave up neither a readable blob nor a path, which a rename does not \
+                 cause, since the path is read per commit: run `git log --follow \
+                 --name-status -- {FILE}` and the commit with no single path beside it is the \
+                 one to look at."
             ),
         )),
     }
@@ -211,35 +232,98 @@ fn check(live: &[String], ever: Option<&[String]>, declaring: &[String]) -> Vec<
 /// repository is shallow and the walk would therefore be narrower than it
 /// reads. Six commits touch this file in a full checkout, so the walk is one
 /// `git log` and six `git show`, measured at 0.2 seconds.
+///
+/// **The path is read per commit rather than assumed constant**, because the
+/// file's own path is what a rename changes and the blob does not exist at the
+/// current path in any commit before one. `--name-status` gives the status and
+/// the path the commit had, so a renamed history is walked rather than refused.
 fn ids_ever_declared(repo_root: &Path) -> Option<Vec<String>> {
     if is_shallow(git(repo_root, &["rev-parse", "--is-shallow-repository"]).as_deref()) {
         return None;
     }
-    let commits = git(repo_root, &["log", "--follow", "--format=%H", "--", FILE])?;
-    if commits.split_whitespace().next().is_none() {
-        // No commit touches the file, so the walk established nothing rather
-        // than establishing that nothing was lost. `Some(vec![])` would read as
-        // the second and is the same false pass a shallow clone produces.
-        return None;
-    }
-    let blobs: Vec<Option<String>> = commits
-        .split_whitespace()
-        .map(|commit| git(repo_root, &["show", &format!("{commit}:{FILE}")]))
+    let log = git(
+        repo_root,
+        &[
+            "log",
+            "--follow",
+            "--format=C %H",
+            "--name-status",
+            "--",
+            FILE,
+        ],
+    )?;
+    let blobs: Vec<Option<String>> = visits_in(&log)?
+        .iter()
+        .map(|(commit, path)| match path {
+            // The file is absent at this commit because this commit is what
+            // removed it. That is read rather than unread, and an absent file
+            // declares no ids, so it contributes nothing and blocks nothing.
+            None => Some(String::new()),
+            Some(path) => git(repo_root, &["show", &format!("{commit}:{path}")]),
+        })
         .collect();
     ids_across(&blobs)
+}
+
+/// Each commit touching the file, with the path it carried there.
+///
+/// The path is `None` for the commit that deleted the file. `None` overall
+/// where the log establishes nothing: no commit at all, a commit whose path
+/// could not be read from it, or a commit carrying more than one, which is the
+/// same answer as an unreadable history rather than a commit to guess at.
+///
+/// A rename prints as `R100<TAB>old<TAB>new`, and **the last field is the path
+/// at that commit**, which is what `git show` reads. Measured in a throwaway
+/// repository across a rename away and back: four commits, two of which have no
+/// blob at the current path and both of which read at their own.
+fn visits_in(log: &str) -> Option<Vec<(String, Option<String>)>> {
+    let mut out: Vec<(String, Option<String>)> = Vec::new();
+    let mut commit: Option<String> = None;
+    let mut named = false;
+    for line in log.lines() {
+        if let Some(hash) = line.strip_prefix("C ") {
+            if commit.is_some() && !named {
+                return None;
+            }
+            commit = Some(hash.trim().to_string());
+            named = false;
+            continue;
+        }
+        if line.trim().is_empty() {
+            continue;
+        }
+        if named {
+            return None;
+        }
+        let status = line.split('\t').next()?;
+        let path = line.rsplit('\t').next()?;
+        if path == status || path.is_empty() {
+            return None;
+        }
+        named = true;
+        out.push((
+            commit.clone()?,
+            (!status.starts_with('D')).then(|| path.to_string()),
+        ));
+    }
+    if (commit.is_some() && !named) || out.is_empty() {
+        return None;
+    }
+    Some(out)
 }
 
 /// Every id across one blob per commit, or `None` if any blob would not read.
 ///
 /// **A commit whose blob will not read leaves the walk incomplete**, so it is
 /// the same answer as an unreadable history rather than a commit to skip.
-/// `--follow` is what makes this reachable: it finds pre-rename commits, and
-/// the blob at the current path does not exist in them, so skipping would drop
-/// every id declared before a rename and report the narrower set as the whole
-/// history. Measured in a throwaway repository: `old.toml` renamed to
-/// `new.toml` gives two commits from `--follow` and one readable blob.
+/// Skipping would drop every id the commit declared and report the narrower set
+/// as the whole history, which is the silent narrowing this whole file exists to
+/// prevent.
 ///
-/// Split out from the walk so the decision is a test rather than a comment.
+/// The commonest way to reach an unreadable blob was a rename, and that is
+/// handled a step earlier now by reading the path per commit, so what is left
+/// here is a genuinely unreadable object. Split out from the walk so the
+/// decision is a test rather than a comment.
 fn ids_across(blobs: &[Option<String>]) -> Option<Vec<String>> {
     let mut out: Vec<String> = Vec::new();
     for blob in blobs {
@@ -448,10 +532,11 @@ mod tests {
     #[test]
     fn a_commit_whose_blob_will_not_read_makes_the_whole_walk_unread() {
         // The fourth route to a walk claiming more than it read, and the one
-        // that lived inside the fix for the third. `--follow` finds pre-rename
-        // commits and the blob at the current path does not exist in them, so
-        // skipping one drops every id declared before the rename and reports
-        // the remainder as the whole history.
+        // that lived inside the fix for the third. Skipping an unreadable blob
+        // drops every id that commit declared and reports the remainder as the
+        // whole history. A rename used to be how this was reached and no longer
+        // is, since the path is read per commit; what is left is an object that
+        // genuinely will not read.
         let complete = [
             Some("[[dimension]]\nid = \"radix\"\n".to_string()),
             Some("[[dimension]]\nid = \"signedness\"\n".to_string()),
@@ -472,6 +557,98 @@ mod tests {
             None,
             "an unreadable blob was skipped, so the walk reported a narrower \
              set as the whole history"
+        );
+    }
+
+    /// The exact bytes `git log --follow --format='C %H' --name-status` printed
+    /// for a rename away and back, in a throwaway repository built for this.
+    /// Four commits, and two of them carry the file under its other name.
+    const RENAMED_LOG: &str = "C d0e13278\n\nR100\tmock/registry/dim_tmp.toml\tmock/registry/dimension.toml\nC b5d6d618\n\nM\tmock/registry/dim_tmp.toml\nC 03e6f0bf\n\nR100\tmock/registry/dimension.toml\tmock/registry/dim_tmp.toml\nC 390af318\n\nA\tmock/registry/dimension.toml\n";
+
+    #[test]
+    fn a_rename_is_history_the_walk_reads_rather_than_a_refusal() {
+        // The fifth route, and the only one whose refusal a reader could not
+        // act on: the commits from before a rename do not have the file at its
+        // current path, so a walk assuming one path refuses forever on a tree
+        // with nothing wrong with it. The path is per commit, and for a rename
+        // it is the last field.
+        let visits = super::visits_in(RENAMED_LOG).expect("a renamed history is readable");
+        assert_eq!(
+            visits,
+            vec![
+                (
+                    "d0e13278".to_string(),
+                    Some("mock/registry/dimension.toml".to_string())
+                ),
+                (
+                    "b5d6d618".to_string(),
+                    Some("mock/registry/dim_tmp.toml".to_string())
+                ),
+                (
+                    "03e6f0bf".to_string(),
+                    Some("mock/registry/dim_tmp.toml".to_string())
+                ),
+                (
+                    "390af318".to_string(),
+                    Some("mock/registry/dimension.toml".to_string())
+                ),
+            ],
+            "a rename must resolve to the path the commit carried, not the one it has now"
+        );
+    }
+
+    #[test]
+    fn a_deletion_contributes_nothing_and_is_not_an_unread_commit() {
+        // A file absent because this commit removed it is read rather than
+        // unread. Refusing here would be the same unliftable block a rename
+        // used to produce, and an absent file declares no ids anyway.
+        let visits = super::visits_in("C aaa111\n\nD\tmock/registry/dimension.toml\n")
+            .expect("a deletion is a readable commit");
+        assert_eq!(visits, vec![("aaa111".to_string(), None)]);
+    }
+
+    #[test]
+    fn a_log_establishing_nothing_is_reported_rather_than_read() {
+        // Every shape where the log does not say what to read. Each is the same
+        // answer as an unreadable history, never a commit to skip or guess at.
+        assert_eq!(super::visits_in(""), None, "no commit at all");
+        assert_eq!(
+            super::visits_in("C aaa111\n\n"),
+            None,
+            "a commit with no path beside it"
+        );
+        assert_eq!(
+            super::visits_in("C aaa111\n\nM\tone.toml\nM\ttwo.toml\n"),
+            None,
+            "two paths for one commit says which to read is not established"
+        );
+        assert_eq!(
+            super::visits_in("C aaa111\n\nM\tone.toml\nC bbb222\n\n"),
+            None,
+            "the last commit carrying no path is as unread as the first"
+        );
+        assert_eq!(
+            super::visits_in("M\tone.toml\n"),
+            None,
+            "a path with no commit to read it at"
+        );
+        assert_eq!(
+            super::visits_in("C aaa111\n\nM\n"),
+            None,
+            "a status with no path field"
+        );
+    }
+
+    #[test]
+    fn control_an_ordinary_unrenamed_log_reads_every_commit() {
+        // The shape this repository actually has, so the arms above are read
+        // as the exceptions they are rather than as the whole function.
+        assert_eq!(
+            super::visits_in("C aaa111\n\nM\tmock/registry/dimension.toml\nC bbb222\n\nA\tmock/registry/dimension.toml\n"),
+            Some(vec![
+                ("aaa111".to_string(), Some("mock/registry/dimension.toml".to_string())),
+                ("bbb222".to_string(), Some("mock/registry/dimension.toml".to_string())),
+            ])
         );
     }
 
