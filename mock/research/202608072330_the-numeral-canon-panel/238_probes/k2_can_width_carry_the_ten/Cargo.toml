@@ -1,0 +1,19 @@
+# Can the door's two existing types carry the ten associated constants?
+#
+# The question's first option says they can, for nine of the ten, and the
+# design round that filed the question says "The second needs no gate and
+# closes nine of the ten". That is a type-checking claim about a shipped crate,
+# so it is compiled rather than argued.
+#
+# Depends on the real `arvo-format` by path. Its own `[workspace]` table, so
+# cargo does not walk up into `mock/`.
+[package]
+name = "k2_can_width_carry_the_ten"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
