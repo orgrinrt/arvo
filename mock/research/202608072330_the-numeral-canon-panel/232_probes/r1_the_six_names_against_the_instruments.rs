@@ -125,7 +125,11 @@ fn rnd(p: i128, f: u32, m: Mode) -> i128 {
         Mode::HalfUpToPlusInf => {
             // floor(x + 1/2): the tie goes up the number line, so at -1/2 it
             // gives 0 and not -1.
-            if 2 * r >= d { q + 1 } else { q }
+            if 2 * r >= d {
+                q + 1
+            } else {
+                q
+            }
         }
         Mode::HalfUpAwayFromZero => {
             // the tie goes away from zero, so at -1/2 it gives -1 and not 0.
@@ -308,7 +312,11 @@ fn part2() {
     );
     for (their_name, m, expect) in [
         ("truncate", Mode::Floor, [0u64, 800, 1128, 910, 543]),
-        ("nearest", Mode::HalfUpToPlusInf, [0u64, 864, 1248, 880, 550]),
+        (
+            "nearest",
+            Mode::HalfUpToPlusInf,
+            [0u64, 864, 1248, 880, 550],
+        ),
     ] {
         for f in 0..=4u32 {
             let d = retraction_differ(4, f, m);
@@ -397,7 +405,11 @@ fn stochastic(p: i128, f: u32, draw: i128) -> i128 {
     // round up with probability r/d, realised by comparing against a draw
     // uniform on 0..d. At r == 0 no draw can round up, which is what makes
     // the F = 0 and exact cases deterministic.
-    if r > draw { q + 1 } else { q }
+    if r > draw {
+        q + 1
+    } else {
+        q
+    }
 }
 
 fn part3() {
@@ -431,8 +443,7 @@ fn part3() {
                     for draw2 in 0..d {
                         total += 1;
                         let ab = a * b;
-                        let eager_shared =
-                            stochastic(stochastic(ab, f, draw1) * c, f, draw1);
+                        let eager_shared = stochastic(stochastic(ab, f, draw1) * c, f, draw1);
                         let eager_indep = stochastic(stochastic(ab, f, draw1) * c, f, draw2);
                         let deferred = stochastic(ab * c, 2 * f, draw1);
                         if eager_shared != deferred {
@@ -449,9 +460,7 @@ fn part3() {
     println!(
         "  (b) at W = {w}, F = {f}, over {total} (triple, draw, draw) cells:\n      shared-draw coupling disagrees at {differ_shared}, independent-draw at {differ_indep}"
     );
-    println!(
-        "      Two couplings, two counts, from one definition and one domain. The question"
-    );
+    println!("      Two couplings, two counts, from one definition and one domain. The question");
     println!("      `does it retract` is therefore not well posed for stochastic at F > 0");
     println!("      until a coupling is named, and no instrument in this panel names one.");
 
@@ -476,7 +485,9 @@ fn part3() {
             }
         }
     }
-    println!("  (c) the two-multiply chain at W = 4, F = 0: disagreements {sd} of {scells} (must be 0),");
+    println!(
+        "  (c) the two-multiply chain at W = 4, F = 0: disagreements {sd} of {scells} (must be 0),"
+    );
     println!("      so the F = 0 verdict covers stochastic too, for the reason that there is");
     println!("      no rounding at F = 0 rather than for anything about the mode.");
 }
@@ -514,12 +525,9 @@ fn part4() {
             ),
         }
     }
-    println!(
-        "\n  The same shape the ratified ruling gives for the retired word: two operations,"
-    );
+    println!("\n  The same shape the ratified ruling gives for the retired word: two operations,");
     println!("  one name, differing on signed rows only.");
 }
-
 
 /// Retraction over a SIGNED domain, otherwise the same chain as `retraction_differ`.
 /// The row this bears on has no `signedness` entry at all and its instrument is
