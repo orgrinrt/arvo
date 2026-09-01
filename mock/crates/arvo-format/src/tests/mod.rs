@@ -10,6 +10,15 @@
 //! powers of two somebody would reach for. Where a law is structural the assertion
 //! is a compile-time one, because a runtime check of a compile-time property tests
 //! the test rather than the property.
+//!
+//! Two topics have their own files. `identity` holds the phase and the additive
+//! identity, which is where the sweep that moves the denominator, the quantum
+//! family and the slot family together sits. `obligations` holds what an
+//! implementor of each open contract owes, which is about four traits rather than
+//! about any one law.
+
+mod identity;
+mod obligations;
 
 use crate::adapt::{Adapt, DeclaredSignature, Operation, Signature};
 use crate::ambient::{Ambient, BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
@@ -168,49 +177,6 @@ fn the_smallest_step_is_the_smallest_magnitudes_and_nothing_names_it() {
     // For the constant family the smallest step is the only step.
     assert_eq!(smallest_step_exponent::<UFixed<13, -4>>(), -4);
     assert_eq!(smallest_step_exponent::<Integer<8>>(), 0);
-}
-
-// --- the phase, which is why the coordinate is carried -----------------------
-
-#[test]
-fn a_zero_phase_puts_the_additive_identity_on_the_grid() {
-    assert!(has_additive_identity::<Integer<8>>());
-    assert!(has_additive_identity::<UFixed<13, -4>>());
-    assert!(has_additive_identity::<Floating<11, -14, 30>>());
-}
-
-#[test]
-fn a_fractional_phase_takes_the_additive_identity_off_the_grid() {
-    // `Biased` fixes the denominator at two, so an odd numerator is the half-step
-    // bias. The canon carries the phase coordinate precisely because this is not
-    // a corner case: no exact sum lands on that grid and it is not a monoid
-    // carrier.
-    assert!(!has_additive_identity::<Biased<7, -2, 1>>());
-    assert!(!has_additive_identity::<Biased<13, 0, 1>>());
-    assert!(!has_additive_identity::<Biased<31, -8, 3>>());
-
-    // And a biased format with the phase set back to zero has it again, which is
-    // the control saying the phase is what did it rather than the width.
-    assert!(has_additive_identity::<Biased<7, -2, 0>>());
-}
-
-#[test]
-fn a_whole_multiple_phase_keeps_the_identity_at_a_shifted_slot() {
-    // The half this suite could not see. Every arm above uses an odd numerator
-    // against a denominator the type fixes at two, so every phase tried was
-    // fractional and the region where a nonzero phase keeps the identity was
-    // never entered. An even numerator is a whole number of quanta: the grid
-    // shifts onto itself and zero sits at the negated multiple rather than at
-    // slot zero.
-    assert!(has_additive_identity::<Biased<4, 0, 2>>());
-    assert!(has_additive_identity::<Biased<7, -2, 2>>());
-    assert!(has_additive_identity::<Biased<13, 0, 4>>());
-    assert!(has_additive_identity::<Biased<31, -8, -6>>());
-
-    // The control, and it is what makes the arms above mean anything: restoring
-    // `PHASE_NUM == 0` passes every arm in the test above and fails all four
-    // here, so these reach a region that suite could not.
-    assert!(!has_additive_identity::<Biased<4, 0, 1>>());
 }
 
 // --- the radix is a coordinate and is not hardcoded --------------------------
@@ -506,7 +472,8 @@ fn the_widest_admitted_width_is_where_the_count_stops_fitting() {
 /// The reviewer's construction, values verbatim, kept permanently rather than in
 /// a scratch file. It **compiles**, which is the point: the trait is open and
 /// nothing stops it being written. What it does not do is pass the law below, and
-/// using it does not build, which the `trybuild` case records.
+/// using it does not build, which a `compile_fail` doctest on `Slots::ADMITTED`
+/// records.
 struct RogueRange;
 
 impl Slots for RogueRange {

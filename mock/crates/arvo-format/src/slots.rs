@@ -84,6 +84,51 @@ pub trait Slots {
     /// exactly because an unqualified "refused at compile time" would be the same
     /// shape as the totality claims this replaced.
     ///
+    /// **And that is why the refusal is a doctest rather than a `trybuild` case.**
+    /// `trybuild` runs `cargo check`, so it never reaches the evaluation and
+    /// would report a refused program as compiling. Nothing tested this refusal
+    /// at all until the round that gave the other three contracts the same
+    /// obligation; the sentence above was a claim about a mechanism with no arm
+    /// behind it.
+    ///
+    /// ```compile_fail
+    /// use arvo_format::slots::{slot_in_range, Slots};
+    /// use arvo_format::width::Width;
+    ///
+    /// struct Inverted;
+    ///
+    /// impl Slots for Inverted {
+    ///     const MIN: i64 = 8;
+    ///     const MAX: i64 = -8;
+    ///     const WIDTH: Width = Width::bits(8);
+    /// }
+    ///
+    /// fn main() {
+    ///     let _ = slot_in_range::<Inverted>(0);
+    /// }
+    /// ```
+    ///
+    /// The control, which is what says the refusal above is this obligation and
+    /// not the outside impl being rejected for some other reason: the same shape
+    /// with the ends the right way round builds.
+    ///
+    /// ```
+    /// use arvo_format::slots::{slot_in_range, Slots};
+    /// use arvo_format::width::Width;
+    ///
+    /// struct Ordered;
+    ///
+    /// impl Slots for Ordered {
+    ///     const MIN: i64 = -8;
+    ///     const MAX: i64 = 7;
+    ///     const WIDTH: Width = Width::bits(8);
+    /// }
+    ///
+    /// fn main() {
+    ///     assert!(slot_in_range::<Ordered>(0));
+    /// }
+    /// ```
+    ///
     /// `is_admissible` below is the same question asked without forcing the
     /// const, which is what a test can use at check time and on a construction
     /// that must keep compiling.
