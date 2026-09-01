@@ -249,8 +249,8 @@ false in the type, which is the one thing a newtype is for.
 So the correct figure is the mirror of the one in the row and in the topic file.
 **One of the ten closes with the types the door has. Nine need something that
 does not exist.** The option's stated cost, "a widened `Width` and `Bool`
-surface", is not the cost; the cost is nine types the design's own sentence
-forbids, and the option as written does not reach them.
+surface", is not the cost; the cost is a type per coordinate, which the design's
+own sentence forbids, and the option as written does not reach them.
 
 I want to be exact about what is wrong here, because the topic file is careful
 elsewhere and this is not carelessness. It reasoned from one instance,
@@ -442,7 +442,10 @@ a compiler feature.
 
 ## 6. What it costs
 
-**Nine coordinate types and their two-line surfaces, plus the retyping.** `k4`
+**Eight new coordinate types and their two-line surfaces, plus the retyping.**
+Eight rather than nine if one rational type serves both the phase and the
+remainder that `Exact` and `Dither` carry, nine if those are two types. `k5`
+uses one and I have no argument that decides it. `k4`
 counts 59 public positions in non-test declaration syntax and `k3` counts 128
 lines the exemption carries. Not all 128 move: bodies stay, the const generic
 parameters stay, and the constructors and accessors are the ones that must keep
