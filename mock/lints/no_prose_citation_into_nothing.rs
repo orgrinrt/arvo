@@ -27,9 +27,14 @@
 //!
 //! # What the standing population is, measured
 //!
-//! Fifteen occurrences over thirteen distinct slugs across seven files, all of
-//! them numbered member files and none a ledger, so the ledger arm starts at
-//! zero and refuses the first one written.
+//! Eleven occurrences over eleven distinct slugs across six files, all of them
+//! numbered member files and none a ledger, so the ledger arm starts at zero
+//! and refuses the first one written.
+//!
+//! **Read off the finding rather than bisected for.** Setting the ceiling to
+//! zero prints the population and the slugs in it; searching for the largest N
+//! that passes finds the same number and shows none of that, so it cannot say
+//! whether the number is right for the right reason.
 //!
 //! **Seven are deliberate**, planted by seats testing citation checkers of
 //! their own: `control_broken_file`, `control_broken_topic`,
@@ -40,17 +45,7 @@
 //! is a statement about what the corpus holds rather than about what deserves
 //! to be there.
 //!
-//! **Six are real, and they are three kinds.**
-//!
-//! **Two stop part way through a slug that does exist**, so each is a strict
-//! prefix of a real id: `proposal::a_min_plus_fold_needs_an_absorbing_top_`
-//! against one ending `_and_wrapping_supplies_none`, and
-//! `proposal::the_multiplicative_guard` against one ending
-//! `_grows_linearly_and_the_saving_is_adaptation_fusion`. The second reads as a
-//! clean concept name rather than as a cut-off one, which is why it was filed
-//! among the paraphrases until somebody measured it against the ids. Both are
-//! written with a trailing `...` in the prose, so the author shortened them on
-//! purpose and the scanner stops at the first dot.
+//! **Four are real, and they are two kinds.**
 //!
 //! **Two name a slug that exists under a different namespace.**
 //! `proposal::staged_narrowing_depends_on_its_staging` is a `probe` row, and
@@ -73,6 +68,41 @@
 //! drops a trailing separator has guessed at what a writer meant, and the guess
 //! is wrong wherever a slug legitimately continues past that point. A defect
 //! that disappears into a passing check is the failure this lint is about.
+//!
+//! # A trailing `...` says a cut happened, and is read as one
+//!
+//! Some of the corpus writes a citation with an ellipsis after it, as
+//! `proposal::a_min_plus_fold_needs_an_absorbing_top_...` against a row ending
+//! `_and_wrapping_supplies_none`, or `proposal::the_multiplicative_guard...`
+//! against one ending `_grows_linearly_and_the_saving_is_adaptation_fusion`.
+//! The second reads as a clean concept name rather than a cut-off one, which is
+//! why it sat among the paraphrases until somebody measured it against the ids.
+//!
+//! **How many there are is not written here**, because a resolving elision
+//! fires nothing and the number moves whenever the corpus or the registry does.
+//! It moved under this paragraph once already, on a merge, while the paragraph
+//! beside it argued that a count of elisions must not be hand-stated. Grep for
+//! `\.\.\.` after a qualified slug to get the current one.
+//!
+//! `...` is outside the slug charset, so it cannot be part of a spelling and
+//! the author put it there to say the id continues. That is the whole
+//! difference from the trailing underscore above, which is inside the charset
+//! and says nothing. **The dots say a cut happened; they do not say what was
+//! cut**, so resolving one still means picking a row, and what makes that
+//! defensible is that exactly one row carries the prefix rather than the
+//! author's punctuation.
+//!
+//! **An elision is never counted, in either population.** Whether one resolves
+//! is a question about the registry rather than about the prose, so counting
+//! them would make the ceiling a function of the registry: one added row
+//! sharing a prefix turns a resolving elision ambiguous and puts the gate over
+//! its ceiling, with no repair available, since the member file is the record
+//! and the ceiling may not be raised. Measured, not supposed: planting one
+//! schema-valid row on the `the_multiplicative_guard` prefix moved the count by
+//! three with no member file touched. So an ambiguous or unmatched elision is
+//! reported at its own `file:line` instead, where a new row produces a specific
+//! finding about a specific citation and the count stays a function of the
+//! prose alone.
 //!
 //! # A line break inside a slug is a wrap rather than a truncation
 //!
@@ -110,14 +140,20 @@ pub fn repo_lint() -> Box<dyn RepoLint> {
 
 const NAME: &str = "no-prose-citation-into-nothing";
 
-/// The standing count in files that are the record, measured over the committed
-/// tree.
+/// The standing count in files that are the record, measured over the
+/// committed tree: eleven occurrences over eleven slugs across six files.
 ///
-/// Fifteen occurrences over thirteen slugs across seven files. It falls when a
-/// slug is declared under the id the prose already used, and it fell by two
-/// when the scanner stopped cutting a citation at a line break. **Do not raise
-/// it.**
-const CEILING: usize = 15;
+/// Established by setting this to zero and reading the finding, which prints
+/// the population and the slugs in it. Bisecting for green-at-N and red-at-N-1
+/// arrives at the same number and shows neither, so it cannot say whether the
+/// number is right for the right reason.
+///
+/// It falls when a slug is declared under the id the prose already used, and
+/// it fell twice for a scanner that had been reading a spelling where there
+/// was none: once at a line break, once at a trailing `...`. Re-read it off
+/// the finding when it moves rather than adjusting the number here by hand.
+/// **Do not raise it.**
+const CEILING: usize = 11;
 
 struct NoProseCitationIntoNothing;
 impl Lint for NoProseCitationIntoNothing {
@@ -138,33 +174,85 @@ impl RepoLint for NoProseCitationIntoNothing {
 fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
     let namespaces: Vec<&str> = reg.namespaces().collect();
     let found = citations(dir, &namespaces, reg);
-    let (in_ledgers, in_the_record): (
-        Vec<&(String, usize, String)>,
-        Vec<&(String, usize, String)>,
-    ) = found.iter().partition(|(at, _, _)| is_a_living_ledger(at));
 
-    let mut out: Vec<LintError> = in_ledgers
+    // An elision never joins a counted population, whichever file it sits in.
+    //
+    // Whether an elided spelling resolves is a question about the registry
+    // rather than about the prose, so counting them would make the ceiling a
+    // function of the registry: one added row sharing a prefix turns a
+    // resolving elision ambiguous and puts the gate over its ceiling with no
+    // permitted repair, since the member file is the record and the ceiling
+    // may not be raised. Reported per site instead, where a new row produces
+    // a specific finding about a specific citation and the count stays a
+    // function of the prose alone.
+    let (elided, whole): (Vec<&Cited>, Vec<&Cited>) = found
         .iter()
-        .map(|(at, line, cited)| {
+        .partition(|c| matches!(c.how, How::Elided { .. }));
+
+    let mut out: Vec<LintError> = elided
+        .iter()
+        .map(|c| {
+            let How::Elided { rows } = c.how else {
+                unreachable!("partitioned on this")
+            };
+            // Both halves are conditioned, because they were not, and the
+            // remedy that fits the ambiguous branch is false in the other:
+            // where nothing could be short for it, there is nothing to spell
+            // it out to and no referent was ever picked.
+            let (why, fix) = if rows == 0 {
+                (
+                    "reaches no row at all, so there is nothing it could be short for".to_string(),
+                    "Where no row says it, the sentence is a paraphrase and cites nothing."
+                        .to_string(),
+                )
+            } else {
+                (
+                    format!(
+                        "reaches {rows} rows, so nothing here can tell which one was meant \
+                         without guessing"
+                    ),
+                    "Spell it out. That is permitted in a member file, unlike repointing a \
+                     dangling citation: this lint holds only the prefix and you hold the \
+                     sentence, so writing it out restores what the author wrote rather than \
+                     changing which row they cited."
+                        .to_string(),
+                )
+            };
             finding(
                 NAME,
-                at,
-                *line,
+                &c.at,
+                c.line,
                 format!(
-                    "cites `{cited}`, which resolves to no row. This file is edited, so fix \
-                     the citation: query the registry for the id it meant, and mind that a \
-                     slug one word short of a real one reads as a citation and is not. Where \
-                     no row says it, the sentence is a paraphrase and cites nothing."
+                    "cites `{}...`, cut short, and the prefix {why}. {fix}",
+                    c.text
                 ),
             )
         })
         .collect();
 
+    let (in_ledgers, in_the_record): (Vec<&&Cited>, Vec<&&Cited>) =
+        whole.iter().partition(|c| is_a_living_ledger(&c.at));
+
+    out.extend(in_ledgers.iter().map(|c| {
+        finding(
+            NAME,
+            &c.at,
+            c.line,
+            format!(
+                "cites `{}`, which resolves to no row. This file is edited, so fix \
+                 the citation: query the registry for the id it meant, and mind that a \
+                 slug one word short of a real one reads as a citation and is not. Where \
+                 no row says it, the sentence is a paraphrase and cites nothing.",
+                c.text
+            ),
+        )
+    }));
+
     if in_the_record.len() > ceiling {
-        let mut slugs: Vec<String> = in_the_record.iter().map(|(_, _, s)| s.clone()).collect();
+        let mut slugs: Vec<String> = in_the_record.iter().map(|c| c.text.clone()).collect();
         slugs.sort();
         slugs.dedup();
-        let mut per_file: Vec<String> = in_the_record.iter().map(|(at, _, _)| at.clone()).collect();
+        let mut per_file: Vec<String> = in_the_record.iter().map(|c| c.at.clone()).collect();
         per_file.sort();
         per_file.dedup();
         out.push(finding(
@@ -186,8 +274,31 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
     out
 }
 
+/// One citation the prose carries that names no row, and how it was spelled.
+struct Cited {
+    at: String,
+    line: usize,
+    /// What to put in front of a reader, which is not always the token as
+    /// scanned: a citation wrapped inside a code span is reported rejoined,
+    /// because the rejoined string is the one the author wrote and the one a
+    /// search for it will find.
+    text: String,
+    how: How,
+}
+
+/// How the prose spelled the citation, which decides what failing to resolve
+/// it means.
+enum How {
+    /// Spelled out. Failing to resolve is a citation into nothing, and it
+    /// counts against the ceiling when it sits in a member file.
+    Whole,
+    /// Cut short with a trailing `...`, carrying how many rows the prefix
+    /// reaches. Never counted: see [`check`].
+    Elided { rows: usize },
+}
+
 /// Every `<namespace>::<slug>` the panel's prose carries that names no row.
-fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String, usize, String)> {
+fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<Cited> {
     let mut out = Vec::new();
     for path in markdown(dir) {
         let Ok(text) = std::fs::read_to_string(&path) else {
@@ -201,18 +312,68 @@ fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String
                 .copied()
                 .map(leading_slug_run)
                 .unwrap_or("");
-            for cited in tokens(line, namespaces) {
+            for (cited, elided) in tokens(line, namespaces) {
                 if reg.row(&cited).is_some() {
+                    continue;
+                }
+                if elided {
+                    let rows = rows_the_prefix_reaches(&cited, reg);
+                    if rows == 1 {
+                        continue;
+                    }
+                    out.push(Cited {
+                        at: at.clone(),
+                        line: n + 1,
+                        text: cited,
+                        how: How::Elided { rows },
+                    });
                     continue;
                 }
                 if line.ends_with(&cited) && reg.row(&format!("{cited}{carry}")).is_some() {
                     continue;
                 }
-                out.push((at.clone(), n + 1, cited));
+                out.push(Cited {
+                    at: at.clone(),
+                    line: n + 1,
+                    text: if ends_inside_a_code_span(line, &cited) {
+                        format!("{cited}{carry}")
+                    } else {
+                        cited
+                    },
+                    how: How::Whole,
+                });
             }
         }
     }
     out
+}
+
+/// How many rows in the cited namespace the elided spelling is a prefix of.
+///
+/// `rows_in` hands back qualified identifiers rather than bare slugs, so the
+/// prefix tested is the whole `<namespace>::<slug>` and not the slug alone. A
+/// first version compared the bare half against the qualified list, matched
+/// nothing anywhere, and reported every elision exactly as before.
+fn rows_the_prefix_reaches(cited: &str, reg: &RegistryView) -> usize {
+    let Some((ns, _)) = cited.split_once("::") else {
+        return 0;
+    };
+    reg.rows_in(ns)
+        .iter()
+        .filter(|id| id.starts_with(cited))
+        .count()
+}
+
+/// Whether the line stops mid-citation with a code span still open, which is
+/// what a wrapped citation looks like from its first line.
+///
+/// This decides only what string gets printed, never whether lines are joined.
+/// Ending on the citation is on its own too loose to report a fusion from: a
+/// citation that genuinely names nothing frequently ends a line of ordinary
+/// prose, and gluing the next line's first word onto it prints a string
+/// nobody wrote. The unclosed span is the part that says a wrap happened.
+fn ends_inside_a_code_span(line: &str, cited: &str) -> bool {
+    line.ends_with(cited) && line.bytes().filter(|b| *b == b'`').count() % 2 == 1
 }
 
 /// The run of slug characters a line opens with, which is what a wrapped
@@ -231,7 +392,7 @@ fn leading_slug_run(line: &str) -> &str {
 /// are load-bearing: without the left boundary
 /// `arvo_proposal::a_row` reports the wrong namespace, and without the right
 /// one a truncated slug is read as the longer row it is missing a word from.
-fn tokens(line: &str, namespaces: &[&str]) -> Vec<String> {
+fn tokens(line: &str, namespaces: &[&str]) -> Vec<(String, bool)> {
     let bytes = line.as_bytes();
     let mut out = Vec::new();
     for ns in namespaces {
@@ -249,7 +410,14 @@ fn tokens(line: &str, namespaces: &[&str]) -> Vec<String> {
             if end == 0 {
                 continue;
             }
-            out.push(format!("{ns}::{}", &rest[..end]));
+            // `...` is outside the slug charset, so it cannot be part of a
+            // spelling and the author put it there to say a cut happened. A
+            // trailing `_` is inside the charset and says nothing, which is
+            // why the two are read differently.
+            out.push((
+                format!("{ns}::{}", &rest[..end]),
+                rest[end..].starts_with("..."),
+            ));
         }
     }
     out
@@ -630,6 +798,212 @@ mod tests {
         assert_findings_block_at(
             &super::NoProseCitationIntoNothing,
             &ctx_at(&dir.join("mock"), &reg),
+        );
+    }
+
+    /// Two rows sharing a prefix, for the arms about what an elision reaches.
+    const TWO_ROWS_ONE_PREFIX: &[(&str, &[(&str, &str)])] = &[
+        (
+            "ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side",
+            &[("says", "a thing")],
+        ),
+        (
+            "ruling::the_warrant_is_a_token_and_a_clause_on_the_other_side",
+            &[("says", "another thing")],
+        ),
+    ];
+
+    #[test]
+    fn an_ellipsis_after_a_prefix_resolves_to_the_one_row_it_reaches() {
+        let f = findings(
+            "prose-cite-elided",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "See `ruling::the_warrant_is_a_token_and_a_clause...` for the shape.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "an unambiguous elision fired: {f:?}");
+    }
+
+    #[test]
+    fn the_same_prefix_without_the_ellipsis_is_still_reported() {
+        // The control, and without it the arm above is satisfied by a scanner
+        // that resolves every prefix. The dots are the whole difference.
+        let f = findings(
+            "prose-cite-elided-control",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "See `ruling::the_warrant_is_a_token_and_a_clause` for the shape.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("ceiling of 0"), "{}", f[0]);
+        assert!(
+            f[0].contains("ruling::the_warrant_is_a_token_and_a_clause\""),
+            "reported as the longer row it is a prefix of: {}",
+            f[0]
+        );
+    }
+
+    #[test]
+    fn an_ellipsis_reaching_two_rows_is_reported_rather_than_picked_between() {
+        let f = findings(
+            "prose-cite-elided-ambiguous",
+            TWO_ROWS_ONE_PREFIX,
+            &[(
+                "42_member.md",
+                "See `ruling::the_warrant_is_a_token_and_a_clause...` for the shape.\n",
+            )],
+            usize::MAX,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("reaches 2 rows"), "{}", f[0]);
+        // The remedy, not only the diagnosis. Pinning one and not the other is
+        // how a remedy that contradicted its own diagnosis shipped once.
+        assert!(f[0].contains("Spell it out"), "{}", f[0]);
+        assert!(
+            !f[0].contains("cites nothing"),
+            "gave the paraphrase remedy to an ambiguous elision: {}",
+            f[0]
+        );
+    }
+
+    #[test]
+    fn an_ellipsis_reaching_no_row_is_reported_like_any_dangling_citation() {
+        let f = findings(
+            "prose-cite-elided-nothing",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "See `ruling::no_such_prefix_anywhere...`.\n",
+            )],
+            usize::MAX,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("reaches no row at all"), "{}", f[0]);
+        // The remedy has to follow the diagnosis. Telling a reader to spell
+        // out a prefix nothing is short for is an instruction with nothing to
+        // carry it out against, and it shipped once because this arm pinned
+        // the first half of the sentence and not the second.
+        assert!(f[0].contains("cites nothing"), "{}", f[0]);
+        assert!(
+            !f[0].contains("Spell it out"),
+            "told the reader to spell out a prefix that reaches nothing: {}",
+            f[0]
+        );
+    }
+
+    #[test]
+    fn an_ellipsis_does_not_borrow_rows_from_another_namespace() {
+        // `rows_in` is asked for the cited namespace only. A version that
+        // searched every row resolves this, because the `ruling` row carries
+        // the prefix. The second row exists so `proposal` is a namespace the
+        // scanner looks for at all.
+        let f = findings(
+            "prose-cite-elided-wrong-ns",
+            &[
+                (
+                    "ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side",
+                    &[("says", "a thing")],
+                ),
+                ("proposal::something_else_entirely", &[("says", "a thing")]),
+            ],
+            &[(
+                "42_member.md",
+                "See `proposal::the_warrant_is_a_token_and_a_clause...`.\n",
+            )],
+            usize::MAX,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("reaches no row at all"), "{}", f[0]);
+        assert!(f[0].contains("cites nothing"), "{}", f[0]);
+    }
+
+    #[test]
+    fn a_row_that_makes_an_elision_ambiguous_does_not_move_the_counted_population() {
+        // The property that keeps the ceiling a statement about the prose. An
+        // elision folded into the count lets a registry addition put the gate
+        // over its ceiling with no member file touched and no repair
+        // available, since the file is the record and the number may not be
+        // raised.
+        let prose = &[(
+            "42_member.md",
+            "See `ruling::the_warrant_is_a_token_and_a_clause...`, and \
+             `ruling::a_row_that_was_never_written` too.\n",
+        )];
+        let before = findings("prose-cite-count-before", ONE_ROW, prose, 0);
+        let after = findings("prose-cite-count-after", TWO_ROWS_ONE_PREFIX, prose, 0);
+
+        let counted = |f: &[String]| {
+            f.iter()
+                .find(|m| m.contains("against a ceiling of"))
+                .cloned()
+                .unwrap_or_else(|| panic!("no counted finding: {f:?}"))
+        };
+        assert!(
+            counted(&before).contains("1 prose citations"),
+            "{}",
+            counted(&before)
+        );
+        assert!(
+            counted(&after).contains("1 prose citations"),
+            "the added row moved the count: {}",
+            counted(&after)
+        );
+        assert_eq!(
+            after.len(),
+            2,
+            "the ambiguity is reported on its own: {after:?}"
+        );
+    }
+
+    #[test]
+    fn a_citation_wrapped_inside_a_code_span_is_reported_rejoined() {
+        // What a reader has to search for is the string the author wrote, not
+        // the half of it that happens to sit on the first line.
+        let f = findings(
+            "prose-cite-fused",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "See `ruling::the_warrant_is_a_token_and_a_clause_on_the_values\n\
+                 _but_no_such_row` here.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(
+            f[0].contains("_on_the_values_but_no_such_row"),
+            "reported only the first line's half: {}",
+            f[0]
+        );
+    }
+
+    #[test]
+    fn a_dangling_citation_merely_ending_a_line_is_not_glued_to_the_next() {
+        // The control for the arm above, and the reason the rejoin is gated on
+        // an unclosed code span rather than on the token ending the line. Here
+        // the span is closed, so the next line is ordinary prose and printing
+        // it as part of the citation would print a string nobody wrote.
+        let f = findings(
+            "prose-cite-not-fused",
+            ONE_ROW,
+            &[(
+                "42_member.md",
+                "See `ruling::a_row_that_was_never_written`\n\
+                 and_then_a_sentence continues.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(
+            !f[0].contains("and_then_a_sentence"),
+            "glued the next line on: {}",
+            f[0]
         );
     }
 
