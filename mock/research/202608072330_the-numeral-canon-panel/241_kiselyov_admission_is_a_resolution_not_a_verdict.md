@@ -305,16 +305,56 @@ choice between two costs where the cheap answer is neither: admit the one-parame
 that already fits, refuse the amendment, and put the general case one tier up where pairs
 live anyway.
 
-**The reading that would beat this**: that "one parameterisation" in R1 was never meant to
-mean one scalar, and a vector slot was always inside it, in which case arm B is admitted and
-the 2016 have coordinates after all. What would distinguish them: whether the ratified
-membership sentence, which spells the predicate as `phase + slot * quantum(magnitude)`, is
-canon at that spelling or canon at its intent. I searched the ruling namespace for a row
-settling intent against spelling for a ratified proposition and found none; the nearest is
-`ruling::the_intent_is_not_every_clause_of_the_quotation`, which is about his words rather
-than about ratified propositions, so it does not reach this. **I could not settle it and I do
-not.** It is the one place my Q22 answer is load-bearing on a reading of ratified text that
-another seat could take the other way, and if it goes the other way arm B is admitted and my
+**The reading that would beat this, and what closed it.** One could hold that "one
+parameterisation" in R1 never meant one *scalar*, and that a vector slot was always inside
+it, in which case arm B is admitted and the 2016 have coordinates after all. My refusal
+rested entirely on the scalar reading, and a reading of a spelling is a weak thing to rest a
+refusal on. I went looking for something better and found it in a ratified count.
+
+R3 says the door carries out "the coordinate set of the ratified parameterisation", and its
+own reasoning counts **ten** associated constants and partitions them: six declared in types
+a `u32` bit count cannot hold, of which three ship values it cannot hold.
+`241_probes/the_ratified_ten_fixes_the_slot_arity` reconstructs that count from the shipped
+traits, under two controls, and it comes out exactly:
+
+```
+coordinates                    : 10
+  declared i64 or i32          : 6
+  the rest (u32, bool, Width)  : 4
+control A passed: the ruling's six reproduces.
+control B passed: the ratified ten reconstructs.
+```
+
+The ten are `RADIX`, `SIGNED`, `BASE`, `SLOPE`, `MAGNITUDES`, `MIN`, `MAX`, `WIDTH`,
+`PHASE_NUM`, `PHASE_DEN`. `ADMITTED` is excluded and the exclusion is the point: it is a
+`const ADMITTED: ()`, it carries no value, and it is what every use site forces rather than
+something a candidate chooses. The shipped code has already separated the coordinates from
+the admission obligation, which is the resolution shape section 2 derives, sitting in the
+tree unnamed.
+
+Three of those ten are the slot axis, so the coordinate count is `3n + 7` in the slot arity
+`n`. At `n = 1` that is ten. At `n = 2` it is thirteen and at `n = 3` sixteen.
+
+**So the arity is fixed at one by a ratified count, not by a reading of a spelling.** A
+vector-valued affine predicate makes R3's ten wrong, and R3 is ratified by two blind
+instances with committed probes. That is a much stronger floor than the sentence I was
+leaning on, and it means the Q22 refusal does not depend on how anybody reads "one
+parameterisation".
+
+**What survives as genuinely open**: whether the panel *should* amend the parameterisation
+to a vector slot, which is a different question from whether the current one admits arm B.
+It does not. Amending it would take R3's count with it, and R3 is the row the numeric door
+is built on, so the amendment is not local to the membership clause. I do not propose it,
+and I note that the compositional route in the paragraph above reaches the same use cases
+without touching a ratified row.
+
+**The first version of that probe was wrong and it is kept, with the defect named in its
+header.** Its declaration regex matched impl bodies as well as trait declarations, so it
+counted 22 and its summary asserted that the ten reconstructed. It did not, and nothing in
+the run said so, because the summary was written before the number arrived. The two controls
+now stand between the count and the claim and the claim prints only if both hold. I record
+this because a probe whose printed conclusion is not what its run measured is the exact
+defect the test gate names, and I wrote one.
 refusal is wrong.
 
 ## 6. Q31, one word or two
@@ -454,14 +494,27 @@ canon's to fix. The finding stands at the canon tier; the mechanism is a design 
 - Q20 is not open. It is ratified by `ruling::the_format_spine_is_canon` and I decline to
   re-derive it.
 
+**Settled after going back at what stage 2 had conceded:**
+
+- **The slot arity is fixed at one by a ratified count**, so the Q22 refusal does not rest
+  on a reading of "one parameterisation" after all. The ten coordinates R3 counts are
+  `3n + 7` at slot arity `n`, which is ten only at one. Reconstructed under two controls.
+- **The ten coordinates are separated from the admission obligation in the shipped code
+  already**, `ADMITTED` being a `const ()` outside the ten, which is the resolution shape
+  sitting in the tree without a name on it.
+
 **Could not:**
 
-- Whether "one parameterisation" in the ratified membership clause means one scalar slot or
-  admits a vector. My whole Q22 refusal rests on the scalar reading, and a seat taking the
-  other reading gets the opposite answer. I found no row that decides it and I say so rather
-  than deciding it myself.
-- Whether the resolution shape is expressible in this crate's permitted feature set. Not
-  attacked, and stated as not attacked.
+- Whether the resolution shape is expressible in this crate's permitted feature set. A
+  `const ()` aborts; returning a coordinate name from const evaluation in a form a
+  diagnostic can print is a different mechanism and may be refused by the crate's feature
+  set. **Not attacked, and stated as not attacked**, because the canon question is what
+  admission is rather than how it is spelled, and
+  `ruling::the_canon_does_not_police_what_shape_a_law_takes` says the spelling is not the
+  canon's.
+- Whether the panel should amend the parameterisation to a vector slot. That is a live
+  design question I decline to open, and the compositional route reaches the same use cases
+  without it.
 
 ## 10. Predicates
 
@@ -489,6 +542,13 @@ Per `dimension`, and absent axes hold nowhere.
 - **The shipped admission mechanism is a predicate and its second projection is hand-written
   beside it.** `crate: crate = arvo-format`, `toolchain: rustc = nightly-2026-05-28,
   edition = 2024`. Read from `mock/crates/arvo-format/src/slots.rs`, `ADMITTED` against
+- **The ratified ten reconstructs from the shipped traits, partitioned six and four, and is
+  `3n + 7` in the slot arity.** `crate: crate = arvo-format`,
+  `toolchain: rustc = nightly-2026-05-28, edition = 2024`,
+  `total_width: W any: construction, the count is over trait declarations and no step reads
+  a width`, `radix: radix any: construction, no step of the count reads a radix`,
+  `threads: threads = 1`. Two controls, both required to pass before the finding prints.
+  Evidence: `241_probes/the_ratified_ten_fixes_the_slot_arity`.
   `is_admissible`. Stated as a reading of shipped source rather than a measurement.
 
 Nothing above claims a region at more than one thread, because nothing above was run at more
