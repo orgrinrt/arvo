@@ -11,9 +11,14 @@
 //! what a number is in this stack cannot express itself in types it has not
 //! defined yet. Every crate above uses what is here and is checked normally.
 //!
-//! Two types and no more. A count of bits, and a truth value. Anything else a
-//! consumer needs is built from a format rather than added here, because the
-//! point of the door is that it stays narrow.
+//! Two types and no more. A count of bits, and a truth value.
+//!
+//! The coordinates a format is declared with are not a third and a fourth of
+//! these. Each is built through this door and each lives beside the contract that
+//! reads it: a radix with the ambient domain, an exponent and the magnitudes with
+//! the quantum law, a slot and a count of them with the slot range, a phase with
+//! the format, an arity with an operation, a fraction with the applied map. That
+//! is what keeps the door narrow while nothing above it has to reach past it.
 
 /// A count of bits.
 ///

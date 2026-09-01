@@ -30,6 +30,9 @@
 //! This crate introduces the numeric category, so the bare-primitive lints skip
 //! it. That is the door for the one place the stack's own primitives cannot be
 //! used to define themselves, and `width` is the narrow thing it exists for.
+//!
+//! The coordinates a format is declared with are built through that door rather
+//! than beside it, and each one lives with the contract that reads it.
 
 pub mod adapt;
 pub mod ambient;
@@ -42,17 +45,21 @@ pub mod slots;
 pub mod width;
 
 pub use adapt::{
-    operation_overflow, operation_rounding, overflow_of, rounding_of, Adapt, Adaptation,
+    operation_overflow, operation_rounding, overflow_of, rounding_of, Adapt, Adaptation, Arity,
     DeclaredSignature, Operation, Signature,
 };
-pub use ambient::{Ambient, BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
+pub use ambient::{Ambient, BinaryRationals, DecimalRationals, Radix, UnsignedBinaryRationals};
+pub use apply::{adapt, panic_on_inexact, panic_on_overflow, Dither, Exact, Fraction};
 pub use format::{
-    contains, has_additive_identity, radix, smallest_step_exponent, step_exponent, Format,
+    contains, has_additive_identity, radix, smallest_step_exponent, step_exponent, Format, Phase,
 };
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
-pub use quantum::{exponent_at, is_constant_family, magnitude_in_range, Quantum};
+pub use quantum::{
+    exponent_at, is_constant_family, magnitude_in_range, Exponent, Magnitude, MagnitudeCount,
+    Quantum,
+};
 pub use rounding::{Mode, Rounding, ALL_MODES};
-pub use slots::{slot_count, slot_in_range, Slots};
+pub use slots::{slot_count, slot_in_range, Slot, SlotCount, Slots};
 pub use width::{Bool, Width};
 
 /// The four points of the parameterisation the canon names, as formats.
@@ -62,7 +69,7 @@ pub use width::{Bool, Width};
 /// privileged by being here.
 pub mod points {
     use crate::ambient::{BinaryRationals, UnsignedBinaryRationals};
-    use crate::format::Format;
+    use crate::format::{Format, Phase};
     use crate::quantum::{Constant, Indexed};
     use crate::slots::{Signed, Slots, Unsigned};
 
@@ -76,8 +83,7 @@ pub mod points {
         type Ambient = BinaryRationals;
         type Quantum = Constant<0>;
         type Slots = Signed<BITS>;
-        const PHASE_NUM: i64 = 0;
-        const PHASE_DEN: i64 = 1;
+        const PHASE: Phase = Phase::ZERO;
     }
 
     /// Unsigned fixed point of `BITS` bits with the quantum at exponent `FRAC`.
@@ -93,8 +99,7 @@ pub mod points {
         type Ambient = UnsignedBinaryRationals;
         type Quantum = Constant<FRAC>;
         type Slots = Unsigned<BITS>;
-        const PHASE_NUM: i64 = 0;
-        const PHASE_DEN: i64 = 1;
+        const PHASE: Phase = Phase::ZERO;
     }
 
     /// A scaled integer: constant quantum at a declared exponent, with a phase.
@@ -102,17 +107,21 @@ pub mod points {
     /// The point that exercises the phase coordinate, which the other three leave
     /// at zero. A nonzero phase takes the additive identity off the grid, and the
     /// law asserting that is what keeps the coordinate honest.
-    pub struct Biased<const BITS: u32, const EXP: i32, const PHASE: i64>;
+    ///
+    /// `HALF_STEPS` counts the phase in half steps, which is what the parameter has
+    /// always meant: its denominator was fixed at two before the two phase consts
+    /// became one.
+    pub struct Biased<const BITS: u32, const EXP: i32, const HALF_STEPS: i64>;
 
-    impl<const BITS: u32, const EXP: i32, const PHASE: i64> Format for Biased<BITS, EXP, PHASE>
+    impl<const BITS: u32, const EXP: i32, const HALF_STEPS: i64> Format
+        for Biased<BITS, EXP, HALF_STEPS>
     where
         Signed<BITS>: Slots,
     {
         type Ambient = BinaryRationals;
         type Quantum = Constant<EXP>;
         type Slots = Signed<BITS>;
-        const PHASE_NUM: i64 = PHASE;
-        const PHASE_DEN: i64 = 2;
+        const PHASE: Phase = Phase::halves(HALF_STEPS);
     }
 
     /// A floating point: the magnitude-indexed family.
@@ -130,8 +139,7 @@ pub mod points {
         type Ambient = BinaryRationals;
         type Quantum = Indexed<MIN_EXP, EXPONENTS>;
         type Slots = Signed<MANTISSA>;
-        const PHASE_NUM: i64 = 0;
-        const PHASE_DEN: i64 = 1;
+        const PHASE: Phase = Phase::ZERO;
     }
 }
 

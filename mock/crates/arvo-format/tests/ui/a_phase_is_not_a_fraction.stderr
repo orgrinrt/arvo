@@ -1,0 +1,27 @@
+error[E0308]: mismatched types
+  --> tests/ui/a_phase_is_not_a_fraction.rs:12:40
+   |
+12 |     let _ = Exact::between(Slot::ZERO, Phase::halves(1));
+   |             --------------             ^^^^^^^^^^^^^^^^ expected `Fraction`, found `Phase`
+   |             |
+   |             arguments to this function are incorrect
+   |
+note: associated function defined here
+  --> src/apply.rs
+   |
+   |     pub const fn between(slot: Slot, part: Fraction) -> Self {
+   |                  ^^^^^^^
+
+error[E0308]: mismatched types
+  --> tests/ui/a_phase_is_not_a_fraction.rs:13:20
+   |
+13 |     let _: Phase = Fraction::HALF;
+   |            -----   ^^^^^^^^^^^^^^ expected `Phase`, found `Fraction`
+   |            |
+   |            expected due to this
+
+error[E0599]: no associated function or constant named `PHASE_DEN` found for struct `Phase` in the current scope
+  --> tests/ui/a_phase_is_not_a_fraction.rs:15:50
+   |
+15 |     let _ = Phase::of(1, 2).numerator() + Phase::PHASE_DEN;
+   |                                                  ^^^^^^^^^ associated function or constant not found in `Phase`
