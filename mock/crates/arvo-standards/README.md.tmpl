@@ -1,0 +1,31 @@
+# arvo-standards
+
+The industrial conventions, written as aliases over the primitives.
+
+A consumer who already thinks in a standard's vocabulary should be able to keep thinking in it and get
+arvo underneath. So `fi` and `fimath` are here as names you write, and behind each is a declared
+signature from `arvo-format` with nothing hidden in between: the alias is the convention's coordinates
+mapped onto the ones the format carries, and the mapping is the whole of it.
+
+Alias is meant literally. There is no adapter, no shim, no second implementation of the arithmetic.
+The convention names a width, a scaling and a rounding-and-overflow pair, arvo names a slot range, a
+quantum and an adaptation, and each of the first three is one of the second three under a different
+word. If a convention needed anything more than that, it would be telling you something about arvo
+rather than about itself.
+
+That is also what the crate is for beyond convenience. A convention that cannot be written this way is
+not a convention arvo is bad at supporting, it is a gap in the primitives, and the alias is where that
+shows up as a compile error instead of as a paragraph. Two of them are marked in the design already:
+one rounding method the vocabulary has no name for, and a width range that runs a thousand times past
+what a slot index carries.
+
+The parity arms are the other half. They take what the standard's own documentation says the answer is
+and assert arvo returns that, so the check is against the published spec rather than against arvo's
+reading of it.
+
+`no_std`, no allocation, sizes const.
+
+## Status
+
+Design phase. MATLAB `fi` and `fimath` are written, IEEE 754 is in scope and not yet started, and
+SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed` are reserved for later.
