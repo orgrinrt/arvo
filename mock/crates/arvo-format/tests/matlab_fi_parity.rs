@@ -167,9 +167,17 @@ macro_rules! parity {
             // the last place is `2^f / 2`.
             let value = ($stored as i128) * ($printed_den as i128);
             let printed = ($printed_num as i128) * (1i128 << $f);
-            let half_a_display_unit = 1i128 << $f;
+            // A whole unit in the last printed place, and the halving is the
+            // `* 2` on the other side of the comparison rather than a division
+            // here, so the arithmetic stays in exact integers. The name used to
+            // say half, which is worth more than a naming quibble because the
+            // bound is attained exactly on one arm and the `<=` is therefore
+            // load-bearing: `the_bound_is_attained_and_not_merely_respected`
+            // pins that, so nobody reads slack into it and relaxes the
+            // comparison.
+            let a_whole_display_unit = 1i128 << $f;
             assert!(
-                (value - printed).abs() * 2 <= half_a_display_unit,
+                (value - printed).abs() * 2 <= a_whole_display_unit,
                 "the stored integer carries a value that does not round to the {} \
                  MathWorks prints",
                 $printed_num
@@ -274,4 +282,36 @@ fn the_gap_is_this_shape_rather_than_a_missing_re_export() {
     // And the even mode is nearest and takes the positive tie down.
     assert_eq!(adapt::<Even>(Exact::between(2, 1, 2), Dither::UNUSED), 2);
     assert_eq!(adapt::<Even>(Exact::between(-3, 1, 2), Dither::UNUSED), -2);
+}
+
+/// The bound above is reached, so the comparison may not become strict.
+///
+/// `fi(pi)` at word length 8 and fraction length 5 stores 101, and MathWorks
+/// prints 3.1562. Scaled into exact integers that is `101 * 10000 = 1010000`
+/// against `31562 * 2^5 = 1009984`, a difference of 16, doubled to 32, against a
+/// whole display unit of `2^5 = 32`. Equal, on the nose.
+///
+/// Computed by hand while checking a name, which is exactly the check that
+/// evaporates and leaves the next reader to redo it. Turning `<=` into `<`
+/// fails here and nowhere else in the file.
+#[test]
+fn the_bound_is_attained_and_not_merely_respected() {
+    const F: u32 = 5;
+    const STORED: i128 = 101;
+    const PRINTED_NUM: i128 = 31_562;
+    const PRINTED_DEN: i128 = 10_000;
+
+    let value = STORED * PRINTED_DEN;
+    let printed = PRINTED_NUM * (1i128 << F);
+    let whole = 1i128 << F;
+
+    assert_eq!(
+        (value - printed).abs() * 2,
+        whole,
+        "the tightest arm sits on the bound rather than inside it"
+    );
+    assert!(
+        (value - printed).abs() * 2 >= whole,
+        "and a strict comparison would reject a value MathWorks does print"
+    );
 }
