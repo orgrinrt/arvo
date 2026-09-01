@@ -2179,6 +2179,38 @@ provenance = ["panel::202608072330_the-numeral-canon-panel::224_checkpoint_the_n
 keywords = ["predicate", "arm", "const", "const-available", "typestate", "trajectory", "runtime", "monomorphisation", "csel", "ingest boundary", "toolbox"]
 
 [[proposal]]
+id = "the_additive_identity_is_decided_by_the_phase_being_a_whole_multiple_of_the_quantum"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_format"
+supersedes = ["a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
+evidence = [
+  "the_identity_predicate_swept_against_an_enumeration",
+  "the_shipped_crate_admits_a_whole_step_phase",
+]
+says = "The representable set carries an additive identity exactly when the phase is a whole multiple of the quantum and the shifted slot is in range. Being nonzero is not what decides it: a phase of one whole quantum leaves zero on the grid one slot down, and only a phase with a fractional part takes it off."
+because = "It follows from the ratified membership predicate rather than from a new premise. Membership is the phase plus a slot multiple of the quantum, so zero is a member exactly when some integer slot satisfies slot times quantum equals minus the phase, which is solvable exactly when the phase is an integer multiple of the quantum. Two instruments reached it independently and neither had read the other: one swept the coordinate space and counted the cells where the shipped predicate and an enumeration disagree, the other ran a whole-step instantiation directly against the shipped crate and read the answer back.\n\nWhat the superseded row measured is not overturned, only its scope. At a half-step phase the set genuinely has no additive identity and is not closed under exact addition, which is the region the original sweep covered."
+predicate = [
+  "phase: phase integral for the identity, phase fractional for its absence",
+  "ambient_domain: ambient domain in {the rationals, the rationals at radix ten}",
+  "radix: radix in {2, 10}",
+  "signedness: signedness in {signed, unsigned}",
+  "integer_width: I in 1..=13, swept, the widths the probes instantiate",
+  "fraction_width: F in -2..=8, swept, as the constant family's exponent",
+  "rounding: rounding any, by construction, the predicate reads no rounding mode and no adaptation is applied",
+  "overflow_policy: overflow policy any, by construction, same",
+  "threads: threads any, by construction, the predicate is a const fn over associated items",
+  "target_features: target features any, by construction, same",
+  "toolchain: rustc = 1.98.0-nightly (57d06900f), edition = 2024",
+  "build_profile: opt level = 2, debug-assertions = off",
+  "occupancy: occupancy any, by construction, no value is placed",
+]
+note = "**The predicate above is one instrument's and the standing says so.** It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\n**Two instruments do meet, and they meet on the diagnosis rather than on a region.** The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\n**The second arrival is genuine and is the establishing seat's own word.** It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\n**The shipped `has_additive_identity` implements the superseded claim.** Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much."
+provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
+keywords = ["phase", "additive identity", "whole multiple", "quantum", "biased grid", "half step", "zero on the grid", "affine predicate", "membership"]
+
+[[proposal]]
 id = "the_introduction_doors_bound_is_a_position_rule_not_a_count_of_types"
 kind = "answer"
 sentence_kind = "normative"
