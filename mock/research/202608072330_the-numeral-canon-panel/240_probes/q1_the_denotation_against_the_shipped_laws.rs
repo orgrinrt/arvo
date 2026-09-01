@@ -63,7 +63,11 @@ fn gcd(a: i128, b: i128) -> i128 {
         a = b;
         b = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 impl Q {
@@ -229,15 +233,15 @@ fn main() {
         &mut disagree2b,
     );
 
-    println!("\n   section 2: {} disagreements over {} rows.", disagree2 + disagree2b, agree2 + disagree2 + agree2b + disagree2b);
+    println!(
+        "\n   section 2: {} disagreements over {} rows.",
+        disagree2 + disagree2b,
+        agree2 + disagree2 + agree2b + disagree2b
+    );
     if disagree2 > 0 {
         bad += 1;
-        println!(
-            "   FINDING: `has_additive_identity` answers on the numerator, not on the phase."
-        );
-        println!(
-            "   The phase is PHASE_NUM/PHASE_DEN, so a numerator that is a nonzero multiple"
-        );
+        println!("   FINDING: `has_additive_identity` answers on the numerator, not on the phase.");
+        println!("   The phase is PHASE_NUM/PHASE_DEN, so a numerator that is a nonzero multiple");
         println!("   of the denominator is a whole number of quanta and leaves zero on the grid.");
     }
 
@@ -247,25 +251,39 @@ fn main() {
     let b = denotation::<ShiftedByPhase>();
     println!("   ShiftedGrid     coords: phase 0/1, slots [-7, 8],  quantum exponent 0");
     println!("   Biased<4,0,2>   coords: phase 2/2, slots [-8, 7],  quantum exponent 0");
-    println!("   both over ambient BinaryRationals, radix {}", <BinaryRationals as Ambient>::RADIX);
+    println!(
+        "   both over ambient BinaryRationals, radix {}",
+        <BinaryRationals as Ambient>::RADIX
+    );
     println!("   |set A| = {}, |set B| = {}", a.len(), b.len());
     println!(
         "   set A = {:?}",
-        a.iter().map(|q| q.num as f64 / q.den as f64).collect::<Vec<_>>()
+        a.iter()
+            .map(|q| q.num as f64 / q.den as f64)
+            .collect::<Vec<_>>()
     );
     println!(
         "   set B = {:?}",
-        b.iter().map(|q| q.num as f64 / q.den as f64).collect::<Vec<_>>()
+        b.iter()
+            .map(|q| q.num as f64 / q.den as f64)
+            .collect::<Vec<_>>()
     );
     let same = a == b;
-    println!("   the two sets are {}", if same { "IDENTICAL" } else { "different" });
+    println!(
+        "   the two sets are {}",
+        if same { "IDENTICAL" } else { "different" }
+    );
 
     // The control for section 3: a pair that must NOT be identical, or "identical"
     // is what this instrument says about everything.
     let c = denotation::<Integer<4>>();
     println!(
         "   control: Integer<4> against ShiftedGrid are {}",
-        if a == c { "IDENTICAL (control FAILED)" } else { "different (control holds)" }
+        if a == c {
+            "IDENTICAL (control FAILED)"
+        } else {
+            "different (control holds)"
+        }
     );
     if a == c {
         println!("   The set comparison is degenerate. Section 3 establishes nothing.");
@@ -274,10 +292,16 @@ fn main() {
 
     if same {
         bad += 1;
-        println!("\n   FINDING: two distinct `Format` types over one ambient domain denote one set.");
-        println!("   `ruling::the_format_spine_is_canon` identifies a format by its ambient domain");
+        println!(
+            "\n   FINDING: two distinct `Format` types over one ambient domain denote one set."
+        );
+        println!(
+            "   `ruling::the_format_spine_is_canon` identifies a format by its ambient domain"
+        );
         println!("   and its representable set. Nothing in the crate quotients the coordinates by");
-        println!("   the set they denote, so the ratified identity and the shipped identity are two");
+        println!(
+            "   the set they denote, so the ratified identity and the shipped identity are two"
+        );
         println!("   different relations and their agreement is a theorem nobody has stated.");
     }
 

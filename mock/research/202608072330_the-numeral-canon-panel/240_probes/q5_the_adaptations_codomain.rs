@@ -110,8 +110,10 @@ fn main() {
 
     println!();
     let mut many_magnitude_worst = 0usize;
-    many_magnitude_worst = many_magnitude_worst.max(report::<Floating<3, -2, 3>>("Floating<3,-2,3>"));
-    many_magnitude_worst = many_magnitude_worst.max(report::<Floating<4, -3, 5>>("Floating<4,-3,5>"));
+    many_magnitude_worst =
+        many_magnitude_worst.max(report::<Floating<3, -2, 3>>("Floating<3,-2,3>"));
+    many_magnitude_worst =
+        many_magnitude_worst.max(report::<Floating<4, -3, 5>>("Floating<4,-3,5>"));
     many_magnitude_worst = many_magnitude_worst.max(report::<Floating<5, 0, 8>>("Floating<5,0,8>"));
 
     println!("\n   controls:");
@@ -148,7 +150,10 @@ fn main() {
          magnitude there is.",
         int_slot
     );
-    println!("\n   For `Floating<3,-2,3>` that same slot names {} different values,", 3);
+    println!(
+        "\n   For `Floating<3,-2,3>` that same slot names {} different values,",
+        3
+    );
     for m in 0..3u32 {
         let step = radix.pow(m);
         println!(

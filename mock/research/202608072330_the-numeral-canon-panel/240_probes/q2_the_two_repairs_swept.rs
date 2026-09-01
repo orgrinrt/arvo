@@ -71,14 +71,21 @@ fn gcd(a: i128, b: i128) -> i128 {
         a = b;
         b = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 impl Q {
     fn new(num: i128, den: i128) -> Self {
         let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
         let g = gcd(num, den);
-        Self { num: num / g, den: den / g }
+        Self {
+            num: num / g,
+            den: den / g,
+        }
     }
 }
 
@@ -94,8 +101,10 @@ fn denotation(c: Coords) -> BTreeSet<Q> {
         };
         for s in c.min..=c.max {
             let s = s as i128;
-            out.insert(Q::new(c.phase_num as i128 * rd + s * rn * c.phase_den as i128,
-                              c.phase_den as i128 * rd));
+            out.insert(Q::new(
+                c.phase_num as i128 * rd + s * rn * c.phase_den as i128,
+                c.phase_den as i128 * rd,
+            ));
         }
     }
     out
@@ -268,7 +277,11 @@ fn main() {
 
     for &c in &pool {
         let oracle = zero_is_denoted(c);
-        if oracle { true_rows += 1 } else { false_rows += 1 }
+        if oracle {
+            true_rows += 1
+        } else {
+            false_rows += 1
+        }
         if has_additive_identity_repaired(c) != oracle {
             repaired_wrong += 1;
         }
@@ -348,7 +361,11 @@ fn main() {
     for i in 0..cpool.len() {
         for j in 0..cpool.len() {
             let oracle = sets[i] == sets[j];
-            if oracle { equal_pairs += 1 } else { unequal_pairs += 1 }
+            if oracle {
+                equal_pairs += 1
+            } else {
+                unequal_pairs += 1
+            }
             if same_set_constant_family(cpool[i], cpool[j]) != oracle {
                 decided_wrong += 1;
                 if first_decided_witness.is_none() {
@@ -389,8 +406,10 @@ fn main() {
 
     // How much the coordinates over-count the sets, which is the size of the gap
     // between the ratified identity and the shipped one.
-    let distinct_sets: BTreeSet<Vec<Q>> =
-        sets.iter().map(|s| s.iter().copied().collect::<Vec<_>>()).collect();
+    let distinct_sets: BTreeSet<Vec<Q>> = sets
+        .iter()
+        .map(|s| s.iter().copied().collect::<Vec<_>>())
+        .collect();
     println!(
         "\n   {} distinct coordinate tuples denote {} distinct sets.",
         cpool.len(),

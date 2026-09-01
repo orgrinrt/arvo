@@ -96,7 +96,11 @@ fn shells_tile(radix: i128, slope: u32, magnitudes: u32, min: i64, max: i64) -> 
     // Greatest multiple of `r` strictly below `a`.
     let down = {
         let q = a.div_euclid(r);
-        if q * r == a { (q - 1) * r } else { q * r }
+        if q * r == a {
+            (q - 1) * r
+        } else {
+            q * r
+        }
     };
     is_power_of(up - b, r) && is_power_of(a - down, r)
 }
@@ -145,7 +149,11 @@ fn main() {
                         swept += 1;
                         let r = radix.pow(slope);
                         let oracle = is_clean_ladder(&set, r);
-                        if oracle { clean += 1 } else { ragged += 1 }
+                        if oracle {
+                            clean += 1
+                        } else {
+                            ragged += 1
+                        }
 
                         if shells_tile(radix, slope, magnitudes, min, max) != oracle {
                             derived_wrong += 1;

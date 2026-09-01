@@ -199,9 +199,18 @@ fn main() {
     let s = union_set(2, 1, 3, -3, 3);
     let i = ieee_set(3, 4);
     println!("\n   worked witness, mantissa 3, exponents 3, against p = 3, span 4:");
-    println!("     union, two's-complement slots [-4, 3] : {:?}", d.iter().copied().collect::<Vec<_>>());
-    println!("     union, symmetric slots      [-3, 3] : {:?}", s.iter().copied().collect::<Vec<_>>());
-    println!("     ieee generic_format p=3 span=4       : {:?}", i.iter().copied().collect::<Vec<_>>());
+    println!(
+        "     union, two's-complement slots [-4, 3] : {:?}",
+        d.iter().copied().collect::<Vec<_>>()
+    );
+    println!(
+        "     union, symmetric slots      [-3, 3] : {:?}",
+        s.iter().copied().collect::<Vec<_>>()
+    );
+    println!(
+        "     ieee generic_format p=3 span=4       : {:?}",
+        i.iter().copied().collect::<Vec<_>>()
+    );
     println!("     union(two's complement) == ieee : {}", d == i);
     println!("     union(symmetric)        == ieee : {}", s == i);
     let only_design: Vec<i128> = d.difference(&i).copied().collect();
@@ -259,14 +268,7 @@ fn main() {
                     if l.is_none() {
                         unreadable += 1;
                         if not_ladder.len() < 8 {
-                            not_ladder.push((
-                                radix,
-                                slope,
-                                mags,
-                                min,
-                                max,
-                                distinct_gaps(&set),
-                            ));
+                            not_ladder.push((radix, slope, mags, min, max, distinct_gaps(&set)));
                         }
                     }
                     ladders.insert(l);
@@ -385,17 +387,26 @@ fn main() {
     let taper2_target = shells(2, &[0, 2, 3], 3);
 
     println!("   control, a float target, exponents [0, 1, 2]:");
-    println!("     members {:?}", float_target.iter().copied().collect::<Vec<_>>());
+    println!(
+        "     members {:?}",
+        float_target.iter().copied().collect::<Vec<_>>()
+    );
     let fr = reaches(&float_target);
     println!("     reached by {fr:?}");
 
     println!("\n   target A, a taper, exponents [0, 1, 3]:");
-    println!("     members {:?}", taper_target.iter().copied().collect::<Vec<_>>());
+    println!(
+        "     members {:?}",
+        taper_target.iter().copied().collect::<Vec<_>>()
+    );
     let tr1 = reaches(&taper_target);
     println!("     reached by {tr1:?}");
 
     println!("\n   target B, a taper, exponents [0, 2, 3]:");
-    println!("     members {:?}", taper2_target.iter().copied().collect::<Vec<_>>());
+    println!(
+        "     members {:?}",
+        taper2_target.iter().copied().collect::<Vec<_>>()
+    );
     let tr2 = reaches(&taper2_target);
     println!("     reached by {tr2:?}");
 
