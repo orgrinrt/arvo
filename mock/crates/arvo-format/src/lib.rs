@@ -100,8 +100,10 @@ pub mod points {
     /// A scaled integer: constant quantum at a declared exponent, with a phase.
     ///
     /// The point that exercises the phase coordinate, which the other three leave
-    /// at zero. A nonzero phase takes the additive identity off the grid, and the
-    /// law asserting that is what keeps the coordinate honest.
+    /// at zero. Its denominator is two, so an odd `PHASE` is the half-step grid
+    /// that has no additive identity and an even one is a whole step that keeps
+    /// it, and the law asserting both directions is what keeps the coordinate
+    /// honest.
     pub struct Biased<const BITS: u32, const EXP: i32, const PHASE: i64>;
 
     impl<const BITS: u32, const EXP: i32, const PHASE: i64> Format for Biased<BITS, EXP, PHASE>

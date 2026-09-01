@@ -34,10 +34,10 @@ pub trait Format {
 
     /// The numerator of the phase, in units of the quantum at magnitude zero.
     ///
-    /// Carried explicitly and never assumed zero. A nonzero phase decides whether
-    /// the identity adaptation ever occurs and whether the set carries an
-    /// additive identity at all, so a design that hardcoded it would have closed
-    /// a case the canon leaves open.
+    /// Carried explicitly and never assumed zero. Together with the denominator
+    /// it decides whether the set carries an additive identity at all, and
+    /// therefore whether the identity adaptation ever occurs, so a design that
+    /// hardcoded it would have closed a case the canon leaves open.
     const PHASE_NUM: i64;
 
     /// The denominator of the phase, in units of the quantum at magnitude zero.
@@ -57,13 +57,18 @@ pub const fn contains<F: Format>(slot: i64, magnitude: u32) -> bool {
 
 /// Whether the format's grid carries an additive identity.
 ///
-/// A zero phase puts zero on the grid at slot zero, provided the slot range
-/// admits it. A nonzero phase takes it off, and takes one off with it: every
-/// exact sum then lands half a step away from every grid point, which is why the
-/// canon carries the coordinate rather than treating the bias as a corner case.
+/// The phase is `PHASE_NUM` over `PHASE_DEN` in units of the quantum, and zero
+/// sits on the grid exactly when some slot cancels it. That needs the phase to
+/// be a whole multiple of the quantum, and the slot it lands on is the negated
+/// multiple rather than slot zero, so a phase of one whole step keeps the
+/// identity and only a fractional part takes it off. A denominator of zero names
+/// no position and is answered as no identity rather than divided by.
 #[must_use]
 pub const fn has_additive_identity<F: Format>() -> bool {
-    F::PHASE_NUM == 0 && slot_in_range::<F::Slots>(0)
+    if F::PHASE_DEN == 0 {
+        return false;
+    }
+    F::PHASE_NUM % F::PHASE_DEN == 0 && slot_in_range::<F::Slots>(-(F::PHASE_NUM / F::PHASE_DEN))
 }
 
 /// The exponent of the step at a magnitude, for the format's quantum law.

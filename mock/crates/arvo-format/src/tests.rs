@@ -180,10 +180,11 @@ fn a_zero_phase_puts_the_additive_identity_on_the_grid() {
 }
 
 #[test]
-fn a_nonzero_phase_takes_the_additive_identity_off_the_grid() {
-    // The half-step bias. The canon carries the phase coordinate precisely
-    // because this is not a corner case: the grid contains neither zero nor one,
-    // no exact sum lands on it, and it is not a monoid carrier.
+fn a_fractional_phase_takes_the_additive_identity_off_the_grid() {
+    // `Biased` fixes the denominator at two, so an odd numerator is the half-step
+    // bias. The canon carries the phase coordinate precisely because this is not
+    // a corner case: no exact sum lands on that grid and it is not a monoid
+    // carrier.
     assert!(!has_additive_identity::<Biased<7, -2, 1>>());
     assert!(!has_additive_identity::<Biased<13, 0, 1>>());
     assert!(!has_additive_identity::<Biased<31, -8, 3>>());
@@ -191,6 +192,25 @@ fn a_nonzero_phase_takes_the_additive_identity_off_the_grid() {
     // And a biased format with the phase set back to zero has it again, which is
     // the control saying the phase is what did it rather than the width.
     assert!(has_additive_identity::<Biased<7, -2, 0>>());
+}
+
+#[test]
+fn a_whole_multiple_phase_keeps_the_identity_at_a_shifted_slot() {
+    // The half this suite could not see. Every arm above uses an odd numerator
+    // against a denominator the type fixes at two, so every phase tried was
+    // fractional and the region where a nonzero phase keeps the identity was
+    // never entered. An even numerator is a whole number of quanta: the grid
+    // shifts onto itself and zero sits at the negated multiple rather than at
+    // slot zero.
+    assert!(has_additive_identity::<Biased<4, 0, 2>>());
+    assert!(has_additive_identity::<Biased<7, -2, 2>>());
+    assert!(has_additive_identity::<Biased<13, 0, 4>>());
+    assert!(has_additive_identity::<Biased<31, -8, -6>>());
+
+    // The control, and it is what makes the arms above mean anything: restoring
+    // `PHASE_NUM == 0` passes every arm in the test above and fails all four
+    // here, so these reach a region that suite could not.
+    assert!(!has_additive_identity::<Biased<4, 0, 1>>());
 }
 
 // --- the radix is a coordinate and is not hardcoded --------------------------
