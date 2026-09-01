@@ -90,7 +90,11 @@ fn enumerate(step: i64, bias: i64, lo: i64, hi: i64) -> BTreeSet<i64> {
 /// Distance from `q` to the nearest lattice point of (step, bias).
 fn distance_to_lattice(q: i64, step: i64, bias: i64) -> i64 {
     let r = (q - bias).rem_euclid(step);
-    if r < step - r { r } else { step - r }
+    if r < step - r {
+        r
+    } else {
+        step - r
+    }
 }
 
 struct Arm {
@@ -104,9 +108,27 @@ struct Arm {
 fn main() {
     // 16 slots each, starting at the first lattice point at or above zero.
     let arms = [
-        Arm { name: "A  step 1/4, bias 1/8 (the measured geometry)", step: 6, bias: 3, lo: 0, hi: 3 + 6 * 15 },
-        Arm { name: "B  step 2,   bias 1   (quantum above one)    ", step: 48, bias: 24, lo: 0, hi: 24 + 48 * 15 },
-        Arm { name: "C  step 1,   bias 1/3 (phase not a half step)", step: 24, bias: 8, lo: 0, hi: 8 + 24 * 15 },
+        Arm {
+            name: "A  step 1/4, bias 1/8 (the measured geometry)",
+            step: 6,
+            bias: 3,
+            lo: 0,
+            hi: 3 + 6 * 15,
+        },
+        Arm {
+            name: "B  step 2,   bias 1   (quantum above one)    ",
+            step: 48,
+            bias: 24,
+            lo: 0,
+            hi: 24 + 48 * 15,
+        },
+        Arm {
+            name: "C  step 1,   bias 1/3 (phase not a half step)",
+            step: 24,
+            bias: 8,
+            lo: 0,
+            hi: 8 + 24 * 15,
+        },
     ];
 
     let mut contains_one = Vec::new();
@@ -116,14 +138,16 @@ fn main() {
         let grid = enumerate(arm.step, arm.bias, arm.lo, arm.hi);
 
         // The predicate agrees with an enumeration written independently of it.
-        let by_predicate: BTreeSet<i64> =
-            (arm.lo..=arm.hi).filter(|&q| member(q, arm.step, arm.bias, arm.lo, arm.hi)).collect();
+        let by_predicate: BTreeSet<i64> = (arm.lo..=arm.hi)
+            .filter(|&q| member(q, arm.step, arm.bias, arm.lo, arm.hi))
+            .collect();
         let agrees = by_predicate == grid;
 
         // The bias-dropped mutant must disagree, or the predicate is not reading
         // the phase at all.
-        let by_mutant: BTreeSet<i64> =
-            (arm.lo..=arm.hi).filter(|&q| member(q, arm.step, 0, arm.lo, arm.hi)).collect();
+        let by_mutant: BTreeSet<i64> = (arm.lo..=arm.hi)
+            .filter(|&q| member(q, arm.step, 0, arm.lo, arm.hi))
+            .collect();
         let mutant_detected = by_mutant != grid;
 
         let has_zero = on_lattice(0, arm.step, arm.bias);
@@ -153,18 +177,30 @@ fn main() {
         println!("    bias-dropped mutant detected      {}", mutant_detected);
         println!("    contains zero                     {}", has_zero);
         println!("    contains one                      {}", has_one);
-        println!("    sums landing on the grid          {} of {}", sums_on_lattice, sums);
+        println!(
+            "    sums landing on the grid          {} of {}",
+            sums_on_lattice, sums
+        );
         println!(
             "    distinct distances (units of 1/{})  {:?}   half a step is {}",
             D,
             distances,
             arm.step / 2
         );
-        println!("    every sum exactly half a step     {}", every_sum_half_a_step);
-        println!("    CONTROL phase-zero grid has zero  {}", phase_zero_has_zero);
+        println!(
+            "    every sum exactly half a step     {}",
+            every_sum_half_a_step
+        );
+        println!(
+            "    CONTROL phase-zero grid has zero  {}",
+            phase_zero_has_zero
+        );
         println!();
 
-        assert!(agrees, "the predicate and the enumeration disagree; the instrument is broken");
+        assert!(
+            agrees,
+            "the predicate and the enumeration disagree; the instrument is broken"
+        );
         assert!(mutant_detected, "the bias-dropped mutant was not detected");
         assert!(phase_zero_has_zero, "CONTROL 2 FAILED at {}", arm.name);
 
@@ -177,10 +213,22 @@ fn main() {
     // Control 3: the half-step clause must hold at A and B and fail at C.
     let control_3 = half_step[0] && half_step[1] && !half_step[2];
 
-    println!("CONTROL 1  contains-one differs between A and B   {}", control_1);
-    println!("CONTROL 3  half-step holds at A and B, fails at C {}", control_3);
-    assert!(control_1, "CONTROL 1 FAILED: the instrument cannot separate the two geometries");
-    assert!(control_3, "CONTROL 3 FAILED: the distance arm is structurally green");
+    println!(
+        "CONTROL 1  contains-one differs between A and B   {}",
+        control_1
+    );
+    println!(
+        "CONTROL 3  half-step holds at A and B, fails at C {}",
+        control_3
+    );
+    assert!(
+        control_1,
+        "CONTROL 1 FAILED: the instrument cannot separate the two geometries"
+    );
+    assert!(
+        control_3,
+        "CONTROL 3 FAILED: the distance arm is structurally green"
+    );
 
     println!();
     println!("VERDICT");

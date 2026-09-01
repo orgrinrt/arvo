@@ -86,19 +86,41 @@ fn main() {
     // A phase of a whole quantum, which is the same lattice as phase zero.
     // `PHASE_NUM = 2` over `PHASE_DEN = 2` is one whole step, so the grid is
     // shifted onto itself and zero stays representable.
-    let (_d_one, d_zero, d_id) = report::<Biased<4, 0, 2>>("Biased<4,  0, 2>  phase a whole quantum");
+    let (_d_one, d_zero, d_id) =
+        report::<Biased<4, 0, 2>>("Biased<4,  0, 2>  phase a whole quantum");
 
-    println!("CONTROL 1  the two Biased formats disagree about one   {}", a_one != b_one);
-    println!("CONTROL 2  neither Biased format has an additive id    {}", !a_id && !b_id);
-    println!("CONTROL 3  the phase-zero control does have one        {}", c_id);
-    println!("CONTROL 4  arm D carries zero while the crate says no  {}", d_zero && !d_id);
+    println!(
+        "CONTROL 1  the two Biased formats disagree about one   {}",
+        a_one != b_one
+    );
+    println!(
+        "CONTROL 2  neither Biased format has an additive id    {}",
+        !a_id && !b_id
+    );
+    println!(
+        "CONTROL 3  the phase-zero control does have one        {}",
+        c_id
+    );
+    println!(
+        "CONTROL 4  arm D carries zero while the crate says no  {}",
+        d_zero && !d_id
+    );
     assert!(a_one != b_one, "CONTROL 1 FAILED");
     assert!(!a_id && !b_id, "CONTROL 2 FAILED");
     assert!(c_id, "CONTROL 3 FAILED");
-    assert!(!a_zero && !b_zero, "a biased grid carried zero, which contradicts p1");
+    assert!(
+        !a_zero && !b_zero,
+        "a biased grid carried zero, which contradicts p1"
+    );
     assert!(c_zero && c_one, "the phase-zero control lost zero or one");
-    assert!(d_zero, "CONTROL 4 FAILED: a whole-quantum phase moved the lattice");
-    assert!(!d_id, "CONTROL 4 FAILED: the crate agreed, so there is nothing to report");
+    assert!(
+        d_zero,
+        "CONTROL 4 FAILED: a whole-quantum phase moved the lattice"
+    );
+    assert!(
+        !d_id,
+        "CONTROL 4 FAILED: the crate agreed, so there is nothing to report"
+    );
 
     println!();
     println!("VERDICT");
