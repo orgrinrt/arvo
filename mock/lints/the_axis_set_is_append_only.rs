@@ -18,46 +18,59 @@
 //! written absence becomes nonsense, and both fail silently: the corpus still
 //! reads, and the sentence it now says is a different one.
 //!
-//! **The mechanism is a roster**, and it is read in both directions. Every id
-//! that has ever been declared is written down here, and each must still
-//! resolve to a row, which is the arm that refuses a deletion. Every row in the
-//! namespace must appear on the roster, which is the arm that keeps the first
-//! one complete. A rename trips both, the deletion half naming what stopped
-//! resolving and the addition half naming what nothing would catch next time.
+//! **The record that decides it is git**, because that is the only record a
+//! deletion cannot edit in the commit that deletes. Every id the namespace has
+//! carried in `dimension.toml` across that file's history must still resolve to
+//! a row. Six commits touch the file, so the walk is one `git log` and six
+//! `git show`, measured at 0.2 seconds.
 //!
-//! The second arm is there because the first one alone is only append-only over
-//! the part somebody remembered to list. An axis declared and never rostered is
-//! invisible to it in either direction, so its deletion months later is silent,
-//! and the omission happens at the one moment nobody is thinking about
-//! deletion, which is the commit that declares the axis. Read the two arms
-//! together and the roster is complete by construction rather than by memory.
+//! **A roster is kept beside it**, read in both directions: every id on it must
+//! resolve, and every row must be on it. That pair is forgeable, and knowing
+//! exactly how is the point of keeping it. An author who deletes an axis is
+//! told a roster entry no longer resolves, and the obvious way to silence that
+//! is to delete the entry, which is a two-line edit in a file already open.
+//! What the roster buys instead is a check that needs no git at all, and a
+//! record of the axis set a reader can see without running anything.
+//!
+//! **So the arms fail differently on purpose.** The history arm is unforgeable
+//! and needs a git checkout. The roster arms need nothing and can be defeated
+//! in one commit. **Where the history cannot be read, that is reported rather
+//! than passed**, because a check that could not run is not a check that
+//! agreed.
+//!
+//! **The premise is checked rather than assumed.** The history arm reads one
+//! path, so a second file declaring the namespace would leave its axes
+//! unprotected without any arm noticing. `law.toml` has already been split
+//! exactly that way, so the third arm reports it, and the fix is to widen the
+//! scan rather than to keep the premise. Reading every path the registry
+//! directory has ever held measured 7.3 seconds against 0.2 for the one file,
+//! which is why the scan is narrow and the premise is guarded.
 //!
 //! **No ceiling and no threshold.** The refused state is not a population that
-//! grew, it is one entry that stopped resolving or one row nobody listed, and
-//! there is no number to grandfather because the committed registry satisfies
-//! both arms exactly today.
-//!
-//! **Growing the roster is what an addition costs**, one line, in the commit
-//! that declares the row. Shrinking it is the thing to refuse: an author who
-//! deletes an axis and deletes its roster entry to match has made the lint
-//! green by removing the check, so the roster is append-only for the same
-//! reason the registry is.
+//! grew, it is one id that stopped resolving, and there is no number to
+//! grandfather because the committed registry satisfies every arm exactly
+//! today: 24 rows, 24 roster entries, and 24 ids across the file's whole
+//! history.
 //!
 //! # What the unit tests here cannot ask
 //!
-//! That the shipped roster matches the committed registry. A unit test cannot
-//! build a `RegistryView` from `mock/registry/`, because that needs a TOML
-//! parser the generated pack has no route to depend on. `cargo mock
-//! --lint-only` is where the roster meets the real rows, and it runs this at
-//! every gate. What the tests below do instead is drive the whole predicate on
-//! planted rosters and planted registries, including the case that must fire.
+//! That the shipped roster matches the committed registry, and that the history
+//! walk reads the real repository. A unit test cannot build a `RegistryView`
+//! from `mock/registry/` (that needs a TOML parser the generated pack has no
+//! route to depend on) and a planted temporary directory is not a git checkout.
+//! So the predicate is a pure function over the three inputs and every arm below
+//! drives it directly, the reading of git and of the registry directory being
+//! the thin part left over.
 //!
-//! **It was driven against them once, deliberately.** Renaming `radix` in the
-//! committed registry produces this arm naming `radix` as gone, and produces two
+//! **All three were driven against the real repository, deliberately.** Renaming
+//! `radix` produces the roster arm naming it gone, plus two
 //! `every-predicate-names-a-declared-axis` errors in the same run, which is the
-//! harm this describes arriving on cue: two predicates written over that axis
-//! stopped parsing the moment it was renamed. That check reports the symptom and
-//! this one reports the cause.
+//! harm this describes arriving on cue. Adding an unrostered row produces the
+//! second arm. **Deleting `leaf_aliasing` from the registry and the roster
+//! together produces the history arm**, and produced nothing at all before that
+//! arm existed, which is the defect it was added for.
+use std::path::Path;
+
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
 use crate::canon_rows::finding;
@@ -119,26 +132,106 @@ impl Lint for TheAxisSetIsAppendOnly {
         Severity::HARD_ERROR
     }
 }
+/// The registry file the axes are declared in, from the repository root.
+const FILE: &str = "mock/registry/dimension.toml";
+
 impl RepoLint for TheAxisSetIsAppendOnly {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        let rows = ctx.registry.rows_in(NAMESPACE);
-        let gone: Vec<&str> = self
-            .roster
-            .iter()
-            .copied()
-            .filter(|id| {
-                let qualified = format!("{NAMESPACE}::{id}");
-                !rows.iter().any(|q| *q == qualified.as_str())
-            })
-            .collect();
-        let unrostered: Vec<&str> = rows
-            .iter()
-            .filter_map(|q| q.strip_prefix(NAMESPACE).and_then(|r| r.strip_prefix("::")))
-            .filter(|id| !self.roster.contains(id))
-            .collect();
+        let live = ids_of(ctx.registry.rows_in(NAMESPACE));
+        check(
+            &live,
+            self.roster,
+            ids_ever_declared(ctx.repo_root).as_deref(),
+            &files_declaring(&ctx.mock_dir.join("registry")),
+        )
+    }
+}
 
-        let mut out = Vec::new();
-        if !gone.is_empty() {
+/// The bare ids of qualified rows in this namespace, and nothing else.
+///
+/// Its own function so the discrimination stays testable: a row spelled
+/// `ruling::signedness` is a different row from `dimension::signedness`, and a
+/// filter written on the slug alone counts it as the axis and passes.
+fn ids_of(rows: &[String]) -> Vec<String> {
+    rows.iter()
+        .filter_map(|q| q.strip_prefix(NAMESPACE)?.strip_prefix("::"))
+        .map(str::to_string)
+        .collect()
+}
+
+/// The whole predicate, over ids rather than qualified rows so a test can state
+/// its fixtures the way the registry states them.
+///
+/// `ever` is `None` where the history could not be read at all, which is itself
+/// reported: a check that cannot run is not a check that passed.
+fn check(
+    live: &[String],
+    roster: &[&str],
+    ever: Option<&[String]>,
+    declaring: &[String],
+) -> Vec<LintError> {
+    let rows: Vec<&str> = live.iter().map(String::as_str).collect();
+    let gone: Vec<&str> = roster
+        .iter()
+        .copied()
+        .filter(|id| !rows.contains(id))
+        .collect();
+    let unrostered: Vec<&str> = rows
+        .iter()
+        .copied()
+        .filter(|id| !roster.contains(id))
+        .collect();
+
+    let mut out = Vec::new();
+    match ever {
+        Some(ever) => {
+            let lost: Vec<&str> = ever
+                .iter()
+                .map(String::as_str)
+                .filter(|id| !rows.contains(id))
+                .collect();
+            if !lost.is_empty() {
+                out.push(finding(
+                    LINT,
+                    None,
+                    format!(
+                        "{} axes were declared in this file's history and resolve to no row \
+                         now: {lost:?}. This arm reads git rather than the roster below, so \
+                         deleting the row and its roster entry in one commit does not reach \
+                         it. Restore the row under its original id, or rewrite history, which \
+                         is not something this repository does.",
+                        lost.len()
+                    ),
+                ));
+            }
+        }
+        None => out.push(finding(
+            LINT,
+            None,
+            format!(
+                "the history of `{FILE}` could not be read, so the arm that a single commit \
+                 cannot defeat did not run and only the roster below applied. That roster \
+                 lives in the working tree and can be edited in the same commit as a \
+                 deletion, so this is a weaker check rather than a passing one. Run this in a \
+                 git checkout of the repository."
+            ),
+        )),
+    }
+    if declaring.len() > 1 || (declaring.len() == 1 && !FILE.ends_with(&declaring[0])) {
+        out.push(finding(
+            LINT,
+            None,
+            format!(
+                "`{NAMESPACE}` rows are declared in {declaring:?} and the history arm reads \
+                 only `{FILE}`, so an axis declared in another of them is unprotected. Widen \
+                 the scan to every file that declares the namespace, and mind that reading \
+                 every path the registry directory has ever held measured 7.3 seconds against \
+                 0.2 for the one file, so the scan is the part to make cheaper rather than \
+                 the premise to keep."
+            ),
+        ));
+    }
+    if !gone.is_empty() {
             out.push(finding(
                 LINT,
                 None,
@@ -164,57 +257,117 @@ impl RepoLint for TheAxisSetIsAppendOnly {
                      only over the part somebody remembered to list. Add each id to `ROSTER` in \
                      the commit that declares it, which is the one moment nobody is thinking \
                      about deletion.",
-                    unrostered.len()
-                ),
-            ));
-        }
-        out
+                unrostered.len()
+            ),
+        ));
     }
+    out
+}
+
+/// Every `id` the namespace has carried in `FILE` across that file's history.
+///
+/// `None` where git is not available or the file has no history, which the
+/// caller reports rather than reading as nothing lost. Six commits touch this
+/// file, so the walk is one `git log` and six `git show`, measured at 0.2
+/// seconds.
+fn ids_ever_declared(repo_root: &Path) -> Option<Vec<String>> {
+    let commits = git(repo_root, &["log", "--format=%H", "--", FILE])?;
+    let mut out: Vec<String> = Vec::new();
+    for commit in commits.split_whitespace() {
+        let Some(text) = git(repo_root, &["show", &format!("{commit}:{FILE}")]) else {
+            continue;
+        };
+        out.extend(ids_in(&text));
+    }
+    out.sort();
+    out.dedup();
+    Some(out)
+}
+
+/// Every id declared under this namespace in one file's text.
+///
+/// The table header decides the namespace, never the path, because that is what
+/// the registry itself does: `law.toml` and `law-the-later-topics.toml` are one
+/// namespace in two files.
+fn ids_in(text: &str) -> Vec<String> {
+    let mut here = String::new();
+    let mut out = Vec::new();
+    for line in text.lines() {
+        let t = line.trim();
+        if let Some(ns) = t.strip_prefix("[[").and_then(|r| r.strip_suffix("]]")) {
+            here = ns.to_string();
+        } else if here == NAMESPACE {
+            if let Some(v) = t.strip_prefix("id = \"").and_then(|r| r.strip_suffix('"')) {
+                out.push(v.to_string());
+            }
+        }
+    }
+    out
+}
+
+/// The registry files that declare this namespace, by filename.
+fn files_declaring(registry: &Path) -> Vec<String> {
+    let Ok(entries) = std::fs::read_dir(registry) else {
+        return Vec::new();
+    };
+    let mut out: Vec<String> = entries
+        .filter_map(Result::ok)
+        .map(|e| e.path())
+        .filter(|p| p.extension().is_some_and(|e| e == "toml"))
+        .filter(|p| {
+            std::fs::read_to_string(p).is_ok_and(|t| !ids_in(&t).is_empty())
+        })
+        .filter_map(|p| p.file_name().map(|n| n.to_string_lossy().into_owned()))
+        .collect();
+    out.sort();
+    out
+}
+
+/// One git invocation, or `None` where it could not be run or did not succeed.
+fn git(repo_root: &Path, args: &[&str]) -> Option<String> {
+    let out = std::process::Command::new("git")
+        .arg("-C")
+        .arg(repo_root)
+        .args(args)
+        .output()
+        .ok()?;
+    out.status
+        .success()
+        .then(|| String::from_utf8_lossy(&out.stdout).into_owned())
 }
 #[cfg(test)]
 mod tests {
     use mockspace::Lint;
 
-    use super::TheAxisSetIsAppendOnly as AppendOnly;
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block, assert_not_declared_off, assert_registered, view,
     };
 
-    /// One planted registry read against one planted roster.
-    fn found(rows: &[(&str, &[(&str, &str)])], roster: &'static [&'static str]) -> Vec<String> {
-        findings(&AppendOnly { roster }, &view(rows, &[]))
-    }
+    const ROSTER_TWO: &[&str] = &["radix", "signedness"];
 
-    /// A registry holding exactly these axis ids and nothing else.
-    fn axes(ids: &[&str]) -> Vec<(String, Vec<(String, String)>)> {
-        ids.iter()
-            .map(|id| {
-                (
-                    format!("dimension::{id}"),
-                    vec![("what".to_string(), "an axis".to_string())],
-                )
-            })
+    /// The one file the history arm reads, as `files_declaring` reports it.
+    const ONE_FILE: &[&str] = &["dimension.toml"];
+
+    /// The whole predicate on planted inputs.
+    ///
+    /// `ever` is stated per arm rather than defaulted, because defaulting it to
+    /// the live rows would make the history arm silent everywhere and no arm
+    /// would be about it.
+    fn run(live: &[&str], roster: &[&str], ever: Option<&[&str]>, files: &[&str]) -> Vec<String> {
+        let live: Vec<String> = live.iter().map(|s| (*s).to_string()).collect();
+        let ever: Option<Vec<String>> =
+            ever.map(|e| e.iter().map(|s| (*s).to_string()).collect());
+        let files: Vec<String> = files.iter().map(|s| (*s).to_string()).collect();
+        super::check(&live, roster, ever.as_deref(), &files)
+            .into_iter()
+            .map(|e| e.message)
             .collect()
     }
 
-    /// The borrowing dance the planted-view helper wants.
-    fn plant(ids: &[&str]) -> Vec<String> {
-        let owned = axes(ids);
-        let borrowed: Vec<(&str, Vec<(&str, &str)>)> = owned
-            .iter()
-            .map(|(k, fs)| {
-                (
-                    k.as_str(),
-                    fs.iter().map(|(f, v)| (f.as_str(), v.as_str())).collect(),
-                )
-            })
-            .collect();
-        let rows: Vec<(&str, &[(&str, &str)])> =
-            borrowed.iter().map(|(k, fs)| (*k, fs.as_slice())).collect();
-        found(&rows, ROSTER_TWO)
+    /// The ordinary case: history agrees with the rows, one declaring file.
+    fn plant(live: &[&str]) -> Vec<String> {
+        run(live, ROSTER_TWO, Some(live), ONE_FILE)
     }
-
-    const ROSTER_TWO: &[&str] = &["radix", "signedness"];
 
     #[test]
     fn a_registry_holding_every_rostered_axis_is_silent() {
@@ -226,11 +379,7 @@ mod tests {
         let f = plant(&["radix"]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("signedness"), "{}", f[0]);
-        assert!(
-            !f[0].contains("radix"),
-            "the surviving axis was named: {}",
-            f[0]
-        );
+        assert!(!f[0].contains("radix"), "the surviving axis was named: {}", f[0]);
     }
 
     #[test]
@@ -246,105 +395,109 @@ mod tests {
     fn an_axis_declared_and_not_rostered_is_reported_as_unprotected() {
         // Growth is still free in the sense that matters: an addition is not
         // refused and nothing has to be undone. What it is not is invisible.
-        // A roster the deletion arm reads is append-only only over the part
-        // somebody remembered to list, so an unrostered axis could be deleted
-        // later in silence. This says so at the one moment the omission is
-        // cheap to repair, which is the commit that declares it.
         let f = plant(&["radix", "signedness", "an_axis_declared_later"]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("an_axis_declared_later"), "{}", f[0]);
-        assert!(
-            f[0].contains("not rostered"),
-            "the unprotected arm did not fire; this may be the deletion arm: {}",
-            f[0]
-        );
-        assert!(
-            !f[0].contains("no longer resolve"),
-            "an addition was reported as a deletion: {}",
-            f[0]
-        );
+        assert!(f[0].contains("not rostered"), "{}", f[0]);
+        assert!(!f[0].contains("no longer resolve"), "an addition was reported as a deletion: {}", f[0]);
     }
 
     #[test]
     fn a_rename_fires_on_both_halves_and_says_which_is_which() {
-        // A rename is a deletion and an addition, and both arms now have
-        // something to say about it. The deletion is what turns a written span
-        // unparseable; the addition is what nothing would catch next time.
         let f = plant(&["radix", "signedness_but_renamed"]);
         assert_eq!(f.len(), 2, "both halves are reported: {f:?}");
-        let gone = f
-            .iter()
-            .find(|m| m.contains("no longer resolve"))
+        let gone = f.iter().find(|m| m.contains("no longer resolve"))
             .unwrap_or_else(|| panic!("no deletion finding: {f:?}"));
         assert!(gone.contains("signedness"), "{gone}");
         assert!(gone.contains("rename"), "the repair is not stated: {gone}");
-        let added = f
-            .iter()
-            .find(|m| m.contains("not rostered"))
+        let added = f.iter().find(|m| m.contains("not rostered"))
             .unwrap_or_else(|| panic!("no unprotected finding: {f:?}"));
         assert!(added.contains("signedness_but_renamed"), "{added}");
     }
 
     #[test]
-    fn a_row_in_another_namespace_does_not_satisfy_the_roster() {
-        // The discrimination the predicate rests on. A check written over
-        // every namespace's rows would count `ruling::signedness` as the axis
-        // and pass, and every arm above plants one namespace so none can tell.
-        let f = found(
-            &[
-                ("dimension::radix", &[("what", "an axis")]),
-                ("ruling::signedness", &[("says", "something")]),
-            ],
-            ROSTER_TWO,
-        );
-        assert_eq!(f.len(), 1, "{f:?}");
-        assert!(f[0].contains("signedness"), "{}", f[0]);
-    }
-
-    #[test]
     fn an_axis_whose_id_merely_contains_a_rostered_one_does_not_satisfy_it() {
-        // A predicate written with `contains` rather than equality passes on
-        // `dimension::signedness_of_the_accumulator`, which is a different
-        // axis and leaves every span written over the old id unparseable.
-        // Both arms discriminate, and both have to: the deletion arm must not
-        // read the longer id as the rostered one, and the reverse arm must not
-        // read the rostered one as covering the longer id.
         let f = plant(&["radix", "signedness_of_the_accumulator"]);
         assert_eq!(f.len(), 2, "{f:?}");
-        let gone = f
-            .iter()
-            .find(|m| m.contains("no longer resolve"))
+        let gone = f.iter().find(|m| m.contains("no longer resolve"))
             .unwrap_or_else(|| panic!("the longer id was read as the rostered axis: {f:?}"));
         assert!(gone.contains("\"signedness\""), "{gone}");
-        let added = f
-            .iter()
-            .find(|m| m.contains("not rostered"))
-            .unwrap_or_else(|| {
-                panic!("the rostered id was read as covering the longer one: {f:?}")
-            });
+        let added = f.iter().find(|m| m.contains("not rostered"))
+            .unwrap_or_else(|| panic!("the rostered id was read as covering the longer one: {f:?}"));
         assert!(added.contains("signedness_of_the_accumulator"), "{added}");
     }
 
     #[test]
-    fn control_an_empty_registry_names_the_whole_roster_rather_than_panicking() {
-        let f = found(&[], ROSTER_TWO);
+    fn a_deletion_from_both_the_registry_and_the_roster_is_still_caught() {
+        // The hole the roster alone had, and the reason the history arm exists.
+        // Both roster arms are satisfied exactly, because the roster was edited
+        // to match, and the axis is still gone.
+        let f = run(&["radix"], &["radix"], Some(&["radix", "signedness"]), ONE_FILE);
+        assert_eq!(f.len(), 1, "a both-sides deletion was silent: {f:?}");
+        assert!(f[0].contains("signedness"), "{}", f[0]);
+        assert!(f[0].contains("history"), "the arm that fired is not the history one: {}", f[0]);
+        assert!(!f[0].contains("not rostered"), "{}", f[0]);
+    }
+
+    #[test]
+    fn control_a_history_agreeing_with_the_rows_says_nothing() {
+        // The negative control for the arm above. Without it that arm passes
+        // for as long as the history arm fires on anything at all.
+        assert!(run(&["radix", "signedness"], ROSTER_TWO, Some(&["radix", "signedness"]), ONE_FILE).is_empty());
+    }
+
+    #[test]
+    fn a_history_that_cannot_be_read_is_reported_rather_than_passed() {
+        // A check that could not run is not a check that passed, and the
+        // roster that remains is the forgeable one.
+        let f = run(&["radix", "signedness"], ROSTER_TWO, None, ONE_FILE);
         assert_eq!(f.len(), 1, "{f:?}");
-        assert!(
-            f[0].contains("radix") && f[0].contains("signedness"),
-            "{}",
-            f[0]
+        assert!(f[0].contains("could not be read"), "{}", f[0]);
+        assert!(f[0].contains("weaker check rather than a passing one"), "{}", f[0]);
+    }
+
+    #[test]
+    fn a_second_file_declaring_the_namespace_is_reported() {
+        // The premise the history arm rests on, checked rather than assumed.
+        // `law.toml` has already been split this way once.
+        let f = run(
+            &["radix", "signedness"],
+            ROSTER_TWO,
+            Some(&["radix", "signedness"]),
+            &["dimension-the-later-axes.toml", "dimension.toml"],
         );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("dimension-the-later-axes.toml"), "{}", f[0]);
+        assert!(f[0].contains("unprotected"), "{}", f[0]);
+    }
+
+    #[test]
+    fn a_file_that_is_not_the_scanned_one_is_reported_even_when_it_is_the_only_one() {
+        // The rename case for the file itself. One file is not enough; it has
+        // to be the file the history arm reads.
+        let f = run(
+            &["radix", "signedness"],
+            ROSTER_TWO,
+            Some(&["radix", "signedness"]),
+            &["axes.toml"],
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("axes.toml"), "{}", f[0]);
+    }
+
+    #[test]
+    fn control_an_empty_registry_names_the_whole_roster_rather_than_panicking() {
+        let f = run(&[], ROSTER_TWO, Some(&[]), ONE_FILE);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("radix"), "{}", f[0]);
     }
 
     #[test]
     fn an_empty_roster_is_loud_rather_than_vacuously_silent() {
         // This arm used to assert the opposite, and pinning that was the
         // defect: with only the deletion arm, an empty roster passed over any
-        // registry at all, so the emptier the roster the quieter the lint. The
-        // reverse arm inverts that, and an empty roster is now the loudest
-        // state rather than the safest.
-        const NONE: &[&str] = &[];
-        let f = found(&[("dimension::radix", &[("what", "an axis")])], NONE);
+        // registry at all, so the emptier the roster the quieter the lint.
+        let f = run(&["radix"], &[], Some(&["radix"]), ONE_FILE);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("radix"), "{}", f[0]);
         assert!(f[0].contains("not rostered"), "{}", f[0]);
@@ -352,54 +505,63 @@ mod tests {
 
     #[test]
     fn control_nothing_declared_and_nothing_rostered_is_the_one_silent_vacuum() {
-        // The genuine vacuous case, kept so the arm above is read as a real
-        // finding rather than as the lint firing on everything. With no rows
-        // and no roster there is nothing to lose and nothing unprotected.
-        const NONE: &[&str] = &[];
-        assert!(found(&[], NONE).is_empty());
+        assert!(run(&[], &[], Some(&[]), ONE_FILE).is_empty());
+    }
+
+    #[test]
+    fn a_row_in_another_namespace_does_not_satisfy_the_roster() {
+        // The discrimination `ids_of` rests on. A filter written on the slug
+        // alone counts `ruling::signedness` as the axis and passes.
+        let rows = vec![
+            "dimension::radix".to_string(),
+            "ruling::signedness".to_string(),
+        ];
+        assert_eq!(super::ids_of(&rows), vec!["radix".to_string()]);
+    }
+
+    #[test]
+    fn ids_are_read_from_the_table_header_rather_than_the_filename() {
+        // What lets one namespace live in two files, which is why the
+        // declaring-file arm is a report rather than a parse failure.
+        let text = "[[dimension]]\nid = \"radix\"\n\n[[ruling]]\nid = \"not_an_axis\"\n";
+        assert_eq!(super::ids_in(text), vec!["radix".to_string()]);
+    }
+
+    #[test]
+    fn control_a_file_declaring_no_axis_yields_no_ids() {
+        assert!(super::ids_in("[[ruling]]\nid = \"a_ruling\"\n").is_empty());
     }
 
     #[test]
     fn the_shipped_roster_pins_something_and_holds_no_duplicate() {
-        // A roster that went empty, or that pins one id twice, would pass every
-        // arm above while checking less than it reads as checking.
         assert!(super::ROSTER.len() >= 24, "{}", super::ROSTER.len());
         let mut sorted = super::ROSTER.to_vec();
         sorted.sort_unstable();
-        let before = sorted.len();
-        sorted.dedup();
-        assert_eq!(before, sorted.len(), "the roster names an axis twice");
-        assert!(
-            super::ROSTER.contains(&"association") && super::ROSTER.contains(&"leaf_aliasing"),
-            "the two axes declared with this lint are not pinned"
-        );
+        let mut deduped = sorted.clone();
+        deduped.dedup();
+        assert_eq!(sorted, deduped, "the roster pins an id twice");
     }
 
     #[test]
     fn its_findings_block_every_gate() {
-        assert_findings_block(&AppendOnly { roster: ROSTER_TWO }, &view(&[], &[]));
+        assert_findings_block(&super::TheAxisSetIsAppendOnly { roster: ROSTER_TWO }, &view(&[], &[]));
     }
 
     #[test]
     fn it_is_not_declared_off_so_it_runs_at_all() {
-        assert_not_declared_off(&AppendOnly {
-            roster: super::ROSTER,
-        });
+        assert_not_declared_off(&super::TheAxisSetIsAppendOnly { roster: super::ROSTER });
     }
 
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
         assert_eq!(
-            AppendOnly {
-                roster: super::ROSTER
-            }
-            .name(),
-            "the-axis-set-is-append-only"
+            super::TheAxisSetIsAppendOnly { roster: super::ROSTER }.name(),
+            super::LINT
         );
     }
 
     #[test]
     fn it_reaches_the_pack_the_engine_is_handed() {
-        assert_registered("the-axis-set-is-append-only");
+        assert_registered(super::LINT);
     }
 }
