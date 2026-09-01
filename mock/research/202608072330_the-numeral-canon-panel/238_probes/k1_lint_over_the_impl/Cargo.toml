@@ -1,0 +1,26 @@
+# The bare-primitive lint, run as itself over planted source.
+#
+# Not a reimplementation of the rule: it links the pack the repo actually
+# pins, at the revision `mockspace.toml [lint-crates]` resolves to, and calls
+# `ArvoTypesOnly::check` directly through `mockspace-lint-rules`' own
+# `LintFixture`. What varies between arms is the planted source and the
+# `[primitive-introductions]` map, which are the two inputs the question is
+# about.
+#
+# Its own `[workspace]` table, so cargo does not walk up into `mock/`.
+[package]
+name = "k1_lint_over_the_impl"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+# `branch = "dev"`, not a rev: the pack depends on it that way, and cargo treats
+# a git-by-rev source and a git-by-branch source as two crates, which put two
+# `CrateLint` traits in the graph and made the pack's lints unusable through the
+# trait imported here. The resolved commit is pinned in the committed Cargo.lock
+# beside this file.
+mockspace-lint-rules = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", rev = "f34cc1b0c87becd8230d46d807ebb3573e30c009" }
