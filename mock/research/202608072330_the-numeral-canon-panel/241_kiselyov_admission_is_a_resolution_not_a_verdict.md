@@ -740,3 +740,101 @@ I read four files of two hundred and sixty-two. The greps were over all of them,
 my findings are written in, and a grep in my words finds only what is written in my words.
 A panel file arguing the resolution shape in a vocabulary I did not think of would not have
 been found, and I cannot say none exists.
+
+---
+
+# Erratum, later still, after the coordinator corrected the brief
+
+The coordinator wrote after my four commits to say two premises of the brief were false. It
+told me to check both against the registry rather than take them, and to say in my own words
+what the correction makes wrong rather than rewriting the committed text. I did, and it costs
+me one sentence of section 0.
+
+## I was wrong about the topic, and right about my six
+
+Section 0 says the bound claim "is true of the topic as a whole, where four rows carry one,
+and false of every row assigned to me". **The second half stands and the first half is
+false.** Enumerated over every `the_number_system` question by walking the raw rows rather
+than a rendered table:
+
+```
+adaptation_in_identity_or_realisation                  bound=0 answered=1
+are_the_level_hierarchies_the_same_cut                 bound=0 answered=0
+is_the_number_system_inventory_open                    bound=0 answered=1
+is_number_system_broad_enough_for_non_magnitude        bound=0 answered=0
+are_set_valued_carriers_admitted                       bound=0 answered=0
+is_the_role_set_closed                                 bound=0 answered=0
+is_interoperation_conversion_or_resolution             bound=0 answered=0
+what_the_admission_contract_asks_a_candidate_to_expose bound=0 answered=0
+is_admission_a_predicate_or_a_location                 bound=0 answered=0
+one_word_or_two_for_is_a_number_system                 bound=0 answered=0
+is_the_ambient_operation_family_fixed                  bound=0 answered=0
+the_ownership_key_as_a_structural_axis                 bound=0 answered=0
+whose_reduction_governs_a_lossy_crossing               bound=0 answered=0
+does_the_canon_name_crossing_classes                   bound=0 answered=0
+when_is_an_order_owed_at_a_crossing                    bound=0 answered=0
+is_the_rounding_vocabulary_complete_at_six             bound=0 answered=0
+which_of_the_six_a_retired_word_names_on_each_row      bound=0 answered=0
+which_tie_direction_an_unqualified_nearest_names       bound=0 answered=0
+```
+
+**Zero of the eighteen.** My "four rows carry one" came from reading the `bound` column of a
+`cargo mock query` table whose fields were truncated and whose blank columns collapse the
+alignment. What I took for four bounds were four `note` fields sitting where I read `bound`
+to be.
+
+**The instructive part is that I ran the right check and then went past it.** My grep in
+section 0 walks the raw rows and covers exactly my six, and it is correct. Having established
+the thing I was assigned, I generalised one step further to the topic, off the table, without
+extending the grep by the six characters that would have covered it. So the false sentence
+sits immediately after the true one and is written in the same confident register, which is
+the shape that makes a wrong count survive review: it is adjacent to a checked one and
+inherits its authority.
+
+**The committed text stands unedited**, per the coordinator's instruction and because a member
+file is the record. Read section 0's bound paragraph as: correct about my six, wrong about the
+topic, and the correct figure is zero of eighteen.
+
+## Checking the correction, which is also a claim
+
+The coordinator says twenty-four rows elsewhere in the registry carry a `bound`. **It is
+twenty-two, and "elsewhere in the registry" is elsewhere in the same file**: every one of them
+is in `question.toml` and the other eleven registry files carry none.
+
+That is a small number in a correction whose whole subject is a count taken off the wrong
+column, so I record it rather than letting it pass. It does not touch the correction's
+substance, which is right.
+
+## The second answered row is not adjacent to my subject. It is underneath it.
+
+The coordinator notes `adaptation_in_identity_or_realisation` carries an `answered` too, "though
+that was never in your six". It was not, and it is load-bearing on my reconciliation anyway,
+which I would not have known without being pointed at it.
+
+Its answer: "Realisation. Settled already by `ruling::the_format_spine_is_canon`, which is
+ratified and ratifies
+`proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set`, whose own
+words are that adaptation choice and encoding are realisation."
+
+My reconciliation finding turns on exactly that clause: the five-chain's components three and
+four, the reduction and the encoding, are out of identity, and the fifth, the container, is
+placement under R2. I argued it from R1's prose. **It is stronger than that: two of the three
+are settled by a registry-recorded answer to a question of this topic, not by my reading.** So
+the finding that "coordinate" means two things upgrades from an inference to a consequence of
+two settled rows, and the seam between `73`'s five-component vocabulary and R3's ten is wider
+than I said, because the registry already records that three of the five are not identity at
+all.
+
+## What the correction does not change
+
+**Nothing in the five answers moves.** I found the inventory question settled myself, in stage
+one, before reading anything, and declined to answer it on the provenance ladder; the
+coordinator's correction agrees with a conclusion already committed rather than overturning
+one. The subject was five questions and a dependency in my stage-two summary and it still is.
+
+**And one thing gets better.** The brief told me to reason from `bound`; the field that does
+that job here is `answered`, and `answered` is a pointer at a ratified ruling rather than a
+free-text constraint. That is a stronger instrument than the one I was handed: a `bound` is
+prose somebody wrote, and an `answered` resolves to a row with a rung on it. Reading the
+`answered` column first is the cheap move on this topic, and it is what would have saved the
+coordinator's error and mine both.
