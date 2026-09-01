@@ -1,0 +1,43 @@
+A  step 1/4, bias 1/8 (the measured geometry)
+    grid size                        16
+    predicate agrees with enumeration true
+    bias-dropped mutant detected      true
+    contains zero                     false
+    contains one                      false
+    sums landing on the grid          0 of 256
+    distinct distances (units of 1/24)  {3}   half a step is 3
+    every sum exactly half a step     true
+    CONTROL phase-zero grid has zero  true
+
+B  step 2,   bias 1   (quantum above one)    
+    grid size                        16
+    predicate agrees with enumeration true
+    bias-dropped mutant detected      true
+    contains zero                     false
+    contains one                      true
+    sums landing on the grid          0 of 256
+    distinct distances (units of 1/24)  {24}   half a step is 24
+    every sum exactly half a step     true
+    CONTROL phase-zero grid has zero  true
+
+C  step 1,   bias 1/3 (phase not a half step)
+    grid size                        16
+    predicate agrees with enumeration true
+    bias-dropped mutant detected      true
+    contains zero                     false
+    contains one                      false
+    sums landing on the grid          0 of 256
+    distinct distances (units of 1/24)  {8}   half a step is 12
+    every sum exactly half a step     false
+    CONTROL phase-zero grid has zero  true
+
+CONTROL 1  contains-one differs between A and B   true
+CONTROL 3  half-step holds at A and B, fails at C true
+
+VERDICT
+  not closed under exact addition   holds at all three arms
+  contains no zero                  holds at all three arms
+  every sum exactly half a step     holds at A and B, fails at C
+  contains no one                   holds at A, FAILS at B
+
+P1 WORKS

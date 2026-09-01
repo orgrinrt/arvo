@@ -1,0 +1,47 @@
+Biased<4, -2, 1>  quantum below one
+    quantum at magnitude zero   16/64
+    phase                       8/64
+    value one on the grid       false
+    value zero on the grid      false
+    has_additive_identity()     false
+
+Biased<4,  1, 1>  quantum above one
+    quantum at magnitude zero   128/64
+    phase                       64/64
+    value one on the grid       true
+    value zero on the grid      false
+    has_additive_identity()     false
+
+Integer<4>        phase zero (control)
+    quantum at magnitude zero   64/64
+    phase                       0/64
+    value one on the grid       true
+    value zero on the grid      true
+    has_additive_identity()     true
+
+Biased<4,  0, 2>  phase a whole quantum
+    quantum at magnitude zero   64/64
+    phase                       64/64
+    value one on the grid       true
+    value zero on the grid      true
+    has_additive_identity()     false
+
+CONTROL 1  the two Biased formats disagree about one   true
+CONTROL 2  neither Biased format has an additive id    true
+CONTROL 3  the phase-zero control does have one        true
+CONTROL 4  arm D carries zero while the crate says no  true
+
+VERDICT
+  `Biased<4, 1, 1>` is a shipped format of the shipped inventory,
+  it is half-step-biased by construction (PHASE_DEN = 2),
+  it carries no additive identity, and it carries the value one.
+  So `format::has_additive_identity`'s doc clause "and takes one
+  off with it" is false of a format this crate ships.
+
+  And arm D is a second, independent defect in the same function.
+  `has_additive_identity` tests `PHASE_NUM == 0` rather than whether
+  the phase is a whole multiple of the quantum, so at a phase of one
+  whole step it reports no additive identity while zero is on the
+  grid. `PHASE_DEN` is read by no function in the crate at all.
+
+P2 WORKS
