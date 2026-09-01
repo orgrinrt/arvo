@@ -50,14 +50,36 @@ impl Fraction {
 
     /// A ratio of `num` over `den`.
     ///
-    /// A non-positive denominator names no position, so it reads as none at all
-    /// rather than being refused. Total, so nothing on this path is a check.
+    /// A non-positive denominator is read rather than refused. Total, so nothing
+    /// on this path is a check.
+    ///
+    /// **A zero denominator names no position and a negative one names one
+    /// exactly**, which is why they take different paths. `of(3, -7)` is `-3/7`
+    /// and normalises by moving the sign to the numerator; only a zero one has
+    /// no reading and becomes `ZERO`. This read `ZERO` for both, so every
+    /// negative input was discarded outright, which is the same defect
+    /// `Phase::of` carried and the reason the fix there was wrong to stop at
+    /// the one function a reviewer named.
+    ///
+    /// **Two pairs cannot be normalised and keep a denominator of one.**
+    /// `i64::MIN` has no negation in `i64`, so a denominator of `i64::MIN`, or
+    /// a numerator of `i64::MIN` under a negative denominator, would need a
+    /// magnitude one past what the type carries. Neither the sign nor the
+    /// magnitude survives on those two, and they are the only inputs on which
+    /// this is lossy at all.
     #[must_use]
     pub const fn of(num: i64, den: i64) -> Self {
-        if den <= 0 {
-            Self::ZERO
-        } else {
+        if den > 0 {
             Self { num, den }
+        } else if den == 0 {
+            Self::ZERO
+        } else if den == i64::MIN || num == i64::MIN {
+            Self { num, den: 1 }
+        } else {
+            Self {
+                num: -num,
+                den: -den,
+            }
         }
     }
 

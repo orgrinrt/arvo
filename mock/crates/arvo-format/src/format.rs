@@ -60,6 +60,13 @@ impl Phase {
     /// numerator of `i64::MIN` under a negative denominator, would need a
     /// magnitude one past what the type carries. Those are the only inputs on
     /// which this is lossy, and they are named rather than folded in.
+    ///
+    /// **Neither the sign nor the magnitude survives on those two.**
+    /// `of(3, i64::MIN)` names a tiny negative and answers `3/1`, and
+    /// `of(i64::MIN, -7)` names a large positive and answers negative. Said
+    /// here because an earlier version of this paragraph left a reader to
+    /// assume the sign was kept, which is the assumption the guarding test was
+    /// also making.
     #[must_use]
     pub const fn of(num: i64, den: i64) -> Self {
         if den > 0 {

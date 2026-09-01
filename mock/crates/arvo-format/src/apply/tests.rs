@@ -460,7 +460,7 @@ fn a_fraction_never_carries_a_denominator_that_cannot_divide() {
     // The property the remainder's doc comment used to ask a caller to hold, over
     // the inputs that reach the coercion rather than only the ones that do not.
     // A zero denominator would divide by zero inside `Exact::between`.
-    for den in [-8i64, -3, -1, 0, 1, 2, 7, i64::MAX] {
+    for den in [i64::MIN, -8i64, -3, -1, 0, 1, 2, 7, i64::MAX] {
         for num in [i64::MIN, -5, -1, 0, 1, 5, i64::MAX] {
             let f = Fraction::of(num, den);
             assert!(
@@ -468,14 +468,44 @@ fn a_fraction_never_carries_a_denominator_that_cannot_divide() {
                 "Fraction::of({num}, {den}) produced a denominator of {}",
                 f.denominator()
             );
+            // And the value, which the sign assertion above never asked about.
+            // This swept every negative denominator and passed while `of` was
+            // answering `ZERO` for all of them, because nothing here looked at
+            // what came back. A negative denominator names a value exactly, so
+            // normalising it moves the sign and keeps the magnitude.
+            if den < 0 && den != i64::MIN && num != i64::MIN {
+                assert_eq!(
+                    (f.numerator(), f.denominator()),
+                    (-num, -den),
+                    "Fraction::of({num}, {den}) has to be exactly {}/{}",
+                    -num,
+                    -den
+                );
+            }
         }
     }
     // The control: a positive denominator is kept rather than being replaced by a
     // constant, so the coercion above is about the cases that need it.
     assert_eq!(Fraction::of(3, 7).denominator(), 7);
     assert_eq!(Fraction::of(3, 7).numerator(), 3);
-    // And a coerced one is the zero position rather than a mangled ratio.
+    // The exactly representable negative, which is what the sweep above was
+    // blind to and is the whole of the finding.
+    assert_eq!((Fraction::of(3, -7).numerator(), Fraction::of(3, -7).denominator()), (-3, 7));
+    // A zero denominator names no position, so it is the one input that still
+    // reads as the zero position rather than a mangled ratio. The control that
+    // keeps the value assertion from swallowing the case it does not cover.
     assert!(Fraction::of(3, 0).is_zero().get());
+    // The two `i64::MIN` puts out of reach. Neither sign nor magnitude survives
+    // on these, which the doc says and which is pinned here so the loss cannot
+    // spread to the pairs that do normalise.
+    assert_eq!(
+        (Fraction::of(3, i64::MIN).numerator(), Fraction::of(3, i64::MIN).denominator()),
+        (3, 1)
+    );
+    assert_eq!(
+        (Fraction::of(i64::MIN, -7).numerator(), Fraction::of(i64::MIN, -7).denominator()),
+        (i64::MIN, 1)
+    );
 }
 
 // --- the edges of the type, which every arm above stays away from ------------
@@ -586,3 +616,4 @@ fn a_dither_at_the_edges_still_selects_between_two_neighbours() {
         );
     }
 }
+

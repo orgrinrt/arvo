@@ -243,8 +243,21 @@ fn a_phase_never_carries_a_denominator_that_cannot_divide() {
     // The two pairs `i64::MIN` puts out of reach, named rather than swept over.
     // Both are lossy on purpose and the doc says so; pinning them here is what
     // stops the loss spreading to the pairs that do normalise.
-    assert_eq!(Phase::of(3, i64::MIN).denominator(), 1);
-    assert_eq!(Phase::of(i64::MIN, -7).denominator(), 1);
+    //
+    // **The pair, not the denominator.** Asserting only the sign of the
+    // denominator was the same defect twelve lines above says a sign assertion
+    // alone carries: `of(3, i64::MIN)` names a tiny negative and answers `+3/1`,
+    // and `of(i64::MIN, -7)` names a large positive and answers negative. So
+    // neither the sign nor the magnitude survives on these two, and the
+    // assertion says which rather than implying the sign is kept.
+    assert_eq!((Phase::of(3, i64::MIN).numerator(), Phase::of(3, i64::MIN).denominator()), (3, 1));
+    assert_eq!(
+        (
+            Phase::of(i64::MIN, -7).numerator(),
+            Phase::of(i64::MIN, -7).denominator()
+        ),
+        (i64::MIN, 1)
+    );
     // The exactly-representable negative case, which is the whole finding.
     assert_eq!(Phase::of(3, -7).numerator(), -3);
     assert_eq!(Phase::of(3, -7).denominator(), 7);
