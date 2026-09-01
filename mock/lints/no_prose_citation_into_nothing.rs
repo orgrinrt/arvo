@@ -140,11 +140,7 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
 }
 
 /// Every `<namespace>::<slug>` the panel's prose carries that names no row.
-fn citations(
-    dir: &Path,
-    namespaces: &[&str],
-    reg: &RegistryView,
-) -> Vec<(String, usize, String)> {
+fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<(String, usize, String)> {
     let mut out = Vec::new();
     for path in markdown(dir) {
         let Ok(text) = std::fs::read_to_string(&path) else {
@@ -229,8 +225,10 @@ mod tests {
             .collect()
     }
 
-    const ONE_ROW: &[(&str, &[(&str, &str)])] =
-        &[("ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side", &[("says", "a thing")])];
+    const ONE_ROW: &[(&str, &[(&str, &str)])] = &[(
+        "ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side",
+        &[("says", "a thing")],
+    )];
 
     #[test]
     fn a_resolving_citation_is_silent_and_a_dangling_one_is_named() {
@@ -341,7 +339,10 @@ mod tests {
             findings(
                 "prose-cite-left-boundary",
                 &[("ruling::a_row", &[("says", "a thing")])],
-                &[("42_member.md", "The symbol `arvo_ruling::a_row_that_is_gone` is code.\n")],
+                &[(
+                    "42_member.md",
+                    "The symbol `arvo_ruling::a_row_that_is_gone` is code.\n"
+                )],
                 0,
             )
             .is_empty(),
@@ -428,7 +429,10 @@ mod tests {
             "See `ruling::nothing_here`.\n",
         );
         let reg = view(&[("ruling::a_row", &[("says", "a thing")])], &[]);
-        assert_findings_block_at(&super::NoProseCitationIntoNothing, &ctx_at(&dir.join("mock"), &reg));
+        assert_findings_block_at(
+            &super::NoProseCitationIntoNothing,
+            &ctx_at(&dir.join("mock"), &reg),
+        );
     }
 
     #[test]
