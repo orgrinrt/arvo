@@ -1,0 +1,39 @@
+======== ARM: positive (no features)
+POSITIVE ARM: an outside crate wrote all ten coordinates and every derived quantity resolved. The inventory is open in fact, not only in prose.
+-------- exit: 0
+======== ARM: phase_den_zero
+POSITIVE ARM: an outside crate wrote all ten coordinates and every derived quantity resolved. The inventory is open in fact, not only in prose.
+CONTROL phase_den_zero: BUILT. PHASE_DEN = 0 is admitted. Every law over the format passed with a phase of 1/0.
+-------- exit: 0
+======== ARM: radix_one
+POSITIVE ARM: an outside crate wrote all ten coordinates and every derived quantity resolved. The inventory is open in fact, not only in prose.
+CONTROL radix_one: BUILT. RADIX = 1 is admitted as an ambient domain.
+-------- exit: 0
+======== ARM: magnitudes_zero
+POSITIVE ARM: an outside crate wrote all ten coordinates and every derived quantity resolved. The inventory is open in fact, not only in prose.
+CONTROL magnitudes_zero: BUILT. An empty representable set is admitted, and `has_additive_identity` says true of a set with no members.
+-------- exit: 0
+======== ARM: inverted_slots
+error[E0080]: evaluation panicked: slot range is inverted: its lowest index exceeds its highest, so it admits nothing
+  --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<inverted_slots::Inverted as arvo_format::Slots>::ADMITTED` failed here
+   |
+  ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat242/mock/crates/arvo-format/src/slots.rs:94:9
+   |
+94 | /         assert!(
+95 | |             Self::MIN <= Self::MAX,
+96 | |             "slot range is inverted: its lowest index exceeds its highest, so it admits nothing"
+97 | |         );
+   | |_________- in this macro invocation
+
+note: erroneous constant encountered
+   --> src/main.rs:200:18
+    |
+200 |         let () = <Inverted as Slots>::ADMITTED;
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `admission-probe` (bin "admission-probe") due to 1 previous error
+-------- exit: 101

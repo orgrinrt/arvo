@@ -1,0 +1,21 @@
+# Standalone: its own `[workspace]` table so cargo does not walk up into
+# `mock/Cargo.toml` and refuse. The bench tree is excluded there for the same
+# reason and this probe is not a member of anything.
+[workspace]
+
+[package]
+name = "admission-probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[features]
+# One negative control per feature, so each is compiled alone and one refusal
+# cannot mask another.
+phase_den_zero = []
+radix_one = []
+magnitudes_zero = []
+inverted_slots = []
