@@ -1,0 +1,12 @@
+[package]
+name = "arvo-standards"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "The industrial fixed-point conventions, as aliases over arvo's own primitives"
+
+[dependencies]
+arvo-format.workspace = true
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "forbid"
