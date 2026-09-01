@@ -130,13 +130,21 @@ const TABLE: &[(bool, &str)] = &[
 // control saying the ticks did it rather than the shape. A bare primitive in a
 // public tuple-struct field goes through.
 //
-// It is not a row above, because this table is what the lint gates on: a row
-// expecting a deny would fire on every run rather than catalogue anything. And
-// it is not fixed here, because it predates the carve-out and has nothing to do
-// with it. Stripping a char literal correctly wants the parse rather than the
-// line, the same change the literal suffix wants, and the lint pack catalogues
-// the identical hole on its own side as
-// `a_bare_primitive_between_two_lifetime_ticks_still_reports`.
+// A literal suffix goes through for a different reason: the scan wants a
+// non-identifier byte on each side of the name and a suffix always carries a
+// digit in front of it, so `0u32` and `1_usize` pass.
+//
+// Neither is a row above, because this table is what the lint gates on and a row
+// expecting a deny would fire on every run rather than catalogue anything. Both
+// are pinned instead as ignored arms against the repository's own template,
+// `a_bare_primitive_between_two_lifetime_ticks_is_still_refused` and
+// `a_literal_suffix_is_still_refused`, each asserting the intended verdict with a
+// control that passes today. They flip green the day the scanner reaches these
+// positions and cannot be lost meanwhile.
+//
+// Neither is fixed here, because both predate the carve-out and have nothing to
+// do with it. Both want the parse rather than the line, and the lint pack
+// catalogues the identical pair on its own side.
 
 struct TheWriteHookExcepts;
 impl Lint for TheWriteHookExcepts {
@@ -446,6 +454,84 @@ mod tests {
         let root = planted_tree("hook-severity");
         let empty = view(&[], &[]);
         assert_findings_block_at(&TheWriteHookExcepts, &ctx_at(&root.join("mock"), &empty));
+    }
+
+    /// The repository root, found by walking up from the generated lint crate
+    /// until a `mockspace.toml` appears.
+    ///
+    /// The crate this compiles into lives under `mock/target/`, so the root is
+    /// reachable but not at a fixed depth, and an arm wanting the real hook
+    /// rather than a planted one has to find it. Returns `None` rather than
+    /// panicking, so an arm using it reports a skip if the layout ever changes.
+    fn repo_root() -> Option<PathBuf> {
+        let mut dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        loop {
+            if dir.join("mockspace.toml").is_file() && dir.join(HOOK).is_file() {
+                return Some(dir);
+            }
+            if !dir.pop() {
+                return None;
+            }
+        }
+    }
+
+    #[test]
+    #[ignore = "catalogue: the scanner strips `'…'` as a char literal, so an even \
+                number of lifetime ticks on one line pairs them and swallows what \
+                sits between the second and third. A bare primitive in a public \
+                tuple-struct field or a function parameter goes through. Closing \
+                it wants the parse rather than the line, the same change the \
+                literal suffix wants, and it predates the const generic carve-out \
+                this lint is about"]
+    fn a_bare_primitive_between_two_lifetime_ticks_is_still_refused() {
+        let Some(root) = repo_root() else {
+            return;
+        };
+        let target = root.join(GUARDED);
+        let hook = super::stage(&root).expect("the repo's own template stages");
+
+        // The control first: one tick alone hides nothing, so a deny here is what
+        // says the ticks did it rather than the shape.
+        assert_eq!(
+            verdict(&hook, &target, "pub struct T<'a>(&'a u32);"),
+            Some(true),
+            "one lifetime tick leaves the bare primitive visible"
+        );
+
+        assert_eq!(
+            verdict(&hook, &target, "pub struct S<'a, 'b>(&'a u32, &'b Bool);"),
+            Some(true),
+            "a tuple-struct field between two ticks"
+        );
+        assert_eq!(
+            verdict(&hook, &target, "fn f<'a, 'b>(x: &'a u32, y: &'b Bool) {}"),
+            Some(true),
+            "a function parameter between two ticks"
+        );
+    }
+
+    #[test]
+    #[ignore = "catalogue: a literal suffix is not reached at all. The scan wants a \
+                non-identifier byte on each side of the name and a suffix always \
+                carries a digit in front of it, so `0u32` and `1_usize` pass. The \
+                hook's own comment claimed the opposite until this round; closing \
+                it wants the parse"]
+    fn a_literal_suffix_is_still_refused() {
+        let Some(root) = repo_root() else {
+            return;
+        };
+        let target = root.join(GUARDED);
+        let hook = super::stage(&root).expect("the repo's own template stages");
+
+        // The control: the same primitive in a position the line scan does reach.
+        assert_eq!(
+            verdict(&hook, &target, "let n: u32 = 0;"),
+            Some(true),
+            "a named type is reached, which is what makes the arms below a gap"
+        );
+
+        assert_eq!(verdict(&hook, &target, "let n = 0u32;"), Some(true));
+        assert_eq!(verdict(&hook, &target, "let n = 1_usize;"), Some(true));
     }
 
     #[test]
