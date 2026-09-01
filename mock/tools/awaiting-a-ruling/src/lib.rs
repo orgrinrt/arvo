@@ -308,10 +308,10 @@ impl AwaitingARuling {
 ///
 /// The sort is by citation count and then by slug, so every row sharing the
 /// lowest count sits in a block the ordering said nothing about. Counting that
-/// block is what separates an ordering that reached two rows out of fifty-eight
-/// from one that reached all of them, which the sort itself cannot report and
-/// which a reader cannot see, since a ranked list and an alphabetical one look
-/// identical.
+/// block is what separates an ordering that reached the first few rows of a long
+/// list from one that reached all of them, which the sort itself cannot report
+/// and which a reader cannot see, since a ranked list and an alphabetical one
+/// look identical.
 ///
 /// Equal to the whole slice exactly when no two rows differ, which covers counts
 /// that are all zero, counts that are all equal and non-zero, and a single row
