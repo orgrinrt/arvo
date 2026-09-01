@@ -761,17 +761,24 @@ the reason I trust the five columns those instruments never ran.
 
 ## 11. What I could not establish
 
-Five things I did not establish, said plainly rather than left to be inferred
-from their absence.
+Four things I did not establish, plus one I did after first conceding it, said
+plainly rather than left to be inferred from their absence.
 
-**One. I did not rerun `p2`, `p_d`, `p4` or `q2`.** I read their sources and I
-read their committed outputs, and I took the mode implementations from the
-source. For `c_retraction` and `y2` that gap is closed: `k2`'s controls R1, R2 and
-R3 reproduce their published numbers from my own independent implementation, so
-source and output are pinned together for those two. For the other four the
-inference is source-only. It would take minutes to close and I did not, and the
-right instinct is that a claim from a source nobody reran is weaker than one from
-an output somebody reproduced.
+**One. I reran every instrument I cite, and all six reproduce.** This was a
+concession when I first wrote this section and it is no longer one, so it is
+recorded as closed rather than quietly deleted. `c_retraction` and `y2` were
+already pinned by `k2`'s controls R1, R2 and R3, which reproduce their published
+numbers from an independently written implementation. The other four I had read
+without rerunning, which is weaker evidence: a committed output produced by a
+different revision of the source beside it would make both the label I rejected
+and the expression I trusted wrong about what actually ran.
+`233_probes/k3_the_cited_instruments_still_reproduce.sh` closes it, with
+`233_probes/k3_out.txt` beside it. `p_d`, `p4` and `q2` reproduce byte for byte.
+`p2` reproduces on every content line; the committed file carries two extra blank
+lines from the concatenation of its three per-width runs, which the runner is
+insensitive to and says so. The runner carries a control comparing two different
+instruments' outputs and requiring them to differ, so four passes are not four
+comparisons that could not have failed.
 
 **Two. I did not decide the `half_up` naming call, and I should not.** Section 8
 sets out three options and their costs and stops there.

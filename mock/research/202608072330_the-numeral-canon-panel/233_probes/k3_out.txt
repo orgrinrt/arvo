@@ -1,0 +1,5 @@
+p2_congruence_predicts_the_laws.py    REPRODUCES (blank-line-insensitive; the committed file carries two extra separators)
+p_d_rescale_saving_is_adaptation_fusion.rs    REPRODUCES EXACTLY
+p4_signed_multiplicative_accumulator.rs    REPRODUCES EXACTLY
+q2_affine_membership.rs    REPRODUCES EXACTLY
+control: a mismatched pair does diff as different, so the four passes above are real
