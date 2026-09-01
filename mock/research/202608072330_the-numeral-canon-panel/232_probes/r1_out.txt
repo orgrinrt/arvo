@@ -1,0 +1,110 @@
+part 1: are the names pairwise distinct as functions?
+        exhaustive over the stated domain at every f in 1..=4
+
+=== domain: signed      p in -64..=63 ===
+                           floor            ceil     toward_zero  away_from_zero   half_up(+inf)   half_up(away)       half_even
+floor                          =             392             196             196             256             196             196
+ceil                         392               =             196             196             136             196             196
+toward_zero                  196             196               =             392             196             256             196
+away_from_zero               196             196             392               =             196             136             196
+half_up(+inf)                256             136             196             196               =              60              60
+half_up(away)                196             196             256             136              60               =              60
+half_even                    196             196             196             196              60              60               =
+
+  collapses and separations on this domain:
+             floor != toward_zero      witness p=-63 f=1: -32 vs -31
+              ceil != away_from_zero   witness p=-63 f=1: -31 vs -32
+     half_up(+inf) != half_up(away)    witness p=-63 f=1: -31 vs -32
+    away_from_zero != floor            witness p=1 f=1: 1 vs 0
+    away_from_zero != half_even        witness p=-61 f=1: -31 vs -30
+
+  CONTROL positive: floor by div_euclid vs floor by shift, disagreements = 0 (must be 0)
+  CONTROL negative: planted mutant separated from 7 of 7 real modes (must be 7)
+
+=== domain: non-negative p in 0..=63 ===
+                           floor            ceil     toward_zero  away_from_zero   half_up(+inf)   half_up(away)       half_even
+floor                          =             196               =             196             128             128              98
+ceil                         196               =             196               =              68              68              98
+toward_zero                    =             196               =             196             128             128              98
+away_from_zero               196               =             196               =              68              68              98
+half_up(+inf)                128              68             128              68               =               =              30
+half_up(away)                128              68             128              68               =               =              30
+half_even                     98              98              98              98              30              30               =
+
+  collapses and separations on this domain:
+             floor == toward_zero      everywhere
+              ceil == away_from_zero   everywhere
+     half_up(+inf) == half_up(away)    everywhere
+    away_from_zero != floor            witness p=1 f=1: 1 vs 0
+    away_from_zero != half_even        witness p=1 f=1: 1 vs 0
+
+  CONTROL positive: floor by div_euclid vs floor by shift, disagreements = 0 (must be 0)
+  CONTROL negative: planted mutant separated from 7 of 7 real modes (must be 7)
+
+
+part 2: does a rounding policy retract over a two-multiply chain?
+        exhaustive over a, b, c in 0..2^W, unsigned, as c_retraction part 2
+
+  reproduction of 94_probes/c_retraction.rs part 2 (its `truncate` is a
+  logical shift on a non-negative value, so it is floor and toward_zero at
+  once; its `nearest` is (x + 2^(f-1)) >> f, which is half_up):
+  c_retraction   W   F       differ       pct   its committed figure
+      truncate   4   0            0     0.00%   0 match
+      truncate   4   1          800    19.53%   800 match
+      truncate   4   2         1128    27.54%   1128 match
+      truncate   4   3          910    22.22%   910 match
+      truncate   4   4          543    13.26%   543 match
+       nearest   4   0            0     0.00%   0 match
+       nearest   4   1          864    21.09%   864 match
+       nearest   4   2         1248    30.47%   1248 match
+       nearest   4   3          880    21.48%   880 match
+       nearest   4   4          550    13.43%   550 match
+
+  the same question over every deterministic ratified name:
+  mode              W=4: F=0..=4  W=6: F=0..=6  W=8: F=0..=8
+  toward_zero       .xxxx  .xxxxxx  .xxxxxxxx
+  floor             .xxxx  .xxxxxx  .xxxxxxxx
+  ceil              .xxxx  .xxxxxx  .xxxxxxxx
+  half_up(+inf)     .xxxx  .xxxxxx  .xxxxxxxx
+  half_even         .xxxx  .xxxxxx  .xxxxxxxx
+  (`.` retracts, `x` does not; leftmost of each group is F = 0)
+
+  CONTROL: planted mutant at F = 0 over the same three widths, differ = 16973568 (must be > 0,
+  or the F = 0 column above is an artifact of the harness rather than a result)
+  At F = 0 the quantiser is the identity for 7 of 7 real modes over p in -64..=63
+  (non-identity results: 0, must be 0)
+
+part 3: stochastic
+
+  (a) at F = 0, stochastic != identity on 0 of 128 values (must be 0)
+  (b) at W = 4, F = 2, over 65536 (triple, draw, draw) cells:
+      shared-draw coupling disagrees at 28704, independent-draw at 27312
+      Two couplings, two counts, from one definition and one domain. The question
+      `does it retract` is therefore not well posed for stochastic at F > 0
+      until a coupling is named, and no instrument in this panel names one.
+  (c) the two-multiply chain at W = 4, F = 0: disagreements 0 of 4096 (must be 0),
+      so the F = 0 verdict covers stochastic too, for the reason that there is
+      no rounding at F = 0 rather than for anything about the mode.
+
+part 4: does `half_up` denote one operation?
+
+  signed      p in -64..=63: 60 disagreements, first at p=-63 f=1: +inf gives -31, away gives -32
+  non-negative p in 0..=63: the two readings agree at every cell (0 disagreements)
+
+  The same shape the ratified ruling gives for the retired word: two operations,
+  one name, differing on signed rows only.
+
+part 5: the same retraction question on a signed domain
+        a, b, c in -2^(W-1)..=2^(W-1)-1, over all seven functions
+
+  mode              W=4: F=0..=4  W=6: F=0..=6
+  floor             .xxxx  .xxxxxx
+  ceil              .xxxx  .xxxxxx
+  toward_zero       .xxxx  .xxxxxx
+  away_from_zero    .xxxx  .xxxxxx
+  half_up(+inf)     .xxxx  .xxxxxx
+  half_up(away)     .xxxx  .xxxxxx
+  half_even         .xxxx  .xxxxxx
+  (`.` retracts, `x` does not; leftmost of each group is F = 0)
+
+  CONTROL: planted mutant at F = 0, differ = 261888 (must be > 0)
