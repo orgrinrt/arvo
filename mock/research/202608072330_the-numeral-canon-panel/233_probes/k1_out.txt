@@ -1,0 +1,46 @@
+k1. are the mode names distinct functions, and on which domain?
+
+-- pairwise equality on a NON-NEGATIVE domain, p in [0, 255], f in [1, 2, 3, 4] --
+  floor            != ceil              first at p=1, f=1: 0 vs 1
+  floor            == toward_zero       SAME everywhere swept
+  floor            != away_from_zero    first at p=1, f=1: 0 vs 1
+  floor            != half_up(+inf)     first at p=1, f=1: 0 vs 1
+  ceil             == away_from_zero    SAME everywhere swept
+  half_up(+inf)    == half_up(away)     SAME everywhere swept
+  3 coincident pair(s), 18 distinct pair(s) of 21 total
+
+-- pairwise equality on a SIGNED domain, p in [-256, 255], f in [1, 2, 3, 4] --
+  floor            != ceil              first at p=-255, f=1: -128 vs -127
+  floor            != toward_zero       first at p=-255, f=1: -128 vs -127
+  floor            != away_from_zero    first at p=1, f=1: 0 vs 1
+  0 coincident pair(s), 21 distinct pair(s) of 21 total
+
+K1 (non-negative coincidences are exactly three, and are these three):
+  HOLDS
+
+K2 (on a signed domain every pair is distinct, so `away_from_zero`
+    is not a spelling of any ratified name):
+  HOLDS
+    away_from_zero != floor            witness p=1, f=1: 1 vs 0
+    away_from_zero != ceil             witness p=-255, f=1: -128 vs -127
+    away_from_zero != toward_zero      witness p=-255, f=1: -128 vs -127
+    away_from_zero != half_up(+inf)    witness p=-255, f=1: -128 vs -127
+    away_from_zero != half_up(away)    witness p=-253, f=2: -64 vs -63
+    away_from_zero != half_even        witness p=-253, f=1: -127 vs -126
+
+K3 (`half_up` names two functions on a signed domain):
+  HOLDS. witness p=-255, f=1: ties-to-+inf gives -127, ties-away gives -128
+
+K4 (at f = 0 every mode is the identity):
+  HOLDS for all 7 modes
+
+== controls ==
+C1 some pair differs on the non-negative domain: pass
+C2 floor            == toward_zero      on non-negative, differs at p=-255, f=1: -128 vs -127
+C2 ceil             == away_from_zero   on non-negative, differs at p=-255, f=1: -127 vs -128
+C2 half_up(+inf)    == half_up(away)    on non-negative, differs at p=-255, f=1: -127 vs -128
+C2 every non-negative coincidence fails when negatives are admitted: pass
+C3 the false claim floor == ceil is refuted on both domains: pass
+C4 the modes are not the identity at f = 1, so K4 measures the shift: pass
+
+k1 verdict: every prediction and control holds

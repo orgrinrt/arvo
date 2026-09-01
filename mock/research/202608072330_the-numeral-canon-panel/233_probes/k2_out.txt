@@ -1,0 +1,189 @@
+k2. what the mode names decide about two committed verdicts
+
+== part A: translation equivariance, W = 6 window ==
+  floor            equivariant: true
+  ceil             equivariant: true
+  toward_zero      equivariant: false
+  away_from_zero   equivariant: false
+  half_up(+inf)    equivariant: true
+  half_up(away)    equivariant: false
+  half_even        equivariant: false
+P1 the equivariant set is exactly {floor, ceil, half_up(+inf)}: HOLDS
+R5 the property separates the modes rather than accepting or rejecting all: pass
+
+== part B: fusion difference, wrapping, W = 6, exhaustive triples ==
+mode             signedness      F=0      F=1      F=2      F=3      F=4      F=5
+floor            unsigned     0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+ceil             unsigned     0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+toward_zero      unsigned     0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+away_from_zero   unsigned     0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+half_up(+inf)    unsigned     0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+half_up(away)    unsigned     0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+half_even        unsigned     0.00%  12.50%  12.50%   9.38%   6.25%   3.91%
+floor            signed       0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+ceil             signed       0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+toward_zero      signed       0.00%   1.64%   5.54%  12.34%  22.22%  33.40%
+away_from_zero   signed       0.00%   1.64%   5.54%  12.34%  22.22%  33.40%
+half_up(+inf)    signed       0.00%   0.00%   0.00%   0.00%   0.00%   0.00%
+half_up(away)    signed       0.00%   1.64%   2.76%   3.34%   3.40%   2.93%
+half_even        signed       0.00%  12.50%  12.50%   9.38%   6.25%   3.91%
+R4 every mode is free at F = 0, so the sweep measures rounding: pass
+P2 on signed wrapping the verdict flips with the reading of `half_up`: HOLDS
+   half_up(+inf) max 0.00%, half_up(away) max 3.40%
+P3 on unsigned wrapping only half_even is not free, either reading: HOLDS
+R3 reproduces y2_out.txt on the six modes it swept, both signednesses: pass
+
+== part C: chain retraction, non-negative domain, two multiplies ==
+mode               W   F         differ       pct   verdict
+floor              4   0              0     0.00%   RETRACTS
+floor              4   1            800    19.53%   does not retract
+floor              4   2           1128    27.54%   does not retract
+floor              4   3            910    22.22%   does not retract
+floor              4   4            543    13.26%   does not retract
+floor              6   0              0     0.00%   RETRACTS
+floor              6   1          61952    23.63%   does not retract
+floor              6   2         116352    44.38%   does not retract
+floor              6   3         138880    52.98%   does not retract
+floor              6   4         128723    49.10%   does not retract
+floor              6   5          94884    36.20%   does not retract
+floor              6   6          54201    20.68%   does not retract
+floor              8   0              0     0.00%   RETRACTS
+floor              8   1        4136960    24.66%   does not retract
+floor              8   2        8153088    48.60%   does not retract
+floor              8   3       10872832    64.81%   does not retract
+floor              8   4       11988992    71.46%   does not retract
+floor              8   5       11577590    69.01%   does not retract
+floor              8   6        9872633    58.85%   does not retract
+floor              8   7        7068031    42.13%   does not retract
+floor              8   8        3969848    23.66%   does not retract
+ceil               4   0              0     0.00%   RETRACTS
+ceil               4   1            800    19.53%   does not retract
+ceil               4   2           1128    27.54%   does not retract
+ceil               4   3            925    22.58%   does not retract
+ceil               4   4            495    12.08%   does not retract
+ceil               6   0              0     0.00%   RETRACTS
+ceil               6   1          61952    23.63%   does not retract
+ceil               6   2         116352    44.38%   does not retract
+ceil               6   3         138880    52.98%   does not retract
+ceil               6   4         128852    49.15%   does not retract
+ceil               6   5          95918    36.59%   does not retract
+ceil               6   6          51357    19.59%   does not retract
+ceil               8   0              0     0.00%   RETRACTS
+ceil               8   1        4136960    24.66%   does not retract
+ceil               8   2        8153088    48.60%   does not retract
+ceil               8   3       10872832    64.81%   does not retract
+ceil               8   4       11988992    71.46%   does not retract
+ceil               8   5       11583714    69.04%   does not retract
+ceil               8   6        9898462    59.00%   does not retract
+ceil               8   7        7110434    42.38%   does not retract
+ceil               8   8        3862828    23.02%   does not retract
+toward_zero        4   0              0     0.00%   RETRACTS
+toward_zero        4   1            800    19.53%   does not retract
+toward_zero        4   2           1128    27.54%   does not retract
+toward_zero        4   3            910    22.22%   does not retract
+toward_zero        4   4            543    13.26%   does not retract
+toward_zero        6   0              0     0.00%   RETRACTS
+toward_zero        6   1          61952    23.63%   does not retract
+toward_zero        6   2         116352    44.38%   does not retract
+toward_zero        6   3         138880    52.98%   does not retract
+toward_zero        6   4         128723    49.10%   does not retract
+toward_zero        6   5          94884    36.20%   does not retract
+toward_zero        6   6          54201    20.68%   does not retract
+toward_zero        8   0              0     0.00%   RETRACTS
+toward_zero        8   1        4136960    24.66%   does not retract
+toward_zero        8   2        8153088    48.60%   does not retract
+toward_zero        8   3       10872832    64.81%   does not retract
+toward_zero        8   4       11988992    71.46%   does not retract
+toward_zero        8   5       11577590    69.01%   does not retract
+toward_zero        8   6        9872633    58.85%   does not retract
+toward_zero        8   7        7068031    42.13%   does not retract
+toward_zero        8   8        3969848    23.66%   does not retract
+away_from_zero     4   0              0     0.00%   RETRACTS
+away_from_zero     4   1            800    19.53%   does not retract
+away_from_zero     4   2           1128    27.54%   does not retract
+away_from_zero     4   3            925    22.58%   does not retract
+away_from_zero     4   4            495    12.08%   does not retract
+away_from_zero     6   0              0     0.00%   RETRACTS
+away_from_zero     6   1          61952    23.63%   does not retract
+away_from_zero     6   2         116352    44.38%   does not retract
+away_from_zero     6   3         138880    52.98%   does not retract
+away_from_zero     6   4         128852    49.15%   does not retract
+away_from_zero     6   5          95918    36.59%   does not retract
+away_from_zero     6   6          51357    19.59%   does not retract
+away_from_zero     8   0              0     0.00%   RETRACTS
+away_from_zero     8   1        4136960    24.66%   does not retract
+away_from_zero     8   2        8153088    48.60%   does not retract
+away_from_zero     8   3       10872832    64.81%   does not retract
+away_from_zero     8   4       11988992    71.46%   does not retract
+away_from_zero     8   5       11583714    69.04%   does not retract
+away_from_zero     8   6        9898462    59.00%   does not retract
+away_from_zero     8   7        7110434    42.38%   does not retract
+away_from_zero     8   8        3862828    23.02%   does not retract
+half_up(+inf)      4   0              0     0.00%   RETRACTS
+half_up(+inf)      4   1            864    21.09%   does not retract
+half_up(+inf)      4   2           1248    30.47%   does not retract
+half_up(+inf)      4   3            880    21.48%   does not retract
+half_up(+inf)      4   4            550    13.43%   does not retract
+half_up(+inf)      6   0              0     0.00%   RETRACTS
+half_up(+inf)      6   1          62976    24.02%   does not retract
+half_up(+inf)      6   2         118272    45.12%   does not retract
+half_up(+inf)      6   3         135200    51.57%   does not retract
+half_up(+inf)      6   4         107789    41.12%   does not retract
+half_up(+inf)      6   5          63242    24.12%   does not retract
+half_up(+inf)      6   6          32909    12.55%   does not retract
+half_up(+inf)      8   0              0     0.00%   RETRACTS
+half_up(+inf)      8   1        4153344    24.76%   does not retract
+half_up(+inf)      8   2        8183808    48.78%   does not retract
+half_up(+inf)      8   3       10813952    64.46%   does not retract
+half_up(+inf)      8   4       11514240    68.63%   does not retract
+half_up(+inf)      8   5       10174670    60.65%   does not retract
+half_up(+inf)      8   6        7402534    44.12%   does not retract
+half_up(+inf)      8   7        4154563    24.76%   does not retract
+half_up(+inf)      8   8        2099069    12.51%   does not retract
+half_up(away)      4   0              0     0.00%   RETRACTS
+half_up(away)      4   1            864    21.09%   does not retract
+half_up(away)      4   2           1248    30.47%   does not retract
+half_up(away)      4   3            880    21.48%   does not retract
+half_up(away)      4   4            550    13.43%   does not retract
+half_up(away)      6   0              0     0.00%   RETRACTS
+half_up(away)      6   1          62976    24.02%   does not retract
+half_up(away)      6   2         118272    45.12%   does not retract
+half_up(away)      6   3         135200    51.57%   does not retract
+half_up(away)      6   4         107789    41.12%   does not retract
+half_up(away)      6   5          63242    24.12%   does not retract
+half_up(away)      6   6          32909    12.55%   does not retract
+half_up(away)      8   0              0     0.00%   RETRACTS
+half_up(away)      8   1        4153344    24.76%   does not retract
+half_up(away)      8   2        8183808    48.78%   does not retract
+half_up(away)      8   3       10813952    64.46%   does not retract
+half_up(away)      8   4       11514240    68.63%   does not retract
+half_up(away)      8   5       10174670    60.65%   does not retract
+half_up(away)      8   6        7402534    44.12%   does not retract
+half_up(away)      8   7        4154563    24.76%   does not retract
+half_up(away)      8   8        2099069    12.51%   does not retract
+half_even          4   0              0     0.00%   RETRACTS
+half_even          4   1            832    20.31%   does not retract
+half_even          4   2           1152    28.12%   does not retract
+half_even          4   3            796    19.43%   does not retract
+half_even          4   4            476    11.62%   does not retract
+half_even          6   0              0     0.00%   RETRACTS
+half_even          6   1          62464    23.83%   does not retract
+half_even          6   2         116736    44.53%   does not retract
+half_even          6   3         133280    50.84%   does not retract
+half_even          6   4         106345    40.57%   does not retract
+half_even          6   5          62442    23.82%   does not retract
+half_even          6   6          32303    12.32%   does not retract
+half_even          8   0              0     0.00%   RETRACTS
+half_even          8   1        4145152    24.71%   does not retract
+half_even          8   2        8159232    48.63%   does not retract
+half_even          8   3       10783232    64.27%   does not retract
+half_even          8   4       11485568    68.46%   does not retract
+half_even          8   5       10156936    60.54%   does not retract
+half_even          8   6        7395296    44.08%   does not retract
+half_even          8   7        4149331    24.73%   does not retract
+half_even          8   8        2092931    12.47%   does not retract
+P4 retraction holds at F = 0 for all seven and fails at every F >= 1 for all seven: HOLDS
+R1 my floor column reproduces c_retraction's `truncate` column: pass
+R2 my half_up(away) column reproduces its `nearest` column: pass
+
+k2 verdict: every prediction and control holds
