@@ -382,7 +382,11 @@ fn main() {
                     f,
                     differ,
                     100.0 * differ as f64 / total as f64,
-                    if differ == 0 { "RETRACTS" } else { "does not retract" }
+                    if differ == 0 {
+                        "RETRACTS"
+                    } else {
+                        "does not retract"
+                    }
                 );
             }
         }

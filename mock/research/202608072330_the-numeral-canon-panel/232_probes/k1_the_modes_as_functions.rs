@@ -167,9 +167,7 @@ fn first_disagreement(
 
 fn matrix(label: &str, lo: i128, hi: i128, fs: &[u32]) -> Vec<(Mode, Mode)> {
     println!();
-    println!(
-        "-- pairwise equality on {label}, p in [{lo}, {hi}], f in {fs:?} --"
-    );
+    println!("-- pairwise equality on {label}, p in [{lo}, {hi}], f in {fs:?} --");
     let mut same = Vec::new();
     let mut differ = 0usize;
     for i in 0..MODES.len() {
@@ -177,7 +175,11 @@ fn matrix(label: &str, lo: i128, hi: i128, fs: &[u32]) -> Vec<(Mode, Mode)> {
             let (a, b) = (MODES[i], MODES[j]);
             match first_disagreement(a, b, lo, hi, fs) {
                 None => {
-                    println!("  {:<16} == {:<16}  SAME everywhere swept", name(a), name(b));
+                    println!(
+                        "  {:<16} == {:<16}  SAME everywhere swept",
+                        name(a),
+                        name(b)
+                    );
                     same.push((a, b));
                 }
                 Some((p, f, x, y)) => {
@@ -257,9 +259,9 @@ fn main() {
     println!();
     println!("K3 (`half_up` names two functions on a signed domain):");
     match first_disagreement(Mode::HalfUpPosInf, Mode::HalfUpAway, slo, shi, &fs) {
-        Some((p, f, x, y)) => println!(
-            "  HOLDS. witness p={p}, f={f}: ties-to-+inf gives {x}, ties-away gives {y}"
-        ),
+        Some((p, f, x, y)) => {
+            println!("  HOLDS. witness p={p}, f={f}: ties-to-+inf gives {x}, ties-away gives {y}")
+        }
         None => println!("  REFUTED: the two readings agree on the signed domain"),
     }
 
@@ -275,7 +277,14 @@ fn main() {
             }
         }
     }
-    println!("  {}", if k4 { "HOLDS for all 7 modes" } else { "REFUTED" });
+    println!(
+        "  {}",
+        if k4 {
+            "HOLDS for all 7 modes"
+        } else {
+            "REFUTED"
+        }
+    );
 
     // ---------------------------------------------------------------- controls
     println!();
@@ -284,7 +293,11 @@ fn main() {
     let c1 = same_unsigned.len() < MODES.len() * (MODES.len() - 1) / 2;
     println!(
         "C1 some pair differs on the non-negative domain: {}",
-        if c1 { "pass" } else { "FAIL (comparison vacuous)" }
+        if c1 {
+            "pass"
+        } else {
+            "FAIL (comparison vacuous)"
+        }
     );
 
     let mut c2 = true;
@@ -333,5 +346,12 @@ fn main() {
 
     let all = k1 && k2 && k4 && c1 && c2 && c3u && c3s && c4;
     println!();
-    println!("k1 verdict: {}", if all { "every prediction and control holds" } else { "SOMETHING FAILED, read above" });
+    println!(
+        "k1 verdict: {}",
+        if all {
+            "every prediction and control holds"
+        } else {
+            "SOMETHING FAILED, read above"
+        }
+    );
 }
