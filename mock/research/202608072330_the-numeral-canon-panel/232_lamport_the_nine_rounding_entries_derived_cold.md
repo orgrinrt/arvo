@@ -594,3 +594,190 @@ nine cannot be pointed at the others. I did not build one.
 Every claim in this file that is not a quotation of one of those files rests on
 the last row, whose source and raw output are committed beside this file in
 `232_probes/`.
+
+## 13. Reconciliation, written after everything above was committed
+
+Everything above was committed at `3da8f314` before I opened a single one of
+`228` through `231`, and the probe at `5fa6a910` before that. The commit order is
+the only evidence of that worth anything and it is why I am pointing at it.
+
+### 13.1 Two files in this directory already answer most of what I was sent for
+
+`228_leroy_the_rounding_vocabulary.md`, 771 lines with six committed probes,
+answers both of the question rows my brief handed me. `229_lamport_do_the_six_
+names_denote_one_operation_each.md`, 677 lines with seven probes, is the `half_up`
+finding my section 7 spends its length on. Both are committed on the branch I was
+cut from and my brief named neither.
+
+That is not a small omission. Five of my nine entries and the harder of my two
+question rows had been derived and probed before I started, and most of sections
+5, 8 and 9 is rediscovery. `expert-dispatch-defends-the-canon` puts checking the
+cheap factual claims on the dispatching side, and one `ls` of the directory the
+deliverable was to be written into would have shown a file whose title is the
+question. The reading list rule says to build it with a grep rather than from
+memory, and the grep here is `ls | grep -i round`.
+
+I am not claiming the dispatch was worthless, and section 13.4 says what it
+bought. I am saying the redundant four fifths were avoidable at the cost of one
+command, and that a second reader running in parallel with me does not fix it,
+because two blind readers rediscovering the same committed file is two costs
+rather than a control.
+
+### 13.2 Where three independent derivations agree, and the independence is real
+
+On the facts, `228`, `229` and this file converge, and they converge from
+instruments that do not share code. `228`'s `p1` reports 0 coinciding pairs of 21
+on a signed domain; my `232_probes/r1` part 1 reports the same separation as a
+full pairwise matrix with a positive and a negative control; `229`'s probe A
+counts the `half_up` disagreement as `2^(W-1-F)` in closed form. Three
+instruments, three shapes, one answer:
+
+- `away from zero` is `ceil` on a non-negative domain and distinct from all six
+  ratified names on a signed one.
+- `half_up` denotes two operations that agree on unsigned rows and differ on
+  signed ties, which is the ratified ruling's own criterion for retirement, met
+  by a name the ruling kept.
+- The retraction row's instrument is `94_probes/c_retraction.rs`, its two arms
+  are floor-and-toward-zero and half-up, and it reproduces. `228`'s `p3` and my
+  `r1` part 2 both reproduce ten of ten of its committed integers, separately.
+- That row's `signedness` axis is absent and should read `unsigned`.
+- The retraction verdict is the same under all five deterministic ratified modes,
+  so the two-mode region is narrower than the instrument supports.
+
+Three arrivals rather than two, which is the bar this workspace asks for, and
+they were not reached by reading each other.
+
+### 13.3 Where I concede, and one of them takes a section of mine down
+
+I concede entries 7 and 9 to `228`, and the concession is about the remedy rather
+than the fact. Section 8 has them not spellable in the six and section 9 concludes
+the set gains `away_from_zero`. `228` agrees that the function is distinct on a
+signed domain and proposes instead that the region be written in the ratified six
+with the swept mode list moved to the warrant clause of
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side`.
+
+That is better than my answer and the reason is one I did not weigh. A predicate
+states the region a consumer can be in. The vocabulary is a specification of what
+the design offers, not a naming system for whatever an instrument swept, so a
+mode no consumer can select is not a region anybody can occupy, and the honest
+place for it is the clause saying how the region was earned. I was treating the
+six as descriptive vocabulary. They are a shipped set. My section 9 is wrong on
+its conclusion and its supporting measurement stands.
+
+I also concede four things I did not find at all:
+
+The warrant mechanism exists and is ratified, and I did not know it, which is why
+my section 5 proposes a repair in a notation one revision out of date. I searched
+the registry for the mode names and not for the notation, and a ratified ruling
+that changes the shape of every answer in this file was one namespace away.
+
+`228` section 3.3 finds something that outranks everything in my file. The
+retraction row's `statement` says "rounding a value already on the representable
+grid returns it unchanged", which is true of every mode at every fraction width
+and which its own `p3` control 2 verifies at zero counterexamples. What the
+instrument measures is a staged quantisation against a deferred one over a
+two-multiply chain. So the row's `fails` field reports that a theorem fails, and
+the row is right about its numbers and wrong about what they are numbers for. I
+reproduced that instrument digit for digit and did not notice that its `statement`
+described something else, because I was checking the rounding axis and took the
+sentence as given. Reproducing an instrument is not reading the row.
+
+`chain_length` is absent from the same row while `operation = mul` is present, and
+the instrument ran a two-multiply chain. `228` has it, I do not.
+
+And the general half of the notation question has a better answer than mine.
+`228` section 3.5 asks which of the three warrant tokens an entry could carry, and
+an entry that can carry none states no region. That is mechanical, works on any
+axis without knowing its vocabulary, and needs no per-axis grammar. My answer was
+that the hole is real and I did not check the other axes, which is a report where
+`228` has an instrument.
+
+To `229` I concede the `half_up` reading. My section 11 offers reading one at low
+confidence on a compositional argument about number-line words. `229`'s probe B
+settles it on measurement instead: with `half_up` read as ties toward positive
+infinity, the equivariance counts reproduce both fusion law rows set for set,
+and under the other reading the signed row gives two of six against the three of
+six it records. So the canon already depends on reading one, and my paragraph is
+superseded by a better argument for the same conclusion.
+
+### 13.4 What survives as this file's own
+
+Group two survives entire, and it is four of the nine. None of `228`, `229`, the
+two `230` files or the two `231` files mentions any of
+`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`,
+`proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion`
+or `proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity`,
+nor any of the four instruments behind them. Measured:
+
+```
+$ for s in a_law_is_inherited the_multiplicative_guard a_nonzero_phase \
+      q2_affine p_d_rescale p4_signed_multiplicative p2_congruence; do
+    grep -c "$s" 228_*.md 229_lamport_*.md 230_*.md 231_*.md
+  done
+# every count zero
+```
+
+`228` was scoped to the two question rows, which cover the five entries in the
+tool's third section and none in its first two, so this is a gap in the coverage
+rather than a disagreement. Sections 7's entries 3, 4, 5 and 6 stand as the only
+reading of those four, with their verdicts `toward_zero`, unnameable,
+`toward_zero` and `half_up`.
+
+Three findings inside that are worth naming separately because they are not
+verdicts:
+
+The guard row asserts exactly one cell nobody measured, signed crossed with
+`half_even`, and its two instruments between them cover the other five. That is
+actionable as written: add a nearest-even arm to `62_probes/p4`.
+
+Entry 6's predicate value is `rounding = nearest, against a phase-zero mutant`,
+whose trailing clause is not a mode and is inadmissible under
+`dimension::rounding`'s grammar. Under the warrant mechanism I now know about,
+that clause is close to what a warrant clause is for, which makes it a better
+example of the general hole than I could see when I wrote it: an author reaching
+for somewhere to put how the region was earned, before there was anywhere.
+
+And `mock/tools/rounding-vocabulary/src/lib.rs:73` files
+`("nearest-half-up", "half_up")` under a table its own documentation calls
+mechanical and rewritable "without reading anything", when the same file at line
+407 explains why the retired word is not mechanical, for the property `half_up`
+turns out to share. Neither `228` nor `229` names this, and both of them rely on
+that tool's report. Under `229`'s own conclusion the rewrite happens to be
+correct, which is not the same as mechanical: it is correct because a probe
+measured which reading the canon depends on, which is exactly the reading the
+tool's mechanical section promises nobody has to do.
+
+### 13.5 One thing I have that bears on the disagreement I lost
+
+Whichever remedy wins for entries 7 and 9, three rows carry a count in their
+prose that is over the wrong set of six. The proposal's `says` reads "five of six
+positions" and "three of six", and the unsigned law's `statement` reads "five of
+the six positions are free". Those count over the swept set, which is `{floor,
+ceil, toward_zero, away_from_zero, half_up, half_even}`. The ratified set is
+`{toward_zero, floor, ceil, half_up, half_even, stochastic}`. Both have six
+members and they differ in one, so the numeral coincides and the sets do not.
+
+That is the worst available coincidence for a reader, and it is untouched by
+`228`'s repair, which moves the mode list out of the predicate and leaves the
+prose saying "of six". So the repair reaches the `says` and the `statement` of
+three rows rather than their predicates alone, and a `says` is the sentence the
+row is. I did not price this either when I proposed adding a name; under my
+remedy the ratified set becomes seven and the same sentences are wrong a different
+way. It is a cost of every remedy on the table and of doing nothing, and nobody
+has named it.
+
+### 13.6 What I would now say to the panel
+
+Take `228`'s remedy for entries 7, 8 and 9 and its warrant-token test for the
+general question. Take `229`'s reading of `half_up`. Take this file for entries
+3, 4, 5 and 6, which nobody else has read, and for the three items in 13.4.
+
+The one open thing after all three files is the nearest family. `228` files it as
+a new question and declines it as a naming call; `229` establishes which reading
+the canon already depends on and says what is missing is one sentence per name
+rather than a seventh name. My entry 4 is the row that forces it: with `half_up`
+settled as ties toward positive infinity, `97_probes/p2`'s ties-away-from-zero
+arm has no name, and `proposal::a_law_is_inherited_where_the_realisation_map_is_a
+_congruence_for_every_nesting_it_contains` is a row in the canon whose rounding
+axis cannot be written. That is a concrete row rather than a hypothetical, and it
+is the argument for the seventh name that my section 9 made for the wrong mode.
