@@ -120,6 +120,24 @@ const TABLE: &[(bool, &str)] = &[
     (false, "pub struct Sized(u128);"),
 ];
 
+// What this table does not reach, said here because a table with no row for a
+// case reads as a case that passes.
+//
+// The scanner strips `'…'` as a char literal, so an even number of lifetime
+// ticks on one line pairs them and everything between the second and third is
+// stripped before the scan. `pub struct S<'a, 'b>(&'a u32, &'b Bool);` is
+// allowed; the one-tick `pub struct T<'a>(&'a u32);` is denied, which is the
+// control saying the ticks did it rather than the shape. A bare primitive in a
+// public tuple-struct field goes through.
+//
+// It is not a row above, because this table is what the lint gates on: a row
+// expecting a deny would fire on every run rather than catalogue anything. And
+// it is not fixed here, because it predates the carve-out and has nothing to do
+// with it. Stripping a char literal correctly wants the parse rather than the
+// line, the same change the literal suffix wants, and the lint pack catalogues
+// the identical hole on its own side as
+// `a_bare_primitive_between_two_lifetime_ticks_still_reports`.
+
 struct TheWriteHookExcepts;
 impl Lint for TheWriteHookExcepts {
     fn name(&self) -> &'static str {

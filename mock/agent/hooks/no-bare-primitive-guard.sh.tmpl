@@ -7,16 +7,26 @@
 # The rule: `u8..u128`, `i8..i128`, `f32`, `f64`, `usize`, `isize`,
 # `bool`, `Option`, `Result`, `String`, and non-static `&str` do not
 # exist in arvo. Not in public fn sigs, not in private fields, not in
-# `let` bindings, not in cast expressions (`as u32`), not in literal
-# suffixes (`0u32`), not in tuple-struct fields, not in trait method
-# parameter types. Wrap in an arvo type, or a domain alias grounded on
-# one, or notko's `Maybe` / `Outcome` / `Just`.
+# `let` bindings, not in cast expressions (`as u32`), not in
+# tuple-struct fields, not in trait method parameter types. Wrap in an
+# arvo type, or a domain alias grounded on one, or notko's `Maybe` /
+# `Outcome` / `Just`.
+#
+# A literal suffix is not among them, and this comment said it was.
+# The scan wants a non-identifier byte on each side of the name and a
+# suffix always carries a digit in front of it, so `0u32` goes through.
+# Reaching it wants the parse rather than the line.
 #
 # One position is excepted, and it is op's own call carried in the
 # canon: the type of a const generic parameter, where the language
 # accepts only integers, `bool` and `char` without a feature gate the
 # stack does not hand downstream. An item constant is a different
 # position and is not excepted.
+#
+# His call carries a second bound this cannot enforce: the bare form
+# belongs there only where the alternative is genuinely painful, which
+# is a judgement about the API rather than anything a scan can see. It
+# stays with whoever reviews the code.
 #
 # Escape hatch: `// lint:allow(<rule>) reason: ...; tracked: #N` on
 # the offending line. The rule name matches the violation
