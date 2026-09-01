@@ -195,12 +195,27 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
             let How::Elided { rows } = c.how else {
                 unreachable!("partitioned on this")
             };
-            let why = if rows == 0 {
-                "reaches no row at all, so there is nothing it could be short for".to_string()
+            // Both halves are conditioned, because they were not, and the
+            // remedy that fits the ambiguous branch is false in the other:
+            // where nothing could be short for it, there is nothing to spell
+            // it out to and no referent was ever picked.
+            let (why, fix) = if rows == 0 {
+                (
+                    "reaches no row at all, so there is nothing it could be short for".to_string(),
+                    "Where no row says it, the sentence is a paraphrase and cites nothing."
+                        .to_string(),
+                )
             } else {
-                format!(
-                    "reaches {rows} rows, so nothing here can tell which one was meant \
-                     without guessing"
+                (
+                    format!(
+                        "reaches {rows} rows, so nothing here can tell which one was meant \
+                         without guessing"
+                    ),
+                    "Spell it out. That is permitted in a member file, unlike repointing a \
+                     dangling citation: this lint holds only the prefix and you hold the \
+                     sentence, so writing it out restores what the author wrote rather than \
+                     changing which row they cited."
+                        .to_string(),
                 )
             };
             finding(
@@ -208,10 +223,7 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
                 &c.at,
                 c.line,
                 format!(
-                    "cites `{}...`, cut short, and the prefix {why}. Spell it out. That is \
-                     permitted in a member file, unlike repointing a dangling citation: \
-                     the author picked the referent and shortened it, so writing it out \
-                     restores what they wrote rather than changing which row they cited.",
+                    "cites `{}...`, cut short, and the prefix {why}. {fix}",
                     c.text
                 ),
             )
@@ -850,6 +862,14 @@ mod tests {
         );
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("reaches 2 rows"), "{}", f[0]);
+        // The remedy, not only the diagnosis. Pinning one and not the other is
+        // how a remedy that contradicted its own diagnosis shipped once.
+        assert!(f[0].contains("Spell it out"), "{}", f[0]);
+        assert!(
+            !f[0].contains("cites nothing"),
+            "gave the paraphrase remedy to an ambiguous elision: {}",
+            f[0]
+        );
     }
 
     #[test]
@@ -865,6 +885,16 @@ mod tests {
         );
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("reaches no row at all"), "{}", f[0]);
+        // The remedy has to follow the diagnosis. Telling a reader to spell
+        // out a prefix nothing is short for is an instruction with nothing to
+        // carry it out against, and it shipped once because this arm pinned
+        // the first half of the sentence and not the second.
+        assert!(f[0].contains("cites nothing"), "{}", f[0]);
+        assert!(
+            !f[0].contains("Spell it out"),
+            "told the reader to spell out a prefix that reaches nothing: {}",
+            f[0]
+        );
     }
 
     #[test]
@@ -890,6 +920,7 @@ mod tests {
         );
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("reaches no row at all"), "{}", f[0]);
+        assert!(f[0].contains("cites nothing"), "{}", f[0]);
     }
 
     #[test]
