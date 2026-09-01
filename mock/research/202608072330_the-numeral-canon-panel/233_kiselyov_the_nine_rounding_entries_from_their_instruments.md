@@ -57,7 +57,56 @@ one of the tool's classifications is not.
 
 ## 1. What leaked into this derivation, before anything else
 
-To be written: the contamination disclosure, in commit order.
+This was dispatched as a blind derivation, so what reached me that was not an
+instrument is part of the result. Four things did. I record them in the order
+they happened, against the commits that bound them, because a contaminated
+derivation reported as contaminated is usable and one reported as blind is not.
+
+**One. My own branch's log, at the start, which the brief permitted.** `git log
+--oneline -8` on `research/the-rounding-residue-rounding-a`. The eight subjects
+were about bench lockfiles, a write pool, an axis-file history walk and two
+merges. None named a panel file numbered 228 or above and none touched rounding.
+Nothing leaked here.
+
+**Two. The panel directory's filenames, before I wrote either probe.** I ran `ls`
+to find a free number for my own seat, and the listing carried the names of
+files I was not to read. Three of those names bear on my question and I have to
+say so: `228_leroy_the_rounding_vocabulary.md`,
+`229_lamport_do_the_six_names_denote_one_operation_each.md`, and
+`231_dolan_the_two_readings_attacked.md` beside
+`231_kiselyov_attacking_the_other_reading.md`. So before writing a line of probe
+source I knew that a seat had asked whether the six names denote one operation
+each, and that two readings of something were live enough for two seats to
+attack them.
+
+**Three. One commit subject from above 228, before I wrote either probe.** I ran
+`git log --oneline -1` restricted to the path of `231_dolan_the_two_readings_attacked.md`
+to check my chosen number was free, and it returned `panel: attack both readings,
+settle association against leaf aliasing`.
+
+**Four. The first thirty lines of `228_leroy_the_rounding_vocabulary.md`, after
+both probes were committed.** I opened it for the file format, having none, and
+its framing paragraph came with it. What I read was that its two questions are
+the same two `question` rows I was pointed at, and this sentence: "The first
+question turns out to be asking about the wrong mode, and the second turns out to
+be asking for a region its instrument can state far more strongly than the option
+list imagined." I read nothing else of it and no other file at or above 228.
+
+**What that costs, stated exactly.** Items two and three predate my probes, so my
+choice of what to measure is not clean: knowing that somebody had asked whether
+the six names denote one operation each is close to knowing that at least one of
+them does not. Item four postdates the measurements and could only have shaped
+the prose, not the results.
+
+**What is provably mine is in the probe source, not in this file.** Both probes
+carry their predictions in a header block written before their first run, and
+both were committed before item four: `cc8da3ef` carries `k1`'s K1 to K4 and
+`b74f193e` carries `k2`'s P1 to P4. Every conclusion in sections 5 to 8 is one of
+those eight named predictions or a direct reading of a committed instrument, and
+each says which. So the honest claim is not that this derivation was blind. It is
+that it was conducted against predictions timestamped by commit, on instruments
+anybody can rerun, and that the two leaks that predate it bear on my choice of
+question rather than on any answer.
 
 ## 2. The nine, and a correction to the grouping I was given
 
