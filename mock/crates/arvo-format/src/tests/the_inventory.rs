@@ -18,7 +18,9 @@
 use crate::ambient::{Ambient, DecimalRationals, Radix};
 use crate::format::{contains, has_additive_identity, radix, step_exponent, Format, Phase};
 use crate::points::Integer;
-use crate::quantum::{is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum};
+use crate::quantum::{
+    is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum,
+};
 use crate::slots::{slot_count, slot_in_range, Signed, Slot, SlotCount, Slots, Unsigned};
 use crate::width::{Bool, Width};
 
@@ -38,7 +40,10 @@ impl Format for Ternary {
 #[test]
 fn the_format_inventory_admits_a_member_this_crate_does_not_know_about() {
     assert_eq!(radix::<Ternary>(), Radix::DECIMAL);
-    assert_eq!(step_exponent::<Ternary>(Magnitude::SMALLEST), Exponent::of(-1));
+    assert_eq!(
+        step_exponent::<Ternary>(Magnitude::SMALLEST),
+        Exponent::of(-1)
+    );
     assert!(has_additive_identity::<Ternary>().get());
     assert!(contains::<Ternary>(Slot::ZERO, Magnitude::SMALLEST).get());
     assert!(!contains::<Ternary>(Slot::at(4), Magnitude::SMALLEST).get());
@@ -116,7 +121,10 @@ fn the_whole_contract_is_supplied_from_outside_and_every_coordinate_reads_back()
     assert!(slot_in_range::<OffsetFive>(Slot::at(-8)).get());
     assert!(slot_in_range::<OffsetFive>(Slot::at(23)).get());
     assert!(!slot_in_range::<OffsetFive>(Slot::at(24)).get());
-    assert_eq!(crate::slots::declared_slot_width::<OffsetFive>(), Width::bits(5));
+    assert_eq!(
+        crate::slots::declared_slot_width::<OffsetFive>(),
+        Width::bits(5)
+    );
 
     // The phase is nonzero, so the grid carries no additive identity, and that is
     // the coordinate doing work rather than sitting in the declaration.
@@ -143,10 +151,7 @@ fn the_control_the_foreign_contract_differs_from_every_shipped_one() {
         <DoubleStepped as Quantum>::SLOPE,
         <Indexed<-14, 30> as Quantum>::SLOPE
     );
-    assert_ne!(
-        <OffsetFive as Slots>::MIN,
-        <Signed<5> as Slots>::MIN
-    );
+    assert_ne!(<OffsetFive as Slots>::MIN, <Signed<5> as Slots>::MIN);
     assert_ne!(
         <WhollyForeign as Format>::PHASE,
         <Integer<8> as Format>::PHASE
@@ -254,10 +259,7 @@ fn the_widest_admitted_width_is_where_the_count_stops_fitting() {
         "one width past the widest admitted still fits, so the impl set is too narrow"
     );
     assert!(slot_count::<Unsigned<62>>().count() > 0);
-    assert_eq!(
-        slot_count::<Unsigned<62>>(),
-        SlotCount::of(at_bound as i64)
-    );
+    assert_eq!(slot_count::<Unsigned<62>>(), SlotCount::of(at_bound as i64));
 }
 
 // --- what an outside implementor owes, and the construction that does not ----

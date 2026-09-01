@@ -126,7 +126,9 @@ pub const fn contains<F: Format>(slot: Slot, magnitude: Magnitude) -> Bool {
 /// canon carries the coordinate rather than treating the bias as a corner case.
 #[must_use]
 pub const fn has_additive_identity<F: Format>() -> Bool {
-    F::PHASE.is_zero().and(slot_in_range::<F::Slots>(Slot::ZERO))
+    F::PHASE
+        .is_zero()
+        .and(slot_in_range::<F::Slots>(Slot::ZERO))
 }
 
 /// The exponent of the step at a magnitude, for the format's quantum law.

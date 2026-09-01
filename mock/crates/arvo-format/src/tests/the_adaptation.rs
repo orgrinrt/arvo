@@ -14,7 +14,9 @@ use crate::format::{contains, Format};
 use crate::overflow::{Overflow, Policy, Saturate, Wrap, SHIPPED_POLICIES};
 use crate::points::{Integer, UFixed};
 use crate::quantum::Magnitude;
-use crate::rounding::{Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic, TowardZero, ALL_MODES};
+use crate::rounding::{
+    Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic, TowardZero, ALL_MODES,
+};
 use crate::slots::Slot;
 
 // --- the rounding vocabulary is the six, and the retired word is not among ----
@@ -164,9 +166,7 @@ fn a_signature_carries_the_format_and_the_adaptation_and_nothing_else() {
         crate::adapt::rounding_of::<<S as DeclaredSignature>::Adaptation>(),
         Mode::Floor
     );
-    assert!(
-        contains::<<S as DeclaredSignature>::Format>(Slot::ZERO, Magnitude::SMALLEST).get()
-    );
+    assert!(contains::<<S as DeclaredSignature>::Format>(Slot::ZERO, Magnitude::SMALLEST).get());
 }
 
 #[test]

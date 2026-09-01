@@ -15,7 +15,10 @@
 use crate::ambient::{Ambient, BinaryRationals, DecimalRationals, Radix, UnsignedBinaryRationals};
 use crate::format::{contains, has_additive_identity, radix, smallest_step_exponent, Phase};
 use crate::points::{Biased, Floating, Integer, UFixed};
-use crate::quantum::{exponent_at, is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum};
+use crate::quantum::{
+    exponent_at, is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount,
+    Quantum,
+};
 use crate::slots::{slot_count, slot_in_range, Signed, Slot, SlotCount, Unsigned};
 use crate::width::Bool;
 
@@ -128,14 +131,8 @@ fn the_constant_family_has_one_magnitude_and_the_indexed_family_has_many() {
     assert!(is_constant_family::<Constant<-4>>().get());
     assert!(!is_constant_family::<Indexed<-14, 30>>().get());
 
-    assert_eq!(
-        <Constant<0> as Quantum>::MAGNITUDES,
-        MagnitudeCount::of(1)
-    );
-    assert_eq!(
-        <Constant<-7> as Quantum>::MAGNITUDES,
-        MagnitudeCount::of(1)
-    );
+    assert_eq!(<Constant<0> as Quantum>::MAGNITUDES, MagnitudeCount::of(1));
+    assert_eq!(<Constant<-7> as Quantum>::MAGNITUDES, MagnitudeCount::of(1));
     assert_eq!(
         <Indexed<-14, 30> as Quantum>::MAGNITUDES,
         MagnitudeCount::of(30)
@@ -188,10 +185,7 @@ fn the_smallest_step_is_the_smallest_magnitudes_and_nothing_names_it() {
     );
 
     // For the constant family the smallest step is the only step.
-    assert_eq!(
-        smallest_step_exponent::<UFixed<13, -4>>(),
-        Exponent::of(-4)
-    );
+    assert_eq!(smallest_step_exponent::<UFixed<13, -4>>(), Exponent::of(-4));
     assert_eq!(smallest_step_exponent::<Integer<8>>(), Exponent::ZERO);
 }
 

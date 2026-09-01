@@ -171,7 +171,11 @@ fn const_type_of(line: &str) -> Option<String> {
     // parameter's name that happened to reach this far. Screaming case is what
     // every const in this crate is written in, and a lint that accepted anything
     // would start reading `const fn` lines as declarations of a type called `fn`.
-    if name.is_empty() || !name.chars().all(|c| c.is_ascii_uppercase() || c.is_ascii_digit() || c == '_') {
+    if name.is_empty()
+        || !name
+            .chars()
+            .all(|c| c.is_ascii_uppercase() || c.is_ascii_digit() || c == '_')
+    {
         return None;
     }
 
@@ -250,7 +254,9 @@ mod tests {
 
     #[test]
     fn it_reaches_the_pack_the_engine_is_handed() {
-        crate::crate_lint_testkit::assert_registered("a-contract-coordinate-is-not-a-host-primitive");
+        crate::crate_lint_testkit::assert_registered(
+            "a-contract-coordinate-is-not-a-host-primitive",
+        );
     }
 
     #[test]
@@ -365,9 +371,8 @@ pub const ADMITTED_WIDTHS: &[Width] = &[];
     fn a_type_whose_name_merely_contains_a_primitive_is_silent() {
         // `Bool` contains no primitive token, but a name like `Boolish` or
         // `MyU32Thing` would match a substring search and must not match this one.
-        let errors = hits(
-            "const A: Boolish;\nconst B: MyU32Thing;\nconst C: Nu32;\nconst D: u32x;\n",
-        );
+        let errors =
+            hits("const A: Boolish;\nconst B: MyU32Thing;\nconst C: Nu32;\nconst D: u32x;\n");
         assert!(
             errors.is_empty(),
             "a substring match fired where a word-boundary match must not: {errors:?}"
@@ -422,13 +427,11 @@ pub const ADMITTED_WIDTHS: &[Width] = &[];
         // Not because it is allowed. The pack's own lints read every other crate
         // and refuse it there, and two lints reporting one line would make the
         // count in any sweep of this class wrong.
-        let fixture =
-            LintFixture::new("    const MIN: i64;\n").with_crate_name("arvo-placement", "placement");
-        assert!(
-            AContractCoordinateIsNotAHostPrimitive
-                .check(&fixture.ctx())
-                .is_empty()
-        );
+        let fixture = LintFixture::new("    const MIN: i64;\n")
+            .with_crate_name("arvo-placement", "placement");
+        assert!(AContractCoordinateIsNotAHostPrimitive
+            .check(&fixture.ctx())
+            .is_empty());
     }
 
     #[test]
