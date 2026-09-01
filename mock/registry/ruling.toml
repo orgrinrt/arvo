@@ -442,7 +442,7 @@ id = "the_next_unit_is_chosen_bottom_up"
 kind = "process"
 rung = "stated"
 topic = "panel_conduct"
-says = "The next topic is whatever is natural and settles the most downstream questions at once, unblocking further design and exploration. The build order is strictly ground up: once the fundamentals, paradigms and conventions are in place, move one tier up and use those to define what arvo needs defined, and so on."
+says = "The next topic is whatever is natural and settles the most downstream questions at once, unblocking further design and exploration. The build order is strictly ground up: once the fundamentals, the shapes and the conventions are in place, move one tier up and use those to define what arvo needs defined, and so on."
 quote = '''
 Whatever makes sense next and is natural and gives most answers that settle downstream questions at the
 same time and enable/unblock further design and exploration work. We want to build from ground up, so
@@ -1666,7 +1666,7 @@ wins worth pursuing, however small, and however small a set they apply to. This 
 approach where we don't even try to generalise, we operate on const predicates that choose the most
 optimal path always, from a million small different impls for different situations.
 '''
-because = "Asking at what rate one objective yields to another asks for a single policy covering a whole category, which is the anti-pattern the arms paradigm exists to refuse. The answer is not a rate and not silence: it is a recorded reason per arm, which is checkable in a way a rate never was."
+because = "Asking at what rate one objective yields to another asks for a single policy covering a whole category, which is the anti-pattern the arms approach exists to refuse. The answer is not a rate and not silence: it is a recorded reason per arm, which is checkable in a way a rate never was."
 answers = ["the_exchange_rate_a_preference_yields_at"]
 instead = "Where a conflict between objectives arises, the arm states in words why it resolves the conflict the way it does, and that justification goes in the record beside the arm."
 note = "Silence was on the option list and was not chosen, so this is not a licence to leave a conflict unexplained. The distinction is that the reason is local and written rather than global and derived. A million small implementations is the intended shape rather than a failure mode to be refactored away later, which bears on any review that would flag the count as duplication."
