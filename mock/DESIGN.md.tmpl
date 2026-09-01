@@ -33,7 +33,7 @@
 
 ## Crate topology
 
-Four crates, and the dependency direction is what enforces the design rather
+Three crates, and the dependency direction is what enforces the design rather
 than a rule asking for it. `arvo-format` cannot name a carrier because it does
 not depend on the crate that has one, which is how "every operation is a
 function of the declared width and never of the machine carrier" stays true
@@ -44,7 +44,6 @@ under later edits.
 | `arvo-format` | The declared signature. The representable set as one affine predicate over a phase, a quantum law and a slot range, of which integers, fixed point, scaled integers and floats are points. The six rounding modes, the overflow policies, the adaptation as the pair of those two, and the map that applies one. Introduces the numeric category, so `Width` and `Bool` are defined here. | `notko` |
 | `arvo-placement` | The placement derivation, keyed on occupancy. One output at sole occupancy, the carrier; three at shared, the carrier and the access width and the stride. No declared operation reads any of them. | `arvo-format` |
 | `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
-| `arvo-standards` | The industrial conventions as aliases over the declared signatures, with the arms that check each against what its standard documents. Ships no arithmetic: a convention it cannot name is a gap in the primitives rather than a gap here. | `arvo-format` |
 
 The set is open at both ends it can be. A new numeral joins by implementing
 `Format`, a new overflow policy by implementing `Overflow`, and a new strategy by
@@ -64,33 +63,32 @@ The reason the split falls this way is what a consumer has to depend on to say
 one thing. Stating what values exist needs `arvo-format` and nothing else.
 Stating where they sit needs `arvo-placement` on top of it. Choosing between
 placements needs `arvo-strategy` on top of both. Saying the same thing in an
-industrial convention's own words needs `arvo-standards`, which is back to
-stating what values exist and so reaches for the declared signature and nothing
-under it. A consumer that only declares formats never compiles a carrier ladder.
+industrial convention's own words is still stating what values exist, so it needs
+`arvo-format` and nothing else, and the conventions ship there beside the
+parameterisation points. A consumer that only declares formats never compiles a
+carrier ladder.
 
 ## Dependency direction
 
 Strictly upward, and it carries a design constraint rather than a convention.
 `arvo-format` has no workspace dependency, so nothing in it can mention a
 carrier; `arvo-placement` depends on it and derives one; `arvo-strategy` depends
-on both and binds a name to a choice between them; `arvo-standards` depends on
-`arvo-format` alone and sits beside `arvo-placement` rather than above it, since
-a convention states what values exist and never where they go. There is no
-facade today, and a crate that re-exported these would sit below all of them
-rather than above.
+on both and binds a name to a choice between them. There is no facade today, and
+a crate that re-exported the three would sit below all of them rather than
+above.
 
 ## Consumers
 
 arvo is a library rather than a program, so how it gets used is not fully known
 here. What it is built for is the algorithm crates every downstream repository
 uses, and the contracts for things that compose into units bigger than numerals
-alone. The numeral base has to work first, which is what the crates above
+alone. The numeral base has to work first, which is what the three crates above
 are.
 
 **The consumers named in earlier versions of this document, hilavitkutin and
 vehje, used crates that no longer exist.** Those crates were removed on
 2026-08-08 and the surfaces they offered have not been rebuilt on the current
-base. A downstream repository pinning this branch gets the crates above and
+base. A downstream repository pinning this branch gets the three crates above and
 nothing else, and that is the honest statement of what is available rather than
 of what is planned.
 ## See also

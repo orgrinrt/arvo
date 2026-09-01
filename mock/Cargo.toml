@@ -25,7 +25,6 @@ resolver = "2"
 members = [
     "crates/arvo-format",
     "crates/arvo-placement",
-    "crates/arvo-standards",
     "crates/arvo-strategy",
 ]
 # `benches` (and every crate under `benches/variants/`) is excluded rather than

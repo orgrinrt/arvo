@@ -18,13 +18,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "arvo-standards"
-version = "0.1.0"
-dependencies = [
- "arvo-format",
-]
-
-[[package]]
 name = "arvo-strategy"
 version = "0.1.0"
 dependencies = [
