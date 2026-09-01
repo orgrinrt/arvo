@@ -51,7 +51,20 @@
 //! So the repository is asked whether it is shallow before the walk is
 //! believed, and **an answer that cannot be obtained counts as shallow**, since
 //! a check that cannot establish it read the whole history must not claim it
-//! did. Both routes land in the same report.
+//! did.
+//!
+//! **There are four routes to a walk that claims more than it read, and every
+//! one of them lands in that same report.** Git unavailable. The repository
+//! shallow. No commit touching the file at all, which returns nothing and reads
+//! as nothing lost. And a commit in the walk whose blob will not read, which
+//! `--follow` makes reachable by finding pre-rename commits where the current
+//! path does not exist.
+//!
+//! Three of the four were found one inside the fix for another, which is the
+//! pattern worth naming rather than the four accidents: each time an early exit
+//! treated "could not read this" as "nothing here". **So every route out of the
+//! walk now either establishes the whole history or says it could not**, and
+//! the function cannot report which without meaning it.
 //!
 //! # The premise is checked rather than assumed
 //!
@@ -209,12 +222,28 @@ fn ids_ever_declared(repo_root: &Path) -> Option<Vec<String>> {
         // the second and is the same false pass a shallow clone produces.
         return None;
     }
+    let blobs: Vec<Option<String>> = commits
+        .split_whitespace()
+        .map(|commit| git(repo_root, &["show", &format!("{commit}:{FILE}")]))
+        .collect();
+    ids_across(&blobs)
+}
+
+/// Every id across one blob per commit, or `None` if any blob would not read.
+///
+/// **A commit whose blob will not read leaves the walk incomplete**, so it is
+/// the same answer as an unreadable history rather than a commit to skip.
+/// `--follow` is what makes this reachable: it finds pre-rename commits, and
+/// the blob at the current path does not exist in them, so skipping would drop
+/// every id declared before a rename and report the narrower set as the whole
+/// history. Measured in a throwaway repository: `old.toml` renamed to
+/// `new.toml` gives two commits from `--follow` and one readable blob.
+///
+/// Split out from the walk so the decision is a test rather than a comment.
+fn ids_across(blobs: &[Option<String>]) -> Option<Vec<String>> {
     let mut out: Vec<String> = Vec::new();
-    for commit in commits.split_whitespace() {
-        let Some(text) = git(repo_root, &["show", &format!("{commit}:{FILE}")]) else {
-            continue;
-        };
-        out.extend(ids_in(&text));
+    for blob in blobs {
+        out.extend(ids_in(blob.as_deref()?));
     }
     out.sort();
     out.dedup();
@@ -417,7 +446,42 @@ mod tests {
     }
 
     #[test]
-    fn control_nothing_declared_and_nothing_in_history_is_the_one_silent_vacuum() {
+    fn a_commit_whose_blob_will_not_read_makes_the_whole_walk_unread() {
+        // The fourth route to a walk claiming more than it read, and the one
+        // that lived inside the fix for the third. `--follow` finds pre-rename
+        // commits and the blob at the current path does not exist in them, so
+        // skipping one drops every id declared before the rename and reports
+        // the remainder as the whole history.
+        let complete = [
+            Some("[[dimension]]\nid = \"radix\"\n".to_string()),
+            Some("[[dimension]]\nid = \"signedness\"\n".to_string()),
+        ];
+        assert_eq!(
+            super::ids_across(&complete),
+            Some(vec!["radix".to_string(), "signedness".to_string()]),
+            "a complete walk must still return its ids"
+        );
+
+        let with_a_gap = [
+            Some("[[dimension]]\nid = \"radix\"\n".to_string()),
+            None,
+            Some("[[dimension]]\nid = \"signedness\"\n".to_string()),
+        ];
+        assert_eq!(
+            super::ids_across(&with_a_gap),
+            None,
+            "an unreadable blob was skipped, so the walk reported a narrower \
+             set as the whole history"
+        );
+    }
+
+    #[test]
+    fn control_an_empty_history_that_is_known_to_be_empty_loses_nothing() {
+        // A control on `check`'s own logic rather than on a tree state. No
+        // walk can hand it this any more: an empty commit list returns `None`,
+        // so `Some(&[])` reaches here only from a test. The arm still earns
+        // its place, because it is what says the lost-id arm reports a real
+        // difference rather than firing whenever the history is short.
         assert!(run(&[], Some(&[]), ONE_FILE).is_empty());
     }
 
