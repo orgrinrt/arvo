@@ -1982,3 +1982,44 @@ unblocks = "Whether the crate's public traits can be implemented at all from out
 note = "The ten are `PHASE_NUM` and `PHASE_DEN` on `Format`, `RADIX` and `SIGNED` on `Ambient`, `BASE`, `SLOPE` and `MAGNITUDES` on `Quantum`, `MIN` and `MAX` on `Slots`, and `ARITY` on `Operation`.\n\n**The exemption contains nothing, which is what makes this more than an internal matter.** It stops the lints inside the crate and the traits are public, so the bare form crosses the boundary in the impl every implementor has to write.\n\n**The crate's own design already states the narrower bound**: the door is two types, no arithmetic beyond what a width derivation needs, and everything else built from a `Format` instead of added here. So this is the source disagreeing with the design above it rather than an open design choice, and the first option is the one that makes them agree.\n\n**The first option needs nothing that does not exist.** An associated constant takes an arvo type on the pinned toolchain; the const generic parameter is the only position that does not, which is pinned as a compile-fail case in the crate's own `tests/ui/`."
 provenance = ["mock::design_rounds/202609011112/202609011112_topic.the-one-position-the-language-refuses-to-repair::#what-this-round-does-not-do-and-why-it-is-left-standing"]
 keywords = ["bare primitive", "exemption", "primitive introductions", "door", "associated constant", "const generic", "public API", "position", "implementor", "export"]
+
+[[question]]
+id = "how_the_stamped_spine_rows_phase_clause_gets_corrected"
+key = "Q67"
+asks = "`proposal::membership_of_the_representable_set_is_one_affine_predicate` closes on the words that a nonzero phase decides whether the set carries an additive identity at all. That clause is measured wrong, and the row is stamped. What corrects it?"
+options = [
+  "A `ruling` carrying `corrects`, resting on two independent agreements about the correction rather than about the measurement underneath it, leaving the rest of the row standing.",
+  "A retirement of the whole row with a replacement, which also retires the affine-predicate sentence the correction itself rests on.",
+  "An edit in place to the stamped row, which changes what a ratified ruling stamped without the ruling moving.",
+]
+decider = "panel"
+bound = """
+The row is canon by ratification: `ruling::the_format_spine_is_canon` stamps it, at
+`standing = "two_experts"`. So the correcting act is not a retirement's and is not one
+instrument's, which is what
+`retirement::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity`
+already records when it names the clause rather than editing it.
+
+The measurement is settled and is not what this asks about.
+`proposal::the_additive_identity_is_decided_by_the_phase_being_a_whole_multiple_of_the_quantum`
+carries it at `one_expert`, with a second arrival recorded rather than counted. Two
+agreements are owed about the correction, not about the arithmetic.
+
+The third option is listed because it is what happens by default when nobody chooses,
+and it is the one that leaves a ratified ruling stamping words it never stamped.
+"""
+topic = "the_format"
+unblocks = "Until it is corrected, the widest statement of the phase clause in the canon reads wider than any evidence supports, and it is the one a reader arrives at first, since it sits inside the ratified spine."
+note = """
+Filed because the correction was owed in prose and tracked by nothing. It stood in the
+`replacement` field of a retirement and in a ruling's `note`, both of which are fields whose
+job is something else, and no instrument reads either: `a-live-row-restates-a-retired-claim`
+does not fire, because the longest run shared between the live clause and the retired one is
+six words against its threshold of eight, and `awaiting-a-ruling` reports only `stated` rungs.
+
+The shipped code does not wait on this. `has_additive_identity` contradicts the affine
+predicate the same row states one sentence earlier, and that sentence is untouched, so the
+correction to the crate rests on the spine rather than on this question.
+"""
+provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
+keywords = ["phase", "additive identity", "affine predicate", "stamped", "correction", "spine", "whole multiple", "nonzero phase"]
