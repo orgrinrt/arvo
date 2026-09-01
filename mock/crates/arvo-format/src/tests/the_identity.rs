@@ -10,11 +10,11 @@
 //! the grid holds zero, which the phase decides by being a whole multiple of the
 //! quantum rather than by being nonzero.
 //!
-//! **Every control here is run rather than described.** The predicate this round
-//! replaced is kept as a function and so is the narrow negation it would have
-//! used, so "the old suite could not have seen this" and "the wide intermediate
-//! is load-bearing" are assertions instead of sentences. A control nobody runs is
-//! a claim about a mutant nobody built.
+//! **Every control here is run rather than described.** The superseded predicate
+//! is kept as a function and so is the narrow negation it would have used, so
+//! "the earlier suite could not have seen this" and "the wide intermediate is
+//! load-bearing" are assertions instead of sentences. A control nobody runs is a
+//! claim about a mutant nobody built.
 
 use crate::ambient::BinaryRationals;
 use crate::format::{contains, has_additive_identity, step_exponent, Format, Phase};
@@ -23,7 +23,7 @@ use crate::quantum::{Constant, Exponent, Magnitude, MagnitudeCount, Quantum};
 use crate::slots::{slot_in_range, Signed, Slot, Slots};
 use crate::width::{Bool, Width};
 
-/// The predicate this round replaced, kept so the control can be run.
+/// The predicate this one replaced, kept so the control can be run.
 ///
 /// It asked whether the phase sits at zero and looked at slot zero, which is a
 /// different question from whether zero sits on the grid.
@@ -95,8 +95,8 @@ fn a_whole_multiple_phase_keeps_the_identity_at_a_shifted_slot() {
     assert!(has_additive_identity::<Biased<13, 0, 4>>().get());
     assert!(has_additive_identity::<Biased<31, -8, -6>>().get());
 
-    // The control, run rather than described. The predicate this replaced answers
-    // no on all four, so a suite unable to tell the two apart was not testing the
+    // The control, run rather than described. The superseded predicate answers no
+    // on all four, so a suite unable to tell the two apart was not testing the
     // phase coordinate at all.
     assert!(!the_superseded_predicate::<Biased<4, 0, 2>>().get());
     assert!(!the_superseded_predicate::<Biased<7, -2, 2>>().get());

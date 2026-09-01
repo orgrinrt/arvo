@@ -11,9 +11,10 @@
 //! points, and every one of them is reached through the crate's own free functions
 //! rather than through its fields.
 //!
-//! The wholly foreign format is the shape this round measured against: written into
-//! a crate that is not exempt from the bare-primitive lints, it was refused at ten
-//! positions before every coordinate carried a type this crate owns.
+//! The wholly foreign format is the shape the coordinate types were measured
+//! against: written into a crate that is not exempt from the bare-primitive lints,
+//! it was refused at ten positions before every coordinate carried a type this
+//! crate owns.
 //!
 //! Two contracts state obligations and both are checked here, each against
 //! constructions that meet the shape and not the conditions. Those constructions
@@ -60,10 +61,10 @@ fn the_format_inventory_admits_a_member_this_crate_does_not_know_about() {
 //
 // `Ternary` above reuses every part under `Format`, so it never exercised what an
 // implementor supplying the concept's obligations has to write. The four members
-// below supply all of them, and they are what the round measured against: this
-// exact shape, written into a crate that is not exempt from the bare-primitive
-// lints, was refused at ten positions before every coordinate carried a type this
-// crate owns.
+// below supply all of them, and they are what the coordinate types were measured
+// against: this exact shape, written into a crate that is not exempt from the
+// bare-primitive lints, was refused at ten positions before every coordinate
+// carried a type this crate owns.
 
 /// A domain nothing here ships: the rationals at radix three.
 struct TernaryRationals;
@@ -324,10 +325,10 @@ fn the_widest_admitted_width_is_where_the_count_stops_fitting() {
 
 /// A slot range from outside this crate that does not meet the contract.
 ///
-/// The reviewer's construction, values verbatim, kept permanently rather than in
-/// a scratch file. It **compiles**, which is the point: the trait is open and
-/// nothing stops it being written. What it does not do is pass the law below, and
-/// using it does not build, which the `trybuild` case records.
+/// A construction from outside this crate, values verbatim, kept permanently
+/// rather than in a scratch file. It **compiles**, which is the point: the trait
+/// is open and nothing stops it being written. What it does not do is pass the law
+/// below, and using it does not build, which the `trybuild` case records.
 struct RogueRange;
 
 impl Slots for RogueRange {

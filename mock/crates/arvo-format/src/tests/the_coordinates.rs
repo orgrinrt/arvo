@@ -5,7 +5,7 @@
 
 //! What the coordinate types themselves promise.
 //!
-//! Each of these is a law about a type this round introduced, and each is a
+//! Each of these is a law about one of the coordinate types, and each is a
 //! property the contract used to state in a doc comment with nothing holding it.
 //! An index is not an extent, and an extent of nothing admits no index at all.
 //!

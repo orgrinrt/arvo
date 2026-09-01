@@ -58,8 +58,8 @@ impl Fraction {
     /// and normalises by moving the sign to the numerator; only a zero one has
     /// no reading and becomes `ZERO`. This read `ZERO` for both, so every
     /// negative input was discarded outright, which is the same defect
-    /// `Phase::of` carried and the reason the fix there was wrong to stop at
-    /// the one function a reviewer named.
+    /// `Phase::of` carried and the reason the fix there was wrong to stop at the
+    /// one function it was found in.
     ///
     /// **Two pairs cannot be normalised and keep a denominator of one.**
     /// `i64::MIN` has no negation in `i64`, so a denominator of `i64::MIN`, or
