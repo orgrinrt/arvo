@@ -122,14 +122,22 @@ fn tie_up(_lo: usize, hi: usize) -> usize {
 }
 
 fn tie_even(lo: usize, hi: usize) -> usize {
-    if lo % 2 == 0 { lo } else { hi }
+    if lo % 2 == 0 {
+        lo
+    } else {
+        hi
+    }
 }
 
 /// C4's mutant: a tie rule is not what breaks monotonicity, so the control has
 /// to break it somewhere a tie rule cannot reach. This one takes the top slot
 /// whenever the input is odd, which is non-monotone by construction.
 fn round_non_monotone(x: i64, g: &[i64]) -> i64 {
-    if x % 2 != 0 { g[g.len() - 1] } else { round_nearest(x, g, tie_up) }
+    if x % 2 != 0 {
+        g[g.len() - 1]
+    } else {
+        round_nearest(x, g, tie_up)
+    }
 }
 
 /// The four adaptation laws, over the window the grid spans.
@@ -203,9 +211,7 @@ fn main() {
                     }
                 }
                 if w <= 3 && f <= 1 {
-                    println!(
-                        "{w:<2} {f:<2} {label:<7} {hits:<13} {half:<20} {z:<9} {o}"
-                    );
+                    println!("{w:<2} {f:<2} {label:<7} {hits:<13} {half:<20} {z:<9} {o}");
                 }
             }
         }
@@ -234,7 +240,8 @@ fn main() {
         "C2 third phase: the half-step distance claim is FALSE: {}",
         !third_phase_ever_half_step
     );
-    ok &= zero_phase_closes_somewhere && !third_phase_closes_somewhere && !third_phase_ever_half_step;
+    ok &=
+        zero_phase_closes_somewhere && !third_phase_closes_somewhere && !third_phase_ever_half_step;
 
     // ---- part 2: does the adaptation-law half read the tie rule -------------
     //
