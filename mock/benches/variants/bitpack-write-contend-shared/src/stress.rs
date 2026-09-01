@@ -126,6 +126,64 @@ fn naive_kernel_never_corrupts_when_the_split_is_aligned() {
     );
 }
 
+/// Two passes entered at once both finish, which is the property that was
+/// missing rather than the property nobody had thought about.
+///
+/// Every test above shares one process-wide pool and `cargo test` runs them on
+/// their own threads, so they were already doing this and the suite wedged.
+/// Four processes were found sitting on it between two and four and a half
+/// hours, every sample inside `pool::write_pass`'s completion spin, and
+/// `cargo mock test` had been reported twice as producing no output at all,
+/// which is what a hang looks like from outside.
+///
+/// The failure this asserts against is not only the hang. Before the pool took
+/// a lock, a second pass overwrote the first's `vals` and `out` while its
+/// workers were running, so a pass that happened not to hang had written
+/// through another pass's pointers and returned a count about nothing.
+///
+/// It fails rather than hangs when the lock goes, which is the whole reason for
+/// the channel: a plain join would reproduce the wedge instead of reporting it,
+/// and a suite that hangs is the thing being fixed.
+#[test]
+fn two_passes_entered_at_once_both_finish() {
+    use std::sync::mpsc;
+    use std::time::Duration;
+
+    // Long enough that a loaded machine does not fail this spuriously, short
+    // enough to report rather than wedge. A pass at this size is microseconds
+    // and the runs below are two hundred of them.
+    const PATIENCE: Duration = Duration::from_secs(60);
+    const TRIALS: usize = 200;
+
+    let (tx, rx) = mpsc::channel();
+    for arm in 0..2 {
+        let tx = tx.clone();
+        std::thread::Builder::new()
+            .name(format!("concurrent-pass-{arm}"))
+            .spawn(move || {
+                let bad = corruption_count(STRESS_N, STRESS_THREADS, TRIALS, kern_packed_guarded);
+                let _ = tx.send((arm, bad));
+            })
+            .expect("spawning a concurrent pass");
+    }
+    drop(tx);
+
+    for _ in 0..2 {
+        match rx.recv_timeout(PATIENCE) {
+            Ok((arm, bad)) => assert_eq!(
+                bad, 0,
+                "arm {arm} saw the guarded kernel corrupt {bad} of {TRIALS} trials, so the \
+                 two passes reached each other's buffers rather than merely queueing"
+            ),
+            Err(_) => panic!(
+                "a pass did not return within {PATIENCE:?}. Two passes are in flight on one \
+                 process-wide pool, so each is spinning on a `done` counter the other reset. \
+                 `pool::ONE_PASS_AT_A_TIME` is what serialises them."
+            ),
+        }
+    }
+}
+
 /// Sanity: the guarded and naive kernels have identical entry points for the
 /// pool, so this test compiles them against the same call site the stress
 /// tests above use.

@@ -11,7 +11,7 @@
 //! summing partials during it.
 
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::OnceLock;
+use std::sync::{Mutex, OnceLock};
 
 use crate::input::{slice_bounds, MAX_THREADS};
 use crate::WriteKernel;
@@ -122,6 +122,30 @@ fn worker(pool: &'static Pool, index: usize) {
     }
 }
 
+/// Held for the duration of a pass, because the pool is one per process and a
+/// pass is what owns it.
+///
+/// The pool publishes its arguments through the fields above and reads back one
+/// `done` counter, so **two passes in flight at once do not race for the
+/// measurement, they destroy each other**: the second store of `vals` and `out`
+/// redirects workers that are already running on the first pass's buffers, the
+/// second `done.store(0)` erases completions the first is still waiting on, and
+/// both coordinators then spin on a counter that will not reach `threads - 1`
+/// again. The visible symptom is a hang; the invisible one is a pass that
+/// finished having written through another pass's pointers.
+///
+/// The `# Safety` clause below always demanded this and nothing enforced it,
+/// which held for as long as the only caller was the harness, running one
+/// process per bench and per size. `cargo test` is the caller that is not that:
+/// it runs the stress tests in `stress.rs` on their own threads, and three of
+/// them enter here.
+///
+/// The cost on the timed path is one uncontended acquire per pass, against a
+/// pass that spawns nothing, walks the whole column and ends on a spin barrier.
+/// The alternative measured on this machine is four processes wedged between
+/// two and four and a half hours.
+static ONE_PASS_AT_A_TIME: Mutex<()> = Mutex::new(());
+
 /// Run one write pass over `[0, n)` with `threads` threads.
 ///
 /// # Safety
@@ -136,6 +160,13 @@ pub unsafe fn write_pass(
     out: *mut u8,
     kernel: WriteKernel,
 ) {
+    // Poisoning carries no information here: the guarded state is the pool's
+    // own fields, every pass overwrites all of them before publishing, and a
+    // panicking pass leaves nothing a later one reads.
+    let _pass = ONE_PASS_AT_A_TIME
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner());
+
     if threads == 1 {
         let _ = pool(1);
         unsafe { kernel(vals, out, 0, n, n) };
