@@ -26,14 +26,22 @@ exactly the shape it forbids. The intents live as prose on each preset, and
 
 Which overflow mode a preset names is not settled:
 `ruling::wrap_or_clamp_stays_open_and_both_get_priced` is at `open` and says the
-bench decides. Do not fill it in.
+bench decides. Each of the four presets carries a value anyway, because a trait
+with an associated type cannot be implemented without one, and each carries a
+`FIXME` beside it saying the value is a carried default rather than a ratified
+one. Read them that way, and leave the markers where they are until the bench
+answers.
 
 ```rust
 pub trait Strategy {
-    const OBJECTIVE: Objective;
+    type Objective: ObjectiveKind;
     type Adaptation: Adaptation;
 }
 ```
+
+An associated type rather than a const, and the crate's own rustdoc says why: a
+const there becomes a const generic argument depending on a generic parameter at
+the call site, which does not compile without a feature the stack does not take.
 
 Two items, and a third keyed on the preset would be the table again.
 ### Monomorphisation is the dispatch
