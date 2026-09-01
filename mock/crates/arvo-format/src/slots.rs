@@ -85,11 +85,10 @@ pub trait Slots {
     /// shape as the totality claims this replaced.
     ///
     /// **And that is why the refusal is a doctest rather than a `trybuild` case.**
-    /// `trybuild` runs `cargo check`, so it never reaches the evaluation and
-    /// would report a refused program as compiling. Nothing tested this refusal
-    /// at all until the round that gave the other three contracts the same
-    /// obligation; the sentence above was a claim about a mechanism with no arm
-    /// behind it.
+    /// `trybuild` runs `cargo check`, so it never reaches the evaluation and would
+    /// report a refused program as compiling. For as long as the paragraph above
+    /// described the refusal as a fact, nothing anywhere ran it, which made it a
+    /// claim about a mechanism with no arm behind it.
     ///
     /// ```compile_fail
     /// use arvo_format::slots::{slot_in_range, Slots};
@@ -110,7 +109,7 @@ pub trait Slots {
     ///
     /// The control, which is what says the refusal above is this obligation and
     /// not the outside impl being rejected for some other reason: the same shape
-    /// with the ends the right way round builds.
+    /// with the lower index below the higher one builds.
     ///
     /// ```
     /// use arvo_format::slots::{slot_in_range, Slots};

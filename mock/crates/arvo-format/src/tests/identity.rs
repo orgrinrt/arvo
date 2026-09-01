@@ -14,9 +14,11 @@
 //! a nonzero phase and it fixes the denominator at two, the quantum at the
 //! constant family and the slots at the signed range, while the other three set
 //! the numerator to zero. A law asserted only through it is a law measured at one
-//! point of three axes, which is how the previous round's gap survived: every
-//! phase any arm tried was fractional, because the numerator was always odd. The
-//! generic format below is what lets the axes move independently.
+//! point of three axes, and an arm set that never leaves that point cannot see the
+//! regions off it: a numerator that is always odd against a denominator fixed at
+//! two never once tries a whole phase, and a constant quantum never once gives the
+//! magnitude anything to do. The generic format below is what lets the axes move
+//! independently.
 //!
 //! **A half-step phase is not the general fractional case and is not used as one
 //! here.** Whether a fractional phase stays fractional depends on the radix and
@@ -107,16 +109,16 @@ fn the_identity_is_decidable_at_const_time_including_the_search() {
 /// Whether some admitted pair cancels the phase, decided through `contains`.
 ///
 /// The design says the identity question is membership asked at the value zero,
-/// so the two have to agree. This reaches the answer the other way round: it
-/// walks the magnitude range the quantum declares rather than the bounded search,
-/// and it asks `contains` rather than `slot_in_range`, so it exercises the
-/// membership predicate itself.
+/// so the two have to agree. This reaches the answer from the other side: it walks
+/// the magnitude range the quantum declares rather than the bounded search, and it
+/// asks `contains` rather than `slot_in_range`, so it exercises the membership
+/// predicate itself.
 ///
-/// It is not independent of `cancelling_slot` and does not claim to be. What it
-/// is independent of is `has_additive_identity`: its search, its bound and its
-/// early returns. The predicate-against-enumeration check lives in
-/// `mock/research/sketches/phase-over-the-magnitude-range/`, where the arm is an
-/// enumerator that mentions neither.
+/// It is not independent of `cancelling_slot` and does not claim to be. What it is
+/// independent of is `has_additive_identity`: its search, its bound and its early
+/// returns. A stronger check than this one is the predicate against an enumeration
+/// written without reference to either, which is a separate instrument rather than
+/// anything in this file.
 fn zero_is_a_member<F: Format>() -> bool {
     let magnitudes = <F::Quantum as Quantum>::MAGNITUDES;
     (0..magnitudes).any(|magnitude| match cancelling_slot::<F>(magnitude) {
@@ -186,22 +188,19 @@ fn the_control_the_matrix_above_contains_both_verdicts() {
 // reachable through the shipped points: three of the four fix the phase at zero
 // over one, and `Biased` fixes the denominator at two.
 //
-// The expression this round replaced computed the cancelling slot in the declared
-// width as
-// `PHASE_NUM % PHASE_DEN == 0 && slot_in_range(-(PHASE_NUM / PHASE_DEN))`,
-// and two of the arms below diverged in it: the least numerator over minus one
-// overflows the remainder, and that numerator over one overflows the negation.
-// Measured, with the output in
-// `mock/research/sketches/phase-over-the-magnitude-range/`. Diverging on the
-// value path is what `ruling::never_a_runtime_check_and_one_lowered_path`
-// forbids, and neither was reachable by a guard placed before the arithmetic,
-// because both are the arithmetic.
+// **Solved in the width the coordinates are declared in, the cancellation has two
+// pairs it cannot answer.** The least numerator over minus one overflows the
+// remainder, and that numerator over one produces a quotient whose negation
+// overflows. Both diverge rather than answering, and diverging on the value path
+// is what `ruling::never_a_runtime_check_and_one_lowered_path` forbids. Neither is
+// reachable by a guard placed before the arithmetic, because both are the
+// arithmetic.
 //
-// The repair was not a guard. Carrying the division one width up makes both
-// defined, because the only overflowing pair in a signed division is the least
-// value over minus one and the declared width's least value is nowhere near the
-// wider one's. The range check afterwards is what turns a quotient no slot index
-// can hold into `Isnt` rather than into a wrap.
+// Carrying the division one width up is what makes them defined, because the only
+// overflowing pair in a signed division is the least value over minus one and the
+// declared width's least value is nowhere near the wider one's. The range check
+// afterwards is what turns a quotient no slot index can hold into `Isnt` rather
+// than into a wrap.
 
 #[test]
 fn the_extreme_phase_coordinates_are_answered_rather_than_overflowing() {
@@ -259,7 +258,7 @@ fn an_extreme_phase_still_answers_at_every_magnitude() {
     assert!(!has_additive_identity::<OneMagnitude>());
 }
 
-// --- the three arms that were here before, unchanged in what they assert ------
+// --- the phase through the one shipped point that carries one ----------------
 
 #[test]
 fn a_zero_phase_puts_the_additive_identity_on_the_grid() {
@@ -294,8 +293,9 @@ fn a_whole_multiple_phase_keeps_the_identity_at_a_shifted_slot() {
     assert!(has_additive_identity::<Biased<13, 0, 4>>());
     assert!(has_additive_identity::<Biased<31, -8, -6>>());
 
-    // The control: restoring `PHASE_NUM == 0` passes every arm in the test above
-    // and fails all four here, so these reach a region that suite could not.
+    // The control, and it is what makes the four arms above mean anything: a
+    // predicate that ignored the numerator entirely would pass all of them and
+    // fail here.
     assert!(!has_additive_identity::<Biased<4, 0, 1>>());
 }
 
@@ -392,9 +392,9 @@ fn the_base_exponent_does_not_move_the_cancelling_slot() {
 #[test]
 fn the_identity_law_holds_at_every_denominator_rather_than_at_two() {
     // Every denominator from one to sixteen and a spread past it, with a
-    // numerator that is a multiple of it and one that is not. Before this the
-    // only denominator any arm used was two, so "a whole multiple keeps the
-    // identity" had been asked at one point of this axis.
+    // numerator that is a multiple of it and one that is not. Two is the only
+    // denominator the shipped points can express, so without this the law that a
+    // whole multiple keeps the identity is asked at one point of this axis.
     //
     // The quantum is constant here, so the magnitude cannot rescue a fractional
     // phase and the two directions are clean.
@@ -437,10 +437,7 @@ fn a_negative_denominator_is_the_same_phase_with_the_sign_moved() {
     // defined rather than somewhere nobody looked.
     type Positive = Grid<BinaryRationals, Constant<0>, Signed<8>, 4, 2>;
     type Negated = Grid<BinaryRationals, Constant<0>, Signed<8>, -4, -2>;
-    assert_eq!(
-        cancelling_slot::<Positive>(0),
-        cancelling_slot::<Negated>(0)
-    );
+    assert_eq!(cancelling_slot::<Positive>(0), cancelling_slot::<Negated>(0));
 
     // And moving only one of the two flips the slot rather than losing it.
     type Flipped = Grid<BinaryRationals, Constant<0>, Signed<8>, 4, -2>;
@@ -476,8 +473,8 @@ fn a_phase_no_power_of_the_radix_cancels_has_no_identity_in_any_family() {
     // The other direction, and the denominator is three rather than two on
     // purpose. No power of two is divisible by three, so a third stays fractional
     // at every magnitude in every family, which a half does not: the shrinking
-    // family cancels a half at magnitude one, and asserting otherwise here would
-    // be asserting the gloss this round removed.
+    // family cancels a half at magnitude one, so a half here would be asserting a
+    // rule that holds only where the quantum does not move.
     macro_rules! never_cancelled_in {
         ($name:literal, $q:ty) => {{
             type Third = Grid<BinaryRationals, $q, Signed<16>, 1, 3>;
@@ -493,7 +490,7 @@ fn a_phase_no_power_of_the_radix_cancels_has_no_identity_in_any_family() {
     never_cancelled_in!("shrinking quantum", Shrinking<8>);
 
     // The control that separates this from the half-step case, and it is the
-    // finding in one line: the same shrinking family does cancel a half.
+    // whole distinction in one line: the same shrinking family does cancel a half.
     type Half = Grid<BinaryRationals, Shrinking<8>, Signed<16>, 1, 2>;
     assert!(
         has_additive_identity::<Half>(),
@@ -559,8 +556,8 @@ fn the_identity_law_holds_at_a_radix_other_than_two() {
 
 #[test]
 fn a_whole_phase_whose_cancelling_slot_is_out_of_range_has_no_identity() {
-    // The case every arm of the previous round missed, because all four of them
-    // asserted true. A whole phase is necessary and not sufficient: the slot it
+    // The case an arm set that only ever asserts a whole phase keeps the identity
+    // cannot reach. A whole phase is necessary and not sufficient: the slot it
     // lands on has to be one the range admits.
     //
     // `Signed<2>` runs from -2 to 1, and a phase of four quanta cancels at slot
@@ -580,7 +577,7 @@ fn a_whole_phase_whose_cancelling_slot_is_out_of_range_has_no_identity() {
     assert!(has_additive_identity::<InReach>());
 }
 
-// --- the magnitude range, which is the coordinate the function used to ignore -
+// --- the magnitude range, which is the coordinate a constant quantum hides ----
 
 #[test]
 fn a_whole_phase_out_of_reach_low_down_is_found_at_a_higher_magnitude() {
@@ -610,10 +607,10 @@ fn a_whole_phase_out_of_reach_low_down_is_found_at_a_higher_magnitude() {
 
 #[test]
 fn a_fractional_phase_that_becomes_whole_higher_up_keeps_the_identity() {
-    // The half that refutes the old gloss outright. The quantum halves per
-    // magnitude, so a phase of one half is a whole step at magnitude one, and the
-    // identity is on the grid despite the phase having a fractional part at
-    // magnitude zero.
+    // The half that refutes the whole-multiple reading outright. The quantum
+    // halves per magnitude, so a phase of one half is a whole step at magnitude
+    // one, and the identity is on the grid despite the phase having a fractional
+    // part at magnitude zero.
     type Shrink = Grid<BinaryRationals, Shrinking<2>, Signed<8>, 1, 2>;
     assert_eq!(cancelling_slot::<Shrink>(0), Maybe::Isnt);
     assert_eq!(cancelling_slot::<Shrink>(1), Maybe::Is(-1));
@@ -641,7 +638,7 @@ fn a_fractional_phase_that_becomes_whole_higher_up_keeps_the_identity() {
 
 #[test]
 fn the_magnitude_the_identity_is_found_at_is_not_always_the_first() {
-    // Stated on its own because it is the whole content of the correction: the
+    // Stated on its own because it is the whole content of the law: the
     // existential runs over the magnitude, so the answer can come from anywhere
     // in the range rather than from its bottom.
     type Growing = Grid<BinaryRationals, Indexed<0, 4>, Signed<2>, 16, 1>;
