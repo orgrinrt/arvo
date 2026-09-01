@@ -66,14 +66,23 @@
 //! # The ladder, and the one comparison the canon does not make
 //!
 //! Strongest first: `ratified`, `in_force`, `stated`, `proposed`, `unsettled`,
-//! `route-closed`, `nothing`. Six of the seven words are the schema's own, for
-//! a rung or for a namespace, so the vocabulary is not this file's invention.
+//! `route-closed`, `nothing`. Four are the schema's own words for a rung. The
+//! other three stand over something the schema spells differently or does not
+//! spell at all, and `Reach::word` says which is which per word.
 //!
 //! `ratified` over everything is the provenance ladder rather than a reading: a
-//! ruling at that rung governs and nothing else does. `in_force` over `stated`
-//! follows the schema's ordering of the four values and the difference it
-//! states between enforcement and an ack. `stated` over `proposed` is the
-//! ladder again, op's own direction over an agent's claim.
+//! ruling at that rung governs and nothing else does. `stated` over `proposed`
+//! is the ladder again, op's own direction over an agent's claim.
+//!
+//! **`in_force` over `stated` is this file's reading and two shipped things
+//! here disagree about it.** The schema lists the four values in that order and
+//! declares no ranking over them, so the list is not the argument it reads as.
+//! `mock/lints/no_ruling_supersedes_one_that_outranks_it.rs:58` ranks the same
+//! two the other way round, weakest first as `open`, `in_force`, `stated`,
+//! `ratified`, on the ground that `in_force` is a process call nobody stamped.
+//! Deciding between them is a canon reading and takes two independent
+//! agreements; until somebody does that, this is a call rather than a
+//! derivation and is marked as one.
 //!
 //! **`proposed` over `unsettled` is this file's reading and nothing in the
 //! canon makes it.** The ladder is how far an obligation has got toward being
@@ -196,9 +205,19 @@ pub enum Reach {
 impl Reach {
     /// The word used in a report.
     ///
-    /// Every word is either a `rung` value or a namespace's own word, spelled as
-    /// the schema spells it, so a tier in the report can be grepped for in
-    /// `mockspace.toml` and found.
+    /// Four of the seven are `rung` values spelled as the schema spells them, so
+    /// a reader holding a report can grep `mockspace.toml` for the word and land
+    /// on the field description that defines it.
+    ///
+    /// **Three cannot be grepped for and each names what it stands over.**
+    /// `unsettled` stands over the rung the schema spells `open`, plus any rung
+    /// this cannot read at all, which is why it is not simply spelled `open`.
+    /// `route-closed` stands over the namespace the schema spells `retirement`,
+    /// and keeps the corpus's word rather than the schema's because the tier was
+    /// named in `mock/research/202608072330_the-numeral-canon-panel/` and a
+    /// report that stops using it stops matching the research it mechanises.
+    /// `nothing` is this file's own word for absence and no schema word stands
+    /// behind it.
     pub fn word(self) -> &'static str {
         match self {
             Self::Ratified => "ratified",
