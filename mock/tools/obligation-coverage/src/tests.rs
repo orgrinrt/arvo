@@ -12,10 +12,10 @@
 
 use std::collections::BTreeMap;
 
-use mockspace::RegistryView;
 use mockspace::tool::{Outcome, Tool, ToolContext};
+use mockspace::RegistryView;
 
-use super::{ObligationCoverage, Reach, preconditions, reach, stamps, tally};
+use super::{preconditions, reach, stamps, tally, ObligationCoverage, Reach};
 
 /// A registry with the rows a test names.
 ///
@@ -98,7 +98,10 @@ fn stamped_by(rung: &str) -> RegistryView {
 
 /// A proposal naming the obligation with nothing stamping it.
 fn unstamped() -> RegistryView {
-    view(&[DEMAND, ("proposal::a_claim", &[("obligation", "the_thing")])])
+    view(&[
+        DEMAND,
+        ("proposal::a_claim", &[("obligation", "the_thing")]),
+    ])
 }
 
 /// A retirement naming the obligation and nothing else doing so.
@@ -160,7 +163,10 @@ fn a_rung_the_walk_cannot_read_does_not_reach_the_top_tier() {
     for v in [
         ruling_at("whatever_comes_next"),
         ruling_at(""),
-        view(&[DEMAND, ("ruling::he_said_so", &[("obligation", "the_thing")])]),
+        view(&[
+            DEMAND,
+            ("ruling::he_said_so", &[("obligation", "the_thing")]),
+        ]),
     ] {
         assert_eq!(tier(&v), Reach::Unsettled);
     }
@@ -173,7 +179,10 @@ fn the_report_prints_a_rulings_rung_beside_it() {
     let (_, open) = run(&ruling_at("open"), &[]);
     assert!(open.contains("rung = open"), "{open}");
     let (_, absent) = run(
-        &view(&[DEMAND, ("ruling::he_said_so", &[("obligation", "the_thing")])]),
+        &view(&[
+            DEMAND,
+            ("ruling::he_said_so", &[("obligation", "the_thing")]),
+        ]),
         &[],
     );
     assert!(absent.contains("rung = (absent)"), "{absent}");
@@ -391,7 +400,10 @@ fn answered_holds_exactly_where_something_constructive_reaches_it() {
 fn a_precondition_is_never_a_tier_and_never_counted_as_coverage() {
     // The arithmetic temptation, refused. An obligation with a precondition and
     // nothing else is further from met than one with nothing at all.
-    let v = view(&[DEMAND, ("law::a_result", &[("precondition_for", "the_thing")])]);
+    let v = view(&[
+        DEMAND,
+        ("law::a_result", &[("precondition_for", "the_thing")]),
+    ]);
     assert_eq!(reach(&v)["the_thing"].0, Reach::Nothing);
     assert_eq!(preconditions(&v)["the_thing"].len(), 1);
 }
@@ -465,7 +477,10 @@ fn the_tally_counts_every_obligation_once_and_at_one_tier() {
             &[("rung", "in_force"), ("obligation", "in_force")],
         ),
         ("ruling::s", &[("rung", "stated"), ("obligation", "stated")]),
-        ("ruling::o", &[("rung", "open"), ("obligation", "unsettled")]),
+        (
+            "ruling::o",
+            &[("rung", "open"), ("obligation", "unsettled")],
+        ),
         ("proposal::p", &[("obligation", "proposed")]),
         ("retirement::x", &[("obligation", "closed")]),
     ]);
@@ -521,7 +536,11 @@ fn the_report_names_every_tier_and_the_rows_that_got_each_there() {
     assert!(matches!(outcome, Outcome::Clean { examined: 2 }), "{text}");
     assert!(text.contains("ruling::he_said_so"), "{text}");
     for tier in super::TIERS {
-        assert!(text.contains(tier.word()), "{} missing: {text}", tier.word());
+        assert!(
+            text.contains(tier.word()),
+            "{} missing: {text}",
+            tier.word()
+        );
     }
 }
 
@@ -546,7 +565,10 @@ fn the_report_marks_a_route_closed_obligation_rather_than_letting_it_read_as_unt
 #[test]
 fn the_report_names_an_unanswered_obligation_carrying_a_precondition() {
     for v in [
-        view(&[DEMAND, ("law::a_result", &[("precondition_for", "the_thing")])]),
+        view(&[
+            DEMAND,
+            ("law::a_result", &[("precondition_for", "the_thing")]),
+        ]),
         view(&[
             DEMAND,
             ("retirement::a_dead_end", &[("obligation", "the_thing")]),
