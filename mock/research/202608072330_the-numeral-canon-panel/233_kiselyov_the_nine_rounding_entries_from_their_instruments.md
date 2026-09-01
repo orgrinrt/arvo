@@ -551,7 +551,80 @@ same defect entry 2's row carries.
 
 ## 8. The finding that outranks all nine
 
-To be written: `half_up` carries the defect that retired `truncation`.
+Adding `away_from_zero` is a small repair. The finding underneath it is not, and
+it is the one thing in this file I would put to the panel ahead of the nine.
+
+**`half_up` is ambiguous on a signed domain in exactly the way `truncation` was.
+The panel's own probes implement it both ways. The two ways land on opposite
+sides of the property two law rows are about, so one ratified-adjacent row's
+truth value is decided by a clause the ruling did not write.**
+
+Four measurements, in order.
+
+**The two readings both exist in this panel's committed corpus.** Ties toward
+positive infinity at `56_probes/q2_affine_membership.rs:73`,
+`147_probes/r1:117-121` and `149_probes/y2:115-121`. Ties away from zero at
+`97_probes/p2_congruence_predicts_the_laws.py:76-79`. Both would be written
+`half_up` under the ratified six, and `mock/tools/rounding-vocabulary/src/lib.rs:73`
+maps the first family's spelling straight onto it.
+
+**They are different functions.** `k1`'s K3, predicted before the run and
+reported in `233_probes/k1_out.txt`: witness `p = -255, f = 1`, ties-to-`+inf`
+gives `-127` and ties-away gives `-128`. They coincide on a non-negative domain,
+per K1, which is why this has stayed invisible: four of the six instruments in
+section 4 sweep domains where the question cannot arise.
+
+**They differ on translation equivariance, which is the property the fusion rows
+say the verdict *is*.** `k2`'s P1, predicted before the run: the equivariant set
+is exactly `{floor, ceil, half_up(+inf)}`. Measured over `f in 1..=5` on the
+`W = 6` window, ties-to-`+inf` is equivariant and ties-away is not. Control R5
+requires the property to separate the modes rather than accept or reject all
+seven, and it passes.
+
+**And that changes a measured verdict, not a label.** `k2`'s P2, predicted before
+the run and reported in `233_probes/k2_out.txt` part B, signed wrapping at
+`W = 6` over exhaustive triples:
+
+```
+half_up(+inf)    signed    F=0 0.00%  F=1 0.00%  F=2 0.00%  F=3 0.00%  F=4 0.00%  F=5 0.00%
+half_up(away)    signed    F=0 0.00%  F=1 1.64%  F=2 2.76%  F=3 3.34%  F=4 3.40%  F=5 2.93%
+```
+
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping` puts
+`nearest-half-up` in its **holds** region. Under one reading of the ratified name
+that is right and the region stands. Under the other it is **wrong**, and the
+entry moves from the holding region to the failing one. That is a measured
+region changing sides, not a spelling being tidied.
+
+Control R4 requires every mode to be free at `F = 0`, so the sweep is measuring
+rounding rather than something else, and it passes. Control R3 requires the six
+columns y2 published to reproduce, and they do.
+
+**What each choice costs, since the call is the panel's and not mine.**
+
+- **`half_up` means ties toward positive infinity.** The signed fusion row stands
+  as written. Then `97_probes/p2`'s rule is not `half_up`, entry 3 has no name at
+  all, and the vocabulary needs a seventh deterministic name for it or that row
+  narrows to `signedness = unsigned`, which is not what it swept.
+- **`half_up` means ties away from zero.** Entry 3 resolves cleanly. Then the
+  signed fusion row's holds region is wrong as written, `nearest-half-up` moves
+  to its fails region, and every claim that reasoned from "three of the six
+  positions are equivariant on the signed domain" is owed a re-read, because the
+  three are then `{floor, ceil}` and nothing else.
+- **Both, under two names.** The vocabulary goes to eight: `away_from_zero` from
+  section 7, and a second half rule here. That is the honest count of what the
+  corpus actually measured, and it is the only option under which no committed
+  region moves and no instrument has to be reread.
+
+**Why this went unseen, which is the part worth keeping.** The ruling that
+retired `truncation` did the right thing on the evidence it had, and its
+`because` says the tell: the two operations "differ on exactly the rows where
+signedness is live". That tell was applied to one word. It is a property of the
+whole vocabulary, and any name whose definition branches on the sign of the
+operand or on the direction of a tie carries it. `toward_zero` and
+`away_from_zero` branch on the sign explicitly and are named for it, so they are
+safe. `half_up` branches on nothing in its name, which is why it reads as
+settled. The class was closed at one instance.
 
 ## 9. Unlicensed mechanisms, outside the question I was asked
 
