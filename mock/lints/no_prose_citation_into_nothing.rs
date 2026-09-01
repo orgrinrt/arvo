@@ -40,19 +40,38 @@
 //! is a statement about what the corpus holds rather than about what deserves
 //! to be there.
 //!
-//! **Seven are real, and they are two kinds.** Two are truncations of a slug
-//! that does exist: `ruling::the_warrant_is_a_token_and_a_clause_on_the_values`
-//! is missing the `_side` its row carries, which the corpus otherwise spells in
-//! full, and `proposal::a_min_plus_fold_needs_an_absorbing_top_` still
-//! carries the underscore that got cut. Five name no row at all and are
-//! paraphrases of a claim rather than citations of it.
+//! **Seven are real, and they are three kinds.**
+//!
+//! **Three stop part way through a slug that does exist**, so each is a strict
+//! prefix of a real id: `ruling::the_warrant_is_a_token_and_a_clause_on_the_values`
+//! against a row ending `_side`, `proposal::a_min_plus_fold_needs_an_absorbing_top_`
+//! against one ending `_and_wrapping_supplies_none`, and
+//! `proposal::the_multiplicative_guard` against one ending
+//! `_grows_linearly_and_the_saving_is_adaptation_fusion`. The third reads as a
+//! clean concept name rather than as a cut-off one, which is why it was filed
+//! among the paraphrases until somebody measured it against the ids.
+//!
+//! **Two name a slug that exists under a different namespace.**
+//! `proposal::staged_narrowing_depends_on_its_staging` is a `probe` row, and
+//! `ruling::observability_is_relative_to_a_declared_signature` is a `proposal`
+//! row, cited correctly elsewhere in the corpus as one. The slug is not the
+//! defect in either; the namespace in front of it is.
+//!
+//! **Two name nothing anywhere** and are paraphrases of a claim rather than
+//! citations of it:
+//! `proposal::a_strategys_weighting_is_rationalisable_from_the_arms_it_selects`
+//! and `retirement::dl_the_associativity_gate_on_the_algorithm_crates`, whose
+//! `dl_` is the spelling a retirement id carries, against no such row.
 //!
 //! # A trailing underscore is kept rather than trimmed
 //!
 //! The token runs to the first character that cannot be in a slug, so
 //! `..._top_` is read with its underscore and does not resolve. Trimming it
-//! would make that citation resolve to a different row and the defect would
-//! disappear into a passing check, which is the failure this lint is about.
+//! would not resolve either, since the trimmed form is no row, so nothing is
+//! lost by keeping it and something is given up by cutting it: a scanner that
+//! drops a trailing separator has guessed at what a writer meant, and the guess
+//! is wrong wherever a slug legitimately continues past that point. A defect
+//! that disappears into a passing check is the failure this lint is about.
 use std::path::Path;
 
 use mockspace::{Lint, LintError, RegistryView, RepoContext, RepoLint, Severity};
@@ -272,8 +291,10 @@ mod tests {
 
     #[test]
     fn a_trailing_underscore_is_kept_so_the_citation_does_not_resolve() {
-        // Trimming it would make this resolve to a different row and the
-        // defect would vanish into a passing check.
+        // The fixture declares the trimmed form as a real row, which the corpus
+        // does not, so this is the hardest version of the case: even where
+        // trimming would resolve, the lint does not trim, and the defect does
+        // not vanish into a passing check.
         let f = findings(
             "prose-cite-underscore",
             &[(
@@ -307,6 +328,53 @@ mod tests {
         let over = findings("prose-cite-member-over", ONE_ROW, &member, 0);
         assert_eq!(over.len(), 1, "{over:?}");
         assert!(over[0].contains("is the record"), "{}", over[0]);
+    }
+
+    #[test]
+    fn a_real_slug_under_the_wrong_namespace_is_named_like_any_other() {
+        // Two of the corpus's seven are this and neither is a truncation or a
+        // paraphrase: the slug is spelled correctly and sits under a different
+        // namespace, so a check that matched on the slug alone would report
+        // both resolving. Both namespaces hold a row, so nothing here is caught
+        // by the undeclared-namespace arm below.
+        let rows: &[(&str, &[(&str, &str)])] = &[
+            ("probe::staged_narrowing_depends_on_its_staging", &[("establishes", "a thing")]),
+            ("proposal::a_row_so_the_namespace_exists", &[("says", "a thing")]),
+        ];
+        let f = findings(
+            "prose-cite-wrong-ns",
+            rows,
+            &[(
+                "42_member.md",
+                "See `proposal::staged_narrowing_depends_on_its_staging`.\n",
+            )],
+            0,
+        );
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("staged_narrowing"), "{}", f[0]);
+        assert!(
+            f[0].contains("proposal::"),
+            "the finding names the namespace that was cited rather than the one \
+             holding the row: {}",
+            f[0]
+        );
+
+        // The control: the same slug under the namespace that holds it is
+        // silent, which is what makes the arm above a statement about the
+        // namespace rather than about the slug.
+        assert!(
+            findings(
+                "prose-cite-right-ns",
+                rows,
+                &[(
+                    "42_member.md",
+                    "See `probe::staged_narrowing_depends_on_its_staging`.\n",
+                )],
+                0,
+            )
+            .is_empty(),
+            "the correctly-namespaced citation fired"
+        );
     }
 
     #[test]
