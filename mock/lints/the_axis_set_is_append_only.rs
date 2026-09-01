@@ -10,72 +10,84 @@
 //! existed**, which is the shape a claim of totality takes when nobody names
 //! the mechanism behind it.
 //!
-//! What is actually at stake is narrow and worth stating exactly. Adding an
-//! axis reaches nobody: a predicate's absence quantifies over the world rather
-//! than over this file, so a row written before an axis was declared was always
-//! as narrow as it now reads. **Deleting or renaming one is what rewrites
-//! meaning**, because a span written over that axis becomes unparseable and a
-//! written absence becomes nonsense, and both fail silently: the corpus still
-//! reads, and the sentence it now says is a different one.
+//! What is at stake is narrow and worth stating exactly. Adding an axis reaches
+//! nobody: a predicate's absence quantifies over the world rather than over
+//! this file, so a row written before an axis was declared was always as narrow
+//! as it now reads. **Deleting or renaming one is what rewrites meaning**,
+//! because a span written over that axis becomes unparseable and a written
+//! absence becomes nonsense, and both fail silently: the corpus still reads,
+//! and the sentence it now says is a different one.
 //!
-//! **The record that decides it is git**, because that is the only record a
-//! deletion cannot edit in the commit that deletes. Every id the namespace has
-//! carried in `dimension.toml` across that file's history must still resolve to
-//! a row. Six commits touch the file, so the walk is one `git log` and six
-//! `git show`, measured at 0.2 seconds.
+//! **The record is git, and only git.** Every id the namespace has carried in
+//! `dimension.toml` across that file's history must still resolve to a row.
+//! History is the one record a deletion cannot edit in the commit that deletes,
+//! which is the whole reason it is the record.
 //!
-//! **A roster is kept beside it**, read in both directions: every id on it must
-//! resolve, and every row must be on it. That pair is forgeable, and knowing
-//! exactly how is the point of keeping it. An author who deletes an axis is
-//! told a roster entry no longer resolves, and the obvious way to silence that
-//! is to delete the entry, which is a two-line edit in a file already open.
-//! What the roster buys instead is a check that needs no git at all, and a
-//! record of the axis set a reader can see without running anything.
+//! # What a roster cost, since one stood here and is gone
 //!
-//! **So the arms fail differently on purpose.** The history arm is unforgeable
-//! and needs a git checkout. The roster arms need nothing and can be defeated
-//! in one commit. **Where the history cannot be read, that is reported rather
-//! than passed**, because a check that could not run is not a check that
-//! agreed.
+//! A hand-written list of every id ever declared sat beside this, read in both
+//! directions: every id on it had to resolve, and every row had to be on it.
+//! **Together those two force the list to equal the row ids exactly**, so it
+//! held no record the registry did not, and deleting a row together with its
+//! entry passed every arm. It read as an independent historical record and was
+//! a duplicate of the current state.
 //!
-//! **The premise is checked rather than assumed.** The history arm reads one
-//! path, so a second file declaring the namespace would leave its axes
-//! unprotected without any arm noticing. `law.toml` has already been split
-//! exactly that way, so the third arm reports it, and the fix is to widen the
-//! scan rather than to keep the premise. Reading every path the registry
-//! directory has ever held measured 7.3 seconds against 0.2 for the one file,
-//! which is why the scan is narrow and the premise is guarded.
+//! It was walked state by state before being removed, and there is no state
+//! where it earned its place. A one-sided deletion fires the history arm too. A
+//! two-sided deletion is the case it was rebuilt for and the case it failed. An
+//! unrostered new row protected nothing, because history protects an axis from
+//! the commit that declares it whether or not anybody wrote it down. And it was
+//! never a fallback for an unreadable history, because that already blocks.
 //!
-//! **No ceiling and no threshold.** The refused state is not a population that
-//! grew, it is one id that stopped resolving, and there is no number to
-//! grandfather because the committed registry satisfies every arm exactly
-//! today: 24 rows, 24 roster entries, and 24 ids across the file's whole
-//! history.
+//! # A history that cannot be trusted is reported, never passed
+//!
+//! **A shallow clone is the case that makes this more than a formality.**
+//! `git log` on a truncated history succeeds and returns fewer commits, so the
+//! walk comes back with a narrower answer and nothing says it narrowed. The arm
+//! that a single commit cannot defeat is then defeated by one commit plus a
+//! clone depth: measured at 1 commit against 6, exit status zero, with the
+//! two-sided deletion passing clean.
+//!
+//! So the repository is asked whether it is shallow before the walk is
+//! believed, and **an answer that cannot be obtained counts as shallow**, since
+//! a check that cannot establish it read the whole history must not claim it
+//! did. Both routes land in the same report.
+//!
+//! # The premise is checked rather than assumed
+//!
+//! The walk reads one path, so a second file declaring the namespace would
+//! leave its axes unprotected with no arm noticing. `law.toml` has already been
+//! split exactly that way. The third arm reports it, and the repair is to widen
+//! the scan rather than to keep the premise.
+//!
+//! **Widening it now would be the wrong trade.** Reading every path the
+//! registry directory has ever held measured 7.3 seconds against 0.2 for the
+//! one file, over 131 commits and 12 paths, and this runs at every commit. That
+//! is a cost paid forever against a case that does not exist yet, so the arm
+//! makes the premise fail loudly and the scan gets widened when something
+//! actually needs it.
 //!
 //! # What the unit tests here cannot ask
 //!
-//! That the shipped roster matches the committed registry, and that the history
-//! walk reads the real repository. A unit test cannot build a `RegistryView`
-//! from `mock/registry/` (that needs a TOML parser the generated pack has no
-//! route to depend on) and a planted temporary directory is not a git checkout.
-//! So the predicate is a pure function over the three inputs and every arm below
-//! drives it directly, the reading of git and of the registry directory being
-//! the thin part left over.
+//! That the walk reads the real repository, because a planted temporary
+//! directory is not a git checkout, and that the shipped registry satisfies it,
+//! because building a `RegistryView` from `mock/registry/` needs a TOML parser
+//! the generated pack has no route to depend on. So the predicate is a pure
+//! function over its inputs and every arm drives it directly; reading git and
+//! reading the registry directory are the thin parts left over, and the string
+//! handling that decides shallowness is split out so it can be pinned.
 //!
-//! **All three were driven against the real repository, deliberately.** Renaming
-//! `radix` produces the roster arm naming it gone, plus two
-//! `every-predicate-names-a-declared-axis` errors in the same run, which is the
-//! harm this describes arriving on cue. Adding an unrostered row produces the
-//! second arm. **Deleting `leaf_aliasing` from the registry and the roster
-//! together produces the history arm**, and produced nothing at all before that
-//! arm existed, which is the defect it was added for.
+//! **Both were driven against the real repository, deliberately.** Deleting
+//! `leaf_aliasing` from the registry produces this arm naming it. Doing that in
+//! a `--depth 1` clone produced `all lints passed` before the shallow check
+//! existed, which is the defect that check was added for.
 use std::path::Path;
 
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
 use crate::canon_rows::finding;
 pub fn repo_lint() -> Box<dyn RepoLint> {
-    Box::new(TheAxisSetIsAppendOnly { roster: ROSTER })
+    Box::new(TheAxisSetIsAppendOnly)
 }
 
 const LINT: &str = "the-axis-set-is-append-only";
@@ -83,46 +95,10 @@ const LINT: &str = "the-axis-set-is-append-only";
 /// The namespace whose rows are the axes.
 const NAMESPACE: &str = "dimension";
 
-/// Every axis id that has ever been declared.
-///
-/// **Append only.** A new axis adds a line here in the same commit that adds
-/// the row. Removing a line is removing the check, not satisfying it.
-const ROSTER: &[&str] = &[
-    "integer_width",
-    "fraction_width",
-    "total_width",
-    "signedness",
-    "overflow_policy",
-    "rounding",
-    "operation",
-    "arity",
-    "chain_length",
-    "target_features",
-    "threads",
-    "container",
-    "alignment",
-    "access_pattern",
-    "strategy",
-    "radix",
-    "ambient_domain",
-    "accumulator_width",
-    "build_profile",
-    "toolchain",
-    "operand_window",
-    "occupancy",
-    "association",
-    "leaf_aliasing",
-];
+/// The registry file the axes are declared in, from the repository root.
+const FILE: &str = "mock/registry/dimension.toml";
 
-/// The lint, carrying the roster it pins.
-///
-/// A field rather than the constant read inside the predicate, so a test can
-/// drive it with a planted roster against a planted registry. A roster only
-/// ever exercised against the rows it was copied from is a roster nobody has
-/// seen fire.
-struct TheAxisSetIsAppendOnly {
-    roster: &'static [&'static str],
-}
+struct TheAxisSetIsAppendOnly;
 impl Lint for TheAxisSetIsAppendOnly {
     fn name(&self) -> &'static str {
         LINT
@@ -132,15 +108,10 @@ impl Lint for TheAxisSetIsAppendOnly {
         Severity::HARD_ERROR
     }
 }
-/// The registry file the axes are declared in, from the repository root.
-const FILE: &str = "mock/registry/dimension.toml";
-
 impl RepoLint for TheAxisSetIsAppendOnly {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        let live = ids_of(ctx.registry.rows_in(NAMESPACE));
         check(
-            &live,
-            self.roster,
+            &ids_of(ctx.registry.rows_in(NAMESPACE)),
             ids_ever_declared(ctx.repo_root).as_deref(),
             &files_declaring(&ctx.mock_dir.join("registry")),
         )
@@ -162,27 +133,12 @@ fn ids_of(rows: &[String]) -> Vec<String> {
 /// The whole predicate, over ids rather than qualified rows so a test can state
 /// its fixtures the way the registry states them.
 ///
-/// `ever` is `None` where the history could not be read at all, which is itself
-/// reported: a check that cannot run is not a check that passed.
-fn check(
-    live: &[String],
-    roster: &[&str],
-    ever: Option<&[String]>,
-    declaring: &[String],
-) -> Vec<LintError> {
+/// `ever` is `None` where the history could not be read or could not be
+/// trusted, which is reported rather than passed.
+fn check(live: &[String], ever: Option<&[String]>, declaring: &[String]) -> Vec<LintError> {
     let rows: Vec<&str> = live.iter().map(String::as_str).collect();
-    let gone: Vec<&str> = roster
-        .iter()
-        .copied()
-        .filter(|id| !rows.contains(id))
-        .collect();
-    let unrostered: Vec<&str> = rows
-        .iter()
-        .copied()
-        .filter(|id| !roster.contains(id))
-        .collect();
-
     let mut out = Vec::new();
+
     match ever {
         Some(ever) => {
             let lost: Vec<&str> = ever
@@ -196,10 +152,11 @@ fn check(
                     None,
                     format!(
                         "{} axes were declared in this file's history and resolve to no row \
-                         now: {lost:?}. This arm reads git rather than the roster below, so \
-                         deleting the row and its roster entry in one commit does not reach \
-                         it. Restore the row under its original id, or rewrite history, which \
-                         is not something this repository does.",
+                         now: {lost:?}. A span written over an axis becomes unparseable when \
+                         the axis goes and a written absence becomes nonsense, and both fail \
+                         silently. Restore the row under its original id. A rename is a \
+                         deletion and needs the old id kept, or every predicate written in it \
+                         stops parsing.",
                         lost.len()
                     ),
                 ));
@@ -209,55 +166,26 @@ fn check(
             LINT,
             None,
             format!(
-                "the history of `{FILE}` could not be read, so the arm that a single commit \
-                 cannot defeat did not run and only the roster below applied. That roster \
-                 lives in the working tree and can be edited in the same commit as a \
-                 deletion, so this is a weaker check rather than a passing one. Run this in a \
-                 git checkout of the repository."
+                "the history of `{FILE}` could not be read, or could not be established as \
+                 complete, so the only check on the axis set did not run. A shallow or \
+                 partial clone reaches this: `git log` on a truncated history succeeds and \
+                 returns fewer commits, so believing it would report a deleted axis as fine. \
+                 Run this in a full checkout."
             ),
         )),
     }
+
     if declaring.len() > 1 || (declaring.len() == 1 && !FILE.ends_with(&declaring[0])) {
         out.push(finding(
             LINT,
             None,
             format!(
-                "`{NAMESPACE}` rows are declared in {declaring:?} and the history arm reads \
+                "`{NAMESPACE}` rows are declared in {declaring:?} and the history walk reads \
                  only `{FILE}`, so an axis declared in another of them is unprotected. Widen \
-                 the scan to every file that declares the namespace, and mind that reading \
+                 the walk to every file that declares the namespace, and mind that reading \
                  every path the registry directory has ever held measured 7.3 seconds against \
-                 0.2 for the one file, so the scan is the part to make cheaper rather than \
+                 0.2 for the one file, so the walk is the part to make cheaper rather than \
                  the premise to keep."
-            ),
-        ));
-    }
-    if !gone.is_empty() {
-            out.push(finding(
-                LINT,
-                None,
-                format!(
-                    "{} declared axes no longer resolve to a row: {gone:?}. The set is \
-                     append-only, because a span written over an axis becomes unparseable when \
-                     the axis goes and a written absence becomes nonsense, and both fail \
-                     silently. Restore the row under its original id. A rename is a deletion and \
-                     needs the old id kept, or every predicate written in it stops parsing. \
-                     Deleting the roster entry instead removes the check rather than satisfying \
-                     it.",
-                    gone.len()
-                ),
-            ));
-        }
-        if !unrostered.is_empty() {
-            out.push(finding(
-                LINT,
-                None,
-                format!(
-                    "{} axes are declared and not rostered: {unrostered:?}. Nothing would catch \
-                     their deletion, so the arm above cannot see them and the set is append-only \
-                     only over the part somebody remembered to list. Add each id to `ROSTER` in \
-                     the commit that declares it, which is the one moment nobody is thinking \
-                     about deletion.",
-                unrostered.len()
             ),
         ));
     }
@@ -266,12 +194,21 @@ fn check(
 
 /// Every `id` the namespace has carried in `FILE` across that file's history.
 ///
-/// `None` where git is not available or the file has no history, which the
-/// caller reports rather than reading as nothing lost. Six commits touch this
-/// file, so the walk is one `git log` and six `git show`, measured at 0.2
-/// seconds.
+/// `None` where git is unavailable, where the file has no history, or where the
+/// repository is shallow and the walk would therefore be narrower than it
+/// reads. Six commits touch this file in a full checkout, so the walk is one
+/// `git log` and six `git show`, measured at 0.2 seconds.
 fn ids_ever_declared(repo_root: &Path) -> Option<Vec<String>> {
-    let commits = git(repo_root, &["log", "--format=%H", "--", FILE])?;
+    if is_shallow(git(repo_root, &["rev-parse", "--is-shallow-repository"]).as_deref()) {
+        return None;
+    }
+    let commits = git(repo_root, &["log", "--follow", "--format=%H", "--", FILE])?;
+    if commits.split_whitespace().next().is_none() {
+        // No commit touches the file, so the walk established nothing rather
+        // than establishing that nothing was lost. `Some(vec![])` would read as
+        // the second and is the same false pass a shallow clone produces.
+        return None;
+    }
     let mut out: Vec<String> = Vec::new();
     for commit in commits.split_whitespace() {
         let Some(text) = git(repo_root, &["show", &format!("{commit}:{FILE}")]) else {
@@ -282,6 +219,18 @@ fn ids_ever_declared(repo_root: &Path) -> Option<Vec<String>> {
     out.sort();
     out.dedup();
     Some(out)
+}
+
+/// Whether the walk must be treated as truncated.
+///
+/// **An answer that could not be obtained counts as shallow.** A check unable
+/// to establish that it read the whole history may not claim it did, and the
+/// two routes are reported as one thing because they mean one thing.
+fn is_shallow(answer: Option<&str>) -> bool {
+    match answer {
+        Some(text) => text.trim() != "false",
+        None => true,
+    }
 }
 
 /// Every id declared under this namespace in one file's text.
@@ -314,9 +263,7 @@ fn files_declaring(registry: &Path) -> Vec<String> {
         .filter_map(Result::ok)
         .map(|e| e.path())
         .filter(|p| p.extension().is_some_and(|e| e == "toml"))
-        .filter(|p| {
-            std::fs::read_to_string(p).is_ok_and(|t| !ids_in(&t).is_empty())
-        })
+        .filter(|p| std::fs::read_to_string(p).is_ok_and(|t| !ids_in(&t).is_empty()))
         .filter_map(|p| p.file_name().map(|n| n.to_string_lossy().into_owned()))
         .collect();
     out.sort();
@@ -343,48 +290,48 @@ mod tests {
         assert_findings_block, assert_not_declared_off, assert_registered, view,
     };
 
-    const ROSTER_TWO: &[&str] = &["radix", "signedness"];
-
-    /// The one file the history arm reads, as `files_declaring` reports it.
+    /// The one file the walk reads, as `files_declaring` reports it.
     const ONE_FILE: &[&str] = &["dimension.toml"];
 
-    /// The whole predicate on planted inputs.
-    ///
-    /// `ever` is stated per arm rather than defaulted, because defaulting it to
-    /// the live rows would make the history arm silent everywhere and no arm
-    /// would be about it.
-    fn run(live: &[&str], roster: &[&str], ever: Option<&[&str]>, files: &[&str]) -> Vec<String> {
+    fn run(live: &[&str], ever: Option<&[&str]>, files: &[&str]) -> Vec<String> {
         let live: Vec<String> = live.iter().map(|s| (*s).to_string()).collect();
-        let ever: Option<Vec<String>> =
-            ever.map(|e| e.iter().map(|s| (*s).to_string()).collect());
+        let ever: Option<Vec<String>> = ever.map(|e| e.iter().map(|s| (*s).to_string()).collect());
         let files: Vec<String> = files.iter().map(|s| (*s).to_string()).collect();
-        super::check(&live, roster, ever.as_deref(), &files)
+        super::check(&live, ever.as_deref(), &files)
             .into_iter()
             .map(|e| e.message)
             .collect()
     }
 
-    /// The ordinary case: history agrees with the rows, one declaring file.
-    fn plant(live: &[&str]) -> Vec<String> {
-        run(live, ROSTER_TWO, Some(live), ONE_FILE)
+    #[test]
+    fn a_history_agreeing_with_the_rows_is_silent() {
+        assert!(run(&["radix", "signedness"], Some(&["radix", "signedness"]), ONE_FILE).is_empty());
     }
 
     #[test]
-    fn a_registry_holding_every_rostered_axis_is_silent() {
-        assert!(plant(&["radix", "signedness"]).is_empty());
-    }
-
-    #[test]
-    fn a_rostered_axis_that_is_gone_is_named() {
-        let f = plant(&["radix"]);
+    fn an_id_in_history_that_no_longer_resolves_is_named() {
+        let f = run(&["radix"], Some(&["radix", "signedness"]), ONE_FILE);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("signedness"), "{}", f[0]);
-        assert!(!f[0].contains("radix"), "the surviving axis was named: {}", f[0]);
+        assert!(
+            !f[0].contains("radix"),
+            "the surviving axis was named: {}",
+            f[0]
+        );
     }
 
     #[test]
-    fn every_missing_axis_is_named_rather_than_the_first() {
-        let f = plant(&[]);
+    fn a_deletion_that_edits_every_file_in_the_tree_is_still_caught() {
+        // The case a roster could not reach, and the reason history is the
+        // record. Nothing in the working tree mentions the axis any more.
+        let f = run(&["radix"], Some(&["radix", "leaf_aliasing"]), ONE_FILE);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("leaf_aliasing"), "{}", f[0]);
+    }
+
+    #[test]
+    fn every_lost_id_is_named_rather_than_the_first() {
+        let f = run(&[], Some(&["radix", "signedness"]), ONE_FILE);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("radix"), "{}", f[0]);
         assert!(f[0].contains("signedness"), "{}", f[0]);
@@ -392,78 +339,57 @@ mod tests {
     }
 
     #[test]
-    fn an_axis_declared_and_not_rostered_is_reported_as_unprotected() {
-        // Growth is still free in the sense that matters: an addition is not
-        // refused and nothing has to be undone. What it is not is invisible.
-        let f = plant(&["radix", "signedness", "an_axis_declared_later"]);
+    fn an_axis_declared_since_the_history_was_read_is_not_a_finding() {
+        // Growth is free. A row present now and absent from the walk is an
+        // addition, and the arm is one-directional on purpose.
+        assert!(run(&["radix", "a_new_axis"], Some(&["radix"]), ONE_FILE).is_empty());
+    }
+
+    #[test]
+    fn an_id_whose_name_merely_contains_a_lost_one_does_not_satisfy_it() {
+        let f = run(
+            &["radix", "signedness_of_the_accumulator"],
+            Some(&["radix", "signedness"]),
+            ONE_FILE,
+        );
         assert_eq!(f.len(), 1, "{f:?}");
-        assert!(f[0].contains("an_axis_declared_later"), "{}", f[0]);
-        assert!(f[0].contains("not rostered"), "{}", f[0]);
-        assert!(!f[0].contains("no longer resolve"), "an addition was reported as a deletion: {}", f[0]);
-    }
-
-    #[test]
-    fn a_rename_fires_on_both_halves_and_says_which_is_which() {
-        let f = plant(&["radix", "signedness_but_renamed"]);
-        assert_eq!(f.len(), 2, "both halves are reported: {f:?}");
-        let gone = f.iter().find(|m| m.contains("no longer resolve"))
-            .unwrap_or_else(|| panic!("no deletion finding: {f:?}"));
-        assert!(gone.contains("signedness"), "{gone}");
-        assert!(gone.contains("rename"), "the repair is not stated: {gone}");
-        let added = f.iter().find(|m| m.contains("not rostered"))
-            .unwrap_or_else(|| panic!("no unprotected finding: {f:?}"));
-        assert!(added.contains("signedness_but_renamed"), "{added}");
-    }
-
-    #[test]
-    fn an_axis_whose_id_merely_contains_a_rostered_one_does_not_satisfy_it() {
-        let f = plant(&["radix", "signedness_of_the_accumulator"]);
-        assert_eq!(f.len(), 2, "{f:?}");
-        let gone = f.iter().find(|m| m.contains("no longer resolve"))
-            .unwrap_or_else(|| panic!("the longer id was read as the rostered axis: {f:?}"));
-        assert!(gone.contains("\"signedness\""), "{gone}");
-        let added = f.iter().find(|m| m.contains("not rostered"))
-            .unwrap_or_else(|| panic!("the rostered id was read as covering the longer one: {f:?}"));
-        assert!(added.contains("signedness_of_the_accumulator"), "{added}");
-    }
-
-    #[test]
-    fn a_deletion_from_both_the_registry_and_the_roster_is_still_caught() {
-        // The hole the roster alone had, and the reason the history arm exists.
-        // Both roster arms are satisfied exactly, because the roster was edited
-        // to match, and the axis is still gone.
-        let f = run(&["radix"], &["radix"], Some(&["radix", "signedness"]), ONE_FILE);
-        assert_eq!(f.len(), 1, "a both-sides deletion was silent: {f:?}");
-        assert!(f[0].contains("signedness"), "{}", f[0]);
-        assert!(f[0].contains("history"), "the arm that fired is not the history one: {}", f[0]);
-        assert!(!f[0].contains("not rostered"), "{}", f[0]);
-    }
-
-    #[test]
-    fn control_a_history_agreeing_with_the_rows_says_nothing() {
-        // The negative control for the arm above. Without it that arm passes
-        // for as long as the history arm fires on anything at all.
-        assert!(run(&["radix", "signedness"], ROSTER_TWO, Some(&["radix", "signedness"]), ONE_FILE).is_empty());
+        assert!(f[0].contains("\"signedness\""), "{}", f[0]);
     }
 
     #[test]
     fn a_history_that_cannot_be_read_is_reported_rather_than_passed() {
-        // A check that could not run is not a check that passed, and the
-        // roster that remains is the forgeable one.
-        let f = run(&["radix", "signedness"], ROSTER_TWO, None, ONE_FILE);
+        let f = run(&["radix", "signedness"], None, ONE_FILE);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("could not be read"), "{}", f[0]);
-        assert!(f[0].contains("weaker check rather than a passing one"), "{}", f[0]);
+        assert!(f[0].contains("shallow"), "{}", f[0]);
+    }
+
+    #[test]
+    fn a_shallow_repository_is_treated_as_unreadable_and_an_unknown_answer_too() {
+        // The blocker this lint shipped with once. `git log` on a truncated
+        // history exits zero and returns fewer commits, so a narrow `Some`
+        // reads exactly like a complete one. An answer nobody could obtain
+        // counts as shallow for the same reason: a check that cannot establish
+        // it read the whole history may not claim it did.
+        assert!(super::is_shallow(Some("true\n")), "shallow was not detected");
+        assert!(super::is_shallow(None), "an unobtainable answer was trusted");
+        assert!(
+            super::is_shallow(Some("something unexpected")),
+            "an answer that is not `false` was trusted"
+        );
+        assert!(
+            !super::is_shallow(Some("false\n")),
+            "a full checkout was refused"
+        );
     }
 
     #[test]
     fn a_second_file_declaring_the_namespace_is_reported() {
-        // The premise the history arm rests on, checked rather than assumed.
+        // The premise the walk rests on, checked rather than assumed.
         // `law.toml` has already been split this way once.
         let f = run(
-            &["radix", "signedness"],
-            ROSTER_TWO,
-            Some(&["radix", "signedness"]),
+            &["radix"],
+            Some(&["radix"]),
             &["dimension-the-later-axes.toml", "dimension.toml"],
         );
         assert_eq!(f.len(), 1, "{f:?}");
@@ -472,44 +398,20 @@ mod tests {
     }
 
     #[test]
-    fn a_file_that_is_not_the_scanned_one_is_reported_even_when_it_is_the_only_one() {
-        // The rename case for the file itself. One file is not enough; it has
-        // to be the file the history arm reads.
-        let f = run(
-            &["radix", "signedness"],
-            ROSTER_TWO,
-            Some(&["radix", "signedness"]),
-            &["axes.toml"],
-        );
+    fn a_file_that_is_not_the_walked_one_is_reported_even_when_it_is_the_only_one() {
+        // One file is not enough; it has to be the file the walk reads.
+        let f = run(&["radix"], Some(&["radix"]), &["axes.toml"]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("axes.toml"), "{}", f[0]);
     }
 
     #[test]
-    fn control_an_empty_registry_names_the_whole_roster_rather_than_panicking() {
-        let f = run(&[], ROSTER_TWO, Some(&[]), ONE_FILE);
-        assert_eq!(f.len(), 1, "{f:?}");
-        assert!(f[0].contains("radix"), "{}", f[0]);
+    fn control_nothing_declared_and_nothing_in_history_is_the_one_silent_vacuum() {
+        assert!(run(&[], Some(&[]), ONE_FILE).is_empty());
     }
 
     #[test]
-    fn an_empty_roster_is_loud_rather_than_vacuously_silent() {
-        // This arm used to assert the opposite, and pinning that was the
-        // defect: with only the deletion arm, an empty roster passed over any
-        // registry at all, so the emptier the roster the quieter the lint.
-        let f = run(&["radix"], &[], Some(&["radix"]), ONE_FILE);
-        assert_eq!(f.len(), 1, "{f:?}");
-        assert!(f[0].contains("radix"), "{}", f[0]);
-        assert!(f[0].contains("not rostered"), "{}", f[0]);
-    }
-
-    #[test]
-    fn control_nothing_declared_and_nothing_rostered_is_the_one_silent_vacuum() {
-        assert!(run(&[], &[], Some(&[]), ONE_FILE).is_empty());
-    }
-
-    #[test]
-    fn a_row_in_another_namespace_does_not_satisfy_the_roster() {
+    fn a_row_in_another_namespace_is_not_an_axis() {
         // The discrimination `ids_of` rests on. A filter written on the slug
         // alone counts `ruling::signedness` as the axis and passes.
         let rows = vec![
@@ -533,31 +435,23 @@ mod tests {
     }
 
     #[test]
-    fn the_shipped_roster_pins_something_and_holds_no_duplicate() {
-        assert!(super::ROSTER.len() >= 24, "{}", super::ROSTER.len());
-        let mut sorted = super::ROSTER.to_vec();
-        sorted.sort_unstable();
-        let mut deduped = sorted.clone();
-        deduped.dedup();
-        assert_eq!(sorted, deduped, "the roster pins an id twice");
-    }
-
-    #[test]
     fn its_findings_block_every_gate() {
-        assert_findings_block(&super::TheAxisSetIsAppendOnly { roster: ROSTER_TWO }, &view(&[], &[]));
+        // This runs the real `check_repo` against a tree where no commit
+        // touches the file, which is the third route to a walk that
+        // established nothing, alongside a shallow clone and an unavailable
+        // git. It found nothing at all until that route returned `None`, so
+        // this arm is what pins it as well as pinning the severity.
+        assert_findings_block(&super::TheAxisSetIsAppendOnly, &view(&[], &[]));
     }
 
     #[test]
     fn it_is_not_declared_off_so_it_runs_at_all() {
-        assert_not_declared_off(&super::TheAxisSetIsAppendOnly { roster: super::ROSTER });
+        assert_not_declared_off(&super::TheAxisSetIsAppendOnly);
     }
 
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
-        assert_eq!(
-            super::TheAxisSetIsAppendOnly { roster: super::ROSTER }.name(),
-            super::LINT
-        );
+        assert_eq!(super::TheAxisSetIsAppendOnly.name(), super::LINT);
     }
 
     #[test]
