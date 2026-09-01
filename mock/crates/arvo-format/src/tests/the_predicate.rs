@@ -250,7 +250,13 @@ fn a_phase_never_carries_a_denominator_that_cannot_divide() {
     // and `of(i64::MIN, -7)` names a large positive and answers negative. So
     // neither the sign nor the magnitude survives on these two, and the
     // assertion says which rather than implying the sign is kept.
-    assert_eq!((Phase::of(3, i64::MIN).numerator(), Phase::of(3, i64::MIN).denominator()), (3, 1));
+    assert_eq!(
+        (
+            Phase::of(3, i64::MIN).numerator(),
+            Phase::of(3, i64::MIN).denominator()
+        ),
+        (3, 1)
+    );
     assert_eq!(
         (
             Phase::of(i64::MIN, -7).numerator(),

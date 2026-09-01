@@ -490,7 +490,13 @@ fn a_fraction_never_carries_a_denominator_that_cannot_divide() {
     assert_eq!(Fraction::of(3, 7).numerator(), 3);
     // The exactly representable negative, which is what the sweep above was
     // blind to and is the whole of the finding.
-    assert_eq!((Fraction::of(3, -7).numerator(), Fraction::of(3, -7).denominator()), (-3, 7));
+    assert_eq!(
+        (
+            Fraction::of(3, -7).numerator(),
+            Fraction::of(3, -7).denominator()
+        ),
+        (-3, 7)
+    );
     // A zero denominator names no position, so it is the one input that still
     // reads as the zero position rather than a mangled ratio. The control that
     // keeps the value assertion from swallowing the case it does not cover.
@@ -499,11 +505,17 @@ fn a_fraction_never_carries_a_denominator_that_cannot_divide() {
     // on these, which the doc says and which is pinned here so the loss cannot
     // spread to the pairs that do normalise.
     assert_eq!(
-        (Fraction::of(3, i64::MIN).numerator(), Fraction::of(3, i64::MIN).denominator()),
+        (
+            Fraction::of(3, i64::MIN).numerator(),
+            Fraction::of(3, i64::MIN).denominator()
+        ),
         (3, 1)
     );
     assert_eq!(
-        (Fraction::of(i64::MIN, -7).numerator(), Fraction::of(i64::MIN, -7).denominator()),
+        (
+            Fraction::of(i64::MIN, -7).numerator(),
+            Fraction::of(i64::MIN, -7).denominator()
+        ),
         (i64::MIN, 1)
     );
 }
@@ -616,4 +628,3 @@ fn a_dither_at_the_edges_still_selects_between_two_neighbours() {
         );
     }
 }
-
