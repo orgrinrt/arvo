@@ -1,0 +1,175 @@
+q1. the statement is two clauses, and they disagree
+
+== PART A. clause 1: rounding an on-grid value returns it unchanged ==
+counterexamples, over every grid point of the declared domain
+mode                   s=0     s=1     s=2     s=3     s=4     s=5     s=6   signedness
+floor                    0       0       0       0       0       0       0   unsigned
+ceil                     0       0       0       0       0       0       0   unsigned
+toward_zero              0       0       0       0       0       0       0   unsigned
+away_from_zero           0       0       0       0       0       0       0   unsigned
+half_up(+inf)            0       0       0       0       0       0       0   unsigned
+half_up(away)            0       0       0       0       0       0       0   unsigned
+half_even                0       0       0       0       0       0       0   unsigned
+floor                    0       0       0       0       0       0       0   signed
+ceil                     0       0       0       0       0       0       0   signed
+toward_zero              0       0       0       0       0       0       0   signed
+away_from_zero           0       0       0       0       0       0       0   signed
+half_up(+inf)            0       0       0       0       0       0       0   signed
+half_up(away)            0       0       0       0       0       0       0   signed
+half_even                0       0       0       0       0       0       0   signed
+
+  C1 must-fail: the planted non-identity map, same checker
+PLANTED shifted        256     256     256     256     256     256     256   unsigned
+  C1 ok: 1792 counterexamples, so part A's zeros are earned
+
+== PART B. clause 2: the property the instrument calls retraction ==
+differing triples out of the whole cube, unsigned, W in {4, 6}
+mode                 W   F        triples         differ   verdict
+floor                4   0           4096              0   holds
+floor                4   1           4096            800   FAILS
+floor                4   2           4096           1128   FAILS
+floor                4   3           4096            910   FAILS
+floor                4   4           4096            543   FAILS
+floor                6   0         262144              0   holds
+floor                6   1         262144          61952   FAILS
+floor                6   2         262144         116352   FAILS
+floor                6   3         262144         138880   FAILS
+floor                6   4         262144         128723   FAILS
+floor                6   5         262144          94884   FAILS
+floor                6   6         262144          54201   FAILS
+ceil                 4   0           4096              0   holds
+ceil                 4   1           4096            800   FAILS
+ceil                 4   2           4096           1128   FAILS
+ceil                 4   3           4096            925   FAILS
+ceil                 4   4           4096            495   FAILS
+ceil                 6   0         262144              0   holds
+ceil                 6   1         262144          61952   FAILS
+ceil                 6   2         262144         116352   FAILS
+ceil                 6   3         262144         138880   FAILS
+ceil                 6   4         262144         128852   FAILS
+ceil                 6   5         262144          95918   FAILS
+ceil                 6   6         262144          51357   FAILS
+toward_zero          4   0           4096              0   holds
+toward_zero          4   1           4096            800   FAILS
+toward_zero          4   2           4096           1128   FAILS
+toward_zero          4   3           4096            910   FAILS
+toward_zero          4   4           4096            543   FAILS
+toward_zero          6   0         262144              0   holds
+toward_zero          6   1         262144          61952   FAILS
+toward_zero          6   2         262144         116352   FAILS
+toward_zero          6   3         262144         138880   FAILS
+toward_zero          6   4         262144         128723   FAILS
+toward_zero          6   5         262144          94884   FAILS
+toward_zero          6   6         262144          54201   FAILS
+half_up(+inf)        4   0           4096              0   holds
+half_up(+inf)        4   1           4096            864   FAILS
+half_up(+inf)        4   2           4096           1248   FAILS
+half_up(+inf)        4   3           4096            880   FAILS
+half_up(+inf)        4   4           4096            550   FAILS
+half_up(+inf)        6   0         262144              0   holds
+half_up(+inf)        6   1         262144          62976   FAILS
+half_up(+inf)        6   2         262144         118272   FAILS
+half_up(+inf)        6   3         262144         135200   FAILS
+half_up(+inf)        6   4         262144         107789   FAILS
+half_up(+inf)        6   5         262144          63242   FAILS
+half_up(+inf)        6   6         262144          32909   FAILS
+half_up(away)        4   0           4096              0   holds
+half_up(away)        4   1           4096            864   FAILS
+half_up(away)        4   2           4096           1248   FAILS
+half_up(away)        4   3           4096            880   FAILS
+half_up(away)        4   4           4096            550   FAILS
+half_up(away)        6   0         262144              0   holds
+half_up(away)        6   1         262144          62976   FAILS
+half_up(away)        6   2         262144         118272   FAILS
+half_up(away)        6   3         262144         135200   FAILS
+half_up(away)        6   4         262144         107789   FAILS
+half_up(away)        6   5         262144          63242   FAILS
+half_up(away)        6   6         262144          32909   FAILS
+half_even            4   0           4096              0   holds
+half_even            4   1           4096            832   FAILS
+half_even            4   2           4096           1152   FAILS
+half_even            4   3           4096            796   FAILS
+half_even            4   4           4096            476   FAILS
+half_even            6   0         262144              0   holds
+half_even            6   1         262144          62464   FAILS
+half_even            6   2         262144         116736   FAILS
+half_even            6   3         262144         133280   FAILS
+half_even            6   4         262144         106345   FAILS
+half_even            6   5         262144          62442   FAILS
+half_even            6   6         262144          32303   FAILS
+away_from_zero       4   0           4096              0   holds
+away_from_zero       4   1           4096            800   FAILS
+away_from_zero       4   2           4096           1128   FAILS
+away_from_zero       4   3           4096            925   FAILS
+away_from_zero       4   4           4096            495   FAILS
+away_from_zero       6   0         262144              0   holds
+away_from_zero       6   1         262144          61952   FAILS
+away_from_zero       6   2         262144         116352   FAILS
+away_from_zero       6   3         262144         138880   FAILS
+away_from_zero       6   4         262144         128852   FAILS
+away_from_zero       6   5         262144          95918   FAILS
+away_from_zero       6   6         262144          51357   FAILS
+
+  clause 2 holds at every F = 0 cell: true
+  clause 2 fails at every F >= 1 cell, every listed mode: true
+  So clause 1 is a theorem and clause 2 is not, and the row's `fails`
+  field is about clause 2. The `so` joining them is the defect.
+
+== PART D. the declared value `rounding = exact` ==
+`dimension::rounding`: "`rounding = exact` names the case where nothing
+is discarded, which is a value of the axis rather than its absence."
+mode                 W   F        triples         differ   verdict
+exact                4   0           4096              0   holds  unsigned
+exact                4   1           4096              0   holds  unsigned
+exact                4   2           4096              0   holds  unsigned
+exact                4   3           4096              0   holds  unsigned
+exact                4   4           4096              0   holds  unsigned
+exact                6   0         262144              0   holds  unsigned
+exact                6   1         262144              0   holds  unsigned
+exact                6   2         262144              0   holds  unsigned
+exact                6   3         262144              0   holds  unsigned
+exact                6   4         262144              0   holds  unsigned
+exact                6   5         262144              0   holds  unsigned
+exact                6   6         262144              0   holds  unsigned
+exact                4   0           4096              0   holds  signed
+exact                4   1           4096              0   holds  signed
+exact                4   2           4096              0   holds  signed
+exact                4   3           4096              0   holds  signed
+exact                4   4           4096              0   holds  signed
+exact                6   0         262144              0   holds  signed
+exact                6   1         262144              0   holds  signed
+exact                6   2         262144              0   holds  signed
+exact                6   3         262144              0   holds  signed
+exact                6   4         262144              0   holds  signed
+exact                6   5         262144              0   holds  signed
+exact                6   6         262144              0   holds  signed
+
+  C2 must-fail: the same comparison with an arm that discards one bit
+    W=4 F=0  differ=3374
+    W=4 F=1  differ=3374
+    W=4 F=2  differ=3374
+    W=4 F=3  differ=3374
+    W=4 F=4  differ=3374
+    W=6 F=0  differ=250046
+    W=6 F=1  differ=250046
+    W=6 F=2  differ=250046
+    W=6 F=3  differ=250046
+    W=6 F=4  differ=250046
+    W=6 F=5  differ=250046
+    W=6 F=6  differ=250046
+  C2 ok: 1767192 differing triples on the planted discarding arm,
+         so part D's zeros come from `exact` and not from the harness
+
+  C3 must-fail: part B's F = 0 zeros, against the planted shifted map
+  C3 ok: 3840 differing triples at W=4 F=0 for the planted map
+
+== WHAT THIS REFUTES ==
+1. `228` section 3.3: "That sentence is true of every mode at every
+   fraction width." Part B: the sentence's second clause is false at
+   every F >= 1 for every mode. Only clause 1 is a theorem, and
+   `228`'s control C2 checks clause 1 alone.
+2. `228` finding F4, `fails: rounding: rounding any`. Part D: at the
+   declared value `rounding = exact` the law HOLDS at every cell of
+   both signednesses, so `any` on the `fails` side is false.
+
+instrument: sound
