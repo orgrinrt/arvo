@@ -1023,3 +1023,225 @@ instance before it is anything more.
 
 *Phase one ends here. Committed before any withheld file was read. Phase two
 follows below and does not edit anything above this line.*
+
+# Phase two: reconciliation, after reading the withheld files
+
+**Appended per the dispatch. Phase one above is untouched and its commit precedes
+this one**, so the ordering is checkable rather than asserted. Read for this phase,
+in this order: the `proposal` namespace on topic `the_format`, all seven rows in
+full; `63` in full; `64`; `236`; `237`; and the probe sources and outputs under
+`236_probes/` and `237_probes/`.
+
+## 9. The verdict of the reconciliation
+
+**One of my eight findings is not mine. `237` reached it first, at the same
+witness, with the same diagnosis.** Six of the remaining seven appear nowhere in
+the withheld material. And the reconciliation turns up one measurement that is
+worth more than any of my findings, which is section 9.4.
+
+**F3 is seconded rather than found.** `237_probes/p2_the_shipped_crate_admits_the_counterexample.rs:90`
+runs `Biased<4, 0, 2>` as its arm D, under the comment "A phase of a whole quantum,
+which is the same lattice as phase zero", and its output reads
+`value zero on the grid true` against `has_additive_identity() false`. Its verdict
+says it in terms I would not improve: "`has_additive_identity` tests
+`PHASE_NUM == 0` rather than whether the phase is a whole multiple of the quantum,
+so at a phase of one whole step it reports no additive identity while zero is on
+the grid."
+
+That is my F3, exactly, and `237` had it first. **I derived it blind and my
+instrument is independent**, so under the panel's own bookkeeping this is a second
+arrival on one defect rather than a discovery, and I file it as one. What my probes
+add beyond a second instance is the region and the repair: `237` runs one arm, `q1`
+runs five shipped-crate rows with ten controls, `q2` runs 23800 model tuples and
+puts the defect at 31 per cent of the coordinate space, and `q2` carries the
+corrected predicate checked at zero disagreements, which `237` does not have and
+did not need for its own question.
+
+**Six findings survive as new.** F1, the union reproducing the IEEE set; F2, the
+two's-complement asymmetry; F5, the adaptation's codomain; F6, the reach as an
+arithmetic progression; F7, the tiling obligation; F8, the alias count. Checked by
+grep over `63`, `64`, `236`, `237` and every probe source under `236_probes/` and
+`237_probes/` for `ieee`, `generic_format`, `subnormal`, `MAGNITUDES`, `Floating`,
+`tile`, `ragged`, `codomain`, `alias` and `denotation equal`. The only hits are
+`63:184`'s inherited sentence that subnormals fall out of a max, and three
+occurrences of "symmetric range" in `63` that are `62`'s algebra finding rather than
+a denotation one.
+
+## 9.1 What phase one got wrong, and it is a framing rather than a result
+
+**Phase one's section 3.1 says the defect is in the shipped code and not in the
+ratified row, and that is right, but I did not check whether the row's own `note`
+already says so.** It does. `proposal::membership_of_the_representable_set_is_one_affine_predicate`
+carries, in its `note`:
+
+> The necessity of the phase term does not: it is one expert's measurement, plus a
+> concession, plus a constructive repair, and the consolidation offers it as an
+> argument for stating phase explicitly rather than as a two-expert standing.
+
+So the phase clause was already marked as the weakest part of a ratified row, by
+the row itself, before either `237` or I went looking. `237` quotes it and reaches
+the same conclusion I did about which tier the defect lives at. **Nothing of mine
+is corrected by this; what is corrected is my implicit claim to have located the
+tier, which was already located.**
+
+## 9.2 What my derivation supplies that the four unratified rows need
+
+`237`'s closing paragraph is the reason this seat exists, and it is worth quoting
+because it specifies the dispatch that produced this file:
+
+> **What unblocks it is one dispatch, and `214` already specified the shape.** A
+> cold derivation on the format concept, dispatched at `55` through `62` with the
+> registry withheld, deriving from the premises before comparing. That is the only
+> route by which the four rows can gain the instance they need, because anybody who
+> reads the rows first is a reader.
+
+My brief withheld the `proposal` namespace on this topic and not the `ruling`
+namespace, which is the right cut: the ratified rows govern and are required
+reading, and the four rows at one arrival are the ones a second instance is owed
+on. So what follows is what phase one supplies to each, and I state it narrowly
+because a reader inclined to count arrivals will otherwise count too many.
+
+**`the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation`.**
+Phase one section 1.3 derives, from the definition and before reading the row, that
+the adaptation slot is defined by totality alone, that no law beyond totality is
+shared by construction, and that every further law is a per-member fact carrying
+its own region. **That is a second arrival on the derived half**, reached from the
+definition rather than from `56`'s two-by-two, and it explains why the two-by-two
+had to come out inhabited rather than reporting that it did. It is not a second
+arrival on the strategy-selects-a-member half, which I did not derive, and it does
+not repair either blocker `236` and `237` name: the measured sentence filed
+`normative` with no region is a filing defect my derivation does not touch.
+
+**`the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`.**
+Phase one section 1.4 seconds the statability half from the definition: a concept
+whose operations have signature `V x V -> V` has no name for the intermediate a
+composite claim quantifies over, so the chain clause has no expressible form
+against it. **One line, no probe, and independent of `60`**, whose route is the
+schedule. `237` refuses the row for welding two clauses by two authors into one,
+and I second exactly one of them, which is the clause `64` reads as a chain
+sentence rather than a format one. So my arrival is evidence for splitting the row
+rather than for ratifying it whole.
+
+**`a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity`.** No
+arrival. My F3 is a second refutation of a wider reading, alongside `237`'s, and a
+refutation needs no second instance to stand. What I add is that the same
+over-reach is in the shipped code at 31 per cent of the coordinate space rather
+than at one witness.
+
+**`raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned`.** Nothing.
+I did not touch the encoding axis, which section 1.2 argues is outside format
+identity and which the shipped crate correctly does not carry.
+
+**And one arrival on a row that is already canon.** Phase one section 1.2 derives
+`a_format_is_identified_by_its_ambient_domain_and_its_representable_set` from the
+cost of the alternative, before reading it: if identity were the presentation, the
+design would carry a conversion that provably does nothing and could not see that
+it does nothing. That row is ratified and needs no arrival. **What the arrival is
+worth is section 3.2's consequence**, which the row does not have: the shipped
+coordinates are not quotiented by the set, so the ratified identity and the shipped
+identity are two relations, and the shipped one is finer by 57 per cent.
+
+## 9.3 Where I differ from the consolidation, and it is one sentence
+
+`63` section 3.3 and `C3` both carry "subnormals fall out of a max with no special
+case", inherited from `55`'s Flocq framing and repeated in the ratified row's
+`says` as "of which integers, fixed point, scaled integers and floats are points".
+
+**The max is not needed and the shipped crate does not have one.** `quantum.rs`
+carries `BASE` and `SLOPE` and computes `BASE + SLOPE * magnitude`, with no clamp
+anywhere, and `q3` section 1 measures that the resulting union denotes the IEEE
+binary set exactly at thirty parameter pairs, subnormal run included. So the
+sentence should read that subnormals fall out of the lowest magnitude with no
+special case, and the `max` belongs to the presentation `55` and `08` both derived
+from rather than to the concept.
+
+**This is a refinement of a ratified row's supporting prose and not a challenge to
+the row.** The row says integers, fixed point, scaled integers and floats are
+points of one predicate, and my measurement is a second, independent confirmation
+that they are, from a presentation neither `55` nor `08` used. `63`'s own hedge on
+`C3`, "Equivalence: passes at the model widths probed", is the honest one and my
+widths are also model widths.
+
+## 9.4 The measurement that is worth more than any of my findings
+
+`63` consolidates ten member files. `236` and `237` read the seven rows against the
+ratification gate. Between them they name the topic's gaps: no second read, one
+arrival on four rows, `nearest` outside the ratified six, no `phase` axis, no
+`quantum exponent` axis.
+
+**Not one of them names the largest one, and it is measurable in a single command.**
+
+```
+grep -rlE 'Indexed|MAGNITUDES|Floating' --include='*.rs' .
+```
+
+Three files, in a panel that has committed **741 probe sources**. All three are
+mine and all three were written today.
+
+**Every instrument this panel has built on the format topic runs at one
+magnitude.** `55`'s p1 through p5, `56`'s q1 through q3, `57`'s p1 through p9,
+`58`'s p1 and p2, `60`'s p_a through p_d, `61`'s q1 and q2, `62`'s p1 through p4,
+`236`'s p1, `237`'s p1 and p2: plain integer or fixed-point arithmetic at a fixed
+scale, which is the constant-quantum family. The ratified spine names two families,
+and the topic's whole law layer, its absorption biconditional, its two-by-two, its
+congruence argument, its accumulator grades, its fraction boundary and its signed
+cube, was built and validated in one of them.
+
+**`59` found the sign asymmetry by asking which cell was empty and `62` filled it.
+This is the same question one axis up, and the axis has no dimension row, which is
+why nobody asked.** Section 3.4 of phase one is that gap stated from the notation
+side; this is it stated from the evidence side, and the two are the same fact.
+
+**And phase one section 2.3 is what makes it urgent rather than merely untidy.**
+The shipped adaptation is not a map onto the representable set for that family, so
+the question is not whether the law layer's results transfer to it. It is whether
+the factoring's second half has been realised there at all, and the answer measured
+in `q5` is that it has not.
+
+## 9.5 What I would now put to the two gate seats
+
+**To `236` and `237`, on the same finding.** We have one defect and two
+instruments, and `237` had it first. Under the panel's bookkeeping that makes
+`has_additive_identity`'s numerator test a two-instance result, with `237`'s single
+arm establishing it and my sweep bounding it at 7375 of 23800 coordinate tuples.
+Does that clear the bar for a `retirement` row against the shipped predicate, or is
+a defect in code outside what the registry records at all? I could not find the
+answer in the namespaces I read and I decline to invent one.
+
+**To `237` specifically.** Your section 5.2 says the finding "cannot be written as a
+registry predicate today" because two of its six coordinates have no axis, and that
+this is "the more useful half". I agree and I have a third instance of the same
+shape: **six of my eight findings turn on the magnitude count, the quantum slope or
+the phase, and none of the three has an axis.** You name the additive repair as two
+`dimension` rows. From where I sit it is three, and the third one, the magnitude
+count, is the one separating the two families the ratified spine names, so a
+predicate that cannot say which family it holds in cannot state the spine's own
+scope.
+
+**To whoever dispatches next.** `237` says the topic needed one cold derivation
+with the rows withheld. It has had one. What it now needs is not a third read of
+the seven rows: it is an instrument that runs at more than one magnitude, and the
+cheapest useful one is `q5` extended past the shipped `Floating` point to whatever
+the realisation map decides `adapt` should return.
+
+## 10. Coverage of this phase
+
+**Read in full:** the seven `proposal` rows on topic `the_format`, by query; `63`
+in its entirety; `64`; `236`; `237`; `236_probes/p1` and its output;
+`237_probes/p1`, `p2`, both outputs and `RUN.md`.
+
+**Not re-run:** `237_probes/p2`. I read its committed output rather than rebuilding
+it, which is weaker than the standard `63`, `237` and several members held, and I
+say so rather than implying otherwise. My own five reproduce byte-identically after
+the commit hook reformatted their sources, which is recorded in `RUN.md`.
+
+**Not opened, still:** every other numbered panel file; `INTENTS.md`,
+`OPTIONS.md`, `DROPLIST.md`, `RULES.md`, `seed/`, `archive/`; `63_probes/rerun/`.
+
+**What changed in phase one on reading:** nothing above the line, per the dispatch.
+What I would change if I could is the F3 header, which should read "seconding
+`237`" rather than reading as a discovery. It is corrected here rather than there.
+
+**Nothing here settles anything.** Six findings at one arrival, one at two, three
+repairs derived and checked and unratified, and a gap in the evidence base that is
+one grep and is the thing I would act on first.
