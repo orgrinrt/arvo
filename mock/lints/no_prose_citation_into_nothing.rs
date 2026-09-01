@@ -71,13 +71,18 @@
 //!
 //! # A trailing `...` says a cut happened, and is read as one
 //!
-//! Four occurrences over two distinct slugs are written with an ellipsis after
-//! them: `proposal::a_min_plus_fold_needs_an_absorbing_top_...` against a row
-//! ending `_and_wrapping_supplies_none`, and
-//! `proposal::the_multiplicative_guard...` against one ending
-//! `_grows_linearly_and_the_saving_is_adaptation_fusion`. The second reads as a
-//! clean concept name rather than a cut-off one, which is why it sat among the
-//! paraphrases until somebody measured it against the ids.
+//! Some of the corpus writes a citation with an ellipsis after it, as
+//! `proposal::a_min_plus_fold_needs_an_absorbing_top_...` against a row ending
+//! `_and_wrapping_supplies_none`, or `proposal::the_multiplicative_guard...`
+//! against one ending `_grows_linearly_and_the_saving_is_adaptation_fusion`.
+//! The second reads as a clean concept name rather than a cut-off one, which is
+//! why it sat among the paraphrases until somebody measured it against the ids.
+//!
+//! **How many there are is not written here**, because a resolving elision
+//! fires nothing and the number moves whenever the corpus or the registry does.
+//! It moved under this paragraph once already, on a merge, while the paragraph
+//! beside it argued that a count of elisions must not be hand-stated. Grep for
+//! `\.\.\.` after a qualified slug to get the current one.
 //!
 //! `...` is outside the slug charset, so it cannot be part of a spelling and
 //! the author put it there to say the id continues. That is the whole
@@ -143,9 +148,10 @@ const NAME: &str = "no-prose-citation-into-nothing";
 /// arrives at the same number and shows neither, so it cannot say whether the
 /// number is right for the right reason.
 ///
-/// It falls when a slug is declared under the id the prose already used, it
-/// fell by two when the scanner stopped cutting a citation at a line break,
-/// and by four more when a trailing `...` stopped being read as a spelling.
+/// It falls when a slug is declared under the id the prose already used, and
+/// it fell twice for a scanner that had been reading a spelling where there
+/// was none: once at a line break, once at a trailing `...`. Re-read it off
+/// the finding when it moves rather than adjusting the number here by hand.
 /// **Do not raise it.**
 const CEILING: usize = 11;
 
@@ -202,8 +208,10 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
                 &c.at,
                 c.line,
                 format!(
-                    "cites `{}...`, cut short, and the prefix {why}. Spell it out, or pick \
-                     the id that says what the sentence needs.",
+                    "cites `{}...`, cut short, and the prefix {why}. Spell it out. That is \
+                     permitted in a member file, unlike repointing a dangling citation: \
+                     the author picked the referent and shortened it, so writing it out \
+                     restores what they wrote rather than changing which row they cited.",
                     c.text
                 ),
             )
