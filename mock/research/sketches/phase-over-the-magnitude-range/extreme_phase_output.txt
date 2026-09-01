@@ -1,14 +1,14 @@
 --- MIN % -1: pn=-9223372036854775808 pd=-1
     new = Some(-9223372036854775808)
 
-thread 'main' (2865043) panicked at extreme_phase_coordinates.rs:3:5:
+thread 'main' (2889104) panicked at extreme_phase_coordinates.rs:5:5:
 attempt to calculate the remainder with overflow
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
     old = PANICKED
 --- -(MIN / 1): pn=-9223372036854775808 pd=1
     new = None
 
-thread 'main' (2865043) panicked at extreme_phase_coordinates.rs:3:31:
+thread 'main' (2889104) panicked at extreme_phase_coordinates.rs:6:17:
 attempt to negate with overflow
     old = PANICKED
 --- MAX / -1: pn=9223372036854775807 pd=-1
