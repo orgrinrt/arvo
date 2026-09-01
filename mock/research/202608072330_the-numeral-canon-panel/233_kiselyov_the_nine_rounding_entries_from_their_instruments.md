@@ -628,7 +628,73 @@ settled. The class was closed at one instance.
 
 ## 9. Unlicensed mechanisms, outside the question I was asked
 
-To be written: the defects found while answering, including one in the tool.
+Five things found while answering that the question did not ask about. Each
+carries the line that shows it.
+
+**One. The tool that exists to find this defect reproduces it.**
+`mock/tools/rounding-vocabulary/src/lib.rs:73` maps `nearest-half-up` to
+`half_up` in its `ALIASES` table, and the table's doc comment at line 65 calls
+aliases "Mechanical to repair". The report prints that section under the heading
+at line 400 with the text at line 401: "Mechanical. The mode is not in doubt,
+only how it is written, so each of these can be rewritten to the name on the
+right without reading anything."
+
+That sentence is **false** for any row whose domain carries negatives, and the
+tool files two such entries under it:
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping` `holds`
+and `fails`, both explicitly `signedness: signed`. On that domain
+`nearest-half-up` names ties-toward-`+inf` and `half_up` names neither reading in
+particular, so rewriting one to the other "without reading anything" substitutes
+a determinate function for an ambiguous name and, by section 8, may flip the
+row's verdict. The tool applies the retired word's own lesson to `truncate` and
+`trunc` at line 77 and does not apply it to `half_up`. The repair is to move
+`nearest-half-up` out of `ALIASES` and into the underspecified class beside
+`nearest` whenever the row's predicate admits a signed domain, which the tool
+already reads.
+
+**Two. `law::rounding_retraction_is_the_identity` names no `signedness` in
+either entry**, while its instrument swept `u128` over `0..2^W`. Under the
+notation an absent axis claims the finding holds nowhere that axis exists, so
+both entries claim to hold nowhere at all. Detailed in section 5.
+
+**Three. Two rows state a product where a union was measured.**
+`proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion`
+crosses `signedness in {unsigned, signed}` with three modes, but
+`62_probes/p4_signed_multiplicative_accumulator.rs` contains no nearest rule at
+all, so `half_even` at `signed` was never swept. And
+`proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`
+crosses both signednesses with one six-mode set whose members mean different
+things on each half. Both are the same shape: two instruments' regions unioned
+into one predicate that reads as a product.
+
+**Four. `stochastic` is in the ratified six and appears in no predicate
+anywhere.** A grep of `mock/registry/` finds it only in the ruling that names it,
+the question that records that ruling, and two `retirement` rows about a
+saturating-stochastic composition. So one sixth of the vocabulary has never been
+used to state a region.
+
+That is not automatically a defect, but it hides one: **`stochastic` is not a
+function, and the whole notation assumes a mode is.** Every entry among the nine
+is a claim of the form "the law holds under this mode", which for a deterministic
+rule is a statement about all inputs and for a randomised rule is a statement
+about a distribution over outcomes. Nothing in `dimension::rounding`'s grammar
+says which reading applies, and `k1` had to exclude `stochastic` from a pointwise
+comparison for exactly this reason. A predicate reading `rounding any` therefore
+quantifies over a set with one member the notation cannot express a claim about.
+That is worth a `question` row and I have not opened one, because opening rows is
+not what this seat was dispatched for.
+
+**Five, and it is a note rather than a finding.** `dimension::operation` forbids
+`operation any` on the ground that `any` quantifies over a set nobody has closed,
+and says the spelling becomes admissible when the operation set is closed. The
+rounding set **is** closed, by a ratified ruling, which is what makes `rounding
+any` meaningful and what makes this whole exercise possible. Sections 7 and 8
+both propose reopening it. If either lands, `rounding any` written before the
+reopening quantifies over a smaller set than the same words written after, and
+nothing in the notation distinguishes them. The append-only rule for axes says
+declaring an axis reveals a narrowness rather than creating one; whether the same
+holds for widening an axis's **value set** is a different question and I do not
+think the registry has answered it.
 
 ## 10. What would refute each conclusion
 
