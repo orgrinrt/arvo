@@ -352,7 +352,100 @@ meant and it is a stronger negative than the rounding entry's. It wants
 
 ## 6. Group two: the retired word and the underspecified one
 
-To be written: entries 1, 2, 3 and 4.
+Four entries, three of which resolve cleanly and one of which cannot be written
+in the six at all.
+
+**Entry 1. `a_law_is_inherited...`, `truncate` is `toward_zero`.**
+
+Decided by implementation, not by label. `97_probes/p2_congruence_predicts_the_laws.py:71-75`
+is the toward-zero branch, carrying the comment `# toward zero` and the
+sign-symmetric body `e // shift` for `e >= 0` and `-((-e) // shift)` otherwise.
+The same file has a separate `floor` at line 65 with a comment distinguishing the
+two, so the author was not conflating them and the label is load-bearing rather
+than casual. The row's predicate carries `signedness in {unsigned, signed}`, so
+the two are different functions over the region claimed and the reading is not
+free: `k1`'s K2 witnesses `floor != toward_zero` at `p = -255, f = 1`, giving
+`-128` against `-127`.
+
+**Entry 2. `the_multiplicative_guard...`, `truncate` is `toward_zero`.**
+
+Two instruments, and only one of them decides it.
+`60_probes/p_d_rescale_saving_is_adaptation_fusion.rs:47` spells `Trunc` as
+`x >> shift` on the non-negative domain `[0, 15]`, where K1 measures floor and
+toward-zero to be the same function, so that file is consistent with either name
+and settles nothing. `62_probes/p4_signed_multiplicative_accumulator.rs` settles
+it: lines 51 to 54 carry `Trunc` documented `/// toward zero` and `Floor`
+documented `/// toward negative infinity`, lines 62 and 63 implement them as
+`x / (1i128 << shift)` and `x >> shift`, and `LO = -8` makes the domain signed so
+they diverge. The row's own `because` field already reads them as two things,
+saying the floor spelling shows pure fusion at exactly `F` while truncation is
+irregular, which is only a sentence if `truncate` is not floor.
+
+So the row's set restates as `rounding in {toward_zero, floor, half_even}`,
+where `round to nearest even` was already a mechanical alias.
+
+**A defect on that row, found while answering.** Its predicate is
+`signedness in {unsigned, signed}` crossed with three modes, and the product is
+not what was measured. `p_d` swept the unsigned domain under the shift rule and
+round-to-nearest-even. `p4` swept the signed domain under toward-zero and floor,
+and contains no nearest rule at all: `grep -c 'Rne\|nearest\|even'` over that file
+returns zero. So `half_even` at `signedness = signed` was never swept by either
+instrument, and the row claims it by taking the union of two sweeps where the
+notation reads a product. The honest region is the two cells each instrument
+earned, which needs either two rows or a predicate that pairs the mode with the
+signedness.
+
+**Entry 4. `a_nonzero_phase...`, `nearest` is `half_up`, and the trailing clause
+is not an axis value.**
+
+`56_probes/q2_affine_membership.rs:73-80` states the tie rule in a comment,
+`ties toward positive infinity`, and implements it as `min_by_key(|&&g| ((g - x).abs(), -g))`,
+which breaks a distance tie by taking the larger grid point. The domain is
+non-negative, per `STEP = 8`, `BIAS = 4` and the bounds at line 86, and the row's
+predicate says `signedness = unsigned`. K1 measures the two readings of `half_up`
+to be one function on a non-negative domain, so the ambiguity of section 8 does
+not reach this entry and `half_up` is exact here.
+
+The rest of the entry, `against a phase-zero mutant`, is not a value of the
+rounding axis. It is the instrument's negative control, mutant B at line 137,
+which is coverage rather than a situation the world can be in. The sibling row
+`proposal::a_law_is_inherited...` already states that principle in its own note,
+that the exhaustiveness of a value sweep is an instrument parameter rather than a
+region, and it applies unchanged. The entry wants to read `rounding = half_up`
+with the control in the note.
+
+**And this entry is where the ambiguity would have hurt most, which is worth
+saying even though it does not bite.** The row's `says` field states that no
+exact sum of two grid points lands on the biased grid and that every one sits
+exactly half a step away. So on that format **every** addition is a tie, and the
+tie rule is not a corner case but the entire content of the claim. A row whose
+whole subject is which way ties go, carrying a mode name that does not say which
+way ties go, is the worst possible place for the word `nearest`. It is saved here
+only by the accident that its domain has no negatives.
+
+**Entry 3. `a_law_is_inherited...`, `nearest` cannot be given a value in the
+six.**
+
+`97_probes/p2_congruence_predicts_the_laws.py:76-79` implements it as
+`(2*e + shift) // (2*shift)` for `e >= 0`, mirrored through the origin for
+negatives, under the comment `# nearest, ties away from zero`. At a tie the
+magnitude rounds up, so the result moves away from the origin in both
+directions. That is ties-away-from-zero, and it is a different function from
+ties-toward-positive-infinity: `k1`'s K3 witnesses it at `p = -255, f = 1`, where
+ties-to-`+inf` gives `-127` and ties-away gives `-128`.
+
+The ratified six offer one half rule, `half_up`, and the ruling does not say
+which way its ties go. The row's predicate carries `signedness in {unsigned,
+signed}`, so its region includes exactly the values where the two readings
+differ. Writing `half_up` here therefore states one of two regions and nobody can
+tell which, and writing anything else states a mode the row did not sweep.
+
+**So the honest answer for entry 3 is that the vocabulary is short, and it is
+short a definition rather than a name.** One clause on `half_up` fixes it, and
+that clause is a naming call of exactly the kind the ratified ruling already made
+once for `truncation`. `ruling::the_panel_finishes_the_canon_without_him` puts it
+with the panel and two independent agreements are owed, so I do not make it. What
+it costs either way is section 8.
 
 ## 7. Group three: `away from zero`
 
