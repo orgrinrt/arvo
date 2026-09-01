@@ -27,6 +27,12 @@
 //! monomorphisation, the `const fn` is the computation over it, and what the
 //! backend sees has no branch left to erase.
 //!
+//! Each open contract carries what an implementor owes as a checked `ADMITTED`
+//! const rather than as a sentence asking for it, with the verdict-returning form
+//! beside it for a test. The check fires at codegen and not at `cargo check`, so
+//! every predicate here stays total for a declaration a check-time evaluation can
+//! still reach.
+//!
 //! This crate introduces the numeric category, so the bare-primitive lints skip
 //! it. That is the door for the one place the stack's own primitives cannot be
 //! used to define themselves, and `width` is the narrow thing it exists for.
@@ -45,12 +51,17 @@ pub use adapt::{
     operation_overflow, operation_rounding, overflow_of, rounding_of, Adapt, Adaptation,
     DeclaredSignature, Operation, Signature,
 };
-pub use ambient::{Ambient, BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
+pub use ambient::{
+    is_admissible_ambient, Ambient, BinaryRationals, DecimalRationals, UnsignedBinaryRationals,
+};
 pub use format::{
-    contains, has_additive_identity, radix, smallest_step_exponent, step_exponent, Format,
+    cancelling_slot, contains, has_additive_identity, is_admissible_format, radix,
+    smallest_step_exponent, step_exponent, Format,
 };
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
-pub use quantum::{exponent_at, is_constant_family, magnitude_in_range, Quantum};
+pub use quantum::{
+    exponent_at, is_admissible_quantum, is_constant_family, magnitude_in_range, Quantum,
+};
 pub use rounding::{Mode, Rounding, ALL_MODES};
 pub use slots::{slot_count, slot_in_range, Slots};
 pub use width::{Bool, Width};
@@ -100,8 +111,17 @@ pub mod points {
     /// A scaled integer: constant quantum at a declared exponent, with a phase.
     ///
     /// The point that exercises the phase coordinate, which the other three leave
-    /// at zero. A nonzero phase takes the additive identity off the grid, and the
-    /// law asserting that is what keeps the coordinate honest.
+    /// at zero. Its denominator is two and its quantum is constant, so within this
+    /// point an odd `PHASE` is the half-step grid with no additive identity and an
+    /// even one is a whole number of steps that keeps it, at a slot the phase
+    /// shifts it to.
+    ///
+    /// **That reduction is a fact about this point rather than about the phase.**
+    /// It holds because the quantum here does not move with the magnitude and
+    /// there is only one magnitude. The general question is whether some admitted
+    /// magnitude and slot cancel the phase, and `has_additive_identity` is where
+    /// that is answered; a law asserted only through this point is a law measured
+    /// at one denominator, in one quantum family, over one slot family.
     pub struct Biased<const BITS: u32, const EXP: i32, const PHASE: i64>;
 
     impl<const BITS: u32, const EXP: i32, const PHASE: i64> Format for Biased<BITS, EXP, PHASE>
