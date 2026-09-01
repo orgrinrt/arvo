@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Membership, the quantum law, the phase and the radix, over the whole matrix.
+//! Membership, the quantum law, the slot range, the phase's own contract and the
+//! radix, over the whole matrix.
 //!
 //! The laws the design names about what is in a format's representable set.
 //! Choosing which instantiations to include is choosing what not to find out, so
@@ -11,9 +12,13 @@
 //! of two somebody would reach for. Where a law is structural the assertion is a
 //! compile-time one, because a runtime check of a compile-time property tests the
 //! test rather than the property.
+//!
+//! Whether zero is in the set is one question and it is in `the_identity`, which
+//! is its own law and its own file. What is here is the predicate over coordinates
+//! a caller supplies.
 
 use crate::ambient::{Ambient, BinaryRationals, DecimalRationals, Radix, UnsignedBinaryRationals};
-use crate::format::{contains, has_additive_identity, radix, smallest_step_exponent, Phase};
+use crate::format::{contains, radix, smallest_step_exponent, Phase};
 use crate::points::{Biased, Floating, Integer, UFixed};
 use crate::quantum::{
     exponent_at, is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount,
@@ -189,28 +194,7 @@ fn the_smallest_step_is_the_smallest_magnitudes_and_nothing_names_it() {
     assert_eq!(smallest_step_exponent::<Integer<8>>(), Exponent::ZERO);
 }
 
-// --- the phase, which is why the coordinate is carried -----------------------
-
-#[test]
-fn a_zero_phase_puts_the_additive_identity_on_the_grid() {
-    assert!(has_additive_identity::<Integer<8>>().get());
-    assert!(has_additive_identity::<UFixed<13, -4>>().get());
-    assert!(has_additive_identity::<Floating<11, -14, 30>>().get());
-}
-
-#[test]
-fn a_nonzero_phase_takes_the_additive_identity_off_the_grid() {
-    // The half-step bias. The canon carries the phase coordinate precisely
-    // because this is not a corner case: the grid contains neither zero nor one,
-    // no exact sum lands on it, and it is not a monoid carrier.
-    assert!(!has_additive_identity::<Biased<7, -2, 1>>().get());
-    assert!(!has_additive_identity::<Biased<13, 0, 1>>().get());
-    assert!(!has_additive_identity::<Biased<31, -8, 3>>().get());
-
-    // And a biased format with the phase set back to zero has it again, which is
-    // the control saying the phase is what did it rather than the width.
-    assert!(has_additive_identity::<Biased<7, -2, 0>>().get());
-}
+// --- the phase's own contract ------------------------------------------------
 
 #[test]
 fn a_phase_never_carries_a_denominator_that_cannot_divide() {
@@ -280,8 +264,6 @@ fn a_phase_never_carries_a_denominator_that_cannot_divide() {
     // The half-step shape the biased point uses, and the zero the other three do.
     assert_eq!(Phase::halves(1).denominator(), 2);
     assert_eq!(Phase::halves(1).numerator(), 1);
-    assert!(Phase::ZERO.is_zero().get());
-    assert!(!Phase::halves(1).is_zero().get());
 }
 
 // --- the radix is a coordinate and is not hardcoded --------------------------

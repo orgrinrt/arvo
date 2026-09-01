@@ -14,6 +14,11 @@
 //! The wholly foreign format is the shape this round measured against: written into
 //! a crate that is not exempt from the bare-primitive lints, it was refused at ten
 //! positions before every coordinate carried a type this crate owns.
+//!
+//! Two contracts state obligations and both are checked here, each against
+//! constructions that meet the shape and not the conditions. Those constructions
+//! are kept rather than deleted, because a construction that compiles and is wrong
+//! is exactly what a verdict function exists to be able to report on.
 
 use crate::ambient::{Ambient, DecimalRationals, Radix};
 use crate::format::{contains, has_additive_identity, radix, step_exponent, Format, Phase};
@@ -126,8 +131,11 @@ fn the_whole_contract_is_supplied_from_outside_and_every_coordinate_reads_back()
         Width::bits(5)
     );
 
-    // The phase is nonzero, so the grid carries no additive identity, and that is
-    // the coordinate doing work rather than sitting in the declaration.
+    // The phase is a third of a quantum, so nothing cancels it and the grid
+    // carries no additive identity. Fractional rather than merely nonzero is what
+    // decides that, and this is the coordinate doing work rather than sitting in
+    // the declaration.
+    assert!(!<WhollyForeign as Format>::PHASE.is_whole_multiple().get());
     assert!(!has_additive_identity::<WhollyForeign>().get());
     assert_eq!(<WhollyForeign as Format>::PHASE.numerator(), 1);
     assert_eq!(<WhollyForeign as Format>::PHASE.denominator(), 3);
@@ -262,7 +270,7 @@ fn the_widest_admitted_width_is_where_the_count_stops_fitting() {
     assert_eq!(slot_count::<Unsigned<62>>(), SlotCount::of(at_bound as i64));
 }
 
-// --- what an outside implementor owes, and the construction that does not ----
+// --- what an outside implementor owes, and the constructions that do not ----
 
 /// A slot range from outside this crate that does not meet the contract.
 ///
@@ -390,4 +398,165 @@ fn the_law_rejects_a_range_that_passes_the_easy_obligations() {
     assert!(<WidthTooNarrow as Slots>::MIN
         .is_at_most(<WidthTooNarrow as Slots>::MAX)
         .get());
+}
+
+// --- what a quantum law owes, and the constructions that do not --------------
+//
+// The same shape one contract over. Both conditions were stated where nothing
+// held them, the first in a doc comment and the second nowhere at all, so these
+// are the first constructions ever written against either.
+
+/// A law over no magnitudes, which describes no values.
+///
+/// It compiles, which is the point: nothing about the three coordinates stops it
+/// being written. Using it does not build, and the `trybuild` case records that.
+struct NoMagnitudes;
+
+impl Quantum for NoMagnitudes {
+    const BASE: Exponent = Exponent::ZERO;
+    const SLOPE: Exponent = Exponent::ONE;
+    const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(0);
+}
+
+/// A law whose exponent runs past what an exponent carries before its last
+/// magnitude.
+///
+/// The sum overflows in the exponent's own width, which panics under
+/// `overflow-checks` and wraps without it, and either way the crate would have
+/// answered with a step law it does not have.
+struct ReachRunsOff;
+
+impl Quantum for ReachRunsOff {
+    const BASE: Exponent = Exponent::of(i32::MAX - 2);
+    const SLOPE: Exponent = Exponent::ONE;
+    const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(8);
+}
+
+/// A law with more magnitudes than a magnitude index can hold.
+///
+/// The other narrowing in the same arithmetic: the index is cast down into the
+/// exponent's width before the multiply, so a count above what a signed 32-bit
+/// integer carries wraps the index itself rather than the sum.
+struct MagnitudesBeyondTheIndex;
+
+impl Quantum for MagnitudesBeyondTheIndex {
+    const BASE: Exponent = Exponent::ZERO;
+    const SLOPE: Exponent = Exponent::ONE;
+    const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(u32::MAX);
+}
+
+#[test]
+fn the_law_rejects_a_quantum_law_that_does_not_meet_the_contract() {
+    assert!(
+        !crate::quantum::is_admissible::<NoMagnitudes>().get(),
+        "a law over no magnitudes was admitted, and it describes no values"
+    );
+    assert!(
+        !crate::quantum::is_admissible::<ReachRunsOff>().get(),
+        "a law whose exponent runs off the end was admitted"
+    );
+    assert!(
+        !crate::quantum::is_admissible::<MagnitudesBeyondTheIndex>().get(),
+        "a law with more magnitudes than an index carries was admitted"
+    );
+}
+
+#[test]
+fn the_law_admits_every_quantum_law_this_crate_ships() {
+    // The control. A law refusing everything would pass the test above and
+    // establish nothing, so it has to accept both shipped families across their
+    // parameters rather than at the one instantiation somebody remembered.
+    macro_rules! admits_constant {
+        ($($e:literal),+ $(,)?) => {
+            $(
+                assert!(
+                    crate::quantum::is_admissible::<Constant<$e>>().get(),
+                    "the constant family at exponent {} was refused", $e
+                );
+            )+
+        };
+    }
+    admits_constant!(
+        -30, -24, -17, -8, -4, -1, 0, 1, 4, 8, 17, 24, 30, 2147483647, -2147483648
+    );
+
+    macro_rules! admits_indexed {
+        ($(($e:literal, $c:literal)),+ $(,)?) => {
+            $(
+                assert!(
+                    crate::quantum::is_admissible::<Indexed<$e, $c>>().get(),
+                    "the indexed family at ({}, {}) was refused", $e, $c
+                );
+            )+
+        };
+    }
+    admits_indexed!(
+        (-14, 30),
+        (-126, 254),
+        (-1022, 2046),
+        (0, 1),
+        (-3, 7),
+        (2147483646, 1),
+    );
+
+    // And the foreign law above, which is neither shipped shape, so the verdict
+    // is about the obligations rather than about the two families this crate
+    // happens to write.
+    assert!(crate::quantum::is_admissible::<DoubleStepped>().get());
+}
+
+#[test]
+fn the_quantum_law_separates_the_two_constructions_rather_than_answering_one_way() {
+    // Both directions in one place, so a verdict stuck at `true` or at `false`
+    // fails here rather than passing one of the two tests above.
+    let shipped = crate::quantum::is_admissible::<Indexed<-14, 30>>().get();
+    let refused = crate::quantum::is_admissible::<NoMagnitudes>().get();
+    assert_ne!(
+        shipped, refused,
+        "the verdict gives the same answer to a shipped law and one over no magnitudes"
+    );
+
+    // And the two conditions are separable: each refused construction trips one
+    // of them and passes the other, so neither condition is doing all the work.
+    assert_eq!(
+        <NoMagnitudes as Quantum>::BASE,
+        <Constant<0> as Quantum>::BASE,
+        "the no-magnitude law would be admissible but for its count"
+    );
+    assert!(
+        <ReachRunsOff as Quantum>::MAGNITUDES.count() >= 1,
+        "the runaway law trips the count condition too, so it separates nothing"
+    );
+    assert!(
+        <MagnitudesBeyondTheIndex as Quantum>::MAGNITUDES.count() >= 1,
+        "the wide-count law trips the count condition too, so it separates nothing"
+    );
+}
+
+#[test]
+fn the_reach_check_is_wider_than_the_widths_currently_need() {
+    // Why the obligation computes one domain wider than the coordinates ask for.
+    // The worst a caller can declare is a rate at the bottom of the exponent's
+    // range against a count at the top of the magnitude count's, and that lands
+    // inside a signed 64-bit integer with two to the thirty-first to spare.
+    let base = i32::MIN as i128;
+    let slope = i32::MIN as i128;
+    let largest = (u32::MAX as i128) - 1;
+    let worst = base + slope * largest;
+
+    assert!(
+        worst > i64::MIN as i128,
+        "the worst declarable reach does not fit a signed 64-bit integer, so the doc on \
+         `reach_is_representable` is wrong about which way the margin runs"
+    );
+    assert_eq!(
+        (i64::MIN as i128) - worst,
+        -2147483648,
+        "the margin is not the one the doc names"
+    );
+
+    // The margin is an argument over three coordinate widths rather than a
+    // property of the check, which is why the check does not rest on it: one more
+    // magnitude than a count can hold would pass the bottom of that width.
+    assert!(base + slope * (largest + 2) < i64::MIN as i128);
 }

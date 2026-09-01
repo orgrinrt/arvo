@@ -20,6 +20,11 @@
 //! written down before, and each names a way a caller could have been wrong with
 //! nothing to say so.
 //!
+//! Two more pin what a quantum law owes. Both conditions were stated where nothing
+//! held them, so both of those constructions used to compile and answer, and a
+//! runtime test cannot catch either because an obligation refuses rather than
+//! returning.
+//!
 //! The last one runs the other way. It pins the refusal the const generic
 //! parameters are spelled around: a coordinate type cannot sit in that position,
 //! which is why the declared widths carry a machine integer there and nowhere
@@ -47,6 +52,27 @@ fn an_index_and_an_extent_do_not_convert_into_each_other() {
 fn the_two_ratios_are_two_coordinates() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_phase_is_not_a_fraction.rs");
+}
+
+/// A law over no magnitudes, refused where it is forced.
+///
+/// The condition lived in a doc comment on `MAGNITUDES` and nothing held it, so
+/// this construction compiled and two functions in one file then disagreed about
+/// whether zero was in its set.
+#[test]
+fn a_quantum_law_over_no_magnitudes_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_law_over_no_magnitudes_is_refused.rs");
+}
+
+/// A step law whose exponent leaves the exponent, refused the same way.
+///
+/// This condition was written nowhere at all, so the arithmetic wrapped in the
+/// exponent's own width and the crate answered with a law it does not have.
+#[test]
+fn a_step_law_that_runs_off_the_exponent_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_step_law_that_runs_off_the_exponent_is_refused.rs");
 }
 
 /// The refusal every const generic parameter in this crate is spelled around.

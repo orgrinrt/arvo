@@ -15,6 +15,13 @@
 //! this crate owns, so a numeral declared elsewhere is written in the same types
 //! as the ones shipped here and is not refused by the lints that read every crate
 //! but this one.
+//!
+//! Membership is one predicate, so a question about one particular value is that
+//! predicate at the coordinates denoting it. `has_additive_identity` below is
+//! `contains` asked at the slot where zero would sit, and it is written that way
+//! because the alternative already happened: its own conjunction over the same
+//! coordinates, short one of them, disagreeing with `contains` about the same
+//! question.
 
 use crate::ambient::{Ambient, Radix};
 use crate::quantum::{exponent_at, magnitude_in_range, Exponent, Magnitude, Quantum};
@@ -38,7 +45,7 @@ pub struct Phase {
 }
 
 impl Phase {
-    /// No offset, which puts the additive identity on the grid at slot zero.
+    /// No offset, which leaves the additive identity at slot zero.
     pub const ZERO: Self = Self { num: 0, den: 1 };
 
     /// A phase of `num` over `den`.
@@ -105,9 +112,24 @@ impl Phase {
     }
 
     /// Whether the grid sits at zero.
+    ///
+    /// Not the question that decides the additive identity, which is the one
+    /// below. A grid at zero has zero on it at slot zero; a grid one whole step
+    /// along has zero on it one slot down, and this answers no about the second.
     #[must_use]
     pub const fn is_zero(self) -> Bool {
         Bool::of(self.num == 0)
+    }
+
+    /// Whether the offset is a whole number of quanta.
+    ///
+    /// The question the additive identity turns on. A phase of one whole step
+    /// shifts the grid onto itself, so zero stays on it at a shifted slot, and
+    /// only a fractional part takes it off. The denominator is positive by
+    /// construction, so this divides rather than asking whether it may.
+    #[must_use]
+    pub const fn is_whole_multiple(self) -> Bool {
+        Bool::of(self.num % self.den == 0)
     }
 }
 
@@ -128,10 +150,10 @@ pub trait Format {
 
     /// The grid's offset, in units of the quantum at magnitude zero.
     ///
-    /// Carried explicitly and never assumed zero. A nonzero phase decides whether
-    /// the identity adaptation ever occurs and whether the set carries an
-    /// additive identity at all, so a design that hardcoded it would have closed
-    /// a case the canon leaves open.
+    /// Carried explicitly and never assumed zero. Whether it is a whole multiple
+    /// of the quantum decides whether the set carries an additive identity at all,
+    /// and therefore whether the identity adaptation ever occurs, so a design that
+    /// hardcoded it would have closed a case the canon leaves open.
     const PHASE: Phase;
 }
 
@@ -146,15 +168,38 @@ pub const fn contains<F: Format>(slot: Slot, magnitude: Magnitude) -> Bool {
 
 /// Whether the format's grid carries an additive identity.
 ///
-/// A zero phase puts zero on the grid at slot zero, provided the slot range
-/// admits it. A nonzero phase takes it off, and takes one off with it: every
-/// exact sum then lands half a step away from every grid point, which is why the
-/// canon carries the coordinate rather than treating the bias as a corner case.
+/// Zero is a member exactly when some admitted slot cancels the phase, so this is
+/// the membership predicate asked at the position zero would occupy rather than a
+/// second reading of the coordinates. The phase is a rational in units of the
+/// quantum at magnitude zero, so cancelling it takes a whole number of quanta, and
+/// the slot it lands on is the negated multiple rather than slot zero: one whole
+/// step keeps the identity and only a fractional part takes it off.
+///
+/// **It answers at magnitude zero**, which is the magnitude the phase is stated in
+/// units of. A law whose step shrinks as the magnitude rises can cancel a
+/// fractional phase higher up, and nothing here looks there.
+/// `the_identity_survives_a_shrinking_quantum` is the catalogued red arm holding
+/// that case, and the canon does not reach it: the finding that decides this one
+/// states its fraction width as the constant family's exponent, so it says nothing
+/// about a magnitude-indexed law.
+///
+/// **The quotient is taken wide enough to hold its own negation.**
+/// `Phase::of(i64::MIN, 1)` is writable and the slot cancelling it is one past
+/// what an index carries, so negating in the index's own width would wrap it into
+/// a slot some range admits.
 #[must_use]
 pub const fn has_additive_identity<F: Format>() -> Bool {
-    F::PHASE
-        .is_zero()
-        .and(slot_in_range::<F::Slots>(Slot::ZERO))
+    if !F::PHASE.is_whole_multiple().get() {
+        return Bool::FALSE;
+    }
+    let cancelling = -((F::PHASE.numerator() as i128) / (F::PHASE.denominator() as i128));
+    // Only the top can be out of reach. The negated quotient runs from `-i64::MAX`
+    // to `2^63`, so it overshoots an index at exactly one writable pair and cannot
+    // undershoot at all, which is why there is one bound here rather than two.
+    if cancelling > i64::MAX as i128 {
+        return Bool::FALSE;
+    }
+    contains::<F>(Slot::at(cancelling as i64), Magnitude::SMALLEST)
 }
 
 /// The exponent of the step at a magnitude, for the format's quantum law.
