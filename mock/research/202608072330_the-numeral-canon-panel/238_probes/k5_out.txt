@@ -1,0 +1,32 @@
+=== 1. does the shape build ===
+    built.
+
+=== 2. do the assertions hold ===
+    test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+    test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+    test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+=== 3. the mutation: can they fail ===
+    the mutant is refused, so the assertions are load-bearing:
+      tests::the_answers_are_the_ones_the_shipped_laws_assert --- FAILED
+      ---- tests::the_answers_are_the_ones_the_shipped_laws_assert stdout ----
+      thread 'tests::the_answers_are_the_ones_the_shipped_laws_assert' (919511) panicked at outside/src/lib.rs:100:9:
+          tests::the_answers_are_the_ones_the_shipped_laws_assert
+
+=== 4. the lint, over both crates, no exemption anywhere ===
+    --- door: 28 finding(s), no exemption applied
+          bare `u32` in src/lib.rs line 33. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+          bare `u32` in src/lib.rs line 35. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+          bare `i32` in src/lib.rs line 37. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+          bare `u32` in src/lib.rs line 39. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+          ... and 24 more
+    --- outside: 0 finding(s), no exemption applied
+    
+    === verdict ===
+    control: the door reports 28, so the scan reaches this tree.
+    An outside crate declares a format of its own with no bare primitive
+    on any line, against a door that carries them all.
+
+=== verdict ===
+The shape builds, computes the shipped answers, refuses the mutant, and
+leaves the crate outside the door with nothing for the lint to report.
