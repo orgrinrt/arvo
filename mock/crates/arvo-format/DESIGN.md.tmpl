@@ -255,10 +255,14 @@ agrees about that.** The one that reads only the slot range is the one that got 
 the whole admitted set rather than the shapes this crate ships, with the wrong constructions kept
 permanently as tests that report a verdict rather than as constructions somebody deleted.
 
-**The refusal itself is a doctest rather than a `trybuild` case, and that is measured.** An obligation
-is a const evaluated at monomorphisation, `trybuild` runs `cargo check`, and `check` skips codegen, so
-a `trybuild` case reports a refused program as compiling. A doctest builds a binary and reaches the
-evaluation.
+**Where an obligation is forced decides which tool can see its refusal**, and that is the axis rather
+than a property of either tool. An obligation is a const and a const is evaluated where it is used.
+Forced from a runtime call it is reached at codegen, which `cargo check` skips, so a doctest, which
+builds a binary, is what catches it. Forced in a `const` item it is reached at check time, and a
+`trybuild` case both sees it and pins the exact diagnostic, which a `compile_fail` doctest does not.
+
+So both shapes ship and neither is redundant: the doctests cover a declaration reached only through a
+running program, and `tests/ui/` covers the const-bound form with its `E0080` committed beside it.
 
 **A test over a declaration reaches something the code does, and there are two ways it fails to.** The
 first is an assertion that reaches a declaration and stops: a constant compared against the literal its
