@@ -1,0 +1,11 @@
+[package]
+name = "outside"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+door = { path = "../door" }
+
+[dev-dependencies]
+trybuild = "1"
