@@ -152,7 +152,45 @@ would have been wrong.
 
 ## 3. Method, and why no conclusion here rests on what a probe called a mode
 
-To be written: the method.
+A mode name is a word and a mode is a function, and the whole of this question is
+that the two have come apart. So the method has one rule: **never take a mode
+from what a probe's author called it, always from what the probe's expression
+computes on the domain the probe sweeps.** A label is a claim about an
+implementation and it is checkable in the same file.
+
+That rule is not pedantry here, it is the thing the ratified ruling already acted
+on once. `truncate` was retired because on a signed domain it names two
+operations, and the ruling's own `because` says bit-drop measures equal to floor
+on every row and differs from toward-zero on signed rows only. The same
+possibility exists for every other name until somebody reads the expression, and
+section 8 is what happens when nobody does.
+
+Two consequences shape everything below.
+
+**A mode is only distinguishable where the domain distinguishes it.** Two modes
+that are different functions on the integers can be the same function on the
+non-negative integers, and then a sweep over a non-negative domain cannot tell
+them apart and does not have to: on that domain a claim about one is a claim
+about the other, and both names are correct. So every answer below carries the
+signedness of the domain its instrument ran over, and where a row's own predicate
+spans both signednesses the answer can differ between the halves.
+
+**A rate is not a function.** Two modes can produce identical divergence
+percentages over a symmetric domain and still be different functions, which is
+exactly what happens to `toward_zero` and `away_from_zero` in section 7. So
+distinctness is decided pointwise with a witness, never by comparing columns of a
+table.
+
+`233_probes/k1_the_modes_as_functions.rs` implements the six ratified names,
+minus `stochastic`, plus the two readings of `half_up` and plus
+`away_from_zero`, seven functions in all, each written from its definition rather
+than copied from any panel probe, and compares them pointwise. `stochastic` is
+absent on purpose: it is not a function, so pointwise equality is not a question
+that can be asked of it, and no entry among the nine names it.
+`233_probes/k2_the_two_verdicts_the_names_decide.rs` then re-measures the two
+verdicts the nine entries carry over all seven, and its controls R1, R2 and R3
+require it to reproduce two already-committed instruments digit for digit before
+any of its new columns are allowed to mean anything.
 
 ## 4. The instruments, opened
 
