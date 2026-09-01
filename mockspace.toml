@@ -507,7 +507,7 @@ push = "off"
 # this manual declaration.
 
 [lint-crates]
-mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "dev" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-extra-lints.git", branch = "dev" }
 
 # ---------------------------------------------------------------------------
 # Reference roots
