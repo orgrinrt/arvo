@@ -123,17 +123,61 @@ fn main() {
     // Widths kept small so the enumeration is exhaustive rather than sampled.
     let cases = [
         // --- the four shipped points, which is the control ------------------
-        Coords { name: "Integer<4>",          radix: 2, base: 0,  slope: 0, magnitudes: 1,
-                  slot_min: -8, slot_max: 7,  phase_num: 0,  phase_den: 1 },
-        Coords { name: "UFixed<4,-2>",        radix: 2, base: -2, slope: 0, magnitudes: 1,
-                  slot_min: 0,  slot_max: 15, phase_num: 0,  phase_den: 1 },
-        Coords { name: "Biased<4,0,1> (1/2)", radix: 2, base: 0,  slope: 0, magnitudes: 1,
-                  slot_min: -8, slot_max: 7,  phase_num: 1,  phase_den: 2 },
-        Coords { name: "Biased<4,0,2> (1)",   radix: 2, base: 0,  slope: 0, magnitudes: 1,
-                  slot_min: -8, slot_max: 7,  phase_num: 2,  phase_den: 2 },
-        Coords { name: "Floating<4,-2,3>",    radix: 2, base: -2, slope: 1, magnitudes: 3,
-                  slot_min: -8, slot_max: 7,  phase_num: 0,  phase_den: 1 },
-
+        Coords {
+            name: "Integer<4>",
+            radix: 2,
+            base: 0,
+            slope: 0,
+            magnitudes: 1,
+            slot_min: -8,
+            slot_max: 7,
+            phase_num: 0,
+            phase_den: 1,
+        },
+        Coords {
+            name: "UFixed<4,-2>",
+            radix: 2,
+            base: -2,
+            slope: 0,
+            magnitudes: 1,
+            slot_min: 0,
+            slot_max: 15,
+            phase_num: 0,
+            phase_den: 1,
+        },
+        Coords {
+            name: "Biased<4,0,1> (1/2)",
+            radix: 2,
+            base: 0,
+            slope: 0,
+            magnitudes: 1,
+            slot_min: -8,
+            slot_max: 7,
+            phase_num: 1,
+            phase_den: 2,
+        },
+        Coords {
+            name: "Biased<4,0,2> (1)",
+            radix: 2,
+            base: 0,
+            slope: 0,
+            magnitudes: 1,
+            slot_min: -8,
+            slot_max: 7,
+            phase_num: 2,
+            phase_den: 2,
+        },
+        Coords {
+            name: "Floating<4,-2,3>",
+            radix: 2,
+            base: -2,
+            slope: 1,
+            magnitudes: 3,
+            slot_min: -8,
+            slot_max: 7,
+            phase_num: 0,
+            phase_den: 1,
+        },
         // --- a growing quantum with a whole phase out of reach at m = 0 ------
         // Every coordinate here is one the crate ships: `Indexed` is slope one
         // and `Signed<2>` is exactly this range, so reaching this needs an
@@ -141,9 +185,17 @@ fn main() {
         // quanta. Slot -4 cancels it at m = 0 and `Signed<2>` stops at -2; at
         // m = 1 the quantum has doubled, so slot -2 cancels the same absolute
         // phase and is the range's own lowest index.
-        Coords { name: "Indexed + Signed<2>, phase 4", radix: 2, base: 0, slope: 1,
-                  magnitudes: 2, slot_min: -2, slot_max: 1, phase_num: 4, phase_den: 1 },
-
+        Coords {
+            name: "Indexed + Signed<2>, phase 4",
+            radix: 2,
+            base: 0,
+            slope: 1,
+            magnitudes: 2,
+            slot_min: -2,
+            slot_max: 1,
+            phase_num: 4,
+            phase_den: 1,
+        },
         // --- a shrinking quantum, which is what SLOPE < 0 means --------------
         // Needs an outside `Quantum` too, since the crate ships slope 0 and 1
         // only. Phase one half: at m = 0 the cancelling slot is -1/2 and is not
@@ -151,21 +203,45 @@ fn main() {
         // absolute phase is one whole step and slot -1 cancels it. This is the
         // case where a FRACTIONAL phase still leaves the identity on the grid,
         // which the design's gloss says cannot happen.
-        Coords { name: "shrinking quantum, phase 1/2", radix: 2, base: 0, slope: -1,
-                  magnitudes: 2, slot_min: -8, slot_max: 7, phase_num: 1, phase_den: 2 },
-
+        Coords {
+            name: "shrinking quantum, phase 1/2",
+            radix: 2,
+            base: 0,
+            slope: -1,
+            magnitudes: 2,
+            slot_min: -8,
+            slot_max: 7,
+            phase_num: 1,
+            phase_den: 2,
+        },
         // --- no magnitudes at all, so the set is empty -----------------------
-        Coords { name: "no magnitudes, phase 0", radix: 2, base: 0, slope: 0, magnitudes: 0,
-                  slot_min: -8, slot_max: 7,  phase_num: 0,  phase_den: 1 },
+        Coords {
+            name: "no magnitudes, phase 0",
+            radix: 2,
+            base: 0,
+            slope: 0,
+            magnitudes: 0,
+            slot_min: -8,
+            slot_max: 7,
+            phase_num: 0,
+            phase_den: 1,
+        },
     ];
 
     let mut disagreements = 0;
-    println!("{:<34} {:>8} {:>12}  {}", "format", "shipped", "enumerated", "witness");
+    println!(
+        "{:<34} {:>8} {:>12}  {}",
+        "format", "shipped", "enumerated", "witness"
+    );
     for c in &cases {
         let shipped = shipped_has_additive_identity(c);
         let witness = enumerated_contains_zero(c);
         let enumerated = witness.is_some();
-        let mark = if shipped == enumerated { "" } else { "<- disagree" };
+        let mark = if shipped == enumerated {
+            ""
+        } else {
+            "<- disagree"
+        };
         println!(
             "{:<34} {:>8} {:>12}  {:<16?} {}",
             c.name, shipped, enumerated, witness, mark
