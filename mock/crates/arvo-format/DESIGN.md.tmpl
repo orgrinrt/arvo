@@ -47,12 +47,14 @@ Subnormals are not a case. They fall out of taking the maximum at the smallest m
 what the ratified sentence says and is the test that the unification is real rather than a
 presentation.
 
-**The phase is carried explicitly and is never assumed zero.** The canon's reason travels with it: a
-nonzero phase decides whether the identity adaptation ever occurs and whether the set carries an
-additive identity at all. A half-step-biased grid is not closed under exact addition, contains neither
-zero nor one, and is not even a monoid carrier. A design that hardcodes the phase to zero has closed
-that case silently, which is why the coordinate is present even though every point in the table above
-except one biased case sets it to zero.
+**The phase is carried explicitly and is never assumed zero.** What it decides is whether the set
+carries an additive identity, and the deciding property is whether the phase is a whole multiple of
+the quantum rather than whether it is nonzero. A phase of one whole step shifts the grid onto itself
+and leaves zero on it, one slot down; only a phase with a fractional part takes it off. A half-step
+grid is the case that does: it is not closed under exact addition, it holds neither zero nor one when
+its quantum is one, and it is not even a monoid carrier. A design that hardcodes the phase to zero has
+closed that case silently, which is why the coordinate is present even though every point in the table
+above except one biased case sets it to zero.
 
 ## The quantum law is where the two families differ, and it is the only place
 
@@ -189,9 +191,10 @@ fail if a partial member were admitted, which is why the panic is not one.
 **Rounding and completion are separable**: a magnitude bound switches off the completion and not the
 rounding, and a grid bound does the reverse.
 
-**A nonzero phase removes the additive identity.** The grid contains neither zero nor one, and the
-test asserts that rather than treating it as a corner case, because the canon's reason for carrying
-the coordinate is that it changes the algebra.
+**A phase that is not a whole multiple of the quantum removes the additive identity**, and one that is
+leaves it on the grid at a shifted slot. The test asserts both directions rather than treating either
+as a corner case, because the canon's reason for carrying the coordinate is that it changes the
+algebra, and a test that only ever tries fractional phases cannot see the half of it that does not.
 
 ## The surface this design names
 
