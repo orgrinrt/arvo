@@ -25,10 +25,10 @@
 
 use std::collections::BTreeMap;
 
-use mockspace_lint_rules::testkit::LintFixture;
-use mockspace_lint_rules::CrateLint;
 use mockspace_extra_lints::lints::arvo_types_only::ArvoTypesOnly;
 use mockspace_extra_lints::lints::no_bare_numeric::NoBareNumeric;
+use mockspace_lint_rules::testkit::LintFixture;
+use mockspace_lint_rules::CrateLint;
 
 /// The impl an outside crate has to write today, against the shipped traits.
 ///
@@ -182,11 +182,36 @@ fn main() {
     println!("rules: mockspace-lint-rules @ a9268f62943c317ea4f5ee4279b528ffdb4ae936");
     println!();
 
-    let c1 = run("C1 clean source, checked crate", "outside-crate", CONTROL_CLEAN, BTreeMap::new());
-    let c2 = run("C2 const generic parameters, checked crate", "outside-crate", CONTROL_CONST_GENERIC, BTreeMap::new());
-    let c3 = run("C3 shipped impl, introducing crate", "arvo-format", IMPL_AS_SHIPPED, introducing());
-    let c4 = run("C4 repaired impl, checked crate", "outside-crate", IMPL_REPAIRED, BTreeMap::new());
-    let arm_a = run("A  shipped impl, checked crate", "outside-crate", IMPL_AS_SHIPPED, BTreeMap::new());
+    let c1 = run(
+        "C1 clean source, checked crate",
+        "outside-crate",
+        CONTROL_CLEAN,
+        BTreeMap::new(),
+    );
+    let c2 = run(
+        "C2 const generic parameters, checked crate",
+        "outside-crate",
+        CONTROL_CONST_GENERIC,
+        BTreeMap::new(),
+    );
+    let c3 = run(
+        "C3 shipped impl, introducing crate",
+        "arvo-format",
+        IMPL_AS_SHIPPED,
+        introducing(),
+    );
+    let c4 = run(
+        "C4 repaired impl, checked crate",
+        "outside-crate",
+        IMPL_REPAIRED,
+        BTreeMap::new(),
+    );
+    let arm_a = run(
+        "A  shipped impl, checked crate",
+        "outside-crate",
+        IMPL_AS_SHIPPED,
+        BTreeMap::new(),
+    );
 
     println!();
     println!("=== verdict ===");

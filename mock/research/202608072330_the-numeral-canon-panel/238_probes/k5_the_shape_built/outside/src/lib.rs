@@ -82,7 +82,6 @@ pub const ARITY: Arity = <Add as Operation>::ARITY;
 mod tests {
     use super::*;
 
-
     /// The membership answers are the right ones, not merely constant.
     ///
     /// A const item that evaluates proves the staging. It does not prove the
@@ -91,8 +90,14 @@ mod tests {
     /// crate's own laws assert, read back through the coordinate types.
     #[test]
     fn the_answers_are_the_ones_the_shipped_laws_assert() {
-        assert!(INSIDE.get(), "slot 0 at magnitude 0 is in an eight-bit signed range");
-        assert!(!OUTSIDE.get(), "slot 200 is past the range's maximum of 127");
+        assert!(
+            INSIDE.get(),
+            "slot 0 at magnitude 0 is in an eight-bit signed range"
+        );
+        assert!(
+            !OUTSIDE.get(),
+            "slot 200 is past the range's maximum of 127"
+        );
         assert!(
             !NO_SUCH_MAGNITUDE.get(),
             "a constant-quantum law ranges over one magnitude, so magnitude 1 is not one"
@@ -128,5 +133,4 @@ mod tests {
         assert!(contains::<Unbiased>(Slot::at(127), Magnitude::at(0)).get());
         assert!(!contains::<Unbiased>(Slot::at(128), Magnitude::at(0)).get());
     }
-
 }

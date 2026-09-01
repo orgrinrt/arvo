@@ -4,13 +4,15 @@
 === 2. do the assertions hold ===
     test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
     test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
-    test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+    test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+    test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+    test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
 === 3. the mutation: can they fail ===
     the mutant is refused, so the assertions are load-bearing:
       tests::the_answers_are_the_ones_the_shipped_laws_assert --- FAILED
       ---- tests::the_answers_are_the_ones_the_shipped_laws_assert stdout ----
-      thread 'tests::the_answers_are_the_ones_the_shipped_laws_assert' (919511) panicked at outside/src/lib.rs:100:9:
+      thread 'tests::the_answers_are_the_ones_the_shipped_laws_assert' (1097149) panicked at outside/src/lib.rs:105:9:
           tests::the_answers_are_the_ones_the_shipped_laws_assert
 
 === 4. the lint, over both crates, no exemption anywhere ===

@@ -16,9 +16,9 @@
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
+use mockspace_extra_lints::lints::arvo_types_only::ArvoTypesOnly;
 use mockspace_lint_rules::testkit::LintFixture;
 use mockspace_lint_rules::{CrateLint, CrateSourceFile};
-use mockspace_extra_lints::lints::arvo_types_only::ArvoTypesOnly;
 
 /// Every `.rs` under `src/`, root first, which is what the engine hands a
 /// `CrateLint`.
@@ -26,15 +26,17 @@ fn sources(root: &Path) -> Vec<CrateSourceFile> {
     let mut found = Vec::new();
     walk(root, root, &mut found);
     found.sort_by(|a: &CrateSourceFile, b: &CrateSourceFile| {
-        let ar = a.rel_path == PathBuf::from("src/lib.rs");
-        let br = b.rel_path == PathBuf::from("src/lib.rs");
+        let ar = a.rel_path == *"src/lib.rs";
+        let br = b.rel_path == *"src/lib.rs";
         br.cmp(&ar).then_with(|| a.rel_path.cmp(&b.rel_path))
     });
     found
 }
 
 fn walk(base: &Path, dir: &Path, out: &mut Vec<CrateSourceFile>) {
-    let Ok(entries) = std::fs::read_dir(dir) else { return };
+    let Ok(entries) = std::fs::read_dir(dir) else {
+        return;
+    };
     for e in entries.flatten() {
         let p = e.path();
         if p.is_dir() {
@@ -52,10 +54,7 @@ fn walk(base: &Path, dir: &Path, out: &mut Vec<CrateSourceFile>) {
 fn report(crate_name: &str, dir: &str, exempt: bool) -> usize {
     let root = PathBuf::from(dir).join("src");
     let files = sources(&root);
-    let root_text = files
-        .first()
-        .map(|f| f.text.clone())
-        .unwrap_or_default();
+    let root_text = files.first().map(|f| f.text.clone()).unwrap_or_default();
 
     let mut intro = BTreeMap::new();
     if exempt {

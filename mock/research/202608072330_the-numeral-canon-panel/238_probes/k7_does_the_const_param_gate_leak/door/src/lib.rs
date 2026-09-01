@@ -18,10 +18,14 @@ pub struct Width(u32);
 impl Width {
     /// A width from a count of bits.
     #[must_use]
-    pub const fn bits(n: u32) -> Self { Self(n) }
+    pub const fn bits(n: u32) -> Self {
+        Self(n)
+    }
     /// The count, for the one place a host contract needs it back.
     #[must_use]
-    pub const fn count(self) -> u32 { self.0 }
+    pub const fn count(self) -> u32 {
+        self.0
+    }
 }
 
 /// A slot range of a declared width, with the width as the door's own type.

@@ -13,9 +13,9 @@
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
+use mockspace_extra_lints::lints::arvo_types_only::ArvoTypesOnly;
 use mockspace_lint_rules::testkit::LintFixture;
 use mockspace_lint_rules::{CrateLint, CrateSourceFile};
-use mockspace_extra_lints::lints::arvo_types_only::ArvoTypesOnly;
 
 /// Verbatim from `arvo-format/src/tests.rs`, the block under
 /// "--- a format the crate does not know about".

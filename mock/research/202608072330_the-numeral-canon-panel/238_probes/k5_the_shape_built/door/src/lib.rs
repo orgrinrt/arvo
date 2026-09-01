@@ -58,13 +58,19 @@ impl Bool {
     pub const FALSE: Self = Self(false);
     /// A truth value from the host's.
     #[must_use]
-    pub const fn of(b: bool) -> Self { Self(b) }
+    pub const fn of(b: bool) -> Self {
+        Self(b)
+    }
     /// The host's, for the one place a control-flow construct needs it.
     #[must_use]
-    pub const fn get(self) -> bool { self.0 }
+    pub const fn get(self) -> bool {
+        self.0
+    }
     /// Both.
     #[must_use]
-    pub const fn and(self, o: Self) -> Self { Self(self.0 && o.0) }
+    pub const fn and(self, o: Self) -> Self {
+        Self(self.0 && o.0)
+    }
 }
 
 /// A rational in units of the quantum at magnitude zero.
@@ -84,11 +90,15 @@ impl Phase {
 
     /// A phase from a numerator over a denominator.
     #[must_use]
-    pub const fn of(num: i64, den: i64) -> Self { Self { num, den } }
+    pub const fn of(num: i64, den: i64) -> Self {
+        Self { num, den }
+    }
 
     /// Whether the offset is the absent one.
     #[must_use]
-    pub const fn is_none(self) -> Bool { Bool::of(self.num == 0) }
+    pub const fn is_none(self) -> Bool {
+        Bool::of(self.num == 0)
+    }
 }
 
 // --- the traits, parameterised on the coordinates -----------------------------
@@ -126,11 +136,21 @@ pub trait Slots {
     /// accessors, which is where the door's own primitive is allowed to be
     /// unwrapped. Nothing about the check weakened.
     const ADMITTED: () = {
-        assert!(Self::MIN.index() <= Self::MAX.index(), "slot range is inverted");
-        assert!(Self::WIDTH.count() >= 1, "a declared width of zero admits no values");
-        assert!(Self::WIDTH.count() <= 62, "declared width is wider than a slot index carries");
         assert!(
-            (Self::MAX.index() as i128) - (Self::MIN.index() as i128) < (1i128 << Self::WIDTH.count()),
+            Self::MIN.index() <= Self::MAX.index(),
+            "slot range is inverted"
+        );
+        assert!(
+            Self::WIDTH.count() >= 1,
+            "a declared width of zero admits no values"
+        );
+        assert!(
+            Self::WIDTH.count() <= 62,
+            "declared width is wider than a slot index carries"
+        );
+        assert!(
+            (Self::MAX.index() as i128) - (Self::MIN.index() as i128)
+                < (1i128 << Self::WIDTH.count()),
             "the declared width does not cover the range"
         );
     };
@@ -193,7 +213,9 @@ pub const fn contains<F: Format>(s: Slot, m: Magnitude) -> Bool {
 /// Whether the format's grid carries an additive identity.
 #[must_use]
 pub const fn has_additive_identity<F: Format>() -> Bool {
-    F::PHASE.is_none().and(slot_in_range::<F::Slots>(Slot::at(0)))
+    F::PHASE
+        .is_none()
+        .and(slot_in_range::<F::Slots>(Slot::at(0)))
 }
 
 /// The radix the format's ambient domain counts in.

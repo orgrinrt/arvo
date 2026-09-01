@@ -11,9 +11,9 @@
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
+use mockspace_extra_lints::lints::arvo_types_only::ArvoTypesOnly;
 use mockspace_lint_rules::testkit::LintFixture;
 use mockspace_lint_rules::{CrateLint, CrateSourceFile};
-use mockspace_extra_lints::lints::arvo_types_only::ArvoTypesOnly;
 
 fn count(name: &str, path: &str) -> usize {
     let text = std::fs::read_to_string(path).expect("the probe's own source is readable");
@@ -25,7 +25,10 @@ fn count(name: &str, path: &str) -> usize {
         }])
         .with_primitive_introductions(BTreeMap::new());
     let findings = ArvoTypesOnly.check(&fixture.ctx());
-    println!("--- {name}: {} finding(s), no exemption applied", findings.len());
+    println!(
+        "--- {name}: {} finding(s), no exemption applied",
+        findings.len()
+    );
     for f in findings.iter().take(4) {
         println!("      {}", f.message.lines().next().unwrap_or(""));
     }
