@@ -2177,3 +2177,48 @@ answers = ["may_an_arms_predicate_read_data"]
 note = "**The question's three options are stale and option (a) is stale in its own self-description.** It calls itself the predicate intent read literally, and the intent was sharpened past the literal reading before the entry was written. The entry's own `note` records this and the entry was never amended. Options (b) and (c) present a fork over a category op has refused three times under three names.\n\n**The measurement in the entry supports this without deciding it**: a value-gated selection materialises both arms and picks with a conditional select, thirteen instructions against six and three for the two const-gated arms. The runtime-gated form buys nothing at the substrate level even where permitted.\n\n**The substrate ships the choice rather than making it**, which is the toolbox posture rather than a new rule.\n\n**What stays open belongs elsewhere**: whether a declared ingest boundary is worth building, so a trajectory condition is checked once where values enter and is a typestate fact afterwards. That is a design question about a mechanism and it belongs to `validation`.\n\n**One expert, the coordinator's own.**"
 provenance = ["panel::202608072330_the-numeral-canon-panel::224_checkpoint_the_notation_residue::#q39-an-arms-predicate-the-stated-options-are-stale-and-the-residue-is-elsewhere"]
 keywords = ["predicate", "arm", "const", "const-available", "typestate", "trajectory", "runtime", "monomorphisation", "csel", "ingest boundary", "toolbox"]
+
+[[proposal]]
+id = "the_additive_identity_is_decided_by_the_phase_being_a_whole_multiple_of_the_quantum"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_format"
+supersedes = ["a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
+evidence = [
+  "the_identity_predicate_swept_against_an_enumeration",
+  "the_shipped_crate_admits_a_whole_step_phase",
+]
+says = "The representable set carries an additive identity exactly when the phase is a whole multiple of the quantum and the shifted slot is in range. Being nonzero is not what decides it: a phase of one whole quantum leaves zero on the grid one slot down, and only a phase with a fractional part takes it off."
+because = "It follows from the ratified membership predicate rather than from a new premise. Membership is the phase plus a slot multiple of the quantum, so zero is a member exactly when some integer slot satisfies slot times quantum equals minus the phase, which is solvable exactly when the phase is an integer multiple of the quantum. Two instruments reached it independently and neither had read the other: one swept the coordinate space and counted the cells where the shipped predicate and an enumeration disagree, the other ran a whole-step instantiation directly against the shipped crate and read the answer back.\n\nWhat the superseded row measured is not overturned, only its scope. At a half-step phase the set genuinely has no additive identity and is not closed under exact addition, which is the region the original sweep covered."
+predicate = [
+  "phase: phase integral for the identity, phase fractional for its absence",
+  "ambient_domain: ambient domain in {the rationals, the rationals at radix ten}",
+  "radix: radix in {2, 10}",
+  "signedness: signedness in {signed, unsigned}",
+  "integer_width: I in 1..=13, swept, the widths the probes instantiate",
+  "fraction_width: F in -2..=8, swept, as the constant family's exponent",
+  "rounding: rounding any, by construction, the predicate reads no rounding mode and no adaptation is applied",
+  "overflow_policy: overflow policy any, by construction, same",
+  "threads: threads any, by construction, the predicate is a const fn over associated items",
+  "target_features: target features any, by construction, same",
+  "toolchain: rustc = 1.98.0-nightly (57d06900f), edition = 2024",
+  "build_profile: opt level = 2, debug-assertions = off",
+  "occupancy: occupancy any, by construction, no value is placed",
+]
+note = "**The predicate above is one instrument's and the standing says so.** It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\n**Two instruments do meet, and they meet on the diagnosis rather than on a region.** The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\n**The second arrival is genuine and is the establishing seat's own word.** It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\n**The shipped `has_additive_identity` implements the superseded claim.** Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much."
+provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
+keywords = ["phase", "additive identity", "whole multiple", "quantum", "biased grid", "half step", "zero on the grid", "affine predicate", "membership"]
+
+[[proposal]]
+id = "the_introduction_doors_bound_is_a_position_rule_not_a_count_of_types"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "operating_constraints"
+says = "The bound on what a primitive-introducing crate may carry is a rule about positions rather than a count of types. In such a crate a bare primitive may appear only in the constructor and the accessor of a primitive that crate itself defines, plus the const generic parameter position the obligation already excepts. Everything else in the crate is checked as any consumer is."
+because = "A count cannot be stated once the door carries one type per coordinate, because the count then moves whenever the parameterisation gains a coordinate, and the thing the count was standing in for was never the number. What the crate-wide exemption is actually for is the two places a newtype has to touch its own representation, which a position rule names directly and which no count approximates."
+answers = ["what_the_numeric_introduction_door_may_carry_out"]
+note = "One instance, and it is the half of seat 238's answer that its partner did not reach, so `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon` deliberately carries the coordinate claim and stops short of this. A second independent derivation is what it wants, and the natural instrument is the one seat 238 already built: a checked crate outside the door declaring a format and naming no machine type.\n\n**It is enforceable, which is the part worth checking second.** The current exemption is a crate-name lookup returning a whole-crate skip, so nothing narrower can be expressed without changing the lint pack, and whether the position rule is cheaper to enforce than the exemption it replaces is unmeasured."
+provenance = ["panel::202608072330_the-numeral-canon-panel::238_kiselyov_what_the_door_may_carry_out::#7-how-the-rule-gets-enforced-because-a-rule-nobody-checks-is-a-comment"]
+keywords = ["door", "position", "exemption", "constructor", "accessor", "bare primitive", "primitive introductions", "bound"]

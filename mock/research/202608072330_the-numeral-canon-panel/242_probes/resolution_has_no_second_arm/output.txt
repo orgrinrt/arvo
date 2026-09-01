@@ -1,0 +1,31 @@
+======== ARM 1: resolve four ambient algebras over the ratified ten
+resolution of four DIFFERENT ambient algebras over one grid:
+  rationals (+,*)  : Resolved { radix: 2, signed: true, exp_at_0: -3, exp_at_1: -2, magnitudes_ok: true, min: -32, max: 31, width: 6, slots: 64, has_zero: true, contains_origin: true }
+  tropical (min,+) : Resolved { radix: 2, signed: true, exp_at_0: -3, exp_at_1: -2, magnitudes_ok: true, min: -32, max: 31, width: 6, slots: 64, has_zero: true, contains_origin: true }
+  boolean (and,or) : Resolved { radix: 2, signed: true, exp_at_0: -3, exp_at_1: -2, magnitudes_ok: true, min: -32, max: 31, width: 6, slots: 64, has_zero: true, contains_origin: true }
+  interval algebra : Resolved { radix: 2, signed: true, exp_at_0: -3, exp_at_1: -2, magnitudes_ok: true, min: -32, max: 31, width: 6, slots: 64, has_zero: true, contains_origin: true }
+  CONTROL radix 10 : Resolved { radix: 10, signed: true, exp_at_0: -3, exp_at_1: -2, magnitudes_ok: true, min: -32, max: 31, width: 6, slots: 64, has_zero: true, contains_origin: true }
+
+case 1 holds: four different algebras, one identical resolution.
+case 2 holds: the negative control moves, so the instrument sees a coordinate.
+
+FINDING: every one of the four RESOLVED. None returned the name of a
+missing coordinate. The operation family is not among the ten, so a
+resolution over the ten cannot report it missing: the diagnosis 241
+cites to motivate the shape is not reachable from the shape.
+
+Now build with --features omit_a_coordinate for the second arm.
+-------- exit: 0
+
+======== ARM 2 (control, must REFUSE): a candidate leaving one coordinate unfixed
+error[E0046]: not all trait items implemented, missing: `PHASE_DEN`
+   --> src/main.rs:123:1
+    |
+123 | impl Format for Underdetermined {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `PHASE_DEN` in implementation
+    |
+    = help: implement the missing item: `const PHASE_DEN: i64 = 42;`
+
+For more information about this error, try `rustc --explain E0046`.
+error: could not compile `resolution-has-no-second-arm` (bin "resolution-has-no-second-arm") due to 1 previous error
+-------- exit: 101

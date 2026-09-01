@@ -7,7 +7,7 @@
 `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`.
 `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, for the position of
 the selector. `ruling::arms_over_regions_are_the_fundamental_heart` and
-`ruling::the_work_is_predicated_arms_composed`.
+`ruling::the_work_is_predicated_arms_composed`, for what this crate supplies to the one that ships them.
 
 ## What this crate is
 
@@ -68,9 +68,16 @@ The accuracy-first preset sacrifices as much performance and efficiency as makes
 most precise answer, especially within chains rather than only per operation. Its objective had no
 measurement in the panel and the gap is recorded rather than papered over.
 
-**Which overflow mode each preset names is not written here.** `does_warm_wrap_or_clamp` is open in
-the registry. The crate carries the axis and the binding; the value is a defaults question and filling
-it inside a design is how an open canon question gets closed where nobody can see it happen.
+**The crate carries the axis; a concrete value has to fill it, and what fills it is a default rather
+than a ratified answer.** `presets` ships one `Adaptation` per preset, because a Rust associated type
+has to name something, but naming something is not the same as the canon having settled it.
+`question::does_warm_wrap_or_clamp` is open in the registry (`topic::overflow_policy`), and op has
+already called the prior panel's ratified preset table's `Warm` cell stale under his restated
+intuition intent. `Warm`'s `Adapt<HalfEven, Wrap>` and the other three presets' choices are marked
+`// FIXME:` at the declaration for exactly this reason: kept because a prior design can name the parts
+well and go wrong in execution, carried rather than endorsed, and open to being replaced by whatever
+`does_warm_wrap_or_clamp` and its neighbours in `overflow_policy` and `rounding` settle, with no edit
+to `Strategy` itself.
 
 ## Measurement decides, and the weightings differ
 
@@ -102,20 +109,33 @@ way it does, and that justification is recorded beside the arm.
 **A million small implementations is the intended shape rather than a failure mode**, which bears on
 any later review that would flag the count as duplication.
 
-## What an arm is, since this crate is what selects them
+## What an arm is, and why this crate supplies the predicate rather than the match
 
 An arm is an expression that is optimal over a nameable region, carrying a const predicate over that
 region and applying nowhere else. The full space is filled by composing arms, so everywhere is optimal
-by construction rather than by one statement uniform across the dimensions.
+by construction rather than by one statement uniform across the dimensions. This is
+`ruling::arms_over_regions_are_the_fundamental_heart`, which op calls the fundamental heart within
+arvo, and it is not a claim this crate proves in isolation: `arvo-placement`'s `derive_sole` and
+`derive_shared` are the two arms that already exist in the tree, matching on `O::OBJECTIVE`, an
+associated const of the objective marker this crate names.
+
+**So the arm is not here.** This crate supplies the const value the arm downstream is gated on
+(`Strategy::Objective`, reached through `objective_of`), and it is that value, not a match this crate
+writes, that makes `derive_shared`'s branch a predicate rather than a runtime check. A consumer generic
+over `S: Strategy` never sees the arm directly; it reaches `arvo_placement::derive_shared::<F,
+S::Objective>()`, and the branch there is what selects.
 
 A predicate may read anything available at const time, and may not read anything that is not, because
 selection happens at monomorphisation and there is nothing there to read. A condition known only at
 runtime is not an arm: it stays a finding about where a law holds, and a consumer who knows their data
 satisfies it selects the arm at their own call site from their own const knowledge.
 
-**No arm ships in this round.** The concepts an arm is gated over are what this round writes, and an
-arm without a measurement to justify it is the generalisation the design refuses, wearing a
-predicate.
+**No arm ships in this crate, and that is not a gap in the ruling.** Building one here, at the
+strategy-binding layer rather than the placement layer, would mean varying a strategy's own
+`Adaptation` by something other than the strategy name, and nothing in the corpus has measured a
+region where that pays. Shipping such a thing anyway would be exactly the unjustified generalisation
+`ruling::there_is_no_exchange_rate_because_there_is_no_generalisation` refuses, dressed as a predicate.
+The concepts an arm is gated over are what this crate writes; the arm itself waits on a measurement.
 
 ## What this crate does not decide
 
@@ -169,5 +189,8 @@ intent lives where a reader reads it and nowhere the type system can see.
 
 `Hot`, `Cold`, `Precise` and `Warm` are the presets, in `presets`. They are
 instances of an open concept rather than members of an enumeration, and a consumer
-adding a fifth edits nothing here. Which overflow mode each names is not settled
-in this design, because the registry holds that question open.
+adding a fifth edits nothing here. **Which overflow mode and rounding mode each
+names is a carried default, marked `// FIXME:` at each impl, and not a ratified
+answer**, because the registry holds `does_warm_wrap_or_clamp` open at least for
+`Warm`, and filling that in silently inside a design is how an open canon question
+gets closed where nobody can see it happen.
