@@ -331,6 +331,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.no-prose-citation-into-nothing]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-probe-reads-the-tree-it-sits-in]
 commit = "error"
 build = "error"
