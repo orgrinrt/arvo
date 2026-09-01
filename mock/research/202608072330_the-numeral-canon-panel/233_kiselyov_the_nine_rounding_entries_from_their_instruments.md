@@ -264,7 +264,91 @@ toward positive infinity. Both would be written `half_up` under the ratified six
 
 ## 5. Group one: the retraction row's two entries
 
-To be written: entries 8 and 9.
+Both entries sit on `law::rounding_retraction_is_the_identity`, in its `holds`
+and its `fails`, and both read `both rounding modes as swept by the instrument`.
+`question::what_region_does_a_predicate_naming_no_mode_state` files this and
+lists three options: that it states no region and is a defect repaired by opening
+the instrument and writing the two modes; that it states whatever region the
+instrument covered and is a pointer rather than a region; or that the axis should
+be absent.
+
+I take the first option's **method** and reject its **conclusion**. The
+instrument opens, so nothing here is void. But writing the two modes it swept
+would state a region narrower than what holds, and on the `holds` side it would
+state the wrong kind of thing entirely.
+
+**Entry 8, the `holds` side at `F = 0`: the value is `rounding = exact`.**
+
+Not a mode set. `dimension::rounding`'s own grammar already declares this value
+and says what it is for: "`rounding = exact` names the case where nothing is
+discarded, which is a value of the axis rather than its absence." At `F = 0` the
+rescale shift is zero bits, so nothing is discarded and no rounding rule is
+consulted. `k1`'s prediction K4, written before the run, is that every one of the
+seven functions is the identity at `f = 0`; the committed output at
+`233_probes/k1_out.txt` reports `HOLDS for all 7 modes` over `p in [-256, 255]`.
+Control C4 in the same run requires the modes not to be the identity at `f = 1`,
+so K4 is measuring the shift and not the sweep, and it passes.
+
+`k2` part C then re-measures the retraction property itself over all seven
+functions at `W in {4, 6, 8}` and `F in 0..=W`, and finds zero divergences at
+`F = 0` for every one of the seven. So the entry does not hold for two modes. It
+holds for every mode there could ever be, because at `F = 0` the axis is
+degenerate. The author of `97_probes/p2` reached the same conclusion in a comment
+at line 238 and acted on it, skipping the second mode at `F = 0` as redundant.
+
+`exact` is strictly better than any of the question's three options. It is
+gateable, which option two's pointer is not; it is a declared value, which
+option three's deletion is not; and it is exactly true, which the two swept modes
+would not be. `mock/tools/rounding-vocabulary/src/lib.rs:63` already classifies
+`exact` as a value of the axis rather than an unknown mode, so writing it costs
+the tool nothing.
+
+**Entry 9, the `fails` side at `F in 1..=W`: what the row's own instrument
+establishes is `rounding in {floor, toward_zero, half_up}`.**
+
+Its two swept rules are a logical shift on an unsigned domain and a half-step-add
+on the same, per section 4. `k1`'s prediction K1 is that on a non-negative domain
+there are exactly three coincidences and that `floor == toward_zero` is one of
+them; the committed output reports it as measured over `p in [0, 255]` at
+`f in {1, 2, 3, 4}`, with control C2 confirming the coincidence breaks the moment
+negatives are admitted, so it is a fact about the domain and not about the test.
+So the shift rule is floor and toward-zero at once and both names are correct
+there. K1 also finds the two readings of `half_up` coincide on that domain, so
+the half rule is `half_up` with no ambiguity, and this is the one place in the
+whole of section 8 that the ambiguity does not bite.
+
+**And a widening, which is a separate claim with its own evidence and does not
+edit the row.** A predicate is never widened in place, so the paragraph above is
+what entry 9 states and this is mine. `k2` part C measures the retraction
+property over all seven functions and finds it fails at every `F >= 1` at every
+one of `W in {4, 6, 8}`, for every one of the seven. Prediction P4, written
+before the run, and it holds. So:
+
+> holds for: total_width W in {4, 6, 8}, fraction_width F in 1..=W, signedness =
+> unsigned, rounding in {floor, ceil, toward_zero, half_up, half_even} and also
+> under away-from-zero, operation = mul, chain_length = 2, arity = 3, threads =
+> 1, target features any
+
+Evidence `233_probes/k2_out.txt` part C, with controls R1 and R2 requiring my
+floor column to reproduce `c_retraction`'s `truncate` column and my
+ties-away column to reproduce its `nearest` column digit for digit across all
+21 rows. Both pass, which is what licenses reading my five new columns as the
+same experiment rather than a different one.
+
+**What that widening actually says is that the rounding axis carries no
+information on this row at all.** Every mode retracts at `F = 0` and none
+retracts above it, so the answer is a fact about the fraction width and the
+mode is not a parameter of it. The row's own `gap` field asks "which two rounding
+modes, and whether a third behaves differently". The answer is that no third
+behaves differently, and neither did the first two.
+
+**A defect on the same row, found while answering and not part of the question.**
+Neither entry names `signedness`, and the instrument swept `u128` over `0..2^W`,
+which is unsigned only. Under the notation an absent axis claims the finding
+holds nowhere that axis exists, and signedness exists everywhere a numeral does,
+so both entries as written claim to hold nowhere. That is not what either author
+meant and it is a stronger negative than the rounding entry's. It wants
+`signedness = unsigned` on both, which is what the instrument earns.
 
 ## 6. Group two: the retired word and the underspecified one
 
