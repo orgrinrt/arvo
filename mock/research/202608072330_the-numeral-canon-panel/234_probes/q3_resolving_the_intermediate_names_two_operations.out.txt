@@ -1,0 +1,245 @@
+q3. `resolve the intermediate` names two operations
+
+== the table, W = 6, both policies, both readings ==
+mode                   sign     policy    F   reading1   reading2   same?
+floor              unsigned       wrap    0      0.00%      0.00%   yes
+floor              unsigned       wrap    1      0.00%      0.00%   yes
+floor              unsigned       wrap    2      0.00%      0.00%   yes
+floor              unsigned       wrap    3      0.00%      0.00%   yes
+floor              unsigned       wrap    4      0.00%      0.00%   yes
+floor              unsigned       wrap    5      0.00%      0.00%   yes
+ceil               unsigned       wrap    0      0.00%      0.00%   yes
+ceil               unsigned       wrap    1      0.00%      0.00%   yes
+ceil               unsigned       wrap    2      0.00%      0.00%   yes
+ceil               unsigned       wrap    3      0.00%      0.00%   yes
+ceil               unsigned       wrap    4      0.00%      0.00%   yes
+ceil               unsigned       wrap    5      0.00%      0.00%   yes
+toward_zero        unsigned       wrap    0      0.00%      0.00%   yes
+toward_zero        unsigned       wrap    1      0.00%      0.00%   yes
+toward_zero        unsigned       wrap    2      0.00%      0.00%   yes
+toward_zero        unsigned       wrap    3      0.00%      0.00%   yes
+toward_zero        unsigned       wrap    4      0.00%      0.00%   yes
+toward_zero        unsigned       wrap    5      0.00%      0.00%   yes
+away_from_zero     unsigned       wrap    0      0.00%      0.00%   yes
+away_from_zero     unsigned       wrap    1      0.00%      0.00%   yes
+away_from_zero     unsigned       wrap    2      0.00%      0.00%   yes
+away_from_zero     unsigned       wrap    3      0.00%      0.00%   yes
+away_from_zero     unsigned       wrap    4      0.00%      0.00%   yes
+away_from_zero     unsigned       wrap    5      0.00%      0.00%   yes
+half_up(+inf)      unsigned       wrap    0      0.00%      0.00%   yes
+half_up(+inf)      unsigned       wrap    1      0.00%      0.00%   yes
+half_up(+inf)      unsigned       wrap    2      0.00%      0.00%   yes
+half_up(+inf)      unsigned       wrap    3      0.00%      0.00%   yes
+half_up(+inf)      unsigned       wrap    4      0.00%      0.00%   yes
+half_up(+inf)      unsigned       wrap    5      0.00%      0.00%   yes
+half_up(away)      unsigned       wrap    0      0.00%      0.00%   yes
+half_up(away)      unsigned       wrap    1      0.00%      0.00%   yes
+half_up(away)      unsigned       wrap    2      0.00%      0.00%   yes
+half_up(away)      unsigned       wrap    3      0.00%      0.00%   yes
+half_up(away)      unsigned       wrap    4      0.00%      0.00%   yes
+half_up(away)      unsigned       wrap    5      0.00%      0.00%   yes
+half_even          unsigned       wrap    0      0.00%      0.00%   yes
+half_even          unsigned       wrap    1     12.50%     12.50%   yes
+half_even          unsigned       wrap    2     12.50%     12.50%   yes
+half_even          unsigned       wrap    3      9.38%      9.38%   yes
+half_even          unsigned       wrap    4      6.25%      6.25%   yes
+half_even          unsigned       wrap    5      3.91%      3.91%   yes
+floor              unsigned   saturate    0      0.00%      0.00%   yes
+floor              unsigned   saturate    1      0.00%      0.00%   yes
+floor              unsigned   saturate    2      0.00%      0.00%   yes
+floor              unsigned   saturate    3      0.00%      0.00%   yes
+floor              unsigned   saturate    4      0.00%      0.00%   yes
+floor              unsigned   saturate    5      0.00%      0.00%   yes
+ceil               unsigned   saturate    0      0.00%      0.00%   yes
+ceil               unsigned   saturate    1      0.00%      0.00%   yes
+ceil               unsigned   saturate    2      0.00%      0.00%   yes
+ceil               unsigned   saturate    3      0.00%      0.00%   yes
+ceil               unsigned   saturate    4      0.00%      0.00%   yes
+ceil               unsigned   saturate    5      0.00%      0.00%   yes
+toward_zero        unsigned   saturate    0      0.00%      0.00%   yes
+toward_zero        unsigned   saturate    1      0.00%      0.00%   yes
+toward_zero        unsigned   saturate    2      0.00%      0.00%   yes
+toward_zero        unsigned   saturate    3      0.00%      0.00%   yes
+toward_zero        unsigned   saturate    4      0.00%      0.00%   yes
+toward_zero        unsigned   saturate    5      0.00%      0.00%   yes
+away_from_zero     unsigned   saturate    0      0.00%      0.00%   yes
+away_from_zero     unsigned   saturate    1      0.00%      0.00%   yes
+away_from_zero     unsigned   saturate    2      0.00%      0.00%   yes
+away_from_zero     unsigned   saturate    3      0.00%      0.00%   yes
+away_from_zero     unsigned   saturate    4      0.00%      0.00%   yes
+away_from_zero     unsigned   saturate    5      0.00%      0.00%   yes
+half_up(+inf)      unsigned   saturate    0      0.00%      0.00%   yes
+half_up(+inf)      unsigned   saturate    1      0.00%      0.00%   yes
+half_up(+inf)      unsigned   saturate    2      0.00%      0.00%   yes
+half_up(+inf)      unsigned   saturate    3      0.00%      0.00%   yes
+half_up(+inf)      unsigned   saturate    4      0.00%      0.00%   yes
+half_up(+inf)      unsigned   saturate    5      0.00%      0.00%   yes
+half_up(away)      unsigned   saturate    0      0.00%      0.00%   yes
+half_up(away)      unsigned   saturate    1      0.00%      0.00%   yes
+half_up(away)      unsigned   saturate    2      0.00%      0.00%   yes
+half_up(away)      unsigned   saturate    3      0.00%      0.00%   yes
+half_up(away)      unsigned   saturate    4      0.00%      0.00%   yes
+half_up(away)      unsigned   saturate    5      0.00%      0.00%   yes
+half_even          unsigned   saturate    0      0.00%      0.00%   yes
+half_even          unsigned   saturate    1      0.93%      0.93%   yes
+half_even          unsigned   saturate    2      1.61%      1.61%   yes
+half_even          unsigned   saturate    3      2.02%      2.02%   yes
+half_even          unsigned   saturate    4      2.18%      2.18%   yes
+half_even          unsigned   saturate    5      2.08%      2.08%   yes
+floor                signed       wrap    0      0.00%      0.00%   yes
+floor                signed       wrap    1      0.00%      0.00%   yes
+floor                signed       wrap    2      0.00%      0.00%   yes
+floor                signed       wrap    3      0.00%      0.00%   yes
+floor                signed       wrap    4      0.00%      0.00%   yes
+floor                signed       wrap    5      0.00%      0.00%   yes
+ceil                 signed       wrap    0      0.00%      0.00%   yes
+ceil                 signed       wrap    1      0.00%      0.00%   yes
+ceil                 signed       wrap    2      0.00%      0.00%   yes
+ceil                 signed       wrap    3      0.00%      0.00%   yes
+ceil                 signed       wrap    4      0.00%      0.00%   yes
+ceil                 signed       wrap    5      0.00%      0.00%   yes
+toward_zero          signed       wrap    0      0.00%      0.00%   yes
+toward_zero          signed       wrap    1      1.64%      1.64%   yes
+toward_zero          signed       wrap    2      5.54%      5.54%   yes
+toward_zero          signed       wrap    3     12.34%     12.34%   yes
+toward_zero          signed       wrap    4     22.22%     22.22%   yes
+toward_zero          signed       wrap    5     33.40%     33.40%   yes
+away_from_zero       signed       wrap    0      0.00%      0.00%   yes
+away_from_zero       signed       wrap    1      1.64%      1.64%   yes
+away_from_zero       signed       wrap    2      5.54%      5.54%   yes
+away_from_zero       signed       wrap    3     12.34%     12.34%   yes
+away_from_zero       signed       wrap    4     22.22%     22.22%   yes
+away_from_zero       signed       wrap    5     33.40%     33.40%   yes
+half_up(+inf)        signed       wrap    0      0.00%      0.00%   yes
+half_up(+inf)        signed       wrap    1      0.00%      0.00%   yes
+half_up(+inf)        signed       wrap    2      0.00%      0.00%   yes
+half_up(+inf)        signed       wrap    3      0.00%      0.00%   yes
+half_up(+inf)        signed       wrap    4      0.00%      0.00%   yes
+half_up(+inf)        signed       wrap    5      0.00%      0.00%   yes
+half_up(away)        signed       wrap    0      0.00%      0.00%   yes
+half_up(away)        signed       wrap    1      1.64%      1.64%   yes
+half_up(away)        signed       wrap    2      2.76%      2.76%   yes
+half_up(away)        signed       wrap    3      3.34%      3.34%   yes
+half_up(away)        signed       wrap    4      3.40%      3.40%   yes
+half_up(away)        signed       wrap    5      2.93%      2.93%   yes
+half_even            signed       wrap    0      0.00%      0.00%   yes
+half_even            signed       wrap    1     12.50%     12.50%   yes
+half_even            signed       wrap    2     12.50%     12.50%   yes
+half_even            signed       wrap    3      9.38%      9.38%   yes
+half_even            signed       wrap    4      6.25%      6.25%   yes
+half_even            signed       wrap    5      3.91%      3.91%   yes
+floor                signed   saturate    0     42.14%      0.00%   NO
+floor                signed   saturate    1     37.50%      0.00%   NO
+floor                signed   saturate    2     30.22%      0.00%   NO
+floor                signed   saturate    3     19.77%      0.00%   NO
+floor                signed   saturate    4      7.53%      0.00%   NO
+floor                signed   saturate    5      0.01%      0.00%   NO
+ceil                 signed   saturate    0     42.14%      0.00%   NO
+ceil                 signed   saturate    1     37.55%      0.00%   NO
+ceil                 signed   saturate    2     30.32%      0.00%   NO
+ceil                 signed   saturate    3     19.92%      0.00%   NO
+ceil                 signed   saturate    4      7.54%      0.00%   NO
+ceil                 signed   saturate    5      0.01%      0.00%   NO
+toward_zero          signed   saturate    0     42.14%      0.00%   NO
+toward_zero          signed   saturate    1     39.10%      1.64%   NO
+toward_zero          signed   saturate    2     35.67%      5.54%   NO
+toward_zero          signed   saturate    3     31.96%     12.34%   NO
+toward_zero          signed   saturate    4     29.52%     22.22%   NO
+toward_zero          signed   saturate    5     33.41%     33.40%   NO
+away_from_zero       signed   saturate    0     42.14%      0.00%   NO
+away_from_zero       signed   saturate    1     39.23%      1.64%   NO
+away_from_zero       signed   saturate    2     35.94%      5.54%   NO
+away_from_zero       signed   saturate    3     32.38%     12.34%   NO
+away_from_zero       signed   saturate    4     29.98%     22.22%   NO
+away_from_zero       signed   saturate    5     33.41%     33.40%   NO
+half_up(+inf)        signed   saturate    0     42.14%      0.00%   NO
+half_up(+inf)        signed   saturate    1     37.55%      0.00%   NO
+half_up(+inf)        signed   saturate    2     30.27%      0.00%   NO
+half_up(+inf)        signed   saturate    3     19.92%      0.00%   NO
+half_up(+inf)        signed   saturate    4      7.64%      0.00%   NO
+half_up(+inf)        signed   saturate    5      0.01%      0.00%   NO
+half_up(away)        signed   saturate    0     42.14%      0.00%   NO
+half_up(away)        signed   saturate    1     39.23%      1.64%   NO
+half_up(away)        signed   saturate    2     33.12%      2.76%   NO
+half_up(away)        signed   saturate    3     23.35%      3.34%   NO
+half_up(away)        signed   saturate    4     11.07%      3.40%   NO
+half_up(away)        signed   saturate    5      2.94%      2.93%   NO
+half_even            signed   saturate    0     42.14%      0.00%   NO
+half_even            signed   saturate    1     39.74%      2.75%   NO
+half_even            signed   saturate    2     33.91%      4.44%   NO
+half_even            signed   saturate    3     24.23%      5.06%   NO
+half_even            signed   saturate    4     11.86%      4.64%   NO
+half_even            signed   saturate    5      3.40%      3.39%   NO
+
+== the free sets ==
+  unsigned  wrap      reading 2   free at every F in 0..=5: ["floor", "ceil", "toward_zero", "away_from_zero", "half_up(+inf)", "half_up(away)"]
+  unsigned  wrap      reading 1   free at every F in 0..=5: ["floor", "ceil", "toward_zero", "away_from_zero", "half_up(+inf)", "half_up(away)"]
+  unsigned  saturate  reading 2   free at every F in 0..=5: ["floor", "ceil", "toward_zero", "away_from_zero", "half_up(+inf)", "half_up(away)"]
+  unsigned  saturate  reading 1   free at every F in 0..=5: ["floor", "ceil", "toward_zero", "away_from_zero", "half_up(+inf)", "half_up(away)"]
+  signed    wrap      reading 2   free at every F in 0..=5: ["floor", "ceil", "half_up(+inf)"]
+  signed    wrap      reading 1   free at every F in 0..=5: ["floor", "ceil", "half_up(+inf)"]
+  signed    saturate  reading 2   free at every F in 0..=5: ["floor", "ceil", "half_up(+inf)"]
+  signed    saturate  reading 1   free at every F in 0..=5: []
+
+== C1 must-fail: the two readings must coincide under wrap ==
+  C1 ok: identical at every wrap cell, so reduction is a homomorphism there
+         and the saturating split below is about saturation, not the model
+
+== C2 must-fail: F = 0 under wrap must be free for every mode ==
+  C2 ok: nothing is discarded at F = 0 and nothing differs
+
+== C3 must-fail: reproduce the row's own published wrap rates ==
+  law::fusing_a_multiply_add_preserves_the_answer_under_unsigned, `note`:
+  "12.50, 12.50, 9.38, 6.25 and 3.91 percent of triples at F = 1 through 5,
+   and zero at F = 0", for half_even under wrapping.
+  measured: ["0.00", "12.50", "12.50", "9.38", "6.25", "3.91"]
+  C3 ok: six of six reproduced, so this is the row's property
+
+== C4 must-fail: reproduce the two saturating figures the corpus already has ==
+  signed saturating, F = 0, reading 1: 110476 of 262144
+  `228` section 0 reports its v1 control firing at 110,476 of 262,144.
+  unsigned saturating half_even, F = 1..5: ["0.93", "1.61", "2.02", "2.18", "2.08"]
+  `228` section 2.3 reports 0.93, 1.61, 2.02, 2.18, 2.08 and the row's `note`
+  reports the range 0.93 to 2.18.
+  C4 ok: both reproduced, so this model is the corpus's model on the
+         saturating side as well as the wrapping side, and `228`'s own
+         control figure is the signed reading-1 cell of this table
+
+== WHAT THIS SETTLES ==
+Three of the four predictions above were wrong and the measurement is
+sharper than any of them.
+
+P1 and P2 held. C3 reproduces the unsigned row's five published wrap rates
+and the free sets under wrap are the two law rows' `holds` fields exactly:
+five modes unsigned, three signed.
+
+P3 held and P4 did not. Under saturation the two readings coincide on the
+UNSIGNED domain at every cell, because clamping at the top is idempotent and
+a non-negative addend cannot come back down: clamp(clamp(x) + c) is
+clamp(x + c) for every c >= 0. So the unsigned row's
+`overflow_policy: in {wrap, saturating}` on `holds` is supported under BOTH
+readings and is not ambiguous at all. The row is right.
+
+The readings come apart on the SIGNED domain only, and there the gap is the
+whole verdict: at F = 0 reading 1 differs on 42.14 percent of triples for
+every mode while reading 2 differs on none, so under reading 1 nothing is
+free and under reading 2 the free set is the signed row's own three. The
+signed row carries `overflow_policy: wrap` and states nothing about
+saturating, which is the right thing to have written, and this measurement
+says why: the saturating extension has no truth value until the reading is
+named, and nothing in `dimension::overflow_policy` names it, because what
+varies is not which policy applies but how many times it is applied.
+
+== WHAT THIS REFUTES ==
+`228` finding F2's justification: "under saturating every mode fails at
+every fraction width including zero, so the prediction is known not to
+extend and I do not claim it does." F2's predicate carries
+`signedness: in {unsigned, signed}`. On the unsigned half of that region
+the sentence is false at all 42 cells measured here: every mode is free
+under saturating at every F including zero, under both readings. The
+sentence is true only on the signed half and only under reading 1, which is
+the cell `228`'s own v1 control fired in, at the figure C4 reproduces.
+So a correct half of a region was dropped because a control fired in the
+other half under a reading the file never names.
+
+instrument: sound

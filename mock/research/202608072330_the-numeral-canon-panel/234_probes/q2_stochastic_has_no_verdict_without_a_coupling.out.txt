@@ -1,0 +1,64 @@
+q2. a stochastic mode has no retraction verdict until a coupling is named
+
+== the two couplings, proportional draw ==
+  W   F      sign    A independent      rate    B shared bits      rate   same?
+  4   0  unsigned                0   0.0000%                0   0.0000%   yes
+  4   1  unsigned            17920  27.3438%             4224  25.7812%   NO
+  4   2  unsigned           432432  41.2399%            23392  35.6934%   NO
+  4   3  unsigned          6124532  36.5051%            71024  27.0935%   NO
+  4   0    signed                0   0.0000%                0   0.0000%   yes
+  4   1    signed            16384  25.0000%             4096  25.0000%   yes
+  4   2    signed           345088  32.9102%            20640  31.4941%   NO
+  4   3    signed          5064000  30.1838%            78116  29.7989%   NO
+  6   0  unsigned                0   0.0000%                0   0.0000%   yes
+  6   1  unsigned          1269760  30.2734%           313344  29.8828%   NO
+  6   2  unsigned         36520704  54.4201%          2225152  53.0518%   NO
+  6   3  unsigned        659090112  61.3826%          9731264  58.0029%   NO
+
+  The two couplings disagree. `does this retract` is therefore not a
+  property of the triple and the mode; it is a property of the triple,
+  the mode and the coupling. A `fails` region naming `stochastic` and no
+  coupling states no region, which is the defect 228 set out to repair
+  and reintroduced on the same field.
+
+== C1 must-fail: collapse the draw and the couplings must agree ==
+  W=4 F=1 unsigned always-up   A  19.5312%  B  19.5312%  agree
+  W=4 F=1 unsigned always-down A  19.5312%  B  19.5312%  agree
+  W=4 F=2 unsigned always-up   A  27.5391%  B  27.5391%  agree
+  W=4 F=2 unsigned always-down A  27.5391%  B  27.5391%  agree
+  W=4 F=3 unsigned always-up   A  22.5830%  B  22.5830%  agree
+  W=4 F=3 unsigned always-down A  22.2168%  B  22.2168%  agree
+  W=4 F=1 signed   always-up   A  18.7500%  B  18.7500%  agree
+  W=4 F=1 signed   always-down A  18.7500%  B  18.7500%  agree
+  W=4 F=2 signed   always-up   A  24.0234%  B  24.0234%  agree
+  W=4 F=2 signed   always-down A  24.0234%  B  24.0234%  agree
+  W=4 F=3 signed   always-up   A  19.3359%  B  19.3359%  agree
+  W=4 F=3 signed   always-down A  19.3359%  B  19.3359%  agree
+  C1 ok: with the randomness removed the couplings are indistinguishable,
+         so the disagreement above is about the draw and not the harness
+
+== C2 must-fail: F = 0 must be zero under every rule and both couplings ==
+  C2 ok: every F = 0 cell is zero, so no draw acts where no residue exists.
+         The `holds` side's construction argument survives for stochastic;
+         it is the `fails` side that does not.
+
+== C3 must-fail: the collapsed draws must reproduce q1's floor and ceil ==
+  q1, unsigned W=4: floor 800 1128 910 543 and ceil 800 1128 925 495 at F=1..4
+    F=1  always-down 800 of 4096   always-up 800 of 4096
+    F=2  always-down 1128 of 4096   always-up 1128 of 4096
+    F=3  always-down 910 of 4096   always-up 925 of 4096
+  C3 ok: the collapsed stochastic rule reproduces floor and ceil exactly,
+         so this is the same comparison q1 and `94_probes/c_retraction` run
+
+== WHAT THIS REFUTES ==
+`228` F4, the `fails` side clause "stochastic by construction since the
+eager step is then not a function of the triple". The premise is true and
+the conclusion does not follow: the comparison becomes a question about a
+joint distribution, two defensible couplings give two answers, and neither
+`228` nor any instrument in this panel names one. The clause therefore does
+not discharge the `construction` warrant that
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` defines,
+which obliges an instrument that varied the axis and found NO movement.
+This instrument varied it and found movement.
+
+instrument: sound

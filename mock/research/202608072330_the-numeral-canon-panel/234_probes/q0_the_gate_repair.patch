@@ -1,0 +1,25 @@
+--- a/mock/research/202608072330_the-numeral-canon-panel/232_lamport_the_nine_rounding_entries_derived_cold.md	2026-09-01 09:12:03
++++ b/mock/research/202608072330_the-numeral-canon-panel/232_lamport_the_nine_rounding_entries_derived_cold.md	2026-09-01 09:26:50
+@@ -777,7 +777,7 @@
+ the canon already depends on and says what is missing is one sentence per name
+ rather than a seventh name. My entry 4 is the row that forces it: with `half_up`
+ settled as ties toward positive infinity, `97_probes/p2`'s ties-away-from-zero
+-arm has no name, and `proposal::a_law_is_inherited_where_the_realisation_map_is_a
+-_congruence_for_every_nesting_it_contains` is a row in the canon whose rounding
+-axis cannot be written. That is a concrete row rather than a hypothetical, and it
++arm has no name, and the row
++`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`
++is a row in the canon whose rounding axis cannot be written. That is a concrete row rather than a hypothetical, and it
+ is the argument for the seventh name that my section 9 made for the wrong mode.
+--- a/mock/research/202608072330_the-numeral-canon-panel/233_kiselyov_the_nine_rounding_entries_from_their_instruments.md	2026-09-01 08:54:31
++++ b/mock/research/202608072330_the-numeral-canon-panel/233_kiselyov_the_nine_rounding_entries_from_their_instruments.md	2026-09-01 09:26:50
+@@ -409,7 +409,8 @@
+ The rest of the entry, `against a phase-zero mutant`, is not a value of the
+ rounding axis. It is the instrument's negative control, mutant B at line 137,
+ which is coverage rather than a situation the world can be in. The sibling row
+-`proposal::a_law_is_inherited...` already states that principle in its own note,
++`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`
++already states that principle in its own note,
+ that the exhaustiveness of a value sweep is an instrument parameter rather than a
+ region, and it applies unchanged. The entry wants to read `rounding = half_up`
+ with the control in the note.

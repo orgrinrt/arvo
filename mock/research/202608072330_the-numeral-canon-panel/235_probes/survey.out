@@ -1,0 +1,258 @@
+
+
+===== 1. the tool never reads a rung =====
+-- occurrences of 'rung' in the tool source and its tests:
+mock/tools/obligation-coverage/src/lib.rs:0
+mock/tools/obligation-coverage/src/tests.rs:0
+-- POSITIVE CONTROL, the same pattern against a file that does carry it:
+102
+-- the tiering table itself:
+const EDGES: [(&str, Reach); 3] = [
+    ("ruling", Reach::Met),
+    ("proposal", Reach::Proposed),
+    ("retirement", Reach::RouteClosed),
+];
+-- the walk, with no filter between rows_in and the tier assignment:
+        for q in reg.rows_in(ns) {
+            for named in list(reg, q, OBLIGATION) {
+                let Some(entry) = out.get_mut(named) else {
+                    continue; // a slug naming no obligation is a lint's report
+                };
+                entry.0 = entry.0.min(tier);
+                entry.1.push(q.clone());
+            }
+-- what the doc comment claims the Met tier means:
+//! **The tier each obligation has reached**, from the typed edges alone. A
+//! ruling names it and op has been in the loop, which is the only tier that is
+//! an answer. A proposal names it and op has not seen that proposal, which the
+pub enum Reach {
+    /// A ruling names it. Op has been in the loop, so this is the only tier that
+    /// is an answer.
+    Met,
+
+
+===== 2. every ruling -> obligation edge in the repository, and its rung =====
+-- count and line:
+997:obligation = ["an_exact_width_container_a_consumer_can_alias_and_pin"]
+-- the row that line belongs to, id and rung:
+   id = "ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up"
+   rung = "stated"
+-- op's words on that row, from its own note:
+I need elaboration on the Ingest vs C ABI. That explanation does not explain what this is, so I can't bless it or comment on it in any manner.\
+I need elaboration on the Ingest vs C ABI. That explanation does not explain what this is, so I can't
+
+
+===== 3. the rung population, and ratification by proxy =====
+-- rulings by rung:
+   1 rung = "in_force"
+   5 rung = "open"
+  31 rung = "ratified"
+  58 rung = "stated"
+-- ratified rulings and the proposals each ratifies:
+--- id = "the_format_spine_is_canon" | rung = "ratified"
+  "a_format_is_identified_by_its_ambient_domain_and_its_representable_set",
+  "membership_of_the_representable_set_is_one_affine_predicate",
+  "arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation",
+  "the_concept_is_closed_and_the_inventory_is_open",
+]
+--- id = "behaviour_is_stated_per_declared_signature_and_the_premise_dissolves" | rung = "ratified"
+  "observability_is_relative_to_a_declared_signature",
+  "every_operation_arvo_declares_is_a_function_of_the_declared_width",
+  "the_carrier_is_observable_through_the_ambient_layout_observation_alone",
+  "at_shared_occupancy_no_per_element_footprint_observation_exists",
+]
+--- id = "arms_over_regions_are_the_fundamental_heart" | rung = "ratified"
+says = "The full space is filled by small arms and spans that hold where they are optimal and nowhere else, composed, rather than by one or a few general statements uniform across the dimensions. Each arm carries a const predicate over the region it holds in."
+quote = '''
+Option 1 is exactly the paradigm. We fill the full space, but instead of one or a couple of general
+statements that are uniform across the dimensions, we have small arms and spans that work where they
+are optimal, and nowhere else. It's the fundamental heart within arvo.
+'''
+because = "Four topics reached this independently and the earliest reached it before the rule that would have required it existed, which is convergence rather than a shared premise. He calls it the fundamental heart within arvo, which is the strongest framing he has given any structural claim."
+note = "This is `I13` stated as a positive shape rather than as a rejection of universals. It is why a finding carries the region it holds in: an arm without a predicate has nothing to be gated on, and a universal claim is not what this design produces."
+provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-organising-shape"]
+--- id = "the_additive_and_absorption_verdicts_are_canon" | rung = "ratified"
+  "an_additive_verdict_is_independent_of_the_fraction_width",
+  "absorption_decides_associativity_of_a_clamped_reduction",
+]
+-- the proposal carrying an obligation edge that a ratified ruling ratifies:
+mock/registry/proposal-the-later-topics.toml:597:id = "every_operation_arvo_declares_is_a_function_of_the_declared_width"
+mock/registry/ruling.toml:1466:  "every_operation_arvo_declares_is_a_function_of_the_declared_width",
+-- and the region that ratified claim was established over:
+predicate = [
+  "integer_width: 3, 8, 13, 14, 16, 23, 27, 31, 32, 47, 60, 64",
+  "fraction_width: 0",
+  "signedness: unsigned",
+  "radix: 2",
+  "container: u16, u32, and the rung tables the two candidate rules generate",
+  "operation: encode, add, mul, xor",
+  "overflow_policy: wrap, sat",
+  "arity: 2",
+  "chain_length: 1, 4",
+  "threads: 1",
+  "target_features: any",
+  "toolchain: nightly-2026-05-28",
+  "build_profile: release",
+]
+
+
+===== 4. the question file's header against its own rows =====
+-- what the header says:
+# No answer is recorded here, including for the rows whose source records one.
+# Where a question was answered, `note` says that it was and where, and never
+# which way. What answers a question is a ruling or a proposal naming it, and the
+# edge is drawn from that side.
+-- question rows, and rows carrying an answer:
+total   104
+answered 13
+-- which ones:
+   id = "which_width_coordinates_a_consumer_writes"
+   id = "container_derivation_output_count"
+   id = "the_exchange_rate_a_preference_yields_at"
+   id = "adaptation_in_identity_or_realisation"
+   id = "is_the_number_system_inventory_open"
+   id = "which_operation_set_the_design_ships"
+   id = "what_a_proof_marker_is_against_a_measurement"
+   id = "the_rounding_mode_vocabulary"
+   id = "the_container_premise"
+   id = "does_the_observability_principle_become_an_intent"
+   id = "which_accuracy_target_the_accuracy_intent_names"
+   id = "which_closed_panel_statements_the_absolute_framing_carve_out_reaches"
+   id = "which_standards_the_alias_obligation_covers"
+
+
+===== 5. no ratified says reaches the algorithm, hashing or rendering subjects =====
+       0
+-- POSITIVE CONTROL, the same walk with a term the ratified set does carry:
+id = "behaviour_is_stated_per_declared_signature_and_the_premise_dissolves"
+
+
+===== 6. the width surface was picked in code, and no round cites the open question =====
+-- Q9's options, which is what was picked from:
+options = [
+  "Keyed on const generics directly with a per-width bridge, one row per written width.",
+  "A raw nat surface with no const bridge, the consumer spelling the width as a hand-written binary digit tower.",
+  "A nat surface with a shipped alias layer, names shipped for the towers.",
+  "A nat surface with a consumer-side declaration macro minting the names it wants.",
+  "A hybrid: a consumer-facing type alias carries the const parameter, the numeral is keyed on nats, and the bridge fires once at the alias so the algebra never re-enters it.",
+  "The width type visible to a consumer is the literal itself, with the structural nat demoted to a hidden projection.",
+  "Declare the output width explicitly and check it is wide enough by a free type-level comparison, so no reverse table exists because no output is ever named computationally.",
+]
+-- what the tree does:
+140:pub struct Signed<const BITS: u32>;
+143:pub struct Unsigned<const BITS: u32>;
+175:admit_widths!(
+70:    pub struct Integer<const BITS: u32>;
+87:    pub struct UFixed<const BITS: u32, const FRAC: i32>;
+105:    pub struct Biased<const BITS: u32, const EXP: i32, const PHASE: i64>;
+123:    pub struct Floating<const MANTISSA: u32, const MIN_EXP: i32, const EXPONENTS: u32>;
+-- citations of that question row anywhere in rounds or crates:
+       0
+-- POSITIVE CONTROL, question rows those same trees do cite:
+   5 question::arbitrary_width_demands_in_the_canon
+   3 question::what_a_datum_stands_for
+   3 question::the_container_premise
+   2 question::is_the_rounding_vocabulary_complete_at_six
+   1 question::which_width_coordinates_a_consumer_writes
+   1 question::which_operation_set_the_design_ships
+   1 question::is_the_cross_kind_join_closed_or_priced
+   1 question::does_warm_wrap_or_clamp
+   1 question::container_derivation_output_count
+-- the discipline, applied correctly one crate over:
+//! Which overflow mode each preset names is not written here. That question is
+//! open in the registry, and filling it inside a design is how an open question
+//! gets closed where nobody can see it happen.
+
+
+===== 7. a locked changelist's justification, against the file it licenses =====
+-- the claim:
+**The type-level coordinates are primitive-typed, and they have to be.** A const generic parameter and
+an associated const must have a primitive type; the language gives no alternative. So the operating
+constraint is read as binding value positions, and `arvo-format`'s value positions carry `Width` and
+`Bool` rather than host integers. Flagged rather than assumed: if a later round decides otherwise, it
+-- associated consts of a non-primitive type, in the crate that claim is about:
+mock/crates/arvo-format/src/slots.rs:63:    const WIDTH: Width;
+mock/crates/arvo-format/src/slots.rs:159:                const WIDTH: Width = Width::bits($w);
+mock/crates/arvo-format/src/slots.rs:165:                const WIDTH: Width = Width::bits($w);
+mock/crates/arvo-placement/src/lib.rs:53:    const BITS: Width;
+mock/crates/arvo-placement/src/lib.rs:66:    const BITS: Width = Width::bits(8);
+mock/crates/arvo-placement/src/lib.rs:69:    const BITS: Width = Width::bits(16);
+mock/crates/arvo-placement/src/lib.rs:72:    const BITS: Width = Width::bits(32);
+mock/crates/arvo-placement/src/lib.rs:75:    const BITS: Width = Width::bits(64);
+
+
+===== 8. that changelist's totality claim about value positions =====
+-- public functions returning a bare host primitive, all of them, then the two that width.rs declares as its unwrap doors, then the rest:
+      19
+mock/crates/arvo-format/src/apply.rs:74:    pub const fn slot(self) -> i64 {
+mock/crates/arvo-format/src/apply.rs:80:    pub const fn is_on_grid(self) -> bool {
+mock/crates/arvo-format/src/apply.rs:86:    pub const fn is_tie(self) -> bool {
+mock/crates/arvo-format/src/apply.rs:229:pub const fn adapt<S: DeclaredSignature>(exact: Exact, dither: Dither) -> i64 {
+mock/crates/arvo-format/src/apply.rs:254:pub const fn panic_on_inexact(exact: Exact) -> bool {
+mock/crates/arvo-format/src/apply.rs:260:pub const fn panic_on_overflow<S: DeclaredSignature>(slot: i64) -> bool {
+mock/crates/arvo-format/src/format.rs:54:pub const fn contains<F: Format>(slot: i64, magnitude: u32) -> bool {
+mock/crates/arvo-format/src/format.rs:65:pub const fn has_additive_identity<F: Format>() -> bool {
+mock/crates/arvo-format/src/format.rs:71:pub const fn step_exponent<F: Format>(magnitude: u32) -> i32 {
+mock/crates/arvo-format/src/format.rs:77:pub const fn radix<F: Format>() -> u32 {
+mock/crates/arvo-format/src/format.rs:88:pub const fn smallest_step_exponent<F: Format>() -> i32 {
+mock/crates/arvo-format/src/quantum.rs:66:pub const fn exponent_at<Q: Quantum>(magnitude: u32) -> i32 {
+mock/crates/arvo-format/src/quantum.rs:72:pub const fn magnitude_in_range<Q: Quantum>(magnitude: u32) -> bool {
+mock/crates/arvo-format/src/quantum.rs:81:pub const fn is_constant_family<Q: Quantum>() -> bool {
+mock/crates/arvo-format/src/slots.rs:130:pub const fn is_admissible<S: Slots>() -> bool {
+mock/crates/arvo-format/src/slots.rs:183:pub const fn slot_in_range<S: Slots>(slot: i64) -> bool {
+mock/crates/arvo-format/src/slots.rs:194:pub const fn slot_count<S: Slots>() -> i64 {
+mock/crates/arvo-format/src/width.rs:43:    pub const fn count(self) -> u32 {
+mock/crates/arvo-format/src/width.rs:107:    pub const fn get(self) -> bool {
+-- public functions returning the stack's own Bool:
+3
+
+
+===== 9. the tool's suite never plants a rung =====
+-- the fixture every ruling in every test comes from:
+/// One obligation and one row naming it from each tiering namespace, so a test
+/// can pick which edges exist.
+fn with(edges: &[(&str, &str)]) -> RegistryView {
+    let mut rows: Vec<(&str, &[(&str, &str)])> =
+        vec![("obligation::the_thing", &[("what", "a demand")])];
+    let held: Vec<(String, [(&str, &str); 1])> = edges
+        .iter()
+        .map(|(q, field)| ((*q).to_string(), [(*field, "the_thing")]))
+        .collect();
+    let refs: Vec<(&str, &[(&str, &str)])> = held
+        .iter()
+        .map(|(q, f)| (q.as_str(), f.as_slice()))
+        .collect();
+    rows.extend(refs);
+    view(&rows)
+}
+-- the test that pins the behaviour:
+#[test]
+fn a_ruling_meets_an_obligation_and_a_proposal_only_proposes_it() {
+    // The distinction the obligation file states in as many words: a proposal
+    // is proposed rather than met, and reporting it otherwise closes a gap op
+    // has never seen.
+    let met = reach(&with(&[("ruling::he_said_so", "obligation")]));
+    assert_eq!(met["the_thing"].0, Reach::Met);
+    let proposed = reach(&with(&[("proposal::a_claim", "obligation")]));
+    assert_eq!(proposed["the_thing"].0, Reach::Proposed);
+}
+-- test count:
+20
+
+
+===== 10. the two-expert union claim =====
+the deciding fact is that the two instances carry disjoint axes and agree where they overlap.
+So the two agree over the union of what each covered and neither is a second instance on the other's axes, which is the honest shape rather than a defect.
+-- what the governing rule says the tier is over:
+(read from ../../.claude/rules/expert-dispatch-defends-the-canon.md)
+the tier is over their intersection**, which is sometimes empty, meaning there is no convergence about it at all.
+
+
+===== 8b. the same count split by whether the position is a declared door =====
+all public bare-primitive returns in arvo-format: 19
+of those, in width.rs, which documents each as 'the unwrap door, declared as one': 2
+outside width.rs, where no door is declared:       17
+public functions in the whole crate returning the stack's own Bool:        3
+
+
+===== done =====
