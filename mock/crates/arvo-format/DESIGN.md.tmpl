@@ -302,6 +302,14 @@ written in a doc comment where nothing enforced it. `Phase` carries the pair, it
 constructors cannot produce a zero denominator, and the condition is a property of
 the type rather than a sentence asking for one.
 
+**A zero denominator and a negative one are different questions.** A zero one names
+no value, so reading it as one loses nothing that existed. A negative one names a
+value exactly, so it moves its sign to the numerator and keeps the magnitude: `3`
+over `-7` is `-3` over `7`, not `3` over `1`. Two pairs stay whole-numbered because
+the exact form is not representable, a denominator of `i64::MIN` and a numerator of
+`i64::MIN` under a negative denominator, both of which would need a magnitude one
+past what the type carries.
+
 Each of these is `repr(transparent)` where it wraps one value, carries a private
 field, and has exactly one declared unwrap accessor, on the same reading as `Width`
 and `Bool`: a type whose fields are public has not carried the property its
