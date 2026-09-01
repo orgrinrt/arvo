@@ -1,4 +1,4 @@
-# 236. The seven `the_format` proposals against the ratification gate
+# 237. The seven `the_format` proposals against the ratification gate
 
 **Date:** 2026-09-01. **Position:** a read of every `proposal` row whose `topic` is `the_format`,
 asking of each whether it is ratifiable today. Worktree `rat-b`, branch
@@ -302,7 +302,7 @@ width transfer is argued, not probed."*
 
 **The quantum is not on the predicate, and the quantum is what the last clause turns on.**
 
-`236_probes/p1_the_phase_clause_over_three_geometries.rs`, committed with its output, writes one
+`237_probes/p1_the_phase_clause_over_three_geometries.rs`, committed with its output, writes one
 affine membership predicate and instantiates it at three geometries in exact integer arithmetic
 over 1/24, each checked against an enumeration built without consulting the predicate, each with
 the bias-dropped mutant detected.
@@ -319,7 +319,7 @@ cannot separate two geometries and reports nothing; a phase-zero grid at each ar
 contain zero, or the negative results are facts about the predicate; and the half-step clause must
 fail at C, or the distance arm is structurally green. All three came out as required.
 
-`236_probes/p2_the_shipped_crate_admits_the_counterexample.rs` compiles against `arvo-format` as
+`237_probes/p2_the_shipped_crate_admits_the_counterexample.rs` compiles against `arvo-format` as
 committed and closes the obvious objection, that arm B is a geometry nobody would declare. Every
 arm is an instantiation of `arvo_format::points::Biased`, which is in the shipped inventory, pins
 `PHASE_DEN = 2` so it is the half-step family by construction, and leaves the quantum exponent
@@ -489,7 +489,7 @@ checked.
 | `membership_of_the_representable_set_is_one_affine_predicate` | out of scope, already canon under the same ruling |
 | `the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation` | **not ratifiable**: one arrival with the second party conceding after reading, and a measured sentence filed `normative` with no region while `law::coherence_of_a_reduction_onto_its_induced_operation` carries the same claim with one |
 | `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws` | **not ratifiable**: one arrival, uncontested rather than corroborated by its own note, and two clauses by two authors welded into one row |
-| `a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity` | **not ratifiable**: predicate names `nearest`, retired by `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names`; the "contains no one" clause is false at `Biased<4, 1, 1>`, measured in `236_probes`; one arrival |
+| `a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity` | **not ratifiable**: predicate names `nearest`, retired by `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names`; the "contains no one" clause is false at `Biased<4, 1, 1>`, measured in `237_probes`; one arrival |
 | `raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned` | **not ratifiable**: one arrival with `56` conceding after reading `55` in full; its third clause is denied by `56`, which is not in its provenance; its subject has no declared axis |
 
 **Nothing on the format layer is ratifiable today**, and the reason is one thing rather than four:
@@ -517,7 +517,7 @@ and a run record before citing either.
 I attribute a claim to `60` it is through `63:570-577` and `64:250-254`, and both citations are
 opened rather than remembered. I ran no bench and nothing here is priced. I did not re-run `q2`,
 `q1` or `p3`; every count I attribute to them is transcribed from the file that reported it, except
-`q2`'s, which `236_probes/p1` arm A independently reproduces.
+`q2`'s, which `237_probes/p1` arm A independently reproduces.
 
 **What my agreement is worth.** Nothing, per section 2. Where I agree with a row I am a reader and
 I raise no standing. The two refutations in sections 5.2 and 7 stand on their own instruments with

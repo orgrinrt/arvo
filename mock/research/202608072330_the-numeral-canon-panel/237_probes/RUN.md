@@ -1,4 +1,4 @@
-# 236 probes, run record
+# 237 probes, run record
 
 Toolchain, passed explicitly on every command per the panel's convention:
 `rustc +nightly-2026-05-28 --version` reports `rustc 1.98.0-nightly (57d06900f 2026-05-27)`,
