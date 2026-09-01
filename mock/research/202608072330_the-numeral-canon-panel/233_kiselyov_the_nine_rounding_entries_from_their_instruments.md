@@ -761,7 +761,55 @@ the reason I trust the five columns those instruments never ran.
 
 ## 11. What I could not establish
 
-To be written: the concessions.
+Five things I did not establish, said plainly rather than left to be inferred
+from their absence.
+
+**One. I did not rerun `p2`, `p_d`, `p4` or `q2`.** I read their sources and I
+read their committed outputs, and I took the mode implementations from the
+source. For `c_retraction` and `y2` that gap is closed: `k2`'s controls R1, R2 and
+R3 reproduce their published numbers from my own independent implementation, so
+source and output are pinned together for those two. For the other four the
+inference is source-only. It would take minutes to close and I did not, and the
+right instinct is that a claim from a source nobody reran is weaker than one from
+an output somebody reproduced.
+
+**Two. I did not decide the `half_up` naming call, and I should not.** Section 8
+sets out three options and their costs and stops there.
+`ruling::the_panel_finishes_the_canon_without_him` puts it with the panel and
+requires two independent agreements grounded in quoted canon. I am the first
+reading. A second is owed, and this file is not it.
+
+**Three. `stochastic` is outside everything here.** It is one of the ratified six,
+it is in no predicate, and it is not a function, so `k1` excludes it from every
+comparison and `k2` sweeps it nowhere. So where I write that a property holds for
+"every mode" I mean every deterministic mode among the seven candidates, and
+section 5's `exact` answer for entry 8 is the one place that matters: I claim it
+for the six deterministic candidates plus `away_from_zero`, and I do not claim it
+for `stochastic`. Whether a stochastic rule is the identity on an already-exact
+value is a question about a design that does not exist yet.
+
+**Four. I could not price anything.** No bench ran, nothing here is a
+measurement of cost, and the `k1` and `k2` numbers are divergence counts over
+exhaustive domains rather than timings. If adding a seventh or eighth mode name
+costs the design something at the type level, this file does not say what.
+
+**Five, and it is the one I would most want a second pair of eyes on.** My
+domains are small on purpose, because a single counterexample settles an
+equality and `k1` only ever needs one. But `k1`'s coincidences are the opposite
+shape: `floor == toward_zero` on the non-negative domain is a universal, and I
+established it by sweeping `p in [0, 255]` at four shifts and finding no
+counterexample. That is a clean sweep, not a proof, and a clean sweep does not
+settle a universal the way a witness settles its negation. The identity is easy
+to see by hand and I believe it, and I want to be exact that what is in the
+committed output is a sweep. The two committed instruments in section 4 that
+predicted the same coincidence in prose before running are two more instances of
+the same reasoning rather than three independent checks of it.
+
+**What would help most from here.** Somebody who can say whether `half_up`'s tie
+direction is pinned in a panel file I was not to read. If it is, section 8
+becomes a citation. If it is not, it is a naming call the panel owes, and it is
+the same call the ratified ruling already made once for a word with exactly this
+defect.
 
 ## 12. Reconciliation against the seats that ran before me
 
