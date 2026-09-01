@@ -466,7 +466,10 @@ fn a_mode_named_outside_the_three_predicate_fields_is_not_seen() {
     let (outcome, out) = run(
         &[(
             "probe::a_probe_row",
-            &[("establishes", "the six modes floor, ceiling and nearest-half-up")],
+            &[(
+                "establishes",
+                "the six modes floor, ceiling and nearest-half-up",
+            )],
         )],
         &[],
     );
@@ -529,11 +532,7 @@ fn the_two_readings_of_half_up_disagree_on_a_signed_domain() {
                     half_up::toward_positive_infinity(k, f) != half_up::away_from_zero(k, f)
                 })
                 .count();
-            assert_eq!(
-                disagreeing as u64,
-                1u64 << (w - 1 - f),
-                "W = {w}, F = {f}"
-            );
+            assert_eq!(disagreeing as u64, 1u64 << (w - 1 - f), "W = {w}, F = {f}");
         }
     }
 }
