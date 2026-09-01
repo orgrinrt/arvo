@@ -615,3 +615,128 @@ The one ignored test is an honest catalogue-red in the correct form:
 `#[ignore = "catalogue: ... Red until the second packing rule lands."]`. That is the
 discipline working rather than a gap, and I record it so a later reader does not have to
 re-establish it.
+
+---
+
+# Reconciliation, written after the blind phase
+
+Everything above this line is committed in `c06a5706`, `b7d7289f` and `a664fffb`, all of
+which precede the first thing I opened under `mock/research/`. Everything below is later and
+is marked as later.
+
+What I read: `74_giesen_consolidation_the_number_system_concept.md` (sections 3.1 and 3.4,
+and the option pass on Q30), `73_leijen_the_membership_test_and_how_wide.md` section 7,
+`08_knuth_what_the_one_format_concept_covers.md` section 4.5, and two paragraphs of
+`71_orchard_what_crosses_between_two_systems.md`. Plus greps across the whole panel
+directory for the phrases my findings turn on.
+
+## What I would not change
+
+**The resolution shape survives contact and gains a second instance for its weaker half.**
+`73` section 7 reaches "the procedure a canon should describe is not a predicate returning
+yes or no", and `74` records it at ONE EXPERT: "admission's useful output is a coordinate,
+not a boolean". I reached the same conclusion without reading either. That is a real second
+instance and it is worth more than the usual second instance, because the routes are
+disjoint: `73` argues from the disputed cases, that a Gray code and a stride are hostable
+non-systems whose honest answer is a coordinate; I argue from
+`ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, which is
+ratified and whose provenance is files `225` and `226`, long after `73` was written. `73`
+could not have used it.
+
+**But the two instances agree about the intersection and not the union, and the union is
+where my contribution is.** `73` replaces the predicate with a location and lets the "no"
+answer go. I say the object is a resolution and the predicate and the location are two folds
+over it, so nothing is thrown away, and the failure branch is not "no" but the name of the
+coordinate the candidate did not fix. That second half is not in `73`, not in `74`, and the
+phrase it comes from, "the signature is missing a coordinate", appears in no panel file at
+all: I grepped the whole directory and my own file is the only hit. So the failure branch is
+one instance, mine, and I mark it as one.
+
+**Q22's compositional route was already there, and reached by my own persona, which is not
+independence.** `08` section 4.5 says "the interval is then a pair of numerals, built above",
+which is my third route almost verbatim. It is an earlier Kiselyov seat, so this is one
+persona agreeing with itself and I do not count it. What `08` carries that I did not derive
+is the constraint that makes the route work, and it is a real one I now carry forward:
+**both directed rounding modes must be a per-operation choice rather than a per-numeral
+one**, or an interval consumer cannot round its two ends in opposite directions and the
+construction fails. `08` measured outward rounding at zero failures over twenty thousand
+pairs on `U<3,3>` against 1036 and 946 for the two wrong disciplines.
+
+`08` also excludes affine forms and Taylor models on arity growth, "not const-size". That is
+the same obstruction my count finds, one tier out, from a different instrument, and the two
+compose: `08` rules out the unbounded-arity case, my count rules out the fixed-arity-greater-
+than-one case, and together they leave exactly the one-parameter family I found admitted.
+
+## What I would change, and it is one word
+
+**"Coordinate" means two different things in this panel and nothing says so.** This is the
+finding I would not have had without reading, and it makes a canon sentence about admission
+ambiguous today.
+
+- `74` section 3.1 has the number-system concept as **a dependent sequence of five
+  components**: ambient domain, representable set, reduction, encoding, container. `73`
+  section 7 locates its disputed cases in that vocabulary, "Gray code: coordinate 4, the
+  encoding", "`Cold`'s stride: coordinate 5, the container". `74` marks the shape ONE EXPERT
+  and says "the count of components is open at both ends".
+- R3 ratifies **ten coordinates**, and my stage-3 probe reconstructs them: `RADIX`, `SIGNED`,
+  `BASE`, `SLOPE`, `MAGNITUDES`, `MIN`, `MAX`, `WIDTH`, `PHASE_NUM`, `PHASE_DEN`.
+
+Every one of the ten sits inside the **first two** of the five. The other three have no
+coordinate among the ten, and they should not: R1 ratifies that "adaptation choice and
+encoding are realisation, observable in computed values and in pattern-level properties
+respectively, and not part of identity", and the container is placement, which R2 ratifies as
+"a placement rather than a semantics".
+
+**So the two vocabularies are consistent and are not the same word.** The ten refine the
+first two components of the five; components three, four and five are ratified out of
+identity and into realisation and placement. Nothing anywhere states this, and the
+consequence is sharp: a canon sentence reading "admission returns which coordinate the
+candidate fixes" is true in `73`'s vocabulary and false in R3's, because in R3's vocabulary a
+Gray code fixes none of the ten. It is a re-encoding of the same representable set over the
+same ambient, which R1 ratifies as **the same format**.
+
+That is not a defect in `73`. `73` predates R1's ratification of the encoding clause. It is a
+seam that opened underneath it, and it is exactly the shape
+`a-governing-claim-is-applied-where-it-hurts` describes: R1 arrived above `73` and everybody
+applied it to the gaps it closed rather than to the standing claims it falsifies.
+
+**What I propose, and it costs one sentence rather than a decision.** The canon says which
+vocabulary a coordinate is in, at every use. Two candidate spellings, and I do not pick:
+call the ten **identity coordinates** and the five **chain components**, so a location answer
+names its own tier; or keep one word and state the projection, that a chain component beyond
+the second is not an identity coordinate and a candidate differing only there is the same
+system realised differently. The second is shorter and puts the ratified content in the
+sentence; the first is harder to misread. **What would distinguish them: whether any canon
+sentence needs to quantify over both tiers at once.** `73`'s location procedure does, since
+its own disputed cases split across the boundary, so I lean to the first and say plainly
+that is a lean rather than a result.
+
+## What this does to my own answers
+
+- **Q30 is unchanged and better supported.** Two independent instances on the not-a-boolean
+  half, mine and `73`'s, with disjoint routes. One instance, mine, on the failure branch.
+- **Q22 is unchanged.** `08` corroborates the compositional route but is my own persona, so I
+  claim no second instance; the counting argument and the fixed-radius arm remain one
+  instance each, and `08`'s per-operation directed-mode constraint is added as a condition I
+  had not derived.
+- **Q29 changes in its reasoning, not its answer.** `74` records the sufficient direction as
+  refuted by the collapsed self-declaration, with the repair adding the ambient's law
+  inventory and a retraction verdict, at ONE EXPERT. My route says the collapse is not a
+  collapse, because `F` and `F'` are two formats under R1's identity clause and the verdict a
+  consumer wants is the adaptation's, which R1 already makes first-class. **These reach the
+  same option and disagree about whether anything must be added.** If my reading holds, the
+  third verdict may already be ratified and the repair is smaller than `74` prices it. I do
+  not claim it is; I claim the two readings differ and that nobody has put them against each
+  other, because `74`'s repair predates R1's ratification.
+- **Q21 is unchanged and corroborated by measurement I did not have.** `74` reports every
+  total order enumerated at widths 2 and 3, with wrapping addition and xor admitting zero
+  compatible total orders each. That is the same conclusion my compile measurement reaches
+  from the other end: theirs says the order discriminator does not cut, mine says the
+  signature has no coordinate to cut with.
+
+## What I did not reach
+
+I read four files of two hundred and sixty-two. The greps were over all of them, in the words
+my findings are written in, and a grep in my words finds only what is written in my words.
+A panel file arguing the resolution shape in a vocabulary I did not think of would not have
+been found, and I cannot say none exists.
