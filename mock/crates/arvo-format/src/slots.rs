@@ -156,6 +156,51 @@ pub trait Slots {
     /// exactly because an unqualified "refused at compile time" would be the same
     /// shape as the totality claims this replaced.
     ///
+    /// **Where the obligation is forced decides which tool can see the refusal.**
+    /// A const is evaluated where it is used, so a runtime call reaches it only at
+    /// codegen and a `const` item reaches it at check time. A doctest builds a
+    /// binary and catches both; a `trybuild` case runs `cargo check` and catches
+    /// the second, which is why the ones in `tests/ui/` bind the predicate to a
+    /// `const` rather than calling it from `main`.
+    ///
+    /// ```compile_fail
+    /// use arvo_format::slots::{slot_in_range, Slot, Slots};
+    /// use arvo_format::width::Width;
+    ///
+    /// struct Inverted;
+    ///
+    /// impl Slots for Inverted {
+    ///     const MIN: Slot = Slot::at(8);
+    ///     const MAX: Slot = Slot::at(-8);
+    ///     const WIDTH: Width = Width::bits(8);
+    /// }
+    ///
+    /// fn main() {
+    ///     let _ = slot_in_range::<Inverted>(Slot::ZERO);
+    /// }
+    /// ```
+    ///
+    /// The control, which is what says the refusal above is this obligation and
+    /// not the outside impl being rejected for some other reason: the same shape
+    /// with the lower index below the higher one builds.
+    ///
+    /// ```
+    /// use arvo_format::slots::{slot_in_range, Slot, Slots};
+    /// use arvo_format::width::Width;
+    ///
+    /// struct Ordered;
+    ///
+    /// impl Slots for Ordered {
+    ///     const MIN: Slot = Slot::at(-8);
+    ///     const MAX: Slot = Slot::at(7);
+    ///     const WIDTH: Width = Width::bits(8);
+    /// }
+    ///
+    /// fn main() {
+    ///     assert!(slot_in_range::<Ordered>(Slot::ZERO).get());
+    /// }
+    /// ```
+    ///
     /// `is_admissible` below is the same question asked without forcing the
     /// const, which is what a test can use at check time and on a construction
     /// that must keep compiling.

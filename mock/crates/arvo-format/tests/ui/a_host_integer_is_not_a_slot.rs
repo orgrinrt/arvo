@@ -1,9 +1,9 @@
 // A host integer where the contract asks for a slot.
 //
-// The whole of what this round changed, pinned as a refusal. Before it, the
-// coordinate was an `i64` and this compiled, which is why an outside crate had to
-// write a host type to implement the contract at all and was refused by the
-// bare-primitive lints for doing so.
+// A slot is a `Slot`, so a declaration handing the range a host integer does not
+// typecheck. That is what lets an outside crate implement the contract without
+// naming a host type on any line, and therefore without being refused by the
+// bare-primitive lints for supplying the coordinates.
 
 use arvo_format::slots::{Slot, Slots};
 use arvo_format::width::Width;

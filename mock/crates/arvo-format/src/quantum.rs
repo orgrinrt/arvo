@@ -170,7 +170,7 @@ impl MagnitudeCount {
 
 /// Whether a law over this many magnitudes describes any values at all.
 ///
-/// One of the two conditions `Quantum::ADMITTED` refuses and `is_admissible`
+/// One of the two conditions `Quantum::ADMITTED` refuses and `is_admissible_quantum`
 /// reports. Written over the coordinate rather than over the type, so the
 /// obligation can call it without the trait needing a `Sized` bound it has no
 /// other reason to carry.
@@ -236,12 +236,81 @@ pub trait Quantum {
     /// format's law too, and nothing arrives at a lowered path, which is what
     /// `ruling::never_a_runtime_check_and_one_lowered_path` asks for.
     ///
-    /// **It fires at codegen, not at `cargo check`**, on the same reading and for
-    /// the same reason the slot range's obligation states. The guarantee is that
-    /// an inadmissible law cannot reach a produced binary; it can reach a passing
-    /// check.
+    /// **Where the obligation is forced decides when it fires**, and that is the
+    /// whole of the qualification rather than a property of the obligation. A
+    /// const is evaluated where it is used: forced from a runtime call it is
+    /// evaluated at codegen, which `cargo check` skips, so `cargo build` refuses
+    /// and `check` does not. Forced in a `const` item it is evaluated at check
+    /// time, and a `trybuild` case that binds one is what makes the refusal
+    /// expressible there.
     ///
-    /// `is_admissible` below is the same question asked without forcing the const,
+    /// So the guarantee is that an inadmissible law cannot reach a produced
+    /// binary, and a declaration that never forces the obligation in a const item
+    /// can reach a passing check. That is why every predicate here stays total.
+    ///
+    /// The runtime-forced half of that is what a doctest covers, and both
+    /// conditions get one.
+    ///
+    /// ```compile_fail
+    /// use arvo_format::quantum::{
+    ///     magnitude_in_range, Exponent, Magnitude, MagnitudeCount, Quantum,
+    /// };
+    ///
+    /// struct NoMagnitudes;
+    ///
+    /// impl Quantum for NoMagnitudes {
+    ///     const BASE: Exponent = Exponent::ZERO;
+    ///     const SLOPE: Exponent = Exponent::ZERO;
+    ///     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(0);
+    /// }
+    ///
+    /// fn main() {
+    ///     let _ = magnitude_in_range::<NoMagnitudes>(Magnitude::SMALLEST);
+    /// }
+    /// ```
+    ///
+    /// ```compile_fail
+    /// use arvo_format::quantum::{
+    ///     magnitude_in_range, Exponent, Magnitude, MagnitudeCount, Quantum,
+    /// };
+    ///
+    /// struct RunsOffTheExponent;
+    ///
+    /// impl Quantum for RunsOffTheExponent {
+    ///     const BASE: Exponent = Exponent::ZERO;
+    ///     const SLOPE: Exponent = Exponent::of(i32::MAX);
+    ///     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(4);
+    /// }
+    ///
+    /// fn main() {
+    ///     let _ = magnitude_in_range::<RunsOffTheExponent>(Magnitude::SMALLEST);
+    /// }
+    /// ```
+    ///
+    /// And the control, which is what says the two refusals above are this
+    /// obligation rather than anything else in the program: one magnitude at a
+    /// rate the exponent holds builds, and it is the shape both mutants were
+    /// derived from.
+    ///
+    /// ```
+    /// use arvo_format::quantum::{
+    ///     magnitude_in_range, Exponent, Magnitude, MagnitudeCount, Quantum,
+    /// };
+    ///
+    /// struct OneMagnitude;
+    ///
+    /// impl Quantum for OneMagnitude {
+    ///     const BASE: Exponent = Exponent::ZERO;
+    ///     const SLOPE: Exponent = Exponent::ZERO;
+    ///     const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
+    /// }
+    ///
+    /// fn main() {
+    ///     assert!(magnitude_in_range::<OneMagnitude>(Magnitude::SMALLEST).get());
+    /// }
+    /// ```
+    ///
+    /// `is_admissible_quantum` below is the same question asked without forcing the const,
     /// which is what a test can use on a construction that must keep compiling.
     /// Both read the same two predicates rather than restating them, so the
     /// verdict and the refusal cannot come apart.
@@ -265,7 +334,7 @@ pub trait Quantum {
 /// refuse it. That is what lets the wrong construction live permanently in a test
 /// rather than in a scratch file somebody deletes.
 #[must_use]
-pub const fn is_admissible<Q: Quantum>() -> Bool {
+pub const fn is_admissible_quantum<Q: Quantum>() -> Bool {
     Bool::of(
         ranges_over_a_magnitude(Q::MAGNITUDES)
             && reach_is_representable(Q::BASE, Q::SLOPE, Q::MAGNITUDES),

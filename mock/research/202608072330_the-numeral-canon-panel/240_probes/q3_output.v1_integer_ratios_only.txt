@@ -1,0 +1,97 @@
+== section 1: does the union of shells denote a float set ==
+
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 2, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 3, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 4, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 5, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 6, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 2 ==  p 2, span 2   (|set| = 5)
+   symmetric slots MATCH ieee: mantissa 2, exponents 3 ==  p 2, span 3   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 2, exponents 4 ==  p 2, span 4   (|set| = 9)
+   symmetric slots MATCH ieee: mantissa 2, exponents 5 ==  p 2, span 5   (|set| = 11)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 3, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 4, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 5, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 6, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 2 ==  p 3, span 3   (|set| = 11)
+   symmetric slots MATCH ieee: mantissa 3, exponents 3 ==  p 3, span 4   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 3, exponents 4 ==  p 3, span 5   (|set| = 19)
+   symmetric slots MATCH ieee: mantissa 3, exponents 5 ==  p 3, span 6   (|set| = 23)
+   symmetric slots MATCH ieee: mantissa 4, exponents 1 ==  p 4, span 3   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 4, exponents 1 ==  p 5, span 3   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 4, exponents 1 ==  p 6, span 3   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 4, exponents 2 ==  p 4, span 4   (|set| = 23)
+   symmetric slots MATCH ieee: mantissa 4, exponents 3 ==  p 4, span 5   (|set| = 31)
+   symmetric slots MATCH ieee: mantissa 4, exponents 4 ==  p 4, span 6   (|set| = 39)
+   symmetric slots MATCH ieee: mantissa 4, exponents 5 ==  p 4, span 7   (|set| = 47)
+   symmetric slots MATCH ieee: mantissa 5, exponents 1 ==  p 5, span 4   (|set| = 31)
+   symmetric slots MATCH ieee: mantissa 5, exponents 1 ==  p 6, span 4   (|set| = 31)
+   symmetric slots MATCH ieee: mantissa 5, exponents 2 ==  p 5, span 5   (|set| = 47)
+   symmetric slots MATCH ieee: mantissa 5, exponents 3 ==  p 5, span 6   (|set| = 63)
+   symmetric slots MATCH ieee: mantissa 5, exponents 4 ==  p 5, span 7   (|set| = 79)
+   symmetric slots MATCH ieee: mantissa 5, exponents 5 ==  p 5, span 8   (|set| = 95)
+
+   1080 comparisons, 0 called equal, 1080 unequal
+   exact matches with two's-complement slots: 0; with a symmetric slot range: 30
+
+   worked witness, mantissa 3, exponents 3, against p = 3, span 5:
+     union, two's-complement slots [-4, 3] : [-16, -12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12]
+     union, symmetric slots      [-3, 3] : [-12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12]
+     ieee generic_format p=3 span=5       : [-24, -16, -12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12, 16, 24]
+     union(two's complement) == ieee : false
+     union(symmetric)        == ieee : false
+     in the union and not in ieee : []
+     in ieee and not in the union : [-24, 16, 24]
+
+   FINDING: the union reproduces the float set exactly, subnormals included,
+   when the slot range is symmetric, and never when it is two's complement.
+   `Floating` uses `Signed<MANTISSA>`, whose range is two's complement, so no
+   instantiation of the shipped point denotes an IEEE binary set.
+
+== section 2: the knee ==
+
+   symmetric union, mantissa 3, exponents 4
+   members : [-24, -16, -12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12, 16, 24]
+   gaps    : [8, 4, 4, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 4, 4, 8]
+   the run of equal smallest gaps nearest zero has length 1
+   That run is the constant-quantum region a float's canonical exponent needs a
+   `max` clamp to produce. Here it falls out of the shell at magnitude zero covering
+   every value below the next shell's reach, with no clamp anywhere in the law.
+
+== section 3: which gap profiles are reachable ==
+
+   17 distinct gap-ratio profiles reachable over the swept coordinates
+     [-1, 1, 2]
+     [-1, 1, 3]
+     [-1, 1, 4]
+     [-1, 1, 5]
+     [-1, 1, 6]
+     [-1, 1, 7]
+     [-1, 1, 8]
+     [-1, 1, 20]
+     [-1, 1, 24]
+     [-1, 1, 93]
+     [-1, 1, 97]
+     [-1, 1, 993]
+     [-1, 1, 997]
+     [1]
+     [1, 2]
+     [1, 4]
+     [1, 8]
+
+   the largest number of distinct ratios above one in any reachable profile: 1
+
+   control A, a shape that must be reachable (a float): ratios {-1, 1, 2}, 1 above one
+   control B, a tapered ladder built by hand: members [0, 1, 2, 3, 5, 7, 15, 23, 87]
+     gaps [1, 1, 1, 2, 2, 8, 8, 64], ratios {1, 2, 4, 8}, 3 above one
+
+   both controls hold.
+
+   FINDING: no coordinate tuple in the swept space denotes a set with two
+   distinct growth ratios. The affine quantum law fixes the ratio at
+   `radix^SLOPE`, one value, so the reachable profiles are a constant grid and a
+   single geometric ladder. A tapered numeral has more than one ratio and is not a
+   point of this parameterisation.
+
+== verdict ==
+   findings: 2

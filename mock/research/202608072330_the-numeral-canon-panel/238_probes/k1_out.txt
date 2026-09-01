@@ -1,0 +1,38 @@
+pack: mockspace-extra-lints @ f34cc1b0c87becd8230d46d807ebb3573e30c009
+rules: mockspace-lint-rules @ a9268f62943c317ea4f5ee4279b528ffdb4ae936
+
+--- C1 clean source, checked crate
+    crate_name              = outside-crate
+    arvo-types-only         = 0 finding(s)
+    no-bare-numeric         = 0 finding(s)
+--- C2 const generic parameters, checked crate
+    crate_name              = outside-crate
+    arvo-types-only         = 0 finding(s)
+    no-bare-numeric         = 0 finding(s)
+--- C3 shipped impl, introducing crate
+    crate_name              = arvo-format
+    arvo-types-only         = 0 finding(s)
+    no-bare-numeric         = 0 finding(s)
+--- C4 repaired impl, checked crate
+    crate_name              = outside-crate
+    arvo-types-only         = 0 finding(s)
+    no-bare-numeric         = 0 finding(s)
+--- A  shipped impl, checked crate
+    crate_name              = outside-crate
+    arvo-types-only         = 10 finding(s)
+    no-bare-numeric         = 10 finding(s)
+      bare `u32` in src/lib.rs line 6. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `bool` in src/lib.rs line 7. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i32` in src/lib.rs line 12. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i32` in src/lib.rs line 13. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `u32` in src/lib.rs line 14. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/lib.rs line 19. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/lib.rs line 20. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/lib.rs line 29. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/lib.rs line 30. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `u32` in src/lib.rs line 36. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+
+=== verdict ===
+controls C1..C4 all zero: true
+arm A findings: 10
+The row's `unblocks` holds: ten hard errors, one per associated constant.

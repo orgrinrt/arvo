@@ -1,0 +1,22 @@
+== the tiling obligation, swept ==
+
+   16728 coordinate tuples
+   the oracle calls 7352 clean and 9376 ragged
+   ragged is 56.0 per cent of the swept space
+
+   controls:
+     both verdicts present: true
+     mutant `always true` caught on 9376 tuples
+     mutant `top join only` caught on 1264 tuples
+     first tuple the top-only mutant gets wrong: (2, 2, 2, -10, 0, false, [4, 4, 4, 4, 4, 4, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+   controls hold.
+
+   the derived obligation differs from the oracle on 0 tuples
+
+   THE OBLIGATION HOLDS over the swept space, from the coordinates alone.
+   `Format` carries every input it needs: the ambient radix, the quantum's
+   slope and magnitude count, and the slot range's ends. Nothing in
+   `arvo-format` asks the question, so a `Format` impl denoting a ragged set
+   compiles and is admitted, where a `Slots` impl with an inverted range is
+   refused by `Slots::ADMITTED`. The two coordinates are checked at one tier
+   and unchecked at the tier above it.

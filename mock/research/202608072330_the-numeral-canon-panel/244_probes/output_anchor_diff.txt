@@ -1,0 +1,54 @@
+sources: 241_kiselyov_admission_is_a_resolution_not_a_verdict.md
+         242_what-admits-a-number-system.md
+         243_seat242_the_resolution_has_no_second_arm.md
+
+anchors in the three sources : 23
+anchors in the consolidation : 30 (section 7 excluded)
+control passes: both sides are nonempty, so the difference below is real.
+
+carried (in both):
+  08_knuth_what_the_one_format_concept_covers.md
+  237_the_format_proposals_against_the_ratification_gate.md
+  240_the_format_layer_derived_from_its_denotation.md
+  241_kiselyov_admission_is_a_resolution_not_a_verdict.md
+  73_leijen_the_membership_test_and_how_wide.md
+  74_giesen_consolidation_the_number_system_concept.md
+  adapt.rs
+  ambient.rs
+  dimension.toml
+  format.rs
+  main.rs:123
+  proposal.toml
+  q4_the_obligation_the_format_does_not_carry.rs
+  quantum.rs
+  question.toml
+  ruling.toml
+  runtime_call.rs
+  slots.rs
+  slots.rs:94
+  tests.rs
+
+LOST (in the sources, not in the consolidation):
+  71_orchard_what_crosses_between_two_systems.md
+  Cargo.toml
+  mockspace.toml
+  count = 3
+
+new (in the consolidation, not in the sources):
+  242_the_resolution_has_no_second_arm.md
+  mockspace.toml:31
+  probe.toml
+  retirement.toml
+  slots.rs:132
+  slots.rs:150
+  slots.rs:65
+  slots.rs:93
+  tests.rs:391
+  topics.toml
+  count = 10
+
+NOTE on the pattern, which is my brief's and which I did not change:
+  [0-9]+_[a-z_]+\.md does not match 242_what-admits-a-number-system.md,
+  because that filename uses hyphens. So the sources' own citations of 242
+  by filename are invisible to this instrument in both directions, which is
+  symmetric and does not bias the difference.

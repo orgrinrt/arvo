@@ -197,73 +197,102 @@ fn the_smallest_step_is_the_smallest_magnitudes_and_nothing_names_it() {
 // --- the phase's own contract ------------------------------------------------
 
 #[test]
-fn a_phase_never_carries_a_denominator_that_cannot_divide() {
-    // The condition an earlier doc comment stated and nothing held. Over the
-    // inputs that reach the coercion as well as the ones that do not, because a
-    // sweep of only the good ones would pass against a constructor doing nothing.
+fn a_phase_carries_the_pair_it_was_declared_with() {
+    // Over every sign of both coordinates and both ends of the width, because a
+    // sweep of only the pairs a normalisation can handle would pass against a
+    // constructor that quietly rewrites the ones it cannot.
     for den in [i64::MIN, -9i64, -1, 0, 1, 2, 5, i64::MAX] {
         for num in [i64::MIN, -3, 0, 3, i64::MAX] {
             let p = Phase::of(num, den);
-            assert!(
-                p.denominator() > 0,
-                "Phase::of({num}, {den}) produced a denominator of {}",
-                p.denominator()
+            assert_eq!(
+                (p.numerator(), p.denominator()),
+                (num, den),
+                "Phase::of({num}, {den}) did not come back as it went in"
             );
-            // And the value, which the sign assertion alone never asked about.
-            // A negative denominator carries one, so normalising it has to move
-            // the sign rather than change the magnitude. Without this the arm
-            // passed against a constructor that answered `3/1` for `of(3, -7)`.
-            if den < 0 && den != i64::MIN && num != i64::MIN {
-                assert_eq!(
-                    (p.numerator(), p.denominator()),
-                    (-num, -den),
-                    "Phase::of({num}, {den}) has to be exactly {}/{}",
-                    -num,
-                    -den
-                );
-            }
         }
     }
-    // The two pairs `i64::MIN` puts out of reach, named rather than swept over.
-    // Both are lossy on purpose and the doc says so; pinning them here is what
-    // stops the loss spreading to the pairs that do normalise.
-    //
-    // **The pair, not the denominator.** Asserting only the sign of the
-    // denominator was the same defect twelve lines above says a sign assertion
-    // alone carries: `of(3, i64::MIN)` names a tiny negative and answers `+3/1`,
-    // and `of(i64::MIN, -7)` names a large positive and answers negative. So
-    // neither the sign nor the magnitude survives on these two, and the
-    // assertion says which rather than implying the sign is kept.
+
+    // The two pairs a normalisation to a positive denominator cannot keep, named
+    // rather than swept over, because they are the reason there is no
+    // normalisation at all. `i64::MIN` has no negation in the declared width, so
+    // a constructor moving the sign has nowhere to put it and an earlier one read
+    // both as a denominator of one: `of(3, i64::MIN)` names a tiny negative and
+    // answered `3/1`, and `of(i64::MIN, -7)` names a large positive and answered
+    // negative.
     assert_eq!(
         (
             Phase::of(3, i64::MIN).numerator(),
             Phase::of(3, i64::MIN).denominator()
         ),
-        (3, 1)
+        (3, i64::MIN)
     );
     assert_eq!(
         (
             Phase::of(i64::MIN, -7).numerator(),
             Phase::of(i64::MIN, -7).denominator()
         ),
-        (i64::MIN, 1)
+        (i64::MIN, -7)
     );
-    // The exactly-representable negative case, which is the whole finding.
-    assert_eq!(Phase::of(3, -7).numerator(), -3);
-    assert_eq!(Phase::of(3, -7).denominator(), 7);
-    // A zero denominator names no value, so it is read as one and the numerator
-    // is kept. The control that keeps the branch above from swallowing this one.
-    assert_eq!(
-        (Phase::of(3, 0).numerator(), Phase::of(3, 0).denominator()),
-        (3, 1)
-    );
-    // The control: a usable denominator is kept rather than replaced, so the
-    // coercion is about the cases that need it and not about all of them.
-    assert_eq!(Phase::of(3, 7).denominator(), 7);
-    assert_eq!(Phase::of(3, 7).numerator(), 3);
+
     // The half-step shape the biased point uses, and the zero the other three do.
     assert_eq!(Phase::halves(1).denominator(), 2);
     assert_eq!(Phase::halves(1).numerator(), 1);
+    assert_eq!(Phase::ZERO.numerator(), 0);
+    assert_eq!(Phase::ZERO.denominator(), 1);
+}
+
+#[test]
+fn the_questions_asked_of_a_phase_do_not_read_the_denominators_sign() {
+    // Why the coordinate needs no positive-denominator invariant, asserted
+    // rather than argued. Both questions the crate asks of the pair give the
+    // same answer under a sign flip of both coordinates, which is the same ratio.
+    for (num, den) in [(4i64, 2i64), (3, 7), (0, 5), (-6, 3), (1, 1000)] {
+        assert_eq!(
+            Phase::of(num, den).is_whole_multiple(),
+            Phase::of(-num, -den).is_whole_multiple(),
+            "the divisibility of {num}/{den} moved when the sign moved"
+        );
+        assert_eq!(
+            Phase::of(num, den).is_zero(),
+            Phase::of(-num, -den).is_zero()
+        );
+    }
+
+    // The control: the two questions are not constant across the sweep, so the
+    // equalities above are about a sign flip rather than about a function that
+    // answers one way.
+    assert!(Phase::of(4, 2).is_whole_multiple().get());
+    assert!(!Phase::of(3, 7).is_whole_multiple().get());
+    assert!(Phase::of(0, 5).is_zero().get());
+    assert!(!Phase::of(4, 2).is_zero().get());
+}
+
+#[test]
+fn a_phase_that_names_no_position_is_refused_rather_than_reinterpreted() {
+    // A denominator of zero is the one pair that denotes nothing, and it is a
+    // condition on the format rather than something the pair can repair. Reading
+    // it as a denominator of one, which an earlier constructor did, answers a
+    // different question: one over zero and one over one are different positions
+    // and only one of them exists.
+    assert!(!Phase::of(3, 0).denotes().get());
+    assert_eq!(
+        (Phase::of(3, 0).numerator(), Phase::of(3, 0).denominator()),
+        (3, 0),
+        "a zero denominator was rewritten rather than carried to the contract"
+    );
+
+    // The divisibility question has no answer there either, and says no rather
+    // than dividing.
+    assert!(!Phase::of(3, 0).is_whole_multiple().get());
+
+    // The control: every other denominator in the sweep denotes, so the verdict
+    // is about zero rather than about anything unusual.
+    for den in [i64::MIN, -9i64, -1, 1, 2, 5, i64::MAX] {
+        assert!(
+            Phase::of(3, den).denotes().get(),
+            "Phase::of(3, {den}) was reported as naming no position"
+        );
+    }
 }
 
 // --- the radix is a coordinate and is not hardcoded --------------------------

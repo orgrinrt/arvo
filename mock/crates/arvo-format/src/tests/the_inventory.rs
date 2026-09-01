@@ -505,15 +505,15 @@ impl Quantum for MagnitudesBeyondTheIndex {
 #[test]
 fn the_law_rejects_a_quantum_law_that_does_not_meet_the_contract() {
     assert!(
-        !crate::quantum::is_admissible::<NoMagnitudes>().get(),
+        !crate::quantum::is_admissible_quantum::<NoMagnitudes>().get(),
         "a law over no magnitudes was admitted, and it describes no values"
     );
     assert!(
-        !crate::quantum::is_admissible::<ReachRunsOff>().get(),
+        !crate::quantum::is_admissible_quantum::<ReachRunsOff>().get(),
         "a law whose exponent runs off the end was admitted"
     );
     assert!(
-        !crate::quantum::is_admissible::<MagnitudesBeyondTheIndex>().get(),
+        !crate::quantum::is_admissible_quantum::<MagnitudesBeyondTheIndex>().get(),
         "a law with more magnitudes than an index carries was admitted"
     );
 }
@@ -527,7 +527,7 @@ fn the_law_admits_every_quantum_law_this_crate_ships() {
         ($($e:literal),+ $(,)?) => {
             $(
                 assert!(
-                    crate::quantum::is_admissible::<Constant<$e>>().get(),
+                    crate::quantum::is_admissible_quantum::<Constant<$e>>().get(),
                     "the constant family at exponent {} was refused", $e
                 );
             )+
@@ -555,7 +555,7 @@ fn the_law_admits_every_quantum_law_this_crate_ships() {
         ($(($e:literal, $c:literal)),+ $(,)?) => {
             $(
                 assert!(
-                    crate::quantum::is_admissible::<Indexed<$e, $c>>().get(),
+                    crate::quantum::is_admissible_quantum::<Indexed<$e, $c>>().get(),
                     "the indexed family at ({}, {}) was refused", $e, $c
                 );
             )+
@@ -573,15 +573,15 @@ fn the_law_admits_every_quantum_law_this_crate_ships() {
     // And the foreign law above, which is neither shipped shape, so the verdict
     // is about the obligations rather than about the two families this crate
     // happens to write.
-    assert!(crate::quantum::is_admissible::<DoubleStepped>().get());
+    assert!(crate::quantum::is_admissible_quantum::<DoubleStepped>().get());
 }
 
 #[test]
 fn the_quantum_law_separates_the_two_constructions_rather_than_answering_one_way() {
     // Both directions in one place, so a verdict stuck at `true` or at `false`
     // fails here rather than passing one of the two tests above.
-    let shipped = crate::quantum::is_admissible::<Indexed<-14, 30>>().get();
-    let refused = crate::quantum::is_admissible::<NoMagnitudes>().get();
+    let shipped = crate::quantum::is_admissible_quantum::<Indexed<-14, 30>>().get();
+    let refused = crate::quantum::is_admissible_quantum::<NoMagnitudes>().get();
     assert_ne!(
         shipped, refused,
         "the verdict gives the same answer to a shipped law and one over no magnitudes"

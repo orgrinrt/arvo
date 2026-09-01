@@ -1,0 +1,30 @@
+======== 1. Which registry rows claim to answer the sitting's six questions
+  is_the_number_system_inventory_open                     
+      proposal::the_concept_is_closed_and_the_inventory_is_open  (standing=two_experts)
+  is_admission_a_predicate_or_a_location                  
+      proposal::admission_returns_a_coordinate_rather_than_a_verdict  (standing=one_expert)
+  is_number_system_broad_enough_for_non_magnitude         
+      proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test  (standing=one_expert)
+  are_set_valued_carriers_admitted                          NO STANDING ANSWER ROW
+  one_word_or_two_for_is_a_number_system                  
+      proposal::membership_and_hosting_are_two_questions  (standing=one_expert)
+  what_the_admission_contract_asks_a_candidate_to_expose  
+      proposal::a_system_exposes_its_ambient_laws_its_set_and_its_reductions_verdicts  (standing=one_expert)
+      proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing  (standing=one_expert)
+
+======== 2. CONTROL: an id the files demonstrably do cite
+  the_concept_is_closed_and_the_inventory_is_open            241 : 2
+  the_concept_is_closed_and_the_inventory_is_open            242 : 1
+  the_concept_is_closed_and_the_inventory_is_open            243 : 0
+  control passes: 3 citations found, so a zero below is a fact about the files.
+
+======== 3. Are the standing answer rows cited by any of the three files
+  a_system_exposes_its_ambient_laws_its_set_and_its_reductions_verdicts                        cited 0 times
+  admission_returns_a_coordinate_rather_than_a_verdict                                         cited 0 times
+  an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing cited 0 times
+  membership_and_hosting_are_two_questions                                                     cited 0 times
+  the_concept_is_closed_and_the_inventory_is_open                                              cited 3 times
+  the_concepts_edge_is_not_an_order_and_wrapping_is_the_test                                   cited 0 times
+
+FINDING: standing answer rows cited across 241, 242 and 243 = 3
+The control fired, so the count above is a fact about the three files.
