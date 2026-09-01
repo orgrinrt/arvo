@@ -26,7 +26,9 @@ use crate::points::Integer;
 use crate::quantum::{
     is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum,
 };
-use crate::slots::{slot_count, slot_in_range, Signed, Slot, SlotCount, Slots, Unsigned};
+use crate::slots::{
+    declared_slot_width, slot_count, slot_in_range, Signed, Slot, SlotCount, Slots, Unsigned,
+};
 use crate::width::{Bool, Width};
 
 // --- a format the crate does not know about ----------------------------------
@@ -126,10 +128,7 @@ fn the_whole_contract_is_supplied_from_outside_and_every_coordinate_reads_back()
     assert!(slot_in_range::<OffsetFive>(Slot::at(-8)).get());
     assert!(slot_in_range::<OffsetFive>(Slot::at(23)).get());
     assert!(!slot_in_range::<OffsetFive>(Slot::at(24)).get());
-    assert_eq!(
-        crate::slots::declared_slot_width::<OffsetFive>(),
-        Width::bits(5)
-    );
+    assert_eq!(declared_slot_width::<OffsetFive>(), Width::bits(5));
 
     // The phase is a third of a quantum, so nothing cancels it and the grid
     // carries no additive identity. Fractional rather than merely nonzero is what
@@ -168,15 +167,66 @@ fn the_control_the_foreign_contract_differs_from_every_shipped_one() {
 
 // --- the width bound is the impl set, and these are the properties it is about -
 
+/// A slot range declaring more bits than its span needs.
+///
+/// Admissible on every count: not inverted, its width is in range, and a span of
+/// four sits well inside two to the thirteenth. **Its bounds imply two bits and
+/// its declaration says thirteen**, which is the only shape that separates a width
+/// that is read from one recovered by counting. Every range this crate ships has
+/// the two agreeing by construction, so no shipped range can.
+struct WiderThanItsSpan;
+
+impl Slots for WiderThanItsSpan {
+    const MIN: Slot = Slot::ZERO;
+    const MAX: Slot = Slot::at(3);
+    const WIDTH: Width = Width::bits(13);
+}
+
 #[test]
 fn the_declared_width_is_read_rather_than_recovered() {
     // The coordinate the declaration stated, not a number counted back out of the
     // slot bounds. This is what removed the class where a 63-bit declaration
     // derived a placement of zero bits: no count is formed, so nothing can wrap.
-    assert_eq!(<Unsigned<13> as Slots>::WIDTH, Width::bits(13));
-    assert_eq!(<Signed<13> as Slots>::WIDTH, Width::bits(13));
-    assert_eq!(<Unsigned<1> as Slots>::WIDTH, Width::bits(1));
-    assert_eq!(<Unsigned<62> as Slots>::WIDTH, Width::bits(62));
+    //
+    // The previous cut of this arm read `<Unsigned<13> as Slots>::WIDTH ==
+    // Width::bits(13)` against a macro whose body is `Width::bits($w)`, which is
+    // the class the comment two tests down condemns: a constant against the
+    // literal its own definition set.
+    let declared = declared_slot_width::<WiderThanItsSpan>();
+    let recovered = Width::bits(slot_count::<WiderThanItsSpan>().count().ilog2());
+
+    assert_eq!(declared, Width::bits(13));
+    assert_eq!(
+        recovered,
+        Width::bits(2),
+        "the span is four slots, so counting it back gives two bits"
+    );
+    assert_ne!(
+        declared, recovered,
+        "the declared width and the one its bounds imply agree here, so this arm \
+         cannot tell a width that is read from one that is counted"
+    );
+
+    // The control: where a declaration is tight the two agree, so the arm above is
+    // about which of them comes back rather than about the function refusing to
+    // answer at all. Every range this crate ships is of that kind.
+    macro_rules! agree_where_tight {
+        ($($w:literal),+ $(,)?) => {
+            $(
+                assert_eq!(
+                    declared_slot_width::<Unsigned<$w>>(),
+                    Width::bits(slot_count::<Unsigned<$w>>().count().ilog2()),
+                    "unsigned {} disagrees with its own span", $w
+                );
+                assert_eq!(
+                    declared_slot_width::<Signed<$w>>(),
+                    Width::bits(slot_count::<Signed<$w>>().count().ilog2()),
+                    "signed {} disagrees with its own span", $w
+                );
+            )+
+        };
+    }
+    agree_where_tight!(1, 2, 3, 7, 13, 17, 31, 47, 61, 62);
 }
 
 #[test]
@@ -334,10 +384,11 @@ fn the_law_admits_every_range_this_crate_ships() {
         49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
     );
 
-    // And the foreign range above, which is neither shipped shape and is
-    // admissible, so the law is about the obligations rather than about the two
-    // constructions this crate happens to write.
+    // And the two foreign ranges above, neither of which is a shipped shape and
+    // both of which are admissible, so the law is about the obligations rather
+    // than about the two constructions this crate happens to write.
     assert!(crate::slots::is_admissible::<OffsetFive>().get());
+    assert!(crate::slots::is_admissible::<WiderThanItsSpan>().get());
 }
 
 #[test]
@@ -398,6 +449,11 @@ fn the_law_rejects_a_range_that_passes_the_easy_obligations() {
     assert!(<WidthTooNarrow as Slots>::MIN
         .is_at_most(<WidthTooNarrow as Slots>::MAX)
         .get());
+
+    // A declaration may be wider than its span and not narrower, which is the
+    // asymmetry the obligation carries: a range addressable by more bits than it
+    // needs is coherent, and one its width cannot address is not.
+    assert!(crate::slots::is_admissible::<WiderThanItsSpan>().get());
 }
 
 // --- what a quantum law owes, and the constructions that do not --------------

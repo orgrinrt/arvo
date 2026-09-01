@@ -8,10 +8,15 @@
 //! An adaptation is its rounding mode and its overflow policy and nothing else,
 //! so the matrix here is the full cross product rather than a diagonal, and the
 //! independence of the two is asserted by moving one and watching the other stay.
+//!
+//! The open-inventory arm runs its foreign policy through the map rather than
+//! reading the constant back. Reading it back says a constant holds what its own
+//! definition set, which is a law between two declarations and constrains neither.
 
 use crate::adapt::{Adapt, Arity, DeclaredSignature, Operation, Signature};
+use crate::apply::{adapt, Dither, Exact};
 use crate::format::{contains, Format};
-use crate::overflow::{Overflow, Policy, Saturate, Wrap, SHIPPED_POLICIES};
+use crate::overflow::{Clamp, Overflow, Policy, Saturate, Wrap, SHIPPED_POLICIES};
 use crate::points::{Integer, UFixed};
 use crate::quantum::Magnitude;
 use crate::rounding::{
@@ -56,18 +61,106 @@ fn the_shipped_overflow_policies_are_three_and_distinct() {
 }
 
 /// A user-defined overflow policy, which is what an open inventory means.
-///
-/// If this file compiles, adding a policy needed no edit to any existing item.
-/// That is the assertion; the body is incidental.
 struct DeclaredBound;
 
 impl Overflow for DeclaredBound {
     const POLICY: Policy = Policy::Clamp;
 }
 
+/// A second one, deciding the other way.
+///
+/// One foreign member establishes that the map does not refuse an unknown type.
+/// Two deciding differently establish that it reads what the declaration says,
+/// which is the claim the name makes and the thing one member cannot separate.
+struct DeclaredRing;
+
+impl Overflow for DeclaredRing {
+    const POLICY: Policy = Policy::Wrap;
+}
+
+/// The window `Integer<5>` declares: slots -16 through 15, so a span of 32.
+const MIN5: Slot = Slot::at(-16);
+const MAX5: Slot = Slot::at(15);
+
 #[test]
 fn the_overflow_inventory_admits_a_member_this_crate_does_not_know_about() {
-    assert_eq!(<DeclaredBound as Overflow>::POLICY, Policy::Clamp);
+    // The whole of this arm used to be the declared constant read back, four
+    // lines under the impl that set it, with a doc saying the body was incidental.
+    // What the name claims is that a policy declared outside this crate reaches
+    // the crate's machinery, so the arms run it through the map.
+    type Outside = Signature<Integer<5>, Adapt<Floor, DeclaredBound>>;
+    type Ring = Signature<Integer<5>, Adapt<Floor, DeclaredRing>>;
+    type Shipped = Signature<Integer<5>, Adapt<Floor, Clamp>>;
+
+    // Positions well outside the window on both sides, so the completion region
+    // answers and the rounding region has nothing to do.
+    let above = Exact::on_grid(Slot::at(MAX5.index() + 25));
+    let below = Exact::on_grid(Slot::at(MIN5.index() - 25));
+
+    for (foreign, shipped) in [
+        (
+            adapt::<Outside>(above, Dither::UNUSED),
+            adapt::<Shipped>(above, Dither::UNUSED),
+        ),
+        (
+            adapt::<Outside>(below, Dither::UNUSED),
+            adapt::<Shipped>(below, Dither::UNUSED),
+        ),
+    ] {
+        assert_eq!(
+            foreign, shipped,
+            "a foreign policy naming the same value did not land where the shipped one does"
+        );
+    }
+    assert_eq!(adapt::<Outside>(above, Dither::UNUSED), MAX5);
+    assert_eq!(adapt::<Outside>(below, Dither::UNUSED), MIN5);
+
+    // The two foreign members decide differently, which is what says the map
+    // reads the declaration rather than answering one way for anything it does
+    // not recognise.
+    assert_ne!(
+        adapt::<Outside>(above, Dither::UNUSED),
+        adapt::<Ring>(above, Dither::UNUSED),
+        "two foreign policies naming different values adapted the same way"
+    );
+
+    // Worked out by hand rather than by the expression the crate uses. The span
+    // is 32, so 40 lands at ((40 + 16) mod 32) - 16, which is 24 - 16 = 8, and
+    // -41 lands at ((-41 + 16) mod 32) - 16, which is 7 - 16 = -9.
+    assert_eq!(adapt::<Ring>(above, Dither::UNUSED), Slot::at(8));
+    assert_eq!(adapt::<Ring>(below, Dither::UNUSED), Slot::at(-9));
+
+    // And the foreign path is total, like every other: both answers are in the
+    // declared window rather than merely different from each other.
+    for got in [
+        adapt::<Outside>(above, Dither::UNUSED),
+        adapt::<Outside>(below, Dither::UNUSED),
+        adapt::<Ring>(above, Dither::UNUSED),
+        adapt::<Ring>(below, Dither::UNUSED),
+    ] {
+        assert!(
+            got.is_within(MIN5, MAX5).get(),
+            "{got:?} left the declared window under a foreign policy"
+        );
+    }
+
+    // The coordinate reads back through the crate's own accessor, which is where
+    // a signature carries it rather than where the impl wrote it.
+    assert_eq!(
+        crate::adapt::overflow_of::<Adapt<Floor, DeclaredBound>>(),
+        Policy::Clamp
+    );
+    assert_eq!(
+        crate::adapt::overflow_of::<Adapt<Floor, DeclaredRing>>(),
+        Policy::Wrap
+    );
+
+    // The control: inside the window the completion does nothing, so both foreign
+    // members agree there and the disagreement above is about the region the
+    // policy governs rather than about the policy being read at all.
+    let inside = Exact::on_grid(Slot::at(3));
+    assert_eq!(adapt::<Outside>(inside, Dither::UNUSED), Slot::at(3));
+    assert_eq!(adapt::<Ring>(inside, Dither::UNUSED), Slot::at(3));
 }
 
 // --- the adaptation is the pair, over the whole matrix -----------------------
@@ -84,7 +177,7 @@ macro_rules! adaptation_over_the_matrix {
                 {
                     type A1 = Adapt<$r, Wrap>;
                     type A2 = Adapt<$r, Saturate>;
-                    type A3 = Adapt<$r, crate::overflow::Clamp>;
+                    type A3 = Adapt<$r, Clamp>;
                     assert_eq!(
                         crate::adapt::rounding_of::<A1>(),
                         <$r as Rounding>::MODE
