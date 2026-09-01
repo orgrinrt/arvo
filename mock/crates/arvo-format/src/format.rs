@@ -282,8 +282,8 @@ pub const fn has_additive_identity<F: Format>() -> bool {
                 if slot_in_range::<F::Slots>(slot) {
                     return true;
                 }
-            },
-            Maybe::Isnt => {},
+            }
+            Maybe::Isnt => {}
         }
         magnitude += 1;
     }

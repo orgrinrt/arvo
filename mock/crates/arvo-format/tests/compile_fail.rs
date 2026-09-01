@@ -21,6 +21,18 @@ fn a_width_the_slot_range_cannot_carry_is_refused() {
     t.compile_fail("tests/ui/width_above_the_bound.rs");
 }
 
+/// The word lengths an industrial convention admits and the ladder does not.
+///
+/// MathWorks documents a `fi` word length to 65535 and the ladder stops at 62,
+/// so an ordinary declaration has no format. That refusal is what the standards
+/// bound is for, and a refusal nothing pins can be deleted by accident, so it
+/// lives here rather than in a paragraph.
+#[test]
+fn a_word_length_past_the_slot_ladder_is_refused_at_the_declaration() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/word_length_past_the_ladder.rs");
+}
+
 /// The refusal every const generic parameter in this crate is spelled around.
 ///
 /// `Width` is the crate's own count of bits and cannot be the type of a const

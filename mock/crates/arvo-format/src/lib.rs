@@ -45,6 +45,7 @@ pub mod overflow;
 pub mod quantum;
 pub mod rounding;
 pub mod slots;
+pub mod standards;
 pub mod width;
 
 pub use adapt::{
