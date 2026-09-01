@@ -1,0 +1,14 @@
+[workspace]
+
+[package]
+name = "resolution-has-no-second-arm"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[features]
+# The control that must refuse. An impl that leaves a coordinate unfixed.
+omit_a_coordinate = []
