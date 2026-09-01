@@ -698,7 +698,66 @@ think the registry has answered it.
 
 ## 10. What would refute each conclusion
 
-To be written: the refutation conditions.
+Each conclusion with the one thing that would take it down, so a later seat can
+attack it cheaply rather than rederive it.
+
+**Entry 8 is `exact`.** Refuted by exhibiting a rounding rule that is not the
+identity when the rescale shift is zero. That would mean a mode discards
+something where nothing is available to discard, so it would refute the reading
+of `rounding = exact` in `dimension::rounding` rather than only my answer.
+`stochastic` is the one candidate I cannot check this way, because `k1` excludes
+it as a non-function; a stochastic rule that perturbs an already-exact value
+would be such a rule, and whether the design's `stochastic` does that is not
+established anywhere I found.
+
+**Entry 9's widening.** Refuted by any mode retracting at some `F >= 1` within
+`W in {4, 6, 8}` on a non-negative domain. `k2` part C sweeps all seven
+exhaustively and finds none, so a refutation needs an eighth mode.
+
+**Entries 1 and 2 are `toward_zero`.** Refuted by showing the implementations I
+cite are not the ones that produced the committed outputs, which would mean the
+source and the output in those directories disagree. I did not check that for
+`p2`, `p_d` or `p4`: I read their sources and did not rerun them. That is a real
+gap and I say so in section 11.
+
+**Entry 4 is `half_up`.** Refuted by finding a negative value in `q2`'s domain,
+which would reopen the tie direction. `STEP`, `BIAS` and the bounds at
+`56_probes/q2_affine_membership.rs:38-39` and 86 say there is none.
+
+**Entry 6 is `ceil`.** Refuted by a non-negative `p` and an `f` at which
+`ceil` and `away_from_zero` disagree. `k1` sweeps `p in [0, 255]` at
+`f in {1, 2, 3, 4}` and finds none, and the identity is not hard to see once
+stated, so a refutation would more likely be an error in my `rnd` than a real
+counterexample. Control C3 guards that by requiring a known-false equality to be
+refuted on the same instrument.
+
+**Entry 7 needs a seventh name.** Refuted by exhibiting one of the six that
+equals `away_from_zero` on a signed domain. `k1` prints a witness against each of
+the six and control C3 shows the test can fail, so this is the best-guarded
+conclusion in the file.
+
+**Section 8, the `half_up` ambiguity.** Refuted by showing the two readings are
+one function on a signed domain, which K3's witness at `p = -255, f = 1` denies;
+or by showing they agree on translation equivariance, which P1 denies; or by
+showing the fusion table does not separate them, which P2's two rows deny. It
+could also be dissolved rather than refuted, if the canon already pins
+`half_up`'s tie direction somewhere I did not look. I grepped `mock/registry/`
+for `half_up`, `half-up`, `ties away` and `away from zero` and found the ruling,
+its question, the probe rows, the predicates, and
+`retirement::r132_midpoint_identified_with_half_up`, which retires an
+identification of the midpoint with half-up and does not define it. So the
+definition is absent from the registry. It may exist in a panel file I was not to
+read, and if it does, section 8 collapses to a citation and I would rather be
+wrong that way than not have raised it.
+
+**The whole file, at once.** Every measured claim rests on my `rnd`, written once
+and used by both probes. If it is wrong, everything falls together. The guard is
+that `k2`'s controls R1 and R2 require it to reproduce `94_probes/c_retraction`'s
+two published columns across all 21 rows, and R3 requires it to reproduce
+`149_probes/y2_out.txt`'s twelve maxima, on instruments written by other seats in
+two languages. It does. That is three independent instruments agreeing, which is
+the bar `evidence-lives-in-the-repo-or-it-never-happened.md` asks for, and it is
+the reason I trust the five columns those instruments never ran.
 
 ## 11. What I could not establish
 
