@@ -1079,3 +1079,55 @@ committed before any of the three started and answer most of it. The control tha
 would have been worth having is not a fourth blind derivation; it is one seat
 reading `228` and `229` and attacking them. Nobody has done that, and it is what
 I would dispatch next.
+
+## 13. Addendum: the mechanical rewrite has landed, including the one that is not mechanical
+
+Written after section 12, against `origin/dev` at `32a7629a`.
+
+`a8ccf940`, "canon: spell every rounding mode the way the ruling closed the set",
+applied the tool's alias table to the registry while this seat was running. The
+state of my nine on the trunk is now:
+
+- **Four unchanged and still open.** Both `truncate` entries, in the `predicate`
+  of `proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion`
+  and of `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`;
+  and both `nearest` entries, in that same inheritance row's `predicate` and in
+  the `predicate` of
+  `proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity`,
+  whose trailing clause is intact. Section 6's verdicts apply to them as written.
+- **The retraction row unchanged**, with `law::rounding_retraction_is_the_identity`
+  still reading `both rounding modes as swept by the instrument` in its `holds`
+  and again in its `fails`. Section 5 and `228`'s better answer both still apply.
+- **The three `away from zero` entries unchanged**, correctly, since they were
+  never aliases.
+- **And the alias rewrites applied**, including the `holds` of
+  `law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`, which
+  now reads `rounding: in {floor, ceil, half_up}`.
+
+That last line is the finding of section 9's first item, no longer hypothetical.
+It is the `holds` region of
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`, at
+`signedness: signed`, and `nearest-half-up` in it has been rewritten to `half_up`
+under a heading the tool's own report describes as rewritable "without reading
+anything". On that domain the two readings of `half_up` are different functions
+and section 8 measures them landing on opposite sides of the property the row is
+about.
+
+**The rewrite is correct and it was not mechanical, and those are different
+claims.** It is correct because `229`'s probe B measured which reading the canon
+depends on, reproducing both fusion rows' counts set for set under
+ties-toward-positive-infinity and getting two of six against the recorded three
+of six under the other. That is a measurement somebody made. The tool's
+mechanical section promises that nobody has to make it. So the trunk now carries
+a determinate spelling in place of an ambiguous one on a signed row, resting on a
+probe the rewrite did not consult, and if `229` had come out the other way the
+same edit would have silently moved a measured region from a holding set to a
+failing one.
+
+`232` and I reported this independently before it landed, at
+`mock/tools/rounding-vocabulary/src/lib.rs:73`. The repair is unchanged and is
+now more urgent rather than less: `nearest-half-up` belongs with the retired word
+until the canon defines `half_up`, and the definition is `229`'s to be ratified
+rather than a spelling anybody may apply. Until it is written down, the trunk's
+`half_up` on a signed row means whichever operation the reader assumes, and the
+whole point of retiring `truncation` was that two readers assume differently.
