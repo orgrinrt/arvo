@@ -6,6 +6,9 @@
 `dimension::occupancy`. `ruling::cold_is_for_cold_paths_and_cold_storage` and
 `ruling::cold_is_not_obliged_to_be_slow`, for what the footprint objective is and is not.
 `ruling::never_a_runtime_check_and_one_lowered_path`.
+`ruling::arms_over_regions_are_the_fundamental_heart` and `ruling::the_work_is_predicated_arms_composed`,
+for `derive_sole` and `derive_shared`, which are that ruling's own instance in the tree rather than a
+citation of it.
 
 ## What this crate is
 
@@ -50,7 +53,10 @@ width is not a function of the carrier and neither is the converse, measured und
 with controls firing.
 
 **These are two arms over a declared region, not one number with a special case.** That is the shape
-the whole design is made of, and this is the crate's own instance of it.
+the whole design is made of, and this is the crate's own instance of it: `ruling::arms_over_regions_are_the_fundamental_heart`
+states the approach directly, and `derive_sole` / `derive_shared` are what it names when it says the full
+space is filled by arms holding where they are optimal and nowhere else, composed, rather than by one
+statement uniform across the dimensions.
 
 ## The footprint is a ratified objective, so the derivation is not free
 
@@ -187,7 +193,9 @@ sees it. That is what `ruling::never_a_runtime_check_and_one_lowered_path` asks 
 
 **A generic consumer composes.** A consumer generic over the strategy writes
 `derive_sole::<F, S::Objective>()`, an ordinary generic call with an associated type in a type
-position.
+position. That is `arvo-strategy`'s `Strategy::Objective` reaching this crate's arms: the strategy
+crate supplies the const value the match here is gated on, and it is the pairing of the two crates,
+not either alone, that makes `O::OBJECTIVE` a predicate rather than a runtime read.
 
 ### Why a const generic cannot carry it, recorded so it is not tried again
 

@@ -1,0 +1,10 @@
+[package]
+name = "set_valued_carriers_need_a_second_slot"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]
