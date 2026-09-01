@@ -237,10 +237,17 @@ are `repr(transparent)` with a single declared unwrap accessor, `count` and `get
 so the observation surface is exactly what the type establishes and nothing
 widens it.
 
-The door is kept narrow on purpose: two types, no arithmetic beyond what a width
-derivation needs, and nothing else added beside them. The coordinates in the next
-section are built through the door rather than widening it, so they are the stack's
-own types without the crate having a third primitive.
+The door was meant to be kept narrow: two types, no arithmetic beyond what a width
+derivation needs, and nothing else beside them. **The coordinates in the next
+section do not go through it.** Each wraps a host primitive of its own and hands
+one back, so the crate introduces eleven rather than two, and a reader looking for
+the coordinates to be built out of `Width` and `Bool` will not find that anywhere.
+
+**What the door may carry out is open**, as
+`question::what_the_numeric_introduction_door_may_carry_out`, with the panel as its
+decider and four options recorded against it. This paragraph states what the crate
+holds today and does not choose among them, because that choice is not a design's
+to make in the tier below where it belongs.
 
 ### The coordinates, and why they are types at all
 
