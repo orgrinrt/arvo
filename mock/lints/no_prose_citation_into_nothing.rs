@@ -256,14 +256,14 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
 
 /// One citation the prose carries that names no row, and how it was spelled.
 struct Cited {
-    at:   String,
+    at: String,
     line: usize,
     /// What to put in front of a reader, which is not always the token as
     /// scanned: a citation wrapped inside a code span is reported rejoined,
     /// because the rejoined string is the one the author wrote and the one a
     /// search for it will find.
     text: String,
-    how:  How,
+    how: How,
 }
 
 /// How the prose spelled the citation, which decides what failing to resolve
@@ -849,7 +849,10 @@ mod tests {
         let f = findings(
             "prose-cite-elided-nothing",
             ONE_ROW,
-            &[("42_member.md", "See `ruling::no_such_prefix_anywhere...`.\n")],
+            &[(
+                "42_member.md",
+                "See `ruling::no_such_prefix_anywhere...`.\n",
+            )],
             usize::MAX,
         );
         assert_eq!(f.len(), 1, "{f:?}");
@@ -894,12 +897,7 @@ mod tests {
              `ruling::a_row_that_was_never_written` too.\n",
         )];
         let before = findings("prose-cite-count-before", ONE_ROW, prose, 0);
-        let after = findings(
-            "prose-cite-count-after",
-            TWO_ROWS_ONE_PREFIX,
-            prose,
-            0,
-        );
+        let after = findings("prose-cite-count-after", TWO_ROWS_ONE_PREFIX, prose, 0);
 
         let counted = |f: &[String]| {
             f.iter()
@@ -917,7 +915,11 @@ mod tests {
             "the added row moved the count: {}",
             counted(&after)
         );
-        assert_eq!(after.len(), 2, "the ambiguity is reported on its own: {after:?}");
+        assert_eq!(
+            after.len(),
+            2,
+            "the ambiguity is reported on its own: {after:?}"
+        );
     }
 
     #[test]
