@@ -42,8 +42,8 @@
 //!
 //! **Seven are real, and they are two kinds.** Two are truncations of a slug
 //! that does exist: `ruling::the_warrant_is_a_token_and_a_clause_on_the_values`
-//! is missing the `_side` its row carries and appears once against 22 of the
-//! correct form, and `proposal::a_min_plus_fold_needs_an_absorbing_top_` still
+//! is missing the `_side` its row carries, which the corpus otherwise spells in
+//! full, and `proposal::a_min_plus_fold_needs_an_absorbing_top_` still
 //! carries the underscore that got cut. Five name no row at all and are
 //! paraphrases of a claim rather than citations of it.
 //!
