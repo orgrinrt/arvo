@@ -28,7 +28,9 @@ use crate::width::{Bool, Width};
 /// It asked whether the phase sits at zero and looked at slot zero, which is a
 /// different question from whether zero sits on the grid.
 const fn the_superseded_predicate<F: Format>() -> Bool {
-    F::PHASE.is_zero().and(slot_in_range::<F::Slots>(Slot::ZERO))
+    F::PHASE
+        .is_zero()
+        .and(slot_in_range::<F::Slots>(Slot::ZERO))
 }
 
 /// The cancelling slot with the negation taken in the index's own width.
@@ -240,8 +242,14 @@ fn the_identity_agrees_with_membership_at_the_slot_it_names() {
 
     // The control. A law that answered one way everywhere would pass every
     // assertion above, so both outcomes have to occur.
-    assert!(present > 0, "no arm has an identity, so the law answers one way");
-    assert!(absent > 0, "every arm has an identity, so the law answers one way");
+    assert!(
+        present > 0,
+        "no arm has an identity, so the law answers one way"
+    );
+    assert!(
+        absent > 0,
+        "every arm has an identity, so the law answers one way"
+    );
 }
 
 // --- the wide intermediate, and the mutant that says why it is there ----------
@@ -291,10 +299,12 @@ fn a_phase_whose_cancelling_slot_leaves_the_index_answers_no() {
     // admits, so the narrow form answers yes to a position no slot can name. That
     // is what the wide intermediate is for, and it is why the range above is
     // declared where it is rather than at some convenient width.
-    assert!(slot_in_range::<AtTheBottomSlots>(the_narrow_cancelling_slot(
-        <AtTheBottom as Format>::PHASE
-    ))
-    .get());
+    assert!(
+        slot_in_range::<AtTheBottomSlots>(the_narrow_cancelling_slot(
+            <AtTheBottom as Format>::PHASE
+        ))
+        .get()
+    );
 
     // The control: the same range with a reachable cancelling slot answers yes,
     // so the arm above is about the overshoot rather than about a range that
@@ -304,10 +314,12 @@ fn a_phase_whose_cancelling_slot_leaves_the_index_answers_no() {
     // And the mutant agrees with the predicate wherever nothing overflows, so it
     // is the one value that separates them rather than a function that differs
     // everywhere.
-    assert!(slot_in_range::<AtTheBottomSlots>(the_narrow_cancelling_slot(
-        <NearTheBottom as Format>::PHASE
-    ))
-    .get());
+    assert!(
+        slot_in_range::<AtTheBottomSlots>(the_narrow_cancelling_slot(
+            <NearTheBottom as Format>::PHASE
+        ))
+        .get()
+    );
 }
 
 // --- the bound this predicate has, catalogued rather than claimed away --------

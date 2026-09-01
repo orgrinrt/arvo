@@ -477,7 +477,21 @@ fn the_law_admits_every_quantum_law_this_crate_ships() {
         };
     }
     admits_constant!(
-        -30, -24, -17, -8, -4, -1, 0, 1, 4, 8, 17, 24, 30, 2147483647, -2147483648
+        -30,
+        -24,
+        -17,
+        -8,
+        -4,
+        -1,
+        0,
+        1,
+        4,
+        8,
+        17,
+        24,
+        30,
+        2147483647,
+        -2147483648
     );
 
     macro_rules! admits_indexed {
