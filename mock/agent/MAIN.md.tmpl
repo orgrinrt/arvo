@@ -7,24 +7,27 @@ chosen by the consumer rather than by the container the machine happens
 to offer. Everything is `#![no_std]`, no `alloc`, no platform
 dependency, and every size is const at type level.
 
-## The tree is empty right now, and that is deliberate
+## The tree holds the bottom three crates and nothing above them
 
-`mock/crates/` holds nothing and `mock/Cargo.toml` is an empty
-workspace. This is not a broken checkout and it is not work in
-progress. The previous crate layout was removed on purpose, because
-arvo's canon is being written and the mutation order requires the
-lower tiers to be cleared before the tier above them can change.
+`mock/crates/` holds `arvo-format`, `arvo-placement` and `arvo-strategy`,
+and `mock/Cargo.toml` names those three and no others. They were written
+from the canon as it settled under them, so they are what the current
+design has produced so far and they may be read as such. They are also
+the bottom of the stack rather than a usable numeric library, so there is
+no fixed-point or exact-width primitive to reach for yet.
 
-**So there is no current architecture to read, and the one git
-remembers is a dead tier.** Do not reconstruct it, do not reason from
-it, and do not treat a name that appears in git history as a name the
-design still uses. Everything about the decomposition is open: how many
-crates there are, what they are called, which layer owns what, and
-whether the layering is the right shape at all.
+**What is gone is the previous crate layout, and it was removed on
+purpose**, because arvo's canon is being written and the mutation order
+requires the lower tiers to be cleared before the tier above them can
+change. **The architecture git remembers is a dead tier.** Do not
+reconstruct it, do not reason from it, and do not treat a name that
+appears in git history as a name the design still uses.
 
-An agent that goes looking for the old tree and builds on what it finds
-is reattaching the tier that had to be detached for the current work to
-be permitted. That has already happened twice.
+Everything above these three is open: how many crates there are, what
+they are called, which layer owns what, and whether the layering is the
+right shape at all. An agent that goes looking for the old tree and
+builds on what it finds is reattaching the tier that had to be detached
+for the current work to be permitted. That has already happened twice.
 
 ## Where the authority actually is
 
