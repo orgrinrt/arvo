@@ -1,0 +1,41 @@
+=== associated const DECLARATIONS on the four coordinate traits ===
+const RADIX: u32;
+const SIGNED: bool;
+const BASE: i32;
+const SLOPE: i32;
+const MAGNITUDES: u32;
+const MIN: i64;
+const MAX: i64;
+const WIDTH: Width;
+const PHASE_NUM: i64;
+const PHASE_DEN: i64;
+
+=== excluded, and why ===
+  const ADMITTED: () = {
+  ^ the admission obligation, not a coordinate: it is a unit, it carries no
+    value, and it is what every use site forces rather than something a
+    candidate chooses.
+  13 impl-side definitions, which are values of coordinates, not coordinates
+
+coordinates                    : 10
+  declared i64 or i32          : 6
+  the rest (u32, bool, Width)  : 4
+
+control A passed: the ruling's six reproduces.
+control B passed: the ratified ten reconstructs.
+
+=== the slot coordinate, and what an arity of n would cost ===
+slot axis      : MIN, MAX, WIDTH                                    -> 3 per axis
+everything else: RADIX, SIGNED, BASE, SLOPE, MAGNITUDES, PHASE_NUM, PHASE_DEN -> 7
+  slot arity 1 -> 10 coordinates
+  slot arity 2 -> 13 coordinates
+  slot arity 3 -> 16 coordinates
+  slot arity 4 -> 19 coordinates
+
+FINDING: the ratified ten reconstructs exactly, as 3n + 7 at n = 1, and the
+partition into six and four is the ruling's own. An affine predicate of slot
+arity 2 would need thirteen coordinates and of arity 3 sixteen, so the door
+would not carry ten. The slot arity is therefore fixed at one by a ratified
+COUNT rather than by a reading of the membership sentence's spelling, and the
+open question of whether 'one parameterisation' meant one scalar does not have
+to be settled on the wording: the count settles it.
