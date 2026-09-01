@@ -107,6 +107,14 @@ const TABLE: &[(bool, &str)] = &[
     (false, "pub struct Handle(u32);"),
     (false, "const WIDTH: u32 = 32;"),
     (false, "pub const MAX: u64 = 9;"),
+    // The two the table did not discriminate, both found by a reviewer running
+    // the real scanner rather than reading it. An item constant whose
+    // initialiser sits on the next line looks exactly like a parameter alone in
+    // a broken generic list, and was excepted; and a trait's associated const
+    // is the shape this whole round is about, was already refused correctly,
+    // and nothing held it there.
+    (false, "    const MAX: u64"),
+    (false, "    const RADIX: u32;"),
     (false, "fn f<const N: usize>(x: u32) -> Bool { }"),
     (false, "let n = x as u32;"),
     (false, "pub struct Sized(u128);"),

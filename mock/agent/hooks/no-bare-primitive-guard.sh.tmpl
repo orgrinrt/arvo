@@ -62,13 +62,22 @@ BARE_NUMS='u8|u16|u32|u64|u128|i8|i16|i32|i64|i128|f32|f64|usize|isize|bool'
 # A line scanner cannot see the grammar, so the position is recognised
 # by where the annotation sits: after the `<` that opens a generic list,
 # after a `,` inside one, or alone on its own line inside a list broken
-# over several. An item constant is not excepted and keeps its type,
-# which is what the closing `;` distinguishes.
+# over several. An item constant is not excepted and keeps its type.
+#
+# The own-line arm requires a trailing `,` or `>`, and that is a deliberate
+# trade rather than an oversight. Without it `    const MAX: u64` is
+# excepted, an item constant whose initialiser sits on the next line: legal,
+# and a hole, because a line scanner cannot see what follows. With it, the
+# one shape that loses is a multi-line generic list whose last parameter
+# carries no trailing comma, which is denied and takes either that comma,
+# which is what rustfmt writes anyway, or the escape comment. The gate errs
+# toward refusing, because a false refusal is visible and a false permission
+# is not.
 _without_const_generic_types() {
     printf '%s' "$1" | sed -E \
         -e "s/(<[[:space:]]*const[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*:[[:space:]]*)($BARE_NUMS)([^A-Za-z0-9_]|\$)/\1\3/g" \
         -e "s/(,[[:space:]]*const[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*:[[:space:]]*)($BARE_NUMS)([^A-Za-z0-9_]|\$)/\1\3/g" \
-        -e "s/^([[:space:]]*const[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*:[[:space:]]*)($BARE_NUMS)([[:space:]]*[,>]?[[:space:]]*)\$/\1\3/"
+        -e "s/^([[:space:]]*const[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*:[[:space:]]*)($BARE_NUMS)([[:space:]]*[,>][[:space:]]*)\$/\1\3/"
 }
 
 while IFS= read -r LINE; do
