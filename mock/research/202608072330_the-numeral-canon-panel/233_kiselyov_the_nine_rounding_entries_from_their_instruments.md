@@ -968,3 +968,114 @@ evidence for it is one control short.
 **`chain_length` is absent from the retraction row** while `operation = mul` is
 present, and the instrument ran a two-multiply chain. `228` reports it. Neither
 `232` nor I did.
+
+### 12.4 What survives as this file's own
+
+Four things, and the first is the only one I would ask the panel to act on.
+
+**One. `rounding any` is meaningful only because the rounding set is closed, and
+that is an argument for `228`'s remedy which `228` does not make.** Section 9's
+fifth item, written before I read any of these files.
+
+`dimension::operation` forbids `operation any` in bold in its own `grammar`, on
+the stated ground that `any` quantifies over a set nobody has closed, and says
+the spelling becomes admissible when the operation set is closed. The rounding
+set **is** closed, by a ratified ruling. That is what makes `rounding any`
+writable at all.
+
+Now put the two remedies for entries 5, 7 and 9 against that. **Mine reopens the
+set**, and every `rounding any` written before the reopening would then quantify
+over five modes where the same words written after quantify over six, with
+nothing in the notation distinguishing them. **`228`'s does not**: it keeps the
+set at six and moves the swept mode to the warrant clause, so `rounding any`
+means today what it meant yesterday.
+
+That is a cost of my remedy that I did not price and that neither `228` nor `232`
+names, and it falls entirely on my side. It also lands directly on `228`'s own
+repair, which writes `rounding any` into both fields of the retraction row: under
+its remedy that spelling is stable, and under mine `228`'s repair would have been
+silently rescoped by my repair. Grepped: `append-only` and `value set` appear in
+`228` and nowhere near this argument, and neither term appears in `229` or `232`.
+
+The general question behind it is open and I do not answer it.
+`dimension.toml`'s own header settles the axis case, that declaring a new axis
+reveals a narrowness rather than creating one, because a predicate's absence
+quantifies over the world rather than over that file's contents. Widening an
+axis's **value set** is not the same act: there `any` quantifies over the
+declared set, so the file's contents are exactly what moves. Whether the
+append-only reading extends to value sets is a question the registry has not
+been asked, and after `228`'s remedy it is not urgent, which is the best reason
+to write it down now rather than when it is.
+
+**Two. The fusion table measured under both readings of `half_up`, which is a
+third instrument on `229`'s conclusion.** `229` establishes the reading from
+translation equivariance, which is the predictor the law rows are stated in terms
+of. `k2` part B measures the thing the rows are actually about, the fusion
+divergence itself, at `W = 6` signed wrapping over exhaustive triples:
+ties-toward-positive-infinity at 0.00 percent at every `F` in `0..=5`, and
+ties-away-from-zero at 1.64, 2.76, 3.34, 3.40 and 2.93 percent at `F = 1`
+through `5`. Same conclusion, reached from the consequence rather than the
+predictor, with control R3 requiring the six columns `149_probes/y2_out.txt`
+published to reproduce first. That is an independent instance rather than a new
+finding, and under the three-instances rule it is worth its line.
+
+**Three. The four instruments nobody else pinned.**
+`233_probes/k3_the_cited_instruments_still_reproduce.sh` reruns
+`97_probes/p2`, `60_probes/p_d`, `62_probes/p4` and `56_probes/q2` against their
+committed outputs and carries a control comparing two different instruments'
+outputs to show the comparison can fail. `232` reran `p2`; `228` reran
+`c_retraction`. Nobody had rerun `p_d`, `p4` or `q2`, and the four verdicts in
+group two rest on reading their sources.
+
+**Four. The product-versus-union defect on the guard row**, section 9's third
+item. `proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion`
+crosses `signedness in {unsigned, signed}` with three modes and its two
+instruments cover five of the six cells: `62_probes/p4` contains no nearest rule
+at all, so `half_even` at `signed` was never swept. `232` reaches the same cell
+and states the same remedy, adding a nearest-even arm to `p4`, so this is a
+second instance rather than mine alone. I record it here because it is the one
+finding in my file that is directly actionable as a probe somebody can write this
+afternoon.
+
+### 12.5 The one place I still differ, stated as a difference rather than a win
+
+`232` writes the retraction row's in-place repair as
+`rounding in {toward_zero, floor, half_up}` and keeps `exact` out of the row, on
+the ground that a predicate is never widened in place and the widening is a later
+reader's evidence. I put the degenerate reading in the answer directly.
+
+I think the never-widen rule does not reach this case and I did not argue it in
+section 5, so I argue it here. A widening is a claim the original instrument
+could not support. `c_retraction`'s `F = 0` column is not that: at `F = 0` its
+own two arms are both `x >> 0`, the identity, so the instrument itself shows that
+nothing was rounded, and reading that off it is reading it correctly rather than
+extending it. What genuinely is a widening is `rounding any` over modes the
+instrument never ran, which is why `228` discharges that with a `construction`
+warrant and a probe rather than by assertion.
+
+So the ordering I would defend is that `exact` is in-place, `rounding any` is a
+widening, and `228`'s `construction` token is what makes the widening admissible
+without a sweep. That agrees with `228`'s repair and disagrees with `232`'s
+placement, and it is a small enough point that I would not spend a seat on it.
+
+### 12.6 What I would say to the panel
+
+Take `228` for the retraction row entire: the `statement` finding, the
+`construction` and `swept` warrant spellings, the absent `signedness` and
+`chain_length`. Take `228`'s remedy for the three `away from zero` entries and
+discard mine. Take `229` for the `half_up` reading and for the theorem that no
+deterministic nearest rule is both equivariant and unbiased. Take `232` or this
+file for group two, which agree entry for entry and which `228` and `229` do not
+cover.
+
+From this file specifically: 12.4's first item, because it is an argument for a
+remedy the panel is likely to adopt anyway and it is cheaper to record now than
+to rediscover when somebody proposes widening an axis's value set for a different
+reason.
+
+And one process note, since four seats have now covered one question. The three
+files that ran blind converge, which is worth something, but `228` and `229` were
+committed before any of the three started and answer most of it. The control that
+would have been worth having is not a fourth blind derivation; it is one seat
+reading `228` and `229` and attacking them. Nobody has done that, and it is what
+I would dispatch next.
