@@ -820,4 +820,151 @@ defect.
 
 ## 12. Reconciliation against the seats that ran before me
 
-To be written last, after this file is committed, against `228`, `229` and `232`.
+Everything above this heading was committed before I opened any of `228`, `229`
+or `232`. The commit order is the only evidence of that worth anything, so:
+sections 0 to 11 land across `1ce73db8` to `745aaa7c`, the two derivation probes
+at `cc8da3ef` and `b74f193e`, and the first thing I read from `origin/dev` came
+after all of them. Section 1 already records the four things that reached me
+before that point and what each was worth.
+
+### 12.1 The dispatch was largely redundant and the redundancy was avoidable
+
+`228_leroy_the_rounding_vocabulary.md` and
+`229_lamport_do_the_six_names_denote_one_operation_each.md` were both committed
+on the branch I was cut from. Between them they answer the two `question` rows my
+brief pointed me at and they contain, already probed, the finding I spent section
+8 on. `232_lamport_the_nine_rounding_entries_derived_cold.md` is a third
+derivation of the same nine, merged from the parallel seat while I was running.
+
+So four seats have now derived overlapping parts of one question. My coordinator
+has since said the omission of `228` and `229` was his, which I record because it
+is the accurate attribution and because the fix is cheap and mechanical: the
+reading list gets built with a grep rather than from memory, and here the grep is
+`ls | grep -i round` in the directory the deliverable was to be written into. I
+saw those filenames myself, in section 1's item two, and treated them as
+something to avoid rather than as evidence my brief was incomplete. That reading
+was defensible under a blind dispatch and it was still the wrong call: a blind
+seat that notices its question is already the title of a committed file should
+say so to its dispatcher before spending the budget, not after.
+
+### 12.2 Where four derivations agree, and the agreement is real
+
+On the facts of group two and group three I agree with `232` entry for entry, and
+we reached them from the same instruments without reading each other. The
+witnesses differ, which is the useful part: `232` separates the two `half_up`
+readings at `p = -63, f = 1` giving `-31` against `-32` over `p in -64..=63`,
+mine at `p = -255, f = 1` giving `-127` against `-128` over `p in -256..=255`,
+and `229` counts the same disagreement in closed form as `2^(W-1-F)`. Three
+shapes, one fact.
+
+The full list of what I hold in common with at least one other seat, reached
+independently:
+
+- `truncate` is `toward_zero` in both rows that carry it, decided by
+  `97_probes/p2:71` and `62_probes/p4:62` rather than by the label.
+- `nearest` in the phase row is `half_up` and is safe there because its domain
+  carries no negatives.
+- `nearest` in the inheritance row has no name in the six.
+- `away from zero` is `ceil` on a non-negative domain and is distinct from all
+  six ratified names on a signed one.
+- The proposal row's `predicate` entry has two different answers over its own
+  declared signedness range, so no single value is correct for it.
+- `half_up` denotes two operations that agree on unsigned rows and differ on
+  signed ties, which is the ratified ruling's own criterion for retirement, met
+  by a name that ruling kept.
+- The retraction row's `signedness` axis is absent and should read `unsigned`.
+- The retraction verdict is the same under every deterministic mode, so the
+  two-mode region is narrower than the instrument supports.
+- `mock/tools/rounding-vocabulary/src/lib.rs:73` files `nearest-half-up` under a
+  heading its own report calls mechanical, on rows whose domain is signed.
+- My brief miscounted group three as five entries when it is three, by counting
+  group one twice. `232` found the identical miscount and reproduced it with a
+  `uniq -c` over the tool's own output.
+
+That last one is worth a line of its own. Two seats, given the same wrong
+sentence, both checked it against the tool in one command. That is the
+`expert-dispatch-defends-the-canon` instruction working, and it cost each of us
+under a minute, which is the argument for the dispatcher running it first.
+
+### 12.3 Where I was wrong, and the largest of them I did not see at all
+
+**`228` section 3.3 outranks my entire section 5 and I missed it.** The
+retraction row's `statement` reads "Rounding a value already on the representable
+grid returns it unchanged, so the reduction retracts." That sentence is true of
+every mode at every fraction width, which `228`'s `p3` control 2 verifies at zero
+counterexamples with an expected-fail control beside it. What the instrument
+compares is a staged quantisation against a deferred one over a two-multiply
+chain, `rnd(rnd(A*B, F) * C, F)` against `rnd(A*B*C, 2F)`, which is a different
+property. So the row's `fails` field reports that a theorem fails.
+
+I reproduced that instrument digit for digit across all 21 of its published cells
+in `k2`'s controls R1 and R2, and I read the row's `statement` in the same
+sitting, and I did not notice they describe different things. My section 5 spends
+its length getting the rounding axis right on a row whose fields and sentence
+disagree. `232` records exactly the same failure about itself and puts it better
+than I can: reproducing an instrument is not reading the row. Both of us were
+checking the axis we were sent for and took the sentence as given, which is what
+a narrow brief does to two readers independently.
+
+**My answer for entries 8 and 9 is true and `228`'s is better.** I said the
+`holds` side is `rounding = exact`, on the ground that at `F = 0` nothing is
+discarded, and `232` reached the same spelling from its own instrument. `228`
+writes it as `rounding any` carrying a `construction` warrant token and the
+clause "at `F = 0` the representable grid is the whole value set, so every mode
+is the identity and the axis cannot enter". That is strictly more: it says why
+the axis is inert rather than only that nothing was discarded, it is in the
+notation the canon actually has, and its `evidence` obligation is discharged by a
+probe that varied the axis and found no movement rather than by a paragraph.
+
+And it reaches `stochastic`, which I excluded from both probes and conceded in
+section 11 that I could not reach. The construction argument covers it for free:
+at `F = 0` no product carries a fraction for a draw to act on. My section 10
+names a stochastic rule that perturbs an already-exact value as the one thing
+that would refute my `exact` answer; `228`'s clause answers it, because a grid
+that is the whole value set leaves nothing to perturb.
+
+**I did not find `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side`,
+and it is ratified.** It permits `<axis>: <span>: <token>, <clause>` and defines
+three tokens. It changes the shape of every answer in my file, and I searched the
+registry for mode names rather than for the notation, so a ratified row that
+reframes the whole question was one namespace away. `232` missed it identically
+and says so.
+
+**So my section 7's conclusion is wrong on its remedy.** I concluded that the
+vocabulary is short a name and gains `away_from_zero`. `228` proposes instead
+that the region be written in the ratified six with the swept mode list moved to
+the warrant clause, and `232` concedes to it on a reason I did not weigh and now
+accept: the six are a specification of what the design ships, not a naming system
+for whatever an instrument swept, so a mode no consumer can select is not a
+region anybody can occupy. I was treating the ratified set as descriptive
+vocabulary. My supporting measurement stands unchanged; the conclusion I drew
+from it does not.
+
+**And section 8's framing is weaker than `229`'s result.** I set out three
+options and priced them and declined the call. `229` does better twice over. Its
+probe B reproduces both fusion law rows' equivariance counts set for set under
+ties-toward-positive-infinity, and gets two of six against the recorded three of
+six under ties-away-from-zero, so the canon already depends on one reading
+without saying so. Then its probe F enumerates every nearest mode over the whole
+domain at four `(W, F)` points, 65536 of them at the first, and finds exactly two
+translation equivariant, 12870 with zero mean error, and **zero** in both, with
+each property shown satisfiable alone as the control. So the trade is a theorem
+rather than a preference: no deterministic nearest rule is both equivariant and
+unbiased, and picking a reading for `half_up` is picking a side that cannot be
+optimised away. My third option, "both, under two names", is the only one of mine
+that survives that, and `229` reaches it as a consequence rather than as one of
+three.
+
+**A control gap in my own probe, which `232` has and I do not.** My `k2` part C
+reports a column of zeros at `F = 0` for all seven modes, and my controls do not
+require that column to be capable of being nonzero. `k1`'s C4 shows the modes are
+not the identity at `f = 1`, which is a weaker thing. `232` plants a mode that is
+off by one everywhere including `f == 0` and reports 16,973,568 disagreements at
+`F = 0`, and `228`'s `p3` C1b plants a non-identity map and reports 3840. Either
+is the control mine is missing, and without it a column of zeros is not
+distinguishable from a harness that returns zero. The conclusion is right and my
+evidence for it is one control short.
+
+**`chain_length` is absent from the retraction row** while `operation = mul` is
+present, and the instrument ran a two-multiply chain. `228` reports it. Neither
+`232` nor I did.
