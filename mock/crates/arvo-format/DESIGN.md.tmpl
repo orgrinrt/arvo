@@ -235,6 +235,15 @@ widens it.
 The door is kept narrow on purpose: two types, no arithmetic beyond what a width
 derivation needs, and everything else built from a `Format` instead of added here.
 
+`Width` cannot be written at the position the widths are actually declared in,
+which is why `Constant<const EXP: i32>` and `Signed<const BITS: u32>` are spelled
+the way they are. A const generic parameter takes an integer, a `bool` or a
+`char`, so a transparent newtype over a bit count is refused there for what it
+is rather than for what it holds, and the way past that refusal is a compiler
+feature. Taking it would put that feature on every crate declaring a format of
+its own, which is not a cost to hand downstream, so the parameters stay integers
+and `tests/ui/` keeps the refusal where it can be read.
+
 ## Applying the adaptation, which is the verb the earlier round left out
 
 The ratified factoring says arithmetic on a format is an exact operation in the ambient domain composed
