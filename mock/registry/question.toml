@@ -1916,9 +1916,39 @@ options = [
 decider = "panel"
 topic = "the_number_system"
 unblocks = "Whether the six names are the whole rounding vocabulary, which every predicate naming the axis is written against and which the design round for the base primitives has to carry into a type."
-note = "**Found by `mock rounding-vocabulary`, which reports every named mode against the ratified six.** Twenty-four of thirty-three entries name something other than one of the six. Most are spellings: `ceiling`, `nearest-half-up`, `round to nearest even`, `toward zero`. Those are mechanical and are not this question.\n\n**This question is the three that are not spellings.** `away from zero` appears in `proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` and in both the holding and failing regions of `law::fusing_a_multiply_add_preserves_the_answer_under_unsigned` and `law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`. In each it is a member of a set an instrument swept, so something ran over it.\n\n**The second option is not the safe one.** If the mode is real and the ruling is short a name, taking it out of three predicates narrows three regions that were correctly measured, and the notation makes an absent axis value a claim that the finding holds nowhere on it. Getting this wrong in that direction destroys measured evidence rather than merely mislabelling it."
+note = "**Found by `mock rounding-vocabulary`, which reports every named mode against the ratified six and is where the current split is read from.** A further group of entries named a mode outside the six and were spellings of one inside it, `ceiling`, `nearest-half-up`, `round to nearest even`, `toward zero`. Each was rewritten in place, since the referent was never in doubt, and none of them is this question.\n\n**This question is the entries naming `away from zero`.** The rest sit in three further residues, each with its own row: the retired word in `question::which_of_the_six_a_retired_word_names_on_each_row`, the underspecified `nearest` in `question::which_tie_direction_an_unqualified_nearest_names`, and the predicate that names no mode at all in `question::what_region_does_a_predicate_naming_no_mode_state`. **Ask the tool for the split rather than reading a count here**, since every count in this note has had to be corrected once and the tool computes them.\n\n `away from zero` appears in `proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` and in both the holding and failing regions of `law::fusing_a_multiply_add_preserves_the_answer_under_unsigned` and `law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`. In each it is a member of a set an instrument swept, so something ran over it.\n\n**The second option is not the safe one.** If the mode is real and the ruling is short a name, taking it out of three predicates narrows three regions that were correctly measured, and the notation makes an absent axis value a claim that the finding holds nowhere on it. Getting this wrong in that direction destroys measured evidence rather than merely mislabelling it."
 provenance = ["panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::92"]
 keywords = ["rounding", "away from zero", "toward zero", "vocabulary", "six names", "mode", "sweep", "fusion", "completeness", "retired word"]
+
+[[question]]
+id = "which_of_the_six_a_retired_word_names_on_each_row"
+asks = "Two predicates still name `truncate`, which `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` retired. On an unsigned domain it is `floor` and on a signed one it is `toward_zero`, and the two differ on exactly the rows where signedness is live. Which does each of the two rows mean?"
+options = [
+  "Open the instrument behind each row and take the mode its sweep actually ran. Cost: two provenance reads, and a row whose instrument cannot be found stays unrewritten rather than guessed.",
+  "Rewrite both to `toward_zero`, on the reading that the retired word most often meant the signed sense. Cost: where the instrument swept unsigned the row then claims a region it never measured, which is the direction that destroys evidence.",
+  "Rewrite both to `floor`, on the reading that a bit drop is what the instrument performed. Cost: the mirror of the second, and it is wrong wherever the sweep reached negative values.",
+]
+decider = "panel"
+topic = "the_number_system"
+unblocks = "Two predicates that name a retired word today, in breach of a ratified ruling, and which no other row tracks. Until each is read, both carry a region that is one of two things and says which nowhere."
+note = "**Not a spelling, which is why it was left out of the mechanical rewrite.** The fifteen entries rewritten alongside had one referent apiece and this has two, so an edit here is a guess rather than a respelling, and a guessed region reads exactly like a measured one.\n\n**The rows are `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains` and `proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion`.** The first names it beside `nearest`, so that row carries both of the underspecified names at once and wants both read together.\n\n**Under the predicate notation the repair has a floor.** A row whose instrument swept one signedness gets that signedness written alongside the mode, since an axis left absent claims the finding holds nowhere it exists."
+provenance = ["panel::202608072330_the-numeral-canon-panel::228_leroy_the_rounding_vocabulary::#0-the-two-gates"]
+keywords = ["rounding", "truncate", "retired word", "toward zero", "floor", "signedness", "provenance", "instrument", "vocabulary"]
+
+[[question]]
+id = "which_tie_direction_an_unqualified_nearest_names"
+asks = "Two predicates give the rounding axis the value `nearest`, which does not say which way a tie goes. Ties away and ties to even are separate members of the ratified six. Which does each row mean?"
+options = [
+  "Open the instrument behind each row and take the tie rule its sweep implemented. Cost: two provenance reads, and the answer for one of them may be that the sweep never produced a tie, in which case the row states a region wider than anything it measured.",
+  "Read `nearest` as `half_up` throughout, on the reading that the corpus's instruments add a half and shift. Cost: it presumes the instrument without opening it, and `half_up` is itself two operations under the reading question that is still open.",
+  "Leave both unqualified and rule that `nearest` names the union of the two tie rules. Cost: it widens the ratified vocabulary by a name that denotes a set rather than an operation, which is the shape the retirement ruling closed.",
+]
+decider = "panel"
+topic = "the_number_system"
+unblocks = "Two predicates whose rounding axis names no member of the six, and which no other row tracks. The second option is also entangled with whether `half_up` denotes one operation or two, so answering this by assuming it would import an open question as a premise."
+note = "**The rows are `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains` and `proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity`.** The first also names the retired word, so it carries both underspecified names.\n\n**A tie rule is only observable where a tie occurs.** An instrument sweeping a domain that produces no tie has measured something true of both rules and named one, so the honest repair there is the wider statement rather than a pick, and that is a third answer neither of the first two options reaches."
+provenance = ["panel::202608072330_the-numeral-canon-panel::229_lamport_do_the_six_names_denote_one_operation_each::#the-question-as-i-took-it"]
+keywords = ["rounding", "nearest", "half up", "half even", "tie", "vocabulary", "six names", "provenance", "instrument"]
 
 [[question]]
 id = "what_region_does_a_predicate_naming_no_mode_state"
