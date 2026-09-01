@@ -1,0 +1,115 @@
+  59 threads
+  41 signedness
+  41 W
+  41 F
+  38 target features
+  32 rounding
+  15 operations
+  15 arity
+  14 radix
+  14 overflow behaviour
+  11 operation
+  11 domain
+   9 overflow
+   9 container width
+   7 declarations
+   7 cost coordinates
+   6 term shapes
+   6 domain closed under negation
+   6 arms
+   5 range policy
+   5 coupling
+   5 chain length
+   3 weight grid resolution
+   3 unchanged
+   3 toolchain
+   3 selector
+   3 overflow limit read at the declared width
+   3 or unsigned with signed
+   3 observation sets
+   3 inputs exhaustive over the declared range
+   3 fraction
+   3 fold length
+   3 feature gates
+   3 element count
+   3 edition 2021
+   3 crate type
+   3 cost tables drawn uniformly from
+   3 accumulator width
+   2 value set finite with at least two elements
+   2 term
+   2 same construction and same condition (136_probes/x2 P3)
+   2 restrictions
+   2 keying axis
+   2 inputs exhaustive
+   2 everything 132 5.8's predicate lists
+   2 every translation-equivariant member against wrapping
+   2 every deterministic member against saturation
+   2 discharge check
+   2 decision procedure
+   2 construction
+   2 baseline
+   2 assignment set
+   2 ambient domain
+   2 F_intermediate
+   2 F_final
+   2 F and signedness: OPEN
+   1 {mul, madd}
+   1 {madd}
+   1 {add, sub, mul, madd, msub}
+   1 weights
+   1 threshold
+   1 the same domain dimension added
+   1 the clause claims nothing until it is stated
+   1 structure constants
+   1 stochastic members
+   1 staged narrowing F_exact
+   1 same population
+   1 same assignment set at W
+   1 reference point
+   1 recursion limit
+   1 positions 0 to 255
+   1 pi
+   1 overflow and
+   1 ops
+   1 operations {multiply-add, sum fold}
+   1 one-signed
+   1 numeral fixed-point signed
+   1 non-conforming pair
+   1 no exact duplicate arms
+   1 multiplier schedules {[1,-1,2], [2,-1,1]}
+   1 keying
+   1 inputs exhaustive over 0..=255
+   1 input shape
+   1 given a floor-based cell coordinate
+   1 float types
+   1 established by the construction reading only frac(x) and never the cell
+   1 equality read
+   1 each claimed and proved separately
+   1 domain: OPEN
+   1 domain containing a complete residue system and the
+   1 dimension
+   1 decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions
+   1 declared grid step
+   1 conforming pair
+   1 certificate weight proportional to the reciprocal deviation
+   1 carriers 8..=24 > and 120
+   1 baseline uniform across coordinates
+   1 augmentation coefficient
+   1 assignments
+   1 assignment sets and observation sets as
+   1 assignment set of rounding
+   1 arm set
+   1 ambient domain one-signed
+   1 ambient domain closed under negation for the saturating arm
+   1 ambient domain closed under negation
+   1 all 2^(depth-1) placements
+   1 accumulator width varied above the declared width
+   1 The non-homomorphic half alone holds for: as 119 4.7's second predicate
+   1 S
+   1 F_exact
+   1 > 600 chains of depth 3..=5
+   1 200
+   1 141's and 143's own axis sets
+   1 120 tables per cell
+   1 #![no_std]

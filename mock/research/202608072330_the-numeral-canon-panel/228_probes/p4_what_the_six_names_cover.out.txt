@@ -1,0 +1,50 @@
+# p4 output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O, aarch64-apple-darwin
+
+p4: what the six ratified names cover
+    function equality decided exhaustively on x in -512..=512, d = 2^3
+
+## reading A: half_up = floor(x + 1/2), the corpus's instruments
+
+reference rule         named in           covered?     by which ratified name
+roundTowardNegative    IEEE 754-2008      yes          floor
+roundTowardPositive    IEEE 754-2008      yes          ceil
+roundTowardZero        IEEE 754-2008      yes          toward_zero
+roundTiesToEven        IEEE 754-2008      yes          half_even
+roundTiesToAway        IEEE 754-2008      NO           -
+floor(x + 1/2)         this corpus        yes          half_up
+away from zero         decimal ROUND_UP   NO           -
+ties toward zero       neither            NO           -
+
+## reading B: half_up = roundTiesToAway, Java and Python
+
+reference rule         named in           covered?     by which ratified name
+roundTowardNegative    IEEE 754-2008      yes          floor
+roundTowardPositive    IEEE 754-2008      yes          ceil
+roundTowardZero        IEEE 754-2008      yes          toward_zero
+roundTiesToEven        IEEE 754-2008      yes          half_even
+roundTiesToAway        IEEE 754-2008      yes          half_up
+floor(x + 1/2)         this corpus        NO           -
+away from zero         decimal ROUND_UP   NO           -
+ties toward zero       neither            NO           -
+
+## and on a non-negative domain, where the design's unsigned rows live
+
+reference rule         covered?     by which ratified name (reading A)
+roundTowardNegative    yes          toward_zero
+roundTowardPositive    yes          ceil
+roundTowardZero        yes          toward_zero
+roundTiesToEven        yes          half_even
+roundTiesToAway        yes          half_up
+floor(x + 1/2)         yes          half_up
+away from zero         yes          ceil
+ties toward zero       NO           -
+
+## controls
+
+  C1 EXPECTED-FAIL ok: floor and ceil are not equal, so the test can say no
+  C2 EXPECTED-PASS ok: the test can say yes
+  C3 EXPECTED ok: the readings differ signed and agree on the non-negative domain
+  C4 EXPECTED ok: away_from_zero has a ratified name on the non-negative domain and none signed
+
+controls: clean

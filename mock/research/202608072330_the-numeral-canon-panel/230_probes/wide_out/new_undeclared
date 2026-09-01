@@ -1,0 +1,99 @@
+     2  ..
+     1  >
+     1  > C
+     1  > E
+     1  > chain length
+     1  > coupling ∈ {comonotone,
+     1  > declarations
+     1  > declared lower bound
+     1  > overflow policy
+     1  > overflow ∈ {wrap, saturate}
+     5  > rounding
+     1  > rounding ∈ {floor, ceil, half_up, half_even} × overflow ∈ {wrap, saturate} commuting
+     1  > rounding ∈ {floor, toward_zero}
+     1  > rustc
+     1  > signedness
+     1  > target features
+     3  > threads
+     1  > toolchain
+     1  F > 0 or op ∉ {+, -, ×-at-F=0} (where rounding fires at all)
+     1  F ≥ 1 (bits exist to drop)
+     1  F_dst
+     1  F_mid
+     1  F_src
+     1  I13's
+     1  W ∈ {3} for the wrap sweeps and the five-cell window at E
+     1  W ≥ 1
+     1  an exhaustive control at F
+     1  any cell pair for > the cross-cell clause
+     1  arity 3
+     1  ceil
+     1  closed under negation or one-signed alike
+     1  commutations
+     1  composition claim
+     1  coupling ∈ {comonotone within cells: monotone on every realisation; >
+     1  decorrelation > measured as the count of distinct outputs for a repeated identical
+     1  decorrelation > measured both as summed-error variance for n same-frac elements (128's witness, closed form > confirmed for n
+     1  dispatch
+     1  divergence between the > value-keyed and position-keyed members confirmed on 129's own worst-case
+     1  domain > containing a complete residue system and the
+     1  domain ∈ {ℚ, ℚ≥0} (the first closed under negation, > the second one-signed, claimed separately and each proved)
+     1  enumerated at 8 tie and 435 non-tie points
+     1  exhaustive at W
+     1  exhaustive over the representable set
+     1  fails for every non-uniform baseline tried
+     1  fracs
+     4  grid
+     1  half_up already given
+     1  identification is definitional
+     1  including every member of the stochastic family
+     1  integer weights and
+     1  measured
+     1  measured at 16 to 32 mismatches of 129 points per row
+     1  measured with the witness 125 T7 names
+     1  monotonicity measured across a value-varying-with-position sequence within one pass
+     1  n
+     1  n ∈ 1..10 enumerated exactly and the closed forms proved by the enumeration matching > them at every n
+     1  no feature gates beyond the stable language
+     1  no float types
+     1  no sweep needed beyond confirming the two > endpoints and the midpoint algebraically
+     1  no threads axis is listed > because the claims hold only where threads do not exist
+     1  not re-established here
+     1  one
+     3  op
+     1  operations {add, mul}
+     1  opt-level
+     1  overflow ∈ {wrap > (untested directly, monotonicity argument applies regardless since it is about the rounding step > alone), saturate (tested, composition stays monotone)}
+     1  overflow ∈ {wrap, saturate}
+     1  parametrisation is exact and definitional
+     1  per-cell-independent family (keyed on > value/frac)
+     1  rounding ∈ {floor, > ceil, toward_zero, half_up, half_even}
+     1  rounding ∈ {floor, ceil, toward_zero, > half_up, half_even}
+     1  rounding ∈ {floor, toward_zero} (the pair > exhibited; other pairs differ too where the probe says so)
+     2  rustc
+     1  rustc 1.98.0-nightly 57d06900f
+     1  same table population
+     1  selection by associated const
+     1  shared-threshold family (rounding
+     1  shared/global family (keyed on nothing)
+     1  signedness ∈ {signed, unsigned} as stated per clause
+     1  so its selection predicate is not fully const-available
+     1  stated on an argument. For the failure
+     1  stated on distribution algebra with the linear system shown
+     1  stated on the equivariance argument. For the non-commutation
+     1  stated on the scalar-multiple and
+     1  stated on valuation additivity
+     1  target
+     2  target > features
+     1  that > is a question for the panel rather than a finding of mine
+     1  the per-element or position-keyed families (keyed on position)
+     1  the position-keyed > deterministic family (rounding
+     1  threads >
+     1  toward_zero × > saturate commuting
+     1  toward_zero × wrap not commuting
+     1  uniqueness and the Fréchet impossibility
+     1  value
+     1  values exhaustive
+     1  which for a > compile-time fact is exactly right under the omission rule
+     1  which is immediate from the definition of Q_U and the > definitions of floor
+     1  window [-7q, 7q]

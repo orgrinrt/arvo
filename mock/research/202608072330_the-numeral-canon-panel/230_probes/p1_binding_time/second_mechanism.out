@@ -1,0 +1,85 @@
+### Arm A: one const fn body, two call sites
+args     site               da     outcome
+200,100  const context      on     REFUSED error[E0080]
+200,100  call at runtime    on     PANIC attempt to add with overflow
+200,100  const context      off    value const 44
+200,100  call at runtime    off    run 44
+
+### N1, the runtime half compiles at both profiles
+  PASS
+### N2, the same body with arguments that do not overflow
+  const   da=on   const 255
+  runtime da=on   run 255
+  const   da=off  const 255
+  runtime da=off  run 255
+  PASS, both sites produce a value at both profiles
+
+### Arm B: can a const expression observe the build profile?
+  debug-assertions=on:
+    const saw debug_assertions = true
+    run   saw debug_assertions = true
+  debug-assertions=off:
+    const saw debug_assertions = false
+    run   saw debug_assertions = false
+### N3, the two halves of arm B must agree with each other
+  PASS, they agree at both profiles
+
+### stderr sizes
+       0 second_out/a_const_off.stderr
+     758 second_out/a_const_on.stderr
+       0 second_out/a_run_off.stderr
+       0 second_out/a_run_on.stderr
+       0 second_out/b_off.stderr
+       0 second_out/b_on.stderr
+       0 second_out/ctl_c_off.stderr
+       0 second_out/ctl_c_on.stderr
+       0 second_out/ctl_r_off.stderr
+       0 second_out/ctl_r_on.stderr
+     758 total
+
+### Arm C: which flag actually moves arm A, debug-assertions or
+###        overflow-checks. The first sets the second by default, so arm A
+###        cannot tell them apart. dimension::build_profile's grammar names
+###        debug-assertions and opt level and not overflow-checks, so which
+###        one acts decides whether the declared axis names the thing that
+###        moves or a proxy for it.
+debug-assertions       overflow-checks        const-context outcome
+on                     on                     REFUSED error[E0080]
+on                     off                    value const 44
+off                    on                     REFUSED error[E0080]
+off                    off                    value const 44
+### N4, the four cells must not all be the same, or the arm distinguishes
+###     nothing and cannot say which flag acts.
+  PASS, 2 distinct outcomes across the four cells
+
+### Arm D: the same 2x2 on the literal-in-a-const shape the matrix used,
+###        so the two shapes can be compared under one flag pair. If the
+###        literal refuses in all four cells and the const fn call refuses
+###        in two, the two arms are measuring different mechanisms and the
+###        matrix's result does not generalise to a const fn.
+debug-assertions       overflow-checks        const A: u8 = 200 + 100
+on                     on                     REFUSED error[E0080]
+on                     off                    REFUSED error[E0080]
+off                    on                     REFUSED error[E0080]
+off                    off                    REFUSED error[E0080]
+### N5, arm D must differ from arm C somewhere, or the two shapes behave
+###     the same and there is nothing to report.
+  PASS, the two shapes disagree, so they are different mechanisms
+
+### Arm E: the same operation written so the refusal is a value the body
+###        inspects rather than a check the backend may not have emitted.
+###        If this refuses in all four cells, the guarantee arm C loses is
+###        recoverable by construction and the finding is constructive
+###        rather than a complaint.
+debug-assertions       overflow-checks        const-context outcome
+on                     on                     REFUSED error[E0080]
+on                     off                    REFUSED error[E0080]
+off                    on                     REFUSED error[E0080]
+off                    off                    REFUSED error[E0080]
+### N6, arm E's control: the same body with operands that fit must produce
+###     a value in all four cells, or arm E refuses for the wrong reason.
+  da=on   oc=on   const 255
+  da=on   oc=off  const 255
+  da=off  oc=on   const 255
+  da=off  oc=off  const 255
+  PASS

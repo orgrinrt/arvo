@@ -1,0 +1,24 @@
+### A1, a phrase nobody writes
+  phase_of_the_moon: 2
+  FAIL
+### A2, a phrase everybody writes
+  threads: 32 personas
+  PASS
+### A3, the count must not saturate
+  discharge check: 5 personas
+
+### personas writing about the association of a term
+  left-fold            1    rompf 
+  tree-fold            1    rompf 
+  balanced tree        5    dolan jhala persona rompf the 
+  left fold            4    jhala mcsherry stam the 
+  reassociat           21   bellard fallin fog giesen jhala kiselyov knuth leijen leroy mcsherry op orchard persona rompf smith spj the torvalds willsey wingo wronski 
+  parenthesisation     4    dolan jhala persona rompf 
+  parenthesization     0    
+  grouping             15   dolan fallin giesen jhala kiselyov knuth lamport leijen leroy mcsherry orchard persona rompf spj willsey 
+
+### the union, which is the number that answers the question
+  7 personas: dolan jhala mcsherry persona rompf stam the 
+
+### and the same for leaf aliasing, 230's candidate, for comparison in one currency
+  3 personas: jhala kiselyov leroy 

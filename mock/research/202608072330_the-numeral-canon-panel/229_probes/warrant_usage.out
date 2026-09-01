@@ -1,0 +1,17 @@
+### W1, the ruling is visible to this grep
+  hits in ruling.toml: 1
+
+### W3, predicate entries in the corpus at all
+  entries matched: 527
+  distinct axes named: 19
+
+### entries carrying a warrant token on the values side
+  swept          0
+  construction   0
+  exhaustive     0
+  --- any token at all:
+    none
+
+### W2, a token nobody defined
+0
+  PASS, 0

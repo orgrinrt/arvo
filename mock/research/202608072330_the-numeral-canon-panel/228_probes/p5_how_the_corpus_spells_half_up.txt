@@ -1,0 +1,407 @@
+# p5: how every instrument in this panel spells half_up
+#
+# Command, run from the panel directory:
+#
+#   for f in $(grep -rln 'HalfUp\|half_up\|NearestHalfUp\|half-up\|HALF_UP' . | grep -E '\.(rs|py)$' | grep -v 228_probes | sort); do
+#     echo "##### $f"; grep -n -i -B1 -A4 'half.up\|HALF_UP' "$f" | head -16
+#   done
+#
+# The question is which of two operations each one applies at a tie on a
+# signed domain: floor(x + 1/2), which is ties toward positive infinity, or
+# ties away from zero, which is IEEE roundTiesToAway and what Java's
+# RoundingMode.HALF_UP and Python decimal's ROUND_HALF_UP mean by the name.
+#
+# Result: 25 files define one, and every one of them is floor(x + 1/2).
+# None is ties-away. The spellings differ and the function does not:
+#
+#   math.floor(scaled + Fr(1, 2))          126 p1, p2, p3
+#   q_floor(x + Fraction(1, 2))            125 p2 p3 p4 p5, 128 r1, 133 s2, 136 x1, 131 v1 v2
+#   m_floor(x + Fr(1, 2))                  145 z4, 151 v1
+#   (u + SUB // 2) >> E                    125 p1
+#   if r >= half { q + 1 }                 142 q2, 147 r1
+#   if 2 * r >= d { q + 1 }                149 y1, y2
+#   (ra * rb + (1 << (F-1))) >> F          58 p1
+#   (numerator + denominator // 2) // ..   45 p3   (non-negative operands only)
+#   quantise_half_up, unsigned only        225 probe2, 168 p1
+#
+# One footnote. 94_probes/d_resolution.rs writes ((scaled + den/2) / den)
+# with Rust integer division, which truncates toward zero, so on a negative
+# argument it is neither reading. It is called round-half-up in its comment.
+#
+# Raw output follows.
+
+##### 125_probes/p1_monotone_and_never_additive.py
+11-def toward_zero(u): return u // SUB if u >= 0 else -((-u) // SUB)
+12:def half_up(u): return (u + SUB // 2) >> E
+13-def half_even(u):
+14-    k, r = floor_m(u), u - (floor_m(u) << E)
+15-    if r * 2 < SUB: return k
+16-    if r * 2 > SUB: return k + 1
+--
+22-MODES = [("floor", floor_m), ("ceil", ceil_m), ("toward_zero", toward_zero),
+23:         ("half_up", half_up), ("half_even", half_even)]
+24-
+25-N = 2000  # sweep window: u in [-N, N] subunits = [-125q, +125q], closed under negation
+26-pts = range(-N, N + 1)
+27-
+
+##### 125_probes/p2_vacuity_and_v2_predicate.py
+12-def q_tz(x): return q_floor(x) if x >= 0 else q_ceil(x)
+13:def q_half_up(x): return q_floor(x + Fraction(1, 2))
+14-def q_half_even(x):
+15-    k = q_floor(x); r = x - k
+16-    if r < Fraction(1, 2): return k
+17-    if r > Fraction(1, 2): return k + 1
+--
+20-MODES = [("floor", q_floor), ("ceil", q_ceil), ("toward_zero", q_tz),
+21:         ("half_up", q_half_up), ("half_even", q_half_even)]
+22-
+23-def operand_range(w, signed):
+24-    return range(-(1 << (w - 1)), 1 << (w - 1)) if signed else range(0, 1 << w)
+25-
+
+##### 125_probes/p3_commutation_with_overflow.py
+2-# P3: commutation of rounding with the overflow policies (T6, T7).
+3:# wrap: expected to commute with floor/ceil/half_up/half_even, and to FAIL with toward_zero
+4-#   (the control that must fail). Wrap on an exact value translates by the span into the
+5-#   representative window; wrap on a grid value is the usual modular reduction. Both are exact.
+6-# saturate: expected to commute with all five deterministic modes; an artificial boundary-violating
+7-#   mode (maps off-grid values just under the max ABOVE the range) is the control that must fail.
+--
+12-def q_tz(x): return q_floor(x) if x >= 0 else q_ceil(x)
+13:def q_half_up(x): return q_floor(x + Fraction(1, 2))
+14-def q_half_even(x):
+15-    k = q_floor(x); r = x - k
+16-    if r < Fraction(1, 2): return k
+17-    if r > Fraction(1, 2): return k + 1
+--
+20-MODES = [("floor", q_floor), ("ceil", q_ceil), ("toward_zero", q_tz),
+21:         ("half_up", q_half_up), ("half_even", q_half_even)]
+
+##### 125_probes/p4_adjunction_and_double_rounding.py
+2-# P4: the adjunction laws for floor/ceil (T3) and staged-narrowing composition (T4).
+3:# Controls that must fail: half_up and half_even under double rounding.
+4-from fractions import Fraction
+5-
+6-def q_floor(x): return x.numerator // x.denominator
+7-def q_ceil(x): return -((-x).numerator // (-x).denominator)
+--
+30-def q_tz(x): return q_floor(x) if x >= 0 else q_ceil(x)
+31:def q_half_up(x): return q_floor(x + Fraction(1, 2))
+32-def q_half_even(x):
+33-    k = q_floor(x); r = x - k
+34-    if r < Fraction(1, 2): return k
+35-    if r > Fraction(1, 2): return k + 1
+--
+38-MODES = [("floor", q_floor), ("ceil", q_ceil), ("toward_zero", q_tz),
+39:         ("half_up", q_half_up), ("half_even", q_half_even)]
+
+##### 125_probes/p5_bitdrop_and_stochastic.py
+47-def q_tz(z): return q_floor(z) if z >= 0 else q_ceil(z)
+48:def q_half_up(z): return q_floor(z + Fraction(1, 2))
+49-def q_half_even(z):
+50-    k = q_floor(z); r = z - k
+51-    if r < Fraction(1, 2): return k
+52-    if r > Fraction(1, 2): return k + 1
+--
+54-for name, f in [("floor", q_floor), ("ceil", q_ceil), ("toward_zero", q_tz),
+55:                ("half_up", q_half_up), ("half_even", q_half_even)]:
+56-    inv = sum(1 for a, b in zip(pts, pts[1:]) if f(a) > f(b))
+57-    print(f"deterministic {name}: {inv} adjacent inversions (must be 0)")
+
+##### 126_probes/p1_rounding_character.py
+27-        k = math.trunc(scaled)
+28:    elif mode == 'round_half_up':
+29-        k = math.floor(scaled + Fr(1, 2))
+30-    elif mode == 'round_half_even':
+31-        lo = math.floor(scaled)
+32-        hi = math.ceil(scaled)
+--
+55-
+56:MODES = ['floor', 'ceil', 'trunc', 'round_half_up', 'round_half_even']
+57-
+58-def grid(F, kmax):
+59-    return [Fr(k, 1 << F) for k in range(0, kmax + 1)]
+60-
+--
+197-print("=" * 70)
+198:print("PREDICTION 6: round-half-to-even accumulates less bias than round-half-up")
+
+##### 126_probes/p2_order_of_round_and_clamp.py
+22-        k = math.trunc(scaled)
+23:    elif mode == 'round_half_up':
+24-        k = math.floor(scaled + Fr(1, 2))
+25-    elif mode == 'round_half_even':
+26-        lo = math.floor(scaled); hi = math.ceil(scaled)
+27-        if lo == hi:
+--
+36-
+37:MODES = ['floor', 'ceil', 'trunc', 'round_half_up', 'round_half_even']
+38-
+39-print("SEARCH A: single target width F_final, grid-aligned boundary hi_final.")
+40-print("round-then-clamp vs clamp-then-round, numeric value and verdict, over exhaustive")
+41-print("sweep of exact values with denominator 24 (finer than any tested F<=3 grid).")
+
+##### 126_probes/p3_double_rounding_isolated.py
+19-        k = math.trunc(scaled)
+20:    elif mode == 'round_half_up':
+21-        k = math.floor(scaled + Fr(1, 2))
+22-    elif mode == 'round_half_even':
+23-        lo = math.floor(scaled); hi = math.ceil(scaled)
+24-        if lo == hi:
+--
+30-
+31:MODES = ['floor', 'ceil', 'trunc', 'round_half_up', 'round_half_even']
+32-count_by_mode = {m: 0 for m in MODES}
+33-first_hit = {}
+34-for F_acc, F_final in [(3, 1), (4, 1), (4, 2), (5, 1), (2, 1)]:
+35-    for mode in MODES:
+
+##### 128_probes/r1_reproduce_shared_threshold_on_my_own_instrument.py
+11-#      zero quotient mismatches; representative-level mismatches nonzero (it can round up out of
+12:#      the top cell, like ceil/half_up in my p3).
+13-#   5. Tie precision: at U = 1/2 under 127's own `f <= U` convention, Q_U rounds frac = 1/2 DOWN,
+14:#      so it equals half_down at ties and differs from half_up there (correction to F127-2's
+15:#      "exactly half_up"); on tie-free points they agree.
+16-#   6. Control (the instrument distinguishes couplings): under INDEPENDENT per-element draws the
+17-#      outcome pair Q(x)=ceil, Q(y)=floor for same-cell x<y has positive probability f_x*(1-f_y),
+18-#      while under the shared threshold the same event has probability 0, computed exactly as the
+19-#      measure of {U : f_x <= U... } intersections, not by sampling.
+--
+25-    return k if f <= U else k + 1
+26:def q_half_up(x): return q_floor(x + Fraction(1, 2))
+27-def q_half_down(x): return -q_floor(-x + Fraction(1, 2))  # ties toward -inf
+28-
+29-E = 5
+30-pts = [Fraction(u, 1 << E) for u in range(-7 * (1 << E), 7 * (1 << E) + 1)]  # [-7, 7] quanta
+
+##### 131_probes/v1_the_f0_widening_and_every_pin_it_reaches.py
+87-
+88:def q_half_up(x, F):
+89-    s = Fraction(1, 2 ** F)
+90-    return q_floor(x + s / 2, F)
+91-
+92-
+--
+121-    "floor": q_floor, "ceil": q_ceil, "toward_zero": q_toward_zero,
+122:    "half_up": q_half_up, "half_even": q_half_even,
+123-    "stochastic(up-draw)": q_stochastic_up,
+124-}
+125-
+126-
+
+##### 131_probes/v2_the_vocabulary_and_which_equality_double_rounding_threatens.py
+47-P4. Staged narrowing equals direct narrowing for floor, ceil and toward_zero and
+48:    fails for half_up and half_even, reproducing `125` T4 and `126` Finding 5 on
+49-    a third instrument.
+50-P5. Therefore the missing clause is about staged narrowing, not about 4.6.
+51-
+52-NEGATIVE CONTROLS
+--
+87-        return frac_floor(x, F) if x >= 0 else frac_ceil(x, F)
+88:    if mode == "half_up":
+89-        return frac_floor(x + s / 2, F)
+90-    if mode == "half_even":
+91-        lo = frac_floor(x, F)
+92-        d = x - lo
+--
+101-DIRECTED = ("floor", "ceil", "toward_zero")
+102:NEAREST = ("half_up", "half_even")
+
+##### 133_probes/s2_the_law_overlap_and_the_threshold_characterisation.py
+16-#      symmetry at once, because negation swaps the adjoints. Verified by direct check with
+17:#      controls (half_up fails composition and negation; floor fails negation).
+18-from fractions import Fraction
+19-from itertools import product
+20-
+21-def q_floor(x): return x.numerator // x.denominator
+--
+23-def q_tz(x): return q_floor(x) if x >= 0 else q_ceil(x)
+24:def q_half_up(x): return q_floor(x + Fraction(1, 2))
+25-def q_half_even(x):
+26-    k = q_floor(x); r = x - k
+27-    if r < Fraction(1, 2): return k
+28-    if r > Fraction(1, 2): return k + 1
+--
+71-members = [("floor", q_floor), ("ceil", q_ceil), ("toward_zero", q_tz),
+72:           ("half_up", q_half_up), ("half_even", q_half_even)]
+
+##### 136_probes/x1_the_two_dissents_on_a_fixed_point_instrument.py
+35-#   B4. The true exclusivity: no member carries the one-sided order bound AND negation symmetry.
+36:#   B5. Control: half_up carries none of the three. If it carries one, my law encodings are wrong.
+37-from itertools import product
+38-from fractions import Fraction
+39-
+40-# ---------------------------------------------------------------------------
+--
+56-
+57:def q_half_up(x):
+58-    return q_floor(x + Fraction(1, 2))
+59-
+60-def q_half_even(x):
+61-    k = q_floor(x)
+--
+72-    "toward_zero": q_toward_zero,
+73:    "half_up": q_half_up,
+
+##### 142_probes/q2_equivariance_partitions_the_rounding_axis.rs
+25-//   E4 away-from-zero is NOT.
+26://   E5 nearest-half-up IS equivariant, because it is floor(x + 1/2) and floor
+27-//      is, which puts a nearest mode on the same side as floor.
+28-//   E6 nearest-half-EVEN is NOT, because its tie break reads the parity of the
+29-//      result and adding c changes that parity. rne(1/2) = 0 but
+30-//      rne(1/2 + 1) = 2, not 1. This is the interesting one: the IEEE default
+--
+69-        Mode::AwayFromZero => "away-from-zero",
+70:        Mode::NearestHalfUp => "nearest-half-up",
+71-        Mode::NearestHalfEven => "nearest-half-even",
+72-    }
+73-}
+74-
+
+##### 145_probes/z4_where_equivariance_sits_among_the_rounding_topics_laws.py
+4-# 142 F142-2 partitions the rounding axis by translation equivariance: floor, ceiling and
+5:# nearest-half-up carry it; toward-zero, away-from-zero and nearest-half-even do not. 142 section 4
+6-# says this reaches the rounding topic and that naming the modes is "necessary and not sufficient",
+7-# because the property an arm's predicate reads is not recoverable from a mode's name.
+8-#
+9-# The rounding topic is closed with its own candidate. Its statement of what the axis selects
+--
+29-#   D3. Among modes carrying NEITHER the order bound nor negation symmetry, equivariance is not
+30:#       determined. Predicted witness: nearest-half-up carries neither and IS equivariant, so a
+31-#       mode carrying neither and NOT equivariant settles independence. I expect to have to
+32-#       construct one, and I mark it as constructed rather than natural.
+33-#       *** THE FIRST CONSTRUCTED WITNESS FAILED AND IS KEPT BELOW. *** `half_floorpair` broke
+34-#       ties on the parity of `k // 2`, which I expected to be sign-blind. It is not: it came out
+--
+41-#       signature and differ on equivariance, which is a stronger requirement than merely lacking
+42:#       the laws. The third attempt perturbs half_up, which already sits at (F, F, F) with
+
+##### 147_probes/r1_the_unsigned_row_and_the_congruence_isolated.rs
+7-//   rounding in {floor, ceiling, toward zero, away from zero,
+8://                nearest-half-up, nearest-half-even}
+9-//
+10-// No instrument in this topic swept six rounding modes on an unsigned domain.
+11-// `139_probes/p2` swept unsigned at toward-zero only, because its shift is
+12-// `p / (1 << sh)` and nothing else. `142_probes/q2` swept six modes but its
+--
+74-        Mode::AwayFromZero => "away-from-zero",
+75:        Mode::NearestHalfUp => "nearest-half-up",
+76-        Mode::NearestHalfEven => "nearest-half-even",
+77-    }
+78-}
+79-
+
+##### 149_probes/y1_the_unsigned_half_over_six_modes.rs
+6-//              rounding in {floor, ceiling, toward zero, away from zero,
+7://                           nearest-half-up, nearest-half-even}; ...
+8-//
+9-// with the argument kind given as "closure for the unsigned half (a one-sided clamp
+10-// of a monotone operation is a congruence, so reducing early and late land in the
+11-// same place)".
+--
+35-//       non-negative values toward-zero collapses onto floor, away-from-zero onto
+36://       ceiling, and floor, ceiling and half-up are all equivariant.
+37-//   Y3. Every mode is 0.00% at F = 0 under unsigned, because no rounding happens.
+38-//   Y4. The half-even rate under unsigned is close to but not identical to the
+39-//       signed wrapping rate `142` reports (12.50 / 12.50 / 9.38 / 6.25 / 3.91),
+40-//       because the tie density differs between the two domains.
+--
+78-        Mode::AwayFromZero => "away-from-zero",
+79:        Mode::NearestHalfUp => "nearest-half-up",
+
+##### 149_probes/y2_equivariance_is_domain_restricted.rs
+75-        Mode::AwayFromZero => "away-from-zero",
+76:        Mode::NearestHalfUp => "nearest-half-up",
+77-        Mode::NearestHalfEven => "nearest-half-even",
+78-    }
+79-}
+80-
+
+##### 151_probes/v1_the_false_clause_and_the_domain_restricted_repair.py
+61-
+62:def m_half_up(x):
+63-    return m_floor(x + Fr(1, 2))
+64-
+65-def m_half_even(x):
+66-    k = m_floor(x)
+--
+78-    "away_from_zero": m_az,
+79:    "half_up": m_half_up,
+80-    "half_even": m_half_even,
+81-}
+82-
+83-# integer-only fast paths, checked against the rational forms below
+--
+97-    twice = 2 * r
+98:    if name == "half_up":
+
+##### 168_probes/p1_two_licences_are_independent.rs
+56-}
+57:/// Round-half-up to a grid of `2^g`, then keep the value. This is what a
+58-/// narrowing from F+g fraction bits to F fraction bits does.
+59-const fn round_grid(v: u128, g: u32) -> u128 {
+60-    if g == 0 {
+61-        return v;
+
+##### 225_probes/probe2_double_rounding_through_a_wider_intermediate.rs
+10-// Setup: unsigned values on a source grid of F_src fraction bits, quantised
+11:// half-up onto a target grid F_dst, either directly or via an intermediate grid
+12-// F_mid with F_dst < F_mid < F_src. round(round(x, mid), dst) vs round(x, dst).
+13-//
+14-// Three arms:
+15-//   arm A (measurement): witness counts for all (F_src, F_mid, F_dst) with
+--
+23-// holds for (arm A result): F_src in 3..=8, F_dst < F_mid < F_src,
+24:// signedness = unsigned, rounding = half_up, operation = quantise, arity = 1,
+25-// overflow policy = none reached (one unit interval), threads = 1,
+26-// toolchain = the committed rustc in probe2_out.txt.
+27-
+28:/// Half-up quantise of `x` (an integer count of 1/2^f_src units) onto f_dst.
+29-/// Returns an integer count of 1/2^f_dst units.
+30:fn quantise_half_up(x: u64, f_src: u32, f_dst: u32) -> u64 {
+31-    assert!(f_dst <= f_src);
+
+##### 226_probes/p6_the_fused_result_is_reachable_by_composition.rs
+
+##### 45_probes/p3_search_pigeonhole_witness.py
+15-# Exhaustive over small F, all representable operand triples in [0, 1). Two independent
+16:# checks are run against every candidate witness (round-half-up and round-half-to-even),
+17-# so the witness is not an artifact of one tie-breaking convention.
+18-
+19:def round_half_up(numerator, denominator):
+20-    # numerator, denominator >= 0
+21-    return (numerator + denominator // 2) // denominator
+22-
+23-def round_half_even(numerator, denominator):
+--
+60-    print(f"=== F = {F} bits, domain [0, {1 << F}) representing [0, 1) in units of 2^-{F} ===")
+61:    for name, rounder in [("round-half-up", round_half_up), ("round-half-to-even", round_half_even)]:
+62-        ws = search(F, rounder)
+63-        print(f"  {name}: {len(ws)} witness quadruples found where step-wise disagrees with once-truncated")
+64-        if ws:
+65-            n_x1, n_x2, n_a, n_b, m, step2, once1, once2 = ws[0]
+
+##### 58_probes/p1_rounding_mode_versus_truncation.rs
+19-//!   TRUNC:  r = sat((ra * rb) >> F)              (what p3 and p4 measured)
+20://!   RNEAR:  r = sat((ra * rb + (1 << (F-1))) >> F) (round half up)
+21-//!
+22-//! INSTRUMENT VALIDATION. The checker must report a NONZERO violation count for
+23-//! at least one RNEAR row (otherwise "rounding restores it" would be an
+24-//! unfalsifiable claim from an instrument that cannot fail), and RNEAR's counts
+--
+154-    // demonstrate the checker CAN report a difference by construction: at
+155:    // F=1, round-half-up on an odd raw product changes the low bit versus
+156-    // truncation, on at least one operand pair.
+157-    let m = 15i64;
+158-    let f = 1u32;
+159-    let mut found_diff_pair = false;
+
+##### 94_probes/d_resolution.rs
+46-fn exact_round(num: i128, den: i128) -> i64 {
+47:    // round-half-up of num/den into the declared scale
+48-    let scaled = num * (ONE as i128);
+49-    ((scaled + den / 2) / den) as i64
+50-}
+51-
+

@@ -1,0 +1,21 @@
+error[E0080]: attempt to compute `0_u8 - 1_u8`, which would overflow
+ --> const_sub.rs:1:15
+  |
+1 | const C: u8 = 0u8 - 1u8;
+  |               ^^^^^^^^^ evaluation of `C` failed here
+
+note: erroneous constant encountered
+ --> const_sub.rs:3:20
+  |
+3 |     println!("{}", C);
+  |                    ^
+
+note: erroneous constant encountered
+ --> const_sub.rs:3:20
+  |
+3 |     println!("{}", C);
+  |                    ^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

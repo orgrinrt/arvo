@@ -1,0 +1,28 @@
+### A4, the exclusion
+  229 files in the read: 0, 230 files: 0
+  PASS
+### A1, a phrase nobody writes
+  quaternion_of_tuesdays: 0
+  PASS
+### A2, a phrase everybody writes
+  threads: 29 personas
+  PASS
+### A3, the count must not saturate
+  discharge check: 3 personas
+
+### personas writing about the association of a term
+  left-fold            1    rompf 
+  tree-fold            1    rompf 
+  balanced tree        2    jhala rompf 
+  left fold            3    jhala mcsherry stam 
+  parenthesisation     3    dolan jhala rompf 
+
+### the union, which is the number that answers the question
+  5 personas: dolan jhala mcsherry rompf stam 
+
+### the same for leaf aliasing, 230's candidate, in one currency
+  2 personas: jhala leroy 
+
+### and the bar both are measured against
+  dimension::ambient_domain and dimension::radix were declared on two
+  independent readings each, which is the count 230 uses as the threshold.

@@ -1,0 +1,41 @@
+### X1, the total
+  four predicate-bearing files: 527
+  PASS, 527
+### X2, widening to all twelve registry files
+  all twelve: 529
+  FAIL, 2 entries elsewhere
+### X3, every slug is declared
+  PASS, none undeclared
+### X4, against 230's committed vector
+  access_pattern     mine 0    theirs 0
+  accumulator_width  mine 1    theirs 1
+  alignment          mine 2    theirs 2
+  ambient_domain     mine 0    theirs 0
+  arity              mine 53   theirs 53
+  build_profile      mine 11   theirs 11
+  chain_length       mine 20   theirs 20
+  container          mine 14   theirs 14
+  fraction_width     mine 66   theirs 66
+  integer_width      mine 4    theirs 4
+  occupancy          mine 0    theirs 0
+  operand_window     mine 3    theirs 3
+  operation          mine 73   theirs 73
+  overflow_policy    mine 61   theirs 61
+  radix              mine 2    theirs 2
+  rounding           mine 17   theirs 17
+  signedness         mine 66   theirs 66
+  strategy           mine 1    theirs 1
+  target_features    mine 25   theirs 25
+  threads            mine 36   theirs 36
+  toolchain          mine 7    theirs 7
+  total_width        mine 65   theirs 65
+
+### X2 resolved: the two extra entries are MY reader's, not the registry's
+### (kept rather than repaired: the control fired on the instrument, which is its job)
+1617:note = "**`sentence_kind = \"theore
+  Both sit on one line, in the `note` of
+  ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side, which quotes
+  two predicate entries as PROSE EXAMPLES of the two dialects. A flat grep
+  cannot tell a quoted example from a real array element; 230's array-aware
+  reader can, and does. So 527 stands, the lint's PREDICATE_FIELDS walk is
+  complete, and the flat reader is only safe inside the four files.

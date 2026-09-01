@@ -1,0 +1,26 @@
+W = 4, representable [-8, 7], F = 0, signedness = signed, arity = 2
+
+## arm A: association varies, every leaf a distinct occurrence
+  saturating, full range      : 16268 of 65536 tuples disagree
+      witness [-8, -8, -8, 1]  left = -7  balanced = -8
+
+## C1 negative control: same arm under wrapping, must be 0
+  wrapping, full range        : 0 of 65536
+    PASS
+
+## C2 negative control: saturating on a declared non-negative window, must be 0
+  saturating, operands in [0, 7] : 0 of 4096
+    PASS, agrees with 82_probes/p2_output.txt exhaustively
+
+## arm B: aliasing varies, association fixed at (x op y) op z
+  declared operand boxes swept: 136
+  (x + y) - z, leaves distinct : rule disagrees with oracle on 0 boxes
+  (x + y) - x, leaf 3 aliases 1: rule disagrees with oracle on 5 boxes
+      witness box [-4, 1]: rule says may-overflow = true, oracle says false
+
+## C3 negative control: the rule must be exact on the distinct-leaf term
+    PASS, 0 disagreements, so the rule is being evaluated correctly
+
+## verdict
+  association moves the answer with aliasing held fixed: true
+  aliasing moves the verdict with association held fixed: true

@@ -1,0 +1,677 @@
+# 229. Do the six names denote one operation each
+
+Seat 229, cold derivation, written from the registry and from outside sources with the panel
+directory unopened. The probes are in `229_probes/` and were committed before this file was
+started.
+
+## The gates
+
+**Canon gate: aligned.** I checked the assigned work against
+`ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names`, which is `ratified` and
+which fixes the vocabulary at the six names the question is about, and against
+`dimension::rounding`, `dimension::signedness`, `topic::rounding`,
+`law::rounding_retraction_is_the_identity`, `law::quantise_then_reduce_commutes`,
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned`,
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping` and
+`probe::the_two_toward_zero_spellings_differ_and_by_how_much`. Asking what each name denotes is
+not a question the ratified ruling closed. It closed which names exist, and it is defended here
+rather than weighed: nothing below proposes adding, removing or renaming any of the six.
+
+**Two rows are open and I have not filled either.**
+`question::is_the_rounding_vocabulary_complete_at_six` reserves whether the set is short a name,
+and `question::what_region_does_a_predicate_naming_no_mode_state` reserves what a predicate naming
+no mode states. My findings touch the neighbourhood of both. Where they do I say so and stop.
+
+**Test gate.** Seven probes, each carrying the case that must fail, stated in the source before
+the sweep and asserted after it. Two of them reproduce numbers the canon already records, which
+is the only reason to believe the rest of what they print. All seven print `instrument: sound`
+and exit non-zero if they do not. No probe is cited here that is not committed with its output.
+
+## The question, as I took it
+
+A name denotes exactly one operation when, given a value and a target grid, the name determines
+the result. It denotes more than one when two readings of it are each defensible and disagree on
+some input the format can hold.
+
+Three things separate a real second reading from one I could invent. The reading has to be
+written down in a standard, or shipped in an implementation people use, or forced by a hardware
+realisation somebody actually builds. A reading that is merely conceivable does not count, and I
+have thrown several away on that test.
+
+The domain matters and the question fixes it: signed. Every name in the set behaves identically
+on the non-negative half of any format, and that is exactly what makes this worth asking, because
+a reading that is wrong only on negatives is a reading nothing catches until a negative arrives.
+That is the shape the ratified ruling already named once, in its own words: bit-drop "differs
+from toward-zero on signed rows only, so a reader coming from the hardware and a reader coming
+from C would have understood the same word as two operations that genuinely differ".
+
+The value model throughout is a scaled integer `k` denoting `k / 2^F`, rounded to an integer, with
+`k` ranging over the whole representable domain of a `W`-bit format. Where a mode is randomised the
+output is a distribution and the comparison is of distributions, computed by enumerating the entire
+draw space rather than by sampling, so no random number generator appears anywhere in this work and
+every number reproduces to the digit.
+
+## The instruments, and what each one covers
+
+Seven probes, all in `229_probes/`, all standalone `rustc` compilations over a shared `modes.rs`
+so the operations are defined once and every probe measures the same functions.
+
+`a_pairwise_disagreement.rs` counts, for every pair of candidate operations, the values of the
+domain on which they disagree. It is the instrument that answers the question directly. Its two
+positive controls are the load-bearing ones: it reproduces
+`probe::the_two_toward_zero_spellings_differ_and_by_how_much` digit for digit at `W = 8`, 64 at
+`F = 1`, 96 at `F = 2`, 120 at `F = 4` and 127 at `F = 7`, and it confirms the ratified note that
+bit-drop equals floor, at zero disagreements over every width, fraction width and signedness it
+sweeps. An instrument that failed either of those would be measuring something other than what the
+canon measured, and nothing else it printed would be worth reading.
+
+`b_translation_equivariance.rs` asks which operations satisfy `R(x + t) = R(x) + t` for integer
+`t`. It exists because two canon law rows count rounding positions by exactly that property, so it
+is the one place where the canon's own recorded numbers discriminate between two readings of a
+name. Its must-fail case is `half_even`, which
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned` puts alone in its failing region;
+an instrument reporting `half_even` equivariant would contradict a canon row and be void.
+
+`c_negation_conjugacy.rs` asks which operations are odd, and for the ones that are not, which
+other operation is the mirror. It found an error in my own comment while I was writing it: I had
+written that `away_from_zero` is `toward_zero`'s conjugate under negation, and it is not, because
+`toward_zero` is odd and therefore its own. The comment is corrected in the committed source. The
+instrument disagreeing with its author is the only reason that got fixed.
+
+`d_stochastic_readings.rs` computes exact output distributions for five readings of `stochastic`
+by enumerating the whole draw space. It reports per-value bias as an exact rational and whether
+each reading retracts, which is `law::rounding_retraction_is_the_identity` applied to a randomised
+mode. Its must-agree control is that the hardware realisation and the proportional definition
+produce identical distributions on every value; its must-differ control is that the
+equal-probability reading differs from the proportional one somewhere.
+
+`e_mean_error.rs` sums `R(x) - x` over the whole domain, exactly, as a rational. This is the axis
+on which the two readings of `half_up` come apart in the opposite direction from probe B, which is
+what makes the choice between them a trade rather than a spelling.
+
+`f_every_tie_rule.rs` enumerates the entire space of nearest modes over a domain, one per
+assignment of up or down to each tie, at four `(W, F)` points, and asks how many are translation
+equivariant, how many have zero mean error, and how many are both. This is the probe that turns
+"the two readings differ" into a statement about every possible reading rather than the two that
+happen to be current. Its controls are that each property is satisfiable alone, so an empty
+intersection is a result rather than a test that cannot pass.
+
+`g_stochastic_equivariance.rs` asks the same two questions of the randomised readings, with
+equivariance taken of the whole distribution.
+
+**What none of them covers.** Everything here is one rounding applied to one value. No chain, no
+composition with an arithmetic operation, no range reduction, no container edge. Where a claim of
+mine touches a canon law about fusion I am reasoning from the property that law is stated over,
+not re-measuring the law. The widths swept are `W` in `{4, 6, 8, 10, 12}` and never beyond, on one
+thread, on one host, under one toolchain, and the predicates below say so rather than implying
+otherwise.
+
+## The answer
+
+Four of the six denote exactly one operation on a signed domain: `floor`, `ceil`, `toward_zero`,
+`half_even`. One denotes two: `half_up`. One denotes a family rather than an operation, and is not
+a function at all in the sense the other five are: `stochastic`.
+
+So the ratified ruling retired one ambiguous word and left two names in the set it fixed that do
+not pin an operation. That is not a defect in the ruling, which settled which names exist and said
+nothing about what each denotes, and it is not a reason to reopen it. It is the next question in
+the same series, and the ruling's own `because` supplies the test for it.
+
+### `floor`, one operation
+
+Greatest integer not above the value. The name is the mathematical function, pinned in every
+standard and every language that ships it, and there is no tie case for a direction to be
+ambiguous about. The only competing reading I could find is casual usage where "floor" is meant as
+"round down in magnitude", which is `toward_zero`, and I discarded it: that usage appears in
+informal writing and in no standard or shipped implementation I could name, so it fails the test I
+set. Probe A confirms `floor` and `bit_drop` are the same operation at zero disagreements over
+every row swept, which is the ratified note measured rather than assumed.
+
+### `ceil`, one operation
+
+Least integer not below the value. Same argument, mirrored. The competing reading here is "round
+up in magnitude", which is `away_from_zero`, and probe A puts them at 120 of 256 disagreeing at
+`W = 8, F = 4` signed and 0 unsigned, so they are genuinely different operations. I discarded the
+reading for the same reason: `ceil` is toward positive infinity in C, in IEEE 754, and in every
+library that uses the spelling. The word is pinned by universal usage in a way "up" is not, which
+is the whole of the difference between this name and `half_up`.
+
+### `toward_zero`, one operation
+
+Discard the fraction, keep the sign. This name denotes one operation by construction, because it
+is the name the ratified ruling minted precisely so that the direction is stated rather than
+inferred. It is what makes the contrast sharp: the ruling fixed the directed family by naming each
+direction outright, and the one name in the set that does not name its direction is the one that
+broke.
+
+### `half_even`, one operation
+
+Nearest, with a tie going to the neighbour whose multiplier is even. I looked hard for a second
+reading and found none that survives the test.
+
+Evenness is not directional, which is the structural reason. Every other tie rule has to answer
+"which way", and "which way" is what admits two answers on a signed domain; "which is even" admits
+one, and the answer does not move when the sign flips, because `n` and `-n` have the same parity.
+Probe C measures it: `half_even` is odd, at zero conjugacy failures across `F` in 1 to 4 at
+`W = 8` signed, so the operation commutes with negation and there is no signed-domain seam for a
+second reading to hide in.
+
+Three candidate second readings, all discarded, with the reason for each. Ties to odd is a real
+operation, von Neumann's, and it is a different name. Evenness judged on the pre-rounding
+truncated value rather than the post-rounding one gives the identical function, which I checked by
+implementing the rule both ways inside probe A's shared definitions. Evenness relative to a
+coarser target grid than the last representable bit is a question about which grid is being
+rounded to, and the target grid is a parameter of the operation rather than part of the name; every
+mode in the set has that parameter and none of them is ambiguous because of it.
+
+One caveat I want stated rather than buried. `half_even` on a decimal format is the same rule
+applied to a decimal grid, and I measured only at `radix = 2`. The predicate below says `radix = 2`
+and therefore claims nothing about decimal, per the notation.
+
+### `half_up`, two operations
+
+Nearest, with a tie going up. "Up" is the whole problem, because on a signed domain it means two
+different things and both are shipped.
+
+**Reading one, ties toward positive infinity.** `floor(x + 1/2)`. This is what `java.lang.Math.round`
+computes, and it is what hardware and DSP practice mean by round-half-up, because adding a half and
+truncating needs no comparison and is therefore the cheap form. The DSP literature calls it the
+asymmetric form and says so in those words.
+
+**Reading two, ties away from zero.** This is IEEE 754's `roundTiesToAway`, `java.math.RoundingMode.HALF_UP`,
+`decimal.ROUND_HALF_UP`, and `MidpointRounding.AwayFromZero`. It is what school arithmetic and
+commercial rounding mean.
+
+The two agree everywhere except at a negative tie, where reading one gives the neighbour toward
+zero and reading two gives the neighbour away from it. Probe A counts the disagreement over the
+whole domain and finds `2^(W-1-F)` values at every width and fraction width it sweeps, which is 64
+of 256 at `W = 8, F = 1`, 8 of 256 at `W = 8, F = 4`, and 1024 of 4096 at `W = 12, F = 1`. On an
+unsigned domain the count is 0 everywhere, and at `F = 0` it is 0 because no tie exists.
+
+That last sentence is the ratified ruling's own criterion, met exactly. The retired word named two
+operations that agree on unsigned rows and differ on signed ones. Probe A prints every pair with
+that property at `W = 8, F = 4`, and there are four: floor against toward-zero, ceil against
+away-from-zero, toward-zero against bit-drop, and the two readings of `half_up` at 8 of 256. Three
+of the four are the retirement the ruling already made. The fourth is a name the ruling kept.
+
+**This is not a criticism of the ruling and nothing here reopens it.** The ruling closed which names
+exist and attached a note pinning a hardware operation to one of them, which is precisely the
+instrument this finding calls for: a note per name saying which operation it denotes. What is
+missing is one sentence, not a seventh name and not a rename.
+
+### `stochastic`, a family, and not a function
+
+The other five names denote functions. This one cannot, because two invocations on the same input
+are permitted to differ, so the object it names is a distribution rather than a value. Every
+comparison below is therefore of distributions, and probe D computes them exactly by enumerating
+the whole draw space.
+
+Four readings, all real, and they are not interchangeable.
+
+**Proportional.** Round up with probability equal to the discarded fraction. Parker's definition,
+the one the numerical literature builds on, and unbiased at every value: probe D reports a worst
+per-value bias of exactly `0/1` over the whole domain at `W = 8, F = 2`.
+
+**Equal probability.** Round up or down with probability one half whenever the value is off the
+grid. This is a named mode in the current literature, called SR-up-or-down where the proportional
+one is called SR-nearness, and it is not the same operation: probe D finds the two distributions
+differing on 128 of 256 values at `W = 8, F = 2`, with a worst per-value bias of `4/16`. Its
+aggregate bias over a uniformly swept domain is zero, which probe G measures, and that is a
+different and weaker property than being unbiased at each value. Conflating the two is easy and I
+nearly did.
+
+**Add a random draw, then drop the bits.** The hardware realisation. Probe D's control is that this
+must produce the proportional distribution exactly, and it does, on every value of every row swept,
+which is what licenses treating the hardware form and the mathematical definition as one operation.
+
+**Add a random draw, then round toward zero.** The same realisation with the other reading of the
+word the canon retired, and it is a badly different operation. At `W = 8, F = 2` it returns 0 with
+certainty for every value in the open interval between minus one and zero: probe D's worked table
+shows `-3/4`, `-2/4` and `-1/4` all mapping to `0` with weight `4/4`. Its worst per-value bias is
+`12/16` against the proportional reading's `0/1`.
+
+**The canon already excludes that fourth reading, and I did not have to decide it.**
+`law::rounding_retraction_is_the_identity` says a value already on the grid comes back unchanged.
+Probe D checks retraction for all five readings and finds add-then-toward-zero failing at 64 signed
+on-grid values at `W = 8, F = 1`, 32 at `F = 2`, 16 at `F = 3` and 8 at `F = 4`, and failing at
+none of the unsigned ones. Every other reading retracts everywhere. So a canon law, stated for a
+different purpose, rules out one of the four readings on the signed domain and leaves three.
+
+**A fifth axis, not a reading but a parameter.** How wide the random draw is. Probe D models a draw
+one bit narrower than the discarded field and gets a distribution that is neither the proportional
+one nor the equal-probability one, with an aggregate bias of `-512` where the proportional reading
+has `0`. Any implementation whose draw is narrower than the field it is choosing within is
+approximating the proportional definition rather than computing it, and the name says nothing about
+which.
+
+**And the seed.** Without one, `stochastic` does not denote a repeatable computation at all, so
+equality of two results under this name is not even a well-formed question.
+`question::does_a_consumer_supplied_seed_surface_exist` has that reserved, with the call recorded
+as the coordinator's and explicitly overturnable, and I have not touched it. What I can say is that
+the reservation is load-bearing for this question rather than adjacent to it: until it is settled,
+`stochastic` names something whose observable behaviour is not determined by the canon.
+
+## Why `half_up` is the one that breaks, structurally
+
+A nearest mode is two things composed: take the nearer neighbour, and where the two are equally
+near, apply a tie rule. The tie rule is itself a directional choice between two neighbours, so a
+nearest mode's name has to pin a direction exactly as a directed mode's name does.
+
+The vocabulary pins three directions by naming them outright. `floor` is toward negative infinity,
+`ceil` is toward positive infinity, `toward_zero` says where it goes in the name. Those three words
+are unambiguous because each of them denotes its direction in every standard that uses it.
+
+`half_up` uses a fourth directional word, "up", and the set defines it nowhere. Reading it as
+"up the number line" gives toward positive infinity; reading it as "up in magnitude" gives away
+from zero. Both readings are ordinary English and both are shipped. The set contains no mode named
+`up`, so there is no other row in the vocabulary a reader can resolve the word against.
+
+That is the whole mechanism, and it says why exactly one name broke rather than several. The
+ratified ruling retired an ambiguous directional word and replaced it with directions named
+explicitly. It did that for the directed family. The nearest family kept a compound name whose
+directional half was never given the same treatment.
+
+Probe C makes the same point from the other side, by asking what each mode becomes under negation.
+`floor` and `ceil` are each other's mirror and both are in the set. `toward_zero` and `half_even`
+are their own mirrors. `half_up` read as away-from-zero is its own mirror. `half_up` read as
+toward-positive-infinity has a mirror that is not in the set at all, the mode whose ties go toward
+negative infinity, so under that reading the vocabulary cannot state the mirror of a claim it can
+state.
+
+## The canon already depends on one of the two readings, without saying so
+
+This is the part that makes the ambiguity load-bearing rather than tidy-up work.
+
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping` holds for
+`rounding: in {floor, ceiling, nearest-half-up}` and fails for
+`rounding: in {toward zero, away from zero, nearest-half-even}`, at `signedness: signed`,
+`W = 6`, `F in 1..=5`, `overflow_policy: wrap`. Its unsigned twin holds for five of the six
+positions and fails for `nearest-half-even` alone. Both rows count positions by translation
+equivariance, which the proposal behind them states outright.
+
+Probe B measures equivariance for every candidate and reproduces both counts, but only under one
+reading. With `half_up` read as ties toward positive infinity: unsigned gives five of six
+equivariant, naming floor, ceil, toward-zero, away-from-zero and half-up, and signed gives three of
+six, naming floor, ceil and half-up. Both match the canon rows exactly, set for set. With `half_up`
+read as ties away from zero: unsigned still gives five of six, and signed gives **two** of six,
+naming only floor and ceil, which contradicts the recorded `holds` region.
+
+So the canon carries a ratified-adjacent law row whose truth value depends on which operation
+`half_up` denotes, and nothing in the canon says which. Under one reading the row is right as
+written. Under the other it is wrong, and `nearest-half-up` belongs in its failing region.
+
+I want to be exact about the status of that. It is not a claim that the row is wrong. It is a claim
+that the row is not decidable from the canon as it stands, because a term it quantifies over has
+two denotations and the canon fixes neither. The measurement says which denotation makes the row
+true, which is evidence about what the instrument behind that row must have computed, and evidence
+is not a ruling.
+
+## The trade between the two readings is forced
+
+Having found that the two readings differ, the obvious next question is whether one is simply
+better, in which case a note picking it would cost nothing. It is not, and the reason is sharper
+than a preference.
+
+Probe E sums the error over the whole domain, exactly. On a signed domain, reading one carries a
+bias of exactly half an LSB per tie and reading two carries none: at `W = 8, F = 2` the sums are
+`128/4` against `0/4`, and the pattern holds at every width and fraction width swept, with the
+biased column tracking the tie count and the unbiased column staying at zero. On an unsigned domain
+both readings carry the identical bias, which is probe E's negative control on the claim that they
+differ at all.
+
+So the two readings sit on opposite sides of two different properties, in opposite directions.
+Reading one is translation equivariant, which is what makes multiply-add fusion free under the
+canon's own law row, and it is biased. Reading two is unbiased, which is what a numeric library
+wants, and it is not equivariant, so the free-fusion licence is unavailable under it.
+
+Probe F asks whether some third tie rule escapes. A nearest mode over a finite domain is fully
+determined by one bit per tie, so the space is finite and can be enumerated whole. At four points,
+`(W, F)` of `(6, 2)`, `(6, 3)`, `(8, 4)` and `(8, 5)`, it enumerates every nearest mode over the
+domain, 65536 of them at the first, and finds exactly two translation equivariant, 12870 with zero
+mean error, and **zero** in both sets. The two equivariant rules are all-ties-up and all-ties-down,
+which is the argument's prediction: integer translation acts transitively on the ties, so an
+equivariant tie rule has to be constant, and a constant rule cannot balance.
+
+The controls are what make that emptiness a result. Each property is satisfiable alone at every
+point, and each of the four named modes is located inside the enumeration and reconstructed against
+its independent implementation before any of it is counted.
+
+**So the trade is a theorem over these domains, not an accident of which two readings happen to be
+current.** No deterministic nearest mode is both. Choosing a reading for `half_up` is choosing a
+side, and the choice cannot be optimised away.
+
+## The escape is the sixth name
+
+Probe G asks the same two questions of the randomised readings, with equivariance taken of the
+whole output distribution. The proportional reading is equivariant at zero failures across `F` in 1
+to 4 at `W = 8` signed, unbiased at every value, and retracts. No deterministic mode can be
+pointwise unbiased at all, since a deterministic map is pointwise unbiased only where it is the
+identity, so this is not a close call.
+
+That gives the composition rather than a winner, and it is per region rather than global.
+
+Where a design needs the free relocation, `half_up` read as ties toward positive infinity is the
+only nearest mode that gives it, and it pays half an LSB per tie of bias.
+
+Where a design needs zero mean error and can pay for relocation, `half_up` read as ties away from
+zero and `half_even` both give it, and probe E puts them at the identical aggregate sum on the
+symmetric domain, so the choice between those two is on other grounds. `half_even` is additionally
+its own mirror and additionally unbiased on unsigned, where both readings of `half_up` carry the
+same nonzero bias, which is the ordinary reason to prefer it.
+
+Where a design needs both, no deterministic mode exists, and `stochastic` under its proportional
+reading is the only thing in the vocabulary that supplies it. That is a real answer to why the
+sixth name is in the set, arrived at from the mathematics rather than from fashion.
+
+## The predicates
+
+Every finding here shares a region on most axes, so the common part is stated once and each finding
+carries only what differs. An axis absent from a predicate is a claim that the finding holds
+nowhere that axis exists, per `every-finding-carries-its-predicate`, and I have written no hedge
+into any of them.
+
+**The common region.**
+
+```
+radix = 2
+ambient domain = the dyadic rationals with denominator 2^F, closed under negation
+operation = quantise
+arity = 1
+chain length = 1
+accumulator width = declared
+operand window = full range
+container = i64, every intermediate strictly inside it at the widths swept
+occupancy any
+alignment any
+access pattern any
+threads = 1
+target features = host aarch64-apple-darwin
+rustc = 1.98.0-nightly 57d06900f, edition = 2015
+debug-assertions = off, opt level = 2
+```
+
+`occupancy any`, `alignment any` and `access pattern any` are written with the structural warrant
+`dimension::access_pattern` states for exactly this case: a correctness claim untouched by the axis
+writes `any`. Nothing here places a value in a carrier or reads one from anywhere, so no result can
+move along those three.
+
+**Finding 1. `floor`, `ceil`, `toward_zero` and `half_even` each denote one operation.**
+Common region, with `total_width: W in {4, 6, 8, 10, 12}`, `fraction_width: F in 0..=W-1`,
+`signedness in {signed, unsigned}`, `overflow policy = none applied, the quantised representative
+is read before any range reduction`, `rounding in {floor, ceil, toward_zero, half_even}`. The
+positive part of this finding is a survey of standards and implementations rather than a
+measurement, and what the probes establish is the negative half: that the competing readings I
+considered and discarded are genuinely different operations, at the counts probe A prints.
+
+**Finding 2. `half_up` denotes two operations, disagreeing on `2^(W-1-F)` values.**
+Common region, with `total_width: W in {4, 6, 8, 10, 12}`, `fraction_width: F in 1..=W-1`,
+`signedness = signed`, `overflow policy = none applied, the quantised representative is read before
+any range reduction`, `rounding in {half_up as ties toward positive infinity, half_up as ties away
+from zero}`. Evidence `229_probes/a_output.txt`.
+
+**Finding 3. The two readings of `half_up` are one operation on an unsigned domain and at `F = 0`.**
+Common region, with `total_width: W in {4, 6, 8, 10, 12}`, `fraction_width: F in 0..=W-1`,
+`signedness = unsigned`, plus the row `fraction_width: F = 0, signedness = signed`, same overflow
+policy and rounding entries as finding 2. Evidence `229_probes/a_output.txt`, control 4.
+
+**Finding 4. Under ties toward positive infinity, and only under it, the equivariant position
+counts reproduce the two canon fusion rows.**
+Common region, with `total_width: W = 6`, `fraction_width: F in 1..=5`,
+`signedness in {signed, unsigned}`, `overflow policy any`,
+`rounding in {floor, ceil, toward_zero, away_from_zero, half_up as ties toward positive infinity,
+half_up as ties away from zero, half_even}`. `overflow policy any` is admissible here and nowhere
+else in this file, because probe B restricts to translations whose endpoints are both representable,
+so no policy is ever reached and every policy agrees. Evidence `229_probes/b_output.txt`.
+
+**Finding 5. No deterministic nearest mode over the domain is both translation equivariant and
+zero mean error.**
+Common region, with `total_width: W in {6, 8}`, `fraction_width: F in {2, 3}` at `W = 6` and
+`F in {4, 5}` at `W = 8`, `signedness = signed`, `overflow policy = none applied`,
+`rounding in {every assignment of a direction to each tie of the domain}`, which is 65536 modes at
+two of the points and 256 at the other two. Evidence `229_probes/f_output.txt`.
+
+**Finding 6. `stochastic` denotes at least four distinguishable readings, of which the canon's
+retraction law excludes one on the signed domain.**
+Common region, with `total_width: W in {4, 6, 8}`, `fraction_width: F in 1..=4`,
+`signedness in {signed, unsigned}`, `overflow policy = none applied`,
+`rounding in {stochastic proportional, stochastic equal probability, stochastic as add-then-bit-drop,
+stochastic as add-then-toward-zero, stochastic with a draw one bit narrower than the discarded
+field}`. Evidence `229_probes/d_output.txt` and `229_probes/g_output.txt`.
+
+**Finding 7. Stochastic under the proportional reading is equivariant, pointwise unbiased and
+retracting together.**
+Common region, with `total_width: W = 8`, `fraction_width: F in 1..=4`, `signedness = signed`,
+`overflow policy = none applied`, `rounding = stochastic proportional`. Evidence
+`229_probes/g_output.txt` and `229_probes/d_output.txt`.
+
+### Two axes I could not write, and what I did about it
+
+**`strategy` has no admissible spelling for a claim established before a strategy is selected.**
+`dimension::strategy` says `S any` is not admissible, because it quantifies over a set op has
+stated is open, and that is right. But every finding above is a statement about what two named
+functions compute, which no strategy moves: a strategy selects among arms, and both readings of
+`half_up` are arms, so whichever strategy selects the `half_up` arm still has to select one of the
+two. Naming a strategy I did not run under would be false, and naming none makes every finding here
+hold nowhere a strategy exists, which is absurd for a fact about integer arithmetic.
+
+I attacked this rather than leaving it. The canon has the shape of the repair three times already:
+`dimension::rounding` says `rounding = exact` "names the case where nothing is discarded, which is a
+value of the axis rather than its absence", `dimension::accumulator_width` has `accumulator width =
+declared` for the no-widening case, and `dimension::container` has `container = declared width`. In
+each, a distinguished value carries what `any` cannot. **The strategy axis needs the same thing: a
+named value for the case where no strategy has been selected because the claim is prior to
+selection.** That is a canon edit and it is not mine to make. It is offered as a proposal owing two
+independent agreements, and until then every finding above is written without a strategy entry and
+is, under the notation as it stands, narrower than it is. I would rather say that plainly than
+write a value I did not measure.
+
+**`overflow_policy` has no named value for a result read before any range reduction.**
+`dimension::overflow_policy` lists `wrap`, `saturate`, `saturate-both-ends`, `clamp` and `panic`.
+None of them is what these findings sit at, because no reduction is performed: the quantised
+representative is read directly, exactly the level `law::quantise_then_reduce_commutes` distinguishes
+in its note when it says "before that reduction, at the representative level". `ceil` of the largest
+representable value at `W = 8, F = 4` is 8 where the integer grid stops at 7, so this is not a
+technicality. The same repair applies, and the same precedent supports it. I have written
+`overflow policy = none applied, the quantised representative is read before any range reduction`,
+which is honest and is not currently a value of the axis.
+
+These are two more instances of the class `question::what_region_does_a_predicate_naming_no_mode_state`
+is about, reached from a different direction: that question found a predicate whose values side was
+prose and therefore passed every check while stating no region. Mine are predicates whose values
+side cannot be written at all. I have not filled that question and I am not proposing an answer to
+it here.
+
+## What I did not settle, what I could not reach, and what is left
+
+**Reserved and untouched.** `question::is_the_rounding_vocabulary_complete_at_six` asks whether the
+set is short a name, on the strength of three predicates sweeping `away from zero`. My work touches
+it and does not answer it. Worth saying precisely how they relate, because they are easy to run
+together and they are not the same question. That row is about `away from zero` as a directed mode,
+the conjugate of `toward_zero` in the directed family. Mine is about "away from zero" as a tie-break
+direction inside a nearest mode. A design could pin `half_up` to either reading without adding a
+directed `away_from_zero` mode, and it could add the directed mode without pinning `half_up`. The
+two are independent, and anybody reading them as one thing will get one of them wrong.
+
+`question::does_a_consumer_supplied_seed_surface_exist` is reserved and I have said only that it is
+load-bearing for what `stochastic` denotes.
+
+`question::what_region_does_a_predicate_naming_no_mode_state` is reserved. I have added two
+instances to its neighbourhood and answered none of it.
+
+**What I could not reach.** I could not reproduce the numbers in `law::quantise_then_reduce_commutes`'s
+note, the zero disagreements for floor against 60, 32 and 32 for ceiling, half-up and half-even at
+the representative level. The row does not carry the width, the fraction width, the reduction, or
+which two of the six the half-up and half-even columns were run under, and reconstructing a setup
+that happens to produce three matching numbers would be guessing dressed as corroboration. I tried
+two reconstructions, discarded both, and stopped. This matters for my question because that note is
+the other place in the canon where a half-up column is recorded, so it is the other place a reading
+might be pinned by evidence. Somebody who can open the probe behind
+`106_giesen_consolidation_the_strategy_axis` can close it in minutes and I could not from the
+registry alone.
+
+I did not open `mock/tools/rounding-vocabulary/`, which exists and which
+`question::is_the_rounding_vocabulary_complete_at_six` says reports every named mode against the
+ratified six. It is outside the phase-one reading list, so I derived the same class of fact by
+grepping the registry directly. Somebody should check my four-pair result against what that tool
+reports.
+
+I reached the sources I wanted on the naming question and can name what they establish: IEEE 754's
+`roundTiesToAway`, the split between `java.lang.Math.round` and `java.math.RoundingMode.HALF_UP`,
+`decimal.ROUND_HALF_UP`, `MidpointRounding.AwayFromZero`, and the DSP literature's own description
+of the add-a-half-and-truncate form as the asymmetric one. On stochastic rounding I confirmed the
+two-mode split and its current naming, SR-nearness against SR-up-or-down, from a survey paper rather
+than from the primary source, because the primary source is a PDF I could not extract text from.
+The distinction I rest on is measured in probe D regardless of what anybody calls it, so the
+citation is for the reader's benefit rather than load-bearing.
+
+**Three things I would hand to the next seat.**
+
+The first is the one I think is worth most. If the equivariant-versus-unbiased split is a theorem
+over nearest modes, it is probably a theorem over the whole space of rounding modes rather than the
+nearest family, and probe F's enumeration technique extends: drop the "take the nearer neighbour"
+constraint and enumerate every monotone map from the domain onto the grid. That is a much larger
+space and probably needs an argument rather than an enumeration, but the argument looks short.
+
+The second is that everything here is one rounding of one value, and the property a design actually
+cares about is what a chain does. A biased mode compounds and an unbiased one does not, which is the
+whole reason the trade matters, and nobody in this file has measured a chain.
+
+The third is negative and I want it recorded so nobody repeats it. I looked for a signed-domain
+ambiguity in `half_even` for some time, on the reasoning that the family that broke once might break
+twice, and there is not one. Parity is sign-invariant, and that closes it. The time is not wasted
+only if the next person does not spend it again.
+
+## What this is, in one line
+
+Four of the six names denote one operation. `half_up` denotes two, which differ on exactly the rows
+the ratified ruling retired a word for, and one canon law row is true under one of them and false
+under the other. `stochastic` denotes a family of at least four, of which the canon's own retraction
+law already excludes one, and it names no function at all until the seed question is settled.
+
+---
+
+## Phase two. Reconciliation against the panel directory
+
+Written after the phase-one file was committed and pushed. Nothing above this line was edited.
+
+**Seat 228's file is not in the tree.** `228_leroy_the_rounding_vocabulary.md` and `228_probes/` do
+not exist here, so there is nothing of its to agree or disagree with, and I have not guessed at what
+it will say. The reconciliation below is against the rounding unit the panel already ran, files 125
+through 138, plus `142`, which turns out to be the load-bearing one.
+
+### Where the panel already had my central fact, and where it kept it
+
+**`125_knuth_rounding_cold_derivation.md` fixed the reading, in a parenthesis.** Line 53 names the
+vocabulary and writes `half_up` as "(nearest, ties toward positive infinity)". Line 110 gives the
+formula, `half_up(x) = floor(x + q/2)`. So the panel did choose, and it chose my reading one.
+
+**`142_muratori_reply_the_repair_was_dead_on_arrival.md` fixed the same reading independently**, at
+line 158, and recorded it as a prediction made before running: "Nearest-half-up is equivariant,
+because it is `floor(x + 1/2)` and floor is, which puts a nearest mode on floor's side of the
+partition." That file is the instrument behind the two fusion law rows.
+
+That second one changes the status of my finding 4 and I am glad to have found it. I had inferred
+from probe B that the canon's fusion rows are true only under the toward-positive-infinity reading,
+and called it evidence about what the instrument must have computed rather than a fact about it.
+It is now a fact about it: the instrument says in its own prose which operation it ran, and it is
+the one my measurement predicted. Two independent arrivals at the same reading, one in `125` from
+the algebra and one in `142` from the fusion partition, and my probes are a third.
+
+**And the count is the finding.** Twenty-seven files in this directory other than this one mention
+`half_up`, at `grep -ln "half_up\\|half-up" *.md | grep -v "^229_" | wc -l`. Two of
+them state which operation it is. The ratified ruling states none:
+`ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` carries the six names and
+no definition of any of them, and a grep of the whole registry for a definition of `half_up`
+returns nothing but sweep membership lists. So the panel knew, twice, and the canon does not carry
+it. That is the gap, stated more precisely than I could state it in phase one: not that nobody
+chose, but that the choice lives in two parentheses in unratified files while the name that
+inherits it is ratified.
+
+### Where I agree, and how I got there
+
+**`125`'s property table at line 165 and my probes B and C agree row for row.** It reports
+translation equivariance by one quantum for floor, ceil and half_up, not for half_even, not for
+toward_zero; and negation equivariance for toward_zero and half_even, not for floor, ceil or
+half_up. Probe B and probe C produce exactly that, at 0 failures where it says yes and nonzero
+where it says no.
+
+**I reached that in phase one, without reading `125`.** The instruments were built from the two
+canon law rows' own counts, which is a different route to the same table, and I did not know the
+table existed. I record it as an independent instance rather than as agreement, since I had nothing
+to agree with at the time.
+
+**What I add to it.** `125` writes "no" in half_up's negation column. Probe C names what the mirror
+actually is: the nearest mode whose ties go toward negative infinity, which is not one of the six.
+So under the reading `125` chose, the vocabulary cannot express the mirror of a claim it can
+express, and that is a fact about the set rather than about the mode.
+
+### Where I differ from something the panel wrote
+
+**`125`'s coverage bound carries a conjecture, flagged as unverified, and it is half right.** Line
+493: "I did not sweep `half_down` or ties-away-from-zero (their T5 rows would mirror half_up's and
+half_even's respectively, and I did not verify that)."
+
+I swept both. The conjecture holds on the signed domain and fails on the unsigned one.
+
+`half_down` mirrors `half_up`: probe B puts both at 0 equivariance failures across `F` in 1 to 5 at
+`W = 6` under both signednesses, and probe C identifies them as each other's negation conjugate.
+Confirmed.
+
+Ties-away-from-zero mirrors `half_even` on the signed domain exactly, and the numbers are identical
+rather than merely similar: probe B gives 512, 128, 32, 8, 2 across `F` in 1 to 5 for both, total
+682 each. Confirmed there. **On the unsigned domain it fails.** Ties-away-from-zero is equivariant
+at 0 failures, and `half_even` is not, at the same 682. The two modes part company exactly where
+the tie rule stops being sign-dependent and parity keeps being parity.
+
+That is a small correction to a conjecture its author marked as unverified, which is the discipline
+working rather than a defect. I would not have looked for it if the file had not named the gap.
+
+### What my instruments covered that the unit's did not
+
+`125`'s coverage bound says it did not sweep `half_down` or ties-away-from-zero, and it did not
+settle whether stochastic commutes with wrapping in distribution, leaving that absent rather than
+hedged. So the whole of my finding 2, the count of values on which the two readings of `half_up`
+disagree, sits outside what the rounding unit measured. It was named as unmeasured and it stayed
+unmeasured.
+
+Three further things I believe are new to this directory, and I would rather be corrected than
+claim them:
+
+Probe F's enumeration of the entire space of nearest modes over a domain, which turns the trade
+between equivariance and zero mean error from a property of two named modes into an emptiness
+result over all 65536 of them at two of its four points. `125` proves the individual rows; nothing
+I found asks whether anything else could fill both.
+
+Probe D's exact-distribution treatment of the four readings of `stochastic`, and specifically that
+`law::rounding_retraction_is_the_identity` already excludes the add-then-toward-zero realisation on
+the signed domain at 64, 32, 16 and 8 on-grid values for `F` of 1 through 4. `125` left the
+stochastic-versus-wrap question absent on purpose; this is a different question about the same name
+and it is answered by a law the canon already carries.
+
+Probe G's finding that the proportional reading of `stochastic` is the only thing in the vocabulary
+that is equivariant, pointwise unbiased and retracting together, which is what gives the sixth name
+a mathematical reason to exist rather than a fashionable one.
+
+### What I would now say to the panel
+
+The gap is one sentence in one row, and the ruling itself supplies the shape of it. It already
+attached a note pinning a hardware operation to `floor` so the operation is not read back into the
+name. The same instrument, applied to `half_up`, would say which of two shipped operations the name
+denotes. Two panel files already answer it the same way and the instrument behind the fusion rows is
+one of them, so this is recording a choice the panel made rather than making one.
+
+I am not writing that note. It touches a ratified row's subject matter, `question::is_the_rounding_vocabulary_complete_at_six`
+is open on a neighbouring question, and one expert's word is not how a call about the canon gets
+made here. What I have is the measurement, the count of files, and the two places the choice is
+already written down.
+
+### One correction to this file, made after it was pushed
+
+The file count above went out as twenty-eight. That measurement included this file, which mentions
+`half_up` throughout and is not evidence of anything about the panel. The number is twenty-seven and
+the command that produces it now sits beside it, so the next reader checks it rather than trusting
+it. Corrected forward rather than by amending the commit, so the wrong number stays in the history
+where it belongs.
+
+Nothing else moved, and the finding is unchanged: two files state the reading, and the canon states
+none.

@@ -1,0 +1,124 @@
+BLOCKED   119 #1  value set finite with at least two elements; operations in
+            undeclared region phrases: value set finite with at least two elements; domain containing a complete residue system and the
+BLOCKED   119 #2  W = 3, F = 0, signedness any, overflow behaviour in {wrapp
+            undeclared region phrases: radix; construction
+BLOCKED   119 #3  W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, o
+            undeclared region phrases: radix
+BLOCKED   119 #4  W = 3, F = 0, signedness = unsigned, overflow behaviour in
+            undeclared region phrases: radix; restrictions
+BLOCKED   119 #5  W = 4, F = 2, signedness = unsigned, overflow behaviour = 
+            undeclared region phrases: radix; declared grid step
+BLOCKED   119 #6  W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, o
+            undeclared region phrases: radix; term shapes; declarations
+BLOCKED   119 #7  W = 3, F = 0, signedness in {unsigned, signed}, overflow b
+            undeclared region phrases: radix; term shapes; declarations; discharge check
+BLOCKED   119 #8  W in {2, 3}, F = 0, signedness in {unsigned, signed}, over
+            undeclared region phrases: radix; term shapes; declarations
+BLOCKED   119 #9  W = 3, F = 0, signedness in {unsigned, signed}, overflow b
+            undeclared region phrases: radix; term shapes; declarations
+BLOCKED   119 #10  W in {3, 5, 6}, F = 0, signedness in {unsigned, signed}, o
+            undeclared region phrases: radix; dimension; structure constants; declarations
+BLOCKED   119 #11  toolchain = the pinned nightly, edition 2021, crate type =
+            undeclared region phrases: edition 2021; feature gates; term
+BLOCKED   122 #1  value set finite with at least two elements; domain closed
+            undeclared region phrases: value set finite with at least two elements; domain closed under negation
+BLOCKED   122 #2  W = 3, F = 0, signedness any, overflow behaviour in {wrapp
+            undeclared region phrases: radix; construction; ambient domain closed under negation
+BLOCKED   122 #3  W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, o
+            undeclared region phrases: radix; ambient domain
+BLOCKED   122 #4  W = 3, F = 0, signedness in {unsigned, signed}, overflow b
+            undeclared region phrases: radix; ambient domain; restrictions
+BLOCKED   122 #5  W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, o
+            undeclared region phrases: radix; term shapes; declarations; ambient domain one-signed
+BLOCKED   122 #6  W = 3, F = 0, signedness in {unsigned, signed}, overflow b
+            undeclared region phrases: radix; term shapes; declarations; ambient domain closed under negation for the saturating arm; discharge check
+BLOCKED   122 #7  The non-homomorphic half alone holds for: as 119 4.7's sec
+            undeclared region phrases: The non-homomorphic half alone holds for: as 119 4.7's second predicate; the same domain dimension added
+BLOCKED   122 #8  toolchain = the pinned nightly, edition 2021, crate type =
+            undeclared region phrases: edition 2021; feature gates; term; recursion limit
+BLOCKED   132 #1  W any; F any; signedness any; domain in {closed under nega
+            undeclared region phrases: domain
+BLOCKED   132 #2  W any; F any; signedness any; domain closed under negation
+            undeclared region phrases: domain closed under negation
+BLOCKED   132 #3  rounding in the nearest members; F_exact in {4, 5}; F_inte
+            undeclared region phrases: F_exact; F_intermediate; F_final; domain
+BLOCKED   132 #4  W >= 1; F any; signedness any; domain closed under negatio
+            undeclared region phrases: domain closed under negation; every deterministic member against saturation; every translation-equivariant member against wrapping
+BLOCKED   132 #5  rounding = toward-zero; range policy = wrapping; signednes
+            undeclared region phrases: or unsigned with signed
+BLOCKED   132 #6  F = 0 with operations in {addition, subtraction, multiplic
+            undeclared region phrases: domain; stochastic members
+BLOCKED   132 #7  W any; F any; signedness any; domain any; operation = mult
+            undeclared region phrases: domain
+BLOCKED   132 #8  F any; W any; signedness any; domain closed under negation
+            undeclared region phrases: domain closed under negation; coupling
+BLOCKED   132 #9  element count any; fraction = 1/3; coupling in {comonotone
+            undeclared region phrases: element count; fraction; coupling
+BLOCKED   132 #10  keying in {none, value, position}; decorrelation measured 
+            undeclared region phrases: keying; decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions; input shape
+BLOCKED   132 #11  toolchain = the pinned nightly; edition 2021; crate type =
+            undeclared region phrases: edition 2021; #![no_std]; feature gates; float types; threshold; positions 0 to 255
+BLOCKED   136 #1  W any; F any; signedness any; domain in {closed under nega
+            undeclared region phrases: domain
+BLOCKED   136 #2  W in {9}; F in {4}; signedness = signed; domain closed und
+            undeclared region phrases: domain closed under negation; staged narrowing F_exact; F_intermediate; F_final
+BLOCKED   136 #3  W any; F any; signedness any; domain any, one-signed inclu
+            undeclared region phrases: domain; one-signed
+BLOCKED   136 #4  W >= 1; F any; signedness any; domain closed under negatio
+            undeclared region phrases: domain closed under negation; every deterministic member against saturation; every translation-equivariant member against wrapping; equality read
+BLOCKED   136 #5  rounding = toward-zero; range policy = wrapping; signednes
+            undeclared region phrases: or unsigned with signed; domain: OPEN; the clause claims nothing until it is stated
+BLOCKED   136 #6  F any; W any; signedness any; domain any, established by t
+            undeclared region phrases: domain; established by the construction reading only frac(x) and never the cell; given a floor-based cell coordinate; coupling
+BLOCKED   136 #7  element count any; fraction = 1/3; coupling in {comonotone
+            undeclared region phrases: element count; fraction; coupling; domain; same construction and same condition (136_probes/x2 P3); F and signedness: OPEN
+BLOCKED   136 #8  everything 132 5.8's predicate lists, unchanged, plus keyi
+            undeclared region phrases: everything 132 5.8's predicate lists; keying axis; domain; F and signedness: OPEN
+BLOCKED   138 #1  rounding = toward-zero; range policy = wrapping; signednes
+            undeclared region phrases: or unsigned with signed
+BLOCKED   138 #2  element count any; fraction = 1/3; coupling in {comonotone
+            undeclared region phrases: element count; fraction; coupling; domain; same construction and same condition (136_probes/x2 P3)
+BLOCKED   138 #3  everything 132 5.8's predicate lists, unchanged, plus keyi
+            undeclared region phrases: everything 132 5.8's predicate lists; keying axis
+BLOCKED   146 #1  the assignment set of rounding, overflow and intermediate 
+            undeclared region phrases: assignment set of rounding; overflow and
+BLOCKED   146 #2  W = 4; F in {0, 1, 2}; signedness in {unsigned, signed}; a
+            undeclared region phrases: assignment set; observation sets; overflow limit read at the declared width
+BLOCKED   146 #3  assignment sets and observation sets as in 5.2, plus 141's
+            undeclared region phrases: assignment sets and observation sets as; 141's and 143's own axis sets
+BLOCKED   146 #4  W = 4; F in {0, 1, 2}; signedness in {unsigned, signed}; a
+            undeclared region phrases: assignments; observation sets; {madd}; {mul, madd}; {add, sub, mul, madd, msub}; overflow limit read at the declared width; accumulator width
+BLOCKED   146 #5  the same assignment set at W = 4; F in {0, 1, 2}; signedne
+            undeclared region phrases: same assignment set at W; observation sets
+BLOCKED   146 #6  numeral fixed-point signed; W = 6; F in {0, 3}; overflow =
+            undeclared region phrases: numeral fixed-point signed; conforming pair; non-conforming pair; cost coordinates; selector; weight grid resolution
+BLOCKED   146 #7  W = 4; F in {0, 1, 2}; signedness in {unsigned, signed}; a
+            undeclared region phrases: assignment set; arm set
+PORTABLE  146 #8  W = 6; F in {0, 1, 2, 3, 4, 5}; signedness = unsigned; ove
+PORTABLE  146 #9  W = 6; F in {0, 1, 2, 3, 4, 5}; signedness = signed; overf
+PORTABLE  146 #10  W in {4, 6}; F in {0 .. W-1}; signedness in {unsigned, sig
+BLOCKED   146 #11  W = 4; F in {0, 1, 2}; operations in {add, subtract, multi
+            undeclared region phrases: overflow limit read at the declared width
+BLOCKED   146 #12  W = 4; F in {0, 1, 2}; signedness in {unsigned, signed}; o
+            undeclared region phrases: accumulator width varied above the declared width
+BLOCKED   146 #13  signedness = signed; W = 4; F = 1; overflow = saturating; 
+            undeclared region phrases: accumulator width; multiplier schedules {[1,-1,2], [2,-1,1]}; domain
+BLOCKED   146 #14  cost tables drawn uniformly from integers 1..20; arms in {
+            undeclared region phrases: arms; cost coordinates
+BLOCKED   146 #15  the same population; reference point = componentwise minim
+            undeclared region phrases: reference point; certificate weight proportional to the reciprocal deviation; augmentation coefficient
+BLOCKED   146 #16  arms = 4; cost coordinates in {2, 3} with the third consta
+            undeclared region phrases: arms; cost coordinates; selector
+BLOCKED   146 #17  cost tables drawn uniformly from integers 1..60; arms = 7;
+            undeclared region phrases: arms; cost coordinates; selector; weight grid resolution
+BLOCKED   146 #18  cost coordinates any; arms any; weights any positive; base
+            undeclared region phrases: cost coordinates; arms; weights; baseline
+BLOCKED   146 #19  cost coordinates = 3; arms = 7; cost tables drawn uniforml
+            undeclared region phrases: cost coordinates; arms; weight grid resolution; baseline
+BLOCKED   146 #20  baseline uniform across coordinates; cost coordinates = 3;
+            undeclared region phrases: baseline uniform across coordinates; cost coordinates; arms
+PORTABLE  151 #1  W = 6; F in {0, 1, 2, 3, 4, 5}; signedness in {unsigned, s
+BLOCKED   151 #2  W = 4; F in {0, 1}; signedness in {unsigned, signed}; over
+            undeclared region phrases: accumulator width; operations {multiply-add, sum fold}
+BLOCKED   178 #1  W = 8, S = [0,255], pi = clamp (a nearest-point selection)
+            undeclared region phrases: pi; > 600 chains of depth 3..=5; ops; carriers 8..=24 > and 120; all 2^(depth-1) placements
