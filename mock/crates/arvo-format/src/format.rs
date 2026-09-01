@@ -27,10 +27,10 @@ use crate::width::Bool;
 /// coordinate rather than two consts an implementor can put out of step with each
 /// other. The ratified parameterisation carries a phase, singular, and this is it.
 ///
-/// **The denominator is positive by construction.** `of` maps a non-positive one
-/// to a whole-numbered phase, which is a total function rather than a check, so
-/// there is no way to name the case an earlier doc comment asked a reader not to
-/// write.
+/// **The denominator is positive by construction.** `of` is total rather than a
+/// check: a negative one moves its sign to the numerator and a zero one is read
+/// as one, so there is no way to name the case an earlier doc comment asked a
+/// reader not to write.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct Phase {
     num: i64,
@@ -43,15 +43,34 @@ impl Phase {
 
     /// A phase of `num` over `den`.
     ///
-    /// A non-positive denominator is read as one rather than refused, on the same
+    /// A non-positive denominator is read rather than refused, on the same
     /// reading `Exact::between` uses for its own remainder: a caller computing a
     /// coordinate should not have to carry an invariant a constructor can hold.
+    ///
+    /// **A negative denominator carries a value and a zero one does not**, which
+    /// is why they take different paths. `of(3, -7)` is exactly `-3/7` and
+    /// normalises by moving the sign to the numerator, losing nothing; a zero
+    /// denominator names no value at all and is read as one. Folding the two
+    /// together, which an earlier version did, changed both the sign and the
+    /// magnitude of every negative case, silently, in a type whose whole point
+    /// is exactness.
+    ///
+    /// **Two pairs cannot be normalised and are read as whole-numbered.**
+    /// `i64::MIN` has no negation in `i64`, so a denominator of `i64::MIN`, or a
+    /// numerator of `i64::MIN` under a negative denominator, would need a
+    /// magnitude one past what the type carries. Those are the only inputs on
+    /// which this is lossy, and they are named rather than folded in.
     #[must_use]
     pub const fn of(num: i64, den: i64) -> Self {
-        if den <= 0 {
+        if den > 0 {
+            Self { num, den }
+        } else if den == 0 || den == i64::MIN || num == i64::MIN {
             Self { num, den: 1 }
         } else {
-            Self { num, den }
+            Self {
+                num: -num,
+                den: -den,
+            }
         }
     }
 

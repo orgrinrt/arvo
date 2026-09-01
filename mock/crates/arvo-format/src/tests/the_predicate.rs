@@ -225,8 +225,35 @@ fn a_phase_never_carries_a_denominator_that_cannot_divide() {
                 "Phase::of({num}, {den}) produced a denominator of {}",
                 p.denominator()
             );
+            // And the value, which the sign assertion alone never asked about.
+            // A negative denominator carries one, so normalising it has to move
+            // the sign rather than change the magnitude. Without this the arm
+            // passed against a constructor that answered `3/1` for `of(3, -7)`.
+            if den < 0 && den != i64::MIN && num != i64::MIN {
+                assert_eq!(
+                    (p.numerator(), p.denominator()),
+                    (-num, -den),
+                    "Phase::of({num}, {den}) has to be exactly {}/{}",
+                    -num,
+                    -den
+                );
+            }
         }
     }
+    // The two pairs `i64::MIN` puts out of reach, named rather than swept over.
+    // Both are lossy on purpose and the doc says so; pinning them here is what
+    // stops the loss spreading to the pairs that do normalise.
+    assert_eq!(Phase::of(3, i64::MIN).denominator(), 1);
+    assert_eq!(Phase::of(i64::MIN, -7).denominator(), 1);
+    // The exactly-representable negative case, which is the whole finding.
+    assert_eq!(Phase::of(3, -7).numerator(), -3);
+    assert_eq!(Phase::of(3, -7).denominator(), 7);
+    // A zero denominator names no value, so it is read as one and the numerator
+    // is kept. The control that keeps the branch above from swallowing this one.
+    assert_eq!(
+        (Phase::of(3, 0).numerator(), Phase::of(3, 0).denominator()),
+        (3, 1)
+    );
     // The control: a usable denominator is kept rather than replaced, so the
     // coercion is about the cases that need it and not about all of them.
     assert_eq!(Phase::of(3, 7).denominator(), 7);
