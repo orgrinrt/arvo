@@ -194,7 +194,73 @@ any of its new columns are allowed to mean anything.
 
 ## 4. The instruments, opened
 
-To be written: what each instrument implements, per mode, with line citations.
+Six instruments stand behind the nine. All six exist and all six open, so no
+claim below is void for want of evidence. What each one implements, per mode,
+with the line that decides it.
+
+**`94_probes/c_retraction.rs` part 2**, behind entries 8 and 9. Two modes, at
+`c_retraction.rs:162`, spelled `truncate` and `nearest`, implemented at line 168
+as a closure over `x: u128`: `nearest` is `(x + half) >> f`, otherwise `x >> f`,
+with `half = 1 << (f - 1)` and `half = 0` at `f = 0`. The domain is `a, b, c in
+0..2^W` at `W in {4, 6, 8}` with `F` swept `0..=W`, all unsigned, operation
+multiply, chain length two. So `truncate` is a logical shift on a non-negative
+value, which is floor and is toward-zero at once, and `nearest` adds a half step
+before shifting, which is a half-up rule. The committed output is
+`94_probes/c_retraction.out.txt` and it matches the source.
+
+**`97_probes/p2_congruence_predicts_the_laws.py`**, behind entries 1 and 3. Three
+modes are implemented and two are swept. At line 71 `truncate` carries the
+comment `# toward zero` and is `e // shift` for `e >= 0` and `-((-e) // shift)`
+otherwise, which is toward-zero exactly. At line 65 `floor` is `e // shift`
+unconditionally, with a comment saying it floors rather than truncating toward
+zero, and it is deliberately not in this file's config list. At line 76 `nearest`
+carries the comment `# nearest, ties away from zero` and is
+`(2*e + shift) // (2*shift)` for `e >= 0`, mirrored through the origin for
+negatives, which is ties-away-from-zero exactly. The config generator at line 233
+sweeps `signed` in both values, so the signed domain is live and the distinctions
+are not free. It skips `nearest` at `F = 0` with the comment `no rounding happens
+at F = 0`, which is the author saying in the source what section 5 measures.
+
+**`60_probes/p_d_rescale_saving_is_adaptation_fusion.rs`**, half of entry 2. Two
+modes at lines 47 and 48: `Trunc` is `x >> shift` and `Rne` is a round-half-to-even
+on the remainder. `const M: i64 = 15` at line 33 and the results clamp to
+`[0, 15]`, so the domain is non-negative and `Trunc` there is floor and
+toward-zero at once.
+
+**`62_probes/p4_signed_multiplicative_accumulator.rs`**, the other half of entry
+2, and this is the file that decides it. Lines 51 to 54 name two modes with doc
+comments, `/// toward zero` on `Trunc` and `/// toward negative infinity
+(arithmetic shift)` on `Floor`, and lines 62 and 63 implement them as
+`x / (1i128 << shift)` and `x >> shift`. Rust integer division truncates toward
+zero, so the two are genuinely the two operations the retired word conflated, in
+one file, side by side. `const LO: i64 = -8` at line 67 makes the domain signed,
+so they are distinct there. This file sweeps no nearest rule at all.
+
+**`56_probes/q2_affine_membership.rs`**, behind entry 4. One rounding rule, at
+lines 73 to 80, with the comment `round to nearest onto a grid, ties toward
+positive infinity (a stated rule; the tie RULE is exactly what part 3 shows
+becomes load bearing)`, implemented as `min_by_key(|&&g| ((g - x).abs(), -g))`,
+which minimises distance and then maximises the grid point, so a tie takes the
+greater neighbour. `STEP = 8` and `BIAS = 4` at lines 38 and 39, bounds
+non-negative, so the domain carries no negatives.
+
+**`147_probes/r1`, `149_probes/y1` and `149_probes/y2`**, behind entries 5, 6 and
+7. All three implement the same six modes with the same bodies;
+`149_probes/y2_equivariance_is_domain_restricted.rs:80-131` is representative.
+`Floor` is `p.div_euclid(d)`; `Ceiling` rounds a nonzero remainder up;
+`TowardZero` and `AwayFromZero` branch on the sign of `p`; `NearestHalfUp` is
+`2*r >= d` giving `q + 1`, which sends a tie to the numerically greater
+neighbour and **not** to the neighbour further from zero; `NearestHalfEven` is
+the standard tie-to-even. `147_probes/r1:81` names the equivariant set outright
+as `Floor | Ceiling | NearestHalfUp`, and `147_probes/r1:29-31` records, as a
+prediction written before that probe ran, that toward-zero and away-from-zero
+also give zero on unsigned "because on a non-negative domain they coincide with
+floor and ceiling and inherit equivariance there".
+
+**One thing to notice across the six, because it is the whole of section 8.**
+`97_probes/p2` implements its half rule as ties away from zero. `56_probes/q2`,
+`147_probes/r1`, `149_probes/y1` and `149_probes/y2` implement theirs as ties
+toward positive infinity. Both would be written `half_up` under the ratified six.
 
 ## 5. Group one: the retraction row's two entries
 
