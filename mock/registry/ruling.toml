@@ -1238,13 +1238,13 @@ id = "the_trait_contract_structure_is_a_primary_paradigm"
 kind = "intent"
 rung = "stated"
 topic = "arvo_identity"
-says = "The trait contract based structure is a primary paradigm we uphold in future too, because it lets the shapes stick even while the implementations are still work in progress."
+says = "The trait contract based structure is a primary one we uphold in future too, because it lets the shapes stick even while the implementations are still work in progress."
 quote = '''
 The trait contract based structure is a primary paradigm we uphold in future too. This allows for
 the shapes to stick even when the impls are wip, like hilavitkutin currently has
 '''
 because = "A contract is a shape, and a shape is expressible before anything implements it. He names hilavitkutin as the live instance of that condition."
-note = "His only new design statement in the message, and a general one rather than an answer to anything the panel asked. It has no entry in `INTENTS.md` and no `I` number. An argument for `in_force` exists and I have not taken it: `mockspace.toml:135` declares an `arvo-bits-traits-only` lint and the crate vocabulary carries three contracts crates, so the paradigm is enforced in one place. That enforces where traits may live rather than that contracts are the paradigm, which is a narrower thing than he stated.\n\nHis \"we\" is the stack, in a message about the stack, naming hilavitkutin as the live instance. The `says` had narrowed it to arvo, which loses what he committed to. His word is kept and the scope is read off the registry this row sits in, which cannot bind another repository anyway."
+note = "His only new design statement in the message, and a general one rather than an answer to anything the panel asked. It has no entry in `INTENTS.md` and no `I` number. An argument for `in_force` exists and I have not taken it: `mockspace.toml:135` declares an `arvo-bits-traits-only` lint and the crate vocabulary carries three contracts crates, so the structure is enforced in one place. That enforces where traits may live rather than that contracts come first, which is a narrower thing than he stated.\n\nHis \"we\" is the stack, in a message about the stack, naming hilavitkutin as the live instance. The `says` had narrowed it to arvo, which loses what he committed to. His word is kept and the scope is read off the registry this row sits in, which cannot bind another repository anyway."
 provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
 keywords = ["trait", "contract", "paradigm", "shape", "structure", "wip", "implementation", "hilavitkutin", "sticks"]
 

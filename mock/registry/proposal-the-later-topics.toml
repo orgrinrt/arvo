@@ -339,7 +339,7 @@ kind = "answer"
 sentence_kind = "normative"
 standing = "one_expert"
 topic = "the_strategy_object"
-says = "The policy is chosen from the consumer's semantics and the substrate cannot know it. The weighting is chosen from the consumer's measurements and nobody else can take them. Pick the policy first, because a wrong policy is a wrong answer and a wrong weighting is a slow answer."
+says = "The policy is chosen from the consumer's semantics and arvo cannot know it. The weighting is chosen from the consumer's measurements and nobody else can take them. Pick the policy first, because a wrong policy is a wrong answer and a wrong weighting is a slow answer."
 because = "It follows from the object rather than from a measurement: the assignment fixes the denotation and the weighting ranges over realisations of it, so an error in the first is an error in what is computed and an error in the second is an error in how long it takes."
 note = """
 Two presets sharing a policy assignment compute the same answers on every input \
