@@ -32,9 +32,22 @@
 //! rather than an edit.
 //!
 //! So this reports and orders, and the lint gets written once the vocabulary
-//! question closes and every remaining row has a known correct spelling. The
-//! report is what makes that question answerable, since it names every row the
-//! answer has to cover.
+//! question closes and every remaining row has a known correct spelling.
+//!
+//! # What it reads, which is narrower than every row
+//!
+//! Three predicate fields, `proposal::predicate`, `law::holds` and
+//! `law::fails`. A mode named anywhere else is invisible here, so the report
+//! covers the answer over those three rather than over the corpus. This
+//! paragraph used to say it names every row the answer has to cover, which is
+//! a claim about the corpus that the field list does not support.
+//!
+//! `probe::fusion_under_unsigned_over_six_rounding_modes` is the known
+//! instance. Its `establishes` names all six modes in the spellings that
+//! predate the ruling, and it came through the sweep that rewrote fifteen
+//! entries untouched, because that sweep worked from this report. Widening the
+//! field list would not reach it: the reader below takes `axis: values`
+//! entries and that field is a sentence.
 
 use mockspace::RegistryView;
 use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
@@ -95,6 +108,10 @@ const JOIN: &str = ", ";
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 enum Standing {
     /// One of the six, spelled as the ruling spells it.
+    ///
+    /// About the spelling and not about the operation. The ruling closed which
+    /// names exist and said nothing about what each denotes, so a row lands
+    /// here whether or not the mode it names is settled.
     Ratified,
     /// Not a mode: `exact` or `any`.
     NotAMode,
@@ -398,8 +415,11 @@ fn report(found: &[Entry]) -> ToolReport {
 
     section(
         "A different spelling of one of the six",
-        "Mechanical. The mode is not in doubt, only how it is written, so each of \
-         these can be rewritten to the name on the right without reading anything.",
+        "Mechanical, and that is a claim about the spelling rather than about the \
+         mode. Both sides of a pair name the same thing, so the rewrite moves no \
+         region and needs nothing read. Whether the name on the right denotes one \
+         operation is a separate question this does not answer: an ambiguous mode \
+         is ambiguous in the row before the rewrite and after it alike.",
         &aliases,
     );
     section(
