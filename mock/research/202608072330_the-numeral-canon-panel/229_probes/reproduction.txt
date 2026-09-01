@@ -1,0 +1,29 @@
+# Reproduction of 183_probes, run in this directory against the same corpus.
+
+## span_verdicts.sh
+IDENTICAL to ../183_probes/span_verdicts.out
+
+## unblock_value.sh
+IDENTICAL to ../183_probes/unblock_value.out
+
+## axis_census.sh
+NOT identical, and correctly so: the census reads the LIVE dimension.toml,
+which has grown from 16 rows to 22 since 183 ran. The diff below is that growth.
+1,2c1,2
+< ### declared axes (16)
+< integer_width fraction_width total_width signedness overflow_policy rounding operation arity chain_length container alignment access_pattern target_features threads strategy build_profile 
+---
+> ### declared axes (22)
+> integer_width fraction_width total_width signedness overflow_policy rounding operation arity chain_length container alignment access_pattern target_features threads strategy ambient_domain radix accumulator_width toolchain build_profile operand_window occupancy 
+28c28
+<     14  radix                                    UNDECLARED
+---
+>     14  radix                                    declared
+72c72
+<      2  ambient domain                           UNDECLARED
+---
+>      2  ambient domain                           declared
+136c136
+<   distinct keys 115, of which declared 19 and undeclared 96
+---
+>   distinct keys 115, of which declared 21 and undeclared 94

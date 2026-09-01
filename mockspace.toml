@@ -283,6 +283,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.ruling-carries-no-verbatim]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-canon-that-loads-nothing-is-not-a-clean-canon]
 commit = "error"
 build = "error"
@@ -1396,3 +1401,8 @@ description = "The words somebody would search for to find this row. The `topic`
 # this round, so a new crate inherited a dead one's exemption and went unchecked
 # by the numeric lints without anything saying so.
 arvo-format = ["numeric"]
+
+[lints.the-axis-set-is-append-only]
+commit = "error"
+build = "error"
+push = "error"

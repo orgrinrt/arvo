@@ -36,8 +36,8 @@
 //! report is what makes that question answerable, since it names every row the
 //! answer has to cover.
 
-use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
 use mockspace::RegistryView;
+use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
 
 /// The ruling that closed the vocabulary. Read at run time rather than trusted,
 /// so this tool cannot outlive the row it enforces.
@@ -252,13 +252,14 @@ fn modes_in(values: &str) -> Vec<String> {
     let v = v.strip_prefix('=').map(str::trim).unwrap_or(v);
 
     if let Some(open) = v.find('{')
-        && let Some(close) = v[open..].find('}') {
-            return v[open + 1..open + close]
-                .split(',')
-                .map(|m| m.trim().to_string())
-                .filter(|m| !m.is_empty())
-                .collect();
-        }
+        && let Some(close) = v[open..].find('}')
+    {
+        return v[open + 1..open + close]
+            .split(',')
+            .map(|m| m.trim().to_string())
+            .filter(|m| !m.is_empty())
+            .collect();
+    }
     // A trailing clause after a comma is commentary on the mode rather than a
     // second mode, so only the head is read.
     let head = v.split(',').next().unwrap_or(v).trim();

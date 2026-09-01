@@ -1,0 +1,54 @@
+PROBE C: negation conjugacy
+
+== FIXTURE ==
+  34 of 34 fixture rows correct
+
+== CONTROL 1 (must hold) ==
+  toward_zero is odd by construction: it keeps the sign and takes
+  the same magnitude, so it is its own conjugate on every row.
+    failures over W in {4,6,8}, F in 0..W, signed: 0
+
+== CONTROL 2 (the case that must fail) ==
+  floor is not odd: floor(-x) is -ceil(x), so it must disagree with
+  itself on every non-integer. A zero here means the instrument is
+  not evaluating the negated argument at all.
+    floor against itself at W = 8, F = 2, signed: 192
+
+== ODDNESS: is each mode its own conjugate? W = 8, signed ==
+  mode                     F=1    F=2    F=3    F=4   verdict
+  floor                     128    192    224    240   not odd
+  ceil                      128    192    224    240   not odd
+  toward_zero                 0      0      0      0   ODD
+  away_from_zero              0      0      0      0   ODD
+  bit_drop                  128    192    224    240   not odd
+  half_up[toward +inf]      128     64     32     16   not odd
+  half_up[away from 0]        0      0      0      0   ODD
+  half_down[toward -inf]    128     64     32     16   not odd
+  half_even                   0      0      0      0   ODD
+
+== CONJUGATE OF EACH MODE, found by search over the mode set ==
+  R(-x) == -N(x) for all x. W = 8, F in 1..=4, signed.
+  floor                  -> ceil
+  ceil                   -> floor, bit_drop
+  toward_zero            -> toward_zero
+  away_from_zero         -> away_from_zero
+  bit_drop               -> ceil
+  half_up[toward +inf]   -> half_down[toward -inf]
+  half_up[away from 0]   -> half_up[away from 0]
+  half_down[toward -inf] -> half_up[toward +inf]
+  half_even              -> half_even
+
+== THE SIX NAMES, AND WHETHER THE SET HOLDS EACH CONJUGATE ==
+  the vocabulary is floor, ceil, toward_zero, half_up, half_even,
+  stochastic. stochastic is not a function and is probe D's subject.
+  floor                  conjugate ceil                     in the six? yes
+  ceil                   conjugate floor                    in the six? yes
+  toward_zero            conjugate toward_zero              in the six? yes
+  half_up[toward +inf]   conjugate half_down[toward -inf]   in the six? NO
+  half_up[away from 0]   conjugate half_up[away from 0]     in the six? yes
+  half_even              conjugate half_even                in the six? yes
+
+== VERDICTS ==
+  control 1 (toward_zero is odd):  PASS
+  control 2 (floor is not):        PASS
+  instrument: sound

@@ -32,8 +32,10 @@
 #
 # What genuinely rewrites meaning is **deleting or renaming a row here**, which
 # turns a written span into an unparseable one and a written absence into
-# nonsense. So the set is append-only, and a check pins it rather than this
-# sentence asking.
+# nonsense. So the set is append-only, and `the-axis-set-is-append-only` pins it
+# rather than this sentence asking: it holds a roster of every id ever declared
+# and refuses one that stops resolving, so growth is free and only loss is
+# refused.
 #
 # The set still moves only on two independent readings, because which of the
 # corpus's keys are axes is a judgement and not a lookup.
@@ -203,7 +205,7 @@ keywords = ["S", "strategy", "Hot", "Cold", "Warm", "Precise", "preset", "policy
 # axis was declared was always as narrow as it now reads: declaring reveals a
 # narrowness rather than creating one. What genuinely would rewrite meaning is
 # deleting or renaming a row here, which turns a written span into an unparseable
-# one, so the set is append-only and a check pins it.
+# one, so the set is append-only and `the-axis-set-is-append-only` pins it.
 
 [[dimension]]
 id = "ambient_domain"
@@ -264,3 +266,21 @@ moves = "The container derivation's own output count moves along it, measured: o
 note = "**Declared because two seats reached the same missing axis from opposite directions and neither could gate on it.** One derived that the footprint observation exists only where the value is the sole occupant, which is now `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`. The other derived that the container derivation has a different output count on each side of that split, and reported that no declared axis could carry the arms it produces.\n\nThat is the shape the axis vocabulary exists for: a region something genuinely moves along, found by measurement rather than posited. Without it the two arms are real and ungateable, which is the state where a finding gets written into prose and lost."
 provenance = ["panel::202608072330_the-numeral-canon-panel::226_lattner_the_derivation_outputs::#23-the-answer", "panel::202608072330_the-numeral-canon-panel::225_peyton_jones_the_container_premise::#3-the-statement-that-survives-and-it-is-already-the-canons-shape"]
 keywords = ["occupancy", "sole", "shared", "placement", "packed", "carrier", "allocation", "footprint", "observable", "stride", "access width", "column"]
+
+[[dimension]]
+id = "association"
+what = "How a multi-operand expression is parenthesised, independent of how many operands it has and of what its leaves are."
+grammar = "`association = <shape>`, `association in {<set>}`, or `association any` where a claim is established independent of it. Shapes seen in the corpus: `left`, `right`, `balanced`. Not admissible bare on any claim over an expression of arity above two: such a claim does not hold anywhere association is defined, which is everywhere more than one operator is applied."
+moves = "The answer itself, not merely a verdict about it. Exhaustive at `W = 4` signed saturating with every leaf a distinct occurrence, the left fold and the balanced tree disagree on 16268 of 65536 tuples, witness `[-8, -8, -8, 1]` giving `-7` against `-8`. Two negative controls bound it: the same arm under wrapping disagrees on none, and a declared non-negative window disagrees on none, the second agreeing exhaustively with an earlier seat's four-million-sample measurement."
+note = "**Declared because two seats reached it independently and neither instrument could vary the other's coordinate**, which is why they read as disagreeing for a whole sitting. One decomposed the term and found the decomposition assigns depth to `chain_length`, arity to `arity`, leaf count to `chain_length` and residue to aliasing, with **no slot for parenthesisation**. The other built the two-by-two directly and found two cells pointing opposite ways: at a non-negative window with distinct leaves the value moves with association and the corner rule stays exact, and at a narrow window with an aliased leaf the value does not move and the corner rule goes wide.\n\nThe two are orthogonal and `a_predicate_names_an_axis_once` is a hard error, so folding them under one key makes a predicate over either unwritable.\n\n**What the two instruments share, and it bounds every claim above.** Neither varied `strategy`, `threads`, `target_features` or `toolchain`, so the region they agree about is the registry as committed, one thread, one host and the pinned toolchain. Widening any of those is a new claim and belongs in whoever establishes it."
+provenance = ["panel::202608072330_the-numeral-canon-panel::231_dolan_the_two_readings_attacked::#23-the-decisive-artifact-exhaustive-rather-than-sampled", "panel::202608072330_the-numeral-canon-panel::231_kiselyov_attacking_the_other_reading::#22-two-cells-settle-it-and-they-point-in-opposite-directions"]
+keywords = ["association", "associativity", "parenthesisation", "grouping", "left fold", "right fold", "balanced tree", "reduction shape", "term shape"]
+
+[[dimension]]
+id = "leaf_aliasing"
+what = "Whether the leaves of a term are distinct occurrences, or the same value appears at more than one of them."
+grammar = "`leaf aliasing = distinct`, `leaf aliasing = aliased`, or `leaf aliasing any` where a claim is established independent of it. Not admissible bare on a claim about an interval or range rule over a term of arity above one: such a rule is exact on distinct leaves and can lose exactness on aliased ones, so a claim that does not name the axis holds nowhere aliasing is defined."
+moves = "Whether an interval rule stays exact. Sweeping 136 declared operand boxes at `W = 4` with association held fixed, the rule agrees with the oracle on every box for `(x + y) - z` and disagrees on 5 for `(x + y) - x`, witness box `[-4, 1]` where the rule says may-overflow and the oracle says it cannot. A negative control on the distinct-leaf term passes at zero disagreements, so the rule is being evaluated correctly in both arms."
+note = "The companion to `association` and separated from it for the same reason. The measurement that first named this region drew every operand independently, so aliasing was fixed at `distinct` across all of it and could not have moved; the measurement that named association stated its condition across both discharge checks, so association could not have moved there. **Two instruments, each blind to the other's coordinate, agreeing perfectly about it because neither varied it.**\n\nSame intersection bound as `association`: one thread, one host, the pinned toolchain, the registry as committed."
+provenance = ["panel::202608072330_the-numeral-canon-panel::231_dolan_the_two_readings_attacked::#23-the-decisive-artifact-exhaustive-rather-than-sampled", "panel::202608072330_the-numeral-canon-panel::231_kiselyov_attacking_the_other_reading::#21-the-instrument-that-varies-both"]
+keywords = ["leaf aliasing", "aliasing", "aliased", "distinct", "repeated operand", "shared leaf", "interval rule", "range rule", "exactness", "occurrence"]

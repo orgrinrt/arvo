@@ -1,0 +1,65 @@
+### predicate entries: 527    declared axes: 22
+### predicate fields:  91
+
+axis                 entries
+integer_width        4
+fraction_width       66
+total_width          65
+signedness           66
+overflow_policy      61
+rounding             17
+operation            73
+arity                53
+chain_length         20
+container            14
+alignment            2
+access_pattern       0
+target_features      25
+threads              36
+strategy             1
+ambient_domain       0
+radix                2
+accumulator_width    1
+toolchain            7
+build_profile        11
+operand_window       3
+occupancy            0
+---
+(sum)                527
+
+### axes named per predicate field, and what each field is therefore silent on
+   1 axes named     6 fields  (silent on 21)
+   2 axes named     8 fields  (silent on 20)
+   3 axes named     5 fields  (silent on 19)
+   4 axes named    10 fields  (silent on 18)
+   5 axes named     7 fields  (silent on 17)
+   6 axes named    28 fields  (silent on 16)
+   7 axes named     8 fields  (silent on 15)
+   8 axes named     6 fields  (silent on 14)
+   9 axes named     2 fields  (silent on 13)
+  11 axes named     9 fields  (silent on 11)
+  13 axes named     2 fields  (silent on 9)
+### mean 5.8 of 22 named, so 16.2 silent on average
+### the richest field names 13 of 22
+
+### U1, two axes in constant use must be high
+  total_width: PASS (65)
+  threads: PASS (36)
+### U2, an axis nobody declared is absent and unused
+  PASS
+### U3, one table row per declared axis
+  PASS, 22 of 22
+### U4, the per-axis sum against the entry total
+  PASS, 527 = 527, so every entry names a declared axis
+### U5, the field grouping is not degenerate
+  PASS, max 13
+### U6, the total against a count somebody else arrived at independently.
+###     ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side, which
+###     is ratified, says in its note: 139 of 527 entries drop the axis word
+###     from the values side entirely. That 527 comes from a different reader
+###     written by a different seat, so agreeing with it is a check rather
+###     than a restatement. The first version of this script said 517.
+  PASS, 527 matches the ratified note's 527
+### U7, at least one entry must come from a single-line array, or this
+###     reader is the old one wearing a new name.
+  PASS, 10 entries live on an array open-bracket line

@@ -1,0 +1,53 @@
+PROBE E: mean error per operation
+
+== FIXTURE ==
+  34 of 34 fixture rows correct
+
+== CONTROL 1 (the case that must fail) ==
+  floor is downward on every non-grid value, so its error sum must
+  be strictly negative. A zero here means the sum is not being
+  accumulated and every number below is void.
+    floor at W = 8, F = 2, signed, full domain: -384/4
+
+== CONTROL 2 (must hold) ==
+  floor and ceil are conjugate under negation, so on the symmetric
+  domain their error sums must be exact negatives of one another.
+    floor -384/4 against ceil 384/4
+
+== ERROR SUM, W = 8, F = 2, signed. numerator over 4 ==
+  mode                       full domain   symmetric domain
+  floor                           -384               -384   biased
+  ceil                             384                384   biased
+  toward_zero                        0                  0   UNBIASED on the symmetric domain
+  away_from_zero                     0                  0   UNBIASED on the symmetric domain
+  bit_drop                        -384               -384   biased
+  half_up[toward +inf]             128                128   biased
+  half_up[away from 0]               0                  0   UNBIASED on the symmetric domain
+  half_down[toward -inf]          -128               -128   biased
+  half_even                          0                  0   UNBIASED on the symmetric domain
+
+== THE NEAREST MODES ONLY, across widths, symmetric domain ==
+  the non-tie errors cancel, so what is left is the tie handling.
+  ties in the domain are counted beside it.
+  W =  6 F = 1 ties    32: hu+inf     32/2     hu-afz      0/2     hd-inf    -32/2     heven       0/2     
+  W =  6 F = 2 ties    16: hu+inf     32/4     hu-afz      0/4     hd-inf    -32/4     heven       0/4     
+  W =  6 F = 3 ties     8: hu+inf     32/8     hu-afz      0/8     hd-inf    -32/8     heven       0/8     
+  W =  8 F = 1 ties   128: hu+inf    128/2     hu-afz      0/2     hd-inf   -128/2     heven       0/2     
+  W =  8 F = 2 ties    64: hu+inf    128/4     hu-afz      0/4     hd-inf   -128/4     heven       0/4     
+  W =  8 F = 3 ties    32: hu+inf    128/8     hu-afz      0/8     hd-inf   -128/8     heven       0/8     
+  W = 10 F = 1 ties   512: hu+inf    512/2     hu-afz      0/2     hd-inf   -512/2     heven       0/2     
+  W = 10 F = 2 ties   256: hu+inf    512/4     hu-afz      0/4     hd-inf   -512/4     heven       0/4     
+  W = 10 F = 3 ties   128: hu+inf    512/8     hu-afz      0/8     hd-inf   -512/8     heven       0/8     
+
+== THE SAME ON AN UNSIGNED DOMAIN ==
+  where the two readings of half_up are one operation, so the two
+  columns must be identical. This is the negative control on the
+  claim that the readings differ: they must not differ here.
+  W = 8 F = 1:  hu+inf    128/2     hu-afz    128/2     heven      0/2
+  W = 8 F = 2:  hu+inf    128/4     hu-afz    128/4     heven      0/4
+  W = 8 F = 3:  hu+inf    128/8     hu-afz    128/8     heven      0/8
+
+== VERDICTS ==
+  control 1 (floor sum is negative): PASS
+  control 2 (floor and ceil mirror): PASS
+  instrument: sound
