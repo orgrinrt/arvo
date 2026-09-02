@@ -11,7 +11,6 @@
 
 #![no_std]
 
-
 use core::fmt::{self, Write};
 
 /// A caller-supplied fixed-size buffer. No alloc, no std, no growth.
@@ -27,7 +26,11 @@ pub struct Buffer<const N: usize> {
 impl<const N: usize> Buffer<N> {
     #[must_use]
     pub const fn new() -> Self {
-        Self { bytes: [0; N], used: 0, overflowed: false }
+        Self {
+            bytes: [0; N],
+            used: 0,
+            overflowed: false,
+        }
     }
 
     #[must_use]
