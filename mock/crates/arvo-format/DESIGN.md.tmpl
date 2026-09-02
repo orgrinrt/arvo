@@ -670,11 +670,33 @@ shape the slot range's own count condition already has.
 identity is present. Two functions in one file disagreed about whether zero is in the set, and the one
 that disagreed with `contains` is the one that was not derived from it.
 
-**Exactly when, because the difference matters and an unqualified claim here would repeat the defect
-this section exists to fix.** Each obligation is a const evaluated at monomorphisation, so it fires
-during codegen. `cargo build` refuses. `cargo check` does not, because it skips codegen. So the
-guarantee is that an inadmissible range or an inadmissible law cannot reach a produced binary, and
-either can reach a passing check.
+**Exactly where, because a guarantee that names no site is not checkable and an unqualified claim here
+would repeat the defect this section exists to fix.** Each obligation is a const, so it is evaluated
+where it is used and nowhere else, and the guarantee is exactly the set of functions that use it.
+`Format::ADMITTED` is forced by two functions, `cancelling_slot` and `has_additive_identity`, and by
+nothing else in the crate. `Ambient`, `Quantum` and `Slots` each have their own forcing sets, which are
+different sets rather than the same two: `Slots::ADMITTED` is forced by the slot range's own accessors
+and by `adapt`, which is where a value is put back on the grid.
+
+**So the guarantee is over those verbs and not over the declaration.** A declaration that no forcing
+verb is ever asked about is refused nowhere, which follows from an associated const being evaluated at
+its use rather than at its definition, and no forcing site can close it. Two routes reach a value
+without meeting it: reading a coordinate off the impl, and `contains`, which is this crate's own
+spelling of the membership predicate. `contains` is not a route that forces nothing, and saying so
+was wrong: it is `magnitude_in_range::<F::Quantum>(magnitude).and(slot_in_range::<F::Slots>(slot))`,
+so it forces the quantum's obligation and the slot range's. What it never reaches is the format's own
+and the ambient's, which are the two this section is about.
+
+**A third route passes a forcing site and defeats it there, which is a different thing and wants
+saying separately.** An implementor writing an empty `ADMITTED` over the default is not missing the
+site: `has_additive_identity` evaluates whatever that implementor supplied, and what it supplied
+imposes nothing. So the guarantee over those verbs holds for an implementor that leaves the default in
+place, and an implementor is free not to. Closing the first two routes would need a verb that forces;
+closing this one needs the obligation to be something an implementor cannot write over.
+
+**Whether the design closes those routes is open and is this tier's to settle**, since the canon does
+not choose the shape a law takes. What is settled is that the sentence names its extension: an
+obligation reaches what asks for it.
 
 The refusal reaches implementors this crate cannot see, which is what makes it a check on the concept
 rather than on the two shapes shipped with it.
@@ -723,15 +745,17 @@ the sentence the trait's own documentation already carried as a request.
 **A format declares a nonzero phase denominator.** A denominator of zero names no position on the
 grid, so the phase coordinate does not denote and the predicate has nothing to be asked about.
 
-**Each fires exactly where the slot range's does**, for the same reason and with the same limit: a
-const evaluated at monomorphisation, so codegen refuses and `cargo check` does not. The guarantee is
-that an inadmissible declaration cannot reach a produced binary, and it can reach a passing check.
+**Each fires for the same reason and with the same limit**: a const, so it is evaluated at the verbs
+that ask for it and at no other. The verbs differ per obligation and the sets are disjoint from the
+slot range's, so the guarantee is over each obligation's own set rather than over one shared set. The
+section above names which they are and which routes reach a value without meeting one.
 
-**So the predicates stay total anyway.** An obligation that fires at codegen does not answer for the
-check-time evaluation an obligation cannot reach, so every function here has a defined answer for a
-declaration that violates one: an empty magnitude range carries no identity, and a zero denominator
-names no position and so carries none either. The obligation removes the case from binaries; the total
-branch is what makes the answer defined everywhere else.
+**So the predicates stay total anyway**, and this is the half that does not depend on where the
+obligations fire. Every function here has a defined answer for a declaration that violates one: an
+empty magnitude range carries no identity, and a zero denominator names no position and so carries
+none either. **That totality is the whole of what makes the answer defined**, rather than a second
+line behind an obligation that would otherwise have removed the case, because the routes above are
+exactly the cases no obligation is asked about.
 
 **A quantum law reaches an exponent it can name.** The step law at the largest admitted magnitude has to
 land inside what an `Exponent` carries, or the law names no quantum there, and a rate and a magnitude

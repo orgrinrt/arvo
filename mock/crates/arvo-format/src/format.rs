@@ -176,9 +176,17 @@ pub trait Format {
     /// on the grid, so the phase coordinate does not denote and the membership
     /// predicate has nothing to be asked about.
     ///
-    /// **It fires at codegen, not at `cargo check`**, so `cargo build` refuses
-    /// and `cargo check` does not, which is why the predicates below stay total
-    /// and answer a zero denominator rather than assuming it was refused.
+    /// **It fires where it is forced and nowhere else**, which is
+    /// `cancelling_slot` and `has_additive_identity` and nothing else in the
+    /// crate. `adapt` forces the slot range's obligation rather than this one.
+    /// So a coordinate read off the impl, and `contains`, both reach a value
+    /// without meeting it, and an implementor writing an empty `ADMITTED` over
+    /// this default meets it and finds nothing there. `contains` is not a route
+    /// that forces nothing: it goes through `magnitude_in_range` and
+    /// `slot_in_range`, so it forces the quantum's obligation and the slot
+    /// range's, and never this one or the ambient's.
+    /// That is why the predicates below stay total and answer a zero
+    /// denominator rather than assuming it was refused.
     ///
     /// ```compile_fail
     /// use arvo_format::ambient::BinaryRationals;

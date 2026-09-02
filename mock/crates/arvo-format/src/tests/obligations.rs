@@ -34,10 +34,12 @@ use crate::ambient::{
     is_admissible_ambient, Ambient, BinaryRationals, DecimalRationals, Radix,
     UnsignedBinaryRationals,
 };
-use crate::format::{is_admissible_format, Format, Phase};
+use crate::format::{contains, has_additive_identity, is_admissible_format, Format, Phase};
 use crate::points::{Biased, Floating, Integer, UFixed};
-use crate::quantum::{is_admissible_quantum, Constant, Exponent, Indexed, MagnitudeCount, Quantum};
-use crate::slots::{Signed, Slots, Unsigned};
+use crate::quantum::{
+    is_admissible_quantum, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum,
+};
+use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::width::{Bool, Width};
 
 // --- the constructions that compile and are wrong ----------------------------
@@ -255,4 +257,124 @@ fn every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts() {
         crate::slots::is_admissible::<Signed<8>>(),
     ];
     assert_eq!(verdicts, [Bool::TRUE; 4]);
+}
+
+// --- how far an obligation reaches, which is not as far as it reads ----------
+//
+// An obligation is a const and a const is evaluated where it is used, so the
+// guarantee is exactly the set of verbs that use it. `Format::ADMITTED` is forced
+// at two of them. The three arms below are the routes that reach a value without
+// meeting either, each one a property the design now states outright and each one
+// established by hand before it was written down here.
+//
+// **They pass, and that is what they are for.** A route the design admits exists
+// is pinned by an arm that passes while it is open and fails the moment it
+// closes, which is what makes a later round's closing visible rather than silent.
+
+/// A format whose phase names no position on the grid.
+///
+/// `Phase::of(1, 0)` is stored as it was written, so this compiles and the
+/// obligation on `Format` is what refuses it, at the two verbs that force it.
+struct PhaseNamesNoPosition;
+
+impl Format for PhaseNamesNoPosition {
+    type Ambient = BinaryRationals;
+    type Quantum = Constant<0>;
+    type Slots = Signed<8>;
+    const PHASE: Phase = Phase::of(1, 0);
+}
+
+/// The same format with the obligation written over, which any implementor may do.
+struct DisarmedObligation;
+
+impl Format for DisarmedObligation {
+    type Ambient = BinaryRationals;
+    type Quantum = Constant<0>;
+    type Slots = Signed<8>;
+    const PHASE: Phase = Phase::of(1, 0);
+    const ADMITTED: () = ();
+}
+
+#[test]
+fn contains_answers_for_a_format_whose_phase_does_not_denote() {
+    // `contains` is this crate's spelling of the membership predicate, and it
+    // forces the quantum's obligation and the slot range's, through
+    // `magnitude_in_range` and `slot_in_range`. What it never reaches is this
+    // one, so a declaration inadmissible in its *phase* answers through it while
+    // one inadmissible in its magnitudes or its slots is refused. The fixture is
+    // the first kind, which is why the arm can run at all.
+    //
+    // The assertion is that it answers at all; which way it answers is the slot
+    // and magnitude ranges' business and neither of those is what is wrong here.
+    let answered = contains::<PhaseNamesNoPosition>(Slot::ZERO, Magnitude::SMALLEST);
+    assert_eq!(answered, Bool::TRUE);
+
+    // The control, and it is what makes the arm mean anything: the same call on a
+    // format that does denote answers the same way, so the arm above is reporting
+    // that the obligation was not consulted rather than that the phase was read.
+    let control = contains::<Integer<8>>(Slot::ZERO, Magnitude::SMALLEST);
+    assert_eq!(answered, control);
+}
+
+#[test]
+fn a_coordinate_is_readable_off_the_impl_without_the_obligation_firing() {
+    // The shortest route of the three. Nothing between a reader and the
+    // declaration, so nothing to force.
+    assert_eq!(
+        <PhaseNamesNoPosition as Format>::PHASE.denotes(),
+        Bool::FALSE
+    );
+    assert_eq!(<Integer<8> as Format>::PHASE.denotes(), Bool::TRUE);
+}
+
+#[test]
+fn an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing() {
+    // Routed through a verb that forces, which is the whole content of the arm.
+    // `contains` never reaches this obligation, so calling the two declarations
+    // through it produces the same answer for a reason that has nothing to do
+    // with the override, and an arm built that way passes identically whether
+    // `ADMITTED` exists or not.
+    //
+    // `has_additive_identity` forces `<F as Format>::ADMITTED`. That this line
+    // compiles at all is the assertion: the same call on `PhaseNamesNoPosition`
+    // does not, which the `tests/ui` arm beside this file pins.
+    assert_eq!(has_additive_identity::<DisarmedObligation>(), Bool::FALSE);
+
+    // The control, and it is what stops the line above from being a fact about
+    // `has_additive_identity` rather than about the override: a format that
+    // leaves the default in place and does denote answers the other way, so the
+    // verb is not simply returning `FALSE` for everything.
+    assert_eq!(has_additive_identity::<Integer<8>>(), Bool::TRUE);
+
+    // And the two are the same declaration apart from the obligation, so the arm
+    // is about the override rather than about anything else that differs.
+    assert_eq!(
+        <DisarmedObligation as Format>::PHASE,
+        <PhaseNamesNoPosition as Format>::PHASE
+    );
+}
+
+#[test]
+fn adapt_forces_the_slot_range_and_not_the_format() {
+    use crate::adapt::{Adapt, Signature};
+    use crate::apply::{adapt, Dither, Exact};
+    use crate::overflow::Saturate;
+    use crate::rounding::Floor;
+
+    // The design said for a while that `apply` forces the format's obligation.
+    // It does not: `adapt` forces `<<S::Format as Format>::Slots as Slots>::ADMITTED`
+    // and reaches the format only through it. That this compiles and returns is
+    // the proof, because the format underneath declares a phase that names no
+    // position and the format's own obligation refuses exactly that.
+    type OverANonDenotingFormat = Signature<PhaseNamesNoPosition, Adapt<Floor, Saturate>>;
+    let landed = adapt::<OverANonDenotingFormat>(Exact::on_grid(Slot::ZERO), Dither::UNUSED);
+
+    // The control: the same call over a format that does denote lands on the same
+    // slot, so the line above is reporting that the format's obligation was never
+    // consulted rather than that this position is special.
+    type OverADenotingFormat = Signature<Integer<8>, Adapt<Floor, Saturate>>;
+    assert_eq!(
+        landed,
+        adapt::<OverADenotingFormat>(Exact::on_grid(Slot::ZERO), Dither::UNUSED)
+    );
 }
