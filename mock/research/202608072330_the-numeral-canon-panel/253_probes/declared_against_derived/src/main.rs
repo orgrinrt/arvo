@@ -168,11 +168,15 @@ fn main() {
         MOD4_IS_ASSOCIATIVE
     );
     match first_witness::<SatWindow>() {
-        Some((a, b, c, l, r)) => println!("  witness on the first : ({a}+{b})+{c} = {l}, {a}+({b}+{c}) = {r}"),
+        Some((a, b, c, l, r)) => {
+            println!("  witness on the first : ({a}+{b})+{c} = {l}, {a}+({b}+{c}) = {r}")
+        }
         None => println!("  witness on the first : none, which would break this probe"),
     }
     match first_witness::<Mod4>() {
-        Some((a, b, c, l, r)) => println!("  witness on the control: ({a}+{b})+{c} = {l}, {a}+({b}+{c}) = {r}"),
+        Some((a, b, c, l, r)) => {
+            println!("  witness on the control: ({a}+{b})+{c} = {l}, {a}+({b}+{c}) = {r}")
+        }
         None => println!("  witness on the control: none, as it should be"),
     }
     println!();

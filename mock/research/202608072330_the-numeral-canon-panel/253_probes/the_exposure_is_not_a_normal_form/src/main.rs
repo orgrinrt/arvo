@@ -90,7 +90,10 @@ impl Q {
         assert!(den != 0, "the probe built a rational with no denominator");
         let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
         let g = gcd(num, den).max(1);
-        Q { num: num / g, den: den / g }
+        Q {
+            num: num / g,
+            den: den / g,
+        }
     }
     fn add(self, o: Self) -> Self {
         Q::of(self.num * o.den + o.num * self.den, self.den * o.den)
@@ -109,7 +112,11 @@ fn power(base: u32, exp: i32) -> Q {
         acc *= b;
         n -= 1;
     }
-    if exp >= 0 { Q::of(acc, 1) } else { Q::of(1, acc) }
+    if exp >= 0 {
+        Q::of(acc, 1)
+    } else {
+        Q::of(1, acc)
+    }
 }
 
 /// The denoted set, enumerated from the exposed coordinates through the crate's
@@ -160,11 +167,24 @@ fn compare<A: Format, B: Format>(label: &str, a: &str, b: &str) {
     println!("{label}");
     println!("  {a}");
     println!("    tuple : {ta}");
-    println!("    set   : {} values, first {:?} last {:?}", sa.len(), sa.first(), sa.last());
+    println!(
+        "    set   : {} values, first {:?} last {:?}",
+        sa.len(),
+        sa.first(),
+        sa.last()
+    );
     println!("  {b}");
     println!("    tuple : {tb}");
-    println!("    set   : {} values, first {:?} last {:?}", sb.len(), sb.first(), sb.last());
-    println!("  same ambient type : {}", core::any::type_name::<A::Ambient>() == core::any::type_name::<B::Ambient>());
+    println!(
+        "    set   : {} values, first {:?} last {:?}",
+        sb.len(),
+        sb.first(),
+        sb.last()
+    );
+    println!(
+        "  same ambient type : {}",
+        core::any::type_name::<A::Ambient>() == core::any::type_name::<B::Ambient>()
+    );
     println!("  tuples equal      : {}", ta == tb);
     println!("  denoted sets equal: {}", sa == sb);
     println!();
@@ -225,10 +245,17 @@ fn contains_agrees<A: Format, B: Format>(label: &str) {
                 contains::<A>(arvo_format::slots::Slot::at(s), Magnitude::at(m)).get(),
                 contains::<B>(arvo_format::slots::Slot::at(s), Magnitude::at(m)).get(),
             );
-            if x == y { same += 1 } else { differ += 1 }
+            if x == y {
+                same += 1
+            } else {
+                differ += 1
+            }
         }
     }
-    println!("{label}: contains agrees on {same} of {} points, differs on {differ}", same + differ);
+    println!(
+        "{label}: contains agrees on {same} of {} points, differs on {differ}",
+        same + differ
+    );
 }
 
 /// The control for the `contains` arm: a different slot range, which is one of

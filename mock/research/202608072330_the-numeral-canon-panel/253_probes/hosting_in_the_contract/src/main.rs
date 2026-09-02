@@ -59,7 +59,10 @@ fn report<S: Slots>(name: &str) {
     println!("  WIDTH <= 62   (carrier capacity)   : {within_the_carrier_bound}");
     println!("  span < i64::MAX                    : {span_counts}");
     println!("  span < 2^WIDTH                     : {width_covers_the_span}");
-    println!("  is_admissible                      : {}", is_admissible::<S>().get());
+    println!(
+        "  is_admissible                      : {}",
+        is_admissible::<S>().get()
+    );
     println!(
         "  conditions failed                  : {}",
         [
