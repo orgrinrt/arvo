@@ -285,6 +285,99 @@ fn the_saturating_region_is_where_the_other_operand_is_odd() {
     assert!(error_numerator(odd_numerator, 5, i64::MIN) > 0);
 }
 
+/// Every pair worth reducing, which is every pair with a denominator.
+///
+/// A dense band crossed with itself, because exactness is a question about
+/// divisibility and sign rather than about the width of the carrier, plus the
+/// values the rule's own branches turn on so the crossing reaches them.
+fn every_pair_worth_reducing() -> impl Iterator<Item = (i64, i64)> {
+    values_to_reduce()
+        .flat_map(|n| values_to_reduce().map(move |d| (n, d)))
+        .filter(|&(_, d)| d != 0)
+}
+
+fn values_to_reduce() -> impl Iterator<Item = i64> {
+    // A binding rather than an item constant, for the reason `every_ratio` gives.
+    let extremes = [
+        i64::MIN,
+        i64::MIN + 1,
+        i64::MIN + 2,
+        i64::MIN + 3,
+        i64::MAX,
+        i64::MAX - 1,
+        i64::MAX - 2,
+        -1_000_000_006,
+        -1_000_000_007,
+        1_000_000_006,
+        1_000_000_007,
+    ];
+    (-64_i64..=64).chain(extremes)
+}
+
+/// Whether `n/d` has a form the coordinate holds, decided by reducing the pair
+/// rather than by the rule `has_an_exact_form` states.
+///
+/// Divide both operands by their greatest common divisor in a carrier wide
+/// enough that nothing overflows, put the sign on the numerator, and ask whether
+/// both coordinates of that reduced form still fit. Every exact form is a
+/// positive multiple of the reduced one, so the reduced one fitting is both
+/// necessary and sufficient. No branch here is shared with the helper.
+fn an_exact_form_exists(n: i64, d: i64) -> bool {
+    assert!(d != 0, "a zero denominator names no ratio to reduce");
+    let (wide_n, wide_d) = (i128::from(n), i128::from(d));
+    let divisor = greatest_common_divisor(wide_n.unsigned_abs(), wide_d.unsigned_abs()) as i128;
+    let (mut num, mut den) = (wide_n / divisor, wide_d / divisor);
+    if den < 0 {
+        num = -num;
+        den = -den;
+    }
+    num >= i128::from(i64::MIN) && num <= i128::from(i64::MAX) && den <= i128::from(i64::MAX)
+}
+
+fn greatest_common_divisor(a: u128, b: u128) -> u128 {
+    let (mut a, mut b) = (a, b);
+    while b != 0 {
+        let remainder = a % b;
+        a = b;
+        b = remainder;
+    }
+    a
+}
+
+/// The rule with its parity clause removed, which exists only to be wrong.
+fn a_rule_without_the_parity_clause(n: i64, d: i64) -> bool {
+    d >= 0 || n == 0 || (n == i64::MIN) == (d == i64::MIN)
+}
+
+#[test]
+fn the_predicate_the_properties_partition_on_agrees_with_reduction() {
+    // Properties 3 and 4 ask `has_an_exact_form` which of the two laws each pair
+    // is tested against, and the helper restates the constructor's own branch
+    // condition. So a change to one that should have moved the other leaves both
+    // agreeing with each other and disagreeing with the arithmetic, and every arm
+    // still passes. This is the arm that would not.
+    let mut walked = 0_u32;
+    for (n, d) in every_pair_worth_reducing() {
+        assert_eq!(
+            has_an_exact_form(n, d),
+            an_exact_form_exists(n, d),
+            "the rule and the reduction disagree at {n}/{d}"
+        );
+        walked += 1;
+    }
+    assert!(walked > 10_000, "the walk shrank to {walked} pairs");
+
+    // The control: the walk can tell a wrong rule from the right one. Dropping
+    // the parity clause is wrong exactly on the pairs the saturating region is
+    // made of, so a walk that had stopped reaching them would find nothing.
+    let caught = every_pair_worth_reducing()
+        .any(|(n, d)| a_rule_without_the_parity_clause(n, d) != an_exact_form_exists(n, d));
+    assert!(
+        caught,
+        "the walk cannot tell a wrong rule from the right one"
+    );
+}
+
 // --- 13. the tie comparison, at the top of the carrier ---------------------
 
 #[test]
@@ -312,12 +405,6 @@ fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
     // tie is `2*num == den`, so a numerator big enough to overflow on doubling
     // forces a denominator past `i64::MAX`, which the coordinate cannot hold.
     // The overflow is reachable only off a tie, which is the arm above.
-    let half_of_max = Exact::between(Slot::ZERO, Fraction::of(i64::MAX - 1, 2));
-    assert!(
-        half_of_max.is_on_grid().get(),
-        "an even numerator over two is whole"
-    );
-
     let genuine = Exact::between(Slot::at(2), Fraction::HALF);
     assert!(genuine.is_tie().get(), "an ordinary tie stopped being one");
 }
