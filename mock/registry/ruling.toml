@@ -442,7 +442,7 @@ id = "the_next_unit_is_chosen_bottom_up"
 kind = "process"
 rung = "stated"
 topic = "panel_conduct"
-says = "The next topic is whatever is natural and settles the most downstream questions at once, unblocking further design and exploration. The build order is strictly ground up: once the fundamentals, the shapes and the conventions are in place, move one tier up and use those to define what arvo needs defined, and so on."
+says = "The next topic is whatever is natural and settles the most downstream questions at once, unblocking further design and exploration. The build order is strictly ground up: once the fundamentals, the basic approaches and the conventions are in place, move one tier up and use those to define what arvo needs defined, and so on."
 quote = '''
 Whatever makes sense next and is natural and gives most answers that settle downstream questions at the
 same time and enable/unblock further design and exploration work. We want to build from ground up, so
@@ -1238,7 +1238,7 @@ id = "the_trait_contract_structure_is_a_primary_paradigm"
 kind = "intent"
 rung = "stated"
 topic = "arvo_identity"
-says = "The trait contract based structure is a primary one we uphold in future too, because it lets the shapes stick even while the implementations are still work in progress."
+says = "The trait contract based structure is a primary approach we uphold in future too, because it lets the shapes stick even while the implementations are still work in progress."
 quote = '''
 The trait contract based structure is a primary paradigm we uphold in future too. This allows for
 the shapes to stick even when the impls are wip, like hilavitkutin currently has
