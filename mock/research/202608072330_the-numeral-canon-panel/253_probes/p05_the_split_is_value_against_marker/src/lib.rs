@@ -18,17 +18,19 @@ use core::mem::size_of;
 
 use arvo_format::adapt::{Adapt, Signature};
 use arvo_format::ambient::{BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
-use arvo_format::overflow::{Clamp, Saturate, Wrap};
-use arvo_format::points::{Biased, Floating, Integer, UFixed};
-use arvo_format::quantum::{Constant, Indexed};
-use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
-use arvo_format::slots::{Signed, Unsigned};
-use arvo_format::standards::{Fi, FractionLength, Ufi};
-use arvo_format::{Arity, Bool, Exponent, Magnitude, MagnitudeCount, Radix, Slot, SlotCount, Width};
 use arvo_format::apply::{Dither, Exact, Fraction};
 use arvo_format::format::Phase;
 use arvo_format::overflow::Policy;
+use arvo_format::overflow::{Clamp, Saturate, Wrap};
+use arvo_format::points::{Biased, Floating, Integer, UFixed};
+use arvo_format::quantum::{Constant, Indexed};
 use arvo_format::rounding::Mode;
+use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
+use arvo_format::slots::{Signed, Unsigned};
+use arvo_format::standards::{Fi, FractionLength, Ufi};
+use arvo_format::{
+    Arity, Bool, Exponent, Magnitude, MagnitudeCount, Radix, Slot, SlotCount, Width,
+};
 use arvo_placement::objective::{Access, Footprint};
 use arvo_placement::{Carrier16, Carrier32, Carrier64, Carrier8, Objective, Occupancy, Placement};
 use arvo_strategy::presets::{Cold, Hot, Precise, Warm};

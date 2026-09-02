@@ -1,19 +1,27 @@
 error[E0080]: evaluation panicked: the buffer is too small for this format's identity
   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
    |
-62 |         $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `p03_the_fit_is_refused_at_compile_time::identity_of::<arvo_format::points::Integer<8>, 50>::{constant#1}` failed here
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `p03_the_fit_is_refused_at_compile_time::identity_of::<arvo_format::points::Integer<8>, 50>::{constant#1}` failed here
    |
-  ::: src/lib.rs:65:13
+  ::: src/lib.rs:71:9
    |
-65 |     const { assert!(N >= rendered_len::<F>(), "the buffer is too small for this format's identity") };
-   |             --------------------------------------------------------------------------------------- in this macro invocation
+71 | /         assert!(
+72 | |             N >= rendered_len::<F>(),
+73 | |             "the buffer is too small for this format's identity"
+74 | |         )
+   | |_________- in this macro invocation
 
 note: erroneous constant encountered
-  --> src/lib.rs:65:5
+  --> src/lib.rs:70:5
    |
-65 |     const { assert!(N >= rendered_len::<F>(), "the buffer is too small for this format's identity") };
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+70 | /     const {
+71 | |         assert!(
+72 | |             N >= rendered_len::<F>(),
+73 | |             "the buffer is too small for this format's identity"
+74 | |         )
+75 | |     };
+   | |_____^
 
 error: aborting due to 1 previous error
 

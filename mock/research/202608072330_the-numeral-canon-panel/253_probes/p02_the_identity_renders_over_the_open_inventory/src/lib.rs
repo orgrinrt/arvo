@@ -81,7 +81,10 @@ mod tests {
 
     impl<const N: usize> Sink<N> {
         const fn new() -> Self {
-            Self { bytes: [0; N], used: 0 }
+            Self {
+                bytes: [0; N],
+                used: 0,
+            }
         }
         fn seen(&self) -> &str {
             core::str::from_utf8(&self.bytes[..self.used]).expect("ascii only")

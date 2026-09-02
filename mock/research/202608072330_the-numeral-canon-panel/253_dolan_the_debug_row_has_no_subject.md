@@ -231,9 +231,9 @@ Where a const gate becomes reachable, three arms, stderr captured and committed:
 
 | arm | command | exit | stderr |
 |---|---|---|---|
-| const-bound | `--emit=metadata` | 1 | 1175 bytes, `E0080` |
+| const-bound | `--emit=metadata` | 1 | 1129 bytes, `E0080` |
 | runtime call | `--emit=metadata` | 0 | 0 bytes |
-| runtime call | full codegen | 1 | 1425 bytes, `E0080` |
+| runtime call | full codegen | 1 | 1379 bytes, `E0080` |
 
 **So a compile-fail case written as a runtime call is green under `cargo check` and red only under
 `cargo build`.** Binding it in a `const` item is what makes the refusal reachable at check time.
@@ -245,6 +245,11 @@ with stderr discarded, arm two reported exit 1, which would have made the measur
 changes nothing. One arm per invocation with stderr captured, it reports exit 0 and zero bytes, three
 times. The byte count is what settles it, and the empty `arm2_runtime_call_check.stderr` is committed
 empty on purpose.
+
+The commit hook then reformatted the probe sources, which moved the assert onto four lines and changed
+what the diagnostics quote. Every stderr here was retaken against the reformatted source and the byte
+counts in the table are the retaken ones. The refusal, the code and the monomorphisation are unchanged;
+what moved was the rendering, which is why the artifacts were retaken rather than the test loosened.
 
 ## 5. What I refuse to ship, and it is the tempting one
 

@@ -4,8 +4,8 @@
 //! const assertion inside a generic function is forced at codegen, so a runtime
 //! call reaches it under `cargo build` and not under `cargo check`.
 
-use p03_the_fit_is_refused_at_compile_time::identity_of;
 use arvo_format::points::Integer;
+use p03_the_fit_is_refused_at_compile_time::identity_of;
 
 // `Integer<8>` renders in 51 bytes. 50 must be refused.
 const _SHORT: () = {

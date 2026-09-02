@@ -47,7 +47,12 @@ const L5: &[u8] = b"/";
 /// a second copy of the string. A hand-typed measuring copy was the first version
 /// and it was one space short, which the const gate caught at build time.
 const fn rendered_len<F: Format>() -> usize {
-    L0.len() + L1.len() + L2.len() + L3.len() + L4.len() + L5.len()
+    L0.len()
+        + L1.len()
+        + L2.len()
+        + L3.len()
+        + L4.len()
+        + L5.len()
         + digits_i64(radix::<F>().base() as i64)
         + digits_i64(slot_count::<F::Slots>().count())
         + digits_i64(declared_slot_width::<F::Slots>().count() as i64)
@@ -62,7 +67,12 @@ const fn rendered_len<F: Format>() -> usize {
 /// excepted at. A buffer too small is a build failure and never a value, so
 /// there is no error path and nothing to check at runtime.
 pub const fn identity_of<F: Format, const N: usize>(buf: &mut [u8; N]) -> &mut [u8] {
-    const { assert!(N >= rendered_len::<F>(), "the buffer is too small for this format's identity") };
+    const {
+        assert!(
+            N >= rendered_len::<F>(),
+            "the buffer is too small for this format's identity"
+        )
+    };
     let mut at = 0;
     at = put(buf, at, L0);
     at = put_i64(buf, at, radix::<F>().base() as i64);
@@ -95,7 +105,11 @@ const fn put_i64<const N: usize>(buf: &mut [u8; N], mut at: usize, v: i64) -> us
         at += 1;
     }
     let mut mag = if v < 0 { -(v as i128) } else { v as i128 };
-    let width = if v < 0 { digits_i64(v) - 1 } else { digits_i64(v) };
+    let width = if v < 0 {
+        digits_i64(v) - 1
+    } else {
+        digits_i64(v)
+    };
     let mut i = width;
     while i > 0 {
         i -= 1;
@@ -176,7 +190,10 @@ mod tests {
         let y = seen::<Integer<32>, 128>(&mut c).len();
         let mut a = [0u8; 128];
         let mut c = [0u8; 128];
-        assert_ne!(seen::<Integer<8>, 128>(&mut a), seen::<Integer<32>, 128>(&mut c));
+        assert_ne!(
+            seen::<Integer<8>, 128>(&mut a),
+            seen::<Integer<32>, 128>(&mut c)
+        );
         assert_ne!(x, y, "the lengths differ too, so the gate discriminates");
     }
 
