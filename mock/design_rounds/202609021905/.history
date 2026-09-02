@@ -1,0 +1,50 @@
+8fadb5ee docs: lock the src changelist
+45607b29 fix: name what contains forces, and pin the other forcing verb
+62d3e872 docs: plan the source half of the forcing-set round
+eeff34db docs: lock the doc changelist
+58c5c94f docs: name what contains forces, and drop the shared-forcing-set claim
+5adc2096 docs: plan the doc half of the forcing-set round
+27abddca docs: open a round on the per-obligation forcing sets
+f68e2eeb docs: close design round 202609021755
+a6f2fec2 docs: lock the src changelist for round 202609021755
+6ab61fa5 fix: name the forcing verbs in rustdoc and pin them from both sides
+708f6628 docs: author the src changelist for round 202609021755
+de9b1cd8 docs: lock the doc changelist for round 202609021755
+0759dc3d docs: name the two verbs that force the format obligation
+688b732b docs: open a fix round on the guarantee's two verbs and the override route
+7f4dcff2 chore: close the round on the guarantee that names nothing
+f862f801 chore: lock the src changelist on the guarantee round
+8ad19bb4 fix: the source drops a bound the canon refuses and pins the three routes
+03103a78 docs: the source plan for the two sentences the design gave up
+815912fc chore: lock the doc changelist on the guarantee sentence
+712b0630 docs: the guarantee names the verbs it holds over, not the declaration
+5b01ee98 docs: open the doc window for the guarantee that names nothing
+512ced0d docs: open a round on the primitives a consumer names at an API position
+77ef8757 docs: drop the registry addresses from the two published crate pages
+67ce00d8 Merge pull request #97 from orgrinrt/research/what-the-four-branches-still-carried
+6e59251a fix: pin the probe lockfiles to the workspace version
+17dc4374 research: what each of the four review branches still carries over dev
+9dbbb65b Merge pull request #95 from orgrinrt/research/q31-attack
+e50a8a45 docs: state the contracts instead of naming what settled them
+34a84bfb research: attack Q31, both routes break and the verdict survives on one leg
+83212d7e chore: drop the banned words from registry prose, keeping op's own
+97024de9 test: the repaired exact-product witness, and the ambient-domain canon probe
+bf0d0da2 feat: cancel the ratio coordinate exactly, saturate only the odd case
+2a274940 style: rustfmt the battery, applied by the pre-commit autofix
+b21c16a5 test: two Q31 instruments, a full ADMITTED mutation sweep and a carrier split
+31492c04 test: catalogue the arrival a consolidation of its own source is not
+5d62db27 test: enumerate the host-primitive positions the stack still carries
+36efe346 docs: stop publishing the registry's rendered pages
+ce18fda1 Merge pull request #94 from orgrinrt/research/q31-q31b
+0008e776 Merge pull request #93 from orgrinrt/research/q31-q31a
+2c473d67 research: close the 16-bit gap in the q31 target predicate
+03071e84 research: q31 answers two words, and the one-word reading contradicts the ratified spine
+93aa8a9d research: take the hook's rustfmt on the two q31a probe sources
+949b4aaa research: q31 takes two words, and the canon has been writing both already
+6761978c research: refresh the q31 probe output after the hook reformatted the sources
+c7859ab4 research: probes for q31, the admission obligation put to a carrier mutation
+cc9415c9 research: stake the q31 route before reading the landed files or building probes
+bfbb3621 Merge pull request #88 from orgrinrt/research/ratify-the-format-rat-a
+26f65faf Merge pull request #87 from orgrinrt/research/q29-q29b
+cba3bd3c Merge pull request #86 from orgrinrt/research/q29-q29a
+404e3a46 research: reconcile q29b against 241, 242, 246 and 247
