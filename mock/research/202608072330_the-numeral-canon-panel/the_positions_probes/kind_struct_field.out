@@ -1,0 +1,30 @@
+    Finished `release` profile [optimized] target(s) in 0.04s
+26 positions at kind `struct-field`, over the demand
+
+  notko@origin/dev:notko-macros-core/src/tiers.rs:145  struct-field         bool       CustomTier inline
+  notko@origin/dev:src/lend.rs:76  struct-field         usize      Exhausted wanted
+  notko@origin/dev:src/lend.rs:78  struct-field         usize      Exhausted had
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:17  struct-field         u32        AbiVersion <tuple field>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:66  struct-field         u64        ProviderId <tuple field>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:98  struct-field         u16        ExtensionVersion major
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:99  struct-field         u16        ExtensionVersion minor
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:100  struct-field         u16        ExtensionVersion patch
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:101  struct-field         u16        ExtensionVersion _reserved
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:149  struct-field         u32        ExtensionDescriptor tag
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:150  struct-field         u32        ExtensionDescriptor descriptor_size
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:153  struct-field         u32        ExtensionDescriptor name_len
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:156  struct-field         u32        ExtensionDescriptor providers_len
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:158  struct-field         u32        ExtensionDescriptor required_host_providers_len
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:42  struct-field         u32        SchemaVersion <tuple field>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:58  struct-field         u64        EvictionWeight <tuple field>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:71  struct-field         u32        BitWidth <tuple field>
+  vehje@origin/main:mock/crates/vehje-ir/src/ids.rs:14  struct-field         u32        NodeId <tuple field>
+  vehje@origin/main:mock/crates/vehje-ir/src/ids.rs:22  struct-field         u32        ScopeId <tuple field>
+  vehje@origin/main:mock/crates/vehje-ir/src/span.rs:20  struct-field         u32        FileId <tuple field>
+  vehje@origin/main:mock/crates/vehje-ir/src/span.rs:27  struct-field         u32        ByteOffset <tuple field>
+  vehje@origin/main:mock/crates/vehje-runtime-abi/src/diagnostic.rs:27  struct-field         u32        AbiSpan file
+  vehje@origin/main:mock/crates/vehje-runtime-abi/src/diagnostic.rs:30  struct-field         u32        AbiSpan start
+  vehje@origin/main:mock/crates/vehje-runtime-abi/src/diagnostic.rs:32  struct-field         u32        AbiSpan end
+  vehje@origin/main:mock/crates/vehje-syntax/src/parser.rs:33  struct-field         u32        TokenCursor <tuple field>
+  kolli@origin/dev:mock/crates/kolli-layout/src/text.rs:26  struct-field         bool       Cut removed
+the-positions: clean, 140500 examined.

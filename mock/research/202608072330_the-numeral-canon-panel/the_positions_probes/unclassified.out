@@ -1,0 +1,37 @@
+    Finished `release` profile [optimized] target(s) in 0.03s
+33 positions at role `unclassified`, over the demand
+
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-build/src/pragma.rs:24  variant-field        u8         Pragma <tuple field>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-build/src/pragma.rs:121  fn-return            u8         parallel_codegen_units parallel_codegen_units
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/error.rs:29  variant-field        u32        ExtensionError advertised
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/error.rs:29  variant-field        u32        ExtensionError minimum
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:45  fn-param             u32        new v
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:61  fn-param             u64        new w
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:74  fn-param             u32        new b
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:128  fn-return            u32        arena_intern arena_intern
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/src/hash.rs:10  item-const           u64        - FNV_PRIME
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/src/hash.rs:13  fn-return            u64        const_fnv1a const_fnv1a
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/src/interner.rs:48  fn-return            u32        arena_intern arena_intern
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/order.rs:110  item-const           usize      - CS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/plan/graph.rs:94  fn-param             usize      end_for i
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/plan/graph.rs:94  fn-return            usize      end_for end_for
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:134  fn-param             u32        atomic_wait expected
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:208  fn-param             u32        wait_u32 expected
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:257  fn-param             u32        wait_u32 expected
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:938  fn-return            u64        now_ns now_ns
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/DESIGN.md.tmpl:43  assoc-type           u32        impl Archive for Str Archived
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/DESIGN.md.tmpl:153  fn-return            u32        arena_intern arena_intern
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:76  fn-return            u32        read_int_literal read_int_literal
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:76  fn-return            u32        read_int_literal read_int_literal
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:93  fn-return            u32        read_line_comment read_line_comment
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:93  fn-return            u32        read_line_comment read_line_comment
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:112  fn-return            u32        read_block_comment read_block_comment
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:112  fn-return            u32        read_block_comment read_block_comment
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:130  fn-return            u32        read_whitespace read_whitespace
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:130  fn-return            u32        read_whitespace read_whitespace
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:148  fn-return            u32        read_operator_or_punct read_operator_or_punct
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:148  fn-return            u32        read_operator_or_punct read_operator_or_punct
+  vehje@origin/main:mock/crates/vehje-syntax/src/parser.rs:42  fn-return            usize      as_usize as_usize
+  kolli@origin/dev:mock/crates/kolli-input/src/console.rs:56  assoc-type           u8         impl Iterator for Stdin Item
+  kolli@origin/dev:mock/crates/kolli-input/src/console.rs:58  fn-return            u8         next next
+the-positions: clean, 140500 examined.
