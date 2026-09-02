@@ -21,3 +21,7 @@ invariance               i686-unknown-linux-gnu       exit=0
 mutant                   i686-unknown-linux-gnu       exit=101
 invariance               thumbv6m-none-eabi           exit=0
 mutant                   thumbv6m-none-eabi           exit=101
+
+--- and the 16-bit target, with core built from source
+invariance               msp430-none-elf              exit=0
+mutant                   msp430-none-elf              exit=101

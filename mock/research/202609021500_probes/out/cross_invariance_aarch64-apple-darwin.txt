@@ -1,4 +1,2 @@
 === invariance @ aarch64-apple-darwin
-   Compiling q31-probes v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/research/202609021500_probes)
-   Compiling q31-cross-invariance v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/research/202609021500_probes/cross/invariance)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s

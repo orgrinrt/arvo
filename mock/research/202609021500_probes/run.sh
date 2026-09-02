@@ -42,11 +42,25 @@ done
 say ""
 say "--- target invariance, and its mutant, per installed target"
 TARGETS="aarch64-apple-darwin x86_64-unknown-linux-gnu i686-unknown-linux-gnu thumbv6m-none-eabi"
+# msp430 is 16-bit and the pin ships no prebuilt artifacts for it, so core is built
+# from source. It needs the `rust-src` component, which the pin already lists.
+BUILD_STD_TARGETS="msp430-none-elf"
 for t in $TARGETS; do
   for d in invariance mutant; do
     log="out/cross_${d}_${t}.txt"
     { echo "=== $d @ $t"; } > "$log"
     ( cd "cross/$d" && cargo build --target "$t" ) >> "$log" 2>&1
+    say "$(printf '%-24s %-28s exit=%s' "$d" "$t" "$?")"
+  done
+done
+
+say ""
+say "--- and the 16-bit target, with core built from source"
+for t in $BUILD_STD_TARGETS; do
+  for d in invariance mutant; do
+    log="out/cross_${d}_${t}.txt"
+    { echo "=== $d @ $t (-Z build-std=core)"; } > "$log"
+    ( cd "cross/$d" && cargo build -Z build-std=core --target "$t" ) >> "$log" 2>&1
     say "$(printf '%-24s %-28s exit=%s' "$d" "$t" "$?")"
   done
 done

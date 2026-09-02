@@ -48,8 +48,12 @@ would have excluded. `AT_SIXTY_THREE_IT_FAILS` beside it is the control saying t
 sweep is not vacuous, and the module `span_too_wide` puts the crate's own pinned
 case for that assertion through the same instrument.
 
-## What is not here
+## What is not here, and what was chased down instead
 
-No 16-bit target. `msp430-none-elf` has no prebuilt artifacts on the pinned
-toolchain and building core from source for it was not attempted, so the target
-invariance result covers pointer widths 32 and 64 and does not claim 16.
+Nothing, now. `msp430-none-elf` has no prebuilt artifacts on the pinned toolchain, so
+`run.sh` builds core from source for it with `-Z build-std=core`, which needs the
+`rust-src` component the pin already lists. So the invariance result covers pointer
+widths 16, 32 and 64, and the mutant fails on all five targets.
+
+`avr-none` was tried and needs a CPU selected through a form `cargo build` would not
+take on this pin. Not chased, because msp430 already carries the 16-bit case.
