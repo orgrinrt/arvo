@@ -1,0 +1,51 @@
+probe: is an ambient domain a candidate system, or a coordinate of one?
+tree:  2a274940
+
+--- controls ---
+POSITIVE  proposal says~"ambient domain"        -> 8 (must be > 0)
+POSITIVE  proposal says~"representable set"     -> 13 (must be > 0)
+NEGATIVE  proposal says~"the surreal numbers"   -> 0 (must be 0)
+NEGATIVE  proposal says~"quaternion"            -> 0 (must be 0)
+
+--- every row whose says names an ambient domain, with its standing ---
+id                                                standing     topic
+------------------------------------------------  -----------  -----------------
+arithmetic_on_a_format_factors_as_an_adaptation…  two_experts  the_format
+a_format_is_identified_by_its_ambient_domain_an…  two_experts  the_format
+the_numeral_concept_is_a_dependent_sequence_of_…  one_expert   the_number_system
+meaning_is_decided_by_the_first_three_coordinat…  one_expert   the_number_system
+conversion_and_resolution_are_one_obligation_at…  one_expert   the_number_system
+a_system_exposes_its_ambient_laws_its_set_and_i…  one_expert   the_number_system
+the_law_frame_was_attacked_from_another_topic_a…  cross_topic  algebraic_laws
+an_exposure_test_over_reduction_verdicts_alone_…  one_expert   the_number_system
+
+8 rows in proposal
+
+--- the two the ratified spine carries, in full ---
+== proposal::arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation
+Arithmetic on a format is an exact operation in an ambient domain composed with a named, total adaptation onto the representable set. The adaptation is a first-class object with its own laws; an operation that fuses one invisibly is an operation and an adaptation point wearing one name, and the model's statements apply to it only when the two are separated.
+
+== proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+A format is identified by its ambient domain and its representable set. The representable set is a constant of the type: a value set that depends on other data is not a format but storage. Adaptation choice and encoding are realisation, observable in computed values and in pattern-level properties respectively, and not part of identity.
+
+--- what the concept's own sequence puts the ambient domain at ---
+== proposal::the_numeral_concept_is_a_dependent_sequence_of_choices
+The numeral concept is a dependent sequence of choices, not a tuple of independent ones: an ambient domain, a representable set over it, a reduction from the space that pair derives, an encoding of the set, a container for the encoding. Each choice ranges over a set the earlier choices determine, the components range over relations with the function case ordinary, and the dependency runs one way.
+
+== proposal::a_system_exposes_its_ambient_laws_its_set_and_its_reductions_verdicts
+A system exposes its ambient domain together with that domain's own law inventory, its representable set, and its selected reduction with that reduction's verdicts, including that the reduction moves no value already representable. The reduction's verdicts carry no information alone: the properties a consumer relies on are conjunctions of an ambient law and a reduction verdict, and a system that names its own computed algebra as its ambient domain satisfies every verdict while voiding every conclusion.
+
+== dimension::ambient_domain, what and grammar
+The mathematical domain a computation's values are taken to live in, which the format approximates.
+`ambient domain = <domain>`, `ambient domain in {<set>}`, or `ambient domain any`. Values name a domain: the integers, the rationals, the reals, a finite ring.
+
+--- the row that ratifies the spine, so the tier is checkable ---
+id                         rung      ratified_by  topic
+-------------------------  --------  -----------  ----------
+the_format_spine_is_canon  ratified  both         the_format
+
+1 rows in ruling
+[a_format_is_identified_by_its_ambient_domain_and_its_representable_set](PROPOSAL.md#a-format-is-identified-by-its-ambient-domain-and-its-representable-set)
+[membership_of_the_representable_set_is_one_affine_predicate](PROPOSAL.md#membership-of-the-representable-set-is-one-affine-predicate)
+[arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation](PROPOSAL.md#arithmetic-on-a-format-factors-as-an-adaptation-of-an-exact-operation)
+[the_concept_is_closed_and_the_inventory_is_open](PROPOSAL.md#the-concept-is-closed-and-the-inventory-is-open)
