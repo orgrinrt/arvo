@@ -63,12 +63,14 @@ impl Fraction {
     /// `of(i64::MIN, -2)` is `2^62` over one, exactly.
     ///
     /// **Magnitude saturation is the second, and it applies where the other
-    /// operand is odd.** Nothing cancels then, and the exact form would want a
-    /// magnitude one past what the type carries, so the magnitude pins to the
-    /// largest it does carry. The answer keeps the sign of the ratio that was
-    /// named and sits within a relative `1 / i64::MAX` of it. That is the same
-    /// act `complete_slot` performs on a slot leaving its range, one coordinate
-    /// up.
+    /// operand is odd.** Nothing cancels then, so writing the exact form would
+    /// want `2^63` in one of the two positions, which the type does not carry.
+    /// That operand takes the largest the type does carry instead, and it is
+    /// the numerator or the denominator depending on which side the `i64::MIN`
+    /// sat. The answer keeps the sign of the ratio that was named and sits
+    /// within a relative `1 / i64::MAX` of it, on whichever side the operand
+    /// moved. That is the same act `complete_slot` performs on a slot leaving
+    /// its range, one coordinate up.
     ///
     /// **A zero denominator is neither region.** It names no ratio at all, so
     /// there is nothing for an answer to be near, and it reads as `ZERO`.

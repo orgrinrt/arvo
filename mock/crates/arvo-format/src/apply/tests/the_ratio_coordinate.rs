@@ -307,8 +307,11 @@ fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
         "a remainder above the midpoint rounds up"
     );
 
-    // The control: a real tie at a denominator whose doubling also leaves the
-    // type is reported as one, so the widening did not answer no to everything.
+    // The control: the widening did not answer no to everything. A tie whose
+    // doubling overflows is not the case to reach for, because there is none. A
+    // tie is `2*num == den`, so a numerator big enough to overflow on doubling
+    // forces a denominator past `i64::MAX`, which the coordinate cannot hold.
+    // The overflow is reachable only off a tie, which is the arm above.
     let half_of_max = Exact::between(Slot::ZERO, Fraction::of(i64::MAX - 1, 2));
     assert!(
         half_of_max.is_on_grid().get(),
