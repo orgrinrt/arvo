@@ -8,139 +8,105 @@
 
 use std::collections::BTreeMap;
 
-use crate::kinds::{family, Found, Position};
+use crate::kinds::{family, Carrier, Found, Position};
 use crate::role;
 
-/// Positions written in a design template's fenced Rust.
+/// Positions written in a design document's fenced Rust.
 ///
-/// **Two consumers here have designs and no source at all**, so a walk over
-/// `.rs` alone answers those at zero and calls it clean, which is the shape of
-/// reading the demand side wrong. A fenced signature is a position that would
-/// sit, which is exactly what the obligation says it covers.
+/// **Two trees here carry designs and no source at all**, and every tree here
+/// carries designs describing surface that is not written yet. A walk over `.rs`
+/// answers those at zero, and the obligation covers a position that "sits **or
+/// would sit**", so a zero there would be the half of the demand nobody has
+/// built yet, reported as absent.
 ///
-/// Line-oriented rather than parsed, deliberately: a design's fence is often a
-/// fragment that does not parse as an item, and a parser that recovers from that
-/// reports the fragment's shape rather than its author's. What is looked for is
-/// narrow and stated: a host primitive inside a fenced block, on a line that
-/// carries a signature marker.
+/// # Parsed, after a line scan was tried and was wrong
+///
+/// The first version of this read fenced lines and classified them by what they
+/// started with. It was wrong in the way a line scan is always wrong, and the
+/// corpus showed it immediately: `pub struct PoolFrame<const MAX_CORES: usize,
+/// const MAX_PHASES: usize>` came back as two struct fields, when both are const
+/// generic parameters and op excepted that position by name. `pub trait
+/// ByteEmitter: Push<u8> + BulkPush<u8> {}` came back as two more, when both are
+/// type arguments in a supertrait bound.
+///
+/// So a fence is handed to the same walk the source gets, and the classification
+/// is the same one. tree-sitter recovers from a fragment rather than refusing it,
+/// which is what makes this work on the half of a design's fences that are not
+/// whole items.
+///
+/// # What it still cannot do
+///
+/// **Visibility is not judged.** Everything a design writes in a fence is the
+/// surface it is describing, and a fragment usually carries no `pub` because the
+/// prose around it already said so. So every position from a fence is taken as
+/// public, which over-counts a design that shows a private helper and is the
+/// direction that reports more demand rather than less.
 pub fn design_positions(tree: &str, path: &str, text: &str) -> Vec<Found> {
     let mut out = Vec::new();
-    let mut in_fence = false;
-    let mut rust_fence = false;
+    for (first_line, block) in rust_fences(text) {
+        for mut row in crate::walk::walk(tree, path, &block) {
+            row.line += first_line;
+            row.owner = if row.owner.is_empty() {
+                "<design>".to_string()
+            } else {
+                row.owner.clone()
+            };
+            row.public = true;
+            row.shipped = true;
+            out.push(row);
+        }
+    }
+    out
+}
+
+/// Every Rust fence in a markdown document, with the line its body starts on.
+///
+/// An unlabelled fence counts as Rust. In this corpus that is what they are, and
+/// the alternative is dropping the design positions in every document whose
+/// author did not label a block.
+fn rust_fences(text: &str) -> Vec<(usize, String)> {
+    let mut out = Vec::new();
+    // Two pieces of state, not one. Tracking only the rust fences means the
+    // closing marker of a `toml` block reads as an opening marker with an empty
+    // language, which counts as rust here, and from there every fence in the
+    // document is inverted. That is not hypothetical: it swallowed the one
+    // unlabelled fence in the suite's own fixture and the suite caught it.
+    let mut inside = false;
+    let mut is_rust = false;
+    let mut first_line = 0usize;
+    let mut body: Vec<&str> = Vec::new();
+
     for (idx, line) in text.lines().enumerate() {
         let trimmed = line.trim_start();
         if trimmed.starts_with("```") {
-            if in_fence {
-                in_fence = false;
-                rust_fence = false;
+            if inside {
+                if is_rust {
+                    out.push((first_line, body.join("\n")));
+                }
+                inside = false;
+                is_rust = false;
+                body.clear();
             } else {
-                in_fence = true;
                 let lang = trimmed.trim_start_matches('`').trim();
-                rust_fence = lang.is_empty() || lang.starts_with("rust") || lang.starts_with("rs");
+                inside = true;
+                is_rust = lang.is_empty()
+                    || lang.starts_with("rust")
+                    || lang.starts_with("rs")
+                    || lang.starts_with("ignore")
+                    || lang.starts_with("no_run");
+                first_line = idx + 1;
             }
             continue;
         }
-        if !in_fence || !rust_fence {
-            continue;
+        if inside && is_rust {
+            body.push(line);
         }
-        let is_signature = trimmed.starts_with("pub fn ")
-            || trimmed.starts_with("fn ")
-            || trimmed.starts_with("pub const ")
-            || trimmed.starts_with("const ")
-            || trimmed.starts_with("pub type ")
-            || trimmed.starts_with("type ")
-            || trimmed.starts_with("pub ")
-            || trimmed.contains("-> ")
-            || trimmed.contains(": ");
-        if !is_signature {
-            continue;
-        }
-        let scan = strip_after_line_comment(trimmed);
-        for prim in every_primitive(&scan) {
-            out.push(Found {
-                tree: tree.to_string(),
-                path: path.to_string(),
-                line: idx + 1,
-                position: if trimmed.starts_with("pub const ") || trimmed.starts_with("const ") {
-                    Position::TraitConst
-                } else if trimmed.contains("-> ") {
-                    Position::FnReturn
-                } else if trimmed.starts_with("pub fn ") || trimmed.starts_with("fn ") {
-                    Position::FnParam
-                } else {
-                    Position::StructField
-                },
-                primitive: prim,
-                name: declared_name(&scan),
-                owner: "<design>".to_string(),
-                public: true,
-                shipped: true,
-            });
-        }
+    }
+    // An unterminated fence at the end of a document is still a fence.
+    if inside && is_rust {
+        out.push((first_line, body.join("\n")));
     }
     out
-}
-
-fn strip_after_line_comment(s: &str) -> String {
-    match s.find("//") {
-        Some(i) => s[..i].to_string(),
-        None => s.to_string(),
-    }
-}
-
-/// Every host primitive name occurring as a whole token in a line.
-fn every_primitive(line: &str) -> Vec<String> {
-    let mut out = Vec::new();
-    let bytes = line.as_bytes();
-    let mut i = 0usize;
-    while i < bytes.len() {
-        if !bytes[i].is_ascii_alphanumeric() && bytes[i] != b'_' {
-            i += 1;
-            continue;
-        }
-        let start = i;
-        while i < bytes.len() && (bytes[i].is_ascii_alphanumeric() || bytes[i] == b'_') {
-            i += 1;
-        }
-        let word = &line[start..i];
-        // A token preceded by a digit or an underscore is a literal suffix or
-        // part of a longer name, and neither is a position.
-        let prev_ok = start == 0 || !matches!(bytes[start - 1], b'0'..=b'9' | b'_');
-        if prev_ok && family(word).is_some() {
-            out.push(word.to_string());
-        }
-    }
-    out
-}
-
-/// The identifier a fenced signature line declares, for the role reading.
-fn declared_name(line: &str) -> String {
-    for kw in [
-        "pub fn ",
-        "fn ",
-        "pub const ",
-        "const ",
-        "pub type ",
-        "type ",
-    ] {
-        if let Some(rest) = line.trim_start().strip_prefix(kw) {
-            let name: String = rest
-                .chars()
-                .take_while(|c| c.is_ascii_alphanumeric() || *c == '_')
-                .collect();
-            if !name.is_empty() {
-                return name;
-            }
-        }
-    }
-    // A field line: `name: Type,`
-    if let Some(colon) = line.find(':') {
-        let head = line[..colon].trim().trim_start_matches("pub ").trim();
-        if !head.is_empty() && head.chars().all(|c| c.is_ascii_alphanumeric() || c == '_') {
-            return head.to_string();
-        }
-    }
-    String::new()
 }
 
 /// The whole report.
@@ -185,12 +151,17 @@ pub fn render(
     let listable: Vec<&Found> = if everything {
         kept.clone()
     } else {
-        kept.iter().copied().filter(|f| f.is_demand()).collect()
+        kept.iter()
+            .copied()
+            .filter(|f| f.is_demand())
+            .filter(|f| f.carrier.is_a_number())
+            .filter(|f| matches!(family(&f.primitive), Some("numeric" | "truth")))
+            .collect()
     };
     let scope = if everything {
         "every occurrence"
     } else {
-        "public API positions"
+        "the demand"
     };
     if let Some(kind) = want_kind {
         return listing(
@@ -258,6 +229,22 @@ pub fn render(
         ));
     }
 
+    s.push_str("\nby carrier, over the public API positions\n");
+    s.push_str("  what the primitive is wrapped in, off the parse rather than off a name.\n  a pointer target and a slice element are the unit of memory or of a byte\n  string; no numeral replaces either, so they are the positions arvo is not\n  the answer to.\n\n");
+    let api_pre: Vec<&&Found> = kept.iter().filter(|f| f.is_demand()).collect();
+    s.push_str(&format!(
+        "  {:<12} {:>7}  {}\n",
+        "carrier", "count", "a number is what is meant"
+    ));
+    for carrier in Carrier::all() {
+        let n = api_pre.iter().filter(|f| f.carrier == *carrier).count();
+        s.push_str(&format!(
+            "  {:<12} {n:>7}  {}\n",
+            carrier.token(),
+            if carrier.is_a_number() { "yes" } else { "no" }
+        ));
+    }
+
     s.push_str("\nby semantic role, over the public API positions\n");
     s.push_str("  a reading off the identifier, not a measurement. `--role <name>`\n  lists one in full so it can be checked.\n\n");
     let api: Vec<&&Found> = kept.iter().filter(|f| f.is_demand()).collect();
@@ -282,6 +269,137 @@ pub fn render(
             spelling.join(" ")
         ));
     }
+
+    // The cross-tabulation, which is what separates the demand from the total.
+    // Neither axis alone says it: `&str` is a reference and is out of the
+    // obligation's wording, `*mut u8` is in the wording and is not a number.
+    s.push_str("\nfamily against carrier, over the public API positions\n\n");
+    s.push_str(&format!("  {:<12}", "carrier"));
+    for fam in ["numeric", "truth", "textual"] {
+        s.push_str(&format!(" {fam:>9}"));
+    }
+    s.push_str("     a number\n");
+    for carrier in Carrier::all() {
+        s.push_str(&format!("  {:<12}", carrier.token()));
+        for fam in ["numeric", "truth", "textual"] {
+            let n = api_pre
+                .iter()
+                .filter(|f| f.carrier == *carrier && family(&f.primitive) == Some(fam))
+                .count();
+            s.push_str(&format!(" {n:>9}"));
+        }
+        s.push_str(&format!(
+            "     {}\n",
+            if carrier.is_a_number() { "yes" } else { "no" }
+        ));
+    }
+
+    // What the obligation is actually over, with every filter applied and each
+    // one named. A number with no predicate is a number nobody can check.
+    let demand: Vec<&&&Found> = api
+        .iter()
+        .filter(|f| f.carrier.is_a_number())
+        .filter(|f| matches!(family(&f.primitive), Some("numeric" | "truth")))
+        .collect();
+    s.push_str("\nthe demand\n");
+    for line in [
+        "a position is one arvo owes a primitive for when all five hold: an outside",
+        "crate writes the type, the item is reachable, the file is a crate's `src/`,",
+        "the primitive is a number or a truth rather than text, and it is not the",
+        "unit of a pointer or a slice. Each is reported above on its own, so the",
+        "subtraction can be checked rather than taken.",
+    ] {
+        s.push_str(&format!("  {line}\n"));
+    }
+    s.push('\n');
+    s.push_str(&format!("  {} positions\n\n", demand.len()));
+    let mut by_role: BTreeMap<&str, usize> = BTreeMap::new();
+    for row in &demand {
+        *by_role
+            .entry(role::of(&row.name, &row.owner, &row.primitive))
+            .or_default() += 1;
+    }
+    let mut ranked_roles: Vec<(&&str, &usize)> = by_role.iter().collect();
+    ranked_roles.sort_by(|a, b| b.1.cmp(a.1));
+    for (name, count) in ranked_roles {
+        let prims: BTreeMap<&str, usize> = demand
+            .iter()
+            .filter(|f| role::of(&f.name, &f.owner, &f.primitive) == *name)
+            .fold(BTreeMap::new(), |mut m, f| {
+                *m.entry(f.primitive.as_str()).or_default() += 1;
+                m
+            });
+        let spelling: Vec<String> = prims.iter().map(|(p, n)| format!("{p}x{n}")).collect();
+        s.push_str(&format!(
+            "  {:<16} {count:>5}  {}\n",
+            name,
+            spelling.join(" ")
+        ));
+    }
+
+    // The other half of the fraction. A count of host primitives says nothing
+    // about how far the obligation is from met without the count of positions
+    // that already went through the stack.
+    s.push_str("\nthe supply, at the same bar\n");
+    for line in [
+        "the same walk over the same positions, keeping the stack's own type names",
+        "instead of the host's. The list is hand-written and is printed below, so a",
+        "name missing from it undercounts this side and makes the obligation look",
+        "further from met than it is.",
+    ] {
+        s.push_str(&format!("  {line}\n"));
+    }
+    s.push('\n');
+    let supply: Vec<&&Found> = kept.iter().filter(|f| f.is_supply()).collect();
+    let mut by_supplier: BTreeMap<&str, usize> = BTreeMap::new();
+    for row in &supply {
+        *by_supplier.entry(row.supplier.unwrap_or("?")).or_default() += 1;
+    }
+    for (who, count) in &by_supplier {
+        s.push_str(&format!("  {who:<16} {count:>5}\n"));
+    }
+    let host = demand.len();
+    let gone = by_supplier.get("gone").copied().unwrap_or(0);
+    let live: usize = by_supplier
+        .iter()
+        .filter(|(k, _)| **k != "gone")
+        .map(|(_, v)| *v)
+        .sum();
+    let total = host + gone + live;
+    if total > 0 {
+        s.push('\n');
+        for line in [
+            format!("{host} host, {gone} naming an arvo crate or type that is not on"),
+            format!(
+                "arvo's `dev`, and {live} resolving. So {}% of the positions carrying",
+                host * 100 / total
+            ),
+            format!(
+                "any of the three still name the host, and a further {}%",
+                gone * 100 / total
+            ),
+            "name arvo and reach nothing. Counting the second group as supply, which".to_string(),
+            "one undivided arvo list does, is what makes the obligation look nearly".to_string(),
+            "met when half of what meets it does not exist.".to_string(),
+        ] {
+            s.push_str(&format!("  {line}\n"));
+        }
+    }
+    s.push_str("\n  which names are counted as the stack's:\n");
+    let mut seen: BTreeMap<&str, usize> = BTreeMap::new();
+    for row in &supply {
+        *seen.entry(row.primitive.as_str()).or_default() += 1;
+    }
+    let used: Vec<String> = seen.iter().map(|(n, c)| format!("{n}x{c}")).collect();
+    s.push_str(&format!("    in use   {}\n", used.join(" ")));
+    let unused: Vec<&str> = crate::supply::every_name()
+        .into_iter()
+        .filter(|n| !seen.contains_key(n))
+        .collect();
+    s.push_str(&format!(
+        "    on the list and reaching nothing   {}\n",
+        unused.join(" ")
+    ));
 
     s.push_str("\nby primitive family, over the public API positions\n\n");
     let mut fams: BTreeMap<&str, usize> = BTreeMap::new();

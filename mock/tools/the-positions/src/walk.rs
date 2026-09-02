@@ -34,7 +34,7 @@
 
 use mockspace::tree_sitter::{Node, Parser};
 
-use crate::kinds::{family, Found, Position};
+use crate::kinds::{family, Carrier, Found, Position};
 
 /// Parse and collect. Returns empty for a file that will not parse at all,
 /// which for Rust is effectively unreachable, since tree-sitter recovers.
@@ -64,6 +64,31 @@ pub fn walk(tree_label: &str, path: &str, source: &str) -> Vec<Found> {
 
 /// Depth-first over every node, picking out the primitive leaves.
 fn collect(node: Node, src: &str, tree: &str, path: &str, shipped: bool, out: &mut Vec<Found>) {
+    // The supply side runs the identical classification over a named type. Only
+    // the stack's own names are kept, so an ordinary consumer type does not
+    // enter the count; `supply::supplier` says which, off a hand-written list
+    // the report prints.
+    if node.kind() == "type_identifier" {
+        let text = text_of(node, src);
+        if crate::supply::supplier(&text).is_some() {
+            let (position, name, owner) = classify(node, src);
+            out.push(Found {
+                tree: tree.to_string(),
+                path: path.to_string(),
+                line: node.start_position().row + 1,
+                position,
+                primitive: text,
+                name,
+                owner,
+                public: visible(node, src),
+                shipped,
+                carrier: carrier_of(node),
+                supplier: crate::supply::supplier(&text_of(node, src)),
+            });
+        }
+        return;
+    }
+
     if node.kind() == "primitive_type" {
         let text = text_of(node, src);
         if family(&text).is_some() {
@@ -78,6 +103,8 @@ fn collect(node: Node, src: &str, tree: &str, path: &str, shipped: bool, out: &m
                 owner,
                 public: visible(node, src),
                 shipped,
+                carrier: carrier_of(node),
+                supplier: None,
             });
         }
         return;
@@ -410,4 +437,39 @@ fn pattern_text(node: Node, src: &str) -> String {
 
 fn text_of(node: Node, src: &str) -> String {
     src.get(node.byte_range()).unwrap_or_default().to_string()
+}
+
+/// What the primitive is wrapped in, from the leaf outward.
+///
+/// The first shaping node wins, which is the innermost one, so `&[u8]` is an
+/// element rather than a reference: what the `u8` is the unit of is the slice,
+/// and the reference around the slice says nothing about the `u8` at all.
+fn carrier_of(leaf: Node) -> Carrier {
+    let mut cur = leaf.parent();
+    while let Some(node) = cur {
+        match node.kind() {
+            "pointer_type" => return Carrier::Pointer,
+            "array_type" => return Carrier::Element,
+            "reference_type" => return Carrier::Reference,
+            "type_arguments" => return Carrier::Argument,
+            // Anything that defines a position ends the search: past it we are
+            // out of the type and into what the type belongs to.
+            "parameter"
+            | "field_declaration"
+            | "ordered_field_declaration_list"
+            | "const_item"
+            | "static_item"
+            | "type_item"
+            | "associated_type"
+            | "function_item"
+            | "function_signature_item"
+            | "const_parameter"
+            | "impl_item"
+            | "block"
+            | "let_declaration" => return Carrier::Scalar,
+            _ => {}
+        }
+        cur = node.parent();
+    }
+    Carrier::Scalar
 }

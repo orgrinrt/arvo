@@ -12,6 +12,27 @@
 use crate::role::{all, of};
 
 #[test]
+fn a_rationals_halves_are_not_cardinalities() {
+    // `numerator` and `denominator` are the two commonest integers in an exact
+    // arithmetic and neither counts anything. They read as `count` under any
+    // vocabulary that has `num` in it and does not have these.
+    assert_eq!(of("numerator", "", "i64"), "rational");
+    assert_eq!(of("denominator", "", "i64"), "rational");
+    assert_eq!(of("den", "", "i64"), "rational");
+    assert_ne!(of("numerator", "", "i64"), of("count", "", "i64"));
+}
+
+#[test]
+fn the_control_the_rational_needles_do_not_swallow_a_plain_number() {
+    assert_eq!(
+        of("num", "", "u32"),
+        "count",
+        "`num` is a count and not a rational half"
+    );
+    assert_ne!(of("denominator", "", "i64"), "count");
+}
+
+#[test]
 fn a_bit_width_reads_as_a_bit_width_under_every_spelling_in_use() {
     for name in [
         "width",
@@ -134,6 +155,7 @@ fn every_declared_role_is_reachable_by_at_least_one_name() {
     let probes: &[(&str, &str)] = &[
         ("bit_width", "bit-width"),
         ("count", "count"),
+        ("numerator", "rational"),
         ("index", "index"),
         ("capacity", "capacity"),
         ("stride", "stride"),

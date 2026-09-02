@@ -11,6 +11,7 @@
 //! number. So every part here plants an input the instrument has to answer
 //! differently, and asserts the difference rather than the answer.
 
+mod carriers;
 mod controls;
 mod design;
 mod positions;

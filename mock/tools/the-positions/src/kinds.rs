@@ -102,6 +102,65 @@ impl Position {
     }
 }
 
+/// What the primitive is wrapped in at the point it is written.
+///
+/// **This is the axis that decides whether arvo owes a numeral at all.** A
+/// `usize` standing alone is a number and wants one. The `u8` in `*mut u8` is
+/// not a number, it is the unit memory is addressed in, and no width, no
+/// signedness and no rounding mode is the answer to it. The same is true of the
+/// `u8` in `&[u8]`, which is a byte string.
+///
+/// Read off the parse: the first shaping node between the leaf and the position
+/// it occupies. Nothing about the identifier is involved, so unlike the
+/// semantic role this is a measurement rather than a reading.
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+pub enum Carrier {
+    /// The primitive is the type. `count: usize`.
+    Scalar,
+    /// Behind a reference. `&u32`.
+    Reference,
+    /// The element of a slice or an array. `&[u8]`, `[u32; 4]`.
+    Element,
+    /// The target of a raw pointer. `*mut u8`.
+    Pointer,
+    /// A type argument. `Outcome<u32, E>`, `Option<usize>`.
+    Argument,
+}
+
+impl Carrier {
+    #[must_use]
+    pub fn token(self) -> &'static str {
+        match self {
+            Self::Scalar => "scalar",
+            Self::Reference => "reference",
+            Self::Element => "element",
+            Self::Pointer => "pointer",
+            Self::Argument => "argument",
+        }
+    }
+
+    /// Whether this is a position where a number is what is meant.
+    ///
+    /// A pointer target and a slice element are not: they name the unit of
+    /// memory or of a byte string, and the thing that would replace them is a
+    /// buffer type rather than a numeral. Everything else carries a value.
+    #[must_use]
+    pub fn is_a_number(self) -> bool {
+        !matches!(self, Self::Pointer | Self::Element)
+    }
+
+    #[must_use]
+    pub fn all() -> &'static [Self] {
+        &[
+            Self::Scalar,
+            Self::Reference,
+            Self::Element,
+            Self::Pointer,
+            Self::Argument,
+        ]
+    }
+}
+
 /// The host types the obligation names, plus the two the grammar groups with
 /// them.
 ///
@@ -167,6 +226,13 @@ pub struct Found {
     /// Whether the file is part of a crate's compiled library, as against a
     /// test, an example, a bench variant or a research probe. `corpus::is_shipped`.
     pub shipped: bool,
+    /// What the primitive is wrapped in, which decides whether a number is what
+    /// the position means at all.
+    pub carrier: Carrier,
+    /// `None` where the type is the host's own, which is what the obligation is
+    /// about. `Some("arvo")` or `Some("notko")` where the position already
+    /// carries one of the stack's, which is the denominator the count needs.
+    pub supplier: Option<&'static str>,
 }
 
 impl Found {
@@ -177,6 +243,13 @@ impl Found {
     /// tool reported 39,529 where the answer is a fraction of that.
     #[must_use]
     pub fn is_demand(&self) -> bool {
-        self.position.is_api() && self.public && self.shipped
+        self.supplier.is_none() && self.position.is_api() && self.public && self.shipped
+    }
+
+    /// A position already carrying one of the stack's own types, at the same
+    /// bar. The other half of the fraction.
+    #[must_use]
+    pub fn is_supply(&self) -> bool {
+        self.supplier.is_some() && self.position.is_api() && self.public && self.shipped
     }
 }

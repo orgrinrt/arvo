@@ -49,6 +49,21 @@ pub const ROLES: &[(&str, &[&str])] = &[
             "bitcount",
         ],
     ),
+    // A rational's two halves. Before `count`, because arvo's own applied map
+    // writes both and neither is a cardinality.
+    (
+        "rational",
+        &[
+            "numerator",
+            "denominator",
+            "den",
+            "quotient",
+            "remainder",
+            "divisor",
+            "dividend",
+            "modulus",
+        ],
+    ),
     (
         "count",
         &[
@@ -65,12 +80,20 @@ pub const ROLES: &[(&str, &[&str])] = &[
             "total",
             "amount",
             "quantity",
+            "operand",
+            "operands",
+            "wanted",
+            "had",
+            "remaining",
+            "available",
+            "slots",
         ],
     ),
     (
         "index",
         &[
-            "index", "idx", "position", "offset", "cursor", "slot", "which", "nth", "ordinal",
+            "index", "idx", "pos", "position", "offset", "cursor", "slot", "which", "nth",
+            "ordinal",
         ],
     ),
     (
@@ -94,7 +117,16 @@ pub const ROLES: &[(&str, &[&str])] = &[
     ),
     (
         "exponent",
-        &["exponent", "exp", "shift", "scale", "log", "pow", "power"],
+        &[
+            "exponent",
+            "exp",
+            "magnitude",
+            "shift",
+            "scale",
+            "log",
+            "pow",
+            "power",
+        ],
     ),
     ("radix", &["radix", "base"]),
     (
@@ -150,7 +182,9 @@ pub const ROLES: &[(&str, &[&str])] = &[
     ),
     (
         "code",
-        &["errno", "code", "status", "errcode", "os_error", "exit"],
+        &[
+            "errno", "code", "status", "errcode", "os_error", "exit", "run", "main",
+        ],
     ),
     (
         "address",

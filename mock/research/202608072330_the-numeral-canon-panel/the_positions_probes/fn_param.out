@@ -1,0 +1,43 @@
+    Finished `release` profile [optimized] target(s) in 0.01s
+39 positions at kind `fn-param`, over the demand
+
+  arvo@origin/dev:mock/crates/arvo-format/src/adapt.rs:97  fn-param             u32        of operands
+  arvo@origin/dev:mock/crates/arvo-format/src/ambient.rs:35  fn-param             u32        of base
+  arvo@origin/dev:mock/crates/arvo-format/src/apply.rs:71  fn-param             i64        of num
+  arvo@origin/dev:mock/crates/arvo-format/src/apply.rs:71  fn-param             i64        of den
+  arvo@origin/dev:mock/crates/arvo-format/src/format.rs:73  fn-param             i64        of num
+  arvo@origin/dev:mock/crates/arvo-format/src/format.rs:73  fn-param             i64        of den
+  arvo@origin/dev:mock/crates/arvo-format/src/format.rs:79  fn-param             i64        halves num
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:51  fn-param             i32        of power
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:106  fn-param             u32        at index
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:144  fn-param             u32        of count
+  arvo@origin/dev:mock/crates/arvo-format/src/slots.rs:50  fn-param             i64        at index
+  arvo@origin/dev:mock/crates/arvo-format/src/slots.rs:88  fn-param             i64        of count
+  arvo@origin/dev:mock/crates/arvo-format/src/width.rs:38  fn-param             u32        bits n
+  arvo@origin/dev:mock/crates/arvo-format/src/width.rs:104  fn-param             bool       of b
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:45  fn-param             u32        new v
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:61  fn-param             u64        new w
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/primitives.rs:74  fn-param             u32        new b
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:174  fn-param             u32        arena_resolve id
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/src/interner.rs:50  fn-param             u32        arena_resolve id
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-sym/src/kind.rs:31  fn-param             u8         from_raw raw
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/plan/graph.rs:94  fn-param             usize      end_for i
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:134  fn-param             u32        atomic_wait expected
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:208  fn-param             u32        wait_u32 expected
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:257  fn-param             u32        wait_u32 expected
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:926  fn-param             usize      allocate len
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:926  fn-param             usize      allocate align
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:927  fn-param             usize      deallocate len
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:928  fn-param             usize      protect len
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:929  fn-param             bool       protect read
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:929  fn-param             bool       protect write
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/DESIGN.md.tmpl:154  fn-param             u32        arena_resolve id
+  vehje@origin/main:mock/crates/vehje-lex/src/cursor.rs:67  fn-param             u32        peek_byte_at n
+  vehje@origin/main:mock/crates/vehje-lex/src/cursor.rs:113  fn-param             u32        bump_n n
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:21  fn-param             u8         is_ident_start b
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:26  fn-param             u8         is_ident_cont b
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:31  fn-param             u8         is_digit b
+  vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:40  fn-param             u8         is_whitespace b
+  vehje@origin/main:mock/crates/vehje-syntax/src/parser.rs:37  fn-param             u32        new idx
+  vehje@origin/main:mock/crates/vehje-syntax/src/parser.rs:84  fn-param             usize      peek_at offset
+the-positions: clean, 142401 examined.

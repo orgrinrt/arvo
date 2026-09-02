@@ -45,6 +45,7 @@ pub mod corpus;
 pub mod kinds;
 pub mod report;
 pub mod role;
+pub mod supply;
 pub mod walk;
 
 use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
