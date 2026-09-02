@@ -46,8 +46,22 @@ What binds, in order:
 - **`rung = "stated"` is his direction**, carrying his own words in a
   `quote` field. It binds as direction and is not yet canon.
 - **`proposal` rows are not canon**, whatever their `standing` says.
-  `standing` records how many independent instances back the claim, and
-  a claim with two is still a proposal until a ruling stamps it.
+  A claim with two instances is still a proposal until a ruling stamps
+  it. `standing` counts arrivals, and its vocabulary is declared in
+  `mockspace.toml` under the `proposal` namespace, in these words:
+  "How many independent instances reached it, over the region they
+  share. `one_expert`; `two_experts`, each deriving before reading the
+  other; `three_or_more`; `cross_topic` where separate topics arrived
+  at it without citing each other, which is the strongest thing this
+  panel produces; `contested` where it is stated because somebody
+  stated it and somebody else disagrees."
+  **Read the declaration rather than this sentence when the value
+  decides something.** Each clause is load-bearing, `each deriving
+  before reading the other` most of all: a seat handed another's
+  conclusion before writing its own has not reached anything, so it
+  does not count, and no quality of argument makes it count. What an
+  argument is weighed by is `gate`, which is a separate field asking a
+  separate question.
 
 **`mock/research/` is the argument behind the canon, not the canon.**
 Everything in it is agent output produced without a recorded human
