@@ -442,7 +442,7 @@ id = "the_next_unit_is_chosen_bottom_up"
 kind = "process"
 rung = "stated"
 topic = "panel_conduct"
-says = "The next topic is whatever is natural and settles the most downstream questions at once, unblocking further design and exploration. The build order is strictly ground up: once the fundamentals, the shapes and the conventions are in place, move one tier up and use those to define what arvo needs defined, and so on."
+says = "The next topic is whatever is natural and settles the most downstream questions at once, unblocking further design and exploration. The build order is strictly ground up: once the fundamentals, the basic approaches and the conventions are in place, move one tier up and use those to define what arvo needs defined, and so on."
 quote = '''
 Whatever makes sense next and is natural and gives most answers that settle downstream questions at the
 same time and enable/unblock further design and exploration work. We want to build from ground up, so
