@@ -3,23 +3,34 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Every tool lockfile pins the same mockspace revision, or the lint pack does
-//! not compile and nobody can run the suite.
+//! Every tool lockfile pins the same mockspace revision, or a tool tree stops
+//! building on its own and `cargo mock test` is where you find out.
 //!
-//! Each tool under `mock/tools/` carries its own tracked `Cargo.lock`, and each
-//! one pins `mockspace-lint-rules` by git revision. The generated lint crate
-//! pins its own. When those disagree, two `LintPack` types land in one
-//! dependency graph, `lint_pack!` expands against the one it did not come from,
-//! and the build fails with a type mismatch between two structs of the same
-//! name from two checkouts of the same repository.
+//! Each tool under `mock/tools/` is its own workspace root with its own tracked
+//! `Cargo.lock`, and each one pins `mockspace-lint-rules` by git revision. That
+//! lockfile governs exactly one thing: building the tool standalone, which is
+//! what `cargo mock test` does, since it runs the tests of every tree mockspace
+//! owns rather than only the workspace members. A tool pinning a revision the
+//! engine has moved past compiles against an API from that revision, and it
+//! fails on whatever moved in between.
 //!
 //! It has happened, and it was invisible until somebody ran the whole suite.
 //! Seven lockfiles pinned three different revisions: five at one, one at
 //! another, one at a third, the third being the revision the generated crate
 //! actually used. `cargo mock test` reported two of ten trees failing, and
-//! nothing in the ordinary commit path said anything, because the lint pass
-//! runs against an already-built pack and a lockfile edit looks like noise in a
-//! diff.
+//! nothing in the ordinary commit path said anything, because a lockfile edit
+//! looks like noise in a diff and the ordinary gates never build a tool alone.
+//!
+//! **The generated lint crate is not where this bites, and the reason is worth
+//! knowing, because it is the obvious place to look.** That crate takes every
+//! tool as a `path` dependency, so all seven do land in one graph with the
+//! engine's own copy. What keeps them from colliding there is the `[patch]`
+//! mockspace writes into the generated manifest, collapsing every reference to
+//! `mockspace-lint-rules`, the tools' included, onto the one checkout the engine
+//! is built from. Inside that build a tool's lockfile is not consulted at all.
+//! So the story about two `LintPack` types meeting in one dependency graph
+//! describes something the patch already prevents, and reaching for it as the
+//! justification means the real cost goes unstated.
 //!
 //! **What this asserts is agreement, not a particular revision.** Naming the
 //! revision here would be a second copy of something the lockfiles already say,
@@ -31,8 +42,11 @@
 //! all of them agree and all of them are stale, which is the likelier one:
 //! `mockspace_branch = "dev"` has the launcher re-resolve the head from time to
 //! time, and nothing moves a tool lockfile when it does. Its manifest lives
-//! under `target/`, so it is absent in a clone nobody has built in, and the
-//! check falls back to the pairwise comparison there.
+//! under `target/`, so a clone nobody has built in has no engine to compare
+//! against, and so does a run under `mock --engine <path>`, where the manifest
+//! names a directory instead of a revision. Both fall back to the pairwise
+//! comparison, and [`EnginePin`] keeps them distinguishable rather than folding
+//! them into one absent value.
 //!
 //! **A lint rather than a tool.** There is no state of this repository in which
 //! two tool lockfiles may pin different mockspace revisions, so this refuses
@@ -42,7 +56,6 @@ use std::path::Path;
 
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-use crate::canon_rows::finding;
 
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(TheToolLocksPinOneMockspace)
@@ -94,28 +107,44 @@ fn revision_in(lock: &str) -> Option<String> {
     None
 }
 
-/// The revision the generated lint crate is built against, if its manifest is
-/// on disk.
+/// What the generated lint crate says about the engine it is built against.
+///
+/// Three states rather than an `Option`, because two different things produce
+/// no revision and folding them together loses which one happened. A tree that
+/// has never been built and a run that deliberately points the engine at a
+/// working copy both fall back to the pairwise comparison, and only one of them
+/// is a state anybody should expect to be in for long.
+enum EnginePin {
+    /// No generated manifest on disk, which is every fresh clone: `target/` is
+    /// not tracked, so nothing has resolved a revision yet.
+    Unbuilt,
+    /// A manifest naming a directory instead of a revision, which is what
+    /// `mock --engine <path>` writes. There is no revision for a tool to agree
+    /// with, so the engine is not a participant and cannot be made one.
+    Unpinned,
+    /// The revision the generated crate resolved, short form.
+    At(String),
+}
+
+/// Read [`EnginePin`] off the generated manifest.
 ///
 /// The launcher writes `target/mockspace-lints/Cargo.toml` with the engine
 /// pinned by `rev`, so this is the participant the tools have to agree with
 /// rather than a fourth opinion. Read from the manifest and not from the
-/// lockfile beside it, because a `[patch]` there resolves the package to a
+/// lockfile beside it, because the `[patch]` there resolves the package to a
 /// checkout path and leaves it with no `source` line at all.
-///
-/// **Returns `None` where the manifest is absent, and that is the ordinary
-/// state of a fresh clone**, since `target/` is not tracked. The check falls
-/// back to comparing the tools against each other, which is what it did before
-/// this arm existed, so a clone nobody has built in is not held in violation of
-/// something it cannot yet know.
-fn engine_revision(mock_dir: &Path) -> Option<String> {
-    let manifest =
-        std::fs::read_to_string(mock_dir.join("target/mockspace-lints/Cargo.toml")).ok()?;
+fn engine_pin(mock_dir: &Path) -> EnginePin {
+    let Ok(manifest) = std::fs::read_to_string(mock_dir.join("target/mockspace-lints/Cargo.toml"))
+    else {
+        return EnginePin::Unbuilt;
+    };
     manifest
         .lines()
         .find(|line| line.contains(&format!("package = \"{PACKAGE}\"")))
         .and_then(|line| line.split_once("rev = \""))
-        .map(|(_, rest)| rest.chars().take(7).collect())
+        .map_or(EnginePin::Unpinned, |(_, rest)| {
+            EnginePin::At(rest.chars().take(7).collect())
+        })
 }
 
 /// The verdict, over a mock directory.
@@ -131,11 +160,17 @@ fn engine_revision(mock_dir: &Path) -> Option<String> {
 /// tool lockfile moves with it, so they stay uniform and stale together.
 fn check(mock_dir: &Path) -> Vec<LintError> {
     let mut by_revision: BTreeMap<String, Vec<String>> = BTreeMap::new();
-    if let Some(rev) = engine_revision(mock_dir) {
-        by_revision
-            .entry(rev)
-            .or_default()
-            .push("the generated lint crate".to_string());
+    match engine_pin(mock_dir) {
+        EnginePin::At(rev) => {
+            by_revision
+                .entry(rev)
+                .or_default()
+                .push("the generated lint crate".to_string());
+        },
+        // Neither state is a violation and neither is a revision, so the
+        // engine simply does not take a seat. Named rather than collapsed
+        // into one `_`, so adding a fourth state has to be decided here.
+        EnginePin::Unbuilt | EnginePin::Unpinned => {},
     }
 
     let Ok(entries) = std::fs::read_dir(mock_dir.join("tools")) else {
@@ -177,18 +212,27 @@ fn verdict(by_revision: BTreeMap<String, Vec<String>>) -> Vec<LintError> {
         .collect::<Vec<_>>()
         .join("; ");
 
-    vec![finding(
+    let mut error = LintError::error(
+        "mock".to_string(),
+        0,
         NAME,
-        Some("the-tool-locks-disagree"),
         format!(
             "{} different revisions of `{PACKAGE}` are pinned across the tools and the generated \
-             lint crate, and two of its `LintPack` types in one dependency graph is a build \
-             failure rather than a warning. {spread}. Run `cargo update -p {PACKAGE}` in each tool \
+             lint crate, so a tool on the losing side no longer builds on its own and `cargo mock \
+             test` is where that surfaces. {spread}. Run `cargo update -p {PACKAGE}` in each tool \
              directory that lags; where the generated crate is the one standing alone, it is the \
              engine pin that moved and every tool lags it.",
             by_revision.len()
         ),
-    )]
+    );
+    error.finding_kind = Some("the-tool-locks-disagree");
+    // `canon_rows::finding` is for the registry lints and reports `registry` as
+    // the location, which is where this one used to point: at a file it has
+    // never read. The disagreement lives in the lockfiles, so the directory
+    // holding them is what a reader is sent to, and the spread above says which
+    // of them to open.
+    error.path = Some("tools".to_string());
+    vec![error]
 }
 
 #[cfg(test)]
@@ -332,8 +376,9 @@ mod tests {
         assert_eq!(
             f.len(),
             1,
-            "seven tools uniformly stale against a moved engine pin is the same build failure as \
-             two tools disagreeing: {f:?}"
+            "seven tools uniformly stale against a moved engine pin leaves all seven building \
+             against an API the engine has left, which is the same standalone failure as two \
+             tools disagreeing and reaches nobody until the whole suite runs: {f:?}"
         );
         let message = format!("{:?}", f[0]);
         assert!(
@@ -390,22 +435,81 @@ mod tests {
     /// The engine's revision read off a manifest and nothing else.
     ///
     /// The lockfile beside it carries the package with no `source` line at all,
-    /// because a `[patch]` resolves it to a checkout path, so a reader built on
-    /// `revision_in` would return `None` and the whole arm would go quiet.
+    /// because the `[patch]` resolves it to a checkout path, so a reader built
+    /// on `revision_in` would come back empty and the whole arm would go quiet.
     #[test]
     fn the_engine_revision_comes_from_the_manifest_not_the_lockfile() {
         let d = planted_tree("locks-engine-reader");
-        assert_eq!(
-            engine_revision(&d),
-            None,
+        assert!(
+            matches!(engine_pin(&d), EnginePin::Unbuilt),
             "no manifest is no answer, not a wrong one"
         );
         plant_engine(&d, C);
-        assert_eq!(
-            engine_revision(&d),
-            Some(C.chars().take(7).collect::<String>()),
+        assert!(
+            matches!(engine_pin(&d), EnginePin::At(ref r) if *r == C.chars().take(7).collect::<String>()),
             "the short form has to match what `revision_in` produces, or the two never compare \
              equal and the arm refuses every tree"
+        );
+    }
+
+    /// A manifest naming a path instead of a revision, which `mock --engine
+    /// <path>` writes.
+    ///
+    /// **The arm that was missing, and its absence is why this state used to be
+    /// indistinguishable from an unbuilt tree.** Both came back as no
+    /// revision, so a run against a working copy quietly stopped checking the
+    /// participant the whole engine arm exists for, and nothing anywhere said
+    /// which of the two had happened.
+    #[test]
+    fn an_engine_supplied_by_path_is_not_a_participant_and_says_so() {
+        let d = planted_mock(
+            "locks-engine-by-path",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(A)))],
+        );
+        plant(
+            &d,
+            "target/mockspace-lints/Cargo.toml",
+            &format!(
+                "[package]\nname = \"mockspace-lints\"\n\n\
+                 [dependencies]\n\
+                 mockspace = {{ package = \"{PACKAGE}\", path = \"/somewhere/mockspace/lint-rules\" \
+                 }}\n"
+            ),
+        );
+        assert!(
+            matches!(engine_pin(&d), EnginePin::Unpinned),
+            "a manifest with no `rev` is a different state from a manifest that is not there, and \
+             folding them together is what hid this"
+        );
+        assert!(
+            check(&d).is_empty(),
+            "there is no revision for a tool to agree with, so the pairwise check is the whole of \
+             what can be asked here"
+        );
+    }
+
+    /// The finding points at the lockfiles rather than at the registry.
+    ///
+    /// It used to be built through the registry lints' shared constructor,
+    /// which reports `registry` as the location, so every finding this lint
+    /// raised sent a reader to a file it has never opened.
+    #[test]
+    fn the_finding_names_where_the_lockfiles_are() {
+        let d = planted_mock(
+            "locks-location",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
+        );
+        let f = check(&d);
+        assert_eq!(f.len(), 1, "one finding: {f:?}");
+        assert_eq!(
+            f[0].path.as_deref(),
+            Some("tools"),
+            "the reader has to land where the disagreeing files are"
+        );
+        assert_eq!(
+            f[0].crate_name, "mock",
+            "and `registry` is the one answer that is certainly wrong, since this lint never reads \
+             it"
         );
     }
 
