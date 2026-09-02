@@ -75,6 +75,18 @@ notko  (zero deps)
 `notko` has no dependencies. `arvo` builds on `notko`. The `clause-*` crates build on both.
 ```
 
+## No emphasis, and no inline styling at all
+
+No `**bold**`, no `*italic*`, no underlining, no combination of them, anywhere in prose a human reads. Not for a load-bearing sentence, not for a term being introduced, not for a warning. Backticks on an identifier, a path or a command stay, because those name a thing rather than shout it.
+
+A sentence carrying its weight in the words does not need a typeface to say which half matters, and emphasis is the first thing that turns into decoration once there is more than a little of it, at which point the reader stops seeing any of it and the prose has lost the device rather than gained one.
+
+The exempt set is closed and is exactly this: files under `.claude/` and the generated agent surfaces under `.github/`. Those are text an agent loads, and the operative-content-first shape they want is what the bold is doing there. Nothing else is exempt, and a file being internal by location does not put it on the list.
+
+A source that renders into a public document is bound as what it renders to. `mock/crates/*/DESIGN.md.tmpl`, `mock/*.md.tmpl` and every other template producing `docs/` are public prose wearing an internal path, so the ban binds them exactly as it binds the rendered file. Rustdoc is the same case, because `///` and `//!` render.
+
+A file already full of bold is not evidence the rule spared it. Those predate the ban and are the work it names, so the tell runs backwards: the more emphasis a public file carries, the more certain it is that nobody has been through it yet. Take it out of what you are editing anyway, rather than opening a sweep that buries the change travelling with it.
+
 ## Emoji
 
 None in public prose. Only exception: semantic UI mocks or diagrams where an emoji carries information a word cannot.
