@@ -439,3 +439,250 @@ I still do not know. Not blind against: `question`, `ruling`, `law`, `dimension`
 for cross-links and false friends before committing to a reading.
 
 ---
+
+## 9. Reconciliation, written after opening the withheld surfaces
+
+**Everything above this line was committed blind at `af0063bc`**, "research: seat 250 blind derivation on
+Q21/Q22 admission scope, plus registry and test-gate probes", together with `250_probes/registry_evidence.txt`
+and `250_probes/test_gate_run.txt`. Nothing above has been edited since, including the two places (Q21's
+leg one, Q22's gating claim) where this section now says it is too strong.
+
+### 9.0 What I opened, in what order, and what I left shut
+
+After the blind commit I read, in this order: `65_knuth_number_systems_derived_cold.md` in full (both
+phases), `74_giesen_consolidation_the_number_system_concept.md` in full,
+`241_kiselyov_admission_is_a_resolution_not_a_verdict.md` in full including its later reconciliation and
+erratum, `244_orchard_consolidation_admission_and_the_number_system.md` in full,
+`246_kiselyov_the_two_promotions_and_what_they_second.md` in full,
+`248_chlipala_standing_counts_arrivals_and_the_gate_is_shut.md` in full including its own reconciliation,
+and `08_knuth_what_the_one_format_concept_covers.md` section 4.5 (interval and affine forms) directly. I
+then re-queried the live registry (`proposal.where(answers=is_number_system_broad_enough_for_non_magnitude)`,
+`proposal.where(answers=are_set_valued_carriers_admitted)`, `proposal.where(answers=is_the_ambient_operation_family_fixed)`)
+against the checked-out tree rather than trusting any panel file's transcription of it, since the registry
+is the canon and a panel file is at best a snapshot of a moment.
+
+**Left shut, and named so the gap is a stated one rather than a silent one**: `242_what-admits-a-number-system.md`,
+`243_seat242_the_resolution_has_no_second_arm.md`, `245_ringer_entailment_check_on_the_admission_consolidation.md`,
+and `247` (whose title I have not even confirmed), plus `08` outside section 4.5, `73_leijen_the_membership_test_and_how_wide.md`
+(cited directly by the standing Q21 proposal's `provenance`, unread by me), `INTENTS.md`, `OPTIONS.md`,
+`AGREEMENTS.md`, `DROPLIST.md`, and the roughly two hundred fifty other numbered files in this panel.
+Everything I say below about `242`, `243`, `245` and `73` is secondhand, through `244`'s and `246`'s
+quotation of them, and I mark it as such where it matters. Given the size of this panel (`244` alone
+reports a corpus in the hundreds of files, and `246` reports one instrument correcting another's word
+counts across it), reading it exhaustively before writing a reconciliation is not what the brief asked for
+and is not what I did; the brief asked me to open "the two withheld surfaces" (the panel directory and the
+withheld proposal namespace) and reconcile, and I read enough of both, on the specific topic I was
+dispatched on, to do that honestly.
+
+### 9.1 Q21: the standing proposal, checked live against my derivation
+
+The registry, queried directly rather than through any panel file's report of it: exactly one proposal row
+answers Q21, `proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test`, `standing = "one_expert"`.
+Its `says` and `because`, quoted in full because the difference between my leg one and this row's mechanism
+turns on the exact wording:
+
+> The concept's edge is not an order and not a magnitude: order-compatibility is a property of the
+> selected reduction, varies within a single family the design must contain, and groups a wrapped integer
+> with a bit vector. A wrapped numeral satisfies fewer of the properties a numeral is expected to satisfy
+> than almost anything else the concept contains, and it sits in the kernel on op's four-times-restated I3;
+> so any clause proposed as a boundary of the concept is checked against wrapping before anything else.
+
+> The discriminator was measured empty: over every total order on the carrier, wrapping addition and xor
+> over a bit vector admit zero compatible orders each, while saturating addition and minimum admit some.
+> So an order-shaped boundary groups a kernel item with the candidate the narrow reading exists to
+> exclude, and splits wrapping from saturating inside one kernel item.
+
+Its `evidence` field names `law::existence_of_a_translation_invariant_total_order`, the exact law row my
+own leg one leans on, and its `note` says outright: "The measurement is carried as a law row rather than
+here, because the law has a region and the boundary claim does not."
+
+**So my leg one is not an independent instance of this claim, and I withdraw treating it as one.** My most
+load-bearing argument in section 3 and this standing proposal's whole argument are, examined closely, the
+same measurement read by two people: one total order, wrapping and GF(2) both admitting zero compatible
+orders, saturating and min admitting some. I did not read this proposal before writing section 3 (the
+contamination in section 0 leaked a different row, on Q33, not this one), so the ordering condition
+`mockspace.toml`'s `standing` field states, "each deriving before reading the other", is satisfied in the
+narrow sense that I had not read this specific row. But `248`'s reconciliation, which I read after my own,
+draws the sharper distinction that matters here, quoting the corpus's own precedent
+(`retirement::r178_the_discount_carried_at_three_of_five_components`): "an empirical claim two parties
+reach independently is corroborated because the world had to cooperate twice, while a definition two
+parties reach independently may be two members of one model family finding the same framing natural on one
+premise set." What I have is neither of those cleanly. It is one empirical measurement (`existence_of_a_translation_invariant_total_order`
+was run once, by whoever built that law row) read by two people who each treated it as decisive. The world
+did not cooperate twice; the same sweep was consulted twice. That is a second read, not a second arrival,
+in exactly the sense `248` names, and I am not going to let it stand as an unqualified "two experts" in
+anyone's later accounting of this topic.
+
+**What does not fall to that discount: my legs two and three.** Neither appears in the standing proposal's
+`says`, `because`, or `note`, and I did not encounter them in `65`, `74`, `241`, `244`, `246`, or `248`
+either. Leg two is that `obligation::a_cost_dynamic_program` is a real, already-recorded consumer need
+computing outside ordinary addition and multiplication, uncovered under the narrow reading, with nobody
+having proposed how it would be served otherwise. Leg three is that the shipped `Ambient` trait's own
+`ADMITTED` obligation does not, on its face, gate on order-compatibility at all, so the ratified, shipped
+format concept was never actually drawing the line the narrow reading proposes. Both are disjoint
+arguments for the same conclusion (broad), reached blind, from material the standing proposal does not
+cite. I am not claiming these promote the standing proposal to `two_experts`: per `248`'s own framework
+(its section 6, case B), a disjoint route to the same normative conclusion, run by a seat that did not read
+the row, is the shape that could in principle earn its own `proposal` row at `standing = "one_expert"`,
+distinct from the existing one, with the coordinator's `gate` deciding whether it is worth folding in.
+That is a consolidator's decision, not mine to make from here. What I can say is that these two legs are,
+as far as I have read, new material on Q21 that nobody else in this topic has stated, and I record them as
+such rather than as a second instance of the existing row.
+
+**Where this leaves 241's finding, which I did not derive and did not know about until after committing.**
+`241`'s Q21 argument is a third, genuinely disjoint mechanism: a committed probe
+(`241_probes/ambient_algebra_is_not_a_coordinate`) showing four structurally different ambient algebras
+(rationals under plus and times, the tropical min-plus semiring, Boolean and/or, an interval algebra)
+return the identical observation tuple from the shipped `Ambient` trait, while a radix-changing control
+does move the tuple. That is a different route to a compatible but not identical conclusion:
+`241` concludes the ratified concept is "broad by construction" and the shipped mechanism is "vacuously
+broad" because it cannot even distinguish algebras, which is stronger and stranger than either my leaning
+or the standing proposal's "the edge is not an order". `246`'s own section 6, which I read directly, states
+that `241` shares only the negative with the standing proposal (the concept's edge is not a breadth
+boundary) and diverges on the positive content, so `241` does not second the standing proposal either. My
+leg three (`Ambient::ADMITTED` does not check order-compatibility) is adjacent to `241`'s finding without
+being the same claim: mine is about one property (order-compatibility) not being checked; `241`'s is that
+no property distinguishing the ambient algebra is checked, of which mine is a special case its probe
+subsumes. I read `241`'s probe's own description in its file rather than the probe's output directly (I did
+not open `241_probes/`), so I record this as read secondhand from `241`'s own file rather than independently
+verified by me.
+
+**Net honest state of Q21 after this reconciliation**: the standing proposal remains, on my reading,
+correctly at `one_expert`, since nothing I bring counts as a second arrival at its specific claim. `241`'s
+finding is a separate, stronger, disjoint one-instance claim that also does not second the standing
+proposal. My own contribution is two further disjoint legs supporting the same broad conclusion by
+different means, offered as material for a future proposal row rather than as a promotion of an existing
+one. Three separate one-instance routes converging on "broad", none of them the same instrument, is
+worth something as a pattern, but the corpus's own discipline (per `248`, per `r178`) is explicit that
+convergence is not counted by pattern-matching on the conclusion; it is counted per claim, and none of the
+three claims here is identical to another.
+
+### 9.2 Q22: 241 answers what I only gestured at, and I say so plainly
+
+The registry, queried directly: zero proposal rows answer Q22. `244`'s L1 table (read directly, not
+through `246`'s restatement of it) reports the same thing and adds that none of `241`, `242`, or `243`
+cited any of the five standing answer rows the other five admission questions have, which is a separate
+finding about citation discipline rather than about Q22's content.
+
+`241`'s Q22 finding, read in full, is sharper and better evidenced than mine on every axis I can check.
+Where I derived, from the ratified format-spine ruling read at a distance, that fixed-radius intervals
+might be admissible "in principle" without settling how, `241` measured it directly against the ratified
+membership clause: `proposal::membership_of_the_representable_set_is_one_affine_predicate` states
+membership is one affine predicate over one parameterisation, `241`'s committed probe
+(`241_probes/set_valued_carriers_need_a_second_slot`) constructs the fixed-radius case as exactly that,
+one affine predicate with the radius carried as a `const` of the type rather than as a second runtime
+slot, and reports 64 nameable instances against 2080 general intervals of which 2016 are not nameable
+under the ratified clause as it stands. That is a concrete, checked answer to the half of Q22 that asks
+about a bounded, structurally-restricted set-valued carrier: **admitted, by construction, without
+amending anything ratified, provided the radius is fixed at the type rather than varying at runtime.**
+General, variable-radius intervals are refused by the same clause, for the same reason: a second runtime
+slot is not one affine predicate over one parameterisation, and admitting it would require amending R1
+itself, which the closed-concept clause in `proposal::the_concept_is_closed_and_the_inventory_is_open`
+forbids without a fresh ratification.
+
+**This corrects something in my own section 4.** I wrote that Q22 "cannot be soundly answered
+independently of Q4", modelled on how Q21 depends on Q33. `241`'s finding shows that claim was too strong.
+The fixed-radius case does not need Q4 resolved at all, because the radius is carried as a compile-time
+type constant rather than as a value a single datum denotes at runtime: nothing about it requires a datum
+to be able to stand for a set in Q4's sense. What genuinely does need Q4 resolved is the harder case, a
+datum whose value varies at runtime and denotes a set at that point, which is closer to what Q4's own
+fourth option describes and closer to what my own file was actually gesturing at when I wrote "genuine
+interval arithmetic, where the interval itself is a first-class value with its own laws." So the gating
+claim survives narrowed rather than intact: **Q22's fixed-radius, type-parameterised half is answered now,
+by `241`'s reading of R1, with no dependency on Q4. Q22's general, runtime-varying half is where the
+gating on Q4 (and, more sharply than I stated it, on whether a runtime-varying arity is even representable
+under the const-size constraint at all, which `08`'s file names as a separate, harder problem, see below)
+actually bites.**
+
+`244` and `246`, read after `241`, correct `241` in the other direction, and I want to record their
+correction rather than let `241`'s framing stand as though it were unchallenged. `244`'s C3 demotes `241`'s
+claim that the slot arity is "fixed at one by a ratified count": `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`
+(R3) states ten identity coordinates as an arithmetic fact inside a different argument, not as a ratified
+commitment to arity, and `244` constructs the counterexample directly (a candidate with thirteen constants
+at slot arity two reaches the same conclusion R3 draws). The weaker argument survives: amending the arity
+would still mean amending the affine-predicate clause R1 states, and R1 is what the closed-concept rule
+protects, so the refusal of general intervals holds on the affine-predicate ground alone, without needing
+the arity-count overreach. I did not verify `244`'s counterexample construction myself (I did not build it
+or read `244_probes/` beyond noting they exist); I record the correction as read rather than as re-derived.
+
+**The composition route, which is where my own contribution is weakest relative to the corpus.** My
+section 4 offered composing two ordinary, already-admitted numerals into a pair as a partial escape hatch
+that does not itself answer Q22. `241` reaches the identical structural observation independently (a value
+and a bound as two ordinary formats composed one tier up). `246`'s section 5.3 (read directly) corrects
+`241`'s own attribution here: `241` had declined to count `08`'s section 4.5 as an independent prior
+instance, believing `08` was an earlier seat under `241`'s own persona; `246` establishes by filename
+convention and by `HANDLES.md` cross-check that `08` is a Knuth seat, disjoint from `241`'s Kiselyov
+persona, restoring it as a genuine independent instance. I read `08` section 4.5 directly rather than
+taking `246`'s word for its content, and it is a measured result, not merely an argument: twenty thousand
+random interval pairs on `U<3,3>`, outward rounding failing zero times against one thousand and thirty-six
+and nine hundred and forty-six failures for the two wrong rounding disciplines, with the load-bearing
+constraint stated precisely, "both directed rounding modes must be a per-operation choice rather than a
+per-numeral one." `08` also names, in the same section, the reason general set-valued admission is
+genuinely harder than the fixed-radius case in a way neither `241` nor I stated: affine forms and Taylor
+models, the natural generalisation of a fixed-radius interval to a variable-arity one, collide with the
+design's const-size constraint directly, since a datum with a growing noise-symbol count is not const-size
+by construction, independently of anything Q4 decides. That is a structural, arity-based reason the general
+case is refused, distinct from and stronger than the affine-predicate-membership reason `241` and I both
+gave, and it is `08`'s own contribution, not mine.
+
+**So the composition route, as I stated it in section 4, is real, but it is now the third independent
+instance of an observation `08` made first, with a measurement, and `241` made second, tying it to the
+ratified text. I add nothing to it beyond a third, later, unmeasured corroboration from a different angle,
+and I say so rather than claim credit for a finding two other seats already established more precisely
+before I arrived.**
+
+**Net honest state of Q22 after this reconciliation**: `241`'s answer, as sharpened by `244`'s correction
+and corroborated independently by `08`'s measurement, is the best-evidenced material this topic currently
+has, and it substantially subsumes mine. What survives from my own file as a genuine, undisplaced
+contribution is narrower than I framed it in section 4: not "Q22 is gated by Q4", which was too strong and
+is now corrected above, but the specific finding that Q22 and Q4 are not cross-linked in the registry the
+way Q21 and Q33 are (section 5), which remains true and remains, as far as I have read, unstated elsewhere
+in this topic, and the observation that the general (non-fixed-radius) case is refused on two independent
+structural grounds now on record (`241`'s affine-predicate argument, `08`'s const-size arity argument),
+neither of which needs the other, which is worth a consolidator noting even though I did not discover
+either ground myself.
+
+### 9.3 What I settled, what I moved, and what I could not
+
+**Settled, in the sense of "I now believe it and it survives contact with the rest of the topic":** the
+composition route is real and cheap, for both Q21's tropical-semiring case (unexamined by anyone I read,
+including me, as a composition candidate, and I do not claim it composes the same way) and Q22's
+fixed-radius interval case, where it is now the well-measured, three-times-independently-reached finding
+described above. The Q22 gating claim is real but narrower than I first stated: it applies to the general,
+runtime-varying case and not to the fixed-radius, type-parameterised case, which `241` shows is answered
+already. The Q21/Q33 entanglement I derived independently in section 3 is corroborated by every other seat
+I read that touched it (`65`, `74`, `241`, `246`), for reasons that in most cases are disjoint from mine.
+
+**Moved, in the sense of "I changed my own position on reading the withheld material":** my Q21 leg one no
+longer counts, by my own hand, as an instance of anything; it is a second read of one measurement, not a
+second arrival, and I would rather say this myself than have a later consolidator find it and wonder why I
+did not. My Q22 gating claim is narrowed to the general case rather than the whole question, per 9.2 above.
+
+**Could not settle:** whether legs two and three of my Q21 derivation (the uncovered-obligation argument
+and the Ambient-does-not-gate-on-order argument) are worth a `proposal` row of their own, since that is a
+`gate` decision reserved to the coordinator per `ruling::two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate`,
+which `248` quotes and which I am not licensed to exercise from a cold seat. Whether the fixed-radius
+Q22 finding, now backed by three disjoint routes (`08` measured, `241` tied to ratified text, this file
+corroborating structurally), is strong enough for the coordinator to consider promoting toward canon; that
+is the same reserved decision, on a different row. Whether Q22 should be filed on `the_primitive` topic
+instead of, or in addition to, `the_number_system` (section 5); I flagged it and did not resolve it, and
+nothing I read in `241`, `244`, `246`, `248` or `08` resolves it either. And, honestly, whether my own
+withdrawal of Q21 leg one is itself being applied too strictly: `248`'s own file argues at length that the
+corpus's mechanical evidence for blindness between any two files is weaker than the corpus's prose claims
+about itself (its `p2` and `p6` probes, which I read about but did not re-run), so a reader more permissive
+than I am about "reading the same underlying law row independently" might reasonably restore my leg one as
+a second instance after all. I chose the stricter reading because it is the one I can defend without
+re-running anyone else's instrument, and I name the more permissive alternative so it is not lost.
+
+## 10. Revised carry-forward count
+
+Section 6's original count of four stands unchanged; nothing in the reconciliation displaces any of the
+four ratified or settled facts it names. Added to it, from the reconciliation phase, and counted
+separately since these were not available to me at the time section 6 was written: (5) the live registry
+state for all three proposal rows on Q21, Q22 and Q33, re-queried directly against the checked-out tree
+rather than taken from any panel file (section 9.0); (6) `08`'s measured interval-composition result,
+read directly rather than through paraphrase (section 9.2); (7) `244`'s correction of `241`'s arity-count
+overreach on R3, read directly (section 9.2). Revised count: 7 distinct pieces of prior material relied
+on across both phases of this file, three added in reconciliation.
+
+---
