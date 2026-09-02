@@ -5,11 +5,10 @@
 
 //! The laws of the applied map, over the whole matrix.
 //!
-//! These replace four earlier tests that reached a declaration and stopped. The
-//! difference is that every assertion here can be wrong about arithmetic: each
-//! one runs the map and looks at what came back, so a predicate stating the
-//! opposite of the truth fails rather than being confirmed by a sibling that
-//! states the same thing.
+//! Every assertion here can be wrong about arithmetic, which is the whole of
+//! what makes them laws rather than restatements: each one runs the map and
+//! looks at what came back, so a predicate stating the opposite of the truth
+//! fails rather than being confirmed by a sibling that states the same thing.
 //!
 //! Every position, window bound and dither below is written as the coordinate it
 //! is rather than as a host integer, which is the same demand the contract makes
@@ -115,7 +114,7 @@ macro_rules! totality_over_the_matrix {
 
 totality_over_the_matrix!(TowardZero, Floor, Ceil, HalfUp, HalfEven, Stochastic);
 
-// --- 2. the identity on the grid, which the old predicate only declared ------
+// --- 2. the identity on the grid, run rather than declared ------------------
 
 macro_rules! identity_over_the_matrix {
     ($($mode:ident),+ $(,)?) => {

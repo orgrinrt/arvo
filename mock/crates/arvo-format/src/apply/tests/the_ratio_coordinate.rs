@@ -28,9 +28,9 @@ use crate::slots::Slot;
 /// one set rather than over whichever set each arm happened to write.
 ///
 /// Both parities on both axes, because parity is what decides whether a pair
-/// with `i64::MIN` in it has an exact form at all. The previous matrix carried
-/// one even negative denominator by accident and switched its value assertion off
-/// exactly there.
+/// with `i64::MIN` in it has an exact form at all, and a matrix carrying only
+/// odd operands asserts the saturating half over nothing while every arm present
+/// looks reasonable.
 fn every_ratio() -> impl Iterator<Item = (i64, i64)> {
     // A binding rather than an item constant: a const here would be a coordinate
     // spelled in the host's own type, which the contract lint refuses in the one
@@ -174,8 +174,8 @@ fn the_ratio_coordinate_holds_its_four_properties_over_the_whole_matrix() {
 fn the_control_the_matrix_carries_both_parities_against_the_least_value() {
     // The property that separates the two regions is the parity of the operand
     // that is not `i64::MIN`, so a matrix with only odd ones would assert the
-    // second property over an empty set while looking complete. This is the arm
-    // the previous matrix would have failed.
+    // second property over an empty set while looking complete. So the matrix is
+    // checked for the parities before anything is concluded from it.
     let mut even_against_min = 0usize;
     let mut odd_against_min = 0usize;
     for (n, d) in every_ratio() {
@@ -237,8 +237,8 @@ fn the_two_pairs_the_old_rule_named_now_keep_their_sign() {
 
 #[test]
 fn a_shared_factor_of_two_cancels_rather_than_saturating() {
-    // Every one of these has an exact form inside the coordinate and the previous
-    // rule sent all four to a denominator of one.
+    // Every one of these has an exact form inside the coordinate, reached by
+    // cancelling the factor of two the two operands share.
     //
     // i64::MIN / -2 is 2^62 exactly.
     let halved = Fraction::of(i64::MIN, -2);
@@ -290,8 +290,8 @@ fn the_saturating_region_is_where_the_other_operand_is_odd() {
 #[test]
 fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
     // The stored remainder reaches one below the denominator, so at a denominator
-    // near the top of the type the doubling `is_tie` used to perform left it. In
-    // a debug build that was a panic inside a verdict function.
+    // near the top of the type doubling it in that same carrier leaves the type,
+    // which is why the comparison is cross-multiplied wide instead.
     let big = Exact::between(Slot::ZERO, Fraction::of(i64::MAX - 1, i64::MAX));
     assert!(
         !big.is_tie().get(),
@@ -327,7 +327,7 @@ fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
             `Slot`. `round_slot` widens on the way out, so the map admits a slot one past the \
             type after `Exact` is built and cannot admit one while it is being built. What a \
             carry past the coordinate means is a question about the slot coordinate rather than \
-            the ratio, and is not answered by the round that catalogued this."]
+            the ratio, so it is stated here and left red until that coordinate answers it."]
 fn a_carry_past_the_top_of_the_coordinate_still_lands_a_slot() {
     // The design says every position maps to a slot the format admits, for every
     // mode and every policy. This position does not reach the map at all.
