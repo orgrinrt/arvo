@@ -1,0 +1,37 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+==============================================================
+A3-control  is the bound evaluated in an ungated consumer at all
+==============================================================
+--- lib       bound_lib2, Small implemented at 0, 7 and 13 only
+[exit 0]
+--- positive  6+7=13, implemented, ungated consumer, must build
+[exit 0]
+--- negative  6+6=12, not implemented, ungated consumer, MUST fail
+error[E0277]: the trait bound `Bits<12>: Small` is not satisfied
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/locus-b/mock/research/202608072330_the-numeral-canon-panel/252_probes/a_generic_const_exprs/bound_user_bad.rs:7:35
+   |
+ 7 | pub const TOTAL: usize = joined::<6, 6>();
+   |                                   ^ the trait `Small` is not implemented for `Bits<12>`
+   |
+help: the following other types implement trait `Small`
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/locus-b/mock/research/202608072330_the-numeral-canon-panel/252_probes/a_generic_const_exprs/bound_lib2.rs:15:1
+   |
+15 | impl Small for Bits<0> {}
+   | ^^^^^^^^^^^^^^^^^^^^^^ `Bits<0>`
+16 | impl Small for Bits<7> {}
+   | ^^^^^^^^^^^^^^^^^^^^^^ `Bits<7>`
+17 | impl Small for Bits<13> {}
+   | ^^^^^^^^^^^^^^^^^^^^^^^ `Bits<13>`
+note: required by a bound in `joined`
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/locus-b/mock/research/202608072330_the-numeral-canon-panel/252_probes/a_generic_const_exprs/bound_lib2.rs:21:22
+   |
+19 | pub const fn joined<const A: usize, const B: usize>() -> usize
+   |              ------ required by a bound in this function
+20 | where
+21 |     Bits<{ A + B }>: Small,
+   |                      ^^^^^ required by this bound in `joined`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
+[exit 1]

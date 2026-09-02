@@ -1,0 +1,9 @@
+==============================================================
+ARM B  a stack-owned type at a const generic parameter
+==============================================================
+--- B.lib  door (feature enabled here)
+[exit 0]
+--- B.control  consumer naming the item with no ADT const parameter
+[exit 0]
+--- B.test  consumer naming the declaration whose const parameter is an ADT
+[exit 0]
