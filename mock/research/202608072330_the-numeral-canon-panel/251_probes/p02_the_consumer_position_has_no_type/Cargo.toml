@@ -1,0 +1,10 @@
+[package]
+name = "p02_the_consumer_position_has_no_type"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

@@ -1,0 +1,13 @@
+error[E0277]: `Integer<32>` doesn't implement `Debug`
+ --> src/the_point_has_no_debug.rs:9:34
+  |
+9 |     let _ = format_args!("{:?}", Integer::<32>);
+  |                           ----   ^^^^^^^^^^^^^ `Integer<32>` cannot be formatted using `{:?}` because it doesn't implement `Debug`
+  |                           |
+  |                           required by this formatting parameter
+  |
+  = help: the trait `Debug` is not implemented for `Integer<32>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
