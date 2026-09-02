@@ -1,0 +1,30 @@
+C1 passes: Q20 heading first appears in 6a662e58, which is not 73's commit 86457709.
+C2 passes: 'missing a coordinate' occurs 1 time(s) in ruling.toml, 0 in 73, 0 in OPTIONS Q29-Q31.
+C3 passes: a planted absent phrase returns zero in all five files.
+
+(1) 73's own statement:
+    560:three new options below and the Q21 amendment are appended to `OPTIONS.md` as **Q29, Q30 and Q31**
+
+(2) oldest commit introducing each heading in OPTIONS.md, against 73's commit 86457709:
+    ### Q29. What does the admission contract ask a candidate to expose    86457709
+    ### Q30. Is admission a predicate or a location                        86457709
+    ### Q31. Does the canon use one word or two                            86457709
+    all three match: 86457709 2026-08-09 panel: 73 on the membership test, which is two tests and neither is magnitude
+
+(3) question rows and their provenance anchors:
+    what_the_admission_contract_asks_a_candidate_to_expose     OPTIONS::#q29-what-does-the-admission-contract-ask-a-candidate-to-expose
+    is_admission_a_predicate_or_a_location                     OPTIONS::#q30-is-admission-a-predicate-or-a-location
+    one_word_or_two_for_is_a_number_system                     OPTIONS::#q31-does-the-canon-use-one-word-or-two-for-is-a-number-system-and-can-arvo-carry-it
+    rows ported in 9a3fa383 (2026-08-31 00:00:05 +0300), an ancestor of the cold-open base 87ab5d70 (2026-09-01 17:02:19 +0300).
+
+(4a) 241's pre-reconciliation body at a664fffb, Q31 section:
+    377:set; the other is a predicate on its values, indexed by target. That makes Q31's option 3,
+    378:"two words with the second scoped to a target", right about the shape and wrong about the
+    384:Option 1, one word, is refuted by the row's own `note` and I have nothing to add: the canon
+(4b) 242's blind body at 64ab711e, Q30 section:
+    214:The row's own note supports this from the other side: "Most of the disputed cases, a Gray code,
+    215:two's complement and a stride, are coordinate choices rather than rejections." Under a location
+
+VERDICT: Q29, Q30 and Q31 were written by 73, ported into the registry before the cold open,
+         and both cold seats cite their notes and options inside the bodies they committed blind.
+         Blindness measured against mock/research/ alone does not bound independence from 73.
