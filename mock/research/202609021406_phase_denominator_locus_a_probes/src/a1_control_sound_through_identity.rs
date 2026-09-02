@@ -5,5 +5,8 @@ mod shared;
 use arvo_format::format::has_additive_identity;
 
 fn main() {
-    println!("A1 sound/has_additive_identity = {}", has_additive_identity::<shared::Sound>().get());
+    println!(
+        "A1 sound/has_additive_identity = {}",
+        has_additive_identity::<shared::Sound>().get()
+    );
 }

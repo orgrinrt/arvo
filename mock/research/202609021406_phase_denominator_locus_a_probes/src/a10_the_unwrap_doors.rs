@@ -7,6 +7,10 @@ use arvo_format::format::Phase;
 fn main() {
     const P: Phase = Phase::of(7, 3);
     // Two distinct declared unwrap doors on one coordinate type.
-    println!("A10 Phase unwrap doors: numerator={} denominator={}", P.numerator(), P.denominator());
+    println!(
+        "A10 Phase unwrap doors: numerator={} denominator={}",
+        P.numerator(),
+        P.denominator()
+    );
     assert_eq!((P.numerator(), P.denominator()), (7, 3));
 }

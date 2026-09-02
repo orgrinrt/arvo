@@ -4,5 +4,8 @@ mod shared;
 use arvo_format::format::smallest_step_exponent;
 
 fn main() {
-    println!("A6 broken/smallest_step_exponent = {}", smallest_step_exponent::<shared::Broken>().power());
+    println!(
+        "A6 broken/smallest_step_exponent = {}",
+        smallest_step_exponent::<shared::Broken>().power()
+    );
 }

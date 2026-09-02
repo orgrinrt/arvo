@@ -30,6 +30,12 @@ fn main() {
     let half = has_additive_identity::<HalfStep>().get();
     println!("A9 whole step (1/1, nonzero) = {whole}");
     println!("A9 half step  (1/2, nonzero) = {half}");
-    assert!(whole, "the shipped function still implements the superseded claim");
-    assert!(!half, "the control moved: a half step must carry no identity");
+    assert!(
+        whole,
+        "the shipped function still implements the superseded claim"
+    );
+    assert!(
+        !half,
+        "the control moved: a half step must carry no identity"
+    );
 }
