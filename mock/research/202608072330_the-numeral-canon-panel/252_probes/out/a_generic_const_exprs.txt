@@ -1,0 +1,27 @@
+==============================================================
+ARM A  generic_const_exprs in a public signature
+==============================================================
+--- A.lib  leaky (feature enabled here)
+[exit 0]
+--- A.control  consumer naming the signature with NO const expression
+[exit 0]
+--- A.test  consumer naming the signature that CARRIES the const expression
+error[E0308]: mismatched types
+ --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/locus-b/mock/research/202608072330_the-numeral-canon-panel/252_probes/a_generic_const_exprs/user.rs:8:5
+  |
+7 | pub const fn call() -> W<4> {
+  |                        ---- expected `W<4>` because of return type
+8 |     widen(W::<3>)
+  |     ^^^^^^^^^^^^^ expected `4`, found `leaky::::widen::{constant#0}`
+  |
+  = note: expected struct `W<4>`
+             found struct `W<leaky::::widen::{constant#0}>`
+help: call `Into::into` on this expression to convert `W<leaky::::widen::{constant#0}>` into `W<4>`
+  |
+8 |     widen(W::<3>).into()
+  |                  +++++++
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
+[exit 1]
