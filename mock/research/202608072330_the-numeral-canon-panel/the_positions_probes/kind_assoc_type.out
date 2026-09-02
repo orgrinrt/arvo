@@ -1,0 +1,6 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+2 positions at kind `assoc-type`, over the demand
+
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/DESIGN.md.tmpl:43  assoc-type           u32        impl Archive for Str Archived
+  kolli@origin/dev:mock/crates/kolli-input/src/console.rs:56  assoc-type           u8         impl Iterator for Stdin Item
+the-positions: clean, 140500 examined.

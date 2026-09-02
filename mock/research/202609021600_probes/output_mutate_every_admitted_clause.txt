@@ -1,0 +1,27 @@
+probe: does the suite isolate each ADMITTED clause?
+tree:  ce18fda1
+tool:  rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+--- C0: unmutated control (must be GREEN) ---
+C0 GREEN. baseline passing count: 165
+
+clause                             suite   what went red
+---------------------------------- ------- --------------
+ambient_radix_positional           RED         tests::obligations::every_open_contract_in_this_crate_states_its_obligation_as_a_check     tests::obligati
+quantum_ranges_over_a_magnitude    RED         tests::obligations::every_open_contract_in_this_crate_states_its_obligation_as_a_check     tests::obligati
+quantum_reach_is_representable     RED         tests::obligations::the_law_rejects_a_step_law_that_runs_off_the_exponent     tests::obligations::the_quan
+slots_range_not_inverted           RED         crates/arvo-format/src/slots.rs - slots::Slots::ADMITTED (line 166) 
+slots_width_at_least_one           GREEN   nothing. the clause is invisible to the suite
+slots_width_at_most_62             GREEN   nothing. the clause is invisible to the suite
+slots_span_fits_a_count            GREEN   nothing. the clause is invisible to the suite
+slots_width_addresses_span         RED         tests::the_inventory::the_law_rejects_a_range_that_passes_the_easy_obligations 
+format_phase_denotes               RED         tests::obligations::every_open_contract_in_this_crate_states_its_obligation_as_a_check     tests::obligati
+
+--- C1: the method can report RED (slots_range_not_inverted above) ---
+If that row is GREEN the whole sweep is void.
+
+--- final restore verified ---
+  ambient.rs restored
+  quantum.rs restored
+  slots.rs restored
+  format.rs restored

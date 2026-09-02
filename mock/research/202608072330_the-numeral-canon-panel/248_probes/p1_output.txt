@@ -1,0 +1,47 @@
+== every proposal row, standing x distinct-files x distinct-author-files ==
+   2 cross_topic	 files=2	 authors=0
+   4 cross_topic	 files=1	 authors=0
+   1 one_expert	 files=2	 authors=0
+   1 one_expert	 files=3	 authors=1
+   1 one_expert	 files=4	 authors=1
+   1 one_expert	 files=4	 authors=2
+   1 one_expert	 files=5	 authors=4
+   2 one_expert	 files=4	 authors=3
+   6 one_expert	 files=3	 authors=2
+  10 one_expert	 files=2	 authors=2
+  14 one_expert	 files=2	 authors=1
+  25 one_expert	 files=1	 authors=0
+  30 one_expert	 files=1	 authors=1
+   2 three_or_more	 files=1	 authors=1
+   4 three_or_more	 files=1	 authors=0
+   1 two_experts	 files=2	 authors=1
+   1 two_experts	 files=2	 authors=2
+   1 two_experts	 files=3	 authors=0
+   1 two_experts	 files=3	 authors=2
+   4 two_experts	 files=1	 authors=1
+  15 two_experts	 files=1	 authors=0
+
+rows read: 127
+
+== arm 1: the lint's own predicate, distinct files < 2 ==
+multi-arrival rows citing fewer than two distinct files: 29
+
+== arm 2: the same rows, counting only files that can be an author ==
+multi-arrival rows total:                              35
+of those, reaching fewer than two independent authors:  33
+
+-- the rows that DO reach two authors --
+  the_concept_is_closed_and_the_inventory_is_open  [two_experts]  74_giesen_consolidation_the_number_system_concept(consolid) 66_dolan_number_systems_derived_cold(author) 65_knuth_number_systems_derived_cold(author)
+  whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra  [two_experts]  76_willsey_derived_laws_derived_cold(author) 77_amin_derived_laws_derived_cold(author)
+
+-- the rows that reach two FILES but fewer than two authors --
+  a_composed_expressions_region_is_never_inherited_from_its_parts  [two_experts]  90_giesen_consolidation_derived_algebraic_laws(consolid) 79_fallin_attacking_the_two_cold_derivations_on_derived_laws(author)
+  chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type  [cross_topic]  106_giesen_consolidation_the_strategy_axis(consolid) AGREEMENTS(ledger)
+  the_law_frame_was_attacked_from_another_topic_and_held  [cross_topic]  74_giesen_consolidation_the_number_system_concept(consolid) AGREEMENTS(ledger)
+  an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit  [two_experts]  p6_the_adaptation_absorbs_one_bit.rs(probe) 63_spj_consolidation_the_format_concept(consolid) p3.out(probe)
+
+== the cases that had to fail ==
+  PASS C1 lint arm reproduces the measured CEILING (= 29)
+  PASS C2 two anchors into file 161 collapse to one file (= 1)
+  PASS C3 the 65/66 cold pair counts as two authors (= 2)
+  PASS C4 a living ledger is not an author (= 0)
