@@ -303,6 +303,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.the-agent-surface-quotes-the-schema]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- arvo canon lints (mock/lints/*.rs, corpus side) ------------------------
 #
 # These read the panel's own prose under `mock/research/` rather than the
