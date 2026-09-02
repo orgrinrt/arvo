@@ -467,3 +467,197 @@ questions and only the third decides anything.
 
 Written after the blind commit, whose hash is filled in here.
 
+Blind commit: `cbcdce5b4ef57fdfa7099f7e283ce850c8dad3e5`, message
+`research: seat 249 derives what standing counts, blind`. Everything above it was
+in the tree at that commit. Everything from here down was written after reading
+`244` through `247`. There was no `248` file on disk when I read, so the parallel
+seat's answer is not reconciled here and its independence from mine is intact in
+both directions.
+
+### 11.1 The question I was sent on is `247`'s O1, and it asked for exactly this read
+
+`247` section 8 opens it:
+
+> **O1. What `proposal.standing` counts when the claim was in the row the seat
+> answered.** Two readings. Strict: an instance is a derivation that did not have
+> the conclusion in front of it ... Permissive: an instance is an argument route
+> the prior instance did not use ... **What would close it:** a second independent
+> reading of `proposal.standing`'s definition against the R3 precedent ... Two
+> agreements grounded in quoted text, per
+> `ruling::the_panel_finishes_the_canon_without_him`. Not mine alone, and I am the
+> first reader, so a second read is owed.
+
+I am the owed read, and I did not know the fork existed when I answered it. My
+section 1 lands strict, my section 4 refutes the permissive branch with two
+committed counterexamples, and my section 6 supplies a partition neither branch
+had. So the two readings agree on the strict answer, reached from different
+material: `247` from the leak it measured in `241` and `242`, mine from the
+declared vocabulary and the corpus's usage of it. Under
+`ruling::two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate`
+that is the bar met on this one question. The gate is the coordinator's and I do
+not claim it.
+
+### 11.2 The thing I have that the sitting did not: the definition is written down
+
+`247`'s gate section says the ambiguity is "what the `standing` field counts,
+**which the canon does not say**". Under the strict reading of what canon is,
+`canon_paths = ["mock/registry/*.toml"]`, that sentence is exactly right and I do
+not dispute it. But the field has a declared meaning one tier below, in the
+schema the registry is validated against, and it answers the question in the
+words the question uses.
+
+All four of `244` through `247` name `mockspace.toml`, and every one of them names
+it only as the file declaring `canon_paths`. None quotes the `standing` field
+description. I checked rather than assumed: `grep -n 'each deriving before
+reading the other\|How many independent instances'` over the four returns nothing.
+
+That is the whole of my contribution over `247`, and it is worth stating what it
+is and is not. It is not a canon row, so it does not ratify anything. What it is
+is the declared vocabulary a row must be written in, which means a row spelling
+`two_experts` is asserting the sentence "each deriving before reading the other"
+whether its author read that sentence or not. A field cannot mean something its
+declaration forbids, and the corpus obeys the declaration in every note I quoted
+in sections 3 and 4, which was written by authors who mostly also had not read it.
+
+So `247`'s O1 does not need a policy decision. It needs somebody to open the
+schema. I count that as the option closed rather than answered, which is a
+cheaper outcome than the one it asked for.
+
+### 11.3 Where I disagree with `246`, and it is its premise sentence
+
+`246` gate section, line 23:
+
+> `proposal.standing` records how many independent instances back a claim and a
+> recording is a count rather than a ratification
+
+The second half is right and the first half is a paraphrase that drops the two
+clauses the case turns on. "Back a claim" is satisfied by an argument for a
+conclusion somebody was handed. "Reached it, each deriving before reading the
+other" is not. `246` then reports at Q30 that "the shape clause of the standing
+answer is now at two instances", which follows from its paraphrase and not from
+the declared text.
+
+I am not saying `246` was careless. It reasoned from the field's plain English,
+the plain English is a fair reading of the name, and the file it needed was not
+in its brief. What it cost is one count, and `247` caught it from the other
+direction on the same day.
+
+### 11.4 `246`'s O1 asks a question I answered without knowing it was asked
+
+> **What would close it: whether any consumer of the registry gates on `standing`
+> mechanically.** Nobody has looked, and the answer decides whether a note is
+> sufficient.
+
+Somebody has now. Yes, one consumer gates on it:
+`mock/lints/a_standing_is_reachable_from_what_it_cites.rs`, `default_severity`
+`HARD_ERROR`, reading
+
+```rust
+const MULTI_ARRIVAL: [&str; 3] = ["two_experts", "three_or_more", "cross_topic"];
+```
+
+and refusing a row in that set whose `provenance` names fewer than two distinct
+files, above a measured ceiling of 29 which the committed corpus currently sits
+exactly on. My section 8 M1 reproduces that 29 from a separate parser.
+
+So `246`'s O1 resolves against the note-only arm on the machine-readable half: a
+per-clause standing written into a note is invisible to the gate, and the field
+is the only thing the gate reads.
+
+**And the more useful half of the answer is that the gate would not have stopped
+the promotion either.** Both rows under discussion carry provenance naming two
+distinct files, `73_leijen_the_membership_test_and_how_wide` and
+`74_giesen_consolidation_the_number_system_concept`. So raising either to
+`two_experts` is green on that lint today, by its own control test
+`control_a_two_expert_row_citing_two_files_is_silent`. It is also green on
+`a_proposal_rests_on_more_than_a_consolidation`, because `73` is not a
+consolidation and that lint fires only when every cited file is one.
+
+And the two files are one author's file and that author's own compression of it.
+I opened both cited lines rather than taking `247`'s word: `74:536` closes on
+"(`73:667-675`). ONE EXPERT on the split" and `74:568` on "(`73:705-711`). ONE
+EXPERT, composing the sequence". The consolidation cites `73` and nothing else and
+labels both entries one expert.
+
+**So the file-count condition is satisfiable by a file plus its own
+consolidation, and the gate cannot tell that from two arrivals.** That is not a
+criticism of the lint, which says in its own doc comment that it is "a necessary
+condition rather than a sufficient one". It is the concrete shape of the hole,
+and it is live rather than hypothetical: two rows, today, one edit away from a
+green false tier.
+
+### 11.5 What `247` has that I did not, credited
+
+`247` established the mechanism I could only describe. My section 7 says a
+question row's `note` or `options` can hand a conclusion over and that the channel
+is uncheckable on its most dangerous term. `247` went and measured one instance
+of it end to end: Q29, Q30 and Q31 were written by `73`, the oldest commit
+introducing each of the three headings is the commit that added `73`'s own file,
+and both cold seats quote those rows' notes in their blind bodies. That is the
+abstract channel with a name, a commit and two quotations on it, and it is worth
+more than my statement of the shape.
+
+I also had not reached `247`'s O2, which is the process half: a cold seat's brief
+should withhold, by namespace, question rows whose `provenance` resolves to a file
+by the same author as the proposal under test. That is the repair for the channel
+and it is better than mine, because mine puts the burden on the seat to declare
+its exposure afterwards and `247`'s removes the exposure. Both are wanted: the
+withholding cannot cover a brief's own prose, which is where seat 225's
+contamination came from, and only a declaration reaches that.
+
+### 11.6 Where the sitting and I part on the R3 precedent, and it is small
+
+`247` reads `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`
+as not settling the handed case, "whose seats derived a conclusion outside the
+recorded options and so do not settle the handed case". I read the same fact as
+the rule rather than as the escape: the dissolution counted **because** it was
+outside what the brief signposted, and the ruling says so in the same breath as it
+declares the contamination. That is my Arm B, and `247`'s sentence is its
+premise. So this is a difference about whether one worked case generalises, not
+about any fact, and I would rather it be argued than split.
+
+If it does not generalise, the strict answer stands alone and is harsher: a
+handed conclusion disqualifies the whole file. If it does, the partition applies
+and a handed seat can still count for what the handover could not have supplied,
+which is the shape the canon's one ratified example actually used.
+
+### 11.7 What I carry forward unchanged, and from whom
+
+- From `247`: that Q29 to Q31 are `73`'s, with the commit evidence; that both cold
+  seats quoted those notes in their blind bodies; O2's withholding repair; and the
+  strict reading of O1, which I reached separately.
+- From `246`: that a recording of standing is a count rather than a ratification,
+  which is right and is why none of this is a canon act; and its clause-level
+  framing, that a row's clauses can carry different standings while `standing` is
+  one field, which my Arm partition is the per-claim version of.
+- From both: that the tree moved under files in this sitting, which is why every
+  figure in my section 8 names `eac588fd`.
+
+I re-derived none of `247`'s commit-authorship instrument and none of the census.
+They are cited above for what they established, not for how they were written.
+
+### 11.8 What the reconciliation changes in sections 1 to 10
+
+Nothing is withdrawn. Two things are narrowed and one is added.
+
+- Section 2's locus correction stands, and `246`'s O1 sharpens it: the field is
+  what a gate reads, so "nobody promotes off `standing`" is true of humans and
+  false of the lint. The lint is a consumer, and section 9's F2 should be read as
+  the field being stale for readers while still being live for the gate.
+- Section 7's predicate gains a term I did not have: an artifact whose content
+  includes C also includes a question row **whose author is the author of the
+  claim**, which is `247`'s finding and is narrower and more checkable than my
+  "a `question` row whose `note`, `options` or `answered` states it".
+- Section 9 gains F6, below.
+
+**F6. The two-file condition is satisfiable by a file and its own
+consolidation.** Live at `admission_returns_a_coordinate_rather_than_a_verdict`
+and `membership_and_hosting_are_two_questions`, both currently `one_expert` and
+both citing `73` plus `74`'s compression of `73`. Neither lint refuses the pair,
+and the compression labels both entries ONE EXPERT in its own text. The cheap
+repair is to make `files_cited` treat a consolidation as the file it compresses
+rather than as a file of its own, which is a small change to
+`mock/lints/canon_citations.rs` and would move the ceiling of
+`a_standing_is_reachable_from_what_it_cites` upward, so it is a coordinator's call
+about a ratchet rather than mine. I state it as a gap with a named population of
+two rather than proposing the edit.
