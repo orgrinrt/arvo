@@ -5,7 +5,7 @@
 
 //! A format this crate declares, and the placement derived from it.
 //!
-//! `proposal::the_concept_is_closed_and_the_inventory_is_open`, ratified through
+//! `proposal::the_concept_is_closed_and_the_inventory_is_open`, under
 //! `ruling::the_format_spine_is_canon`, says a new instance earns admission by
 //! supplying the concept's obligations, and that closing the concept while opening
 //! the inventory is what makes admission a check rather than a negotiation.
@@ -15,7 +15,7 @@
 //! declared in that crate's own tests is written under a rule with nothing to
 //! refuse. This crate is read by those lints like any other consumer: a coordinate
 //! written as a host integer here stops the gate, so the declaration below
-//! standing is the check the ratified clause asks for rather than a demonstration
+//! standing is the check that clause asks for rather than a demonstration
 //! that the types compile somewhere.
 //!
 //! The other half is that it supplies all of them. An ambient domain, a quantum

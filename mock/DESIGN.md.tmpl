@@ -1,11 +1,3 @@
-> **Superseded. This document describes a design that is being replaced, and it is
-> not current.**
->
-> Two things it states as settled are not. The strategy set is not fixed at four
-> markers; how many there are, what they are called, and how they decompose are all
-> open. And `feature(generic_const_exprs)` is named here but is not used and will not
-> be. A replacement is in progress; until it lands, treat nothing below as binding.
-
 # arvo. Architecture Design
 
 > Numeric primitives + analysis algorithms with Hot / Warm / Cold /
@@ -95,4 +87,4 @@ of what is planned.
 
 - Per-crate DESIGN documents for each layer's contracts and concretes.
 - The strategy-bound trilemma deep dive captures the rationale behind
-  the four strategy markers and their codegen consequences.
+  the strategy markers and what a strategy bound costs at codegen.

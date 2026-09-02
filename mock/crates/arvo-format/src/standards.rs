@@ -112,7 +112,7 @@ pub mod rounding_method {
     // FIXME: MATLAB's Round, ties toward the greater absolute value, has no mode
     // here for the same reason, and additionally
     // `question::is_the_rounding_vocabulary_complete_at_six` treats ties away
-    // from zero as a mode outside the ratified six. Unblocked by that row.
+    // from zero as a mode outside the six. Unblocked by that row.
 }
 
 /// MATLAB's overflow actions, under MATLAB's names.

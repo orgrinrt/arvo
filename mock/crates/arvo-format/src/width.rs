@@ -5,9 +5,9 @@
 
 //! The stack's own primitives, defined here because something has to be first.
 //!
-//! This crate introduces the numeric category, declared in `mockspace.toml` under
-//! `[primitive-introductions]`, so the bare-primitive lints skip it. That door
-//! exists for exactly one situation, which is this one: the crate that defines
+//! This crate introduces the numeric category, so the bare-primitive lints skip
+//! it. That door exists for exactly one situation, which is this one: the crate
+//! that defines
 //! what a number is in this stack cannot express itself in types it has not
 //! defined yet. Every crate above uses what is here and is checked normally.
 //!
