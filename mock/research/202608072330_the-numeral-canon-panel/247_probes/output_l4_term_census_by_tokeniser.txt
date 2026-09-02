@@ -1,0 +1,39 @@
+C1 passes: the planted fixture (3/2/1/4) reproduces under all four token relations.
+C1b passes: a wrong claim set reproduces under none.
+C2 passes: an absent term is zero under all four.
+C3 passes: exact and within disagree on NonZero, so the relations are distinct on this file.
+
+target : archive/OLD_CANON_CANDIDATE.md  (7115 lines)
+244 L4 claims: sealed=61 value-unique=8 NonZero=6 AtLeastTwo=6
+
+term           exact suffix prefix within     wf  244 says
+sealed            56     59     57     61      0        61
+value-unique       6      6      8      8      0         8
+NonZero            5      6     12     13      0         6
+AtLeastTwo         6      6      6      6      0         6
+
+the tokens each term is embedded in:
+  sealed:
+       1 -on-a-sealed-
+      56 sealed
+       1 sealed-bound-plus-const-assertion
+       3 unsealed
+  value-unique:
+       6 value-unique
+       2 value-uniqueness
+  NonZero:
+       1 IsNonZero
+       5 NonZero
+       5 NonZeroCarrier
+       1 NonZeroUsize
+       1 NonZeroable
+  AtLeastTwo:
+       6 AtLeastTwo
+
+VERDICT: no single token relation reproduces all four of 244's numbers, and the workspace
+         word-frequency tool does not either (it lowercases and splits on hyphens).
+         Per term, the relations that give 244's number:
+           sealed         within
+           value-unique   prefix within
+           NonZero        suffix
+           AtLeastTwo     exact suffix prefix within
