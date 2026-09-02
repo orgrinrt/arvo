@@ -7,17 +7,15 @@
 `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`.
 `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, for the position of
 the selector. `ruling::arms_over_regions_are_the_fundamental_heart` and
-`ruling::the_work_is_predicated_arms_composed`.
+`ruling::the_work_is_predicated_arms_composed`, for what this crate supplies to the one that ships them.
 
 ## What this crate is
 
 A strategy is a binding from a name to a placement objective and an adaptation selection. It is not
 the key of the derivation ladder and it is not a closed enumeration.
 
-The position comes straight out of the derivation ruling:
-
-> the ladder is keyed on the placement objective and the strategy-to-objective map is the selector,
-> which preserves the earlier two-expert result that a strategy name is a binding.
+The ladder is keyed on the placement objective and the strategy-to-objective map is the selector, so
+a strategy name stays a binding rather than becoming a behaviour.
 
 That kills the selector-versus-key disagreement rather than resolving it: the two readings are one
 function curried two ways, and the floor removed the thing that made the difference observable. So
@@ -25,25 +23,20 @@ this crate ships the map, and `arvo-placement` ships the ladder the map points i
 
 ## The set is open, and this crate is built so it stays open
 
-`ruling::the_strategy_set_is_not_closed_at_four` is at `open` and is op's own:
-
-> the strategy set is not closed at exactly four. These are the ones the last panel settled with, and
-> what my amateur ass had written for arvo that we are now redesigning [...] so it's entirely open to
-> discussion and exploration
+The set is not closed at exactly four, and nothing in `arvo-strategy` presumes it is. See
+`ruling::the_strategy_set_is_not_closed_at_four`.
 
 So the presets are implementors of an open concept, exactly as formats are. A new strategy joins by
 supplying the obligations. There is no enumeration to extend and no match to widen.
 
 **Openness is a licence to question the decomposition rather than an instruction to replace it.** The
-four names the corpus carries are kept, because a prior design can name the parts well and go wrong in
-execution, and nothing here has found them wrong.
+four names are kept because nothing has found them wrong, and a name that describes its part well is
+worth more than a fresh one that describes it as well.
 
 ## Why the per-strategy statements are intents and not tables
 
-`ruling::the_strategy_intents_are_not_clear_cut` is ratified and it governs how this crate is written:
-
-> And as such, it's not clear cut. You should not write these as clear cut and settled. The *intent*
-> is clear I think, but nothing about them is absolute otherwise.
+Each preset's intent is clear and nothing about it is absolute, so the crate does not write them as
+though they were settled. See `ruling::the_strategy_intents_are_not_clear_cut`.
 
 A design shipping four markers with a behaviour table against each writes exactly what that forbids.
 So the crate carries each preset's intent, in the words the canon has for it, and carries no table of
@@ -65,18 +58,26 @@ It has leeway to be inefficient and is not obliged to use it. It is not depriori
 survives the set being reshaped, renamed or resized.
 
 The accuracy-first preset sacrifices as much performance and efficiency as makes sense to reach the
-most precise answer, especially within chains rather than only per operation. Its objective had no
-measurement in the panel and the gap is recorded rather than papered over.
+most precise answer, especially within chains rather than only per operation. Nothing has measured
+that objective yet, so what the preset is for is stated and what it costs is not.
 
-**Which overflow mode each preset names is not written here.** `does_warm_wrap_or_clamp` is open in
-the registry. The crate carries the axis and the binding; the value is a defaults question and filling
-it inside a design is how an open canon question gets closed where nobody can see it happen.
+**The crate carries the axis; a concrete value has to fill it, and what fills it is a default rather
+than a settled answer.** `presets` ships one `Adaptation` per preset, because a Rust associated type
+has to name something, and naming something is not the same as deciding it. Whether `Warm` wraps or
+clamps is open, at `question::does_warm_wrap_or_clamp` under `topic::overflow_policy`. `Warm`'s
+`Adapt<HalfEven, Wrap>` and the other three presets' choices are marked `// FIXME:` at the
+declaration for exactly that reason: carried rather than endorsed, and replaceable by whatever
+`does_warm_wrap_or_clamp` and its neighbours in `overflow_policy` and `rounding` settle, with no edit
+to `Strategy` itself.
+
+So do not read a preset's adaptation as the answer for that preset. Read it as the value the crate
+compiles with until there is one.
 
 ## Measurement decides, and the weightings differ
 
-`ruling::the_strategies_weigh_measurements_differently` is ratified and is the mechanism under all of
-the above: all the strategies are decided by measurement, they measure different things, and they
-weigh different measurements differently.
+The mechanism under all of the above is that every strategy is decided by measurement, they measure
+different things, and they weigh different measurements differently. See
+`ruling::the_strategies_weigh_measurements_differently`.
 
 So a strategy is not a rule that short-circuits evidence. It is a weighting over evidence, and an
 answer that decided without measurement would be unfalsifiable. That is why the concept this crate
@@ -87,13 +88,12 @@ answer to it.
 
 ## There is no exchange rate, so the selection is per arm
 
-`ruling::there_is_no_exchange_rate_because_there_is_no_generalisation` is ratified and refuses the
-question this crate would otherwise have to answer:
-
-> This is case by case basis and has to be justified in words that get recorded. Even small wins are
-> wins worth pursuing, however small, and however small a set they apply to. This is the "patchwork"
-> approach where we don't even try to generalise, we operate on const predicates that choose the most
-> optimal path always, from a million small different impls for different situations.
+The question this crate would otherwise have to answer, how much of one objective a unit of another
+is worth, is refused rather than answered. See
+`ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`. It is decided case by case,
+in words that get recorded, and even a small win over a small set is a win worth taking. Nothing here
+generalises: const predicates choose the most optimal path, out of many small implementations for
+many small situations.
 
 So there is no rate at which one objective yields to another, and there is no ranking in this crate.
 Where a conflict between objectives arises, the arm states in words why it resolves the conflict the
@@ -102,20 +102,33 @@ way it does, and that justification is recorded beside the arm.
 **A million small implementations is the intended shape rather than a failure mode**, which bears on
 any later review that would flag the count as duplication.
 
-## What an arm is, since this crate is what selects them
+## What an arm is, and why this crate supplies the predicate rather than the match
 
 An arm is an expression that is optimal over a nameable region, carrying a const predicate over that
 region and applying nowhere else. The full space is filled by composing arms, so everywhere is optimal
-by construction rather than by one statement uniform across the dimensions.
+by construction rather than by one statement uniform across the dimensions. That is the heart of
+arvo, at `ruling::arms_over_regions_are_the_fundamental_heart`, and it is not a claim this crate
+proves in isolation: `arvo-placement`'s `derive_sole` and
+`derive_shared` are the two arms that already exist in the tree, matching on `O::OBJECTIVE`, an
+associated const of the objective marker this crate names.
+
+**So the arm is not here.** This crate supplies the const value the arm downstream is gated on
+(`Strategy::Objective`, reached through `objective_of`), and it is that value, not a match this crate
+writes, that makes `derive_shared`'s branch a predicate rather than a runtime check. A consumer generic
+over `S: Strategy` never sees the arm directly; it reaches `arvo_placement::derive_shared::<F,
+S::Objective>()`, and the branch there is what selects.
 
 A predicate may read anything available at const time, and may not read anything that is not, because
 selection happens at monomorphisation and there is nothing there to read. A condition known only at
 runtime is not an arm: it stays a finding about where a law holds, and a consumer who knows their data
 satisfies it selects the arm at their own call site from their own const knowledge.
 
-**No arm ships in this round.** The concepts an arm is gated over are what this round writes, and an
-arm without a measurement to justify it is the generalisation the design refuses, wearing a
-predicate.
+**No arm ships in this crate, and that is not a gap in the ruling.** Building one here, at the
+strategy-binding layer rather than the placement layer, would mean varying a strategy's own
+`Adaptation` by something other than the strategy name, and nothing in the corpus has measured a
+region where that pays. Shipping such a thing anyway would be exactly the unjustified generalisation
+`ruling::there_is_no_exchange_rate_because_there_is_no_generalisation` refuses, dressed as a predicate.
+The concepts an arm is gated over are what this crate writes; the arm itself waits on a measurement.
 
 ## What this crate does not decide
 
@@ -142,8 +155,8 @@ selects the placement and the adaptation, and the placement does not change what
 they disagree, the disagreement is in the adaptation, which is a coordinate of the declared signature
 and therefore a different signature.
 
-**No behaviour table is keyed on a preset name.** Structural, and the reason is the ratified row
-forbidding the per-strategy statements from being written as settled.
+**No behaviour table is keyed on a preset name.** Structural, and the reason is that a per-strategy
+statement is an intent rather than a settled behaviour.
 
 **The selection is const.** A predicate that is not const-available does not compile as an arm
 selector, and the test asserting that is a compile-fail test rather than a runtime one.
@@ -169,5 +182,8 @@ intent lives where a reader reads it and nowhere the type system can see.
 
 `Hot`, `Cold`, `Precise` and `Warm` are the presets, in `presets`. They are
 instances of an open concept rather than members of an enumeration, and a consumer
-adding a fifth edits nothing here. Which overflow mode each names is not settled
-in this design, because the registry holds that question open.
+adding a fifth edits nothing here. **Which overflow mode and rounding mode each
+names is a carried default, marked `// FIXME:` at each impl, and not a settled
+answer**, because `does_warm_wrap_or_clamp` is open at least for `Warm`, and
+filling that in silently inside a design is how an open question gets closed
+where nobody can see it happen.

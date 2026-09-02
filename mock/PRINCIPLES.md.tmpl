@@ -1,11 +1,3 @@
-> **Superseded. This document describes a design that is being replaced, and it is
-> not current.**
->
-> Two things it states as settled are not. The strategy set is not fixed at four
-> markers; how many there are, what they are called, and how they decompose are all
-> open. And `feature(generic_const_exprs)` is named here but is not used and will not
-> be. A replacement is in progress; until it lands, treat nothing below as binding.
-
 # arvo. Architecture Principles
 
 
@@ -25,16 +17,13 @@ The split is by what a consumer must depend on to say one thing. Declaring
 formats needs the first crate alone; placing them needs the second; choosing
 between placements needs the third.
 
-Every trait whose methods are sensibly callable in const context is
-`pub const trait` (RFC 3762 line). The nightly feature flag set:
-`feature(adt_const_params)`, `feature(generic_const_exprs)`,
-`feature(const_trait_impl)`, `feature(const_index)`,
-`feature(const_param_ty_trait)`,
-`feature(macro_metavar_expr_concat)`, `feature(try_trait_v2)`. Risk
-class is the same as `generic_const_exprs`:
-incomplete-but-actively-developed, not stabilised.
-`feature(const_index)` is required for slice indexing inside const-trait
-bodies.
+Everything that can be answered before the program runs is answered there, in
+plain `const fn`. No crate here enables a nightly feature, and the toolchain pin
+is a workspace policy rather than something these crates reach for.
+
+`generic_const_exprs` is ruled out, and `min_generic_const_args` is what there is,
+so a quantity derived from a const parameter is expressed within that bound rather
+than around it. `arvo-format`'s design carries the reasoning.
 
 [//]: # (BEGIN shared cross-ecosystem principles, synced from workspace .shared/principles-fragment.md, do not edit in place)
 
@@ -55,17 +44,27 @@ this moment".
 `u8` through `u128`, `i8` through `i128`, `f32`, `f64`, `usize`,
 `isize`, `bool`, `Option`, `Result`, `String`, non-static `&str`, **they do not exist in this stack.** Not in public signatures, not
 in private fields, not in internal `let` bindings, not in cast
-expressions, not in literal suffixes, not in type aliases, not in
-`const`/`static` declarations, not in trait method parameter types,
-not in `where` clauses, not in tuple-struct fields.
+expressions, not in type aliases, not in `const`/`static`
+declarations, not in trait method parameter types, not in `where`
+clauses, not in tuple-struct fields.
 
-Substitute vocabulary lives in arvo (`UFixed` / `IFixed` /
-`FastFloat` / `StrictFloat` / `USize` / `Cap` / `Bool`) and notko
-(`Maybe` / `Outcome` / `Just`). hilavitkutin-str supplies `Str` for
-interned string identity. The `arvo-types-only`, `no-bare-numeric`,
-`no-bare-option`, `no-bare-result`, `no-bare-string`, and
-`no-public-raw-field` lints scan every line of every `.rs` file and
-block commits the moment a bare primitive is physically written.
+The type of a const generic parameter is the one excepted position,
+so `Signed<const BITS: u32>` passes and an associated constant beside
+it does not. A literal suffix is a different matter: it is not
+excepted and it is also not reached, because a line scan wants a
+non-identifier byte on each side of the name and a suffix carries a
+digit in front of it. `0u32` goes unreported, and closing that wants
+the parse rather than the line.
+
+Substitute vocabulary lives in arvo and notko (`Maybe` / `Outcome` /
+`Just`), and hilavitkutin-str supplies `Str` for interned string
+identity. What arvo offers today is the format layer's own vocabulary,
+`Width` and `Bool` among it; the fixed-point and exact-width
+primitives are being designed and are not there to reach for yet. The
+`arvo-types-only`, `no-bare-numeric`, `no-bare-option`,
+`no-bare-result`, `no-bare-string` and `no-public-raw-field` lints
+scan every line of every `.rs` file and block commits the moment a
+bare primitive is physically written.
 
 If a foreign crate's trait or an unavoidable language feature forces
 a specific std primitive, the first question is: *can we implement

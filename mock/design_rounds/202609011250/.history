@@ -1,0 +1,50 @@
+1a854ff4 chore: lock the src changelist on the phase normalisation
+17597da7 fix: normalise a negative phase denominator by sign, not by one
+c0543d16 chore: lock the doc changelist and open the source window
+644c116a docs: say what a non-positive phase denominator becomes
+90b53c7e chore: close the round on the format contract's coordinates
+6a7186ae docs: record what the source round actually did
+6179909b style: take the formatter's wrapping on the new files
+3635136f feat: give every format coordinate a type the stack owns
+4c5c3592 chore: lock the doc changelist and open the source window
+0ed22a61 docs: name the type every format coordinate carries
+00c441ea Merge pull request #52 from orgrinrt/research/attacking-the-rounding-readings
+5b613a52 research: attack the two rounding readings
+5779702c probe: four instruments against the two rounding readings
+92899d04 Merge pull request #51 from orgrinrt/research/the-canon-support-survey
+16aab9ea panel: survey which obligations the ratified canon supports
+dae3b57d fix: read a slug cut short with an ellipsis as the prefix it is
+1c1c2571 fix: warrant the spelling rewrite by the referent, not the mode
+d4152394 Merge pull request #48 from orgrinrt/research/the-rounding-residue-rounding-a
+34a4f5b6 panel: note the non-mechanical alias rewrite has landed on the trunk
+b130854a panel: record what survives seat 233's reconciliation
+86c02851 panel: reconcile seat 233 against 228, 229 and 232
+745aaa7c probe: pin the four cited instruments against their committed output
+4fd08444 panel: concede what seat 233 did not establish
+f7cb3bd1 panel: state what would refute each of seat 233's answers
+93e06039 panel: report five defects found outside the assigned question
+7146583f panel: show half_up carries the defect that retired truncation
+f5ee5718 panel: answer the three away-from-zero entries
+8a2bc6d0 panel: answer the retired and underspecified rounding entries
+32a7629a feat: say how far the stated-row ordering actually reached
+a8ccf940 canon: spell every rounding mode the way the ruling closed the set
+b6fb1222 panel: answer the retraction row's two rounding entries
+78ca0b4a panel: record what each of the six instruments implements
+06cc91f7 panel: state the method seat 233 reads modes by
+436fc880 panel: enumerate the nine and correct the brief's miscount
+db261302 panel: disclose what reached seat 233 that was not an instrument
+caf63149 panel: record seat 233's gate results
+1ce73db8 panel: open seat 233 on the nine rounding entries
+3aa584f8 chore: renumber the rounding probe directory to 233
+d185c440 chore: hook reformat of the two rounding probes
+3bea9e8f Merge pull request #46 from orgrinrt/research/the-rounding-residue-rounding-b
+7191f939 docs: correct the agent instructions that call the crate tree empty
+75e83e07 chore: format the rounding probe
+cf7600f3 research: reconcile the rounding derivation against the panel
+3da8f314 research: derive the nine rounding entries from their instruments
+b74f193e probe: measure which verdicts a reading of a mode name decides
+cc8da3ef probe: measure which rounding names denote one function and where
+5fa6a910 test: probe the six rounding names against their instruments
+c2dd7cb7 feat: refuse a prose citation that resolves to no registry row
+792f1588 chore: track the 23 bench variant lockfiles that had none
+e82ee607 fix: serialise the shared write pool so two concurrent passes cannot wedge

@@ -1,0 +1,32 @@
+=== control: arvo-placement as it is ===
+--- unmodified: 0 finding(s)
+
+=== the same crate, with the open-inventory test appended ===
+--- with the `Ternary` block: 2 finding(s)
+      bare `i64` in src/tests.rs line 444. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/tests.rs line 445. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+
+=== the same crate, with a format that borrows nothing ===
+--- with every trait implemented outside: 10 finding(s)
+      bare `u32` in src/tests.rs line 440. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `bool` in src/tests.rs line 441. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i32` in src/tests.rs line 446. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i32` in src/tests.rs line 447. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `u32` in src/tests.rs line 448. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/tests.rs line 453. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/tests.rs line 454. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/tests.rs line 463. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `i64` in src/tests.rs line 464. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+      bare `u32` in src/tests.rs line 470. The stack has no bare numeric/bool primitives. Use an arvo type, or a domain alias grounded on one
+
+=== verdict ===
+control: the crate reports nothing before the block is added.
+Moving the test turns the ratified open-inventory clause into 2
+gate finding(s) that stay red until the coordinates are typed.
+No new lint is needed for the exported half of the rule; the
+existing one enforces it as soon as the test is on the side that
+has no exemption.
+
+And `Ternary` reaches two of the ten because it borrows this crate's
+own ambient, quantum and slot range. A format that borrows nothing
+reaches 10, which is the whole of what an outside implementor writes.

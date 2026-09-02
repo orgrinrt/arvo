@@ -1,0 +1,5 @@
+error[E0326]: implemented const `MIN` has an incompatible type for trait
+  --> tests/ui/a_host_integer_is_not_a_slot.rs:14:16
+   |
+14 |     const MIN: i64 = 0;
+   |                ^^^ expected `Slot`, found `i64`

@@ -1,0 +1,13 @@
+# The introducing crate as the answer would have it: coordinate types, and the
+# traits parameterised on them.
+#
+# Not a proposal for the real crate's contents. It is the smallest tree that can
+# answer "is the shape buildable, does it still evaluate at const time, and does
+# it cost anything at runtime", which is the part a design sentence has to have
+# established before it can be written down.
+[package]
+name = "door"
+version = "0.0.0"
+edition = "2021"
+publish = false
+

@@ -236,8 +236,8 @@ pub const fn derive_sole<S: DeclaredSignature, O: ObjectiveKind>() -> Placement 
 ///
 /// `Footprint` packs. The stride is the declared width, elements share carriers,
 /// and a read has to reach wider because an element can straddle a boundary. That
-/// is `ruling::cold_is_for_cold_paths_and_cold_storage`, which is ratified and
-/// says the storage-minimising objective aggressively minimises and bitpacks.
+/// is `ruling::cold_is_for_cold_paths_and_cold_storage`, which says the
+/// storage-minimising objective aggressively minimises and bitpacks.
 ///
 /// `Access` does not pack. One element per carrier, stride and access both the
 /// carrier, padding rather than straddling, so every read is a single native

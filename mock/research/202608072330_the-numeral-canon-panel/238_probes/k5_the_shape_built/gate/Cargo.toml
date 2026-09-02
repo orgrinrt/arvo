@@ -1,0 +1,14 @@
+# Runs the real bare-primitive lint over the outside crate beside it.
+#
+# k1 asked the lint about a hand-written impl. This asks it about the impl that
+# actually compiles against the door, which is the one that matters: a repair
+# that clears the lint but does not build has repaired nothing.
+[package]
+name = "gate"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+mockspace-lint-rules = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", rev = "f34cc1b0c87becd8230d46d807ebb3573e30c009" }

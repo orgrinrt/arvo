@@ -1,0 +1,40 @@
+C2 passes: a planted trait with two required consts and one defaulted counts 2.
+C3 passes: the encoding/container sweep reports a planted 'trait Encoding'.
+tree a12d4d5d (commit 033c02e2):
+  Ambient  ambient.rs 2  RADIX SIGNED 
+  Quantum  quantum.rs 3  BASE SLOPE MAGNITUDES 
+  Slots    slots.rs 3  MIN MAX WIDTH 
+  Format   format.rs 2  PHASE_NUM PHASE_DEN 
+  format-trait coordinates: 10
+  Operation (adapt.rs) required consts: ARITY 
+  encoding/container items declared in mock/crates/arvo-format/src at this tree:
+    0
+  does arvo-format depend on arvo-placement at this tree:
+    0
+
+tree 7aaeb2ad (commit 607ca52f):
+  Ambient  ambient.rs 2  RADIX SIGNED 
+  Quantum  quantum.rs 3  BASE SLOPE MAGNITUDES 
+  Slots    slots.rs 3  MIN MAX WIDTH 
+  Format   format.rs 1  PHASE 
+  format-trait coordinates: 9
+  Operation (adapt.rs) required consts: ARITY 
+  encoding/container items declared in mock/crates/arvo-format/src at this tree:
+    0
+  does arvo-format depend on arvo-placement at this tree:
+    0
+
+C1 passes: the extractor counts 10 at 033c02e2 and 9 at HEAD, so it sees 748c6004.
+
+component mapping, from the modules' own first doc lines at HEAD:
+  ambient.rs The ambient domain a format's values are drawn from.
+  quantum.rs The quantum law: how the step between neighbouring values changes with magnitude.
+  slots.rs   The slot range: which multiples of the quantum are in the set.
+  format.rs  A format: an ambient domain and a representable set, and membership in it.
+  adapt.rs   The adaptation, and the declared signature it completes.
+
+VERDICT: on both trees every required const of the four format traits sits on the ambient domain
+         (component 1) or on the representable set (component 2). No encoding or container item is
+         declared in arvo-format and it does not depend on arvo-placement. The one const outside 1-2
+         is Operation::ARITY in adapt.rs, which 748c6004's message counts as 'the tenth' and which
+         is a coordinate of an operation over the signature, not of the format's identity.

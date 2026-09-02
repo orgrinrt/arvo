@@ -1,0 +1,50 @@
+20ee4f42 docs: name the deprecated changes in the comparison section
+c006bd99 test: pin the exactness predicate against reduction
+16e52067 chore: close the pinning-gloss round
+a8197321 chore: lock the src changelist for the two comments
+b1c26423 docs: say which operand pins, and why no tie overflows on doubling
+c24a15c2 chore: src changelist for the two comments
+4ee5b3b0 chore: lock the doc changelist for the pinning gloss
+6adcae1c docs: name the operand that pins in the saturation region
+fced3eac docs: doc changelist for the pinning gloss
+9c59629c docs: open a round on the gloss above the ratio properties
+be156262 chore: close the comment surface design round
+eb563997 chore: lock the src changelist for the comment surface round
+e8889af2 docs: take the prior state out of eight shipped comments
+4d12ec47 chore: open the src changelist for the comment surface round
+d98780e7 chore: lock the doc changelist for the comment surface round
+a9e57c5a topic: the arms that guard a public surface are on it
+bdcca060 chore: close the ratio coordinate design round
+490605d8 chore: lock the src changelist for the ratio coordinate round
+a02f6640 chore: rustfmt the new arms and sharpen one changelist verification
+d80598e3 fix: normalise the ratio coordinate exactly, saturate only where it cannot
+0348cb7c chore: open the src changelist for the ratio coordinate round
+05f1f15c chore: lock the doc changelist for the ratio coordinate round
+983af84f docs: state the ratio constructor as an adaptation with two regions
+aa35f4df chore: rustfmt the two fraction sketches
+488db931 topic: the ratio coordinate saturates rather than dropping its magnitude
+607ca52f docs: fix the four release surfaces no diff was ever about
+8064a454 research: seat 246 finds both promotions clause-partial
+5fd3134a research: seat 246 corrects the promotions and rebuilds the anchor diff
+748c6004 feat: spell every format coordinate in a type the stack owns
+033c02e2 research: seat 245 entails the admission consolidation against its sources
+334f59e5 research: seat 245 entails the admission consolidation against its sources
+98a4b7ee research: seat 244 consolidates the admission sitting
+b864cf8a feat: name matlab fi and fimath over the declared signature
+cc19b122 research: seat 244 consolidates the admission sitting
+da2f9d23 fix: the identity turns on a whole multiple of the quantum
+5ae69731 chore: drop the banned word from registry prose, keeping op's own
+c21c0e52 canon: the additive identity turns on a whole-multiple phase, not a nonzero one
+800e120a research: seat 242 attacks 241, the resolution has no second arm
+4bbe1805 research: seat 242 attacks 241, the resolution has no second arm
+eeef1ddc research: seat 242 probe, the resolution's failure arm is uninhabited
+78a01b8b research: seat 241 erratum on the bound-field count
+e338c138 research: seat 241 erratum, zero of eighteen carry a bound and my topic figure was wrong
+aec4859e research: seat 241 on what admits a number system
+f9081b95 research: seat 242 on what admits a number system
+d8c22e2b research: seat 241 reconciliation, coordinate means two things and nothing says so
+556eb12f research: seat 242 probe sources reformatted by the gate, outputs re-verified
+a664fffb research: seat 241 stage 3, the ratified ten fixes the slot arity at one
+8a736b27 research: seat 242 reconciliation after reading the panel
+27ac9476 research: seat 242 probe, seat 237's phase repair at the value that motivated it
+b7d7289f research: seat 241 stage 2, the refused shape and the two probes

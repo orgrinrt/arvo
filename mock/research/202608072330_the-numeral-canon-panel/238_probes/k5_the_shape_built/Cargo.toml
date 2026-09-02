@@ -1,0 +1,7 @@
+# A two-crate tree: the door, and a crate outside it.
+#
+# Its own workspace, so cargo does not walk up into `mock/`. Two members,
+# because the whole question is about what crosses between them.
+[workspace]
+resolver = "2"
+members = ["door", "outside", "gate"]

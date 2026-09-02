@@ -1,0 +1,17 @@
+    Finished `release` profile [optimized] target(s) in 0.01s
+13 positions at kind `item-const`, over the demand
+
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:36  item-const           u32        - EXTENSION_DESCRIPTOR_TAG
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/descriptor.rs:45  item-const           u32        - MAX_DESCRIPTOR_LIST_LEN
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/manifest.rs:18  item-const           usize      - MAX_TABLES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/manifest.rs:23  item-const           usize      - MAX_COLUMNS_PER_TABLE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/src/hash.rs:7  item-const           u64        - FNV_OFFSET
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-str/src/hash.rs:10  item-const           u64        - FNV_PRIME
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/order.rs:110  item-const           usize      - CS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/plan/grouping.rs:49  item-const           usize      - GATE2_MAX_UNITS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/plan/grouping.rs:56  item-const           usize      - GATE2_MAX_ACCUMS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/class.rs:47  item-const           usize      - MAX_CORES
+  vehje@origin/main:mock/crates/vehje-lex/src/trivia.rs:46  item-const           usize      - TRIVIA_SLOTS
+  vehje@origin/main:mock/crates/vehje-syntax/src/ast.rs:27  item-const           usize      - MAX_CHILDREN
+  vehje@origin/main:mock/crates/vehje-syntax/src/ast.rs:34  item-const           usize      - MAX_NODES
+the-positions: clean, 140500 examined.

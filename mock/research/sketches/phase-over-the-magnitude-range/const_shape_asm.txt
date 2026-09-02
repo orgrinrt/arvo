@@ -1,0 +1,17 @@
+=== folds_zero ===
+=== folds_half ===
+_folds_half:
+	.cfi_startproc
+	mov	w0, #0
+	ret
+=== folds_out_of_reach ===
+=== folds_becomes_whole ===
+_folds_becomes_whole:
+	.cfi_startproc
+	mov	w0, #1
+	ret
+=== symbol aliasing: identical bodies folded to one ===
+255:	.globl	_folds_out_of_reach
+256:_folds_out_of_reach = _folds_becomes_whole
+257:	.globl	_folds_zero
+258:_folds_zero = _folds_becomes_whole

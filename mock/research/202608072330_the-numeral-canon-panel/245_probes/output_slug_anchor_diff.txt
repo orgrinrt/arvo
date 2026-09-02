@@ -1,0 +1,40 @@
+slug anchors in the three sources      : 13
+slug anchors in the consolidation       : 23 (whole file)
+control passes: both sides nonempty.
+
+LOST (slugs cited by a source, not cited anywhere in 244):
+  ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves
+  ruling::the_canon_does_not_police_what_shape_a_law_takes
+  ruling::the_option_set_is_not_a_boundary
+  ruling::the_panel_finishes_the_canon_without_him
+  ruling::there_is_no_universal_answer_take_the_win_and_gate_it
+  count = 5
+
+new (cited by 244, not by any source):
+  probe::the_collapsed_declaration_cannot_be_made_to_fail
+  proposal::a_system_exposes_its_ambient_laws_its_set_and_its_reductions_verdicts
+  proposal::admission_returns_a_coordinate_rather_than_a_verdict
+  proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing
+  proposal::membership_and_hosting_are_two_questions
+  proposal::the_concept_commits_to_its_choices_and_to_no_count_of_levels
+  proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test
+  question::are_set_valued_carriers_admitted
+  question::are_the_level_hierarchies_the_same_cut
+  question::is_admission_a_predicate_or_a_location
+  question::is_interoperation_conversion_or_resolution
+  question::the_ownership_key_as_a_structural_axis
+  question::what_the_admission_contract_asks_a_candidate_to_expose
+  retirement::r161_r9_the_number_system_convergence_as_two_instances
+  ruling::a_predicate_lists_only_what_holds
+  count = 15
+
+carried:
+  proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+  proposal::the_concept_is_closed_and_the_inventory_is_open
+  question::is_the_ambient_operation_family_fixed
+  question::is_the_number_system_inventory_open
+  ruling::never_a_runtime_check_and_one_lowered_path
+  ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule
+  ruling::the_format_spine_is_canon
+  ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon
+  count = 8

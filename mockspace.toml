@@ -293,7 +293,17 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.the-write-hook-excepts-what-the-canon-excepts]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.no-registry-comment-counts-its-own-rows]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.the-agent-surface-quotes-the-schema]
 commit = "error"
 build = "error"
 push = "error"
@@ -502,7 +512,7 @@ push = "off"
 # this manual declaration.
 
 [lint-crates]
-mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "dev" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-extra-lints.git", branch = "dev" }
 
 # ---------------------------------------------------------------------------
 # Reference roots

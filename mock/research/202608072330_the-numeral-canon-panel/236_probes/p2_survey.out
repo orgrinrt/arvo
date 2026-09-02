@@ -1,0 +1,106 @@
+## 1. the format topic's proposal rows
+
+id                                                                       standing     sentence_kind  distinct provenance files
+arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation    two_experts  normative      1
+a_format_is_identified_by_its_ambient_domain_and_its_representable_set   two_experts  normative      1
+membership_of_the_representable_set_is_one_affine_predicate              two_experts  normative      1
+the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation one_expert   normative      1
+the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws one_expert   normative      1
+a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity one_expert   measured       1
+raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned       one_expert   measured       1
+
+## 2. which of them a ratified ruling names under ratifies
+
+a_format_is_identified_by_its_ambient_domain_and_its_representable_set <- the_format_spine_is_canon (rung=ratified, by=both)
+membership_of_the_representable_set_is_one_affine_predicate <- the_format_spine_is_canon (rung=ratified, by=both)
+arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation <- the_format_spine_is_canon (rung=ratified, by=both)
+the_concept_is_closed_and_the_inventory_is_open          <- the_format_spine_is_canon (rung=ratified, by=both)
+observability_is_relative_to_a_declared_signature        <- behaviour_is_stated_per_declared_signature_and_the_premise_dissolves (rung=ratified, by=experts)
+every_operation_arvo_declares_is_a_function_of_the_declared_width <- behaviour_is_stated_per_declared_signature_and_the_premise_dissolves (rung=ratified, by=experts)
+the_carrier_is_observable_through_the_ambient_layout_observation_alone <- behaviour_is_stated_per_declared_signature_and_the_premise_dissolves (rung=ratified, by=experts)
+at_shared_occupancy_no_per_element_footprint_observation_exists <- behaviour_is_stated_per_declared_signature_and_the_premise_dissolves (rung=ratified, by=experts)
+arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached <- arms_over_regions_are_the_fundamental_heart (rung=ratified, by=both)
+an_additive_verdict_is_independent_of_the_fraction_width <- the_additive_and_absorption_verdicts_are_canon (rung=ratified, by=experts)
+absorption_decides_associativity_of_a_clamped_reduction  <- the_additive_and_absorption_verdicts_are_canon (rung=ratified, by=experts)
+
+### control on check 2
+Every line above must be a slug that resolves in the proposal namespace.
+proposal slugs in the registry: 125
+
+## 3. multi-arrival standing resting on one cited file, whole registry
+(the state a-standing-is-reachable-from-what-it-cites refuses; its
+ ceiling grandfathers the backlog, so the gate is green and the rows stand)
+
+arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation    two_experts  the_format (files=1)
+a_format_is_identified_by_its_ambient_domain_and_its_representable_set   two_experts  the_format (files=1)
+membership_of_the_representable_set_is_one_affine_predicate              two_experts  the_format (files=1)
+absorption_decides_associativity_of_a_clamped_reduction                  two_experts  algebraic_laws (files=1)
+no_multiplicative_structure_survives_a_nonzero_fraction_width            three_or_more algebraic_laws (files=1)
+an_additive_verdict_is_independent_of_the_fraction_width                 three_or_more algebraic_laws (files=1)
+a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics two_experts  algebraic_laws (files=1)
+a_law_stated_as_an_author_written_marker_is_checked_by_nothing           two_experts  validation (files=1)
+the_model_band_transfer_is_defeated_in_both_fragments                    two_experts  algebraic_laws (files=1)
+inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width two_experts  algebraic_laws (files=1)
+a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body  three_or_more the_strategy_axis (files=1)
+the_join_over_demands_is_union_and_it_is_free                            two_experts  the_strategy_object (files=1)
+the_rationalisability_counts_on_the_committed_carrier_table              three_or_more the_strategy_axis (files=1)
+the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent two_experts  the_strategy_axis (files=1)
+a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going cross_topic  the_predicate_notation (files=1)
+arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached cross_topic  the_predicate_notation (files=1)
+three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder cross_topic  the_strategy_axis (files=1)
+one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both cross_topic  panel_conduct (files=1)
+a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin two_experts  the_strategy_axis (files=1)
+the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice two_experts  the_strategy_object (files=1)
+most_committed_bench_regions_predate_the_harness_cross_variant_validation two_experts  panel_conduct (files=1)
+the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion two_experts  the_chain (files=1)
+staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even three_or_more rounding (files=1)
+a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns     two_experts  the_realisation_map (files=1)
+the_realisation_map_is_one_map_with_two_regions                          three_or_more the_primitive (files=1)
+configuration_is_not_composition_and_a_composite_is_a_primitive          two_experts  the_primitive (files=1)
+a_strategy_is_an_assignment_and_a_weighting                              two_experts  the_strategy_object (files=1)
+where_fusion_changes_the_answer_it_is_not_a_lowering                     two_experts  the_strategy_object (files=1)
+membership_in_the_type_and_identity_are_two_criteria                     two_experts  the_primitive (files=1)
+
+count: 29
+
+### control on check 3
+A one_expert row must never appear above, whatever it cites, and a
+two_experts row citing two files must not either. Both arms:
+one_expert rows in the corpus (none of which check 3 may report): 90
+multi-arrival rows citing two or more files (the passing arm):    6
+
+## 4. imposed rows carrying a law edge and no evidence
+(an-imposition-rests-on-no-instrument reads 'evidence' only, so a
+ normative row pointing at a measured law row walks past it)
+
+arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation    normative   the_format
+the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation normative   the_format
+a_crossings_preservations_are_the_two_law_families                       normative   the_number_system
+the_concepts_edge_is_not_an_order_and_wrapping_is_the_test               normative   the_number_system
+erasures_guarantee_is_a_conditional_with_a_stated_base                   normative   validation
+the_two_law_families_have_two_consumer_classes                           normative   algebraic_laws
+a_composed_expressions_region_is_never_inherited_from_its_parts          normative   algebraic_laws
+a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going normative   the_predicate_notation
+
+count through the hole: 8
+count the lint itself would report (imposed + evidence): 0
+
+### control on check 4
+The second count is the lint's own predicate. The gate is green, so it
+must be zero; if it is not, this script disagrees with the shipped lint
+and this script is what is wrong.
+
+## 5. do the cited evidence artifacts exist
+
+PRESENT 55_probes/p3_encoding_is_a_separate_axis.rs
+PRESENT 55_probes/p3_output.txt
+PRESENT 56_probes/q2_affine_membership.rs
+PRESENT 56_probes/q2_output.txt
+PRESENT 56_probes/q3_signed_encoding_trade.rs
+PRESENT 56_probes/q3_output.txt
+PRESENT 56_probes/q1_two_law_families.rs
+ABSENT  56_probes/this_file_does_not_exist.rs
+
+### control on check 5
+The last line must read ABSENT. A checker reporting every path present
+has not looked at any of them.
