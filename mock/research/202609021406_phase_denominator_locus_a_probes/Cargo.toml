@@ -1,0 +1,58 @@
+# A probe, not shipping code. It checks one thing: at which points, if any, a
+# format declaring a zero phase denominator is refused.
+#
+# One binary per arm so each is built on its own and a refusal is attributable.
+[workspace]
+
+[package]
+name = "phase-denominator-locus-probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../crates/arvo-format" }
+
+[[bin]]
+name = "p1_the_pair_survives"
+path = "src/p1_the_pair_survives.rs"
+
+[[bin]]
+name = "a1_control_sound_through_identity"
+path = "src/a1_control_sound_through_identity.rs"
+
+[[bin]]
+name = "a2_broken_through_identity"
+path = "src/a2_broken_through_identity.rs"
+
+[[bin]]
+name = "a3_broken_declared_and_never_used"
+path = "src/a3_broken_declared_and_never_used.rs"
+
+[[bin]]
+name = "a4_broken_through_the_applied_map"
+path = "src/a4_broken_through_the_applied_map.rs"
+
+[[bin]]
+name = "a5_broken_through_contains"
+path = "src/a5_broken_through_contains.rs"
+
+[[bin]]
+name = "a6_broken_through_step_exponent"
+path = "src/a6_broken_through_step_exponent.rs"
+
+[[bin]]
+name = "a7_broken_forced_in_a_const_item"
+path = "src/a7_broken_forced_in_a_const_item.rs"
+
+[[bin]]
+name = "a8_control_sound_forced_in_a_const_item"
+path = "src/a8_control_sound_forced_in_a_const_item.rs"
+
+[[bin]]
+name = "a9_the_whole_step_phase"
+path = "src/a9_the_whole_step_phase.rs"
+
+[[bin]]
+name = "a10_the_unwrap_doors"
+path = "src/a10_the_unwrap_doors.rs"
