@@ -193,8 +193,29 @@ fn quoted_value(line: &str, key: &str) -> Option<String> {
     let rest = line.strip_prefix(key)?.trim_start();
     let rest = rest.strip_prefix('=')?.trim_start();
     let inner = rest.strip_prefix('"')?;
-    let end = inner.rfind('"')?;
-    Some(inner[..end].to_string())
+
+    let mut value = String::new();
+    let mut escaped = false;
+    for c in inner.chars() {
+        if escaped {
+            // The escape itself is kept, because what this hands back is compared
+            // against a quotation of the same source text rather than against the
+            // string TOML would decode. Unescaping here would make the two differ
+            // by exactly the escapes.
+            value.push('\\');
+            value.push(c);
+            escaped = false;
+            continue;
+        }
+        match c {
+            '\\' => escaped = true,
+            '"' => return Some(value),
+            _ => value.push(c),
+        }
+    }
+    // No closing quote on the line, so this is not the assignment it looked like:
+    // a multi-line string, or a truncated file. Nothing is better than a guess.
+    None
 }
 
 /// The text with every run of whitespace collapsed to one space.
@@ -433,20 +454,46 @@ mod tests {
 
     #[test]
     fn the_value_reader_takes_the_whole_string() {
-        // The descriptions carry backticks, semicolons and apostrophes. Taking
-        // to the last quote rather than the first is what makes a sentence with
-        // a quoted phrase inside it survive, which is the shape a description
-        // quoting somebody would take.
+        // The descriptions carry backticks, semicolons and apostrophes.
         assert_eq!(
             quoted_value("description = \"a `thing`; and it's fine\"", "description").as_deref(),
             Some("a `thing`; and it's fine")
         );
+
+        // A trailing comment is outside the string and does not join it. Reading
+        // to the last quote on the line rather than to the closing one was this
+        // function's first shape, and it would have taken the whole comment in
+        // and refused a correct quotation for it.
         assert_eq!(
-            quoted_value("description = \"he said \"no\" and left\"", "description").as_deref(),
-            Some("he said \"no\" and left")
+            quoted_value(
+                "description = \"the words\"  # and \"a note\"",
+                "description"
+            )
+            .as_deref(),
+            Some("the words")
         );
+
+        // An escaped quote stays inside the string, and stays escaped, because
+        // what this is compared against is a quotation of the source text rather
+        // than the string TOML would decode.
+        assert_eq!(
+            quoted_value(
+                "description = \"he said \\\"no\\\" and left\"",
+                "description"
+            )
+            .as_deref(),
+            Some("he said \\\"no\\\" and left")
+        );
+
         assert_eq!(quoted_value("name = \"standing\"", "description"), None);
         assert_eq!(quoted_value("description = 4", "description"), None);
+
+        // No closing quote is not an assignment this can read, and guessing at
+        // one is how a lint refuses on something it misread.
+        assert_eq!(
+            quoted_value("description = \"unterminated", "description"),
+            None
+        );
     }
 
     #[test]
