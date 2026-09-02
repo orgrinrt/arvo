@@ -136,7 +136,13 @@ fn check(tools: &Path) -> Vec<LintError> {
 
 #[cfg(test)]
 mod tests {
+    use std::path::PathBuf;
+
     use super::*;
+    use crate::canon_lint_testkit::{
+        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
+        planted_tree, view,
+    };
 
     /// A lockfile body pinning `PACKAGE` at one revision.
     fn lock_at(rev: &str) -> String {
@@ -157,66 +163,56 @@ mod tests {
     const B: &str = "cfa89a497f0e91accf7817de8f7dc05ca8a4ebdc";
     const C: &str = "bd879613170fdf9d70aed1c1b22b168860f98548";
 
-    /// A scratch directory that removes itself, so no dependency is added for it.
+    /// A mock directory carrying a `tools/` built from tool name and lockfile.
     ///
-    /// `tempfile` is not among this pack's dependencies and one lint is not a
-    /// reason to add one. The name carries the process id and a counter, so two
-    /// tests running in parallel in one process cannot collide.
-    struct Scratch(std::path::PathBuf);
-    impl Scratch {
-        fn new() -> Self {
-            use std::sync::atomic::{AtomicU32, Ordering};
-            static N: AtomicU32 = AtomicU32::new(0);
-            let p = std::env::temp_dir().join(format!(
-                "arvo-tool-locks-{}-{}",
-                std::process::id(),
-                N.fetch_add(1, Ordering::Relaxed)
-            ));
-            let _ = std::fs::remove_dir_all(&p);
-            std::fs::create_dir_all(&p).expect("mkdir scratch");
-            Self(p)
-        }
-
-        fn path(&self) -> &Path {
-            &self.0
-        }
-    }
-    impl Drop for Scratch {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.0);
-        }
-    }
-
-    /// Build a `tools` directory from a list of tool name and lockfile body.
-    fn tools_dir(tools: &[(&str, Option<String>)]) -> Scratch {
-        let dir = Scratch::new();
+    /// `planted_tree` is the testkit's, keyed on this name plus the process and
+    /// thread, so two arms cannot plant into each other's tree. The returned
+    /// path is a mock directory rather than the tools directory itself, because
+    /// that is what `check_repo` is handed and what `ctx_at` wants.
+    fn planted_mock(what: &str, tools: &[(&str, Option<String>)]) -> PathBuf {
+        let dir = planted_tree(what);
+        std::fs::create_dir_all(dir.join("tools")).expect("a planted tools directory");
         for (name, body) in tools {
-            let tool = dir.path().join(name);
-            std::fs::create_dir_all(&tool).expect("mkdir");
+            let tool = dir.join("tools").join(name);
+            std::fs::create_dir_all(&tool).expect("a planted tool");
             if let Some(body) = body {
-                std::fs::write(tool.join("Cargo.lock"), body).expect("write");
+                plant(&dir, &format!("tools/{name}/Cargo.lock"), body);
             }
         }
         dir
     }
 
+    /// The tools directory inside a planted mock directory.
+    ///
+    /// `check` takes that directory directly, so the arms below that are about
+    /// the predicate rather than about the wiring reach it without a context.
+    fn tools_of(dir: &Path) -> PathBuf {
+        dir.join("tools")
+    }
+
     #[test]
     fn every_lock_on_one_revision_passes() {
-        let d = tools_dir(&[
-            ("alpha", Some(lock_at(A))),
-            ("beta", Some(lock_at(A))),
-            ("gamma", Some(lock_at(A))),
-        ]);
+        let d = planted_mock(
+            "locks-agree",
+            &[
+                ("alpha", Some(lock_at(A))),
+                ("beta", Some(lock_at(A))),
+                ("gamma", Some(lock_at(A))),
+            ],
+        );
         assert!(
-            check(d.path()).is_empty(),
+            check(&tools_of(&d)).is_empty(),
             "three lockfiles agreeing is the state this lint exists to permit"
         );
     }
 
     #[test]
     fn two_revisions_are_caught() {
-        let d = tools_dir(&[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))]);
-        let f = check(d.path());
+        let d = planted_mock(
+            "locks-two",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
+        );
+        let f = check(&tools_of(&d));
         assert_eq!(f.len(), 1, "one finding for the whole disagreement: {f:?}");
         let m = &f[0].message;
         assert!(
@@ -230,13 +226,16 @@ mod tests {
     /// The shape actually found in the tree: three revisions, unevenly spread.
     #[test]
     fn three_revisions_name_every_tool_on_every_one() {
-        let d = tools_dir(&[
-            ("alpha", Some(lock_at(A))),
-            ("beta", Some(lock_at(A))),
-            ("gamma", Some(lock_at(C))),
-            ("delta", Some(lock_at(B))),
-        ]);
-        let f = check(d.path());
+        let d = planted_mock(
+            "locks-three",
+            &[
+                ("alpha", Some(lock_at(A))),
+                ("beta", Some(lock_at(A))),
+                ("gamma", Some(lock_at(C))),
+                ("delta", Some(lock_at(B))),
+            ],
+        );
+        let f = check(&tools_of(&d));
         assert_eq!(f.len(), 1, "still one finding: {f:?}");
         let m = &f[0].message;
         assert!(m.contains("3 different revisions"), "{m}");
@@ -252,46 +251,52 @@ mod tests {
     /// tree is an assertion that the vector is empty.
     #[test]
     fn a_check_that_never_refuses_would_fail_this() {
-        let d = tools_dir(&[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))]);
+        let d = planted_mock(
+            "locks-control",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
+        );
         assert!(
-            !check(d.path()).is_empty(),
+            !check(&tools_of(&d)).is_empty(),
             "a disagreement has to produce a finding, or nothing here measures anything"
         );
     }
 
     #[test]
     fn a_single_tool_cannot_disagree_with_itself() {
-        let d = tools_dir(&[("alpha", Some(lock_at(A)))]);
-        assert!(check(d.path()).is_empty(), "one lockfile is agreement");
+        let d = planted_mock("locks-single", &[("alpha", Some(lock_at(A)))]);
+        assert!(check(&tools_of(&d)).is_empty(), "one lockfile is agreement");
     }
 
     #[test]
     fn no_tools_at_all_passes() {
-        let d = tools_dir(&[]);
+        let d = planted_mock("locks-none", &[]);
         assert!(
-            check(d.path()).is_empty(),
+            check(&tools_of(&d)).is_empty(),
             "an empty tools directory pins nothing"
         );
     }
 
     #[test]
     fn a_missing_tools_directory_passes() {
-        let d = Scratch::new();
+        let d = planted_tree("locks-absent");
         assert!(
-            check(&d.path().join("nothing-here")).is_empty(),
+            check(&d.join("nothing-here")).is_empty(),
             "a repository with no tools directory is not in violation of this"
         );
     }
 
     #[test]
     fn a_tool_with_no_lockfile_is_skipped_rather_than_counted() {
-        let d = tools_dir(&[
-            ("alpha", Some(lock_at(A))),
-            ("beta", None),
-            ("gamma", Some(lock_at(A))),
-        ]);
+        let d = planted_mock(
+            "locks-unpinned",
+            &[
+                ("alpha", Some(lock_at(A))),
+                ("beta", None),
+                ("gamma", Some(lock_at(A))),
+            ],
+        );
         assert!(
-            check(d.path()).is_empty(),
+            check(&tools_of(&d)).is_empty(),
             "a tool that pins nothing cannot disagree with one that does"
         );
     }
@@ -303,12 +308,15 @@ mod tests {
                          name = \"serde\"\n\
                          version = \"1.0.0\"\n\
                          source = \"registry+https://github.com/rust-lang/crates.io-index\"\n";
-        let d = tools_dir(&[
-            ("alpha", Some(lock_at(A))),
-            ("beta", Some(unrelated.to_string())),
-        ]);
+        let d = planted_mock(
+            "locks-unrelated",
+            &[
+                ("alpha", Some(lock_at(A))),
+                ("beta", Some(unrelated.to_string())),
+            ],
+        );
         assert!(
-            check(d.path()).is_empty(),
+            check(&tools_of(&d)).is_empty(),
             "a lockfile without the package contributes no revision"
         );
     }
@@ -327,9 +335,12 @@ mod tests {
              version = \"0.1.0\"\n\
              source = \"git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#{A}\"\n"
         );
-        let d = tools_dir(&[("alpha", Some(two_deps)), ("beta", Some(lock_at(A)))]);
+        let d = planted_mock(
+            "locks-other-dep",
+            &[("alpha", Some(two_deps)), ("beta", Some(lock_at(A)))],
+        );
         assert!(
-            check(d.path()).is_empty(),
+            check(&tools_of(&d)).is_empty(),
             "the other dependency's revision was read as this package's"
         );
     }
@@ -339,5 +350,46 @@ mod tests {
         assert_eq!(revision_in(&lock_at(A)).as_deref(), Some("b4e0c7a"));
         assert_eq!(revision_in(&lock_at(B)).as_deref(), Some("cfa89a4"));
         assert_eq!(revision_in("version = 4\n"), None);
+    }
+
+    /// The wiring, which every arm above is blind to.
+    ///
+    /// `check` is a free function and each arm calls it directly, so all of
+    /// them would pass on a lint whose `check_repo` reads the wrong directory,
+    /// or on one the engine never runs at all. These three ask the questions
+    /// the predicate cannot.
+    #[test]
+    fn it_reads_the_tools_directory_under_the_mock_directory_it_is_handed() {
+        let d = planted_mock(
+            "locks-wiring",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
+        );
+        let empty = view(&[], &[]);
+        let found = TheToolLocksPinOneMockspace.check_repo(&ctx_at(&d, &empty));
+        assert_eq!(
+            found.len(),
+            1,
+            "the lint found nothing through a context, so it is reading somewhere \
+             other than `mock_dir/tools`: {found:?}"
+        );
+    }
+
+    #[test]
+    fn its_findings_block_every_gate() {
+        // A finding here that did not block would leave the pack green over a
+        // dependency graph that cannot compile, which is the state this lint
+        // exists to refuse and the one it was written after.
+        let d = planted_mock(
+            "locks-severity",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
+        );
+        let empty = view(&[], &[]);
+        assert_findings_block_at(&TheToolLocksPinOneMockspace, &ctx_at(&d, &empty));
+    }
+
+    #[test]
+    fn it_is_not_declared_off_and_it_reaches_the_pack() {
+        assert_not_declared_off(&TheToolLocksPinOneMockspace);
+        assert_registered(NAME);
     }
 }
