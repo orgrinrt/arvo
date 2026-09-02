@@ -99,6 +99,17 @@ fn the_identity_search_forces_the_format_obligation() {
     t.compile_fail("tests/ui/the_identity_search_forces_the_format_obligation.rs");
 }
 
+/// The other forcing verb, which nothing held.
+///
+/// Two functions force the format's obligation and one arm pinned one of them,
+/// so deleting the force site from `cancelling_slot` left the suite green. A
+/// claim about a set of two needs both of its members pinned.
+#[test]
+fn the_cancelling_slot_search_forces_the_format_obligation() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/cancelling_slot_forces_the_format_obligation.rs");
+}
+
 /// The refusal every const generic parameter in this crate is spelled around.
 ///
 /// `Width` is the crate's own count of bits and cannot be the type of a const

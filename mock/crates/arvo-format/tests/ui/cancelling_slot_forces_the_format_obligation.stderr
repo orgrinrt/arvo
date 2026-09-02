@@ -1,0 +1,20 @@
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<PhaseNamesNoPosition as arvo_format::Format>::ADMITTED` failed here
+  |
+ ::: src/format.rs
+  |
+  | /         assert!(
+  | |             Self::PHASE.denotes().get(),
+  | |             "a phase denominator of zero names no position on the grid, so the phase does not \
+  | |              denote a value the set could contain"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/format.rs
+  |
+  |     let () = <F as Format>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^

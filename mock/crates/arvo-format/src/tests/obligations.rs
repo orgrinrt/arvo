@@ -297,8 +297,13 @@ impl Format for DisarmedObligation {
 
 #[test]
 fn contains_answers_for_a_format_whose_phase_does_not_denote() {
-    // `contains` is this crate's spelling of the membership predicate and forces
-    // no obligation, so an inadmissible declaration reaches an answer through it.
+    // `contains` is this crate's spelling of the membership predicate, and it
+    // forces the quantum's obligation and the slot range's, through
+    // `magnitude_in_range` and `slot_in_range`. What it never reaches is this
+    // one, so a declaration inadmissible in its *phase* answers through it while
+    // one inadmissible in its magnitudes or its slots is refused. The fixture is
+    // the first kind, which is why the arm can run at all.
+    //
     // The assertion is that it answers at all; which way it answers is the slot
     // and magnitude ranges' business and neither of those is what is wrong here.
     let answered = contains::<PhaseNamesNoPosition>(Slot::ZERO, Magnitude::SMALLEST);
@@ -325,10 +330,10 @@ fn a_coordinate_is_readable_off_the_impl_without_the_obligation_firing() {
 #[test]
 fn an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing() {
     // Routed through a verb that forces, which is the whole content of the arm.
-    // `contains` forces nothing, so calling the two declarations through it
-    // produces the same answer for a reason that has nothing to do with the
-    // override, and an arm built that way passes identically whether `ADMITTED`
-    // exists or not.
+    // `contains` never reaches this obligation, so calling the two declarations
+    // through it produces the same answer for a reason that has nothing to do
+    // with the override, and an arm built that way passes identically whether
+    // `ADMITTED` exists or not.
     //
     // `has_additive_identity` forces `<F as Format>::ADMITTED`. That this line
     // compiles at all is the assertion: the same call on `PhaseNamesNoPosition`
