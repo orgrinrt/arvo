@@ -112,6 +112,7 @@ fn rust_fences(text: &str) -> Vec<(usize, String)> {
 /// The whole report.
 pub fn render(
     found: &[Found],
+    allows: &[crate::allows::Allow],
     heads: &[(String, String, usize)],
     designs: &[(String, usize, usize)],
     api_only: bool,
@@ -312,7 +313,18 @@ pub fn render(
         s.push_str(&format!("  {line}\n"));
     }
     s.push('\n');
-    s.push_str(&format!("  {} positions\n\n", demand.len()));
+    let free = demand.iter().filter(|f| !f.boundary).count();
+    let bound = demand.len() - free;
+    s.push_str(&format!("  {} positions\n", demand.len()));
+    for line in [
+        format!("  {free} of them free, and {bound} on a boundary with something outside the"),
+        "  stack, where the width and the representation are the operating system's or a"
+            .to_string(),
+        "  foreign ABI's. arvo can wrap one of those; it cannot choose it.".to_string(),
+    ] {
+        s.push_str(&format!("{line}\n"));
+    }
+    s.push('\n');
     let mut by_role: BTreeMap<&str, usize> = BTreeMap::new();
     for row in &demand {
         *by_role
@@ -340,6 +352,146 @@ pub fn render(
     // The other half of the fraction. A count of host primitives says nothing
     // about how far the obligation is from met without the count of positions
     // that already went through the stack.
+    // The demand the consumers stated themselves, which rests on no judgement
+    // of mine at all.
+    s.push_str("\nwhere a consumer turned the rule off\n");
+    for line in [
+        "a `lint:allow` on one of these four is a consumer saying at the site that the",
+        "rule forbids what it needs. Unlike every other number here it rests on no",
+        "reading: the site says so. Shipped source only.",
+    ] {
+        s.push_str(&format!("  {line}\n"));
+    }
+    s.push('\n');
+    let mut by_lint: BTreeMap<&str, usize> = BTreeMap::new();
+    let mut tracked: BTreeMap<&str, usize> = BTreeMap::new();
+    let mut untracked = 0usize;
+    for a in allows {
+        *by_lint.entry(a.lint).or_default() += 1;
+        if a.tracked.is_empty() {
+            untracked += 1;
+        } else {
+            *tracked.entry(a.tracked.as_str()).or_default() += 1;
+        }
+    }
+    for name in crate::allows::WATCHED {
+        s.push_str(&format!(
+            "  {:<24} {:>5}\n",
+            name,
+            by_lint.get(name).copied().unwrap_or(0)
+        ));
+    }
+    s.push_str(&format!(
+        "\n  {} in all, {untracked} of them naming no task.\n",
+        allows.len()
+    ));
+    if !tracked.is_empty() {
+        let mut ranked: Vec<(&&str, &usize)> = tracked.iter().collect();
+        ranked.sort_by(|a, b| b.1.cmp(a.1));
+        let spelling: Vec<String> = ranked
+            .iter()
+            .take(8)
+            .map(|(t, n)| format!("{t} x{n}"))
+            .collect();
+        s.push_str(&format!("  the tasks they name: {}\n", spelling.join(", ")));
+    }
+    let mut by_tree: BTreeMap<&str, usize> = BTreeMap::new();
+    for a in allows {
+        *by_tree.entry(a.tree.as_str()).or_default() += 1;
+    }
+    s.push('\n');
+    for (t, n) in &by_tree {
+        s.push_str(&format!("  {t:<44} {n:>5}\n"));
+    }
+
+    // Joining the suppressions to the positions, which is what says whether a
+    // suppression is a demand on arvo or a site turning off a rule that does not
+    // apply to it. A line whose only host primitive is a const generic
+    // parameter is the position op excepted in his own words, and a suppression
+    // there is suppressing nothing.
+    s.push_str("\n  what the suppressed lines actually carry\n\n");
+    let mut on_line: BTreeMap<(&str, &str, usize), Vec<Position>> = BTreeMap::new();
+    for row in found {
+        on_line
+            .entry((row.tree.as_str(), row.path.as_str(), row.line))
+            .or_default()
+            .push(row.position);
+    }
+    let mut only_excepted = 0usize;
+    let mut carries_a_real_one = 0usize;
+    let mut carries_nothing = 0usize;
+    let mut on_a_comment = 0usize;
+    let mut excepted_by_task: BTreeMap<&str, usize> = BTreeMap::new();
+    let mut inert_by_task: BTreeMap<&str, usize> = BTreeMap::new();
+    for a in allows {
+        if a.comment_only {
+            on_a_comment += 1;
+            if !a.tracked.is_empty() {
+                *inert_by_task.entry(a.tracked.as_str()).or_default() += 1;
+            }
+            continue;
+        }
+        match on_line.get(&(a.tree.as_str(), a.path.as_str(), a.line)) {
+            None => {
+                if crate::allows::the_pack_would_flag(&a.text) {
+                    // The pack's own rule fires and mine does not. That is a
+                    // gap in this walk rather than a fact about the site.
+                    carries_a_real_one += 1;
+                } else {
+                    carries_nothing += 1;
+                }
+            }
+            Some(kinds) => {
+                if kinds.iter().all(|k| *k == Position::ConstGenericParam) {
+                    only_excepted += 1;
+                    if !a.tracked.is_empty() {
+                        *excepted_by_task.entry(a.tracked.as_str()).or_default() += 1;
+                    }
+                } else {
+                    carries_a_real_one += 1;
+                }
+            }
+        }
+    }
+    s.push_str(&format!(
+        "  {carries_a_real_one:>5}  carry a host primitive at a position the exception does not\n         cover. These are the demand, stated by the consumer.\n"
+    ));
+    s.push_str(&format!(
+        "  {on_a_comment:>5}  sit on a line that is nothing but a comment, and are inert. The\n         pack's `line_lint_allowed` reads one line and no neighbour, and\n         `no_bare_numeric` skips a line whose text begins `//` before it\n         scans, so a marker written above the item it means to cover\n         suppresses nothing and the line below it is still checked.\n"
+    ));
+    s.push_str(&format!(
+        "  {only_excepted:>5}  carry nothing but the type of a const generic parameter, which op\n         excepted by name and which the pack already blanks before it scans.\n"
+    ));
+    s.push_str(&format!(
+        "  {carries_nothing:>5}  sit on a line the pack's own scan would not have flagged either,\n         so they suppress a diagnostic that was never going to fire. The\n         pack's rule is reimplemented in `allows::the_pack_would_flag`\n         rather than approximated, because the question is about that\n         instrument and not about this one.\n"
+    ));
+    if !inert_by_task.is_empty() {
+        let mut ranked: Vec<(&&str, &usize)> = inert_by_task.iter().collect();
+        ranked.sort_by(|a, b| b.1.cmp(a.1));
+        let spelling: Vec<String> = ranked
+            .iter()
+            .take(6)
+            .map(|(t, n)| format!("{t} x{n}"))
+            .collect();
+        s.push_str(&format!(
+            "\n  the inert ones are filed under: {}\n",
+            spelling.join(", ")
+        ));
+    }
+    if !excepted_by_task.is_empty() {
+        let mut ranked: Vec<(&&str, &usize)> = excepted_by_task.iter().collect();
+        ranked.sort_by(|a, b| b.1.cmp(a.1));
+        let spelling: Vec<String> = ranked
+            .iter()
+            .take(6)
+            .map(|(t, n)| format!("{t} x{n}"))
+            .collect();
+        s.push_str(&format!(
+            "\n  the excepted ones are filed under: {}\n",
+            spelling.join(", ")
+        ));
+    }
+
     s.push_str("\nthe supply, at the same bar\n");
     for line in [
         "the same walk over the same positions, keeping the stack's own type names",
@@ -412,6 +564,27 @@ pub fn render(
         s.push_str(&format!("  {name:<16} {count:>7}\n"));
     }
 
+    s.push_str("\nthe demand by crate, free against on a boundary\n\n");
+    let mut by_crate: BTreeMap<String, (usize, usize)> = BTreeMap::new();
+    for row in &demand {
+        let name = crate_of(&row.path).unwrap_or_else(|| "<root>".to_string());
+        let slot = by_crate.entry(format!("{} {name}", row.tree)).or_default();
+        if row.boundary {
+            slot.1 += 1;
+        } else {
+            slot.0 += 1;
+        }
+    }
+    let mut ranked: Vec<(&String, &(usize, usize))> = by_crate.iter().collect();
+    ranked.sort_by(|a, b| (b.1 .0 + b.1 .1).cmp(&(a.1 .0 + a.1 .1)));
+    s.push_str(&format!(
+        "  {:<58} {:>5} {:>9}\n",
+        "tree and crate", "free", "boundary"
+    ));
+    for (name, (f, b)) in ranked {
+        s.push_str(&format!("  {name:<58} {f:>5} {b:>9}\n"));
+    }
+
     s.push_str("\nby tree, over the public API positions\n\n");
     let mut trees: BTreeMap<&str, usize> = BTreeMap::new();
     for row in &api {
@@ -448,4 +621,19 @@ fn listing(kept: &[&Found], keep: impl Fn(&Found) -> bool, what: &str) -> String
         ));
     }
     s
+}
+
+/// The crate a path belongs to, where the path names one.
+///
+/// `mock/crates/<name>/...` in a mockspace tree, and the first component
+/// otherwise, which is what a plain cargo workspace looks like.
+fn crate_of(path: &str) -> Option<String> {
+    let parts: Vec<&str> = path.split('/').collect();
+    if let Some(i) = parts.iter().position(|c| *c == "crates") {
+        return parts.get(i + 1).map(std::string::ToString::to_string);
+    }
+    if parts.len() > 1 && parts[0] != "src" {
+        return Some(parts[0].to_string());
+    }
+    None
 }

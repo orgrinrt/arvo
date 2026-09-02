@@ -229,6 +229,9 @@ pub struct Found {
     /// What the primitive is wrapped in, which decides whether a number is what
     /// the position means at all.
     pub carrier: Carrier,
+    /// Whether the position sits on a boundary with something outside the
+    /// stack, where the host type is a contract rather than a choice.
+    pub boundary: bool,
     /// `None` where the type is the host's own, which is what the obligation is
     /// about. `Some("arvo")` or `Some("notko")` where the position already
     /// carries one of the stack's, which is the denominator the count needs.
@@ -244,6 +247,13 @@ impl Found {
     #[must_use]
     pub fn is_demand(&self) -> bool {
         self.supplier.is_none() && self.position.is_api() && self.public && self.shipped
+    }
+
+    /// A position in the demand that is not on an outside boundary, which is
+    /// the set a numeral could be chosen for freely.
+    #[must_use]
+    pub fn is_free(&self) -> bool {
+        self.is_demand() && !self.boundary
     }
 
     /// A position already carrying one of the stack's own types, at the same

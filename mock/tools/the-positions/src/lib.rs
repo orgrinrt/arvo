@@ -41,6 +41,7 @@
 //! resolved to, because a count over a corpus is a claim about which corpus and
 //! a ref moves.
 
+pub mod allows;
 pub mod corpus;
 pub mod kinds;
 pub mod report;
@@ -166,6 +167,7 @@ impl Tool for ThePositions {
         }
 
         let mut found: Vec<Found> = Vec::new();
+        let mut allows: Vec<allows::Allow> = Vec::new();
         let mut heads: Vec<(String, String, usize)> = Vec::new();
         let mut designs: Vec<(String, usize, usize)> = Vec::new();
 
@@ -202,6 +204,9 @@ impl Tool for ThePositions {
             let read = blobs.len();
             for blob in &blobs {
                 found.extend(walk::walk(&label, &blob.path, &blob.text));
+                if corpus::is_shipped(&blob.path) {
+                    allows.extend(allows::allows_in(&label, &blob.path, &blob.text));
+                }
             }
 
             // The design side: a position that does not exist yet is written in
@@ -256,6 +261,7 @@ impl Tool for ThePositions {
         let examined = found.len();
         let output = report::render(
             &found,
+            &allows,
             &heads,
             &designs,
             api_only,

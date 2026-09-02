@@ -1,0 +1,10 @@
+    Finished `release` profile [optimized] target(s) in 0.03s
+6 positions at kind `variant-field`, over the demand
+
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-build/src/pragma.rs:24  variant-field        u8         Pragma <tuple field>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/error.rs:25  variant-field        u32        ExtensionError found
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/error.rs:29  variant-field        u32        ExtensionError advertised
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/error.rs:29  variant-field        u32        ExtensionError minimum
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-extensions/src/error.rs:35  variant-field        u32        ExtensionError len
+  vehje@origin/main:mock/crates/vehje-runtime-driver/src/error.rs:50  variant-field        i32        DriverError code
+the-positions: clean, 140500 examined.

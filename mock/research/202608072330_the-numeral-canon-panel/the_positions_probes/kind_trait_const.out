@@ -6,4 +6,4 @@
   hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:221  trait-const          usize      ColumnValue BIT_WIDTH
   hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:335  trait-const          bool       WorkUnit COMMUTATIVE
   vehje@origin/main:mock/crates/vehje-codegen/DESIGN.md.tmpl:39  trait-const          u32        CodegenTarget VERSION
-the-positions: clean, 142401 examined.
+the-positions: clean, 140500 examined.

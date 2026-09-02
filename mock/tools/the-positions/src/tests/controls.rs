@@ -306,3 +306,161 @@ fn the_control_a_host_primitive_is_on_no_supply_list() {
         assert_eq!(supplier(name), None, "`{name}` is the host's");
     }
 }
+
+#[test]
+fn an_opaque_newtype_does_not_leak_the_integer_it_wraps() {
+    // `pub struct Width(u32)` is the shape the whole obligation is aiming at:
+    // the integer is inside and no caller can name it. Counting it as a public
+    // position reports arvo's own answer as nine more violations, and turns the
+    // thing that satisfies the rule into evidence against it.
+    let found = walk("t", "src/lib.rs", "pub struct Width(u32);");
+    assert_eq!(found.len(), 1, "the field was not found at all: {found:?}");
+    assert!(
+        !found[0].public,
+        "an opaque newtype's inner field was called public"
+    );
+    assert!(!found[0].is_demand());
+}
+
+#[test]
+fn the_control_a_newtype_that_does_leak_it_is_counted() {
+    // The mutation: one `pub` of difference. `vehje`'s `NodeId(pub u32)` and
+    // `hilavitkutin`'s `BitWidth(pub u32)` are written this way and each
+    // carries a `lint:allow(no-public-raw-field)` beside it, so the distinction
+    // is one the stack already makes by hand.
+    let found = walk("t", "src/lib.rs", "pub struct NodeId(pub u32);");
+    assert_eq!(found.len(), 1);
+    assert!(found[0].public, "a `pub` inner field was called private");
+    assert!(found[0].is_demand());
+}
+
+#[test]
+fn a_mixed_tuple_struct_reports_one_of_its_two_fields() {
+    // Both fields in one list, one public and one not, so the read has to be
+    // per field rather than per list. A list-wide check gives the same answer
+    // for both and cannot be told from a correct one on a struct where the two
+    // agree.
+    let found = walk("t", "src/lib.rs", "pub struct Pair(pub i8, u128);");
+    let public: Vec<&str> = found
+        .iter()
+        .filter(|f| f.public)
+        .map(|f| f.primitive.as_str())
+        .collect();
+    assert_eq!(public, vec!["i8"], "{found:?}");
+}
+
+#[test]
+fn an_enum_variants_tuple_field_stays_as_public_as_the_enum() {
+    // A variant's field carries no visibility of its own, so the per-field rule
+    // above must not apply to it.
+    let found = walk("t", "src/lib.rs", "pub enum E { V(u32) }");
+    assert_eq!(found.len(), 1);
+    assert!(
+        found[0].public,
+        "a public enum's variant field was called private"
+    );
+}
+
+#[test]
+fn the_name_an_item_declares_is_not_a_use_of_that_name() {
+    // Found on the fixture for the newtype test above: `pub struct Width(u32)`
+    // was reporting a `Width` position, so every declaration of one of arvo's
+    // own types entered the supply count as a consumer of itself.
+    let found = walk("t", "src/lib.rs", "pub struct Width(u32);");
+    assert_eq!(
+        found.len(),
+        1,
+        "the declaration was counted as a use: {found:?}"
+    );
+    assert_eq!(found[0].primitive, "u32");
+}
+
+#[test]
+fn the_control_a_real_use_of_the_same_name_is_still_counted() {
+    // The distinction has to cut one way only. Three uses here and no
+    // declaration of `Width` at all.
+    let found = walk(
+        "t",
+        "src/lib.rs",
+        "pub fn f(w: Width) -> Width { w }\npub struct S { pub w: Width }",
+    );
+    let widths = found.iter().filter(|f| f.primitive == "Width").count();
+    assert_eq!(widths, 3, "{found:?}");
+}
+
+#[test]
+fn a_declaration_and_a_use_in_one_file_separate_correctly() {
+    let found = walk(
+        "t",
+        "src/lib.rs",
+        "pub struct Width(u32);\npub fn f(w: Width) {}",
+    );
+    let widths: Vec<&crate::kinds::Found> =
+        found.iter().filter(|f| f.primitive == "Width").collect();
+    assert_eq!(widths.len(), 1, "{found:?}");
+    assert_eq!(widths[0].name, "w");
+}
+
+#[test]
+fn the_control_an_alias_separates_its_own_name_from_its_target() {
+    // `type A = Width;` has two `type_identifier` nodes under one parent and
+    // only the second is a use. An exclusion by parent kind rather than by
+    // field name would drop both.
+    let found = walk("t", "src/lib.rs", "pub type A = Width;");
+    assert_eq!(found.len(), 1, "{found:?}");
+    assert_eq!(found[0].primitive, "Width");
+}
+#[test]
+fn an_associated_path_is_found_and_is_always_interior() {
+    // `u32::MAX` puts the primitive in a slot the grammar spells `identifier`,
+    // so the leaf walk cannot see it. The stack's own lint lists associated
+    // paths among what it refuses, and the two instruments disagreed about 691
+    // suppressed lines until this was closed.
+    let found = walk(
+        "t",
+        "src/lib.rs",
+        "pub fn f() { let m = u32::MAX; let n = usize::BITS; }",
+    );
+    let names: Vec<&str> = found.iter().map(|f| f.primitive.as_str()).collect();
+    assert_eq!(names, vec!["u32", "usize"], "{found:?}");
+    assert!(
+        found
+            .iter()
+            .all(|f| f.position == crate::kinds::Position::Interior),
+        "an expression cannot be an API position: {found:?}"
+    );
+    assert!(found.iter().all(|f| !f.is_demand()));
+}
+
+#[test]
+fn the_control_an_ordinary_scoped_path_is_not_a_primitive() {
+    let found = walk(
+        "t",
+        "src/lib.rs",
+        "pub fn f() { let x = Width::NONE; let y = Vec::new(); }",
+    );
+    assert!(found.iter().all(|f| f.primitive != "u32"), "{found:?}");
+}
+
+#[test]
+fn the_control_the_member_half_of_a_path_is_not_taken() {
+    // `Thing::u32` is not a primitive position, and matching on the text alone
+    // rather than on the path slot would take it.
+    let found = walk("t", "src/lib.rs", "pub fn f() { let x = Thing::u32; }");
+    assert!(found.is_empty(), "{found:?}");
+}
+
+#[test]
+fn a_type_annotation_beside_an_associated_path_is_counted_once_as_each() {
+    let found = walk("t", "src/lib.rs", "pub const X: u32 = u32::MAX;");
+    assert_eq!(found.len(), 2, "{found:?}");
+    let kinds: Vec<crate::kinds::Position> = found.iter().map(|f| f.position).collect();
+    assert!(
+        kinds.contains(&crate::kinds::Position::ItemConst),
+        "{found:?}"
+    );
+    assert!(
+        kinds.contains(&crate::kinds::Position::Interior),
+        "{found:?}"
+    );
+}

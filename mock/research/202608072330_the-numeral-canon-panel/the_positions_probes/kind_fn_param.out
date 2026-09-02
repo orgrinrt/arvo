@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.01s
+    Finished `release` profile [optimized] target(s) in 0.05s
 39 positions at kind `fn-param`, over the demand
 
   arvo@origin/dev:mock/crates/arvo-format/src/adapt.rs:97  fn-param             u32        of operands
@@ -40,4 +40,4 @@
   vehje@origin/main:mock/crates/vehje-lex/src/tokenizers.rs:40  fn-param             u8         is_whitespace b
   vehje@origin/main:mock/crates/vehje-syntax/src/parser.rs:37  fn-param             u32        new idx
   vehje@origin/main:mock/crates/vehje-syntax/src/parser.rs:84  fn-param             usize      peek_at offset
-the-positions: clean, 142401 examined.
+the-positions: clean, 140500 examined.
