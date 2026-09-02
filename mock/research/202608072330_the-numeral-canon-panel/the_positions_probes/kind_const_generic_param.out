@@ -1,0 +1,168 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+163 positions at kind `const-generic-param`, over every shipped occurrence rather than the demand, 
+because this kind is not one an outside crate has to write
+
+  notko@origin/dev:src/lend.rs:45  const-generic-param  usize      impl Lend<T> N
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:89  const-generic-param  u32        Integer BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:91  const-generic-param  u32        impl Format for Integer<BITS> BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:105  const-generic-param  u32        UFixed BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:105  const-generic-param  i32        UFixed FRAC
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:107  const-generic-param  u32        impl Format for UFixed<BITS, FRAC> BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:107  const-generic-param  i32        impl Format for UFixed<BITS, FRAC> FRAC
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:134  const-generic-param  u32        Biased BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:134  const-generic-param  i32        Biased EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:134  const-generic-param  i64        Biased HALF_STEPS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:136  const-generic-param  u32        impl Format for Biased<BITS, EXP, HALF_STEPS> BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:136  const-generic-param  i32        impl Format for Biased<BITS, EXP, HALF_STEPS> EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:136  const-generic-param  i64        impl Format for Biased<BITS, EXP, HALF_STEPS> HALF_STEPS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:152  const-generic-param  u32        Floating MANTISSA
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:152  const-generic-param  i32        Floating MIN_EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:152  const-generic-param  u32        Floating EXPONENTS
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:154  const-generic-param  u32        impl Format for Floating<MANTISSA, MIN_EXP, EXPONENTS> MANTISSA
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:154  const-generic-param  i32        impl Format for Floating<MANTISSA, MIN_EXP, EXPONENTS> MIN_EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/lib.rs:154  const-generic-param  u32        impl Format for Floating<MANTISSA, MIN_EXP, EXPONENTS> EXPONENTS
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:348  const-generic-param  i32        Constant EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:350  const-generic-param  i32        impl Quantum for Constant<EXP> EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:360  const-generic-param  i32        Indexed MIN_EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:360  const-generic-param  u32        Indexed COUNT
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:362  const-generic-param  i32        impl Quantum for Indexed<MIN_EXP, COUNT> MIN_EXP
+  arvo@origin/dev:mock/crates/arvo-format/src/quantum.rs:362  const-generic-param  u32        impl Quantum for Indexed<MIN_EXP, COUNT> COUNT
+  arvo@origin/dev:mock/crates/arvo-format/src/slots.rs:260  const-generic-param  u32        Signed BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/slots.rs:263  const-generic-param  u32        Unsigned BITS
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:40  const-generic-param  i32        FractionLength F
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:42  const-generic-param  i32        impl Quantum for FractionLength<F> F
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:58  const-generic-param  u32        Fi W
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:58  const-generic-param  i32        Fi F
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:60  const-generic-param  u32        impl Format for Fi<W, F> W
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:60  const-generic-param  i32        impl Format for Fi<W, F> F
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:75  const-generic-param  u32        Ufi W
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:75  const-generic-param  i32        Ufi F
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:77  const-generic-param  u32        impl Format for Ufi<W, F> W
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:77  const-generic-param  i32        impl Format for Ufi<W, F> F
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:92  const-generic-param  u32        - W
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:92  const-generic-param  i32        - F
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:96  const-generic-param  u32        - W
+  arvo@origin/dev:mock/crates/arvo-format/src/standards.rs:96  const-generic-param  i32        - F
+  arvo@origin/dev:mock/crates/arvo-format/src/tests/the_identity.rs:65  const-generic-param  i64        Grid PN
+  arvo@origin/dev:mock/crates/arvo-format/src/tests/the_identity.rs:65  const-generic-param  i64        Grid PD
+  arvo@origin/dev:mock/crates/arvo-format/src/tests/the_identity.rs:67  const-generic-param  i64        impl Format for Grid<A, Q, S, PN, PD> PN
+  arvo@origin/dev:mock/crates/arvo-format/src/tests/the_identity.rs:67  const-generic-param  i64        impl Format for Grid<A, Q, S, PN, PD> PD
+  arvo@origin/dev:mock/crates/arvo-format/src/tests/the_identity.rs:82  const-generic-param  u32        Shrinking COUNT
+  arvo@origin/dev:mock/crates/arvo-format/src/tests/the_identity.rs:84  const-generic-param  u32        impl Quantum for Shrinking<COUNT> COUNT
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:27  const-generic-param  usize      CeilingDiv N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:27  const-generic-param  usize      CeilingDiv D
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:34  const-generic-param  usize      Ceil N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:34  const-generic-param  usize      Ceil D
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:39  const-generic-param  usize      impl CeilingDiv<N, D> for Ceil<N, D> N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:39  const-generic-param  usize      impl CeilingDiv<N, D> for Ceil<N, D> D
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:229  const-generic-param  usize      CoreProgram MAX_PHASES_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:230  const-generic-param  usize      CoreProgram MAX_TRUNKS_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:231  const-generic-param  usize      CoreProgram MAX_FIBERS_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:261  const-generic-param  usize      impl CoreProgram<MAX_PHASES_PER_CORE, MAX_TRUNKS_PER_CORE, MAX_FIBERS_PER_CORE> MAX_PHASES_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:262  const-generic-param  usize      impl CoreProgram<MAX_PHASES_PER_CORE, MAX_TRUNKS_PER_CORE, MAX_FIBERS_PER_CORE> MAX_TRUNKS_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:263  const-generic-param  usize      impl CoreProgram<MAX_PHASES_PER_CORE, MAX_TRUNKS_PER_CORE, MAX_FIBERS_PER_CORE> MAX_FIBERS_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:284  const-generic-param  usize      impl Default for CoreProgram<MAX_PHASES_PER_CORE, MAX_TRUNKS_PER_CORE, MAX_FIBERS_PER_CORE> MAX_PHASES_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:285  const-generic-param  usize      impl Default for CoreProgram<MAX_PHASES_PER_CORE, MAX_TRUNKS_PER_CORE, MAX_FIBERS_PER_CORE> MAX_TRUNKS_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:286  const-generic-param  usize      impl Default for CoreProgram<MAX_PHASES_PER_CORE, MAX_TRUNKS_PER_CORE, MAX_FIBERS_PER_CORE> MAX_FIBERS_PER_CORE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:177  const-generic-param  usize      PoolFrame MAX_CORES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:177  const-generic-param  usize      PoolFrame MAX_PHASES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:255  const-generic-param  usize      impl Send for PoolFrame<'arena, C, P> C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:255  const-generic-param  usize      impl Send for PoolFrame<'arena, C, P> P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:256  const-generic-param  usize      impl Sync for PoolFrame<'arena, C, P> C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:256  const-generic-param  usize      impl Sync for PoolFrame<'arena, C, P> P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:335  const-generic-param  usize      run C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:335  const-generic-param  usize      run P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:370  const-generic-param  usize      run C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/platform.rs:370  const-generic-param  usize      run P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/sieve.rs:41  const-generic-param  usize      SieveCache CAP
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/sieve.rs:47  const-generic-param  usize      impl SieveCache<K, V, CAP> CAP
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/src/sieve.rs:186  const-generic-param  usize      impl Default for SieveCache<K, V, CAP> CAP
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:90  const-generic-param  usize      MemoryArena BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:90  const-generic-param  usize      MemoryArena ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:103  const-generic-param  usize      impl MemoryArena<BYTES, ENTRIES> BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:103  const-generic-param  usize      impl MemoryArena<BYTES, ENTRIES> ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:118  const-generic-param  usize      impl Default for MemoryArena<BYTES, ENTRIES> BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:118  const-generic-param  usize      impl Default for MemoryArena<BYTES, ENTRIES> ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:127  const-generic-param  usize      impl ArenaInterner for MemoryArena<BYTES, ENTRIES> BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:127  const-generic-param  usize      impl ArenaInterner for MemoryArena<BYTES, ENTRIES> ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:212  const-generic-param  usize      default_interner BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:212  const-generic-param  usize      default_interner ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:223  const-generic-param  usize      InternerKit BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:223  const-generic-param  usize      InternerKit ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:225  const-generic-param  usize      impl BuilderInput for InternerKit<BYTES, ENTRIES> BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:225  const-generic-param  usize      impl BuilderInput for InternerKit<BYTES, ENTRIES> ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:231  const-generic-param  usize      impl Kit for InternerKit<BYTES, ENTRIES> BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/src/interner.rs:231  const-generic-param  usize      impl Kit for InternerKit<BYTES, ENTRIES> ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/order.rs:46  const-generic-param  usize      topo_order N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_dispatch.rs:49  const-generic-param  usize      IsRoot POS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_dispatch.rs:51  const-generic-param  usize      impl IsRoot<Full, Stores, GW, CU, CS, Adj, POS> POS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_dispatch.rs:60  const-generic-param  usize      PhaseAt POS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_dispatch.rs:62  const-generic-param  usize      impl PhaseAt<Full, Stores, GW, CU, CS, Adj, POS> POS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_dispatch.rs:76  const-generic-param  usize      RunTrunkDispatch POS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_dispatch.rs:103  const-generic-param  usize      impl RunTrunkDispatch<Full, A, Witnesses, GW, Stores, CU, CS, Adj, POS> for WuNil POS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_dispatch.rs:124  const-generic-param  usize      impl RunTrunkDispatch<Full, A, Witnesses, GW, Stores, CU, CS, Adj, POS> for WuCons<W, Tail> POS
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_gate.rs:62  const-generic-param  usize      Member TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_gate.rs:66  const-generic-param  usize      impl Member<Full, Stores, GW, CU, CS, Adj, Pos, TRUNK> TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_gate.rs:79  const-generic-param  usize      RunGatedTrunk TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_gate.rs:95  const-generic-param  usize      impl RunGatedTrunk<Full, A, Empty, GW, Stores, CU, CS, Adj, TRUNK, Pos> for WuNil TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/trunk_gate.rs:100  const-generic-param  usize      impl RunGatedTrunk<Full, A, Cons<(RI, RCI, WCI, WAI, WVI, GI), WTail>, GW, Stores, CU, CS, Adj, TRUNK, Pos> for WuCons<W, Tail> TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/plan/grouping.rs:467  const-generic-param  usize      is_member PHASE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/plan/grouping.rs:467  const-generic-param  usize      is_member TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/resource/accumulator.rs:23  const-generic-param  usize      ConvergenceBuffer N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/resource/accumulator.rs:27  const-generic-param  usize      impl ConvergenceBuffer<T, N> N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/scheduler/mod.rs:1535  const-generic-param  usize      run_one_trunk TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/scheduler/mod.rs:1575  const-generic-param  usize      run_one_trunk_windowed TRUNK
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:45  const-generic-param  usize      phase_barrier_arrive C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:45  const-generic-param  usize      phase_barrier_arrive P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:61  const-generic-param  usize      phase_barrier_reset C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:61  const-generic-param  usize      phase_barrier_reset P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:72  const-generic-param  usize      phase_barrier_observe C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:72  const-generic-param  usize      phase_barrier_observe P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:104  const-generic-param  usize      waist_barrier C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/barrier.rs:104  const-generic-param  usize      waist_barrier P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:30  const-generic-param  usize      frame_publish C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:30  const-generic-param  usize      frame_publish P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:41  const-generic-param  usize      frame_await C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:41  const-generic-param  usize      frame_await P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:58  const-generic-param  usize      frame_done_arrive C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:58  const-generic-param  usize      frame_done_arrive P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:70  const-generic-param  usize      frame_await_done C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:70  const-generic-param  usize      frame_await_done P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:85  const-generic-param  usize      request_shutdown C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:85  const-generic-param  usize      request_shutdown P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:95  const-generic-param  usize      frame_exit_arrive C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:95  const-generic-param  usize      frame_exit_arrive P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:108  const-generic-param  usize      await_exit C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/frame.rs:108  const-generic-param  usize      await_exit P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:93  const-generic-param  usize      predicted_wait_ns_load C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:93  const-generic-param  usize      predicted_wait_ns_load P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:109  const-generic-param  usize      predicted_wait_ns_store C
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/thread/parking.rs:109  const-generic-param  usize      predicted_wait_ns_store P
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:972  const-generic-param  usize      run MAX_CORES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:972  const-generic-param  usize      run MAX_PHASES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:991  const-generic-param  usize      PoolFrame MAX_CORES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:991  const-generic-param  usize      PoolFrame MAX_PHASES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:1126  const-generic-param  usize      Seq N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:1127  const-generic-param  usize      Map N
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-kit/DESIGN.md.tmpl:97  const-generic-param  usize      InternerKit BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-kit/DESIGN.md.tmpl:97  const-generic-param  usize      InternerKit ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-kit/DESIGN.md.tmpl:99  const-generic-param  usize      impl Kit for InternerKit<BYTES, ENTRIES> BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-kit/DESIGN.md.tmpl:99  const-generic-param  usize      impl Kit for InternerKit<BYTES, ENTRIES> ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/DESIGN.md.tmpl:81  const-generic-param  usize      default_interner BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/DESIGN.md.tmpl:81  const-generic-param  usize      default_interner ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/DESIGN.md.tmpl:96  const-generic-param  usize      InternerKit BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/DESIGN.md.tmpl:96  const-generic-param  usize      InternerKit ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/DESIGN.md.tmpl:98  const-generic-param  usize      impl Kit for InternerKit<BYTES, ENTRIES> BYTES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-providers/DESIGN.md.tmpl:98  const-generic-param  usize      impl Kit for InternerKit<BYTES, ENTRIES> ENTRIES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/DESIGN.md.tmpl:584  const-generic-param  usize      PoolFrame MAX_CORES
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/DESIGN.md.tmpl:584  const-generic-param  usize      PoolFrame MAX_PHASES
+  kolli@origin/dev:mock/crates/kolli-layout/src/columns.rs:20  const-generic-param  usize      Columns N
+  kolli@origin/dev:mock/crates/kolli-layout/src/columns.rs:25  const-generic-param  usize      impl Columns<N> N
+  kolli@origin/dev:mock/crates/kolli-shell/src/suggest.rs:92  const-generic-param  usize      Lent N
+  kolli@origin/dev:mock/crates/kolli-shell/src/suggest.rs:96  const-generic-param  usize      impl Lent<N> N
+  kolli@origin/dev:mock/crates/kolli-shell/src/suggest.rs:102  const-generic-param  usize      impl Cells<USize> for Lent<N> N
+  kolli@origin/dev:mock/crates/kolli-shell/src/table.rs:18  const-generic-param  usize      Table N
+  kolli@origin/dev:mock/crates/kolli-shell/src/table.rs:23  const-generic-param  usize      impl Table<'a, N> N
+  kolli@origin/dev:mock/crates/kolli-shell/src/table.rs:45  const-generic-param  usize      impl View for Table<'_, N> N
+  kolli@origin/dev:mock/crates/kolli-shell/src/table.rs:101  const-generic-param  usize      line_of N
+the-positions: clean, 140500 examined.

@@ -1,0 +1,29 @@
+== 0. baseline: the suite as it stands ==
+   1 test result: ok. 104 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   1 test result: ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   1 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   1 test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+   1 test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.35s
+
+== 1. mutate: delete the WIDTH <= 62 clause from the const and the verdict ==
+  clause still present in the file? 0 occurrence(s) (0 means the mutation applied)
+
+== 2. run the whole suite against the mutant ==
+   1 test result: ok. 104 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   1 test result: ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   1 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   1 test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+   1 test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+
+== 3. verdict ==
+  NO TEST FAILED. The clause can be deleted and the suite stays green.
+  So no test in this crate isolates `WIDTH <= 62`. The construction the
+  suite points at it with, RogueRange, is inverted as well as 63 bits wide,
+  and the first clause refuses it whether or not the third exists.
+
+== 4. control: mutate a clause that IS isolated, to show the method fires ==
+  deleting the MIN <= MAX clause: 2 failing test(s) / error(s)
+test crates/arvo-format/src/slots.rs - slots::Slots::ADMITTED (line 166) - compile fail ... FAILED
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+error: doctest failed, to rerun pass `-p arvo-format --doc`
+  The method fires. Section 3's zero is a fact about the suite.

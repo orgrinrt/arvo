@@ -1,0 +1,32 @@
+--- mock/research/202609021238_probes/slots.rs.baseline	2026-09-02 12:42:49
++++ mock/research/202609021238_probes/slots.rs.mutant	2026-09-02 12:42:49
+@@ -212,29 +212,6 @@
+             Self::MIN.index() <= Self::MAX.index(),
+             "slot range is inverted: its lowest index exceeds its highest, so it admits nothing"
+         );
+-        assert!(
+-            Self::WIDTH.count() >= 1,
+-            "a declared width of zero bits admits no values and is not a slot range"
+-        );
+-        assert!(
+-            Self::WIDTH.count() <= 62,
+-            "declared width is wider than a slot index carries; the count of slots is 2^width and \
+-             2^63 does not fit a signed 64-bit integer"
+-        );
+-        // In `i128`, so the obligation cannot overflow while checking that the
+-        // thing it is about does not. An earlier version of this checked only
+-        // `MIN <= MAX` and the width's range, and admitted a span of 2^63, which
+-        // made `slot_count` panic under `overflow-checks` and wrap without it.
+-        assert!(
+-            (Self::MAX.index() as i128) - (Self::MIN.index() as i128) < i64::MAX as i128,
+-            "slot range spans more indices than a count can carry, so counting it would overflow"
+-        );
+-        assert!(
+-            (Self::MAX.index() as i128) - (Self::MIN.index() as i128)
+-                < (1i128 << Self::WIDTH.count()),
+-            "the declared width does not cover the range: the range holds more indices than the \
+-             width can address"
+-        );
+     };
+ }
+ 

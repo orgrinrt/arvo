@@ -1,0 +1,45 @@
+== control 1: can the pattern list fire at all? ==
+  planted file            : 4 hit(s)  (must be > 0)
+
+== control 2: the crates' own test files ==
+  23 test file(s), 4 hit(s)  (must be > 0)
+
+== the measurement: every non-test source file in every crate ==
+  file                                                    ANY  TARGET
+  mock/crates/arvo-format/src/adapt.rs                      0       0
+  mock/crates/arvo-format/src/ambient.rs                    0       0
+  mock/crates/arvo-format/src/apply.rs                      1       0
+  mock/crates/arvo-format/src/format.rs                     0       0
+  mock/crates/arvo-format/src/lib.rs                        1       0
+  mock/crates/arvo-format/src/overflow.rs                   0       0
+  mock/crates/arvo-format/src/quantum.rs                    0       0
+  mock/crates/arvo-format/src/rounding.rs                   0       0
+  mock/crates/arvo-format/src/slots.rs                      0       0
+  mock/crates/arvo-format/src/standards.rs                  0       0
+  mock/crates/arvo-format/src/width.rs                      0       0
+  mock/crates/arvo-placement/src/lib.rs                     1       0
+  mock/crates/arvo-strategy/src/lib.rs                      1       0
+  ---------------------------------------------------------------------
+  13 files, total                                           4       0
+
+  The ANY column is not zero and every hit in it is `#[cfg(test)]`:
+mock/crates/arvo-format/src/apply.rs:339:#[cfg(test)]
+mock/crates/arvo-format/src/lib.rs:166:#[cfg(test)]
+mock/crates/arvo-placement/src/lib.rs:269:#[cfg(test)]
+mock/crates/arvo-strategy/src/lib.rs:148:#[cfg(test)]
+  A test-inclusion gate is not a target index. That is why the two columns
+  differ, and the ANY column is what shows the instrument fires on source.
+
+== what carries the hosting bounds, then ==
+mock/crates/arvo-format/src/ambient.rs:24:pub struct Radix(u32);
+mock/crates/arvo-format/src/quantum.rs:40:pub struct Exponent(i32);
+mock/crates/arvo-format/src/quantum.rs:136:pub struct MagnitudeCount(u32);
+mock/crates/arvo-format/src/slots.rs:41:pub struct Slot(i64);
+mock/crates/arvo-format/src/width.rs:30:pub struct Width(u32);
+
+Every one of those is a fixed-width machine type. With MIN, MAX, WIDTH,
+BASE, SLOPE and MAGNITUDES held fixed, no assertion in any ADMITTED block
+can change truth value between two targets.
+
+RESULT: the hosting predicate is indexed by this implementation, not by a target.
+        Option three's quantifier over compilations ranges over one value.

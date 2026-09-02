@@ -1,0 +1,27 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+--- the admission arms, built one at a time so a refusal does not hide the rest
+a1_exact_product_of_admitted_operands_is_refused           exit=101
+a2_control_the_same_shape_at_sixteen_bits_builds           exit=0
+a3_a_wellformed_grid_past_the_ladder_is_refused            exit=101
+a4_control_the_same_grid_at_sixtytwo_builds                exit=0
+a5_negative_control_a_malformed_grid_is_also_refused       exit=101
+
+--- the carrier mutation: two copies of the shipped slots.rs differing in one type
+carrier/lib                                                exit=0
+carrier/c1_mutant_shipped_admits_63                        exit=101
+carrier/c2_mutant_mutated_refuses_63                       exit=101
+
+--- target invariance, and its mutant, per installed target
+invariance               aarch64-apple-darwin         exit=0
+mutant                   aarch64-apple-darwin         exit=101
+invariance               x86_64-unknown-linux-gnu     exit=0
+mutant                   x86_64-unknown-linux-gnu     exit=101
+invariance               i686-unknown-linux-gnu       exit=0
+mutant                   i686-unknown-linux-gnu       exit=101
+invariance               thumbv6m-none-eabi           exit=0
+mutant                   thumbv6m-none-eabi           exit=101
+
+--- and the 16-bit target, with core built from source
+invariance               msp430-none-elf              exit=0
+mutant                   msp430-none-elf              exit=101

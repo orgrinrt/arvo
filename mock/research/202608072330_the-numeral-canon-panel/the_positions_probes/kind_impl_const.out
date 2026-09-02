@@ -1,0 +1,11 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+7 positions at kind `impl-const`, over the demand
+
+  notko@origin/dev:notko-macros-core/src/tiers.rs:61  impl-const           bool       impl Tier for Hot INLINE
+  notko@origin/dev:notko-macros-core/src/tiers.rs:69  impl-const           bool       impl Tier for Warm INLINE
+  notko@origin/dev:notko-macros-core/src/tiers.rs:77  impl-const           bool       impl Tier for Cold INLINE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:40  impl-const           usize      impl CeilingDiv<N, D> for Ceil<N, D> RESULT
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:59  impl-const           usize      impl PhaseId ADDRESSABLE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/dispatch_codegen.rs:108  impl-const           usize      impl TrunkId ADDRESSABLE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/order.rs:117  impl-const           usize      impl CarrierMasks<Stores, Empty, CS> for Empty LEN
+the-positions: clean, 140500 examined.
