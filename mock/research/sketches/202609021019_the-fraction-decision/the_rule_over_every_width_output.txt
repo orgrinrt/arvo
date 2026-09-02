@@ -1,0 +1,60 @@
+0. the exhaustive search and the derived family, cross-checked
+   W =  3: disagreements 0
+   W =  4: disagreements 0
+   W =  5: disagreements 0
+   W =  6: disagreements 0
+   W =  7: disagreements 0
+   W =  8: disagreements 0
+   the control, a family missing one half: 10 disagreements at W = 4
+
+1. the four arms, exhaustive at every width
+   W    arm                        den <= 0  sign flip  lost an exact  breaches  worst relative
+   3    shipped                           0         10              4        10  20/4 at (-4, -4)
+   3    holds the pair                   40          0              0         0  0/1 at (0, 0)
+   3    zero on the families              0         10              4        10  4/4 at (-4, -4)
+   3    nearest representable             0          0              0         0  3/9 at (-3, -4)
+
+   4    shipped                           0         22             10        22  72/8 at (-8, -8)
+   4    holds the pair                  144          0              0         0  0/1 at (0, 0)
+   4    zero on the families              0         22             10        22  8/8 at (-8, -8)
+   4    nearest representable             0          0              0         0  7/49 at (-7, -8)
+
+   5    shipped                           0         46             22        46  272/16 at (-16, -16)
+   5    holds the pair                  544          0              0         0  0/1 at (0, 0)
+   5    zero on the families              0         46             22        46  16/16 at (-16, -16)
+   5    nearest representable             0          0              0         0  15/225 at (-15, -16)
+
+   6    shipped                           0         94             46        94  1056/32 at (-32, -32)
+   6    holds the pair                 2112          0              0         0  0/1 at (0, 0)
+   6    zero on the families              0         94             46        94  32/32 at (-32, -32)
+   6    nearest representable             0          0              0         0  31/961 at (-31, -32)
+
+   7    shipped                           0        190             94       190  4160/64 at (-64, -64)
+   7    holds the pair                 8320          0              0         0  0/1 at (0, 0)
+   7    zero on the families              0        190             94       190  64/64 at (-64, -64)
+   7    nearest representable             0          0              0         0  63/3969 at (-63, -64)
+
+   8    shipped                           0        382            190       382  16512/128 at (-128, -128)
+   8    holds the pair                33024          0              0         0  0/1 at (0, 0)
+   8    zero on the families              0        382            190       382  128/128 at (-128, -128)
+   8    nearest representable             0          0              0         0  127/16129 at (-127, -128)
+
+   12   shipped                           0       6142           3070      6142  4196352/2048 at (-2048, -2048)
+   12   holds the pair              8392704          0              0         0  0/1 at (0, 0)
+   12   zero on the families              0       6142           3070      6142  2048/2048 at (-2048, -2048)
+   12   nearest representable             0          0              0         0  2047/4190209 at (-2047, -2048)
+
+   16   shipped                           0      98302          49150     98302  1073774592/32768 at (-32768, -32768)
+   16   holds the pair           2147549184          0              0         0  0/1 at (0, 0)
+   16   zero on the families              0      98302          49150     98302  32768/32768 at (-32768, -32768)
+   16   nearest representable             0          0              0         0  32767/1073676289 at (-32767, -32768)
+
+2. the claims about the nearest arm, asserted at every width
+   positive denominator, sign preserved, exact where an exact exists,
+   relative error at most 1/MAX: all four hold at W in {3,4,5,6,7,8,12,16}
+
+3. the same claims against the shipped arm, which has to fail them
+   W =  3: 10 sign flips, 10 breaches of 1/MAX
+   W =  4: 22 sign flips, 22 breaches of 1/MAX
+   W =  8: 382 sign flips, 382 breaches of 1/MAX
+   W = 16: 98302 sign flips, 98302 breaches of 1/MAX
