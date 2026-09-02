@@ -34,10 +34,12 @@ use crate::ambient::{
     is_admissible_ambient, Ambient, BinaryRationals, DecimalRationals, Radix,
     UnsignedBinaryRationals,
 };
-use crate::format::{is_admissible_format, Format, Phase};
+use crate::format::{contains, is_admissible_format, Format, Phase};
 use crate::points::{Biased, Floating, Integer, UFixed};
-use crate::quantum::{is_admissible_quantum, Constant, Exponent, Indexed, MagnitudeCount, Quantum};
-use crate::slots::{Signed, Slots, Unsigned};
+use crate::quantum::{
+    is_admissible_quantum, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum,
+};
+use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::width::{Bool, Width};
 
 // --- the constructions that compile and are wrong ----------------------------
@@ -255,4 +257,89 @@ fn every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts() {
         crate::slots::is_admissible::<Signed<8>>(),
     ];
     assert_eq!(verdicts, [Bool::TRUE; 4]);
+}
+
+// --- how far an obligation reaches, which is not as far as it reads ----------
+//
+// An obligation is a const and a const is evaluated where it is used, so the
+// guarantee is exactly the set of verbs that use it. `Format::ADMITTED` is forced
+// at two of them. The three arms below are the routes that reach a value without
+// meeting either, each one a property the design now states outright and each one
+// established by hand before it was written down here.
+//
+// **They pass, and that is what they are for.** A route the design admits exists
+// is pinned by an arm that passes while it is open and fails the moment it
+// closes, which is what makes a later round's closing visible rather than silent.
+
+/// A format whose phase names no position on the grid.
+///
+/// `Phase::of(1, 0)` is stored as it was written, so this compiles and the
+/// obligation on `Format` is what refuses it, at the two verbs that force it.
+struct PhaseNamesNoPosition;
+
+impl Format for PhaseNamesNoPosition {
+    type Ambient = BinaryRationals;
+    type Quantum = Constant<0>;
+    type Slots = Signed<8>;
+    const PHASE: Phase = Phase::of(1, 0);
+}
+
+/// The same format with the obligation written over, which any implementor may do.
+struct DisarmedObligation;
+
+impl Format for DisarmedObligation {
+    type Ambient = BinaryRationals;
+    type Quantum = Constant<0>;
+    type Slots = Signed<8>;
+    const PHASE: Phase = Phase::of(1, 0);
+    const ADMITTED: () = ();
+}
+
+#[test]
+fn contains_answers_for_a_format_whose_phase_does_not_denote() {
+    // `contains` is this crate's spelling of the membership predicate and forces
+    // no obligation, so an inadmissible declaration reaches an answer through it.
+    // The assertion is that it answers at all; which way it answers is the slot
+    // and magnitude ranges' business and neither of those is what is wrong here.
+    let answered = contains::<PhaseNamesNoPosition>(Slot::ZERO, Magnitude::SMALLEST);
+    assert_eq!(answered, Bool::TRUE);
+
+    // The control, and it is what makes the arm mean anything: the same call on a
+    // format that does denote answers the same way, so the arm above is reporting
+    // that the obligation was not consulted rather than that the phase was read.
+    let control = contains::<Integer<8>>(Slot::ZERO, Magnitude::SMALLEST);
+    assert_eq!(answered, control);
+}
+
+#[test]
+fn a_coordinate_is_readable_off_the_impl_without_the_obligation_firing() {
+    // The shortest route of the three. Nothing between a reader and the
+    // declaration, so nothing to force.
+    assert_eq!(
+        <PhaseNamesNoPosition as Format>::PHASE.denotes(),
+        Bool::FALSE
+    );
+    assert_eq!(<Integer<8> as Format>::PHASE.denotes(), Bool::TRUE);
+}
+
+#[test]
+fn an_implementor_writes_over_the_obligation_and_the_default_is_gone() {
+    // Written as a verdict rather than an assertion, so the disarming impl lives
+    // permanently on the right side of the suite instead of being built, looked
+    // at and deleted. What it establishes is that the default is a default: an
+    // implementor supplies its own and nothing here can refuse that.
+    let disarmed_still_answers =
+        contains::<DisarmedObligation>(Slot::ZERO, Magnitude::SMALLEST) == Bool::TRUE;
+    assert!(
+        disarmed_still_answers,
+        "an implementor may write over `ADMITTED`, and this arm fails when that \
+         stops being true, which is a design change rather than a regression"
+    );
+
+    // And the two are the same declaration apart from the obligation, so the arm
+    // is about the override rather than about anything else that differs.
+    assert_eq!(
+        <DisarmedObligation as Format>::PHASE,
+        <PhaseNamesNoPosition as Format>::PHASE
+    );
 }

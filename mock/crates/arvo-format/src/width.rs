@@ -11,14 +11,19 @@
 //! what a number is in this stack cannot express itself in types it has not
 //! defined yet. Every crate above uses what is here and is checked normally.
 //!
-//! Two types and no more. A count of bits, and a truth value.
+//! A count of bits, and a truth value.
 //!
-//! The coordinates a format is declared with are not a third and a fourth of
-//! these. Each is built through this door and each lives beside the contract that
-//! reads it: a radix with the ambient domain, an exponent and the magnitudes with
-//! the quantum law, a slot and a count of them with the slot range, a phase with
-//! the format, an arity with an operation, a fraction with the applied map. That
-//! is what keeps the door narrow while nothing above it has to reach past it.
+//! What the door carries out is the coordinate set of the parameterisation,
+//! spelled in types this stack owns. Each is built through this door and each
+//! lives beside the contract that reads it: a radix with the ambient domain, an
+//! exponent and the magnitudes with the quantum law, a slot and a count of them
+//! with the slot range, a phase with the format, an arity with an operation, a
+//! fraction with the applied map. That is what keeps the door narrow while
+//! nothing above it has to reach past it.
+//!
+//! How many types that is, is not stated here and is not settled anywhere. Two
+//! separate derivations reached different counts, so a number written down here
+//! would be one of them wearing the door's authority.
 
 /// A count of bits.
 ///
