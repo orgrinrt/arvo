@@ -1,0 +1,29 @@
+### the guard in walk()
+  165:    if !dir.is_dir() {
+  166-        return Ok(());
+  167-    }
+  --
+  172:        if path.is_dir() {
+  173-            walk(&path, reg)?;
+  174-        } else if path.extension().is_some_and(|e| e == "toml") {
+
+### the expect() on canon()
+  136-
+  137-/// The committed canon.
+  138-pub fn canon() -> Registry {
+  139:    load(&repo().join("mock/registry")).expect("mock/registry is readable")
+
+### what that composes to
+  walk() returns Ok(()) for a path that is not a directory, so load() returns
+  Ok(empty) and the expect() never fires. A Registry with no rows makes every
+  arm return an empty Vec, and every arm asserted empty passes.
+
+### the shape of assertion that would still catch it
+  a test asserting a finder NON-empty. Two exist:
+    checks/tests/what_one_field_obliges_another_to_carry.rs:67:/// The ratchet above is green, and this is what says the green means anything.
+    checks/tests/what_one_field_obliges_another_to_carry.rs:85:fn the_measured_without_evidence_finder_still_finds_the_stuck_rows() {
+    checks/tests/the_axis_vocabulary_is_append_only.rs:117:    let first = live.first().expect("the canon declares at least one axis");
+
+### CONTROL. The reader must find a string known present and miss one known absent.
+  present(is_dir)=2  absent(zzqq_not_in_this_file)=0
+  controls held, so the two greps above mean what they print.

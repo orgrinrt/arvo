@@ -1,0 +1,7 @@
+Q = [-8, 7], |Q|^3 = 4096
+signed saturating ADDITION      associativity failures: 952
+signed saturating MULTIPLICATION associativity failures: 160
+
+the two differ, so the number belongs to exactly one of them:
+  952 is ADDITION
+EXIT=0

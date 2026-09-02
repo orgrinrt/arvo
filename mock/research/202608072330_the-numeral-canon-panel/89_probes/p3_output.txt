@@ -1,0 +1,24 @@
+VERDICT COST. law = E_D at gated width 64, verdict TRUE so nothing exits early.
+cost model: 2*(D+1) evaluations of a ~D-node term, ~2*D^2 node steps.
+     D  ~node steps        default     with allow
+    64        16640    accept 0.7s              -
+   128        66048    accept 0.3s              -
+   256       263168    accept 1.1s              -
+   512      1050624    accept 4.4s              -
+  1024      4198400 refuse-guard 8.4s         accept
+  2048     16785408 refuse-guard 8.4s         accept
+  4096     67125248 refuse-guard 8.5s         accept
+
+CHECKER COST. the rung-0 implementation check: E_d for d in 2..=L, widths 1..=WB.
+cost model: L * 2^WB * (term size), paid once for the library, not per law.
+   L   WB          default       with allow
+   9    8      accept 0.3s                -
+   9   10      accept 0.5s                -
+   9   12      accept 0.4s                -
+   9   14      accept 0.4s                -
+   9   16      accept 0.4s                -
+  16   12 refuse-guard 8.0s     accept 11.8s
+  16   14 refuse-guard 7.9s     accept 33.3s
+  32   12 refuse-guard 8.1s     refuse 65.1s
+
+Seconds are an ad-hoc quick spike with no substance. Accept and refuse are the results.

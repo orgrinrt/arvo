@@ -1,0 +1,20 @@
+error[E0277]: the trait bound `Precise: Same<Hot>` is not satisfied
+  --> p09_resolve_laws_and_control.rs:38:19
+   |
+38 |     assert_same::<<Precise as Resolve<Hot>>::Out, Hot>();
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+   |
+help: the trait `Same<Hot>` is not implemented for `Precise`
+  --> p09_resolve_laws_and_control.rs:4:54
+   |
+ 4 | pub struct Ambient; pub struct Hot; pub struct Warm; pub struct Precise;
+   |                                                      ^^^^^^^^^^^^^^^^^^
+note: required by a bound in `assert_same`
+  --> p09_resolve_laws_and_control.rs:13:19
+   |
+13 | fn assert_same<A: Same<B>, B>() {}
+   |                   ^^^^^^^ required by this bound in `assert_same`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

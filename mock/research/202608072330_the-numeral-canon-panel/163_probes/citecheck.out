@@ -1,0 +1,129 @@
+OK  bitpack-shared/src/lib.rs:236   [1 lines]
+      pack_aligned(&col.logical[..N], &mut col.aligned[..aligned_bytes]);
+OK  154_probes/p2_fibre/fibre.rs:35-45   [11 lines]
+      #[repr(transparent)]
+      #[derive(Clone, Copy, PartialEq, Debug)]
+      pub struct Dense13(u16);
+OK  warm-container-shared/src/lib.rs:5-11   [7 lines]
+      //! `arvo-strategy/src/container.rs:15-19` sizes the `Warm` and `Precise`
+      //! container at one rung above the declared width `W`: `1..=8 -> u16`,
+      //! `9..=16 -> u32`, `17..=32 -> u64`, `33..=64 -> u128`. Written as a
+OK  OPTIONS.md:2502   [1 lines]
+      since rounding at `F = 0` is observable the moment anyone writes a non-grid literal.
+OK  157:358-362   [5 lines]
+      **S-8. Types are the degenerate case of lenses, not the other way round.** Stated as an account rather
+      than a taxonomy: a primitive's realisation is always a lens `(carrier, position)`; where the position
+      is const-zero and the carrier is one machine word, the lens is an identity and the thing is a value.
+OK  157:695-701   [6 lines]
+      > Adequacy is two obligations. **Soundness** holds when the denotation factors through the parameters
+      > the type carries, which is a structural property of the design and needs no enumeration.
+      > **Completeness** holds when every pair of distinct parameter assignments is separated by some input,
+OK  157:698-699   [2 lines]
+      > **Completeness** holds when every pair of distinct parameter assignments is separated by some input,
+      > and a separating witness discharges one pair at any width. A design owes a witness **per pair of
+OK  151:496   [1 lines]
+      **Whether a canon may carry an unpredicated proposition** (`146` 6.1), and this now reaches further than
+OK  109:525-557   [33 lines]
+      ## 11. The criterion, which is what I would actually put in a canon
+      
+      An enumeration of components ages badly and a criterion does not. What I would offer, as a suggestion
+OK  157:1011-1013   [3 lines]
+      situation involving that dimension, and a fixed listing means it holds there and only there. Every
+      value arvo computes on has a width. So the whole of topic five, read under the discipline it was written
+      under, holds nowhere in the library.
+OK  157:288-294   [7 lines]
+      **F157-3. At the packed end the bench corpus names a column and never an element, in four independent
+      crates.** Four of four packed-end `-shared` crates declare a `*Column<const N: usize>` and none
+      declares an element type; the one crate at the native width declares both. `region = packed sub-word
+OK  157:35-36   [2 lines]
+      there. So topic five's corpus, read under its own rules, says nothing whatever about any width arvo
+      ships. Several of those eighty-two are **proofs recorded as measurements**, and `111:334-336` says so
+OK  157:858-861   [4 lines]
+      **And `109` has the constraint, though it reached it for a different reason and stated it narrower than
+      adequacy needs.** `109:649-651`, verbatim: "**`ρ` for anything that persists must be target-independent,
+      and only `λ` may vary with the target.** Which is the always-optimal-internals split derived instead of
+OK  157:1011-1013   [3 lines]
+      situation involving that dimension, and a fixed listing means it holds there and only there. Every
+      value arvo computes on has a width. So the whole of topic five, read under the discipline it was written
+      under, holds nowhere in the library.
+OK  157:35-36   [2 lines]
+      there. So topic five's corpus, read under its own rules, says nothing whatever about any width arvo
+      ships. Several of those eighty-two are **proofs recorded as measurements**, and `111:334-336` says so
+OK  157:858-861   [4 lines]
+      **And `109` has the constraint, though it reached it for a different reason and stated it narrower than
+      adequacy needs.** `109:649-651`, verbatim: "**`ρ` for anything that persists must be target-independent,
+      and only `λ` may vary with the target.** Which is the always-optimal-internals split derived instead of
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  157:288-294   [7 lines]
+      **F157-3. At the packed end the bench corpus names a column and never an element, in four independent
+      crates.** Four of four packed-end `-shared` crates declare a `*Column<const N: usize>` and none
+      declares an element type; the one crate at the native width declares both. `region = packed sub-word
+OK  82:770-774   [5 lines]
+      **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+      associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+      saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+OK  157:358-362   [5 lines]
+      **S-8. Types are the degenerate case of lenses, not the other way round.** Stated as an account rather
+      than a taxonomy: a primitive's realisation is always a lens `(carrier, position)`; where the position
+      is const-zero and the carrier is one machine word, the lens is an identity and the thing is a value.
+OK  157:695-701   [6 lines]
+      > Adequacy is two obligations. **Soundness** holds when the denotation factors through the parameters
+      > the type carries, which is a structural property of the design and needs no enumeration.
+      > **Completeness** holds when every pair of distinct parameter assignments is separated by some input,
+OK  111:531-535   [4 lines]
+      > **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+      > wrong answer along a name.
+      > **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+OK  111:552-553   [2 lines]
+      - **Adequacy.** The type is a sound and complete decision procedure for denotational identity. Nobody's
+        yet, and it is the obligation the other two are pointless without.
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  111:555-556   [2 lines]
+      Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
+      transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  111:1175-1176   [2 lines]
+      declaration pairs where the SELECTED ARM changed : 1753
+        chains where the ANSWER changed                  : 0
+OK  82:770-774   [5 lines]
+      **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+      associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+      saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+OK  109:645-656   [12 lines]
+      compiler: this range, this precision, and I care about speed more than size. Strong because it *is* what
+      the strategy axis is under I8 and I13. I folded its useful half into the request-and-resolution pair.
+      **The reason I did not take it whole**: if the resolution is target-dependent then a value written on
+OK  112:904-945   [42 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  82:770-774   [5 lines]
+      **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+      associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+      saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+OK  108:820-830   [11 lines]
+      > than independent.
+      >
+      > The **declared semantics** is an assignment on the axes a consumer can observe: those where moving the
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 34 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

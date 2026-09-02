@@ -1,0 +1,34 @@
+### N1, the excused kinds, read out of the lint
+"definition" "normative" "theorem" 
+
+### rows filed as the excused kind, no `evidence` key, `because` naming instruments
+  a_const_eval_frontier_is_a_fact_about_the_procedure_rather_than_about_the_law
+  a_crossing_preserves_an_operation_exactly_when_it_moves_no_coordinate_that_operation_reads
+  a_folds_compile_time_refusal_is_the_staging_boundary_reporting_its_own_position
+  a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove
+  a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going
+  a_region_whose_arms_may_differ_is_validated_arm_by_arm_against_its_own_semantics
+  a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations
+  a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it
+  a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin
+  a_transfer_argument_is_a_construction_warrant_and_needs_no_new_rule
+  an_axis_the_realisation_map_does_not_read_is_not_a_type_parameter
+  an_instrument_is_mutated_and_the_battery_is_made_to_notice
+  configuration_is_not_composition_and_a_composite_is_a_primitive
+  every_dispute_in_the_number_system_topic_was_a_dispute_about_an_address
+  membership_of_the_representable_set_is_one_affine_predicate
+  one_container_hosts_many_systems_so_the_canon_types_the_system
+  the_concept_commits_to_its_choices_and_to_no_count_of_levels
+  the_concepts_edge_is_not_an_order_and_wrapping_is_the_test
+  the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked
+  the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice
+  the_two_law_families_have_two_consumer_classes
+  --- count: 21
+
+### N2, the row that says in its own note it is in this class
+  FAIL, the arm cannot see the one row known to be here
+### N3, the arm must be able to report zero
+  PASS, 0 for a kind nothing carries
+### N4, a row carrying `evidence` must not be counted
+  rows carrying an `evidence` key anywhere: 35
+  PASS, none of the reported rows carries evidence

@@ -1,8 +1,36 @@
 # arvo-strategy
 
-Strategy markers and the type-only container-projection trait.
-`Hot`, `Warm`, `Cold`, `Precise` ZSTs identify the precision /
-throughput tradeoff. The unified `BitsContainerFor<const N: Width,
-Sign: Signedness>` const trait projects a strategy + bit-width +
-sign axis to either a native primitive (N <= 128) or byte-sequence
-storage (N > 128). `Width` newtype lives here. `#![no_std]`, no alloc.
+A name bound to what you are optimising for.
+
+A strategy here is a binding and not a switch. It maps a name onto a placement objective, which is
+what the derivation in `arvo-placement` is keyed on, and onto which adaptation gets selected per
+operation. It does not name an implementation and it does not own one.
+
+The set is open. Four names come with the crate, fast, compact, accurate, and a compromise meant to be
+the sensible default, but they are implementors of a concept rather than members of an enumeration,
+and adding a fifth needs no edit to anything already here.
+
+What each of those four is for is written down as an intent, deliberately, and not as a table of
+behaviours. The intents are clear enough to build against and nothing about them is absolute, so a
+document stating them as settled rules would be claiming more than is known. The fast one may trade
+soundness away, that is its whole purpose, but not for nothing, the gain has to be provable. The
+compact one keeps memory and disk small and has room to be slow, though it does not have to take it
+and mostly should not. The accurate one gives up speed to be right, especially across a chain rather
+than one operation at a time. The compromise aims at being the intuitive choice for most things, and
+being a Rust crate, how Rust does it is where intuition starts, but that is a starting point and not a
+rule, and it gets dropped where following it is just the worse answer.
+
+All of them decide by measurement. They measure different things and they weigh what they measure
+differently, and that difference is the whole reason there is more than one of them.
+
+There is no exchange rate between the objectives, on purpose. Nothing here says how much speed a unit
+of accuracy is worth, because a rate like that is a generalisation over a whole category and this
+library is built the other way around, out of many small pieces that each hold where they hold and
+nowhere else. Where two objectives genuinely conflict, whatever resolves it says in words why, and
+that reason gets written down beside it.
+
+`no_std`, no allocation, and the selection happens at compile time. Nothing here branches at runtime.
+
+## Status
+
+Design phase. The documents are written and the source is being built from them.

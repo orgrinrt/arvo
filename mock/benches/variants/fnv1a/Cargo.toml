@@ -1,3 +1,15 @@
+# FIXME: this variant does not build and has not since 2026-08-08.
+#
+# It inherits workspace dependencies naming crates that were deleted that day, so
+# `cargo metadata` fails to parse this manifest before anything is compiled. The
+# arvo dependencies below resolve to nothing.
+#
+# It is kept rather than deleted because its committed results are evidence the
+# panel cites, and the workspace manifest says so where it excludes this tree.
+# It is not repaired because repairing it means writing new bench arms against
+# the current crates, and an arm invented to make a manifest parse measures
+# nothing. What was missing was that nothing said any of this, which is what this
+# marker is.
 [package]
 name = "fnv1a"
 version = "0.0.0"

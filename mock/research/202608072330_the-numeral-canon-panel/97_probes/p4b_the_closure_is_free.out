@@ -1,0 +1,54 @@
+P4b. the closure of d one-demand generators under union
+
+==================================================================
+d = 4 generators: speed, residency, accuracy, familiarity
+  ordered pairs of generators                : 16
+  pairs whose union is NOT itself a generator: 12
+  closure under union                        : 15 elements
+  2^d - 1                                    : 15
+  identical                                  : True
+  ordered pairs unresolvable INSIDE the closure: 0 of 225
+  names a design must write down             : 4 (the generators)
+  elements a consumer can name anyway        : 15 (formal joins of them)
+
+==================================================================
+d = 3 generators: speed, residency, accuracy
+  ordered pairs of generators                : 9
+  pairs whose union is NOT itself a generator: 6
+  closure under union                        : 7 elements
+  2^d - 1                                    : 7
+  identical                                  : True
+  ordered pairs unresolvable INSIDE the closure: 0 of 49
+  names a design must write down             : 3 (the generators)
+  elements a consumer can name anyway        : 7 (formal joins of them)
+
+==================================================================
+d = 5 generators: speed, residency, accuracy, familiarity, reproducibility
+  ordered pairs of generators                : 25
+  pairs whose union is NOT itself a generator: 20
+  closure under union                        : 31 elements
+  2^d - 1                                    : 31
+  identical                                  : True
+  ordered pairs unresolvable INSIDE the closure: 0 of 961
+  names a design must write down             : 5 (the generators)
+  elements a consumer can name anyway        : 31 (formal joins of them)
+
+==================================================================
+growth: adding one generator doubles the carrier and adds ONE name.
+  d = 2  carrier =    3  names = 2
+  d = 3  carrier =    7  names = 3
+  d = 4  carrier =   15  names = 4
+  d = 5  carrier =   31  names = 5
+  d = 6  carrier =   63  names = 6
+  d = 7  carrier =  127  names = 7
+  d = 8  carrier =  255  names = 8
+
+So `93` section 4's stated cost of response (a), that every question about
+a strategy must be answered per coordinate rather than looked up per
+marker, is the cost of the structure being GENERATED. That is the same cost
+a formal union type carries in a type system with unions, and it is what
+buys totality: zero unresolvable pairs against 12 of 16 on the flat set.
+
+Note what this does NOT settle. It says the join is total and lawful on the
+demand side. It says nothing about whether the demand side is where the
+resolution question lives, which P3 attacks separately.

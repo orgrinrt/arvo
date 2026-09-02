@@ -1,0 +1,47 @@
+q3: an accumulator carried across a fold, W=4, exhaustive over every sequence
+accumulator widths swept: declared W, W+1, W+2, 2W. Control: W-1 (lossy).
+
+  signed=false Wrap n=1: seqs=16     accumulator visible at      0 comparisons | lossy control differs      8 | left declared range      0  [VACUOUS: the accumulator never left the declared range]
+  signed=false Wrap n=2: seqs=256    accumulator visible at      0 comparisons | lossy control differs    128 | left declared range    120
+  signed=false Wrap n=3: seqs=4096   accumulator visible at      0 comparisons | lossy control differs   2048 | left declared range   3280
+  signed=false Wrap n=4: seqs=65536  accumulator visible at      0 comparisons | lossy control differs  32768 | left declared range  61660
+  signed=false Sat  n=1: seqs=16     accumulator visible at      0 comparisons | lossy control differs      8 | left declared range      0  [VACUOUS: the accumulator never left the declared range]
+  signed=false Sat  n=2: seqs=256    accumulator visible at      0 comparisons | lossy control differs    220 | left declared range    120
+  signed=false Sat  n=3: seqs=4096   accumulator visible at      0 comparisons | lossy control differs   3976 | left declared range   3280
+  signed=false Sat  n=4: seqs=65536  accumulator visible at      0 comparisons | lossy control differs  65206 | left declared range  61660
+  signed=true  Wrap n=1: seqs=16     accumulator visible at      0 comparisons | lossy control differs      8 | left declared range      0  [VACUOUS: the accumulator never left the declared range]
+  signed=true  Wrap n=2: seqs=256    accumulator visible at      0 comparisons | lossy control differs    128 | left declared range     64
+  signed=true  Wrap n=3: seqs=4096   accumulator visible at      0 comparisons | lossy control differs   2048 | left declared range   1712
+  signed=true  Wrap n=4: seqs=65536  accumulator visible at      0 comparisons | lossy control differs  32768 | left declared range  35984
+  signed=true  Sat  n=1: seqs=16     accumulator visible at      0 comparisons | lossy control differs      8 | left declared range      0  [VACUOUS: the accumulator never left the declared range]
+  signed=true  Sat  n=2: seqs=256    accumulator visible at      0 comparisons | lossy control differs    191 | left declared range     64
+  signed=true  Sat  n=3: seqs=4096   accumulator visible at   1428 comparisons | lossy control differs   3518 | left declared range   1712  witness seq=[-8, -8, 1] pinned=-7 widened=-8
+  signed=true  Sat  n=4: seqs=65536  accumulator visible at  44163 comparisons | lossy control differs  59657 | left declared range  35984  witness seq=[-8, -8, -8, 1] pinned=-7 widened=-8
+
+the same question through a multiply-accumulate fold, F=1.
+TWO multiplier ORDERS, because the first run showed zero and the mechanism
+said that was the arrangement rather than the answer: with [1,-1,2] the
+largest step is last, so a saturation is never followed by a step that could
+recover from it, and the effect cannot appear however hard the sweep looks.
+The reversed order puts the large step first. If the cell is real, the order
+must change the verdict, and if it does not, my sum-fold result is the one
+that needs explaining.
+
+  signed=false Wrap large-last  n=1: seqs=16     accumulator visible at      0 | lossy control      0 | left range      0
+  signed=false Wrap large-last  n=3: seqs=4096   accumulator visible at      0 | lossy control   2048 | left range   3100
+  signed=false Sat  large-last  n=1: seqs=16     accumulator visible at      0 | lossy control      0 | left range      0
+  signed=false Sat  large-last  n=3: seqs=4096   accumulator visible at      0 | lossy control   3910 | left range   3100
+  signed=false Wrap large-first n=1: seqs=16     accumulator visible at      0 | lossy control      5 | left range      5
+  signed=false Wrap large-first n=3: seqs=4096   accumulator visible at      0 | lossy control   2048 | left range   3100
+  signed=false Sat  large-first n=1: seqs=16     accumulator visible at      0 | lossy control     10 | left range      5
+  signed=false Sat  large-first n=3: seqs=4096   accumulator visible at      0 | lossy control   3910 | left range   3100
+  signed=true  Wrap large-last  n=1: seqs=16     accumulator visible at      0 | lossy control      0 | left range      0
+  signed=true  Wrap large-last  n=3: seqs=4096   accumulator visible at      0 | lossy control   2048 | left range    688
+  signed=true  Sat  large-last  n=1: seqs=16     accumulator visible at      0 | lossy control      0 | left range      0
+  signed=true  Sat  large-last  n=3: seqs=4096   accumulator visible at      0 | lossy control   2546 | left range    688
+  signed=true  Wrap large-first n=1: seqs=16     accumulator visible at      0 | lossy control      8 | left range      0
+  signed=true  Wrap large-first n=3: seqs=4096   accumulator visible at      0 | lossy control   2048 | left range    856
+  signed=true  Sat  large-first n=1: seqs=16     accumulator visible at      0 | lossy control      8 | left range      0
+  signed=true  Sat  large-first n=3: seqs=4096   accumulator visible at    672 | lossy control   2902 | left range    856
+
+control failures: 0

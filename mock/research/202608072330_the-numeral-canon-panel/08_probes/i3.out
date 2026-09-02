@@ -1,0 +1,23 @@
+Q1/Q2: injectivity of the datum map, and whether the bit order is the value order
+  unsigned binary, 6 bits      data=    64 values=    64 injective= True max data per value=    1 bit order = value order: True
+  two's complement, 6 bits     data=    64 values=    64 injective= True max data per value=    1 bit order = value order: False
+  one's complement, 6 bits     data=    64 values=    63 injective=False max data per value=    2 bit order = value order: False
+  sign magnitude, 6 bits       data=    64 values=    63 injective=False max data per value=    2 bit order = value order: False
+  Gray code, 6 bits            data=    64 values=    64 injective= True max data per value=    1 bit order = value order: False
+  negabinary, 6 bits           data=    64 values=    64 injective= True max data per value=    1 bit order = value order: False
+  thermometer, 6 bits          data=    64 values=     7 injective=False max data per value=   20 bit order = value order: False
+  carry-save, 6 bits           data=    64 values=    22 injective=False max data per value=    4 bit order = value order: False
+  residue (3,5,7)              data=   105 values=   105 injective= True max data per value=    1 bit order = value order: None
+  stochastic stream, 6 bits    data=    64 values=     7 injective=False max data per value=   20 bit order = value order: False
+  decimal with cohorts p=2     data=   300 values=   280 injective=False max data per value=    3 bit order = value order: None
+
+Q3: interval soundness over U<3,3>, 20000 random interval pairs, add and multiply
+    results outside the numeral's range, skipped : 35051
+    outward rounding (down the low, up the high) : 0 failures
+    one directed mode used for both ends         : 1036 failures
+    round to nearest used for both ends          : 946 failures
+
+    So an interval consumer needs both directed modes and nothing
+    else from the numeral. The numeral does not change; what the
+    design owes is that both directions are reachable per operation.
+

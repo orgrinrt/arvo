@@ -1,0 +1,149 @@
+instrument 2: instrument 1's corrections, and the questions it could not ask
+==============================================================================
+Q7  four-condition predicate against true inclusion, WITH singletons at fine grids
+    ordered pairs 1936   agree 1748   disagree 188
+      source carries fewer than two values: 188
+      source carries two or more values:    0
+    witness: UF2<-3,3> = [Fraction(0, 1)] into UF2<-2,2>: really True, predicate False
+    witness: UF2<-3,3> = [Fraction(0, 1)] into UF2<-1,1>: really True, predicate False
+    witness: UF2<-3,3> = [Fraction(0, 1)] into UF2<-1,2>: really True, predicate False
+    (a source of two or more values pins its own step, so the grid clause is
+     forced; a singleton lies on every grid and the declared step is not)
+
+Q8  does the meet need the origin shape? (unsigned fixed-point, radix 2, zero bias)
+  origin ADMITTED    lim=6
+    points    28 (label collisions folded: 0)   pairs    378
+    meet   ok    378  (exact 378, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    252                                       no-upper-bound   126   bounds-but-no-least       0
+    first join failure: none  UF<0,1>  &  UF<6,0>
+  origin REFUSED     lim=6
+    points    27 (label collisions folded: 0)   pairs    351
+    meet   ok    315  (exact 315, undershoot 0)   no-lower-bound    36   bounds-but-no-greatest     0
+    join   ok    225                                       no-upper-bound   126   bounds-but-no-least       0
+    first meet failure: none  UF<0,1>  &  UF<1,0>
+    first join failure: none  UF<0,1>  &  UF<6,0>
+    meets lost by refusing the origin: 36
+  origin ADMITTED    lim=7
+    points    36 (label collisions folded: 0)   pairs    630
+    meet   ok    630  (exact 630, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    420                                       no-upper-bound   210   bounds-but-no-least       0
+    first join failure: none  UF<0,1>  &  UF<7,0>
+  origin REFUSED     lim=7
+    points    35 (label collisions folded: 0)   pairs    595
+    meet   ok    546  (exact 546, undershoot 0)   no-lower-bound    49   bounds-but-no-greatest     0
+    join   ok    385                                       no-upper-bound   210   bounds-but-no-least       0
+    first meet failure: none  UF<0,1>  &  UF<1,0>
+    first join failure: none  UF<0,1>  &  UF<7,0>
+    meets lost by refusing the origin: 49
+
+Q9  the signed families
+  symmetric alone            lim=5
+    points    19 (label collisions folded: 2)   pairs    171
+    meet   ok    171  (exact 171, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    103                                       no-upper-bound    68   bounds-but-no-least       0
+    first join failure: none  S<0,2>  &  S<4,0>
+  asymmetric-low alone       lim=5
+    points    20 (label collisions folded: 0)   pairs    190
+    meet   ok    165  (exact 165, undershoot 0)   no-lower-bound    25   bounds-but-no-greatest     0
+    join   ok    120                                       no-upper-bound    70   bounds-but-no-least       0
+    first meet failure: none  A<0,1>  &  A<1,0>
+    first join failure: none  A<0,1>  &  A<5,0>
+  unsigned + symmetric       lim=5
+    points    39 (label collisions folded: 3)   pairs    741
+    meet   ok    741  (exact 701, undershoot 40)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    392                                       no-upper-bound   349   bounds-but-no-least       0
+    first join failure: none  U<0,1>  &  U<5,0>
+  unsigned + sym + asym      lim=5
+    points    59 (label collisions folded: 3)   pairs   1711
+    meet   ok   1711  (exact 1631, undershoot 80)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    930                                       no-upper-bound   781   bounds-but-no-least       0
+    first join failure: none  U<0,1>  &  U<5,0>
+  symmetric alone            lim=6
+    points    26 (label collisions folded: 2)   pairs    325
+    meet   ok    325  (exact 325, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    201                                       no-upper-bound   124   bounds-but-no-least       0
+    first join failure: none  S<0,2>  &  S<5,0>
+  asymmetric-low alone       lim=6
+    points    27 (label collisions folded: 0)   pairs    351
+    meet   ok    315  (exact 315, undershoot 0)   no-lower-bound    36   bounds-but-no-greatest     0
+    join   ok    225                                       no-upper-bound   126   bounds-but-no-least       0
+    first meet failure: none  A<0,1>  &  A<1,0>
+    first join failure: none  A<0,1>  &  A<6,0>
+  unsigned + symmetric       lim=6
+    points    53 (label collisions folded: 3)   pairs   1378
+    meet   ok   1378  (exact 1303, undershoot 75)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    759                                       no-upper-bound   619   bounds-but-no-least       0
+    first join failure: none  U<0,1>  &  U<6,0>
+  unsigned + sym + asym      lim=6
+    points    80 (label collisions folded: 3)   pairs   3160
+    meet   ok   3160  (exact 3010, undershoot 150)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok   1781                                       no-upper-bound  1379   bounds-but-no-least       0
+    first join failure: none  U<0,1>  &  U<6,0>
+
+Q10 coordinatewise meet on (step, -L, G) against the order-theoretic meet
+    these are DIFFERENT claims: one asks whether a formula's output is a shape,
+    the other asks whether a greatest lower bound exists at all.
+    pairs compared 351   (singleton sources skipped: 27)
+      componentwise triple IS a shape in the family:     155
+      componentwise triple is NOT a shape in the family: 196
+      UF<0,1> & UF<1,0>: componentwise (step,-L,G)=(Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)) names no shape; the actual meet is UF<0,0>
+      UF<0,1> & UF<2,0>: componentwise (step,-L,G)=(Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)) names no shape; the actual meet is UF<0,0>
+      UF<0,1> & UF<3,0>: componentwise (step,-L,G)=(Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)) names no shape; the actual meet is UF<0,0>
+      UF<0,1> & UF<4,0>: componentwise (step,-L,G)=(Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)) names no shape; the actual meet is UF<0,0>
+    the order-theoretic meet existed for every pair (Q8, origin admitted), so a
+    closure condition stated for the FORMULA is not a condition on the meet.
+
+Q11 join failures split: box truncation against structural
+    pairs 378
+      join present                          252
+      upper bounds present, none least      0
+      no upper bound, join shape OUTSIDE box 126   <- artifact of the bound
+      no upper bound, join shape INSIDE box  0
+
+Q12 cross-radix joins: structural or artifact?
+    cross-radix pairs 149   with no common upper bound in the space 96
+      of those, the required step is neither a power of 1/2 nor of 1/3: 60
+      that count is structural: no enlargement of either radix's box supplies
+      a step with both 2 and 3 in its denominator.
+
+Q13 the meet stops being EXACT once two sign domains share one order
+    unsigned alone: meets exact 210, meets strictly undershooting the intersection 0
+    unsigned + symmetric: meets exact 701, meets strictly undershooting the intersection 40
+      U<0,2> & S<0,2>
+        set intersection      [Fraction(0, 1), Fraction(1, 4)]
+        greatest lower bound  [Fraction(0, 1)]   <- a proper subset of it
+      U<0,2> & S<0,3>
+        set intersection      [Fraction(0, 1), Fraction(1, 4)]
+        greatest lower bound  [Fraction(0, 1)]   <- a proper subset of it
+      U<0,2> & S<0,4>
+        set intersection      [Fraction(0, 1), Fraction(1, 4)]
+        greatest lower bound  [Fraction(0, 1)]   <- a proper subset of it
+
+Q14 what the meet needs once a bias is admitted
+    pairs 1326
+      no greatest lower bound because the intersection is EMPTY:    670
+      no greatest lower bound though the intersection is NONEMPTY:  130
+      U<0,1>+1/2 & U<1,0>+0: intersection [Fraction(1, 1)] names no shape in the space
+      U<0,1>+1/2 & U<2,0>+0: intersection [Fraction(1, 1)] names no shape in the space
+      U<0,1>+1/2 & U<3,0>+0: intersection [Fraction(1, 1)] names no shape in the space
+    so a biased space needs an empty numeral for the first count and a singleton
+    at every reachable phase for the second. They are two separate admissions.
+
+Q15 float family alone: are meet and join total there?
+  float alone, p<= 3, e in [-3,2]
+    points    36 (label collisions folded: 0)   pairs    630
+    meet   ok    630  (exact 630, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    630                                       no-upper-bound     0   bounds-but-no-least       0
+  float alone, p<= 4, e in [-3,2]
+    points    48 (label collisions folded: 0)   pairs   1128
+    meet   ok   1128  (exact 1128, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok   1128                                       no-upper-bound     0   bounds-but-no-least       0
+
+Q16 does negative integer width restore the exact meet across two sign domains?
+    unsigned + symmetric, I >= 0: points 39, meets exact 701, undershoot 40, no glb 0
+      residual undershoot U<0,2> & S<0,2>: intersection [Fraction(0, 1), Fraction(1, 4)], glb [Fraction(0, 1)]
+      residual undershoot U<0,2> & S<0,3>: intersection [Fraction(0, 1), Fraction(1, 4)], glb [Fraction(0, 1)]
+    unsigned + symmetric, I >= -3 (negative integer width admitted): points 54, meets exact 1427, undershoot 4, no glb 0
+      residual undershoot U<-3,5> & S<-3,5>: intersection [Fraction(0, 1), Fraction(1, 32)], glb [Fraction(0, 1)]
+      residual undershoot U<-2,5> & S<-3,5>: intersection [Fraction(0, 1), Fraction(1, 32)], glb [Fraction(0, 1)]
+

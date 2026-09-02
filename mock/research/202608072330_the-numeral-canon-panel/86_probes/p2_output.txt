@@ -1,0 +1,9 @@
+p2: const-eval frontier of the 2^k grid at width 64, chain-assoc (true verdict, no early exit)
+   k         grid                    default guard   #![allow(long_running_const_eval)]
+   8          256                    ACCEPT   0.7s                       ACCEPT    0.1s
+  12         4096                    ACCEPT   0.5s                       ACCEPT    0.5s
+  16        65536 REFUSE(long_running_const_eval)   2.7s                       ACCEPT    8.7s
+  18       262144                   skipped   0.0s                       ACCEPT   38.3s
+  20      1048576                   skipped   0.0s                       ACCEPT  171.8s
+  22      4194304                   skipped   0.0s                TIMEOUT(300s)  300.0s
+  24     16777216                   skipped   0.0s                      skipped    0.0s

@@ -1,0 +1,64 @@
+AXES, with where the record gets each and whether it is observable
+
+  headroom = ('minimum', 'doubled')
+      source: 25 sec 4.1, read off the preset table's Container column (25:127-132): 'minimum byte-aligned' against '2x logical'.
+      observable by the consumer: False. changes bytes and cycles, never the value computed.
+  layout = ('addressable', 'packed')
+      source: 25 sec 4.1, same column: 'byte-aligned' against 'bitpacked'.
+      observable by the consumer: False. changes bytes and cycles, never the value computed.
+  overflow = ('wrap', 'saturate')
+      source: 25 sec 4.2, splitting the Arithmetic column: wrapping and saturating answer 'what happens when a result does not fit'.
+      observable by the consumer: True. wrapping and saturating are different functions on the same domain (25 sec 5.3); 35 sec 3.4 measures the top absorbing at 63 of 63 cells under saturation and 0 of 63 under wrapping.
+  intermediate = ('same-width', 'widened')
+      source: 25 sec 4.2, same column: 'widen-op-narrow' answers 'what precision does the intermediate carry'.
+      observable by the consumer: True. a widened intermediate changes which results are reachable at all; 35 sec 3.2 derives the accumulator width a fold needs and shows one bit narrower is insufficient.
+
+  product size with these values: 16
+
+WHAT THE FOUR NAMES REACH
+
+  Hot      denotes 2 point(s); silent on ['intermediate']; consumer-requestable point: NONE (silence is the implementations choice)
+  Warm     denotes 2 point(s); silent on ['intermediate']; consumer-requestable point: NONE (silence is the implementations choice)
+  Cold     denotes 2 point(s); silent on ['overflow']; consumer-requestable point: NONE (silence is the implementations choice)
+  Precise  denotes 2 point(s); silent on ['intermediate']; consumer-requestable point: NONE (silence is the implementations choice)
+
+  reachable-as-stated:   8 of 16  (50.0%)
+  reachable-determinate: 0 of 16  (0.0%)
+
+  Every one of the four is silent on exactly one axis, so the
+  consumer-requestable count is zero: not one of the four names
+  pins a point in the product it is a name for.
+
+UNREACHABLE POINTS WITH A CONSUMER NAMED IN THE PANEL RECORD
+
+  ('minimum', 'addressable', 'saturate', 'same-width')
+      a hot-path min-plus relaxation: same absorption requirement, on a column that is being iterated rather than stored (35 sec 3.4, 3.5).
+  ('minimum', 'packed', 'saturate', 'same-width')
+      a stored graph weight column: 35 sec 3.4 shows a min-plus fold needs an absorbing top, supplied by saturation at 63 of 63 cells and by wrapping at 0 of 63, and 35 sec 3.5 measures 48.9% wrong answers on in-range DAG shortest paths without it. 37 quoting op gives such a column 'minimum for memory or disk storage'. Packed, minimal, and saturating is what that consumer wants.
+  (reachable-as-stated, so not counted) ('minimum', 'addressable', 'wrap', 'widened')
+
+  unreachable points with a named consumer: 2
+
+HOW THE FRACTION MOVES AS AXES ARE ADDED
+  Candidate further axes named in the record but not counted above:
+    rounding mode  (25 sec 9, absent from arvo entirely per the
+                    prior-art memory it cites; 35 sec 3.10 measures
+                    round-to-nearest dropping one downstream
+                    invariant's failure rate from 87.5% to 12.5%)
+    sign domain    (35 sec 3.6: unsigned saturating addition is
+                    exactly reassociable and signed saturating is
+                    not, at 70.1% of 16.7M vectors)
+    reduction shape (35 sec 6, its Q12: specified tree against
+                    detected split)
+
+   axes  product size    fraction 4 names can pin
+      2             4                      100.0%
+      3             8                       50.0%
+      4            16                       25.0%
+      5            32                       12.5%
+      6            64                        6.2%
+      7           128                        3.1%
+
+  The bound is 4/2^k however the axes are cut, because a name is a
+  point and there are four names. That is the whole content of the
+  count: it is a statement about naming, not about arvo's axes.

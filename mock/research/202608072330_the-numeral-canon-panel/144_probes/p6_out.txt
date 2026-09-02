@@ -1,0 +1,54 @@
+==============================================================================
+R2. non-vacuity of both arm pairs
+==============================================================================
+  F=0: conforming pair disagrees on 0 of 4096 input pairs
+       non-conforming pair disagrees on 110476 of 262144 triples (42.14%)
+  F=3: conforming pair disagrees on 0 of 4096 input pairs
+       non-conforming pair disagrees on 83792 of 262144 triples (31.96%)
+  the non-conforming rate at F=0 is 139's 42.14% and 141's, on a third model.
+  R2 -> PASS
+
+==============================================================================
+R3. does the selection differ across the two targets at all?
+==============================================================================
+  non-conforming arm pair: selection differs at 47 of 325 weights (14.5%)
+  conforming arm pair:     selection differs at 47 of 325 weights (14.5%)
+  R3 -> PASS
+
+==============================================================================
+Q1. conforming arms: does a target change move an answer?
+==============================================================================
+  F=0: 0 differing (weight, input) cases over 192512 checked
+  F=3: 0 differing (weight, input) cases over 192512 checked
+  Q1 -> CONFIRMED
+
+==============================================================================
+Q2/Q3. non-conforming arms: the same question
+==============================================================================
+  F=0: at weights where the selection DIFFERS, 5192372 differing cases over 12320768, 42.14% of inputs per weight
+       at weights where the selection AGREES, 0 (sampled 40 weights)
+  F=3: at weights where the selection DIFFERS, 3938224 differing cases over 12320768, 31.96% of inputs per weight
+       at weights where the selection AGREES, 0 (sampled 40 weights)
+  Q2 -> CONFIRMED
+  Q3: the per-weight rate above is the arms' own disagreement rate, not a
+      fraction of it. A selection change exposes the whole difference.
+
+==============================================================================
+R1. the case that must fail: identical targets
+==============================================================================
+  identical targets, non-conforming arms: 0 differing cases
+  R1 -> PASS
+
+the composed statement:
+  p4 says a fixed weighting picks a different arm on a different target, at
+  44.3% of the simplex for 139's pair and a median of 90.2% for random ones.
+  This probe says that costs nothing at all while the arms conform to one
+  policy, and costs the arms' entire disagreement rate the moment they do
+  not. So the firewall is not only a rule about what a cost model may do.
+  It is the precondition that makes a weighting a portable object, and
+  without it a strategy's meaning is a function of the machine it compiled
+  on, with nothing in the type saying so.
+
+==============================================================================
+control failures: 0 []
+==============================================================================

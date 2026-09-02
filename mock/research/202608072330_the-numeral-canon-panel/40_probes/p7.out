@@ -1,0 +1,136 @@
+SELF-CHECK: recomputed medians against the committed findings files
+  medians compared: 126, mismatches: 0
+
+==============================================================================
+PAIR: elementwise, 4 ops/element
+  wrapping:   warm-elementwise-width-l1
+  saturating: precise-elementwise-width-l1
+  arms in every run of both: 5 ['headroom', 'kernel', 'minimum', 'native', 'plusone']
+  declared widths in both:   [8, 13, 16, 32, 60, 64]
+
+  no arm flagged as eliminated.
+
+  ARMS IN CONTENTION, tolerance 2% of the fastest
+   width  under wrapping                      under saturating                     same?
+       8  kernel, minimum, native             minimum                                 NO
+      13  minimum, native                     minimum, native, plusone                NO
+      16  kernel, minimum, native             kernel, minimum, native                yes
+      32  kernel, native                      kernel, minimum, native                 NO
+      60  kernel, minimum, native, plusone    minimum, native, plusone                NO
+      64  native                              kernel, minimum, native                 NO
+  widths where the contending set is identical: 1 of 6
+
+  ARMS IN CONTENTION, tolerance 5% of the fastest
+   width  under wrapping                      under saturating                     same?
+       8  kernel, minimum, native             minimum                                 NO
+      13  minimum, native                     minimum, native, plusone                NO
+      16  kernel, minimum, native             kernel, minimum, native                yes
+      32  kernel, minimum, native             kernel, minimum, native                yes
+      60  headroom, kernel, minimum, native, plusone  minimum, native, plusone                NO
+      64  kernel, minimum, native             kernel, minimum, native                yes
+  widths where the contending set is identical: 3 of 6
+
+  ARMS IN CONTENTION, tolerance 10% of the fastest
+   width  under wrapping                      under saturating                     same?
+       8  kernel, minimum, native             minimum                                 NO
+      13  minimum, native                     minimum, native, plusone                NO
+      16  kernel, minimum, native             kernel, minimum, native                yes
+      32  kernel, minimum, native             kernel, minimum, native                yes
+      60  headroom, kernel, minimum, native, plusone  minimum, native, plusone                NO
+      64  kernel, minimum, native             kernel, minimum, native                yes
+  widths where the contending set is identical: 3 of 6
+
+  full rankings, fastest first, flagged arms included and marked,
+  so every judgement above is inspectable:
+    width 8
+      wrap:     native(192) > kernel(192) > minimum(192) > headroom(397) > plusone(428)
+      saturate: minimum(210) > native(241) > kernel(250) > plusone(403) > headroom(517)
+    width 13
+      wrap:     native(329) > minimum(330) > plusone(384) > kernel(394) > headroom(563)
+      saturate: native(398) > minimum(400) > plusone(404) > kernel(488) > headroom(760)
+    width 16
+      wrap:     native(320) > kernel(320) > minimum(321) > headroom(571) > plusone(574)
+      saturate: native(314) > kernel(318) > minimum(319) > headroom(722) > plusone(730)
+    width 32
+      wrap:     kernel(572) > native(573) > minimum(589) > plusone(3136) > headroom(3155)
+      saturate: native(558) > kernel(565) > minimum(568) > headroom(1730) > plusone(1734)
+    width 60
+      wrap:     native(3520) > kernel(3545) > plusone(3560) > minimum(3572) > headroom(3641)
+      saturate: plusone(1712) > native(1733) > minimum(1735) > kernel(2365) > headroom(10236)
+    width 64
+      wrap:     native(3036) > kernel(3097) > minimum(3130) > headroom(5798) > plusone(5892)
+      saturate: kernel(1056) > native(1060) > minimum(1064) > plusone(8286) > headroom(8305)
+
+==============================================================================
+PAIR: container fork, 3 ops/element
+  wrapping:   warm-container-width-l1
+  saturating: precise-container-width-l1
+  arms in every run of both: 5 ['headroom', 'kernel', 'minimum', 'native', 'plusone']
+  declared widths in both:   [8, 13, 16, 32, 60, 64]
+
+  ARMS FLAGGED AS ELIMINATED RATHER THAN FAST
+    kernel: flagged in 6 of 12 runs
+      saturate  width 8           64 ns against      10588 ns for the next arm  (165x)
+      saturate  width 13          63 ns against       8048 ns for the next arm  (127x)
+      saturate  width 16          65 ns against       8168 ns for the next arm  (126x)
+      saturate  width 32          66 ns against       5420 ns for the next arm  (82x)
+      saturate  width 60          63 ns against       8036 ns for the next arm  (128x)
+      saturate  width 64          68 ns against       5572 ns for the next arm  (83x)
+    A ratio this size within one run at one width is not a kernel
+    difference. The digest column of every CSV in this directory is
+    0 for every arm, so nothing in the harness output cross-checks
+    that an arm computed anything. Reported, then excluded below.
+
+  proceeding with 4 arms: ['headroom', 'minimum', 'native', 'plusone']
+
+  ARMS IN CONTENTION, tolerance 2% of the fastest
+   width  under wrapping                      under saturating                     same?
+       8  minimum, native                     headroom, minimum, native, plusone      NO
+      13  native                              headroom                                NO
+      16  minimum, native                     plusone                                 NO
+      32  minimum, native                     minimum, native                        yes
+      60  native                              minimum, plusone                        NO
+      64  minimum, native                     minimum, native                        yes
+  widths where the contending set is identical: 2 of 6
+
+  ARMS IN CONTENTION, tolerance 5% of the fastest
+   width  under wrapping                      under saturating                     same?
+       8  minimum, native                     headroom, minimum, native, plusone      NO
+      13  native                              headroom                                NO
+      16  minimum, native                     headroom, plusone                       NO
+      32  minimum, native                     minimum, native                        yes
+      60  native                              minimum, native, plusone                NO
+      64  minimum, native                     minimum, native                        yes
+  widths where the contending set is identical: 2 of 6
+
+  ARMS IN CONTENTION, tolerance 10% of the fastest
+   width  under wrapping                      under saturating                     same?
+       8  minimum, native                     headroom, minimum, native, plusone      NO
+      13  native                              headroom                                NO
+      16  minimum, native                     headroom, plusone                       NO
+      32  minimum, native                     minimum, native                        yes
+      60  native                              minimum, native, plusone                NO
+      64  minimum, native                     minimum, native                        yes
+  widths where the contending set is identical: 2 of 6
+
+  full rankings, fastest first, flagged arms included and marked,
+  so every judgement above is inspectable:
+    width 8
+      wrap:     native(250) > minimum(252) > kernel*(483) > plusone(8396) > headroom(8477)
+      saturate: kernel*(64) > headroom(10588) > minimum(10661) > plusone(10710) > native(10731)
+    width 13
+      wrap:     native(459) > kernel*(889) > headroom(8455) > minimum(8656) > plusone(8701)
+      saturate: kernel*(63) > headroom(8048) > plusone(10702) > native(10713) > minimum(10717)
+    width 16
+      wrap:     native(460) > minimum(460) > kernel*(864) > headroom(8414) > plusone(8775)
+      saturate: kernel*(65) > plusone(8168) > headroom(8377) > native(11057) > minimum(11077)
+    width 32
+      wrap:     native(866) > minimum(878) > kernel*(958) > plusone(5777) > headroom(5782)
+      saturate: kernel*(66) > native(5420) > minimum(5508) > headroom(8244) > plusone(8412)
+    width 60
+      wrap:     kernel*(2288) > native(2488) > headroom(8479) > plusone(8507) > minimum(8511)
+      saturate: kernel*(63) > minimum(8036) > plusone(8085) > native(8359) > headroom(15508)
+    width 64
+      wrap:     kernel*(2323) > native(2504) > minimum(2516) > headroom(6118) > plusone(6174)
+      saturate: kernel*(68) > native(5572) > minimum(5601) > headroom(11477) > plusone(11509)
+

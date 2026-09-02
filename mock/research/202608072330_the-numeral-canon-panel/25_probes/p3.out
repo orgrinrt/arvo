@@ -1,0 +1,43 @@
+06         306-306   breaks that tie                    OK
+10         193-193   does not know what a strategy is   OK
+11         544-545   does not know what a strategy is   OK
+15         426-426   granularly                         OK
+23         701-710   strategy-blind                     OK
+23         813-813   footprint                          OK
+23         825-828   wrap                               OK
+23         838-846   headroom rule                      OK
+23         918-926   rung read off a summary            OK
+23         1023-1029 eight rows mention                 OK
+23         1096-1096 footprint                          OK
+01         96-98     confident enough                   OK
+RULES      62-66     Converge before escalating         OK
+RULES      72-78     Forbidden                          OK
+RULES      103-104   did not cover                      OK
+RULES      106-109   never happened                     OK
+RULES      110-114   Every probe is a spike             OK
+RULES      116-118   One instance of evidence           OK
+RULES      175-197   cost eighteen files                OK
+RULES      153-157   61 of 78 citations                 OK
+RULES      124-126   Counts are measurements            OK
+SETTLED    78-87     strategy and profile               OK
+SETTLED    73-74     erases on lowering                 OK
+SETTLED    93-93     never written by a consumer        OK
+MORNING    108-108   No row anywhere says what a strate OK
+CANDIDATE  3163-3163 Layout                             OK
+142c       59-59     function of the active profile     OK
+142c       58-60     one mechanism with two knobs       OK
+143b       10-12     constant                           OK
+143b       16-17     It is wrong                        OK
+143b       24-27     special case                       OK
+143b       81-83     incomplete by a lot                OK
+143b       105-107   additive                           OK
+144b       10-16     synergy                            OK
+144b       33-34     separation working                 OK
+144b       52-52     select a strategy                  OK
+impl       31-31     load-bearing                       OK
+impl       34-36     SIMD                               OK
+impl       52-58     bitpacked                          OK
+impl       60-64     MUST carry                         OK
+toolbox    (file)    not buckets the substrate picks    OK
+
+citations checked: 41, failures: 0

@@ -1,0 +1,32 @@
+P2. can 110's TEST 3 report a nonzero answer?
+==========================================================================
+configurations swept        : 48
+distinct keys among them    : 48
+
+arm 1: law set computed from the configuration (110's shape)
+  times `k in seen` was true   : 0
+  law-set comparisons performed: 0
+  free variations found        : 0
+  verdict printed by TEST 3    : DETERMINED (a projection)
+
+arm 2: MUTATION, law set declared freely per configuration
+       (three different declared law sets across the 48 configs)
+  distinct declared law sets   : 3
+  times `k in seen` was true   : 0
+  law-set comparisons performed: 0
+  free variations found        : 0
+  verdict printed by TEST 3    : DETERMINED (a projection)
+
+--------------------------------------------------------------------------
+the mutation does not move the verdict : True
+so the test does not distinguish a projection from a free coordinate.
+
+arm 3: the same test over a sweep whose key is coarser than its axes
+       (radix added to the sweep, absent from the key, as it would be
+        if somebody asked whether radix is a free coordinate)
+  configurations               : 96
+  times `k in seen` was true   : 48
+  free variations found        : 32
+  verdict: the branch is reachable and the count is informative
+  (the 32 are exactly the F > 0 cells, which is 110's F5 from
+   the other side: at F = 0 the radix is not free, above it is)

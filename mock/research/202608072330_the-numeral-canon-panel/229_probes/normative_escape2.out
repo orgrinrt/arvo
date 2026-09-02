@@ -1,0 +1,16 @@
+### rows whose own prose says the region could not be written
+  dimension.toml               :254  operand_window
+  law.toml                     :6  
+  probe.toml                   :591  the_inventory_of_clauses_that_could_not_be_written
+  proposal-the-later-topics.toml :791  at_shared_occupancy_no_per_element_footprint_observation_exists
+  proposal.toml                :2144  the_topics_form_a_stack_a_frame_and_the_canons_own_machinery
+  question.toml                :1123  is_the_firewall_carried_unpredicated
+  question.toml                :899  which_reassociated_arm_a_law_licenses
+  --- count: 7
+
+### M1
+  PASS
+### M2
+  PASS, nobody wrote it
+### M3, narrower than arm 1
+  PASS, 7 < 21

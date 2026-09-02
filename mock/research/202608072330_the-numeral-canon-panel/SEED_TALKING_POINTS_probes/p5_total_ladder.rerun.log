@@ -1,0 +1,4 @@
+== rerun 2026-08-09, toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+== cmd: rustc --edition 2024 p5_total_ladder.rs
+== exit: 0
+-rw-r--r--@ 1 orgrinrt  staff  105168 Aug  9 10:31 libp5_total_ladder.rlib

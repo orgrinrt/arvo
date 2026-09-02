@@ -1,224 +1,149 @@
+//--------------------------------------------------------------------------------------------------
+// Copyright (c) 2026                   orgrinrt                 ort@hiisi.digital
+// SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
+//--------------------------------------------------------------------------------------------------
+
 #![no_std]
-#![feature(adt_const_params)]
-#![feature(const_trait_impl)]
-#![feature(const_ops)]
-#![feature(const_param_ty_trait)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
+#![forbid(unsafe_op_in_unsafe_fn)]
 
-//! arvo-strategy. Strategy markers + container-projection traits.
+//! A name bound to what you are optimising for.
 //!
-//! `Hot` / `Warm` / `Cold` / `Precise` ZSTs. `Strategy` marker
-//! trait. `BitsContainerFor<const N: u16, Sign: Signedness>` const
-//! trait projecting (strategy, bit-width, sign) to a concrete
-//! container via Pattern C const-tag dispatch through the
-//! `Project<TAG, Sign, BYTES, S>` helper. `Resolve<S1, S2>` strategy
-//! resolution.
+//! A strategy is a binding and not a switch. It maps a name onto a placement
+//! objective, which is what the derivation ladder is keyed on, and onto an
+//! adaptation. It names no implementation and owns none.
 //!
-//! Four strategies determine container width, arithmetic semantics,
-//! and cross-width rules for `UFixed` / `IFixed`:
+//! The set is open. Four presets ship and they are implementors of a concept
+//! rather than members of an enumeration, so a fifth needs no edit to anything
+//! here.
 //!
-//! | Strategy | Container          | Arithmetic           |
-//! |----------|--------------------|----------------------|
-//! | `Hot`    | min aligned        | wrapping             |
-//! | `Warm`   | 2x logical         | wrapping (safe 1-op) |
-//! | `Cold`   | min (bitpacked)    | widen-op-narrow      |
-//! | `Precise`| 2x logical         | saturating           |
+//! **What each preset is for is written as rustdoc on the preset and is not a
+//! trait item.** An intent is something a reader reads and nothing a compiler
+//! gates on, so it is documentation; a `const` in a trait is the opposite of
+//! that, and carrying one made a per-preset compile-time item keyed on the
+//! preset, which is nearer the behaviour table the canon forbids than prose is.
 //!
-//! Container selection runs through the unified `BitsContainerFor`
-//! impl per Strategy. Hot / Cold cover `1..=128` natively (min aligned
-//! ladder); Warm / Precise cover `1..=64` natively (2x-logical ladder
-//! with no native bucket above N=64). Above the per-Strategy native
-//! cap, all four strategies project to `WideBits<bytes_for(N), A>`,
-//! where `A = A16` for Hot (SSE2 / NEON aligned baseline) and `A = A1`
-//! for Cold / Warm / Precise. `UFixed<_, _, Warm>` with `I + F > 64`
-//! is a compile-time error pointing at Hot or Cold via the
-//! `#[diagnostic::on_unimplemented]` note on `BitsContainerFor`.
+//! Each preset's `Adaptation` is a carried default rather than a settled answer.
+//! `question::does_warm_wrap_or_clamp` is open in the registry and disputes at
+//! least the `Warm` cell; the other three carry the same unproven status. Each
+//! impl below is marked `// FIXME:` at the declaration for exactly this reason.
 
-use core::marker::ConstParamTy;
+use arvo_format::Adaptation;
+use arvo_placement::{Objective, ObjectiveKind};
 
-mod sealed {
-    pub trait Sealed {}
-}
-
-mod arith;
-mod axes;
-mod const_convert;
-mod container;
-mod cross_strategy;
-mod ieee;
-mod widebits;
-mod widen;
-pub mod width;
-
-pub use widebits::{A1, A16, A32, A64, Align, WideBits};
-pub use width::{Width, bytes_for, tag, width, width_le_64, width_u16, width_u8};
-
-pub use arith::{
-    Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
-};
-pub use const_convert::{ConstFrom, ConstTryFrom};
-pub use cross_strategy::CrossStrategyOp;
-pub use ieee::{FromU8Ieee, Ieee};
-pub use axes::{
-    Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,
-    StorageLayout, Wrapping,
-};
-pub use container::{BitsContainerFor, Picker, Project};
-pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
-
-/// Strategy marker trait.
+/// A name bound to an objective and an adaptation selection.
 ///
-/// Implemented by the four zero-sized markers `Hot`, `Warm`, `Cold`,
-/// and `Precise`. Sealed: consumers cannot add new strategies.
-pub const trait Strategy: sealed::Sealed + Copy + Clone + Default + 'static {
-    /// Human-readable name of the strategy.
+/// Two items and no third. A third keyed on which preset this is would be the
+/// behaviour table again, and the compiler is what enforces the count: adding an
+/// item breaks every impl with `E0046` before any test runs.
+///
+/// Open: an implementor outside this crate is a strategy this crate does not know
+/// about, which is the intended shape and not a gap.
+pub trait Strategy {
+    /// What the placement ladder is keyed on for this binding.
     ///
-    /// Debug-only: static strings are gated out of release builds
-    /// (zero `.rodata` footprint). Runtime strategy identity flows
-    /// through `RANK`; `NAME` is for diagnostics and tests.
-    #[cfg(debug_assertions)]
-    const NAME: &'static str;
+    /// A type rather than a const, so a consumer generic over the strategy can
+    /// hand it to the derivation. A const here would be a const generic argument
+    /// depending on a generic parameter at the call site, which does not compile
+    /// without a forbidden feature.
+    type Objective: ObjectiveKind;
 
-    /// Conservativeness rank. Higher is more conservative. Used by
-    /// cross-strategy operation resolution:
-    /// `Precise > Cold > Warm > Hot`.
-    const RANK: u16;
+    /// The adaptation this binding selects.
+    ///
+    /// An associated type rather than a const, because an adaptation is a pair of
+    /// types and a strategy selects it at monomorphisation.
+    type Adaptation: Adaptation;
 }
 
-/// Optimised for L1 density and operation throughput.
+/// The objective a strategy binds to.
 ///
-/// Container is the minimum byte-aligned standard width that fits
-/// `I + F` bits. Arithmetic is wrapping. Single instruction per op;
-/// LLVM vectorises freely.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
-pub struct Hot;
+/// Reached through the binding rather than around it, so a consumer never has to
+/// know which preset it holds to know what the ladder will do.
+#[must_use]
+pub const fn objective_of<S: Strategy>() -> Objective {
+    <S::Objective as ObjectiveKind>::OBJECTIVE
+}
 
-/// Store big, operate fast. The development-friendly default.
+/// The presets the corpus carries.
 ///
-/// Container is 2x the logical bit width. A single `add` / `sub` /
-/// `mul` of two values within their logical range cannot overflow
-/// the container. Bounded to `I + F <= 32` per doc CL D2: no u128
-/// container is available, so Warm is forbidden at logical widths
-/// beyond 32 bits rather than degrading silently.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
-pub struct Warm;
+/// Kept because a prior design can name the parts well and go wrong in execution,
+/// and nothing here has found these four wrong. They are instances, not the
+/// inventory.
+pub mod presets {
+    use super::Strategy;
+    use arvo_format::overflow::{Saturate, Wrap};
+    use arvo_format::rounding::{HalfEven, TowardZero};
+    use arvo_format::Adapt;
+    use arvo_placement::objective;
 
-/// Store small, operate carefully. Optimised for storage density.
-///
-/// Minimum container, bitpacked for sub-byte values. Arithmetic
-/// widens to 2x before operating, narrows back on store.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
-pub struct Cold;
+    /// The speed-first binding.
+    ///
+    /// Performance and efficiency, even at the cost of accuracy or soundness.
+    /// Sacrificing soundness is its explicit purpose rather than a tolerated
+    /// defect, but it should not lose soundness for nothing: the price is a
+    /// provable meaningful gain. What counts as meaningful is unset and nobody
+    /// has set it.
+    pub struct Hot;
 
-/// Store exactly, operate exactly. Correctness above all.
-///
-/// Container is 2x the logical width (same physical layout as Warm).
-/// Arithmetic is saturating: overflow clamps to logical min/max
-/// rather than wrapping.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
-pub struct Precise;
+    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
+    // No overflow_policy/rounding row disputes this specific cell yet; treat it
+    // as unproven the same as the other three until one settles it.
+    impl Strategy for Hot {
+        type Objective = objective::Access;
+        type Adaptation = Adapt<TowardZero, Wrap>;
+    }
 
-impl sealed::Sealed for Hot {}
-impl sealed::Sealed for Warm {}
-impl sealed::Sealed for Cold {}
-impl sealed::Sealed for Precise {}
+    /// The storage-minimising binding.
+    ///
+    /// Cold paths and cold storage. It aggressively minimises and bitpacks and
+    /// stays small for memory or disk. Because the path is cold it has leeway to
+    /// be inefficient, and it is not obliged to take it: it may use the same
+    /// paths the speed-first binding uses wherever nothing in its intent fights
+    /// them. It is not deprioritised, and that survives the set being reshaped,
+    /// renamed or resized.
+    pub struct Cold;
 
-impl const Strategy for Hot {
-    #[cfg(debug_assertions)]
-    const NAME: &'static str = "Hot";
-    const RANK: u16 = 0;
-}
-impl const Strategy for Warm {
-    #[cfg(debug_assertions)]
-    const NAME: &'static str = "Warm";
-    const RANK: u16 = 1;
-}
-impl const Strategy for Cold {
-    #[cfg(debug_assertions)]
-    const NAME: &'static str = "Cold";
-    const RANK: u16 = 2;
-}
-impl const Strategy for Precise {
-    #[cfg(debug_assertions)]
-    const NAME: &'static str = "Precise";
-    const RANK: u16 = 3;
-}
+    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
+    // No overflow_policy/rounding row disputes this specific cell yet; treat it
+    // as unproven the same as the other three until one settles it.
+    impl Strategy for Cold {
+        type Objective = objective::Footprint;
+        type Adaptation = Adapt<TowardZero, Wrap>;
+    }
 
-// --- Sign axis markers ----------------------------------------------------
-//
-// `Signedness` is the sealed marker trait carried as the third
-// const-generic on `Bits<N, S, Sign>`. Default `Sign = Unsigned`
-// keeps every existing call site unchanged. `IFixed<I, F, S>` reaches
-// for `Sign = Signed` internally; consumers normally write `IFixed`
-// rather than `Bits<N, S, Signed>` directly.
+    /// The accuracy-first binding.
+    ///
+    /// Sacrifices as much performance and efficiency as makes sense to reach the
+    /// most precise answer, throwing out both the speed and the footprint
+    /// optimisations, and especially within chains rather than only per
+    /// operation. Its objective has no measurement behind it yet, and that gap is
+    /// recorded rather than papered over.
+    pub struct Precise;
 
-/// Sign-axis marker trait. Sealed; consumers cannot add new variants.
-///
-/// The two implementors are `Unsigned` and `Signed` (zero-sized
-/// markers). Used as the `Sign` const-generic on `Bits<N, S, Sign>`
-/// and routed through `BitsContainerFor<N, Sign>` to the dispatched
-/// container via Pattern C const-tag projection through `Project`.
-pub trait Signedness: sealed::Sealed + Copy + Clone + Default + 'static {}
+    // FIXME: Adapt<HalfEven, Saturate> is a carried default rather than a settled value.
+    // No overflow_policy/rounding row disputes this specific cell yet; treat it
+    // as unproven the same as the other three until one settles it.
+    impl Strategy for Precise {
+        type Objective = objective::Access;
+        type Adaptation = Adapt<HalfEven, Saturate>;
+    }
 
-/// Unsigned bit pattern. Default `Sign` on `Bits<N, S, Sign>`.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
-pub struct Unsigned;
+    /// The compromise binding, meant as the sensible default.
+    ///
+    /// The intuitive best choice for most every use case. The intuitive part
+    /// demands it mimics, and being a Rust crate makes Rust's way the baseline
+    /// for what a reader finds intuitive, but that is a baseline and not a
+    /// definition: mimicry is dropped where following it is consistently the
+    /// worse choice.
+    pub struct Warm;
 
-/// Signed bit pattern. Used by `IFixed<I, F, S>` internally.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
-pub struct Signed;
-
-impl sealed::Sealed for Unsigned {}
-impl sealed::Sealed for Signed {}
-
-impl Signedness for Unsigned {}
-impl Signedness for Signed {}
-
-// --- Strategy resolution for cross-strategy ops ----------------------------
-//
-// `Precise > Cold > Warm > Hot`. The more conservative strategy wins.
-// Encoded via trait-level selection: `Resolve<S1, S2>` picks the winner.
-//
-// Implemented as a nested table so blanket impls don't collide.
-
-/// Resolve the more conservative of two strategies.
-///
-/// `Resolve<S1, S2>::Out` is the higher-rank strategy; see
-/// `Strategy::RANK`.
-pub const trait Resolve<Other: Strategy>: Strategy {
-    /// The resolved strategy: more conservative of `Self` and `Other`.
-    type Out: Strategy;
+    // FIXME: Adapt<HalfEven, Wrap> is a carried default rather than a settled
+    // value. question::does_warm_wrap_or_clamp is open in the registry and
+    // disputes this cell. Do not read it as settled until that question resolves.
+    impl Strategy for Warm {
+        type Objective = objective::Access;
+        type Adaptation = Adapt<HalfEven, Wrap>;
+    }
 }
 
-macro_rules! impl_resolve {
-    ($lhs:ty, $rhs:ty, $out:ty) => {
-        impl const Resolve<$rhs> for $lhs {
-            type Out = $out;
-        }
-    };
-}
-
-// Self: identity.
-impl_resolve!(Hot, Hot, Hot);
-impl_resolve!(Warm, Warm, Warm);
-impl_resolve!(Cold, Cold, Cold);
-impl_resolve!(Precise, Precise, Precise);
-
-// Hot with others.
-impl_resolve!(Hot, Warm, Warm);
-impl_resolve!(Hot, Cold, Cold);
-impl_resolve!(Hot, Precise, Precise);
-impl_resolve!(Warm, Hot, Warm);
-impl_resolve!(Cold, Hot, Cold);
-impl_resolve!(Precise, Hot, Precise);
-
-// Warm with others.
-impl_resolve!(Warm, Cold, Cold);
-impl_resolve!(Warm, Precise, Precise);
-impl_resolve!(Cold, Warm, Cold);
-impl_resolve!(Precise, Warm, Precise);
-
-// Cold with Precise.
-impl_resolve!(Cold, Precise, Precise);
-impl_resolve!(Precise, Cold, Precise);
+#[cfg(test)]
+mod tests;

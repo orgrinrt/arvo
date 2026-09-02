@@ -7,11 +7,11 @@ skill_description: Guide for arvo custom lint rules. Use this when adding new li
 
 arvo uses three sources of lints, each enforcing a different layer:
 
-1. **Mockspace built-in lints** — universal quality rules (see below).
-2. **Custom arvo lints** in `mock/lints/<name>.rs` — encode arvo's
+1. **Mockspace built-in lints**, universal quality rules (see below).
+2. **Custom arvo lints** in `mock/lints/<name>.rs`: encode arvo's
    architectural invariants that aren't expressible as
    `forbidden-imports`.
-3. **`[lints.forbidden-imports]` rules** in `mock/mockspace.toml` —
+3. **`[lints.forbidden-imports]` rules** in `mock/mockspace.toml`
    encode the L0 → L1 → L2 → L3 layering table.
 
 All three run on every `cargo mock`. Per-gate severity

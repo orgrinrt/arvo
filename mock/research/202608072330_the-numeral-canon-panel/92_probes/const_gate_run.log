@@ -1,0 +1,54 @@
+  WARNING: 1 variant pair(s) have identical machine code:
+    release == release
+  Validating 5 variants × 100 seeds...
+  Validation OK: all 5 variants produce valid output
+  Determinism check: 5 variants × 10 seeds...
+  Determinism OK: all 5 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_lanes16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (3s elapsed, ~8s left)
+  pass 2/4 cd=0ms... done (6s elapsed, ~6s left)
+  pass 3/4 cd=0ms... done (8s elapsed, ~3s left)
+  pass 4/4 cd=0ms... done (10s elapsed, ~0s left)
+  Total: 10.5s
+  CSV: satfold-const-gate_n7000.csv (400 rows)
+  Meta: satfold-const-gate_n7000.meta.json
+  wrote satfold-const-gate_n7000.csv + satfold-const-gate_n7000_findings.md
+  WARNING: 1 variant pair(s) have identical machine code:
+    release == release
+  Validating 5 variants × 100 seeds...
+  Validation OK: all 5 variants produce valid output
+  Determinism check: 5 variants × 10 seeds...
+  Determinism OK: all 5 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_lanes16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (2s elapsed, ~7s left)
+  pass 2/4 cd=0ms... done (5s elapsed, ~5s left)
+  pass 3/4 cd=0ms... done (7s elapsed, ~2s left)
+  pass 4/4 cd=0ms... done (10s elapsed, ~0s left)
+  Total: 9.7s
+  CSV: satfold-const-gate_n10000.csv (400 rows)
+  Meta: satfold-const-gate_n10000.meta.json
+  wrote satfold-const-gate_n10000.csv + satfold-const-gate_n10000_findings.md
+  WARNING: 1 variant pair(s) have identical machine code:
+    release == release
+  Validating 5 variants × 100 seeds...
+  Validation OK: all 5 variants produce valid output
+  Determinism check: 5 variants × 10 seeds...
+  Determinism OK: all 5 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_lanes16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (2s elapsed, ~7s left)
+  pass 2/4 cd=0ms... done (5s elapsed, ~5s left)
+  pass 3/4 cd=0ms... done (7s elapsed, ~2s left)
+  pass 4/4 cd=0ms... done (9s elapsed, ~0s left)
+  Total: 9.3s
+  CSV: satfold-const-gate_n12000.csv (400 rows)
+  Meta: satfold-const-gate_n12000.meta.json
+  wrote satfold-const-gate_n12000.csv + satfold-const-gate_n12000_findings.md

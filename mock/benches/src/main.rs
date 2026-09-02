@@ -7,7 +7,7 @@
 //! `mockspace-bench-macro`) so neither the orchestrator nor the
 //! variant cdylibs declare a `Routine` impl.
 
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::ExitCode;
 
 use mockspace_bench_core::{routine_bridge, ByteRoutine};
@@ -21,6 +21,19 @@ fn main() -> ExitCode {
     }
 
     let report_only = args.iter().any(|a| a == "--report-only");
+
+    // Section filter. Without it every invocation re-runs every bench in the
+    // manifest and rewrites every committed csv, meta and findings file, so a
+    // dispatch measuring one thing destroys the artifact trail of all the
+    // others. Six consecutive panel files declined to bench for exactly that
+    // reason. `--bench <name>` may repeat; absent, the filter is inert and the
+    // whole manifest runs as before.
+    let only: Vec<String> = args
+        .iter()
+        .enumerate()
+        .filter(|(_, a)| a.as_str() == "--bench")
+        .filter_map(|(i, _)| args.get(i + 1).cloned())
+        .collect();
 
     let manifest_path = Path::new("bench.toml");
     let manifest = match BenchManifest::load(manifest_path) {
@@ -39,21 +52,35 @@ fn main() -> ExitCode {
         b.stage(vec![harness::algo_call(), harness::light_scalar()]);
     });
 
+    if !only.is_empty() {
+        for name in &only {
+            if !manifest.bench.contains_key(name) {
+                eprintln!("error: --bench `{name}` names no section in bench.toml");
+                return ExitCode::FAILURE;
+            }
+        }
+    }
+
     for (bench_name, section) in &manifest.bench {
+        if !only.is_empty() && !only.iter().any(|n| n == bench_name) {
+            continue;
+        }
         for (size_idx, _size) in section.sizes.iter().enumerate() {
-            let mut config = match manifest.for_size(bench_name, size_idx, &mock_benches_dir) {
+            let config = match manifest.for_size(bench_name, size_idx, &mock_benches_dir) {
                 Ok(c) => c,
                 Err(e) => {
                     eprintln!("error: {e}");
                     return ExitCode::FAILURE;
                 }
             };
-            config.variant_paths = config
-                .variant_paths
-                .into_iter()
-                .map(shape_variant_path)
-                .collect();
-            let routine = match routine_for_n(&section.workload, config.n) {
+            // `BenchManifest::for_size` (mockspace-bench-harness `resolve_variant_path`)
+            // already applies the platform dylib prefix/suffix to any extensionless
+            // variant entry; re-shaping here doubled it (`liblibfoo.dylib.dylib`),
+            // which is why every bench in this file failed to `dlopen` with
+            // TIMEOUT/<load-fail> before this fix (found while landing the
+            // quantiser-vs-fadd bench, file 57 of the formalization panel; not
+            // specific to that bench, every existing bench in this manifest hit it).
+            let routine = match routine_for_n(bench_name, config.n) {
                 Some(r) => r,
                 None => {
                     eprintln!(
@@ -104,6 +131,50 @@ fn main() -> ExitCode {
                 }
                 eprintln!("  regenerated {report_path}");
             } else {
+                // Cross-check the arms before timing them.
+                //
+                // `harness::run` does NOT do this: `run_orchestrator` never
+                // calls `validation::validate`, so without this call a variant
+                // computing a different answer from its peers is timed and
+                // reported like any other. Demonstrated: a one-character
+                // off-by-one in a loader's tail assembly produced 400 rows of
+                // ordinary-looking numbers and exit 0. The `digest` and `score`
+                // columns are zero for every plain `timed!` variant, so they
+                // catch nothing either, which leaves the variant crate's own
+                // unit tests as the only fidelity check in the system.
+                let variant_strings: Vec<String> = config
+                    .variant_paths
+                    .iter()
+                    .map(|p| p.display().to_string())
+                    .collect();
+                // The harness ships an automatic disassembly comparison across
+                // the variant dylibs and exports it as `check_disasm_duplicates`.
+                // Nothing in this driver ever called it, so no bench in this
+                // repository has ever been told that two of its arms compile to
+                // the same machine code, which is the one condition under which a
+                // timing difference between them is definitionally noise. The
+                // `benchmarking` skill lists it as one of the reasons to use the
+                // framework rather than a timing loop. Wired here (file 92).
+                if variant_strings.len() >= 2 {
+                    harness::check_disasm_duplicates(&variant_strings);
+                }
+                if variant_strings.len() >= 2
+                    && let Err(e) = harness::validate(
+                        &routine,
+                        &variant_strings,
+                        config.n,
+                        &config.bench_name,
+                        None,
+                        None,
+                    )
+                {
+                    eprintln!(
+                        "error: bench `{bench_name}` n={} failed validation, refusing to \
+                         report timings for arms that do not agree: {e}",
+                        config.n
+                    );
+                    return ExitCode::FAILURE;
+                }
                 let result = match harness::run(&config, &routine, &workload) {
                     Ok(r) => r,
                     Err(e) => {
@@ -129,35 +200,398 @@ fn main() -> ExitCode {
     ExitCode::SUCCESS
 }
 
-/// Pick the right monomorphised Routine bridge for a given input
-/// size. `ByteRoutine<IN, 8, true>` is the canonical hash-bench
-/// shape: IN bytes in, 8 bytes out (u64 digest), independent
-/// algorithms (so cross-variant byte-equality is not required).
+/// Pick the right monomorphised Routine bridge for a given bench
+/// name + input size. Hash benches go through `ByteRoutine`; graph
+/// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
-    let bridge = match n {
-        64 => routine_bridge!(ByteRoutine<64, 8, true>),
-        256 => routine_bridge!(ByteRoutine<256, 8, true>),
-        1024 => routine_bridge!(ByteRoutine<1024, 8, true>),
-        4096 => routine_bridge!(ByteRoutine<4096, 8, true>),
+    use bench_bitpack_carrier_shared::CarrierColumn;
+    use bench_bitpack_contend_shared::Contend;
+    use bench_bitpack_wide_shared::Wide;
+    use bench_bitpack_write_contend_shared::WriteContend;
+    use bench_bitpack_footprint_shared::FootprintColumn;
+    use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
+    use bench_bitpack_shared::Column;
+    use bench_quantiser_fadd_shared::AddSweep;
+    use bench_quantiser_radix_shared::RadixAdd;
+    // `Fiedler` (spectral-bisection) and `Rcm` (structural-decomposition) are
+    // not imported: both crates depend on the real `arvo` crate, which the
+    // canon-work deletion round removed, and `mock/benches/Cargo.toml` no
+    // longer lists either as a dependency of this binary for exactly that
+    // reason (see the comment there). Restore both once a canon-derived
+    // `arvo` crate exists.
+    use bench_warm_clamp_shared::Case as ClampCase;
+    use bench_warm_container_shared::Case;
+    use bench_satfold_shared::Case as SatFoldCase;
+    use bench_wide_rung_shared::Case as WideCase;
+
+    let bridge = match (name, n) {
+        // hash benches: byte-array IO via ByteRoutine.
+        ("fnv1a-vs-xxhash3", 64) => routine_bridge!(ByteRoutine<64, 8, true>),
+        ("fnv1a-vs-xxhash3", 256) => routine_bridge!(ByteRoutine<256, 8, true>),
+        ("fnv1a-vs-xxhash3", 1024) => routine_bridge!(ByteRoutine<1024, 8, true>),
+        ("fnv1a-vs-xxhash3", 4096) => routine_bridge!(ByteRoutine<4096, 8, true>),
+
+        // graph bench: RCM over BitMatrix-shaped input.
+        // ("structural-decomposition", 16 | 32 | 64) => routine_bridge!(Rcm<N>),
+        // disabled: see the comment above and in Cargo.toml.
+
+        // spectral bench: Fiedler vector + sign-cut partition over
+        // dense Laplacian-weighted input.
+        // ("spectral-bisection", 16 | 32 | 64) => routine_bridge!(Fiedler<N>),
+        // disabled: see the comment above and in Cargo.toml.
+
+        // quantiser-vs-fadd bench: AddSweep<PCT> dispatched per swept
+        // subnormal-fraction percentage PCT. Both variants (software
+        // quantiser, hardware fadd) share this one Routine bridge per PCT;
+        // which dylib runs is resolved from bench.toml's `variants` list,
+        // not from this table, so one match arm per size covers both.
+        ("quantiser-vs-fadd-subnormal-sweep", 0) => routine_bridge!(AddSweep<0>),
+        ("quantiser-vs-fadd-subnormal-sweep", 10) => routine_bridge!(AddSweep<10>),
+        ("quantiser-vs-fadd-subnormal-sweep", 25) => routine_bridge!(AddSweep<25>),
+        ("quantiser-vs-fadd-subnormal-sweep", 50) => routine_bridge!(AddSweep<50>),
+        ("quantiser-vs-fadd-subnormal-sweep", 75) => routine_bridge!(AddSweep<75>),
+        ("quantiser-vs-fadd-subnormal-sweep", 100) => routine_bridge!(AddSweep<100>),
+
+        // decimal-quantiser bench: RadixAdd<SPREAD> dispatched per swept
+        // exponent-spread size. Both variants (radix two at binary32's
+        // parameters, radix ten at decimal32's) share this bridge and the
+        // identical operand stream; only the radix the kernel monomorphises
+        // at differs.
+        ("decimal-quantiser-radix-sweep", 0) => routine_bridge!(RadixAdd<0>),
+        ("decimal-quantiser-radix-sweep", 2) => routine_bridge!(RadixAdd<2>),
+        ("decimal-quantiser-radix-sweep", 8) => routine_bridge!(RadixAdd<8>),
+        ("decimal-quantiser-radix-sweep", 20) => routine_bridge!(RadixAdd<20>),
+
+        // bitpack access-pattern bench: the two `Layout::Bitpacked`
+        // readings (byte-aligned slot, zero-inter-value-padding) dispatched
+        // per swept column size. Sequential and random-access sections each
+        // share the identical Column* Input/Output shape across their two
+        // variant dylibs; only the extraction transform inside each dylib
+        // differs.
+        ("bitpack-sequential-sum", 256) => routine_bridge!(Column<256>),
+        ("bitpack-sequential-sum", 4096) => routine_bridge!(Column<4096>),
+        ("bitpack-sequential-sum", 16384) => routine_bridge!(Column<16384>),
+        ("bitpack-random-sum", 256) => routine_bridge!(Column<256>),
+        ("bitpack-random-sum", 4096) => routine_bridge!(Column<4096>),
+        ("bitpack-random-sum", 16384) => routine_bridge!(Column<16384>),
+
+        // bitpack decoder-shape bench: the identical zero-inter-value-padding
+        // buffer read three ways (dense native carrier, index-driven decode,
+        // plan-driven decode), swept across sizes that bracket this host's
+        // L1 data cache rather than sitting entirely inside it.
+        ("bitpack-decoder-shape", 16384) => routine_bridge!(PlanColumn<16384>),
+        ("bitpack-decoder-shape", 65536) => routine_bridge!(PlanColumn<65536>),
+        ("bitpack-decoder-shape", 98304) => routine_bridge!(PlanColumn<98304>),
+        ("bitpack-decoder-shape", 262144) => routine_bridge!(PlanColumn<262144>),
+
+        // the identical decoders feeding a heavier per-element kernel, to see
+        // whether the decode-shape multiple is an upper bound over consumer
+        // work or a constant factor on it.
+        ("bitpack-kernel-amortisation", 16384) => routine_bridge!(MacColumn<16384>),
+        ("bitpack-kernel-amortisation", 65536) => routine_bridge!(MacColumn<65536>),
+        ("bitpack-kernel-amortisation", 98304) => routine_bridge!(MacColumn<98304>),
+        ("bitpack-kernel-amortisation", 262144) => routine_bridge!(MacColumn<262144>),
+
+        // container fork (panel file 141): the shipped Warm/Precise rule
+        // against the deletion, against rung(W+1), against plain Rust
+        // primitive arithmetic. One Case<KEY> bridge per row; which of
+        // the four dylibs runs comes from bench.toml, not from here.
+        ("warm-container-width-l1", 80003) => routine_bridge!(Case<80003>),
+        ("warm-container-width-l1", 130003) => routine_bridge!(Case<130003>),
+        ("warm-container-width-l1", 160003) => routine_bridge!(Case<160003>),
+        ("warm-container-width-l1", 320003) => routine_bridge!(Case<320003>),
+        ("warm-container-width-l1", 600003) => routine_bridge!(Case<600003>),
+        ("warm-container-width-l1", 640003) => routine_bridge!(Case<640003>),
+        ("warm-container-width-l2", 81003) => routine_bridge!(Case<81003>),
+        ("warm-container-width-l2", 131003) => routine_bridge!(Case<131003>),
+        ("warm-container-width-l2", 161003) => routine_bridge!(Case<161003>),
+        ("warm-container-width-l2", 321003) => routine_bridge!(Case<321003>),
+        ("warm-container-width-l2", 601003) => routine_bridge!(Case<601003>),
+        ("warm-container-width-l2", 641003) => routine_bridge!(Case<641003>),
+        ("warm-container-density-w13", 130001) => routine_bridge!(Case<130001>),
+        ("warm-container-density-w13", 130002) => routine_bridge!(Case<130002>),
+        ("warm-container-density-w13", 130004) => routine_bridge!(Case<130004>),
+        ("warm-container-density-w13", 130008) => routine_bridge!(Case<130008>),
+        ("warm-container-density-w13", 130016) => routine_bridge!(Case<130016>),
+        ("warm-container-density-w64", 640001) => routine_bridge!(Case<640001>),
+        ("warm-container-density-w64", 640002) => routine_bridge!(Case<640002>),
+        ("warm-container-density-w64", 640004) => routine_bridge!(Case<640004>),
+        ("warm-container-density-w64", 640008) => routine_bridge!(Case<640008>),
+        ("warm-container-density-w64", 640016) => routine_bridge!(Case<640016>),
+        ("precise-container-width-l1", 80103) => routine_bridge!(Case<80103>),
+        ("precise-container-width-l1", 130103) => routine_bridge!(Case<130103>),
+        ("precise-container-width-l1", 160103) => routine_bridge!(Case<160103>),
+        ("precise-container-width-l1", 320103) => routine_bridge!(Case<320103>),
+        ("precise-container-width-l1", 600103) => routine_bridge!(Case<600103>),
+        ("precise-container-width-l1", 640103) => routine_bridge!(Case<640103>),
+        ("warm-elementwise-width-l1", 80204) => routine_bridge!(Case<80204>),
+        ("warm-elementwise-width-l1", 130204) => routine_bridge!(Case<130204>),
+        ("warm-elementwise-width-l1", 160204) => routine_bridge!(Case<160204>),
+        ("warm-elementwise-width-l1", 320204) => routine_bridge!(Case<320204>),
+        ("warm-elementwise-width-l1", 600204) => routine_bridge!(Case<600204>),
+        ("warm-elementwise-width-l1", 640204) => routine_bridge!(Case<640204>),
+        ("precise-elementwise-width-l1", 80304) => routine_bridge!(Case<80304>),
+        ("precise-elementwise-width-l1", 130304) => routine_bridge!(Case<130304>),
+        ("precise-elementwise-width-l1", 160304) => routine_bridge!(Case<160304>),
+        ("precise-elementwise-width-l1", 320304) => routine_bridge!(Case<320304>),
+        ("precise-elementwise-width-l1", 600304) => routine_bridge!(Case<600304>),
+        ("precise-elementwise-width-l1", 640304) => routine_bridge!(Case<640304>),
+        ("warm-affine-collapse-l1", 80403) => routine_bridge!(Case<80403>),
+        ("warm-affine-collapse-l1", 130403) => routine_bridge!(Case<130403>),
+        ("warm-affine-collapse-l1", 160403) => routine_bridge!(Case<160403>),
+        ("warm-affine-collapse-l1", 320403) => routine_bridge!(Case<320403>),
+        ("warm-affine-collapse-l1", 600403) => routine_bridge!(Case<600403>),
+        ("warm-affine-collapse-l1", 640403) => routine_bridge!(Case<640403>),
+        ("precise-widening-theorem-l1", 80501) => routine_bridge!(Case<80501>),
+        ("precise-widening-theorem-l1", 130501) => routine_bridge!(Case<130501>),
+        ("precise-widening-theorem-l1", 160501) => routine_bridge!(Case<160501>),
+        ("precise-widening-theorem-l1", 320501) => routine_bridge!(Case<320501>),
+        ("precise-widening-theorem-l1", 600501) => routine_bridge!(Case<600501>),
+        ("precise-widening-theorem-l1", 640501) => routine_bridge!(Case<640501>),
+
+        // clamping-semantics bench (file 142). One ClampCase<KEY> bridge per row;
+        // the six arms are resolved from bench.toml's `variants` list.
+        ("warm-clamp-arity-w8", 80010) => routine_bridge!(ClampCase<80010>),
+        ("warm-clamp-arity-w8", 80020) => routine_bridge!(ClampCase<80020>),
+        ("warm-clamp-arity-w8", 80030) => routine_bridge!(ClampCase<80030>),
+        ("warm-clamp-arity-w8", 80040) => routine_bridge!(ClampCase<80040>),
+        ("warm-clamp-arity-w13", 130010) => routine_bridge!(ClampCase<130010>),
+        ("warm-clamp-arity-w13", 130020) => routine_bridge!(ClampCase<130020>),
+        ("warm-clamp-arity-w13", 130030) => routine_bridge!(ClampCase<130030>),
+        ("warm-clamp-arity-w13", 130040) => routine_bridge!(ClampCase<130040>),
+        ("warm-clamp-arity-w13", 130060) => routine_bridge!(ClampCase<130060>),
+        ("warm-clamp-arity-w13", 130080) => routine_bridge!(ClampCase<130080>),
+        ("warm-clamp-arity-w16", 160010) => routine_bridge!(ClampCase<160010>),
+        ("warm-clamp-arity-w16", 160020) => routine_bridge!(ClampCase<160020>),
+        ("warm-clamp-arity-w16", 160030) => routine_bridge!(ClampCase<160030>),
+        ("warm-clamp-arity-w16", 160040) => routine_bridge!(ClampCase<160040>),
+        ("warm-clamp-arity-w16", 160060) => routine_bridge!(ClampCase<160060>),
+        ("warm-clamp-arity-w16", 160080) => routine_bridge!(ClampCase<160080>),
+        ("warm-clamp-arity-w32", 320010) => routine_bridge!(ClampCase<320010>),
+        ("warm-clamp-arity-w32", 320020) => routine_bridge!(ClampCase<320020>),
+        ("warm-clamp-arity-w32", 320030) => routine_bridge!(ClampCase<320030>),
+        ("warm-clamp-arity-w32", 320040) => routine_bridge!(ClampCase<320040>),
+        ("warm-clamp-arity-w32", 320060) => routine_bridge!(ClampCase<320060>),
+        ("warm-clamp-arity-w32", 320080) => routine_bridge!(ClampCase<320080>),
+        ("warm-clamp-arity-w60", 600010) => routine_bridge!(ClampCase<600010>),
+        ("warm-clamp-arity-w60", 600020) => routine_bridge!(ClampCase<600020>),
+        ("warm-clamp-arity-w60", 600030) => routine_bridge!(ClampCase<600030>),
+        ("warm-clamp-arity-w60", 600040) => routine_bridge!(ClampCase<600040>),
+        ("warm-clamp-arity-w60", 600060) => routine_bridge!(ClampCase<600060>),
+        ("warm-clamp-arity-w60", 600080) => routine_bridge!(ClampCase<600080>),
+        ("warm-clamp-arity-w64", 640010) => routine_bridge!(ClampCase<640010>),
+        ("warm-clamp-arity-w64", 640020) => routine_bridge!(ClampCase<640020>),
+        ("warm-clamp-arity-w64", 640030) => routine_bridge!(ClampCase<640030>),
+        ("warm-clamp-arity-w64", 640040) => routine_bridge!(ClampCase<640040>),
+        ("warm-clamp-arity-w64", 640060) => routine_bridge!(ClampCase<640060>),
+        ("warm-clamp-arity-w64", 640080) => routine_bridge!(ClampCase<640080>),
+        ("warm-clamp-chain-l1", 80001) => routine_bridge!(ClampCase<80001>),
+        ("warm-clamp-chain-l1", 130001) => routine_bridge!(ClampCase<130001>),
+        ("warm-clamp-chain-l1", 160001) => routine_bridge!(ClampCase<160001>),
+        ("warm-clamp-chain-l1", 320001) => routine_bridge!(ClampCase<320001>),
+        ("warm-clamp-chain-l1", 600001) => routine_bridge!(ClampCase<600001>),
+        ("warm-clamp-chain-l1", 640001) => routine_bridge!(ClampCase<640001>),
+        ("warm-clamp-arity-l2", 81040) => routine_bridge!(ClampCase<81040>),
+        ("warm-clamp-arity-l2", 131040) => routine_bridge!(ClampCase<131040>),
+        ("warm-clamp-arity-l2", 161040) => routine_bridge!(ClampCase<161040>),
+        ("warm-clamp-arity-l2", 321040) => routine_bridge!(ClampCase<321040>),
+        ("warm-clamp-arity-l2", 601040) => routine_bridge!(ClampCase<601040>),
+        ("warm-clamp-arity-l2", 641040) => routine_bridge!(ClampCase<641040>),
+        ("warm-affine-density-w13", 130401) => routine_bridge!(Case<130401>),
+        ("warm-affine-density-w13", 130402) => routine_bridge!(Case<130402>),
+        ("warm-affine-density-w13", 130404) => routine_bridge!(Case<130404>),
+        ("warm-affine-density-w13", 130408) => routine_bridge!(Case<130408>),
+        ("warm-affine-density-w13", 130416) => routine_bridge!(Case<130416>),
+
+
+        // saturating-fold reassociation (file 92): prices `80` section 5.3's and
+        // `82` section 9's instructions-per-element ratios as time. One
+        // SatFoldCase<KEY> bridge per row; the eight arms come from bench.toml's
+        // `variants` list, not from this table. KEY = (LI+1)*1000 + NC*100 +
+        // AL*10 + OP; see `bench-satfold-shared` for the encoding.
+        ("satfold-length-l1", 1000) => routine_bridge!(SatFoldCase<1000>),
+        ("satfold-length-l1", 2000) => routine_bridge!(SatFoldCase<2000>),
+        ("satfold-length-l1", 3000) => routine_bridge!(SatFoldCase<3000>),
+        ("satfold-length-l1", 4000) => routine_bridge!(SatFoldCase<4000>),
+        ("satfold-length-l1", 5000) => routine_bridge!(SatFoldCase<5000>),
+        ("satfold-length-l1", 6000) => routine_bridge!(SatFoldCase<6000>),
+        ("satfold-length-l1", 7000) => routine_bridge!(SatFoldCase<7000>),
+        ("satfold-length-l1", 8000) => routine_bridge!(SatFoldCase<8000>),
+        ("satfold-length-l1", 9000) => routine_bridge!(SatFoldCase<9000>),
+        ("satfold-length-l1", 10000) => routine_bridge!(SatFoldCase<10000>),
+        ("satfold-length-l1", 11000) => routine_bridge!(SatFoldCase<11000>),
+        ("satfold-length-l1", 12000) => routine_bridge!(SatFoldCase<12000>),
+        ("satfold-length-l1-wrap", 1001) => routine_bridge!(SatFoldCase<1001>),
+        ("satfold-length-l1-wrap", 3001) => routine_bridge!(SatFoldCase<3001>),
+        ("satfold-length-l1-wrap", 7001) => routine_bridge!(SatFoldCase<7001>),
+        ("satfold-length-l1-wrap", 10001) => routine_bridge!(SatFoldCase<10001>),
+        ("satfold-length-l1-wrap", 12001) => routine_bridge!(SatFoldCase<12001>),
+        ("satfold-align-l1", 3010) => routine_bridge!(SatFoldCase<3010>),
+        ("satfold-align-l1", 7010) => routine_bridge!(SatFoldCase<7010>),
+        ("satfold-align-l1", 10010) => routine_bridge!(SatFoldCase<10010>),
+        ("satfold-align-l1", 12010) => routine_bridge!(SatFoldCase<12010>),
+        ("satfold-length-dram", 3100) => routine_bridge!(SatFoldCase<3100>),
+        ("satfold-length-dram", 7100) => routine_bridge!(SatFoldCase<7100>),
+        ("satfold-length-dram-long", 12100) => routine_bridge!(SatFoldCase<12100>),
+        ("satfold-length-dram-wrap", 3101) => routine_bridge!(SatFoldCase<3101>),
+        ("satfold-length-dram-wrap", 7101) => routine_bridge!(SatFoldCase<7101>),
+        ("satfold-length-dram-wrap", 12101) => routine_bridge!(SatFoldCase<12101>),
+
+        ("satfold-const-gate", 7000) => routine_bridge!(SatFoldCase<7000>),
+        ("satfold-const-gate", 10000) => routine_bridge!(SatFoldCase<10000>),
+        ("satfold-const-gate", 12000) => routine_bridge!(SatFoldCase<12000>),
+
+        // footprint bench: prices Cold's own intent (a smaller column fits
+        // where a larger one does not) rather than decode cost at
+        // cache-resident sizes, which is all every bitpack bench above this
+        // one measures. Sizes bracket this host's own 128 KB L1 and 12 MB L2
+        // (read fresh via sysctl, `bitpack-footprint-shared`'s own doc
+        // comment): 16384 and 65536 stay inside L1 for continuity with the
+        // decoder-shape sweep; 1048576 and 4194304 sit inside L2; 7000000 is
+        // the crossover where the packed region (10.85 MiB) still fits L2 and
+        // the dense region (13.35 MiB) no longer does; 33554432 puts both
+        // regions well past any cache this host has. Dense and packed share
+        // one `FootprintColumn<N>` bridge (same seed, same logical value
+        // stream, two encodings), so both bench sections below register the
+        // identical routine per size.
+        ("bitpack-footprint-dense", 16384) => routine_bridge!(FootprintColumn<16384>),
+        ("bitpack-footprint-dense", 65536) => routine_bridge!(FootprintColumn<65536>),
+        ("bitpack-footprint-dense", 1048576) => routine_bridge!(FootprintColumn<1048576>),
+        ("bitpack-footprint-dense", 4194304) => routine_bridge!(FootprintColumn<4194304>),
+        ("bitpack-footprint-dense", 7000000) => routine_bridge!(FootprintColumn<7000000>),
+        ("bitpack-footprint-dense", 33554432) => routine_bridge!(FootprintColumn<33554432>),
+        ("bitpack-footprint-packed", 16384) => routine_bridge!(FootprintColumn<16384>),
+        ("bitpack-footprint-packed", 65536) => routine_bridge!(FootprintColumn<65536>),
+        ("bitpack-footprint-packed", 1048576) => routine_bridge!(FootprintColumn<1048576>),
+        ("bitpack-footprint-packed", 4194304) => routine_bridge!(FootprintColumn<4194304>),
+        ("bitpack-footprint-packed", 7000000) => routine_bridge!(FootprintColumn<7000000>),
+        ("bitpack-footprint-packed", 33554432) => routine_bridge!(FootprintColumn<33554432>),
+
+        // the wide rung: payload shape above the native container rungs.
+        // Every key is W*1000 + NC*100 + D; see bench-wide-rung-shared.
+        ("wide-rung-width-l1", 129003) => routine_bridge!(WideCase<129003>),
+        ("wide-rung-width-l1", 160003) => routine_bridge!(WideCase<160003>),
+        ("wide-rung-width-l1", 192003) => routine_bridge!(WideCase<192003>),
+        ("wide-rung-width-l1", 200003) => routine_bridge!(WideCase<200003>),
+        ("wide-rung-width-l1", 232003) => routine_bridge!(WideCase<232003>),
+        ("wide-rung-width-l1", 256003) => routine_bridge!(WideCase<256003>),
+        ("wide-rung-width-l2", 129103) => routine_bridge!(WideCase<129103>),
+        ("wide-rung-width-l2", 160103) => routine_bridge!(WideCase<160103>),
+        ("wide-rung-width-l2", 192103) => routine_bridge!(WideCase<192103>),
+        ("wide-rung-width-l2", 200103) => routine_bridge!(WideCase<200103>),
+        ("wide-rung-width-l2", 232103) => routine_bridge!(WideCase<232103>),
+        ("wide-rung-width-l2", 256103) => routine_bridge!(WideCase<256103>),
+        ("wide-rung-density-w200", 200001) => routine_bridge!(WideCase<200001>),
+        ("wide-rung-density-w200", 200002) => routine_bridge!(WideCase<200002>),
+        ("wide-rung-density-w200", 200004) => routine_bridge!(WideCase<200004>),
+        ("wide-rung-density-w200", 200008) => routine_bridge!(WideCase<200008>),
+        ("wide-rung-walk-l2", 129100) => routine_bridge!(WideCase<129100>),
+        ("wide-rung-walk-l2", 160100) => routine_bridge!(WideCase<160100>),
+        ("wide-rung-walk-l2", 192100) => routine_bridge!(WideCase<192100>),
+        ("wide-rung-walk-l2", 200100) => routine_bridge!(WideCase<200100>),
+        ("wide-rung-walk-l2", 232100) => routine_bridge!(WideCase<232100>),
+        ("wide-rung-walk-l2", 256100) => routine_bridge!(WideCase<256100>),
+        ("wide-rung-walk-l1", 129000) => routine_bridge!(WideCase<129000>),
+        ("wide-rung-walk-l1", 160000) => routine_bridge!(WideCase<160000>),
+        ("wide-rung-walk-l1", 192000) => routine_bridge!(WideCase<192000>),
+        ("wide-rung-walk-l1", 200000) => routine_bridge!(WideCase<200000>),
+        ("wide-rung-walk-l1", 232000) => routine_bridge!(WideCase<232000>),
+        ("wide-rung-walk-l1", 256000) => routine_bridge!(WideCase<256000>),
+        // the same four arms as the two sections above, run together so a
+        // packed-against-dense delta exists at all (panel file 26).
+        ("bitpack-footprint-headtohead", 16384) => routine_bridge!(FootprintColumn<16384>),
+        ("bitpack-footprint-headtohead", 65536) => routine_bridge!(FootprintColumn<65536>),
+        ("bitpack-footprint-headtohead", 1048576) => routine_bridge!(FootprintColumn<1048576>),
+        ("bitpack-footprint-headtohead", 4194304) => routine_bridge!(FootprintColumn<4194304>),
+        ("bitpack-footprint-headtohead", 7000000) => routine_bridge!(FootprintColumn<7000000>),
+        // carrier-width sweep (panel file 26): one Routine per size, five
+        // arms per row resolved from bench.toml rather than from here.
+        ("bitpack-carrier-width", 16384) => routine_bridge!(CarrierColumn<16384>),
+        ("bitpack-carrier-width", 131072) => routine_bridge!(CarrierColumn<131072>),
+        ("bitpack-carrier-width", 1048576) => routine_bridge!(CarrierColumn<1048576>),
+        ("bitpack-carrier-width", 2097152) => routine_bridge!(CarrierColumn<2097152>),
+        ("bitpack-carrier-width", 4194304) => routine_bridge!(CarrierColumn<4194304>),
+        ("bitpack-carrier-width", 8388608) => routine_bridge!(CarrierColumn<8388608>),
+
+        // contention sweep (panel file 27): the carrier sweep's six arms with
+        // the column split T ways over one persistent pool. The key is
+        // N * 10 + T, because the bench macro dispatches on exactly one const
+        // parameter and the harness keys a row by its n, so the two travel
+        // together the way `warm-clamp-arity`'s W * 1000 + ... keys do.
+        ("bitpack-contention", 163841) => routine_bridge!(Contend<163841>),
+        ("bitpack-contention", 163842) => routine_bridge!(Contend<163842>),
+        ("bitpack-contention", 163844) => routine_bridge!(Contend<163844>),
+        ("bitpack-contention", 163848) => routine_bridge!(Contend<163848>),
+        ("bitpack-contention", 10485761) => routine_bridge!(Contend<10485761>),
+        ("bitpack-contention", 10485762) => routine_bridge!(Contend<10485762>),
+        ("bitpack-contention", 10485764) => routine_bridge!(Contend<10485764>),
+        ("bitpack-contention", 10485768) => routine_bridge!(Contend<10485768>),
+        ("bitpack-contention", 41943041) => routine_bridge!(Contend<41943041>),
+        ("bitpack-contention", 41943042) => routine_bridge!(Contend<41943042>),
+        ("bitpack-contention", 41943044) => routine_bridge!(Contend<41943044>),
+        ("bitpack-contention", 41943048) => routine_bridge!(Contend<41943048>),
+        ("bitpack-contention", 83886081) => routine_bridge!(Contend<83886081>),
+        ("bitpack-contention", 83886082) => routine_bridge!(Contend<83886082>),
+        ("bitpack-contention", 83886084) => routine_bridge!(Contend<83886084>),
+        ("bitpack-contention", 83886088) => routine_bridge!(Contend<83886088>),
+
+        // the decode attack (panel file 27 section 8): the same rows with two
+        // unrolled packed decoders added, run as their own section so the
+        // twelve committed contention rows are not rewritten to answer a
+        // question about one arm.
+        ("bitpack-contend-decode", 163841) => routine_bridge!(Contend<163841>),
+        ("bitpack-contend-decode", 163844) => routine_bridge!(Contend<163844>),
+        ("bitpack-contend-decode", 41943041) => routine_bridge!(Contend<41943041>),
+        ("bitpack-contend-decode", 41943044) => routine_bridge!(Contend<41943044>),
+        ("bitpack-contend-decode", 83886081) => routine_bridge!(Contend<83886081>),
+        ("bitpack-contend-decode", 83886084) => routine_bridge!(Contend<83886084>),
+
+        // the dense side attacked as well (panel file 27 section 9), so the
+        // comparison is between two kernels written with the same care rather
+        // than between an attacked one and whichever was committed first.
+        ("bitpack-contend-best", 41943041) => routine_bridge!(Contend<41943041>),
+        ("bitpack-contend-best", 41943044) => routine_bridge!(Contend<41943044>),
+
+        // write-contention (panel file 78): does the packing trade change
+        // shape when the column is written rather than read. KEY = N*10+T,
+        // same idiom. "safe" sizes land every internal boundary on the packed
+        // period; "race" sizes deliberately do not, pinned by
+        // bitpack-write-contend-shared's own test suite rather than trusted
+        // by hand arithmetic. Both sections share one Routine, so one match
+        // arm per (section, key) covers whichever variants that section's
+        // bench.toml entry lists.
+        ("bitpack-write-contend-safe", 655361) => routine_bridge!(WriteContend<655361>),
+        ("bitpack-write-contend-safe", 655362) => routine_bridge!(WriteContend<655362>),
+        ("bitpack-write-contend-safe", 655364) => routine_bridge!(WriteContend<655364>),
+        ("bitpack-write-contend-safe", 20971521) => routine_bridge!(WriteContend<20971521>),
+        ("bitpack-write-contend-safe", 20971522) => routine_bridge!(WriteContend<20971522>),
+        ("bitpack-write-contend-safe", 20971524) => routine_bridge!(WriteContend<20971524>),
+
+        ("bitpack-write-contend-race", 655341) => routine_bridge!(WriteContend<655341>),
+        ("bitpack-write-contend-race", 655342) => routine_bridge!(WriteContend<655342>),
+        ("bitpack-write-contend-race", 655344) => routine_bridge!(WriteContend<655344>),
+        ("bitpack-write-contend-race", 20971501) => routine_bridge!(WriteContend<20971501>),
+        ("bitpack-write-contend-race", 20971502) => routine_bridge!(WriteContend<20971502>),
+        ("bitpack-write-contend-race", 20971504) => routine_bridge!(WriteContend<20971504>),
+        ("bitpack-contend-best", 83886081) => routine_bridge!(Contend<83886081>),
+        ("bitpack-contend-best", 83886084) => routine_bridge!(Contend<83886084>),
+
+        // the u16 question at a column several times past L2 (panel file 27
+        // section 15), where the contention sweep's largest row left it a tie
+        // inside the noise floor because both regions were only just past the
+        // cache.
+        ("bitpack-wide", 83886081) => routine_bridge!(Wide<83886081>),
+        ("bitpack-wide", 83886084) => routine_bridge!(Wide<83886084>),
+        ("bitpack-wide", 167772161) => routine_bridge!(Wide<167772161>),
+        ("bitpack-wide", 167772164) => routine_bridge!(Wide<167772164>),
+        ("bitpack-wide", 335544321) => routine_bridge!(Wide<335544321>),
+        ("bitpack-wide", 335544324) => routine_bridge!(Wide<335544324>),
         _ => return None,
     };
     Some(RoutineSpec {
         name: name.to_string(),
         bridge,
     })
-}
-
-/// Take a manifest variant path with bare cargo target stem and
-/// produce the platform-shaped dylib path.
-fn shape_variant_path(p: PathBuf) -> PathBuf {
-    let parent = p.parent().map(Path::to_path_buf).unwrap_or_default();
-    let stem = p.file_name().and_then(|s| s.to_str()).unwrap_or("");
-    parent.join(format!(
-        "{}{}{}",
-        std::env::consts::DLL_PREFIX,
-        stem,
-        std::env::consts::DLL_SUFFIX
-    ))
 }
 
 fn run_worker(args: &[String]) -> ExitCode {
@@ -184,6 +618,11 @@ fn run_worker(args: &[String]) -> ExitCode {
     let max_call_us: Option<u64> = get("--max-call-us")
         .and_then(|s| s.parse().ok())
         .filter(|&v| v > 0);
+    // The coordinator passes this through from the manifest's `threaded`.
+    // A threaded bench's spawned workers never inherit a core pin, so the
+    // harness skips pinning rather than pin only the coordinating thread
+    // and skew the workload.
+    let threaded = args.iter().any(|a| a == "--threaded");
 
     let routine = match routine_for_n(&bench_name, n) {
         Some(r) => r,
@@ -192,6 +631,23 @@ fn run_worker(args: &[String]) -> ExitCode {
             return ExitCode::FAILURE;
         }
     };
+
+    // The validation pass spawns its workers with `--mode validate` and a
+    // comma-separated `--seeds` list, and expects `VOUT` lines back. Routing
+    // that through `harness::run_worker` produces no output, which the
+    // orchestrator reads as "returned 0 of 100 outputs" and then reports
+    // "Validation OK: all 0 variants produce identical output" before timing
+    // every variant anyway. Dispatch it to the worker that answers it.
+    if mode == "validate" {
+        let seeds: Vec<u64> = get("--seeds")
+            .unwrap_or_default()
+            .split(',')
+            .filter(|s| !s.is_empty())
+            .filter_map(|s| s.parse().ok())
+            .collect();
+        mockspace_bench_harness::harness::run_worker_validate(&routine, &dylib_path, &seeds, n, threaded);
+        return ExitCode::SUCCESS;
+    }
 
     let mut workload = Workload::new();
     workload.program("default", |b| {
@@ -210,6 +666,7 @@ fn run_worker(args: &[String]) -> ExitCode {
         n,
         batch_k,
         max_call_us,
+        threaded,
     );
     ExitCode::SUCCESS
 }

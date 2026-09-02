@@ -1,0 +1,2 @@
+derive_raw_one::<I=4,F=4>() = 16
+derive_raw_one::<I=11,F=5>() = 32

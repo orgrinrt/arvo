@@ -1,0 +1,11 @@
+p5: the frontier with the guard allowed. arity 3, exhaustive, counting.
+seconds are an ad-hoc quick spike, not a bench.
+
+policy=wrap  width= 6  triples=2^18   accept                             5.85s
+policy=wrap  width= 7  triples=2^21   accept                            49.06s
+policy=wrap  width= 8  triples=2^24   accept                           370.95s
+policy=wrap  width= 9  triples=2^27   timeout>900s                     900.06s
+policy=sat   width= 6  triples=2^18   accept                             3.80s
+policy=sat   width= 7  triples=2^21   accept                            29.73s
+policy=sat   width= 8  triples=2^24   accept                           254.85s
+policy=sat   width= 9  triples=2^27   timeout>900s                     900.06s

@@ -1,0 +1,43 @@
+== how many members of the representable set share one slot ==
+
+   Integer<4>                 magnitudes 1   slots [-8, 7]  |set| 16    worst slot -8 denotes 1 values
+   Integer<8>                 magnitudes 1   slots [-128, 127]  |set| 256   worst slot -128 denotes 1 values
+   UFixed<5,-2>               magnitudes 1   slots [0, 31]  |set| 32    worst slot 0 denotes 1 values
+   Biased<5,-1,1>             magnitudes 1   slots [-16, 15]  |set| 32    worst slot -16 denotes 1 values
+
+   Floating<3,-2,3>           magnitudes 3   slots [-4, 3]  |set| 16    worst slot -4 denotes 3 values
+   Floating<4,-3,5>           magnitudes 5   slots [-8, 7]  |set| 48    worst slot -8 denotes 5 values
+   Floating<5,0,8>            magnitudes 8   slots [-16, 15]  |set| 144   worst slot -16 denotes 8 values
+
+   controls:
+     worst ambiguity among one-magnitude formats: 1
+     worst ambiguity among many-magnitude formats: 8
+   controls hold.
+
+== what `adapt` returns on a position past the top of the range ==
+
+   Exact::on_grid(1000), saturating:
+     Signature<Integer<4>, ...>        -> slot 7
+     Signature<Floating<3,-2,3>, ...>  -> slot 3
+
+   For `Integer<4>` that slot names one value: 7 times the quantum at the only
+   magnitude there is.
+
+   For `Floating<3,-2,3>` that same slot names 3 different values,
+     at magnitude 0: 3 quanta of q(0) = 3 * 2^-2
+     at magnitude 1: 6 quanta of q(0) = 6 * 2^-2
+     at magnitude 2: 12 quanta of q(0) = 12 * 2^-2
+
+   Nothing in the returned `i64` says which, and `apply.rs` reads no magnitude:
+   `MAGNITUDES` appears nowhere in it and the two occurrences of the word `magnitude`
+   are both in doc comments. `RUN.md` carries the grep.
+
+== the statement this supports ==
+
+   `adapt` is a total map onto the representable set exactly at
+   `magnitudes = 1`. Above it the codomain is the slot range, which is a
+   projection of the set rather than the set, so the ratified factoring's
+   second half is realised for the constant-quantum family and not for the
+   magnitude-indexed one.
+
+   findings: 1

@@ -1,0 +1,30 @@
+== honest build (the mechanism, green end to end) ==
+exit: 0
+p2: 80's cross-check mechanism licensing a false law
+  model band: widths 2..=5
+  agreement over the band, evaluated at compile time: true
+  closed_verdict(w = 64) = true   (constant time, no enumeration)
+  consumer_that_rewrites_through_the_law::<Numeral64>() = licensed
+
+  swept verdict per width (runtime, exhaustive):
+    w =  2: true
+    w =  3: true
+    w =  4: true
+    w =  5: true
+    w =  6: true
+    w =  7: true
+    w =  8: true
+    w =  9: true
+    w = 10: true
+    w = 11: true
+    w = 12: true
+    w = 13: true
+    w = 14: true
+    w = 15: true
+    w = 16: FALSE, witness x = 16
+    w = 17: FALSE, witness x = 16
+    w = 18: FALSE, witness x = 16
+
+  the band (and every band ending below width 16) agrees with the
+  closed form; the arm is licensed at width 64; the law is false
+  there. Build with --cfg audit for the compile-time refutation.

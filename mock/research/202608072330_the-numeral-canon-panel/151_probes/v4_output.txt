@@ -1,0 +1,63 @@
+================================================================================================
+D1/D2/D3. The three readings over the committed corpus
+================================================================================================
+  families with >= 3 size points and >= 4 shared variants: 35
+
+       k                    earned      escaped-conservative         escaped-symmetric
+                    mean / askable            mean / askable            mean / askable
+     0.0              3.03 /   29              3.03 /   29              3.03 /   29
+    0.05              2.63 /   28              3.03 /   29              2.63 /   28
+     0.1              2.23 /   23              3.03 /   29              2.34 /   25
+    0.25              1.26 /   11              3.06 /   29              1.77 /   20
+     0.5              0.77 /    4              3.14 /   29              1.89 /   20
+     1.0              0.66 /    4              3.17 /   29              2.11 /   23
+     2.0              0.60 /    2              3.26 /   29              2.23 /   21
+
+  monotone NON-INCREASING in k:
+    earned                  True
+    escaped-conservative    False
+    escaped-symmetric       False
+  D1: CONFIRMED
+  D2 (earned is a subset of escaped-conservative in every family and k): True
+
+  askable families at k = 0.5: earned = 4, escaped-conservative = 29, escaped-symmetric = 20
+  D3: CONFIRMED; 150 reports 4, 20 and 29
+
+================================================================================================
+D4/D5. The controls
+================================================================================================
+  family                                    earned      escaped-conservative         escaped-symmetric
+  exact duplicates                               0                         4                         4
+  well separated                                 3                         3                         3
+
+  D4 (duplicates: earned 0, escaped-conservative 4): True (must be True)
+  D5 (well separated: all three agree): True (must be True)
+
+================================================================================================
+D6. 150's dissent against 145 section 2, checked at source
+================================================================================================
+  the claim is in 145's prose: True
+  z3's own summary lines:
+    overflow = sat    conforming-arm counts observed: [2]
+    overflow = wrap   conforming-arm counts observed: [2, 4]
+  z3 rows showing a wrapping assignment with 2 conforming arms: 4
+    toward_zero/wrap/stepwise          2 conforming arms: stepwise/shift, stepwise/partials
+    toward_zero/wrap/exact             2 conforming arms: fused/widening, fused/partials
+    toward_zero/wrap/stepwise          2 conforming arms: stepwise/shift, stepwise/partials
+
+  D6: CONFIRMED. The verdict contradicts its own table, and the
+  mechanism is 142 F142-2: absorption relocates a REDUCTION, the residual is a ROUNDING
+  relocation, free only for translation-equivariant positions, and toward-zero is not one.
+  That is the same defect 136 section 9 records against x4, occurring a second time in the
+  same file and not caught by me.
+
+================================================================================================
+VERDICT
+================================================================================================
+  150's gate reading is a third one and mine were both the wrong shape for 144's gate.
+  Earned is monotone non-increasing, is a subset of escaped-conservative, and leaves
+  4 askable families at k = 0.5 against 20 and 29.
+  So z2's B2 refutation is correct about the readings it implemented and wrong as a
+  generalisation to 'a gated dominance test', which is what 145 section 7 claims.
+
+  And 150's D1 against 145 is correct at source.

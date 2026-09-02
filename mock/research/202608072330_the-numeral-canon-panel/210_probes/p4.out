@@ -1,0 +1,61 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p4_standards_alias_adequacy.rs
+
+### compiled clean
+
+### p4. the standards adequacy test, over three candidate statements of arvo's
+### encoding. toolchain: the repository pin.
+
+CONTROL 0. Table 3.5's own closure k = 1 + w + t, before judging any arm
+  T3.5         binary16: 1 + w + t                          PASS     required=PASS     w=Some(5) gives k=Some(16)     as required
+  T3.5         binary32: 1 + w + t                          PASS     required=PASS     w=Some(8) gives k=Some(32)     as required
+  T3.5         binary64: 1 + w + t                          PASS     required=PASS     w=Some(11) gives k=Some(64)    as required
+  T3.5         binary128: 1 + w + t                         PASS     required=PASS     w=Some(15) gives k=Some(128)   as required
+  T3.5         binary256: 1 + w + t                         PASS     required=PASS     w=Some(19) gives k=Some(256)   as required
+
+MATLAB `fi`, arvo's encoding stated over W
+  bin          exactly WordLength characters, every swept width PASS     required=PASS     fails at 0 of 12 widths        as required
+  storedInt    the documented rung(WL) type, every swept width PASS     required=PASS     fails at 0 of 12 widths        as required
+
+MATLAB `fi`, arvo's encoding stated over Min
+  bin          exactly WordLength characters, every swept width REFUSED  required=REFUSED  fails at 8 of 12 widths        as required
+  storedInt    the documented rung(WL) type, every swept width PASS     required=PASS     fails at 0 of 12 widths        as required
+
+MATLAB `fi`, arvo's encoding stated over Head
+  bin          exactly WordLength characters, every swept width REFUSED  required=REFUSED  fails at 12 of 12 widths       as required
+  storedInt    the documented rung(WL) type, every swept width REFUSED  required=REFUSED  fails at 12 of 12 widths       as required
+
+MATLAB `fi`, arvo's encoding stated over WBroken
+  bin          exactly WordLength characters, every swept width REFUSED  required=REFUSED  fails at 12 of 12 widths       as required
+  storedInt    the documented rung(WL) type, every swept width REFUSED  required=REFUSED  fails at 4 of 12 widths        as required
+
+IEEE 754-2019 binary interchange, arvo's encoding stated over W
+  sec 3.4      uniquely encoded in k bits, k in {16, 32, 64} PASS     required=PASS     fails at []                    as required
+
+IEEE 754-2019 binary interchange, arvo's encoding stated over Min
+  sec 3.4      uniquely encoded in k bits, k in {16, 32, 64} PASS     required=PASS     fails at []                    as required
+
+IEEE 754-2019 binary interchange, arvo's encoding stated over Head
+  sec 3.4      uniquely encoded in k bits, k in {16, 32, 64} REFUSED  required=REFUSED  fails at [16, 32, 64]          as required
+
+IEEE 754-2019 binary interchange, arvo's encoding stated over WBroken
+  sec 3.4      uniquely encoded in k bits, k in {16, 32, 64} REFUSED  required=REFUSED  fails at [16, 32, 64]          as required
+
+REPORTED, NOT SCORED. k = 128 and k = 256, where `rung` has no value
+  binary128: W gives 128, Min gives 128, Head gives 128. The standard defines the
+  format; arvo has no native rung there, so only the W statement has a referent.
+  binary256: W gives 256, Min gives 128, Head gives 128. The standard defines the
+  format; arvo has no native rung there, so only the W statement has a referent.
+
+### reading
+### Only the W arm satisfies every observation of both standards. The MIN arm
+### passes IEEE (every interchange width is already a native rung) and passes
+### `storedInteger` (whose own rule is rung(WL)), and it fails `bin` at every
+### width that is not exactly a rung, so switching arvo's container rule does
+### not rescue a canon that states the encoding over the container.
+### The HEAD arm, which is what arvo ships for Warm and Precise, is refused
+### by every observation of both standards.
+
+### overall: every arm as required
+
+### exit 0

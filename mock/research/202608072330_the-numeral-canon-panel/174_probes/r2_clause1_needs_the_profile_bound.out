@@ -1,0 +1,27 @@
+debug-assertions = off
+  inputs where the two agree in value : 256/256
+  inputs where realisation A panicked : 0
+  inputs where the values differ      : 0
+
+C1 PASS: at off the two agree on all 256 inputs and neither panics.
+         They induce the SAME boundary function on the SAME definedness
+         domain (both total), so clause 1 declares them indistinguishable.
+
+debug-assertions = on
+  inputs where the two agree in value : 53/256
+  inputs where realisation A panicked : 203
+  inputs where the values differ      : 0
+  first distinguishing input          : x = 53
+  realisation B at that input         : 0
+
+C2 PASS: at on, realisation A diverges on 203 of 256 inputs while B is total.
+C3 PASS: on the 53 inputs where A returns, the two still agree in value.
+
+SO: realisation A is total at off and partial at on. The pair satisfies
+clause 1's hypothesis at off and FAILS it at on, which means clause 1 is
+vacuous for this pair at on rather than false. What is established is that
+'the same definedness domain' is profile-dependent, so clause 1's
+equivalence classes are profile-dependent and the clause does not say so;
+and that which operations are partial is profile-dependent too, which is
+clause 2's partial-operation hypothesis resting on a moving set.
+

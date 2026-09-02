@@ -1,0 +1,16 @@
+CONTROL (64,wrap) vs (64,clamp) separates under add: (18446744073709551615, 1, 0, 18446744073709551615) -> ok
+CONTROL (13,wrap) vs (13,clamp) separates under add: (8191, 1, 0, 8191) -> ok
+
+widths where wrap == clamp, signature = arity-1 mask (what P4 used) : [64]
+widths where wrap == clamp, signature = arity-2 add                 : []
+widths where R itself does not read the policy (whole-line test)    : []
+
+index points collapsing, arity-1 signature : 1 of 128
+index points collapsing, arity-2 signature : 0 of 128
+index points collapsing DEFINITIONALLY     : 0 of 128
+
+VERDICT: P4's collapse is a REACHABILITY degeneracy, not a definitional one.
+         It is an artifact of P4's one-operation, arity-1 signature. Adding
+         `add` -- an operation any numeral must interpret -- destroys it.
+         F11 and F12 as stated in P4 are WITHDRAWN. What survives is stated
+         in p5_signature/FINDINGS.md.

@@ -11,39 +11,39 @@ signatures land in `mock/crates/<name>/src/` first, validated by
 `cargo check` in `mock/`, then by `cargo mock` (which also
 regenerates `docs/`).
 
-### Strategy markers are load-bearing
+### A strategy is a binding, and its presets are not a table
 
-Every numeric type that has a precision/throughput tradeoff carries
-`S: Strategy`. Default is `Warm`. The strategy drives storage
-container width, operation semantics (wrapping vs saturating), and
-SIMD lane count.
+A strategy maps a name onto a placement objective and an adaptation selection.
+It names no implementation and owns none, and the ladder it points into is keyed
+on the objective rather than on the name.
+
+**Do not write a behaviour table keyed on a preset name.**
+`ruling::the_strategy_intents_are_not_clear_cut` is ratified and says the
+per-strategy statements are not to be written down as clear cut and settled, so
+a table with one row per preset and columns for container and arithmetic is
+exactly the shape it forbids. The intents live as prose on each preset, and
+`ruling::the_strategy_set_is_not_closed_at_four` is why the set is open.
+
+Which overflow mode a preset names is not settled:
+`ruling::wrap_or_clamp_stays_open_and_both_get_priced` is at `open` and says the
+bench decides. Each of the four presets carries a value anyway, because a trait
+with an associated type cannot be implemented without one, and each carries a
+`FIXME` beside it saying the value is a carried default rather than a ratified
+one. Read them that way, and leave the markers where they are until the bench
+answers.
 
 ```rust
-pub struct UFixed<const I: u8, const F: u8, S: Strategy = Warm> {
-    bits: S::Container<I, F>,
+pub trait Strategy {
+    type Objective: ObjectiveKind;
+    type Adaptation: Adaptation;
 }
-
-pub type Ratio   = UFixed<0, 8, Warm>;
-pub type Angle   = UFixed<9, 7, Warm>;
-pub type Bool    = UFixed<1, 0, Hot>;   // explicit override
 ```
 
-Strategies (summary — see
-`design_rounds/202603241200_topic.arvo-strategy-markers.md` for the
-full table):
+An associated type rather than a const, and the crate's own rustdoc says why: a
+const there becomes a const generic argument depending on a generic parameter at
+the call site, which does not compile without a feature the stack does not take.
 
-| Strategy | Container | Arithmetic | Use case |
-|---|---|---|---|
-| `Hot` | minimum byte-aligned | wrapping | inner loops, known-safe range |
-| `Warm` (default) | 2x logical, byte-aligned | wrapping (safe on single ops) | default |
-| `Cold` | bitpacked minimum | widen-op-narrow | storage density |
-| `Precise` | 2x logical, bitpacked | saturating | correctness-critical |
-
-If you add a new numeric type and the type admits a precision
-tradeoff, it MUST carry `S: Strategy` or justify the omission in
-a code comment. The `strategy-marker-required` lint warns when a
-new `pub struct`/`pub type` in a numeric crate lacks the parameter.
-
+Two items, and a third keyed on the preset would be the table again.
 ### Monomorphisation is the dispatch
 
 - No `dyn Trait` anywhere.
@@ -56,29 +56,26 @@ new `pub struct`/`pub type` in a numeric crate lacks the parameter.
 
 ### Contracts before concretes
 
-- `arvo` declares numeric primitives, strategy markers, and
-  composable numeric traits.
-- `arvo-bits` declares bit-level contracts (`BitWidth`, `BitAccess`,
-  `BitSequence`, `BitLogic`) + opaque-bit concretes via allowlist
-  (today: `Bits<N>`). **Arithmetic fielded structs live in L0 arvo;
-  mask-specific concretes live in L2 arvo-bitmask.** A new arithmetic
-  `pub struct` with fields in `arvo-bits/src/**` is a layering
-  violation.
-- `arvo-bitmask` picks `Mask64`, `Mask256`, `BitMatrix` concretes on
-  top of `arvo-bits` contracts.
-- `arvo-tensor` picks `Array<T, N>`, `Matrix<W, N>` dense-tensor
-  concretes; sibling of arvo-bitmask (bit storage) with value
-  storage. Hosts canonical `cap_size` and `Enumerator` trait.
-- `arvo-graph` / `arvo-sparse` / `arvo-comb` / `arvo-spectral` are
-  generic over numeric trait bounds. They do not import `UFixed` or
-  `IFixed` directly.
+- `arvo-format` declares what values exist: the representable set as one
+  affine predicate over a phase, a quantum law and a slot range, the six
+  rounding modes, the overflow policies, the adaptation as the pair of
+  those two, and the map that applies one. It is the crate that introduces
+  the numeric category, so `Width` and `Bool` are defined here and nowhere
+  else.
+- `arvo-placement` derives where the bits sit, keyed on occupancy. **No
+  declared operation reads a placement**, and the dependency direction is
+  what enforces that: `arvo-format` cannot name a carrier because it does
+  not depend on this crate.
+- `arvo-strategy` binds a name to a placement objective and an adaptation
+  selection. A strategy names no implementation and owns none, and the
+  preset set is open rather than an enumeration to widen.
 
 ### Sizes are const
 
 Every size lives at type level: `Mask64`, `Mask256`, `Seq<T, N>`,
 `[W; N]`. No runtime resize. No runtime grow. If you reach for
 `.push(`, `.resize(`, `.extend(`, `Vec::with_capacity`, you are
-solving the wrong problem — either make the size const-generic or
+solving the wrong problem, either make the size const-generic or
 the consumer owns the buffer.
 
 ### Zero platform dep

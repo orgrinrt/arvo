@@ -1,0 +1,20 @@
+NOTE: 159:176-185 and 159:225-230 are quoted verbatim from
+      161_probes/anchor_accounting/dropped_anchors.txt lines 89-90; their
+      ranges are the list's, not mine, so they are checked for existence
+      rather than for starting on a non-blank line.
+
+109:534-537  ->  "Const-available" rather than "in the type" is op's own widening at I13:
+159:176-185  ->  **S-5 partially accepted, and the residue is real.** S-5 says O-C closes
+159:225-230  ->  - **F6** is recorded at `W = 13` and its argument is a proof. `size_of` 
+111:555-556  ->  Adequacy is checkable the way `110` checks a congruence: at model widths
+154_probes/p1_saturation/sat.s:31-39  ->  _b_unsat:
+154_probes/p1_saturation/sat.s:31-39  ->  _b_unsat:
+OK   PATH 162_probes/p1_how_far_does_the_premise_reach.py
+OK   PATH 162_probes/p2_cfg_in_const_fn
+OK   PATH 162_probes/p2_cfg_in_const_fn
+OK   PATH 161_probes/anchor_accounting/dropped_anchors.txt
+OK   PATH 161_probes/anchor_accounting/dropped_anchors.txt
+OK   PATH 161_probes/citecheck.out
+OK   PATH 161_probes/anchor_accounting/count_anchors.py
+
+resolved=13 failed=0

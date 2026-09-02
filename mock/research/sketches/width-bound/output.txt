@@ -1,0 +1,6 @@
+error[E0080]: evaluation panicked: declared width is wider than a slot index carries; the bound is 62 bits, because the count of slots is 2^width and 2^63 does not fit a signed 64-bit integer
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/design-primitives/mock/crates/arvo-format/src/slots.rs:79:24
+   |                        ^^^^^^^^^^ evaluation of `<arvo_format::slots::Signed<63> as arvo_format::Slots>::MIN` failed inside this call
+note: inside `slots::span`
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/design-primitives/mock/crates/arvo-format/src/slots.rs:53:13
+note: inside `checked_width`

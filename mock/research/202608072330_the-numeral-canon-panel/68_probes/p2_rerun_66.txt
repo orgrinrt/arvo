@@ -1,0 +1,13 @@
+LIB_EXIT=0
+TESTBUILD_EXIT=0
+
+running 4 tests
+test tests::cold_accepts_and_erases_to_a_different_representation_than_hot ... ok
+test tests::cold_rejects_the_reserved_top_bit ... ok
+test tests::hot_accepts_full_range_and_erases_identically ... ok
+test tests::one_shape_two_strategies_two_container_encodings_both_type_check ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+TESTRUN_EXIT=0
+0

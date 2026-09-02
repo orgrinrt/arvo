@@ -1,0 +1,43 @@
+arm A: W in 1..=31, C = 32, wrap mul, declared vs container
+  W        pairs     disagree       mode  first witness
+  1            4            0 exhaustive  none
+  2           16            4 exhaustive  a=2 b=2
+  3           64           33 exhaustive  a=2 b=4
+  4          256          180 exhaustive  a=2 b=8
+  5         1024          848 exhaustive  a=2 b=16
+  6         4096         3696 exhaustive  a=2 b=32
+  7        16384        15492 exhaustive  a=2 b=64
+  8        65536        63568 exhaustive  a=2 b=128
+  9       262144       257851 exhaustive  a=2 b=256
+ 10      1048576      1039278 exhaustive  a=2 b=512
+ 11        40000        39805    sampled  a=1344 b=1423
+ 12        40000        39922    sampled  a=1344 b=3471
+ 13        40000        39953    sampled  a=5440 b=7567
+ 14        40000        39978    sampled  a=13632 b=7567
+ 15        40000        39990    sampled  a=13632 b=7567
+ 16        40000        39993    sampled  a=46400 b=7567
+ 17        40000        39999    sampled  a=111936 b=73103
+ 18        40000        39998    sampled  a=243008 b=73103
+ 19        40000        39996    sampled  a=505152 b=335247
+ 20        40000        39992    sampled  a=1029440 b=335247
+ 21        40000        39985    sampled  a=2078016 b=335247
+ 22        40000        39954    sampled  a=2078016 b=2432399
+ 23        40000        39922    sampled  a=6272320 b=6626703
+ 24        40000        39833    sampled  a=14660928 b=15015311
+ 25        40000        39703    sampled  a=31438144 b=15015311
+ 26        40000        39376    sampled  a=64992576 b=48569743
+ 27        40000        38753    sampled  a=64992576 b=115678607
+ 28        40000        37558    sampled  a=64992576 b=249896335
+ 29        40000        35048    sampled  a=127050866 b=438105945
+ 30        40000        30010    sampled  a=870298944 b=249896335
+ 31        40000        19987    sampled  a=1944040768 b=1323638159
+
+arm B (control, must agree): W = 32, C = 32, sampled
+  pairs=200000 disagree=0
+
+arm C (negative control, MUST FAIL): assert declared == container at W = 13, C = 32
+  FAILED AS REQUIRED: 67017387 disagreeing pairs of 2^26.
+  first witness: a=2 b=4096: declared-wrap 0, container-wrap 8192
+  (matlab fi with word length 13 and wrap documents the declared value; a
+  container-stated numeral returns the other one, so at most one branch can
+  pass a fi parity suite)

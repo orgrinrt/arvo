@@ -1,0 +1,10 @@
+== honest build (the mechanism, green end to end) ==
+exit: 0
+p4: the band mechanism licensing a false SATURATING law at width 64
+  model band: widths 2..=8
+  agreement over the band, evaluated at compile time: true
+  closed_verdict(w = 64) = true   (constant time, no enumeration)
+  arm at width 64: licensed
+  and the licensed law is false at width 64, witness x = 2:
+    sat_pow(2, 63, 64) = 0x8000000000000000, sat_pow(2, 64, 64) = 0xffffffffffffffff
+  (--cfg badclosed refuses at the band; --cfg audit refuses at width 64)

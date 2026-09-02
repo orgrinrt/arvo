@@ -1,0 +1,26 @@
+  ok    mock/research/202608072330_the-numeral-canon-panel/INTENTS.md:56
+  ok    mock/research/202608072330_the-numeral-canon-panel/INTENTS.md:290-292
+  ok    mock/research/202608072330_the-numeral-canon-panel/OPTIONS.md:2059-2060
+  ok    mock/research/202608072330_the-numeral-canon-panel/OPTIONS.md:2089
+  ok    mock/research/202608072330_the-numeral-canon-panel/OPTIONS.md:2096
+  ok    mock/research/202608072330_the-numeral-canon-panel/93_orchard_the_strategy_axis_derived_cold.md:966-973
+  ok    mock/research/202608072330_the-numeral-canon-panel/97_dolan_the_strategy_space_attacked.md:939-942
+  ok    mock/research/202608072330_the-numeral-canon-panel/98_spj_what_the_strategy_axis_settles.md:398-402
+  ok    mock/research/202608072330_the-numeral-canon-panel/98_spj_what_the_strategy_axis_settles.md:473-477
+  ok    mock/research/202608072330_the-numeral-canon-panel/98_spj_what_the_strategy_axis_settles.md:285-286
+  ok    mock/research/202608072330_the-numeral-canon-panel/99_persona_checkpoint_eight.md:60-63
+  ok    mock/research/202608072330_the-numeral-canon-panel/98_probes/p10_is_the_table_stable_enough_to_be_an_object.out:8-13
+  ok    mock/research/202608072330_the-numeral-canon-panel/93_probes/p4_preference_erases.rs:47
+  ok    mock/benches/variants/bitpack-carrier-d16-control/src/lib.rs:1-8
+  ok    mock/benches/variants/bitpack-carrier-shared/src/lib.rs:373-388
+  ok    mock/benches/variants/bitpack-carrier-shared/src/lib.rs:394-411
+  ok    mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:68
+  ok    mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:66-72
+  ok    mock/research/202608072330_the-numeral-canon-panel/100_probes/p10_the_slow_crate_is_serial_only.out:(whole file)
+  ok    mock/benches/variants/warm-clamp-shared/src/lib.rs:83
+  ok    /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/bce17f6/bench-harness/src/harness.rs:752
+  ok    /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/bce17f6/bench-harness/src/env.rs:105-106
+  ok    .claude/rules/arvo-toolbox-not-policer.md:(whole file)
+  ok    .claude/rules/arvo-compile-time-last.md:(whole file)
+
+citations checked: 24   ok: 24   failed: 0

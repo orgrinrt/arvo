@@ -1,0 +1,88 @@
+######## question, by decider
+  decider         total  answered  proposed   open
+  coordinator         3         0         0      3
+  measurement         3         0         0      3
+  op                 27         4         0     23
+  panel              45         0        13     32
+  ALL                78         4        13     61
+
+######## obligation, by consumer
+  consumer        total  answered  proposed   open
+  any                 2         0         1      1
+  hilavitkutin        7         0         0      7
+  hilavitkutin for a scheduler's plan, vehje for a compiler's pass order      1         0         0      1
+  hilavitkutin, and vehje for a compiler's artifact read and write sets      1         0         0      1
+  ALL                11         0         1     10
+
+######## the questions and obligations nothing points at
+  question :: which_width_coordinates_a_consumer_writes
+  question :: mixed_numeral_addition
+  question :: what_a_datum_stands_for
+  question :: arithmetic_column_one_axis_or_two
+  question :: does_warm_wrap_or_clamp
+  question :: which_carrier_the_packing_claim_is_about
+  question :: one_numeral_family_or_several
+  question :: the_width_surface_crossing
+  question :: container_derivation_output_count
+  question :: inclusion_order_singleton_amendment
+  question :: what_a_numeral_guarantees_to_a_fold
+  question :: reduction_order_or_associativity
+  question :: which_axes_a_build_arm_may_move
+  question :: the_exchange_rate_a_preference_yields_at
+  question :: are_the_axes_independently_resolvable
+  question :: which_sense_composition_carries
+  question :: does_the_canon_carry_a_numeric_threshold
+  question :: is_the_derived_numeral_required_to_be_tightest
+  question :: does_precision_count_the_sign_digit
+  question :: does_narrowing_compose
+  question :: is_the_cross_kind_join_closed_or_priced
+  question :: should_phase_collide_across_two_vocabularies
+  question :: adaptation_in_identity_or_realisation
+  question :: are_set_valued_carriers_admitted
+  question :: is_the_role_set_closed
+  question :: does_the_canon_speak_about_cost
+  question :: how_the_law_inventory_is_named
+  question :: what_a_platform_width_type_is
+  question :: arbitrary_width_demands_in_the_canon
+  question :: is_the_ambient_operation_family_fixed
+  question :: two_shapes_of_aggregate_composition
+  question :: whose_reduction_governs_a_lossy_crossing
+  question :: does_the_canon_name_crossing_classes
+  question :: may_an_arms_predicate_read_data
+  question :: which_route_a_law_verdict_takes_to_closed_form
+  question :: are_strategies_partially_ordered_by_chain_laws
+  question :: which_reassociated_arm_a_law_licenses
+  question :: must_a_weighting_be_strictly_positive
+  question :: arms_no_weighting_can_select
+  question :: is_i9_about_a_strategy_or_one_component
+  question :: what_transfers_from_a_model_width
+  question :: are_consumer_terms_trees_or_dags
+  question :: what_the_double_rounding_mechanism_is
+  question :: which_operation_set_the_design_ships
+  question :: is_the_firewall_carried_unpredicated
+  question :: what_a_proof_marker_is_against_a_measurement
+  question :: may_the_canon_carry_an_unpredicated_proposition
+  question :: is_the_rounding_candidates_pairing_section_canon_or_design
+  question :: why_the_default_rounding_position_is_chosen
+  question :: which_units_a_weighting_is_expressed_in
+  question :: the_rounding_mode_vocabulary
+  question :: the_container_premise
+  question :: does_the_observability_principle_become_an_intent
+  question :: which_accuracy_target_the_accuracy_intent_names
+  question :: chains_and_ops_as_two_things_or_one_phrase
+  question :: which_chain_carrier_ships
+  question :: chain_or_region_between_observations
+  question :: does_the_position_keyed_dither_arm_ship
+  question :: does_a_consumer_supplied_seed_surface_exist
+  question :: is_the_non_terminating_contention_crate_a_defect
+  question :: are_open_domain_dimensions_stated_as_open
+  obligation :: set_operations_over_a_fixed_size_bit_set
+  obligation :: ordering_a_directed_acyclic_graph
+  obligation :: a_sparse_adjacency_a_plan_can_be_built_on
+  obligation :: a_spectral_partition_of_a_dependency_graph
+  obligation :: a_cost_dynamic_program
+  obligation :: a_platform_sized_unsigned_integer_at_an_api_position
+  obligation :: an_exact_width_container_a_consumer_can_alias_and_pin
+  obligation :: a_content_hash
+  obligation :: debug_output_from_every_numeral_shape
+  obligation :: a_build_flag_that_changes_float_semantics

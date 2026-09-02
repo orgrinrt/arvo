@@ -1,0 +1,112 @@
+==============================================================================
+p3. Does the one-sided form dominate off its thirteen chosen rows?
+==============================================================================
+
+------------------------------------------------------------------------------
+SATURATING, one-sided declarations, every term at 2 and 3 leaf slots
+
+  exhaustive   primitive uW3/sat   terms 96
+    cells 13032   arms agree 2950   reachable-set oracle 2680   (gap 270)
+    corner 2247   symmetric affine 2111   ONE-SIDED 2663
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 1232]
+    cells where the corner rule licenses and the one-sided form does NOT: 0
+    cells where the symmetric affine licenses and the one-sided form does NOT: 0
+
+  exhaustive   primitive iW3/sat   terms 96
+    cells 2148   arms agree 1338   reachable-set oracle 1310   (gap 28)
+    corner 1245   symmetric affine 1296   ONE-SIDED 1306
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 297]
+    cells where the corner rule licenses and the one-sided form does NOT: 0
+    cells where the symmetric affine licenses and the one-sided form does NOT: 0
+
+------------------------------------------------------------------------------
+SATURATING, TWO-ENDPOINT declarations
+
+  exhaustive, arity 2   primitive uW3/sat   terms 6
+    cells 3996   arms agree 952   reachable-set oracle 952   (gap 0)
+    corner 924   symmetric affine 884   ONE-SIDED 952
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 245]
+    cells where the corner rule licenses and the one-sided form does NOT: 0
+    cells where the symmetric affine licenses and the one-sided form does NOT: 0
+
+  exhaustive, arity 2   primitive iW3/sat   terms 6
+    cells 3996   arms agree 1532   reachable-set oracle 1532   (gap 0)
+    corner 1522   symmetric affine 1528   ONE-SIDED 1440
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 738]
+    cells where the corner rule licenses and the one-sided form does NOT: 92
+    cells where the symmetric affine licenses and the one-sided form does NOT: 88
+    terms on which the one-sided form is beaten by the corner rule:
+      (x * y)                  beaten on 91 cells   corner 380  one-sided 289
+      (x * x)                  beaten on 1 cells   corner 6  one-sided 5
+
+  sampled 500 decls, arity 3   primitive uW3/sat   terms 90
+    cells 36648   arms agree 5874   reachable-set oracle 5718   (gap 156)
+    corner 3199   symmetric affine 5313   ONE-SIDED 5625
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 1050]
+    cells where the corner rule licenses and the one-sided form does NOT: 43
+    cells where the symmetric affine licenses and the one-sided form does NOT: 10
+    terms on which the one-sided form is beaten by the corner rule:
+      (x * (y - x))            beaten on 17 cells   corner 57  one-sided 42
+      ((x - y) * y)            beaten on 14 cells   corner 48  one-sided 40
+      (x * (y - z))            beaten on 6 cells   corner 19  one-sided 13
+      ((x - y) * z)            beaten on 3 cells   corner 23  one-sided 20
+      ((x - y) * x)            beaten on 2 cells   corner 16  one-sided 14
+      (x * (x - y))            beaten on 1 cells   corner 12  one-sided 11
+
+  sampled 500 decls, arity 3   primitive iW3/sat   terms 90
+    cells 36648   arms agree 9552   reachable-set oracle 9438   (gap 114)
+    corner 6738   symmetric affine 9253   ONE-SIDED 8661
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 5689]
+    cells where the corner rule licenses and the one-sided form does NOT: 593
+    cells where the symmetric affine licenses and the one-sided form does NOT: 613
+    terms on which the one-sided form is beaten by the corner rule:
+      ((x * y) * y)            beaten on 30 cells   corner 103  one-sided 73
+      ((x * x) * y)            beaten on 27 cells   corner 90  one-sided 63
+      (x * (x * y))            beaten on 22 cells   corner 93  one-sided 71
+      ((x + y) * y)            beaten on 22 cells   corner 84  one-sided 65
+      ((x + y) * z)            beaten on 22 cells   corner 57  one-sided 35
+      ((x * y) * x)            beaten on 22 cells   corner 99  one-sided 77
+      (x * (y * x))            beaten on 21 cells   corner 93  one-sided 72
+      ((x + y) * x)            beaten on 21 cells   corner 77  one-sided 59
+      (x * (y + x))            beaten on 20 cells   corner 80  one-sided 62
+      (x * (y + z))            beaten on 20 cells   corner 60  one-sided 40
+      (x * (x + y))            beaten on 19 cells   corner 78  one-sided 61
+      ((x - y) * z)            beaten on 19 cells   corner 69  one-sided 50
+
+------------------------------------------------------------------------------
+WRAPPING, where P3 predicts the comparison is between two rules
+answering a question p2 shows the root already answers
+
+  exhaustive   primitive uW3/wrap   terms 96
+    cells 13032   arms agree 3210   reachable-set oracle 2680   (gap 530)
+    corner 2247   symmetric affine 2111   ONE-SIDED 2663
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 1202]
+    cells where the corner rule licenses and the one-sided form does NOT: 0
+    cells where the symmetric affine licenses and the one-sided form does NOT: 0
+
+  exhaustive   primitive iW3/wrap   terms 96
+    cells 2148   arms agree 1402   reachable-set oracle 1310   (gap 92)
+    corner 1245   symmetric affine 1296   ONE-SIDED 1306
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 253]
+    cells where the corner rule licenses and the one-sided form does NOT: 0
+    cells where the symmetric affine licenses and the one-sided form does NOT: 0
+
+------------------------------------------------------------------------------
+SATURATING, arity 4, sampled terms and declarations
+
+  sampled   primitive uW2/sat   terms 80
+    cells 3788   arms agree 1115   reachable-set oracle 904   (gap 211)
+    corner 751   symmetric affine 766   ONE-SIDED 898
+    unsound: corner 0  symAff 0  one-sided 0   [C2 halved rule: 202]
+    cells where the corner rule licenses and the one-sided form does NOT: 0
+    cells where the symmetric affine licenses and the one-sided form does NOT: 0
+
+------------------------------------------------------------------------------
+C1. The correlation-breaking mutation, which must collapse the
+one-sided form's advantage back onto the corner rule.
+
+  (x + y) - y   correlated     corner    8  one-sided   36  of   64 cells
+  (x + y) - y2  broken         corner    8  one-sided    8  of   64 cells
+
+  If the broken row's one-sided count drops to the corner count, the
+  cancellation is what produces the advantage rather than a looser check.

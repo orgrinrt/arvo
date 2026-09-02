@@ -1,0 +1,51 @@
+p7. Emitted bodies, aarch64-apple-darwin, opt-level 3, no feature gates
+==========================================================================
+
+general_masked:  ALIASES  ->  cheap_reduced_ungated
+cheap_reduced_ungated:   (4 instructions)
+    sub	w8, w0, w1
+    add	w8, w8, w2
+    and	w0, w8, #0x1f
+    ret
+
+cheap_unreduced_ungated:   (3 instructions)
+    sub	w8, w0, w1
+    add	w0, w8, w2
+    ret
+
+wrap_gated:  ALIASES  ->  cheap_unreduced_ungated
+sat_gated:  ALIASES  ->  general_saturating
+general_saturating:   (15 instructions)
+    and	w8, w2, #0xff
+    and	w9, w1, #0xff
+    and	w10, w0, #0xff
+    mov	w11, #31
+    cmp	w10, #31
+    csel	w10, w10, w11, lo
+    cmp	w9, #31
+    csel	w9, w9, w11, lo
+    cmp	w8, #31
+    csel	w8, w8, w11, lo
+    subs	w8, w9, w8
+    csel	w8, wzr, w8, lo
+    subs	w8, w10, w8
+    csel	w0, wzr, w8, lo
+    ret
+
+
+What the aliases say, which is the whole result:
+
+  general_masked = cheap_reduced_ungated
+      masking after EVERY node and masking once at the root compile to
+      one body. Reduction mod 2^k is a ring homomorphism and LLVM already
+      proves it, so the intermediate reductions cost nothing and no
+      declaration is needed to remove them.
+
+  wrap_gated = cheap_unreduced_ungated
+      the declaration licenses dropping the FINAL reduction as well, which
+      LLVM cannot do on its own because nothing tells it the root stays in
+      range. This is what the refinement buys under a wrapping map.
+
+  sat_gated = general_saturating
+      the same declaration under a saturating map is refused, correctly,
+      and the gate leaves no residue in either direction.

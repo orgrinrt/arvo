@@ -1,0 +1,16 @@
+  r   parity   ties   roundings   |V|
+  2   even       14          40   7
+  3   odd         0         318   19
+  4   even      226        1212   37
+  5   odd         0        3280   61
+  6   even      902        7260   91
+  7   odd         0       14070   127
+  8   even     2306       24808   169
+  9   odd         0       40752   217
+ 10   even     4702       63360   271
+ 11   odd         0       94270   331
+ 12   even     8354      135300   397
+ 13   odd         0      188448   469
+
+every even radix in 2..=13 reaches a tie; every odd one reaches none, with rounding occurring in both cases so the odd rows are not vacuous.
+the quantiser is one function; the bans are in force; the property's truth value still moves with the radix.

@@ -1,0 +1,17 @@
+error[E0271]: type mismatch resolving `<Idx<30> as ToNat<Arvo>>::N == D0<D1<D0<D1<D1<Term>>>>>`
+   --> p09a_lawsite_control.rs:196:92
+    |
+196 | pub fn law_site_wrong(a: UFixed<13, 3, Hot>, b: UFixed<13, 3, Hot>) -> Fixed<30, 6, Hot> { mul(a, b) }
+    |                                                                                            ^^^^^^^^^ type mismatch resolving `<Idx<30> as ToNat<Arvo>>::N == D0<D1<D0<D1<D1<Term>>>>>`
+    |
+note: expected this to be `D0<D1<D0<D1<D1<Term>>>>>`
+   --> p09a_lawsite_control.rs:24:31
+    |
+ 24 |     6 => T6, 26 => T26, 30 => T30, 40 => T40, 64 => T64, 100 => T100, 200 => T200,
+    |                               ^^^
+    = note: expected struct `D0<D1<D0<D1<D1<Term>>>>>`
+               found struct `D0<D1<D1<D1<D1<Term>>>>>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0271`.

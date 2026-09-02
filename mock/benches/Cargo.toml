@@ -8,6 +8,34 @@ publish = false
 name = "arvo-benches"
 path = "src/main.rs"
 
+# `structural-decomposition` and `spectral-bisection` are NOT listed below.
+# Both depend on the real `arvo` crate (Sqrt, Recip, TotalOrd, USize) via
+# `.workspace = true` inheritance, and the canon-work deletion round removed
+# both `mock/crates/arvo` and `mock/Cargo.toml`'s `workspace.dependencies.arvo`
+# entry it inherited from. A path dependency's manifest is parsed during
+# resolution whether or not it is `optional`, and an unparseable manifest at
+# a declared path fails the whole binary's build, so `optional = true` does
+# not help here: the dependency has to be absent from this manifest entirely,
+# not merely unselected. Their variant crates, `main.rs`'s two `Rcm<N>` /
+# `Fiedler<N>` match arms, and their `bench.toml` sections are all still on
+# disk, untouched; restoring the dependency here is a one-line revert of this
+# comment once a canon-derived `arvo` crate exists to satisfy them. Restoring
+# `arvo` itself to make this build sooner is exactly the mistake
+# `mock/Cargo.toml`'s own header forbids.
+
 [dependencies]
 mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
 mockspace-bench-harness = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+bench-quantiser-fadd-shared = { path = "variants/quantiser-fadd-shared" }
+bench-quantiser-radix-shared = { path = "variants/quantiser-radix-shared" }
+bench-bitpack-shared = { path = "variants/bitpack-shared" }
+bench-bitpack-plan-shared = { path = "variants/bitpack-plan-shared" }
+bench-bitpack-footprint-shared = { path = "variants/bitpack-footprint-shared" }
+bench-bitpack-carrier-shared = { path = "variants/bitpack-carrier-shared" }
+bench-bitpack-contend-shared = { path = "variants/bitpack-contend-shared" }
+bench-bitpack-wide-shared = { path = "variants/bitpack-wide-shared" }
+bench-bitpack-write-contend-shared = { path = "variants/bitpack-write-contend-shared" }
+bench-warm-container-shared = { path = "variants/warm-container-shared" }
+bench-warm-clamp-shared = { path = "variants/warm-clamp-shared" }
+bench-wide-rung-shared = { path = "variants/wide-rung-shared" }
+bench-satfold-shared = { path = "variants/satfold-shared" }

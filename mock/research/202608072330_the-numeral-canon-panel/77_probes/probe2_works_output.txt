@@ -1,0 +1,14 @@
+warning: associated constant `HAS_ONE` is never used
+  --> probe2_works_validate_erase.rs:16:11
+   |
+13 | trait Shape {
+   |       ----- associated constant in this trait
+...
+16 |     const HAS_ONE: bool = Self::I >= 1;
+   |           ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+
+Fixed<3,5>::ONE_RAW = 32

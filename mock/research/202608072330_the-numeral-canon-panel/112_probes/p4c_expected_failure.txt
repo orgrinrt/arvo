@@ -1,0 +1,25 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+=== p4c: a tightening (expected failure) ===
+command: rustc --edition 2021 -O p4c_... -o p4c_bin
+error[E0080]: evaluation panicked: widening must not tighten the declared bound
+  --> p4c_a_tightening_is_refused_before_the_program_exists.rs:32:23
+   |
+32 |       const CHECK: () = assert!(
+   |  _______________________^
+33 | |         From::HI <= To::HI,
+34 | |         "widening must not tighten the declared bound"
+35 | |     );
+   | |_____^ evaluation of `Widen::<Lit<200>, Lit<100>>::CHECK` failed here
+
+note: erroneous constant encountered
+  --> p4c_a_tightening_is_refused_before_the_program_exists.rs:39:14
+   |
+39 |     let () = Widen::<From, To>::CHECK;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit: 1
+ls: p4c_bin: No such file or directory

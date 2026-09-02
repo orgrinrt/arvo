@@ -31,9 +31,2988 @@ variants = [
     "../target/release/xxhash3",
 ]
 
+[bench.structural-decomposition]
+title = "Graph structural decomposition: RCM reorder"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.structural-decomposition.sizes]]
+n = 16
+variants = [
+    "../target/release/bench_structural_decomposition",
+]
+
+[[bench.structural-decomposition.sizes]]
+n = 32
+variants = [
+    "../target/release/bench_structural_decomposition",
+]
+
+[[bench.structural-decomposition.sizes]]
+n = 64
+variants = [
+    "../target/release/bench_structural_decomposition",
+]
+
+[bench.spectral-bisection]
+title = "Spectral bisection: Fiedler vector + sign-cut partition"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.spectral-bisection.sizes]]
+n = 16
+variants = [
+    "../target/release/bench_spectral_bisection",
+]
+
+[[bench.spectral-bisection.sizes]]
+n = 32
+variants = [
+    "../target/release/bench_spectral_bisection",
+]
+
+[[bench.spectral-bisection.sizes]]
+n = 64
+variants = [
+    "../target/release/bench_spectral_bisection",
+]
+
+[bench.quantiser-vs-fadd-subnormal-sweep]
+title = "Round-first software quantiser add vs native hardware fadd, subnormal fraction swept"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 0
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 10
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 25
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 50
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 75
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 100
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[bench.decimal-quantiser-radix-sweep]
+title = "Quantiser cost by radix: decimal32 against binary32, exponent spread swept"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 0
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 2
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 8
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 20
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
 [timing]
 passes = 4
 runs_per_pass = 1000
 batch_size = 100
 harness_runs = 1
 cooldowns_ms = [0]
+
+[bench.bitpack-sequential-sum]
+title = "Layout::Bitpacked reading, sequential column sum: byte-aligned slot vs zero-inter-value-padding"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-sequential-sum.sizes]]
+n = 256
+variants = [
+    "../target/release/bench_bitpack_native_seq",
+    "../target/release/bench_bitpack_aligned_seq",
+    "../target/release/bench_bitpack_zeropad_seq",
+]
+
+[[bench.bitpack-sequential-sum.sizes]]
+n = 4096
+variants = [
+    "../target/release/bench_bitpack_native_seq",
+    "../target/release/bench_bitpack_aligned_seq",
+    "../target/release/bench_bitpack_zeropad_seq",
+]
+
+[[bench.bitpack-sequential-sum.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_native_seq",
+    "../target/release/bench_bitpack_aligned_seq",
+    "../target/release/bench_bitpack_zeropad_seq",
+]
+
+[bench.bitpack-random-sum]
+title = "Layout::Bitpacked reading, random-access column sum: byte-aligned slot vs zero-inter-value-padding"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-random-sum.sizes]]
+n = 256
+variants = [
+    "../target/release/bench_bitpack_native_rand",
+    "../target/release/bench_bitpack_aligned_rand",
+    "../target/release/bench_bitpack_zeropad_rand",
+]
+
+[[bench.bitpack-random-sum.sizes]]
+n = 4096
+variants = [
+    "../target/release/bench_bitpack_native_rand",
+    "../target/release/bench_bitpack_aligned_rand",
+    "../target/release/bench_bitpack_zeropad_rand",
+]
+
+[[bench.bitpack-random-sum.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_native_rand",
+    "../target/release/bench_bitpack_aligned_rand",
+    "../target/release/bench_bitpack_zeropad_rand",
+]
+
+[bench.bitpack-decoder-shape]
+title = "Layout::Bitpacked decoder shape: index-driven vs plan-driven, across the L1 boundary"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 98304
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 262144
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[bench.bitpack-kernel-amortisation]
+title = "Layout::Bitpacked decode against per-element consumer work"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 98304
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 262144
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]
+
+[bench.bitpack-footprint-dense]
+title = "Layout::Dense footprint: sequential sum swept past L1 and L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 7000000
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 33554432
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[bench.bitpack-footprint-packed]
+title = "Layout::Bitpacked footprint: plan-driven sum swept past L1 and L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 7000000
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 33554432
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+# ---------------------------------------------------------------------------
+# The container fork (panel file 141). Four arms per row, all computing the
+# identical value: `headroom` is the shipped rule (rung(rung_bits(W)+1)),
+# `minimum` is the deletion, `plusone` is rung(W+1) kept as an aliasing
+# control, `native` is plain Rust primitive arithmetic with the projection
+# written once. The size field is a key: W*10000 + NC*1000 + OP*100 + D,
+# decoded by `bench-warm-container-shared`'s `key_w` / `key_nc` / `key_op` /
+# `key_d`. NC 0 is 8192 elements, NC 1 is 1048576. OP 0 is wrapping (Warm),
+# OP 1 is saturating (Precise). D is operations per element.
+# ---------------------------------------------------------------------------
+
+[bench.warm-container-width-l1]
+title = "Container fork, declared-width sweep, cache-resident (8192 elements, 3 ops/element, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-width-l1.sizes]]
+n = 80003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 130003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 160003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 320003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 600003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 640003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.warm-container-width-l2]
+title = "Container fork, declared-width sweep, 1048576 elements (3 ops/element, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-width-l2.sizes]]
+n = 81003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 131003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 161003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 321003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 601003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 641003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[bench.warm-container-density-w13]
+title = "Container fork, operation-density sweep at 13 bits (8192 elements, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130001
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130002
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130004
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130008
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130016
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.warm-container-density-w64]
+title = "Container fork, operation-density sweep at 64 bits (8192 elements, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640001
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640002
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640004
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640008
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640016
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.precise-container-width-l1]
+title = "Container fork under saturating semantics, declared-width sweep (8192 elements, 3 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.precise-container-width-l1.sizes]]
+n = 80103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 130103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 160103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 320103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 600103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 640103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.warm-elementwise-width-l1]
+title = "Container fork, elementwise transform with no loop-carried value, declared-width sweep (8192 elements, 4 ops/element, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 80204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 130204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 160204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 320204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 600204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 640204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.precise-elementwise-width-l1]
+title = "Container fork under saturating semantics, elementwise, declared-width sweep (8192 elements, 4 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 80304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 130304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 160304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 320304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 600304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 640304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.warm-affine-collapse-l1]
+title = "Wrapping reduction whose steps are all affine: what the interior projection prevents the optimiser from doing (8192 elements, 3 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 80403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 130403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 160403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 320403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 600403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 640403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.precise-widening-theorem-l1]
+title = "Saturating accumulation of a W-bit column into a 64-bit accumulator, with and without the theorem that the saturation cannot occur (8192 elements)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 80501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 130501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 160501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 320501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 600501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 640501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.warm-affine-density-w13]
+title = "Affine-only wrapping reduction at 13 bits, operation-density swept: how much of the deferred form's advantage is the optimiser collapsing the chain rather than the mask being gone"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130401
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130402
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130404
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130408
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130416
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.warm-clamp-arity-w8]
+title = "Clamping fold at 8 bits, arity 2 / 4 / 8 / 16: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w13]
+title = "Clamping fold at 13 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w16]
+title = "Clamping fold at 16 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w32]
+title = "Clamping fold at 32 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w60]
+title = "Clamping fold at 60 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w64]
+title = "Clamping fold at 64 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-chain-l1]
+title = "Elementwise clamping chain of four steps, width swept: what the doubled container costs when no fold accumulator is involved"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 80001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 130001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 160001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 320001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 600001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 640001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-l2]
+title = "Clamping fold at arity 16, 1048576 elements: the same fork with both containers crossing this host's L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 81040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 131040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 161040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 321040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 601040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 641040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+# ---------------------------------------------------------------------------
+# The wide rung (panel file 22). Five arms per row, all computing the identical
+# value. `ragged` is the byte-exact payload the ratified rule assigns to Cold
+# and Precise; `ragged-overread` is the same payload read with whole-limb loads
+# that reach into the neighbour; `wordround` is the whole-64-bit-limb payload
+# the rule assigns to Hot and Warm; `wordround-alias` is the same stride from a
+# different expression, kept as a noise-floor control; `align16` is the
+# vector-aligned baseline. The size field is a key: W*1000 + NC*100 + D,
+# decoded by `bench-wide-rung-shared`'s `key_w` / `key_nc` / `key_d`. NC 0 is
+# 2048 elements, NC 1 is 458752. Every swept width is above the 128-bit native
+# rung, which no other bench in this directory reaches.
+# ---------------------------------------------------------------------------
+
+[bench.wide-rung-width-l1]
+title = "Wide rung, payload-shape sweep, cache-resident (2048 elements, 3 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 129003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 160003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 192003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 200003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 232003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 256003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[bench.wide-rung-width-l2]
+title = "Wide rung, payload-shape sweep, 458752 elements (3 ops/element, past L2 for the wide strides)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 129103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 160103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 192103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 200103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 232103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 256103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[bench.wide-rung-density-w200]
+title = "Wide rung at the ratified numeral (W=200), operation-count sweep, cache-resident"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200001
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200002
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200004
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200008
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+# ---------------------------------------------------------------------------
+# The bare column walk past L2 (panel file 22, section 5). One wide operation
+# per element, which is the highest byte-to-work ratio this transform reaches.
+# The D=3 sweep above runs at 8 to 12 GB/s against this host's roughly 60, so
+# it is issue-bound on the limb arithmetic and a footprint difference cannot
+# show as throughput there. This section is the same six widths with the
+# arithmetic removed, which is the only shape in which the ragged payload's
+# fewer bytes can pay.
+# ---------------------------------------------------------------------------
+
+[bench.wide-rung-walk-l2]
+title = "Wide rung, bare column walk, 458752 elements (1 wide op/element, past L2)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 129100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 160100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 192100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 200100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 232100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 256100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+# ---------------------------------------------------------------------------
+# The bare column walk, cache-resident (panel file 22, section 6). Same six
+# widths and same one-operation transform as wide-rung-walk-l2, at 2048
+# elements so every arm fits L1. It is the discriminator: the l2 walk shows a
+# reproducible width-dependent baseline that instruction count, run order and
+# loaded-byte contiguity all fail to explain, and if that pattern survives in
+# cache it is not a memory-system effect at all.
+# ---------------------------------------------------------------------------
+
+[bench.wide-rung-walk-l1]
+title = "Wide rung, bare column walk, 2048 elements (1 wide op/element, cache-resident)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 129000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 160000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 192000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 200000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 232000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 256000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+
+# ---------------------------------------------------------------------------
+# The head-to-head the footprint pair never ran (panel file 26).
+#
+# `bitpack-footprint-dense` and `bitpack-footprint-packed` are two separate
+# sections above, so dense is only ever compared to dense and packed only to
+# packed, and no packed-against-dense delta exists at any size past L1. All
+# four arms are declared against the same `FootprintColumn` Routine with the
+# same size list and share one `build_input_bytes`, so they were always
+# directly comparable. This section runs them together. No variant code
+# changes; the arms are byte-identical to the ones the two sections above
+# already time.
+# ---------------------------------------------------------------------------
+[bench.bitpack-footprint-headtohead]
+title = "Bitpacked against Dense over one column, swept from L1 to past a 12 MB L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 7000000
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+
+# ---------------------------------------------------------------------------
+# The carrier-width sweep (panel file 26).
+#
+# Every prior bitpack bench in this file compares packed 13-bit against a
+# `u16` dense column, which is the tightest native carrier a 13-bit value can
+# have and therefore the least favourable footprint ratio packing can be given
+# (0.375 bytes saved per element). The variable nobody swept is how wide the
+# alternative is. Four arms read the identical logical column out of four
+# carriers in one shared input: u64 (8 B/elem), u32 (4), u16 (2), packed
+# (1.625). A fifth arm is a noise floor, calling the identical u16 transform
+# so any gap between the two is this workload's measurement resolution.
+#
+# Sizes bracket both cache boundaries on this host (128 KB L1D, 12 MB L2) for
+# each carrier separately, because each crosses at a different n. At
+# n = 4194304 the packed column is 6.8 MB and the u16 is 8 MB, both inside a
+# 12 MB L2, while u32 at 16 MB and u64 at 32 MB are outside it. That row is
+# the one where "a smaller column fits where a larger one does not" is
+# literally true, which is the substrate's own stated case.
+# ---------------------------------------------------------------------------
+[bench.bitpack-carrier-width]
+title = "Packed 13-bit against u16, u32 and u64 dense carriers, swept from L1 to past a 12 MB L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 131072
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 2097152
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 8388608
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[bench.bitpack-contention]
+title = "Packed 13-bit against u16, u32 and u64 carriers with one column split 1, 2 and 4 ways"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+# Variants spawn their own threads inside the timed run block, so the worker's
+# P-core self-pin is skipped (a spawned thread never inherits it and pinning
+# only the coordinator would skew the workload). The variant crate pins every
+# participating thread itself instead, coordinator included, so the measurement
+# is of the memory system rather than of the scheduler.
+threaded = true
+
+# n = 16,384 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 163841
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 16,384 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 163842
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 16,384 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 163844
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 1,048,576 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 10485761
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 1,048,576 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 10485762
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 1,048,576 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 10485764
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 4,194,304 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 41943041
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 4,194,304 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 41943042
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 4,194,304 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 41943044
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 8,388,608 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 83886081
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 8,388,608 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 83886082
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 8,388,608 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 83886084
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+[bench.bitpack-contend-decode]
+title = "The packed decode with one, two and four accumulators, against the u16 carrier, at one and four threads"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+threaded = true
+
+# n = 16,384 elements, 1 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 163841
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 16,384 elements, 4 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 163844
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 4,194,304 elements, 1 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 41943041
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 4,194,304 elements, 4 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 41943044
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 8,388,608 elements, 1 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 83886081
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 8,388,608 elements, 4 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 83886084
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+[bench.bitpack-contend-best]
+title = "Both sides attacked: pairwise-accumulate dense carriers against the unrolled packed decode, at one and four threads"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+threaded = true
+
+# n = 4,194,304 elements, 1 thread(s)
+[[bench.bitpack-contend-best.sizes]]
+n = 41943041
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_padal",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d32_padal",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 4,194,304 elements, 4 thread(s)
+[[bench.bitpack-contend-best.sizes]]
+n = 41943044
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_padal",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d32_padal",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 8,388,608 elements, 1 thread(s)
+[[bench.bitpack-contend-best.sizes]]
+n = 83886081
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_padal",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d32_padal",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 8,388,608 elements, 4 thread(s)
+[[bench.bitpack-contend-best.sizes]]
+n = 83886084
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_padal",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d32_padal",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+[bench.bitpack-wide]
+title = "Packed 13-bit against the u16 carrier with both columns several times past a 12 MB L2, at one and four threads"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+threaded = true
+
+# n = 8,388,608 elements, 1 thread(s); u16 region 16 MiB, packed 13 MiB
+[[bench.bitpack-wide.sizes]]
+n = 83886081
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 8,388,608 elements, 4 thread(s); u16 region 16 MiB, packed 13 MiB
+[[bench.bitpack-wide.sizes]]
+n = 83886084
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 16,777,216 elements, 1 thread(s); u16 region 32 MiB, packed 26 MiB
+[[bench.bitpack-wide.sizes]]
+n = 167772161
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 16,777,216 elements, 4 thread(s); u16 region 32 MiB, packed 26 MiB
+[[bench.bitpack-wide.sizes]]
+n = 167772164
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 33,554,432 elements, 1 thread(s); u16 region 64 MiB, packed 52 MiB
+[[bench.bitpack-wide.sizes]]
+n = 335544321
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 33,554,432 elements, 4 thread(s); u16 region 64 MiB, packed 52 MiB
+[[bench.bitpack-wide.sizes]]
+n = 335544324
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+[bench.bitpack-write-contend-safe]
+title = "Packed 13-bit write against a dense u16 write, column split 1, 2 and 4 ways, every internal boundary period-aligned"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF1
+threaded = true
+
+# n = 65,536 elements, 1 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 655361
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 65,536 elements, 2 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 655362
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 65,536 elements, 4 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 655364
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 2,097,152 elements, 1 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 20971521
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 2,097,152 elements, 2 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 20971522
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 2,097,152 elements, 4 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 20971524
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+[bench.bitpack-write-contend-race]
+title = "Packed 13-bit write against a dense u16 write, column split 1, 2 and 4 ways, every internal boundary deliberately misaligned"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF2
+threaded = true
+
+# n = 65,534 elements, 1 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 655341
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_unsound",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 65,534 elements, 2 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 655342
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 65,534 elements, 4 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 655344
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 2,097,150 elements, 1 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 20971501
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_unsound",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 2,097,150 elements, 2 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 20971502
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 2,097,150 elements, 4 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 20971504
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+
+[bench.satfold-length-l1]
+title = "Saturating fold reassociation, reduction length swept, 32 KiB column: the fold as written against the idiomatic iterator form, against the licensed arm whose bounds are unprovable, against the licensed arm with the bounds proof, against the 64-element unroll with a tree combine, against the bounds proof with no law, against hand-written NEON, against the licensed arm with the length known at compile time"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 8, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 1000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 15, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 2000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 16, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 3000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 17, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 4000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 32, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 5000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 63, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 6000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 7000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 65, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 8000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 128, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 9000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 256, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 10000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 1024, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 11000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 4096, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 12000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-l1-wrap]
+title = "The identical arms over wrapping addition, which the backend may reassociate with no help from any typestate: the ceiling every saturating arm is measured against"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 8, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 1001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 16, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 3001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 7001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 256, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 10001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 4096, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 12001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-align-l1]
+title = "The same arms with the column start offset by one byte from a 64-byte boundary: what the licensed vector arms cost when the load stream is not aligned"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 16, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 3010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 7010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 256, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 10010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 4096, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 12010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-dram]
+title = "The same arms over a 16 MiB column, past every cache level on this host: what the reassociation is worth once the load stream is the binding constraint"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 16, column 16 MiB, past L2, aligned, saturating
+[[bench.satfold-length-dram.sizes]]
+n = 3100
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 16 MiB, past L2, aligned, saturating
+[[bench.satfold-length-dram.sizes]]
+n = 7100
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-dram-long]
+title = "The same arms at the longest reduction length over a 16 MiB column: the row where the hand-written arm reaches the load-bandwidth ceiling on the small column, so it is the row where a working set past every cache level can cap it"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 4096, column 16 MiB, past L2, aligned, saturating
+[[bench.satfold-length-dram-long.sizes]]
+n = 12100
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-dram-wrap]
+title = "The wrapping ceiling over the same 16 MiB column"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+
+
+# L = 4096, column 16 MiB, past L2, aligned, wrapping
+[[bench.satfold-length-dram-wrap.sizes]]
+n = 12101
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-const-gate]
+title = "Does a const gate erase in time: the licensed arm reached directly, the same arm reached through a const verdict computed by an exhaustive sweep in a const fn, and the same gate over a law that is false so it selects the fallback"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 64, column 32 KiB L1-resident, aligned, saturating
+[[bench.satfold-const-gate.sizes]]
+n = 7000
+variants = [
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes16_3",
+    "../target/release/bench_satfold_gate_true",
+    "../target/release/bench_satfold_gate_false",
+    "../target/release/bench_satfold_seq",
+]
+
+# L = 256, column 32 KiB L1-resident, aligned, saturating
+[[bench.satfold-const-gate.sizes]]
+n = 10000
+variants = [
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes16_3",
+    "../target/release/bench_satfold_gate_true",
+    "../target/release/bench_satfold_gate_false",
+    "../target/release/bench_satfold_seq",
+]
+
+# L = 4096, column 32 KiB L1-resident, aligned, saturating
+[[bench.satfold-const-gate.sizes]]
+n = 12000
+variants = [
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes16_3",
+    "../target/release/bench_satfold_gate_true",
+    "../target/release/bench_satfold_gate_false",
+    "../target/release/bench_satfold_seq",
+]

@@ -1,0 +1,11 @@
+  triples failing *assoc, partitioned by which policy fails them (w=4, trunc):
+
+   F     both   sat only   wrap only
+   1      586        118         874
+   2      674         34         390
+   3      380          0           0
+
+  F=1 sets differ (instrument can distinguish the policies): true
+  F=3 failure sets are IDENTICAL (pure shared coarsening): true
+
+P2B WORKS

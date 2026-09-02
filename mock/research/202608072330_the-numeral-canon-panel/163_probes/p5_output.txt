@@ -1,0 +1,38 @@
+  F157-1   named 5 time(s):  F157-1), corroborating `154` P2.
+  F157-2   NOT NAMED
+  F157-3   NOT NAMED
+  F157-4   named 1 time(s):  
+  F157-5   NOT NAMED
+  F157-6   named 1 time(s):  F157-6, F157-7).
+  F157-7   named 1 time(s):  F157-7).
+  F157-8   NOT NAMED
+  F157-9   named 1 time(s):  
+  F157-10  named 2 time(s):  F157-10's generalisation to "topic five states nothing about any width".
+  F157-11  named 1 time(s):  
+  F157-12  NOT NAMED
+  F157-13  named 1 time(s):  
+  Q157-A   NOT NAMED
+  Q157-B   NOT NAMED
+  Q157-C   named 1 time(s):  Q157-C.
+  Q157-D   NOT NAMED
+  Q157-E   named 2 time(s):  Q157-E.
+
+CONTROL: F157-6 must be found -> 1
+
+and the S-numbers, which is how the replacements were addressed:
+  S-1   1
+  S-5   2
+  S-6   1
+  S-8   6
+  S-10  1
+  S-11  0
+  S-12  0
+  S-13  0
+  S-14  3
+  S-15  0
+  S-16  1
+  S-17  1
+  S-18  0
+  S-19  0
+  S-20  0
+  S-21  1

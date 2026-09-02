@@ -1,0 +1,5 @@
+(E) quantiser equivariance : 509660160 checked, 0 failures
+(+) addition transfer      : 254830080 checked, 0 failures
+(x) mulnum-target transfer : 254830080 checked, 0 failures
+negative control (window shifted, value not): 8 disagreements out of 13 values; zero here would mean the check above proves nothing
+negative control (value map made affine by a nonzero bias):          29 disagreements out of 51;          zero here would mean the homogeneity condition is not load-bearing

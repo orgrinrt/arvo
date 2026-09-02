@@ -1,0 +1,14 @@
+error: complex const arguments must be placed inside of a `const` block
+  --> p07c_pin_const_to_nat_type_const.rs:34:25
+   |
+34 |     type const V: u32 = 2 * T::V;
+   |                         ^^^^^^^^
+
+error: complex const arguments must be placed inside of a `const` block
+  --> p07c_pin_const_to_nat_type_const.rs:37:25
+   |
+37 |     type const V: u32 = 2 * T::V + 1;
+   |                         ^^^^^^^^^^^^
+
+error: aborting due to 2 previous errors
+

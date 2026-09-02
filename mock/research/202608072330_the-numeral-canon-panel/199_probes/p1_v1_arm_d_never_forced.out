@@ -1,0 +1,11 @@
+### rustc: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+######## BASE: arms A, B, C   (must compile, then must print as required)
+ARM A  arm E, len 16   got=240 exact=240  correct     (required: correct)
+ARM B  arm E, len 32   got=224 exact=480  WRONG       (required: wrong)
+ARM C  derived, cap 32 got=480 exact=480  correct     (required: correct)
+
+ARM D is a separate compile, under --cfg arm_d, and must be REFUSED.
+
+######## ARM D: capacity 64, 4-bit elements, 8-bit accumulator   (must be REFUSED)
+    COMPILED  *** NOT AS REQUIRED: the derivation is decorative ***

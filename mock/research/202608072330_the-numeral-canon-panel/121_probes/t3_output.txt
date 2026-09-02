@@ -1,0 +1,43 @@
+================================================================================================
+t3. Reconciling two files' numbers for one cell
+================================================================================================
+
+P1/P2/P3. The same primitive on two ambient spans
+
+  policy   span                            add          sub          mul   monotone
+  sat      non-negative 0..45           0/1081     885/1081        0/273       True
+  sat      straddling -45..45        3120/6211    2445/6211      182/909       True
+  wrap     non-negative 0..45           0/1081        0/723        0/273      False
+  wrap     straddling -45..45           0/6211       0/6211        0/603      False
+
+  The saturating rows move with the span and the wrapping rows do not,
+  which is the control: the span is what separates them.
+
+  The witness, on the straddling span:
+    a=-1, b=1: R(a+b) = 0, R(R(a)+R(b)) = 1
+    a=-5, b=3: R(a+b) = 0, R(R(a)+R(b)) = 3
+  On the non-negative span neither argument exists, so the identity holds
+  there for a reason rather than by luck.
+
+P4. `119` 4.4's clause, tested on both spans
+
+  saturating on non-negative 0..45    : homomorphism for ['add', 'mul']
+  saturating on straddling -45..45    : homomorphism for no operation
+
+  The clause is true on one span and false on the other, and states no
+  span. On the non-negative one it is a homomorphism for two of three.
+
+P5. The same fact as a shipped test, re-derived here
+
+  `warm-clamp-shared/src/lib.rs` carries
+  `clamping_is_a_retraction_on_non_negative_addition_at_every_swept_width`,
+  which asserts that folding with a clamp at every step equals clamping
+  once at the end, on non-negative addition. That is exactly the
+  homomorphism identity for add on a non-negative domain. Re-derived:
+
+    W=3: eager and deferred clamping disagree on 0/1088 folds
+    W=4: eager and deferred clamping disagree on 0/8448 folds
+    W=5: eager and deferred clamping disagree on 0/66560 folds
+
+  Zero everywhere, which is the test's own claim and is the clause's
+  counterexample.

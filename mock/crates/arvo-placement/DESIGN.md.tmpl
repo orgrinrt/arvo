@@ -1,0 +1,234 @@
+# `arvo-placement`: where the value sits, which no operation reads
+
+**Canon this design declares.**
+`ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`.
+`ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`.
+`dimension::occupancy`. `ruling::cold_is_for_cold_paths_and_cold_storage` and
+`ruling::cold_is_not_obliged_to_be_slow`, for what the footprint objective is and is not.
+`ruling::never_a_runtime_check_and_one_lowered_path`.
+`ruling::the_format_spine_is_canon`, for the open inventory this crate declares a member of.
+`ruling::arms_over_regions_are_the_fundamental_heart` and `ruling::the_work_is_predicated_arms_composed`,
+for `derive_sole` and `derive_shared`, which are that ruling's own instance in the tree rather than a
+citation of it.
+
+## What this crate is
+
+The derivation from a declared signature to a placement. A placement says where the bits sit. It says
+nothing about what any operation computes, and no operation in the design reads it.
+
+The crate exists because the floor made those two statements true at once, and they had been argued
+about as though only one could be:
+
+> every operation the design declares is a function of the declared width and never of the machine
+> carrier [...] The footprint is nonetheless observable, through exactly one observation the design
+> does not own, the host language's layout observation on a sized type
+
+So the carrier is nameable, because otherwise the footprint is not observable and there is a ratified
+intent about footprint that would denote nothing. And no operation reads it, because otherwise
+behaviour is stated over the container, which is refuted: a container-stated numeral returns 8192
+where MATLAB `fi` at thirteen bits under wrap documents 0.
+
+## The derivation is a placement rather than a semantics
+
+This is the sentence to keep. The derivation chooses where the value goes; it never chooses what the
+value means. Two placements of one declared signature compute the same function, and they are
+distinguishable only through an observation this design does not own.
+
+## Its output count moves with occupancy, and that is two arms
+
+`dimension::occupancy` is the axis: `sole` where the value is the sole logical occupant of its carrier
+allocation, `shared` where it is not.
+
+**At sole occupancy the derivation has one output: the carrier.** The host language supplies a
+standalone sized type, the layout observation exists, and the footprint is observable through it and
+through nothing else.
+
+**At shared occupancy it has three: the carrier, the access width and the stride.** A per-element
+footprint does not exist to observe at all, because the element is reached through its carrier and no
+size-bounded contract ranges over it. What is observable is the allocation's stride, which is a
+property of the column and not of the element.
+
+The three are not three coordinates of one answer. The carrier answers where the bits live, the access
+width answers how wide a read reaches, and the stride answers how far to the next element. The access
+width is not a function of the carrier and neither is the converse, measured under both packing rules
+with controls firing.
+
+**These are two arms over a declared region, not one number with a special case.** That is the shape
+the whole design is made of, and this is the crate's own instance of it: `ruling::arms_over_regions_are_the_fundamental_heart`
+states the approach directly, and `derive_sole` / `derive_shared` are what it names when it says the full
+space is filled by arms holding where they are optimal and nowhere else, composed, rather than by one
+statement uniform across the dimensions.
+
+## The footprint is a ratified objective, so the derivation is not free
+
+`ruling::cold_is_for_cold_paths_and_cold_storage` is ratified and its subject is the footprint: the
+storage-minimising intent aggressively minimises and bitpacks, and stays small for memory or disk.
+That intent has a subject only because the layout observation exists, which is why the observability
+half of the floor is load-bearing rather than a curiosity.
+
+`ruling::cold_is_not_obliged_to_be_slow` bounds it from the other side and is stated as a test rather
+than a preference: the storage-minimising path may use the same paths the speed-first one uses, not
+because its intent demands them but because nothing in its intent fights them, and where a path fights
+the intent it is not for that strategy. So the leeway to be inefficient goes unused whenever a fast
+path costs nothing in residency.
+
+Neither of those names a strategy this crate depends on. The objective is what the ladder is keyed on
+and the strategy is a binding onto it, which is `arvo-strategy`'s subject.
+
+## Two placements of one signature are two types, and that is correct
+
+A consequence worth stating because it looks like a defect and is the design.
+
+At sole occupancy, two placements of one declared signature are distinct in layout and identical in
+denotation. They are therefore two types to the host language, and a homogeneous container built from
+both is refused. That refusal is right: a column is keyed on the placement, and at shared occupancy
+there is no per-element footprint to key on anything else.
+
+The two are the same primitive under denotational sameness, which is the relation that licenses
+substitution inside a composite, and different under representational sameness, which is the one that
+licenses memory reinterpretation. Only the denotational relation is a congruence, so only it licenses
+substitution, and the crate keeps them separate rather than collapsing them into one word.
+
+## What this crate does not decide
+
+`which_carrier_the_packing_claim_is_about`, `are_consumer_terms_trees_or_dags` and
+`are_a_consumers_derivations_trees_or_dags` are open in the registry and none of them is reached by
+the two arms above. The derivation stated here is per declared signature and per occupancy; how a
+consumer's own derivations compose is the open question and it is not answered by writing this crate.
+
+`does_the_order_based_realisation_family_have_more_than_one_member` is likewise open.
+
+The access ladder is known to run out of native containers before the carrier ladder does, measured at
+width 123 where an instrument panicked. That is a real bound on the derivation and it is recorded
+rather than designed around, because designing around it needs a decision about arbitrary widths that
+`arbitrary_width_demands_in_the_canon` holds open.
+
+**And what the format contract asks of a member of its inventory.** This crate declares one, below,
+and what a format owes and what refuses it are stated where that contract is. Nothing about the
+coordinates' obligations is restated here, because two copies of one rule are two things that can
+disagree and only one of them would be the rule.
+
+## The laws this crate owes tests for
+
+**No declared operation reads a placement.** This is the crate's whole reason to exist and it is the
+one law here that is structural rather than computational: the type of an operation does not mention
+the placement, so a violation does not compile. The test is a contract test, and if it cannot be
+written the separation is not real.
+
+**Two placements of one declared signature agree on every declared operation**, over the whole matrix
+of signatures rather than a sample.
+
+**They disagree on the layout observation at sole occupancy**, which is the other half and is what
+makes the footprint objective denote something.
+
+**At shared occupancy no per-element size observation exists.** Asserted by construction: there is no
+expression that reaches one. A packed column with elements straddling carrier boundaries roundtrips
+exactly, and the only reachable size observation is the allocation's.
+
+**The output count is one at sole and three at shared**, and the three are independent: the access
+width is not a function of the carrier, nor the converse.
+
+**The derivation reads a format this crate declares itself.** The subject is a function from a declared
+signature to a placement and a signature is a format paired with an adaptation, so a format written
+here rather than borrowed from the four shipped points is what says the derivation is over the contract
+rather than over the instances that happen to sit beside it. It supplies all of them, an ambient
+domain, a quantum law and a slot range that nothing ships plus the phase the format carries, because
+reusing the shipped parts exercises the one coordinate `Format` itself demands and nothing under it.
+
+**Where that declaration lives is the point rather than an incidental.** `arvo-format` introduces the
+numeric category, so the bare-primitive lints skip it whole and a format declared there is written
+under a rule with nothing to refuse. This crate is read by those lints like every other consumer, so a
+coordinate written as a host integer here stops the gate and the declaration standing is the
+assertion. `proposal::the_concept_is_closed_and_the_inventory_is_open`, ratified through
+`ruling::the_format_spine_is_canon`, is the clause it is about: admission is a check rather than a
+negotiation, and a check that runs only where nothing can fail it is a negotiation with whoever reads
+the lint config.
+
+## The surface this design names
+
+`Occupancy` is the axis, with `Sole` and `Shared` as its two values, and it is the
+declared dimension the two arms gate on.
+
+`Placement` is what a derivation returns: a `carrier`, an `access` and a `stride`,
+each an `arvo_format::Width`, together with the `occupancy` that says which arm
+produced it. `output_count` reports one at sole and three at shared, and
+`footprint_is_observable` reports whether a per-element footprint exists at all.
+
+`Carrier` is the contract a machine container satisfies, carrying its `BITS`.
+`Carrier8`, `Carrier16`, `Carrier32` and `Carrier64` are the members the host
+offers, and `LADDER` is them
+in order, narrowest first. The ladder is what `narrowest_carrier` walks, and it
+returns `Width::NONE` where it runs out rather than widening past what it has.
+
+`Objective` is what the derivation is keyed on, with `Footprint` and `Access` as
+its values. It is deliberately not a strategy: a strategy binds a name onto one of
+these, and that binding is `arvo-strategy`'s.
+
+`declared_width` reads the declared signature's slot range and nothing else, which
+is the mechanical form of the rule that the derivation is a function of the
+declaration. `derive_sole` and `derive_shared` are the two arms.
+
+## What the objective selects, which is nothing at sole occupancy and the packing at shared
+
+The derivation ladder is keyed on the objective, and this states what the two objectives actually
+differ in, because a key that selects one answer everywhere is not a key.
+
+**At sole occupancy they coincide, and that is a result rather than a collapse.** The value is the
+sole logical occupant of its allocation, so there is no other element to trade against: the narrowest
+carrier that holds the declared width is both the smallest footprint and the widest native access. One
+answer for both objectives, asserted as an equality rather than left to look like an oversight.
+
+**At shared occupancy they differ, and the difference is the packing.**
+
+| Objective | Stride | Access | What it is doing |
+|---|---|---|---|
+| `Footprint` | the declared width | wide enough to cover an element that straddles a carrier boundary | packing, so elements share carriers and no bits are spent on alignment |
+| `Access` | the carrier | the carrier | one element per carrier, padding rather than straddling, so every read is a single native access |
+
+The footprint arm is derived from `ruling::cold_is_for_cold_paths_and_cold_storage`, which is ratified
+and says the storage-minimising objective aggressively minimises and bitpacks. The access arm is what
+not bitpacking means: an element that never crosses a boundary needs no wider read and no shift pair
+to assemble.
+
+**The three outputs at shared occupancy are what make the difference expressible.** With one output
+there would be nothing for the objectives to disagree about, which is why this is stated here and not
+in the sole-occupancy arm.
+
+## The objective is a type, and the associated const on it is what the arms read
+
+The objective reaches the derivation as a **type-level marker** bound by `ObjectiveKind`, not as a
+const generic and not as an argument.
+
+```rust
+pub trait ObjectiveKind {
+    const OBJECTIVE: Objective;
+}
+
+pub const fn derive_shared<S: DeclaredSignature, O: ObjectiveKind>() -> Placement
+```
+
+**Two properties have to hold at once and only this shape holds both.**
+
+**The branch erases.** The arms match on `O::OBJECTIVE`, an associated const of a generic parameter,
+which is a constant once the call is monomorphised, so the unselected arm is gone before the backend
+sees it. That is what `ruling::never_a_runtime_check_and_one_lowered_path` asks for.
+
+**A generic consumer composes.** A consumer generic over the strategy writes
+`derive_sole::<F, S::Objective>()`, an ordinary generic call with an associated type in a type
+position. That is `arvo-strategy`'s `Strategy::Objective` reaching this crate's arms: the strategy
+crate supplies the const value the match here is gated on, and it is the pairing of the two crates,
+not either alone, that makes `O::OBJECTIVE` a predicate rather than a runtime read.
+
+### Why a const generic cannot carry it, recorded so it is not tried again
+
+A const generic argument may not depend on a generic type parameter. `derive_sole::<F, { S::OBJECTIVE }>()`
+is refused with `generic parameters may not be used in const operations`, and the feature rustc
+suggests for it is on the forbidden list.
+
+So a const generic buys the erasure and **severs composition**: only a call site naming a concrete
+preset can derive anything, and a consumer generic over the strategy cannot reach the ladder at all.
+The marker buys the erasure without that cost, and needs no unstable feature where the const generic
+needed one.
+
+**A design that stated the erasure and not the composition is what let this happen once already**, so
+both are stated here.

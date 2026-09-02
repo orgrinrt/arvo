@@ -1,0 +1,59 @@
+=== `holds for:` lines per member file ===
+
+-- FORMAT --
+  55     55_smith_the_format_concept_derived_cold.md                  0
+  55b    55b_smith_reply.md                                           0
+  56     56_knuth_the_four_choice_model_attacked.md                   0
+  57     57_orchard_the_grading_and_the_refutation.md                 0
+  57b    57b_orchard_reply.md                                         0
+  58     58_wronski_the_fraction_boundary.md                          0
+  60     60_stam_the_chain_derived_cold.md                            0
+  61     61_absorption_against_coherence.md                           0
+  62     62_carmack_the_signed_cell.md                                0
+  subtotal                                                            0
+
+-- NUMSYS --
+  65     65_knuth_number_systems_derived_cold.md                      0
+  66     66_dolan_number_systems_derived_cold.md                      0
+  67     67_kiselyov_which_prefix_earns_the_word.md                   0
+  68     68_leroy_what_the_pipeline_certifies.md                      0
+  70     70_lattner_levels_are_clients_not_facts.md                   0
+  71     71_orchard_what_crosses_between_two_systems.md               0
+  72     72_kiselyov_reply.md                                         0
+  73     73_leijen_the_membership_test_and_how_wide.md                0
+  subtotal                                                            0
+
+-- LAWS --
+  76     76_willsey_derived_laws_derived_cold.md                      0
+  77     77_amin_derived_laws_derived_cold.md                         0
+  79     79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md   0
+  80     80_rompf_when_the_deriving_happens.md                        0
+  81     81_persona_checkpoint_seven.md                               0
+  82     82_jhala_lifting_a_measured_region_into_a_declaration.md     0
+  84     84_leroy_what_the_model_band_actually_certifies.md           0
+  86     86_knuth_how_far_the_verdict_reaches_and_the_saturating_threshold.md   0
+  89     89_the_saturating_verdict_as_a_const_gate.md                 0
+  subtotal                                                            0
+
+-- STRAT --
+  93     93_orchard_the_strategy_axis_derived_cold.md                12
+  94     94_wingo_the_strategy_axis_derived_cold.md                   0
+  97     97_dolan_the_strategy_space_attacked.md                     12
+  98     98_spj_what_the_strategy_axis_settles.md                    17
+  100    100_xu_generating_the_table_attacked.md                      9
+  101    101_wronski_the_cost_coordinates.md                         12
+  102    102_torvalds_does_the_mechanism_serve_the_intents.md        10
+  103    103_mcsherry_what_the_corpus_can_and_cannot_show.md         10
+  subtotal                                                           82
+
+=== TOTAL `holds for:` lines across the 34 member files: 82 ===
+=== against 182 section 1's count over the four consolidations:  11 ===
+
+=== CONTROL 1: the same pattern over the registry, which must be zero ===
+  proposal.toml 0   law.toml 0
+
+=== CONTROL 2: a pattern that must be non-zero in every member file ===
+  55_smith_the_format_concept_derived_cold.md                lines=512
+  65_knuth_number_systems_derived_cold.md                    lines=788
+  76_willsey_derived_laws_derived_cold.md                    lines=447
+  93_orchard_the_strategy_axis_derived_cold.md               lines=1182

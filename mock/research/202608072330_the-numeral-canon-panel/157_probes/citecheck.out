@@ -1,0 +1,296 @@
+OK  INTENTS.md:288-289   [2 lines]
+      - Public API positions use the stack's own primitives rather than bare integers, floats, `bool` or
+        `usize`.
+OK  INTENTS.md:190-197   [8 lines]
+      ## I11. arvo is a library, and the value is what composes on top of it
+      
+      **STATED.** `32`, 2026-08-08.
+OK  bitpack-write-contend-shared/src/stress.rs:97-112   [16 lines]
+      #[test]
+      fn naive_kernel_corruption_rate_under_real_concurrency() {
+          let trials = 3000usize;
+OK  bitpack-write-contend-shared/src/pool.rs:110-111   [2 lines]
+      let vals = pool.vals.load(Ordering::Relaxed) as *const u16;
+              let out = pool.out.load(Ordering::Relaxed) as *mut u8;
+OK  bitpack-write-contend-shared/src/pool.rs:34   [1 lines]
+      static POOL: OnceLock<PoolHandle> = OnceLock::new();
+OK  bitpack-write-contend-shared/src/pool.rs:146-151   [6 lines]
+      let p = handle.pool;
+          p.kernel.store(kernel as usize, Ordering::Relaxed);
+          p.vals.store(vals as usize, Ordering::Relaxed);
+OK  bitpack-write-contend-shared/src/pool.rs:110-113   [4 lines]
+      let vals = pool.vals.load(Ordering::Relaxed) as *const u16;
+              let out = pool.out.load(Ordering::Relaxed) as *mut u8;
+              let n = pool.n.load(Ordering::Relaxed);
+OK  bitpack-write-contend-shared/src/pool.rs:158-160   [3 lines]
+      while p.done.load(Ordering::Acquire) != threads - 1 {
+              std::hint::spin_loop();
+          }
+OK  bitpack-write-contend-shared/src/pool.rs:150   [1 lines]
+      p.n.store(n, Ordering::Relaxed);
+OK  bitpack-write-contend-shared/src/stress.rs:41-50   [10 lines]
+      let mut mismatches = 0usize;
+          for trial in 0..trials {
+              let mut buf = build_bytes(n, 0xC0FF_EE00 ^ trial as u64);
+OK  bitpack-write-contend-shared/src/pool.rs:129-131   [3 lines]
+      /// least the encoded form of `n` elements plus headroom, outlives the call,
+      /// and is not read or written by anything else while this call is in flight.
+      #[inline(never)]
+OK  bitpack-write-contend-shared/src/stress.rs:117-127   [11 lines]
+      /// other defect in the pool or the test harness, this must be zero.
+      #[test]
+      fn naive_kernel_never_corrupts_when_the_split_is_aligned() {
+OK  RULES.md:135-148   [14 lines]
+      **Check your own citations before shipping, by opening them.** A reference that resolves is not a
+      reference that says what you claim. One member found **seven of its own citations wrong** this way and
+      built a probe that opens every `file:line` and tests its content rather than its resolution; forty-one
+OK  /Users/orgrinrt/Dev/clause-dev/.claude/rules/arvo-always-optimal-internals.md:1-4   [4 lines]
+      ---
+      paths:
+        - "arvo/**"
+OK  INTENTS.md:214-226   [12 lines]
+      ## I13. The work is predicated arms composed, and a universal solution is rejected
+      
+      **RATIFIED.** Op, 2026-08-09, ratifying his own two statements in the sitting that produced them, with the
+OK  INTENTS.md:248-261   [14 lines]
+      **Op further specified what "const predicates" reaches**, on 2026-08-13, answering a question about the
+      phrase in his own entry. Verbatim, and recorded in full with its context at
+      `83_op_the_predicate_is_whatever_is_const.md`:
+OK  warm-container-shared/src/lib.rs:187   [1 lines]
+      pub trait Carrier: Copy + 'static {
+OK  warm-clamp-shared/src/lib.rs:41-47   [7 lines]
+      //!
+      //! ## The interior-safety predicate, which is what selects an arm
+      //!
+OK  RULES.md:79-83   [5 lines]
+      **Two tests decide every sentence.** *Permanence*: would this still be true and useful after the
+      implementation is rewritten from scratch? *Equivalence*: would three teams implementing this
+      independently produce things that behave the same? If the first fails it is describing an
+OK  RULES.md:79-83   [5 lines]
+      **Two tests decide every sentence.** *Permanence*: would this still be true and useful after the
+      implementation is rewritten from scratch? *Equivalence*: would three teams implementing this
+      independently produce things that behave the same? If the first fails it is describing an
+OK  INTENTS.md:363-380   [18 lines]
+      ## I17. Cold is not to be deprioritised, and that is independent of how many strategies there are
+      
+      **STATED.** Op, 2026-08-13, asked to resolve a conflict between `arvo-toolbox-not-policer.md`, which is
+OK  INTENTS.md:123-124   [2 lines]
+      > Cold is optimised for cold paths and cold storage, which means, it aggressively minimises and
+      > bitpacks, *but* because it optimises for cold paths, it has more leeway to do things non-efficient.
+OK  111_probes/p4_output.txt:27-30   [4 lines]
+      the pairs where rounding stays unobservable under rational constants:
+        W=2 unsigned sat: trunc vs floor
+        W=3 unsigned sat: trunc vs floor
+OK  warm-container-shared/src/lib.rs:279-283   [5 lines]
+      impl_carrier!(u8);
+      impl_carrier!(u16);
+      impl_carrier!(u32);
+OK  112:904-945   [42 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  111:507-573   [66 lines]
+      ## 8. "Compile-time half" and "finite algebra over a signature" answer two different questions, and the third question between them is the one that de
+      
+      The dispatch asks whether the two answers are rivals, one answer in two vocabularies, or answers to two
+OK  111:555-556   [2 lines]
+      Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
+      transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  111:334-336   [3 lines]
+      Two primitives with the same value set are separated by some term exactly when their realisation maps
+      differ somewhere a term can reach. Every term's argument to `R` is a rational. So **no signature can
+      separate more than "R differs somewhere on Q"**, and a signature containing a constant injection over Q
+OK  112:904-945   [42 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  111:507-573   [66 lines]
+      ## 8. "Compile-time half" and "finite algebra over a signature" answer two different questions, and the third question between them is the one that de
+      
+      The dispatch asks whether the two answers are rivals, one answer in two vocabularies, or answers to two
+OK  153:135   [1 lines]
+      this repository's own `.claude/` rules, the workspace's `.claude/rules/` which load automatically,
+OK  110:113   [1 lines]
+      This workspace auto-loads `arvo-always-optimal-internals.md` into every agent context. That rule
+OK  155:602-616   [14 lines]
+      ## Shared input, declared per the brief
+      
+      Both my phase-one file and 110's phase-one file (and, by its own admission, 111's) had
+OK  110:113   [1 lines]
+      This workspace auto-loads `arvo-always-optimal-internals.md` into every agent context. That rule
+OK  155:602-616   [14 lines]
+      ## Shared input, declared per the brief
+      
+      Both my phase-one file and 110's phase-one file (and, by its own admission, 111's) had
+OK  155:698-706   [9 lines]
+      ### The sibling cold derivation this unit dispatched alongside mine is incomplete, as of this writing
+      
+      `153_dispatcher_note_opening_the_ninth_unit_on_a_cold_return.md` and `156_checkpoint_nine_the_queue_for_ops_seat.md`, neither in my curated reading li
+OK  155:571-585   [15 lines]
+      **analytic** that a function of the tables cannot vary while the tables are held fixed (`111` section
+      2.3). My phase-one section 5 came close to this insight when discussing the interior-safety predicate
+      as "a fact that is true or false as a function of the identities involved," but I never generalised it
+OK  146:646   [1 lines]
+      **The operation set the design ships**, which is what the shape-to-count table waits on (6.3).
+OK  151:507   [1 lines]
+      **The operation set the design ships**, which is what the shape-to-count table waits on, and `150` adds
+OK  112:904-945   [42 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  112:904-905   [2 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  112:944-946   [2 lines]
+      > the two spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic one, and
+      > the program at a homogeneous container, where no repair exists.
+OK  112:904-905   [2 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+OK  111:334-337   [4 lines]
+      Two primitives with the same value set are separated by some term exactly when their realisation maps
+      differ somewhere a term can reach. Every term's argument to `R` is a rational. So **no signature can
+      separate more than "R differs somewhere on Q"**, and a signature containing a constant injection over Q
+OK  111:340-347   [7 lines]
+      ```
+      {literal}                                       165
+      {literal,add}                                   165
+OK  111:832-835   [4 lines]
+      operation-only signature swept. `W in {2,3,4}, F in 0..=2 with F <= W, signedness any, overflow policy
+      in {sat,wrap}, rounding in {near,trunc,floor}, radix in {2,3}, threads = 1, target features any`.
+      `p3_output.txt`. The bound half is structural rather than enumerative: every term's argument to `R` is a
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  112:904-905   [2 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+OK  111:820-822   [3 lines]
+      **F111-5. Rounding at `F = 0` is observable under any signature containing a rational literal, and
+      unobservable under one restricted to grid constants.** 33 of 36 pairs, with the three exceptions named.
+      Same predicate as F111-4. `p4_output.txt`.
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  146:646   [1 lines]
+      **The operation set the design ships**, which is what the shape-to-count table waits on (6.3).
+OK  111:507-573   [66 lines]
+      ## 8. "Compile-time half" and "finite algebra over a signature" answer two different questions, and the third question between them is the one that de
+      
+      The dispatch asks whether the two answers are rivals, one answer in two vocabularies, or answers to two
+OK  111:555-556   [2 lines]
+      Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
+      transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+OK  111:520-523   [4 lines]
+      `110`'s identity criterion is a denotation-preserving isomorphism over a declared signature. **It is
+      undecidable at real widths**, and `110` says so in its own words: exhaustive at `W <= 5`, "an exhaustive
+      check at a model width transfers to a real width only with an argument. I have not made one." Nothing
+OK  112:960-962   [3 lines]
+      Everything enumerative is at `W <= 6` and I have made **no transfer argument** to any real width.
+      `unstable-features.md` is explicit that a model-width check needs one and that its own enumeration of the
+      routes by which behaviour can vary per instantiation is not exhaustive.
+OK  111:531-535   [4 lines]
+      > **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+      > wrong answer along a name.
+      > **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  111:531-535   [4 lines]
+      > **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+      > wrong answer along a name.
+      > **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+OK  111:552-553   [2 lines]
+      - **Adequacy.** The type is a sound and complete decision procedure for denotational identity. Nobody's
+        yet, and it is the obligation the other two are pointless without.
+OK  111:555-556   [2 lines]
+      Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
+      transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+OK  111:567-568   [2 lines]
+      bottom: **nominal sameness is the only one a compiler decides, so a design is exactly as good as the gap
+      between nominal and denotational.** The lattice is not three coequal options to pick from per question.
+OK  108:825   [1 lines]
+      > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
+OK  111:1140-1145   [5 lines]
+      > The **declared semantics** is an assignment on the axes a consumer can observe: those where moving the
+      > assignment changes what the program denotes, or whether it denotes at all. It is supplied and never
+      > derived, because a consumer of a value cannot recover it from the bits, so every consumer of that value
+OK  108:825   [1 lines]
+      > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
+OK  111:824-828   [5 lines]
+      **F111-6. Observability of the rounding mode is a joint fact with the signedness and the overflow
+      policy, not a per-axis one.** Truncate and floor stay unobservable at unsigned saturating and separate
+      at unsigned wrapping. `W in {2,3,4}, F = 0, signedness = unsigned, overflow policy in {sat,wrap},
+OK  111:468-470   [2 lines]
+      **So "is this axis degenerate" has no answer.** It is a joint fact about the axis, the signedness and
+      the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+OK  111:470   [1 lines]
+      the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+OK  111:468-470   [2 lines]
+      **So "is this axis degenerate" has no answer.** It is a joint fact about the axis, the signedness and
+      the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+OK  112:944-946   [2 lines]
+      > the two spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic one, and
+      > the program at a homogeneous container, where no repair exists.
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  108:825   [1 lines]
+      > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
+OK  111:334-336   [3 lines]
+      Two primitives with the same value set are separated by some term exactly when their realisation maps
+      differ somewhere a term can reach. Every term's argument to `R` is a rational. So **no signature can
+      separate more than "R differs somewhere on Q"**, and a signature containing a constant injection over Q
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  112:944-946   [2 lines]
+      > the two spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic one, and
+      > the program at a homogeneous container, where no repair exists.
+OK  111:531-535   [4 lines]
+      > **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+      > wrong answer along a name.
+      > **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+OK  111:334-337   [4 lines]
+      Two primitives with the same value set are separated by some term exactly when their realisation maps
+      differ somewhere a term can reach. Every term's argument to `R` is a rational. So **no signature can
+      separate more than "R differs somewhere on Q"**, and a signature containing a constant injection over Q
+OK  111:1192-1193   [2 lines]
+      Under `108`'s stated criterion, a refinement is not a member of the declared semantics. **`112`'s verdict
+      stands and I withdraw my lean.** What I would change is the argument: it does not need the
+OK  108:825   [1 lines]
+      > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
+OK  108:820-830   [11 lines]
+      > than independent.
+      >
+      > The **declared semantics** is an assignment on the axes a consumer can observe: those where moving the
+OK  112:904-945   [42 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 84 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

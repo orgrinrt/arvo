@@ -1,0 +1,45 @@
+P5. definitional degeneracy against reachability degeneracy
+==============================================================================
+configuration points swept: 432
+
+fraction of points at which each axis is OBSERVABLE, per signature:
+  axis        grid-closed {add,sub,mul,n    + half (not grid-closed)          + half, recip, fma
+  W                  432 / 432                   432 / 432                   432 / 432          
+  F                  432 / 432                   432 / 432                   432 / 432          
+  signed             432 / 432                   432 / 432                   432 / 432          
+  policy             432 / 432                   432 / 432                   432 / 432          
+  rounding           306 / 432                   432 / 432                   432 / 432          
+  radix              324 / 432                   324 / 432                   324 / 432          
+
+the two axes that vanish somewhere, resolved by region:
+  radix:
+    grid-closed {add,sub,mul,neg}  unobservable at F=0:  108, at F>0:    0
+    + half (not grid-closed)       unobservable at F=0:  108, at F>0:    0
+    + half, recip, fma             unobservable at F=0:  108, at F>0:    0
+  rounding:
+    grid-closed {add,sub,mul,neg}  unobservable at F=0:  108, at F>0:   18
+    + half (not grid-closed)       unobservable at F=0:    0, at F>0:    0
+    + half, recip, fma             unobservable at F=0:    0, at F>0:    0
+
+the decisive comparison, at F = 0 only:
+  radix       grid-closed: 0/108 observable  +: 0/108 observable  +: 0/108 observable
+  rounding    grid-closed: 0/108 observable  +: 108/108 observable  +: 108/108 observable
+
+  radix at F = 0 is never observable under any signature tested.
+  it is DEFINITIONAL: step = radix^0 = 1, so no part of the value set
+  or of R mentions the radix, and there is nothing for a term to read.
+
+  rounding at F = 0 is unobservable under the grid-closed signature
+  and observable as soon as an operation leaves the grid. it is
+  REACHABILITY: R still reads the rounding mode, and the old signature
+  merely never handed it a fractional argument.
+
+the definitional test, run rather than argued:
+  does the axis appear in the value set or in R's behaviour on the
+  FULL rational line, rather than only on terms the signature reaches?
+    radix     at F=0: value set or R DOES NOT read it: definitional degeneracy
+    radix     at F=1: value set or R reads it
+    rounding  at F=0: value set or R reads it
+    rounding  at F=1: value set or R reads it
+    policy    at F=0: value set or R reads it
+    policy    at F=1: value set or R reads it

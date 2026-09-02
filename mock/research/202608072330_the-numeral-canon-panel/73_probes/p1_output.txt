@@ -1,0 +1,36 @@
+==============================================================================
+p1. the collapsed declaration, measured against the honest one
+W = 4, Q sizes [16]
+==============================================================================
+
+declaration            AMB-ASSOC  COH fails    MONO fails   IND-ASSOC   
+------------------------------------------------------------------------
+u4 wrap add            0/29791    0/961        120/961      0/4096      
+  [collapsed]          0/4096     0/256        0/256        0/4096         same fn: True
+u4 saturate add        0/29791    0/961        0/961        0/4096      
+  [collapsed]          0/4096     0/256        0/256        0/4096         same fn: True
+i4 saturate add        0/29791    322/961      0/961        952/4096    
+  [collapsed]          952/4096   0/256        0/256        952/4096       same fn: True
+i4 wrap add            0/29791    0/961        232/961      0/4096      
+  [collapsed]          0/4096     0/256        0/256        0/4096         same fn: True
+u4 saturate mul        0/729000   0/8100       0/8100       0/4096      
+  [collapsed]          0/4096     0/256        0/256        0/4096         same fn: True
+gf(2)^4 xor            0/4096     0/256        0/256        0/4096      
+  [collapsed]          0/4096     0/256        0/256        0/4096         same fn: True
+
+------------------------------------------------------------------------------
+ASSERTIONS (the probe crashes rather than inviting the reader to eyeball)
+------------------------------------------------------------------------------
+  ok  every collapsed term computes the identical induced operation
+  ok  every collapsed term reports 0 coherence and 0 monotonicity failures
+  ok  at least one honest declaration fails each law family
+  ok  induced associativity is identical under both declarations
+  ok  ambient associativity holds honestly and fails collapsed for: i4 saturate add
+
+READING. A test that asks a candidate to name (D, Q, rho) and reads the
+two law verdicts off what it named cannot distinguish an honest signed
+saturating numeral from the same numeral naming its own computed
+algebra as its ambient domain. The second reports both families clean.
+The verdicts are informative only jointly with the ambient domain's own
+laws, and the collapse satisfies the second conjunct by voiding the first.
+EXIT=0

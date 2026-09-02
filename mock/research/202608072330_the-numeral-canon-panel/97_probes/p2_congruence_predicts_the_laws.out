@@ -1,0 +1,938 @@
+### W=4
+P2. does one property predict every law verdict
+model width W = 4, exhaustive over every pair and every triple
+
+==============================================================================
+unsigned wrap     F=0 truncate
+  pi respects: add>add, add>mul, add>sub, mul>add, mul>mul, mul>sub, sub>add, sub>mul, sub>sub
+  pi breaks  : (nothing)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   holds      holds      agree
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+unsigned wrap     F=1 truncate
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(23.44%), mul>mul(32.67%), mul>sub(5.20%), sub>mul(23.44%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (41.80% of 4096)
+  distrib        fails      fails      agree  (28.91% of 4096)
+  mul_over_sub   fails      fails      agree  (28.91% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+unsigned wrap     F=1 nearest 
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(23.44%), mul>mul(33.40%), mul>sub(5.20%), sub>mul(23.44%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (41.89% of 4096)
+  distrib        fails      fails      agree  (28.91% of 4096)
+  mul_over_sub   fails      fails      agree  (28.91% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+unsigned wrap     F=2 truncate
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(35.16%), mul>mul(43.46%), mul>sub(16.94%), sub>mul(35.16%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (48.73% of 4096)
+  distrib        fails      fails      agree  (46.09% of 4096)
+  mul_over_sub   fails      fails      agree  (46.09% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+unsigned wrap     F=2 nearest 
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(35.16%), mul>mul(45.46%), mul>sub(8.45%), sub>mul(35.16%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (51.37% of 4096)
+  distrib        fails      fails      agree  (43.75% of 4096)
+  mul_over_sub   fails      fails      agree  (43.75% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+unsigned saturate F=0 truncate
+  pi respects: add>add, add>mul, mul>add, mul>mul, sub>mul
+  pi breaks  : add>sub(43.95%), mul>sub(65.92%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   fails      fails      agree  (34.94% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+unsigned saturate F=1 truncate
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(2.93%), add>sub(43.95%), mul>mul(6.01%), mul>sub(57.93%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (9.72% of 4096)
+  distrib        fails      fails      agree  (4.10% of 4096)
+  mul_over_sub   fails      fails      agree  (31.98% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+unsigned saturate F=1 nearest 
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(2.56%), add>sub(43.95%), mul>mul(6.01%), mul>sub(57.93%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (9.52% of 4096)
+  distrib        fails      fails      agree  (3.91% of 4096)
+  mul_over_sub   fails      fails      agree  (31.98% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+unsigned saturate F=2 truncate
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(8.79%), add>sub(43.95%), mul>mul(16.67%), mul>sub(50.63%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (21.44% of 4096)
+  distrib        fails      fails      agree  (12.65% of 4096)
+  mul_over_sub   fails      fails      agree  (26.98% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+unsigned saturate F=2 nearest 
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(7.71%), add>sub(43.95%), mul>mul(16.72%), mul>sub(42.87%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (23.39% of 4096)
+  distrib        fails      fails      agree  (11.60% of 4096)
+  mul_over_sub   fails      fails      agree  (26.39% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   wrap     F=0 truncate
+  pi respects: add>add, add>mul, add>sub, mul>add, mul>mul, mul>sub, sub>add, sub>mul, sub>sub
+  pi breaks  : (nothing)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   holds      holds      agree
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+signed   wrap     F=1 truncate
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(12.50%), mul>add(4.39%), mul>mul(31.05%), mul>sub(4.39%), sub>mul(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (35.64% of 4096)
+  distrib        fails      fails      agree  (21.88% of 4096)
+  mul_over_sub   fails      fails      agree  (21.88% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+signed   wrap     F=1 nearest 
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(12.50%), mul>add(4.39%), mul>mul(32.62%), mul>sub(4.39%), sub>mul(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (36.52% of 4096)
+  distrib        fails      fails      agree  (21.88% of 4096)
+  mul_over_sub   fails      fails      agree  (21.88% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+signed   wrap     F=2 truncate
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(18.75%), mul>add(13.53%), mul>mul(22.75%), mul>sub(13.53%), sub>mul(18.75%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (25.98% of 4096)
+  distrib        fails      fails      agree  (37.50% of 4096)
+  mul_over_sub   fails      fails      agree  (37.50% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+signed   wrap     F=2 nearest 
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(18.75%), mul>add(6.74%), mul>mul(28.81%), mul>sub(6.74%), sub>mul(18.75%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (33.59% of 4096)
+  distrib        fails      fails      agree  (32.81% of 4096)
+  mul_over_sub   fails      fails      agree  (32.81% of 4096)
+  sub_assoc      fails      fails      agree  (87.50% of 4096)
+  sub_comm       fails      fails      agree  (87.50% of 256)
+==============================================================================
+signed   saturate F=0 truncate
+  pi respects: 
+  pi breaks  : add>add(11.62%), add>mul(0.68%), add>sub(12.50%), mul>add(28.47%), mul>mul(1.98%), mul>sub(30.27%), sub>add(11.82%), sub>mul(0.88%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (23.24% of 4096)
+  mul_assoc      fails      fails      agree  (3.91% of 4096)
+  distrib        fails      fails      agree  (34.52% of 4096)
+  mul_over_sub   fails      fails      agree  (33.08% of 4096)
+  sub_assoc      fails      fails      agree  (88.77% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   saturate F=1 truncate
+  pi respects: 
+  pi breaks  : add>add(11.62%), add>mul(3.42%), add>sub(12.50%), mul>add(22.95%), mul>mul(11.40%), mul>sub(24.12%), sub>add(11.82%), sub>mul(3.66%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (23.24% of 4096)
+  mul_assoc      fails      fails      agree  (17.19% of 4096)
+  distrib        fails      fails      agree  (31.49% of 4096)
+  mul_over_sub   fails      fails      agree  (30.81% of 4096)
+  sub_assoc      fails      fails      agree  (88.77% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   saturate F=1 nearest 
+  pi respects: 
+  pi breaks  : add>add(11.62%), add>mul(3.47%), add>sub(12.50%), mul>add(23.54%), mul>mul(11.99%), mul>sub(24.90%), sub>add(11.82%), sub>mul(3.61%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (23.24% of 4096)
+  mul_assoc      fails      fails      agree  (17.48% of 4096)
+  distrib        fails      fails      agree  (33.25% of 4096)
+  mul_over_sub   fails      fails      agree  (32.30% of 4096)
+  sub_assoc      fails      fails      agree  (88.77% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   saturate F=2 truncate
+  pi respects: 
+  pi breaks  : add>add(11.62%), add>mul(8.25%), add>sub(12.50%), mul>add(20.02%), mul>mul(14.82%), mul>sub(20.36%), sub>add(11.82%), sub>mul(8.69%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (23.24% of 4096)
+  mul_assoc      fails      fails      agree  (17.29% of 4096)
+  distrib        fails      fails      agree  (30.42% of 4096)
+  mul_over_sub   fails      fails      agree  (30.76% of 4096)
+  sub_assoc      fails      fails      agree  (88.77% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   saturate F=2 nearest 
+  pi respects: 
+  pi breaks  : add>add(11.62%), add>mul(8.69%), add>sub(12.50%), mul>add(14.50%), mul>mul(19.31%), mul>sub(15.14%), sub>add(11.82%), sub>mul(8.79%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (23.24% of 4096)
+  mul_assoc      fails      fails      agree  (25.39% of 4096)
+  distrib        fails      fails      agree  (31.59% of 4096)
+  mul_over_sub   fails      fails      agree  (31.35% of 4096)
+  sub_assoc      fails      fails      agree  (88.77% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   saturate F=0 truncate [nonneg window]
+  pi respects: add>add, add>mul, mul>add, mul>mul, sub>mul
+  pi breaks  : add>sub(38.28%), mul>sub(45.12%), sub>add(38.28%), sub>sub(38.28%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   fails      fails      agree  (23.83% of 512)
+  sub_assoc      fails      fails      agree  (65.62% of 512)
+  sub_comm       fails      fails      agree  (87.50% of 64)
+==============================================================================
+signed   saturate F=1 truncate [nonneg window]
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(5.47%), add>sub(38.28%), mul>mul(8.59%), mul>sub(35.16%), sub>add(38.28%), sub>sub(38.28%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (12.50% of 512)
+  distrib        fails      fails      agree  (6.84% of 512)
+  mul_over_sub   fails      fails      agree  (19.14% of 512)
+  sub_assoc      fails      fails      agree  (65.62% of 512)
+  sub_comm       fails      fails      agree  (87.50% of 64)
+==============================================================================
+signed   saturate F=1 nearest  [nonneg window]
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(4.10%), add>sub(38.28%), mul>mul(8.98%), mul>sub(37.89%), sub>add(38.28%), sub>sub(38.28%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (12.11% of 512)
+  distrib        fails      fails      agree  (6.84% of 512)
+  mul_over_sub   fails      fails      agree  (20.31% of 512)
+  sub_assoc      fails      fails      agree  (65.62% of 512)
+  sub_comm       fails      fails      agree  (87.50% of 64)
+
+==============================================================================
+cells                              : 184
+SOUNDNESS mismatches (refute)      : 0
+conservative mismatches (safe)     : 0
+
+Every law the criterion predicted to hold, holds, in every configuration
+swept. So the law table is derivable from the retraction verdicts and
+does not need to be measured law by law.
+
+### W=5
+P2. does one property predict every law verdict
+model width W = 5, exhaustive over every pair and every triple
+
+==============================================================================
+unsigned wrap     F=0 truncate
+  pi respects: add>add, add>mul, add>sub, mul>add, mul>mul, mul>sub, sub>add, sub>mul, sub>sub
+  pi breaks  : (nothing)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   holds      holds      agree
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+unsigned wrap     F=1 truncate
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(24.22%), mul>mul(38.21%), mul>sub(3.19%), sub>mul(24.22%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (48.34% of 32768)
+  distrib        fails      fails      agree  (30.08% of 32768)
+  mul_over_sub   fails      fails      agree  (30.08% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+unsigned wrap     F=1 nearest 
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(24.22%), mul>mul(38.62%), mul>sub(3.19%), sub>mul(24.22%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (48.33% of 32768)
+  distrib        fails      fails      agree  (30.08% of 32768)
+  mul_over_sub   fails      fails      agree  (30.08% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+unsigned wrap     F=2 truncate
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(36.33%), mul>mul(59.00%), mul>sub(10.78%), sub>mul(36.33%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (66.63% of 32768)
+  distrib        fails      fails      agree  (48.05% of 32768)
+  mul_over_sub   fails      fails      agree  (48.05% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+unsigned wrap     F=2 nearest 
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(36.33%), mul>mul(60.02%), mul>sub(5.36%), sub>mul(36.33%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (67.49% of 32768)
+  distrib        fails      fails      agree  (45.31% of 32768)
+  mul_over_sub   fails      fails      agree  (45.31% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+unsigned saturate F=0 truncate
+  pi respects: add>add, add>mul, mul>add, mul>mul, sub>mul
+  pi breaks  : add>sub(46.92%), mul>sub(80.22%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   fails      fails      agree  (41.91% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+unsigned saturate F=1 truncate
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(1.51%), add>sub(46.92%), mul>mul(3.30%), mul>sub(74.33%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (5.77% of 32768)
+  distrib        fails      fails      agree  (2.16% of 32768)
+  mul_over_sub   fails      fails      agree  (40.07% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+unsigned saturate F=1 nearest 
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(1.42%), add>sub(46.92%), mul>mul(3.32%), mul>sub(74.71%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (5.67% of 32768)
+  distrib        fails      fails      agree  (2.16% of 32768)
+  mul_over_sub   fails      fails      agree  (40.18% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+unsigned saturate F=2 truncate
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(4.54%), add>sub(46.92%), mul>mul(11.01%), mul>sub(67.73%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (16.33% of 32768)
+  distrib        fails      fails      agree  (7.05% of 32768)
+  mul_over_sub   fails      fails      agree  (37.07% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+unsigned saturate F=2 nearest 
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(4.26%), add>sub(46.92%), mul>mul(11.07%), mul>sub(62.88%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (16.60% of 32768)
+  distrib        fails      fails      agree  (6.40% of 32768)
+  mul_over_sub   fails      fails      agree  (36.58% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   wrap     F=0 truncate
+  pi respects: add>add, add>mul, add>sub, mul>add, mul>mul, mul>sub, sub>add, sub>mul, sub>sub
+  pi breaks  : (nothing)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   holds      holds      agree
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+signed   wrap     F=1 truncate
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(12.50%), mul>add(2.74%), mul>mul(37.92%), mul>sub(2.74%), sub>mul(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (46.18% of 32768)
+  distrib        fails      fails      agree  (21.88% of 32768)
+  mul_over_sub   fails      fails      agree  (21.88% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+signed   wrap     F=1 nearest 
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(12.50%), mul>add(2.74%), mul>mul(38.53%), mul>sub(2.74%), sub>mul(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (46.39% of 32768)
+  distrib        fails      fails      agree  (21.88% of 32768)
+  mul_over_sub   fails      fails      agree  (21.88% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+signed   wrap     F=2 truncate
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(18.75%), mul>add(8.92%), mul>mul(48.95%), mul>sub(8.92%), sub>mul(18.75%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (55.64% of 32768)
+  distrib        fails      fails      agree  (37.50% of 32768)
+  mul_over_sub   fails      fails      agree  (37.50% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+signed   wrap     F=2 nearest 
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(18.75%), mul>add(4.44%), mul>mul(50.98%), mul>sub(4.44%), sub>mul(18.75%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (57.47% of 32768)
+  distrib        fails      fails      agree  (32.81% of 32768)
+  mul_over_sub   fails      fails      agree  (32.81% of 32768)
+  sub_assoc      fails      fails      agree  (93.75% of 32768)
+  sub_comm       fails      fails      agree  (93.75% of 1024)
+==============================================================================
+signed   saturate F=0 truncate
+  pi respects: 
+  pi breaks  : add>add(12.08%), add>mul(0.37%), add>sub(12.50%), mul>add(36.58%), mul>mul(1.19%), mul>sub(37.74%), sub>add(12.13%), sub>mul(0.42%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.17% of 32768)
+  mul_assoc      fails      fails      agree  (2.38% of 32768)
+  distrib        fails      fails      agree  (41.49% of 32768)
+  mul_over_sub   fails      fails      agree  (40.43% of 32768)
+  sub_assoc      fails      fails      agree  (92.31% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   saturate F=1 truncate
+  pi respects: 
+  pi breaks  : add>add(12.08%), add>mul(1.83%), add>sub(12.50%), mul>add(32.23%), mul>mul(7.37%), mul>sub(33.16%), sub>add(12.13%), sub>mul(1.89%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.17% of 32768)
+  mul_assoc      fails      fails      agree  (12.45% of 32768)
+  distrib        fails      fails      agree  (39.91% of 32768)
+  mul_over_sub   fails      fails      agree  (39.11% of 32768)
+  sub_assoc      fails      fails      agree  (92.31% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   saturate F=1 nearest 
+  pi respects: 
+  pi breaks  : add>add(12.08%), add>mul(1.84%), add>sub(12.50%), mul>add(32.41%), mul>mul(7.41%), mul>sub(33.36%), sub>add(12.13%), sub>mul(1.88%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.17% of 32768)
+  mul_assoc      fails      fails      agree  (12.27% of 32768)
+  distrib        fails      fails      agree  (40.20% of 32768)
+  mul_over_sub   fails      fails      agree  (39.36% of 32768)
+  sub_assoc      fails      fails      agree  (92.31% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   saturate F=2 truncate
+  pi respects: 
+  pi breaks  : add>add(12.08%), add>mul(4.58%), add>sub(12.50%), mul>add(28.10%), mul>mul(18.38%), mul>sub(28.70%), sub>add(12.13%), sub>mul(4.66%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.17% of 32768)
+  mul_assoc      fails      fails      agree  (24.95% of 32768)
+  distrib        fails      fails      agree  (38.48% of 32768)
+  mul_over_sub   fails      fails      agree  (38.07% of 32768)
+  sub_assoc      fails      fails      agree  (92.31% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   saturate F=2 nearest 
+  pi respects: 
+  pi breaks  : add>add(12.08%), add>mul(4.69%), add>sub(12.50%), mul>add(24.00%), mul>mul(18.75%), mul>sub(24.61%), sub>add(12.13%), sub>mul(4.72%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.17% of 32768)
+  mul_assoc      fails      fails      agree  (26.94% of 32768)
+  distrib        fails      fails      agree  (37.56% of 32768)
+  mul_over_sub   fails      fails      agree  (37.04% of 32768)
+  sub_assoc      fails      fails      agree  (92.31% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   saturate F=0 truncate [nonneg window]
+  pi respects: add>add, add>mul, mul>add, mul>mul, sub>mul
+  pi breaks  : add>sub(43.95%), mul>sub(65.92%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   fails      fails      agree  (34.94% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   saturate F=1 truncate [nonneg window]
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(2.93%), add>sub(43.95%), mul>mul(6.01%), mul>sub(57.93%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (9.72% of 4096)
+  distrib        fails      fails      agree  (4.10% of 4096)
+  mul_over_sub   fails      fails      agree  (31.98% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+==============================================================================
+signed   saturate F=1 nearest  [nonneg window]
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(2.56%), add>sub(43.95%), mul>mul(6.01%), mul>sub(57.93%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (9.52% of 4096)
+  distrib        fails      fails      agree  (3.91% of 4096)
+  mul_over_sub   fails      fails      agree  (31.98% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+
+==============================================================================
+cells                              : 184
+SOUNDNESS mismatches (refute)      : 0
+conservative mismatches (safe)     : 0
+
+Every law the criterion predicted to hold, holds, in every configuration
+swept. So the law table is derivable from the retraction verdicts and
+does not need to be measured law by law.
+
+### W=6
+P2. does one property predict every law verdict
+model width W = 6, exhaustive over every pair and every triple
+
+==============================================================================
+unsigned wrap     F=0 truncate
+  pi respects: add>add, add>mul, add>sub, mul>add, mul>mul, mul>sub, sub>add, sub>mul, sub>sub
+  pi breaks  : (nothing)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   holds      holds      agree
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+unsigned wrap     F=1 truncate
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(24.61%), mul>mul(40.61%), mul>sub(1.89%), sub>mul(24.61%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (52.44% of 262144)
+  distrib        fails      fails      agree  (30.66% of 262144)
+  mul_over_sub   fails      fails      agree  (30.66% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+unsigned wrap     F=1 nearest 
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(24.61%), mul>mul(40.81%), mul>sub(1.89%), sub>mul(24.61%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (52.45% of 262144)
+  distrib        fails      fails      agree  (30.66% of 262144)
+  mul_over_sub   fails      fails      agree  (30.66% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+unsigned wrap     F=2 truncate
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(36.91%), mul>mul(66.65%), mul>sub(6.53%), sub>mul(36.91%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (75.30% of 262144)
+  distrib        fails      fails      agree  (49.02% of 262144)
+  mul_over_sub   fails      fails      agree  (49.02% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+unsigned wrap     F=2 nearest 
+  pi respects: add>add, add>sub, mul>add, sub>add, sub>sub
+  pi breaks  : add>mul(36.91%), mul>mul(67.13%), mul>sub(3.26%), sub>mul(36.91%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (75.80% of 262144)
+  distrib        fails      fails      agree  (46.09% of 262144)
+  mul_over_sub   fails      fails      agree  (46.09% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+unsigned saturate F=0 truncate
+  pi respects: add>add, add>mul, mul>add, mul>mul, sub>mul
+  pi breaks  : add>sub(48.45%), mul>sub(88.82%), sub>add(48.45%), sub>sub(48.45%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   fails      fails      agree  (45.79% of 262144)
+  sub_assoc      fails      fails      agree  (81.01% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+unsigned saturate F=1 truncate
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(0.77%), add>sub(48.45%), mul>mul(1.67%), mul>sub(85.04%), sub>add(48.45%), sub>sub(48.45%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (3.07% of 262144)
+  distrib        fails      fails      agree  (1.12% of 262144)
+  mul_over_sub   fails      fails      agree  (44.79% of 262144)
+  sub_assoc      fails      fails      agree  (81.01% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+unsigned saturate F=1 nearest 
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(0.75%), add>sub(48.45%), mul>mul(1.68%), mul>sub(85.04%), sub>add(48.45%), sub>sub(48.45%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (3.04% of 262144)
+  distrib        fails      fails      agree  (1.11% of 262144)
+  mul_over_sub   fails      fails      agree  (44.79% of 262144)
+  sub_assoc      fails      fails      agree  (81.01% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+unsigned saturate F=2 truncate
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(2.31%), add>sub(48.45%), mul>mul(5.72%), mul>sub(80.27%), sub>add(48.45%), sub>sub(48.45%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (9.29% of 262144)
+  distrib        fails      fails      agree  (3.70% of 262144)
+  mul_over_sub   fails      fails      agree  (43.09% of 262144)
+  sub_assoc      fails      fails      agree  (81.01% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+unsigned saturate F=2 nearest 
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(2.24%), add>sub(48.45%), mul>mul(5.77%), mul>sub(77.09%), sub>add(48.45%), sub>sub(48.45%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (9.36% of 262144)
+  distrib        fails      fails      agree  (3.33% of 262144)
+  mul_over_sub   fails      fails      agree  (42.77% of 262144)
+  sub_assoc      fails      fails      agree  (81.01% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+signed   wrap     F=0 truncate
+  pi respects: add>add, add>mul, add>sub, mul>add, mul>mul, mul>sub, sub>add, sub>mul, sub>sub
+  pi breaks  : (nothing)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   holds      holds      agree
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+signed   wrap     F=1 truncate
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(12.50%), mul>add(1.64%), mul>mul(42.49%), mul>sub(1.64%), sub>mul(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (51.68% of 262144)
+  distrib        fails      fails      agree  (21.88% of 262144)
+  mul_over_sub   fails      fails      agree  (21.88% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+signed   wrap     F=1 nearest 
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(12.50%), mul>add(1.64%), mul>mul(42.82%), mul>sub(1.64%), sub>mul(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (51.76% of 262144)
+  distrib        fails      fails      agree  (21.88% of 262144)
+  mul_over_sub   fails      fails      agree  (21.88% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+signed   wrap     F=2 truncate
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(18.75%), mul>add(5.54%), mul>mul(64.32%), mul>sub(5.54%), sub>mul(18.75%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (70.26% of 262144)
+  distrib        fails      fails      agree  (37.50% of 262144)
+  mul_over_sub   fails      fails      agree  (37.50% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+signed   wrap     F=2 nearest 
+  pi respects: add>add, add>sub, sub>add, sub>sub
+  pi breaks  : add>mul(18.75%), mul>add(2.76%), mul>mul(65.12%), mul>sub(2.76%), sub>mul(18.75%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (70.94% of 262144)
+  distrib        fails      fails      agree  (32.81% of 262144)
+  mul_over_sub   fails      fails      agree  (32.81% of 262144)
+  sub_assoc      fails      fails      agree  (96.88% of 262144)
+  sub_comm       fails      fails      agree  (96.88% of 4096)
+==============================================================================
+signed   saturate F=0 truncate
+  pi respects: 
+  pi breaks  : add>add(12.30%), add>mul(0.19%), add>sub(12.50%), mul>add(42.14%), mul>mul(0.67%), mul>sub(42.81%), sub>add(12.31%), sub>mul(0.20%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.60% of 262144)
+  mul_assoc      fails      fails      agree  (1.34% of 262144)
+  distrib        fails      fails      agree  (45.56% of 262144)
+  mul_over_sub   fails      fails      agree  (44.92% of 262144)
+  sub_assoc      fails      fails      agree  (94.07% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+signed   saturate F=1 truncate
+  pi respects: 
+  pi breaks  : add>add(12.30%), add>mul(0.95%), add>sub(12.50%), mul>add(39.10%), mul>mul(3.99%), mul>sub(39.69%), sub>add(12.31%), sub>mul(0.96%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.60% of 262144)
+  mul_assoc      fails      fails      agree  (7.15% of 262144)
+  distrib        fails      fails      agree  (44.57% of 262144)
+  mul_over_sub   fails      fails      agree  (44.02% of 262144)
+  sub_assoc      fails      fails      agree  (94.07% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+signed   saturate F=1 nearest 
+  pi respects: 
+  pi breaks  : add>add(12.30%), add>mul(0.95%), add>sub(12.50%), mul>add(39.23%), mul>mul(4.02%), mul>sub(39.83%), sub>add(12.31%), sub>mul(0.96%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.60% of 262144)
+  mul_assoc      fails      fails      agree  (7.06% of 262144)
+  distrib        fails      fails      agree  (44.73% of 262144)
+  mul_over_sub   fails      fails      agree  (44.17% of 262144)
+  sub_assoc      fails      fails      agree  (94.07% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+signed   saturate F=2 truncate
+  pi respects: 
+  pi breaks  : add>add(12.30%), add>mul(2.41%), add>sub(12.50%), mul>add(35.67%), mul>mul(11.79%), mul>sub(36.14%), sub>add(12.31%), sub>mul(2.43%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.60% of 262144)
+  mul_assoc      fails      fails      agree  (17.87% of 262144)
+  distrib        fails      fails      agree  (43.71% of 262144)
+  mul_over_sub   fails      fails      agree  (43.29% of 262144)
+  sub_assoc      fails      fails      agree  (94.07% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+signed   saturate F=2 nearest 
+  pi respects: 
+  pi breaks  : add>add(12.30%), add>mul(2.44%), add>sub(12.50%), mul>add(33.12%), mul>mul(11.88%), mul>sub(33.60%), sub>add(12.31%), sub>mul(2.45%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (24.60% of 262144)
+  mul_assoc      fails      fails      agree  (18.15% of 262144)
+  distrib        fails      fails      agree  (43.01% of 262144)
+  mul_over_sub   fails      fails      agree  (42.56% of 262144)
+  sub_assoc      fails      fails      agree  (94.07% of 262144)
+  sub_comm       fails      fails      agree  (98.44% of 4096)
+==============================================================================
+signed   saturate F=0 truncate [nonneg window]
+  pi respects: add>add, add>mul, mul>add, mul>mul, sub>mul
+  pi breaks  : add>sub(46.92%), mul>sub(80.22%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   fails      fails      agree  (41.91% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   saturate F=1 truncate [nonneg window]
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(1.51%), add>sub(46.92%), mul>mul(3.30%), mul>sub(74.33%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (5.77% of 32768)
+  distrib        fails      fails      agree  (2.16% of 32768)
+  mul_over_sub   fails      fails      agree  (40.07% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+==============================================================================
+signed   saturate F=1 nearest  [nonneg window]
+  pi respects: add>add, mul>add, sub>mul
+  pi breaks  : add>mul(1.42%), add>sub(46.92%), mul>mul(3.32%), mul>sub(74.71%), sub>add(46.92%), sub>sub(46.92%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      fails      fails      agree  (5.67% of 32768)
+  distrib        fails      fails      agree  (2.16% of 32768)
+  mul_over_sub   fails      fails      agree  (40.18% of 32768)
+  sub_assoc      fails      fails      agree  (78.71% of 32768)
+  sub_comm       fails      fails      agree  (96.88% of 1024)
+
+==============================================================================
+cells                              : 184
+SOUNDNESS mismatches (refute)      : 0
+conservative mismatches (safe)     : 0
+
+Every law the criterion predicted to hold, holds, in every configuration
+swept. So the law table is derivable from the retraction verdicts and
+does not need to be measured law by law.

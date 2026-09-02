@@ -1,0 +1,11 @@
+error: `Width` is forbidden as the type of a const generic parameter
+  --> tests/ui/c1_the_consumer_really_has_no_gate.rs:11:32
+   |
+11 | pub struct MyRange<const BITS: Width>;
+   |                                ^^^^^
+   |
+   = note: the only supported types are integers, `bool`, and `char`
+help: add `#![feature(min_adt_const_params)]` to the crate attributes to enable more complex and user defined types
+   |
+ 9 + #![feature(min_adt_const_params)]
+   |

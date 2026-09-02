@@ -1,0 +1,9 @@
+symbol                                                                  insns
+__RNvCslBZzTB4pgIt_25p6_sufficiency_as_a_bound12call_b_equal               10
+__RNvCslBZzTB4pgIt_25p6_sufficiency_as_a_bound9fold_bare                   10
+
+identical to fold_bare after label normalisation: True  <- __RNvCslBZzTB4pgIt_25p6_sufficiency_as_a_bound12call_b_equal
+
+aliased symbols in the file (equal-sign directives):
+  __RNvCslBZzTB4pgIt_25p6_sufficiency_as_a_bound6call_a = __RNvCslBZzTB4pgIt_25p6_sufficiency_as_a_bound12call_b_equal
+  __RNvCslBZzTB4pgIt_25p6_sufficiency_as_a_bound6call_b = __RNvCslBZzTB4pgIt_25p6_sufficiency_as_a_bound12call_b_equal

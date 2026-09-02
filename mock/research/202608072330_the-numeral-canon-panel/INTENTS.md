@@ -1,0 +1,395 @@
+# The intent catalogue
+
+**Op's stated intents for arvo, in his own words, with provenance.** This is the material that
+graduates into the canon. Everything else this panel produces is working towards it.
+
+**Opened 2026-08-08**, after op asked whether his ratifiable intents had been written into any
+catalogue and the answer was no. They had been recorded only in the numbered audit-trail files, because
+the panel's explore-do-not-settle mode was applied to them uniformly. That was a category error: the
+mode exists so that **agent-derived conclusions** are not settled before the experts converge, and an
+intent op states in his own words is not a derived conclusion. It is the source those conclusions are
+measured against.
+
+## What may be in here, and what may not
+
+**In:** intents op has stated, quoted rather than paraphrased, with where he said it.
+
+**Out:** every conclusion drawn from an intent, every per-strategy ruling an agent derived, every
+mechanism, and every number. Those live in the panel files and in `OPTIONS.md`, and a reader who wants
+them should go there rather than find them dressed as intent here.
+
+The distinction is not decorative. Op, 2026-08-08: "we don't ratify these as absolutes, rather,
+*intent* as stated by me here and prior." An absolute derived from an intent is exactly the thing that
+must not appear in this file.
+
+## How to read an entry
+
+**RATIFIED** means it sits on the record as ratified with op in the loop, with the provenance shown.
+**One entry holds this rung: I13**, ratified by op in the sitting that produced it, in the words recorded
+there. The three that previously held it were imported from the prior panel's
+`SETTLED.md` classification, which `01` section 0 and the panel's own continuation state had already
+established was made under the old reading of ratification and is not to be trusted. Op demoted the
+first of them within hours (`39`); the other two were rewritten to rest on his current word instead.
+**Do not import that rung again.** An entry earns RATIFIED here only from a convergence brought to op
+and blessed, which has not happened for anything.
+
+**STATED** means op has said it and marked it canon-bound, and it has not been through the convergence
+that ratification requires. Under his own correction, an opinion given before the experts converge is
+an ack meaning the direction checks out. A STATED entry is his intent and is not yet a settled answer.
+
+**IN FORCE** means op has stated it and it is **enforced outside this panel**, by arvo's own mockspace
+lint configuration and by the workspace rules. One entry holds it: I14. It is neither of the two above,
+because it is not a convergence op blessed and it is not an open direction either. It is a rule already
+operating, which op has confirmed is also his intent. The marker is the coordinator's bookkeeping; the
+force comes from the lints and from his word that it is "not to be questioned".
+
+**A standing instruction applies to every entry below**, and it is his: *"You should not write these as
+clear cut and settled. The intent is clear I think, but nothing about them is absolute otherwise."*
+
+---
+
+## I1. ~~The strategy set is closed at exactly four~~ DEMOTED TO OPEN
+
+**OPEN.** Demoted 2026-08-08 on op's direct word, hours after this file opened. Kept rather than
+deleted so the demotion is legible. Full statement: `39`.
+
+> the strategy set is not closed at exactly four. These are the ones the last panel settled with, and
+> what my amateur ass had written for arvo that we are now redesigning (infer from that what you
+> will..), so it's entirely open to discussion and exploration
+
+`Hot`, `Cold`, `Warm`, `Precise` are **a prior attempt at the intent, not the intent**. The number, the
+names and the decomposition are all open.
+
+## I2. Each preset names a stated intent, not a derived rule
+
+**STATED, and its enumeration is OPEN.** The shape of this claim survives, because op spent 2026-08-08
+stating intents rather than deriving them (`34`, `36`, `37`, `38`). The list of four it enumerates does
+not, per I1. Quoted at `seed/OLD_SETTLED_strategy.md` section 2, from the prior panel at `70:106-109` and
+requoted at `124:2578-2580`.
+
+> `Hot` is as fast as possible, `Cold` stores as small as possible, `Precise` is the most precise at
+> the price of both storage and compute, `Warm` is the compromise that suits most default cases and
+> behaves intuitively.
+
+## I3. Warm behaves as a native Rust primitive would
+
+**STATED, on op's current word rather than on the carried rung.** He restated it on 2026-08-08 and
+refined it at `38`, so its authority does not depend on the prior panel's classification. Whether a
+strategy named `Warm` exists in the final decomposition is open, per I1. Originally at `140b:16-21`,
+carried at `seed/OLD_SETTLED_strategy.md` section 3.
+
+> My standing call is "It should behave like native primitives in regular old rust would"... The
+> intent, here, is what matters. The mechanisms and theory may live freely and shift under and around
+> it, the intent is what remains and matters.
+
+The seed records that this call was re-stated twice in two days because it kept failing to stick, and
+op restated it again on 2026-08-08. Four statements of the same call.
+
+**What the imitation is about, settled 2026-08-14.** Asked whether, at a declared width Rust has no
+primitive for, the imitation targets the **declared width** or the **container**, op took neither:
+
+> Neither, it's ergonomics
+
+So **I3 is not a statement about where arithmetic boundaries land.** It is about the experience of using
+the type: that it is unsurprising, that it does the expected thing, that a reader who knows Rust's
+primitives is not caught out. Where the boundaries land is answered by the width and the overflow
+policy, not by I3.
+
+The panel had built a two-way fork between the two arithmetic readings and measured that they disagree
+at all fourteen non-native widths swept (`93`'s F8). That measurement is correct and is about something
+I3 does not range over. Full record at `104`.
+
+## I4. Warm's objective is the intuitive best choice, and imitation serves it rather than defines it
+
+**STATED.** `38`, 2026-08-08.
+
+> Warm does not merely imitate, its intent is to be intuitive best choice for most every use case, and
+> the intuitive part demands it mimics, but it does not make it absolutely required, if mimicking is
+> consistently just worse choice.
+
+## I5. Hot may sacrifice soundness, for a proven meaningful gain
+
+**STATED.** `34`, 2026-08-08.
+
+> the intent behind Hot is performance, efficiency, even at the cost of accuracy or soundness
+
+> Hot *can* sacrifice soundness, that is its explicit purpose, but it should not lose it for nothing,
+> instead, provable meaningful gains.
+
+## I6. Cold is for cold paths and cold storage
+
+**STATED.** `36` and `37`, 2026-08-08.
+
+> Cold is optimised for cold paths and cold storage, which means, it aggressively minimises and
+> bitpacks, *but* because it optimises for cold paths, it has more leeway to do things non-efficient.
+
+> It's intent is that it is for cold paths, cold use. Which means, it should remain small for memory or
+> disk storage, because it's just sitting basically.
+
+And the bound on that leeway, `38`:
+
+> Cold does not *have to* drop efficiency wins elsewhere. It can use the same paths Hot uses, not
+> because it needs to by intent, but nothing in its intent would fight it. But if the path fights the
+> intent, then it's not for Cold.
+
+## I7. Precise is accurate across chains, not only per operation
+
+**STATED.** `36`, 2026-08-08.
+
+> Precise on other hand is the one that sacrifices as much performance and efficiency as makes sense,
+> to be the most precise possible answer, throwing out all cold or hot axis optimisations to be
+> *accurate* and *precise*, especially within chains and ops, not only alone.
+
+## I8. The strategies weigh measurements differently
+
+**STATED.** `38`, 2026-08-08. Op calls this the mental unlock.
+
+**The intent is the first sentence.** All strategies are decided by measurement, they measure different
+things, and **they weigh different measurements differently**. That is the entry.
+
+> All of them should be decided by measurement, just measuring different things, and, this is I think
+> the mental unlock: They weigh different measurements differently. For the most part, they probably
+> agree, because in general, the best answer fits all, because it fights none of their intent. But
+> perhaps my instinct is wrong there, and all truly differ for the most part.
+
+The rest of the quotation is kept for provenance and **is not part of the intent.** Op, 2026-08-13, asked
+whether he still held the agreement instinct:
+
+> It doesn't matter. The important part is whatever came before "for the most part, they probably
+> agree...". That's just filler noise I mused on the spot. What it is speculating on ("probably",
+> "perhaps") is the important part, not the small talk speculation itself.
+
+An earlier version of this entry said the second half "is part of the intent rather than a hedge on it"
+and recorded whether the weightings usually agree as an open question of op's. **That was wrong**, and it
+is the exact failure the split between intent and concretes exists to prevent: a verbatim transcript was
+recorded, correctly, and then every clause of it was treated as load-bearing. Quoting verbatim is for
+provenance. Naming the intent inside the quotation is a second act, and skipping it turns thinking-aloud
+into doctrine and then hands it back to op as a question he has to answer.
+
+Nothing is open here. Whether the weightings agree in practice is an ordinary empirical question about
+arvo, answerable by measurement like any other, and it is not an intent op owes.
+
+## I9. The strategy is what makes an answer correct
+
+**STATED.** `37`, 2026-08-08.
+
+> The strategies aren't orthogonal to the threaded question you had, or its answer, strategies are the
+> variables that change what the "correct" answer is for what we choose as the path.
+
+## I10. arvo takes no stance on how many cores it runs on
+
+**STATED.** `32`, 2026-08-08.
+
+> We will run in threads = 1, threads = 2, threads = n where n can be any finite. We don't take stances
+> on these. If it gives juice and proves more efficient than the alternatives, we should do that, when
+> we can detect we have several cores available. When we don't, we do what is the most efficient thing
+> in a single-threaded realm.
+
+Read with I5: the soundness condition in the fuller quote at `32` is not uniform across strategies.
+
+## I11. arvo is a library, and the value is what composes on top of it
+
+**STATED.** `32`, 2026-08-08.
+
+> We are a library, not a program, so we don't know how end users will use us, however, our main
+> selling point are the algo crates that hilavitkutin, vehje, pretty much every single repo and project
+> I have, downstream, use. As well as the contracts for things that compose to bigger units than just
+> numerals alone. But we need this base to work, to build the bigger things.
+
+## I12. An opinion given before the experts converge is an ack, not a ratification
+
+**STATED.** `01` section 0, 2026-08-07. Governs how every entry above is read, including itself.
+
+> we don't need to settle this with so loose base. We can explore more. And where there aren't any
+> ratifications, it only makes sense to make the experts work it out until they agree and stop
+> attacking each other and concede that this is actually good. Until that time, my word is only thing
+> that ratifies shit, and the last panel process taught me that I shouldn't go and ratify anything
+> before the experts actually agree and have a converged thing to bring to me, with all the angles
+> considered and perhaps some options too, alternatives. Until that time, we are wasting time taking my
+> opinions as anything other than "yeah checks out, direction is good" acks.
+
+---
+
+
+## I13. The work is predicated arms composed, and a universal solution is rejected
+
+**RATIFIED.** Op, 2026-08-09, ratifying his own two statements in the sitting that produced them, with the
+instruction that the entry mean **no more than he said** and not extend beyond it. His words, both
+statements, verbatim:
+
+> Even if "mostly doesn't hold in arvo", it means that still "sometimes holds in arvo" which means, there's
+> a nameable predicate for the sometimes which allows choosing the more optimal lowering and arm for that
+> specific case. We have to all remember that we are not writing a generalization, rather a bunch of arms
+> with const predicates that optimize each little "sometimes" so that all "sometimes" apply on that
+> sometimes and nowhere else, thus "everywhere" is optimal by construction as a composition of those
+> sometimes
+
+> Add that predicated arm for small wins that compound together as the heart of the work the experts are
+> doing. We explicitly reject a universal solution. That is ass. The strategies themselves as a concept
+> make a universal solution impossible by premise. We collect and compound answers to specific regions
+> where a predicate holds and write the expression where it holds, and the most optimal things that hold
+> true there. We should add a rule where all findings have to be predicated, even "universal" ones, so that
+> they are exact; currently universal would then probably mean something like "where n is numeral and
+> strategy is any and hardware features are any and threads are any" etc. that forces clearly saying where
+> a finding is known to hold instead of assuming an ambiguous "universal" that shifts constantly and is by
+> design, rejected and unstable
+
+**Op further specified the mechanism**, in the same sitting, correcting an elaboration of the
+coordinator's rather than adding to the intent:
+
+> unmeasured or unknown does not list in the predicate. It's not known, it's assumed not true until proven
+> true. No adding "unsure" into the predicate. Unsure or unmeasured etc explicitly go unstated and
+> implicitly mean not true
+
+He did not mark that separately as ratified, so it is recorded here as his instruction and is not claimed
+for the RATIFIED rung. It replaced a proposal of the coordinator's that a predicate should write
+`unmeasured` on a dimension nobody checked. It should write nothing there.
+
+**Op further specified what "const predicates" reaches**, on 2026-08-13, answering a question about the
+phrase in his own entry. Verbatim, and recorded in full with its context at
+`83_op_the_predicate_is_whatever_is_const.md`:
+
+> Let me just add there that the above collapses to whatever is available at const time: Making the
+> predicates const expressions for example, allows using const functions and pipe in some data that is
+> outside the typestate. However, being const time expressions, typestate is usable there too
+
+He did not mark this separately as ratified either, so it too is his instruction rather than a second entry
+on the rung. What it settles: the admissible category is **whatever is available at const time**, which is
+wider than the typestate and reaches const functions and const data from outside it, with the typestate
+usable inside a const expression rather than being the only source. It was answering a two-way fork the
+panel had built, typestate against values flowing through, and it rejected the fork rather than picking a
+side. What it does not settle is what happens to a condition that is genuinely not const-available.
+
+**The scope of this entry is those two paragraphs.** Op ratified the call and said explicitly that it means
+no more than he said. Anything further, including the dimension list, the `any` against `unmeasured`
+distinction, and the exactness bar for a predicate, is elaboration in
+`every-finding-carries-its-predicate.md` and is **not** part of what was ratified.
+
+## I14. The operating constraints, which are rules as much as intents
+
+**IN FORCE.** A third marker, and it is the coordinator's bookkeeping rather than op's word: it means op
+has stated it, it is **enforced outside this panel** by arvo's own mockspace lint configuration and by the
+workspace rules, and it is not open. It is not RATIFIED, because that rung is earned only by a convergence
+brought to op and blessed. It is not STATED either, because STATED carries "not yet a settled answer" and
+these are settled and enforced. Op, 2026-08-13, asked whether these were his intents at all:
+
+> They are very explicitly also arvo intents and rules. The mockspace already contains the lints it wants
+> and the workspace and repo's own rules all direct this work. No std, no alloc, all that is explicitly
+> already in place and not to be questioned. You can write them as intents though, since they are also
+> that, but it should've been clear. It doesn't trace to polka-dots, it traces to this fucking workspace
+> and its rules... and this very mockspace of arvo's own...
+
+The constraints, entered here on that direction:
+
+- `#![no_std]` everywhere. No `alloc`, no `Vec`, no `String`, no `Box`.
+- Sizes are const. No runtime growth.
+- Monomorphisation is the dispatch. No `dyn`, no `TypeId`, no `std::any`.
+- No platform dependency: no `std::thread`, `std::time`, `std::fs`, `std::net`.
+- Public API positions use the stack's own primitives rather than bare integers, floats, `bool` or
+  `usize`.
+
+**The panel was wrong about these and the error propagated.** Checkpoint `69` raised their status as a
+question for op; `76`, `77`, `79`, `80` and `81` each carried some version of "the erasure argument rests
+on unratified ground"; and arvo's generated agent instructions were edited to say they are not op's intents
+and must not be cited as ratified. The cause was a provenance hunt that found an older copy of these
+sentences in a different repository and read that as evidence the constraints were inherited rather than
+intended. **Finding an older copy of a rule does not demote the rule.** Nothing built on them needs
+redoing; what was wrong was the hedge attached to it. Full record at `85`.
+
+## I15. Never a runtime check, and everything reaches one lowered path
+
+**STATED.** Op, 2026-08-13, choosing compile-time-only validation over two alternatives that would have
+admitted a runtime check at an ingest boundary, and sharpening past the option as written:
+
+> Option 1, but I should be clear on this: Runtime code can exist, it's only that the branching of it
+> should be done as much as possible, with const-time ifs that get erased via monomorphisation and just
+> const time solving and ultimately llvm. Never any runtime checks, ever. We catch invalids on compile
+> time, and unused paths we clear out when lowered. Period.
+
+Two strengths in one sentence, and they are different. "As much as possible" governs the **branching**.
+"Never, ever" governs the **checks**. Runtime code exists; runtime validation does not.
+
+This closes the panel's Q-A. The runtime column of the binding-time grid does not exist, so `68`'s
+argument that an ingest-boundary check is forced for a representation is refused as a design option, and
+`80` section 5.1's value-gated arm, which materialises both lowerings and selects with a `csel`, is out on
+principle rather than on its measured cost.
+
+## I16. The canon does not police what shape a law takes
+
+**STATED.** Op, 2026-08-13, asked which of four const-time constructions a law permission must use, after
+`82` measured that they give four different guarantees:
+
+> I do not think I get the framing. Monomorphisation and const solving should lead everything to go through
+> one lowered path, that's it. So if a law is a law, it should be expressed so that it actually works, be
+> it typestate or const expressions or whatever. We shouldn't police what kind of laws there are or what
+> shapes they take. The law is defined as makes sense and is applicable in each situation on a case by case
+> basis.
+
+The requirement on a law's expression is **functional, not structural**: it must actually work, meaning it
+reaches one lowered path. Which construction gets it there is case by case, and the canon does not rank
+the constructions or mandate one. This is `arvo-toolbox-not-policer.md` at the law layer, and the question
+was asking the canon to do the policing that rule forbids.
+
+## I18. The native overflow panic is permitted, bounded by build and by concern
+
+**STATED, and explicitly held as a rule of thumb rather than an absolute.** Op, 2026-08-14, asked
+whether I3's imitation covers the debug-mode overflow panic that Rust's native primitives raise, given
+I15's "never any runtime checks, ever". He answered, then corrected himself; both are his and the
+second is what fixes the first:
+
+> Option 3 but strategy bound and never on release outside of warm. As a rule of thumb, not an
+> absolute, more of an intent
+
+> Q2 might be never on hot outside of dev/debug. It's the intent inferrable
+
+**The marker names are not load-bearing and he says so.** The first bounds the panic by naming the
+imitate-the-native-primitive concern, the second by naming the speed-first concern, and the second adds
+that the intent is the inferrable thing rather than the wording. Per I1 the set is open and per I17 a
+marker name is vehicle. They name concerns.
+
+**The intent.** A native-primitive-style overflow panic is permitted, and I15 bends for it, bounded on
+two axes:
+
+- **By build.** Dev and debug only. It does not survive into a release artifact. Both statements carry
+  this bound.
+- **By concern.** It belongs where imitating the native primitive is the point, and not where cost is
+  the point. A path chosen for speed does not carry a check that exists for familiarity.
+
+**And it is a rule of thumb.** It is not a gate, and an arm that cannot honour it is not thereby wrong.
+
+**I15 is unchanged.** This is a declared, bounded exception inside it rather than a hole in it, and the
+build bound is why: a shipped program still contains no runtime validation. Full record at `104`.
+
+## I17. Cold is not to be deprioritised, and that is independent of how many strategies there are
+
+**STATED.** Op, 2026-08-13, asked to resolve a conflict between `arvo-toolbox-not-policer.md`, which is
+written throughout in terms of four named markers and says Cold storage "is the reason arvo exists", and
+I1, which is demoted to open and says the set is not closed at four:
+
+> The intent governs, BUT in intent alone, not in any arbitrary amount that made sense back when it was
+> written. The intent is that cold isn't to be depriorised. Whether the strategies are four or seventeen
+> or a billion is besides the point of the intent. Reword it if need be. But the intent survives and
+> should be written down in the intents here too, if it's not obvious
+
+So the intent and the vehicle come apart, and only the intent binds. **The intent is that the
+storage-minimising, aggressively bitpacked path is not deprioritised**, and that arguments for dropping
+or downgrading it are not entertained. The count of strategies, and the name of the one that currently
+carries this, are the vehicle and are open.
+
+This is distinct from I6, which says what Cold is *for*. I17 says it does not get traded away, and it
+survives the strategy set being reshaped, renamed, or resized.
+
+`arvo-toolbox-not-policer.md` is reworded on this instruction, keeping its content and dropping its
+dependence on there being exactly four markers.
+
+## What this file is not
+
+Not a canon. A canon states intent in its own voice, having established that what it intends is
+doable, and this is a catalogue of quotations with provenance. It is the input to that work.
+
+Not a substitute for the panel files. Each entry names where it came from, and the surrounding
+reasoning, the connections to open questions, and the corrections between files are there rather than
+here.
+
+Not complete. Anything op has said that is not quoted above is missing rather than excluded, and the
+remedy is to add it.

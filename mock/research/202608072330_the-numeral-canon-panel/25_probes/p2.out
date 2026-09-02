@@ -1,0 +1,32 @@
+parsed 4 data rows from /Users/orgrinrt/Dev/clause-dev/arvo/.claude/rules/implementation.md
+   `Hot`                  | minimum byte-aligned     | wrapping
+   `Warm` (default)       | 2x logical, byte-aligned | wrapping (safe on single ops)
+   `Cold`                 | bitpacked minimum        | widen-op-narrow
+   `Precise`              | 2x logical, bitpacked    | saturating
+
+`Hot`        -> headroom=minimum   layout=byte-aligned
+`Warm`       -> headroom=doubled   layout=byte-aligned
+`Cold`       -> headroom=minimum   layout=bitpacked
+`Precise`    -> headroom=doubled   layout=bitpacked
+
+2x2 product cells        : 4
+cells occupied           : 4
+cells with >1 occupant   : 0 
+occupants outside the 2x2: 0 
+
+BIJECTION between the four names and the 2x2 product: YES
+
+arithmetic column, classified by which question the cell answers:
+   `Hot`        wrapping                           -> answers: overflow
+   `Warm`       wrapping (safe on single ops)      -> answers: overflow
+   `Cold`       widen-op-narrow                    -> answers: intermediate
+   `Precise`    saturating                         -> answers: overflow
+
+answers overflow only     : ['`Hot`', '`Warm`', '`Precise`']
+answers intermediate only : ['`Cold`']
+answers both              : []
+answers neither           : []
+
+SPLIT CONFIRMED: the column contains cells answering two different questions.
+  -> `Hot`, `Warm`, `Precise` state an overflow policy and no intermediate precision.
+  -> `Cold` state an intermediate precision and no overflow policy.

@@ -1,0 +1,35 @@
+model shape: 5 regions, 5 arms, 3 coordinates, L0 = 3125 sections
+60 models per generator, seeds 20260814 / 20260815 / 20260816
+
+generator uniform
+  L1: min     36  median     288.0  max   1125  ( 9.216% of L0)
+  L2: min     36  median     217.0  max   1050  ( 6.944% of L0)
+  L4: min      8  median      20.5  max     34  ( 0.656% of L0)
+  L4/L1: min 0.02125  median 0.08333  max 0.30556  spread 14.4x
+  L1 == L2 in 18 of 60 models
+
+generator scaled
+  L1: min      6  median     168.0  max    800  ( 5.376% of L0)
+  L2: min      6  median     168.0  max    800  ( 5.376% of L0)
+  L4: min      4  median      17.5  max     38  ( 0.560% of L0)
+  L4/L1: min 0.02125  median 0.11921  max 0.83333  spread 39.2x
+  L1 == L2 in 60 of 60 models
+
+generator tiered
+  L1: min      2  median      84.0  max    768  ( 2.688% of L0)
+  L2: min      2  median      84.0  max    768  ( 2.688% of L0)
+  L4: min      2  median      15.5  max     48  ( 0.496% of L0)
+  L4/L1: min 0.03646  median 0.18056  max 1.00000  spread 27.4x
+  L1 == L2 in 60 of 60 models
+
+what this settles
+  uniform: L1 != L2 in 42 of 60. The order rung is real and does bite, so it is a rung and not a restatement.
+
+  L4/L1 across all models:
+    min 0.02125  median 0.11111  max 1.00000
+    ratio of max to min: 47.1x
+  A specific value of this ratio is a fact about one table. Its ORDER,
+  that a weighting admits far fewer sections than admissibility does,
+  is what holds across every generator here.
+
+written: p3_rung_counts.json

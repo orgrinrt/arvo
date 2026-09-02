@@ -1,0 +1,23 @@
+# Does the harness's own Routine surface admit an accuracy coordinate?
+#
+# A free-standing probe crate. Not a bench and not a variant: it builds the
+# descriptor the harness reads and inspects it, so the claim "the accuracy
+# coordinate is reachable" rests on a compiled artifact rather than on a reading
+# of the harness source.
+[package]
+name = "p7-a-fidelity-coordinate"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "p7"
+path = "src/main.rs"
+
+[dependencies]
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+
+# Free-standing: mock/Cargo.toml is a workspace with no members and excludes
+# only `benches`, so without this the probe is refused as "believes it is in a
+# workspace when it is not". An empty table is the documented way to opt out.
+[workspace]

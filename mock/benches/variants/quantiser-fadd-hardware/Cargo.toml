@@ -1,0 +1,15 @@
+[package]
+name = "bench-quantiser-fadd-hardware"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_quantiser_fadd_hardware"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-quantiser-fadd-shared = { path = "../quantiser-fadd-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

@@ -1,0 +1,114 @@
+PROBE A: pairwise disagreement between candidate readings
+value model: k / 2^F rounded to an integer, k over the whole
+representable domain of a W-bit format.
+
+== FIXTURE (textbook values at F = 1) ==
+  34 of 34 fixture rows correct
+
+== CONTROL 1 (positive, against the canon) ==
+  probe::the_two_toward_zero_spellings_differ_and_by_how_much
+  records bit-drop against toward-zero at W = 8 as 64 at F = 1,
+  96 at F = 2, 120 at F = 4 and 127 at F = 7, signed.
+    F = 1: this instrument 64, canon 64 -> match
+    F = 2: this instrument 96, canon 96 -> match
+    F = 4: this instrument 120, canon 120 -> match
+    F = 7: this instrument 127, canon 127 -> match
+
+== CONTROL 2 (positive, against the ratified note) ==
+  ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names
+  records that bit truncation of a two's complement value is floor.
+  So bit_drop against floor must be 0 on every row.
+    worst disagreement over W in {4,6,8,10}, F in 0..W, both signedness: 0
+
+== CONTROL 3 (the case that must fail) ==
+  The two readings of `half_up` must DISAGREE somewhere on a
+  signed domain with F >= 1. A zero here means the instrument is
+  comparing one operation with itself and every number below is void.
+    W = 8, F = 1, signed: 64
+
+== CONTROL 4 (the case that must not fail) ==
+  The same two readings must AGREE on every unsigned row and on
+  every F = 0 row, because neither negatives nor ties exist there.
+    worst disagreement over those rows: 0
+
+== SWEEP: half_up, the two readings, signed ==
+  W    F   disagreeing values   of domain   predicted 2^(W-1-F)
+   4    0                    0          16           0
+   4    1                    4          16           4
+   4    2                    2          16           2
+   4    3                    1          16           1
+   6    0                    0          64           0
+   6    1                   16          64          16
+   6    2                    8          64           8
+   6    3                    4          64           4
+   6    4                    2          64           2
+   6    5                    1          64           1
+   8    0                    0         256           0
+   8    1                   64         256          64
+   8    2                   32         256          32
+   8    3                   16         256          16
+   8    4                    8         256           8
+   8    5                    4         256           4
+   8    6                    2         256           2
+   8    7                    1         256           1
+  10    0                    0        1024           0
+  10    1                  256        1024         256
+  10    2                  128        1024         128
+  10    3                   64        1024          64
+  10    4                   32        1024          32
+  10    5                   16        1024          16
+  10    6                    8        1024           8
+  10    7                    4        1024           4
+  10    8                    2        1024           2
+  10    9                    1        1024           1
+  12    0                    0        4096           0
+  12    1                 1024        4096        1024
+  12    2                  512        4096         512
+  12    3                  256        4096         256
+  12    4                  128        4096         128
+  12    5                   64        4096          64
+  12    6                   32        4096          32
+  12    7                   16        4096          16
+  12    8                    8        4096           8
+  12    9                    4        4096           4
+  12   10                    2        4096           2
+  12   11                    1        4096           1
+
+== SWEEP: full pairwise table, W = 8, F = 4 ==
+  signedness = signed
+                              flr   ceil     tz    afz   drop hu+inf hu-afz hd-inf  heven
+  floor                         0    240    120    120      0    128    120    112    120
+  ceil                        240      0    120    120    240    112    120    128    120
+  toward_zero                 120    120      0    240    120    120    128    120    120
+  away_from_zero              120    120    240      0    120    120    112    120    120
+  bit_drop                      0    240    120    120      0    128    120    112    120
+  half_up[toward +inf]        128    112    120    120    128      0      8     16      8
+  half_up[away from 0]        120    120    128    112    120      8      0      8      8
+  half_down[toward -inf]      112    128    120    120    112     16      8      0      8
+  half_even                   120    120    120    120    120      8      8      8      0
+
+  signedness = unsigned
+                              flr   ceil     tz    afz   drop hu+inf hu-afz hd-inf  heven
+  floor                         0    240      0    240      0    128    128    112    120
+  ceil                        240      0    240      0    240    112    112    128    120
+  toward_zero                   0    240      0    240      0    128    128    112    120
+  away_from_zero              240      0    240      0    240    112    112    128    120
+  bit_drop                      0    240      0    240      0    128    128    112    120
+  half_up[toward +inf]        128    112    128    112    128      0      0     16      8
+  half_up[away from 0]        128    112    128    112    128      0      0     16      8
+  half_down[toward -inf]      112    128    112    128    112     16     16      0      8
+  half_even                   120    120    120    120    120      8      8      8      0
+
+== SWEEP: every pair that agrees on unsigned and differs on signed ==
+  the class the ratified ruling retired a word for. W = 8, F = 4.
+    floor                    vs toward_zero               unsigned 0, signed 120
+    ceil                     vs away_from_zero            unsigned 0, signed 120
+    toward_zero              vs bit_drop                  unsigned 0, signed 120
+    half_up[toward +inf]     vs half_up[away from 0]      unsigned 0, signed 8
+
+== VERDICTS ==
+  control 1 (canon numbers reproduced): PASS
+  control 2 (bit_drop == floor):        PASS
+  control 3 (half_up readings differ):  PASS
+  control 4 (and agree where they must): PASS
+  instrument: sound

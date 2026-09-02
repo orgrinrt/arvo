@@ -1,0 +1,42 @@
+====================================================================================
+p6. does a closed form replace the sweep, and for which operation
+====================================================================================
+
+--- clamped ADDITION against the sign-confinement predicate ---
+width    windows    agreeing   first disagreements
+3        36         36         
+4        136        136        
+5        528        528        
+6        2080       2080       
+
+--- clamped MULTIPLICATION against the mirror-symmetry predicate ---
+width    windows    agreeing   first disagreements
+3        36         23         [(-4, -4, True, False), (-3, -3, True, False), (-2, -2, True, False), (-1, -1, True, False), (0, 1, True, False), (0, 2, True, False)]
+4        136        93         [(-8, -8, True, False), (-7, -7, True, False), (-6, -6, True, False), (-5, -5, True, False), (-4, -4, True, False), (-3, -3, True, False)]
+5        528        377        [(-16, -16, True, False), (-15, -15, True, False), (-14, -14, True, False), (-13, -13, True, False), (-12, -12, True, False), (-11, -11, True, False)]
+
+------------------------------------------------------------------------------------
+ASSERTIONS
+------------------------------------------------------------------------------------
+  ok  for clamped addition the closed form predicts the verdict at EVERY
+      window at widths 3 through 6, exhaustively over windows, zero residue
+  ok  and the predicate is not constant, so the agreement is not vacuous
+  ok  the analogous predicate for multiplication does NOT hold, so the lift
+      is per-operation rather than a general property of closed forms:
+        width 3: 23 of 36 windows agree
+        width 4: 93 of 136 windows agree
+        width 5: 377 of 528 windows agree
+
+READING. The membership test's law verdicts are not uniformly stuck at the
+model width. Where the panel's own law frame supplies a geometric condition
+on the range, the verdict is O(1) in the width and needs no sweep at all, so
+membership for that family is decidable wherever hosting is. Where it does
+not, the sweep and its transfer proviso stand. So a canon sentence about
+membership owes one distinction it does not currently make: which of its
+verdicts are computed and which are assumed uniform above the model width.
+
+BOUND, stated. This does not establish the closed form at real widths; it
+establishes that the closed form agrees with the sweep wherever the sweep
+can run, which is the same epistemic position `63` section 4.2 holds and no
+stronger. What is new is the consequence for the membership test.
+EXIT=0

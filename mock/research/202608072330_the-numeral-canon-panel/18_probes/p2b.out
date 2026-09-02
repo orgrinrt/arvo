@@ -1,0 +1,23 @@
+# U<3,3> unsigned: 64 values, step 1/8, bottom 0, top 63/8
+
+steps=3  chains=   1728   unsound: point=   656  top-absorbing=   240  both-absorbing=   200
+          both-absorbing failures by cause: {'top-then-down': 128, 'bot-then-up': 72, 'never-clamped': 0, 'other': 0}
+          first witness: start=0 chain=['-1', '+1', '+1'] abstract=2 exact=1 clamps=['bot', None, None]
+
+steps=4  chains=   5184   unsound: point=  2464  top-absorbing=   936  both-absorbing=   840
+          both-absorbing failures by cause: {'top-then-down': 568, 'bot-then-up': 272, 'never-clamped': 0, 'other': 0}
+          first witness: start=0 chain=['+1', '-1', '-1', '+1'] abstract=1 exact=0 clamps=[None, 'bot', 'bot', None]
+
+steps=5  chains=  15552   unsound: point=  8759  top-absorbing=  3415  both-absorbing=  3191
+          both-absorbing failures by cause: {'top-then-down': 2248, 'bot-then-up': 936, 'never-clamped': 0, 'other': 7}
+          first witness: start=0 chain=['+1', '-1', '-1', '+1', '+1'] abstract=2 exact=1 clamps=[None, 'bot', 'bot', None, None]
+
+# the structural statement the numbers are pointing at
+  An absorbing endpoint is sound exactly while the computation STAYS at it.
+  The instant an operation moves off the endpoint into the interior, the
+  interior datum's point denotation is asserted, and it is false, because the
+  information that was absorbed cannot be recovered.
+
+  So 'the top absorbs' is not a denotation for the numeral. It is a denotation
+  for the numeral RESTRICTED to operations that cannot decrease, and the
+  restriction is the part nobody has written down.

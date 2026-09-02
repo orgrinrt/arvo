@@ -1,0 +1,94 @@
+p2b. Why the strictly-positive rung caught none of p2's dropped-coordinate
+generators, and the predicate under which it would.
+
+p2 predicted, before running, that `G5 dropped` (a generator that never reads
+one coordinate) would be caught by the strictly-positive rationalisability rung,
+on the reasoning that a dropped coordinate IS a zero weight and `98` section 2.3
+establishes that a zero weight is what admits an arm no strictly positive
+weighting can reach.
+
+The prediction was wrong: 0 of 152 and 0 of 160. This probe finds out why, and
+the answer sharpens `98`'s finding rather than weakening it.
+
+THE MECHANISM, stated as a hypothesis before measuring. The section a zero weight
+produces is admitted by a CONE, and a cone with non-empty interior contains
+strictly positive points arbitrarily close to any boundary point. Setting the
+third weight to zero puts you on the boundary of the weight simplex, not on the
+boundary of the admitting cone: as long as every difference-vector inequality is
+satisfied STRICTLY at that section, a small positive third weight preserves them
+all. So the zero-weight section is also strictly rationalisable, and D1s is
+blind to it.
+
+The inequalities become tight, and the hazard becomes real, exactly when two
+arms carry the SAME VALUE on some coordinate, because then the difference vector
+has a zero there and the zero weight is doing load-bearing work.
+
+That is not a hypothetical shape. It is the committed carrier table:
+`bitpack-carrier-packed` and `bitpack-carrier-packed-simd` both carry 13 bits per
+element, so they are exactly tied on the footprint coordinate
+(`mock/benches/variants/bitpack-carrier-packed/src/lib.rs` against
+`.../bitpack-carrier-packed-simd/src/lib.rs`, both decoding the same 13-bit
+column). `97` names the same pair for the same reason when reconciling 9 with 72.
+
+THE TEST. Three model families, otherwise identical:
+
+  independent   every cost drawn independently, so exact ties do not occur
+  shared-coord  two arms share one coordinate exactly, mirroring the real table
+  duplicate     two arms are identical on every coordinate, mirroring what a
+                noise-floor control arm does to a model
+  tied-except-dropped
+                two arms tie on both coordinates the generator reads and differ
+                only on the one it drops, which is the only shape in which a
+                zero weight can reach a dominated arm
+
+and for each, how often the strictly-positive rung catches a dropped
+coordinate, plus how often the emitted section selects an arm that is
+Pareto-dominated on the full coordinate set, which is the event the rung's
+theorem is actually about.
+
+Exact rational arithmetic. Not a bench, no measurement taken.
+
+300 models per family, 5 regions, 5 arms, 3 coordinates
+generator: coordinate 2 never read, which is a zero weight on it
+
+  independent    differs  230   strict rung caught    0 (  0.0%)   selects a dominated arm    0 (  0.0%)   zero weight load bearing    9 (  3.9%)
+  shared-coord   differs  241   strict rung caught    0 (  0.0%)   selects a dominated arm    0 (  0.0%)   zero weight load bearing   11 (  4.6%)
+  duplicate      differs  234   strict rung caught    0 (  0.0%)   selects a dominated arm    0 (  0.0%)   zero weight load bearing  192 ( 82.1%)
+  tied-except-dropped differs  285   strict rung caught  230 ( 80.7%)   selects a dominated arm  230 ( 80.7%)   zero weight load bearing   15 (  5.3%)
+
+==============================================================================
+READING
+==============================================================================
+
+The strictly-positive rung is a detector for exactly one event: the section
+selects an arm that is Pareto-dominated on the full coordinate set. The two
+columns measuring those are identical in every family above, 0 and 0 three times
+and 230 and 230 in the fourth, which is what "detector for exactly one event"
+looks like when it is true rather than asserted.
+
+It is NOT a detector for a generator reading the wrong thing, and p2's prediction
+that it would be was wrong. A zero weight sits on the boundary of the weight
+simplex, not on the boundary of the admitting cone, so as long as every
+difference-vector inequality holds strictly the section stays strictly
+rationalisable and the rung sees nothing.
+
+Whether the event is reachable at all is a property of the ARM SET rather than of
+the weighting, and the predicate is exact: it needs a pair of arms that tie on
+every coordinate the effective weighting reads and differ on one it does not.
+Arms drawn independently never satisfy it, 0 of 230. Arms sharing one coordinate
+while differing on the rest do not satisfy it either, 0 of 241, which refutes the
+looser form of the hypothesis this probe opened with. Two arms identical
+everywhere do not satisfy it, 0 of 234, because identical arms do not dominate
+each other. Only the exact shape satisfies it, 230 of 285.
+
+That exact shape is what the committed carrier table has. `bitpack-carrier-packed`
+and `-packed-simd` carry the same 13 bits per element and differ in time, so a
+zero weight on TIME reaches the slower of the two, which is `98` section 2.3's 63
+of 72 rather than an abstract possibility.
+
+So `98`'s constraint stands and its predicate is sharper than the general
+statement suggests. Strict positivity buys the no-dominated-arm guarantee; the
+guarantee is reachable exactly where the arm set contains such a pair, which is a
+property of the arm set checkable directly and once; and it buys nothing whatever
+against a generator computing the wrong argmin.
+

@@ -1,0 +1,37 @@
+
+######## the whole canon, by what has a human in the loop
+  rulings          75
+    of those, process (how the panel runs, not what arvo is)  37
+    at rung ratified 1   in_force 1   stated 68   open 5
+  proposals        103
+    ratified by a ruling (`ratifies` edges in the whole canon)  0
+    normative, i.e. a design decision rather than a measurement  62
+    resting on one expert  71
+
+######## per topic: op rows that are about arvo, against proposals
+  TOPIC                      OP-ROWS  PROPOSALS
+  the_format                 0        6   <- nothing from op, 6 claims
+  the_number_system          2        19
+  algebraic_laws             1        15
+  the_strategy_axis          15       9
+  the_strategy_object        1        10
+  the_primitive              0        6   <- nothing from op, 6 claims
+  the_realisation_map        1        6
+  rounding                   1        2
+  the_chain                  0        10   <- nothing from op, 10 claims
+  overflow_policy            3        0
+  the_container_premise      0        0
+  the_predicate_notation     3        2
+  canon_form                 0        1   <- nothing from op, 1 claims
+  arvo_identity              3        2
+  execution_environment      2        1
+  operating_constraints      1        0
+  binding_time               2        5
+  validation                 1        4
+  naming                     1        1
+  panel_conduct              1        4
+=== CONTROL: one ratified ruling planted on the_format ===
+  [control] planted one ratified ruling on the_format carrying a ratifies edge
+    at rung ratified 2   in_force 1   stated 68   open 5
+    ratified by a ruling (`ratifies` edges in the whole canon)  1
+  the_format                 1        6

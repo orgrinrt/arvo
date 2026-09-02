@@ -1,0 +1,25 @@
+# share of operand pairs whose result keeps a POINT denotation
+   numeral  values    op     exact   inexact  out-of-range  undefined   exact share of in-range
+    U<2,2>      16   add       136         0           120          0                  100.00%
+    U<2,2>      16   sub       136         0           120          0                  100.00%
+    U<2,2>      16   mul        90        72            94          0                   55.56%
+    U<2,2>      16   div        74       142            24         16                   34.26%
+    U<3,3>      64   add      2080         0          2016          0                  100.00%
+    U<3,3>      64   sub      2080         0          2016          0                  100.00%
+    U<3,3>      64   mul       554      1067          2475          0                   34.18%
+    U<3,3>      64   div       490      3318           224         64                   12.87%
+    U<4,4>     256   add     32896         0         32640          0                  100.00%
+    U<4,4>     256   sub     32896         0         32640          0                  100.00%
+    U<4,4>     256   mul      3170     12486         49880          0                   20.25%
+    U<4,4>     256   div      2914     60446          1920        256                    4.60%
+
+# reading
+  Addition and subtraction keep the point denotation on every in-range pair,
+  because the grid is closed under them. Multiplication and division do not, and
+  the share that does is small and shrinks with the fraction width.
+
+  So a strategy that demands a point denotation is not a marginal restriction on
+  a numeral's operation set. It admits the additive part outright and refuses most
+  of the multiplicative part, which is the same shape as the record's open
+  question about Precise, arrived at from the denotation clause instead of from
+  the strategy axis.

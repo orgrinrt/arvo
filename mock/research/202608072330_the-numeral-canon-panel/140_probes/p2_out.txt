@@ -1,0 +1,51 @@
+p2: independent model, exact rationals, no raw-integer shifts
+30 real assignments, plus a duplicate and a corrupted control
+witness set: W=4, F in {0,1,2}, ops {add,sub,mul,a*b+c,a*b-c}
+
+W=4 F=0 add        -> 2 distinguishable classes
+W=4 F=0 sub        -> 2 distinguishable classes
+W=4 F=0 mul        -> 2 distinguishable classes
+W=4 F=0 chain_add  -> 2 distinguishable classes
+W=4 F=0 chain_sub  -> 5 distinguishable classes
+W=4 F=1 add        -> 2 distinguishable classes
+W=4 F=1 sub        -> 2 distinguishable classes
+W=4 F=1 mul        -> 6 distinguishable classes
+W=4 F=1 chain_add  -> 8 distinguishable classes
+W=4 F=1 chain_sub  -> 20 distinguishable classes
+W=4 F=2 add        -> 2 distinguishable classes
+W=4 F=2 sub        -> 2 distinguishable classes
+W=4 F=2 mul        -> 8 distinguishable classes
+W=4 F=2 chain_add  -> 10 distinguishable classes
+W=4 F=2 chain_sub  -> 24 distinguishable classes
+
+COMPARABLE_JOINT_CLASSES=24
+      { toward_zero/wrap/round_each_step | toward_neg_inf/wrap/round_each_step | toward_neg_inf/wrap/exact_then_round_once }
+      { toward_zero/wrap/exact_then_round_once }
+      { toward_zero/saturate_both/round_each_step | toward_neg_inf/saturate_both/round_each_step }
+      { toward_zero/saturate_both/exact_then_round_once | toward_neg_inf/saturate_both/exact_then_round_once }
+      { toward_zero/saturate_high_only/round_each_step | toward_neg_inf/saturate_high_only/round_each_step }
+      { toward_zero/saturate_high_only/exact_then_round_once }
+      { ties_even/wrap/round_each_step }
+      { ties_even/wrap/exact_then_round_once }
+      { ties_even/saturate_both/round_each_step }
+      { ties_even/saturate_both/exact_then_round_once }
+      { ties_even/saturate_high_only/round_each_step }
+      { ties_even/saturate_high_only/exact_then_round_once }
+      { ties_away/wrap/round_each_step }
+      { ties_away/wrap/exact_then_round_once }
+      { ties_away/saturate_both/round_each_step }
+      { ties_away/saturate_both/exact_then_round_once }
+      { ties_away/saturate_high_only/round_each_step }
+      { ties_away/saturate_high_only/exact_then_round_once }
+      { toward_neg_inf/saturate_high_only/exact_then_round_once }
+      { toward_pos_inf/wrap/round_each_step | toward_pos_inf/wrap/exact_then_round_once }
+      { toward_pos_inf/saturate_both/round_each_step }
+      { toward_pos_inf/saturate_both/exact_then_round_once }
+      { toward_pos_inf/saturate_high_only/round_each_step }
+      { toward_pos_inf/saturate_high_only/exact_then_round_once }
+
+p1 reports 24 for this witness set. p2 reports 24.
+AGREE
+
+=== controls ===
+both controls behaved everywhere: the partitioner separates.

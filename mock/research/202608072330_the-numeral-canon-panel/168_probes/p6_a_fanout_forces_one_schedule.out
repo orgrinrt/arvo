@@ -1,0 +1,39 @@
+W = 8, domain 0..256 exhaustive, carrier = 16 bits (cap 65535)
+
+RESULT 1. A shared node's width requirement is one number, so the
+join over its consumers is a maximum and can never exceed it.
+  t needs 10 bits, branch A needs 20, branch B needs 8, out needs 20
+  joined requirement 20, max over the two per-path requirements 20
+  equal, as it must be. O-168-1's carrier reading is closed: there is
+  nothing there, and phase one guessed the wrong quantity.
+
+RESULT 2. The schedule is shared, and the branches want different ones.
+  branch A needs 20 bits with t left exact, against a carrier of 16:
+    fits = false
+  branch A needs 16 bits with t resolved: fits = true
+  so branch A FORCES t to be resolved. There is one t.
+
+  branch B, forced schedule against its own best schedule:
+    inputs made worse: 203/256
+    total extra |err|: 15504, worst extra |err|: 152
+
+CONTROL. A DAG whose two branches both want t deferred must show zero loss.
+  control branch A needs 9 bits, branch B needs 8, both inside 16
+  control total extra |err| when t is resolved anyway: 36027
+  (nonzero is expected and is NOT the finding: resolving t hurts any
+   branch. The finding is that in RESULT 2 nothing else could be done,
+   and here nothing forces it, so the region may leave t exact.)
+  is any control branch forced to resolve t? false
+
+BOUND. At which carrier widths does the conflict exist?
+  branch A needs 20 bits exact, 16 bits with t resolved
+  conflict at carrier widths: [16, 17, 18, 19]
+  no conflict at:             [8, 9, 10, 11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+  so the conflict is exactly the band [16, 19]: wide enough for the
+  resolved branch and too narrow for the exact one. Outside it the two
+  branches' windows agree and there is nothing to report.
+
+RESULT: a fan-out region's CARRIER reduces to a maximum over its paths
+and its SCHEDULE does not. One branch can force a resolution that the
+other strictly loses by, and no path-shaped analysis reports that loss,
+because along each path in isolation the schedule chosen is the best one.

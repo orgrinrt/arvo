@@ -1,0 +1,30 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+edition:   2024, no feature gates anywhere
+
+t0_positive_control                                            want compiles got compiles  as predicted
+    why it is here: the driver works
+t1_arithmetic_on_a_generic_const                               want refused  got refused   as predicted
+    why it is here: retirement dl_width_arithmetic_as_a_const_generic
+    error: generic parameters may not be used in const operations
+    error: aborting due to 1 previous error
+t2_width_comparison_in_a_where_clause                          want refused  got refused   as predicted
+    why it is here: retirement dl_const_generic_width_comparison_in_a_where_clause
+    error: generic parameters may not be used in const operations
+    error: generic parameters may not be used in const operations
+    error: aborting due to 2 previous errors
+t3_const_predicate_over_a_structural_nat                       want compiles got compiles  as predicted
+    why it is here: option 5 can cross back
+t4_const_predicate_over_a_const_generic                        want compiles got compiles  as predicted
+    why it is here: option 6 needs no crossing
+t5_const_generic_used_as_a_const_argument_downstream           want compiles got compiles  as predicted
+    why it is here: passing a width on is not arithmetic
+t6_bridge_from_a_const_to_a_nat_by_table                       want compiles got compiles  as predicted
+    why it is here: the bridge works and costs one impl per width
+t7_type_level_comparison_without_const_ops                     want compiles got compiles  as predicted
+    why it is here: option 7 needs no const operation
+t8_negative_control_the_comparison_must_refuse_the_wrong_direction want refused  got refused   as predicted
+    why it is here: t7 is a comparison rather than a free bound
+    error[E0277]: the trait bound `Z: AtLeast<S<S<Z>>>` is not satisfied
+    error: aborting due to 1 previous error
+
+every arm landed where it was predicted to

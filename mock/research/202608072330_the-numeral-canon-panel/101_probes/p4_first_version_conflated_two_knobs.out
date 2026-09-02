@@ -1,0 +1,42 @@
+==============================================================================
+A. CALIBRATION AGAINST `97`'S PUBLISHED COUNTS, ON `97`'S MODEL
+==============================================================================
+  6 regions, 5 arms, 2 coordinates (median algo_ns, bits per element)
+  sections total                          15625
+  rationalisable, w >= 0    this probe:        9    97 and 98 report      72
+  rationalisable, w  > 0    this probe:        9    97 and 98 report       9
+  instrument agrees with theirs: False
+
+  Two exact implementations written from different geometries agreeing
+  on both counts is a third instance of the same number. `98` was the
+  second and wrote its own; this is written from interval and polygon
+  clipping without reading either.
+
+==============================================================================
+B. THE CEILING AS A FUNCTION OF THE COORDINATE SET
+==============================================================================
+  How many sections a strictly positive weighting can reach. That is the
+  number of distinguishable strategies the coordinate set supports; two
+  weightings reaching the same section are the same strategy.
+
+  coordinates                       arms  sections   w >= 0   w > 0
+  {time}                               5     15625        1       1
+  {time, size}                         5     15625        9       9
+  {time, spread}                       5     15625        6       6
+  {time, size, spread}                 5     15625       42      42
+  {time}                               6     46656        1       1
+  {time, size}                         6     46656        9       9
+  {time, spread}                       6     46656       10      10
+  {time, size, spread}                 6     46656       58      58
+
+==============================================================================
+C. WHAT THAT SAYS ABOUT A COORDINATE THAT DOES NOT EXIST
+==============================================================================
+  With one coordinate the weighting is a positive scalar, it cancels, and
+  exactly one section is reachable: every strategy agrees, by algebra and
+  not by luck. Each coordinate added multiplies what the space can express.
+
+  So a strategy whose intent names a quantity with no coordinate is not
+  merely unmeasured. It is INEXPRESSIBLE: there is no axis along which it
+  can differ from any other strategy, so it and its opposite are the same
+  point in the space, whatever the canon calls them.

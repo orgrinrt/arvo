@@ -1,0 +1,20 @@
+error[E0080]: evaluation panicked: overflow at the declared width
+  --> p5_mutant_const_overflow.rs:15:18
+   |
+15 | const BAD: u64 = add_or_refuse(8000, 8000);
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `BAD` failed inside this call
+   |
+note: inside `add_or_refuse`
+  --> p5_mutant_const_overflow.rs:11:5
+   |
+11 |     assert!(s < DECLARED_MODULUS, "overflow at the declared width");
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+
+note: erroneous constant encountered
+  --> p5_mutant_const_overflow.rs:18:16
+   |
+18 |     println!("{BAD}");
+   |                ^^^
+
+note: erroneous constant encountered
+  --> p5_mutant_const_overflow.rs:18:16

@@ -1,0 +1,10 @@
+unsigned [0,15]  wrap       trop_over_Q3= 1360  commuting_failures_over_reachable_pairs= 240
+unsigned [0,15]  saturate   trop_over_Q3=    0  commuting_failures_over_reachable_pairs=   0
+unsigned [0,15]  mutant     trop_over_Q3= 1360  commuting_failures_over_reachable_pairs= 450
+signed [-8,7]    wrap       trop_over_Q3= 1360  commuting_failures_over_reachable_pairs= 464
+signed [-8,7]    saturate   trop_over_Q3=    0  commuting_failures_over_reachable_pairs=   0
+signed [-8,7]    mutant     trop_over_Q3= 1360  commuting_failures_over_reachable_pairs= 562
+
+p4's counts reproduce. The 1360 collision across four cells is real and
+unexplained; the unweighted counts differ, so the reductions are not the
+same function.

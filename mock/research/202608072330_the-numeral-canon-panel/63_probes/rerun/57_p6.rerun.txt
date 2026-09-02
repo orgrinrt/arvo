@@ -1,0 +1,68 @@
+=== minimum sufficient accumulator width against the exact-sum width ===
+
+  'exact' is the width that holds every exact sum. 'measured' is the
+  smallest accumulator width at which eager saturation into the
+  accumulator, adapted once, agrees with the exact sum adapted once, over
+  every tuple. 'gap' is exact minus measured.
+
+      sign    W    n       tuples    exact   measured    gap                       note
+    signed    3    2           64        4          3      1 format width already suffices
+    signed    3    3          512        5          4      1                           
+    signed    3    4         4096        5          4      1                           
+    signed    3    5        32768        6          5      1                           
+    signed    3    6       262144        6          5      1                           
+    signed    3    7      2097152        6          5      1                           
+    signed    3    8     16777216        6          5      1                           
+    signed    4    2          256        5          4      1 format width already suffices
+    signed    4    3         4096        6          5      1                           
+    signed    4    4        65536        6          5      1                           
+    signed    4    5      1048576        7          6      1                           
+    signed    4    6     16777216        7          6      1                           
+    signed    5    2         1024        6          5      1 format width already suffices
+    signed    5    3        32768        7          6      1                           
+    signed    5    4      1048576        7          6      1                           
+    signed    5    5     33554432        8          7      1                           
+    signed    6    2         4096        7          6      1 format width already suffices
+    signed    6    3       262144        8          7      1                           
+    signed    6    4     16777216        8          7      1                           
+  unsigned    3    2           64        4          3      1 format width already suffices
+  unsigned    3    3          512        5          3      2 format width already suffices
+  unsigned    3    4         4096        5          3      2 format width already suffices
+  unsigned    3    5        32768        6          3      3 format width already suffices
+  unsigned    3    6       262144        6          3      3 format width already suffices
+  unsigned    3    7      2097152        6          3      3 format width already suffices
+  unsigned    3    8     16777216        6          3      3 format width already suffices
+  unsigned    4    2          256        5          4      1 format width already suffices
+  unsigned    4    3         4096        6          4      2 format width already suffices
+  unsigned    4    4        65536        6          4      2 format width already suffices
+  unsigned    4    5      1048576        7          4      3 format width already suffices
+  unsigned    4    6     16777216        7          4      3 format width already suffices
+  unsigned    5    2         1024        6          5      1 format width already suffices
+  unsigned    5    3        32768        7          5      2 format width already suffices
+  unsigned    5    4      1048576        7          5      2 format width already suffices
+  unsigned    5    5     33554432        8          5      3 format width already suffices
+
+=== what the sweep says ===
+
+  rows where the question arises (some width diverged, some did not): 15
+  rows where the format's own width already sufficed:                 20
+  gap is exactly one bit in every row where the question arises:      true
+
+  Reading if the gap is uniformly one: the naive 'accumulate the exact
+  sum' bound is one bit loose, because the adaptation that has to happen
+  at the end absorbs the outermost bit. The accumulator has to distinguish
+  which side of the format the result falls on, not to represent how far
+  outside it fell.
+
+  This is measured, at the widths and fold lengths in the table and no
+  further. It is exhaustive within each row and it is not a proof, and the
+  unsigned rows and the signed rows are the same claim at two sign domains
+  rather than two independent instances of it.
+
+=== instrument validation ===
+
+  rows carrying both a diverging and a non-diverging width: 15
+  (a row with only one verdict cannot locate a minimum and is excluded above)
+  the sweep contains a row with gap 0, which would refute the rule: false
+
+P6 WORKS

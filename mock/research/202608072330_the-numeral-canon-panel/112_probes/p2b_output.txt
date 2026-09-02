@@ -1,0 +1,45 @@
+==============================================================================
+p2b. The grade repaired: two parts, two regions of R
+==============================================================================
+
+Q1 REPAIRED. Both error directions against the fully cheap arm.
+
+  setting                                       unsound  conserv   exact  extents
+  W=4 sat  add arity=2, all bound pairs               0        0     256      256
+  W=4 wrap add arity=2, all bound pairs               0        0     256      256
+  W=4 sat  mul arity=2, all bound pairs               0        0     256      256
+  W=5 sat  add arity=2, all bound pairs               0        0    1024     1024
+  W=4 sat  add arity=3, uniform bounds                0        0      16       16
+  W=5 wrap add arity=3, uniform bounds                0        0      32       32
+
+  A conservative cell, named rather than left inside a ratio:
+
+Q2-Q6. Which part of the grade licenses which axis substitution
+
+  axis moved                     grade                       disch   term differs  types merge
+  overflow policy                magnitude <= 7               True           0/64        False
+  overflow policy                magnitude <= 15             False        120/256        False
+  total width 3 vs 4             magnitude <= 3               True           0/16        False
+  total width 3 vs 4             magnitude <= 7              False          28/64        False
+  signedness                     magnitude <= 3               True           0/16        False
+  signedness                     magnitude <= 7              False          28/64        False
+  rounding trunc vs near         magnitude <= 3, grid 1/4     True         36/169        False
+  rounding trunc vs near         grid 1 (integers)            True           0/16        False
+  rounding trunc vs near         grid 1, magnitude only       True           0/16        False
+  overflow policy at F=2         grid 1 (integers)            True           0/16        False
+  overflow policy at F=2         grid 1, grid part only       True        180/256        False
+
+The licence is denotational and is not representational
+
+  unsigned vs signed, bit patterns whose value differs: 8/16
+  unsigned vs signed, arithmetic on a discharged extent: 0/16
+  so the grade licenses substituting the OPERATION and never reinterpreting the BITS
+
+INSTRUMENT CHECK
+
+  baseline W=4 sat add: unsound 0, conservative 0, exact 256, extents 256
+  all three counters are live: 1 of 3 non-zero
+  with a broken (max, not sum) rule: unsound 120, conservative 0
+  the unsound counter detects it: True
+  with an exact (enumerate the result set) rule: unsound 0, conservative 0
+  so the conservatism is the CORNER rule's, not the grade's: False

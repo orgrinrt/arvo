@@ -1,0 +1,94 @@
+P2. The policy selects the algebra
+==================================
+
+Exhaustive over the whole domain at each width. No sampling.
+
+--- declared width W = 3 (8 values) ---
+  policy = wrap
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = saturate
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = exact
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+
+--- declared width W = 4 (16 values) ---
+  policy = wrap
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = saturate
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = exact
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+
+--- declared width W = 5 (32 values) ---
+  policy = wrap
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = saturate
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = exact
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+
+--- declared width W = 6 (64 values) ---
+  policy = wrap
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = saturate
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+  policy = exact
+      a+b == b+a               HOLDS everywhere
+      (a+b)+c == a+(b+c)       HOLDS everywhere
+      (a*b)*c == a*(b*c)       HOLDS everywhere
+      a*(b+c) == a*b + a*c     HOLDS everywhere
+      a+0 == a                 HOLDS everywhere
+
+What this says about a rewrite:
+
+Reassociating a sum, or fusing a*b + a*c into a*(b+c), is licensed by
+a law. The law is a property of the POLICY, not of the operation and
+not of the width. So the same source expression admits a fused kernel
+under one policy and does not under another, with everything else
+held identical. That is I9 stated as something checkable rather than
+as a slogan: the strategy is what makes an answer correct, because it
+is what decides which rewrites preserve the answer.

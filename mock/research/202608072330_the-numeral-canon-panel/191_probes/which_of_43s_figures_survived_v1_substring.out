@@ -1,0 +1,23 @@
+######## 43 section 0, the figures its instruments produced
+  finding  ABSENT   1201         registry=0   (in 43: 5)  two-level shapes one bit wide, s3
+  finding  present  4096         registry=5   (in 43: 5)  two-level shape space, s3
+  finding  ABSENT   6502         registry=0   (in 43: 4)  negative control overflow witness, s3
+  finding  ABSENT   8 of 18      registry=0   (in 43: 2)  grids matching the prediction, s5
+  finding  ABSENT   9 of 9       registry=0   (in 43: 3)  grids at zero bias, s5
+  finding  present  58           registry=13  (in 43: 4)  assembly lines, clamped subslice, p7
+  finding  present  94           registry=6   (in 43: 5)  assembly lines, enforced run, p7
+  finding  ABSENT   seven traversals registry=0   (in 43: 2)  traversals read, p7
+
+######## controls
+  CTRL+A   present  476          registry=4   (in 43: 0)  coherence law witness
+  CTRL+A   present  897          registry=2   (in 43: 0)  coherence law witness
+  CTRL-N   ABSENT   999999999    registry=0   (in 43: 0)  a figure in neither
+
+######## and the concepts, not the numbers: does any row state them?
+  capacity against count       registry=0
+  len <= capacity              registry=0
+  binding-time distinction     registry=0
+  flatten                      registry=1
+  traversal order              registry=2
+  shared scale                 registry=0
+  frame of reference           registry=0

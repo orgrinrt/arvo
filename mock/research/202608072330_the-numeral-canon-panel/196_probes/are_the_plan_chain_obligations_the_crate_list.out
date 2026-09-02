@@ -1,0 +1,80 @@
+### registry: /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/registry
+### consumer: /Users/orgrinrt/Dev/clause-work/numeric-stack/hilavitkutin
+
+======== ARM 1. the chain, and what the obligations say it is ========
+   the consumer's own heading:
+      46:### Plan algorithm chain (12 steps + step 13 FiberShape classification)
+   arrow-separated canonical stages: 12
+   what the obligation rows say:
+      28:why = "Two steps of a twelve-step plan chain rest on it, and the same surface is asked for again by a different consumer for a 
+      37:why = "Four of the twelve plan steps are this one surface asked for four ways, and the second consumer wants the same thing for
+
+======== ARM 2. five obligations against five crate clauses ========
+   the sentence's clauses:
+      arvo-bitmask` for set ops
+      arvo-graph` for DAG / RCM
+      arvo-sparse` for CSR DependencyGraph (bench-locked canonical at all N)
+      arvo-spectral` for the Fiedler partition step
+      arvo-comb` for the cost DP
+   clause count: 5
+
+   the plan-chain obligation ids, in file order, first five:
+      id = "set_operations_over_a_fixed_size_bit_set"
+      id = "ordering_a_directed_acyclic_graph"
+      id = "a_sparse_adjacency_a_plan_can_be_built_on"
+      id = "a_spectral_partition_of_a_dependency_graph"
+      id = "a_cost_dynamic_program"
+
+======== ARM 3. what the consumer says arvo-comb is for ========
+   the obligation's need, as the canon carries it:
+      need = "A dynamic program over costs, deciding how to group work under a budget."
+   every statement of that crate's purpose in the consumer, lockfiles and
+   imported prior art excluded:
+      mock/research/202607181300_engine-roadmap-r6.md:259:confirmed (`arvo-comb::matrix_chain_dp` and `greedy_group`). B2 still needs its sketch, proving the
+      mock/research/seed/foundations.md:24:| arvo-comb | Matrix-chain ordering DP, greedy constrained interval grouping, two-level greedy bin-packing |
+      mock/research/seed/foundations.md:30:partitioning in the plan; arvo-comb does fiber-grouping DP and bin-packing.
+      mock/research/seed/plan.md:106:**Step 8, fiber grouping** (arvo-comb). Greedy at 10 or fewer ops (walk the
+      mock/research/pre_seed/202607191500_engine-roadmap-r7.md:528:holistic feasibility predicate. `arvo-comb::matrix_chain_dp` exists.
+      mock/research/pre_seed/202607193000_engine-roadmap-r8.md:169:Matrix-chain DP fiber grouping (`arvo-comb::matrix_chain_dp` exists upstream; no engine call).
+      mock/research/pre_seed/202607193000_engine-roadmap-r8.md:313:  with the greedy former; `arvo-comb::matrix_chain_dp` is the substrate.
+      mock/research/2026_05_05_doc_audit.md:193:- L45 — **Engine-vocab `chain`** — verbatim: "Fiber grouping: greedy (arvo-comb) or matrix chain DP for >10 ops". `matrix chain` here
+      mock/research/2026_05_05_doc_audit.md:198:- L349 — **Stale type names** — verbatim: "Runtime: hilavitkutin-api, arvo, arvo-bitmask, arvo-graph, arvo-sparse, arvo-spectral, arv
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:37:arvo-comb              combinatorial optimisation (DP, greedy grouping, bin-packing)
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:153:arvo-comb            combinatorial optimisation (DP, greedy, bin-pack)
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:246:- hilavitkutin uses arvo-comb for fiber grouping DP, morsel bin-pack
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:754:5. Form fibers within each trunk (arvo-comb greedy grouping +
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:1052:- Optimal grouping = matrix chain DP (arvo-comb, when >10 ops)
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:1054:Core algorithm: arvo-graph Kahn's topological sort → arvo-comb greedy
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:1255:| Optimal fiber grouping | arvo-comb | Matrix chain ordering DP |
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:1256:| Greedy fiber grouping | arvo-comb | Constrained interval grouping |
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:1257:| Bit assignment | arvo-comb | Two-level greedy bin-packing |
+      mock/design_rounds/202604200055/202603181200_topic.hilavitkutin-design-consolidation.md:1398:**Step 8: Fiber grouping** (arvo-comb)
+      mock/design_rounds/202605101036/202605101036_topic.plan-algorithm-chain.md:31:8. **Fiber grouping**: greedy (arvo-comb) or matrix chain DP for >10 ops (arvo-comb).
+      mock/DESIGN.md.tmpl:50:Each step names its foundations crate dependency: `arvo-bitmask` for set ops, `arvo-graph` for DAG / RCM, `arvo-sparse` for CSR DependencyGraph (bench-l
+
+======== ARM 4. the twelve stages against 191's five classes ========
+    1  build_dag         class A
+    2  topo_sort         class A
+    3  upward_rank       class B
+    4  waist             class A
+    5  RCM               class A
+    6  block-diag        class A
+    7  spectral          class C
+    8  fiber group       class B
+    9  morsel size       class D
+   10  phase config      class -- UNASSIGNED
+   11  column classify   class A
+   12  dirty masks       class A
+
+   the unassigned stage's own vocabulary, in the consumer:
+      mock/research/202606201300_adapt-actuation-chart.md:23:  thread). A dead field. Domain-14 strategy-shaping (MAX_FUSE / BALANCED /
+      mock/research/seed/execution.md:143:Per-phase config selection picks among the grouper's MAX_FUSE, BALANCED,
+      mock/research/202606060900_engine-completion-strategic-synthesis.md:66:Verified against the canonical spec (cross-check, not taken on trust): the spec NEVER special-
+      mock/research/202606191800_p1-adapt-granularity-sketch-plan.md:47:4. **R10a strategy mutability.** Hypothesis: per-phase config (MAX_FUSE/BALANCED/MAX_SPLIT) is a ru
+      mock/research/202606061000_canon-amendment-unified-engine.md:15:- "sequential, 1.00x, single core, no overhead" (`:1956`) is one of the per-phase STRATEGY modes (MAX
+      mock/design_rounds/202604200227/202604200227_changelist.doc.lock.md:23:- `PhaseStrategy` — per-phase config (MAX_FUSE / BALANCED /
+
+======== CONTROLS ========
+   POS-2  PASS  the dependency sentence parsed
+   NEG    PASS  the splitter matches an invented clause, so ARM 2's five are
+                the document's five and not a list this probe carried in

@@ -1,0 +1,48 @@
+# 23_probes outputs. Run from the panel directory, 2026-08-08.
+
+NOTE: check_own_citations.py reports one out-of-range citation, 08:985-987. That is a dead
+citation quoted inside the file's coverage section as the defect the script itself found. The
+script cannot distinguish a citation from a narration of a bad one. 118 live, all resolving.
+
+$ python3 23_probes/check_own_citations.py
+distinct citations: 119
+in range: 118
+out of range or unresolvable: 1
+   08:985-987  OUT OF RANGE, file has 744 lines
+
+$ python3 23_probes/spot_check_citation_content.py
+06      341-348   D0                      OK
+06      718-718   six sites               OK
+12      130-158   UInt<5>                 OK
+12       62-78    does not say            OK
+12      459-481   priced                  OK
+17      377-379   ceil                    OK
+18      193-200   42                      OK
+13      654-662   alias-definition site   OK
+15      288-306   impl                    OK
+16      384-384   28                      OK
+16      639-642   23.1                    OK
+11       42-43    1148                    OK
+20       99-104   44                      OK
+22      604-612   operation is            OK
+RULES    99-101   Keeping something       OK
+
+$ python3 23_probes/count_strategy_mentions.py
+rows total: 30
+rows mentioning 'strateg' anywhere: 8 -> S18, S19, S21, S22, S23, S25, S26, S29
+rows whose canon sentence says 'strateg': 3 -> S19, S23, S26
+
+$ inventory counts
+rows          30
+blocked       7
+refused       2
+two experts   5
+one expert    20
+
+$ concept vocabulary in the surface and derivation files
+  binade: exit 1
+  exponent form: exit 1
+
+$ style gates
+em-dash  0
+en-dash  0

@@ -1,0 +1,325 @@
+=== base (no cfg) ===
+exit: 0
+=== bad_width ===
+error[E0277]: the trait bound `Cap<7>: Log2Ceil` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:242:57
+    |
+242 | pub fn negative_width(b: &Bounded<Num<N4, Wrap>, 7>) -> <Num<N4, Wrap> as TropicalSumAccum<Cap<7>, AccSat>>::Acc {
+    |                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Log2Ceil` is not implemented for `Cap<7>`
+   --> p2_composed_accumulator_and_law_bound.rs:89:1
+    |
+ 89 | pub struct Cap<const K: usize>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: the following other types implement trait `Log2Ceil`
+   --> p2_composed_accumulator_and_law_bound.rs:94:1
+    |
+ 94 | impl Log2Ceil for Cap<3> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ `Cap<3>`
+...
+ 97 | impl Log2Ceil for Cap<4> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ `Cap<4>`
+note: required for `Num<Su<Su<Su<Su<Z>>>>, Wrap>` to implement `TropicalSumAccum<Cap<7>, Strat<Minimum, Saturate>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+188 | where
+189 |     Cap<K>: Log2Ceil,
+    |             -------- unsatisfied trait bound introduced here
+
+error[E0277]: the trait bound `Cap<7>: Log2Ceil` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:243:19
+    |
+243 |     min_plus_fold(b)
+    |     ------------- ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `Log2Ceil` is not implemented for `Cap<7>`
+   --> p2_composed_accumulator_and_law_bound.rs:89:1
+    |
+ 89 | pub struct Cap<const K: usize>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: the following other types implement trait `Log2Ceil`
+   --> p2_composed_accumulator_and_law_bound.rs:94:1
+    |
+ 94 | impl Log2Ceil for Cap<3> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ `Cap<3>`
+...
+ 97 | impl Log2Ceil for Cap<4> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ `Cap<4>`
+note: required for `Num<Su<Su<Su<Su<Z>>>>, Wrap>` to implement `TropicalSumAccum<Cap<7>, _>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+188 | where
+189 |     Cap<K>: Log2Ceil,
+    |             -------- unsatisfied trait bound introduced here
+note: required by a bound in `min_plus_fold`
+   --> p2_composed_accumulator_and_law_bound.rs:213:18
+    |
+208 | pub fn min_plus_fold<We, Se, const K: usize, Sa>(
+    |        ------------- required by a bound in this function
+...
+213 |     Num<We, Se>: TropicalSumAccum<Cap<K>, Sa>,
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `min_plus_fold`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0277`.
+exit: 1
+=== bad_law ===
+error[E0277]: the trait bound `Wrap: AbsorbingTop` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:253:55
+    |
+253 | pub fn negative_law(b: &Bounded<Num<N4, Wrap>, 3>) -> <Num<N4, Wrap> as TropicalSumAccum<Cap<3>, AccWrap>>::Acc {
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `AbsorbingTop` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `AbsorbingTop` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:125:1
+    |
+125 | impl AbsorbingTop for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<Su<Su<Su<Su<Z>>>>, Wrap>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                   ------------ unsatisfied trait bound introduced here
+
+error[E0277]: the trait bound `Wrap: MonotoneAdd` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:253:55
+    |
+253 | pub fn negative_law(b: &Bounded<Num<N4, Wrap>, 3>) -> <Num<N4, Wrap> as TropicalSumAccum<Cap<3>, AccWrap>>::Acc {
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `MonotoneAdd` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `MonotoneAdd` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:130:1
+    |
+130 | impl MonotoneAdd for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<Su<Su<Su<Su<Z>>>>, Wrap>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                                  ----------- unsatisfied trait bound introduced here
+
+error[E0277]: the trait bound `Wrap: AbsorbingTop` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:254:19
+    |
+254 |     min_plus_fold(b)
+    |     ------------- ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `AbsorbingTop` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `AbsorbingTop` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:125:1
+    |
+125 | impl AbsorbingTop for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<Su<Su<Su<Su<Z>>>>, Wrap>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                   ------------ unsatisfied trait bound introduced here
+note: required by a bound in `min_plus_fold`
+   --> p2_composed_accumulator_and_law_bound.rs:213:18
+    |
+208 | pub fn min_plus_fold<We, Se, const K: usize, Sa>(
+    |        ------------- required by a bound in this function
+...
+213 |     Num<We, Se>: TropicalSumAccum<Cap<K>, Sa>,
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `min_plus_fold`
+
+error[E0277]: the trait bound `Wrap: MonotoneAdd` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:254:19
+    |
+254 |     min_plus_fold(b)
+    |     ------------- ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `MonotoneAdd` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `MonotoneAdd` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:130:1
+    |
+130 | impl MonotoneAdd for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<Su<Su<Su<Su<Z>>>>, Wrap>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                                  ----------- unsatisfied trait bound introduced here
+note: required by a bound in `min_plus_fold`
+   --> p2_composed_accumulator_and_law_bound.rs:213:18
+    |
+208 | pub fn min_plus_fold<We, Se, const K: usize, Sa>(
+    |        ------------- required by a bound in this function
+...
+213 |     Num<We, Se>: TropicalSumAccum<Cap<K>, Sa>,
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `min_plus_fold`
+
+error: aborting due to 4 previous errors
+
+For more information about this error, try `rustc --explain E0277`.
+exit: 1
+=== observable_axis ===
+error[E0277]: the trait bound `Wrap: AbsorbingTop` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:290:42
+    |
+290 |     generic_consumer::<_, _, 3, AccWrap>(b)
+    |     ------------------------------------ ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `AbsorbingTop` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `AbsorbingTop` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:125:1
+    |
+125 | impl AbsorbingTop for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<_, _>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                   ------------ unsatisfied trait bound introduced here
+note: required by a bound in `generic_consumer`
+   --> p2_composed_accumulator_and_law_bound.rs:273:18
+    |
+268 | pub fn generic_consumer<We, Se, const K: usize, Sa>(
+    |        ---------------- required by a bound in this function
+...
+273 |     Num<We, Se>: TropicalSumAccum<Cap<K>, Sa>,
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `generic_consumer`
+
+error[E0277]: the trait bound `Wrap: MonotoneAdd` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:290:42
+    |
+290 |     generic_consumer::<_, _, 3, AccWrap>(b)
+    |     ------------------------------------ ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `MonotoneAdd` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `MonotoneAdd` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:130:1
+    |
+130 | impl MonotoneAdd for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<_, _>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                                  ----------- unsatisfied trait bound introduced here
+note: required by a bound in `generic_consumer`
+   --> p2_composed_accumulator_and_law_bound.rs:273:18
+    |
+268 | pub fn generic_consumer<We, Se, const K: usize, Sa>(
+    |        ---------------- required by a bound in this function
+...
+273 |     Num<We, Se>: TropicalSumAccum<Cap<K>, Sa>,
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `generic_consumer`
+
+error[E0277]: the trait bound `Wrap: AbsorbingTop` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:290:5
+    |
+290 |     generic_consumer::<_, _, 3, AccWrap>(b)
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `AbsorbingTop` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `AbsorbingTop` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:125:1
+    |
+125 | impl AbsorbingTop for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<_, _>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                   ------------ unsatisfied trait bound introduced here
+
+error[E0277]: the trait bound `Wrap: MonotoneAdd` is not satisfied
+   --> p2_composed_accumulator_and_law_bound.rs:290:5
+    |
+290 |     generic_consumer::<_, _, 3, AccWrap>(b)
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `MonotoneAdd` is not implemented for `Wrap`
+   --> p2_composed_accumulator_and_law_bound.rs:117:1
+    |
+117 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `MonotoneAdd` is implemented for `Saturate`
+   --> p2_composed_accumulator_and_law_bound.rs:130:1
+    |
+130 | impl MonotoneAdd for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<_, _>` to implement `TropicalSumAccum<Cap<3>, Strat<Minimum, Wrap>>`
+   --> p2_composed_accumulator_and_law_bound.rs:187:34
+    |
+187 | impl<We, Se, const K: usize, Sa> TropicalSumAccum<Cap<K>, Sa> for Num<We, Se>
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^
+...
+192 |     Sa::Overflow: AbsorbingTop + MonotoneAdd,
+    |                                  ----------- unsatisfied trait bound introduced here
+
+error: aborting due to 4 previous errors
+
+For more information about this error, try `rustc --explain E0277`.
+exit: 1
+=== feature gate count ===
+0

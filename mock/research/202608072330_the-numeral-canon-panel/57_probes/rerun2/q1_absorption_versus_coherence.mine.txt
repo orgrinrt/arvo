@@ -1,0 +1,117 @@
+=== absorption against coherence, measured rather than argued ===
+
+### section 1: 57_probes/p2's own configuration space (4248 per op) ###
+
+--- addition, p2's sweep ---
+  configurations swept:                    4248
+  absorption true:                         1609
+  coherence-ext true:                      1357
+  coherence-direct true:                   1786
+  absorption vs coherence-ext disagreements:    252
+     lo=None hi=Some(-6) box=[0,0]  absorption=true coherence-ext=false  y-outside-Q-count=1
+     lo=None hi=Some(-6) box=[0,1]  absorption=true coherence-ext=false  y-outside-Q-count=2
+     lo=None hi=Some(-6) box=[0,2]  absorption=true coherence-ext=false  y-outside-Q-count=3
+     lo=None hi=Some(-6) box=[0,3]  absorption=true coherence-ext=false  y-outside-Q-count=4
+     lo=None hi=Some(-6) box=[0,4]  absorption=true coherence-ext=false  y-outside-Q-count=5
+     lo=None hi=Some(-6) box=[0,5]  absorption=true coherence-ext=false  y-outside-Q-count=6
+  absorption vs coherence-direct disagreements: 681
+     lo=None hi=Some(-6) box=[0,0]  absorption=true coherence-direct=false  y-outside-Q-count=1
+     lo=None hi=Some(-6) box=[0,1]  absorption=true coherence-direct=false  y-outside-Q-count=2
+     lo=None hi=Some(-6) box=[0,2]  absorption=true coherence-direct=false  y-outside-Q-count=3
+     lo=None hi=Some(-6) box=[0,3]  absorption=true coherence-direct=false  y-outside-Q-count=4
+     lo=None hi=Some(-6) box=[0,4]  absorption=true coherence-direct=false  y-outside-Q-count=5
+     lo=None hi=Some(-6) box=[0,5]  absorption=true coherence-direct=false  y-outside-Q-count=6
+  coherence-ext vs coherence-direct disagreements: 429
+  absorption vs coherence-ext disagreements WHERE box entirely subset of Q: 0 (should be 0)
+  absorption vs coherence-ext disagreements where box is NOT subset of Q:  252
+  absorption vs coherence-direct disagreements WHERE box entirely subset of Q: 429 (mechanism check)
+  absorption vs coherence-direct disagreements where box is NOT subset of Q:  252
+  disagreements with MEASURED associativity: absorption 0, coherence-ext 252, coherence-direct 681
+
+--- multiplication, p2's sweep ---
+  configurations swept:                    4248
+  absorption true:                         1617
+  coherence-ext true:                      1557
+  coherence-direct true:                   2153
+  absorption vs coherence-ext disagreements:    240
+     lo=None hi=Some(-6) box=[-1,2]  absorption=false coherence-ext=true  y-outside-Q-count=4
+     lo=None hi=Some(-6) box=[0,2]  absorption=false coherence-ext=true  y-outside-Q-count=3
+     lo=None hi=Some(-6) box=[0,3]  absorption=false coherence-ext=true  y-outside-Q-count=4
+     lo=None hi=Some(-6) box=[0,4]  absorption=false coherence-ext=true  y-outside-Q-count=5
+     lo=None hi=Some(-6) box=[0,5]  absorption=false coherence-ext=true  y-outside-Q-count=6
+     lo=None hi=Some(-5) box=[-1,2]  absorption=false coherence-ext=true  y-outside-Q-count=4
+  absorption vs coherence-direct disagreements: 1006
+     lo=None hi=Some(-6) box=[-5,0]  absorption=false coherence-direct=true  y-outside-Q-count=6
+     lo=None hi=Some(-6) box=[-5,1]  absorption=false coherence-direct=true  y-outside-Q-count=7
+     lo=None hi=Some(-6) box=[-4,0]  absorption=false coherence-direct=true  y-outside-Q-count=5
+     lo=None hi=Some(-6) box=[-4,1]  absorption=false coherence-direct=true  y-outside-Q-count=6
+     lo=None hi=Some(-6) box=[-3,0]  absorption=false coherence-direct=true  y-outside-Q-count=4
+     lo=None hi=Some(-6) box=[-3,1]  absorption=false coherence-direct=true  y-outside-Q-count=5
+  coherence-ext vs coherence-direct disagreements: 766
+  absorption vs coherence-ext disagreements WHERE box entirely subset of Q: 0 (should be 0)
+  absorption vs coherence-ext disagreements where box is NOT subset of Q:  240
+  absorption vs coherence-direct disagreements WHERE box entirely subset of Q: 477 (mechanism check)
+  absorption vs coherence-direct disagreements where box is NOT subset of Q:  529
+  disagreements with MEASURED associativity: absorption 153, coherence-ext 393, coherence-direct 853
+
+### section 2: box deliberately widened past the clamp bounds ###
+
+--- addition, widened box ---
+  configurations swept:                    7744
+  absorption true:                         2165
+  coherence-ext true:                      1945
+  coherence-direct true:                   2020
+  absorption vs coherence-ext disagreements:    220
+     lo=None hi=Some(-4) box=[0,0]  absorption=true coherence-ext=false  y-outside-Q-count=1
+     lo=None hi=Some(-4) box=[0,2]  absorption=true coherence-ext=false  y-outside-Q-count=3
+     lo=None hi=Some(-4) box=[0,4]  absorption=true coherence-ext=false  y-outside-Q-count=5
+     lo=None hi=Some(-4) box=[0,6]  absorption=true coherence-ext=false  y-outside-Q-count=7
+     lo=None hi=Some(-4) box=[0,8]  absorption=true coherence-ext=false  y-outside-Q-count=9
+     lo=None hi=Some(-4) box=[0,10]  absorption=true coherence-ext=false  y-outside-Q-count=11
+  absorption vs coherence-direct disagreements: 295
+     lo=None hi=Some(-4) box=[0,0]  absorption=true coherence-direct=false  y-outside-Q-count=1
+     lo=None hi=Some(-4) box=[0,2]  absorption=true coherence-direct=false  y-outside-Q-count=3
+     lo=None hi=Some(-4) box=[0,4]  absorption=true coherence-direct=false  y-outside-Q-count=5
+     lo=None hi=Some(-4) box=[0,6]  absorption=true coherence-direct=false  y-outside-Q-count=7
+     lo=None hi=Some(-4) box=[0,8]  absorption=true coherence-direct=false  y-outside-Q-count=9
+     lo=None hi=Some(-4) box=[0,10]  absorption=true coherence-direct=false  y-outside-Q-count=11
+  coherence-ext vs coherence-direct disagreements: 75
+  absorption vs coherence-ext disagreements WHERE box entirely subset of Q: 0 (should be 0)
+  absorption vs coherence-ext disagreements where box is NOT subset of Q:  220
+  absorption vs coherence-direct disagreements WHERE box entirely subset of Q: 75 (mechanism check)
+  absorption vs coherence-direct disagreements where box is NOT subset of Q:  220
+  disagreements with MEASURED associativity: absorption 0, coherence-ext 220, coherence-direct 295
+
+--- multiplication, widened box ---
+  configurations swept:                    7744
+  absorption true:                         2297
+  coherence-ext true:                      2291
+  coherence-direct true:                   2536
+  absorption vs coherence-ext disagreements:    206
+     lo=None hi=Some(-4) box=[0,2]  absorption=false coherence-ext=true  y-outside-Q-count=3
+     lo=None hi=Some(-4) box=[0,4]  absorption=false coherence-ext=true  y-outside-Q-count=5
+     lo=None hi=Some(-4) box=[0,6]  absorption=false coherence-ext=true  y-outside-Q-count=7
+     lo=None hi=Some(-4) box=[0,8]  absorption=false coherence-ext=true  y-outside-Q-count=9
+     lo=None hi=Some(-4) box=[0,10]  absorption=false coherence-ext=true  y-outside-Q-count=11
+     lo=None hi=Some(-4) box=[0,12]  absorption=false coherence-ext=true  y-outside-Q-count=13
+  absorption vs coherence-direct disagreements: 737
+     lo=None hi=Some(-4) box=[-20,0]  absorption=false coherence-direct=true  y-outside-Q-count=4
+     lo=None hi=Some(-4) box=[-18,0]  absorption=false coherence-direct=true  y-outside-Q-count=4
+     lo=None hi=Some(-4) box=[-16,0]  absorption=false coherence-direct=true  y-outside-Q-count=4
+     lo=None hi=Some(-4) box=[-14,0]  absorption=false coherence-direct=true  y-outside-Q-count=4
+     lo=None hi=Some(-4) box=[-12,0]  absorption=false coherence-direct=true  y-outside-Q-count=4
+     lo=None hi=Some(-4) box=[-10,0]  absorption=false coherence-direct=true  y-outside-Q-count=4
+  coherence-ext vs coherence-direct disagreements: 531
+  absorption vs coherence-ext disagreements WHERE box entirely subset of Q: 0 (should be 0)
+  absorption vs coherence-ext disagreements where box is NOT subset of Q:  206
+  absorption vs coherence-direct disagreements WHERE box entirely subset of Q: 150 (mechanism check)
+  absorption vs coherence-direct disagreements where box is NOT subset of Q:  587
+  disagreements with MEASURED associativity: absorption 150, coherence-ext 356, coherence-direct 587
+
+### section 3: one hand-built witness ###
+  x = add(5,5) = 10, rho(x) = 7, y = -5, rho(y) = -5
+  absorption check:      rho(op(rho(x), y)) = 2   rho(op(x, y)) = 5
+  coherence-ext check:   rho(op(x, y)) = 5   rho(op(rho(x), rho(y))) = 2
+
+instrument: predicates take both boolean values in the sweep true
+Q1 WORKS

@@ -1,0 +1,22 @@
+=== the test gate, run by me, per crate ===
+  bitpack-carrier-shared           test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.18s
+  bitpack-contend-shared           test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.80s
+  bitpack-footprint-shared         test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+  bitpack-plan-shared              test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+  bitpack-shared                   test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+  bitpack-wide-shared              test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+  bitpack-write-contend-shared     test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.61s
+  quantiser-fadd-shared            test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+  quantiser-radix-shared           test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+  satfold-shared                   test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+  warm-clamp-shared                test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.92s
+  warm-container-shared            test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.40s
+  test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 159.53s
+  ---
+  123 passed across 13 crates, 0 failed.
+
+  bitpack-write-contend-shared COMPLETED in 6.61s under no concurrent load.
+  That is a third data point on 125's diagnosis: 122_probes/u0 records it at
+  7.28s, 125 records it not terminating under three concurrent instances.
+  The non-termination is a machine-state property, as 125 itself said, and
+  136's wording 'does not terminate under concurrent load' is accurate.

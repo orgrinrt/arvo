@@ -1,0 +1,64 @@
+=== Q1. Is the resolved step monotone in the accumulator? ===
+    a |-> R(a + p, V) for each fixed p, checked over every pair a <= a'.
+  U<3,0>, 8 values
+            wrapping | not monotone at    84 of   224   first: a=0 <= a'=7, p=1, but R gives 1 > 0
+          saturating | not monotone at     0 of   224
+     substitute zero | not monotone at    84 of   224   first: a=0 <= a'=7, p=1, but R gives 1 > 0
+  U<2,1>, 8 values
+            wrapping | not monotone at    84 of   224   first: a=0 <= a'=7/2, p=1/2, but R gives 1/2 > 0
+          saturating | not monotone at     0 of   224
+     substitute zero | not monotone at    84 of   224   first: a=0 <= a'=7/2, p=1/2, but R gives 1/2 > 0
+  U<4,0>, 16 values
+            wrapping | not monotone at   680 of  1920   first: a=0 <= a'=15, p=1, but R gives 1 > 0
+          saturating | not monotone at     0 of  1920
+     substitute zero | not monotone at   680 of  1920   first: a=0 <= a'=15, p=1, but R gives 1 > 0
+
+=== Q2. Post-fixpoint holds; does soundness follow, and under which g? ===
+    Point reading   : a datum denotes exactly its own value.
+    Absorbing reading: the top denotes [top, infinity), everything else itself.
+
+    accumulator U<3,0> = [Fraction(0, 1), Fraction(1, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1)]
+    element     U<2,0> = [Fraction(0, 1), Fraction(1, 1), Fraction(2, 1), Fraction(3, 1)]
+
+      resolution |  n |   seqs | unsound, point | unsound, absorbing
+--------------------------------------------------------------------------
+        wrapping |  1 |      4 |              0 |                  0
+        wrapping |  2 |     16 |              0 |                  0
+        wrapping |  3 |     64 |              4 |                  4
+        wrapping |  4 |    256 |             66 |                 66
+        wrapping |  5 |   1024 |            512 |                511
+                   witness [absorbing] seq=[Fraction(0, 1), Fraction(0, 1), Fraction(2, 1), Fraction(3, 1), Fraction(3, 1)] exact=8 abstract=0
+
+      saturating |  1 |      4 |              0 |                  0
+      saturating |  2 |     16 |              0 |                  0
+      saturating |  3 |     64 |              4 |                  0
+      saturating |  4 |    256 |             66 |                  0
+      saturating |  5 |   1024 |            512 |                  0
+
+ substitute zero |  1 |      4 |              0 |                  0
+ substitute zero |  2 |     16 |              0 |                  0
+ substitute zero |  3 |     64 |              4 |                  4
+ substitute zero |  4 |    256 |             66 |                 66
+ substitute zero |  5 |   1024 |            512 |                512
+                   witness [absorbing] seq=[Fraction(0, 1), Fraction(0, 1), Fraction(2, 1), Fraction(3, 1), Fraction(3, 1)] exact=8 abstract=0
+
+=== Q3. Does the absorbing reading's soundness stay n-independent? ===
+    A post-fixpoint argument's whole value is that the trip count never
+    enters.  If the failure count under the absorbing reading is zero for
+    every n tried, that is the shape holding; if it grows with n, it is not.
+        wrapping | n=1:0/4  n=2:0/16  n=3:4/64  n=4:66/256  n=5:511/1024  n=6:2828/4096  n=7:13064/16384  n=8:55085/65536
+      saturating | n=1:0/4  n=2:0/16  n=3:0/64  n=4:0/256  n=5:0/1024  n=6:0/4096  n=7:0/16384  n=8:0/65536
+ substitute zero | n=1:0/4  n=2:0/16  n=3:4/64  n=4:66/256  n=5:512/1024  n=6:2860/4096  n=7:13332/16384  n=8:56313/65536
+
+=== Q4. Which inequality is the sufficiency condition? ===
+    Saturating, absorbing reading, n = 4.  Cell shows unsound sequences.
+    Accumulator U<3,FA>, element U<1,FP>.
+
+    FA\FP |         0         1         2         3
+    -----------------------------------------------
+         0 |         0       240      4080     65520
+         1 |         0         0      3840     65280
+         2 |         0         0         0     61440
+         3 |         0         0         0         0
+
+    Predicted: zero exactly on and above the diagonal FA >= FP.

@@ -1,0 +1,49 @@
+====================================================================================================
+Anchor accounting for 146, over this topic's seven files
+====================================================================================================
+  union built from 7 files
+
+  class                 in the union   in 146  incl. accounting  not carried
+  finding                         35       33                35            2
+  finding_qualified               21       33                34            0
+  line_panel                      55       14                14           51
+  option                          18        4                 4           14
+  probe_stem                      29       22                24            8
+  theorem                          4        2                 2            2
+
+  J1, the stripper: FIRED  (finding +2, finding_qualified +1, probe_stem +2)
+
+  finding: 33 carried, 2 not
+      F144-10                 F144-17               
+  finding_qualified: 21 carried, 0 not
+  line_panel: 4 carried, 51 not
+      139:166                 139:220                 139:230                 139:260                 139:266               
+      139:293                 139:338                 139:347                 139:356                 139:396               
+      139:400                 139:403                 139:430                 139:433                 139:497               
+      139:504                 139:604                 139:661                 139:703                 139:750               
+      139:788                 139:796                 140:160                 140:263                 140:564               
+      140:620                 140:667                 140:673                 140:702                 140:819               
+      140:862                 140:878                 140:921                 140:926                 141:125               
+      141:216                 141:220                 141:50                  141:520                 141:526               
+      141:563                 141:598                 141:776                 141:783                 141:874               
+      141:884                 142:581                 143:169                 143:194                 143:296               
+      143:418               
+  option: 4 carried, 14 not
+      O-139-A                 O-139-D                 O-139-E                 O-141-A                 O-141-B               
+      O-141-C                 O-141-D                 O-141-E                 O-142-A                 O-142-C               
+      O-144-B                 O-144-C                 O-144-D                 O-144-E               
+  probe_stem: 21 carried, 8 not
+      p11                     p1b                     p3b                     p3c                     p5b                   
+      p5c                     p7                      p9                    
+  theorem: 2 carried, 2 not
+      T3                      T4                    
+
+====================================================================================================
+J3/J4. The controls
+====================================================================================================
+  J3 stripping does not manufacture an absent id (F999-9): True (must be True)
+     and it DOES recover one wrapped in markup: True (must be True)
+  J5 a possessive extracts the id and not a primed variant: True (must be True)
+  J4 option ids present in the union: 18 (must be > 0), examples ['O-139-A', 'O-139-B', 'O-139-C', 'O-139-D']
+
+  controls: CONFIRMED

@@ -1,0 +1,41 @@
+width 4 signed, representable [-8, 7], saturating at every step
+term: l1 - l2 + l3 - l4, left-nested against balanced
+
+### K1, the aliased term has one fewer free variable than leaf positions
+  PASS, 4 and 3
+### K3, without clamping the two associations agree everywhere
+  PASS, they are re-associations of one expression
+
+### Q1: does the VALUE depend on the association?
+declared window          aliasing      divergent           of  first witness
+full range, straddles    distinct          16368        65536  [-8, -7, -8, -8] left=0 tree=-1
+full range, straddles    aliased             820         4096  [-8, 0, 0, -8] left=0 tree=-1
+non-negative             distinct            588         4096  [1, 0, 7, 1] left=6 tree=7
+non-negative             aliased               0          512  
+non-positive             distinct            996         6561  [-8, -7, -8, -8] left=0 tree=-1
+non-positive             aliased               8          729  [-8, 0, 0, -8] left=0 tree=-1
+narrow [-1, 1]           distinct              0           81  
+narrow [-1, 1]           aliased               0           27  
+
+### Q2: is the corner rule exact?
+declared window          aliasing   assoc    exact?   corner         true
+full range, straddles    distinct   left     exact    [-8, 7]        [-8, 7]
+full range, straddles    distinct   tree     exact    [-8, 7]        [-8, 7]
+full range, straddles    aliased    left     exact    [-8, 7]        [-8, 7]
+full range, straddles    aliased    tree     exact    [-8, 7]        [-8, 7]
+non-negative             distinct   left     exact    [-8, 7]        [-8, 7]
+non-negative             distinct   tree     exact    [-8, 7]        [-8, 7]
+non-negative             aliased    left     WIDE     [-8, 7]        [-7, 7]
+non-negative             aliased    tree     WIDE     [-8, 7]        [-7, 7]
+non-positive             distinct   left     exact    [-8, 7]        [-8, 7]
+non-positive             distinct   tree     exact    [-8, 7]        [-8, 7]
+non-positive             aliased    left     exact    [-8, 7]        [-8, 7]
+non-positive             aliased    tree     exact    [-8, 7]        [-8, 7]
+narrow [-1, 1]           distinct   left     exact    [-4, 4]        [-4, 4]
+narrow [-1, 1]           distinct   tree     exact    [-4, 4]        [-4, 4]
+narrow [-1, 1]           aliased    left     WIDE     [-4, 4]        [-2, 2]
+narrow [-1, 1]           aliased    tree     WIDE     [-4, 4]        [-2, 2]
+### K4, the corner rule must be exact for the distinct term everywhere
+  PASS
+### K2, a window narrow enough that no clamp is reachable gives no divergence
+  PASS, zero in both aliasings at [-1, 1]

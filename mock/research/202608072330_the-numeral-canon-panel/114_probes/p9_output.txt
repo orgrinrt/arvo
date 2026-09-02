@@ -1,0 +1,73 @@
+================================================================================================
+p9. Pricing the two spellings without a clock
+================================================================================================
+
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+ONE. The exact counts, which are arithmetic rather than a measurement.
+
+   fold L   nodes   corner consts   affine cells    ratio
+        2       3               6              6      1.0
+        4       7              14             28      2.0
+        8      15              30            120      4.0
+       16      31              62            496      8.0
+       32      63             126           2016     16.0
+       64     127             254           8128     32.0
+      256     511            1022         130816    128.0
+     1024    2047            4094        2096128    512.0
+
+  `111` F111-18 reports the affine STATE as one coefficient per leaf,
+  which is the state at ONE node. The tower carries a vector at every
+  node, so the compile-side quantity is the product.
+
+TWO. The refusal, which is deterministic and is not a duration.
+
+  variant                  2     8    16    24    32    48    64    96   128
+  neither                 ok    ok    ok    ok    ok    ok    ok    ok    ok
+  corner                  ok    ok    ok    ok    ok    ok    ok    ok  FAIL
+  affine-types-only       ok    ok    ok    ok    ok    ok    ok    ok  FAIL
+  affine                  ok    ok    ok    ok    ok    ok  FAIL  FAIL  FAIL
+  disjunction             ok    ok    ok    ok    ok    ok  FAIL  FAIL  FAIL
+  selection               ok    ok    ok    ok    ok    ok  FAIL  FAIL  FAIL
+  affine-impl-only        ok    ok    ok    ok    ok    ok  FAIL  FAIL  FAIL
+  selection-assoc         ok    ok    ok    ok    ok    ok  FAIL  FAIL  FAIL
+  selection-early         ok    ok    ok    ok    ok    ok    ok    ok  FAIL
+  affine-limit-1024       ok    ok    ok    ok    ok    ok    ok    ok    ok
+  disjunction-limit-1024    ok    ok    ok    ok    ok    ok    ok    ok    ok
+
+  The first refusal for each variant, with the diagnostic:
+    corner               first fails at L = 128
+      error[E0275]: overflow evaluating the requirement `ILeaf<0, 3>: Iv`
+    affine-types-only    first fails at L = 128
+      error[E0320]: overflow while adding drop-check rules for `Option<GAdd<GAdd<GAdd<GAdd<GAdd<..., .
+    affine               first fails at L = 64
+      error[E0275]: overflow evaluating the requirement `Cons<Lit<0>, Nil>: Coeffs`
+    disjunction          first fails at L = 64
+      error[E0275]: overflow evaluating the requirement `Cons<Lit<0>, Nil>: Coeffs`
+    selection            first fails at L = 64
+      error[E0275]: overflow evaluating the requirement `Cons<Lit<0>, Nil>: Coeffs`
+    affine-impl-only     first fails at L = 64
+      error[E0275]: overflow evaluating the requirement `Cons<Lit<0>, Nil>: Coeffs`
+    selection-assoc      first fails at L = 64
+      error[E0275]: overflow evaluating the requirement `Cons<Lit<0>, Nil>: Coeffs`
+    selection-early      first fails at L = 128
+      error[E0275]: overflow evaluating the requirement `ILeaf<0, 3>: Iv`
+
+================================================================================================
+
+  READING IT
+
+  C1 is the `neither` row. It must be `ok` throughout, or the refusals below are
+  about the generator's source size rather than about a const tower.
+
+  C2 is the `affine-types-only` row against the `affine` row. If types-only
+  compiles where affine refuses, the cost is const EVALUATION. If both refuse at
+  the same length, the cost is type CONSTRUCTION, which is a different answer and
+  changes what a design can do about it.
+
+  What is NOT established here, stated plainly: no duration, for any spelling, at
+  any length. Every figure above is a count or a compiler verdict. The harness
+  cannot take the duration and nothing else may be called a measurement, so the
+  duration remains unpriced and the shape of the instrument that would price it
+  is a compile-time mode the bench harness does not have.
+

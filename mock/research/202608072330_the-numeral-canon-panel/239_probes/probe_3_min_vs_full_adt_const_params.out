@@ -1,0 +1,14 @@
+=== rustc --edition 2021 probe_3a (min_adt_const_params) ===
+error: the trait `ConstParamTy` may not be implemented for this struct
+ --> probe_3a_min_adt_const_params_refuses_arvo_formats_actual_width_shape.rs:4:12
+  |
+2 | #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, std::marker::ConstParamTy)]
+  |                                                              ------------------------- in this derive macro expansion
+3 | #[repr(transparent)]
+4 | pub struct Width(u32);
+  |            ^^^^^ struct fields are less visible than the struct
+
+error: aborting due to 1 previous error
+
+
+=== rustc --edition 2021 probe_3b (adt_const_params) ===

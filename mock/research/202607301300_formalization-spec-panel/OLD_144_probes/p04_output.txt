@@ -1,0 +1,4 @@
+ambient  = 7
+hot      = 7
+precise  = 7
+stored   = p04_op_level_retarget::Num<5, p04_op_level_retarget::Warm>

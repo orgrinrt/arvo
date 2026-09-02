@@ -1,0 +1,49 @@
+error[E0277]: the trait bound `Packed<W13>: SameType<Packed<W16>>` is not satisfied
+  --> p1b_negctl_distinctness.rs:85:29
+   |
+85 | const _: () = assert_same::<ReprOf<W13, Cold>, ReprOf<W16, Cold>>();
+   |                             ^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+   |
+help: the trait `SameType<Packed<W16>>` is not implemented for `Packed<W13>`
+  --> p1b_negctl_distinctness.rs:44:1
+   |
+44 | pub struct Packed<W: Width>(core::marker::PhantomData<W>);
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `assert_same`
+  --> p1b_negctl_distinctness.rs:80:29
+   |
+80 | pub const fn assert_same<A: SameType<B> + ?Sized, B: ?Sized>() {}
+   |                             ^^^^^^^^^^^ required by this bound in `assert_same`
+
+error[E0277]: the trait bound `Packed<W13>: SameType<Padded<W13>>` is not satisfied
+  --> p1b_negctl_distinctness.rs:88:29
+   |
+88 | const _: () = assert_same::<ReprOf<W13, Cold>, ReprOf<W13, Warm>>();
+   |                             ^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+   |
+help: the trait `SameType<Padded<W13>>` is not implemented for `Packed<W13>`
+  --> p1b_negctl_distinctness.rs:44:1
+   |
+44 | pub struct Packed<W: Width>(core::marker::PhantomData<W>);
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `assert_same`
+  --> p1b_negctl_distinctness.rs:80:29
+   |
+80 | pub const fn assert_same<A: SameType<B> + ?Sized, B: ?Sized>() {}
+   |                             ^^^^^^^^^^^ required by this bound in `assert_same`
+
+error[E0277]: the trait bound `u16: SameType<u32>` is not satisfied
+  --> p1b_negctl_distinctness.rs:92:29
+   |
+92 | const _: () = assert_same::<<ReprOf<W13, Cold> as Representation>::Carrier, u32>();
+   |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `SameType<u32>` is not implemented for `u16`
+   |
+note: required by a bound in `assert_same`
+  --> p1b_negctl_distinctness.rs:80:29
+   |
+80 | pub const fn assert_same<A: SameType<B> + ?Sized, B: ?Sized>() {}
+   |                             ^^^^^^^^^^^ required by this bound in `assert_same`
+
+error: aborting due to 3 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

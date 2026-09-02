@@ -1,0 +1,25 @@
+== NC4: a geometry where both fit; the arms must agree ==
+  f=8 n=1024 widened_bits=29 comp_bits=21 : widened=91987 comp=91987 oracle=91987
+  NC4 ok
+
+== The boundary: container = 64 bits ==
+   F         n  wid_bits cmp_bits                widened                   comp oracle=?
+   8      1024        29       21                 -11558                 -11558     both
+   8     16384        33       25                -117708                -117708     both
+   8    262144        37       29                -169454                -169454     both
+  16      1024        45       29               17628362               17628362     both
+  16     16384        49       33              -42034543              -42034543     both
+  16    262144        53       37             -195981397             -195981397     both
+  20      1024        53       33              333197216              333197216     both
+  20     16384        57       37             -828144076             -828144076     both
+  20    262144        61       41            -1597763341            -1597763341     both
+  24      1024        61       37            -1272461764            -1272461764     both
+  24     16384        65       41            -3205457503            -3205457503     both
+  24    262144        69       45           -51354435842           -51354435842     both
+  26      1024        65       39            -7899720555            -7899720555     both
+  26     16384        69       43            -4793854444            -4793854444     both
+  26    262144        73       47           -57494709343           -57494709343     both
+
+  geometries where the predicted overflow region is confirmed by the oracle: 0
+  NC5: a row tagged COMP ONLY is one where the widened arm is wrong, which is
+       the disagreement the demonstration needs; 0 such rows would mean nothing shown.

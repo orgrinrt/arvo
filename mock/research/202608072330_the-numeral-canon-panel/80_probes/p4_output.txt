@@ -1,0 +1,8 @@
+p4: what the law unlocks
+  u8 saturating add, associativity, exhaustive: 0 of 16777216 triples fail
+  sat_sum_seq   = 255
+  sat_sum_lanes = 255
+  sat_sum_lanes16 = 255
+  sat_sum_lanes64 = 255
+  wrap_sum_seq  = 1
+  seq vs the three reassociated arms, lengths 0..=300 x 64 seeds: 0 disagreements

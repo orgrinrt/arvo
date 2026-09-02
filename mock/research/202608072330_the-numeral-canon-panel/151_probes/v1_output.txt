@@ -1,0 +1,96 @@
+================================================================================================
+Instrument check: the integer fast path against the rational definitions
+================================================================================================
+  disagreements over 6 modes x 4 denominators x 81 numerators: 0 (must be 0)
+
+================================================================================================
+A1/A2. The unsigned half over six rounding positions, exhaustive at W = 6
+================================================================================================
+
+  unsigned, wrap
+  mode                     F=0       F=1       F=2       F=3       F=4       F=5
+  floor                  0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  ceiling                0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  toward_zero            0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  away_from_zero         0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  half_up                0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  half_even              0.00%    12.50%    12.50%     9.38%     6.25%     3.91%
+
+  unsigned, sat
+  mode                     F=0       F=1       F=2       F=3       F=4       F=5
+  floor                  0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  ceiling                0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  toward_zero            0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  away_from_zero         0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  half_up                0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  half_even              0.00%     0.93%     1.61%     2.02%     2.18%     2.08%
+
+  A1 (exactly one unsigned mode is nonzero): CONFIRMED, nonzero modes = ['half_even']
+  A2 (unsigned wrapping half_even at F=1 is 12.50%): CONFIRMED, measured 12.50%
+
+================================================================================================
+A7. CONTROL: the signed wrapping rows must reproduce 142 F142-3
+================================================================================================
+  mode                     F=0       F=1       F=2       F=3       F=4       F=5
+  floor                  0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  ceiling                0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  toward_zero            0.00%     1.64%     5.54%    12.34%    22.22%    33.40%
+  away_from_zero         0.00%     1.64%     5.54%    12.34%    22.22%    33.40%
+  half_up                0.00%     0.00%     0.00%     0.00%     0.00%     0.00%
+  half_even              0.00%    12.50%    12.50%     9.38%     6.25%     3.91%
+
+  A7: REFUTED, toward_zero and half_even both match 142's table
+
+================================================================================================
+A5/A6. The remaining controls
+================================================================================================
+  A5 mutant arm dropping the addend differs at 258048 of 262144 (CONFIRMED)
+  A6 F=1: inexact shifts present at 65536 triples
+  A6 F=2: inexact shifts present at 131072 triples
+  A6 F=3: inexact shifts present at 180224 triples
+  A6 F=4: inexact shifts present at 212992 triples
+  A6 F=5: inexact shifts present at 233472 triples
+  A6: CONFIRMED
+
+================================================================================================
+A3/A4. 149's repair: equivariance on the domain the cell reaches
+================================================================================================
+  mode              unrestricted    non-negative domain   
+  floor             True            True                  
+  ceiling           True            True                  
+  toward_zero       False           True                  
+  away_from_zero    False           True                  
+  half_up           True            True                  
+  half_even         False           False                 
+
+  A3 (restricted gives five, unrestricted gives three): CONFIRMED
+
+  mode              signedness  free (measured)   restricted    unrestricted  
+  floor             unsigned    True              True          True          
+  floor             signed      True              True          True          
+  ceiling           unsigned    True              True          True          
+  ceiling           signed      True              True          True          
+  toward_zero       unsigned    True              True          False           <- unrestricted mispredicts
+  toward_zero       signed      False             False         False         
+  away_from_zero    unsigned    True              True          False           <- unrestricted mispredicts
+  away_from_zero    signed      False             False         False         
+  half_up           unsigned    True              True          True          
+  half_up           signed      True              True          True          
+  half_even         unsigned    False             False         False         
+  half_even         signed      False             False         False         
+
+  restricted mispredictions: 0 of 12
+  unrestricted mispredictions: 2 of 12
+  A4: CONFIRMED
+
+================================================================================================
+VERDICT
+================================================================================================
+  146 section 5.5's first predicate block is FALSE: True
+  149's domain-restricted repair predicts the table where the unrestricted one does not:
+    0 against 2 mispredictions of 12
+
+  The repair is one clause rather than two, and it is not merely narrower: it explains why
+  toward-zero and away-from-zero are free under unsigned, which the enumerated form has to
+  record as a coincidence. Signedness stops being a case split and becomes what determines
+  the domain the rounding is read on.

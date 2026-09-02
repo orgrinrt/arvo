@@ -1,0 +1,67 @@
+### the test: strip the notation's own vocabulary, require 1 distinct content tokens
+
+  [ok] mechanism -> mechanism n=5  ["equalities", "being", "decided", "compile", "time"]
+        "the equalities being decided at compile time"
+        source: predicate span, proposal.toml
+  [ok] mechanism -> mechanism n=7  ["refusal", "being", "type", "check", "outcome", "precedes", "execution"]
+        "the refusal being a type-check outcome that precedes execution"
+        source: predicate span, proposal.toml
+  [ok] mechanism -> mechanism n=7  ["splits", "being", "computed", "rather", "than", "executed", "lanes"]
+        "the splits being computed rather than executed on lanes"
+        source: predicate span, proposal.toml
+  [ok] mechanism -> mechanism n=5  ["addition", "common", "scale", "performs", "rescale"]
+        "addition at a common scale performs no rescale"
+        source: ruling::the_additive_and_absorption_verdicts_are_canon promotion
+  [ok] mechanism -> mechanism n=9  ["size_of", "denominated", "bytes", "rust", "type", "bit", "size", "multiple", "eight"]
+        "size_of is denominated in bytes so every Rust type's bit size is a multiple of eight"
+        source: 159_kiselyov_reply F6
+  [ok] mechanism -> mechanism n=6  ["compiler", "know", "forces", "check", "ignorance", "premise"]
+        "a width the compiler cannot know forces a range check, because the compiler's ignorance is the premise"
+        source: 159_kiselyov_reply F1
+  [ok] mechanism -> mechanism n=7  ["compile", "time", "result", "decided", "before", "thread", "exists"]
+        "a compile-time result is decided before any thread exists"
+        source: dimension.toml access_pattern
+  [ok] mechanism -> mechanism n=7  ["addition", "common", "scale", "performs", "rescale", "step", "exists"]
+        "addition at a common scale performs no rescale so no rounding step exists"
+        source: ruling note, the rounding asymmetry
+  [ok]   relabel -> relabel   n=0  []
+        "by construction"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "structural"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "it is a proof"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "trivially, the width cannot enter"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "obvious from the argument"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "holds for any width"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "the argument is width-free by construction"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "proved for all widths"
+        source: invented
+  [ok]   relabel -> relabel   n=0  []
+        "the width cannot enter the argument by construction of the proof"
+        source: invented, the adversarial one
+  [ok] mechanism -> mechanism n=2  ["rescale", "occurs"]
+        "no rescale occurs"
+        source: the shortest real one I could find
+
+### separation
+  quietest mechanism: 2 content tokens
+  loudest relabel:    0 content tokens
+  misclassified:      0 of 18
+  the two populations are separated, and any floor in (0, 2] works
+
+### CONTROL. The stripper must actually strip, and must not strip everything.
+  a clause of pure notation vocabulary -> [] (must be empty)
+  a clause of pure content            -> ["rescale", "denominated", "lanes"] (must be 3)
+  controls held.

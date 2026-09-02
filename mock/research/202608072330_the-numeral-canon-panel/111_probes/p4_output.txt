@@ -1,0 +1,43 @@
+P4. what constant injection does to the two degeneracies, at F = 0
+==============================================================================
+
+axis varied: radix   (108 configuration pairs, all at F = 0)
+  signature                                    observable
+  grid-closed {add,sub,mul,neg}                   0/108  
+  + constants restricted to the grid              0/108  
+  + constants over a dense rational sample        0/108  
+  R differs somewhere on the rational line        0/108  
+
+axis varied: rounding   (36 configuration pairs, all at F = 0)
+  signature                                    observable
+  grid-closed {add,sub,mul,neg}                   0/36   
+  + constants restricted to the grid              0/36   
+  + constants over a dense rational sample       33/36   
+  R differs somewhere on the rational line       33/36   
+
+------------------------------------------------------------------------------
+coincidence: does 'reachable under {ops + rational constants}' agree
+cell by cell with 'R differs somewhere on the rational line'?
+  agree 144, disagree 0
+
+coincidence under GRID-RESTRICTED constants, the same question:
+  agree 111, disagree 33
+
+------------------------------------------------------------------------------
+the pairs where rounding stays unobservable under rational constants:
+  W=2 unsigned sat: trunc vs floor
+  W=3 unsigned sat: trunc vs floor
+  W=4 unsigned sat: trunc vs floor
+  the overflow policy erases the disagreement: over an unsigned set
+  every negative argument clamps to the same endpoint under sat, and
+  trunc and floor differ only on negatives. Under wrap they separate.
+  So observability of one axis is a joint fact with another, which is
+  a reason a per-axis degeneracy verdict is the wrong unit.
+
+------------------------------------------------------------------------------
+reading:
+  the two notions COINCIDE when the constants cover the ambient domain
+  and COME APART when the constants are restricted to the grid.
+  So the distinction is not between two kinds of degeneracy. It is one
+  notion evaluated at two signatures, and 'definitional' is the value
+  it takes at the largest signature a design will ever admit.

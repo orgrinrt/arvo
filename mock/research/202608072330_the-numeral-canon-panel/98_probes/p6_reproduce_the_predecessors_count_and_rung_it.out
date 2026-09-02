@@ -1,0 +1,48 @@
+97's model reproduced: 6 regions, 5 arms, 2 coordinates (ns per record, bits per element)
+L0 = 5^6 = 15625
+
+dominance, the claim in 97 section 10
+  bitpack-carrier-d16            dominated at 0 of 6 regions
+  bitpack-carrier-d32            dominated at 4 of 6 regions
+  bitpack-carrier-d64            dominated at 6 of 6 regions
+  bitpack-carrier-packed         dominated at 6 of 6 regions
+  bitpack-carrier-packed-simd    dominated at 0 of 6 regions
+  dominated in EVERY region: ['bitpack-carrier-d64', 'bitpack-carrier-packed']
+  (97 section 10 names exactly these two)
+
+counts on 97's model
+  L0 any section                      15625
+  L1 Pareto-admissible                  144
+  L3 rationalisable, w >= 0              72   <- 97 section 2.2 reports 72 here
+  L4 rationalisable, w > 0                9
+  L5 forced, w > 0                        9   <- 97 section 2.2 reports 9 strict
+
+the two sentences, measured against each other
+  sections at L3 that select an arm 97 says no weighting can select: 63 of 72
+  sections at L4 that do:                                            0 of 9
+
+  So both sentences are true and they are about different rungs. The
+  headline count admits a zero weight, and a zero weight is exactly
+  what lets a strategy pick a dominated arm. The dominance claim is
+  about strictly positive weights, where it holds by construction.
+
+  the sections that survive at L4, listed, since there are few
+    ['d16', 'd16', 'd16', 'd16', 'd16', 'd16']
+    ['d16', 'd16', 'd16', 'packed-simd', 'd16', 'd16']
+    ['d16', 'd16', 'd16', 'packed-simd', 'packed-simd', 'd16']
+    ['d16', 'd16', 'packed-simd', 'packed-simd', 'packed-simd', 'd16']
+    ['d16', 'd16', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+    ['d32', 'd16', 'd16', 'd16', 'd16', 'd16']
+    ['d32', 'd32', 'd16', 'd16', 'd16', 'd16']
+    ['packed-simd', 'd16', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+    ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+
+what to carry, and what not
+  Not '72 of 15625'. That figure counts sections a strategy could
+  only reach by ignoring a measurement outright.
+  The figure with the property 97 wants from it is 9 of 15625, which is 0.0576%, and it is
+  smaller than the one reported, so 97's conclusion that a weighting
+  admits a vanishing fraction of the sections is strengthened rather
+  than weakened by the correction.
+
+written: p6_model97.json

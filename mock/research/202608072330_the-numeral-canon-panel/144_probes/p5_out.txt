@@ -1,0 +1,48 @@
+==============================================================================
+N3. 140's scalar result, reproduced
+==============================================================================
+  shared baseline: 0 of 840 reorder
+  per-arm baseline: 20106 of 35724 reorder (56.3%)
+  N3 -> REPRODUCED
+  140 reports 0 of 840 and 20106 of 35724 (56.3%). The totals differ because
+  140 skips tied reported figures on the per-arm side only; the two verdicts
+  agree and the scalar half is a theorem either way.
+
+==============================================================================
+N1/N2/P1. the same obligation under a vector cost and a weighting
+==============================================================================
+  34440 (arm set, weight) cases
+  per-coordinate normalisation BEFORE the weighting changes the pick at 8483 (24.6%)
+  scalar normalisation AFTER the weighting changes the pick at 0 (0.0%)
+  N1 per-coordinate form moves the pick at least 10% of the time: CONFIRMED
+  N2 scalar form never moves it: CONFIRMED
+  P1 mutual control: the two forms disagree with each other -> PASS
+  a witness: baseline arm 4 = ('44', '24', '17'), w = ('1/40', '1/10', '7/8')
+    raw cost picks arm 1 = ('15', '5', '8')
+    baseline-normalised cost picks arm 0 = ('57', '41', '4')
+    same arms, same weighting, one named shared baseline, two answers.
+
+==============================================================================
+P2. the case that must fail: a uniform baseline vector
+==============================================================================
+  uniform baseline: 0 of 10380 picks moved -> PASS
+  so the per-coordinate form is harmless exactly when the baseline arm costs
+  the same on every coordinate, which is the case where it is not a vector.
+
+==============================================================================
+P3. the hazard 140 names, under vector cost
+==============================================================================
+  per-arm baselines under vector cost: 6946 of 20760 (33.5%) report a winner that is not the winner
+  P3 -> PASS, the hazard survives the dimension change
+
+the repair, stated as what the measurement supports:
+  the obligation is right and it is under-specified. One named baseline arm
+  is necessary and it is not sufficient: WHERE the division happens decides
+  whether it is a normalisation or a reweighting. Applied per coordinate
+  before the weighting it silently changes the weighting, and the arm a
+  consumer asked for is not the arm they get. Applied once to the weighted
+  scalar it is 140's own theorem and preserves everything.
+
+==============================================================================
+control failures: 0 []
+==============================================================================

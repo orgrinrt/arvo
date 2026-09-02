@@ -1,0 +1,12 @@
+error[E0277]: the trait bound `SatAddI4Op: Associative` is not satisfied
+   --> /tmp/negcase.rs:368:38
+    |
+368 | const _: () = requires_associative::<SatAddI4Op>();
+    |                                      ^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Associative` is not implemented for `SatAddI4Op`
+   --> /tmp/negcase.rs:354:1
+    |
+354 | pub struct SatAddI4Op;
+    | ^^^^^^^^^^^^^^^^^^^^^
+help: the following other types implement trait `Associative`

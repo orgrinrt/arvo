@@ -1,0 +1,10 @@
+== Forward-only width assignment against forward-plus-backward ==
+                                               chain    fwd bits   both bits     saved       pct
+                  MAC x4, 16-bit inputs, 16-bit sink         228         112       116     50.9%
+MAC x4, same chain, consumer keeps everything (NC10)         228         228         0      0.0%
+                Horner degree 4, 12-bit, 12-bit sink         352          96       256     72.7%
+Horner degree 4 with a shift in the middle, 12-bit sink         365         158       207     56.7%
+        all-blocking chain (div and min), 8-bit sink          72          56        16     22.2%
+
+  NC10 (consumer keeps everything => saving must be exactly 0): ok
+  NC11 (chains saving zero = 1, chains saving more = 4; both must be > 0): ok

@@ -1,0 +1,50 @@
+cbb64ba9 chore: lock the src changelist for the surfaces round
+f7290079 chore: hook reformat, and track the probe lockfile so it resolves the same twice
+9599493d fix: drop the profile-gated trait so the public surface is one shape
+4489498e chore: lock the doc changelist for the surfaces round
+cd33cd9b docs: describe the tree that ships instead of the one deleted in august
+0ce75d79 docs: open the round on the four reviewer findings
+34953c6d docs: say what the tree actually ships now
+5e8338a1 docs: re-file the untested source gate after the close swept it
+28c7b81e chore: close design round 202608311957
+03568015 chore: lock the src changelist for the adaptation round
+0f5d90b0 chore: drop two unused imports left from the previous round
+f17bd8be chore: hook reformat of the adaptation tests, suite re-run and unchanged
+9b612941 feat: apply the adaptation, and delete four tests that checked declarations
+e5cff64b chore: lock the doc changelist for the adaptation round
+511e458d docs: state the applied adaptation map and its two regions
+b4c2dd91 docs: probe whether the shipped law surface has grip on the truth
+341d4852 chore: take the canon branch's rounding-vocabulary work into the slice
+e6b79547 docs: re-file the untested source gate as a fresh topic
+2accd701 chore: close design round 202608311902
+944a43b0 chore: lock the src changelist for the base primitive round
+fe3c8735 chore: hook reformat of the placement tests, suite re-run and unchanged
+20cf34ad feat: rename the carriers and record what the strict gate found
+1736679b chore: lock the doc changelist naming the declared surface
+011442f8 docs: name the surface each base primitive design declares
+c82503c3 chore: add the three crates to the mock workspace
+6436e516 feat: the base primitive crates, format placement and strategy
+eea02d7a canon: file the two rounding-vocabulary questions the tool surfaced
+cf812ca2 feat: add `rounding-vocabulary`, and fix the three entries it can resolve
+d607a424 chore: lock the doc changelist for the base primitive round
+6dba57ff docs: write the base primitive designs, three crates from the settled floor
+cf6ef930 chore: hook reformat of p4, output re-run and unchanged
+36aa600d docs: derive the base primitive design from the settled floor
+60765359 chore: take the canon branch's three rulings into the design round
+378d9cd7 canon: settle the derivation as a placement and the operation set as a rule
+7d1923b7 research: seat 226 on the derivation outputs and the operation set
+710775d0 chore: hook reformat of p6
+0e3fe6ca chore: seat 226 p6, is the fused result reachable by composition
+87ff87f6 Merge remote-tracking branch 'origin/research/canon-registry' into research/derivation-outputs-226
+be7bc201 chore: seat 226 p5, how wide the unprojected-chain arm is
+b8003dfa canon: record that the standard is parity in output and the framework is what ships
+7f66a452 chore: hook reformat of p4
+e634f3a7 chore: seat 226 p4, the differential control the predicate notation owes
+b90f320a chore: seat 226 probes reformatted by the hook, outputs regenerated
+f0c7563e chore: seat 226 probes, the two ladders and the operation set
+8cd4cf61 Merge remote-tracking branch 'origin/research/container-premise-225' into research/canon-registry
+c78819db chore: carry the hook's rustfmt pass on probes 5 and 6, logic unchanged
+949951f6 docs: seat 225 derives the derivation output count and the operation set on the settled floor
+502de99f docs: point the agent rules at the registry instead of a panel file
+accafd3b canon: ratify that behaviour is stated per declared signature
+c1b57bc6 Merge remote-tracking branch 'origin/research/container-premise-225' into research/canon-registry

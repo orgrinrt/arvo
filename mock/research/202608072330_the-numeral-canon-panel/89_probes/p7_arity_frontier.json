@@ -1,0 +1,74 @@
+[
+ {
+  "n": 8,
+  "box": 256,
+  "default": "accept",
+  "default_s": 0.43,
+  "allow": "-",
+  "allow_s": 0.0,
+  "note": ""
+ },
+ {
+  "n": 12,
+  "box": 4096,
+  "default": "accept",
+  "default_s": 1.37,
+  "allow": "-",
+  "allow_s": 0.0,
+  "note": ""
+ },
+ {
+  "n": 14,
+  "box": 16384,
+  "default": "accept",
+  "default_s": 5.36,
+  "allow": "-",
+  "allow_s": 0.0,
+  "note": ""
+ },
+ {
+  "n": 15,
+  "box": 32768,
+  "default": "refuse-guard",
+  "default_s": 8.93,
+  "allow": "accept",
+  "allow_s": 11.92,
+  "note": ""
+ },
+ {
+  "n": 16,
+  "box": 65536,
+  "default": "refuse-guard",
+  "default_s": 8.61,
+  "allow": "accept",
+  "allow_s": 22.36,
+  "note": ""
+ },
+ {
+  "n": 18,
+  "box": 262144,
+  "default": "refuse",
+  "default_s": 0.37,
+  "allow": "-",
+  "allow_s": 0.0,
+  "note": "error[E0080]: index out of bounds: the length is 16 but the index is 16"
+ },
+ {
+  "n": 20,
+  "box": 1048576,
+  "default": "refuse",
+  "default_s": 0.42,
+  "allow": "-",
+  "allow_s": 0.0,
+  "note": "error[E0080]: index out of bounds: the length is 16 but the index is 16"
+ },
+ {
+  "n": 22,
+  "box": 4194304,
+  "default": "refuse",
+  "default_s": 0.39,
+  "allow": "-",
+  "allow_s": 0.0,
+  "note": "error[E0080]: index out of bounds: the length is 16 but the index is 16"
+ }
+]

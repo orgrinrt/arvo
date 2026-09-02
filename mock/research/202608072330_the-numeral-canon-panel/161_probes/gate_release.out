@@ -1,0 +1,15 @@
+bitpack-carrier-shared : 9 passed
+bitpack-contend-shared : 12 passed
+bitpack-footprint-shared : 6 passed
+bitpack-plan-shared : 5 passed
+bitpack-shared : 3 passed
+bitpack-wide-shared : 6 passed
+quantiser-fadd-shared : 1 passed
+quantiser-radix-shared : 3 passed
+satfold-shared : 11 passed
+warm-clamp-shared : 7 passed
+warm-container-shared : 15 passed
+wide-rung-shared : 30 passed
+bitpack-write-contend-shared (serial) : 15 passed
+total : 123
+CONTROL nonexistent crate : MISSING OR ZERO (control fires)

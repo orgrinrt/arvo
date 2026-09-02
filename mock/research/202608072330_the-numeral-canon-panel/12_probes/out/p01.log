@@ -1,0 +1,10 @@
+warning: type `T3_padded` should have an upper camel case name
+  --> p01_nat_canonicity.rs:63:10
+   |
+63 | pub type T3_padded = D1<D1<D0<Term>>>;
+   |          ^^^^^^^^^ help: convert the identifier to upper camel case: `T3Padded`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+

@@ -1,0 +1,86 @@
+0	1	#![no_std]
+0	1	141's and 143's own axis sets
+0	1	> 600 chains of depth 3..=5
+0	2	F and signedness: OPEN
+0	1	F_exact
+0	2	F_final
+0	2	F_intermediate
+0	1	The non-homomorphic half alone holds for: as 119 4.7's second predicate
+0	3	accumulator width
+1	1	accumulator width varied above the declared width
+0	1	all 2^(depth-1) placements
+0	2	ambient domain
+0	1	ambient domain closed under negation
+0	1	ambient domain closed under negation for the saturating arm
+0	1	ambient domain one-signed
+0	1	arm set
+0	6	arms
+0	2	assignment set
+0	1	assignment set of rounding
+0	1	assignment sets and observation sets as
+0	1	assignments
+0	1	augmentation coefficient
+0	2	baseline
+0	1	baseline uniform across coordinates
+0	1	carriers 8..=24 > and 120
+0	1	certificate weight proportional to the reciprocal deviation
+0	1	conforming pair
+0	2	construction
+0	7	cost coordinates
+0	5	coupling
+0	7	declarations
+0	1	declared grid step
+0	1	decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions
+0	1	dimension
+0	2	discharge check
+3	11	domain
+1	6	domain closed under negation
+0	1	domain containing a complete residue system and the
+0	1	domain: OPEN
+0	3	edition 2021
+0	3	element count
+0	1	equality read
+0	1	established by the construction reading only frac(x) and never the cell
+0	2	every deterministic member against saturation
+0	2	every translation-equivariant member against wrapping
+0	2	everything 132 5.8's predicate lists
+0	3	feature gates
+0	1	float types
+0	3	fraction
+0	1	given a floor-based cell coordinate
+0	1	input shape
+0	1	keying
+0	2	keying axis
+0	1	multiplier schedules {[1,-1,2], [2,-1,1]}
+0	1	non-conforming pair
+0	1	numeral fixed-point signed
+0	3	observation sets
+0	1	one-signed
+0	1	operations {multiply-add, sum fold}
+0	1	ops
+2	3	or unsigned with signed
+0	1	overflow and
+1	3	overflow limit read at the declared width
+0	1	pi
+0	1	positions 0 to 255
+1	14	radix
+0	1	recursion limit
+0	1	reference point
+0	2	restrictions
+0	1	same assignment set at W
+0	2	same construction and same condition (136_probes/x2 P3)
+0	3	selector
+0	1	staged narrowing F_exact
+0	1	stochastic members
+0	1	structure constants
+0	2	term
+0	6	term shapes
+0	1	the clause claims nothing until it is stated
+0	1	the same domain dimension added
+0	1	threshold
+0	2	value set finite with at least two elements
+0	3	weight grid resolution
+0	1	weights
+0	1	{add, sub, mul, madd, msub}
+0	1	{madd}
+0	1	{mul, madd}

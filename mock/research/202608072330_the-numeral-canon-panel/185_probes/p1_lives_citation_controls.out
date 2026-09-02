@@ -1,0 +1,53 @@
+p1: can a probe row lives citation fail?
+date: 2026-08-30T22:33:00Z
+
+=== arm a_missing_file
+  lives = panel::202608072330_the-numeral-canon-panel::185_probes::this_file_does_not_exist::1
+  404 rows across 10 namespaces
+  ERROR [unresolvable-provenance]: probe::planted_a_missing_file: `panel::202608072330_the-numeral-canon-panel::185_probes::this_file_does_not_exist::1` matches no file under root `panel`.
+registry check failed: 1 error(s)
+  (nothing matched)
+
+=== arm b_real_file_control
+  lives = panel::202608072330_the-numeral-canon-panel::147_probes::r1_the_unsigned_row_and_the_congruence_isolated::1
+  404 rows across 10 namespaces
+
+=== arm c_line_into_living_ledger
+  lives = panel::202608072330_the-numeral-canon-panel::AGREEMENTS::12
+  404 rows across 10 namespaces
+
+=== arm d_bare_root
+  lives = panel
+  404 rows across 10 namespaces
+  ERROR [malformed-provenance]: probe::planted_d_bare_root: `panel` is not `root::path::line`. Unparsed, it points nowhere while looking like a citation.
+registry check failed: 1 error(s)
+  (nothing matched)
+
+=== arm e_filename_with_no_terminal_anchor
+  lives = panel::202608072330_the-numeral-canon-panel::147_probes::r1_the_unsigned_row_and_the_congruence_isolated
+  404 rows across 10 namespaces
+  ERROR [malformed-provenance]: probe::planted_e_filename_with_no_terminal_anchor: `panel::202608072330_the-numeral-canon-panel::147_probes::r1_the_unsigned_row_and_the_congruence_isolated` is not `root::path::line`. Unparsed, it points nowhere while looking like a citation.
+registry check failed: 1 error(s)
+  (nothing matched)
+
+=== arm f_line_past_the_end
+  lives = panel::202608072330_the-numeral-canon-panel::147_probes::r1_the_unsigned_row_and_the_congruence_isolated::999999
+  404 rows across 10 namespaces
+  ERROR [unresolvable-provenance]: probe::planted_f_line_past_the_end: `panel::202608072330_the-numeral-canon-panel::147_probes::r1_the_unsigned_row_and_the_congruence_isolated::999999` points past the end of 202608072330_the-numeral-canon-panel/147_probes/r1_the_unsigned_row_and_the_congruence_isolated (999999 requested). Line citations only stay true in a root that does not change; declare the root frozen or cite a heading.
+registry check failed: 1 error(s)
+  (nothing matched)
+
+
+=== arm c second half: ledger guard, with the arm-c plant actually in place
+    required outcome: the_committed_canon_cites_no_moving_line FAILS
+test a_line_into_a_ledger_is_reported ... ok
+test a_citation_that_is_only_a_root_is_reported ... ok
+test a_ledger_named_with_its_extension_is_still_caught ... ok
+test a_probes_location_is_read_as_a_citation ... ok
+test a_heading_into_the_same_ledger_is_fine ... ok
+test a_line_into_a_numbered_member_file_is_fine ... ok
+test the_committed_canon_has_no_citation_without_a_target ... ok
+test the_committed_canon_cites_no_moving_line ... FAILED
+        kind: "line-citation-into-a-living-ledger",
+        says: "`lives` cites `panel::202608072330_the-numeral-canon-panel::AGREEMENTS::12`, which is a line number into `AGREEMENTS.md`. That file is still being written, so the line moves and the citation keeps resolving to whatever ends up there. Cite a heading instead: a rename fails loudly, a shifted line does not.",
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s

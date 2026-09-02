@@ -1,0 +1,9 @@
+kind,k,ms_run1,ms_run2,ms_run3,ms_min,status
+radix_one,10,60,61,61,60,ok
+absorbed_one,10,60,66,63,60,ok
+radix_one,38,65,63,60,60,ok
+absorbed_one,38,67,70,68,67,ok
+radix_one,40,65,62,60,60,ok
+absorbed_one,40,110,86,86,86,REFUSED
+radix_one,398,64,79,77,64,ok
+absorbed_one,398,154,162,173,154,REFUSED

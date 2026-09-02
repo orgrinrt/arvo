@@ -1,0 +1,64 @@
+=== bitpack-shared: what the three tests actually assert.
+=== 106 section 0.3 refutes 102's 'no cross-arm agreement assertion of
+=== either kind' against this body. Extracted rather than described.
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Cross-checks both extraction paths against the logical ground truth,
+    /// every index, every size, 8 seeds each. This is the correctness check
+    /// the harness's own `validate_output` also runs per call; this test
+    /// exists so `cargo test -p bench-bitpack-shared` catches a packing
+    /// defect without needing the full FFI harness in the loop, matching
+    /// the sibling quantiser-fadd-shared crate's own `#[cfg(test)]`
+    /// discipline.
+    fn check_size<const N: usize>() {
+        for seed in 0u64..8 {
+            let col = <Column<N> as Routine>::build_input(seed);
+            for i in 0..N {
+                let a = extract_aligned(&col.aligned, i);
+                let z = extract_zeropad(&col.zeropad, i);
+                let expect = col.logical[i];
+                assert_eq!(a, expect, "aligned mismatch at seed {seed} index {i} N={N}");
+                assert_eq!(z, expect, "zeropad mismatch at seed {seed} index {i} N={N}");
+            }
+            // the permutation is a bijection on 0..N: every index appears
+            // exactly once.
+            let mut seen = std::vec![false; N];
+            for &p in col.perm[..N].iter() {
+                let p = p as usize;
+                assert!(!seen[p], "duplicate permutation index {p} N={N}");
+                seen[p] = true;
+            }
+        }
+    }
+
+    #[test]
+    fn column256_roundtrips() {
+        check_size::<256>();
+    }
+
+    #[test]
+    fn column4096_roundtrips() {
+        check_size::<4096>();
+    }
+
+    #[test]
+    fn column16384_roundtrips() {
+        check_size::<16384>();
+    }
+}
+
+=== and its Routine::validate_output, which is the second oracle 103 named
+    fn validate_output(input: &Self::Input, output: &Self::Output) -> Result<(), &'static str> {
+        let mut expect: u64 = 0;
+        for &v in input.logical[..N].iter() {
+            expect = expect.wrapping_add(v as u64);
+        }
+        if output.value != expect {
+            return Err("column sum mismatch: the extraction path produced a \
+                 different value stream than the logical ground truth");
+        }
+        Ok(())
+    }

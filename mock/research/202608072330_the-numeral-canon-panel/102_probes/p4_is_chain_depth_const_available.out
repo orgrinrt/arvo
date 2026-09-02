@@ -1,0 +1,110 @@
+p4 OUTCOME: WORKS
+
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+compile: rustc --crate-type=lib -O --edition 2021 p4_is_chain_depth_const_available.rs
+  -> exit 0, no diagnostics, no #![feature(...)] anywhere in the file
+
+feature gates present in the source:
+1
+
+forbidden constructs present (dyn / TypeId / alloc / std):
+1
+
+=== NEGATIVE CONTROL: a wrong depth is a BUILD failure, not a test failure ===
+error[E0080]: evaluation panicked: assertion failed: <D2 as Depth>::VALUE == 5
+   --> /tmp/p4neg.rs:191:17
+    |
+191 | const _: () = { assert!(<D2 as Depth>::VALUE == 5); };
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+
+=== EMITTED ASSEMBLY, aarch64-apple-darwin, opt-level 3 ===
+--- chain_switch_at_2 ---
+_chain_switch_at_2:
+	mul	x8, x1, x0
+	add	x8, x2, x8, asr #8
+	mov	x9, #128
+	madd	x8, x8, x1, x9
+	add	x8, x2, x8, asr #8
+	madd	x8, x8, x1, x9
+	add	x8, x2, x8, asr #8
+	madd	x8, x8, x1, x9
+	add	x0, x2, x8, asr #8
+	ret
+--- chain_truncate_everywhere ---
+_chain_truncate_everywhere:
+	mul	x8, x1, x0
+	add	x8, x2, x8, asr #8
+	mul	x8, x8, x1
+	add	x8, x2, x8, asr #8
+	mul	x8, x8, x1
+	add	x8, x2, x8, asr #8
+	mul	x8, x8, x1
+	add	x0, x2, x8, asr #8
+	ret
+--- chain_round_everywhere ---
+_chain_round_everywhere:
+	mov	x8, #128
+	madd	x9, x1, x0, x8
+	add	x9, x2, x9, asr #8
+	madd	x9, x9, x1, x8
+	add	x9, x2, x9, asr #8
+	madd	x9, x9, x1, x8
+	add	x9, x2, x9, asr #8
+	madd	x8, x9, x1, x8
+	add	x0, x2, x8, asr #8
+	ret
+
+=== BRANCH COUNT PER FUNCTION (cmp / csel / conditional branch) ===
+chain_switch_at_2: branches=0  instructions=10
+chain_truncate_everywhere: branches=0  instructions=9
+chain_round_everywhere: branches=0  instructions=10
+
+=== CORRECTION TO THE TWO COUNTS ABOVE ===
+The `feature(` and `dyn` counts above are 1 each because they matched MY OWN
+doc comment saying the file has none. Recounted over non-comment lines only:
+  #![feature(...)] gates : 0
+  `dyn`                  : 0
+  TypeId                 : 0
+  use std:: / alloc      : 0
+  #![no_std]             : present
+
+=== WHAT THIS ESTABLISHES ===
+
+WORKS. A chain's depth is const-available without a forbidden feature. The
+refused spelling is `Fx<{D + 1}>`, arithmetic in a type argument, which needs
+generic_const_exprs. The accepted one carries depth as a TYPE and the number
+as an associated const, so the increment is arithmetic in a value position and
+ordinary const evaluation handles it. That is the workspace's standing reflex
+landing on a case nobody had pointed it at: a refused bound wants a trait.
+
+And the const predicate reaches one lowered path, which is what I15 asks for.
+Zero conditional branches in all three functions. `chain_switch_at_2` shows the
+switch WITHIN one function: its first step emits `mul` with no rounding
+constant and its last three emit `madd` against #128, which is truncate at
+depth 1 and round at depths 2, 3 and 4, exactly what the type says, with
+nothing left to decide at run time.
+
+=== AND ONE THING THAT CUTS AGAINST p3, WHICH IS WHY IT IS HERE ===
+
+This is an ad-hoc quick spike with no substance for any how-much question. It
+is not a bench, it took no timing, and nothing below prices anything.
+
+With that said: the three emitted sequences are 9, 10 and 10 instructions.
+Rounding to nearest costs one hoisted `mov` for the whole chain, because this
+target fuses the add-half into `madd`. p3's second cost coordinate is a count
+of round-to-nearest steps, and on this target that count does not correspond
+to a per-step cost at all.
+
+So p3's arm family is real as an accuracy structure and its TRADE is a fact
+about the target, not about the arithmetic. On a target with a fused
+multiply-add the interior of that Pareto front may collapse to its round-
+everywhere end. That is unpriced, it needs the harness rather than this, and
+it is the first thing I would attack next.
+
+It is also `25` section 7's own clause arriving with evidence: an assignment on
+an axis is a function of the build condition, and here is an axis whose very
+EXISTENCE as a trade is a function of the build condition.

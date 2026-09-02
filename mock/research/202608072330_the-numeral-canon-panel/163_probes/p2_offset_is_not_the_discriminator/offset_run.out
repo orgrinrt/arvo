@@ -1,0 +1,8 @@
+sole-at-offset-3 round trip over all 8192 values : 0 disagreements
+sole-at-offset-3 size_of                          : 2 bytes
+sole-at-offset-3 reachable through a reference    : 4095
+S-8's condition (offset==0 && carrier==one word)  : NOT a value
+sole-occupancy condition                          : value (nothing else lives in this allocation)
+shared-at-offset-3 standalone size                : 8 bytes
+shared-at-offset-3 sibling reachable from the SAME reference : 777
+CONTROL fires (sibling observable through one reference)     : true

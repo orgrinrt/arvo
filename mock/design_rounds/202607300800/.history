@@ -1,0 +1,50 @@
+b8c80cf chore: lock src changelist
+f22b8a5 docs: open the replacement src changelist recording no source change
+063eb01 docs: correct the doc changelist to record the six templates that changed
+9e91a98 docs: open an empty doc changelist to walk the round to closed
+cccb74b docs: fold the sketch findings into the consolidated round state
+afdf262 docs: sketch the format and the derived laws, consolidate the round state
+42f8dd6 docs: name the formats and re-examine the taxonomy against the proposal
+a750ee4 docs: propose the primitives as named compositions over a formalization
+9c5026f docs: measure the strategy axes against the field
+7c68030 docs: send the axes to research and point the ladder at the mathematics
+26ea111 docs: mark lengyel's pga article as required reading for the round
+847bf61 docs: consolidate the round state and settle rank span plus saturation
+1c79a28 docs: retract the pga fork correction, the memo was right
+bdfb3d4 docs: settle the number systems crate, the box name and hashing's domain
+adfe853 docs: settle the last four open calls in the round
+cc4b087 docs: carry the remaining open calls into the round
+fba79be docs: place the markers and the width const fns
+65bb2d9 docs: storage decomposes, floats get a crate, aliases are kept
+c6dce60 docs: d3's gate inventory misses the four ergonomic aliases
+18e6ab9 docs: sketch the capacity traits kept separate with delegated bodies
+e89bf24 docs: sketch the const-argument shapes under the allowed features
+692cc84 docs: bounded is sugar over two identities
+2c0141f docs: identity and bounded are algebra, bitfield gets its own crate
+5bacffd chore: opt in to the interactive design-talk skill
+d750abf chore: consume stranded design artifacts into this round
+803eac0 chore: deprecate the premature doc changelist
+a3c51ff docs: open the taxonomy talk transcript and correct the notko split
+4b1133a docs: record the placement calls that lived only in chat
+23e2fc1 merge: bring the lint-coverage topic into the round it was filed for
+4611646 docs: note the inherited gate on the hash test
+78a8559 docs: open the doc changelist and record the predicate replacement
+8221612 docs: correct the Cap declaration site and the layer labels
+d1aa601 docs: record the predicate decisions
+73254a8 docs: one predicate concept, implemented twice at the wrong level
+9a62141 docs: typestate selects microkernels from the shape
+0abade2 docs: collapse shape F's arity table to one macro line
+a053154 docs: recursive Describes, two impls and zero arity
+a6675f6 docs: literal call syntax via Deref, no feature gates
+7a36386 docs: extend the arity sketch through ergonomics and vetting
+a30483c docs: sketch the arity dissolution for the Pred family
+c7c6a44 docs: drop a stale cross-reference in the sketch header
+3adbe51 docs: research the restructure, and forbid the const-expr feature
+55c2437 docs: add prior-art research for the taxonomy restructure
+c716b88 docs: correct the algebra gap, Identity already ships in a better form
+868b4e2 docs: rotors and motors, curves as a bench matrix, imaging, and the algebra gap
+2e2d6e8 docs: settle the arvo taxonomy walk and the shape design so far
+13aab56 docs: research what arvo ships toward N dimensions, and the ndim/shape split
+6d719fc docs: widen the shape topic from two dimensions to N
+62aed40 docs: open the topic for two-dimensional shape primitives
+fe7f56e docs: record the lint coverage findings as owed work

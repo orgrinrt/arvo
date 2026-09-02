@@ -1,0 +1,27 @@
+[package]
+name = "asm_vs_link"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["rlib"]
+path = "src/lib.rs"
+
+[[bin]]
+name = "driver"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+codegen-units = 1
+panic = "abort"
+
+[profile.release-thin]
+inherits = "release"
+lto = "thin"
+
+[profile.release-fat]
+inherits = "release"
+lto = "fat"
+
+[workspace]

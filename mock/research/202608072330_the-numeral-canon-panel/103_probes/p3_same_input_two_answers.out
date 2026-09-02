@@ -1,0 +1,36 @@
+p3. same exact input, do the two committed radix arms answer differently?
+
+arms  : quantised_add at <R=2,P=24>  and  <R=10,P=7>, the exact
+        instantiations quantiser-radix2 and quantiser-radix10 run
+input : both operands (neg=false, mag in [10^6, 10^7), exp = 0)
+        at exp = 0 the triple denotes the integer `mag` under EITHER
+        radix, so both arms receive the identical pair of reals and
+        the exact sum they must round is the same integer
+cmp   : exact rational, i128, no float anywhere in the comparison
+
+trials                        : 200000
+answers IDENTICAL             : 92556  (46.2780%)
+answers DIFFERENT             : 107444  (53.7220%)
+
+accuracy against the exact integer sum:
+  binary32 exact              : 193747  (96.8735%)
+  decimal32 exact             : 91329  (45.6645%)
+  binary32 strictly closer    : 106167
+  decimal32 strictly closer   : 0
+  equal error                 : 93833
+
+  5315940 + 8535628 = 13851568 exactly;  binary32 -> (13851568, 0),  decimal32 -> (1385157, 1)
+  7250501 + 6768206 = 14018707 exactly;  binary32 -> (14018707, 0),  decimal32 -> (1401871, 1)
+  9306627 + 9137899 = 18444526 exactly;  binary32 -> (9222263, 1),  decimal32 -> (1844453, 1)
+  8522019 + 4286920 = 12808939 exactly;  binary32 -> (12808939, 0),  decimal32 -> (1280894, 1)
+  9826539 + 9144143 = 18970682 exactly;  binary32 -> (9485341, 1),  decimal32 -> (1897068, 1)
+  8548389 + 9261419 = 17809808 exactly;  binary32 -> (8904904, 1),  decimal32 -> (1780981, 1)
+
+READING
+  Both arms saw the identical pair of exact integers. Any nonzero
+  DIFFERENT count is therefore two committed arms of one committed
+  family returning different answers for one input, which is an
+  accuracy difference and not an input-interpretation artefact.
+  The `binary32 strictly closer` and `decimal32 strictly closer`
+  counts are the ranking a fidelity coordinate would record, and
+  no column of the committed CSV corpus carries it.

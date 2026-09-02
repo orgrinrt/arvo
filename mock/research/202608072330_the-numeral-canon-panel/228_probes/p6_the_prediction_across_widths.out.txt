@@ -1,0 +1,40 @@
+# p6 output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O, aarch64-apple-darwin
+
+p6: the equivariance prediction at widths other than six
+    overflow policy wrap; exhaustive over every triple at each width
+
+  W  cells    agree   mismatch      verdict
+  3     42       42          0       agrees
+  4     56       56          0       agrees
+  5     70       70          0       agrees
+  6     84       84          0       agrees
+  7     98       98          0       agrees
+
+  350 cells across five widths, 0 mismatch(es)
+
+## the free set at each width, under wrap
+
+  W signed    free at every F below the width
+  3 false     floor, ceil, toward_zero, away_from_zero, half_up(+inf), half_up(away)
+  3 true      floor, ceil, half_up(+inf)
+  4 false     floor, ceil, toward_zero, away_from_zero, half_up(+inf), half_up(away)
+  4 true      floor, ceil, half_up(+inf)
+  5 false     floor, ceil, toward_zero, away_from_zero, half_up(+inf), half_up(away)
+  5 true      floor, ceil, half_up(+inf)
+  6 false     floor, ceil, toward_zero, away_from_zero, half_up(+inf), half_up(away)
+  6 true      floor, ceil, half_up(+inf)
+  7 false     floor, ceil, toward_zero, away_from_zero, half_up(+inf), half_up(away)
+  7 true      floor, ceil, half_up(+inf)
+
+## controls
+
+     W=3 signed F=1: some mode free true, some mode not free true
+     W=4 signed F=1: some mode free true, some mode not free true
+     W=5 signed F=1: some mode free true, some mode not free true
+     W=6 signed F=1: some mode free true, some mode not free true
+     W=7 signed F=1: some mode free true, some mode not free true
+  C1 EXPECTED-PASS ok: both verdicts occur at every width
+  C2 EXPECTED-FAIL ok: asserting half_even free unsigned is refuted in 20 cell(s)
+
+controls: clean, and the prediction is unrefuted at every width run

@@ -1,0 +1,280 @@
+########## bitpack-carrier-shared
+    Finished `release` profile [optimized] target(s) in 0.09s
+     Running unittests src/lib.rs (target/release/deps/bench_bitpack_carrier_shared-4d655b04741867dd)
+
+running 9 tests
+test simd_tests::drain_period_cannot_overflow_a_lane ... ok
+test tests::regions_are_naturally_aligned ... ok
+test tests::total_input_bytes_matches_struct_size ... ok
+test tests::all_four_transforms_agree ... ok
+test simd_tests::padal_agrees_below_one_drain ... ok
+test tests::validate_output_rejects_a_wrong_sum ... ok
+test tests::carrier_16384_roundtrips ... ok
+test tests::carrier_131072_roundtrips ... ok
+test simd_tests::padal_agrees_across_a_drain_boundary ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+   Doc-tests bench_bitpack_carrier_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## bitpack-contend-shared
+348 |         unsafe {
+    |         ^^^^^^ unnecessary `unsafe` block
+
+warning: `bench-bitpack-contend-shared` (lib) generated 2 warnings
+warning: `bench-bitpack-contend-shared` (lib test) generated 2 warnings (2 duplicates)
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_bitpack_contend_shared-c617ffa59407fac9)
+
+running 12 tests
+test tests::suite::a_key_that_does_not_split_would_be_refused ... ok
+test tests::suite::every_declared_key_decodes_and_splits ... ok
+test tests::suite::slices_tile_the_column_at_every_thread_count ... ok
+test tests::suite::layout_is_independent_of_the_const_parameter ... ok
+test tests::suite::a_split_pass_equals_the_whole_pass_for_every_kernel ... ok
+test tests::suite::the_pool_computes_the_same_total_as_a_serial_pass ... ok
+test kernels::dense_padal_tests::attacked_dense_kernels_agree_below_one_drain ... ok
+test kernels::pipe_tests::pipelined_kernels_agree_below_one_drain ... ok
+test tests::suite::validate_output_rejects_a_wrong_sum ... ok
+test kernels::dense_padal_tests::attacked_dense_kernels_agree_across_a_drain_boundary ... ok
+test kernels::pipe_tests::pipelined_kernels_agree_across_a_drain_boundary ... ok
+test tests::suite::build_bytes_equals_the_carrier_crates_builder ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+   Doc-tests bench_bitpack_contend_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## bitpack-footprint-shared
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_bitpack_footprint_shared-d23f288618e6d2ab)
+
+running 6 tests
+test tests::build_input_bytes_differs_across_seeds ... ok
+test tests::sum_naive_is_sensitive_to_packed_corruption ... ok
+test tests::column4096_agrees ... ok
+test tests::column256_agrees ... ok
+test tests::column16384_agrees ... ok
+test tests::build_input_bytes_is_deterministic_per_seed ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+   Doc-tests bench_bitpack_footprint_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## bitpack-plan-shared
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_bitpack_plan_shared-715c435cd594a745)
+
+running 5 tests
+test tests::period_and_group_hold_at_every_width_to_64 ... ok
+test tests::plan_at_width_13_is_the_period_and_two_windows ... ok
+test tests::column16384_decoders_agree ... ok
+test tests::column65536_decoders_agree ... ok
+test tests::column262144_decoders_agree ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests bench_bitpack_plan_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## bitpack-shared
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_bitpack_shared-a4c2616b8554d67a)
+
+running 3 tests
+test tests::column256_roundtrips ... ok
+test tests::column4096_roundtrips ... ok
+test tests::column16384_roundtrips ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests bench_bitpack_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## bitpack-wide-shared
+
+warning: unnecessary `unsafe` block
+   --> /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-contend-shared/src/kernels.rs:348:9
+    |
+340 |     unsafe {
+    |     ------ because it's nested under this `unsafe` block
+...
+348 |         unsafe {
+    |         ^^^^^^ unnecessary `unsafe` block
+
+warning: `bench-bitpack-contend-shared` (lib) generated 2 warnings
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_bitpack_wide_shared-6c8dda581a3e15b7)
+
+running 6 tests
+test tests::every_declared_key_decodes_and_splits ... ok
+test tests::layout_is_independent_of_the_const_parameter ... ok
+test tests::both_regions_are_far_past_this_hosts_l2 ... ok
+test tests::a_split_pass_equals_the_whole_pass_for_every_kernel ... ok
+test tests::validate_output_rejects_a_wrong_sum ... ok
+test tests::the_value_stream_matches_the_contention_crates ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+   Doc-tests bench_bitpack_wide_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## quantiser-fadd-shared
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_quantiser_fadd_shared-0a2a115beba83033)
+
+running 1 test
+test tests::software_add_matches_hardware_bit_exact ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests bench_quantiser_fadd_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## quantiser-radix-shared
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_quantiser_radix_shared-10253c9b4263a722)
+
+running 3 tests
+test tests::an_odd_radix_has_no_representable_tie ... ok
+test tests::radix_two_instantiation_matches_the_silicon ... ok
+test tests::radix_ten_delivers_the_nearest_grid_point_ties_to_even ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests bench_quantiser_radix_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## satfold-shared
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_satfold_shared-c1bff7afba5b386d)
+
+running 11 tests
+test tests::the_key_encoding_round_trips ... ok
+test tests::the_two_const_verdicts_differ_and_are_computed ... ok
+test tests::the_offset_column_is_actually_offset ... ok
+test tests::wrapping_addition_is_associative_at_eight_bits ... ok
+test tests::a_dropped_remainder_is_caught_wherever_one_exists ... ok
+test tests::a_dropped_lane_is_caught_wherever_a_sixteenth_lane_exists ... ok
+test tests::the_one_element_defect_is_caught_up_to_1024_and_not_above_it ... ok
+test tests::saturating_addition_is_associative_at_eight_bits ... ok
+test tests::the_workload_is_not_degenerate_at_any_length ... ok
+test tests::a_wrong_operator_is_caught_at_every_length_and_both_ops ... ok
+test tests::every_kernel_agrees_with_the_oracle_at_every_length ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+   Doc-tests bench_satfold_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## warm-clamp-shared
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/bench_warm_clamp_shared-821c8c40c515f5c4)
+
+running 7 tests
+test tests::accfit_holds_the_exact_sum_at_every_swept_width_and_arity ... ok
+test tests::the_shipped_container_fails_interior_safety_at_arities_the_design_expects ... ok
+test tests::the_noise_floor_controls_really_are_the_same_instantiation ... ok
+test tests::clamping_is_a_retraction_on_non_negative_addition_at_every_swept_width ... ok
+test tests::the_clamp_fires_on_a_real_fraction_of_chunks_at_every_chunked_key ... ok
+test tests::every_arm_agrees_with_the_oracle_on_every_key ... ok
+test tests::chunked_answer_depends_on_every_element_the_clamp_did_not_absorb ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+   Doc-tests bench_warm_clamp_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## warm-container-shared
+    Finished `release` profile [optimized] target(s) in 0.02s
+     Running unittests src/lib.rs (target/release/deps/bench_warm_container_shared-e0fb483d9a587757)
+
+running 15 tests
+test tests::carrier_widths_match_the_region_strides ... ok
+test tests::cols_layout_matches_the_byte_buffer ... ok
+test tests::eager_and_lazy_wrapping_agree_everywhere ... ok
+test tests::key_encoding_round_trips_over_the_whole_declared_matrix ... ok
+test tests::mask_to_is_identity_at_the_rung_and_reduces_below_it ... ok
+test tests::plusone_is_never_a_third_container ... ok
+test tests::saturating_agrees_with_the_oracle_in_both_containers ... ok
+test tests::the_control_arm_aliases_a_real_arm_at_every_swept_width ... ok
+test tests::build_input_bytes_is_deterministic_and_seed_sensitive ... ok
+test tests::the_oracle_is_sensitive_to_a_perturbed_column ... ok
+test tests::the_shipped_rule_widens_every_width_to_64 ... ok
+test tests::diag_sat_lanes_actually_runs ... ok
+test tests::validate_output_refuses_a_wrong_sum ... ok
+test tests::both_regions_hold_the_same_column ... ok
+test tests::all_four_arms_agree_with_each_other_and_with_the_oracle_on_every_key ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+   Doc-tests bench_warm_container_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+########## wide-rung-shared
+test shape::tests::the_overread_slack_is_bounded_by_the_reserved_tail ... ok
+test shape::tests::the_top_limb_mask_keeps_exactly_the_bits_the_width_declares ... ok
+test shape::tests::w200_is_the_numeral_the_ratified_claim_was_counted_at ... ok
+test shape::tests::wordround_alias_is_never_a_distinct_stride ... ok
+test tests::every_declared_key_names_a_swept_width_and_a_declared_operation_count ... ok
+test load::tests::the_overreading_loader_is_correct_at_the_final_element ... ok
+test column::tests::the_three_regions_hold_the_same_logical_column ... ok
+test column::tests::every_stored_value_is_inside_the_declared_width ... ok
+test tests::the_arms_read_identical_shapes_at_the_whole_limb_widths ... ok
+test load::tests::every_loader_recovers_the_same_value_from_its_own_region ... ok
+test wide::tests::const_and_dynamic_arithmetic_agree ... ok
+test wide::tests::every_operation_in_the_cycle_is_injective ... ok
+test wide::tests::every_operation_lands_inside_the_declared_width ... ok
+test wide::tests::multiplication_by_three_is_invertible_at_every_swept_width ... ok
+test wide::tests::the_const_and_dynamic_forms_agree ... ok
+test column::tests::the_builder_uses_its_seed ... ok
+test tests::all_five_arms_agree_at_every_declared_key ... ok
+test tests::the_answer_depends_on_the_seed_at_every_declared_key ... ok
+test tests::every_arm_matches_the_independent_oracle_at_every_declared_key ... ok
+test tests::the_answer_moves_when_any_single_element_moves ... ok
+test tests::the_answer_exercises_every_bit_of_the_declared_width ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.90s
+
+   Doc-tests bench_wide_rung_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+ALLDONE

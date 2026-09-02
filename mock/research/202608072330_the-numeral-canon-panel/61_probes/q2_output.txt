@@ -1,0 +1,56 @@
+=== section 1: reproduce the F = 0 wrap ring, before trusting anything at F > 0 ===
+
+     M    F  +assoc   +comm     +id  *assoc   *comm     *id  distrib  no-inv    0-annih    verdict
+    15    0       0       0       0       0       0       0        0       0          0       ring
+  reproduces 55_probes/p4 and 57_probes/p3 section 4's wrap-is-a-ring reading: true
+
+=== section 2: the wrap ring across F = 0, 1, 2, 3, at three widths ===
+
+     M    F  +assoc   +comm     +id  *assoc   *comm     *id  distrib  no-inv    0-annih    verdict
+    15    0       0       0       0       0       0       0        0       0          0       ring
+    15    1       0       0       0    1712       0       0     1184       0          0   NOT ring
+    15    2       0       0       0    1996       0       0     1888       0          0   NOT ring
+    15    3       0       0       0    1284       0       0     2296       0          0   NOT ring
+    31    0       0       0       0       0       0       0        0       0          0       ring
+    31    1       0       0       0   15840       0       0     9856       0          0   NOT ring
+    31    2       0       0       0   21832       0       0    15744       0          0   NOT ring
+    31    3       0       0       0   20756       0       0    19168       0          0   NOT ring
+    63    0       0       0       0       0       0       0        0       0          0       ring
+    63    1       0       0       0  137472       0       0    80384       0          0   NOT ring
+    63    2       0       0       0  197394       0       0   128512       0          0   NOT ring
+    63    3       0       0       0  208686       0       0   156544       0          0   NOT ring
+
+  fractional (F > 0) configurations that are NOT rings: 9 of 9
+
+=== section 3: which half breaks, mirroring 57/58's factor decomposition ===
+
+  additive half only (does +assoc alone survive F > 0):
+    M=15   F=1  +assoc failures 0 (additive monoid survives)
+    M=15   F=2  +assoc failures 0 (additive monoid survives)
+    M=15   F=3  +assoc failures 0 (additive monoid survives)
+    M=31   F=1  +assoc failures 0 (additive monoid survives)
+    M=31   F=2  +assoc failures 0 (additive monoid survives)
+    M=31   F=3  +assoc failures 0 (additive monoid survives)
+    M=63   F=1  +assoc failures 0 (additive monoid survives)
+    M=63   F=2  +assoc failures 0 (additive monoid survives)
+    M=63   F=3  +assoc failures 0 (additive monoid survives)
+
+  the SAME coarsening code shared with saturation, side by side at F=1, M=15:
+    wrap:       *assoc 1712  distrib 1184   (Q11's 'ring' claim, at F>0)
+    saturation: *assoc 398  distrib 168   (57_probes/p3's already-measured semiring collapse)
+    both policies' multiplicative associativity breaks under the identical rescale: true
+
+=== section 4: does the additive-only survival transfer to wrap the way 58 argued for saturation ===
+
+  wrap's additive group axioms hold at every (M, F) measured: true
+  (the reason is structural, not a sweep result: wrap's `add` closure never reads
+   `f` or `scale` anywhere in its definition, exactly as 58 argued for saturation.)
+
+=== section 5: the additive-monoid-survives, ring-does-not verdict ===
+
+  does wrap fall all the way to 'not even a semiring' at F > 0, or only lose ring status: semiring holds at F>0: false
+  (if false: wrap's multiplicative half is WORSE than saturation's at F > 0, since
+   saturation's semiring already failed distributivity/assoc but wrap may fail
+   both those AND identity/annihilation checks that involve rem_euclid wraparound.)
+
+Q2 WORKS

@@ -1,0 +1,84 @@
+OK  INTENTS.md:268-297   [30 lines]
+      ## I14. The operating constraints, which are rules as much as intents
+      
+      **IN FORCE.** A third marker, and it is the coordinator's bookkeeping rather than op's word: it means op
+OK  INTENTS.md:190-197   [8 lines]
+      ## I11. arvo is a library, and the value is what composes on top of it
+      
+      **STATED.** `32`, 2026-08-08.
+OK  INTENTS.md:214   [1 lines]
+      ## I13. The work is predicated arms composed, and a universal solution is rejected
+OK  warm-container-shared/src/lib.rs:187   [1 lines]
+      pub trait Carrier: Copy + 'static {
+OK  warm-container-shared/src/lib.rs:279-283   [5 lines]
+      impl_carrier!(u8);
+      impl_carrier!(u16);
+      impl_carrier!(u32);
+OK  INTENTS.md:363-380   [18 lines]
+      ## I17. Cold is not to be deprioritised, and that is independent of how many strategies there are
+      
+      **STATED.** Op, 2026-08-13, asked to resolve a conflict between `arvo-toolbox-not-policer.md`, which is
+OK  157:358-362   [5 lines]
+      **S-8. Types are the degenerate case of lenses, not the other way round.** Stated as an account rather
+      than a taxonomy: a primitive's realisation is always a lens `(carrier, position)`; where the position
+      is const-zero and the carrier is one machine word, the lens is an identity and the thing is a value.
+OK  159:169-175   [7 lines]
+      **S-8 accepted, and it is the best thing in `157` for my question.** "A primitive's realisation is
+      always a lens `(carrier, position)`; where the position is const-zero and the carrier is one machine
+      word, the lens is an identity and the thing is a value." This **is** the synthesis I could not find.
+OK  112:898-945   [48 lines]
+      ## 9. The statement, offered
+      
+      Suggestions. Op decides, and per I12 an opinion given before the experts converge is an ack. This is what
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  108:827   [1 lines]
+      > predicate over the chain, not a reclassification of the axis.
+OK  157:358-362   [5 lines]
+      **S-8. Types are the degenerate case of lenses, not the other way round.** Stated as an account rather
+      than a taxonomy: a primitive's realisation is always a lens `(carrier, position)`; where the position
+      is const-zero and the carrier is one machine word, the lens is an identity and the thing is a value.
+OK  159:225-230   [5 lines]
+      - **F6** is recorded at `W = 13` and its argument is a proof. `size_of` is denominated in bytes, so
+        every Rust type's bit size is a multiple of eight; therefore for any `W` not a multiple of eight no
+        Rust type has exactly `W` bits. The finding widens to **`W any where W mod 8 != 0`**, on that
+OK  157:695-701   [6 lines]
+      > Adequacy is two obligations. **Soundness** holds when the denotation factors through the parameters
+      > the type carries, which is a structural property of the design and needs no enumeration.
+      > **Completeness** holds when every pair of distinct parameter assignments is separated by some input,
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  111:1175-1176   [2 lines]
+      declaration pairs where the SELECTED ARM changed : 1753
+        chains where the ANSWER changed                  : 0
+OK  108:827   [1 lines]
+      > predicate over the chain, not a reclassification of the axis.
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  159:176-185   [9 lines]
+      **S-5 partially accepted, and the residue is real.** S-5 says O-C closes positively because the wall
+      is external and binds every implementer equally, so two teams both ship a lens at the packed end.
+      **The forcing is shared and the resolution is not.** Both teams meet the same wall, which is more than
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 22 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

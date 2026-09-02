@@ -1,0 +1,16 @@
+[package]
+name = "p7-the-constraint-on-real-arms"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "p7-errors"
+path = "src/main.rs"
+
+[dependencies]
+bench-quantiser-radix-shared = { path = "../../../../benches/variants/quantiser-radix-shared" }
+bench-quantiser-fadd-shared = { path = "../../../../benches/variants/quantiser-fadd-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+
+[workspace]

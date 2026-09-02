@@ -1,0 +1,21 @@
+error[E0308]: mismatched types
+  --> probe_1_statement_two_is_illtyped.rs:84:15
+   |
+84 |     encode(f, decode(f, d))
+   |     ------    ^^^^^^^^^^^^ expected `Value`, found `Val`
+   |     |
+   |     arguments to this function are incorrect
+   |
+note: function defined here
+  --> probe_1_statement_two_is_illtyped.rs:66:8
+   |
+66 | pub fn encode(_f: &Fmt, v: Value) -> Datum {
+   |        ^^^^^^           --------
+help: try wrapping the expression in `Value`
+   |
+84 |     encode(f, Value { inner: decode(f, d) })
+   |               ++++++++++++++              +
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.

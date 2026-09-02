@@ -1,0 +1,605 @@
+# Catalogue of panel files 00 through 49 (this seat's slice), private-investigator
+# pass rather than a porting pass. One row per item examined; a file with more
+# than one separately-evidenced claim gets more than one row.
+#
+# Not canon. Not read by any tool. This is the audit trail for the porting
+# decision on each item: what it claims, what happened to it, how sure I am,
+# and what would raise or lower that confidence. Kept beside the panel rather
+# than under mock/registry/ on purpose: canon_paths in mockspace.toml globs
+# every TOML under mock/registry/, and a catalogue that is explicitly
+# uncertain and confidence-scored must not sit where the tooling treats
+# anything present as settled.
+#
+# verdict:
+#   live        - claim exists and is already directly cited by a registry row
+#   superseded  - claim is real and was properly carried forward into a later
+#                 consolidation file or ledger, which IS what is cited
+#   lost        - claim is real, canon-worthy, and reached no registry row
+#                 before this round (ported_as shows what this round added)
+#   exploration - process, methodology, audit-of-someone-else's-file, or a
+#                 dead end that was never meant to become canon
+#
+# confidence: 0.0-1.0. Reflects how directly I checked the item, not how
+# strongly I believe the underlying claim. A 0.5 on an unread file means "the
+# structural evidence points one way and I have not opened it to confirm";
+# raising it costs one Read call and whoever does that owes the correction to
+# this row, not a new file.
+#
+# Format note: TOML beside the registry, in the registry's own dialect,
+# because a reader who already knows how to read law.toml or probe.toml reads
+# this with no new grammar, and it stays greppable with the same tools
+# (`grep -rn 'id = "` on the same tree). The one deliberate difference is
+# `verdict` and `confidence`, which no canon namespace carries and which mark
+# this table as the uncertain one on sight.
+
+[[entry]]
+file = "00_brief.md"
+claims = "The panel's own opening brief and charter: what questions it exists to answer, in what mode."
+verdict = "exploration"
+confidence = 0.95
+evidence = "0 direct citations anywhere in mock/registry/*.toml. Read in full. Its content is the panel's own dispatch, restated structurally by RULES.md's phase description and by INTENTS.md's own framing, not a claim any row would quote."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-07"
+note = "Not a finding-bearing file. Nothing to port; correctly absent."
+
+[[entry]]
+file = "01_op_answers.md"
+claims = "Op's answers to the panel's opening questions, plus the correction that an ack is not a ratification: the numeral-family question, the container-derivation mechanism, Warm's headroom rule, Precise on inexact."
+verdict = "live"
+confidence = 0.95
+evidence = "5 direct citations in mock/registry/ruling.toml (grep -c '01_op_answers' mock/registry/ruling.toml). This is op's own words; it is exactly the material INTENTS.md and ruling.toml exist to carry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-07"
+note = "Fully ported. Nothing further to do."
+
+[[entry]]
+file = "02_carried_what_replaces_the_two_refutations.md"
+claims = "Carries forward what replaces two refuted claims from earlier in the thread."
+verdict = "superseded"
+confidence = 0.6
+evidence = "0 direct citations. Not read in full this round. Falls inside the range 30_willsey_rebuilding_the_option_register.md states it rebuilt OPTIONS.md from directly (\"02 through 27\"), and inside AGREEMENTS.md's own accounting of what the four early consolidations (the_format at 63, the_number_system at 74, algebraic_laws at 90, the_strategy_axis at 106) cover. Not independently confirmed by opening the file."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::30_willsey_rebuilding_the_option_register.md", "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-07"
+note = "Confidence is capped by not having opened the file directly; the structural case is solid, the content case is not independently checked."
+
+[[entry]]
+file = "03_lamport_the_family_question_and_its_consequences.md"
+claims = "The family question (is the numeral space one family or several) and its consequences."
+verdict = "superseded"
+confidence = 0.75
+evidence = "0 direct citations by filename. Not read in full this round, but its content is characterised at length by 09_persona_checkpoint.md (read in full), which audits 03 alongside 06/07/08 and evaluates each finding for what holds, what is thin, and what would push. 09 found nothing in 03 that the registry lacks once the audit's own corrections are applied."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::09_persona_checkpoint.md", "panel::202608072330_the-numeral-canon-panel::01_op_answers.md"]
+ported_as = []
+first_commit = "2026-08-08"
+note = "The family question itself is answered directly by op in 01 (\"Is the numeral space one family, or several?\"), which is the higher-authority source and is already live."
+
+[[entry]]
+file = "04_op_no_settlements_tonight.md"
+claims = "Op's methodology ruling: nothing settles overnight; options stay open and get reflected over."
+verdict = "live"
+confidence = 0.9
+evidence = "2 direct citations in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+note = "Ported."
+
+[[entry]]
+file = "05_dispatcher_note_two_meet_questions.md"
+claims = "Resolves a citation conflict between this panel's file 03 and the predecessor panel's file 150 about two different \"meet\" questions: an ambient coordinatewise meet and a greatest-lower-bound among admitted shapes."
+verdict = "superseded"
+confidence = 0.9
+evidence = "Read in full. Both meet questions it disambiguates already exist as content in question.toml (Q8's region). The file's own job was disambiguation for a downstream reader, not a claim of its own, and the disambiguation it produced is now moot once the two questions are separately named in the registry."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS.md"]
+ported_as = []
+first_commit = "2026-08-08"
+note = "A dispatcher note resolving a cross-panel citation collision, not a design claim."
+
+[[entry]]
+file = "06_kiselyov_where_a_numeral_is_inferred.md"
+claims = "Where a numeral's type is inferred from, in the format-concept thread."
+verdict = "superseded"
+confidence = 0.65
+evidence = "0 direct citations. Audited in 09_persona_checkpoint.md (read in full) alongside 03/07/08; 09 confirms the Moore-completion caution, the tightness-false finding, and the cross-kind join content from this cluster are already present in the registry, checked by grep at the time."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::09_persona_checkpoint.md", "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "07_orchard_the_adjunction_frame.md"
+claims = "An adjunction frame for the format-concept thread."
+verdict = "live"
+confidence = 0.85
+evidence = "2 direct citations in the registry, plus covered by 09's audit."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "08_knuth_what_the_one_format_concept_covers.md"
+claims = "What the one format concept covers: the seed of what becomes topic the_format."
+verdict = "superseded"
+confidence = 0.75
+evidence = "0 direct citations by filename. Its title matches topic.toml's the_format description closely (\"what a numeral's format is: the widths it declares, its signedness, and how a declared format relates to the container underneath it\"), and the_format is stated in topic.toml as consolidated at file 63. Covered by 09's audit."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "09_persona_checkpoint.md"
+claims = "Persona checkpoint auditing 03/06/07/08: corrects MORNING.md compression defects, evaluates each file's findings."
+verdict = "exploration"
+confidence = 0.95
+evidence = "Read in full. A checkpoint/audit of other files' content, not itself a new design claim; its corrections are folded into how I read 03/06/07/08 above."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "10_lattner_fresh_eyes_on_the_container_derivation.md"
+claims = "A fresh-eyes pass on the container derivation."
+verdict = "superseded"
+confidence = 0.5
+evidence = "0 direct citations. Not read this round. Falls in the OPTIONS.md 02-27 rebuild range and precedes the container-derivation thread that reaches its own consolidation at file 53 and the format topic at 63. Structural case only."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation.md", "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+note = "Lower confidence than the read files; raising it costs one Read call on this file specifically."
+
+[[entry]]
+file = "11_chlipala_prior_art_on_typed_widths.md"
+claims = "Prior art on typed widths, feeding the format-concept thread."
+verdict = "superseded"
+confidence = 0.5
+evidence = "0 direct citations. Not read this round. Same structural basis as 10."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "12_muratori_can_the_surface_meet_the_bar.md"
+claims = "Whether the proposed surface can meet the bar set for it."
+verdict = "superseded"
+confidence = 0.5
+evidence = "0 direct citations. Not read this round. Same structural basis as 10."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "13_dolan_second_read_on_the_width_surface.md"
+claims = "A second read on the width surface."
+verdict = "superseded"
+confidence = 0.5
+evidence = "0 direct citations. Not read this round. Same structural basis as 10."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "14_persona_checkpoint_two.md"
+claims = "Second persona checkpoint."
+verdict = "exploration"
+confidence = 0.8
+evidence = "Not read this round; naming and position match the pattern of 09/19/48, all confirmed audit checkpoints rather than original claims."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "15_giesen_the_axes_the_ladders_left_out.md"
+claims = "Axes the existing ladders (of options considered) left out."
+verdict = "superseded"
+confidence = 0.5
+evidence = "0 direct citations. Not read this round. Same structural basis as 10."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "16_aaltonen_second_read_on_the_two_outputs.md"
+claims = "A second read on the two outputs, the same thread files 44 through 49 re-derive and file 53 consolidates."
+verdict = "superseded"
+confidence = 0.55
+evidence = "0 direct citations. Not read this round. Title strongly suggests this is an earlier pass at the same \"two outputs\" question files 44-49 re-derive from scratch and 53 consolidates; if so it is superseded twice over, by 53 directly. Not confirmed by opening the file, so the specific lineage claim is held at moderate confidence."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation.md"]
+ported_as = []
+first_commit = "2026-08-08"
+note = "Worth a direct read before anyone treats the lineage claim as settled; the title match is suggestive, not confirmed."
+
+[[entry]]
+file = "17_leroy_what_would_actually_certify_this.md"
+claims = "What would actually certify the container derivation."
+verdict = "live"
+confidence = 0.7
+evidence = "1 direct citation in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "18_jhala_the_denotation_clause.md"
+claims = "The denotation clause for the format concept."
+verdict = "superseded"
+confidence = 0.5
+evidence = "0 direct citations. Not read this round. Same structural basis as 10."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "19_persona_checkpoint_three.md"
+claims = "Third persona checkpoint."
+verdict = "exploration"
+confidence = 0.8
+evidence = "Not read this round; naming and position match the confirmed checkpoint pattern (09)."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "20_fog_what_the_benches_already_know.md"
+claims = "Section 1: audit of the headroom bench body, arm competitiveness, and whether the bench's semantics match Warm's."
+verdict = "superseded"
+confidence = 0.55
+evidence = "Read in full. 2 direct citations exist for this file overall. Section 1's semantics-mismatch finding is consistent with, though not directly confirmed against, the strategy-axis consolidation at 106."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "20_fog_what_the_benches_already_know.md"
+claims = "Sections 2.1 through 2.3: six committed bench cells report numbers 48 to 66 times past the physical roofline, the harness recommends the fastest as dominant, and no fidelity check ran in any of the 147 committed benches at the time."
+verdict = "lost"
+confidence = 0.95
+evidence = "Read in full. 0 registry rows captured this before this round. Cross-checked corpus-wide by 41 (digest column zero across 82,960 rows) and root-caused and fixed by 22 (run_worker_validate not reachable from run_orchestrator)."
+superseded_by = []
+ported_as = ["probe::bench_corpus_never_validates_its_own_arms"]
+first_commit = "2026-08-08"
+note = "This round's clearest recovered finding. Ported this session; see the new probe row."
+
+[[entry]]
+file = "20_fog_what_the_benches_already_know.md"
+claims = "Sections 3.1 through 3.3: the ring-homomorphism law LLVM cannot see across a headroom/intermediate-precision composition, a typestate theorem priced with the width band where it stops applying, and a fold's arity priced in isolation."
+verdict = "superseded"
+confidence = 0.75
+evidence = "Read in full. Captured by a later, more general and more rigorously stated registry proposal: proposal::headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region, which states the identical mechanism (ring operations compose invisibly, the first non-ring step is where headroom and intermediate precision become observable) at higher generality."
+superseded_by = ["proposal::headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "20_fog_what_the_benches_already_know.md"
+claims = "Sections 3.4 through 3.5: the strategy axis has a ratified cell no harness run touches, and the packed layouts are priced with one arm dominated."
+verdict = "superseded"
+confidence = 0.5
+evidence = "Read in full. Consistent with 106's packing table (\"packing: 0/640 both regimes, unobservable everywhere swept\"), which is the strategy-axis consolidation's own verdict on packing. Not independently confirmed cell-by-cell against these specific sections."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "20_fog_what_the_benches_already_know.md"
+claims = "Section Four: what is not measured that should be, an open-items list."
+verdict = "exploration"
+confidence = 0.7
+evidence = "Read in full. A worklist for future dispatches rather than a claim; some of its items were subsequently picked up by 22 and 41 in this same file range."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "21_ringer_entailment_check_on_the_map.md"
+claims = "An independent entailment check on MORNING.md, run by someone who did not write it."
+verdict = "exploration"
+confidence = 0.9
+evidence = "Header read: self-declared \"I did not contribute to the design and this file makes no design claim.\" A verification pass, not a finding."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "22_xu_the_bench_that_was_missing.md"
+claims = "Sections One through Three, and Eight through Twelve: the general bench, its control, cache-resident numbers, provenance, the final validated numbers, coverage, and what is op's to decide."
+verdict = "live"
+confidence = 0.8
+evidence = "Read in full. 7 direct citations exist for this file, the highest of any file in this slice; most of its supporting apparatus was already reachable by later panel files even before this round."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "22_xu_the_bench_that_was_missing.md"
+claims = "Section Seven: the fidelity check was missing, demonstrated by root-causing run_orchestrator's failure to call validate and fixing it, with a positive control (an injected one-character bug caught after the fix)."
+verdict = "lost"
+confidence = 0.95
+evidence = "Read in full. Despite the file's own 7 citations, this specific sub-claim, the root cause and its demonstrated fix, was not itself a registry row before this round."
+superseded_by = []
+ported_as = ["probe::bench_corpus_never_validates_its_own_arms"]
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "22_xu_the_bench_that_was_missing.md"
+claims = "Sections Four through Six: the wide-rung ratified item 14 (seed/OLD_SETTLED_container.md) is measured and found wrong on its instruction-count half, correct-but-not-throughput on its byte-count half, with a real unresolved width-dependent effect left open."
+verdict = "lost"
+confidence = 0.95
+evidence = "Read in full. seed/OLD_SETTLED_container.md item 14 was RATIFIED in the predecessor panel and never retired in this one, despite being measured and refuted here. No existing retirement row cited seed:: material before this round (grep -n 'seed::|OLD_SETTLED' mock/registry/*.toml returned nothing)."
+superseded_by = []
+ported_as = ["retirement::r22_r1_the_wide_rung_item_14_instruction_and_byte_claim"]
+first_commit = "2026-08-08"
+note = "Second of this round's two clear recovered findings. The residual mechanism (a ~2.1x width-dependent effect between W=129 and W=192) is stated in the retirement row's replacement field as an open lead, not resolved."
+
+[[entry]]
+file = "23_spj_the_sentences_a_canon_could_carry.md"
+claims = "A stocktaking pass, after twenty-two files, on the sentences a canon could actually carry."
+verdict = "superseded"
+confidence = 0.55
+evidence = "0 direct citations. Header read only. Self-declared \"inventory, not consolidation. Nothing here settles.\" Feeds the strategy-axis and format threads; not independently confirmed against 63/106."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept.md", "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "24_amin_the_seam_between_two_vocabularies.md"
+claims = "The seam between two vocabularies, picking up a gap 23 named and declined to fill."
+verdict = "superseded"
+confidence = 0.55
+evidence = "0 direct citations. Header read only. Self-declared \"a derivation, and it is one expert. Nothing here settles.\" Not independently confirmed against a later consolidation."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "25_torvalds_what_a_strategy_is.md"
+claims = "What a strategy is, decomposed into four axes: headroom, packing, overflow policy, intermediate precision."
+verdict = "superseded"
+confidence = 0.75
+evidence = "0 direct citations by filename, but 106 (read in full) names this file's four-axis decomposition explicitly by number (\"25 section 7\") and reruns its observability test in 106_probes, reporting the same shape: packing unobservable in both regimes, headroom and intermediate precision observable only past a non-ring step, overflow policy observable in both. Internal panel citation by bare number rather than by the registry's own path form, so a filename grep missed it; the content match is direct."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "26_aaltonen_does_packing_pay.md"
+claims = "Whether packing pays at the workload arvo says it exists for, built and run as a bench."
+verdict = "superseded"
+confidence = 0.6
+evidence = "0 direct citations. Header read only, not the full bench body. Conclusion direction (packing does not observably pay) matches 106's packing row (\"0/640 both regimes, unobservable everywhere swept\") and 25's axis decomposition; the specific numbers in this file were not cross-checked against 106's cell-by-cell."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis.md"]
+ported_as = []
+first_commit = "2026-08-08"
+note = "Convergent framing, not a confirmed number match. Worth a direct read if anyone needs the exact bench numbers rather than the verdict."
+
+[[entry]]
+file = "27_fog_packing_under_contention.md"
+claims = "The packed-against-dense trade under real memory-system contention."
+verdict = "superseded"
+confidence = 0.6
+evidence = "0 direct citations. Header read only. Same basis as 26: convergent with 106's packing row, not cross-checked cell-by-cell."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "28_op_answers_two.md"
+claims = "Op's second round of answers, extending 04's methodology roughly to the first hundred files."
+verdict = "live"
+confidence = 0.9
+evidence = "9 direct citations in the registry, the second-highest count in this slice after 22."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "29_dispatcher_note_what_the_mode_change_costs.md"
+claims = "What the mode change in 28 costs, and what it means for the next dispatch."
+verdict = "exploration"
+confidence = 0.9
+evidence = "Header read; self-declared \"a note, not a finding. Carries no authority and may not be cited as support.\""
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "30_willsey_rebuilding_the_option_register.md"
+claims = "OPTIONS.md rebuilt directly from member files 02 through 27, not from the defective MORNING.md."
+verdict = "exploration"
+confidence = 0.95
+evidence = "Read in full. Its own coverage statement is the single strongest piece of evidence for the superseded verdicts assigned to files 02 through 27 above; it is a rebuild pass, not itself a design claim."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "31_ringer_checking_the_option_register.md"
+claims = "An outside check on OPTIONS.md, run from the member files toward the register."
+verdict = "exploration"
+confidence = 0.9
+evidence = "Header read; self-declared \"I contribute no design opinion in this file, and I did not edit OPTIONS.md.\""
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "32_op_arvo_adapts_to_the_cores_it_finds.md"
+claims = "Op's ruling that arvo adapts to the cores it finds."
+verdict = "live"
+confidence = 0.9
+evidence = "4 direct citations in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "33_dispatcher_a_coverage_instrument_and_three_ways_it_failed.md"
+claims = "A coverage instrument for the option register, and the three ways it failed on first build."
+verdict = "exploration"
+confidence = 0.9
+evidence = "Header read; self-declared \"tooling plus its validation record. Carries no authority over any design question.\""
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "34_op_hot_may_sacrifice_soundness_for_proven_gain.md"
+claims = "Op's ruling that Hot may sacrifice soundness for proven gain."
+verdict = "live"
+confidence = 0.85
+evidence = "1 direct citation in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "35_mcsherry_what_the_layers_above_need_from_the_numeral.md"
+claims = "What the layers above (hilavitkutin, vehje) need from the numeral."
+verdict = "live"
+confidence = 0.85
+evidence = "4 direct citations in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "36_op_the_intent_behind_each_strategy.md"
+claims = "Op's ruling stating the intent behind each strategy."
+verdict = "live"
+confidence = 0.9
+evidence = "5 direct citations in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "37_op_warm_imitates_rust_and_strategy_is_not_orthogonal.md"
+claims = "Op's ruling: Warm imitates Rust's own behaviour, and the strategy axis is not orthogonal to the others."
+verdict = "live"
+confidence = 0.9
+evidence = "6 direct citations in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "38_op_the_strategies_weigh_measurements_differently.md"
+claims = "Op's ruling: the strategies weigh measurements differently rather than sharing one weighting."
+verdict = "live"
+confidence = 0.9
+evidence = "5 direct citations in the registry."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "39_op_the_strategy_set_is_not_closed.md"
+claims = "Op's ruling: the strategy set is not closed at four (Hot, Warm, Cold, Precise)."
+verdict = "live"
+confidence = 0.85
+evidence = "1 direct citation in the registry, and restated directly in the generated CLAUDE.md governing this repo (\"the strategy set is not closed at four\")."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "40_leijen_what_the_axes_actually_are.md"
+claims = "What the axes actually are, in the algebraic-laws thread."
+verdict = "superseded"
+confidence = 0.55
+evidence = "0 direct citations. Header read only. Falls before the algebraic_laws topic's stated consolidation at file 90."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "41_dispatcher_note_no_bench_here_has_ever_checked_its_answers.md"
+claims = "Corpus-wide sweep: the digest fidelity column is zero across all 214 committed CSVs and 82,960 rows, confirming what 20 and 22 found file-by-file."
+verdict = "lost"
+confidence = 0.95
+evidence = "Read in full. 1 direct citation exists for this file, but the corpus-wide sweep itself, the number that turns 20's and 22's local findings into a corpus-wide claim, had not been captured as a registry row before this round."
+superseded_by = []
+ported_as = ["probe::bench_corpus_never_validates_its_own_arms"]
+first_commit = "2026-08-08"
+note = "The control instrument in the new probe row's control field is this file's sweep."
+
+[[entry]]
+file = "42_willsey_the_law_layer.md"
+claims = "The law layer, in the algebraic-laws thread."
+verdict = "superseded"
+confidence = 0.55
+evidence = "0 direct citations. Header read only. Same basis as 40."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws.md"]
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "43_rompf_what_a_composition_is.md"
+claims = "What a composition is, in the algebraic-laws thread."
+verdict = "live"
+confidence = 0.6
+evidence = "1 direct citation in the registry, plus falls inside the algebraic_laws pre-90 exploration window."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-08"
+
+[[entry]]
+file = "44_arntzen_the_two_outputs_re_derived.md"
+claims = "The two outputs of the container derivation, re-derived from scratch."
+verdict = "superseded"
+confidence = 0.85
+evidence = "Confirmed directly: 53_leroy_consolidation_the_container_derivation.md opens by stating it is \"the consolidation of 44 through 52\" and its opening section walks 44 through 49 end to end."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation.md"]
+ported_as = []
+first_commit = "2026-08-09"
+
+[[entry]]
+file = "45_fallin_is_the_widening_forced.md"
+claims = "Whether the widening step in the container derivation is forced."
+verdict = "superseded"
+confidence = 0.85
+evidence = "Same as 44: directly confirmed by 53's own \"consolidation of 44 through 52\" statement."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation.md"]
+ported_as = []
+first_commit = "2026-08-09"
+
+[[entry]]
+file = "46_dolan_the_carrier_collision_attacked.md"
+claims = "The carrier-collision question attacked directly."
+verdict = "superseded"
+confidence = 0.85
+evidence = "Same as 44: directly confirmed by 53's own \"consolidation of 44 through 52\" statement."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation.md"]
+ported_as = []
+first_commit = "2026-08-09"
+
+[[entry]]
+file = "47_wingo_one_richer_output.md"
+claims = "An argument for one richer output rather than two, in the container-derivation thread."
+verdict = "live"
+confidence = 0.9
+evidence = "2 direct citations in the registry, and confirmed by 53's \"consolidation of 44 through 52\" statement."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation.md"]
+ported_as = []
+first_commit = "2026-08-09"
+
+[[entry]]
+file = "48_persona_checkpoint_four.md"
+claims = "Fourth persona checkpoint."
+verdict = "exploration"
+confidence = 0.8
+evidence = "Not read this round; naming and position match the confirmed checkpoint pattern (09), and 53 names its own unit's rung-inflation self-corrections, which a checkpoint at this position would be checking."
+superseded_by = []
+ported_as = []
+first_commit = "2026-08-09"
+
+[[entry]]
+file = "49_marlow_derived_cold.md"
+claims = "Cold, derived from the container-derivation thread's conclusions."
+verdict = "superseded"
+confidence = 0.8
+evidence = "Directly confirmed by 53's own \"consolidation of 44 through 52\" statement, which places 49 as the last member file before consolidation."
+superseded_by = ["panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation.md"]
+ported_as = []
+first_commit = "2026-08-09"

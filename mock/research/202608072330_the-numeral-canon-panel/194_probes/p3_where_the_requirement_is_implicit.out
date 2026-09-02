@@ -1,0 +1,101 @@
+=== p3 where the requirement is implicit, 2026-08-31T01:05:49Z
+
+## the split
+    13 BUCKET
+     9 admission
+    57 required
+
+## C1: a row writing `must differ` must be in `required`
+C1 PASS
+
+## C2: no `uncontrolled` row in the bucket
+C2 PASS
+
+## C3: the bucket is a proper non-empty subset
+C3 PASS: 13 of 79
+
+## the bucket, with its control field in full, for reading
+### staged_narrowing_depends_on_its_staging  [sound]
+The corrected instrument prints the first failing value per member, so a True cannot mean an empty sweep. That is the repair rather than a widening: the defect was an empty region and the fix makes emptiness visible.
+
+### a_domain_widening_with_a_control_that_can_fire  [sound]
+The replacement controls fire and the output shows them firing rather than asserting they would, printing CONFIRMED for the threshold arm and a difference at k = -4 against k = +4 for the variance arm.
+
+### the_width_invariance_control_was_toothless  [defective]
+The control came out toothless and its author says so in the successor's own docstring: a check reporting that the count does not move with width, which cannot be made to move with width at all, is indistinguishable from a check blind to width. What was missing is an axis position whose observability genuinely depends on the integer width, and the three swept axes do not have one.
+
+### operation_erasure_holds_at_every_optimisation_level  [sound]
+The two oracles disagree with each other across the sweep, which is the arm: symbol folding is an identical-code-folding pass that does not run below `-O2`, so a certification resting on symbol identity alone answers a question about the build setting. Running both across all six levels is what separates the instrument's failure from the design's.
+
+### absorption_and_associativity_agree_for_clamped_addition  [sound]
+Both directions are counted separately and both are printed with the sentence they would refute, in the output: sufficiency violations refute absorbing-implies-associative and necessity violations refute the converse. The 153 in the second configuration set is the arm firing, which is what says a zero elsewhere is a measurement rather than a checker that cannot report.
+
+### a_half_step_biased_grid_is_not_closed_under_addition  [sound]
+The affine membership predicate is written once and instantiated at two phases, and each instantiation is compared exhaustively against a direct enumeration that never mentions the predicate. That is the arm: a predicate agreeing with an enumeration written independently of it cannot be agreeing with itself.
+
+### the_collapsed_declaration_cannot_be_made_to_fail  [sound]
+The whole instrument is a control, and its header is the clearest statement of the principle in this corpus: a row that cannot fail is not a measurement, and the way to show it cannot fail is to corrupt what it is nominally about and watch it not notice. The predecessor reported zero coherence and zero monotonicity failures for every collapsed declaration, and this one says that number is worth nothing until somebody tries to make it nonzero.
+
+### the_rationalisable_sections_on_the_committed_carrier_table  [sound]
+The tolerance sweep is the arm: a count that does not move as the tolerance widens would be measuring the parser rather than the table, and it moves from 9 to 134 at one percent. The successor asks separately whether the gap is structural rather than an artifact of the particular table.
+
+### one_congruence_property_predicts_every_law_verdict  [sound]
+The two mismatch directions are counted apart, soundness against conservative, so a predictor that simply says yes everywhere shows up as conservative mismatches rather than as a clean sheet. And the companion arm derives a closed-form failure rate for one cell before measuring it, `1 - 2^(1-W)`, and prints predicted against measured per width. A prediction written before the sweep is the strongest control shape in this corpus and it appears twice.
+
+### no_conservatism_order_exists_on_the_overflow_axis  [sound]
+Computing both candidate orders rather than one is the arm. A single order computed alone comes back with an answer whichever it is, and only the disagreement between two independently motivated candidates shows that the phrase naming the order does not name one.
+
+### the_const_eval_frontier_by_arity  [sound]
+The refusal is read for which limit it hit rather than counted, which is what distinguishes a total-step budget from a width ceiling and is the whole content of the finding. A frontier measured by counting failures alone would report the same numbers and support the wrong conclusion.
+
+### generating_a_winner_table_from_a_stated_weighting  [sound]
+The stability arm is the prerequisite and is a separate instrument: a table not stable enough to be an object cannot be generated from anything, so the generation result is conditional on it and the two are cited together.
+
+### the_cost_coordinate_census_and_its_calibration_control  [sound]
+A calibration control run before everything else in the directory, and it is the best-designed control in this corpus. The bench declares pairs of arms that compile to the same machine code, and every reading in the directory treats a measured difference between such a pair as the instrument rather than the arms. That reading is only as good as the pair actually being byte-identical, so the arm checks it in every family that declares one, before any measurement is taken. A pre-normalisation run is kept beside it.
+
+WHAT THIS IS NOT. The pattern reads vocabulary, and a row can demand an
+outcome without using any of these words. So the bucket is where to
+look rather than a verdict, and the findings file carries my reading of
+each one and what would settle it.
+
+--- appended by 194: the reading of all thirteen ---
+
+Every one of the thirteen was read and the instrument opened where reading the
+field did not settle it. Verdicts, with why:
+
+  REQUIREMENT STATED, in vocabulary the pattern does not carry (5)
+    a_domain_widening_with_a_control_that_can_fire     "the replacement controls fire"
+    absorption_and_associativity_agree_for_clamped_..  "the 153 ... is the arm firing"
+    a_half_step_biased_grid_is_not_closed_under_add..  the enumeration must agree
+    the_rationalisable_sections_on_the_committed_ca..  the count must move with tolerance
+    the_cost_coordinate_census_and_its_calibration_..  the pairs must be byte-identical
+
+  REQUIREMENT IMPLICIT IN WHAT THE CLAIM NEEDS (6)
+    staged_narrowing_depends_on_its_staging            a True with no witness is impossible
+    operation_erasure_holds_at_every_optimisation_l..  the oracles must part below -O2
+    one_congruence_property_predicts_every_law_verd..  a yes-everywhere predictor shows as
+                                                       conservative mismatches, and the closed
+                                                       form is predicted before measuring
+    no_conservatism_order_exists_on_the_overflow_axis  the claim needs the two orders to disagree
+    the_const_eval_frontier_by_arity                   every refusal must be the step budget
+    generating_a_winner_table_from_a_stated_weighting  the table must be stable or nothing generates
+
+  ALREADY CLASSIFIED (1)
+    the_width_invariance_control_was_toothless         `defective`, and correctly so
+
+  NEEDED THE INSTRUMENT OPENED (1)
+    the_collapsed_declaration_cannot_be_made_to_fail   reading the field could not settle it.
+      `73_probes/p1c_output.txt` carries a positive arm the field did not name: the mutation
+      set breaks the HONEST declaration's verdicts in 3 of 4 cases, and one of the four is
+      labelled the control in the source. So the collapsed column's zeros are a fact about the
+      collapsed declaration rather than about a checker that notices nothing. `sound`, and the
+      row's `control` field has been amended to name the arm, because a row understating its
+      own instrument is the same defect as one overstating it pointed the other way.
+
+SO THE BUCKET EMPTIES, and that is a result about the corpus rather than about
+the reading: none of the thirteen turned out to be a row where a control was
+neither stated nor implied. The six implicit ones are the real residue and they
+are the place a second reader should push, because an implicit requirement is
+one nobody wrote down and the next reader has to reconstruct it exactly as I
+just did.

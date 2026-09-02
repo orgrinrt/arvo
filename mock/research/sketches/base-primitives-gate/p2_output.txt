@@ -1,0 +1,15 @@
+error[E0080]: evaluation panicked: if this compiles, the branch-A shape distinguishes two footprints at one declared width, and the claim in this file's header is refuted
+  --> p2_branch_a_cannot_express_two_carriers.rs:39:15
+   |
+39 |   const _: () = assert!(
+   |  _______________^
+40 | |     size_of::<Narrow13>() != size_of::<Wide13>(),
+41 | |     "if this compiles, the branch-A shape distinguishes two footprints at one \
+42 | |      declared width, and the claim in this file's header is refuted"
+43 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit=1

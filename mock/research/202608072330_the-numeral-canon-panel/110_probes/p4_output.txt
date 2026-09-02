@@ -1,0 +1,51 @@
+P4. do the collapses survive a wider signature?
+==============================================================================
+population: 288 names
+
+under the base signature ['add', 'sub', 'mul', 'neg']:
+  primitives: 186 from 288 names
+  collapse classes: 54  (structural, all F=0: 12;  other: 42)
+
+how many collapse classes SURVIVE each signature extension:
+  extension             structural survive   other survive  primitives
+  + half                     0 / 12            42 / 42             202
+  + third                    0 / 12            36 / 42             210
+  + recip                    6 / 12            42 / 42             192
+  + fma                     12 / 12            36 / 42             192
+  + scale_by_step           12 / 12            42 / 42             186
+  + all five                 0 / 12            36 / 42             210
+
+classes broken by the widest signature, with the operation that broke them:
+  ['uW2F0r2/sat/near', 'uW2F0r3/sat/near', 'uW2F0r2/sat/trunc', 'uW2F0r3/sat/trunc', 'uW2F0r2/sat/floor', 'uW2F0r3/sat/floor']
+      broken by: half, third
+  ['uW2F0r2/wrap/near', 'uW2F0r3/wrap/near', 'uW2F0r2/wrap/trunc', 'uW2F0r3/wrap/trunc', 'uW2F0r2/wrap/floor', 'uW2F0r3/wrap/floor']
+      broken by: half, third
+  ['iW2F0r2/sat/near', 'iW2F0r3/sat/near', 'iW2F0r2/sat/trunc', 'iW2F0r3/sat/trunc', 'iW2F0r2/sat/floor', 'iW2F0r3/sat/floor']
+      broken by: half, third, recip
+  ['iW2F0r2/wrap/near', 'iW2F0r3/wrap/near', 'iW2F0r2/wrap/trunc', 'iW2F0r3/wrap/trunc', 'iW2F0r2/wrap/floor', 'iW2F0r3/wrap/floor']
+      broken by: half, third, recip
+  ['iW2F1r2/sat/near', 'iW2F1r2/sat/trunc']
+      broken by: third, fma
+  ['iW2F1r2/wrap/near', 'iW2F1r2/wrap/trunc']
+      broken by: third, fma
+  ['iW2F2r2/sat/near', 'iW2F2r2/sat/trunc']
+      broken by: third, fma
+  ['iW2F2r3/sat/near', 'iW2F2r3/sat/trunc']
+      broken by: third, fma
+  ... 18 classes broken in total
+
+classes surviving every extension: 36
+  fraction widths present among survivors: [1, 2, 3, 4]
+  NOT all survivors are at F = 0, so the structural test above is
+  incomplete and the rule needs another clause.
+
+of the 42 non-structural collapse classes, 6 were
+broken by adding operations that use the same realisation map.
+
+consequence for a naming discipline:
+  canonicalising on observed table equality would have merged those
+  6 classes under the base signature and been forced to
+  un-merge them when an operation was added. Two types that were one
+  type become two, with nothing in the design edited to cause it.
+  Canonicalising only on the structural degeneracy is stable, at the
+  price of leaving 36 genuine collapses unnamed.

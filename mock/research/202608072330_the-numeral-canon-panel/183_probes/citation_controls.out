@@ -1,0 +1,10 @@
+### cargo mock --lint-only (expect B and C reported, A silent)
+  ERROR [unresolvable-provenance]: proposal::probe_183_cite_b_no_such_file: `panel::202608072330_the-numeral-canon-panel::999_no_such_file_anywhere::1` matches no file under root `panel`.
+  ERROR [unresolvable-heading]: proposal::probe_183_cite_c_no_such_heading: `panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#there-is-no-such-heading` names heading `there-is-no-such-heading`, which 202608072330_the-numeral-canon-panel/173_leroy_the_canon_candidate_for_the_chain does not contain. A renamed heading fails here rather than silently pointing elsewhere, which is why headings are preferred over line numbers.
+(nothing reported)
+
+### cargo test -p arvo-checks (expect D reported by the living-ledger arm)
+        at: "proposal::probe_183_cite_d_line_into_a_living_ledger",
+        says: "`provenance` cites `panel::202608072330_the-numeral-canon-panel::AGREEMENTS::754`, which is a line number into `AGREEMENTS.md`. That file is still being written, so the line moves and the citation keeps resolving to whatever ends up there. Cite a heading instead: a rename fails loudly, a shifted line does not.",
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+(nothing reported)

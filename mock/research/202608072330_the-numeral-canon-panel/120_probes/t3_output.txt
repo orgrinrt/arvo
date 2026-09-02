@@ -1,0 +1,38 @@
+T3. is the compile wall additive or multiplicative in the fold length?
+==============================================================================
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+towers are 115 s2's, imported rather than rebuilt; only the
+recursion_limit attribute is substituted.
+
+   limit  expensive wall   cheap wall  wall/limit
+      16               8           16       0.500
+      24              12           24       0.500
+      32              16           32       0.500
+      48              24           48       0.500
+      64              32           64       0.500
+
+------------------------------------------------------------------------------
+the two readings, scored against the measurement:
+
+   limit  measured  additive pred  multiplicative pred
+      16         8            8.0                 11.3
+      24        12           12.0                 13.9
+      32        16           16.0                 16.0
+      48        24           24.0                 19.6
+      64        32           32.0                 22.6
+
+  mean absolute error, additive       : 0.00
+  mean absolute error, multiplicative : 3.79
+  => the depth is ADDITIVE in the fold length
+
+CONTROL: the cheap tower's wall must also move with the limit, or
+the instrument is not reading the tower's own obligation chain.
+  distinct cheap-tower walls across the limits: 5
+  control fired: True
+
+------------------------------------------------------------------------------
+reading: F114-18's cell count is multiplicative and is a count of
+associated-const cells. The recursion wall this measures is a
+different quantity and moves linearly in the limit, which is 114's
+own spine-plus-vector explanation. 119 section 4.10's sentence
+attributes the cell count's law to the depth.

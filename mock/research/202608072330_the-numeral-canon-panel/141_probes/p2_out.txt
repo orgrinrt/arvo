@@ -1,0 +1,76 @@
+p2: what the declared-slack mechanism actually buys
+
+=== (a) absorption theorem, checked exhaustively ===
+W=4 unsigned  wrapping : R(R(x)+c) == R(x+c) mismatches = 0
+W=4 signed    wrapping : R(R(x)+c) == R(x+c) mismatches = 0
+W=5 unsigned  wrapping : R(R(x)+c) == R(x+c) mismatches = 0
+W=5 signed    wrapping : R(R(x)+c) == R(x+c) mismatches = 0
+W=6 unsigned  wrapping : R(R(x)+c) == R(x+c) mismatches = 0
+W=6 signed    wrapping : R(R(x)+c) == R(x+c) mismatches = 0
+
+--- C1: the same check with SATURATION substituted, which must FAIL ---
+W=4 unsigned  saturating: mismatches = 960      control FIRES
+W=4 signed    saturating: mismatches = 848      control FIRES
+W=5 unsigned  saturating: mismatches = 3968     control FIRES
+W=5 signed    saturating: mismatches = 3488     control FIRES
+W=6 unsigned  saturating: mismatches = 16128    control FIRES
+W=6 signed    saturating: mismatches = 14144    control FIRES
+
+=== (b) minimum slack admitting fusion, W=6, my model ===
+-- rounding = toward zero --
+cell                      F=0    F=1    F=2    F=3    F=4    F=5
+unsigned, wrapping          0      0      0      0      0      0
+      . F=0 C3: fusion never differs, 0 is trivial
+      . F=1 C3: fusion never differs, 0 is trivial
+      . F=2 C3: fusion never differs, 0 is trivial
+      . F=3 C3: fusion never differs, 0 is trivial
+      . F=4 C3: fusion never differs, 0 is trivial
+      . F=5 C3: fusion never differs, 0 is trivial
+unsigned, saturating        0      0      0      0      0      0
+      . F=0 C3: fusion never differs, 0 is trivial
+      . F=1 C3: fusion never differs, 0 is trivial
+      . F=2 C3: fusion never differs, 0 is trivial
+      . F=3 C3: fusion never differs, 0 is trivial
+      . F=4 C3: fusion never differs, 0 is trivial
+      . F=5 C3: fusion never differs, 0 is trivial
+signed, wrapping            0      0      0      0      0      0
+      . F=0 C3: fusion never differs, 0 is trivial
+      . F=1 C3: fusion never differs, 0 is trivial
+      . F=2 C3: fusion never differs, 0 is trivial
+      . F=3 C3: fusion never differs, 0 is trivial
+      . F=4 C3: fusion never differs, 0 is trivial
+      . F=5 C3: fusion never differs, 0 is trivial
+signed, saturating         32     32     32     32     32      1
+-- rounding = floor --
+cell                      F=0    F=1    F=2    F=3    F=4    F=5
+unsigned, wrapping          0      0      0      0      0      0
+      . F=0 C3: fusion never differs, 0 is trivial
+      . F=1 C3: fusion never differs, 0 is trivial
+      . F=2 C3: fusion never differs, 0 is trivial
+      . F=3 C3: fusion never differs, 0 is trivial
+      . F=4 C3: fusion never differs, 0 is trivial
+      . F=5 C3: fusion never differs, 0 is trivial
+unsigned, saturating        0      0      0      0      0      0
+      . F=0 C3: fusion never differs, 0 is trivial
+      . F=1 C3: fusion never differs, 0 is trivial
+      . F=2 C3: fusion never differs, 0 is trivial
+      . F=3 C3: fusion never differs, 0 is trivial
+      . F=4 C3: fusion never differs, 0 is trivial
+      . F=5 C3: fusion never differs, 0 is trivial
+signed, wrapping            0      0      0      0      0      0
+      . F=0 C3: fusion never differs, 0 is trivial
+      . F=1 C3: fusion never differs, 0 is trivial
+      . F=2 C3: fusion never differs, 0 is trivial
+      . F=3 C3: fusion never differs, 0 is trivial
+      . F=4 C3: fusion never differs, 0 is trivial
+      . F=5 C3: fusion never differs, 0 is trivial
+signed, saturating         32     32     32     32     32      1
+
+=== (c) how many answers the declaration permits, signed saturating, floor ===
+(range holds 64 representable values)
+F=0: slack 32 -> conforming set per input: mean 41.74, min 33, max 64  (65.2% of range)
+      S4 control, slack 0 -> mean 1.00, min 1, max 1 (must be exactly 1/1/1)
+F=3: slack 32 -> conforming set per input: mean 44.38, min 33, max 64  (69.3% of range)
+      S4 control, slack 0 -> mean 1.00, min 1, max 1 (must be exactly 1/1/1)
+F=5: slack  1 -> conforming set per input: mean 2.86, min 2, max 3  (4.5% of range)
+      S4 control, slack 0 -> mean 1.00, min 1, max 1 (must be exactly 1/1/1)

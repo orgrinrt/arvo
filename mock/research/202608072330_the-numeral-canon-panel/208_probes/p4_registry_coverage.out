@@ -1,0 +1,102 @@
+== p4. registry coverage of the seed's sections 2-8, by subject ==
+registry: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat208/mock/registry  (12 files)
+each subject searched on independent phrasings; counts per phrasing in ()
+
+-- CONTROLS: these must be present, or the sweep means nothing --
+c1     headroom (known carried)                   present  ( 17)
+c2     interior safety (known carried)            present  ( 7 110)
+c3     bitpack contention (known carried)         present  ( 16 14)
+c4     strategy presets (known carried)           present  ( 52 62)
+
+-- CONTROL: this must be absent --
+c5     nonsense term                              ABSENT   ( 0)
+
+-- 3.1 the width surface and the container derivation --
+T1     structural width-to-container ladder       ABSENT   ( 0 0 0)
+T2     structurally derived backing array         present  ( 1 2 0)
+T3     const-to-type bridge table                 present  ( 3 2 0)
+T4     binding time and the table's real job      present  ( 11 0 0)
+T5     generic_const_args vetting                 present  ( 4 0)
+T6     diagnostics: bound not equality            present  ( 0 1 0)
+T7     erasure vs a competent author              present  ( 28 0 0)
+
+-- 3.2 the strategy axis --
+T8     one preset name, two rows, exponent form   present  ( 0 5 1)
+T9     the headroom thread                        present  ( 17 5)
+T10    only Hot folds signed                      present  ( 0 39 1)
+T11    the strategy door and the environment      present  ( 0 4 1)
+T12    preset divergence mechanism                ABSENT   ( 0 0)
+
+-- 3.3 quantiser, laws, folds --
+T13    round first, classify second               present  ( 2 7 0)
+T14    overflow band closed form                  present  ( 2 0)
+T15    finest view / grade monoid                 present  ( 0 4 4)
+T16    TotalOrd split precondition                present  ( 1 2 0)
+T17    closure laws, bias and adjustment          present  ( 0 2 0)
+T18    interior vs total safety, quire            present  ( 7 69 0)
+T19    site count vs moved count, flags           present  ( 2 2 0)
+T20    algo crates wrong under their presets      present  ( 0 27 0)
+T21    parse is the quantiser, print              ABSENT   ( 0 0 0)
+
+-- 3.4 order, conversion, the family question --
+T22    inclusion order, four conditions           present  ( 0 0 3)
+T23    the cardinality antichain                  present  ( 1 0)
+T24    lattice dissolution, the 81 vs 0           present  ( 0 1 2)
+T25    conversion needs an adjudicating key       present  ( 4 50 2)
+T26    From coherence walls                       ABSENT   ( 0 0 0)
+T27    membership, m dot r^q, Ostrowski           ABSENT   ( 0 0 0)
+
+-- 3.5 crossing, encoding, storage --
+T28    the crossing contract and the leak         present  ( 8 0 4)
+T29    three width levels, bitpacked group        present  ( 1 0 1)
+T30    digest, mutation perimeter, niches         present  ( 10 0 0)
+T31    byte image, same-process                   present  ( 2 6)
+
+-- 3.6 operations --
+T32    division as a failure classifier           present  ( 0 0 2)
+T33    elementary functions, three classes        ABSENT   ( 0 0 0)
+T34    radix ten, cohorts, preferred exponent     present  ( 2 0 0)
+
+-- 3.7 the peripheral subjects --
+T35    the truth contract                         present  ( 2 1 0)
+T36    the bitfield                               present  ( 0 2 11)
+T37    capacity and the array grammar             present  ( 41 14 43)
+T38    shape and geometry                         present  ( 3 0 0)
+T39    the platform crate and Bool's doors        present  ( 0 0 2)
+T40    the notation vehicle                       present  ( 0 1 0)
+T41    the cost model                             present  ( 9 0 24)
+T42    the environment parameter                  ABSENT   ( 0 0 0)
+
+-- 4, 5, 6: refuted, abandoned, blind spots --
+T43    ratified-then-reversed as a category       present  ( 1 2)
+T44    claims that died of provenance             present  ( 1 0)
+T45    the uncommitted-bench era                  ABSENT   ( 0 0)
+T46    refutations of the archive instruments     present  ( 4 0)
+T47    the three-relation ladder                  present  ( 4 2)
+T48    Growth and Widening as axes                present  ( 38 13)
+T49    LogicalWidth and the ten-axis table        ABSENT   ( 0 0)
+T50    the single Sign axis split                 present  ( 1 1 3)
+T51    the step-A/step-B seam                     present  ( 1)
+T52    ambient and realisation                    present  ( 85 151)
+T53    the 29-item queue at close                 present  ( 2 0)
+T54    the owed-artifact list                     ABSENT   ( 0 0)
+T55    three instruments named, never run         ABSENT   ( 0 0)
+T56    threads A, B, C                            ABSENT   ( 0 0 0)
+T57    questions never asked                      present  ( 2 0)
+
+-- 2. material bearing on the two questions in flight --
+S2.1   the verb validate                          present  ( 26 28)
+S2.2   the long-standing constraints              present  ( 10 2)
+
+== how to read this ==
+ABSENT is the reliable verdict: the vocabulary appears nowhere across 12
+registry files on 2-3 independent phrasings, with four carried controls
+returning non-zero in the same run. It means nobody has written the subject
+down, and it is a finding.
+
+'present' is NOT a claim that the registry carries the talking point. It
+says a word appears. The registry reached these subjects by its own route
+and may hold a different claim about them, a narrower one, or the opposite
+one. Every 'present' row is a pointer to go and read, never a verdict that
+the material is carried. The catalogue beside this file records which of
+them was actually opened and what was found.

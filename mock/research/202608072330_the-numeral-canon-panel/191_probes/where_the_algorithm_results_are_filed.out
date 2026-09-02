@@ -1,0 +1,125 @@
+### rows with narrative text: 543
+
+######## min-plus
+    retirement                   dl_interior_wrapping_with_a_reserved_absorbing_top topic=overflow_policy
+    -- 1 rows
+
+######## tropical
+    question                     is_the_ambient_operation_family_fixed          topic=the_number_system
+    retirement                   dl_interior_wrapping_with_a_reserved_absorbing_top topic=overflow_policy
+    -- 2 rows
+
+######## shortest path
+    retirement                   dl_interior_wrapping_with_a_reserved_absorbing_top topic=overflow_policy
+    -- 1 rows
+
+######## monotonic
+    proposal                     a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity topic=the_format
+    proposal                     an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing topic=the_number_system
+    retirement                   dl_gate_algorithm_crates_on_addassoc           topic=algebraic_laws
+    retirement                   dl_interior_wrapping_with_a_reserved_absorbing_top topic=overflow_policy
+    retirement                   dl_the_one_shipped_monotone_implementation     topic=algebraic_laws
+    retirement                   dl_threshold_from_recovery_map_monotonicity    topic=algebraic_laws
+    retirement                   r132_first_non_monotonicity_witness_attempt    topic=rounding
+    -- 7 rows
+
+######## absorb
+    law                          multiplicative_associativity_under_saturation  topic=algebraic_laws
+    law                          the_saturating_exponent_absorbing_identity     topic=algebraic_laws
+    proposal                     a_coherent_reduction_needs_no_accumulator      topic=the_chain
+    proposal                     a_format_is_identified_by_its_ambient_domain_and_its_representable_set topic=the_format
+    proposal                     absorption_decides_associativity_of_a_clamped_reduction topic=algebraic_laws
+    proposal                     an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit topic=the_chain
+    proposal                     no_total_join_exists_over_the_observable_axes_so_the_operation_reports topic=the_strategy_axis
+    proposal                     the_model_band_transfer_is_defeated_in_both_fragments topic=algebraic_laws
+    question                     what_a_datum_stands_for                        topic=the_primitive
+    retirement                   dl_absorbing_a_decimal_quantum_into_the_adjustment topic=the_format
+    retirement                   dl_diligence_claim_about_applying_two_requirements topic=(none)
+    retirement                   dl_interior_wrapping_with_a_reserved_absorbing_top topic=overflow_policy
+    retirement                   dl_reification_stability_generalisation        topic=(none)
+    ruling                       the_option_set_is_not_a_boundary               topic=panel_conduct
+    -- 14 rows
+
+######## spectral
+    obligation                   a_spectral_partition_of_a_dependency_graph     topic=arvo_identity
+    retirement                   dl_gate_algorithm_crates_on_addassoc           topic=algebraic_laws
+    retirement                   dl_total_ord_makes_no_output_law_expressible   topic=algebraic_laws
+    -- 3 rows
+
+######## total order
+    law                          existence_of_a_translation_invariant_total_order topic=the_number_system
+    proposal                     the_concepts_edge_is_not_an_order_and_wrapping_is_the_test topic=the_number_system
+    question                     is_number_system_broad_enough_for_non_magnitude topic=the_number_system
+    question                     what_a_datum_stands_for                        topic=the_primitive
+    retirement                   dl_total_ord_makes_no_output_law_expressible   topic=algebraic_laws
+    -- 5 rows
+
+######## laplacian
+    -- 0 rows
+
+######## eigen
+    -- 0 rows
+
+######## critical path
+    -- 0 rows
+
+######## saturat
+    dimension                    overflow_policy                                topic=(none)
+    law                          additive_associativity_under_saturation        topic=algebraic_laws
+    law                          additive_associativity_under_wrapping          topic=algebraic_laws
+    law                          associativity_of_a_composed_saturating_add_and_subtract topic=algebraic_laws
+    law                          coherence_of_a_reduction_onto_its_induced_operation topic=the_format
+    law                          distributivity_of_multiplication_over_addition topic=algebraic_laws
+    law                          distributivity_of_multiplication_over_subtraction topic=algebraic_laws
+    law                          equation_truth_sets_are_initial_segments_in_the_width topic=algebraic_laws
+    law                          existence_of_a_translation_invariant_total_order topic=the_number_system
+    law                          multiplicative_associativity_under_saturation  topic=algebraic_laws
+    law                          the_saturating_exponent_absorbing_identity     topic=algebraic_laws
+    law-the-later-topics         fusing_a_multiply_add_preserves_the_answer_under_unsigned topic=the_strategy_object
+    law-the-later-topics         the_fused_and_the_stepwise_multiply_add_denote_one_function topic=the_strategy_object
+    proposal                     a_coherent_reduction_needs_no_accumulator      topic=the_chain
+    proposal                     a_composed_expressions_region_is_never_inherited_from_its_parts topic=algebraic_laws
+    proposal                     a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove topic=algebraic_laws
+    proposal                     a_law_stated_as_an_author_written_marker_is_checked_by_nothing topic=validation
+    proposal                     a_law_verdict_is_invariant_under_change_of_encoding_and_container topic=the_realisation_map
+    proposal                     a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure topic=algebraic_laws
+    proposal                     absorption_decides_associativity_of_a_clamped_reduction topic=algebraic_laws
+    proposal                     an_additive_verdict_is_independent_of_the_fraction_width topic=algebraic_laws
+    proposal                     an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing topic=the_number_system
+    proposal                     an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit topic=the_chain
+    proposal                     chain_laws_split_by_whether_a_lifting_theorem_exists topic=the_chain
+    proposal                     headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region topic=the_strategy_axis
+    proposal                     inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width topic=algebraic_laws
+    proposal                     no_multiplicative_structure_survives_a_nonzero_fraction_width topic=algebraic_laws
+    proposal                     no_total_join_exists_over_the_observable_axes_so_the_operation_reports topic=the_strategy_axis
+    proposal                     one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both topic=panel_conduct
+    proposal                     the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation topic=the_format
+    proposal                     the_concepts_edge_is_not_an_order_and_wrapping_is_the_test topic=the_number_system
+    proposal                     the_four_consolidations_contradict_each_other_nowhere topic=panel_conduct
+    proposal                     the_law_frame_was_attacked_from_another_topic_and_held topic=algebraic_laws
+    proposal                     the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy topic=algebraic_laws
+    proposal                     the_model_band_transfer_is_defeated_in_both_fragments topic=algebraic_laws
+    proposal-the-later-topics    fusing_a_multiply_add_is_free_exactly_at_translation_equivariance topic=the_strategy_object
+    proposal-the-later-topics    where_fusion_changes_the_answer_it_is_not_a_lowering topic=the_strategy_object
+    question                     are_the_axes_independently_resolvable          topic=the_strategy_axis
+    question                     is_number_system_broad_enough_for_non_magnitude topic=the_number_system
+    question                     reduction_order_or_associativity               topic=the_chain
+    question                     the_container_premise                          topic=the_container_premise
+    question                     what_a_datum_stands_for                        topic=the_primitive
+    question                     what_transfers_from_a_model_width              topic=the_predicate_notation
+    question                     where_wrapping_lives                           topic=overflow_policy
+    question                     whose_reduction_governs_a_lossy_crossing       topic=the_number_system
+    retirement                   dl_interior_wrapping_with_a_reserved_absorbing_top topic=overflow_policy
+    retirement                   dl_regrouping_bounded_on_a_diameter_budget     topic=algebraic_laws
+    retirement                   r119_soundness_at_both_overflow_policies       topic=the_realisation_map
+    retirement                   r119_the_two_part_rule_fails_under_saturation  topic=the_realisation_map
+    retirement                   r122_four_withdrawn_clauses_of_the_candidate   topic=the_realisation_map
+    retirement                   r132_saturating_stochastic_ejected_from_monotone topic=rounding
+    retirement                   r146_declared_slack_repair                     topic=the_strategy_object
+    retirement                   r146_the_count_is_not_a_property_of_the_design topic=the_strategy_object
+    retirement                   r151_the_first_predicate_of_clause_five_five   topic=the_strategy_object
+    -- 54 rows
+
+######## zzz_no_such_term
+    -- 0 rows
+

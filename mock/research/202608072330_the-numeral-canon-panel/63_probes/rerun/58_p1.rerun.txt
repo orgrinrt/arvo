@@ -1,0 +1,43 @@
+=== does round-to-nearest restore what truncation broke ===
+
+  mode        M   F   *assoc   distrib   *comm
+  trunc       15   1      398       168       0
+  nearest     15   1      390       160       0
+
+  trunc       15   2      878       518       0
+  nearest     15   2      958       475       0
+
+  trunc       15   3      884      1158       0
+  nearest     15   3     1098      1060       0
+
+  trunc       31   1     1892       709       0
+  nearest     31   1     1858       709       0
+
+  trunc       31   2     5352      2309       0
+  nearest     31   2     5440      2096       0
+
+  trunc       31   3     9522      5495       0
+  nearest     31   3     9788      4757       0
+
+  trunc       63   1     8054      2946       0
+  nearest     63   1     7966      2906       0
+
+  trunc       63   2    24350      9704       0
+  nearest     63   2    24532      8738       0
+
+  trunc       63   3    53032     23706       0
+  nearest     63   3    53648     20135       0
+
+  round-to-nearest still shows at least one nonzero violation: true
+  round-to-nearest ever reaches a fully clean row: false
+  round-to-nearest's counts differ from truncation's at every row: true
+
+  commutativity of the rescaling multiply, both modes, every row: 0 (checked above)
+  instrument: trunc and nearest disagree on at least one raw (a,b) pair at M=15,F=1: true
+
+  reading: rounding mode changes HOW MANY triples diverge, never WHETHER the
+semiring survives F > 0. The mechanism (a second lossy step baked into
+every multiply, per 57_probes/p4) is unaffected by which value the lossy
+step chooses; only its magnitude changes.
+
+P1 WORKS

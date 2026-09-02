@@ -1,0 +1,31 @@
+====================================================================================
+p5. which clause is the right third verdict
+====================================================================================
+
+declaration              kernel  RETRACT   DIST-MIN  MONOTONE  COHERENT 
+------------------------------------------------------------------------
+u4 wrap add (K1)         True    True      False     False     True     
+i4 wrap add (K1)         True    True      False     False     True     
+u4 saturate add (K1)     True    True      True      True      True     
+i4 saturate add (K1)     True    True      True      True      False    
+gf(2)^4 xor (K5)         True    True      True      True      True     
+u4 constant zero         False   False     False     True      True     
+i4 opposite bound        False   True      False     False     False    
+i4 parity scramble       False   False     False     False     False    
+
+------------------------------------------------------------------------------------
+ASSERTIONS
+------------------------------------------------------------------------------------
+  ok  distance-minimising implies retraction in every row measured
+  ok  and strictly so: u4 wrap add (K1), i4 wrap add (K1), i4 opposite bound retract without minimising
+  ok  the stronger clause EXCLUDES kernel items: u4 wrap add (K1), i4 wrap add (K1)
+  ok  the weaker clause excludes no kernel item
+  ok  and still excludes the reduction that computes nothing, which passes
+      both of the proposed verdicts
+
+READING. The third verdict is the RETRACTION and not the distance law, and
+the reason is the same one section 4 gives for the order discriminator: the
+stronger, more natural-sounding clause throws out a kernel item op's I3
+demands. Reaching for the strongest available law is exactly the move that
+would have got this wrong, twice, in one unit.
+EXIT=0

@@ -1,0 +1,82 @@
+# p3 output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O, aarch64-apple-darwin
+
+p3: staged against deferred quantisation over a two-multiply chain
+    exhaustive over a, b, c in 0..2^W, unsigned, as the instrument ran it
+
+## 0. faithfulness against `94_probes/c_retraction.out.txt`, W = 4
+
+94's name      F  published   measured  verdict
+truncate       0          0          0  matches
+truncate       1        800        800  matches
+truncate       2       1128       1128  matches
+truncate       3        910        910  matches
+truncate       4        543        543  matches
+nearest        0          0          0  matches
+nearest        1        864        864  matches
+nearest        2       1248       1248  matches
+nearest        3        880        880  matches
+nearest        4        550        550  matches
+
+  So the instrument's two modes are floor and half_up, and this
+  implementation is that instrument: ten of ten integers reproduced
+
+## W = 4
+
+mode             ratified         F=0       F=1       F=2       F=3       F=4
+floor            yes         RETRACTS       800      1128       910       543
+ceil             yes         RETRACTS       800      1128       925       495
+toward_zero      yes         RETRACTS       800      1128       910       543
+half_up          yes         RETRACTS       864      1248       880       550
+half_even        yes         RETRACTS       832      1152       796       476
+away_from_zero   no          RETRACTS       800      1128       925       495
+
+## W = 6
+
+mode             ratified         F=0       F=1       F=2       F=3       F=4       F=5       F=6
+floor            yes         RETRACTS     61952    116352    138880    128723     94884     54201
+ceil             yes         RETRACTS     61952    116352    138880    128852     95918     51357
+toward_zero      yes         RETRACTS     61952    116352    138880    128723     94884     54201
+half_up          yes         RETRACTS     62976    118272    135200    107789     63242     32909
+half_even        yes         RETRACTS     62464    116736    133280    106345     62442     32303
+away_from_zero   no          RETRACTS     61952    116352    138880    128852     95918     51357
+
+## W = 8
+
+mode             ratified         F=0       F=1       F=2       F=3       F=4       F=5       F=6       F=7       F=8
+floor            yes         RETRACTS   4136960   8153088  10872832  11988992  11577590   9872633   7068031   3969848
+ceil             yes         RETRACTS   4136960   8153088  10872832  11988992  11583714   9898462   7110434   3862828
+toward_zero      yes         RETRACTS   4136960   8153088  10872832  11988992  11577590   9872633   7068031   3969848
+half_up          yes         RETRACTS   4153344   8183808  10813952  11514240  10174670   7402534   4154563   2099069
+half_even        yes         RETRACTS   4145152   8159232  10783232  11485568  10156936   7395296   4149331   2092931
+away_from_zero   no          RETRACTS   4136960   8153088  10872832  11988992  11583714   9898462   7110434   3862828
+
+## the region on the rounding axis
+
+  F = 0:  every mode retracts at every swept W: true
+  F >= 1: every mode fails at every swept (W, F), 108 cells: true
+
+  stochastic, which is not a function and cannot be swept:
+    W=4 F=0: 0 product(s) with a nonzero fraction at the eager step, so the draw never happens and the mode is the identity
+    W=4 F=1: 64 product(s) with a nonzero fraction at the eager step, so the eager result is not determined by the triple
+    W=4 F=4: 208 product(s) with a nonzero fraction at the eager step, so the eager result is not determined by the triple
+    W=6 F=0: 0 product(s) with a nonzero fraction at the eager step, so the draw never happens and the mode is the identity
+    W=6 F=1: 1024 product(s) with a nonzero fraction at the eager step, so the eager result is not determined by the triple
+    W=6 F=6: 3840 product(s) with a nonzero fraction at the eager step, so the eager result is not determined by the triple
+    W=8 F=0: 0 product(s) with a nonzero fraction at the eager step, so the draw never happens and the mode is the identity
+    W=8 F=1: 16384 product(s) with a nonzero fraction at the eager step, so the eager result is not determined by the triple
+    W=8 F=8: 64256 product(s) with a nonzero fraction at the eager step, so the eager result is not determined by the triple
+
+## controls
+
+     W=4 F=0 counts across six modes: [0, 0, 0, 0, 0, 0]
+     W=6 F=0 counts across six modes: [0, 0, 0, 0, 0, 0]
+     W=8 F=0 counts across six modes: [0, 0, 0, 0, 0, 0]
+  C1 EXPECTED-PASS ok: the rounding axis moves nothing at F = 0
+  C1b EXPECTED-FAIL ok: a non-identity map at F = 0 differs on 3840 triples
+  C2 EXPECTED-PASS ok: `rounding a value already on the grid returns it unchanged`
+      holds for every mode at every F, 0 counterexamples, so the row's
+      `statement` cannot be what its `fails` field is about
+  C3 EXPECTED-FAIL ok: a shifted map moves 16 grid points
+
+controls: clean

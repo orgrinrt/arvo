@@ -1,0 +1,2 @@
+resolve(P00, P12).overflow = 1, .storage = 2
+resolve(P12, P00).overflow = 1, .storage = 2  (commutativity holds: checked at compile time above)

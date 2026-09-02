@@ -1,0 +1,23 @@
+# probe A output: emitted code for each strategy entry point
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O --emit asm -C panic=abort, aarch64-apple-darwin
+# feature gates in the source: `grep -c "^#!\[feature" a_choice_function.rs` says:
+0
+
+## the four entry symbols, verbatim from a_choice_function.s
+_entry_exact:
+	b	__RNvCs2HiZyOMri21_17a_choice_function10arm_accfit
+_entry_footprint:
+	b	__RNvCs2HiZyOMri21_17a_choice_function11arm_minimum
+_entry_speed:
+	b	__RNvCs2HiZyOMri21_17a_choice_function16arm_accfit_lanes
+_entry_speed_short = _entry_exact
+.subsections_via_symbols
+
+## conditional instructions in each entry before the tail call
+entry_speed: 0
+entry_footprint: 0
+entry_exact: 0
+
+## the alias
+427:	.globl	_entry_speed_short
+428:_entry_speed_short = _entry_exact

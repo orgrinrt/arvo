@@ -1,0 +1,41 @@
+OK   00_brief.md  (file exists, no line cited)
+OK   RULES.md:328-329  -> **Every member writes its file to disk early and extends it in place.** Several prior dispatches died / holding a complete investigation in a single f
+OK   17_probes/t2_aggregate_erasure.rs  (file exists, no line cited)
+OK   17_probes/t3_opcode_oracle.out  (file exists, no line cited)
+OK   INTENTS.md  (file exists, no line cited)
+OK   00_brief.md:144-146  -> **The acceptance criterion**, which is op's erasure gate: the consumer expresses usage in bits and / bytes, the typestate derives the matching contain
+OK   mock/Cargo.toml:1-17  -> # arvo's mock workspace, deliberately empty. / # / # `mock/crates` was deleted on 2026-08-08 while the canon is written. This is the / # mutation orde
+OK   RULES.md:359-375  -> ### Cumulative reading makes the TWO EXPERTS rung unreachable unless the dispatch says otherwise /  / Noticed at the first checkpoint of this panel, a
+OK   RULES.md  (file exists, no line cited)
+OK   panels-argue-the-intent-not-the-wording.md  (file exists, no line cited)
+OK   16_probes/p3_blind_suite.rs  (file exists, no line cited)
+OK   16_probes/p3_blind_suite.rs:89-92  -> // NOTE: this is a weak stand-in. The panel's real erasure check compares emitted symbols / // and reports that LLVM folds the two into one. What matt
+OK   17_probes/t2_aggregate_erasure.rs:3-9  -> // The panel's instrument (15's q12) compares ONE typed operation on ONE value against / // ONE native instruction. That is a real result and it is qu
+OK   OPTIONS.md  (file exists, no line cited)
+OK   RULES.md:335-357  -> ### The reading list needs a slot for the repository, and did not have one /  / Found at the third checkpoint of this panel's first night, and it cost
+OK   32_op_arvo_adapts_to_the_cores_it_finds.md  (file exists, no line cited)
+OK   51_probes/width_matrix_O3_n1000.out  (file exists, no line cited)
+OK   the-test-gate.md  (file exists, no line cited)
+OK   verify.sh  (file exists, no line cited)
+OK   41_dispatcher_note_no_bench_here_has_ever_checked_its_answers.md  (file exists, no line cited)
+OK   51_probes/v3_matrix.out  (file exists, no line cited)
+OK   51_probes/asm2_O3_n1000/w19.s  (file exists, no line cited)
+OK   51_probes/robustness.out  (file exists, no line cited)
+OK   17_probes/verify.sh  (file exists, no line cited)
+OK   51_probes/fixed_gather.out  (file exists, no line cited)
+OK   small-wins-compound-into-the-program.md  (file exists, no line cited)
+OK   a-refused-bound-wants-a-trait-not-a-feature.md  (file exists, no line cited)
+OK   50_lamport_which_criterion_is_in_use.md:483-489  -> ``` / n         naive / windowed       windowed / native      naive / native / 16384     3.12                   1.51                   4.72 / 65536   
+OK   43_rompf_what_a_composition_is.md:73  -> `len <= capacity` is enforced by its **only constructor** still emits two bounds-check failure paths and
+OK   43_probes/p7.out  (file exists, no line cited)
+OK   RULES.md:124  -> **Counts are measurements.** Produce every number with a command and say which command.
+OK   RULES.md:126-133  -> **Check your own citations before shipping, by opening them.** A reference that resolves is not a / reference that says what you claim. One member fou
+OK   citations.out  (file exists, no line cited)
+OK   cl-claim-sketch-discipline.md  (file exists, no line cited)
+OK   RULES.md:263-266  ->  / **Every option is carried in `OPTIONS.md`, written out in full.** Your file says which options your / finding fits well, which it fits badly, and w
+OK   47_wingo_one_richer_output.md:120-121  -> `47_probes/p2_scalar_single_output_refused.rs` builds it and is refused, six times, in three / syntactic positions:
+OK   50_lamport_which_criterion_is_in_use.md:17-21  -> among them, and it leaves three separate parameters unstated.** Enumerated exhaustively over those / parameters, one sentence admits output sets of si
+OK   51_probes/verify.sh  (file exists, no line cited)
+OK   check3.rs  (file exists, no line cited)
+
+39 citations resolved and opened, 0 name a file that does not exist, 0 name a line past end of file

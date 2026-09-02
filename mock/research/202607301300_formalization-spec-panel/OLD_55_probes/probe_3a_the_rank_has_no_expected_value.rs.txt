@@ -1,0 +1,60 @@
+//! Does the rank fold's interior overflow, and does anything say so?
+use arvo::strategy::{Hot, Precise, Unsigned};
+use arvo::ufixed::UFixed;
+use arvo::{Bits, FBits, USize, ibits};
+use arvo_bitmask::{BitMatrix, NodeId};
+use arvo_graph::upward_rank;
+use arvo_tensor::Dim;
+
+type WHot = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
+type WPrecise = UFixed<{ ibits(8) }, { FBits::ZERO }, Precise>;
+
+fn nid(i: usize) -> NodeId { NodeId(USize(i)) }
+
+fn chain4<W: Copy>(w: [W; 4]) -> (BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>>, [W; 4]) {
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>> =
+        BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    dag.set_edge(nid(0), nid(1));
+    dag.set_edge(nid(1), nid(2));
+    dag.set_edge(nid(2), nid(3));
+    (dag, w)
+}
+
+#[test]
+fn hot_rank_on_a_four_chain_of_hundreds() {
+    let (dag, weights) = chain4([WHot::from_raw(100u8); 4]);
+    let r = upward_rank(&dag, &weights);
+    // Exact answers: 400, 300, 200, 100.
+    println!("rank = [{}, {}, {}, {}]",
+        r[0].to_raw(), r[1].to_raw(), r[2].to_raw(), r[3].to_raw());
+    assert_eq!(r[3].to_raw(), 100);
+    assert_eq!(r[2].to_raw(), 200);
+    assert_eq!(r[1].to_raw(), 300, "rank[1] should be 300");
+    assert_eq!(r[0].to_raw(), 400, "rank[0] should be 400");
+}
+
+#[test]
+fn hot_rank_ordering_inverts() {
+    // Two independent chains. Chain A (0->1) totals 400; chain B (2->3) totals 210.
+    // A is strictly the longer path, so any correct rank orders A above B.
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>> =
+        BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    dag.set_edge(nid(0), nid(1));
+    dag.set_edge(nid(2), nid(3));
+    let weights = [
+        WHot::from_raw(200u8), WHot::from_raw(200u8),
+        WHot::from_raw(200u8), WHot::from_raw(10u8),
+    ];
+    let r = upward_rank(&dag, &weights);
+    println!("rank A(node 0) = {}, rank B(node 2) = {}", r[0].to_raw(), r[2].to_raw());
+    assert!(r[0].to_raw() > r[2].to_raw(),
+        "the longer path ranked below the shorter one: {} vs {}", r[0].to_raw(), r[2].to_raw());
+}
+
+#[test]
+fn precise_rank_on_the_same_input() {
+    let (dag, weights) = chain4([WPrecise::from_raw(100u16); 4]);
+    let r = upward_rank(&dag, &weights);
+    println!("precise rank = [{}, {}, {}, {}]",
+        r[0].to_raw(), r[1].to_raw(), r[2].to_raw(), r[3].to_raw());
+}

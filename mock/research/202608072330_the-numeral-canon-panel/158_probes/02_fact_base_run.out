@@ -1,0 +1,4 @@
+HAZARD    build=base R(MAX+1) = 8191
+CONTROL_R build=base R(MAX+1) = 8191
+CONTROL_L build=base sum(lambda) = 160348640
+CERT      build=base separates = false

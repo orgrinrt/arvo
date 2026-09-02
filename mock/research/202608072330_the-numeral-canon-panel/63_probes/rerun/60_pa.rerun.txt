@@ -1,0 +1,6 @@
+inputs tested (count = 3-element (a,b) raw-vector pairs over a 6-value set): 46656
+arm W (wide exact + single RNE narrow): correctly rounded on ALL inputs
+arm S-trunc: not correctly rounded on 42892 inputs, max drift 3 ulp at F=8
+arm S-rne:   not correctly rounded on 15628 inputs, max drift 2 ulp at F=8
+mutant W-trunc flagged on 22476 inputs (instrument CAN fail)
+OUTCOME: WORKS

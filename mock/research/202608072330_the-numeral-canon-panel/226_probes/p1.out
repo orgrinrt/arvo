@@ -1,0 +1,35 @@
+== the carrier ladder ==
+  jump points (4): [9, 17, 33, 65]
+  monotone over 1..=128
+
+== the access ladders, against that base ==
+  tight  
+    jump points (24): [3, 4, 5, 8, 9, 11, 12, 13, 16, 17, 27, 28, 29, 32, 33, 59, 60, 61, 64, 65, 123, 124, 125, 128]
+    shared with the carrier ladder: 4 [9, 17, 33, 65]
+    widths where it differs from the carrier: 20 of 128, first Some(3)
+    NON-MONOTONE: f(3) = 16 and f(4) = 8
+  loose  
+    jump points (5): [2, 10, 26, 58, 122]
+    shared with the carrier ladder: 0 []
+    widths where it differs from the carrier: 35 of 128, first Some(2)
+    monotone over 1..=128
+
+== C1 control: an access rule defined to BE the carrier rule ==
+  clone  
+    jump points (4): [9, 17, 33, 65]
+    shared with the carrier ladder: 4 [9, 17, 33, 65]
+    widths where it differs from the carrier: 0 of 128, first None
+    monotone over 1..=128
+
+== the sole-occupancy arm ==
+  widths where sole-occupancy stride or access is NOT the carrier: 0 []
+  C2 control, padded placement, widths reported as differing: 128 of 128
+
+== verdict ==
+  C1 clone rule shares every carrier jump point: true
+  C2 padded placement reported at every width:   true
+  C3 monotonicity check fires on the tight rule: true
+  tight shares 4 carrier jump points
+  loose shares 0 carrier jump points
+
+  RESULT: INCONCLUSIVE

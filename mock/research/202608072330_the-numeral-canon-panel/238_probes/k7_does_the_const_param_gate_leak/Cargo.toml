@@ -1,0 +1,12 @@
+# Does an `adt_const_params` const parameter in a public signature reach a
+# consumer?
+#
+# `obligation::the_unstable_machinery_does_not_reach_a_consumer` is what the
+# question's second option is bounded by, and that row's own `gap` field says
+# the containment question is unmeasured. This measures it for the one gate the
+# second option would need.
+#
+# Own workspace, so cargo does not walk up into `mock/`.
+[workspace]
+resolver = "2"
+members = ["door", "outside"]

@@ -1,0 +1,39 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p2_joins_exist_meets_do_not.rs
+
+### compiled clean
+
+### p2. joins and meets of representable sets under inclusion
+### catalogue: 47 shapes, distinct by denotation
+###   constant quantum 38, exponential quantum 9
+
+CONTROLS
+  C1  meet is unique inside the constant-quantum family        as required  required=0 bad, got 0
+  C2  some pair's intersection is outside the catalogue        as required  required=>0, got 125
+  C3  every pair has at least one upper bound                  as required  required=0 bad, got 0
+  C4  some exponential point denotes no constant point's set   as required  required=>0, got 9
+  C5  removing the degenerate points breaks C1                 as required  required=>0, got 256
+
+MEASUREMENT over all 1081 unordered pairs
+  join    unique least upper bound      1003
+  join    several minimal upper bounds  78
+  meet    unique greatest lower bound   1032
+  meet    several maximal lower bounds  49
+  meet    no lower bound at all         0
+
+  of the 49 pairs with no unique meet:
+    both points of one kind    2
+    one of each kind           47
+
+  first join failure:  degenerate: one value {0}
+              const step=16/16 half=64/16 phase=8/16
+           minimal upper bounds: const step=8/16 half=64/16 phase=0/16 | float p=3 e=[-4,1] half=128/16
+
+  first meet failure:  const step=1/16 half=64/16 phase=0/16
+              float p=2 e=[-3,2] half=128/16
+           maximal lower bounds: const step=16/16 half=64/16 phase=0/16 | float p=2 e=[-4,1] half=128/16
+
+  intersections falling outside the catalogue: 125
+  first such:  const step=1/16 half=16/16 phase=0/16  /\  float p=2 e=[-3,2] half=32/16
+
+### exit 0

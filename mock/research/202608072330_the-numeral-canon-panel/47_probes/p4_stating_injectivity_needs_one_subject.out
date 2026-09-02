@@ -1,0 +1,15 @@
+arm A, componentwise: `assert_same::<u16, u16>()` compiles.
+  it is true of all eight colliding widths and certifies nothing about any of them.
+
+arm B, joint: the assertion needs ONE subject. Reifying the pair supplies one.
+  Pair<u16, 9> / Pair<u16, 13> / Pair<u16, 16> are three distinct types.
+  p4b asserts they are the same and is refused; that refusal is the check.
+
+arm C, a third projection arrives:
+  tuple reification: Pair<C, S> becomes Triple<C, S, X>. every assertion rewritten.
+  named result:      Packed<W> is unchanged. the three assert_same lines in this
+                     file are character-identical to p1's, and p1's trait had two
+                     projections where this one has three.
+
+stride of the eight, from the named result, with the compute projection present:
+  W9=9 W13=13 W16=16   compute width = u32 in all three

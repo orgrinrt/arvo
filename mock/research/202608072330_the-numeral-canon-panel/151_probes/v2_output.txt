@@ -1,0 +1,104 @@
+================================================================================================
+B1/B2/B3. 148's refutation: does the congruence even apply at a single addition?
+================================================================================================
+  A. unsigned ADDITION, the two saturating positions
+     low branch taken: 0 of 1024 operand pairs
+     SaturateBoth and SaturateHighOnly agree everywhere: True
+     -> the mechanism is REACHABILITY, not congruence: the distinguishing branch
+        is never entered
+
+  B2 CONTROL. unsigned SUBTRACTION, same two positions
+     low branch taken: 496 of 1024
+     the two positions separate at: 496 pairs
+     control fires: True (must be True)
+
+  B1. single addition: do the two INTERMEDIATE positions coincide?
+     overflow = wrap       early vs late differ at 0 triples
+     overflow = sat_both   early vs late differ at 0 triples
+     overflow = sat_high   early vs late differ at 0 triples
+     B1: CONFIRMED, and the wrapping row is the decisive one:
+     a zero under a policy the congruence does not cover is structural, not congruential.
+
+  B3 CONTROL. multiply-add, which has two reduction sites
+     signedness = unsigned  differ at 0 triples
+     signedness = signed    differ at 11986 triples
+     B3: CONFIRMED, so the congruence is the mechanism where
+     there are two sites and is unavailable where there is one.
+
+================================================================================================
+B4. 147's narrowing: which unsigned cell actually rests on the one-sidedness
+================================================================================================
+  overflow                 F=0       F=1       F=2       F=3  low clamp
+  wrap                   0.00%     0.00%     0.00%     0.00%  0
+  sat_one_sided          0.00%     0.00%     0.00%     0.00%  0
+  sat_two_sided          6.19%     7.14%     9.63%    15.50%  13792
+
+  B4: CONFIRMED. The wrapping zero survives a two-sided clamp
+  because wrapping has no clamp; only the saturating zero rests on the one-sidedness.
+
+================================================================================================
+B5/B6. The instrument fix: intersect over VALUES, not over names
+================================================================================================
+
+  container is answer-invisible at the column
+    139: {'W': ['11', '3', '5', '6', '7'], 'F': ['0', '2'], 'overflow': ['saturating'], 'rounding': ['truncate']}
+    140: {'W': ['4'], 'F': ['0', '1', '2'], 'signedness': ['unsigned'], 'rounding': 'any', 'overflow': 'any'}
+    141: {'W': ['4'], 'F': ['0', '1', '2'], 'signedness': ['signed', 'unsigned'], 'rounding': ['floor', 'toward zero'], 'overflow': ['saturating', 'wrap']}
+    dimensions whose VALUE intersection is EMPTY: ['W', 'rounding']
+
+  accumulator is visible exactly at signed saturating
+    141: {'W': ['4', '5', '6'], 'F': ['0', '1', '2', '3', '4', '5'], 'signedness': ['signed', 'unsigned'], 'rounding': ['floor', 'toward zero', 'truncate toward zero'], 'overflow': ['saturating', 'wrap']}
+    142: {'W': ['4'], 'signedness': ['signed', 'unsigned'], 'overflow': ['saturating', 'wrap'], 'F': ['1'], 'rounding': ['floor']}
+    143: {'W': ['4', '6', '8'], 'F': ['0', '1', '2', '3'], 'signedness': ['signed', 'unsigned'], 'overflow': ['saturate', 'wrap'], 'rounding': ['toward zero']}
+    dimensions whose VALUE intersection is EMPTY: ['rounding']
+
+  class count is monotone and not strict
+    141: {'W': ['3', '4', '5', '6'], 'F': ['0', '1', '2'], 'signedness': ['signed', 'unsigned']}
+    143: {'W': ['4', '6', '8'], 'F': ['0', '1', '2', '3'], 'signedness': ['unsigned']}
+    dimensions whose VALUE intersection is EMPTY: ['assignments', 'witness sets']
+
+  fusion is an axis position already
+    141: {'W': ['3', '4', '5', '6'], 'F': ['0', '1', '2', '3', '4', '5'], 'signedness': ['signed', 'unsigned'], 'overflow': ['saturating', 'wrap'], 'rounding': ['floor']}
+    142: {'W': ['4', '6'], 'F': ['0', '1', '2', '3', '4', '5'], 'signedness': ['signed', 'unsigned'], 'overflow': ['saturating', 'wrap'], 'rounding': ['away from zero', 'ceiling', 'floor', 'nearest-half-even', 'nearest-half-up', 'toward zero', 'truncate toward zero']}
+    dimensions whose VALUE intersection is EMPTY: none
+
+  B7 CONTROL: parsed keys dropped as not dimension-shaped: 83
+      139: rustc 1.98.0-nightly 57d06900f)...
+      139: rustc 1.98.0-nightly 57d06900f)...
+      140: the control doubles it to 48. `140_probes/p3_out.txt...
+      140: arithmetic exhaustive` Structural only. Prices nothing. ...
+  B7: CONFIRMED, the control fires and the mangled keys are named
+
+  B5 (the container row's signedness intersects to empty): REFUTED
+  B6 (rows carrying the defect): 3 of 4
+      container is answer-invisible at the column: ['W', 'rounding']
+      accumulator is visible exactly at signed saturating: ['rounding']
+      class count is monotone and not strict: ['assignments', 'witness sets']
+
+================================================================================================
+VERDICT
+================================================================================================
+  148's refutation reproduces: at one reduction site the intermediate positions coincide
+  under every overflow position, wrapping included, so the congruence is not available as
+  an explanation at the cell 146 attributed to it. The third contamination item is wrong.
+
+  147's narrowing reproduces: only the unsigned saturating cell rests on the one-sidedness.
+
+  And my z6 instrument was measuring the wrong thing. Intersecting dimension NAMES reports a
+  dimension as present when the instances partition its values, and the honest intersection
+  is over values.
+
+  B5 as I predicted it is REFUTED. At the container row the empty dimensions are not
+  `signedness`, which 139 simply omits and which the name-level check already dropped.
+  They are `W` and `rounding`: 139 swept W in {3,5,6,7,11} where the other two swept
+  W = 4, and 139 swept truncate where 141 swept floor and toward-zero. So 148's diagnosis
+  is right about the mechanism and wrong about which dimension carries it here.
+
+  B6: the defect reaches 3 of 4 rows, which 148 did not
+  check and said so. The fusion row is clean.
+
+  What that means for a clause built on one of these rows: the intersection is not merely
+  an upper bound, it is EMPTY on those dimensions, so a predicate written from it claims
+  nothing where they are present. A clause needs a single instance that spans what it
+  wants to claim, cited for that dimension, which is 148's repair applied per dimension
+  rather than only to signedness.

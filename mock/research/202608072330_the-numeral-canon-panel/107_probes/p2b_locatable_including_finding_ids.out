@@ -1,0 +1,36 @@
+member ref = a backticked bare number naming a panel file
+
+file   refs     locatable    pct       
+93     39       12           30%       
+94     27       9            33%       
+97     38       9            23%       
+98     23       0            0%        
+100    36       2            5%        
+101    43       2            4%        
+102    62       1            1%        
+103    34       1            2%        
+25     13       6            46%       
+40     3        1            33%       
+22     1        0            0%        
+35     1        0            0%        
+83     1        0            0%        
+87     2        0            0%        
+88     3        0            0%        
+96     4        0            0%        
+99     2        0            0%        
+104    11       2            18%       
+105    4        0            0%        
+
+TOTAL refs=347 locatable=45  -> 12%
+
+=== for contrast, the same measure over the eight members themselves ===
+  93_orchard_the_strategy_axis_derived_cold.md       line-anchors=29
+  94_wingo_the_strategy_axis_derived_cold.md         line-anchors=13
+  97_dolan_the_strategy_space_attacked.md            line-anchors=27
+  98_spj_what_the_strategy_axis_settles.md           line-anchors=19
+  100_xu_generating_the_table_attacked.md            line-anchors=23
+  101_wronski_the_cost_coordinates.md                line-anchors=41
+  102_torvalds_does_the_mechanism_serve_the_intents.md line-anchors=0
+  103_mcsherry_what_the_corpus_can_and_cannot_show.md line-anchors=5
+
+106 whole file, line-anchors:        2

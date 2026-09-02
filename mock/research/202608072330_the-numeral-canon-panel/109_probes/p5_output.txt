@@ -1,0 +1,10 @@
+
+running 5 tests
+test tests::the_derived_range_is_tight_and_sound_by_census ... ok
+test tests::the_proved_path_agrees_with_ordinary_addition_on_its_whole_region ... ok
+test tests::range_composes_to_depth ... ok
+test tests::outside_the_proved_region_the_completions_disagree ... ok
+test tests::range_propagates_through_associated_consts_with_no_feature_gate ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,16 @@
+warning: function `derive_raw_one` is never used
+  --> probe2_derive_validate_erase.rs:19:10
+   |
+19 | const fn derive_raw_one<const I: u32, const F: u32>() -> u64 {
+   |          ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `main` is never used
+  --> probe2_derive_validate_erase.rs:33:4
+   |
+33 | fn main() {
+   |    ^^^^
+
+warning: 2 warnings emitted
+

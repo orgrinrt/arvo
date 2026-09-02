@@ -1,0 +1,25 @@
+ITEM                                       EXPECT   HITS   WHERE
+------------------------------------------ -------- ------ -----
+1.1a standard: optimal and ideal           ABSENT   0       
+1.1c standard: express the conventions     CARRIED  13      obligation.toml retirement.toml 
+1.3a stopping condition: op says when      CARRIED  4       ruling.toml 
+1.3b the fresh read, transcripts withheld  ABSENT   0       
+1.4 post-canon four-phase sequence         ABSENT   0       
+1.5 end state: invisible, lowers optimally ABSENT   0       
+1.6 pricing pillar: compile time is nothing ABSENT   0       
+1.7 D54 the axis-sorting test              ABSENT   0       
+1.8 D56 no gratuitous abbreviation         ABSENT   0       
+1.9 D53 one numeric type, families alias it ABSENT   0       
+1.10a no enumerations, generally           PARTIAL  47      obligation.toml probe.toml proposal-the-later-topics.toml proposal.toml question.toml retirement.toml ruling.toml 
+1.10b container is never consumer-named    ABSENT   3       probe.toml 
+1.14 downstream evidence is not a need     ABSENT   0       
+1.15 licence to argue a ratified call      ABSENT   0       
+135b the four-part erasure gate            ABSENT   1       question.toml 
+143b a constant is a function, granular    ABSENT   0       
+138b the aliases are aliases               ABSENT   0       
+CTL warm behaves as a rust primitive       CARRIED  9       question.toml ruling.toml 
+CTL the D-numbered decisions are dead      CARRIED  5       retirement.toml ruling.toml 
+CTL prior calls are a historical log       CARRIED  3       ruling.toml 
+
+controls held: every CARRIED row returned a non-zero count, so a zero above is
+the registry's silence rather than the grep's.

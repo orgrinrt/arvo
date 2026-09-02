@@ -1,0 +1,141 @@
+106 accounting section: lines 1217..1270 EXCLUDED from the target set
+
+=== RAW TOTALS (non-unique occurrences) ===
+members, occurrences:      157
+106 body (no sec15), occurrences:        1
+
+=== UNIQUE ANCHOR SETS ===
+members, unique:      116
+106 body (no sec15), unique:        1
+106 sec15 accounting only, unique:        1
+
+=== CARRIED: member anchors present in 106 body ===
+       0
+
+=== DROPPED: member anchors absent from 106 body ===
+     116
+
+=== DROPPED FROM BODY BUT PRESENT IN SEC 15 ACCOUNTING ===
+(these would have silently passed a diff run without the exclusion)
+       0
+
+=== FULL DROPPED LIST ===
+.../src/lib.rs:394-411
+100:1090-1092
+100:1102-1104
+100:520
+100:803-812
+100:812
+100:841
+100:866
+100:925-927
+100_probes/p1_what_the_instability_is_made_of.py:118-128
+100_probes/p1_what_the_instability_is_made_of.py:78-87
+102_probes/p1...py:55
+102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.py:41
+25:528-537
+25:533-534
+25:534-537
+35_probes/p2b_laws_signed.rs:72-74
+40:209-211
+40:23-28
+40:26-28
+40:33-34
+40:398
+40:486-492
+88:20-21
+88:28-30
+93:1042-1044
+93:1151-1158
+93:1178-1180
+93:172-176
+93:180-188
+93:354-357
+93:384-386
+93:632-633
+93:966-973
+93_probes/p4_preference_erases.rs:47
+94:420-421
+94_probes/c_retraction.rs:24-27
+98:285-286
+98:398-402
+98:473-477
+98:475-477
+98_probes/p10_is_the_table_stable_enough_to_be_an_object.out:8-13
+99:60-63
+INTENTS.md:100-103
+INTENTS.md:102-103
+INTENTS.md:109-110
+INTENTS.md:109-119
+INTENTS.md:112-113
+INTENTS.md:117-119
+INTENTS.md:125-127
+INTENTS.md:126-127
+INTENTS.md:127
+INTENTS.md:136-139
+INTENTS.md:137-139
+INTENTS.md:155-156
+INTENTS.md:162-163
+INTENTS.md:162-164
+INTENTS.md:169-172
+INTENTS.md:180-183
+INTENTS.md:238-240
+INTENTS.md:246-247
+INTENTS.md:290-292
+INTENTS.md:309-311
+INTENTS.md:326-328
+INTENTS.md:327
+INTENTS.md:51-61
+INTENTS.md:56
+INTENTS.md:56-58
+INTENTS.md:81
+INTENTS.md:81-83
+INTENTS.md:92-94
+OPTIONS.md:1466-1470
+OPTIONS.md:1655-1656
+OPTIONS.md:2059-2060
+OPTIONS.md:2089
+OPTIONS.md:2096
+arvo-always-optimal-internals.md:54-55
+arvo-always-optimal-internals.md:55-56
+arvo-toolbox-not-policer.md:76
+bench-core/src/lib.rs:182-193
+bench-core/src/lib.rs:421-438
+bench-core/src/lib.rs:427-429
+bench-core/src/lib.rs:432-435
+bench-core/src/lib.rs:98-107
+bench-harness/src/env.rs:105
+bench-harness/src/harness.rs:228-231
+bench-harness/src/harness.rs:752
+bench-harness/src/perf.rs:16-21
+bench-harness/src/perf.rs:9-14
+bitpack-carrier-d16-control/src/lib.rs:1-8
+bitpack-contend-d16-control/src/lib.rs:1-5
+bitpack-contend-shared/src/routine.rs:11-24
+bitpack-wide-d16-control/src/lib.rs:1-6
+bitpack-write-contend-shared/src/stress.rs:68
+mock/Cargo.toml:1-15
+mock/Cargo.toml:1-16
+mock/Cargo.toml:32
+mock/benches/bench.toml:312
+mock/benches/bench.toml:359
+mock/benches/src/main.rs:229-232
+mock/benches/variants/bitpack-carrier-d16-control/src/lib.rs:1-8
+mock/benches/variants/bitpack-carrier-shared/src/lib.rs:373-388
+mock/benches/variants/bitpack-carrier-shared/src/lib.rs:513-516
+mock/benches/variants/bitpack-contend-shared/src/routine.rs:11-24
+mock/benches/variants/bitpack-wide-shared/src/lib.rs:102
+mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:66-72
+mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:68
+mock/benches/variants/warm-clamp-shared/src/lib.rs:83
+mock/benches/variants/warm-clamp-shared/src/lib.rs:83-89
+mock/benches/variants/warm-container-shared/src/lib.rs:1356
+notko/notko-macros-core/src/tiers.rs:53
+notko/notko-macros-core/src/tiers.rs:78
+notko/notko-macros/src/lib.rs:21-30
+notko/src/lib.rs:41-44
+p3_mutant_generator_bug.rs:169
+variants/warm-clamp-shared/src/lib.rs:83
+
+=== NEW IN 106, not in any member ===
+22:188-193

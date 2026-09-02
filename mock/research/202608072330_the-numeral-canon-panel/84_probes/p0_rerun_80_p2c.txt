@@ -1,0 +1,34 @@
+== p0: rerun of 80_probes/p2c, honest build ==
+exit: 0
+p2c: closed-form verdict, cross-checked against the sweep on a model band
+  model band: widths 2..=5
+  agreement over the band, evaluated at compile time: true
+  closed_verdict(wrap, w = 64) = true   (constant time, no enumeration)
+  closed_verdict(sat,  w = 64) = false
+  reassociating_consumer::<Policy<0>>() = licensed
+
+What is still unchecked, and it is now exactly one named thing:
+  the transfer of the agreement from widths 2..=5 to width 64.
+
+== p0: rerun of 80_probes/p2c, badclosed build ==
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+   --> ../80_probes/p2c_closed_form_checked_on_a_model.rs:122:23
+    |
+122 |   const AGREEMENT: () = assert!(
+    |  _______________________^
+123 | |     closed_agrees_with_sweep(),
+124 | |     "the closed-form law verdict disagrees with the swept verdict somewhere in the \
+125 | |      model band, so the closed form is wrong and no arm may be gated on it"
+126 | | );
+    | |_^ evaluation of `AGREEMENT` failed here
+
+note: erroneous constant encountered
+   --> ../80_probes/p2c_closed_form_checked_on_a_model.rs:136:18
+    |
+136 |         let () = AGREEMENT;
+    |                  ^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit: 1

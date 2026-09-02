@@ -1,0 +1,21 @@
+p4: the multivariate box criterion for monotone unsigned saturating laws
+
+k = 2, widths 1..=5, exhaustive sweeps over the full square:
+  (pair, width) verdicts:                 2030
+  true 431, false 1599
+  box criterion vs sweep mismatches:      0
+  cases with a clamped box point (K nonempty): 1142
+  MUTATION CONTROL, box shrunk by one per coordinate: 691 mismatches
+
+k = 3, widths 1..=4, exhaustive sweeps over the full cube:
+  (pair, width) verdicts:                 976
+  true 215, false 761
+  box criterion vs sweep mismatches:      0
+  cases with a clamped box point (K nonempty): 575
+  MUTATION CONTROL, box shrunk by one per coordinate: 345 mismatches
+
+DIRECT FALSIFICATION SEARCH: every pair of depth-2 k=2 terms, widths 2 and 3.
+  term pairs checked: 770006
+  pairs TRUE on the box and FALSE in the domain: 0
+
+all checks passed

@@ -1,0 +1,10 @@
+rationals (+,*) : (2, true, -3, true, true, true, -128, 127, true)
+tropical (min,+): (2, true, -3, true, true, true, -128, 127, true)
+boolean (and,or): (2, true, -3, true, true, true, -128, 127, true)
+interval algebra: (2, true, -3, true, true, true, -128, 127, true)
+CONTROL radix 10: (10, true, -3, true, true, true, -128, 127, true)
+
+four different algebras indistinguishable : true
+negative control (RADIX) moved            : true
+
+FINDING: `Ambient` declares RADIX and SIGNED and no operation family, so the rationals under plus and times, the tropical semiring under min and plus, the two-element Boolean algebra and the interval algebra over the rationals are one ambient domain to every function this crate ships. Under the ratified rule that where two realisations of one name disagree the signature is missing a coordinate, the signature is missing the operation family.

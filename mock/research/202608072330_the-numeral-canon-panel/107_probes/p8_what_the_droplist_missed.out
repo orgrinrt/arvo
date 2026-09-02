@@ -1,0 +1,137 @@
+
+----------------------------------------------------------------
+OMISSION 1. 97's F-H: a declared non-negative operand window RECOVERS
+three laws that two-sided signed saturation loses. Licence-shaped, one file.
+800:**F-H. Restricting a signed saturating type to a declared non-negative operand window recovers additive
+801-associativity, multiplicative associativity and distributivity over addition, all of which two-sided
+802-saturation loses.**
+803-`holds for: W in {4, 5, 6}, F = 0, signedness = signed, overflow = saturate, operand window = declared
+804-non-negative, operations {add, mul}, arity 3, values exhaustive, threads = 1, target features any`
+805-Evidence: same probe. This was a prediction of the criterion made before running, on the ground that a
+806-one-sided clamp is a congruence and a two-sided one is not, and it independently retrodicts `82`'s
+
+-- 106, every occurrence of 'window' --
+0
+   (zero means absent)
+
+----------------------------------------------------------------
+OMISSION 2. 97's F-B: the gap is polynomial against exponential in the
+region count, which is what makes 72-of-15625 a fact about weightings
+rather than about one table. 98 calls it 'a better argument than mine'.
+285:**F-B. The gap is polynomial against exponential in the number of regions, so it is a property of what
+286-a weighting is rather than of any dataset.**
+287-`holds for: regions in 2..20, arms in {4, 5, 6}, cost dimensions in {2, 3}, cost tables arbitrary`
+288-Evidence: `97_probes/p1b_the_gap_is_structural.py`, a counting bound plus exact enumeration over 2000
+289-random cost tables with zero violations.
+290-
+
+-- and 98's own bound on the counts without it --
+853:**F-98-5. The ratio of weighting-realisable sections to Pareto-admissible ones varies by a factor of 47
+854-across cost tables of one shape, so a particular value of it is a fact about one table.**
+855-`holds for: regions = 5, arms = 5, cost coordinates = 3, 180 models across three generators, arithmetic
+856-exact rational`
+
+-- 106: 'polynomial', 'hyperplane', '47x', 'fact about one table' --
+   polynomial             0
+   hyperplane             0
+   47x                    0
+   fact about one table   0
+
+----------------------------------------------------------------
+OMISSION 3. The exchange-rate-not-priority reading of op's FOUR intents.
+Three independent instances: 40 section 5.3, then 98 section 4.1 with a
+probe, then 102 from the intents' text. It constrains what 106 section 1
+means by 'a weighting', and it carries a consequence 98 said to state.
+### 4.1 A priority is not an exchange rate, and every one of the four intents refuses the priority
+
+Two things "a weighting over measurements" could mean.
+
+A **priority**: the strategy names which measurement outranks which, absolutely, so any gain on a higher
+coordinate justifies any loss on a lower one. That is a lexicographic order.
+
+An **exchange rate**: the strategy names how much of one measurement a unit of another is worth, so a
+loss on the primary is accepted when the gain elsewhere is large enough and refused when it is not. That
+is a weighting with finite ratios.
+
+Now read op's four, and notice that each names a primary concern **and then explicitly refuses to make
+it absolute**:
+
+- I4, on the imitation intent: mimicry "does not make it absolutely required, if mimicking is
+  consistently just worse choice" (`INTENTS.md:92-94`).
+- I5, on the speed intent: it "can sacrifice soundness... but it should not lose it for nothing,
+  instead, provable meaningful gains" (`INTENTS.md:102-103`).
+- I6, on the storage intent: it "has more leeway to do things non-efficient" and "does not have to drop
+  efficiency wins elsewhere" (`INTENTS.md:109-119`).
+- I7, on the accuracy intent: it "sacrifices as much performance and efficiency as makes sense"
+  (`INTENTS.md:125-127`).
+
+Four intents, four refusals of the absolute reading. That is not a stylistic hedge, and
+`98_probes/p4_priority_order_against_exchange_rate.py` measures what it is instead.
+
+**A priority is always realisable as an exchange rate on a finite model.** 1200 lexicographic sections
+over 200 random models, one per coordinate permutation, and **1200 of 1200** are realisable by a
+strictly positive weight vector. So a canon stating which measurement outranks which has said something
+a weighting can implement, and the two formalisms are not rivals.
+
+**The converse fails by a wide margin.** On the three-coordinate table, the six coordinate permutations
+produce **4 distinct sections**, against **58** realisable by a weighting. So 54 of 58 behaviours need
+an actual rate and no priority order can express them. The probe exhibits three of the 54, and one with
+an exact weight vector that realises it, checked by recomputing the argmin.
+
+**So op's four refusals have exact operational content**: they are the difference between 4 available
+behaviours and 58, on that table. That is what "not absolutely required" buys.
+
+871:**F-98-7. A selection rule of the form "minimise one coordinate subject to a bound on another" is not
+872-realisable by any non-negative weighting.**
+873-`holds for: cost coordinates = 2, alternatives = 3, arithmetic exact rational`
+874-Evidence: `98_probes/p4_priority_order_against_exchange_rate.py`, with the algebra stated in closed form
+875-in the probe's own docstring and the exact feasibility computed on the one-dimensional weight simplex.
+
+-- 106: 'lexicographic', 'priority', 'threshold', 'hard bound' --
+   lexicographic          0
+   priority               0
+   threshold              0
+   hard bound             0
+   exchange rate          3
+
+----------------------------------------------------------------
+OMISSION 4. 97's law criterion is cited by SCORE and never stated.
+97 calls it 'the one I would most like carried'.
+707-
+708:> a law holds in the representable set **iff** it is an identity of exact arithmetic **and** `pi`
+709-> respects every ordered nesting of operations the law contains.
+710-
+711-`97_probes/p2_congruence_predicts_the_laws.py` states that rule before running and tests it against
+712-exhaustive sweeps. Twenty-three configurations across signedness, policy, fraction width and rounding
+713-mode, at `W = 4`, `5` and `6`, exhaustive over every pair and every triple, all integer arithmetic:
+714-
+715-```
+716-cells                              : 552
+
+-- 106: 'realisation map', 'identity of exact', 'ordered nesting', 'congruence', 'quotient' --
+   realisation map        0
+   identity of exact      0
+   ordered nesting        0
+   congruence             0
+   quotient               0
+-- what 106 DOES say about it --
+326:criterion predicts every verdict in 552 cells with zero mismatches in either direction; and `97`'s p7
+
+----------------------------------------------------------------
+AND THE CONSEQUENCE 106'S OWN AMENDMENT INTRODUCES AND DOES NOT TRACE
+106 section 9.2 widens 'observable' to cover whether a value is produced.
+98 section 3.2, citing 40 section 5.3, says a build arm may move an
+unobservable coordinate and is FORBIDDEN to move an observable one.
+I18's panic is moved by the build profile.
+**Two costs of the inversion, stated rather than hidden.** Generating the section from a weighting means
+the emitted arm selection can change between builds even with identical source. For an **unobservable**
+coordinate that is licensed: `40` section 5.3 says an arm may resolve those however it likes and a later
+arm may resolve them differently. For an **observable** one it is forbidden by the same section, so the
+generation story applies exactly to the coordinates cost-based selection lives on, which is where it was
+always meant to apply.
+
+-- and the seam this lands on, which 102 already named as unnoticed --
+155:  corpus is element count, width, arity, thread count and mode. A build condition is a `cfg`. A region is
+156-  a property of the consumer's workload. These are disjoint sets of things and nothing has noticed.
+157-- **Codomain.** `25` assigns values on headroom, packing, overflow and intermediate precision. `94`
+158-  assigns an arm. An arm is a mechanism, so the codomains overlap, but only if every one of `25`'s axes

@@ -1,0 +1,203 @@
+# What arvo is asked for, in the asker's own terms.
+#
+# Read from outside the canon on purpose: a check that walks the canon can only
+# report that the canon agrees with itself, so the enumeration has to come from
+# somewhere the canon does not reach. This is the instrument behind op's bar
+# that the canon be exhaustive enough for a full design and a full
+# implementation to follow from it.
+#
+# **Whether an obligation is met is derived and is never stated here.**
+# `refsto(obligation::<slug>)` reports what points at it, and an empty result is
+# the finding. A proposal alone does not meet one: a proposal is proposed rather
+# than met, and reporting it otherwise closes a gap op has never seen.
+#
+# **The names in the sources are the deleted crate tree's and none of them
+# appear below.** Every row is the need the consumer states in its own words.
+# Where a consumer names a crate and never says what it is for, no row exists
+# and `184` records the gap.
+#
+# An absence here means nobody has enumerated it, never that arvo does not owe
+# it. `184` says exactly what was read.
+
+# --- what the engine's plan chain asks for ------------------------------------
+
+[[obligation]]
+id = "set_operations_over_a_fixed_size_bit_set"
+need = "Intersection, union and an emptiness test over sets of a size fixed at compile time, each lowering to one instruction, for a scheduler's read and write sets and for the dirty masks its plan ends on."
+consumer = "hilavitkutin, and vehje for a compiler's artifact read and write sets"
+quote = "`AccessMask` is the arvo-bitmask `Mask64` (<=64 stores) or `Mask256` (<=256 stores). All scheduler ops = single-instruction bitwise. (hilavitkutin, `mock/crates/hilavitkutin-api/DESIGN.md.tmpl`, on `dev`)  --  All scheduler ops = single-instruction bitwise: AND for conflict, OR for union, `== 0` for empty check. (the same claim with the operations enumerated, `mock/research/imported-from-polka-dots/design_rounds/202603181200_topic.hilavitkutin-design-consolidation.md`)"
+why = "Two steps of a twelve-step plan chain rest on it, and the same surface is asked for again by a different consumer for a different purpose, which is what makes it an obligation rather than one consumer's convenience. **The lowering is part of the need rather than a quality of implementation**: the consumer states what these compile to, in a live design, so a correct set type that lowers to a loop does not meet this. It is also the only obligation here that names an instruction count, which makes it the one an arm can be measured against."
+gap = "**This row read `union, intersection and difference` and the third of those is asked for nowhere.** No mask difference appears in the consumer at all; the two hits for the word are a string crate's code-size discussion and a type-level operation on the hlist typestate, which is a different mechanism. So the row carried an operation nobody wanted, which is the cheapest way for an implementation to spend effort on nothing. Union survives and is not the same mistake: the live design walks `the union of the fiber's units' write masks`. The single-instruction requirement was absent from the row entirely and is the load-bearing half. What is still unstated is whether `Mask256` is required to hold the same lowering, since one instruction over four words is not available on every target."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for", "panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-vehje-asks-for", "panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#3-per-obligation-is-there-a-statement-of-need"]
+keywords = ["set", "sets", "bitmask", "bit set", "mask", "union", "intersection", "overlap", "conflict", "read set", "write set", "dirty mask", "access set", "single instruction", "lowering"]
+
+[[obligation]]
+id = "ordering_a_directed_acyclic_graph"
+need = "A topological order over a dependency graph that rejects a cycle rather than returning one, an upward rank giving a critical path, and a waist detection giving phase boundaries."
+consumer = "hilavitkutin for a scheduler's plan, vehje for a compiler's pass order"
+quote = "2. Topological sort + node renumbering (arvo-graph). A registration whose units form a cyclic data dependency (each reads what another writes, transitively back to itself) cannot be linearised; the runner rejects it as `PlanError::Cycle`. [...] 3. Upward rank -> critical path (arvo-graph). 4. Waist detection -> phase boundaries (arvo-graph). (hilavitkutin, `mock/crates/hilavitkutin/DESIGN.md.tmpl`, steps 2 to 4 of the plan chain, on `dev`)"
+why = "Three of the twelve plan steps are this one surface asked for three ways, each with a stated purpose rather than a crate name, and the second consumer wants the same thing for an unrelated reason. The cycle case is part of the need and not an error path bolted on: the consumer names the rejection it wants back, so a routine that assumes acyclicity does not meet this."
+gap = "**This row carried a fourth item, a bandwidth-reducing reordering, and it did not belong here.** It came from the dependency sentence's `arvo-graph for DAG / RCM`, and the consumer's own per-crate design puts RCM at step 5 and attributes it to a different crate, with two outputs going to two different consumers. The consumer disagrees with itself across those two documents and this row inherited the half that was a crate list. The item now lives in `a_sparse_adjacency_a_plan_can_be_built_on`, whose need was rewritten to the analyses the consumer asks for over a matrix it supplies, which is where the consumer's live design puts both."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for", "panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#3-per-obligation-is-there-a-statement-of-need"]
+keywords = ["graph", "DAG", "dependency graph", "topological sort", "topo", "rank", "critical path", "waist", "phase boundary", "cycle", "ordering", "pass order"]
+
+[[obligation]]
+id = "a_sparse_adjacency_a_plan_can_be_built_on"
+need = "A renumbering permutation that reduces bandwidth, and a partition into connected components with a fine decomposition and dead column elimination, both taken over a compressed sparse matrix the consumer hands over rather than one arvo builds."
+consumer = "hilavitkutin"
+quote = "It converts to a bidirectional CSR (forward adjacency plus a pre-computed transpose) to feed the arvo-sparse structural steps (5-6). [...] 5. RCM reordering -> renumber permutation on `ExecutionPlan`: row order is the WU execution order (feeds fiber grouping, step 8), column order is the arena layout (arvo-sparse). 6. Block diagonal -> connected-component partition projected to per-phase trunk skeletons (one trunk per block; sets `Phase` id, `Trunk` id, trunk count). Dulmage-Mendelsohn fine decomposition, dead column elimination, and the phase-alignment check layer on in later rounds (arvo-sparse). (hilavitkutin, `mock/crates/hilavitkutin/DESIGN.md.tmpl`, steps 1, 5 and 6 of the plan chain, on `dev`)"
+why = "Two named steps of the plan chain, and the boundary is stated by the consumer in the same breath as the representation: it builds the CSR and converts it precisely in order to feed these. The two outputs go to different places, the row order into fiber grouping and the column order into the arena layout, so the permutation is a result the consumer consumes rather than an internal detail of a partition."
+gap = "**This row asked for the sparse representation itself and that was wrong in the same way two neighbouring rows were.** It read `a compressed sparse representation of a dependency graph, sized at compile time, that stays the fastest shape at every graph size`, and the consumer builds that itself: `DependencyGraph uses CSR backing (row_offsets + col_indices + edge_kinds)`, and `bench-locked canonical at every N (no threshold)` is the consumer recording its own choice of backing rather than asking arvo to guarantee anything. Third of five plan-chain rows found to be the crate list rather than the need. What is still unstated is which fine decomposition the consumer wants when the graph is not square, since Dulmage-Mendelsohn is named without the bipartite structure it decomposes being described anywhere.\n\n**The slug still names the representation and stays that way**, for the reason the float-flag row's slug stays: it is an address, six landed member files cite it by name, and this namespace has no way to supersede a row, so renaming it would orphan those six for a cosmetic gain. Read the `need`, not the slug."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for", "panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#6-what-changes"]
+keywords = ["sparse", "CSR", "adjacency", "RCM", "reverse Cuthill McKee", "bandwidth", "permutation", "renumber", "block diagonal", "connected components", "Dulmage-Mendelsohn", "dead column elimination"]
+
+[[obligation]]
+id = "a_spectral_partition_of_a_dependency_graph"
+need = "A spectral split of a graph into groups that can run apart, taken over an operator the consumer supplies rather than over a representation arvo picks, and reproducible bit for bit at a fixed iteration count the consumer names."
+consumer = "hilavitkutin"
+quote = "arvo-spectral's `SparseLaplacian` walks forward edges only, giving the directed Laplacian. Spectral partitioning needs the symmetric (undirected) Laplacian: nodes `i` and `j` couple if `i -> j` or `j -> i`. This engine-local operator wraps the `CsrBidirectional` (forward plus transpose) and implements `LinearOperator` with the symmetric matvec, using unit edge weights (every dependency edge is one unit of coupling for partitioning purposes). It is composition over the `LinearOperator` contract, not a reimplementation of an arvo primitive. (hilavitkutin, `mock/crates/hilavitkutin/src/plan/laplacian.rs`, module header, on `dev`)"
+why = "One named step of the plan chain, and the one that decides which work is allowed to run in parallel. The operator being the consumer's is the load-bearing half: it builds a symmetric Laplacian of its own because a directed one is the wrong object for partitioning, and it describes that as composition over a contract rather than as reimplementing anything. So what is owed is the contract and the split over it. Reproducibility is not a nicety either: the consumer pins the iteration count precisely so the schedule it derives stays statically analysable, and a split that moved between runs would move the schedule with it."
+gap = "**This row briefly demanded the Laplacian construction, the power iteration and both split forms, and that was wrong in the direction that matters.** It was written from a table in the consumer's `research/seed/`, which is demoted material, and reported as the consumer's design. The consumer's actual source builds its own Laplacian and says why in the file's opening comment. Reading a seed file and calling it a design is the failure of claiming what a design says without opening the design, and it inflated the one measurement op's exhaustiveness bar is checked by. Reported by an expert dispatched on a neighbouring question and verified here against committed source. What remains genuinely unstated is where the iteration-count determinism is written down: it is in the consumer's roadmap research rather than in a design document."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["spectral", "Fiedler", "eigenvector", "partition", "graph partition", "block diagonal", "parallel groups", "linear operator", "matvec", "operator contract", "deterministic", "iteration count"]
+
+[[obligation]]
+id = "a_cost_dynamic_program"
+need = "Combinatorial grouping over a cost model: packing items into bins, and ordering a chain of operations so the total cost of the chain is least."
+consumer = "hilavitkutin"
+quote = "The DP cost is neither the step-6 Laplacian nor a per-fiber weight. Spec Step 8 states it outright: `cost(i,j) = record_count x sum of size_of::<T_k>() over the union columns of ops i..j`, using type-native strides (R3) and the co-located arena model; the cost IS the memory bandwidth of one data walk through the candidate fiber's arena. Feasibility = the full domain-14 holistic check (register file, L1 write budget, L1+L2 total, no fan-in, no pipeline breaker). Greedy mode for <=10 ops, DP for >10. (hilavitkutin, `mock/research/202606201900_granular-roadmap-and-sketch-plan.md`, on `dev`)"
+why = "Its grouping step is named as greedy together with a matrix-chain dynamic program, and a separate ordering step reaches for bin packing by name. Both decide how work is grouped rather than how much of it fits anywhere. **The objective is a minimum over sums**, which makes this the min-plus shape the corpus has results about rather than a budgeted optimisation: minimising a cost over a chain, under a separate feasibility predicate that admits or rejects a grouping and does not enter the objective."
+gap = "**This row read `a dynamic program over costs, deciding how to group work under a budget`, and the budget half was wrong.** The consumer's budgets are cache-footprint constants that size morsels, which is a different step of the same chain, so the row attached a real quantity to the wrong need and could have been met by something the consumer never asked for. Reported by an expert dispatched on a neighbouring question; the two routines and the misplaced budget were verified here against the consumer's own documents.\n\n**The cost model this row recorded as stated nowhere is stated**, and the quotation carries it: record count times the summed element sizes over the union of columns an interval touches, which is the bandwidth of one data walk through that grouping's arena. So the row is no longer under-specified in its objective. **Its provenance is weaker than a design and that is the remaining gap**: the sentence lives in the consumer's research, reporting what a spec says, and the live per-crate design does not carry it. A cost model quoted from a document reporting a second document is worth having and is not worth treating as settled. What genuinely remains open is the feasibility predicate, which is named as one check over five conditions taken together and defined in none of them here."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["cost", "DP", "dynamic programming", "combinatorics", "grouping", "bin packing", "matrix chain", "greedy", "knapsack", "ordering"]
+
+# --- what reaches the numeral itself -------------------------------------------
+
+[[obligation]]
+id = "a_platform_sized_unsigned_integer_at_an_api_position"
+need = "An unsigned integer of the platform's size, usable in a public error type, whose range covers both a unix errno and a Windows GetLastError value with no negative case."
+consumer = "hilavitkutin"
+quote = "Error shapes are fixed enum variants with no heap payloads. OS error codes are carried as `arvo::USize` values (non-negative on both unix errno and Windows GetLastError ranges). (hilavitkutin, `mock/crates/hilavitkutin-linking/DESIGN.md.tmpl`, on `dev`)"
+why = "The consumer states the property rather than the type: non-negative across both platforms' ranges. A fixed-shape error enum with no heap payload has to carry the code somewhere, and the stack's own primitive is what its public positions are allowed to use."
+topic = "the_format"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for", "panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#3-per-obligation-is-there-a-statement-of-need"]
+keywords = ["usize", "USize", "platform size", "pointer width", "errno", "GetLastError", "error code", "non-negative", "public API", "primitive"]
+
+[[obligation]]
+id = "an_exact_width_container_a_consumer_can_alias_and_pin"
+need = "A container of an exactly declared bit width that a consumer can name, alias under its own name, and convert to a fixed wider width at a boundary it controls."
+consumer = "hilavitkutin"
+quote = "The runtime API carries the hash value as arvo_hash ContentHash, an alias for arvo_bits Bits<28>. Conversion at the rkyv boundary is a single masked cast; no format change. (hilavitkutin, `mock/crates/hilavitkutin-persistence/DESIGN.md.tmpl`, on `dev`)"
+why = "Its content hash is a 28-bit value in the runtime API and a bare 32-bit value on disk, and the on-disk width is pinned by a serialisation format rather than chosen. So the demand is both halves: the exact width in memory and a conversion the consumer writes at the boundary. The consumer prices that conversion at one masked cast, which makes the cost part of the need rather than an implementation's business."
+topic = "the_format"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for", "panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#3-per-obligation-is-there-a-statement-of-need"]
+keywords = ["exact width", "Bits", "28 bit", "container", "alias", "newtype", "content hash", "serialisation", "on disk", "byte layout", "conversion"]
+
+[[obligation]]
+id = "a_content_hash"
+need = "A hash of content that is stable across sessions and across machines, wide enough that a cache keyed on it does not collide at the population its consumer holds, and whose width the consumer names rather than inherits."
+consumer = "hilavitkutin"
+quote = "The runtime API carries the hash value as arvo_hash ContentHash, an alias for arvo_bits Bits<28>. (hilavitkutin, `mock/crates/hilavitkutin-persistence/DESIGN.md.tmpl`, on `dev`)"
+why = "Its persistence layer keys on it, and stability across sessions is the property that makes a cache a cache. Nothing else about a cache key is free: two entries colliding is a wrong answer served from disk rather than a slow one."
+gap = "The consumer states the stability and not the width or the collision bound, and the earlier wording here stated neither, so anything returning bytes met it. What the population actually is, and therefore what width is enough, is not established anywhere. **The quotation is the nearest the consumer comes and it does not close this**: 28 bits is where the hash is carried, which is a layout fact, and nothing says the population fits under the birthday bound at that width. So the row is quoted and still under-specified, and those are different states."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for", "panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#3-per-obligation-is-there-a-statement-of-need"]
+keywords = ["hash", "content hash", "digest", "stable", "across sessions", "cache key", "persistence"]
+
+[[obligation]]
+id = "debug_output_from_every_numeral_shape"
+need = "Debug output from every numeral, at every width and under every strategy, written into a caller-supplied fixed-size buffer with no alloc and no std."
+consumer = "any"
+why = "A check written for it exists and cannot run, because the tree it was written against was deleted. The obligation is what outlives the file: a numeric foundation whose types cannot be printed is one nobody can debug, and the no-alloc constraint means the ordinary route is unavailable."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#and-one-from-a-check-that-was-written-and-never-landed"]
+keywords = ["Debug", "fmt", "format", "print", "no_std", "no alloc", "core::fmt::Write", "buffer", "smoke test", "diagnostics"]
+
+# --- the one that is not a type -------------------------------------------------
+
+[[obligation]]
+id = "a_build_flag_that_changes_float_semantics"
+need = "A way for a consumer to say that within some part of its own program the stricter float guarantees may be traded for speed, and to have arvo's floats honour that."
+consumer = "hilavitkutin"
+quote = "The only cfg this crate emits: `arvo_fast_math`, when the FastMath pragma is active. arvo uses this to gate fast-math float semantics. (hilavitkutin, `mock/crates/hilavitkutin-build/DESIGN.md.tmpl`, on `dev`)"
+why = "Its build tooling exists partly to turn this on, driven by a pragma a person writes in the consumer's source. The need is the relaxation and the region it applies to; nothing about it requires the mechanism the consumer currently uses. The quotation states the mechanism because that is what the consumer wrote, and it is worth having in that form: `the only cfg this crate emits` is the consumer bounding its own surface, which is the fact the conflict with `a_content_hash` turns on."
+gap = "**This row used to state the mechanism**, a named cfg the consumer's build sets, which the field description forbids in as many words: the need, never the mechanism that serves it. As worded it could only be met by the one thing the corpus argues against, which is not a coverage finding about arvo but a defect in the row. What the corpus has measured is that one source one flag apart gives one type name two policies, and a compile-time check cannot catch it, because each build emits one lowered path and satisfies the check while the denotation differs between builds. So the need stands and the current mechanism is what is in doubt. It also conflicts with `a_content_hash`, from the same consumer: a hash stable across machines and a float regime that changes with a build flag cannot both hold over the same values, and nothing in the registry says so. **The slug still names the mechanism and stays that way.** It is an address, five landed member files cite it by name, and this namespace has no way to supersede a row, so renaming it would orphan those five for a cosmetic gain. Read the `need`, not the slug."
+topic = "binding_time"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#the-one-that-is-not-a-type-at-all"]
+keywords = ["cfg", "build flag", "fast math", "unsafe-fp-math", "float semantics", "pragma", "rustc wrapper", "denotation", "one lowered path", "soundness hole"]
+
+# --- op's own, which no consumer document could state ---------------------------
+
+[[obligation]]
+id = "composition_contracts_above_the_numeral"
+need = "Contracts for units bigger than a single numeral, so that what a chain of operations guarantees is expressible at all."
+consumer = "any"
+why = "Op names it as half of what arvo is for, beside the algorithm surface, and explicitly not the numeral alone. The panel reaches the same place from the other direction: a chain is not a value, so an accuracy intent stated over chains has no expression over a per-value primitive, and that was recorded as a hole in the whole framing rather than as a gap in one topic."
+topic = "the_chain"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-op-asks-for", "panel::202608072330_the-numeral-canon-panel::INTENTS::#i11-arvo-is-a-library-and-the-value-is-what-composes-on-top-of-it"]
+keywords = ["composition", "contract", "chain", "beyond the numeral", "fold", "accuracy across chains", "bigger than a numeral", "guarantee", "trait contract"]
+
+[[obligation]]
+id = "a_primitive_for_every_position_a_bare_number_would_take"
+need = "A primitive of arvo's own for every public API position across the stack where a bare integer, float, bool or platform-sized index would otherwise sit, so that no such position anywhere in the stack has to fall back on the machine's own types. **A const generic parameter is excepted**, and even there the bare form is used only where the alternative is genuinely painful."
+consumer = "any, and the whole stack by rule"
+quote = "We want arvo there. No bare usize other than in const generics for smoother and more ergonomic api, and even there, only when truly painful otherwise. (op, in `kolli`, `mock/design_rounds/202607261745/202607270230_topic.arvo-everywhere-no-bare-usize.md`, on `dev`)"
+why = "The constraint forbids the bare types at those positions and is enforced by lint, so it is a demand on arvo whether or not anyone states it as one: every position it closes is a position arvo has to have something for. A rule that forbids without supplying is a rule consumers cannot follow. The exception is op's own and is twice bounded: const generics, and inside those only where the alternative is painful."
+gap = "**This is the widest obligation here and it was enumerated nowhere**, because it comes from a prohibition rather than from a consumer naming a want, and the enumeration was built by reading what consumers ask for. It is not satisfied by counting the primitives that exist: it is satisfied by the positions, and nothing has enumerated those. One consumer's error type already produced a narrower version of it, recorded separately as the platform-sized unsigned integer.\n\n**The exception clause was missing until a consumer nobody had read supplied it.** This row was written from op's general statement of the constraint and stated it without limit; he had already bounded it, in a design round of a consumer that two prior passes recorded as saying nothing about arvo. One of those passes reported that consumer at zero and called the figure controlled. It was reading a single-branch clone."
+topic = "the_format"
+provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i14-the-operating-constraints-which-are-rules-as-much-as-intents"]
+keywords = ["primitive", "bare", "u8", "u32", "u64", "i32", "f32", "f64", "bool", "usize", "public API", "position", "no bare primitives", "stack's own"]
+
+[[obligation]]
+id = "the_surface_expressible_as_contracts_before_anything_implements_it"
+need = "Every part of arvo's surface stated as a trait contract that holds and is checkable before an implementation of it exists, so a consumer can build against the shape while the implementation behind it is unfinished."
+consumer = "any, and hilavitkutin as the live instance"
+why = "Op names the contract structure as an approach arvo keeps, for the reason that it lets the shapes stick while implementations are still in progress, and he names a consumer that is in exactly that condition now. So what is owed is not merely that traits are used, but that the surface is expressible as contracts first and implementations second."
+gap = "One place enforces where traits may live, which is narrower than the approach and does not reach the surface as a whole. Nothing here says what a contract has to carry to be usable before its implementation exists, and no row anywhere establishes that the surface can be stated that way."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["trait", "contract", "paradigm", "shape", "before implementation", "wip", "unimplemented", "surface", "sticks", "buildable against"]
+
+# --- two a consumer states about arvo itself rather than about a type -----------
+#
+# Both come from consumers that the demand-side sweep recorded as silent and
+# that turned out not to be, and both are about arvo as a dependency rather
+# than about anything in its surface. Neither is met by adding a type.
+
+[[obligation]]
+id = "the_unstable_machinery_does_not_reach_a_consumer"
+need = "A consumer naming arvo's types needs no unstable compiler features, no nightly-only attributes and no feature gates of its own, whatever arvo uses internally to build them."
+consumer = "kolli, and every crate in the stack by the same reasoning"
+quote = "The numerics come from arvo, the workspace's numeric substrate, and every crate here takes it. arvo's unstable machinery stays inside arvo, so a crate naming these types needs no feature gates of its own. (kolli, `mock/DESIGN.md.tmpl`, on `dev`)"
+why = "The consumer states it as a property it depends on rather than as a hope, in the sentence that adopts arvo across every one of its crates, so adopting arvo at all rests on it. It is also the strongest form of the containment question the corpus argues about from arvo's side: a consumer has said what it needs the answer to be, which no other row about unstable features has."
+gap = "**Nothing in the registry is about this**, and it is not implied by anything that is. It bounds what arvo may use internally by what leaks, which is a constraint on the implementation of every arm the canon proposes rather than on any one of them, and no proposal here states whether it holds. The one measurement adjacent to it is the pin's own feature list, which says what arvo uses and nothing about what escapes to a caller. Whether a `generic_const_exprs` bound in a public signature can be hidden from a consumer at all is exactly the open question, and it is unmeasured."
+topic = "binding_time"
+provenance = ["panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#5-two-consumers-were-never-read-and-both-say-things"]
+keywords = ["unstable", "nightly", "feature gate", "generic_const_exprs", "leak", "containment", "public signature", "consumer", "no_std", "adoption"]
+
+[[obligation]]
+id = "the_algebra_is_legible_enough_to_adopt_without_adopting_half_of_it"
+need = "Arvo's algebra states its layers so that a consumer reading it adopts the whole of what it reached for, rather than one layer of two while believing it took both."
+consumer = "tarina"
+quote = "And arvo carries two grade counts at two layers, ratified after both readings were seen: a site count that is an operation-layer fact and is published, and a moved count that is a value-layer fact, data-dependent, and never published by default. Tarina adopted one and did not notice there were two. [...] Arvo's algebra is still the intended destination. It is not adopted until its two-layer shape is understood well enough to adopt correctly. (tarina, `mock/research/canon/03-algebra.md`, on `dev`)"
+why = "**A consumer reporting that arvo's design misled it, in its own canon, naming the exact reading it got wrong.** That is the only evidence of this kind anywhere in the corpus and it is not a matter of taste: the consumer did not merely find the design hard, it adopted a wrong subset and shipped a local algebra instead, and says so as its reason for not adopting. It lands on op's bar directly, since a canon that a competent reader takes half of is not one a full design can be built from."
+gap = "**Legibility has no instrument here and this row does not supply one.** Every check in this repository walks the registry and can only report that the canon agrees with itself, which is the property that fails silently when a reader takes half of a correct document. The nearest thing to a test is a second consumer reading the two-layer shape cold and reporting which layers it found, and nobody has done that. Worth saying plainly that this row cannot be closed by an argument that the two layers are correctly stated: they are, and the consumer read them anyway."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#5-two-consumers-were-never-read-and-both-say-things"]
+keywords = ["legibility", "two layers", "grade", "site count", "moved count", "published", "misled", "adoption", "algebra", "documentation", "consumer report"]
+
+[[obligation]]
+id = "every_standard_convention_expressible_as_an_alias_over_the_primitives"
+need = "Each industrial fixed-point and floating-point convention writable as a first-class alias over arvo's own primitives, so a consumer reaches for the standard's own vocabulary and gets arvo underneath, and a parity suite runs the same computation through both and asserts the same answer."
+consumer = "any, and op by rule"
+quote = "it is bounded by soundness and also the rule that demands we provide first-class matlab and ieee754 compatible apis as aliases over arvo primitives and such (op, on whether a declared numeral's footprint is observable)  --  actual tests where we run same stuff in our api and then on matlab/sysc/etc APIs, and assert that both actually return the same ... on a wide selection of different usages (op, the verification mandate, quoted in `PRIOR_CALLS.md`)"
+why = "**It is an adequacy test on the abstraction rather than a feature.** A convention that cannot be written as an alias is a gap in the primitives, and the gap is falsifiable per standard before anything ships, which is what makes this the one demand-side row that can refute a design rather than merely ask it for something. Op names it as a bound on a question the panel had put to him as open, so it constrains work that is in flight now."
+gap = "**No row carried this and the corpus has held it since long before this panel.** The standards appear in the corpus as a test rather than an inspiration, one prior pass recorded that the table-changing files had never once been tested against MATLAB, IEEE 754 or SystemC, and the first gap the test caught was slope-bias, which is why a neighbouring retirement exists at all. None of that reached the demand side, so the enumeration was missing the requirement that most constrains it.\n\nWhat is unstated: which conventions are in scope. MATLAB `fi`/`fimath`, IEEE 754, SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed` all appear in the corpus, op named two, and no row says whether the set is those, more, or a core with the rest open. The parity suite is also unbuilt: it is a mandate with no artifact."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::PRIOR_CALLS::#which-verb-validate-is-in-his-acceptance-criterion"]
+keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "parity suite", "adequacy", "expressible", "standard"]

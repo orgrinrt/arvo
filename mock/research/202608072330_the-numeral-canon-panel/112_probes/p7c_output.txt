@@ -1,0 +1,32 @@
+==========================================================================
+p7c. The per-node check is load-bearing
+==========================================================================
+
+  container            : [0, 15]
+  declared x           : [8, 10]
+  declared y           : [8, 10]
+  declared z           : [15, 15]
+  propagated x + y     : [16, 20]   fits: False
+  propagated (x+y) - z : [1, 5]   fits: True
+
+  a ROOT-ONLY check licenses the cheap arm : True
+  a PER-NODE check licenses the cheap arm  : False
+
+  the two arms disagree on 9/9 tuples inside the declaration
+    x=8 y=8 z=15: cheap 1, general 0
+    x=8 y=9 z=15: cheap 2, general 0
+    x=8 y=10 z=15: cheap 3, general 0
+    x=9 y=8 z=15: cheap 2, general 0
+
+  so the root-only check is UNSOUND here: True
+  and the per-node check refuses, correctly: True
+
+INSTRUMENT CHECK
+
+  the same term with one-sided extents [0, b], which is what every
+  sweep in this file uses:
+    x<=10 y<=10 z<=15: root [-15,20] fits False, inner [0,20] fits False, root-only and per-node agree: True
+    x<=15 y<=15 z<=15: root [-15,30] fits False, inner [0,30] fits False, root-only and per-node agree: True
+    x<=3 y<=3 z<=15: root [-15,6] fits False, inner [0,6] fits True, root-only and per-node agree: True
+
+  they agree on every one, which is why p7b's mutation measured 0.

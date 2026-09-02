@@ -1,0 +1,91 @@
+OK  175:180-188   [9 lines]
+      Clause 2: the design may select any realisation that induces **the stretch's boundary function**.
+      
+      Clause 3: an adaptation point on an unbound edge "is free and **placed under clause 2**", and, in the
+OK  173:556-566   [11 lines]
+      > **4. [enumeration]** Chain exactness has grades: composite correct rounding (one adaptation on
+      > the true composite), stepwise correct rounding (the only compositional grade, and its ceiling),
+      > bounded drift, and **structural exactness**, which is fixed point's own: inside its width
+OK  176:68-75   [8 lines]
+      **Two, the shape of B3's witnesses.** `175`'s chains with boundary-function families are exactly
+      chains where clause 6's deletion licences refuse: `*3 >>1 *5` under a rounding resolution has no
+      algebra licence (rounding does not commute with the shift) and no range licence (intermediates
+OK  173:575-580   [6 lines]
+      > **6. [measured]** Deleting an interior adaptation needs a licence, and there are two
+      > independent kinds: **range** (every intermediate provably where the resolution is the identity;
+      > reads widths and a bound, not the operations) and **algebra** (the resolution commutes with or
+OK  174:384   [1 lines]
+      wrong. A4 rests on r1, and its `pi` is the clamp; a grid-shaped `S` would change the shortfall count and
+OK  174:192-194   [3 lines]
+      `holds for: W = 8, S = [0,255], pi = clamp (a nearest-point selection), 600 chains of depth 3..=5,
+      ops in {+97, +13, *3, *5, *7, >>1, >>2, xor 182}, carriers 8..=24 and 120, all 2^(depth-1)
+      placements, inputs exhaustive over 0..=255, threads = 1.`
+OK  174:192-194   [3 lines]
+      `holds for: W = 8, S = [0,255], pi = clamp (a nearest-point selection), 600 chains of depth 3..=5,
+      ops in {+97, +13, *3, *5, *7, >>1, >>2, xor 182}, carriers 8..=24 and 120, all 2^(depth-1)
+      placements, inputs exhaustive over 0..=255, threads = 1.`
+OK  174:384   [1 lines]
+      wrong. A4 rests on r1, and its `pi` is the clamp; a grid-shaped `S` would change the shortfall count and
+OK  175:295-299   [5 lines]
+      **Both instances are definitions, and a definition is the weakest thing two instances can agree on.**
+      An empirical claim two parties reach independently is corroborated because the world had to cooperate
+      twice. A definition two parties reach independently may be corroborated, or may be two members of one
+OK  175:301-303   [3 lines]
+      `169` found one shared input by looking for it. Nothing establishes it found the only one, and my
+      section 5.1 argument is about **stated** failure modes, which are exactly the ones we each thought to
+      name.
+OK  169:84-108   [25 lines]
+      ### 1.2 A shared auto-loaded rule states the definitional principle, and none of the three declares it
+      
+      `168` asks how much of the shape a shared premise set fixes, and answers it about headings. The
+OK  60:210   [1 lines]
+      **no expressible form**. That is a statability argument, not a benchmark, and it is the central
+OK  60:210   [1 lines]
+      **no expressible form**. That is a statability argument, not a benchmark, and it is the central
+OK  173:500   [1 lines]
+      **R-k. The static-length lever** (`lanes16-constl`). Unestablished: largest gap 1.2% inside the
+OK  172:519   [1 lines]
+      at the profile named in section 7; Q-C3's cost half, Q55, and the const-time accumulability of
+OK  60:210   [1 lines]
+      **no expressible form**. That is a statability argument, not a benchmark, and it is the central
+OK  60:69-84   [16 lines]
+      Five things, none of which a per-op model can express.
+      
+      An **intermediate format** wider than the boundary format, or there is nothing between "adapt
+OK  60:210   [1 lines]
+      **no expressible form**. That is a statability argument, not a benchmark, and it is the central
+OK  173:76   [1 lines]
+      compilation, `171_probes/perimeter/`). Second read by `172` section 10, verdict formed from the
+OK  173:676   [1 lines]
+      1. **The container premise** (`156` item 1), **Q65's marker question**, and **X1 through X4**,
+OK  173:656   [1 lines]
+      2. **X-A through X-F**, each with its decider, section 2.
+OK  174:28   [1 lines]
+      X1 through X4, and the canon-form question coupled to `156` item 2 are untouched, and clause 2's
+OK  173:676   [1 lines]
+      1. **The container premise** (`156` item 1), **Q65's marker question**, and **X1 through X4**,
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  60:210   [1 lines]
+      **no expressible form**. That is a statability argument, not a benchmark, and it is the central
+OK  60:206-212   [7 lines]
+      The counter-direction must be stated to be tested: a format concept that closes its operations
+      over the format, F × F → F with the adaptation hidden inside each op, can state grade b and
+      nothing above it. Grade a, "matches the once-adapted exact answer", quantifies over an
+OK  173:76   [1 lines]
+      compilation, `171_probes/perimeter/`). Second read by `172` section 10, verdict formed from the
+OK  174:28   [1 lines]
+      X1 through X4, and the canon-form question coupled to `156` item 2 are untouched, and clause 2's
+OK  175:29   [1 lines]
+      `holds for: profile = release, threads = 1 for the serialised crate and default for the other twelve,
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 30 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

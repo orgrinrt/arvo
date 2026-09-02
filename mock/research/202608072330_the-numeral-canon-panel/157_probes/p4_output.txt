@@ -1,0 +1,15 @@
+grid configurations                              : 64
+classes under {literal} alone                    : 32
+classes under {literal, add, sub, mul}            : 32
+classes under {add, sub, mul} (no literal)        : 32
+classes under {literal} + container observation   : 64
+
+D1 (operations add nothing to the literal)   : PASS   [32 -> 32]
+D2 (container observation strictly refines)  : PASS   [32 -> 64]
+D3 (classes that the container splits)       : PASS   32 of 32 classes contain configurations differing in container
+
+worked example of one denotation with two containers:
+    W= 3 F=0 signed=False policy=wrap treatment= minimal -> container 8 bits
+    W= 3 F=0 signed=False policy=wrap treatment=headroom -> container 16 bits
+  identical (V, R). Under the saturation bound these are ONE primitive.
+  Under a design where footprint is observable they are TWO.

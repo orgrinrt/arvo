@@ -1,0 +1,14 @@
+error[E0277]: the trait bound `I: Add<F>` is not satisfied
+   --> p12_surface.rs:518:35
+    |
+518 | pub struct Numeral<I, F, Sign, S>(Container<Sum<I, F>>, core::marker::PhantomData<(I, F, Sign, S)>);
+    |                                   ^^^^^^^^^^^^^^^^^^^^ the trait `Add<F>` is not implemented for `I`
+    |
+help: consider restricting type parameter `I` with trait `Add`
+    |
+518 | pub struct Numeral<I: Add<F>, F, Sign, S>(Container<Sum<I, F>>, core::marker::PhantomData<(I, F, Sign, S)>);
+    |                     ++++++++
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

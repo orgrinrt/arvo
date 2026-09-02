@@ -1,0 +1,130 @@
+=== p3. where the one-bit constant stops holding ===
+
+S1, exhaustive at the cells that decide it:
+
+   W    L           tuples   exact exhaustive    gap  witness at measured-1
+   3    9        134217728       7          5      2  [3, 3, 3, 3, 1, -4, -4, -4, -4]
+
+  a cell with a gap other than one bit, exhaustively: true
+  so the constant is refuted outside the region it was measured in
+
+S2, the minimum against the fold length, by the extremal route:
+
+   W    L     exact  measured    gap   candidate     rival
+   3    2         4         3      1           3         3
+   3    3         5         4      1           4         4
+   3    4         5         4      1           4         4
+   3    5         6         5      1           5         5
+   3    6         6         5      1           5         5
+   3    7         6         5      1           5         5
+   3    8         6         5      1           5         5
+   3    9         7         5      2           6         6
+   3   10         7         6      1           6         6
+   3   11         7         6      1           6         6
+   3   12         7         6      1           6         6
+   3   13         7         6      1           6         6
+   3   14         7         6      1           6         6
+   3   15         7         6      1           6         6
+   3   16         7         6      1           6         6
+   3   17         8         6      2           7         7
+   3   18         8         6      2           7         7
+   3   19         8         7      1           7         7
+   3   20         8         7      1           7         7
+   3   21         8         7      1           7         7
+   3   22         8         7      1           7         7
+   3   23         8         7      1           7         7
+   3   24         8         7      1           7         7
+
+   4    2         5         4      1           4         4
+   4    3         6         5      1           5         5
+   4    4         6         5      1           5         5
+   4    5         7         6      1           6         6
+   4    6         7         6      1           6         6
+   4    7         7         6      1           6         6
+   4    8         7         6      1           6         6
+   4    9         8         7      1           7         7
+   4   10         8         7      1           7         7
+   4   11         8         7      1           7         7
+   4   12         8         7      1           7         7
+   4   13         8         7      1           7         7
+   4   14         8         7      1           7         7
+   4   15         8         7      1           7         7
+   4   16         8         7      1           7         7
+   4   17         9         7      2           8         8
+   4   18         9         8      1           8         8
+   4   19         9         8      1           8         8
+   4   20         9         8      1           8         8
+   4   21         9         8      1           8         8
+   4   22         9         8      1           8         8
+   4   23         9         8      1           8         8
+   4   24         9         8      1           8         8
+
+   5    2         6         5      1           5         5
+   5    3         7         6      1           6         6
+   5    4         7         6      1           6         6
+   5    5         8         7      1           7         7
+   5    6         8         7      1           7         7
+   5    7         8         7      1           7         7
+   5    8         8         7      1           7         7
+   5    9         9         8      1           8         8
+   5   10         9         8      1           8         8
+   5   11         9         8      1           8         8
+   5   12         9         8      1           8         8
+   5   13         9         8      1           8         8
+   5   14         9         8      1           8         8
+   5   15         9         8      1           8         8
+   5   16         9         8      1           8         8
+   5   17        10         9      1           9         9
+   5   18        10         9      1           9         9
+   5   19        10         9      1           9         9
+   5   20        10         9      1           9         9
+   5   21        10         9      1           9         9
+   5   22        10         9      1           9         9
+   5   23        10         9      1           9         9
+   5   24        10         9      1           9         9
+
+   6    2         7         6      1           6         6
+   6    3         8         7      1           7         7
+   6    4         8         7      1           7         7
+   6    5         9         8      1           8         8
+   6    6         9         8      1           8         8
+   6    7         9         8      1           8         8
+   6    8         9         8      1           8         8
+   6    9        10         9      1           9         9
+   6   10        10         9      1           9         9
+   6   11        10         9      1           9         9
+   6   12        10         9      1           9         9
+   6   13        10         9      1           9         9
+   6   14        10         9      1           9         9
+   6   15        10         9      1           9         9
+   6   16        10         9      1           9         9
+   6   17        11        10      1          10        10
+   6   18        11        10      1          10        10
+   6   19        11        10      1          10        10
+   6   20        11        10      1          10        10
+   6   21        11        10      1          10        10
+   6   22        11        10      1          10        10
+   6   23        11        10      1          10        10
+   6   24        11        10      1          10        10
+
+S3, the two candidate formulas against the table:
+
+  rows in the table                               : 92
+  W + ceil(log2(ceil(L/2))) matched               : 88
+  the row's constant, exact-sum width less one bit: 88
+
+  the table discriminates between the two          : false
+
+  Where the rival matches, it matches because `ceil(log2 L)` and
+  `1 + ceil(log2(ceil(L/2)))` agree, which they do for every L from 2 to 8.
+  That is the whole of the region the row was measured in, and it is why the
+  constant looked like a law there. The two part company first at L = 9.
+
+S3 cross-check against exhaustion, small cells only:
+
+  candidate misses at W=3 L=9: 6 vs 5
+  rival misses at W=3 L=9: 6 vs 5
+  candidate agrees with every exhaustive cell : false
+  rival agrees with every exhaustive cell     : false
+
+P3 DONE

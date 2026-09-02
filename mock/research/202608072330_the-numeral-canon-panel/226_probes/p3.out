@@ -1,0 +1,38 @@
+== the declared set, one operation at a time ==
+  W  carriers  classes after each prefix of [encode, add, mul, xor, fma]
+  3  5         [1, 1, 1, 1, 1]
+  4  5         [1, 1, 1, 1, 1]
+  5  5         [1, 1, 1, 1, 1]
+  6  5         [1, 1, 1, 1, 1]
+  7  5         [1, 1, 1, 1, 1]
+  8  5         [1, 1, 1, 1, 1]
+  9  4         [1, 1, 1, 1, 1]
+  10 4         [1, 1, 1, 1, 1]
+
+== C1: the declared set plus a footprint observation ==
+  W=3   classes 5, admissible carriers 5
+  W=4   classes 5, admissible carriers 5
+  W=5   classes 5, admissible carriers 5
+  W=6   classes 5, admissible carriers 5
+  W=7   classes 5, admissible carriers 5
+  W=8   classes 5, admissible carriers 5
+  W=9   classes 4, admissible carriers 4
+  W=10  classes 4, admissible carriers 4
+
+== C2: one operation with its projection omitted ==
+  W  add  mul  headroom    predicted split by growth > headroom
+  3  1    1    5         add false / mul false
+  4  1    1    4         add false / mul false
+  5  1    2    3         add false / mul true
+  6  1    2    2         add false / mul true
+  7  1    2    1         add false / mul true
+  8  2    2    0         add true / mul true
+  9  1    2    7         add false / mul true
+  10 1    2    6         add false / mul true
+
+== verdict ==
+  count constant at 1 across every prefix, W in 3..=10:      true
+  C1 the footprint observation splits to the carrier count:  true
+  C2 both arms split exactly where growth exceeds headroom: true
+
+  RESULT: the class count does not move as declared-width operations are added

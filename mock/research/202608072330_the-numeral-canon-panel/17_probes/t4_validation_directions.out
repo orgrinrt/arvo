@@ -1,0 +1,21 @@
+t4. the two directions a validation claim is quantified over
+    domain swept: W in 0..=69, 70 declarations
+    the independently written rule: admissible iff 1 <= W <= 64
+
+defect                                         under    over                   caught by
+----------------------------------------------------------------------------------------
+none (control)                                     0       0                     nothing
+under-refusal: admits W = 0                        1       0          compile-fail suite
+under-refusal: admits W = 65, 66                   2       0          compile-fail suite
+over-refusal: refuses the top rung W = 64          0       1     these-all-compile suite
+over-refusal: refuses W = 33..35                   0       3     these-all-compile suite
+
+reading:
+  A compile-fail suite observes the under-refusal rows and is blind to the
+  over-refusal rows. A these-all-compile suite is blind the other way. Neither
+  shape observes both, and only a sweep against a separately written predicate
+  does, because only the predicate knows which widths SHOULD have compiled.
+
+  The over-refusal rows are the ones with no natural test author: a consumer
+  who never wrote W = 34 never files a bug, and the suite stays green because
+  every declaration it contains is one somebody thought of.

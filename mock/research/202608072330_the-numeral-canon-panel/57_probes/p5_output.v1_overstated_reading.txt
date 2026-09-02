@@ -1,0 +1,92 @@
+=== 1. does the LADDER compose ===
+
+  For each (M, F): the laws of the clamp factor alone, the coarsening
+  factor alone, and the composite. A composite failing a law BOTH
+  factors satisfy would mean the rung of a composite is not determined
+  by the rungs of its parts, which is what a grade would have to be.
+
+    M    F |        clamp only        |       coarsen only       |        composite         | meet respected
+    7    0 |     +a:1 *a:1 dist:1     |     +a:1 *a:1 dist:1     |     +a:1 *a:1 dist:1     | true
+    7    1 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+    7    2 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+    7    3 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+   15    0 |     +a:1 *a:1 dist:1     |     +a:1 *a:1 dist:1     |     +a:1 *a:1 dist:1     | true
+   15    1 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+   15    2 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+   15    3 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+   31    0 |     +a:1 *a:1 dist:1     |     +a:1 *a:1 dist:1     |     +a:1 *a:1 dist:1     | true
+   31    1 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+   31    2 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+   31    3 |     +a:1 *a:1 dist:1     |     +a:1 *a:0 dist:0     |     +a:1 *a:0 dist:0     | true
+
+  meet respected in every row: true
+  a composite strictly worse than one of its factors on distributivity: true
+
+  Reading: the ladder is at best an UPPER BOUND on a composite's laws.
+  Even where the meet holds, nothing computes the composite's rung FROM
+  the factors' rungs, because the meet is an inequality and not a law of
+  composition. A ladder of algebraic strength is a partial order on
+  theories, which is a real classification and is not a grading.
+
+=== 2a. is the additive width rule a monoid operation ===
+
+  width rule g(W,V) = max(W,V) + 1
+  g(g(5,0),0) = 7
+  g(5,g(0,0)) = 6
+  associative: false
+
+  So widths under the additive rule are NOT a monoid, and therefore not a
+  grade semiring's additive part. The multiplicative rule g(W,V) = W + V
+  IS associative, so products grade and sums do not, under widths alone.
+
+=== 2b. what composes exactly: the reachable interval ===
+
+  For n operands drawn from Q = [lo, hi], the exact reachable set is
+  measured and compared against the Minkowski sum [n*lo, n*hi], and
+  against the width the repeated max+1 rule would predict.
+
+   n     measured range          Minkowski   exact bits   max+1 bits    slack
+   1            [-8, 7]            [-8, 7]            4            4        0
+   2          [-16, 14]          [-16, 14]            5            5        0
+   3          [-24, 21]          [-24, 21]            6            6        0
+   4          [-32, 28]          [-32, 28]            6            7        1
+   5          [-40, 35]          [-40, 35]            7            8        1
+   6          [-48, 42]          [-48, 42]            7            9        2
+
+  interval arithmetic exact at every n measured: true
+  The interval composes exactly under Minkowski sum; the width does not,
+  and the repeated max+1 rule over-approximates by a growing slack. So the
+  quantity that grades is the reachable SET, and the width is a lax image
+  of it: sound, and not tight.
+
+=== 2c. the grading, measured: divergence as a function of accumulator width ===
+
+  Format Q = [-8, 7], 4-bit signed, signed saturation, which `q1` and `p4`
+  both measure as the incoherent policy. Accumulate n operands saturating
+  into a width-w intermediate, then adapt once into Q. Divergence from the
+  exact-then-adapt answer is reported per w. Predicted sufficient grade is
+  4 + ceil(log2 n); the width where divergence ACTUALLY reaches zero is
+  printed beside it, so a conservative prediction shows as a gap.
+
+   n       tuples    divergences by accumulator width w = 4..9  predicted   measured
+   2          256                                  0 0 0 0 0 0          5          4
+   3         4096                                476 0 0 0 0 0          6          5
+   4        65536                              14721 0 0 0 0 0          6          5
+   5      1048576                          333900 4536 0 0 0 0          7          6
+
+  predicted grade sound at every n (zero divergence at the predicted width): true
+
+  This is a grading in the sense the word carries: a family indexed by w,
+  an index computed from the operation and the operand count, and an exact
+  statement of what the index buys. The adaptation is the map that spends
+  the grade back down to the format's own width, and it is exactly where
+  the information is lost.
+
+=== 3. instrument validation ===
+
+  2c reported nonzero divergence somewhere: true
+  2c reported zero divergence somewhere:    true
+  2a's counterexample is a real one:        true
+  meet checker returns false on a constructed violation: true
+
+P5 WORKS

@@ -1,0 +1,84 @@
+
+==============================================================================
+INDEX 5. Re-housing: same encoding, different physical offset
+==============================================================================
+  source            signed4/sat/2c @offset0
+  target            signed4/sat/2c @offset2
+  value map         identity on 16 values, total and injective
+  pattern map       1/16 patterns unchanged (a shift, not the identity)
+  VALUE ops   add   256/256
+  VALUE ops   mul   256/256
+  PATTERN ops add   256/256
+
+==============================================================================
+INDEX 4. Re-encoding: same (D, Q, rho), different pattern map
+==============================================================================
+  source            signed4/sat/2c
+  target            signed4/sat/excess8
+  value map         identity on 16 values, total and injective
+  pattern map       bijection, 16/16 distinct images, 0/16 unchanged
+  VALUE ops   add   256/256
+  VALUE ops   mul   256/256
+  PATTERN ops add   0/256
+
+==============================================================================
+INDEX 3. Restrategise: same (D, Q, E, C), different selected reduction
+==============================================================================
+  source            signed4/wrap/2c
+  target            signed4/sat/2c
+  value map         identity on 16 values, total and injective
+  pattern map       identity, 16/16 unchanged
+  VALUE ops   add   192/256   (`67` X1 signed add: 192/256)
+  VALUE ops   mul   111/256   (`67` X1 signed mul: 111/256)
+  VALUE ops   add   136/256 on the unsigned window (`67`: 136/256)
+  VALUE ops   mul   80/256 on the unsigned window (`67`: 80/256)
+  PATTERN ops add   256/256
+
+==============================================================================
+INDEX 2. Widen: same D, larger representable set
+==============================================================================
+  source            signed4/wrap/2c
+  target            signed8/wrap/2c
+  value map         inclusion, 16/16 values carried, total and injective
+  pattern map       sign-extension, 8/16 unchanged
+  VALUE ops   add   192/256 under wrap   (`67` X2 add: 192/256)
+  VALUE ops   mul   101/256 under wrap   (`67` X2 mul: 101/256)
+  VALUE ops   add   192/256 under saturate
+  VALUE ops   mul   101/256 under saturate
+
+==============================================================================
+INDEX 1. Reinterpret: same container and patterns, different ambient operations
+==============================================================================
+  source            Z/wrap/2c
+  targets           GF(2)^4 with xor as addition; tropical with min as addition
+  value map         NOT TYPED: the two carriers are different sets, so there is no
+                    value-level map to preserve anything. What crosses is the pattern.
+  pattern map       identity, 16/16 unchanged
+  ops vs xor        108/256   (`67` X3 vs xor: 108/256)
+  ops vs min        1/256   (`67` X3 vs min: 1/256)
+
+==============================================================================
+THE FIVE CROSSING CLASSES, addition
+==============================================================================
+index                   value map   pattern map   VALUE ops       PATTERN ops
+1  ambient domain       none        identity      108/256 vs xor  n/a
+2  representable set    inclusion   sign-extend   192/256         not measured
+3  adaptation           identity    identity      192/256         256/256
+4  encoding             identity    bijection     256/256         0/256
+5  container            identity    shift         256/256         256/256
+
+Crossings preserving the VALUE-level operation at 100%: ['4  encoding', '5  container']
+Crossings preserving the PATTERN-level operation at 100%: ['3  adaptation', '5  container']
+
+PREDICTION HELD. `67` section 4's universal, 'No crossing preserves operations at
+100%', is refuted at the two indices it did not measure. The universal was drawn
+from three of five classes.
+
+And the mirror pair, which is the structural point:
+  index 4 preserves the VALUE operation totally and destroys the PATTERN operation
+    (256/256 against 0/256)
+  index 1 preserves the PATTERN map totally and has no value operation to preserve
+  index 3 preserves the pattern map AND the untyped pattern operation and destroys
+    the value operation (256/256 against 192/256), which is exactly
+    why it is the crossing that looks free: it is free at every level a machine can
+    see, and not free at the level that decides the answer.

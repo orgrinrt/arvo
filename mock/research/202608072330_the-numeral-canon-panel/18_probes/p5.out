@@ -1,0 +1,41 @@
+# source numeral: 64 values, top tick 63
+
+# inhabitants against reachable values, per accumulator width and trip count
+ acc bits  inhabitants    n   reachable  unreachable  share unreachable
+        8          256    1          64          192            75.00%
+        8          256    2         127          129            50.39%
+        8          256    4         253            3             1.17%
+        8          256    8         256            0             0.00%
+       10         1024    1          64          960            93.75%
+       10         1024    2         127          897            87.60%
+       10         1024    4         253          771            75.29%
+       10         1024    8         505          519            50.68%
+       12         4096    1          64         4032            98.44%
+       12         4096    2         127         3969            96.90%
+       12         4096    4         253         3843            93.82%
+       12         4096    8         505         3591            87.67%
+       14        16384    1          64        16320            99.61%
+       14        16384    2         127        16257            99.22%
+       14        16384    4         253        16131            98.46%
+       14        16384    8         505        15879            96.92%
+
+# the reachable set is an interval of the grid, not a scattered subset
+  n=1: min tick 0, max tick 63, contiguous=True, predicate v <= 63
+  n=2: min tick 0, max tick 126, contiguous=True, predicate v <= 126
+  n=4: min tick 0, max tick 252, contiguous=True, predicate v <= 252
+  n=8: min tick 0, max tick 504, contiguous=True, predicate v <= 504
+
+# so the honest statement, and it is about the TYPE rather than about a datum
+  Every datum of the accumulator denotes one rational. What headroom creates is a
+  set of inhabitants no computation reaches, and the reachable set is exactly
+  {v : v <= n * src_max}. That is a predicate on a value. It is the shape a
+  refinement type carries and it is not a denotation, so `08` section 5's first
+  clause is untouched by it.
+
+# the second offered example, a refusing conversion, checked the same way
+  A conversion that refuses is a PARTIAL map on data, not a set-valued map.
+  It does become a set-valued map under one reading, where a refusal denotes the
+  EMPTY set, and that reading is consistent with the containment order because
+  the empty set is below everything. Consistency is not a reason to adopt it:
+  the reading buys nothing unless the design wants a bottom element, and the
+  record does not currently ask for one.

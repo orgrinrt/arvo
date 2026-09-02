@@ -1,0 +1,92 @@
+SOLE	1	accumulator width varied above the declared width
+SOLE	3	domain
+SOLE	1	domain closed under negation
+SOLE	2	or unsigned with signed
+SOLE	1	overflow limit read at the declared width
+SOLE	1	radix
+ANY	1	#![no_std]
+ANY	1	141's and 143's own axis sets
+ANY	1	> 600 chains of depth 3..=5
+ANY	2	F and signedness: OPEN
+ANY	1	F_exact
+ANY	2	F_final
+ANY	2	F_intermediate
+ANY	1	The non-homomorphic half alone holds for: as 119 4.7's second predicate
+ANY	3	accumulator width
+ANY	1	accumulator width varied above the declared width
+ANY	1	all 2^(depth-1) placements
+ANY	2	ambient domain
+ANY	1	ambient domain closed under negation
+ANY	1	ambient domain closed under negation for the saturating arm
+ANY	1	ambient domain one-signed
+ANY	1	arm set
+ANY	6	arms
+ANY	2	assignment set
+ANY	1	assignment set of rounding
+ANY	1	assignment sets and observation sets as
+ANY	1	assignments
+ANY	1	augmentation coefficient
+ANY	2	baseline
+ANY	1	baseline uniform across coordinates
+ANY	1	carriers 8..=24 > and 120
+ANY	1	certificate weight proportional to the reciprocal deviation
+ANY	1	conforming pair
+ANY	2	construction
+ANY	7	cost coordinates
+ANY	5	coupling
+ANY	7	declarations
+ANY	1	declared grid step
+ANY	1	decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions
+ANY	1	dimension
+ANY	2	discharge check
+ANY	11	domain
+ANY	6	domain closed under negation
+ANY	1	domain containing a complete residue system and the
+ANY	1	domain: OPEN
+ANY	3	edition 2021
+ANY	3	element count
+ANY	1	equality read
+ANY	1	established by the construction reading only frac(x) and never the cell
+ANY	2	every deterministic member against saturation
+ANY	2	every translation-equivariant member against wrapping
+ANY	2	everything 132 5.8's predicate lists
+ANY	3	feature gates
+ANY	1	float types
+ANY	3	fraction
+ANY	1	given a floor-based cell coordinate
+ANY	1	input shape
+ANY	1	keying
+ANY	2	keying axis
+ANY	1	multiplier schedules {[1,-1,2], [2,-1,1]}
+ANY	1	non-conforming pair
+ANY	1	numeral fixed-point signed
+ANY	3	observation sets
+ANY	1	one-signed
+ANY	1	operations {multiply-add, sum fold}
+ANY	1	ops
+ANY	3	or unsigned with signed
+ANY	1	overflow and
+ANY	3	overflow limit read at the declared width
+ANY	1	pi
+ANY	1	positions 0 to 255
+ANY	14	radix
+ANY	1	recursion limit
+ANY	1	reference point
+ANY	2	restrictions
+ANY	1	same assignment set at W
+ANY	2	same construction and same condition (136_probes/x2 P3)
+ANY	3	selector
+ANY	1	staged narrowing F_exact
+ANY	1	stochastic members
+ANY	1	structure constants
+ANY	2	term
+ANY	6	term shapes
+ANY	1	the clause claims nothing until it is stated
+ANY	1	the same domain dimension added
+ANY	1	threshold
+ANY	2	value set finite with at least two elements
+ANY	3	weight grid resolution
+ANY	1	weights
+ANY	1	{add, sub, mul, madd, msub}
+ANY	1	{madd}
+ANY	1	{mul, madd}

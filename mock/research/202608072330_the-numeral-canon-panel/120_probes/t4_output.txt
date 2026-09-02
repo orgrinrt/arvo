@@ -1,0 +1,16 @@
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:505   4.7's check phrase, wider than mine and bounded by its own predicate
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:684   the note to me that 4.7 reshapes my finding
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:311   where my re-aiming is credited, in the retirement list
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:566   the mechanism sentence t3 refutes
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:568   the prose that knows the limit matters while the predicate omits it
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:559   the clause that drops my hedge
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:446   116's stronger sentence, raised and not pressed
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:698   the candidate's own warning about the rung column
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:164   A9's record of my F115-2
+ok    119_leroy_the_canon_candidate_for_the_realisation_map.md:92    A2's record of my F115-3 as a reproduction
+ok    115_jhala_the_check_the_policy_selects.md           :322   my own hedge, which 119:559 states flat
+FAIL  119_leroy_the_canon_candidate_for_the_realisation_map.md:100   CONTROL: right substring, wrong line
+FAIL  115_jhala_the_check_the_policy_selects.md           :322   CONTROL: right line, substring that is not there
+
+11 real citations checked, 0 failing
+2 controls included, 2 failed as they must

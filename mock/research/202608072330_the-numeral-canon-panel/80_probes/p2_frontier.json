@@ -1,0 +1,418 @@
+[
+ {
+  "arity": 1,
+  "width": 1,
+  "log2_tuples": 1,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 2,
+  "log2_tuples": 2,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 3,
+  "log2_tuples": 3,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 4,
+  "log2_tuples": 4,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 5,
+  "log2_tuples": 5,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 6,
+  "log2_tuples": 6,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 7,
+  "log2_tuples": 7,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 8,
+  "log2_tuples": 8,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 9,
+  "log2_tuples": 9,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 10,
+  "log2_tuples": 10,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 11,
+  "log2_tuples": 11,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 12,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.12,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 13,
+  "log2_tuples": 13,
+  "status": "accept",
+  "seconds": 0.15,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 14,
+  "log2_tuples": 14,
+  "status": "accept",
+  "seconds": 0.2,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 15,
+  "log2_tuples": 15,
+  "status": "accept",
+  "seconds": 0.32,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 16,
+  "log2_tuples": 16,
+  "status": "accept",
+  "seconds": 0.53,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 17,
+  "log2_tuples": 17,
+  "status": "accept",
+  "seconds": 0.95,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 18,
+  "log2_tuples": 18,
+  "status": "accept",
+  "seconds": 1.82,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 19,
+  "log2_tuples": 19,
+  "status": "accept",
+  "seconds": 3.76,
+  "note": ""
+ },
+ {
+  "arity": 1,
+  "width": 20,
+  "log2_tuples": 20,
+  "status": "refuse-long-running",
+  "seconds": 4.33,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 1,
+  "log2_tuples": 2,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 2,
+  "log2_tuples": 4,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 3,
+  "log2_tuples": 6,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 4,
+  "log2_tuples": 8,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 5,
+  "log2_tuples": 10,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 6,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.15,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 7,
+  "log2_tuples": 14,
+  "status": "accept",
+  "seconds": 0.32,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 8,
+  "log2_tuples": 16,
+  "status": "accept",
+  "seconds": 1.01,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 9,
+  "log2_tuples": 18,
+  "status": "accept",
+  "seconds": 3.97,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 10,
+  "log2_tuples": 20,
+  "status": "refuse-long-running",
+  "seconds": 4.06,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 1,
+  "log2_tuples": 3,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 2,
+  "log2_tuples": 6,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 3,
+  "log2_tuples": 9,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 4,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.18,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 5,
+  "log2_tuples": 15,
+  "status": "accept",
+  "seconds": 0.8,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 6,
+  "log2_tuples": 18,
+  "status": "refuse-long-running",
+  "seconds": 4.01,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 1,
+  "log2_tuples": 4,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 2,
+  "log2_tuples": 8,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 3,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.21,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 4,
+  "log2_tuples": 16,
+  "status": "accept",
+  "seconds": 2.09,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 5,
+  "log2_tuples": 20,
+  "status": "refuse-long-running",
+  "seconds": 3.81,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 1,
+  "log2_tuples": 5,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 2,
+  "log2_tuples": 10,
+  "status": "accept",
+  "seconds": 0.13,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 3,
+  "log2_tuples": 15,
+  "status": "accept",
+  "seconds": 1.41,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 4,
+  "log2_tuples": 20,
+  "status": "refuse-long-running",
+  "seconds": 3.85,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 1,
+  "log2_tuples": 6,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 2,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.26,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 3,
+  "log2_tuples": 18,
+  "status": "refuse-long-running",
+  "seconds": 3.72,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 1,
+  "log2_tuples": 8,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 2,
+  "log2_tuples": 16,
+  "status": "refuse-long-running",
+  "seconds": 3.84,
+  "note": ""
+ },
+ {
+  "arity": 12,
+  "width": 1,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.45,
+  "note": ""
+ },
+ {
+  "arity": 12,
+  "width": 2,
+  "log2_tuples": 24,
+  "status": "refuse-long-running",
+  "seconds": 3.83,
+  "note": ""
+ }
+]

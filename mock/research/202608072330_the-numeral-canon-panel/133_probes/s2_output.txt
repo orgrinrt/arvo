@@ -1,0 +1,19 @@
+--- A. monotone deterministic retraction == per-cell threshold rule, exhaustively ---
+m=3: 4 retractions per cell, 3 monotone, 3 suffix rules (equal=True, count must be m=3: True)
+m=4: 8 retractions per cell, 4 monotone, 4 suffix rules (equal=True, count must be m=4: True)
+m=5: 16 retractions per cell, 5 monotone, 5 suffix rules (equal=True, count must be m=5: True)
+parity control at m=4: round-up set (1, 0, 1) monotone=False (must be False)
+--- B. the law overlap, checked per member ---
+member       order bound  staged comp  negation sym
+floor        True         True         False       
+ceil         True         True         False       
+toward_zero  False        True         True        
+half_up      False        False        False       
+half_even    False        False        True        
+
+checks against candidate 5.3:
+floor carries order bound AND composition: True (must be True: refutes 'no member carries more than one')
+toward_zero carries composition AND negation: True (must be True: second refutation)
+half_even carries negation symmetry: True (must be True: 5.3 attributes it to toward_zero alone)
+controls: half_up composition False (must be False), half_up negation False (must be False), floor negation False (must be False)
+the true exclusivity, order bound never with negation symmetry: True (must be True)

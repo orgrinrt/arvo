@@ -1,0 +1,64 @@
+p2 (143): is the accumulator width answer-visible?
+model: a FOLD over a slice, policy applied per step at the accumulator width,
+narrowed once at the end. W=4, slice length 3, exhaustive over all slices.
+
+sign       overflow   F    kernel   acc widths -> classes
+------------------------------------------------------------------------------
+Unsigned   Wrap       0    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       0    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       0    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       1    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       1    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       1    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       2    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       2    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Wrap       2    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   0    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   0    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   0    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   1    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   1    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   1    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   2    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   2    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Unsigned   Saturate   2    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       0    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       0    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       0    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       1    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       1    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       1    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       2    sum      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       2    dot      {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Wrap       2    altsum   {W,W+2,W+4} -> 1   lossy(W-1) -> 2
+Signed     Saturate   0    sum      {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   0    dot      {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   0    altsum   {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   1    sum      {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   1    dot      {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   1    altsum   {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   2    sum      {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   2    dot      {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+Signed     Saturate   2    altsum   {W,W+2,W+4} -> 2   lossy(W-1) -> 3
+
+=== verdict by cell ===
+accumulator VISIBLE in 9 cells:
+  Signed/Saturate/F=0/sum
+  Signed/Saturate/F=0/dot
+  Signed/Saturate/F=0/altsum
+  Signed/Saturate/F=1/sum
+  Signed/Saturate/F=1/dot
+  Signed/Saturate/F=1/altsum
+  Signed/Saturate/F=2/sum
+  Signed/Saturate/F=2/dot
+  Signed/Saturate/F=2/altsum
+accumulator invisible in 27 cells
+
+P2a (visible at signed saturating): CONFIRMED
+P2b + P2c (invisible everywhere else): CONFIRMED
+
+141's cell reproduces on an independent model: YES
+
+=== controls ===
+the lossy accumulator is visible in every cell, so the sweep can see an
+accumulator when there is something to see, and the invisible cells are real.

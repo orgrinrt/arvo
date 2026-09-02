@@ -1,63 +1,66 @@
+# arvo's mock workspace.
+#
+# `mock/crates` was deleted on 2026-08-08 while the canon was written, and this
+# file said "deliberately empty" for as long as that was true. It is no longer
+# true: the canon settled its floor, a design was derived from it, and the three
+# crates below are the first source written from that design.
+#
+# The order that emptied this list is the same order that refills it. Canon first,
+# then designs derived from it, then code written from those. What is forbidden is
+# restoring a crate to make something build, or bringing back source that predates
+# the canon; source written from a locked design changelist is the opposite of
+# that and is how the tree is meant to grow.
+
+# There is no `checks` member and there will not be one.
+#
+# A crate here once held the checks over the canon, on the reasoning that it was
+# neither source nor a tool but a harness above the canon. That third category
+# does not exist: a check is a lint or a tool, and a directory of checks that are
+# neither is a suite of lints that run only when somebody remembers plus a
+# handful of reports nobody can find. Its arms are lints under `mock/lints/` and
+# tools under `mock/tools/`, and they gate at every commit rather than when a
+# test is run.
 [workspace]
 resolver = "2"
 members = [
-    # L0a — foundation traits (no storage, no algorithms)
-    "crates/arvo-transparent",
+    "crates/arvo-format",
+    "crates/arvo-placement",
     "crates/arvo-strategy",
-
-    # L0 — minimal bare-primitive layer
-    "crates/arvo-storage",
-
-    # L0.5 — trait contracts (declarations only)
-    "crates/arvo-bits-contracts",
-    "crates/arvo-mask-contracts",
-    "crates/arvo-numeric-contracts",
-
-    # L1 — implementation crates (concrete storage + impls)
-    "crates/arvo-bits",
-    "crates/arvo-bitmask",
-    "crates/arvo-refit",
-    "crates/arvo-tensor",
-
-    # L2 — algorithm + hash crates
-    "crates/arvo-hash",
-    "crates/arvo-sparse",
-    "crates/arvo-graph",
-    "crates/arvo-comb",
-
-    # L3 — spectral
-    "crates/arvo-spectral",
-
-    # facade — re-exports + default impls + ergonomic aliases
-    "crates/arvo",
-
-    # bench infrastructure (operational tooling, not a published artefact)
-    "benches",
-    "benches/variants/fnv1a",
-    "benches/variants/xxhash3",
 ]
+# `benches` (and every crate under `benches/variants/`) is excluded rather than
+# listed as a member. The deletion commit that emptied `members` above (929c46ed)
+# dropped every `benches*` entry along with the crate list, even though its own
+# message says the bench tree stays and its artifacts are committed evidence the
+# panel cites. Without an exclude entry, every crate under `benches/` has no
+# `[workspace]` table of its own, so cargo walks up, finds this now-empty
+# workspace, and refuses to build ("current package believes it's in a
+# workspace when it's not"), which silently broke every bench in this repository,
+# including ones the panel had already run and cited, from that commit forward.
+# `exclude` keeps bench crates buildable as their own free-standing tree without
+# re-listing them as workspace members, which would be the wrong fix: they are
+# not governed by the canon/design/code chain the member list protects.
+exclude = ["benches"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.0.0"
 edition = "2024"
 license = "MPL-2.0"
 
 [workspace.dependencies]
-mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
-notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const"] }
-arvo-transparent = { path = "crates/arvo-transparent" }
-arvo-strategy = { path = "crates/arvo-strategy" }
-arvo-storage = { path = "crates/arvo-storage" }
-arvo-bits-contracts = { path = "crates/arvo-bits-contracts" }
-arvo-mask-contracts = { path = "crates/arvo-mask-contracts" }
-arvo-numeric-contracts = { path = "crates/arvo-numeric-contracts" }
-arvo-bits = { path = "crates/arvo-bits" }
-arvo-bitmask = { path = "crates/arvo-bitmask" }
-arvo-refit = { path = "crates/arvo-refit" }
-arvo-tensor = { path = "crates/arvo-tensor" }
-arvo-hash = { path = "crates/arvo-hash" }
-arvo-graph = { path = "crates/arvo-graph" }
-arvo-sparse = { path = "crates/arvo-sparse" }
-arvo-spectral = { path = "crates/arvo-spectral" }
-arvo-comb = { path = "crates/arvo-comb" }
-arvo = { path = "crates/arvo" }
+notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const", "try_trait_v2"] }
+arvo-format = { path = "crates/arvo-format" }
+arvo-placement = { path = "crates/arvo-placement" }
+
+# Incremental compilation is off here, deliberately.
+#
+# arvo's cost is in monomorphised output, not in source it could reuse: the
+# per-width, per-strategy, per-sign impl macros turn a small file into an
+# enormous object, and `libarvo_strategy.rlib` alone was 19 MB. Incremental
+# caches a dep graph proportional to that output on every rustc invocation and
+# cargo garbage-collects the sessions lazily, so an afternoon of iteration put
+# 8.9 GB in `target/debug/incremental` across a thousand session directories.
+#
+# It buys correspondingly little: the expensive part is re-monomorphising, which
+# incremental does not avoid. Kept for whatever is built here next.
+[profile.dev]
+incremental = false

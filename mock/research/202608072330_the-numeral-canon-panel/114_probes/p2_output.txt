@@ -1,0 +1,80 @@
+==============================================================================
+p2. The overflow policy decides which discharge check is right
+==============================================================================
+
+C3. Is the realisation map a ring homomorphism? Checked, not asserted.
+    Domain is the whole ambient range the operands can reach.
+
+  primitive    ops                    mismatches         of
+  uW3/wrap     add, sub, mul                   0       1728
+  iW3/wrap     add, sub, mul                   0       1728
+  uW4/wrap     add, sub, mul                   0       6912
+  uW3/sat      add, sub, mul                 400       1728
+  iW3/sat      add, sub, mul                 464       1728
+
+  The saturating rows are the control. A zero on every row would mean
+  the check cannot distinguish the two policies and proves nothing.
+
+------------------------------------------------------------------------------
+P1 and P2. Under wrap, does the root alone decide everything?
+
+  primitive      cells   agree  rootval  P1 gap  pernode  rootchk  ro unsnd  ro consv
+  uW3/wrap       13032    3210     3210       0     2247     2565         0       645
+  iW3/wrap        2148    1402     1402       0     1245     1307         0        95
+  uW3/sat        13032    2950     3210     260     2247     2565        38       423
+  iW3/sat         2148    1338     1402      64     1245     1307        34        65
+
+  P1 gap: cells where 'the arms agree' and 'the root's exact value is
+  always in range' disagree. Zero means the root decides everything.
+  ro unsnd / ro consv: the root-only check's own soundness and loss.
+  C1 is the saturating rows: root-only must go unsound there.
+
+------------------------------------------------------------------------------
+P2 continued. Under wrap, is the root-only check EXACT where (a) holds?
+
+  uW3/wrap     condition (a) holds on 9408 cells; root-only disagrees with the arms on 0
+  iW3/wrap     condition (a) holds on 1200 cells; root-only disagrees with the arms on 0
+
+  The same count run on a saturating primitive, which must not be zero:
+  uW3/sat      condition (a) holds on 9408 cells; root-only disagrees with the arms on 28
+  iW3/sat      condition (a) holds on 1200 cells; root-only disagrees with the arms on 16
+
+------------------------------------------------------------------------------
+The violations named. Cells where (a) and (b) hold, the per-node corner
+rule refuses, and the arms agree anyway. Under wrap only.
+
+  (x - (y - z))        declared [(0, 0), (0, 0), (0, 1)]
+      nodes: (x - (y - z)) in (0, 1); (y - z) in (-1, 0)   container [0, 7]
+      root-only says: True
+  (x - (y - z))        declared [(0, 0), (0, 0), (0, 2)]
+      nodes: (x - (y - z)) in (0, 2); (y - z) in (-2, 0)   container [0, 7]
+      root-only says: True
+  (x - (y - z))        declared [(0, 0), (0, 0), (0, 3)]
+      nodes: (x - (y - z)) in (0, 3); (y - z) in (-3, 0)   container [0, 7]
+      root-only says: True
+  (x - (y - z))        declared [(0, 0), (0, 0), (0, 4)]
+      nodes: (x - (y - z)) in (0, 4); (y - z) in (-4, 0)   container [0, 7]
+      root-only says: True
+  (x - (y - z))        declared [(0, 0), (0, 0), (0, 5)]
+      nodes: (x - (y - z)) in (0, 5); (y - z) in (-5, 0)   container [0, 7]
+      root-only says: True
+  (x - (y - z))        declared [(0, 0), (0, 0), (0, 6)]
+      nodes: (x - (y - z)) in (0, 6); (y - z) in (-6, 0)   container [0, 7]
+      root-only says: True
+  (x - (y - z))        declared [(0, 0), (0, 0), (0, 7)]
+      nodes: (x - (y - z)) in (0, 7); (y - z) in (-7, 0)   container [0, 7]
+      root-only says: True
+  (x - (y - z))        declared [(0, 1), (0, 0), (0, 1)]
+      nodes: (x - (y - z)) in (0, 2); (y - z) in (-1, 0)   container [0, 7]
+      root-only says: True
+
+  total such cells at uW3/wrap: 28
+
+------------------------------------------------------------------------------
+C2. Break the ring by adding `min` to the signature. P1 must fail.
+
+  uW3/wrap     homomorphism mismatches 168 of 2304;  P1 gap 591 of 9496 cells over 60 sampled terms
+  iW3/wrap     homomorphism mismatches 168 of 2304;  P1 gap 72 of 1500 cells over 60 sampled terms
+
+  A nonzero P1 gap here is the control firing: the root stops deciding
+  everything the moment the signature leaves the ring.

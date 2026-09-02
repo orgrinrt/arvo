@@ -1,0 +1,5 @@
+nearest (random S, adversarial ties): 0 win-chains, 0 win-inputs, 320 exercised of 400
+CONTROL down-projection onto same S : 145 win-chains, 15304 win-inputs, 313 exercised of 400
+C1 theorem rows zero                : PASS
+C2 control fires (harness can see a win): PASS
+C3 placements genuinely move outputs: PASS

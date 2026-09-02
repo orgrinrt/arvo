@@ -1,0 +1,57 @@
+p4: does the minimising concern stay answer-invisible at the accumulator?
+W = 4, limit read at the DECLARED width always, exhaustive per operation
+
+--- W=4 F=0 unsigned ---
+  T1 storage x3 lossless, acc pinned :  12 configs -> 2 classes (assignment alone: 2)
+  T2 lossy control added             :  16 configs -> 4 classes control FIRES
+  T3 storage x3 AND accumulator x3   :  36 configs -> 2 classes accumulator invisible
+  T4 wrapping  : acc varied -> 1 classes, acc pinned -> 1 classes  invisible
+  T4 saturating: acc varied -> 1 classes, acc pinned -> 1 classes  invisible
+  T5 witness set = {add} only        : acc varied -> 2, acc pinned -> 2 (add cannot see the accumulator)
+  merge control: duplicate config     : 2 vs 2 (comparator merges)
+
+--- W=4 F=0 signed ---
+  T1 storage x3 lossless, acc pinned :  12 configs -> 2 classes (assignment alone: 2)
+  T2 lossy control added             :  16 configs -> 4 classes control FIRES
+  T3 storage x3 AND accumulator x3   :  36 configs -> 4 classes ACCUMULATOR IS VISIBLE
+  T4 wrapping  : acc varied -> 1 classes, acc pinned -> 1 classes  invisible
+  T4 saturating: acc varied -> 3 classes, acc pinned -> 1 classes  VISIBLE
+  T5 witness set = {add} only        : acc varied -> 2, acc pinned -> 2 (add cannot see the accumulator)
+  merge control: duplicate config     : 2 vs 2 (comparator merges)
+
+--- W=4 F=1 unsigned ---
+  T1 storage x3 lossless, acc pinned :  12 configs -> 2 classes (assignment alone: 2)
+  T2 lossy control added             :  16 configs -> 4 classes control FIRES
+  T3 storage x3 AND accumulator x3   :  36 configs -> 2 classes accumulator invisible
+  T4 wrapping  : acc varied -> 1 classes, acc pinned -> 1 classes  invisible
+  T4 saturating: acc varied -> 1 classes, acc pinned -> 1 classes  invisible
+  T5 witness set = {add} only        : acc varied -> 2, acc pinned -> 2 (add cannot see the accumulator)
+  merge control: duplicate config     : 2 vs 2 (comparator merges)
+
+--- W=4 F=1 signed ---
+  T1 storage x3 lossless, acc pinned :  12 configs -> 4 classes (assignment alone: 4)
+  T2 lossy control added             :  16 configs -> 8 classes control FIRES
+  T3 storage x3 AND accumulator x3   :  36 configs -> 8 classes ACCUMULATOR IS VISIBLE
+  T4 wrapping  : acc varied -> 2 classes, acc pinned -> 2 classes  invisible
+  T4 saturating: acc varied -> 6 classes, acc pinned -> 2 classes  VISIBLE
+  T5 witness set = {add} only        : acc varied -> 2, acc pinned -> 2 (add cannot see the accumulator)
+  merge control: duplicate config     : 4 vs 4 (comparator merges)
+
+--- W=4 F=2 unsigned ---
+  T1 storage x3 lossless, acc pinned :  12 configs -> 2 classes (assignment alone: 2)
+  T2 lossy control added             :  16 configs -> 4 classes control FIRES
+  T3 storage x3 AND accumulator x3   :  36 configs -> 2 classes accumulator invisible
+  T4 wrapping  : acc varied -> 1 classes, acc pinned -> 1 classes  invisible
+  T4 saturating: acc varied -> 1 classes, acc pinned -> 1 classes  invisible
+  T5 witness set = {add} only        : acc varied -> 2, acc pinned -> 2 (add cannot see the accumulator)
+  merge control: duplicate config     : 2 vs 2 (comparator merges)
+
+--- W=4 F=2 signed ---
+  T1 storage x3 lossless, acc pinned :  12 configs -> 4 classes (assignment alone: 4)
+  T2 lossy control added             :  16 configs -> 8 classes control FIRES
+  T3 storage x3 AND accumulator x3   :  36 configs -> 6 classes ACCUMULATOR IS VISIBLE
+  T4 wrapping  : acc varied -> 2 classes, acc pinned -> 2 classes  invisible
+  T4 saturating: acc varied -> 4 classes, acc pinned -> 2 classes  VISIBLE
+  T5 witness set = {add} only        : acc varied -> 2, acc pinned -> 2 (add cannot see the accumulator)
+  merge control: duplicate config     : 4 vs 4 (comparator merges)
+

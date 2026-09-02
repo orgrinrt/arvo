@@ -1,0 +1,50 @@
+dd02117 chore: lock src CL for bitmask rustdoc fixup
+baa459d docs: fix arvo-bitmask rustdoc to migrated BitMatrix<W, C> signature
+9968edd docs: open src CL for bitmask rustdoc fixup
+e9bbebd chore: lock doc CL for bitmask rustdoc fixup
+858de7d docs: open bitmask rustdoc fixup round
+6d6ef98 chore: close design round 202605301415
+43f46e4 chore: lock src CL for capacity-container migration
+ed02e98 refactor!: migrate arvo containers and algorithms off Cap to Capacity
+fd52f5c docs: open src CL for capacity-container migration
+76a67e2 chore: lock doc CL for capacity-container migration
+bb57172 docs: update cross-refs to migrated BitMatrix/Csr/Cap shape
+48bef5c docs: migrate arvo-spectral DESIGN to Capacity shape
+cd4e480 docs: migrate arvo-comb DESIGN to Capacity shape
+c641fca docs: migrate arvo-graph algorithm DESIGN to Capacity shape
+2843db2 docs: migrate arvo-sparse Csr and adjacency DESIGN to Capacity shape
+c8ef775 docs: migrate arvo-bitmask BitMatrix DESIGN to Capacity shape
+1b07489 docs: migrate arvo-tensor DESIGN to Capacity shape
+4b96745 docs: add doc CL for capacity-container migration
+0d6470e docs: open capacity-container migration round + de-risk sketch
+c774b59 feat: add Capacity trait and Dim marker to arvo-tensor
+4cec32a feat: live-node-count awareness for loose-CSR spectral partitioning
+0d6fb4f feat: parameterise csr over live row and nnz counts
+57cd6d3 refactor: scope generic_const_exprs gates to crates that use them
+5776b61 fix: pin nightly, adapt Bool Try to core's Residual bound
+1840531 feat: add cap, the usize to Cap const constructor
+83af326 docs: catalog arvo arbitrary limitations
+b5db00d chore: add restrict-main-merges workflow
+ac9b875 feat: debug impls for ufixed and ifixed
+85be3de fix: remove stale CsrBidirectional SHAME entry from arvo-sparse (#64)
+a6d8cd7 feat: graph + spectral algorithms for hilavitkutin (round 202605111719) (#63)
+fd19593 Merge pull request #62 from orgrinrt/feat/cap-usize-const-from
+2a83524 chore: close design round 202605112230
+b9ad65b chore: lock src changelist for 202605112230_changelist.src.lock.md
+6d0bd0d test: route from_bridges const unwraps through Transparent::raw
+5f52e5b docs: open SRC phase for review-followup round 202605112230
+4e88a72 chore: lock doc changelist for 202605112230_changelist.doc.lock.md
+bb26a27 docs: rewrite stale Bool/From paragraph to acknowledge const lift
+95a6f57 docs: open DOC phase for review-followup round 202605112230
+dc895cb docs: topic for review-followup round 202605112230
+7d513df chore: close design round 202605112200
+1119b85 chore: lock src changelist for 202605112200_changelist.src.lock.md
+6b26f92 feat: Cap <-> USize const From bridges + lift Bool <-> bool to const
+bd3d481 docs: open SRC phase for round 202605112200
+93e838c chore: lock doc changelist for 202605112200_changelist.doc.lock.md
+791c4b4 docs: apply round 202605112200 DOC phase
+f944cee docs: open DOC phase for round 202605112200
+4ff12ec docs: topic for Cap/USize const From bridges round 202605112200
+0f5711c docs: arvo doc audit round (Tier 1 leakage + drift sweep) (#60)
+de59475 chore: bump mockspace pin + regen docs (#59)
+0a820a8 docs: rewrite readme (#57)

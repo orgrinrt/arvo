@@ -1,0 +1,32 @@
+######## 43 section 0, the figures its instruments produced
+  finding  ABSENT  1201             matches=0   (in 43: 5)  two-level shapes one bit wide, s3
+  finding  CHECK   4096             matches=4   (in 43: 5)  two-level shape space, s3
+           | all 256 ordered pairs, that it associates over all 4096 triples, and that al
+           | s signed saturating addition, measured directly at 4096 triples, and not sig
+  finding  ABSENT  6502             matches=0   (in 43: 4)  negative control overflow witness, s3
+  finding  ABSENT  8 of 18          matches=0   (in 43: 2)  grids matching the prediction, s5
+  finding  ABSENT  9 of 9           matches=0   (in 43: 3)  grids at zero bias, s5
+  finding  CHECK   58               matches=2   (in 43: 4)  assembly lines, clamped subslice, p7
+           | y unsupported, though the coordinate does separate 58 of 90 arm pairs meas
+  finding  CHECK   94               matches=3   (in 43: 5)  assembly lines, enforced run, p7
+           |  corpus at a named commit, 254 files, 104080 rows, 94 variant crates, none
+           | s unqualified at `35:311` where it originated, at `94:887`, and in the sta
+           | st reading, which differs from the second on 32 to 94 cells in one compari
+
+######## controls
+  CTRL+A   CHECK   476              matches=4   (in 43: 0)  coherence law witness, signed sat
+           | n holds the adaptation laws and fails coherence at 476 chain-divergent trip
+           | adaptation laws", "law roles", "induced algebra", "476", "897", "quotient"]
+  CTRL+A   CHECK   897              matches=2   (in 43: 0)  coherence law witness, mutant
+           | 
+  CTRL-N   ABSENT  999999999        matches=0   (in 43: 0)  a figure in neither document
+
+######## and the concepts, not the numbers: does any row state them?
+  capacity against count       registry=0
+  len <= capacity              registry=0
+  binding-time distinction     registry=0
+  flattening                   registry=0
+  traversal order              registry=2
+  shared scale                 registry=0
+  frame of reference           registry=0
+  per-aggregate                registry=3

@@ -1,0 +1,25 @@
+   Compiling bench-satfold-shared v0.0.0 (/Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/satfold-shared)
+    Finished `release` profile [optimized] target(s) in 4.83s
+     Running unittests src/lib.rs (target/release/deps/bench_satfold_shared-ccec0e96395eb886)
+
+running 11 tests
+test tests::the_key_encoding_round_trips ... ok
+test tests::the_two_const_verdicts_differ_and_are_computed ... ok
+test tests::the_offset_column_is_actually_offset ... ok
+test tests::wrapping_addition_is_associative_at_eight_bits ... ok
+test tests::a_dropped_remainder_is_caught_wherever_one_exists ... ok
+test tests::the_one_element_defect_is_caught_up_to_1024_and_not_above_it ... ok
+test tests::a_dropped_lane_is_caught_wherever_a_sixteenth_lane_exists ... ok
+test tests::the_workload_is_not_degenerate_at_any_length ... ok
+test tests::saturating_addition_is_associative_at_eight_bits ... ok
+test tests::a_wrong_operator_is_caught_at_every_length_and_both_ops ... ok
+test tests::every_kernel_agrees_with_the_oracle_at_every_length ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+   Doc-tests bench_satfold_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

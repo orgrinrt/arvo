@@ -1,0 +1,72 @@
+=== 1. can any of the five assertions differ between two targets ===
+  non-test source files:
+    mock/crates/arvo-format/src/adapt.rs
+    mock/crates/arvo-format/src/ambient.rs
+    mock/crates/arvo-format/src/apply.rs
+    mock/crates/arvo-format/src/format.rs
+    mock/crates/arvo-format/src/lib.rs
+    mock/crates/arvo-format/src/overflow.rs
+    mock/crates/arvo-format/src/quantum.rs
+    mock/crates/arvo-format/src/rounding.rs
+    mock/crates/arvo-format/src/slots.rs
+    mock/crates/arvo-format/src/standards.rs
+    mock/crates/arvo-format/src/width.rs
+  target-dependent constructs found: NONE
+  C1 passes: the same pattern finds 1 target-dependent constructs in the crate's test files, so the zero above is about the source.
+
+  the carriers the slot coordinates are declared in:
+    54:    const MIN: i64;
+    57:    const MAX: i64;
+    63:    const WIDTH: Width;
+    100:    ///     const MIN: i64 = 8;
+    101:    ///     const MAX: i64 = -8;
+    102:    ///     const WIDTH: Width = Width::bits(8);
+    121:    ///     const MIN: i64 = -8;
+    122:    ///     const MAX: i64 = 7;
+    123:    ///     const WIDTH: Width = Width::bits(8);
+    201:                const MIN: i64 = -(1i64 << ($w - 1));
+    202:                const MAX: i64 = (1i64 << ($w - 1)) - 1;
+    203:                const WIDTH: Width = Width::bits($w);
+    207:                const MIN: i64 = 0;
+    208:                const MAX: i64 = (1i64 << $w) - 1;
+    209:                const WIDTH: Width = Width::bits($w);
+    25:pub struct Width(u32);
+  Every one is a fixed-width Rust type. i64 is 64 bits on every target and
+  u32 is 32 bits on every target, so with MIN, MAX and WIDTH held fixed no
+  assertion in ADMITTED can change truth value between two targets.
+  CONCLUSION: the shipped hosting predicate is indexed by THIS CRATE'S
+  chosen carriers, not by a target. The proposal's word is the right one.
+
+=== 2. what each of the five assertions actually compares ===
+  five conditions extracted from mock/crates/arvo-format/src/slots.rs:
+    Self::MIN <= Self::MAX
+    Self::WIDTH.count() >= 1
+    Self::WIDTH.count() <= 62
+    (Self::MAX as i128) - (Self::MIN as i128) < i64::MAX as i128
+    (Self::MAX as i128) - (Self::MIN as i128) < (1i128 << Self::WIDTH.count())
+
+  classification:
+    wellformed Self::MIN <= Self::MAX
+    wellformed Self::WIDTH.count() >= 1
+    hosting    Self::WIDTH.count() <= 62
+    hosting    (Self::MAX as i128) - (Self::MIN as i128) < i64::MAX as i128
+    wellformed (Self::MAX as i128) - (Self::MIN as i128) < (1i128 << Self::WIDTH.count())
+
+  hosting: 2    well-formedness: 3
+  C2 passes: at least one condition is classified hosting.
+  C3 passes: at least one condition is classified well-formedness, so the classifier distinguishes.
+  C4 passes: three planted conditions, two kinds, all classified correctly.
+
+  CONCLUSION: Slots::ADMITTED is not one kind of condition. It mixes
+  well-formedness of the declaration with capacity of this crate's carriers.
+  241's 'exactly this and nothing else' is measured false here.
+
+=== 3. the 63-bit example 241 rests its hosting half on ===
+  148:            "declared width is wider than a slot index carries; the count of slots is 2^width and \
+  149-             2^63 does not fit a signed 64-bit integer"
+  150-        );
+  241 wrote: 'a width of 63 bits is a perfectly good coordinate assignment
+  that this stack cannot carry, because a slot count of 2^63 does not fit
+  the signed 64-bit integer a slot index is carried in.'
+  The bound in source is <= 62, so 63 is refused, and the message is the
+  source's own. 241's worked example reproduces.

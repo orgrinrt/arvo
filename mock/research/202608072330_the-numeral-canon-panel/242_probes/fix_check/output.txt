@@ -1,0 +1,20 @@
+======== ARM: control (no cfg)
+control: the predicate evaluates and separates the two shipped phases.
+zero arm not built; rerun with --cfg zero_den.
+-------- ok
+
+======== ARM: zero_den
+error[E0080]: attempt to calculate the remainder of `1_i64` with a divisor of zero
+  --> proposed_phase_predicate.rs:35:24
+   |
+35 | const ZERO_DEN: bool = proposed(1, 0, -8, 7);
+   |                        ^^^^^^^^^^^^^^^^^^^^^ evaluation of `ZERO_DEN` failed inside this call
+   |
+note: inside `proposed`
+  --> proposed_phase_predicate.rs:24:5
+   |
+24 |     phase_num % phase_den == 0 && slot_in_range(0, min, max)
+   |     ^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+
+note: erroneous constant encountered
+  --> proposed_phase_predicate.rs:46:38

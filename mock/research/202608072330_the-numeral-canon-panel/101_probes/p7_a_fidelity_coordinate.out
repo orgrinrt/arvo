@@ -1,0 +1,30 @@
+1. THE DESCRIPTOR THE HARNESS READS
+   score_label, scored routine   : Some("ulp error")
+   score_label, control routine  : None
+   outputs_may_differ, scored    : true
+   outputs_may_differ, control   : false
+
+2. THE SCORER, THROUGH THE BYTE BRIDGE THE HARNESS ACTUALLY CALLS
+           seed       truncating         rounding   closer to exact
+              1           9.9297           3.0703   rounding
+              2           7.8945           0.1055   rounding
+              3           7.8945           0.1055   rounding
+              4           8.5938           0.5938   rounding
+              5           8.5938           0.5938   rounding
+              6           8.6055           0.3945   rounding
+              7           8.6055           0.3945   rounding
+              8           7.6641           1.6641   rounding
+
+   rounding closer on 8 of 8 seeds, which is p6's k = 1 prediction:
+   an unbiased rounding beats truncation at the same grid at every chain length.
+
+3. WHAT THIS ESTABLISHES
+   A Routine carrying a fidelity metric compiles against the pinned
+   mockspace-bench-core with no feature gate and no fork; the descriptor
+   carries the label the harness tests at harness.rs:230 before writing the
+   score column, and a working scorer reachable through the byte bridge; and
+   the same routine sets outputs_may_differ, without which two arms that
+   round differently cannot be compared at all.
+
+   So the missing accuracy coordinate is a routine nobody wrote, not a
+   harness that cannot carry one.

@@ -1,0 +1,104 @@
+================================================================================================
+R1. Predicates found in 132: 11
+================================================================================================
+  5.2    The quantisation axis has no homomorphic mem   8 dimensions: F, W, domain, operation = addition, rounding = every deterministic member, signedness, target features, threads
+  5.3    What the axis selects instead: which exact l   7 dimensions: F, W, domain closed under negation, operations, rounding, signedness, threads
+  5.3    What the axis selects instead: which exact l   6 dimensions: F_exact, F_final, F_intermediate, domain = rationals over the swept window closed under negation, rounding, threads = 1
+  5.4    The axes decompose, with one named exception   6 dimensions: F, W >= 1, domain closed under negation, every deterministic member against saturation, and every translation-equivariant member against wrapping, signedness, threads
+  5.4    The axes decompose, with one named exception   4 dimensions: range policy = wrapping, rounding = toward-zero, signedness = signed, or unsigned with signed intermediates, threads = 1
+  5.5    Where the axis does not act at all             8 dimensions: F = 0 with operations, W, domain, range policy, rounding, signedness, target features, threads
+  5.5    Where the axis does not act at all             8 dimensions: F, W, domain, operation = multiplication, range policy, rounding, signedness, threads
+  5.6    Beyond the functions: unbiasedness fixes the   6 dimensions: F, W, coupling =, domain closed under negation, signedness, threads
+  5.6    Beyond the functions: unbiasedness fixes the   4 dimensions: coupling, element count, fraction = 1/3, threads
+  5.7    The tension is keyed, and a member keyed on    6 dimensions: F, decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions, input shape = one constant value at forty positions, keying, signedness, threads = 1
+  5.8    Randomness comes from outside, or the member   10 dimensions: `#![no_std]`, crate type = library, edition 2021, feature gates = none, float types = none, positions 0 to 255, target features, threads, threshold = a low-discrepancy sequence on the position, toolchain = the pinned nightly
+
+  control, a malformed dimension is surfaced not dropped: True (must be True), parsed as (unparsed)
+  control, `domain` is not split at the `in` inside it: True (must be True), keys = ['W', 'domain closed under negation']
+  control, a plural-subject `hold for:` predicate is found: True (must be True)
+
+================================================================================================
+R2/R3. Dimensions identical to the preceding clause's, the inheritance fingerprint
+================================================================================================
+  NECESSARY, NOT SUFFICIENT. Every flag below is a candidate for the hand check in 136,
+  not a finding. Coincidence between neighbours is normal and expected.
+
+  5.3    shares with 5.2    (adjacent)         : F, W, signedness, threads
+  5.4    shares with 5.2    (3 clauses up)     : F, signedness, threads
+  5.4    shares with 5.3    (2 clauses up)     : F, domain closed under negation, signedness, threads
+  5.4    shares with 5.3    (2 clauses up)     : threads = 1
+  5.5    shares with 5.2    (5 clauses up)     : W, signedness, target features, threads
+  5.5    shares with 5.3    (4 clauses up)     : W, signedness, threads
+  5.5    shares with 5.4    (2 clauses up)     : signedness, threads
+  5.5    shares with 5.2    (6 clauses up)     : F, W, signedness, threads
+  5.5    shares with 5.3    (5 clauses up)     : F, W, signedness, threads
+  5.5    shares with 5.4    (3 clauses up)     : F, signedness, threads
+  5.5    shares with 5.5    (adjacent)         : W, domain, range policy, signedness, threads
+  5.6    shares with 5.2    (7 clauses up)     : F, W, signedness, threads
+  5.6    shares with 5.3    (6 clauses up)     : F, W, domain closed under negation, signedness, threads
+  5.6    shares with 5.4    (4 clauses up)     : F, domain closed under negation, signedness, threads
+  5.6    shares with 5.5    (2 clauses up)     : W, signedness, threads
+  5.6    shares with 5.5    (adjacent)         : F, W, signedness, threads
+  5.6    shares with 5.2    (8 clauses up)     : threads
+  5.6    shares with 5.3    (7 clauses up)     : threads
+  5.6    shares with 5.4    (5 clauses up)     : threads
+  5.6    shares with 5.5    (3 clauses up)     : threads
+  5.6    shares with 5.5    (2 clauses up)     : threads
+  5.6    shares with 5.6    (adjacent)         : threads
+  5.7    shares with 5.2    (9 clauses up)     : F, signedness
+  5.7    shares with 5.3    (8 clauses up)     : F, signedness
+  5.7    shares with 5.3    (7 clauses up)     : threads = 1
+  5.7    shares with 5.4    (6 clauses up)     : F, signedness
+  5.7    shares with 5.4    (5 clauses up)     : threads = 1
+  5.7    shares with 5.5    (4 clauses up)     : signedness
+  5.7    shares with 5.5    (3 clauses up)     : F, signedness
+  5.7    shares with 5.6    (2 clauses up)     : F, signedness
+  5.8    shares with 5.2    (10 clauses up)    : target features, threads
+  5.8    shares with 5.3    (9 clauses up)     : threads
+  5.8    shares with 5.4    (7 clauses up)     : threads
+  5.8    shares with 5.5    (5 clauses up)     : target features, threads
+  5.8    shares with 5.5    (4 clauses up)     : threads
+  5.8    shares with 5.6    (3 clauses up)     : threads
+  5.8    shares with 5.6    (2 clauses up)     : threads
+
+  total flagged clause pairs: 37
+  of those, flagged on the domain dimension specifically: 4
+    5.4 inherits domain from 5.3
+    5.5 inherits domain from 5.5
+    5.6 inherits domain from 5.3
+    5.6 inherits domain from 5.4
+
+================================================================================================
+The domain dimension across every predicate, for the hand check
+================================================================================================
+  clause  the domain dimension as written                               dims  
+  5.2     domain in {closed under negation, one-signed}, each claimed   8     
+  5.3     domain closed under negation                                  7     
+  5.3     domain = rationals over the swept window closed under negati  6     
+  5.4     domain closed under negation                                  6     
+  5.4     (ABSENT: under I13 this claims nothing where a domain is pre  4     
+  5.5     domain any                                                    8     
+  5.5     domain any                                                    8     
+  5.6     domain closed under negation                                  6     
+  5.6     (ABSENT: under I13 this claims nothing where a domain is pre  4     
+  5.7     (ABSENT: under I13 this claims nothing where a domain is pre  6     
+  5.8     (ABSENT: under I13 this claims nothing where a domain is pre  10    
+
+  domain present in 7 of 11 predicates, absent in 4: 5.4, 5.6, 5.7, 5.8
+  An absent dimension is not a hedge. Per I13 it is the strongest negative available:
+  the claim does not hold in any situation where that dimension is present at all. For
+  a claim about quantising numbers a domain is always present, so each of those is
+  vacuous as written, which is the same class 133 names for the three unclassifiable
+  pins and a more severe defect than the over-narrow predicate 135 reports.
+
+================================================================================================
+VERDICT
+================================================================================================
+  R1 predicates extracted: 11, malformed-dimension control: True, domain-not-split: True, plural-subject: True (all three must be True or nothing below counts)
+  R2 5.6 flagged on domain once the comparison reaches past the adjacent clause: True
+  R2 5.7 flagged: False, and it cannot be. It carries no domain dimension, so there is
+     nothing to match. A matching heuristic is blind to omission by construction, which
+     is why the absence table above is a separate instrument and not a refinement.
+  R3 domain flags: 4, absences: 4. Neither number is a
+     finding on its own; each of the 8 is checked by hand
+     against its source argument in 136.

@@ -1,0 +1,4 @@
+citations checked (must pass): 43
+failures: 0
+deliberately wrong entries that must fail: 2
+  of those, wrongly found: 0 (must be 0)

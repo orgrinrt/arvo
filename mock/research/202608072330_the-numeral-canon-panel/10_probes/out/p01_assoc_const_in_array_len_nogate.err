@@ -1,0 +1,14 @@
+error: generic `Self` types are currently not permitted in anonymous constants
+  --> p01_assoc_const_in_array_len_nogate.rs:18:20
+   |
+18 |     type C = [u64; Self::WORDS];
+   |                    ^^^^
+   |
+note: not a concrete type
+  --> p01_assoc_const_in_array_len_nogate.rs:16:43
+   |
+16 | impl<const I: u32, const F: u32> Pick for Key<I, F> {
+   |                                           ^^^^^^^^^
+
+error: aborting due to 1 previous error
+

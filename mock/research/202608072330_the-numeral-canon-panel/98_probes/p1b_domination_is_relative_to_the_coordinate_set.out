@@ -1,0 +1,33 @@
+Arms dominated in EVERY region, per coordinate subset.
+An arm listed here is unreachable by any monotone selection rule
+over those coordinates, at every region measured.
+
+  coords ['time']                           dominated everywhere: ['bitpack-carrier-d64', 'bitpack-carrier-packed', 'bitpack-carrier-packed-simd']
+                                            Pareto fronts per region: [1, 1, 1, 1, 1, 1], admissible sections <= 1
+  coords ['bytes']                          dominated everywhere: ['bitpack-carrier-d16', 'bitpack-carrier-d16-control', 'bitpack-carrier-d32', 'bitpack-carrier-d64']
+                                            Pareto fronts per region: [2, 2, 2, 2, 2, 2], admissible sections <= 64
+  coords ['spread']                         dominated everywhere: ['bitpack-carrier-d16', 'bitpack-carrier-d64']
+                                            Pareto fronts per region: [1, 1, 1, 1, 1, 1], admissible sections <= 1
+  coords ['time', 'bytes']                  dominated everywhere: ['bitpack-carrier-d64', 'bitpack-carrier-packed']
+                                            Pareto fronts per region: [3, 3, 2, 2, 2, 2], admissible sections <= 144
+  coords ['time', 'spread']                 dominated everywhere: ['bitpack-carrier-d64']
+                                            Pareto fronts per region: [2, 1, 4, 4, 3, 2], admissible sections <= 192
+  coords ['bytes', 'spread']                dominated everywhere: ['bitpack-carrier-d64']
+                                            Pareto fronts per region: [2, 3, 1, 1, 1, 1], admissible sections <= 6
+  coords ['time', 'bytes', 'spread']        dominated everywhere: ['bitpack-carrier-d64']
+                                            Pareto fronts per region: [4, 4, 4, 4, 4, 2], admissible sections <= 2048
+
+under (time, bytes):          ['bitpack-carrier-d64', 'bitpack-carrier-packed']
+under (time, bytes, spread):  ['bitpack-carrier-d64']
+
+RESCUED by adding 'spread': ['bitpack-carrier-packed']
+  bitpack-carrier-packed is on the front at 4 of 6 regions once spread is a coordinate: [16384, 1048576, 2097152, 4194304]
+
+So the everywhere-dominated verdict on these arms was a
+property of the two-coordinate model, not of the arms.
+
+And the converse direction, which is the honest caveat on this
+probe itself: adding a fourth coordinate could rescue the rest.
+  bitpack-carrier-d64 is dominated everywhere on all three coordinates.
+    That is a licence to drop it only if the three are the whole
+    of what any strategy weighs, which nothing has established.

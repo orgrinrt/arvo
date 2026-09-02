@@ -29,7 +29,7 @@ if ! echo "$TARGET" | grep -qE "mock/crates/arvo[^/]*/src/"; then
     allow
 fi
 
-# Platform modules under std:: — catch both `use std::thread` and
+# Platform modules under std::, catch both `use std::thread` and
 # fully-qualified inline paths like `std::thread::spawn`.
 for MOD in thread time fs net process io env sync; do
     if echo "$CONTENT" | grep -qE "std::${MOD}(::|[^a-zA-Z0-9_]|$)"; then

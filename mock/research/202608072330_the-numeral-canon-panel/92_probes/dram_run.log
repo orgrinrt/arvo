@@ -1,0 +1,41 @@
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (412s elapsed, ~1237s left)
+  pass 2/4 cd=0ms... done (824s elapsed, ~824s left)
+  pass 3/4 cd=0ms... done (1235s elapsed, ~412s left)
+  pass 4/4 cd=0ms... done (1648s elapsed, ~0s left)
+  Total: 1648.4s
+  CSV: satfold-length-dram_n3100.csv (640 rows)
+  Meta: satfold-length-dram_n3100.meta.json
+  wrote satfold-length-dram_n3100.csv + satfold-length-dram_n3100_findings.md
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (448s elapsed, ~1343s left)
+  pass 2/4 cd=0ms... done (893s elapsed, ~893s left)
+  pass 3/4 cd=0ms... done (1340s elapsed, ~447s left)
+  pass 4/4 cd=0ms... done (1789s elapsed, ~0s left)
+  Total: 1789.4s
+  CSV: satfold-length-dram_n7100.csv (640 rows)
+  Meta: satfold-length-dram_n7100.meta.json
+  wrote satfold-length-dram_n7100.csv + satfold-length-dram_n7100_findings.md
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms...

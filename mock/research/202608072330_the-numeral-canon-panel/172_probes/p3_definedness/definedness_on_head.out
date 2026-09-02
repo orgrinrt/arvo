@@ -1,0 +1,5 @@
+debug_assertions = true
+constructed divisor: exact = 4294967296 (nonzero), wrapped i32 = 0
+partial arm, narrow realisation : Err(())
+partial arm, wide realisation   : Ok(0)
+binding-free channel at this profile: true

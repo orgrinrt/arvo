@@ -1,0 +1,15 @@
+bitpack-carrier-d16          vs bitpack-carrier-d16-control  IDENTICAL   (50497 instruction lines each)
+bitpack-contend-d16          vs bitpack-contend-d16-control  IDENTICAL   (55678 instruction lines each)
+bitpack-wide-d16             vs bitpack-wide-d16-control     DIFFER      (55513 vs 55513 lines, 6 differing)
+35723c35723
+< ldr	q4, [x11]
+---
+> ldr	q4, [x11, #ADDR]
+35839c35839
+< ldr	q0, [x8]
+---
+> ldr	q0, [x8, #ADDR]
+35883c35883
+< ldr	q1, [x8]
+---
+> ldr	q1, [x8, #ADDR]

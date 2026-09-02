@@ -1,0 +1,37 @@
+=== p3a: honest closed form, sign-uniform declarations: EXPECT ACCEPT ===
+rustc -O -C panic=abort --crate-type=staticlib -o /tmp/libp3a.a   1.12s user 0.12s system 69% cpu 1.774 total
+
+=== p3b: straddling declaration: EXPECT REFUSAL ===
+rustc -O -C panic=abort --crate-type=staticlib -o /tmp/libp3b.a   1.10s user 0.02s system 99% cpu 1.133 total
+
+=== p3c: perturbed closed form: EXPECT REFUSAL FROM THE CROSS-CHECK ===
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+   --> p3c_perturbed_closed_form_refused.rs:244:9
+    |
+244 | /         assert!(
+245 | |             cross_check_holds(),
+246 | |             "the closed-form law verdict disagrees with the swept verdict somewhere in \
+247 | |              the model band, so the closed form is wrong and no arm may be gated on it"
+248 | |         );
+    | |_________^ evaluation of `<Win<-128, 0> as ReassociableFold>::PROOF` failed here
+
+note: erroneous constant encountered
+   --> p3c_perturbed_closed_form_refused.rs:288:13
+    |
+288 |     let _ = <W as ReassociableFold>::PROOF;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn fold_reassociated::<Win<-128, 0>>`
+   --> p3c_perturbed_closed_form_refused.rs:411:17
+    |
+411 |         let b = fold_reassociated::<NeverPositive>(&buf[..len]);
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+   --> p3c_perturbed_closed_form_refused.rs:244:9
+    |
+244 | /         assert!(
+245 | |             cross_check_holds(),
+246 | |             "the closed-form law verdict disagrees with the swept verdict somewhere in \
+247 | |              the model band, so the closed form is wrong and no arm may be gated on it"
+248 | |         );

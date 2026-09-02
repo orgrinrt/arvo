@@ -1,0 +1,26 @@
+== --cfg badclosed (control, must refuse at the band) ==
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+   --> p4_sat_defeat_gate.rs:104:9
+    |
+104 | /         assert!(
+105 | |             closed_verdict(w) == swept_verdict(w),
+106 | |             "the closed-form law verdict disagrees with the swept verdict somewhere in \
+107 | |              the model band, so the closed form is wrong and no arm may be gated on it"
+108 | |         );
+    | |_________^ evaluation of `BAND_AGREEMENT` failed here
+
+note: erroneous constant encountered
+   --> p4_sat_defeat_gate.rs:127:13
+== --cfg audit (must refuse at width 64) ==
+error[E0080]: evaluation panicked: the licensed law is FALSE at the gated width: 2^63 does not saturate at width 64, and sat(2^64) = MAX != 2^63
+   --> p4_sat_defeat_gate.rs:120:19
+    |
+120 |   const AUDIT: () = assert!(
+    |  ___________________^
+121 | |     sat_pow(2, 63, 64) == sat_pow(2, 64, 64),
+122 | |     "the licensed law is FALSE at the gated width: 2^63 does not saturate at \
+123 | |      width 64, and sat(2^64) = MAX != 2^63"
+124 | | );
+    | |_^ evaluation of `AUDIT` failed here
+
+error: aborting due to 1 previous error

@@ -1,0 +1,49 @@
+========================================================================================================================
+p11. Cutting the chain at the non-ring operations
+========================================================================================================================
+
+P1 and P3: WRAPPING map, mixed signature {add, sub, mul, min}
+
+  all terms, logical width 3         terms  168 (72 mixed)  cells   3360  CUT differs      0  root-only differs    294  [C2 wrong-cut differs    294]
+  terms WITH a min, width 3          terms   72 (72 mixed)  cells   1440  CUT differs      0  root-only differs    288  [C2 wrong-cut differs    288]
+  all terms, logical width 4         terms  168 (72 mixed)  cells   3360  CUT differs      0  root-only differs    353  [C2 wrong-cut differs    353]
+  terms WITH a min, width 4          terms   72 (72 mixed)  cells   1440  CUT differs      0  root-only differs    349  [C2 wrong-cut differs    349]
+
+C3: terms with no non-ring operation, where the cut rule and arm W0
+are the same rule and must agree
+
+  ring-only terms, width 3           terms   96 (0 mixed)  cells   1920  CUT differs      0  root-only differs      0  [C2 wrong-cut differs      0]
+  ring-only terms, width 4           terms   96 (0 mixed)  cells   1920  CUT differs      0  root-only differs      0  [C2 wrong-cut differs      0]
+
+C1 / P2: the same measurement under a SATURATING map
+
+  all terms, logical width 3         terms  168 (72 mixed)  cells   3360  CUT differs    244  root-only differs    244  [C2 wrong-cut differs      0]
+  terms WITH a min, width 3          terms   72 (72 mixed)  cells   1440  CUT differs      0  root-only differs      0  [C2 wrong-cut differs      0]
+  all terms, logical width 4         terms  168 (72 mixed)  cells   3360  CUT differs    277  root-only differs    277  [C2 wrong-cut differs      0]
+  terms WITH a min, width 4          terms   72 (72 mixed)  cells   1440  CUT differs      0  root-only differs      0  [C2 wrong-cut differs      0]
+
+P4: how many reductions each arm performs
+
+  term                                 nodes   general  cut rule
+  x + y                                    1         1         1
+  min(x + y, z)                            2         2         3
+  fold of 6 adds                           5         5         1
+  min(fold of 6 adds, z)                   6         6         3
+
+  The last row is the shipped kernel's shape: one chunk of wrapping
+  additions terminated by a clamp. The general arm reduces at every
+  node; the cut rule reduces the clamp's two operands and the root.
+
+========================================================================================================================
+
+  P1 holds when 'CUT differs' is zero on every wrapping row INCLUDING the
+  mixed-only rows, which is where the cut is doing work.
+
+  P3 holds when 'root-only differs' is nonzero on the mixed rows, which is what
+  says the cut is necessary rather than decorative.
+
+  C1 holds when the saturating rows show the cut rule differing.
+  C2 holds when the wrong-cut mutation differs under wrap.
+  C3 holds when the ring-only rows show the cut rule agreeing, since with no
+  non-ring node the cut rule reduces only at the root and is arm W0 exactly.
+

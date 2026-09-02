@@ -1,0 +1,19 @@
+error[E0080]: evaluation panicked: the committed winner table disagrees with the argmin of the weighting that is supposed to have generated it
+   --> p3_mutant_generator_bug.rs:169:9
+    |
+169 | /         assert!(
+170 | |             WINNER_SPEED[r] == resolve(SpeedWeighted::W, r),
+171 | |             "the committed winner table disagrees with the argmin of the \
+172 | |              weighting that is supposed to have generated it"
+173 | |         );
+    | |_________^ evaluation of `AGREEMENT` failed here
+
+note: erroneous constant encountered
+   --> p3_mutant_generator_bug.rs:177:15
+    |
+177 | const _: () = AGREEMENT;
+    |               ^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

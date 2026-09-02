@@ -1,0 +1,79 @@
+== associativity_check.py ==
+range checked: -8..8 inclusive
+wrapping add over the full range: 4913 triples checked, 0 associativity failures
+saturating add over the full range: 4913 triples checked, 1152 associativity failures
+first saturating counterexample: ((-8+-8)+1) sat = -7, (-8+(-8+1)) sat = -8
+wrapping: every element has an additive inverse (trivial, symmetric range): True
+saturating: every element has an additive inverse (trivial, symmetric range): True
+(inverse existence alone does not distinguish the two structures on a symmetric
+ range; associativity does, and that is the load-bearing result below.)
+
+CONCLUSION: same value set {-8..8}, two overflow policies, two different
+algebraic structures. Wrapping add is associative everywhere checked (a genuine
+group, Z/17Z shifted); saturating add fails associativity on 1152 of 4913 checked
+triples (23.5 percent of the space), so it is provably not a group under addition.
+Overflow/rounding policy is therefore identity-determining for a number system,
+not a cosmetic detail layered on top of one fixed structure.
+EXIT=0
+
+== redundant_representation_demo.py ==
+signed-digit binary, width 4, digit set {-1,0,1}
+total digit strings: 81
+distinct integer values represented: 31
+values with more than one valid encoding: 22
+
+example: the value -1 has 4 distinct valid digit-string encodings in width 4, including:
+  (-1, 1, 1, 1)  ->  -1
+  (0, -1, 1, 1)  ->  -1
+  (0, 0, -1, 1)  ->  -1
+  (0, 0, 0, -1)  ->  -1
+
+contrast: canonical unsigned binary, width 4, digit set {0,1}
+total digit strings: 16
+distinct values represented: 16
+values with more than one encoding: 0
+
+CONCLUSION: canonical binary is a bijection (one encoding per value, by
+construction, since the digit set exactly matches the base). Signed-digit
+binary is deliberately non-bijective (digit set wider than the base) and this
+redundancy is exactly what buys constant-depth carry-free addition in hardware.
+Redundancy is a property some numeral representations have on purpose, not an
+accident to be designed away; the tradeoff is representation width and a
+canonicalisation step, paid for O(1)-depth combination instead of O(N).
+EXIT=0
+
+== fixed_vs_float_generic_format.py ==
+fixed: 12-bit mantissa, frac_bits=8 (Q3.8-shaped, exponent = -8 always)
+float: 4-bit exponent, 8-bit mantissa (toy IEEE-shaped, exponent per value)
+
+target = 0.1
+  fixed: mantissa=    26 exponent=  -8 (compile-time const) -> 0.1015625000  abs_err=1.56e-03
+  float: mantissa=   205 exponent=  -4 (stored per value)    -> 0.1000976562  abs_err=9.77e-05
+
+target = 3.75
+  fixed: mantissa=   960 exponent=  -8 (compile-time const) -> 3.7500000000  abs_err=0.00e+00
+  float: mantissa=   240 exponent=   1 (stored per value)    -> 3.7500000000  abs_err=0.00e+00
+
+target = 1000.25
+  fixed: mantissa=  2047 exponent=  -8 (compile-time const) -> 7.9960937500  abs_err=9.92e+02
+  float: mantissa=   255 exponent=   7 (stored per value)    -> 255.0000000000  abs_err=7.45e+02
+
+target = 0.0009765625
+  fixed: mantissa=     0 exponent=  -8 (compile-time const) -> 0.0000000000  abs_err=9.77e-04
+  float: mantissa=    16 exponent=  -7 (stored per value)    -> 0.0009765625  abs_err=0.00e+00
+
+small-magnitude check at 0.0009765625 (= 2^-10, below fixed's 2^-8 step):
+  fixed abs_error = 9.77e-04
+  float abs_error = 0.00e+00
+
+CONCLUSION: both schemes compute reconstructed = mantissa * 2^exponent.
+The only structural difference exercised here is WHERE the exponent lives:
+a compile-time constant (fixed) versus a per-value field inside the encoding
+(float). That difference is exactly why float tracks small magnitudes tighter
+(exponent adapts) while fixed holds a constant absolute step regardless of
+magnitude. Same general shape (Flocq's generic_format: mantissa * base^fexp(e)),
+two placements of one parameter (the exponent function). Whether that makes them
+the same 'number system' or two different ones is a naming question the shared
+shape alone does not settle, since the operations' error/rounding behaviour still
+differs in a way downstream reasoning (associativity, error accumulation) can see.
+EXIT=0

@@ -1,0 +1,17 @@
+error[E0275]: overflow evaluating the requirement `Pz<O<_>>: ExactDivOdd<_>`
+  --> probe_1_the_wall_is_one_refactor_away.rs:45:21
+   |
+45 |     Ratio<Hd, Am1>: Reduce,
+   |                     ^^^^^^
+   |
+   = help: consider increasing the recursion limit by adding a `#![recursion_limit = "256"]` attribute to your crate (`probe_1_the_wall_is_one_refactor_away`)
+   = note: required for `Pz<O<O<_>>>` to implement `ExactDivOdd<_>`
+   = note: 126 redundant requirements hidden
+   = note: required for `Pz<O<O<O<O<O<O<O<O<O<O<O<O<O<O<O<O<O<O<O<O<O<...>>>>>>>>>>>>>>>>>>>>>>` to implement `ExactDivOdd<_>`
+   = note: required for `Ratio<Hd, Am1>` to implement `Reduce`
+   = note: the full name for the type has been written to '/tmp/x_probe1.long-type-8005956400344047059.txt'
+   = note: consider using `--verbose` to print the full type name to the console
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0275`.

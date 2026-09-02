@@ -1,0 +1,35 @@
+=== a6: the two repairs 221 applied together, varied one at a time ===
+
+C1 is 221's control: inside the constant-quantum family alone, every pair must
+have a unique meet. The column split says what each failure is.
+
+degenerate   dedup  points     pairs    fail  several distinct  several same
+      true    true        47     703       0                 0             0
+                                       empty intersections: 0
+      true   false        54     861      28                 0             0
+                                       empty intersections: 28
+     false    true        45     630     256                 0             0
+                                       empty intersections: 256
+     false   false        52     780     284                 0             0
+                                       empty intersections: 284
+
+--- P1, the control that decides whether anything else here counts ---
+  221's repaired cell (degenerates on, dedup on):  0  (its run reports 0)
+  221's C5 cell       (degenerates off, dedup on): 256  (its run reports 256)
+  both reproduced: true
+
+--- P2 and P3, what deduplication is actually repairing ---
+  degenerates on, dedup off: 28 failures, of which 0 are several maximal lower bounds
+    all denoting one set: 0, denoting different sets: 0, empty: 28
+
+  Mixed, and the mixture is the finding: see the split above.
+
+--- what this does and does not overturn ---
+  221's ANSWER to the singleton row is not attacked here. Option 1 stands.
+  What is attacked is the evidence offered for it: the 256 are the bottom being
+  absent, which its own p2d diagnosis says, and the deduplication is a separate
+  repair answering a separate question. A reader taking the 256 as evidence for
+  deciding inclusion on denotation has taken a number about one repair as support
+  for the other.
+
+=== end a6 ===

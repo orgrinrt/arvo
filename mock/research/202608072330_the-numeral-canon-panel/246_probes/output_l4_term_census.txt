@@ -1,0 +1,41 @@
+C1 passes: on the planted fixture (3/2/1/4, no embedding, one per line) the reproducing conventions are:substr trailB bothB lines
+C1b passes: a deliberately wrong claim set on the same fixture reproduces under no convention.
+C2 passes: an absent term returns zero under all four conventions.
+C3 passes: the conventions disagree on at least one term, so they are distinct instruments.
+
+target : archive/OLD_CANON_CANDIDATE.md
+244 L4 claims, in its own order: sealed=61 value-unique=8 NonZero=6 AtLeastTwo=6
+
+term             substr   trailB    bothB    lines   244 says
+sealed               61       61       58       58         61
+value-unique          8        6        6        8          8
+NonZero              13        6        5       12          6
+AtLeastTwo            6        6        6        6          6
+
+why the conventions differ, by token:
+  sealed:
+      59 sealed
+       1 sealed-
+       1 sealed-bound-plus-const-assertion
+    preceded by a token character in:
+         1 -sealed
+         3 nsealed
+  value-unique:
+       6 value-unique
+       2 value-uniqueness
+  NonZero:
+       6 NonZero
+       5 NonZeroCarrier
+       1 NonZeroUsize
+       1 NonZeroable
+    preceded by a token character in:
+         1 sNonZero
+  AtLeastTwo:
+       6 AtLeastTwo
+
+VERDICT: no single convention reproduces all four of 244's numbers.
+         Per-term, the conventions that give 244's number are:
+           sealed          substr trailB
+           value-unique    substr lines
+           NonZero         trailB
+           AtLeastTwo      substr trailB bothB lines

@@ -1,0 +1,60 @@
+value set finite with at least two elements; domain containing a complete residue system and the
+radix; construction
+radix
+radix; restrictions
+radix; declared grid step
+radix; term shapes; declarations
+radix; term shapes; declarations; discharge check
+radix; term shapes; declarations
+radix; term shapes; declarations
+radix; dimension; structure constants; declarations
+edition 2021; feature gates; term
+value set finite with at least two elements; domain closed under negation
+radix; construction; ambient domain closed under negation
+radix; ambient domain
+radix; ambient domain; restrictions
+radix; term shapes; declarations; ambient domain one-signed
+radix; term shapes; declarations; ambient domain closed under negation for the saturating arm; discharge check
+The non-homomorphic half alone holds for: as 119 4.7's second predicate; the same domain dimension added
+edition 2021; feature gates; term; recursion limit
+domain
+domain closed under negation
+F_exact; F_intermediate; F_final; domain
+domain closed under negation; every deterministic member against saturation; every translation-equivariant member against wrapping
+or unsigned with signed
+domain; stochastic members
+domain
+domain closed under negation; coupling
+element count; fraction; coupling
+keying; decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions; input shape
+edition 2021; #![no_std]; feature gates; float types; threshold; positions 0 to 255
+domain
+domain closed under negation; staged narrowing F_exact; F_intermediate; F_final
+domain; one-signed
+domain closed under negation; every deterministic member against saturation; every translation-equivariant member against wrapping; equality read
+or unsigned with signed; domain: OPEN; the clause claims nothing until it is stated
+domain; established by the construction reading only frac(x) and never the cell; given a floor-based cell coordinate; coupling
+element count; fraction; coupling; domain; same construction and same condition (136_probes/x2 P3); F and signedness: OPEN
+everything 132 5.8's predicate lists; keying axis; domain; F and signedness: OPEN
+or unsigned with signed
+element count; fraction; coupling; domain; same construction and same condition (136_probes/x2 P3)
+everything 132 5.8's predicate lists; keying axis
+assignment set of rounding; overflow and
+assignment set; observation sets; overflow limit read at the declared width
+assignment sets and observation sets as; 141's and 143's own axis sets
+assignments; observation sets; {madd}; {mul, madd}; {add, sub, mul, madd, msub}; overflow limit read at the declared width; accumulator width
+same assignment set at W; observation sets
+numeral fixed-point signed; conforming pair; non-conforming pair; cost coordinates; selector; weight grid resolution
+assignment set; arm set
+overflow limit read at the declared width
+accumulator width varied above the declared width
+accumulator width; multiplier schedules {[1,-1,2], [2,-1,1]}; domain
+arms; cost coordinates
+reference point; certificate weight proportional to the reciprocal deviation; augmentation coefficient
+arms; cost coordinates; selector
+arms; cost coordinates; selector; weight grid resolution
+cost coordinates; arms; weights; baseline
+cost coordinates; arms; weight grid resolution; baseline
+baseline uniform across coordinates; cost coordinates; arms
+accumulator width; operations {multiply-add, sum fold}
+pi; > 600 chains of depth 3..=5; ops; carriers 8..=24 > and 120; all 2^(depth-1) placements

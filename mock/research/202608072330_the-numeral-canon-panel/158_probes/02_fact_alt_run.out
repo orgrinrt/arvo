@@ -1,0 +1,4 @@
+HAZARD    build=alt R(MAX+1) = 0
+CONTROL_R build=alt R(MAX+1) = 8191
+CONTROL_L build=alt sum(lambda) = 160348640
+CERT      build=alt separates = true

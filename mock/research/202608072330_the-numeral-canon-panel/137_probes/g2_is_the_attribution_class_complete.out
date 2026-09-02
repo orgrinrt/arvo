@@ -1,0 +1,43 @@
+=== the five 136 names, each opened ===
+131:48   ### 0.2 Test gate: passed, at 123 across 13, inherited with attribution
+131:52   records the eleventh run at 123 across 13 by `--manifest-path`, and I add that `122` section 0.
+132:43   `125` section 10 records the eleventh run at 123 across 13 by `--manifest-path`; `122` section 
+134:13   **Test gate: inherited with attribution, unchanged.** `125` section 10's eleventh run, 123 acro
+135:10   not re-run the crate suite; `132` section 0.2 correctly inherits the eleventh run at 123 across
+
+=== is 130 in that list? what does 130 carry? ===
+stale `cargo test --workspace --no-fail-fast` process `127` reported is no longer running. I did not
+re-run the crate suite: nothing in this reply touches shipped source, and per the coordinator's
+message the eleventh run of the gate already stands at 123 across 13 by `--manifest-path`, cited
+with attribution rather than re-run.
+
+
+-- 130's commit time against 131's, i.e. which came first --
+00:41 131: formalising the rounding axis, six arms and four holes closed
+00:26 research: 130, reply to 128 and 129, one axis keyed by value versus by position
+
+=== what 133 ACTUALLY named, against 136's summary of it ===
+-- 136 0.2 says: '133 names 131 and 132' --
+**The propagation is wider than `133` reported.** `133` names `131` and `132`. `x3` Q4d finds the wrong
+attribution in **five places across four files**: `131:48`, `131:52`, `132:43`, `134:13` and `135:10`.
+-- 133 D1, verbatim --
+**D1. Section 0.2 attributes to my file a count my file contradicts.** `132` 0.2 (and `131` 0.2, and
+`130`'s gate note citing the coordinator's message) say "`125` section 10 records the eleventh run at
+123 across 13". It records the opposite: twelve of thirteen crates green at 108 tests, the
+thirteenth non-terminating after 88 CPU-minutes in my run and above fifteen CPU-hours in a sibling
+
+=== 136's two counts of the same class, side by side ===
+-- section 0.2 --
+**The propagation is wider than `133` reported.** `133` names `131` and `132`. `x3` Q4d finds the wrong attribution in **five places across four files**: `131:48`, `131:52`, `132:43`, `134:13` and `135:10`. Both cosigners inherited it from my files and repeated it in their own gate lines while checking my work 
+-- section 10 --
+**Whether the non-terminating contention crate is a gate defect to fix or a measurement to record.**
+Six files have now inherited a gate count through it, five of them citing the wrong file for it.
+
+=== files in THIS topic carrying the 123 figure at all, chronologically ===
+  130  1 occurrence(s)
+  131  2 occurrence(s)
+  132  1 occurrence(s)
+  133  3 occurrence(s)
+  134  1 occurrence(s)
+  135  1 occurrence(s)
+  136  2 occurrence(s)

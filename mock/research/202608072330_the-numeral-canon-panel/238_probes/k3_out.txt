@@ -1,0 +1,33 @@
+pack: mockspace-extra-lints @ f34cc1b0c87becd8230d46d807ebb3573e30c009
+tree: arvo @ the commit this probe is committed on
+
+=== the two checked crates, as they are gated today ===
+--- arvo-placement  (2 file(s) under src/, exemption REMOVED)
+    findings: 0
+
+--- arvo-strategy  (2 file(s) under src/, exemption REMOVED)
+    findings: 0
+
+=== the introducing crate, as it is gated today ===
+--- arvo-format  (12 file(s) under src/, exemption APPLIED)
+    findings: 0
+
+=== the introducing crate, with the exemption taken away ===
+--- arvo-format  (12 file(s) under src/, exemption REMOVED)
+    findings: 128
+        1  src/adapt.rs
+        8  src/ambient.rs
+       25  src/apply.rs
+       27  src/apply/tests.rs
+        7  src/format.rs
+        8  src/lib.rs
+       13  src/quantum.rs
+       14  src/slots.rs
+       19  src/tests.rs
+        6  src/width.rs
+
+=== verdict ===
+controls (both checked crates clean, exemption silences): true
+The exemption is carrying 128 line(s) in `arvo-format`.
+The question names ten of them, which are the ten an outside
+implementor has to write in its own source.

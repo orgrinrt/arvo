@@ -3,142 +3,60 @@
 <div align="center" style="text-align: center;">
 
 [![GitHub Stars](https://img.shields.io/github/stars/orgrinrt/arvo.svg)](https://github.com/orgrinrt/arvo/stargazers)
-[![Crates.io](https://img.shields.io/crates/v/arvo)](https://crates.io/crates/arvo)
-[![docs.rs](https://img.shields.io/docsrs/arvo)](https://docs.rs/arvo)
 [![GitHub Issues](https://img.shields.io/github/issues/orgrinrt/arvo.svg)](https://github.com/orgrinrt/arvo/issues)
 ![License](https://img.shields.io/github/license/orgrinrt/arvo?color=%23009689)
 
-> Numeric and analysis primitives with strategy tags dictating speed, precision and layout per call site. `no_std`, no alloc, no platform deps.
+> Numeric foundations where the consumer picks the behaviour instead of the container the machine happens to offer. `no_std`, no alloc, no platform deps.
 
 </div>
 
-`arvo` ships fixed-point and float types tagged by a `Strategy` marker that picks the trade between speed, precision and layout at every call site. Four strategies cover the spectrum: `Hot` (fastest path, wraps on overflow), `Warm` (default, pragmatic), `Cold` (widens conditionally on the rare branch, bitpacks at the column-store layer), and `Precise` (widens for every op, narrows back on assign). `UFixed<I, F, S>` is unsigned with `I` integer bits and `F` fractional bits; `IFixed<I, F, S>` is its signed counterpart; `FastFloat<F>` and `StrictFloat<F>` cover IEEE floats with the same strategy tag.
+`arvo` is about numbers whose behaviour you choose rather than inherit. Ordinary integer types hand you whatever the hardware has lying around, a `u16` when you wanted thirteen bits, and then the wrapping, the rounding and the width are all decided for you by that accident. Here the width is exactly the width you name, and what happens at the edges is a thing you select at the call site, so two values of the same nominal shape can behave differently because their consumers wanted different things from them.
 
-Above the numerics, `arvo-bitmask` ships `Mask64`, `Mask256`, and `BitMatrix` for set membership and packing; `arvo-tensor` ships `Array<T, N>` and `Matrix<W, N>` for arrays and matrices of fixed size; `arvo-hash` ships `Fnv1a`, `Hasher<N>`, and `ContentHash` for hashing.
+Everything is `#![no_std]` with no alloc and no platform dependency, and every size is const at the type level, so the choosing happens at compile time and the branch that picks it is gone by the time anything runs.
 
-On top of those, the analysis crates are generic over trait bounds rather than concrete numeric types. `arvo-graph` covers DAG operations (topological sort, rank, waist, spanning tree); `arvo-sparse` covers sparse matrix layouts (CSR, RCM, block-diagonal, Dulmage-Mendelsohn); `arvo-comb` covers combinatorial optimisation (DP, greedy grouping, bin-packing); `arvo-spectral` covers spectral methods (Laplacian, Fiedler vector, power iteration). Each is independently usable.
+## Where this is right now
 
-Pairs with [`notko`](https://github.com/orgrinrt/notko)'s `#[profile]` attribute, which rewrites strategy tags on arvo types named directly in a function body. The proc-macro pass handles direct uses; aliases and generic positions pass through unchanged. Reaching further (into aliases, generics, and types that arrive through traits) is planned via `hilavitkutin-build`'s MIR-level rewrite hooks. `arvo` is `#![no_std]`, no alloc, no platform deps.
+The first crates are in the tree and they build. `arvo-format` carries the format itself, the predicate that says which values a format can represent and the adaptation that puts an exact result back onto them, with the six rounding modes and the overflow policies. `arvo-placement` derives where a result goes from what else wants the slot. `arvo-strategy` binds the four presets, `Hot`, `Cold`, `Warm` and `Precise`, to a placement objective and an adaptation, and carries what each is for as prose rather than as a table of behaviours.
 
-## Strategy markers
+On top of that the industrial conventions people already write against get named directly, so a MATLAB `fi` at a given word length and fraction length, or a `fimath` rounding and overflow choice over one, is written as itself and resolves to a format the crate already had, rather than to a translation somebody does by hand and then has to check. MATLAB is the only convention named so far and the set is open, so the next one is an addition and not a change. Two of its rounding methods have no mode here yet and the source says which and why.
 
-Types name the exact width: `UInt<3>`, `UInt<47>`, `Int<13>`. The strategy tag on the type, together with the width, picks the container, the carrier width for arithmetic, the operation intrinsics, and how aggressively the impl widens, narrows, or hands off to a hand-rolled microkernel. The presentation at the assignment site looks the same across strategies; the distinction lives at every level below.
+That's the bottom of the stack rather than a usable numeric library, so there's no `UFixed` or `Uint` to reach for yet, and the layers above these are being designed and written as the design settles under them.
 
-`Hot` aims at the fastest possible code for the target. The container often snaps to whatever aligns best for SIMD lanes or register width; some hot ops drop into raw asm microkernels where benches show a win, others trust LLVM. Operations wrap on overflow when wrap is the cheapest behaviour, and the invariants are asserted at the call site.
+I'd caution against depending on this for anything serious just yet. The api hasn't settled, and neither has the shape above these three: which crates there end up being and which layer owns what are still open, and answering them is the work in progress. If you do want to follow along, the `dev` branch is where things land as they get tested and stable, so a git dep pointed at it will get you the real thing sooner than waiting for a release will.
 
-`Warm` is the default pragmatic path. The container fits the width without aggressive widening; arithmetic saturates or checks on overflow when that is faster than wrap. No microkernel detour.
+## What has settled
 
-`Cold` is the rare-path strategy. Same shape as `Warm` for the common operation; on the rare branch (overflow, edge case) it widens conditionally to avoid the wrong answer rather than padding everywhere. At the column-store layer above the per-value container, `Cold` columns bitpack adjacent records aggressively rather than padding to the container width.
+A format is identified by two things, the domain it lives in and the set of values it can actually represent, and that set is a constant of the type rather than something that depends on the data. Membership in it turns out to be one predicate over one parameterisation, with a slot function, a quantum per magnitude and a phase, and integers, fixed point, scaled integers and floats all fall out as points of that same shape rather than as separate families needing separate treatment.
 
-`Precise` widens unconditionally before each operation (more expensive, more precise), then narrows or rounds back to the typed width on assign. Where the carrier width exceeds 128 bits, all four strategies route through `WideBits<BYTES>` byte-sequence storage; width is unbounded.
+Arithmetic then factors into two halves that are worth keeping apart: the exact operation in the ambient domain, and a named adaptation that puts the result back onto the representable set. The adaptation is a real object with its own laws, not a footnote about rounding, and that's what makes it possible to say which laws survive a given composition and which don't.
 
-Dispatch happens at monomorphisation. `UFixed<16, 0, Hot>` and `UFixed<16, 0, Cold>` compile to different code at every call site; the trade is picked at the call site, and the callee never branches on it. The sign axis on the underlying `Bits<N, S, Sign>` is independent of the strategy axis: signed and unsigned types share container projection and bit contracts, with sign handling layered on top.
+Rounding carries six explicit names, `toward_zero`, `floor`, `ceil`, `half_up`, `half_even` and `stochastic`. The familiar `trunc` is deliberately not among them, because on a signed domain it names two different operations and people reliably mean the wrong one of the two.
 
-## Compile-time construction
+The concept is closed and the inventory isn't. A new number system earns its place by supplying what the concept asks of it, so admitting one doesn't mean amending anything.
 
-Most arvo arithmetic and bit operations are callable from `const fn` bodies. Typed `UFixed<I, F, S>` and `IFixed<I, F, S>` constants build directly in const contexts, without unwrapping to bare bits and back. The `from_constant` family handles typed-value construction, with strategy projection resolved at the trait solver.
+## What it's for
 
-Bridge traits cover the std parallels for use in const contexts: `ConstEq`, `ConstOrd`, `ConstDefault`, `ConstFrom`, `ConstTryFrom`, `ConstDeref`, `ConstAsRef`, and `ConstHash`. Each lives in the contract crate per the bridge-home rule (the trait sits in the lowest layer where its return type is reachable).
+`arvo` is a library and the value is in what composes on top of it, so it stays usable by anyone rather than being shaped around one caller. The known consumers are [`hilavitkutin`](https://github.com/orgrinrt/hilavitkutin), a pipeline execution engine, and [`vehje`](https://github.com/orgrinrt/vehje), a language toolchain, and they're what drive which surfaces eventually exist. It builds on [`notko`](https://github.com/orgrinrt/notko) for its foundations.
 
-## Layered structure
+If you want general-purpose numerics today, this probably isn't the right thing, and there are established crates in the ecosystem that will serve you better and are available right now. The reason to want this one is the exact widths and the behaviour being a choice you make, which is a fairly specific thing to want.
 
-`arvo` is split across multiple crates organised in five dependency tiers. A foundation tier carries storage and the strategy markers; a contract tier declares the `pub const` traits; an implementation tier carries the blanket impls; an L2 tier hosts the concretes (masks, tensors, hashes) plus the analysis crates; a top tier ships the spectral methods. The facade `arvo` re-exports the public surface and hosts `UFixed`, `IFixed`, the `Uint<N, S>` and `Int<N, S>` aliases, the IEEE floats, and the `bitfield!` macro. Algorithm crates depend on the facade and the L2 concretes, never reaching back into the underlying contract layer.
+## A note on coding agents
 
-## Algorithms
+We do not recommend using coding agents with this codebase.
 
-Algorithms ship alongside the primitives because the strategy axis has nowhere to land otherwise. A topological sort or a sparse solver written once over plain numerics ends up with one set of trades forever. The arvo algorithm crates are written generic over trait bounds, with the strategy parameter either flowing through the value type (when the algorithm signature carries `T: TraitBound + Strategy`) or stamped at the call site through `notko`'s `#[profile]` rewrite.
+The design here is unusual enough that current models tend to reach for the familiar shape instead of the one that's written down, and there isn't yet enough code in the tree to correct the guess for them.
 
-Each implementation is bench-driven. For a given algorithm and strategy, several candidate implementations sit alongside one another: textbook recursion, tight-loop iteration, SIMD-aware variants, raw asm microkernels where the target supports them. Benchmark results decide which implementation a strategy ends up with. The selection is ongoing and not finished. Bench inputs ship with the repo, and the chosen path can shift as targets, intrinsics, or evidence change.
+If you still choose to use a coding agent:
 
-`arvo-graph`, `arvo-sparse`, `arvo-comb`, and `arvo-spectral` each ship their domain (DAG operations, sparse matrix layouts, combinatorial optimisation, spectral methods). They are independently usable and depend only on the foundation and the peer concretes (`arvo-bitmask`, `arvo-tensor`).
+- Be aware of the environmental and social impact of large-scale model inference. Minimise agent use where it is not needed. Be responsible.
+- Only use an agent if you yourself understand the architecture. Do not use an agent because you do not understand; you will waste time and energy, both yours and the planet's.
+- This repository provides agent instructions and skills that help, but they do not eliminate the problem. You will still need to correct the agent frequently.
 
-## Installation
+The recommendation stands: do this work yourself unless you know what you are doing and why.
 
-```bash
-cargo add arvo
-```
+## Contributing
 
-Or in `Cargo.toml`:
-
-```toml
-[dependencies]
-arvo = "0.1"
-```
-
-The `arvo` facade pulls in the full public surface. To pull only a subset (bit contracts, masks, a single algorithm crate), depend on the relevant crate directly.
-
-## Usage
-
-```rust
-use arvo::{UFixed, IFixed, Signed, Uint, Hot, Warm, Cold, Precise, USize, Bool, Bits, Mask64};
-use arvo::refit::Widen;
-use arvo::bits::{BitAccess, BitSequence};
-use notko::profile;
-
-// scene a: a hot dsp integration loop. exact-width samples, wider
-// accumulator; strategy picks how the arithmetic lowers.
-
-type Sample = UFixed<14, 0, Warm>;     // u16 native; warm saturates on overflow
-type Acc    = UFixed<23, 0, Hot>;      // u32 native; hot wraps on overflow
-
-#[profile(Hot)]
-fn integrate(samples: &[Sample]) -> Acc {
-    let mut acc: Acc = Acc::ZERO;
-    for s in samples {
-        let w: Acc = s.widen_to();     // 14 -> 23, single u32 widen, const
-        acc = acc + w;                 // hot u32 add, no overflow check
-    }
-    acc
-}
-
-// scene b: a cold-stored sensor frame. 47 bits per record packs
-// adjacent on disk; 17 bits saved per frame versus a u64-aligned
-// layout, scaling linearly with record count. bit ops on each field
-// run on the field's underlying carrier (u8 / u16 / u32).
-
-arvo::bitfield! {
-    pub struct Frame: 47 {
-        timestamp: 27 at 20,           // 27-bit tick counter
-        device:     5 at 15,           // 32 device ids
-        seq:        9 at  6,           // 9-bit wrapping sequence
-        status:     7 at  0,           // 7-bit status register
-    }
-}
-
-const READY: USize = USize::from_raw(0);
-const FAULT: USize = USize::from_raw(6);
-
-fn ready(f: &Frame) -> Bool {
-    f.status().bit(READY)              // mask-and on u8 carrier
-}
-
-fn active_signals(f: &Frame) -> USize {
-    f.status().count_ones()            // popcnt on u8, sized to the 7-bit field
-}
-
-fn mark_fault(f: Frame) -> Frame {
-    f.with_status(f.status().with_bit_set(FAULT))
-}
-
-fn fault_count(frames: &[Frame]) -> USize {
-    let mut n = USize::ZERO;
-    for f in frames {
-        if f.status().bit(FAULT).into() {
-            n = n + USize::from_raw(1);
-        }
-    }
-    n
-}
-
-// frame visibility cull. mask64 carries core::ops::BitAnd.
-fn visible(camera: Mask64, alive: Mask64) -> Mask64 { camera & alive }
-```
-
-## Status & features
-
-`arvo` is in the design phase. Crate surfaces are scaffolded across the workspace; shipping implementations land next per tier. To experiment with the shape ahead of release, path-dep into the crates directly.
-
-`arvo` tracks unstable rustc features (`adt_const_params`, `generic_const_exprs`, `const_trait_impl`, `const_param_ty_trait`, `try_trait_v2`) as they mature. Features known to have soundness issues are intentionally skipped.
+Feel free to contribute, though do mind that the design is still moving under everything right now, so a large pull request has a real chance of landing against something that changed last week. Throwing in an issue first is the cheaper path if you're unsure. Forks are always a valid choice too and I'd encourage anyone to have their own take on this, just mind the license when you do.
 
 ## Support
 
@@ -152,4 +70,4 @@ Whether you use this project, have learned something from it, or just like it, p
 
 `SPDX-License-Identifier: MPL-2.0`
 
-> You can check out the full license [here](https://github.com/orgrinrt/arvo/blob/dev/LICENSE)
+> You can check out the full license [here](https://github.com/orgrinrt/arvo/blob/main/LICENSE)

@@ -2,7 +2,19 @@
 apply_to: ["crates/**/*.rs", "src/**/*.rs"]
 ---
 
-# Cookbook — intent → trait / type
+# Cookbook, intent → trait / type
+
+> **The crate names below name a tree that no longer exists.** `mock/crates/` was
+> cleared for the canon work, and the decomposition is being redecided from
+> scratch. Read what follows for the discipline it states, never for the
+> architecture it names. Do not restore a crate because this file mentions it,
+> and do not cite this file as evidence that a surface exists. **Authority is the
+> registry**, `mock/registry/*.toml`, declared as `canon_paths` in
+> `mockspace.toml`. Query it with `cargo mock query` and cite a row by its slug.
+> A `ruling` row at `rung = "ratified"` governs; anything else, including every
+> file under `mock/research/`, is agent output nobody ratified.
+
+
 
 A pattern book for "I need to X" questions. Pick the matching intent,
 use the suggested trait / type. When none fits, the correct answer is
@@ -24,7 +36,7 @@ well-known failure kinds, not a free-form error type. `?` works via
 
 Return `T` directly, or `Just<T>` when the signature needs explicit
 "never fails" framing. `Just<T>` is `#[repr(transparent)]` + `Try` with
-`Residual = Infallible` — zero cost.
+`Residual = Infallible`: zero cost.
 
 ## "I need arithmetic that works for Hot / Warm / Cold / Precise"
 
@@ -43,7 +55,7 @@ Take a trait bound from `arvo-bits`: `T: BitSequence + BitAccess` when
 the consumer scans bits and reads / writes individual positions; add
 `+ BitLogic` when the consumer also needs whole-word OR / AND / NOT /
 XOR (or use `core::ops::{BitOr, BitAnd, BitNot, BitXor}` on the `Hot`
-containers — arvo-bits impls them). Works across `Mask64` / `Mask256`
+containers, arvo-bits impls them). Works across `Mask64` / `Mask256`
 / custom storage.
 
 ## "I need a sparse matrix"
@@ -97,7 +109,7 @@ the use case.
 
 ## "I genuinely need std"
 
-Arvo is `#![no_std]`, no alloc, no platform — by design. If you think
+Arvo is `#![no_std]`, no alloc, no platform, by design. If you think
 you need std, the API shape is wrong. File a design round describing
 why, then reshape until the std dep disappears.
 
@@ -105,14 +117,9 @@ why, then reshape until the std dep disappears.
 
 | Intent | Type / trait |
 |--------|--------------|
-| Declare a new numeric semantic alias | `pub type Mass<S: Strategy = Warm> = UFixed<…, …, S>` |
-| Declare a new bit-level trait | Add to `arvo-bits` (traits only; no concrete storage) |
-| Graph analysis | `arvo-graph` — `topo_sort`, `rank_levels`, `waist`, `spanning_tree` |
-| Partition a matrix | `arvo-spectral::Laplacian` → `fiedler_partition` → `Mask64` |
-| Combinatorial opt | `arvo-comb` — DP, greedy grouping, bin packing |
 
 ## See also
 
-- `.claude/rules/type-surface.md` — the decision test, DO/DON'T table
-- `.claude/rules/no-heap.md` — dedicated no-heap rule
-- `PRINCIPLES.md` — first principles
+- `.claude/rules/type-surface.md`: the decision test, DO/DON'T table
+- `.claude/rules/no-heap.md`: dedicated no-heap rule
+- `PRINCIPLES.md`: first principles

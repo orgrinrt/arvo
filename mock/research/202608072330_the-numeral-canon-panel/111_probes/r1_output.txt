@@ -1,0 +1,45 @@
+R1. does moving ONLY the refinement change what the program denotes?
+==============================================================================
+criterion applied: 108:826, 'an axis belongs here if there is any
+reachable chain on which moving it is observable'
+
+primitive held fixed at uW3/sat, declarations one-sided [0, b],
+every declaration pair at two leaves, uniform declarations at three
+
+  term              decl pairs  arm changed  pairs disagreeing  value disagreements
+  x + y                   1296          756                  0                    0
+  (x + y) + z               36           15                  0                    0
+  x * y                   1296          711                  0                    0
+  (x + y) - y             1296          252                  0                    0
+  (x + y) * z               36           12                  0                    0
+  (x + y) - z               36            7                  0                    0
+
+  declaration pairs where the SELECTED ARM changed : 1753
+  chains where the ANSWER changed                  : 0
+  the first being large is what makes the second's zero a result
+
+CONTROL: the same terms with an observable axis moved instead,
+so the instrument is shown able to report a difference.
+
+  term             axis moved                 cells   disagreements
+  x + y            overflow policy             1296             210
+  (x + y) + z      overflow policy            46656           19236
+  x * y            overflow policy             1296             315
+  (x + y) - y      overflow policy             1296             210
+  (x + y) * z      overflow policy            46656           20963
+  (x + y) - z      overflow policy            46656           17178
+  x + y            signedness                  1296             811
+  (x + y) + z      signedness                 46656           39153
+  x * y            signedness                  1296             581
+
+------------------------------------------------------------------------------
+reading:
+  Under 108's own stated criterion, a refinement is not a member of
+  the declared semantics: there is no reachable chain on which moving
+  it is observable. 112 reaches the same verdict and 111 leaned the
+  other way; both of us argued from the middle sentence of the clause
+  rather than from the criterion in the sentence after it.
+
+  What moving a refinement changes is which arm is AVAILABLE. The
+  control shows the instrument reports a difference when an axis that
+  does change the denotation is moved instead.

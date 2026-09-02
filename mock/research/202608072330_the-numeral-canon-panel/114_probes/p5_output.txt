@@ -1,0 +1,104 @@
+
+==============================================================================
+ONE. The wrap arm: check the root, with the tightest interval
+==============================================================================
+
+  primitive    decls          cells   agree  pernode hyb  root+corner  root+one  ROOT+HYB  unsound
+  uW3/wrap     one-sided      13032    3210         2663         2565      3188      3188        0
+  iW3/wrap     one-sided       2148    1402         1306         1307      1389      1389        0
+  uW3/wrap     two-endpoint   38256    8744         6080         5132      8656      8688        0
+  iW3/wrap     two-endpoint   38256   13056         9824         8585     11999     12697        0
+  uW3/sat      one-sided  [C1]   13032    2950         2663         2565      3188      3188      259
+  iW3/sat      two-endpoint [C1]   38256   10122         9839         8516     11996     12682     2749
+
+  The last column is the point. Zero on the wrap rows and nonzero on
+  the [C1] saturating rows is the arm; a zero on the sat rows would
+  mean the rule is universally sound and there is no arm to name.
+
+==============================================================================
+TWO. The selector's step counts
+==============================================================================
+
+  The selector, in the order a design would evaluate it:
+
+    step 1  the cheap rule licenses            -> cheap arm, 2 numbers per node
+    step 2  else (a) and (b) hold              -> honest refusal, general arm
+    step 3  else                               -> instantiate the expensive form
+
+  step 3 is where the coefficient vector is paid for, and the question is how
+  often it is reached and how often it pays when reached.
+
+  primitive    decls           cells   step1   step2   step3  step3 pays   lost
+  uW3/sat      one-sided       13032    2247    5384    5401         416    287
+  iW3/sat      one-sided        2148    1245     316     587          61     32
+  uW3/sat      two-endpoint    30756    2860    7202   20694        2031    143
+  iW3/sat      two-endpoint    30756    5840    5727   19189        2043    242
+
+  step3 pays: cells reaching step 3 where the expensive form licenses.
+  lost: cells reaching step 3 where no rule licenses and the arms agree
+  anyway, which is the ceiling nothing per-node reaches.
+
+==============================================================================
+THREE. The fold: exactness and state at every length, not just 64
+==============================================================================
+
+  primitive uW2/sat, declarations sampled without replacement
+  term                            cells   consv  unsound   fires  root uns  corner  affine
+  fold of 2 adds                     16       0        0      16         0       2       2
+  fold of 3 adds                     60       0        0      60         0       2       3
+  fold of 4 adds                     60       0        0      60         0       2       4
+  fold of 5 adds                     60       0        0      60         0       2       5
+  fold of 6 adds                     60       0        0      60         0       2       6
+  fold of 7 adds                     60       0        0      60         0       2       7
+  fold of 8 adds                     60       0        0      60         0       2       8
+
+  Mixed add and subtract, where the spine is not monotone, so the root
+  stops being the widest node and the per-node check has work to do:
+
+  fold of 3, alternating +/-         60       0        0      60         0       2       3
+  fold of 4, alternating +/-         60       0        0      60         0       2       4
+  fold of 5, alternating +/-         60       0        0      60         0       2       5
+  fold of 6, alternating +/-         60       0        0      60         0       2       6
+  fold of 7, alternating +/-         60       0        0      60         0       2       7
+  fold of 8, alternating +/-         60       0        0      60         0       2       8
+
+  C2. The same fold with every leaf identified. The predicate must
+  stop firing, or it is not condition (a) doing the work:
+
+  fold of 2 adds, one leaf            4       0        0       0         0       2       1
+  fold of 3 adds, one leaf            4       0        0       0         0       2       1
+  fold of 4 adds, one leaf            4       0        0       0         0       2       1
+  fold of 5 adds, one leaf            4       0        0       0         0       2       1
+  fold of 6 adds, one leaf            4       0        0       0         0       2       1
+
+  C3. A fold under a multiplication, where condition (b) predicts
+  conservatism is possible and the check must be able to report it:
+
+  (fold of 2) * z                    60       5        0       0         0       2       4
+  (fold of 3) * z                    60      13        0       0         0       2       5
+  (fold of 4) * z                    60      15        0       0         0       2       6
+  (fold of 5) * z                    60      12        0       0         0       2       7
+
+  A wider container, to check the verdicts are not an artifact of W = 2:
+
+  fold of 2 adds  uW3                40       0        0      40         0       2       2
+  fold of 2 +/-   uW3                40       0        0      40         0       2       2
+  fold of 3 adds  uW3                40       0        0      40         0       2       3
+  fold of 3 +/-   uW3                40       0        0      40         0       2       3
+  fold of 4 adds  uW3                40       0        0      40         0       2       4
+  fold of 4 +/-   uW3                40       0        0      40         0       2       4
+  fold of 5 adds  uW3                40       0        0      40         0       2       5
+  fold of 5 +/-   uW3                40       0        0      40         0       2       5
+
+  The state counts, extended past what any sweep can reach, because
+  they are properties of the term and neither the width nor the
+  declaration appears in them:
+
+   fold length  corner state  affine state    ratio
+             2             2             2      1.0
+             4             2             4      2.0
+             8             2             8      4.0
+            16             2            16      8.0
+            64             2            64     32.0
+           256             2           256    128.0
+          1024             2          1024    512.0

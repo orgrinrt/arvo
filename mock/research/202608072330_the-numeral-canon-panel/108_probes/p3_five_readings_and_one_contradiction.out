@@ -1,0 +1,76 @@
+p3. Five readings of one sentence, and a contradiction inside the pair.
+
+=== FINDING ONE: five incompatible readings of op's `88` answer ===
+
+  [ok ] op, the sentence itself
+         in `88`: Mostly option 1, but a little bit of option 3 with it. Hard to put into words, hopefully you get...
+  [ok ] op flags his own difficulty, in the same file
+         in `88`: Op flagged his own difficulty putting it into words, so a later expert finding the two readings ...
+  [ok ] 93: a RANKING of two readings, neither decomposed
+         in `93`: The point reading is mostly it and the weighting reading is a little bit of it...
+  [ok ] 97: TIERS, and the surviving bit is the rationalisability constraint
+         in `97`: The little bit of option 3 that survives into the design tier is one checkable constraint: the t...
+  [ok ] 98: a RUNG on a five-step ladder, strictly between the ends
+         in `98`: a little bit of option 3...
+  [ok ] 102: a DECOMPOSITION into two components, not a proportion
+         in `102`: a decomposition rather than a proportion...
+  [ok ] 106: the NAMED BINDING, a point in each component
+         in `106`: It also makes `88`'s "mostly option 1, a little bit of option 3" read cleanly: mostly the point,...
+
+  7 present, 0 absent
+
+=== FINDING TWO: the pair's clause three against its own consequences ===
+
+  [ok ] C1. 106 defines component two as ranging over answer-equivalent arms
+         in `106`: a **weighting over cost coordinates**, which selects among the arms that produce the answer the ...
+  [ok ] C1b. 102 states the same clause, in the wording 106 compressed
+         in `102`: Its second is a weighting over cost coordinates, which selects among the arms that produce that ...
+  [ok ] C2. 102 says op's accuracy and speed intents range over arms that DISAGREE
+         in `102`: I5 trades accuracy for speed, I7 buys accuracy with speed, I3 asks for a particular answer...
+  [ok ] C2b. and names that explicitly
+         in `102`: Each ranges over arms that **disagree**...
+  [ok ] C3. 102 nonetheless maps I7 onto component two as a weighting
+         in `102`: I7, accuracy first | weighting, over a computed coordinate, with depth in the region...
+  [ok ] C4. 106 says a fidelity coordinate over answer-equivalent arms measures a constant
+         in `106`: cost-only is correct and complete; a fidelity column would measure a constant...
+  [ok ] C5. 106 carries the remedy for I7 as the missing fidelity hook
+         in `106`: The missing piece is `score_output`...
+
+  7 present, 0 absent
+
+=== FINDING THREE: where the two-space structure actually comes from ===
+
+  [ok ] P1. 40 states the two spaces, 53 files before 93 and 57 before 97
+         in `40`: A strategy lives in the **objective** space. A mechanism assignment is what a strategy produces ...
+  [ok ] P2. 93's cold derivation records that 40 got there first
+         in `93`: That is op's "mostly option 1, a little bit of option 3" derived before he said it...
+  [ok ] P3. 93 claims THREE independent instances including 25
+         in `93`: The credit for the two-space reading is `40`'s and `25`'s, and mine is a third independent arriv...
+  [ok ] P4. but 40's own account of 25 says 25 does NOT carry the second space
+         in `40`: What it does not carry is the thing that generates the graph, and op supplied that afterwards...
+  [ok ] P5. and 40 declares itself a refinement OF 25, so the two are not independent
+         in `40`: That is a refinement of `25` rather than a replacement...
+  [ok ] P6. 97 credits 40 for the observable definition, honestly
+         in `97`: This is a derivation from `40:398`'s definition and `40` section 5.4's compile...
+  [ok ] P7. 106 attributes that same definition to 97
+         in `106`: `97` defines an observable coordinate as one whose movement **changes the value the program comp...
+  [ok ] P8. op declined the nearest question and returned it to the panel
+         in `104`: I think the intent is clear and this is impl detail that already had answer: optimal and converg...
+
+  8 present, 0 absent
+
+=== mutation test of this checker ===
+
+  [caught] a phrase op did not say
+  [caught] a real phrase in the wrong file
+  [caught] a near-miss on a real quotation
+
+  3 of 3 mutants caught
+
+=== verdict ===
+
+absent citations across all three findings: 0
+mutants caught: 3 of 3
+
+Every passage the file's textual findings rest on is present as quoted,
+and the instrument that says so has been made to fail three ways.

@@ -1,0 +1,29 @@
+########## debug-assertions=off
+== P2b, profile = debug-assertions=off ==
+                              pair   both ok   both bad   SPLIT    value dis
+      constructed: divisor widened       255          1       0            0
+          C-D  v1's shared divisor       219         37       0            0
+               C-B  total interior       256          0       0            0
+
+C-A  value disagreements where both defined: 0   (must be 0)
+C-B  total-interior splits: 0, disagreements: 0   (both must be 0)
+C-C  constructed splits: 0   (must be > 0)
+C-D  v1's shared-divisor splits: 0   (must be 0)
+
+VERDICT at debug-assertions=off: a partial interior gives a binding-free definedness
+  channel: false
+
+########## debug-assertions=on
+== P2b, profile = debug-assertions=on ==
+                              pair   both ok   both bad   SPLIT    value dis
+      constructed: divisor widened       255          1       0            0
+          C-D  v1's shared divisor       219         37       0            0
+               C-B  total interior       256          0       0            0
+
+C-A  value disagreements where both defined: 0   (must be 0)
+C-B  total-interior splits: 0, disagreements: 0   (both must be 0)
+C-C  constructed splits: 0   (must be > 0)
+C-D  v1's shared-divisor splits: 0   (must be 0)
+
+VERDICT at debug-assertions=on: a partial interior gives a binding-free definedness
+  channel: false

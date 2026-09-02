@@ -1,0 +1,32 @@
+source unique line anchors        : 63
+source unique probe paths         : 90
+candidate anchors, full text      : 1   ['60:210']
+candidate anchors, section 7 cut  : 1   ['60:210']
+candidate probe paths, full text  : 9
+candidate probe paths, sec 7 cut  : 8
+
+carried (candidate & source), full : 0  []
+novel   (candidate - source), full : 1  ['60:210']
+dropped (source - candidate), full : 63
+
+anchors present ONLY inside section 7: []
+probe paths present ONLY inside sec 7: ['176_probes/anchor_accounting/']
+
+probe paths the candidate carries:
+    173_probes/                                          in a source: False
+    173_probes/anchor_accounting/                        in a source: True
+    175_probes/options/                                  in a source: True
+    176_probes/anchor_accounting/                        in a source: False
+    176_probes/citecheck.out                             in a source: False
+    176_probes/gate_release.out                          in a source: False
+    176_probes/quotecheck/                               in a source: False
+    176_probes/reproduce_dissents.sh                     in a source: False
+    176_probes/run_test_gate.sh                          in a source: False
+
+loose extraction over the candidate: 1  ['60:210']
+seen loose and not strict          : []
+
+CONTROLS
+  L1 planted anchor reported novel      : PASS
+  L2 stripping does not grow the set    : PASS
+  L3 extractor finds something          : PASS

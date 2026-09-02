@@ -1,0 +1,29 @@
+declared width W = 13, column lengths [1, 2, 3, 4, 8, 16, 32, 64, 128, 1024], 64 seeds each
+
+AXIS                        DISAGREEMENT                       VERDICT
+1 headroom                      0 of    640 inputs disagree   SAME ANSWER
+2 packing                       0 of    640 inputs disagree   SAME ANSWER
+3 overflow policy             511 of    640 inputs disagree   DIFFERENT ANSWER
+4 intermediate precision        0 of    640 inputs disagree   SAME ANSWER
+
+FIRST DISAGREEING INPUT, PER AXIS
+  1 headroom                 none
+  2 packing                  none
+  3 overflow policy          n=2 seed=10: 409 against 8191
+  4 intermediate precision   none
+
+WHAT THIS DECIDES
+
+Three of `25` section 7's four axes are OBSERVABLE by `97` section 3.2's
+test: moving them changes the value the program computes, so a consumer
+must be told and they sit in input position. One is UNOBSERVABLE: packing
+changes where the bits live and nothing else.
+
+So `25` section 7's object is three parts policy and one part lowering,
+and the cold pair's argmin-over-cost object is entirely lowering. They are
+not two definitions of one thing competing on strength. They name two
+different layers, with opposite polarity, and no merge was ever available.
+
+And the unobservable one is exactly the axis the committed corpus benches:
+the bitpack-* families sweep packing against dense with every arm asserted
+to agree. p1 shows why that is not a coincidence.

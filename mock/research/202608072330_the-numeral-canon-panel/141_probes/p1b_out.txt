@@ -1,0 +1,33 @@
+p1b: which multiply model produces 139's table
+
+=== fusion difference rate, MODEL B (reduce before shift), rounding = toward zero ===
+cell                        F=0      F=1      F=2      F=3      F=4      F=5
+unsigned, wrapping        0.00%   46.68%   69.82%   80.96%   86.55%   89.16%
+unsigned, saturating      0.00%   45.12%   67.68%   78.96%   84.59%   87.41%
+signed, wrapping          0.00%   52.54%   74.80%   82.71%   85.55%   85.62%
+signed, saturating       42.14%   63.48%   74.00%   78.84%   80.46%   79.26%
+
+=== fusion difference rate, MODEL B (reduce before shift), rounding = floor ===
+cell                        F=0      F=1      F=2      F=3      F=4      F=5
+unsigned, wrapping        0.00%   46.68%   69.82%   80.96%   86.55%   89.16%
+unsigned, saturating      0.00%   45.12%   67.68%   78.96%   84.59%   87.41%
+signed, wrapping          0.00%   48.24%   70.80%   81.25%   85.55%   85.62%
+signed, saturating       42.14%   63.55%   74.25%   79.60%   82.28%   83.62%
+
+=== 139's reported table, for side by side reading ===
+cell                        F=0      F=1      F=2      F=3      F=4      F=5
+unsigned, wrapping        0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+unsigned, saturating      0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+signed, wrapping          0.00%    1.64%    5.54%   12.34%   22.22%   33.40%
+signed, saturating       42.14%   39.10%   35.67%   31.96%   29.52%   33.41%
+
+=== R4 CONTROL: are models A and B distinguishable at all? ===
+(rate at which the two STEPWISE arms disagree; zero everywhere would void this probe)
+unsigned, wrapping, toward zero           0.00%   46.68%   69.82%   80.96%   86.55%   89.16%
+unsigned, saturating, toward zero         0.00%   45.12%   67.68%   78.96%   84.59%   87.41%
+signed, wrapping, toward zero             0.00%   52.54%   74.80%   82.71%   85.55%   85.62%
+signed, saturating, toward zero           0.00%   63.48%   74.00%   78.84%   80.46%   79.26%
+unsigned, wrapping, floor                 0.00%   46.68%   69.82%   80.96%   86.55%   89.16%
+unsigned, saturating, floor               0.00%   45.12%   67.68%   78.96%   84.59%   87.41%
+signed, wrapping, floor                   0.00%   48.24%   70.80%   81.25%   85.55%   85.62%
+signed, saturating, floor                 0.00%   63.55%   74.25%   79.60%   82.28%   83.62%

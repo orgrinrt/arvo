@@ -1,0 +1,30 @@
+error[E0277]: the trait bound `tele::Saturate<tele::Id<tele::RingZ, tele::S4>>: AddAssociates` is not satisfied
+   --> p1_neg_b.rs:31:24
+    |
+ 31 |     reassociating_fold(x)
+    |     ------------------ ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `AddAssociates` is not implemented for `tele::Saturate<tele::Id<tele::RingZ, tele::S4>>`
+   --> p1_telescope.rs:117:1
+    |
+117 | pub struct Saturate<I>(PhantomData<I>);
+    | ^^^^^^^^^^^^^^^^^^^^^^
+help: the trait `AddAssociates` is implemented for `tele::Saturate<tele::Id<D, U4>>`
+   --> p1_telescope.rs:217:1
+    |
+217 | impl<D: Ambient> AddAssociates for Saturate<Id<D, U4>> {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `tele::reassociating_fold`
+   --> p1_telescope.rs:223:21
+    |
+221 | pub fn reassociating_fold<A, C>(_x: Num<A, C>) -> &'static str
+    |        ------------------ required by a bound in this function
+222 | where
+223 |     A: Adaptation + AddAssociates,
+    |                     ^^^^^^^^^^^^^ required by this bound in `reassociating_fold`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

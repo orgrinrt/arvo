@@ -1,0 +1,22 @@
+error[E0119]: conflicting implementations of trait `Adjudicate<Num<_, _>>` for type `Num<_, _>`
+  --> p4_two_rules.rs:40:1
+   |
+29 | / impl<SN, SS, TN, TS> Adjudicate<Num<SN, SS>> for Num<TN, TS>
+30 | | where
+31 | |     SN: Numeral,
+32 | |     SS: Strategy,
+33 | |     TN: Numeral,
+34 | |     TS: Strategy,
+   | |_________________- first implementation here
+...
+40 | / impl<SN, SS, TN, TS> Adjudicate<Num<SN, SS>> for Num<TN, TS>
+41 | | where
+42 | |     SN: Numeral,
+43 | |     SS: Strategy,
+44 | |     TN: Numeral,
+45 | |     TS: Strategy,
+   | |_________________^ conflicting implementation for `Num<_, _>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0119`.

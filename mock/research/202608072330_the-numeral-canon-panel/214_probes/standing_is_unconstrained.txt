@@ -1,0 +1,39 @@
+# What reads `standing` on a proposal row, established by mutation.
+
+Hypothesis stated before the run: the schema validates the SPELLING of
+`standing` and nothing ties its VALUE to the work the row cites, so the
+strongest tier the panel produces can sit on one citation into a
+consolidation and every gate stays green.
+
+The case that must fail, run first, because a run with no failing case
+establishes nothing: a value outside the declared set must be refused. If
+it is not, the gate is not running and the green below is meaningless.
+
+Row under test: proposal::the_numeral_concept_is_a_dependent_sequence_of_choices
+Its provenance, unchanged throughout: one citation, into 74, the consolidation.
+
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+== CONTROL: standing = "seventeen_experts" (outside the declared set) ==
+--- registry ---
+  670 rows across 10 namespaces
+  ERROR [schema]: error: "seventeen_experts" is not one of ["one_expert","two_experts","three_or_more","cross_topic","contested"]
+  ERROR [schema]: ERROR taplo:lint_files: invalid file error=schema validation failed path="/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat214/mock/registry/proposal.toml"
+  ERROR [schema]: ERROR operation failed error=some files were not valid
+registry check failed: 3 error(s)
+
+== MEASUREMENT: standing = "cross_topic" (the strongest tier) ==
+--- running lints ---
+--- registry ---
+  670 rows across 10 namespaces
+  schema check passed
+  all lints passed
+--- lint-only mode, skipping generation ---
+
+== and the whole arvo-checks suite under the same mutation ==
+aggregate: 140 passed, 0 failed
+
+Reading: the control is refused by name, so the gate is live. The
+measurement passes, so what the gate reads is the spelling. Nothing in
+the repository related the tier to the citations until
+mock/checks/src/provenance.rs.

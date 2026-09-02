@@ -1,0 +1,50 @@
+=== every backticked member reference in 106, with the 60 chars after it ===
+     318
+
+=== WITH a section/heading qualifier following (locatable) ===
+8
+
+=== breakdown: which qualifier word follows a member reference ===
+  29 ,
+  24 ectio
+  18 a
+  12 
+   9 ow
+   7 ays
+   6 the
+   6 .
+   5 was
+   5 i
+   5 co
+   5 attacked
+   4 reached
+   4 measured
+   4 W9
+   3 p3
+   3 o
+   3 is
+   3 from
+   3 fou
+   3 e
+   3 also
+   3 :
+   3 ).
+   3 ),
+
+=== per-member: total refs vs refs carrying a section qualifier ===
+  93    refs=39   with-section=1   
+  94    refs=27   with-section=2   
+  97    refs=38   with-section=7   
+  98    refs=23   with-section=0   
+  100   refs=36   with-section=2   
+  101   refs=43   with-section=2   
+  102   refs=62   with-section=1   
+  103   refs=34   with-section=1   
+  25    refs=13   with-section=6   
+  40    refs=3    with-section=1   
+  22    refs=1    with-section=0   
+  35    refs=1    with-section=0   
+  87    refs=2    with-section=0   
+  88    refs=3    with-section=0   
+  96    refs=4    with-section=0   
+  99    refs=2    with-section=0   

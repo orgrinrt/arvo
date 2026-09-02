@@ -1,0 +1,18 @@
+# A spike, not a crate. Answers one question seat 220 left open with a stated
+# predicate: it exercised 8 of the crate's 30 finding-returning arms against an
+# empty registry, and said the other 22 were "a question rather than a result".
+# This runs all 30.
+#
+# `[workspace]` is empty on purpose, so the parent mock workspace does not
+# absorb this and so building it changes nothing about the shipped tree.
+
+[package]
+name = "vacuity-spike"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+arvo-checks = { path = "../../../../checks" }

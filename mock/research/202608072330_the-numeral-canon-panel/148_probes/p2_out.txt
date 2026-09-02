@@ -1,0 +1,45 @@
+p2 (148): is the component assignment a function of the rule or of the measurement?
+W=5, F=1, signed, overflow=saturating, exhaustive over the declared range
+
+=== the two axes ===
+LIVE axis (stepwise vs fused): differ at 9722 triples, max gap 16
+DEAD axis (stepwise vs a second spelling): differ at 0 triples, max gap 0
+
+=== control (iii): the live axis must be component one under the firewall ===
+  fires: the live axis is component one under the firewall.
+
+=== control (ii): the dead axis must be component two under every rule ===
+  fires: the dead axis is component two under the firewall and at every
+  slack tried, so the classifier does not manufacture policy content.
+
+=== control (i): SLACK(0) must agree with FIREWALL ===
+  fires: slack zero is the firewall, so the two rules are one family
+  and the slack parameter is what separates them.
+
+=== the classification, as a function of the rule ===
+rule             live axis        dead axis
+------------------------------------------------
+FIREWALL         component one    component two
+SLACK(0)         component one    component two
+SLACK(1)         component one    component two
+SLACK(2)         component one    component two
+SLACK(4)         component one    component two
+SLACK(8)         component one    component two
+SLACK(16)        component two    component two
+SLACK(32)        component two    component two
+SLACK(64)        component two    component two
+
+=== verdict ===
+the live axis is COMPONENT ONE under the firewall and COMPONENT TWO once
+the slack reaches 16, with the measurement held fixed throughout.
+So which component an answer-visible axis belongs to is a function of the
+classification rule, not of the measurement.
+
+146 section 6.3 closes the count's second argument by declaring that an
+axis visible under the maximal observation set IS component one. That
+declaration is the firewall. Section 6.1 records the firewall as carrying
+no predicate in any file that endorses it. So the closure inherits that
+status: it is as settled as the firewall is and no more.
+
+=== controls ===
+all three controls fired.

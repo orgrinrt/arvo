@@ -1,0 +1,51 @@
+================================================================================================
+C1/C2/C3. The two-by-two: units crossed with baseline provenance, one shared population
+================================================================================================
+  units       baseline          pure rescale    arbitrary change
+  absolute    fixed                    16.6%               87.1%
+  absolute    per-target               16.6%               87.1%
+  relative    fixed                    15.2%               87.1%
+  relative    per-target                0.0%               84.1%
+
+  C1 (the invariance is exactly one cell and it is relative/per-target): CONFIRMED, zero cells = [('relative', 'per-target')]
+  C2 CONTROL (the two absolute rows are identical): True (must be True)
+  C3 CONTROL (every cell moves under an arbitrary target change): True (must be True)
+
+================================================================================================
+C4. Under relative units, what is the baseline arm's own figure?
+================================================================================================
+  cases: 3640
+  baseline arm's own relative figure equals 1: 3640 (100.0%)
+  the reported ranking equals the selection ranking: 3640 of 3640
+  C4: CONFIRMED
+  So under relative units the reporting normalisation divides every arm's figure by one,
+  and the two operations 144 sections 6 and 4.3 name stop competing: there is only one.
+
+================================================================================================
+C5/C6. 150's D3: F144-2 at two cost coordinates and at three
+================================================================================================
+  two coordinates, the compromise arm at (6,6):   optimum 1 at w = ('1/2', '1/2')
+  two coordinates, 139's control arm at (4,4):    optimum -1
+  three coordinates, third identically zero:      optimum 0 at w = ('0', '0', '1')
+
+  the exact witness at three coordinates needs no solver: at w = (0, 0, 1) every arm
+  scores 0 on the constant coordinate, so the gap is 0 by inspection.
+
+  C5: CONFIRMED (+1 at two coordinates, 0 at three)
+  C6 CONTROL (the hull-interior control arm is strictly selectable): True (must be True)
+
+================================================================================================
+VERDICT
+================================================================================================
+  150's two-by-two reproduces: the cross-target invariance needs BOTH baseline-relative
+  units and a per-target baseline, and relative units with a fixed baseline does not give
+  it. 145's units reading is one dimension short and 146 inherited that.
+
+  And 150's consequence holds: under relative units the baseline arm's figure is exactly 1
+  at every case, so the reporting normalisation is division by one. There is no second
+  operation to place, which is why the two sections stop competing rather than needing a
+  rule about which wins.
+
+  150's D3 reproduces: F144-2's optimum is +1 at two cost coordinates and exactly 0 at
+  three with a constant third, and the three-coordinate zero is exhibited rather than
+  solved. 146 section 4 states the claim without the coordinate count it needs.

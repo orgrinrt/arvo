@@ -1,0 +1,40 @@
+s3: capacity under nesting
+======================================================================
+lg agrees with ceil(log2) over c in [1, 4096]: ok
+
+Q1/Q2  over m,n in [1,64]  ->  4096 pairs
+   FLAT strictly wider than NESTED : 0
+   equal                           : 2895
+   NESTED strictly wider than FLAT : 1201  (29.3%)
+   slack histogram (extra bits)    : {1: 1201}
+   worst case: m=3 n=5 -> nested adds 5 bits, flat adds 4, slack 1
+
+   witness, checkable by hand: m=3, n=3
+     nested = lg(3) + lg(3) = 2 + 2 = 4
+     flat   = lg(9)         = 4
+     a 3-by-3 sum of values below 2^W is below 9*2^W < 2^(W+4), and the nested derivation asks for W+4 as well; the slack appears at m=3,n=5: nested 2+3=5, flat lg(15)=4.
+
+Q3  sufficiency of the FLAT accumulator for a nested traversal
+   checked (w,m,n) triples          : 8192
+   per-row intermediate overflows   : 0
+   final total overflows            : 0
+   NEGATIVE CONTROL, one bit narrower, overflows: 6502   (must be large, else the check above is vacuous)
+
+Q4  does the derivation degenerate at capacity one
+   lg(1) = 0, so acc(W, 1) = W + 0 = W
+   a fold over a capacity-one composition returns its element, and
+   the derived accumulator is the element numeral, unchanged.
+   nesting a capacity-one level is the identity, n in [1,4096]: True
+
+Q5  three levels
+   over a,b,c in [1,24] -> 13824 triples
+   slack histogram: {0: 4377, 1: 8471, 2: 976}
+   worst slack at three levels: 2 bits
+
+SUMMARY
+  FLAT is never wider than NESTED, over every pair checked.
+  NESTED is strictly wider on a large minority, up to 2 bits at two
+  levels and more at three, so composing the derivations per level
+  is sound and not tight.
+  FLAT is sufficient for the per-row intermediates as well as the
+  total, so flattening does not cost the nested traversal anything.

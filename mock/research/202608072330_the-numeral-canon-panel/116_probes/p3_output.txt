@@ -1,0 +1,72 @@
+==========================================================================================
+p3. The two licence families are complementary, and forced apart
+==========================================================================================
+
+P1/P3/P4. The two properties and the two licences, per policy
+
+  primitive        hom fails  monotone fails  interval ill-ord  root-only unsound
+  uW3/wrap            0/1452            2/21          546/1296             0/4800
+  iW3/wrap            0/1452            2/21          546/1296             0/4800
+  uW3/sat           189/1452            0/21            0/1296             0/4800
+  iW3/sat           376/1452            0/21            0/1296            14/4800
+  uW3/zero          392/1452            1/21          728/1296             0/4800
+  uW3/reflect       288/1452            7/21          568/1296             0/4800
+
+  read as a two-by-two:
+
+  primitive        ring hom   monotone   -> W1 arm   -> interval
+  uW3/wrap             True      False        True         False
+  iW3/wrap             True      False        True         False
+  uW3/sat             False       True        True          True
+  iW3/sat             False       True       False          True
+  uW3/zero            False      False        True         False
+  uW3/reflect         False      False        True         False
+
+  the cell that matters: is any policy in BOTH columns?
+    policies with both properties: none
+
+P2. Exhaustive search for a map that is both, over a window of Z
+
+  |V| = 2, window 9 points, 512 maps: homomorphic 3, monotone 10, both 2, both AND non-constant 0
+  |V| = 3, window 13 points, 1594323 maps: homomorphic 6, monotone 105, both 3, both AND non-constant 0
+
+  the search contains candidates passing each half separately, so
+  'none passes both non-trivially' is a statement about the maps.
+
+P5. On a discharged declared extent, the map is the identity
+
+  uW3/wrap     extent <= 1: discharged True  R is the identity on it: True   order preserved on it: True
+  uW3/wrap     extent <= 3: discharged True  R is the identity on it: True   order preserved on it: True
+  uW3/wrap     extent <= 7: discharged False R is the identity on it: True   order preserved on it: True
+  uW3/sat      extent <= 1: discharged True  R is the identity on it: True   order preserved on it: True
+  uW3/sat      extent <= 3: discharged True  R is the identity on it: True   order preserved on it: True
+  uW3/sat      extent <= 7: discharged False R is the identity on it: True   order preserved on it: True
+
+  so a discharged extent restores BOTH properties at once, which no
+  choice of policy can do.
+
+-----------------------------------------------------------------------------
+ONE COLUMN OF THIS TABLE IS UNDERSIZED AND MUST NOT BE READ AS A RESULT
+-----------------------------------------------------------------------------
+The "root-only unsound" column sweeps 4800 cells over one-sided declarations
+derived from a single bound per leaf, which is far smaller than p1's sweep of
+the same question.  It reports 0 at `uW3/sat`, which is a FALSE NEGATIVE: p1,
+over 76896 cells with a systematic term enumeration, reports 228 unsound at
+that exact primitive.  The `uW3/zero` and `uW3/reflect` zeros in that column
+are undersized in the same way and no claim is made from them.
+
+That is the hand-picked-rows failure appearing in my own probe, and it is
+worth leaving visible: a column can be live somewhere (`iW3/sat` shows 14) and
+still be a false negative on the row a reader is most likely to quote.
+
+WHAT THE FILE ACTUALLY RESTS ON, which is unaffected:
+
+  - the HOMOMORPHISM column, exhaustive over the whole ambient range the
+    operands can reach, 0/1452 at wrap and 189 to 376 at sat;
+  - the MONOTONICITY column, exhaustive over the same range;
+  - the INTERVAL column, exhaustive over every well-ordered pair, 0/1296 at
+    sat and 546/1296 at wrap;
+  - the P2 search, exhaustive over every map from the window, which is what
+    establishes that no non-constant map has both properties.
+
+The licence columns are corroboration and their authoritative values are p1's.

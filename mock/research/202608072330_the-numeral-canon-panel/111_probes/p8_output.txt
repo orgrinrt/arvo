@@ -1,0 +1,33 @@
+$ rustc --version
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+$ ./p8
+widening is the identity on all 256 of 256 representations
+widen_7_to_15(7)      = 7
+widen_derived(100)    = 100
+BSum<Lit<40>,Lit<60>>::HI = 100
+
+$ symbols in p8_asm.s
+185:_plain_identity:
+249:_widen_100_to_200 = _plain_identity
+251:_widen_7_to_15 = _plain_identity
+253:_widen_derived = _plain_identity
+
+$ rustc --edition 2021 -O p8b_a_tightening_is_refused_at_build_time.rs   # expect FAIL
+error[E0080]: evaluation panicked: widening must not tighten the bound
+  --> p8b_a_tightening_is_refused_at_build_time.rs:35:13
+   |
+35 |     const { assert!(A::HI <= B::HI, "widening must not tighten the bound") }
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `widen::<Lit<200>, Lit<100>>::{constant#0}` failed here
+
+note: erroneous constant encountered
+  --> p8b_a_tightening_is_refused_at_build_time.rs:35:5
+   |
+35 |     const { assert!(A::HI <= B::HI, "widening must not tighten the bound") }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+
+feature gates: p8 0, p8b 0

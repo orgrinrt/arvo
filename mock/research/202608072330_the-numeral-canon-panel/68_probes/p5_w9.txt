@@ -1,0 +1,18 @@
+error: constant evaluation is taking a long time
+  --> p5_const_eval_ceiling.rs:49:60
+   |
+49 |                 if sat_add(sat_add(a, b), c) != sat_add(a, sat_add(b, c)) {
+   |                                                            ^^^^^^^^^^^^^
+   |
+   = note: this lint makes sure the compiler doesn't get stuck due to infinite loops in const eval.
+           If your compilation actually takes a long time, you can safely allow the lint
+help: the constant being evaluated
+  --> p5_const_eval_ceiling.rs:63:1
+   |
+63 | pub const FAILURES: u64 = assoc_failures();
+   | ^^^^^^^^^^^^^^^^^^^^^^^
+   = note: `#[deny(long_running_const_eval)]` on by default
+
+error: aborting due to 1 previous error
+
+W9_EXIT=1 (refused in 4.7s on prior run; rerun for line-number fidelity)

@@ -1,0 +1,272 @@
+
+law::additive_associativity_under_wrapping  [provenance]
+  -> 63_spj_consolidation_the_format_concept:444
+     | |---|---|---|---|---|
+     | | unsigned | add | saturate | commutative monoid | monoid, every F |
+     | | unsigned | add | wrap | abelian group | group, every F |
+     | | unsigned | mul | saturate | semiring half, by congruence | dead |
+     | | unsigned | mul | wrap | ring half | dead |
+
+law::additive_associativity_under_wrapping  [provenance]
+  -> 63_spj_consolidation_the_format_concept:473
+     | ### 4.4 The additive column, and the premise it stands on
+     | 
+     | **The additive verdict, whatever it is, is independent of the fraction width.** Addition of two
+     | values at a common scale never reads the scale: `57_probes/p3.rs:109` and the p4 Factor arms are
+     | scale-blind by construction (opened here), so an additive result at F = 0 transfers verbatim to
+
+law::additive_associativity_under_wrapping  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:122
+     | values, and the decision to act on a fact belongs to whoever performs the rewrite (`76:299-309`, with
+     | op's direct refusal of the engine relocation carried at `DROPLIST.md:19-22`). The wrapping-associativity
+     | base fact behind much of the unit is `76`'s exhaustive probe
+     | (`76_probes/probe1_associativity_exhaustive.rs`, `76_probes/probe1_output.txt`): wrapping addition
+     | associates universally over `u8`, signed `i8` saturating addition fails on 4,177,792 of 16,777,216
+
+law::additive_associativity_under_saturation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:443
+     | | sign | op | policy | F = 0 | F > 0 |
+     | |---|---|---|---|---|
+     | | unsigned | add | saturate | commutative monoid | monoid, every F |
+     | | unsigned | add | wrap | abelian group | group, every F |
+     | | unsigned | mul | saturate | semiring half, by congruence | dead |
+
+law::additive_associativity_under_saturation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:352
+     | ### 4.2 The congruence layer, and the frame that replaced the shared theorem
+     | 
+     | **The unsigned semiring is structural.** Every commutative-semiring axiom at M = 1, 2, 3, 7, 15,
+     | 31, 63, 127, 255, zero failures, with the explanation that covers all widths at once: "equal, or
+     | both at or beyond the bound" is a congruence on the naturals for both operations, so the
+
+law::additive_associativity_under_saturation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:300
+     | **The refutation that started it, told honestly.** The register's Q12 carried a mechanism
+     | sentence from `42`: associativity of a clamped operation survives by bound-reachability
+     | ("at most one of its clamps can be triggered", grep-verified in Q12). `55b`'s `p5` refuted the
+     | quoted form exhaustively: 952 divergent signed-clamp triples, 448 ceiling-only, 504 floor-only,
+     | **zero involving both bounds** (`55b:160-190`, re-run here). `57` then opened `42` itself and
+
+law::additive_associativity_under_saturation  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:123
+     | op's direct refusal of the engine relocation carried at `DROPLIST.md:19-22`). The wrapping-associativity
+     | base fact behind much of the unit is `76`'s exhaustive probe
+     | (`76_probes/probe1_associativity_exhaustive.rs`, `76_probes/probe1_output.txt`): wrapping addition
+     | associates universally over `u8`, signed `i8` saturating addition fails on 4,177,792 of 16,777,216
+     | triples with first counterexample `a = -128, b = -128, c = 1`.
+
+law::additive_associativity_under_saturation  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:1356
+     | > additive associativity, multiplicative associativity and distributivity over addition, all of which
+     | > two-sided saturation loses.**
+     | > `holds for: W in {4, 5, 6}, F = 0, signedness = signed, overflow = saturate, operand window =
+     | > declared non-negative, operations {add, mul}, arity 3, values exhaustive, threads = 1, target
+     | > features any`
+
+law::multiplicative_associativity_under_wrapping  [provenance]
+  -> 63_spj_consolidation_the_format_concept:446
+     | | unsigned | add | wrap | abelian group | group, every F |
+     | | unsigned | mul | saturate | semiring half, by congruence | dead |
+     | | unsigned | mul | wrap | ring half | dead |
+     | | signed | add | saturate | dead, 952 at w = 4 | dead, counts F-invariant |
+     | | signed | add | wrap | abelian group | group, every F |
+
+law::multiplicative_associativity_under_wrapping  [provenance]
+  -> 63_spj_consolidation_the_format_concept:417
+     | discard (the rounding rule) moves failure magnitudes and never their existence (truncation
+     | against round-half-up: counts move both directions, no row reaches zero, `58_probes/p1`, re-run
+     | here; truncation against arithmetic-shift on signed operands: same shape on a second axis,
+     | `62:122-130`); and the only escape, never narrowing until the end, abandons fixed width at a cost
+     | linear in fold length (`58:80-115`, `58:178-203`). Three instruments and a structural argument
+
+law::multiplicative_associativity_under_wrapping  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:324
+     | 
+     | **Multiplicative associativity and distributivity hold at `F = 0` and fail at `F > 0`, for unsigned
+     | types.** `holds for: W in 3..8, F in 0..2, signedness = unsigned, overflow in {wrap, saturate},
+     | operations {add, sub, mul}, arity 2 and 3, values exhaustive over the representable domain, threads = 1,
+     | target features any`
+
+law::multiplicative_associativity_under_saturation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:358
+     | here). M = 1 degenerates to the Boolean semiring, the structurally distinct sanity instance.
+     | 
+     | **The signed cell never had the structure.** Signed two's-complement saturating multiplication
+     | fails associativity **on the integer grid**: 28, 160, 780, 3516 triples at w = 3 through 6, with
+     | the three-value witness `(7 * 7) * -1 = -7` against `7 * (7 * -1) = -8` and no coarsening
+
+law::multiplicative_associativity_under_saturation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:364
+     | under negation: negation carries one absorbed tail into the interior, so "both beyond the same
+     | bound" is not preserved by multiplication by a negative and no congruence can be stated
+     | (`62:82-95`). **A symmetric clamp restores it exactly**: zero associativity failures and zero
+     | coherence violations at every width measured, while distributivity and additive associativity
+     | stay broken because they route through the additive pullback that range symmetry does not touch
+
+law::multiplicative_associativity_under_saturation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:445
+     | | unsigned | add | saturate | commutative monoid | monoid, every F |
+     | | unsigned | add | wrap | abelian group | group, every F |
+     | | unsigned | mul | saturate | semiring half, by congruence | dead |
+     | | unsigned | mul | wrap | ring half | dead |
+     | | signed | add | saturate | dead, 952 at w = 4 | dead, counts F-invariant |
+
+law::multiplicative_associativity_under_saturation  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:324
+     | 
+     | **Multiplicative associativity and distributivity hold at `F = 0` and fail at `F > 0`, for unsigned
+     | types.** `holds for: W in 3..8, F in 0..2, signedness = unsigned, overflow in {wrap, saturate},
+     | operations {add, sub, mul}, arity 2 and 3, values exhaustive over the representable domain, threads = 1,
+     | target features any`
+
+law::distributivity_of_multiplication_over_addition  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:324
+     | 
+     | **Multiplicative associativity and distributivity hold at `F = 0` and fail at `F > 0`, for unsigned
+     | types.** `holds for: W in 3..8, F in 0..2, signedness = unsigned, overflow in {wrap, saturate},
+     | operations {add, sub, mul}, arity 2 and 3, values exhaustive over the representable domain, threads = 1,
+     | target features any`
+
+law::distributivity_of_multiplication_over_addition  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:331
+     | Restored on `107`'s check, from `93`'s F1 directly, which carries `signedness = unsigned` in its own
+     | predicate. At **signed** saturating, `F = 0`, two independently written models measure the law failing:
+     | `93_probes/p7` gives distributivity failing **47.72%** of triples at `W = 7`, and `97_probes/p2` gives
+     | **34.52%** at `W = 6`. A one-sided clamp is a congruence and a two-sided one is not. `97` section 6.3
+     | adds a second qualifier inside the surviving region: at unsigned `F = 0` saturating, distributivity over
+
+law::distributivity_of_multiplication_over_addition  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:1354
+     | 
+     | > **F-H. Restricting a signed saturating type to a declared non-negative operand window recovers
+     | > additive associativity, multiplicative associativity and distributivity over addition, all of which
+     | > two-sided saturation loses.**
+     | > `holds for: W in {4, 5, 6}, F = 0, signedness = signed, overflow = saturate, operand window =
+
+law::distributivity_of_multiplication_over_subtraction  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:333
+     | `93_probes/p7` gives distributivity failing **47.72%** of triples at `W = 7`, and `97_probes/p2` gives
+     | **34.52%** at `W = 6`. A one-sided clamp is a congruence and a two-sided one is not. `97` section 6.3
+     | adds a second qualifier inside the surviving region: at unsigned `F = 0` saturating, distributivity over
+     | **addition** holds while distributivity over **subtraction** fails at 45.79% of triples, so a law
+     | permission names the operations it covers and not only the fraction width.
+
+law::associativity_of_a_composed_saturating_add_and_subtract  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:131
+     | `79`'s P4, verified at source and re-run by both later attackers (`82_probes/p0_rerun_of_79_p1.rs`,
+     | `82_probes/p0_rerun_output.txt`): unsigned saturating addition is associative on every triple (predicate
+     | `any` on the operand dimension), the composed `(a+b)-c == a+(b-c)` fails on 13,882,880 of 16,777,216
+     | triples, 82.7484%, and the exact holding region is a four-way case split on the two clamp events plus a
+     | residual operand condition, zero sufficiency and zero necessity violations, with a mutant control
+
+law::associativity_of_a_composed_saturating_add_and_subtract  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:137
+     | (`79_probes/p1_compositional_predicate_search.rs`, `79_probes/p1_output.txt`,
+     | `79_probes/p1_negative_control.rs`, `79_probes/p1_negative_output.txt`). Predicate as `79` stated it:
+     | `N = 8, sign = unsigned, policy = saturate, op pair = {+, -} composed, F = 0, threads any, features any`
+     | (`79:95-100`), threads and features claimed on a semantic argument about pure value functions.
+     | 
+
+law::existence_of_a_translation_invariant_total_order  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:277
+     | not a proof and the provisional marking stays, now with the record that an attack was made.
+     | 
+     | **Q21's stated discriminator is measured empty.** Over every total order on the carrier at widths
+     | 2 and 3, exhaustively, wrapping addition and xor over GF(2)^n admit zero compatible total orders
+     | each, for the same structural reason (finite groups admit no translation-invariant total order,
+
+law::existence_of_a_translation_invariant_total_order  [provenance]
+  -> 63_spj_consolidation_the_format_concept:286
+     | uncontested through seven subsequent files.
+     | 
+     | **Wrapped order.** A wrapped numeral has no arithmetic-compatible order (a finite cyclic group
+     | admits no translation-invariant total order), so comparison there is representative-order, which
+     | arithmetic does not respect. Owed under every filing equally, therefore not a distinguisher
+
+law::rounding_retraction_is_the_identity  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:347
+     | 
+     | The supporting measurements, which are correct and were never in question: `93`'s F1 measured
+     | it exhaustively over every triple at `W` in 3 to 8; `94`'s probe C part 2 measured that rounding retraction
+     | retracts exactly at `F = 0` over `W` in {4, 6, 8} and `F` in 0 to `W`, both rounding modes; `97`'s
+     | criterion predicts every verdict in 552 cells with zero mismatches in either direction; and `97`'s p7
+
+law::rounding_retraction_is_the_identity  [provenance]
+  -> 63_spj_consolidation_the_format_concept:415
+     | **The boundary is structural, not swept-so-far.** At F > 0 a representable-width multiply
+     | discards F bits at every pairwise step before any clamp is consulted; the choice of what to
+     | discard (the rounding rule) moves failure magnitudes and never their existence (truncation
+     | against round-half-up: counts move both directions, no row reaches zero, `58_probes/p1`, re-run
+     | here; truncation against arithmetic-shift on signed operands: same shape on a second axis,
+
+law::equation_truth_sets_are_initial_segments_in_the_width  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:237
+     | and F5).
+     | 
+     | What survives of band transfer is exact and narrow: `84`'s polarity theorem for the ring fragment
+     | (`84_probes/p3_transfer_polarity.rs`, F3, measured at arity 1 by its own admission at `84:520-521`). Equation laws have initial-segme
+     | FALSE embeds upward with its witness and a band TRUE exports nothing; disequation laws are the dual.
+
+law::equation_truth_sets_are_initial_segments_in_the_width  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:241
+     | FALSE embeds upward with its witness and a band TRUE exports nothing; disequation laws are the dual.
+     | `86` proved the polarity at every arity as a corollary of R6, discharging that limit, and measured that **saturating laws have
+     | neither direction**: gapped and interior-run truth sets exist among constant-free depth-2 terms, 16 and
+     | 24 of 21,945 pairs, including a law true at width 2 alone and a genuine ring identity false at width 2
+     | alone (`86` F6). `89`'s p8 supplied the mechanism: the gapped sets occur exactly where the min-form
+
+law::equation_truth_sets_are_initial_segments_in_the_width  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:262
+     | `prod_i {0..d_i}` decides the whole domain, a false law has a witness inside its own degree box, the
+     | exact truth threshold is the minimum 2-adic valuation over the grid's integer values, and equation truth
+     | sets are initial segments at every arity (`86` F2, measured at genuine degree where `84`'s battery had
+     | none: 1,975 pairs zero mismatches, 25 tensor members matching the Legendre prediction exactly,
+     | `86_probes/p1_multivariate_at_real_degree.rs`). Width-64 instances at genuine degree: `(x)_33 (y)_33`
+
+law::the_falling_factorial_family_vanishes_modulo_two_to_the_width  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:216
+     | `84` broke it by construction. The threshold family `L_k`, every product of k consecutive integers
+     | vanishes mod `2^W`, is true at every width up to `k - s2(k)` and false above, by Legendre's formula,
+     | verified exhaustively for nine family members with the instrument shown able to fail
+     | (`84_probes/p1_threshold_family.rs`). `L_16` run through `80`'s own construction: band agreement green,
+     | perturbation control still refuses, arm licensed at width 64, **law false at width 64**, refuted in
+
+law::the_saturating_exponent_absorbing_identity  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:231
+     | const-tag-dispatch counterexample which at least needed a width-keyed path (`DROPLIST.md:230-232`).
+     | 
+     | `86` extended the defeat outside the ring fragment: `E_d`, `x^d == x^(d+1)` under unsigned saturating
+     | multiplication, constant-free, clamps live, truth set exactly widths 1 through d for all eleven swept
+     | members, so `E_63` is true below the shipped width and false at it, and the band mechanism licenses it
+
+law::the_multiplicative_inverse_round_trip  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:223
+     | shipped width, at any guard setting, on any host, could have disagreed**
+     | (`84_probes/p2b_no_band_can_catch_it.rs`). The family is not exotic: magic constants have exactly this
+     | downward-correct, upward-false shape, and the INV3 sibling, `(x * 3) * INV3 == x` with the 64-bit
+     | inverse constant, holds through width 65 and fails at 128 with witness 1, computed
+     | (`84` F6, re-derived by hand at `86_probes/p0_rerun_of_84_probes.txt`). `68`'s transfer proviso, no
+
+law::coherence_of_a_reduction_onto_its_induced_operation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:219
+     | (monotone, distance-minimising: what error transport and order transport consume) and the
+     | coherence law faces the target (whether the reduction is a homomorphism onto its induced
+     | operation). All four combinations are inhabited: signed saturation holds the adaptation laws and
+     | fails coherence at 476 chain-divergent triples; wrap fails both adaptation laws and holds
+     | coherence for addition and multiplication at zero; unsigned add-only saturation over a
+
+law::coherence_of_a_reduction_onto_its_induced_operation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:389
+     | > Both hold, and the induced operation on Q is associative, because Q is the quotient.
+     | 
+     | Evaluated mechanically over the unit's cube, twenty-four cells (three sign domains, two policies,
+     | two operations, two scales): sufficiency violations zero, cells associative without both
+     | hypotheses zero, residue zero, with each hypothesis and the measured truth observed both true and
+
+law::coherence_of_a_reduction_onto_its_induced_operation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:731
+     | width instances (w = 3 through 7). That is a strength of the biconditional, holding over a wider
+     | class than arvo formats, and a reader quoting "4248" as a count of formats checked would be
+     | wrong. The cube's twenty-four cells are cells of a three-by-two-by-two-by-two design at 4-bit
+     | widths and two scales, exhaustive within each cell. `35_probes/p3`'s 70.1 percent is at w = 3,
+     | n = 8, exhaustive over 16.7M vectors, additive, same-scale. **Nothing in unit two is priced**: no

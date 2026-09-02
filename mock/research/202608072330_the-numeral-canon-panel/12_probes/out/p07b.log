@@ -1,0 +1,14 @@
+error: use of `const` in the type system not defined as `type const`
+  --> p07b_pin_const_to_nat_min_gca.rs:34:22
+   |
+34 | impl<W: Nat> NatIs<{ <W as Nat>::V }> for W {}
+   |                      ^^^^^^^^^^^^^
+   |
+help: add `type` before `const` for `Nat::V`
+  --> ladder.rs:15:5
+   |
+15 |     type const V: u32;
+   |     ++++
+
+error: aborting due to 1 previous error
+

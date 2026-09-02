@@ -1,0 +1,67 @@
+====================================================================================================
+E1. The scalar placement, and why it needs no measurement
+====================================================================================================
+  cases: 5460, selections changed by the scalar normalisation: 0
+  E1: CONFIRMED, and the reason is that dividing every
+      arm's weighted sum by one positive constant preserves the argmin. Nothing could have
+      come out otherwise, so 144's 0.0% is the theorem showing rather than evidence.
+
+====================================================================================================
+E2. Is the per-coordinate form exactly the substitution w -> w/b?
+====================================================================================================
+  (arm set, weight) pairs checked: 5460, disagreements: 0
+  E2: CONFIRMED, they are the same operation
+      So 'per-coordinate normalisation' and 'change the weighting to w/b' are one thing
+      written two ways, and no measurement is needed to call it a reweighting.
+
+====================================================================================================
+E3. Is a uniform baseline NECESSARY for the per-coordinate form to be a no-op?
+====================================================================================================
+  baseline              arm sets tried    selection moved somewhere   
+  uniform (5,5,5)       40                False                       
+  non-uniform (1,2,4)   1                 True                        
+  non-uniform (3,3,7)   1                 True                        
+  non-uniform (1,1,2)   1                 True                        
+
+  E3: uniform never moves anything: True (must be True)
+      every non-uniform baseline moves something: True (must be True)
+      CONFIRMED
+
+====================================================================================================
+E4. Do 144 section 6 and section 4.3 conflict on one fixed target?
+====================================================================================================
+  (arm set, weight) cases: 3640, per-coordinate normalisation picks a different arm than the declared weighting: 894 (24.6%)
+  E4: CONFIRMED, the two obligations conflict
+      Section 4.3 requires the per-coordinate form to make a weighting travel. Section 6
+      forbids it because it changes which arm a fixed weighting picks. Both are correct
+      about the same operation, and nothing in 144 says how a design does both.
+
+====================================================================================================
+E5/E6. The dissolution: read the division as the weighting's UNITS, not as a transform
+====================================================================================================
+  If a weighting is DECLARED in baseline-relative units, then the selection on a target is
+  argmin over arms of sum_k w_k * c_ik / b_k by definition, and there is no other weighting
+  it should have agreed with. Two things then have to hold, and they are opposite:
+
+  E5: across a pure per-coordinate RESCALE of the target, the relative-units selection
+      moves at 0 of 3640 cases (0.0%) -> CONFIRMED
+  E6: across an ARBITRARY target change it moves at 2892 of 3640 cases (79.5%) -> CONFIRMED, so it is a change of units and not a claim that targets do not matter
+
+====================================================================================================
+VERDICT
+====================================================================================================
+  One named shared baseline names two operations and the word does not distinguish them.
+
+    Applied once to the weighted scalar it is a REPORTING normalisation. It preserves the
+    argmin as a theorem, so it changes no selection ever, and it is what makes two
+    strategies' cost claims comparable. This is 144's repair and it is right.
+
+    Applied per coordinate before the weighting it is a CHANGE OF UNITS, identical to the
+    substitution w -> w/b. It is what makes a weighting travel across a per-coordinate
+    rescale of the target, and it is a no-op for every weight exactly when the baseline is
+    uniform across coordinates.
+
+  The 24.6% is the disagreement between a weighting read in absolute units and the same
+  numbers read in relative ones, which is two questions rather than one question answered
+  wrongly. So the design owes a declaration of which units a weighting is expressed in, and
+  once it declares that, both of 144's requirements hold at once and neither is violated.

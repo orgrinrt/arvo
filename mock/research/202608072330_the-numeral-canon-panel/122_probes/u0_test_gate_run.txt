@@ -1,0 +1,27 @@
+122 test gate. Fifteenth independent count.
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+Attribute-only #[test] count across variants/, excluding target/:
+     123
+
+Per crate, by --manifest-path, --test-threads=1:
+bench-bitpack-carrier-shared             test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+bench-bitpack-contend-shared             test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+bench-bitpack-footprint-shared           test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+bench-bitpack-plan-shared                test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+bench-bitpack-shared                     test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bench-bitpack-wide-shared                test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+bench-bitpack-write-contend-shared       test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.28s
+bench-quantiser-fadd-shared              test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bench-quantiser-radix-shared             test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bench-satfold-shared                     test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+bench-warm-clamp-shared                  test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+bench-warm-container-shared              test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+bench-wide-rung-shared                   test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.30s
+
+TOTAL PASSED: 123
+
+121 section 3.4 names one of these as evidence rather than only a gate result.
+The named test, run on its own:
+test tests::clamping_is_a_retraction_on_non_negative_addition_at_every_swept_width ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s

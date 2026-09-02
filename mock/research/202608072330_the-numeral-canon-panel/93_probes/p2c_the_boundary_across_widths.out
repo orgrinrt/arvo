@@ -1,0 +1,50 @@
+P2c. The F = 0 boundary across widths
+=====================================
+
+Exhaustive over every triple. No sampling, no stepping.
+Rounding is truncation throughout; P2b already showed nearest
+moves the failure rate and not the boundary.
+
+    W   F  overflow        triples  mul-assoc fails    distrib fails
+    3   0      wrap            512                0                0
+    3   1      wrap            512              144              136
+    3   2      wrap            512               82              216
+    3   0  saturate            512                0                0
+    3   1  saturate            512               64               35
+    3   2  saturate            512               48              101
+    4   0      wrap           4096                0                0
+    4   1      wrap           4096             1712             1184
+    4   2      wrap           4096             1996             1888
+    4   0  saturate           4096                0                0
+    4   1  saturate           4096              398              168
+    4   2  saturate           4096              878              518
+    5   0      wrap          32768                0                0
+    5   1      wrap          32768            15840             9856
+    5   2      wrap          32768            21832            15744
+    5   0  saturate          32768                0                0
+    5   1  saturate          32768             1892              709
+    5   2  saturate          32768             5352             2309
+    6   0      wrap         262144                0                0
+    6   1      wrap         262144           137472            80384
+    6   2      wrap         262144           197394           128512
+    6   0  saturate         262144                0                0
+    6   1  saturate         262144             8054             2946
+    6   2  saturate         262144            24350             9704
+    7   0      wrap        2097152                0                0
+    7   1      wrap        2097152          1134784           649216
+    7   2      wrap        2097152          1673768          1038336
+    7   0  saturate        2097152                0                0
+    7   1  saturate        2097152            32948            11956
+    7   2  saturate        2097152           101368            39727
+    8   0      wrap       16777216                0                0
+    8   1      wrap       16777216          9270976          5218304
+    8   2      wrap       16777216         13766544          8347648
+    8   0  saturate       16777216                0                0
+    8   1  saturate       16777216           132464            48286
+    8   2  saturate       16777216           407318           160966
+
+Every F = 0 row is zero and every F > 0 row is nonzero, across six
+widths and both overflow policies. The F = 0 rows agree with the
+congruence argument above, which is what makes them extendable past
+the swept widths; the F > 0 rows are counterexamples and extend to
+nothing beyond the pairs listed.

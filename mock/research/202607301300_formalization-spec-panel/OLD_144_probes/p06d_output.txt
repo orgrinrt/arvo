@@ -1,0 +1,34 @@
+error[E0284]: type annotations needed
+  --> p06d_mode_method_call.rs:10:18
+   |
+10 |     let y = 3u32.run(4);                       // elides M: does the default apply?
+   |                  ^^^
+   |
+   = note: cannot satisfy `<u32 as Algo<_>>::Out == _`
+help: try using a fully qualified path to specify the expected types
+   |
+10 -     let y = 3u32.run(4);                       // elides M: does the default apply?
+10 +     let y = <u32 as Algo<M>>::run(3u32, 4);                       // elides M: does the default apply?
+   |
+
+error[E0283]: type annotations needed
+  --> p06d_mode_method_call.rs:10:18
+   |
+10 |     let y = 3u32.run(4);                       // elides M: does the default apply?
+   |                  ^^^
+   |
+note: multiple `impl`s satisfying `u32: Algo<_>` found
+  --> p06d_mode_method_call.rs:7:1
+   |
+ 7 | impl Algo<Native> for u32 { type Out = u32;    fn run(self, o: u32) -> u32 { self + o } }
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+ 8 | impl Algo<Erase>  for u32 { type Out = Erased; fn run(self, o: u32) -> Erased { Erased(self + o) } }
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+help: try using a fully qualified path to specify the expected types
+   |
+10 -     let y = 3u32.run(4);                       // elides M: does the default apply?
+10 +     let y = <u32 as Algo<M>>::run(3u32, 4);                       // elides M: does the default apply?
+   |
+
+error: aborting due to 2 previous errors
+

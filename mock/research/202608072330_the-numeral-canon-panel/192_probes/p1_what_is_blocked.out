@@ -1,0 +1,49 @@
+=== p1 what is blocked, 2026-08-31T00:21:06Z
+
+## C3: the five phrases the checker reads, taken from shape.rs
+  no control
+  none was run
+  none run
+  nothing was run
+  no case
+C3 PASS: five phrases extracted
+
+## LIST A: ran something, names no instrument
+  absorption_decides_associativity_of_a_clamped_reduction algebraic_laws                   measured     proposal.toml
+  a_law_stated_as_an_author_written_marker_is_checked_by_nothing validation                       measured     proposal.toml
+  the_const_eval_frontier_collapses_along_arity_and_buys_three_bits_from_the_guard binding_time                     measured     proposal.toml
+  the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times binding_time                     enumeration  proposal.toml
+  a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body the_strategy_axis                measured     proposal.toml
+  chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type the_chain                        measured     proposal.toml
+  no_total_join_exists_over_the_observable_axes_so_the_operation_reports the_strategy_axis                measured     proposal.toml
+  headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region the_strategy_axis                measured     proposal.toml
+  the_rationalisability_counts_on_the_committed_carrier_table the_strategy_axis                measured     proposal.toml
+  generation_relocates_the_check_rather_than_removing_it the_strategy_axis                measured     proposal.toml
+  the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent the_strategy_axis                measured     proposal.toml
+  a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist the_strategy_object              measured     proposal.toml
+  the_four_consolidations_contradict_each_other_nowhere panel_conduct                    enumeration  proposal.toml
+  most_committed_bench_regions_predate_the_harness_cross_variant_validation panel_conduct                    measured     proposal.toml
+  a_coherent_reduction_needs_no_accumulator            the_chain                        measured     proposal.toml
+  an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit the_chain                        measured     proposal.toml
+  the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion the_chain                        measured     proposal.toml
+  a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity the_format                       measured     proposal.toml
+  a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure algebraic_laws                   measured     proposal.toml
+  an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing the_number_system                measured     proposal.toml
+  where_fusion_changes_the_answer_it_is_not_a_lowering the_strategy_object              enumeration  proposal-the-later-topics.toml
+count: 21
+
+## C1: must equal the committed ceiling
+C1 PASS: 21 against a ceiling of 21
+
+## C2: the extractor must also exclude a RAN_SOMETHING row that has evidence
+C2 PASS: 1 such rows exist and are correctly absent from list A
+  excluded: staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even
+
+## LIST B: probe rows the checker reads as having no control
+  the_bench_tree_was_built_at_the_undocumented_profile     matched: none run
+  chain_accuracy_needs_an_intermediate_wider_than_the_operand_type matched: none was run
+
+## C4: a row describing a control that fired must not be in list B
+C4 PASS: not matched
+   and the positive half:
+   PASS: an admission is matched

@@ -1,0 +1,63 @@
+=== toolchain ===
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+=== gates and forbidden constructs in the source ===
+feature(  : 0
+dyn        : 0
+TypeId     : 0
+alloc/std  : 0
+no_std     : 2
+
+=== compile ===
+clean
+
+=== the emitted symbols for the six entry points ===
+_a_size_first:
+_a_time_first:
+_b_as_stored = _a_time_first
+_c_default = _a_time_first
+_b_other_weighting = _a_size_first
+_c_overridden = _a_size_first
+
+=== per-symbol instruction and branch counts ===
+
+  a_time_first: instructions=15 conditional_branches=2 csel_family=1
+      branch: 	cbz	x1, LBB1_4
+      branch: 	b.ne	LBB1_2
+  a_size_first: instructions=11 conditional_branches=2 csel_family=1
+      branch: 	cbz	x1, LBB0_3
+      branch: 	b.ne	LBB0_2
+
+=== is anything left of the cost table in the binary? ===
+COST symbol present : 0
+__const sections    : 0
+
+=== what the aliases mean ===
+
+Six entry points, two emitted bodies. `b_as_stored` and `c_default` are
+assembler aliases of `a_time_first`; `b_other_weighting` and `c_overridden`
+are aliases of `a_size_first`.
+
+So the three encodings of the pair's fourth clause are the same program.
+Shape B's `reinterpret`, which `106` section 10 prices as "a cast that changes
+no value, which is free at runtime and not free in the design", is free at
+runtime here to the symbol rather than to the instruction, and shape C reaches
+the same code while never asking the value's type to move.
+
+The fork therefore has NOTHING a consumer can observe, which puts it where
+`100` section 6.2 put the check-against-generate fork by the same instrument.
+It is a design-tier question about which spelling a consumer writes, and it is
+settled on ergonomics and on who is allowed to move component one, not on cost.
+=== what the branches are, since a count alone would mislead ===
+
+Both bodies carry two conditional branches and one `csel`, and none of the
+three tests a strategy, a policy or an arm choice:
+
+  cbz x1, ...   the empty-slice guard, which is the slice's length
+  b.ne ...      the loop backedge
+  csel ...      the saturating clamp, which IS component one, lowered to a
+                select rather than to a branch on a marker
+
+The arm choice and the weighting appear nowhere. That is the erasure result the
+unit already has on four instruments, reproduced here on a fifth arrangement,
+and it is the reason the fork between shapes B and C cannot be decided on cost.

@@ -1,0 +1,13 @@
+kind,bits,count,ms
+bias_mag,8,0,116
+bias_full,8,0,79
+bias_mag,8,25,559
+bias_full,8,25,699
+bias_mag,8,50,919
+bias_full,8,50,1207
+bias_mag,8,100,1585
+bias_full,8,100,2170
+bias_mag,8,200,3251
+bias_full,8,200,4169
+bias_mag,8,400,5538
+bias_full,8,400,7771

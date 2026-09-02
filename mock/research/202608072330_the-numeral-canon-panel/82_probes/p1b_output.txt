@@ -1,0 +1,14 @@
+p1b: is every non-degenerate lifted box clamp-free
+
+width   hold boxes   hold + clamp   hold + clamp +         non-degenerate           control:
+                                         non-degen  clamp-free hold boxes     boxes w/ clamp
+    2          214            130                0                     84                916
+    3         3648           1932                0                   1716              44940
+    4        83504          29240                0                  54264            2461192
+    5      2777632         452848                0                2324784          144873168
+
+reading: column 4 is the residue. Zero there means every fully-holding
+declared-range box in which a clamp can fire is one of the two boxes that
+pin an operand to zero. Column 6 is the control: boxes in which a clamp
+fires at all, holding or not, and it is large, so the clamp detector is
+not silently returning false.

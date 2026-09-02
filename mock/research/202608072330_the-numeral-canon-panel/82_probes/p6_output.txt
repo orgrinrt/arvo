@@ -1,0 +1,45 @@
+p6: which const-available operand subsets decide 79's P4
+
+law holds on 2,894,336 of 16,777,216 triples (17.2516%), from p1.
+
+const operands          configs   licensed    refused    undecided  licensed volume % of holding
+{} (nothing const)            1          0          0            1                0      0.0000%
+{a}                         256          1          0          255            65536      2.2643%
+{b}                         256          0          0          256                0      0.0000%
+{ab}                      65536        256          0        65280            65536      2.2643%
+{c}                         256          1          0          255            65536      2.2643%
+{ac}                      65536        511      32640        32385           130816      4.5197%
+{bc}                      65536        256          0        65280            65536      2.2643%
+{abc}                  16777216    2894336   13882880            0          2894336    100.0000%
+
+section 2: what the licensed configurations actually are, for the
+single-operand subsets, since those are the ones a call site is most
+likely to have.
+
+  const {a}: licensed at values [0], refused at values [], undecided at the other 255
+  const {b}: licensed at values [], refused at values [], undecided at the other 256
+  const {c}: licensed at values [0], refused at values [], undecided at the other 255
+
+section 3: the same lattice for the signed fold's condition, to see
+whether section 2's answer is about P4 or about clamp conditions in
+general. Signed saturating addition at width 4, arity 3, asking which
+const-available operand subsets decide associativity.
+
+const operands          configs   licensed    refused    undecided
+{} (nothing const)            1          0          0            1
+{a}                          16          1          0           15
+{b}                          16          1          0           15
+{ab}                        256         80          0          176
+{c}                          16          1          0           15
+{ac}                        256        144          0          112
+{bc}                        256         80          0          176
+{abc}                      4096       3144        952            0
+
+section 4: the control. If `decide` could not return Undecided the
+table above would be meaningless, and if it could not return Refused the
+admissibility half would be untested. Both appear above with non-zero
+counts, and here is a witness of each for P4:
+
+  const {a} with a=0 b=0 c=0 -> Licensed (volume 65536)
+  const {a} with a=1 b=0 c=0 -> Undecided (volume 0)
+  const {c} with a=0 b=0 c=200 -> Undecided (volume 0)

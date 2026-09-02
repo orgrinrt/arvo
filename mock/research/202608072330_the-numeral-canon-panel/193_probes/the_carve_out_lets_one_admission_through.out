@@ -1,0 +1,30 @@
+######## probe::chain_accuracy_needs_an_intermediate_wider_than_the_operand_type
+  control = "None was run as a case that had to fail. The two instruments are at different widths 
+  and fraction widths by different authors, so what stands in place of a control is that the 
+  growth rate agrees across a change of both, which a single-width sweep could not have shown. 
+  What neither arm carries is a chain shape on which the width must NOT grow, and without one the 
+  linear growth is measured rather than isolated."
+  --- FIRED words present:
+
+######## probe::the_four_const_available_constructions_bind_at_four_times
+  control = "None was run as a case that had to fail, and the shape is a compiled lattice over 
+  four constructions where the four outcomes differ from one another, which is itself the 
+  separation: four constructions reported as binding at one time would say the instrument cannot 
+  distinguish them. That is weaker than a planted case and it is what there is."
+  --- FIRED words present:
+      reported
+
+Measured by writing each edge and running the gate, one at a time:
+
+  chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type
+    -> FAILED, kind = measurement-rests-on-an-uncontrolled-instrument
+
+  the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times
+    -> ok, 28 passed
+
+Both probes stand at `sound` and both say in their first sentence that no case
+that had to fail was run. The second is let through by the word `reported`,
+which appears in "four constructions reported as binding at one time would say
+the instrument cannot distinguish them": a sentence about what the instrument
+would have shown had it come out differently, which is the opposite of a report
+that something did.

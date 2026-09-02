@@ -1,0 +1,29 @@
+expect-clean  p06_nat_algebra  exit=0
+expect-clean  p07_matrix  exit=0
+expect-clean  p10_full  exit=0
+expect-clean  p13_surface_bounded  exit=0
+expect-clean  p14_multiply_past_the_table  exit=0
+expect-clean  p17_alias_only_no_error  exit=0
+expect-clean  p21_named_widths  exit=0
+expect-clean  p25_declared_output  exit=0
+expect-clean  p29_extension_without_towers  exit=0
+expect-refuse p01_the_wall  exit=1
+expect-refuse p02_mgca_assoc_const_path  exit=1
+expect-refuse p03_mgca_type_const  exit=1
+expect-refuse p04_mgca_type_const_block  exit=1
+expect-refuse p05_const_default_from_param  exit=1
+expect-refuse p08_negative_control  exit=1
+expect-refuse p16_unbridged_width  exit=1
+expect-refuse p19_lazy_type_alias  exit=1
+expect-refuse p20_width_mismatch  exit=1
+expect-refuse p23_named_ceiling  exit=1
+expect-refuse p24_reverse_wall  exit=1
+expect-refuse p26_declared_too_narrow  exit=1
+buffer sizes checked 0..=128, mismatches = 0
+StrHandle  UInt<5>        size=1 align=1
+Money      UFixed<13,3>   size=2 align=2
+M2         w=32           size=4
+M4         w=64           size=8
+M8         w=128          size=16
+M16        w=256          size=32
+unexpected outcomes: 0

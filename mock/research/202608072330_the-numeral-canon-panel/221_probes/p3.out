@@ -1,0 +1,39 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p3_does_precision_count_the_sign_digit.rs
+
+### compiled clean
+
+### p3. does the precision coordinate count the sign digit?
+### criterion, from the question's own bound: take the reading under which the
+### three sign domains form a structure a const predicate can gate on rather
+### than one leaving a domain incomparable.
+
+CONTROLS
+  C1  some reading leaves a pair incomparable          as required  required=incomparable seen
+  C2  some reading produces a chain                    as required  required=a chain seen
+  C3  the comparator reaches all four branches         as required  required=planted, all four
+  C4  reading A at P=1 makes symmetric the zero set    as required  required={0}
+
+  among the three domains at one precision, `Equal` occurs: false   (never, by cardinality)
+  strict inclusion occurs: true;  incomparability occurs: true
+
+MEASUREMENT  (20 points: radix in {2,3,4,10} x precision 1..=5)
+  READING A  precision COUNTS the sign digit    chain at  0 of 20 points, broken at 20
+      first break: r=2 P=1: NonNegative(0, 1) vs Asymmetric(-1, 0) are incomparable
+  READING B  precision does NOT count it        chain at 20 of 20 points, broken at  0
+      no break
+
+THE TWO CONSEQUENCES THE QUESTION'S `unblocks` NAMES
+  symmetric at P=1 under reading A denotes (0, 0)   (a zero-width numeral, already in the space)
+  symmetric at P=1 under reading B denotes (-1, 1)
+
+  do two of the three collapse at an odd radix?
+    r= 2  even radix: no balanced point exists, nothing collapses
+    r= 3  balanced (-13, 13) vs symmetric (-26, 26) -> Subset;  vs asymmetric (-27, 26) -> Subset
+    r= 4  even radix: no balanced point exists, nothing collapses
+    r=10  even radix: no balanced point exists, nothing collapses
+
+  a balanced point carries NO sign digit, so at an odd radix the reading
+  question is vacuous for it: there is nothing for precision to count.
+
+### exit 0

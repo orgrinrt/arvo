@@ -1,0 +1,15 @@
+p3c: translation equivariance as the mechanism
+signed, wrapping, toward-zero rounding, W = 6, exhaustive
+
+  F  differing    predicted   predicted but agreed differed but unpredicted
+  0          0            0                      0                        0
+  1       4296         4296                      0                        0
+  2      14520        14520                      0                        0
+  3      32344        32344                      0                        0
+  4      58246        58246                      0                        0
+  5      87552        87552                      0                        0
+
+R13 holds iff both error columns are 0 at every F.
+If they are, the disagreement between 139's table and mine is entirely
+the failure of toward-zero truncation to commute with integer translation,
+and floor, which does commute, removes it at no cost.

@@ -1,0 +1,27 @@
+########## P2: the wide arm as a const, RELEASE
+profile = release
+C-D  the wide arm compiles as a const: yes, WIDE = 900000000
+C-E  matches the runtime value 900000000: true
+
+########## P2: the wide arm as a const, DEBUG
+profile = debug
+C-D  the wide arm compiles as a const: yes, WIDE = 900000000
+C-E  matches the runtime value 900000000: true
+
+########## P2: the narrow arm as a const, RELEASE  (must be REFUSED)
+compiled artifact produced: YES
+
+########## P2: the narrow arm as a const, DEBUG  (must be REFUSED)
+error[E0080]: attempt to compute `1500000000_i32 + 1400000000_i32`, which would overflow
+  --> const_channel_narrow_MUST_NOT_COMPILE.rs:14:21
+   |
+14 | const NARROW: i32 = narrow(A, B, C);
+   |                     ^^^^^^^^^^^^^^^ evaluation of `NARROW` failed inside this call
+   |
+note: inside `narrow`
+  --> const_channel_narrow_MUST_NOT_COMPILE.rs:10:18
+   |
+10 |     let t: i32 = a + b; // must be refused: overflows at const time
+   |                  ^^^^^ the failure occurred here
+
+compiled artifact produced: NO

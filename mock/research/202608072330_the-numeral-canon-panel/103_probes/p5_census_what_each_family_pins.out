@@ -1,0 +1,56 @@
+p5. per-family census: what does each committed family actually pin?
+
+root: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants
+
+family                         validator kind           outputs_may_differ   max_rel_err       
+-----------------------------------------------------------------------------------------------
+bitpack-carrier-shared         ANSWER-PINNING           false (default)      None (default)    
+bitpack-contend-shared         ANSWER-PINNING           false (default)      None (default)    
+bitpack-footprint-shared       ANSWER-PINNING           false (default)      None (default)    
+bitpack-plan-shared            ANSWER-PINNING           false (default)      None (default)    
+bitpack-shared                 ANSWER-PINNING           false (default)      None (default)    
+bitpack-wide-shared            ANSWER-PINNING           false (default)      None (default)    
+bitpack-write-contend-shared   ANSWER-PINNING           false (default)      None (default)    
+quantiser-fadd-shared          PROPERTY-PINNING ONLY    false (default)      None (default)    
+quantiser-radix-shared         PROPERTY-PINNING ONLY    false (default)      None (default)    
+satfold-shared                 ANSWER-PINNING           true (declared)      None (default)    
+warm-clamp-shared              ANSWER-PINNING           false (default)      None (default)    
+warm-container-shared          ANSWER-PINNING           false (default)      None (default)    
+wide-rung-shared               ANSWER-PINNING           false (default)      None (default)    
+
+EVIDENCE LINE PER FAMILY (the fragment the classification rests on)
+  bitpack-carrier-shared         ANSWER-PINNING           'output.value != e'
+  bitpack-contend-shared         ANSWER-PINNING           'output.value != e'
+  bitpack-footprint-shared       ANSWER-PINNING           'output.value != e'
+  bitpack-plan-shared            ANSWER-PINNING           'output.value != e'
+  bitpack-shared                 ANSWER-PINNING           'output.value != e'
+  bitpack-wide-shared            ANSWER-PINNING           'output.value != e'
+  bitpack-write-contend-shared   ANSWER-PINNING           'output.value != e'
+  quantiser-fadd-shared          PROPERTY-PINNING ONLY    'output.s[i].is_nan()'
+  quantiser-radix-shared         PROPERTY-PINNING ONLY    'output.mag[i] >='
+  satfold-shared                 ANSWER-PINNING           'if rep.value != output.value'
+  warm-clamp-shared              ANSWER-PINNING           'arity) != output.value'
+  warm-container-shared          ANSWER-PINNING           'd) != output.value'
+  wide-rung-shared               ANSWER-PINNING           'd) != output.limbs'
+
+FAMILIES WHOSE ARMS ARE NOT REQUIRED TO AGREE ON A VALUE
+    quantiser-fadd-shared
+    quantiser-radix-shared
+  count: 2 of 13
+
+PER-ARM ORACLES: tests validating ONE arm against its own semantics
+  quantiser-fadd-shared          ['software_add_matches_hardware_bit_exact']
+  quantiser-radix-shared         ['radix_ten_delivers_the_nearest_grid_point_ties_to_even', 'radix_two_instantiation_matches_the_silicon']
+
+THE DECLARATION MISMATCH
+  A family classified PROPERTY-PINNING ONLY whose bridge declares
+  outputs_may_differ = false is telling the harness its arms must
+  agree byte-for-byte while its own validator does not require it.
+    quantiser-fadd-shared          PROPERTY-PINNING ONLY  with outputs_may_differ false (default)
+    quantiser-radix-shared         PROPERTY-PINNING ONLY  with outputs_may_differ false (default)
+
+READING
+  ANSWER-PINNING is the only classification that supports the claim
+  that a family's numbers compare cost at a fixed answer. A family
+  that pins only a property admits arms computing different values,
+  and whether they do is a separate measurement (p2, p3, p4).

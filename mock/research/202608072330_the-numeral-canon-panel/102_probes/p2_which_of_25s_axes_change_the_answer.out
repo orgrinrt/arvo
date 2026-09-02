@@ -1,0 +1,35 @@
+declared width W = 13, column lengths [1, 2, 3, 4, 8, 16, 32, 64, 128, 1024], 64 seeds each
+
+RING     = chain of +, - and * only, masked to W at the end
+NONRING  = the same chain with one `>> 3` in it
+
+AXIS                            ring     nonring   VERDICT
+1 headroom                    0/640     500/640    OBSERVABLE only past a non-ring step
+2 packing                     0/640       0/640    UNOBSERVABLE everywhere swept
+3 overflow policy           511/640     511/640    OBSERVABLE in both regimes
+4 intermediate precision      0/640     570/640    OBSERVABLE only past a non-ring step
+
+WHAT THIS DECIDES
+
+`25` section 7's axis list is not one kind of thing. Packing is
+UNOBSERVABLE: it moves bits and nothing else, and it is exactly the axis
+the committed bitpack-* families bench with every arm asserted to agree.
+Overflow policy is OBSERVABLE unconditionally. Headroom and intermediate
+precision are observable CONDITIONALLY, and the condition is the same one
+for both: they are invisible across any composition of + - * because
+reduction mod 2^W is a ring homomorphism, and they become visible at the
+first step that is not a ring operation.
+
+Two consequences the unit does not currently carry.
+
+ONE. `25` section 7 and the cold pair's argmin definition describe two
+different layers with opposite polarity, not two strengths of one claim.
+Three of `25`'s four axes sit in input position; an argmin over cost
+ranges over output position. No merge of the two was ever available, and
+the 72-of-15625 gap `97` measured is the smaller of the two differences.
+
+TWO. Headroom and intermediate precision have the same observability
+predicate here, which is evidence toward `25` section 8's own open
+question about whether that column is one axis or two, from the side
+nobody has looked at: they are distinguishable as mechanisms and they are
+not distinguishable by what a consumer can observe.

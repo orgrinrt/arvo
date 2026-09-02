@@ -1,0 +1,960 @@
+
+proposal::arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:616
+     | canon vocabulary.
+     | 
+     | **C1, the standard model.** *Arithmetic on a format is an exact operation in an ambient domain
+     | composed with a named, total adaptation onto the representable set. The adaptation is a
+     | first-class object with its own laws; an operation that fuses one invisibly is an operation and
+
+proposal::arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:116
+     | ### 3.1 The standard model
+     | 
+     | **The claim.** Arithmetic on represented numbers is statable exactly when it factors as
+     | `computed = adapt(exact)`: the operation performed exactly in an ambient number system, a total
+     | map bringing the result back onto the representable set. The factoring is what makes error
+
+proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set  [provenance]
+  -> 63_spj_consolidation_the_format_concept:625
+     | as the oracle).
+     | 
+     | **C2, identity.** *A format is identified by its ambient domain and its representable set. The
+     | representable set is a constant of the type: a value set that depends on other data is not a
+     | format but storage. Adaptation choice and encoding are realisation, observable in computed values
+
+proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set  [provenance]
+  -> 63_spj_consolidation_the_format_concept:141
+     | ### 3.2 Identity: the ambient domain and the representable set, with the locus rider
+     | 
+     | **The claim.** A format is identified by (D, Q): its ambient domain and its representable set.
+     | Not Q alone, because the same representative set under two ambient algebras is two formats, which
+     | is precisely what the wrapping question is about; not the full tuple, because two's complement
+
+proposal::membership_of_the_representable_set_is_one_affine_predicate  [provenance]
+  -> 63_spj_consolidation_the_format_concept:633
+     | refinement converged by attack and concession, marked as such.
+     | 
+     | **C3, the representable set.** *Membership is one predicate over one parameterisation: an affine
+     | slot function, a quantum per magnitude and a phase, of which integers, fixed point, scaled
+     | integers and floats are points. The phase is stated explicitly: a nonzero phase decides whether
+
+proposal::membership_of_the_representable_set_is_one_affine_predicate  [provenance]
+  -> 63_spj_consolidation_the_format_concept:182
+     | ### 3.3 The representable set: one affine membership predicate
+     | 
+     | **The claim.** Membership of Q is one predicate over one parameterisation: a slot function giving
+     | the quantum per magnitude, in affine form so a phase (a grid offset) is expressible. Integers,
+     | fixed point, scaled integers and floats are points of the parameterisation; subnormals fall out
+
+proposal::the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:640
+     | repair both instruments that erred at this coordinate needed. Rests on: 3.3.
+     | 
+     | **C4, the adaptation slot.** *Given the identity, the space of total reductions onto the
+     | representable set is derived, not chosen; a strategy selects a member per operation, which is
+     | where "the strategy changes what the correct answer is" attaches. Members classify along two
+
+proposal::the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation  [provenance]
+  -> 63_spj_consolidation_the_format_concept:207
+     | ### 3.4 The adaptation slot: derived, populated per operation by the strategy layer
+     | 
+     | **The claim.** Given (D, Q), the space of total reductions onto Q is a derived mathematical
+     | object, the way the ulp function is derived; nothing about a format selects members of it. What
+     | selects a member, per operation, is the strategy layer (`55b:38-44`), which is I9 landing in the
+
+proposal::absorption_decides_associativity_of_a_clamped_reduction  [provenance]
+  -> 63_spj_consolidation_the_format_concept:649
+     | Rests on: 3.4, and I9's own words for the attachment point.
+     | 
+     | **C5, the criterion.** *Whether a reduction's induced operation is associative is decided by
+     | absorption, quantified over the values the format can hold: reducing a reachable exact value
+     | before combining it with a stored operand must not change the adapted result. For clamped
+
+proposal::absorption_decides_associativity_of_a_clamped_reduction  [provenance]
+  -> 63_spj_consolidation_the_format_concept:312
+     | `59:100-109` against its own brief, which is the audit-trail behaviour this panel exists for.
+     | 
+     | **What replaced it.** A reduction is **absorbing** over an operand set when
+     | `rho(rho(x) op y) == rho(x op y)` for every reachable exact value x and every operand y. For
+     | clamped addition, absorption and associativity of the induced operation agree exactly: zero
+
+proposal::absorption_decides_associativity_of_a_clamped_reduction  [provenance]
+  -> 63_spj_consolidation_the_format_concept:727
+     | The absorption biconditional's "4248 configurations" is a sweep of clamp-and-operand-box
+     | combinations, most of which are no format at all; the number of **format-shaped** configurations
+     | (genuine interval numerals containing zero) anywhere in the unit's law evidence is **100** in
+     | `57_probes/p1` section 3 and the same 100-interval space again in `57_probes/p7`, plus the cube's
+     | width instances (w = 3 through 7). That is a strength of the biconditional, holding over a wider
+
+proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy  [provenance]
+  -> 63_spj_consolidation_the_format_concept:659
+     | with the mutant as the reason.
+     | 
+     | **C6, the law frame.** *The laws of a format's operations are derived, not enumerated per policy.
+     | The induced operation is associative when the ambient operation is associative on the reachable
+     | set and the reduction's kernel is a congruence for it. The congruence half is decided by the
+
+proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy  [provenance]
+  -> 63_spj_consolidation_the_format_concept:385
+     | multiplication by `58`; `57b` withdrew it as stated and replaced it with two hypotheses:
+     | 
+     | > **H1.** The ambient operation is associative on the reachable set.
+     | > **H2.** The reduction's kernel is a congruence for it.
+     | > Both hold, and the induced operation on Q is associative, because Q is the quotient.
+
+proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy  [provenance]
+  -> 63_spj_consolidation_the_format_concept:370
+     | 
+     | **The congruence condition, per operation, with closed forms.** `57b`'s `p7` answers `62`'s
+     | request for the theorem shape: the reduction's kernel is a multiplicative congruence iff the
+     | range is mirror-symmetric (`lo == -hi`) or nonnegative (`lo == 0`), and an additive congruence
+     | iff the range is sign-confined (`lo == 0` or `hi == 0`); over all 100 zero-containing intervals
+
+proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:273
+     | retraction excludes no kernel item (`73:231-241`).
+     | 
+     | This was also a deliberate attack on the law frame the format unit left provisionally marked, from
+     | a direction it was not built to face, and the frame held (`73:220-229`). A failed refutation is
+     | not a proof and the provisional marking stays, now with the record that an attack was made.
+
+proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width  [provenance]
+  -> 63_spj_consolidation_the_format_concept:675
+     | ownership clause. Rests on: 4.2, with every ingredient separately multi-instrumented.
+     | 
+     | **C7, the scale asymmetry.** *Addition at a common scale never rescales, so an additive verdict,
+     | survival and breakage alike, is independent of the fraction width. No multiplicative structure
+     | survives a nonzero fraction width for any policy, sign domain, range or rescale spelling, because
+
+proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width  [provenance]
+  -> 63_spj_consolidation_the_format_concept:413
+     | ### 4.3 The fraction boundary, and the filled cube
+     | 
+     | **The boundary is structural, not swept-so-far.** At F > 0 a representable-width multiply
+     | discards F bits at every pairwise step before any clamp is consulted; the choice of what to
+     | discard (the rounding rule) moves failure magnitudes and never their existence (truncation
+
+proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width  [provenance]
+  -> 63_spj_consolidation_the_format_concept:425
+     | 
+     | **The attribution, corrected twice and now stable.** `57` attributed the unsigned collapse to the
+     | grid coarsening and reported the clamp factor clean (`57:375-397`); `58` corrected the reading:
+     | the "clamp only" arm is F = 0 relabelled, no F > 0 clamp ablation can exist because coarsening is
+     | what F > 0 multiplication is, and an intermediate range clamp at full fractional precision is
+
+proposal::an_additive_verdict_is_independent_of_the_fraction_width  [provenance]
+  -> 63_spj_consolidation_the_format_concept:675
+     | ownership clause. Rests on: 4.2, with every ingredient separately multi-instrumented.
+     | 
+     | **C7, the scale asymmetry.** *Addition at a common scale never rescales, so an additive verdict,
+     | survival and breakage alike, is independent of the fraction width. No multiplicative structure
+     | survives a nonzero fraction width for any policy, sign domain, range or rescale spelling, because
+
+proposal::an_additive_verdict_is_independent_of_the_fraction_width  [provenance]
+  -> 63_spj_consolidation_the_format_concept:473
+     | ### 4.4 The additive column, and the premise it stands on
+     | 
+     | **The additive verdict, whatever it is, is independent of the fraction width.** Addition of two
+     | values at a common scale never reads the scale: `57_probes/p3.rs:109` and the p4 Factor arms are
+     | scale-blind by construction (opened here), so an additive result at F = 0 transfers verbatim to
+
+proposal::an_additive_verdict_is_independent_of_the_fraction_width  [provenance]
+  -> 63_spj_consolidation_the_format_concept:485
+     | argument, which `59` first said (`59:186-196`) and the register now carries in Q17.
+     | 
+     | **The premise, named because nobody in the first five files had.** All of it is **same-scale**
+     | addition. `59` found Q3 (is there a mixed-numeral addition?) uncited by the entire first half of
+     | the unit and load-bearing for its strongest unconditional result (`59:224-242`). `60` sharpened
+
+proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points  [provenance]
+  -> 63_spj_consolidation_the_format_concept:692
+     | canon should hold a constant that is measured and not proven. Rests on: 4.5.
+     | 
+     | **C9, the chain.** *A chain is a composition of exact operations together with a schedule of
+     | adaptation points, and the schedule is part of the function's meaning. The per-operation model
+     | extends to chains exactly when adaptation is unfused from the operations. Chains factor into
+
+proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points  [provenance]
+  -> AGREEMENTS  anchor #2-2-single-expert-claims-carried-as-if-settled-flagged
+
+proposal::the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws  [provenance]
+  -> 63_spj_consolidation_the_format_concept:707
+     | the compatibility claim, one reader's each.
+     | 
+     | **C10, what the concept carries upward.** *The format concept supplies the layers above with the
+     | width algebra of exact results, the named adaptation carrying its rounding rule, its overflow
+     | member and its granularity function, and the exactness predicate naming the conditions under
+
+proposal::the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws  [provenance]
+  -> 63_spj_consolidation_the_format_concept:280
+     | so do I.
+     | 
+     | **Stored-pair rationals, intervals, error-carrying pairs, complexes.** Not format instances:
+     | compositions over formats, with their own laws owed by the composition layer (`55:176-193`).
+     | Uncontested through the unit; fits the brief's own "named compositions over one format concept"
+
+proposal::the_numeral_concept_is_a_dependent_sequence_of_choices  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:475
+     | to op's eventual convergence pass, not around it.
+     | 
+     | **N1, the shape.** *The numeral concept is a dependent sequence of choices, not a tuple of
+     | independent ones: an ambient domain, a representable set over it, a reduction from the space that
+     | pair derives, an encoding of the set, a container for the encoding. Each choice ranges over a set
+
+proposal::every_canon_sentence_names_the_prefix_it_quantifies_over  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:482
+     | `72:214-219`). ONE EXPERT, two instruments.
+     | 
+     | **N2, the quantifier.** *Every canon sentence about numerals names the prefix of that sequence it
+     | quantifies over. A property decided by the identity, one decided by the identity with its selected
+     | reduction, and one decided by the encoding are three different claims, and stating one at the
+
+proposal::derivation_is_completion_of_the_sequence_by_the_typestate  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:488
+     | (`67:618-624`). ONE EXPERT, resting on five recorded failures (section 3.2).
+     | 
+     | **N3, derivation is completion.** *The consumer supplies a prefix and the typestate completes the
+     | sequence; validation checks that the completion satisfies what the prefix demanded; erasure
+     | discards the completion's evidence and keeps its consequences. A completion may branch, and the
+
+proposal::a_crossing_carries_two_relations_and_a_verdict_per_law_family  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:494
+     | EXPERT, read together with N8's split of the validate verb.
+     | 
+     | **N4, what a crossing is.** *A value crosses between two systems along the coordinates at which
+     | they differ, one class per coordinate. A crossing carries a relation on values, a relation on
+     | patterns, and a verdict per law family, and none determines another; the two relations need not
+
+proposal::a_crossing_preserves_an_operation_exactly_when_it_moves_no_coordinate_that_operation_reads  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:501
+     | Permanence and equivalence: pass (`71:658-665`, `71:711-718`). ONE EXPERT.
+     | 
+     | **N5, the corrected universal.** *A crossing preserves the value-level operation exactly when it
+     | moves no coordinate that operation reads, which is at the encoding and at the container and
+     | nowhere earlier.* True by construction, so it holds at any width in any language, which is what a
+
+proposal::meaning_is_decided_by_the_first_three_coordinates_and_cost_by_the_last_two  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:507
+     | ONE EXPERT.
+     | 
+     | **N6, the two depths.** *What a crossing means is decided by the ambient domain, the representable
+     | set and the selected reduction on both sides. What it costs is decided by the encoding and the
+     | container on both sides, and those two can never change what it computes.* Permanence and
+
+proposal::a_crossings_preservations_are_the_two_law_families  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:513
+     | own files name it the sentence most wanting attack, because everything else is scoped by it.
+     | 
+     | **N7, the crossing's preservations are the law families.** *A crossing preserves order exactly
+     | when the reduction it adapts through is monotone, and preserves operations exactly when that
+     | reduction is coherent; the crossing is the two families' third consumer beside order transport and
+
+proposal::an_order_is_named_exactly_where_a_crossing_is_lossy  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:519
+     | the families are unit two's.
+     | 
+     | **N8, lossy crossings owe an order.** *A composite crossing that loses nothing is determined by
+     | its endpoints. Where it loses, it is determined by its endpoints together with an order, the two
+     | candidate orders being the source's policy governing the loss and the target's, and the typestate
+
+proposal::conversion_and_resolution_are_one_obligation_at_two_arities  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:526
+     | whose order it is remains op's, section 6.
+     | 
+     | **N9, conversion and resolution.** *Moving one value into a declared system and combining several
+     | values from disagreeing systems are one obligation at two arities: both name a common ambient
+     | domain, a target representable set, and which reduction governs the loss, and both are schedules,
+
+proposal::membership_and_hosting_are_two_questions  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:536
+     | restored to this shape per `75` section 2b under this file's own merge policy.
+     | 
+     | **N10, membership and hosting are two questions.** *Whether something is a number system and
+     | whether this implementation can carry one are different questions. The first is about structure
+     | and is answered by locating the candidate on the chain of choices; the second is about residue at
+
+proposal::a_system_exposes_its_ambient_laws_its_set_and_its_reductions_verdicts  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:543
+     | (`73:667-675`). ONE EXPERT on the split; the hosting half is `68`'s and is Q-B-conditional.
+     | 
+     | **N11, what a system exposes.** *A system exposes its ambient domain together with that domain's
+     | own law inventory, its representable set, and its selected reduction with that reduction's
+     | verdicts, including that the reduction moves no value already representable. The reduction's
+
+proposal::a_closed_ambient_operation_makes_the_reduction_the_identity  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:552
+     | exposure test while keeping its necessary direction whole.
+     | 
+     | **N12, closure and the magnitude-free members.** *Where an ambient operation is closed on the
+     | representable set, no adaptation is possible and the reduction is the identity. Such a system
+     | exposes everything the concept asks, needs none of the adaptation machinery, and is a member for
+
+proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:558
+     | `67:447-453`). ONE EXPERT with a construction.
+     | 
+     | **N13, no order-shaped boundary, and wrapping as the test.** *The concept's edge is not an order
+     | and not a magnitude: order-compatibility is a property of the selected reduction, varies within a
+     | single family the design must contain, and groups a wrapped integer with a bit vector. A wrapped
+
+proposal::admission_returns_a_coordinate_rather_than_a_verdict  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:568
+     | two widths with a structural argument covering all widths.
+     | 
+     | **N14, admission returns a coordinate.** *Asking whether a candidate is a number system is
+     | usually the wrong question. The useful question is which choice in the chain the candidate fixes
+     | and whose it is, because most things that are not systems are not outside the concept: they are
+
+proposal::the_concept_commits_to_its_choices_and_to_no_count_of_levels  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:575
+     | composing the sequence, the ownership key and the crossing classes.
+     | 
+     | **N15, the two instruments and no intrinsic level count.** *Identity and quantification cut the
+     | concept along its dependency order; compatibility and crossings cut it by preserved observables.
+     | Both partitions are real and neither refines the other. The concept commits to its choices and
+
+proposal::each_choice_in_the_sequence_has_an_owner_and_a_resolution_time  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:582
+     | (`70:352-367`). ONE EXPERT on the joint statement.
+     | 
+     | **N16, the ownership key.** *Each choice in the sequence has an owner and a resolution time: a
+     | type, an aggregate, or the compilation, resolving at monomorphisation, or a runtime datum. The
+     | concept's per-value obligations are owed by choices resolved at monomorphisation whoever owns
+
+proposal::validation_is_two_acts_keyed_by_boundary_and_it_validates_maps  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:590
+     | key; the platform-width half carries Q-B's provenance condition.
+     | 
+     | **N17, validation is two acts keyed by boundary, and validates maps.** *At derivation,
+     | compile-time, per type: the declared representation is checked through its executable maps,
+     | exhaustively at a model width. At ingest, runtime, per datum: bits arriving without their
+
+proposal::erasures_guarantee_is_a_conditional_with_a_stated_base  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:599
+     | contains op's open Q-A: whether both acts are wanted, and where, is his, section 10.
+     | 
+     | **N18, erasure's guarantee is a conditional with a stated base.** *What survives erasure is the
+     | theorem that reachable values of a type satisfy its predicate, conditional on a closed
+     | construction perimeter, validated operations, the model-width transfer proviso, and the
+
+proposal::one_container_hosts_many_systems_so_the_canon_types_the_system  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:608
+     | equivalence: pass (`68:429-436`). ONE EXPERT.
+     | 
+     | **N19, the format does not determine the system.** *One container hosts many systems at once,
+     | arithmetic and non-arithmetic, and the canon types the system, never the box.* Permanence and
+     | equivalence: pass (`65:502-504`, with `67:488-497`'s vocabulary caution applied: the sentence is
+
+proposal::the_concept_is_closed_and_the_inventory_is_open  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:614
+     | ONE EXPERT with a third blind instrument on the arithmetic cells.
+     | 
+     | **N20, the concept is closed and the inventory is open.** *The canon defines once what a number
+     | system is and what admission requires; the set of admitted instances is open, and a new one earns
+     | admission by supplying the concept's obligations rather than by amending the canon. The kernel
+
+proposal::roles_derive_representations_and_a_realisation_variant_computes_nothing_new  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:624
+     | ratified.
+     | 
+     | **N21, the roles, stated with their open condition.** *A demand derives representations, plural,
+     | keyed by role; the roles named so far differ in who re-establishes the invariant. A role that
+     | moves nothing before the encoding is a realisation variant and cannot change what anything
+
+proposal::the_two_law_families_have_two_consumer_classes  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:632
+     | condition (`65:185-196`, `65:505-507`, `71:406-449`, `72:232-255`, `73:415-424`). ONE EXPERT per part.
+     | 
+     | **N22, the two law families have two consumer classes.** *The adaptation laws are what order
+     | transport consumes, and the algorithms whose additive operation is the order are their consumer;
+     | coherence is what a reduction that may be split or reassociated consumes. The two are
+
+proposal::every_dispute_in_the_number_system_topic_was_a_dispute_about_an_address  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:638
+     | neither.* Permanence and equivalence: pass (`67:647-654`). ONE EXPERT on the mapping.
+     | 
+     | **N23, consolidator's composition, offered for attack rather than adoption.** *Every question this
+     | unit disputed was a dispute about an address: which coordinate of the sequence a claim lives at,
+     | and who owns that coordinate. A canon sentence about numerals therefore carries its address, the
+
+proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:96
+     | earlier one's, both are named and the later claim carries its own attribution.
+     | 
+     | ### R1. A law is a fact about an operation composed under a fixed arithmetic semantics, never about a type or an operation alone
+     | 
+     | The one claim in the unit at the TWO EXPERTS rung: `76` and `77` derived it cold, in parallel, blind to
+
+proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:105
+     | same-author instance at lesser weight (`76:282-297`).
+     | 
+     | The dimension list a law's region needs grew all unit and is not closed. `79` section 5, from `63`'s
+     | cube: operation, sign domain, overflow policy, fraction width, representable-set shape, and a
+     | placeholder, "whatever named axis a strategy resolves to" (`79:200-219`). `82` added the **declared
+
+proposal::arvo_owes_laws_as_checkable_facts_and_not_as_a_rewriting_engine  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:117
+     | shape op rejected three times in one sitting (`88:118-123`).
+     | 
+     | The existence-and-locus half of the dispatch also closed inside this result, in `76`'s phase two
+     | adopting its own prior file: arvo owes algebraic laws **as a vocabulary of checkable facts, never as a
+     | rewriting engine that acts on them**; the facts belong in arvo because only arvo knows its own axis
+
+proposal::a_composed_expressions_region_is_never_inherited_from_its_parts  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:127
+     | triples with first counterexample `a = -128, b = -128, c = 1`.
+     | 
+     | ### R2. A composed expression's region is never inherited from its parts
+     | 
+     | `79`'s P4, verified at source and re-run by both later attackers (`82_probes/p0_rerun_of_79_p1.rs`,
+
+proposal::a_composed_expressions_region_is_never_inherited_from_its_parts  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:140
+     | (`79:95-100`), threads and features claimed on a semantic argument about pure value functions.
+     | 
+     | The general statement, which `79` put as a caution on `63`'s C6 and `84`/`86`/`89` never disturbed: even
+     | where a component operation's own hypotheses hold unconditionally, the composition needs its own
+     | derivation (`79:112-121`; C6's own text and scope are at `63:659-673`, its zero-residue evaluation at
+
+proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:147
+     | re-run to the digit per `79_probes/p1_output.txt` section 1).
+     | 
+     | ### R3. A law stated as an author-written marker is a declaration checked by nothing
+     | 
+     | `80` section 3.1, which is `68:145-148`'s paper-checking-paper hole one coordinate up
+
+proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:153
+     | four-bit signed window, one declaration is false, the compiler raises nothing, and the licensed
+     | reassociating consumer returns a different answer on 16,268 of 65,536 vectors, 24.8%, with a zero
+     | arity-2 control. Predicate: `N = 4, sign = signed, policy = {wrap, saturate}, op = add, F = 0,
+     | arity = 4, threads = 1, features any`. The repair, computing the permission from the policy's own map so
+     | the false instantiation is `E0080` (`80_probes/p1b_computed_law_refuses.rs`), works, and R4 is what it
+
+proposal::a_const_eval_frontier_is_a_fact_about_the_procedure_rather_than_about_the_law  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:164
+     | opposite directions for two algorithms at once (`DROPLIST.md:25-29`, read at source by `79` section 4).
+     | 
+     | ### R4. Exhaustive const-eval verdicts do not reach shipped widths, and every frontier number is a fact about the procedure, not the 
+     | 
+     | The unit's deepest correction chain, four instruments long, and the chain **is** the finding.
+
+proposal::a_const_eval_frontier_is_a_fact_about_the_procedure_rather_than_about_the_law  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:203
+     | `89_probes/p3_frontier.py` and `89_probes/p3b_checker_frontier.py`.
+     | 
+     | The consequence, owed to whoever quotes any of these numbers: **a const-eval frontier is a function of
+     | domain size times per-tuple cost times procedure**, and a frontier cited without all three is the same
+     | defect at three depths that `74:942-943` recorded for a count cited without its operation.
+
+proposal::the_const_eval_frontier_collapses_along_arity_and_buys_three_bits_from_the_guard  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:171
+     | 19 at arity 1, 9 at 2, 5 at 3, 3 at 5, 1 at 8, every refusal `long_running_const_eval`
+     | (`80_probes/p2_frontier.py`, `80_probes/p2_frontier_output.txt`, `80_probes/p2_frontier.json`),
+     | extending `68`'s single measured point (`68:196-211`) and the droplist record that the wall is a
+     | total-step budget rather than a width ceiling (`DROPLIST.md:234-235`). `76`'s own narrow-domain choice,
+     | "16 values, 4,096 triples, small enough for const-eval to finish", was the frontier being observed and
+
+proposal::the_model_band_transfer_is_defeated_in_both_fragments  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:207
+     | defect at three depths that `74:942-943` recorded for a count cited without its operation.
+     | 
+     | ### R5. The model-band transfer is defeated, in both fragments, and the polarity theorem is what survives of it
+     | 
+     | `80`'s escape from R4 was the closed-form verdict cross-checked against the sweep over a model band,
+
+proposal::the_model_band_transfer_is_defeated_in_both_fragments  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:214
+     | the checkpoint at `81:110-117`). `80` itself named this the piece it most wanted broken (`80:807-809`).
+     | 
+     | `84` broke it by construction. The threshold family `L_k`, every product of k consecutive integers
+     | vanishes mod `2^W`, is true at every width up to `k - s2(k)` and false above, by Legendre's formula,
+     | verified exhaustively for nine family members with the instrument shown able to fail
+
+proposal::inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:252
+     | soundness story there has no catch anywhere (`84` section 12).
+     | 
+     | ### R6. Inside a fragment with a complete test set, the verdict is computed at the shipped width, and two fragments now have one
+     | 
+     | The constructive replacement, three members deep.
+
+proposal::inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:268
+     | that a verdict is per width (`86` F2).
+     | 
+     | For the **monotone unsigned saturating fragment** (sat add, sat mul, nonnegative clamp-embedded
+     | constants), whose right framing `86` had already stated, saturating arithmetic is exact integer
+     | arithmetic composed with clamps rather than modular arithmetic (`86:269-270`): `89`'s Theorem A, saturating evaluation equals the exa
+
+proposal::inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:280
+     | Both are **const gates on the pinned toolchain**, `no_std`, no feature gates, no `dyn`, no `TypeId`, no
+     | allocation: `84`'s certificate gate replacing the band gate (`84_probes/p4b_certificate_gate.rs`),
+     | `89`'s saturating gate with four controls (`89_probes/p2_const_gate.rs`, F4), and `89`'s signed window
+     | gate deciding `82`'s fold law at width 64 in 0.50s (`89_probes/p6_signed_window_gate.rs`, F8). The
+     | controls are the load-bearing part: `--cfg perturb` refuses at the rung-0 implementation check, `--cfg
+
+proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:380
+     | operand (`82_probes/p6_const_availability_lattice.rs`, F5).
+     | 
+     | ### R9. The licensed category is const-available, the binding times inside it differ, and op refused to rank them
+     | 
+     | One decomposition question was retired before op's files arrived: `80` section 1.2 found that op's
+
+proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:395
+     | gate anything (`83`, in full, and `82` section 5 for what it changed mid-flight).
+     | 
+     | `82` measured that const-available is not one moment: four constructions, four binding times. A
+     | crate-level const and a structural trait bound refuse on dead code under `--emit=metadata`; an inline
+     | const in a non-generic fn refuses at codegen; a const assert in a generic's associated const refuses
+
+proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:405
+     | `82_probes/p7_window_from_outside_the_typestate.rs`).
+     | 
+     | Op's `85` section 2 then refused the ranking question as policing (`85:49-59`, I16,
+     | `INTENTS.md:303-318`): the requirement on a law's expression is **functional**, it must actually work,
+     | meaning reach one lowered path through monomorphisation and const solving, and which construction gets
+
+proposal::a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:415
+     | p2 and p6).
+     | 
+     | ### R10. Where a law pays is strictly narrower than where it is true, and the win is the microkernelling shape
+     | 
+     | `80` section 5.2, the probe that refuted its own thesis: at `F = 0` the emitted assembly aliases the
+
+proposal::a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:426
+     | 
+     | Where it does, both attackers measured the same shape on the case a backend structurally cannot
+     | reassociate, a saturating reduction. `80` unsigned: 6.000 instructions per element for the fold as
+     | written, **8.500 for the first licensed attempt** (the law true, the arm legal, the bounds unprovable,
+     | vectorisation abandoned), 0.250 with the bounds proof via `chunks_exact`, 0.141 unrolled, against a
+
+proposal::chain_laws_split_by_whether_a_lifting_theorem_exists  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:445
+     | (`85:20-25`, which names `80` section 5.1 explicitly).
+     | 
+     | ### R11. Chain laws split by whether a lifting theorem exists, and the schedule kind is the one op's accuracy intent is stated over
+     | 
+     | `80` section 4.5, correcting its own section 4.1: grouping questions lift from arity 3 by the
+
+proposal::chain_laws_split_by_whether_a_lifting_theorem_exists  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:451
+     | divergence at n = 2 through 5 and saturate nonzero from 3 (`80_probes/p6_which_chain_laws_reduce_to_arity_three.rs`);
+     | schedule questions, stepwise rounding against round-once, are vacuous at n = 2 and a fresh statement at
+     | every higher n, with no lower-arity statement implying them. The schedule kind carries rounding, sits
+     | outside both R6 fragments, and is the kind I7 is stated over (`INTENTS.md:119-121`). `86` F3 priced
+     | what the box procedure does for multilinear chains: a chain law must reach length 15 before the default
+
+proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:464
+     | is why the rounding rule is a predicate dimension (R1).
+     | 
+     | ### R12. A law verdict is invariant under change of encoding and container
+     | 
+     | Carried by `80` section 8 from the number-system consolidation, read at source: a law contract is
+
+proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:470
+     | same identity with only the adaptation moved flips a bound from accepted to refused (`74:144-147`,
+     | `74:507-511`). Consequence nobody had stated before `80`: the law layer's compile-time computation is
+     | keyed on strictly less than the container derivation's, so a verdict can be computed once per
+     | identity-and-adaptation pair and reused across every container realising it. Whether that matters is
+     | unpriced. This is also why every finding in the unit is predicated on `policy = wrap` or
+
+proposal::an_instrument_is_mutated_and_the_battery_is_made_to_notice  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:476
+     | what lets the whole unit survive the strategy set being reshaped (`86` addendum, `87` section 3).
+     | 
+     | ### R13. The unit's own instruments failed in one repeated way, and the record of it is a result
+     | 
+     | Four instances, four authors' intentions, one failure: nobody asked what the instrument would say if
+
+proposal::an_instrument_is_mutated_and_the_battery_is_made_to_notice  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:497
+     | (`86_probes/p0_rerun_of_84_probes.txt`), `89` re-ran `86`'s p5, and everything reproduced to the digit.
+     | **Every defect found in this unit was in what an instrument could not see, never in whether it
+     | reproduced.** The cheap disciplines that caught the class: mutate the validated thing and demand the
+     | battery notice; assert the battery's own non-degeneracy inside the instrument; commit first runs with
+     | notes rather than replacing them. One further hazard worth carrying verbatim: rustup resolves the
+
+proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:167
+     | ## 1. What a strategy is
+     | 
+     | Stated once, plainly, before any of it is argued for, in the register a canon could take. It is a
+     | suggestion and op decides.
+     | 
+
+proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:1404
+     |   belonging to the checker rather than the author.
+     | 
+     | ## 18. The pair attacked, and what it is after `108`
+     | 
+     | This consolidation named one thing it had not done: nobody had attacked the pair. `108` did, against
+
+proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it  [provenance]
+  -> 108_lamport_the_pair_attacked:818
+     | is a suggestion and op decides.
+     | 
+     | > A **strategy** is a declared semantics together with a weighting over the cost coordinates of the arms
+     | > that realise it. The second is chosen from a set the first determines, so the two are ordered rather
+     | > than independent.
+
+proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:1404
+     |   belonging to the checker rather than the author.
+     | 
+     | ## 18. The pair attacked, and what it is after `108`
+     | 
+     | This consolidation named one thing it had not done: nobody had attacked the pair. `108` did, against
+
+proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:310
+     | file. The earlier 108 and 96 are superseded and `98` explains both.
+     | 
+     | **The selection erases.** A strategy resolved at compile time leaves no residue in the emitted body, on
+     | four instruments: `93`'s P4 comparing a const-fn argmin over a cost table against the hand-written arm, nine
+     | instructions each and identical after label normalisation; `94`'s probes A, B and F reading entry bodies
+
+proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:318
+     | 1438 ns median against 1456 ns reached directly, overlapping intervals, with the false-verdict gate at
+     | 38391 ns.
+     | `holds for: target aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f), edition 2024, opt-level 3, panic
+     | = abort, no_std, feature gates = 0, arms in {2, 3, 4, 5}, threads = 1 for the timed instance and threads
+     | any for the compile-time artifacts`
+
+proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:360
+     | together. Blind, in parallel.
+     | 
+     | **Chain accuracy cannot be served by an operator closed over its operand type**, and the intermediate width
+     | grows linearly in chain length. `93`'s F7 at `W = 8, F = 4`; `94`'s W7 at `W = 16, F = 8` with the growth
+     | rule in closed form and the availability table against a 128-bit widest rung. Two parameter settings, two
+
+proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type  [provenance]
+  -> AGREEMENTS  anchor #6-cross-topic-agreements
+
+proposal::no_total_join_exists_over_the_observable_axes_so_the_operation_reports  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:523
+     | demanding both, and `97`'s P4 asserts at compile time that it is neither operand's and has lost neither.
+     | 
+     | **On the observable axes, no join exists, so the operation reports.**
+     | `97_probes/p3_does_a_conservatism_order_exist.py` computed three candidate orders exhaustively over the
+     | whole representable domain and they disagree. By honoured laws, wrapping and saturating are **incomparable
+
+proposal::no_total_join_exists_over_the_observable_axes_so_the_operation_reports  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:530
+     | above wrapping. So "resolve toward the more conservative side" has no referent until somebody says which of
+     | the three is meant, and two of the three do not give an order at all.
+     | `holds for: W in {5, 6}, F in {0, 1}, signedness in {unsigned, signed}, overflow in {wrap, saturate,
+     | exact}, operations {add, sub, mul}, laws as enumerated in the probe, arity 3 for the algebraic family and 2
+     | for the order family, values exhaustive over the representable domain, threads = 1, target features any`
+
+proposal::the_join_over_demands_is_union_and_it_is_free  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:499
+     | why it reported leaning toward two of them being the same answer seen from two sides. They are.
+     | 
+     | **On the weighting, the join is union and it is free.** `93`'s P1b reported that four markers carrying one
+     | demand each leave 12 of 16 ordered pairs unresolvable and that the closure has 15 elements, and `93`'s prose
+     | priced the closure as a cost. **Fifteen is `2^4 - 1`**: the closure of `d` one-demand generators under
+
+proposal::the_join_over_demands_is_union_and_it_is_free  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:516
+     | 
+     | Two things the demand lattice buys that a flat set cannot. **Silence becomes a first-class element**: the
+     | absence of a demand is the statement that the consumer asked nothing there and the resolver is free, rather
+     | than a cell somebody has to fill. And **the escalation pathology disappears**: `93`'s F4 found exactly four
+     | join semilattices on the four named markers satisfying six intent-derived constraints, and **all four make
+
+proposal::headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:460
+     | | intermediate precision | 0/640 | 570/640 | observable only past a non-ring step |
+     | 
+     | `holds for: W = 13, operations in {+, -, *, >>}, column lengths in {1, 2, 3, 4, 8, 16, 32, 64, 128, 1024},
+     | seeds 1 to 64, unsigned, threads = 1, host aarch64-apple-darwin, rustc nightly-2026-05-28`
+     | 
+
+proposal::headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:476
+     | **The ring boundary that fell out of the fix is a licence nobody took.**
+     | 
+     | > Headroom and intermediate precision are **invisible across any composition of `+`, `-` and `*`, and
+     | > become visible at the first step that is not a ring operation**: a shift, a division, a saturation, a
+     | > comparison.
+
+proposal::the_rationalisability_counts_on_the_committed_carrier_table  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:289
+     | ### 3.1 Three or more independent instances
+     | 
+     | **The rationalisability counts.** On the committed `bitpack-carrier-width` table, of 15625 sections, **72
+     | are rationalisable by a non-negative weighting and 9 by a strictly positive one**, and **63 of the 72
+     | select an arm no weighting can select**.
+
+proposal::the_rationalisability_counts_on_the_committed_carrier_table  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:299
+     | simplex (`98_probes/p6_reproduce_the_predecessors_count_and_rung_it.py`), and `101`'s polygon clipping
+     | written without opening either (`101_probes/p4_what_a_coordinate_buys.py`). `RULES.md` puts the bar at
+     | three and these two numbers clear it.
+     | 
+     | **And the whole 72-against-9 gap is one tie**, which `101` established and which nobody had named:
+
+proposal::the_rationalisability_counts_on_the_committed_carrier_table  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:1372
+     | given only the counts will take a number for a law.
+     | 
+     | **The exchange-rate reading of op's four intents, three-instance across `40`, `98` and `102`.** Each
+     | intent names a concern and then declines to make it absolute, and that declining is the difference
+     | between a lexicographic priority and a finite exchange rate. `98` measures the consequence: 4 available
+
+proposal::generation_relocates_the_check_rather_than_removing_it  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:578
+     | coordinate, and therefore usually calls for changing the statistic before accepting the arm.
+     | 
+     | ### 6.1 Why the check does not disappear under generation
+     | 
+     | `98` argued for inverting `97`: state the weighting, derive the table, and rationalisability becomes true by
+
+proposal::generation_relocates_the_check_rather_than_removing_it  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:596
+     | recomputation flagging a tie as a defect 48 of 48 times when a tie is precisely where the weighting
+     | declines to choose.
+     | `holds for: regions = 5, arms = 5, cost coordinates = 3, 400 random models across two families, plus the
+     | committed carrier table at 6 regions and 5 arms with the noise-floor control dropped, arithmetic exact
+     | rational, defect classes {unit scale, coordinate swap, tie-break policy, region off-by-one, dropped
+
+proposal::the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:796
+     | `102` leans on was not running for 175 of 254 regions.
+     | 
+     | **What survives, and it is the load-bearing part.** `102`'s conclusion holds: the corpus cannot exhibit
+     | I5, I7 or I9. But **the barrier is the absent coordinate, not the arm sets.** The corpus does contain
+     | answer-differing arms, and one region with a strict accuracy ordering between them, and it records nothing
+
+proposal::the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:769
+     | survival is the interesting part.
+     | 
+     | **The measurement.** Over the right unit, which is a committed CSV rather than a shared crate:
+     | 
+     | | | regions |
+
+proposal::a_region_whose_arms_may_differ_is_validated_arm_by_arm_against_its_own_semantics  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:812
+     | passes. The general shape, which is `103`'s and which I would carry:
+     | 
+     | > A region whose arms may produce different answers is validated **arm by arm, each against its own
+     | > declared semantics**, rather than arm against arm. Cross-arm agreement is then a consequence where the
+     | > semantics coincide, and its absence is not a defect where they do not.
+
+proposal::a_region_whose_arms_may_differ_is_validated_arm_by_arm_against_its_own_semantics  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:806
+     | **And the remedy is much smaller than the unit had been treating it.** `103`'s constructive half:
+     | `quantiser-radix-shared` **already carries the mechanism the corpus is said to lack**. It has two oracles,
+     | one per arm, and none across arms: the radix-two arm checked against native `f32` bit for bit, and the
+     | radix-ten arm checked against the **definition** rather than against the other arm, because no silicon
+     | exists to check it against, with both neighbours tested in exact integer arithmetic and ties-to-even checked
+
+proposal::what_ships_is_four_arms_with_disjoint_predicates_over_one_generated_artifact_set  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:552
+     | ---
+     | 
+     | ## 6. What ships, as four arms with disjoint predicates
+     | 
+     | `100` section 6.1 is the composition and it is the form I13 asks for. Written as one recommendation it
+
+proposal::what_ships_is_four_arms_with_disjoint_predicates_over_one_generated_artifact_set  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:615
+     | was wrong.
+     | 
+     | ### 6.2 The fork that has consumer-visible content is not the one that was asked
+     | 
+     | `100`'s sharpest structural finding. Check-against-generate are two maintainer workflows that **emit the
+
+proposal::a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:687
+     | everything above it.
+     | 
+     | **The corpus measures one coordinate.** Of the harness CSV's seventeen columns, across 254 committed files
+     | and 104080 rows, nine carry information and **exactly three vary between arms at a fixed region**:
+     | `e2e_ns`, `algo_ns` and `bridge_ns`, which are one timing and its decomposition. Eight are identically
+
+proposal::a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:695
+     | mentions `outputs_may_differ`, and there are 254 committed CSVs.**
+     | 
+     | **A coordinate set is a countable ceiling on how many strategies can exist**, and it is exact rather than
+     | approximate. On the committed carrier table with the control dropped, at strictly positive weights:
+     | `{time}` reaches **1** section, `{time, size}` reaches **9**, `{time, size, spread}` reaches **42**.
+
+proposal::a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going  [provenance]
+  -> AGREEMENTS  anchor #6-cross-topic-agreements
+
+proposal::arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached  [provenance]
+  -> AGREEMENTS  anchor #6-cross-topic-agreements
+
+proposal::the_law_frame_was_attacked_from_another_topic_and_held  [provenance]
+  -> AGREEMENTS  anchor #6-cross-topic-agreements
+
+proposal::the_law_frame_was_attacked_from_another_topic_and_held  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:273
+     | retraction excludes no kernel item (`73:231-241`).
+     | 
+     | This was also a deliberate attack on the law frame the format unit left provisionally marked, from
+     | a direction it was not built to face, and the frame held (`73:220-229`). A failed refutation is
+     | not a proof and the provisional marking stays, now with the record that an attack was made.
+
+proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder  [provenance]
+  -> AGREEMENTS  anchor #6-cross-topic-agreements
+
+proposal::one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both  [provenance]
+  -> AGREEMENTS  anchor #6-cross-topic-agreements
+
+proposal::the_four_consolidations_contradict_each_other_nowhere  [provenance]
+  -> AGREEMENTS  anchor #7-contradictions-between-consolidations
+
+proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:355
+     | ### 3.2 Two experts, each deriving before reading the other
+     | 
+     | **A strategy is a preference over measurements resolved as an argmin over candidate arms at compile time**,
+     | and the container, the codegen choice and the overflow rule are effects of it rather than components of a
+     | marker. `93` section 2 from the partial order on cost vectors; `94` section 3.1 from I8 and I9 read
+
+proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:239
+     | ground that which laws hold is **computed** from the policy and the region rather than chosen, and its own
+     | probe C was the evidence it had misread. `94` also withdrew "cost belongs at the site" for the storage
+     | half, since a value's layout has to be on the value. `93` withdrew its notko evidence on op's direct
+     | ruling that the two designs do not correspond, and withdrew the claim that the preference sits on the
+     | value, conceding `94`'s W9 had the better evidence and noting that its own P4 had put the preference at
+
+proposal::the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:366
+     | 
+     | **The named strategies are points in a product and the flat set is a slice through it.** `93` from the
+     | resolution side by counting; `94` from the component side by measuring that a fifth unnamed point costs one
+     | alias symbol and eight bytes. Two disjoint arguments.
+     | 
+
+proposal::most_committed_bench_regions_predate_the_harness_cross_variant_validation  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:369
+     | alias symbol and eight bytes. Two disjoint arguments.
+     | 
+     | **175 of 254 committed regions were produced before the driver called cross-variant validation at all.**
+     | `103`'s F-103-6, and this file. `103` named it as the finding it most wanted re-derived, so I redid the
+     | join independently: resolve each `*.meta.json`'s `git_commit` against the commit time of `9db33f8c`, the
+
+proposal::most_committed_bench_regions_predate_the_harness_cross_variant_validation  [provenance]
+  -> 106_giesen_consolidation_the_strategy_axis:378
+     | Evidence: `106_probes/p3_prewiring_join.py` and its output. One reconciliation with `103`, which is not a
+     | correction: there are **24 distinct `git_commit` strings and 23 distinct commits**, because `defc747`
+     | appears both clean and dirty. `103`'s 24 is the string count and is right as stated.
+     | 
+     | **And the reproduction has a precondition neither `103` nor I could have skipped, which sits 81 files back
+
+proposal::a_coherent_reduction_needs_no_accumulator  [provenance]
+  -> 63_spj_consolidation_the_format_concept:498
+     | ### 4.5 Accumulators: the grading that is real, and its two shapes
+     | 
+     | **Coherent reductions need no accumulator at all.** Eager saturation in the format itself agrees
+     | with exact-then-adapt at every accumulator width including the narrowest, across all sixteen
+     | unsigned rows and at every fold length measured (`57_probes/p6_output.txt`, 20 rows "format width
+
+proposal::a_coherent_reduction_needs_no_accumulator  [provenance]
+  -> 63_spj_consolidation_the_format_concept:683
+     | Equivalence: passes. Rests on: 4.3 and 4.4, with the Q3 dependency stated rather than resolved.
+     | 
+     | **C8, accumulators.** *A coherent reduction needs no accumulator: the format's own width
+     | suffices at any fold length. For incoherent clamped addition, agreement with the once-adapted
+     | exact answer needs the exact-sum width less one bit, because the final adaptation absorbs the
+
+proposal::an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit  [provenance]
+  -> 63_spj_consolidation_the_format_concept:506
+     | collapse.
+     | 
+     | **Incoherent clamped addition: exact-sum width less one bit.** The gap is exactly one bit in all
+     | fifteen rows where the question arises, zero anomalies; the final adaptation absorbs the
+     | outermost bit, because the accumulator must decide which side of the format the result fell on,
+
+proposal::an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit  [provenance]
+  -> 63_spj_consolidation_the_format_concept:683
+     | Equivalence: passes. Rests on: 4.3 and 4.4, with the Q3 dependency stated rather than resolved.
+     | 
+     | **C8, accumulators.** *A coherent reduction needs no accumulator: the format's own width
+     | suffices at any fold length. For incoherent clamped addition, agreement with the once-adapted
+     | exact answer needs the exact-sum width less one bit, because the final adaptation absorbs the
+
+proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion  [provenance]
+  -> 63_spj_consolidation_the_format_concept:515
+     | for both (`57:495-501`).
+     | 
+     | **Multiplication: linear, with a rounding-conditional constant.** The exact guard grows linearly
+     | in fold length, `(n-1)F` bits, and there is no logarithmic closed form; the saving below full
+     | precision is **adaptation fusion**, worth exactly F under a composing rounding rule and zero
+
+proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion  [provenance]
+  -> 63_spj_consolidation_the_format_concept:683
+     | Equivalence: passes. Rests on: 4.3 and 4.4, with the Q3 dependency stated rather than resolved.
+     | 
+     | **C8, accumulators.** *A coherent reduction needs no accumulator: the format's own width
+     | suffices at any fold length. For incoherent clamped addition, agreement with the once-adapted
+     | exact answer needs the exact-sum width less one bit, because the final adaptation absorbs the
+
+proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity  [provenance]
+  -> 63_spj_consolidation_the_format_concept:188
+     | textbook enumerations exactly, both mutants detected, re-run here).
+     | 
+     | **The phase is not a passive parameter.** A half-step-biased grid is not closed under exact
+     | addition: 0 of 256 exact sums land on it, every one sits exactly half a step away, and the grid
+     | contains neither zero nor one (`56_probes/q2_output.txt`, re-run here). So phase decides whether
+
+proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity  [provenance]
+  -> 63_spj_consolidation_the_format_concept:633
+     | refinement converged by attack and concession, marked as such.
+     | 
+     | **C3, the representable set.** *Membership is one predicate over one parameterisation: an affine
+     | slot function, a quantum per magnitude and a phase, of which integers, fixed point, scaled
+     | integers and floats are points. The phase is stated explicitly: a nonzero phase decides whether
+
+proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:341
+     | (`82` F6 against `OPTIONS.md:1550-1556`).
+     | 
+     | ### R8. What a lifting is, and the closure criterion that decides it
+     | 
+     | `82`'s assigned question was `80`'s cheapest-next-instance: can a measured trajectory region become a
+
+proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure  [provenance]
+  -> 90_giesen_consolidation_derived_algebraic_laws:372
+     | is unbuilt (`82` F13, section 10).
+     | 
+     | Two negative results guard the whole lifting question. The declaration a consumer would naturally
+     | write, "my exact result stays in range", is **unsound**: true while the law is false on 49.80% of the
+     | domain, wrong in 87.5% of the boxes satisfying it, with a hand-checkable witness
+
+proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:543
+     | (`73:667-675`). ONE EXPERT on the split; the hosting half is `68`'s and is Q-B-conditional.
+     | 
+     | **N11, what a system exposes.** *A system exposes its ambient domain together with that domain's
+     | own law inventory, its representable set, and its selected reduction with that reduction's
+     | verdicts, including that the reduction moves no value already representable. The reduction's
+
+proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing  [provenance]
+  -> 74_giesen_consolidation_the_number_system_concept:251
+     | they are choices at a later coordinate (`73:104-116`).
+     | 
+     | **The standing admission test's sufficient direction is refuted.** The prefix-3 exposure test
+     | (`71:464-469`, accepted at `72:227-230`) is passed by every system's collapsed self-declaration,
+     | which names its own computed algebra as its ambient domain, satisfies the list verbatim, computes

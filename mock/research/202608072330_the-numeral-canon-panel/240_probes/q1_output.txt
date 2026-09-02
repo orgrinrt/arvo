@@ -1,0 +1,53 @@
+== section 1: the control. Formats whose phase is zero, or odd over two. ==
+   These must AGREE. If any disagrees, the instrument's denotation is wrong
+   and nothing in section 2 or 3 counts.
+
+  Integer<8>                         phase =   0/1   has_additive_identity = true   0 in the set = true   agree
+  Integer<4>                         phase =   0/1   has_additive_identity = true   0 in the set = true   agree
+  UFixed<13,-4>                      phase =   0/1   has_additive_identity = true   0 in the set = true   agree
+  UFixed<3,-1>                       phase =   0/1   has_additive_identity = true   0 in the set = true   agree
+  Floating<11,-14,4>                 phase =   0/1   has_additive_identity = true   0 in the set = true   agree
+  Biased<7,-2,1>   phase 1/2         phase =   1/2   has_additive_identity = false  0 in the set = false  agree
+  Biased<7,-2,3>   phase 3/2         phase =   3/2   has_additive_identity = false  0 in the set = false  agree
+  Biased<7,-2,-1>  phase -1/2        phase =  -1/2   has_additive_identity = false  0 in the set = false  agree
+  Biased<7,-2,0>   phase 0/2         phase =   0/2   has_additive_identity = true   0 in the set = true   agree
+  ShiftedGrid (outside impl)         phase =   0/1   has_additive_identity = true   0 in the set = true   agree
+
+   control: 10 agree, 0 disagree. Control HOLDS.
+
+== section 2: an even nonzero phase numerator over PHASE_DEN = 2. ==
+   A phase of a whole quantum. The crate's predicate reads PHASE_NUM == 0,
+   so it answers on the numerator rather than on the phase.
+
+  Biased<7,-2,2>   phase 1           phase =   2/2   has_additive_identity = false  0 in the set = true   DISAGREE
+  Biased<7,-2,4>   phase 2           phase =   4/2   has_additive_identity = false  0 in the set = true   DISAGREE
+  Biased<7,-2,-2>  phase -1          phase =  -2/2   has_additive_identity = false  0 in the set = true   DISAGREE
+  Biased<13,0,6>   phase 3           phase =   6/2   has_additive_identity = false  0 in the set = true   DISAGREE
+  Biased<9,-8,8>   phase 4           phase =   8/2   has_additive_identity = false  0 in the set = true   DISAGREE
+
+  PositiveOnly     phase 0, no slot 0 phase =   0/1   has_additive_identity = false  0 in the set = false  agree
+
+   section 2: 5 disagreements over 6 rows.
+   FINDING: `has_additive_identity` answers on the numerator, not on the phase.
+   The phase is PHASE_NUM/PHASE_DEN, so a numerator that is a nonzero multiple
+   of the denominator is a whole number of quanta and leaves zero on the grid.
+
+== section 3: two formats, different coordinates, one representable set. ==
+
+   ShiftedGrid     coords: phase 0/1, slots [-7, 8],  quantum exponent 0
+   Biased<4,0,2>   coords: phase 2/2, slots [-8, 7],  quantum exponent 0
+   both over ambient BinaryRationals, radix 2
+   |set A| = 16, |set B| = 16
+   set A = [-7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+   set B = [-7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+   the two sets are IDENTICAL
+   control: Integer<4> against ShiftedGrid are different (control holds)
+
+   FINDING: two distinct `Format` types over one ambient domain denote one set.
+   `ruling::the_format_spine_is_canon` identifies a format by its ambient domain
+   and its representable set. Nothing in the crate quotients the coordinates by
+   the set they denote, so the ratified identity and the shipped identity are two
+   different relations and their agreement is a theorem nobody has stated.
+
+== verdict ==
+   findings: 2

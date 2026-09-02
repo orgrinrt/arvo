@@ -1,0 +1,73 @@
+seat 215, probe 2. AN AD-HOC QUICK SPIKE, NOT A BENCH.
+It establishes qualitatively whether a lowering happened. It prices nothing.
+
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+binary: rustc
+commit-hash: 57d06900fd7d9ee06d3a7f323bb77f17ab3cfaf8
+commit-date: 2026-05-27
+host: aarch64-apple-darwin
+release: 1.98.0-nightly
+LLVM version: 22.1.6
+
+command: rustc -O --emit asm -C opt-level=3 p2_what_the_backend_already_knows.rs
+full listing committed beside this file as p2.s
+
+== 1. the control: wrapping add, left against right ==
+193:_wrap_right = _wrap_left
+  the assembler ALIASES the two symbols to one body. LLVM proved wrapping
+  addition associative and emitted the computation once. the control passes:
+  the instrument can see a reassociation when one happens.
+
+== 2. unsigned saturating add, left against right ==
+-- sat_left first three instructions --
+	and	w8, w0, #0xff
+	add	w8, w8, w1, uxtb
+	mov	w9, #255
+-- sat_right first three instructions --
+	and	w8, w2, #0xff
+	add	w8, w8, w3, uxtb
+	mov	w9, #255
+  two distinct bodies. sat_left folds a,b first; sat_right folds c,d first.
+  NOT aliased, NOT reassociated. so the backend does not have this law,
+  and probe 1 proves exhaustively at 8 bits that the law is TRUE.
+
+== 3. the reductions, where reassociation is what buys the vector form ==
+  wrap_reduce      vector ops: 16
+  sat_reduce       vector ops: 0
+  sat_reduce_tree  vector ops: 15   of which uqadd.16b: 15
+
+  sat_reduce is the scalar byte-at-a-time loop:
+LBB1_1:
+	ldrb	w11, [x0, x9]
+	add	w8, w11, w8, uxtb
+	cmp	w8, #255
+	csel	w8, w8, w10, lo
+	add	x9, x9, #1
+	cmp	x9, #256
+
+  sat_reduce_tree, the SAME computation with the reassociation written out:
+	ldp	q0, q1, [x0]
+	uqadd.16b	v0, v0, v1
+	ldp	q1, q2, [x0, #32]
+	uqadd.16b	v0, v0, v1
+	uqadd.16b	v0, v0, v2
+	ldp	q1, q2, [x0, #64]
+
+== what this establishes ==
+  the hardware instruction exists (uqadd.16b saturates sixteen lanes at once).
+  the backend WILL use it once the reassociation is written explicitly.
+  the backend will NOT perform that reassociation itself, at any of the four
+  associativity sites above, although the law is true and probe 1 proves it.
+  so a true law, held in the typestate and lost at lowering, is the whole of
+  what stands between a byte-at-a-time loop and a sixteen-lane one.
+
+== what this does NOT establish ==
+  how much faster the vector form runs. no timing was taken, no harness was
+  used, there are no competitor arms and no artifact trail. that question is
+  UNPRICED and needs mock/benches/.
+  and every sentence here is indexed to the toolchain and target printed at
+  the top. it is a fact about this backend on this day, not about arithmetic.
+
+  one further unexploited win, noted rather than pursued: the tail of
+  sat_reduce_tree folds the sixteen lanes back scalar, sixteen dependent
+  csel steps. a log-depth uqadd tree would do it in four.

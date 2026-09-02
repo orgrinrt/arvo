@@ -1,0 +1,38 @@
+# C1 control run, arm64-apple-darwin
+
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+rustc --edition 2024 -O --emit asm c1_a_runtime_selection_must_leave_a_branch.rs -o c1.s
+
+## Program output (the premise: all three agree on values, the model selects)
+
+fold_const   = 520
+fold_runtime = 520  (same weighting, arriving at runtime)
+fold_direct  = 520  (the arm, hand written)
+values agree: yes
+fold_runtime at a weighting preferring accuracy = 21000
+the weighting selects: yes
+
+The verdict is in the assembly, not here. Count conditional jumps
+in `fold_const` and in `fold_runtime`: the control passes when the
+first has none and the second has them, and fails when they match,
+because then the comparison cannot tell the two apart at all.
+
+## The verdict, read off c1.s
+
+fold_const       9 instructions,  2 of them branches
+fold_runtime    76 instructions, 11 of them branches
+fold_direct      9 instructions,  2 of them branches
+
+fold_const against fold_direct, after label normalisation:
+  identical
+
+## What this establishes
+
+The const arm lowers to the hand-written arm exactly: nine instructions,
+and its two branches are the loop rather than the selection. The runtime
+arm, whose only difference is where the weighting comes from, lowers to
+seventy-six instructions carrying eleven branches and all three arms.
+
+So the comparison instrument CAN come out both ways. That is the case that
+had to fail, and it fails, which is what the three probes backing the
+no-residue finding never supplied.

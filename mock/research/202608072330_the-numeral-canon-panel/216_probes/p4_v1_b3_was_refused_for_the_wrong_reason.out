@@ -1,0 +1,37 @@
+The first version of arm B3, which did not establish what it was built to establish.
+
+It made the accumulator width a const fn of a const generic N. rustc refused it before
+reaching const evaluation, for the same reason it refuses arm A2, so it demonstrated the
+generic-const wall a second time rather than a third refusal cause. Replaced by a version
+with no generic parameter anywhere in the const, which does fault in const evaluation.
+
+The source, as it was:
+
+    #![allow(dead_code)]
+    struct Acc<const A: usize>([u8; A]);
+    const fn acc_width(n: usize) -> usize { usize::MAX - 1 + n }
+    fn fold<const N: usize>(_xs: [i8; N]) -> Acc<{ acc_width(N) }> { Acc([0u8; acc_width(N)]) }
+    fn main() { let _ = fold([1i8, 2, 3]); }
+
+What rustc said:
+
+    error: generic parameters may not be used in const operations
+     --> /tmp/b3v1.rs:4:58
+      |
+    4 | fn fold<const N: usize>(_xs: [i8; N]) -> Acc<{ acc_width(N) }> { Acc([0u8; acc_width(N)]) }
+      |                                                          ^ cannot perform const operation using `N`
+      |
+      = help: const parameters may only be used as standalone arguments here, i.e. `N`
+      = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+    
+    error: generic parameters may not be used in const operations
+     --> /tmp/b3v1.rs:4:86
+      |
+    4 | fn fold<const N: usize>(_xs: [i8; N]) -> Acc<{ acc_width(N) }> { Acc([0u8; acc_width(N)]) }
+      |                                                                                      ^ cannot perform const operation using `N`
+      |
+      = help: const parameters may only be used as standalone arguments here, i.e. `N`
+      = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+    
+    error: aborting due to 2 previous errors
+    

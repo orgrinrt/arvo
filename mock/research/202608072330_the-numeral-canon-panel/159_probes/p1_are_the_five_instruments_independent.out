@@ -1,0 +1,69 @@
+=== A. dependency graph (bench-* deps only) ===
+  bitpack-carrier-shared     -> bench-bitpack-plan-shared 
+  bitpack-footprint-shared   -> bench-bitpack-plan-shared 
+  bitpack-shared             -> <none: bench-core only>
+  bitpack-wide-shared        -> bench-bitpack-carrier-shared bench-bitpack-contend-shared bench-bitpack-plan-shared 
+  warm-container-shared      -> <none: bench-core only>
+  bitpack-plan-shared        -> <none: bench-core only>
+  crates in FOUR depending on another bitpack crate: 3 of 4
+
+=== B. symbols declared identically in more than one crate ===
+  struct SplitMix64(u64);                    in 6 crates: bitpack-carrier-shared bitpack-footprint-shared bitpack-shared bitpack-wide-shared warm-container-shared bitpack-plan-shared
+  pub type Plan13 = Pack<LOGICAL_BITS>;      in 2 crates: bitpack-carrier-shared bitpack-footprint-shared
+
+=== C. the family root 157 did not count ===
+  bitpack-plan-shared declares: 
+    115:pub trait Packing {
+
+    131:pub struct Pack<const W: usize>;
+
+    256:pub struct PlanColumn<const N: usize> {
+
+    372:pub struct MacColumn<const N: usize>;
+
+  (three of the FOUR depend on this crate; footprint's own header says it
+   reuses its transform 'unmodified')
+
+=== D. is SplitMix64 copied, or independently typed from its paper? ===
+  (SplitMix64 is a published routine, so shared presence alone proves
+   nothing. Whitespace-normalised hash of each declaration-to-brace body:)
+  bitpack-carrier-shared     1d5b8ba5f58f
+  bitpack-footprint-shared   1d5b8ba5f58f
+  bitpack-shared             6530b511637a
+  bitpack-wide-shared        1d5b8ba5f58f
+  warm-container-shared      1d5b8ba5f58f
+  bitpack-plan-shared        1d5b8ba5f58f
+  Identical hashes are copies. A crate with its own hash typed its own.
+
+CONTROL at least one of the four is independent : 1 (want >= 1)
+CONTROL warm-container-shared is independent    : 1 (want 1)
+
+VERDICT: the four packed-end crates are not four independent instances.
+         Three of the four depend on bitpack-plan-shared, whose own
+         PlanColumn/MacColumn are the same column-and-no-element shape,
+         and the copied SplitMix64 and Plan13 alias show a shared
+         ancestor independent of the cargo graph. Counting the family
+         once, the independent instances supporting 154 F6 are:
+           1. warm-container-shared's Carrier: Copy bound (structural)
+              -- and note SplitMix64 is in 6 of 6, warm-container-shared
+              included, so its VOCABULARY is template-shared too. What
+              supports F6 there is the Copy bound, which is a fact about
+              the target rather than about the template, so the sharing
+              does not touch it.
+           2. bitpack-shared (bench-core only)
+           3. the bitpack-plan-shared family, as ONE instance
+         Three, which meets RULES.md's bar. Not five.
+
+AND SECTION D CLOSES THE OBVIOUS OBJECTION: SplitMix64 is published, so
+         its presence in six crates could be six people reading one paper.
+         It is not: five of the six bodies are byte-identical once
+         whitespace is removed, and the sixth is bitpack-shared, which is
+         also the one crate with no bitpack dependency. The copying and
+         the independence agree with each other.
+
+GENERALISES: SplitMix64 is declared identically in 6 of 6 crates examined.
+         Every bench crate in this corpus descends from one template, so
+         'N bench crates agree' is worth much less than N anywhere in this
+         panel, not only here. A vocabulary count over these crates is one
+         instance unless the dependency graph and the copied symbols are
+         checked first.

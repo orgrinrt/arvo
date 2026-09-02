@@ -1,0 +1,25 @@
+OK  157_probes/loaded_rules_157.txt:4   [1 lines]
+      what-you-can-observe-is-what-you-guaranteed
+OK  171:77-91   [15 lines]
+      **(P) The partition.** A program divides into maximal stretches whose intermediates nothing binds. That
+      is a statement about the program.
+      
+OK  168:168-170   [2 lines]
+      > **A chain is a maximal run of operations whose intermediates are not observable. Its boundary is
+      > where a value becomes observable. Inside it, only the boundary value is owed.**
+OK  171:249-253   [5 lines]
+      | file | its own defining sentence | observation-bounded | observation vocabulary |
+      |---|---|---|---|
+      | `60` | "A chain is a composition of exact operations together with a schedule of adaptation points" | **no** | 2 in 7,299 words, 0.27 per 1000 |
+OK  167:127-131   [5 lines]
+      **A chain is not a syntactic object and "chain" is not the right unit.** The right unit is the
+      **unobserved region**: a maximal stretch of a computation in which no intermediate is named by anyone
+      outside it. Its boundary is the act of observation rather than the operator, everything inside it is
+OK  60:28-29   [2 lines]
+      something must bring it back, and that something, the adaptation, must be placed somewhere. **A
+      chain is a composition of exact operations together with a schedule of adaptation points.** The
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 6 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

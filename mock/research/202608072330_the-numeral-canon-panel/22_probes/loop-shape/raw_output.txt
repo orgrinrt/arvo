@@ -1,0 +1,47 @@
+Ad-hoc quick spike. No timing. Hot-loop instruction counts.
+rustc 1.98.0-nightly (57d06900f 2026-05-27), opt-level=3, fat LTO, 1 CGU.
+
+Question: the ratified rule says ragged costs three instructions PER OPERATION.
+If that is per operation the gap grows with D. If per element it is flat.
+
+   W  D |  ragged  wordround |  delta
+ 129  1 |      16         16 |     +0
+ 129  3 |      26         26 |     +0
+ 129  8 |      56         56 |     +0
+
+ 160  1 |      16         16 |     +0
+ 160  3 |      27         27 |     +0
+ 160  8 |      58         58 |     +0
+
+ 192  1 |      16         16 |     +0
+ 192  3 |      27         27 |     +0
+ 192  8 |      58         58 |     +0
+
+ 200  1 |      24         24 |     +0
+ 200  3 |      38         38 |     +0
+ 200  8 |      82         82 |     +0
+
+ 232  1 |      31         27 |     +4
+ 232  3 |      45         42 |     +3
+ 232  8 |      89         86 |     +3
+
+ 256  1 |      26         26 |     +0
+ 256  3 |      41         41 |     +0
+ 256  8 |      85         85 |     +0
+
+Symbols the linker merged (identical machine code):
+  0xd88: loop_align16_w200_d1 == loop_wordround_w200_d1
+  0xe90: loop_align16_w200_d3 == loop_wordround_w200_d3
+  0x1020: loop_align16_w200_d8 == loop_wordround_w200_d8
+  0x1260: loop_align16_w232_d1 == loop_wordround_w232_d1
+  0x1388: loop_align16_w232_d3 == loop_wordround_w232_d3
+  0x152c: loop_align16_w232_d8 == loop_wordround_w232_d8
+  0x1780: loop_align16_w256_d1 == loop_wordround_w256_d1
+  0x18a8: loop_align16_w256_d3 == loop_wordround_w256_d3
+  0x1a50: loop_align16_w256_d8 == loop_wordround_w256_d8
+  0x2324: loop_ragged_overread_w192_d1 == loop_ragged_w192_d1
+  0x23d4: loop_ragged_overread_w192_d3 == loop_ragged_w192_d3
+  0x2504: loop_ragged_overread_w192_d8 == loop_ragged_w192_d8
+  0x30ac: loop_ragged_overread_w256_d1 == loop_ragged_w256_d1
+  0x31d4: loop_ragged_overread_w256_d3 == loop_ragged_w256_d3
+  0x337c: loop_ragged_overread_w256_d8 == loop_ragged_w256_d8

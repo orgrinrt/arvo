@@ -1,0 +1,8 @@
+dense13 size_of*8 = 16 (13 logical + 3 padding)
+dense13 referenceable: Dense13(6844)
+first13 size_of = 8 bytes (pointer, not ceil(13/8) = 2)
+first13 focus = 0xaaa
+sibling observable through the same carrier: 0x1555
+lens<0,13>.get(0)  = 0xaaa
+lens<13,13>.get(0) = 0x1555
+degenerate lens against sole-occupant value, 8192 values: 0 disagreements

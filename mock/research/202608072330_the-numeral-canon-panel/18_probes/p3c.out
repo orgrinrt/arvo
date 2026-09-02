@@ -1,0 +1,29 @@
+## unsigned U<2,2>: 16 grid points, 136 interval data
+A - A == 0                         checked=      16 skip=     120  equal=      16  lhs<rhs=      0  rhs<lhs=      0  incomparable=      0
+                                   equality 100.00%   lhs-contained-in-rhs 100.00%
+distributivity                     checked=   89853 skip= 2425603  equal=   62439  lhs<rhs=  27414  rhs<lhs=      0  incomparable=      0
+                                   equality 69.49%   lhs-contained-in-rhs 100.00%
+associativity of *                 checked=  229710 skip= 2285746  equal=  151396  lhs<rhs=  38248  rhs<lhs=  38248  incomparable=   1818
+                                   equality 65.91%   lhs-contained-in-rhs 82.56%
+                                   incomparable witness args=((1, 5), (2, 3), (8, 11)) lhs=(0, 11) rhs=(1, 12)
+
+## signed I<1,2>: 16 grid points, 136 interval data
+A - A == 0                         checked=     100 skip=      36  equal=      16  lhs<rhs=      0  rhs<lhs=     84  incomparable=      0
+                                   equality 16.00%   lhs-contained-in-rhs 16.00%
+distributivity                     checked=  384294 skip= 2131162  equal=  127287  lhs<rhs= 257007  rhs<lhs=      0  incomparable=      0
+                                   equality 33.12%   lhs-contained-in-rhs 100.00%
+associativity of *                 checked=  857651 skip= 1657805  equal=  594953  lhs<rhs= 126587  rhs<lhs= 126587  incomparable=   9524
+                                   equality 69.37%   lhs-contained-in-rhs 84.13%
+                                   incomparable witness args=((-8, -7), (-2, -2), (-7, -6)) lhs=(-7, -4) rhs=(-8, -5)
+
+## how far A - A is from zero on the signed numeral
+  width of A - A, in ticks, over the 100 in-range data:
+    width   0 ticks :    16 data
+    width   2 ticks :    15 data
+    width   4 ticks :    14 data
+    width   6 ticks :    13 data
+    width   8 ticks :    12 data
+    width  10 ticks :    11 data
+    width  12 ticks :    10 data
+    width  14 ticks :     9 data
+  width zero is exactly the degenerate data; every other datum loses its inverse.

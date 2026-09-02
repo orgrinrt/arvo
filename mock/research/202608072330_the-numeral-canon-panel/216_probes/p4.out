@@ -1,0 +1,44 @@
+=== a1_const_generic_reaches_both_sorts ===
+    declares: A1, must compile. A fact carried as a const generic parameter, consumed in BOTH sorts:
+    OUTCOME: compiled
+
+=== a2_associated_const_as_const_generic_arg ===
+    declares: A2, must FAIL. The identical fact carried as an associated const, consumed where a
+    OUTCOME: refused
+      error: generic parameters may not be used in const operations
+      error: constant expression depends on a generic parameter
+      error: aborting due to 2 previous errors
+
+=== a3_associated_const_as_const_value ===
+    declares: A3, must compile. The same associated-const carrier, consumed only as a const value.
+    OUTCOME: compiled
+
+=== a4_type_to_const_is_free ===
+    declares: A4, must compile. The `type -> const` direction: a fact carried as an associated TYPE,
+    OUTCOME: compiled
+
+=== b1_accumulator_keyed_on_a_runtime_length ===
+    declares: B1, must FAIL, and the failure is the staging boundary.
+    OUTCOME: refused
+      error[E0435]: attempt to use a non-constant value in a constant
+      error[E0435]: attempt to use a non-constant value in a constant
+      error: aborting due to 2 previous errors
+
+=== b2_fold_refused_by_an_unsatisfied_bound ===
+    declares: B2, must FAIL, and the failure is NOT the staging boundary.
+    OUTCOME: refused
+      error[E0277]: the trait bound `String: Addable` is not satisfied
+      help: the trait `Addable` is implemented for `i64`
+      error[E0277]: the trait bound `String: Copy` is not satisfied
+      error: aborting due to 2 previous errors
+
+=== b3_fold_refused_by_const_eval_overflow ===
+    declares: B3, must FAIL, and the failure is NOT the staging boundary either.
+    OUTCOME: refused
+      error[E0080]: attempt to compute `18446744073709551614_usize + 3_usize`, which would overflow
+      error: aborting due to 1 previous error
+
+=== b4_accumulator_keyed_on_a_static_capacity ===
+    declares: B4, must compile, gate-free. The same widening fold with the count at stage zero.
+    OUTCOME: compiled
+

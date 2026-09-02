@@ -1,0 +1,50 @@
+=== (1) which 132 clauses does 136 section 7 restate? ===
+  320:### 7.1 Replacing 5.2's second sentence
+  337:### 7.2 Replacing 5.3's headline, `133`'s wording adopted
+  355:### 7.3 Replacing 5.4's predicate and adding A1
+  380:### 7.4 Replacing 5.6's uniqueness predicate and its dead citation
+  401:### 7.5 Replacing 5.8's last sentence
+
+  section 5's four vacuous verdicts: 5.4 non-commutation, 5.6 variance,
+  5.7 keying, 5.8 entropy.
+
+  -- 5.7 is restated by no 7.x. What does section 1 say about 5.7? --
+  60:5.1, 5.5, 5.7's substance, 6.1, 6.3, 7, and section 9's method. `134` cosigns the candidate in full.
+  190:### 4.2 But `135`'s premise about 5.7 is wrong, and the real defect there is worse
+  192:`135` writes that 5.6 and 5.7 both carry `domain closed under negation`. **5.7 carries no domain
+  255:| 5.7 | the keying | **absent** | **VACUOUS as written.** `135` believed this one over-narrow; it is not narrow, it is empty |
+  265:topic measures 5.7's keying divergence or 5.8's entropy claim across domain shapes. `135`'s `z1` part
+  267:uncontrolled comparison, so 5.7's widening is indicated and not established. Filling a predicate with a
+  418:`2_654_435_769`, which is `floor(2^32 / phi)` exactly.
+  563:pin classification. No check of 5.7's or 5.8's domain dimension, which is why both are left open rather
+
+=== (2) 7.2's predicate against x1's actual sweep ===
+  -- 136 7.2 says: --
+    *The overlap and the exclusivity hold for: W in {9}; F in {4}; signedness = signed; domain closed under
+    negation; rounding in the five standard members; staged narrowing F_exact = 4, F_intermediate = 2,
+    F_final = 0; threads = 1. **Argument kind: enumeration**, on `133_probes/s2` and `136_probes/x1`
+    independently. The exclusivity's reason is structural and its measurement is not: the adjoint exchange
+    argument carries at every width and the table does not.*
+  -- x1's committed header/params: --
+    27:  at W=9, F=4, staged narrowing F_exact=4 -> F_mid=2 -> F_final=0
+
+=== (3) x1 A3, the refuted prediction that widened the result ===
+  13-     'every deterministic member is order-preserving' is false with a committed witness.
+  14-
+  15:  A3 a monotone NON-local grid-fixing retraction exists: False (PREDICTED True, so this prediction is REFUTED), witness=None
+  16-     The refutation is the stronger result and I keep it rather than repair the prediction.
+  17-     A grid-fixing map pins k and k+1; a subpoint strictly between them must land in
+  18-     [k, k+1] to stay monotone, which IS locality. So monotone implies local, and the
+  19-     characterisation holds over ALL grid-fixing retractions, not only the local ones.
+  20-     That is wider than 133's s2 established and wider than I predicted.
+  21-
+  --
+  51-============================================================================================
+  52-  both of 133's dissents reproduce: True (predicted True)
+  53:  my own A3 prediction: REFUTED (found_monotone_nonlocal=False),
+  54-    and the refutation widens the characterisation rather than weakening it.
+  55-  one earlier defect in THIS probe, recorded rather than repaired silently: the first
+  56-    run swept W=7,F=3 with a 3->2->1 staging and reported half_even carrying exact
+  57-    composition, contradicting 133 and 125's P4. The window held no tie at the
+  58-    intermediate stage, so the failing path was never entered. Widened, half_even now
+  59-    fails at -247/16 and the witness is printed above.

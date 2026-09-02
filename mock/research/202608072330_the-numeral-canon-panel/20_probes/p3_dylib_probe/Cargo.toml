@@ -1,0 +1,15 @@
+[package]
+name = "p3-dylib-probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+bench-warm-container-shared = { path = "../../../../benches/variants/warm-container-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+libc = "0.2"
+
+[profile.release]
+opt-level = 3
+
+[workspace]

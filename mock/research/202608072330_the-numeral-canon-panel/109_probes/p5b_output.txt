@@ -1,0 +1,19 @@
+error[E0080]: evaluation panicked: the carried range does not fit the container
+  --> p5b_overflowing_range_must_be_refused.rs:37:22
+   |
+37 |       const FITS: () = assert!(
+   |  ______________________^
+38 | |         R::LO >= 0 && R::HI <= STORE_MAX,
+39 | |         "the carried range does not fit the container"
+40 | |     );
+   | |_____^ evaluation of `Ranged::<RSum<Lit<0, 200>, Lit<0, 100>>>::FITS` failed here
+
+note: erroneous constant encountered
+  --> p5b_overflowing_range_must_be_refused.rs:44:14
+   |
+44 |     let () = Ranged::<RSum<A, B>>::FITS;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

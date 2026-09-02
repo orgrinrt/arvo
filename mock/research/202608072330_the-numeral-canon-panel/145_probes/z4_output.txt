@@ -1,0 +1,92 @@
+====================================================================================================
+The table: the rounding candidate's three deterministic laws, plus equivariance
+====================================================================================================
+  mode                          order bound   staged comp   negation sym   equivariant
+  floor                         True          True          False          True
+  ceiling                       True          True          False          True
+  toward_zero                   False         True          True           False
+  away_from_zero                False         True          True           False
+  half_up                       False         False         False          True
+  half_down                     False         False         False          True
+  half_even                     False         False         True           False
+  half_odd                      False         True          True           False
+  half_toward_zero              False         False         True           False
+  half_away_from_zero           False         False         True           False
+  CONSTRUCTED half_floorpair (failed)False         True          True           False
+  CONSTRUCTED mod3_bump (alone) False         True          False          False
+  CONSTRUCTED half_up_mod3      False         False         False          False
+
+====================================================================================================
+D1. Does the order bound imply equivariance?
+====================================================================================================
+  modes with the order bound and without equivariance: [] (must be empty)
+  D1: CONFIRMED
+
+====================================================================================================
+D2. Are negation symmetry and equivariance mutually exclusive?
+====================================================================================================
+  modes carrying both: [] (must be empty)
+  and the argument, which is two lines and does not depend on the sweep:
+    if rnd is negation symmetric and translation equivariant, then
+      rnd(-1/2) = -rnd(1/2)          by symmetry
+      rnd(-1/2) = rnd(1/2) - 1       by equivariance at c = -1
+    so 2*rnd(1/2) = 1 and rnd(1/2) = 1/2, which is not an integer.
+  D2: CONFIRMED
+  This is a SECOND exclusivity of exactly the shape 132 section 5.3 already records for
+  the order bound against negation symmetry, so equivariance joins that structure.
+
+====================================================================================================
+D3. Among modes carrying neither the order bound nor negation symmetry,
+    is equivariance determined by the other laws?
+====================================================================================================
+  law signature (order, comp, negation)       modes and their equivariance
+  (False, False, False)                       half_up=True, half_down=True, CONSTRUCTED half_up_mod3=False  <- SPLIT
+  (False, False, True)                        half_even=False, half_toward_zero=False, half_away_from_zero=False
+  (False, True, False)                        CONSTRUCTED mod3_bump (alone)=False
+  (False, True, True)                         toward_zero=False, away_from_zero=False, half_odd=False, CONSTRUCTED half_floorpair (failed)=False
+  (True, True, False)                         floor=True, ceiling=True
+
+  law signatures whose members disagree on equivariance: 1
+  D3: CONFIRMED, equivariance is not a function of the three laws
+  and the witness is CONSTRUCTED ONLY, which is
+  stated because a constructed witness settles logical independence and says nothing
+  about any mode a design would ship.
+
+====================================================================================================
+D3b. And on the NATURAL modes alone, is the coincidence perfect?
+====================================================================================================
+  modes considered: 10 natural
+  equivariance coincides with the ABSENCE of negation symmetry on all of them: True
+  and the constructed witness above shows the coincidence is not a theorem.
+  So a design reading the law table alone gets the right answer on every mode it would
+  plausibly ship and has no argument that it will keep getting it. That is the precise
+  content of 142's 'naming the modes is necessary and not sufficient'.
+
+====================================================================================================
+D4/D5. The controls
+====================================================================================================
+  every property column takes both values over the mode set: True (must be True)
+    order bound     2 true of 13
+    staged comp     7 true of 13
+    negation sym    7 true of 13
+    equivariant     4 true of 13
+  D4/D5: CONFIRMED
+
+====================================================================================================
+VERDICT, and what 145 may say about a closed topic without editing it
+====================================================================================================
+  Translation equivariance is not an independent fifth property sitting beside the
+  rounding candidate's four laws. It is bound to two of them:
+
+    the order bound IMPLIES it, so both adjoints carry it;
+    negation symmetry EXCLUDES it, by a two-line argument of the same shape as the
+      exclusivity 132 section 5.3 already records;
+    and among modes carrying neither it is UNDETERMINED, witnessed by
+      signature (False, False, False): half_up=True, half_down=True, CONSTRUCTED half_up_mod3=False
+
+  So the rounding topic's statement is not wrong and is not complete for this use. It
+  enumerates which member carries which law; an arm relocating a rounding across an integer
+  addition reads a property that the enumeration determines in two of four cases and leaves
+  open in the rest. That is a gap in what the closed candidate happens to cover, reported
+  here rather than edited into it, and it is the strategy topic's finding rather than the
+  rounding topic's because the strategy topic is where an arm's predicate is being written.

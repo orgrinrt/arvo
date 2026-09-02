@@ -1,0 +1,124 @@
+--- fixed U<3,3>  (radix 2, 64 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FIXED (fexp constant)
+    canonical exponent     : {-3:-3, -2:-3, -1:-3, 0:-3, 1:-3, 2:-3}  distinct=1
+
+--- fixed U<0,4>  (radix 2, 16 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FIXED (fexp constant)
+    canonical exponent     : {-4:-4, -3:-4, -2:-4, -1:-4}  distinct=1
+
+--- HUB fixed I=2 F=2  (radix 2, 16 values)
+    note: half-unit-biased; phase is half a step
+    every value m*r^q      : True
+    uniform grid per binade: False   (3 of 5 binades fail; [(-1, 'values not multiples of the step', None), (0, 'values not multiples of the step', None), (1, 'values not multiples of the step', None)])
+    family                 : OUTSIDE: not a union of uniform grids by binade
+
+--- float p=3 e=-2..3, no subnormals  (radix 2, 25 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FLOAT, unbounded exponent (fexp(e) = e - 2)
+    canonical exponent     : {-2:-4, -1:-3, 0:-2, 1:-1, 2:0, 3:1}  distinct=6
+
+--- float p=3 e=-2..3, with subnormals  (radix 2, 28 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FLOAT with gradual underflow (fexp constant below e = -2, slope 1 above)
+    canonical exponent     : {-4:-4, -3:-4, -2:-4, -1:-3, 0:-2, 1:-1, 2:0, 3:1}  distinct=6
+
+--- fp8 E4M3-shaped (p=4, e=-6..8, subnormals)  (radix 2, 128 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FLOAT with gradual underflow (fexp constant below e = -6, slope 1 above)
+    canonical exponent     : {-9:-9, -8:-9, -7:-9, -6:-9, -5:-8, -4:-7, -3:-6, -2:-5, -1:-4, 0:-3, ... (18 binades)}  distinct=15
+
+--- posit<8,0>  (radix 2, 128 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : TAPERED / SEGMENTED (fexp of no named shape)
+    canonical exponent     : {-6:-6, -5:-6, -4:-6, -3:-6, -2:-6, -1:-6, 0:-5, 1:-3, 2:-1, 3:1, ... (13 binades)}  distinct=8
+
+--- posit<8,1>  (radix 2, 128 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : TAPERED / SEGMENTED (fexp of no named shape)
+    canonical exponent     : {-12:-12, -10:-10, -9:-9, -8:-9, -7:-8, -6:-8, -5:-7, -4:-7, -3:-6, -2:-6, ... (23 binades)}  distinct=19
+
+--- posit<10,2>  (radix 2, 512 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : TAPERED / SEGMENTED (fexp of no named shape)
+    canonical exponent     : {-32:-32, -28:-28, -26:-26, -24:-24, -23:-23, -22:-22, -21:-21, -20:-21, -19:-20, -18:-19, ... (55 binades)}  distinct=50
+
+--- decimal p=2 e=-2..2, at radix 10  (radix 10, 451 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FLOAT, unbounded exponent (fexp(e) = e - 1)
+    canonical exponent     : {-1:-2, 0:-1, 1:0, 2:1, 3:2}  distinct=5
+
+--- decimal p=2 e=-2..2, at radix 2  (radix 2, 451 values)
+    note: same set, asked at the binary radix
+    every value m*r^q      : False   (159 not, first 1/10)
+    family                 : OUTSIDE: values are not m * r^q
+
+--- fixed-slash P=7 Q=7  (radix 2, 36 values)
+    every value m*r^q      : False   (20 not, first 1/7)
+    family                 : OUTSIDE: values are not m * r^q
+
+--- residue number system, moduli (3,5,7)  (radix 2, 105 values)
+    note: value set only; the encoding is the whole point and is not a value fact
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FIXED (fexp constant)
+    canonical exponent     : {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0}  distinct=1
+
+--- thermometer / unary, 16 levels  (radix 2, 17 values)
+    note: value set only
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : TAPERED / SEGMENTED (fexp of no named shape)
+    canonical exponent     : {0:0, 1:0, 2:0, 3:0, 4:4}  distinct=2
+
+--- negabinary, 6 digits  (radix 2, 64 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FIXED (fexp constant)
+    canonical exponent     : {0:0, 1:0, 2:0, 3:0, 4:0, 5:0}  distinct=1
+
+--- mixed radix (factorial base 5!)  (radix 2, 120 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : FIXED (fexp constant)
+    canonical exponent     : {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0}  distinct=1
+
+--- stochastic stream, N=16  (radix 2, 17 values)
+    note: value set only; a datum is a bit stream and denotes a distribution
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : TAPERED / SEGMENTED (fexp of no named shape)
+    canonical exponent     : {-4:-4, -3:-4, -2:-4, -1:-4, 0:0}  distinct=2
+
+--- double-double p=3 e=-1..2  (radix 2, 21 values)
+    every value m*r^q      : True
+    uniform grid per binade: True
+    family                 : TAPERED / SEGMENTED (fexp of no named shape)
+    canonical exponent     : {-1:-3, 0:-2, 1:-1, 2:-1}  distinct=3
+
+--- logarithmic number system, base 2, F=3 fraction bits
+    denotable magnitudes 2^(k/8), k = 1..64 : 64
+    of those, rational at all               : 8
+    so values of the form m*2^q             : 8 of 64
+
+SUMMARY over 18 value sets, at the radix each is asked at:
+  inside  the one-format concept: 15
+  outside the one-format concept: 3
+    FIXED: 5
+    FLOAT: 2
+    FLOAT with gradual underflow: 2
+    TAPERED / SEGMENTED: 6
+  outside, by clause:
+    HUB fixed I=2 F=2: OUTSIDE: not a union of uniform grids by binade
+    decimal p=2 e=-2..2, at radix 2: OUTSIDE: values are not m * r^q
+    fixed-slash P=7 Q=7: OUTSIDE: values are not m * r^q

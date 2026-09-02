@@ -1,0 +1,37 @@
+error[E0277]: the trait bound `Pair<u16, 13>: SameType<Pair<u16, 16>>` is not satisfied
+  --> p4b_negctl_joint_distinctness.rs:28:29
+   |
+28 | const _: () = assert_same::<Pair13, Pair16>();
+   |                             ^^^^^^ unsatisfied trait bound
+   |
+help: the trait `SameType<Pair<u16, 16>>` is not implemented for `Pair<u16, 13>`
+  --> p4b_negctl_joint_distinctness.rs:21:1
+   |
+21 | pub struct Pair<C: Copy, const STRIDE: u32>(core::marker::PhantomData<C>);
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `assert_same`
+  --> p4b_negctl_joint_distinctness.rs:19:29
+   |
+19 | pub const fn assert_same<A: SameType<B> + ?Sized, B: ?Sized>() {}
+   |                             ^^^^^^^^^^^ required by this bound in `assert_same`
+
+error[E0277]: the trait bound `Pair<u16, 9>: SameType<Pair<u16, 16>>` is not satisfied
+  --> p4b_negctl_joint_distinctness.rs:31:29
+   |
+31 | const _: () = assert_same::<Pair9, Pair16>();
+   |                             ^^^^^ unsatisfied trait bound
+   |
+help: the trait `SameType<Pair<u16, 16>>` is not implemented for `Pair<u16, 9>`
+  --> p4b_negctl_joint_distinctness.rs:21:1
+   |
+21 | pub struct Pair<C: Copy, const STRIDE: u32>(core::marker::PhantomData<C>);
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `assert_same`
+  --> p4b_negctl_joint_distinctness.rs:19:29
+   |
+19 | pub const fn assert_same<A: SameType<B> + ?Sized, B: ?Sized>() {}
+   |                             ^^^^^^^^^^^ required by this bound in `assert_same`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

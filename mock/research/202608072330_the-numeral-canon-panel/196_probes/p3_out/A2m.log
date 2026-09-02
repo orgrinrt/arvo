@@ -1,0 +1,36 @@
+error[E0080]: evaluation panicked: assertion failed: <(Num<N4>, C3) as AccWidth>::W == 4 + lg_ref(<C3 as PosVal>::VAL)
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3_composing_p7_and_p8.rs:241:13
+    |
+241 |             assert!(<(Num<N4>, $c) as AccWidth>::W == 4 + lg_ref(<$c as PosVal>::VAL));
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+247 | check_cap!(C3);
+    | -------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `check_cap` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: <(Num<N4>, C5) as AccWidth>::W == 4 + lg_ref(<C5 as PosVal>::VAL)
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3_composing_p7_and_p8.rs:241:13
+    |
+241 |             assert!(<(Num<N4>, $c) as AccWidth>::W == 4 + lg_ref(<$c as PosVal>::VAL));
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+249 | check_cap!(C5);
+    | -------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `check_cap` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: <(Num<N4>, C7) as AccWidth>::W == 4 + lg_ref(<C7 as PosVal>::VAL)
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3_composing_p7_and_p8.rs:241:13
+    |
+241 |             assert!(<(Num<N4>, $c) as AccWidth>::W == 4 + lg_ref(<$c as PosVal>::VAL));
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+250 | check_cap!(C7);
+    | -------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `check_cap` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 3 previous errors
+
+For more information about this error, try `rustc --explain E0080`.

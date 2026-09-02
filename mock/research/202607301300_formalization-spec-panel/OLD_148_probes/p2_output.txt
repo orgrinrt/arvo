@@ -1,0 +1,34 @@
+146's third-instance pair, Underflow=Gradual: source has 10 values, target has 20, source values NOT in target: 0 []
+  under the design's sentence the binade quantum is r^(e-p+1), so at e=-3 it is r^-4 for the source and r^-5 for the target: the target grid is FINER everywhere
+146's third-instance pair, Underflow=Abrupt: source has 9 values, target has 17, source values NOT in target: 0 []
+  under the design's sentence the binade quantum is r^(e-p+1), so at e=-3 it is r^-4 for the source and r^-5 for the target: the target grid is FINER everywhere
+
+Ranged numerals: 384
+ordered pairs: 147456
+
+oracle: 11592 of 147456 ordered pairs include
+
+condition set                      false-positive  false-negative
+R_naive (p, EMIN, EMAX, U, dom)                 0            4572
+R_basis (p, EMIN-p+1, EMAX, ...)              882            2808
+R_exact (pointwise phi + range)                 0            1296
+
+R_basis false positive:
+  source: r=2 p=1 EMIN=-3 EMAX=-3 U=Abrupt dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=2
+  target: r=2 p=2 EMIN=-2 EMAX=-2 U=Abrupt dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=3
+
+R_exact false negative:
+  source: r=2 p=1 EMIN=0 EMAX=0 U=Gradual dom=NonNegative  finest=r^0 coarsest=r^0  |V|=2
+  target: r=3 p=1 EMIN=-3 EMAX=0 U=Gradual dom=NonNegative  finest=r^-3 coarsest=r^0  |V|=9
+
+same-radix pairs: 73728, R_exact false negatives among them: 0
+cross-radix inclusions the oracle finds: 1296, of which the source has at least 4 values: 552
+cross-radix witness:
+  source: r=2 p=1 EMIN=0 EMAX=1 U=Gradual dom=Symmetric  finest=r^0 coarsest=r^1  |V|=5
+  target: r=3 p=1 EMIN=-3 EMAX=0 U=Gradual dom=Symmetric  finest=r^-3 coarsest=r^0  |V|=17
+  source values: [(-2, 1), (-1, 1), (0, 1), (1, 1), (2, 1)]
+
+inclusions where the target's precision is strictly larger AND its EMIN is strictly larger (a significand digit paying for an exponent): 1764
+  source: r=2 p=1 EMIN=-3 EMAX=-3 U=Gradual dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=2
+  target: r=2 p=2 EMIN=-2 EMAX=-2 U=Gradual dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=4
+  source finest-quantum exponent -3, target finest-quantum exponent -3

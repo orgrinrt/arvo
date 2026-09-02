@@ -1,0 +1,61 @@
+R2. a structural predicate for where the corner rule is exact
+==============================================================================
+
+  term           primitive     unsnd  consv  exact  pred fires  pred wrong
+  x + y          uW4/sat           0      0    256         256           0
+  x * y          uW4/sat           0      0    256         256           0
+  (x + y) + z    uW4/sat           0      0   4096        4096           0
+  (x + y) - z    iW4/sat           0      0    512         512           0
+  (x + y) * z    uW4/sat           0    120   3976           0           0
+  (x * y) + z    uW4/sat           0      0   4096        4096           0
+  (x + y) - y    uW4/sat           0    120    136           0           0
+  (x + y) - x    iW4/sat           0      0     64           0           0
+  x - x          iW4/sat           0      0      8           0           0
+  x * (y - y)    iW4/sat           0     33     31           0           0
+  x + y          uW4/wrap          0      0    256         256           0
+  (x + y) - y    uW4/wrap          0    240     16           0           0
+
+  predicate violations across every row: 0
+  (a violation is the predicate firing on a conservative cell, which
+   is what it would take for the predicate to be wrong)
+
+------------------------------------------------------------------------------
+The annihilation case, with the multiplier declared away from zero.
+112 F112-7 reports the corner rule and an enumerating oracle both
+refusing 385 of 4096 while the arms agree on 120 more, and says no
+node-wise rule reaches it. Every extent in that sweep is [0, b].
+
+  z declared             extents   consv   exact  pred fires
+  [0, zhi]                  4096     120    3976           0
+  [1, zhi]                  3840       0    3840        3840
+  [2, zhi]                  3584       0    3584        3584
+  [3, zhi]                  3328       0    3328        3328
+
+  the same term with z's lower bound raised off zero: the second
+  source of conservatism goes with it, and the predicate fires exactly
+  where it does.
+
+------------------------------------------------------------------------------
+What each rule costs to carry, since the composition turns on it.
+The corner rule carries two numbers per node whatever the term is.
+An affine form carries one coefficient per leaf plus one per
+non-constant multiplication, which 112 p8b states and which is a
+property of the term rather than of the width.
+
+  term                        corner state  affine state  leaf repeats
+  x + y                                  2             2         False
+  (x + y) - y                            2             2          True
+  (x + y) * z                            2             4         False
+  x * (y - y)                            2             3          True
+  fold of 2 adds                         2             2         False
+  fold of 4 adds                         2             4         False
+  fold of 8 adds                         2             8         False
+  fold of 16 adds                        2            16         False
+  fold of 64 adds                        2            64         False
+
+  On a fold, which is the shape satfold and warm-clamp are built
+  around, no leaf repeats, the predicate fires, the corner rule is
+  exact, and the affine form costs one coefficient per element for
+  nothing. On a correlated term the corner rule loses licences and
+  the affine form is what recovers them. That is two arms with one
+  const-checkable predicate between them, not a better rule.

@@ -1,0 +1,23 @@
+P4. Preference resolution at const time
+=======================================
+
+The cost model, resolved now at runtime for reporting only. The
+emitted code resolved it at compile time; see the asm comparison.
+
+  arm                time  space  error   
+  wrap                  1      1      9
+  saturate              3      1      4
+  widen                 7      3      0
+
+  prefer time      weights [8, 1, 1] -> wrap      [wrap=18  saturate=29  widen=59]
+  prefer space     weights [1, 8, 1] -> saturate  [wrap=18  saturate=15  widen=31]
+  prefer accuracy  weights [1, 1, 8] -> widen     [wrap=74  saturate=36  widen=10]
+
+Three preferences, three different arms, from one table. The
+preference is the whole content of the strategy at this layer, and
+the arm is derived rather than named.
+
+  direct_wrap    = 532
+  pref_speed     = 532   same as direct_wrap: true
+  direct_widen   = 1950228
+  pref_accuracy  = 1950228   same as direct_widen: true

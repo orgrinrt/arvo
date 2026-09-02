@@ -1,0 +1,34 @@
+widths 1..=128
+native rung jumps at W = [9, 17, 33, 65]
+access rung jumps at W = [2, 10, 26, 58, 122]
+jump points shared by both partitions: []
+classes: native 5, access 6, common refinement 10
+widths where the native carrier is the WRONG load type: 35 of 128
+
+first sixteen widths, both rungs:
+  W   native  access
+  1   1       1
+  2   1       2
+  3   1       2
+  4   1       2
+  5   1       2
+  6   1       2
+  7   1       2
+  8   1       2
+  9   2       2
+  10  2       4
+  11  2       4
+  12  2       4
+  13  2       4
+  14  2       4
+  15  2       4
+  16  2       4
+
+the two partitions share NO jump point in this range, so neither refines the
+other. one width ladder cannot key both. a design needs two ladders, or one
+over the common refinement, which is strictly larger than either.
+
+16's verdict that the access width is not a third OUTPUT stands: it is a function
+of W. what it costs is a second rung partition, which 16 did not name and which is
+not free, because the ladder is the part of the derivation the design has already
+refused to enumerate.

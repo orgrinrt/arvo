@@ -1,0 +1,52 @@
+radix 2, total width <= 6, unsigned fixed point only
+=== Q1. Closed under intersection?  (the Moore condition) ===
+                    policy | points |  pairs |  cap not a value set
+----------------------------------------------------------------------
+   strict: I>=0, no origin |     27 |    351 |                   36
+                             first: U<0,1> cap U<1,0> = [Fraction(0, 1)]
+           origin admitted |     28 |    378 |                    0
+            origin + I>=-2 |     37 |    666 |                    0
+            origin + I>=-4 |     42 |    861 |                    0
+            origin + I>=-6 |     43 |    903 |                    0
+
+=== Q2. Does every concrete set have a LEAST containing numeral? ===
+    (GC tested head on; concrete sets are all subsets of size <= 3 of the
+     box's rationals, plus every pairwise union of value sets)
+                    policy |   sets |  unique |   none | antichain
+------------------------------------------------------------------------
+   strict: I>=0, no origin | 2796636 |  273373 | 2523262 |         1
+                             none:      S=[Fraction(1, 64), Fraction(1, 1)] (above the box ceiling)
+                             antichain: S=[Fraction(0, 1)] minimal U<0,1>, U<1,0>
+           origin admitted | 2796636 |  273374 | 2523262 |         0
+                             none:      S=[Fraction(1, 64), Fraction(1, 1)] (above the box ceiling)
+            origin + I>=-2 | 2796836 |  273467 | 2523369 |         0
+                             none:      S=[Fraction(1, 64), Fraction(1, 1)] (above the box ceiling)
+            origin + I>=-4 | 2796981 |  273530 | 2523451 |         0
+                             none:      S=[Fraction(1, 64), Fraction(1, 1)] (above the box ceiling)
+            origin + I>=-6 | 2797011 |  273540 | 2523471 |         0
+                             none:      S=[Fraction(1, 64), Fraction(1, 1)] (above the box ceiling)
+
+=== Q3. Meet exactness: does the order's meet equal the intersection? ===
+                    policy |  pairs | meet absent | meet proper subset
+--------------------------------------------------------------------------
+   strict: I>=0, no origin |    351 |          36 |                  0
+           origin admitted |    378 |           0 |                  0
+            origin + I>=-2 |    666 |           0 |                  0
+            origin + I>=-4 |    861 |           0 |                  0
+            origin + I>=-6 |    903 |           0 |                  0
+
+=== Q4. The multiplication site: is the product's best abstraction there? ===
+    naive form is U<I1+I2, F1+F2>.  Compared against the least containing
+    numeral of the exact product set, per admission policy.
+                    policy |  pairs | naive = best | naive > best |  no best
+----------------------------------------------------------------------------------
+   strict: I>=0, no origin |    729 |           88 |           67 |      548
+                             no best: U<0,1> * U<0,6> -> [Fraction(0, 1), Fraction(1, 128), Fraction(1, 64), Fraction(3, 128), Fraction(1, 32), Fraction(5, 128), Fraction(3, 64), Fraction(7, 128), Fraction(1, 16), Fraction(9, 128), Fraction(5, 64), Fraction(11, 128), Fraction(3, 32), Fraction(13, 128), Fraction(7, 64), Fraction(15, 128), Fraction(1, 8), Fraction(17, 128), Fraction(9, 64), Fraction(19, 128), Fraction(5, 32), Fraction(21, 128), Fraction(11, 64), Fraction(23, 128), Fraction(3, 16), Fraction(25, 128), Fraction(13, 64), Fraction(27, 128), Fraction(7, 32), Fraction(29, 128), Fraction(15, 64), Fraction(31, 128), Fraction(1, 4), Fraction(33, 128), Fraction(17, 64), Fraction(35, 128), Fraction(9, 32), Fraction(37, 128), Fraction(19, 64), Fraction(39, 128), Fraction(5, 16), Fraction(41, 128), Fraction(21, 64), Fraction(43, 128), Fraction(11, 32), Fraction(45, 128), Fraction(23, 64), Fraction(47, 128), Fraction(3, 8), Fraction(49, 128), Fraction(25, 64), Fraction(51, 128), Fraction(13, 32), Fraction(53, 128), Fraction(27, 64), Fraction(55, 128), Fraction(7, 16), Fraction(57, 128), Fraction(29, 64), Fraction(59, 128), Fraction(15, 32), Fraction(61, 128), Fraction(31, 64), Fraction(63, 128)] (none)
+           origin admitted |    784 |           89 |          121 |      548
+                             no best: U<0,1> * U<0,6> -> [Fraction(0, 1), Fraction(1, 128), Fraction(1, 64), Fraction(3, 128), Fraction(1, 32), Fraction(5, 128), Fraction(3, 64), Fraction(7, 128), Fraction(1, 16), Fraction(9, 128), Fraction(5, 64), Fraction(11, 128), Fraction(3, 32), Fraction(13, 128), Fraction(7, 64), Fraction(15, 128), Fraction(1, 8), Fraction(17, 128), Fraction(9, 64), Fraction(19, 128), Fraction(5, 32), Fraction(21, 128), Fraction(11, 64), Fraction(23, 128), Fraction(3, 16), Fraction(25, 128), Fraction(13, 64), Fraction(27, 128), Fraction(7, 32), Fraction(29, 128), Fraction(15, 64), Fraction(31, 128), Fraction(1, 4), Fraction(33, 128), Fraction(17, 64), Fraction(35, 128), Fraction(9, 32), Fraction(37, 128), Fraction(19, 64), Fraction(39, 128), Fraction(5, 16), Fraction(41, 128), Fraction(21, 64), Fraction(43, 128), Fraction(11, 32), Fraction(45, 128), Fraction(23, 64), Fraction(47, 128), Fraction(3, 8), Fraction(49, 128), Fraction(25, 64), Fraction(51, 128), Fraction(13, 32), Fraction(53, 128), Fraction(27, 64), Fraction(55, 128), Fraction(7, 16), Fraction(57, 128), Fraction(29, 64), Fraction(59, 128), Fraction(15, 32), Fraction(61, 128), Fraction(31, 64), Fraction(63, 128)] (none)
+            origin + I>=-2 |   1369 |          162 |          210 |      922
+                             no best: U<-2,3> * U<-2,4> -> [Fraction(0, 1), Fraction(1, 128), Fraction(1, 64), Fraction(3, 128)] (none)
+            origin + I>=-4 |   1764 |          174 |          271 |     1217
+                             no best: U<-4,5> * U<-4,5> -> [Fraction(0, 1), Fraction(1, 1024)] (none)
+            origin + I>=-6 |   1849 |          169 |          264 |     1288
+                             no best: U<-5,6> * U<-5,6> -> [Fraction(0, 1), Fraction(1, 4096)] (none)

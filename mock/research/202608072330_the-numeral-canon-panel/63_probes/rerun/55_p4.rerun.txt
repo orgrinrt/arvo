@@ -1,0 +1,7 @@
+wrap:      assoc(+) fail 0  assoc(*) fail 0  id 0 true  id 1 true  no-inverse 0  distrib fail 0
+usat:      assoc(+) fail 0  assoc(*) fail 0  id 0 true  id 1 true  no-inverse 15  distrib fail 0
+ssat:      assoc(+) fail 952  id 0 true
+mutant:    assoc(+) fail 1386  id 0 true
+window chains: wrap fail 0  usat(nonneg) fail 0  ssat fail 1166076
+usat coherent(*) over nonneg window: true
+P4 WORKS

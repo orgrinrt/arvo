@@ -1,0 +1,26 @@
+F=8: |disagreeing| = 128 = 2^(F-1) = 128
+
+--- find the smallest modulus 2^k on the exact product that determines the set ---
+  modulus 2^8   residues [127, 129]  predicts exactly: False
+  modulus 2^9   residues [129, 383]  predicts exactly: True
+  modulus 2^10  residues [129, 383, 641, 895]  predicts exactly: True
+  modulus 2^11  residues [129, 383, 641, 895, 1153, 1407]...  predicts exactly: True
+  modulus 2^12  residues [129, 383, 641, 895, 1153, 1407]...  predicts exactly: True
+  modulus 2^13  residues [129, 383, 641, 895, 1153, 1407]...  predicts exactly: True
+  modulus 2^14  residues [129, 383, 641, 895, 1153, 1407]...  predicts exactly: True
+  modulus 2^15  residues [129, 895, 1407, 1665, 1919, 2177]...  predicts exactly: True
+  modulus 2^16  residues [129, 895, 1407, 1665, 1919, 2431]...  predicts exactly: True
+
+C-O  smaller moduli fail: yes
+     determined at modulus 2^9, residues [129, 383]
+     in units of 2^(F-1): [1.0078125, 2.9921875]
+
+--- C-P: predict at widths not used to derive it ---
+  F=4  |D|=    8  2^(F-1)=    8  count ok True  set ok False
+  F=5  |D|=   16  2^(F-1)=   16  count ok True  set ok False
+  F=6  |D|=   32  2^(F-1)=   32  count ok True  set ok False
+  F=7  |D|=   64  2^(F-1)=   64  count ok True  set ok False
+  F=9  |D|=  256  2^(F-1)=  256  count ok True  set ok False
+
+--- C-Q: a wrong condition of the same shape ---
+  residues shifted by 2 predict exactly: False   (must be False)

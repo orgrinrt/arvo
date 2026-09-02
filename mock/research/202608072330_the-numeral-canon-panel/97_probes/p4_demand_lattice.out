@@ -1,0 +1,29 @@
+=== toolchain ===
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+=== assertion counts ===
+ordered pairs asserted: 256
+ordered triples asserted: 4096
+
+=== forbidden-feature check ===
+feature( gates: 0
+dyn / TypeId / std:: : 0
+
+=== p4_demand_lattice.rs ===
+exit=0
+
+=== mutant: one Or impl drops a demand ===
+error[E0080]: evaluation panicked: the join of two demand sets is not their union
+   --> p4_mutant_dropped_demand.rs:139:17
+    |
+139 | /                 assert!(
+140 | |                     <JoinOf<L, R> as Mask>::M == (<L as Mask>::M | <R as Mask>::M),
+141 | |                     "the join of two demand sets is not their union"
+142 | |                 );
+    | |_________________^ evaluation of `_` failed here
+    |
+   ::: p4_pairs.inc:2:1
+    |
+  2 | / union_is_the_join!(
+  3 | |     0 0 0 0 | 0 0 0 0,
+  4 | |     0 0 0 0 | 1 0 0 0,

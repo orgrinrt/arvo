@@ -1,0 +1,167 @@
+=== p7 axes the probes actually varied, 2026-08-30T23:01:04Z
+
+## the declared axis set, read from dimension.toml
+access_pattern alignment arity build_profile chain_length container fraction_width integer_width operation overflow_policy rounding signedness strategy target_features threads total_width 
+declared count: 16
+
+## C1: w and f must appear
+C1 pass: w appears in 66 probe directories
+C1 pass: f appears in 54 probe directories
+
+## keys ranked by how many probe directories they appear in
+key                       dirs distinct declared
+w                           66      129 -
+f                           54       58 -
+n                           36      130 -
+a                           23       37 -
+k                           22       35 -
+b                           21       44 -
+m                           21       30 -
+c                           18       34 -
+x                           18       50 -
+threads                     11        5 declared
+p                           10       24 -
+overflow                     9       10 -
+controls                     8        2 -
+d                            8       19 -
+i                            8       18 -
+it                           8        3 -
+policy                       8        9 -
+t                            8       31 -
+arms                         7        6 -
+count                        7       15 -
+exact                        7       14 -
+failures                     7       13 -
+pairs                        7       23 -
+q                            7       15 -
+rounding                     7        9 declared
+signedness                   7        2 declared
+stride                       7       21 -
+toolchain                    7        4 -
+e                            6       24 -
+hi                           6       16 -
+op                           6        8 -
+width                        6       25 -
+witness                      6       10 -
+y                            6        9 -
+arity                        5       10 declared
+box                          5       17 -
+carrier                      5        7 -
+domain                       5        6 -
+exit                         5        2 -
+monotone                     5        2 -
+operation                    5        4 declared
+out                          5       28 -
+profile                      5        8 -
+r                            5       79 -
+s                            5        4 -
+verdict                      5        1 -
+zero                         5        7 -
+agree                        4        4 -
+assertions                   4        5 -
+build                        4        4 -
+congruence                   4        2 -
+coordinates                  4        4 -
+counts                       4        2 -
+differ                       4        3 -
+disagreements                4        8 -
+form                         4       27 -
+fused                        4        9 -
+key                          4        3 -
+left                         4        7 -
+lo                           4       10 -
+
+## the synonym map, and why the column above is not the finding
+The probes name their axes with the short symbols the corpus argues in.
+dimension.toml names them with long descriptive slugs. So `w` reads as
+undeclared against `integer_width` and `f` against `fraction_width`, and
+the C2 arm below would have passed on that alone, which is the arm
+cheating rather than finding anything. Nothing mechanical bridges the two
+spellings, which is itself worth stating: no check can confirm that a
+predicate naming `integer_width` corresponds to a probe that swept `W`.
+The map below is hand-written and is a reading, not a measurement.
+
+  w=integer_width
+  f=fraction_width
+  width=total_width
+  policy=overflow_policy
+  overflow=overflow_policy
+  op=operation
+  mode=rounding
+  signed=signedness
+  signedness=signedness
+  rounding=rounding
+  arity=arity
+  operation=operation
+  threads=threads
+  container=container
+  strategy=strategy
+  alignment=alignment
+  profile=build_profile
+  optlevel=build_profile
+  opt=build_profile
+  lto=build_profile
+  assertions=build_profile
+  build=build_profile
+  depth=chain_length
+  steps=chain_length
+  chain=chain_length
+
+## C2: after the map, at least one frequent key must still map to nothing
+C2 pass: 35 keys appear in five or more directories, match no declared slug,
+        and are not a spelling of one under the map above
+
+those keys, with the directory count, unclassified:
+  a                        23
+  arms                     7
+  b                        21
+  box                      5
+  c                        18
+  carrier                  5
+  controls                 8
+  count                    7
+  d                        8
+  domain                   5
+  e                        6
+  exact                    7
+  exit                     5
+  failures                 7
+  hi                       6
+  i                        8
+  it                       8
+  k                        22
+  m                        21
+  monotone                 5
+  n                        36
+  out                      5
+  p                        10
+  pairs                    7
+  q                        7
+  r                        5
+  s                        5
+  stride                   7
+  t                        8
+  toolchain                7
+  verdict                  5
+  witness                  6
+  x                        18
+  y                        6
+  zero                     5
+
+## the toolchain, which is the residue arm worth a number
+The pinned nightly is a condition on every compiled result in this
+corpus and is not a declared axis. `build_profile` is the optimisation
+settings; the compiler version is a different thing, and a result at one
+nightly is not established at another.
+probe directories:                        135
+naming the pinned nightly anywhere:       49
+C5 PASS: the count does not exceed its own population
+C5 exists because a first hand-run of this count returned 202 of 135.
+It split the path on the wrong field and counted directory names that
+were not probe directories. A count exceeding its own denominator is the
+cheapest control available and it is available on every count.
+
+C3: a key here is not necessarily an axis. `differ` and `ops` are result
+columns and appear in this list; nothing mechanical separates a parameter
+from an output, so the distinct-value count above is the only signal and
+the classification in the findings file is a reading rather than a count.

@@ -1,0 +1,75 @@
+============================================================================================
+T1. The OPEN token: every occurrence, and whether any predicate keeps one
+============================================================================================
+  occurrences of the token in 136_leroy_the_candidate_revised_against_three_signatures.md: 3
+    374: unsigned with signed intermediates; **domain: OPEN, and the clause claims nothing until it is st
+    399: signedness: OPEN**. **Argument kind: induction.** The fraction is a fixed value and is not widen
+    410: (section 8), plus **domain, W, F and signedness: OPEN**.*
+
+  predicates in the file: 9, carrying the token: 3
+  T1: CONFIRMED (137 names three: 136:374, 136:398-399, 136:410)
+  control, after the repair this count must be 0 and the rerun below is that check.
+
+============================================================================================
+T2. Is 130:13 the origin of the attribution class rather than a sixth copy?
+============================================================================================
+  every line asserting the count, with what it cites:
+    130:13    carrier     cites a coordinator MESSAGE
+    131:48    carrier     cites unstated
+    131:52    carrier     cites 125
+    132:43    carrier     cites 125
+    133:11    RETRACTION  cites n/a
+    133:199   RETRACTION  cites n/a
+    133:205   RETRACTION  cites n/a
+    134:13    carrier     cites 125
+    135:10    carrier     cites 132 (which cites 125)
+
+  carriers: 6 places across 5 files
+  retractions, correctly excluded: 3
+  carriers whose cited source is a FILE rather than a message: 5 places across 4 files
+  the one citing a message is the origin: ['130:13']
+
+  commit order of the files involved:
+    a2db9574 00:26 research: 130, reply to 128 and 129, one axis keyed by value versus by position
+    5eb7eb6a 00:54 research: 132 leroy canon candidate for the quantisation axis
+    51f49ff4 01:00 research: 134 wronski cosigns 132, addendum on dither spectral shape
+    314c284d 01:00 research: 135, sign 132 in part, domain predicate on 5.6/5.7 and a missing credit
+    e4bcb8d1 01:02 research: 133 probe s1, the closed form matches every committed sweep and the fabrica
+    da758403 01:03 research: 133 probe s2, the law overlap refutes the exclusivity sentence and monotone
+    814b1267 01:05 research: 133 signature in part, three dissents with replacements and the figure owne
+    a70196ae 01:11 research: 136 probe x1, reproducing both of 133's dissents on a fixed-point instrumen
+
+  T2: 130 carries it, cites a message rather than a file, and is the earliest: True
+
+============================================================================================
+T3. How many loci does 133's D1 actually name?
+============================================================================================
+  D1 names: ['125', '130', '131', '132']
+  136:36 says: "`133` names `131` and `132`"
+  T3: CONFIRMED, 136 understates it
+
+============================================================================================
+T4. Which anchor class does 136's line-anchor paragraph actually describe?
+============================================================================================
+  line: 20 not carried, of which 5 INTENTS.md and 0 probe paths
+  line_panel: 13 not carried, of which 0 INTENTS.md and 0 probe paths
+
+  136:516-518 attributes five INTENTS.md and one 118_probes path to the row it is
+  explaining, which reports line_panel. T4: CONFIRMED, wrong class
+  the union count 136:498-499 states: 'five preceding files plus three signatures'; the instrument counts 11 files
+
+============================================================================================
+T5. Is B6's answer in 126's phase one, and where does phase one end?
+============================================================================================
+  the answer sentence ('stated up front') at line(s): [24]
+  first line mentioning a phase-two boundary: 393
+  T5: CONFIRMED, the answer precedes any phase-two boundary
+  132's table credits B6's 126 side to 'its reconciliation section', which is phase two,
+  so the ledger understates the rung. A rung understated is a real error.
+
+============================================================================================
+VERDICT
+============================================================================================
+  Every one of 137's five findings reproduces at source on my own reading. None was
+  taken on its word, and the two false positives 137 records in its own section 1 are
+  the reason that mattered.

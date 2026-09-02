@@ -1,0 +1,14 @@
+CONTROL minimal-container W=8 collapses : True -> ok
+CONTROL minimal-container W=7 does not  : True -> ok
+
+wide container (always u64), widths where wrap == clamp : [64]
+minimal container (u8/u16/u32/u64),      same           : [8, 16, 32, 64]
+
+degenerate index points, wide arm    : 1 of 128
+degenerate index points, minimal arm : 4 of 128
+
+READING: the set of index points at which the overflow policy has no
+         content is NOT a property of the declared width. It is a
+         property of (declared width, container), and the container is
+         chosen by the treatment. Changing the container policy moves
+         the degenerate set from [64] to [8, 16, 32, 64].

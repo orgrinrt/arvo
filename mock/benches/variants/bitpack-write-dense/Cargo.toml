@@ -1,0 +1,15 @@
+[package]
+name = "bench-bitpack-write-dense"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_bitpack_write_dense"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+bench-bitpack-write-contend-shared = { path = "../bitpack-write-contend-shared" }

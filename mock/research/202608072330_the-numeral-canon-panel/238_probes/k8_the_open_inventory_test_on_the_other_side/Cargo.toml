@@ -1,0 +1,20 @@
+# What happens if the open-inventory test moves to the other side of the door.
+#
+# `the_format_inventory_admits_a_member_this_crate_does_not_know_about` lives in
+# `arvo-format/src/tests.rs`, inside the crate-wide exemption, so it asserts the
+# ratified open-inventory clause in the one crate where the rule cannot refuse
+# it. This asks what the gate says when the same test text sits in a checked
+# crate instead.
+#
+# Own `[workspace]` table, so cargo does not walk up into `mock/`.
+[package]
+name = "k8_the_open_inventory_test_on_the_other_side"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+mockspace-lint-rules = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", rev = "f34cc1b0c87becd8230d46d807ebb3573e30c009" }

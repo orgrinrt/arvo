@@ -1,0 +1,85 @@
+=== p6 absolute machine paths in committed probes, 2026-08-30T22:53:59Z
+
+## C3: what counts as a machine path
+planted lines and what the matcher does with each:
+  ignored  p = "../168_probes/p3.out"
+  ignored  here="$(cd "$(dirname "$0")" && pwd)"
+  ignored  PANEL = "mock/research/202608072330_the-numeral-canon-panel"
+  ignored  out = "/tmp/p3_binary"
+  COUNTED  PANEL = "/Users/somebody/Dev/clause-dev/arvo/mock/research"
+  (expected: only the last one counted)
+
+## C1: 25_probes/p3_verify_my_citations.py must be counted
+C1 PASS
+
+## C2: not every file counted
+C2 PASS: 43 of 1195
+
+## the count
+probe files scanned:                        1195
+containing an absolute machine path:        43
+distinct path occurrences:                  65
+  of those, resolving in THIS worktree:     58
+  of those, missing in THIS worktree:       7
+
+C4: a path that resolves is the DANGEROUS case, not the safe one.
+this worktree: /Users/orgrinrt/Dev/clause-work/numeric-stack/port-probes
+occurrences naming a path INSIDE this worktree:  0
+occurrences naming a path OUTSIDE it:            65
+
+Decided by comparing the strings, not by opening the other tree. That
+tree belongs to somebody else and one-session-one-workspace.md says it
+is not read; an earlier run of this arm did open it, which is recorded
+in the findings rather than quietly dropped.
+
+Every occurrence above is outside, and every one of them resolves on
+this host, because the tree they name happens to exist here. So a probe
+in this corpus run from this worktree does not fail. It succeeds, against
+a DIFFERENT checkout of the same repository, and reports OK. A citation
+checker doing that has verified somebody else clone rather than the tree
+it was committed beside, and nothing in its output says so.
+
+## the files, with one path each
+  resolves_here 106_probes/p3_prewiring_join.py                      /Users/orgrinrt/Dev/clause-dev/arvo
+  resolves_here 107_probes/p0_test_gate.sh                           /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants
+  resolves_here 107_probes/p10_the_numbers_106_says_it_verified.sh   /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 107_probes/p4_the_four_meaningless_greens.sh         /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 107_probes/p5_reproduce_the_prewiring_join.sh        /Users/orgrinrt/Dev/clause-dev/arvo
+  resolves_here 107_probes/p6_the_law_bullet_is_false_at_signed_saturating.sh /Users/orgrinrt/Dev/clause-dev/.claude/rules/arvo-always-optimal-internals.md
+  resolves_here 137_probes/g2_is_the_attribution_class_complete.sh   /Users/orgrinrt/Dev/clause-dev/arvo
+  resolves_here 140_probes/p5_check_my_own_citations.py              /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 143_probes/p3_w_did_nothing_in_my_own_output.py      /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/
+  resolves_here 143_probes/p4_check_my_own_citations.py              /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 148_probes/p3_check_my_own_citations.py              /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 154_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev/arvo
+  resolves_here 154_probes/p6_testgate/FINDINGS.md                   /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 157_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 157_probes/p3_predicate_audit.sh                     /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel
+  resolves_here 157_probes/run_test_gate.sh                          /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  MISSING      159_probes/p1_are_the_five_instruments_independent.sh /Users/orgrinrt/Dev/clause-dev/arvo}/mock/benches/variants
+  MISSING      159_probes/p2_predicate_audit.sh                     /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel}
+  resolves_here 160_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 161_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 163_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 163_probes/p4_l_entry_anchors.sh                     /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel
+  resolves_here 163_probes/p5_findings_survival.sh                   /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel
+  resolves_here 163_probes/run_test_gate.sh                          /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 164_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  MISSING      169_probes/p1_heading_identity.sh                    /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel}
+  MISSING      169_probes/p2_what_fixed_the_definition.sh           /Users/orgrinrt/Dev/clause-dev/.claude/rules/$RULE.md
+  resolves_here 169_probes/p6_citecheck.py                           /Users/orgrinrt/Dev/clause-dev/.claude/rules/what-you-can-observe-is-what-you-guaranteed.md
+  resolves_here 170_probes/q4_citecheck.py                           /Users/orgrinrt/Dev/clause-dev/.claude/rules
+  resolves_here 172_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 173_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 176_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 177_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  resolves_here 177_probes/run_test_gate.sh                          /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  resolves_here 178_probes/citecheck.py                              /Users/orgrinrt/Dev/clause-dev
+  MISSING      20_probes/p3_dylib_probe/src/main.rs                 /Users/orgrinrt/Dev/clause-dev/arvo/mock/target/release/
+  resolves_here 23_probes/check_own_citations.py                     /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel
+  resolves_here 23_probes/spot_check_citation_content.py             /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel
+  MISSING      25_probes/p1_hunt_for_a_definition.py                /Users/orgrinrt/Dev/clause-dev/.claude/rules/*.md
+  resolves_here 25_probes/p2_decompose_the_preset_table.py           /Users/orgrinrt/Dev/clause-dev/arvo/.claude/rules/implementation.md
+  resolves_here 25_probes/p3_verify_my_citations.py                  /Users/orgrinrt/Dev/clause-dev/.claude/rules/arvo-toolbox-not-policer.md
+  resolves_here 25_probes/p4_axes_vary_independently_in_the_committed_benches.py /Users/orgrinrt/Dev/clause-dev/arvo
+  resolves_here 26_probes/verify_my_citations.py                     /Users/orgrinrt/Dev/clause-dev/arvo

@@ -1,0 +1,33 @@
+total workspace rule files:       75
+loaded into 157's context:        52
+carrying 'paths:' scope:          23
+
+--- NOT loaded (set difference all - loaded) ---
+arvo-always-optimal-internals
+arvo-bridge-home-rule
+arvo-compile-time-last
+arvo-toolbox-not-policer
+bevy-019-cheatsheet
+cl-claim-sketch-discipline
+documentation-writing
+gpu-render-resource-discipline
+hilavitkutin-workunit-mental-model
+ikiuni-check-theory-types-globals
+ikiuni-conventions
+ikiuni-machinery-is-canon-theory-is-moldable
+ikiuni-renderer-bevy-boundary
+ikiuni-renderer-streams-the-world
+ikiuni-theory-model-planner-boundary
+ikiuni-theory-models-final-state
+mockspace-toml-edits
+no-alloc-no-std-framing
+no-bare-primitives
+no-legacy-shims-pre-1.0
+read-the-repo-you-are-working-in
+readme-format
+use-the-stack-not-reinvent
+
+--- of the NOT-loaded, how many carry paths: ---
+      23
+--- scoped rules that ARE loaded (should be 0 if scoping suppresses) ---
+(end)

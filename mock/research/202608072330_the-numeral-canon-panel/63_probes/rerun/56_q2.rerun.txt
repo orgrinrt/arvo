@@ -1,0 +1,9 @@
+plain: predicate 16 values, enumeration 16 values, equal: true
+hub:   predicate 16 values, enumeration 16 values, equal: true
+mutant predicate (bias dropped) detected: true
+nearest onto biased grid: total true retraction true monotone true distance-minimising true
+mutant rounder (phase-zero target) fails retraction on hub: true
+exact sums of hub points landing on the hub grid: 0 of 256
+every exact sum sits exactly half a step from the hub grid (tie): true
+hub grid contains zero: false   contains one: false
+Q2 WORKS

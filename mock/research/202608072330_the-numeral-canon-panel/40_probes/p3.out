@@ -1,0 +1,198 @@
+### toolchain
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+### feature gates in this probe
+0
+
+### ARM base (expected: clean)
+(base done)
+
+### ARM bad1
+error[E0277]: this strategy's overflow policy does not give the numeral an absorbing top
+   --> p3_axes_presets_properties.rs:235:19
+    |
+235 |     shortest_path(w)
+    |     ------------- ^ min-plus and other tropical folds stand infinity on the top and need it to absorb
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `AbsorbingTop` is not implemented for `Wrap`
+   --> p3_axes_presets_properties.rs:59:1
+    |
+ 59 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+    = note: saturating overflow supplies it; wrapping does not, and a wrapping top plus one is zero
+help: the trait `AbsorbingTop` is implemented for `Saturate`
+   --> p3_axes_presets_properties.rs:86:1
+    |
+ 86 | impl AbsorbingTop for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `shortest_path`
+   --> p3_axes_presets_properties.rs:157:18
+    |
+154 | pub fn shortest_path<const W: u32, S>(_weights: &[Numeral<W, S>]) -> Numeral<W, S>
+    |        ------------- required by a bound in this function
+...
+157 |     S::Overflow: AbsorbingTop + MonotoneAdd,
+    |                  ^^^^^^^^^^^^ required by this bound in `shortest_path`
+
+error[E0277]: the trait bound `Wrap: MonotoneAdd` is not satisfied
+   --> p3_axes_presets_properties.rs:235:19
+    |
+235 |     shortest_path(w)
+    |     ------------- ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `MonotoneAdd` is not implemented for `Wrap`
+   --> p3_axes_presets_properties.rs:59:1
+    |
+ 59 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `MonotoneAdd` is implemented for `Saturate`
+   --> p3_axes_presets_properties.rs:93:1
+    |
+ 93 | impl MonotoneAdd for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `shortest_path`
+   --> p3_axes_presets_properties.rs:157:33
+    |
+154 | pub fn shortest_path<const W: u32, S>(_weights: &[Numeral<W, S>]) -> Numeral<W, S>
+    |        ------------- required by a bound in this function
+...
+157 |     S::Overflow: AbsorbingTop + MonotoneAdd,
+    |                                 ^^^^^^^^^^^ required by this bound in `shortest_path`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0277`.
+
+### ARM bad2
+error[E0277]: this strategy's overflow policy does not give the numeral an absorbing top
+   --> p3_axes_presets_properties.rs:240:29
+    |
+240 |     shortest_path_ergonomic(w)
+    |     ----------------------- ^ min-plus and other tropical folds stand infinity on the top and need it to absorb
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `AbsorbingTop` is not implemented for `Wrap`
+   --> p3_axes_presets_properties.rs:59:1
+    |
+ 59 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+    = note: saturating overflow supplies it; wrapping does not, and a wrapping top plus one is zero
+help: the trait `AbsorbingTop` is implemented for `Saturate`
+   --> p3_axes_presets_properties.rs:86:1
+    |
+ 86 | impl AbsorbingTop for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Strat<Doubled, Addressable, Wrap, SameWidth>` to implement `Tropical`
+   --> p3_axes_presets_properties.rs:175:9
+    |
+175 | impl<S> Tropical for S
+    |         ^^^^^^^^     ^
+...
+178 |     S::Overflow: AbsorbingTop + MonotoneAdd,
+    |                  ------------ unsatisfied trait bound introduced here
+note: required by a bound in `shortest_path_ergonomic`
+   --> p3_axes_presets_properties.rs:182:60
+    |
+182 | pub fn shortest_path_ergonomic<const W: u32, S: Strategy + Tropical>(
+    |                                                            ^^^^^^^^ required by this bound in `shortest_path_ergonomic`
+
+error[E0277]: the trait bound `Wrap: MonotoneAdd` is not satisfied
+   --> p3_axes_presets_properties.rs:240:29
+    |
+240 |     shortest_path_ergonomic(w)
+    |     ----------------------- ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `MonotoneAdd` is not implemented for `Wrap`
+   --> p3_axes_presets_properties.rs:59:1
+    |
+ 59 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `MonotoneAdd` is implemented for `Saturate`
+   --> p3_axes_presets_properties.rs:93:1
+    |
+ 93 | impl MonotoneAdd for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Strat<Doubled, Addressable, Wrap, SameWidth>` to implement `Tropical`
+   --> p3_axes_presets_properties.rs:175:9
+    |
+175 | impl<S> Tropical for S
+    |         ^^^^^^^^     ^
+...
+178 |     S::Overflow: AbsorbingTop + MonotoneAdd,
+    |                                 ----------- unsatisfied trait bound introduced here
+note: required by a bound in `shortest_path_ergonomic`
+   --> p3_axes_presets_properties.rs:182:60
+    |
+182 | pub fn shortest_path_ergonomic<const W: u32, S: Strategy + Tropical>(
+    |                                                            ^^^^^^^^ required by this bound in `shortest_path_ergonomic`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0277`.
+
+### ARM release_arm
+error[E0277]: this strategy's overflow policy does not give the numeral an absorbing top
+   --> p3_axes_presets_properties.rs:271:19
+    |
+271 |     shortest_path(w)
+    |     ------------- ^ min-plus and other tropical folds stand infinity on the top and need it to absorb
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `AbsorbingTop` is not implemented for `Wrap`
+   --> p3_axes_presets_properties.rs:59:1
+    |
+ 59 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+    = note: saturating overflow supplies it; wrapping does not, and a wrapping top plus one is zero
+help: the trait `AbsorbingTop` is implemented for `Saturate`
+   --> p3_axes_presets_properties.rs:86:1
+    |
+ 86 | impl AbsorbingTop for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `shortest_path`
+   --> p3_axes_presets_properties.rs:157:18
+    |
+154 | pub fn shortest_path<const W: u32, S>(_weights: &[Numeral<W, S>]) -> Numeral<W, S>
+    |        ------------- required by a bound in this function
+...
+157 |     S::Overflow: AbsorbingTop + MonotoneAdd,
+    |                  ^^^^^^^^^^^^ required by this bound in `shortest_path`
+
+error[E0277]: the trait bound `Wrap: MonotoneAdd` is not satisfied
+   --> p3_axes_presets_properties.rs:271:19
+    |
+271 |     shortest_path(w)
+    |     ------------- ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `MonotoneAdd` is not implemented for `Wrap`
+   --> p3_axes_presets_properties.rs:59:1
+    |
+ 59 | pub struct Wrap;
+    | ^^^^^^^^^^^^^^^
+help: the trait `MonotoneAdd` is implemented for `Saturate`
+   --> p3_axes_presets_properties.rs:93:1
+    |
+ 93 | impl MonotoneAdd for Saturate {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `shortest_path`
+   --> p3_axes_presets_properties.rs:157:33
+    |
+154 | pub fn shortest_path<const W: u32, S>(_weights: &[Numeral<W, S>]) -> Numeral<W, S>
+    |        ------------- required by a bound in this function
+...
+157 |     S::Overflow: AbsorbingTop + MonotoneAdd,
+    |                                 ^^^^^^^^^^^ required by this bound in `shortest_path`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

@@ -1,0 +1,64 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+feature gates in this file: 0
+command: rustc --edition 2021 -O p8_... -o p8_bin
+
+error: generic parameters may not be used in const operations
+  --> p8_the_affine_grade_compiles_as_a_type_level_list.rs:66:23
+   |
+66 |     type Out = Cons<{ A + B }, <S as AddC<T>>::Out>;
+   |                       ^ cannot perform const operation using `A`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `A`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p8_the_affine_grade_compiles_as_a_type_level_list.rs:66:27
+   |
+66 |     type Out = Cons<{ A + B }, <S as AddC<T>>::Out>;
+   |                           ^ cannot perform const operation using `B`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `B`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p8_the_affine_grade_compiles_as_a_type_level_list.rs:80:23
+   |
+80 |     type Out = Cons<{ A - B }, <S as SubC<T>>::Out>;
+   |                       ^ cannot perform const operation using `A`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `A`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p8_the_affine_grade_compiles_as_a_type_level_list.rs:80:27
+   |
+80 |     type Out = Cons<{ A - B }, <S as SubC<T>>::Out>;
+   |                           ^ cannot perform const operation using `B`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `B`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 4 previous errors
+
+build exit: 1
+
+(eval):1: no such file or directory: /tmp/p8_bin
+
+-----------------------------------------------------------------------------
+THE WALL, AND IT IS THE ONE THE WORKSPACE REFLEX NAMES
+-----------------------------------------------------------------------------
+`Cons<{ A + B }, ...>` puts arithmetic in TYPE position, which is exactly what
+`generic_const_exprs` is for and exactly what is forbidden.  I reached for the
+type-level list because a refused bound wants a trait, and then put the
+arithmetic back into a const argument, which is the same mistake one level
+down.
+
+The fix is to stop making the coefficient a const argument.  A coefficient
+becomes a TYPE carrying an associated const, so `A + B` is computed in an
+impl body where arbitrary const expressions are legal, and nothing arithmetic
+ever appears in type position.  That is the shape `109` P5 already used for
+`RSum`, applied to a vector instead of a scalar.
+
+Repaired in `p8b`.  This failed version is kept because the wall is worth more
+than the fix: the reflex is easy to half-apply, and half-applying it lands you
+on the forbidden feature with a clean conscience.

@@ -1,0 +1,105 @@
+..
+>
+> C
+> E
+> chain length
+> coupling ∈ {comonotone,
+> declarations
+> declared lower bound
+> overflow policy
+> overflow ∈ {wrap, saturate}
+> rounding
+> rounding ∈ {floor, ceil, half_up, half_even} × overflow ∈ {wrap, saturate} commuting
+> rounding ∈ {floor, toward_zero}
+> rustc
+> signedness
+> target features
+> threads
+> toolchain
+F > 0 or op ∉ {+, -, ×-at-F=0} (where rounding fires at all)
+F ≥ 1 (bits exist to drop)
+F_dst
+F_mid
+F_src
+I
+I13's
+W ∈ {3} for the wrap sweeps and the five-cell window at E
+W ≥ 1
+an exhaustive control at F
+any cell pair for > the cross-cell clause
+arity 3
+ceil
+closed under negation or one-signed alike
+commutations
+composition claim
+container
+coupling ∈ {comonotone within cells: monotone on every realisation; >
+decorrelation > measured as the count of distinct outputs for a repeated identical
+decorrelation > measured both as summed-error variance for n same-frac elements (128's witness, closed form > confirmed for n
+dispatch
+divergence between the > value-keyed and position-keyed members confirmed on 129's own worst-case
+domain > containing a complete residue system and the
+domain ∈ {ℚ, ℚ≥0} (the first closed under negation, > the second one-signed, claimed separately and each proved)
+edition
+enumerated at 8 tie and 435 non-tie points
+exhaustive at W
+exhaustive over the representable set
+f
+fails for every non-uniform baseline tried
+fracs
+grid
+half_up already given
+identification is definitional
+including every member of the stochastic family
+integer weights and
+measured
+measured at 16 to 32 mismatches of 129 points per row
+measured with the witness 125 T7 names
+monotonicity measured across a value-varying-with-position sequence within one pass
+n
+n ∈ 1..10 enumerated exactly and the closed forms proved by the enumeration matching > them at every n
+no feature gates beyond the stable language
+no float types
+no sweep needed beyond confirming the two > endpoints and the midpoint algebraically
+no threads axis is listed > because the claims hold only where threads do not exist
+not re-established here
+one
+op
+operand window
+operations {add, mul}
+opt-level
+overflow policy
+overflow ∈ {wrap > (untested directly, monotonicity argument applies regardless since it is about the rounding step > alone), saturate (tested, composition stays monotone)}
+overflow ∈ {wrap, saturate}
+parametrisation is exact and definitional
+per-cell-independent family (keyed on > value/frac)
+rounding ∈ {floor, > ceil, toward_zero, half_up, half_even}
+rounding ∈ {floor, ceil, toward_zero, > half_up, half_even}
+rounding ∈ {floor, toward_zero} (the pair > exhibited; other pairs differ too where the probe says so)
+rustc
+rustc 1.98.0-nightly 57d06900f
+same table population
+selection by associated const
+shared-threshold family (rounding
+shared/global family (keyed on nothing)
+signedness ∈ {signed, unsigned} as stated per clause
+so its selection predicate is not fully const-available
+stated on an argument. For the failure
+stated on distribution algebra with the linear system shown
+stated on the equivariance argument. For the non-commutation
+stated on the scalar-multiple and
+stated on valuation additivity
+target
+target > features
+that > is a question for the panel rather than a finding of mine
+the per-element or position-keyed families (keyed on position)
+the position-keyed > deterministic family (rounding
+threads >
+toward_zero × > saturate commuting
+toward_zero × wrap not commuting
+uniqueness and the Fréchet impossibility
+value
+values exhaustive
+which for a > compile-time fact is exactly right under the omission rule
+which is immediate from the definition of Q_U and the > definitions of floor
+window [-7q, 7q]

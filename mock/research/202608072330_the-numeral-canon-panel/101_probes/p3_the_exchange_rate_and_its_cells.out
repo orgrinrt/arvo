@@ -1,0 +1,166 @@
+==============================================================================
+A. THE EXCHANGE-RATE AXIS, EXACTLY
+==============================================================================
+Coordinate 1 is median algo_ns. r is how many nanoseconds one unit of
+coordinate 2 is worth. Every section the coordinate pair can produce
+appears below, with the interval of r that produces it.
+
+  bitpack-carrier-width   coordinate 2 = declared bytes/elem   arms=6 regions=6
+            r from           r to  decades  section
+                 0           9.55      inf  d32,d32,d16,d16,d16,control
+              9.55         50.425     0.72  control,d32,d16,d16,d16,control
+            50.425        1507.33     1.48  control,control,d16,d16,d16,control
+           1507.33        12157.7     0.91  simd,control,d16,d16,d16,control
+           12157.7        94932.3     0.89  simd,simd,d16,d16,d16,control
+           94932.3         183061     0.29  simd,simd,simd,d16,d16,control
+            183061         376255     0.31  simd,simd,simd,simd,d16,control
+            376255         766780     0.31  simd,simd,simd,simd,simd,control
+            766780            inf      inf  simd,simd,simd,simd,simd,simd
+
+  bitpack-carrier-width   coordinate 2 = declared bytes/elem, control dropped   arms=5 regions=6
+            r from           r to  decades  section
+                 0          9.775      inf  d32,d32,d16,d16,d16,d16
+             9.775             65     0.82  d16,d32,d16,d16,d16,d16
+                65        1506.13     1.36  d16,d16,d16,d16,d16,d16
+           1506.13          12080     0.90  simd,d16,d16,d16,d16,d16
+             12080        94932.3     0.90  simd,simd,d16,d16,d16,d16
+           94932.3         183061     0.29  simd,simd,simd,d16,d16,d16
+            183061         376255     0.31  simd,simd,simd,simd,d16,d16
+            376255         761166     0.31  simd,simd,simd,simd,simd,d16
+            761166            inf      inf  simd,simd,simd,simd,simd,simd
+
+  bitpack-carrier-width   coordinate 2 = IQR of algo_ns   arms=6 regions=6
+            r from           r to  decades  section
+                 0       0.790423      inf  d32,d32,d16,d16,d16,control
+          0.790423        1.04514     0.12  d32,d32,d16,d16,control,control
+           1.04514        2.95809     0.45  control,d32,d16,d16,control,control
+           2.95809        3.20381     0.03  control,d32,control,d16,control,control
+           3.20381        17.2124     0.73  control,d32,control,control,control,control
+           17.2124        32.8109     0.28  control,d32,control,simd,control,control
+           32.8109        137.643     0.62  control,d32,packed,simd,control,control
+           137.643        143.393     0.02  control,d32,packed,packed,control,control
+           143.393        310.623     0.34  control,d32,packed,packed,control,simd
+           310.623            inf      inf  control,d32,packed,packed,packed,simd
+
+  bitpack-contend-decode   coordinate 2 = IQR of algo_ns   arms=5 regions=6
+            r from           r to  decades  section
+                 0     0.00370828      inf  pipe4,control,pipe2,pipe2,pipe4,pipe4
+        0.00370828       0.147749     1.60  pipe2,control,pipe2,pipe2,pipe4,pipe4
+          0.147749       0.424379     0.46  pipe2,d16,pipe2,pipe2,pipe4,pipe4
+          0.424379        3.78948     0.95  pipe2,d16,pipe4,pipe2,pipe4,pipe4
+           3.78948        6.11378     0.21  pipe2,d16,control,pipe2,pipe4,pipe4
+           6.11378        6.48397     0.03  pipe2,d16,control,pipe2,d16,pipe4
+           6.48397        9.16461     0.15  pipe2,d16,control,pipe2,d16,simd
+           9.16461        18.0564     0.29  control,d16,control,pipe2,d16,simd
+           18.0564            inf      inf  control,d16,control,simd,d16,simd
+
+  bitpack-contention   coordinate 2 = IQR of algo_ns   arms=6 regions=12
+            r from           r to  decades  section
+                 0       0.420855      inf  d32,control,d16,d16,control,control,control,control,d16,d16,control,control
+          0.420855       0.662616     0.20  d32,control,d16,d16,control,control,control,control,simd,d16,control,control
+          0.662616       0.905183     0.14  d32,simd,d16,d16,control,control,control,control,simd,d16,control,control
+          0.905183        1.52174     0.23  d32,simd,d16,d16,control,control,control,control,simd,d16,control,simd
+           1.52174        2.93806     0.29  d32,simd,simd,d16,control,control,control,control,simd,d16,control,simd
+           2.93806        4.08784     0.14  d32,simd,simd,d16,control,control,control,control,simd,d16,simd,simd
+           4.08784        6.24252     0.18  d32,simd,simd,d16,control,simd,control,control,simd,d16,simd,simd
+           6.24252        7.39181     0.07  d32,simd,simd,d16,d16,simd,control,control,simd,d16,simd,simd
+           7.39181        18.9505     0.41  simd,simd,simd,d16,d16,simd,control,control,simd,d16,simd,simd
+           18.9505        26.7431     0.15  simd,simd,simd,d16,packed,simd,control,control,simd,d16,simd,simd
+           26.7431         65.329     0.39  simd,simd,simd,simd,packed,simd,control,control,simd,d16,simd,simd
+            65.329            inf      inf  simd,simd,simd,simd,packed,simd,control,control,simd,simd,simd,simd
+
+  bitpack-wide   coordinate 2 = IQR of algo_ns   arms=4 regions=6
+            r from           r to  decades  section
+                 0       0.151958      inf  padal,padal,padal,pipe4,padal,pipe4
+          0.151958       0.435644     0.46  padal,padal,padal,pipe4,padal,padal
+          0.435644        4.00836     0.96  padal,padal,padal,padal,padal,padal
+           4.00836        16.4639     0.61  pipe4,padal,padal,padal,padal,padal
+           16.4639        17.8493     0.04  pipe4,pipe4,padal,padal,padal,padal
+           17.8493        20.1158     0.05  pipe4,d16,padal,padal,padal,padal
+           20.1158        50.8826     0.40  pipe4,d16,control,padal,padal,padal
+           50.8826            inf      inf  control,d16,control,padal,padal,padal
+
+==============================================================================
+B. HOW MANY ANSWERS THE COORDINATE PAIR CAN SUPPORT
+==============================================================================
+  family                   coordinate 2            cells  widest cell (decades)
+  bitpack-carrier-width    declared bytes/elem         9                    inf
+  bitpack-carrier-width    declared bytes/elem, control dropped      9                    inf
+  bitpack-carrier-width    IQR of algo_ns             10                    inf
+  bitpack-contend-decode   IQR of algo_ns              9                    inf
+  bitpack-contention       IQR of algo_ns             12                    inf
+  bitpack-wide             IQR of algo_ns              8                    inf
+
+A cell is a set of weightings that are the same strategy. The count is
+how many distinguishable strategies the coordinate pair supports at all;
+the width is how wrong a declared exchange rate may be and still select
+the shipped table.
+
+==============================================================================
+C. THREE COORDINATES, BY SAMPLING, SINCE THE SPACE IS NO LONGER AN INTERVAL
+==============================================================================
+(median algo_ns, declared bytes, IQR) on the carrier family, log-uniform
+exchange rates over twelve decades each, 20000 draws.
+  distinct sections reached: 57 of 6^6 possible
+     28.63% of the sampled space   d32,d32,d16,d16,d16,control
+     26.04% of the sampled space   control,d32,packed,packed,packed,simd
+      5.92% of the sampled space   control,control,d16,d16,d16,control
+      3.80% of the sampled space   control,d32,control,control,control,control
+      3.80% of the sampled space   simd,control,d16,d16,d16,control
+      3.74% of the sampled space   simd,simd,d16,d16,d16,control
+      3.65% of the sampled space   control,d32,packed,simd,control,control
+      3.17% of the sampled space   control,d32,d16,d16,d16,control
+      2.65% of the sampled space   control,d32,d16,d16,control,control
+      2.21% of the sampled space   control,d16,packed,packed,packed,simd
+      2.17% of the sampled space   control,d32,packed,packed,control,simd
+      1.65% of the sampled space   control,d32,control,simd,control,control
+      1.41% of the sampled space   simd,simd,simd,simd,d16,control
+      1.39% of the sampled space   simd,simd,simd,simd,simd,control
+      1.18% of the sampled space   simd,simd,simd,d16,d16,control
+      0.69% of the sampled space   packed,simd,packed,simd,control,control
+      0.68% of the sampled space   packed,simd,packed,packed,packed,simd
+      0.60% of the sampled space   control,d16,packed,simd,control,control
+      0.59% of the sampled space   d32,d32,d16,d16,control,control
+      0.54% of the sampled space   simd,simd,simd,simd,simd,simd
+      0.52% of the sampled space   control,control,d16,d16,control,control
+      0.46% of the sampled space   control,d16,control,control,control,control
+      0.45% of the sampled space   packed,d16,packed,packed,packed,simd
+      0.36% of the sampled space   simd,simd,d16,d16,control,control
+      0.33% of the sampled space   simd,control,d16,d16,control,control
+      0.29% of the sampled space   packed,d16,packed,simd,control,control
+      0.24% of the sampled space   control,d16,packed,packed,control,simd
+      0.23% of the sampled space   control,d16,control,simd,control,control
+      0.23% of the sampled space   control,control,control,control,control,control
+      0.22% of the sampled space   packed,simd,packed,simd,packed,simd
+      0.21% of the sampled space   control,d32,control,d16,control,control
+      0.20% of the sampled space   packed,simd,control,control,control,control
+      0.20% of the sampled space   simd,simd,simd,simd,control,control
+      0.18% of the sampled space   packed,d16,packed,packed,control,simd
+      0.18% of the sampled space   packed,simd,simd,simd,control,control
+      0.18% of the sampled space   packed,d16,control,control,control,control
+      0.14% of the sampled space   simd,simd,simd,d16,control,control
+      0.12% of the sampled space   simd,control,control,control,control,control
+      0.11% of the sampled space   packed,simd,packed,packed,control,simd
+      0.10% of the sampled space   simd,simd,control,control,control,control
+      0.10% of the sampled space   packed,simd,simd,simd,simd,control
+      0.08% of the sampled space   packed,d16,control,simd,control,control
+      0.07% of the sampled space   control,d32,packed,packed,control,control
+      0.07% of the sampled space   packed,simd,control,simd,control,control
+      0.04% of the sampled space   control,control,control,d16,control,control
+      0.03% of the sampled space   simd,simd,simd,control,control,control
+      0.03% of the sampled space   packed,simd,simd,simd,simd,simd
+      0.03% of the sampled space   packed,simd,packed,simd,control,simd
+      0.02% of the sampled space   packed,simd,packed,simd,packed,control
+      0.01% of the sampled space   control,d16,packed,packed,control,control
+      0.01% of the sampled space   simd,control,control,d16,control,control
+      0.01% of the sampled space   packed,simd,packed,simd,simd,simd
+      0.01% of the sampled space   packed,simd,simd,control,control,control
+      0.01% of the sampled space   simd,simd,control,d16,control,control
+      0.01% of the sampled space   packed,d16,packed,packed,control,control
+      0.01% of the sampled space   packed,control,control,control,control,control
+      0.01% of the sampled space   packed,simd,packed,simd,simd,control
+
+The share of sampled space is NOT scale invariant: it depends on the
+twelve-decade window the rates were drawn from, which is a choice. The
+COUNT is invariant, because scaling a weighting is a bijection on the
+weighting space that maps the reachable set onto itself.

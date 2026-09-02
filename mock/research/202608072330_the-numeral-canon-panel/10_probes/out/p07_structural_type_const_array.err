@@ -1,0 +1,18 @@
+error: generic parameters may not be used in const operations
+  --> p07_structural_type_const_array.rs:23:40
+   |
+23 |     type const V: usize = const { 2 * <T as Nat>::V };
+   |                                        ^
+   |
+   = help: add `#![feature(generic_const_args)]` to allow generic expressions as the RHS of const items
+
+error: generic parameters may not be used in const operations
+  --> p07_structural_type_const_array.rs:26:40
+   |
+26 |     type const V: usize = const { 2 * <T as Nat>::V + 1 };
+   |                                        ^
+   |
+   = help: add `#![feature(generic_const_args)]` to allow generic expressions as the RHS of const items
+
+error: aborting due to 2 previous errors
+

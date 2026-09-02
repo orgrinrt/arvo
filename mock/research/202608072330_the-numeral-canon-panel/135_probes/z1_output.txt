@@ -1,0 +1,24 @@
+=== Part 1: uniqueness solve, does it reference which cell (k) at all? ===
+=== (128's r2 part 3 and my own y1 part 1 both parametrise by m subpoints ===
+=== per cell, never by k; confirm the solved distribution is identical    ===
+=== whether the cell in question is k=-3 or k=+3.)                        ===
+  m=5: threshold distribution [Fraction(1, 5), Fraction(1, 5), Fraction(1, 5), Fraction(1, 5), Fraction(1, 5)] (computed with no reference to any k at all; the same values apply verbatim to a cell at k=-5 as to one at k=+5, because the construction is stated over frac(x) in [0,1) alone)
+  m=8: threshold distribution [Fraction(1, 8), Fraction(1, 8), Fraction(1, 8), Fraction(1, 8), Fraction(1, 8), Fraction(1, 8), Fraction(1, 8), Fraction(1, 8)] (computed with no reference to any k at all; the same values apply verbatim to a cell at k=-5 as to one at k=+5, because the construction is stated over frac(x) in [0,1) alone)
+
+=== Part 2: variance law, negative-k cell vs positive-k cell, same frac ===
+  n=5, f=1/3 (this f is the same number whether the cell holding it is k=-4 [values in [-4,-3)] or k=+4 [values in [4,5)]): comonotone Var=50/9, independent Var=10/9
+  n=10, f=1/3 (this f is the same number whether the cell holding it is k=-4 [values in [-4,-3)] or k=+4 [values in [4,5)]): comonotone Var=200/9, independent Var=20/9
+  (the formula never mentions k; there is no branch on sign anywhere in either derivation)
+
+=== Part 3: the keying divergence (F130-1), negative-position and negative-value check ===
+=== reproducing the original probe's exact construction, but at x = -1/2 (cell k = -1) ===
+  x=1/2 (cell k=0): per-cell-independent-across-cells decorrelation count over 40 positions = 1 (predicted: identical to the positive-cell case, 1)
+  x=-1/2 (cell k=-1): per-cell-independent-across-cells decorrelation count over 40 positions = 1 (predicted: identical to the positive-cell case, 1)
+
+=== Summary ===
+  If every quantity above is identical in shape and value between a negative-indexed cell
+  and a positive-indexed one (predicted: yes, since none of the three constructions ever
+  reads k's sign), then 132 5.6/5.7's 'domain closed under negation' predicate restricts a
+  region the argument was never shown to depend on, and the honest predicate is 'domain
+  any', inherited from nothing needing checking because the construction is sign-blind by
+  its own definition.

@@ -1,0 +1,167 @@
+//--------------------------------------------------------------------------------------------------
+// Copyright (c) 2026                   orgrinrt                 ort@hiisi.digital
+// SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
+//--------------------------------------------------------------------------------------------------
+
+#![no_std]
+#![forbid(unsafe_op_in_unsafe_fn)]
+
+//! The declared signature of a number: which values exist, and what happens to a
+//! result that is not one of them.
+//!
+//! A format here is not a container. It is a representable set together with the
+//! domain that set sits in, and membership in it is one affine predicate rather
+//! than a family of them: a phase, a quantum per magnitude, and a slot range.
+//! Integers, fixed point, scaled integers and floating point are points of that
+//! one predicate, and subnormals fall out of the smallest magnitude rather than
+//! out of a case naming them.
+//!
+//! There is no machine carrier in this crate and none is reachable from it. Every
+//! operation is a function of the declared signature and never of what the value
+//! happens to sit in, and the dependency edge is what keeps that true rather than
+//! a comment asking for it. Where the bits go is `arvo-placement`.
+//!
+//! Every derived quantity is an associated item resolved by an impl, and every
+//! computation over one is a free `const fn`. That is the staging boundary rather
+//! than a restriction worked around: the trait is what is known at
+//! monomorphisation, the `const fn` is the computation over it, and what the
+//! backend sees has no branch left to erase.
+//!
+//! Each open contract carries what an implementor owes as a checked `ADMITTED`
+//! const rather than as a sentence asking for it, with the verdict-returning form
+//! beside it for a test. Where the obligation is forced decides when it fires: a
+//! runtime call reaches it at codegen, which `cargo check` skips, and a `const`
+//! item reaches it at check time. So every predicate here stays total for a
+//! declaration that never forces one.
+//!
+//! This crate introduces the numeric category, so the bare-primitive lints skip
+//! it. That is the door for the one place the stack's own primitives cannot be
+//! used to define themselves, and `width` is the narrow thing it exists for.
+//!
+//! The coordinates a format is declared with are built through that door rather
+//! than beside it, and each one lives with the contract that reads it.
+
+pub mod adapt;
+pub mod ambient;
+pub mod apply;
+pub mod format;
+pub mod overflow;
+pub mod quantum;
+pub mod rounding;
+pub mod slots;
+pub mod standards;
+pub mod width;
+
+pub use adapt::{
+    operation_overflow, operation_rounding, overflow_of, rounding_of, Adapt, Adaptation, Arity,
+    DeclaredSignature, Operation, Signature,
+};
+pub use ambient::{
+    is_admissible_ambient, Ambient, BinaryRationals, DecimalRationals, Radix,
+    UnsignedBinaryRationals,
+};
+pub use apply::{adapt, panic_on_inexact, panic_on_overflow, Dither, Exact, Fraction};
+pub use format::{
+    cancelling_slot, contains, has_additive_identity, is_admissible_format, radix,
+    smallest_step_exponent, step_exponent, Format, Phase,
+};
+pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
+pub use quantum::{
+    exponent_at, is_admissible_quantum, is_constant_family, magnitude_in_range, Exponent,
+    Magnitude, MagnitudeCount, Quantum,
+};
+pub use rounding::{Mode, Rounding, ALL_MODES};
+pub use slots::{slot_count, slot_in_range, Slot, SlotCount, Slots};
+pub use width::{Bool, Width};
+
+/// The four points of the parameterisation the canon names, as formats.
+///
+/// Shipped as worked instances of the open inventory rather than as the inventory
+/// itself. A new numeral joins by implementing `Format`, and none of these is
+/// privileged by being here.
+pub mod points {
+    use crate::ambient::{BinaryRationals, UnsignedBinaryRationals};
+    use crate::format::{Format, Phase};
+    use crate::quantum::{Constant, Indexed};
+    use crate::slots::{Signed, Slots, Unsigned};
+
+    /// Signed integers of `BITS` bits: constant quantum at exponent zero, no phase.
+    pub struct Integer<const BITS: u32>;
+
+    impl<const BITS: u32> Format for Integer<BITS>
+    where
+        Signed<BITS>: Slots,
+    {
+        type Ambient = BinaryRationals;
+        type Quantum = Constant<0>;
+        type Slots = Signed<BITS>;
+        const PHASE: Phase = Phase::ZERO;
+    }
+
+    /// Unsigned fixed point of `BITS` bits with the quantum at exponent `FRAC`.
+    ///
+    /// The constant-quantum family at a negative exponent, which is the whole of
+    /// what makes it fixed point rather than integral.
+    pub struct UFixed<const BITS: u32, const FRAC: i32>;
+
+    impl<const BITS: u32, const FRAC: i32> Format for UFixed<BITS, FRAC>
+    where
+        Unsigned<BITS>: Slots,
+    {
+        type Ambient = UnsignedBinaryRationals;
+        type Quantum = Constant<FRAC>;
+        type Slots = Unsigned<BITS>;
+        const PHASE: Phase = Phase::ZERO;
+    }
+
+    /// A scaled integer: constant quantum at a declared exponent, with a phase.
+    ///
+    /// The point that exercises the phase coordinate, which the other three leave
+    /// at zero.
+    ///
+    /// `HALF_STEPS` counts the phase in half steps, which is what the parameter has
+    /// always meant: its denominator is fixed at two. So within this point an odd
+    /// count is the half-step grid that carries no additive identity, and an even
+    /// one is a whole number of quanta that keeps it at a shifted slot, and the law
+    /// asserting both directions is what keeps the coordinate honest.
+    ///
+    /// **That reduction is a fact about this point rather than about the phase.**
+    /// It holds because the quantum here does not move with the magnitude and
+    /// there is only one magnitude. The general question is whether some admitted
+    /// magnitude and slot cancel the phase, and `has_additive_identity` is where
+    /// that is answered; a law asserted only through this point is a law measured
+    /// at one denominator, in one quantum family, over one slot family.
+    pub struct Biased<const BITS: u32, const EXP: i32, const HALF_STEPS: i64>;
+
+    impl<const BITS: u32, const EXP: i32, const HALF_STEPS: i64> Format
+        for Biased<BITS, EXP, HALF_STEPS>
+    where
+        Signed<BITS>: Slots,
+    {
+        type Ambient = BinaryRationals;
+        type Quantum = Constant<EXP>;
+        type Slots = Signed<BITS>;
+        const PHASE: Phase = Phase::halves(HALF_STEPS);
+    }
+
+    /// A floating point: the magnitude-indexed family.
+    ///
+    /// `MANTISSA` gives the slot range within one magnitude, `MIN_EXP` the
+    /// exponent at the smallest magnitude, and `EXPONENTS` how many magnitudes
+    /// there are. Nothing here names a subnormal.
+    pub struct Floating<const MANTISSA: u32, const MIN_EXP: i32, const EXPONENTS: u32>;
+
+    impl<const MANTISSA: u32, const MIN_EXP: i32, const EXPONENTS: u32> Format
+        for Floating<MANTISSA, MIN_EXP, EXPONENTS>
+    where
+        Signed<MANTISSA>: Slots,
+    {
+        type Ambient = BinaryRationals;
+        type Quantum = Indexed<MIN_EXP, EXPONENTS>;
+        type Slots = Signed<MANTISSA>;
+        const PHASE: Phase = Phase::ZERO;
+    }
+}
+
+#[cfg(test)]
+mod tests;

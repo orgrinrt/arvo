@@ -1,0 +1,31 @@
+== NC1: F = 0, every arm must be exact ==
+  NC1 violations: 0  (expected 0)
+
+== NC3: products exactly representable, naive must be exact ==
+  n=16      naive err = 0 LSB
+  n=1024    naive err = 0 LSB
+  n=65536   naive err = 0 LSB
+  NC3 violations: 0  (expected 0)
+
+== The chain, F = 12, error in LSBs of the Q(.12) result ==
+        n           naive     naive_round         widened            comp      NC2 ok
+        1         -0.7117          0.2883         -0.7117         -0.7117         yes
+        4         -1.5232          0.4768         -0.5232         -0.5232         yes
+       16        -10.0908          1.9092         -0.0908         -0.0908         yes
+       64        -28.7803         -1.7803         -0.7803         -0.7803         yes
+      256       -131.9785          0.0215         -0.9785         -0.9785         yes
+     1024       -496.6736         -3.6736         -0.6736         -0.6736         yes
+     4096      -2043.0547        -27.0547         -0.0547         -0.0547         yes
+    16384      -8256.9326         76.0674         -0.9326         -0.9326         yes
+    65536     -32851.0388        155.9612         -0.0388         -0.0388         yes
+   262144    -130803.0303        283.9697         -0.0303         -0.0303         yes
+  1048576    -523332.4397        780.5603         -0.4397         -0.4397         yes
+  NC2 violations: 0  (expected 0)
+
+== Growth: max |err| over 32 seeds, per arm, per n ==
+        n         naive   naive_round       widened          comp
+       16       10.9441        2.8682        0.9983        0.9983
+      256      136.2229        8.4294        0.9946        0.9946
+     4096     2084.7375       37.9534        0.9893        0.9893
+    65536    32831.3113      231.5889        0.9839        0.9839
+  1048576   524046.4570     1418.2107        0.9285        0.9285

@@ -1,0 +1,31 @@
+=== a0_control_the_shipped_shape_builds  (must build) ===
+    built.
+
+=== a4_control_bool_does_carry_the_signedness  (must build) ===
+    built.
+
+=== a1_width_cannot_carry_a_negative_slot  (must not build) ===
+    refused, as follows:
+    error[E0600]: cannot apply unary operator `-` to type `u32`
+      --> examples/a1_width_cannot_carry_a_negative_slot.rs:20:36
+    20 |     const MIN: Width = Width::bits(-128);
+    error: could not compile `k2_can_width_carry_the_ten` (example "a1_width_cannot_carry_a_negative_slot") due to 1 previous error
+
+=== a2_width_cannot_carry_the_widest_slot_max  (must not build) ===
+    refused, as follows:
+    error: literal out of range for `u32`
+      --> examples/a2_width_cannot_carry_the_widest_slot_max.rs:17:36
+    17 |     const MAX: Width = Width::bits(4611686018427387903);
+    error: could not compile `k2_can_width_carry_the_ten` (example "a2_width_cannot_carry_the_widest_slot_max") due to 1 previous error
+
+=== a3_width_cannot_carry_a_fixed_point_exponent  (must not build) ===
+    refused, as follows:
+    error[E0600]: cannot apply unary operator `-` to type `u32`
+      --> examples/a3_width_cannot_carry_a_fixed_point_exponent.rs:17:37
+    17 |     const BASE: Width = Width::bits(-4);
+    error: could not compile `k2_can_width_carry_the_ten` (example "a3_width_cannot_carry_a_fixed_point_exponent") due to 1 previous error
+
+=== verdict ===
+Both controls built and all three arms were refused.
+`Width` carries neither a negative coordinate nor one above 2^32,
+and `Bool` does carry the one truth value among the ten.

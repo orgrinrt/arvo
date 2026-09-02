@@ -1,0 +1,96 @@
+== p3. the committed bench artifacts, counted, dated and attributed ==
+at     : /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat208/mock/benches
+cutoff : 2026-08-07 23:30 UTC (the current panel's own timestamp)
+
+-- control A --
+ok : nonsense family reports 0 triples
+
+-- T9's count, and where the number actually comes from --
+T9 states                       : 57 triples under mock/benches/warm-container-*
+triples matching that glob      : 22
+csv ever deleted from that glob : 0
+
+The archive's own file 141 states the same 57, and 141 is right:
+  csv added by 141's commit ccf05099, across all sections it landed:
+      12 warm-container-width
+      10 warm-container-density
+       6 warm-elementwise-width
+       6 warm-affine-collapse
+       6 precise-widening-theorem
+       6 precise-elementwise-width
+       6 precise-container-width
+       5 warm-affine-density
+    total: 57
+
+  So 57 is 141's nine-section total. Four of those sections are not
+  warm-container-* at all. The seed attached a nine-section figure to a
+  one-family glob; nothing was lost from disk.
+
+-- every family, with its era --
+family                                csv  era
+bitpack-carrier-width                   6  current panel (2026-08-08)
+bitpack-contend-best                    4  current panel (2026-08-08)
+bitpack-contend-decode                  6  current panel (2026-08-08)
+bitpack-contention                     12  current panel (2026-08-08)
+bitpack-decoder-shape                   4  closed panel (2026-08-04)
+bitpack-footprint-dense                 5  closed panel (2026-08-05)
+bitpack-footprint-headtohead            5  current panel (2026-08-08)
+bitpack-footprint-packed                5  closed panel (2026-08-05)
+bitpack-kernel-amortisation             4  closed panel (2026-08-04)
+bitpack-random-sum                      3  closed panel (2026-08-04)
+bitpack-sequential-sum                  3  closed panel (2026-08-04)
+bitpack-wide                            6  current panel (2026-08-08)
+bitpack-write-contend-race              6  current panel (2026-08-09)
+bitpack-write-contend-safe              6  current panel (2026-08-09)
+decimal-quantiser-radix-sweep           4  closed panel (2026-08-04)
+fnv1a-vs-xxhash3                        4  closed panel (2026-08-04)
+precise-container-width                 6  closed panel (2026-08-07)
+precise-elementwise-width               6  closed panel (2026-08-07)
+precise-widening-theorem                6  closed panel (2026-08-07)
+quantiser-vs-fadd-subnormal-sweep       6  closed panel (2026-08-04)
+satfold-align                           4  current panel (2026-08-13)
+satfold-const-gate                      3  current panel (2026-08-13)
+satfold-length                         21  current panel (2026-08-13)
+satfold-length-dram                     4  current panel (2026-08-13)
+satfold-length-dram-long                1  current panel (2026-08-13)
+satfold-length-dram-wrap                1  current panel (2026-08-13)
+satfold-length-l1-wrap                  5  current panel (2026-08-13)
+spectral-bisection                      3  closed panel (2026-08-04)
+structural-decomposition                3  closed panel (2026-08-04)
+warm-affine-collapse                    6  closed panel (2026-08-07)
+warm-affine-density                     5  closed panel (2026-08-07)
+warm-clamp-arity                       40  closed panel (2026-08-07)
+warm-clamp-chain                        6  closed panel (2026-08-07)
+warm-container-density                 10  closed panel (2026-08-07)
+warm-container-width                   12  closed panel (2026-08-07)
+warm-elementwise-width                  6  closed panel (2026-08-07)
+wide-rung-density                       4  current panel (2026-08-08)
+wide-rung-walk                         12  current panel (2026-08-08)
+wide-rung-width                        12  current panel (2026-08-08)
+
+-- control B --
+ok : 21 families on the closed side, 18 on the current side
+
+-- what section 0's four names reach, of the CLOSED-panel corpus --
+closed-panel csv total                      : 147
+  reachable from the four named prefixes    : 92
+  NOT reachable from them                   : 55
+
+  the closed-panel families section 0 does not name:
+       6 warm-elementwise-width
+       6 warm-affine-collapse
+       6 quantiser-vs-fadd-subnormal-sweep
+       6 precise-widening-theorem
+       6 precise-elementwise-width
+       6 precise-container-width
+       5 warm-affine-density
+       4 fnv1a-vs-xxhash3
+       4 decimal-quantiser-radix-sweep
+       3 structural-decomposition
+       3 spectral-bisection
+
+Section 0 says "several bench families" and gives four, so it does not
+claim to be exhaustive. It is still the file's own statement of what may be
+cited as current evidence, and a reader taking the list as the extent loses
+55 committed closed-panel csv across the families printed above,
+precise-* and quantiser-* among them.

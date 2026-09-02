@@ -1,0 +1,13 @@
+# arvo-refit round-by-round history
+
+Tier 2 audit-trail file. Captures the round-id source citations migrated
+out of the Tier 1 design template per the doc-audit round of
+2026-05-05. Round identifiers, deprecated changelist filenames, and
+internal sketch paths are recorded here for contributors; they no longer
+appear in the rendered Tier 1 output.
+
+## Sources
+
+- `mock/design_rounds/202604300826_topic.refit-narrow-widen-completion.md`
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
+- `mock/design_rounds/202604280034_topic.audit-driven-hygiene-and-Q-D-completion.md`

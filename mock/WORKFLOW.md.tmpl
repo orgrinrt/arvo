@@ -1,45 +1,49 @@
 # Workflow
 
-This file captures the day-to-day authoring loop for arvo: how a change
-enters the mock workspace, how design work validates, and when a crate
-graduates from `mock/` to the repo root. Read it before starting any
-change that touches design, source, or structure.
+How a consumer uses arvo from a Rust project, what shape the dependency
+takes, and how arvo evolves.
 
-## Pre-work checklist
+## Adding arvo to a project
 
-- On main? If not, you are on a PR branch.
-- Look for branch TODO: `TODO.{branch}.md` overrides main TODO.
-- Read STRUCTURE to see what exists.
-- Read relevant DESIGN sections; update if your plan differs.
-- Grep for existing helpers and types before adding new ones.
+```toml
+[dependencies]
+arvo-format = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+```
 
-## Development order
+Depend on the crate that carries what you need. `arvo-format` declares what
+values exist and what happens to a result that is not one of them,
+`arvo-placement` derives where the bits sit, and `arvo-strategy` binds a name to
+a choice between placements. There is no facade to reach through, so a consumer
+that only declares formats never compiles a carrier ladder.
 
-**Current phase: design.** The mockspace validates design via `cargo
-check` + doc generation. Source is not expected to have real
-implementations yet. The goal is every DESIGN.md.tmpl agrees with
-every other and the types compile.
+Nothing is published to the registry yet, so the dependency is by git ref. When
+it is, the facade publishes as `libarvo`, because `arvo` is taken there by
+another project, and the rest keep the `arvo-*` shape they already have.
 
-1. Design. Update the mock workspace crate sources and documentation.
-2. Validate. `cargo check` in the mock workspace. It must compile.
-3. Regenerate. `cargo mock` to produce generated docs.
-4. Types. Declare internal types if needed.
-5. Tests. Write to fail first.
-6. Implement, code until tests pass.
-7. Document, STRUCTURE is auto-generated; verify it reflects changes.
+All three are `#![no_std]` and ship with no platform dependency.
 
-Rules:
-- Do not change tests to make them pass; fix design or code.
-- Keep changes small and merge-friendly.
-- `#![no_std]`, no `alloc`, no platform deps.
-- Prefer trait contracts over concrete types in sub-crate APIs.
-- Every numeric with a tradeoff axis carries a `Strategy` parameter.
+## Picking primitives
 
-## Graduation to real repo
+Reach for the exact width: `Uint<3>`, `Uint<14>`, `Int<47>`. The
+`Strategy` parameter defaults to `Warm`. Choose `Hot` for the fast
+release path, `Precise` for saturating semantics, `Cold` for bitpacked
+column-store layouts. The strategy marker is a type-level knob that
+drives container width and codegen; it does not change at runtime.
 
-When an arvo crate's design is locked and implementation stabilises, its
-contents move from `mock/crates/<name>/` to `crates/<name>/` at the
-repo root. Root-level `Cargo.toml` workspace takes over from
-`mock/Cargo.toml`.
+Fixed-point arithmetic uses `UFixed<I, F, S>` and `IFixed<I, F, S>`,
+where `I` is integer bit count and `F` is fractional bit count. Floats
+use `FastFloat` and `StrictFloat`. Boolean values use `Bool`. Pointer-
+width sizes use `USize` and the `Cap` newtype for type-level capacities.
 
-Until then, everything lives under `mock/`.
+## Pre-1.0 stability
+
+arvo is in pre-1.0 design phase. Public surfaces stabilise at `0.0.x`;
+expect breaking changes between minor versions. Consumers depending on
+arvo today pin a specific version; once the surface stabilises and the
+first `0.1` release ships, semver guarantees apply.
+
+## Reporting issues
+
+Issues and feature discussion happen on the GitHub repo. Patches arrive
+as feature-branch PRs. The repository's CONTRIBUTING file (when shipped)
+describes the local validation loop.

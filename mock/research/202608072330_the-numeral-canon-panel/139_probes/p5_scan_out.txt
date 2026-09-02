@@ -1,0 +1,14 @@
+magic for the fast arm : 0x5bd1e995
+magic for the small arm: 0x27d4eb2d
+
+library-preset: body=5 lines, arm_fast=1, arm_small=0, conditional branches=0
+consumer-strategy: body=5 lines, arm_fast=0, arm_small=1, conditional branches=0
+runtime-selected: body=9 lines, arm_fast=1, arm_small=1, conditional branches=1
+
+verdict:
+  T2a library preset (time-weighted) keeps ONLY the fast arm: PASS
+  T2b consumer strategy (space-weighted) keeps ONLY the small arm: PASS
+  T3 runtime-selected control keeps BOTH arms, so the scan can see a
+     surviving arm and the two PASSes above are not free: PASS
+
+scan failures: 0

@@ -3,13 +3,11 @@ name = "arvo-strategy"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+description = "A name bound to a placement objective and an adaptation selection"
 
 [dependencies]
-notko.workspace = true
-arvo-transparent.workspace = true
+arvo-format.workspace = true
+arvo-placement.workspace = true
 
-[build-dependencies]
-mockspace.workspace = true
-
-[features]
-default = []
+[lints.rust]
+unsafe_op_in_unsafe_fn = "forbid"

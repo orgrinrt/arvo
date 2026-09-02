@@ -1,0 +1,33 @@
+=== anchors the rows carry (normalised targets) ===
+106 108 63 74 90 AGREEMENTS 
+count: 6
+
+=== 63_spj_consolidation_the_format_concept.md : 41 distinct anchors, 0 survive into a row ===
+--- DROPPED (the set difference, printed rather than described) ---
+00 04 08 18 20 22 23 25 28 35 35_probes 40 42 42_probes 43 50 51 53 54 55 55_probes 56 56_probes 57 57_probes 58 58_probes 59 60 60_probes 61 61_probes 62 62_probes 63_probes 64 7 DROPLIST.md INTENTS.md OPTIONS.md RULES.md 
+
+=== 74_giesen_consolidation_the_number_system_concept.md : 23 distinct anchors, 1 survive into a row ===
+--- DROPPED (the set difference, printed rather than described) ---
+00 01 16 35 51 55 62 64 65 66 67 68 69 70 71 72 73 75 DROPLIST.md INTENTS.md OPTIONS.md RULES.md 
+
+=== 90_giesen_consolidation_derived_algebraic_laws.md : 38 distinct anchors, 2 survive into a row ===
+--- DROPPED (the set difference, printed rather than described) ---
+135 2 28 35 42 55 57 60_probes 68 73 76 76_probes 77 77_probes 79 79_probes 80 80_probes 81 82 82_probes 83 84 84_probes 85 86 86_probes 87 88 89 89_probes 91 DROPLIST.md INTENTS.md OPTIONS.md RULES.md 
+
+=== 106_giesen_consolidation_the_strategy_axis.md : 41 distinct anchors, 2 survive into a row ===
+--- DROPPED (the set difference, printed rather than described) ---
+0 1 100 100_probes 101 101_probes 102 102_probes 103 104 105 106_probes 107 2 22 25 35 40 6 82 83 87 88 9 93 93_probes 94 95 96 97 97_probes 98 98_probes 99 DROPLIST.md INTENTS.md OPTIONS.md PRIOR_CALLS.md RULES.md 
+
+=== AGREEMENTS.md : 77 distinct anchors, 5 survive into a row ===
+--- DROPPED (the set difference, printed rather than described) ---
+00 01 04 08 103 104 105 107 109 111 112 113 114 117 119 122 123 124 125 132 136 137 138 139 146 151 152 153 156 161 164 165 166 173 176 177 178 28 32 34 35_probes 36 37 38 39 42 43 55 56 57 57_probes 60 61 62 65 66 67 68 76 77 80 83 84 85 86 87 88 95 DROPLIST.md INTENTS.md OPTIONS.md RULES.md 
+
+=== CONTROL: each source diffed against itself, which must be empty ===
+63_spj_consolidation_the_format_concept.md               self-diff = 0
+74_giesen_consolidation_the_number_system_concept.md     self-diff = 0
+90_giesen_consolidation_derived_algebraic_laws.md        self-diff = 0
+106_giesen_consolidation_the_strategy_axis.md            self-diff = 0
+AGREEMENTS.md                                            self-diff = 0
+
+=== CONTROL 2: a target no source can contain must be absent from every kept set ===
+absent, as required

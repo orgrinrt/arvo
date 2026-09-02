@@ -1,0 +1,100 @@
+cross-arm agreement assertions in the committed bench corpus
+
+  bitpack-carrier-shared             tests   9   FORCES AGREEMENT
+      src/lib.rs: padal_agrees_below_one_drain
+      src/lib.rs: padal_agrees_across_a_drain_boundary
+  bitpack-contend-shared             tests  12   FORCES AGREEMENT
+  bitpack-footprint-shared           tests   6   FORCES AGREEMENT
+      src/lib.rs: column256_agrees
+      src/lib.rs: column4096_agrees
+      src/lib.rs: column16384_agrees
+  bitpack-plan-shared                tests   5   FORCES AGREEMENT
+  bitpack-shared                     tests   3   FORCES AGREEMENT
+  bitpack-wide-shared                tests   6   FORCES AGREEMENT
+  bitpack-write-contend-shared       tests  15   FORCES AGREEMENT
+      src/kernels.rs: windowed_agrees_single_call
+      src/kernels.rs: windowed_agrees_split_across_period_aligned_calls
+      src/kernels.rs: single_threaded_plain_agrees
+  quantiser-fadd-shared              tests   1   FORCES AGREEMENT
+  quantiser-radix-shared             tests   3   FORCES AGREEMENT
+  satfold-shared                     tests  11   FORCES AGREEMENT
+      src/lib.rs: every_kernel_agrees_with_the_oracle_at_every_length
+  warm-clamp-shared                  tests   7   FORCES AGREEMENT
+      src/lib.rs: every_arm_agrees_with_the_oracle_on_every_key
+  warm-container-shared              tests  15   FORCES AGREEMENT
+      src/lib.rs: all_four_arms_agree_with_each_other_and_with_the_oracle_on_every_key
+      src/lib.rs: saturating_agrees_with_the_oracle_in_both_containers
+      src/lib.rs: the_oracle_is_sensitive_to_a_perturbed_column
+  wide-rung-shared                   tests  29   FORCES AGREEMENT
+      src/oracle.rs: the_oracle_projection_keeps_exactly_the_declared_bits
+      src/oracle.rs: the_oracle_carries_across_its_limb_boundary
+      src/tests.rs: all_five_arms_agree_at_every_declared_key
+
+  crates: 13, with an agreement or oracle assertion: 13
+
+the one exception, and what it is and is not
+      1  //! Packed write, the naive parallel encoder a caller would produce without
+      2  //! knowing about the packed representation's own period, run against
+      3  //! `bitpack-write-contend-race`'s deliberately misaligned sizes.
+      4  //!
+      5  //! This is the same `kern_packed_plain` function `bitpack-write-aligned`
+      6  //! runs; only the `(N, T)` pair differs, which is the whole point: the
+      7  //! kernel is not the defect, the split is. Included as a demonstration arm,
+      8  //! not as a candidate. `bitpack-write-contend-shared`'s own stress tests
+      9  //! (`stress.rs`) already measured this exact kernel corrupting 16 to 19
+     10  //! percent of concurrent passes at a misaligned split on this host; this
+     11  //! variant exists to show what that costs (or does not cost) against the
+     12  //! guarded fix, not to compete for the fastest time. The harness's own
+     13  //! cross-arm validation may or may not catch an individual run's corruption
+     14  //! (a race is not guaranteed to fire on every pass), which is itself part of
+     15  //! the finding: a defect that is not always caught is worse than one that
+     16  //! fails loudly every time.
+
+  So one arm may compute a different answer, on purpose, and its own
+  header calls it a demonstration arm rather than a candidate. That is
+  a CORRECTNESS difference from a data race, not an accuracy difference
+  from quantisation, and its magnitude is measured in the crate's stress
+  test as a corruption RATE over trials rather than as a bench column.
+  A rate of wrong answers is exactly the shape of an accuracy
+  coordinate, and it sits in a test rather than in the CSV, so no
+  weighting can read it.
+
+what follows
+  A family whose arms are required to agree cannot measure an accuracy
+  difference between them, because there is none to measure. That is
+  correct bench design and it is the right requirement: without it the
+  fast arm is fast because it is doing less.
+
+  It does mean that no committed bench family carries a column for how
+  wrong an arm is, nor one for how far an arm departs from a reference
+  semantics. So of the four intents op has stated, two have coordinates
+  in the committed corpus (time and footprint) and two do not. A
+  weighting cannot distinguish strategies along a coordinate nobody has
+  varied, so on this corpus the accuracy-first and the
+  imitate-the-native-primitive intents have no expression at all.
+
+  This is a gap in the corpus rather than in the design, and it is the
+  kind op named as inside the panel's scope at `95`: a harness question
+  that blocks pricing. What is missing is a family whose arms compute
+  DIFFERENT answers on purpose, with the difference measured against an
+  exact reference and reported as a column. `35`'s law probes measure
+  exactly that quantity and are not bench arms; the write-unsound arm
+  has exactly that property and reports no such column; nothing joins
+  the two.
+
+and the same question asked of the arms themselves
+  In the carrier family used by p1 and p6, every arm decodes the same
+  13-bit column and the crate asserts the decode against an independent
+  ground truth, so the five or six arms differ in time and footprint and
+  in nothing else. Any weighting over that family is a weighting over
+  two coordinates, whatever the strategy claims to weigh.
+
+  bitpack-carrier-shared/src/lib.rs:515
+      509                  .wrapping_add(
+      510                      u16::from_le_bytes([buf[OFF_D16 + i * 2], buf[OFF_D16 + i * 2 + 1]]) as u64,
+      511                  );
+      512          }
+      513          assert_eq!(
+      514              scalar, truth,
+      515              "scalar decode disagrees with ground truth at N={N}"
+      516          );

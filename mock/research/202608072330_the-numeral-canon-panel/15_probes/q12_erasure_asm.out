@@ -1,0 +1,13 @@
+emitted assembly, aarch64-apple-darwin, -O
+
+--- q12_arvo_hot: ALIASED to _q12_arvo_cold
+--- q12_arvo_cold (3 instructions)
+    madd	w8, w1, w0, w2
+    and	w0, w8, #0xffff
+    ret
+--- q12_arvo_signed (3 instructions)
+    madd	w8, w1, w0, w2
+    sxth	w0, w8
+    ret
+--- q12_native_u16: ALIASED to _q12_arvo_cold
+--- q12_native_i16: ALIASED to _q12_arvo_signed

@@ -1,0 +1,20 @@
+H:  a*b mod 2^(F+1)  in  { 2^(F-1)+1 , 3*2^(F-1)-1 }
+
+  F     |D|   2^(F-1)  count ok   H exact   r1 only   r2 only   shifted
+  4       8         8      True      True     False     False     False
+  5      16        16      True      True     False     False     False
+  6      32        32      True      True     False     False     False
+  7      64        64      True      True     False     False     False
+  8     128       128      True      True     False     False     False
+  9     256       256      True      True     False     False     False
+ 10     512       512      True      True     False     False     False
+
+C-R  H predicts exactly at every width 4..10: True   (must be True)
+C-S  the 'r1 only' and 'r2 only' columns must be all False
+C-T  the 'shifted' column must be all False
+
+READING. 2^(F-1) and 3*2^(F-1) are the two ODD multiples of 2^(F-1) modulo
+2^(F+1): the tie points of the F-level rounding. The disagreeing products sit
+exactly one unit from a tie, on the side the single discarded bit rounds ONTO
+it, where ties-to-even then breaks the other way from the direct rounding.
+The count is 2^(F-1) because that is how many products land there.

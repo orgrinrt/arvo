@@ -1,0 +1,48 @@
+P1b. the gap between sections and rationalisable sections is structural
+
+part one: the counts, from the bound rather than from any data
+ regions   arms    k           sections          bound ratio
+       2      4    2                 16             13 0.812
+       4      4    2                256             25 0.0977
+       6      4    2               4096             37 0.00903
+       8      4    2              65536             49 0.000748
+      12      4    2           16777216             73 4.35e-06
+      20      4    2      1099511627776            121 1.1e-10
+       2      6    2                 36             31 0.861
+       4      6    2               1296             61 0.0471
+       6      6    2              46656             91 0.00195
+       8      6    2            1679616            121 7.2e-05
+      12      6    2         2176782336            181 8.32e-08
+      20      6    2   3656158440062976            301 8.23e-14
+
+       2      4    3                 16             79 4.94
+       4      4    3                256            301 1.18
+       6      4    3               4096            667 0.163
+       8      4    3              65536           1177 0.018
+      12      4    3           16777216           2629 0.000157
+      20      4    3      1099511627776           7261 6.6e-09
+       2      6    3                 36            466 12.9
+       4      6    3               1296           1831 1.41
+       6      6    3              46656           4096 0.0878
+       8      6    3            1679616           7261 0.00432
+      12      6    3         2176782336          16291 7.48e-06
+      20      6    3   3656158440062976          45151 1.23e-11
+
+part two: exact enumeration on random cost tables, two cost dimensions
+checks the bound holds and is not vacuous, over 400 random tables each
+ regions   arms       sections      bound   max seen  mean seen
+       6      5          15625         61         12       6.18
+       6      6          46656         91         11       6.55
+       8      4          65536         49         12       7.13
+      10      5        9765625        101         15       9.56
+      12      6     2176782336        181         18      12.08
+
+no table exceeded the bound in any trial, and every observed count is
+orders below the section count. So the finding P1 measured on committed
+data is what the shape of the question forces, and the committed data is
+one instance of it rather than the reason for it.
+
+What this does NOT say. It does not say the weighting reading is right and
+the section reading is wrong. It says they are different propositions with
+a quantified gap, so an agreement recorded between them is an agreement
+between two claims rather than two derivations of one claim.

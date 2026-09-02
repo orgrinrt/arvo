@@ -1,0 +1,54 @@
+section A: do the licensed arms agree with the fold as written
+
+declared window                       vectors  lanes4 != seq lanes16 != seq
+NonNeg<0,127>   licensed               200000              0              0
+NonPos<0,128>   licensed               200000              0              0
+NonNeg<3,40>    licensed               200000              0              0
+Win<-128,127>   REFUSED                200000         146323         167875
+      witness at len 191: seq=108 lanes16=-1
+Win<-1,127>     REFUSED                200000           1190           1588
+      witness at len 31: seq=127 lanes16=126
+
+  reading: the licensed rows must be zero and the refused rows must be
+  non-zero. A refused row at zero would mean the instrument never enters
+  the path the declaration exists to forbid.
+
+section B: the closure predicate against a length-aware one
+
+for a signed window at model width W, the first fold length n at which
+SOME vector drawn from the window makes two parenthesisations disagree.
+`closure` is what p2's predicate says; `first n` is what a length-aware
+predicate could say instead.
+
+width         window     sign-uniform      first n  closure assoc
+    4         [-8,7]            false            4          false
+    4         [-1,1]            false    none <= 7          false
+    4         [-1,2]            false            6          false
+    4         [-2,2]            false            6          false
+    4         [-1,7]            false            4          false
+    4          [0,7]             true    none <= 7           true
+    4         [-8,0]             true    none <= 7           true
+    4         [-3,3]            false            4          false
+
+    5       [-16,15]            false            4          false
+    5         [-1,1]            false    none <= 7          false
+    5         [-1,2]            false    none <= 7          false
+    5         [-2,2]            false    none <= 7          false
+    5        [-1,15]            false            4          false
+    5         [0,15]             true    none <= 7           true
+    5        [-16,0]             true    none <= 7           true
+    5         [-3,3]            false            7          false
+
+    6       [-32,31]            false            4          false
+    6         [-1,1]            false    none <= 7          false
+    6         [-1,2]            false    none <= 7          false
+    6         [-2,2]            false    none <= 7          false
+    6        [-1,31]            false            4          false
+    6         [0,31]             true    none <= 7           true
+    6        [-32,0]             true    none <= 7           true
+    6         [-3,3]            false    none <= 7          false
+
+reading: any row where sign-uniform is false and `first n` is above 2 is a
+region the closure predicate refuses and a length-aware predicate could
+license, for folds shorter than `first n`. That predicate needs the length
+at monomorphisation, which a runtime-length fold does not have.

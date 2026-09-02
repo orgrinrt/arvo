@@ -1,0 +1,36 @@
+P2. is a law set a coordinate of a primitive, or a projection of one?
+==============================================================================
+configurations swept: 48
+  W in {3,4}, F in {0,1,2}, signed in {no,yes},
+  policy in {sat,wrap}, rounding in {near,trunc}, radix = 2
+
+distinct algebras (full operation tables): 40
+distinct law sets over 10 laws:      7
+
+TEST 1 law set is a function of the algebra: PASS
+  (40 algebra classes checked, 0 carried more than one law set)
+
+TEST 2 law set is injective on algebras: NO
+  one law set {add_comm, add_assoc, mul_comm, mul_assoc, distrib_add, add_zero, mul_one, add_monotone} is shared by 2 DIFFERENT algebras, e.g. ['uW3F0/sat/near', 'uW4F0/sat/near']
+  one law set {add_comm, add_assoc, mul_comm, mul_assoc, distrib_add, distrib_sub, add_zero, mul_one, neg_involutive} is shared by 4 DIFFERENT algebras, e.g. ['uW3F0/wrap/near', 'iW3F0/wrap/near', 'uW4F0/wrap/near', 'iW4F0/wrap/near']
+  one law set {add_comm, mul_comm, add_zero, mul_one, add_monotone} is shared by 8 DIFFERENT algebras, e.g. ['iW3F0/sat/near', 'iW3F1/sat/near', 'iW3F1/sat/trunc', 'iW4F0/sat/near']
+  one law set {add_comm, add_assoc, mul_comm, add_zero, mul_one, add_monotone} is shared by 8 DIFFERENT algebras, e.g. ['uW3F1/sat/near', 'uW3F1/sat/trunc', 'uW3F2/sat/near', 'uW3F2/sat/trunc']
+
+TEST 3 can a law set be varied with every other coordinate fixed?
+  configurations sharing all other coordinates but differing in law set: 0
+  verdict: law set is DETERMINED (a projection)
+
+TEST 4 law set read as a demand rather than a component:
+  demand ('add_assoc',)                                satisfied by  36/48 configs; F in {F=0,F=1,F=2}, policy in {sat,wrap}
+  demand ('add_assoc', 'distrib_add')                  satisfied by  12/48 configs; F in {F=0}, policy in {sat,wrap}
+  demand ('add_assoc', 'mul_assoc', 'distrib_add')     satisfied by  12/48 configs; F in {F=0}, policy in {sat,wrap}
+  demand ('distrib_sub',)                              satisfied by   8/48 configs; F in {F=0}, policy in {wrap}
+
+law table, unsigned, radix 2, nearest rounding, W=4:
+  config                   add_comm   add_assoc    mul_comm   mul_assoc distrib_add distrib_sub    add_zero     mul_one add_monoton neg_involut
+  uW4F0/sat/near                 yes         yes         yes         yes         yes           .         yes         yes         yes           .
+  uW4F0/wrap/near                yes         yes         yes         yes         yes         yes         yes         yes           .         yes
+  uW4F1/sat/near                 yes         yes         yes           .           .           .         yes         yes         yes           .
+  uW4F1/wrap/near                yes         yes         yes           .           .           .         yes         yes           .         yes
+  uW4F2/sat/near                 yes         yes         yes           .           .           .         yes         yes         yes           .
+  uW4F2/wrap/near                yes         yes         yes           .           .           .         yes         yes           .         yes

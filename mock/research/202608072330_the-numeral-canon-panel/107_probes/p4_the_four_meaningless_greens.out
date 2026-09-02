@@ -1,0 +1,36 @@
+=== (3) does tail -4 read the doc-test block? ===
+-- structure of a real cargo test tail, from bitpack-shared --
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+-- what tail -4 alone would have reported --
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+-- exit status of the pipeline --
+exit=0
+
+=== (4) the target/ contamination of a source grep ===
+grep -rl outputs_may_differ variants/            :      133
+grep -rl ... --exclude-dir=target                :        1
+
+-- where the contaminating hits live --
+target/debug/deps
+target/debug/incremental/bench_satfold_shared-048csumaso3gy/s-hlbby7domn-1xh29m4-c0t6idaikl9m0hzhm2iw9y1iy
+target/debug/incremental/bench_satfold_shared-048csumaso3gy/s-hlbby9di7x-1l6jxqs-c0t6idaikl9m0hzhm2iw9y1iy
+target/debug/incremental/bench_satfold_shared-048csumaso3gy/s-hlbbyb7hez-0jw2euc-c0t6idaikl9m0hzhm2iw9y1iy
+target/debug/incremental/bench_satfold_shared-048csumaso3gy/s-hlbbyd45md-12ydrs1-c0t6idaikl9m0hzhm2iw9y1iy
+
+-- and the same for the other counts 106 section 7 reports --
+  score_output           contaminated=84    clean=0    
+  score_dimensions       contaminated=84    clean=0    
+  max_relative_error     contaminated=84    clean=0    
+  validate_output        contaminated=428   clean=16   

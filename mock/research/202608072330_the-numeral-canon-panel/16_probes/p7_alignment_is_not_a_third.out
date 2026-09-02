@@ -1,0 +1,19 @@
+(a) can two declarations share size and stride but need different alignment?
+    WideBits32   size  32  align   1   stride would be 256 bits
+    AlignedWide32 size 32  align  16   stride would be 256 bits
+    yes. so alignment is not recoverable from the stride.
+
+(b) does the CARRIER already distinguish them?
+    align_of is a property of the type, so a site holding the carrier type reads
+    1 and 16 directly. it does not need a third component.
+
+(c) the one case where no carrier holds the run: a packed column's base.
+    a 13-bit field at unknown phase touches at most 3 bytes.
+    every byte offset is reachable, so no base alignment makes any element aligned;
+    align 1 is sufficient and nothing higher is required for correctness.
+    what a higher base alignment buys is a load-crossing question, and that is
+    UNPRICED: no bench harness run in this panel bears on it.
+
+verdict: alignment rides on the carrier for the unpacked case and is a free choice
+for the packed base. it is not a third output. it IS a reason the carrier has to be
+a type rather than a width, because a width cannot carry an alignment.

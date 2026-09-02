@@ -4,6 +4,18 @@ apply_to: ["**/Cargo.toml"]
 
 ## Cargo workspace rules
 
+> **The crate names below name a tree that no longer exists.** `mock/crates/` was
+> cleared for the canon work, and the decomposition is being redecided from
+> scratch. Read what follows for the discipline it states, never for the
+> architecture it names. Do not restore a crate because this file mentions it,
+> and do not cite this file as evidence that a surface exists. **Authority is the
+> registry**, `mock/registry/*.toml`, declared as `canon_paths` in
+> `mockspace.toml`. Query it with `cargo mock query` and cite a row by its slug.
+> A `ruling` row at `rung = "ratified"` governs; anything else, including every
+> file under `mock/research/`, is agent output nobody ratified.
+
+
+
 ### Mock workspace inheritance
 
 - Every `arvo*` crate uses `version.workspace = true`,
@@ -16,26 +28,11 @@ apply_to: ["**/Cargo.toml"]
 
 ### Layer rules (dependency direction)
 
-arvo is a four-layer stack. Cross-layer imports flow one way only.
-
-| Layer | Crate | Allowed deps |
-|---|---|---|
-| L0 | `arvo` | (none within arvo family) |
-| L1 | `arvo-bits` | `arvo` |
-| L2 | `arvo-bitmask` | `arvo-bits` |
-| L2 | `arvo-graph` | `arvo`, `arvo-bitmask` |
-| L2 | `arvo-sparse` | `arvo`, `arvo-bitmask` |
-| L2 | `arvo-comb` | `arvo`, `arvo-bitmask` |
-| L3 | `arvo-spectral` | `arvo`, `arvo-sparse` |
-
-Notes:
-
-- `arvo-graph` / `arvo-sparse` / `arvo-comb` depend on `arvo-bitmask`
-  (not `arvo-bits` directly). They reach bit contracts transitively.
-- `arvo-spectral` uses `arvo-sparse` for the matrix layout. Spectral
-  math doesn't need bitmask adjacency.
-- The lint `forbidden-imports` in `mockspace.toml` encodes this
-  table. Violations are rejected at build time.
+The layer table that stood here encoded the removed decomposition and is gone.
+Dependency direction as a principle survives: a lower layer never depends on a
+higher one, and the direction is part of the design rather than an accident of
+what compiled. Which layers exist, and what they are called, is what the canon
+work is deciding.
 
 ### No external runtime deps (except notko foundation)
 
@@ -66,21 +63,21 @@ arvo does not ship a proc-macro crate. `proc_macro_crates = []` in
 `mockspace.toml`. If a `_derive` crate becomes necessary, its
 addition is a design-round topic, not a routine edit.
 
-### build.rs pattern
+### No build script carries the tooling
 
-Every arvo crate has a one-line `build.rs`:
+arvo crates do not depend on mockspace and do not run it from a
+build script. The `cargo mock` launcher is installed once on the
+machine, reads `mockspace.toml` at the repo root, and resolves its
+own engine pin from the `mockspace_branch` there.
 
-```rust
-fn main() { mockspace::bootstrap_from_buildscript(); }
-```
+This keeps the published crates free of a git dependency. A build
+script that pulled the design tooling in would make every consumer
+of arvo fetch it too, for a tool that does nothing at their build
+time, and would block publishing outright, since a registry refuses
+a crate whose dependency resolves to a git source.
 
-and:
-
-```toml
-[build-dependencies]
-mockspace = { workspace = true }
-```
-
-Mockspace's bootstrap writes `.cargo/config.toml` (`cargo mock`
-alias) and installs hooks under `mock/target/hooks/` on first build.
-Do not hand-author those files.
+`mock/crates/arvo/build.rs` is the one build script that remains. It
+declares the `arvo_fast_math` cfg that hilavitkutin-build's FastMath
+pragma sets, so rustc does not warn on `#[cfg(arvo_fast_math)]`. It
+has nothing to do with the design tooling. A new crate needs no
+build script at all.

@@ -1,0 +1,30 @@
+p6: which chain laws reduce to a lower arity, and which do not
+window Q = [-8, 7]
+
+GROUPING: disagreeing tuples out of all tuples, over every parenthesisation
+     n                   wrap      saturate (signed)
+     2            0 / 256                0 / 256    
+     3            0 / 4096             952 / 4096   
+     4            0 / 65536          28917 / 65536  
+     5            0 / 1048576       623049 / 1048576
+
+  wrap is zero at every n, which is what the arity-3 verdict predicts by the
+  generalized associative law. saturate is nonzero from n = 3 and stays so.
+  In both directions the arity-3 verdict determines every higher arity, so a
+  compile-time check of THIS kind of chain law only ever needs arity 3.
+
+SCHEDULE: stepwise rounding against one rounding at the end, F = 4
+  operands swept over [-64, 64) step 7
+     n      disagreeing           of
+     2                0          361
+     3             2654         6859
+     4            77399       130321
+     5          1750983      2476099
+
+  n = 2 is zero by construction: one rounding happens under either schedule,
+  so there is nothing to disagree about. Every higher n is a fresh statement
+  with no lower-arity statement implying it, so the arity-3 verdict carries no
+  information about the arity-5 one and no lifting theorem is available.
+
+  This is the kind of chain statement op's I7 is about, and it is the kind the
+  const-eval frontier's arity axis bites on in full.

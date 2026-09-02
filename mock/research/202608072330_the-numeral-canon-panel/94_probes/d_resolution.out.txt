@@ -1,0 +1,41 @@
+# probe D output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O, aarch64-apple-darwin
+
+probe D: what a resolved marker may claim
+declared type: W = 16, F = 8, one = 256
+
+case 1: y = a + b, addition performed EXACTLY, `a` off a lossy path
+  drop          pairs     y != exact  max |err| (ulp)   max |err| in a
+     0         450088              0                0                0
+     1         450088         225044                1                1
+     2         450088         337566                3                3
+     4         450088         421894               15               15
+     8         450088         448310              255              255
+
+  the two max columns are equal at every row, which is the whole point:
+  the result's error is exactly the operand's error, and the operation
+  had no opportunity to introduce or remove any of it.
+
+case 2: y = a / b, division performed EXACTLY, `a` off a lossy path
+  drop          pairs     y != exact  max |err| (ulp)
+     0         202868              0                0
+     1         202868           2810              256
+     2         202868           7444              768
+     4         202868          26154             3840
+     8         202868         152345            65280
+
+case 3: does the operand's ulp bound bound the RESULT's ulp error?
+        op   drop          pairs      operand bound     max result err meet tight
+       add      1         299354                  1                  1        yes
+       add      2         299354                  3                  3        yes
+       add      4         299354                 15                 15        yes
+       add      8         299354                255                255        yes
+       mul      1         299354                  1                256         NO
+       mul      2         299354                  3                766         NO
+       mul      4         299354                 15               3827         NO
+       mul      8         299354                255              65055         NO
+
+reading of case 3: an ulp bound survives addition and does not survive
+multiplication, because the operand's error is scaled by the other
+operand. A lattice over guarantees stated in ulps is therefore not
+closed under the operations the type supports.

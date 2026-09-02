@@ -1,0 +1,15 @@
+[package]
+name = "bench-wide-rung-ragged-overread"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_wide_rung_ragged_overread"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-wide-rung-shared = { path = "../wide-rung-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

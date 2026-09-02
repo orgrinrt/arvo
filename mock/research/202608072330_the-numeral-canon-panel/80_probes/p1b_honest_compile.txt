@@ -1,0 +1,10 @@
+warning: struct `SatSigned` is never constructed
+  --> p1b_computed_law_refuses.rs:72:8
+   |
+72 | struct SatSigned;
+   |        ^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+

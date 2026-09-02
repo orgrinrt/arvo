@@ -1,0 +1,9 @@
+necessity violations for clamped multiplication: 153
+  of which the induced operation is CONSTANT:    153
+  residue (associative, not absorbing, not constant): 0
+
+instrument: constancy checker saw constant true and non-constant true
+
+verdict: absorption is necessary for clamped multiplication EXCEPT on collapsed 
+operations: 153 of 153 violations are constant induced operations.
+P2B WORKS

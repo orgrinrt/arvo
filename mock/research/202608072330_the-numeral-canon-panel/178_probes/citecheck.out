@@ -1,0 +1,31 @@
+OK  174:384   [1 lines]
+      wrong. A4 rests on r1, and its `pi` is the clamp; a grid-shaped `S` would change the shortfall count and
+OK  174:384   [1 lines]
+      wrong. A4 rests on r1, and its `pi` is the clamp; a grid-shaped `S` would change the shortfall count and
+OK  175:296-299   [4 lines]
+      An empirical claim two parties reach independently is corroborated because the world had to cooperate
+      twice. A definition two parties reach independently may be corroborated, or may be two members of one
+      model family finding the same framing natural on one premise set, which is what shared training
+OK  175:301   [1 lines]
+      `169` found one shared input by looking for it. Nothing establishes it found the only one, and my
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  60:210   [1 lines]
+      **no expressible form**. That is a statability argument, not a benchmark, and it is the central
+OK  173:676   [1 lines]
+      1. **The container premise** (`156` item 1), **Q65's marker question**, and **X1 through X4**,
+OK  175:296-299   [4 lines]
+      An empirical claim two parties reach independently is corroborated because the world had to cooperate
+      twice. A definition two parties reach independently may be corroborated, or may be two members of one
+      model family finding the same framing natural on one premise set, which is what shared training
+OK  175:301   [1 lines]
+      `169` found one shared input by looking for it. Nothing establishes it found the only one, and my
+OK  174:384   [1 lines]
+      wrong. A4 rests on r1, and its `pi` is the clamp; a grid-shaped `S` would change the shortfall count and
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 10 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

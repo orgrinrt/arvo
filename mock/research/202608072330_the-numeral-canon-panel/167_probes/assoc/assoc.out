@@ -1,0 +1,19 @@
+== Associativity, exhaustive over the whole domain ==
+                        operator        W=4 (16^3)        W=6 (64^3)       W=8 (256^3)     verdict
+                    wrapping add          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+       saturating add (unsigned)          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+       saturating sub (unsigned)  3040 (742188ppm)212352 (810059ppm)13882880 (827484ppm)         not
+                    wrapping mul          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+       saturating mul (unsigned)          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+   fixed mul, truncate (F = W/2)   878 (214355ppm) 53032 (202301ppm)2097706 (125033ppm)         not
+fixed mul, round nearest (F = W/2)   958 (233887ppm) 53648 (204651ppm)2092854 (124744ppm)         not
+                             min          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+                             max          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+                  average, floor  3152 (769531ppm)246080 (938721ppm)16516352 (984451ppm)         not
+                      bitwise or          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+                     bitwise xor          0 (0ppm)          0 (0ppm)          0 (0ppm)       ASSOC
+
+  NC8: associative operators found = 8, non-associative = 4
+       (both must be > 0): ok
+  NC9: the self-comparison reports 0 disagreements across all 12 operators
+       (must be exactly 0, showing the real test compares two distinct expressions): ok

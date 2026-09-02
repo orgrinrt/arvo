@@ -1,0 +1,61 @@
+=== sat arm (law false) ===
+warning: constant `N` is never used
+  --> p2b_swept_verdict_at_shipped_width.rs:30:7
+   |
+30 | const N: i32 = HI - LO + 1;
+   |       ^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `wrap_add` is never used
+  --> p2b_swept_verdict_at_shipped_width.rs:43:10
+   |
+43 | const fn wrap_add(a: i32, b: i32) -> i32 {
+   |          ^^^^^^^^
+
+error[E0080]: evaluation panicked: not associative at this width
+  --> p2b_swept_verdict_at_shipped_width.rs:83:23
+   |
+83 |     const PROOF: () = assert!(assoc_holds(), "not associative at this width");
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<Policy as AssocProven>::PROOF` failed here
+
+note: erroneous constant encountered
+  --> p2b_swept_verdict_at_shipped_width.rs:89:14
+   |
+89 |     let () = <P as AssocProven>::PROOF;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error; 2 warnings emitted
+
+For more information about this error, try `rustc --explain E0080`.
+rustc --edition 2021 -O --cfg sat p2b_swept_verdict_at_shipped_width.rs -o   0.03s user 0.08s system 21% cpu 0.504 total
+sat exit: 1
+
+=== wrap arm (law true) ===
+warning: function `sat_add` is never used
+  --> p2b_swept_verdict_at_shipped_width.rs:32:10
+   |
+32 | const fn sat_add(a: i32, b: i32) -> i32 {
+   |          ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+error: constant evaluation is taking a long time
+  --> p2b_swept_verdict_at_shipped_width.rs:58:9
+   |
+58 |         wrap_add(a, b)
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: this lint makes sure the compiler doesn't get stuck due to infinite loops in const eval.
+           If your compilation actually takes a long time, you can safely allow the lint
+help: the constant being evaluated
+  --> p2b_swept_verdict_at_shipped_width.rs:83:5
+   |
+83 |     const PROOF: () = assert!(assoc_holds(), "not associative at this width");
+   |     ^^^^^^^^^^^^^^^
+   = note: `#[deny(long_running_const_eval)]` on by default
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+rustc --edition 2021 -O --cfg wrap p2b_swept_verdict_at_shipped_width.rs -o   4.45s user 0.02s system 99% cpu 4.479 total
+wrap exit: 1

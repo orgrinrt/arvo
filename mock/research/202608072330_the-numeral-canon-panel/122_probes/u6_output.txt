@@ -1,0 +1,31 @@
+u6. Every citation in `122`, and every restated clause's evidence
+==============================================================================
+
+  citations checked : 17
+  passing           : 17
+  failing           : 0
+  controls that correctly failed : 3 of 3
+
+  Evidence present, per restated clause:
+
+    ok       4.2 replaced                 4 anchors present
+    ok       4.3 amended                  1 anchors present
+    ok       4.4 replaced                 7 anchors present
+    ok       4.5 amended                  2 anchors present
+    ok       4.6 amended                  4 anchors present
+    ok       4.7 amended                  5 anchors present
+    ok       4.8 stands                   1 anchors present
+    ok       4.9 stands                   2 anchors present
+    ok       4.10 amended                 5 anchors present
+    ok       A2 as confirmed              1 anchors present
+    ok       A13 corrected                4 anchors present
+    ok       A18 new                      1 anchors present
+    ok       A19 new                      3 anchors present
+    ok       A20 new                      1 anchors present
+    ok       section 7 withdrawals        3 anchors present
+    control fired as it must  C2 CONTROL, must be missing: missing ['F999-1']
+
+  restated clauses whose evidence is incomplete : 0
+
+  Every citation opens and says what the claim depends on, every restated
+  clause carries the evidence it rests on, and every control failed.

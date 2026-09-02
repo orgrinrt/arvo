@@ -1,0 +1,137 @@
+================================================================================================
+v1. The F = 0 widening, checked, and every pin it reaches
+================================================================================================
+
+P1 and P4. The vacuous set at F = 0, all six modes, exhaustive.
+
+    W signedness  F op      pairs  modes disagree on
+    3 unsigned    0 add        64                  0
+    3 unsigned    0 sub        64                  0
+    3 unsigned    0 mul        64                  0
+    3 unsigned    0 min        64                  0
+    3 signed      0 add        64                  0
+    3 signed      0 sub        64                  0
+    3 signed      0 mul        64                  0
+    3 signed      0 min        64                  0
+    4 unsigned    0 add       256                  0
+    4 unsigned    0 sub       256                  0
+    4 unsigned    0 mul       256                  0
+    4 unsigned    0 min       256                  0
+    4 signed      0 add       256                  0
+    4 signed      0 sub       256                  0
+    4 signed      0 mul       256                  0
+    4 signed      0 min       256                  0
+    5 signed      0 add      1024                  0
+    5 signed      0 sub      1024                  0
+    5 signed      0 mul      1024                  0
+    5 signed      0 min      1024                  0
+
+C3. The same sweep with a mode that is not a retraction, which must
+    break it or the sweep is not testing the property the argument uses.
+
+    3 signed      0 add        64                 64
+    3 signed      0 mul        64                 64
+    4 unsigned    0 add       256                256
+    4 unsigned    0 mul       256                256
+
+------------------------------------------------------------------------------------------------
+P2 and P3. The controls: where rounding does fire.
+
+    W signedness  F op      pairs  modes disagree on   witness
+    4 signed      0 div       240                154   -8 div -7 = 8/7: floor 1 vs ceil 2
+    4 unsigned    0 div       240                180   1 div 2 = 1/2: floor 0 vs ceil 1
+    3 signed      2 mul        64                 32   -3/4 mul -3/4 = 9/16: floor 1/2 vs ceil 3/4
+    3 signed      2 add        64                  0   
+    3 signed      2 sub        64                  0   
+    3 signed      2 min        64                  0   
+
+------------------------------------------------------------------------------------------------
+P5. Every truncation pin in the preceding topic, classified.
+
+  file  verdict                                              F            ops
+  111   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  111   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  111   unclassifiable: no operation set named               [0]          None
+  112   unclassifiable: no operation set named               [0]          None
+  112   WIDENS at any F                                      [0]          ['add']
+  112   WIDENS at any F                                      [0]          ['add']
+  112   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  112   WIDENS at any F                                      [0]          ['sub']
+  112   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  112   unclassifiable: no operation set named               [0]          None
+  112   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'min', 'mul', 'sub']
+  114   WIDENS at any F                                      [0]          ['add', 'sub']
+  114   WIDENS at F = 0                                      [0]          ['add', 'min', 'mul', 'sub']
+  115   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  116   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  116   WIDENS at any F                                      [0, 1, 2]    ['add', 'sub']
+  116   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  116   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  116   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  116   WIDENS at any F                                      [0]          ['add']
+  116   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  116   does not widen                                       [2]          ['mul']
+  118   WIDENS at any F                                      [0, 1, 2]    ['add', 'sub']
+  118   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  118   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  118   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  118   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  118   does not widen                                       [1]          ['add', 'mul', 'sub']
+  118   does not widen                                       [0, 1, 2]    ['add', 'min', 'mul', 'sub']
+  118   does not widen                                       [0, 1]       ['add', 'min', 'mul', 'sub']
+  119   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  119   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  119   WIDENS at any F                                      [0]          ['add']
+  119   does not widen                                       [2]          ['mul']
+  119   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  119   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  119   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  119   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  121   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  121   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  122   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  122   does not widen                                       [0, 1, 2]    ['add', 'mul', 'sub']
+  122   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  122   does not widen                                       [0, 1, 2]    ['add', 'min', 'mul', 'sub']
+  122   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  122   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  122   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+  122   WIDENS at F = 0                                      [0]          ['add', 'mul', 'sub']
+
+  pins found: 55
+    WIDENS at F = 0                                      30
+    WIDENS at any F                                      8
+    does not widen                                       14
+    unclassifiable: no operation set named               3
+
+C2. The extractor on text with no pin, and on a predicate that mentions
+    rounding without pinning it.
+
+    no rounding at all           -> no pin   
+    rounding any                 -> no pin   
+    a real pin                   -> pin   WIDENS at any F
+
+================================================================================================
+
+  READING IT
+
+  P1 holds when every F = 0 row in the first table reads zero disagreements, and
+  C3's rows must not, or the sweep is insensitive to the retraction property the
+  argument turns on.
+
+  The first table is a CONTROL ON AN ARGUMENT, not the evidence for it. The
+  argument is that the grid is closed under those operations so the mode never
+  fires, and it mentions no width and no signedness, which is why the claim
+  carries past the widths swept while nothing else in this topic does.
+
+  P5's counts decide whether the preceding topic's truncation pins were a real
+  restriction. A pin classified 'does not widen' is one where rounding genuinely
+  acts and the predicate was right to name it.
+

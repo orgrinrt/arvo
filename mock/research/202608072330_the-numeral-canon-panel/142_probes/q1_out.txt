@@ -1,0 +1,24 @@
+p1's Intermediate axis positions against p2's two lowerings
+p2 fixes rounding at toward-zero, so p1 is read at Rounding::Trunc to match
+
+  swept 6356992 input triples across W in {4,6}, every F, both signednesses,
+  both overflow positions.
+
+  A1  p1 Intermediate::Exact    vs p2 madd_fused    : 0 differences
+  A2  p1 Intermediate::Stepwise vs p2 madd_unfused  : 0 differences
+  C1  p1 Intermediate::Exact    vs p2 madd_unfused  : 757954 differences (control)
+  C2  nonzero results: 6271942
+
+  A1 and A2 CONFIRMED: the two files compute the same two functions.
+  C1 PASS: the cross pairing differs at 757954 inputs, so the identity
+     above is a fact about the pairing rather than about all four agreeing.
+
+A3, which is the consequence and not a measurement:
+  `139` section 2 presents this pair as an axis whose two positions are
+  observationally distinct, and counts them in its class table. `139`
+  section 4 then presents the same pair as one policy lowered two ways and
+  proposes a slack field on every policy to license the difference. The
+  capability the mechanism was buying is the axis position the same
+  dispatch had already modelled two probes earlier.
+
+control failures: 0

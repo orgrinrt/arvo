@@ -1,0 +1,11 @@
+$ rustc --edition 2021 -O p1b_const_generic_tag_and_match.rs && ./p1b
+value set        : -8..=7, 4096 triples, 256 pairs
+operation carried as a const generic VALUE, not a type
+
+op              assoc-failures  escapes-from-set
+sat-both                   952                 0
+wrap                         0                 0
+sat-top-only               448                36
+
+pairs enumerated per op: 256
+verdicts differ across ops: true

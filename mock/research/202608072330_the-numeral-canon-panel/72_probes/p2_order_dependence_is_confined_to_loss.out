@@ -1,0 +1,76 @@
+p2. order dependence in a composite crossing is confined to the lossy region
+==============================================================================
+
+CONTROL. `71`'s narrowing case, reproduced: wide wrap -> narrow saturate.
+
+  distinct functions        2
+  agreeing source values    30/256    (`71`: 30/256)
+  control reproduces        True
+  first three witnesses     [(-128, 0, -8), (-127, 1, -8), (-126, 2, -8)]
+
+H-a. WIDENING instead of narrowing: narrow wrap -> wide saturate.
+     Every source value is already in the target's set, so the Q-move is exact.
+
+  distinct functions        1
+  agreeing source values    16/16
+  H-a holds                 True
+
+H-b. NARROWING, restricted to source values already inside the target's set.
+
+  source values in range    16/256
+  distinct functions        1
+  agreeing source values    16/16
+  H-b holds                 True
+  complement (out of range) 240 values, distinct functions 2, agreeing 14/240
+
+THE PARTITION, stated as a biconditional and checked value by value.
+
+  values where the two orders diverge   226
+  values outside the target's set       240
+  the two sets are equal                False
+  divergent is contained in lossy       True
+
+  H-c AS A BICONDITIONAL IS REFUTED BY THIS PROBE'S OWN OUTPUT, and the prediction is
+  kept with the correction. Containment holds in one direction only: every divergent
+  value is lossy, and some lossy values agree anyway.
+    lossy but agreeing: 14 values, [-120, -104, -88, -72, -56, -40, -24, 23, 39, 55, 71, 87, 103, 119]
+
+  The closed form for the exceptions, derived after seeing them and then checked here.
+  Order one is wrap onto the target; order two is clamp onto the target. Off range they
+  agree exactly when the wrapped representative lands ON the bound the clamp would pick:
+  above the window when v is congruent to hi, below it when v is congruent to lo.
+    predicted agreeing-but-lossy set: 14 values, [-120, -104, -88, -72, -56, -40, -24, 23, 39, 55, 71, 87, 103, 119]
+    predictor is exact:               True
+
+BOTH DIRECTIONS of the reduction pair, so the finding is not about saturation.
+
+  wrap      -> saturate   distinct 2  agreeing 30/256
+  saturate  -> wrap       distinct 2  agreeing 30/256
+  wrap      -> wrap       distinct 1  agreeing 256/256  (single coordinate, no order to name)
+  saturate  -> saturate   distinct 1  agreeing 256/256  (single coordinate, no order to name)
+
+==============================================================================
+VERDICT
+
+  `71` section 4's finding stands: a composite crossing over {Q, rho} is not determined
+  by its endpoints, and the canon must name an order.
+
+  Its SCOPE is narrower than the section states, in one direction and not two. The two
+  orders are the same function on every source value the crossing carries WITHOUT LOSS,
+  measured here at 16 of 16 in range and 16 of 16 under widening. Off range they usually
+  differ and sometimes coincide, so the divergent set is contained in the lossy set and
+  is not equal to it.
+
+  The containment is the direction that matters for what op is asked. The obligation is
+  not 'name an order for every multi-coordinate crossing'. It is 'name an order for every
+  LOSSY one', and a crossing that loses nothing is endpoint-determined and needs no canon
+  sentence at all.
+
+  That matters because widening composites are the common case in the material this
+  panel already carries: an accumulator entry, a promotion into a wider intermediate,
+  and the window mechanism a chain uses are all Q-growing.
+
+  What this does not establish: anything about three or more coordinates (`71` measured
+  that and found two classes, which this file does not re-derive); anything about a
+  crossing whose ambient domain also moves; any magnitude. One model pair of widths,
+  exhaustive within it.

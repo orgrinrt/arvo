@@ -1,0 +1,51 @@
+=== p7 good, full codegen: EXPECT ACCEPT ===
+   (silence = accepted)
+
+=== p7 bad, TYPE CHECK ONLY, --emit=metadata: EXPECT REFUSAL ===
+=== p7 bad, FULL CODEGEN: ===
+error[E0080]: evaluation panicked: the ledger's declared cost window straddles zero, so the reassociated fold may not be used for it
+   --> p7_bad_straddling_const.rs:206:9
+    |
+206 | /         assert!(
+207 | |             reassociation_licensed(ledger::COST_LO, ledger::COST_HI),
+208 | |             "the ledger's declared cost window straddles zero, so the reassociated \
+209 | |              fold may not be used for it"
+210 | |         )
+    | |_________^ evaluation of `total_cost::{constant#0}` failed here
+
+note: erroneous constant encountered
+   --> p7_bad_straddling_const.rs:205:5
+    |
+205 | /     const {
+206 | |         assert!(
+207 | |             reassociation_licensed(ledger::COST_LO, ledger::COST_HI),
+208 | |             "the ledger's declared cost window straddles zero, so the reassociated \
+...   |
+211 | |     };
+    | |_____^
+
+error[E0080]: evaluation panicked: dead-code arm: the declared window straddles zero
+   --> p7_bad_straddling_const.rs:231:9
+    |
+231 | /         assert!(
+exit=
+
+=== p7 bad, which symbols were emitted ===
+
+=== p7 bad, no optimisation (-C opt-level=0), in case inlining hid it ===
+error[E0080]: evaluation panicked: the ledger's declared cost window straddles zero, so the reassociated fold may not be used for it
+   --> p7_bad_straddling_const.rs:206:9
+    |
+206 | /         assert!(
+207 | |             reassociation_licensed(ledger::COST_LO, ledger::COST_HI),
+208 | |             "the ledger's declared cost window straddles zero, so the reassociated \
+209 | |              fold may not be used for it"
+210 | |         )
+    | |_________^ evaluation of `total_cost::{constant#0}` failed here
+
+note: erroneous constant encountered
+   --> p7_bad_straddling_const.rs:205:5
+    |
+205 | /     const {
+206 | |         assert!(
+exit=

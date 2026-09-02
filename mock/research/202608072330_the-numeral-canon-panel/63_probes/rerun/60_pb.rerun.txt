@@ -1,0 +1,6 @@
+multiset [30000, 10000, -25000], exact sum 15000, once-adapted (saturated) exact 15000
+per-step saturating fold, distinct results across 6 orders: [7767, 15000]
+per-step wrapping fold,   distinct results across 6 orders: [15000]
+wide exact + single sat,  distinct results across 6 orders: [15000]
+f64 stepwise sum of [1e16, 1.0, -1e16], distinct results across 6 orders: [0.0, 1.0]
+OUTCOME: WORKS

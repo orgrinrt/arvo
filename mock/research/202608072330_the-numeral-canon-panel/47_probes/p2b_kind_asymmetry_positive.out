@@ -1,0 +1,14 @@
+direction: scalar output -> const, generically
+  stride_of::<W13, Cold>()  = 13
+  stride_of::<W16, Cold>()  = 16
+  stride_of::<W13, Warm>()  = 16
+
+direction: type output -> const, generically
+  W13/Cold  stride=13 carrier=16 access=32 align=2
+
+direction: type output -> type, generically
+  widen_one::<W13, Cold>(8191u16) -> u32 = 8191
+  the same call at Warm returns u16, from the same source line:
+  widen_one::<W13, Warm>(8191u16) -> u16 = 8191
+
+p2 could write none of the last block. its output was a value, not a type.

@@ -1,0 +1,38 @@
+corpus root: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+csv files: 254
+rows: 104080
+distinct header shapes: 1
+  header used by 254 files:
+    run,pass,cooldown_ms,mode,variant,batch_idx,e2e_ns,algo_ns,bridge_ns,batch_count,score,input_tag,instructions,cycles,setup_ns,first_ns,digest
+
+per-column cardinality over the whole corpus:
+  algo_ns        distinct= 54176  top=[('333.8', 69), ('331.2', 67), ('332.9', 63)]
+  batch_count    distinct=     1 CONSTANT  top=[('100', 104080)]
+  batch_idx      distinct=    10  top=[('0', 10408), ('1', 10408), ('2', 10408)]
+  bridge_ns      distinct=  1165  top=[('2.5', 7742), ('2.1', 7601), ('2.9', 7063)]
+  cooldown_ms    distinct=     1 CONSTANT  top=[('0', 104080)]
+  cycles         distinct=     1 CONSTANT  top=[('0', 104080)]
+  digest         distinct=     1 CONSTANT  top=[('0', 104080)]
+  e2e_ns         distinct= 81324  top=[('452.9', 40), ('452.1', 37), ('452.5', 37)]
+  first_ns       distinct=     1 CONSTANT  top=[('0.0', 104080)]
+  input_tag      distinct=     1 CONSTANT  top=[('', 104080)]
+  instructions   distinct=     1 CONSTANT  top=[('0', 104080)]
+  mode           distinct=     2  top=[('warm', 52040), ('cold', 52040)]
+  pass           distinct=     4  top=[('1', 26020), ('2', 26020), ('3', 26020)]
+  run            distinct=     1 CONSTANT  top=[('1', 104080)]
+  score          distinct=     1 CONSTANT  top=[('', 104080)]
+  setup_ns       distinct=     1 CONSTANT  top=[('0.0', 104080)]
+  variant        distinct=    81  top=[('warm-container-native', 4560), ('warm-container-plusone', 4560), ('warm-container-minimum', 4560)]
+
+the columns that could carry an answer:
+  digest         CARRIES NOTHING (single value '0' in all 104080 rows)
+  score          CARRIES NOTHING (single value '' in all 104080 rows)
+  input_tag      CARRIES NOTHING (single value '' in all 104080 rows)
+
+distinct arms named anywhere in the corpus: 81
+csv files naming more than one arm: 248 of 254
+
+VERDICT: the committed corpus records no per-arm answer.
+  Answer-equivalence is therefore not a property this data
+  attests, in either direction. It can only be a claim about
+  the variant sources, or about the convention they follow.

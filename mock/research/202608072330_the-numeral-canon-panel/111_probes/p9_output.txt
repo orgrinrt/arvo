@@ -1,0 +1,36 @@
+$ python3 p9_check_my_own_citations.py   (extended with the reply's citations)
+ok    110_willsey_the_primitive_derived_cold.md                 :282    110 prices a split at nothing
+ok    110_willsey_the_primitive_derived_cold.md                 :357    110 prices the same act as a wall
+ok    110_willsey_the_primitive_derived_cold.md                 :370    110 says the wall has no in-language repair
+ok    110_willsey_the_primitive_derived_cold.md                 :540    110 half-notices the tension itself
+ok    p2_laws_are_a_projection_not_a_coordinate.py              :192    the sweep is a product over exactly five axes
+ok    p2_laws_are_a_projection_not_a_coordinate.py              :52     the key is those five plus a constant radix
+ok    p5_definitional_versus_reachability_degeneracy.py         :99     110's grid-closed signature has no nullary operation
+ok    p5_definitional_versus_reachability_degeneracy.py         :102    nor does its widest one
+ok    82_jhala_lifting_a_measured_region_into_a_declaration.md  :770    82 F6 is about a declared operand window
+ok    82_jhala_lifting_a_measured_region_into_a_declaration.md  :899    82 says the window separates verdicts with everything else fixed
+ok    18_jhala_the_denotation_clause.md                         :363    18 states soundness is quantified over an operation set
+ok    35_mcsherry_what_the_layers_above_need_from_the_numeral.md:63     35 records the old tree's algorithm crates bounding on FromConstant
+ok    lib.rs                                                    :519    a shipped const fn computing a law with the operation inline
+ok    lib.rs                                                    :547    and its negative control, written out a second time
+ok    lib.rs                                                    :1116   a test asserting its own suite's sensitivity boundary
+ok    lib.rs                                                    :370    the first of the two redundant assertions
+ok    lib.rs                                                    :372    the second, which restates it
+ok    stress.rs                                                 :68     the doc-comment occurrence that made two counts read 124
+ok    108_lamport_the_pair_attacked.md                          :825    108's membership criterion, the sentence after the one 111 and 112 used
+ok    108_lamport_the_pair_attacked.md                          :824    the middle sentence, whose reason 111 used and whose consequence 112 used
+ok    112_leijen_where_the_refinement_lives.md                  :110    112's agreement claim, which p2b's table does not measure
+ok    112_leijen_where_the_refinement_lives.md                  :1029   F112-6's 'only', refuted by its own p3b output
+ok    112_leijen_where_the_refinement_lives.md                  :1039   F112-7's unreachability claim, bounded by R2 to one-sided declarations
+ok    112_leijen_where_the_refinement_lives.md                  :1042   F112-8, the half of the correction 112 did not carry into F112-6
+ok    112_leijen_where_the_refinement_lives.md                  :1142   F112-23, which R2 connects to F112-7
+ok    p3b_output.txt                                            :21     the mixed-operation row that is exact
+ok    p3b_output.txt                                            :16     the repeated-leaf row that is exact
+
+27 citations checked, 0 failing
+
+MUTATION TEST, rerun after the extension:
+  wrong line number  (108:825 -> 108:725)          -> exit 1, 27 citations checked, 1 failing
+  wrong substring    (112:1029 needle changed)     -> exit 1, 27 citations checked, 1 failing
+  wrong file         (112 -> 111 at line 1142)     -> exit 1, 27 citations checked, 1 failing
+  unmutated                                        -> exit 0, 27 citations checked, 0 failing

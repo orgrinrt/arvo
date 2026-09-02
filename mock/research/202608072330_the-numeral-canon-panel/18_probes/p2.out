@@ -1,0 +1,28 @@
+# numeral U<3,3> unsigned: 64 values, step 1/8, top 63/8, saturating both ends
+
+# A. monotone non-decreasing operations only, which is what 07 measured
+add-only, 4 steps                  chains=   1024  unsound point=    768  unsound absorbing=      0
+add-only, 6 steps                  chains=   4096  unsound point=   4032  unsound absorbing=      0
+scale up by 2, 4 steps             chains=     64  unsound point=     60  unsound absorbing=      0
+
+# B. an operation set that can decrease
+add and subtract, 4 steps          chains=   5184  unsound point=   2464  unsound absorbing=    936
+add and multiply by zero, 3 steps  chains=    512  unsound point=     48  unsound absorbing=      0
+add and multiply by one, 4 steps   chains=   1024  unsound point=    512  unsound absorbing=      0
+
+# witnesses, first found, for the absorbing failures
+add/sub    start=0 chain-length=4 abstract=1 exact=0
+add/mul0   none: absorbing stayed sound over the whole enumeration
+add/mul1   none: absorbing stayed sound over the whole enumeration
+
+# C. the single step that breaks it, stated minimally
+  start at the top, 63/8, whose absorbing denotation is [63/8, inf)
+  one saturating add of 2 gives abstract 63/8, denotation [63/8, inf)  SOUND
+  then one subtract of 1 gives abstract 55/8, denotation {55/8}, a point
+  but the exact set was [63/8, inf) shifted down by 1, which is [55/8, inf), not a point
+  so the abstraction has claimed a point where it holds an unbounded set
+
+# D. does a second absorbing bottom repair it
+  no, and the reason is structural rather than measured: the bottom absorbs
+  [-inf, 0], and the failure above is at the top coming DOWN into the
+  representable range, which neither absorbing end covers.

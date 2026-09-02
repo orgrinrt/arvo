@@ -1,0 +1,19 @@
+# Probe crate for p1. Its own `[workspace]` so cargo does not walk up into
+# arvo's deliberately empty mock workspace, which excludes `benches` and would
+# refuse this the way it refuses every bench crate.
+[workspace]
+
+[package]
+name = "p1-oracle-quantifier"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+# The real bench crate. Reimplementing `reference` here would be the defect
+# this panel already shipped once: a probe whose own setup makes its claim
+# true. The oracle under test has to be the oracle.
+bench-warm-container-shared = { path = "../../../../benches/variants/warm-container-shared" }
+
+[profile.release]
+debug = false

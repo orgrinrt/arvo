@@ -1,0 +1,39 @@
+q4. which six the `exhaustive, all six named modes` clause names
+
+ratified, from ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names
+  (6) ceil, floor, half_even, half_up, stochastic, toward_zero
+swept, from 228_probes/p3_retraction_over_the_whole_vocabulary.rs `MODES`
+  (6) away_from_zero, ceil, floor, half_even, half_up, toward_zero
+
+== C1 must-fail: each parse must find exactly six ==
+  C1 ok: six and six, so the comparison below is between two real sets
+
+== the diff ==
+  ratified but never swept: ["stochastic"]
+  swept but not ratified:   ["away_from_zero"]
+
+== C2 must-fail: the differ must report both answers ==
+  planted identical list  -> missing []
+  planted one-name-off    -> missing ["stochastic"]
+  C2 ok: the differ reports nothing on an identical set and exactly the
+         one name on a set one off, so the diff above is earned
+
+== WHAT THIS REFUTES ==
+`228` finding F5's warrant clause, `exhaustive, all six named modes`.
+The span it carries is `rounding any`, which under
+`dimension::rounding` spans every value of the axis, and the clause names
+the domain as the six named modes. The run covered a different six: it
+substituted ["away_from_zero"] for ["stochastic"].
+
+So the one ratified name the sweep never reached is exactly the one that
+cannot be swept, and the one it did reach is not a value of the axis the
+ratified vocabulary declares. Under the warrant ruling, `exhaustive`
+obliges the clause to name the domain the span is the whole of. This
+clause names a domain the run was not the whole of.
+
+The neighbouring finding F4 does this correctly on the same row: its
+clause reads `swept, five ratified deterministic modes and away-from-zero
+at all 108 cells, stochastic by construction`, which names what ran. F5
+compresses the same run into a phrase that names something else.
+
+instrument: sound

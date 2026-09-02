@@ -1,0 +1,344 @@
+P3. does a conservatism order exist on the overflow axis
+model width W = 5, exhaustive over the whole representable domain
+
+==========================================================================
+unsigned F=0
+  law                    wrap       saturate   exact    
+  add_assoc              yes        yes        yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  distrib                yes        yes        yes      
+  mul_assoc              yes        yes        yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  mul_over_sub           yes        .          yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  7          9          9        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong    1344 of    2048 ( 65.62%)  total abs err     247296  worst    960
+    saturate  wrong    1344 of    2048 ( 65.62%)  total abs err     223173  worst    930
+    exact     wrong       0 of    2048 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : INCOMPARABLE
+        only in wrap     : mul_over_sub
+        only in saturate : add_monotone, mul_monotone_nonneg, top_absorbing
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : INCOMPARABLE
+        only in saturate : top_absorbing
+        only in exact    : mul_over_sub
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders DISAGREE here. The law order makes
+  wrapping and saturating incomparable, so a join over the law order
+  does not exist, while the fidelity order ranks them. "The more
+  conservative side" therefore has no referent at this predicate
+  without saying which order is meant.
+
+==========================================================================
+unsigned F=1
+  law                    wrap       saturate   exact    
+  add_assoc              yes        yes        yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  4          7          6        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong    1248 of    2048 ( 60.94%)  total abs err     124160  worst    480
+    saturate  wrong    1248 of    2048 ( 60.94%)  total abs err     101750  worst    449
+    exact     wrong       0 of    2048 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : wrap below saturate
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : exact below saturate
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders AGREE here, and a join exists on
+  both, so `Resolve` toward the conservative side is well defined at
+  this predicate.
+
+==========================================================================
+signed F=0
+  law                    wrap       saturate   exact    
+  add_assoc              yes        .          yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  distrib                yes        .          yes      
+  mul_assoc              yes        .          yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  mul_over_sub           yes        .          yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  7          6          9        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong    1029 of    2048 ( 50.24%)  total abs err      72704  worst    256
+    saturate  wrong    1029 of    2048 ( 50.24%)  total abs err      53303  worst    241
+    exact     wrong       0 of    2048 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : INCOMPARABLE
+        only in wrap     : add_assoc, distrib, mul_assoc, mul_over_sub
+        only in saturate : add_monotone, mul_monotone_nonneg, top_absorbing
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : INCOMPARABLE
+        only in saturate : top_absorbing
+        only in exact    : add_assoc, distrib, mul_assoc, mul_over_sub
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders DISAGREE here. The law order makes
+  wrapping and saturating incomparable, so a join over the law order
+  does not exist, while the fidelity order ranks them. "The more
+  conservative side" therefore has no referent at this predicate
+  without saying which order is meant.
+
+==========================================================================
+signed F=1
+  law                    wrap       saturate   exact    
+  add_assoc              yes        .          yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  4          6          6        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong     879 of    2048 ( 42.92%)  total abs err      39616  worst    128
+    saturate  wrong     879 of    2048 ( 42.92%)  total abs err      21821  worst    113
+    exact     wrong       0 of    2048 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : INCOMPARABLE
+        only in wrap     : add_assoc
+        only in saturate : add_monotone, mul_monotone_nonneg, top_absorbing
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : INCOMPARABLE
+        only in saturate : top_absorbing
+        only in exact    : add_assoc
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders DISAGREE here. The law order makes
+  wrapping and saturating incomparable, so a join over the law order
+  does not exist, while the fidelity order ranks them. "The more
+  conservative side" therefore has no referent at this predicate
+  without saying which order is meant.
+
+
+#### W=6
+P3. does a conservatism order exist on the overflow axis
+model width W = 6, exhaustive over the whole representable domain
+
+==========================================================================
+unsigned F=0
+  law                    wrap       saturate   exact    
+  add_assoc              yes        yes        yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  distrib                yes        yes        yes      
+  mul_assoc              yes        yes        yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  mul_over_sub           yes        .          yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  7          9          9        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong    5712 of    8192 ( 69.73%)  total abs err    4070400  worst   3968
+    saturate  wrong    5712 of    8192 ( 69.73%)  total abs err    3865440  worst   3906
+    exact     wrong       0 of    8192 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : INCOMPARABLE
+        only in wrap     : mul_over_sub
+        only in saturate : add_monotone, mul_monotone_nonneg, top_absorbing
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : INCOMPARABLE
+        only in saturate : top_absorbing
+        only in exact    : mul_over_sub
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders DISAGREE here. The law order makes
+  wrapping and saturating incomparable, so a join over the law order
+  does not exist, while the fidelity order ranks them. "The more
+  conservative side" therefore has no referent at this predicate
+  without saying which order is meant.
+
+==========================================================================
+unsigned F=1
+  law                    wrap       saturate   exact    
+  add_assoc              yes        yes        yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  4          7          6        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong    5476 of    8192 ( 66.85%)  total abs err    2038528  worst   1984
+    saturate  wrong    5476 of    8192 ( 66.85%)  total abs err    1841204  worst   1921
+    exact     wrong       0 of    8192 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : wrap below saturate
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : exact below saturate
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders AGREE here, and a join exists on
+  both, so `Resolve` toward the conservative side is well defined at
+  this predicate.
+
+==========================================================================
+signed F=0
+  law                    wrap       saturate   exact    
+  add_assoc              yes        .          yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  distrib                yes        .          yes      
+  mul_assoc              yes        .          yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  mul_over_sub           yes        .          yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  7          6          9        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong    4531 of    8192 ( 55.31%)  total abs err    1111040  worst   1024
+    saturate  wrong    4531 of    8192 ( 55.31%)  total abs err     941187  worst    993
+    exact     wrong       0 of    8192 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : INCOMPARABLE
+        only in wrap     : add_assoc, distrib, mul_assoc, mul_over_sub
+        only in saturate : add_monotone, mul_monotone_nonneg, top_absorbing
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : INCOMPARABLE
+        only in saturate : top_absorbing
+        only in exact    : add_assoc, distrib, mul_assoc, mul_over_sub
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders DISAGREE here. The law order makes
+  wrapping and saturating incomparable, so a join over the law order
+  does not exist, while the fidelity order ranks them. "The more
+  conservative side" therefore has no referent at this predicate
+  without saying which order is meant.
+
+==========================================================================
+signed F=1
+  law                    wrap       saturate   exact    
+  add_assoc              yes        .          yes      
+  add_identity           yes        yes        yes      
+  add_monotone           .          yes        yes      
+  mul_identity           yes        yes        yes      
+  mul_monotone_nonneg    .          yes        yes      
+  top_absorbing          .          yes        .        
+  zero_annihilates       yes        yes        yes      
+  count                  4          6          6        
+
+  fidelity against exact (lower is more faithful)
+    wrap      wrong    4141 of    8192 ( 50.55%)  total abs err     583040  worst    512
+    saturate  wrong    4141 of    8192 ( 50.55%)  total abs err     423493  worst    481
+    exact     wrong       0 of    8192 (  0.00%)  total abs err          0  worst      0
+
+  LAW ORDER, pairwise:
+    wrap       vs saturate   : INCOMPARABLE
+        only in wrap     : add_assoc
+        only in saturate : add_monotone, mul_monotone_nonneg, top_absorbing
+    wrap       vs exact      : wrap below exact
+    saturate   vs exact      : INCOMPARABLE
+        only in saturate : top_absorbing
+        only in exact    : add_assoc
+
+  FIDELITY ORDER, and it splits into two metrics that disagree:
+    by frequency (how often the answer is wrong):
+      wrap       vs saturate   : TIED, no order
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+    by magnitude (how far wrong the worst case is):
+      wrap       vs saturate   : saturate more faithful than wrap
+      wrap       vs exact      : exact more faithful than wrap
+      saturate   vs exact      : exact more faithful than saturate
+
+  VERDICT: the two candidate orders DISAGREE here. The law order makes
+  wrapping and saturating incomparable, so a join over the law order
+  does not exist, while the fidelity order ranks them. "The more
+  conservative side" therefore has no referent at this predicate
+  without saying which order is meant.
+

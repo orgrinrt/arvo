@@ -1,0 +1,14 @@
+sweep: u in [-2000, 2000] subunits, E=4 (16 subunits per quantum), window [-125q, +125q]
+monotone floor: MONOTONE
+monotone ceil: MONOTONE
+monotone toward_zero: MONOTONE
+monotone half_up: MONOTONE
+monotone half_even: MONOTONE
+monotone parity_broken(CONTROL): NOT MONOTONE (1750 adjacent inversions)
+additivity floor: 6516 violations of 14884 pairs; one-signed subdomain: 1665 violations; on-grid pairs: 0 violations (must be 0)
+additivity ceil: 7344 violations of 14884 pairs; one-signed subdomain: 1800 violations; on-grid pairs: 0 violations (must be 0)
+additivity toward_zero: 7143 violations of 14884 pairs; one-signed subdomain: 1665 violations; on-grid pairs: 0 violations (must be 0)
+additivity half_up: 3770 violations of 14884 pairs; one-signed subdomain: 912 violations; on-grid pairs: 0 violations (must be 0)
+additivity half_even: 3802 violations of 14884 pairs; one-signed subdomain: 920 violations; on-grid pairs: 0 violations (must be 0)
+controls: parity mode must be NOT MONOTONE; every mode must have >0 additivity violations
+on both the negation-closed window and its one-signed restriction, and 0 on-grid violations.

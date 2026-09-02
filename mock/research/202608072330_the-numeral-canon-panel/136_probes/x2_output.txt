@@ -1,0 +1,58 @@
+==========================================================================================
+P1. The uniqueness solve, computed PER k over both signs, floor-based frac
+==========================================================================================
+  m=5: 1 distinct distribution(s) across k in (-5, -4, -3, -1, 0, 1, 3, 4, 5)
+        value = ['1/5', '1/5', '1/5', '1/5', '1/5']
+  m=8: 1 distinct distribution(s) across k in (-5, -4, -3, -1, 0, 1, 3, 4, 5)
+        value = ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8']
+
+  P1 (sign-blind under floor-based frac): CONFIRMED
+
+==========================================================================================
+P2. THE CONTROL. A deliberately sign-dependent variant must be DETECTED.
+==========================================================================================
+  m=5: 2 distinct distribution(s) across k (must be > 1 for the
+        instrument to be capable of reporting a difference at all)
+  m=8: 2 distinct distribution(s) across k (must be > 1 for the
+        instrument to be capable of reporting a difference at all)
+
+  P2 (control fires): CONFIRMED
+
+==========================================================================================
+P3. The variance closed forms per k, and the same control
+==========================================================================================
+  n=5: 1 distinct (comonotone, independent) pair(s) across k, value = (50/9, 10/9)
+        control at k=-4 vs k=+4 under the sign-dependent variant: (125/36, 25/36) vs (50/9, 10/9), differ = True
+  n=10: 1 distinct (comonotone, independent) pair(s) across k, value = (200/9, 20/9)
+        control at k=-4 vs k=+4 under the sign-dependent variant: (125/9, 25/18) vs (200/9, 20/9), differ = True
+
+  P3 (variance sign-blind, control fires): CONFIRMED
+
+==========================================================================================
+P4. What the widening rests on: the frac convention, which nobody has stated
+==========================================================================================
+  m=5, truncating frac: 2 distinct distribution(s) across k (floor-based gave 1)
+        k=-3 -> ['-4/5', '1/5', '1/5', '1/5', '1/5', '1']
+        k=+3 -> ['1/5', '1/5', '1/5', '1/5', '1/5']
+        differ = True
+  m=8, truncating frac: 2 distinct distribution(s) across k (floor-based gave 1)
+        k=-3 -> ['-7/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1']
+        k=+3 -> ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8']
+        differ = True
+
+  P4 (the same construction IS sign-dependent under truncating frac): CONFIRMED
+
+==========================================================================================
+VERDICT
+==========================================================================================
+  135's dissent reproduces on an instrument that can report a difference: True
+  and the widening carries a hypothesis 135 did not state: True
+
+  So the honest predicate is not bare `domain any`. It is `domain any` GIVEN that the
+  cell coordinate is taken by flooring, which is the convention the construction and
+  every probe in this topic uses, and which is the same convention 125's F9 identifies
+  the bit-drop operation with. Under a truncating cell coordinate the argument does not
+  transfer, and the region where the widening applies is exactly the region where the
+  grid decomposition is floor-based. That is a condition on the construction rather than
+  on the domain, which is why it belongs in the clause and not in the predicate's domain
+  dimension.

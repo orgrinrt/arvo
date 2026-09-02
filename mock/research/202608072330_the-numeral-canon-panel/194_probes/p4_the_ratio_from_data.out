@@ -1,0 +1,28 @@
+=== p4 the ratio from data, 2026-08-31T01:08:06Z
+
+## standing, read from the field
+     2 defective
+    67 sound
+     9 uncontrolled
+     1 withdrawn
+  total 79
+
+## C1: prose and data must differ
+rows whose control OPENS with the word none:  7
+rows whose standing IS uncontrolled:          9
+C1 PASS: the value carries 2 the prose cannot see
+
+the ones prose cannot see:
+  a_compile_time_strategy_selection_leaves_no_residue
+  the_argmin_mechanism_has_never_run_on_arms_that_disagree
+
+## C3: prose must be a subset of data
+C3 PASS: every prose hit is also `uncontrolled`
+
+## C2: the values partition
+C2 PASS: 79 of 79
+
+## the ratio, stated the way it should now be stated
+instruments that ran with no case that had to fail: 9 of 79 (11%)
+instruments carrying one:                           67 of 79 (85%)
+plus two `defective` and one `withdrawn`, which are neither.

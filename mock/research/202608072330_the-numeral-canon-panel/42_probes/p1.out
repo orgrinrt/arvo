@@ -1,0 +1,10 @@
+commutativity, exhaustive, W = 1..=7 unsigned / 2..=7 signed, F = 0..=W or W-1
+
+unsigned wrap      add:     167480 pairs,      0 commute-failures | mul:     167480 pairs,      0 commute-failures
+unsigned saturate  add:     167480 pairs,      0 commute-failures | mul:     167480 pairs,      0 commute-failures
+signed   wrap      add:     145632 pairs,      0 commute-failures | mul:     145632 pairs,      0 commute-failures
+signed   saturate  add:     145632 pairs,      0 commute-failures | mul:     145632 pairs,      0 commute-failures
+
+if every commute-failures column above reads 0, commutativity of + and * holds
+under both overflow policies and both sign domains, over the whole box measured,
+and is therefore not a fact that varies with the strategy: it is free.

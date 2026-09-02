@@ -1,0 +1,9 @@
+OK L3  60_stam_the_chain_derived_cold.md: a chain is a composition of exact operations together with a
+OK L1  60_stam_the_chain_derived_cold.md: the schedule is also the index set of the error analysis
+OK L0  167_rompf_the_chain_derived_cold.md: no adaptation on the additive side occurs at all
+OK L0  111_jhala_the_primitive_attacked.md: I did not attack `109`'s section 8 chain result
+OK L0  171_rompf_reply.md: everything inside it is arvo's to choose
+OK L0  168_mcsherry_the_chain_derived_cold.md: A chain is a maximal run of operations whose intermediates a
+CONTROL absent not found : PASS
+CONTROL present found    : PASS
+VERDICT: PASS

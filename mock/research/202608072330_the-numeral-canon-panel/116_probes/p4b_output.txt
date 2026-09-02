@@ -1,0 +1,62 @@
+================================================================================================
+p4. Arm W1 at a nonzero fraction width
+================================================================================================
+
+P1/P2/P3. Is the map a homomorphism, per operation, per fraction width
+
+  primitive                   add          sub          mul
+  uW4F0/wrap               0/2116       0/2116       0/2116
+  uW4F1/wrap               0/2116       0/2116     608/2116
+  uW4F2/wrap               0/2116       0/2116    1234/2116
+  iW4F0/wrap               0/2116       0/2116       0/2116
+  iW4F2/wrap               0/2116       0/2116    1451/2116
+  uW4F0/sat                0/2116     885/2116       0/2116
+  uW4F2/sat                0/2116     885/2116     180/2116
+
+  a witness for the F > 0 multiplication failure under wrap:
+    a = 1/4, b = 4: R(R(a)*R(b)) = 0, R(a*b) = 1
+    a = 1/4, b = 17/4: R(R(a)*R(b)) = 0, R(a*b) = 1
+
+P4. The root-only check at F > 0 under wrap, split by term shape
+
+  uW4F0/wrap                         no-mul: 52992 cells,    0 unsound,  959 checks-differ   |   with-mul: 38496 cells,    0 unsound,  118 checks-differ
+  uW4F1/wrap                         no-mul: 52992 cells,    0 unsound,  959 checks-differ   |   with-mul: 38496 cells, 2079 unsound,  190 checks-differ
+  uW4F2/wrap                         no-mul: 52992 cells,    0 unsound,  959 checks-differ   |   with-mul: 38496 cells, 6330 unsound,  387 checks-differ
+  iW4F2/wrap                         no-mul: 52992 cells,    0 unsound,  565 checks-differ   |   with-mul: 38496 cells, 16063 unsound, 1099 checks-differ
+
+P5. Restricting the operands to a coarse grid, which is `112` F112-4's
+    grid part of the declaration
+
+  operands on a grid of step 1/4, ambient span 46 points: hom fails on 1234/2116, every product already on the fine grid: False
+  operands on a grid of step 1/2, ambient span 23 points: hom fails on 144/529, every product already on the fine grid: True
+  operands on a grid of step 1, ambient span 12 points: hom fails on 0/144, every product already on the fine grid: True
+
+  so the grid part of a declaration is what restores the homomorphism
+  at F > 0, exactly as the magnitude part restores the completion.
+
+INSTRUMENT CHECK
+
+  F = 0 mul under wrap: 0/2116   (this is the control, must be 0)
+  F = 2 mul under wrap: 1234/2116
+  the check separates the two fraction widths: True
+
+-----------------------------------------------------------------------------
+P5's PREDICTION WAS WRONG IN ITS MECHANISM AND RIGHT IN ITS CONCLUSION
+-----------------------------------------------------------------------------
+I predicted the homomorphism would be restored once the operands sit on a grid
+coarse enough that their products need no requantisation.  The step-1/2 row
+refutes that: every product IS already on the fine grid ("True"), and the
+homomorphism still fails on 144 of 529.
+
+The correct condition is stronger and is visible in raw units.  At fraction
+width F a value v has raw index v * 2^F, and a product's raw index is
+raw_a * raw_b / 2^F.  Replacing raw_a by raw_a + k*n adds k*n*raw_b / 2^F,
+which is a multiple of n exactly when raw_b is a multiple of 2^F, that is when
+b is a whole multiple of the UNIT.  So:
+
+  the multiplicative homomorphism at F > 0 is restored exactly when the
+  operands are declared to lie on the UNIT grid, not merely on a grid whose
+  products avoid requantisation.
+
+Step 1/4 fails on 1234/2116, step 1/2 fails on 144/529, step 1 fails on 0/144,
+which is that condition and not the one I predicted.

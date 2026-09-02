@@ -1,0 +1,8 @@
+control failed as required: [CONTROL: substring absent]
+control failed as required: [CONTROL: right file wrong range]
+
+24 real citations checked by opening the range and testing its content.
+0 failed.
+
+=== controls ===
+both deliberately-wrong citations were caught, so the checker checks.

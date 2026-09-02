@@ -1,0 +1,77 @@
+P5. What a strategy defined by imitation imitates
+=================================================
+
+PART A. The two readings of 'behave like a native primitive'
+-----------------------------------------------------------
+
+Exhaustive over every ordered pair in the declared domain, per width.
+A width is 'native' when Rust has a primitive of exactly that size.
+
+   W    native?     add pairs    add differ     mul pairs    mul differ
+   1         no             4             1             4             0
+   2         no            16             6            16             4
+   3         no            64            28            64            33
+   4         no           256           120           256           180
+   5         no          1024           496          1024           783
+   6         no          4096          2016          4096          2860
+   7         no         16384          8128         16384          7976
+   8        yes         65536             0         65536             0
+   9         no        262144        130816        262144        256660
+  10         no       1048576        523776       1048576       1025375
+  11         no       4194304       2096128       4194304       4050046
+  12         no       4194304       2096128       4194304       3925903
+      (stepped by 2; the sweep is uniform, not a sample of a region)
+  13         no       4194304       2096128       4194304       3667276
+      (stepped by 4; the sweep is uniform, not a sample of a region)
+  14         no       4194304       2096128       4194304       3141632
+      (stepped by 8; the sweep is uniform, not a sample of a region)
+  15         no       4194304       2096128       4194304       2088960
+      (stepped by 16; the sweep is uniform, not a sample of a region)
+  16        yes       4194304             0       4194304             0
+      (stepped by 32; the sweep is uniform, not a sample of a region)
+
+  widths where Rust HAS a primitive: the two readings differ on 0 of the
+  pairs swept, which is zero, because at a native width the declared
+  width IS the container width and there is nothing to disagree about.
+
+  widths where Rust has NO primitive: 14 of 14 show the readings
+  disagreeing. Those are exactly the widths arvo exists to provide.
+
+  So 'behave like a native primitive' is a total specification on the
+  widths Rust already serves and an ambiguous one on the widths it
+  does not. The imitation is well defined precisely where it is not
+  needed. Op's own refinement resolves which way it goes: the intent
+  is the intuitive best choice, and imitation is the vehicle rather
+  than the requirement.
+
+PART B. The half of Rust's behaviour that cannot be imitated at all
+------------------------------------------------------------------
+
+Rust's `+` on a primitive has two behaviours, not one:
+  release: wrap at the type's width
+  debug  : panic on overflow
+
+The panic is a runtime check. I15 forbids runtime checks without
+qualification. So a strategy defined by imitating Rust can imitate
+the release half and can never imitate the debug half.
+
+What is available instead, and its exact region:
+
+  const operands  : a compile-time refusal. `add_or_refuse(4000, 91)`
+                    is a const item in this file and evaluated to 4091.
+                    `add_or_refuse(8000, 8000)` in the same position
+                    does not compile; see p5_mutant_const_overflow.rs
+                    and its committed output.
+  runtime operands: nothing. Not a weaker check, not a debug-only
+                    check. Nothing, by I15.
+
+That is a predicate rather than a defect: the debug half of the
+imitation holds where both operands are const-available, and does not
+hold anywhere else. Op's addendum to I13 is what makes the region
+worth naming: the admissible category is whatever is available at
+const time, which is wider than the typestate.
+
+Demonstrating that the two readings are live at runtime too, at W=13:
+  a=4000  b=91     rule(mod 2^13)=4091   container(mod 2^16)=4091    agree=true
+  a=8000  b=8000   rule(mod 2^13)=7808   container(mod 2^16)=16000   agree=false
+  a=5000  b=4000   rule(mod 2^13)=808    container(mod 2^16)=9000    agree=false

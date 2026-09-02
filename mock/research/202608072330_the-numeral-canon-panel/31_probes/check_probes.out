@@ -1,0 +1,19 @@
+total probe citations: 16
+12_probes  p11                                      OK
+12_probes  p12                                      OK
+15_probes  q10                                      OK
+18_probes  p2.out                                   OK
+25_probes  p2                                       OK
+25_probes  p4                                       OK
+06_probes  p4_arm3.out                              OK
+03_probes  i5.out                                   OK
+12_probes  p03                                      OK
+13_probes  p14                                      OK
+15_probes  q15                                      OK
+15_probes  q14                                      OK
+13_probes  p28                                      OK
+16_probes  p7                                       OK
+16_probes  p5b                                      OK
+24_probes  s4                                       OK
+
+missing: 0 of 16

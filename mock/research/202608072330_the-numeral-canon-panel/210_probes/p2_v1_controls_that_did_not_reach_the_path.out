@@ -1,0 +1,43 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p2_three_observation_classes.rs
+
+### compiled clean
+
+### p2. three observation classes over one shipped-shaped carrier pair
+### pair: W=13, F=0, unsigned. carrier A = u16 (2 bytes), carrier B = u32 (4 bytes)
+### domain: all 8192 declared values; binary arms over all 8192 x 8192 ordered pairs
+
+SIGMA_SIZE  (nullary; supplied by the host language, not by arvo)
+  S1         size_of                                        SEPARATES  required=SEPARATES  2 vs 4                   as required
+  S2         align_of                                       SEPARATES  required=SEPARATES  2 vs 4                   as required
+
+SIGMA_BITS  (the encoding: MATLAB bin, IEEE 754 interchange, to_le_bytes)
+  B1         encoding stated over the declared width W      agrees     required=agrees     -                        as required
+  C1 ctl     encoding stated over the container             SEPARATES  required=SEPARATES  v=0                      as required
+
+SIGMA_VAL   (arithmetic, with the projection back to W after every step)
+  V          Add/Wrap, arity 2, projected                   agrees     required=agrees     -                        as required
+  V          Add/Sat, arity 2, projected                    agrees     required=agrees     -                        as required
+  V          Mul/Wrap, arity 2, projected                   agrees     required=agrees     -                        as required
+  V          Mul/Sat, arity 2, projected                    agrees     required=agrees     -                        as required
+  V          Xor/Wrap, arity 2, projected                   agrees     required=agrees     -                        as required
+  V          Xor/Sat, arity 2, projected                    agrees     required=agrees     -                        as required
+  V          chain d=1, Add/Wrap, projected                 agrees     required=agrees     -                        as required
+  V          chain d=4, Add/Wrap, projected                 agrees     required=agrees     -                        as required
+
+SIGMA_VAL   controls: the projection is what makes the carrier invisible
+  C2 ctl     Add/Wrap, arity 2, projection OMITTED          agrees     required=SEPARATES  -                        *** NOT AS REQUIRED ***
+  C2 ctl     Mul/Wrap, arity 2, projection OMITTED          SEPARATES  required=SEPARATES  a=9,b=7282               as required
+  C2 ctl     Add/Sat, arity 2, projection OMITTED           agrees     required=SEPARATES  -                        *** NOT AS REQUIRED ***
+  C2 ctl     chain d=4, Add/Wrap, projection OMITTED        agrees     required=SEPARATES  -                        *** NOT AS REQUIRED ***
+
+controls: the comparators are not stuck reporting equality
+  C3 ctl     encoding at W=13 against W=14                  SEPARATES  required=SEPARATES  v=0                      as required
+  C3 ctl     Add/Wrap at W=13 against W=14                  SEPARATES  required=SEPARATES  a=1,b=8191               as required
+
+### reading: the carrier separates the pair through SIGMA_SIZE and through
+### nothing else. C2 establishes that SIGMA_VAL's blindness is bought by the
+### projection rather than given, so it is an obligation on the design and not
+### an observation about it.
+
+### exit 0

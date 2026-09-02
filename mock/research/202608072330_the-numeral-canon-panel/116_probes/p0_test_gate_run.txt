@@ -1,0 +1,19 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+date: Fri Aug 14 16:51:59 UTC 2026
+command: cargo test --release -p bench-<crate> -- --test-threads=1, per crate, serially
+
+attribute-only #[test] lines:      123
+
+bitpack-carrier-shared           test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+bitpack-contend-shared           test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+bitpack-footprint-shared         test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+bitpack-plan-shared              test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+bitpack-shared                   test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bitpack-wide-shared              test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+bitpack-write-contend-shared     test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.12s
+quantiser-fadd-shared            test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+quantiser-radix-shared           test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+satfold-shared                   test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+warm-clamp-shared                test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+warm-container-shared            test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+wide-rung-shared                 test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.64s

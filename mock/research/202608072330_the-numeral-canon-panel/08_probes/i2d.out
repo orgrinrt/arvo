@@ -1,0 +1,22 @@
+window 4, depth 3, 121 monotone inhabited shapes
+    fixed alone                  n=  1  meet-closure=  1  join-closure=  1
+    float alone                  n=  4  meet-closure=  4  join-closure=  4
+    float with underflow alone   n= 10  meet-closure= 10  join-closure= 15   <- leaks
+    fixed + float                n=  5  meet-closure=  7  join-closure=  7   <- leaks
+    all three                    n= 10  meet-closure= 10  join-closure= 15   <- leaks
+
+window 6, depth 4, 2380 monotone inhabited shapes
+    fixed alone                  n=  0  meet-closure=  0  join-closure=  0
+    float alone                  n=  5  meet-closure=  5  join-closure=  5
+    float with underflow alone   n= 15  meet-closure= 15  join-closure= 31   <- leaks
+    fixed + float                n=  5  meet-closure=  5  join-closure=  5
+    all three                    n= 15  meet-closure= 15  join-closure= 31   <- leaks
+
+window 8, depth 4, 25213 monotone inhabited shapes
+    fixed alone                  n=  0  meet-closure=  0  join-closure=  0
+    float alone                  n=  5  meet-closure=  5  join-closure=  5
+    float with underflow alone   n= 15  meet-closure= 15  join-closure= 31   <- leaks
+    fixed + float                n=  5  meet-closure=  5  join-closure=  5
+    all three                    n= 15  meet-closure= 15  join-closure= 31   <- leaks
+
+The first leak from fixed + float, in full:

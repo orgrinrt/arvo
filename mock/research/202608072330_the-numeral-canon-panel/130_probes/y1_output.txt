@@ -1,0 +1,43 @@
+=== Part 1: is the threshold-to-marginals map invertible at every m, not merely m=8? ===
+  m=3: system size 2x2, det = 1, invertible = True (must be True at every m)
+  m=5: system size 4x4, det = 1, invertible = True (must be True at every m)
+  m=8: system size 7x7, det = 1, invertible = True (must be True at every m)
+  m=12: system size 11x11, det = 1, invertible = True (must be True at every m)
+  m=20: system size 19x19, det = 1, invertible = True (must be True at every m)
+  ALL m invertible: True (this is the uniqueness claim itself: the marginals determine the threshold law with no freedom left, as a fact about the linear system, at every m tested, not only m=8)
+
+=== Part 1 control: is a NON-monotone (non-suffix) coupling family even in the search ===
+=== space this system covers? Confirm the system only parametrises suffix rules.      ===
+  (structural: every column of M is a suffix indicator, so every solution is a mixture
+   of monotone realisations; non-monotone couplings are outside this system's domain by
+   construction, which matches, rather than narrows, 128's own claim)
+
+=== Part 2: does the variance closed form hold past n = 10, analytically? ===
+  n=11: comonotone closed-form=242/9, predicted n^2 f(1-f)=242/9, match=True; independent closed-form=22/9, predicted n f(1-f)=22/9, match=True
+  n=15: comonotone closed-form=50, predicted n^2 f(1-f)=50, match=True; independent closed-form=10/3, predicted n f(1-f)=10/3, match=True
+  n=25: comonotone closed-form=1250/9, predicted n^2 f(1-f)=1250/9, match=True; independent closed-form=50/9, predicted n f(1-f)=50/9, match=True
+  n=100: comonotone closed-form=20000/9, predicted n^2 f(1-f)=20000/9, match=True; independent closed-form=200/9, predicted n f(1-f)=200/9, match=True
+
+=== Part 2 cross-check: brute-force enumeration agrees with the closed form up to the ===
+=== point brute force is still feasible (n=14, 2^14 = 16384 outcomes), independent   ===
+=== construction from 128's r3 (which enumerated to n=10 only)                       ===
+  n=12: brute-force enumeration Var=8/3, closed form=8/3, match=True (4096 outcomes enumerated)
+  n=14: brute-force enumeration Var=28/9, closed form=28/9, match=True (16384 outcomes enumerated)
+
+=== Part 3: are 128's variance framing and 129's decorrelation framing one finding ===
+=== or two? Test whether 128's own 'per-cell, independent across cells' member    ===
+=== (praised in 128 section 5 as buying cross-cell decorrelation) delivers ANY of ===
+=== 129's within-pass decorrelation on 129's own worst-case probe: a single VALUE ===
+=== repeated at many POSITIONS, so every element shares one cell by construction. ===
+=== Prediction: 1 distinct output (per-cell scheme draws once per cell, and there ===
+=== is only one cell here), identical to the pure global shared-threshold failure,===
+=== because 128's per-cell member is keyed on VALUE (which cell) while 129's test ===
+=== varies POSITION at fixed value, an axis 128's construction cannot see.        ===
+  128's per-cell-independent-across-cells on 129's constant-value-40-positions probe: 1 distinct output(s) (predicted 1)
+  129's position-keyed golden-ratio dither on the same probe: 2 distinct output(s) (predicted 2, reproducing 129's own result, confirming the two constructions diverge on exactly this input)
+
+=== Summary ===
+  Part 1: uniqueness confirmed as a well-posed-system fact at m in {3,5,8,12,20}, all invertible = True. This generalises 128's single m=8 solve to a structural argument (triangular, unit diagonal, hence invertible for every m).
+  Part 2: variance closed forms hold at n up to 100 analytically and are cross-checked
+  by brute-force enumeration through n=14, past 128's own n<=10 enumeration bound. The
+  closed forms are exact identities of variance algebra and are not n-bounded at all.

@@ -1,0 +1,234 @@
+error[E0277]: the trait bound `T: Shr5` is not satisfied
+  --> ladder.rs:94:18
+   |
+94 | pub type Q6<T> = <T as Shr5>::Q;
+   |                  ^^^^^^^^^^^^^^ the trait `Shr5` is not implemented for `T`
+   |
+help: consider restricting type parameter `T` with trait `Shr5`
+   |
+94 | pub type Q6<T: Shr5> = <T as Shr5>::Q;
+   |              ++++++
+
+error[E0277]: the trait bound `T: Shr5` is not satisfied
+  --> ladder.rs:95:18
+   |
+95 | pub type R5<T> = <T as Shr5>::R;
+   |                  ^^^^^^^^^^^^^^ the trait `Shr5` is not implemented for `T`
+   |
+help: consider restricting type parameter `T` with trait `Shr5`
+   |
+95 | pub type R5<T: Shr5> = <T as Shr5>::R;
+   |              ++++++
+
+error[E0277]: the trait bound `A: Add<B>` is not satisfied
+ --> surfaces.rs:9:22
+  |
+9 | pub type Sum<A, B> = <A as Add<B>>::O;
+  |                      ^^^^^^^^^^^^^^^^ the trait `Add<B>` is not implemented for `A`
+  |
+help: consider restricting type parameter `A` with trait `Add`
+  |
+9 | pub type Sum<A: Add<B>, B> = <A as Add<B>>::O;
+  |               ++++++++
+
+error[E0277]: the trait bound `W: Dec` is not satisfied
+   --> surfaces.rs:10:20
+    |
+ 10 | pub type Cont<W> = <W as Container>::C;
+    |                    ^^^^^^^^^^^^^^^^^^^ the trait `Dec` is not implemented for `W`
+    |
+note: required for `W` to implement `Container`
+   --> ladder.rs:381:9
+    |
+381 | impl<T> Container for T
+    |         ^^^^^^^^^     ^
+382 | where
+383 |     T: Dec,
+    |        --- unsatisfied trait bound introduced here
+help: consider restricting type parameter `W` with trait `Dec`
+    |
+ 10 | pub type Cont<W: Dec> = <W as Container>::C;
+    |                +++++
+
+error[E0277]: arvo does not ship this width: c0::Idx<N>
+  --> surfaces.rs:51:35
+   |
+51 |     pub type UInt<const N: u32> = CFixed<N, 0, Warm>;
+   |                                   ^^^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+   |
+help: the trait `c0::ToNat<Arvo>` is not implemented for `c0::Idx<N>`
+  --> surfaces.rs:28:5
+   |
+28 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for c0::Idx<N>` and spell the numeral against `MyWidths`
+note: required by a bound in `CFixed`
+  --> surfaces.rs:43:17
+   |
+41 |     pub struct CFixed<const I: u32, const F: u32, S, M = Arvo>
+   |                ------ required by a bound in this struct
+42 |     where
+43 |         Idx<I>: ToNat<M>,
+   |                 ^^^^^^^^ required by this bound in `CFixed`
+
+error[E0277]: arvo does not ship this width: c0::Idx<I>
+  --> surfaces.rs:52:54
+   |
+52 |     pub type UFixed<const I: u32, const F: u32, S> = CFixed<I, F, S>;
+   |                                                      ^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+   |
+help: the trait `c0::ToNat<Arvo>` is not implemented for `c0::Idx<I>`
+  --> surfaces.rs:28:5
+   |
+28 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for c0::Idx<I>` and spell the numeral against `MyWidths`
+note: required by a bound in `CFixed`
+  --> surfaces.rs:43:17
+   |
+41 |     pub struct CFixed<const I: u32, const F: u32, S, M = Arvo>
+   |                ------ required by a bound in this struct
+42 |     where
+43 |         Idx<I>: ToNat<M>,
+   |                 ^^^^^^^^ required by this bound in `CFixed`
+
+error[E0277]: arvo does not ship this width: c0::Idx<F>
+  --> surfaces.rs:52:54
+   |
+52 |     pub type UFixed<const I: u32, const F: u32, S> = CFixed<I, F, S>;
+   |                                                      ^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+   |
+help: the trait `c0::ToNat<Arvo>` is not implemented for `c0::Idx<F>`
+  --> surfaces.rs:28:5
+   |
+28 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for c0::Idx<F>` and spell the numeral against `MyWidths`
+note: required by a bound in `CFixed`
+  --> surfaces.rs:44:17
+   |
+41 |     pub struct CFixed<const I: u32, const F: u32, S, M = Arvo>
+   |                ------ required by a bound in this struct
+...
+44 |         Idx<F>: ToNat<M>,
+   |                 ^^^^^^^^ required by this bound in `CFixed`
+
+error[E0277]: the trait bound `W: Add<Term>` is not satisfied
+  --> surfaces.rs:76:24
+   |
+76 |     pub type UInt<W> = Fixed<W, N0, Warm>;
+   |                        ^^^^^^^^^^^^^^^^^^ the trait `Add<Term>` is not implemented for `W`
+   |
+note: required by a bound in `Fixed`
+  --> surfaces.rs:15:9
+   |
+13 | pub struct Fixed<WI, WF, S>
+   |            ----- required by a bound in this struct
+14 | where
+15 |     WI: Add<WF>,
+   |         ^^^^^^^ required by this bound in `Fixed`
+help: consider restricting type parameter `W` with trait `Add`
+   |
+76 |     pub type UInt<W: Add<Term>> = Fixed<W, N0, Warm>;
+   |                    +++++++++++
+
+error[E0277]: the trait bound `WI: Add<WF>` is not satisfied
+  --> surfaces.rs:77:34
+   |
+77 |     pub type UFixed<WI, WF, S> = Fixed<WI, WF, S>;
+   |                                  ^^^^^^^^^^^^^^^^ the trait `Add<WF>` is not implemented for `WI`
+   |
+note: required by a bound in `Fixed`
+  --> surfaces.rs:15:9
+   |
+13 | pub struct Fixed<WI, WF, S>
+   |            ----- required by a bound in this struct
+14 | where
+15 |     WI: Add<WF>,
+   |         ^^^^^^^ required by this bound in `Fixed`
+help: consider restricting type parameter `WI` with trait `Add`
+   |
+77 |     pub type UFixed<WI: Add<WF>, WF, S> = Fixed<WI, WF, S>;
+   |                       +++++++++
+
+error[E0277]: no width literal `c4::Idx<N>` is declared in this program
+  --> surfaces.rs:98:36
+   |
+98 |     pub type NatOf<const N: u32> = <Idx<N> as ToNat<Arvo>>::N;
+   |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^ this literal width is not declared
+   |
+help: the trait `c4::ToNat<Arvo>` is not implemented for `c4::Idx<N>`
+  --> surfaces.rs:87:5
+   |
+87 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: literal widths are declared per program, one line each. Declare it, or name a width you already have
+
+error[E0277]: no width literal `c4::Idx<N>` is declared in this program
+  --> surfaces.rs:99:35
+   |
+99 |     pub type UInt<const N: u32> = Fixed<NatOf<N>, T0, Warm>;
+   |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^ this literal width is not declared
+   |
+help: the trait `c4::ToNat<Arvo>` is not implemented for `c4::Idx<N>`
+  --> surfaces.rs:87:5
+   |
+87 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: literal widths are declared per program, one line each. Declare it, or name a width you already have
+
+error[E0277]: no width literal `c4::Idx<I>` is declared in this program
+   --> surfaces.rs:100:54
+    |
+100 |     pub type UFixed<const I: u32, const F: u32, S> = Fixed<NatOf<I>, NatOf<F>, S>;
+    |                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this literal width is not declared
+    |
+help: the trait `c4::ToNat<Arvo>` is not implemented for `c4::Idx<I>`
+   --> surfaces.rs:87:5
+    |
+ 87 |     pub struct Idx<const N: u32>;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: literal widths are declared per program, one line each. Declare it, or name a width you already have
+
+error[E0277]: no width literal `c4::Idx<F>` is declared in this program
+   --> surfaces.rs:100:54
+    |
+100 |     pub type UFixed<const I: u32, const F: u32, S> = Fixed<NatOf<I>, NatOf<F>, S>;
+    |                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this literal width is not declared
+    |
+help: the trait `c4::ToNat<Arvo>` is not implemented for `c4::Idx<F>`
+   --> surfaces.rs:87:5
+    |
+ 87 |     pub struct Idx<const N: u32>;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: literal widths are declared per program, one line each. Declare it, or name a width you already have
+
+error[E0277]: no width literal `c4::Idx<7>` is declared in this program
+  --> p14b_lazy_over_full_ladder.rs:24:1
+   |
+24 | pub type PacketTag = c4::UInt<7>;
+   | ^^^^^^^^^^^^^^^^^^ this literal width is not declared
+   |
+help: the trait `c4::ToNat<Arvo>` is not implemented for `c4::Idx<7>`
+  --> surfaces.rs:87:5
+   |
+87 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: literal widths are declared per program, one line each. Declare it, or name a width you already have
+
+error[E0277]: no width literal `c4::Idx<7>` is declared in this program
+  --> p14b_lazy_over_full_ladder.rs:41:20
+   |
+41 | pub fn read_tag(t: PacketTag) -> PacketTag {
+   |                    ^^^^^^^^^ this literal width is not declared
+   |
+help: the trait `c4::ToNat<Arvo>` is not implemented for `c4::Idx<7>`
+  --> surfaces.rs:87:5
+   |
+87 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: literal widths are declared per program, one line each. Declare it, or name a width you already have
+
+error: aborting due to 15 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

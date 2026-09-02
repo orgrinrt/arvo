@@ -1,0 +1,222 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+=== s1: grid-and-reach agreement ===
+s1: grid-and-reach agreement between vocabulary A and vocabulary B
+box: W in [0,10], F in [0,10]  ->  121 numerals
+
+Q1 set equality      : 121/121
+
+Q2 08's predicate over a discriminating pool (accepts AND rejects):
+    ok  fixed W=4 F=2                        got accept  want accept  
+    ok  fixed W=8 F=0                        got accept  want accept  
+    ok  fixed W=1 F=4                        got accept  want accept  
+    ok  fixed W=0 F=0                        got accept  want accept  
+    ok  fixed W=6 F=6                        got accept  want accept  
+    ok  HUB W=4 F=2 (phase half a step)      got reject  want reject  binade -3: 1/8 is not on the step lattice
+    ok  float p=4 e=-3..3                    got reject  want reject  binade -2: step 1/32, expected 1/64
+    ok  decimal 2 digits F10=1               got reject  want reject  step 1/10 is not a power of radix 2
+    ok  ragged progression                   got reject  want reject  binade 0: 2 distinct steps [Fraction(1, 4), Fraction(1, 2)]
+    ok  fixed W=4 F=2, wrong step asserted   got reject  want reject  binade -1: step 1/4, expected 1/8
+    -> 10/10 verdicts correct
+
+I = W - F as the binade the reach stops at (exclusive):
+  W=4   F=0   I=4    reach=[0,2^4) = [0,16)   max value 15
+  W=4   F=2   I=2    reach=[0,2^2) = [0,4)   max value 15/4
+  W=4   F=4   I=0    reach=[0,2^0) = [0,1)   max value 15/16
+  W=1   F=1   I=0    reach=[0,2^0) = [0,1)   max value 1/2
+  W=1   F=8   I=-7   reach=[0,2^-7) = [0,1/128)   max value 1/256
+  W=1   F=32  I=-31  reach=[0,2^-31) = [0,1/2147483648)   max value 1/4294967296
+  W=0   F=0   I=0    reach=[0,2^0) = [0,1)   max value 0
+
+negative I is the reach lying wholly below one, which needs no signed storage:
+  W=1 F=1: I=0, values are exactly {0, 2^-1}, one bit
+  W=1 F=2: I=-1, values are exactly {0, 2^-2}, one bit
+  W=1 F=4: I=-3, values are exactly {0, 2^-4}, one bit
+  W=1 F=8: I=-7, values are exactly {0, 2^-8}, one bit
+  W=1 F=32: I=-31, values are exactly {0, 2^-32}, one bit
+
+=== s2: which numerals the width keying misses ===
+s2: which A-numerals admit a (W, F) presentation
+
+representation                       A-shape                    (W,F)?   detail
+------------------------------------------------------------------------------------------------------------
+fixed point W=4 F=2                  constant f                 YES      W=4 F=2  |V|=16
+fixed point W=8 F=8                  constant f                 YES      W=8 F=8  |V|=256
+zero-only numeral W=0                constant f                 YES      W=0 F=0  |V|=1
+negative derived I: W=1 F=4          constant f                 YES      W=1 F=4  |V|=2
+HUB W=4 F=2 (phase half a step)      constant f, phase 1/2      NO       does not start at zero (min is 1/8)
+Ranged, 12 values at F=2             constant f, count not 2^k  NO       cardinality 12 is not a power of two
+Ranged, 100 values at F=0            constant f, count not 2^k  NO       cardinality 100 is not a power of two
+float p=4 emin=-3 emax=3             f slope one                NO       7 distinct steps, not one progression
+float p=3 emin=-2 emax=2             f slope one                NO       5 distinct steps, not one progression
+float+subnormals p=4 e=-3..3         f knee then slope one      NO       7 distinct steps, not one progression
+posit-shaped, f slope two            f slope two                NO       12 distinct steps, not one progression
+decimal 2 digits, F10=1              radix ten                  NO       step 1/10 denominator is not a power of two
+bias = 1/2, W=4 F=2                  bias non-zero              NO       does not start at zero (min is 1/2)
+adjustment = 3, W=4 F=2              adjustment not one         NO       step 3/4 is not a negative power of two (numerator 3)
+------------------------------------------------------------------------------------------------------------
+presentable: 4/14    not presentable: 10/14
+
+Every case above is INSIDE 08's format concept (08:303-331). So the misses are
+numerals the concept admits and the (W, F) keying cannot name.
+
+grouped by which A coordinate the (W, F) pair does not carry:
+  canonical exponent not constant : float, float+subnormals, posit-shaped
+  phase not zero                  : HUB
+  radix not two                   : decimal
+  bias not zero                   : bias = 1/2
+  adjustment not one              : adjustment = 3
+  reach not a power of the radix   : Ranged (both rows)
+
+=== s3: one definition, three projections ===
+no_std library built clean, no feature gates
+s3: one definition of a numeral, projected to both vocabularies
+
+check 1: the general derivation, at the constant case, recovers 2^W
+         width box (12 rows, W in 0..12, F in 0..32): PASS
+         compile-time asserts: W=4 F=2 -> 16, W=4 F=0 -> 16, W=1 F=32 -> 2
+
+check 2: the SAME derivation on families the width pair cannot name
+         float p=4, binades -3..3 : 57 magnitudes (7 binades * 8 + zero = 57)
+         float p=3, binades -2..2 : 21 magnitudes (5 binades * 4 + zero = 21)
+         tapered slope-two p=4    : 128 magnitudes
+         float counts as expected : PASS
+
+check 3: the discriminating fact, which is why there is no fraction width
+         constant grid F=2: f(-2) = -2, f(5) = -2  -> one step exponent, so F names it
+         slope-one grid p=4: f(-3) = -6, f(3) = 0  -> 7 distinct, so no F exists
+         constant has a fraction width: true
+         slope-one has one           : false
+
+check 4: the knee, carried by the same definition with one more integer
+         KneeGrid<p=4, knee at binade -6>: f(-9)=-9 f(-7)=-9 f(-6)=-9 f(-4)=-7 f(0)=-3
+         constant below the knee: true   sloped above: true
+         magnitude count through the same walk: 87
+         knee behaves as gradual underflow: true
+
+overall: PASS
+
+=== s4: the two phases ===
+s4: the value-space phase and the storage-space phase are independent
+
+numeral                value phase    storage phases over 64 elements      same word?
+--------------------------------------------------------------------------------------------
+W=13 F=0 anchored      0              {0,1,2,3,4,5,6,7}                    yes, and it is a hazard
+W=8  F=0 anchored      0              {0}                                  yes, and it is a hazard
+W=13 F=0 HUB           1/2            {0,1,2,3,4,5,6,7}                    yes, and it is a hazard
+W=8  F=0 HUB           1/2            {0}                                  yes, and it is a hazard
+W=16 F=4 anchored      0              {0}                                  yes, and it is a hazard
+W=3  F=1 anchored      0              {0,1,2,3,4,5,6,7}                    yes, and it is a hazard
+--------------------------------------------------------------------------------------------
+
+all four combinations are realised, so neither phase determines the other:
+  value phase zero      + storage phase single  : PRESENT  W=8  F=0 anchored
+  value phase zero      + storage phase cycling : PRESENT  W=13 F=0 anchored
+  value phase non-zero  + storage phase single  : PRESENT  W=8  F=0 HUB
+  value phase non-zero  + storage phase cycling : PRESENT  W=13 F=0 HUB
+
+The two are orthogonal by construction: the value phase is a property of the
+grid, fixed by the numeral's type. The storage phase is a property of the
+element's index in a run, and 16:186 gives it as a function of W alone. A
+numeral has one value phase and a run of it visits many storage phases.
+
+=== s5: the knee without an enumeration ===
+s5: expressing every named canonical exponent as max(K, e + I)
+window: binades -40..40
+
+Q1: the design's named shapes in the two-integer form
+   ok  fixed point, f == -F, F=8              K=-8      I=-1000   -> constant
+   ok  fixed point, f == -F, F=0              K=0       I=-1000   -> constant
+   ok  float, p=24, f(e)=e-23                 K=-10000  I=-23     -> slope one
+   ok  float, p=53, f(e)=e-52                 K=-10000  I=-52     -> slope one
+   ok  gradual underflow, p=24, emin=-14      K=-37     I=-23     -> knee
+   ok  gradual underflow, p=11, emin=-14      K=-24     I=-10     -> knee
+   -> 6/6
+
+Q2/Q3: closure over a pool of 81 grids, 6561 ordered pairs
+   meet (pointwise max) stays in the family : 6561/6561
+   the closed form max(max(K1,K2), e+max(I1,I2)) holds : True
+   join (pointwise min) stays in the family : 3969/6561
+   join leaves the family                   : 2592/6561
+
+Q4: what the join lands in, for the two cases that differ
+
+   A. join of a pure fixed shape (f == -8) and a pure float (f == e-23)
+      slope runs: [(1, 55), (0, 25)]
+      in the family max(K, e+I)? False
+      slope one at the bottom then slope zero above, which is 08:436-440's
+      mirror shape. It is min(K, e+I), one flip of the same two integers.
+
+   B. join of two knees, (-12, -10) and (-10, -12)
+      slope runs: [(0, 38), (1, 2), (0, 2), (1, 38)]
+      in the family max(K, e+I)? False
+      four segments, so it is not the mirror shape either. The join of two
+      knees is strictly worse than the join 08 measured, and this is the
+      case 08 did not have because its pool's join question was asked
+      across kinds rather than within the knee family.
+
+Reading:
+  The knee needs two integers, not a list. The design's whole admitted set is
+  the two-integer form, so the enumeration collision 08:392-396 names does not
+  arise for the shapes the design actually has.
+  Meet-closure is an algebraic identity on those two integers rather than a
+  survey result, and non-closure under the join is the same identity failing
+  in the other direction. 08 measured both; this says why.
+  A design wanting the join total needs at least min-of-max-of-affine, and the
+  segment count grows with each join, which is where the function-space
+  question actually starts. Refusing the join keeps the shape at two integers.
+
+=== s6: the whole vocabulary overlap ===
+concept side : 6 files  ['02', '03', '06', '07', '08', '18']
+surface side : 7 files  ['10', '11', '12', '13', '15', '16', '17']
+
+term                    concept  surface   reading
+------------------------------------------------------------------------
+--- vocabulary A, the concept ---
+radix                       122        0   concept only
+binade                       22        0   concept only
+canonical exponent           19        0   concept only
+exponent form                 1        0   concept only
+adjustment                   13        0   concept only
+bias                         36        0   concept only
+phase                        30       13   IN BOTH, candidate collision
+value set                    74        0   concept only
+progression                  23        0   concept only
+locus                         2        0   concept only
+encoding                     45        4   IN BOTH, candidate collision
+denot                       121        1   IN BOTH, candidate collision
+
+--- vocabulary B, the widths ---
+total width                  11       11   IN BOTH, candidate collision
+fraction width                5        3   IN BOTH, candidate collision
+integer width                25       14   IN BOTH, candidate collision
+container                    39      156   IN BOTH, candidate collision
+carrier                       0       94   surface only
+stride                        0       69   surface only
+rung                          6       62   IN BOTH, candidate collision
+extent                        1       34   IN BOTH, candidate collision
+ladder                        0       79   surface only
+width pair                    1        1   IN BOTH, candidate collision
+
+------------------------------------------------------------------------
+terms on both sides: 10  ['phase', 'encoding', 'denot', 'total width', 'fraction width', 'integer width', 'container', 'rung', 'extent', 'width pair']
+
+Every one of these was read. The verdicts:
+  phase (30 vs 13): COLLISION. Value-space offset within a binade (08:222-224, 08:306) against bit offset of a packed element (16:178-179). s4 shows all four combinations occur, so neither determines the other.
+  encoding (45 vs 4): not a collision. 08:253-277 uses it for the datum-to-value map and the surface side uses it in the ordinary sense. No sentence turns on the difference.
+  denot (121 vs 1): not a collision. One meaning throughout, and 08's denotation clause is where it is load-bearing.
+  total width (11 vs 11): NOT YET READ. This is a gap in this probe's coverage.
+  fraction width (5 vs 3): NOT YET READ. This is a gap in this probe's coverage.
+  integer width (25 vs 14): NOT YET READ. This is a gap in this probe's coverage.
+  container (39 vs 156): not a collision. Both sides mean the storage the numeral lowers to. The concept side barely uses it and never load-bearingly.
+  rung (6 vs 62): NOT YET READ. This is a gap in this probe's coverage.
+  extent (1 vs 34): not a collision. Surface side only in any load-bearing sense.
+  width pair (1 vs 1): NOT YET READ. This is a gap in this probe's coverage.
+
+So the overlap is wide and the collision count is one. That is the useful
+shape of the answer: most shared words are shared innocently, and the single
+hazard sits inside 08's own membership predicate, which is the worst place
+for it.
+
+=== feature-gate audit of every probe source ===
+no #![feature(...)] in any probe source

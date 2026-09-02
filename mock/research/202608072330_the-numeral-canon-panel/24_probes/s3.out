@@ -1,0 +1,25 @@
+s3: one definition of a numeral, projected to both vocabularies
+
+check 1: the general derivation, at the constant case, recovers 2^W
+         width box (12 rows, W in 0..12, F in 0..32): PASS
+         compile-time asserts: W=4 F=2 -> 16, W=4 F=0 -> 16, W=1 F=32 -> 2
+
+check 2: the SAME derivation on families the width pair cannot name
+         float p=4, binades -3..3 : 57 magnitudes (7 binades * 8 + zero = 57)
+         float p=3, binades -2..2 : 21 magnitudes (5 binades * 4 + zero = 21)
+         tapered slope-two p=4    : 128 magnitudes
+         float counts as expected : PASS
+
+check 3: the discriminating fact, which is why there is no fraction width
+         constant grid F=2: f(-2) = -2, f(5) = -2  -> one step exponent, so F names it
+         slope-one grid p=4: f(-3) = -6, f(3) = 0  -> 7 distinct, so no F exists
+         constant has a fraction width: true
+         slope-one has one           : false
+
+check 4: the knee, carried by the same definition with one more integer
+         KneeGrid<p=4, knee at binade -6>: f(-9)=-9 f(-7)=-9 f(-6)=-9 f(-4)=-7 f(0)=-3
+         constant below the knee: true   sloped above: true
+         magnitude count through the same walk: 87
+         knee behaves as gradual underflow: true
+
+overall: PASS

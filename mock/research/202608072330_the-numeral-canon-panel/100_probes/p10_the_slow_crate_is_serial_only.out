@@ -1,0 +1,41 @@
+p10. The test-gate observation on bitpack-write-contend-shared, raw.
+
+Not a probe I wrote: this is the captured output of the gate runs themselves,
+kept because 100 section 0 cites it and a citation to a transcript nobody kept
+is not a citation.
+
+THREE RUNS OF ONE CRATE, same host, same pin:
+
+  1. debug, cargo test, default parallel runner
+     killed by me at 58 minutes elapsed, having produced no test result line.
+  2. release, cargo test, default parallel runner
+     killed by me at 37 minutes elapsed. Its tail is reproduced below.
+  3. debug, test binary invoked directly with --test-threads=1
+     15 passed in 45.22 seconds.
+
+I KILLED 1 AND 2, so what is established is that they had not finished at those
+elapsed times, NOT that they never would. Run 3 is a completed measurement.
+
+--- tail of run 2, release, default parallel runner ---
+test stress::stress_size_is_actually_misaligned ... ok
+test kernels::tests::windowed_agrees_split_across_period_aligned_calls ... ok
+test kernels::tests::sequential_split_guarded_agrees_misaligned ... ok
+test kernels::tests::sequential_split_plain_agrees_aligned ... ok
+test kernels::tests::sequential_split_plain_agrees_even_misaligned ... ok
+test stress::guarded_kernel_never_corrupts_under_real_concurrency has been running for over 60 seconds
+test stress::naive_kernel_corruption_rate_under_real_concurrency has been running for over 60 seconds
+test stress::naive_kernel_never_corrupts_when_the_split_is_aligned has been running for over 60 seconds
+
+--- run 3, complete ---
+running 15 tests
+... (all 15 listed, all ok)
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 45.22s
+
+READING
+
+The three stress tests run CONCURRENTLY under the default runner and each is
+reported by the runner as exceeding 60 seconds. The crate declares a single
+per-process four-thread pool (src/stress.rs:66-72) that every stress test
+shares. Three tests contending for one four-thread pool is the mechanism, and
+the release profile ruling out compilation as the explanation is what makes it
+the mechanism rather than a guess.

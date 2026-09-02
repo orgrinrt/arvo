@@ -1,0 +1,22 @@
+=== 1. unprefixed citations into the closed panel ===
+research/202608072330_the-numeral-canon-panel/02_carried_what_replaces_the_two_refutations.md:3:formalization-spec-panel/151_rompf_what_replaces_the_two_refutations.md
+research/202608072330_the-numeral-canon-panel/10_lattner_fresh_eyes_on_the_container_derivation.md:36:formalization-spec-panel/137_aaltonen_erasure_without_a_condition.md
+research/202608072330_the-numeral-canon-panel/180_kiselyov_porting_the_options_register_and_the_droplist.md:352:formalization-spec-panel/124_consolidation_twelve.md
+research/202608072330_the-numeral-canon-panel/19_persona_checkpoint_three.md:919:formalization-spec-panel/141_xu_the_container_fork_benched.md
+count: 4   (all in member files; the living-ledger ones were repointed)
+
+=== 2. each one resolves to nothing, and the OLD_ form exists ===
+  124_consolidation_twelve.md                    bare:NO  OLD_:yes
+  137_aaltonen_erasure_without_a_condition.md    bare:NO  OLD_:yes
+  141_xu_the_container_fork_benched.md           bare:NO  OLD_:yes
+  151_rompf_what_replaces_the_two_refutations.md bare:NO  OLD_:yes
+
+=== 3. the archives the arms now run over ===
+76:        prefix: "seed/",
+81:        prefix: "formalization-spec-panel/",
+citations above containing the string 'seed/': 0
+(zero is the point: these are the second archive, which the old literal could not reach)
+
+=== 4. CONTROL: plant a dead-spelling citation and require the arm to fail ===
+  control fired: the arm now catches a dead-spelling citation into the SECOND archive,
+  which is the case it was blind to before the fix

@@ -1,0 +1,24 @@
+control A: census reproduces a planted registry exactly
+control B: mangled `an_ack_is_not_a_ratification`, which matches as written, by one clause
+control B: miss count moved 0 -> 1 on one mangled clause
+
+== arm A, the census ==
+rows: 86
+  rung in_force: 1
+  rung open: 5
+  rung ratified: 28
+  rung stated: 52
+stated rows carrying a quote: 50
+stated rows carrying none:    2
+    the_branch_waits_for_the_canon
+    the_canon_is_written_once_at_the_end
+  stated, kind deferral: 2
+  stated, kind intent: 6
+  stated, kind process: 33
+  stated, kind refusal: 1
+  stated, kind ruling: 10
+
+== arm B, quote against the file its provenance names ==
+quotes checked against a panel file: 79
+quotes the arm could not reach:      0
+quotes not found in their source:    0

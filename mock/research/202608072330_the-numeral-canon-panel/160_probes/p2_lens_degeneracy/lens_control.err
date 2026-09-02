@@ -1,0 +1,10 @@
+error[E0080]: evaluation panicked: lens focus leaves the carrier
+  --> 160_probes/p2_lens_degeneracy/lens.rs:34:28
+   |
+34 |     const IN_CARRIER: () = assert!(OFF + W <= 64, "lens focus leaves the carrier");
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `Lens64::<60, 13>::IN_CARRIER` failed here
+
+note: erroneous constant encountered
+  --> 160_probes/p2_lens_degeneracy/lens.rs:37:17
+   |
+37 |         let _ = Self::IN_CARRIER;

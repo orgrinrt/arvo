@@ -1,0 +1,14 @@
+./p5bin > p5.out 2> p5.err  137.98s user 0.34s system 99% cpu 2:19.42 total
+--- out ---
+w,policy,routine,in_range_instances,wrong_answers,pct
+3,wrap,longest_max_plus,11785152,0,0.0000
+3,wrap,shortest_min_plus,11932446,5414255,45.3742
+3,saturate,longest_max_plus,11785152,0,0.0000
+3,saturate,shortest_min_plus,11932446,0,0.0000
+4,wrap,longest_max_plus,736300800,0,0.0000
+4,wrap,shortest_min_plus,832398764,407293133,48.9301
+4,saturate,longest_max_plus,736300800,0,0.0000
+4,saturate,shortest_min_plus,832398764,0,0.0000
+--- err ---
+w=3 wrap shortest wrong: edge mask 001000, weights [0, 0, 0, 1, 0, 0]
+w=4 wrap shortest wrong: edge mask 001000, weights [0, 0, 0, 1, 0, 0]

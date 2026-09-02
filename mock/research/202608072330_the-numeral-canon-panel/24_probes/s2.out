@@ -1,0 +1,31 @@
+s2: which A-numerals admit a (W, F) presentation
+
+representation                       A-shape                    (W,F)?   detail
+------------------------------------------------------------------------------------------------------------
+fixed point W=4 F=2                  constant f                 YES      W=4 F=2  |V|=16
+fixed point W=8 F=8                  constant f                 YES      W=8 F=8  |V|=256
+zero-only numeral W=0                constant f                 YES      W=0 F=0  |V|=1
+negative derived I: W=1 F=4          constant f                 YES      W=1 F=4  |V|=2
+HUB W=4 F=2 (phase half a step)      constant f, phase 1/2      NO       does not start at zero (min is 1/8)
+Ranged, 12 values at F=2             constant f, count not 2^k  NO       cardinality 12 is not a power of two
+Ranged, 100 values at F=0            constant f, count not 2^k  NO       cardinality 100 is not a power of two
+float p=4 emin=-3 emax=3             f slope one                NO       7 distinct steps, not one progression
+float p=3 emin=-2 emax=2             f slope one                NO       5 distinct steps, not one progression
+float+subnormals p=4 e=-3..3         f knee then slope one      NO       7 distinct steps, not one progression
+posit-shaped, f slope two            f slope two                NO       12 distinct steps, not one progression
+decimal 2 digits, F10=1              radix ten                  NO       step 1/10 denominator is not a power of two
+bias = 1/2, W=4 F=2                  bias non-zero              NO       does not start at zero (min is 1/2)
+adjustment = 3, W=4 F=2              adjustment not one         NO       step 3/4 is not a negative power of two (numerator 3)
+------------------------------------------------------------------------------------------------------------
+presentable: 4/14    not presentable: 10/14
+
+Every case above is INSIDE 08's format concept (08:303-331). So the misses are
+numerals the concept admits and the (W, F) keying cannot name.
+
+grouped by which A coordinate the (W, F) pair does not carry:
+  canonical exponent not constant : float, float+subnormals, posit-shaped
+  phase not zero                  : HUB
+  radix not two                   : decimal
+  bias not zero                   : bias = 1/2
+  adjustment not one              : adjustment = 3
+  reach not a power of the radix   : Ranged (both rows)

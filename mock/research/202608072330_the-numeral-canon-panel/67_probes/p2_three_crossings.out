@@ -1,0 +1,53 @@
+p2. three crossings, exhaustive at the 4-bit model width
+========================================================================
+
+X1 RESTRATEGISE: same (ambient, representable set, encoding, container);
+   only the adaptation moves. wrap <-> saturate on Q = [-8, 7].
+
+  (a) value map is the identity on Q: 16/16 preserved, bijective by construction.
+  (b) add: the two adaptations agree on 192/256 operand pairs (75.0%)
+  (b) mul: the two adaptations agree on 111/256 operand pairs (43.4%)
+  (b) add on Q = [0, 15]: agree on 136/256 (53.1%)
+  (b) mul on Q = [0, 15]: agree on 80/256 (31.2%)
+
+  So X1 is TOTAL and value-preserving and is not operation-preserving.
+  A crossing that is free on values and not free on operations has no name
+  in the panel's vocabulary, and it is the one that looks free.
+
+X2 WIDEN: same ambient, Q grows from [-8, 7] to [-128, 127].
+   The value map is the inclusion.
+
+  (a) inclusion is injective on values: 16/16 distinct images.
+  (b) wrap     add: emb(op_small(a,b)) == op_big(emb a, emb b) on 192/256 (75.0%)
+  (b) wrap     mul: emb(op_small(a,b)) == op_big(emb a, emb b) on 101/256 (39.5%)
+  (b) saturate add: emb(op_small(a,b)) == op_big(emb a, emb b) on 192/256 (75.0%)
+  (b) saturate mul: emb(op_small(a,b)) == op_big(emb a, emb b) on 101/256 (39.5%)
+
+  So X2 is injective on values and is a homomorphism only where the small
+  numeral's adaptation did not fire. Widening is not free either; it is free
+  exactly on the sub-box where no adaptation occurs, which is a checkable
+  condition and is what a lossless-conversion predicate is really about.
+
+X3 REINTERPRET: same container, same 4-bit patterns, different ambient.
+   (Z, +) with wrapping, against GF(2)^4 with xor, against (Z, min).
+
+  (a) the pattern map is the identity: 16/16 patterns carried, bijective by construction. Nothing in storage moves.
+  (b) wrapping add vs xor agree on 108/256 (42.2%)
+      prediction: the agreement set is the carry-free pairs (a & b == 0), which number 81.
+      REFUTED: 108 != 81. Wrapping discards the carry OUT of
+      the container, so a shared top bit also agrees. Corrected closed form:
+      agreement iff (a & b) is 0 or the top bit alone: count 108, set-equal to the measured agreement: True
+  (b) wrapping add vs min agree on 1/256 (0.4%)
+
+  So X3 preserves every pattern and preserves nothing else. The container is
+  identical, the value map is the identity, and the arithmetic is unrelated.
+
+========================================================================
+SUMMARY
+  every crossing above is total and value- or pattern-preserving at 100%.
+  no crossing above is operation-preserving at 100%.
+  the two properties are independent, and a canon that has one word for
+  'conversion' is naming (a) and silent about (b).
+
+  What this does not establish: that these are the only three crossings, or
+  anything at all about magnitudes. One model width, exhaustive within it.

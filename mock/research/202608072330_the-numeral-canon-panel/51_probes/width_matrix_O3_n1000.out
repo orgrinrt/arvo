@@ -1,0 +1,47 @@
+toolchain : rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host: aarch64-apple-darwin
+opt-level : 3    elements: 1000
+feature gates in generated sources (expected 0): 0
+
+  W acc   instr t/h  loop t/h  rec t/h O1 O2 O3 O4  verdict
+------------------------------------------------------------------------------------------------
+  1   1   128/128     75/75    13/13    1  1  1  1  ERASED: folded to one body
+  2   2   112/112     66/66    13/13    1  1  1  1  ERASED: folded to one body
+  3   2    37/37      31/31     8/8     1  1  1  1  ERASED: folded to one body
+  4   2    56/56      41/41    12/12    1  1  1  1  ERASED: folded to one body
+  5   2    41/41      34/34     8/8     1  1  1  1  ERASED: folded to one body
+  6   2    24/24      18/18     6/6     1  1  1  1  ERASED: folded to one body
+  7   2    41/41      34/34     8/8     1  1  1  1  ERASED: folded to one body
+  8   2    62/62      55/55    16/16    1  1  1  1  ERASED: folded to one body
+  9   2    41/41      34/34     8/8     1  1  1  1  ERASED: folded to one body
+ 10   3    28/28      22/22     7/7     1  1  1  1  ERASED: folded to one body
+ 11   3    51/51      43/43     9/9     1  1  1  1  ERASED: folded to one body
+ 12   3    27/27      21/21     5/5     1  1  1  1  ERASED: folded to one body
+ 13   3    51/51      43/43     9/9     1  1  1  1  ERASED: folded to one body
+ 14   3    32/32      26/26     7/7     1  1  1  1  ERASED: folded to one body
+ 15   3    51/51      43/43     9/9     1  1  1  1  ERASED: folded to one body
+ 16   3    95/95      86/86    18/18    1  1  1  1  ERASED: folded to one body
+ 17   3    51/51      43/43     9/9     1  1  1  1  ERASED: folded to one body
+ 18   4    34/34      28/28     8/8     1  1  1  1  ERASED: folded to one body
+ 19   4    14/14      11/11     6/6     1  1  1  1  ERASED: folded to one body
+ 20   4    31/31      25/25     6/6     1  1  1  1  ERASED: folded to one body
+ 21   4    14/14      11/11     6/6     1  1  1  1  ERASED: folded to one body
+ 22   4    14/14      11/11     6/6     1  1  1  1  ERASED: folded to one body
+ 23   4    14/14      11/11     6/6     1  1  1  1  ERASED: folded to one body
+ 24   4   132/132    121/121   20/20    1  1  1  1  ERASED: folded to one body
+ 25   4    14/14      11/11     6/6     1  1  1  1  ERASED: folded to one body
+ 26   5    14/14      11/11     6/6     1  1  1  1  ERASED: folded to one body
+ 27   5    16/16      13/13     7/7     1  1  1  1  ERASED: folded to one body
+ 28   5    14/14      11/11     6/6     1  1  1  1  ERASED: folded to one body
+ 29   5    16/16      13/13     7/7     1  1  1  1  ERASED: folded to one body
+ 30   5    16/16      13/13     7/7     1  1  1  1  ERASED: folded to one body
+ 31   5    16/16      13/13     7/7     1  1  1  1  ERASED: folded to one body
+ 32   5   169/169    156/156   20/20    1  1  1  1  ERASED: folded to one body
+ 33   5    16/16      13/13     7/7     1  1  1  1  ERASED: folded to one body
+ 40   6    12/12       8/8      3/3     1  1  1  1  ERASED: folded to one body
+ 47   7    20/20      17/17     9/9     1  1  1  1  ERASED: folded to one body
+ 48   7    14/14      10/10     4/4     1  1  1  1  ERASED: folded to one body
+
+summary: 36 widths built, 0 failed to build or parse
+         36 of 36 report ERASED under the strongest oracle that fired
+         widths where the live-in correspondence was a guess: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 24, 32]

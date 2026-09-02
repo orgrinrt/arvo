@@ -2,144 +2,127 @@
 
 ## What arvo is
 
-arvo is a numeric + analysis foundation: fixed-point primitives with
-strategy markers, bit-level contracts, and a handful of algorithm
-crates built on top. Everything is `#![no_std]`, no `alloc`, no
-platform dependency, and every size is const at type level.
+arvo is a numeric foundation: exact-width primitives whose behaviour is
+chosen by the consumer rather than by the container the machine happens
+to offer. Everything is `#![no_std]`, no `alloc`, no platform
+dependency, and every size is const at type level.
 
-Per round 202604271346, arvo is structured as a layered set
-of small crates with a downstream facade. `arvo` itself is the facade,
-not L0. L0 is `arvo-storage`. Trait declarations split into six
-contract crates (`arvo-transparent`, `arvo-strategy`,
-`arvo-bits-contracts`, `arvo-mask-contracts`, `arvo-narrow-contracts`,
-`arvo-numeric-contracts`). Concrete impls live in domain-organised
-implementation crates.
+## The tree holds the bottom three crates and nothing above them
 
-## Identity
+`mock/crates/` holds `arvo-format`, `arvo-placement` and `arvo-strategy`,
+and `mock/Cargo.toml` names those three and no others. They were written
+from the canon as it settled under them, so they are what the current
+design has produced so far and they may be read as such. They are also
+the bottom of the stack rather than a usable numeric library, so there is
+no fixed-point or exact-width primitive to reach for yet.
 
-{{crate_count}} crates, layered from L0 foundation up through the
-facade:
+**What is gone is the previous crate layout, and it was removed on
+purpose**, because arvo's canon is being written and the mutation order
+requires the lower tiers to be cleared before the tier above them can
+change. **The architecture git remembers is a dead tier.** Do not
+reconstruct it, do not reason from it, and do not treat a name that
+appears in git history as a name the design still uses.
 
-**L0 foundation:**
-- `arvo-transparent`. `Transparent` const unsafe trait, the typed
-  unwrap door for every `repr(transparent)` arvo primitive.
-  Free `arvo::raw` const fn.
-- `arvo-strategy`. `Strategy` marker plus the four ZST markers
-  `Hot` / `Warm` / `Cold` / `Precise`. Unified `BitsContainerFor<const
-  N: Width, Sign: Signedness>` const trait projecting (strategy, N,
-  sign) to the dispatched container via Pattern C const-tag dispatch
-  through the `Project<TAG, Sign, BYTES, S>` helper. Native primitives
-  (u8/u16/u32/u64/u128 or signed) for N <= 128; `WideBits<BYTES>` /
-  `AlignedWideBits16<BYTES>` (declared in arvo-storage) for N > 128.
-  Hosts the `Width` newtype.
-- `arvo-storage`. `Bits<N, S, Sign>` opaque storage primitive
-  (`repr(transparent)` over the dispatched container; default
-  `Sign = Unsigned`). `WideBits<const BYTES: usize>` byte-sequence
-  storage at align-1 (Warm/Cold/Precise for N > 128).
-  `AlignedWideBits16<const BYTES: usize>` byte-sequence at align(16)
-  (Hot for N > 128; SSE2/NEON-aligned baseline). `Unsigned` / `Signed`
-  ZST markers + sealed `Signedness` trait. `Bool`, `USize` platform
-  wrappers. `IBits`, `FBits` typed meta-bit newtypes; `Width`
-  re-exported from arvo-strategy.
+Everything above these three is open: how many crates there are, what
+they are called, which layer owns what, and whether the layering is the
+right shape at all. An agent that goes looking for the old tree and
+builds on what it finds is reattaching the tier that had to be detached
+for the current work to be permitted. That has already happened twice.
 
-**L0.5 trait contracts:**
-- `arvo-bits-contracts`. `HasBitWidth`, `BitAccess`, `BitSequence`,
-  `BitLogic`, `BitPrim`, `IBitPrim`, `UBitContainer`,
-  `IBitContainer`, plus `Narrow<T>` and the `Narrowed<N, T>` alias.
-  All `pub const trait`.
-- `arvo-mask-contracts`. `Mask<const W: u8>` const trait surface
-  for fixed-width bit set / clear / test / count operations.
-- `arvo-numeric-contracts`. `Abs`, `Recip`, `Sqrt`, `TotalOrd`,
-  `FromConstant`, `Predicate`, plus the `IsZero` / `IsPositive` /
-  `IsNonZero` / `IsNonNegative` / `IsZeroOrPositive` predicate
-  family. All `pub const trait`.
+## Where the authority actually is
 
-**L1 blanket-impl carrier:**
-- `arvo-bits`. Concrete blanket impls of every L0.5 bit-level trait
-  on `Bits<N, S>` and the bare primitive containers, plus the
-  bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`,
-  `QWord` over `Bits<N, Hot>`).
+**The canon is the registry**: typed rows under `mock/registry/*.toml`,
+declared as `canon_paths` in `mockspace.toml`. Query it with `cargo mock
+query`, never from memory, and cite a row by its slug rather than by
+line, because the registry gains rows constantly and a line citation
+keeps resolving while naming something else.
 
-**L2 concretes:**
-- `arvo-bitmask`. `Mask64`, `Mask256`, `BitMatrix`. Implements
-  `Mask<const W: u8>` from arvo-mask-contracts.
-- `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
-  tensor wrappers. `Cap` newtype + `Enumerator` trait for
-  USize-indexed iteration. Value-generic, no bit semantics.
-- `arvo-refit`. Re-export gateway for the bit-width refit family.
-  Re-exports `Narrow<T>` / `Widen<T>` / `Narrowed` / `Widened` from
-  `arvo-bits-contracts`; concrete impls (cross-primitive plus cross-
-  Bits) live in `arvo-bits-contracts` itself. Renamed from
-  `arvo-narrow` in round 202604301700.
-- `arvo-hash`. Hash family (`Fnv1a` plus future better defaults)
-  with `Hasher<const N: u8>` per-N impls. `ContentHash` typed alias.
+What binds, in order:
 
-**L2 generic algorithms:**
-- `arvo-graph`. Topological sort, rank, waist, spanning tree.
-  Generic over numeric trait bounds for edge weights.
-- `arvo-sparse`. CSR, RCM, block-diagonal, Dulmage-Mendelsohn.
-  Generic over value types.
-- `arvo-comb`. DP, greedy grouping, bin-packing. Generic over cost
-  types.
+- **`ruling` rows at `rung = "ratified"` govern.** `ratified_by = "op"`
+  means the lead designer stamped it. `ratified_by = "experts"` means
+  two independent experts converged and the coordinator gated it, which
+  is a ratification and is treated as one.
+- **`rung = "stated"` is his direction**, carrying his own words in a
+  `quote` field. It binds as direction and is not yet canon.
+- **`proposal` rows are not canon**, whatever their `standing` says.
+  `standing` records how many independent instances back the claim, and
+  a claim with two is still a proposal until a ruling stamps it.
 
-**L3 spectral methods:**
-- `arvo-spectral`. Laplacian, Fiedler vector, power iteration.
-  Generic over weight and eigenvector types.
+**`mock/research/` is the argument behind the canon, not the canon.**
+Everything in it is agent output produced without a recorded human
+decision, `INTENTS.md` included: op's intents live there as the panel
+recorded them and reach the canon as `ruling` rows carrying their `key`.
+Read the tree for evidence and provenance; reason from the registry.
 
-**Facade:**
-- `arvo`. Re-exports the consumer surface. `UFixed<I, F, S>` as
-  `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>`.
-  `IFixed<I, F, S>` as `repr(transparent)` newtype over
-  `Bits<{1+I+F}, S, Signed>` (symmetric counterpart; reshape shipped
-  in round 202604280500 alongside the Sign axis on Bits).
-  `Uint<N, S>` and `Int<N, S>` ergonomic generic aliases.
-  `FastFloat<F>` and `StrictFloat<F>` IEEE-width-tagged floats.
-  `bitfield!` declarative macro.
+Presume unratified material wrong where it conflicts with the canon, and
+**treat agreement between two unratified files as shared drift rather
+than corroboration**, since agents copy each other's framing.
 
-## Crate table
+**Op has left the canon work.** `ruling::the_panel_finishes_the_canon_without_him`
+carries his words: it should be solvable and fully fillable from what he
+has already said. So a canon question does not go to him. Derive it from
+the intent inside its spirit, put it through two independent agreements,
+and remember that **his silence is not permission**. Where the canon
+explicitly holds a question open and reserves the call, that is not
+silence and it may not be filled inside a design.
 
-{{crate_table}}
+## The constraints that are not open, and are not to be questioned
 
-## Architecture rules
+These govern arvo. They are op's intents and they are rules, they are enforced by this repo's own
+mockspace lint configuration and by the workspace rules, and they are in force right now:
 
-- Dependency flow: `arvo → arvo-bits → arvo-bitmask`; `arvo →
-  arvo-tensor` (L2 peer of bitmask); L2 algorithm crates depend on
-  `arvo`, `arvo-bitmask`, and `arvo-tensor` (not `arvo-bits`
-  directly); `arvo-spectral` depends on `arvo`, `arvo-sparse`,
-  and `arvo-tensor`.
-- `arvo-bits` hosts bit-level contracts plus a small allowlist of
-  opaque-bit concrete containers (`Bits<const N: u8>`). Arithmetic
-  fielded types (UFixed, IFixed) belong in L0 `arvo`; mask concretes
-  (Mask64, Mask256, BitMatrix) belong in `arvo-bitmask`. New
-  opaque-bit types extend the allowlist via a design round; the
-  `arvo-bits-traits-only` lint is the backstop.
-- Algorithm crates are generic over numeric trait bounds. They do not
-  import `UFixed` or `IFixed` directly.
-- Every numeric type that has a precision/throughput tradeoff carries
-  `S: Strategy`. Default `Warm`.
-- Monomorphisation is the dispatch. No `dyn`, no `TypeId`, no
-  `std::any`.
-- `#![no_std]` in every crate. No `alloc`, no `Vec`, no `String`,
-  no `Box`.
-- Sizes are const. No runtime grow: no `.push(`, `.resize(`,
-  `.extend(`.
-- No platform dep: no `std::thread`, `std::time`, `std::fs`,
-  `std::net`.
+- `#![no_std]` everywhere. No `alloc`, no `Vec`, no `String`, no `Box`.
+- Sizes are const. No runtime growth: no `.push(`, `.resize(`, `.extend(`.
+- Monomorphisation is the dispatch. No `dyn`, no `TypeId`, no `std::any`.
+- No platform dependency: no `std::thread`, `std::time`, `std::fs`, `std::net`.
+- Public API positions use the stack's own primitives rather than bare
+  `u8`..`u128` / `i8`..`i128` / `f32` / `f64` / `bool` / `usize`.
+
+**And no runtime checks, ever.** Invalids are caught at compile time. Branching is const-time, erased by
+monomorphisation and const solving, with unused paths cleared at lowering, so everything reaches one
+lowered path. Runtime code exists, obviously; runtime *validation* does not.
+
+A previous version of this section said none of these appears in `INTENTS.md`, that they were
+agent-authored, and that any argument depending on one of them rested on unratified ground. **That was
+wrong**, and it was wrong in the direction that does the most damage, because it invited every agent
+reading this file to treat a live rule as a soft convention. The reasoning behind it was a provenance
+hunt that found an older copy of these sentences in a different repository and concluded the rule was
+inherited rather than intended. Finding an older copy of a rule does not demote the rule, and the
+authority was this workspace's rules and this repo's own mockspace configuration the whole time, both
+live and both enforced.
+
+Cite them freely. Build on them. They are `ruling` rows in the registry,
+several of them ratified, and `cargo mock query` will find them.
+
+## What is open, including things that used to read as settled
+
+The strategy axis exists: a numeric type's behaviour is selected by the
+consumer, and the substrate provides the choice rather than making it.
+That much is intent.
+
+**The strategy set is not closed at four.** `Hot`, `Warm`, `Cold` and
+`Precise` are what the previous design happened to carry, and op has
+stated explicitly that the set is open to discussion and exploration.
+Nothing may be written that presumes exactly those four, or that
+presumes their meanings are fixed.
+
+What each strategy weighs is likewise intent rather than rule. They are
+all decided by measurement; what differs is which measurements each one
+weighs most. Read the `ruling` rows on `topic = "the_strategy_axis"` for
+op's own statement of each, in his words in their `quote` fields, and do
+not compress those statements into a table of absolutes.
 
 ## Consumers
 
-arvo is a library; real code lives downstream. Known consumers:
+arvo is a library; real code lives downstream. hilavitkutin (the
+pipeline execution engine) and vehje (the Clause language toolchain)
+are the known consumers, and they drive which algorithm surfaces
+eventually exist. arvo's API is not shaped by any one consumer; arvo
+stays usable by anyone.
 
-- **hilavitkutin** is the pipeline execution engine. It uses `arvo-graph`
-  for plan-stage DAG analysis, `arvo-bitmask` for `AccessMask`,
-  `arvo-sparse` for RCM reordering, `arvo-spectral` for trunk
-  formation, and `arvo-comb` for fiber grouping.
-- **clause** is the language toolchain. It uses `arvo-graph` for pass DAGs
-  and `arvo-bitmask` for artifact read/write sets.
-
-Consumer names appear here only because they drive the choice of
-which L2/L3 algorithms exist. arvo's API is not shaped by any one
-consumer; arvo stays usable by anyone.
+Which specific surfaces those consumers use is part of what the canon
+work is redeciding, so no list of them is given here.
 
 ## Commit style
 
@@ -165,18 +148,16 @@ commit time.
 
 ## What not to do
 
-- Do not add `alloc`, `std`, `Vec`, `String`, `Box`, `dyn`, or
-  `TypeId` to any `arvo*` crate.
-- Do not put arithmetic fielded structs in `arvo-bits`. Opaque-bit
-  concretes on the allowlist (today: `Bits`) are permitted;
-  arithmetic types live in L0 `arvo`, masks in `arvo-bitmask`.
-- Do not import `UFixed` / `IFixed` directly in `arvo-graph`,
-  `arvo-sparse`, `arvo-comb`, or `arvo-spectral`. Use trait bounds.
-- Do not add platform calls (`std::thread`, `std::time`, `std::fs`,
-  `std::net`) anywhere.
+- Do not reason from the removed crate tree, or restore any part of it because a
+  document mentions it. Several generated rule files still name it; they carry a
+  banner saying so.
+- Do not add `alloc`, `std`, `Vec`, `String`, `Box`, `dyn`, or `TypeId` anywhere.
+- Do not add platform calls (`std::thread`, `std::time`, `std::fs`, `std::net`).
 - Do not grow collections at runtime. All sizes are const.
+- Do not write a runtime check where a compile-time refusal belongs. Never a
+  runtime check, ever: catch invalids at compile time and let the unused paths
+  clear at lowering.
 - Do not edit files under `.claude/`, `.github/copilot-instructions.md`,
-  `.github/instructions/`, `.github/skills/`, or `.github/hooks/`.
-  They regenerate from `mock/agent/` on every `cargo mock`.
-- Do not hand-rename `design_rounds/*.md` suffixes. Use the
-  subcommands.
+  `.github/instructions/`, `.github/skills/`, or `.github/hooks/`. They
+  regenerate from `mock/agent/` on every `cargo mock`.
+- Do not hand-rename `design_rounds/*.md` suffixes. Use the subcommands.

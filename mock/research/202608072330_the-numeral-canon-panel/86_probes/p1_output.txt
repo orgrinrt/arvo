@@ -1,0 +1,29 @@
+p1: the multivariate criterion at genuine per-variable degree
+
+arity-2 battery: 225 laws x widths 1..=7
+  laws with TRUE per-variable degree >= 2 in both vars: 155
+  laws whose threshold sits inside the swept range:     109
+  (law, width) pairs checked:                           1575
+  sweep vs grid-verdict mismatches:                     0
+  sweep vs difference-verdict mismatches:               0
+  grid-verdict vs difference-verdict mismatches:        0
+  threshold-from-grid vs threshold-from-diffs mismatch: 0
+
+tensor falling factorials (x)_a (y)_b: threshold prediction
+  predicted (a - s2(a)) + (b - s2(b)) vs computed, 25 members: 0 mismatches
+
+arity-3 battery: 100 laws x widths 1..=4
+  laws with true per-variable degree >= 2 in all three: 47
+  (law, width) pairs checked:                           400
+  sweep vs grid-verdict mismatches:                     0
+
+negative control: (x)_3 * y with x-degree claimed 2, width 3:
+  truncated grid says true, sweep says false => wrong, as it must be (bound understated in x)
+
+width-64 verdicts by grid evaluation (no sweep, no band, no transfer):
+  (x)_33 (y)_33: false in 1156 evaluations (Legendre threshold 62 => false at 64, true through 62)
+  (x)_34 (y)_34: true in 1225 evaluations (Legendre threshold 64 => TRUE at 64, false at 65)
+  (x)_34 (y)_34 at width 65 via u128 at the witness (34, 34): residue = 0x10000000000000000 (must be 1 << 64)
+  black-box tensor grid vs sweep, a,b in 2..=5, widths 1..=5: 0 mismatches
+
+all checks passed

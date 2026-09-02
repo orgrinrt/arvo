@@ -1,0 +1,17 @@
+literal   grid?   separates trunc/near at F=0 (W=3 unsigned sat)
+    1/2    no     no   trunc=0 near=0
+    3/4    no     SEPARATES   trunc=0 near=1
+    1/3    no     no   trunc=0 near=0
+    2/3    no     SEPARATES   trunc=0 near=1
+    3/2    no     SEPARATES   trunc=1 near=2
+    5/2    no     no   trunc=2 near=2
+      1    yes    no   trunc=1 near=1
+      2    yes    no   trunc=2 near=2
+
+CONTROL: every grid literal must fail to separate -> PASS
+CONTROL: at least one non-grid literal must separate -> PASS
+
+The tie case: 1/2 is non-grid at F=0 and does NOT separate, because
+ties-to-even sends it to 0 and truncation sends it to 0 as well.
+So 'non-grid' is necessary and not sufficient; 'non-grid and not a tie' is the
+condition, and any half-integer is exactly the excluded case.

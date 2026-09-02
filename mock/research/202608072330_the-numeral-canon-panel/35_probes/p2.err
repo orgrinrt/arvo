@@ -1,0 +1,3 @@
+--- invariants that must hold across the whole box ---
+wrapping addition associativity failures, summed over every (w,f): 0
+saturating addition monotonicity failures, summed over every (w,f): 0

@@ -1,0 +1,18 @@
+W = 13, limit = 8191, k = 2731
+
+B-holds-A-fails  wrap, affine chain, 3637/4096 inputs exceed 2^W
+  eager vs deferred: AGREE
+CONTROL  wrap, same chain with ONE saturating step
+  eager vs deferred: DISAGREE (0, 0, 5462)
+A-holds-B-fails  round to 2^3, every intermediate on the grid
+  eager vs deferred: AGREE
+CONTROL  round to 2^3, operand off the grid
+  eager vs deferred: DISAGREE (0, 10912, 10920)
+B-holds  clamp, non-negative additions only
+  eager vs deferred: AGREE
+CONTROL  clamp, mixed add/subtract chain
+  eager vs deferred: DISAGREE (6577, 4096, 7944)
+CONTROL  wrap, chain containing a right shift
+  eager vs deferred: DISAGREE at x=4962
+
+RESULT: the two licences are independent, and both negative controls fired.

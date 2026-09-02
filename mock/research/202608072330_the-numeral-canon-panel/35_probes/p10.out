@@ -1,0 +1,6 @@
+check,detail,failures,total,pct
+one_update_fixes_input,x in 0..4096,3584,4096,87.5000
+holds_iff_x_multiple_of_8,x in 0..4096,0,4096,0.0000
+steady_state_equals_input,x in 0..4096,3584,4096,87.5000
+one_update_fixes_input_round_nearest,x in 0..4096,512,4096,12.5000
+any_pair_summing_to_one_fails,all 65537 pairs over x in 0..512,65535,65537,99.9969

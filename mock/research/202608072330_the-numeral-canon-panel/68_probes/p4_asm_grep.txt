@@ -1,0 +1,29 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+command: rustc --edition 2024 --crate-type lib -O --emit=asm p4_validate_residue.rs
+
+== the aliasing line: the typed interior op compiled IDENTICAL to the bare op ==
+32:	.globl	_add_trusted
+33:_add_trusted = _add_bare
+
+== add_bare (which add_trusted is aliased to) ==
+_add_bare:
+	.cfi_startproc
+	ldrb	w8, [x0]
+	ldrb	w9, [x1]
+	add	w0, w9, w8
+	ret
+
+== add_runtime_validated: the runtime-validate residue (orr, tst, csel) ==
+_add_runtime_validated:
+	.cfi_startproc
+	orr	w8, w1, w0
+	add	w9, w1, w0
+	tst	w8, #0x80
+	csel	w0, wzr, w9, ne
+	ret
+
+== trusted_constant: compile-time-validated constants fold; no check anywhere ==
+_trusted_constant:
+	.cfi_startproc
+	mov	w0, #123
+	ret

@@ -1,0 +1,22 @@
+p7: does a composition's len <= capacity invariant survive to the backend?
+==============================================================================
+A QUALITATIVE assembly read, on one host and one toolchain.  It is not a
+bench, it prices nothing, and no timing figure appears in it.  What it
+can support is an existence claim: whether a failure path is emitted.
+
+rustc +nightly-2026-05-28, -O, --emit asm, aarch64-apple-darwin
+failure-path symbols counted: slice_index_fail, panic_bounds_check, slice_start_index_len_fail, slice_end_index_len_fail, unwrap_failed, core9panicking, 5panic, handle_alloc_error
+
+symbol                       asm lines  fail calls  branches  simd regs
+------------------------------------------------------------------------
+sum_slice                           73           2         6          4
+sum_run_unproven                   119           2        12         32
+BoundedRun::sum                    143           2        12         32
+sum_run_clamped                     94           0        11         32
+BoundedRun::sum_via_slice           78           1         6          4
+sum_run_iter                        58           0         5          4
+sum_full                            63           0         0         32
+
+Read this way:
+  A nonzero 'fail calls' means the bounds check reached the backend and
+  was emitted.  Zero means the compiler proved it dead and removed it.

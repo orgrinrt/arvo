@@ -1,0 +1,120 @@
+seat 215, probe 1. W = 8, exhaustive over the declared range.
+
+== A/B. associativity and absorption, exhaustive over all 2^24 triples per row ==
+
+configuration                         assoc bad L-absorb bad R-absorb bad  verdict
+Add/Wrap/U/F=0/Trunc                          0            0            0  associative, absorption holds
+Add/Wrap/U/F=2/Trunc                          0            0            0  associative, absorption holds
+Add/Wrap/U/F=2/Near                           0            0            0  associative, absorption holds
+Add/Wrap/U/F=4/Trunc                          0            0            0  associative, absorption holds
+Add/Wrap/U/F=4/Near                           0            0            0  associative, absorption holds
+Add/Wrap/I/F=0/Trunc                          0            0            0  associative, absorption holds
+Add/Wrap/I/F=2/Trunc                          0            0            0  associative, absorption holds
+Add/Wrap/I/F=2/Near                           0            0            0  associative, absorption holds
+Add/Wrap/I/F=4/Trunc                          0            0            0  associative, absorption holds
+Add/Wrap/I/F=4/Near                           0            0            0  associative, absorption holds
+Add/Sat/U/F=0/Trunc                           0            0            0  associative, absorption holds
+Add/Sat/U/F=2/Trunc                           0            0            0  associative, absorption holds
+Add/Sat/U/F=2/Near                            0            0            0  associative, absorption holds
+Add/Sat/U/F=4/Trunc                           0            0            0  associative, absorption holds
+Add/Sat/U/F=4/Near                            0            0            0  associative, absorption holds
+Add/Sat/I/F=0/Trunc                     4177792      2088896      2088896  not associative, absorption fails
+        first associativity witness: a=-128 b=-128 c=1 -> L=-127 R=-128
+Add/Sat/I/F=2/Trunc                     4177792      2088896      2088896  not associative, absorption fails
+Add/Sat/I/F=2/Near                      4177792      2088896      2088896  not associative, absorption fails
+Add/Sat/I/F=4/Trunc                     4177792      2088896      2088896  not associative, absorption fails
+Add/Sat/I/F=4/Near                      4177792      2088896      2088896  not associative, absorption fails
+Mul/Wrap/U/F=0/Trunc                          0            0            0  associative, absorption holds
+Mul/Wrap/U/F=2/Trunc                   13766544     12189018     12189018  not associative, absorption fails
+Mul/Wrap/U/F=2/Near                    13777670     12192568     12192568  not associative, absorption fails
+Mul/Wrap/U/F=4/Trunc                   15601714     15052262     15052262  not associative, absorption fails
+Mul/Wrap/U/F=4/Near                    15597480     14932130     14932130  not associative, absorption fails
+Mul/Wrap/I/F=0/Trunc                          0            0            0  associative, absorption holds
+Mul/Wrap/I/F=2/Trunc                   13735108     12204868     12204868  not associative, absorption fails
+Mul/Wrap/I/F=2/Near                    13571512     12132880     12132880  not associative, absorption fails
+Mul/Wrap/I/F=4/Trunc                   15286514     14247766     14247766  not associative, absorption fails
+Mul/Wrap/I/F=4/Near                    14664976     13629080     13629080  not associative, absorption fails
+Mul/Sat/U/F=0/Trunc                           0            0            0  associative, absorption holds
+Mul/Sat/U/F=2/Trunc                      407318       223755       223755  not associative, absorption fails
+Mul/Sat/U/F=2/Near                       407270       223422       223422  not associative, absorption fails
+Mul/Sat/U/F=4/Trunc                     2097706      1428838      1428838  not associative, absorption fails
+Mul/Sat/U/F=4/Near                      2091214      1360316      1360316  not associative, absorption fails
+Mul/Sat/I/F=0/Trunc                       62476        31239        31239  not associative, absorption fails
+        first associativity witness: a=-128 b=-128 c=-1 -> L=-127 R=-128
+Mul/Sat/I/F=2/Trunc                      891290       510269       510269  not associative, absorption fails
+Mul/Sat/I/F=2/Near                       873472       497717       497717  not associative, absorption fails
+Mul/Sat/I/F=4/Trunc                     4143422      2917051      2917051  not associative, absorption fails
+Mul/Sat/I/F=4/Near                      3841944      2593331      2593331  not associative, absorption fails
+
+-- the controls, which decide whether anything above counts --
+  PASS  signed saturating multiply at F=0 reports non-associative
+  PASS  signed wrapping multiply at F=0 reports associative
+
+  no configuration is associative while absorption fails, over the swept space.
+  so absorption is not observed to be strictly stronger here. it remains PROVEN
+  sufficient and OBSERVED necessary, and those are different standings.
+
+== C. absorbing elements, by exhaustive search ==
+
+  Add/Wrap/U                 absorbing elements: []
+  Add/Wrap/I                 absorbing elements: []
+  Add/Sat/U                  absorbing elements: [255]
+  Add/Sat/I                  absorbing elements: []
+  Mul/Wrap/U                 absorbing elements: [0]
+  Mul/Wrap/I                 absorbing elements: [0]
+  Mul/Sat/U                  absorbing elements: [0]
+  Mul/Sat/I                  absorbing elements: [0]
+
+  the control: wrapping addition must report none at both signednesses.
+  note that wrapping MULTIPLY absorbs at 0, which is the ring annihilator and
+  is not the element a min-plus fold needs. min-plus takes + as its product, so
+  the annihilator it needs is one for +, and that is what wrapping has none of.
+
+== E. a composite's region, in both directions ==
+
+  composite fails where every part of one association holds:
+    signed saturating multiply, F=0, a=-128 b=-1 c=-1
+    every site of a*(b*c) is in range, and (a*b)*c = -127 against a*(b*c) = -128
+
+  composite holds where a part fails:
+    unsigned wrapping, F=0. pairs where a+b escapes the declared range: 32640 of 65536.
+    pairs where (a+b)-b != a: 0.
+
+== F. the width grade against the interval grade ==
+
+  signed saturating multiply, F=0.
+    width grade, operands in [-128,127]: 62476 of 16777216 triples non-associative.
+    interval grade, operands in [-5,5]:  0 of 1331 triples non-associative.
+    the largest symmetric interval [-k,k] carrying associativity is k = 11.
+
+  k = 11 rather than k = 5, and the gap is the finding. I predicted 5, reasoning that
+  the TRIPLE product must stay in range: 5^3 = 125 fits [-128,127] and 6^3 = 216 does not.
+  that is wrong. 11^2 = 121 fits and 12^2 = 144 does not, so the boundary is set by the
+  PAIRWISE product. containment is needed at the nested position and nowhere else: once
+  both inner products are exact, the two associations hand the outer clamp the SAME exact
+  value, so the outer clamp cannot separate them however hard it saturates.
+
+  the pairwise-containment predicate, over all 16777216 triples:
+    triples where an inner product leaves the range: 16497435
+    of those, triples where the two associations agree anyway: 16434959
+    so the predicate is SUFFICIENT and not necessary. it refuses 16434959 triples
+    on which the law does hold, and that is the price of a const-decidable gate stated as a
+    number rather than as an adjective.
+
+== D. the min-plus semiring axioms, one line per axiom ==
+
+  Sat/U  otimes assoc yes  otimes comm yes  otimes ident(0) yes  oplus ident(TOP) yes  TOP annihilates yes  distributes yes
+        -> a complete min-plus semiring, with TOP = 255
+  Sat/I  otimes assoc NO   otimes comm yes  otimes ident(0) yes  oplus ident(TOP) yes  TOP annihilates NO   distributes yes
+        -> not a min-plus carrier. missing: otimes associativity, annihilating top
+  Wrap/U  otimes assoc yes  otimes comm yes  otimes ident(0) yes  oplus ident(TOP) yes  TOP annihilates NO   distributes NO 
+        -> not a min-plus carrier. missing: annihilating top, distributivity
+  Wrap/I  otimes assoc yes  otimes comm yes  otimes ident(0) yes  oplus ident(TOP) yes  TOP annihilates NO   distributes NO 
+        -> not a min-plus carrier. missing: annihilating top, distributivity
+
+  TOP is a reachable value rather than a fresh point, so 'no path' and 'a path
+  costing TOP' are the same bit pattern. the arm carries `all reachable costs <
+  TOP` and is unsound without it. that is a caveat on the carrier, not on the
+  axioms, every one of which is checked above over the whole value set.
+
+== every control: PASSED ==

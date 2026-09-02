@@ -1,0 +1,97 @@
+======================================================================
+PREDICTION 1: at F=0, rounded multiply is associative for ALL modes,
+exhaustively over the swept grid (rounding never engages at F=0).
+======================================================================
+  F=0 mode=floor            associativity: PASS (no counterexample, exhaustive)
+  F=0 mode=ceil             associativity: PASS (no counterexample, exhaustive)
+  F=0 mode=trunc            associativity: PASS (no counterexample, exhaustive)
+  F=0 mode=round_half_up    associativity: PASS (no counterexample, exhaustive)
+  F=0 mode=round_half_even  associativity: PASS (no counterexample, exhaustive)
+
+======================================================================
+PREDICTION 2: at F>=1, rounded multiply is NOT associative for standard
+modes; expect at least one counterexample per mode within a modest sweep.
+======================================================================
+  F=1 mode=floor           : counterexample found (associativity FAILS, as predicted) a=1/2 b=1/2 c=2 (ab)c=0 a(bc)=1/2
+  F=1 mode=ceil            : counterexample found (associativity FAILS, as predicted) a=1/2 b=1/2 c=3/2 (ab)c=1 a(bc)=1/2
+  F=1 mode=trunc           : counterexample found (associativity FAILS, as predicted) a=1/2 b=1/2 c=2 (ab)c=0 a(bc)=1/2
+  F=1 mode=round_half_up   : counterexample found (associativity FAILS, as predicted) a=1/2 b=1/2 c=3/2 (ab)c=1 a(bc)=1/2
+  F=1 mode=round_half_even : counterexample found (associativity FAILS, as predicted) a=1/2 b=1/2 c=3/2 (ab)c=0 a(bc)=1/2
+  F=2 mode=floor           : counterexample found (associativity FAILS, as predicted) a=1/4 b=3/4 c=3/2 (ab)c=0 a(bc)=1/4
+  F=2 mode=ceil            : counterexample found (associativity FAILS, as predicted) a=1/4 b=1/4 c=5/4 (ab)c=1/2 a(bc)=1/4
+  F=2 mode=trunc           : counterexample found (associativity FAILS, as predicted) a=1/4 b=3/4 c=3/2 (ab)c=0 a(bc)=1/4
+  F=2 mode=round_half_up   : counterexample found (associativity FAILS, as predicted) a=1/4 b=1/4 c=3/2 (ab)c=0 a(bc)=1/4
+  F=2 mode=round_half_even : counterexample found (associativity FAILS, as predicted) a=1/4 b=1/2 c=3/2 (ab)c=0 a(bc)=1/4
+  F=3 mode=floor           : counterexample found (associativity FAILS, as predicted) a=1/4 b=3/4 c=3/4 (ab)c=0 a(bc)=1/8
+  F=3 mode=ceil            : counterexample found (associativity FAILS, as predicted) a=1/4 b=5/8 c=5/8 (ab)c=1/4 a(bc)=1/8
+  F=3 mode=trunc           : counterexample found (associativity FAILS, as predicted) a=1/4 b=3/4 c=3/4 (ab)c=0 a(bc)=1/8
+  F=3 mode=round_half_up   : counterexample found (associativity FAILS, as predicted) a=1/8 b=1/2 c=1/2 (ab)c=1/8 a(bc)=0
+  F=3 mode=round_half_even : counterexample found (associativity FAILS, as predicted) a=1/8 b=5/8 c=5/8 (ab)c=1/8 a(bc)=0
+
+======================================================================
+PREDICTION 3: at F>=1, rounded multiply does NOT distribute over addition
+for standard modes; a*(b+c) =?= a*b + a*c under rounding.
+======================================================================
+  F=1 mode=floor           : counterexample found (distributivity FAILS, as predicted) a=1/2 b=1/2 c=1/2
+  F=1 mode=ceil            : counterexample found (distributivity FAILS, as predicted) a=1/2 b=1/2 c=1/2
+  F=1 mode=trunc           : counterexample found (distributivity FAILS, as predicted) a=1/2 b=1/2 c=1/2
+  F=1 mode=round_half_up   : counterexample found (distributivity FAILS, as predicted) a=1/2 b=1/2 c=1/2
+  F=1 mode=round_half_even : counterexample found (distributivity FAILS, as predicted) a=1/2 b=1/2 c=1/2
+  F=2 mode=floor           : counterexample found (distributivity FAILS, as predicted) a=1/4 b=1/4 c=3/4
+  F=2 mode=ceil            : counterexample found (distributivity FAILS, as predicted) a=1/4 b=1/4 c=1/4
+  F=2 mode=trunc           : counterexample found (distributivity FAILS, as predicted) a=1/4 b=1/4 c=3/4
+  F=2 mode=round_half_up   : counterexample found (distributivity FAILS, as predicted) a=1/4 b=1/4 c=1/4
+  F=2 mode=round_half_even : counterexample found (distributivity FAILS, as predicted) a=1/4 b=1/4 c=1/2
+  F=3 mode=floor           : counterexample found (distributivity FAILS, as predicted) a=1/8 b=1/4 c=3/4
+  F=3 mode=ceil            : counterexample found (distributivity FAILS, as predicted) a=1/8 b=1/8 c=1/8
+  F=3 mode=trunc           : counterexample found (distributivity FAILS, as predicted) a=1/8 b=1/4 c=3/4
+  F=3 mode=round_half_up   : counterexample found (distributivity FAILS, as predicted) a=1/8 b=1/8 c=3/8
+  F=3 mode=round_half_even : counterexample found (distributivity FAILS, as predicted) a=1/8 b=1/8 c=1/2
+
+======================================================================
+PREDICTION 4: all deterministic rounding modes are monotone: x<=y implies
+round(x)<=round(y), swept over a fine sample of non-grid-aligned rationals.
+======================================================================
+  mode=floor           : PASS (monotone over the sweep)
+  mode=ceil            : PASS (monotone over the sweep)
+  mode=trunc           : PASS (monotone over the sweep)
+  mode=round_half_up   : PASS (monotone over the sweep)
+  mode=round_half_even : PASS (monotone over the sweep)
+
+======================================================================
+PREDICTION 5: stochastic rounding is (a) NOT monotone per-realization
+(adversarial draws constructible), (b) unbiased in expectation exactly.
+======================================================================
+  x=99/100 (u=0.5) -> 1;  y=101/100 (u=0.5) -> 1;  x<y holds: True
+  retry: x=99/100 (u=0.999) -> 0;  y=101/100 (u=0.001) -> 2
+  strict violation (round(x) > round(y) while x<y): False
+  x=1/3    analytic E[round(x)]=0.333333 exact_x=0.333333 MC_mean(N=200000)=0.333295 diff=0.00004
+  x=7/8    analytic E[round(x)]=0.875000 exact_x=0.875000 MC_mean(N=200000)=0.875345 diff=0.00035
+  x=5/2    analytic E[round(x)]=2.500000 exact_x=2.500000 MC_mean(N=200000)=2.501755 diff=0.00176
+  x=0      analytic E[round(x)]=0.000000 exact_x=0.000000 MC_mean(N=200000)=0.000000 diff=0.00000
+  x=4      analytic E[round(x)]=4.000000 exact_x=4.000000 MC_mean(N=200000)=4.000000 diff=0.00000
+
+======================================================================
+PREDICTION 6: round-half-to-even accumulates less bias than round-half-up
+or truncation, over a long chain of multiplications by a fixed factor
+that lands exactly halfway between grid points at each step.
+======================================================================
+  mode=trunc            N=2000 ties, mean per-step rounding error = -0.5000 (0.0 = unbiased)
+  mode=round_half_up    N=2000 ties, mean per-step rounding error = +0.5000 (0.0 = unbiased)
+  mode=round_half_even  N=2000 ties, mean per-step rounding error = +0.0000 (0.0 = unbiased)
+
+======================================================================
+PREDICTION 7: composing overflow with rounding: saturate(monotone) o round
+stays monotone; wrap(non-monotone) o round stays non-monotone.
+======================================================================
+  saturate(round(x)) monotone over sweep: PASS
+  bare wrap monotone: FAIL (violation, as predicted for wrap) (-3, 0, 5, 0)
+
+======================================================================
+PREDICTION 8: rounding-then-saturate can diverge from saturate-then-round
+when the intermediate grid (accumulator) differs from the final grid.
+======================================================================
+  exact=3.375 path A (round@F3 then clamp)=3 path B (clamp then round@F1)=3
+  divergent: False
+  exact2=3.0625 roundAcc=3 clampToFinalRange=3 thenNarrow=3 vs clampThenRound=3
+  divergent2: False

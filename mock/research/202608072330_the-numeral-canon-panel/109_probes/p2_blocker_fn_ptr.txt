@@ -1,0 +1,24 @@
+P2, first attempt. The const associativity census parameterised by a function
+pointer, `const fn associativity_census(op: fn(i32,i32)->i32) -> (u32,u32)`.
+
+rustc 1.98.0-nightly (57d06900f 2026-05-27), nightly-2026-05-28:
+
+error: function pointer calls are not allowed in constant functions
+   --> p2_a_declared_law_is_a_claim_nothing_constrains.rs:133:31
+    |
+133 |                 let left = op(op(a, b), c);
+    |                               ^^^^^^^^
+
+error: function pointer calls are not allowed in constant functions
+   --> p2_a_declared_law_is_a_claim_nothing_constrains.rs:133:28
+error: function pointer calls are not allowed in constant functions
+   --> p2_a_declared_law_is_a_claim_nothing_constrains.rs:134:35
+error: function pointer calls are not allowed in constant functions
+   --> p2_a_declared_law_is_a_claim_nothing_constrains.rs:134:29
+
+error: aborting due to 4 previous errors
+
+Consequence for the design, not for the probe: a law cannot be computed at
+const time about an operation supplied as a VALUE. The operation has to be a
+TYPE, reached through a const trait, for anything to be computable about it.
+Resolved that way in the committed version of the probe.

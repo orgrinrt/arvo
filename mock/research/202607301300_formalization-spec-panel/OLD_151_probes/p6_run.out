@@ -1,0 +1,29 @@
+-- the six relations the sign-domain question turns on, radix two, one grid
+   Symmetric(4) inside AsymmetricLow(4)     true
+   AsymmetricLow(4) inside Symmetric(4)     false
+   AsymmetricLow(4) inside Symmetric(5)     true
+   Symmetric(5) inside AsymmetricLow(4)     false
+   NonNegative(4) inside AsymmetricLow(4)   false
+   AsymmetricLow(4) inside NonNegative(4)   false
+   forced: Sym <= Asym from row 1, Asym <= Sym from row 3, so antisymmetry
+   would give Sym = Asym, and their ranges differ, so no order on the three
+   domains carries the inclusion order.
+-- endpoints, derived rather than declared
+   NonNegative(4)               codes=16    lo=0     hi=15   
+   Symmetric(4)                 codes=16    lo=-7    hi=7    
+   AsymmetricLow(4)             codes=16    lo=-8    hi=7    
+   Symmetric(1)                 codes=2     lo=0     hi=0    
+   Symmetric(2) at radix three  codes=9     lo=-4    hi=4    
+   AsymmetricLow(2) at radix three codes=9     lo=-4    hi=4    
+-- one grid clause check, stated so a reader can see it is not vacuous
+   NonNegative(4) at exponent 0 inside NonNegative(4) at exponent -1: false
+-- conversion: four source strategies, everything else held fixed
+   v=   3  [Some(3), Some(3), Some(3), Some(3)]
+   v=   9  [Some(7), Some(7), Some(7), Some(7)]
+   v=  20  [Some(7), Some(7), Some(7), Some(7)]
+   v=  -4  [Some(-4), Some(-4), Some(-4), Some(-4)]
+-- conversion: four target strategies, everything else held fixed
+   v=   3  [Some(3), Some(3), Some(3), Some(3)]
+   v=   9  [Some(-7), Some(7), Some(7), None]
+   v=  20  [Some(4), Some(7), Some(7), None]
+   v=  -4  [Some(-4), Some(-4), Some(-4), Some(-4)]

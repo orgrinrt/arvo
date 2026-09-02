@@ -1,0 +1,32 @@
+# arvo-placement
+
+Where the bits sit. Nothing about what they mean.
+
+Given a declared signature from `arvo-format`, this derives the placement: the machine carrier, and
+where the value lives inside it. The one thing to hold onto is that no operation reads any of it. Two
+placements of the same declared signature compute the same function, every time, and the derivation
+chooses where the value goes rather than what it is.
+
+The output depends on whether the value has its allocation to itself. When it does, there is one
+output, the carrier, and the language gives you a standalone sized type whose size you can ask for.
+When the value shares its allocation with others, there are three, the carrier and the access width
+and the stride, and there is no per-element size to ask about at all: you reach the element through
+its carrier, and what is measurable is the stride of the whole allocation, which is a property of the
+column rather than of the element in it. The access width is not derivable from the carrier and the
+carrier is not derivable from it, so the three are genuinely three answers.
+
+That size observation is the only way the footprint is visible, and it matters that it is visible at
+all, because minimising footprint is one of the things a consumer can ask for and an objective nobody
+can measure is not an objective.
+
+One consequence surprises people, so it is better said here than found later. Two placements of one
+declared signature are two types as far as the language is concerned, since they have different
+layouts, and an array cannot hold both. They are the same number and they are not the same
+arrangement, and only sameness of the number licenses substituting one for the other inside a bigger
+computation.
+
+`no_std`, no allocation, sizes const.
+
+## Status
+
+Design phase. The documents are written and the source is being built from them.

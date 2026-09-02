@@ -1,0 +1,49 @@
+=== every cell of the cube, with both hypotheses evaluated mechanically ===
+
+cell                           H1   H2  induced  predicted    verdict
+unsigned     sat  add F=0     yes  yes    assoc      assoc  predicted
+unsigned     sat  mul F=0     yes  yes    assoc      assoc  predicted
+unsigned     wrap add F=0     yes  yes    assoc      assoc  predicted
+unsigned     wrap mul F=0     yes  yes    assoc      assoc  predicted
+signed 2c    sat  add F=0     yes   no   broken     broken  predicted
+signed 2c    sat  mul F=0     yes   no   broken     broken  predicted
+signed 2c    wrap add F=0     yes  yes    assoc      assoc  predicted
+signed 2c    wrap mul F=0     yes  yes    assoc      assoc  predicted
+signed sym   sat  add F=0     yes   no   broken     broken  predicted
+signed sym   sat  mul F=0     yes  yes    assoc      assoc  predicted
+signed sym   wrap add F=0     yes  yes    assoc      assoc  predicted
+signed sym   wrap mul F=0     yes  yes    assoc      assoc  predicted
+unsigned     sat  add F=2     yes  yes    assoc      assoc  predicted
+unsigned     sat  mul F=2      no   no   broken     broken  predicted
+unsigned     wrap add F=2     yes  yes    assoc      assoc  predicted
+unsigned     wrap mul F=2      no   no   broken     broken  predicted
+signed 2c    sat  add F=2     yes   no   broken     broken  predicted
+signed 2c    sat  mul F=2      no   no   broken     broken  predicted
+signed 2c    wrap add F=2     yes  yes    assoc      assoc  predicted
+signed 2c    wrap mul F=2      no   no   broken     broken  predicted
+signed sym   sat  add F=2     yes   no   broken     broken  predicted
+signed sym   sat  mul F=2      no   no   broken     broken  predicted
+signed sym   wrap add F=2     yes  yes    assoc      assoc  predicted
+signed sym   wrap mul F=2      no   no   broken     broken  predicted
+
+=== what the cube says ===
+
+  SUFFICIENCY violations (H1 and H2 hold, induced not associative): 0
+  cells associative without both hypotheses:                        0
+    of which the induced operation is collapsed to a constant:      0
+    residue:                                                        0
+
+  Reading. H2 is the fixable one: it is decided by the range geometry per
+  operation, which is why a symmetric range restores signed multiplication at
+  F = 0. H1 is the one nothing about the reduction can repair, which is why the
+  same symmetric range buys nothing at F > 0: the rescaled ambient is not
+  associative, so there is no associativity left to inherit.
+
+=== instrument validation ===
+
+  H1 observed both true and false:    true
+  H2 observed both true and false:    true
+  induced observed both true and false: true
+  (a hypothesis that never varied would predict by accident)
+
+P9 WORKS

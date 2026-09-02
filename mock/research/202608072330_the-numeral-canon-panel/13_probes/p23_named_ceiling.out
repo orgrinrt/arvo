@@ -1,0 +1,33 @@
+error[E0277]: the trait bound `E<E<E<O<E<O<O<Z>>>>>>>: Named` is not satisfied
+   --> p23_named_ceiling.rs:704:44
+    |
+704 | pub const SZ: usize = core::mem::size_of::<M8>();
+    |                                            ^^ unsatisfied trait bound
+    |
+help: the trait `Named` is not implemented for `E<E<E<O<E<O<O<Z>>>>>>>`
+   --> p23_named_ceiling.rs:10:1
+    |
+ 10 | pub struct E<N>(N);
+    | ^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Named`:
+              E<E<E<E<E<E<O<Z>>>>>>>
+              E<E<E<E<E<O<Z>>>>>>
+              E<E<E<E<O<O<Z>>>>>>
+              E<E<E<E<O<Z>>>>>
+              E<E<E<O<E<O<Z>>>>>>
+              E<E<E<O<O<O<Z>>>>>>
+              E<E<E<O<O<Z>>>>>
+              E<E<E<O<Z>>>>
+            and 24 others
+note: required for `Numeral<L<52>, L<12>, Unsigned, Warm>` to implement `MulShape<Numeral<L<52>, L<12>, Unsigned, Warm>>`
+   --> p23_named_ceiling.rs:685:55
+    |
+685 | impl<I1: Repr, F1: Repr, I2: Repr, F2: Repr, Sign, S> MulShape<Numeral<I2, F2, Sign, S>> for Numeral<I1, F1, Sign, S>
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+691 |     Sum<ReprOf<I1>, ReprOf<I2>>: Named,
+    |                                  ----- unsatisfied trait bound introduced here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

@@ -1,0 +1,15 @@
+# toolchain, recorded before any probe ran
+2026-08-09T07:03:56Z
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+binary: rustc
+commit-hash: 57d06900fd7d9ee06d3a7f323bb77f17ab3cfaf8
+commit-date: 2026-05-27
+host: aarch64-apple-darwin
+release: 1.98.0-nightly
+LLVM version: 22.1.6
+--- python ---
+Python 3.14.6
+--- pin ---
+[toolchain]
+channel = "nightly-2026-05-28"
+components = ["rustfmt", "clippy", "rust-src"]

@@ -1,0 +1,50 @@
+ee9aadb6 chore: lock the src changelist
+096edb02 fix: the identity turns on a whole multiple of the quantum
+ab69bccd docs: the source plan for the phase correction
+687e95f8 chore: lock the doc changelist
+830573ba docs: the design says the identity turns on a whole multiple, not a nonzero phase
+ea31b5a9 docs: open the doc window for the phase correction
+c52d0579 docs: open a round for the identity turning on a whole-multiple phase
+c75f10b6 Merge pull request #64 from orgrinrt/research/the-format-second-read
+d25ca87a chore: format the 240 probes as the commit hook wrote them
+7491d08a research: reconcile seat 240 against the format consolidation and gate
+143e24fc research: derive the format layer from its denotation, seat 240
+97a3ba00 Merge pull request #62 from orgrinrt/research/the-door-question-seat-a
+a591d550 probe: five instruments against the shipped format layer
+176ced90 panel: name k6's harness in the probe index
+c9a82396 probe: give the gate comparison a harness and drop its compiled output
+ad44ab60 panel: state the new type count as eight, and where the ninth would come from
+5a89d165 panel: answer what the numeric introduction door may carry out
+5542b83a chore: hook reformat of the eight door probes, outputs re-run
+4b56529b probe: move the open inventory test to the side with no exemption
+aea30803 probe: measure which const parameter gate works and whether it leaks
+2dbdbb29 probe: build the coordinate shape and check it from outside the door
+3c411113 probe: measure what the crate-wide exemption is carrying
+4577afc8 probe: compile what Width and Bool can carry of the ten constants
+0c4c0f8e probe: run the bare-primitive lint over the impl an outside crate must write
+2ff7ae29 Merge pull request #61 from orgrinrt/research/the-door-question-seat-b
+845d2f6d research: seat 239 answers what the numeric door may carry out
+1e2e3d6b Merge pull request #60 from orgrinrt/research/ratify-the-format-rat-b
+ac581696 research: renumber the second format ratification seat to 237
+7f39e587 chore: format the 236 probes as the commit hook wrote them
+ab26465d docs: read the seven format proposals against the ratification gate
+dd553113 research: which format proposals are ratifiable, seat a
+9488825f fix: the proposal header said nothing was ratified and eleven rows are
+0cac9beb fix: tier by the rung that reaches an obligation, and follow the stamp
+c85b477a test: pin the refusal a declared width is spelled around
+ad2679ca canon: file what the numeric-introduction door may carry out
+a0d76a9f chore: close the round on the const parameter refusal
+8a575990 chore: lock the src changelist for the const parameter refusal
+e796ba63 test: pin that an arvo type is refused as a const parameter
+1351814c chore: open the src changelist for the const parameter refusal
+293b980f chore: lock the doc changelist for the const parameter refusal
+3c794556 docs: say why a declared width carries a machine integer
+00c441ea Merge pull request #52 from orgrinrt/research/attacking-the-rounding-readings
+5b613a52 research: attack the two rounding readings
+5779702c probe: four instruments against the two rounding readings
+92899d04 Merge pull request #51 from orgrinrt/research/the-canon-support-survey
+16aab9ea panel: survey which obligations the ratified canon supports
+dae3b57d fix: read a slug cut short with an ellipsis as the prefix it is
+1c1c2571 fix: warrant the spelling rewrite by the referent, not the mode
+d4152394 Merge pull request #48 from orgrinrt/research/the-rounding-residue-rounding-a
+34a4f5b6 panel: note the non-mechanical alias rewrite has landed on the trunk

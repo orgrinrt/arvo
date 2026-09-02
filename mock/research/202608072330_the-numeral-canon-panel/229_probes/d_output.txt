@@ -1,0 +1,81 @@
+PROBE D: the readings of `stochastic`, as exact distributions
+no sampling and no rng. the whole draw space is enumerated.
+
+== FIXTURE ==
+  34 of 34 fixture rows correct
+
+== CONTROL 1 (must agree) ==
+  add-then-bit-drop is the hardware realisation of the proportional
+  reading, so the two distributions must be identical on every value.
+  A difference means the model of one of them is wrong.
+    differing values over W in {4,6,8}, F in 1..W, both: 0
+
+== CONTROL 2 (the case that must fail) ==
+  equal probability must differ from proportional somewhere, or the
+  instrument is comparing one reading with itself.
+    differing values at W = 8, F = 2, signed: 128
+
+== BIAS: E[R(x)] - x, at W = 8, F = 2, signed ==
+  reported as the largest magnitude over the domain, as a rational.
+  proportional             worst bias     0/1     at x = 0/4  UNBIASED
+  equal probability        worst bias     4/16    at x = -127/4  biased
+  add-then-bit-drop        worst bias     0/1     at x = 0/4  UNBIASED
+  add-then-toward-zero     worst bias    12/16    at x = -128/4  biased
+  narrow draw (F-1 bits)   worst bias    -2/8     at x = -127/4  biased
+
+== RETRACTION: does an on-grid value come back unchanged? ==
+  law::rounding_retraction_is_the_identity. W = 8, signed and unsigned.
+  proportional             signed F=1..4 then unsigned F=1..4:     0     0     0     0     0     0     0     0   RETRACTS
+  equal probability        signed F=1..4 then unsigned F=1..4:     0     0     0     0     0     0     0     0   RETRACTS
+  add-then-bit-drop        signed F=1..4 then unsigned F=1..4:     0     0     0     0     0     0     0     0   RETRACTS
+  add-then-toward-zero     signed F=1..4 then unsigned F=1..4:    64    32    16     8     0     0     0     0   DOES NOT RETRACT
+  narrow draw (F-1 bits)   signed F=1..4 then unsigned F=1..4:     0     0     0     0     0     0     0     0   RETRACTS
+
+== WORKED VALUES at F = 2, so the draw space is four wide ==
+  x        reading                    distribution (output x weight)/denom
+   -3/4    proportional               -1x3 0x1 / 4
+   -3/4    equal probability          -1x2 0x2 / 4
+   -3/4    add-then-bit-drop          -1x3 0x1 / 4
+   -3/4    add-then-toward-zero       0x4 / 4
+   -3/4    narrow draw (F-1 bits)     -1x2 / 2
+
+   -2/4    proportional               -1x2 0x2 / 4
+   -2/4    equal probability          -1x2 0x2 / 4
+   -2/4    add-then-bit-drop          -1x2 0x2 / 4
+   -2/4    add-then-toward-zero       0x4 / 4
+   -2/4    narrow draw (F-1 bits)     -1x1 0x1 / 2
+
+   -1/4    proportional               -1x1 0x3 / 4
+   -1/4    equal probability          -1x2 0x2 / 4
+   -1/4    add-then-bit-drop          -1x1 0x3 / 4
+   -1/4    add-then-toward-zero       0x4 / 4
+   -1/4    narrow draw (F-1 bits)     -1x1 0x1 / 2
+
+    0/4    proportional               0x4 / 4
+    0/4    equal probability          0x4 / 4
+    0/4    add-then-bit-drop          0x4 / 4
+    0/4    add-then-toward-zero       0x4 / 4
+    0/4    narrow draw (F-1 bits)     0x2 / 2
+
+    1/4    proportional               0x3 1x1 / 4
+    1/4    equal probability          0x2 1x2 / 4
+    1/4    add-then-bit-drop          0x3 1x1 / 4
+    1/4    add-then-toward-zero       0x3 1x1 / 4
+    1/4    narrow draw (F-1 bits)     0x2 / 2
+
+    2/4    proportional               0x2 1x2 / 4
+    2/4    equal probability          0x2 1x2 / 4
+    2/4    add-then-bit-drop          0x2 1x2 / 4
+    2/4    add-then-toward-zero       0x2 1x2 / 4
+    2/4    narrow draw (F-1 bits)     0x1 1x1 / 2
+
+    3/4    proportional               0x1 1x3 / 4
+    3/4    equal probability          0x2 1x2 / 4
+    3/4    add-then-bit-drop          0x1 1x3 / 4
+    3/4    add-then-toward-zero       0x1 1x3 / 4
+    3/4    narrow draw (F-1 bits)     0x1 1x1 / 2
+
+== VERDICTS ==
+  control 1 (bit-drop SR is proportional): PASS
+  control 2 (equal probability differs):   PASS
+  instrument: sound
