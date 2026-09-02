@@ -1,2 +1,3 @@
 === carrier lib
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s
+   Compiling q31-carrier v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/research/202609021500_probes/carrier)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
