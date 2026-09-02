@@ -1,0 +1,179 @@
+the corpus
+  .@HEAD                                       b34d7a3c98173dae0d58ef3ab799cd5e5b28749f  (2362 rust files)
+  .@HEAD                                       23 design documents, 7 fenced positions
+
+130682 occurrences in all, 27 of them at a public API position.
+
+where the occurrences are, by directory
+  `shipped` is a crate's own `src/`. Everything else is a test, an example,
+  a bench variant or a research probe, and is public API to nobody.
+
+  tree and directory                                                 all  shipped
+  .@HEAD mock/research/202607301300_formalization-spec-panel       70705        0
+  .@HEAD mock/research/202608072330_the-numeral-canon-panel        53280        0
+  .@HEAD mock/research/sketches                                     2337        0
+  .@HEAD mock/benches/variants                                      2116        0
+  .@HEAD mock/crates/arvo-format                                     823      766
+  .@HEAD mock/tools/the-positions                                    195        0
+  .@HEAD mock/research/202609021500_probes                           140        0
+  .@HEAD mock/crates/arvo-placement                                   79       79
+  .@HEAD mock/research/202609021401_probes                            65        0
+  .@HEAD mock/lints/no_prose_citation_into_nothing.rs                 60        0
+  .@HEAD mock/tools/rounding-vocabulary                               56        0
+  .@HEAD mock/crates/arvo-strategy                                    48       48
+  .@HEAD mock/tools/obligation-coverage                               45        0
+  .@HEAD mock/tools/awaiting-a-ruling                                 42        0
+  (54 more directories)                                              691        3
+
+by grammatical kind
+  every kind is listed, including the ones at zero, because a kind
+  nobody found is a result about the stack rather than about the walk.
+
+  kind                        all the host the stack  an outside crate writes this type
+  fn-param                  13752       14       18  yes
+  fn-return                 18959       13       48  yes
+  struct-field               1406        0        4  yes
+  variant-field                81        0        0  yes
+  trait-const                1741        0       15  yes
+  impl-const                 3812        0      104  yes
+  item-const                16701        0        3  yes
+  alias-target               9324        0        0  yes
+  assoc-type                  848        0        9  yes
+  impl-trait-arg             6294        0       92  yes
+  const-generic-param        5679       43        0  no
+  bound-arg                 33212        0       62  yes
+  interior                  18873       27       31  no
+  
+  `all` counts every tree read, probes and benches included, which is why it
+  is large and why it is not the answer to anything. The two shipped columns
+  are the population the obligation is over.
+
+by carrier, over the public API positions
+  what the primitive is wrapped in, off the parse rather than off a name.
+  a pointer target and a slice element are the unit of memory or of a byte
+  string; no numeral replaces either, so they are the positions arvo is not
+  the answer to.
+
+  carrier        count  a number is what is meant
+  scalar            27  yes
+  reference          0  yes
+  element            0  no
+  pointer            0  no
+  argument           0  yes
+
+by semantic role, over the public API positions
+  a reading off the identifier, not a measurement. `--role <name>`
+  lists one in full so it can be checked.
+
+  role               count  the primitives it is written in
+  bit-width              0  
+  rational               6  i64x6
+  count                 11  i64x5 u32x6
+  index                  4  i64x2 u32x2
+  capacity               0  
+  stride                 0  
+  exponent               2  i32x2
+  radix                  2  u32x2
+  identity               0  
+  opaque-bits            0  
+  truth                  2  boolx2
+  real                   0  
+  code                   0  
+  address                0  
+  version                0  
+  time                   0  
+  unclassified           0  
+
+family against carrier, over the public API positions
+
+  carrier        numeric     truth   textual     a number
+  scalar              25         2         0     yes
+  reference            0         0         0     yes
+  element              0         0         0     no
+  pointer              0         0         0     no
+  argument             0         0         0     yes
+
+the demand
+  a position is one arvo owes a primitive for when all five hold: an outside
+  crate writes the type, the item is reachable, the file is a crate's `src/`,
+  the primitive is a number or a truth rather than text, and it is not the
+  unit of a pointer or a slice. Each is reported above on its own, so the
+  subtraction can be checked rather than taken.
+
+  27 positions
+  27 of them free, and 0 on a boundary with something outside the
+  stack, where the width and the representation are the operating system's or a
+  foreign ABI's. arvo can wrap one of those; it cannot choose it.
+
+  count               11  i64x5 u32x6
+  rational             6  i64x6
+  index                4  i64x2 u32x2
+  exponent             2  i32x2
+  radix                2  u32x2
+  truth                2  boolx2
+
+where a consumer turned the rule off
+  a `lint:allow` on one of these four is a consumer saying at the site that the
+  rule forbids what it needs. Unlike every other number here it rests on no
+  reading: the site says so. Shipped source only.
+
+  no-bare-numeric              0
+  arvo-types-only              0
+  no-public-raw-field          0
+  no-bare-static-str           0
+
+  0 in all, 0 of them naming no task.
+
+
+  what the suppressed lines actually carry
+
+      0  carry a host primitive at a position the exception does not
+         cover. These are the demand, stated by the consumer.
+      0  sit on a line that is nothing but a comment, and are inert. The
+         pack's `line_lint_allowed` reads one line and no neighbour, and
+         `no_bare_numeric` skips a line whose text begins `//` before it
+         scans, so a marker written above the item it means to cover
+         suppresses nothing and the line below it is still checked.
+      0  carry nothing but the type of a const generic parameter, which op
+         excepted by name and which the pack already blanks before it scans.
+      0  sit on a line the pack's own scan would not have flagged either,
+         so they suppress a diagnostic that was never going to fire. The
+         pack's rule is reimplemented in `allows::the_pack_would_flag`
+         rather than approximated, because the question is about that
+         instrument and not about this one.
+
+the supply, at the same bar
+  the same walk over the same positions, keeping the stack's own type names
+  instead of the host's. The list is hand-written and is printed below, so a
+  name missing from it undercounts this side and makes the obligation look
+  further from met than it is.
+
+  arvo               350
+  gone                 4
+  notko                1
+
+  27 host, 4 naming an arvo crate or type that is not on
+  arvo's `dev`, and 351 resolving. So 7% of the positions carrying
+  any of the three still name the host, and a further 1%
+  name arvo and reach nothing. Counting the second group as supply, which
+  one undivided arvo list does, is what makes the obligation look nearly
+  met when half of what meets it does not exist.
+
+  which names are counted as the stack's:
+    in use   Accessx1 Adaptx7 Adaptationx8 Ambientx10 Arityx3 Biasedx1 Boolx35 Carrierx4 Coldx1 DeclaredSignaturex8 Ditherx2 Exactx3 Exponentx28 Floatingx1 Footprintx1 Formatx26 Fractionx3 Hotx1 Integerx1 Magnitudex8 MagnitudeCountx14 Maybex1 Modex10 Objectivex5 ObjectiveKindx7 Occupancyx1 Operationx3 Overflowx8 Phasex17 Placementx4 Policyx9 Precisex1 Quantumx17 Radixx10 Roundingx9 Signaturex2 Slotx27 SlotCountx2 Slotsx20 Strategyx6 UFixedx1 Unsignedx4 Warmx1 Widthx24
+    on the list and reaching nothing   USize Cap Capacity Bits BitPrim BitWidth BitAccess ContentHash IFixed FastFloat StrictFloat UWire Dim Just Outcome Boundable NonZeroable Lent
+
+by primitive family, over the public API positions
+
+  numeric               25
+  truth                  2
+
+the demand by crate, free against on a boundary
+
+  tree and crate                                              free  boundary
+  .@HEAD arvo-format                                            27         0
+
+by tree, over the public API positions
+
+  .@HEAD                                            27
+the-positions: clean, 130682 examined.

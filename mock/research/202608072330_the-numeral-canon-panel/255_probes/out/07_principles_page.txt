@@ -1,0 +1,15 @@
+what the page says:
+mock/PRINCIPLES.md.tmpl:80:primitives. Every arvo numeric primitive (USize, Cap, UFixed, IFixed,
+mock/PRINCIPLES.md.tmpl:154:| **Newtype** | Fixed representation, validation at construction | `UFixed<I, F, S>`, `USize`, `Bool`, `ContentHash`, strategy markers |
+mock/PRINCIPLES.md.tmpl:220:| `u8..u128` / `i8..i128` | `UFixed` / `IFixed` / `T: Boundable` / `T: NonZeroable` | `arvo-format`, and `notko` for the traits |
+mock/PRINCIPLES.md.tmpl:247:Every numeric primitive flows through `UFixed` / `IFixed` /
+docs/PRINCIPLES.md:89:primitives. Every arvo numeric primitive (USize, Cap, UFixed, IFixed,
+docs/PRINCIPLES.md:163:| **Newtype** | Fixed representation, validation at construction | `UFixed<I, F, S>`, `USize`, `Bool`, `ContentHash`, strategy markers |
+docs/PRINCIPLES.md:229:| `u8..u128` / `i8..i128` | `UFixed` / `IFixed` / `T: Boundable` / `T: NonZeroable` | `arvo-format`, and `notko` for the traits |
+docs/PRINCIPLES.md:256:Every numeric primitive flows through `UFixed` / `IFixed` /
+
+IFixed in shipped source: 0 files
+UFixed in shipped source: 6 files   (control, must be non-zero)
+
+where UFixed is declared:
+mock/crates/arvo-format/src/lib.rs:105:    pub struct UFixed<const BITS: u32, const FRAC: i32>;

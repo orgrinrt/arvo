@@ -1,0 +1,4 @@
+rlib=target/debug/deps/libarvo_format-08b74f0e1e36fbaf.rlib
+the_ifixed_arm exit=1 stderr_bytes=280
+the_ufixed_field_arm exit=1 stderr_bytes=379
+the_arm_control exit=0 stderr_bytes=342

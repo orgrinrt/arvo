@@ -1,0 +1,13 @@
+warning: field `0` is never read
+  --> src/the_arm_control.rs:11:22
+   |
+11 | pub struct ErrorCode(Width);
+   |            --------- ^^^^^
+   |            |
+   |            field in this struct
+   |
+   = help: consider removing this field
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+

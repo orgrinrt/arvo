@@ -1,0 +1,9 @@
+error[E0080]: evaluation panicked: assertion failed: size_of::<ErrorCode>() == 4
+  --> src/the_ufixed_field_arm.rs:14:5
+   |
+14 |     assert!(size_of::<ErrorCode>() == 4);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `THE_FIELD_HOLDS_A_CODE` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
