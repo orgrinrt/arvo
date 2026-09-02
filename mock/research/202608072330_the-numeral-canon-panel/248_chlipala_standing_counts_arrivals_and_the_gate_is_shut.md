@@ -592,3 +592,308 @@ English phrase rather than the field; and `canon_paths = ["mock/registry/*.toml"
 not glob `mockspace.toml`. **A reader who believes this is wrong should re-run the grep rather
 than re-read this sentence**, because an absence claim inverts silently the moment somebody
 writes the row.
+
+---
+
+## 12. Reconciliation, written after reading 244 through 247
+
+**Everything above this line was committed blind at `c9afdeaa`**, "research: seat 248 blind on
+what a standing counts", together with `248_probes/p1` through `p4`. Nothing above has been
+edited since, including the two places where I now think it is too weak. Probes `p5`, `p6` and
+`p7` were built after, are labelled as such in their own headers, and are the evidence for this
+section.
+
+After the commit I read `247` in full; `246` in its gate section, its section 9 and by grep for every occurrence of the word this file is about, which is less than `247` and is what my citations of it rest on; `244` and `245` in
+their gate and coverage sections and in what `246` and `247` quote of them, and
+`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`,
+which `247` names as the governing precedent.
+
+### 12.1 The question was answered in the file all four seats cited, 1265 lines past where two of them stopped
+
+`247` opens its canon gate by handing this exact question back:
+
+> One ambiguity is handed back in the same section: what the `standing` field counts, which
+> the canon does not say and which decides the principal question.
+
+and `247`'s O1 asks for "a second independent reading of `proposal.standing`'s definition",
+noting "I am the first reader, so a second read is owed."
+
+All four seats cite `mockspace.toml` in their canon gates: `244:16` and `245:13` by line as
+`mockspace.toml:31`, `246:18` and `247:17` by name. Line 31 is `canon_paths`. The `standing`
+field description is line 1296 of the same file.
+
+**Both `246` and `247` quote the field's definition, and neither quotes the field's
+definition.** They quote this:
+
+> `proposal.standing` records how many independent instances back the claim
+
+`246:23` writes it as "back a claim"; `247:199` puts it in quotation marks as "back the
+claim". **That sentence is `mock/agent/MAIN.md.tmpl:49`, rendered into `.claude/CLAUDE.md:63`,
+which auto-loads at the start of every session in this repository.** It is a paraphrase of the
+schema written for the agent instructions, and what it drops is the clause the question turns
+on.
+
+The schema, `mockspace.toml`, `proposal` namespace, `standing` field, printed by `p5`:
+
+> How many independent instances **reached** it, over the region they share. `one_expert`;
+> `two_experts`, **each deriving before reading the other**; `three_or_more`; `cross_topic`
+> where separate topics arrived at it **without citing each other**, which is the strongest
+> thing this panel produces; `contested` where it is stated because somebody stated it and
+> somebody else disagrees.
+
+`p5` locates each wording, with five controls, all five firing:
+
+| file | schema clause | paraphrase |
+|---|---|---|
+| `mockspace.toml` | present | absent |
+| `mock/agent/MAIN.md.tmpl` | absent | present |
+| `.claude/CLAUDE.md` | absent | present |
+| `AGREEMENTS.md` | present | absent |
+| `246` | absent | present |
+| `247` | absent | present |
+
+**And the clause is in the panel's own convergence ledger as a section heading.**
+`AGREEMENTS.md` section 5.2 is titled, verbatim, "Two experts, each deriving before reading
+the other", with siblings 5.1 "Three or more independent instances", 5.3 "Single-expert
+claims" and 5.4 "Contested or located". `106_giesen_consolidation_the_strategy_axis.md`
+section 3.2 carries the same heading. So the ledger every seat is told to read for what has
+converged organises its tiers by the schema's own glosses, and the entries under 5.2 read
+"Two files, blind, in parallel, from different premises".
+
+**The permissive arm of `247`'s O1 exists because of one dropped subordinate clause in a
+generated agent instruction.** Its premise, that "no row says what an instance is when the
+claim was in the question the seat was answering", is false as stated: the definition says an
+instance derives before reading, and a seat holding the conclusion in its brief has read.
+
+`p5` found this only after failing at it. Its first two runs carried two defects, both kept in
+its header rather than deleted, and the second is the one worth reading: **the panel-file
+column returned a clean zero while broken**, because the paraphrase is line-wrapped in both
+files and a fixed-string grep found neither, and no control covered that column. I caught it
+by comparing the output against a `grep -rn` I had run by hand before the script existed,
+which is not a method. `C5` is the repair.
+
+### 12.2 There are five precedents, not one, and one of them is exactly this case
+
+`247` names R3 as "the precedent the panel has for cold seats answering question rows" and
+finds that it "says nothing about a seat whose row already holds the conclusion". True of R3.
+
+**There are five rulings at `ratified_by = "experts"`, every one carries a `promotion` field,
+and every one of those fields states the test it used.** `p7` enumerates them with four
+controls, all firing:
+
+| ruling | the test its promotion states |
+|---|---|
+| `behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` | "its phase-one commit precedes the commit in which it read the prior work, so the ordering is checkable rather than asserted" |
+| `the_additive_and_absorption_verdicts_are_canon` | "Promoted on the gate rather than on the count" |
+| `the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule` | a leaked seat "can no longer serve as a blind instance on the framing", contamination bounded by commit ordering |
+| `the_warrant_is_a_token_and_a_clause_on_the_values_side` | "What the two agree on by having read the same paragraph rather than by two instruments is recorded in both files and **excluded from the above**" |
+| `the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon` | mutual non-ancestry of the two branches |
+
+**Every one is an ordering test or an exclusion test. Not one is a judgement of how good an
+argument is.** `p7`'s C3 checks the negative: no promotion field justifies itself by a
+`standing` value.
+
+**And the fourth covers the handed case outright.**
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` is ratified, and its
+`promotion` excludes from what it rests on the material the two seats agreed about "by having
+read the same paragraph rather than by two instruments". A seat that agrees with a conclusion
+because the conclusion was in its brief is the limiting case of agreeing by having read the
+same paragraph: there is one paragraph and only one seat read it before deriving.
+
+So `247`'s O1 is not open. It is closed by a ratified row, and the closure is stricter than
+`247`'s own strict arm, because `1615` excludes shared-reading agreement even where both seats
+derived blind of each other.
+
+### 12.3 The corpus's own blindness test, run on the corpus
+
+`p6` runs R3's instrument, mutual non-ancestry, on every cold pair a `two_experts` standing in
+this corpus rests on. It supersedes `p2`'s instrument rather than repeating it: a gap between
+two add-commits is weak evidence in both directions, and ancestry is what R3 actually used.
+
+Controls: R3's own pair, seats 238 and 239, must come out mutually non-ancestral, or the
+instrument cannot see the one case the corpus has certified. It does. R3's own two hashes must
+reproduce R3's own sentence, `2ff7ae29` not an ancestor of `176ced90`. They do. And the
+predicate is checked to be neither always-true nor always-false.
+
+| pair | verdict |
+|---|---|
+| 238 / 239, R3's own | blind: mutually non-ancestral |
+| 65 / 66, the number-system pair | not blind: 65 is an ancestor of 66 |
+| 76 / 77, the derived-law pair | not blind: 76 is an ancestor of 77 |
+| 109 / 110, the primitive pair | not blind: 109 is an ancestor of 110 |
+| 125 / 126, the rounding pair | not blind: 126 is an ancestor of 125 |
+
+**The two rows `p1` found to be the only multi-arrival rows reachable through two authors are
+65/66 and 76/77, and both fail R3's test.** So the honest count of proposal rows in this
+corpus whose `two_experts` standing is checkable rather than asserted is **zero**.
+
+**What `p6` does not establish, and its own output says so**: that any of those seats read the
+other. Sequential commitment into one branch is what the panel did before the
+worktree-per-seat discipline, and a seat's context may have been sealed regardless of what its
+branch could show it. What is measured is that blindness there is asserted, which is exactly
+the distinction R3 draws about itself.
+
+### 12.4 Answering `247`'s O1, and why my agreement is not the second agreement it asked for
+
+`247` asks for a second independent reading and says two agreements grounded in quoted text
+are owed. **I formed mine blind and it is the strict arm.** But I will not let it be counted
+as the second agreement, for a reason that matters more than the count.
+
+**`247`'s reading and mine are not two readings of one text. They are readings of two
+different texts.** `247` read the agent-instruction paraphrase; I read the schema. We do not
+disagree about what "independent instance" means; we disagree about which sentence defines it,
+and that is a question of fact, settled by opening `mockspace.toml`, not by two readers
+agreeing.
+
+**So the two-expert machinery does not apply here and invoking it would be the error.** It
+exists for reading a canon that is genuinely open between readings. The next reader's job is
+not to agree with me. It is to open the field description, check that `p5` reports it
+honestly, and then decide whether the schema binds at all, which is section 12.5 and is the
+only genuinely open thing left.
+
+### 12.5 The locus finding, sharpened: the field that gates the canon is defined two tiers below it
+
+My blind section 2 said `standing` is defined outside `canon_paths`. Reading `246` and `247`
+tells me what that costs, and it is more than I thought.
+
+- **`mockspace.toml` declares `canon_paths = ["mock/registry/*.toml"]`** and defines `standing`
+  in the same file, outside that glob. So the definition is configuration.
+- **`mock/agent/MAIN.md.tmpl` paraphrases the definition**, and that paraphrase is what
+  generates into `.claude/CLAUDE.md` and auto-loads into every session. So what every seat
+  reads is a rendering of a paraphrase of configuration.
+- **The paraphrase and the definition disagree** on the clause that decides promotions.
+- **A lint reads the field and refuses on it at `error` at commit, build and push**, per
+  `mockspace.toml:174-177` and `a_standing_is_reachable_from_what_it_cites.rs:119`.
+
+So the chain runs: a hard gate reads a field, whose meaning is set in configuration, whose
+paraphrase in generated agent text is what the people writing the field actually read, and the
+paraphrase is lossy. **Under `the-canon-design-code-chain` that is a canon-level decision
+living at the code tier and being consumed through a lossy render.** Nothing about this is
+fixable by a panel argument, and a panel arguing about it is the symptom.
+
+**I am not licensed to decide where it should live and I do not propose a location.** What I
+can say precisely is what would have to be true for the argument to stop recurring: the
+sentence that decides whether a claim is promotable has to be a row somebody can cite by slug,
+and the agent instructions have to quote it rather than restate it.
+
+### 12.6 What I got, that `246` and `247` asked for and did not have
+
+**`246`'s O1 asks: "whether any consumer of the registry gates on `standing` mechanically.
+Nobody has looked."** I looked, blind, without knowing the question was open.
+
+**Yes.** `mock/lints/a_standing_is_reachable_from_what_it_cites.rs` reads `standing` at line
+119, tests membership in `MULTI_ARRIVAL = ["two_experts", "three_or_more", "cross_topic"]` at
+line 120, and `mockspace.toml:174-177` declares it `error` at commit, build and push.
+
+That closes `246`'s O1 in the direction that decides its own arm list. Its second arm was
+"leave the rows and record the standing per clause in a note, which costs nothing and is not
+machine-readable". **It is not free**: the field is machine-read and the note is not, so a
+clause-level standing recorded in a note is invisible to a gate that refuses on the row-level
+value, and the row keeps whatever value silences the gate. Of `246`'s three arms, the first,
+splitting the row into clauses each carrying its own standing, is the only one the gate can
+see, and it is also the arm the corpus already has a precedent for, at
+`proposal::membership_in_the_type_and_identity_are_two_criteria`, which I cited blind in
+section 6 for a different purpose.
+
+**`247`'s O2** asks for a panel-conduct decision on whether a cold seat's brief withholds
+question rows whose provenance resolves to a file by the same author as the proposal under
+test. `p4` gives that decision a number it did not have: **6 of the 34 commits touching
+`question.toml` also land a numbered member file in the same act.** So the shape is a class of
+six rather than an incident, and the decision is worth making rather than noting.
+
+### 12.7 What I concede, and one of these is against my own file
+
+**My leak is worse than I bounded it in section 0, and the corpus has the precedent.**
+`ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`'s
+`promotion` records a seat whose merge printed another seat's probe filenames, and its terms
+are:
+
+> All six of its probes and both of its conclusions were committed before that merge, so the
+> contamination is bounded and checkable from the commit ordering, but it says plainly it can
+> no longer serve as a blind instance on the framing. That is the dispatcher's error rather
+> than the seat's.
+
+**My leak preceded my derivation rather than following it**, so I do not have that seat's
+bound. Two of the seven filenames I saw name my subject: `the_standing_answers_nobody_cited`
+and `the_bound_field_and_the_blind_cut`. Under `1615`'s exclusion clause and `1538`'s
+precedent together, **I withdraw as a blind instance on the framing of the blind cut**, which
+is the framing this file is about.
+
+**What survives that withdrawal, and it is the load-bearing part: the schema finding is a
+quotation, and a quotation needs no blindness.** `p5` prints the sentence and locates it in
+four files with five controls. Anyone can re-run it in a second, and if `246` had run it the
+question would not have been asked. **The strongest thing in this file is not a derivation and
+should not be counted as one.**
+
+**My section 7 gate is per row and it should be per clause.** `246`'s O1 is right that a
+row's `says` is often a conjunction whose clauses have different backing, and my gate silently
+assumes one proposition per row. Restated: the gate applies per clause of `says`, and a row
+whose clauses differ is the split case rather than a case my gate decides.
+
+**My F4 stands and its instrument does not.** `p2` measured commit-time gaps, which is weak in
+both directions; `p6` measures ancestry, which is R3's own test, and reaches the stronger
+conclusion on four pairs. F4's sentence survives; a reader should cite `p6` for it and read
+`p2` only for the gap figures.
+
+**My section 9's claim that the `contested` tier is dead is narrower than I wrote it.** `p5`
+measures four "Contested or located" sections in `AGREEMENTS.md`, 13 entries between them, and
+zero `proposal` rows at `standing = "contested"`. **That says none of the ledger's contested
+material arrived as a proposal at that value. It does not say the material was lost**, since it
+may have arrived as a `retirement` or a `question` row, and I did not look. The instrument says
+so in its own output.
+
+### 12.8 What I carry forward unchanged, and from whom
+
+Five items, and the count is five.
+
+1. **From `247`, that the question is the one the sitting turns on.** Its gate section names it
+   before its assigned work and its O1 states both arms cleanly. I disagree with the premise
+   under the permissive arm and not with the framing of the fork.
+2. **From `247`, that the R3 precedent does not cover the handed case.** True of R3 and I
+   confirm it. What I add is four further precedents, one of which does.
+3. **From `246`, that a row's `standing` is one field over a `says` that carries several
+   clauses.** Re-derived from `proposal::membership_in_the_type_and_identity_are_two_criteria`
+   blind and for a different purpose, so carried as a second instance rather than unchanged.
+4. **From `246`, that recording a promotion is a count rather than a ratification.** Unchanged,
+   and it is what makes `ruling::the_additive_and_absorption_verdicts_are_canon`'s "Promoted on
+   the gate rather than on the count" legible.
+5. **From `244` and `245`, nothing.** I read their gate and coverage sections and what `246`
+   and `247` quote of them, and nothing in what I read bears on `standing`. Stated so a later
+   reader does not read my silence as endorsement.
+
+### 12.9 Predicates for the sections written after the commit
+
+**F9. The schema at `mockspace.toml` defines `two_experts` as "each deriving before reading the
+other"; the agent instructions at `mock/agent/MAIN.md.tmpl` and `.claude/CLAUDE.md` paraphrase
+the field without that clause; `AGREEMENTS.md` carries the clause as a section heading; `246`
+and `247` carry the paraphrase and not the clause.**
+Holds for: the arvo repository at `eac588fd2dfd157faaf088ae69c6342227ac2c98`; the six files
+named; whitespace-normalised matching for the two panel files and line-oriented matching for
+the other four; `threads = 1`; `toolchain = nightly-2026-05-28`. Instrument:
+`248_probes/p5_the_paraphrase_that_lost_the_clause.sh`, five controls, all five firing, two
+defects found in the instrument itself and recorded in its header.
+
+**F10. Five rulings carry `ratified_by = "experts"`, all five carry a `promotion` field, and
+every one of those fields states an ordering test or an exclusion test rather than a judgement
+of argument quality. None justifies itself by a `standing` value.**
+Holds for: the same ref; `mock/registry/ruling.toml` as committed; the six instrument phrases
+written into `p7`'s source and no others; `threads = 1`. Instrument:
+`248_probes/p7_what_the_five_promotions_treated_as_an_instance.sh`, four controls, all firing.
+**The exhaustiveness claim is over the five rows and the six phrases**, not over every sentence
+in those fields, and a reader looking for a sixth instrument should read the fields rather than
+re-run the grep.
+
+**F11. Under R3's own blindness test, none of the four cold pairs a `two_experts` standing
+rests on is blind, and R3's own pair is.**
+Holds for: the same ref; the five pairs `p6` names; `git merge-base --is-ancestor` over the
+add-commits of the panel files as the instrument; `threads = 1`. Instrument:
+`248_probes/p6_r3s_own_blindness_test_on_the_cold_pairs.sh`, four controls, all firing,
+including the positive control that the instrument detects R3's own certified pair. **It
+establishes that blindness there is asserted rather than checkable and it establishes nothing
+about whether any seat read any other.**
+
+**F12. A consumer of the registry gates on `standing` mechanically, at `error` severity at
+commit, build and push.**
+Holds for: the same ref; `mock/lints/a_standing_is_reachable_from_what_it_cites.rs:119-120` and
+`mockspace.toml:174-177`; `threads = 1`. This is a two-file read rather than a measurement and
+needs no instrument beyond opening both.

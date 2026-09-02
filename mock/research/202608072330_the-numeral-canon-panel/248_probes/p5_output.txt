@@ -1,0 +1,34 @@
+== where each wording lives (line-oriented) ==
+  mockspace.toml                               clause x1   paraphrase x0
+  MAIN.md.tmpl                                 clause x0   paraphrase x1
+  CLAUDE.md                                    clause x0   paraphrase x1
+  AGREEMENTS.md                                clause x1   paraphrase x0
+
+== the two panel files (whitespace-normalised, D2) ==
+  246                                          clause x0   paraphrase x1
+  247                                          clause x0   paraphrase x1
+
+== the schema's own sentence, printed rather than described ==
+  description = "How many independent instances reached it, over the region they share. 
+  `one_expert`; `two_experts`, each deriving before reading the other; `three_or_more`; 
+  `cross_topic` where separate topics arrived at it without citing each other, which is the 
+  strongest thing this panel produces; `contested` where it is stated because somebody stated it 
+  and somebody else disagrees."
+
+== what the agent instructions say instead ==
+  49:  `standing` records how many independent instances back the claim, and
+  50-  a claim with two is still a proposal until a ruling stamps it.
+
+== the cases that had to fail ==
+  PASS C1 the schema clause exists in mockspace.toml
+  PASS C2 the clause is absent from both agent surfaces, wrapping allowed for
+  PASS C3 the same grep finds a string known to be in both (2 / 2)
+  PASS C4 AGREEMENTS.md carries the clause as a section heading (1)
+  PASS C5 both panel files carry the paraphrase (1 / 1)
+
+== the contested tier, since the ledger has one and the registry does not ==
+  "Contested or located" sections in AGREEMENTS.md: 4
+  proposal rows at standing="contested":            0
+  This says none of the ledger's contested material arrived as a proposal
+  at that value. It may have arrived as a retirement or a question row;
+  this instrument does not look and does not claim otherwise.
