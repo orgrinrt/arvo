@@ -1,0 +1,48 @@
+swept 9604 pairs over 98 values per axis
+
+0. the oracle, checked against three answers whose verdict is known
+   exact, sign moved: error numerator 0, expected 0
+   the shipped answer on a pair it does normalise: error numerator 24, expected 24
+   the identity: error numerator 0, expected 0
+
+1. the two pairs the brief names, under the shipped constructor
+   of(3, -9223372036854775808) = 3/1   named sign -1   answered sign 1
+   of(-9223372036854775808, -7) = -9223372036854775808/1   named sign 1   answered sign -1
+
+2. what the euclidean split stores when the denominator is negative
+   negative denominators whose stored remainder leaves [0, 1): 4477 of 4801
+   positive denominators whose stored remainder stays in [0, 1): 4704  (the control)
+
+3. four arms against the exact ratio
+   arm                       den <= 0  sign flip  inexact  undecided  worst relative error
+   shipped                          0        145      145        138  85070591730234615875067023894796828672 / 9223372036854775808 at of(-9223372036854775808, -9223372036854775808)
+   holds the pair                4900          0        0          0  0 / 1 at of(0, 1)
+   zero on the families             0        145      145          0  9223372036854775808 / 9223372036854775808 at of(-9223372036854775808, -9223372036854775808)
+   nearest representable            0          0       75         45  3 / 27670116110564327421 at of(-3, -9223372036854775808)
+
+4. the control: an arm that has to score badly, and does
+   arm                       den <= 0  sign flip  inexact  undecided  worst relative error
+   always one half                  0       4801     9501        148  9223372036854775810 / 2 at of(1, -9223372036854775808)
+   worse on both columns than every arm, so the columns move
+
+5. the nearest arm's bound, stated and checked
+   nearest representable    breaches of `relative error <= 1/i64::MAX`:     0   last at of(0, 0)
+   shipped                  breaches of `relative error <= 1/i64::MAX`:   145   last at of(9223372036854775807, -9223372036854775808)
+   the shipped row is the control: a bound nothing breaches distinguishes nothing
+
+6. `is_tie` in i64 against the same comparison in i128
+   stored remainders whose doubling leaves i64: 233, e.g. the remainder of of(9223372036854775806, 9223372036854775807)
+   disagreements where the doubling fits: 0
+   the same check against a mutated wide form: 117 disagreements  (the control)
+
+7. the shipped rule's damage, closed form checked against the exhaustive widths
+   W =  3: lost an exact 4, sign flips 10  (both match the exhaustive run)
+   W =  4: lost an exact 10, sign flips 22  (both match the exhaustive run)
+   W =  8: lost an exact 190, sign flips 382  (both match the exhaustive run)
+   W = 16: lost an exact 49150, sign flips 98302  (both match the exhaustive run)
+   W = 64: lost an exact 13835058055282163710, sign flips 27670116110564327422
+   of 2^128 pairs, so the families are 13835058055282163710 and 27670116110564327422 of the input space
+
+8. `Exact::between` and `is_tie`, in the carrier they are written in
+   slot carries that leave i64 in `between`: 4637, e.g. slot 9223372036854775807 with of(9223372036854775807, 9223372036854775807)
+   the same check with a carry of zero: 0  (the control)
