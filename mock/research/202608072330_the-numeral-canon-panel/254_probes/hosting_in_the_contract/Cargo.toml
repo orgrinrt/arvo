@@ -1,0 +1,16 @@
+# Standalone: its own `[workspace]` table so cargo does not walk up into
+# `mock/Cargo.toml`. Seat 253.
+[workspace]
+
+[package]
+name = "hosting-in-the-contract"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[features]
+# The arm that must fail. Compiled alone so nothing else can mask it.
+force = []

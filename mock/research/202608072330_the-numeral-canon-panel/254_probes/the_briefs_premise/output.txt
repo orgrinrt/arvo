@@ -1,0 +1,55 @@
+======== the claim: 242 says its reading must not be merged with 241's
+  merge                    241=0    242=0    243=0   
+  merged                   241=0    242=0    243=0   
+  merging                  241=0    242=0    243=0   
+  combine                  241=0    242=0    243=0   
+  combined                 241=0    242=0    243=0   
+  synthes                  241=0    242=0    243=0   
+  should not be read       241=0    242=0    243=0   
+  cannot be read as one    241=0    242=0    243=0   
+  must not be              241=0    242=0    243=0   
+  collaps                  241=12   242=6    243=2   
+
+======== POSITIVE CONTROL: words that are certainly in those files
+  resolution               241=18   242=0    243=12  
+  tier                     241=13   242=29   243=17  
+  admission                241=44   242=23   243=14  
+  coordinate               241=67   242=36   243=21  
+
+======== what 242 and 243 do say about 241's reading, in full
+-------- 243 section 6, the withdrawal:
+## 6. Where 241 beat me, said plainly
+
+**Q22, and it is not close.** I reached the same discriminator, that the ratified affine
+predicate has one slot coordinate, and rested it on how to read "one parameterisation". 241
+saw that a reading of a spelling is a weak floor, went looking for better, and found it in a
+ratified count: R3's ten, reconstructed under two controls, with the arity relation
+`3n + 7`, so a vector slot makes R3's ten wrong. That is a strictly stronger argument for the
+same conclusion and it does not depend on anybody's reading. I withdraw my version in favour
+of it. Its fixed-radius/general split is also a real refinement I did not have, and its
+constructive third route, a certified value being a pair of formats one tier up, is the same
+place I put intervals with a better reason attached.
+
+**The `coordinate` finding reaches past this sitting and I endorse it.** Ten identity
+coordinates against `74`'s five chain components, with three of the five ratified out of
+identity by R1 and R2. I would take its first spelling, `identity coordinates` against
+`chain components`, and my reason is one it does not give: **the ambiguity is the same
+disease as the one in "admission"**, one word over two tiers, and a panel that has now found
+it twice in two words should expect it in a third rather than patch each as it appears.
+
+## 7. The instrument the dispatcher flagged
+
+======== the absence claim in section 13: prior statements of the tuple non-injectivity
+-------- files matching each phrase, excluding seat 253's own
+  normal form        : <none>
+  same set           : ../../141_lamport_the_strategy_set_attacked.md ../../143_mcsherry_reply_the_scope_the_wording_and_one_claim_i_keep.md ../../146_leroy_the_canon_candidate_for_the_strategy_object.md ../../154_kiselyov_the_primitive_derived_cold.md ../../215_kiselyov_second_read_the_algebraic_laws.md ../../216_lamport_second_read_the_chain_and_the_realisation_map.md ../../226_lattner_the_derivation_outputs.md ../../24_amin_the_seam_between_two_vocabularies.md ../../25_torvalds_what_a_strategy_is.md ../../40_leijen_what_the_axes_actually_are.md ../../43_rompf_what_a_composition_is.md ../../52_chlipala_the_fixpoint_claim_second_read.md ../../66_dolan_number_systems_derived_cold.md ../../97_dolan_the_strategy_space_attacked.md 
+  denote the same    : ../../02_carried_what_replaces_the_two_refutations.md ../../110_willsey_the_primitive_derived_cold.md ../../111_jhala_the_primitive_attacked.md ../../112_leijen_where_the_refinement_lives.md ../../157_lamport_the_primitive_attacked.md ../../216_lamport_second_read_the_chain_and_the_realisation_map.md ../../24_amin_the_seam_between_two_vocabularies.md ../../31_ringer_checking_the_option_register.md ../../63_spj_consolidation_the_format_concept.md ../../OPTIONS.md 
+  non-injective      : ../../08_knuth_what_the_one_format_concept_covers.md ../../110_willsey_the_primitive_derived_cold.md ../../155_dolan_the_primitive_derived_cold.md ../../161_leroy_the_canon_candidate_for_the_primitive.md ../../244_orchard_consolidation_admission_and_the_number_system.md ../../SEED_THEORY_00_45.md 
+  not injective      : ../../03_lamport_the_family_question_and_its_consequences.md ../../08_knuth_what_the_one_format_concept_covers.md ../../110_willsey_the_primitive_derived_cold.md ../../16_aaltonen_second_read_on_the_two_outputs.md ../../226_lattner_the_derivation_outputs.md ../../243_seat242_the_resolution_has_no_second_arm.md ../../244_orchard_consolidation_admission_and_the_number_system.md ../../OPTIONS.md 
+-------- POSITIVE CONTROL: a phrase certainly present across many files
+  representable set  : 64 files
+-------- what the one recurring hit is about, checked rather than counted
+1:# 243. Attacking 241: the resolution's failure arm is uninhabited and its success arm is not injective
+68:## 3. The success arm is not injective, so it is not a location either
+144:- **Onto a quotient**, because it is not injective (section 3), and the fibres are exactly
+210:- **The success arm is not injective: four distinct ambient algebras over one grid resolve to
