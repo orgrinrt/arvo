@@ -71,7 +71,7 @@ Two claims in my brief are checkable in seconds and one of them is false.
 
 **False: "`242` states explicitly that its reading of admission should not be
 merged with `241`'s."** It does not.
-`253_probes/the_briefs_premise/` greps `241`, `242` and `243` for every phrasing
+`254_probes/the_briefs_premise/` greps `241`, `242` and `243` for every phrasing
 that claim could take, with a positive control:
 
 ```
@@ -190,7 +190,7 @@ property of a different object or a fact derivable from these two.
 
 An entailment from ratified text is worth exactly as much as the completeness of
 the reading behind it, so I built the instrument that would refute it:
-**`253_probes/what_a_canon_sentence_reads_of_a_candidate/`.**
+**`254_probes/what_a_canon_sentence_reads_of_a_candidate/`.**
 
 The refutation would be a governing sentence whose subject is a candidate and
 which reads a reduction, an adaptation, a verdict, an encoding or a law
@@ -200,7 +200,7 @@ is checkable: every `ruling` at `rung = "ratified"` (32) and every `proposal` at
 broad, five words matched against the `says` field, and it returns eleven hits.
 
 **Zero of eleven refutes.** The classification is in
-`253_probes/what_a_canon_sentence_reads_of_a_candidate/classification.md`, row by
+`254_probes/what_a_canon_sentence_reads_of_a_candidate/classification.md`, row by
 row over the complete list rather than a sample. Every hit has as its subject an
 operation, a reduction, a law, an accumulator, or the concept itself. Three are
 worth naming here:
@@ -254,7 +254,7 @@ verdict is the adaptation's, and I1 puts the adaptation outside identity.
 
 **And a verdict a candidate declares is a declaration nothing can constrain.** I
 measured this rather than asserting it, in
-`253_probes/declared_against_derived/`. One algebra, saturating addition on the
+`254_probes/declared_against_derived/`. One algebra, saturating addition on the
 window `[-2, 1]`, which is not associative, with the first witness printed:
 `(-2 + -2) + 1 = -1` against `-2 + (-2 + 1) = -2`. Two candidates over that one
 algebra, differing only in the verdict they declare:
@@ -468,7 +468,7 @@ without introducing one.
 
 ### 6.1 Measured, and the bound is not even the right bound
 
-`253_probes/hosting_in_the_contract/` builds an outside candidate declaring a
+`254_probes/hosting_in_the_contract/` builds an outside candidate declaring a
 width of 63 bits over the index window `[0, 255]`, and reports the five conditions
 of the shipped contract one at a time so the cause is named rather than
 summarised:
@@ -566,7 +566,7 @@ have to be trusted.
 
 ### 7.1 A second instance for the refutation, and its region is empty
 
-`253_probes/declared_against_derived/` seconds the *conclusion* of
+`254_probes/declared_against_derived/` seconds the *conclusion* of
 `an_exposure_test_over_reduction_verdicts_alone...`, that an exposure test over
 verdicts alone establishes nothing, by a different instrument on a different
 object: a compiled Rust trait rather than a swept declaration model, and an
@@ -621,7 +621,7 @@ and I1 does not say what to do about it**, because I1 locates the redundancy in
 encoding and adaptation and this redundancy is inside the identity coordinates
 themselves.
 
-`253_probes/the_exposure_is_not_a_normal_form/` enumerates the denoted set of each
+`254_probes/the_exposure_is_not_a_normal_form/` enumerates the denoted set of each
 candidate from its own exposed coordinates, through the crate's own accessors,
 as exact rationals over `i128` reduced to lowest terms, so two spellings of one
 value compare equal:
@@ -679,7 +679,7 @@ files and changes no measured surface.
   building control on the forcing arm.
   `toolchain: rustc = 1.98.0-nightly (57d06900f 2026-05-27), edition = 2024`,
   `build_profile: debug, debug-assertions = on`, `threads: threads = 1`, tree at
-  `fb6c843f`. Evidence: `253_probes/hosting_in_the_contract/`.
+  `fb6c843f`. Evidence: `254_probes/hosting_in_the_contract/`.
 
 - **A law verdict a candidate declares admits both truth values over one algebra;
   the same verdict derived from that algebra admits one and separates two
@@ -690,7 +690,7 @@ files and changes no measured surface.
   `arity: arity = 3`,
   `toolchain: rustc = 1.98.0-nightly (57d06900f 2026-05-27), edition = 2024`,
   `build_profile: debug, debug-assertions = on`, `threads: threads = 1`.
-  Evidence: `253_probes/declared_against_derived/`.
+  Evidence: `254_probes/declared_against_derived/`.
 
 - **Two distinct coordinate tuples over one ambient type denote one representable
   set, by two independent mechanisms.** Established by construction over the
@@ -701,7 +701,7 @@ files and changes no measured surface.
   `phase: phase in {0/1, 0/2}`,
   `toolchain: rustc = 1.98.0-nightly (57d06900f 2026-05-27), edition = 2024`,
   `build_profile: debug, debug-assertions = on`, `threads: threads = 1`.
-  Evidence: `253_probes/the_exposure_is_not_a_normal_form/`.
+  Evidence: `254_probes/the_exposure_is_not_a_normal_form/`.
 
 - **The shipped membership function agrees on every point for two candidates whose
   denoted sets differ.** Same predicate as above, over 84 points of the union of
@@ -713,18 +713,18 @@ files and changes no measured surface.
   claim, exhaustive over 55 rows, 32 ratified rulings and 23 two-expert
   proposals, with a planted-row control that is flagged. Tree at `fb6c843f`,
   `threads: threads = 1`. Evidence:
-  `253_probes/what_a_canon_sentence_reads_of_a_candidate/`.
+  `254_probes/what_a_canon_sentence_reads_of_a_candidate/`.
 
 - **Neither `241` nor `242` nor `243` contains any phrasing of the claim that
   `242`'s reading must not be merged with `241`'s.** Absence claim over ten
   phrasings with four positive controls that all fire. Tree at `fb6c843f`,
-  `threads: threads = 1`. Evidence: `253_probes/the_briefs_premise/`.
+  `threads: threads = 1`. Evidence: `254_probes/the_briefs_premise/`.
 
 - **The four format contracts declare nine coordinates on this tree, not ten.**
   Registry-and-source claim, extracted from the trait bodies, with a
   planted-const control that moves the count. Tree at `fb6c843f`,
   `threads: threads = 1`. Evidence:
-  `253_probes/the_coordinate_count_on_this_tree/`. Second instance; seat 247 is
+  `254_probes/the_coordinate_count_on_this_tree/`. Second instance; seat 247 is
   the first, by reading rather than by extraction.
 
 - **`RADIX` is read in exactly two functional places in `arvo-format`, its own
@@ -965,7 +965,7 @@ somebody else's dispatch.
 
 **A grep for a phrase is weak evidence of absence and I did not read all 442
 files**, so section 8.2 is offered as new with that caveat. Evidence for this
-paragraph: `253_probes/the_briefs_premise/output.txt`, second half.
+paragraph: `254_probes/the_briefs_premise/output.txt`, second half.
 
 **What a reader should distrust most in this file.** Section 6's criterion for
 which conditions belong in the admission contract. It is an entailment from I4
