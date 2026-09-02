@@ -246,6 +246,58 @@ mod tests {
         assert_eq!(f.len(), 1, "two anchors into one file is one author: {f:?}");
     }
 
+    /// A member file plus the consolidation over that member is one arrival.
+    ///
+    /// Two distinct files, so the count passes it, and the second is the first's
+    /// own compression, so the two agree by construction rather than by
+    /// arriving separately.
+    ///
+    /// **Left red on purpose, and the obvious fix is wrong.** Refusing every
+    /// stem carrying `_consolidation` closes this and breaks `cross_topic`,
+    /// whose whole meaning is that two topics arrived without citing each
+    /// other, and whose arrivals are recorded in one consolidation per topic.
+    /// Measured on the committed canon: refusing them wholesale takes the
+    /// population from 29 to 32, and all three of the newly-caught rows cite
+    /// consolidations of different topics, which is the tier working rather
+    /// than a defect. Telling the two apart needs the sitting's file-to-topic
+    /// map, which the citation stem does not carry.
+    #[test]
+    #[ignore = "catalogue: a member file and the consolidation over it are counted as two \
+                arrivals. Closing it needs the sitting's file-to-topic map, because refusing \
+                every consolidation would refuse the cross_topic tier itself"]
+    fn a_file_and_the_consolidation_over_it_are_one_arrival() {
+        let p = cited(&[
+            &format!("{ROOT}::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27"),
+            &format!("{ROOT}::90_giesen_consolidation_derived_algebraic_laws::127"),
+        ]);
+        let f = findings(&[(
+            "proposal::a_claim",
+            &[("standing", "two_experts"), ("provenance", &p)],
+        )]);
+        assert_eq!(f.len(), 1, "a compression is not a second arrival: {f:?}");
+    }
+
+    /// The control that keeps the arm above honest when it is un-ignored.
+    ///
+    /// Two consolidations of two different topics are two arrivals, so whatever
+    /// closes the arm above must leave this silent. Without it the cheapest fix
+    /// passes the arm and refuses the strongest tier the panel produces.
+    #[test]
+    fn control_two_consolidations_of_different_topics_stay_two_arrivals() {
+        let p = cited(&[
+            &format!("{ROOT}::63_spj_consolidation_the_format_concept::120"),
+            &format!("{ROOT}::106_giesen_consolidation_the_strategy_axis::360"),
+        ]);
+        let f = findings(&[(
+            "proposal::a_claim",
+            &[("standing", "cross_topic"), ("provenance", &p)],
+        )]);
+        assert!(
+            f.is_empty(),
+            "two topics arriving separately is what cross_topic names: {f:?}"
+        );
+    }
+
     #[test]
     fn control_a_one_expert_row_citing_one_file_is_silent() {
         let p = cited(&[&format!(
