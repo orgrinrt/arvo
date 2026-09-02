@@ -26,6 +26,14 @@
 //! and it would need editing on every legitimate bump. What cannot be right is
 //! two of them disagreeing, so that is what refuses.
 //!
+//! **The generated crate is read as a participant rather than assumed to
+//! follow.** Comparing the tools only against each other passes the case where
+//! all of them agree and all of them are stale, which is the likelier one:
+//! `mockspace_branch = "dev"` has the launcher re-resolve the head from time to
+//! time, and nothing moves a tool lockfile when it does. Its manifest lives
+//! under `target/`, so it is absent in a clone nobody has built in, and the
+//! check falls back to the pairwise comparison there.
+//!
 //! **A lint rather than a tool.** There is no state of this repository in which
 //! two tool lockfiles may pin different mockspace revisions, so this refuses
 //! rather than reports.
@@ -58,7 +66,7 @@ impl Lint for TheToolLocksPinOneMockspace {
 }
 impl RepoLint for TheToolLocksPinOneMockspace {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&ctx.mock_dir.join("tools"))
+        check(&ctx.mock_dir)
     }
 }
 
@@ -86,16 +94,54 @@ fn revision_in(lock: &str) -> Option<String> {
     None
 }
 
-/// The verdict, over a `mock/tools` directory.
+/// The revision the generated lint crate is built against, if its manifest is
+/// on disk.
+///
+/// The launcher writes `target/mockspace-lints/Cargo.toml` with the engine
+/// pinned by `rev`, so this is the participant the tools have to agree with
+/// rather than a fourth opinion. Read from the manifest and not from the
+/// lockfile beside it, because a `[patch]` there resolves the package to a
+/// checkout path and leaves it with no `source` line at all.
+///
+/// **Returns `None` where the manifest is absent, and that is the ordinary
+/// state of a fresh clone**, since `target/` is not tracked. The check falls
+/// back to comparing the tools against each other, which is what it did before
+/// this arm existed, so a clone nobody has built in is not held in violation of
+/// something it cannot yet know.
+fn engine_revision(mock_dir: &Path) -> Option<String> {
+    let manifest =
+        std::fs::read_to_string(mock_dir.join("target/mockspace-lints/Cargo.toml")).ok()?;
+    manifest
+        .lines()
+        .find(|line| line.contains(&format!("package = \"{PACKAGE}\"")))
+        .and_then(|line| line.split_once("rev = \""))
+        .map(|(_, rest)| rest.chars().take(7).collect())
+}
+
+/// The verdict, over a mock directory.
 ///
 /// Split from the trait impl so a test can point it at a tree it built, and so
 /// the one place that decides is one function.
-fn check(tools: &Path) -> Vec<LintError> {
-    let Ok(entries) = std::fs::read_dir(tools) else {
-        return Vec::new();
+///
+/// **The generated lint crate is one of the participants**, which is what makes
+/// this more than a pairwise check between tools. Seven tools agreeing with
+/// each other and disagreeing with the engine is the same build failure as two
+/// tools disagreeing, and it is the likelier shape: `mockspace_branch = "dev"`
+/// means the launcher re-resolves the head periodically, and when it moves no
+/// tool lockfile moves with it, so they stay uniform and stale together.
+fn check(mock_dir: &Path) -> Vec<LintError> {
+    let mut by_revision: BTreeMap<String, Vec<String>> = BTreeMap::new();
+    if let Some(rev) = engine_revision(mock_dir) {
+        by_revision
+            .entry(rev)
+            .or_default()
+            .push("the generated lint crate".to_string());
+    }
+
+    let Ok(entries) = std::fs::read_dir(mock_dir.join("tools")) else {
+        return verdict(by_revision);
     };
 
-    let mut by_revision: BTreeMap<String, Vec<String>> = BTreeMap::new();
     for entry in entries.flatten() {
         let lock = entry.path().join("Cargo.lock");
         let Ok(text) = std::fs::read_to_string(&lock) else {
@@ -108,6 +154,15 @@ fn check(tools: &Path) -> Vec<LintError> {
         by_revision.entry(rev).or_default().push(tool);
     }
 
+    verdict(by_revision)
+}
+
+/// One finding where the participants disagree, nothing where they do not.
+///
+/// Separate from the gathering so the early return above lands here too: a mock
+/// directory with no `tools/` still has an engine revision worth reporting
+/// against, and returning an empty vector there would have skipped it.
+fn verdict(by_revision: BTreeMap<String, Vec<String>>) -> Vec<LintError> {
     if by_revision.len() < 2 {
         return Vec::new();
     }
@@ -126,9 +181,11 @@ fn check(tools: &Path) -> Vec<LintError> {
         NAME,
         Some("the-tool-locks-disagree"),
         format!(
-            "the tool lockfiles pin {} different revisions of `{PACKAGE}`, and two of its \
-             `LintPack` types in one dependency graph is a build failure rather than a warning. \
-             {spread}. Run `cargo update -p {PACKAGE}` in each tool directory that lags.",
+            "{} different revisions of `{PACKAGE}` are pinned across the tools and the generated \
+             lint crate, and two of its `LintPack` types in one dependency graph is a build \
+             failure rather than a warning. {spread}. Run `cargo update -p {PACKAGE}` in each tool \
+             directory that lags; where the generated crate is the one standing alone, it is the \
+             engine pin that moved and every tool lags it.",
             by_revision.len()
         ),
     )]
@@ -182,12 +239,22 @@ mod tests {
         dir
     }
 
-    /// The tools directory inside a planted mock directory.
+    /// A planted mock directory carrying a generated lint crate pinned at one
+    /// revision, so an arm can make the engine a participant.
     ///
-    /// `check` takes that directory directly, so the arms below that are about
-    /// the predicate rather than about the wiring reach it without a context.
-    fn tools_of(dir: &Path) -> PathBuf {
-        dir.join("tools")
+    /// The manifest line is the shape the launcher writes, package name and
+    /// `rev` on one line, and nothing else in the file matters to the reader.
+    fn plant_engine(dir: &Path, rev: &str) {
+        plant(
+            dir,
+            "target/mockspace-lints/Cargo.toml",
+            &format!(
+                "[package]\nname = \"mockspace-lints\"\n\n\
+                 [dependencies]\n\
+                 mockspace = {{ package = \"{PACKAGE}\", git = \
+                 \"ssh://git@github.com/hiisi-digital/mockspace.git\", rev = \"{rev}\" }}\n"
+            ),
+        );
     }
 
     #[test]
@@ -201,7 +268,7 @@ mod tests {
             ],
         );
         assert!(
-            check(&tools_of(&d)).is_empty(),
+            check(&d).is_empty(),
             "three lockfiles agreeing is the state this lint exists to permit"
         );
     }
@@ -212,7 +279,7 @@ mod tests {
             "locks-two",
             &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
         );
-        let f = check(&tools_of(&d));
+        let f = check(&d);
         assert_eq!(f.len(), 1, "one finding for the whole disagreement: {f:?}");
         let m = &f[0].message;
         assert!(
@@ -235,7 +302,7 @@ mod tests {
                 ("delta", Some(lock_at(B))),
             ],
         );
-        let f = check(&tools_of(&d));
+        let f = check(&d);
         assert_eq!(f.len(), 1, "still one finding: {f:?}");
         let m = &f[0].message;
         assert!(m.contains("3 different revisions"), "{m}");
@@ -244,34 +311,115 @@ mod tests {
         }
     }
 
-    /// The control that a permissive implementation fails.
+    /// Every tool agreeing with every other and disagreeing with the engine.
     ///
-    /// Without it, a `check` returning an empty vector unconditionally passes
-    /// every other test here, because every other assertion about a passing
-    /// tree is an assertion that the vector is empty.
+    /// **The arm the pairwise check could not have.** Three lockfiles on one
+    /// revision is exactly the shape `every_lock_on_one_revision_passes` plants
+    /// and passes; what makes this a violation is the fourth participant, so an
+    /// implementation that reads only `tools/` returns empty here and fails.
     #[test]
-    fn a_check_that_never_refuses_would_fail_this() {
+    fn tools_agreeing_with_each_other_and_not_with_the_engine_are_caught() {
         let d = planted_mock(
-            "locks-control",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
+            "locks-engine-disagrees",
+            &[
+                ("alpha", Some(lock_at(A))),
+                ("beta", Some(lock_at(A))),
+                ("gamma", Some(lock_at(A))),
+            ],
+        );
+        plant_engine(&d, B);
+        let f = check(&d);
+        assert_eq!(
+            f.len(),
+            1,
+            "seven tools uniformly stale against a moved engine pin is the same build failure as \
+             two tools disagreeing: {f:?}"
+        );
+        let message = format!("{:?}", f[0]);
+        assert!(
+            message.contains("the generated lint crate"),
+            "the finding has to name the participant standing alone, or nobody knows which side \
+             to move: {message}"
+        );
+    }
+
+    /// The same tree with the engine on the revision the tools carry.
+    ///
+    /// The negative half of the arm above: without it, a `check` that reported
+    /// a finding whenever an engine manifest existed would pass that one.
+    #[test]
+    fn tools_agreeing_with_the_engine_pass() {
+        let d = planted_mock(
+            "locks-engine-agrees",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(A)))],
+        );
+        plant_engine(&d, A);
+        assert!(
+            check(&d).is_empty(),
+            "agreement across every participant is the state this lint exists to protect"
+        );
+    }
+
+    /// A tree with no generated crate on disk, which is every fresh clone.
+    ///
+    /// `target/` is not tracked, so the manifest is absent until somebody
+    /// builds. The engine arm has to be skipped there rather than counted as a
+    /// participant pinning nothing.
+    #[test]
+    fn a_missing_generated_crate_falls_back_to_the_pairwise_check() {
+        let agree = planted_mock(
+            "locks-no-engine-agree",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(A)))],
         );
         assert!(
-            !check(&tools_of(&d)).is_empty(),
-            "a disagreement has to produce a finding, or nothing here measures anything"
+            check(&agree).is_empty(),
+            "a clone nobody has built in cannot be in violation of a pin it has not resolved"
+        );
+
+        let disagree = planted_mock(
+            "locks-no-engine-disagree",
+            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
+        );
+        assert_eq!(
+            check(&disagree).len(),
+            1,
+            "the pairwise check still has to refuse when the engine is the part that is missing"
+        );
+    }
+
+    /// The engine's revision read off a manifest and nothing else.
+    ///
+    /// The lockfile beside it carries the package with no `source` line at all,
+    /// because a `[patch]` resolves it to a checkout path, so a reader built on
+    /// `revision_in` would return `None` and the whole arm would go quiet.
+    #[test]
+    fn the_engine_revision_comes_from_the_manifest_not_the_lockfile() {
+        let d = planted_tree("locks-engine-reader");
+        assert_eq!(
+            engine_revision(&d),
+            None,
+            "no manifest is no answer, not a wrong one"
+        );
+        plant_engine(&d, C);
+        assert_eq!(
+            engine_revision(&d),
+            Some(C.chars().take(7).collect::<String>()),
+            "the short form has to match what `revision_in` produces, or the two never compare \
+             equal and the arm refuses every tree"
         );
     }
 
     #[test]
     fn a_single_tool_cannot_disagree_with_itself() {
         let d = planted_mock("locks-single", &[("alpha", Some(lock_at(A)))]);
-        assert!(check(&tools_of(&d)).is_empty(), "one lockfile is agreement");
+        assert!(check(&d).is_empty(), "one lockfile is agreement");
     }
 
     #[test]
     fn no_tools_at_all_passes() {
         let d = planted_mock("locks-none", &[]);
         assert!(
-            check(&tools_of(&d)).is_empty(),
+            check(&d).is_empty(),
             "an empty tools directory pins nothing"
         );
     }
@@ -296,7 +444,7 @@ mod tests {
             ],
         );
         assert!(
-            check(&tools_of(&d)).is_empty(),
+            check(&d).is_empty(),
             "a tool that pins nothing cannot disagree with one that does"
         );
     }
@@ -316,7 +464,7 @@ mod tests {
             ],
         );
         assert!(
-            check(&tools_of(&d)).is_empty(),
+            check(&d).is_empty(),
             "a lockfile without the package contributes no revision"
         );
     }
@@ -340,7 +488,7 @@ mod tests {
             &[("alpha", Some(two_deps)), ("beta", Some(lock_at(A)))],
         );
         assert!(
-            check(&tools_of(&d)).is_empty(),
+            check(&d).is_empty(),
             "the other dependency's revision was read as this package's"
         );
     }
