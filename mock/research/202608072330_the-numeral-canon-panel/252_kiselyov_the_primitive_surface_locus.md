@@ -850,3 +850,104 @@ namespace rather than about this row.
 mine to add.** I did not add it: `mockspace.toml` declares `mock/registry/*.toml` as `canon_paths`
 and a panel is open. Closed by a consolidation pass, which is where an edge belongs, and it should be
 added with the coverage figure for row one restated afterwards.
+
+## Appendix. Reconciliation against 235, written after the blind commit
+
+Everything above was committed at `c6cb8f7e` before I opened
+`235_kiselyov_which_obligations_the_ratified_canon_supports.md`, which is the neighbouring question
+written by this persona. The commit ordering is the evidence and it is checkable rather than
+asserted. I read 235 afterwards, which is what section 10 said I would do, and this is what came of
+it.
+
+It is a good file and most of what it says about the five rows I reached separately. That is worth
+saying before the disagreements, because two files by one persona agreeing is weak evidence and I
+want the weak part visible.
+
+### What we reached separately and agree on
+
+**That `question::what_a_platform_width_type_is` reserves the platform-width row.** 235 section 4.1,
+me at 3.5. Both from the question's `decider` and empty `answered`.
+
+**That the canon is silent on debug output and on unstable containment.** 235 section 4.3, me at 3.4.
+Different instruments: 235 walked the ratified rows for a keyword list with a positive control on
+`declared width`; I grepped `ruling.toml` whole for six patterns with a positive control on `usize`
+and `^id = `. Same zero.
+
+**That the platform-sized spelling is in tension with something the canon holds firmly.** Here the
+instruments genuinely differ and the union is not the claim. 235 reaches it through "no platform
+dependency" in `ruling::the_operating_constraints_are_intents_and_rules`, and separately through the
+ratified `proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set` and its
+"is not a format but storage" clause. I reach it through
+`ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` and its "never of the
+machine carrier". **Three routes, one conclusion, and the intersection is only that a tension exists.**
+Which row it violates is not agreed and I do not claim it is.
+
+**That row seven, the position rule, is `in_force` only and that this is a distinct standing.** 235
+section 4.2, me at 3.1.
+
+### Where 235 is now out of date, through no fault of its own
+
+**Its silence walk ran over 31 ratified rows and there are 32.** Measured:
+`git show 16aab9ea:mock/registry/ruling.toml | grep -c 'rung = "ratified"'` returns 31 and the same
+grep on the working tree returns 32. The missing one is
+`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`, and
+`git merge-base --is-ancestor 87ab5d70 16aab9ea` returns false, so the door ruling landed after 235
+was written and could not have been in its walk. **Nothing in 235 is wrong because of this**, since
+the door ruling adds no row about hashing or rendering, but a later reader citing 235's walk as
+covering the ratified set should know it covers 31 of the 32 and which one is missing.
+
+**Its statement that nothing has enumerated the positions is dated rather than wrong.** 235 section
+4.2 quotes row seven's `gap`, "nothing has enumerated those", and endorses it. `mock/tools/the-positions`
+was added at `5d62db27` on 2026-09-02 and 235 landed at `16aab9ea` on 2026-09-01. So the enumeration
+did not exist when 235 was written and exists now, and section 4.3 of this file reports it: 27
+positions, all in one crate, all constructor or accessor. **This is the correction I would most want
+carried forward**, because the sentence has now been repeated by a row's `gap` and by a panel file,
+and repetition between unratified artifacts is how a stale claim hardens.
+
+### Where I disagree with 235 outright
+
+**On what `in_force` means.** 235 section 4.2 writes of row seven's ruling: "That binds as direction
+and is not canon." That is the schema's description of `stated`, not of `in_force`. The `rung`
+field's own declaration in `mockspace.toml` gives four values and describes them separately:
+`ratified` "where it is canon"; **`in_force` "where the workspace and this repo's own lints enforce it
+independently of convergence"**; `stated` "where it is his direction and an ack rather than a ruling";
+`open` "where he has explicitly not settled it".
+
+So `in_force` is not a weaker `stated`. It is a claim that the thing binds **because it is enforced**
+rather than because anybody converged, which is why the row's own `says` can end "and they are not to
+be questioned" without a `ratified_by`. Nothing above this paragraph in my file leans on `in_force`
+being canon; it leans on the constraint being in force, which is what the tier says. But the
+difference decides whether a design may build on row seven's demand, and 235's reading says no while
+mine says yes, so it should not be left as a matter of wording.
+
+**And I think I can name why 235 read it that way, which makes it a defect in the surface rather than
+in the file.** `mock/agent/MAIN.md.tmpl` is the generated agent instruction every session in this
+repository loads, and its "what binds, in order" list at lines 42 to 47 names `ratified` and `stated`
+and stops. **`in_force` and `open` are not in it.** Grepping that file for `in_force` returns nothing;
+the one match for "in force" is prose about the constraints themselves at line 87 rather than about
+the tier. So an agent reading the authority list and meeting an `in_force` row has two documented
+tiers to put it in and picks the nearer one, which is `stated`. **The omitted tier is the one carrying
+the widest constraint in the registry**, and it is the tier the question I was dispatched on turns on.
+
+That is an unlicensed gap in a generated surface rather than a canon question, and the repair is in
+`mock/agent/MAIN.md.tmpl` rather than in any row. I have not made it; it is somebody's design act and
+the file is generated from a template.
+
+### What 235 has that I do not, and that I am carrying rather than re-deriving
+
+Its section 4.1 second block, that the ratified
+`proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set` carries an "is not
+a format but storage" clause and that **the canon has no `storage` concept anywhere**, so a design
+taking that branch would have to invent one. I did not reach that and did not check it. It bears
+directly on my O1 and it narrows it further than I did: if the storage reading wins, the platform-width
+row needs a concept the canon does not have, which is a bigger act than picking an option. **O1 should
+be read with that attached**, and whoever takes it should verify the clause and the absence rather
+than inheriting either from two files by one persona.
+
+### What this reconciliation does not change
+
+Nothing in sections 1 through 12 is edited. 235 does not contradict the measurement in section 6,
+which it could not, since it names that measurement as absent and it was absent. It does not
+contradict section 5's reading of the five rows as a demand-side sample rather than a cut; it works
+over all sixteen rows and reaches no view on whether the set is a decomposition, which is a different
+question. And it does not touch section 7's four findings, none of which appears in it.
