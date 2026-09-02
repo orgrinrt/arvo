@@ -257,10 +257,13 @@ mod tests {
     /// whose whole meaning is that two topics arrived without citing each
     /// other, and whose arrivals are recorded in one consolidation per topic.
     /// Measured on the committed canon: refusing them wholesale takes the
-    /// population from 29 to 32, and all three of the newly-caught rows cite
-    /// consolidations of different topics, which is the tier working rather
-    /// than a defect. Telling the two apart needs the sitting's file-to-topic
-    /// map, which the citation stem does not carry.
+    /// population from 29 to 32, and of the three rows that catches, two are
+    /// `cross_topic` citing one consolidation of a topic that is not their own
+    /// alongside the agreements file, so the refusal would take the tier out
+    /// rather than a defect. The third is this very case, a member file and
+    /// the consolidation of its own topic, and the refusal catches it
+    /// correctly. Telling the two apart needs the sitting's file-to-topic map,
+    /// which the citation stem does not carry.
     #[test]
     #[ignore = "catalogue: a member file and the consolidation over it are counted as two \
                 arrivals. Closing it needs the sitting's file-to-topic map, because refusing \
