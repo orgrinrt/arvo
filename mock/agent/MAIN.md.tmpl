@@ -45,6 +45,15 @@ What binds, in order:
   is a ratification and is treated as one.
 - **`rung = "stated"` is his direction**, carrying his own words in a
   `quote` field. It binds as direction and is not yet canon.
+- **`rung = "in_force"` binds now and does not wait on convergence.**
+  The workspace rules and this repo's own lint configuration carry it
+  independently, so it is enforced whether or not the panel has agreed
+  anything about it. The constraints in the next section are these, and
+  a row at this tier is not weaker than a ratified one for being a
+  different tier.
+- **`rung = "open"` is a question he has explicitly not settled.** That
+  is not silence, and it may not be filled inside a design. Derive
+  nothing from it; the call is reserved.
 - **`proposal` rows are not canon**, whatever their `standing` says.
   A claim with two instances is still a proposal until a ruling stamps
   it. `standing` counts arrivals, and its vocabulary is declared in

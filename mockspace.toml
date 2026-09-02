@@ -497,15 +497,18 @@ push = "off"
 # ("this crate brings the numeric substrate"), not a permission list.
 #
 # Layer hierarchy in arvo:
-# - `arvo` (L0) — defines the numeric substrate: `UFixed`, `IFixed`,
-#   `FastFloat`, `StrictFloat`, `USize`, `Cap`, `Bool`, strategy markers.
-# - `arvo-bits` (L1) — supplements the numeric substrate with opaque-bit
-#   containers: `Bits<N>`, `BitPrim`, `BitWidth`, `BitAccess`.
-# - `arvo-hash` (L2) — supplements the numeric substrate with hash
-#   identity: `ContentHash` (alias of `Bits<28>`), plus hasher contracts.
-# - Every other crate (`arvo-bitmask`, `arvo-graph`, `arvo-sparse`,
-#   `arvo-comb`, `arvo-spectral`) is a consumer of the substrate — stays
-#   fully strict.
+# - `arvo-format` introduces the numeric category, so the bare-primitive
+#   lints skip it. The crate that defines what a number is here cannot
+#   express itself in types it has not defined yet. `Width` and `Bool`
+#   are the door it carries them out through.
+# - `arvo-placement` and `arvo-strategy` sit above it and are checked
+#   normally.
+# - This comment used to enumerate a different tree, with a crate per
+#   concern below a facade. That tree was deleted deliberately, on
+#   2026-08-08, because the canon under it is being rewritten and the
+#   mutation order clears the lower tiers first. Do not restore it and
+#   do not reason from it; how many crates there are and what they are
+#   called is open.
 #
 # Future direction (mockspace task #119): auto-detect the categories a
 # crate introduces from its DESIGN.md.tmpl / source parse, eliminating
