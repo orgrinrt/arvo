@@ -110,6 +110,19 @@ fn the_cancelling_slot_search_forces_the_format_obligation() {
     t.compile_fail("tests/ui/cancelling_slot_forces_the_format_obligation.rs");
 }
 
+/// The slot range reached through a call rather than forced directly.
+///
+/// `has_additive_identity` reaches `slot_in_range` only on a magnitude where
+/// `cancelling_slot` answers `Is`, so in a const evaluation a phase that cancels
+/// decides whether the slot range's obligation is met at all. The other half, the
+/// same verb over the same inverted range under a phase that cancels nowhere,
+/// builds and is a const item beside the obligation arms.
+#[test]
+fn a_cancelling_phase_reaches_the_slot_range_and_a_non_cancelling_one_does_not() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_cancelling_phase_reaches_the_slot_range.rs");
+}
+
 /// The refusal every const generic parameter in this crate is spelled around.
 ///
 /// `Width` is the crate's own count of bits and cannot be the type of a const
