@@ -1,0 +1,34 @@
+== 1. the files after 243, and the origin/dev commit that added each
+244  cc19b122 2026-09-02  244_orchard_consolidation_admission_and_the_number_system.md
+245  334f59e5 2026-09-02  245_ringer_entailment_check_on_the_admission_consolidation.md
+246  5fd3134a 2026-09-02  246_kiselyov_the_two_promotions_and_what_they_second.md
+247  0f882f73 2026-09-02  247_leroy_the_cold_seats_answered_rows_73_wrote.md
+248  c9afdeaa 2026-09-02  248_chlipala_standing_counts_arrivals_and_the_gate_is_shut.md
+249  cbcdce5b 2026-09-02  249_jhala_standing_counts_arrivals_not_arguments.md
+250  bdf3aa87 2026-09-02  250_dolan_admission_is_a_measured_contract.md
+251  7ab786ab 2026-09-02  251_the_primitive_surface_is_a_rule_with_no_supply.md
+252  c6cb8f7e 2026-09-02  252_kiselyov_the_primitive_surface_locus.md
+253  21a5798e 2026-09-02  253_dolan_the_debug_row_has_no_subject.md
+254  0eba6a0d 2026-09-02  254_leijen_the_exposure_list_is_derived_not_chosen.md
+255  9d7d65b6 2026-09-02  255_leroy_the_primitive_established.md
+
+== 2. does 242 or 243 say its reading must not be merged with 241's
+negative control, a planted line the pattern must catch:
+1
+hits over the two files, each hit printed so the reader sees what it is:
+  1  242_what-admits-a-number-system.md
+      254:Q21's own note says the two should be read as one and that its stated discriminator was measured
+  0  243_seat242_the_resolution_has_no_second_arm.md
+positive control, words known to be in each file:
+  resolution in 243: 12
+  tier in 242: 29
+
+== 3. the tier count: where 244 filed it, and where 246 retired that filing
+406:### C2. The tier count
+540:### 5.4 `244`'s C2 is filed against a row that decides nothing about it
+the only tier-count phrase in 242 itself:
+387:eccentric. Separately, FLoPS formalises low-precision formats in three tiers, bit encodings, an
+
+== 4. how many briefs have carried the premise, by the files that quote it
+244_orchard_consolidation_admission_and_the_number_system.md
+245_ringer_entailment_check_on_the_admission_consolidation.md
