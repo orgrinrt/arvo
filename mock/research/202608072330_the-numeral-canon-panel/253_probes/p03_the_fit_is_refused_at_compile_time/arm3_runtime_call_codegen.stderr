@@ -1,0 +1,34 @@
+error[E0080]: evaluation panicked: the buffer is too small for this format's identity
+  --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `p03_the_fit_is_refused_at_compile_time::identity_of::<arvo_format::points::Integer<8>, 50>::{constant#1}` failed here
+   |
+  ::: src/lib.rs:71:9
+   |
+71 | /         assert!(
+72 | |             N >= rendered_len::<F>(),
+73 | |             "the buffer is too small for this format's identity"
+74 | |         )
+   | |_________- in this macro invocation
+
+note: erroneous constant encountered
+  --> src/lib.rs:70:5
+   |
+70 | /     const {
+71 | |         assert!(
+72 | |             N >= rendered_len::<F>(),
+73 | |             "the buffer is too small for this format's identity"
+74 | |         )
+75 | |     };
+   | |_____^
+
+note: the above error was encountered while instantiating `fn identity_of::<Integer<8>, 50>`
+  --> arms/from_a_runtime_call.rs:36:13
+   |
+36 |     let _ = identity_of::<Integer<8>, 50>(&mut b);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
