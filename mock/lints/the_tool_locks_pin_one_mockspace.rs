@@ -56,7 +56,6 @@ use std::path::Path;
 
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(TheToolLocksPinOneMockspace)
 }
@@ -154,10 +153,12 @@ fn engine_pin(mock_dir: &Path) -> EnginePin {
 ///
 /// **The generated lint crate is one of the participants**, which is what makes
 /// this more than a pairwise check between tools. Seven tools agreeing with
-/// each other and disagreeing with the engine is the same build failure as two
-/// tools disagreeing, and it is the likelier shape: `mockspace_branch = "dev"`
-/// means the launcher re-resolves the head periodically, and when it moves no
-/// tool lockfile moves with it, so they stay uniform and stale together.
+/// each other and disagreeing with the engine leaves all seven building against
+/// an api the engine has left, which is the same standalone failure as two
+/// tools disagreeing and reaches nobody until the whole suite runs. It is also
+/// the likelier shape: `mockspace_branch = "dev"` means the launcher re-resolves
+/// the head periodically, and when it moves no tool lockfile moves with it, so
+/// they stay uniform and stale together.
 fn check(mock_dir: &Path) -> Vec<LintError> {
     let mut by_revision: BTreeMap<String, Vec<String>> = BTreeMap::new();
     match engine_pin(mock_dir) {
@@ -166,11 +167,11 @@ fn check(mock_dir: &Path) -> Vec<LintError> {
                 .entry(rev)
                 .or_default()
                 .push("the generated lint crate".to_string());
-        },
+        }
         // Neither state is a violation and neither is a revision, so the
         // engine simply does not take a seat. Named rather than collapsed
         // into one `_`, so adding a fourth state has to be decided here.
-        EnginePin::Unbuilt | EnginePin::Unpinned => {},
+        EnginePin::Unbuilt | EnginePin::Unpinned => {}
     }
 
     let Ok(entries) = std::fs::read_dir(mock_dir.join("tools")) else {
