@@ -1,7 +1,7 @@
 error[E0277]: `Signed<64>` is not an admitted slot range
   --> tests/ui/word_length_past_the_ladder.rs:14:14
    |
-14 |     let _ = <Fi<64, 32> as Format>::PHASE_NUM;
+14 |     let _ = <Fi<64, 32> as Format>::PHASE;
    |              ^^^^^^^^^^ no slot range exists for this width
    |
    = help: the trait `Slots` is not implemented for `Signed<64>`

@@ -22,8 +22,8 @@
 //! obligations rather than by amending anything.
 
 use crate::ambient::{BinaryRationals, UnsignedBinaryRationals};
-use crate::format::Format;
-use crate::quantum::Quantum;
+use crate::format::{Format, Phase};
+use crate::quantum::{Exponent, MagnitudeCount, Quantum};
 use crate::slots::{Signed, Slots, Unsigned};
 
 /// MATLAB's fraction length, as the quantum law it names.
@@ -40,12 +40,12 @@ use crate::slots::{Signed, Slots, Unsigned};
 pub struct FractionLength<const F: i32>;
 
 impl<const F: i32> Quantum for FractionLength<F> {
-    const BASE: i32 = -F;
+    const BASE: Exponent = Exponent::of(-F);
     // The constant family. A fixed-point convention has one step rather than a
     // ladder of them, so nothing moves with magnitude and there is one magnitude
     // to move over.
-    const SLOPE: i32 = 0;
-    const MAGNITUDES: u32 = 1;
+    const SLOPE: Exponent = Exponent::ZERO;
+    const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
 }
 
 /// A signed MATLAB `fi` of `W` bits at fraction length `F`.
@@ -68,8 +68,7 @@ where
     // rather than assumed, because the same convention's slope-and-bias scaling
     // does not, and that is a different declaration rather than a flag on this
     // one.
-    const PHASE_NUM: i64 = 0;
-    const PHASE_DEN: i64 = 1;
+    const PHASE: Phase = Phase::ZERO;
 }
 
 /// An unsigned MATLAB `fi` of `W` bits at fraction length `F`.
@@ -82,8 +81,7 @@ where
     type Ambient = UnsignedBinaryRationals;
     type Quantum = FractionLength<F>;
     type Slots = Unsigned<W>;
-    const PHASE_NUM: i64 = 0;
-    const PHASE_DEN: i64 = 1;
+    const PHASE: Phase = Phase::ZERO;
 }
 
 /// A `fi` under a `fimath`, which is the declared signature the pair names.

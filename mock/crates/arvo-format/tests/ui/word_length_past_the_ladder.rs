@@ -11,5 +11,5 @@ use arvo_format::format::Format;
 use arvo_format::standards::Fi;
 
 fn main() {
-    let _ = <Fi<64, 32> as Format>::PHASE_NUM;
+    let _ = <Fi<64, 32> as Format>::PHASE;
 }

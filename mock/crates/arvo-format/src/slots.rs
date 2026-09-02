@@ -9,6 +9,11 @@
 //! phase. A slot is an index, not a value: the value it denotes is the phase plus
 //! the slot times the quantum at its magnitude.
 //!
+//! **That sentence is a type here rather than a note.** `Slot` is the index and
+//! `SlotCount` is how many of them a range admits, and the two do not convert into
+//! each other, so the off-by-one the inclusive bounds below worry about cannot be
+//! written by handing a count where an index was wanted.
+//!
 //! **The declared width is carried rather than recovered.** A declaration of
 //! thirteen bits knows it is thirteen bits, and reconstructing that from the slot
 //! bounds by counting is a computation over a quantity nothing needs.
@@ -24,7 +29,74 @@
 //! the trait as `ADMITTED`, and it is checked at compile time rather than asked
 //! for in a comment.
 
-use crate::width::Width;
+use crate::width::{Bool, Width};
+
+/// An index of a multiple of the quantum.
+///
+/// An index and never a value. The value a slot denotes is the phase plus the slot
+/// times the quantum at its magnitude, and nothing in this crate hands one out as
+/// a number in the ambient domain.
+#[repr(transparent)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+pub struct Slot(i64);
+
+impl Slot {
+    /// The slot at zero, which is where the additive identity sits on an unbiased
+    /// grid and where it does not sit on a biased one.
+    pub const ZERO: Self = Self(0);
+
+    /// A slot at an index.
+    #[must_use]
+    pub const fn at(index: i64) -> Self {
+        Self(index)
+    }
+
+    /// The index, for the one place a host contract needs it back.
+    ///
+    /// The unwrap door, declared as one. `repr(transparent)` and this accessor are
+    /// the whole observation surface.
+    #[must_use]
+    pub const fn index(self) -> i64 {
+        self.0
+    }
+
+    /// Whether this slot is no higher than another.
+    #[must_use]
+    pub const fn is_at_most(self, other: Self) -> Bool {
+        Bool::of(self.0 <= other.0)
+    }
+
+    /// Whether this slot falls between two bounds, inclusive at both ends.
+    #[must_use]
+    pub const fn is_within(self, low: Self, high: Self) -> Bool {
+        Bool::of(self.0 >= low.0 && self.0 <= high.0)
+    }
+}
+
+/// How many slots a range admits.
+///
+/// An extent and not an index, on the same reading that separates a magnitude from
+/// a count of them. A range from `-4` to `3` admits eight slots and its highest
+/// index is three, and the two numbers are never interchangeable.
+#[repr(transparent)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+pub struct SlotCount(i64);
+
+impl SlotCount {
+    /// A count of slots.
+    #[must_use]
+    pub const fn of(count: i64) -> Self {
+        Self(count)
+    }
+
+    /// The count, for the one place a host contract needs it back.
+    ///
+    /// The unwrap door, declared as one.
+    #[must_use]
+    pub const fn count(self) -> i64 {
+        self.0
+    }
+}
 
 /// Which slot indices a format admits.
 ///
@@ -51,10 +123,10 @@ use crate::width::Width;
 )]
 pub trait Slots {
     /// The lowest admitted slot index.
-    const MIN: i64;
+    const MIN: Slot;
 
     /// The highest admitted slot index.
-    const MAX: i64;
+    const MAX: Slot;
 
     /// The width the declaration stated.
     ///
@@ -84,26 +156,27 @@ pub trait Slots {
     /// exactly because an unqualified "refused at compile time" would be the same
     /// shape as the totality claims this replaced.
     ///
-    /// **And that is why the refusal is a doctest rather than a `trybuild` case.**
-    /// `trybuild` runs `cargo check`, so it never reaches the evaluation and would
-    /// report a refused program as compiling. For as long as the paragraph above
-    /// described the refusal as a fact, nothing anywhere ran it, which made it a
-    /// claim about a mechanism with no arm behind it.
+    /// **Where the obligation is forced decides which tool can see the refusal.**
+    /// A const is evaluated where it is used, so a runtime call reaches it only at
+    /// codegen and a `const` item reaches it at check time. A doctest builds a
+    /// binary and catches both; a `trybuild` case runs `cargo check` and catches
+    /// the second, which is why the ones in `tests/ui/` bind the predicate to a
+    /// `const` rather than calling it from `main`.
     ///
     /// ```compile_fail
-    /// use arvo_format::slots::{slot_in_range, Slots};
+    /// use arvo_format::slots::{slot_in_range, Slot, Slots};
     /// use arvo_format::width::Width;
     ///
     /// struct Inverted;
     ///
     /// impl Slots for Inverted {
-    ///     const MIN: i64 = 8;
-    ///     const MAX: i64 = -8;
+    ///     const MIN: Slot = Slot::at(8);
+    ///     const MAX: Slot = Slot::at(-8);
     ///     const WIDTH: Width = Width::bits(8);
     /// }
     ///
     /// fn main() {
-    ///     let _ = slot_in_range::<Inverted>(0);
+    ///     let _ = slot_in_range::<Inverted>(Slot::ZERO);
     /// }
     /// ```
     ///
@@ -112,19 +185,19 @@ pub trait Slots {
     /// with the lower index below the higher one builds.
     ///
     /// ```
-    /// use arvo_format::slots::{slot_in_range, Slots};
+    /// use arvo_format::slots::{slot_in_range, Slot, Slots};
     /// use arvo_format::width::Width;
     ///
     /// struct Ordered;
     ///
     /// impl Slots for Ordered {
-    ///     const MIN: i64 = -8;
-    ///     const MAX: i64 = 7;
+    ///     const MIN: Slot = Slot::at(-8);
+    ///     const MAX: Slot = Slot::at(7);
     ///     const WIDTH: Width = Width::bits(8);
     /// }
     ///
     /// fn main() {
-    ///     assert!(slot_in_range::<Ordered>(0));
+    ///     assert!(slot_in_range::<Ordered>(Slot::ZERO).get());
     /// }
     /// ```
     ///
@@ -136,7 +209,7 @@ pub trait Slots {
     /// obligations are the design decision; this is only how they are enforced.
     const ADMITTED: () = {
         assert!(
-            Self::MIN <= Self::MAX,
+            Self::MIN.index() <= Self::MAX.index(),
             "slot range is inverted: its lowest index exceeds its highest, so it admits nothing"
         );
         assert!(
@@ -153,11 +226,12 @@ pub trait Slots {
         // `MIN <= MAX` and the width's range, and admitted a span of 2^63, which
         // made `slot_count` panic under `overflow-checks` and wrap without it.
         assert!(
-            (Self::MAX as i128) - (Self::MIN as i128) < i64::MAX as i128,
+            (Self::MAX.index() as i128) - (Self::MIN.index() as i128) < i64::MAX as i128,
             "slot range spans more indices than a count can carry, so counting it would overflow"
         );
         assert!(
-            (Self::MAX as i128) - (Self::MIN as i128) < (1i128 << Self::WIDTH.count()),
+            (Self::MAX.index() as i128) - (Self::MIN.index() as i128)
+                < (1i128 << Self::WIDTH.count()),
             "the declared width does not cover the range: the range holds more indices than the \
              width can address"
         );
@@ -171,12 +245,14 @@ pub trait Slots {
 /// refuse it. That is what lets the wrong construction live permanently in a test
 /// rather than in a scratch file somebody deletes.
 #[must_use]
-pub const fn is_admissible<S: Slots>() -> bool {
-    S::MIN <= S::MAX
-        && S::WIDTH.count() >= 1
-        && S::WIDTH.count() <= 62
-        && (S::MAX as i128) - (S::MIN as i128) < i64::MAX as i128
-        && (S::MAX as i128) - (S::MIN as i128) < (1i128 << S::WIDTH.count())
+pub const fn is_admissible<S: Slots>() -> Bool {
+    Bool::of(
+        S::MIN.index() <= S::MAX.index()
+            && S::WIDTH.count() >= 1
+            && S::WIDTH.count() <= 62
+            && (S::MAX.index() as i128) - (S::MIN.index() as i128) < i64::MAX as i128
+            && (S::MAX.index() as i128) - (S::MIN.index() as i128) < (1i128 << S::WIDTH.count()),
+    )
 }
 
 /// The slot range a two's complement declaration of `BITS` bits produces on a
@@ -193,26 +269,28 @@ pub struct Unsigned<const BITS: u32>;
 ///
 /// **Adding a width past the bound fails here rather than at some use site**: the
 /// body computes `1i64 << BITS` for the unsigned bound, which overflows at the
-/// definition site at 63 and refuses to compile where somebody added it.
+/// definition site at 63 and refuses to compile where somebody added it. Wrapping
+/// that in `Slot::at` does not move the arithmetic, so the property survives the
+/// coordinate having a type.
 macro_rules! admit_widths {
     ($($w:literal),+ $(,)?) => {
         $(
             impl Slots for Signed<$w> {
-                const MIN: i64 = -(1i64 << ($w - 1));
-                const MAX: i64 = (1i64 << ($w - 1)) - 1;
+                const MIN: Slot = Slot::at(-(1i64 << ($w - 1)));
+                const MAX: Slot = Slot::at((1i64 << ($w - 1)) - 1);
                 const WIDTH: Width = Width::bits($w);
             }
 
             impl Slots for Unsigned<$w> {
-                const MIN: i64 = 0;
-                const MAX: i64 = (1i64 << $w) - 1;
+                const MIN: Slot = Slot::ZERO;
+                const MAX: Slot = Slot::at((1i64 << $w) - 1);
                 const WIDTH: Width = Width::bits($w);
             }
         )+
 
         /// Every width the design admits, for a test that wants the whole set
         /// rather than the widths somebody remembered.
-        pub const ADMITTED_WIDTHS: &[u32] = &[$($w),+];
+        pub const ADMITTED_WIDTHS: &[Width] = &[$(Width::bits($w)),+];
     };
 }
 
@@ -224,9 +302,9 @@ admit_widths!(
 
 /// Whether a slot index is admitted.
 #[must_use]
-pub const fn slot_in_range<S: Slots>(slot: i64) -> bool {
+pub const fn slot_in_range<S: Slots>(slot: Slot) -> Bool {
     let () = S::ADMITTED;
-    slot >= S::MIN && slot <= S::MAX
+    slot.is_within(S::MIN, S::MAX)
 }
 
 /// How many slots the range admits.
@@ -235,9 +313,9 @@ pub const fn slot_in_range<S: Slots>(slot: i64) -> bool {
 /// fits. Nothing derives a width from this, and it is kept because a cardinality
 /// is a real thing to ask a range for.
 #[must_use]
-pub const fn slot_count<S: Slots>() -> i64 {
+pub const fn slot_count<S: Slots>() -> SlotCount {
     let () = S::ADMITTED;
-    S::MAX - S::MIN + 1
+    SlotCount::of(S::MAX.index() - S::MIN.index() + 1)
 }
 
 /// The width the declaration stated.

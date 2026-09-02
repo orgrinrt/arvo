@@ -11,11 +11,12 @@
 //! this file would be most likely to ship.
 
 use arvo_format::adapt::{Adapt, Signature};
-use arvo_format::apply::{adapt, Dither, Exact};
+use arvo_format::apply::{adapt, Dither, Exact, Fraction};
 use arvo_format::overflow::Wrap;
 use arvo_format::points::Integer;
+use arvo_format::quantum::Magnitude;
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
-use arvo_format::slots::Slots;
+use arvo_format::slots::{Slot, Slots};
 
 use arvo_format::standards::{Fi, FractionLength, Ufi};
 
@@ -37,7 +38,10 @@ fn pi_at(f: u32) -> Exact {
     let scaled = PI_NUM * (1i128 << f);
     let slot = scaled / PI_DEN;
     let rem = scaled % PI_DEN;
-    Exact::between(slot as i64, rem as i64, PI_DEN as i64)
+    Exact::between(
+        Slot::at(slot as i64),
+        Fraction::of(rem as i64, PI_DEN as i64),
+    )
 }
 
 /// Twice the remainder against the denominator, which is the tie test.
@@ -69,7 +73,7 @@ fn the_control_no_parity_arm_reaches_an_overflow_policy() {
     // The same argument for the other axis. Every expected stored integer sits
     // inside its declared range, so the completion region is the identity and no
     // arm below is secretly asserting something about wrapping.
-    let inside = |lo: i64, hi: i64, v: i64| v >= lo && v <= hi;
+    let inside = |lo: Slot, hi: Slot, v: i64| v >= lo.index() && v <= hi.index();
     assert!(inside(
         <<Fi<16, 13> as arvo_format::format::Format>::Slots as Slots>::MIN,
         <<Fi<16, 13> as arvo_format::format::Format>::Slots as Slots>::MAX,
@@ -103,14 +107,24 @@ fn the_control_the_five_declarations_are_genuinely_different() {
     // times. The step exponent is the coordinate the fraction length sets, so it
     // is what has to differ.
     use arvo_format::format::step_exponent;
+    use arvo_format::quantum::Exponent;
     let exponents = [
-        step_exponent::<Fi<16, 13>>(0),
-        step_exponent::<Ufi<16, 14>>(0),
-        step_exponent::<Fi<8, 5>>(0),
-        step_exponent::<Ufi<8, 6>>(0),
-        step_exponent::<Fi<8, 3>>(0),
+        step_exponent::<Fi<16, 13>>(Magnitude::SMALLEST),
+        step_exponent::<Ufi<16, 14>>(Magnitude::SMALLEST),
+        step_exponent::<Fi<8, 5>>(Magnitude::SMALLEST),
+        step_exponent::<Ufi<8, 6>>(Magnitude::SMALLEST),
+        step_exponent::<Fi<8, 3>>(Magnitude::SMALLEST),
     ];
-    assert_eq!(exponents, [-13, -14, -5, -6, -3]);
+    assert_eq!(
+        exponents,
+        [
+            Exponent::of(-13),
+            Exponent::of(-14),
+            Exponent::of(-5),
+            Exponent::of(-6),
+            Exponent::of(-3),
+        ]
+    );
 }
 
 // --- the fraction length is the negation, including below zero ---------------
@@ -118,22 +132,35 @@ fn the_control_the_five_declarations_are_genuinely_different() {
 #[test]
 fn the_fraction_length_is_the_negated_exponent_at_every_sign() {
     use arvo_format::format::step_exponent;
+    use arvo_format::quantum::Exponent;
     // Positive, which is every fixed-point declaration anybody writes.
-    assert_eq!(step_exponent::<Fi<16, 13>>(0), -13);
+    assert_eq!(
+        step_exponent::<Fi<16, 13>>(Magnitude::SMALLEST),
+        Exponent::of(-13)
+    );
     // Zero, which is the integers and is where MATLAB's `fi` meets `Integer`.
-    assert_eq!(step_exponent::<Fi<8, 0>>(0), 0);
+    assert_eq!(
+        step_exponent::<Fi<8, 0>>(Magnitude::SMALLEST),
+        Exponent::ZERO
+    );
     // Negative, which MATLAB admits and which scales the step up rather than
     // down. No case of its own here, which is the point of asserting it.
-    assert_eq!(step_exponent::<Fi<8, -4>>(0), 4);
+    assert_eq!(
+        step_exponent::<Fi<8, -4>>(Magnitude::SMALLEST),
+        Exponent::of(4)
+    );
 }
 
 #[test]
 fn the_fraction_length_is_the_constant_family_rather_than_the_indexed_one() {
     // A fixed-point convention has one step. If this were the indexed family the
     // grid would have a step per magnitude, which is a float and not a `fi`.
-    use arvo_format::quantum::{is_constant_family, Quantum};
-    assert!(is_constant_family::<FractionLength<13>>());
-    assert_eq!(<FractionLength<13> as Quantum>::MAGNITUDES, 1);
+    use arvo_format::quantum::{is_constant_family, MagnitudeCount, Quantum};
+    assert!(is_constant_family::<FractionLength<13>>().get());
+    assert_eq!(
+        <FractionLength<13> as Quantum>::MAGNITUDES,
+        MagnitudeCount::ONE
+    );
 }
 
 // --- the five MathWorks publishes --------------------------------------------
@@ -149,7 +176,8 @@ macro_rules! parity {
                 adapt::<Signature<$fmt, Adapt<HalfEven, Wrap>>>(position, Dither::UNUSED),
             ] {
                 assert_eq!(
-                    got, $stored,
+                    got,
+                    Slot::at($stored),
                     "MathWorks prints a stored integer of {} for this declaration",
                     $stored
                 );
@@ -208,8 +236,12 @@ fn the_control_a_wrong_stored_integer_would_be_caught() {
     // not round to, reported rather than asserted, is what says the instrument
     // works.
     let got = adapt::<Signature<Fi<8, 3>, Adapt<HalfEven, Wrap>>>(pi_at(3), Dither::UNUSED);
-    assert_ne!(got, 26, "the map returned the neighbour it should not have");
-    assert_ne!(got, 24);
+    assert_ne!(
+        got,
+        Slot::at(26),
+        "the map returned the neighbour it should not have"
+    );
+    assert_ne!(got, Slot::at(24));
 }
 
 // --- what MATLAB needs and the vocabulary does not have ----------------------
@@ -222,10 +254,22 @@ fn the_control_a_wrong_stored_integer_would_be_caught() {
 macro_rules! is_matlab_nearest {
     ($mode:ty) => {{
         type S = Signature<Integer<8>, Adapt<$mode, Wrap>>;
-        let below = adapt::<S>(Exact::between(2, 1, 10), Dither::UNUSED) == 2;
-        let above = adapt::<S>(Exact::between(2, 9, 10), Dither::UNUSED) == 3;
-        let tie_up = adapt::<S>(Exact::between(2, 1, 2), Dither::UNUSED) == 3;
-        let tie_down = adapt::<S>(Exact::between(-3, 1, 2), Dither::UNUSED) == -2;
+        let below = adapt::<S>(
+            Exact::between(Slot::at(2), Fraction::of(1, 10)),
+            Dither::UNUSED,
+        ) == Slot::at(2);
+        let above = adapt::<S>(
+            Exact::between(Slot::at(2), Fraction::of(9, 10)),
+            Dither::UNUSED,
+        ) == Slot::at(3);
+        let tie_up = adapt::<S>(
+            Exact::between(Slot::at(2), Fraction::of(1, 2)),
+            Dither::UNUSED,
+        ) == Slot::at(3);
+        let tie_down = adapt::<S>(
+            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
+            Dither::UNUSED,
+        ) == Slot::at(-2);
         below && above && tie_up && tie_down
     }};
 }
@@ -263,25 +307,67 @@ fn the_gap_is_this_shape_rather_than_a_missing_re_export() {
 
     // Ceiling agrees at both ties and is not nearest: it takes the upper
     // neighbour from a position nine tenths below it.
-    assert_eq!(adapt::<Ceiling>(Exact::between(2, 1, 2), Dither::UNUSED), 3);
     assert_eq!(
-        adapt::<Ceiling>(Exact::between(-3, 1, 2), Dither::UNUSED),
-        -2
+        adapt::<Ceiling>(
+            Exact::between(Slot::at(2), Fraction::of(1, 2)),
+            Dither::UNUSED
+        ),
+        Slot::at(3)
     );
     assert_eq!(
-        adapt::<Ceiling>(Exact::between(2, 1, 10), Dither::UNUSED),
-        3
+        adapt::<Ceiling>(
+            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
+            Dither::UNUSED
+        ),
+        Slot::at(-2)
+    );
+    assert_eq!(
+        adapt::<Ceiling>(
+            Exact::between(Slot::at(2), Fraction::of(1, 10)),
+            Dither::UNUSED
+        ),
+        Slot::at(3)
     );
 
     // The shipped nearest-not-to-even mode is nearest and takes the negative tie
     // away from zero, which is MATLAB's Round rather than its Nearest.
-    assert_eq!(adapt::<Away>(Exact::between(2, 1, 10), Dither::UNUSED), 2);
-    assert_eq!(adapt::<Away>(Exact::between(2, 1, 2), Dither::UNUSED), 3);
-    assert_eq!(adapt::<Away>(Exact::between(-3, 1, 2), Dither::UNUSED), -3);
+    assert_eq!(
+        adapt::<Away>(
+            Exact::between(Slot::at(2), Fraction::of(1, 10)),
+            Dither::UNUSED
+        ),
+        Slot::at(2)
+    );
+    assert_eq!(
+        adapt::<Away>(
+            Exact::between(Slot::at(2), Fraction::of(1, 2)),
+            Dither::UNUSED
+        ),
+        Slot::at(3)
+    );
+    assert_eq!(
+        adapt::<Away>(
+            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
+            Dither::UNUSED
+        ),
+        Slot::at(-3)
+    );
 
     // And the even mode is nearest and takes the positive tie down.
-    assert_eq!(adapt::<Even>(Exact::between(2, 1, 2), Dither::UNUSED), 2);
-    assert_eq!(adapt::<Even>(Exact::between(-3, 1, 2), Dither::UNUSED), -2);
+    assert_eq!(
+        adapt::<Even>(
+            Exact::between(Slot::at(2), Fraction::of(1, 2)),
+            Dither::UNUSED
+        ),
+        Slot::at(2)
+    );
+    assert_eq!(
+        adapt::<Even>(
+            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
+            Dither::UNUSED
+        ),
+        Slot::at(-2)
+    );
 }
 
 /// The bound above is reached, so the comparison may not become strict.
