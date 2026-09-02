@@ -1573,3 +1573,27 @@ defect = "K1 failed on the first run and the committed first output is kept. The
 standing = "sound"
 note = "Built because a sentence in the file it belongs to said the contextual formulation would 'very likely' subsume the transfer branch, which is a hunch offered where a result was checkable in an afternoon. The value is as much in what it did not find: nothing is reclassified, so the reformulation buys tidiness rather than reach, and that is a reason to leave a clause under signature alone rather than a reason to replace it."
 keywords = ["contextual equivalence", "completeness", "transfer", "model width", "polymorphic witness", "conservative", "reformulation", "clause 9", "exactly filled", "lazy projection"]
+
+[[probe]]
+id = "the_identity_predicate_swept_against_an_enumeration"
+establishes = "Over 23800 coordinate tuples, the shipped `has_additive_identity` disagrees with an enumeration of the representable set on 7375 of them, every one a phase that is a whole multiple of the quantum. So the property is decided by the phase being an integer multiple rather than by its being nonzero."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::240_probes::q2_the_two_repairs_swept.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::240_probes::q2_output.txt::1",
+]
+control = "Three, all stated in the header before the run and all three fired. A mutant of the repair testing only `PHASE_NUM == 0`, which is the shipped predicate, had to be reported as differing from the enumeration, or the sweep never reaches a format where the two can differ. A mutant of the second repair comparing only step and count had to differ from enumerated equality, or the pool holds no two grids at one step and count with different offsets. And the pool had to contain at least one equal pair and one unequal, or the equality decision answers one way regardless of input."
+standing = "sound"
+reproduced = "The diagnosis, not the sweep, is independently reached by `the_shipped_crate_admits_a_whole_step_phase`, which links against the real crate rather than modelling the coordinates. The two share no instrument."
+keywords = ["phase", "additive identity", "sweep", "enumeration", "whole multiple", "quantum", "mutant", "coordinate space"]
+
+[[probe]]
+id = "the_shipped_crate_admits_a_whole_step_phase"
+establishes = "Compiled against `arvo-format` itself, a biased format whose phase is one whole quantum has zero on its grid and `has_additive_identity` returns false for it. Separately, the half-step-biased format at a quantum above one carries the value one, which the superseded claim said such a grid cannot."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::237_probes::p2_the_shipped_crate_admits_the_counterexample.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::237_probes::p2_output.txt::1",
+]
+control = "A phase-zero format from the same inventory is run as the third arm, so a result reporting no identity everywhere would be visible rather than read as the finding. Two further controls are asserted in the output: that the two biased formats disagree about carrying one, and that neither of them has an additive identity, which is what distinguishes the half-step geometry from the whole-step one."
+standing = "sound"
+reproduced = "Reached independently by `the_identity_predicate_swept_against_an_enumeration`, which models the coordinate space rather than linking the crate, so the two instruments share nothing but the conclusion."
+keywords = ["phase", "additive identity", "biased", "whole step", "half step", "shipped crate", "counterexample", "value one"]

@@ -1,0 +1,10 @@
+slots in the range                      : 64
+slots the shipped predicate admits      : 64
+arm A, fixed-radius intervals nameable  : 64
+arm B, general intervals on the grid    : 2080
+unnameable by one affine slot           : 2016
+
+CONTROL, radius 0: points on the grid   : 64
+CONTROL gap (must be 0)                 : 0
+
+FINDING: arm A compiles. A fixed-radius interval is a `Format` with no amendment to the ratified parameterisation: the centre is the one affine slot and the radius is a constant of the type, which is what the identity clause asks for. Arm B does not: one slot index names 64 of the 2080 intervals the grid carries, and the remaining 2016 have no coordinate. Admitting them needs the affine predicate to become vector-valued, which is an amendment to a ratified clause, and the same ratified clause says an instance joins by supplying the concept's obligations RATHER THAN by amending the canon. So general set-valued carriers are refused by the canon's own admission rule, and fixed-radius ones are admitted by construction.

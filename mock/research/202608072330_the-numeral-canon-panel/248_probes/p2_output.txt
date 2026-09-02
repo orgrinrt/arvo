@@ -1,0 +1,27 @@
+== C1 control: a consolidation must land after what it compresses ==
+  65 added at 1786253345   74 added at 1786262734
+  PASS C1 74 is later than 65
+
+== C2 control: a nonexistent file ==
+  PASS C2 reports MISSING rather than a number
+
+== the two multi-arrival rows p1 found that reach two authors ==
+  65_knuth_number_systems_derived_cold           66_dolan_number_systems_derived_cold            gap=76s  under an hour apart: the later one could read the earlier
+  76_willsey_derived_laws_derived_cold           77_amin_derived_laws_derived_cold               gap=33s  under an hour apart: the later one could read the earlier
+
+== every other cold pair the corpus names, as the population C3 needs ==
+  09_persona_checkpoint                          10_lattner_fresh_eyes_on_the_container_derivation  gap=1569s  under an hour apart: the later one could read the earlier
+  65_knuth_number_systems_derived_cold           74_giesen_consolidation_the_number_system_concept  gap=9389s  over an hour apart
+  109_bellard_the_primitive_derived_cold         110_willsey_the_primitive_derived_cold          gap=1393s  under an hour apart: the later one could read the earlier
+  125_knuth_rounding_cold_derivation             126_wronski_what_rounding_actually_selects      gap=503s  under an hour apart: the later one could read the earlier
+  65_knuth_number_systems_derived_cold           126_wronski_what_rounding_actually_selects      gap=485464s  over an hour apart
+
+== C3 control: the gaps are not constant ==
+  distinct gap values observed: 7
+  PASS C3 the instrument discriminates
+
+== what this establishes ==
+  A cold pair whose two files land minutes apart has no MECHANICAL
+  independence evidence: at the moment the second landed, the first was
+  already in the tree and readable. Blindness then rests on the members'
+  own coverage statements, which is what the corpus already says.

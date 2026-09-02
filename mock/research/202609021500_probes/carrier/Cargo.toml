@@ -1,0 +1,27 @@
+# The carrier mutation arm.
+#
+# Two copies of the shipped `slots.rs`, side by side in one crate. One is
+# verbatim. The other differs in exactly one thing that is not a design choice:
+# the machine type a slot index is carried in, `i64` becoming `i128`, with the
+# two numeric literals that were written from that type moved with it.
+#
+# If the admitted set is a fact about what a number system is, the two copies
+# admit the same declarations. If it is a fact about a carrier, they do not.
+[workspace]
+
+[package]
+name = "q31-carrier"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+
+[[bin]]
+name = "c1_mutant_shipped_admits_63"
+path = "arms/c1_mutant_shipped_admits_63.rs"
+
+[[bin]]
+name = "c2_mutant_mutated_refuses_63"
+path = "arms/c2_mutant_mutated_refuses_63.rs"

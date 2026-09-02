@@ -6,9 +6,9 @@
 //! The overflow policy: what happens outside the representable range.
 //!
 //! Open, unlike the rounding vocabulary. Three members ship and another joins by
-//! supplying the obligations, because nothing ratified closed this one.
+//! supplying the obligations, because nothing has closed this one.
 //!
-//! **A panic is not a member and cannot be.** The ratified factoring requires the
+//! **A panic is not a member and cannot be.** The factoring requires the
 //! adaptation to be total, and a panic diverges, so it is not a total map onto the
 //! representable set. The canon reaches the same bound from the other side: the
 //! panic is a debug-build behaviour, and what stands in its place on release is a

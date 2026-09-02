@@ -22,9 +22,10 @@
 //! that, and carrying one made a per-preset compile-time item keyed on the
 //! preset, which is nearer the behaviour table the canon forbids than prose is.
 //!
-//! Which overflow mode each preset names is not written here. That question is
-//! open in the registry, and filling it inside a design is how an open question
-//! gets closed where nobody can see it happen.
+//! Each preset's `Adaptation` is a carried default rather than a settled answer.
+//! `question::does_warm_wrap_or_clamp` is open in the registry and disputes at
+//! least the `Warm` cell; the other three carry the same unproven status. Each
+//! impl below is marked `// FIXME:` at the declaration for exactly this reason.
 
 use arvo_format::Adaptation;
 use arvo_placement::{Objective, ObjectiveKind};
@@ -83,6 +84,9 @@ pub mod presets {
     /// has set it.
     pub struct Hot;
 
+    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
+    // No overflow_policy/rounding row disputes this specific cell yet; treat it
+    // as unproven the same as the other three until one settles it.
     impl Strategy for Hot {
         type Objective = objective::Access;
         type Adaptation = Adapt<TowardZero, Wrap>;
@@ -98,6 +102,9 @@ pub mod presets {
     /// renamed or resized.
     pub struct Cold;
 
+    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
+    // No overflow_policy/rounding row disputes this specific cell yet; treat it
+    // as unproven the same as the other three until one settles it.
     impl Strategy for Cold {
         type Objective = objective::Footprint;
         type Adaptation = Adapt<TowardZero, Wrap>;
@@ -108,10 +115,13 @@ pub mod presets {
     /// Sacrifices as much performance and efficiency as makes sense to reach the
     /// most precise answer, throwing out both the speed and the footprint
     /// optimisations, and especially within chains rather than only per
-    /// operation. Its objective had no measurement in the panel and that gap is
+    /// operation. Its objective has no measurement behind it yet, and that gap is
     /// recorded rather than papered over.
     pub struct Precise;
 
+    // FIXME: Adapt<HalfEven, Saturate> is a carried default rather than a settled value.
+    // No overflow_policy/rounding row disputes this specific cell yet; treat it
+    // as unproven the same as the other three until one settles it.
     impl Strategy for Precise {
         type Objective = objective::Access;
         type Adaptation = Adapt<HalfEven, Saturate>;
@@ -126,6 +136,9 @@ pub mod presets {
     /// worse choice.
     pub struct Warm;
 
+    // FIXME: Adapt<HalfEven, Wrap> is a carried default rather than a settled
+    // value. question::does_warm_wrap_or_clamp is open in the registry and
+    // disputes this cell. Do not read it as settled until that question resolves.
     impl Strategy for Warm {
         type Objective = objective::Access;
         type Adaptation = Adapt<HalfEven, Wrap>;

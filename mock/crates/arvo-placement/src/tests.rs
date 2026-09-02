@@ -12,6 +12,12 @@
 //! design states an independence in both directions and this crate's single
 //! packing rule exhibits one of them, so the honest state is the assertion
 //! standing and failing rather than an assertion narrowed until it passes.
+//!
+//! Every format under the laws here is one of the four `arvo-format` ships, which
+//! is the other narrowness the design names. `the_open_inventory` declares one
+//! this crate writes itself, in a file the bare-primitive lints read.
+
+mod the_open_inventory;
 
 use crate::objective;
 use crate::{

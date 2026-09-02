@@ -6,8 +6,7 @@
 //! The rounding mode: what happens between grid points.
 //!
 //! Six names and no more. This is the one closed enumeration in the design, and
-//! it is closed because a ratification closed it rather than because six felt
-//! like enough.
+//! it is closed by the design rather than because six felt like enough.
 //!
 //! The retired word is absent on purpose, both of its spellings. On a signed
 //! domain it named two operations that genuinely differ, so a reader coming from
@@ -20,7 +19,7 @@
 ///
 /// Closed: the six below are the whole of it. An implementor outside this crate
 /// is not a seventh mode, it is a mode this crate does not know about, and the
-/// vocabulary is ratified rather than extensible.
+/// vocabulary is closed rather than extensible.
 pub trait Rounding {
     /// Which of the six, as a value a const predicate can gate on.
     const MODE: Mode;

@@ -1,0 +1,28 @@
+== section 1: the repaired additive-identity predicate, swept ==
+
+   pool: 23800 coordinate tuples
+   oracle says zero is a member on 8175 rows and not on 15625
+   the repaired predicate differs from the oracle on 0 rows
+   the shipped predicate differs from the oracle on 7375 rows
+
+   controls hold: the oracle answers both ways, and the mutant is caught.
+   first witness against the shipped predicate: Coords { radix: 2, base: -2, slope: 0, magnitudes: 1, min: -8, max: 7, phase_num: -7, phase_den: 1 }
+
+   REPAIR ONE HOLDS over the swept space.
+
+== section 2: denotation equality over the constant-quantum family ==
+
+   pool: 378 constant-family tuples
+   ordered pairs: 142884
+   the oracle calls 1206 equal and 141678 unequal
+   the decision procedure differs from the oracle on 0 pairs
+   the offset-dropping mutant differs on 19698 pairs
+
+   controls hold.
+   REPAIR TWO HOLDS over the swept space: three comparisons decide it.
+
+   378 distinct coordinate tuples denote 163 distinct sets.
+   So 215 tuples are a second name for a set another tuple already names.
+
+== verdict ==
+   repairs that failed: 0

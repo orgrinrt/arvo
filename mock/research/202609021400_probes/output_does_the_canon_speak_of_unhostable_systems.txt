@@ -1,0 +1,60 @@
+==============================================================
+ 1. The ratification chain the argument rests on
+==============================================================
+ruling::the_format_spine_is_canon rung  : ratified
+what it ratifies:
+[a_format_is_identified_by_its_ambient_domain_and_its_representable_set](PROPOSAL.md#a-format-is-identified-by-its-ambient-domain-and-its-representable-set)
+[membership_of_the_representable_set_is_one_affine_predicate](PROPOSAL.md#membership-of-the-representable-set-is-one-affine-predicate)
+[arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation](PROPOSAL.md#arithmetic-on-a-format-factors-as-an-adaptation-of-an-exact-operation)
+[the_concept_is_closed_and_the_inventory_is_open](PROPOSAL.md#the-concept-is-closed-and-the-inventory-is-open)
+
+==============================================================
+ 2. Does a ratified sentence quantify over an ambient domain?
+==============================================================
+-- proposal::arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation
+Arithmetic on a format is an exact operation in an ambient domain composed with a named, total adaptation onto the representable set. The adaptation is a first-class object with its own laws; an operation that fuses one invisibly is an operation and an adaptation point wearing one name, and the model's statements apply to it only when the two are separated.
+
+-- proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+A format is identified by its ambient domain and its representable set. The representable set is a constant of the type: a value set that depends on other data is not a format but storage. Adaptation choice and encoding are realisation, observable in computed values and in pattern-level properties respectively, and not part of identity.
+
+==============================================================
+ 3. What values does the canon's own ambient_domain axis take?
+==============================================================
+`ambient domain = <domain>`, `ambient domain in {<set>}`, or `ambient domain any`. Values name a domain: the integers, the rationals, the reals, a finite ring.
+
+-- and what a live committed predicate actually writes there:
+mock/registry/dimension.toml:213:grammar = "`ambient domain = <domain>`, `ambient domain in {<set>}`, or `ambient domain any`. Values name a domain: the integers, the rationals, the reals, a finite ring."
+mock/registry/proposal.toml:2196:  "ambient_domain: ambient domain in {the rationals, the rationals at radix ten}",
+
+==============================================================
+ 4. Is 'the rationals' a system arvo can host?
+==============================================================
+-- ruling::the_operating_constraints_are_intents_and_rules
+   rung : in_force
+The long-standing constraints are very explicitly arvo intents and rules: no std, no alloc, const sizes with no runtime growth, monomorphisation as the dispatch with no dyn and no TypeId, no platform dependency, and public API positions using the stack's own primitives rather than bare integers, floats, bool or usize. They are already in place, enforced by the mockspace lints and the workspace and repo rules, and they are not to be questioned.
+
+   An exact rational needs unbounded terms, so a representable set equal to
+   the rationals needs runtime growth. The row above forbids it and is in
+   force. So the rationals are named by the canon and are not hostable.
+
+==============================================================
+ 5. Q31 option one's stated cost, against the row above
+==============================================================
+One word, folding the residue clauses into the concept, which makes the concept exclude unbounded exact rationals as a matter of mathematics, which is false, and makes every hosting clause conditional on unratified constraints inside a sentence about arithmetic., Two words, at the cost of two admission passages and a reader told which is which at every use., Two words with the second scoped to a target, composing with target-indexed families, at the same cost plus a quantifier over compilations.
+
+   Option one prices itself on 'unratified constraints'. Section 4 shows
+   the constraints carry rung in_force, and the row's own words are that
+   they are 'not to be questioned'. The price is stale.
+
+==============================================================
+ 6. NEGATIVE CONTROL: a domain the canon does not name
+==============================================================
+  'the surreals' : 0 hit(s) across the registry
+  'the hyperreals' : 0 hit(s) across the registry
+  'the p-adics' : 0 hit(s) across the registry
+-- POSITIVE CONTROL, the same instrument on a domain it should find:
+  'the rationals' : 2 hit(s) across the registry
+  'the reals' : 2 hit(s) across the registry
+
+If the negative rows are zero and the positive rows are not, the zeroes in
+this file are facts about the registry rather than about the grep.

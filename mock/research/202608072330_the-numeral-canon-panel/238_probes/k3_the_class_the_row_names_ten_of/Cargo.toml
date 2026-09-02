@@ -1,0 +1,19 @@
+# How wide the class is that the question's ten associated constants belong to.
+#
+# The row names ten because ten is where the reporter looked. The rule is
+# position-scoped, so the class is every public position in the introducing
+# crate, and this counts it with the instrument that enforces it rather than
+# with a grep of my own.
+#
+# Its own `[workspace]` table, so cargo does not walk up into `mock/`.
+[package]
+name = "k3_the_class_the_row_names_ten_of"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+mockspace-lint-rules = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", rev = "f34cc1b0c87becd8230d46d807ebb3573e30c009" }

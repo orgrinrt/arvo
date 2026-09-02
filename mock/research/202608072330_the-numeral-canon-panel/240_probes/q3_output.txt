@@ -1,0 +1,114 @@
+== section 1: does the union of shells denote a float set ==
+
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 2, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 3, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 4, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 5, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 1 ==  p 6, span 1   (|set| = 3)
+   symmetric slots MATCH ieee: mantissa 2, exponents 2 ==  p 2, span 2   (|set| = 5)
+   symmetric slots MATCH ieee: mantissa 2, exponents 3 ==  p 2, span 3   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 2, exponents 4 ==  p 2, span 4   (|set| = 9)
+   symmetric slots MATCH ieee: mantissa 2, exponents 5 ==  p 2, span 5   (|set| = 11)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 3, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 4, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 5, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 1 ==  p 6, span 2   (|set| = 7)
+   symmetric slots MATCH ieee: mantissa 3, exponents 2 ==  p 3, span 3   (|set| = 11)
+   symmetric slots MATCH ieee: mantissa 3, exponents 3 ==  p 3, span 4   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 3, exponents 4 ==  p 3, span 5   (|set| = 19)
+   symmetric slots MATCH ieee: mantissa 3, exponents 5 ==  p 3, span 6   (|set| = 23)
+   symmetric slots MATCH ieee: mantissa 4, exponents 1 ==  p 4, span 3   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 4, exponents 1 ==  p 5, span 3   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 4, exponents 1 ==  p 6, span 3   (|set| = 15)
+   symmetric slots MATCH ieee: mantissa 4, exponents 2 ==  p 4, span 4   (|set| = 23)
+   symmetric slots MATCH ieee: mantissa 4, exponents 3 ==  p 4, span 5   (|set| = 31)
+   symmetric slots MATCH ieee: mantissa 4, exponents 4 ==  p 4, span 6   (|set| = 39)
+   symmetric slots MATCH ieee: mantissa 4, exponents 5 ==  p 4, span 7   (|set| = 47)
+   symmetric slots MATCH ieee: mantissa 5, exponents 1 ==  p 5, span 4   (|set| = 31)
+   symmetric slots MATCH ieee: mantissa 5, exponents 1 ==  p 6, span 4   (|set| = 31)
+   symmetric slots MATCH ieee: mantissa 5, exponents 2 ==  p 5, span 5   (|set| = 47)
+   symmetric slots MATCH ieee: mantissa 5, exponents 3 ==  p 5, span 6   (|set| = 63)
+   symmetric slots MATCH ieee: mantissa 5, exponents 4 ==  p 5, span 7   (|set| = 79)
+   symmetric slots MATCH ieee: mantissa 5, exponents 5 ==  p 5, span 8   (|set| = 95)
+
+   1080 comparisons, 0 called equal, 1080 unequal
+   exact matches with two's-complement slots: 0; with a symmetric slot range: 30
+
+   worked witness, mantissa 3, exponents 3, against p = 3, span 4:
+     union, two's-complement slots [-4, 3] : [-16, -12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12]
+     union, symmetric slots      [-3, 3] : [-12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12]
+     ieee generic_format p=3 span=4       : [-12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12]
+     union(two's complement) == ieee : false
+     union(symmetric)        == ieee : true
+     in the union and not in ieee : [-16]
+     in ieee and not in the union : []
+
+   FINDING: the union reproduces the float set exactly, subnormals included,
+   when the slot range is symmetric, and never when it is two's complement.
+   `Floating` uses `Signed<MANTISSA>`, whose range is two's complement, so no
+   instantiation of the shipped point denotes an IEEE binary set.
+
+== section 2: the knee ==
+
+   symmetric union, mantissa 3, exponents 4
+   members : [-24, -16, -12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12, 16, 24]
+   gaps    : [8, 4, 4, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 4, 4, 8]
+   the smallest gap is 1 and its longest run has length 8
+   That run is the constant-quantum region a float's canonical exponent needs a
+   `max` clamp to produce. Here it falls out of the shell at magnitude zero covering
+   every value below the next shell's reach, with no clamp anywhere in the law.
+
+== section 3: which gap profiles are reachable ==
+
+   240 coordinate tuples swept
+   distinct ladder verdicts reachable: {None, Some(1), Some(2), Some(3), Some(4), Some(8)}
+   tuples whose gaps are NOT one geometric ladder: 93
+   the first few, with their coordinates and their distinct gaps:
+     radix 2, slope 3, magnitudes 2, slots [-4, 3] -> gaps [1, 4, 5, 8]
+     radix 2, slope 3, magnitudes 2, slots [-3, 3] -> gaps [1, 5, 8]
+     radix 2, slope 3, magnitudes 3, slots [-4, 3] -> gaps [1, 4, 5, 8, 32, 40, 64]
+     radix 2, slope 3, magnitudes 3, slots [-3, 3] -> gaps [1, 5, 8, 40, 64]
+     radix 2, slope 3, magnitudes 4, slots [-4, 3] -> gaps [1, 4, 5, 8, 32, 40, 64, 256, 320, 512]
+     radix 2, slope 3, magnitudes 4, slots [-3, 3] -> gaps [1, 5, 8, 40, 64, 320, 512]
+     radix 3, slope 1, magnitudes 2, slots [-4, 3] -> gaps [1, 2, 3]
+     radix 3, slope 1, magnitudes 2, slots [0, 7] -> gaps [1, 2, 3]
+
+   control A, a float, must be one ladder: gaps [1, 2, 4, 8], verdict Some(2)
+   control B, a tapered ladder built by hand, must NOT be one ladder:
+     members [-87, -23, -15, -7, -5, -3, -2, -1, 0, 1, 2, 3, 5, 7, 15, 23, 87]
+     gaps [1, 2, 8, 64], verdict None
+
+   both controls hold.
+
+   93 tuples denote a set that is not one ladder; the reach claim
+   is refuted and the shapes should be read off the list above.
+
+== section 4: is a tapered set reachable at all ==
+
+   Section 3 refuted the claim that every reachable set is one ladder, so the
+   reach question has to be asked directly rather than through the ladder shape.
+   A target is a set; the question is whether any coordinate tuple denotes it.
+
+   control, a float target, exponents [0, 1, 2]:
+     members [-12, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 12]
+     reached by Some((2, 1, 3, -3, 3))
+
+   target A, a taper, exponents [0, 1, 3]:
+     members [-24, -16, -8, -6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6, 8, 16, 24]
+     reached by None
+
+   target B, a taper, exponents [0, 2, 3]:
+     members [-24, -16, -12, -8, -4, -3, -2, -1, 0, 1, 2, 3, 4, 8, 12, 16, 24]
+     reached by None
+
+   control holds: the float target is reached.
+
+   FINDING: neither tapered target is denoted by any coordinate tuple in the
+   search space. The exponent sequence a format denotes is an arithmetic
+   progression, because the law is affine in the magnitude, so a shell ladder
+   whose exponents are not equally spaced has no coordinates. That is the exact
+   sense in which a tapered numeral is outside this parameterisation, and it is
+   narrower than the gap-shape claim section 3 refuted.
+
+== verdict ==
+   findings: 2

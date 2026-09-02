@@ -1,0 +1,29 @@
+== C1 and the reference case: R3's own pair ==
+  238/239     BLIND by R3's test: mutually non-ancestral
+  PASS C1 the instrument detects the pair the corpus already certified
+
+== C2: R3's own two hashes, against R3's own sentence ==
+  PASS C2 2ff7ae29 is not an ancestor of 176ced90, exactly as R3 states
+
+== C3 and C4: the predicate is neither always-true nor always-false ==
+  PASS C3 a commit is an ancestor of itself
+  PASS C4 the panel's first commit is an ancestor of HEAD
+
+== every cold pair a two_experts standing in this corpus rests on ==
+  65_/66_     NOT BLIND: 65_ is an ancestor of 66_, so the later seat's git log reached it
+  76_/77_     NOT BLIND: 76_ is an ancestor of 77_, so the later seat's git log reached it
+  109/110     NOT BLIND: 109 is an ancestor of 110, so the later seat's git log reached it
+  125/126     NOT BLIND: 126 is an ancestor of 125, so the later seat's git log reached it
+
+== what this establishes, and what it does not ==
+  Establishes: under the instrument the corpus's only expert-ratified
+  promotion used to certify blindness, none of the four cold pairs is blind.
+  Each was committed sequentially into one branch, so the later seat's
+  `git log` reached the earlier seat's file.
+
+  Does NOT establish that any of those seats read the other. Sequential
+  commitment into a shared clone is what the panel did before the
+  worktree-per-seat discipline, and a seat may have had its context sealed
+  regardless of what its branch could show it. What is measured is that
+  blindness there is ASSERTED and not CHECKABLE, which is precisely the
+  distinction R3 draws about itself.

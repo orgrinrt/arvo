@@ -1,0 +1,47 @@
+== controls ==
+  planted concept arm -> CONCEPT
+  planted hosting arm -> HOSTING
+
+== the four ADMITTED blocks ==
+-- ambient.rs : 1 assertion(s)
+   CONCEPT          );     }; 
+-- format.rs : 1 assertion(s)
+   CONCEPT          );     }; 
+-- quantum.rs : 2 assertion(s)
+   CONCEPT          );         
+   CONCEPT          );     }; 
+-- slots.rs : 5 assertion(s)
+   CONCEPT          );         
+   CONCEPT          );         
+   HOSTING          );         // In `i128`, so the obligation cannot overflow wh
+   HOSTING          );         
+   HOSTING          );     }; 
+
+== totals, recounted outside the subshell ==
+  assertions total : 9
+  CONCEPT          : 6
+  HOSTING          : 3
+
+RESULT: the obligations are two kinds of condition under one word.
+
+--- WITHDRAWN, and kept as the audit trail of a wrong instrument -----------------
+Two cells are wrong and both were found by reading the source against the output:
+
+  quantum.rs assertion 2 reported CONCEPT and is HOSTING. The bound it enforces
+  is `reach >= i32::MIN && reach <= i32::MAX`, which lives inside the helper
+  `reach_is_representable` at quantum.rs:196-204 and therefore never appears in
+  the assertion text the regex saw. The classifier reads one level and the bound
+  is one level down.
+
+  slots.rs assertion 5 reported HOSTING and is CONCEPT. Its expression carries
+  `i128` casts, which the pattern matches, but the casts are there so the
+  obligation cannot overflow while checking; the bound being enforced is
+  `MAX - MIN < 1 << WIDTH`, a coherence condition between two declared
+  coordinates with no machine limit in it. The classifier cannot tell a bound
+  from a cast taken for safety.
+
+The two errors happen to cancel in the total (6 CONCEPT / 3 HOSTING is the right
+count for the wrong reasons), which is exactly why the count alone would have
+been believed. Superseded by `an_admitted_refusal_that_denotes_a_number_system.sh`,
+which decides the same question by exhibiting the refused candidate instead of
+matching on text.

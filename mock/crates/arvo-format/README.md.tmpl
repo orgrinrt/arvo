@@ -30,6 +30,10 @@ operation is a function of the width you declared, never of whatever the value h
 the way that is kept true is that this crate does not depend on the crate that has containers in it.
 Where the bits actually go is `arvo-placement`.
 
+Every coordinate a format is declared with carries a type of its own, a radix, an exponent, a slot, a
+phase and so on, rather than a host integer, so a numeral declared in some other crate is written in
+the same types as the ones shipped here and is not a second-class member of the inventory.
+
 `no_std`, no allocation, and everything a type knows is known at compile time.
 
 ## Status

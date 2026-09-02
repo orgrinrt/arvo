@@ -1,0 +1,19 @@
+error[E0080]: evaluation panicked: a quantum law over no magnitudes describes no values, so it is not a step law
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<NoMagnitudes as arvo_format::Quantum>::ADMITTED` failed here
+  |
+ ::: src/quantum.rs
+  |
+  | /         assert!(
+  | |             ranges_over_a_magnitude(Self::MAGNITUDES),
+  | |             "a quantum law over no magnitudes describes no values, so it is not a step law"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/quantum.rs
+  |
+  |     let () = Q::ADMITTED;
+  |              ^^^^^^^^^^^

@@ -1,0 +1,5 @@
+Zero (phase 0, constant)                    true
+HalfStep (phase 1/2, constant)              false
+WholeOutOfReach (phase 4, Indexed+Signed<2>) true
+FractionalBecomesWhole (phase 1/2, slope -1) true
+control: cutting the magnitude range to one takes both back to false
