@@ -1,0 +1,10 @@
+=== carrier c2_mutant_mutated_refuses_63
+   Compiling q31-carrier v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/research/202609021500_probes/carrier)
+error[E0080]: evaluation panicked: assertion failed: !q31_carrier::verdict::MUTATED_ADMITS_63
+ --> arms/c2_mutant_mutated_refuses_63.rs:5:19
+  |
+5 |     const _: () = assert!(!q31_carrier::verdict::MUTATED_ADMITS_63);
+  |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `main::_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `q31-carrier` (bin "c2_mutant_mutated_refuses_63") due to 1 previous error

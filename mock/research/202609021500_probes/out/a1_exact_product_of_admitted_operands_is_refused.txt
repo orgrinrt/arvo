@@ -1,0 +1,33 @@
+=== a1_exact_product_of_admitted_operands_is_refused
+--- cargo build --bin a1_exact_product_of_admitted_operands_is_refused
+   Compiling q31-probes v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/research/202609021500_probes)
+error[E0080]: evaluation panicked: declared width is wider than a slot index carries; the count of slots is 2^width and 2^63 does not fit a signed 64-bit integer
+   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<q31_probes::Grid<-4611686016279904256, 4611686018427387904, 63> as arvo_format::Slots>::ADMITTED` failed here
+    |
+   ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/crates/arvo-format/src/slots.rs:219:9
+    |
+219 | /         assert!(
+220 | |             Self::WIDTH.count() <= 62,
+221 | |             "declared width is wider than a slot index carries; the count of slots is 2^width and \
+222 | |              2^63 does not fit a signed 64-bit integer"
+223 | |         );
+    | |_________- in this macro invocation
+
+note: erroneous constant encountered
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/crates/arvo-format/src/slots.rs:324:14
+    |
+324 |     let () = S::ADMITTED;
+    |              ^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn declared_slot_width::<Grid<-4611686016279904256, 4611686018427387904, 63>>`
+  --> arms/a1_exact_product_of_admitted_operands_is_refused.rs:29:13
+   |
+29 |     let _ = declared_slot_width::<ExactProduct>();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `q31-probes` (bin "a1_exact_product_of_admitted_operands_is_refused") due to 1 previous error
+--- exit: 101

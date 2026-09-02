@@ -1,0 +1,2 @@
+=== invariance @ msp430-none-elf (-Z build-std=core)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s

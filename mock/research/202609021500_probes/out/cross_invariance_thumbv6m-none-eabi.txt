@@ -1,0 +1,2 @@
+=== invariance @ thumbv6m-none-eabi
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s

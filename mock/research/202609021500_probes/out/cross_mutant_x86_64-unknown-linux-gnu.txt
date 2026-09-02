@@ -1,0 +1,10 @@
+=== mutant @ x86_64-unknown-linux-gnu
+   Compiling q31-cross-mutant v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/research/202609021500_probes/cross/mutant)
+error[E0080]: evaluation panicked: assertion failed: is_admissible::<Grid<-4611686018427387904, 4611686018427387903, 63>>().get()
+  --> src/lib.rs:11:15
+   |
+11 | const _: () = assert!(is_admissible::<Grid<-4611686018427387904, 4611686018427387903, 63>>().get());
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `q31-cross-mutant` (lib) due to 1 previous error
