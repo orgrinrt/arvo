@@ -1,0 +1,126 @@
+## 1. dev tip
+9dbbb65b8ebc898d2221e8345832cbeb67249455
+
+## 2. is dev already contained in each branch, and what is left
+origin/fix/obligation-coverage-reads-the-rung-and-follows-ratifies
+   merge-base: 9dbbb65b8ebc898d2221e8345832cbeb67249455
+   dev is an ancestor: YES
+   net files differing from dev: 4
+origin/fix/the-release-surface
+   merge-base: 9dbbb65b8ebc898d2221e8345832cbeb67249455
+   dev is an ancestor: YES
+   net files differing from dev: 1
+origin/fix/the-write-hook-excepts-what-the-canon-excepts
+   merge-base: 9dbbb65b8ebc898d2221e8345832cbeb67249455
+   dev is an ancestor: YES
+   net files differing from dev: 5
+origin/feat/the-standards-alias-and-what-it-refutes
+   merge-base: da2f9d23ee5048e175bf3053d9b543b902c02797
+   dev is an ancestor: NO
+   net files differing from dev: 369
+
+## 3. the whole remaining delta of the three fix branches
+--- origin/fix/obligation-coverage-reads-the-rung-and-follows-ratifies
+ .../238_probes/k2_can_width_carry_the_ten/Cargo.lock                    | 2 +-
+ .../241_probes/set_valued_carriers_need_a_second_slot/Cargo.lock        | 2 +-
+ .../242_probes/admission/Cargo.lock                                     | 2 +-
+ .../242_probes/resolution_has_no_second_arm/Cargo.lock                  | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+--- origin/fix/the-release-surface
+ docs/DESIGN.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+--- origin/fix/the-write-hook-excepts-what-the-canon-excepts
+ docs/PRINCIPLES.md                                                      | 2 +-
+ .../238_probes/k2_can_width_carry_the_ten/Cargo.lock                    | 2 +-
+ .../241_probes/set_valued_carriers_need_a_second_slot/Cargo.lock        | 2 +-
+ .../242_probes/admission/Cargo.lock                                     | 2 +-
+ .../242_probes/resolution_has_no_second_arm/Cargo.lock                  | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+## 4. arvo-format's real version, which the probe lockfiles disagree with
+  crate manifest: version.workspace = true
+  workspace:      version = "0.0.0"
+  dev lockfile:   version = "0.1.0"
+  b90 lockfile:   version = "0.0.0"
+
+## 5. PR89: what the branch has that dev lacks, by status
+  11 A
+ 318 D
+  39 M
+   1 R069
+  files only on the branch:
+    docs/DIMENSION.md
+    docs/LAW.md
+    docs/OBLIGATION.md
+    docs/PROBE.md
+    docs/PROPOSAL.md
+    docs/QUESTION.md
+    docs/RETIREMENT.md
+    docs/RULING.md
+    docs/STRATEGY.md
+    docs/TOPIC.md
+    mock/crates/arvo-format/src/tests/identity.rs
+
+## 6. PR89: the one test fn on the branch and not on dev
+  branch fns:       27
+  dev fns:          35
+  on branch, absent from dev:
+    a_fractional_phase_that_becomes_whole_higher_up_keeps_the_identity
+
+## 7. PR89: that test's three assertions, located on dev
+  [Shrinking<2>, Signed<8>, 1, 2]
+    mock/crates/arvo-format/src/tests/the_identity.rs:143:    has_additive_identity::<Grid<BinaryRationals, Shrinking<2>, Signed<8>, 1, 2>>();
+    mock/crates/arvo-format/src/tests/the_identity.rs:213:        "shrinking, half phase" => Grid<BinaryRationals, Shrinking<2>, Signed<8>, 1, 2>,
+    mock/crates/arvo-format/src/tests/the_identity.rs:512:    type WholeHigherUp = Grid<BinaryRationals, Shrinking<2>, Signed<8>, 1, 2>;
+  [cutting the magnitude range to one]
+    mock/crates/arvo-format/src/tests/the_identity/the_magnitude_range.rs:54:    // magnitude: cutting the magnitude range to one takes the identity away while
+    mock/crates/arvo-format/src/tests/the_identity/the_magnitude_range.rs:63:        "cutting the magnitude range to one did not take the identity back"
+    mock/crates/arvo-format/src/tests/the_identity/the_magnitude_range.rs:108:        "cutting the magnitude range to one did not take the identity back"
+  [Shrinking<40>, Signed<62>, 1, 3]
+    mock/crates/arvo-format/src/tests/the_identity.rs:145:    has_additive_identity::<Grid<BinaryRationals, Shrinking<40>, Signed<62>, 1, 3>>();
+    mock/crates/arvo-format/src/tests/the_identity/the_magnitude_range.rs:113:    type NeverWhole = Grid<BinaryRationals, Shrinking<40>, Signed<62>, 1, 3>;
+
+## 8. PR89: the merge does not compute cleanly
+  exit=1
+  conflicts: 10
+    CONFLICT (content): Merge conflict in docs/DESIGN.md
+    CONFLICT (content): Merge conflict in docs/FORMAT.md
+    CONFLICT (modify/delete): docs/STRATEGY.md deleted in origin/dev and modified in origin/feat/the-standards-alias-and-what-it-refutes.  Version origin/feat/the-standards-alias-and-what-it-refutes of docs/STRATEGY.md left in tree.
+    CONFLICT (content): Merge conflict in mock/crates/arvo-format/DESIGN.md.tmpl
+    CONFLICT (add/add): Merge conflict in mock/crates/arvo-format/src/standards.rs
+    CONFLICT (content): Merge conflict in mock/crates/arvo-format/tests/compile_fail.rs
+    CONFLICT (add/add): Merge conflict in mock/crates/arvo-format/tests/matlab_fi_parity.rs
+    CONFLICT (add/add): Merge conflict in mock/crates/arvo-format/tests/ui/word_length_past_the_ladder.rs
+    CONFLICT (add/add): Merge conflict in mock/crates/arvo-format/tests/ui/word_length_past_the_ladder.stderr
+    CONFLICT (add/add): Merge conflict in mock/research/sketches/the-standards-alias-refusal/Cargo.lock
+
+## 9. PR89 would put host primitives back on arvo-format's public trait consts
+    -    const BASE: Exponent = Exponent::of(-F);
+    +    const BASE: i32 = -F;
+    -    const SLOPE: Exponent = Exponent::ZERO;
+    -    const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
+    +    const SLOPE: i32 = 0;
+    +    const MAGNITUDES: u32 = 1;
+    -    const PHASE: Phase = Phase::ZERO;
+    +    const PHASE_NUM: i64 = 0;
+    +    const PHASE_DEN: i64 = 1;
+    -    const PHASE: Phase = Phase::ZERO;
+    +    const PHASE_NUM: i64 = 0;
+    +    const PHASE_DEN: i64 = 1;
+  dev carries the lint that refuses exactly this:
+    mock/lints/a_contract_coordinate_is_not_a_host_primitive.rs
+
+## 10. bylines, adverts and em-dashes, with the positive control
+  fix/obligation-coverage-reads-the-rung-and-follows-ratifies: coauth=0 genwith=0 emdash=0 robot=0
+  fix/the-release-surface: coauth=0 genwith=0 emdash=0 robot=0
+  fix/the-write-hook-excepts-what-the-canon-excepts: coauth=0 genwith=0 emdash=0 robot=0
+  feat/the-standards-alias-and-what-it-refutes: coauth=0 genwith=0 emdash=0 robot=0
+  POSITIVE CONTROL, same greps over all of dev's history (must be non-zero):
+    coauth=2 emdash=256
+
+## 11. commit subjects past 72 characters
+    fix/obligation-coverage-reads-the-rung-and-follows-ratifies len=77: fix: assert the strongest edge over both walk orders, and narrow three claims
+    fix/the-release-surface len=82: docs: the shipped comments stop saying who decided, and the version stops claiming
+    feat/the-standards-alias-and-what-it-refutes len=73: test: pin that the parity bound is reached, and name it for what it holds
+    feat/the-standards-alias-and-what-it-refutes len=76: docs: name the industrial conventions on the readme, and lock the doc window
+    feat/the-standards-alias-and-what-it-refutes len=76: docs: put the conventions beside the points, where Format can be implemented
