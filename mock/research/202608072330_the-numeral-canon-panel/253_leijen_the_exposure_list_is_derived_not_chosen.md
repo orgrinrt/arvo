@@ -21,8 +21,8 @@ for it costs a declaration nothing can constrain.
 
 That is one instance. Under
 `ruling::two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate`
-a second independent reading is owed before anything here binds, and section 12
-says what a second reader should attack first.
+a second independent reading is owed before anything here binds. Section 13's
+last paragraph says what a second reader should attack first.
 
 ## 0. Gates
 
