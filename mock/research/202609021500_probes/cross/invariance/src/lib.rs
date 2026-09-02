@@ -15,10 +15,12 @@ use q31_probes::Grid;
 
 // The boundary, both sides of it.
 const _: () = assert!(is_admissible::<Grid<-2305843009213693952, 2305843009213693951, 62>>().get());
-const _: () = assert!(!is_admissible::<Grid<-4611686018427387904, 4611686018427387903, 63>>().get());
+const _: () =
+    assert!(!is_admissible::<Grid<-4611686018427387904, 4611686018427387903, 63>>().get());
 
 // The exact-product range from arm 1, refused here too and on every target.
-const _: () = assert!(!is_admissible::<Grid<-4611686016279904256, 4611686018427387904, 63>>().get());
+const _: () =
+    assert!(!is_admissible::<Grid<-4611686016279904256, 4611686018427387904, 63>>().get());
 
 // The whole shipped set, counted rather than sampled.
 const _: () = assert!(ADMITTED_WIDTHS.len() == 62);

@@ -230,8 +230,7 @@ pub trait Slots {
             "slot range spans more indices than a count can carry, so counting it would overflow"
         );
         assert!(
-            (Self::MAX.index()) - (Self::MIN.index())
-                < (1i128 << Self::WIDTH.count()),
+            (Self::MAX.index()) - (Self::MIN.index()) < (1i128 << Self::WIDTH.count()),
             "the declared width does not cover the range: the range holds more indices than the \
              width can address"
         );

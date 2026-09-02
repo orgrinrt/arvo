@@ -51,13 +51,25 @@ pub const fn exact_product_bounds(bits: u32) -> (i128, i128) {
     let c = hi * lo;
     let d = hi * hi;
     let mut min = a;
-    if b < min { min = b; }
-    if c < min { min = c; }
-    if d < min { min = d; }
+    if b < min {
+        min = b;
+    }
+    if c < min {
+        min = c;
+    }
+    if d < min {
+        min = d;
+    }
     let mut max = a;
-    if b > max { max = b; }
-    if c > max { max = c; }
-    if d > max { max = d; }
+    if b > max {
+        max = b;
+    }
+    if c > max {
+        max = c;
+    }
+    if d > max {
+        max = d;
+    }
     (min, max)
 }
 

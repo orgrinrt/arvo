@@ -32,12 +32,10 @@ pub mod verdict {
     }
 
     /// The shipped carrier refuses it.
-    pub const SHIPPED_ADMITS_63: bool =
-        crate::shipped::is_admissible::<ShippedGrid63>().get();
+    pub const SHIPPED_ADMITS_63: bool = crate::shipped::is_admissible::<ShippedGrid63>().get();
 
     /// The wider carrier admits it.
-    pub const MUTATED_ADMITS_63: bool =
-        crate::mutated::is_admissible::<MutatedGrid63>().get();
+    pub const MUTATED_ADMITS_63: bool = crate::mutated::is_admissible::<MutatedGrid63>().get();
 
     // The finding, as two const assertions that cannot both hold if the admitted
     // set is a fact about grids rather than about a carrier.
@@ -134,21 +132,41 @@ pub mod classify {
     const _: () = assert!(trips(widened(W_INVERTED.0, W_INVERTED.1, W_INVERTED.2), 0));
 
     // Assertion 2, the zero width. Invariant.
-    const _: () = assert!(trips(shipped(W_ZERO_WIDTH.0, W_ZERO_WIDTH.1, W_ZERO_WIDTH.2), 1));
-    const _: () = assert!(trips(widened(W_ZERO_WIDTH.0, W_ZERO_WIDTH.1, W_ZERO_WIDTH.2), 1));
+    const _: () = assert!(trips(
+        shipped(W_ZERO_WIDTH.0, W_ZERO_WIDTH.1, W_ZERO_WIDTH.2),
+        1
+    ));
+    const _: () = assert!(trips(
+        widened(W_ZERO_WIDTH.0, W_ZERO_WIDTH.1, W_ZERO_WIDTH.2),
+        1
+    ));
 
     // Assertion 3, the ladder bound. Trips under the shipped carrier and not
     // under the widened one: it moves, so it is about the machine.
-    const _: () = assert!(trips(shipped(W_PAST_LADDER.0, W_PAST_LADDER.1, W_PAST_LADDER.2), 2));
-    const _: () = assert!(!trips(widened(W_PAST_LADDER.0, W_PAST_LADDER.1, W_PAST_LADDER.2), 2));
+    const _: () = assert!(trips(
+        shipped(W_PAST_LADDER.0, W_PAST_LADDER.1, W_PAST_LADDER.2),
+        2
+    ));
+    const _: () = assert!(!trips(
+        widened(W_PAST_LADDER.0, W_PAST_LADDER.1, W_PAST_LADDER.2),
+        2
+    ));
 
     // Assertion 5, the width not covering the range. Invariant.
     const _: () = assert!(trips(
-        shipped(W_WIDTH_DOES_NOT_COVER.0, W_WIDTH_DOES_NOT_COVER.1, W_WIDTH_DOES_NOT_COVER.2),
+        shipped(
+            W_WIDTH_DOES_NOT_COVER.0,
+            W_WIDTH_DOES_NOT_COVER.1,
+            W_WIDTH_DOES_NOT_COVER.2
+        ),
         4
     ));
     const _: () = assert!(trips(
-        widened(W_WIDTH_DOES_NOT_COVER.0, W_WIDTH_DOES_NOT_COVER.1, W_WIDTH_DOES_NOT_COVER.2),
+        widened(
+            W_WIDTH_DOES_NOT_COVER.0,
+            W_WIDTH_DOES_NOT_COVER.1,
+            W_WIDTH_DOES_NOT_COVER.2
+        ),
         4
     ));
 
