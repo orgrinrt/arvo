@@ -1,0 +1,10 @@
+probe: can the exact product of two admitted operands be written down?
+tool:  rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+It encodes no expectation. What each arm was for is in its own header and
+its file name; what is printed is the exit code that came back.
+
+e1_the_exact_product_of_admitted_operands_is_inexpressible     exit=101
+    error: literal out of range for `i64`
+    error: could not compile `q31-carrier-dependence` (bin "e1_the_exact_product_of_admitted_operands_is_inexpressible") due to 1 previous error
+e2_control_the_same_product_at_eight_bits_is_expressible       exit=0
