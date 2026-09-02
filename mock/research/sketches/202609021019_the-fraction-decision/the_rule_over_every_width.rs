@@ -140,7 +140,12 @@ struct Row {
     worst_at: (i64, i64),
 }
 
-fn run(width: u32, arm_name: &'static str, arm: fn(i64, i64, i64) -> (i64, i64), search: bool) -> Row {
+fn run(
+    width: u32,
+    arm_name: &'static str,
+    arm: fn(i64, i64, i64) -> (i64, i64),
+    search: bool,
+) -> Row {
     let min = -(1i64 << (width - 1));
     let max = (1i64 << (width - 1)) - 1;
     let bound = max as i128;
@@ -217,7 +222,10 @@ fn main() {
             }
         }
         println!("   W = {width:>2}: disagreements {disagreements}");
-        assert_eq!(disagreements, 0, "the derived family is not the searched one at W = {width}");
+        assert_eq!(
+            disagreements, 0,
+            "the derived family is not the searched one at W = {width}"
+        );
     }
     // the control: a family that is deliberately wrong has to disagree
     let (min, max) = (-8i64, 7i64);
@@ -277,9 +285,15 @@ fn main() {
     println!("2. the claims about the nearest arm, asserted at every width");
     for width in [3u32, 4, 5, 6, 7, 8, 12, 16] {
         let r = run(width, "nearest", nearest, width <= 8);
-        assert_eq!(r.den_violations, 0, "W = {width}: a non-positive denominator");
+        assert_eq!(
+            r.den_violations, 0,
+            "W = {width}: a non-positive denominator"
+        );
         assert_eq!(r.sign_flips, 0, "W = {width}: a sign flip");
-        assert_eq!(r.inexact_where_exact_exists, 0, "W = {width}: lost an exact answer");
+        assert_eq!(
+            r.inexact_where_exact_exists, 0,
+            "W = {width}: lost an exact answer"
+        );
         assert_eq!(r.bound_breaches, 0, "W = {width}: breached 1/MAX");
     }
     println!("   positive denominator, sign preserved, exact where an exact exists,");
@@ -288,9 +302,20 @@ fn main() {
     println!("\n3. the same claims against the shipped arm, which has to fail them");
     for width in [3u32, 4, 8, 16] {
         let r = run(width, "shipped", shipped, width <= 8);
-        assert_eq!(r.den_violations, 0, "W = {width}: the shipped arm does hold this one");
-        assert!(r.sign_flips > 0, "W = {}: the sign check cannot be failing", width);
-        assert!(r.bound_breaches > 0, "W = {}: the bound check cannot be failing", width);
+        assert_eq!(
+            r.den_violations, 0,
+            "W = {width}: the shipped arm does hold this one"
+        );
+        assert!(
+            r.sign_flips > 0,
+            "W = {}: the sign check cannot be failing",
+            width
+        );
+        assert!(
+            r.bound_breaches > 0,
+            "W = {}: the bound check cannot be failing",
+            width
+        );
         println!(
             "   W = {width:>2}: {} sign flips, {} breaches of 1/MAX",
             r.sign_flips, r.bound_breaches

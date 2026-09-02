@@ -283,7 +283,13 @@ fn main() {
     println!("0. the oracle, checked against three answers whose verdict is known");
     let cases: [((i64, i64), i64, i64, u128, &str); 3] = [
         ((-3, 7), 3, -7, 0, "exact, sign moved"),
-        ((3, 1), 3, -7, 24, "the shipped answer on a pair it does normalise"),
+        (
+            (3, 1),
+            3,
+            -7,
+            24,
+            "the shipped answer on a pair it does normalise",
+        ),
         ((1, 2), 1, 2, 0, "the identity"),
     ];
     for (r, n, d, expect, what) in cases {
@@ -375,7 +381,10 @@ fn main() {
     println!("5. the nearest arm's bound, stated and checked");
     let bound = i64::MAX as u128;
     for (name, arm) in [
-        ("nearest representable", nearest as fn(i64, i64) -> (i64, i64)),
+        (
+            "nearest representable",
+            nearest as fn(i64, i64) -> (i64, i64),
+        ),
         ("shipped", shipped as fn(i64, i64) -> (i64, i64)),
     ] {
         let mut breaches = 0usize;
@@ -455,14 +464,26 @@ fn main() {
     }
     // the numbers the exhaustive probe printed, transcribed so a drift in either
     // file shows up here
-    for (w, lost, flips) in [(3u32, 4u128, 10u128), (4, 10, 22), (8, 190, 382), (16, 49150, 98302)] {
+    for (w, lost, flips) in [
+        (3u32, 4u128, 10u128),
+        (4, 10, 22),
+        (8, 190, 382),
+        (16, 49150, 98302),
+    ] {
         assert_eq!(lost_an_exact(w), lost, "closed form disagrees at W = {w}");
         assert_eq!(sign_flips(w), flips, "closed form disagrees at W = {w}");
         println!("   W = {w:>2}: lost an exact {lost}, sign flips {flips}  (both match the exhaustive run)");
     }
-    println!("   W = 64: lost an exact {}, sign flips {}", lost_an_exact(64), sign_flips(64));
-    println!("   of 2^128 pairs, so the families are {} and {} of the input space",
-        lost_an_exact(64), sign_flips(64));
+    println!(
+        "   W = 64: lost an exact {}, sign flips {}",
+        lost_an_exact(64),
+        sign_flips(64)
+    );
+    println!(
+        "   of 2^128 pairs, so the families are {} and {} of the input space",
+        lost_an_exact(64),
+        sign_flips(64)
+    );
 
     // --- 8. the two places `Exact` does its own arithmetic in i64 -------------
     //
@@ -496,5 +517,8 @@ fn main() {
     }
     println!("   the same check with a carry of zero: {zero_carry_overflows}  (the control)");
     assert_eq!(zero_carry_overflows, 0);
-    assert!(carry_overflows > 0, "the carry check cannot be detecting anything");
+    assert!(
+        carry_overflows > 0,
+        "the carry check cannot be detecting anything"
+    );
 }
