@@ -26,9 +26,9 @@
 // Run: `refused_candidates.sh`.
 
 use arvo_format::ambient::{is_admissible_ambient, Ambient, Radix};
+use arvo_format::slots::Slot;
 use arvo_format::slots::{is_admissible, Slots};
 use arvo_format::width::{Bool, Width};
-use arvo_format::slots::Slot;
 
 // ---- pair A: the concept kind -------------------------------------------------
 
@@ -69,13 +69,28 @@ impl Slots for Sixty2 {
 
 fn main() {
     println!("== pair A, the concept kind ==");
-    println!("  radix 1 admitted as an ambient domain : {}", is_admissible_ambient::<Unary>().get());
-    println!("  radix 2 admitted as an ambient domain : {}", is_admissible_ambient::<Binary>().get());
-    println!("  the crate's own BinaryRationals       : {}", is_admissible_ambient::<BinaryRationals>().get());
+    println!(
+        "  radix 1 admitted as an ambient domain : {}",
+        is_admissible_ambient::<Unary>().get()
+    );
+    println!(
+        "  radix 2 admitted as an ambient domain : {}",
+        is_admissible_ambient::<Binary>().get()
+    );
+    println!(
+        "  the crate's own BinaryRationals       : {}",
+        is_admissible_ambient::<BinaryRationals>().get()
+    );
 
     println!("== pair B, the hosting kind ==");
-    println!("  63-bit slot range admitted            : {}", is_admissible::<Sixty3>().get());
-    println!("  62-bit slot range admitted            : {}", is_admissible::<Sixty2>().get());
+    println!(
+        "  63-bit slot range admitted            : {}",
+        is_admissible::<Sixty3>().get()
+    );
+    println!(
+        "  62-bit slot range admitted            : {}",
+        is_admissible::<Sixty2>().get()
+    );
 
     println!();
     println!("== what the two refusals are about ==");

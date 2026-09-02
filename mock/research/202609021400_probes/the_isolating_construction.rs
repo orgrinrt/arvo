@@ -58,7 +58,10 @@ fn main() {
 
     // What the pasted test would assert.
     let would_pass = !sixty_three && sixty_two;
-    println!("  the missing assertion (!63 && 62) : {}", if would_pass { "PASSES" } else { "FAILS" });
+    println!(
+        "  the missing assertion (!63 && 62) : {}",
+        if would_pass { "PASSES" } else { "FAILS" }
+    );
     println!();
     println!("  Run against the crate as it stands, this passes. Run against the");
     println!("  mutant with the width clause deleted, `sixty_three` becomes true");
