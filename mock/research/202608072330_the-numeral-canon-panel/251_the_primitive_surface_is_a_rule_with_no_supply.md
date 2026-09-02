@@ -490,3 +490,28 @@ Arvo has a ratified rule forbidding bare primitives at public API positions, no 
 what may go there instead, and nothing in the tree that holds a number; the five rows describe that
 one hole four times in the consumers' vocabulary and once in the wrong ledger, and the canon's own
 closed-concept clause says three of the five were never canon questions at all.
+
+## 10. Addendum, committed after the blind file: the locus claim against every unmerged branch
+
+Section 3.3 says the primitive belongs in a crate that does not exist, and section 3.1 counts what the
+three crates ship. Both are claims about a corpus, so both name a ref or they say nothing.
+
+**My base is `origin/dev` at `2ca4bc9a`**, and everything in sections 1 to 9 is measured there.
+
+An unmerged branch could falsify it, so I checked the one whose name says it would:
+`origin/feat/the-primitives-a-consumer-names`. `git merge-base --is-ancestor` reports it is not in
+`dev`, and `git ls-tree` over `mock/crates/` on that branch returns the same three members,
+`arvo-format`, `arvo-placement`, `arvo-strategy`. **So the claim holds on that ref too**, and the
+branch name is about naming rather than about a new crate.
+
+**One instrument lied to me while I was doing that and I nearly took it.** `git merge-base
+--is-ancestor A B` exits 1 for "not an ancestor" and also for a ref that does not resolve, and the
+`git rev-parse --short A B` I ran beside it failed with `fatal: Needed a single revision`. Reading
+those together, the honest first conclusion is that `origin/dev` does not resolve in this worktree and
+the ancestry answer is void. It does resolve; `--short` takes one revision and not two. The exit code
+was a real answer and the error next to it was mine, which is the reverse of the usual case and is why
+it is written down.
+
+I did not sweep the other 30-odd remote branches. Naming that as the residue: a crate could exist on a
+branch whose name does not suggest it, and the claim is bounded to `origin/dev` at `2ca4bc9a` plus the
+one branch above.
