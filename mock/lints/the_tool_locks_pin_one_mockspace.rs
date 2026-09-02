@@ -76,7 +76,10 @@ fn revision_in(lock: &str) -> Option<String> {
             named = line == format!("name = \"{PACKAGE}\"");
         } else if named && line.starts_with("source = ") {
             return line.rsplit_once('#').map(|(_, rev)| {
-                rev.trim_end_matches('"').chars().take(7).collect::<String>()
+                rev.trim_end_matches('"')
+                    .chars()
+                    .take(7)
+                    .collect::<String>()
             });
         }
     }
@@ -216,7 +219,10 @@ mod tests {
         let f = check(d.path());
         assert_eq!(f.len(), 1, "one finding for the whole disagreement: {f:?}");
         let m = &f[0].message;
-        assert!(m.contains("2 different revisions"), "the count is named: {m}");
+        assert!(
+            m.contains("2 different revisions"),
+            "the count is named: {m}"
+        );
         assert!(m.contains("alpha"), "the lagging tool is named: {m}");
         assert!(m.contains("beta"), "the other tool is named: {m}");
     }
@@ -262,7 +268,10 @@ mod tests {
     #[test]
     fn no_tools_at_all_passes() {
         let d = tools_dir(&[]);
-        assert!(check(d.path()).is_empty(), "an empty tools directory pins nothing");
+        assert!(
+            check(d.path()).is_empty(),
+            "an empty tools directory pins nothing"
+        );
     }
 
     #[test]
@@ -318,10 +327,7 @@ mod tests {
              version = \"0.1.0\"\n\
              source = \"git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#{A}\"\n"
         );
-        let d = tools_dir(&[
-            ("alpha", Some(two_deps)),
-            ("beta", Some(lock_at(A))),
-        ]);
+        let d = tools_dir(&[("alpha", Some(two_deps)), ("beta", Some(lock_at(A)))]);
         assert!(
             check(d.path()).is_empty(),
             "the other dependency's revision was read as this package's"
