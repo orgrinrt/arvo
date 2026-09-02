@@ -47,9 +47,18 @@ edition = "2024"
 license = "MPL-2.0"
 
 [workspace.dependencies]
-notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const", "try_trait_v2"] }
-arvo-format = { path = "crates/arvo-format" }
-arvo-placement = { path = "crates/arvo-placement" }
+# Every dependency here carries a version alongside its git or path, and the two
+# do different jobs: cargo resolves through the git url or the path locally, and
+# a registry reads the version. A registry refuses a dependency that carries no
+# version at all, so without these the crates build here and cannot be
+# published, and `cargo deny` reports the missing requirement as a wildcard on
+# every publishable crate that pulls one in.
+#
+# notko's is its own, from `notko/mock/Cargo.toml`. The two arvo ones match
+# `workspace.package.version` above and move with it.
+notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false, features = ["const", "try_trait_v2"] }
+arvo-format = { path = "crates/arvo-format", version = "0.0.0" }
+arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 
 # Incremental compilation is off here, deliberately.
 #
