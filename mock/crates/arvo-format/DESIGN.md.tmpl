@@ -682,10 +682,10 @@ and by `adapt`, which is where a value is put back on the grid.
 verb is ever asked about is refused nowhere, which follows from an associated const being evaluated at
 its use rather than at its definition, and no forcing site can close it. Two routes reach a value
 without meeting it: reading a coordinate off the impl, and `contains`, which is this crate's own
-spelling of the membership predicate. `contains` is not a route that forces nothing, and saying so
-was wrong: it is `magnitude_in_range::<F::Quantum>(magnitude).and(slot_in_range::<F::Slots>(slot))`,
-so it forces the quantum's obligation and the slot range's. What it never reaches is the format's own
-and the ambient's, which are the two this section is about.
+spelling of the membership predicate. `contains` carries no force site of its own: it is
+`magnitude_in_range::<F::Quantum>(magnitude).and(slot_in_range::<F::Slots>(slot))`, so it reaches the
+quantum's obligation and the slot range's through those two calls, and it reaches neither the format's
+own nor the ambient's, which are the two this section is about.
 
 **A third route passes a forcing site and defeats it there, which is a different thing and wants
 saying separately.** An implementor writing an empty `ADMITTED` over the default is not missing the
@@ -694,9 +694,9 @@ imposes nothing. So the guarantee over those verbs holds for an implementor that
 place, and an implementor is free not to. Closing the first two routes would need a verb that forces;
 closing this one needs the obligation to be something an implementor cannot write over.
 
-**Whether the design closes those routes is open and is this tier's to settle**, since the canon does
-not choose the shape a law takes. What is settled is that the sentence names its extension: an
-obligation reaches what asks for it.
+**Whether the design closes those routes is open**, since the canon does not choose the shape a law
+takes. What is settled is that the sentence names its extension: an obligation reaches what asks for
+it.
 
 The refusal reaches implementors this crate cannot see, which is what makes it a check on the concept
 rather than on the two shapes shipped with it.
@@ -746,9 +746,17 @@ the sentence the trait's own documentation already carried as a request.
 grid, so the phase coordinate does not denote and the predicate has nothing to be asked about.
 
 **Each fires for the same reason and with the same limit**: a const, so it is evaluated at the verbs
-that ask for it and at no other. The verbs differ per obligation and the sets are disjoint from the
-slot range's, so the guarantee is over each obligation's own set rather than over one shared set. The
-section above names which they are and which routes reach a value without meeting one.
+that ask for it and at no other. Asking for it means carrying the force site rather than reaching one
+through a call, and the distinction is what makes the sets comparable at all. A set counted
+transitively is a property of the declaration as well as the verb, since `has_additive_identity`
+returns early when `cancelling_slot` answers `Isnt`, and so reaches the slot range's obligation for
+one format and not for another.
+
+**Under that reading the format's obligation is forced at two verbs, `cancelling_slot` and
+`has_additive_identity`, and a verb belongs to as many sets as it has force sites.** Each of those two
+carries a second site on the adjacent line, the ambient's and the quantum's respectively, so the sets
+overlap by construction and the relation between them is not disjointness. What a guarantee is over is
+its own set of verbs, and the section above names the routes that reach a value without meeting one.
 
 **So the predicates stay total anyway**, and this is the half that does not depend on where the
 obligations fire. Every function here has a defined answer for a declaration that violates one: an
