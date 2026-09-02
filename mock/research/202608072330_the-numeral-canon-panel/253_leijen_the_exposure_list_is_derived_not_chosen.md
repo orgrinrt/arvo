@@ -195,15 +195,15 @@ the reading behind it, so I built the instrument that would refute it:
 The refutation would be a governing sentence whose subject is a candidate and
 which reads a reduction, an adaptation, a verdict, an encoding or a law
 inventory. The census is exhaustive over the governing set, stated so the scope
-is checkable: every `ruling` at `rung = "ratified"` (31) and every `proposal` at
-`standing = "two_experts"` (23), fifty-four rows. The pattern is deliberately
-broad, five words, and it returns twelve hits.
+is checkable: every `ruling` at `rung = "ratified"` (32) and every `proposal` at
+`standing = "two_experts"` (23), fifty-five rows. The pattern is deliberately
+broad, five words matched against the `says` field, and it returns eleven hits.
 
-**Zero of twelve refutes.** The classification is in
+**Zero of eleven refutes.** The classification is in
 `253_probes/what_a_canon_sentence_reads_of_a_candidate/classification.md`, row by
 row over the complete list rather than a sample. Every hit has as its subject an
-operation, a reduction, a law, an accumulator, the concept itself, or something
-unrelated. Three are worth naming here:
+operation, a reduction, a law, an accumulator, or the concept itself. Three are
+worth naming here:
 
 - **`proposal::absorption_decides_associativity_of_a_clamped_reduction`** and
   **`ruling::the_additive_and_absorption_verdicts_are_canon`** are verdict
@@ -219,10 +219,24 @@ unrelated. Three are worth naming here:
 
 **The control fires.** A planted row carrying exactly the refuting sentence is
 extracted and flagged by the same pipeline, so the zero is a fact about the
-corpus rather than about the grep. **One false positive is disclosed** in the
-classification: the first hit matches on its `id` rather than its `says`, because
-the extractor emits both on one line. It changes no count and a reader tightening
-the instrument should anchor the pattern.
+corpus rather than about the grep.
+
+**Two defects in my first version of this instrument, disclosed rather than
+quietly fixed, because both are the kind a census hides.**
+
+- **It lost one row.** Paragraph-mode `awk` over a TOML file loses any row whose
+  `quote` block contains a blank line, because the half carrying `rung` then
+  carries no `id`. One ratified row went that way,
+  `warms_objective_is_the_intuitive_best_choice`, and the census read 54 where
+  the registry holds 55. **The count control caught it**, cross-checking against
+  a plain `grep` and against `cargo mock query`, and the extractor is now a state
+  machine over `[[table]]` headers. The lost row matches none of the five words,
+  so the conclusion never moved. **The completeness claim did, and completeness
+  is the whole of what this instrument is for.**
+- **It matched on the wrong field**, emitting `id<TAB>says` and grepping the
+  line, so one row was reported as a hit on its own slug. The pattern now matches
+  `says` alone and the count falls from twelve to eleven with no genuine hit
+  lost.
 
 ## 4. What each recorded option costs, and what each compiles to
 
@@ -696,7 +710,7 @@ files and changes no measured surface.
 
 - **No governing sentence has a candidate as its subject while reading a
   reduction, an adaptation, a verdict, an encoding or a law inventory.** Registry
-  claim, exhaustive over 54 rows, 31 ratified rulings and 23 two-expert
+  claim, exhaustive over 55 rows, 32 ratified rulings and 23 two-expert
   proposals, with a planted-row control that is flagged. Tree at `fb6c843f`,
   `threads: threads = 1`. Evidence:
   `253_probes/what_a_canon_sentence_reads_of_a_candidate/`.
@@ -906,7 +920,7 @@ proposals in full; `the_adaptation_slot_is_derived_and_a_strategy_selects_a_memb
 `admission_returns_a_coordinate_rather_than_a_verdict`;
 `law::rounding_retraction_is_the_identity` and
 `law::coherence_of_a_reduction_onto_its_induced_operation`; the `id` list of
-`obligation.toml` and of `dimension.toml`; and the `says` field of all 54 rows in
+`obligation.toml` and of `dimension.toml`; and the `says` field of all 55 rows in
 the census set.
 
 **Read from source:** `arvo-format/src/{ambient,quantum,slots,format,adapt,width}.rs`

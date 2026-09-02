@@ -1,6 +1,6 @@
-# Classification of the twelve hits
+# Classification of the eleven hits
 
-The census in `output.txt` is exhaustive over 54 governing rows (31 ratified
+The census in `output.txt` is exhaustive over 55 governing rows (32 ratified
 rulings, 23 two-expert proposals) and the pattern is broad on purpose. The
 classification below is mine, by reading, and it is over the complete list rather
 than a sample, so it can be checked row by row.
@@ -12,7 +12,6 @@ candidate to expose is fixed by the ratified identity clause.
 
 | row | subject of the sentence | reads something outside identity? | refutes? |
 |---|---|---|---|
-| `adaptation_is_conditional_on_proof_and_on_soundness` | arvo's multi-threadability | no. The hit is on the **id**, not the statement, which says "multi-threadable" and nothing else | no |
 | `the_format_spine_is_canon` | the format concept | its adaptation clause is about **arithmetic on** a format, and its identity clause puts adaptation and encoding outside identity by name | no, it is the claim's own source |
 | `behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` | an operation, and the footprint observation | "arithmetic and encoding are stated over the declared width" is about where behaviour is stated | no |
 | `the_additive_and_absorption_verdicts_are_canon` | a reduction's induced operation | yes, a verdict, and its subject is the reduction | no |
@@ -25,17 +24,31 @@ candidate to expose is fixed by the ratified identity clause.
 | `an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit` | an accumulator width for a fold | no | no |
 | `the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion` | an accumulator width for a fold | no | no |
 
-**Zero of twelve refutes.** Every hit has as its subject an operation, a
-reduction, a law, an accumulator, the concept itself, or something unrelated. Not
-one has a candidate as its subject while reading a reduction, an adaptation, a
-verdict or a law inventory.
+**Zero of eleven refutes.** Every hit has as its subject an operation, a
+reduction, a law, an accumulator, or the concept itself. Not one has a candidate
+as its subject while reading a reduction, an adaptation, a verdict or a law
+inventory.
 
-**One false positive is worth naming**, because it is a defect in the instrument
-rather than a result: the first row matches on its `id` rather than on its
-`says`, since the extractor emits `id<TAB>says` on one line. It does not change
-the count of genuine hits, and a reader tightening the instrument should anchor
-the pattern to the `says` field.
+## Two defects in the first version of this instrument, disclosed
 
-**The control fires**: a planted row carrying exactly the refuting sentence is
-extracted and flagged by the same pipeline, so the zero above is a fact about the
+Both were caught by the controls rather than by reading, which is the argument
+for having built them.
+
+**It lost one row.** The first extractor used `awk` paragraph mode, and one
+ratified row, `warms_objective_is_the_intuitive_best_choice`, carries a `quote`
+block with a blank line inside it. That splits the row into two paragraphs, and
+the half carrying `rung = "ratified"` carries no `id`, so the row vanished. The
+census read 54 where the registry holds 55. **The count control is what caught
+it**, and the extractor is now a state machine over `[[table]]` headers with the
+count cross-checked against a plain `grep`. The lost row's statement matches none
+of the five words, so the conclusion never moved; the completeness claim did.
+
+**It matched on the wrong field.** The first version emitted `id<TAB>says` and
+grepped the whole line, so `adaptation_is_conditional_on_proof_and_on_soundness`
+was reported as a hit on its own slug while its statement says only that arvo is
+multi-threadable under two conditions. The pattern now matches the `says` field
+alone, and the hit count falls from twelve to eleven with no genuine hit lost.
+
+**The planted control fires** in both versions: a row carrying exactly the
+refuting sentence is extracted and flagged, so the zero is a fact about the
 corpus rather than about the grep.

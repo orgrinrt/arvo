@@ -1,29 +1,29 @@
 ======== the governing set
-rows in the governing set: 54
-  ratified rulings          : 31
-  two-expert proposals      : 23
+  ratified rulings     : 32
+  two-expert proposals : 23
+  rows in the set      : 55
 
-======== rows whose statement names something outside (ambient, representable set)
-pattern: reduction|adaptation|verdict|law inventory|encoding
-  8:adaptation_is_conditional_on_proof_and_on_soundness
-  20:the_format_spine_is_canon
-  21:behaviour_is_stated_per_declared_signature_and_the_premise_dissolves
-  23:the_additive_and_absorption_verdicts_are_canon
-  32:arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation
-  33:a_format_is_identified_by_its_ambient_domain_and_its_representable_set
-  34:membership_of_the_representable_set_is_one_affine_predicate
-  35:absorption_decides_associativity_of_a_clamped_reduction
-  40:the_model_band_transfer_is_defeated_in_both_fragments
-  41:inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width
-  47:an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit
-  48:the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion
-  count: 12
+-------- COUNT CONTROL: the same two counts from a second instrument
+  grep 'rung = "ratified"' in ruling.toml   : 32
+  grep 'standing = "two_experts"' in both   : 23
+  (if either disagrees with the counts above, the extractor is lossy)
+
+======== rows whose STATEMENT names something outside (ambient, representable set)
+pattern, matched against the says field only: reduction|adaptation|verdict|law inventory|encoding
+  the_format_spine_is_canon
+  behaviour_is_stated_per_declared_signature_and_the_premise_dissolves
+  the_additive_and_absorption_verdicts_are_canon
+  arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation
+  a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+  membership_of_the_representable_set_is_one_affine_predicate
+  absorption_decides_associativity_of_a_clamped_reduction
+  the_model_band_transfer_is_defeated_in_both_fragments
+  inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width
+  an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit
+  the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion
+  count: 11
 
 -------- their statements, in full, for classification by subject
-### adaptation_is_conditional_on_proof_and_on_soundness
-    "arvo is multi-threadable wherever that is proven to improve performance without sacrificing 
-    soundness. Two conditions, not one."
-
 ### the_format_spine_is_canon
     "Four propositions become canon together and they are the format topic's spine. A format is 
     identified by its ambient domain and its representable set, and that set is a constant of the 
@@ -103,7 +103,7 @@ pattern: reduction|adaptation|verdict|law inventory|encoding
     with a second growing rule-independent slack appearing at five. So any accumulator statement 
     derived from a capacity is an additive-only mechanism."
 
-======== CONTROL: a planted row carrying the sentence that would refute the claim
-planted row flagged by the same instrument:
-  planted_control_a_candidate_exposes_its_reductions_verdicts
-  (if this line is empty the census above proves nothing)
+======== PLANTED CONTROL: a row carrying the sentence that would refute the claim
+  planted row flagged by the same pipeline:
+    planted_control_a_candidate_exposes_its_reductions_verdicts
+  (if that line is empty the census above proves nothing)
