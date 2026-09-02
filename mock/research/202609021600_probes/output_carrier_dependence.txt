@@ -1,0 +1,37 @@
+probe: is a clause carrier-derived, or a literal somebody moved?
+tree:  ce18fda1
+tool:  rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+Legend: 1 admitted, 0 refused, by the shipped verdict functions.
+Rows that must never move: Grid8, WiderThanSpan (admitted), Inverted,
+WidthZero, SpanOverWidth, ZeroMagnitudes (refused), and the quantum rows
+under a slot arm, and the slot rows under an exponent arm.
+
+baseline (unmutated)         Grid63=0 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=0 ReachFits=1 Flat=1
+
+--- slot index carrier: i64 -> i128 ---
+slot NAIVE  (forced only)    Grid63=0 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=0 ReachFits=1 Flat=1
+slot FULL   (+ chosen)       Grid63=1 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=0 ReachFits=1 Flat=1
+
+--- the same slot bound, written as a computation over the carrier ---
+derived @ i64  (control)     Grid63=0 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=0 ReachFits=1 Flat=1
+derived @ i128 (one token)   Grid63=1 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=0 ReachFits=1 Flat=1
+
+--- exponent carrier: i32 -> i64 ---
+exp  NAIVE  (forced only)    Grid63=0 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=0 ReachFits=1 Flat=1
+exp  FULL   (+ chosen)       Grid63=0 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=1 ReachFits=1 Flat=1
+
+baseline again (restore)     Grid63=0 Grid62=1 Grid8=1 Inverted=0 WidthZero=0 WiderThanSpan=1 SpanOverWidth=0 ZeroMagnitudes=0 ReachPast=0 ReachFits=1 Flat=1
+
+The chosen edits, verbatim, and note that each COMPILES unchanged under the
+wider carrier, which is what makes it a choice rather than a consequence:
+  slots.rs  Self::WIDTH.count() <= 62      -> <= 126
+  slots.rs  < i64::MAX as i128             -> < i128::MAX
+  quantum.rs reach in [i32::MIN, i32::MAX] -> [i64::MIN, i64::MAX]
+
+  slots.rs restored
+  quantum.rs restored
+  apply.rs restored
+  format.rs restored
+  lib.rs restored
+  standards.rs restored

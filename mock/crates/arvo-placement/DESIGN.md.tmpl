@@ -16,12 +16,10 @@ citation of it.
 The derivation from a declared signature to a placement. A placement says where the bits sit. It says
 nothing about what any operation computes, and no operation in the design reads it.
 
-The crate exists because the floor made those two statements true at once, and they had been argued
-about as though only one could be:
-
-> every operation the design declares is a function of the declared width and never of the machine
-> carrier [...] The footprint is nonetheless observable, through exactly one observation the design
-> does not own, the host language's layout observation on a sized type
+The crate exists because two statements are true at once. Every operation the design declares is a
+function of the declared width and never of the machine carrier. And the footprint is nonetheless
+observable, through exactly one observation the design does not own, which is the host language's
+layout observation on a sized type.
 
 So the carrier is nameable, because otherwise the footprint is not observable and the footprint intent
 would denote nothing. And no operation reads it, because otherwise behaviour is stated over the

@@ -1,7 +1,7 @@
 # `arvo-format`: the declared signature
 
-**Canon this design declares.** `ruling::the_format_spine_is_canon` and the four propositions it
-ratifies, chiefly `proposal::membership_of_the_representable_set_is_one_affine_predicate` and
+**Canon this design declares.** `ruling::the_format_spine_is_canon` and the four propositions under
+it, chiefly `proposal::membership_of_the_representable_set_is_one_affine_predicate` and
 `proposal::arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation`.
 `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`.
 `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, for the admission
@@ -114,7 +114,7 @@ one name.
 So the crate names two independent coordinates of an adaptation.
 
 **The rounding mode**, which decides what happens between grid points. Six names, and this is the one
-closed enumeration in the design, closed because a ratification closed it:
+closed enumeration in the design, fixed at these six:
 
 `toward_zero`, `floor`, `ceil`, `half_up`, `half_even`, `stochastic`.
 
@@ -299,7 +299,7 @@ supplying coordinates that meet it and never writes it out.
 `Mode` and `Policy` are the two value enumerations a const predicate compares
 against, and `ALL_MODES` and `SHIPPED_POLICIES` are what a test sweeps so a law is
 asserted over the matrix rather than over a remembered subset. `Mode` is closed
-because a ratification closed the vocabulary at six; `Policy` is not.
+at six names; `Policy` is not.
 
 The membership predicate and its neighbours are free functions rather than trait
 methods, for the staging reason above: `contains`, `has_additive_identity`,
@@ -411,20 +411,29 @@ range is inclusive at both ends because the alternative is an error nobody can s
 in a const, and carrying both as one host integer is that worry with nothing done
 about it.
 
-**The phase is one coordinate and is now one const.** The parameterisation
-carries a phase, singular, and the crate carried a numerator and a denominator as
-two independent associated consts with the denominator's never-zero condition
-written in a doc comment where nothing enforced it. `Phase` carries the pair, its
-constructors cannot produce a zero denominator, and the condition is a property of
-the type rather than a sentence asking for one.
+**The phase is one coordinate and one const.** The parameterisation carries a phase, singular.
+`Phase` carries the numerator and the denominator as a pair rather than as one host integer, so the
+two halves never have to be unpacked in a const, and it carries the pair as it was written: nothing
+normalises the sign and nothing reduces the ratio, so a phase comes back exactly as it went in. Both
+questions asked of a phase, whether the ratio is a whole number and which whole number it is, are
+independent of the sign of the denominator, and no other reader consults it. The predicates below
+are total over the pair, the zero denominator that names no position included.
 
-**A zero denominator and a negative one are different questions.** A zero one names
-no value, so reading it as one loses nothing that existed. A negative one names a
-value exactly, so it moves its sign to the numerator and keeps the magnitude: `3`
-over `-7` is `-3` over `7`, not `3` over `1`. Two pairs stay whole-numbered because
-the exact form is not representable, a denominator of `i64::MIN` and a numerator of
-`i64::MIN` under a negative denominator, both of which would need a magnitude one
-past what the type carries.
+**So the phase's condition sits on the contract that reads it, not on its
+constructor.** A denominator of zero names no position on the grid, `Phase::denotes`
+is that predicate written over the coordinate, and `Format::ADMITTED` refuses it
+where the coordinates are declared together, which is the shape `Slots`, `Quantum`
+and `Ambient` already carry. An invariant a constructor can only hold by discarding
+a value it was handed is not an invariant worth holding there.
+
+**The ratio a position carries answers to a different reader, so it does
+normalise.** `Fraction` goes to `Exact`, which splits it with a euclidean division
+and keeps the remainder over the same denominator, and the `[0, 1)` reading that
+split produces is what lets the six rounding modes be stated once rather than once
+per sign. A negative denominator there stores a remainder that reads as negative, so
+the positive denominator is a property a reader depends on rather than a tidiness the
+phase could afford to drop. What that costs, and where it is paid, is under the
+applied map below.
 
 Each of these is `repr(transparent)` where it wraps one value, carries a private
 field, and has exactly one declared unwrap accessor, on the same reading as `Width`
@@ -473,6 +482,49 @@ The `Fraction` a caller hands `Exact::between` may be any ratio at all, and `Exa
 the slot, so a caller computing an exact result does not carry the remainder invariant. What `Exact`
 holds afterwards is in `[0, 1)`, which is what lets the rounding modes be stated once rather than once
 per sign.
+
+### The ratio coordinate is an adaptation too, one tier down
+
+The format spine describes an operation onto a representable set as an exact operation in the ambient
+domain composed with a named total adaptation, and it goes on to require the adaptation to be a
+first-class object with its own laws, so that an operation fusing one invisibly is an operation and
+an adaptation point wearing a single name.
+
+**The same shape recurs here, and it is a resemblance rather than an instance.** The exact operation
+is a ratio in the ambient rationals, the set is the pairs the coordinate carries with a positive
+denominator, and the constructor is the map between them. But `Fraction` is not a format, and
+`Fraction::of` is one `const fn` doing both halves, so there is no separated adaptation to name and
+what the spine says about a format's arithmetic does not carry over to it.
+
+So it has two regions, the same way the applied map below does, and for the same reason.
+
+| Region | What it does | When it applies |
+|---|---|---|
+| Exact normalisation | returns the pair as given where the denominator is already positive, and otherwise moves the sign to the numerator, cancelling the power of two the operands share where one of them is `i64::MIN` | an exact form exists inside the coordinate |
+| Magnitude saturation | the operand that would need `2^63` takes the largest the coordinate carries instead | it does not |
+
+Four properties hold over every pair, and they are what the constructor is:
+
+- The denominator is positive.
+- The sign of the answer is the sign of the ratio that was named.
+- The answer is exact wherever the coordinate admits an exact form.
+- Where it does not, the answer is within a relative `1 / i64::MAX` of the named ratio.
+
+**The second region is one condition, not a list of pairs.** One operand is `i64::MIN`, the
+denominator is negative, and the other operand is odd. An odd operand is what leaves nothing to
+cancel, and only then does the exact form need a magnitude one past the coordinate. Where the other
+operand is even the pair reduces and the answer is exact, so `of(i64::MIN, -2)` is `2^62` over one
+rather than a saturated approximation of it.
+
+**Saturation is the crate's own word and this is the same act.** `complete_slot` pins a slot leaving
+its range to the bound the declaration carries, and this pins a magnitude leaving the coordinate to
+the bound the width carries. Neither refuses, neither panics, and both are total.
+
+**A zero denominator is not one of the two regions.** It names no ratio, so there is nothing for an
+answer to be near and nothing lost by reading it as the zero position. That is the same reading the
+phase gives it, and the difference is only where the reading is enforced: the phase hands the
+question to `Format::ADMITTED` because a phase is declared once in a const, and a fraction is computed
+per position by a caller who has no contract to hang it on.
 
 ### One map with two regions, not two mechanisms
 
@@ -582,7 +634,10 @@ because a guard is a thing that can be deleted and an absent impl is not.
 two shipped shapes has to be able to supply one, because the concept is closed and the inventory is
 open. So the sentence above is about what this crate ships and says nothing about what exists: an
 outside crate may implement `Slots`, and the contracts table above lists `Signed` and `Unsigned` as
-examples for that reason. Do not read the two shipped shapes as the two that can exist.
+examples for that reason.
+
+**So do not read the two shipped shapes as the two that can exist.** Nothing enforces such a bound
+and nothing could, on a trait an outside crate may implement.
 
 ### What an outside implementor owes, and what checks it
 
