@@ -1,0 +1,184 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+cargo:     cargo 1.98.0-nightly (fbb61be30 2026-05-26)
+
+=== a_pair_roundtrip | cargo check | exit=0
+=== a_pair_roundtrip | cargo build | exit=0
+=== a_pair_roundtrip | cargo run | exit=0
+A ok: of(1, 0) stores (1, 0); denotes=false is_whole_multiple=false
+
+=== b_zero_den_runtime_call | cargo check | exit=0
+=== b_zero_den_runtime_call | cargo build | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+note: erroneous constant encountered
+note: the above error was encountered while instantiating `fn has_additive_identity::<NoDenominator>`
+note: erroneous constant encountered
+error: could not compile `phase-denominator-locus` (bin "b_zero_den_runtime_call") due to 1 previous error
+=== b_zero_den_runtime_call | cargo run | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<NoDenominator as arvo_format::Format>::ADMITTED` failed here
+    |
+
+=== c_zero_den_const_call | cargo check | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+note: erroneous constant encountered
+error: could not compile `phase-denominator-locus` (bin "c_zero_den_const_call") due to 1 previous error
+=== c_zero_den_const_call | cargo build | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+note: erroneous constant encountered
+note: erroneous constant encountered
+error: could not compile `phase-denominator-locus` (bin "c_zero_den_const_call") due to 1 previous error
+=== c_zero_den_const_call | cargo run | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<NoDenominator as arvo_format::Format>::ADMITTED` failed here
+    |
+
+=== d_zero_den_verdict_only | cargo check | exit=0
+=== d_zero_den_verdict_only | cargo build | exit=0
+=== d_zero_den_verdict_only | cargo run | exit=0
+D: zero-denominator verdict=false control verdict=true
+
+=== e_control_half_step | cargo check | exit=0
+=== e_control_half_step | cargo build | exit=0
+=== e_control_half_step | cargo run | exit=0
+E: control builds, has_additive_identity=false
+
+=== f_inadmissible_reaches_a_binary | cargo check | exit=0
+=== f_inadmissible_reaches_a_binary | cargo build | exit=0
+=== f_inadmissible_reaches_a_binary | cargo run | exit=0
+F: an inadmissible declaration reached a binary. PHASE = 1/0, denotes=false
+
+=== g_unused_const_item | cargo check | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+note: erroneous constant encountered
+error: could not compile `phase-denominator-locus` (bin "g_unused_const_item") due to 1 previous error
+=== g_unused_const_item | cargo build | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+note: erroneous constant encountered
+error: could not compile `phase-denominator-locus` (bin "g_unused_const_item") due to 1 previous error
+=== g_unused_const_item | cargo run | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<NoDenominator as arvo_format::Format>::ADMITTED` failed here
+    |
+
+=== h_phase_const_alone | cargo check | exit=0
+=== h_phase_const_alone | cargo build | exit=0
+=== h_phase_const_alone | cargo run | exit=0
+H: 1/0 sat in a const item with nothing to say about it
+
+=== i_implementor_overrides_the_obligation | cargo check | exit=0
+=== i_implementor_overrides_the_obligation | cargo build | exit=0
+=== i_implementor_overrides_the_obligation | cargo run | exit=0
+I: verdict=false has_additive_identity=false
+
+=== j_constructor_assert_costs_a_runtime_panic | cargo check | exit=0
+=== j_constructor_assert_costs_a_runtime_panic | cargo build | exit=0
+=== j_constructor_assert_costs_a_runtime_panic | cargo run | exit=101
+J control: 1/2 returned
+
+thread 'main' (8619198) panicked at src/bin/j_constructor_assert_costs_a_runtime_panic.rs:27:9:
+a phase denominator of zero names no position
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+=== j2_constructor_assert_refuses_the_const_site | cargo check | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position
+note: inside `PhaseJ::of`
+error: could not compile `phase-denominator-locus` (bin "j2_constructor_assert_refuses_the_const_site") due to 1 previous error
+=== j2_constructor_assert_refuses_the_const_site | cargo build | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position
+note: inside `PhaseJ::of`
+note: erroneous constant encountered
+note: erroneous constant encountered
+note: erroneous constant encountered
+note: erroneous constant encountered
+=== j2_constructor_assert_refuses_the_const_site | cargo run | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position
+  --> src/bin/j2_constructor_assert_refuses_the_const_site.rs:34:25
+   |
+34 | const REFUSED: PhaseJ = PhaseJ::of(1, 0);
+   |                         ^^^^^^^^^^^^^^^^ evaluation of `REFUSED` failed inside this call
+   |
+
+=== k_const_generic_denominator | cargo check | exit=0
+=== k_const_generic_denominator | cargo build | exit=0
+=== k_const_generic_denominator | cargo run | exit=0
+K control: 1/2 built and ran
+
+=== k2_const_generic_denominator_refuses | cargo check | exit=0
+=== k2_const_generic_denominator_refuses | cargo build | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position
+note: erroneous constant encountered
+note: the above error was encountered while instantiating `fn PhaseK::of::<0>`
+error: could not compile `phase-denominator-locus` (bin "k2_const_generic_denominator_refuses") due to 1 previous error
+=== k2_const_generic_denominator_refuses | cargo run | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position
+  --> src/bin/k2_const_generic_denominator_refuses.rs:23:17
+   |
+23 |         const { assert!(DEN != 0, "a phase denominator of zero names no position") }
+   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `PhaseK::of::<0>::{constant#0}` failed here
+
+
+=== l_a_blanket_obligation_cannot_be_disarmed | cargo check | exit=0
+=== l_a_blanket_obligation_cannot_be_disarmed | cargo build | exit=0
+=== l_a_blanket_obligation_cannot_be_disarmed | cargo run | exit=0
+L control: forced::<HalfStep>() = 2
+L: Format::ADMITTED on the disarmed impl is still a no-op
+
+=== l2_the_blanket_obligation_refuses_the_disarmed_impl | cargo check | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid
+note: erroneous constant encountered
+error: could not compile `phase-denominator-locus` (bin "l2_the_blanket_obligation_refuses_the_disarmed_impl") due to 1 previous error
+=== l2_the_blanket_obligation_refuses_the_disarmed_impl | cargo build | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid
+note: erroneous constant encountered
+note: erroneous constant encountered
+error: could not compile `phase-denominator-locus` (bin "l2_the_blanket_obligation_refuses_the_disarmed_impl") due to 1 previous error
+=== l2_the_blanket_obligation_refuses_the_disarmed_impl | cargo run | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid
+  --> src/bin/l2_the_blanket_obligation_refuses_the_disarmed_impl.rs:26:9
+   |
+26 | /         assert!(
+27 | |             F::PHASE.denotes().get(),
+28 | |             "a phase denominator of zero names no position on the grid"
+
+=== l3_the_blanket_obligation_at_a_runtime_call_site | cargo check | exit=0
+=== l3_the_blanket_obligation_at_a_runtime_call_site | cargo build | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid
+note: erroneous constant encountered
+note: the above error was encountered while instantiating `fn forced::<Disarmed>`
+error: could not compile `phase-denominator-locus` (bin "l3_the_blanket_obligation_at_a_runtime_call_site") due to 1 previous error
+=== l3_the_blanket_obligation_at_a_runtime_call_site | cargo run | exit=101
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid
+  --> src/bin/l3_the_blanket_obligation_at_a_runtime_call_site.rs:24:9
+   |
+24 | /         assert!(
+25 | |             F::PHASE.denotes().get(),
+26 | |             "a phase denominator of zero names no position on the grid"
+
+=== l4_the_blanket_obligation_has_no_second_impl | cargo check | exit=101
+error[E0119]: conflicting implementations of trait `Admits` for type `Disarmed`
+error: could not compile `phase-denominator-locus` (bin "l4_the_blanket_obligation_has_no_second_impl") due to 1 previous error
+=== l4_the_blanket_obligation_has_no_second_impl | cargo build | exit=101
+error[E0119]: conflicting implementations of trait `Admits` for type `Disarmed`
+error: could not compile `phase-denominator-locus` (bin "l4_the_blanket_obligation_has_no_second_impl") due to 1 previous error
+=== l4_the_blanket_obligation_has_no_second_impl | cargo run | exit=101
+error[E0119]: conflicting implementations of trait `Admits` for type `Disarmed`
+  --> src/bin/l4_the_blanket_obligation_has_no_second_impl.rs:41:1
+   |
+22 | impl<F: Format> Admits for F {
+   | ---------------------------- first implementation here
+...
+
+=== m_membership_does_not_force_the_obligation | cargo check | exit=0
+=== m_membership_does_not_force_the_obligation | cargo build | exit=0
+=== m_membership_does_not_force_the_obligation | cargo run | exit=0
+M: contains on a non-denoting format answered in-range=true out-of-range=false, and PHASE.denotes()=false
+

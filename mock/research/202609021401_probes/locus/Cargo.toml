@@ -1,0 +1,18 @@
+# Its own `[workspace]` table, so cargo does not walk up into the mock workspace
+# and refuse with "current package believes it's in a workspace when it's not".
+# Same shape as `mock/research/sketches/the-standards-alias-refusal`.
+#
+# Six binaries rather than six crates, because the question is which cargo verb
+# refuses which call site, and `--bin` is the smallest thing that isolates one.
+[workspace]
+
+[package]
+name = "phase-denominator-locus"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+description = "Where the zero phase denominator is actually refused, measured per cargo verb and per call site"
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
