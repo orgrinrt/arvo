@@ -34,7 +34,7 @@ use crate::ambient::{
     is_admissible_ambient, Ambient, BinaryRationals, DecimalRationals, Radix,
     UnsignedBinaryRationals,
 };
-use crate::format::{contains, is_admissible_format, Format, Phase};
+use crate::format::{contains, has_additive_identity, is_admissible_format, Format, Phase};
 use crate::points::{Biased, Floating, Integer, UFixed};
 use crate::quantum::{
     is_admissible_quantum, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum,
@@ -323,23 +323,53 @@ fn a_coordinate_is_readable_off_the_impl_without_the_obligation_firing() {
 }
 
 #[test]
-fn an_implementor_writes_over_the_obligation_and_the_default_is_gone() {
-    // Written as a verdict rather than an assertion, so the disarming impl lives
-    // permanently on the right side of the suite instead of being built, looked
-    // at and deleted. What it establishes is that the default is a default: an
-    // implementor supplies its own and nothing here can refuse that.
-    let disarmed_still_answers =
-        contains::<DisarmedObligation>(Slot::ZERO, Magnitude::SMALLEST) == Bool::TRUE;
-    assert!(
-        disarmed_still_answers,
-        "an implementor may write over `ADMITTED`, and this arm fails when that \
-         stops being true, which is a design change rather than a regression"
-    );
+fn an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing() {
+    // Routed through a verb that forces, which is the whole content of the arm.
+    // `contains` forces nothing, so calling the two declarations through it
+    // produces the same answer for a reason that has nothing to do with the
+    // override, and an arm built that way passes identically whether `ADMITTED`
+    // exists or not.
+    //
+    // `has_additive_identity` forces `<F as Format>::ADMITTED`. That this line
+    // compiles at all is the assertion: the same call on `PhaseNamesNoPosition`
+    // does not, which the `tests/ui` arm beside this file pins.
+    assert_eq!(has_additive_identity::<DisarmedObligation>(), Bool::FALSE);
+
+    // The control, and it is what stops the line above from being a fact about
+    // `has_additive_identity` rather than about the override: a format that
+    // leaves the default in place and does denote answers the other way, so the
+    // verb is not simply returning `FALSE` for everything.
+    assert_eq!(has_additive_identity::<Integer<8>>(), Bool::TRUE);
 
     // And the two are the same declaration apart from the obligation, so the arm
     // is about the override rather than about anything else that differs.
     assert_eq!(
         <DisarmedObligation as Format>::PHASE,
         <PhaseNamesNoPosition as Format>::PHASE
+    );
+}
+
+#[test]
+fn adapt_forces_the_slot_range_and_not_the_format() {
+    use crate::adapt::{Adapt, Signature};
+    use crate::apply::{adapt, Dither, Exact};
+    use crate::overflow::Saturate;
+    use crate::rounding::Floor;
+
+    // The design said for a while that `apply` forces the format's obligation.
+    // It does not: `adapt` forces `<<S::Format as Format>::Slots as Slots>::ADMITTED`
+    // and reaches the format only through it. That this compiles and returns is
+    // the proof, because the format underneath declares a phase that names no
+    // position and the format's own obligation refuses exactly that.
+    type OverANonDenotingFormat = Signature<PhaseNamesNoPosition, Adapt<Floor, Saturate>>;
+    let landed = adapt::<OverANonDenotingFormat>(Exact::on_grid(Slot::ZERO), Dither::UNUSED);
+
+    // The control: the same call over a format that does denote lands on the same
+    // slot, so the line above is reporting that the format's obligation was never
+    // consulted rather than that this position is special.
+    type OverADenotingFormat = Signature<Integer<8>, Adapt<Floor, Saturate>>;
+    assert_eq!(
+        landed,
+        adapt::<OverADenotingFormat>(Exact::on_grid(Slot::ZERO), Dither::UNUSED)
     );
 }

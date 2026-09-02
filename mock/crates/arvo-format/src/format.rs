@@ -176,12 +176,14 @@ pub trait Format {
     /// on the grid, so the phase coordinate does not denote and the membership
     /// predicate has nothing to be asked about.
     ///
-    /// **It fires where it is forced and nowhere else**, which is `apply` and
-    /// the identity search, so a coordinate read off the impl, an implementor
-    /// writing an empty `ADMITTED` over this default, and `contains`, which
-    /// forces nothing, all reach a value without meeting it. That is why the
-    /// predicates below stay total and answer a zero denominator rather than
-    /// assuming it was refused.
+    /// **It fires where it is forced and nowhere else**, which is
+    /// `cancelling_slot` and `has_additive_identity` and nothing else in the
+    /// crate. `adapt` forces the slot range's obligation rather than this one.
+    /// So a coordinate read off the impl, and `contains`, which forces nothing,
+    /// both reach a value without meeting it, and an implementor writing an
+    /// empty `ADMITTED` over this default meets it and finds nothing there.
+    /// That is why the predicates below stay total and answer a zero
+    /// denominator rather than assuming it was refused.
     ///
     /// ```compile_fail
     /// use arvo_format::ambient::BinaryRationals;
