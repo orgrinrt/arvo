@@ -1238,7 +1238,7 @@ id = "the_trait_contract_structure_is_a_primary_paradigm"
 kind = "intent"
 rung = "stated"
 topic = "arvo_identity"
-says = "The trait contract based structure is a primary one we uphold in future too, because it lets the shapes stick even while the implementations are still work in progress."
+says = "The trait contract based structure is a primary approach we uphold in future too, because it lets the shapes stick even while the implementations are still work in progress."
 quote = '''
 The trait contract based structure is a primary paradigm we uphold in future too. This allows for
 the shapes to stick even when the impls are wip, like hilavitkutin currently has
