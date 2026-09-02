@@ -673,15 +673,23 @@ that disagreed with `contains` is the one that was not derived from it.
 **Exactly where, because a guarantee that names no site is not checkable and an unqualified claim here
 would repeat the defect this section exists to fix.** Each obligation is a const, so it is evaluated
 where it is used and nowhere else, and the guarantee is exactly the set of functions that use it.
-`Format::ADMITTED` is forced at two of them, `apply` and the identity search. `Ambient`, `Quantum` and
-`Slots` each force their own beside those.
+`Format::ADMITTED` is forced by two functions, `cancelling_slot` and `has_additive_identity`, and by
+nothing else in the crate. `Ambient`, `Quantum` and `Slots` each have their own forcing sets, which are
+different sets rather than the same two: `Slots::ADMITTED` is forced by the slot range's own accessors
+and by `adapt`, which is where a value is put back on the grid.
 
 **So the guarantee is over those verbs and not over the declaration.** A declaration that no forcing
 verb is ever asked about is refused nowhere, which follows from an associated const being evaluated at
-its use rather than at its definition, and no forcing site can close it. Three routes reach a value
-without passing a forcing site: reading a coordinate off the impl, an implementor writing an empty
-`ADMITTED` over the default, and `contains`, which is this crate's own spelling of the membership
-predicate and forces nothing.
+its use rather than at its definition, and no forcing site can close it. Two routes reach a value
+without passing a forcing site: reading a coordinate off the impl, and `contains`, which is this
+crate's own spelling of the membership predicate and forces nothing.
+
+**A third route passes a forcing site and defeats it there, which is a different thing and wants
+saying separately.** An implementor writing an empty `ADMITTED` over the default is not missing the
+site: `has_additive_identity` evaluates whatever that implementor supplied, and what it supplied
+imposes nothing. So the guarantee over those verbs holds for an implementor that leaves the default in
+place, and an implementor is free not to. Closing the first two routes would need a verb that forces;
+closing this one needs the obligation to be something an implementor cannot write over.
 
 **Whether the design closes those routes is open and is this tier's to settle**, since the canon does
 not choose the shape a law takes. What is settled is that the sentence names its extension: an
