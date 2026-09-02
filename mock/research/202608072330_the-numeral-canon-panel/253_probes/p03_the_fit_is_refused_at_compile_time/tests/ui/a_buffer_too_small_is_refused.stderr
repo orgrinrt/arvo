@@ -1,0 +1,16 @@
+error[E0080]: evaluation panicked: the buffer is too small for this format's identity
+ --> $RUST/core/src/panic.rs
+  |
+  |         $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `p03_the_fit_is_refused_at_compile_time::identity_of::<arvo_format::points::Integer<8>, 50>::{constant#1}` failed here
+  |
+ ::: src/lib.rs
+  |
+  |     const { assert!(N >= rendered_len::<F>(), "the buffer is too small for this format's identity") };
+  |             --------------------------------------------------------------------------------------- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/lib.rs
+  |
+  |     const { assert!(N >= rendered_len::<F>(), "the buffer is too small for this format's identity") };
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
