@@ -1,0 +1,71 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+=== p1_the_pair_survives
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+P1 broken = 1/0 denotes=false
+P1 sound  = 1/2 denotes=true
+
+=== a1_control_sound_through_identity
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A1 sound/has_additive_identity = false
+
+=== a2_broken_through_identity
+  cargo check: ACCEPTED
+  cargo build: REFUSED
+    error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+    error: could not compile `phase-denominator-locus-probe` (bin "a2_broken_through_identity") due to 1 previous error; 1 warning emitted
+    error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+        |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<shared::Broken as arvo_format::Format>::ADMITTED` failed here
+  run: did not run
+
+=== a3_broken_declared_and_never_used
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A3 broken PHASE = 1/0
+
+=== a4_broken_through_the_applied_map
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A4 broken/adapt = 3
+
+=== a5_broken_through_contains
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A5 broken/contains = true
+
+=== a6_broken_through_step_exponent
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A6 broken/smallest_step_exponent = 0
+
+=== a7_broken_forced_in_a_const_item
+  cargo check: REFUSED
+    error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+    error: could not compile `phase-denominator-locus-probe` (bin "a7_broken_forced_in_a_const_item") due to 1 previous error
+    error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+        |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<shared::Broken as arvo_format::Format>::ADMITTED` failed here
+  cargo build: REFUSED
+    error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+    error: could not compile `phase-denominator-locus-probe` (bin "a7_broken_forced_in_a_const_item") due to 1 previous error
+    error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+        |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<shared::Broken as arvo_format::Format>::ADMITTED` failed here
+  run: did not run
+
+=== a8_control_sound_forced_in_a_const_item
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A8 sound in a const item = false
+
+=== a9_the_whole_step_phase
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A9 whole step (1/1, nonzero) = true
+A9 half step  (1/2, nonzero) = false
+
+=== a10_the_unwrap_doors
+  cargo check: ACCEPTED
+  cargo build: ACCEPTED
+A10 Phase unwrap doors: numerator=7 denominator=3
+
