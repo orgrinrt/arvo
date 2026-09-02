@@ -502,16 +502,22 @@ per sign.
 
 ### The ratio coordinate is an adaptation too, one tier down
 
-The format spine says an operation onto a representable set is an exact operation in the ambient
-domain composed with a named total adaptation. `Fraction::of` is one of those. The exact operation is
-a ratio in the ambient rationals, the representable set is the pairs the coordinate carries with a
-positive denominator, and the constructor is the map between them.
+The format spine describes an operation onto a representable set as an exact operation in the ambient
+domain composed with a named total adaptation, and it goes on to require the adaptation to be a
+first-class object with its own laws, so that an operation fusing one invisibly is an operation and
+an adaptation point wearing a single name.
+
+**The same shape recurs here, and it is a resemblance rather than an instance.** The exact operation
+is a ratio in the ambient rationals, the set is the pairs the coordinate carries with a positive
+denominator, and the constructor is the map between them. But `Fraction` is not a format, and
+`Fraction::of` is one `const fn` doing both halves, so there is no separated adaptation to name and
+what the spine says about a format's arithmetic does not carry over to it.
 
 So it has two regions, the same way the applied map below does, and for the same reason.
 
 | Region | What it does | When it applies |
 |---|---|---|
-| Exact normalisation | moves the sign to the numerator and cancels the power of two the two operands share | an exact form exists inside the coordinate |
+| Exact normalisation | returns the pair as given where the denominator is already positive, and otherwise moves the sign to the numerator, cancelling the power of two the operands share where one of them is `i64::MIN` | an exact form exists inside the coordinate |
 | Magnitude saturation | the operand that would need `2^63` takes the largest the coordinate carries instead | it does not |
 
 Four properties hold over every pair, and they are what the constructor is:
