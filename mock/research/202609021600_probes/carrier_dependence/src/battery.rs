@@ -66,10 +66,25 @@ fn main() {
     print!("Grid8={} ", is_admissible::<Grid8>().get() as u8);
     print!("Inverted={} ", is_admissible::<Inverted>().get() as u8);
     print!("WidthZero={} ", is_admissible::<WidthZero>().get() as u8);
-    print!("WiderThanSpan={} ", is_admissible::<WiderThanSpan>().get() as u8);
-    print!("SpanOverWidth={} ", is_admissible::<SpanOverWidth>().get() as u8);
-    print!("ZeroMagnitudes={} ", is_admissible_quantum::<ZeroMagnitudes>().get() as u8);
-    print!("ReachPast={} ", is_admissible_quantum::<ReachPast>().get() as u8);
-    print!("ReachFits={} ", is_admissible_quantum::<ReachFits>().get() as u8);
+    print!(
+        "WiderThanSpan={} ",
+        is_admissible::<WiderThanSpan>().get() as u8
+    );
+    print!(
+        "SpanOverWidth={} ",
+        is_admissible::<SpanOverWidth>().get() as u8
+    );
+    print!(
+        "ZeroMagnitudes={} ",
+        is_admissible_quantum::<ZeroMagnitudes>().get() as u8
+    );
+    print!(
+        "ReachPast={} ",
+        is_admissible_quantum::<ReachPast>().get() as u8
+    );
+    print!(
+        "ReachFits={} ",
+        is_admissible_quantum::<ReachFits>().get() as u8
+    );
     println!("Flat={}", is_admissible_quantum::<Flat>().get() as u8);
 }
