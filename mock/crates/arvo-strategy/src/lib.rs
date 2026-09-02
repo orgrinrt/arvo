@@ -115,7 +115,7 @@ pub mod presets {
     /// Sacrifices as much performance and efficiency as makes sense to reach the
     /// most precise answer, throwing out both the speed and the footprint
     /// optimisations, and especially within chains rather than only per
-    /// operation. Its objective had no measurement in the panel and that gap is
+    /// operation. Its objective has no measurement behind it yet, and that gap is
     /// recorded rather than papered over.
     pub struct Precise;
 
