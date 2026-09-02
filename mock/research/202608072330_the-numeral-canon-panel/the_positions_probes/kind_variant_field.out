@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.03s
+    Finished `release` profile [optimized] target(s) in 0.04s
 6 positions at kind `variant-field`, over the demand
 
   hilavitkutin@origin/dev:mock/crates/hilavitkutin-build/src/pragma.rs:24  variant-field        u8         Pragma <tuple field>

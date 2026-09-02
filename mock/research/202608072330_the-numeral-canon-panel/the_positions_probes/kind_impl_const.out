@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.03s
+    Finished `release` profile [optimized] target(s) in 0.02s
 7 positions at kind `impl-const`, over the demand
 
   notko@origin/dev:notko-macros-core/src/tiers.rs:61  impl-const           bool       impl Tier for Hot INLINE

@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.02s
+    Finished `release` profile [optimized] target(s) in 0.04s
 26 positions at kind `struct-field`, over the demand
 
   notko@origin/dev:notko-macros-core/src/tiers.rs:145  struct-field         bool       CustomTier inline

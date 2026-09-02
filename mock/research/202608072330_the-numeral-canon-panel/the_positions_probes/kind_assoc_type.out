@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.04s
+    Finished `release` profile [optimized] target(s) in 0.02s
 2 positions at kind `assoc-type`, over the demand
 
   hilavitkutin@origin/dev:mock/crates/hilavitkutin-persistence/DESIGN.md.tmpl:43  assoc-type           u32        impl Archive for Str Archived

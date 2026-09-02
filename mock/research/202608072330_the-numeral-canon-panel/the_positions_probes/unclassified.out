@@ -34,4 +34,4 @@
   vehje@origin/main:mock/crates/vehje-syntax/src/parser.rs:42  fn-return            usize      as_usize as_usize
   kolli@origin/dev:mock/crates/kolli-input/src/console.rs:56  assoc-type           u8         impl Iterator for Stdin Item
   kolli@origin/dev:mock/crates/kolli-input/src/console.rs:58  fn-return            u8         next next
-the-positions: clean, 142401 examined.
+the-positions: clean, 140500 examined.

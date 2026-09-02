@@ -1,1 +1,21 @@
-    Finished `release` profile [optimized] target(s) in 0.03s
+    Finished `release` profile [optimized] target(s) in 0.02s
+17 positions at kind `bound-arg`, over the demand
+
+  notko@origin/dev:src/maybe.rs:229  bound-arg            bool       filter <bound>
+  notko@origin/dev:src/maybe.rs:269  bound-arg            bool       is_some_and <bound>
+  notko@origin/dev:src/maybe.rs:278  bound-arg            bool       is_none_or <bound>
+  notko@origin/dev:src/outcome.rs:235  bound-arg            bool       is_ok_and <bound>
+  notko@origin/dev:src/outcome.rs:244  bound-arg            bool       is_err_and <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/sink.rs:49  bound-arg            u8         ByteEmitter <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/sink.rs:49  bound-arg            u8         ByteEmitter <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/sink.rs:50  bound-arg            u8         impl ByteEmitter for S <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/sink.rs:50  bound-arg            u8         impl ByteEmitter for S <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin/src/dispatch/order.rs:185  bound-arg            usize      - <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:1207  bound-arg            u8         ByteEmitter <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:1207  bound-arg            u8         ByteEmitter <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:1208  bound-arg            u8         impl ByteEmitter for S <bound>
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:1208  bound-arg            u8         impl ByteEmitter for S <bound>
+  kolli@origin/dev:mock/crates/kolli-input/src/lib.rs:148  bound-arg            u8         impl Decoder<B> <bound>
+  kolli@origin/dev:mock/crates/kolli-input/src/lib.rs:155  bound-arg            u8         impl Keys for Decoder<B> <bound>
+  kolli@origin/dev:mock/crates/kolli-input/src/lib.rs:189  bound-arg            u8         impl Decoder<B> <bound>
+the-positions: clean, 140500 examined.

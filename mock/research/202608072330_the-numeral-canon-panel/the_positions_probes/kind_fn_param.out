@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.05s
+    Finished `release` profile [optimized] target(s) in 0.03s
 39 positions at kind `fn-param`, over the demand
 
   arvo@origin/dev:mock/crates/arvo-format/src/adapt.rs:97  fn-param             u32        of operands

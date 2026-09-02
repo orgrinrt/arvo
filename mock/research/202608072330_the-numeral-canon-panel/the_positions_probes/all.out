@@ -1,6 +1,6 @@
    Compiling arvo-the-positions v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/positions/mock/tools/the-positions)
    Compiling mockspace-lints-ffe099b60deef60d v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/positions/mock/target/mockspace-lints)
-    Finished `release` profile [optimized] target(s) in 4.06s
+    Finished `release` profile [optimized] target(s) in 3.13s
 the corpus
   notko@origin/dev                             a30683d7d27a25b005ac0956bbd092dae1566442  (232 rust files)
   arvo@origin/dev                              8a58ee3fdea0d8949e43ca1cdf5f0c51625dc9a8  (2254 rust files)
@@ -42,20 +42,24 @@ by grammatical kind
   every kind is listed, including the ones at zero, because a kind
   nobody found is a result about the stack rather than about the walk.
 
-  kind                       all shipped  an outside crate writes this type
-  fn-param                 16041     501  yes
-  fn-return                20037     466  yes
-  struct-field              2429     185  yes
-  variant-field              111      24  yes
-  trait-const               1802      50  yes
-  impl-const                3922     159  yes
-  item-const               17157      30  yes
-  alias-target              9458      12  yes
-  assoc-type                1169      33  yes
-  impl-trait-arg            6438     136  yes
-  const-generic-param       6367     167  no
-  bound-arg                33700     434  yes
-  interior                 21869     419  no
+  kind                        all the host the stack  an outside crate writes this type
+  fn-param                  16041      124      377  yes
+  fn-return                 20037      148      318  yes
+  struct-field               2429       35      150  yes
+  variant-field               111       16        8  yes
+  trait-const                1802       11       39  yes
+  impl-const                 3922       10      149  yes
+  item-const                17157       15       15  yes
+  alias-target               9458        0       12  yes
+  assoc-type                 1169        4       29  yes
+  impl-trait-arg             6438        2      134  yes
+  const-generic-param        6367      153       14  no
+  bound-arg                 33700       18      416  yes
+  interior                  21869      211      208  no
+  
+  `all` counts every tree read, probes and benches included, which is why it
+  is large and why it is not the answer to anything. The two shipped columns
+  are the population the obligation is over.
 
 by carrier, over the public API positions
   what the primitive is wrapped in, off the parse rather than off a name.

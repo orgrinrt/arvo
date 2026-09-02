@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.04s
+    Finished `release` profile [optimized] target(s) in 0.02s
 105 positions at kind `fn-return`, over the demand
 
   notko@origin/dev:notko-macros-core/src/rewrite/helpers.rs:11  fn-return            bool       is_ok_call is_ok_call

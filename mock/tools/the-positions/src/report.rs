@@ -165,10 +165,34 @@ pub fn render(
         "the demand"
     };
     if let Some(kind) = want_kind {
+        // A kind outside the demand cannot be listed from the demand set, and
+        // the one that matters here is `const-generic-param`: op excepted it and
+        // bounded the exception twice, "and even there, only when truly painful
+        // otherwise", so it is exactly the group somebody wants to read. Listing
+        // it over the shipped set instead, and saying which set it is.
+        let is_api_kind = Position::all()
+            .iter()
+            .find(|p| p.token() == kind)
+            .is_some_and(|p| p.is_api());
+        if is_api_kind || everything {
+            return listing(
+                &listable,
+                |f| f.position.token() == kind,
+                &format!("kind `{kind}`, over {scope}"),
+            );
+        }
+        let shipped: Vec<&Found> = kept
+            .iter()
+            .copied()
+            .filter(|f| f.shipped && f.supplier.is_none())
+            .collect();
         return listing(
-            &listable,
+            &shipped,
             |f| f.position.token() == kind,
-            &format!("kind `{kind}`, over {scope}"),
+            &format!(
+                "kind `{kind}`, over every shipped occurrence rather than the demand, \n\
+                 because this kind is not one an outside crate has to write"
+            ),
         );
     }
     if let Some(want) = want_role {
@@ -214,20 +238,31 @@ pub fn render(
     s.push_str("\nby grammatical kind\n");
     s.push_str("  every kind is listed, including the ones at zero, because a kind\n  nobody found is a result about the stack rather than about the walk.\n\n");
     s.push_str(&format!(
-        "  {:<22} {:>7} {:>7}  {}\n",
-        "kind", "all", "shipped", "an outside crate writes this type"
+        "  {:<22} {:>8} {:>8} {:>8}  {}\n",
+        "kind", "all", "the host", "the stack", "an outside crate writes this type"
     ));
     for position in Position::all() {
         let all = kept.iter().filter(|f| f.position == *position).count();
-        let public = kept
+        let shipped = kept
             .iter()
-            .filter(|f| f.position == *position && f.public && f.shipped)
-            .count();
+            .filter(|f| f.position == *position && f.public && f.shipped);
+        let (host, stack): (Vec<&&Found>, Vec<&&Found>) =
+            shipped.partition(|f| f.supplier.is_none());
         s.push_str(&format!(
-            "  {:<22} {all:>7} {public:>7}  {}\n",
+            "  {:<22} {all:>8} {:>8} {:>8}  {}\n",
             position.token(),
+            host.len(),
+            stack.len(),
             if position.is_api() { "yes" } else { "no" }
         ));
+    }
+    for line in [
+        "",
+        "`all` counts every tree read, probes and benches included, which is why it",
+        "is large and why it is not the answer to anything. The two shipped columns",
+        "are the population the obligation is over.",
+    ] {
+        s.push_str(&format!("  {line}\n"));
     }
 
     s.push_str("\nby carrier, over the public API positions\n");
