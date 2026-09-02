@@ -1,0 +1,27 @@
+== A. against the crate as it stands ==
+  width 63, everything else fine : admissible = false
+  width 62, everything else fine : admissible = true
+
+  the missing assertion (!63 && 62) : PASSES
+
+  Run against the crate as it stands, this passes. Run against the
+  mutant with the width clause deleted, `sixty_three` becomes true
+  and it fails, which is the whole point: it is the first test in
+  the crate whose verdict depends on that clause existing.
+  exit status: 0  (0 = the missing test passes here)
+
+== B. against the mutant, width clause deleted ==
+  width 63, everything else fine : admissible = true
+  width 62, everything else fine : admissible = true
+
+  the missing assertion (!63 && 62) : FAILS
+
+  Run against the crate as it stands, this passes. Run against the
+  mutant with the width clause deleted, `sixty_three` becomes true
+  and it fails, which is the whole point: it is the first test in
+  the crate whose verdict depends on that clause existing.
+  exit status: 1  (non-zero = the missing test fails here)
+
+== C. verdict ==
+  The construction separates the crate from the mutant. It is a real test
+  of the width clause and it is the only one there would be.

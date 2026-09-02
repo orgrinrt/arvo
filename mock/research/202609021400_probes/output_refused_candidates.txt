@@ -1,0 +1,27 @@
+linking against:
+  mock/target/debug/deps/libarvo_format-146018322adcb37a.rlib
+  mock/target/debug/deps/libnotko-31b2d5d4bd1e4a98.rlib
+
+== pair A, the concept kind ==
+  radix 1 admitted as an ambient domain : false
+  radix 2 admitted as an ambient domain : true
+  the crate's own BinaryRationals       : true
+== pair B, the hosting kind ==
+  63-bit slot range admitted            : false
+  62-bit slot range admitted            : true
+
+== what the two refusals are about ==
+  A refuses radix 1. Behind it: nothing. A radix-1 positional
+  notation names one value at every magnitude, so no set of values
+  is being kept out. The obligation is about what a number system is.
+
+  B refuses a 63-bit range. Behind it: the 63-bit two's complement
+  integers, which are a number system by any account and which this
+  crate refuses because 2^63 does not fit the i64 it counts slots in.
+  The obligation is about what this implementation carries.
+
+  And the crate admits BinaryRationals, whose domain is the rationals,
+  which arvo cannot host at all: I14 is in force and forbids alloc and
+  runtime growth, so no representable set here is the rationals. The
+  same crate therefore admits an unhostable domain at one obligation
+  and refuses a hostable system at another, calling both `ADMITTED`.
