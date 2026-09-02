@@ -1,0 +1,286 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/arvo_format-97ee6d7fb63b9be7)
+
+running 112 tests
+test apply::tests::clamp_and_saturate_compute_the_same_function_because_a_coordinate_is_missing ... ok
+test apply::tests::a_wider_format_admits_what_a_narrower_one_completes_away ... ok
+test apply::tests::a_remainder_outside_the_unit_interval_is_normalised_into_the_slot ... ok
+test apply::tests::each_directed_mode_moves_every_off_grid_position_its_own_way ... ok
+test apply::tests::half_up_goes_away_from_zero_on_a_tie_and_half_even_goes_to_the_even_slot ... ok
+test apply::tests::rounding_at_the_top_of_the_type_does_not_leave_the_carrier ... ok
+test apply::tests::adapting_at_the_edges_of_the_type_gives_the_arithmetic_answer ... ok
+test apply::tests::a_non_tie_is_decided_by_which_side_of_the_midpoint_it_falls ... ok
+test apply::tests::a_dither_at_the_edges_still_selects_between_two_neighbours ... ok
+test apply::tests::rounding_is_reachable_without_completion_and_completion_without_rounding ... ok
+test apply::tests::rounding_happens_before_completion_and_the_order_is_observable ... ok
+test apply::tests::saturating_at_the_edges_pins_to_the_declared_ends ... ok
+test apply::tests::the_control_the_edges_are_outside_the_window_the_other_arms_use ... ok
+test apply::tests::the_control_the_sweep_reaches_both_regions_and_both_sides ... ok
+test apply::tests::the_edge_answers_are_the_ones_worked_out_by_hand ... ok
+test apply::tests::the_ratio_coordinate::a_carry_past_the_top_of_the_coordinate_still_lands_a_slot ... ignored, catalogue: `Exact::between` adds the euclidean carry to the slot index in the coordinate's own carrier, and a carry past the end of it has nowhere to go inside `Slot`. `round_slot` widens on the way out, so the map admits a slot one past the type after `Exact` is built and cannot admit one while it is being built. What a carry past the coordinate means is a question about the slot coordinate rather than the ratio, so it is stated here and left red until that coordinate answers it.
+test apply::tests::the_panic_verdicts_report_and_the_crate_stays_total ... ok
+test apply::tests::the_map_is_the_identity_on_a_grid_point_inside_the_window ... ok
+test apply::tests::the_ratio_coordinate::a_positive_denominator_is_kept_rather_than_replaced ... ok
+test apply::tests::the_ratio_coordinate::a_shared_factor_of_two_cancels_rather_than_saturating ... ok
+test apply::tests::the_ratio_coordinate::a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling ... ok
+test apply::tests::the_ratio_coordinate::the_control_the_matrix_carries_both_parities_against_the_least_value ... ok
+test apply::tests::the_ratio_coordinate::the_saturating_region_is_where_the_other_operand_is_odd ... ok
+test apply::tests::five_modes_ignore_the_dither_and_one_does_not ... ok
+test apply::tests::the_ratio_coordinate::the_two_pairs_the_old_rule_named_now_keep_their_sign ... ok
+test apply::tests::toward_zero_and_floor_are_measured_to_differ_and_the_witness_is_named ... ok
+test apply::tests::order_transport_is_measured_from_the_map_rather_than_declared ... ok
+test apply::tests::two_signatures_differing_only_in_mode_adapt_the_same_position_differently ... ok
+test apply::tests::wrapping_inverts_a_specific_pair_and_the_witness_is_named ... ok
+test tests::obligations::the_ambient_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::obligations::the_law_admits_every_domain_this_crate_ships ... ok
+test tests::obligations::the_law_admits_every_quantum_this_crate_ships ... ok
+test tests::obligations::the_law_rejects_a_format_whose_phase_denominator_is_zero ... ok
+test tests::obligations::the_law_admits_every_format_this_crate_ships ... ok
+test tests::obligations::the_format_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::obligations::the_law_rejects_a_quantum_over_no_magnitudes ... ok
+test tests::obligations::the_law_rejects_a_radix_below_two ... ok
+test tests::obligations::the_law_rejects_a_step_law_that_runs_off_the_exponent ... ok
+test tests::obligations::the_quantum_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::the_adaptation::an_admitted_operation_reads_its_answer_through_the_signature ... ok
+test tests::the_adaptation::a_signature_carries_the_format_and_the_adaptation_and_nothing_else ... ok
+test tests::obligations::every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts ... ok
+test tests::obligations::every_open_contract_in_this_crate_states_its_obligation_as_a_check ... ok
+test tests::the_adaptation::every_rounding_mode_pairs_with_every_shipped_overflow_policy ... ok
+test tests::the_adaptation::the_overflow_inventory_admits_a_member_this_crate_does_not_know_about ... ok
+test tests::the_adaptation::the_rounding_coordinate_and_the_overflow_coordinate_move_independently ... ok
+test tests::the_adaptation::the_rounding_vocabulary_is_exactly_six_names ... ok
+test tests::the_adaptation::the_shipped_overflow_policies_are_three_and_distinct ... ok
+test tests::the_adaptation::two_signatures_differing_only_in_adaptation_are_different_signatures ... ok
+test tests::the_coordinates::an_extent_of_nothing_admits_no_index_at_all ... ok
+test tests::the_coordinates::the_largest_admitted_magnitude_is_one_below_the_count ... ok
+test tests::the_identity::a_phase_keeps_the_value_it_was_declared_with ... ok
+test tests::the_identity::a_zero_phase_puts_the_additive_identity_on_the_grid ... ok
+test tests::the_identity::a_whole_multiple_phase_keeps_the_identity_at_a_shifted_slot ... ok
+test tests::the_identity::a_fractional_phase_takes_the_additive_identity_off_the_grid ... ok
+test tests::the_identity::the_cancelling_slot::a_negative_denominator_is_the_same_phase_with_the_sign_moved ... ok
+test tests::the_identity::the_cancelling_slot::a_whole_phase_whose_cancelling_slot_is_out_of_range_has_no_identity ... ok
+test tests::the_identity::the_cancelling_slot::the_base_exponent_does_not_move_the_cancelling_slot ... ok
+test tests::the_identity::an_extreme_phase_still_answers_at_every_magnitude ... ok
+test tests::the_identity::the_cancelling_slot::a_whole_phase_keeps_the_identity_in_every_quantum_family ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_answers_both_ways_rather_than_one ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_is_isnt_where_the_phase_is_fractional_there ... ok
+test tests::the_identity::the_cancelling_slot::a_phase_no_power_of_the_radix_cancels_has_no_identity_in_any_family ... ok
+test apply::tests::the_map_is_total_over_every_mode_and_every_policy ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_is_the_negated_multiple_where_one_exists ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_moves_with_the_magnitude_in_both_directions ... ok
+test tests::the_identity::the_cancelling_slot::the_identity_law_holds_at_a_radix_other_than_two ... ok
+test tests::the_identity::the_cancelling_slot::the_identity_law_holds_over_both_slot_families ... ok
+test tests::the_identity::the_control_the_matrix_above_contains_both_verdicts ... ok
+test tests::the_identity::the_cancelling_slot::the_identity_law_holds_at_every_denominator_rather_than_at_two ... ok
+test tests::the_identity::the_extreme_phase_coordinates_are_answered_rather_than_overflowing ... ok
+test tests::the_identity::the_identity_answer_is_membership_asked_at_zero ... ok
+test tests::the_identity::the_identity_is_decidable_at_const_time_including_the_search ... ok
+test tests::the_identity::the_magnitude_range::a_phase_whose_cancelling_slot_leaves_the_index_answers_no ... ok
+test tests::the_identity::the_magnitude_range::the_magnitude_the_identity_is_found_at_is_not_always_the_first ... ok
+test tests::the_identity::the_magnitude_range::a_whole_phase_out_of_reach_low_down_is_found_at_a_higher_magnitude ... ok
+test apply::tests::the_ratio_coordinate::the_ratio_coordinate_holds_its_four_properties_over_the_whole_matrix ... ok
+test tests::the_identity::the_magnitude_range::a_magnitude_range_past_the_bound_still_finds_what_is_below_it ... ok
+test tests::the_identity::the_magnitude_range::the_identity_survives_a_shrinking_quantum ... ok
+test tests::the_identity::the_magnitude_range::the_search_bound_is_past_where_a_radix_of_two_can_still_answer ... ok
+test tests::the_identity::the_one_magnitude_predicate_differs_exactly_where_the_quantum_moves ... ok
+test tests::the_identity::the_magnitude_range::the_search_bound_loses_nothing_where_the_quantum_does_not_move ... ok
+test tests::the_identity::the_superseded_predicate_differs_exactly_at_a_nonzero_whole_multiple ... ok
+test tests::the_identity::the_two_questions_about_a_phase_are_two_questions ... ok
+test tests::the_inventory::the_admitted_set_is_the_contiguous_run_the_macro_names ... ok
+test tests::the_inventory::the_format_inventory_admits_a_member_this_crate_does_not_know_about ... ok
+test tests::the_inventory::the_law_admits_every_quantum_law_this_crate_ships ... ok
+test tests::the_inventory::the_control_the_foreign_contract_differs_from_every_shipped_one ... ok
+test tests::the_inventory::the_law_rejects_a_quantum_law_that_does_not_meet_the_contract ... ok
+test tests::the_inventory::the_law_rejects_a_range_that_does_not_meet_the_contract ... ok
+test tests::the_inventory::the_law_rejects_a_range_that_passes_the_easy_obligations ... ok
+test tests::the_inventory::the_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::the_inventory::the_quantum_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::the_inventory::the_reach_check_is_wider_than_the_widths_currently_need ... ok
+test tests::the_inventory::the_declared_width_is_read_rather_than_recovered ... ok
+test tests::the_inventory::the_whole_contract_is_supplied_from_outside_and_every_coordinate_reads_back ... ok
+test tests::the_predicate::a_constant_quantum_does_not_move_with_magnitude_and_an_indexed_one_does ... ok
+test tests::the_inventory::the_widest_admitted_width_is_where_the_count_stops_fitting ... ok
+test tests::the_predicate::a_phase_that_names_no_position_is_refused_rather_than_reinterpreted ... ok
+test tests::the_predicate::a_phase_carries_the_pair_it_was_declared_with ... ok
+test tests::the_predicate::membership_is_decidable_at_const_time_for_every_point ... ok
+test tests::the_predicate::signedness_is_a_property_of_the_domain_and_not_of_a_carrier ... ok
+test tests::the_predicate::the_control_the_widths_produce_different_slot_ranges ... ok
+test tests::the_predicate::the_constant_family_has_one_magnitude_and_the_indexed_family_has_many ... ok
+test tests::the_predicate::the_questions_asked_of_a_phase_do_not_read_the_denominators_sign ... ok
+test tests::the_predicate::the_radix_comes_from_the_ambient_domain ... ok
+test tests::the_predicate::the_smallest_step_is_the_smallest_magnitudes_and_nothing_names_it ... ok
+test tests::the_inventory::the_law_admits_every_range_this_crate_ships ... ok
+test tests::the_predicate::an_unsigned_slot_range_is_exactly_what_its_width_declares ... ok
+test tests::the_predicate::a_signed_slot_range_is_exactly_what_its_width_declares ... ok
+test tests::the_inventory::every_admitted_width_has_a_coherent_range ... ok
+test apply::tests::the_ratio_coordinate::the_predicate_the_properties_partition_on_agrees_with_reduction ... ok
+
+test result: ok. 111 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/compile_fail.rs (target/debug/deps/compile_fail-1d65fa56815c0759)
+
+running 8 tests
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/a_step_law_that_runs_off_the_exponent_is_refused.rs[0m ... [0m[32mok
+[0m
+
+test a_step_law_that_runs_off_the_exponent_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+
+
+test [0m[1mtests/ui/an_arvo_type_as_a_const_parameter.rs[0m ... [0m[32mok
+[0m
+
+test an_arvo_type_as_a_const_parameter_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+
+
+test [0m[1mtests/ui/a_host_integer_is_not_a_slot.rs[0m ... [0m[32mok
+[0m
+
+test a_host_integer_at_a_coordinate_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+
+
+test [0m[1mtests/ui/a_phase_is_not_a_fraction.rs[0m ... [0m[32mok
+[0m
+
+test the_two_ratios_are_two_coordinates ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+
+
+test [0m[1mtests/ui/width_above_the_bound.rs[0m ... [0m[32mok
+[0m
+
+test a_width_the_slot_range_cannot_carry_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+
+
+test [0m[1mtests/ui/a_law_over_no_magnitudes_is_refused.rs[0m ... [0m[32mok
+[0m
+
+test a_quantum_law_over_no_magnitudes_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+
+
+test [0m[1mtests/ui/an_index_is_not_an_extent.rs[0m ... [0m[32mok
+[0m
+
+test an_index_and_an_extent_do_not_convert_into_each_other ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/admission/mock/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+
+
+test [0m[1mtests/ui/word_length_past_the_ladder.rs[0m ... [0m[32mok
+[0m
+
+test a_word_length_past_the_slot_ladder_is_refused_at_the_declaration ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+
+     Running tests/matlab_fi_parity.rs (target/debug/deps/matlab_fi_parity-afdf1858b466b48b)
+
+running 14 tests
+test fi_pi ... ok
+test fi_pi_fraction_three ... ok
+test fi_pi_signed_eight ... ok
+test some_shipped_mode_is_matlab_nearest ... ignored, catalogue: MATLAB's Nearest, ties toward positive infinity, has no mode in the ratified vocabulary; closed by question::is_the_rounding_vocabulary_complete_at_six and question::which_tie_direction_an_unqualified_nearest_names
+test fi_pi_unsigned_eight ... ok
+test the_bound_is_attained_and_not_merely_respected ... ok
+test the_control_a_wrong_stored_integer_would_be_caught ... ok
+test fi_pi_unsigned ... ok
+test the_control_no_parity_arm_reaches_a_tie ... ok
+test the_control_no_parity_arm_reaches_an_overflow_policy ... ok
+test the_control_the_five_declarations_are_genuinely_different ... ok
+test the_fraction_length_is_the_constant_family_rather_than_the_indexed_one ... ok
+test the_fraction_length_is_the_negated_exponent_at_every_sign ... ok
+test the_gap_is_this_shape_rather_than_a_missing_re_export ... ok
+
+test result: ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/arvo_placement-72575ff0b30f4437)
+
+running 22 tests
+test tests::the_carrier_is_not_a_function_of_the_access_width ... ignored, catalogue: the converse independence is not exhibited by this crate's single packing rule. The design states the carrier is not a function of the access width, measured under both packing rules; only one rule ships here, and under it every access width reaches exactly one carrier. Red until the second packing rule lands.
+test tests::a_placement_carries_no_adaptation_and_no_operation ... ok
+test tests::the_control_the_ladder_rungs_are_distinct_and_ordered ... ok
+test tests::each_marker_names_the_objective_it_is_named_for ... ok
+test tests::at_shared_occupancy_the_stride_is_the_declared_width_and_not_the_carrier ... ok
+test tests::the_access_ladder_runs_out_before_the_carrier_ladder_does ... ok
+test tests::both_arms_resolve_at_compile_time_and_to_different_placements ... ok
+test tests::at_sole_occupancy_the_three_numbers_collapse_to_the_carrier ... ok
+test tests::the_declared_width_comes_from_the_slot_range_and_not_from_a_container ... ok
+test tests::the_footprint_is_observable_at_sole_occupancy_and_not_at_shared ... ok
+test tests::the_ladder_runs_out_and_says_so_rather_than_widening_silently ... ok
+test tests::the_narrowest_carrier_is_the_narrowest_rung_that_holds_the_width ... ok
+test tests::the_objective_selects_at_every_width_the_ladder_reaches ... ok
+test tests::the_open_inventory::the_control_the_foreign_width_is_not_one_a_shipped_point_here_produces ... ok
+test tests::the_open_inventory::the_derivation_reads_a_format_this_crate_declared_itself ... ok
+test tests::the_access_width_is_not_a_function_of_the_carrier ... ok
+test tests::the_open_inventory::the_foreign_format_carries_the_coordinates_the_contract_asks_for ... ok
+test tests::the_output_count_is_one_at_sole_and_three_at_shared ... ok
+test tests::the_two_derived_numbers_are_not_the_same_number_wearing_two_names ... ok
+test tests::the_two_objectives_agree_at_sole_occupancy_and_that_is_a_result ... ok
+test tests::the_two_objectives_derive_two_placements_at_shared_occupancy ... ok
+test tests::two_adaptations_over_one_format_derive_one_placement ... ok
+
+test result: ok. 21 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/arvo_strategy-300db8e82cf4ccdf)
+
+running 10 tests
+test tests::a_consumer_generic_over_the_strategy_never_names_a_preset ... ok
+test tests::a_consumer_generic_over_the_strategy_reaches_the_ladder ... ok
+test tests::a_new_strategy_reaches_the_ladder_the_same_way_a_preset_does ... ok
+test tests::every_preset_resolves_both_items_through_one_generic_path ... ok
+test tests::every_preset_selects_an_adaptation ... ok
+test tests::the_binding_is_readable_at_const_time ... ok
+test tests::every_preset_binds_to_an_objective ... ok
+test tests::the_control_the_objectives_are_distinguishable ... ok
+test tests::the_storage_binding_is_the_one_that_binds_to_footprint ... ok
+test tests::the_strategy_inventory_admits_a_member_this_crate_does_not_know_about ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arvo_format
+
+running 4 tests
+test crates/arvo-format/src/slots.rs - slots::Slots::ADMITTED (line 187) ... ok
+test crates/arvo-format/src/quantum.rs - quantum::Quantum::ADMITTED (line 295) ... ok
+test crates/arvo-format/src/ambient.rs - ambient::Ambient::ADMITTED (line 130) ... ok
+test crates/arvo-format/src/format.rs - format::Format::ADMITTED (line 206) ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test crates/arvo-format/src/quantum.rs - quantum::Quantum::ADMITTED (line 254) - compile fail ... ok
+test crates/arvo-format/src/ambient.rs - ambient::Ambient::ADMITTED (line 99) - compile fail ... ok
+test crates/arvo-format/src/slots.rs - slots::Slots::ADMITTED (line 166) - compile fail ... ok
+test crates/arvo-format/src/quantum.rs - quantum::Quantum::ADMITTED (line 272) - compile fail ... ok
+test crates/arvo-format/src/format.rs - format::Format::ADMITTED (line 183) - compile fail ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+all doctests ran in 1.01s; merged doctests compilation took 0.63s
+   Doc-tests arvo_placement
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arvo_strategy
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
