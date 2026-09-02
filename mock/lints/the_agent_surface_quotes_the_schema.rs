@@ -347,7 +347,11 @@ mod tests {
         // read.
         let dir = tree_with(
             "declaration-moved",
-            &schema_declaring(NAMESPACE, FIELD, "How many instances reached it, and nothing more."),
+            &schema_declaring(
+                NAMESPACE,
+                FIELD,
+                "How many instances reached it, and nothing more.",
+            ),
             &surface_quoting(DECLARED),
         );
         assert_eq!(check(&dir).len(), 1, "the copy is stale, not the schema");
