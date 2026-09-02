@@ -1,0 +1,53 @@
+======== rustc
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+probe: the exposed tuple against the set it denotes
+
+PAIR 1 (must fail for 'the tuple is a normal form'): the quantum law spelled two ways
+  ConstantStep          Quantum = Constant<0>
+    tuple : RADIX=2 SIGNED=true BASE=0 SLOPE=0 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/1
+    set   : 16 values, first Some(Q { num: -8, den: 1 }) last Some(Q { num: 7, den: 1 })
+  IndexedAtOneMagnitude Quantum = Indexed<0, 1>
+    tuple : RADIX=2 SIGNED=true BASE=0 SLOPE=1 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/1
+    set   : 16 values, first Some(Q { num: -8, den: 1 }) last Some(Q { num: 7, den: 1 })
+  same ambient type : true
+  tuples equal      : false
+  denoted sets equal: true
+
+PAIR 2 (must fail for 'the tuple is a normal form'): the phase spelled two ways
+  ConstantStep     PHASE = 0/1
+    tuple : RADIX=2 SIGNED=true BASE=0 SLOPE=0 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/1
+    set   : 16 values, first Some(Q { num: -8, den: 1 }) last Some(Q { num: 7, den: 1 })
+  PhaseZeroOverTwo PHASE = 0/2
+    tuple : RADIX=2 SIGNED=true BASE=0 SLOPE=0 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/2
+    set   : 16 values, first Some(Q { num: -8, den: 1 }) last Some(Q { num: 7, den: 1 })
+  same ambient type : true
+  tuples equal      : false
+  denoted sets equal: true
+
+PAIR 3 (the control): two candidates whose sets do differ
+  ConstantStep      Quantum = Constant<0>
+    tuple : RADIX=2 SIGNED=true BASE=0 SLOPE=0 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/1
+    set   : 16 values, first Some(Q { num: -8, den: 1 }) last Some(Q { num: 7, den: 1 })
+  ConstantStepAtOne Quantum = Constant<1>
+    tuple : RADIX=2 SIGNED=true BASE=1 SLOPE=0 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/1
+    set   : 16 values, first Some(Q { num: -16, den: 1 }) last Some(Q { num: 14, den: 1 })
+  same ambient type : true
+  tuples equal      : false
+  denoted sets equal: false
+
+PAIR 3 again, through the shipped membership predicate: contains agrees on 84 of 84 points, differs on 0
+CONTROL for that, a candidate with a different slot range: contains agrees on 72 of 84 points, differs on 12
+
+PAIR 4 (the comparator's own control): a candidate against itself
+  ConstantStep
+    tuple : RADIX=2 SIGNED=true BASE=0 SLOPE=0 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/1
+    set   : 16 values, first Some(Q { num: -8, den: 1 }) last Some(Q { num: 7, den: 1 })
+  ConstantStep
+    tuple : RADIX=2 SIGNED=true BASE=0 SLOPE=0 MAGNITUDES=1 MIN=-8 MAX=7 WIDTH=4 PHASE=0/1
+    set   : 16 values, first Some(Q { num: -8, den: 1 }) last Some(Q { num: 7, den: 1 })
+  same ambient type : true
+  tuples equal      : true
+  denoted sets equal: true
+
+-------- exit: 0

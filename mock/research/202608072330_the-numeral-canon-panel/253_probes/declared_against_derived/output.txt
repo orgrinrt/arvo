@@ -1,0 +1,42 @@
+======== rustc
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+======== ARM 1 and ARM 2: the exposed verdict and the derived one
+ALGEBRAS, and the derived verdict is a const
+  saturating add on [-2, 1]  associative : false
+  add modulo 4               associative : true
+  witness on the first : (-2+-2)+1 = -1, -2+(-2+1) = -2
+  witness on the control: none, as it should be
+
+ARM 1: the verdict exposed by the candidate, over ONE algebra
+  Declared<true>  : ASSOCIATIVE = true  over saturating add on [-2, 1]
+  Declared<false> : ASSOCIATIVE = false over saturating add on [-2, 1]
+  both compile, and the algebra is the same type in both
+  => an exposed verdict admits both truth values over one algebra
+  => the case that must fail for an exposed verdict does not fail
+
+ARM 2: the verdict derived from what was exposed
+  derived over Declared<_>'s own ambient : false
+  derived over the control algebra       : true
+  => it separates the two algebras, so it is not stuck at one answer
+  => and it contradicts Declared<true>, which nothing in ARM 1 can
+-------- exit: 0
+
+======== ARM 3 (the case that must fail): pin Declared<true> against the derivation
+error[E0080]: evaluation panicked: a declared verdict disagreeing with the algebra it is about
+   --> src/main.rs:140:15
+    |
+140 |   const _: () = assert!(
+    |  _______________^
+141 | |     <Declared<true> as Declares>::ASSOCIATIVE
+142 | |         == is_associative::<<Declared<true> as Declares>::Ambient>(),
+143 | |     "a declared verdict disagreeing with the algebra it is about"
+144 | | );
+    | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `declared-against-derived` (bin "declared-against-derived") due to 1 previous error
+-------- exit: 101
+
+======== ARM 4 (the control): pin Declared<false> against the same derivation
+-------- exit: 0

@@ -1,0 +1,15 @@
+# Standalone, no dependency on arvo. The question is about what an exposure list
+# can and cannot constrain, which is a property of declarations rather than of
+# this stack. Seat 253.
+[workspace]
+
+[package]
+name = "declared-against-derived"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[features]
+# The two cases that must fail, each compiled alone so one cannot mask the other.
+the_lie_is_refused = []
+the_honest_declaration_is_refused_too = []

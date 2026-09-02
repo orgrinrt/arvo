@@ -1,0 +1,109 @@
+======== the governing set
+rows in the governing set: 54
+  ratified rulings          : 31
+  two-expert proposals      : 23
+
+======== rows whose statement names something outside (ambient, representable set)
+pattern: reduction|adaptation|verdict|law inventory|encoding
+  8:adaptation_is_conditional_on_proof_and_on_soundness
+  20:the_format_spine_is_canon
+  21:behaviour_is_stated_per_declared_signature_and_the_premise_dissolves
+  23:the_additive_and_absorption_verdicts_are_canon
+  32:arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation
+  33:a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+  34:membership_of_the_representable_set_is_one_affine_predicate
+  35:absorption_decides_associativity_of_a_clamped_reduction
+  40:the_model_band_transfer_is_defeated_in_both_fragments
+  41:inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width
+  47:an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit
+  48:the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion
+  count: 12
+
+-------- their statements, in full, for classification by subject
+### adaptation_is_conditional_on_proof_and_on_soundness
+    "arvo is multi-threadable wherever that is proven to improve performance without sacrificing 
+    soundness. Two conditions, not one."
+
+### the_format_spine_is_canon
+    "Four propositions become canon together and they are the format topic's spine. A format is 
+    identified by its ambient domain and its representable set, and that set is a constant of the 
+    type. Membership in it is one affine predicate over one parameterisation, of which integers, 
+    fixed point, scaled integers and floats are points. Arithmetic on a format is an exact 
+    operation in the ambient domain composed with a named total adaptation onto that set, and the 
+    adaptation is a first-class object with its own laws. The concept is closed and the inventory 
+    of admitted instances is open."
+
+### behaviour_is_stated_per_declared_signature_and_the_premise_dissolves
+    "The container premise is malformed as a binary and both of its branches are false. Behaviour 
+    is stated per declared signature: every operation the design declares is a function of the 
+    declared width and never of the machine carrier, so arithmetic and encoding are stated over the 
+    declared width. The footprint is nonetheless observable, through exactly one observation the 
+    design does not own, the host language's layout observation on a sized type, and that 
+    observation exists only where the value is the sole logical occupant of its allocation. At a 
+    shared placement no per-element footprint exists to observe. Identity saturates at the declared 
+    signature set."
+
+### the_additive_and_absorption_verdicts_are_canon
+    "Two law-tier propositions become canon. Addition at a common scale never rescales, so an 
+    additive verdict, survival and breakage alike, is independent of the fraction width. And 
+    whether a reduction's induced operation is associative is decided by absorption, quantified 
+    over the values the format can hold."
+
+### arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation
+    "Arithmetic on a format is an exact operation in an ambient domain composed with a named, total 
+    adaptation onto the representable set. The adaptation is a first-class object with its own 
+    laws; an operation that fuses one invisibly is an operation and an adaptation point wearing one 
+    name, and the model's statements apply to it only when the two are separated."
+
+### a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+    "A format is identified by its ambient domain and its representable set. The representable set 
+    is a constant of the type: a value set that depends on other data is not a format but storage. 
+    Adaptation choice and encoding are realisation, observable in computed values and in 
+    pattern-level properties respectively, and not part of identity."
+
+### membership_of_the_representable_set_is_one_affine_predicate
+    "Membership is one predicate over one parameterisation: an affine slot function, a quantum per 
+    magnitude and a phase, of which integers, fixed point, scaled integers and floats are points. 
+    The phase is stated explicitly: a nonzero phase decides whether the identity adaptation ever 
+    occurs and whether the set carries an additive identity at all."
+
+### absorption_decides_associativity_of_a_clamped_reduction
+    "Whether a reduction's induced operation is associative is decided by absorption, quantified 
+    over the values the format can hold: reducing a reachable exact value before combining it with 
+    a stored operand must not change the adapted result. For clamped addition this is exactly 
+    associativity; for clamped multiplication, exactly modulo operations the clamp has collapsed to 
+    a constant. Stated over ambient values beyond the format it is a different and stronger 
+    predicate, and the stronger form is the one that gets real folds wrong."
+
+### the_model_band_transfer_is_defeated_in_both_fragments
+    "Agreement between a law's verdicts over a band of model widths and its verdict at the shipped 
+    width carries nothing. Two independently constructed families place a law's truth flip exactly 
+    at the shipped width, where no model band, at any guard setting, on any host, could have 
+    disagreed."
+
+### inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width
+    "Inside a fragment with a complete test set, a law's verdict is computed at the shipped width, 
+    and two fragments now have one. For the wrapping ring fragment, agreement on the degree grid 
+    decides the whole domain, a false law has a witness inside its own degree box, and equation 
+    truth sets are initial segments at every arity. For the monotone unsigned saturating fragment, 
+    saturating evaluation equals the exact integer polynomial clamped once, and agreement on the 
+    degree box decides any width at any arity."
+
+### an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit
+    "For incoherent clamped addition, agreement with the once-adapted exact answer needs the 
+    exact-sum width less one bit. The final adaptation absorbs the outermost bit, because the 
+    accumulator must decide which side of the format the result fell on rather than represent how 
+    far outside it fell."
+
+### the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion
+    "For multiplication no bounded closed form exists: the exact guard grows linearly in fold 
+    length at `(n-1)F` bits with no logarithmic closed form. The saving below full precision is 
+    adaptation fusion, and it is rounding-conditional rather than constant: worth exactly `F` under 
+    a composing rounding rule and zero under round-to-nearest-even at fold lengths three and four, 
+    with a second growing rule-independent slack appearing at five. So any accumulator statement 
+    derived from a capacity is an additive-only mechanism."
+
+======== CONTROL: a planted row carrying the sentence that would refute the claim
+planted row flagged by the same instrument:
+  planted_control_a_candidate_exposes_its_reductions_verdicts
+  (if this line is empty the census above proves nothing)
