@@ -1,0 +1,77 @@
+=== the four lists, each quoted from its own source ===
+
+A. 65's three levels, from OPTIONS.md's statement of Q19:
+    1598:`65` proposes three levels (system, representation, format) with a change-test attached. `66` proposes
+B. 66's five levels, same line:
+    `65` proposes three levels (system, representation, format) with a change-test attached. `66` proposes
+    five (number, system, representation scheme, format, container). **What would distinguish them:** apply
+
+   and the registry row's own options, which is what a reader gates on:
+    options = [
+      "Three levels: system, representation, format, with a change-test attached.",
+      "Five levels: number, system, representation scheme, format, container.",
+    ]
+
+C. 67's five chain components, from 74 section 3.1:
+    The concept's components are not a tuple. Each later component ranges over a set the earlier ones
+    determine, the dependency runs one way, and the sequence as currently established has five
+    components: an ambient domain, a representable set over it, a reduction from the space that pair
+    derives, an encoding of the set, a container for the encoding (`67:134-149`, the notation at
+    `67:143`). The dependency is enforceable, not merely describable: attaching a component declared
+
+D. R3's ten identity coordinates, from the shipped trait declarations.
+   ADMITTED is excluded: it carries a default body, so no candidate chooses it.
+    ambient.rs RADIX SIGNED 
+    quantum.rs BASE MAGNITUDES SLOPE 
+    slots.rs   MAX MIN WIDTH 
+    format.rs  PHASE_DEN PHASE_NUM 
+    total, deduplicated : 10
+
+=== the comparison ===
+  A n B : format system 
+  A n C : 
+  B n C : container 
+
+  D is a list of associated constants and A, B and C are lists of concept
+  levels, so a set intersection between them is not defined at the level of
+  the names. What relates D to C is stated by ratified rows, below.
+
+  C1 passes: C against itself returns all five members, so the comparison can see a match.
+  C2 passes: B and C share exactly 'container', which the comparison reports.
+
+  VERDICT: Q19 asks about A against B. 241's seam is C against D.
+  A and C share nothing. B and C share one word, 'container', which is why
+  the two pairs are easy to conflate and why they are not the same pair.
+
+=== what the ratified rows already say about C against D ===
+  R1, ruling::the_format_spine_is_canon, ratifies:
+    says = "A format is identified by its ambient domain and its representable set. The 
+    representable set is a constant of the type: a value set that depends on other data is not 
+    a format but storage. Adaptation choice and encoding are realisation, observable in 
+    computed values and in pattern-level properties respectively, and not part of identity."
+
+  R2, ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule:
+    says = "The container derivation is a placement rather than a semantics, and its output 
+    count moves with occupancy: one output at sole occupancy, the carrier; three at shared, the 
+    carrier, the access width and the stride. Two arms, not one number. And the design ships an 
+
+  question::adaptation_in_identity_or_realisation, its answered field:
+    answered = "Realisation. Settled already by `ruling::the_format_spine_is_canon`, which is 
+    ratified and ratifies 
+    `proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set`, whose 
+    own words are that adaptation choice and encoding are realisation, observable in computed 
+
+  So C's component 3 (the reduction, which is the adaptation) and component
+  4 (the encoding) are ratified out of identity by R1, and component 5 (the
+  container) is ratified as placement rather than semantics by R2. That
+  leaves components 1 and 2 as identity, and D refines exactly those two.
+  The relation between C and D is therefore already settled by ratified
+  text. What is not settled is which of the two a canon sentence uses.
+
+=== is there a row asking which vocabulary a canon sentence uses ===
+  every the_number_system row whose text contains any of the phrases the
+  question would be written in, with what that row actually asks, because a
+  bare count would not let a reader see that the hit is incidental:
+    the_ownership_key_as_a_structural_axis
+      asks: Does the concept adopt an ownership key as a structural axis?
+  C3 passes: the same grep over the same rows finds 'level' 8 times, so it can find a phrase.

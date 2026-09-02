@@ -1,0 +1,9 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+5 positions at kind `trait-const`, over the demand
+
+  notko@origin/dev:notko-macros-core/src/tiers.rs:54  trait-const          bool       Tier INLINE
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/src/ceiling_div.rs:29  trait-const          usize      CeilingDiv RESULT
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:221  trait-const          usize      ColumnValue BIT_WIDTH
+  hilavitkutin@origin/dev:mock/crates/hilavitkutin-api/DESIGN.md.tmpl:335  trait-const          bool       WorkUnit COMMUTATIVE
+  vehje@origin/main:mock/crates/vehje-codegen/DESIGN.md.tmpl:39  trait-const          u32        CodegenTarget VERSION
+the-positions: clean, 140500 examined.

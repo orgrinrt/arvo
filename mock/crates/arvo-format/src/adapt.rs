@@ -76,6 +76,37 @@ impl<F: Format, A: Adaptation> DeclaredSignature for Signature<F, A> {
     type Adaptation = A;
 }
 
+/// How many operands an operation takes.
+///
+/// A count, and the only coordinate an operation carries beside the signature it
+/// is a function of. It is here rather than with the other counts because it
+/// belongs to the contract that reads it.
+#[repr(transparent)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+pub struct Arity(u32);
+
+impl Arity {
+    /// One operand.
+    pub const UNARY: Self = Self(1);
+
+    /// Two operands.
+    pub const BINARY: Self = Self(2);
+
+    /// An arity from a count of operands.
+    #[must_use]
+    pub const fn of(operands: u32) -> Self {
+        Self(operands)
+    }
+
+    /// The count, for the one place a host contract needs it back.
+    ///
+    /// The unwrap door, declared as one.
+    #[must_use]
+    pub const fn count(self) -> u32 {
+        self.0
+    }
+}
+
 /// An operation admitted by the admission rule.
 ///
 /// The rule is that an operation is admitted exactly when it is a function of the
@@ -92,7 +123,7 @@ pub trait Operation {
     type Signature: DeclaredSignature;
 
     /// How many operands it takes.
-    const ARITY: u32;
+    const ARITY: Arity;
 }
 
 /// The rounding mode an operation's signature selects, reached through the

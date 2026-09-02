@@ -1,0 +1,72 @@
+==================================================================
+CONTROLS -- nothing below counts unless each of these behaves
+==================================================================
+-- C1 two anchors into one file must read as ONE file, two files as TWO --
+planted_two_anchors_one_file	two_experts	1	74_giesen_consolidation
+planted_two_files	two_experts	2	65_knuth_derived_cold,66_dolan_derived_cold
+   expected: 1 for the first row, 2 for the second.
+
+-- C2 the standing field is really being read: mutate it and watch it move --
+planted_two_anchors_one_file	three_or_more
+planted_two_files	three_or_more
+   expected: both rows now three_or_more. Same output as C1 would mean the
+   extractor is printing a constant rather than reading the field.
+
+-- C3 a pattern that must be ZERO on the real tree --
+   zzznotanamespace:: hits: 0
+-- C4 the same instrument, the real pattern, must be NON-ZERO --
+   registry-slug hits across the panel: 939
+
+==================================================================
+A. standing against the number of DISTINCT files its provenance names
+==================================================================
+proposal rows read: 127
+   2 cross_topic	files=2
+   4 cross_topic	files=1
+   1 one_expert	files=5
+   4 one_expert	files=4
+   7 one_expert	files=3
+  25 one_expert	files=2
+  55 one_expert	files=1
+   6 three_or_more	files=1
+   2 two_experts	files=2
+   2 two_experts	files=3
+  19 two_experts	files=1
+
+multi-arrival standing resting on ONE file: 29
+the ceiling the lint carries:               const CEILING: usize = 29
+
+==================================================================
+B. the proposals an expert ratification names, and their standing
+==================================================================
+proposal ids named anywhere in ruling.toml: 11
+  a_format_is_identified_by_its_ambient_domain_and_its_representable_set two_experts    files=1
+  absorption_decides_associativity_of_a_clamped_reduction      two_experts    files=1
+  an_additive_verdict_is_independent_of_the_fraction_width     three_or_more  files=1
+  arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation two_experts    files=1
+  arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached cross_topic    files=1
+  at_shared_occupancy_no_per_element_footprint_observation_exists one_expert     files=1
+  every_operation_arvo_declares_is_a_function_of_the_declared_width one_expert     files=1
+  membership_of_the_representable_set_is_one_affine_predicate  two_experts    files=1
+  observability_is_relative_to_a_declared_signature            one_expert     files=1
+  the_carrier_is_observable_through_the_ambient_layout_observation_alone one_expert     files=1
+  the_concept_is_closed_and_the_inventory_is_open              two_experts    files=3
+
+  of those, how many rest on one file:
+  10 of 11
+
+==================================================================
+C. registry-slug citations in panel member files, split at 189
+==================================================================
+files numbered  < 189: 191 files, 3 cite the registry, 5 citation lines
+files numbered >= 189: 55 files, 42 cite the registry, 835 citation lines
+(244 through 249 excluded: seat 249 had not read them when this ran.)
+
+==================================================================
+D. question.toml's header against its own rows
+==================================================================
+16:# No answer is recorded here, including for the rows whose source records one.
+question rows:      106
+carrying answered:  14
+carrying bound:     23
+carrying options:   106

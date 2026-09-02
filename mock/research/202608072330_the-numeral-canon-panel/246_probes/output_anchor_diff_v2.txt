@@ -1,0 +1,168 @@
+registry namespaces, derived from the table headers of ../../registry/*.toml:
+  dimension|law|obligation|probe|proposal|question|retirement|ruling|strategy|topic
+
+C1 passes: all four extractions are nonempty.
+C2 passes: the sources-only plant is reported lost.
+C3 passes: the 244-only plant is reported new.
+C4 passes: the both-sides plant is carried and appears in neither difference.
+C5 passes: v1 produces both phantoms and v2 produces neither.
+
+--- class: registry row slugs (invisible to v1 entirely) ---
+  in the three sources : 13
+  in 244               : 23 (section 7 excluded)
+  LOST (cited by a source, not by 244):
+    ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves
+    ruling::the_canon_does_not_police_what_shape_a_law_takes
+    ruling::the_option_set_is_not_a_boundary
+    ruling::the_panel_finishes_the_canon_without_him
+    ruling::there_is_no_universal_answer_take_the_win_and_gate_it
+    count = 5
+  new (cited by 244, not by a source):
+    probe::the_collapsed_declaration_cannot_be_made_to_fail
+    proposal::a_system_exposes_its_ambient_laws_its_set_and_its_reductions_verdicts
+    proposal::admission_returns_a_coordinate_rather_than_a_verdict
+    proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing
+    proposal::membership_and_hosting_are_two_questions
+    proposal::the_concept_commits_to_its_choices_and_to_no_count_of_levels
+    proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test
+    question::are_set_valued_carriers_admitted
+    question::are_the_level_hierarchies_the_same_cut
+    question::is_admission_a_predicate_or_a_location
+    question::is_interoperation_conversion_or_resolution
+    question::the_ownership_key_as_a_structural_axis
+    question::what_the_admission_contract_asks_a_candidate_to_expose
+    retirement::r161_r9_the_number_system_convergence_as_two_instances
+    ruling::a_predicate_lists_only_what_holds
+    count = 15
+  carried:
+    proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+    proposal::the_concept_is_closed_and_the_inventory_is_open
+    question::is_the_ambient_operation_family_fixed
+    question::is_the_number_system_inventory_open
+    ruling::never_a_runtime_check_and_one_lowered_path
+    ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule
+    ruling::the_format_spine_is_canon
+    ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon
+    count = 8
+
+--- class: files and file:line (v1's class, phantoms removed, hyphens admitted) ---
+  in the three sources : 23
+  in 244               : 32 (section 7 excluded)
+  LOST (cited by a source, not by 244):
+    71_orchard_what_crosses_between_two_systems.md
+    Cargo.toml
+    mockspace.toml
+    count = 3
+  new (cited by 244, not by a source):
+    242_what-admits-a-number-system.md
+    243_seat242_the_resolution_has_no_second_arm.md
+    law-the-later-topics.toml
+    mockspace.toml:31
+    probe.toml
+    proposal-the-later-topics.toml
+    retirement.toml
+    slots.rs:132
+    slots.rs:150
+    slots.rs:65
+    slots.rs:93
+    tests.rs:391
+    count = 12
+  carried:
+    08_knuth_what_the_one_format_concept_covers.md
+    237_the_format_proposals_against_the_ratification_gate.md
+    240_the_format_layer_derived_from_its_denotation.md
+    241_kiselyov_admission_is_a_resolution_not_a_verdict.md
+    73_leijen_the_membership_test_and_how_wide.md
+    74_giesen_consolidation_the_number_system_concept.md
+    adapt.rs
+    ambient.rs
+    dimension.toml
+    format.rs
+    main.rs:123
+    proposal.toml
+    q4_the_obligation_the_format_does_not_carry.rs
+    quantum.rs
+    question.toml
+    ruling.toml
+    runtime_call.rs
+    slots.rs
+    slots.rs:94
+    tests.rs
+    count = 20
+
+--- COMBINED, which is the corrected accounting ---
+  in the three sources : 36
+  in 244               : 55 (section 7 excluded)
+  LOST (cited by a source, not by 244):
+    71_orchard_what_crosses_between_two_systems.md
+    Cargo.toml
+    mockspace.toml
+    ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves
+    ruling::the_canon_does_not_police_what_shape_a_law_takes
+    ruling::the_option_set_is_not_a_boundary
+    ruling::the_panel_finishes_the_canon_without_him
+    ruling::there_is_no_universal_answer_take_the_win_and_gate_it
+    count = 8
+  new (cited by 244, not by a source):
+    242_what-admits-a-number-system.md
+    243_seat242_the_resolution_has_no_second_arm.md
+    law-the-later-topics.toml
+    mockspace.toml:31
+    probe.toml
+    probe::the_collapsed_declaration_cannot_be_made_to_fail
+    proposal-the-later-topics.toml
+    proposal::a_system_exposes_its_ambient_laws_its_set_and_its_reductions_verdicts
+    proposal::admission_returns_a_coordinate_rather_than_a_verdict
+    proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing
+    proposal::membership_and_hosting_are_two_questions
+    proposal::the_concept_commits_to_its_choices_and_to_no_count_of_levels
+    proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test
+    question::are_set_valued_carriers_admitted
+    question::are_the_level_hierarchies_the_same_cut
+    question::is_admission_a_predicate_or_a_location
+    question::is_interoperation_conversion_or_resolution
+    question::the_ownership_key_as_a_structural_axis
+    question::what_the_admission_contract_asks_a_candidate_to_expose
+    retirement.toml
+    retirement::r161_r9_the_number_system_convergence_as_two_instances
+    ruling::a_predicate_lists_only_what_holds
+    slots.rs:132
+    slots.rs:150
+    slots.rs:65
+    slots.rs:93
+    tests.rs:391
+    count = 27
+  carried:
+    08_knuth_what_the_one_format_concept_covers.md
+    237_the_format_proposals_against_the_ratification_gate.md
+    240_the_format_layer_derived_from_its_denotation.md
+    241_kiselyov_admission_is_a_resolution_not_a_verdict.md
+    73_leijen_the_membership_test_and_how_wide.md
+    74_giesen_consolidation_the_number_system_concept.md
+    adapt.rs
+    ambient.rs
+    dimension.toml
+    format.rs
+    main.rs:123
+    proposal.toml
+    proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+    proposal::the_concept_is_closed_and_the_inventory_is_open
+    q4_the_obligation_the_format_does_not_carry.rs
+    quantum.rs
+    question.toml
+    question::is_the_ambient_operation_family_fixed
+    question::is_the_number_system_inventory_open
+    ruling.toml
+    ruling::never_a_runtime_check_and_one_lowered_path
+    ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule
+    ruling::the_format_spine_is_canon
+    ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon
+    runtime_call.rs
+    slots.rs
+    slots.rs:94
+    tests.rs
+    count = 28
+
+--- v1's own numbers, reproduced here for the comparison ---
+  v1 sources : 23      v1 244 : 30
+  v1 lost    : 3      v1 new : 10

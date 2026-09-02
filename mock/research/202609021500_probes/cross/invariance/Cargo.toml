@@ -1,0 +1,13 @@
+[workspace]
+
+[package]
+name = "q31-cross-invariance"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+q31-probes = { path = "../.." }
+notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const", "try_trait_v2"] }

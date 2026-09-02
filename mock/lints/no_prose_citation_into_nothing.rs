@@ -360,8 +360,24 @@ fn rows_the_prefix_reaches(cited: &str, reg: &RegistryView) -> usize {
     };
     reg.rows_in(ns)
         .iter()
-        .filter(|id| id.starts_with(cited))
+        .filter(|id| continues_at_a_word_boundary(id, cited))
         .count()
+}
+
+/// Whether `id` continues `cited` from a word boundary.
+///
+/// An elision says a cut happened and does not say where, so the only cuts a
+/// reader can finish are the ones landing between words. Two spellings reach
+/// one: the prose stopped before the separator, so the row's next byte is
+/// `_`, or it stopped just after one, so the written part already ends in `_`.
+/// Both occur in the corpus. Stopping inside a word leaves a prefix nobody can
+/// complete without guessing, which is the near miss this lint is about, so it
+/// is not a resolution however few rows carry it.
+fn continues_at_a_word_boundary(id: &str, cited: &str) -> bool {
+    if !id.starts_with(cited) {
+        return false;
+    }
+    cited.ends_with('_') || id[cited.len()..].starts_with('_')
 }
 
 /// Whether the line stops mid-citation with a code span still open, which is
@@ -413,10 +429,12 @@ fn tokens(line: &str, namespaces: &[&str]) -> Vec<(String, bool)> {
             // `...` is outside the slug charset, so it cannot be part of a
             // spelling and the author put it there to say a cut happened. A
             // trailing `_` is inside the charset and says nothing, which is
-            // why the two are read differently.
+            // why the two are read differently. Both spellings of the mark
+            // count, since an editor may fold three dots into one character
+            // without being asked.
             out.push((
                 format!("{ns}::{}", &rest[..end]),
-                rest[end..].starts_with("..."),
+                rest[end..].starts_with("...") || rest[end..].starts_with('\u{2026}'),
             ));
         }
     }
@@ -1020,5 +1038,81 @@ mod tests {
     #[test]
     fn it_reaches_the_pack_the_engine_is_handed() {
         assert_registered(super::NAME);
+    }
+
+    const P_GUARD: &[(&str, &[(&str, &str)])] = &[(
+        "proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion",
+        &[("says", "a thing")],
+    )];
+    const P_TOP: &[(&str, &[(&str, &str)])] = &[(
+        "proposal::a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none",
+        &[("says", "a thing")],
+    )];
+    const P_LAW: &[(&str, &[(&str, &str)])] = &[(
+        "proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence",
+        &[("says", "a thing")],
+    )];
+
+    #[test]
+    fn case_a_cut_before_the_separator_resolves() {
+        let f = findings(
+            "c-a",
+            P_GUARD,
+            &[(
+                "42_member.md",
+                "`proposal::the_multiplicative_guard...` says so.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "corpus case A reported: {f:?}");
+    }
+    #[test]
+    fn case_b_cut_after_the_separator_resolves() {
+        let f = findings(
+            "c-b",
+            P_TOP,
+            &[(
+                "42_member.md",
+                "`proposal::a_min_plus_fold_needs_an_absorbing_top_...` says so.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "corpus case B reported: {f:?}");
+    }
+    #[test]
+    fn case_c_cut_inside_a_word_is_refused() {
+        let f = findings(
+            "c-c",
+            P_LAW,
+            &[("42_member.md", "`proposal::a_law_is_inherit...` says so.\n")],
+            0,
+        );
+        assert_eq!(f.len(), 1, "mid-word elision resolved silently: {f:?}");
+    }
+    #[test]
+    fn case_d_the_corpus_law_elision_still_resolves() {
+        let f = findings(
+            "c-d",
+            P_LAW,
+            &[(
+                "42_member.md",
+                "`proposal::a_law_is_inherited...` says so.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "corpus case D reported: {f:?}");
+    }
+    #[test]
+    fn case_e_a_unicode_ellipsis_is_read_as_an_elision() {
+        let f = findings(
+            "c-e",
+            P_LAW,
+            &[(
+                "42_member.md",
+                "`proposal::a_law_is_inherited\u{2026}` says so.\n",
+            )],
+            0,
+        );
+        assert!(f.is_empty(), "u2026 not read as an elision: {f:?}");
     }
 }

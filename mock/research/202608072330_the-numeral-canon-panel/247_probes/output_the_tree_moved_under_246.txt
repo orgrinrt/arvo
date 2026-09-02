@@ -1,0 +1,28 @@
+control passes: Slots::ADMITTED carries 5 assert! calls at 800e120a, at a12d4d5d and at HEAD, so 'unchanged' is readable.
+
+(1) 246's tree, and the source commit it never saw
+    tree of 033c02e2 : a12d4d5d  (246 cites a12d4d5d)
+    033c02e2 parents:98a4b7ee 334f59e5  2026-09-02 00:51:43 +0300  research: seat 245 entails the admission consolidation against its sources
+    748c6004 parents:033c02e2  2026-09-02 09:28:30 +0300  feat: spell every format coordinate in a type the stack owns
+    5fd3134a parents:033c02e2  2026-09-02 09:53:46 +0300  research: seat 246 corrects the promotions and rebuilds the anchor diff
+    8064a454 parents:748c6004 5fd3134a  2026-09-02 09:57:57 +0300  research: seat 246 finds both promotions clause-partial
+    607ca52f parents:8064a454  2026-09-02 09:59:21 +0300  docs: fix the four release surfaces no diff was ever about
+    748c6004 and 5fd3134a are siblings off 033c02e2; 8064a454 merges them. 246 did not see 748c6004.
+                           at a12d4d5d                          at HEAD (607ca52f)
+    Format phase consts    const PHASE_NUM: i64; const PHASE_DEN: i64;  const PHASE: Phase; 
+    Ambient::RADIX         const RADIX: u32;                    const RADIX: Radix;
+
+(2) when the obligations above Slots landed, against the three seats' trees
+    da2f9d23  2026-09-02 00:06:35 +0300  fix: the identity turns on a whole multiple of the quantum
+    tree                           ADMITTED on            da2f9d23 in tree?
+    244 at 800e120a                slots                  no
+    245 at 98a4b7ee                ambient quantum slots format  yes
+    246 at 033c02e2                ambient quantum slots format  yes
+    247 at 607ca52f                ambient quantum slots format  yes
+
+what this makes stale, by file and section:
+  244 A4   'the admission obligation exists at Slots and at no tier above it' : true at 800e120a, false at every later tree
+  245 gate 'none of the growth touches the admission topic'                   : da2f9d23 is in that growth and adds the three obligations 242 measured missing
+  246 5.2  'the shipped mechanism enforces all three through one const'        : four consts at a12d4d5d already
+  246 6,O4 carry 244's C5, 'what would decide the fourth option: a second independent derivation'   : the three were enforced at a12d4d5d already
+  246 2.2  'Format declares PHASE_NUM and PHASE_DEN'                            : true at a12d4d5d, one PHASE of type Phase at HEAD

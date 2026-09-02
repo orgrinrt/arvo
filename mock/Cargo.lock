@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "arvo-format"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "notko",
  "trybuild",
@@ -12,14 +12,14 @@ dependencies = [
 
 [[package]]
 name = "arvo-placement"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "arvo-format",
 ]
 
 [[package]]
 name = "arvo-strategy"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "arvo-format",
  "arvo-placement",

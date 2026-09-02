@@ -41,3 +41,23 @@ target/
 # run, so the binary and the build log are regenerable and the committed `.out`
 # beside them is the evidence.
 mock/research/*/[0-9]*_probes/p*_out/
+
+# The registry's own rendered pages, one per namespace. They still generate on
+# every run and are still there to read; what changed is that they are not
+# published, because the shape a table gives them and the content their prose
+# columns carry are both written for somebody working on the design rather than
+# for somebody using the crates. They come back when there is a form of them
+# worth putting in front of a stranger.
+#
+# Named one by one rather than swept, because `docs/` also holds the design
+# documents and those are published.
+/docs/DIMENSION.md
+/docs/LAW.md
+/docs/OBLIGATION.md
+/docs/PROBE.md
+/docs/PROPOSAL.md
+/docs/QUESTION.md
+/docs/RETIREMENT.md
+/docs/RULING.md
+/docs/STRATEGY.md
+/docs/TOPIC.md

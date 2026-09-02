@@ -1,0 +1,31 @@
+== notko @ origin/dev
+   -> 0
+== arvo @ origin/dev
+   mock/crates/arvo-format/src/adapt.rs:86:pub struct Arity(u32);
+   mock/crates/arvo-format/src/ambient.rs:24:pub struct Radix(u32);
+   mock/crates/arvo-format/src/quantum.rs:136:pub struct MagnitudeCount(u32);
+   mock/crates/arvo-format/src/quantum.rs:40:pub struct Exponent(i32);
+   mock/crates/arvo-format/src/quantum.rs:97:pub struct Magnitude(u32);
+   mock/crates/arvo-format/src/slots.rs:41:pub struct Slot(i64);
+   mock/crates/arvo-format/src/slots.rs:83:pub struct SlotCount(i64);
+   mock/crates/arvo-format/src/width.rs:30:pub struct Width(u32);
+   mock/crates/arvo-format/src/width.rs:94:pub struct Bool(bool);
+   -> 9
+== hilavitkutin @ origin/dev
+   mock/crates/hilavitkutin-extensions/src/descriptor.rs:17:pub struct AbiVersion(pub u32); // lint:allow(no-public-raw-field) tracked: #206
+   mock/crates/hilavitkutin-extensions/src/descriptor.rs:66:pub struct ProviderId(pub u64); // lint:allow(no-public-raw-field) tracked: #206
+   mock/crates/hilavitkutin-persistence/src/primitives.rs:42:pub struct SchemaVersion(pub u32); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) lint:allow(no-public-raw-field) reason: wire-format bit width fixed for on-disk representation; exact-width refinement tracked: #72
+   mock/crates/hilavitkutin-persistence/src/primitives.rs:58:pub struct EvictionWeight(pub u64); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) lint:allow(no-public-raw-field) reason: wire-format bit width fixed for on-disk representation; exact-width refinement tracked: #72
+   mock/crates/hilavitkutin-persistence/src/primitives.rs:71:pub struct BitWidth(pub u32); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) lint:allow(no-public-raw-field) reason: wire-format bit width fixed for on-disk representation; exact-width refinement tracked: #72
+   -> 5
+== vehje @ origin/main
+   mock/crates/vehje-ir/src/ids.rs:14:pub struct NodeId(pub u32); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) lint:allow(no-public-raw-field) tracked: #207
+   mock/crates/vehje-ir/src/ids.rs:22:pub struct ScopeId(pub u32); // lint:allow(arvo-types-only) tracked: #207 lint:allow(no-bare-numeric) tracked: #207 lint:allow(no-public-raw-field) tracked: #207
+   mock/crates/vehje-ir/src/span.rs:20:pub struct FileId(pub u32);  // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) tracked: #207 lint:allow(no-public-raw-field) tracked: #207
+   mock/crates/vehje-ir/src/span.rs:27:pub struct ByteOffset(pub u32);  // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) tracked: #207 lint:allow(no-public-raw-field) tracked: #207
+   mock/crates/vehje-syntax/src/parser.rs:33:pub struct TokenCursor(pub u32);  // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) tracked: #207 lint:allow(no-public-raw-field) tracked: #207
+   -> 5
+== kolli @ origin/dev
+   -> 0
+
+total: 19

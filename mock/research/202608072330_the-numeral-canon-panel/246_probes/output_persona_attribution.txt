@@ -1,0 +1,74 @@
+=== controls on the extractor ===
+  C1 passes: 241 -> kiselyov
+  C2 passes: 08 -> knuth, which is not kiselyov, so the extractor distinguishes
+
+=== 1. what 241 says about 08, quoted from 241 ===
+  657:which is my third route almost verbatim. It is an earlier Kiselyov seat, so this is one
+  in context:
+    654-
+    655-**Q22's compositional route was already there, and reached by my own persona, which is not
+    656-independence.** `08` section 4.5 says "the interval is then a pair of numerals, built above",
+    657:which is my third route almost verbatim. It is an earlier Kiselyov seat, so this is one
+    658-persona agreeing with itself and I do not count it. What `08` carries that I did not derive
+    659-is the constraint that makes the route work, and it is a real one I now carry forward:
+
+  C3 passes: the sentence is present in 241, a planted variant is found in the planted copy only.
+
+  every kiselyov-named file in this panel:
+    06_kiselyov_where_a_numeral_is_inferred.md
+    154_kiselyov_the_primitive_derived_cold.md
+    159_kiselyov_reply.md
+    162_kiselyov_signature_in_part.md
+    169_kiselyov_the_chain_attacked.md
+    180_kiselyov_porting_the_options_register_and_the_droplist.md
+    189_kiselyov_settling_what_the_corpus_already_settled.md
+    215_kiselyov_second_read_the_algebraic_laws.md
+    219_kiselyov_the_marker_spelling.md
+    222_kiselyov_the_numeric_fundamentals.md
+    230_kiselyov_are_the_blocking_phrases_axes.md
+    231_kiselyov_attacking_the_other_reading.md
+    233_kiselyov_the_nine_rounding_entries_from_their_instruments.md
+    235_kiselyov_which_obligations_the_ratified_canon_supports.md
+    238_kiselyov_what_the_door_may_carry_out.md
+    241_kiselyov_admission_is_a_resolution_not_a_verdict.md
+    246_kiselyov_the_two_promotions_and_what_they_second.md
+    67_kiselyov_which_prefix_earns_the_word.md
+    72_kiselyov_reply.md
+  every knuth-named file in this panel:
+    08_knuth_what_the_one_format_concept_covers.md
+    125_knuth_rounding_cold_derivation.md
+    128_knuth_reply_the_boundary_moves_to_the_coupling.md
+    133_knuth_signature_in_part_with_two_corrections.md
+    56_knuth_the_four_choice_model_attacked.md
+    65_knuth_number_systems_derived_cold.md
+    86_knuth_how_far_the_verdict_reaches_and_the_saturating_threshold.md
+
+  the handle table's row for 08, which records the seat independently of the filename:
+    40:| 8 | `08_knuth_what_the_one_format_concept_covers.md` | `ab1ff2f06636d5a2a` |
+
+  08's own header, first six lines:
+    # 08. What the one format concept covers, and what it leaves outside
+    
+    **Date:** 2026-08-08
+    **Position:** tests the panel's founding premise from outside it. `00_brief.md:8` says the primitives become
+    "named compositions over one format concept". Every file so far has worked inside that sentence. This one
+    asks what it excludes, by surveying the representations that exist rather than the ones the panel has been
+
+  VERDICT: 08 is a knuth seat. 241's ground for declining it is false, so
+  241 declined an independent prior instance for its Q22 compositional
+  route. 244 C3 repeats the attribution and 245 did not check it.
+  The likely source of the confusion is visible in 08's own reading list,
+  which names a kiselyov file:
+    12:`07_orchard_the_adjunction_frame.md`, `06_kiselyov_where_a_numeral_is_inferred.md`,
+
+  the passage of 08 that 241 says is its route almost verbatim:
+    9:directed rounding modes, reachable per operation. The interval is then a pair of numerals, built above.
+
+=== 2. my own seat, and what it forbids me from counting ===
+  this file's seat number : 246
+  this seat's persona     : kiselyov
+  241's persona           : kiselyov
+  So by 241's own standard, quoted above, any conclusion of mine that
+  AGREES with 241 is one persona agreeing with itself and is not a second
+  instance. What is unaffected: measurements, source reads, date and hash
+  comparisons, and refutations, none of which is an agreement.
