@@ -59,11 +59,12 @@ fn every_ratio() -> impl Iterator<Item = (i64, i64)> {
 
 /// Whether `n/d` has an exact form the coordinate can hold.
 ///
-/// Derived rather than searched, and the derivation is what the exhaustive search
-/// in `mock/research/sketches/202609021019_the-fraction-decision/` agrees with at
-/// every width from three bits to eight: a pair has no exact form exactly when one
-/// operand is `i64::MIN`, the denominator is negative, and the other operand is
-/// odd, so nothing cancels.
+/// Derived rather than searched, and an exhaustive search agrees with the
+/// derivation at every width from three bits to eight: a pair has no exact form
+/// exactly when one operand is `i64::MIN`, the denominator is negative, and the
+/// other operand is odd, so nothing cancels. The arm below walks it against a
+/// reduction that shares no branch with it, which is what keeps the two honest
+/// once either moves.
 fn has_an_exact_form(n: i64, d: i64) -> bool {
     if d >= 0 || n == 0 {
         return true;
@@ -102,9 +103,33 @@ fn error_numerator(r: Fraction, n: i64, d: i64) -> u128 {
 
 #[test]
 fn the_ratio_coordinate_holds_its_four_properties_over_the_whole_matrix() {
+    // The hand-written matrix, which is where the zero denominator and the
+    // deliberate parities live, and which the control below is about.
+    let (exact, saturated) = the_four_properties_hold_over(every_ratio());
+    assert!(exact > 0, "the exact region was never entered");
+    assert!(saturated > 0, "the saturating region was never entered");
+
+    // And the wide walk, because eleven of those 225 pairs enter the saturating
+    // region and eleven is thin enough that a rule failing on a shape the matrix
+    // happens not to carry would pass. This one reaches about a hundred.
+    let (exact, saturated) = the_four_properties_hold_over(every_pair_worth_reducing());
+    assert!(exact > 0, "the exact region was never entered");
+    assert!(
+        saturated > 50,
+        "the wide walk entered the saturating region only {saturated} times, which is \
+         the thinness it exists to fix"
+    );
+}
+
+/// The four properties, over whatever pairs are handed in.
+///
+/// Returns how many pairs entered each of the two regions, because a walk that
+/// asserted the saturating half over an empty set would pass every arm in it and
+/// the count is the only thing that says otherwise.
+fn the_four_properties_hold_over(pairs: impl Iterator<Item = (i64, i64)>) -> (usize, usize) {
     let mut exact_seen = 0usize;
     let mut saturated_seen = 0usize;
-    for (n, d) in every_ratio() {
+    for (n, d) in pairs {
         let f = Fraction::of(n, d);
 
         // 1. the denominator is positive, which is what `Exact::between` reads
@@ -160,14 +185,12 @@ fn the_ratio_coordinate_holds_its_four_properties_over_the_whole_matrix() {
         }
     }
 
-    // The control. Both regions have to be entered, or a rule that never
-    // saturated and a rule that never cancelled would each pass one half of the
-    // assertions above by never reaching the other.
-    assert!(exact_seen > 0, "the exact region was never entered");
-    assert!(
-        saturated_seen > 0,
-        "the saturating region was never entered"
-    );
+    // Handed back rather than asserted here, because what counts as enough
+    // depends on which walk was passed in, and the caller is the one that knows.
+    // Both are still checked on every call: a rule that never saturated and one
+    // that never cancelled would each pass one half of the assertions above by
+    // never reaching the other.
+    (exact_seen, saturated_seen)
 }
 
 #[test]
