@@ -1,0 +1,20 @@
+ruling.where(topic=the_primitive).count() = 0
+  rung        in_force
+  key         I14
+ruling.where(rung=ratified).count() = 32
+ruling.where(rung=in_force).count() = 1
+ruling.where(rung=stated).count() = 58
+ruling.where(rung=open).count() = 5
+proposal.where(topic=the_primitive).count() = 8
+id                                                standing
+------------------------------------------------  -------------
+a_primitive_is_a_value_set_with_one_realisation…  one_expert
+the_realisation_map_is_one_map_with_two_regions   three_or_more
+an_axis_the_realisation_map_does_not_read_is_no…  one_expert
+the_lens_degenerates_to_an_ordinary_value_at_so…  one_expert
+configuration_is_not_composition_and_a_composit…  two_experts
+membership_in_the_type_and_identity_are_two_cri…  two_experts
+the_realisation_is_not_part_of_denotational_ide…  one_expert
+a_completeness_obligation_quantifying_over_inpu…  one_expert
+
+8 rows in proposal

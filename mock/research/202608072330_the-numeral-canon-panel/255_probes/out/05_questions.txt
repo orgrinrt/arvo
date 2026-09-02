@@ -1,0 +1,36 @@
+== what_a_platform_width_type_is
+  decider     panel
+  topic       the_format
+  key         Q26
+== the_width_surface_crossing
+  decider     panel
+  topic       the_format
+  key         Q9
+== what_a_datum_stands_for
+  decider     panel
+  topic       the_primitive
+  key         Q4
+== arbitrary_width_demands_in_the_canon
+  decider     panel
+  topic       canon_form
+  key         Q28
+== what_transfers_from_a_model_width
+  decider     panel
+  topic       the_predicate_notation
+  key         Q53
+== the_container_premise
+  decider     panel
+  answered    Neither branch, because the question is malformed as a binary and both branches are false. Behaviour is st
+  topic       the_container_premise
+== what_a_proof_marker_is_against_a_measurement
+  decider     op
+  answered    Recorded as answered by op on 2026-08-31. Both of the first two options, taken together. A proof carries a
+  topic       the_predicate_notation
+  key         Q65
+== what_the_numeric_introduction_door_may_carry_out
+  decider     panel
+  answered    None of the four, and the bound they argue over is not canon. `Width` is a count of bits over `u32`, and t
+  topic       operating_constraints
+== what_the_ingest_row_claims_and_what_turns_on_it
+  decider     panel
+  topic       arvo_identity

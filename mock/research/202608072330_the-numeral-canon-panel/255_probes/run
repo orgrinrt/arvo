@@ -1,0 +1,112 @@
+#!/usr/bin/env nutshell
+# 255 probes. Re-opens what 251 and 252 measured, at this base, and measures one
+# thing neither did: what the principles page tells a consumer to write.
+#
+#   mock/research/202608072330_the-numeral-canon-panel/255_probes/run
+#
+# Everything lands under `out/` and is committed. Exit status is not the result;
+# the captured text is. Every step that can only return one answer carries a
+# control that returns the other, and the control's line is in the same file.
+use log
+
+set -u
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+panel="$(cd "$here/.." && pwd)"
+repo="$(cd "$panel/../../.." && pwd)"
+out="$here/out"
+mkdir -p "$out"
+
+log_step "01: rebuild 251's p01 at this base"
+( cd "$panel/251_probes/p01_the_value_layer_is_absent" && cargo build 2>&1 ) > "$out/01_p01_rebuild.txt"
+echo "exit=$?" >> "$out/01_p01_rebuild.txt"
+
+log_step "02: the principles page, compiled as a consumer"
+p02="$here/p02_the_principles_locus"
+( cd "$p02" && cargo build 2>&1 ) > "$out/02a_control_crate_builds.txt"
+echo "exit=$?" >> "$out/02a_control_crate_builds.txt"
+rlib="$(ls "$p02"/target/debug/deps/libarvo_format-*.rlib 2>/dev/null | head -1)"
+mkdir -p "$p02/target/arms"
+{
+    cd "$p02"
+    echo "rlib=${rlib#$p02/}"
+    for arm in the_ifixed_arm the_ufixed_field_arm the_arm_control; do
+        rustc --edition 2024 --crate-type lib "src/$arm.rs" \
+            --extern arvo_format="${rlib#$p02/}" -L "dependency=target/debug/deps" \
+            --out-dir "target/arms" 2> "$arm.stderr"
+        echo "$arm exit=$? stderr_bytes=$(wc -c < "$arm.stderr" | tr -d ' ')"
+    done
+} > "$out/02b_arms.txt" 2>&1
+
+log_step "03: silence, per registry file, with a control"
+{
+    cd "$repo/mock/registry"
+    for pat in 'fmt' 'debug output' 'nightly' 'feature gate' 'generic_const_exprs' 'printab'; do
+        printf '%-22s all=%-3s  ' "$pat" "$(cat ./*.toml | grep -ic -- "$pat")"
+        for f in ./*.toml; do
+            n="$(grep -ic -- "$pat" "$f")"
+            [ "$n" = 0 ] || printf '%s=%s ' "${f#./}" "$n"
+        done
+        echo
+    done
+    printf '%-22s all=%-3s  (control, must be non-zero)\n' 'usize' "$(cat ./*.toml | grep -ic -- 'usize')"
+    echo
+    echo "the fmt and debug-output hits, so a reader can see which tier each is in:"
+    grep -in -- 'fmt\|debug output' ./*.toml
+    echo
+    echo "ruling.toml alone, which is the governing tier:"
+    for pat in 'fmt' 'debug output' 'nightly' 'feature gate' 'generic_const_exprs' 'printab'; do
+        printf '%-22s %s\n' "$pat" "$(grep -ic -- "$pat" ruling.toml)"
+    done
+    printf '%-22s %s   (control, must be non-zero)\n' 'usize' "$(grep -ic -- 'usize' ruling.toml)"
+} > "$out/03_silence.txt" 2>&1
+
+log_step "04: the-positions over the shipped tree at HEAD"
+( cd "$repo" && cargo mock the-positions '.@HEAD' 2>&1 | grep -v '^ *Finished' ) > "$out/04_the_positions.txt"
+
+log_step "05: which questions in the neighbourhood are answered"
+{
+    cd "$repo"
+    for slug in what_a_platform_width_type_is the_width_surface_crossing \
+        what_a_datum_stands_for arbitrary_width_demands_in_the_canon \
+        what_transfers_from_a_model_width the_container_premise \
+        what_a_proof_marker_is_against_a_measurement \
+        what_the_numeric_introduction_door_may_carry_out \
+        what_the_ingest_row_claims_and_what_turns_on_it; do
+        echo "== $slug"
+        cargo mock query "question::$slug" 2>&1 | grep -E '^  (decider|answered|key|topic) ' | cut -c1-120
+    done
+} > "$out/05_questions.txt" 2>&1
+
+log_step "06: the rung tier list in the generated agent instructions"
+{
+    cd "$repo"
+    printf 'in_force in MAIN.md.tmpl: %s\n' "$(grep -c 'in_force' mock/agent/MAIN.md.tmpl)"
+    printf 'stated   in MAIN.md.tmpl: %s   (control, must be non-zero)\n' "$(grep -c 'stated' mock/agent/MAIN.md.tmpl)"
+} > "$out/06_main_tiers.txt" 2>&1
+
+log_step "07: the principles page against the tree"
+{
+    cd "$repo"
+    echo "what the page says:"
+    grep -n 'IFixed\|UFixed' mock/PRINCIPLES.md.tmpl docs/PRINCIPLES.md
+    echo
+    printf 'IFixed in shipped source: %s files\n' "$(grep -rl 'IFixed' mock/crates/*/src | wc -l | tr -d ' ')"
+    printf 'UFixed in shipped source: %s files   (control, must be non-zero)\n' "$(grep -rl 'UFixed' mock/crates/*/src | wc -l | tr -d ' ')"
+    echo
+    echo "where UFixed is declared:"
+    grep -rn 'pub struct UFixed' mock/crates/*/src
+} > "$out/07_principles_page.txt" 2>&1
+
+log_step "08: the brief's two claims"
+{
+    cd "$repo"
+    printf 'ruling.where(topic=the_primitive).count() = %s\n' "$(cargo mock query 'ruling.where(topic=the_primitive).count()' 2>&1 | tail -1)"
+    cargo mock query 'ruling::the_operating_constraints_are_intents_and_rules' 2>&1 | grep -E '^  (rung|key) '
+    for r in ratified in_force stated open; do
+        printf 'ruling.where(rung=%s).count() = %s\n' "$r" "$(cargo mock query "ruling.where(rung=$r).count()" 2>&1 | tail -1)"
+    done
+    printf 'proposal.where(topic=the_primitive).count() = %s\n' "$(cargo mock query 'proposal.where(topic=the_primitive).count()' 2>&1 | tail -1)"
+    cargo mock query 'proposal.where(topic=the_primitive).select(id,standing)' 2>&1 | grep -v '^ *Finished'
+} > "$out/08_the_briefs_claims.txt" 2>&1
+
+log_step "done; read out/"
