@@ -50,34 +50,70 @@ impl Fraction {
 
     /// A ratio of `num` over `den`.
     ///
-    /// A non-positive denominator is read rather than refused. Total, so nothing
-    /// on this path is a check.
+    /// Total, and no branch here is a check. The exact operation is the ratio in
+    /// the ambient rationals, the representable set is the pairs this type
+    /// carries with a positive denominator, and the constructor is the adaptation
+    /// between them. So it has two regions, the way the applied map does.
     ///
-    /// **A zero denominator names no position and a negative one names one
-    /// exactly**, which is why they take different paths. `of(3, -7)` is `-3/7`
-    /// and normalises by moving the sign to the numerator; only a zero one has
-    /// no reading and becomes `ZERO`. This read `ZERO` for both, so every
-    /// negative input was discarded outright, which is the same defect
-    /// `Phase::of` carried and the reason the fix there was wrong to stop at the
-    /// one function it was found in.
+    /// **Exact normalisation is the first, and it covers all but one condition.**
+    /// A negative denominator names a value exactly, so the sign moves to the
+    /// numerator and `of(3, -7)` is `-3/7`. Where one operand is `i64::MIN` the
+    /// pair still reduces whenever the other is even, because the two then share
+    /// a factor of two and cancelling it lands both inside the type:
+    /// `of(i64::MIN, -2)` is `2^62` over one, exactly.
     ///
-    /// **Two pairs cannot be normalised and keep a denominator of one.**
-    /// `i64::MIN` has no negation in `i64`, so a denominator of `i64::MIN`, or
-    /// a numerator of `i64::MIN` under a negative denominator, would need a
-    /// magnitude one past what the type carries. Neither the sign nor the
-    /// magnitude survives on those two, and they are the only inputs on which
-    /// this is lossy at all.
+    /// **Magnitude saturation is the second, and it applies where the other
+    /// operand is odd.** Nothing cancels then, and the exact form would want a
+    /// magnitude one past what the type carries, so the magnitude pins to the
+    /// largest it does carry. The answer keeps the sign of the ratio that was
+    /// named and sits within a relative `1 / i64::MAX` of it. That is the same
+    /// act `complete_slot` performs on a slot leaving its range, one coordinate
+    /// up.
+    ///
+    /// **A zero denominator is neither region.** It names no ratio at all, so
+    /// there is nothing for an answer to be near, and it reads as `ZERO`.
     #[must_use]
     pub const fn of(num: i64, den: i64) -> Self {
         if den > 0 {
-            Self { num, den }
-        } else if den == 0 {
-            Self::ZERO
-        } else if den == i64::MIN || num == i64::MIN {
-            Self { num, den: 1 }
-        } else {
+            return Self { num, den };
+        }
+        if den == 0 {
+            return Self::ZERO;
+        }
+        if num != i64::MIN && den != i64::MIN {
+            return Self {
+                num: -num,
+                den: -den,
+            };
+        }
+        if num == 0 {
+            // The denominator is `i64::MIN` and the ratio is zero, which `ZERO`
+            // names exactly.
+            return Self::ZERO;
+        }
+        if num == i64::MIN && den == i64::MIN {
+            return Self { num: 1, den: 1 };
+        }
+        // Exactly one operand is `i64::MIN` and the other decides how far the
+        // pair cancels. That other one is neither zero nor `i64::MIN`, both of
+        // which the branches above answered, so it carries at most 62 factors of
+        // two: each shift below is an exact division and each negation has room.
+        let other = if den == i64::MIN { num } else { den };
+        let k = other.trailing_zeros();
+        if k > 0 {
+            return Self {
+                num: -(num >> k),
+                den: -(den >> k),
+            };
+        }
+        if den == i64::MIN {
             Self {
                 num: -num,
+                den: i64::MAX,
+            }
+        } else {
+            Self {
+                num: i64::MAX,
                 den: -den,
             }
         }
@@ -164,9 +200,15 @@ impl Exact {
     }
 
     /// Whether the position is exactly half way between two grid points.
+    ///
+    /// Cross-multiplied in the wide carrier, which is what `round_slot` does with
+    /// the same comparison. The stored remainder reaches one below the
+    /// denominator, so doubling it in the coordinate's own carrier leaves the
+    /// type on any remainder above half of it, and a verdict function that
+    /// diverges is not one.
     #[must_use]
     pub const fn is_tie(self) -> Bool {
-        Bool::of(self.part.num * 2 == self.part.den)
+        Bool::of((self.part.num as i128) * 2 == self.part.den as i128)
     }
 }
 
