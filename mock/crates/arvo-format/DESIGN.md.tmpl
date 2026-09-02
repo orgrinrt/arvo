@@ -746,10 +746,12 @@ grid, so the phase coordinate does not denote and the predicate has nothing to b
 
 Each fires for the same reason and with the same limit: a const, so it is evaluated at the verbs that
 ask for it and at no other. Asking for it means carrying the force site rather than reaching one
-through a call, and the distinction is what makes the sets comparable at all. A set counted
-transitively is a property of the declaration as well as the verb, since `has_additive_identity`
-returns early when `cancelling_slot` answers `Isnt`, and so reaches the slot range's obligation for
-one format and not for another.
+through a call, and the distinction is what makes the sets comparable at all, because a set counted
+transitively is not one set. In a const evaluation the branches are taken or not taken, so
+`has_additive_identity` reaches the slot range's obligation for a format whose phase cancels and not
+for one whose phase does not, and there the reach is a property of the declaration as much as of the
+verb. At a runtime call it is neither: monomorphising the verb instantiates everything it calls, so
+every obligation below it is forced for every declaration, whichever branch would have run.
 
 Under that reading the format's obligation is forced at two verbs, `cancelling_slot` and
 `has_additive_identity`, and a verb belongs to as many sets as it has force sites. Each of those two
