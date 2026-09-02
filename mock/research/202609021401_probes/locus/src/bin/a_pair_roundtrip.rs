@@ -28,7 +28,11 @@ fn main() {
 
     // The control: the same numerator over one is a different position, and the
     // two are distinguishable, so the storage is not collapsing them.
-    assert_ne!(Phase::of(1, 0), Phase::of(1, 1), "1/0 and 1/1 compared equal");
+    assert_ne!(
+        Phase::of(1, 0),
+        Phase::of(1, 1),
+        "1/0 and 1/1 compared equal"
+    );
 
     println!("A ok: of(1, 0) stores (1, 0); denotes=false is_whole_multiple=false");
 }

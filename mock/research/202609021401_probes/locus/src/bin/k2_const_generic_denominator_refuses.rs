@@ -27,7 +27,9 @@ impl PhaseK {
 
 // The refusing half of arm K, as its own bin. The call site is an ordinary
 // function, not a const item, which is the whole point.
-fn refused() -> PhaseK { PhaseK::of::<0>(1) }
+fn refused() -> PhaseK {
+    PhaseK::of::<0>(1)
+}
 
 fn main() {
     let bad = refused();

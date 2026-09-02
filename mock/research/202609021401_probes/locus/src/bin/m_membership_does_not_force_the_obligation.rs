@@ -35,7 +35,10 @@ fn main() {
     // The control: a slot the range cannot hold.
     let outside = contains::<NoDenominator>(Slot::at(1 << 40), Magnitude::at(0)).get();
 
-    assert!(!outside, "the control was admitted, so the arm measures nothing");
+    assert!(
+        !outside,
+        "the control was admitted, so the arm measures nothing"
+    );
     println!(
         "M: contains on a non-denoting format answered in-range={inside} out-of-range={outside}, \
          and PHASE.denotes()={}",

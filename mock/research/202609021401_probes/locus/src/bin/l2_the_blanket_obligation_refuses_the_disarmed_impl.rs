@@ -60,7 +60,10 @@ const REFUSED: i64 = forced::<Disarmed>();
 fn main() {
     // The control: the well-formed declaration forces `OK` and builds.
     println!("L2: {}", REFUSED);
-    println!("L2 control: forced::<HalfStep>() = {}", forced::<HalfStep>());
+    println!(
+        "L2 control: forced::<HalfStep>() = {}",
+        forced::<HalfStep>()
+    );
     // And the disarm still works against the trait's own const, which is the
     // thing being replaced.
     let () = <Disarmed as Format>::ADMITTED;

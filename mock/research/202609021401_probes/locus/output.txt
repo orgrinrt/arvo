@@ -84,7 +84,7 @@ I: verdict=false has_additive_identity=false
 === j_constructor_assert_costs_a_runtime_panic | cargo run | exit=101
 J control: 1/2 returned
 
-thread 'main' (8461979) panicked at src/bin/j_constructor_assert_costs_a_runtime_panic.rs:27:9:
+thread 'main' (8619198) panicked at src/bin/j_constructor_assert_costs_a_runtime_panic.rs:27:9:
 a phase denominator of zero names no position
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 
