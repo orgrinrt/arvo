@@ -1,0 +1,32 @@
+=== a5_negative_control_a_malformed_grid_is_also_refused
+--- cargo build --bin a5_negative_control_a_malformed_grid_is_also_refused
+   Compiling q31-probes v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/research/202609021500_probes)
+error[E0080]: evaluation panicked: slot range is inverted: its lowest index exceeds its highest, so it admits nothing
+   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<q31_probes::Grid<8, -8, 8> as arvo_format::Slots>::ADMITTED` failed here
+    |
+   ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/crates/arvo-format/src/slots.rs:211:9
+    |
+211 | /         assert!(
+212 | |             Self::MIN.index() <= Self::MAX.index(),
+213 | |             "slot range is inverted: its lowest index exceeds its highest, so it admits nothing"
+214 | |         );
+    | |_________- in this macro invocation
+
+note: erroneous constant encountered
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q31b/mock/crates/arvo-format/src/slots.rs:324:14
+    |
+324 |     let () = S::ADMITTED;
+    |              ^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn declared_slot_width::<Grid<8, -8, 8>>`
+  --> arms/a5_negative_control_a_malformed_grid_is_also_refused.rs:14:13
+   |
+14 |     let _ = declared_slot_width::<Inverted>();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `q31-probes` (bin "a5_negative_control_a_malformed_grid_is_also_refused") due to 1 previous error
+--- exit: 101

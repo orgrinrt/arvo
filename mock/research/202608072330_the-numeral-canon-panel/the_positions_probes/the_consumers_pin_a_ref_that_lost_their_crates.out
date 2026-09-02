@@ -1,0 +1,114 @@
+== the crates arvo has on dev ==
+mock/crates/arvo-format
+mock/crates/arvo-placement
+mock/crates/arvo-strategy
+
+== the arvo crates the consumers depend on ==
+-- hilavitkutin @ origin/dev
+arvo            = { path = "../../../../../arvo/mock/crates/arvo" }
+arvo = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-bitmask    = { path = "../../../../../arvo/mock/crates/arvo-bitmask" }
+arvo-bitmask = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-bits       = { path = "../../../../../arvo/mock/crates/arvo-bits" }
+arvo-bits = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-bits-contracts = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-bits-contracts = { path = "../../../../../arvo/mock/crates/arvo-bits-contracts" }
+arvo-comb = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-graph = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-hash = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-numeric-contracts = { path = "../../../../../arvo/mock/crates/arvo-numeric-contracts" }
+arvo-refit = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-sparse     = { path = "../../../../../arvo/mock/crates/arvo-sparse" }
+arvo-sparse = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-spectral   = { path = "../../../../../arvo/mock/crates/arvo-spectral" }
+arvo-spectral = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+arvo-storage    = { path = "../../../../../arvo/mock/crates/arvo-storage" }
+arvo-tensor = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev", default-features = false }
+-- vehje @ origin/main
+arvo = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+arvo-bitmask = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+arvo-bits = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+arvo-comb = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+arvo-graph = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+arvo-sparse = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+arvo-spectral = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
+-- kolli @ origin/dev
+arvo = { git = "https://github.com/orgrinrt/arvo.git", branch = "dev" }
+
+== what they import, by name ==
+-- hilavitkutin @ origin/dev
+//! types use arvo newtypes.
+:BitAccess;
+:BitAccess; // re-exported through arvo-bitmask L2 per #76
+:Bits;
+:Bool;
+:CAP) }>`) because arvo's `Bits`
+:Cap;
+:Capacity;
+:ContentHash;
+:Dim;
+:Hot;
+:LinearOperator;
+:Narrow;
+:NodeId;
+:USize;
+:bitfield;
+:block_diagonal;
+:cap_size;
+:dulmage_mendelsohn;
+:k_way_partition;
+:strategy::Hot;
+:strategy::Identity;
+:strategy::Identity; // brings USize::ZERO into scope
+:traits::FromConstant;
+:traits::{FromConstant, Recip, Sqrt, TotalOrd};
+:traits::{FromConstant, TotalOrd};
+:ufixed::UFixed;
+:waist_detect;
+:waist_detect_const;
+:{BidirectionalSparseAdjacency, CsrBidirectional, SparseAdjacency};
+:{Bit, Bits, Hot};
+:{BitAccess, BitLogic, BitSequence};
+:{BitAccess, BitLogic};
+:{BitAccess, BitMatrix, Mask, NodeId};
+:{BitAccess, NodeId};
+:{BitMatrix, Mask, NodeId};
+:{BitMatrix, NodeId, cap_size};
+:{BitMatrix, NodeId};
+:{Bits, Bool, Hot, Unsigned, USize};
+:{Bits, Bool, Hot, Unsigned};
+:{Bits, Hot, Identity, Unsigned};
+:{Bits, Hot, USize, Unsigned};
+:{Bits, Hot, Unsigned};
+:{Bits, Hot};
+:{Bool, Cap, Identity, USize};
+:{Bool, Cap, USize};
+:{Bool, FastFloat, USize};
+:{Bool, Identity, USize};
+:{Bool, USize};
+:{Bool, Uint, USize};
+:{Cap, Identity, USize};
+:{Cap, USize};
+:{Capacity, ConstCapacity, Dim};
+:{Capacity, ConstCapacity};
+:{Capacity, Dim};
+:{Csr, CsrBidirectional};
+:{FromConstant, TotalOrd};
+:{Hot, UFixed, fbits, ibits};
+:{Identity, USize};
+:{Narrow, Widen};
+:{Uint, USize};
+:{block_diagonal_via, rcm_reorder_via};
+:{cap_size, Capacity, ConstCapacity};
+:{cap_size, Capacity, Dim};
+:{cap_size, Capacity};
+:{dense_laplacian_lambda_max_bound, k_way_partition, laplacian, Matrix};
+:{fbits, ibits, Bool, USize};
+:{fbits, ibits, strategy::Hot, UFixed};
+-- vehje @ origin/main
+:newtype::Bool;
+:{newtype::Bool, USize};
+-- kolli @ origin/dev
+:Bool;
+:USize;
+:{Precise, TotalOrd, Transparent, USize, Uint};

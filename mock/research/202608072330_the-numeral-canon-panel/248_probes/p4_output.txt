@@ -1,0 +1,26 @@
+== C3 control: the member-file pattern, on strings whose answer is known ==
+  PASS matches a member file: 65_knuth_number_systems_derived_cold.md
+  PASS matches a member file: 09_persona_checkpoint.md
+  PASS rejects: q1_output.txt
+  PASS rejects: question.toml
+  PASS rejects: OPTIONS.md
+
+== the counts ==
+  commits touching mock/registry/question.toml:            34
+  of those, also landing a numbered member file:           6
+  of those, landing no member file:                        28
+  commits touching the panel directory at all:             1239
+
+== C1 control: the filter discriminates ==
+  PASS 34 is non-zero and well under 1239
+
+== C2 control: a registry-only commit does not classify as co-landing ==
+  PASS 28 commits touched question.toml with no member file, so the
+       classifier is not simply matching the registry path
+
+== what this establishes ==
+  A question row landing in the same commit as a member file is a shape the
+  corpus contains 6 times, not once. Wherever a later seat is dispatched on
+  such a row, the ordering the schema asks for ('each deriving before reading
+  the other') cannot hold for that seat: the row, carrying the earlier file's
+  conclusion, was in the tree before the seat opened anything.

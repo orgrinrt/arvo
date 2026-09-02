@@ -1,0 +1,30 @@
+== the namespace ==
+  question rows:                 106
+  rows carrying `answered`:      14
+  rows carrying `bound`:         23
+  rows carrying `note`:          106
+  rows carrying `options`:       106
+
+== the verdict vocabulary, on the two fields ==
+  `note` lines matching a verdict word:  33 of 106
+  `asks` lines matching a verdict word:  3 of 106
+
+== C1 control: the vocabulary must discriminate the two fields ==
+  PASS C1 note rate is at least three times the asks rate
+
+== C2 control: a row known to carry an answer is counted ==
+  PASS C2 the known-answered row is seen
+
+== C3 control: the row count agrees with the generated document ==
+  docs/QUESTION.md states: 106   registry parse: 106
+  PASS C3
+
+== the header's own claim, against the file ==
+  header: "No answer is recorded here, including for the rows whose source records one."
+  file:   14 rows carry a populated `answered` field.
+
+== what this establishes ==
+  Every question row in the namespace carries both a `note` and an
+  `options` list, so there is no such thing as a bare question to dispatch
+  a seat on. A seat dispatched on one is handed the panel's own compressed
+  prior positions along with the question.

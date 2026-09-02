@@ -1,0 +1,235 @@
+   Compiling arvo-the-positions v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/positions/mock/tools/the-positions)
+   Compiling mockspace-lints-ffe099b60deef60d v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/positions/mock/target/mockspace-lints)
+    Finished `release` profile [optimized] target(s) in 3.13s
+the corpus
+  notko@origin/dev                             a30683d7d27a25b005ac0956bbd092dae1566442  (232 rust files)
+  arvo@origin/dev                              8a58ee3fdea0d8949e43ca1cdf5f0c51625dc9a8  (2254 rust files)
+  hilavitkutin@origin/dev                      313d427aeae1f5f4c98678a49f1f8aaea84fdd55  (518 rust files)
+  vehje@origin/main                            5da3d10580c923f98f1885fb2445d00cc7993a96  (113 rust files)
+  kolli@origin/dev                             c7b549e202603f6ab10623efcd7193e36de947d4  (25 rust files)
+  tarina@origin/main                           2114a8d59d120fa81a2e2be7a8541e6ad5e0fed4  (0 rust files)
+  notko@origin/dev                             2 design documents, 2 fenced positions
+  arvo@origin/dev                              23 design documents, 7 fenced positions
+  hilavitkutin@origin/dev                      52 design documents, 106 fenced positions
+  vehje@origin/main                            55 design documents, 8 fenced positions
+  kolli@origin/dev                             15 design documents, 0 fenced positions
+  tarina@origin/main                           2 design documents, 0 fenced positions
+
+140500 occurrences in all, 383 of them at a public API position.
+
+where the occurrences are, by directory
+  `shipped` is a crate's own `src/`. Everything else is a test, an example,
+  a bench variant or a research probe, and is public API to nobody.
+
+  tree and directory                                                 all  shipped
+  arvo@origin/dev mock/research/202607301300_formalization-spec-panel   70705        0
+  arvo@origin/dev mock/research/202608072330_the-numeral-canon-panel   53048        0
+  hilavitkutin@origin/dev mock/research/sketches                    2680        0
+  hilavitkutin@origin/dev mock/crates/hilavitkutin                  2561     1257
+  arvo@origin/dev mock/research/sketches                            2151        0
+  arvo@origin/dev mock/benches/variants                             2116        0
+  notko@origin/dev research/202608251000_consttry-copy-bound/p04_real_crate    1290        0
+  arvo@origin/dev mock/crates/arvo-format                            722      670
+  hilavitkutin@origin/dev mock/benches/variants                      708        0
+  hilavitkutin@origin/dev mock/research/imported-from-polka-dots     527        0
+  hilavitkutin@origin/dev mock/crates/hilavitkutin-api               335      242
+  hilavitkutin@origin/dev mock/benches/resource_storage              259        0
+  hilavitkutin@origin/dev mock/benches/engine_vs_std                 161        0
+  kolli@origin/dev mock/crates/kolli-shell                           145      145
+  (158 more directories)                                            3092     1194
+
+by grammatical kind
+  every kind is listed, including the ones at zero, because a kind
+  nobody found is a result about the stack rather than about the walk.
+
+  kind                        all the host the stack  an outside crate writes this type
+  fn-param                  16041      124      377  yes
+  fn-return                 20037      148      318  yes
+  struct-field               2429       35      150  yes
+  variant-field               111       16        8  yes
+  trait-const                1802       11       39  yes
+  impl-const                 3922       10      149  yes
+  item-const                17157       15       15  yes
+  alias-target               9458        0       12  yes
+  assoc-type                 1169        4       29  yes
+  impl-trait-arg             6438        2      134  yes
+  const-generic-param        6367      153       14  no
+  bound-arg                 33700       18      416  yes
+  interior                  21869      211      208  no
+  
+  `all` counts every tree read, probes and benches included, which is why it
+  is large and why it is not the answer to anything. The two shipped columns
+  are the population the obligation is over.
+
+by carrier, over the public API positions
+  what the primitive is wrapped in, off the parse rather than off a name.
+  a pointer target and a slice element are the unit of memory or of a byte
+  string; no numeral replaces either, so they are the positions arvo is not
+  the answer to.
+
+  carrier        count  a number is what is meant
+  scalar           205  yes
+  reference        109  yes
+  element           26  no
+  pointer           20  no
+  argument          23  yes
+
+by semantic role, over the public API positions
+  a reading off the identifier, not a measurement. `--role <name>`
+  lists one in full so it can be checked.
+
+  role               count  the primitives it is written in
+  bit-width              5  u32x3 u64x1 usizex1
+  rational               6  i64x6
+  count                 38  i64x5 u32x16 usizex17
+  index                 10  i64x2 u32x6 u64x1 usizex1
+  capacity              22  strx1 u8x11 usizex10
+  stride                 1  usizex1
+  exponent               2  i32x2
+  radix                  2  u32x2
+  identity              18  charx1 strx2 u32x10 u64x1 u8x2 usizex2
+  opaque-bits            5  strx1 u8x4
+  truth                 68  boolx63 strx2 u32x1 u8x2
+  real                   1  u64x1
+  code                   6  i32x6
+  address               13  u8x13
+  version               10  u16x4 u32x6
+  time                   0  
+  unclassified         176  charx6 strx104 u32x21 u64x4 u8x37 usizex4
+
+family against carrier, over the public API positions
+
+  carrier        numeric     truth   textual     a number
+  scalar             136        63         6     yes
+  reference            0         0       109     yes
+  element             26         0         0     no
+  pointer             20         0         0     no
+  argument            21         0         2     yes
+
+the demand
+  a position is one arvo owes a primitive for when all five hold: an outside
+  crate writes the type, the item is reachable, the file is a crate's `src/`,
+  the primitive is a number or a truth rather than text, and it is not the
+  unit of a pointer or a slice. Each is reported above on its own, so the
+  subtraction can be checked rather than taken.
+
+  220 positions
+  205 of them free, and 15 on a boundary with something outside the
+  stack, where the width and the representation are the operating system's or a
+  foreign ABI's. arvo can wrap one of those; it cannot choose it.
+
+  truth               66  boolx63 u32x1 u8x2
+  count               38  i64x5 u32x16 usizex17
+  unclassified        33  u32x21 u64x4 u8x4 usizex4
+  capacity            21  u8x11 usizex10
+  identity            15  u32x10 u64x1 u8x2 usizex2
+  index               10  i64x2 u32x6 u64x1 usizex1
+  version             10  u16x4 u32x6
+  code                 6  i32x6
+  rational             6  i64x6
+  bit-width            5  u32x3 u64x1 usizex1
+  opaque-bits          4  u8x4
+  exponent             2  i32x2
+  radix                2  u32x2
+  real                 1  u64x1
+  stride               1  usizex1
+
+where a consumer turned the rule off
+  a `lint:allow` on one of these four is a consumer saying at the site that the
+  rule forbids what it needs. Unlike every other number here it rests on no
+  reading: the site says so. Shipped source only.
+
+  no-bare-numeric            861
+  arvo-types-only            539
+  no-public-raw-field         24
+  no-bare-static-str           0
+
+  1424 in all, 0 of them naming no task.
+  the tasks they name: #121 x532, #72 x525, #207 x230, #649 x75, #339 x12, #73 x12, #429 x7, #131 x6
+
+  hilavitkutin@origin/dev                       1176
+  vehje@origin/main                              248
+
+  what the suppressed lines actually carry
+
+    667  carry a host primitive at a position the exception does not
+         cover. These are the demand, stated by the consumer.
+     43  sit on a line that is nothing but a comment, and are inert. The
+         pack's `line_lint_allowed` reads one line and no neighbour, and
+         `no_bare_numeric` skips a line whose text begins `//` before it
+         scans, so a marker written above the item it means to cover
+         suppresses nothing and the line below it is still checked.
+     71  carry nothing but the type of a const generic parameter, which op
+         excepted by name and which the pack already blanks before it scans.
+    643  sit on a line the pack's own scan would not have flagged either,
+         so they suppress a diagnostic that was never going to fire. The
+         pack's rule is reimplemented in `allows::the_pack_would_flag`
+         rather than approximated, because the question is about that
+         instrument and not about this one.
+
+  the inert ones are filed under: #72 x18, #121 x17, #345 x5, #654 x2, #644 x1
+
+  the excepted ones are filed under: #121 x70, #649 x1
+
+the supply, at the same bar
+  the same walk over the same positions, keeping the stack's own type names
+  instead of the host's. The list is hand-written and is printed below, so a
+  name missing from it undercounts this side and makes the obligation look
+  further from met than it is.
+
+  arvo               488
+  gone               958
+  notko              201
+
+  220 host, 958 naming an arvo crate or type that is not on
+  arvo's `dev`, and 689 resolving. So 11% of the positions carrying
+  any of the three still name the host, and a further 51%
+  name arvo and reach nothing. Counting the second group as supply, which
+  one undivided arvo list does, is what makes the obligation look nearly
+  met when half of what meets it does not exist.
+
+  which names are counted as the stack's:
+    in use   Accessx1 Adaptx7 Adaptationx8 Ambientx10 Arityx3 Biasedx1 BitAccessx33 BitWidthx2 Bitsx15 Boolx79 Capx1 Capacityx324 Carrierx4 Coldx2 ContentHashx7 DeclaredSignaturex8 Dimx15 Ditherx2 Exactx3 Exponentx28 Floatingx1 Footprintx1 Formatx24 Fractionx3 Hotx25 Integerx1 Justx12 Magnitudex8 MagnitudeCountx14 Maybex106 Modex10 NonZeroablex4 Objectivex5 ObjectiveKindx7 Occupancyx1 Operationx3 Outcomex79 Overflowx8 Phasex20 Placementx4 Policyx9 Precisex1 Quantumx17 Radixx10 Roundingx9 Signaturex2 Slotx32 SlotCountx2 Slotsx20 Strategyx14 UFixedx7 USizex556 Unsignedx5 Warmx2 Widthx72
+    on the list and reaching nothing   BitPrim IFixed FastFloat StrictFloat UWire Boundable Lent
+
+by primitive family, over the public API positions
+
+  numeric              203
+  textual              117
+  truth                 63
+
+the demand by crate, free against on a boundary
+
+  tree and crate                                              free  boundary
+  notko@origin/dev <root>                                       31         0
+  vehje@origin/main vehje-lex                                   30         0
+  arvo@origin/dev arvo-format                                   27         0
+  hilavitkutin@origin/dev hilavitkutin-api                      22         0
+  hilavitkutin@origin/dev hilavitkutin-extensions                9         9
+  hilavitkutin@origin/dev hilavitkutin                          11         3
+  hilavitkutin@origin/dev hilavitkutin-persistence              12         0
+  vehje@origin/main vehje-syntax                                12         0
+  notko@origin/dev notko-macros-core                            10         0
+  hilavitkutin@origin/dev hilavitkutin-str                       7         0
+  kolli@origin/dev kolli-input                                   6         0
+  vehje@origin/main vehje-ir                                     6         0
+  vehje@origin/main vehje                                        5         0
+  hilavitkutin@origin/dev hilavitkutin-build                     4         0
+  kolli@origin/dev kolli-shell                                   4         0
+  vehje@origin/main vehje-runtime-abi                            0         3
+  hilavitkutin@origin/dev hilavitkutin-providers                 2         0
+  vehje@origin/main vehje-codegen                                2         0
+  hilavitkutin@origin/dev hilavitkutin-sym                       1         0
+  kolli@origin/dev kolli                                         1         0
+  kolli@origin/dev kolli-args                                    1         0
+  kolli@origin/dev kolli-layout                                  1         0
+  vehje@origin/main vehje-runtime-driver                         1         0
+
+by tree, over the public API positions
+
+  arvo@origin/dev                                   27
+  hilavitkutin@origin/dev                          143
+  kolli@origin/dev                                  51
+  notko@origin/dev                                  57
+  vehje@origin/main                                105
+the-positions: clean, 140500 examined.
