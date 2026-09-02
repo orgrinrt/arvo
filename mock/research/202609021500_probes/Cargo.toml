@@ -1,0 +1,41 @@
+# Free-standing on purpose: an empty `[workspace]` table stops cargo walking up
+# into `mock/Cargo.toml`, so this probe needs no edit to the member or exclude
+# lists and touches nothing in the source tier.
+[workspace]
+
+[package]
+name = "q31-probes"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../crates/arvo-format" }
+notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const", "try_trait_v2"] }
+
+[lib]
+path = "src/lib.rs"
+
+# One `[[bin]]` per arm, so each is built on its own with `cargo build --bin
+# <name>`. A plain `cargo build` would try all five and stop at the first
+# refusal, which would hide the four results after it.
+[[bin]]
+name = "a1_exact_product_of_admitted_operands_is_refused"
+path = "arms/a1_exact_product_of_admitted_operands_is_refused.rs"
+
+[[bin]]
+name = "a2_control_the_same_shape_at_sixteen_bits_builds"
+path = "arms/a2_control_the_same_shape_at_sixteen_bits_builds.rs"
+
+[[bin]]
+name = "a3_a_wellformed_grid_past_the_ladder_is_refused"
+path = "arms/a3_a_wellformed_grid_past_the_ladder_is_refused.rs"
+
+[[bin]]
+name = "a4_control_the_same_grid_at_sixtytwo_builds"
+path = "arms/a4_control_the_same_grid_at_sixtytwo_builds.rs"
+
+[[bin]]
+name = "a5_negative_control_a_malformed_grid_is_also_refused"
+path = "arms/a5_negative_control_a_malformed_grid_is_also_refused.rs"
