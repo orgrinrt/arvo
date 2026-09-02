@@ -279,11 +279,22 @@ joins without amending the canon". **In the ruling's framing "a new instance" is
 instance; in the proposal's own filing the concept is the number system.** One sentence, stamped
 once, resolving to two different concepts depending on which field you read.
 
-Every citation in the shipped tree exploits that. `ambient.rs:89`, `quantum.rs:226`,
-`slots.rs:141`, `arvo-format/src/tests/the_inventory.rs:8`,
-`arvo-placement/src/tests/the_open_inventory.rs:8`, `arvo-format/DESIGN.md.tmpl:387` and
-`arvo-format/DESIGN.md.tmpl:601` all cite a `the_number_system` proposition to license a
-mechanism on the `the_format` contracts, and none of them says it is crossing a topic.
+Every citation in the shipped tree exploits that. The instrument rather than a count, so a
+later reader can re-ask it:
+
+```
+grep -rn "the_concept_is_closed_and_the_inventory_is_open" mock/crates mock/lints
+```
+
+At `7fed7b59` it returns `arvo-placement/DESIGN.md.tmpl:142`,
+`arvo-placement/src/tests/the_open_inventory.rs:8`, `arvo-format/DESIGN.md.tmpl:387`,
+`arvo-format/DESIGN.md.tmpl:601`, `arvo-format/src/ambient.rs:89`,
+`arvo-format/src/quantum.rs:226`, `arvo-format/src/slots.rs:141`,
+`arvo-format/src/tests/the_inventory.rs:8` and
+`mock/lints/a_contract_coordinate_is_not_a_host_primitive.rs:19`. Every one cites a
+`the_number_system` proposition to license a mechanism on the `the_format` contracts, and not one
+says it is crossing a topic. The last is a lint, which means the seam is load-bearing for a gate
+as well as for prose.
 
 So the canon **does not** answer whether the format contract's obligations and the number
 system's admission contract are one thing. If they are one, Q29's option space is wrong, because
@@ -301,10 +312,10 @@ in which case the shipped citations want a second slug and Q29 is untouched by a
 second independent reading before it is anything.
 
 **Finding 4.** `ruling::the_format_spine_is_canon` stamps a `the_number_system` proposition inside
-a `the_format` ruling without saying which concept the stamped sentence closes, and seven sites in
-the shipped tree cite across that seam. No open row asks the question, so it is not merely
+a `the_format` ruling without saying which concept the stamped sentence closes, and every citation
+of it under `mock/crates` and `mock/lints` crosses that seam. No open row asks the question, so it is not merely
 unsettled, it is untracked.
-*Holds for: the registry at `7fed7b59`; `ruling::the_format_spine_is_canon` and `proposal::the_concept_is_closed_and_the_inventory_is_open`; the seven citation sites enumerated above. Holds over no numeric axis, per `question::can_a_claim_about_the_canons_own_structure_carry_a_region`, which is open on whether a claim of this kind can carry a region at all; threads = 0; target_features none.*
+*Holds for: the registry at `7fed7b59`; `ruling::the_format_spine_is_canon` and `proposal::the_concept_is_closed_and_the_inventory_is_open`; the nine citation sites the grep above returns. Holds over no numeric axis, per `question::can_a_claim_about_the_canons_own_structure_carry_a_region`, which is open on whether a claim of this kind can carry a region at all; threads = 0; target_features none.*
 
 ## 6a. And the obligation nobody is guarding, measured
 
@@ -401,4 +412,80 @@ nothing can refuse it.
 
 ## 9. Reconciliation, appended after reading the prior panel files
 
-Appended in a second commit. Everything above stands as committed.
+Everything above is as committed at `5eeb39d2`, before I opened `241`, `242`, `246` or `247`.
+The commit ordering is the evidence and it is the only kind available. I then read those four on
+this subject. Nothing above changes; what follows says which of my findings has a prior instance
+and which does not, because that decides the tier each sits at.
+
+**Finding 2 has a prior instance and is now at two.** `246` section 5.2 extracted the same five
+`Slots::ADMITTED` conditions and classified them the same way, two hosting and three
+well-formedness, with four controls including a not-flagged one. Its rows are my rows 4, 5, 6, 7
+and 8 and we agree on every classification. **It reached that on `Slots` alone.** My instance
+widens it to nine assertions over four contracts and adds `quantum.rs:323` as a third carrier
+row, which is on a contract `246` did not look at. Two instances, different instruments,
+different scopes, agreeing about the intersection.
+
+`246` section 5.1 supports it from a direction I did not take: it greps every non-test source
+file of `arvo-format` for `usize`, `isize`, `target_pointer_width`, `cfg(target` and pointer-sized
+`size_of` and gets zero, with a positive control finding one in the test files. So the carrier
+bounds are indexed by this crate's chosen types and by no target. That is the sharpest support
+finding 3 has and it was measured before I got here.
+
+**Finding 4 has a prior instance of the handback and not of the reason.** `247` section 8, O3, is
+the brief's fork verbatim, down to the wording, and it was already returned as "ambiguous under
+the canon gate and handed back rather than decided". So the brief I was given is O3 re-dispatched.
+`247` names as what would close it "two readings of Q29's `asks` against `Ambient::ADMITTED`'s own
+doc". **I disagree about the locus and that is my contribution here.** Reading the const's doc
+against Q29's `asks` cannot close it, because the ambiguity is not in either of those texts: it is
+in `ruling::the_format_spine_is_canon` stamping a `the_number_system` proposition and glossing it
+as being about format instances. Two careful readers of the doc and the row will still disagree,
+because the sentence they are both reading resolves to two concepts. What closes it is a ruling
+saying which concept the stamped sentence closes, which is a different act by a different party.
+
+`241` section 0 saw the same mismatch and used it as a floor rather than as a defect: "That
+proposal's own `topic` is `the_number_system`, not `the_format`." It is stated there as a
+parenthesis in an argument about Q20 and nothing was filed.
+
+**Finding 1 has no prior instance and it is what kills reading (a).** Six panel files cite
+`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`.
+`241` carries it as floor item R3. `242` uses it twice, both times against Q30's stated cost that
+a location "presumes a coordinate count the canon may not want to commit to", correctly observing
+that the ruling commits to the coordinate set and leaves only the type count open. **Nobody points
+it at Q29.** `246` section 6 on Q29 says in full: "Reserved, two standing answers, both at one
+instance, neither cited. I add nothing and I did not attack it."
+
+That is the gap. Q29 asks what the admission contract asks a candidate to expose; a ratified
+ruling already says what the format contracts carry out, in a vocabulary of coordinates that
+shares nothing with Q29's three options. Reading (a) needs those two to be one contract, and the
+canon has answered one of them and left the other open, which is only possible if they are two.
+**One instance, mine, and it wants a second reader before it is anything.**
+
+**Finding 3 is a sharpening rather than a second instance.** `246` reached "the count is three
+rather than two" and then explicitly declined to go further: "I do not propose a third word ...
+where the third belongs is open." Its finding is taxonomic. Mine is that
+`question::one_word_or_two_for_is_a_number_system`'s first option, folding hosting into the
+concept, is not merely a live option: it is implemented, at
+`mock/crates/arvo-format/src/slots.rs:220`, and it binds every outside implementor of an open
+trait at build time. **The difference matters for what is owed.** A taxonomy finding wants a
+vocabulary decision. An implemented answer to an open row wants the row to say so, because the
+next reader of that row will otherwise weigh two options one of which has already shipped.
+
+**Finding 5 has no prior instance anywhere.** Nobody has measured what the `ADMITTED` conditions
+are held by. `246` classified them, `241` characterised them, `247` counted them, and none asked
+whether deleting them turns anything red. The answer is that four of the five in `Slots::ADMITTED`
+are held by nothing at all.
+
+**One stale figure travelled into my brief and is worth naming.** `247` O3 says "the tree enforces
+three obligations". At `7fed7b59` there are four, because `Ambient::ADMITTED` landed in the round
+at `mock/design_rounds/202609011813/` after `247` was written. The brief I was given carries the
+updated count, nine assertions across four blocks, without saying that the row it inherits its
+fork from was written against three. Nothing in my answer turns on it, and a later reader
+comparing the two files would otherwise read the difference as a disagreement.
+
+**Coverage, bounded.** I read `241` sections 0 and 1 and its heading outline, `246` sections 5.1,
+5.2 and 6 in full, `247` section 8 O3 and section 9, and `242` at its three citations of the door
+ruling. I did not read `243`, `244`, `245`, `248`, `249`, or the bodies of `241` sections 2
+through 11. So a prior instance of finding 1, 3 or 5 could exist in what I did not open, and my
+"no prior instance" claims are bounded by that list rather than by the corpus. The greps behind
+them are not: `grep -ln "the_numeric_door_carries_the_coordinate_set" *.md` over the whole panel
+directory returns the six files named above and I checked how three of them use it.
