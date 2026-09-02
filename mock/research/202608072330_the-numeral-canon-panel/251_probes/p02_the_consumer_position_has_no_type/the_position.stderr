@@ -1,0 +1,9 @@
+error[E0432]: unresolved import `arvo_format::USize`
+ --> src/the_position.rs:8:5
+  |
+8 | use arvo_format::USize;
+  |     ^^^^^^^^^^^^^^^^^^ no `USize` in the root
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0432`.

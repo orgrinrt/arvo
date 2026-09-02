@@ -1,0 +1,24 @@
+repo           ref          commit
+hilavitkutin   origin/dev   313d427aeae1f5f4c98678a49f1f8aaea84fdd55
+kolli          origin/dev   c7b549e202603f6ab10623efcd7193e36de947d4
+vehje          origin/main  5da3d10580c923f98f1885fb2445d00cc7993a96
+notko          origin/dev   a30683d7d27a25b005ac0956bbd092dae1566442
+
+repo           name         files    occurrences
+hilavitkutin   USize        75       1375
+hilavitkutin   ISize        1        1
+hilavitkutin   Cap          6        19
+hilavitkutin   Bits         11       43
+hilavitkutin   UFixed       4        14
+hilavitkutin   IFixed       1        1
+hilavitkutin   FastFloat    3        7
+hilavitkutin   Mask64       2        2
+hilavitkutin   Mask256      3        3
+hilavitkutin   ZZThisTypeHasNeverExisted 0        0
+kolli          USize        11       108
+kolli          ZZThisTypeHasNeverExisted 0        0
+vehje          USize        3        5
+vehje          ZZThisTypeHasNeverExisted 0        0
+notko          ZZThisTypeHasNeverExisted 0        0
+
+the control must read 0 everywhere above; a non-zero there voids the rest.
