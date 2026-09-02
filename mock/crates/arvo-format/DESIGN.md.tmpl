@@ -512,7 +512,7 @@ So it has two regions, the same way the applied map below does, and for the same
 | Region | What it does | When it applies |
 |---|---|---|
 | Exact normalisation | moves the sign to the numerator and cancels the power of two the two operands share | an exact form exists inside the coordinate |
-| Magnitude saturation | pins the magnitude to the largest the coordinate carries | it does not |
+| Magnitude saturation | the operand that would need `2^63` takes the largest the coordinate carries instead | it does not |
 
 Four properties hold over every pair, and they are what the constructor is:
 
