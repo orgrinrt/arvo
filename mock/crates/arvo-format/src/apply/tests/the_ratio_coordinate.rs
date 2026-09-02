@@ -164,7 +164,10 @@ fn the_ratio_coordinate_holds_its_four_properties_over_the_whole_matrix() {
     // saturated and a rule that never cancelled would each pass one half of the
     // assertions above by never reaching the other.
     assert!(exact_seen > 0, "the exact region was never entered");
-    assert!(saturated_seen > 0, "the saturating region was never entered");
+    assert!(
+        saturated_seen > 0,
+        "the saturating region was never entered"
+    );
 }
 
 #[test]
@@ -290,7 +293,10 @@ fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
     // near the top of the type the doubling `is_tie` used to perform left it. In
     // a debug build that was a panic inside a verdict function.
     let big = Exact::between(Slot::ZERO, Fraction::of(i64::MAX - 1, i64::MAX));
-    assert!(!big.is_tie().get(), "a remainder just below one is not a tie");
+    assert!(
+        !big.is_tie().get(),
+        "a remainder just below one is not a tie"
+    );
 
     // And the answer agrees with what `round_slot` decides at the same position,
     // which is the comparison the two were supposed to share.
@@ -304,7 +310,10 @@ fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
     // The control: a real tie at a denominator whose doubling also leaves the
     // type is reported as one, so the widening did not answer no to everything.
     let half_of_max = Exact::between(Slot::ZERO, Fraction::of(i64::MAX - 1, 2));
-    assert!(half_of_max.is_on_grid().get(), "an even numerator over two is whole");
+    assert!(
+        half_of_max.is_on_grid().get(),
+        "an even numerator over two is whole"
+    );
 
     let genuine = Exact::between(Slot::at(2), Fraction::HALF);
     assert!(genuine.is_tie().get(), "an ordinary tie stopped being one");
@@ -329,4 +338,3 @@ fn a_carry_past_the_top_of_the_coordinate_still_lands_a_slot() {
         "the carry has to land somewhere the coordinate can hold"
     );
 }
-
