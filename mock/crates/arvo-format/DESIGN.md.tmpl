@@ -45,7 +45,7 @@ concepts:
 | Floats | `radix^(m - precision + 1)`, indexed by magnitude | zero | many |
 
 Subnormals are not a case. They fall out of taking the maximum at the smallest magnitude, which is
-the test that the unification is real rather than a presentation.
+what the rule above says and is the test that the unification is real rather than a presentation.
 
 **The phase is carried explicitly and is never assumed zero.** What it decides is whether the set
 carries an additive identity, and that question is the membership predicate above asked at the value
@@ -73,10 +73,9 @@ shrinks as the magnitude rises, a phase with a fractional part at one magnitude 
 steps at a higher one, so it does leave the identity on the grid.
 
 **In the constant family this reduces to the whole-multiple rule**, because there is one quantum and
-one magnitude, and that is the family the reduction was measured in:
-`proposal::the_additive_identity_is_decided_by_the_phase_being_a_whole_multiple_of_the_quantum` names
-its fraction width as the constant family's exponent. It does not reduce that way in the
-magnitude-indexed family, where "the quantum" names a different value at each magnitude, so a design
+one magnitude, and that is the family the reduction was measured in: it is stated over a fraction
+width, which is that family's exponent. It does not reduce that way in the magnitude-indexed family,
+where "the quantum" names a different value at each magnitude, so a design
 stating the reduction as the deciding property has stated a constant-family fact about both families.
 
 A half-step grid is the case that carries no identity in either family: it is not closed under exact
@@ -101,9 +100,9 @@ This is what makes the cross-kind arithmetic question a question about one space
 interface between two. It is also where that space is known to be awkward: within one kind the points
 form a lattice, and putting both kinds in one space breaks the join on pairs that are both
 fixed-point, because a floating point can sit between two fixed points and be incomparable with the
-one that used to be the join. That is a measured result and it is open as
-`question::is_the_cross_kind_join_closed_or_priced`. **This crate does not close it and does not
-depend on it being closed**: nothing here needs a join.
+one that used to be the join. That is a measured result, and whether the join is closed across the two
+kinds or has to be paid for is not settled. **This crate does not close it and does not depend on it
+being closed**: nothing here needs a join.
 
 ## The adaptation is a first-class object
 
@@ -135,20 +134,17 @@ reverse, which is what two regions of one map predict and what two independent m
 
 ### The panic is not an overflow policy
 
-The factoring requires the adaptation to be total. A panic diverges, so it is not a total map onto
-the representable set and cannot be a member of the slot. From the other direction,
-`ruling::the_overflow_panic_is_permitted_and_bounded` puts the panic on the build axis: it is the
-go-to for what cannot be caught at compile time through the typestate, on debug builds, in every
+**Two things say so and they agree.** The factoring requires the adaptation to be total. A panic
+diverges, so it is not a total map onto the representable set and cannot be a member of the slot.
+From the other direction the panic sits on the build axis: it is the go-to for what cannot be caught
+at compile time through the typestate, on debug builds, in every
 strategy, and on release what stands in its place is the guarantee plus an explicit declaration of the
 mode, which lowers and behaves accordingly.
 
 So the panic is a property of how an adaptation is applied under a build profile, and it is not one of
-the things an adaptation may be. `dimension::build_profile` is the axis that carries it.
+the things an adaptation may be. The build profile is the axis that carries it.
 
-`dimension::overflow_policy` still lists `panic` among its values. The dimension set is append-only,
-so that disagreement is a note on that row rather than an edit to this design.
-
-The bound is loose on purpose, so this crate states the shape and does not sharpen it into a rule
+The looseness there is deliberate, so this crate states the shape and does not sharpen it into a rule
 about where a panic fires.
 
 ## The admission rule, which is how an operation earns its place
@@ -161,14 +157,14 @@ Both halves are load-bearing. The first is the test. The second is what to do wh
 it says the failure is diagnostic rather than fatal: a name whose two realisations disagree has found
 a coordinate nobody declared, and the repair is to declare it.
 
-This is the format spine's closed-concept-open-inventory shape one tier down, which is what makes it a
-derivation rather than a new decision.
+This is the closed concept and open inventory the format itself has, one level down over operations
+rather than over formats.
 
 **What it means for the operation set is that there is not one.** Asking which operations ship is
 asking for a list where the rule gives a criterion. What ships is whatever satisfies the rule, and
-`ruling::the_standard_is_parity_in_output_not_in_the_internals` is why that is enough: the standards
-bound is parity in output for the cases a standard covers, it does not oblige carrying the standard's
-operation list, and reaching the result by a different or unconventional route is fine so long as the
+the standards bound is why that is enough: it is parity in output for the cases a standard covers, it
+does not oblige carrying the standard's operation list, and reaching the result by a different or
+unconventional route is fine so long as the
 logic of the spec is matched.
 
 The worked case is the fused multiply-add. Its result is reachable by composing multiply and add
@@ -184,9 +180,9 @@ may not be computed in a bound, and every derived quantity is an associated item
 Read that as the staging boundary rather than as a restriction worked around. The trait is the
 stage-zero object: what is known at monomorphisation. A free `const fn` over a format's associated
 items is the stage-zero computation. What the backend sees is stage one, and by then every branch the
-computation took is gone. `ruling::never_a_runtime_check_and_one_lowered_path` asks for exactly that,
-so the contract form is what the intent wants and the const expression in a bound is the thing that
-would have needed erasing.
+computation took is gone. Never a runtime check and one lowered path is exactly that, so the contract
+form is what the design wants and the const expression in a bound is the thing that would have needed
+erasing.
 
 The consequence for anyone implementing this: membership, the quantum at a magnitude, and the slot
 range are `const fn`s taking a format as a type parameter and reading its associated items. They are
@@ -340,13 +336,10 @@ are `repr(transparent)` with a single declared unwrap accessor, `count` and `get
 so the observation surface is exactly what the type establishes and nothing
 widens it.
 
-**They are not the bound on what the door carries.** A count of types is not what the canon bounds the
-door by, and
-`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon` says so in
-those terms.
+**They are not the bound on what the door carries.** A count of types is not the bound at all.
 
-**What the door carries out is the coordinate set of the parameterisation, spelled in types
-the stack owns.** A format's coordinates are what an implementor writes, so a crate outside this one
+**What the door carries out is the coordinate set of the parameterisation, spelled in types the stack
+owns.** A format's coordinates are what an implementor writes, so a crate outside this one
 has to be able to write them, and every one of them is a number or a truth value that the
 bare-primitive lints refuse in every crate but this one.
 
@@ -356,17 +349,15 @@ is signed, a slot index is wider, and a slot range's lowest index is routinely n
 makes the recorded option arithmetically impossible rather than merely costly, and it is why a reader
 looking for the coordinates to be built out of the two primitives will not find that anywhere.
 
-**How many types the door carries is not settled, and this design does not settle it.** One reading
-is a type per coordinate; the other is more than two and fewer than ten, leaving open whether the
-signed coordinates share one. **This crate ships one per coordinate**, which is the first of those,
-and saying what it ships is a different act from choosing.
+**How many types the door carries is not settled, and this design does not settle it.** Two readings
+are live: a type per coordinate, or more than two and fewer than ten with the signed coordinates
+possibly sharing one. **This crate ships one per coordinate**, which is the first of them, and saying
+what it ships is a different act from saying what the bound is.
 
-`proposal::the_introduction_doors_bound_is_a_position_rule_not_a_count_of_types` is where the question
-went next: the bound stops being a count and becomes a rule about positions, so a bare primitive
-appears only in the constructor and the accessor of a primitive this crate itself defines, plus the
-const generic parameter position the obligation already excepts. **One instance, named here as open
-rather than adopted**, because a design adopting a one-expert proposal has decided a canon question in
-the tier below where it belongs.
+There is a third shape the bound could take, where it stops being a count and becomes a rule about
+positions: a bare primitive appears only in the constructor and the accessor of a primitive this
+crate itself defines, plus the const generic parameter position that is already excepted. **Named
+here as open rather than adopted**, because this design is not where that bound gets chosen.
 
 ### The coordinates, and why they are types at all
 
@@ -378,12 +369,12 @@ them as host integers and a host `bool`, and that has a consequence.
 **The bare-primitive lints run at error level in every crate, and `arvo-format` is
 the only one exempt**, because it introduces the numeric category. So a crate
 elsewhere that implements `Format` is refused at the gate for every coordinate it
-supplies, and the only way it lands is by turning a lint off.
-A new instance earns admission by supplying the concept's obligations, at
-`proposal::the_concept_is_closed_and_the_inventory_is_open`. Closing the concept while opening
-the inventory is what makes admission a check rather than a negotiation. A
-contract nobody outside can supply without editing a lint config has made it a
-negotiation with the lint config, which is not the same thing.
+supplies, and the only way it lands is by turning a lint off. The concept is
+closed and the inventory is open: a new instance earns admission by supplying
+the concept's obligations, and closing the concept while opening the inventory
+is what makes admission a check rather than a negotiation. A contract nobody
+outside can supply without editing a lint config has made it a negotiation with
+the lint config, which is not the same thing.
 
 **The floor is two, measured rather than argued.** An outside format reusing every
 shipped `Ambient`, `Quantum` and `Slots`, and supplying only what `Format` itself
@@ -392,9 +383,9 @@ arrangement of the shipped parts gets past the gate, which is what makes it a
 defect in the contract rather than an inconvenience at one call site.
 
 An associated const takes any type at all. Only a const generic parameter is
-restricted to the host's own, and `obligation::a_primitive_for_every_position_a_bare_number_would_take`
-excepts that position. So the repair needs no mechanism: it
-needs each coordinate to be named for what it is and given a type that says so.
+restricted to the host's own, and that position is excepted. So the repair needs
+no mechanism: it needs each coordinate to be named for what it is and given a
+type that says so.
 
 | Coordinate type | What it is | Declared with |
 |---|---|---|
@@ -449,9 +440,9 @@ field, and has exactly one declared unwrap accessor, on the same reading as `Wid
 and `Bool`: a type whose fields are public has not carried the property its
 constructors establish.
 
-**Nothing here touches a const generic parameter.** They are excepted, and
-`question::the_width_surface_crossing` is open on exactly that surface, so this
-design states its coordinates and leaves that question where it is.
+**Nothing here touches a const generic parameter.** They are excepted, and what
+crosses at that surface is unsettled, so this design states its coordinates and
+goes no further.
 
 **The compiler refuses that position, and a test says so.**
 `an_arvo_type_as_a_const_parameter_is_refused` holds the file that will not build,
@@ -469,7 +460,7 @@ and `tests/ui/` keeps the refusal where it can be read.
 
 ## Applying the adaptation, which is the second half of the composition
 
-Arithmetic on a format is an exact operation in the ambient domain composed
+The factoring says arithmetic on a format is an exact operation in the ambient domain composed
 with a named total adaptation onto the representable set. Naming an adaptation is not applying one, and
 without the verb the composition has only its first half.
 
@@ -574,9 +565,9 @@ a caller would then have to know the meaning of.
 than adapt it. They return a verdict rather than diverging, so the crate itself stays total and the
 decision to panic belongs to the caller's build.
 
-The bound is loose on purpose. Whether the panic may appear in dev builds of the speed-first concern
-is open, and a design sharpening that into a rule about where a panic fires would be deciding it
-here rather than stating it.
+The bound is stated loosely on purpose. Two concerns bound the panic, and neither of them settles
+whether it may appear in dev builds of the speed-first concern. **A design that sharpened this would
+be going past the bound rather than completing it.**
 
 ### The laws the applied map owes tests for
 
@@ -640,17 +631,17 @@ impl, so every use of it is a trait-bound error at the use site. There is no gua
 because a guard is a thing that can be deleted and an absent impl is not.
 
 **The trait itself is open and is not sealed.** A numeral wanting a slot range that is neither of the
-two shipped shapes has to be able to supply one, per
-`proposal::the_concept_is_closed_and_the_inventory_is_open`. So the sentence above is about what this
-crate ships and says nothing about what exists: an outside crate may implement `Slots`, and the
-contracts table above lists `Signed` and `Unsigned` as examples for that reason.
+two shipped shapes has to be able to supply one, because the concept is closed and the inventory is
+open. So the sentence above is about what this crate ships and says nothing about what exists: an
+outside crate may implement `Slots`, and the contracts table above lists `Signed` and `Unsigned` as
+examples for that reason.
 
 **So do not read the two shipped shapes as the two that can exist.** Nothing enforces such a bound
 and nothing could, on a trait an outside crate may implement.
 
 ### What an outside implementor owes, and what checks it
 
-The same proposition says a new instance earns admission by **supplying the concept's obligations**,
+The same rule says a new instance earns admission by **supplying the concept's obligations**,
 and that closing the concept while opening the inventory is what makes admission **a check rather
 than a negotiation**. So the obligations are checked rather than requested.
 
@@ -706,20 +697,19 @@ that arithmetic overflows at the definition site, so adding a width past the bou
 where it was added rather than opening a hole at some use site later.
 
 **Why this rather than a checked constructor.** A public function taking a runtime width and asserting
-on it is a runtime check on the public surface, which
-`ruling::never_a_runtime_check_and_one_lowered_path` forbids, and it is a check a later edit can
+on it is a runtime check on the public surface, which is forbidden, and it is a check a later edit can
 remove while every test at admitted widths stays green. The set of impls is the same statement made
 where nothing can delete it.
 
 **The bound is a property of this representation rather than a statement about how wide arvo goes.**
-`question::arbitrary_width_demands_in_the_canon` is open and its second option leaves width families
-to the design tier; this design states what it admits and does not answer the open question.
+How wide arvo goes in general is unsettled, and this design states what it admits rather than
+answering that.
 
 ### The other three contracts owe the same thing, in the same form
 
-The argument above is about the concept and not about slot ranges. What it rests on is how any new
-instance of any of these concepts earns admission, so the other three open contracts carry the
-obligation in the same shape, and what follows is what each one asserts.
+The argument above is about the concept and not about slot ranges. The admission rule is about how
+any new instance of any of these concepts earns its place. So the other three open contracts carry
+the obligation in the same shape, and what follows is what each one asserts.
 
 **An ambient domain declares a radix of at least two.** A radix below that is not a positional
 notation: at one the step never changes with the exponent and every magnitude names the same value, and
@@ -761,7 +751,7 @@ a scratch file somebody deletes.
 
 ## Where the exact step happens, which is not in the set it lands in
 
-Arithmetic on a format is an exact operation in an ambient domain composed
+The factoring says arithmetic on a format is an exact operation in an ambient domain composed
 with a named total adaptation onto the representable set. **Those are two acts in two places**, and
 reading them as one is how a map ends up computing the exact step in the carrier its result has to fit
 rather than in one wide enough to hold the step.
@@ -783,8 +773,7 @@ function that asks. Nothing about it reaches the surface: what comes back is a `
 **This is what makes the map total without a check.** Wrapping a very large exact position into a small
 range has a correct answer, and the only reason a design would refuse or guard there is that it chose
 a carrier too narrow for the intermediate. Widening it removes the case rather than catching it, which
-is what `ruling::never_a_runtime_check_and_one_lowered_path` asks for: no check on the value path, and
-no arm that only holds under a build flag.
+is what the design asks for: no check on the value path, and no arm that only holds under a build flag.
 
 A guard would have been the wrong answer twice over. Under `overflow-checks` it is a runtime check the
 canon forbids; without it, it is nothing at all, and the wrong value it lets through lands **inside**
@@ -806,17 +795,16 @@ that has been admitted rather than one that merely arrived.
 
 ## The industrial conventions, as instances of the open inventory
 
-`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest` names MATLAB `fi` and `fimath` and
-IEEE 754 as the two the parity suite is built against, with SystemC `sc_fixed`, Vitis `ap_fixed` and
-Algorithmic C `ac_fixed` reserved rather than excluded. A convention is a naming over what this crate
+The standards bound starts at two and reserves the rest. MATLAB `fi` and `fimath` and IEEE 754 are the
+two the parity suite is built against, with SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C
+`ac_fixed` reserved rather than excluded. A convention is a naming over what this crate
 already carries, so it joins the same way any instance does and nothing about the concept grows.
 
 **Nothing behind the naming is the test of whether it is honest.** A convention that needed this crate
 to compute something to make it work would not be a convention arvo supports badly; it would be a gap
-in the primitives, which is what
-`proposal::every_operation_arvo_declares_is_a_function_of_the_declared_width` says the standards bound
-is for. So the interesting output of this section is its refusals, and both of them below are claims
-about this crate rather than about MATLAB.
+in the primitives, which is what the standards bound is there to find: every operation arvo declares
+is a function of the declared width. So the interesting output of this section is its refusals, and
+both of them below are claims about this crate rather than about MATLAB.
 
 ### The coordinate map, which is five names for things that exist
 
@@ -855,14 +843,12 @@ Four of the six rounding methods land on a shipped mode. Ceiling is `Ceil`, Floo
 
 **The two nearest-with-ties methods do not.** MathWorks documents Nearest as ties toward positive
 infinity and Round as ties toward the greater absolute value, and those are two operations. This crate
-names one nearest-not-to-even mode, `half_up`, and what it means is open:
-`question::is_the_rounding_vocabulary_complete_at_six` asks whether the vocabulary is short a name,
-treating ties away from zero as a mode outside the six this crate names, and
-`question::which_tie_direction_an_unqualified_nearest_names` records that `half_up` is itself two
-operations under a reading nobody has settled.
+names one nearest-not-to-even mode, `half_up`, and what it means is open in two ways. The vocabulary
+may be short a name, with ties away from zero a mode outside the six there are. And `half_up` is
+itself two operations under a reading nobody has settled.
 
-So both are marked and neither is asserted, because a parity arm claiming either would close an open
-question inside a design. What the convention shows is stronger than either mark: MATLAB needs two
+So both are marked and neither is asserted, because a parity arm claiming either would settle in code
+what the design has left open. What the convention shows is stronger than either mark: MATLAB needs two
 nearest-with-ties operations and this crate names one, so whatever `half_up` turns out to mean, one of
 the two has nowhere to land.
 

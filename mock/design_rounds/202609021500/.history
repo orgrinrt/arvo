@@ -1,0 +1,50 @@
+9e024b41 chore: lock the src changelist
+3c1c8868 fix: compare against the merge base in the src changelist check
+f5467064 chore: add the src changelist for the doc round
+fba0fc49 chore: lock the doc changelist
+0e48b084 docs: drop the registry citations from the two published pages
+905ea489 docs: plan the doc changelist for the two published pages
+7a6cf024 docs: open a round on what the two published pages name
+bfbb3621 Merge pull request #88 from orgrinrt/research/ratify-the-format-rat-a
+26f65faf Merge pull request #87 from orgrinrt/research/q29-q29b
+cba3bd3c Merge pull request #86 from orgrinrt/research/q29-q29a
+404e3a46 research: reconcile q29b against 241, 242, 246 and 247
+5eeb39d2 research: the ADMITTED blocks do not answer Q29, and four of nine are unguarded
+ffbb9d1d research: the admission obligations are Q1's, and the open row they spent is Q31
+7fed7b59 docs: quote the `standing` vocabulary instead of paraphrasing it
+8a58ee3f Merge pull request #79 from orgrinrt/research/numeral-seat248
+713d022d research: seat 248 reconciles, the clause was in the schema
+e1de4031 Merge pull request #77 from orgrinrt/research/numeral-seat249
+15a18243 research: seat 249 reconciles against 244 to 247
+c9afdeaa research: seat 248 blind on what a standing counts
+cbcdce5b research: seat 249 derives what standing counts, blind
+eac588fd research: seat 247 finds the cold seats read rows 73 wrote
+0f882f73 research: seat 247 finds the cold seats answered rows 73 wrote
+607ca52f docs: fix the four release surfaces no diff was ever about
+8064a454 research: seat 246 finds both promotions clause-partial
+5fd3134a research: seat 246 corrects the promotions and rebuilds the anchor diff
+748c6004 feat: spell every format coordinate in a type the stack owns
+033c02e2 research: seat 245 entails the admission consolidation against its sources
+334f59e5 research: seat 245 entails the admission consolidation against its sources
+98a4b7ee research: seat 244 consolidates the admission sitting
+b864cf8a feat: name matlab fi and fimath over the declared signature
+cc19b122 research: seat 244 consolidates the admission sitting
+da2f9d23 fix: the identity turns on a whole multiple of the quantum
+5ae69731 chore: drop the banned word from registry prose, keeping op's own
+c21c0e52 canon: the additive identity turns on a whole-multiple phase, not a nonzero one
+800e120a research: seat 242 attacks 241, the resolution has no second arm
+4bbe1805 research: seat 242 attacks 241, the resolution has no second arm
+eeef1ddc research: seat 242 probe, the resolution's failure arm is uninhabited
+78a01b8b research: seat 241 erratum on the bound-field count
+e338c138 research: seat 241 erratum, zero of eighteen carry a bound and my topic figure was wrong
+aec4859e research: seat 241 on what admits a number system
+f9081b95 research: seat 242 on what admits a number system
+d8c22e2b research: seat 241 reconciliation, coordinate means two things and nothing says so
+556eb12f research: seat 242 probe sources reformatted by the gate, outputs re-verified
+a664fffb research: seat 241 stage 3, the ratified ten fixes the slot arity at one
+8a736b27 research: seat 242 reconciliation after reading the panel
+27ac9476 research: seat 242 probe, seat 237's phase repair at the value that motivated it
+b7d7289f research: seat 241 stage 2, the refused shape and the two probes
+64ab711e research: seat 242 blind derivation, what admits a number system
+b6350453 research: seat 242 probe, what the admission contract actually enforces
+c06a5706 research: seat 241 stage 1, admission is a resolution not a verdict
