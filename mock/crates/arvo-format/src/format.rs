@@ -36,7 +36,7 @@ use crate::width::{Bool, Width};
 ///
 /// A ratio, so the half-step bias is exact rather than approximated, and one
 /// coordinate rather than two consts an implementor can put out of step with each
-/// other. The ratified parameterisation carries a phase, singular, and this is it.
+/// other. The parameterisation carries a phase, singular, and this is it.
 ///
 /// **It holds the pair it was declared with.** Nothing here normalises the sign
 /// or reduces the fraction. Both questions asked of it, whether the ratio is a

@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Applying an adaptation: the second half of the ratified factoring.
+//! Applying an adaptation: the second half of the factoring.
 //!
 //! Arithmetic on a format is an exact operation in the ambient domain composed
 //! with a named total adaptation onto the representable set. Everything else in
@@ -300,7 +300,7 @@ const fn complete_slot(policy: Policy, slot: i128, min: Slot, max: Slot) -> Slot
 ///
 /// Total: every position returns a slot the format admits, for every mode and
 /// every policy. That totality is what makes an adaptation a member of the slot
-/// the ratified factoring names, and it is why a panic is not one.
+/// the factoring names, and it is why a panic is not one.
 #[must_use]
 pub const fn adapt<S: DeclaredSignature>(exact: Exact, dither: Dither) -> Slot {
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
@@ -320,12 +320,9 @@ pub const fn adapt<S: DeclaredSignature>(exact: Exact, dither: Dither) -> Slot {
 /// Returns a verdict rather than diverging, so this crate stays total and the
 /// decision belongs to the caller's build profile.
 ///
-/// The bound is deliberately loose. One ratified row bounds the panic by the
-/// imitate-a-native-primitive concern and op's own correction rebounds it on the
-/// speed-first concern while saying the intent is the inferrable thing rather
-/// than the wording, and the correction's own gap records that whether the panic
-/// may appear in dev builds of that concern is unsettled. Sharpening it here
-/// would go past what was blessed.
+/// The bound is deliberately loose, and it stays loose because whether the panic
+/// may appear in a dev build of a speed-first strategy is not settled. Sharpening
+/// it here would answer that question in the wrong place.
 #[must_use]
 pub const fn panic_on_inexact(exact: Exact) -> Bool {
     exact.is_on_grid().not()

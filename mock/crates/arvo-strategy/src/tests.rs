@@ -7,7 +7,7 @@
 //! convenient.
 //!
 //! Every test here runs in both build profiles. Nothing in this file is behind a
-//! `cfg`, which is the property the round that wrote it was fixing: a test that
+//! `cfg`, which is the property this file is built around: a test that
 //! exists in one profile and not the other is a coverage claim that changes with
 //! the build while the runner reports `0 ignored` either way.
 
@@ -42,7 +42,7 @@ fn every_preset_binds_to_an_objective() {
 
 #[test]
 fn the_storage_binding_is_the_one_that_binds_to_footprint() {
-    // The ratified intent is that the storage-minimising path is not
+    // The intent is that the storage-minimising path is not
     // deprioritised, and the binding is where that shows up: it is the preset that
     // reaches the footprint objective, and no other does.
     let to_footprint = [

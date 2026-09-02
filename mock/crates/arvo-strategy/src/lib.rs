@@ -22,7 +22,7 @@
 //! that, and carrying one made a per-preset compile-time item keyed on the
 //! preset, which is nearer the behaviour table the canon forbids than prose is.
 //!
-//! Each preset's `Adaptation` is a carried default, not a ratified answer.
+//! Each preset's `Adaptation` is a carried default rather than a settled answer.
 //! `question::does_warm_wrap_or_clamp` is open in the registry and disputes at
 //! least the `Warm` cell; the other three carry the same unproven status. Each
 //! impl below is marked `// FIXME:` at the declaration for exactly this reason.
@@ -84,7 +84,7 @@ pub mod presets {
     /// has set it.
     pub struct Hot;
 
-    // FIXME: Adapt<TowardZero, Wrap> is a carried default, not a ratified value.
+    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
     // No overflow_policy/rounding row disputes this specific cell yet; treat it
     // as unproven the same as the other three until one settles it.
     impl Strategy for Hot {
@@ -102,7 +102,7 @@ pub mod presets {
     /// renamed or resized.
     pub struct Cold;
 
-    // FIXME: Adapt<TowardZero, Wrap> is a carried default, not a ratified value.
+    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
     // No overflow_policy/rounding row disputes this specific cell yet; treat it
     // as unproven the same as the other three until one settles it.
     impl Strategy for Cold {
@@ -119,7 +119,7 @@ pub mod presets {
     /// recorded rather than papered over.
     pub struct Precise;
 
-    // FIXME: Adapt<HalfEven, Saturate> is a carried default, not a ratified value.
+    // FIXME: Adapt<HalfEven, Saturate> is a carried default rather than a settled value.
     // No overflow_policy/rounding row disputes this specific cell yet; treat it
     // as unproven the same as the other three until one settles it.
     impl Strategy for Precise {
@@ -136,10 +136,9 @@ pub mod presets {
     /// worse choice.
     pub struct Warm;
 
-    // FIXME: Adapt<HalfEven, Wrap> is a carried default, not a ratified value.
-    // question::does_warm_wrap_or_clamp is open in the registry and already
-    // disputes this cell; op has called the prior panel's ratified table's Warm
-    // cell stale. Do not read this as settled until that question resolves.
+    // FIXME: Adapt<HalfEven, Wrap> is a carried default rather than a settled
+    // value. question::does_warm_wrap_or_clamp is open in the registry and
+    // disputes this cell. Do not read it as settled until that question resolves.
     impl Strategy for Warm {
         type Objective = objective::Access;
         type Adaptation = Adapt<HalfEven, Wrap>;
