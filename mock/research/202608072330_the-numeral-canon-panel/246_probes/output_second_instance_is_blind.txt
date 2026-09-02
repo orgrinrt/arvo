@@ -1,0 +1,142 @@
+=== 1. route disjointness, by the dates the files landed ===
+  73_leijen_the_membership_test_and_how_wide.md              2026-08-09 10:29:34 +0300
+  74_giesen_consolidation_the_number_system_concept.md       2026-08-09 11:05:34 +0300
+  225_peyton_jones_the_container_premise.md                  2026-08-31 20:52:05 +0300
+  226_lattner_the_derivation_outputs.md                      2026-08-31 21:41:40 +0300
+  73 and 74 both precede 225 and 226, so neither could have used R2.
+  C1 passes: the same comparison run the other way round returns false, so it is a test and not a constant.
+  R2's own provenance field, quoted from the row:
+    provenance = ["panel::202608072330_the-numeral-canon-panel::226_lattner_the_derivation_outputs::#23-the-answer", "panel::202608072330_the-numeral-canon-panel::225_peyton_jones_the_container_premise::#3-the-statement-that-survives-and-it-is-already-the-canons-shape"]
+
+=== 2. was 241's pre-reconciliation body edited after the reading began ===
+  commits touching 241, oldest first:
+    c06a5706  2026-09-01 17:54:57 +0300 research: seat 241 stage 1, admission is a resolution not a verdict
+    b7d7289f  2026-09-01 18:09:19 +0300 research: seat 241 stage 2, the refused shape and the two probes
+    a664fffb  2026-09-01 18:13:59 +0300 research: seat 241 stage 3, the ratified ten fixes the slot arity at one
+    d8c22e2b  2026-09-01 18:17:35 +0300 research: seat 241 reconciliation, coordinate means two things and nothing says so
+    e338c138  2026-09-01 18:27:36 +0300 research: seat 241 erratum, zero of eighteen carry a bound and my topic figure was wrong
+
+  per-commit hash of section 6 (Q31, the claim L2' turns on):
+    c06a5706  da39a3ee5e6b  (0 lines)
+    b7d7289f  e85576137983  (31 lines)
+    a664fffb  e85576137983  (31 lines)
+    d8c22e2b  e85576137983  (31 lines)
+    e338c138  e85576137983  (31 lines)
+  per-commit hash of section 8 (Q30, the claim L2 turns on):
+    c06a5706  da39a3ee5e6b
+    b7d7289f  071272bc9cda
+    a664fffb  071272bc9cda
+    d8c22e2b  071272bc9cda
+    e338c138  071272bc9cda
+  per-commit hash of section 5 (Q22), included as the control:
+    c06a5706  da39a3ee5e6b
+    b7d7289f  677edca8e2da
+    a664fffb  a5f124f8f5f3
+    d8c22e2b  a5f124f8f5f3
+    e338c138  a5f124f8f5f3
+  C2 passes: section 5 differs between the first and last commit, so the instrument can see a change.
+
+  whole pre-reconciliation body (everything above the reconciliation rule), a664fffb against HEAD-of-file:
+    raw, including any appended separator: a664fffb : cc293b3c98cc / e338c138 : f259738bccae
+    separator rule and trailing blanks stripped: a664fffb : cc293b3c98cc / e338c138 : cc293b3c98cc
+    the raw difference, in full:
+      617a618,620
+      > 
+      > ---
+      > 
+    IDENTICAL. 241 added the reconciliation and the erratum and edited nothing above them.
+
+=== 3. what 241 says it read, and whether it reaches the proposals' provenance ===
+  241's own reading list, from its reconciliation:
+    What I read: `74_giesen_consolidation_the_number_system_concept.md` (sections 3.1 and 3.4,
+    and the option pass on Q30), `73_leijen_the_membership_test_and_how_wide.md` section 7,
+    `08_knuth_what_the_one_format_concept_covers.md` section 4.5, and two paragraphs of
+    `71_orchard_what_crosses_between_two_systems.md`. Plus greps across the whole panel
+    directory for the phrases my findings turn on.
+    
+    ## What I would not change
+
+  the provenance the two proposals name:
+    admission_returns_a_coordinate_rather_than_a_verdict:
+      provenance = [
+        "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::568",
+        "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::705",
+      ]
+    membership_and_hosting_are_two_questions:
+      provenance = [
+        "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::536",
+        "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::667",
+      ]
+
+  73's line 667 and 705, which are the two provenance targets inside 73:
+    **M1, the word is two words.** *Whether something is a number system and whether this
+    **M5, admission returns a coordinate.** *Asking whether a candidate is a number system is usually
+
+  does 241 cite 73 by section, and which section:
+    `73_leijen_the_membership_test_and_how_wide.md` section 7,
+    `73` section 7 reaches "the procedure a cano
+    `73` argues from the disputed cases, that a 
+    `73` was written
+    `73`
+    `73` replaces the predicate with a location 
+    `73`, not in `74`, and the
+    `73`
+    `73`'s vocabulary and false in R3's, because
+    `73`
+    `73` predates R1's ratification of the encod
+    `73` and everybody
+    `73`'s location procedure does, since
+    `73`'s, with disjoint routes
+    `73`'s five-component vocabulary and R3's te
+  C3a passes: the grep finds text that is present in 241.
+  C3b passes: a planted '73 section 1' is found in the planted copy and is absent from 241 itself.
+
+=== 4. what backs the two sections of 73 the proposals come from ===
+  73's own committed instruments:
+    p0_toolchain.txt
+    p1_collapse.py
+    p1_output.txt
+    p1b_952_attribution.py
+    p1b_output.txt
+    p1c_collapse_cannot_fail.py
+    p1c_output.txt
+    p1d_admission_clauses.py
+    p1d_output.txt
+    p2_order_discriminator.py
+    p2_output.txt
+    p3_membership_contract.rs
+    p3_n1.rs
+    p3_n1.stderr
+    p3_n2.rs
+    p3_n2.stderr
+    p3_n3.rs
+    p3_n3.stderr
+    p3_negatives.sh
+    p3_positive.txt
+    p4_check_my_own_citations.py
+    p4_output.txt
+    p5_output.txt
+    p5_which_third_verdict.py
+    p6_closed_form_lifts_the_ceiling.py
+    p6_output.txt
+
+  which section of 73 cites each of its own probes:
+    
+    ## 11. Fits against the register
+    ## 12. Candidate canon sentences
+    ## 13. What I could not settle
+    ## 14. Coverage, bounded honestly
+    ## 2. The proposed membership test fails in its sufficient direction, and the failure is cheap
+    ## 3. What the exposure list is missing, derived from what breaks it
+    ## 4. Q21's discriminator is empty, and this is measured over every order rather than argued
+    ## 6. The broad reading costs no mechanism, and the repair is expressible as a bound
+    ## 8. Q20, and the bound the membership test actually carries
+    ## 9. Two reports outside the question, per the standing instruction
+
+  section 1 cites its own probes 0 times
+  section 7 cites its own probes 0 times
+  C4 passes: the same counter returns 3 for section 2, so a zero is a fact about the section.
+
+  73's own 'Rests on' lines for M1 and M5:
+    674:about whether unbounded rationals are excluded by mathematics or by choice. Rests on: section 1,
+    710:mechanism. Equivalence: passes. Rests on: section 7, composing `67`'s telescope, `70`'s ownership
