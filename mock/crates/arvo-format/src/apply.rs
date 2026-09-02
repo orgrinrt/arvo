@@ -206,8 +206,8 @@ impl Exact {
     /// Cross-multiplied in the wide carrier, which is what `round_slot` does with
     /// the same comparison. The stored remainder reaches one below the
     /// denominator, so doubling it in the coordinate's own carrier leaves the
-    /// type on any remainder above half of it, and a verdict function that
-    /// diverges is not one.
+    /// type on any remainder above half the carrier's maximum, and a verdict
+    /// function that diverges is not one.
     #[must_use]
     pub const fn is_tie(self) -> Bool {
         Bool::of((self.part.num as i128) * 2 == self.part.den as i128)
