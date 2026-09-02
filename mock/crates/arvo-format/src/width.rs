@@ -21,9 +21,9 @@
 //! fraction with the applied map. That is what keeps the door narrow while
 //! nothing above it has to reach past it.
 //!
-//! How many types that is, is not stated here and is not settled anywhere. Two
-//! separate derivations reached different counts, so a number written down here
-//! would be one of them wearing the door's authority.
+//! How many types that is, is not stated here and is not settled anywhere, so a
+//! number written down here would be wearing the door's authority without having
+//! earned it.
 
 /// A count of bits.
 ///

@@ -263,25 +263,48 @@ fn every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts() {
 //
 // An obligation is a const and a const is evaluated where it is used, so the
 // guarantee is exactly the set of verbs that use it. `Format::ADMITTED` is forced
-// at two of them. The three arms below are the routes that reach a value without
-// meeting either, each one a property the design now states outright and each one
-// established by hand before it was written down here.
+// at two of them, and the arms below are about what that leaves open. One is a
+// route that reaches a value without meeting the obligation at all. One reaches a
+// forcing site and finds an implementor's override sitting where the obligation
+// was. One is about a different obligation, reached through a call rather than
+// forced, which is the case where the set depends on the declaration as much as
+// on the verb.
 //
-// **They pass, and that is what they are for.** A route the design admits exists
-// is pinned by an arm that passes while it is open and fails the moment it
-// closes, which is what makes a later round's closing visible rather than silent.
+// They pass, and that is what they are for. A route the design admits exists is
+// pinned by an arm that passes while it is open and fails the moment it closes,
+// which is what makes a later round's closing visible rather than silent.
+//
+// The fixture throughout is `NoDenominator`, declared with the other wrong
+// constructions above. It used to be declared a second time here under another
+// name, character for character, and the copy grew an assertion whose only job was
+// checking the two had not drifted apart.
 
-/// A format whose phase names no position on the grid.
+/// A slot range whose lowest index is above its highest, so it admits nothing.
 ///
-/// `Phase::of(1, 0)` is stored as it was written, so this compiles and the
-/// obligation on `Format` is what refuses it, at the two verbs that force it.
-struct PhaseNamesNoPosition;
+/// Inadmissible, and nothing here forces it. `Slots::ADMITTED` is reached through
+/// `slot_in_range`, so a verb that never calls it over this range never learns the
+/// range is wrong.
+struct InvertedSlots;
 
-impl Format for PhaseNamesNoPosition {
+impl Slots for InvertedSlots {
+    const MIN: Slot = Slot::at(8);
+    const MAX: Slot = Slot::at(-8);
+    const WIDTH: Width = Width::bits(8);
+}
+
+/// Over the inverted range, with a phase that never yields a cancelling slot.
+///
+/// `Phase::of(1, 2)` denotes, so this format's own obligation is met, and no
+/// magnitude cancels it, so `has_additive_identity` never reaches the
+/// `slot_in_range` inside its loop. The range stays unexamined and the verb
+/// answers.
+struct NeverCancelsOverAnInvertedRange;
+
+impl Format for NeverCancelsOverAnInvertedRange {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
-    type Slots = Signed<8>;
-    const PHASE: Phase = Phase::of(1, 0);
+    type Slots = InvertedSlots;
+    const PHASE: Phase = Phase::of(1, 2);
 }
 
 /// The same format with the obligation written over, which any implementor may do.
@@ -306,7 +329,7 @@ fn contains_answers_for_a_format_whose_phase_does_not_denote() {
     //
     // The assertion is that it answers at all; which way it answers is the slot
     // and magnitude ranges' business and neither of those is what is wrong here.
-    let answered = contains::<PhaseNamesNoPosition>(Slot::ZERO, Magnitude::SMALLEST);
+    let answered = contains::<NoDenominator>(Slot::ZERO, Magnitude::SMALLEST);
     assert_eq!(answered, Bool::TRUE);
 
     // The control, and it is what makes the arm mean anything: the same call on a
@@ -314,17 +337,6 @@ fn contains_answers_for_a_format_whose_phase_does_not_denote() {
     // that the obligation was not consulted rather than that the phase was read.
     let control = contains::<Integer<8>>(Slot::ZERO, Magnitude::SMALLEST);
     assert_eq!(answered, control);
-}
-
-#[test]
-fn a_coordinate_is_readable_off_the_impl_without_the_obligation_firing() {
-    // The shortest route of the three. Nothing between a reader and the
-    // declaration, so nothing to force.
-    assert_eq!(
-        <PhaseNamesNoPosition as Format>::PHASE.denotes(),
-        Bool::FALSE
-    );
-    assert_eq!(<Integer<8> as Format>::PHASE.denotes(), Bool::TRUE);
 }
 
 #[test]
@@ -336,7 +348,7 @@ fn an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing(
     // `ADMITTED` exists or not.
     //
     // `has_additive_identity` forces `<F as Format>::ADMITTED`. That this line
-    // compiles at all is the assertion: the same call on `PhaseNamesNoPosition`
+    // compiles at all is the assertion: the same call on `NoDenominator`
     // does not, which the `tests/ui` arm beside this file pins.
     assert_eq!(has_additive_identity::<DisarmedObligation>(), Bool::FALSE);
 
@@ -345,13 +357,48 @@ fn an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing(
     // leaves the default in place and does denote answers the other way, so the
     // verb is not simply returning `FALSE` for everything.
     assert_eq!(has_additive_identity::<Integer<8>>(), Bool::TRUE);
+}
 
-    // And the two are the same declaration apart from the obligation, so the arm
-    // is about the override rather than about anything else that differs.
-    assert_eq!(
-        <DisarmedObligation as Format>::PHASE,
-        <PhaseNamesNoPosition as Format>::PHASE
-    );
+// A transitive reach is decided in const evaluation and not at a runtime call,
+// and the two answer differently.
+//
+// `has_additive_identity` reaches `slot_in_range` inside its loop, on a magnitude
+// where `cancelling_slot` answers `Is`. In a `const` item the branch is taken or
+// not taken, so a phase that cancels at no magnitude never reaches the call and
+// the slot range's obligation goes unforced. That is what the const below asserts:
+// it binds the verb over an inadmissible range, and it builds.
+//
+// A runtime call is the opposite and it is worth stating, because the design's
+// sentence about declaration-dependence is true only of the first. Monomorphising
+// `has_additive_identity::<F>` instantiates `slot_in_range::<F::Slots>` whether or
+// not the branch is ever executed, so the obligation is forced at codegen for
+// every declaration. Calling the same verb on the same format from a running test
+// is refused, which is why this arm is a const and not an `assert_eq!`.
+const _THE_CANCELLING_BRANCH_IS_NOT_REACHED: () = {
+    assert!(!has_additive_identity::<NeverCancelsOverAnInvertedRange>().get());
+};
+
+// The control, and it is what stops the const above from being a fact about the
+// verb rather than about the phase: the same phase over a range that does admit
+// answers the same way.
+const _THE_SAME_PHASE_OVER_AN_ADMISSIBLE_RANGE: () = {
+    assert!(!has_additive_identity::<NeverCancelsOverAnAdmissibleRange>().get());
+};
+
+// The other half is a refusal and cannot be asserted from inside a running test.
+// `tests/ui/a_cancelling_phase_reaches_the_slot_range.rs` carries it: the same
+// inverted range under a phase that cancels at slot zero at every magnitude, so
+// the loop reaches `slot_in_range` on the first pass and the range is refused.
+// Same verb, same slot range, opposite outcome, decided by the phase.
+
+/// The control for the arm above: the same phase over a range that admits.
+struct NeverCancelsOverAnAdmissibleRange;
+
+impl Format for NeverCancelsOverAnAdmissibleRange {
+    type Ambient = BinaryRationals;
+    type Quantum = Constant<0>;
+    type Slots = Signed<8>;
+    const PHASE: Phase = Phase::of(1, 2);
 }
 
 #[test]
@@ -366,7 +413,7 @@ fn adapt_forces_the_slot_range_and_not_the_format() {
     // and reaches the format only through it. That this compiles and returns is
     // the proof, because the format underneath declares a phase that names no
     // position and the format's own obligation refuses exactly that.
-    type OverANonDenotingFormat = Signature<PhaseNamesNoPosition, Adapt<Floor, Saturate>>;
+    type OverANonDenotingFormat = Signature<NoDenominator, Adapt<Floor, Saturate>>;
     let landed = adapt::<OverANonDenotingFormat>(Exact::on_grid(Slot::ZERO), Dither::UNUSED);
 
     // The control: the same call over a format that does denote lands on the same
