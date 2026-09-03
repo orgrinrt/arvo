@@ -18,8 +18,8 @@ use core::fmt::{self, Write};
 /// Overflow is reported rather than silently truncated, because a debug routine
 /// that lies about having printed everything is worse than one that refuses.
 pub struct Buffer<const N: usize> {
-    bytes: [u8; N],
-    used: usize,
+    bytes:      [u8; N],
+    used:       usize,
     overflowed: bool,
 }
 
@@ -27,8 +27,8 @@ impl<const N: usize> Buffer<N> {
     #[must_use]
     pub const fn new() -> Self {
         Self {
-            bytes: [0; N],
-            used: 0,
+            bytes:      [0; N],
+            used:       0,
             overflowed: false,
         }
     }
@@ -36,7 +36,7 @@ impl<const N: usize> Buffer<N> {
     #[must_use]
     pub fn as_str(&self) -> &str {
         // Every write came through `Write::write_str`, so the prefix is valid utf8.
-        core::str::from_utf8(&self.bytes[..self.used]).unwrap_or("")
+        core::str::from_utf8(&self.bytes[.. self.used]).unwrap_or("")
     }
 
     #[must_use]
@@ -58,7 +58,7 @@ impl<const N: usize> Write for Buffer<N> {
             self.overflowed = true;
             return Err(fmt::Error);
         }
-        self.bytes[self.used..self.used + b.len()].copy_from_slice(b);
+        self.bytes[self.used .. self.used + b.len()].copy_from_slice(b);
         self.used += b.len();
         Ok(())
     }

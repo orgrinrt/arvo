@@ -9,5 +9,7 @@ use arvo_format::USize;
 
 pub enum LinkError {
     PathNotFound,
-    LoadFailed { platform_code: USize },
+    LoadFailed {
+        platform_code: USize,
+    },
 }

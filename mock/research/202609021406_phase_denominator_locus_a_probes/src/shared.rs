@@ -12,6 +12,7 @@ impl Format for Broken {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 0);
 }
 
@@ -21,5 +22,6 @@ impl Format for Sound {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 2);
 }

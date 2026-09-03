@@ -20,8 +20,9 @@
 
 #![no_std]
 
-use arvo_format::Format;
 use core::fmt;
+
+use arvo_format::Format;
 
 impl<F: Format> fmt::Debug for F {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

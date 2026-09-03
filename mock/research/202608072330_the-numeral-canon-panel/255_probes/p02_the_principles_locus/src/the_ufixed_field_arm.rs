@@ -5,8 +5,9 @@
 //! assertion states that expectation and const evaluation refuses it, because
 //! the type is a format declaration and not a numeral.
 
-use arvo_format::points::UFixed;
 use core::mem::size_of;
+
+use arvo_format::points::UFixed;
 
 pub struct ErrorCode(UFixed<32, 0>);
 

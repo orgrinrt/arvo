@@ -8,5 +8,7 @@ use arvo_format::Width;
 
 pub enum LinkError {
     PathNotFound,
-    LoadFailed { platform_code: Width },
+    LoadFailed {
+        platform_code: Width,
+    },
 }

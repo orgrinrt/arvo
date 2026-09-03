@@ -27,9 +27,10 @@
 
 #![no_std]
 
-use arvo_format::slots::declared_slot_width;
-use arvo_format::{radix, slot_count, smallest_step_exponent, Format};
 use core::fmt::{Result, Write};
+
+use arvo_format::slots::declared_slot_width;
+use arvo_format::{Format, radix, slot_count, smallest_step_exponent};
 
 /// A rendering of what identifies a format.
 ///
@@ -65,29 +66,31 @@ impl<F: Format> RenderIdentity for F {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use arvo_format::ambient::BinaryRationals;
     use arvo_format::format::Phase;
     use arvo_format::points::{Integer, UFixed};
     use arvo_format::quantum::Constant;
     use arvo_format::slots::Signed;
 
+    use super::*;
+
     /// A sink with no allocation anywhere, standing in for whatever a caller
     /// brings. It is the caller's, which is the point: arvo supplies none.
     struct Sink<const N: usize> {
         bytes: [u8; N],
-        used: usize,
+        used:  usize,
     }
 
     impl<const N: usize> Sink<N> {
         const fn new() -> Self {
             Self {
                 bytes: [0; N],
-                used: 0,
+                used:  0,
             }
         }
+
         fn seen(&self) -> &str {
-            core::str::from_utf8(&self.bytes[..self.used]).expect("ascii only")
+            core::str::from_utf8(&self.bytes[.. self.used]).expect("ascii only")
         }
     }
 
@@ -97,7 +100,7 @@ mod tests {
             if self.used + b.len() > N {
                 return Err(core::fmt::Error);
             }
-            self.bytes[self.used..self.used + b.len()].copy_from_slice(b);
+            self.bytes[self.used .. self.used + b.len()].copy_from_slice(b);
             self.used += b.len();
             Ok(())
         }
@@ -150,6 +153,7 @@ mod tests {
         type Ambient = BinaryRationals;
         type Quantum = Constant<-3>;
         type Slots = Signed<11>;
+
         const PHASE: Phase = Phase::halves(1);
     }
 

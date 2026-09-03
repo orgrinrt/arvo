@@ -4,7 +4,7 @@
 //! nothing else about the declaration, the call, the crate or the toolchain.
 
 use arvo_format::ambient::BinaryRationals;
-use arvo_format::format::{has_additive_identity, Format, Phase};
+use arvo_format::format::{Format, Phase, has_additive_identity};
 use arvo_format::quantum::Constant;
 use arvo_format::slots::Signed;
 
@@ -14,6 +14,7 @@ impl Format for HalfStep {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 2);
 }
 

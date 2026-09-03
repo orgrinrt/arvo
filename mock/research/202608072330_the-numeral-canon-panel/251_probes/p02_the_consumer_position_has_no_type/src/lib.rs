@@ -12,9 +12,10 @@
 
 #![no_std]
 
+use core::mem::size_of;
+
 use arvo_format::points::{Integer, UFixed};
 use arvo_format::{Bool, Slot, Width};
-use core::mem::size_of;
 
 /// A platform error code is a value. The four points are the only numeral-shaped
 /// things arvo exports, and none of them can hold one.

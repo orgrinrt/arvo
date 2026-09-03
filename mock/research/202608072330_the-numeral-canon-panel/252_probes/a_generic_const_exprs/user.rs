@@ -2,7 +2,7 @@
 // signature that carries the const expression.
 #![no_std]
 
-use leaky::{widen, W};
+use leaky::{W, widen};
 
 pub const fn call() -> W<4> {
     widen(W::<3>)

@@ -24,7 +24,7 @@
 // comparator stuck at true.
 
 use arvo_format::ambient::{Ambient, BinaryRationals};
-use arvo_format::format::{radix, step_exponent, Format, Phase};
+use arvo_format::format::{Format, Phase, radix, step_exponent};
 use arvo_format::quantum::{Constant, Indexed, Magnitude, Quantum};
 use arvo_format::slots::{Signed, Slots};
 
@@ -36,6 +36,7 @@ impl Format for ConstantStep {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<4>;
+
     const PHASE: Phase = Phase::of(0, 1);
 }
 
@@ -46,6 +47,7 @@ impl Format for IndexedAtOneMagnitude {
     type Ambient = BinaryRationals;
     type Quantum = Indexed<0, 1>;
     type Slots = Signed<4>;
+
     const PHASE: Phase = Phase::of(0, 1);
 }
 
@@ -55,6 +57,7 @@ impl Format for PhaseZeroOverTwo {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<4>;
+
     const PHASE: Phase = Phase::of(0, 2);
 }
 
@@ -64,6 +67,7 @@ impl Format for ConstantStepAtOne {
     type Ambient = BinaryRationals;
     type Quantum = Constant<1>;
     type Slots = Signed<4>;
+
     const PHASE: Phase = Phase::of(0, 1);
 }
 
@@ -95,9 +99,11 @@ impl Q {
             den: den / g,
         }
     }
+
     fn add(self, o: Self) -> Self {
         Q::of(self.num * o.den + o.num * self.den, self.den * o.den)
     }
+
     fn mul_int(self, k: i128) -> Self {
         Q::of(self.num * k, self.den)
     }
@@ -112,11 +118,7 @@ fn power(base: u32, exp: i32) -> Q {
         acc *= b;
         n -= 1;
     }
-    if exp >= 0 {
-        Q::of(acc, 1)
-    } else {
-        Q::of(1, acc)
-    }
+    if exp >= 0 { Q::of(acc, 1) } else { Q::of(1, acc) }
 }
 
 /// The denoted set, enumerated from the exposed coordinates through the crate's
@@ -132,10 +134,10 @@ fn denoted<F: Format>() -> Vec<Q> {
     let mags = <F::Quantum as Quantum>::MAGNITUDES.count();
 
     let mut out = Vec::new();
-    for m in 0..mags {
+    for m in 0 .. mags {
         let e = step_exponent::<F>(Magnitude::at(m)).power();
         let step = power(r, e);
-        for s in min..=max {
+        for s in min ..= max {
             out.push(phase.add(step.mul_int(s)));
         }
     }
@@ -239,17 +241,13 @@ fn contains_agrees<A: Format, B: Format>(label: &str) {
     use arvo_format::format::contains;
     let mut same = 0usize;
     let mut differ = 0usize;
-    for m in 0u32..4 {
-        for s in -10i64..=10 {
+    for m in 0u32 .. 4 {
+        for s in -10i64 ..= 10 {
             let (x, y) = (
                 contains::<A>(arvo_format::slots::Slot::at(s), Magnitude::at(m)).get(),
                 contains::<B>(arvo_format::slots::Slot::at(s), Magnitude::at(m)).get(),
             );
-            if x == y {
-                same += 1
-            } else {
-                differ += 1
-            }
+            if x == y { same += 1 } else { differ += 1 }
         }
     }
     println!(
@@ -265,5 +263,6 @@ impl Format for ConstantStep2Bits {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<2>;
+
     const PHASE: Phase = Phase::of(0, 1);
 }

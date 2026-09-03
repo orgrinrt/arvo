@@ -11,9 +11,10 @@
 
 #![no_std]
 
+use core::mem::size_of;
+
 use arvo_format::points::{Biased, Floating, Integer, UFixed};
 use arvo_format::{Bool, Slot, Width};
-use core::mem::size_of;
 
 /// Every shipped point of the parameterisation is zero sized.
 ///

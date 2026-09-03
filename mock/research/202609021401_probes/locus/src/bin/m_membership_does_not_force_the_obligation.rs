@@ -17,7 +17,7 @@
 //! measures nothing.
 
 use arvo_format::ambient::BinaryRationals;
-use arvo_format::format::{contains, Format, Phase};
+use arvo_format::format::{Format, Phase, contains};
 use arvo_format::quantum::{Constant, Magnitude};
 use arvo_format::slots::{Signed, Slot};
 
@@ -27,6 +27,7 @@ impl Format for NoDenominator {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 0);
 }
 

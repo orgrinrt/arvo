@@ -5,8 +5,9 @@
 //! are facts about `IFixed` and about `UFixed`'s size and not about how rustc
 //! was called.
 
-use arvo_format::Width;
 use core::mem::size_of;
+
+use arvo_format::Width;
 
 pub struct ErrorCode(Width);
 

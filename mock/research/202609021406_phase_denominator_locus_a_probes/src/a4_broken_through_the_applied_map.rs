@@ -4,7 +4,7 @@
 // where arithmetic happens.
 mod shared;
 use arvo_format::adapt::{Adapt, Signature};
-use arvo_format::apply::{adapt, Dither, Exact};
+use arvo_format::apply::{Dither, Exact, adapt};
 use arvo_format::overflow::Saturate;
 use arvo_format::rounding::HalfEven;
 use arvo_format::slots::Slot;

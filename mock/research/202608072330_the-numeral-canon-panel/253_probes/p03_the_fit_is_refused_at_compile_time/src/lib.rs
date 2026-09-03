@@ -18,7 +18,7 @@
 #![no_std]
 
 use arvo_format::slots::declared_slot_width;
-use arvo_format::{radix, slot_count, smallest_step_exponent, Format};
+use arvo_format::{Format, radix, slot_count, smallest_step_exponent};
 
 /// Decimal digits an `i64` needs, sign included. Const, and private.
 const fn digits_i64(mut v: i64) -> usize {
@@ -105,11 +105,7 @@ const fn put_i64<const N: usize>(buf: &mut [u8; N], mut at: usize, v: i64) -> us
         at += 1;
     }
     let mut mag = if v < 0 { -(v as i128) } else { v as i128 };
-    let width = if v < 0 {
-        digits_i64(v) - 1
-    } else {
-        digits_i64(v)
-    };
+    let width = if v < 0 { digits_i64(v) - 1 } else { digits_i64(v) };
     let mut i = width;
     while i > 0 {
         i -= 1;
@@ -121,12 +117,13 @@ const fn put_i64<const N: usize>(buf: &mut [u8; N], mut at: usize, v: i64) -> us
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use arvo_format::ambient::BinaryRationals;
     use arvo_format::format::Phase;
     use arvo_format::points::{Integer, UFixed};
     use arvo_format::quantum::Constant;
     use arvo_format::slots::Signed;
+
+    use super::*;
 
     fn seen<F: Format, const N: usize>(buf: &mut [u8; N]) -> &str {
         core::str::from_utf8(identity_of::<F, N>(buf)).expect("ascii only")
@@ -172,6 +169,7 @@ mod tests {
             type Ambient = BinaryRationals;
             type Quantum = Constant<-3>;
             type Slots = Signed<11>;
+
             const PHASE: Phase = Phase::of(-7, 2);
         }
         let mut b = [0u8; 128];

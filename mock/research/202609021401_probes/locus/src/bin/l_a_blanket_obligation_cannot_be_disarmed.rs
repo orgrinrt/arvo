@@ -36,8 +36,9 @@ impl Format for Disarmed {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
-    const PHASE: Phase = Phase::of(1, 0);
+
     const ADMITTED: () = ();
+    const PHASE: Phase = Phase::of(1, 0);
 }
 
 struct HalfStep;
@@ -46,6 +47,7 @@ impl Format for HalfStep {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 2);
 }
 

@@ -21,7 +21,10 @@ struct PhaseK {
 impl PhaseK {
     const fn of<const DEN: i64>(num: i64) -> Self {
         const { assert!(DEN != 0, "a phase denominator of zero names no position") }
-        Self { num, den: DEN }
+        Self {
+            num,
+            den: DEN,
+        }
     }
 }
 

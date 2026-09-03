@@ -11,7 +11,7 @@
 #![allow(dead_code)]
 
 use arvo_format::ambient::BinaryRationals;
-use arvo_format::format::{has_additive_identity, Format, Phase};
+use arvo_format::format::{Format, Phase, has_additive_identity};
 use arvo_format::quantum::Constant;
 use arvo_format::slots::Signed;
 use arvo_format::width::Bool;
@@ -22,6 +22,7 @@ impl Format for NoDenominator {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 0);
 }
 

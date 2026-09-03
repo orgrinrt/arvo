@@ -4,7 +4,7 @@
 // cannot be consumed at all.
 #![no_std]
 
-use leaky::{identity, W};
+use leaky::{W, identity};
 
 pub const fn call() -> W<3> {
     identity(W::<3>)

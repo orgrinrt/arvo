@@ -19,15 +19,15 @@
 // through a runtime call. It is a separate compilation on purpose: a codegen
 // refusal aborts the build, so it cannot share a binary with the arm that prints.
 
-use arvo_format::slots::{is_admissible, slot_count, Slot, Slots};
+use arvo_format::slots::{Slot, Slots, is_admissible, slot_count};
 use arvo_format::width::Width;
 
 /// 63 bits of declared width over a 256-index window. Coherent with itself.
 struct Wide63;
 
 impl Slots for Wide63 {
-    const MIN: Slot = Slot::at(0);
     const MAX: Slot = Slot::at(255);
+    const MIN: Slot = Slot::at(0);
     const WIDTH: Width = Width::bits(63);
 }
 
@@ -35,8 +35,8 @@ impl Slots for Wide63 {
 struct Narrow62;
 
 impl Slots for Narrow62 {
-    const MIN: Slot = Slot::at(0);
     const MAX: Slot = Slot::at(255);
+    const MIN: Slot = Slot::at(0);
     const WIDTH: Width = Width::bits(62);
 }
 

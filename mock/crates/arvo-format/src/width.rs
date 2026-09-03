@@ -21,9 +21,9 @@
 //! fraction with the applied map. That is what keeps the door narrow while
 //! nothing above it has to reach past it.
 //!
-//! How many types that is, is not stated here and is not settled anywhere. Two
+//! How many types that is, is not stated here and is not settled anywhere: two
 //! separate derivations reached different counts, so a number written down here
-//! would be one of them wearing the door's authority.
+//! would be one of them wearing the door's authority without having earned it.
 
 /// A count of bits.
 ///
@@ -75,11 +75,7 @@ impl Width {
     /// This width less one bit, saturating at none.
     #[must_use]
     pub const fn less_one(self) -> Self {
-        if self.0 == 0 {
-            Self(0)
-        } else {
-            Self(self.0 - 1)
-        }
+        if self.0 == 0 { Self(0) } else { Self(self.0 - 1) }
     }
 
     /// Whether two widths are the same.
@@ -99,10 +95,10 @@ impl Width {
 pub struct Bool(bool);
 
 impl Bool {
-    /// Yes.
-    pub const TRUE: Self = Self(true);
     /// No.
     pub const FALSE: Self = Self(false);
+    /// Yes.
+    pub const TRUE: Self = Self(true);
 
     /// A truth value from the host's.
     #[must_use]

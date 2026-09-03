@@ -13,9 +13,10 @@
 
 #![no_std]
 
-use arvo_format::points::UFixed;
-use arvo_format::Width;
 use core::mem::size_of;
+
+use arvo_format::Width;
+use arvo_format::points::UFixed;
 
 /// The type the principles page names holds nothing.
 ///

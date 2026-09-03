@@ -21,6 +21,7 @@ impl Width {
     pub const fn bits(n: u32) -> Self {
         Self(n)
     }
+
     pub const fn count(self) -> u32 {
         self.0
     }

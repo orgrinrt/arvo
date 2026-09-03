@@ -1,0 +1,19 @@
+error[E0080]: evaluation panicked: slot range is inverted: its lowest index exceeds its highest, so it admits nothing
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<InvertedSlots as arvo_format::Slots>::ADMITTED` failed here
+  |
+ ::: src/slots.rs
+  |
+  | /         assert!(
+  | |             Self::MIN.index() <= Self::MAX.index(),
+  | |             "slot range is inverted: its lowest index exceeds its highest, so it admits nothing"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/slots.rs
+  |
+  |     let () = S::ADMITTED;
+  |              ^^^^^^^^^^^

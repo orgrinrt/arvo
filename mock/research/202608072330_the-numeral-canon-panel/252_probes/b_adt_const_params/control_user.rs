@@ -2,6 +2,6 @@
 // only the item with no ADT const parameter in it.
 #![no_std]
 
-use door::{plain, Width};
+use door::{Width, plain};
 
 pub const DECLARED: u32 = plain(Width::bits(13));

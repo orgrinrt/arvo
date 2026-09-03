@@ -3,14 +3,14 @@
 // so the values are the ones a `u32`-only door could not carry.
 #![no_std]
 
-use door::{smallest_step, Declared, Exponent, Radix, Width};
+use door::{Declared, Exponent, Radix, Width, smallest_step};
 
 pub struct Ternary;
 
 impl Declared for Ternary {
-    const WIDTH: Width = Width::bits(13);
-    const RADIX: Radix = Radix::of(3);
     const EXPONENT: Exponent = Exponent::of(-4);
+    const RADIX: Radix = Radix::of(3);
+    const WIDTH: Width = Width::bits(13);
 }
 
 /// Forced at check time. If the door needed a gate the consumer does not have,

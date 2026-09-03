@@ -39,9 +39,8 @@ trait Alg {
 struct SatWindow;
 
 impl Alg for SatWindow {
-    const NAME: &'static str = "saturating add on [-2, 1]";
     const N: usize = 4;
-    const VALUES: &'static [i32] = &[-2, -1, 0, 1];
+    const NAME: &'static str = "saturating add on [-2, 1]";
     #[rustfmt::skip]
     const TABLE: &'static [usize] = &[
         // -2   -1    0    1
@@ -50,15 +49,15 @@ impl Alg for SatWindow {
         0,    1,   2,   3, //  0
         1,    2,   3,   3, //  1
     ];
+    const VALUES: &'static [i32] = &[-2, -1, 0, 1];
 }
 
 /// Addition modulo 4 on {0, 1, 2, 3}. The control algebra.
 struct Mod4;
 
 impl Alg for Mod4 {
-    const NAME: &'static str = "add modulo 4";
     const N: usize = 4;
-    const VALUES: &'static [i32] = &[0, 1, 2, 3];
+    const NAME: &'static str = "add modulo 4";
     #[rustfmt::skip]
     const TABLE: &'static [usize] = &[
         0, 1, 2, 3,
@@ -66,6 +65,7 @@ impl Alg for Mod4 {
         2, 3, 0, 1,
         3, 0, 1, 2,
     ];
+    const VALUES: &'static [i32] = &[0, 1, 2, 3];
 }
 
 // --- the derived verdict ---------------------------------------------------------
@@ -102,9 +102,9 @@ const fn is_associative<A: Alg>() -> bool {
 /// loop. Returns the first failing triple as values.
 fn first_witness<A: Alg>() -> Option<(i32, i32, i32, i32, i32)> {
     let (t, n, v) = (A::TABLE, A::N, A::VALUES);
-    for i in 0..n {
-        for j in 0..n {
-            for k in 0..n {
+    for i in 0 .. n {
+        for j in 0 .. n {
+            for k in 0 .. n {
                 let l = t[t[i * n + j] * n + k];
                 let r = t[i * n + t[j * n + k]];
                 if l != r {
@@ -130,8 +130,9 @@ trait Declares {
 struct Declared<const SAYS: bool>;
 
 impl<const SAYS: bool> Declares for Declared<SAYS> {
-    const ASSOCIATIVE: bool = SAYS;
     type Ambient = SatWindow;
+
+    const ASSOCIATIVE: bool = SAYS;
 }
 
 // --- ARM 3 and ARM 4: the cases that must fail for the derived form ---------------
@@ -170,13 +171,13 @@ fn main() {
     match first_witness::<SatWindow>() {
         Some((a, b, c, l, r)) => {
             println!("  witness on the first : ({a}+{b})+{c} = {l}, {a}+({b}+{c}) = {r}")
-        }
+        },
         None => println!("  witness on the first : none, which would break this probe"),
     }
     match first_witness::<Mod4>() {
         Some((a, b, c, l, r)) => {
             println!("  witness on the control: ({a}+{b})+{c} = {l}, {a}+({b}+{c}) = {r}")
-        }
+        },
         None => println!("  witness on the control: none, as it should be"),
     }
     println!();

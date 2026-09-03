@@ -25,8 +25,9 @@ pub struct AnotherPlainMarker;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use alloc::format;
+
+    use super::*;
 
     /// The finding. `derive` renders the name and drops the const, so two
     /// declarations that are different formats render identically. A rendering

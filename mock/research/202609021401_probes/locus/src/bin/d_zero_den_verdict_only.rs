@@ -11,7 +11,7 @@
 //! regardless of what it is handed.
 
 use arvo_format::ambient::BinaryRationals;
-use arvo_format::format::{is_admissible_format, Format, Phase};
+use arvo_format::format::{Format, Phase, is_admissible_format};
 use arvo_format::quantum::Constant;
 use arvo_format::slots::Signed;
 
@@ -21,6 +21,7 @@ impl Format for NoDenominator {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 0);
 }
 
@@ -30,6 +31,7 @@ impl Format for HalfStep {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 2);
 }
 

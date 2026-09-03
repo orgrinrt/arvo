@@ -14,7 +14,7 @@
 //! If B refuses and I does not, the override is what did it.
 
 use arvo_format::ambient::BinaryRationals;
-use arvo_format::format::{has_additive_identity, is_admissible_format, Format, Phase};
+use arvo_format::format::{Format, Phase, has_additive_identity, is_admissible_format};
 use arvo_format::quantum::Constant;
 use arvo_format::slots::Signed;
 
@@ -24,10 +24,10 @@ impl Format for Disarmed {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
-    const PHASE: Phase = Phase::of(1, 0);
 
     // The one line arm B does not have.
     const ADMITTED: () = ();
+    const PHASE: Phase = Phase::of(1, 0);
 }
 
 fn main() {

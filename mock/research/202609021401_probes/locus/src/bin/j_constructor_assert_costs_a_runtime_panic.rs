@@ -25,7 +25,10 @@ struct PhaseJ {
 impl PhaseJ {
     const fn of(num: i64, den: i64) -> Self {
         assert!(den != 0, "a phase denominator of zero names no position");
-        Self { num, den }
+        Self {
+            num,
+            den,
+        }
     }
 }
 

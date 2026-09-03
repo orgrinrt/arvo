@@ -11,7 +11,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use leaky::{widen, W};
+use leaky::{W, widen};
 
 pub const fn call() -> W<4> {
     widen(W::<3>)

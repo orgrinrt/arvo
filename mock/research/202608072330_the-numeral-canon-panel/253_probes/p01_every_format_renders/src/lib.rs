@@ -32,8 +32,9 @@ impl<F: Format> LocalRender for F {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use arvo_format::points::Integer;
+
+    use super::*;
 
     /// The control fires: the blanket reaches a point of the inventory.
     #[test]

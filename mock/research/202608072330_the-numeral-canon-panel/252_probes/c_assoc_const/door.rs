@@ -19,6 +19,7 @@ impl Width {
     pub const fn bits(n: u32) -> Self {
         Self(n)
     }
+
     pub const fn count(self) -> u32 {
         self.0
     }
@@ -32,6 +33,7 @@ impl Radix {
     pub const fn of(base: u32) -> Self {
         Self(base)
     }
+
     pub const fn base(self) -> u32 {
         self.0
     }
@@ -45,6 +47,7 @@ impl Exponent {
     pub const fn of(power: i32) -> Self {
         Self(power)
     }
+
     pub const fn power(self) -> i32 {
         self.0
     }

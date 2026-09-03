@@ -25,6 +25,16 @@
 //! runtime test cannot catch either because an obligation refuses rather than
 //! returning.
 //!
+//! One pins where the slot ladder stops, against a word length an industrial
+//! convention admits and this stack has no format for. A refusal that lives only
+//! in a paragraph can be deleted by accident.
+//!
+//! Three pin which verbs force an obligation, from the refusing side, which is
+//! the half the runtime arms cannot reach: the two verbs that force the format's
+//! own, and the slot range reached through a call rather than forced. Each of
+//! those was a claim about a set, and a claim about a set of two needs both of
+//! its members pinned or deleting one member leaves the suite green.
+//!
 //! The last one runs the other way. It pins the refusal the const generic
 //! parameters are spelled around: a coordinate type cannot sit in that position,
 //! which is why the declared widths carry a machine integer there and nowhere
@@ -108,6 +118,19 @@ fn the_identity_search_forces_the_format_obligation() {
 fn the_cancelling_slot_search_forces_the_format_obligation() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/cancelling_slot_forces_the_format_obligation.rs");
+}
+
+/// The slot range reached through a call rather than forced directly.
+///
+/// `has_additive_identity` reaches `slot_in_range` only on a magnitude where
+/// `cancelling_slot` answers `Is`, so in a const evaluation a phase that cancels
+/// decides whether the slot range's obligation is met at all. The other half, the
+/// same verb over the same inverted range under a phase that cancels nowhere,
+/// builds and is a const item beside the obligation arms.
+#[test]
+fn a_cancelling_phase_reaches_the_slot_range_and_a_non_cancelling_one_does_not() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_cancelling_phase_reaches_the_slot_range.rs");
 }
 
 /// The refusal every const generic parameter in this crate is spelled around.

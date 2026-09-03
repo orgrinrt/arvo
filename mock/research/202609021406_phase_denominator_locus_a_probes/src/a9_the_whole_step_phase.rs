@@ -5,7 +5,7 @@
 // step and at a half step, so the registry's claim about the source is checkable
 // rather than remembered.
 use arvo_format::ambient::BinaryRationals;
-use arvo_format::format::{has_additive_identity, Format, Phase};
+use arvo_format::format::{Format, Phase, has_additive_identity};
 use arvo_format::quantum::Constant;
 use arvo_format::slots::Signed;
 
@@ -14,6 +14,7 @@ impl Format for WholeStep {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 1);
 }
 
@@ -22,6 +23,7 @@ impl Format for HalfStep {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 2);
 }
 
