@@ -1,0 +1,51 @@
+# step 06: the tie direction, and which reading the committed row's region needs
+
+ties_up signed W=3 F=0 policy=wrap triples=512 differing=0 witness=None
+ties_up signed W=3 F=0 policy=saturate triples=512 differing=90 witness=Some((-4, -4, -4, 3, -1))
+ties_up signed W=3 F=1 policy=wrap triples=512 differing=0 witness=None
+ties_up signed W=3 F=1 policy=saturate triples=512 differing=34 witness=Some((-4, -4, -4, 3, -1))
+ties_up signed W=3 F=2 policy=wrap triples=512 differing=0 witness=None
+ties_up signed W=3 F=2 policy=saturate triples=512 differing=4 witness=Some((-4, -4, -4, 0, -1))
+ties_up signed W=4 F=0 policy=wrap triples=4096 differing=0 witness=None
+ties_up signed W=4 F=0 policy=saturate triples=4096 differing=1166 witness=Some((-8, -8, -8, 7, -1))
+ties_up signed W=4 F=1 policy=wrap triples=4096 differing=0 witness=None
+ties_up signed W=4 F=1 policy=saturate triples=4096 differing=792 witness=Some((-8, -8, -8, 7, -1))
+ties_up signed W=4 F=2 policy=wrap triples=4096 differing=0 witness=None
+ties_up signed W=4 F=2 policy=saturate triples=4096 differing=326 witness=Some((-8, -8, -8, 7, -1))
+ties_up signed W=4 F=3 policy=wrap triples=4096 differing=0 witness=None
+ties_up signed W=4 F=3 policy=saturate triples=4096 differing=8 witness=Some((-8, -8, -8, 0, -1))
+ties_up signed W=5 F=0 policy=wrap triples=32768 differing=0 witness=None
+ties_up signed W=5 F=0 policy=saturate triples=32768 differing=11986 witness=Some((-16, -16, -16, 15, -1))
+ties_up signed W=5 F=1 policy=wrap triples=32768 differing=0 witness=None
+ties_up signed W=5 F=1 policy=saturate triples=32768 differing=9662 witness=Some((-16, -16, -16, 15, -1))
+ties_up signed W=5 F=2 policy=wrap triples=32768 differing=0 witness=None
+ties_up signed W=5 F=2 policy=saturate triples=32768 differing=6348 witness=Some((-16, -16, -16, 15, -1))
+ties_up signed W=5 F=3 policy=wrap triples=32768 differing=0 witness=None
+ties_up signed W=5 F=3 policy=saturate triples=32768 differing=2410 witness=Some((-16, -16, -16, 15, -1))
+ties_up signed W=5 F=4 policy=wrap triples=32768 differing=0 witness=None
+ties_up signed W=5 F=4 policy=saturate triples=32768 differing=16 witness=Some((-16, -16, -16, 0, -1))
+ties_up signed W=6 F=0 policy=wrap triples=262144 differing=0 witness=None
+ties_up signed W=6 F=0 policy=saturate triples=262144 differing=110476 witness=Some((-32, -32, -32, 31, -1))
+ties_up signed W=6 F=1 policy=wrap triples=262144 differing=0 witness=None
+ties_up signed W=6 F=1 policy=saturate triples=262144 differing=98448 witness=Some((-32, -32, -32, 31, -1))
+ties_up signed W=6 F=2 policy=wrap triples=262144 differing=0 witness=None
+ties_up signed W=6 F=2 policy=saturate triples=262144 differing=79362 witness=Some((-32, -32, -32, 31, -1))
+ties_up signed W=6 F=3 policy=wrap triples=262144 differing=0 witness=None
+ties_up signed W=6 F=3 policy=saturate triples=262144 differing=52212 witness=Some((-32, -32, -32, 31, -1))
+ties_up signed W=6 F=4 policy=wrap triples=262144 differing=0 witness=None
+ties_up signed W=6 F=4 policy=saturate triples=262144 differing=20016 witness=Some((-32, -32, -32, 31, -1))
+ties_up signed W=6 F=5 policy=wrap triples=262144 differing=0 witness=None
+ties_up signed W=6 F=5 policy=saturate triples=262144 differing=32 witness=Some((-32, -32, -32, 0, -1))
+
+# --- the arms ---
+F2 detail: 1754624 positions, 0 where the model and the shipped HalfUp disagree
+F2: the model under ties-away-from-zero must be the shipped HalfUp -> HELD
+F3 detail: 132850 positions where ties-toward-positive-infinity differs from the shipped HalfUp, witness=Some((-3, -1, -4, -2))
+F3: the two readings must be two operations -> HELD
+F1 detail: 18 signed wrapping cells, 0 differing triples in total
+F1: under ties-toward-positive-infinity, signed wrapping must agree at every triple -> HELD
+F4 detail: 18 signed saturating cells, 0 of them agreeing
+F4: the tie direction must not rescue signed saturating -> HELD
+F5 detail: 18 unsigned cells, 0 positions where the two readings differ
+F5: on a non-negative domain the two readings must be one function -> HELD
+exit=0

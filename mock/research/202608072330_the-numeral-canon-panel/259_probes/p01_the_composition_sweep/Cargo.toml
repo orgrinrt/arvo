@@ -1,0 +1,13 @@
+[package]
+name = "p01_the_composition_sweep"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[profile.release]
+debug = false
+
+[workspace]

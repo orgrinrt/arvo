@@ -1,0 +1,683 @@
+# step 02: the two conditions apart, and step 01 predicted from them
+
+mech unsigned W=3 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=0 mode=half_even policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=0 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=0 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=0 mode=toward_zero policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=0 mode=half_up policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=0 mode=half_even policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 3, -1))
+mech unsigned W=3 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech unsigned W=3 F=1 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech signed W=3 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=1 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=1 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=1 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-3, -1, -4, 1, -2)) h_witness=None
+mech signed W=3 F=1 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-3, -1, -4, 1, -2)) h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=1 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-3, -1, -4, 2, -3)) h_witness=None
+mech signed W=3 F=1 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-3, -1, -4, 2, -3)) h_witness=Some((-4, -4, -4, 3, -1))
+mech signed W=3 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-3, -3, -3, 4, 2)) h_witness=None
+mech signed W=3 F=1 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-3, -3, -3, 4, 2)) h_witness=Some((-4, -4, -4, 3, -1))
+mech unsigned W=3 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=3 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech unsigned W=3 F=2 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech signed W=3 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=2 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 0, -1))
+mech signed W=3 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=3 F=2 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-4, -4, -4, 0, -1))
+mech signed W=3 F=2 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-3, -3, -4, 2, -1)) h_witness=None
+mech signed W=3 F=2 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-3, -3, -4, 2, -1)) h_witness=Some((-4, -4, -4, 0, -1))
+mech signed W=3 F=2 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-3, -2, -4, 2, -3)) h_witness=None
+mech signed W=3 F=2 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-3, -2, -4, 2, -3)) h_witness=Some((-4, -4, -4, 0, -1))
+mech signed W=3 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-3, -2, -3, 2, -2)) h_witness=None
+mech signed W=3 F=2 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-3, -2, -3, 2, -2)) h_witness=Some((-4, -4, -4, 0, -1))
+mech unsigned W=4 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=0 mode=half_even policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=0 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=0 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=0 mode=toward_zero policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=0 mode=half_up policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=0 mode=half_even policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech unsigned W=4 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech unsigned W=4 F=1 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech signed W=4 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=1 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=1 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=1 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -1, -8, 3, -4)) h_witness=None
+mech signed W=4 F=1 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -1, -8, 3, -4)) h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=1 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -1, -8, 4, -5)) h_witness=None
+mech signed W=4 F=1 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -1, -8, 4, -5)) h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -7, -7, 24, 18)) h_witness=None
+mech signed W=4 F=1 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -7, -7, 24, 18)) h_witness=Some((-8, -8, -8, 7, -1))
+mech unsigned W=4 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech unsigned W=4 F=2 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech signed W=4 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=2 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=2 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=2 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -3, -8, 5, -2)) h_witness=None
+mech signed W=4 F=2 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -3, -8, 5, -2)) h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=2 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -2, -8, 4, -5)) h_witness=None
+mech signed W=4 F=2 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -2, -8, 4, -5)) h_witness=Some((-8, -8, -8, 7, -1))
+mech signed W=4 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -6, -7, 10, 4)) h_witness=None
+mech signed W=4 F=2 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -6, -7, 10, 4)) h_witness=Some((-8, -8, -8, 7, -1))
+mech unsigned W=4 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=4 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech unsigned W=4 F=3 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech signed W=4 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=3 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 0, -1))
+mech signed W=4 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=4 F=3 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-8, -8, -8, 0, -1))
+mech signed W=4 F=3 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -7, -8, 6, -1)) h_witness=None
+mech signed W=4 F=3 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -7, -8, 6, -1)) h_witness=Some((-8, -8, -8, 0, -1))
+mech signed W=4 F=3 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -4, -8, 4, -5)) h_witness=None
+mech signed W=4 F=3 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -4, -8, 4, -5)) h_witness=Some((-8, -8, -8, 0, -1))
+mech signed W=4 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-7, -4, -7, 4, -4)) h_witness=None
+mech signed W=4 F=3 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-7, -4, -7, 4, -4)) h_witness=Some((-8, -8, -8, 0, -1))
+mech unsigned W=5 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=0 mode=half_even policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=0 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=0 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=0 mode=toward_zero policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=0 mode=half_up policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=0 mode=half_even policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech unsigned W=5 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech unsigned W=5 F=1 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech signed W=5 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=1 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=1 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=1 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -1, -16, 7, -8)) h_witness=None
+mech signed W=5 F=1 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -1, -16, 7, -8)) h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=1 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -1, -16, 8, -9)) h_witness=None
+mech signed W=5 F=1 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -1, -16, 8, -9)) h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -15, -15, 112, 98)) h_witness=None
+mech signed W=5 F=1 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -15, -15, 112, 98)) h_witness=Some((-16, -16, -16, 15, -1))
+mech unsigned W=5 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech unsigned W=5 F=2 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech signed W=5 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=2 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=2 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=2 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -3, -16, 11, -4)) h_witness=None
+mech signed W=5 F=2 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -3, -16, 11, -4)) h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=2 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -2, -16, 8, -9)) h_witness=None
+mech signed W=5 F=2 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -2, -16, 8, -9)) h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -14, -15, 52, 38)) h_witness=None
+mech signed W=5 F=2 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -14, -15, 52, 38)) h_witness=Some((-16, -16, -16, 15, -1))
+mech unsigned W=5 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech unsigned W=5 F=3 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech signed W=5 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=3 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=3 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=3 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -7, -16, 13, -2)) h_witness=None
+mech signed W=5 F=3 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -7, -16, 13, -2)) h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=3 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -4, -16, 8, -9)) h_witness=None
+mech signed W=5 F=3 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -4, -16, 8, -9)) h_witness=Some((-16, -16, -16, 15, -1))
+mech signed W=5 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -12, -15, 22, 8)) h_witness=None
+mech signed W=5 F=3 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -12, -15, 22, 8)) h_witness=Some((-16, -16, -16, 15, -1))
+mech unsigned W=5 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=5 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech unsigned W=5 F=4 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech signed W=5 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=4 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 0, -1))
+mech signed W=5 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=5 F=4 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-16, -16, -16, 0, -1))
+mech signed W=5 F=4 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -15, -16, 14, -1)) h_witness=None
+mech signed W=5 F=4 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -15, -16, 14, -1)) h_witness=Some((-16, -16, -16, 0, -1))
+mech signed W=5 F=4 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -8, -16, 8, -9)) h_witness=None
+mech signed W=5 F=4 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -8, -16, 8, -9)) h_witness=Some((-16, -16, -16, 0, -1))
+mech signed W=5 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-15, -8, -15, 8, -8)) h_witness=None
+mech signed W=5 F=4 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-15, -8, -15, 8, -8)) h_witness=Some((-16, -16, -16, 0, -1))
+mech unsigned W=6 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=0 mode=half_even policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=0 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=0 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=0 mode=toward_zero policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=0 mode=half_up policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=0 mode=half_even policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech unsigned W=6 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech unsigned W=6 F=1 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech signed W=6 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=1 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=1 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=1 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -1, -32, 15, -16)) h_witness=None
+mech signed W=6 F=1 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -1, -32, 15, -16)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=1 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -1, -32, 16, -17)) h_witness=None
+mech signed W=6 F=1 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -1, -32, 16, -17)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -31, -31, 480, 450)) h_witness=None
+mech signed W=6 F=1 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -31, -31, 480, 450)) h_witness=Some((-32, -32, -32, 31, -1))
+mech unsigned W=6 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech unsigned W=6 F=2 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech signed W=6 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=2 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=2 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=2 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -3, -32, 23, -8)) h_witness=None
+mech signed W=6 F=2 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -3, -32, 23, -8)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=2 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -2, -32, 16, -17)) h_witness=None
+mech signed W=6 F=2 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -2, -32, 16, -17)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -30, -31, 232, 202)) h_witness=None
+mech signed W=6 F=2 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -30, -31, 232, 202)) h_witness=Some((-32, -32, -32, 31, -1))
+mech unsigned W=6 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech unsigned W=6 F=3 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech signed W=6 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=3 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=3 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=3 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -7, -32, 27, -4)) h_witness=None
+mech signed W=6 F=3 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -7, -32, 27, -4)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=3 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -4, -32, 16, -17)) h_witness=None
+mech signed W=6 F=3 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -4, -32, 16, -17)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -28, -31, 108, 78)) h_witness=None
+mech signed W=6 F=3 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -28, -31, 108, 78)) h_witness=Some((-32, -32, -32, 31, -1))
+mech unsigned W=6 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech unsigned W=6 F=4 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech signed W=6 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=4 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=4 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=4 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -15, -32, 29, -2)) h_witness=None
+mech signed W=6 F=4 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -15, -32, 29, -2)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=4 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -8, -32, 16, -17)) h_witness=None
+mech signed W=6 F=4 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -8, -32, 16, -17)) h_witness=Some((-32, -32, -32, 31, -1))
+mech signed W=6 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -24, -31, 46, 16)) h_witness=None
+mech signed W=6 F=4 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -24, -31, 46, 16)) h_witness=Some((-32, -32, -32, 31, -1))
+mech unsigned W=6 F=5 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=6 F=5 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 16, 1, 0, 2)) h_witness=None
+mech unsigned W=6 F=5 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 16, 1, 0, 2)) h_witness=None
+mech signed W=6 F=5 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=5 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 0, -1))
+mech signed W=6 F=5 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=6 F=5 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-32, -32, -32, 0, -1))
+mech signed W=6 F=5 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -31, -32, 30, -1)) h_witness=None
+mech signed W=6 F=5 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -31, -32, 30, -1)) h_witness=Some((-32, -32, -32, 0, -1))
+mech signed W=6 F=5 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -16, -32, 16, -17)) h_witness=None
+mech signed W=6 F=5 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -16, -32, 16, -17)) h_witness=Some((-32, -32, -32, 0, -1))
+mech signed W=6 F=5 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-31, -16, -31, 16, -16)) h_witness=None
+mech signed W=6 F=5 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-31, -16, -31, 16, -16)) h_witness=Some((-32, -32, -32, 0, -1))
+mech unsigned W=7 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=0 mode=half_even policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=0 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=0 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=0 mode=toward_zero policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=0 mode=half_up policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=0 mode=half_even policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech unsigned W=7 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech unsigned W=7 F=1 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech signed W=7 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=1 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=1 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=1 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -1, -64, 31, -32)) h_witness=None
+mech signed W=7 F=1 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -1, -64, 31, -32)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=1 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -1, -64, 32, -33)) h_witness=None
+mech signed W=7 F=1 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -1, -64, 32, -33)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -63, -63, 1984, 1922)) h_witness=None
+mech signed W=7 F=1 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -63, -63, 1984, 1922)) h_witness=Some((-64, -64, -64, 63, -1))
+mech unsigned W=7 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech unsigned W=7 F=2 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech signed W=7 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=2 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=2 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=2 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -3, -64, 47, -16)) h_witness=None
+mech signed W=7 F=2 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -3, -64, 47, -16)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=2 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -2, -64, 32, -33)) h_witness=None
+mech signed W=7 F=2 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -2, -64, 32, -33)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -62, -63, 976, 914)) h_witness=None
+mech signed W=7 F=2 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -62, -63, 976, 914)) h_witness=Some((-64, -64, -64, 63, -1))
+mech unsigned W=7 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech unsigned W=7 F=3 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech signed W=7 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=3 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=3 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=3 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -7, -64, 55, -8)) h_witness=None
+mech signed W=7 F=3 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -7, -64, 55, -8)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=3 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -4, -64, 32, -33)) h_witness=None
+mech signed W=7 F=3 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -4, -64, 32, -33)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -60, -63, 472, 410)) h_witness=None
+mech signed W=7 F=3 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -60, -63, 472, 410)) h_witness=Some((-64, -64, -64, 63, -1))
+mech unsigned W=7 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech unsigned W=7 F=4 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech signed W=7 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=4 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=4 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=4 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -15, -64, 59, -4)) h_witness=None
+mech signed W=7 F=4 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -15, -64, 59, -4)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=4 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -8, -64, 32, -33)) h_witness=None
+mech signed W=7 F=4 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -8, -64, 32, -33)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -56, -63, 220, 158)) h_witness=None
+mech signed W=7 F=4 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -56, -63, 220, 158)) h_witness=Some((-64, -64, -64, 63, -1))
+mech unsigned W=7 F=5 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=5 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 16, 1, 0, 2)) h_witness=None
+mech unsigned W=7 F=5 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 16, 1, 0, 2)) h_witness=None
+mech signed W=7 F=5 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=5 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=5 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=5 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=5 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -31, -64, 61, -2)) h_witness=None
+mech signed W=7 F=5 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -31, -64, 61, -2)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=5 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -16, -64, 32, -33)) h_witness=None
+mech signed W=7 F=5 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -16, -64, 32, -33)) h_witness=Some((-64, -64, -64, 63, -1))
+mech signed W=7 F=5 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -48, -63, 94, 32)) h_witness=None
+mech signed W=7 F=5 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -48, -63, 94, 32)) h_witness=Some((-64, -64, -64, 63, -1))
+mech unsigned W=7 F=6 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=7 F=6 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 32, 1, 0, 2)) h_witness=None
+mech unsigned W=7 F=6 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 32, 1, 0, 2)) h_witness=None
+mech signed W=7 F=6 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=6 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 0, -1))
+mech signed W=7 F=6 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=7 F=6 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-64, -64, -64, 0, -1))
+mech signed W=7 F=6 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -63, -64, 62, -1)) h_witness=None
+mech signed W=7 F=6 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -63, -64, 62, -1)) h_witness=Some((-64, -64, -64, 0, -1))
+mech signed W=7 F=6 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -32, -64, 32, -33)) h_witness=None
+mech signed W=7 F=6 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -32, -64, 32, -33)) h_witness=Some((-64, -64, -64, 0, -1))
+mech signed W=7 F=6 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-63, -32, -63, 32, -32)) h_witness=None
+mech signed W=7 F=6 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-63, -32, -63, 32, -32)) h_witness=Some((-64, -64, -64, 0, -1))
+mech unsigned W=8 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=0 mode=half_even policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=0 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=0 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=0 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=0 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=0 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=0 mode=toward_zero policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=0 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=0 mode=half_up policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=0 mode=half_even policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=0 mode=half_even policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech unsigned W=8 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech unsigned W=8 F=1 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 1, 1, 0, 2)) h_witness=None
+mech signed W=8 F=1 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=1 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=1 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=1 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=1 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -1, -128, 63, -64)) h_witness=None
+mech signed W=8 F=1 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -1, -128, 63, -64)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=1 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -1, -128, 64, -65)) h_witness=None
+mech signed W=8 F=1 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -1, -128, 64, -65)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=1 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -127, -127, 8064, 7938)) h_witness=None
+mech signed W=8 F=1 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -127, -127, 8064, 7938)) h_witness=Some((-128, -128, -128, 127, -1))
+mech unsigned W=8 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech unsigned W=8 F=2 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 2, 1, 0, 2)) h_witness=None
+mech signed W=8 F=2 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=2 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=2 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=2 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=2 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -3, -128, 95, -32)) h_witness=None
+mech signed W=8 F=2 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -3, -128, 95, -32)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=2 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -2, -128, 64, -65)) h_witness=None
+mech signed W=8 F=2 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -2, -128, 64, -65)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=2 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -126, -127, 4000, 3874)) h_witness=None
+mech signed W=8 F=2 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -126, -127, 4000, 3874)) h_witness=Some((-128, -128, -128, 127, -1))
+mech unsigned W=8 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech unsigned W=8 F=3 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 4, 1, 0, 2)) h_witness=None
+mech signed W=8 F=3 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=3 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=3 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=3 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=3 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -7, -128, 111, -16)) h_witness=None
+mech signed W=8 F=3 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -7, -128, 111, -16)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=3 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -4, -128, 64, -65)) h_witness=None
+mech signed W=8 F=3 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -4, -128, 64, -65)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=3 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -124, -127, 1968, 1842)) h_witness=None
+mech signed W=8 F=3 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -124, -127, 1968, 1842)) h_witness=Some((-128, -128, -128, 127, -1))
+mech unsigned W=8 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech unsigned W=8 F=4 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 8, 1, 0, 2)) h_witness=None
+mech signed W=8 F=4 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=4 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=4 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=4 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=4 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -15, -128, 119, -8)) h_witness=None
+mech signed W=8 F=4 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -15, -128, 119, -8)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=4 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -8, -128, 64, -65)) h_witness=None
+mech signed W=8 F=4 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -8, -128, 64, -65)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=4 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -120, -127, 952, 826)) h_witness=None
+mech signed W=8 F=4 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -120, -127, 952, 826)) h_witness=Some((-128, -128, -128, 127, -1))
+mech unsigned W=8 F=5 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=5 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 16, 1, 0, 2)) h_witness=None
+mech unsigned W=8 F=5 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 16, 1, 0, 2)) h_witness=None
+mech signed W=8 F=5 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=5 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=5 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=5 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=5 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -31, -128, 123, -4)) h_witness=None
+mech signed W=8 F=5 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -31, -128, 123, -4)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=5 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -16, -128, 64, -65)) h_witness=None
+mech signed W=8 F=5 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -16, -128, 64, -65)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=5 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -112, -127, 444, 318)) h_witness=None
+mech signed W=8 F=5 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -112, -127, 444, 318)) h_witness=Some((-128, -128, -128, 127, -1))
+mech unsigned W=8 F=6 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=6 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 32, 1, 0, 2)) h_witness=None
+mech unsigned W=8 F=6 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 32, 1, 0, 2)) h_witness=None
+mech signed W=8 F=6 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=6 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=6 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=6 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=6 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -63, -128, 125, -2)) h_witness=None
+mech signed W=8 F=6 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -63, -128, 125, -2)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=6 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -32, -128, 64, -65)) h_witness=None
+mech signed W=8 F=6 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -32, -128, 64, -65)) h_witness=Some((-128, -128, -128, 127, -1))
+mech signed W=8 F=6 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -96, -127, 190, 64)) h_witness=None
+mech signed W=8 F=6 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -96, -127, 190, 64)) h_witness=Some((-128, -128, -128, 127, -1))
+mech unsigned W=8 F=7 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=floor policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=ceil policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=toward_zero policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=toward_zero policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=half_up policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=half_up policy=saturate E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech unsigned W=8 F=7 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((1, 64, 1, 0, 2)) h_witness=None
+mech unsigned W=8 F=7 mode=half_even policy=saturate E=false H=true predicted=false measured=false e_witness=Some((1, 64, 1, 0, 2)) h_witness=None
+mech signed W=8 F=7 mode=floor policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=7 mode=floor policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 0, -1))
+mech signed W=8 F=7 mode=ceil policy=wrap E=true H=true predicted=true measured=true e_witness=None h_witness=None
+mech signed W=8 F=7 mode=ceil policy=saturate E=true H=false predicted=false measured=false e_witness=None h_witness=Some((-128, -128, -128, 0, -1))
+mech signed W=8 F=7 mode=toward_zero policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -127, -128, 126, -1)) h_witness=None
+mech signed W=8 F=7 mode=toward_zero policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -127, -128, 126, -1)) h_witness=Some((-128, -128, -128, 0, -1))
+mech signed W=8 F=7 mode=half_up policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -64, -128, 64, -65)) h_witness=None
+mech signed W=8 F=7 mode=half_up policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -64, -128, 64, -65)) h_witness=Some((-128, -128, -128, 0, -1))
+mech signed W=8 F=7 mode=half_even policy=wrap E=false H=true predicted=false measured=false e_witness=Some((-127, -64, -127, 64, -64)) h_witness=None
+mech signed W=8 F=7 mode=half_even policy=saturate E=false H=false predicted=false measured=false e_witness=Some((-127, -64, -127, 64, -64)) h_witness=Some((-128, -128, -128, 0, -1))
+
+# --- the arms ---
+B1 detail: wide-format positions visited=3026446080, of which completed=0
+B1: the wide format must never complete, so E is the rounding alone -> HELD
+B2 detail: equivariant cells=444, non-equivariant=216
+B2: E must separate: some cells equivariant and some not -> HELD
+B3 detail: homomorphic cells=495, non-homomorphic=165
+B3: H must separate: some cells homomorphic and some not -> HELD
+B4: E and H together must be sufficient: no such cell may disagree -> HELD
+B5 detail: 0 cells agree with E or H broken
+B5: under wrap the conditions must also be necessary, so no wrap cell may sit here -> HELD
+
+# --- a second reading of A5, by hand ---
+hand check: signed W=6 F=1 half_up wrap, slots -32 to 31
+hand check: a=-31 b=-1 c=-32 fused=-17 stepwise=-16
+A5-hand: the paper answer is fused = -17 and stepwise = -16 -> HELD
+hand check control: the same triple under floor, fused=-17 stepwise=-17
+A5-hand-control: the same triple under floor must agree -> HELD
+hand check twin: unsigned W=6 F=1 half_up wrap differing=0 of 262144
+A5-hand-twin: the unsigned twin of the failing cell must agree at every triple -> HELD
+exit=0
