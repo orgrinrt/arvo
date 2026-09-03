@@ -1,0 +1,27 @@
+### G1, the commit R5 names
+  type: commit
+  b34d7a3c 2026-09-02 fix: point every tool lockfile at one mockspace revision
+  PASS, it resolves
+
+### G2, obligation rows at HEAD
+  grep 16, engine 16
+  PASS
+
+### the obligation namespace's row count at every commit that touched it
+  c962834d  11  2026-08-31 canon: the demand side, read from the consumers rather than from the canon
+  3896a35e  13  2026-08-31 chore: measure the obligation coverage in the checks crate
+  c58faffc  13  2026-08-31 chore: build the control one probe named and fix a probe pointing at the wrong file
+  943b5961  13  2026-08-31 chore: act on what the two seats found against the demand side
+  5e347f94  13  2026-08-31 canon: give obligation a quote field, and file the exception op had already stated
+  9bd9d219  15  2026-08-31 canon: quote the obligations from the consumers instead of from a summary of them
+  1f6c9b7d  15  2026-08-31 canon: quote the last two consumer-sourced obligations, and close the cost model gap
+  37a32043  16  2026-08-31 canon: file the standards-alias demand, which op named and no row carried
+  5ae69731  16  2026-09-02 chore: drop the banned word from registry prose, keeping op's own
+
+### G3, distinct counts seen
+  4
+  PASS, the namespace R5 quantifies over has moved
+
+### and whether it has moved since b34d7a3c on this branch
+  (empty means unchanged on this branch, which is a fact about this branch
+   rather than about the claim's durability)

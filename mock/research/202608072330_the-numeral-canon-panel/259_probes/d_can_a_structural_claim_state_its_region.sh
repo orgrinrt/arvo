@@ -12,7 +12,7 @@
 # The six, with the verdict each is predicted to draw, written before the run:
 #
 #   D1 argument, no region      -> an-established-claim-carries-no-region
-#   D2 argument, structural axis-> axis-not-declared, twice
+#   D2 argument, structural axis-> undeclared-axis, twice
 #   D3 argument, every declared axis at `any`, tokenless -> SILENT
 #   D4 normative, with evidence -> an-imposition-rests-on-no-instrument
 #   D5 normative, with a region -> an-imposed-proposition-carries-a-region
@@ -88,7 +88,7 @@ verdict() {
   fi
 }
 verdict zz_probe_argument_with_no_region              an-established-claim-carries-no-region
-verdict zz_probe_argument_with_a_structural_axis      axis-not-declared
+verdict zz_probe_argument_with_a_structural_axis      undeclared-axis
 verdict zz_probe_argument_with_universal_on_every_axis SILENT
 verdict zz_probe_normative_carrying_its_instrument    an-imposition-rests-on-no-instrument
 verdict zz_probe_normative_carrying_a_region          an-imposed-proposition-carries-a-region

@@ -1,227 +1,69 @@
-    Blocking waiting for file lock on package cache
-   Compiling mockspace-lints-e8889c0949f25c6f v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/target/mockspace-lints)
-error[E0308]: mismatched types
-    --> src/lib.rs:151:36
-     |
- 151 |     mockspace_extra_lints::collect(pack);
-     |     ------------------------------ ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
-     |     |
-     |     arguments to this function are incorrect
-     |
-note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ------------------- this is the found type
-     |
-    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
-     = help: you can use `cargo tree` to explore your dependency tree
-note: function defined here
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
-     |
-1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
-     |                  ^^^^^^^
-     |
-    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-extra-lints-5f2ad990fc8d8d81/6d2c85a/src/lib.rs:73:1
-     |
-  73 | / mockspace_lint_rules::lint_pack! {
-  74 | |     lints: [
-  75 | |         NoAlloc,
-  76 | |         NoStd,
-...    |
- 110 | |     ],
- 111 | | }
-     | |_- in this macro invocation
-     = note: this error originates in the macro `mockspace_lint_rules::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+    Finished `release` profile [optimized] target(s) in 0.03s
+--- cargo check skipped (lint-only mode) ---
+--- parsing crates ---
+--- running lints ---
+--- registry ---
+  714 rows across 10 namespaces
+  schema check passed
 
-error[E0308]: mismatched types
-    --> src/lib.rs:152:49
-     |
- 152 |     arvo_a_panel_catalogue_is_readable::collect(pack);
-     |     ------------------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
-     |     |
-     |     arguments to this function are incorrect
-     |
-note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ------------------- this is the found type
-     |
-    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
-     = help: you can use `cargo tree` to explore your dependency tree
-note: function defined here
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
-     |
-1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
-     |                  ^^^^^^^
-     |
-    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/a-panel-catalogue-is-readable/src/lib.rs:263:1
-     |
- 263 | / mockspace::lint_pack! {
- 264 | |     repo_lints: [APanelCatalogueIsReadable],
- 265 | | }
-     | |_- in this macro invocation
-     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+--- lint warnings (51) ---
+  [export-count] arvo-placement:1: [warn] file has 14 public exports (guideline: ~5)
+  [writing-style] PRINCIPLES.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] PRINCIPLES.md.tmpl:154: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:75: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:116: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:126: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:209: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:217: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:225: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:229: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:247: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:251: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:318: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:354: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:402: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:644: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:650: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:660: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:762: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:765: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:788: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:812: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:179: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:286: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:25: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:239: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/slots.rs:270: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/obligations.rs:344: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_identity.rs:323: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_inventory.rs:329: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:115: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:118: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:125: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:194: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:228: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/src/lib.rs:207: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:102: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:34: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:89: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:107: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:108: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:109: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:42: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:51: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:10: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:11: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:23: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:24: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
 
-error[E0308]: mismatched types
-    --> src/lib.rs:153:37
-     |
- 153 |     arvo_awaiting_a_ruling::collect(pack);
-     |     ------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
-     |     |
-     |     arguments to this function are incorrect
-     |
-note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ------------------- this is the found type
-     |
-    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
-     = help: you can use `cargo tree` to explore your dependency tree
-note: function defined here
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
-     |
-1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
-     |                  ^^^^^^^
-     |
-    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/awaiting-a-ruling/src/lib.rs:374:1
-     |
- 374 | / mockspace::lint_pack! {
- 375 | |     tools: [AwaitingARuling],
- 376 | | }
-     | |_- in this macro invocation
-     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+--- lint errors (5) ---
+  [a-region-agrees-with-the-sentence-kind/an-established-claim-carries-no-region] registry:0: [error] `proposal::zz_probe_argument_with_no_region` has `sentence_kind` `argument` and an empty `predicate`, so the claim reads as holding everywhere while having been established somewhere. Write the region it was established in, however narrow: `threads = 1` is a real region and a real finding.
+  [a-region-agrees-with-the-sentence-kind/an-imposed-proposition-carries-a-region] registry:0: [error] `proposal::zz_probe_normative_carrying_a_region` has `sentence_kind` `normative` and carries a `predicate`. Neither kind states a region: an imposed proposition would be saying the design may violate it everywhere the region does not reach, and a definition is not a claim about where anything holds.
+  [an-imposition-rests-on-no-instrument] registry:0: [error] `proposal::zz_probe_normative_carrying_its_instrument` sets `sentence_kind` to `normative`, which says the claim is imposed rather than established and is why it carries no region, and `evidence` names ["most_committed_bench_regions_predate_the_validation_gate"]. An instrument that could have returned the other answer is what `measured` means. Either the claim is measured and owes the region its instrument was run at, or it is imposed and owes no evidence.
+  [every-predicate-names-a-declared-axis/undeclared-axis] registry:0: [error] `proposal::zz_probe_argument_with_a_structural_axis` names the axis `registry_state` in `predicate`, which no `dimension` row declares. Declare it, or use the slug of the axis that already means this. An undeclared axis cannot be absent from any other predicate, so admitting one here weakens every predicate in the canon.
+  [every-predicate-names-a-declared-axis/undeclared-axis] registry:0: [error] `proposal::zz_probe_argument_with_a_structural_axis` names the axis `namespace` in `predicate`, which no `dimension` row declares. Declare it, or use the slug of the axis that already means this. An undeclared axis cannot be absent from any other predicate, so admitting one here weakens every predicate in the canon.
 
-error[E0308]: mismatched types
-    --> src/lib.rs:154:39
-     |
- 154 |     arvo_rounding_vocabulary::collect(pack);
-     |     --------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
-     |     |
-     |     arguments to this function are incorrect
-     |
-note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ------------------- this is the found type
-     |
-    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
-     = help: you can use `cargo tree` to explore your dependency tree
-note: function defined here
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
-     |
-1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
-     |                  ^^^^^^^
-     |
-    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/rounding-vocabulary/src/lib.rs:472:1
-     |
- 472 | / mockspace::lint_pack! {
- 473 | |     tools: [RoundingVocabulary],
- 474 | | }
-     | |_- in this macro invocation
-     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-error[E0308]: mismatched types
-    --> src/lib.rs:155:33
-     |
- 155 |     arvo_the_positions::collect(pack);
-     |     --------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
-     |     |
-     |     arguments to this function are incorrect
-     |
-note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ------------------- this is the found type
-     |
-    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
-     = help: you can use `cargo tree` to explore your dependency tree
-note: function defined here
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
-     |
-1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
-     |                  ^^^^^^^
-     |
-    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/the-positions/src/lib.rs:282:1
-     |
- 282 | / mockspace::lint_pack! {
- 283 | |     tools: [ThePositions],
- 284 | | }
-     | |_- in this macro invocation
-     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-error[E0308]: mismatched types
-    --> src/lib.rs:156:37
-     |
- 156 |     arvo_unasked_questions::collect(pack);
-     |     ------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
-     |     |
-     |     arguments to this function are incorrect
-     |
-note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ------------------- this is the found type
-     |
-    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
-     |
-1486 | pub struct LintPack {
-     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
-     = help: you can use `cargo tree` to explore your dependency tree
-note: function defined here
-    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
-     |
-1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
-     |                  ^^^^^^^
-     |
-    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/unasked-questions/src/lib.rs:366:1
-     |
- 366 | / mockspace::lint_pack! {
- 367 | |     tools: [UnaskedQuestions],
- 368 | | }
-     | |_- in this macro invocation
-     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-For more information about this error, try `rustc --explain E0308`.
-error: could not compile `mockspace-lints-e8889c0949f25c6f` (lib) due to 6 previous errors
-
-BLOCKED: this repo's custom lints could not be built, so no lint below
-them ran. Nothing was checked.
-
-  the build reported:
-    building the custom-lint cdylib failed; see cargo output above
-
-  declared in:
-    /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mockspace.toml
-
-  what to check, most likely first:
-    - a `[lint-crates]` entry pinned to a branch that has stopped
-      moving. The head still resolves, so nothing looks stale, but the
-      pack ages against an engine that keeps moving. Point it at the
-      branch the pack is actually developed on.
-    - a `[lint-crates]` key that is not the pack's package name. It is
-      used verbatim as the cargo dependency name and as the Rust
-      identifier, so a renamed pack needs the key renamed with it.
-    - a local lint in this repo's lints directory still on an older
-      trait shape than the engine expects.
-
+lint check failed: 5 violation(s)
