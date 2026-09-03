@@ -293,6 +293,10 @@ fn every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts() {
 /// Inadmissible, and nothing here forces it. `Slots::ADMITTED` is reached through
 /// `slot_in_range`, so a verb that never calls it over this range never learns the
 /// range is wrong.
+///
+/// Never constructed. It is a typestate marker and the const assertions below
+/// are what exercise it, so the compiler cannot see it being used.
+#[allow(dead_code)]
 struct InvertedSlots;
 
 impl Slots for InvertedSlots {
@@ -307,6 +311,9 @@ impl Slots for InvertedSlots {
 /// magnitude cancels it, so `has_additive_identity` never reaches the
 /// `slot_in_range` inside its loop. The range stays unexamined and the verb
 /// answers.
+///
+/// Never constructed, for the reason `InvertedSlots` is not.
+#[allow(dead_code)]
 struct NeverCancelsOverAnInvertedRange;
 
 impl Format for NeverCancelsOverAnInvertedRange {
@@ -352,8 +359,8 @@ fn contains_answers_for_a_format_whose_phase_does_not_denote() {
 
 #[test]
 fn a_coordinate_is_readable_off_the_impl_without_the_obligation_firing() {
-    // The shortest route of the four. Nothing between a reader and the
-    // declaration, so nothing to force.
+    // The shortest of the three routes the design names. Nothing between a
+    // reader and the declaration, so nothing to force.
     assert_eq!(<NoDenominator as Format>::PHASE.denotes(), Bool::FALSE);
     assert_eq!(<Integer<8> as Format>::PHASE.denotes(), Bool::TRUE);
 }
@@ -421,6 +428,9 @@ const _THE_SAME_PHASE_OVER_AN_ADMISSIBLE_RANGE: () = {
 // Same verb, same slot range, opposite outcome, decided by the phase.
 
 /// The control for the arm above: the same phase over a range that admits.
+///
+/// Never constructed, for the reason `InvertedSlots` is not.
+#[allow(dead_code)]
 struct NeverCancelsOverAnAdmissibleRange;
 
 impl Format for NeverCancelsOverAnAdmissibleRange {

@@ -25,6 +25,16 @@
 //! runtime test cannot catch either because an obligation refuses rather than
 //! returning.
 //!
+//! One pins where the slot ladder stops, against a word length an industrial
+//! convention admits and this stack has no format for. A refusal that lives only
+//! in a paragraph can be deleted by accident.
+//!
+//! Three pin which verbs force an obligation, from the refusing side, which is
+//! the half the runtime arms cannot reach: the two verbs that force the format's
+//! own, and the slot range reached through a call rather than forced. Each of
+//! those was a claim about a set, and a claim about a set of two needs both of
+//! its members pinned or deleting one member leaves the suite green.
+//!
 //! The last one runs the other way. It pins the refusal the const generic
 //! parameters are spelled around: a coordinate type cannot sit in that position,
 //! which is why the declared widths carry a machine integer there and nowhere
