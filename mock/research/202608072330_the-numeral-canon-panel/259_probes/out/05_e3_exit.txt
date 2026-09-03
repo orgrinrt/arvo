@@ -1,0 +1,2 @@
+exit=0
+E3 control: the blanket impl builds and FRACTION is 3

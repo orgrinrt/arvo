@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# 259 probes. Whether the fused multiply-add's answer is reachable by composing a
+# declared multiply and a declared add, and where.
+#
+#   mock/research/202608072330_the-numeral-canon-panel/259_probes/run
+#
+# Everything lands under `out/` and is committed. Exit status is not the result;
+# the captured text is. Every step declares in its own source what must fail, and
+# the verdict lines in the output say HELD or BROKEN per arm. One arm is BROKEN
+# on purpose and stays that way: C2, in step 03, whose break is the finding.
+#
+# Release profile throughout. These are exhaustive sweeps over slot triples and a
+# debug build takes long enough that somebody would sample instead, which the
+# test gate forbids. No timing is taken here and no number in the panel file is a
+# duration, so the profile is a runtime convenience rather than a measurement
+# condition.
+
+set -u
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+crate="$here/p01_the_composition_sweep"
+out="$here/out"
+mkdir -p "$out"
+
+echo "01..05: building"
+( cd "$crate" && cargo build --release 2>&1 ) > "$out/00_build.txt"
+echo "exit=$?" >> "$out/00_build.txt"
+
+echo "01: fused against the natural stepwise composition"
+"$crate/target/release/sweep" > "$out/01_sweep.txt" 2>&1
+echo "exit=$?" >> "$out/01_sweep.txt"
+
+echo "02: the two conditions apart, and step 01 predicted from them"
+"$crate/target/release/mechanism" > "$out/02_mechanism.txt" 2>&1
+echo "exit=$?" >> "$out/02_mechanism.txt"
+
+echo "03: the existential over every arm a consumer could write"
+"$crate/target/release/existential" > "$out/03_existential.txt" 2>&1
+echo "exit=$?" >> "$out/03_existential.txt"
+
+echo "04: the fused answer through a widened intermediate"
+"$crate/target/release/widening" > "$out/04_widening.txt" 2>&1
+echo "exit=$?" >> "$out/04_widening.txt"
+
+echo "05: the widened route written once, generically over the numeral"
+"$crate/target/release/derivable" > "$out/05_derivable.txt" 2>&1
+echo "exit=$?" >> "$out/05_derivable.txt"
+
+echo "06: the tie direction, and which reading the committed row needs"
+"$crate/target/release/tie_direction" > "$out/06_tie_direction.txt" 2>&1
+echo "exit=$?" >> "$out/06_tie_direction.txt"
+
+echo "05: E2, the blanket impl that must be refused"
+rlib="$(ls "$crate"/target/release/deps/libarvo_format-*.rlib 2>/dev/null | head -1)"
+mkdir -p "$crate/target/arms"
+rustc --edition 2024 --extern arvo_format="$rlib" -L "$crate/target/release/deps" \
+    --out-dir "$crate/target/arms" "$crate/src/derivable_blanket.rs" \
+    > "$out/05_e2_stdout.txt" 2> "$crate/src/derivable_blanket.stderr"
+echo "exit=$?" > "$out/05_e2_exit.txt"
+cp "$crate/src/derivable_blanket.stderr" "$out/05_e2_refusal.txt"
+
+echo "05: E3, the control that must build"
+rustc --edition 2024 --extern arvo_format="$rlib" -L "$crate/target/release/deps" \
+    --out-dir "$crate/target/arms" "$crate/src/derivable_blanket_control.rs" \
+    2> "$crate/src/derivable_blanket_control.stderr"
+echo "exit=$?" > "$out/05_e3_exit.txt"
+"$crate/target/arms/derivable_blanket_control" >> "$out/05_e3_exit.txt" 2>&1
+
+echo "the verdict lines, gathered"
+grep -hE "^(A[0-9]|B[0-9]|C[0-9]|D[0-9]|E[0-9]|F[0-9])[^ ]*: " \
+    "$out/01_sweep.txt" "$out/02_mechanism.txt" "$out/03_existential.txt" \
+    "$out/04_widening.txt" "$out/05_derivable.txt" "$out/06_tie_direction.txt" > "$out/07_verdicts.txt"
+cat "$out/07_verdicts.txt"

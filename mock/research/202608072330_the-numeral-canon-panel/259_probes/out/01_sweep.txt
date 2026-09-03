@@ -1,0 +1,730 @@
+# step 01: fused against the natural stepwise composition
+# every adaptation is arvo_format::apply::adapt
+# rounding modes: the five deterministic members of the ratified six
+# stochastic is excluded by name: it is not a function of the value,
+# so equality of two realisations is not a well posed question for it
+
+cell unsigned W=3 F=0 mode=floor policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=floor policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=ceil policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=ceil policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=toward_zero policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=toward_zero policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=half_up policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=half_up policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=half_even policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=0 mode=half_even policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=0 mode=floor policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=0 mode=floor policy=saturate differing=90 of 512 rate=17.5781 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=0 mode=ceil policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=0 mode=ceil policy=saturate differing=90 of 512 rate=17.5781 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=0 mode=toward_zero policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=0 mode=toward_zero policy=saturate differing=90 of 512 rate=17.5781 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=0 mode=half_up policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=0 mode=half_up policy=saturate differing=90 of 512 rate=17.5781 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=0 mode=half_even policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=0 mode=half_even policy=saturate differing=90 of 512 rate=17.5781 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell unsigned W=3 F=1 mode=floor policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=floor policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=ceil policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=ceil policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=toward_zero policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=toward_zero policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=half_up policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=half_up policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=1 mode=half_even policy=wrap differing=64 of 512 rate=12.5000 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell unsigned W=3 F=1 mode=half_even policy=saturate differing=18 of 512 rate=3.5156 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell signed W=3 F=1 mode=floor policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=1 mode=floor policy=saturate differing=40 of 512 rate=7.8125 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=1 mode=ceil policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=1 mode=ceil policy=saturate differing=34 of 512 rate=6.6406 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=1 mode=toward_zero policy=wrap differing=34 of 512 rate=6.6406 witness: a=-3 b=-1 c=-4 fused=-2 stepwise=-3
+cell signed W=3 F=1 mode=toward_zero policy=saturate differing=68 of 512 rate=13.2812 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=1 mode=half_up policy=wrap differing=34 of 512 rate=6.6406 witness: a=-3 b=-1 c=-4 fused=-3 stepwise=-2
+cell signed W=3 F=1 mode=half_up policy=saturate differing=74 of 512 rate=14.4531 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell signed W=3 F=1 mode=half_even policy=wrap differing=64 of 512 rate=12.5000 witness: a=-3 b=-3 c=-3 fused=2 stepwise=1
+cell signed W=3 F=1 mode=half_even policy=saturate differing=76 of 512 rate=14.8438 witness: a=-4 b=-4 c=-4 fused=3 stepwise=-1
+cell unsigned W=3 F=2 mode=floor policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=floor policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=ceil policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=ceil policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=toward_zero policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=toward_zero policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=half_up policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=half_up policy=saturate differing=0 of 512 rate=0.0000 witness: -
+cell unsigned W=3 F=2 mode=half_even policy=wrap differing=64 of 512 rate=12.5000 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell unsigned W=3 F=2 mode=half_even policy=saturate differing=28 of 512 rate=5.4688 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell signed W=3 F=2 mode=floor policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=2 mode=floor policy=saturate differing=4 of 512 rate=0.7812 witness: a=-4 b=-4 c=-4 fused=0 stepwise=-1
+cell signed W=3 F=2 mode=ceil policy=wrap differing=0 of 512 rate=0.0000 witness: -
+cell signed W=3 F=2 mode=ceil policy=saturate differing=4 of 512 rate=0.7812 witness: a=-4 b=-4 c=-4 fused=0 stepwise=-1
+cell signed W=3 F=2 mode=toward_zero policy=wrap differing=96 of 512 rate=18.7500 witness: a=-3 b=-3 c=-4 fused=-1 stepwise=-2
+cell signed W=3 F=2 mode=toward_zero policy=saturate differing=100 of 512 rate=19.5312 witness: a=-4 b=-4 c=-4 fused=0 stepwise=-1
+cell signed W=3 F=2 mode=half_up policy=wrap differing=48 of 512 rate=9.3750 witness: a=-3 b=-2 c=-4 fused=-3 stepwise=-2
+cell signed W=3 F=2 mode=half_up policy=saturate differing=52 of 512 rate=10.1562 witness: a=-4 b=-4 c=-4 fused=0 stepwise=-1
+cell signed W=3 F=2 mode=half_even policy=wrap differing=64 of 512 rate=12.5000 witness: a=-3 b=-2 c=-3 fused=-2 stepwise=-1
+cell signed W=3 F=2 mode=half_even policy=saturate differing=56 of 512 rate=10.9375 witness: a=-4 b=-4 c=-4 fused=0 stepwise=-1
+cell unsigned W=4 F=0 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=floor policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=ceil policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=toward_zero policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=toward_zero policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=half_up policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=half_up policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=half_even policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=0 mode=half_even policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=0 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=0 mode=floor policy=saturate differing=1166 of 4096 rate=28.4668 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=0 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=0 mode=ceil policy=saturate differing=1166 of 4096 rate=28.4668 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=0 mode=toward_zero policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=0 mode=toward_zero policy=saturate differing=1166 of 4096 rate=28.4668 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=0 mode=half_up policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=0 mode=half_up policy=saturate differing=1166 of 4096 rate=28.4668 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=0 mode=half_even policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=0 mode=half_even policy=saturate differing=1166 of 4096 rate=28.4668 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell unsigned W=4 F=1 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=floor policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=ceil policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=toward_zero policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=toward_zero policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=half_up policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=half_up policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=1 mode=half_even policy=wrap differing=512 of 4096 rate=12.5000 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell unsigned W=4 F=1 mode=half_even policy=saturate differing=101 of 4096 rate=2.4658 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell signed W=4 F=1 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=1 mode=floor policy=saturate differing=760 of 4096 rate=18.5547 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=1 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=1 mode=ceil policy=saturate differing=792 of 4096 rate=19.3359 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=1 mode=toward_zero policy=wrap differing=180 of 4096 rate=4.3945 witness: a=-7 b=-1 c=-8 fused=-4 stepwise=-5
+cell signed W=4 F=1 mode=toward_zero policy=saturate differing=940 of 4096 rate=22.9492 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=1 mode=half_up policy=wrap differing=180 of 4096 rate=4.3945 witness: a=-7 b=-1 c=-8 fused=-5 stepwise=-4
+cell signed W=4 F=1 mode=half_up policy=saturate differing=964 of 4096 rate=23.5352 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=1 mode=half_even policy=wrap differing=512 of 4096 rate=12.5000 witness: a=-7 b=-7 c=-7 fused=2 stepwise=1
+cell signed W=4 F=1 mode=half_even policy=saturate differing=1000 of 4096 rate=24.4141 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell unsigned W=4 F=2 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=floor policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=ceil policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=toward_zero policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=toward_zero policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=half_up policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=half_up policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=2 mode=half_even policy=wrap differing=512 of 4096 rate=12.5000 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell unsigned W=4 F=2 mode=half_even policy=saturate differing=164 of 4096 rate=4.0039 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell signed W=4 F=2 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=2 mode=floor policy=saturate differing=294 of 4096 rate=7.1777 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=2 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=2 mode=ceil policy=saturate differing=298 of 4096 rate=7.2754 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=2 mode=toward_zero policy=wrap differing=554 of 4096 rate=13.5254 witness: a=-7 b=-3 c=-8 fused=-2 stepwise=-3
+cell signed W=4 F=2 mode=toward_zero policy=saturate differing=820 of 4096 rate=20.0195 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=2 mode=half_up policy=wrap differing=276 of 4096 rate=6.7383 witness: a=-7 b=-2 c=-8 fused=-5 stepwise=-4
+cell signed W=4 F=2 mode=half_up policy=saturate differing=594 of 4096 rate=14.5020 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell signed W=4 F=2 mode=half_even policy=wrap differing=512 of 4096 rate=12.5000 witness: a=-7 b=-6 c=-7 fused=4 stepwise=3
+cell signed W=4 F=2 mode=half_even policy=saturate differing=642 of 4096 rate=15.6738 witness: a=-8 b=-8 c=-8 fused=7 stepwise=-1
+cell unsigned W=4 F=3 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=floor policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=ceil policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=toward_zero policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=toward_zero policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=half_up policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=half_up policy=saturate differing=0 of 4096 rate=0.0000 witness: -
+cell unsigned W=4 F=3 mode=half_even policy=wrap differing=384 of 4096 rate=9.3750 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell unsigned W=4 F=3 mode=half_even policy=saturate differing=189 of 4096 rate=4.6143 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell signed W=4 F=3 mode=floor policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=3 mode=floor policy=saturate differing=8 of 4096 rate=0.1953 witness: a=-8 b=-8 c=-8 fused=0 stepwise=-1
+cell signed W=4 F=3 mode=ceil policy=wrap differing=0 of 4096 rate=0.0000 witness: -
+cell signed W=4 F=3 mode=ceil policy=saturate differing=8 of 4096 rate=0.1953 witness: a=-8 b=-8 c=-8 fused=0 stepwise=-1
+cell signed W=4 F=3 mode=toward_zero policy=wrap differing=1056 of 4096 rate=25.7812 witness: a=-7 b=-7 c=-8 fused=-1 stepwise=-2
+cell signed W=4 F=3 mode=toward_zero policy=saturate differing=1064 of 4096 rate=25.9766 witness: a=-8 b=-8 c=-8 fused=0 stepwise=-1
+cell signed W=4 F=3 mode=half_up policy=wrap differing=288 of 4096 rate=7.0312 witness: a=-7 b=-4 c=-8 fused=-5 stepwise=-4
+cell signed W=4 F=3 mode=half_up policy=saturate differing=296 of 4096 rate=7.2266 witness: a=-8 b=-8 c=-8 fused=0 stepwise=-1
+cell signed W=4 F=3 mode=half_even policy=wrap differing=384 of 4096 rate=9.3750 witness: a=-7 b=-4 c=-7 fused=-4 stepwise=-3
+cell signed W=4 F=3 mode=half_even policy=saturate differing=332 of 4096 rate=8.1055 witness: a=-8 b=-8 c=-8 fused=0 stepwise=-1
+cell unsigned W=5 F=0 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=floor policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=ceil policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=toward_zero policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=toward_zero policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=half_up policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=half_up policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=half_even policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=0 mode=half_even policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=0 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=0 mode=floor policy=saturate differing=11986 of 32768 rate=36.5784 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=0 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=0 mode=ceil policy=saturate differing=11986 of 32768 rate=36.5784 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=0 mode=toward_zero policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=0 mode=toward_zero policy=saturate differing=11986 of 32768 rate=36.5784 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=0 mode=half_up policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=0 mode=half_up policy=saturate differing=11986 of 32768 rate=36.5784 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=0 mode=half_even policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=0 mode=half_even policy=saturate differing=11986 of 32768 rate=36.5784 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell unsigned W=5 F=1 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=floor policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=ceil policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=toward_zero policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=toward_zero policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=half_up policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=half_up policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=1 mode=half_even policy=wrap differing=4096 of 32768 rate=12.5000 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell unsigned W=5 F=1 mode=half_even policy=saturate differing=508 of 32768 rate=1.5503 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell signed W=5 F=1 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=1 mode=floor policy=saturate differing=9722 of 32768 rate=29.6692 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=1 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=1 mode=ceil policy=saturate differing=9662 of 32768 rate=29.4861 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=1 mode=toward_zero policy=wrap differing=898 of 32768 rate=2.7405 witness: a=-15 b=-1 c=-16 fused=-8 stepwise=-9
+cell signed W=5 F=1 mode=toward_zero policy=saturate differing=10560 of 32768 rate=32.2266 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=1 mode=half_up policy=wrap differing=898 of 32768 rate=2.7405 witness: a=-15 b=-1 c=-16 fused=-9 stepwise=-8
+cell signed W=5 F=1 mode=half_up policy=saturate differing=10620 of 32768 rate=32.4097 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=1 mode=half_even policy=wrap differing=4096 of 32768 rate=12.5000 witness: a=-15 b=-15 c=-15 fused=2 stepwise=1
+cell signed W=5 F=1 mode=half_even policy=saturate differing=10856 of 32768 rate=33.1299 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell unsigned W=5 F=2 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=floor policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=ceil policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=toward_zero policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=toward_zero policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=half_up policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=half_up policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=2 mode=half_even policy=wrap differing=4096 of 32768 rate=12.5000 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell unsigned W=5 F=2 mode=half_even policy=saturate differing=856 of 32768 rate=2.6123 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell signed W=5 F=2 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=2 mode=floor policy=saturate differing=6404 of 32768 rate=19.5435 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=2 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=2 mode=ceil policy=saturate differing=6348 of 32768 rate=19.3726 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=2 mode=toward_zero policy=wrap differing=2924 of 32768 rate=8.9233 witness: a=-15 b=-3 c=-16 fused=-4 stepwise=-5
+cell signed W=5 F=2 mode=toward_zero policy=saturate differing=9208 of 32768 rate=28.1006 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=2 mode=half_up policy=wrap differing=1456 of 32768 rate=4.4434 witness: a=-15 b=-2 c=-16 fused=-9 stepwise=-8
+cell signed W=5 F=2 mode=half_up policy=saturate differing=7864 of 32768 rate=23.9990 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=2 mode=half_even policy=wrap differing=4096 of 32768 rate=12.5000 witness: a=-15 b=-14 c=-15 fused=6 stepwise=5
+cell signed W=5 F=2 mode=half_even policy=saturate differing=8224 of 32768 rate=25.0977 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell unsigned W=5 F=3 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=floor policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=ceil policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=toward_zero policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=toward_zero policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=half_up policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=half_up policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=3 mode=half_even policy=wrap differing=3072 of 32768 rate=9.3750 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell unsigned W=5 F=3 mode=half_even policy=saturate differing=1040 of 32768 rate=3.1738 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell signed W=5 F=3 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=3 mode=floor policy=saturate differing=2466 of 32768 rate=7.5256 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=3 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=3 mode=ceil policy=saturate differing=2382 of 32768 rate=7.2693 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=3 mode=toward_zero policy=wrap differing=6142 of 32768 rate=18.7439 witness: a=-15 b=-7 c=-16 fused=-2 stepwise=-3
+cell signed W=5 F=3 mode=toward_zero policy=saturate differing=8428 of 32768 rate=25.7202 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=3 mode=half_up policy=wrap differing=1666 of 32768 rate=5.0842 witness: a=-15 b=-4 c=-16 fused=-9 stepwise=-8
+cell signed W=5 F=3 mode=half_up policy=saturate differing=4136 of 32768 rate=12.6221 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell signed W=5 F=3 mode=half_even policy=wrap differing=3072 of 32768 rate=9.3750 witness: a=-15 b=-12 c=-15 fused=8 stepwise=7
+cell signed W=5 F=3 mode=half_even policy=saturate differing=4484 of 32768 rate=13.6841 witness: a=-16 b=-16 c=-16 fused=15 stepwise=-1
+cell unsigned W=5 F=4 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=floor policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=ceil policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=toward_zero policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=toward_zero policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=half_up policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=half_up policy=saturate differing=0 of 32768 rate=0.0000 witness: -
+cell unsigned W=5 F=4 mode=half_even policy=wrap differing=2048 of 32768 rate=6.2500 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell unsigned W=5 F=4 mode=half_even policy=saturate differing=1060 of 32768 rate=3.2349 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell signed W=5 F=4 mode=floor policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=4 mode=floor policy=saturate differing=16 of 32768 rate=0.0488 witness: a=-16 b=-16 c=-16 fused=0 stepwise=-1
+cell signed W=5 F=4 mode=ceil policy=wrap differing=0 of 32768 rate=0.0000 witness: -
+cell signed W=5 F=4 mode=ceil policy=saturate differing=16 of 32768 rate=0.0488 witness: a=-16 b=-16 c=-16 fused=0 stepwise=-1
+cell signed W=5 F=4 mode=toward_zero policy=wrap differing=9984 of 32768 rate=30.4688 witness: a=-15 b=-15 c=-16 fused=-1 stepwise=-2
+cell signed W=5 F=4 mode=toward_zero policy=saturate differing=10000 of 32768 rate=30.5176 witness: a=-16 b=-16 c=-16 fused=0 stepwise=-1
+cell signed W=5 F=4 mode=half_up policy=wrap differing=1536 of 32768 rate=4.6875 witness: a=-15 b=-8 c=-16 fused=-9 stepwise=-8
+cell signed W=5 F=4 mode=half_up policy=saturate differing=1552 of 32768 rate=4.7363 witness: a=-16 b=-16 c=-16 fused=0 stepwise=-1
+cell signed W=5 F=4 mode=half_even policy=wrap differing=2048 of 32768 rate=6.2500 witness: a=-15 b=-8 c=-15 fused=-8 stepwise=-7
+cell signed W=5 F=4 mode=half_even policy=saturate differing=1776 of 32768 rate=5.4199 witness: a=-16 b=-16 c=-16 fused=0 stepwise=-1
+cell unsigned W=6 F=0 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=floor policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=ceil policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=toward_zero policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=toward_zero policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=half_up policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=half_up policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=half_even policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=0 mode=half_even policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=0 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=0 mode=floor policy=saturate differing=110476 of 262144 rate=42.1432 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=0 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=0 mode=ceil policy=saturate differing=110476 of 262144 rate=42.1432 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=0 mode=toward_zero policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=0 mode=toward_zero policy=saturate differing=110476 of 262144 rate=42.1432 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=0 mode=half_up policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=0 mode=half_up policy=saturate differing=110476 of 262144 rate=42.1432 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=0 mode=half_even policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=0 mode=half_even policy=saturate differing=110476 of 262144 rate=42.1432 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell unsigned W=6 F=1 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=floor policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=ceil policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=toward_zero policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=toward_zero policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=half_up policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=half_up policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=1 mode=half_even policy=wrap differing=32768 of 262144 rate=12.5000 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell unsigned W=6 F=1 mode=half_even policy=saturate differing=2436 of 262144 rate=0.9293 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell signed W=6 F=1 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=1 mode=floor policy=saturate differing=98316 of 262144 rate=37.5046 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=1 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=1 mode=ceil policy=saturate differing=98448 of 262144 rate=37.5549 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=1 mode=toward_zero policy=wrap differing=4296 of 262144 rate=1.6388 witness: a=-31 b=-1 c=-32 fused=-16 stepwise=-17
+cell signed W=6 F=1 mode=toward_zero policy=saturate differing=102488 of 262144 rate=39.0961 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=1 mode=half_up policy=wrap differing=4296 of 262144 rate=1.6388 witness: a=-31 b=-1 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=1 mode=half_up policy=saturate differing=102852 of 262144 rate=39.2349 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=1 mode=half_even policy=wrap differing=32768 of 262144 rate=12.5000 witness: a=-31 b=-31 c=-31 fused=2 stepwise=1
+cell signed W=6 F=1 mode=half_even policy=saturate differing=104184 of 262144 rate=39.7430 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell unsigned W=6 F=2 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=floor policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=ceil policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=toward_zero policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=toward_zero policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=half_up policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=half_up policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=2 mode=half_even policy=wrap differing=32768 of 262144 rate=12.5000 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell unsigned W=6 F=2 mode=half_even policy=saturate differing=4210 of 262144 rate=1.6060 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell signed W=6 F=2 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=2 mode=floor policy=saturate differing=79226 of 262144 rate=30.2223 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=2 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=2 mode=ceil policy=saturate differing=79490 of 262144 rate=30.3230 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=2 mode=toward_zero policy=wrap differing=14520 of 262144 rate=5.5389 witness: a=-31 b=-3 c=-32 fused=-8 stepwise=-9
+cell signed W=6 F=2 mode=toward_zero policy=saturate differing=93498 of 262144 rate=35.6667 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=2 mode=half_up policy=wrap differing=7228 of 262144 rate=2.7573 witness: a=-31 b=-2 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=2 mode=half_up policy=saturate differing=86814 of 262144 rate=33.1169 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=2 mode=half_even policy=wrap differing=32768 of 262144 rate=12.5000 witness: a=-31 b=-30 c=-31 fused=10 stepwise=9
+cell signed W=6 F=2 mode=half_even policy=saturate differing=88894 of 262144 rate=33.9104 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell unsigned W=6 F=3 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=floor policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=ceil policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=toward_zero policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=toward_zero policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=half_up policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=half_up policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=3 mode=half_even policy=wrap differing=24576 of 262144 rate=9.3750 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell unsigned W=6 F=3 mode=half_even policy=saturate differing=5304 of 262144 rate=2.0233 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell signed W=6 F=3 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=3 mode=floor policy=saturate differing=51820 of 262144 rate=19.7678 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=3 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=3 mode=ceil policy=saturate differing=52216 of 262144 rate=19.9188 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=3 mode=toward_zero policy=wrap differing=32344 of 262144 rate=12.3383 witness: a=-31 b=-7 c=-32 fused=-4 stepwise=-5
+cell signed W=6 F=3 mode=toward_zero policy=saturate differing=83792 of 262144 rate=31.9641 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=3 mode=half_up policy=wrap differing=8764 of 262144 rate=3.3432 witness: a=-31 b=-4 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=3 mode=half_up policy=saturate differing=61200 of 262144 rate=23.3459 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=3 mode=half_even policy=wrap differing=24576 of 262144 rate=9.3750 witness: a=-31 b=-28 c=-31 fused=14 stepwise=13
+cell signed W=6 F=3 mode=half_even policy=saturate differing=63520 of 262144 rate=24.2310 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell unsigned W=6 F=4 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=floor policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=ceil policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=toward_zero policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=toward_zero policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=half_up policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=half_up policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=4 mode=half_even policy=wrap differing=16384 of 262144 rate=6.2500 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell unsigned W=6 F=4 mode=half_even policy=saturate differing=5714 of 262144 rate=2.1797 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell signed W=6 F=4 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=4 mode=floor policy=saturate differing=19752 of 262144 rate=7.5348 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=4 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=4 mode=ceil policy=saturate differing=19772 of 262144 rate=7.5424 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=4 mode=toward_zero policy=wrap differing=58246 of 262144 rate=22.2191 witness: a=-31 b=-15 c=-32 fused=-2 stepwise=-3
+cell signed W=6 F=4 mode=toward_zero policy=saturate differing=77378 of 262144 rate=29.5174 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=4 mode=half_up policy=wrap differing=8904 of 262144 rate=3.3966 witness: a=-31 b=-8 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=4 mode=half_up policy=saturate differing=29028 of 262144 rate=11.0733 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell signed W=6 F=4 mode=half_even policy=wrap differing=16384 of 262144 rate=6.2500 witness: a=-31 b=-24 c=-31 fused=16 stepwise=15
+cell signed W=6 F=4 mode=half_even policy=saturate differing=31080 of 262144 rate=11.8561 witness: a=-32 b=-32 c=-32 fused=31 stepwise=-1
+cell unsigned W=6 F=5 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=floor policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=ceil policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=toward_zero policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=toward_zero policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=half_up policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=half_up policy=saturate differing=0 of 262144 rate=0.0000 witness: -
+cell unsigned W=6 F=5 mode=half_even policy=wrap differing=10240 of 262144 rate=3.9062 witness: a=1 b=16 c=1 fused=2 stepwise=1
+cell unsigned W=6 F=5 mode=half_even policy=saturate differing=5444 of 262144 rate=2.0767 witness: a=1 b=16 c=1 fused=2 stepwise=1
+cell signed W=6 F=5 mode=floor policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=5 mode=floor policy=saturate differing=32 of 262144 rate=0.0122 witness: a=-32 b=-32 c=-32 fused=0 stepwise=-1
+cell signed W=6 F=5 mode=ceil policy=wrap differing=0 of 262144 rate=0.0000 witness: -
+cell signed W=6 F=5 mode=ceil policy=saturate differing=32 of 262144 rate=0.0122 witness: a=-32 b=-32 c=-32 fused=0 stepwise=-1
+cell signed W=6 F=5 mode=toward_zero policy=wrap differing=87552 of 262144 rate=33.3984 witness: a=-31 b=-31 c=-32 fused=-1 stepwise=-2
+cell signed W=6 F=5 mode=toward_zero policy=saturate differing=87584 of 262144 rate=33.4106 witness: a=-32 b=-32 c=-32 fused=0 stepwise=-1
+cell signed W=6 F=5 mode=half_up policy=wrap differing=7680 of 262144 rate=2.9297 witness: a=-31 b=-16 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=5 mode=half_up policy=saturate differing=7712 of 262144 rate=2.9419 witness: a=-32 b=-32 c=-32 fused=0 stepwise=-1
+cell signed W=6 F=5 mode=half_even policy=wrap differing=10240 of 262144 rate=3.9062 witness: a=-31 b=-16 c=-31 fused=-16 stepwise=-15
+cell signed W=6 F=5 mode=half_even policy=saturate differing=8912 of 262144 rate=3.3997 witness: a=-32 b=-32 c=-32 fused=0 stepwise=-1
+cell unsigned W=7 F=0 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=floor policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=ceil policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=toward_zero policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=half_up policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=half_even policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=0 mode=half_even policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=0 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=0 mode=floor policy=saturate differing=954094 of 2097152 rate=45.4947 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=0 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=0 mode=ceil policy=saturate differing=954094 of 2097152 rate=45.4947 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=0 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=0 mode=toward_zero policy=saturate differing=954094 of 2097152 rate=45.4947 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=0 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=0 mode=half_up policy=saturate differing=954094 of 2097152 rate=45.4947 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=0 mode=half_even policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=0 mode=half_even policy=saturate differing=954094 of 2097152 rate=45.4947 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell unsigned W=7 F=1 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=floor policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=ceil policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=toward_zero policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=half_up policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=1 mode=half_even policy=wrap differing=262144 of 2097152 rate=12.5000 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell unsigned W=7 F=1 mode=half_even policy=saturate differing=11276 of 2097152 rate=0.5377 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell signed W=7 F=1 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=1 mode=floor policy=saturate differing=894022 of 2097152 rate=42.6303 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=1 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=1 mode=ceil policy=saturate differing=893770 of 2097152 rate=42.6183 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=1 mode=toward_zero policy=wrap differing=20048 of 2097152 rate=0.9560 witness: a=-63 b=-1 c=-64 fused=-32 stepwise=-33
+cell signed W=7 F=1 mode=toward_zero policy=saturate differing=913818 of 2097152 rate=43.5742 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=1 mode=half_up policy=wrap differing=20048 of 2097152 rate=0.9560 witness: a=-63 b=-1 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=1 mode=half_up policy=saturate differing=914070 of 2097152 rate=43.5863 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=1 mode=half_even policy=wrap differing=262144 of 2097152 rate=12.5000 witness: a=-63 b=-63 c=-63 fused=2 stepwise=1
+cell signed W=7 F=1 mode=half_even policy=saturate differing=921702 of 2097152 rate=43.9502 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell unsigned W=7 F=2 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=floor policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=ceil policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=toward_zero policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=half_up policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=2 mode=half_even policy=wrap differing=262144 of 2097152 rate=12.5000 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell unsigned W=7 F=2 mode=half_even policy=saturate differing=19864 of 2097152 rate=0.9472 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell signed W=7 F=2 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=2 mode=floor policy=saturate differing=794072 of 2097152 rate=37.8643 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=2 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=2 mode=ceil policy=saturate differing=794336 of 2097152 rate=37.8769 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=2 mode=toward_zero policy=wrap differing=69472 of 2097152 rate=3.3127 witness: a=-63 b=-3 c=-64 fused=-16 stepwise=-17
+cell signed W=7 F=2 mode=toward_zero policy=saturate differing=863040 of 2097152 rate=41.1530 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=2 mode=half_up policy=wrap differing=34636 of 2097152 rate=1.6516 witness: a=-63 b=-2 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=2 mode=half_up policy=saturate differing=829220 of 2097152 rate=39.5403 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=2 mode=half_even policy=wrap differing=262144 of 2097152 rate=12.5000 witness: a=-63 b=-62 c=-63 fused=18 stepwise=17
+cell signed W=7 F=2 mode=half_even policy=saturate differing=842004 of 2097152 rate=40.1499 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell unsigned W=7 F=3 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=floor policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=ceil policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=toward_zero policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=half_up policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=3 mode=half_even policy=wrap differing=196608 of 2097152 rate=9.3750 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell unsigned W=7 F=3 mode=half_even policy=saturate differing=25688 of 2097152 rate=1.2249 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell signed W=7 F=3 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=3 mode=floor policy=saturate differing=639512 of 2097152 rate=30.4943 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=3 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=3 mode=ceil policy=saturate differing=639788 of 2097152 rate=30.5075 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=3 mode=toward_zero policy=wrap differing=160610 of 2097152 rate=7.6585 witness: a=-63 b=-7 c=-64 fused=-8 stepwise=-9
+cell signed W=7 F=3 mode=toward_zero policy=saturate differing=798862 of 2097152 rate=38.0927 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=3 mode=half_up policy=wrap differing=43608 of 2097152 rate=2.0794 witness: a=-63 b=-4 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=3 mode=half_up policy=saturate differing=683384 of 2097152 rate=32.5863 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=3 mode=half_even policy=wrap differing=196608 of 2097152 rate=9.3750 witness: a=-63 b=-60 c=-63 fused=26 stepwise=25
+cell signed W=7 F=3 mode=half_even policy=saturate differing=698540 of 2097152 rate=33.3090 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell unsigned W=7 F=4 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=floor policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=ceil policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=toward_zero policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=half_up policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=4 mode=half_even policy=wrap differing=131072 of 2097152 rate=6.2500 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell unsigned W=7 F=4 mode=half_even policy=saturate differing=28728 of 2097152 rate=1.3699 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell signed W=7 F=4 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=4 mode=floor policy=saturate differing=419928 of 2097152 rate=20.0237 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=4 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=4 mode=ceil policy=saturate differing=419456 of 2097152 rate=20.0012 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=4 mode=toward_zero policy=wrap differing=306668 of 2097152 rate=14.6231 witness: a=-63 b=-15 c=-64 fused=-4 stepwise=-5
+cell signed W=7 F=4 mode=toward_zero policy=saturate differing=724076 of 2097152 rate=34.5266 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=4 mode=half_up policy=wrap differing=46924 of 2097152 rate=2.2375 witness: a=-63 b=-8 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=4 mode=half_up policy=saturate differing=466616 of 2097152 rate=22.2500 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=4 mode=half_even policy=wrap differing=131072 of 2097152 rate=6.2500 witness: a=-63 b=-56 c=-63 fused=30 stepwise=29
+cell signed W=7 F=4 mode=half_even policy=saturate differing=481384 of 2097152 rate=22.9542 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell unsigned W=7 F=5 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=floor policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=ceil policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=toward_zero policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=half_up policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=5 mode=half_even policy=wrap differing=81920 of 2097152 rate=3.9062 witness: a=1 b=16 c=1 fused=2 stepwise=1
+cell unsigned W=7 F=5 mode=half_even policy=saturate differing=28984 of 2097152 rate=1.3821 witness: a=1 b=16 c=1 fused=2 stepwise=1
+cell signed W=7 F=5 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=5 mode=floor policy=saturate differing=159958 of 2097152 rate=7.6274 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=5 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=5 mode=ceil policy=saturate differing=159110 of 2097152 rate=7.5870 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=5 mode=toward_zero policy=wrap differing=511440 of 2097152 rate=24.3874 witness: a=-63 b=-31 c=-64 fused=-2 stepwise=-3
+cell signed W=7 F=5 mode=toward_zero policy=saturate differing=668374 of 2097152 rate=31.8706 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=5 mode=half_up policy=wrap differing=44624 of 2097152 rate=2.1278 witness: a=-63 b=-16 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=5 mode=half_up policy=saturate differing=204598 of 2097152 rate=9.7560 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell signed W=7 F=5 mode=half_even policy=wrap differing=81920 of 2097152 rate=3.9062 witness: a=-63 b=-48 c=-63 fused=32 stepwise=31
+cell signed W=7 F=5 mode=half_even policy=saturate differing=216198 of 2097152 rate=10.3091 witness: a=-64 b=-64 c=-64 fused=63 stepwise=-1
+cell unsigned W=7 F=6 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=floor policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=ceil policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=toward_zero policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=toward_zero policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=half_up policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=half_up policy=saturate differing=0 of 2097152 rate=0.0000 witness: -
+cell unsigned W=7 F=6 mode=half_even policy=wrap differing=49152 of 2097152 rate=2.3438 witness: a=1 b=32 c=1 fused=2 stepwise=1
+cell unsigned W=7 F=6 mode=half_even policy=saturate differing=26476 of 2097152 rate=1.2625 witness: a=1 b=32 c=1 fused=2 stepwise=1
+cell signed W=7 F=6 mode=floor policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=6 mode=floor policy=saturate differing=64 of 2097152 rate=0.0031 witness: a=-64 b=-64 c=-64 fused=0 stepwise=-1
+cell signed W=7 F=6 mode=ceil policy=wrap differing=0 of 2097152 rate=0.0000 witness: -
+cell signed W=7 F=6 mode=ceil policy=saturate differing=64 of 2097152 rate=0.0031 witness: a=-64 b=-64 c=-64 fused=0 stepwise=-1
+cell signed W=7 F=6 mode=toward_zero policy=wrap differing=737280 of 2097152 rate=35.1562 witness: a=-63 b=-63 c=-64 fused=-1 stepwise=-2
+cell signed W=7 F=6 mode=toward_zero policy=saturate differing=737344 of 2097152 rate=35.1593 witness: a=-64 b=-64 c=-64 fused=0 stepwise=-1
+cell signed W=7 F=6 mode=half_up policy=wrap differing=36864 of 2097152 rate=1.7578 witness: a=-63 b=-32 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=6 mode=half_up policy=saturate differing=36928 of 2097152 rate=1.7609 witness: a=-64 b=-64 c=-64 fused=0 stepwise=-1
+cell signed W=7 F=6 mode=half_even policy=wrap differing=49152 of 2097152 rate=2.3438 witness: a=-63 b=-32 c=-63 fused=-32 stepwise=-31
+cell signed W=7 F=6 mode=half_even policy=saturate differing=42880 of 2097152 rate=2.0447 witness: a=-64 b=-64 c=-64 fused=0 stepwise=-1
+cell unsigned W=8 F=0 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=half_even policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=0 mode=half_even policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=0 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=0 mode=floor policy=saturate differing=7964040 of 16777216 rate=47.4694 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=0 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=0 mode=ceil policy=saturate differing=7964040 of 16777216 rate=47.4694 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=0 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=0 mode=toward_zero policy=saturate differing=7964040 of 16777216 rate=47.4694 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=0 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=0 mode=half_up policy=saturate differing=7964040 of 16777216 rate=47.4694 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=0 mode=half_even policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=0 mode=half_even policy=saturate differing=7964040 of 16777216 rate=47.4694 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell unsigned W=8 F=1 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=1 mode=half_even policy=wrap differing=2097152 of 16777216 rate=12.5000 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell unsigned W=8 F=1 mode=half_even policy=saturate differing=51071 of 16777216 rate=0.3044 witness: a=1 b=1 c=1 fused=2 stepwise=1
+cell signed W=8 F=1 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=1 mode=floor policy=saturate differing=7676144 of 16777216 rate=45.7534 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=1 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=1 mode=ceil policy=saturate differing=7677680 of 16777216 rate=45.7625 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=1 mode=toward_zero policy=wrap differing=91512 of 16777216 rate=0.5455 witness: a=-127 b=-1 c=-128 fused=-64 stepwise=-65
+cell signed W=8 F=1 mode=toward_zero policy=saturate differing=7767656 of 16777216 rate=46.2988 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=1 mode=half_up policy=wrap differing=91512 of 16777216 rate=0.5455 witness: a=-127 b=-1 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=1 mode=half_up policy=saturate differing=7769168 of 16777216 rate=46.3078 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=1 mode=half_even policy=wrap differing=2097152 of 16777216 rate=12.5000 witness: a=-127 b=-127 c=-127 fused=2 stepwise=1
+cell signed W=8 F=1 mode=half_even policy=saturate differing=7805540 of 16777216 rate=46.5246 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell unsigned W=8 F=2 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=2 mode=half_even policy=wrap differing=2097152 of 16777216 rate=12.5000 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell unsigned W=8 F=2 mode=half_even policy=saturate differing=91304 of 16777216 rate=0.5442 witness: a=1 b=2 c=1 fused=2 stepwise=1
+cell signed W=8 F=2 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=2 mode=floor policy=saturate differing=7186288 of 16777216 rate=42.8336 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=2 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=2 mode=ceil policy=saturate differing=7187836 of 16777216 rate=42.8428 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=2 mode=toward_zero policy=wrap differing=323246 of 16777216 rate=1.9267 witness: a=-127 b=-3 c=-128 fused=-32 stepwise=-33
+cell signed W=8 F=2 mode=toward_zero policy=saturate differing=7508010 of 16777216 rate=44.7512 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=2 mode=half_up policy=wrap differing=161180 of 16777216 rate=0.9607 witness: a=-127 b=-2 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=2 mode=half_up policy=saturate differing=7349484 of 16777216 rate=43.8063 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=2 mode=half_even policy=wrap differing=2097152 of 16777216 rate=12.5000 witness: a=-127 b=-126 c=-127 fused=34 stepwise=33
+cell signed W=8 F=2 mode=half_even policy=saturate differing=7411724 of 16777216 rate=44.1773 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell unsigned W=8 F=3 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=3 mode=half_even policy=wrap differing=1572864 of 16777216 rate=9.3750 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell unsigned W=8 F=3 mode=half_even policy=saturate differing=120391 of 16777216 rate=0.7176 witness: a=1 b=4 c=1 fused=2 stepwise=1
+cell signed W=8 F=3 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=3 mode=floor policy=saturate differing=6384312 of 16777216 rate=38.0535 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=3 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=3 mode=ceil policy=saturate differing=6385368 of 16777216 rate=38.0598 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=3 mode=toward_zero policy=wrap differing=767252 of 16777216 rate=4.5732 witness: a=-127 b=-7 c=-128 fused=-16 stepwise=-17
+cell signed W=8 F=3 mode=toward_zero policy=saturate differing=7147500 of 16777216 rate=42.6024 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=3 mode=half_up policy=wrap differing=208384 of 16777216 rate=1.2421 witness: a=-127 b=-4 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=3 mode=half_up policy=saturate differing=6594208 of 16777216 rate=39.3045 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=3 mode=half_even policy=wrap differing=1572864 of 16777216 rate=9.3750 witness: a=-127 b=-124 c=-127 fused=50 stepwise=49
+cell signed W=8 F=3 mode=half_even policy=saturate differing=6671612 of 16777216 rate=39.7659 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell unsigned W=8 F=4 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=4 mode=half_even policy=wrap differing=1048576 of 16777216 rate=6.2500 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell unsigned W=8 F=4 mode=half_even policy=saturate differing=138242 of 16777216 rate=0.8240 witness: a=1 b=8 c=1 fused=2 stepwise=1
+cell signed W=8 F=4 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=4 mode=floor policy=saturate differing=5139146 of 16777216 rate=30.6317 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=4 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=4 mode=ceil policy=saturate differing=5140222 of 16777216 rate=30.6381 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=4 mode=toward_zero policy=wrap differing=1521728 of 16777216 rate=9.0702 witness: a=-127 b=-15 c=-128 fused=-8 stepwise=-9
+cell signed W=8 F=4 mode=toward_zero policy=saturate differing=6654270 of 16777216 rate=39.6625 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=4 mode=half_up policy=wrap differing=232960 of 16777216 rate=1.3885 witness: a=-127 b=-8 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=4 mode=half_up policy=saturate differing=5373626 of 16777216 rate=32.0293 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=4 mode=half_even policy=wrap differing=1048576 of 16777216 rate=6.2500 witness: a=-127 b=-120 c=-127 fused=58 stepwise=57
+cell signed W=8 F=4 mode=half_even policy=saturate differing=5455062 of 16777216 rate=32.5147 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell unsigned W=8 F=5 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=5 mode=half_even policy=wrap differing=655360 of 16777216 rate=3.9062 witness: a=1 b=16 c=1 fused=2 stepwise=1
+cell unsigned W=8 F=5 mode=half_even policy=saturate differing=144839 of 16777216 rate=0.8633 witness: a=1 b=16 c=1 fused=2 stepwise=1
+cell signed W=8 F=5 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=5 mode=floor policy=saturate differing=3367660 of 16777216 rate=20.0728 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=5 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=5 mode=ceil policy=saturate differing=3372840 of 16777216 rate=20.1037 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=5 mode=toward_zero policy=wrap differing=2692432 of 16777216 rate=16.0481 witness: a=-127 b=-31 c=-128 fused=-4 stepwise=-5
+cell signed W=8 F=5 mode=toward_zero policy=saturate differing=6052472 of 16777216 rate=36.0755 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=5 mode=half_up policy=wrap differing=234908 of 16777216 rate=1.4002 witness: a=-127 b=-16 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=5 mode=half_up policy=saturate differing=3607680 of 16777216 rate=21.5034 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=5 mode=half_even policy=wrap differing=655360 of 16777216 rate=3.9062 witness: a=-127 b=-112 c=-127 fused=62 stepwise=61
+cell signed W=8 F=5 mode=half_even policy=saturate differing=3682016 of 16777216 rate=21.9465 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell unsigned W=8 F=6 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=6 mode=half_even policy=wrap differing=393216 of 16777216 rate=2.3438 witness: a=1 b=32 c=1 fused=2 stepwise=1
+cell unsigned W=8 F=6 mode=half_even policy=saturate differing=140200 of 16777216 rate=0.8357 witness: a=1 b=32 c=1 fused=2 stepwise=1
+cell signed W=8 F=6 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=6 mode=floor policy=saturate differing=1278444 of 16777216 rate=7.6201 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=6 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=6 mode=ceil policy=saturate differing=1282100 of 16777216 rate=7.6419 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=6 mode=toward_zero policy=wrap differing=4309434 of 16777216 rate=25.6862 witness: a=-127 b=-63 c=-128 fused=-2 stepwise=-3
+cell signed W=8 F=6 mode=toward_zero policy=saturate differing=5578734 of 16777216 rate=33.2518 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=6 mode=half_up policy=wrap differing=214392 of 16777216 rate=1.2779 witness: a=-127 b=-32 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=6 mode=half_up policy=saturate differing=1498472 of 16777216 rate=8.9316 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell signed W=8 F=6 mode=half_even policy=wrap differing=393216 of 16777216 rate=2.3438 witness: a=-127 b=-96 c=-127 fused=64 stepwise=63
+cell signed W=8 F=6 mode=half_even policy=saturate differing=1555004 of 16777216 rate=9.2685 witness: a=-128 b=-128 c=-128 fused=127 stepwise=-1
+cell unsigned W=8 F=7 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=floor policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=ceil policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=toward_zero policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=toward_zero policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=half_up policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=half_up policy=saturate differing=0 of 16777216 rate=0.0000 witness: -
+cell unsigned W=8 F=7 mode=half_even policy=wrap differing=229376 of 16777216 rate=1.3672 witness: a=1 b=64 c=1 fused=2 stepwise=1
+cell unsigned W=8 F=7 mode=half_even policy=saturate differing=124415 of 16777216 rate=0.7416 witness: a=1 b=64 c=1 fused=2 stepwise=1
+cell signed W=8 F=7 mode=floor policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=7 mode=floor policy=saturate differing=128 of 16777216 rate=0.0008 witness: a=-128 b=-128 c=-128 fused=0 stepwise=-1
+cell signed W=8 F=7 mode=ceil policy=wrap differing=0 of 16777216 rate=0.0000 witness: -
+cell signed W=8 F=7 mode=ceil policy=saturate differing=128 of 16777216 rate=0.0008 witness: a=-128 b=-128 c=-128 fused=0 stepwise=-1
+cell signed W=8 F=7 mode=toward_zero policy=wrap differing=6070272 of 16777216 rate=36.1816 witness: a=-127 b=-127 c=-128 fused=-1 stepwise=-2
+cell signed W=8 F=7 mode=toward_zero policy=saturate differing=6070400 of 16777216 rate=36.1824 witness: a=-128 b=-128 c=-128 fused=0 stepwise=-1
+cell signed W=8 F=7 mode=half_up policy=wrap differing=172032 of 16777216 rate=1.0254 witness: a=-127 b=-64 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=7 mode=half_up policy=saturate differing=172160 of 16777216 rate=1.0262 witness: a=-128 b=-128 c=-128 fused=0 stepwise=-1
+cell signed W=8 F=7 mode=half_even policy=wrap differing=229376 of 16777216 rate=1.3672 witness: a=-127 b=-64 c=-127 fused=-64 stepwise=-63
+cell signed W=8 F=7 mode=half_even policy=saturate differing=200384 of 16777216 rate=1.1944 witness: a=-128 b=-128 c=-128 fused=0 stepwise=-1
+
+# --- the arms ---
+A1: floor under wrap must agree at every triple of every cell -> HELD
+A2 detail: 165 signed saturating cells, 165 of them disagree somewhere
+A2 detail at F = 0: 30 cells, all disagreeing: true
+A2: every signed saturating cell must disagree, F = 0 included -> HELD
+A3: unsigned saturating at the four modes equivariant on non-negatives must agree -> HELD
+A4 detail: half_even wrap, 12 cells at F = 0 all agreeing: true; 54 cells at F >= 1, 54 disagreeing
+A4: half_even under wrap must agree at F = 0 and disagree at every F >= 1 -> HELD
+cell signed W=3 F=1 mode=half_up policy=wrap differing=34 of 512 rate=6.6406 witness: a=-3 b=-1 c=-4 fused=-3 stepwise=-2
+cell signed W=3 F=2 mode=half_up policy=wrap differing=48 of 512 rate=9.3750 witness: a=-3 b=-2 c=-4 fused=-3 stepwise=-2
+cell signed W=4 F=1 mode=half_up policy=wrap differing=180 of 4096 rate=4.3945 witness: a=-7 b=-1 c=-8 fused=-5 stepwise=-4
+cell signed W=4 F=2 mode=half_up policy=wrap differing=276 of 4096 rate=6.7383 witness: a=-7 b=-2 c=-8 fused=-5 stepwise=-4
+cell signed W=4 F=3 mode=half_up policy=wrap differing=288 of 4096 rate=7.0312 witness: a=-7 b=-4 c=-8 fused=-5 stepwise=-4
+cell signed W=5 F=1 mode=half_up policy=wrap differing=898 of 32768 rate=2.7405 witness: a=-15 b=-1 c=-16 fused=-9 stepwise=-8
+cell signed W=5 F=2 mode=half_up policy=wrap differing=1456 of 32768 rate=4.4434 witness: a=-15 b=-2 c=-16 fused=-9 stepwise=-8
+cell signed W=5 F=3 mode=half_up policy=wrap differing=1666 of 32768 rate=5.0842 witness: a=-15 b=-4 c=-16 fused=-9 stepwise=-8
+cell signed W=5 F=4 mode=half_up policy=wrap differing=1536 of 32768 rate=4.6875 witness: a=-15 b=-8 c=-16 fused=-9 stepwise=-8
+cell signed W=6 F=1 mode=half_up policy=wrap differing=4296 of 262144 rate=1.6388 witness: a=-31 b=-1 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=2 mode=half_up policy=wrap differing=7228 of 262144 rate=2.7573 witness: a=-31 b=-2 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=3 mode=half_up policy=wrap differing=8764 of 262144 rate=3.3432 witness: a=-31 b=-4 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=4 mode=half_up policy=wrap differing=8904 of 262144 rate=3.3966 witness: a=-31 b=-8 c=-32 fused=-17 stepwise=-16
+cell signed W=6 F=5 mode=half_up policy=wrap differing=7680 of 262144 rate=2.9297 witness: a=-31 b=-16 c=-32 fused=-17 stepwise=-16
+cell signed W=7 F=1 mode=half_up policy=wrap differing=20048 of 2097152 rate=0.9560 witness: a=-63 b=-1 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=2 mode=half_up policy=wrap differing=34636 of 2097152 rate=1.6516 witness: a=-63 b=-2 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=3 mode=half_up policy=wrap differing=43608 of 2097152 rate=2.0794 witness: a=-63 b=-4 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=4 mode=half_up policy=wrap differing=46924 of 2097152 rate=2.2375 witness: a=-63 b=-8 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=5 mode=half_up policy=wrap differing=44624 of 2097152 rate=2.1278 witness: a=-63 b=-16 c=-64 fused=-33 stepwise=-32
+cell signed W=7 F=6 mode=half_up policy=wrap differing=36864 of 2097152 rate=1.7578 witness: a=-63 b=-32 c=-64 fused=-33 stepwise=-32
+cell signed W=8 F=1 mode=half_up policy=wrap differing=91512 of 16777216 rate=0.5455 witness: a=-127 b=-1 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=2 mode=half_up policy=wrap differing=161180 of 16777216 rate=0.9607 witness: a=-127 b=-2 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=3 mode=half_up policy=wrap differing=208384 of 16777216 rate=1.2421 witness: a=-127 b=-4 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=4 mode=half_up policy=wrap differing=232960 of 16777216 rate=1.3885 witness: a=-127 b=-8 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=5 mode=half_up policy=wrap differing=234908 of 16777216 rate=1.4002 witness: a=-127 b=-16 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=6 mode=half_up policy=wrap differing=214392 of 16777216 rate=1.2779 witness: a=-127 b=-32 c=-128 fused=-65 stepwise=-64
+cell signed W=8 F=7 mode=half_up policy=wrap differing=172032 of 16777216 rate=1.0254 witness: a=-127 b=-64 c=-128 fused=-65 stepwise=-64
+A5: half_up under signed wrap must disagree at every F >= 1 -> HELD
+A6 detail: cross-paired floor against ceil at W=6 F=3 signed wrap, differing=180224, witness=Some((-31, -31, -32, 24, 25))
+A6: a cross-paired mode must disagree somewhere -> HELD
+A7 detail at W=7 F=3 signed: off_grid=11264 ties=3072 above_range=5039 below_range=5032
+A7: the sweep must reach off-grid positions, ties, and both sides of the range -> HELD
+
+# --- the summary table, agreement per cell ---
+summary unsigned wrap floor: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned wrap ceil: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned wrap toward_zero: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned wrap half_up: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned wrap half_even: cells=33 agreeing_at_F=[0] failing_at_F=[1, 2, 3, 4, 5, 6, 7]
+summary unsigned saturate floor: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned saturate ceil: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned saturate toward_zero: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned saturate half_up: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary unsigned saturate half_even: cells=33 agreeing_at_F=[0] failing_at_F=[1, 2, 3, 4, 5, 6, 7]
+summary signed wrap floor: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary signed wrap ceil: cells=33 agreeing_at_F=[0, 1, 2, 3, 4, 5, 6, 7] failing_at_F=[]
+summary signed wrap toward_zero: cells=33 agreeing_at_F=[0] failing_at_F=[1, 2, 3, 4, 5, 6, 7]
+summary signed wrap half_up: cells=33 agreeing_at_F=[0] failing_at_F=[1, 2, 3, 4, 5, 6, 7]
+summary signed wrap half_even: cells=33 agreeing_at_F=[0] failing_at_F=[1, 2, 3, 4, 5, 6, 7]
+summary signed saturate floor: cells=33 agreeing_at_F=[] failing_at_F=[0, 1, 2, 3, 4, 5, 6, 7]
+summary signed saturate ceil: cells=33 agreeing_at_F=[] failing_at_F=[0, 1, 2, 3, 4, 5, 6, 7]
+summary signed saturate toward_zero: cells=33 agreeing_at_F=[] failing_at_F=[0, 1, 2, 3, 4, 5, 6, 7]
+summary signed saturate half_up: cells=33 agreeing_at_F=[] failing_at_F=[0, 1, 2, 3, 4, 5, 6, 7]
+summary signed saturate half_even: cells=33 agreeing_at_F=[] failing_at_F=[0, 1, 2, 3, 4, 5, 6, 7]
+exit=0

@@ -1,0 +1,31 @@
+A1: floor under wrap must agree at every triple of every cell -> HELD
+A2: every signed saturating cell must disagree, F = 0 included -> HELD
+A3: unsigned saturating at the four modes equivariant on non-negatives must agree -> HELD
+A4: half_even under wrap must agree at F = 0 and disagree at every F >= 1 -> HELD
+A5: half_up under signed wrap must disagree at every F >= 1 -> HELD
+A6: a cross-paired mode must disagree somewhere -> HELD
+A7: the sweep must reach off-grid positions, ties, and both sides of the range -> HELD
+B1: the wide format must never complete, so E is the rounding alone -> HELD
+B2: E must separate: some cells equivariant and some not -> HELD
+B3: H must separate: some cells homomorphic and some not -> HELD
+B4: E and H together must be sufficient: no such cell may disagree -> HELD
+B5: under wrap the conditions must also be necessary, so no wrap cell may sit here -> HELD
+A5-hand: the paper answer is fused = -17 and stepwise = -16 -> HELD
+A5-hand-control: the same triple under floor must agree -> HELD
+A5-hand-twin: the unsigned twin of the failing cell must agree at every triple -> HELD
+C1: no signed saturating target may be reached by any of the twenty arms -> HELD
+C2: outside signed saturating every target must be reached, and by the identity arm -> BROKEN
+C3: the add's rounding mode must never change an answer -> HELD
+C4: the search must kill arms -> HELD
+C5: a target is reachable exactly when the identity arm reaches it, so the other nineteen arms buy nothing -> HELD
+C6: half_even is unreachable at every fraction length above zero -> HELD
+D1: the two wide adaptation points must be the identity everywhere -> HELD
+D2: the route must reproduce the fused answer at every triple of every cell -> HELD
+D3: a wide signature one bit too narrow must break the route -> HELD
+D4: the wide signature's policy must change the failure, so it is being read -> HELD
+E1: the route written once over the trait must reproduce the fused answer everywhere -> HELD
+F2: the model under ties-away-from-zero must be the shipped HalfUp -> HELD
+F3: the two readings must be two operations -> HELD
+F1: under ties-toward-positive-infinity, signed wrapping must agree at every triple -> HELD
+F4: the tie direction must not rescue signed saturating -> HELD
+F5: on a non-negative domain the two readings must be one function -> HELD

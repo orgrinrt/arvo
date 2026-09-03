@@ -1,0 +1,29 @@
+error: generic parameters may not be used in const operations
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-fma/mock/research/202608072330_the-numeral-canon-panel/259_probes/p01_the_composition_sweep/src/derivable_blanket.rs:23:18
+   |
+23 |     Signed<{ 2 * W + 1 }>: Slots,
+   |                  ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-fma/mock/research/202608072330_the-numeral-canon-panel/259_probes/p01_the_composition_sweep/src/derivable_blanket.rs:25:26
+   |
+25 |     type Wide = Fi<{ 2 * W + 1 }, { 2 * F }>;
+   |                          ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-fma/mock/research/202608072330_the-numeral-canon-panel/259_probes/p01_the_composition_sweep/src/derivable_blanket.rs:25:41
+   |
+25 |     type Wide = Fi<{ 2 * W + 1 }, { 2 * F }>;
+   |                                         ^ cannot perform const operation using `F`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `F`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 3 previous errors
+
