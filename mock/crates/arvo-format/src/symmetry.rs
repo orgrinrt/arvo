@@ -55,6 +55,15 @@ pub enum Reads {
     Sign,
     /// The parity of the slot. Not defeated by any restriction on the sign, and
     /// defeated by translations that are all even.
+    // FIXME: the even-translation region is named here and expressed nowhere.
+    // `Reach` carries no parity of the translation band, so
+    // `rounding_is_translation_equivariant` has no disjunct for it and answers
+    // no on a domain where the law in fact holds. Conservative, so nothing
+    // unsound rests on it, and it costs a real region an arm could gate on.
+    // Expressing it wants a fourth fact on `Reach`, that every representable
+    // translation the domain reaches is even, which the declared signature does
+    // not carry today. `the_classification` walks exactly that domain with a
+    // step of two, so the instrument for checking it already exists.
     Parity,
 }
 

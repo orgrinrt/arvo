@@ -24,7 +24,7 @@ use crate::adapt::{Adapt, DeclaredSignature, Signature};
 use crate::ambient::BinaryRationals;
 use crate::apply::{Dither, Exact, Fraction, adapt};
 use crate::format::{Format, Phase};
-use crate::overflow::{Clamp, Policy, SHIPPED_POLICIES, Saturate, Wrap};
+use crate::overflow::{Clamp, Policy, Saturate, Wrap};
 use crate::points::{Integer, UFixed};
 use crate::quantum::Constant;
 use crate::rounding::{ALL_MODES, Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZero};
@@ -35,12 +35,12 @@ use crate::symmetry::{
     adaptation_relocates,
     completion_is_reflection_equivariant,
     completion_is_translation_homomorphic,
-    rounding_is_translation_equivariant,
 };
 use crate::width::{Bool, Width};
 
 mod the_classification;
 mod the_cross;
+mod the_reach;
 
 /// A slot range symmetric about zero, which no shipped format has.
 ///
@@ -399,143 +399,5 @@ fn reflection_reach(which: Which) -> Reach {
     Reach::of(Slot::at(lo.index() - span), Slot::at(hi.index() + span))
 }
 
-// --- the controls, which say what a yes above is a claim about ---------------
-
-#[test]
-fn the_control_the_cross_reaches_every_case_a_verdict_could_turn_on() {
-    // The per-cell floor is derived rather than guessed, and the derivation was
-    // wrong the first time, which is why it is written out. The smallest cell is
-    // the symmetric range restricted to non-negative positions and non-negative
-    // translations with no tie: eleven positions, four translations and six
-    // residues, which is 264 triples. Restricting the translations is what makes
-    // a cell on a range reaching negatives smaller than one on a range that does
-    // not, and that is the part the first floor missed.
-    let mut cells = 0u32;
-    let mut triples = 0u64;
-    let mut excursions = 0u64;
-    let mut ties = 0u64;
-    let mut negatives = 0u64;
-    for which in RANGES {
-        for &mode in &ALL_MODES {
-            for &policy in &SHIPPED_POLICIES {
-                for r in RESTRICTIONS {
-                    let cell = relocation_over(which, mode, policy, r);
-                    assert!(
-                        cell.triples >= 250,
-                        "{which:?} {mode:?} {policy:?} {r:?} ran {} triples, so the sweep shrank",
-                        cell.triples
-                    );
-                    assert!(
-                        cell.excursions > 0,
-                        "{which:?} {mode:?} {policy:?} {r:?} never left the range, so the \
-                         completion region answered nothing in it"
-                    );
-                    cells += 1;
-                    triples += cell.triples;
-                    excursions += cell.excursions;
-                    ties += cell.ties;
-                    negatives += cell.negative_positions;
-                }
-            }
-        }
-    }
-    assert_eq!(
-        cells,
-        (RANGES.len() * ALL_MODES.len() * SHIPPED_POLICIES.len() * RESTRICTIONS.len()) as u32
-    );
-    assert!(triples > 0, "the cross ran nothing");
-    assert!(
-        excursions > 0,
-        "no position left the range: {excursions} of {triples}"
-    );
-    assert!(
-        ties > 0,
-        "no exactly-half position, so the tie rules are untested"
-    );
-    assert!(
-        negatives > 0,
-        "no negative position, so the sign the modes read never varies"
-    );
-}
-
-#[test]
-fn the_control_a_degenerate_reach_licenses_everything_and_says_so() {
-    // A reach of one position with no translation and no tie cannot exhibit a
-    // difference between two positions, so every mode's rounding region commutes
-    // over it. A yes from this predicate is a claim about the reach it was
-    // handed, and this says so out loud rather than in a comment.
-    let one = Reach::of(Slot::ZERO, Slot::ZERO).without_ties();
-    for &mode in &ALL_MODES {
-        assert!(
-            rounding_is_translation_equivariant(mode, one).get(),
-            "{mode:?} refused a reach with no tie and no negative position"
-        );
-    }
-    // And the conservative reach refuses the three that read something, which is
-    // the other end of the same instrument.
-    let refused = ALL_MODES
-        .iter()
-        .filter(|&&mode| !rounding_is_translation_equivariant(mode, Reach::EVERYTHING).get())
-        .count();
-    assert_eq!(
-        refused, 3,
-        "the conservative reach should refuse exactly the modes that read something"
-    );
-}
-
-#[test]
-fn a_reach_handed_its_ends_backwards_widens_rather_than_inverting() {
-    let forwards = Reach::of(Slot::at(-4), Slot::at(7));
-    let backwards = Reach::of(Slot::at(7), Slot::at(-4));
-    assert_eq!(forwards, backwards);
-    assert_eq!(backwards.positions_low(), Slot::at(-4));
-    assert_eq!(backwards.positions_high(), Slot::at(7));
-
-    let translated = Reach::of(Slot::ZERO, Slot::ZERO).translated_by(Slot::at(3), Slot::at(-3));
-    assert_eq!(translated.translations_low(), Slot::at(-3));
-    assert_eq!(translated.translations_high(), Slot::at(3));
-
-    // The control: ordering is not the identity on everything, so the assertion
-    // above is about a pair that needed it.
-    assert_ne!(
-        Reach::of(Slot::at(-4), Slot::at(7)),
-        Reach::of(Slot::ZERO, Slot::at(7))
-    );
-}
-
-#[test]
-fn the_conservative_reach_is_the_widest_thing_a_caller_can_declare() {
-    let everything = Reach::EVERYTHING;
-    assert!(everything.reaches_a_tie().get());
-    assert!(everything.reaches_a_negative_position().get());
-    assert!(everything.reaches_a_negative_translation().get());
-    assert!(everything.reaches_a_positive_translation().get());
-    assert!(everything.reaches_below(Slot::ZERO).get());
-    assert!(everything.reaches_above(Slot::ZERO).get());
-
-    // The saturating add is what keeps that true. Both bounds already sit at the
-    // ends of the coordinate, so the union of the positions and the translated
-    // positions cannot be reached by adding them.
-    assert_eq!(everything.lowest_rounded_position(), Slot::at(i64::MIN));
-    assert_eq!(everything.highest_rounded_position(), Slot::at(i64::MAX));
-}
-
-#[test]
-fn a_negative_translation_carries_a_non_negative_position_below_zero() {
-    // The defect the predicate had in its first revision, kept as an arm. A reach
-    // whose positions start at zero still reaches a negative position once a
-    // negative translation is in it, and the sign a mode reads varies there.
-    let no_translation = Reach::of(Slot::ZERO, Slot::at(16));
-    assert!(!no_translation.reaches_a_negative_position().get());
-    assert!(rounding_is_translation_equivariant(Mode::TowardZero, no_translation).get());
-
-    let translated = no_translation.translated_by(Slot::at(-16), Slot::at(16));
-    assert!(translated.reaches_a_negative_position().get());
-    assert!(!rounding_is_translation_equivariant(Mode::TowardZero, translated).get());
-
-    // The control: a non-negative translation leaves the answer alone, so the
-    // difference is the sign of the translation rather than its presence.
-    let forwards = no_translation.translated_by(Slot::ZERO, Slot::at(16));
-    assert!(!forwards.reaches_a_negative_position().get());
-    assert!(rounding_is_translation_equivariant(Mode::TowardZero, forwards).get());
-}
+// The controls that say what a yes is a claim about, and the reach coordinate's
+// own arms, are in `the_reach`.

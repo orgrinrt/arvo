@@ -1,0 +1,40 @@
+test tests::the_predicate::a_phase_carries_the_pair_it_was_declared_with ... ok
+test tests::the_predicate::a_phase_that_names_no_position_is_refused_rather_than_reinterpreted ... ok
+test tests::the_predicate::a_signed_slot_range_is_exactly_what_its_width_declares ... ok
+test tests::the_predicate::an_unsigned_slot_range_is_exactly_what_its_width_declares ... ok
+test tests::the_predicate::membership_is_decidable_at_const_time_for_every_point ... ok
+test tests::the_predicate::signedness_is_a_property_of_the_domain_and_not_of_a_carrier ... ok
+test tests::the_predicate::the_constant_family_has_one_magnitude_and_the_indexed_family_has_many ... ok
+test tests::the_predicate::the_control_the_widths_produce_different_slot_ranges ... ok
+test tests::the_predicate::the_questions_asked_of_a_phase_do_not_read_the_denominators_sign ... ok
+test tests::the_predicate::the_radix_comes_from_the_ambient_domain ... ok
+test tests::the_predicate::the_smallest_step_is_the_smallest_magnitudes_and_nothing_names_it ... ok
+test symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says ... FAILED
+test symmetry::tests::the_cross::neither_region_alone_decides_either_law ... ok
+test symmetry::tests::the_reach::the_control_the_cross_reaches_every_case_a_verdict_could_turn_on ... ok
+
+failures:
+
+---- symmetry::tests::the_classification::the_classification_of_every_mode_agrees_with_what_the_map_reads stdout ----
+
+thread 'symmetry::tests::the_classification::the_classification_of_every_mode_agrees_with_what_the_map_reads' (37372277) panicked at crates/arvo-format/src/symmetry/tests/the_classification.rs:149:9:
+assertion `left == right` failed: HalfEven is declared to read Sign and the map disagrees
+  left: Sign
+ right: Parity
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says stdout ----
+
+thread 'symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says' (37372292) panicked at crates/arvo-format/src/symmetry/tests/the_cross.rs:68:21:
+assertion `left == right` failed: Signed HalfEven Wrap Restriction { negative_positions: false, negative_translations: false, ties: true }: the predicate says true and the map says false
+  left: true
+ right: false
+
+
+failures:
+    symmetry::tests::the_classification::the_classification_of_every_mode_agrees_with_what_the_map_reads
+    symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says
+
+test result: FAILED. 136 passed; 2 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `-p arvo-format --lib`
