@@ -10,6 +10,9 @@ rule half. `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_name
 `ruling::never_a_runtime_check_and_one_lowered_path`.
 `ruling::the_standard_is_parity_in_output_not_in_the_internals`.
 `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`.
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned` and
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`, whose statements are the
+translation equivariance of the rounding position that the symmetry section expresses.
 
 ## What this crate is
 
@@ -921,10 +924,24 @@ number of quanta carries the grid onto itself, and so does reflecting it through
 is a map onto that grid, so for each symmetry there is a question about whether the map commutes with
 it, and each has an answer that holds in one region and fails outside it.
 
-The canon names the first of the two. Two law rows about fusing a multiply-add state in their own
-sentences that the property they are about is translation equivariance of the rounding position on the
-domain the cell reaches. The list of laws the applied map owes tests for, above, did not carry it,
-which left a law stated one tier up with no expression here and no test against it.
+The canon names the first of the two.
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned` and
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping` state in their own sentences
+that the property they are about is translation equivariance of the rounding position on the domain
+the cell reaches. The list of laws the applied map owes tests for, above, did not carry it, which left
+a law stated one tier up with no expression here and no test against it.
+
+Their mode sets and this crate's do not correspond one for one, and the cardinalities agreeing is a
+coincidence rather than a check. The unsigned row holds over five of six and the signed wrapping row
+over three of six, and so does the region below, over a different set. Both rows name `away from
+zero`, which `cargo mock rounding-vocabulary` reports as outside the six ratified names, and neither
+row names a stochastic decision, which this crate ships. Whether `away from zero` is a further name
+the vocabulary wants or a mode the design does not ship is a canon question and is open; the tool
+exists to make it answerable and is not answered here. So what the region below claims is over the six
+this crate ships, and the five those two sets share are where the two can be compared at all. On the
+unsigned row they agree there: the same four commute and half-even does not. On the signed wrapping
+row the comparison turns on whether the domain that row was measured over reaches a tie, which the row
+does not say, so it is not settled here either.
 
 The reason it belongs here rather than wherever a multiply-add eventually lives is that the law is
 about the map. Take an exact position, translate it by a representable amount, and ask whether
@@ -963,7 +980,10 @@ From those two facts the region follows without a table per mode. The rounding r
 translation where the mode reads nothing, or where it reads only at a tie and the domain reaches no
 tie, or where what it reads is the sign and the domain reaches no negative position. Parity is the one
 the sign restriction does not defeat, and it is defeated instead by a domain whose translations are
-all even.
+all even. That last region is named and not expressed: the reach a caller hands the predicate carries
+no parity of the translation band, so the predicate answers no on a domain where the law holds. It is
+conservative rather than unsound, and it is a real region an arm could gate on once the declared
+signature carries the fact.
 
 The domain the mode is asked about is the positions together with the translated positions, not the
 positions alone. A domain of non-negative positions with a translation that may be negative reaches a
