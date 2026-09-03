@@ -1,0 +1,10 @@
+[package]
+name = "p05_is_the_wall_a_wall"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

@@ -1,0 +1,18 @@
+   Compiling p05_is_the_wall_a_wall v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-width/mock/research/202608072330_the-numeral-canon-panel/258_probes/p05_is_the_wall_a_wall)
+error[E0080]: evaluation panicked: assertion failed: covered == ADMITTED_WIDTHS.len()
+   --> src/lib.rs:172:13
+    |
+172 |               assert!(covered == ADMITTED_WIDTHS.len());
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `THE_AGREEMENT_ARM_COVERS_THE_WHOLE_ADMITTED_SET` failed here
+...
+177 | / agrees_at!(
+178 | |     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+179 | |     27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+180 | |     51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61
+181 | | );
+    | |_- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `agrees_at` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `p05_is_the_wall_a_wall` (lib) due to 1 previous error

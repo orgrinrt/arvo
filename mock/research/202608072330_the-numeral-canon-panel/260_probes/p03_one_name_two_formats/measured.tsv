@@ -1,0 +1,5 @@
+target	pointer_width	universal_arm	family_arm_only
+aarch64-apple-darwin	64	builds	builds
+i686-unknown-linux-gnu	32	REFUSED	builds
+thumbv6m-none-eabi	32	REFUSED	builds
+x86_64-unknown-linux-gnu	64	builds	builds

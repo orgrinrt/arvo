@@ -1,0 +1,30 @@
+error[E0080]: evaluation panicked: declared width is wider than a slot index carries; the count of slots is 2^width and 2^63 does not fit a signed 64-bit integer
+   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<PlatformSigned64 as arvo_format::Slots>::ADMITTED` failed here
+    |
+   ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-width/mock/crates/arvo-format/src/slots.rs:219:9
+    |
+219 | /         assert!(
+220 | |             Self::WIDTH.count() <= 62,
+221 | |             "declared width is wider than a slot index carries; the count of slots is 2^width and \
+222 | |              2^63 does not fit a signed 64-bit integer"
+223 | |         );
+    | |_________- in this macro invocation
+
+note: erroneous constant encountered
+  --> src/the_outside_signed_sixty_four.rs:30:14
+   |
+30 |     let () = <PlatformSigned64 as Slots>::ADMITTED;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0080]: evaluation panicked: assertion failed: ((1u128 << 63) - 1) > widest_nameable_slot
+  --> src/the_outside_signed_sixty_four.rs:57:5
+   |
+57 |     assert!(((1u128 << 63) - 1) > widest_nameable_slot);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `THE_COORDINATE_CANNOT_NAME_AN_UNSIGNED_SIXTY_FOUR_BIT_SLOT` failed here
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0080`.

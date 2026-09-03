@@ -1,0 +1,116 @@
+
+=== the_sixty_four_bit_width.rs ===
+exit 1, stderr 2944 bytes -> the_sixty_four_bit_width.stderr
+error[E0277]: `Unsigned<64>` is not an admitted slot range
+  --> src/the_sixty_four_bit_width.rs:22:13
+   |
+22 |     assert!(<USize as Format>::Slots::WIDTH.count() == 64);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
+   |
+   = help: the trait `Slots` is not implemented for `Unsigned<64>`
+   = note: this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+   = help: the following other types implement trait `Slots`:
+             Unsigned<10>
+             Unsigned<11>
+             Unsigned<12>
+             Unsigned<13>
+             Unsigned<14>
+             Unsigned<15>
+             Unsigned<16>
+             Unsigned<17>
+           and 54 others
+   = note: required for `UFixed<64, 0>` to implement `Format`
+
+error[E0599]: no associated function or constant named `WIDTH` found for struct `Unsigned<BITS>` in the current scope
+  --> src/the_sixty_four_bit_width.rs:22:39
+   |
+22 |     assert!(<USize as Format>::Slots::WIDTH.count() == 64);
+   |                                       ^^^^^ associated function or constant not found in `Unsigned<64>`
+
+error[E0277]: `Signed<64>` is not an admitted slot range
+  --> src/the_sixty_four_bit_width.rs:23:13
+   |
+23 |     assert!(<ISize as Format>::Slots::WIDTH.count() == 64);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
+   |
+   = help: the trait `Slots` is not implemented for `Signed<64>`
+   = note: this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+   = help: the following other types implement trait `Slots`:
+             Signed<10>
+             Signed<11>
+             Signed<12>
+             Signed<13>
+             Signed<14>
+             Signed<15>
+             Signed<16>
+             Signed<17>
+           and 54 others
+   = note: required for `Integer<64>` to implement `Format`
+
+error[E0599]: no associated function or constant named `WIDTH` found for struct `Signed<BITS>` in the current scope
+  --> src/the_sixty_four_bit_width.rs:23:39
+   |
+23 |     assert!(<ISize as Format>::Slots::WIDTH.count() == 64);
+   |                                       ^^^^^ associated function or constant not found in `Signed<64>`
+
+error: aborting due to 4 previous errors
+
+Some errors have detailed explanations: E0277, E0599.
+For more information about an error, try `rustc --explain E0277`.
+
+=== the_sixty_two_bit_width.rs ===
+exit 0, stderr 0 bytes -> the_sixty_two_bit_width.stderr
+
+=== the_outside_implementor.rs ===
+exit 1, stderr 358 bytes -> the_outside_implementor.stderr
+error: this arithmetic operation will overflow
+  --> src/the_outside_implementor.rs:27:32
+   |
+27 |     const MAX: Slot = Slot::at((1i64 << 64) - 1);
+   |                                ^^^^^^^^^^^^ attempt to shift left by `64_i32`, which would overflow
+   |
+   = note: `#[deny(arithmetic_overflow)]` on by default
+
+error: aborting due to 1 previous error
+
+
+=== the_outside_implementor_control.rs ===
+exit 0, stderr 0 bytes -> the_outside_implementor_control.stderr
+
+=== the_outside_signed_sixty_four.rs ===
+exit 1, stderr 1295 bytes -> the_outside_signed_sixty_four.stderr
+error[E0080]: evaluation panicked: declared width is wider than a slot index carries; the count of slots is 2^width and 2^63 does not fit a signed 64-bit integer
+   --> /Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<PlatformSigned64 as arvo_format::Slots>::ADMITTED` failed here
+    |
+   ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-width/mock/crates/arvo-format/src/slots.rs:219:9
+    |
+219 | /         assert!(
+220 | |             Self::WIDTH.count() <= 62,
+221 | |             "declared width is wider than a slot index carries; the count of slots is 2^width and \
+222 | |              2^63 does not fit a signed 64-bit integer"
+223 | |         );
+    | |_________- in this macro invocation
+
+note: erroneous constant encountered
+  --> src/the_outside_signed_sixty_four.rs:40:14
+   |
+40 |     let () = <PlatformSigned64 as Slots>::ADMITTED;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+
+=== the_outside_signed_sixty_four_control.rs ===
+exit 0, stderr 0 bytes -> the_outside_signed_sixty_four_control.stderr
+
+pair A, the shipped family:       refusal exit 1 (non-zero), control exit 0 (zero)
+pair B, an outside unsigned 64:   refusal exit 1 (non-zero), control exit 0 (zero)
+pair C, an outside signed 64:     refusal exit 1 (non-zero), control exit 0 (zero)
+RESULT: 64 bits is refused inside the shipped family, refused to an outside
+        unsigned declarer by the coordinate's arithmetic, and refused to an
+        outside signed declarer by the ADMITTED obligation, which caps every
+        implementor at 62 while the diagnostic tells them the trait is open.
