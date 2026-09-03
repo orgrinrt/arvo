@@ -1,0 +1,21 @@
+ref          coordinates    traits carrying ADMITTED
+cc19b122     10              slots
+748c6004     9               ambient quantum slots format
+607ca52f     9               ambient quantum slots format
+origin/dev   9               ambient quantum slots format
+
+== CONTROL A: the extractor must move across refs, or it sees nothing ==
+   satisfied above iff the coordinate column is not constant.
+
+== CONTROL B: the ADMITTED exclusion must work, or the count is inflated ==
+   slots.rs consts at origin/dev including ADMITTED : 4
+   slots.rs consts at origin/dev excluding ADMITTED : 3
+   the two must differ by exactly one.
+
+== CONTROL C: a ref known to predate the traits must count zero ==
+   the panel-directory root commit : 0
+   (zero lines means the path does not exist there, as required)
+
+== What the ratified row says the count is ==
+three of the ten associated constants
+   ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon

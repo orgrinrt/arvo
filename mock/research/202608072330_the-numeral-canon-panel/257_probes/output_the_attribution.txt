@@ -1,0 +1,23 @@
+== ARM 1: the merge-and-contest instruction over 242 and 243 ==
+  242_what-admits-a-number-system.md                         1
+  243_seat242_the_resolution_has_no_second_arm.md            0
+
+== ARM 1 hits, shown so a reader can judge polarity rather than count ==
+242_what-admits-a-number-system.md:254:Q21's own note says the two should be read as one and that its stated discriminator was measured
+
+== NEGATIVE CONTROL: a planted instruction of the exact shape must fire ==
+  planted lines matching (must be 2): 2
+
+== POSITIVE CONTROL: the instrument can see these two files at all ==
+  resolution   in 242_what-admits-a-number-system.md                         0
+  resolution   in 243_seat242_the_resolution_has_no_second_arm.md            12
+  tier         in 242_what-admits-a-number-system.md                         29
+  tier         in 243_seat242_the_resolution_has_no_second_arm.md            17
+  coordinate   in 242_what-admits-a-number-system.md                         36
+  coordinate   in 243_seat242_the_resolution_has_no_second_arm.md            21
+
+== ARM 2: what 243 says about 241, which is the opposite polarity ==
+137:Not "241 is wrong, my location wins". **241's attack on a bare location lands on me** and my
+171:## 6. Where 241 beat me, said plainly
+178:same conclusion and it does not depend on anybody's reading. I withdraw my version in favour
+229:- **I could not close Q33 either**, and 241's dependency claim survives my attack: Q30 cannot
