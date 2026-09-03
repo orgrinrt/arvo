@@ -1,0 +1,33 @@
+tree: 2a2995d455a18839bc3548176ff49aa3babc284b
+root: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-orchard
+
+C1 planted seat 999 seen        : 1   (must be >= 1)
+C3 unplanted seat 998 seen      : 0   (must be 0)
+C2 control, seat 240 citations  : 6   (must be >= 1)
+
+citations per seat, 241 through 258:
+  241 : 0
+  242 : 0
+  243 : 0
+  244 : 0
+  245 : 0
+  246 : 0
+  247 : 0
+  248 : 0
+  249 : 0
+  250 : 0
+  251 : 0
+  252 : 0
+  253 : 0
+  254 : 0
+  255 : 0
+  256 : 0
+  257 : 0
+  258 : 0
+
+total citations of seats 241..258 : 0
+highest seat cited anywhere in the registry:
+240
+
+total citations of this panel in the registry, all seats:
+1174

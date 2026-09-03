@@ -1,0 +1,23 @@
+tree: 2a2995d455a18839bc3548176ff49aa3babc284b
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+C1 cargo test --workspace in mock/benches            : passes
+C2 the same run under RUSTFLAGS=-D warnings   : fails
+
+    error: unnecessary `unsafe` block
+       --> variants/bitpack-contend-shared/src/kernels.rs:291:9
+    error: unnecessary `unsafe` block
+       --> variants/bitpack-contend-shared/src/kernels.rs:348:9
+    error: could not compile `bench-bitpack-contend-shared` (lib) due to 2 previous errors
+
+the two lines, read out of the source:
+    mock/benches/variants/bitpack-contend-shared/src/kernels.rs:291:         unsafe {
+    mock/benches/variants/bitpack-contend-shared/src/kernels.rs:348:         unsafe {
+C3 both named lines are unsafe blocks         : yes
+    and each is nested inside an outer one:
+    mock/benches/variants/bitpack-contend-shared/src/kernels.rs:279:     unsafe {
+    mock/benches/variants/bitpack-contend-shared/src/kernels.rs:340:     unsafe {
+
+VERDICT: `cargo mock test` denies warnings and the benches tree carries two.
+The suite itself is green. Not repaired here: the variant's committed artifacts
+record what built them and the repair belongs to whoever owns the bench harness.

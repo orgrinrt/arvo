@@ -1,0 +1,33 @@
+tree: 2a2995d455a18839bc3548176ff49aa3babc284b
+
+C3 the row exists and carries no `answered` : yes
+    asks: All declared dimensions are numeric or machine axes, so a reasoned claim about the canon's own contents has no expressible region and can only be filed `normative` or `definition`. Is that the
+    decider: decider = "panel"
+    provenance: provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#its-standing"]
+
+C1 files of this sitting citing the control slug : 2   (must be > 0)
+C2 a slug existing nowhere, files matching       : 0
+
+files of this sitting (241..257) citing can_a_claim_about_the_canons_own_structure_carry_a_region:
+  (none)
+
+every file in the panel directory citing it:
+  (none)
+
+registry rows mentioning `mockspace.toml`, which is where `standing` is declared:
+mock/registry/dimension.toml:0
+mock/registry/law-the-later-topics.toml:0
+mock/registry/law.toml:0
+mock/registry/obligation.toml:0
+mock/registry/probe.toml:0
+mock/registry/proposal-the-later-topics.toml:0
+mock/registry/proposal.toml:0
+mock/registry/question.toml:0
+mock/registry/retirement.toml:0
+mock/registry/ruling.toml:2
+mock/registry/strategy.toml:0
+mock/registry/topic.toml:0
+
+VERDICT: the axis gap 248 reports as unnamed is an open question row filed at
+seat 223, and no file of this sitting cites it. The locus of `standing`'s own
+declaration is a different matter and is named by no row at all.

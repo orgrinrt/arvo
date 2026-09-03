@@ -1,0 +1,79 @@
+tree: 2a2995d455a18839bc3548176ff49aa3babc284b
+
+C3 the clause is in mockspace.toml                     : yes
+C1 unnormalised grep over the template                 : 0   (must be 0)
+C1 whitespace-normalised grep over the template        : 1   (must be >= 1)
+C2 a clause known absent, under normalisation          : 0
+
+old paraphrase, "records how many independent instances back the claim" : 0
+old paraphrase, "records how many independent instances back a claim" : 0
+
+C4 the lint exists and is declared                     : yes
+    [lints.the-agent-surface-quotes-the-schema]
+    commit = "error"
+    build = "error"
+    push = "error"
+    
+the repair commit:
+    7fed7b59 2026-09-02 docs: quote the `standing` vocabulary instead of paraphrasing it
+
+C5 a phrase known present in the registry              : 1   (must be >= 1)
+registry rows carrying "each deriving before reading the other" : 0
+registry rows carrying "has not reached anything" : 0
+registry rows carrying "mockspace.toml" : 1
+registry rows carrying "canon_paths" : 0
+
+the word `standing` in ruling.toml, and what each occurrence is:
+    87:note = "He said the same thing from the other side one file earlier, offering the descriptions for the canon and adding in the same sentence: \"tho
+    89:keywords = ["clear cut", "settled", "absolute", "intent", "standing instruction", "how to read"]
+    103:provenance = ["panel::202608072330_the-numeral-canon-panel::38_op_the_strategies_weigh_measurements_differently::#standing-and-it-is-now-precise"]
+    214:says = "The persona standing in for him steers, aids and offers perspectives imitating him. Its calls are the persona's and not his, and none of t
+    258:says = "Where a question asks which of several shapes to adopt, take whatever is convenient, keep every option open, and explore, per the standing
+    260:Whatever is convenient. Let's not get married here, let's consider all options as per our standing
+    266:keywords = ["options", "convenient", "married", "explore", "standing rules", "method", "coordinate"]
+    297:id = "the_standing_rules_are_in_the_rules_directory"
+    301:says = "Where the standing rules are unclear, read the rules directory and all of its files. Where a memo reached a sibling panel and not this one
+    303:Read the rules dir and all of its files if you are unclear with the standing rules. Or if this new
+    310:keywords = ["rules", "standing rules", "brief", "tarina", "memo", "adapt"]
+    348:says = "The standing goal is not met until the full canon is ratified by him, or until he clears the goal himself."
+    355:keywords = ["goal", "ratification", "finish", "canon", "clears", "standing"]
+    424:because = "A consolidation is the topic's best available compression and has no standing beyond that. Writing the canon from all of them at once i
+    580:says = "His standing call is that the intuitive-compromise strategy should behave like native primitives in regular old Rust would. The intent is 
+    582:My standing call is "It should behave like native primitives in regular old rust would"... The
+    588:keywords = ["Warm", "native", "primitive", "Rust", "imitation", "mimic", "standing call", "intuitive"]
+    644:note = "This sharpens the standing call rather than contradicting it: the objective sits underneath the imitation, so there is an escape from imit
+    935:says = "The long-standing constraints are very explicitly arvo intents and rules: no std, no alloc, const sizes with no runtime growth, monomorphi
+    945:provenance = ["panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::#3-the-long-standing-constr
+    968:question was about standing and the thing that actually needed fixing was the
+    1155:says = "There is no trade to accept on the container-derivation mechanism. The standing call is unchanged: fresh eyes on the latest attempt, to c
+    1214:keywords = ["canon", "ratifiable", "intent", "canon-bound", "put into the canon", "standing"]
+    1227:note = "Both halves are his and neither cancels the other: canon-bound and explicitly left open. The invitation to discuss and explore is part of
+    1353:note = "Recorded because it bears on design rather than only on housekeeping: it is the standing instruction against reinventing something the st
+    1538:promotion = "Two seats, independently, on a floor settled hours earlier. Both reached the same two results and both reported that the questions a
+    1705:note = "It does not supersede that ruling's substance, which stands unchanged and is what makes this workable; it supersedes only the residual re
+
+the template's own words, as they stand:
+    - **`proposal` rows are not canon**, whatever their `standing` says.
+      A claim with two instances is still a proposal until a ruling stamps
+      it. `standing` counts arrivals, and its vocabulary is declared in
+      `mockspace.toml` under the `proposal` namespace, in these words:
+      "How many independent instances reached it, over the region they
+      share. `one_expert`; `two_experts`, each deriving before reading the
+      other; `three_or_more`; `cross_topic` where separate topics arrived
+      at it without citing each other, which is the strongest thing this
+      panel produces; `contested` where it is stated because somebody
+      stated it and somebody else disagrees."
+      **Read the declaration rather than this sentence when the value
+      decides something.** Each clause is load-bearing, `each deriving
+      before reading the other` most of all: a seat handed another's
+      conclusion before writing its own has not reached anything, so it
+      does not count, and no quality of argument makes it count. What an
+      argument is weighed by is `gate`, which is a separate field asking a
+      separate question.
+
+VERDICT: 248's F9 names two things and only one survives. The lossy paraphrase
+is repaired and a hard-error lint keeps it repaired, and the strict reading the
+sitting derived is now in the instruction every session loads. The locus half is
+untouched and is one layer worse than 248 measured it: neither the declaration
+nor the answer to it is a row, so the sentence that decides a promotion binds
+every agent and can be cited by no slug.

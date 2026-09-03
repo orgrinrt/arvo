@@ -1,0 +1,36 @@
+tree: 2a2995d455a18839bc3548176ff49aa3babc284b
+
+C3 c9afdeaa : research: seat 248 blind on what a standing counts
+C3 cbcdce5b : research: seat 249 derives what standing counts, blind
+
+C1 both blind commits are ancestors of HEAD    : yes
+C2 HEAD is an ancestor of neither              : yes
+
+248's blind commit is an ancestor of 249's     : NO
+249's blind commit is an ancestor of 248's     : NO
+VERDICT: mutually non-ancestral, which is R3's own blindness test passing.
+
+merge base of the two:
+eac588fd2dfd157faaf088ae69c6342227ac2c98
+
+what 248's blind commit added:
+mock/research/202608072330_the-numeral-canon-panel/248_chlipala_standing_counts_arrivals_and_the_gate_is_shut.md
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p1_output.txt
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p1_who_can_a_standing_be_reached_through.sh
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p2_output.txt
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p2_what_ordering_evidence_exists.sh
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p3_does_a_question_row_hand_over_its_answer.sh
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p3_output.txt
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p4_a_row_and_its_seconder_in_one_act.sh
+mock/research/202608072330_the-numeral-canon-panel/248_probes/p4_output.txt
+what 249's blind commit added:
+mock/research/202608072330_the-numeral-canon-panel/249_jhala_standing_counts_arrivals_not_arguments.md
+mock/research/202608072330_the-numeral-canon-panel/249_probes/p1_standing_against_its_citations.out
+mock/research/202608072330_the-numeral-canon-panel/249_probes/p1_standing_against_its_citations.sh
+mock/research/202608072330_the-numeral-canon-panel/249_probes/p2_blind_halves_cite_the_registry.out
+mock/research/202608072330_the-numeral-canon-panel/249_probes/p2_blind_halves_cite_the_registry.sh
+mock/research/202608072330_the-numeral-canon-panel/249_probes/rows.awk
+
+NOTE: non-ancestry establishes that neither branch could show the other's file.
+It establishes nothing about what either seat's context held, which is the same
+bound 248's own p6 states about itself.
