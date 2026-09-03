@@ -1,0 +1,16 @@
+error[E0424]: expected value, found module `self`
+  --> src/the_block_floating_point_element.rs:49:31
+   |
+44 | / impl<'a> Format for BlockElement<'a> {
+45 | |     type Ambient = BinaryRationals;
+...  |
+49 | |     type Quantum = Constant<{ self.block.shared_exponent }>;
+   | |                               ^^^^ `self` value is a keyword only available in methods with a `self` parameter
+...  |
+52 | |     const PHASE: Phase = Phase::ZERO;
+53 | | }
+   | |_- `self` not allowed in an implementation
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0424`.

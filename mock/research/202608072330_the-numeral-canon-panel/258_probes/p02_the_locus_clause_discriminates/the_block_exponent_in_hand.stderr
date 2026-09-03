@@ -1,0 +1,11 @@
+error[E0435]: attempt to use a non-constant value in a constant
+  --> src/the_block_exponent_in_hand.rs:46:22
+   |
+45 | pub fn the_quantum_of_this_blocks_elements(block: &Block) -> i32 {
+   |                                            ----- this would need to be a `const`
+46 |     <<BlockElement<{ block.shared_exponent }> as Format>::Quantum as Quantum>::BASE.power()
+   |                      ^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0435`.

@@ -1,0 +1,73 @@
+=== 1. axes declared in dimension.toml ===
+  access_pattern
+  accumulator_width
+  alignment
+  ambient_domain
+  arity
+  association
+  build_profile
+  chain_length
+  container
+  fraction_width
+  integer_width
+  leaf_aliasing
+  occupancy
+  operand_window
+  operation
+  overflow_policy
+  phase
+  radix
+  rounding
+  signedness
+  strategy
+  target_features
+  threads
+  toolchain
+  total_width
+  ---- 25 declared
+
+=== 2. axes the corpus predicates over, with occurrence counts ===
+   941 panel
+    71 operation
+    67 signedness
+    65 total_width
+    65 fraction_width
+    62 overflow_policy
+    53 arity
+    35 threads
+    24 target_features
+    19 chain_length
+    18 rounding
+    14 container
+    12 build_profile
+     8 toolchain
+     5 integer_width
+     3 radix
+     3 operand_window
+     2 alignment
+     1 phase
+     1 occupancy
+     1 ambient_domain
+     1 accumulator_width
+
+=== control on 2: every key counted, other than provenance, is a declared axis ===
+  none. the tally and the roster agree, so the pattern is reading axes.
+
+=== 3. is any axis a target, pointer or platform width? ===
+  pointer_width    declared axes matching: 0    registry lines matching: 0
+  pointer          declared axes matching: 0    registry lines matching: 13
+  platform         declared axes matching: 0    registry lines matching: 22
+  target_pointer   declared axes matching: 0    registry lines matching: 0
+  target_width     declared axes matching: 0    registry lines matching: 0
+
+=== control on 3: a phrase that is present, through the same two pipelines ===
+  target_features  declared axes matching: 1    registry lines matching: 34
+  container        declared axes matching: 1    registry lines matching: 238
+  a zero in this block voids every zero in block 3.
+
+=== 4. the same question over the panel corpus, not only the registry ===
+  target_pointer_width     files in the panel corpus mentioning it: 6
+  pointer width            files in the panel corpus mentioning it: 6
+  platform width           files in the panel corpus mentioning it: 4
+  mentioning is not predicating. Block 3 is what says no predicate is stated
+  over it; this block says whether the subject is discussed at all.

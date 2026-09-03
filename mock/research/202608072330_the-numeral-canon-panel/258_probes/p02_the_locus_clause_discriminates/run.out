@@ -1,0 +1,46 @@
+
+=== the_block_floating_point_element.rs ===
+exit 1, stderr 609 bytes -> the_block_floating_point_element.stderr
+error[E0424]: expected value, found module `self`
+  --> src/the_block_floating_point_element.rs:49:31
+   |
+44 | / impl<'a> Format for BlockElement<'a> {
+45 | |     type Ambient = BinaryRationals;
+...  |
+49 | |     type Quantum = Constant<{ self.block.shared_exponent }>;
+   | |                               ^^^^ `self` value is a keyword only available in methods with a `self` parameter
+...  |
+52 | |     const PHASE: Phase = Phase::ZERO;
+53 | | }
+   | |_- `self` not allowed in an implementation
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0424`.
+
+=== the_block_floating_point_element_control.rs ===
+exit 0, stderr 0 bytes -> the_block_floating_point_element_control.stderr
+
+=== the_block_exponent_in_hand.rs ===
+exit 1, stderr 512 bytes -> the_block_exponent_in_hand.stderr
+error[E0435]: attempt to use a non-constant value in a constant
+  --> src/the_block_exponent_in_hand.rs:46:22
+   |
+45 | pub fn the_quantum_of_this_blocks_elements(block: &Block) -> i32 {
+   |                                            ----- this would need to be a `const`
+46 |     <<BlockElement<{ block.shared_exponent }> as Format>::Quantum as Quantum>::BASE.power()
+   |                      ^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0435`.
+
+=== the_block_exponent_in_hand_control.rs ===
+exit 0, stderr 0 bytes -> the_block_exponent_in_hand_control.stderr
+
+pair A, the exponent as a field:     refusal exit 1 (non-zero), control exit 0 (zero)
+pair B, the block in hand:           refusal exit 1 (non-zero), control exit 0 (zero)
+RESULT: the locus clause's criterion discriminates, and rustc states it in
+        the same words: a value set fixed by a sibling datum has no format,
+        and the same set fixed by a const does. A cfg-selected width is a
+        const, which is the arm that builds in lib.rs.

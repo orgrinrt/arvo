@@ -1,0 +1,10 @@
+error: this arithmetic operation will overflow
+  --> src/the_outside_implementor.rs:27:32
+   |
+27 |     const MAX: Slot = Slot::at((1i64 << 64) - 1);
+   |                                ^^^^^^^^^^^^ attempt to shift left by `64_i32`, which would overflow
+   |
+   = note: `#[deny(arithmetic_overflow)]` on by default
+
+error: aborting due to 1 previous error
+

@@ -1,0 +1,56 @@
+error[E0277]: `Unsigned<64>` is not an admitted slot range
+  --> src/the_sixty_four_bit_width.rs:22:13
+   |
+22 |     assert!(<USize as Format>::Slots::WIDTH.count() == 64);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
+   |
+   = help: the trait `Slots` is not implemented for `Unsigned<64>`
+   = note: this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+   = help: the following other types implement trait `Slots`:
+             Unsigned<10>
+             Unsigned<11>
+             Unsigned<12>
+             Unsigned<13>
+             Unsigned<14>
+             Unsigned<15>
+             Unsigned<16>
+             Unsigned<17>
+           and 54 others
+   = note: required for `UFixed<64, 0>` to implement `Format`
+
+error[E0599]: no associated function or constant named `WIDTH` found for struct `Unsigned<BITS>` in the current scope
+  --> src/the_sixty_four_bit_width.rs:22:39
+   |
+22 |     assert!(<USize as Format>::Slots::WIDTH.count() == 64);
+   |                                       ^^^^^ associated function or constant not found in `Unsigned<64>`
+
+error[E0277]: `Signed<64>` is not an admitted slot range
+  --> src/the_sixty_four_bit_width.rs:23:13
+   |
+23 |     assert!(<ISize as Format>::Slots::WIDTH.count() == 64);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
+   |
+   = help: the trait `Slots` is not implemented for `Signed<64>`
+   = note: this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+   = help: the following other types implement trait `Slots`:
+             Signed<10>
+             Signed<11>
+             Signed<12>
+             Signed<13>
+             Signed<14>
+             Signed<15>
+             Signed<16>
+             Signed<17>
+           and 54 others
+   = note: required for `Integer<64>` to implement `Format`
+
+error[E0599]: no associated function or constant named `WIDTH` found for struct `Signed<BITS>` in the current scope
+  --> src/the_sixty_four_bit_width.rs:23:39
+   |
+23 |     assert!(<ISize as Format>::Slots::WIDTH.count() == 64);
+   |                                       ^^^^^ associated function or constant not found in `Signed<64>`
+
+error: aborting due to 4 previous errors
+
+Some errors have detailed explanations: E0277, E0599.
+For more information about an error, try `rustc --explain E0277`.

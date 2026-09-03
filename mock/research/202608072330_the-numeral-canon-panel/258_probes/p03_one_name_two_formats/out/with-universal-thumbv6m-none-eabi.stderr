@@ -1,0 +1,9 @@
+error[E0080]: evaluation panicked: assertion failed: <USize as Format>::Slots::WIDTH.count() == 56
+  --> src/lib.rs:65:5
+   |
+65 |     assert!(<USize as Format>::Slots::WIDTH.count() == 56);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `THE_UNIVERSAL_CLAIM_ABOUT_USIZE` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
