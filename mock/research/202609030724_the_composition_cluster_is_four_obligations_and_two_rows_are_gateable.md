@@ -55,7 +55,10 @@ should be corrected in the row rather than left to be rediscovered.
 ## The test gate
 
 I ran the whole suite before touching anything. `cargo mock test` reports 676 passed, 0 failed,
-16 ignored across seven of eight trees, and the eighth, the bench tree, fails. It fails on
+16 ignored across seven of eight trees, and the eighth, the bench tree, fails. That first run's
+green turned out to be an artifact of a stale harness target directory rather than a fact about
+the source, which the fourth blocker below sets out; the figure above is the run after that was
+cleared, and it is real. It fails on
 `mock/benches/variants/fnv1a/Cargo.toml`, which inherits `arvo` and `arvo-hash` from a workspace
 root that no longer exists, so `cargo metadata` cannot parse it. That variant carries a `FIXME`
 header explaining that it is kept rather than repaired because its committed results are
@@ -538,9 +541,9 @@ own `evidence-lives-in-the-repo-or-it-never-happened.md` names probe directories
 location. The local canon wins and I used `probe` throughout. The workspace rule is what is
 stale, and it is stale in a way that will keep producing this question.
 
-## Three blockers I hit, and what each cost
+## The blockers I hit, and what each cost
 
-Two of them were mine and one was not, and all three are recorded because the next agent into
+Two of them were mine and two were not, and all four are recorded because the next agent into
 this tree will hit at least the first.
 
 `cargo mock` in a fresh worktree does not generate the repo's agent rules if any lint fails,
