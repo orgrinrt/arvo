@@ -681,6 +681,50 @@ The measurement in the paragraph above stands as measured. Three configurations 
 the counts are right. What was wrong was reporting a candidate repair as landed, at a hash nobody
 can resolve, and the direction it picked was the one the repository rejected.
 
+### 6.2 One clause of 6.1 is false, and the hash resolves
+
+`83db4508` is a real commit. `git rev-parse --verify` answers
+`83db45085282838e32b8f3216ad06bc48c1fa252`, `git branch -a --contains` puts it on
+`origin/research/what-a-platform-width-type-is`, this seat's original branch before the rebase, and
+its subject is "fix: pin the engine url so the lint patch reaches every pack". `mockspace_git` is at
+line 10 of that branch's `mockspace.toml`.
+
+So 6.1's clause "the hash names nothing published" is false, and the summary clause "at a hash
+nobody can resolve" with it. It turned "cited a commit that never reached the trunk" into "cited an
+object that does not exist", which is a different and heavier thing to say about a seat that had
+done neither. The seat cited its own work correctly by the only reference it had.
+
+**6.1's other clause is true and is not being corrected.** It says `mockspace_git` "appears in no
+`mockspace.toml` on the trunk or on this branch", and that holds: absent from `origin/dev` and from
+`origin/research/what-a-platform-width-type-is-rebased`, present only on the unrebased original.
+Dropping that qualifier while quoting it is how one false clause reads as two, and it is the same
+move 6.2 exists to correct, so it is named rather than committed again.
+
+The check that produced 6.1 answered `Not a valid object name`, which is what a fabricated hash and
+a ref this clone has not fetched answer identically. `never-discard-stderr-on-a-check` says to run
+the positive control before believing a zero, and one was available: resolve a hash known to be on
+that branch. It was not run. The commit body of `102f9d0a` carries the same false sentence, where
+it stays.
+
+What survives 6.1 is the part that matters: the fix named in section 6 is not the fix on the trunk,
+`1ac3c8de` is, and it went the other way.
+
+**This section rests on a ref nothing keeps, so the content it rests on is copied in here.**
+`83db4508` is reachable only from `origin/research/what-a-platform-width-type-is`, which is unmerged
+and which the ordinary branch hygiene would delete, and then 6.2 becomes exactly the unverifiable
+claim it was written to correct. What the commit is:
+
+```
+83db45085282838e32b8f3216ad06bc48c1fa252
+fix: pin the engine url so the lint patch reaches every pack
+
+mockspace.toml, line 10:
+    mockspace_git = "ssh://git@github.com/hiisi-digital/mockspace.git"
+```
+
+So the branch is kept deliberately rather than as an oversight, and if somebody reaps it anyway the
+section still says what it read.
+
 ## 7. What this leaves owed
 
 **A second reading on another persona**, for the two calls that would become rows: that the
