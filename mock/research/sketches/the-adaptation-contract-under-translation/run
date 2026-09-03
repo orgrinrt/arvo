@@ -6,8 +6,9 @@
 # Everything lands under `out/` and is committed. Exit status is not the result;
 # the captured text is. Every step declares in its own source what must fail, and
 # the verdict lines say HELD or BROKEN per arm. Nothing here is BROKEN in the
-# committed run; step 05's `P1` was, in the first revision, and the file it
-# refuted says what it caught.
+# committed run; two arms were, in earlier revisions, and each says in its own
+# source what it caught: step 05's `P1` on an unsound predicate and step 07's
+# `S5` on a hand-worked answer computed for the wrong slot range.
 #
 # Release profile throughout, because these are exhaustive sweeps and a debug
 # build takes long enough that somebody would sample instead. No timing is taken
@@ -29,7 +30,9 @@ for step in \
     s02_completion_homomorphy \
     s03_relocation \
     s04_reflection \
-    s05_the_predicate
+    s05_the_predicate \
+    s06_the_group \
+    s07_scaling
 do
     echo "$step"
     "$here/target/release/$step" > "$out/${step}.txt" 2>&1
@@ -37,5 +40,5 @@ do
 done
 
 echo "the verdict lines, gathered"
-grep -hE "^([WCRNP][0-9][a-z]?): " "$out"/s0*.txt > "$out/06_verdicts.txt"
-cat "$out/06_verdicts.txt"
+grep -hE "^([WCRNPGS][0-9][a-z]?): " "$out"/s0*.txt > "$out/08_verdicts.txt"
+cat "$out/08_verdicts.txt"

@@ -1,0 +1,119 @@
+step 06: is the pair of laws the whole symmetry group of the grid
+composite: adapt(e*position + c) against adapt(e*adapt(position) + c)
+
+cell range=SmallSigned mode=TowardZero policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSigned mode=TowardZero policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSigned mode=TowardZero policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=TowardZero policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=TowardZero policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=TowardZero policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Floor policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallSigned mode=Floor policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallSigned mode=Floor policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Floor policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Floor policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Floor policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Ceil policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallSigned mode=Ceil policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallSigned mode=Ceil policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Ceil policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Ceil policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Ceil policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfUp policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSigned mode=HalfUp policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSigned mode=HalfUp policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfUp policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfUp policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfUp policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfEven policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSigned mode=HalfEven policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSigned mode=HalfEven policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfEven policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfEven policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=HalfEven policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Stochastic policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallSigned mode=Stochastic policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallSigned mode=Stochastic policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Stochastic policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Stochastic policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSigned mode=Stochastic policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=TowardZero policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallUnsigned mode=TowardZero policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallUnsigned mode=TowardZero policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=TowardZero policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=TowardZero policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=TowardZero policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Floor policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallUnsigned mode=Floor policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallUnsigned mode=Floor policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Floor policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Floor policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Floor policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Ceil policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallUnsigned mode=Ceil policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallUnsigned mode=Ceil policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Ceil policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Ceil policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Ceil policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfUp policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallUnsigned mode=HalfUp policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallUnsigned mode=HalfUp policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfUp policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfUp policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfUp policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfEven policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallUnsigned mode=HalfEven policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallUnsigned mode=HalfEven policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfEven policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfEven policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=HalfEven policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Stochastic policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallUnsigned mode=Stochastic policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallUnsigned mode=Stochastic policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Stochastic policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Stochastic policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallUnsigned mode=Stochastic policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=TowardZero policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=TowardZero policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=TowardZero policy=Saturate orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=TowardZero policy=Saturate orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=TowardZero policy=Clamp orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=TowardZero policy=Clamp orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=Floor policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallSymmetric mode=Floor policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallSymmetric mode=Floor policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Floor policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Floor policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Floor policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Ceil policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallSymmetric mode=Ceil policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallSymmetric mode=Ceil policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Ceil policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Ceil policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Ceil policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=HalfUp policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfUp policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfUp policy=Saturate orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfUp policy=Saturate orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfUp policy=Clamp orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfUp policy=Clamp orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfEven policy=Wrap orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfEven policy=Wrap orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfEven policy=Saturate orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfEven policy=Saturate orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfEven policy=Clamp orientation=1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=HalfEven policy=Clamp orientation=-1 composite=false translates=false reflects=true predicted=false
+cell range=SmallSymmetric mode=Stochastic policy=Wrap orientation=1 composite=true translates=true reflects=false predicted=true
+cell range=SmallSymmetric mode=Stochastic policy=Wrap orientation=-1 composite=false translates=true reflects=false predicted=false
+cell range=SmallSymmetric mode=Stochastic policy=Saturate orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Stochastic policy=Saturate orientation=-1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Stochastic policy=Clamp orientation=1 composite=false translates=false reflects=false predicted=false
+cell range=SmallSymmetric mode=Stochastic policy=Clamp orientation=-1 composite=false translates=false reflects=false predicted=false
+
+--- the controls ---
+cells=108 walked=25087752 composite true/false=9/99
+G1: the composite holds exactly where its generators do: 108 of 108 cells -> HELD
+G2: the composite answers both ways, so agreeing with the conjunction is not agreeing with a constant -> HELD
+G3: the two orientations disagree somewhere: 9 cells -> HELD
+G4: the map is a retraction, which is the composite at the identity and is what makes the outer rounding of a staged schedule dead -> HELD
+exit=0

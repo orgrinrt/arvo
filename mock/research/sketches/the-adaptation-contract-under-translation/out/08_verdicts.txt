@@ -37,3 +37,13 @@ P4: the rounded slot is the position's slot or the next one, over 116964 positio
 P5: over the six shipped names, commuting with reflection equals reading something beyond the residue -> HELD
 P6: the predicate answers both ways: 196 yes and 236 no -> HELD
 P7: the conservative default licenses only cells where both regions commute unconditionally -> HELD
+G1: the composite holds exactly where its generators do: 108 of 108 cells -> HELD
+G2: the composite answers both ways, so agreeing with the conjunction is not agreeing with a constant -> HELD
+G3: the two orientations disagree somewhere: 9 cells -> HELD
+G4: the map is a retraction, which is the composite at the identity and is what makes the outer rounding of a staged schedule dead -> HELD
+S1: on the grid at a non-negative factor the law holds in 270 of 270 cells -> HELD
+S2: off the grid at a factor of two or more the law fails in 162 of 162 cells -> HELD
+S3: on the grid at a negative factor the law holds in 72 of 108 cells, which is the reflection question wearing a factor -> HELD
+S4: the walk left the range, so the completion region was asked something -> HELD
+S5: the slot 20 wraps to -12, sixty wraps to -4, and three times the wrapped answer wraps to -4 -> HELD
+S6: off the grid the two schedules differ: direct=4 staged=3 from the floored answer 1 -> HELD
