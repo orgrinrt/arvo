@@ -709,6 +709,22 @@ it stays.
 What survives 6.1 is the part that matters: the fix named in section 6 is not the fix on the trunk,
 `1ac3c8de` is, and it went the other way.
 
+**This section rests on a ref nothing keeps, so the content it rests on is copied in here.**
+`83db4508` is reachable only from `origin/research/what-a-platform-width-type-is`, which is unmerged
+and which the ordinary branch hygiene would delete, and then 6.2 becomes exactly the unverifiable
+claim it was written to correct. What the commit is:
+
+```
+83db45085282838e32b8f3216ad06bc48c1fa252
+fix: pin the engine url so the lint patch reaches every pack
+
+mockspace.toml, line 10:
+    mockspace_git = "ssh://git@github.com/hiisi-digital/mockspace.git"
+```
+
+So the branch is kept deliberately rather than as an oversight, and if somebody reaps it anyway the
+section still says what it read.
+
 ## 7. What this leaves owed
 
 **A second reading on another persona**, for the two calls that would become rows: that the
