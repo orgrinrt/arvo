@@ -1,0 +1,32 @@
+== What 256 section 4 says is still owed ==
+Still owed, and neither is a consolidation: `246` section 2.2 has no second reader and its
+author says it is the load-bearing new argument; `246` section 8 item 5 says `244`'s C3
+demotion of `241`'s fixed-arity claim still wants a second independent reading that a Kiselyov
+seat cannot supply.
+
+## 5. The mechanism, which is the only finding here worth keeping
+
+== OWED 1: a second reader on 246 section 2.2 ==
+-- 247's own heading for it, and whether the reading was formed before accepting:
+69:## 1. My own reading of 246 section 2.2, formed before accepting it
+-- 247's verdict lines on 2.2:
+98:the extractor counts differently on the two trees. **So the containment `246` rests on holds, and
+102:**Where I part from 246, and it is the inference from the containment.** `246` writes:
+134:**So on my reading, 246's mechanism does not do the work 246 assigns it.** The containment is
+
+== OWED 2: a non-Kiselyov reading of 244's C3 demotion of the fixed-arity claim ==
+346:**Q22, `are_set_valued_carriers_admitted`.** Reserved, no standing row. `244`'s C3 demotion of
+
+== PERSONA CONTROL: which of the four files is Kiselyov-named ==
+  241_kiselyov_admission_is_a_resolution_not_a_verdict.md        kiselyov
+  244_orchard_consolidation_admission_and_the_number_system.md   not kiselyov
+  246_kiselyov_the_two_promotions_and_what_they_second.md        kiselyov
+  247_leroy_the_cold_seats_answered_rows_73_wrote.md             not kiselyov
+
+== NEGATIVE CONTROL: a phrase known absent from 247 must return none ==
+  (none, as required)
+
+== Registry provenance from seats 241 to 256, with 240 as the control ==
+  rows citing seats 241-256 : 0
+  CONTROL, rows citing 240  : 2
+  (the control must be non-zero, or the grep proves nothing)
