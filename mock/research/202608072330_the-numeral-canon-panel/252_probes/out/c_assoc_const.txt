@@ -1,0 +1,20 @@
+==============================================================
+ARM C  the coordinate set at associated consts, no feature anywhere
+==============================================================
+--- C.lib  door (NO feature attribute)
+[exit 0]
+--- C.test  outside crate declaring a format, no machine type, no gate
+[exit 0]
+--- C.negative  the value a u32-shaped door cannot hold, which MUST fail
+error[E0600]: cannot apply unary operator `-` to type `u32`
+ --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/locus-b/mock/research/202608072330_the-numeral-canon-panel/252_probes/c_assoc_const/negative_control.rs:9:40
+  |
+9 | pub const REFUSED: Width = Width::bits(-4);
+  |                                        ^^ cannot apply unary operator `-`
+  |
+  = note: unsigned values cannot be negated
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0600`.
+[exit 1]

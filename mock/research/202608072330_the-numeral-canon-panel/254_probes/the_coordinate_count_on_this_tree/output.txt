@@ -1,0 +1,13 @@
+  Ambient   2 : RADIX SIGNED
+  Quantum   3 : BASE SLOPE MAGNITUDES
+  Slots     3 : MIN MAX WIDTH
+  Format    1 : PHASE
+  ---------------------------------
+  coordinates on this tree (ADMITTED excluded, it carries no value): 9
+
+  Operation::ARITY, which one commit message counted as the tenth:
+    126:    const ARITY: Arity;
+
+======== CONTROL: the extractor against a planted trait carrying one more
+  Format with one planted const: 2
+  (if this is not 2 the count above proves nothing)

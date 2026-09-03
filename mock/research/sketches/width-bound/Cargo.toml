@@ -3,5 +3,6 @@
 name = "over"
 version = "0.0.0"
 edition = "2024"
+publish = false
 [dependencies]
 arvo-format = { path = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/design-primitives/mock/crates/arvo-format" }

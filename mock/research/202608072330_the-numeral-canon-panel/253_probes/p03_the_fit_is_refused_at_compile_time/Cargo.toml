@@ -1,0 +1,13 @@
+[package]
+name = "p03_the_fit_is_refused_at_compile_time"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[dev-dependencies]
+trybuild = "1"
+
+[workspace]

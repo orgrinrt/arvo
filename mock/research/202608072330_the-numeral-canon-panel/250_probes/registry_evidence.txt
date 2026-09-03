@@ -1,0 +1,252 @@
+=== question::is_number_system_broad_enough_for_non_magnitude ===
+question::is_number_system_broad_enough_for_non_magnitude
+  asks        Is "number system" broad enough to include things that are not about magnitude?
+  options     Broad, naming the two-element Boolean algebra and the vector space over the two-element field as number systems not about magnitude at all., Narrow, excluding them.
+  decider     panel
+  topic       the_number_system
+  key         Q21
+  note        One cold derivation leaning broad is one instance, and one instance decides nothing. The entry's stated discriminator is measured not to cut: every total order on the carrier was enumerated at widths two and three, and wrapping addition and exclusive-or over the vector space admit zero compatible total orders each for the same structural reason, while saturating addition and min admit some, so an order-or-magnitude reading groups a kernel item with the candidate the narrow reading exists to exclude. What remains is whether the ambient operation family is fixed or is a parameter, which is Q33, and the two entries should be read as one.
+  provenance  panel::202608072330_the-numeral-canon-panel::OPTIONS::#q21-is-number-system-broad-enough-to-include-things-that-are-not-about-magnitude, panel::202608072330_the-numeral-canon-panel::OPTIONS::#q21-amendment-from-73
+  keywords    magnitude, Boolean algebra, GF(2), vector space, total order, compatible order, kernel, broad, narrow
+
+  in QUESTION.md#is-number-system-broad-enough-for-non-magnitude
+
+=== question::are_set_valued_carriers_admitted ===
+question::are_set_valued_carriers_admitted
+  asks        Are set-valued carriers admitted into the number-system concept, or scoped out?
+  options     Admitted, which generalises the concept cleanly and makes the carrier a set of sets., Scoped out, which keeps the concept smaller.
+  decider     panel
+  topic       the_number_system
+  key         Q22
+  note        What would distinguish them: whether certified accuracy should be expressible inside the system concept or beside it. Intervals and any future error-tracking pair are the instances.
+  provenance  panel::202608072330_the-numeral-canon-panel::OPTIONS::#q22-are-set-valued-carriers-admitted-or-scoped-out
+  keywords    set-valued, carrier, interval, error tracking, certified accuracy, admission
+
+  in QUESTION.md#are-set-valued-carriers-admitted
+
+=== question::is_the_ambient_operation_family_fixed (Q33) ===
+question::is_the_ambient_operation_family_fixed
+  asks        Is the ambient domain's operation family fixed at addition and multiplication, or is it a parameter?
+  options     Fixed: the concept describes one arithmetic, the law layer's entire evidence base is correctly scoped as it stands, and the tropical semiring the algorithm crates compute in is described by the algorithm crates. Cost: the named selling point computes in something the canon does not cover, and the one law those algorithms need is quantified over a pair of operations from two families, which no instrument in the panel measures., A parameter: one representable set carries several ambient domains, the Boolean and vector-space structures and the tropical semiring become ordinary members, and the index-one crossing becomes something the concept can talk about. Cost: every law sentence acquires a scope it did not need, prefix equality becomes a relation somebody must define, and the reduction space varies along an unenumerated axis.
+  decider     panel
+  topic       the_number_system
+  key         Q33
+  note        Labelled O-A in the consolidation it was carried from, and mapped to Q33 by the register. To be read as one with Q21, whose own discriminator was measured not to cut. Distinguisher: whether any consumer needs one generic algorithm spanning both families, or naming two families separately costs nothing because no code spans them.
+  provenance  panel::202608072330_the-numeral-canon-panel::OPTIONS::#q33-to-q37-five-options-that-lived-only-in-member-files-until-the-unit-s-consolidation
+  keywords    ambient domain, operation family, tropical semiring, min-plus, distributivity, parameter, algorithm crates, Boolean, GF(2)
+
+  in QUESTION.md#is-the-ambient-operation-family-fixed
+
+=== question::what_a_datum_stands_for (Q4) ===
+question::what_a_datum_stands_for
+  asks        What does one datum of a numeral stand for?
+  options     A point: a datum is one value, and saturation's absorbing behaviour is a documented restriction on where a fold is sound rather than a denotation., An absorbing top: the top denotes everything above it, which is sufficient for soundness while the computation stays at the endpoint and whose necessary condition is not known., A constructor-level clause: the denotation clause is a statement about the constructor wearing the grammar of a statement about every datum, and what it distinguishes is a partitioning set denotation from an overlapping one., A set, admitted generally: intervals and set-valued data are first class, which costs the value-level total order, multiplicative associativity and the additive inverse, and buys verified optimisation, rigorous ODE work and exact geometric predicates.
+  decider     panel
+  topic       the_primitive
+  key         Q4
+  note        Op explicitly refused to bound this option set, so what is listed is what has been written down rather than what is admissible; that refusal is about the options and the register names no decider for the question, so `decider` is the default. A live sub-fork runs inside every reading: soundness (the derived numeral holds every value the operation can produce) against bestness (and no numeral smaller does), which `07` offers as a sharper replacement for the tightness framing and which composes with all four.
+  provenance  panel::202608072330_the-numeral-canon-panel::OPTIONS::#q4-what-does-a-datum-stand-for
+  keywords    datum, denotation, absorbing top, saturation, interval, set-valued, point, soundness, bestness, tightness, total order
+
+  in QUESTION.md#what-a-datum-stands-for
+
+=== question::what_the_admission_contract_asks_a_candidate_to_expose (Q29) ===
+question::what_the_admission_contract_asks_a_candidate_to_expose
+  asks        What does the admission contract ask a candidate number system to expose?
+  options     The standing list prefixed with the reduction's two law verdicts, whose sufficient direction is refuted twice over because every system has a second declaration of itself naming its own computed algebra as its ambient domain, satisfying the list verbatim while computing the identical function., The same, plus the ambient domain's own law inventory, plus a third verdict for the retraction, which costs one more item and one more verdict and buys a collapse that is harmless rather than forbidden., Admission relative to a consumer-supplied ambient domain, the candidate exposing only its representable set and its reduction, which makes the collapse unstateable rather than caught and costs a candidate not determining its own identity until a frame is chosen.
+  decider     panel
+  topic       the_number_system
+  key         Q29
+  note        The necessary direction of the first option is untouched and survives. What would distinguish the second from the third: whether any canon sentence must be true of a system with no ambient domain named. The ingest door was proposed as that case and is measured not to be one.
+  provenance  panel::202608072330_the-numeral-canon-panel::OPTIONS::#q29-what-does-the-admission-contract-ask-a-candidate-to-expose
+  keywords    admission contract, ambient domain, law verdict, retraction, reduction, collapse, representable set, ingest
+
+  in QUESTION.md#what-the-admission-contract-asks-a-candidate-to-expose
+
+=== ruling::the_format_spine_is_canon ===
+ruling::the_format_spine_is_canon
+  kind         ruling
+  rung         ratified
+  ratified_by  both
+  topic        the_format
+  says         Four propositions become canon together and they are the format topic's spine. A format is identified by its ambient domain and its representable set, and that set is a constant of the type. Membership in it is one affine predicate over one parameterisation, of which integers, fixed point, scaled integers and floats are points. Arithmetic on a format is an exact operation in the ambient domain composed with a named total adaptation onto that set, and the adaptation is a first-class object with its own laws. The concept is closed and the inventory of admitted instances is open.
+  quote        I stamp them but all of these are subject to being changed if the experts themselves end up
+disagreeing or finding a better solution or wording or bound. These make sense to me, but I'm not a
+domain expert. So if two experts agree on this, it is equal to my blessing.
+
+  because      Each stood at two independent experts before it was put to him, and the four are one shape rather than four claims: the identity fixes what a format is, the predicate says what is in it, the factoring says what an operation on it does, and the closed-concept clause says how a new instance joins without amending the canon.
+  ratifies     a_format_is_identified_by_its_ambient_domain_and_its_representable_set, membership_of_the_representable_set_is_one_affine_predicate, arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation, the_concept_is_closed_and_the_inventory_is_open
+  note         The first panel-derived propositions ever ratified in this registry. Marked `both` because he stamped them and the expert convergence was already there; under the ruling he made in the same breath, the convergence alone would have sufficed. His condition travels with them: subject to change if the experts later disagree or find a better solution, wording or bound.
+  provenance   panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-format
+  keywords     format, identity, representable set, ambient domain, affine predicate, adaptation, closed concept, open inventory
+
+  in RULING.md#the-format-spine-is-canon
+
+=== proposal::the_concept_is_closed_and_the_inventory_is_open (topic the_number_system, cited by ratified ruling) ===
+proposal::the_concept_is_closed_and_the_inventory_is_open
+  kind           answer
+  sentence_kind  normative
+  standing       two_experts
+  topic          the_number_system
+  says           The canon defines once what a number system is and what admission requires; the set of admitted instances is open, and a new one earns admission by supplying the concept's obligations rather than by amending the canon. The kernel derived from the stated intents is carried as guaranteed; everything else is admitted by contract and decided by measurement.
+  because        A closed inventory would put every new numeral through a canon amendment, and an open concept would make admission mean nothing. Closing the concept and opening the inventory is what makes admission a check rather than a negotiation.
+  answers        is_the_number_system_inventory_open
+  note           Two instruments over one premise set, plus the format topic's prior text carried through the reconciliation, so the discount is the same shape as the format topic's shared-literature one. The guarantee clause inherits the intents' STATED status: it is aligned with op's stated direction, is not settled by it, and firms only when those intents are ratified.
+  provenance     panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::614, panel::202608072330_the-numeral-canon-panel::65_knuth_number_systems_derived_cold::519, panel::202608072330_the-numeral-canon-panel::66_dolan_number_systems_derived_cold::245
+  keywords       closed concept, open inventory, admission, kernel, contract, guaranteed, N20
+
+  in PROPOSAL.md#the-concept-is-closed-and-the-inventory-is-open
+
+=== proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set (topic the_format) ===
+proposal::a_format_is_identified_by_its_ambient_domain_and_its_representable_set
+  kind           answer
+  sentence_kind  normative
+  standing       two_experts
+  topic          the_format
+  says           A format is identified by its ambient domain and its representable set. The representable set is a constant of the type: a value set that depends on other data is not a format but storage. Adaptation choice and encoding are realisation, observable in computed values and in pattern-level properties respectively, and not part of identity.
+  because        Not the representable set alone, because the same representative set under two ambient algebras is two formats, which is precisely what the wrapping question is about. Not the full four-tuple, because two's complement and offset binary denote the same sixteen values through different pattern maps and are one format filed two ways. The consequence it absorbs for free is that at a nonzero fraction width the two wrap sections compute different products, 96 of 256 class pairs at `w = 4, F = 1` rising to 168 of 256 at `F = 3`, which under this identity is the section being the representable set rather than a complication.
+  answers        adaptation_in_identity_or_realisation
+  note           The standing is disaggregated in the source and the parts do not share it. The value-level half, that identity is denotation rather than encoding, is two experts with the same shared-literature discount as the standard model, and one of the two was read through intermediaries rather than opened by the consolidator. The refinement from the representable set alone to the pair, the dissolution of the reduction into derived structure, and the locus rider are **converged by attack and concession** rather than independently derived, which the source marks explicitly as weaker than two experts because the conceding file read rather than derived. A reader wanting the stronger half must take the value-level clause alone.
+  gap            It makes the declaration arithmetic-bearing at a nonzero fraction width, which narrows an earlier deflation sentence saying the section is chosen at declaration and no cast consults a policy. That sentence is exact at `F = 0` only, and the register's wrapping entry does not yet carry the scope.
+  provenance     panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::625, panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::141
+  keywords       identity, ambient domain, representable set, D and Q, denotation, encoding, storage, locus, C2
+
+  in PROPOSAL.md#a-format-is-identified-by-its-ambient-domain-and-its-representable-set
+
+=== proposal::membership_of_the_representable_set_is_one_affine_predicate (topic the_format) ===
+proposal::membership_of_the_representable_set_is_one_affine_predicate
+  kind           answer
+  sentence_kind  normative
+  standing       two_experts
+  topic          the_format
+  says           Membership is one predicate over one parameterisation: an affine slot function, a quantum per magnitude and a phase, of which integers, fixed point, scaled integers and floats are points. The phase is stated explicitly: a nonzero phase decides whether the identity adaptation ever occurs and whether the set carries an additive identity at all.
+  because        The unification was checked against textbook enumerations at 16, 16 and 47 values with both mutants detected, and subnormals fall out of a maximum with no special case. The phase is not a passive parameter: a half-step-biased grid is not closed under exact addition, no exact sum lands on it, every one sits exactly half a step away, and the grid contains neither zero nor one, so phase promotes the tie rule from a corner case to the policy deciding every sum and produces a numeral that is not even a monoid carrier.
+  answers        which_width_coordinates_a_consumer_writes
+  note           The one-predicate unification carries the shared-literature discount. The necessity of the phase term does not: it is one expert's measurement, plus a concession, plus a constructive repair, and the consolidation offers it as an argument for stating phase explicitly rather than as a two-expert standing. Its evidence is that two independent instruments erred at the phase coordinate **in opposite directions**, which is a reason to name the coordinate rather than a second derivation of the claim.
+  provenance     panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::633, panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::182
+  keywords       representable set, affine, slot function, quantum, phase, subnormal, membership, grid, C3
+
+  in PROPOSAL.md#membership-of-the-representable-set-is-one-affine-predicate
+
+=== law::existence_of_a_translation_invariant_total_order ===
+law::existence_of_a_translation_invariant_total_order
+  statement   There is a total order on the representable set that the induced additive operation respects.
+  fails       total_width: W any, signedness: signedness in {unsigned, signed}, overflow_policy: overflow policy = wrap, operation: operation = add
+  witness     Over every total order on the carrier at widths 2 and 3, exhaustively, wrapping addition and xor over `GF(2)^n` admit zero compatible total orders each, while saturating addition and min admit some. The structural reason holds at every width: a finite cyclic group admits no translation-invariant total order.
+  topic       the_number_system
+  note        `W any` is the source's own, licensed by the structural argument rather than by the sweep, which ran at two widths. The consequence the format unit draws is that comparison on a wrapped numeral is representative-order, which arithmetic does not respect, and it says the canon owes that sentence under every filing equally. The number-system unit draws a different one: an order-or-magnitude boundary for `number system` is measured empty, because it groups wrapping with a bit vector and splits wrapping from saturating inside one kernel item.
+  gap         The format unit records a further, untested hypothesis that the signed encoding trade, no bijective encoding of a signed value set having both raw-order agreement and raw-adder correctness, is this same theorem in disguise. Nobody has built it, and it would close the redundant-encoding hole if it were true. Since resolved as its own independent result rather than as a reduction to this theorem: see law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness, established by uniqueness argument plus an exhaustive 4-bit check; whether it is literally the same theorem in disguise remains open.
+  provenance  panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::277, panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::286
+  keywords    order, total order, translation invariant, wrapping, cyclic group, comparison, GF(2), boundary
+
+  in LAW.md#existence-of-a-translation-invariant-total-order
+
+=== dimension::ambient_domain ===
+dimension::ambient_domain
+  what        The mathematical domain a computation's values are taken to live in, which the format approximates.
+  grammar     `ambient domain = <domain>`, `ambient domain in {<set>}`, or `ambient domain any`. Values name a domain: the integers, the rationals, the reals, a finite ring.
+  moves       Which laws are even askable. Associativity over the reals and associativity over a finite ring are different questions with different answers, and a claim proved over one says nothing about the other. It is the single largest blocker in the corpus's unwritable predicates, sole blocker of four spans and present in eleven.
+  note        Not the same axis as `container`. The container is what a value is stored in; the ambient domain is what it is understood to approximate, and a claim can be exact in one and lossy in the other.
+  provenance  panel::202608072330_the-numeral-canon-panel::183_probes::unblock_value.out::6, panel::202608072330_the-numeral-canon-panel::186_spj_the_notation_calls_derived_cold::#1-3-the-gateability-test-attacked-as-instructed
+  keywords    ambient, ambient domain, domain, reals, rationals, integers, ring, field, approximates, exact values, denotation
+
+  in DIMENSION.md#ambient-domain
+
+=== obligation::a_cost_dynamic_program ===
+obligation::a_cost_dynamic_program
+  need        Combinatorial grouping over a cost model: packing items into bins, and ordering a chain of operations so the total cost of the chain is least.
+  consumer    hilavitkutin
+  why         Its grouping step is named as greedy together with a matrix-chain dynamic program, and a separate ordering step reaches for bin packing by name. Both decide how work is grouped rather than how much of it fits anywhere. **The objective is a minimum over sums**, which makes this the min-plus shape the corpus has results about rather than a budgeted optimisation: minimising a cost over a chain, under a separate feasibility predicate that admits or rejects a grouping and does not enter the objective.
+  quote       The DP cost is neither the step-6 Laplacian nor a per-fiber weight. Spec Step 8 states it outright: `cost(i,j) = record_count x sum of size_of::<T_k>() over the union columns of ops i..j`, using type-native strides (R3) and the co-located arena model; the cost IS the memory bandwidth of one data walk through the candidate fiber's arena. Feasibility = the full domain-14 holistic check (register file, L1 write budget, L1+L2 total, no fan-in, no pipeline breaker). Greedy mode for <=10 ops, DP for >10. (hilavitkutin, `mock/research/202606201900_granular-roadmap-and-sketch-plan.md`, on `dev`)
+  topic       arvo_identity
+  gap         **This row read `a dynamic program over costs, deciding how to group work under a budget`, and the budget half was wrong.** The consumer's budgets are cache-footprint constants that size morsels, which is a different step of the same chain, so the row attached a real quantity to the wrong need and could have been met by something the consumer never asked for. Reported by an expert dispatched on a neighbouring question; the two routines and the misplaced budget were verified here against the consumer's own documents.
+
+**The cost model this row recorded as stated nowhere is stated**, and the quotation carries it: record count times the summed element sizes over the union of columns an interval touches, which is the bandwidth of one data walk through that grouping's arena. So the row is no longer under-specified in its objective. **Its provenance is weaker than a design and that is the remaining gap**: the sentence lives in the consumer's research, reporting what a spec says, and the live per-crate design does not carry it. A cost model quoted from a document reporting a second document is worth having and is not worth treating as settled. What genuinely remains open is the feasibility predicate, which is named as one check over five conditions taken together and defined in none of them here.
+  provenance  panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for
+  keywords    cost, DP, dynamic programming, combinatorics, grouping, bin packing, matrix chain, greedy, knapsack, ordering
+
+  in OBLIGATION.md#a-cost-dynamic-program
+
+=== ruling::the_family_question_wants_the_comparison_first ===
+ruling::the_family_question_wants_the_comparison_first
+  kind        deferral
+  rung        open
+  topic       the_number_system
+  says        On whether the numeral space is one family or several, he wants the consequences of the candidates laid out in a written comparison before ruling.
+  because     The base is too loose to settle it, and ratifying before the experts converge is the failure being avoided.
+  instead     It goes back to the panel, as its first expert task, and the comparison owes for each candidate what becomes derivable, what has to be named, what the canon has to say that it would not otherwise, and what it costs a consumer.
+  note        No verbatim quotation exists for this one. The source records his answer as the comparison and does not quote him. The options were: one family with a closed shape space; one family with the shape space not closed, so meet goes partial; several families, so a common target is always a named rule; or a written comparison first. The comparison is required to state, for each candidate, what becomes derivable, what has to be named, what the canon has to say that it would not otherwise, and what it costs a consumer.
+  provenance  panel::202608072330_the-numeral-canon-panel::01_op_answers::#1-is-the-numeral-space-one-family-or-several
+  keywords    family, families, numeral space, comparison, meet, join, shape space, closed
+
+  in RULING.md#the-family-question-wants-the-comparison-first
+
+=== ruling::his_instinct_on_one_family_is_not_to_be_acted_on ===
+ruling::his_instinct_on_one_family_is_not_to_be_acted_on
+  kind        deferral
+  rung        open
+  topic       the_number_system
+  says        He declines to settle whether there is one numeral family or several. He records an instinct for one, and instructs that it not be acted on.
+  quote       My instinct says one. But I'm not a mathematician, and we saw how the last panel ended in a mess by me
+making ratifications or calls too early and got us locked into a mess. Now we are avoiding those
+mistakes.
+
+  because     The failure being avoided is ratifying at the wrong time rather than answering wrongly. A call made before its consumers and synergies are known can be perfectly reasonable and still lock the design into a shape that does not fit, and there is no way to tell which at the moment it is made.
+  instead     It goes back to the panel to explore and converge. His instinct is recorded and is explicitly not to be acted on.
+  note        The first sentence is quotable and the rest is what makes it safe to quote. A member citing the instinct as a ruling is making the previous panel's mistake with his words instead of its own. The options put to him were: explore; several families; or hold until the coordinate question settles.
+  provenance  panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q8-one-numeral-family-or-several
+  keywords    family, instinct, one, several, not a ruling, premature, lock, mathematician
+
+  in RULING.md#his-instinct-on-one-family-is-not-to-be-acted-on
+
+=== retirement r161_r15 (four-part working assumption) ===
+id = "r161_r15_the_four_part_working_assumption"
+claim = "A primitive as a named composition of a format, a number system, a law set and a strategy."
+why = "Superseded by the candidate's statement. Per element: format is two things, one identity-bearing and one selectable; number system is a category error resolved into the radix cut; the law set is excluded because it cannot vary with the others held fixed; and the strategy is a selector whose request-versus-resolution placement was settled in an earlier topic, with one author's own recommendation to carry the marker withdrawn in that file's second phase on that ground."
+kind = "superseded"
+replacement = "The candidate's own statement of what a primitive is."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["four-part", "working assumption", "format", "number system", "law set", "strategy", "refinement", "R15"]
+
+
+=== retirement r161_r9 (number-system convergence as two instances) ===
+[[retirement]]
+id = "r161_r9_the_number_system_convergence_as_two_instances"
+claim = "The number-system convergence, as two instances."
+why = "One file made a category claim, the other made a cut, and the first conceded: one expert rather than two. The cut itself stands at that tier inside the candidate's ledger."
+kind = "wrong"
+replacement = "One expert, on the cut."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["number system", "convergence", "two instances", "one expert", "category claim", "cut", "radix", "R9"]
+
+=== topic table (all) ===
+id                      what                                              keywords
+----------------------  ------------------------------------------------  ------------------------------------------------
+the_format              What a numeral's format is: the widths it decla…  format, width, declared width, integer width, f…
+the_number_system       What counts as a number system arvo can carry, …  number system, admission, admission contract, c…
+algebraic_laws          Which algebraic laws hold over arvo's arithmeti…  law, laws, associativity, distributivity, commu…
+the_strategy_axis       The axis a consumer selects along: what a strat…  strategy, strategy axis, Hot, Cold, Warm, Preci…
+the_strategy_object     The strategy as a thing with internal structure…  strategy object, component, shape to count, obs…
+the_primitive           What a primitive is: a value set with a realisa…  primitive, value set, identity, denotation, iso…
+the_realisation_map     How a declared numeral is realised onto machine…  realisation, realisation map, lowering, storage…
+rounding                The rounding axis: which modes exist, what each…  rounding, round, round to nearest, ties to even…
+the_chain               Composition beyond a single operation: what a c…  chain, composite, composition, fold, reduction,…
+overflow_policy         What happens at the edge of a numeral's range: …  overflow, wrap, clamp, saturate, saturating, pa…
+the_container_premise   Whether a declared numeral's behaviour is state…  container, container premise, declared width, c…
+the_predicate_notation  How a finding states the region it holds in, wh…  predicate, region, dimension, holds for, any, u…
+canon_form              What a canon sentence may be: which kinds of st…  canon, canon form, sentence kind, theorem, meas…
+arvo_identity           What arvo is and what it is for: a library rath…  identity, library, not a program, selling point…
+execution_environment   What arvo assumes about the machine it runs on:…  threads, cores, core count, parallel, adaptatio…
+operating_constraints   The constraints arvo is built under and does no…  no_std, no alloc, const, monomorphisation, dyn,…
+binding_time            When a thing happens: what is decided at compil…  const, compile time, runtime, runtime check, bi…
+validation              What validating a numeral means and who does it…  validate, validation, admissible, admissibility…
+naming                  What things are called, where the name is a cal…  name, naming, vocabulary, spelling, rename, ter…
+panel_conduct           How this panel is run and how its output is to …  panel, conduct, process, ack, ratification, con…
+
+20 rows in topic

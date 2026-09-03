@@ -1,0 +1,26 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+==============================================================
+A2  does turning the feature ON in the consumer fix arm A
+==============================================================
+--- A2.lib   leaky
+[exit 0]
+--- A2.test  same consumer, feature enabled in the CONSUMER
+[exit 0]
+==============================================================
+B2  was the ADT const parameter actually evaluated in the consumer
+==============================================================
+--- B2.lib       door
+[exit 0]
+--- B2.positive  asserts DECLARED == 13, must build
+[exit 0]
+--- B2.negative  asserts DECLARED == 12, MUST fail
+error[E0080]: evaluation panicked: assertion failed: Thirteen::DECLARED == 12
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/locus-b/mock/research/202608072330_the-numeral-canon-panel/252_probes/b_adt_const_params/forced_user_wrong.rs:10:15
+   |
+10 | const _: () = assert!(Thirteen::DECLARED == 12);
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+[exit 1]

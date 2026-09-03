@@ -1,0 +1,2 @@
+in_force in MAIN.md.tmpl: 0
+stated   in MAIN.md.tmpl: 4   (control, must be non-zero)

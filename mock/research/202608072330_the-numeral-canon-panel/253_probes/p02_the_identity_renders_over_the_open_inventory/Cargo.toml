@@ -1,0 +1,10 @@
+[package]
+name = "p02_the_identity_renders_over_the_open_inventory"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

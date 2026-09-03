@@ -1,0 +1,20 @@
+fmt                    all=1    obligation.toml=1 
+debug output           all=1    obligation.toml=1 
+nightly                all=26   dimension.toml=2 law-the-later-topics.toml=4 obligation.toml=2 probe.toml=7 proposal-the-later-topics.toml=5 proposal.toml=6 
+feature gate           all=12   obligation.toml=3 probe.toml=3 proposal.toml=6 
+generic_const_exprs    all=9    obligation.toml=2 probe.toml=3 proposal.toml=1 retirement.toml=3 
+printab                all=0    
+usize                  all=8    (control, must be non-zero)
+
+the fmt and debug-output hits, so a reader can see which tier each is in:
+./obligation.toml:114:need = "Debug output from every numeral, at every width and under every strategy, written into a caller-supplied fixed-size buffer with no alloc and no std."
+./obligation.toml:119:keywords = ["Debug", "fmt", "format", "print", "no_std", "no alloc", "core::fmt::Write", "buffer", "smoke test", "diagnostics"]
+
+ruling.toml alone, which is the governing tier:
+fmt                    0
+debug output           0
+nightly                0
+feature gate           0
+generic_const_exprs    0
+printab                0
+usize                  1   (control, must be non-zero)

@@ -1,0 +1,9 @@
+error[E0432]: unresolved import `arvo_format::IFixed`
+ --> src/the_ifixed_arm.rs:6:5
+  |
+6 | use arvo_format::IFixed;
+  |     ^^^^^^^^^^^^^^^^^^^ no `IFixed` in the root
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0432`.

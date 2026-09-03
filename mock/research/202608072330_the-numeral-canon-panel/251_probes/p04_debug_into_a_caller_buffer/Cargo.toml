@@ -1,0 +1,10 @@
+[package]
+name = "p04_debug_into_a_caller_buffer"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

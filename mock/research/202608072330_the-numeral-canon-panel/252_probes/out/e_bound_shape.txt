@@ -1,0 +1,10 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+==============================================================
+A3  a generic_const_exprs bound in a public signature
+==============================================================
+--- A3.lib      bound_lib
+[exit 0]
+--- A3.test     consumer with NO feature
+[exit 0]
+--- A3.control  same consumer, feature ON
+[exit 0]
