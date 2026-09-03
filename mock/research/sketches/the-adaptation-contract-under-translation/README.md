@@ -1,5 +1,12 @@
 # The adaptation contract under translation and under reflection
 
+Outcome: WORKS. Both laws are stateable over the shipped map, both regions
+decide them, and the const predicate a consumer would gate on agrees with the map
+on every cell of the cross. What this unblocks is the design round that writes
+the laws into `crates/arvo-format/DESIGN.md.tmpl` and the source changelist that
+moves the substance of these sweeps into the crate's own tests. What it blocks is
+nothing.
+
 What this establishes, and what it refutes. Five steps, thirty-nine verdict
 lines, all in `out/` and all reproducible with `./run` from this directory.
 
