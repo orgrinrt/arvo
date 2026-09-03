@@ -454,9 +454,11 @@ and `a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_
 come out of `60_stam_the_chain_derived_cold`, and the multiplicative row's `note` says outright
 that it is what makes the other row's window concept a costed design rather than a name. Three
 rows come out of `35_mcsherry_what_the_layers_above_need_from_the_numeral`, the fold row, the
-min-plus row and the splitting row. Counting distinct cited files across the ten gives six
-author-personas: mcsherry at 35, stam at 60, spj at 63, fallin and giesen at 79 and 90, rompf at
-43, and leroy at 161, 173 and 176. So ten rows over six seats, and the cluster looks broader
+min-plus row and the splitting row. Counting distinct cited files across the ten gives seven
+author-personas over nine files: mcsherry at 35, stam at 60, spj at 63, fallin at 79, giesen at
+90, rompf at 43, and leroy at 161, 173 and 176. Only one of the ten rows cites two personas and
+it is the strongest one. Seven of the ten sit on three personas, mcsherry with three rows and
+stam and leroy with two each, so the cluster looks broader
 than it is because rows are finer-grained than arrivals. Nothing in the registry surfaces that,
 and it is the single most misleading thing about reading the obligation's coverage.
 
