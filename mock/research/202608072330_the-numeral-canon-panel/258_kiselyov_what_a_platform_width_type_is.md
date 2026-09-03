@@ -4,17 +4,19 @@ Seat 258. Kiselyov. Q26, `question::what_a_platform_width_type_is`, open, `decid
 
 `195` called this "the cheapest of the nine to close" and `187` called the reconciliation behind
 it "worth a dispatch on its own". This is that dispatch. What it adds over both is that the step
-they left interpretive is measurable, and I measured it: four committed instruments, five
+they left interpretive is measurable, and I measured it: five committed instruments, seven
 paired refusals and eight cross-target builds of one source, every refusal paired with a
 control that differs from it in exactly one thing.
 
 **The short version.** None of the four options in the row is the answer, and a fifth already
 exists in the corpus and in the registry. The clause Q26's first option is built on does not
 exclude a platform-width type, and I establish that by its own criterion rather than by reading
-it more sympathetically. What the shipped design cannot do is express one at all, on any
-64-bit target, three ways, and the escape its own diagnostic names is closed by its own
-obligation. And no canon sentence can currently say where such a claim holds, because the axis
-it would be predicated over is not one of the twenty-five that exist.
+it more sympathetically. What the shipped design cannot do is express one at all on any
+64-bit target, refused three ways, with the escape its own diagnostic names closed by its own
+obligation. That refusal is an artifact rather than a wall: the same affine predicate with its
+endpoints derived rather than declared admits 64 and agrees with the shipped family at every
+width the shipped family has. And no canon sentence can currently say where any of this holds,
+because the axis it would be predicated over is not one of the twenty-five that exist.
 
 Every claim below is about `origin/dev` at `5644b8f0`, which is the base of this worktree.
 Instruments are under `258_probes/` with their sources, their controls and their raw output
@@ -347,7 +349,8 @@ width of the largest integer the coordinate can be carried in. **So a platform-w
 sits, by construction, at the boundary of the family's own self-description**, and any design
 representing slot indices in a host integer will meet it there. That is a structural property
 this width has and no other declared width does, and it is what a designer deriving from any
-answer to Q26 hits first.
+answer to Q26 hits first. Section 3.5 asks whether it is a wall or an artifact and finds an
+artifact, which is the half of this that a designer needs.
 
 ### 3.2 The locus clause discriminates, and rustc says it in the same words
 
@@ -450,6 +453,51 @@ finding holds in no situation involving that axis at all.
 That is the sharpest practical consequence of answering Q26 the way section 1 answers it. **If a
 platform-width numeral is a target-indexed family, the index is an axis, and it is not one.**
 
+### 3.5 The wall in 3.1 is an artifact, and the answer is about something buildable
+
+`258_probes/p05_is_the_wall_a_wall/`, one crate, one build, two negative controls committed.
+
+Section 3.1 left a question the answer to Q26 turns on. If a platform-width numeral is a
+target-indexed family of formats and arvo can never build one at the width every current machine
+has, then section 1 answers a question about something that does not exist, and saying so would
+be a better deliverable than the answer.
+
+**The canon does not fix the shape that refuses it.**
+`proposal::membership_of_the_representable_set_is_one_affine_predicate` says membership is "an
+affine slot function, a quantum per magnitude and a phase". It says nothing about what host type
+a slot index is carried in. The shipped `Slots` declares `MIN: Slot` and `MAX: Slot` where `Slot`
+is a newtype over `i64`, and that is a design choice with a canon that is silent above it.
+
+So the probe expresses the same predicate with the endpoints **derived on demand** rather than
+**declared as constants**: a range is its width and its signedness, and `min_index`, `max_index`,
+`index_count` and `contains_index` are functions over those, answered in whatever domain the
+caller has. It builds, at 64, at 100, at 126, and at the target's own width.
+
+**The agreement arm is the finding, not the 64-bit arm.** The derived endpoints equal the shipped
+family's declared ones at every one of the 62 widths it admits, both signednesses, five
+assertions each. The whole admitted set rather than three sampled widths, and a second arm
+compares the covered count against `ADMITTED_WIDTHS.len()` so that a macro invocation one width
+short fails rather than quietly covering less than it claims. Both were mutated and both fired:
+`the_agreement_arm_can_fail.stderr` and `the_coverage_arm_can_fail.stderr`.
+
+Without that arm this would be a different predicate that happens to reach further. With it,
+**it is the same predicate and the bound was in the coordinate rather than in the concept.**
+
+**What it does not establish, said plainly.** It is not a proposed design and I am not proposing
+one. It hands back a bare `i128`, which is the wrong shape for a stack whose own rule is that no
+public position carries a host primitive, and repairing that is the whole of the work this
+sketch skips. There are at least three other shapes that would also lift the bound, none of them
+tried here: widening `Slot`'s host type, stating the range as a minimum plus a count, or stating
+the maximum as an exclusive bound. Each moves the ceiling somewhere else rather than removing it,
+which is the property the derived form has and they do not, and that is an argument rather than a
+measurement because I did not build them.
+
+**What it does establish is the one thing section 1 needed.** The 64-bit refusal is a fact about
+where the shipped design stores an endpoint, not about what the canon admits, so the answer to
+Q26 is about a numeral arvo can build. It also gives whoever writes that design the property to
+aim at, which is that the observer's domain rather than the declaration's is what an endpoint
+costs: a caller comparing two indices of one range materialises no endpoint at all.
+
 ## 4. Three findings that are not the answer and travel with it
 
 ### 4.1 The option set is incomplete, and this is the second time it is said
@@ -549,6 +597,9 @@ it, and I have nothing to add to it).
 - the cross-target instance, which is section 3.3 and is the first place in this corpus where
   one source is compiled for four targets and the disagreement is exhibited rather than argued;
 - the absent axis, which is section 3.4 and section 4.3;
+- that the 64-bit wall is a fact about where an endpoint is stored rather than about what the
+  canon admits, which is section 3.5 and is what keeps section 1 from being an answer about
+  something unbuildable;
 - `Cap` being in the wrong question, which is section 4.2;
 - that Q26's own note now misdirects, which is section 2.1.
 
@@ -643,6 +694,7 @@ had opened at its source would not move anything. That is a judgement and it may
 I did not read `arvo-format`'s adaptation, rounding or apply surfaces at all, and nothing here
 claims anything about them.
 
-**Five paired refusals and eight cross-target builds, every control green.** Three of the four
-instruments are compile-outcome instruments and one is a registry census; they are independent in
-route and not in author, which is the limit on what four probes by one seat can be worth.
+**Seven paired refusals and eight cross-target builds, every control green.** Three of the five
+instruments are compile-outcome instruments, one is a registry census and one is a sketch;
+they are independent in route and not in author, which is the limit on what five probes by
+one seat can be worth.
