@@ -1,0 +1,50 @@
+918f914c fix: correct two stale counts and silence three dead typestate markers
+4decfbf0 docs: close the round the trunk merge needed
+04195146 docs: lock the src changelist
+21deaa9d docs: point the src changelist at the lines the autofix left
+6fc1920b fix: consolidate the two source halves the merge left at parent bytes
+3e512df6 docs: lock the doc changelist
+56cef396 chore: merge dev and follow the engine pin in the tool locks
+2a2995d4 research: gate the composition cluster and unstick the tool locks
+77b2a8f7 research: refuse the fourth consolidation and date what is owed
+228667cb docs: open the round the trunk merge needs
+bd2916f3 fix: stop three surfaces naming things arvo does not have
+ff6db524 fix: drop the local obligation-coverage, the pack ships it
+e98b7db3 chore: point every tool lockfile at the engine's own mockspace pin
+0f315b52 fix: drop the local rulings-with-no-verbatim, the pack ships it
+607651b1 chore: take the shared rustfmt and deny configs
+4c582833 fix: carry a version on every workspace dep so the crates can publish
+29f58b79 fix: pin every tool lockfile to one mockspace revision
+5db09992 research: seat 256 returns early, 244 already consolidated the sitting
+144a8c88 research: seat 256 returns early, 244 already consolidated the sitting
+f09c501a Merge pull request #109 from orgrinrt/research/the-primitive-surface-establish
+e0e2f3e1 docs: close the forcing-set round
+f470d16e docs: lock the src changelist
+9d7d65b6 research: establish the primitive, five candidate rows and what stays reserved
+f272d1bd test: pin the cancelling phase reaching the slot range
+bf892abb docs: reopen the src changelist after the second doc pass
+798a4ee1 docs: lock the doc changelist
+2f6d20d4 docs: say the transitive reach differs between const and codegen
+c7a098c5 test: pin that the cancelling branch decides the reach in const
+9a12b1cb research: measure the primitive surface again at b34d7a3c, and what the principles page names
+bf22469f docs: reopen the src changelist after the doc side reopened
+09d770d6 docs: drop the emphasis from the paragraphs this round rewrote
+868dda23 docs: state the no-emphasis rule in the writing-style template
+0420d18e docs: lock the doc changelist for the forcing-set round
+23697625 docs: say which reading of forcing a set is counted under
+9cc36839 docs: open a round on the forcing-set reading the last one got wrong
+b34d7a3c fix: point every tool lockfile at one mockspace revision
+099acaf5 docs: name where the primitives live, and say which are unbuilt
+8090e262 Merge pull request #108 from orgrinrt/wt/admission-contract
+0eba6a0d research: renumber the admission seat to 254, clear of the debug seat
+a65a3d55 Merge pull request #107 from orgrinrt/wt/debug-surface
+34ed0aa2 research: point seat 253's opening at the section that carries the distrust note
+213e63b9 research: repair seat 253's census extractor, which was losing a row
+9b270a94 research: land seat 253's probe lockfiles and the hook's own formatting
+daa46980 research: the admission contract's exposure list is derived, not chosen
+1e3aebde research: retake the 253 diagnostics after the hook reformatted the probes
+21a5798e research: the debug row has no subject and three arms are compiled
+fb6c843f Merge pull request #104 from orgrinrt/design/primitive-surface-locus-b
+f445d195 chore: close design round 202609021905
+8fadb5ee docs: lock the src changelist
+45607b29 fix: name what contains forces, and pin the other forcing verb
