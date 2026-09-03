@@ -1,6 +1,13 @@
-# 258. What a platform-width type is, decided by compilation rather than by reading
+# 260. What a platform-width type is, decided by compilation rather than by reading
 
-Seat 258. Kiselyov. Q26, `question::what_a_platform_width_type_is`, open, `decider = "panel"`.
+Seat 260. Kiselyov. Q26, `question::what_a_platform_width_type_is`, open, `decider = "panel"`.
+
+This file and its probes were written as seat 258 and are seat 260. Seat 258 was already held on
+the trunk by `258_orchard_what_the_admission_and_standing_sitting_settled.md` and its own
+`258_probes/p1` through `p9`, which this seat could not see from its base. Two seats at one number
+merge without a conflict, because the filenames are disjoint, and every later citation of
+`258_probes/` would then name two seats' instruments at once. The number is an identifier and
+carries no meaning, so it was reallocated rather than argued over.
 
 `195` called this "the cheapest of the nine to close" and `187` called the reconciliation behind
 it "worth a dispatch on its own". This is that dispatch. What it adds over both is that the step
@@ -19,7 +26,7 @@ width the shipped family has. And no canon sentence can currently say where any 
 because the axis it would be predicated over is not one of the twenty-five that exist.
 
 Every claim below is about `origin/dev` at `5644b8f0`, which is the base of this worktree.
-Instruments are under `258_probes/` with their sources, their controls and their raw output
+Instruments are under `260_probes/` with their sources, their controls and their raw output
 committed beside them.
 
 ## 0. The two gates
@@ -121,7 +128,7 @@ while only one has standing.
 **Option 2, a degenerate instance of the shape family. Holds within one compilation, and it is
 not degenerate.** At a fixed target `USize` is `UFixed<W, 0>` at one `W`, with the ambient
 domain, the quantum, the slot range and the phase every other point of the parameterisation
-has, and nothing about it is a special case. `258_probes/p02` compiles a target-derived
+has, and nothing about it is a special case. `260_probes/p02` compiles a target-derived
 declaration beside a literal one and reads every coordinate back at const time; they are
 indistinguishable through the contract and both are zero sized.
 
@@ -132,7 +139,7 @@ instance is one where a coordinate collapses. Nothing here collapses.
 target is already an axis of the compilation, and every const parameter of every format is
 resolved along it. Adding it to the parameterisation would put a coordinate into the format
 that no value carries, that no operation reads, and that `contains` would have to quantify over
-while being unable to vary it within a build. `258_probes/p02` shows the target reaching the
+while being unable to vary it within a build. `260_probes/p02` shows the target reaching the
 existing coordinate through the ordinary const generic position with nothing added.
 
 It does hold somewhere else, and section 4.3 is that place: the target is an axis a **finding**
@@ -291,7 +298,7 @@ own output.
 
 ### 3.1 The shipped design cannot express a 64-bit platform width, three ways
 
-`258_probes/p01_the_platform_width_has_no_format/`, six rustc invocations,
+`260_probes/p01_the_platform_width_has_no_format/`, six rustc invocations,
 `build_the_refusal.sh`, output in `run.out`, every stderr committed.
 
 **Pair A, the shipped family.** `UFixed<64, 0>` and `Integer<64>` are not `Format`s.
@@ -354,7 +361,7 @@ artifact, which is the half of this that a designer needs.
 
 ### 3.2 The locus clause discriminates, and rustc says it in the same words
 
-`258_probes/p02_the_locus_clause_discriminates/`, four rustc invocations plus a cargo build,
+`260_probes/p02_the_locus_clause_discriminates/`, four rustc invocations plus a cargo build,
 output in `run.out`.
 
 Three declarations, all written as `Format` implementations.
@@ -400,7 +407,7 @@ all.
 
 ### 3.3 One name, two representable sets, four targets, one source
 
-`258_probes/p03_one_name_two_formats/`, `measure.sh`, `measured.tsv`, sixteen stderrs.
+`260_probes/p03_one_name_two_formats/`, `measure.sh`, `measured.tsv`, sixteen stderrs.
 
 The alias is declared once. The build runs for every installed target, twice per target: with an
 arm asserting what is true of it at 64 bits, and with that arm cut out.
@@ -431,7 +438,7 @@ not.
 
 ### 3.4 There is no axis to predicate a target-indexed claim on
 
-`258_probes/p04_no_axis_to_predicate_a_target_on/measure.sh`, output in `measure.out`.
+`260_probes/p04_no_axis_to_predicate_a_target_on/measure.sh`, output in `measure.out`.
 
 `ruling::the_work_is_predicated_arms_composed` puts every finding under a predicate, and
 `mock/registry/dimension.toml` is the roster of axes a predicate may be stated over.
@@ -455,7 +462,7 @@ platform-width numeral is a target-indexed family, the index is an axis, and it 
 
 ### 3.5 The wall in 3.1 is an artifact, and the answer is about something buildable
 
-`258_probes/p05_is_the_wall_a_wall/`, one crate, one build, two negative controls committed.
+`260_probes/p05_is_the_wall_a_wall/`, one crate, one build, two negative controls committed.
 
 Section 3.1 left a question the answer to Q26 turns on. If a platform-width numeral is a
 target-indexed family of formats and arvo can never build one at the width every current machine
@@ -653,6 +660,26 @@ change.
 (`src/custom_lints.rs:192`) emits one patch keyed on one url; emitting one per known spelling
 of the same repository, or normalising the url before keying, would make every consumer immune.
 Its own comment anticipates the rev-spec mismatch and not the scheme mismatch, which is the hole.
+
+### 6.1 The fix named above is not the fix that landed, added after this file was pushed
+
+The paragraph above records `mockspace_git` at the repo root, committed at `83db4508`, as the
+repair. Neither survives. `git rev-parse --verify 83db4508` answers `Not a valid object name` in
+this repository, so the hash names nothing published, and `mockspace_git` appears in no
+`mockspace.toml` on the trunk or on this branch. That commit was dropped deliberately when this
+seat's work was rebased onto the trunk.
+
+What landed is the opposite repair, and it is the better one. Everything converged on `https`
+rather than on `ssh`, because `https` is the engine's own canonical spelling, carried as
+`CANONICAL_URL` in the launcher with a test asserting it holds no `git@`, and because mockspace is
+a public repository, so an anonymous fetch of it works and the private-repo reasoning that would
+have argued for `ssh` does not apply. `1ac3c8de` moved arvo's five tool manifests to it, and the
+lint pack moved with them. The engine now writes both patch tables rather than one, which is the
+upstream half this section called for and which fixes every consumer rather than this one.
+
+The measurement in the paragraph above stands as measured. Three configurations were compared and
+the counts are right. What was wrong was reporting a candidate repair as landed, at a hash nobody
+can resolve, and the direction it picked was the one the repository rejected.
 
 ## 7. What this leaves owed
 
