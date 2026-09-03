@@ -3,7 +3,7 @@ profile: release, opt-level 3, no feature gates
 driver:  run.sh in this directory
 
     build:    Compiling composition-contracts-probes v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-composition/mock/research/202609030724_probes)
-    build:     Finished `release` profile [optimized] target(s) in 0.41s
+    build:     Finished `release` profile [optimized] target(s) in 0.18s
 probe 2: equality transport, as a congruence and as an adequacy.
 base: unsigned, width 4, fraction width zero, values 0..=15.
 

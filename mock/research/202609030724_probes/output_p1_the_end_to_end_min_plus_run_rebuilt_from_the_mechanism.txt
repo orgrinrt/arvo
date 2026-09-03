@@ -3,7 +3,7 @@ profile: release, opt-level 3, no feature gates
 driver:  run.sh in this directory
 
     build:    Compiling composition-contracts-probes v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-composition/mock/research/202609030724_probes)
-    build:     Finished `release` profile [optimized] target(s) in 0.74s
+    build:     Finished `release` profile [optimized] target(s) in 0.40s
 probe 1: the end-to-end min-plus run, with the sentinel encoding
 as an axis. four nodes, one fixed topological order, six ordered
 slots each absent or carrying a weight in 0..=MAX, (MAX+2)^6
