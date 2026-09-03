@@ -4,11 +4,11 @@ version = 4
 
 [[package]]
 name = "notko"
-version = "0.0.0"
+version = "0.0.1"
 
 [[package]]
 name = "notko-macros"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "notko-macros-core",
  "proc-macro2",
@@ -16,7 +16,7 @@ dependencies = [
 
 [[package]]
 name = "notko-macros-core"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "proc-macro2",
  "quote",
