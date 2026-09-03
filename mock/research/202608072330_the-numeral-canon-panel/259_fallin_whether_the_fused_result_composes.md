@@ -337,7 +337,20 @@ So my step 01 and the committed row are both right about their own operation.
 Neither is a measurement error. What sits between them is an unanswered question
 about what the word `half_up` names.
 
-## 8. A locus challenge: that question has no row
+That is the honest description of the canon's position and it understates the
+consequence, which is worth saying plainly and was added after this file was
+pushed. The canon has not decided which operation the name denotes, but arvo
+ships exactly one, and it is the reading under which the committed row's holding
+region is wrong. So a consumer who reads
+`law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`, sees
+`half_up` in its holding region, and reaches for the `half_up` this crate
+actually provides, is licensed to fuse where fusing changes the answer. F3
+measures that at 132,850 positions with witness `(-3, -1, -4)`. Nothing in the
+registry says so, no lint reaches it, and the row reads as settled. Which of the
+two readings the canon should pick is a panel call and I have not made it; that
+the current pairing misleads a reader today is not a call, it is a measurement.
+
+## 8. A locus challenge: no row asks what `half_up` denotes
 
 `question::which_tie_direction_an_unqualified_nearest_names` refers to the
 question in its second option, saying `half_up` "is itself two operations under
@@ -346,8 +359,9 @@ answering by assuming it "would import an open question as a premise".
 `crates/arvo-format/src/standards.rs` cites that same row for it, at the `FIXME`
 in `rounding_method`.
 
-There is no such row. `which_tie_direction_an_unqualified_nearest_names` is about
-the value `nearest` in two proposal rows, not about `half_up`. I grepped every
+There is no row asking that. `which_tie_direction_an_unqualified_nearest_names`
+exists and is about the value `nearest` in two proposal rows, not about what
+`half_up` denotes. I grepped every
 file under `mock/registry/` for a row asking what tie direction `half_up` names
 and there is none; the whole registry's mentions of `half_up` are the vocabulary
 ruling, the two law rows' regions, one proposal's region, one retirement, and the
@@ -478,6 +492,25 @@ on that diagonal. Occupancy is structural: `adapt` takes a declared signature an
 an exact position, `crates/arvo-format/src/adapt.rs` says a declared signature
 carries no carrier and none can be reached from it, so occupancy is not
 observable by the thing measured.
+
+**Which `half_up` the arms name, added after this file was pushed.** Several of
+the blocks above give the rounding axis a set containing `half_up`, and section 7
+proves that token denotes two operations on a signed domain, so leaving it
+unqualified hands a reader the same ambiguity this file is about. Grep the blocks
+rather than taking a count from here. In every one of them it is the shipped
+reading, ties away from zero, and that is a fact about the instrument rather than
+a choice made now: section 4 states that steps 01 to 05 run
+`arvo_format::apply::adapt` at `Fi` and `Ufi` with no reimplementation of any
+rounding mode, and every arm is drawn from those steps. Step 06 is the only one
+that models a mode, it says so, and it contributes no arm. Where the block is
+unsigned the qualification changes nothing, because F5 measures the two readings
+as one function on a non-negative domain over 18 cells with 0 differing
+positions. Where it is signed it is what makes the region readable at all.
+
+The blocks are left as they were written. A predicate states what was established
+when it was written and is not edited afterwards, so the qualification goes here
+rather than into the blocks, and a reader gating on one of them takes both
+together.
 
 ## 10. What I suggest, and the coordinator judges promotion
 
