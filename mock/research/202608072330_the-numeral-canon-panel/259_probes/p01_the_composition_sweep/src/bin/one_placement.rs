@@ -36,7 +36,8 @@ use p01_the_composition_sweep::bounds;
 
 /// A format wide enough that the intermediate's range bound never bites, at the
 /// declared grid. The rounding coordinate is the cell's own and the policy is
-/// never reached, which the widths make true and G0 measures.
+/// never reached. The widths make that true and the assertion at the end of
+/// `cell` measures it per cell rather than leaving it to the sentence.
 type WideAt<const F: i32> = Fi<40, F>;
 
 struct Cell {
