@@ -1,0 +1,35 @@
+# E. A probe crate that drives the three shipped predicate lints directly.
+#
+# It exists because `cargo mock` cannot build this repo's lint pack at all at
+# this base: the engine writes the mockspace dependency and its `[patch]` table
+# with the `https://` spelling while `[lint-crates]` and every tool crate use
+# `ssh://git@`, cargo keys a git source by the literal URL, and two copies of
+# `mockspace-lint-rules` enter the graph. `d_run_full.txt` is that failure and
+# `f_the_url_mismatch.sh` isolates it.
+#
+# So this crate pulls the lint sources in by `#[path]`, the way the generated
+# crate does, and depends on `mockspace-lint-rules` once, at the ssh spelling
+# only. Nothing else is a dependency, so nothing else can bring a second copy.
+#
+# `test = false` on the lib is load-bearing. The lint files carry their own
+# `#[cfg(test)] mod tests`, which reach for `crate::canon_lint_testkit` and
+# `crate::__mockspace_collect_lints`, neither of which exists outside the
+# engine's generated pack. Compiling the lib without `cfg(test)` leaves those
+# blocks out, so the arms live in `tests/drive.rs` as an integration test.
+#
+# Not part of any workspace: `[workspace]` empty, so it does not join arvo's.
+[workspace]
+
+[package]
+name = "arvo-259-lintdrive"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+test = false
+doctest = false
+
+[dependencies]
+mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

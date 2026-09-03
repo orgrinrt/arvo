@@ -1,0 +1,27 @@
+### the target before planting: 2224 lines
+
+### L1, the baseline, before anything is planted
+  findings from the three lints under test on the untouched registry: 0
+  PASS, the baseline is clean
+
+### planting six candidate rows
+  target is now 2359 lines
+
+### the run
+
+### verdict per planted row
+  zz_probe_argument_with_no_region               did NOT draw an-established-claim-carries-no-region (hits: 0)
+  zz_probe_argument_with_a_structural_axis       did NOT draw axis-not-declared (hits: 0)
+  zz_probe_argument_with_universal_on_every_axis SILENT   as predicted
+  zz_probe_normative_carrying_its_instrument     did NOT draw an-imposition-rests-on-no-instrument (hits: 0)
+  zz_probe_normative_carrying_a_region           did NOT draw an-imposed-proposition-carries-a-region (hits: 0)
+  zz_probe_control_an_ordinary_numeric_row       SILENT   as predicted
+
+### L3, at least one planted row must be reported
+  FAIL, nothing fired, so the plant may never have been read
+
+### restoring
+  target is 2224 lines, was 2224
+  L4a PASS, length restored
+  git reports 0 modified path(s) under mock/registry
+  L4b PASS, the registry is untouched

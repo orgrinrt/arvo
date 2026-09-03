@@ -1,0 +1,107 @@
+### C1, the fields the checkers read as a region
+120:pub const PREDICATE_FIELDS: [(&str, &str); 3] = [
+121-    ("proposal", "predicate"),
+122-    ("law", "holds"),
+123-    ("law", "fails"),
+124-];
+125-
+  K1: constant declares 3 entries, the list holds 3
+  PASS
+
+### C2, which namespaces can state a region, against every namespace there is
+  dimension    no region field at all
+  law          region-bearing
+  obligation   no region field at all
+  probe        no region field at all
+  proposal     region-bearing
+  question     no region field at all
+  retirement   no region field at all
+  ruling       no region field at all
+  strategy     no region field at all
+  topic        no region field at all
+
+### C3, the declared axes, classified by whether their subject is a numeral or a machine
+  numeric/machine  integer_width
+  numeric/machine  fraction_width
+  numeric/machine  total_width
+  numeric/machine  signedness
+  numeric/machine  overflow_policy
+  numeric/machine  rounding
+  numeric/machine  operation
+  numeric/machine  arity
+  numeric/machine  chain_length
+  numeric/machine  container
+  numeric/machine  alignment
+  numeric/machine  access_pattern
+  numeric/machine  target_features
+  numeric/machine  threads
+  numeric/machine  strategy
+  numeric/machine  ambient_domain
+  numeric/machine  radix
+  numeric/machine  accumulator_width
+  numeric/machine  toolchain
+  numeric/machine  build_profile
+  numeric/machine  operand_window
+  numeric/machine  occupancy
+  numeric/machine  association
+  numeric/machine  leaf_aliasing
+  numeric/machine  phase
+  --- axes: 25, not classified as numeric or machine: 0
+  K2, the classifier must be able to say OTHER:
+    PASS, a planted structural coordinate classifies as OTHER
+
+### K5, the predicate reader stops at the closing bracket
+  entries read: 1 -> threads: threads = 1
+  PASS, one entry, so provenance was not swallowed
+
+### C4, sentence kind against topic, cut by arvo versus the canon's own machinery
+  machinery topics: canon_form the_predicate_notation naming panel_conduct
+  topics in use: algebraic_laws arvo_identity binding_time canon_form execution_environment naming operating_constraints panel_conduct rounding the_chain the_container_premise the_format the_number_system the_predicate_notation the_primitive the_realisation_map the_strategy_axis the_strategy_object validation 
+  K3: machinery topics present among those in use: 4 of 4
+    PASS
+
+  kind             arvo  machinery
+  theorem             8          0
+  measured           32          1
+  enumeration         2          1
+  definition          1          0
+  normative          62          8
+  argument           10          2
+  K4: rows counted by kind 127, rows in the namespace 127
+    PASS
+
+### C5, every machinery-topic row, and what region it actually states
+  normative    evidence:no   every_canon_sentence_names_the_prefix_it_quantifies_over
+      region: none
+  normative    evidence:no   an_instrument_is_mutated_and_the_battery_is_made_to_notice
+      region: none
+  normative    evidence:no   a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going
+      region: none
+  normative    evidence:no   arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached
+      region: none
+  argument     evidence:no   one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both
+      region: total_width: W = 4
+      region: fraction_width: F any
+      region: signedness: signedness = signed
+      region: overflow_policy: overflow policy = saturate
+      region: operation: operation = add
+      region: arity: arity = 3
+  enumeration  evidence:no   the_four_consolidations_contradict_each_other_nowhere
+      region: total_width: W in 3..=7
+      region: fraction_width: F = 0
+      region: signedness: signedness = signed
+      region: overflow_policy: overflow policy = saturate
+      region: operation: operations {add, mul}
+      region: arity: arity = 3
+  measured     evidence:yes  most_committed_bench_regions_predate_the_harness_cross_variant_validation
+      region: threads: threads = 1
+  argument     evidence:no   the_derived_laws_units_re_runs_reproduced_and_its_defects_were_all_in_blind_spots
+      region: threads: threads = 1
+  normative    evidence:no   the_topics_form_a_stack_a_frame_and_the_canons_own_machinery
+      region: none
+  normative    evidence:no   a_transfer_argument_is_a_construction_warrant_and_needs_no_new_rule
+      region: none
+  normative    evidence:no   const_availability_is_the_axis_and_a_trajectory_condition_is_not_an_arm
+      region: none
+  normative    evidence:no   naming_is_partial_and_injective_or_it_is_broken
+      region: none

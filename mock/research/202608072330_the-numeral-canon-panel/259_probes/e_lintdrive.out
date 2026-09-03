@@ -1,0 +1,18 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running tests/drive.rs (target/debug/deps/drive-05eee3437f13d65e)
+
+running 11 tests
+test d5_an_imposed_structural_claim_may_not_carry_a_region_either ... ok
+test d1_argument_with_no_region_is_refused_as_claiming_the_whole_space ... ok
+test d2_a_structural_axis_is_refused_because_nothing_declares_it ... ok
+test control_the_declared_axis_list_here_matches_the_registry ... ok
+test d4_an_imposed_structural_claim_may_not_cite_its_instrument ... ok
+test control_an_ordinary_numeric_row_draws_nothing ... ok
+test control_each_lint_fires_on_its_own_canonical_breach ... ok
+test d3_every_declared_axis_at_any_is_accepted_by_every_lint ... ok
+test d6_a_borrowed_region_passes_every_lint ... ok
+test d7_every_declared_sentence_kind_against_the_region_obligation ... ok
+test d8_narrowing_any_single_axis_is_equally_acceptable_to_the_checker ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

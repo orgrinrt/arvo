@@ -1,0 +1,227 @@
+    Blocking waiting for file lock on package cache
+   Compiling mockspace-lints-e8889c0949f25c6f v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/target/mockspace-lints)
+error[E0308]: mismatched types
+    --> src/lib.rs:151:36
+     |
+ 151 |     mockspace_extra_lints::collect(pack);
+     |     ------------------------------ ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
+     |     |
+     |     arguments to this function are incorrect
+     |
+note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ------------------- this is the found type
+     |
+    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
+     = help: you can use `cargo tree` to explore your dependency tree
+note: function defined here
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
+     |
+1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
+     |                  ^^^^^^^
+     |
+    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-extra-lints-5f2ad990fc8d8d81/6d2c85a/src/lib.rs:73:1
+     |
+  73 | / mockspace_lint_rules::lint_pack! {
+  74 | |     lints: [
+  75 | |         NoAlloc,
+  76 | |         NoStd,
+...    |
+ 110 | |     ],
+ 111 | | }
+     | |_- in this macro invocation
+     = note: this error originates in the macro `mockspace_lint_rules::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+    --> src/lib.rs:152:49
+     |
+ 152 |     arvo_a_panel_catalogue_is_readable::collect(pack);
+     |     ------------------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
+     |     |
+     |     arguments to this function are incorrect
+     |
+note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ------------------- this is the found type
+     |
+    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
+     = help: you can use `cargo tree` to explore your dependency tree
+note: function defined here
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
+     |
+1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
+     |                  ^^^^^^^
+     |
+    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/a-panel-catalogue-is-readable/src/lib.rs:263:1
+     |
+ 263 | / mockspace::lint_pack! {
+ 264 | |     repo_lints: [APanelCatalogueIsReadable],
+ 265 | | }
+     | |_- in this macro invocation
+     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+    --> src/lib.rs:153:37
+     |
+ 153 |     arvo_awaiting_a_ruling::collect(pack);
+     |     ------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
+     |     |
+     |     arguments to this function are incorrect
+     |
+note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ------------------- this is the found type
+     |
+    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
+     = help: you can use `cargo tree` to explore your dependency tree
+note: function defined here
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
+     |
+1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
+     |                  ^^^^^^^
+     |
+    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/awaiting-a-ruling/src/lib.rs:374:1
+     |
+ 374 | / mockspace::lint_pack! {
+ 375 | |     tools: [AwaitingARuling],
+ 376 | | }
+     | |_- in this macro invocation
+     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+    --> src/lib.rs:154:39
+     |
+ 154 |     arvo_rounding_vocabulary::collect(pack);
+     |     --------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
+     |     |
+     |     arguments to this function are incorrect
+     |
+note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ------------------- this is the found type
+     |
+    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
+     = help: you can use `cargo tree` to explore your dependency tree
+note: function defined here
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
+     |
+1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
+     |                  ^^^^^^^
+     |
+    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/rounding-vocabulary/src/lib.rs:472:1
+     |
+ 472 | / mockspace::lint_pack! {
+ 473 | |     tools: [RoundingVocabulary],
+ 474 | | }
+     | |_- in this macro invocation
+     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+    --> src/lib.rs:155:33
+     |
+ 155 |     arvo_the_positions::collect(pack);
+     |     --------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
+     |     |
+     |     arguments to this function are incorrect
+     |
+note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ------------------- this is the found type
+     |
+    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
+     = help: you can use `cargo tree` to explore your dependency tree
+note: function defined here
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
+     |
+1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
+     |                  ^^^^^^^
+     |
+    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/the-positions/src/lib.rs:282:1
+     |
+ 282 | / mockspace::lint_pack! {
+ 283 | |     tools: [ThePositions],
+ 284 | | }
+     | |_- in this macro invocation
+     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+    --> src/lib.rs:156:37
+     |
+ 156 |     arvo_unasked_questions::collect(pack);
+     |     ------------------------------- ^^^^ expected `mockspace_lint_rules::LintPack`, found `LintPack`
+     |     |
+     |     arguments to this function are incorrect
+     |
+note: there are multiple different versions of crate `mockspace_lint_rules` in the dependency graph
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ------------------- this is the found type
+     |
+    ::: /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1486:1
+     |
+1486 | pub struct LintPack {
+     | ^^^^^^^^^^^^^^^^^^^ this is the expected type
+     = help: you can use `cargo tree` to explore your dependency tree
+note: function defined here
+    --> /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/b57007c/lint-rules/src/lib.rs:1470:16
+     |
+1470 |           pub fn collect(#[allow(unused_variables)] pack: &mut $crate::LintPack) {
+     |                  ^^^^^^^
+     |
+    ::: /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/tools/unasked-questions/src/lib.rs:366:1
+     |
+ 366 | / mockspace::lint_pack! {
+ 367 | |     tools: [UnaskedQuestions],
+ 368 | | }
+     | |_- in this macro invocation
+     = note: this error originates in the macro `mockspace::lint_pack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mockspace-lints-e8889c0949f25c6f` (lib) due to 6 previous errors
+
+BLOCKED: this repo's custom lints could not be built, so no lint below
+them ran. Nothing was checked.
+
+  the build reported:
+    building the custom-lint cdylib failed; see cargo output above
+
+  declared in:
+    /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mockspace.toml
+
+  what to check, most likely first:
+    - a `[lint-crates]` entry pinned to a branch that has stopped
+      moving. The head still resolves, so nothing looks stale, but the
+      pack ages against an engine that keeps moving. Point it at the
+      branch the pack is actually developed on.
+    - a `[lint-crates]` key that is not the pack's package name. It is
+      used verbatim as the cargo dependency name and as the Rust
+      identifier, so a renamed pack needs the key renamed with it.
+    - a local lint in this repo's lints directory still on an older
+      trait shape than the engine expects.
+
