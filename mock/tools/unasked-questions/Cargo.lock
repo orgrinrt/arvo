@@ -65,7 +65,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "mockspace-lint-rules"
 version = "0.0.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#a7dd822305629e54c6ed4ed2c5670840ecab2677"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#a7dd822305629e54c6ed4ed2c5670840ecab2677"
 dependencies = [
  "toml",
  "tree-sitter",
