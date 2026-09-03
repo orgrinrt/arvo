@@ -1,0 +1,22 @@
+### what the renderer prints
+------------------------------------------------
+the_realisation_map_is_one_map_with_two_regions
+no_multiplicative_structure_survives_a_nonzero_…
+an_additive_verdict_is_independent_of_the_fract…
+a_compile_time_strategy_selection_leaves_no_res…
+the_rationalisability_counts_on_the_committed_c…
+staged_narrowing_disagrees_with_direct_narrowin…
+
+6 rows in proposal
+
+### the same six ids, out of the TOML
+no_multiplicative_structure_survives_a_nonzero_fraction_width
+an_additive_verdict_is_independent_of_the_fraction_width
+a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body
+the_rationalisability_counts_on_the_committed_carrier_table
+staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even
+the_realisation_map_is_one_map_with_two_regions
+
+### control: at least one printed cell must be shorter than its real id
+  rendered cells carrying an ellipsis: 5
+  PASS, the renderer truncates
