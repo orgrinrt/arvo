@@ -1,0 +1,15 @@
+   Compiling the-adaptation-contract-under-translation v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/fma-arm/mock/research/sketches/the-adaptation-contract-under-translation)
+warning: method `translated_high` is never used
+   --> src/bin/../predicate.rs:143:18
+    |
+114 | impl Reach {
+    | ---------- method in this implementation
+...
+143 |     pub const fn translated_high(self) -> i64 {
+    |                  ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `the-adaptation-contract-under-translation` (bin "s05_the_predicate") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 1.21s
+exit=0

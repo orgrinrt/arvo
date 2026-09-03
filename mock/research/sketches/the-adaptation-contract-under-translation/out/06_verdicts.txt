@@ -1,0 +1,39 @@
+W1: no answer left the wide range, so the rounding region is what was measured -> HELD
+W2: the residue set reaches an exactly-half position -> HELD
+W3: the slot band reaches a negative position -> HELD
+W4: the instrument separates: some mode commutes on the full domain and some does not -> HELD
+W4b: no cell's verdict moved with the dither, so the stochastic answer is about the mode -> HELD
+W4c: no cell holding at the band on zero broke at a band far from it -> HELD
+W5: collapsing the band to one slot reports every mode equivariant, which is what a vacuous domain looks like -> HELD
+W6: every witness re-checked against the map: 7 of 7 -> HELD
+W7: the no-negatives verdict is the same on an unsigned format: 6 of 6 modes -> HELD
+W8: the even-slot domain separates the parity reader from the sign reader -> HELD
+C1: the completion's answer on a grid position does not move with the rounding mode, so the completion region is what was measured -> HELD
+C2: the instrument separates: some policy commutes over both-sided excursions and some does not -> HELD
+C3: with no excursion at all every policy commutes, which is what a vacuous restriction looks like -> HELD
+C4: the hand-worked signed witness is direct = 15 and staged = -1, got 15 and -1 -> HELD
+C5: the unsigned range still breaks on a low excursion: direct = 5 and staged = 10, got 5 and 10 -> HELD
+C6: unsigned saturation commutes once nothing goes below the bottom, over 3072 pairs of which 64 were above the top -> HELD
+C7: the same restriction leaves the signed range broken, so C6 is about which signs the translations carry -> HELD
+C8: wrapping commutes over every range and every excursion set measured -> HELD
+C9: the mode-blindness control ran all 6 modes -> HELD
+R1: the law holds in a cell exactly when both region properties do: 432 of 432 cells agree -> HELD
+R2: the cross reaches cells where the law holds and cells where it fails -> HELD
+R3: the cross reaches cells where each region property holds and where it fails -> HELD
+R4: the values reaching the completion left the range, so the homomorphy question was not vacuous -> HELD
+R5: neither property alone decides the law: equivariance alone agrees in 304 of 432 cells and homomorphy alone in 388 -> HELD
+R6: the hand-worked pair: the in-range case agrees at -1 and -1, and the excursion breaks at direct=15 staged=-1 -> HELD
+N1: the whole map reflects exactly when both regions do: 54 of 54 cells agree, over 194940 positions -> HELD
+N2: the instrument separates: 3 of six modes reflect and the rest do not -> HELD
+N3: over the six shipped modes on a domain reaching negatives, the two symmetries partition: 0 have both and 0 have neither -> HELD
+N4: floor sends one and a half to 1 and its negation to -2, and -2 is not -1 -> HELD
+N5: toward zero sends one and a half to 1 and its negation to -1 at the same position -> HELD
+N6: saturation reflects on a symmetric range and not on a two's complement one -> HELD
+N7: wrapping reflects on every range measured, asymmetric ones included -> HELD
+P1: the relocation predicate is never unsound: 0 cells said the law holds where the map says it does not -> HELD
+P2: the relocation predicate is exact on 432 of 432 cells, with 0 conservative refusals -> HELD
+P3: the reflection predicate is never unsound and is exact on 54 of 54 cells -> HELD
+P4: the rounded slot is the position's slot or the next one, over 116964 positions -> HELD
+P5: over the six shipped names, commuting with reflection equals reading something beyond the residue -> HELD
+P6: the predicate answers both ways: 196 yes and 236 no -> HELD
+P7: the conservative default licenses only cells where both regions commute unconditionally -> HELD
