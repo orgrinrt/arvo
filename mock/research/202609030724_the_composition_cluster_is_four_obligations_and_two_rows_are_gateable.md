@@ -564,6 +564,31 @@ refuted runs produced, because the second of them turned out to be the finding a
 control that only ever passes is not a control. The instrument as committed carries six controls
 and all six pass.
 
+## A fourth blocker, which produced a false green and then a false red
+
+After the lockfile fix the suite went from one failing tree to two, and the new failure was the
+lints tree, which is the one carrying all 676 tests. It read exactly like a regression I had
+caused. It was not, and the diagnosis is worth recording because both of its faces are lies
+about the source.
+
+The error is `E0308` on `LintPack`, with rustc noting multiple different versions of
+`mockspace_lint_rules` and printing the same checkout path for the expected and the found type.
+`cargo tree -i mockspace-lint-rules` in that crate shows one copy reaching everything, and plain
+`cargo build` and `cargo test` in that same directory both succeed. The two disagree because
+`cargo mock test` builds into its own target directory at `mock/target/mockspace-test`, and that
+directory held two `libmockspace_lint_rules` rlibs at different hashes, left over from the
+engine pin having moved under it. Clearing the generated lint crate does not touch that
+directory and neither does clearing the tools'. `rm -rf mock/target/mockspace-test` fixes it in
+one command and the suite returns to 676 passing with the bench tree the only failure.
+
+The false green is the worse half and it came first. Before the lockfile fix, the same directory
+held artifacts that were merely stale rather than duplicated, and the suite reported 676 passing
+lint tests against a generated crate that could not be rebuilt from its own manifest. I only
+found that out by restoring the old lockfiles and regenerating from scratch, which fails
+identically, so the green I measured at the top of this file was an artifact rather than a fact.
+Both readings of that suite in one sitting were wrong, in opposite directions, and nothing in
+either output said so.
+
 ## A count of my own that was wrong, kept rather than tidied
 
 The law-row figure in sections five and eleven was twelve until I checked it. I had counted the
