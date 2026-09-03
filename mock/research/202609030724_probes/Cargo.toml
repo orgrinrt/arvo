@@ -1,0 +1,24 @@
+# Free-standing: an empty `[workspace]` table stops cargo walking up into
+# `mock/Cargo.toml`, so this probe needs no edit to the member or exclude lists
+# and touches nothing in the source tier.
+[workspace]
+
+[package]
+name = "composition-contracts-probes"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+
+[[bin]]
+name = "p1_the_end_to_end_min_plus_run_rebuilt_from_the_mechanism"
+path = "arms/p1_the_end_to_end_min_plus_run_rebuilt_from_the_mechanism.rs"
+
+[[bin]]
+name = "p2_equality_transports_as_a_congruence_and_not_as_an_adequacy"
+path = "arms/p2_equality_transports_as_a_congruence_and_not_as_an_adequacy.rs"
+
+[profile.release]
+opt-level = 3

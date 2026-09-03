@@ -1,0 +1,41 @@
+tool:    rustc 1.98.0-nightly (57d06900f 2026-05-27)
+profile: release, opt-level 3, no feature gates
+driver:  run.sh in this directory
+
+    build:    Compiling composition-contracts-probes v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-composition/mock/research/202609030724_probes)
+    build:     Finished `release` profile [optimized] target(s) in 0.18s
+probe 2: equality transport, as a congruence and as an adequacy.
+base: unsigned, width 4, fraction width zero, values 0..=15.
+
+== the rational construction, which normalises ==
+  A1 congruence, lifted implies denoted: 0 violations of 57600 ordered pairs
+  A2 adequacy,   denoted implies lifted: 688 violations of 57600 ordered pairs
+      first witness: (0/1) against (0/2)
+
+== the pair construction, which does not ==
+  A3 congruence, lifted implies denoted: 0 violations of 65536 ordered pairs
+  A4 adequacy,   denoted implies lifted: 0 violations of 65536 ordered pairs
+
+== the predicate half, for contrast ==
+  A5 rational, borrowed admission rule: admits 16 of 256 the construction refuses
+  A6 pair, componentwise lift of the base refinement: disagrees on 30 of 256
+
+== C4, the sabotage arm ==
+A2 re-run with the rational's denotation replaced by the lifted
+relation itself. The two are then one relation and must agree.
+  C4 sabotaged adequacy: 0 violations of 57600 ordered pairs
+
+== the controls ==
+  C1 both congruence arms report zero ............... PASS
+  C2 the pair's adequacy arm reports zero ........... PASS
+  C3 the rational's adequacy arm reports nonzero .... PASS
+  C4 the sabotaged adequacy arm reports zero ........ PASS
+
+every control: PASSED
+
+what this says, and it is narrower than either side of the argument.
+the lifted equality is a congruence on both constructions, so the
+clause holds on reading A and `110` R6's 4 of 4 is not disturbed.
+it is not the construction's own equality on the rational, so the
+clause fails on reading B, on a construction the sibling row names.
+and the predicate half holds on both readings and on both arms.
