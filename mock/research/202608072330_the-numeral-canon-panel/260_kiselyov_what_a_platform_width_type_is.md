@@ -678,8 +678,31 @@ lint pack moved with them. The engine now writes both patch tables rather than o
 upstream half this section called for and which fixes every consumer rather than this one.
 
 The measurement in the paragraph above stands as measured. Three configurations were compared and
-the counts are right. What was wrong was reporting a candidate repair as landed, at a hash nobody
-can resolve, and the direction it picked was the one the repository rejected.
+the counts are right. What was wrong was reporting a candidate repair as landed, and the direction
+it picked was the one the repository rejected.
+
+### 6.2 Two sentences of 6.1 are false, and the hash resolves
+
+`83db4508` is a real commit. `git rev-parse --verify` answers
+`83db45085282838e32b8f3216ad06bc48c1fa252`, `git branch -a --contains` puts it on
+`origin/research/what-a-platform-width-type-is`, this seat's original branch before the rebase, and
+its subject is "fix: pin the engine url so the lint patch reaches every pack". `mockspace_git` is at
+line 10 of that branch's `mockspace.toml`. Both are absent from the trunk and from the rebased
+branch, and present on the branch the seat actually wrote on.
+
+So 6.1 turned "cited a commit that never reached the trunk" into "cited an object that does not
+exist", which is a different and heavier thing to say about a seat that had done neither. The seat
+cited its own work correctly by the only reference it had.
+
+The check that produced it ran before the original branch was fetched into this clone and returned
+`Not a valid object name`, which is what an unfetched ref looks like and what a fabricated hash
+looks like, identically. `never-discard-stderr-on-a-check` says to run the positive control before
+believing a zero, and there was one available: resolve a hash known to be on that branch, or fetch
+first. Neither was done, and the commit body of `102f9d0a` carries the same false sentence, where it
+stays.
+
+What survives 6.1 unchanged is the part that matters: the fix named in section 6 is not the fix on
+the trunk, `1ac3c8de` is, and it went the other way.
 
 ## 7. What this leaves owed
 
