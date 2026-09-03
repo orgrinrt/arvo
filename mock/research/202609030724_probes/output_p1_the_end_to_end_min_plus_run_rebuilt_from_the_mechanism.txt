@@ -1,0 +1,87 @@
+tool:    rustc 1.98.0-nightly (57d06900f 2026-05-27)
+profile: release, opt-level 3, no feature gates
+driver:  run.sh in this directory
+
+    build:    Compiling composition-contracts-probes v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-composition/mock/research/202609030724_probes)
+    build:     Finished `release` profile [optimized] target(s) in 0.74s
+probe 1: the end-to-end min-plus run, with the sentinel encoding
+as an axis. four nodes, one fixed topological order, six ordered
+slots each absent or carrying a weight in 0..=MAX, (MAX+2)^6
+configurations walked in full, in-range control on the answer and
+on every finite exact intermediate.
+
+== width 3, unsigned, fraction width zero ==
+  InBand MinPlus under Wrap: 194768 wrong of 495108 in-range, 39.3385%
+      first witness: 0->1=.  0->2=.  0->3=1 1->2=.  1->3=1 2->3=.  
+  InBand MinPlus under Saturate: 0 wrong of 495108 in-range, 0.0000%
+  InBand MaxPlus under Wrap: 17822 wrong of 132956 in-range, 13.4044%
+      first witness: 0->1=.  0->2=.  0->3=0 1->2=.  1->3=1 2->3=.  
+  InBand MaxPlus under Saturate: 18032 wrong of 132956 in-range, 13.5624%
+      first witness: 0->1=.  0->2=.  0->3=0 1->2=.  1->3=1 2->3=.  
+  OutOfBand MinPlus under Wrap: 177408 wrong of 495108 in-range, 35.8322%
+      first witness: 0->1=7 0->2=.  0->3=1 1->2=.  1->3=1 2->3=.  
+  OutOfBand MinPlus under Saturate: 0 wrong of 495108 in-range, 0.0000%
+  OutOfBand MaxPlus under Wrap: 0 wrong of 132956 in-range, 0.0000%
+  OutOfBand MaxPlus under Saturate: 0 wrong of 132956 in-range, 0.0000%
+
+== width 4, unsigned, fraction width zero ==
+  InBand MinPlus under Wrap: 10359680 wrong of 23188680 in-range, 44.6756%
+      first witness: 0->1=.  0->2=.  0->3=1 1->2=.  1->3=1 2->3=.  
+  InBand MinPlus under Saturate: 0 wrong of 23188680 in-range, 0.0000%
+  InBand MaxPlus under Wrap: 437868 wrong of 4112248 in-range, 10.6479%
+      first witness: 0->1=.  0->2=.  0->3=0 1->2=.  1->3=1 2->3=.  
+  InBand MaxPlus under Saturate: 458880 wrong of 4112248 in-range, 11.1589%
+      first witness: 0->1=.  0->2=.  0->3=0 1->2=.  1->3=1 2->3=.  
+  OutOfBand MinPlus under Wrap: 9947584 wrong of 23188680 in-range, 42.8984%
+      first witness: 0->1=15 0->2=.  0->3=1 1->2=.  1->3=1 2->3=.  
+  OutOfBand MinPlus under Saturate: 0 wrong of 23188680 in-range, 0.0000%
+  OutOfBand MaxPlus under Wrap: 0 wrong of 4112248 in-range, 0.0000%
+  OutOfBand MaxPlus under Saturate: 0 wrong of 4112248 in-range, 0.0000%
+
+== the decomposition, which is what this file is actually for ==
+the row names absorption as the mechanism and its own `gap` field
+says monotonicity is a second property it did not file. taking the
+sentinel out of band removes every absorption failure and leaves
+every monotonicity failure, so the difference between the two
+min-plus wrapping cells is what absorption was worth.
+
+  width 3: in band 194768 wrong, out of band 177408 wrong. absorption accounts for 17360 of them, 8.9% of the failures; the rest survive with no sentinel in the numeral at all.
+  width 4: in band 10359680 wrong, out of band 9947584 wrong. absorption accounts for 412096 of them, 4.0% of the failures; the rest survive with no sentinel in the numeral at all.
+
+== C5, the sabotage arm ==
+in band, min-plus under saturation, sentinel moved off the top to
+zero. zero absorbs addition under no policy, so this must go nonzero.
+  width 3: 24640 wrong of 495108 in-range
+  width 4: 653600 wrong of 23188680 in-range
+
+== the controls ==
+  C1 in band, min-plus saturating, zero ................ PASS
+  C2 in band, min-plus wrapping, nonzero ............... PASS
+  C3 the cells that cannot go wrong, zero .............. PASS
+  C4 in band, max-plus fails under both policies ....... PASS
+  C5 sabotaged sentinel, nonzero ....................... PASS
+  C6 out of band never worse than in band, and nonzero . PASS
+
+every control: PASSED
+
+what this says, and two thirds of it is not what the row says.
+
+the row's headline reproduces. in band, min-plus is wrong under
+wrapping at both widths and right under saturation at both, and
+the sabotage arm at C5 says the sentinel absorbing is why the
+saturating column is clean.
+
+the row's control does not reproduce. its `because` says the
+max-plus routine agreeing everywhere is what says the failure
+belongs to the operation rather than the harness. run in the same
+encoding as the failing routine, max-plus fails under both
+policies. the earlier instrument's clean max-plus column is its
+out-of-band `Option` encoding, not the operation, so that clause
+supports nothing. C1 is the control that does the job, and it is
+a policy move inside one routine rather than a routine swap.
+
+and the mechanism is mostly not absorption. the row's own `gap`
+names monotonicity as a second unfiled property. the decomposition
+above prices it: with the sentinel taken out of the numeral
+entirely, the wrapping failure barely moves, so absorption is the
+minority cause and the unfiled half is the majority one.
