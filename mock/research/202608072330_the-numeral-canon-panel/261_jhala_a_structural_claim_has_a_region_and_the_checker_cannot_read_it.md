@@ -1,6 +1,15 @@
-# 259. Jhala, seat 259: a structural claim can state a region today, and nothing can tell whether it is the right one
+# 261. Jhala, seat 261: a structural claim can state a region today, and nothing can tell whether it is the right one
 
 Base of this worktree: `5644b8f0`, branch `research/whether-a-structural-claim-carries-a-region`.
+
+This file and its probes were written as seat 259 and are seat 261. Another seat dispatched
+alongside this one took 259 from the same base and wrote its own `259_probes/`, and a third took
+258, which the trunk already held. None of the three could see the others. Two seats at one number
+merge without a conflict, because the probe filenames are disjoint, so every later citation of a
+shared probe directory would have named two seats' instruments at once. The number is an
+identifier and carries no meaning, so the later two were reallocated. Every bare `258` below names
+`258_orchard_what_the_admission_and_standing_sitting_settled.md`, which is the seat that held the
+number all along.
 
 ## 0. The two gates
 
@@ -42,7 +51,7 @@ its contract against each other rather than one twice. I found nothing tautologi
 options are answers to a premise that does not hold.** Twelve `proposal` rows sit on the four topics
 that are about the canon rather than about arvo. Eight are `normative` with no region. **Four are
 filed `measured`, `enumeration` and `argument` and carry a predicate**, which the question says is not
-possible. `259_probes/c_what_can_carry_a_region.out` names all twelve.
+possible. `261_probes/c_what_can_carry_a_region.out` names all twelve.
 
 **And every one of those four writes a region that is not its own.** Two write the numeric region of
 the claims they are talking *about*. Two write `threads: threads = 1` and nothing else. One of the two
@@ -55,7 +64,7 @@ says so in its own `note`, in terms:
 structural claim cannot state a region. It is that **whatever it states, nothing can be wrong.** The
 planted-row probe shows a structural claim passing every predicate lint with all 25 axes at `any`, and
 passing equally with any single axis pinned to a value the claim was never observed at
-(`259_probes/e_lintdrive/tests/drive.rs`, arms `d3` and `d8`). A structural claim is handed 25 axes it
+(`261_probes/e_lintdrive/tests/drive.rs`, arms `d3` and `d8`). A structural claim is handed 25 axes it
 may set to anything and no way to be refuted on any of them.
 
 That is a defect in what a checker can falsify, not in the dimension vocabulary and not in the locus.
@@ -71,8 +80,8 @@ count and I record it because the row's own list is quoted downstream.
 
 **The row's second option says the panel would then be unable to tell a reasoned structural claim from
 an imposed one.** That is true and it is the smaller half of the cost. The larger half is measured at
-`259_probes/e_lintdrive` arm `d4` and again through the real gate at
-`259_probes/d_can_a_structural_claim_state_its_region.out`: **`an-imposition-rests-on-no-instrument`
+`261_probes/e_lintdrive` arm `d4` and again through the real gate at
+`261_probes/d_can_a_structural_claim_state_its_region.out`: **`an-imposition-rests-on-no-instrument`
 refuses a `normative` row that carries `evidence`.** So filing a structural claim `normative` does not
 merely blur it with governance, it **strips the instrument that produced it**. Of the eight machinery
 rows filed `normative`, not one carries `evidence`, and several of them ran something.
@@ -85,7 +94,7 @@ registry is a value of one of exactly three fields. Everything below turns on wh
 
 ## 3. What can carry a region at all, measured
 
-`259_probes/c_what_can_carry_a_region.sh`, five controls, all passing. Two results.
+`261_probes/c_what_can_carry_a_region.sh`, five controls, all passing. Two results.
 
 **Three fields in the whole registry are read as a region**, and they are declared in one constant at
 `mock/lints/canon_rows.rs`, `PREDICATE_FIELDS`: `proposal.predicate`, `law.holds`, `law.fails`.
@@ -110,10 +119,10 @@ The decisive work. Six candidate spellings of one claim, and the claim is the la
 already in the registry, whose own note says it was "filed `normative` after being written `argument`"
 because "no predicate, because none in this registry can express it".
 
-**Instrument one**, `259_probes/e_lintdrive/`: a probe crate that pulls the three lint sources in by
+**Instrument one**, `261_probes/e_lintdrive/`: a probe crate that pulls the three lint sources in by
 `#[path]`, the way the engine's generated pack does, and depends on `mockspace-lint-rules` once. Eleven
 arms, three of them controls, all passing. **Instrument two**,
-`259_probes/d_can_a_structural_claim_state_its_region.sh`: the same six rows appended to the real
+`261_probes/d_can_a_structural_claim_state_its_region.sh`: the same six rows appended to the real
 `mock/registry/proposal.toml`, judged by `cargo mock --lint-only` over the whole real registry, then
 truncated back with the tree asserted clean. Four controls including a clean baseline and a
 must-fire arm.
@@ -263,7 +272,7 @@ and arms three and four are the ones that move.
 ### 7.1 `258` asked for a reader who opens the declaration before the seats. What the ordering changed
 
 I committed my reading of the `standing` declaration before opening `247`, `248` or `249`. It is
-`259_probes/a_standing_read_before_the_seats.md` and it landed in commit `ca9f3d27`; every read of
+`261_probes/a_standing_read_before_the_seats.md` and it landed in commit `ca9f3d27`; every read of
 those three files is after it, which is checkable in the log rather than asserted here.
 
 **On the core claim it changed nothing, and that is the useful result.** From the declaration alone I
@@ -295,7 +304,7 @@ file has one author, so one citation cannot exhibit two arrivals however the not
 `three_or_more` and `cross_topic`.** Two files is the right floor for two arrivals and it is the floor
 applied to all three.
 
-`259_probes/b_three_or_more_floor.sh`, five controls, all passing, including one that reproduces the
+`261_probes/b_three_or_more_floor.sh`, five controls, all passing, including one that reproduces the
 lint's own measured ceiling of 29 exactly from an independently written reader. The result:
 
 **All twelve rows claiming three or more arrivals cite fewer than three files, and ten of the twelve
@@ -361,7 +370,7 @@ argument, because the `ruling` namespace has no field to put it in.** It is the 
 the same move `229` makes in its predicate line, and it is the third independent instance of the
 primary question's residue arriving from a direction that was not looking for it.
 
-**Sentence (b) fails the permanence test.** `259_probes/g_r5_permanence.sh`, three controls, all
+**Sentence (b) fails the permanence test.** `261_probes/g_r5_permanence.sh`, three controls, all
 passing: the `obligation` namespace went from 11 rows to 16 across nine commits in two days, four
 distinct counts. It has not moved since `b34d7a3c` **on this branch**, which is a fact about this
 branch rather than about the claim's durability, and the probe says so rather than reporting the zero
@@ -389,7 +398,7 @@ built it from source since the pin moved there.** Every gate that reported green
 hooks included, reused a cached cdylib. `rm -rf mock/target/mockspace-lints/target` is what made it
 visible, and it made it visible only because I was trying to run a probe.
 
-`259_probes/f_the_url_mismatch.sh` isolates it to one string, four controls, all passing in
+`261_probes/f_the_url_mismatch.sh` isolates it to one string, four controls, all passing in
 `f_the_url_mismatch.out`. The engine wrote the generated crate's mockspace dependency and its
 `[patch]` table with the `https://` spelling, from `cargo-mock/src/lib.rs`'s `CANONICAL_URL`.
 `mockspace.toml`'s `[lint-crates]`, `mockspace-extra-lints`' own manifest and all five of this repo's
@@ -432,6 +441,18 @@ more than the defect was.
   direction: the workspace rule on private repositories is why they are spelled `ssh://`, and the
   https spelling works here only because of a git config on one machine. The repair that landed
   upstream is the other one, both tables, which is the right shape.
+
+  **The reasoning in that bullet is wrong on both halves, and the correction was made after this
+  file was pushed.** `gh repo view hiisi-digital/mockspace --json visibility` answers `PUBLIC`, so
+  the private-repository rule does not reach this dependency at all; that rule's own text names
+  the public repositories in the stack as the reason the https spelling has always worked. Nor
+  does https work here only through a machine-local git config: an anonymous fetch of a public
+  repository succeeds with no credential, and the `insteadOf` rewrite exists to keep a credential
+  helper out of the way rather than to make the fetch possible. So the direction the bullet calls
+  wrong is the one the repository took, at `1ac3c8de`, moving all five tool manifests and the lint
+  pack onto `https`, which is also the engine's own `CANONICAL_URL`. **The bullet's conclusion is
+  unaffected**: both patch tables upstream is the right shape and is what landed, and it is what
+  makes every consumer immune rather than this one.
 
 **What I committed from all of this is one `.gitignore` line** saying a local cargo config is not
 tracked, which the workspace's own cross-repo iteration rule already assumes and which stands whether
@@ -519,7 +540,7 @@ and one says so in its own note. *Same coordinates as F2.*
 **F4.** A structural claim with all 25 declared axes at `any`, tokenless, passes every predicate lint,
 and so does the same claim with any single axis pinned to a value it was never observed at. *holds
 for: the three lints at the revision `mock/target/mockspace-lints/Cargo.toml` pins; the 25 axes
-declared at `5644b8f0`; both instruments in `259_probes`. No declared axis bears on it.*
+declared at `5644b8f0`; both instruments in `261_probes`. No declared axis bears on it.*
 
 **F5.** A structural claim filed `normative` may not cite the instrument that produced it. *Same
 coordinates as F4.*

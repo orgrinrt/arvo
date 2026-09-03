@@ -1,6 +1,6 @@
 
 # ---------------------------------------------------------------------------
-# PLANTED BY 259_probes/d_can_a_structural_claim_state_its_region.sh
+# PLANTED BY 261_probes/d_can_a_structural_claim_state_its_region.sh
 #
 # Six candidate spellings of one structural claim, appended to the real
 # registry so the shipped checkers judge them. The script removes every line of
