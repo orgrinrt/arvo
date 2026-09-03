@@ -31,13 +31,23 @@
 //! cover the const-bound form with the exact diagnostic pinned.
 
 use crate::ambient::{
-    is_admissible_ambient, Ambient, BinaryRationals, DecimalRationals, Radix,
+    Ambient,
+    BinaryRationals,
+    DecimalRationals,
+    Radix,
     UnsignedBinaryRationals,
+    is_admissible_ambient,
 };
-use crate::format::{contains, has_additive_identity, is_admissible_format, Format, Phase};
+use crate::format::{Format, Phase, contains, has_additive_identity, is_admissible_format};
 use crate::points::{Biased, Floating, Integer, UFixed};
 use crate::quantum::{
-    is_admissible_quantum, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum,
+    Constant,
+    Exponent,
+    Indexed,
+    Magnitude,
+    MagnitudeCount,
+    Quantum,
+    is_admissible_quantum,
 };
 use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::width::{Bool, Width};
@@ -52,8 +62,8 @@ pub struct NoMagnitudes;
 
 impl Quantum for NoMagnitudes {
     const BASE: Exponent = Exponent::ZERO;
-    const SLOPE: Exponent = Exponent::ZERO;
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(0);
+    const SLOPE: Exponent = Exponent::ZERO;
 }
 
 /// A step law whose exponent leaves what an `Exponent` carries before it reaches
@@ -66,8 +76,8 @@ pub struct ReachesPastTheExponent;
 
 impl Quantum for ReachesPastTheExponent {
     const BASE: Exponent = Exponent::ZERO;
-    const SLOPE: Exponent = Exponent::of(i32::MAX);
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(4);
+    const SLOPE: Exponent = Exponent::of(i32::MAX);
 }
 
 /// A domain declaring a radix of one, which is not a positional notation.
@@ -97,6 +107,7 @@ impl Format for NoDenominator {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 0);
 }
 
@@ -263,21 +274,19 @@ fn every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts() {
 //
 // An obligation is a const and a const is evaluated where it is used, so the
 // guarantee is exactly the set of verbs that use it. `Format::ADMITTED` is forced
-// at two of them, and the arms below are about what that leaves open. One is a
-// route that reaches a value without meeting the obligation at all. One reaches a
-// forcing site and finds an implementor's override sitting where the obligation
-// was. One is about a different obligation, reached through a call rather than
-// forced, which is the case where the set depends on the declaration as much as
-// on the verb.
+// at two of them, and the arms below are about what that leaves open. Two are
+// routes that reach a value without meeting the obligation at all, the membership
+// predicate and a read straight off the impl. One reaches a forcing site and finds
+// an implementor's override sitting where the obligation was. One is about a
+// different obligation, reached through a call rather than forced, which is the
+// case where the set depends on the declaration as much as on the verb.
 //
 // They pass, and that is what they are for. A route the design admits exists is
 // pinned by an arm that passes while it is open and fails the moment it closes,
 // which is what makes a later round's closing visible rather than silent.
 //
 // The fixture throughout is `NoDenominator`, declared with the other wrong
-// constructions above. It used to be declared a second time here under another
-// name, character for character, and the copy grew an assertion whose only job was
-// checking the two had not drifted apart.
+// constructions above, rather than a second declaration of it under a local name.
 
 /// A slot range whose lowest index is above its highest, so it admits nothing.
 ///
@@ -287,8 +296,8 @@ fn every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts() {
 struct InvertedSlots;
 
 impl Slots for InvertedSlots {
-    const MIN: Slot = Slot::at(8);
     const MAX: Slot = Slot::at(-8);
+    const MIN: Slot = Slot::at(8);
     const WIDTH: Width = Width::bits(8);
 }
 
@@ -304,6 +313,7 @@ impl Format for NeverCancelsOverAnInvertedRange {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = InvertedSlots;
+
     const PHASE: Phase = Phase::of(1, 2);
 }
 
@@ -314,8 +324,9 @@ impl Format for DisarmedObligation {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
-    const PHASE: Phase = Phase::of(1, 0);
+
     const ADMITTED: () = ();
+    const PHASE: Phase = Phase::of(1, 0);
 }
 
 #[test]
@@ -340,6 +351,14 @@ fn contains_answers_for_a_format_whose_phase_does_not_denote() {
 }
 
 #[test]
+fn a_coordinate_is_readable_off_the_impl_without_the_obligation_firing() {
+    // The shortest route of the four. Nothing between a reader and the
+    // declaration, so nothing to force.
+    assert_eq!(<NoDenominator as Format>::PHASE.denotes(), Bool::FALSE);
+    assert_eq!(<Integer<8> as Format>::PHASE.denotes(), Bool::TRUE);
+}
+
+#[test]
 fn an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing() {
     // Routed through a verb that forces, which is the whole content of the arm.
     // `contains` never reaches this obligation, so calling the two declarations
@@ -357,6 +376,16 @@ fn an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing(
     // leaves the default in place and does denote answers the other way, so the
     // verb is not simply returning `FALSE` for everything.
     assert_eq!(has_additive_identity::<Integer<8>>(), Bool::TRUE);
+
+    // And the two are the same declaration apart from the obligation, so the arm
+    // is about the override rather than about anything else that differs.
+    // Without this line a reader cannot tell whether `DisarmedObligation` simply
+    // declares a phase that denotes, which would make the first assertion a fact
+    // about the phase and not about the override.
+    assert_eq!(
+        <DisarmedObligation as Format>::PHASE,
+        <NoDenominator as Format>::PHASE
+    );
 }
 
 // A transitive reach is decided in const evaluation and not at a runtime call,
@@ -398,13 +427,14 @@ impl Format for NeverCancelsOverAnAdmissibleRange {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(1, 2);
 }
 
 #[test]
 fn adapt_forces_the_slot_range_and_not_the_format() {
     use crate::adapt::{Adapt, Signature};
-    use crate::apply::{adapt, Dither, Exact};
+    use crate::apply::{Dither, Exact, adapt};
     use crate::overflow::Saturate;
     use crate::rounding::Floor;
 
