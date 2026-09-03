@@ -1,0 +1,39 @@
+### B1, the floor, the checked set and the ceiling, read out of the lint source
+74:const CEILING: usize = 29;
+82:const MULTI_ARRIVAL: [&str; 3] = ["two_experts", "three_or_more", "cross_topic"];
+124:    if files.len() >= 2 {
+
+### B3, the extractor sees the same population the engine does
+  one_expert     awk 92   engine 92   PASS
+  two_experts    awk 23   engine 23   PASS
+  three_or_more  awk 6    engine 6    PASS
+  cross_topic    awk 6    engine 6    PASS
+  contested      awk 0    engine 0    PASS
+
+### every three_or_more row, with the number of distinct files it cites
+  1   no_multiplicative_structure_survives_a_nonzero_fraction_width  <-- claims 3+ arrivals, cites 1 file(s)
+  1   an_additive_verdict_is_independent_of_the_fraction_width  <-- claims 3+ arrivals, cites 1 file(s)
+  1   a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body  <-- claims 3+ arrivals, cites 1 file(s)
+  1   the_rationalisability_counts_on_the_committed_carrier_table  <-- claims 3+ arrivals, cites 1 file(s)
+  1   staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even  <-- claims 3+ arrivals, cites 1 file(s)
+  1   the_realisation_map_is_one_map_with_two_regions  <-- claims 3+ arrivals, cites 1 file(s)
+  --- rows: 6, citing fewer than three files: 6
+
+### the same question of cross_topic, the strongest count the panel produces
+  2   chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type  <-- separate topics claimed, 2 file(s) cited
+  1   a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going  <-- separate topics claimed, 1 file(s) cited
+  1   arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached  <-- separate topics claimed, 1 file(s) cited
+  2   the_law_frame_was_attacked_from_another_topic_and_held  <-- separate topics claimed, 2 file(s) cited
+  1   three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder  <-- separate topics claimed, 1 file(s) cited
+  1   one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both  <-- separate topics claimed, 1 file(s) cited
+  --- citing fewer than three files: 6
+
+### B5, the shipped >= 2 predicate's population against the lint's measured ceiling
+  rows below the shipped floor of 2: 29, the lint's measured ceiling: 29
+  PASS, this reader and the lint agree on the population
+
+### B2, the extractor must be able to report zero
+  PASS, 0 rows for a standing nothing carries
+### B4, two citations naming one file de-duplicate to one
+  raw citations: 2, distinct files: 1
+  PASS, 2 citations of one file counted once

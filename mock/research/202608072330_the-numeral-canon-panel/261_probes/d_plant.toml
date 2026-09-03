@@ -1,0 +1,135 @@
+
+# ---------------------------------------------------------------------------
+# PLANTED BY 261_probes/d_can_a_structural_claim_state_its_region.sh
+#
+# Six candidate spellings of one structural claim, appended to the real
+# registry so the shipped checkers judge them. The script removes every line of
+# this file again after the run. Nothing here is a proposal and nothing here is
+# to be committed into `mock/registry/`.
+#
+# The claim used throughout is the layering derivation already in the registry
+# as `the_topics_form_a_stack_a_frame_and_the_canons_own_machinery`, filed
+# `normative` after being written `argument` because, in that row's own words,
+# "no predicate, because none in this registry can express it".
+# ---------------------------------------------------------------------------
+
+# D1. The state that forced the refiling: reasoned, and no region.
+# EXPECT: a-region-agrees-with-the-sentence-kind / an-established-claim-carries-no-region
+[[proposal]]
+id = "zz_probe_argument_with_no_region"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "canon_form"
+says = "The twenty topics are not one order; eleven form a stack, four a frame, four the canon's own machinery."
+because = "Derived from the `what` sentence of each topic row by one test: can this topic's subject be stated at all without a decision belonging to that one."
+note = "Planted by a probe. The reasoning is real and the region is absent, which is the state the layering row was in before it was refiled."
+provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#the-stack-bottom-first"]
+keywords = ["probe", "layering", "region", "argument"]
+
+# D2. The region written in the vocabulary the claim's subject actually has.
+# EXPECT: every-predicate-names-a-declared-axis / axis-not-declared
+[[proposal]]
+id = "zz_probe_argument_with_a_structural_axis"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "canon_form"
+says = "The twenty topics are not one order; eleven form a stack, four a frame, four the canon's own machinery."
+because = "Derived from the `what` sentence of each topic row by one test: can this topic's subject be stated at all without a decision belonging to that one."
+predicate = [
+  "registry_state: the twenty topic rows as they stand at this commit",
+  "namespace: namespace = topic",
+]
+note = "Planted by a probe. The coordinates are the ones the claim genuinely varies over."
+provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#the-stack-bottom-first"]
+keywords = ["probe", "layering", "region", "structural axis"]
+
+# D3. The region written as the whole space on every declared axis, tokenless,
+# which under the ratified warrant ruling claims the region and claims no
+# warrant for it.
+# EXPECT: no finding from either predicate lint.
+[[proposal]]
+id = "zz_probe_argument_with_universal_on_every_axis"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "canon_form"
+says = "The twenty topics are not one order; eleven form a stack, four a frame, four the canon's own machinery."
+because = "Derived from the `what` sentence of each topic row by one test: can this topic's subject be stated at all without a decision belonging to that one."
+predicate = [
+  "integer_width: I any",
+  "fraction_width: F any",
+  "total_width: W any",
+  "signedness: signedness any",
+  "overflow_policy: overflow policy any",
+  "rounding: rounding any",
+  "operation: operation in {add, sub, mul, div}",
+  "arity: arity any",
+  "chain_length: chain length any",
+  "container: container any",
+  "alignment: alignment any",
+  "access_pattern: access pattern any",
+  "target_features: target features any",
+  "threads: threads any",
+  "strategy: strategy any",
+  "ambient_domain: ambient domain any",
+  "radix: radix any",
+  "accumulator_width: accumulator width any",
+  "toolchain: toolchain any",
+  "build_profile: build profile any",
+  "operand_window: operand window any",
+  "occupancy: occupancy any",
+  "association: association any",
+  "leaf_aliasing: leaf aliasing any",
+  "phase: phase any",
+]
+note = "Planted by a probe. Every declared axis at its widest, because no declared axis indexes any observation of a claim about which topic rests on which."
+provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#the-stack-bottom-first"]
+keywords = ["probe", "layering", "region", "universal"]
+
+# D4. The filing the row actually took, plus the instrument it ran.
+# EXPECT: an-imposition-rests-on-no-instrument
+[[proposal]]
+id = "zz_probe_normative_carrying_its_instrument"
+kind = "finding"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "canon_form"
+says = "The twenty topics are not one order; eleven form a stack, four a frame, four the canon's own machinery."
+because = "Derived from the `what` sentence of each topic row by one test: can this topic's subject be stated at all without a decision belonging to that one."
+evidence = ["most_committed_bench_regions_predate_the_validation_gate"]
+note = "Planted by a probe. The evidence entry names an existing probe row so the citation resolves; what is being tested is whether an imposed kind may name an instrument at all."
+provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#the-stack-bottom-first"]
+keywords = ["probe", "layering", "normative", "evidence"]
+
+# D5. The imposed filing with a region on it, which is what the layering row
+# would look like if somebody tried to keep both.
+# EXPECT: a-region-agrees-with-the-sentence-kind / an-imposed-proposition-carries-a-region
+[[proposal]]
+id = "zz_probe_normative_carrying_a_region"
+kind = "finding"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "canon_form"
+says = "The twenty topics are not one order; eleven form a stack, four a frame, four the canon's own machinery."
+because = "Derived from the `what` sentence of each topic row by one test: can this topic's subject be stated at all without a decision belonging to that one."
+predicate = ["threads: threads = 1"]
+note = "Planted by a probe. Keeping the imposed kind and the region together."
+provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#the-stack-bottom-first"]
+keywords = ["probe", "layering", "normative", "region"]
+
+# D6. The negative control: an ordinary numeric claim, correctly filed.
+# EXPECT: no finding from any of the three lints under test.
+[[proposal]]
+id = "zz_probe_control_an_ordinary_numeric_row"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "rounding"
+says = "A planted control, stating a numeric claim in the ordinary way so the three lints under test have a row they must be silent about."
+because = "It exists so that a run in which every planted row is reported can be told apart from a run in which the lints report everything."
+predicate = ["fraction_width: F = 0", "threads: threads = 1"]
+note = "Planted by a probe. If this row is reported, the arm is measuring the lints rather than the rows."
+provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#the-stack-bottom-first"]
+keywords = ["probe", "control", "numeric"]

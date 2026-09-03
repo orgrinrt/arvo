@@ -1,0 +1,37 @@
+### F1, the two spellings, read out of the tree
+  the engine's generated manifest:
+    13:mockspace = { package = "mockspace-lint-rules", git = "https://github.com/hiisi-digital/mockspace.git", rev = "b57007c900cf405f19b2b7fa2e040575da99444e" }
+    21:[patch."https://github.com/hiisi-digital/mockspace.git"]
+  what everything else uses:
+    mock/tools/a-panel-catalogue-is-readable/Cargo.toml:32:mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+    mock/tools/awaiting-a-ruling/Cargo.toml:19:mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+    mock/tools/rounding-vocabulary/Cargo.toml:19:mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+    mock/tools/the-positions/Cargo.toml:19:mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+    mock/tools/unasked-questions/Cargo.toml:19:mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+  https spellings in the generated manifest: 2
+  PASS, the dependency and the patch both use it
+
+### F2, the build with the engine's spelling
+    
+    For more information about this error, try `rustc --explain E0308`.
+    error: could not compile `mockspace-lints-e8889c0949f25c6f` (lib) due to 6 previous errors
+  build: failed
+  PASS, it fails as described
+
+### F3, the same manifest with the one string changed
+    13c13
+    < mockspace = { package = "mockspace-lint-rules", git = "https://github.com/hiisi-digital/mockspace.git", rev = "b57007c900cf405f19b2b7fa2e040575da99444e" }
+    ---
+    > mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", rev = "b57007c900cf405f19b2b7fa2e040575da99444e" }
+    21c21
+    < [patch."https://github.com/hiisi-digital/mockspace.git"]
+    ---
+    > [patch."ssh://git@github.com/hiisi-digital/mockspace.git"]
+       Compiling mockspace-lints-e8889c0949f25c6f v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-region/mock/target/mockspace-lints)
+        Finished `release` profile [optimized] target(s) in 33.81s
+  build: ok
+  PASS, one string is the whole of it
+
+### F4, does the engine write it back
+  https spellings after one `cargo mock --lint-only`: 2
+  PASS, the engine rewrites it, so this is not fixable in this repo

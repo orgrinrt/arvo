@@ -1,0 +1,69 @@
+    Finished `release` profile [optimized] target(s) in 0.03s
+--- cargo check skipped (lint-only mode) ---
+--- parsing crates ---
+--- running lints ---
+--- registry ---
+  714 rows across 10 namespaces
+  schema check passed
+
+--- lint warnings (51) ---
+  [export-count] arvo-placement:1: [warn] file has 14 public exports (guideline: ~5)
+  [writing-style] PRINCIPLES.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] PRINCIPLES.md.tmpl:154: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:75: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:116: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:126: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:209: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:217: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:225: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:229: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:247: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:251: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:318: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:354: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:402: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:644: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:650: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:660: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:762: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:765: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:788: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:812: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:179: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:286: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:25: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:239: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/slots.rs:270: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/obligations.rs:344: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_identity.rs:323: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_inventory.rs:329: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:115: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:118: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:125: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:194: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:228: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/src/lib.rs:207: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:102: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:34: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:89: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:107: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:108: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:109: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:42: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:51: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:10: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:11: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:23: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:24: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+
+--- lint errors (5) ---
+  [a-region-agrees-with-the-sentence-kind/an-established-claim-carries-no-region] registry:0: [error] `proposal::zz_probe_argument_with_no_region` has `sentence_kind` `argument` and an empty `predicate`, so the claim reads as holding everywhere while having been established somewhere. Write the region it was established in, however narrow: `threads = 1` is a real region and a real finding.
+  [a-region-agrees-with-the-sentence-kind/an-imposed-proposition-carries-a-region] registry:0: [error] `proposal::zz_probe_normative_carrying_a_region` has `sentence_kind` `normative` and carries a `predicate`. Neither kind states a region: an imposed proposition would be saying the design may violate it everywhere the region does not reach, and a definition is not a claim about where anything holds.
+  [an-imposition-rests-on-no-instrument] registry:0: [error] `proposal::zz_probe_normative_carrying_its_instrument` sets `sentence_kind` to `normative`, which says the claim is imposed rather than established and is why it carries no region, and `evidence` names ["most_committed_bench_regions_predate_the_validation_gate"]. An instrument that could have returned the other answer is what `measured` means. Either the claim is measured and owes the region its instrument was run at, or it is imposed and owes no evidence.
+  [every-predicate-names-a-declared-axis/undeclared-axis] registry:0: [error] `proposal::zz_probe_argument_with_a_structural_axis` names the axis `registry_state` in `predicate`, which no `dimension` row declares. Declare it, or use the slug of the axis that already means this. An undeclared axis cannot be absent from any other predicate, so admitting one here weakens every predicate in the canon.
+  [every-predicate-names-a-declared-axis/undeclared-axis] registry:0: [error] `proposal::zz_probe_argument_with_a_structural_axis` names the axis `namespace` in `predicate`, which no `dimension` row declares. Declare it, or use the slug of the axis that already means this. An undeclared axis cannot be absent from any other predicate, so admitting one here weakens every predicate in the canon.
+
+lint check failed: 5 violation(s)
