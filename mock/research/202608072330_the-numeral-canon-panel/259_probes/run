@@ -65,8 +65,12 @@ rustc --edition 2024 --extern arvo_format="$rlib" -L "$crate/target/release/deps
 echo "exit=$?" > "$out/05_e3_exit.txt"
 "$crate/target/arms/derivable_blanket_control" >> "$out/05_e3_exit.txt" 2>&1
 
+echo "07: one completion, with the intermediate on the declared grid"
+"$crate/target/release/one_placement" > "$out/07_one_placement.txt" 2>&1
+echo "exit=$?" >> "$out/07_one_placement.txt"
+
 echo "the verdict lines, gathered"
-grep -hE "^(A[0-9]|B[0-9]|C[0-9]|D[0-9]|E[0-9]|F[0-9])[^ ]*: " \
+grep -hE "^(A[0-9]|B[0-9]|C[0-9]|D[0-9]|E[0-9]|F[0-9]|G[0-9])[^ ]*: " \
     "$out/01_sweep.txt" "$out/02_mechanism.txt" "$out/03_existential.txt" \
-    "$out/04_widening.txt" "$out/05_derivable.txt" "$out/06_tie_direction.txt" > "$out/07_verdicts.txt"
-cat "$out/07_verdicts.txt"
+    "$out/04_widening.txt" "$out/05_derivable.txt" "$out/06_tie_direction.txt" "$out/07_one_placement.txt" > "$out/08_verdicts.txt"
+cat "$out/08_verdicts.txt"

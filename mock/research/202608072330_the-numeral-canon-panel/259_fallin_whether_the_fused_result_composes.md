@@ -4,11 +4,11 @@ Chris Fallin, seat 259, on the question `ruling::the_fused_result_is_composable_
 holds open: is the fused multiply-add's answer reachable by composing a multiply
 and an add, and where.
 
-Everything down to and including section 8 was written and committed before I
-opened `226_lattner_the_derivation_outputs.md`. Section 9 is what changed when I
-read it, and it is a later commit on the same branch. The ordering is checkable
-in `git log` rather than asserted here, which is the only form of independence
-worth claiming.
+Sections 1 to 10 and probe steps 01 to 06 were written and committed before I
+opened `226_lattner_the_derivation_outputs.md`. Section 11 and probe step 07 are
+what came of reading it, in a later commit on the same branch. Section 12 names
+both. The ordering is checkable in `git log` rather than asserted here, which is
+the only form of independence worth claiming.
 
 ## 1. Both gates, first
 
@@ -166,8 +166,17 @@ Widths 3 to 8, fraction lengths 0 to `W - 1`, exhaustive over every slot triple.
 Step 01 alone is 660 cells and 3,013,048,320 triples
 (`259_probes/out/01_sweep.txt`).
 
-Twenty-six arms were declared in the sources before the runs. Twenty-five held.
-One broke and stays broken, and the break is a finding.
+Every arm was declared in its step's source before that step was run.
+`259_probes/out/08_verdicts.txt` is the gathered list and is what to count,
+because a number written in prose here is a claim with an expiry nobody sees.
+Exactly one arm reads BROKEN and it is `C2`, whose break is the finding of step
+03.
+
+I wrote a count into this paragraph on the first pass, said twenty-six, then
+added step 06 and did not update it. It was wrong by five in the committed
+revision `ab9592f3`, which is `a-claim-of-totality-names-what-enforces-it.md`
+happening to me in the file where I quote that discipline at other people. The
+repair is the instrument rather than a corrected number.
 
 ## 5. Step 01, the natural composition
 
@@ -527,4 +536,155 @@ depends on that, and the next seat will hit it too.
 
 ## 11. What reading 226 changed
 
-*(This section is a later commit. See section 12.)*
+Everything above this line is at commit `ab9592f3`, pushed before
+`226_lattner_the_derivation_outputs.md` was opened. This section and step 07 of
+the probes are a later commit.
+
+**We agree on the mechanism, reached separately.** 226's section 3.5 gives the
+two mechanisms as "any adaptation whose decision reads only the residue is
+translation-equivariant by construction" and "wrap composes because wrapping is a
+ring homomorphism, saturation is not". That is my E and my H, in its words. It
+reached the first through a control that failed on it, a planted `3 * r >= den`
+rule that turned out equivariant; I reached it by writing the position as
+`(n + r) * q` and asking what each mode reads. Different routes, one sentence.
+226 found its version by being wrong first, which is the better story and, I
+think, the better evidence.
+
+**We agree on the exception and on its independence from the fraction length.**
+Both files say signed saturating fails at every fraction length including zero,
+both give the double clamp as the reason, and both say `F = 0` is the tell that
+the mechanism is the range policy rather than the rounding.
+
+**We agree on the table, mode for mode, once one word is fixed.** 226's table and
+my step 01 differ in exactly one entry: it puts `half_up` in the signed wrapping
+free set and I put it in the failing set. I predicted that disagreement in
+`sweep.rs`'s A5 before running anything, on the ground that `arvo_format`'s
+`HalfUp` reads the sign of the position, and I built step 06 to take it apart
+before I had read 226. Opening `226_probes/p6_the_fused_result_is_reachable_by_composition.rs`
+confirms it exactly: its `Mode::HalfUp` is `if twice >= den { q + 1 } else { q }`,
+which rounds a tie up whatever the sign, reads nothing but the residue and is
+therefore equivariant by 226's own sentence. `arvo_format`'s is
+`if exact.slot().index() < 0 { down } else { up }` on a tie, which reads the sign.
+
+Its other four modes match the crate's exactly: `Floor` is `q`, `Ceil` is
+`q + 1`, `TowardZero` branches on `num < 0` which for a non-zero residue is
+equivalent to the crate's branch on the slot, and `HalfEven` has the same three
+cases in the same order. So the two instruments agree on every mode that has one
+reading and differ on the one mode that has two, which is as clean a diagnosis as
+this could have.
+
+**So neither of us measured wrong.** 226's model and the earlier instruments
+behind the two law rows compute a `half_up` that rounds a tie toward positive
+infinity; the shipped crate computes one that rounds a tie away from zero; and my
+step 06 measures both and gets both tables. F1 says the ties-up reading agrees at
+every triple of all 18 signed wrapping cells, which is 226's row. A5 says the
+shipped reading disagrees at every fraction length above zero at every width from
+3 to 8, which is mine. F3 says the two differ at 132,850 positions, so they are
+two operations rather than one under two spellings.
+
+**What that promotes from a disagreement to a finding.** Section 8's locus
+challenge stands and is sharper for this. Three registry regions and one model in
+a committed probe directory are computed under a `half_up` the shipped crate does
+not implement, and the question deciding which is right is described as open by
+`question::which_tie_direction_an_unqualified_nearest_names` and by
+`crates/arvo-format/src/standards.rs` and has no row anywhere. 226's own section
+3.6 reports a neighbouring word problem, the retired "truncate toward zero"
+spelling in `law::the_fused_and_the_stepwise_multiply_add_denote_one_function`,
+and calls it a call rather than a typo for the same reason. Two word problems in
+one small corner of one law family is a pattern rather than two accidents.
+
+**One thing 226 asked the next seat to attack, answered.** Its section 7:
+"Whether `p6`'s two-placement model is the right stepwise form. It is what I
+believe a real implementation does and I did not establish that from any row. If
+the design places only once, the signed-saturating cell reopens."
+
+It is establishable from a row, and both forms are worth having.
+`ruling::the_format_spine_is_canon` ratifies that arithmetic on a format is an
+exact operation composed with a named **total** adaptation onto the representable
+set. A declared operation's output is in that set by the totality of the
+adaptation, so a composition of two declared operations places twice, necessarily,
+and 226's two-placement model is the composition of two declared operations
+rather than a belief about implementations. The one-placement form is a third
+schedule: its intermediate is not in the representable set, so it is not two
+declared operations at all.
+
+**And the signed-saturating cell does reopen there, partly.** Step 07
+(`out/07_one_placement.txt`) runs the one-placement form on the shipped map over
+360 cells at widths 3 to 6. With exactly one completion on each side, H cannot
+separate the two, so step 02's decomposition predicts before the run that the
+pair agrees exactly where E holds and that the overflow policy drops out. G1
+holds with 0 breaks over 360 cells and G2 holds with 0 cells whose verdict moved
+with the policy. G3, the separating case, holds: all 18 signed saturating `floor`
+cells agree under one completion where every one of them disagrees in step 01.
+G4 holds, 112 cells still disagreeing, so it is not the fused realisation under
+another name.
+
+So the answer to 226's question is that the cell reopens for `floor` and `ceil`
+under signed and for `floor`, `ceil`, `toward_zero` and `half_up` under unsigned,
+at every fraction length, and stays shut for the rest. It reopens for the modes
+whose rounding is equivariant and not for the others, which is E alone, which is
+what removing the second completion should do.
+
+**What that leaves is three schedules rather than two, and they are a ladder.**
+
+| schedule | completions | what can separate it from the fused answer | signed saturating |
+|---|---|---|---|
+| two declared operations composed | two | E and H | unreachable at every mode and fraction length |
+| one completion, intermediate on the declared grid | one | E alone | reachable at `floor` and `ceil`, every fraction length |
+| intermediate at a wider declared signature | one, at the end | nothing | reachable at every mode and fraction length |
+
+The three rows are one statement read at three intermediate widths, and the
+exception the row under review names is the top row of it.
+
+**Where I am less novel than I thought.** 226's section 3.4 already quotes
+`law::the_fused_and_the_stepwise_multiply_add_denote_one_function` saying "a
+consumer wanting the fused answer declares the exact-intermediate position, keeps
+full determinism, and gets the fast arm", and reads the multiply-add through the
+admission rule as two declared operations distinguished by that coordinate. My
+steps 04 and 05 are that sentence measured rather than that sentence found. What
+they add is the width the exact intermediate needs, `2W+1` at fraction `2F`, with
+a one-bit-short control that breaks at 40299 triples; a measurement that the two
+intermediate adaptations are inert at every triple of all 360 cells, which is the
+load-bearing half of the word "exact"; and a compiled account of how the relation
+can be written, which is an associated type with per-numeral impls, since the
+blanket form computing the width is refused by three `generic_const_exprs`
+errors.
+
+**What I would not carry from 226 without re-checking.** Its `p6` predicate names
+`away_from_zero` in the rounding line, which
+`question::is_the_rounding_vocabulary_complete_at_six` records as a mode outside
+the ratified six, and `p6`'s `Mode::AwayFromZero` is a mode the crate does not
+implement. That is not an error in `p6`, whose table is honest about what it ran;
+it is one more entry in the same column as the `half_up` reading and the retired
+"truncate toward zero" spelling. Three regions in one law family are stated over a
+vocabulary that does not match the shipped one, and each of the three is tracked
+somewhere different or not at all.
+
+**And one thing neither of us did.** Neither instrument ran `stochastic`, and both
+of us say so in the same words: absent from the predicate, so the finding does not
+hold there. 226 lists extending to `stochastic` in its section 6. I would not:
+the mode's result is not a function of the value, so "the two realisations compute
+the same function" has no truth value for it until the seeding question is
+answered, and running it would produce a number that reads like an answer.
+
+**Nothing in sections 1 to 10 changed on reading 226.** The predicates stand as
+written, and the disagreement with the committed law row stands as a disagreement
+about what `half_up` names rather than as a claim that anybody measured wrong. Two
+instances now agree over the intersection of what they claim, which is the whole
+table outside `half_up` under signed wrapping, at widths 5 to 7 where both ran,
+and I extend it to 3, 4 and 8.
+
+## 12. Which commit is which
+
+- `ab9592f3`, `research: derive where the fused answer composes, cold`: sections
+  1 to 10 and probe steps 01 to 06, written and pushed before
+  `226_lattner_the_derivation_outputs.md` was opened.
+- The commit carrying this section and probe step 07, written after reading it.
+
+`2105ee79` sits between them and is unrelated: five tool lockfiles pulled up to
+the engine pin, because `the-tool-locks-disagree` was blocking every commit in
+the repository and the fix the lint prescribes is a lockfile update. The
+mechanism recurs and is worth a look: the generated lint crate pins
+`mockspace-lint-rules` by `rev` and the five tools pin it by `branch`, so the two
+drift apart every time the launcher re-resolves `mockspace_branch`. This is the
+second such fix in three commits on the trunk.

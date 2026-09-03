@@ -29,3 +29,7 @@ F3: the two readings must be two operations -> HELD
 F1: under ties-toward-positive-infinity, signed wrapping must agree at every triple -> HELD
 F4: the tie direction must not rescue signed saturating -> HELD
 F5: on a non-negative domain the two readings must be one function -> HELD
+G1: this form must agree exactly where the rounding region is equivariant -> HELD
+G2: with one completion the overflow policy must drop out -> HELD
+G3: signed saturating at floor must agree here and disagrees in step 01 -> HELD
+G4: this form must not be the fused realisation under another name -> HELD

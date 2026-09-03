@@ -12,14 +12,19 @@ is a runtime convenience: a debug build of step 01 is slow enough that somebody
 would be tempted to sample, and the test gate refuses a law asserted over a
 sample of the shapes it supports.
 
+Steps 01 to 06 were written and run before `226_lattner_the_derivation_outputs.md`
+was opened, and step 07 after. The two commits are separate and `git log` is what
+says which is which.
+
 ## What the instrument is
 
-Every adaptation point in steps 01 to 05 is `arvo_format::apply::adapt`, the
-shipped realisation of the ratified factoring in `ruling::the_format_spine_is_canon`.
-Nothing in those steps reimplements a rounding mode or a range policy. That
-matters twice: a disagreement between two arms is a disagreement between two
-schedules of one map rather than between this code and the crate, and the numbers
-are about what arvo does rather than about what a model of arvo does.
+Every adaptation point in steps 01 to 05 and 07 is `arvo_format::apply::adapt`,
+the shipped realisation of the ratified factoring in
+`ruling::the_format_spine_is_canon`. Nothing in those steps reimplements a
+rounding mode or a range policy. That matters twice: a disagreement between two
+arms is a disagreement between two schedules of one map rather than between this
+code and the crate, and the numbers are about what arvo does rather than about
+what a model of arvo does.
 
 Step 06 is the exception and says so in its own header. It models the rounding
 region, because the mode it measures is one the crate does not ship, and it
@@ -46,6 +51,7 @@ length from 0 to `W - 1`.
 | 04 | `widening` | the fused answer through an intermediate at a wider declared signature | D3, D4 |
 | 05 | `derivable` | the same route written once, generically over the numeral, plus the blanket impl that must be refused | E2 |
 | 06 | `tie_direction` | whether the one disagreement with a committed law row is about arithmetic or about a word | F3 |
+| 07 | `one_placement` | the third schedule, one completion with the intermediate on the declared grid | G3, G4 |
 
 ## What each step establishes
 
@@ -86,15 +92,25 @@ one of them. F2 calibrates a model of the rounding region against the shipped ma
 on that reading, F3 shows the other reading is a different operation, and F1
 measures the other reading over the region the committed row claims.
 
+**07.** The third schedule, added after reading seat 226, which runs it and this
+seat's first six steps do not. The product is rounded onto the declared grid and
+added to the addend with no completion between, so the whole expression completes
+once. Step 02's decomposition predicts what that does before it runs: with one
+completion on each side H cannot separate the two, so the pair agrees exactly
+where E holds and the overflow policy drops out. G1 and G2 check both halves, and
+G3 is the case that separates this schedule from step 01's.
+
 ## The one broken arm, and why it stays broken
 
-`C2` in step 03 is BROKEN in `out/03_existential.txt` and in `out/07_verdicts.txt`,
-and it is not repaired. It was stated before the run and it claimed that outside
-signed saturating every target is reachable by some arm. Seventy of two hundred
-and seventy are reachable by nothing. The break is the finding of that step, so
-repairing the arm would delete the result. `C5` and `C6` state what the run
-actually shows, and they are marked in the source as written after the break and
-therefore worth less than the four arms that preceded it.
+`C2` in step 03 is BROKEN in `out/03_existential.txt` and in
+`out/08_verdicts.txt`, and it is not repaired. It was stated before the run and
+it claimed that outside signed saturating every target is reachable by some arm.
+Seventy of two hundred and seventy are reachable by nothing. The break is the
+finding of that step, so repairing the arm would delete the result. `C5` and `C6`
+state what the run actually shows, and they are marked in the source as written
+after the break and therefore worth less than the four arms that preceded it.
+
+Thirty-five arms across the seven steps, thirty-four held, and that one did not.
 
 ## The refusals, committed
 

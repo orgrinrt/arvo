@@ -1,0 +1,373 @@
+# step 07: one completion, with the intermediate on the declared grid
+
+once unsigned W=3 F=0 mode=floor policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=floor policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=ceil policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=ceil policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=toward_zero policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=toward_zero policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=half_up policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=half_up policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=half_even policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=0 mode=half_even policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=0 mode=floor policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=0 mode=floor policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=0 mode=ceil policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=0 mode=ceil policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=0 mode=toward_zero policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=0 mode=toward_zero policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=0 mode=half_up policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=0 mode=half_up policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=0 mode=half_even policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=0 mode=half_even policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=floor policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=floor policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=ceil policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=ceil policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=toward_zero policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=toward_zero policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=half_up policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=half_up policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=1 mode=half_even policy=wrap differing=64 of 512 witness=Some((1, 1, 1, 2, 1))
+once unsigned W=3 F=1 mode=half_even policy=saturate differing=18 of 512 witness=Some((1, 1, 1, 2, 1))
+once signed W=3 F=1 mode=floor policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=1 mode=floor policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=1 mode=ceil policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=1 mode=ceil policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=1 mode=toward_zero policy=wrap differing=34 of 512 witness=Some((-3, -1, -4, -2, -3))
+once signed W=3 F=1 mode=toward_zero policy=saturate differing=34 of 512 witness=Some((-3, -1, -4, -2, -3))
+once signed W=3 F=1 mode=half_up policy=wrap differing=34 of 512 witness=Some((-3, -1, -4, -3, -2))
+once signed W=3 F=1 mode=half_up policy=saturate differing=34 of 512 witness=Some((-3, -1, -4, -3, -2))
+once signed W=3 F=1 mode=half_even policy=wrap differing=64 of 512 witness=Some((-3, -3, -3, 2, 1))
+once signed W=3 F=1 mode=half_even policy=saturate differing=44 of 512 witness=Some((-3, -3, -3, 2, 1))
+once unsigned W=3 F=2 mode=floor policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=floor policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=ceil policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=ceil policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=toward_zero policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=toward_zero policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=half_up policy=wrap differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=half_up policy=saturate differing=0 of 512 witness=None
+once unsigned W=3 F=2 mode=half_even policy=wrap differing=64 of 512 witness=Some((1, 2, 1, 2, 1))
+once unsigned W=3 F=2 mode=half_even policy=saturate differing=28 of 512 witness=Some((1, 2, 1, 2, 1))
+once signed W=3 F=2 mode=floor policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=2 mode=floor policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=2 mode=ceil policy=wrap differing=0 of 512 witness=None
+once signed W=3 F=2 mode=ceil policy=saturate differing=0 of 512 witness=None
+once signed W=3 F=2 mode=toward_zero policy=wrap differing=96 of 512 witness=Some((-3, -3, -4, -1, -2))
+once signed W=3 F=2 mode=toward_zero policy=saturate differing=96 of 512 witness=Some((-3, -3, -4, -1, -2))
+once signed W=3 F=2 mode=half_up policy=wrap differing=48 of 512 witness=Some((-3, -2, -4, -3, -2))
+once signed W=3 F=2 mode=half_up policy=saturate differing=48 of 512 witness=Some((-3, -2, -4, -3, -2))
+once signed W=3 F=2 mode=half_even policy=wrap differing=64 of 512 witness=Some((-3, -2, -3, -2, -1))
+once signed W=3 F=2 mode=half_even policy=saturate differing=52 of 512 witness=Some((-3, -2, -3, -2, -1))
+once unsigned W=4 F=0 mode=floor policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=floor policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=toward_zero policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=toward_zero policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=half_up policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=half_up policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=half_even policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=0 mode=half_even policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=floor policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=floor policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=toward_zero policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=toward_zero policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=half_up policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=half_up policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=half_even policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=0 mode=half_even policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=floor policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=floor policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=toward_zero policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=toward_zero policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=half_up policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=half_up policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=1 mode=half_even policy=wrap differing=512 of 4096 witness=Some((1, 1, 1, 2, 1))
+once unsigned W=4 F=1 mode=half_even policy=saturate differing=101 of 4096 witness=Some((1, 1, 1, 2, 1))
+once signed W=4 F=1 mode=floor policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=1 mode=floor policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=1 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=1 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=1 mode=toward_zero policy=wrap differing=180 of 4096 witness=Some((-7, -1, -8, -4, -5))
+once signed W=4 F=1 mode=toward_zero policy=saturate differing=180 of 4096 witness=Some((-7, -1, -8, -4, -5))
+once signed W=4 F=1 mode=half_up policy=wrap differing=180 of 4096 witness=Some((-7, -1, -8, -5, -4))
+once signed W=4 F=1 mode=half_up policy=saturate differing=180 of 4096 witness=Some((-7, -1, -8, -5, -4))
+once signed W=4 F=1 mode=half_even policy=wrap differing=512 of 4096 witness=Some((-7, -7, -7, 2, 1))
+once signed W=4 F=1 mode=half_even policy=saturate differing=266 of 4096 witness=Some((-7, -3, -7, 4, 3))
+once unsigned W=4 F=2 mode=floor policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=floor policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=toward_zero policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=toward_zero policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=half_up policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=half_up policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=2 mode=half_even policy=wrap differing=512 of 4096 witness=Some((1, 2, 1, 2, 1))
+once unsigned W=4 F=2 mode=half_even policy=saturate differing=164 of 4096 witness=Some((1, 2, 1, 2, 1))
+once signed W=4 F=2 mode=floor policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=2 mode=floor policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=2 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=2 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=2 mode=toward_zero policy=wrap differing=554 of 4096 witness=Some((-7, -3, -8, -2, -3))
+once signed W=4 F=2 mode=toward_zero policy=saturate differing=554 of 4096 witness=Some((-7, -3, -8, -2, -3))
+once signed W=4 F=2 mode=half_up policy=wrap differing=276 of 4096 witness=Some((-7, -2, -8, -5, -4))
+once signed W=4 F=2 mode=half_up policy=saturate differing=276 of 4096 witness=Some((-7, -2, -8, -5, -4))
+once signed W=4 F=2 mode=half_even policy=wrap differing=512 of 4096 witness=Some((-7, -6, -7, 4, 3))
+once signed W=4 F=2 mode=half_even policy=saturate differing=368 of 4096 witness=Some((-7, -6, -7, 4, 3))
+once unsigned W=4 F=3 mode=floor policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=floor policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=toward_zero policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=toward_zero policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=half_up policy=wrap differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=half_up policy=saturate differing=0 of 4096 witness=None
+once unsigned W=4 F=3 mode=half_even policy=wrap differing=384 of 4096 witness=Some((1, 4, 1, 2, 1))
+once unsigned W=4 F=3 mode=half_even policy=saturate differing=189 of 4096 witness=Some((1, 4, 1, 2, 1))
+once signed W=4 F=3 mode=floor policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=3 mode=floor policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=3 mode=ceil policy=wrap differing=0 of 4096 witness=None
+once signed W=4 F=3 mode=ceil policy=saturate differing=0 of 4096 witness=None
+once signed W=4 F=3 mode=toward_zero policy=wrap differing=1056 of 4096 witness=Some((-7, -7, -8, -1, -2))
+once signed W=4 F=3 mode=toward_zero policy=saturate differing=1056 of 4096 witness=Some((-7, -7, -8, -1, -2))
+once signed W=4 F=3 mode=half_up policy=wrap differing=288 of 4096 witness=Some((-7, -4, -8, -5, -4))
+once signed W=4 F=3 mode=half_up policy=saturate differing=288 of 4096 witness=Some((-7, -4, -8, -5, -4))
+once signed W=4 F=3 mode=half_even policy=wrap differing=384 of 4096 witness=Some((-7, -4, -7, -4, -3))
+once signed W=4 F=3 mode=half_even policy=saturate differing=324 of 4096 witness=Some((-7, -4, -7, -4, -3))
+once unsigned W=5 F=0 mode=floor policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=floor policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=toward_zero policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=toward_zero policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=half_up policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=half_up policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=half_even policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=0 mode=half_even policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=floor policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=floor policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=toward_zero policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=toward_zero policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=half_up policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=half_up policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=half_even policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=0 mode=half_even policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=floor policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=floor policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=toward_zero policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=toward_zero policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=half_up policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=half_up policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=1 mode=half_even policy=wrap differing=4096 of 32768 witness=Some((1, 1, 1, 2, 1))
+once unsigned W=5 F=1 mode=half_even policy=saturate differing=508 of 32768 witness=Some((1, 1, 1, 2, 1))
+once signed W=5 F=1 mode=floor policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=1 mode=floor policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=1 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=1 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=1 mode=toward_zero policy=wrap differing=898 of 32768 witness=Some((-15, -1, -16, -8, -9))
+once signed W=5 F=1 mode=toward_zero policy=saturate differing=898 of 32768 witness=Some((-15, -1, -16, -8, -9))
+once signed W=5 F=1 mode=half_up policy=wrap differing=898 of 32768 witness=Some((-15, -1, -16, -9, -8))
+once signed W=5 F=1 mode=half_up policy=saturate differing=898 of 32768 witness=Some((-15, -1, -16, -9, -8))
+once signed W=5 F=1 mode=half_even policy=wrap differing=4096 of 32768 witness=Some((-15, -15, -15, 2, 1))
+once signed W=5 F=1 mode=half_even policy=saturate differing=1428 of 32768 witness=Some((-15, -3, -15, 8, 7))
+once unsigned W=5 F=2 mode=floor policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=floor policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=toward_zero policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=toward_zero policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=half_up policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=half_up policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=2 mode=half_even policy=wrap differing=4096 of 32768 witness=Some((1, 2, 1, 2, 1))
+once unsigned W=5 F=2 mode=half_even policy=saturate differing=856 of 32768 witness=Some((1, 2, 1, 2, 1))
+once signed W=5 F=2 mode=floor policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=2 mode=floor policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=2 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=2 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=2 mode=toward_zero policy=wrap differing=2924 of 32768 witness=Some((-15, -3, -16, -4, -5))
+once signed W=5 F=2 mode=toward_zero policy=saturate differing=2924 of 32768 witness=Some((-15, -3, -16, -4, -5))
+once signed W=5 F=2 mode=half_up policy=wrap differing=1456 of 32768 witness=Some((-15, -2, -16, -9, -8))
+once signed W=5 F=2 mode=half_up policy=saturate differing=1456 of 32768 witness=Some((-15, -2, -16, -9, -8))
+once signed W=5 F=2 mode=half_even policy=wrap differing=4096 of 32768 witness=Some((-15, -14, -15, 6, 5))
+once signed W=5 F=2 mode=half_even policy=saturate differing=2180 of 32768 witness=Some((-15, -6, -15, 8, 7))
+once unsigned W=5 F=3 mode=floor policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=floor policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=toward_zero policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=toward_zero policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=half_up policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=half_up policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=3 mode=half_even policy=wrap differing=3072 of 32768 witness=Some((1, 4, 1, 2, 1))
+once unsigned W=5 F=3 mode=half_even policy=saturate differing=1040 of 32768 witness=Some((1, 4, 1, 2, 1))
+once signed W=5 F=3 mode=floor policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=3 mode=floor policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=3 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=3 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=3 mode=toward_zero policy=wrap differing=6142 of 32768 witness=Some((-15, -7, -16, -2, -3))
+once signed W=5 F=3 mode=toward_zero policy=saturate differing=6142 of 32768 witness=Some((-15, -7, -16, -2, -3))
+once signed W=5 F=3 mode=half_up policy=wrap differing=1666 of 32768 witness=Some((-15, -4, -16, -9, -8))
+once signed W=5 F=3 mode=half_up policy=saturate differing=1666 of 32768 witness=Some((-15, -4, -16, -9, -8))
+once signed W=5 F=3 mode=half_even policy=wrap differing=3072 of 32768 witness=Some((-15, -12, -15, 8, 7))
+once signed W=5 F=3 mode=half_even policy=saturate differing=2256 of 32768 witness=Some((-15, -12, -15, 8, 7))
+once unsigned W=5 F=4 mode=floor policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=floor policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=toward_zero policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=toward_zero policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=half_up policy=wrap differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=half_up policy=saturate differing=0 of 32768 witness=None
+once unsigned W=5 F=4 mode=half_even policy=wrap differing=2048 of 32768 witness=Some((1, 8, 1, 2, 1))
+once unsigned W=5 F=4 mode=half_even policy=saturate differing=1060 of 32768 witness=Some((1, 8, 1, 2, 1))
+once signed W=5 F=4 mode=floor policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=4 mode=floor policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=4 mode=ceil policy=wrap differing=0 of 32768 witness=None
+once signed W=5 F=4 mode=ceil policy=saturate differing=0 of 32768 witness=None
+once signed W=5 F=4 mode=toward_zero policy=wrap differing=9984 of 32768 witness=Some((-15, -15, -16, -1, -2))
+once signed W=5 F=4 mode=toward_zero policy=saturate differing=9984 of 32768 witness=Some((-15, -15, -16, -1, -2))
+once signed W=5 F=4 mode=half_up policy=wrap differing=1536 of 32768 witness=Some((-15, -8, -16, -9, -8))
+once signed W=5 F=4 mode=half_up policy=saturate differing=1536 of 32768 witness=Some((-15, -8, -16, -9, -8))
+once signed W=5 F=4 mode=half_even policy=wrap differing=2048 of 32768 witness=Some((-15, -8, -15, -8, -7))
+once signed W=5 F=4 mode=half_even policy=saturate differing=1760 of 32768 witness=Some((-15, -8, -15, -8, -7))
+once unsigned W=6 F=0 mode=floor policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=floor policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=toward_zero policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=toward_zero policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=half_up policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=half_up policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=half_even policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=0 mode=half_even policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=floor policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=floor policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=toward_zero policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=toward_zero policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=half_up policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=half_up policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=half_even policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=0 mode=half_even policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=floor policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=floor policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=toward_zero policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=toward_zero policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=half_up policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=half_up policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=1 mode=half_even policy=wrap differing=32768 of 262144 witness=Some((1, 1, 1, 2, 1))
+once unsigned W=6 F=1 mode=half_even policy=saturate differing=2436 of 262144 witness=Some((1, 1, 1, 2, 1))
+once signed W=6 F=1 mode=floor policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=1 mode=floor policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=1 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=1 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=1 mode=toward_zero policy=wrap differing=4296 of 262144 witness=Some((-31, -1, -32, -16, -17))
+once signed W=6 F=1 mode=toward_zero policy=saturate differing=4296 of 262144 witness=Some((-31, -1, -32, -16, -17))
+once signed W=6 F=1 mode=half_up policy=wrap differing=4296 of 262144 witness=Some((-31, -1, -32, -17, -16))
+once signed W=6 F=1 mode=half_up policy=saturate differing=4296 of 262144 witness=Some((-31, -1, -32, -17, -16))
+once signed W=6 F=1 mode=half_even policy=wrap differing=32768 of 262144 witness=Some((-31, -31, -31, 2, 1))
+once signed W=6 F=1 mode=half_even policy=saturate differing=7196 of 262144 witness=Some((-31, -3, -31, 16, 15))
+once unsigned W=6 F=2 mode=floor policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=floor policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=toward_zero policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=toward_zero policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=half_up policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=half_up policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=2 mode=half_even policy=wrap differing=32768 of 262144 witness=Some((1, 2, 1, 2, 1))
+once unsigned W=6 F=2 mode=half_even policy=saturate differing=4210 of 262144 witness=Some((1, 2, 1, 2, 1))
+once signed W=6 F=2 mode=floor policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=2 mode=floor policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=2 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=2 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=2 mode=toward_zero policy=wrap differing=14520 of 262144 witness=Some((-31, -3, -32, -8, -9))
+once signed W=6 F=2 mode=toward_zero policy=saturate differing=14520 of 262144 witness=Some((-31, -3, -32, -8, -9))
+once signed W=6 F=2 mode=half_up policy=wrap differing=7228 of 262144 witness=Some((-31, -2, -32, -17, -16))
+once signed W=6 F=2 mode=half_up policy=saturate differing=7228 of 262144 witness=Some((-31, -2, -32, -17, -16))
+once signed W=6 F=2 mode=half_even policy=wrap differing=32768 of 262144 witness=Some((-31, -30, -31, 10, 9))
+once signed W=6 F=2 mode=half_even policy=saturate differing=11628 of 262144 witness=Some((-31, -6, -31, 16, 15))
+once unsigned W=6 F=3 mode=floor policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=floor policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=toward_zero policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=toward_zero policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=half_up policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=half_up policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=3 mode=half_even policy=wrap differing=24576 of 262144 witness=Some((1, 4, 1, 2, 1))
+once unsigned W=6 F=3 mode=half_even policy=saturate differing=5304 of 262144 witness=Some((1, 4, 1, 2, 1))
+once signed W=6 F=3 mode=floor policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=3 mode=floor policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=3 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=3 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=3 mode=toward_zero policy=wrap differing=32344 of 262144 witness=Some((-31, -7, -32, -4, -5))
+once signed W=6 F=3 mode=toward_zero policy=saturate differing=32344 of 262144 witness=Some((-31, -7, -32, -4, -5))
+once signed W=6 F=3 mode=half_up policy=wrap differing=8764 of 262144 witness=Some((-31, -4, -32, -17, -16))
+once signed W=6 F=3 mode=half_up policy=saturate differing=8764 of 262144 witness=Some((-31, -4, -32, -17, -16))
+once signed W=6 F=3 mode=half_even policy=wrap differing=24576 of 262144 witness=Some((-31, -28, -31, 14, 13))
+once signed W=6 F=3 mode=half_even policy=saturate differing=13276 of 262144 witness=Some((-31, -12, -31, 16, 15))
+once unsigned W=6 F=4 mode=floor policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=floor policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=toward_zero policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=toward_zero policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=half_up policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=half_up policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=4 mode=half_even policy=wrap differing=16384 of 262144 witness=Some((1, 8, 1, 2, 1))
+once unsigned W=6 F=4 mode=half_even policy=saturate differing=5714 of 262144 witness=Some((1, 8, 1, 2, 1))
+once signed W=6 F=4 mode=floor policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=4 mode=floor policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=4 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=4 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=4 mode=toward_zero policy=wrap differing=58246 of 262144 witness=Some((-31, -15, -32, -2, -3))
+once signed W=6 F=4 mode=toward_zero policy=saturate differing=58246 of 262144 witness=Some((-31, -15, -32, -2, -3))
+once signed W=6 F=4 mode=half_up policy=wrap differing=8904 of 262144 witness=Some((-31, -8, -32, -17, -16))
+once signed W=6 F=4 mode=half_up policy=saturate differing=8904 of 262144 witness=Some((-31, -8, -32, -17, -16))
+once signed W=6 F=4 mode=half_even policy=wrap differing=16384 of 262144 witness=Some((-31, -24, -31, 16, 15))
+once signed W=6 F=4 mode=half_even policy=saturate differing=12160 of 262144 witness=Some((-31, -24, -31, 16, 15))
+once unsigned W=6 F=5 mode=floor policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=floor policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=toward_zero policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=toward_zero policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=half_up policy=wrap differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=half_up policy=saturate differing=0 of 262144 witness=None
+once unsigned W=6 F=5 mode=half_even policy=wrap differing=10240 of 262144 witness=Some((1, 16, 1, 2, 1))
+once unsigned W=6 F=5 mode=half_even policy=saturate differing=5444 of 262144 witness=Some((1, 16, 1, 2, 1))
+once signed W=6 F=5 mode=floor policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=5 mode=floor policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=5 mode=ceil policy=wrap differing=0 of 262144 witness=None
+once signed W=6 F=5 mode=ceil policy=saturate differing=0 of 262144 witness=None
+once signed W=6 F=5 mode=toward_zero policy=wrap differing=87552 of 262144 witness=Some((-31, -31, -32, -1, -2))
+once signed W=6 F=5 mode=toward_zero policy=saturate differing=87552 of 262144 witness=Some((-31, -31, -32, -1, -2))
+once signed W=6 F=5 mode=half_up policy=wrap differing=7680 of 262144 witness=Some((-31, -16, -32, -17, -16))
+once signed W=6 F=5 mode=half_up policy=saturate differing=7680 of 262144 witness=Some((-31, -16, -32, -17, -16))
+once signed W=6 F=5 mode=half_even policy=wrap differing=10240 of 262144 witness=Some((-31, -16, -31, -16, -15))
+once signed W=6 F=5 mode=half_even policy=saturate differing=8880 of 262144 witness=Some((-31, -16, -31, -16, -15))
+
+# --- the arms ---
+G1 detail: 360 cells, 0 breaks
+G1: this form must agree exactly where the rounding region is equivariant -> HELD
+G2 detail: 0 cells whose verdict moved with the policy
+G2: with one completion the overflow policy must drop out -> HELD
+G3 detail: 18 signed saturating floor cells, all agreeing under one completion: true
+G3: signed saturating at floor must agree here and disagrees in step 01 -> HELD
+G4 detail: 112 cells disagreeing
+G4: this form must not be the fused realisation under another name -> HELD
+exit=0
