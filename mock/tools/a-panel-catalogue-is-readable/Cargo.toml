@@ -26,10 +26,16 @@ publish = false
 
 [dependencies]
 # The URL spelling has to match the one the engine pins, character for
-# character. Cargo keys a git source by its URL, so `https://` here against
-# `ssh://` there is two copies of the same crate in one graph and a type
-# mismatch across the boundary, with nothing in the error saying so.
-mockspace = { package = "mockspace-lint-rules", git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+# character. Cargo keys a git source by its URL, so a spelling here that
+# differs from the engine's is two copies of the same crate in one graph and
+# a type mismatch across the boundary, with nothing in the error saying so.
+#
+# The engine's spelling is `https://`: `CANONICAL_URL` in cargo-mock, with a
+# test asserting it carries no `git@`, and the generated lint crate keys its
+# `[patch]` on that URL, so a patch collapses only what matches it. An earlier
+# version of this comment named `ssh://` as the engine's, which is what left
+# all five of these wrong and wedged the repo.
+mockspace = { package = "mockspace-lint-rules", git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev" }
 # Comment-preserving, and the same reader the engine's own registry loader uses,
 # so a file this accepts is one the engine accepts too.
 toml_edit = "0.22"
