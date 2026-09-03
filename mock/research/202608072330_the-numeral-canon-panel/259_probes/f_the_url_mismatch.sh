@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+#
+# TWO OUTPUTS, AND READ BOTH. `f_the_url_mismatch.out` is the run at engine
+# revision `b57007c`, where every control passes and the defect is real.
+# `f_the_url_mismatch_after_the_pin_moved.out` is the same script at `a7dd8223`,
+# which the launcher resolved to mid-dispatch, and there F2 and F3 report FAIL.
+# That is the instrument saying the defect is repaired: the engine now writes a
+# `[patch]` table for BOTH spellings, the pack builds with no workaround, and
+# F3 fails because rewriting the https table into a second ssh one is now a
+# duplicate key. A control that fires on a fixed tree is the control working.
 # F. Why `cargo mock` builds nothing at this base, isolated to one string.
 #
 # Found while trying to run `d_can_a_structural_claim_state_its_region.sh`,
