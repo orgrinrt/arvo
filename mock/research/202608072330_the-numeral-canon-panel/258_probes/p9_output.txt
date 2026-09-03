@@ -1,0 +1,25 @@
+tree: 2a2995d455a18839bc3548176ff49aa3babc284b
+
+C0 with nothing planted:
+      schema check passed
+      [the-tool-locks-pin-one-mockspace/the-tool-locks-disagree] mock/tools:0: [error] 2 different revisions of `mockspace-lint-rules` are pinne
+    lint check failed: 1 violation(s)
+
+A argument, no predicate                     : REFUSED
+      [a-region-agrees-with-the-sentence-kind/an-established-claim-carries-no-region] registry:0: [error] `proposal::zz_258_proposal_control` has `sentence_kind` `argument` and an empty `predicate`, so the claim reads as hol
+
+B argument, an axis nothing declares         : REFUSED
+      [every-predicate-names-a-declared-axis/undeclared-axis] registry:0: [error] `proposal::zz_258_proposal_control` names the axis `corpus_tier` in `predicate`, which no `dimension` row declares. Declare it, or use the slu
+
+C argument, threads and toolchain only       : accepted
+      schema check passed
+    lint check failed: 1 violation(s)
+
+D normative, no predicate                    : accepted
+      schema check passed
+    lint check failed: 1 violation(s)
+
+accepted: 2   refused: 2
+
+VERDICT is in which spellings landed, above. Read A and B for whether section 5's
+premise holds, and C for whether the block is a gate or a matter of honesty.

@@ -1597,3 +1597,114 @@ control = "A phase-zero format from the same inventory is run as the third arm, 
 standing = "sound"
 reproduced = "Reached independently by `the_identity_predicate_swept_against_an_enumeration`, which models the coordinate space rather than linking the crate, so the two instruments share nothing but the conclusion."
 keywords = ["phase", "additive identity", "biased", "whole step", "half step", "shipped crate", "counterexample", "value one"]
+
+[[probe]]
+id = "no_row_cites_a_seat_of_the_admission_and_standing_sitting"
+establishes = "At `2a2995d4`, no row under `mock/registry/*.toml` carries a provenance reference to any panel seat from 241 to 258, per seat and not only at the maximum. The highest seat of this panel cited anywhere in the registry is 240, and the registry carries 1174 citations of the panel in total."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p1_what_the_registry_carries_from_this_sitting.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p1_output.txt::1",
+]
+control = "Three, all fired. A registry file citing a seat 999 was planted, measured and removed, and the census reported it, so an empty result cannot be an extractor that sees nothing. A seat 998 that was never planted came back zero in the same run, so the extractor is not reporting everything. And seat 240 came back with six citations, which is the positive control that the pattern matches the citation form the rows use."
+standing = "sound"
+reproduced = "A fourth arrival on a measurement two earlier seats took at earlier trees, run again because the trunk moved twice after the last of them and because the earlier form reported a maximum rather than a per-seat census. It widens the range by two seats and reports six citations for the control seat where an earlier form reported two, which is a difference in what was counted rather than a disagreement."
+note = "It is a claim about a tree and it stops being true the moment a row cites one of those seats, which is what the file citing it does. Cite it for the state it found rather than for the state of the registry now."
+keywords = ["registry", "provenance", "citation", "seat", "admission", "standing", "census", "unadmitted"]
+
+[[probe]]
+id = "the_two_standing_seats_are_mutually_non_ancestral"
+establishes = "The blind commits of the two seats that answered what a standing counts, `c9afdeaa` and `cbcdce5b`, are mutually non-ancestral and share the base `eac588fd`. Under the blindness test a ratified promotion in this registry used on its own pair, neither branch could show the other's file."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p2_the_two_standing_seats_are_mutually_non_ancestral.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p2_output.txt::1",
+]
+control = "Three, all fired. Each blind commit is an ancestor of HEAD, which is a pair whose answer is known and which an always-false predicate would fail. HEAD is an ancestor of neither, which an always-true predicate would fail. And each hash was required to resolve and to carry the commit subject its own file claims for it, so the two hashes are not taken on trust."
+standing = "sound"
+note = "Non-ancestry establishes that neither branch could show the other's file and nothing about what either seat's context held, which is the same bound the earlier application of this instrument states about itself. One of the two withdrew itself as a blind instance on its own framing for a disclosed leak that preceded its derivation, and that withdrawal is not visible to this instrument."
+keywords = ["blind", "non-ancestry", "merge base", "standing", "independence", "cold seat", "248", "249"]
+
+[[probe]]
+id = "the_registry_is_written_while_the_panel_runs"
+establishes = "At `2a2995d4` no panel is declared under `mock/panel/`, the directory does not exist, and `mock check` reports its panel row green. Over the registry's whole history, 138 commits touch `mock/registry`, of which 22 also land a numbered panel member file in the same act."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p3_rows_are_admitted_while_the_panel_runs.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p3_output.txt::1",
+]
+control = "Three, all fired. The commit classifier reports 116 registry commits landing no member file, so it is not matching the registry path itself and calling every commit a co-landing. It reports 22 that do, so it can see a co-landing at all. And the member-file pattern was required to reject a living ledger and a probe artifact and to accept two numbered member files, which is what separates a member file from anything else in the same directory."
+standing = "sound"
+note = "The green panel row is vacuous rather than a statement that the registry is untouched: with no panel declared there is nothing for the gate to fire on. So a seat declining to write a row on the ground that the naming of `canon_paths` refuses one while a panel is open is declining on a mechanism that has never refused anything here. The other two grounds that seat gave, that the coordinator holds the promotion gate and that a second read was owed on two of its rows, are untouched by this and are the reasons that hold."
+keywords = ["canon_paths", "panel", "gate", "mock check", "registry", "co-landing", "vacuous", "declared"]
+
+[[probe]]
+id = "a_fixed_string_search_over_wrapped_prose_returns_a_false_zero"
+establishes = "A fixed-string search for a sentence-length fragment over this corpus reports it absent wherever the line wrap falls inside the fragment. One sentence of one seat's own gate is reported present in the file that quotes it and absent from the file that wrote it, and whitespace normalisation recovers it. Twelve claim fragments are found under normalisation."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p4_the_retirement_claims_are_findable.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p4_output.txt::1",
+]
+control = "Three, all fired, and one of them failed first and is why the instrument exists in this form. A planted fragment present in no file comes back zero. A fragment known to be in a named file, and known to wrap there, must come back naming that file under normalisation, which is the control that failed on the first run and named the wrong file. And the same fragment under the unnormalised search must not name that file, or normalisation is not what recovered it."
+standing = "sound"
+reproduced = "Three arrivals at one defect class on one corpus, each found by its own author against its own instrument: a seat's paraphrase census returned a clean zero for a wrapped line with no control covering that column, this instrument's first run named the wrong file for the same reason, and a third instrument in the same directory reports the same behaviour on the agent template."
+note = "The defect is not that a search is wrong. It is that the wrong answer is a zero, which is indistinguishable from the answer an absence check is looking for, so an instrument that has never been made to find something is reporting nothing and reading as clean."
+keywords = ["grep", "wrap", "false zero", "normalisation", "fixed string", "absence claim", "control", "findable"]
+
+[[probe]]
+id = "the_axis_gap_is_an_open_row_no_seat_of_the_sitting_cited"
+establishes = "The gap one seat reports as named by nothing, that no declared dimension can carry a claim about the canon's own contents, is an open question row with three options and `decider = panel`, filed by an earlier seat and carrying no `answered`. No file numbered 241 to 257 cites it, and no file in the panel directory does. No registry row mentions the file the standing vocabulary is declared in."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p5_the_open_row_nobody_in_this_sitting_cited.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p5_output.txt::1",
+]
+control = "Three, all fired. A slug that files of this sitting demonstrably do cite comes back from two of them, so a zero is a fact about the corpus rather than about the search. A slug of the same shape existing nowhere comes back zero in both the registry and the corpus. And the row is required to be present and to carry no `answered`, so what is reported uncited is an open row rather than a settled one."
+standing = "sound"
+note = "Four files of this panel report the same axis gap and none of them cites the row that asks it, which is the mechanism the row's own subject describes from the other side: a question row is reachable from the question it asks only by somebody who already suspects it exists."
+keywords = ["dimension", "axis", "predicate", "canon", "structural claim", "question row", "uncited", "gap"]
+
+[[probe]]
+id = "the_standing_clause_binds_from_the_agent_surface_and_from_no_row"
+establishes = "At `2a2995d4` the generated agent instructions quote the standing declaration in full, including the clause a paraphrase had dropped, and add the strict reading that a seat handed another's conclusion has not reached anything. A hard-error lint compares the template against the declaration in both directions at commit, build and push. No registry row carries the clause, the gloss, or the name of the file the declaration lives in as a statement about the field."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p6_the_agent_surface_and_the_wrapped_line.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p6_output.txt::1",
+]
+control = "Five, all fired. The clause is present in the declaration, so the comparison has a left-hand side. The unnormalised search over the template returns zero while the normalised one returns one, so the wrap is what separates them. A clause known absent returns zero under normalisation too. The lint file and its severity declaration are both required to exist. And a phrase known to be in the registry is found by the registry arm, so the four zeros it reports are facts about the registry."
+standing = "sound"
+note = "The paraphrase half of the finding this reproduces is repaired and held repaired. The locus half is one layer worse than it was measured: it is now not only the declaration that sits outside the canon but the answer to it, so the sentence deciding whether a claim may be promoted binds every session and can be cited by no slug."
+keywords = ["standing", "agent surface", "paraphrase", "quotation", "lint", "locus", "wrap", "declaration", "canon"]
+
+[[probe]]
+id = "the_bench_tree_fails_only_under_denied_warnings"
+establishes = "The bench tree passes `cargo test --workspace` and fails the same run under `RUSTFLAGS=-D warnings`, on two nested `unsafe` blocks in one variant's kernel that the compiler reports as unnecessary. That is why the whole-tree runner reports the tree failed while the tree's own suite is green."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p7_the_benches_tree_fails_only_under_denied_warnings.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p7_output.txt::1",
+]
+control = "Three, all fired. The ordinary run must pass, or the finding is not about the flag. The denied-warnings run must fail, or the flag is not the separator. And the two lines the error names must be read out of the source and must be `unsafe` blocks, each nested inside an outer one, rather than taken from the message."
+standing = "sound"
+note = "Not repaired, and the reason is not that the repair is hard: the two blocks come out in one edit. The file is a bench variant whose committed artifacts record what built them, so editing the kernel is a bench-harness act with its own gate rather than a panel one. Reported here because the whole-tree runner prints no output for the tree it fails, so the failure arrives with no diagnosis attached and reads as a broken suite."
+keywords = ["benches", "unused_unsafe", "denied warnings", "RUSTFLAGS", "mock test", "green", "variant", "kernel"]
+
+[[probe]]
+id = "the_registry_citation_checker_fires_on_all_three_bad_shapes"
+establishes = "The registry's own citation check reports a citation into a panel file that does not exist, a heading anchor that does not exist in a file that does, and a citation naming a root and nothing in it, each naming the offending row. So a clean registry section over a set of newly written rows is a measurement rather than a silence."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p8_the_citation_checker_fires_on_a_bad_anchor.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p8_output.txt::1",
+]
+control = "Four, all fired. With nothing planted the registry section must report no error, or the tree was already failing and the probe would be hiding it. Then one plant per failure mode, each of which must be reported and must name the planted row rather than merely raising a count."
+standing = "sound"
+defect = "Its first version counted lint errors and reported all three modes as unreported, because the registry check runs before the lint pass and aborts it, so a planted bad citation removes the pre-existing lint error from the output rather than adding to it. The count went from one to zero and the instrument read that as nothing being caught. Counting was the wrong operation and the instrument now reads the registry section by name. Kept because a control that reports the opposite of the truth is worth more on the record than the corrected run."
+note = "The heading-anchor mode is the one a row of this seat's own uses, so it is checked rather than assumed. The engine names the three shapes `unresolvable-provenance`, `unresolvable-heading` and `malformed-provenance`."
+keywords = ["citation", "provenance", "anchor", "heading", "control", "registry check", "plant", "counting"]
+
+[[probe]]
+id = "which_spellings_of_a_proposal_about_the_corpus_the_gates_accept"
+establishes = "Four spellings of one proposal row about the corpus, each planted alone and removed in the same run. An `argument` carrying no predicate is refused by name. An `argument` whose predicate names an axis no `dimension` row declares is refused by name. An `argument` whose predicate names only `threads` and `toolchain` is accepted. A `normative` row carrying no predicate is accepted. So the two gates fire exactly as their names say, and a proposal about the corpus is landable under two spellings."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p9_can_a_process_proposal_be_landed_at_all.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::258_probes::p9_output.txt::1",
+]
+control = "Two, both fired. With nothing planted the registry section must report no error and the run must still carry the one pre-existing lint error, so the probe is neither hiding a failure nor reporting somebody else's. And at least one spelling must be accepted and at least one refused, or the instrument says the same thing about every input."
+standing = "sound"
+note = "It refutes a reasoned claim rather than confirming one. A seat had argued from the lints' doc comments and a census that a proposal about the corpus could not be landed at all; the gate accepts two spellings, so what stops such a row is a judgement about whether its predicate is true rather than a refusal. Under the predicate notation an axis left out holds nowhere, so `threads` and `toolchain` alone say a claim about what a sentence means holds nowhere any other axis exists, and `normative` says the claim is imposed rather than reasoned. Which of those a structural claim should take is what `question::can_a_claim_about_the_canons_own_structure_carry_a_region` asks, and neither is what an `argument` means."
+keywords = ["proposal", "predicate", "sentence_kind", "argument", "normative", "declared axis", "threads", "gate", "plant"]

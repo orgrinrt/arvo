@@ -2215,3 +2215,168 @@ topic = "the_format"
 replacement = "Whether the set carries an additive identity is decided by the phase being a whole multiple of the quantum, not by its being nonzero. What survives of the original is narrower and is about the half-step geometry alone: that grid is not closed under exact addition, and every exact sum of two of its points lands half a step off it.\n\n**The same clause stands in a row this retirement cannot reach**, and it is named here rather than edited. `proposal::membership_of_the_representable_set_is_one_affine_predicate` closes on the words that a nonzero phase decides whether the set carries an additive identity at all, at `standing = \"two_experts\"`, and `ruling::the_format_spine_is_canon` stamps it, so it is canon by ratification. Correcting a stamped row is not a retirement's act and is not one instrument's: it wants a `ruling` carrying `corrects`, on two agreements about the correction rather than about the measurement underneath it. Until then that row's phase sentence reads wider than the evidence, and the sentence around it, that membership is one affine predicate, is untouched by any of this and is what the correction here rests on.\n\nThe claim also stands in the crate's design, its rustdoc and one of its tests, which the design and code tiers correct in their own order rather than here."
 provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
 keywords = ["phase", "additive identity", "biased grid", "half step", "whole step", "zero on the grid", "monoid", "closure", "nearest"]
+
+[[retirement]]
+id = "r241_the_arity_is_fixed_at_one_by_a_ratified_count"
+claim = "So the arity is fixed at one by a ratified count, not by a reading of a spelling."
+why = "R3 carries the number ten as a description of the shipped crate, inside an arithmetic argument about `Width`, and its own scope statement places the count outside what it ratifies: two instances agree about the intersection of their claims and never the union, so the count is outside what that row ratifies. R3's conclusions do not depend on the count being ten. At thirteen constants and slot arity two the same three would still exceed `u32` and the same conclusion would follow, so ten appears inside a ratified row as an incidental description rather than as a ratified commitment to the arity.\n\nTwo readers, two personas, both reading the row's own text rather than each other. The consolidation demoted it while reading R3's `promotion`; a later seat read the same field from outside the persona that wrote the claim and agreed, which is the second reading a Kiselyov seat had said it could not supply. A third seat verified the quotation verbatim against the row.\n\nThe `3n + 7` model of how the count would move travels with the retired claim and is one seat's construction rather than a measured or ratified fact: a two-vector slot sharing one `WIDTH` gives `2n + 8`, and nothing turns on which."
+kind = "wrong"
+topic = "the_number_system"
+replacement = "The weaker form the same file states later in the same section, which is defensible and is a real cost argument: amending the slot arity would take R3's count with it, and R3 is the row the numeric door is built on, so the amendment is not local to the membership clause."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::241_kiselyov_admission_is_a_resolution_not_a_verdict::338",
+  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::417",
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::469",
+]
+keywords = ["arity", "ratified count", "R3", "slot", "coordinate count", "ten", "door", "spelling", "set-valued carriers"]
+
+[[retirement]]
+id = "r242_twentyfour_question_rows_carry_a_bound"
+claim = "24 of the registry's 105 question rows carry one; none is in this topic."
+why = "It is 22 of 105 at the tree the sitting measured, and 23 of 106 once one unrelated row landed afterwards. Three arrivals give the same number: an erratum corrected the coordinator's 24 to 22, a consolidation's census reproduced 22 with a control showing the instrument can find a bound, and an entailment check re-ran that census at the tree it names and matched the committed output after first getting 23 at a later tree and finding the cause.\n\nThe second clause of the claim is true and is not retired: none of the eighteen `the_number_system` question rows carries a `bound`."
+kind = "wrong"
+topic = "the_number_system"
+replacement = "22 of 105 at the tree the sitting measured, and the count moves with the tree, so a reader wanting it now runs the census rather than quoting a number."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::242_what-admits-a-number-system::26",
+  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::654",
+  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::110",
+]
+keywords = ["bound", "question rows", "24", "22", "census", "count", "tree", "erratum"]
+
+[[retirement]]
+id = "r241_the_four_bounds_were_four_note_fields"
+claim = "what I took for four bounds were four `note` fields sitting where I read `bound` to be"
+why = "Every one of the eighteen `the_number_system` question rows carries a `note`, so four notes could not have been what the miscount saw. Exactly four of the eighteen carry an `unblocks`, and four is the number that was counted. Established by one exhaustive census over the eighteen rows with a control showing the instrument finds bounds elsewhere in the same file.\n\nThe correction to the count stands and only the account of the mechanism goes. One instance, and it has had no second reader."
+kind = "wrong"
+topic = "the_number_system"
+replacement = "The four rows that were counted are the four carrying an `unblocks`, not four carrying a `note`, since all eighteen carry a `note`."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::241_kiselyov_admission_is_a_resolution_not_a_verdict::169",
+  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::658",
+]
+keywords = ["erratum", "miscount", "bound", "note", "unblocks", "eighteen", "question rows", "diagnosis"]
+
+[[retirement]]
+id = "r245_neither_counting_convention_gives_six"
+claim = "Neither reading gives `6`. This does not touch the substance of L4"
+why = "A trailing-token-boundary count of `NonZero` over that file gives exactly six, and it is the only ordinary convention that does. Measured twice by two instruments neither of which produced the claim: a four-convention census with four controls, all of which had to fire before the census printed, and a tokeniser-based census over five relations plus a sixth taken by hand, which also closed two further hypotheses about the original method.\n\nWhat is true and survives is the finding underneath: no single counting convention reproduces all four of the numbers the census reported, so the four were taken under at least two mutually inconsistent conventions and reported as one census. The severity is unchanged and nothing in the argument the census corroborates depends on it."
+kind = "wrong"
+topic = "the_number_system"
+replacement = "`NonZero` is six under trailing-boundary counting and thirteen under plain substring. The defect was never a number: it is that four numbers were reported as one census under at least two conventions, which is invisible until somebody runs all of them."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::238",
+  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::304",
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::242",
+]
+keywords = ["NonZero", "census", "counting convention", "substring", "word boundary", "tokeniser", "six", "thirteen"]
+
+[[retirement]]
+id = "r245_three_of_four_identifies_the_counting_method"
+claim = "Three of four reproduce exactly under plain substring counting, which is strong evidence that is the method used."
+why = "It identifies nothing. Three of four also reproduce under trailing-boundary counting, with a different one of the four failing, so two conventions each score three of four on disjoint failure sets. Three-of-four is the shape a set of numbers takes when it was not taken as one census, and it is not identification.\n\nMeasured with four conventions under four controls, then again on a third instrument built on a tokeniser rather than on grep, which added two further conventions and closed two hypotheses about the original method. Six ordinary conventions do not reproduce the four numbers, and the instrument that produced them is not recoverable from them."
+kind = "wrong"
+topic = "the_number_system"
+replacement = "Nothing identifies the method. Each of the four numbers is reproducible under at least one convention and no single convention reproduces all four."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::235",
+  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::59",
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::242",
+]
+keywords = ["census", "method", "identification", "substring", "trailing boundary", "three of four", "convention", "hand check"]
+
+[[retirement]]
+id = "r244_the_sittings_one_promotable_result"
+claim = "So the sitting's one promotable result is a promotion nobody proposed"
+why = "Stated as a completeness claim and not complete. A second candidate of the identical shape sat uninspected in the table the same file had built, and three later readings each recast the sentence again.\n\nThe entailment check found the second candidate. A later seat then established that neither row is promotable as written, because a row is promoted whole and the two rows carry clauses at different standings: what the sitting produced is independent second instances for some clauses and a gap on others. A third seat, from a different persona, refuted two of that seat's clause verdicts and showed that the conclusions of two further clauses reached the cold seats through the question rows they were dispatched on, which were written by the author of the proposals under test.\n\nSo the count was never one, and counting was the wrong operation."
+kind = "superseded"
+topic = "the_number_system"
+replacement = "The sitting produced no promotion of either admission row as written. It produced second instances for some clauses of two rows and nothing for others, and it produced no counter-instance. What a row carrying clauses of different standing should become is unsettled and is not a count."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::553",
+  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::247",
+  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::214",
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::142",
+]
+keywords = ["promotion", "promotable", "L2", "second instance", "clause", "standing", "one promotable result", "admission"]
+
+[[retirement]]
+id = "r245_the_intervening_growth_does_not_touch_admission"
+claim = "none of the growth touches the admission topic and none of it is a regression"
+why = "A commit inside that growth adds `ADMITTED` to `Ambient`, `Quantum` and `Format`, which is the admission obligation appearing at three tiers the sitting had measured it absent from. It is not an ancestor of the consolidation's tree and is an ancestor of the checking seat's own tree and of every tree after it.\n\nThe sentence was written from a diff of the registry files between the two trees. A registry diff answers what the canon says; it does not answer what the tree does, and the claim it was used to support is a claim about the tree. Established by a repository instrument over four refs with a control that `Slots::ADMITTED` carries five assertions at every tree compared, and whose own first two versions were refused by their controls before it reported anything.\n\nThe same measurement bounds a neighbouring claim rather than retiring it: the finding that the admission obligation exists at `Slots` and at no tier above it correctly names the tree it was measured on and is true there. What is retired is the sentence carrying it forward to a later tree."
+kind = "wrong"
+topic = "the_number_system"
+replacement = "The growth between the two trees includes the commit that adds the admission obligation to three further contracts, so anything the sitting established about which tiers carry an obligation holds at the tree it names and nowhere later."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::23",
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::285",
+]
+keywords = ["growth", "regression", "admission", "ADMITTED", "tree", "merge", "registry diff", "obligation", "Slots"]
+
+[[retirement]]
+id = "r246_two_forty_one_is_a_counter_instance_on_the_enumeration_clause"
+claim = "and `241` is a counter-instance in its own vocabulary"
+why = "A counter-instance denies a clause. The file it is said of affirms the clause in the vocabulary the clause is written in and asks the canon to tag the vocabulary: its own words are that a canon sentence about which coordinate a candidate fixes is true in one vocabulary and false in the other, that the two vocabularies are consistent and are not the same word, and that what it proposes costs one sentence rather than a decision. That is a drafting caveat filed as one.\n\nEstablished by a reader of a different persona, from the file's own text rather than from any summary of it. The narrower thing the same mechanism does establish is untouched and is carried: that file did not derive the enumeration clause, so it cannot second it."
+kind = "wrong"
+topic = "the_number_system"
+replacement = "The file neither seconds the enumeration clause nor contradicts it. It supplies no derivation of that clause, which is a gap in what can be counted and not a counter-instance."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::224",
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::126",
+]
+keywords = ["counter-instance", "enumeration clause", "vocabulary", "coordinate", "chain", "drafting", "second instance", "Gray code"]
+
+[[retirement]]
+id = "r241_the_compositional_route_is_one_persona_agreeing_with_itself"
+claim = "It is an earlier Kiselyov seat, so this is one persona agreeing with itself and I do not count it."
+why = "The seat it declines to count is a Knuth seat, not a Kiselyov one. Established from the panel's own filename convention under two controls, a file known to be Kiselyov and a file known not to be, and corroborated by the member-handle table, which records it under its own task id as a knuth file. The likely cause is visible in that file's own header, which names a Kiselyov file in its reading list.\n\nSo the compositional route has an independent prior instance and was recorded as having none: a different persona, twenty-four days earlier, a different instrument, twenty thousand interval pairs under addition and multiplication with outward rounding failing zero times against 1036 and 946 for the two wrong disciplines, derived blind of it.\n\nAn under-count is the direction nothing here audits. Every mechanism in this corpus is built to catch a convergence that is really one instance and none is built to catch an instance declined for a false reason, and this one survived three files."
+kind = "misattributed"
+topic = "the_number_system"
+replacement = "The compositional route for set-valued carriers has one independent prior instance in an earlier Knuth seat, which counts. This bears on that route only; the separate demotion of the refusal argument is untouched by it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::241_kiselyov_admission_is_a_resolution_not_a_verdict::658",
+  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::507",
+]
+keywords = ["persona", "Kiselyov", "Knuth", "instance", "under-count", "compositional route", "interval", "declined"]
+
+[[retirement]]
+id = "r244_the_tier_count_is_the_sittings_contested_item"
+claim = "section 9 says the admission subject does not close until it does, and `241`'s `coordinate` finding is the same seam from the other side"
+why = "Four lists are in play and the two pairs are not the same pair. The question row the item is filed against asks about a three-level hierarchy against a five-level one; the seam the sitting found is a five-component chain against ten identity coordinates. The first pair shares nothing with the third list and the second pair shares exactly one word, `container`, which is why the two are easy to conflate and is the only thing they have in common.\n\nMeasured by printing all four lists from their own sources and intersecting them, under two controls: a list compared with itself comes back whole, and the one shared word is reported rather than swallowed. Answering the question row closes nothing about the word the two admission proposals are written in, so the admission subject does not wait on it.\n\nTwo later seats read the measurement and both say the item must not be cited as this sitting's open tier-count dependency."
+kind = "misattributed"
+topic = "the_number_system"
+replacement = "The tier-count question row is about a different pair of lists and is not a dependency of the admission subject. What is genuinely unheld is a drafting convention for which vocabulary a canon sentence about admission speaks, and no row asks it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::406",
+  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::540",
+  "panel::202608072330_the-numeral-canon-panel::257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::48",
+]
+keywords = ["tier count", "level cut", "C2", "coordinate", "chain components", "container", "four lists", "dependency"]
+
+[[retirement]]
+id = "r256_the_sitting_still_owes_two_second_readings"
+claim = "Still owed, and neither is a consolidation: `246` section 2.2 has no second reader and its author says it is the load-bearing new argument"
+why = "Both items were already supplied when the list was written, in a file the same list names in its own table under the heading that the admission argument continued, and did not open.\n\nThe first is discharged by a seat of a different persona whose opening section is its own reading of that argument formed before accepting it, and which does more than second: it grants the containment the argument rests on and refuses the inference drawn from it. A partial refutation by a different persona is a stronger discharge than the agreement the list was asking for. The second is discharged in the same file's reading of the ratified row's own `promotion` field, from outside the persona that wrote the demoted claim.\n\nThis matters more than it looks because the list sits in the most recent file a coordinator opening the directory reads, and a stale owed-list produces a dispatch for work already done."
+kind = "wrong"
+topic = "panel_conduct"
+replacement = "Both readings are discharged. What the sitting still owes is elsewhere: a second reader on the exposure-list derivation, and the locus questions the standing thread opened."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::256_giesen_the_sitting_was_consolidated_at_244_and_the_brief_did_not_know::109",
+  "panel::202608072330_the-numeral-canon-panel::257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::107",
+]
+keywords = ["owed", "second reader", "handover", "stale", "discharged", "consolidation", "ledger", "dispatch"]
+
+[[retirement]]
+id = "the_two_admission_readings_must_not_be_merged"
+claim = "its reading of admission is not to be merged with `241`'s, so the two stay two readings and the tier count is recorded as contested"
+why = "Neither of that seat's two files contains the instruction or anything like it, and the second of them argues the reverse: it opens its attack phase by saying the other seat's argument lands on it and that its own replacement absorbs it, it titles a section on where the other seat beat it, it withdraws one of its own arguments in favour of the other seat's, and it grants that the other seat's dependency claim survives its attack. That is a member converging, and an instruction to keep the two readings apart is an instruction to undo a convergence the member performed.\n\nRefuted four times, and the fourth is the one that settles it. The first three were phrase greps with positive controls, which establish that a phrase is absent and never that an instruction is absent, so three refutations of one kind are one instrument in three hats. The fourth read all three source files end to end.\n\nThe true thing near it is a different claim entirely: one file observes that the admission subject does not close until a level cut does, pointing at a question row, which a later measurement then removed from the sitting's dependency list.\n\nThe sentence is not the panel's. It sits in a workspace-side continuation file that nothing in this repository can reach, which is why four refutations written into this directory did not stop it being reissued."
+kind = "misattributed"
+topic = "panel_conduct"
+replacement = "Nothing attributable to that seat says the two readings must be kept apart or that the tier count is to be recorded as contested. A brief carrying either sentence is carrying a coordinator's framing as a member's position."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::63",
+  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::25",
+  "panel::202608072330_the-numeral-canon-panel::256_giesen_the_sitting_was_consolidated_at_244_and_the_brief_did_not_know::49",
+  "panel::202608072330_the-numeral-canon-panel::257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::48",
+]
+keywords = ["merged", "two readings", "attribution", "brief", "premise", "contested", "tier count", "state file", "convergence"]

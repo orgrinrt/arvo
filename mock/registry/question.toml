@@ -2023,3 +2023,98 @@ correction to the crate rests on the spine rather than on this question.
 """
 provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
 keywords = ["phase", "additive identity", "affine predicate", "stamped", "correction", "spine", "whole multiple", "nonzero phase"]
+
+[[question]]
+id = "where_the_standing_vocabulary_is_declared"
+asks = "The field that decides whether a claim may be promoted is declared in `mockspace.toml`, which `canon_paths` does not glob, and the strict reading of that declaration now binds every session from a generated agent instruction, which is not canon either. Where should the sentence live?"
+options = [
+  "A row somebody can cite by slug, with the schema and the agent surface quoting it rather than restating it. Cost: the row and the declaration can disagree, and one of the two has to be the source the lint reads, so the question of which is authoritative moves rather than closing.",
+  "The declaration stays where it is and the canon carries nothing about it, on the ground that a schema a hard-error lint validates the agent surface against is a stronger guarantee than a row nothing checks. Cost: the sentence that decides a promotion is settled two tiers below the canon and no design can cite it.",
+  "The field is retired, on the ground that `provenance`, `gate` and `probe.standing` together carry what it carries and collapsing them into a count is what makes an inflation possible. Cost: 127 rows lose a field, and every consolidation quoting a tier has to be rewritten.",
+]
+decider = "panel"
+unblocks = "Whether a promotion argued on a standing rests on a sentence a design may cite, and whether the field is doing two jobs, since it answers what the establishing file had rather than how much backing a claim now has."
+topic = "canon_form"
+note = """
+Two seats reached the locus finding blind of each other and neither proposed a location; both
+said in terms that it was not theirs to decide. The row is filed so the call is somebody's
+rather than sitting in two panel files.
+
+The substance is not open and this row does not reopen it. The declaration says `two_experts`
+is two instances "each deriving before reading the other", the generated agent instructions
+now quote it and add the strict gloss the sitting derived, and a hard-error lint compares the
+two in both directions. What is open is only where that sentence belongs.
+
+A consumer does gate on the field mechanically, at `error` severity at commit, build and push,
+so the second option is not free in the way an unchecked field would be: a standing recorded
+per clause in a note is invisible to the gate while the row-level value is what the gate reads.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::248_chlipala_standing_counts_arrivals_and_the_gate_is_shut::443",
+  "panel::202608072330_the-numeral-canon-panel::248_chlipala_standing_counts_arrivals_and_the_gate_is_shut::754",
+  "panel::202608072330_the-numeral-canon-panel::249_jhala_standing_counts_arrivals_not_arguments::62",
+  "panel::202608072330_the-numeral-canon-panel::258_orchard_what_the_admission_and_standing_sitting_settled::#4-the-locus-question-and-why-it-is-a-row-rather-than-an-answer",
+]
+keywords = ["standing", "locus", "canon_paths", "schema", "declaration", "agent surface", "promotion", "gate", "mockspace.toml"]
+
+[[question]]
+id = "does_a_cold_brief_withhold_rows_the_proposal_author_wrote"
+asks = "A cold seat derives blind of the panel corpus and is dispatched on a question row. Where that row's `note` and `options` were written by the author of the proposal the seat's answer will later be counted against, the seat read the conclusion before deriving anything. Should a cold brief withhold such rows?"
+options = [
+  "Withhold by provenance: a cold seat's brief omits question rows whose `provenance` resolves to a file by the same author as the proposal under test. Cost: the seat loses the panel's own compression of the question and derives against less than the registry holds.",
+  "Disclose rather than withhold: the seat states its exposure under a heading of its own and its standing rests on that statement. Cost: the burden falls on the seat afterwards, and a declaration cannot reach a brief's own prose, which is where one recorded contamination came from.",
+  "Neither: a question row is the ordinary input, and the exposure is already what the standing vocabulary's ordering condition excludes, so nothing about the dispatch changes. Cost: cold sittings keep producing files whose standing is zero by construction, at whatever a cold dispatch costs.",
+]
+decider = "panel"
+unblocks = "Whether a future cold sitting can produce an independent instance at all, which is what a sitting is dispatched for."
+topic = "panel_conduct"
+note = """
+The shape is a class rather than an incident. Six of the thirty-four commits touching the
+question namespace also land a numbered member file in the same act, so where a row is written
+in the same act as the file that argued for it, the ordering condition cannot hold for anything
+dispatched on that row afterwards, by construction.
+
+One worked instance is on the record: three question rows of one topic were written by one
+member, the oldest commit introducing each of the three headings in the option register is the
+commit that added that member's own file, and both cold seats quote those rows' notes and
+options inside their blind bodies.
+
+The first option cannot cover a brief's own prose, and the second cannot remove an exposure that
+has already happened, so a reader treating them as exclusive is reading the row wrongly: both
+were proposed and by different seats.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::142",
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::418",
+  "panel::202608072330_the-numeral-canon-panel::248_chlipala_standing_counts_arrivals_and_the_gate_is_shut::429",
+  "panel::202608072330_the-numeral-canon-panel::249_jhala_standing_counts_arrivals_not_arguments::288",
+]
+keywords = ["cold seat", "blind", "brief", "withhold", "question row", "exposure", "contamination", "dispatch", "independence"]
+
+[[question]]
+id = "did_the_admitted_obligations_answer_the_exposure_question_in_the_design"
+asks = "The exposure question is open with three recorded options. A later commit added `ADMITTED` to three further contracts, enforcing three conditions one seat filed as a fourth option to that question, and the crate's design carries them. Did a reserved question get answered in the design tier, or are the conditions a kind of thing the question does not reach?"
+options = [
+  "They are what the admission contract asks a candidate to expose, so a question the canon holds open was answered in the design tier and the row wants what settled it recorded. Cost: a design-tier act is recorded as having settled canon, which the mutation order forbids, so the finding is a defect rather than an answer.",
+  "They are well-formedness conditions on the declaration, a third kind beside membership and hosting that no row asks about, so the design was free to add them and they want a row of their own. Cost: a third kind enters the vocabulary with one instance behind it and nothing asking for it.",
+  "They are conditions on the two items the exposure list already has rather than a further item or a third question, and the criterion for admitting one is that the ratified sentences do not apply to the declaration without it. Cost: one instance, whose own author names it as the part a second reader should attack first.",
+]
+decider = "panel"
+unblocks = "Whether the exposure question is still open, and whether the obligations the crate now enforces are derived from the canon or were invented at the design tier."
+topic = "the_number_system"
+note = """
+Handed back rather than decided, by the seat that found it, on the ground that the canon does
+not settle which of the three readings is right. The second and third options were each reached
+by a different seat and each declines to place what the other places, so the fork is between
+positions somebody holds rather than between positions somebody enumerated.
+
+The tree half is measured rather than argued: the commit that adds the three obligations is not
+an ancestor of the consolidation's tree and is an ancestor of every tree after it, so a reader
+comparing the sitting's findings against the crate has to name which tree.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::418",
+  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::507",
+  "panel::202608072330_the-numeral-canon-panel::254_leijen_the_exposure_list_is_derived_not_chosen::737",
+]
+keywords = ["exposure", "admission contract", "ADMITTED", "obligations", "well-formedness", "design tier", "reserved", "mutation order", "radix", "magnitudes"]

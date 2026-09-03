@@ -1,0 +1,26 @@
+tree: 2a2995d455a18839bc3548176ff49aa3babc284b
+
+C3 member pattern separates member files from ledgers and probe artifacts : yes
+
+mock/panel                           : does not exist
+mock panel status                    :
+    mock panel: no panels declared under /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/arvo-orchard/mock/panel/
+
+mock check, the panel row            :
+      ! git        1 uncommitted change(s)
+      ✓ panel      no canon path touched by an open panel
+
+C1 registry commits landing no member file : 116   (must be > 0)
+C2 registry commits landing one            : 22   (must be > 0)
+
+commits touching mock/registry, total  : 138
+  earliest: 484aeec1 2026-08-30 canon: shape the registry, its dimensions and its topics
+  latest  : 83212d7e 2026-09-02 chore: drop the banned words from registry prose, keeping op's own
+commits touching this panel directory  : 1268
+  earliest: 4f8adfe6 2026-08-07 research: open the numeral canon panel, seeded and with the ack correction
+  latest  : 77b2a8f7 2026-09-03 research: refuse the fourth consolidation and date what is owed
+
+VERDICT: the registry was written throughout the panel's life, and 22 commits
+landed a registry change and a numbered member file in one act. No panel is
+declared under mock/panel, so the gate mockspace.toml describes has nothing to
+fire on. It reports green vacuously rather than because the registry is untouched.
