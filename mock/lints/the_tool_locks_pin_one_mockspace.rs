@@ -167,11 +167,11 @@ fn check(mock_dir: &Path) -> Vec<LintError> {
                 .entry(rev)
                 .or_default()
                 .push("the generated lint crate".to_string());
-        }
+        },
         // Neither state is a violation and neither is a revision, so the
         // engine simply does not take a seat. Named rather than collapsed
         // into one `_`, so adding a fourth state has to be decided here.
-        EnginePin::Unbuilt | EnginePin::Unpinned => {}
+        EnginePin::Unbuilt | EnginePin::Unpinned => {},
     }
 
     let Ok(entries) = std::fs::read_dir(mock_dir.join("tools")) else {
@@ -242,8 +242,13 @@ mod tests {
 
     use super::*;
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        view,
     };
 
     /// A lockfile body pinning `PACKAGE` at one revision.
@@ -304,14 +309,11 @@ mod tests {
 
     #[test]
     fn every_lock_on_one_revision_passes() {
-        let d = planted_mock(
-            "locks-agree",
-            &[
-                ("alpha", Some(lock_at(A))),
-                ("beta", Some(lock_at(A))),
-                ("gamma", Some(lock_at(A))),
-            ],
-        );
+        let d = planted_mock("locks-agree", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(A))),
+            ("gamma", Some(lock_at(A))),
+        ]);
         assert!(
             check(&d).is_empty(),
             "three lockfiles agreeing is the state this lint exists to permit"
@@ -320,10 +322,10 @@ mod tests {
 
     #[test]
     fn two_revisions_are_caught() {
-        let d = planted_mock(
-            "locks-two",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
-        );
+        let d = planted_mock("locks-two", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(B))),
+        ]);
         let f = check(&d);
         assert_eq!(f.len(), 1, "one finding for the whole disagreement: {f:?}");
         let m = &f[0].message;
@@ -338,15 +340,12 @@ mod tests {
     /// The shape actually found in the tree: three revisions, unevenly spread.
     #[test]
     fn three_revisions_name_every_tool_on_every_one() {
-        let d = planted_mock(
-            "locks-three",
-            &[
-                ("alpha", Some(lock_at(A))),
-                ("beta", Some(lock_at(A))),
-                ("gamma", Some(lock_at(C))),
-                ("delta", Some(lock_at(B))),
-            ],
-        );
+        let d = planted_mock("locks-three", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(A))),
+            ("gamma", Some(lock_at(C))),
+            ("delta", Some(lock_at(B))),
+        ]);
         let f = check(&d);
         assert_eq!(f.len(), 1, "still one finding: {f:?}");
         let m = &f[0].message;
@@ -364,14 +363,11 @@ mod tests {
     /// implementation that reads only `tools/` returns empty here and fails.
     #[test]
     fn tools_agreeing_with_each_other_and_not_with_the_engine_are_caught() {
-        let d = planted_mock(
-            "locks-engine-disagrees",
-            &[
-                ("alpha", Some(lock_at(A))),
-                ("beta", Some(lock_at(A))),
-                ("gamma", Some(lock_at(A))),
-            ],
-        );
+        let d = planted_mock("locks-engine-disagrees", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(A))),
+            ("gamma", Some(lock_at(A))),
+        ]);
         plant_engine(&d, B);
         let f = check(&d);
         assert_eq!(
@@ -395,10 +391,10 @@ mod tests {
     /// a finding whenever an engine manifest existed would pass that one.
     #[test]
     fn tools_agreeing_with_the_engine_pass() {
-        let d = planted_mock(
-            "locks-engine-agrees",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(A)))],
-        );
+        let d = planted_mock("locks-engine-agrees", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(A))),
+        ]);
         plant_engine(&d, A);
         assert!(
             check(&d).is_empty(),
@@ -413,19 +409,19 @@ mod tests {
     /// participant pinning nothing.
     #[test]
     fn a_missing_generated_crate_falls_back_to_the_pairwise_check() {
-        let agree = planted_mock(
-            "locks-no-engine-agree",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(A)))],
-        );
+        let agree = planted_mock("locks-no-engine-agree", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(A))),
+        ]);
         assert!(
             check(&agree).is_empty(),
             "a clone nobody has built in cannot be in violation of a pin it has not resolved"
         );
 
-        let disagree = planted_mock(
-            "locks-no-engine-disagree",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
-        );
+        let disagree = planted_mock("locks-no-engine-disagree", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(B))),
+        ]);
         assert_eq!(
             check(&disagree).len(),
             1,
@@ -463,10 +459,10 @@ mod tests {
     /// which of the two had happened.
     #[test]
     fn an_engine_supplied_by_path_is_not_a_participant_and_says_so() {
-        let d = planted_mock(
-            "locks-engine-by-path",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(A)))],
-        );
+        let d = planted_mock("locks-engine-by-path", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(A))),
+        ]);
         plant(
             &d,
             "target/mockspace-lints/Cargo.toml",
@@ -496,10 +492,10 @@ mod tests {
     /// raised sent a reader to a file it has never opened.
     #[test]
     fn the_finding_names_where_the_lockfiles_are() {
-        let d = planted_mock(
-            "locks-location",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
-        );
+        let d = planted_mock("locks-location", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(B))),
+        ]);
         let f = check(&d);
         assert_eq!(f.len(), 1, "one finding: {f:?}");
         assert_eq!(
@@ -540,14 +536,11 @@ mod tests {
 
     #[test]
     fn a_tool_with_no_lockfile_is_skipped_rather_than_counted() {
-        let d = planted_mock(
-            "locks-unpinned",
-            &[
-                ("alpha", Some(lock_at(A))),
-                ("beta", None),
-                ("gamma", Some(lock_at(A))),
-            ],
-        );
+        let d = planted_mock("locks-unpinned", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", None),
+            ("gamma", Some(lock_at(A))),
+        ]);
         assert!(
             check(&d).is_empty(),
             "a tool that pins nothing cannot disagree with one that does"
@@ -561,13 +554,10 @@ mod tests {
                          name = \"serde\"\n\
                          version = \"1.0.0\"\n\
                          source = \"registry+https://github.com/rust-lang/crates.io-index\"\n";
-        let d = planted_mock(
-            "locks-unrelated",
-            &[
-                ("alpha", Some(lock_at(A))),
-                ("beta", Some(unrelated.to_string())),
-            ],
-        );
+        let d = planted_mock("locks-unrelated", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(unrelated.to_string())),
+        ]);
         assert!(
             check(&d).is_empty(),
             "a lockfile without the package contributes no revision"
@@ -588,10 +578,10 @@ mod tests {
              version = \"0.1.0\"\n\
              source = \"git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#{A}\"\n"
         );
-        let d = planted_mock(
-            "locks-other-dep",
-            &[("alpha", Some(two_deps)), ("beta", Some(lock_at(A)))],
-        );
+        let d = planted_mock("locks-other-dep", &[
+            ("alpha", Some(two_deps)),
+            ("beta", Some(lock_at(A))),
+        ]);
         assert!(
             check(&d).is_empty(),
             "the other dependency's revision was read as this package's"
@@ -613,10 +603,10 @@ mod tests {
     /// the predicate cannot.
     #[test]
     fn it_reads_the_tools_directory_under_the_mock_directory_it_is_handed() {
-        let d = planted_mock(
-            "locks-wiring",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
-        );
+        let d = planted_mock("locks-wiring", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(B))),
+        ]);
         let empty = view(&[], &[]);
         let found = TheToolLocksPinOneMockspace.check_repo(&ctx_at(&d, &empty));
         assert_eq!(
@@ -632,10 +622,10 @@ mod tests {
         // A finding here that did not block would leave the pack green over a
         // dependency graph that cannot compile, which is the state this lint
         // exists to refuse and the one it was written after.
-        let d = planted_mock(
-            "locks-severity",
-            &[("alpha", Some(lock_at(A))), ("beta", Some(lock_at(B)))],
-        );
+        let d = planted_mock("locks-severity", &[
+            ("alpha", Some(lock_at(A))),
+            ("beta", Some(lock_at(B))),
+        ]);
         let empty = view(&[], &[]);
         assert_findings_block_at(&TheToolLocksPinOneMockspace, &ctx_at(&d, &empty));
     }
