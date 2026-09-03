@@ -211,8 +211,8 @@ So nothing is void and the claim is not in doubt; what is missing is a `probe` r
 from the law to it, which is what makes "which claims rest on an instrument nobody controlled" a
 query rather than a reading exercise.
 
-This is not one row's oversight. Of twenty-four `law` rows across the two law files, twelve
-carry a `witness` and exactly one carries an `evidence` edge, and the lint that exists for this
+This is not one row's oversight. Of twenty-four `law` rows across the two law files, fourteen
+carry a `witness`, exactly one carries an `evidence` edge, and thirteen carry a measured witness with no instrument named, and the lint that exists for this
 class cannot see any of them, because `mock/lints/measured_claim_cites_no_probe.rs` declares
 `const NAMESPACE: &str = "proposal"` and reads that namespace only. Section eleven carries that
 as a finding of its own.
@@ -511,7 +511,7 @@ that are answered.
 ## Findings outside my scope, reported because they are load-bearing
 
 A law row can carry an exact measured figure with no instrument named and no gate notices.
-Twelve of twenty-four `law` rows carry a `witness` and one carries an `evidence` edge, and
+Fourteen of twenty-four `law` rows carry a `witness` and one carries an `evidence` edge, so
 `mock/lints/measured_claim_cites_no_probe.rs` reads `const NAMESPACE: &str = "proposal"` only.
 The lint's own documentation is careful about several of its bounds and does not mention this
 one. Whether the law namespace should be inside its ratchet is a design call about the ratchet
@@ -561,6 +561,16 @@ one. Both failures are kept in the file's header rather than tidied away, with t
 refuted runs produced, because the second of them turned out to be the finding and because a
 control that only ever passes is not a control. The instrument as committed carries six controls
 and all six pass.
+
+## A count of my own that was wrong, kept rather than tidied
+
+The law-row figure in sections five and eleven was twelve until I checked it. I had counted the
+rows by reading the table my own command printed, which is the failure the workspace rule names
+exactly: an accounting section is generated rather than written, and the tell is that I could
+write the number without running anything. Run properly, over both law files with a positive
+control naming the single row that does carry an `evidence` edge, it is fourteen of twenty-four
+carrying a witness and thirteen carrying one with no instrument named. The direction of the
+error is the flattering one, which is the direction to distrust.
 
 ## Reconciliation against the one prior file, written after the above was committed
 
