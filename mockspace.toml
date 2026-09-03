@@ -132,12 +132,16 @@ commit = "error"
 build = "error"
 push = "error"
 
-[lints.arvo-bits-traits-only]
+[lints.no-runtime-grow]
 commit = "error"
 build = "error"
 push = "error"
 
-[lints.no-runtime-grow]
+# A `RepoLint` reading `mock/lints/` rather than the registry, so it sits with
+# the source-side lints above rather than with the canon ones below. It refuses
+# a lint that scopes itself to a crate this workspace does not ship, which
+# passes every gate by returning early on every crate there is.
+[lints.a-lint-guards-a-crate-that-exists]
 commit = "error"
 build = "error"
 push = "error"
