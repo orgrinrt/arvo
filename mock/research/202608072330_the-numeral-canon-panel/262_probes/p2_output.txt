@@ -1,0 +1,28 @@
+base: b544c82cf66536bfd19e3d3f7bdf995a4a813c52
+rows read:      127
+
+== control: the machinery cell is non-empty ==
+machinery rows:       12
+
+== machinery rows, kind x carries-a-predicate ==
+   2 argument	yes
+   1 enumeration	yes
+   1 measured	yes
+   8 normative	no
+
+== which topic the region-bearing machinery rows sit on ==
+  panel_conduct | argument | one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both
+  panel_conduct | enumeration | the_four_consolidations_contradict_each_other_nowhere
+  panel_conduct | measured | most_committed_bench_regions_predate_the_harness_cross_variant_validation
+  panel_conduct | argument | the_derived_laws_units_re_runs_reproduced_and_its_defects_were_all_in_blind_spots
+
+== the refuting direction: structural subject on a non-machinery topic ==
+pattern: a says that quantifies over the panels own disputes or over how the canon is organised
+  the_number_system | normative | the_concept_is_closed_and_the_inventory_is_open
+     says: The canon defines once what a number system is and what admission requires; the set of admitted instances is open, and a new one earns admission by supplying the concept'
+  the_number_system | normative | every_dispute_in_the_number_system_topic_was_a_dispute_about_an_address
+     says: Every question this unit disputed was a dispute about an address: which coordinate of the sequence a claim lives at, and who owns that coordinate. A canon sentence about 
+
+== control for that hunt: the same pattern over machinery rows must also match something ==
+  (a pattern matching only outside the machinery set would be selecting for the answer)
+  machinery rows whose says names the canon, the registry or a row: 4

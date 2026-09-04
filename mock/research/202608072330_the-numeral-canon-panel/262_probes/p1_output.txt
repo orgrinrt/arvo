@@ -1,0 +1,25 @@
+base: b544c82cf66536bfd19e3d3f7bdf995a4a813c52
+
+== the clause, quoted from the canon tier ==
+# like.** A definitional canon candidate that stipulates what a word means is
+# `normative` and carries no region, because a region on an imposed proposition
+# would say the design may violate it everywhere unmeasured. A claim that could
+# be measured false is not `normative` however definitional its grammar, and it
+# carries the region it was established in or it is not here at all.
+
+== control: a phrase invented here, which must not be found ==
+hits outside this probe directory: 0
+
+== positive control: the real phrase is findable at all ==
+  mock/registry/proposal.toml
+
+== who in the panel cites it ==
+panel files quoting the clause, excluding this probe directory: 1
+  mock/research/202608072330_the-numeral-canon-panel/237_the_format_proposals_against_the_ratification_gate.md
+
+and the seat that answered this question before me:
+0
+
+== the row the clause bears on, and what it says about itself ==
+  sentence_kind:"normative
+  its own note says: Checkable rather than arguable**: take an edge, read the depending topic's unanswered questions, and see whether any turns on the other's subject. The two most likely to fail are `the_number_system` on `the_format`, which may be closer to independent, and `validation` on `binding_time`.

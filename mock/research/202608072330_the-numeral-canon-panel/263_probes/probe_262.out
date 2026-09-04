@@ -1,0 +1,18 @@
+   Compiling mockspace-lints-b8af77c5c6b6c2d5 v0.0.0 (/private/tmp/claude-501/-Users-orgrinrt-Dev-clause-work-numeric-stack/02cc2df2-cbb5-4e54-aba8-40f92ba44df7/scratchpad/pack)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.63s
+     Running unittests src/lib.rs (/private/tmp/claude-501/-Users-orgrinrt-Dev-clause-work-numeric-stack/02cc2df2-cbb5-4e54-aba8-40f92ba44df7/scratchpad/pack/target/debug/deps/mockspace_lints_b8af77c5c6b6c2d5-c97a7573d3be574d)
+
+running 1 test
+
+| cell | filing | a-region-agrees-with-the-sentence-kind | every-predicate-names-a-declared-axis |
+|---|---|---|---|
+| A | argument, no predicate | an-established-claim-carries-no-region | silent |
+| B | argument, predicate over a topic | silent | undeclared-axis |
+| C | argument, predicate `threads = 1` (the fig leaf) | silent | silent |
+| D | normative, no predicate (the refile) | silent | silent |
+| E | control: an arvo claim, argument, `F = 0` | silent | silent |
+
+test probe_262::the_four_filings_of_a_structural_claim_against_the_two_checks ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 684 filtered out; finished in 0.00s
+
