@@ -3,16 +3,24 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The laws `DESIGN.md.tmpl` names, each pinned at the width chosen to exercise
-//! it rather than at a width chosen for convenience.
+//! The laws `DESIGN.md.tmpl` names, over every width they are stated over.
 //!
-//! There is exactly one generic code path in this crate, unlike
-//! `arvo_format::slots`'s per-width `admit_widths!` macro, so the distinct
-//! behaviours to cover are the boundary at `N = 1`, the special-cased boundary
-//! at `N = 64` where the mask formula takes the shift-overflow case explicitly,
-//! and the ordinary interior case. The widths below are chosen to hit those
-//! three and nothing else, plus one exhaustive sweep at a width cheap enough to
-//! run in full.
+//! Two kinds of test, and both are here on purpose. The named ones come first
+//! and each says which case somebody was worried about: the narrow boundary,
+//! the special-cased wide one, the interior width the obligation names, the
+//! whole value space at eight bits, and the cast that must not shortcut itself
+//! into a no-op. The sweeps come after and say the laws hold everywhere, over
+//! all sixty-four admitted widths and all four thousand and ninety-six cast
+//! pairs.
+//!
+//! An earlier version of this header argued the named ones were enough: one
+//! generic code path in this crate, so a boundary at each end and one interior
+//! width covered it. `lib.rs` says otherwise. `MASK` is
+//! `if N == 64 { .. } else { .. }`, the comment above it explains why the second
+//! arm exists, and the design states the same split. So the widths were a
+//! sample, chosen on a premise the crate refutes, and `N` runs over sixty-four
+//! values, which is enumerable. Moving the boundary to `N >= 63` on purpose
+//! failed two sweeps and none of the named tests.
 
 use crate::Bits;
 
