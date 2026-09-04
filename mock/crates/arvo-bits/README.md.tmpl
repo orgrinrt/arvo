@@ -1,0 +1,22 @@
+# arvo-bits
+
+An exact-width bit container. Not a numeral, not a format, no arithmetic.
+
+`Bits<const N: u32>` holds a value known to be `N` bits wide, from one bit to sixty-four. Construction
+masks whatever you hand it down to the low `N` bits rather than rejecting anything, because there is
+nothing to reject: a bit pattern of the wrong width is not an invalid value, it is a value with some
+bits you asked to be dropped. Casting to a different width is the same masking arithmetic at a
+different bound, so widening never loses a bit and narrowing loses exactly the ones above the new
+width, on purpose.
+
+This is the shape a consumer wants when a value's width is pinned by something arvo does not own, a
+disk format, a wire format, a hash function's output size, and the consumer needs to name that exact
+width, alias it under their own type, and convert it to whatever wider or narrower width their
+boundary demands, on their own terms. Nothing here validates external bytes and nothing here decides
+when a consumer's conversion happens; both stay the consumer's.
+
+Zero workspace dependencies. `no_std`, no allocation, sizes const.
+
+## Status
+
+Design phase. The documents are written and the source is being built from them.

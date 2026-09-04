@@ -1,0 +1,131 @@
+# `arvo-bits`: a value at an exact declared width, and nothing else
+
+Canon this design declares:
+`obligation::an_exact_width_container_a_consumer_can_alias_and_pin`, the need this crate exists to
+meet. `ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up`, the `stated` rung this
+design sits under and stays compliant with regardless of how its own open question,
+`question::what_the_ingest_row_claims_and_what_turns_on_it`, eventually resolves.
+
+## What this crate is
+
+One type, `Bits<const N: u32>`, holding a value known to be exactly `N` bits wide. It is not a numeral:
+there is no sign, no ambient domain, no quantum, no rounding, no arithmetic operation anywhere in this
+crate. It is the mechanical fact of a value at a declared width, with the ability to be constructed
+from a wider host value by masking and cast to a different declared width by masking again.
+
+The crate exists because of a gap between what the obligation asks for and what the two crates below
+it say about themselves. `arvo-format`'s own design states plainly that "a format here is not a
+container" and that there is no machine carrier reachable from it. `arvo-placement`'s own design
+states that it derives placement metadata, three widths and an occupancy, and is checked against ever
+holding a host primitive itself, because it does not introduce the numeric category. Neither crate,
+by its own stated charter, can hold a runtime value at a declared width. This crate is that hole,
+closed narrowly: a value, not a placement and not a format.
+
+## Why it is not built on `arvo-format`
+
+An earlier draft of this design gave `Bits<N>` a dependency on `arvo-format` for one thing, an
+`arvo_format::Width` accessor reporting `N` back as a value in the stack's existing count-of-bits
+vocabulary. Reconsidered against this stack's own stated principle that a consumer depends on the
+smallest slice it needs to say one thing: a consumer wanting `Bits<28>` would have pulled in `Format`,
+`Ambient`, `Quantum`, `Rounding`, `Overflow` and `Adapt` for the sake of one associated constant. And
+the constant itself buys nothing, because nothing in this design erases `N`: there is no `dyn`, no
+`TypeId`, no type-erased context anywhere a caller could hold a `Bits<N>` value without already
+knowing `N` at the same scope. A width accessor mirroring a const generic parameter a caller already
+has in hand is not a capability, it is a second name for one already in scope.
+
+So `Bits<N>` depends on nothing in this workspace. It is a leaf crate structurally parallel to
+`arvo-format`, not built on top of it, and it needs its own primitive door for the identical reason
+`arvo-format` has one: the crate that defines a value at an exact width cannot express itself in types
+that do not exist yet.
+
+## Why the width bound is not `arvo_format::slots::Slots`
+
+`Slots` already states a bound that reads almost like this one, admitted at widths one to
+sixty-two. The two bounds are not the same claim and conflating them would have cost this crate two
+widths for no reason. `Slots`'s bound exists because a slot index is carried in a signed 64-bit
+integer, and `2^63` positions do not fit one; that is an index-space overflow. `Bits<N>`'s bound exists
+because the value is carried in a `u64`, which runs out of capacity at `64`, not `62`; that is a
+storage-capacity overflow. A raw 64-bit hash, or a raw 63-bit one, is a value this crate can represent
+exactly and has no structural reason to refuse, so its own bound is asserted independently rather than
+borrowed from a trait answering a different question.
+
+## The type
+
+```
+Bits<const N: u32>(u64)
+```
+
+`repr(transparent)`. `N` is bounded to the closed range one to sixty-four by a private `ADMITTED: ()`
+constant, asserted inside a `const` item and forced by every public constructor and cast, the same
+codegen-forced-assert shape `arvo_format::slots::Slots::ADMITTED` already uses: the assertion is
+evaluated where the const is used, so a call reaches it at codegen and `cargo build` refuses a bad `N`
+where `cargo check` would not have. `ADMITTED` needs no public visibility here, unlike on `Slots`,
+because there is no outside implementor of anything; `Bits<N>` is a concrete type; only its own
+constructors force the check.
+
+Construction masks. `Bits::<N>::masked(raw: u64) -> Self` is a bitwise AND against a precomputed mask
+and nothing else, total by construction: there is no input it rejects, because there is no invalid
+input, only one whose bits above `N` get dropped. This is deliberate and is the reason this crate never
+needed a `TryFrom` or a `notko::Boundable` impl. Both of those are shaped around rejecting a value, and
+the ruling this design sits under records op declining, in terms, to have arvo own a validating
+constructor for exactly this kind of boundary. Shipping one here under a different name, even for an
+in-memory value rather than untrusted external bytes, would be the same door with a different sign on
+it.
+
+`Bits::<N>::raw(self) -> u64` is the unwrap door, the one place a host contract needs the value back,
+matching the pattern `arvo_format::Width::count`, `arvo_format::slots::Slot::index` and
+`arvo_format::Bool::get` already use.
+
+`Bits::<N>::cast<const M: u32>(self) -> Bits<M>` is `Bits::<M>::masked(self.raw())`: the same masking
+arithmetic at a different bound, which covers both directions with one operation rather than a widen
+method and a separate narrow method for what is structurally one fact. Widening (`M > N`) never drops a
+bit, because the wider mask is a strict superset of the narrower one. Narrowing (`M < N`) drops the
+bits above `M`, which is exactly what a masked cast at a boundary the consumer controls already means
+in the consumer's own vocabulary, and is not a defect this design tries to prevent.
+
+## What the ruling constrains, and how this design stays inside it without resolving it
+
+`ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` carries op's words that arvo may
+ship casting and conversion helpers and may not use them in place of the consumer. Its own `note`
+records that he was asked to bless the row and declined, and that a panel question,
+`question::what_the_ingest_row_claims_and_what_turns_on_it`, is open over what the row concretely
+constrains, among four candidate readings. That question is not this design's to answer; its decider
+is the panel. What this design does instead is stay correct under every reading at once: nothing in
+this crate calls `masked` or `cast` on a consumer's behalf, and neither can fail, so there is no
+validating constructor for any reading to refuse and no entry point that decides an ingest question the
+consumer did not decide themselves.
+
+## What this crate does not ship
+
+No hashing algorithm, no `arvo-hash` crate, no `ContentHash` alias, no `rkyv::Archive` implementation.
+The obligation asks for a container a consumer can "alias under its own name," which is the consumer
+doing the aliasing; nothing here pre-empts that by shipping a domain alias of its own. A downstream
+crate wanting `pub type ContentHash = arvo_bits::Bits<28>;` writes exactly that line, in its own crate,
+whenever it wants it.
+
+## The surface this design names
+
+`Bits<const N: u32>` is the whole public type. `masked` constructs, `raw` reads the value back at its
+natural host width, `cast` reinterprets at a different declared width. `Clone`, `Copy`, `PartialEq`,
+`Eq`, `PartialOrd`, `Ord`, `Hash`, `Debug` are derived, matching the derive set `arvo_format::Width` and
+`arvo_format::slots::Slot` already carry, with `Hash` added because a consumer using this as a lookup
+key (a content hash into a string table, named directly in the obligation's own `why`) needs it.
+
+## The laws this crate owes tests for
+
+Construction never rejects. There is no input to `masked` that fails; the compile-time refusal is
+on `N` itself, at construction of the type, not on any runtime value handed to it.
+
+`masked` and `raw` round-trip exactly for any value already within `N` bits. For `raw < 2^N`,
+`Bits::<N>::masked(raw).raw() == raw`.
+
+`masked` drops exactly the bits above `N` for any value: `Bits::<N>::masked(raw).raw() == raw &
+((1u64 << N) - 1)` for `N < 64`, and `== raw` for `N == 64`, where the mask computation takes the
+shift-overflow case explicitly rather than relying on `1u64 << 64` not panicking.
+
+`cast` composes with `masked` rather than adding a second rule: `b.cast::<M>() ==
+Bits::<M>::masked(b.raw())` for every `b: Bits<N>` and every admitted `M`, including `M == N`.
+
+`N` outside `1..=64` is refused at `cargo build`, not at `cargo check`. Pinned as a `trybuild`
+`compile_fail` case at `N == 0` and at `N == 65`, mirroring `arvo_format::slots`'s own
+`width_above_the_bound.rs`.
