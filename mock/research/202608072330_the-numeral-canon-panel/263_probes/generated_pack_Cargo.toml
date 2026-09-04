@@ -1,0 +1,25 @@
+[workspace]
+
+[package]
+name = "mockspace-lints-b8af77c5c6b6c2d5"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+mockspace = { package = "mockspace-lint-rules", git = "https://github.com/hiisi-digital/mockspace.git", rev = "a7dd822305629e54c6ed4ed2c5670840ecab2677" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-extra-lints.git", branch = "dev" }
+arvo-a-panel-catalogue-is-readable = { path = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/mock/tools/a-panel-catalogue-is-readable" }
+arvo-awaiting-a-ruling = { path = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/mock/tools/awaiting-a-ruling" }
+arvo-rounding-vocabulary = { path = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/mock/tools/rounding-vocabulary" }
+arvo-the-positions = { path = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/mock/tools/the-positions" }
+arvo-unasked-questions = { path = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/mock/tools/unasked-questions" }
+
+[patch."https://github.com/hiisi-digital/mockspace.git"]
+mockspace-lint-rules = { path = "/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822/lint-rules" }
+
+[patch."ssh://git@github.com/hiisi-digital/mockspace.git"]
+mockspace-lint-rules = { path = "/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822/lint-rules" }

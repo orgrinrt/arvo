@@ -1,0 +1,46 @@
+step 01: does the rounding region commute with translation
+residues over denominators 2, 3, 4, 5, 8, 16; three bands; five domains
+
+cell mode=TowardZero domain=full equivariant=false visited=4902 far=true very_far=true witness=slot -64 offset 1 against slot 0 offset 0 at residue 1/2
+cell mode=TowardZero domain=no-negatives equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=TowardZero domain=no-ties equivariant=false visited=4386 far=true very_far=true witness=slot -64 offset 1 against slot 0 offset 0 at residue 1/3
+cell mode=TowardZero domain=no-negatives-no-ties equivariant=true visited=2210 far=true very_far=true witness=none
+cell mode=TowardZero domain=even-slots equivariant=false visited=2470 far=true very_far=true witness=slot -64 offset 1 against slot 0 offset 0 at residue 1/2
+cell mode=Floor domain=full equivariant=true visited=4902 far=true very_far=true witness=none
+cell mode=Floor domain=no-negatives equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=Floor domain=no-ties equivariant=true visited=4386 far=true very_far=true witness=none
+cell mode=Floor domain=no-negatives-no-ties equivariant=true visited=2210 far=true very_far=true witness=none
+cell mode=Floor domain=even-slots equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=Ceil domain=full equivariant=true visited=4902 far=true very_far=true witness=none
+cell mode=Ceil domain=no-negatives equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=Ceil domain=no-ties equivariant=true visited=4386 far=true very_far=true witness=none
+cell mode=Ceil domain=no-negatives-no-ties equivariant=true visited=2210 far=true very_far=true witness=none
+cell mode=Ceil domain=even-slots equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=HalfUp domain=full equivariant=false visited=4902 far=true very_far=true witness=slot -64 offset 0 against slot 0 offset 1 at residue 1/2
+cell mode=HalfUp domain=no-negatives equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=HalfUp domain=no-ties equivariant=true visited=4386 far=true very_far=true witness=none
+cell mode=HalfUp domain=no-negatives-no-ties equivariant=true visited=2210 far=true very_far=true witness=none
+cell mode=HalfUp domain=even-slots equivariant=false visited=2470 far=true very_far=true witness=slot -64 offset 0 against slot 0 offset 1 at residue 1/2
+cell mode=HalfEven domain=full equivariant=false visited=4902 far=false very_far=false witness=slot -64 offset 0 against slot -63 offset 1 at residue 1/2
+cell mode=HalfEven domain=no-negatives equivariant=false visited=2470 far=false very_far=false witness=slot 0 offset 0 against slot 1 offset 1 at residue 1/2
+cell mode=HalfEven domain=no-ties equivariant=true visited=4386 far=true very_far=true witness=none
+cell mode=HalfEven domain=no-negatives-no-ties equivariant=true visited=2210 far=true very_far=true witness=none
+cell mode=HalfEven domain=even-slots equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=Stochastic domain=full equivariant=true visited=4902 far=true very_far=true witness=none
+cell mode=Stochastic domain=no-negatives equivariant=true visited=2470 far=true very_far=true witness=none
+cell mode=Stochastic domain=no-ties equivariant=true visited=4386 far=true very_far=true witness=none
+cell mode=Stochastic domain=no-negatives-no-ties equivariant=true visited=2210 far=true very_far=true witness=none
+cell mode=Stochastic domain=even-slots equivariant=true visited=2470 far=true very_far=true witness=none
+
+--- the controls ---
+W1: no answer left the wide range, so the rounding region is what was measured -> HELD
+W2: the residue set reaches an exactly-half position -> HELD
+W3: the slot band reaches a negative position -> HELD
+W4: the instrument separates: some mode commutes on the full domain and some does not -> HELD
+W4b: no cell's verdict moved with the dither, so the stochastic answer is about the mode -> HELD
+W4c: no cell holding at the band on zero broke at a band far from it -> HELD
+W5: collapsing the band to one slot reports every mode equivariant, which is what a vacuous domain looks like -> HELD
+W6: every witness re-checked against the map: 7 of 7 -> HELD
+W7: the no-negatives verdict is the same on an unsigned format: 6 of 6 modes -> HELD
+W8: the even-slot domain separates the parity reader from the sign reader -> HELD
+exit=0

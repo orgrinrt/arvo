@@ -1,0 +1,56 @@
+step 02: does the completion region commute with translation
+values two spans past each end, translations over the whole representable range
+
+range SmallSigned: -16 to 15, reaches negatives = true, symmetric = false
+  cell policy=Wrap excursions=both-sides homomorphic=true pairs=5120 below=64 above=64 neg_c=2560 pos_c=2400 witness=none
+  cell policy=Wrap excursions=none-below homomorphic=true pairs=3072 below=0 above=64 neg_c=1536 pos_c=1440 witness=none
+  cell policy=Wrap excursions=none-above homomorphic=true pairs=3072 below=64 above=0 neg_c=1536 pos_c=1440 witness=none
+  cell policy=Wrap excursions=inside-only homomorphic=true pairs=1024 below=0 above=0 neg_c=512 pos_c=480 witness=none
+  cell policy=Saturate excursions=both-sides homomorphic=false pairs=5120 below=64 above=64 neg_c=2560 pos_c=2400 witness=y=-80 c=1 direct=-16 staged=-15
+  cell policy=Saturate excursions=none-below homomorphic=false pairs=3072 below=0 above=64 neg_c=1536 pos_c=1440 witness=y=16 c=-16 direct=0 staged=-1
+  cell policy=Saturate excursions=none-above homomorphic=false pairs=3072 below=64 above=0 neg_c=1536 pos_c=1440 witness=y=-80 c=1 direct=-16 staged=-15
+  cell policy=Saturate excursions=inside-only homomorphic=true pairs=1024 below=0 above=0 neg_c=512 pos_c=480 witness=none
+  cell policy=Clamp excursions=both-sides homomorphic=false pairs=5120 below=64 above=64 neg_c=2560 pos_c=2400 witness=y=-80 c=1 direct=-16 staged=-15
+  cell policy=Clamp excursions=none-below homomorphic=false pairs=3072 below=0 above=64 neg_c=1536 pos_c=1440 witness=y=16 c=-16 direct=0 staged=-1
+  cell policy=Clamp excursions=none-above homomorphic=false pairs=3072 below=64 above=0 neg_c=1536 pos_c=1440 witness=y=-80 c=1 direct=-16 staged=-15
+  cell policy=Clamp excursions=inside-only homomorphic=true pairs=1024 below=0 above=0 neg_c=512 pos_c=480 witness=none
+
+range SmallUnsigned: 0 to 31, reaches negatives = false, symmetric = false
+  cell policy=Wrap excursions=both-sides homomorphic=true pairs=5120 below=64 above=64 neg_c=0 pos_c=4960 witness=none
+  cell policy=Wrap excursions=none-below homomorphic=true pairs=3072 below=0 above=64 neg_c=0 pos_c=2976 witness=none
+  cell policy=Wrap excursions=none-above homomorphic=true pairs=3072 below=64 above=0 neg_c=0 pos_c=2976 witness=none
+  cell policy=Wrap excursions=inside-only homomorphic=true pairs=1024 below=0 above=0 neg_c=0 pos_c=992 witness=none
+  cell policy=Saturate excursions=both-sides homomorphic=false pairs=5120 below=64 above=64 neg_c=0 pos_c=4960 witness=y=-64 c=1 direct=0 staged=1
+  cell policy=Saturate excursions=none-below homomorphic=true pairs=3072 below=0 above=64 neg_c=0 pos_c=2976 witness=none
+  cell policy=Saturate excursions=none-above homomorphic=false pairs=3072 below=64 above=0 neg_c=0 pos_c=2976 witness=y=-64 c=1 direct=0 staged=1
+  cell policy=Saturate excursions=inside-only homomorphic=true pairs=1024 below=0 above=0 neg_c=0 pos_c=992 witness=none
+  cell policy=Clamp excursions=both-sides homomorphic=false pairs=5120 below=64 above=64 neg_c=0 pos_c=4960 witness=y=-64 c=1 direct=0 staged=1
+  cell policy=Clamp excursions=none-below homomorphic=true pairs=3072 below=0 above=64 neg_c=0 pos_c=2976 witness=none
+  cell policy=Clamp excursions=none-above homomorphic=false pairs=3072 below=64 above=0 neg_c=0 pos_c=2976 witness=y=-64 c=1 direct=0 staged=1
+  cell policy=Clamp excursions=inside-only homomorphic=true pairs=1024 below=0 above=0 neg_c=0 pos_c=992 witness=none
+
+range SmallSymmetric: -15 to 15, reaches negatives = true, symmetric = true
+  cell policy=Wrap excursions=both-sides homomorphic=true pairs=4805 below=62 above=62 neg_c=2325 pos_c=2325 witness=none
+  cell policy=Wrap excursions=none-below homomorphic=true pairs=2883 below=0 above=62 neg_c=1395 pos_c=1395 witness=none
+  cell policy=Wrap excursions=none-above homomorphic=true pairs=2883 below=62 above=0 neg_c=1395 pos_c=1395 witness=none
+  cell policy=Wrap excursions=inside-only homomorphic=true pairs=961 below=0 above=0 neg_c=465 pos_c=465 witness=none
+  cell policy=Saturate excursions=both-sides homomorphic=false pairs=4805 below=62 above=62 neg_c=2325 pos_c=2325 witness=y=-77 c=1 direct=-15 staged=-14
+  cell policy=Saturate excursions=none-below homomorphic=false pairs=2883 below=0 above=62 neg_c=1395 pos_c=1395 witness=y=16 c=-15 direct=1 staged=0
+  cell policy=Saturate excursions=none-above homomorphic=false pairs=2883 below=62 above=0 neg_c=1395 pos_c=1395 witness=y=-77 c=1 direct=-15 staged=-14
+  cell policy=Saturate excursions=inside-only homomorphic=true pairs=961 below=0 above=0 neg_c=465 pos_c=465 witness=none
+  cell policy=Clamp excursions=both-sides homomorphic=false pairs=4805 below=62 above=62 neg_c=2325 pos_c=2325 witness=y=-77 c=1 direct=-15 staged=-14
+  cell policy=Clamp excursions=none-below homomorphic=false pairs=2883 below=0 above=62 neg_c=1395 pos_c=1395 witness=y=16 c=-15 direct=1 staged=0
+  cell policy=Clamp excursions=none-above homomorphic=false pairs=2883 below=62 above=0 neg_c=1395 pos_c=1395 witness=y=-77 c=1 direct=-15 staged=-14
+  cell policy=Clamp excursions=inside-only homomorphic=true pairs=961 below=0 above=0 neg_c=465 pos_c=465 witness=none
+
+--- the controls ---
+C1: the completion's answer on a grid position does not move with the rounding mode, so the completion region is what was measured -> HELD
+C2: the instrument separates: some policy commutes over both-sided excursions and some does not -> HELD
+C3: with no excursion at all every policy commutes, which is what a vacuous restriction looks like -> HELD
+C4: the hand-worked signed witness is direct = 15 and staged = -1, got 15 and -1 -> HELD
+C5: the unsigned range still breaks on a low excursion: direct = 5 and staged = 10, got 5 and 10 -> HELD
+C6: unsigned saturation commutes once nothing goes below the bottom, over 3072 pairs of which 64 were above the top -> HELD
+C7: the same restriction leaves the signed range broken, so C6 is about which signs the translations carry -> HELD
+C8: wrapping commutes over every range and every excursion set measured -> HELD
+C9: the mode-blindness control ran all 6 modes -> HELD
+exit=0

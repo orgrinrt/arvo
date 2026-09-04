@@ -1,0 +1,445 @@
+step 03: relocation over the whole map, against the two region properties
+law: adapt(position + c) == adapt(adapt(position) + c)
+
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=116736 excursions=2400 witness=position -15+1/2 translated by 15: direct=0 staged=1
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=false law=false E=false H=true triples=104448 excursions=2148 witness=position -15+1/3 translated by 15: direct=0 staged=1
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=58368 excursions=2400 witness=position -15+1/2 translated by 15: direct=0 staged=1
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=false law=false E=false H=true triples=52224 excursions=2148 witness=position -15+1/3 translated by 15: direct=0 staged=1
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=true law=false E=false H=true triples=58368 excursions=1216 witness=position 0+1/2 translated by -16: direct=-15 staged=-16
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=false law=false E=false H=true triples=52224 excursions=1088 witness=position 0+1/3 translated by -16: direct=-15 staged=-16
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1216 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1088 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2400 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=false law=false E=false H=false triples=104448 excursions=2148 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=58368 excursions=2400 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=false law=false E=false H=false triples=52224 excursions=2148 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=true law=false E=false H=false triples=58368 excursions=1216 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=false law=false E=false H=false triples=52224 excursions=1088 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1216 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1088 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2400 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=false law=false E=false H=false triples=104448 excursions=2148 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=58368 excursions=2400 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=false law=false E=false H=false triples=52224 excursions=2148 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=true law=false E=false H=false triples=58368 excursions=1216 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=false law=false E=false H=false triples=52224 excursions=1088 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1216 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1088 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=58368 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=52224 excursions=2176 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=58368 excursions=1216 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=52224 excursions=1088 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1216 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1088 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=true law=false E=true H=false triples=58368 excursions=1216 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1088 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1216 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1088 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=true law=false E=true H=false triples=58368 excursions=1216 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1088 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1216 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1088 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=58368 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=52224 excursions=2176 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=58368 excursions=1248 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=52224 excursions=1116 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1248 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1116 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=true law=false E=true H=false triples=58368 excursions=1248 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1116 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1248 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1116 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=true law=false E=true H=false triples=58368 excursions=1248 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1116 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1248 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1116 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=116736 excursions=2436 witness=position -15+1/2 translated by 15: direct=1 staged=0
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=58368 excursions=2436 witness=position -15+1/2 translated by 15: direct=1 staged=0
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=52224 excursions=2176 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=true law=false E=false H=true triples=58368 excursions=1234 witness=position 0+1/2 translated by -16: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=52224 excursions=1102 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1234 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2436 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=58368 excursions=2436 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=true law=false E=false H=false triples=58368 excursions=1234 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1102 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1234 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2436 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=58368 excursions=2436 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=true law=false E=false H=false triples=58368 excursions=1234 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1102 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1234 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=116736 excursions=2432 witness=position -48+1/2 translated by -15: direct=2 staged=1
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=58368 excursions=2432 witness=position -48+1/2 translated by 1: direct=-14 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=52224 excursions=2176 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=true law=false E=false H=true triples=58368 excursions=1234 witness=position 0+1/2 translated by -15: direct=-14 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=52224 excursions=1102 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=true law=false E=false H=true triples=29184 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=true law=false E=false H=false triples=58368 excursions=1234 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1102 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=true law=false E=false H=true triples=29184 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=true law=false E=false H=false triples=58368 excursions=1234 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1102 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=true law=false E=false H=true triples=29184 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=58368 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=52224 excursions=2176 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=58368 excursions=1230 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=52224 excursions=1102 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1230 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=true law=false E=true H=false triples=58368 excursions=1230 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1102 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1230 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=58368 excursions=2432 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=52224 excursions=2176 witness=position -48+0/2 translated by 1: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=true law=false E=true H=false triples=58368 excursions=1230 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=52224 excursions=1102 witness=position 16+0/2 translated by -16: direct=0 staged=-1
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=29184 excursions=1230 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=26112 excursions=1102 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=116736 excursions=2400 witness=position -31+1/2 translated by 31: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=false law=false E=false H=true triples=104448 excursions=2148 witness=position -31+1/3 translated by 31: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=116736 excursions=2400 witness=position -31+1/2 translated by 31: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=false law=false E=false H=true triples=104448 excursions=2148 witness=position -31+1/3 translated by 31: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2400 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=false law=false E=false H=false triples=104448 excursions=2148 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=116736 excursions=2400 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=false law=false E=false H=false triples=104448 excursions=2148 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2400 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=false law=false E=false H=false triples=104448 excursions=2148 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=116736 excursions=2400 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=false law=false E=false H=false triples=104448 excursions=2148 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1216 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1088 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1248 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1116 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1248 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1116 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1248 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1116 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1248 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1116 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1248 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1116 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1248 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1116 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=116736 excursions=2436 witness=position -31+1/2 translated by 31: direct=1 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=116736 excursions=2436 witness=position -31+1/2 translated by 31: direct=1 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1234 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1234 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2436 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=116736 excursions=2436 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1234 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1234 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2436 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=116736 excursions=2436 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1234 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1234 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=116736 excursions=2432 witness=position -32+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=116736 excursions=2432 witness=position -32+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=true law=false E=false H=true triples=77824 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=true law=false E=false H=true triples=77824 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=true law=false E=false H=true triples=77824 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=true law=false E=false H=true triples=77824 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=true law=false E=false H=true triples=77824 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=true law=false E=false H=true triples=77824 excursions=1234 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=116736 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=104448 excursions=2176 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1230 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1230 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1230 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1230 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=116736 excursions=2432 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=104448 excursions=2176 witness=position -32+0/2 translated by 1: direct=0 staged=1
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=true law=true E=true H=true triples=77824 excursions=1230 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=77824 excursions=1230 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=69632 excursions=1102 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=109554 excursions=2324 witness=position -15+1/2 translated by 15: direct=0 staged=1
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=false law=false E=false H=true triples=98022 excursions=2080 witness=position -15+1/3 translated by 15: direct=0 staged=1
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=56544 excursions=2324 witness=position -15+1/2 translated by 15: direct=0 staged=1
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=false law=false E=false H=true triples=50592 excursions=2080 witness=position -15+1/3 translated by 15: direct=0 staged=1
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=true law=false E=false H=true triples=55366 excursions=1178 witness=position 0+1/2 translated by -15: direct=-14 staged=-15
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=false law=false E=false H=true triples=49538 excursions=1054 witness=position 0+1/3 translated by -15: direct=-14 staged=-15
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1178 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1054 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=109554 excursions=2324 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=false law=false E=false H=false triples=98022 excursions=2080 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=56544 excursions=2324 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=false law=false E=false H=false triples=50592 excursions=2080 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=true law=false E=false H=false triples=55366 excursions=1178 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=false law=false E=false H=false triples=49538 excursions=1054 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1178 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1054 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=109554 excursions=2324 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=false law=false E=false H=false triples=98022 excursions=2080 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=56544 excursions=2324 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=false law=false E=false H=false triples=50592 excursions=2080 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=true law=false E=false H=false triples=55366 excursions=1178 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=false law=false E=false H=false triples=49538 excursions=1054 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1178 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1054 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=109554 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=98022 excursions=2108 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=56544 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=50592 excursions=2108 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=55366 excursions=1178 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=49538 excursions=1054 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1178 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1054 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=109554 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=56544 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=true ties=true law=false E=true H=false triples=55366 excursions=1178 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1054 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1178 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1054 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=109554 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=56544 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=true ties=true law=false E=true H=false triples=55366 excursions=1178 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1054 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1178 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1054 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=109554 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=98022 excursions=2108 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=56544 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=50592 excursions=2108 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=55366 excursions=1210 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=49538 excursions=1082 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1210 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1082 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=109554 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=56544 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=true law=false E=true H=false triples=55366 excursions=1210 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1082 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1210 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1082 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=109554 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=56544 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=true law=false E=true H=false triples=55366 excursions=1210 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1082 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1210 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1082 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=109554 excursions=2360 witness=position -15+1/2 translated by 15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=98022 excursions=2108 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=56544 excursions=2360 witness=position -15+1/2 translated by 15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=50592 excursions=2108 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=true law=false E=false H=true triples=55366 excursions=1196 witness=position 0+1/2 translated by -15: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=49538 excursions=1068 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1196 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=109554 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=56544 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=true law=false E=false H=false triples=55366 excursions=1196 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1068 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1196 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=109554 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=56544 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=true law=false E=false H=false triples=55366 excursions=1196 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1068 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1196 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=true law=false E=false H=true triples=109554 excursions=2360 witness=position -46+1/2 translated by -15: direct=2 staged=1
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=98022 excursions=2108 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=true law=false E=false H=true triples=56544 excursions=2360 witness=position -46+1/2 translated by 1: direct=-13 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=50592 excursions=2108 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=true law=false E=false H=true triples=55366 excursions=1196 witness=position 0+1/2 translated by -15: direct=-14 staged=-15
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=49538 excursions=1068 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=true law=false E=false H=true triples=28576 excursions=1196 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=true law=false E=false H=false triples=109554 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=true law=false E=false H=false triples=56544 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=true law=false E=false H=false triples=55366 excursions=1196 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1068 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=true law=false E=false H=true triples=28576 excursions=1196 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=true law=false E=false H=false triples=109554 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=true law=false E=false H=false triples=56544 excursions=2360 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=true law=false E=false H=false triples=55366 excursions=1196 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1068 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=true law=false E=false H=true triples=28576 excursions=1196 witness=position 0+1/2 translated by 1: direct=2 staged=1
+cell range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=true law=true E=true H=true triples=109554 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=false law=true E=true H=true triples=98022 excursions=2108 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=true law=true E=true H=true triples=56544 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=false law=true E=true H=true triples=50592 excursions=2108 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=true law=true E=true H=true triples=55366 excursions=1192 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=false law=true E=true H=true triples=49538 excursions=1068 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1192 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=true law=false E=true H=false triples=109554 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=true law=false E=true H=false triples=56544 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=true law=false E=true H=false triples=55366 excursions=1192 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1068 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1192 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=true law=false E=true H=false triples=109554 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=false law=false E=true H=false triples=98022 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=true law=false E=true H=false triples=56544 excursions=2356 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=false law=false E=true H=false triples=50592 excursions=2108 witness=position -46+0/2 translated by 1: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=true law=false E=true H=false triples=55366 excursions=1192 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=false law=false E=true H=false triples=49538 excursions=1068 witness=position 16+0/2 translated by -15: direct=1 staged=0
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=true law=true E=true H=true triples=28576 excursions=1192 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=false law=true E=true H=true triples=25568 excursions=1068 witness=none
+
+--- the controls ---
+cells=432 triples=30756672 excursions=740472 law true/false=196/236 E true/false=324/108 H true/false=240/192
+R1: the law holds in a cell exactly when both region properties do: 432 of 432 cells agree -> HELD
+R2: the cross reaches cells where the law holds and cells where it fails -> HELD
+R3: the cross reaches cells where each region property holds and where it fails -> HELD
+R4: the values reaching the completion left the range, so the homomorphy question was not vacuous -> HELD
+R5: neither property alone decides the law: equivariance alone agrees in 304 of 432 cells and homomorphy alone in 388 -> HELD
+R6: the hand-worked pair: the in-range case agrees at -1 and -1, and the excursion breaks at direct=15 staged=-1 -> HELD
+exit=0

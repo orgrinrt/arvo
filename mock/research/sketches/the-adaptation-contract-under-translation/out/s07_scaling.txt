@@ -1,0 +1,769 @@
+step 07: does the map commute with a whole-number scaling, and where
+law: adapt(m * position) == adapt(m * adapt(position))
+
+cell range=SmallSigned mode=TowardZero policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-1 staged=-2
+cell range=SmallSigned mode=TowardZero policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=-1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=1 staged=2
+cell range=SmallSigned mode=TowardZero policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-14 staged=-13
+cell range=SmallSigned mode=TowardZero policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-13 staged=-11
+cell range=SmallSigned mode=TowardZero policy=Saturate m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSigned mode=TowardZero policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSigned mode=TowardZero policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -6+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -4+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSigned mode=TowardZero policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSigned mode=TowardZero policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -6+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=TowardZero policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=TowardZero policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -4+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-1 staged=0
+cell range=SmallSigned mode=Floor policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=15 staged=-16
+cell range=SmallSigned mode=Floor policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=1 staged=0
+cell range=SmallSigned mode=Floor policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=Floor policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-14 staged=-16
+cell range=SmallSigned mode=Floor policy=Saturate m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSigned mode=Floor policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=Floor policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSigned mode=Floor policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSigned mode=Floor policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=Floor policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSigned mode=Floor policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Floor policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSigned mode=Ceil policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-1 staged=-2
+cell range=SmallSigned mode=Ceil policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-16 staged=15
+cell range=SmallSigned mode=Ceil policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=1 staged=2
+cell range=SmallSigned mode=Ceil policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-14 staged=-13
+cell range=SmallSigned mode=Ceil policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-13 staged=-11
+cell range=SmallSigned mode=Ceil policy=Saturate m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSigned mode=Ceil policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSigned mode=Ceil policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -6+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -4+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSigned mode=Ceil policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSigned mode=Ceil policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -6+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Ceil policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Ceil policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -4+1/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-1 staged=0
+cell range=SmallSigned mode=HalfUp policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=-1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=1 staged=0
+cell range=SmallSigned mode=HalfUp policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=HalfUp policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-14 staged=-16
+cell range=SmallSigned mode=HalfUp policy=Saturate m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSigned mode=HalfUp policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=HalfUp policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSigned mode=HalfUp policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=HalfUp policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSigned mode=HalfUp policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfUp policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-1 staged=0
+cell range=SmallSigned mode=HalfEven policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=-1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=1 staged=0
+cell range=SmallSigned mode=HalfEven policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-14 staged=-16
+cell range=SmallSigned mode=HalfEven policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-14 staged=-16
+cell range=SmallSigned mode=HalfEven policy=Saturate m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=12
+cell range=SmallSigned mode=HalfEven policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=HalfEven policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-12
+cell range=SmallSigned mode=HalfEven policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSigned mode=HalfEven policy=Clamp m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=12
+cell range=SmallSigned mode=HalfEven policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=HalfEven policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=HalfEven policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-12
+cell range=SmallSigned mode=HalfEven policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=HalfEven policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSigned mode=Stochastic policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-1 staged=0
+cell range=SmallSigned mode=Stochastic policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=15 staged=-16
+cell range=SmallSigned mode=Stochastic policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=1 staged=0
+cell range=SmallSigned mode=Stochastic policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=Stochastic policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -48+1/2: direct=-14 staged=-16
+cell range=SmallSigned mode=Stochastic policy=Saturate m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSigned mode=Stochastic policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=Stochastic policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSigned mode=Stochastic policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 16+0/2: direct=-16 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -8+1/2: direct=-15 staged=-16
+cell range=SmallSigned mode=Stochastic policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSigned mode=Stochastic policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallSigned mode=Stochastic policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=30
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=-1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=2
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=2 staged=3
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=3 staged=5
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=TowardZero policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=Floor policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Floor policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Floor policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=Floor policy=Saturate m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Floor policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Floor policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=Floor policy=Clamp m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Floor policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Floor policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Floor policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Floor policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=30
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=0 staged=31
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=2
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=2 staged=3
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=3 staged=5
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=2
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=3
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=3 staged=5
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=2
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=3
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Ceil policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=3 staged=5
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=-1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=2
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=3
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=3 staged=5
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=2
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=3
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfUp policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=3 staged=5
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=-1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=HalfEven policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=-2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=-1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Wrap m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Saturate m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=-2 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=-2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=-1 on_grid_only=true held=false walked=576 excursions=384 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=-1 on_grid_only=false held=false walked=3648 excursions=2432 witness=position -32+0/2: direct=31 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=0 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=0 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=1 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=1 on_grid_only=false held=true walked=3648 excursions=2432 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=2 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=2 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=3 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=3 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=1 staged=0
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=5 on_grid_only=true held=true walked=576 excursions=384 witness=none
+cell range=SmallUnsigned mode=Stochastic policy=Clamp m=5 on_grid_only=false held=false walked=3648 excursions=2432 witness=position 0+1/2: direct=2 staged=0
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-2 staged=-3
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=2 staged=3
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-12 staged=-11
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Wrap m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-10 staged=-8
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-13 staged=-12
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Saturate m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-13 staged=-12
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=TowardZero policy=Clamp m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSymmetric mode=Floor policy=Wrap m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-2 staged=-1
+cell range=SmallSymmetric mode=Floor policy=Wrap m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=14 staged=15
+cell range=SmallSymmetric mode=Floor policy=Wrap m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=2 staged=1
+cell range=SmallSymmetric mode=Floor policy=Wrap m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Wrap m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Wrap m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-11 staged=-13
+cell range=SmallSymmetric mode=Floor policy=Saturate m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSymmetric mode=Floor policy=Saturate m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -15+1/2: direct=14 staged=15
+cell range=SmallSymmetric mode=Floor policy=Saturate m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Saturate m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSymmetric mode=Floor policy=Saturate m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Saturate m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSymmetric mode=Floor policy=Clamp m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSymmetric mode=Floor policy=Clamp m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -15+1/2: direct=14 staged=15
+cell range=SmallSymmetric mode=Floor policy=Clamp m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=Floor policy=Clamp m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSymmetric mode=Floor policy=Clamp m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Floor policy=Clamp m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-2 staged=-3
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=15 staged=14
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=2 staged=3
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-12 staged=-11
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Wrap m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-10 staged=-8
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -15+1/2: direct=15 staged=14
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-13 staged=-12
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Saturate m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=15 staged=14
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -15+1/2: direct=15 staged=14
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -8+1/2: direct=-15 staged=-14
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-13 staged=-12
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Ceil policy=Clamp m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-2 staged=-1
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=2 staged=1
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Wrap m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-11 staged=-13
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Saturate m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfUp policy=Clamp m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-2 staged=-1
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=2 staged=1
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-12 staged=-14
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Wrap m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-11 staged=-13
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=12
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-12
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-12
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Saturate m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=12
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=-1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-12
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-12
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=HalfEven policy=Clamp m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-12 staged=-10
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-2 staged=-1
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=14 staged=15
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=2 staged=1
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Wrap m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -46+1/2: direct=-11 staged=-13
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -15+1/2: direct=14 staged=15
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Saturate m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-13 staged=-15
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=-2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=-2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=13 staged=14
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=-1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=-1 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -15+1/2: direct=14 staged=15
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=0 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=0 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=1 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=1 on_grid_only=false held=true walked=3534 excursions=2356 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=2 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=2 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -7+1/2: direct=-13 staged=-14
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=3 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=3 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -5+1/2: direct=-14 staged=-15
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=5 on_grid_only=true held=true walked=558 excursions=372 witness=none
+cell range=SmallSymmetric mode=Stochastic policy=Clamp m=5 on_grid_only=false held=false walked=3534 excursions=2356 witness=position -3+1/2: direct=-13 staged=-15
+
+--- the controls ---
+cells=756 walked=1580040 excursions=1053360
+S1: on the grid at a non-negative factor the law holds in 270 of 270 cells -> HELD
+S2: off the grid at a factor of two or more the law fails in 162 of 162 cells -> HELD
+S3: on the grid at a negative factor the law holds in 72 of 108 cells, which is the reflection question wearing a factor -> HELD
+S4: the walk left the range, so the completion region was asked something -> HELD
+S5: the slot 20 wraps to -12, sixty wraps to -4, and three times the wrapped answer wraps to -4 -> HELD
+S6: off the grid the two schedules differ: direct=4 staged=3 from the floored answer 1 -> HELD
+exit=0
