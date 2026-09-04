@@ -1,0 +1,166 @@
+mock: wrote the durable pre-commit to /Users/orgrinrt/.config/mockspace/hooks-v3
+mock: wrote the durable pre-push to /Users/orgrinrt/.config/mockspace/hooks-v3
+mock: wrote the durable commit-msg to /Users/orgrinrt/.config/mockspace/hooks-v3
+    Finished `release` profile [optimized] target(s) in 0.09s
+--- cargo check ---
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+--- parsing crates ---
+--- running lints ---
+
+--- lint warnings (51) ---
+  [export-count] arvo-placement:1: [warn] file has 14 public exports (guideline: ~5)
+  [writing-style] PRINCIPLES.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] PRINCIPLES.md.tmpl:154: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:75: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:116: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:126: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:209: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:217: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:225: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:229: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:247: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:251: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:318: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:354: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:402: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:644: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:650: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:660: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:762: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:765: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:788: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:812: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:179: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:286: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:25: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:239: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/slots.rs:270: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/obligations.rs:344: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_identity.rs:323: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_inventory.rs:329: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:115: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:118: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:125: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:194: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:228: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/src/lib.rs:207: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:102: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:34: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:89: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:107: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:108: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:109: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:42: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:51: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:10: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:11: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:23: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:24: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  all lints passed
+--- generating dependency graph ---
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/docs/STRUCTURE.GRAPH.dot
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/docs/STRUCTURE.GRAPH.png
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/docs/STRUCTURE.GRAPH.svg
+--- registry ---
+  733 rows across 10 namespaces
+  schema check passed
+--- generating documents ---
+--- sweeping docs/ ---
+  swept 0 document(s) nothing generates any more
+  generated 17 documents
+--- generating agent rules ---
+cargo::warning=mockspace: PREAMBLE.md.tmpl is 34 words (9 over budget). Bookends are re-stamped on every rule/skill load; tight constant reminders only. Move longer invariants into MAIN.md.tmpl.
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/CLAUDE.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/copilot-instructions.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/reference-syntax.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/reference-syntax.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/generated-agent-rules.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/generated-agent-rules.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/generated-docs.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/generated-docs.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/generated.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/generated.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/mock-workspace.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/mock-workspace.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/bench-and-sketch-discipline.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/bench-and-sketch-discipline.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/canon-design-code-chain.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/canon-design-code-chain.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/design-round-consumes-its-inheritance.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/design-round-consumes-its-inheritance.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/readmes.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/readmes.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/catalogues.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/catalogues.instructions.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/lint-forbidden-star.md (lint-derived)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/crate-readme-arvo-format.md (crate readme)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/crate-readme-arvo-format.instructions.md (crate readme)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/crate-readme-arvo-placement.md (crate readme)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/crate-readme-arvo-placement.instructions.md (crate readme)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/crate-readme-arvo-strategy.md (crate readme)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/crate-readme-arvo-strategy.instructions.md (crate readme)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/cargo.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/cargo.instructions.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/cookbook.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/cookbook.instructions.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/implementation.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/implementation.instructions.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/no-heap.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/no-heap.instructions.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/type-surface.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/type-surface.instructions.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/rules/writing-style.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/instructions/writing-style.instructions.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/design-round/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/design-round/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/mockup-workflow/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/mockup-workflow/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/canon-tiers/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/canon-tiers/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/reference-syntax/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/reference-syntax/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/real-code-guard/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/real-code-guard/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/sketching/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/sketching/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/benchmarking/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/benchmarking/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/design-talk/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/design-talk/SKILL.md (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/design-talk/scripts/consume-strays (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/design-talk/scripts/consume-strays (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/design-talk/nut.toml (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/design-talk/nut.toml (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/commit-style/SKILL.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/commit-style/SKILL.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/lint-rules/SKILL.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/lint-rules/SKILL.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/skills/type-surface-review/SKILL.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/skills/type-surface-review/SKILL.md
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/mockspace-gate.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/mockspace-gate.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/check-message.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/check-message.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/mockspace-write-guard.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/mockspace-write-guard.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/mockspace-reminder.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/mockspace-reminder.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/no-yagni-guard.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/no-yagni-guard.sh (builtin)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/no-alloc-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/no-alloc-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/no-bare-primitive-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/no-bare-primitive-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/no-dyn-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/no-dyn-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/no-platform-dep-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/no-platform-dep-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/hooks/no-std-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/no-std-guard.sh
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.claude/settings.json (hook wiring merged)
+  /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/.github/hooks/hooks.json (hook wiring merged)
+  generated 92 agent files
+exit=0
