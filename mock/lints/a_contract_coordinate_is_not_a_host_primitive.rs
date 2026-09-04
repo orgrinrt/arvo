@@ -435,6 +435,44 @@ pub const ADMITTED_WIDTHS: &[Width] = &[];
     }
 
     #[test]
+    fn a_host_typed_const_inside_arvo_bits_is_reported_like_one_in_arvo_format() {
+        // `arvo-bits` was added to `THE_EXEMPT_CRATES` and every fixture in this
+        // module goes through `hits`, which is fixed to `arvo-format`, so the
+        // widening had no arm of its own. It is not decorative: it caught a
+        // `const MASK: u64` while the round was open and drove it to
+        // `const MASK: Self`.
+        let fixture =
+            LintFixture::new("    const MASK: u64 = 0;\n").with_crate_name("arvo-bits", "bits");
+        let errors = AContractCoordinateIsNotAHostPrimitive.check(&fixture.ctx());
+        assert_eq!(
+            errors.len(),
+            1,
+            "the widened lint has to fire in the crate it was widened for"
+        );
+    }
+
+    #[test]
+    fn a_const_in_arvo_bits_spelled_in_the_crates_own_type_is_silent() {
+        // The other half, and the one that would pass vacuously alone. A lint that
+        // fires on everything in a crate is not an exemption reaching that crate,
+        // it is a lint with no predicate.
+        let fixture = LintFixture::new("    const MASK: Self = Self(0);\n")
+            .with_crate_name("arvo-bits", "bits");
+        assert!(
+            AContractCoordinateIsNotAHostPrimitive
+                .check(&fixture.ctx())
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn the_exempt_list_names_the_two_crates_that_have_a_door_and_no_others() {
+        // A third entry is a design decision with its own round, which the list's
+        // own doc comment says. This is what makes a quiet fourth crate loud.
+        assert_eq!(THE_EXEMPT_CRATES, &["arvo-format", "arvo-bits"]);
+    }
+
+    #[test]
     fn the_finding_names_the_file_it_is_in() {
         let errors = hits("    const MIN: i64;\n");
         assert_eq!(errors.len(), 1);

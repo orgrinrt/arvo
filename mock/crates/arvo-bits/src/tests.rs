@@ -93,3 +93,137 @@ fn derived_equality_reads_the_wrapped_value() {
     assert_eq!(Bits::<8>::masked(3), Bits::<8>::masked(3));
     assert_ne!(Bits::<8>::masked(3), Bits::<8>::masked(4));
 }
+
+/// The mask at width `N`, built by setting one bit at a time.
+///
+/// An independent oracle rather than a second copy of `MASK`. The shipped
+/// constant is a closed form with a special case at the top width; this folds
+/// the bits in one at a time and has no special case, so the two agreeing at a
+/// width is evidence rather than a restatement.
+const fn mask_by_folding(n: u32) -> u64 {
+    let mut m = 0u64;
+    let mut i = 0u32;
+    while i < n {
+        m |= 1u64 << i;
+        i += 1;
+    }
+    m
+}
+
+/// The oracle is not vacuous: it disagrees with an off-by-one mask at every
+/// admitted width.
+///
+/// Without this the sweeps below would pass against a broken oracle exactly as
+/// they pass against a correct one, and a sweep whose oracle cannot be wrong is
+/// a sweep that establishes nothing.
+#[test]
+fn the_folded_oracle_rejects_an_off_by_one_mask() {
+    for n in 1u32 ..= 63 {
+        assert_ne!(mask_by_folding(n), mask_by_folding(n + 1), "at N = {n}");
+    }
+    assert_ne!(mask_by_folding(1), 0);
+    assert_eq!(mask_by_folding(64), u64::MAX);
+}
+
+/// Every admitted width, not a sample of them.
+///
+/// The module header above says there is one generic code path and picks four
+/// widths on that reasoning. `lib.rs` disagrees with it: `MASK` is
+/// `if N == 64 { .. } else { .. }`, which is two paths, and the design says so
+/// too. So the widths were a sample after all, and `N` runs over sixty-four
+/// values, which is enumerable. Each arm asserts against the folded oracle
+/// rather than against the shipped constant.
+macro_rules! every_width {
+    ($($n:literal),* $(,)?) => {
+        /// Construction masks to exactly the folded oracle's bits, at every
+        /// admitted width, for the all-ones input.
+        #[test]
+        fn construction_masks_to_the_oracle_at_every_admitted_width() {
+            $(
+                assert_eq!(
+                    Bits::<$n>::masked(u64::MAX).raw(),
+                    mask_by_folding($n),
+                    "at N = {}", $n
+                );
+            )*
+        }
+
+        /// The drop law at every admitted width: what comes back is the input
+        /// with the bits above `N` removed, and nothing else changed.
+        #[test]
+        fn construction_drops_exactly_the_bits_above_the_width_everywhere() {
+            // A local rather than a const, because
+            // `a-contract-coordinate-is-not-a-host-primitive` reads every file in
+            // this crate including this one, and it is right to: a const here is a
+            // position an outside implementor writes too. These are raw host inputs
+            // being fed in, which is the one thing `masked` exists to take, so they
+            // are a value in a function rather than a coordinate on a contract.
+            let probes: [u64; 8] = [
+                0,
+                1,
+                u64::MAX,
+                u64::MAX - 1,
+                0x5555_5555_5555_5555,
+                0xAAAA_AAAA_AAAA_AAAA,
+                0x8000_0000_0000_0000,
+                0x0123_4567_89AB_CDEF,
+            ];
+            $(
+                for raw in probes {
+                    assert_eq!(
+                        Bits::<$n>::masked(raw).raw(),
+                        raw & mask_by_folding($n),
+                        "at N = {}, raw = {:#x}", $n, raw
+                    );
+                }
+            )*
+        }
+
+        /// Idempotence at every admitted width: masking a value that is
+        /// already within the width changes nothing.
+        #[test]
+        fn masking_an_already_narrow_value_is_the_identity_everywhere() {
+            $(
+                for raw in [0u64, 1, mask_by_folding($n), mask_by_folding($n) >> 1] {
+                    assert_eq!(Bits::<$n>::masked(raw).raw(), raw, "at N = {}", $n);
+                }
+            )*
+        }
+
+        /// A cast to every admitted width from every admitted width, all four
+        /// thousand and ninety-six pairs, against the oracle. Widening keeps
+        /// every bit and narrowing drops exactly those above the target, and
+        /// both directions are the one expression `raw & mask(M)`.
+        #[test]
+        fn cast_lands_on_the_oracle_for_every_pair_of_widths() {
+            $( cast_from::<$n>(); )*
+        }
+    };
+}
+
+/// One row of the cast matrix: from `N` to every admitted `M`.
+fn cast_from<const N: u32>() {
+    macro_rules! to_every_width {
+        ($($m:literal),* $(,)?) => {
+            let start = Bits::<N>::masked(0x0123_4567_89AB_CDEF);
+            $(
+                assert_eq!(
+                    start.cast::<$m>().raw(),
+                    start.raw() & mask_by_folding($m),
+                    "from N = {} to M = {}", N, $m
+                );
+            )*
+        };
+    }
+    to_every_width!(
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
+    );
+}
+
+every_width!(
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
+);
