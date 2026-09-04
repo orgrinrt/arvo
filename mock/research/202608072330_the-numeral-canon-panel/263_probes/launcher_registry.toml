@@ -1,0 +1,67 @@
+schema = 0
+last_gc = 1788499131
+
+[[consumer]]
+root = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a"
+name = "q223a"
+workdir = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a/mock"
+engine_url = "https://github.com/hiisi-digital/mockspace.git"
+pin_form = "branch"
+pin_value = "dev"
+key = "dc747ead03d81111"
+root_exact = true
+last_seen = 1788499492
+
+[[consumer]]
+root = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b"
+name = "q223b"
+workdir = "/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223b/mock"
+engine_url = "https://github.com/hiisi-digital/mockspace.git"
+pin_form = "branch"
+pin_value = "dev"
+key = "dc747ead03d81111"
+root_exact = true
+last_seen = 1788499775
+
+[[consumer]]
+root = "/Users/orgrinrt/Dev/clause-work/hulilupteri_arc/sodapop"
+name = "sodapop"
+workdir = "/Users/orgrinrt/Dev/clause-work/hulilupteri_arc/sodapop/linux"
+engine_url = "https://github.com/hiisi-digital/mockspace.git"
+pin_form = "rev"
+pin_value = "8032eaee73e644efdf9cb3bcc8d9655c3a9aac36"
+key = "0a00626017ac3f2c"
+root_exact = true
+last_seen = 1788499767
+
+[[build]]
+key = "dc747ead03d81111"
+engine_url = "https://github.com/hiisi-digital/mockspace.git"
+key_rev = "a7dd822305629e54c6ed4ed2c5670840ecab2677"
+toolchain = """
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+binary: rustc
+commit-hash: 57d06900fd7d9ee06d3a7f323bb77f17ab3cfaf8
+commit-date: 2026-05-27
+host: aarch64-apple-darwin
+release: 1.98.0-nightly
+LLVM version: 22.1.6
+"""
+built_at = 1788499131
+last_used = 1788499775
+
+[[build]]
+key = "0a00626017ac3f2c"
+engine_url = "https://github.com/hiisi-digital/mockspace.git"
+key_rev = "8032eaee73e644efdf9cb3bcc8d9655c3a9aac36"
+toolchain = """
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+binary: rustc
+commit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea
+commit-date: 2026-08-18
+host: aarch64-apple-darwin
+release: 1.98.0
+LLVM version: 22.1.8
+"""
+built_at = 1788499657
+last_used = 1788499767
