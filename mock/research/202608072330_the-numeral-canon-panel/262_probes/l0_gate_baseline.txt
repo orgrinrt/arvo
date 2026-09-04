@@ -1,0 +1,183 @@
+mock: building the engine for this pin (once per version) ...
+    Updating git repository `https://github.com/hiisi-digital/mockspace.git`
+  Installing mockspace v0.0.2 (https://github.com/hiisi-digital/mockspace.git?rev=a7dd822305629e54c6ed4ed2c5670840ecab2677#a7dd8223)
+warning: default toolchain implicitly overridden with `nightly-2026-05-28-aarch64-apple-darwin` by environment variable
+  |
+  = help: use `cargo +stable install` if you meant to use the stable toolchain
+  = note: rustup selects the toolchain based on the parent environment and not the environment of the package being installed
+    Updating crates.io index
+     Locking 34 packages to latest Rust 1.88 compatible versions
+      Adding libloading v0.8.9 (available: v0.9.0)
+      Adding toml v0.8.23 (available: v1.1.5+spec-1.1.0)
+      Adding toml_edit v0.22.27 (available: v0.25.13+spec-1.1.0)
+      Adding tree-sitter v0.24.7 (available: v0.27.0)
+      Adding tree-sitter-language v0.1.7 (available: v0.1.8)
+      Adding tree-sitter-rust v0.23.3 (available: v0.24.2)
+ Downloading crates ...
+  Downloaded find-msvc-tools v0.1.11
+  Downloaded cfg-if v1.0.4
+  Downloaded toml_write v0.1.2
+  Downloaded equivalent v1.0.2
+  Downloaded tree-sitter-language v0.1.7
+  Downloaded toml_datetime v0.6.11
+  Downloaded itoa v1.0.18
+  Downloaded quote v1.0.47
+  Downloaded zmij v1.0.23
+  Downloaded libloading v0.8.9
+  Downloaded serde_spanned v0.6.9
+  Downloaded shlex v2.0.1
+  Downloaded streaming-iterator v0.1.9
+  Downloaded indexmap v2.14.1
+  Downloaded toml v0.8.23
+  Downloaded serde_core v1.0.229
+  Downloaded unicode-ident v1.0.24
+  Downloaded proc-macro2 v1.0.107
+  Downloaded serde_derive v1.0.229
+  Downloaded toml_edit v0.22.27
+  Downloaded serde v1.0.229
+  Downloaded cc v1.4.4
+  Downloaded memchr v2.8.3
+  Downloaded regex v1.13.1
+  Downloaded hashbrown v0.17.1
+  Downloaded serde_json v1.0.151
+  Downloaded aho-corasick v1.1.5
+  Downloaded tree-sitter v0.24.7
+  Downloaded winnow v0.7.15
+  Downloaded syn v3.0.4
+  Downloaded regex-syntax v0.8.11
+  Downloaded tree-sitter-rust v0.23.3
+  Downloaded regex-automata v0.4.18
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling shlex v2.0.1
+   Compiling find-msvc-tools v0.1.11
+   Compiling hashbrown v0.17.1
+   Compiling cc v1.4.4
+   Compiling tree-sitter-language v0.1.7
+   Compiling equivalent v1.0.2
+   Compiling memchr v2.8.3
+   Compiling indexmap v2.14.1
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling aho-corasick v1.1.5
+   Compiling regex-syntax v0.8.11
+   Compiling tree-sitter v0.24.7
+   Compiling tree-sitter-rust v0.23.3
+   Compiling zmij v1.0.23
+   Compiling syn v3.0.4
+   Compiling serde_json v1.0.151
+   Compiling mockspace-bench-harness v0.0.0 (/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822/bench-harness)
+   Compiling cfg-if v1.0.4
+   Compiling streaming-iterator v0.1.9
+   Compiling libloading v0.8.9
+   Compiling regex-automata v0.4.18
+   Compiling itoa v1.0.18
+   Compiling mockspace-bench-core v0.0.0 (/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822/bench-core)
+   Compiling serde_derive v1.0.229
+   Compiling regex v1.13.1
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling mockspace-manifest v0.0.2 (/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822/mockspace-manifest)
+   Compiling mockspace-lint-rules v0.0.0 (/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822/lint-rules)
+   Compiling mockspace v0.0.2 (/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822)
+warning: use of deprecated field `config::Config::crates_dir`: use `src_dirs`. This is `src_dirs[0]`, so on a grouped project it sees only the first group and reports a subset as if it were the whole. If one directory really is meant, take it as an argument rather than reading the first entry of a list.
+   --> src/config.rs:848:13
+    |
+848 |             crates_dir,
+    |             ^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `mockspace` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 1m 11s
+  Installing /Users/orgrinrt/.cache/mockspace/builds/dc747ead03d81111/bin/mockspace
+   Installed package `mockspace v0.0.2 (https://github.com/hiisi-digital/mockspace.git?rev=a7dd822305629e54c6ed4ed2c5670840ecab2677#a7dd8223)` (executable `mockspace`)
+warning: be sure to add `/Users/orgrinrt/.cache/mockspace/builds/dc747ead03d81111/bin` to your PATH to be able to run the installed binaries
+   Compiling regex-syntax v0.8.11
+   Compiling aho-corasick v1.1.5
+   Compiling winnow v0.7.15
+   Compiling serde v1.0.229
+   Compiling tree-sitter v0.24.7
+   Compiling tree-sitter-rust v0.23.3
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling regex-automata v0.4.18
+   Compiling toml v0.8.23
+   Compiling regex v1.13.1
+   Compiling mockspace-lint-rules v0.0.0 (/Users/orgrinrt/.cargo/git/checkouts/mockspace-725094cc58de1ed7/a7dd822/lint-rules)
+   Compiling mockspace-extra-lints v0.1.0 (ssh://git@github.com/orgrinrt/mockspace-extra-lints.git?branch=dev#81d69141)
+   Compiling arvo-unasked-questions v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a/mock/tools/unasked-questions)
+   Compiling arvo-the-positions v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a/mock/tools/the-positions)
+   Compiling arvo-rounding-vocabulary v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a/mock/tools/rounding-vocabulary)
+   Compiling arvo-a-panel-catalogue-is-readable v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a/mock/tools/a-panel-catalogue-is-readable)
+   Compiling arvo-awaiting-a-ruling v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a/mock/tools/awaiting-a-ruling)
+   Compiling mockspace-lints-e2833e90d796e8ad v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/q223a/mock/target/mockspace-lints)
+    Finished `release` profile [optimized] target(s) in 15.08s
+--- cargo check skipped (lint-only mode) ---
+--- parsing crates ---
+--- running lints ---
+--- registry ---
+  generated 1 schema files
+  733 rows across 10 namespaces
+  schema check passed
+
+--- lint warnings (51) ---
+  [export-count] arvo-placement:1: [warn] file has 14 public exports (guideline: ~5)
+  [writing-style] PRINCIPLES.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] PRINCIPLES.md.tmpl:154: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:75: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:116: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:126: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:209: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:217: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:225: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:229: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:247: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:251: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:318: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:354: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:402: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:644: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:650: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:660: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:762: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:765: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:788: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/DESIGN.md.tmpl:812: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:179: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/format.rs:286: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:25: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/quantum.rs:239: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/slots.rs:270: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/obligations.rs:344: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_identity.rs:323: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-format/src/tests/the_inventory.rs:329: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:115: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:118: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:125: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:194: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:223: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/DESIGN.md.tmpl:228: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-placement/src/lib.rs:207: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:102: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] arvo-strategy/DESIGN.md.tmpl:153: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:34: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:89: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/MAIN.md.tmpl:107: [warn] inline emphasis `*`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:108: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/rules/type-surface.md.tmpl:109: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:42: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/commit-style/SKILL.md.tmpl:51: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:10: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:11: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:23: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  [writing-style] agent/skills/lint-rules/SKILL.md.tmpl:24: [warn] inline emphasis `**`. No bold, italic or underline in prose a human reads; say it in the words. Backticks on an identifier or a path stay
+  all lints passed
+--- lint-only mode, skipping generation ---

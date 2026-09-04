@@ -1,0 +1,25 @@
+base: b544c82cf66536bfd19e3d3f7bdf995a4a813c52
+registry byte length before:   255560
+
+--- arm a_control_baseline (nothing planted)
+  all lints passed
+
+--- arm b_argument_no_region (sentence_kind=argument; extra=none)
+  [a-region-agrees-with-the-sentence-kind/an-established-claim-carries-no-region] registry:0: [error] `proposal::probe262_b_argument_no_region` has `sentence_kind` `argument` and an empty `predicate`, so the claim reads as holding everywhere while having been established somewhere. Write the region it was established in, however narrow: `threads = 1` is a real region and a real finding.
+  [a-row-carries-keywords] registry:0: [error] `proposal::probe262_b_argument_no_region` carries no `keywords`. A search over row text finds whichever word the author reached for, and the reader reaches for a different one.
+
+--- arm d_normative_no_region (sentence_kind=normative; extra=none)
+  [a-row-carries-keywords] registry:0: [error] `proposal::probe262_d_normative_no_region` carries no `keywords`. A search over row text finds whichever word the author reached for, and the reader reaches for a different one.
+
+--- arm c_control_must_fire (sentence_kind=normative; extra=predicate = ["fraction_width: F = 0"])
+  [a-region-agrees-with-the-sentence-kind/an-imposed-proposition-carries-a-region] registry:0: [error] `proposal::probe262_c_control_must_fire` has `sentence_kind` `normative` and carries a `predicate`. Neither kind states a region: an imposed proposition would be saying the design may violate it everywhere the region does not reach, and a definition is not a claim about where anything holds.
+  [a-row-carries-keywords] registry:0: [error] `proposal::probe262_c_control_must_fire` carries no `keywords`. A search over row text finds whichever word the author reached for, and the reader reaches for a different one.
+
+--- arm e_argument_corpus_axis (sentence_kind=argument; extra=predicate = ["corpus_state: the registry at HEAD"])
+  [a-row-carries-keywords] registry:0: [error] `proposal::probe262_e_argument_corpus_axis` carries no `keywords`. A search over row text finds whichever word the author reached for, and the reader reaches for a different one.
+  [every-predicate-names-a-declared-axis/undeclared-axis] registry:0: [error] `proposal::probe262_e_argument_corpus_axis` names the axis `corpus_state` in `predicate`, which no `dimension` row declares. Declare it, or use the slug of the axis that already means this. An undeclared axis cannot be absent from any other predicate, so admitting one here weakens every predicate in the canon.
+
+--- arm f_control_argument_declared_axis (sentence_kind=argument; extra=predicate = ["fraction_width: F = 0"])
+  [a-row-carries-keywords] registry:0: [error] `proposal::probe262_f_control_argument_declared_axis` carries no `keywords`. A search over row text finds whichever word the author reached for, and the reader reaches for a different one.
+
+restored: registry byte length   255560, tree clean
