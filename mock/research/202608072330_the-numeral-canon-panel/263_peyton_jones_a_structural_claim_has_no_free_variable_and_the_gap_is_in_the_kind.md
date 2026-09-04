@@ -1,4 +1,11 @@
-# 262. Peyton Jones: a structural claim has no free variable, and the gap is in the kind rather than in the axes
+# 263. Peyton Jones: a structural claim has no free variable, and the gap is in the kind rather than in the axes
+
+**Minted as 262 and reassigned to 263 by the dispatcher.** Two seats ran this row
+in parallel and both counted the directory rather than the ledger, so both took
+262. The other is `262_orchard_the_structural_region_derived_blind.md`, which
+committed first and keeps the number. Section 10 predicted this collision before
+it happened. The probe artifacts under `263_probes/` were produced under the
+older number and their own contents are left as they were run.
 
 Answering `question::can_a_claim_about_the_canons_own_structure_carry_a_region`, blind. Sections 0
 to 9 were written to disk before I opened anything in this directory other than seat 223 at the
@@ -29,15 +36,15 @@ change an answer is.
 The first `cargo mock` in this fresh worktree exited 1 before running a single lint: six `E0308`
 mismatches on `LintPack`, two copies of `mockspace-lint-rules` in one graph, and the engine's own
 notice, `BLOCKED: this repo's custom lints could not be built, so no lint below them ran. Nothing was
-checked.` That log is `262_probes/cargo_mock.log`. The next full run in the same worktree, with the
+checked.` That log is `263_probes/cargo_mock.log`. The next full run in the same worktree, with the
 launcher's registry showing the same engine build `dc747ead03d81111` at
 `a7dd822305629e54c6ed4ed2c5670840ecab2677`, exited 0 with `all lints passed`, and so did a third run
 after deleting `mock/target/mockspace-lints` entirely; the second is
-`262_probes/cargo_mock_at_the_resolved_pin.log` and the launcher's record is
-`262_probes/launcher_registry.toml`. In the failing run I saw a generated manifest with no `[patch]`
+`263_probes/cargo_mock_at_the_resolved_pin.log` and the launcher's record is
+`263_probes/launcher_registry.toml`. In the failing run I saw a generated manifest with no `[patch]`
 table and a `cargo tree -d` naming the crate twice, once by `rev` and once by `branch`; I did not
 preserve that manifest before the engine rewrote it, so that observation is mine and not evidence,
-and `262_probes/generated_pack_Cargo.toml` is the rewritten one, which carries both patch tables.
+and `263_probes/generated_pack_Cargo.toml` is the rewritten one, which carries both patch tables.
 What is committed establishes that one launcher key produced one blocked run and two green ones in
 one worktree within twenty minutes, and the registry says the engine build at that key was compiled
 during the first run. I could not establish the mechanism and I say so rather than guess; seat 261
@@ -49,7 +56,7 @@ run it twice before filing anything.
 The suite itself. The three source crates pass under `cargo test` in `mock/`: `arvo-format` 115
 unit, 11 compile-fail, 13 parity; `arvo-placement` 21; `arvo-strategy` 10; plus 9 in the tools. The
 lint pack was run as a copy placed under `mock/target/probe-pack/`, 685 tests, 669 passed, 0 failed,
-16 ignored, in `262_probes/pack_test.log`; the same copy run from a scratch directory outside the
+16 ignored, in `263_probes/pack_test.log`; the same copy run from a scratch directory outside the
 repository reported seven failures that were all `no mockspace.toml above the working directory`,
 which is the testkit's `repo_root` walk and not a lint, and that log is kept beside it under its own
 name so nobody spends a dispatch on it. I read the body of every test in
@@ -202,8 +209,8 @@ to the three sources rather than as a gate." Seven rows have hand-written, in pr
 schema lacks. Say it once, in the right type: that recurring note is the missing coordinate, spelled
 seven times where nothing can read it.
 
-**The checker's four cells.** `262_probes/probe_262.rs` plants the one sentence from section 2 in
-each filing the schema offers it and runs the two shipped predicate lints; `262_probes/probe_262.out`
+**The checker's four cells.** `263_probes/probe_262.rs` plants the one sentence from section 2 in
+each filing the schema offers it and runs the two shipped predicate lints; `263_probes/probe_262.out`
 is the run:
 
 | cell | filing | `a-region-agrees-with-the-sentence-kind` | `every-predicate-names-a-declared-axis` |
