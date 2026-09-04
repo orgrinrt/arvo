@@ -1,0 +1,500 @@
+step 05: does the shipped predicate agree with the map
+
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Floor policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallUnsigned mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=TowardZero policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=TowardZero policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=TowardZero policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Floor policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Ceil policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfUp policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=HalfEven policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=true neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=true ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Wrap neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Saturate neg_pos=false neg_c=false ties=false predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=true neg_c=false ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=true predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=true ties=false predicate=false measured=false
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=true predicate=true measured=true
+relocation range=SmallSymmetric mode=Stochastic policy=Clamp neg_pos=false neg_c=false ties=false predicate=true measured=true
+
+reflection range=SmallSigned mode=TowardZero policy=Wrap predicate=true measured=true
+reflection range=SmallSigned mode=TowardZero policy=Saturate predicate=false measured=false
+reflection range=SmallSigned mode=TowardZero policy=Clamp predicate=false measured=false
+reflection range=SmallSigned mode=Floor policy=Wrap predicate=false measured=false
+reflection range=SmallSigned mode=Floor policy=Saturate predicate=false measured=false
+reflection range=SmallSigned mode=Floor policy=Clamp predicate=false measured=false
+reflection range=SmallSigned mode=Ceil policy=Wrap predicate=false measured=false
+reflection range=SmallSigned mode=Ceil policy=Saturate predicate=false measured=false
+reflection range=SmallSigned mode=Ceil policy=Clamp predicate=false measured=false
+reflection range=SmallSigned mode=HalfUp policy=Wrap predicate=true measured=true
+reflection range=SmallSigned mode=HalfUp policy=Saturate predicate=false measured=false
+reflection range=SmallSigned mode=HalfUp policy=Clamp predicate=false measured=false
+reflection range=SmallSigned mode=HalfEven policy=Wrap predicate=true measured=true
+reflection range=SmallSigned mode=HalfEven policy=Saturate predicate=false measured=false
+reflection range=SmallSigned mode=HalfEven policy=Clamp predicate=false measured=false
+reflection range=SmallSigned mode=Stochastic policy=Wrap predicate=false measured=false
+reflection range=SmallSigned mode=Stochastic policy=Saturate predicate=false measured=false
+reflection range=SmallSigned mode=Stochastic policy=Clamp predicate=false measured=false
+reflection range=SmallUnsigned mode=TowardZero policy=Wrap predicate=true measured=true
+reflection range=SmallUnsigned mode=TowardZero policy=Saturate predicate=false measured=false
+reflection range=SmallUnsigned mode=TowardZero policy=Clamp predicate=false measured=false
+reflection range=SmallUnsigned mode=Floor policy=Wrap predicate=false measured=false
+reflection range=SmallUnsigned mode=Floor policy=Saturate predicate=false measured=false
+reflection range=SmallUnsigned mode=Floor policy=Clamp predicate=false measured=false
+reflection range=SmallUnsigned mode=Ceil policy=Wrap predicate=false measured=false
+reflection range=SmallUnsigned mode=Ceil policy=Saturate predicate=false measured=false
+reflection range=SmallUnsigned mode=Ceil policy=Clamp predicate=false measured=false
+reflection range=SmallUnsigned mode=HalfUp policy=Wrap predicate=true measured=true
+reflection range=SmallUnsigned mode=HalfUp policy=Saturate predicate=false measured=false
+reflection range=SmallUnsigned mode=HalfUp policy=Clamp predicate=false measured=false
+reflection range=SmallUnsigned mode=HalfEven policy=Wrap predicate=true measured=true
+reflection range=SmallUnsigned mode=HalfEven policy=Saturate predicate=false measured=false
+reflection range=SmallUnsigned mode=HalfEven policy=Clamp predicate=false measured=false
+reflection range=SmallUnsigned mode=Stochastic policy=Wrap predicate=false measured=false
+reflection range=SmallUnsigned mode=Stochastic policy=Saturate predicate=false measured=false
+reflection range=SmallUnsigned mode=Stochastic policy=Clamp predicate=false measured=false
+reflection range=SmallSymmetric mode=TowardZero policy=Wrap predicate=true measured=true
+reflection range=SmallSymmetric mode=TowardZero policy=Saturate predicate=true measured=true
+reflection range=SmallSymmetric mode=TowardZero policy=Clamp predicate=true measured=true
+reflection range=SmallSymmetric mode=Floor policy=Wrap predicate=false measured=false
+reflection range=SmallSymmetric mode=Floor policy=Saturate predicate=false measured=false
+reflection range=SmallSymmetric mode=Floor policy=Clamp predicate=false measured=false
+reflection range=SmallSymmetric mode=Ceil policy=Wrap predicate=false measured=false
+reflection range=SmallSymmetric mode=Ceil policy=Saturate predicate=false measured=false
+reflection range=SmallSymmetric mode=Ceil policy=Clamp predicate=false measured=false
+reflection range=SmallSymmetric mode=HalfUp policy=Wrap predicate=true measured=true
+reflection range=SmallSymmetric mode=HalfUp policy=Saturate predicate=true measured=true
+reflection range=SmallSymmetric mode=HalfUp policy=Clamp predicate=true measured=true
+reflection range=SmallSymmetric mode=HalfEven policy=Wrap predicate=true measured=true
+reflection range=SmallSymmetric mode=HalfEven policy=Saturate predicate=true measured=true
+reflection range=SmallSymmetric mode=HalfEven policy=Clamp predicate=true measured=true
+reflection range=SmallSymmetric mode=Stochastic policy=Wrap predicate=false measured=false
+reflection range=SmallSymmetric mode=Stochastic policy=Saturate predicate=false measured=false
+reflection range=SmallSymmetric mode=Stochastic policy=Clamp predicate=false measured=false
+
+--- the controls ---
+P1: the relocation predicate is never unsound: 0 cells said the law holds where the map says it does not -> HELD
+P2: the relocation predicate is exact on 432 of 432 cells, with 0 conservative refusals -> HELD
+P3: the reflection predicate is never unsound and is exact on 54 of 54 cells -> HELD
+P4: the rounded slot is the position's slot or the next one, over 116964 positions -> HELD
+P5: over the six shipped names, commuting with reflection equals reading something beyond the residue -> HELD
+P6: the predicate answers both ways: 196 yes and 236 no -> HELD
+P7 detail: the default licenses ["SmallSigned/Floor/Wrap", "SmallSigned/Ceil/Wrap", "SmallSigned/Stochastic/Wrap", "SmallUnsigned/Floor/Wrap", "SmallUnsigned/Ceil/Wrap", "SmallUnsigned/Stochastic/Wrap", "SmallSymmetric/Floor/Wrap", "SmallSymmetric/Ceil/Wrap", "SmallSymmetric/Stochastic/Wrap"]
+P7: the conservative default licenses only cells where both regions commute unconditionally -> HELD
+exit=0

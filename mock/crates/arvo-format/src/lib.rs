@@ -50,28 +50,67 @@ pub mod quantum;
 pub mod rounding;
 pub mod slots;
 pub mod standards;
+pub mod symmetry;
 pub mod width;
 
 pub use adapt::{
-    operation_overflow, operation_rounding, overflow_of, rounding_of, Adapt, Adaptation, Arity,
-    DeclaredSignature, Operation, Signature,
+    Adapt,
+    Adaptation,
+    Arity,
+    DeclaredSignature,
+    Operation,
+    Signature,
+    operation_overflow,
+    operation_rounding,
+    overflow_of,
+    rounding_of,
 };
 pub use ambient::{
-    is_admissible_ambient, Ambient, BinaryRationals, DecimalRationals, Radix,
+    Ambient,
+    BinaryRationals,
+    DecimalRationals,
+    Radix,
     UnsignedBinaryRationals,
+    is_admissible_ambient,
 };
-pub use apply::{adapt, panic_on_inexact, panic_on_overflow, Dither, Exact, Fraction};
+pub use apply::{Dither, Exact, Fraction, adapt, panic_on_inexact, panic_on_overflow};
 pub use format::{
-    cancelling_slot, contains, has_additive_identity, is_admissible_format, radix,
-    smallest_step_exponent, step_exponent, Format, Phase,
+    Format,
+    Phase,
+    cancelling_slot,
+    contains,
+    has_additive_identity,
+    is_admissible_format,
+    radix,
+    smallest_step_exponent,
+    step_exponent,
 };
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
 pub use quantum::{
-    exponent_at, is_admissible_quantum, is_constant_family, magnitude_in_range, Exponent,
-    Magnitude, MagnitudeCount, Quantum,
+    Exponent,
+    Magnitude,
+    MagnitudeCount,
+    Quantum,
+    exponent_at,
+    is_admissible_quantum,
+    is_constant_family,
+    magnitude_in_range,
 };
-pub use rounding::{Mode, Rounding, ALL_MODES};
-pub use slots::{slot_count, slot_in_range, Slot, SlotCount, Slots};
+pub use rounding::{ALL_MODES, Mode, Rounding};
+pub use slots::{Slot, SlotCount, Slots, slot_count, slot_in_range};
+pub use symmetry::{
+    Behaviour,
+    Reach,
+    Reads,
+    When,
+    adaptation_reflects,
+    adaptation_relocates,
+    behaviour_of,
+    completion_is_reflection_equivariant,
+    completion_is_translation_homomorphic,
+    rounding_is_reflection_equivariant,
+    rounding_is_translation_equivariant,
+};
 pub use width::{Bool, Width};
 
 /// The four points of the parameterisation the canon names, as formats.
@@ -95,6 +134,7 @@ pub mod points {
         type Ambient = BinaryRationals;
         type Quantum = Constant<0>;
         type Slots = Signed<BITS>;
+
         const PHASE: Phase = Phase::ZERO;
     }
 
@@ -111,6 +151,7 @@ pub mod points {
         type Ambient = UnsignedBinaryRationals;
         type Quantum = Constant<FRAC>;
         type Slots = Unsigned<BITS>;
+
         const PHASE: Phase = Phase::ZERO;
     }
 
@@ -141,6 +182,7 @@ pub mod points {
         type Ambient = BinaryRationals;
         type Quantum = Constant<EXP>;
         type Slots = Signed<BITS>;
+
         const PHASE: Phase = Phase::halves(HALF_STEPS);
     }
 
@@ -159,6 +201,7 @@ pub mod points {
         type Ambient = BinaryRationals;
         type Quantum = Indexed<MIN_EXP, EXPONENTS>;
         type Slots = Signed<MANTISSA>;
+
         const PHASE: Phase = Phase::ZERO;
     }
 }

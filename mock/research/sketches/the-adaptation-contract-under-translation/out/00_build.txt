@@ -1,0 +1,17 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling the-adaptation-contract-under-translation v0.0.0 (/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/fma-arm/mock/research/sketches/the-adaptation-contract-under-translation)
+warning: method `translated_high` is never used
+   --> src/bin/../predicate.rs:147:18
+    |
+122 | impl Reach {
+    | ---------- method in this implementation
+...
+147 |     pub const fn translated_high(self) -> i64 {
+    |                  ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `the-adaptation-contract-under-translation` (bin "s05_the_predicate") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.78s
+exit=0
