@@ -1,0 +1,19 @@
+error[E0080]: evaluation panicked: a declared width of zero bits admits no values and is not a bit container
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Bits::<0>::ADMITTED` failed here
+  |
+ ::: src/lib.rs
+  |
+  | /         assert!(
+  | |             N >= 1,
+  | |             "a declared width of zero bits admits no values and is not a bit container"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/lib.rs
+  |
+  |         let () = Self::ADMITTED;
+  |                  ^^^^^^^^^^^^^^

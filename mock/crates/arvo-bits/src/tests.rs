@@ -199,9 +199,10 @@ macro_rules! every_width {
         }
 
         /// A cast to every admitted width from every admitted width, all four
-        /// thousand and ninety-six pairs, against the oracle. Widening keeps
-        /// every bit and narrowing drops exactly those above the target, and
-        /// both directions are the one expression `raw & mask(M)`.
+        /// thousand and ninety-six pairs, each over eight probes, against the
+        /// oracle. Widening keeps every bit and narrowing drops exactly those
+        /// above the target, and both directions are the one expression
+        /// `raw & mask(M)`.
         #[test]
         fn cast_lands_on_the_oracle_for_every_pair_of_widths() {
             $( cast_from::<$n>(); )*
@@ -209,18 +210,37 @@ macro_rules! every_width {
     };
 }
 
-/// One row of the cast matrix: from `N` to every admitted `M`.
+/// One row of the cast matrix: from `N` to every admitted `M`, over the same
+/// probes construction is swept with.
+///
+/// One start value would exercise every pair and still only ever put one bit
+/// pattern through the mask, so a mask that happened to agree with the oracle
+/// on that pattern and nowhere else would pass the whole matrix. The
+/// alternating and single-bit probes are what make the all-zero and all-one
+/// halves of each mask observable.
 fn cast_from<const N: u32>() {
     macro_rules! to_every_width {
         ($($m:literal),* $(,)?) => {
-            let start = Bits::<N>::masked(0x0123_4567_89AB_CDEF);
-            $(
-                assert_eq!(
-                    start.cast::<$m>().raw(),
-                    start.raw() & mask_by_folding($m),
-                    "from N = {} to M = {}", N, $m
-                );
-            )*
+            let probes: [u64; 8] = [
+                0,
+                1,
+                u64::MAX,
+                u64::MAX - 1,
+                0x5555_5555_5555_5555,
+                0xAAAA_AAAA_AAAA_AAAA,
+                0x8000_0000_0000_0000,
+                0x0123_4567_89AB_CDEF,
+            ];
+            for raw in probes {
+                let start = Bits::<N>::masked(raw);
+                $(
+                    assert_eq!(
+                        start.cast::<$m>().raw(),
+                        start.raw() & mask_by_folding($m),
+                        "from N = {} to M = {}, raw = {:#x}", N, $m, raw
+                    );
+                )*
+            }
         };
     }
     to_every_width!(
