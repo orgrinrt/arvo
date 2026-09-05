@@ -525,6 +525,10 @@ push = "off"
 
 [lint-crates]
 mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-extra-lints.git", branch = "dev" }
+# `mock ask <question...>`: a question against this mock dir, answered with
+# the passages that clear. The tool lives in muisti's repository and comes in
+# on the same cdylib as the lint pack; muisti is private, hence ssh.
+ask = { git = "ssh://git@github.com/orgrinrt/muisti.git", branch = "dev" }
 
 # ---------------------------------------------------------------------------
 # Reference roots
