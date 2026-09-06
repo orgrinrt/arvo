@@ -1,0 +1,20 @@
+error[E0080]: evaluation panicked: declared width is wider than a u64 carries; the value itself is stored in one, and a width past sixty-four has nowhere to be masked into
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Bits::<65>::ADMITTED` failed here
+  |
+ ::: src/lib.rs
+  |
+  | /         assert!(
+  | |             N <= 64,
+  | |             "declared width is wider than a u64 carries; the value itself is stored in one, and \
+  | |              a width past sixty-four has nowhere to be masked into"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/lib.rs
+  |
+  |         let () = Self::ADMITTED;
+  |                  ^^^^^^^^^^^^^^

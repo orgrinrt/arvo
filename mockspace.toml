@@ -1433,6 +1433,12 @@ description = "The words somebody would search for to find this row. The `topic`
 # by the numeric lints without anything saying so.
 arvo-format = ["numeric"]
 
+# `arvo-bits` introduces the numeric category a second time, for a value at an
+# exact declared width rather than for a representable set. It depends on
+# nothing in this workspace, including not on `arvo-format`, so it needs its
+# own door for the identical reason `arvo-format` has one.
+arvo-bits = ["numeric"]
+
 [lints.the-axis-set-is-append-only]
 commit = "error"
 build = "error"
