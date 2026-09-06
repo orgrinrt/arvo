@@ -25,17 +25,20 @@
 
 ## Crate topology
 
-Three crates, and the dependency direction is what enforces the design rather
-than a rule asking for it. `arvo-format` cannot name a carrier because it does
-not depend on the crate that has one, which is how "every operation is a
-function of the declared width and never of the machine carrier" stays true
-under later edits.
+Four crates. Three of them chain by dependency, and the dependency direction is
+what enforces the design rather than a rule asking for it: `arvo-format` cannot
+name a carrier because it does not depend on the crate that has one, which is
+how "every operation is a function of the declared width and never of the
+machine carrier" stays true under later edits. The fourth, `arvo-bits`, sits
+parallel to `arvo-format` rather than in the chain, depending on nothing in
+this workspace.
 
 | Crate | What it ships | Depends on |
 |---|---|---|
 | `arvo-format` | The declared signature. The representable set as one affine predicate over a phase, a quantum law and a slot range, of which integers, fixed point, scaled integers and floats are points. The six rounding modes, the overflow policies, the adaptation as the pair of those two, and the map that applies one. Introduces the numeric category, so `Width` and `Bool` are defined here. | `notko` |
 | `arvo-placement` | The placement derivation, keyed on occupancy. One output at sole occupancy, the carrier; three at shared, the carrier and the access width and the stride. No declared operation reads any of them. | `arvo-format` |
 | `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
+| `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four. Masked construction and masked cast between declared widths, no arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | none |
 
 The set is open at both ends it can be. A new numeral joins by implementing
 `Format`, a new overflow policy by implementing `Overflow`, and a new strategy by
@@ -52,6 +55,13 @@ them. `Format`, `Ambient`, `Quantum`, `Slots`, `Rounding`, `Overflow`,
 `UFixed`, `Biased`, `Floating`, the six modes and the three policies are
 instances of them.
 
+`Bits<const N: u32>` in `arvo-bits` is the one exception to that shape, and
+naming it as one is worth a sentence rather than leaving it to look like an
+oversight. There is no open contract behind it, because there is nothing for
+an outside crate to implement: an exact-width value at a declared width has
+one shape, and a second implementation would not be a new instance of a
+concept, it would be a second definition of the same fact.
+
 The reason the split falls this way is what a consumer has to depend on to say
 one thing. Stating what values exist needs `arvo-format` and nothing else.
 Stating where they sit needs `arvo-placement` on top of it. Choosing between
@@ -59,31 +69,41 @@ placements needs `arvo-strategy` on top of both. Saying the same thing in an
 industrial convention's own words is still stating what values exist, so it needs
 `arvo-format` and nothing else, and the conventions ship there beside the
 parameterisation points. A consumer that only declares formats never compiles a
-carrier ladder.
+carrier ladder. Naming a value at an exact width needs `arvo-bits` and nothing
+else either, including not `arvo-format`: the two answer different questions
+and a consumer wanting only one of them should not compile the other.
 
 ## Dependency direction
 
-Strictly upward, and it carries a design constraint rather than a convention.
-`arvo-format` has no workspace dependency, so nothing in it can mention a
-carrier; `arvo-placement` depends on it and derives one; `arvo-strategy` depends
-on both and binds a name to a choice between them. There is no facade today, and
-a crate that re-exported the three would sit below all of them rather than
-above.
+Strictly upward within the three-crate chain, and it carries a design constraint
+rather than a convention. `arvo-format` has no workspace dependency, so nothing
+in it can mention a carrier; `arvo-placement` depends on it and derives one;
+`arvo-strategy` depends on both and binds a name to a choice between them.
+`arvo-bits` depends on none of the three: it sits beside `arvo-format` rather
+than above or below it, because the value it holds and the format that would
+describe a numeral's representable set are answers to different questions, and
+a consumer of one should not be made to compile the other. There is no facade
+today, and a crate that re-exported the four would sit below all of them rather
+than above.
 
 ## Consumers
 
 arvo is a library rather than a program, so how it gets used is not fully known
 here. What it is built for is the algorithm crates every downstream repository
 uses, and the contracts for things that compose into units bigger than numerals
-alone. The numeral base has to work first, which is what the three crates above
-are.
+alone. The numeral base has to work first, which is what the crates above are.
 
 **The consumers named in earlier versions of this document, hilavitkutin and
 vehje, used crates that no longer exist.** Those crates were removed on
 2026-08-08 and the surfaces they offered have not been rebuilt on the current
-base. A downstream repository pinning this branch gets the three crates above and
+base. A downstream repository pinning this branch gets the crates above and
 nothing else, and that is the honest statement of what is available rather than
-of what is planned.
+of what is planned. `arvo-bits` is new source written from the current canon,
+not a restoration of anything removed, and it answers one piece of what those
+removed crates used to answer, an exact-width container, rather than the rest
+of it: hashing algorithms and string identity are not this crate's job and
+nothing here ships them.
+
 ## See also
 
 - Per-crate DESIGN documents for each layer's contracts and concretes.

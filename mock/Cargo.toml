@@ -2,7 +2,7 @@
 #
 # `mock/crates` was deleted on 2026-08-08 while the canon was written, and this
 # file said "deliberately empty" for as long as that was true. It is no longer
-# true: the canon settled its floor, a design was derived from it, and the three
+# true: the canon settled its floor, a design was derived from it, and the four
 # crates below are the first source written from that design.
 #
 # The order that emptied this list is the same order that refills it. Canon first,
@@ -26,6 +26,7 @@ members = [
     "crates/arvo-format",
     "crates/arvo-placement",
     "crates/arvo-strategy",
+    "crates/arvo-bits",
 ]
 # `benches` (and every crate under `benches/variants/`) is excluded rather than
 # listed as a member. The deletion commit that emptied `members` above (929c46ed)
@@ -54,11 +55,15 @@ license = "MPL-2.0"
 # published, and `cargo deny` reports the missing requirement as a wildcard on
 # every publishable crate that pulls one in.
 #
-# notko's is its own, from `notko/mock/Cargo.toml`. The two arvo ones match
-# `workspace.package.version` above and move with it.
+# notko's is its own, from `notko/mock/Cargo.toml`. The three arvo ones match
+# `workspace.package.version` above and move with it. `arvo-bits` carries no
+# path dependency on any sibling here; it is a leaf parallel to `arvo-format`
+# rather than above or below it, and is listed for the same publishing reason
+# the other three are, not because anything depends on it yet.
 notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false, features = ["const", "try_trait_v2"] }
 arvo-format = { path = "crates/arvo-format", version = "0.0.0" }
 arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
+arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }
 
 # Incremental compilation is off here, deliberately.
 #

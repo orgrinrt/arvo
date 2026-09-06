@@ -38,11 +38,13 @@ use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
 /// The crate the bare-primitive pack skips, which is the one this reads.
 ///
-/// One name rather than a lookup into `[primitive-introductions]`, because a
-/// second exempt crate is a design decision that would come with its own round,
-/// and a lint that silently widened with the config would be one nobody noticed
-/// widening.
-const THE_EXEMPT_CRATE: &str = "arvo-format";
+/// A fixed list rather than a lookup into `[primitive-introductions]`, because
+/// widening it is a design decision that comes with its own round, and a lint
+/// that silently widened with the config would be one nobody noticed widening.
+/// `arvo-bits` joined `arvo-format` here for the identical reason: it
+/// introduces the numeric category a second time and needs its own door. A
+/// third exempt crate is a further decision needing its own round in turn.
+const THE_EXEMPT_CRATES: &[&str] = &["arvo-format", "arvo-bits"];
 
 /// The host's own numeric and truth types, by the name they are written under.
 ///
@@ -77,7 +79,7 @@ impl CrateLint for AContractCoordinateIsNotAHostPrimitive {
             return Vec::new();
         }
 
-        if ctx.crate_name != THE_EXEMPT_CRATE {
+        if !THE_EXEMPT_CRATES.contains(&ctx.crate_name) {
             return Vec::new();
         }
 
@@ -155,7 +157,7 @@ fn const_type_of(line: &str) -> Option<String> {
     // is not read as a declaration and a `; // ...` tail does not swallow the
     // terminator the type ends at.
     let code = match trimmed.find("//") {
-        Some(pos) => trimmed[..pos].trim_end(),
+        Some(pos) => trimmed[.. pos].trim_end(),
         None => trimmed,
     };
 
@@ -166,7 +168,7 @@ fn const_type_of(line: &str) -> Option<String> {
         .or_else(|| code.strip_prefix("pub(super) const "))?;
 
     let colon = after.find(':')?;
-    let name = after[..colon].trim();
+    let name = after[.. colon].trim();
     // A const item's name, and not `const fn`, `const _`, or a generic
     // parameter's name that happened to reach this far. Screaming case is what
     // every const in this crate is written in, and a lint that accepted anything
@@ -179,19 +181,15 @@ fn const_type_of(line: &str) -> Option<String> {
         return None;
     }
 
-    let rest = &after[colon + 1..];
+    let rest = &after[colon + 1 ..];
     let end = rest
         .find('=')
         .into_iter()
         .chain(rest.find(';'))
         .min()
         .unwrap_or(rest.len());
-    let declared = rest[..end].trim();
-    if declared.is_empty() {
-        None
-    } else {
-        Some(declared.to_string())
-    }
+    let declared = rest[.. end].trim();
+    if declared.is_empty() { None } else { Some(declared.to_string()) }
 }
 
 /// The first host primitive named anywhere in a declared type, if any.
@@ -204,7 +202,7 @@ fn host_primitive_in(declared: &str) -> Option<&'static str> {
     let bytes = declared.as_bytes();
     for candidate in HOST_PRIMITIVES {
         let mut from = 0;
-        while let Some(rel) = declared[from..].find(candidate) {
+        while let Some(rel) = declared[from ..].find(candidate) {
             let start = from + rel;
             let end = start + candidate.len();
             let before_ok = start == 0 || !is_ident_byte(bytes[start - 1]);
@@ -429,9 +427,49 @@ pub const ADMITTED_WIDTHS: &[Width] = &[];
         // count in any sweep of this class wrong.
         let fixture = LintFixture::new("    const MIN: i64;\n")
             .with_crate_name("arvo-placement", "placement");
-        assert!(AContractCoordinateIsNotAHostPrimitive
-            .check(&fixture.ctx())
-            .is_empty());
+        assert!(
+            AContractCoordinateIsNotAHostPrimitive
+                .check(&fixture.ctx())
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn a_host_typed_const_inside_arvo_bits_is_reported_like_one_in_arvo_format() {
+        // `arvo-bits` was added to `THE_EXEMPT_CRATES` and every fixture in this
+        // module goes through `hits`, which is fixed to `arvo-format`, so the
+        // widening had no arm of its own. It is not decorative: it caught a
+        // `const MASK: u64` while the round was open and drove it to
+        // `const MASK: Self`.
+        let fixture =
+            LintFixture::new("    const MASK: u64 = 0;\n").with_crate_name("arvo-bits", "bits");
+        let errors = AContractCoordinateIsNotAHostPrimitive.check(&fixture.ctx());
+        assert_eq!(
+            errors.len(),
+            1,
+            "the widened lint has to fire in the crate it was widened for"
+        );
+    }
+
+    #[test]
+    fn a_const_in_arvo_bits_spelled_in_the_crates_own_type_is_silent() {
+        // The other half, and the one that would pass vacuously alone. A lint that
+        // fires on everything in a crate is not an exemption reaching that crate,
+        // it is a lint with no predicate.
+        let fixture = LintFixture::new("    const MASK: Self = Self(0);\n")
+            .with_crate_name("arvo-bits", "bits");
+        assert!(
+            AContractCoordinateIsNotAHostPrimitive
+                .check(&fixture.ctx())
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn the_exempt_list_names_the_two_crates_that_have_a_door_and_no_others() {
+        // A third entry is a design decision with its own round, which the list's
+        // own doc comment says. This is what makes a quiet fourth crate loud.
+        assert_eq!(THE_EXEMPT_CRATES, &["arvo-format", "arvo-bits"]);
     }
 
     #[test]
