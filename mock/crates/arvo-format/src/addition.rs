@@ -91,6 +91,29 @@ impl<F: Format> Addable<F> {
              coordinate, so the position it names is not one a slot index can hold"
         );
     };
+    /// `phase_parts::<F>(1)`, settled once at monomorphisation rather than run
+    /// again by every caller.
+    ///
+    /// Every reader of the phase's parts asks at exactly one copy: addition's
+    /// arity is fixed at two, so `addition_reach`'s `ARITY.count() - 1` is one
+    /// wherever `Add` is the operation, and every other reader has always asked
+    /// for one copy outright. The euclidean division and the reduction it runs
+    /// depend on `F` alone, so a consumer touching two positions of the same
+    /// format paid for it twice for no reason a type parameter could not settle.
+    const PHASE_PARTS: PhaseParts = phase_parts::<F>(1);
+}
+
+/// The three components `phase_parts` computes: the whole slot count, and the
+/// reduced remainder as a numerator over a positive denominator, in a domain one
+/// wider than a slot.
+///
+/// Named rather than a bare tuple, so the crate declaring a `const` of it holds a
+/// coordinate of its own rather than the host's `i128` in contract position.
+#[derive(Clone, Copy)]
+struct PhaseParts {
+    whole: i128,
+    rem:   i128,
+    den:   i128,
 }
 
 /// `copies` times the phase, as a whole number of slots and a remainder, one
@@ -101,17 +124,25 @@ impl<F: Format> Addable<F> {
 /// division, so the remainder is in `[0, 1)` whichever sign the pair was
 /// declared with. A zero denominator has no parts and answers zeros, which
 /// nothing reads: the obligation and `is_addable` refuse such a phase first.
-const fn phase_parts<F: Format>(copies: i128) -> (i128, i128, i128) {
+const fn phase_parts<F: Format>(copies: i128) -> PhaseParts {
     let num = (F::PHASE.numerator() as i128) * copies;
     let den = F::PHASE.denominator() as i128;
     if den == 0 {
-        return (0, 0, 0);
+        return PhaseParts {
+            whole: 0,
+            rem:   0,
+            den:   0,
+        };
     }
     let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
     let whole = num.div_euclid(den);
     let rem = num.rem_euclid(den);
     let common = greatest_common_divisor(rem, den);
-    (whole, rem / common, den / common)
+    PhaseParts {
+        whole,
+        rem: rem / common,
+        den: den / common,
+    }
 }
 
 /// Euclid's algorithm over a non-negative and a positive operand.
@@ -136,7 +167,7 @@ const fn remainder_is_held<F: Format>() -> Bool {
     if !F::PHASE.denotes().get() {
         return Bool::FALSE;
     }
-    let (_, _, den) = phase_parts::<F>(1);
+    let den = Addable::<F>::PHASE_PARTS.den;
     Bool::of(den <= i64::MAX as i128)
 }
 
@@ -147,7 +178,11 @@ const fn remainder_is_held<F: Format>() -> Bool {
 /// where `k` is the phase's whole part, so the top one rounds as far as one slot
 /// above that when the remainder is not zero.
 const fn sum_is_carried<F: Format>() -> Bool {
-    let (whole, rem, _) = phase_parts::<F>(1);
+    let PhaseParts {
+        whole,
+        rem,
+        ..
+    } = Addable::<F>::PHASE_PARTS;
     let ceiling = if rem == 0 { whole } else { whole + 1 };
     let min = <F::Slots as Slots>::MIN.index() as i128;
     let max = <F::Slots as Slots>::MAX.index() as i128;
@@ -183,7 +218,11 @@ const fn saturated(wide: i128) -> Slot {
 #[must_use]
 pub const fn sum_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Addable::<F>::ADMITTED;
-    let (whole, rem, den) = phase_parts::<F>(1);
+    let PhaseParts {
+        whole,
+        rem,
+        den,
+    } = Addable::<F>::PHASE_PARTS;
     let wide = (a.index() as i128) + (b.index() as i128) + whole;
     // The obligation holds the reduced denominator inside the coordinate and the
     // remainder below it, so both narrow exactly.
@@ -229,7 +268,15 @@ pub const fn is_addable<F: Format>() -> Bool {
 pub const fn addition_reach<S: DeclaredSignature>() -> Reach {
     let () = Addable::<S::Format>::ADMITTED;
     let operands = <Add<S> as Operation>::ARITY.count() as i128;
-    let (whole, rem, den) = phase_parts::<S::Format>(operands - 1);
+    // The cache is settled at one copy, which is `operands - 1` wherever `Add`'s
+    // arity is what it is declared above, two. The assertion is what keeps the
+    // two in step, at compile time, rather than trusting the comment.
+    assert!(operands - 1 == 1, "addition's arity moved away from two");
+    let PhaseParts {
+        whole,
+        rem,
+        den,
+    } = Addable::<S::Format>::PHASE_PARTS;
     let min = <<S::Format as Format>::Slots as Slots>::MIN.index() as i128;
     let max = <<S::Format as Format>::Slots as Slots>::MAX.index() as i128;
     let reach = Reach::of(
@@ -286,7 +333,11 @@ const fn completion_at<S: DeclaredSignature>(k: i128) -> Bool {
 pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
     let () = Addable::<S::Format>::ADMITTED;
     let reach = addition_reach::<S>();
-    let (whole, rem, den) = phase_parts::<S::Format>(1);
+    let PhaseParts {
+        whole,
+        rem,
+        den,
+    } = Addable::<S::Format>::PHASE_PARTS;
     if !reach.reaches_off_the_grid().get() {
         return completion_at::<S>(whole);
     }

@@ -25,6 +25,7 @@ use super::{
     Window,
     at_every_signature,
     coordinates,
+    edges,
     member_count,
     members,
     signatures,
@@ -43,25 +44,6 @@ use crate::tests::dispatch::{self, PerFormat, PerSignature};
 use crate::tests::grid::Grid;
 
 // --- totality ------------------------------------------------------------------
-
-/// Both ends of the coordinate and one in from each, and each end of the range
-/// with the slot either side of it.
-fn edges(min: Slot, max: Slot) -> [Slot; 10] {
-    let (lo, hi) = (min.index(), max.index());
-    [
-        i64::MIN,
-        i64::MIN + 1,
-        lo - 1,
-        lo,
-        lo + 1,
-        hi - 1,
-        hi,
-        hi + 1,
-        i64::MAX - 1,
-        i64::MAX,
-    ]
-    .map(Slot::at)
-}
 
 /// Every fed pair at one signature: the answer is admitted, and where the true
 /// sum decides it, it is the true sum's. Answers how many pairs it checked.

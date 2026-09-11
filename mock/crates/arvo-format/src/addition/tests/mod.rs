@@ -20,6 +20,8 @@
 //! suite: every pair is added once, and a triple is then two lookups on each
 //! side rather than four additions.
 
+use notko::Maybe;
+
 use crate::adapt::DeclaredSignature;
 use crate::addition::add;
 use crate::ambient::{Ambient, Radix};
@@ -107,6 +109,62 @@ fn members<F: Format>() -> impl Iterator<Item = Slot> {
 /// How many members a format's slot range has.
 fn member_count<F: Format>() -> usize {
     (<F::Slots as Slots>::MAX.index() - <F::Slots as Slots>::MIN.index() + 1) as usize
+}
+
+/// Both ends of the coordinate and one in from each, and each end of the range
+/// with the slot either side of it.
+///
+/// Shared rather than local to one file: the totality sweep draws its fed pairs
+/// from it and the verdict sweep draws its no-divergence sample from the same
+/// ten, so a width neither can brute force still gets one instrument's worth of
+/// coverage from both laws.
+pub(super) fn edges(min: Slot, max: Slot) -> [Slot; 10] {
+    let (lo, hi) = (min.index(), max.index());
+    [
+        i64::MIN,
+        i64::MIN + 1,
+        lo - 1,
+        lo,
+        lo + 1,
+        hi - 1,
+        hi,
+        hi + 1,
+        i64::MAX - 1,
+        i64::MAX,
+    ]
+    .map(Slot::at)
+}
+
+/// Four members at the ends of the range: the two lowest and the two highest.
+///
+/// Members rather than `edges`' wider set on purpose. The associativity
+/// verdict is quantified over stored operands rather than over the ambient
+/// domain, `quantifying_over_the_ambient_domain_refuses_a_format_that_is_associative`
+/// pins the distinction with a format the law holds over until an ambient
+/// translation is asked about, so a sample checking the licensed half of the
+/// claim draws only from what the claim is actually stated over. Where a
+/// range holds fewer than four members the ends clamp together, which asks
+/// the same member twice rather than a wrong one.
+pub(super) fn boundary_members(min: Slot, max: Slot) -> [Slot; 4] {
+    let (lo, hi) = (min.index(), max.index());
+    [lo, (lo + 1).min(hi), (hi - 1).max(lo), hi].map(Slot::at)
+}
+
+/// A pair of members summing to `sum`, where one exists.
+///
+/// `a` and `b` range independently over `[min, max]`, so their sum covers every
+/// integer in `[2 * min, 2 * max]` and nothing outside it. Where `sum` is in
+/// range the construction is the one the associativity witness wants: pin one
+/// operand at whichever end `sum` sits closer to and let the other carry the
+/// rest, so the pair sits at the end of the range the witness needs rather than
+/// in its middle.
+pub(super) fn pair_for_sum(min: i64, max: i64, sum: i128) -> Maybe<(Slot, Slot)> {
+    let (min, max) = (min as i128, max as i128);
+    if sum < 2 * min || sum > 2 * max {
+        return Maybe::Isnt;
+    }
+    let (a, b) = if sum <= min + max { (min, sum - min) } else { (max, sum - max) };
+    Maybe::Is((Slot::at(a as i64), Slot::at(b as i64)))
 }
 
 /// The declared coordinates of a format, for a failure message.

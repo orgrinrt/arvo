@@ -20,9 +20,9 @@
 //! some cells that turn out associative anyway, and that count is pinned so a
 //! change to it is seen rather than absorbed.
 
-use super::{DITHERS, Table, Window, phases, signatures};
+use super::{DITHERS, Table, Window, boundary_members, pair_for_sum, phases, signatures};
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
-use crate::addition::addition_is_associative;
+use crate::addition::{add, addition_is_associative};
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::Dither;
 use crate::format::Format;
@@ -30,7 +30,7 @@ use crate::overflow::{SHIPPED_POLICIES, Saturate, Wrap};
 use crate::points::{Biased, Integer, UFixed};
 use crate::quantum::Constant;
 use crate::rounding::{ALL_MODES, Floor};
-use crate::slots::{Signed, Slot, Slots};
+use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::symmetry::{Reach, completion_is_translation_homomorphic};
 use crate::tests::dispatch::{self, PerFormat, PerSignature};
 use crate::tests::grid::Grid;
@@ -124,6 +124,11 @@ fn the_count_and_the_verdict_do_not_move_with_the_fraction_width_or_the_radix() 
     every_scale!(third; DecimalRationals, 1, 3);
     assert_eq!(third.formats, 34);
     let first = third.counts[0];
+    // Pinned so a map that stopped diverging at a third fails here rather than
+    // vacuously agreeing with itself: the same count the whole-phase cross
+    // above carries, which is the fraction-width independence claim holding at
+    // a fractional phase too rather than a coincidence of the whole one.
+    assert_eq!(first, 952);
     assert!(
         third.counts[.. 34].iter().all(|&c| c == first),
         "{:?}",
@@ -287,6 +292,151 @@ fn a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways()
     // licenses every such cell, so the exactness claim above is not resting on
     // the span bound it is stated with.
     assert_eq!(cross.single_slot_refused_associative, 0);
+}
+
+// --- the verdict over the whole width walk --------------------------------------
+
+/// Whether `boundary_members`' sample ever diverges under a licensed
+/// signature.
+///
+/// The claim it checks, that a licensed cell never diverges, is stated over
+/// every value the format holds rather than over a width the brute-force
+/// `Table` can afford, so this is the instrument the width walk and the
+/// widest-range fractional check both share: sixty-four triples is affordable
+/// at every width the design admits, and a member-indexed `Table` is not past
+/// eight bits. `boundary_members` rather than `edges`, because the claim is
+/// quantified over stored operands and `edges` reaches past them on purpose.
+fn assert_licensed_sample_holds<S: DeclaredSignature>(min: Slot, max: Slot) {
+    for a in boundary_members(min, max) {
+        for b in boundary_members(min, max) {
+            let ab = add::<S>(a, b, Dither::UNUSED);
+            for c in boundary_members(min, max) {
+                let bc = add::<S>(b, c, Dither::UNUSED);
+                assert_eq!(
+                    add::<S>(ab, c, Dither::UNUSED),
+                    add::<S>(a, bc, Dither::UNUSED),
+                    "a licensed cell diverged at {a:?} + {b:?} + {c:?}, [{min:?}, {max:?}]"
+                );
+            }
+        }
+    }
+}
+
+/// The verdict at one whole-phase signature: a licensed cell against the edge
+/// sample above, a refused cell against the witness the design names.
+///
+/// At a whole phase a refusal always names a triple that diverges, one past
+/// the top of the range or one past the bottom, whichever the range affords:
+/// `pair_for_sum` builds the pair summing to that position and the opposite
+/// end supplies the third operand, the same construction `completion_at`
+/// reasons about, read back into an actual triple through `add` rather than
+/// trusted from the reach machinery alone.
+struct WholePhaseWitness;
+
+impl PerSignature for WholePhaseWitness {
+    type Out = ();
+
+    fn run<S: DeclaredSignature>(&self) {
+        let min = <<S::Format as Format>::Slots as Slots>::MIN;
+        let max = <<S::Format as Format>::Slots as Slots>::MAX;
+        if addition_is_associative::<S>().get() {
+            assert_licensed_sample_holds::<S>(min, max);
+            return;
+        }
+        let diverges = |a: Slot, b: Slot, c: Slot| -> bool {
+            let ab = add::<S>(a, b, Dither::UNUSED);
+            let bc = add::<S>(b, c, Dither::UNUSED);
+            add::<S>(ab, c, Dither::UNUSED) != add::<S>(a, bc, Dither::UNUSED)
+        };
+        let top = pair_for_sum(min.index(), max.index(), max.index() as i128 + 1)
+            .is_some_and(|(a, b)| diverges(a, b, min));
+        let bottom = pair_for_sum(min.index(), max.index(), min.index() as i128 - 1)
+            .is_some_and(|(a, b)| diverges(a, b, max));
+        assert!(
+            top || bottom,
+            "refused cell [{min:?}, {max:?}] named no divergent witness"
+        );
+    }
+}
+
+/// `WholePhaseWitness` over every mode and policy, at one format.
+#[derive(Default)]
+struct WidthWalk {
+    formats: usize,
+}
+
+impl PerFormat for WidthWalk {
+    fn run<F: Format>(&mut self) {
+        for mode in ALL_MODES {
+            for policy in SHIPPED_POLICIES {
+                dispatch::at::<F, WholePhaseWitness>(mode, policy, &WholePhaseWitness);
+            }
+        }
+        self.formats += 1;
+    }
+}
+
+#[test]
+fn the_verdict_holds_a_witness_or_a_sample_over_every_admitted_width() {
+    let mut walk = WidthWalk::default();
+    dispatch::every_width(&mut walk);
+    assert_eq!(walk.formats, 62 * 2);
+}
+
+/// The licensed half of the verdict's claim, at the widest ranges under a
+/// fractional phase.
+///
+/// The same four formats `the_operation.rs`'s
+/// `addition_is_total_at_the_widest_ranges_under_a_fractional_phase` already
+/// carries, since the obligation's own narrowing in `saturated` only has
+/// anything to saturate near the widest admitted range, and the suite never
+/// exercised the verdict there at all. A refused cell is tallied rather than
+/// witnessed: the witness the design names is stated for a whole phase, and
+/// none of these four is one.
+struct WidestFractional;
+
+impl PerSignature for WidestFractional {
+    type Out = bool;
+
+    fn run<S: DeclaredSignature>(&self) -> bool {
+        let min = <<S::Format as Format>::Slots as Slots>::MIN;
+        let max = <<S::Format as Format>::Slots as Slots>::MAX;
+        let licensed = addition_is_associative::<S>().get();
+        if licensed {
+            assert_licensed_sample_holds::<S>(min, max);
+        }
+        licensed
+    }
+}
+
+#[test]
+fn the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phase() {
+    type F1 = Grid<BinaryRationals, Constant<0>, Signed<62>, 1, 3>;
+    type F2 = Grid<BinaryRationals, Constant<0>, Signed<62>, -1, 2>;
+    type F3 = Grid<BinaryRationals, Constant<0>, Unsigned<62>, -1, 3>;
+    type F4 = Grid<BinaryRationals, Constant<0>, Unsigned<62>, 1, 2>;
+    let mut licensed = 0u32;
+    let mut cells = 0u32;
+    for mode in ALL_MODES {
+        for policy in SHIPPED_POLICIES {
+            for is_licensed in [
+                dispatch::at::<F1, WidestFractional>(mode, policy, &WidestFractional),
+                dispatch::at::<F2, WidestFractional>(mode, policy, &WidestFractional),
+                dispatch::at::<F3, WidestFractional>(mode, policy, &WidestFractional),
+                dispatch::at::<F4, WidestFractional>(mode, policy, &WidestFractional),
+            ] {
+                cells += 1;
+                if is_licensed {
+                    licensed += 1;
+                }
+            }
+        }
+    }
+    assert_eq!(cells, 4 * signatures() as u32);
+    assert!(
+        licensed > 0,
+        "the licensed half of this claim went unchecked"
+    );
 }
 
 // --- the negative controls -----------------------------------------------------
