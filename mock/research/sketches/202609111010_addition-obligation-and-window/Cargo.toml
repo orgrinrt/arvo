@@ -1,0 +1,21 @@
+[workspace]
+
+[package]
+name = "sketch-addition-obligation-and-window"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "sketch"
+path = "main.rs"
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+
+# Each feature plants one construction that must be refused, so the refusal is
+# observed rather than argued. Built one at a time; see `output.txt`.
+[features]
+refuse_indexed_at_build = []
+refuse_indexed_at_check = []
+refuse_uncarried_sum_at_check = []
