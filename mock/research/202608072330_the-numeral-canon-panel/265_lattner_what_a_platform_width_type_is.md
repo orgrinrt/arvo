@@ -405,3 +405,236 @@ platform, with the refusal pinned and the obligation unnamed by any test.
 Appended in phase two, after `git fetch origin` and after reading
 `origin/dev:mock/research/202608072330_the-numeral-canon-panel/260_kiselyov_what_a_platform_width_type_is.md`
 and its `260_probes/`. Nothing above this line was edited after the phase-one commit.
+
+Seat 260's file is `origin/dev` at `22efc5d0`; its probes are `260_probes/p01` through `p05`, each
+opened and read as source and raw output rather than through the file's account of them. The
+reconciliation is written against what those instruments show, and where 260 states something by
+reading rather than by instrument the sentence says so.
+
+### 9.1 Verdict
+
+**Two seats, two personas, two blind derivations, one answer.** 260 and 265 land on the same reading:
+a platform-width type is, at any one compilation, an ordinary format in the full ratified sense, and
+across compilations it is a family of those formats indexed by the target, with the storage rider
+reaching only dependence that survives to runtime. 260 calls it "a target-indexed family of formats";
+265 calls it "a point of the parameterisation with one coordinate bound by reference to a
+const-available fact of the target". Those are the same object described from the family end and
+from the member end, and each file says the other half in its own words (260 section 1.1 second
+sentence; 265 section 1 first paragraph, last sentence).
+
+The routes differ, which is what makes the agreement worth something. 260 derives it from the locus
+clause's establishing source (the sibling-datum class in `08`) and then compiles the discrimination
+(`260_probes/p02`: `E0435` when the coordinate is a value in hand, a build when it is a `cfg`-selected
+const). 265 derives it from the binding-time ruling and the admission rule
+(`ruling::never_a_runtime_check_and_one_lowered_path`,
+`ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`) and compiles the
+same line from the other side (`265_probes/p2b`: `E0015` when the width comes from a function reading a
+static; `p3`: one name, disagreeing realisations, therefore a missing coordinate). Neither seat read
+the other. 265 did not read `70`. 260 read the registry row that carries `70` L4's sentence before
+forming a view, and read `70` itself, and says so; 265 read the row after the derivation was
+written. So on the headline claim the instances are: `70` by argument, 265 blind by instrument,
+260 by instrument as confirmation of the row. Three instances, two of them independent, and the two independent ones are the two on the
+Lattner persona, which is the weakness in the count and is stated rather than left to be found. The
+one on the other persona is the one that was not blind to the row. For the two-expert rule as
+`ruling::two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate` states it, both
+readings ground the same claim in the same ratified rows (`ruling::the_format_spine_is_canon`,
+`ruling::never_a_runtime_check_and_one_lowered_path`) by different arguments, which is what the rule
+asks for; the persona overlap is the coordinator's to weigh.
+
+**Nothing in either file's answer has to change.** What has to change is one table in 260, which is
+section 9.3 item 1, and one line in 265, which is section 9.4.
+
+### 9.2 Agreements, and which dimensions each seat varied to reach each
+
+For every agreement: the claim, how each seat established it, and what each seat varied. Where the
+two varied the same thing over different ranges the union is written, because that union is what the
+panel now has.
+
+**1. The line between format and storage is binding time, and a target-derived width is on the
+format side.**
+260: `p02`, one target (the host, 64 bits), varied the *source of the coordinate* over four values:
+a literal, a `cfg`-selected const, a field of `self`, a block passed by reference; refusals `E0424`
+and `E0435`, controls identical but for the source. 265: `p2a` against `p2b`, six targets at three
+pointer widths, varied the *binding* over four values: `usize::BITS`, `cfg(target_pointer_width)`,
+`size_of::<usize>()`, a non-const function over a static; refusal `E0015`, one difference per pair,
+plus the `-O` listing at five targets showing the const arm lowers to one constant and no branch.
+Union: the coordinate's source varied over six spellings, the target over three widths, the refusal
+observed under three different rustc error classes, and the lowered path checked, which neither seat
+alone covers. 260 never varied the target for this claim; 265 never wrote the sibling-datum arm, so
+the block-floating-point control that ties the line to the corpus's own example of storage is 260's
+alone.
+
+**2. Within one compilation it is an ordinary instance, and "degenerate" is the wrong word.**
+260: `p02` arm two beside arm one, every coordinate read back through `Format` at const time, both
+zero-sized; at one target, width `W - 8`. 265: `p1` against `p1c`, six targets, width `W` itself,
+four assertions (width, cardinality through `slot_count`, top member in, past-top out), control one
+token different per format. Union: the instance is measured at the pointer width itself at 16 and
+32 and at eight below it at 64, with the literal control on both sides. Note that 260's `W - 8` is a
+workaround for the wall in item 4 and 260 says so; 265 took the wall head-on and paid for it with
+no instance at 64.
+
+**3. The four options: 1 holds nowhere, 2 is right minus its adjective, 3 is not the type, 4 is a
+true sentence reached by a false route, and the reading that covers the case is absent from the
+row.** Both seats, by reading the row against the ratified rows, and both independently of `189`
+(neither read it in phase one; 260 read it after, 265 has not). 260 adds a second ground against
+option 1 that 265 did not give and now checks and accepts: "storage" as a tier of the number concept
+is named nowhere, and the word is already taken twice in other senses
+(`ruling::cold_is_for_cold_paths_and_cold_storage`;
+`proposal::roles_derive_representations_and_a_realisation_variant_computes_nothing_new`;
+`question::is_the_role_set_closed`, all three verified present). 265 adds the retirement that
+explains where "degenerate" came from (`retirement::r161_r13_the_one_element_column_cost_clause`),
+which 260 does not cite. No dimension varied; this is a reading, twice.
+
+**4. The shipped tree cannot express a 64-bit platform width, the cause is the `i64` slot index and
+the 62 bound, and it is a fact about the representation and not about the concept.**
+260: `p01`, host only, three pairs, varied the *route to 64* over three values: inside the family
+(`E0277`), an outside unsigned declarer (`arithmetic_overflow`), an outside signed declarer (`E0080`
+from `ADMITTED`); control at 62 for the first, control with the obligation unforced for the third.
+265: `p1` at two 64-bit targets, one route (inside the family, `E0277`, exactly four errors and
+nothing else), plus the consequence measured downstream: `p4` (the obligation's range is undeclarable
+at 64) and `p6` (the placement over the family inherits the refusal while the ladder alone does not,
+`p6a`). Union: three routes closed at the host, the family route closed at two targets, and the
+refusal followed into the obligation and into placement. **265 stated in section 7 that an outside
+impl "would have to lie about `MAX` or fail `ADMITTED`'s width bound" and did not build it; 260
+built both halves of that sentence and found the second half is the one that bites for a signed
+range, whose constants all fit.** That is 260's instrument establishing what 265 only argued, and 265
+withdraws the argument in favour of the measurement. 260 also found what 265 did not: the `E0277`
+diagnostic offers an escape (`slots.rs`, "The trait is open ... what such an implementor owes is the
+`ADMITTED` obligation") that `ADMITTED` then refuses unconditionally, so the crate contradicts itself
+in two sentences about one trait. That is a defect in the shipped tree and it is design-tier.
+
+**5. The one name denotes different representable sets on different targets, from one source.**
+260: `p03`, four targets at two widths, the observation pinned at 64 (via `W - 8 = 56`), the arm
+present and then cut out of a copy of the source so a refusal is the arm's and not the target's;
+`arvo-format` and `notko` rebuilt per target under bare `rustc`. 265: `p3`, six targets at three
+widths, the observation pinned at 32 at width `W` itself, under `cargo --target`, with `core` built
+from `rust-src` for the 16-bit target. Union: pinned at 64 the name fails at 32; pinned at 32 it
+fails at 16 and is unexpressible at 64. Of the six off-diagonal cells of the 3-by-3 matrix over pointer
+width, three now carry a refusal (64 pinned at 32; 32 pinned at 16; 32 pinned at 64, by
+unexpressibility rather than by the pin); nobody pinned at 16, and nobody built 260's 64-bit pin at
+a 16-bit target, because 265 is the only seat with a 16-bit row at all. 260's cut-out control is
+the cleaner instrument for "is it the arm or the target", and 265's
+per-target `exit=` and `target_pointer_width=` header in every output is the cleaner provenance;
+neither has both.
+
+**6. There is no axis to predicate a target-indexed claim on, it is not `target_features`, and the
+pointer width passes `dimension.toml`'s own test for an axis.**
+260: `p04`, a census: 25 axes declared, 21 used, `pointer_width` matching zero declared axes and zero
+registry lines, with `target_features` and `container` as the positive control on the grep. 265:
+by reading the 25 rows and by the two instruments that move along the axis (`p3`, `p4`), and by
+eliminating `target_features`, `toolchain` and `container` one at a time on their `what` fields. 260
+declined to propose a spelling; 265 proposed `pointer width = <n> / in {<set>} / any` for the second
+reader to attack and left open whether the axis is the pointer width or the target triple with
+pointer width a projection. **`dimension.toml`'s header says the set moves on two independent
+readings. Two now exist, on different personas, reached blind. That condition is met in substance;
+the declaration is still not a seat's to make and this file does not make it.** The fork 265 opened
+(pointer width against target triple) is one 260 does not name, and it should be closed before the
+row is written, because a row keyed on the wrong projection is a row every C-ABI-indexed claim then
+works around.
+
+**7. `Cap` is not a platform-width type; it is the const-generic position, which the obligation
+excepts and the door ruling already answers.**
+260: by reading `PRINCIPLES.md.tmpl:170` and `:219` against
+`obligation::a_primitive_for_every_position_a_bare_number_would_take` and
+`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`. 265:
+`p5`, five targets, varied the parameter's type over three values (`usize`, a newtype, a newtype
+under `adt_const_params` with `ConstParamTy`), refusal "`Cap` is forbidden as the type of a const
+generic parameter", plus the shipped `tests/ui/an_arvo_type_as_a_const_parameter.rs` pinning the same
+refusal for `Width`. Union: 260's three-positions split (API value, const-generic parameter, domain
+newtype) is the sharper statement of why the row's keywords conflate; 265's instrument is the only
+measurement in either file of what the position actually admits.
+
+**8. "No platform dependency" is about std facilities and creates no tension with a target-indexed
+width.** Both, from the same sentence of `INTENTS.md` at
+`#i14-the-operating-constraints-which-are-rules-as-much-as-intents`. Same source, same reading, so
+this is one instance twice and not two, and it is recorded as such.
+
+### 9.3 Disagreements, and what decides each
+
+**1. 260's region table is written in spellings the registry forbids.** 260 section 1.3 writes the
+target-indexed family's region as `operation any, ... strategy any, ... build_profile any,
+toolchain = nightly-2026-05-28` (260, "1.3 The regions, written out", the fenced block). The
+registry's own rows decide this and they decide it against 260:
+
+- `dimension::operation`, grammar: "**`operation any` is not admissible**, because `any` quantifies
+  over a set nobody has closed."
+- `dimension::strategy`, grammar: "**`S any` is not admissible**, because it quantifies over a set
+  op has stated is open."
+- `dimension::build_profile`, grammar: `debug-assertions = on | off | in {on, off}`, with `opt level
+  = <n>` beside it; there is no `any`.
+- `dimension::toolchain`, grammar: `rustc = <version>` and `edition = <year>` as separate entries,
+  or `toolchain any` where independence of both is established.
+
+Each of those rows carries a `note` saying that the grammar used to admit `any` while the note
+forbade it, and that the gap was closed precisely so a checker reading the grammar refuses the
+spelling. 260 wrote the spelling the rows were tightened to refuse, in the one section of the file
+whose whole purpose is to state the region in the registry's grammar. **A predicate that would not
+validate is not a predicate, and a region stated in an inadmissible spelling is a region left
+unstated.** The fix is a rewrite of one fenced block, and 265 section 6 shows the shape: `operation`
+named as the operations actually exercised (membership and cardinality), no `S` written at all
+because no strategy was run, `opt level` and `debug-assertions` stated, `rustc` and `edition` as two
+entries. The claim under the table is right; the table does not carry it.
+
+**2. Whether the 64-bit refusal is an artifact of one coordinate or a wall.** 260 section 3.5 says
+artifact and has an instrument: `p05`, the same affine predicate with endpoints derived rather than
+declared, building at 64, 100, 126 and at the target's own width, with an agreement arm over all 62
+admitted widths at both signednesses and a coverage arm that fails if the macro invocation is one
+width short; both arms mutated and both fired, stderrs committed. 265 section 5 says the same thing
+by reading ("a fact about the representation the design chose for a slot index and not about the
+kind of thing a platform-width type is") and built nothing. **This is not a disagreement in the
+conclusion; it is a disagreement in what each seat earned.** 260 earned it. 265 accepts `p05` as
+establishing artifact-not-wall, with 260's own caveat carried: the sketch hands back a bare `i128`,
+which the operating constraints forbid at a public position, and the sketch is not a design. What
+decides the shape of the repair is a design round, and both files say so.
+
+**3. Whether option 3 gets partial credit.** 265 section 3 says "half right": the pointer width is
+an axis of the predicate notation, the type is a point that reads it. 260 section 1.2 says "holds
+nowhere as an axis of the format" and files the axis finding separately. Both agree the type is not
+an axis and the axis is real and undeclared. The row's text is "An orthogonal axis." with no "of
+what", so which reading is right is a fact about how the row is read, not about the canon, and
+`ruling::the_option_set_is_not_a_boundary` makes the difference immaterial: neither seat files the
+type under it. Nothing decides it and nothing needs to.
+
+**4. Whether the obligation's range was measured.** 260 section 7 says nothing in 260 speaks to
+the errno and `GetLastError` ranges. 265 `p4` measures both: errno's 4095 bound holds at 16 and 32,
+the `DWORD` bound holds at 32 and fails at 16, and both are undeclarable at 64 in the shipped tree.
+Not a disagreement; an addition, and it means the obligation's own range claim now has a region:
+`W in {16, 32}` measured, `W = 64` refused, pointer width the undeclared index.
+
+**5. The residue for the red obligation.** 265 section 5 names a least-bad residue (a test in the
+tree named for the obligation, failing until the tree meets it). 260 section 7 names the obligation
+as not delivered and the `ADMITTED`-against-diagnostic contradiction as a `.rs` edit behind a round,
+and offers no residue. These do not conflict. 265's residue is marked as residue and not proposal,
+and it stays marked so.
+
+### 9.4 A correction to phase one, made here rather than above the line
+
+Line 18 of this file reports the test gate as "format 13 passed 1 ignored". That number is the
+`tests/matlab_fi_parity.rs` binary's. Re-run whole in phase two, `cargo test --workspace
+--all-targets` from `mock/` at `5644b8f0` gives: `arvo_format` unit 115 passed 1 ignored,
+`tests/compile_fail.rs` 11, `tests/matlab_fi_parity.rs` 13 passed 1 ignored, `arvo_placement` unit 21
+passed 1 ignored, `arvo_strategy` 10; doc-tests 4 and 5 for `arvo_format`, 0 for the other two.
+170 passing, 3 ignored, 0 failing, which agrees with 260 section 0. The gate's verdict does not
+move; the count on line 18 undercounts one binary by 102 and is corrected here because nothing above
+the phase-two line is edited after the phase-one commit.
+
+### 9.5 The gate at the base is broken, in the shape 260 section 6 describes, and it cost this seat
+a commit
+
+At `5644b8f0` the mockspace pre-commit gate refused the phase-one commit twice before it passed, and
+neither refusal was about the deliverable. First, `E0308: expected LintPack, found LintPack` with
+notes pointing at another worktree's tool sources: the workspace's shared `target/` (per
+`.cargo/config.toml`) let the lint pack link tool rlibs built from a sibling worktree against a
+different copy of `mockspace-lint-rules`, which is 260's two-copies-of-one-crate failure arriving
+through a different door. Second, after a clean rebuild of the pack from this worktree's tool
+sources, `the-tool-locks-pin-one-mockspace/the-tool-locks-disagree`: the five `mock/tools/*`
+lockfiles pin `mockspace-lint-rules` at `cf0fb06` while the generated pack pins `b96752d`. The lint's
+own instruction, `cargo update -p mockspace-lint-rules` in each tool directory, moves all five to
+`b96752d` and the gate then passes. Those five lockfile edits are left uncommitted in this worktree
+on purpose: they are not this dispatch's, the trunk already carries the proper repair at `1ac3c8de`
+(the `https` spelling in the five manifests, which 260 section 6.1 records), and committing a second
+repair on the `ssh` spelling would be exactly the divergence 260 measured. What is worth recording
+is that a worktree cut at `5644b8f0` cannot commit at all until an agent repairs the tool locks by
+hand, and that the shared `target/` makes the pack's freshness depend on which worktree built last,
+so the repair does not stick while another worktree is building. Both are infrastructure findings
+and neither is arvo's.
