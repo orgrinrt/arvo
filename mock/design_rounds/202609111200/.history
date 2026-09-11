@@ -1,0 +1,50 @@
+1e4e9e58 chore: lock the source changelist for admitted addition
+50b431ed docs: name the commits the addition block landed in
+f9cd035b chore: format the addition suite to the repo rustfmt config
+c05f11b2 feat: add addition over a declared signature and its verdict
+115ebda8 docs: open the source changelist again with a per-block comparison
+a81ffb37 chore: lock the doc changelist for admitted addition
+922a9343 docs: compare the doc changelist to its predecessor per section
+59bc569e chore: unlock design round to repair the doc changelist comparison
+a13cd1e1 feat: ask the overflow verdict about a position and its dither
+b841169b feat: carry the reach's grid state as one three-valued coordinate
+3d986ef6 test: share the signature dispatch and the free grid format
+6c79f700 docs: declare the shared grid format in the source changelist
+1b7be09a test: delete the adaptation read-backs that could not fail
+be709534 docs: open the source changelist for admitted addition
+23aad439 chore: lock the doc changelist for admitted addition
+aca9a8e9 docs: saturate a non-member sum into the slot coordinate
+7344fdb2 docs: carry the zero denominator in the remainder refusal
+14dd0047 docs: refuse a phase remainder the position cannot hold
+a72c888a docs: open the doc changelist carrying the remainder refusal
+ea76db17 chore: deprecate the doc changelist to add the remainder refusal
+ee5b09ca chore: lock the doc changelist for admitted addition
+abf0b845 docs: regenerate the design pages for admitted addition
+85ae9130 docs: say the eight-bit law runs in the ordinary suite
+915c26d9 docs: design admitted addition and its associativity verdict
+afd0787c docs: open the doc changelist for admitted addition
+a404e9a2 fix: keep the sketch's carry arm building after the formatter pass
+82c8eba3 docs: file the topic for addition admitted on a declared signature
+910c9179 docs: add the sketch admitted addition's obligation rests on
+5e265643 fix: move every tool lock onto the engine pin of `mockspace-lint-rules`
+22efc5d0 canon: answer the admitted-obligations row by reshaping it
+6c130503 feat: ship `arvo-bits`, an exact-width bit container
+c45809b1 chore: take the ask tool from muisti under lint-crates
+f8d8a9d1 research: seat 264, the door ruling does not reach the unwrap accessor
+fb618b0c fix: bump the five tool locks onto the engine revision they lag, again
+cdab9a22 fix: bump the five tool locks onto the engine revision they lag
+05d0a851 docs: record that the structural-region row is answered, on three reads
+26b14649 feat: state where the adaptation commutes with the grid's symmetries
+b544c82c docs: correct the width seat's hash, which resolves on its own branch
+eb059dec docs: file the question of which operation `half_up` denotes
+3f6b37c1 Merge pull request #125 from orgrinrt/research/whether-a-structural-claim-carries-a-region
+e1b8a98e Merge pull request #124 from orgrinrt/research/what-a-platform-width-type-is-rebased
+e0f64697 Merge pull request #123 from orgrinrt/research/whether-the-fused-result-composes
+84dac759 docs: say which `half_up` the arms name, and what the pairing costs
+5c69b710 docs: move the region seat to 261, and correct what it said about ssh
+102f9d0a docs: move the width seat to 260, and correct the fix it recorded
+764bc72f chore: take the tool manifests and locks as `dev` has them
+84065f75 research: settle whether the 64-bit wall is a wall, and it is not
+776a7fff research: answer q26 by compiling the clause its first option rests on
+cced7740 research: record the probe crate lock without the local patch override
+e583b7e1 research: fix the arm the placement probe doc names, and rebuild its output

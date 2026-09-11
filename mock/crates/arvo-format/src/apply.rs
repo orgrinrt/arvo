@@ -42,11 +42,16 @@ pub struct Fraction {
 }
 
 impl Fraction {
-    /// Nothing between the grid points, which is a position already on one.
-    pub const ZERO: Self = Self { num: 0, den: 1 };
-
     /// Exactly half way, which is the tie every rounding rule has an answer for.
-    pub const HALF: Self = Self { num: 1, den: 2 };
+    pub const HALF: Self = Self {
+        num: 1,
+        den: 2,
+    };
+    /// Nothing between the grid points, which is a position already on one.
+    pub const ZERO: Self = Self {
+        num: 0,
+        den: 1,
+    };
 
     /// A ratio of `num` over `den`.
     ///
@@ -77,7 +82,10 @@ impl Fraction {
     #[must_use]
     pub const fn of(num: i64, den: i64) -> Self {
         if den > 0 {
-            return Self { num, den };
+            return Self {
+                num,
+                den,
+            };
         }
         if den == 0 {
             return Self::ZERO;
@@ -94,7 +102,10 @@ impl Fraction {
             return Self::ZERO;
         }
         if num == i64::MIN && den == i64::MIN {
-            return Self { num: 1, den: 1 };
+            return Self {
+                num: 1,
+                den: 1,
+            };
         }
         // Exactly one operand is `i64::MIN` and the other decides how far the
         // pair cancels. That other one is neither zero nor `i64::MIN`, both of
@@ -242,8 +253,13 @@ impl Dither {
 /// Stated over a remainder in `[0, 1)`, so the position is between `slot` and
 /// `slot + 1` and every mode is one comparison. The sign cases live in the modes
 /// that care about sign rather than in the representation.
+///
+/// Visible to the crate and to nothing outside it, because addition's verdict
+/// reads the one offset a rounding adds where that offset is fixed, and reading
+/// it through the map rather than restating the six rules is what keeps the two
+/// from disagreeing.
 #[must_use]
-const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
+pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
     if exact.part.num == 0 {
         return exact.slot.index() as i128;
     }
@@ -267,7 +283,7 @@ const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
             } else {
                 down
             }
-        }
+        },
         Mode::HalfUp => {
             if twice > den {
                 up
@@ -279,7 +295,7 @@ const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
             } else {
                 up
             }
-        }
+        },
         Mode::HalfEven => {
             if twice > den {
                 up
@@ -290,7 +306,7 @@ const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
             } else {
                 up
             }
-        }
+        },
         // Up when the dither falls below the position's offset, which makes the
         // probability of rounding up equal to that offset when the dither is
         // uniform. Cross-multiplied so no division happens.
@@ -300,7 +316,7 @@ const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
             } else {
                 down
             }
-        }
+        },
     }
 }
 
@@ -323,7 +339,7 @@ const fn complete_slot(policy: Policy, slot: i128, min: Slot, max: Slot) -> Slot
             // and the narrowing cannot lose anything.
             let span = hi - lo + 1;
             Slot::at((lo + (slot - lo).rem_euclid(span)) as i64)
-        }
+        },
         // `Clamp` is documented as pinning to a declared bound that need not be
         // the range's own end, and the declared signature carries nowhere to put
         // that bound. With no bound to read it pins to the range, which is
@@ -336,7 +352,7 @@ const fn complete_slot(policy: Policy, slot: i128, min: Slot, max: Slot) -> Slot
             } else {
                 max
             }
-        }
+        },
     }
 }
 
@@ -372,12 +388,24 @@ pub const fn panic_on_inexact(exact: Exact) -> Bool {
     exact.is_on_grid().not()
 }
 
-/// Whether a debug build should refuse a slot that leaves the range.
+/// Whether a debug build should refuse a position whose rounded slot leaves the
+/// range.
+///
+/// Takes the position and the dither rather than a slot. What leaves the range
+/// is the slot the position rounds to, the rounding is internal to this file, and
+/// a verdict over a slot would be asked about something no caller can produce
+/// before adapting. The dither is the one `adapt` is handed, because the
+/// stochastic mode's rounded slot is a function of it.
+///
+/// It reads the range without forcing the slot range's obligation, the same as
+/// the slot verdict it replaces did. `adapt` is where that obligation is met.
 #[must_use]
-pub const fn panic_on_overflow<S: DeclaredSignature>(slot: Slot) -> Bool {
+pub const fn panic_on_overflow<S: DeclaredSignature>(exact: Exact, dither: Dither) -> Bool {
+    let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     let min = <<S::Format as Format>::Slots as Slots>::MIN;
     let max = <<S::Format as Format>::Slots as Slots>::MAX;
-    slot.is_within(min, max).not()
+    let rounded = round_slot(mode, exact, dither);
+    Bool::of(rounded < min.index() as i128 || rounded > max.index() as i128)
 }
 
 #[cfg(test)]

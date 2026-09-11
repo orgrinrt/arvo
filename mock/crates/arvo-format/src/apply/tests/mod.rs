@@ -83,44 +83,12 @@ fn the_control_the_sweep_reaches_both_regions_and_both_sides() {
 }
 
 // --- 1. the map is total -----------------------------------------------------
+//
+// Over every admitted width of both slot families, at the edges of each range and
+// at the ends of the coordinate, in `totality`. The arm that stood here asserted
+// it at `Integer<5>` alone, which is a law over every format shape measured at one.
 
-macro_rules! totality_over_the_matrix {
-    ($($mode:ident),+ $(,)?) => {
-        #[test]
-        fn the_map_is_total_over_every_mode_and_every_policy() {
-            let mut checked = 0usize;
-            $(
-                {
-                    type SW = Signature<Integer<5>, Adapt<$mode, Wrap>>;
-                    type SS = Signature<Integer<5>, Adapt<$mode, Saturate>>;
-                    type SC = Signature<Integer<5>, Adapt<$mode, Clamp>>;
-                    for e in every_position() {
-                        for d in [
-                            Dither::UNUSED,
-                            Dither::at(Fraction::of(1, 4)),
-                            Dither::at(Fraction::of(3, 4)),
-                        ] {
-                            for got in [
-                                adapt::<SW>(e, d),
-                                adapt::<SS>(e, d),
-                                adapt::<SC>(e, d),
-                            ] {
-                                assert!(
-                                    got.is_within(MIN5, MAX5).get(),
-                                    "{got:?} is outside the declared window for {e:?}"
-                                );
-                                checked += 1;
-                            }
-                        }
-                    }
-                }
-            )+
-            assert!(checked > 0, "the matrix ran nothing");
-        }
-    };
-}
-
-totality_over_the_matrix!(TowardZero, Floor, Ceil, HalfUp, HalfEven, Stochastic);
+mod totality;
 
 // --- 2. the identity on the grid, run rather than declared ------------------
 
@@ -395,17 +363,76 @@ fn the_panic_verdicts_report_and_the_crate_stays_total() {
     assert!(!panic_on_inexact(Exact::on_grid(Slot::at(3))).get());
     assert!(panic_on_inexact(Exact::between(Slot::at(3), Fraction::of(1, 4))).get());
 
-    type S = Signature<Integer<5>, Adapt<Floor, Wrap>>;
-    assert!(!panic_on_overflow::<S>(MAX5).get());
-    assert!(!panic_on_overflow::<S>(MIN5).get());
-    assert!(panic_on_overflow::<S>(Slot::at(MAX5.index() + 1)).get());
-    assert!(panic_on_overflow::<S>(Slot::at(MIN5.index() - 1)).get());
+    type Down = Signature<Integer<5>, Adapt<Floor, Wrap>>;
+    type Up = Signature<Integer<5>, Adapt<Ceil, Wrap>>;
+    type Dice = Signature<Integer<5>, Adapt<Stochastic, Wrap>>;
+    let d = Dither::UNUSED;
+
+    // On the grid the rounded slot is the position's own, so the verdict is the
+    // range test on that slot.
+    assert!(!panic_on_overflow::<Down>(Exact::on_grid(MAX5), d).get());
+    assert!(!panic_on_overflow::<Down>(Exact::on_grid(MIN5), d).get());
+    assert!(panic_on_overflow::<Down>(Exact::on_grid(Slot::at(MAX5.index() + 1)), d).get());
+    assert!(panic_on_overflow::<Down>(Exact::on_grid(Slot::at(MIN5.index() - 1)), d).get());
+
+    // Off the grid the verdict is about the slot the position rounds to, which is
+    // why it takes the position. A tie on the top slot rounds out of the range
+    // under `Ceil` and stays under `Floor`; one below the bottom does the reverse.
+    // A verdict over the position's own slot would answer the same for both modes
+    // at both ends, and one of the two would be wrong each time.
+    let top_tie = Exact::between(MAX5, Fraction::HALF);
+    assert!(panic_on_overflow::<Up>(top_tie, d).get());
+    assert!(!panic_on_overflow::<Down>(top_tie, d).get());
+    let under = Exact::between(Slot::at(MIN5.index() - 1), Fraction::HALF);
+    assert!(panic_on_overflow::<Down>(under, d).get());
+    assert!(!panic_on_overflow::<Up>(under, d).get());
+
+    // And the dither is read where the mode reads it: a quarter past the top slot
+    // rounds up exactly when the dither falls below a quarter.
+    let quarter = Exact::between(MAX5, Fraction::of(1, 4));
+    assert!(panic_on_overflow::<Dice>(quarter, Dither::at(Fraction::of(1, 8))).get());
+    assert!(!panic_on_overflow::<Dice>(quarter, Dither::at(Fraction::of(7, 8))).get());
+
+    // The verdict agrees with what the map does: wherever it reports nothing, the
+    // completion had nothing to do, so the map returned the rounded slot as it
+    // was. Over the whole sweep, both modes, which leaves the window both ways.
+    let mut reported = 0;
+    for e in every_position() {
+        for (verdict, got, rounded) in [
+            (
+                panic_on_overflow::<Down>(e, d),
+                adapt::<Down>(e, d),
+                round_slot(Mode::Floor, e, d),
+            ),
+            (
+                panic_on_overflow::<Up>(e, d),
+                adapt::<Up>(e, d),
+                round_slot(Mode::Ceil, e, d),
+            ),
+        ] {
+            if verdict.get() {
+                reported += 1;
+                assert!(
+                    rounded < MIN5.index() as i128 || rounded > MAX5.index() as i128,
+                    "the verdict reported {e:?}, whose rounded slot is in the window"
+                );
+            } else {
+                assert_eq!(
+                    got.index() as i128,
+                    rounded,
+                    "the verdict passed {e:?} and the map still completed it"
+                );
+            }
+        }
+    }
+    assert!(reported > 0, "the sweep never left the window");
 
     // Totality is unaffected by the verdicts: the map still returns a slot for a
     // position both verdicts refuse.
     let refused = Exact::between(Slot::at(MAX5.index() + 5), Fraction::of(1, 4));
     assert!(panic_on_inexact(refused).get());
-    let got = adapt::<S>(refused, Dither::UNUSED);
+    assert!(panic_on_overflow::<Down>(refused, d).get());
+    let got = adapt::<Down>(refused, d);
     assert!(got.is_within(MIN5, MAX5).get());
 }
 

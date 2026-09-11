@@ -1,0 +1,13 @@
+error[E0308]: arguments to this function are incorrect
+  --> tests/ui/a_host_integer_is_not_an_operand.rs:15:13
+   |
+15 |     let _ = add::<Signature<Integer<4>, Adapt<Floor, Saturate>>>(3, 4, Dither::UNUSED);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -  - expected `Slot`, found integer
+   |                                                                  |
+   |                                                                  expected `Slot`, found integer
+   |
+note: function defined here
+  --> src/addition.rs
+   |
+   | pub const fn add<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
+   |              ^^^

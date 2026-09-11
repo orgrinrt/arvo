@@ -35,10 +35,16 @@
 //! those was a claim about a set, and a claim about a set of two needs both of
 //! its members pinned or deleting one member leaves the suite green.
 //!
-//! The last one runs the other way. It pins the refusal the const generic
-//! parameters are spelled around: a coordinate type cannot sit in that position,
-//! which is why the declared widths carry a machine integer there and nowhere
-//! else.
+//! One runs the other way. It pins the refusal the const generic parameters are
+//! spelled around: a coordinate type cannot sit in that position, which is why
+//! the declared widths carry a machine integer there and nowhere else.
+//!
+//! The last five pin what addition refuses. Three are its obligation's three
+//! refusals, each bound in a const item so the refusal is reached at check time,
+//! and `is_addable` in the addition suite asks the same three questions from the
+//! side that does not force them. The other two are the shape of the operation:
+//! a format alone where a declared signature goes, and a host integer where a
+//! slot goes.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -143,4 +149,50 @@ fn a_cancelling_phase_reaches_the_slot_range_and_a_non_cancelling_one_does_not()
 fn an_arvo_type_as_a_const_parameter_is_refused() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/an_arvo_type_as_a_const_parameter.rs");
+}
+
+/// Addition over the magnitude-indexed family, refused by the obligation.
+///
+/// The applied map carries no magnitude coordinate, so a sum of two members at
+/// two quanta has no position to be handed as.
+#[test]
+fn addition_over_a_float_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/addition_over_a_float_is_refused.rs");
+}
+
+/// Addition over an outside format whose sum leaves the slot coordinate.
+///
+/// No shipped format reaches it, which is why the case declares its own: a
+/// refusal only an outside format can reach is still a refusal the obligation
+/// makes.
+#[test]
+fn addition_over_an_uncarried_sum_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/addition_over_an_uncarried_sum_is_refused.rs");
+}
+
+/// Addition over a phase whose remainder no position can hold.
+///
+/// The one refusal the first version of the design missed. The saturation that
+/// is harmless for a ratio moves a position a whole slot, so it is refused
+/// rather than approximated.
+#[test]
+fn addition_over_a_remainder_the_position_cannot_hold_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/addition_over_a_remainder_the_position_cannot_hold_is_refused.rs");
+}
+
+/// A format where a declared signature goes.
+#[test]
+fn a_format_is_not_a_signature() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_format_is_not_a_signature.rs");
+}
+
+/// A host integer where an operand goes.
+#[test]
+fn a_host_integer_is_not_an_operand() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_host_integer_is_not_an_operand.rs");
 }

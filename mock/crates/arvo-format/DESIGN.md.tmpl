@@ -13,6 +13,12 @@ rule half. `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_name
 `law::fusing_a_multiply_add_preserves_the_answer_under_unsigned` and
 `law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`, whose statements are the
 translation equivariance of the rounding position that the symmetry section expresses.
+`ruling::the_additive_and_absorption_verdicts_are_canon`, with the two propositions it ratifies,
+`proposal::an_additive_verdict_is_independent_of_the_fraction_width` and
+`proposal::absorption_decides_associativity_of_a_clamped_reduction`, and the laws they speak of,
+`law::additive_associativity_under_wrapping`, `law::additive_associativity_under_saturation` and
+`law::additive_associativity_recovered_under_declared_nonnegative_operand_window`, for the addition
+section.
 
 ## What this crate is
 
@@ -175,6 +181,10 @@ everywhere except at signed saturating, so it is not a required member of any in
 required arm at signed saturating, gated on that region. This crate neither ships that arm nor
 forecloses it.
 
+Addition is the instance this crate ships, stated in the last section. It is one member under the
+rule, admitted because its exact step reads the phase and the slot range and nothing else, and shipping
+it is not the start of a list any more than shipping `Integer` was the start of a list of formats.
+
 ## Where the computation lives, and why it is not in a bound
 
 `generic_const_exprs` is forbidden. `min_generic_const_args` is what there is. So a derived quantity
@@ -208,6 +218,12 @@ soundness is stated and bestness is an arm. `does_precision_count_the_sign_digit
 `does_narrowing_compose` and `what_the_double_rounding_mechanism_is`, both of which bear on composing
 adaptations and neither of which the single-adaptation contract here needs.
 `is_the_cross_kind_join_closed_or_priced`, above.
+
+`mixed_numeral_addition`, which is why addition takes one signature and not two.
+`reduction_order_or_associativity` and `what_a_numeral_guarantees_to_a_fold`, which is why the verdict
+on addition's associativity is about the binary operation and says nothing about how a fold may use
+it. And a numeral value type carrying a stored slot, which no row licenses and which would be a second
+placement beside the one the derivation performs by occupancy, so addition takes and returns slots.
 
 **And how many types the numeric introduction door carries**, which the ruling closing that question
 deliberately left open and which the section on the two primitives states in full.
@@ -291,7 +307,7 @@ them with no edit to anything below.
 | `Overflow` | which policy, as `POLICY`, a `Policy` | `Wrap`, `Saturate`, `Clamp` |
 | `Adaptation` | a `Rounding` and an `Overflow` | `Adapt` |
 | `DeclaredSignature` | a `Format` and an `Adaptation` | `Signature` |
-| `Operation` | the `Signature` it is a function of, and `ARITY`, an `Arity` | none; consumers declare their own |
+| `Operation` | the `Signature` it is a function of, and `ARITY`, an `Arity` | `Add`; a consumer's own sits beside it |
 
 **Not one coordinate in that table is a host primitive, and that is the contract rather than a
 preference about spelling.** The reason is the section after next.
@@ -309,7 +325,8 @@ methods, for the staging reason above: `contains`, `has_additive_identity`,
 `cancelling_slot`, `step_exponent`, `smallest_step_exponent`, `radix`,
 `exponent_at`, `magnitude_in_range`, `is_constant_family`, `slot_in_range`,
 `slot_count`, `rounding_of`, `overflow_of`, `operation_rounding`,
-`operation_overflow`. Each takes a coordinate and returns one, and the ones that
+`operation_overflow`, `sum_position`, `add`, `addition_reach`,
+`addition_is_associative`. Each takes a coordinate and returns one, and the ones that
 answer a yes or no return a `Bool` rather than the host's truth value, on the same
 reading as the table above.
 
@@ -328,7 +345,8 @@ and a law over the conjunction alone cannot say which half a failure came from.
 
 Each contract carrying an obligation has the verdict-returning form of it beside
 the obligation: `slots::is_admissible`, `is_admissible_ambient`,
-`is_admissible_quantum` and `is_admissible_format`.
+`is_admissible_quantum` and `is_admissible_format`. The obligation addition
+carries has `is_addable` beside it in the same form.
 
 ### The two primitives, and why they are here
 
@@ -565,8 +583,14 @@ a caller would then have to know the meaning of.
 ### The panic is a build-profile behaviour and still not a policy
 
 `panic_on_inexact` and `panic_on_overflow` report whether a debug build should refuse a position rather
-than adapt it. They return a verdict rather than diverging, so the crate itself stays total and the
-decision to panic belongs to the caller's build.
+than adapt it. Both take the position, and `panic_on_overflow` takes the dither as well, because what it
+reports is whether the slot the position rounds to leaves the range, and the rounded slot is what `adapt`
+completes. A verdict over a slot the caller had rounded already would need a rounding this crate keeps
+internal, so it would be asked about something no caller can produce. They return a verdict rather than
+diverging, so the crate itself stays total and the decision to panic belongs to the caller's build.
+
+No operation panics on its own account. `sum_position` is the position addition adapts, so a caller
+wanting the debug panic asks the verdict about exactly that position, with the dither it handed `add`.
 
 The bound is stated loosely on purpose. Two concerns bound the panic, and neither of them settles
 whether it may appear in dev builds of the speed-first concern. **A design that sharpened this would
@@ -978,7 +1002,9 @@ slot, at a tie only.
 
 From those two facts the region follows without a table per mode. The rounding region commutes with
 translation where the mode reads nothing, or where it reads only at a tie and the domain reaches no
-tie, or where what it reads is the sign and the domain reaches no negative position. Parity is the one
+tie, or where what it reads is the sign and the domain reaches no negative position, or where no
+position is off the grid at all, because then the region is never entered and there is nothing for any
+mode to read. Parity is the one
 the sign restriction does not defeat, and it is defeated instead by a domain whose translations are
 all even. That last region is named and not expressed: the reach a caller hands the predicate carries
 no parity of the translation band, so the predicate answers no on a domain where the law holds. It is
@@ -1026,12 +1052,21 @@ A declared signature says which slots are admitted. It does not say which exact 
 produces before the adaptation sees them, which translations that operation applies, or whether an
 exactly-half position is among them, and all three decide a region above.
 
-That is what `Reach` carries. It is a coordinate rather than a set of loose arguments because the five
-questions the two laws ask of it are derived from it rather than declared beside it: whether a
-negative position is reached, whether a negative or a positive translation is reached, and whether a
-rounded value can sit below the lowest admitted slot or above the highest. The last two are derived
-from the position bounds because the rounding region returns the position's own slot or the one above
-it and never anything else, which is a law this section owes a test for.
+That is what `Reach` carries. It is a coordinate rather than a set of loose arguments because the six
+questions the two laws ask of it are derived from it rather than declared beside it: whether any
+position is off the grid, whether a negative position is reached, whether a negative or a positive
+translation is reached, and whether a rounded value can sit below the lowest admitted slot or above the
+highest. The last two are derived from the position bounds because the rounding region returns the
+position's own slot or the one above it and never anything else, which is a law this section owes a
+test for.
+
+Whether a position is off the grid is one coordinate with three values rather than two flags:
+every position on the grid, some off it with no exactly-half one among them, or an exactly-half one
+reached. An on-grid reach with a tie in it would be a contradiction, and a coordinate of three values is
+what makes it one nobody can write. On the grid the rounding region returns the position itself, so a
+rounded value sits above the highest slot only where the position does, and the upper excursion is
+strict there rather than inclusive. Without that, a reach whose highest position is the highest slot
+reads as an excursion that never happens, and a relocation the map honours is refused.
 
 A consumer that knows none of it declares `Reach::EVERYTHING`, which licenses only the cells where
 both regions commute whatever the reach. The conservative answer is the default because the cost of
@@ -1049,6 +1084,10 @@ and a range symmetric about zero, and every combination of the restrictions the 
 test that matters is the one that would fail if the predicate licensed a law the map refuses, so the
 two directions are counted separately: a licensed law the map refuses is a defect, and a refused law
 the map honours is a cost.
+
+An on-grid reach is among those combinations, and there the rounding half holds for every mode and the
+map agrees, including where the highest position is the highest slot, which the inclusive bound would
+have refused.
 
 The map reflects where the predicate says it does, over the same cross.
 
@@ -1074,7 +1113,8 @@ assumed.
 
 `Reach` is the region coordinate: `Reach::of` takes the positions an operation reaches,
 `translated_by` adds the translations it applies, `without_ties` says no exactly-half position is
-among them, and `Reach::EVERYTHING` is the conservative declaration.
+among them, `on_grid` says no position is off the grid at all, and `Reach::EVERYTHING` is the
+conservative declaration. `reaches_off_the_grid` and `reaches_a_tie` read the grid state back.
 
 `Reads`, `When` and `Behaviour` are what a mode does besides the residue, and `behaviour_of` is the
 classification. They are named rather than hidden inside a predicate because they are what makes the
@@ -1097,13 +1137,214 @@ reached a declaration and stopped. That note is right and it is the first thing 
 against.
 
 Two things separate what this section adds. A predicate here takes a region, so its answer is a
-function of five facts about a domain rather than a restatement of one enumeration, and each of those
-five was shown to move a verdict rather than assumed to. And the test is a reader that runs the
+function of six facts about a domain rather than a restatement of one enumeration, and each of those
+six was shown to move a verdict rather than assumed to. And the test is a reader that runs the
 machinery: it derives the classification by walking the map and asserts the shipped one equals it,
 which is the repair this design already prescribes for an assertion that reaches a declaration and
 stops.
 
-What is still true is that no code in this crate reads these predicates, because the consumer that
-would is an operation and there are none here. That is stated rather than dressed up. The predicates
-exist because the canon states the law and the design is what the source is checked against, and the
-day an operation lands it gates its arm on them instead of writing the conjunction again.
+Addition reads them. Its associativity verdict is the completion half of the relocation law read at the
+reach addition supplies, and the rounding half decides whether that reading applies at all, so the
+conjunction is written once, here, and the operation gates on it rather than writing it again.
+
+## Addition, the one operation this crate admits
+
+The admission rule asks one thing of an operation, that it be a function of the declared signature,
+and addition is the operation whose exact step shows most plainly what that means. It reads the phase
+and the slot range and nothing else, so it can be stated here, in the crate that cannot reach a
+carrier, and it could not be stated in any crate that can.
+
+It is also what two ratified laws were about before anything computed it. The additive verdict and
+absorption both speak of an addition reduced onto the representable set, and the relocation predicates
+above were written for an operation to read. This section is that operation.
+
+### The exact step names no quantum
+
+Two members of a format are `(phase + a) * q` and `(phase + b) * q` at one quantum `q`, so their exact
+sum is
+
+```
+(phase + a) * q + (phase + b) * q = (phase + (a + b + phase)) * q
+```
+
+which is the member at position `a + b + phase`, counted in slots. The whole part of the phase adds to
+the slot and the fractional part is the remainder the rounding region reads. Neither the quantum nor the
+radix appears, which is the additive verdict's independence of the fraction width stated as a property
+of the arithmetic: addition at a common scale never reads the scale, so a verdict about it cannot move
+with the scale. The tests that assert it run a decimal format beside the binary ones rather than
+trusting the argument.
+
+`sum_position` computes that position one domain wider than a slot and returns an `Exact`. A phase is
+carried as the pair it was declared with, so the whole part is a euclidean division of the pair after
+the sign has moved onto the numerator, taken in that wider domain for the same reason the phase's other
+readers take it there.
+
+The operands are slots, and nothing about a slot says it is a member, since the value type that would
+carry membership is the one this crate does not ship. The carry obligation bounds the sum of two
+members, so for members the wide sum always narrows into a `Slot` exactly. For a slot outside the range
+there is no member sum to be exact about, and the step still has to return a position, so the wide sum
+is saturated into the coordinate, the same act `Reach` performs on a bound that leaves it. That keeps
+`add` total over every pair of slots. Under saturation and clamping the answer is then the one the true
+sum would get; under wrapping it is not, once the sum of two non-members leaves the coordinate, and that
+is the whole of what the saturation costs.
+
+### What it refuses, and where the refusal is seen
+
+The step is stated over one quantum, and that is the first thing it refuses without. In the
+magnitude-indexed family a slot names a different value at each magnitude, so two members may sit at
+two quanta and the sum may belong at a third. The applied map has no magnitude coordinate to land it at:
+an `Exact` is a slot and a remainder at the one magnitude a constant-quantum format has. So a format
+whose quantum is not the constant family is refused, and the refusal names that coordinate as what is
+missing.
+
+The second refusal is a sum the slot coordinate cannot carry. The exact positions addition produces
+span `2 * MIN + phase` to `2 * MAX + phase`, and a position outside what a `Slot` holds is not a
+position. No format this crate ships reaches it, because the widest slot range is 62 bits and `Biased`
+counts its phase in halves, but an outside format declaring a phase of many whole quanta does, and the
+refusal is what stops the step leaving the coordinate silently.
+
+The third is a remainder the position cannot hold. An `Exact` carries its remainder as a `Fraction`,
+whose denominator is a positive value the coordinate carries, and the phase's fractional part needs the
+phase's reduced denominator there. Two kinds of declared pair reach past that. A denominator of zero
+names no remainder at all; the format's own obligation refuses it where that obligation is forced, and
+addition's obligation carries the condition itself rather than forcing the format's, so the format's
+obligation keeps exactly the two force sites the section on obligations names. And a denominator of the
+least value with an odd numerator has a reduced denominator of two to the sixty-third. `Fraction::of`
+saturates such a ratio, which is its own second region and close enough for a ratio, and at the largest
+odd numerator it saturates to exactly one, which `Exact::between` then carries into the slot. The
+position would land a whole slot above the sum, so the saturation that is harmless for a ratio is wrong
+for a position, and refusing is the only answer that keeps the step exact.
+
+All three are one obligation. `sum_position` forces it, so everything that adds does, and
+`addition_reach` and `addition_is_associative` force it as well, because they compute the same
+positions and would otherwise narrow them into a `Slot` for a format whose sum leaves the coordinate.
+It is a const, so it has the reach every obligation in this crate has: a runtime call meets it when a
+binary is produced, and a call bound in a `const` item meets it at check time, which is the form the
+compile-fail cases pin with their diagnostics. `is_addable` asks the same question without forcing it,
+which is what lets a test hold a format addition refuses and report on it.
+
+### The operation, and what reads its arity
+
+`Add` is the operation: it names the declared signature it is a function of and its arity, two. It
+carries nothing else, because the admission rule asks for nothing else. The arity is read rather than
+decorative: the reach addition supplies is computed from it, so an arity that disagreed with the step
+would move the reach away from the positions the step produces, and the test comparing the two would
+say so.
+
+`add` is the composition the factoring names: `sum_position`, then `adapt` under the same signature,
+with the dither passed through for the one mode that reads it. It takes two slots and returns one. It
+carries no check and does not panic; the panic section above says where a caller asks instead.
+
+### Where the adapted sum is associative
+
+The canon decides this by absorption: the reduction is associative exactly when reducing a reachable
+exact value before combining it with a stored operand does not change the adapted result, quantified
+over the values the format holds. For addition that is the relocation law above, read at the positions
+addition produces and the translations its second step applies, and quantified over stored operands
+rather than over the ambient domain. The ambient quantifier is a different and stronger predicate, and
+it is the one that refuses associative cases.
+
+`addition_reach` is the reach addition supplies: positions from `2 * MIN + k` to `2 * MAX + k`, where
+`k` is the phase's whole part, with the grid state its fractional part decides. On the grid when the
+phase is whole, at a tie when the fractional part is one half, and off the grid otherwise. It carries no
+translation, because at a fractional phase the second step's translation is a stored operand plus the
+phase, which is not a whole number of slots and is not something `Reach` can hold.
+
+`addition_is_associative` answers from that reach in three cases.
+
+When the phase is whole every position is on the grid, the rounding region is never entered, and the
+verdict is the completion half of the relocation law at the positions above with translations from
+`MIN + k` to `MAX + k`.
+
+When the phase is fractional the rounding region is asked about every step. Where the rounding half of
+the relocation law holds over the reach, rounding adds one fixed offset of zero or one slot at every
+position, so addition is the whole-phase addition at `k` plus that offset, and the verdict is the
+completion question there. The offset is read by rounding one position of the reach, since holding the
+rounding half is exactly what makes every position give the same one.
+
+The stochastic mode's offset is the dither's rather than the position's, so for it the verdict needs
+the completion question to hold at both offsets. That is the verdict for every dither at once rather
+than for one, which is the claim a caller that does not know its dither can use.
+
+Where the rounding half does not hold over the reach, the offset varies from one position to the next
+and addition is not a translated whole-phase addition. The verdict refuses there. That is a cost rather
+than a defect, since some of those cells are associative anyway, and the tests count them rather than
+assume there are none.
+
+Over every cell the tests cross, a licensed cell never has a divergent triple. At a whole phase the
+verdict is exact in both directions over any range of two slots or more: a range whose top is reachable
+from above by a negative translation has the witness one past the top, and one reachable from below the
+witness one past the bottom, so a refusal always names a triple that diverges. The tests assert both
+directions, which reproduces the ratified biconditional over a wider set of ranges than it was measured
+on, ranges that do not contain zero among them.
+
+### What this section does not build
+
+The magnitude-indexed family. Two things block it and they are different in kind. In the design, the
+applied map takes a slot and a remainder at one magnitude, so a sum whose operands sit at two
+magnitudes has no position to be handed as, and giving it one is a change to `Exact` and to `adapt`
+rather than to addition. In the canon, the completion policies are stated over a representable range,
+and a magnitude-indexed set is a union of ranges with no single span to reduce modulo. No row says what
+wrapping means there, and `where_wrapping_lives` classifies wrapping rather than defining it on such a
+set. Saturation and clamping have an evident reading on that set and wrapping does not, which is the
+call this design does not make.
+
+Addition across two signatures, a fold, and a numeral value type, all under what this crate does not
+decide.
+
+### The laws this section owes tests for
+
+Each is stated over what the operation computes.
+
+The exact step is the denotation. For every pair of slots at small widths, the value `sum_position`
+names equals the exact rational sum of the two members' values, over quantum exponents on both sides of
+zero, radix two and radix ten, and whole, half and third phases. A step that adds the phase in value
+units rather than slot units, which is what a design reading the scale would compute, is kept as a
+negative control and disagrees.
+
+Addition is total: every pair at every admitted width of both slot families, at the edges of the range,
+maps to an admitted slot, over every mode and every policy, and so does every pair of slots at the ends
+of the coordinate, outside every range, where under saturation the answer is also the one the true sum
+gets.
+
+Addition is commutative, over every pair, mode, policy and phase the sweeps reach.
+
+Addition is exact where it can be: when the exact position is on the grid and inside the range, the
+answer is that slot, and where the format carries an additive identity, adding the identity's slot
+returns the other operand unchanged.
+
+The verdict and the counts are independent of the fraction width: the divergent-triple count at four
+bits is the same at every quantum exponent from minus eight to eight and at radix ten, and so is the
+verdict.
+
+At a whole phase the answer is the same under every rounding mode, which answers the ratified additive
+row's missing rounding axis where it can be answered: nothing rounds there. At a fractional phase two
+modes are shown to disagree, so the rounding axis is real wherever the phase is not whole.
+
+The counts the canon records are reproduced: 952 divergent triples at four bits signed under
+saturation, none under wrapping, none unsigned, and 4,177,792 at eight bits.
+
+The verdict agrees with brute force. Over every shipped point at the widths the sweep can afford, over
+a family of test-local slot ranges covering every interval of small bounds whether it contains zero or
+not, over whole and fractional phases, and over every mode, every policy and every dither the sweep
+carries, a licensed cell never diverges, both answers are reached, and the refused cells that are
+associative anyway are counted and reported rather than hidden. Two negative controls go with it: a
+rule keyed on signedness disagrees with brute force on a signed range that is associative, and the
+relocation predicate asked over ambient translations beyond the format refuses a format that is
+associative, which is the quantifier the canon warns about.
+
+The reach addition supplies is the reach the step produces: its bounds are the least and greatest slot
+`sum_position` returns over every pair, and its grid state is the one the returned remainders show.
+
+What must not compile does not: addition over a magnitude-indexed format, over an outside format whose
+sum is not carried, over an outside format whose phase remainder the position cannot hold, over a
+format that is not a declared signature, and with a host integer where a
+slot goes. Each is a compile-fail case with its diagnostic committed.
+
+### The surface this section names
+
+`Add` is the operation. `sum_position` is the exact step, `add` the composition, and `is_addable` the
+verdict beside the obligation. `addition_reach` is the reach addition supplies and
+`addition_is_associative` the verdict on where the adapted sum is associative. Every one is a
+`const fn` over associated items or a type, so a consumer gating an arm on the verdict has no branch
+left by the time the backend sees it.

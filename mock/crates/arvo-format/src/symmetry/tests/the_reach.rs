@@ -9,22 +9,28 @@
 //! a cell reaches. These arms are about the coordinate itself: that a reach
 //! handed its ends backwards widens rather than inverting, that the conservative
 //! reach really is the widest thing a caller can name, that a degenerate reach
-//! licenses everything and says so, and that the cross reaches the cases its
-//! verdicts turn on.
+//! licenses everything and says so, that the upper excursion is strict on the
+//! grid and inclusive off it, and that the cross reaches the cases its verdicts
+//! turn on.
 //!
-//! One of them is here because the cross cannot reach it. `cell_reach` hands
+//! Two of them are here because the cross cannot reach them. `cell_reach` hands
 //! every cell an upper translation bound of the range's highest slot, so the
 //! completion region's low-side disjunct is never exercised true anywhere in the
-//! 432 cells, and a defect confined to it would pass the whole sweep.
+//! 648 cells, and a defect confined to it would pass the whole sweep. And every
+//! cell's positions run a whole span past the top, so the difference between a
+//! strict and an inclusive upper excursion never decides a cell either.
 
 use super::{
     ALL_MODES,
     CompletionRelocates,
+    GridState,
     RANGES,
     RESTRICTIONS,
+    Relocates,
     Which,
     at,
     bounds,
+    measure_relocation,
     relocation_over,
 };
 use crate::overflow::{Policy, SHIPPED_POLICIES};
@@ -37,30 +43,55 @@ fn the_control_the_cross_reaches_every_case_a_verdict_could_turn_on() {
     // The per-cell floor is derived rather than guessed, and the derivation was
     // wrong the first time, which is why it is written out. The smallest cell is
     // the symmetric range restricted to non-negative positions and non-negative
-    // translations with no tie: eleven positions, four translations and six
-    // residues, which is 264 triples. Restricting the translations is what makes
+    // translations: eleven positions and four translations, which is 44 triples
+    // at every residue the cell walks. Restricting the translations is what makes
     // a cell on a range reaching negatives smaller than one on a range that does
     // not, and that is the part the first floor missed.
+    //
+    // How many residues a cell walks is its grid state's, out of the seven
+    // `residues` lists: one on the grid, the six that are not the midpoint off it,
+    // and all seven with a tie. That count is asserted too, so the floor cannot be
+    // met by walking residues the cell's grid state rules out.
     let mut cells = 0u32;
     let mut triples = 0u64;
     let mut excursions = 0u64;
     let mut ties = 0u64;
     let mut negatives = 0u64;
+    let mut on_grid_cells = 0u32;
     for which in RANGES {
         for &mode in &ALL_MODES {
             for &policy in &SHIPPED_POLICIES {
                 for r in RESTRICTIONS {
                     let cell = relocation_over(which, mode, policy, r);
+                    let walked = match r.grid {
+                        GridState::OnGrid => 1,
+                        GridState::OffGrid => 6,
+                        GridState::WithTies => 7,
+                    };
+                    assert_eq!(
+                        cell.residues, walked,
+                        "{which:?} {mode:?} {policy:?} {r:?} walked {} residues",
+                        cell.residues
+                    );
                     assert!(
-                        cell.triples >= 250,
-                        "{which:?} {mode:?} {policy:?} {r:?} ran {} triples, so the sweep shrank",
-                        cell.triples
+                        cell.triples >= 44 * cell.residues,
+                        "{which:?} {mode:?} {policy:?} {r:?} ran {} triples over {} residues, so \
+                         the sweep shrank",
+                        cell.triples,
+                        cell.residues
                     );
                     assert!(
                         cell.excursions > 0,
                         "{which:?} {mode:?} {policy:?} {r:?} never left the range, so the \
                          completion region answered nothing in it"
                     );
+                    if r.grid == GridState::OnGrid {
+                        assert_eq!(
+                            cell.ties, 0,
+                            "an on-grid cell walked an exactly-half position"
+                        );
+                        on_grid_cells += 1;
+                    }
                     cells += 1;
                     triples += cell.triples;
                     excursions += cell.excursions;
@@ -73,6 +104,15 @@ fn the_control_the_cross_reaches_every_case_a_verdict_could_turn_on() {
     assert_eq!(
         cells,
         (RANGES.len() * ALL_MODES.len() * SHIPPED_POLICIES.len() * RESTRICTIONS.len()) as u32
+    );
+    assert_eq!(
+        cells, 648,
+        "the cross is not the whole matrix of twelve restrictions"
+    );
+    assert_eq!(
+        on_grid_cells,
+        cells / 3,
+        "a third of the restrictions are on the grid"
     );
     assert!(triples > 0, "the cross ran nothing");
     assert!(
@@ -90,15 +130,88 @@ fn the_control_the_cross_reaches_every_case_a_verdict_could_turn_on() {
 }
 
 #[test]
+fn an_on_grid_reach_is_strict_at_the_top_and_the_map_agrees() {
+    // The reach whose highest position is the highest slot, which no cell in the
+    // cross reaches. On the grid the rounding region returns the position itself,
+    // so nothing rounds above the top, and an inclusive upper excursion would read
+    // an excursion that never happens and refuse a relocation the map honours.
+    // Off the grid the position at the top rounds above it under `Ceil`, so the
+    // same bounds really do reach past it there.
+    let (lo, hi) = bounds(Which::Signed);
+    let on = Reach::of(lo, hi).translated_by(lo, hi).on_grid();
+    let off = Reach::of(lo, hi).translated_by(lo, hi).without_ties();
+
+    // The coordinate first. On the grid nothing is off it and no tie is reached,
+    // and taking the ties away from a reach with none leaves it where it was
+    // rather than moving it off the grid it never left.
+    assert!(!on.reaches_off_the_grid().get());
+    assert!(!on.reaches_a_tie().get());
+    assert_eq!(on.without_ties(), on);
+    assert!(off.reaches_off_the_grid().get());
+    assert!(!off.reaches_a_tie().get());
+    assert_ne!(on, off);
+
+    // The upper excursion is what the grid state moves. The lower one is not,
+    // because rounding never goes down past the position's own slot.
+    assert!(!on.reaches_above(hi).get());
+    assert!(off.reaches_above(hi).get());
+    assert!(!on.reaches_below(lo).get());
+    assert!(!off.reaches_below(lo).get());
+
+    // On the grid every mode is licensed under every policy, and the map honours
+    // every one of them.
+    for &mode in &ALL_MODES {
+        for &policy in &SHIPPED_POLICIES {
+            assert!(
+                at(Which::Signed, mode, policy, &Relocates(on)).get(),
+                "{mode:?} {policy:?}: an on-grid reach inside the range was refused"
+            );
+            assert!(
+                measure_relocation(Which::Signed, mode, policy, on, GridState::OnGrid).law,
+                "{mode:?} {policy:?}: the map broke relocation on the grid inside the range"
+            );
+        }
+    }
+
+    // Off the grid under a clamp the predicate refuses, and the map agrees under
+    // `Ceil`: the top slot plus a quarter rounds to one past the top, saturates
+    // back, and a negative translation then lands one lower than the direct sum.
+    for policy in [Policy::Saturate, Policy::Clamp] {
+        assert!(
+            !at(Which::Signed, Mode::Ceil, policy, &Relocates(off)).get(),
+            "{policy:?}: an off-grid reach at the top was licensed"
+        );
+        assert!(
+            !measure_relocation(Which::Signed, Mode::Ceil, policy, off, GridState::OffGrid).law,
+            "{policy:?}: the map honoured a relocation the rounding above the top breaks"
+        );
+    }
+
+    // The control: under wrapping the same off-grid reach is licensed and holds,
+    // so the refusal above is the clamp at the top rather than the reach.
+    assert!(at(Which::Signed, Mode::Ceil, Policy::Wrap, &Relocates(off)).get());
+    assert!(
+        measure_relocation(
+            Which::Signed,
+            Mode::Ceil,
+            Policy::Wrap,
+            off,
+            GridState::OffGrid
+        )
+        .law
+    );
+}
+
+#[test]
 fn a_translation_band_with_no_positive_translation_licenses_a_low_excursion() {
-    // The one case the cross cannot reach. `completion_is_translation_homomorphic`
+    // The other case the cross cannot reach. `completion_is_translation_homomorphic`
     // decides the low side by `reaches_below(lowest).not()` or
     // `reaches_a_positive_translation().not()`, and the second is false in every
     // cell of the sweep, because `cell_reach` always hands the range's highest
     // slot as the upper translation bound and that is positive on all three
     // ranges. Its mirror on the high side is exercised both ways, through the
     // `negative_translations` axis. So a defect confined to this disjunct passes
-    // 432 cells and this arm is what would catch it.
+    // 648 cells and this arm is what would catch it.
     //
     // The positions stop one slot short of the top so the high side is decided by
     // `reaches_above` rather than by the translations, which is what leaves the
@@ -210,6 +323,7 @@ fn a_reach_handed_its_ends_backwards_widens_rather_than_inverting() {
 #[test]
 fn the_conservative_reach_is_the_widest_thing_a_caller_can_declare() {
     let everything = Reach::EVERYTHING;
+    assert!(everything.reaches_off_the_grid().get());
     assert!(everything.reaches_a_tie().get());
     assert!(everything.reaches_a_negative_position().get());
     assert!(everything.reaches_a_negative_translation().get());
@@ -242,4 +356,9 @@ fn a_negative_translation_carries_a_non_negative_position_below_zero() {
     let forwards = no_translation.translated_by(Slot::ZERO, Slot::at(16));
     assert!(!forwards.reaches_a_negative_position().get());
     assert!(rounding_is_translation_equivariant(Mode::TowardZero, forwards).get());
+
+    // And the fourth disjunct, which no sign argument reaches: the same negative
+    // translation over a reach on the grid is licensed, because the rounding
+    // region is never entered and the sign it would read is never read.
+    assert!(rounding_is_translation_equivariant(Mode::TowardZero, translated.on_grid()).get());
 }
