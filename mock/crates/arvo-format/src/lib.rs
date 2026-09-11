@@ -66,14 +66,7 @@ pub use adapt::{
     overflow_of,
     rounding_of,
 };
-pub use addition::{
-    Add,
-    add,
-    addition_is_associative,
-    addition_reach,
-    is_addable,
-    sum_position,
-};
+pub use addition::{Add, add, addition_is_associative, addition_reach, is_addable, sum_position};
 pub use ambient::{
     Ambient,
     BinaryRationals,

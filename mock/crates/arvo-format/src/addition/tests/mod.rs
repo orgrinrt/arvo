@@ -101,7 +101,7 @@ impl<const LO: i64, const HI: i64> Slots for Window<LO, HI> {
 fn members<F: Format>() -> impl Iterator<Item = Slot> {
     let min = <F::Slots as Slots>::MIN.index();
     let max = <F::Slots as Slots>::MAX.index();
-    (min..=max).map(Slot::at)
+    (min ..= max).map(Slot::at)
 }
 
 /// How many members a format's slot range has.
@@ -114,7 +114,16 @@ fn member_count<F: Format>() -> usize {
 /// The crate asks the compiler for no type names at run time, so a message names the
 /// declaration rather than the type: the ambient's radix and sign, the quantum
 /// law's base, slope and magnitude count, the phase, and the ends of the range.
-fn coordinates<F: Format>() -> (Radix, Bool, Exponent, Exponent, MagnitudeCount, Phase, Slot, Slot) {
+fn coordinates<F: Format>() -> (
+    Radix,
+    Bool,
+    Exponent,
+    Exponent,
+    MagnitudeCount,
+    Phase,
+    Slot,
+    Slot,
+) {
     (
         <F::Ambient as Ambient>::RADIX,
         <F::Ambient as Ambient>::SIGNED,
@@ -188,7 +197,10 @@ impl Ratio {
     fn plus(self, other: Self) -> Self {
         let g = common_factor(self.den, other.den);
         let den = self.den / g * other.den;
-        Self::of(self.num * (den / self.den) + other.num * (den / other.den), den)
+        Self::of(
+            self.num * (den / self.den) + other.num * (den / other.den),
+            den,
+        )
     }
 
     /// The difference.
@@ -254,7 +266,10 @@ impl Table {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
         let members = member_count::<S::Format>();
-        assert!(members <= 256, "the table holds eight-bit ranges and narrower");
+        assert!(
+            members <= 256,
+            "the table holds eight-bit ranges and narrower"
+        );
         let mut sums = [[0u8; 256]; 256];
         for (i, row) in sums.iter_mut().enumerate().take(members) {
             for (j, cell) in row.iter_mut().enumerate().take(members) {
@@ -268,7 +283,10 @@ impl Table {
                 *cell = (got.index() - min.index()) as u8;
             }
         }
-        Self { members, sums }
+        Self {
+            members,
+            sums,
+        }
     }
 
     /// The adapted sum of the members at offsets `i` and `j`.
@@ -279,10 +297,10 @@ impl Table {
     /// How many triples `(a + b) + c` and `a + (b + c)` disagree on.
     fn divergent(&self) -> u64 {
         let mut count = 0u64;
-        for a in 0..self.members {
-            for b in 0..self.members {
+        for a in 0 .. self.members {
+            for b in 0 .. self.members {
                 let ab = self.at(a, b);
-                for c in 0..self.members {
+                for c in 0 .. self.members {
                     if self.at(ab, c) != self.at(a, self.at(b, c)) {
                         count += 1;
                     }

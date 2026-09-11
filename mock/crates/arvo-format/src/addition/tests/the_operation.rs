@@ -18,7 +18,17 @@
 
 use notko::Maybe;
 
-use super::{DITHERS, Ratio, Sums, Window, at_every_signature, coordinates, member_count, members, signatures};
+use super::{
+    DITHERS,
+    Ratio,
+    Sums,
+    Window,
+    at_every_signature,
+    coordinates,
+    member_count,
+    members,
+    signatures,
+};
 use crate::adapt::{Adapt, DeclaredSignature, Signature, overflow_of};
 use crate::addition::{add, sum_position};
 use crate::ambient::{BinaryRationals, DecimalRationals};
@@ -38,8 +48,19 @@ use crate::tests::grid::Grid;
 /// with the slot either side of it.
 fn edges(min: Slot, max: Slot) -> [Slot; 10] {
     let (lo, hi) = (min.index(), max.index());
-    [i64::MIN, i64::MIN + 1, lo - 1, lo, lo + 1, hi - 1, hi, hi + 1, i64::MAX - 1, i64::MAX]
-        .map(Slot::at)
+    [
+        i64::MIN,
+        i64::MIN + 1,
+        lo - 1,
+        lo,
+        lo + 1,
+        hi - 1,
+        hi,
+        hi + 1,
+        i64::MAX - 1,
+        i64::MAX,
+    ]
+    .map(Slot::at)
 }
 
 /// Every fed pair at one signature: the answer is admitted, and where the true
@@ -116,7 +137,10 @@ fn addition_is_total_over_every_admitted_width_mode_and_policy() {
     let mut walk = Walk::default();
     dispatch::every_width(&mut walk);
     assert_eq!(walk.cells, 62 * 2 * signatures());
-    assert_eq!(walk.pairs, walk.cells as u64 * 10 * 10 * DITHERS.len() as u64);
+    assert_eq!(
+        walk.pairs,
+        walk.cells as u64 * 10 * 10 * DITHERS.len() as u64
+    );
 }
 
 #[test]
@@ -129,7 +153,10 @@ fn addition_is_total_at_the_widest_ranges_under_a_fractional_phase() {
     walk.run::<Grid<BinaryRationals, Constant<0>, Unsigned<62>, -1, 3>>();
     walk.run::<Grid<BinaryRationals, Constant<0>, Unsigned<62>, 1, 2>>();
     assert_eq!(walk.cells, 4 * signatures());
-    assert_eq!(walk.pairs, walk.cells as u64 * 10 * 10 * DITHERS.len() as u64);
+    assert_eq!(
+        walk.pairs,
+        walk.cells as u64 * 10 * 10 * DITHERS.len() as u64
+    );
 }
 
 // --- commutativity -------------------------------------------------------------
@@ -147,9 +174,16 @@ impl PerSignature for Commutes {
         let mut checked = 0u64;
         for a in fed() {
             for b in fed() {
-                assert_eq!(sum_position::<S::Format>(a, b), sum_position::<S::Format>(b, a));
+                assert_eq!(
+                    sum_position::<S::Format>(a, b),
+                    sum_position::<S::Format>(b, a)
+                );
                 for dither in DITHERS {
-                    assert_eq!(add::<S>(a, b, dither), add::<S>(b, a, dither), "{a:?}, {b:?}");
+                    assert_eq!(
+                        add::<S>(a, b, dither),
+                        add::<S>(b, a, dither),
+                        "{a:?}, {b:?}"
+                    );
                     checked += 1;
                 }
             }
@@ -267,7 +301,10 @@ impl PerSignature for Neutral {
 fn the_identity_is_neutral<F: Format>() -> u64 {
     assert!(has_additive_identity::<F>().get());
     let Maybe::Is(identity) = cancelling_slot::<F>(Magnitude::SMALLEST) else {
-        panic!("{:?} has an identity and no cancelling slot", coordinates::<F>());
+        panic!(
+            "{:?} has an identity and no cancelling slot",
+            coordinates::<F>()
+        );
     };
     at_every_signature::<F, Neutral>(&Neutral(identity))
 }
@@ -303,16 +340,18 @@ fn a_phase_cancelled_outside_the_range_has_no_identity_and_wrapping_finds_a_neut
     assert!(!has_additive_identity::<F>().get());
     // Under saturation no slot is neutral.
     for z in members::<F>() {
-        let moves_something = members::<F>().any(|a| {
-            add::<Signature<F, Adapt<Floor, Saturate>>>(a, z, Dither::UNUSED) != a
-        });
+        let moves_something = members::<F>()
+            .any(|a| add::<Signature<F, Adapt<Floor, Saturate>>>(a, z, Dither::UNUSED) != a);
         assert!(moves_something, "{z:?} is neutral under saturation");
     }
     // Under wrapping slot 7 is, because 7 + 9 is the span. The identity law is
     // about the value zero, and a neutral slot of the wrapped operation is a
     // different thing the format can have without it.
     for a in members::<F>() {
-        assert_eq!(add::<Signature<F, Adapt<Floor, Wrap>>>(a, Slot::at(7), Dither::UNUSED), a);
+        assert_eq!(
+            add::<Signature<F, Adapt<Floor, Wrap>>>(a, Slot::at(7), Dither::UNUSED),
+            a
+        );
     }
 }
 
@@ -335,12 +374,18 @@ impl PerFormat for Axis {
                 for mode in ALL_MODES {
                     for dither in DITHERS {
                         let other = dispatch::at::<F, Sums>(mode, policy, &Sums(dither));
-                        assert!(other == floor, "{mode:?} moved a sum at {name:?}, {policy:?}");
+                        assert!(
+                            other == floor,
+                            "{mode:?} moved a sum at {name:?}, {policy:?}"
+                        );
                     }
                 }
             } else {
                 let ceil = dispatch::at::<F, Sums>(Mode::Ceil, policy, &Sums(Dither::UNUSED));
-                assert!(ceil != floor, "floor and ceil agree at {name:?}, {policy:?}");
+                assert!(
+                    ceil != floor,
+                    "floor and ceil agree at {name:?}, {policy:?}"
+                );
             }
         }
         if whole {

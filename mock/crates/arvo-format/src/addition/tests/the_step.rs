@@ -73,7 +73,11 @@ impl PerFormat for Denotation {
                 let got = sum_position::<F>(a, b);
                 // Back from value space: a value is `phase * q + p * q`, so the
                 // position of a value `v` is `v / q - phase`.
-                let want = value::<F>(a).plus(value::<F>(b)).over(q).minus(phase).position();
+                let want = value::<F>(a)
+                    .plus(value::<F>(b))
+                    .over(q)
+                    .minus(phase)
+                    .position();
                 assert_eq!(got, want, "{a:?} + {b:?} at {:?}", coordinates::<F>());
                 self.pairs += 1;
                 if self.with_mutant {
@@ -129,7 +133,10 @@ fn the_exact_step_is_the_sum_of_the_values_read_back_as_a_position() {
     assert_eq!(walk.pairs, u64::from(walk.formats) * 64);
     // The control: the value-units step is wrong somewhere, and nowhere the
     // quantum is one, so what separates it from the step is the scale.
-    assert!(walk.mutant_wrong > 0, "the value-units step agreed everywhere");
+    assert!(
+        walk.mutant_wrong > 0,
+        "the value-units step agreed everywhere"
+    );
     assert_eq!(walk.mutant_wrong_at_unit, 0);
 }
 

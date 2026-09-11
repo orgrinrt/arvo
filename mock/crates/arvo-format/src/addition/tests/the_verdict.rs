@@ -20,7 +20,7 @@
 //! some cells that turn out associative anyway, and that count is pinned so a
 //! change to it is seen rather than absorbed.
 
-use super::{DITHERS, phases, signatures, Table, Window};
+use super::{DITHERS, Table, Window, phases, signatures};
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
 use crate::addition::addition_is_associative;
 use crate::ambient::{BinaryRationals, DecimalRationals};
@@ -45,11 +45,20 @@ type Wr<F> = Signature<F, Adapt<Floor, Wrap>>;
 
 #[test]
 fn the_counts_the_canon_records_are_reproduced() {
-    assert_eq!(Table::of::<Sat<Integer<4>>>(Dither::UNUSED).divergent(), 952);
+    assert_eq!(
+        Table::of::<Sat<Integer<4>>>(Dither::UNUSED).divergent(),
+        952
+    );
     assert_eq!(Table::of::<Wr<Integer<4>>>(Dither::UNUSED).divergent(), 0);
-    assert_eq!(Table::of::<Sat<UFixed<4, 0>>>(Dither::UNUSED).divergent(), 0);
+    assert_eq!(
+        Table::of::<Sat<UFixed<4, 0>>>(Dither::UNUSED).divergent(),
+        0
+    );
     assert_eq!(Table::of::<Wr<UFixed<4, 0>>>(Dither::UNUSED).divergent(), 0);
-    assert_eq!(Table::of::<Sat<Integer<8>>>(Dither::UNUSED).divergent(), 4_177_792);
+    assert_eq!(
+        Table::of::<Sat<Integer<8>>>(Dither::UNUSED).divergent(),
+        4_177_792
+    );
 
     assert!(!addition_is_associative::<Sat<Integer<4>>>().get());
     assert!(addition_is_associative::<Wr<Integer<4>>>().get());
@@ -101,7 +110,11 @@ fn the_count_and_the_verdict_do_not_move_with_the_fraction_width_or_the_radix() 
     every_scale!(whole; BinaryRationals, 0, 1);
     every_scale!(whole; DecimalRationals, 0, 1);
     assert_eq!(whole.formats, 34);
-    assert!(whole.counts[.. 34].iter().all(|&c| c == 952), "{:?}", &whole.counts[.. 34]);
+    assert!(
+        whole.counts[.. 34].iter().all(|&c| c == 952),
+        "{:?}",
+        &whole.counts[.. 34]
+    );
     assert!(whole.verdicts[.. 34].iter().all(|&v| !v));
 
     // The same at a fractional phase, where the count is whatever it is at one
@@ -111,8 +124,16 @@ fn the_count_and_the_verdict_do_not_move_with_the_fraction_width_or_the_radix() 
     every_scale!(third; DecimalRationals, 1, 3);
     assert_eq!(third.formats, 34);
     let first = third.counts[0];
-    assert!(third.counts[.. 34].iter().all(|&c| c == first), "{:?}", &third.counts[.. 34]);
-    assert!(third.verdicts[.. 34].iter().all(|&v| v == third.verdicts[0]));
+    assert!(
+        third.counts[.. 34].iter().all(|&c| c == first),
+        "{:?}",
+        &third.counts[.. 34]
+    );
+    assert!(
+        third.verdicts[.. 34]
+            .iter()
+            .all(|&v| v == third.verdicts[0])
+    );
 }
 
 // --- the verdict against brute force -------------------------------------------
@@ -134,16 +155,16 @@ impl PerSignature for Cell {
 /// The cross, tallied by phase class.
 #[derive(Default)]
 struct Cross {
-    cells:                          usize,
-    licensed_divergent:             u64,
-    whole_licensed:                 u64,
-    whole_refused:                  u64,
-    whole_refused_associative:      u64,
+    cells: usize,
+    licensed_divergent: u64,
+    whole_licensed: u64,
+    whole_refused: u64,
+    whole_refused_associative: u64,
     single_slot_refused_associative: u64,
-    fractional_licensed:            u64,
-    fractional_refused:             u64,
+    fractional_licensed: u64,
+    fractional_refused: u64,
     fractional_refused_associative: [[u64; 3]; 6],
-    fractional_refused_by_cell:     [[u64; 3]; 6],
+    fractional_refused_by_cell: [[u64; 3]; 6],
 }
 
 impl PerFormat for Cross {
@@ -246,14 +267,22 @@ fn a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways()
     // a mode reading the sign or the parity, where the offset moves across the
     // reach and the verdict refuses without asking whether the moving offset
     // composes anyway.
-    assert_eq!(
-        cross.fractional_refused_by_cell,
-        [[101, 101, 101], [0, 53, 53], [0, 52, 52], [36, 67, 67], [51, 82, 82], [0, 63, 63]]
-    );
-    assert_eq!(
-        cross.fractional_refused_associative,
-        [[38, 38, 38], [0, 0, 0], [0, 0, 0], [10, 14, 14], [17, 22, 22], [0, 0, 0]]
-    );
+    assert_eq!(cross.fractional_refused_by_cell, [
+        [101, 101, 101],
+        [0, 53, 53],
+        [0, 52, 52],
+        [36, 67, 67],
+        [51, 82, 82],
+        [0, 63, 63]
+    ]);
+    assert_eq!(cross.fractional_refused_associative, [
+        [38, 38, 38],
+        [0, 0, 0],
+        [0, 0, 0],
+        [10, 14, 14],
+        [17, 22, 22],
+        [0, 0, 0]
+    ]);
     // A range of one slot is associative whatever the map does, and the verdict
     // licenses every such cell, so the exactness claim above is not resting on
     // the span bound it is stated with.
@@ -292,7 +321,9 @@ fn quantifying_over_the_ambient_domain_refuses_a_format_that_is_associative() {
     // than the stored operands: a negative translation points back into the
     // range from above, so the law is refused over a format where it holds.
     let positions = Reach::of(Slot::at(0), Slot::at(30));
-    let over_the_ambient = positions.translated_by(Slot::at(i64::MIN), Slot::at(i64::MAX)).on_grid();
+    let over_the_ambient = positions
+        .translated_by(Slot::at(i64::MIN), Slot::at(i64::MAX))
+        .on_grid();
     assert!(!completion_is_translation_homomorphic::<S>(over_the_ambient).get());
     let over_stored = positions.translated_by(Slot::at(0), Slot::at(15)).on_grid();
     assert!(completion_is_translation_homomorphic::<S>(over_stored).get());

@@ -17,6 +17,7 @@ impl Format for UnheldRemainder {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Signed<8>;
+
     const PHASE: Phase = Phase::of(i64::MAX, i64::MIN);
 }
 
