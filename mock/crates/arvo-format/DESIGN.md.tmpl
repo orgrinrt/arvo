@@ -1196,8 +1196,11 @@ refusal is what stops the step leaving the coordinate silently.
 
 The third is a remainder the position cannot hold. An `Exact` carries its remainder as a `Fraction`,
 whose denominator is a positive value the coordinate carries, and the phase's fractional part needs the
-phase's reduced denominator there. One kind of declared pair reaches past that: a denominator of the
-least value with an odd numerator, whose reduced denominator is two to the sixty-third. `Fraction::of`
+phase's reduced denominator there. Two kinds of declared pair reach past that. A denominator of zero
+names no remainder at all; the format's own obligation refuses it where that obligation is forced, and
+addition's obligation carries the condition itself rather than forcing the format's, so the format's
+obligation keeps exactly the two force sites the section on obligations names. And a denominator of the
+least value with an odd numerator has a reduced denominator of two to the sixty-third. `Fraction::of`
 saturates such a ratio, which is its own second region and close enough for a ratio, and at the largest
 odd numerator it saturates to exactly one, which `Exact::between` then carries into the slot. The
 position would land a whole slot above the sum, so the saturation that is harmless for a ratio is wrong
