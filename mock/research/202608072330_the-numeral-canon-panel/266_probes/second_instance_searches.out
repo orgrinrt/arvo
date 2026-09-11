@@ -1,0 +1,51 @@
+# For each one_expert row in the cluster: files (besides the row's own provenance)
+# mentioning its slug or a close paraphrase, searched across the whole panel directory.
+# Control at the end: the same search shape against a row already confirmed two_experts
+# (a_composed_expressions_region_is_never_inherited_from_its_parts), to show the method
+# finds the corroborating files that are known to exist.
+
+== a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points ==
+mock/research/202608072330_the-numeral-canon-panel/187_mcsherry_wiring_the_edges.md
+mock/research/202608072330_the-numeral-canon-panel/216_lamport_second_read_the_chain_and_the_realisation_map.md
+
+== a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator ==
+mock/research/202608072330_the-numeral-canon-panel/216_lamport_second_read_the_chain_and_the_realisation_map.md
+mock/research/202608072330_the-numeral-canon-panel/220_orchard_the_marker_spelling.md
+mock/research/202608072330_the-numeral-canon-panel/219_kiselyov_the_marker_spelling.md
+
+== a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing ==
+mock/research/202608072330_the-numeral-canon-panel/216_lamport_second_read_the_chain_and_the_realisation_map.md
+mock/research/202608072330_the-numeral-canon-panel/220_orchard_the_marker_spelling.md
+
+== no_derivation_reads_the_grid_so_a_composition_may_hold_it_at_run_time ==
+mock/research/202608072330_the-numeral-canon-panel/219_kiselyov_the_marker_spelling.md
+mock/research/202608072330_the-numeral-canon-panel/216_lamport_second_read_the_chain_and_the_realisation_map.md
+mock/research/202608072330_the-numeral-canon-panel/220_orchard_the_marker_spelling.md
+
+== splitting_a_reduction_is_sound_in_three_of_the_four_sign_and_policy_cells ==
+mock/research/202608072330_the-numeral-canon-panel/235_kiselyov_which_obligations_the_ratified_canon_supports.md
+
+== the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws ==
+mock/research/202608072330_the-numeral-canon-panel/189_kiselyov_settling_what_the_corpus_already_settled.md
+mock/research/202608072330_the-numeral-canon-panel/195_mcsherry_the_obligation_coverage.md
+mock/research/202608072330_the-numeral-canon-panel/222_kiselyov_the_numeric_fundamentals.md
+mock/research/202608072330_the-numeral-canon-panel/236_seat_a_which_format_proposals_are_ratifiable.md
+mock/research/202608072330_the-numeral-canon-panel/240_the_format_layer_derived_from_its_denotation.md
+mock/research/202608072330_the-numeral-canon-panel/237_the_format_proposals_against_the_ratification_gate.md
+
+== within_an_unbound_stretch_the_design_may_select_any_realisation ==
+mock/research/202608072330_the-numeral-canon-panel/183_rompf_porting_the_five_candidates.md
+mock/research/202608072330_the-numeral-canon-panel/189_kiselyov_settling_what_the_corpus_already_settled.md
+mock/research/202608072330_the-numeral-canon-panel/187_mcsherry_wiring_the_edges.md
+
+== CONTROL: a_composed_expressions_region_is_never_inherited_from_its_parts (known two_experts) ==
+mock/research/202608072330_the-numeral-canon-panel/182_orchard_porting_the_four_consolidations.md
+mock/research/202608072330_the-numeral-canon-panel/188_ringer_entailment_check_on_the_consolidation_port.md
+mock/research/202608072330_the-numeral-canon-panel/215_kiselyov_second_read_the_algebraic_laws.md
+mock/research/202608072330_the-numeral-canon-panel/195_mcsherry_the_obligation_coverage.md
+mock/research/202608072330_the-numeral-canon-panel/82_jhala_lifting_a_measured_region_into_a_declaration.md
+mock/research/202608072330_the-numeral-canon-panel/76_willsey_derived_laws_derived_cold.md
+mock/research/202608072330_the-numeral-canon-panel/91_ringer_entailment_check_on_the_derived_laws_consolidation.md
+mock/research/202608072330_the-numeral-canon-panel/79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md
+mock/research/202608072330_the-numeral-canon-panel/90_giesen_consolidation_derived_algebraic_laws.md
+mock/research/202608072330_the-numeral-canon-panel/81_persona_checkpoint_seven.md
