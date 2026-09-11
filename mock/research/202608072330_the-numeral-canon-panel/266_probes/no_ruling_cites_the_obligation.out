@@ -1,0 +1,13 @@
+# grep: does any existing ruling row cite composition_contracts_above_the_numeral
+$ grep -n composition_contracts_above_the_numeral mock/registry/ruling.toml
+exit: 1
+
+# control: the same grep against an obligation known to be ratified (the_format spine),
+# to show the pattern finds real hits when they exist rather than being silently broken
+$ grep -n 'the_container_premise\|arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation' mock/registry/ruling.toml | head -5
+1444:  "arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation",
+1463:topic = "the_container_premise"
+1471:answers = ["the_container_premise"]
+1474:note = "**The intersection is stated rather than assumed.** Seat 225's instruments carry the width span 2 to 31 and the fraction-grid axis, which seat 210's own note flags as unreached. Seat 210's carry the operation and policy axes and the standards encodings. So the two agree over the union of what each covered and neither is a second instance on the other's axes, which is the honest shape rather than a defect.\n\n**One contamination, declared by seat 225 and recorded here rather than filed away.** Its brief withheld the four proposals by naming their slugs, and those slugs are descriptive sentences, so withholding them by name signposted the destination. Its route and its instruments are its own and were committed first. What that cost is unmeasurable and what it did not reach is the finding: **no signpost suggests dissolving the binary**, since all four slugs read as claims on one branch, and the dissolution is what this ruling turns on.\n\n**The question's own option list was the shape op has refused three times**, a single policy to govern a whole category. It is closed by dissolution rather than by picking a letter, which is what he has said the answer to that shape always is.\n\nThis unblocks the floor of the stack. `topic::the_container_premise` said of itself that no wording of several downstream clauses is true on both branches; there are no branches now, and the clauses can be written."
+1475:provenance = ["panel::202608072330_the-numeral-canon-panel::225_peyton_jones_the_container_premise::#3-the-statement-that-survives-and-it-is-already-the-canons-shape", "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#1-what-i-did-first-which-was-try-to-break-the-question"]
+exit: 0
