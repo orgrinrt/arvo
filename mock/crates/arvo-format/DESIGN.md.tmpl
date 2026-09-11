@@ -1194,11 +1194,22 @@ position. No format this crate ships reaches it, because the widest slot range i
 counts its phase in halves, but an outside format declaring a phase of many whole quanta does, and the
 refusal is what stops the step leaving the coordinate silently.
 
-Both are one obligation, forced by `sum_position` and therefore by everything that adds. It is a const,
-so it has the reach every obligation in this crate has: a runtime call meets it when a binary is
-produced, and a call bound in a `const` item meets it at check time, which is the form the compile-fail
-cases pin with their diagnostics. `is_addable` asks the same question without forcing it, which is what
-lets a test hold a format addition refuses and report on it.
+The third is a remainder the position cannot hold. An `Exact` carries its remainder as a `Fraction`,
+whose denominator is a positive value the coordinate carries, and the phase's fractional part needs the
+phase's reduced denominator there. One kind of declared pair reaches past that: a denominator of the
+least value with an odd numerator, whose reduced denominator is two to the sixty-third. `Fraction::of`
+saturates such a ratio, which is its own second region and close enough for a ratio, and at the largest
+odd numerator it saturates to exactly one, which `Exact::between` then carries into the slot. The
+position would land a whole slot above the sum, so the saturation that is harmless for a ratio is wrong
+for a position, and refusing is the only answer that keeps the step exact.
+
+All three are one obligation. `sum_position` forces it, so everything that adds does, and
+`addition_reach` and `addition_is_associative` force it as well, because they compute the same
+positions and would otherwise narrow them into a `Slot` for a format whose sum leaves the coordinate.
+It is a const, so it has the reach every obligation in this crate has: a runtime call meets it when a
+binary is produced, and a call bound in a `const` item meets it at check time, which is the form the
+compile-fail cases pin with their diagnostics. `is_addable` asks the same question without forcing it,
+which is what lets a test hold a format addition refuses and report on it.
 
 ### The operation, and what reads its arity
 
@@ -1312,7 +1323,8 @@ The reach addition supplies is the reach the step produces: its bounds are the l
 `sum_position` returns over every pair, and its grid state is the one the returned remainders show.
 
 What must not compile does not: addition over a magnitude-indexed format, over an outside format whose
-sum is not carried, over a format that is not a declared signature, and with a host integer where a
+sum is not carried, over an outside format whose phase remainder the position cannot hold, over a
+format that is not a declared signature, and with a host integer where a
 slot goes. Each is a compile-fail case with its diagnostic committed.
 
 ### The surface this section names
