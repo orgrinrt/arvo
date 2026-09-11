@@ -28,7 +28,7 @@ use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Biased, Integer, UFixed};
 use arvo_format::quantum::{Constant, is_constant_family};
 use arvo_format::rounding::Floor;
-use arvo_format::slots::{Signed, Slot, Slots};
+use arvo_format::slots::{Slot, Slots};
 use arvo_format::width::Width;
 
 // --- H1 and H4 ---------------------------------------------------------------
@@ -95,6 +95,9 @@ const REFUSED_AT_CHECK: Exact = {
 
 /// A phase of `i64::MAX` whole quanta over an eight-bit signed range: every
 /// coordinate admitted on its own, and the sum of two members is not carried.
+///
+/// The slot range is named by its full path so the default build, which does
+/// not compile this arm, has no import a fixer would strip.
 #[cfg(feature = "refuse_uncarried_sum_at_check")]
 struct FarPhase;
 
@@ -102,7 +105,8 @@ struct FarPhase;
 impl Format for FarPhase {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
-    type Slots = Signed<8>;
+    type Slots = arvo_format::slots::Signed<8>;
+
     const PHASE: Phase = Phase::of(i64::MAX, 1);
 }
 
@@ -124,8 +128,8 @@ const fn width_for(lo: i64, hi: i64) -> u32 {
 struct Window<const LO: i64, const HI: i64>;
 
 impl<const LO: i64, const HI: i64> Slots for Window<LO, HI> {
-    const MIN: Slot = Slot::at(LO);
     const MAX: Slot = Slot::at(HI);
+    const MIN: Slot = Slot::at(LO);
     const WIDTH: Width = Width::bits(width_for(LO, HI));
 }
 
@@ -135,6 +139,7 @@ impl<const LO: i64, const HI: i64> Format for Over<LO, HI> {
     type Ambient = BinaryRationals;
     type Quantum = Constant<0>;
     type Slots = Window<LO, HI>;
+
     const PHASE: Phase = Phase::ZERO;
 }
 
@@ -144,10 +149,10 @@ fn divergent<S: DeclaredSignature>() -> u64 {
     let lo = <<S::Format as Format>::Slots as Slots>::MIN.index();
     let hi = <<S::Format as Format>::Slots as Slots>::MAX.index();
     let mut n = 0;
-    for a in lo..=hi {
-        for b in lo..=hi {
+    for a in lo ..= hi {
+        for b in lo ..= hi {
             let ab = add::<S>(Slot::at(a), Slot::at(b));
-            for c in lo..=hi {
+            for c in lo ..= hi {
                 let left = add::<S>(ab, Slot::at(c));
                 let right = add::<S>(Slot::at(a), add::<S>(Slot::at(b), Slot::at(c)));
                 if left != right {

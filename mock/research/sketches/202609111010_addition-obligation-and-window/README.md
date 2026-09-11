@@ -75,5 +75,3 @@ evaluates and the `trybuild` shape the round chose is no longer the only one tha
 Unblocks the doc changelist: the obligation shape, the carry refusal as a `trybuild` case over an
 outside format rather than a shipped one, and the window family as the test instrument for the
 absorption predicate.
-
-The unused-import warning in the default build is `Signed`, used only under the carry feature.
