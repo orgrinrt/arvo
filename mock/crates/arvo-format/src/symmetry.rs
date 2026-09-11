@@ -26,12 +26,14 @@
 //! the whole of it, which is what makes the two regions being separable
 //! load-bearing rather than descriptive.
 //!
-//! Nothing in this crate reads these predicates. The consumer that would is an
-//! operation and this crate ships none, so what checks them is the test that
-//! derives the same answers by walking the map. That is stated rather than dressed
-//! up: two predicates that were a `matches!` over an enumeration nothing read were
-//! deleted from `overflow` and `rounding`, and the difference here is that an
-//! answer is a function of five facts about a domain rather than a restatement of
+//! Addition reads these predicates. Its associativity verdict is the completion
+//! half of the relocation law, read at the reach addition supplies, and the
+//! rounding half decides whether that reading applies at all, so the conjunction
+//! is written once, here, rather than again in the operation. What checks the
+//! predicates themselves is the test that derives the same answers by walking the
+//! map: two predicates that were a `matches!` over an enumeration nothing read
+//! were deleted from `overflow` and `rounding`, and the difference here is that an
+//! answer is a function of six facts about a domain rather than a restatement of
 //! one enumeration, and that the test runs the machinery instead of reading the
 //! declaration back.
 
@@ -60,7 +62,7 @@ pub enum Reads {
     // `rounding_is_translation_equivariant` has no disjunct for it and answers
     // no on a domain where the law in fact holds. Conservative, so nothing
     // unsound rests on it, and it costs a real region an arm could gate on.
-    // Expressing it wants a fourth fact on `Reach`, that every representable
+    // Expressing it wants a further fact on `Reach`, that every representable
     // translation the domain reaches is even, which the declared signature does
     // not carry today. `the_classification` walks exactly that domain with a
     // step of two, so the instrument for checking it already exists.
@@ -149,12 +151,29 @@ pub const fn behaviour_of(mode: Mode) -> Behaviour {
     }
 }
 
+/// Whether the positions a reach names leave the grid, and whether a tie is among
+/// them.
+///
+/// One coordinate of three values rather than two flags, because an on-grid reach
+/// with an exactly-half position in it is a contradiction, and two flags are what
+/// would let somebody write it. The values run from the narrowest reach to the
+/// widest.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+enum Residues {
+    /// Every position is on the grid, so the rounding region is never entered.
+    OnGrid,
+    /// Some position is off the grid and none is exactly half way.
+    OffGrid,
+    /// An exactly-half position is among them.
+    WithTies,
+}
+
 /// What an operation's exact positions and its translations reach.
 ///
 /// The half of a law's region a declared signature cannot supply. A signature
 /// says which slots are admitted; this says which exact positions an operation
 /// produces before the adaptation sees them, which translations it applies, and
-/// whether an exactly-half position is among them.
+/// whether those positions leave the grid and reach a tie.
 ///
 /// A pair handed in the wrong order is ordered rather than refused, the same act
 /// `Fraction::of` performs on a ratio, and the wider reading is the conservative
@@ -165,12 +184,12 @@ pub struct Reach {
     position_high:    Slot,
     translation_low:  Slot,
     translation_high: Slot,
-    ties:             Bool,
+    grid:             Residues,
 }
 
 impl Reach {
-    /// Every position and every translation the coordinate can carry, with an
-    /// exactly-half position among them.
+    /// Every position and every translation the coordinate can carry, off the
+    /// grid and with an exactly-half position among them.
     ///
     /// What a consumer declares when it knows nothing about its operation. It
     /// licenses only the cells where both regions commute whatever the reach,
@@ -181,11 +200,11 @@ impl Reach {
         position_high:    Slot::at(i64::MAX),
         translation_low:  Slot::at(i64::MIN),
         translation_high: Slot::at(i64::MAX),
-        ties:             Bool::of(true),
+        grid:             Residues::WithTies,
     };
 
-    /// The positions an operation reaches, with no translation and a tie among
-    /// them.
+    /// The positions an operation reaches, with no translation, off the grid and
+    /// with a tie among them.
     #[must_use]
     pub const fn of(low: Slot, high: Slot) -> Self {
         let (low, high) = ordered(low, high);
@@ -194,7 +213,7 @@ impl Reach {
             position_high:    high,
             translation_low:  Slot::ZERO,
             translation_high: Slot::ZERO,
-            ties:             Bool::of(true),
+            grid:             Residues::WithTies,
         }
     }
 
@@ -210,10 +229,30 @@ impl Reach {
     }
 
     /// The same reach with no exactly-half position in it.
+    ///
+    /// A reach already on the grid stays there: taking the ties away from a set
+    /// of positions that has none leaves it where it was, rather than moving it
+    /// off the grid it never left.
     #[must_use]
     pub const fn without_ties(self) -> Self {
+        let grid = match self.grid {
+            Residues::OnGrid => Residues::OnGrid,
+            Residues::OffGrid | Residues::WithTies => Residues::OffGrid,
+        };
         Self {
-            ties: Bool::of(false),
+            grid,
+            ..self
+        }
+    }
+
+    /// The same reach with every position on the grid.
+    ///
+    /// What an operation declares when its exact positions are whole slots, so
+    /// the rounding region is never entered and no mode has anything to read.
+    #[must_use]
+    pub const fn on_grid(self) -> Self {
+        Self {
+            grid: Residues::OnGrid,
             ..self
         }
     }
@@ -242,10 +281,16 @@ impl Reach {
         self.translation_high
     }
 
+    /// Whether any position is off the grid.
+    #[must_use]
+    pub const fn reaches_off_the_grid(self) -> Bool {
+        Bool::of(!matches!(self.grid, Residues::OnGrid))
+    }
+
     /// Whether an exactly-half position is among them.
     #[must_use]
     pub const fn reaches_a_tie(self) -> Bool {
-        self.ties
+        Bool::of(matches!(self.grid, Residues::WithTies))
     }
 
     /// The lowest position the rounding region is asked about.
@@ -318,9 +363,19 @@ impl Reach {
     }
 
     /// Whether a rounded position can sit above the highest admitted slot.
+    ///
+    /// Off the grid a position at the highest slot can round to the one above
+    /// it, so a reach whose highest position is the highest slot already
+    /// reaches past it. On the grid the rounding region returns the position
+    /// itself, so it reaches past only where a position does, and the test is
+    /// strict. Reading it inclusively there refuses a relocation the map honours.
     #[must_use]
     pub const fn reaches_above(self, highest: Slot) -> Bool {
-        Bool::of(self.position_high.index() >= highest.index())
+        if self.reaches_off_the_grid().get() {
+            Bool::of(self.position_high.index() >= highest.index())
+        } else {
+            Bool::of(self.position_high.index() > highest.index())
+        }
     }
 }
 
@@ -333,10 +388,10 @@ const fn ordered(low: Slot, high: Slot) -> (Slot, Slot) {
 
 /// Whether the rounding region commutes with translation over what `reach` names.
 ///
-/// Three disjuncts, and they are the three ways the thing a mode reads can fail
-/// to be present: it reads nothing, or it reads only at a tie and no tie is
-/// reached, or what it reads is the sign and no position it is asked about is
-/// negative.
+/// Four disjuncts, and they are the four ways the thing a mode reads can fail to
+/// be present: it reads nothing, or it reads only at a tie and no tie is reached,
+/// or what it reads is the sign and no position it is asked about is negative, or
+/// no position is off the grid, so the region is never entered at all.
 #[must_use]
 pub const fn rounding_is_translation_equivariant(mode: Mode, reach: Reach) -> Bool {
     let behaviour = behaviour_of(mode);
@@ -345,7 +400,11 @@ pub const fn rounding_is_translation_equivariant(mode: Mode, reach: Reach) -> Bo
         Bool::of(matches!(behaviour.when(), When::AtATie)).and(reach.reaches_a_tie().not());
     let the_sign_does_not_vary = Bool::of(matches!(behaviour.reads(), Reads::Sign))
         .and(reach.reaches_a_negative_position().not());
-    reads_nothing.or(only_at_a_tie).or(the_sign_does_not_vary)
+    let never_entered = reach.reaches_off_the_grid().not();
+    reads_nothing
+        .or(only_at_a_tie)
+        .or(the_sign_does_not_vary)
+        .or(never_entered)
 }
 
 /// Whether the completion region commutes with translation over what `reach`

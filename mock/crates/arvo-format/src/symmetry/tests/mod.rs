@@ -19,15 +19,19 @@
 //! range reaching negatives asymmetrically, one reaching none, and one symmetric
 //! about zero. No shipped format is symmetric, so this module declares one, which
 //! is also what an outside implementor does.
+//!
+//! The mode and the policy become a signature through the crate's shared
+//! dispatch, so the eighteen signatures a cell can name are written once for
+//! every suite that walks them.
 
-use crate::adapt::{Adapt, DeclaredSignature, Signature};
+use crate::adapt::DeclaredSignature;
 use crate::ambient::BinaryRationals;
 use crate::apply::{Dither, Exact, Fraction, adapt};
 use crate::format::{Format, Phase};
-use crate::overflow::{Clamp, Policy, Saturate, Wrap};
+use crate::overflow::Policy;
 use crate::points::{Integer, UFixed};
 use crate::quantum::Constant;
-use crate::rounding::{ALL_MODES, Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZero};
+use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::{Slot, Slots};
 use crate::symmetry::{
     Reach,
@@ -36,6 +40,7 @@ use crate::symmetry::{
     completion_is_reflection_equivariant,
     completion_is_translation_homomorphic,
 };
+use crate::tests::dispatch::{self, PerSignature};
 use crate::width::{Bool, Width};
 
 mod the_classification;
@@ -85,48 +90,13 @@ enum Which {
 /// isolate a region rather than to be a range a law is stated at.
 const RANGES: [Which; 3] = [Which::Signed, Which::Unsigned, Which::Symmetric];
 
-/// Something to do at a declared signature the cell names.
-///
-/// One dispatch over the matrix rather than one per caller. The alternative is
-/// the same four-by-six-by-three match written out five times, which is the pile
-/// this crate refuses everywhere else.
-trait PerSignature {
-    /// What it answers with.
-    type Out;
-
-    /// Do it at one signature.
-    fn run<S: DeclaredSignature>(&self) -> Self::Out;
-}
-
-/// The dispatch. Every arm is a real instantiation, so what comes back is what a
-/// consumer declaring that signature gets.
+/// The signature a cell names, and `what` run at it.
 fn at<P: PerSignature>(which: Which, mode: Mode, policy: Policy, what: &P) -> P::Out {
-    macro_rules! at_policy {
-        ($fmt:ty, $md:ty) => {
-            match policy {
-                Policy::Wrap => what.run::<Signature<$fmt, Adapt<$md, Wrap>>>(),
-                Policy::Saturate => what.run::<Signature<$fmt, Adapt<$md, Saturate>>>(),
-                Policy::Clamp => what.run::<Signature<$fmt, Adapt<$md, Clamp>>>(),
-            }
-        };
-    }
-    macro_rules! at_mode {
-        ($fmt:ty) => {
-            match mode {
-                Mode::TowardZero => at_policy!($fmt, TowardZero),
-                Mode::Floor => at_policy!($fmt, Floor),
-                Mode::Ceil => at_policy!($fmt, Ceil),
-                Mode::HalfUp => at_policy!($fmt, HalfUp),
-                Mode::HalfEven => at_policy!($fmt, HalfEven),
-                Mode::Stochastic => at_policy!($fmt, Stochastic),
-            }
-        };
-    }
     match which {
-        Which::Signed => at_mode!(Integer<3>),
-        Which::Unsigned => at_mode!(UFixed<3, 0>),
-        Which::Symmetric => at_mode!(SymmetricInteger),
-        Which::Wide => at_mode!(Integer<40>),
+        Which::Signed => dispatch::at::<Integer<3>, P>(mode, policy, what),
+        Which::Unsigned => dispatch::at::<UFixed<3, 0>, P>(mode, policy, what),
+        Which::Symmetric => dispatch::at::<SymmetricInteger, P>(mode, policy, what),
+        Which::Wide => dispatch::at::<Integer<40>, P>(mode, policy, what),
     }
 }
 
@@ -219,6 +189,22 @@ fn residues() -> impl Iterator<Item = (i64, i64)> {
     [(0, 1), (1, 8), (1, 4), (1, 2), (3, 4), (7, 8), (1, 3)].into_iter()
 }
 
+/// The residues a reach with this grid state may produce.
+///
+/// On the grid that is the one residue of zero. Off it with no tie it is every
+/// residue but the midpoint, and with a tie it is all of them. The on-grid
+/// residue is in both of the other two, because a reach off the grid says some
+/// position is off it and not that every one is.
+fn residues_of(grid: GridState) -> impl Iterator<Item = (i64, i64)> {
+    residues().filter(move |&(num, den)| {
+        match grid {
+            GridState::OnGrid => num == 0,
+            GridState::OffGrid => !is_tie(num, den),
+            GridState::WithTies => true,
+        }
+    })
+}
+
 /// The dither every arm uses.
 ///
 /// Fixed, because relocation is a question about a function and the stochastic
@@ -240,55 +226,57 @@ fn is_tie(num: i64, den: i64) -> bool {
     num * 2 == den
 }
 
+/// Whether the positions a cell reaches leave the grid, and whether a tie is
+/// among them.
+///
+/// The test's own statement of the three values `Reach` carries, spelled out
+/// here rather than read from the coordinate, so a cell names what it walks and
+/// the predicate is then asked about the same thing through the public surface.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+enum GridState {
+    /// Every position on the grid.
+    OnGrid,
+    /// Some off it, and no exactly-half position.
+    OffGrid,
+    /// An exactly-half position among them.
+    WithTies,
+}
+
 /// What a cell restricts, which is what a reach carries.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 struct Restriction {
     negative_positions:    bool,
     negative_translations: bool,
-    ties:                  bool,
+    grid:                  GridState,
 }
 
-const RESTRICTIONS: [Restriction; 8] = [
+const fn restriction(
+    negative_positions: bool,
+    negative_translations: bool,
+    grid: GridState,
+) -> Restriction {
     Restriction {
-        negative_positions:    true,
-        negative_translations: true,
-        ties:                  true,
-    },
-    Restriction {
-        negative_positions:    true,
-        negative_translations: true,
-        ties:                  false,
-    },
-    Restriction {
-        negative_positions:    true,
-        negative_translations: false,
-        ties:                  true,
-    },
-    Restriction {
-        negative_positions:    true,
-        negative_translations: false,
-        ties:                  false,
-    },
-    Restriction {
-        negative_positions:    false,
-        negative_translations: true,
-        ties:                  true,
-    },
-    Restriction {
-        negative_positions:    false,
-        negative_translations: true,
-        ties:                  false,
-    },
-    Restriction {
-        negative_positions:    false,
-        negative_translations: false,
-        ties:                  true,
-    },
-    Restriction {
-        negative_positions:    false,
-        negative_translations: false,
-        ties:                  false,
-    },
+        negative_positions,
+        negative_translations,
+        grid,
+    }
+}
+
+/// Every combination: two signs of position, two signs of translation, three
+/// grid states.
+const RESTRICTIONS: [Restriction; 12] = [
+    restriction(true, true, GridState::WithTies),
+    restriction(true, true, GridState::OffGrid),
+    restriction(true, true, GridState::OnGrid),
+    restriction(true, false, GridState::WithTies),
+    restriction(true, false, GridState::OffGrid),
+    restriction(true, false, GridState::OnGrid),
+    restriction(false, true, GridState::WithTies),
+    restriction(false, true, GridState::OffGrid),
+    restriction(false, true, GridState::OnGrid),
+    restriction(false, false, GridState::WithTies),
+    restriction(false, false, GridState::OffGrid),
+    restriction(false, false, GridState::OnGrid),
 ];
 
 /// The reach one cell describes.
@@ -307,12 +295,17 @@ fn cell_reach(which: Which, r: Restriction) -> Reach {
     let translation_low = if r.negative_translations { lo.index() } else { lo.index().max(0) };
     let reach = Reach::of(Slot::at(position_low), Slot::at(hi.index() + span))
         .translated_by(Slot::at(translation_low), hi);
-    if r.ties { reach } else { reach.without_ties() }
+    match r.grid {
+        GridState::WithTies => reach,
+        GridState::OffGrid => reach.without_ties(),
+        GridState::OnGrid => reach.on_grid(),
+    }
 }
 
 /// What one cell's sweep found.
 struct Cell {
     law:                bool,
+    residues:           u64,
     triples:            u64,
     excursions:         u64,
     ties:               u64,
@@ -321,20 +314,30 @@ struct Cell {
 
 /// The relocation law over one cell, measured.
 fn relocation_over(which: Which, mode: Mode, policy: Policy, r: Restriction) -> Cell {
-    let reach = cell_reach(which, r);
+    measure_relocation(which, mode, policy, cell_reach(which, r), r.grid)
+}
+
+/// The relocation law over the positions and translations a reach names, at
+/// the residues its grid state allows, measured.
+fn measure_relocation(
+    which: Which,
+    mode: Mode,
+    policy: Policy,
+    reach: Reach,
+    grid: GridState,
+) -> Cell {
     let (lo, hi) = bounds(which);
     let d = the_dither();
     let mut out = Cell {
         law:                true,
+        residues:           0,
         triples:            0,
         excursions:         0,
         ties:               0,
         negative_positions: 0,
     };
-    for (num, den) in residues() {
-        if !r.ties && is_tie(num, den) {
-            continue;
-        }
+    for (num, den) in residues_of(grid) {
+        out.residues += 1;
         for n in reach.positions_low().index() ..= reach.positions_high().index() {
             let here = adapt_at(which, mode, policy, position(n, num, den), d);
             if n < lo.index() || n > hi.index() {
