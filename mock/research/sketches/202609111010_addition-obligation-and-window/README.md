@@ -60,8 +60,9 @@ coordinate". The control prints that the widest phase a shipped point can declar
 `Biased<62, 0, i64::MAX>` and `Biased<62, 0, i64::MIN>`, is still carried: `Phase::halves` halves the
 count, so no shipped point reaches the refusal.
 
-The eight-bit timing in `output.txt` is an ad-hoc spike with no substance, a debug build and one run,
-printed only so a reader knows why the eight-bit law sits behind `--ignored` in the crate.
+The eight-bit timing in `output.txt` is an ad-hoc spike with no substance, a debug build and one run.
+It is printed so a reader can see what the eight-bit law costs when the crate runs it in the ordinary
+suite rather than behind `--ignored`, which is where the round puts it.
 
 ## What must fail
 
