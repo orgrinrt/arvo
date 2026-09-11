@@ -433,9 +433,9 @@ static; `p3`: one name, disagreeing realisations, therefore a missing coordinate
 the other. 265 did not read `70`. 260 read the registry row that carries `70` L4's sentence before
 forming a view, and read `70` itself, and says so; 265 read the row after the derivation was
 written. So on the headline claim the instances are: `70` by argument, 265 blind by instrument,
-260 by instrument as confirmation of the row. Three instances, two of them independent, and the two independent ones are the two on the
-Lattner persona, which is the weakness in the count and is stated rather than left to be found. The
-one on the other persona is the one that was not blind to the row. For the two-expert rule as
+260 by instrument as confirmation of the row. Three instances, two of them independent, and the
+two independent ones are the two on the Lattner persona, which is the weakness in the count and is
+stated rather than left to be found. The one on the other persona is the one that was not blind to the row. For the two-expert rule as
 `ruling::two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate` states it, both
 readings ground the same claim in the same ratified rows (`ruling::the_format_spine_is_canon`,
 `ruling::never_a_runtime_check_and_one_lowered_path`) by different arguments, which is what the rule
