@@ -28,8 +28,9 @@ asks for.
 Addition is the one operation shipped, and it is built exactly that way: the exact sum of two slots
 under the declared signature, adapted once. It takes and returns slots, the coordinate the format is
 stated in, and beside it sits the verdict for where the adapted sum is associative, which reads the
-range and the phase rather than guessing from the sign. Floating point formats are refused for now,
-because the applied map has no magnitude coordinate to land a sum at.
+range and the phase rather than guessing from the sign. Floating point formats are refused: the applied
+map has no magnitude coordinate to land a sum at, and what wrapping means over a union of magnitude
+ranges is a canon question this crate does not answer.
 
 There is no machine container anywhere in this crate and you cannot reach one from here. Every
 operation is a function of the width you declared, never of whatever the value happens to sit in, and
