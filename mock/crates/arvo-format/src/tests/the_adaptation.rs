@@ -19,10 +19,10 @@
 //! differ in one coordinate.
 
 use crate::adapt::{Adapt, Signature};
-use crate::apply::{adapt, Dither, Exact};
+use crate::apply::{Dither, Exact, adapt};
 use crate::overflow::{Clamp, Overflow, Policy, SHIPPED_POLICIES};
 use crate::points::Integer;
-use crate::rounding::{Floor, Mode, ALL_MODES};
+use crate::rounding::{ALL_MODES, Floor, Mode};
 use crate::slots::Slot;
 
 // --- the two vocabularies, and the sweeps over them --------------------------

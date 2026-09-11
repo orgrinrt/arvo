@@ -17,10 +17,19 @@
 //! two mutants of their own. The obligations are their own file because they are
 //! about four traits rather than about any one law.
 //!
+//! Two modules here are instruments rather than laws, and every suite in the
+//! crate may reach them: `dispatch` turns a mode, a policy or a width into the
+//! type a law is stated at, and `grid` is the format with every coordinate free.
+//! Each was written once in one suite and wanted by another, so each is here
+//! instead of copied.
+//!
 //! Every coordinate here is written as the type the contract declares it with. A
 //! suite reaching for a host integer would be exercising a surface the contract
 //! does not have, and it would be the one place in the crate still saying a slot
 //! is a number.
+
+pub(crate) mod dispatch;
+pub(crate) mod grid;
 
 mod obligations;
 mod the_adaptation;

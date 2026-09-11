@@ -17,8 +17,8 @@
 //! point of three axes, and an arm set that never leaves that point cannot see the
 //! regions off it: a numerator that is always odd against a denominator fixed at
 //! two never once tries a whole phase, and a constant quantum never once gives the
-//! magnitude anything to do. `Grid` below is what lets the axes move
-//! independently.
+//! magnitude anything to do. `Grid`, the crate's format with every coordinate
+//! free, is what lets the axes move independently.
 //!
 //! **A half-step phase is not the general fractional case and is not used as one
 //! here.** Whether a fractional phase stays fractional depends on the radix and
@@ -36,42 +36,20 @@
 //! What an implementor owes each contract is in `obligations`, because that is
 //! about four traits rather than about this one question.
 
-use core::marker::PhantomData;
-
 use notko::Maybe;
 
-use crate::ambient::{Ambient, BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
-use crate::format::{cancelling_slot, contains, has_additive_identity, Format, Phase};
+use crate::ambient::{BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
+use crate::format::{Format, Phase, cancelling_slot, contains, has_additive_identity};
 use crate::points::{Biased, Floating, Integer, UFixed};
 use crate::quantum::{Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum};
-use crate::slots::{slot_in_range, Signed, Slot, Slots, Unsigned};
+use crate::slots::{Signed, Slot, Unsigned, slot_in_range};
+use crate::tests::grid::Grid;
 use crate::width::Bool;
 
 mod the_cancelling_slot;
 mod the_magnitude_range;
 
 // --- the instruments ---------------------------------------------------------
-
-/// A format with every coordinate free, which is what the sweep needs.
-///
-/// The shipped points each pin at least two of the four axes the cancellation
-/// depends on. This pins none.
-///
-/// The phase arrives as two const generic parameters and becomes a `Phase` in the
-/// impl body. An associated const takes an arbitrary expression, so the coordinate
-/// carrying a type of its own costs the sweep nothing; only a const generic
-/// parameter is restricted to the host's types, and that is the position
-/// `tests/ui/an_arvo_type_as_a_const_parameter.rs` pins.
-struct Grid<A, Q, S, const PN: i64, const PD: i64>(PhantomData<(A, Q, S)>);
-
-impl<A: Ambient, Q: Quantum, S: Slots, const PN: i64, const PD: i64> Format
-    for Grid<A, Q, S, PN, PD>
-{
-    type Ambient = A;
-    type Quantum = Q;
-    type Slots = S;
-    const PHASE: Phase = Phase::of(PN, PD);
-}
 
 /// A quantum whose step shrinks as the magnitude rises.
 ///
@@ -83,8 +61,8 @@ struct Shrinking<const COUNT: u32>;
 
 impl<const COUNT: u32> Quantum for Shrinking<COUNT> {
     const BASE: Exponent = Exponent::ZERO;
-    const SLOPE: Exponent = Exponent::of(-1);
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(COUNT);
+    const SLOPE: Exponent = Exponent::of(-1);
 }
 
 /// The predicate this one replaced, kept so the control can be run.
@@ -175,9 +153,11 @@ fn the_identity_is_decidable_at_const_time_including_the_search() {
 /// returns.
 fn zero_is_a_member<F: Format>() -> bool {
     let magnitudes = <F::Quantum as Quantum>::MAGNITUDES.count();
-    (0..magnitudes).any(|index| match cancelling_slot::<F>(Magnitude::at(index)) {
-        Maybe::Is(slot) => contains::<F>(slot, Magnitude::at(index)).get(),
-        Maybe::Isnt => false,
+    (0 .. magnitudes).any(|index| {
+        match cancelling_slot::<F>(Magnitude::at(index)) {
+            Maybe::Is(slot) => contains::<F>(slot, Magnitude::at(index)).get(),
+            Maybe::Isnt => false,
+        }
     })
 }
 
@@ -554,12 +534,7 @@ fn the_two_questions_about_a_phase_are_two_questions() {
 
     // The control: the two questions give different answers somewhere, so neither
     // is the other under a different name.
-    let phases = [
-        Phase::ZERO,
-        Phase::halves(1),
-        Phase::halves(2),
-        Phase::of(1, 3),
-    ];
+    let phases = [Phase::ZERO, Phase::halves(1), Phase::halves(2), Phase::of(1, 3)];
     let disagreements = phases
         .iter()
         .filter(|p| p.is_zero().get() != p.is_whole_multiple().get())
