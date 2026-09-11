@@ -1,0 +1,6 @@
+exit=0
+target=i686-unknown-linux-gnu target_pointer_width="32"
+toolchain=1.98.0-nightly 57d06900f
+---
+   Compiling p1c_literal_width v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/research/202608072330_the-numeral-canon-panel/265_probes/p1c_literal_width)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s

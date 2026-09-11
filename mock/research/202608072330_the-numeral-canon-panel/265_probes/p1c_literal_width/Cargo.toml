@@ -1,0 +1,17 @@
+# Probe p1c: the control for p1, the same declaration with the width written as
+# the literal 32 rather than bound to the target.
+#
+# Its own workspace root, so cargo does not fold it into `mock/Cargo.toml`.
+[package]
+name = "p1c_literal_width"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

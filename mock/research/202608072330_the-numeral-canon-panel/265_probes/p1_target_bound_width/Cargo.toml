@@ -1,0 +1,17 @@
+# Probe p1: a platform-width type declared as a point of the shipped `Format`
+# contract, with its width coordinate bound to the target's pointer width.
+#
+# Its own workspace root, so cargo does not fold it into `mock/Cargo.toml`.
+[package]
+name = "p1_target_bound_width"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

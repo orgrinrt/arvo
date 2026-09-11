@@ -1,0 +1,17 @@
+# Probe p3: one declared name, and a compile-time observation of it that is
+# pinned at one value. Where the target disagrees the build refuses, which is the
+# admission rule's diagnostic ("two realisations of one name disagree") made
+# mechanical.
+[package]
+name = "p3_one_name_two_realisations"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

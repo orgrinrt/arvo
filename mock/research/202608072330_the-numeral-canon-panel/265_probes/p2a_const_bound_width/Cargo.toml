@@ -1,0 +1,16 @@
+# Probe p2a: the platform width is available at const time, so it can be a
+# coordinate and can gate an arm. The pair of this crate is p2b, which differs in
+# one thing: the count comes from a runtime function instead of the target.
+[package]
+name = "p2a_const_bound_width"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

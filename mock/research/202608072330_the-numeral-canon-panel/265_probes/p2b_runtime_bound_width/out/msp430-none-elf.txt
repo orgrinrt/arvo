@@ -1,0 +1,20 @@
+exit=101
+target=msp430-none-elf target_pointer_width="16"
+toolchain=1.98.0-nightly 57d06900f
+---
+   Compiling p2b_runtime_bound_width v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/research/202608072330_the-numeral-canon-panel/265_probes/p2b_runtime_bound_width)
+error[E0015]: cannot call non-const function `read_width` in constants
+  --> src/lib.rs:18:34
+   |
+18 | pub const W: Width = Width::bits(read_width());
+   |                                  ^^^^^^^^^^^^
+   |
+note: function `read_width` is not const
+  --> src/lib.rs:12:1
+   |
+12 | fn read_width() -> u32 {
+   | ^^^^^^^^^^^^^^^^^^^^^^
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+
+For more information about this error, try `rustc --explain E0015`.
+error: could not compile `p2b_runtime_bound_width` (lib) due to 1 previous error

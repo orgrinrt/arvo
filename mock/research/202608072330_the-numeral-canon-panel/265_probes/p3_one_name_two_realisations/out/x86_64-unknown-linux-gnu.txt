@@ -1,0 +1,50 @@
+exit=101
+target=x86_64-unknown-linux-gnu target_pointer_width="64"
+toolchain=1.98.0-nightly 57d06900f
+---
+   Compiling p3_one_name_two_realisations v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/research/202608072330_the-numeral-canon-panel/265_probes/p3_one_name_two_realisations)
+error[E0277]: `Unsigned<64>` is not an admitted slot range
+   --> src/lib.rs:21:18
+    |
+ 21 |     type Slots = Unsigned<{ usize::BITS }>;
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
+    |
+    = help: the trait `Slots` is not implemented for `Unsigned<64>`
+    = note: this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+    = help: the following other types implement trait `Slots`:
+              Unsigned<10>
+              Unsigned<11>
+              Unsigned<12>
+              Unsigned<13>
+              Unsigned<14>
+              Unsigned<15>
+              Unsigned<16>
+              Unsigned<17>
+            and 54 others
+note: required by a bound in `arvo_format::Format::Slots`
+   --> /Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/crates/arvo-format/src/format.rs:158:17
+    |
+158 |     type Slots: Slots;
+    |                 ^^^^^ required by this bound in `Format::Slots`
+
+error[E0277]: `Unsigned<64>` is not an admitted slot range
+  --> src/lib.rs:26:6
+   |
+26 |     <<PlatformUnsigned as Format>::Slots as Slots>::WIDTH.count() == 32,
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
+   |
+   = help: the trait `Slots` is not implemented for `Unsigned<64>`
+   = note: this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and 2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider declaration would invert its own range rather than describe one. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+   = help: the following other types implement trait `Slots`:
+             Unsigned<10>
+             Unsigned<11>
+             Unsigned<12>
+             Unsigned<13>
+             Unsigned<14>
+             Unsigned<15>
+             Unsigned<16>
+             Unsigned<17>
+           and 54 others
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `p3_one_name_two_realisations` (lib) due to 2 previous errors

@@ -1,0 +1,17 @@
+exit=101
+target=msp430-none-elf target_pointer_width="16"
+toolchain=1.98.0-nightly 57d06900f
+---
+   Compiling p3_one_name_two_realisations v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/research/202608072330_the-numeral-canon-panel/265_probes/p3_one_name_two_realisations)
+error[E0080]: evaluation panicked: on this target the name PlatformUnsigned does not denote the 32-bit set
+  --> src/lib.rs:25:15
+   |
+25 |   const _: () = assert!(
+   |  _______________^
+26 | |     <<PlatformUnsigned as Format>::Slots as Slots>::WIDTH.count() == 32,
+27 | |     "on this target the name PlatformUnsigned does not denote the 32-bit set"
+28 | | );
+   | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `p3_one_name_two_realisations` (lib) due to 1 previous error
