@@ -1,0 +1,17 @@
+exit=1
+target=aarch64-apple-darwin target_pointer_width="64"
+---
+error: `Cap` is forbidden as the type of a const generic parameter
+ --> p5b_newtype_no_feature.rs:6:25
+  |
+6 | pub struct Buf<const N: Cap>;
+  |                         ^^^
+  |
+  = note: the only supported types are integers, `bool`, and `char`
+help: add `#![feature(min_adt_const_params)]` to the crate attributes to enable more complex and user defined types
+  |
+4 + #![feature(min_adt_const_params)]
+  |
+
+error: aborting due to 1 previous error
+

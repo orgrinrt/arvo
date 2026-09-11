@@ -1,0 +1,8 @@
+exit=0
+target=thumbv6m-none-eabi target_pointer_width="32"
+toolchain=1.98.0-nightly 57d06900f
+---
+   Compiling notko v0.0.1 (ssh://git@github.com/orgrinrt/notko.git?branch=dev#1a978e5c)
+   Compiling arvo-format v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/crates/arvo-format)
+   Compiling p1_target_bound_width v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/research/202608072330_the-numeral-canon-panel/265_probes/p1_target_bound_width)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.37s

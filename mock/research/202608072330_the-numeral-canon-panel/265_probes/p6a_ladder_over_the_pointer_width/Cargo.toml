@@ -1,0 +1,16 @@
+# Probe p6a: the first half of p6 alone, so it can be shown at 64 bits too,
+# where p6 as a whole inherits p1's refusal.
+[package]
+name = "p6a_ladder_over_the_pointer_width"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+arvo-placement = { path = "../../../../crates/arvo-placement" }
+
+[workspace]

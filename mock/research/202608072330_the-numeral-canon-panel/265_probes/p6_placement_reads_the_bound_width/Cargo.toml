@@ -1,0 +1,16 @@
+# Probe p6: the placement tier reads a target-bound width the way it reads any
+# width. The ladder has no notion of a machine word and needs none.
+[package]
+name = "p6_placement_reads_the_bound_width"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+arvo-placement = { path = "../../../../crates/arvo-placement" }
+
+[workspace]
