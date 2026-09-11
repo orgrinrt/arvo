@@ -1,0 +1,15 @@
+# Probe p4: does the platform-width unsigned set cover the two ranges the
+# consumer obligation names, a unix errno and a Windows GetLastError DWORD.
+[package]
+name = "p4_obligation_range"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]

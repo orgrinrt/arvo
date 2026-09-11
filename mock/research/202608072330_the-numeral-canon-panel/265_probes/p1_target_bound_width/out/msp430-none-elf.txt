@@ -1,0 +1,20 @@
+exit=0
+target=msp430-none-elf target_pointer_width="16"
+toolchain=1.98.0-nightly 57d06900f
+---
+ Downloading crates ...
+  Downloaded rustc-literal-escaper v0.0.7
+  Downloaded rustc-demangle v0.1.27
+  Downloaded getopts v0.2.24
+  Downloaded addr2line v0.25.1
+  Downloaded miniz_oxide v0.8.9
+  Downloaded memchr v2.7.6
+  Downloaded gimli v0.32.3
+  Downloaded object v0.37.3
+  Downloaded libc v0.2.185
+   Compiling compiler_builtins v0.1.160 (/Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/compiler-builtins/compiler-builtins)
+   Compiling core v0.0.0 (/Users/orgrinrt/.rustup/toolchains/nightly-2026-05-28-aarch64-apple-darwin/lib/rustlib/src/rust/library/core)
+   Compiling notko v0.0.1 (ssh://git@github.com/orgrinrt/notko.git?branch=dev#1a978e5c)
+   Compiling arvo-format v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/crates/arvo-format)
+   Compiling p1_target_bound_width v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/seat265/mock/research/202608072330_the-numeral-canon-panel/265_probes/p1_target_bound_width)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.77s

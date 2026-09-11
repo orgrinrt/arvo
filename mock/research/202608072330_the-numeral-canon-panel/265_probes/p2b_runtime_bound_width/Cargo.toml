@@ -1,0 +1,15 @@
+# Probe p2b: the control for p2a. The one difference is that the count comes
+# from a runtime function rather than from the target.
+[package]
+name = "p2b_runtime_bound_width"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[workspace]
