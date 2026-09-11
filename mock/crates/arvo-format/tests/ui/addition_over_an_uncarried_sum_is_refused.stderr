@@ -1,0 +1,20 @@
+error[E0080]: evaluation panicked: addition is refused over this format: the exact sum of two members leaves the slot coordinate, so the position it names is not one a slot index can hold
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::addition::Addable::<FarPhase>::ADMITTED` failed here
+  |
+ ::: src/addition.rs
+  |
+  | /         assert!(
+  | |             sum_is_carried::<F>().get(),
+  | |             "addition is refused over this format: the exact sum of two members leaves the slot \
+  | |              coordinate, so the position it names is not one a slot index can hold"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/addition.rs
+  |
+  |     let () = Addable::<F>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^

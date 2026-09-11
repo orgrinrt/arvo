@@ -1,0 +1,16 @@
+error[E0277]: the trait bound `Integer<4>: DeclaredSignature` is not satisfied
+  --> tests/ui/a_format_is_not_a_signature.rs:13:19
+   |
+13 |     let _ = add::<Integer<4>>(Slot::ZERO, Slot::ZERO, Dither::UNUSED);
+   |                   ^^^^^^^^^^ the trait `DeclaredSignature` is not implemented for `Integer<4>`
+   |
+help: the trait `DeclaredSignature` is implemented for `Signature<F, A>`
+  --> src/adapt.rs
+   |
+   | impl<F: Format, A: Adaptation> DeclaredSignature for Signature<F, A> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `arvo_format::add`
+  --> src/addition.rs
+   |
+   | pub const fn add<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
+   |                     ^^^^^^^^^^^^^^^^^ required by this bound in `add`

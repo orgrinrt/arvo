@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: addition is refused over a phase whose remainder no position can hold: the phase denominator is zero, or its fractional part reduces to a denominator of 2^63, which the remainder of an exact position does not carry
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::addition::Addable::<UnheldRemainder>::ADMITTED` failed here
+  |
+ ::: src/addition.rs
+  |
+  | /         assert!(
+  | |             remainder_is_held::<F>().get(),
+  | |             "addition is refused over a phase whose remainder no position can hold: the phase \
+  | |              denominator is zero, or its fractional part reduces to a denominator of 2^63, which \
+  | |              the remainder of an exact position does not carry"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/addition.rs
+  |
+  |     let () = Addable::<F>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^

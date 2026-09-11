@@ -42,6 +42,7 @@
 //! than beside it, and each one lives with the contract that reads it.
 
 pub mod adapt;
+pub mod addition;
 pub mod ambient;
 pub mod apply;
 pub mod format;
@@ -64,6 +65,14 @@ pub use adapt::{
     operation_rounding,
     overflow_of,
     rounding_of,
+};
+pub use addition::{
+    Add,
+    add,
+    addition_is_associative,
+    addition_reach,
+    is_addable,
+    sum_position,
 };
 pub use ambient::{
     Ambient,
