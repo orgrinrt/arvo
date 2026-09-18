@@ -1,0 +1,27 @@
+=== reading 1: ties toward positive infinity, floor(x + 1/2) ===
+half_up_toward_pos_inf: den=1 pass=576 fail=0
+half_up_toward_pos_inf: den=2 pass=1143 fail=0
+half_up_toward_pos_inf: den=4 pass=2277 fail=0
+half_up_toward_pos_inf: den=8 pass=4545 fail=0
+half_up_toward_pos_inf: den=16 pass=9081 fail=0
+half_up_toward_pos_inf: den=32 pass=18153 fail=0
+reading 1 totals: pass=35775 fail=0
+=== reading 2: ties away from zero ===
+half_up_away_from_zero: den=1 pass=576 fail=0
+half_up_away_from_zero: den=2 pass=1123 fail=20
+half_up_away_from_zero: den=4 pass=2257 fail=20
+half_up_away_from_zero: den=8 pass=4525 fail=20
+half_up_away_from_zero: den=16 pass=9061 fail=20
+half_up_away_from_zero: den=32 pass=18133 fail=20
+reading 2 totals: pass=35675 fail=100
+=== control: half_even, must fail per the law row's own `fails` region ===
+half_even: den=1 pass=576 fail=0
+half_even: den=2 pass=891 fail=252
+half_even: den=4 pass=2025 fail=252
+half_even: den=8 pass=4293 fail=252
+half_even: den=16 pass=8829 fail=252
+half_even: den=32 pass=17901 fail=252
+control totals: pass=34515 fail=1260
+=== divergence: do the two readings differ at every negative tie? ===
+negative ties checked=160 all_diverge=true
+ALL ASSERTIONS PASSED
