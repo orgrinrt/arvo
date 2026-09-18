@@ -173,3 +173,92 @@ standards-documented operations the canon is already bound to reproduce.
 ## Committing phase one
 
 Committed here, before opening `229_*`.
+
+---
+
+## Phase two. Reconciliation against seat 229
+
+Written after the phase-one text above was committed and pushed. Nothing above
+this line was edited. Read:
+`229_lamport_do_the_six_names_denote_one_operation_each.md`.
+
+### Where we agree
+
+**The two readings are the same two operations, defined the same way, and my
+probe reproduces 229's core measured facts independently.** 229 names reading
+one `floor(x + 1/2)` and reading two `roundTiesToAway`/away-from-zero at lines
+176-183; my probe defines the identical two functions and derives the same
+closed-form fact that reading one is exactly `floor(x + 1/2)`.
+
+**Both of us find the ratified/measured fma law row is true only under reading
+one.** 229's finding 4 and its account at lines 285-301 states the signed row
+holds for `{floor, ceil, half_up}` (three of six) under the toward-positive-
+infinity reading and drops to `{floor, ceil}` (two of six) under the other,
+matching my own probe's independent reproduction of the same partition
+(0 failures under reading 1, breaking to exclude `half_up` under reading 2).
+
+**Both find the trade between the two properties is forced, not a preference.**
+229's probe F enumerates the entire nearest-mode space at four domain points
+and finds zero modes both translation equivariant and zero mean error (lines
+327-341: "the trade is a theorem over these domains"). My probe establishes the
+same fact by closed form for the two named readings specifically: reading one
+is exactly equivariant, reading two is not, over the identical law-row domain.
+
+**Both find the two readings differ exactly on the signed, non-zero-fraction
+region.** 229's probe A gives the disagreement count `2^(W-1-F)` at lines
+185-189; my probe finds the two readings differ at every one of 160 negative
+ties checked over the signed 6-bit, `fraction_width` 0..=5 domain, which is
+the same region stated the other way (by tie count rather than by disagreement
+count over the whole domain).
+
+### Where we disagree
+
+**The shape of the answer.** My phase one answers that the question's shape
+is wrong as posed: both readings are independently standards-documented
+operations (MATLAB `fi`'s `Nearest` and `Round`, the second matching IEEE
+754's `roundTiesToAway`), the ratified standards-parity rows already bind
+arvo to reproduce both, and collapsing them under one name violates that bound
+for whichever reading loses. 229 answers the opposite shape explicitly, at
+lines 197-200: "What is missing is one sentence, not a seventh name and not a
+rename," and again at lines 655-661 ("the gap is one sentence in one row"),
+proposing to pin `half_up` to reading one alone and leaving reading two
+unnamed, absorbed informally into the case for `half_even` (lines 356-360:
+"the choice between those two is on other grounds").
+
+**229's own canon gate did not check the rows my answer turns on.** The gate
+list at lines 9-18 names eight rows and does not name
+`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest` or
+`ruling::the_standard_is_parity_in_output_not_in_the_internals`, though the
+question is precisely about which operation matches which standard's
+documented result. 229's admissibility test for a "real" second reading
+(lines 36-39: written in a standard, or shipped, or a hardware realisation)
+is close to the standards bound but never connects to it as a ratified
+obligation arvo itself carries; IEEE 754 and MATLAB naming appear only as
+evidence that reading two is a real convention (lines 518-520), not as a
+constraint on how many names the vocabulary needs.
+
+**229 never opened the crate's own shipped test, and it is load-bearing
+against 229's proposed fix.** `mock/crates/arvo-format/src/apply/tests/mod.rs:268-279`
+asserts `Mode::HalfUp` at a tie of `-2.5` gives `-3`, away from zero: reading
+two, not reading one. 229's own file cites no `arvo-format` source or test
+anywhere in it; its evidence for reading two is external (IEEE 754, Java,
+Python, .NET) rather than internal. If 229's proposed one-sentence note pins
+`half_up` to reading one without a matching change to `arvo-format`, the
+ratified vocabulary would say `half_up` is reading one while the crate
+shipping under that name computes reading two, which is the exact
+contradiction my phase one names as a standing defect independent of how the
+naming question is answered. This is not a refutation of 229's arithmetic,
+which my own instrument reproduces; it is a gap in what 229's derivation
+checked before proposing its fix.
+
+### What this leaves for the panel or op
+
+Two live proposals, not reconciled here: mine (two ratified names, one per
+reading, because the standards bound already requires both) and 229's (one
+name, `half_up`, pinned by note to reading one, with reading two left
+unnamed and its niche use covered informally by `half_even`). Both agree on
+every measured fact; they disagree on whether the standards-parity rulings
+force a second name into the vocabulary. That disagreement, and the fact that
+229's fix as stated would leave `arvo-format`'s shipped `Mode::HalfUp` test
+contradicting a newly pinned `half_up`, is what I am handing forward rather
+than resolving unilaterally, per `a-conflict-is-consolidated-never-selected.md`.
