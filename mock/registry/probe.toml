@@ -797,6 +797,21 @@ standing = "sound"
 note = "The criterion is the deliverable rather than any one region's verdict. A reader wanting a list of which regions lift is reading the wrong instrument; this one says what decides it."
 keywords = ["lifting", "trajectory", "declaration", "closure", "operand set", "box", "region", "degenerate", "criterion"]
 
+[[probe]]
+id = "a_composed_saturating_add_then_subtract_fails_associativity_on_82_percent_of_triples"
+establishes = "Over every triple at eight bits, unsigned saturating addition associates on all of them and the composition `(a + b) - c` against `a + (b - c)`, both operations exact ambients reduced by saturation, disagrees on 13,882,880 of 16,777,216 triples, 82.7484%. The same composition under wrapping reports zero disagreements, so the instrument is reading the policy rather than reporting failure unconditionally. A four-way case split on the two clamp events plus a residual operand condition (P0 through P4) accounts for the region exactly: zero sufficiency and zero necessity violations."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::79_probes::p1_compositional_predicate_search.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::79_probes::p1_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::79_probes::p1_negative_control.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::79_probes::p1_negative_output.txt::1",
+]
+control = "A mutant control on the case split's P4 clause (`a<=1` in place of `a==0`) reintroduces exactly 32,640 violations, so the zero residue on the honest predicate is not an artefact of an unreachable branch."
+reproduced = "Independently by seat 215, over the same coordinates and composition, matching 13,882,880 of 16,777,216 to the digit (`215_probes::p4_verifying_two_cited_numbers.rs::1`, `215_probes::p4.out::1`, which names the cited figure at `79:27` and confirms it)."
+standing = "sound"
+note = "The wrapping arm reporting zero is the negative control a claim about a policy-sensitive law needs: the same composition, same coordinates, opposite policy, disagreeing verdict."
+keywords = ["composition", "region", "inheritance", "derivation", "saturating", "associativity", "82.7484", "mutant control", "R2"]
+
 # --- the number system concept, files 64 to 74 ------------------------------
 
 [[probe]]
@@ -1233,6 +1248,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::35_probes::p4.out::1",
 ]
 control = "Both directions are counted per cell and printed side by side, so the same column reports 0 failures of 63 under one policy and 63 of 63 under the other. The identity column is a second arm moving independently of the first: it goes false at exactly the nine cells where the fraction width equals the total width and stays true everywhere else, which is what says the sweep is reading the cell rather than the policy."
+reproduced = "Independently by seat 215, over the identical rectangle (`W in 2..=10`, `F in 0..=W`, unsigned, 63 cells), deriving the cell count from the rectangle rather than matching it by eye: the top absorbs at all 63 saturating cells and at none of the 63 wrapping ones (`215_probes::p4_verifying_two_cited_numbers.rs::1`, `215_probes::p4.out::1`, section 2). The same seat proves the wrapping half as a theorem, `T + x = T` forcing `x = 0` by group cancellation at every width and both signednesses, which is strictly stronger than a swept claim."
 standing = "sound"
 note = "Unsigned throughout; the model is `u128` and there is no signed arm. So this says nothing about a signed top, which is a different question and one a min-plus consumer would also need answered."
 keywords = ["absorbing top", "absorption", "saturation", "wrapping", "min-plus", "tropical", "identity", "seed", "fold seed", "63", "infinity"]

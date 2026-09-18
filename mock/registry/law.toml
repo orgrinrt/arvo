@@ -205,6 +205,7 @@ fails = [
   "target_features: target features any",
 ]
 witness = "13,882,880 of 16,777,216 triples, 82.7484%. The exact holding region is a four-way case split on the two clamp events plus a residual operand condition, with zero sufficiency and zero necessity violations, and a mutant control reintroducing 32,640 violations so the zero residue is not an artefact."
+evidence = ["a_composed_saturating_add_then_subtract_fails_associativity_on_82_percent_of_triples"]
 topic = "algebraic_laws"
 note = "The point of this row is that **each component operation is associative on its own** at exactly these coordinates, and the composition is not: unsigned saturating addition associates on every triple here. So a composed expression's region is never inherited from its parts, and even where a component's own hypotheses hold unconditionally the composition needs its own derivation. `threads any` and `target features any` are the source's own, claimed on a semantic argument about pure value functions rather than on a run, and they are carried because the source wrote them."
 gap = "The four-way case split that exactly characterises the holding region is not written here, because it is a condition over operand values rather than over any declared axis. A region the notation cannot state is a region no arm can be gated on, and this is the sharpest instance of that in the corpus."
