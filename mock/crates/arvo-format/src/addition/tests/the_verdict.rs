@@ -275,17 +275,19 @@ fn a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways()
     // `SHIPPED_POLICIES` lists them, wrap, saturate and clamp.
     //
     // The first table is every fractional refusal, the second the refusals that
-    // are associative anyway. The three modes that read nothing besides the
-    // residue have none of the second kind, so over this cross their verdict is
-    // exact both ways at a fractional phase too. Every associative refusal is in
-    // a mode reading the sign or the parity, where the offset moves across the
-    // reach and the verdict refuses without asking whether the moving offset
+    // are associative anyway. The four modes that read nothing besides the
+    // residue, floor, ceil, half up and stochastic, have none of the second kind,
+    // so over this cross their verdict is exact both ways at a fractional phase
+    // too. Half up refuses exactly the cells ceil does, since both add a fixed
+    // offset and the offset is all the verdict reads. Every associative refusal
+    // is in a mode reading the sign or the parity, where the offset moves across
+    // the reach and the verdict refuses without asking whether the moving offset
     // composes anyway.
     assert_eq!(cross.fractional_refused_by_cell, [
         [101, 101, 101],
         [0, 53, 53],
         [0, 52, 52],
-        [36, 67, 67],
+        [0, 52, 52],
         [51, 82, 82],
         [0, 63, 63]
     ]);
@@ -293,7 +295,7 @@ fn a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways()
         [38, 38, 38],
         [0, 0, 0],
         [0, 0, 0],
-        [10, 14, 14],
+        [0, 0, 0],
         [17, 22, 22],
         [0, 0, 0]
     ]);

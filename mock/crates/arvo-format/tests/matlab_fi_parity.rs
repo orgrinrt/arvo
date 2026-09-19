@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Parity against what MathWorks publishes, and the two gaps it turned up.
+//! Parity against what MathWorks publishes, and where the vocabulary stops.
 //!
 //! Every expected number here comes from the `fi` reference page rather than
 //! from arvo. An arm that computed both sides through arvo would assert that
@@ -17,6 +17,7 @@ use arvo_format::points::Integer;
 use arvo_format::quantum::Magnitude;
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
 use arvo_format::slots::{Slot, Slots};
+use arvo_format::standards::rounding_method::Nearest;
 use arvo_format::standards::{Fi, FractionLength, Ufi};
 
 /// Pi as an exact rational, to fifteen places.
@@ -52,8 +53,9 @@ fn twice_remainder_against_den(f: u32) -> (i128, i128) {
 fn the_control_no_parity_arm_reaches_a_tie() {
     // The arms below are asserted under both nearest modes at once, and that is
     // only honest while none of them lands on a midpoint. A tie is the one
-    // position where the two disagree, and which way it should go is open in the
-    // registry, so an arm reaching one would be closing that question quietly.
+    // position where the two differ, `half_up` going toward positive infinity
+    // and `half_even` to the even slot, so an arm reaching one would be
+    // asserting two different answers as one.
     for f in [13u32, 14, 5, 6, 3] {
         let (twice, den) = twice_remainder_against_den(f);
         assert_ne!(
@@ -176,8 +178,8 @@ macro_rules! parity {
                 );
             }
             // The real-world value is the stored integer over two to the fraction
-            // length. **MathWorks prints a five-significant-figure display of it
-            // and not the value**, so only the last of the five is exact and an
+            // length. MathWorks prints a five-significant-figure display of it
+            // and not the value, so only the last of the five is exact and an
             // arm asserting equality against the printed number is wrong. What
             // holds is that the value rounds to what is printed, which is the
             // difference being at most half a unit in the last printed place.
@@ -237,130 +239,138 @@ fn the_control_a_wrong_stored_integer_would_be_caught() {
     assert_ne!(got, Slot::at(24));
 }
 
-// --- what MATLAB needs and the vocabulary does not have ----------------------
+// --- MATLAB's two nearest rules ------------------------------------------------
+//
+// MathWorks documents `Nearest` as nearest with a tie toward positive infinity
+// and `Round` as nearest with a tie away from zero. Each is checked at four
+// positions: two off the grid say the mode is nearest rather than directed, and
+// a positive and a negative tie say where a midpoint goes. Every expected slot
+// is MathWorks' number, not arvo's.
 
-/// Whether a mode is nearest with ties toward positive infinity.
-///
-/// Four positions decide it. Two off-grid ones say the mode is nearest rather
-/// than directed, and the two ties say which way a midpoint goes. MathWorks
-/// documents its Nearest as exactly this.
-macro_rules! is_matlab_nearest {
-    ($mode:ty) => {{
+/// Whether a mode answers the four positions as `rule` says, where `rule` is
+/// `(2.1, 2.9, 2.5, -2.5)` to the slots it names.
+macro_rules! answers_like {
+    ($mode:ty, $rule:expr) => {{
         type S = Signature<Integer<8>, Adapt<$mode, Wrap>>;
-        let below = adapt::<S>(
-            Exact::between(Slot::at(2), Fraction::of(1, 10)),
-            Dither::UNUSED,
-        ) == Slot::at(2);
-        let above = adapt::<S>(
-            Exact::between(Slot::at(2), Fraction::of(9, 10)),
-            Dither::UNUSED,
-        ) == Slot::at(3);
-        let tie_up = adapt::<S>(
-            Exact::between(Slot::at(2), Fraction::of(1, 2)),
-            Dither::UNUSED,
-        ) == Slot::at(3);
-        let tie_down = adapt::<S>(
-            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
-            Dither::UNUSED,
-        ) == Slot::at(-2);
-        below && above && tie_up && tie_down
+        let at = |slot: i128, num: i64, den: i64| {
+            adapt::<S>(
+                Exact::between(Slot::at(slot), Fraction::of(num, den)),
+                Dither::UNUSED,
+            )
+            .index()
+        };
+        let got = [at(2, 1, 10), at(2, 9, 10), at(2, 1, 2), at(-3, 1, 2)];
+        got == $rule
     }};
 }
 
+/// MATLAB's `Nearest`: `2`, `3`, `3`, `-2`.
+const MATLAB_NEAREST: [i128; 4] = [2, 3, 3, -2];
+
+/// MATLAB's `Round`: `2`, `3`, `3`, `-3`.
+const MATLAB_ROUND: [i128; 4] = [2, 3, 3, -3];
+
 #[test]
-#[ignore = "catalogue: MATLAB's Nearest, ties toward positive infinity, has no mode in the ratified \
-            vocabulary; closed by question::is_the_rounding_vocabulary_complete_at_six and \
-            question::which_tie_direction_an_unqualified_nearest_names"]
-fn some_shipped_mode_is_matlab_nearest() {
-    // Red on purpose, and it is the finding rather than a defect in this crate.
-    // MATLAB needs two nearest-with-ties operations and arvo names one, so one of
-    // the two has nowhere to land whatever `half_up` turns out to mean. This goes
-    // green when the vocabulary gains the name, not when anybody edits it.
-    let any = is_matlab_nearest!(TowardZero)
-        || is_matlab_nearest!(Floor)
-        || is_matlab_nearest!(Ceil)
-        || is_matlab_nearest!(HalfUp)
-        || is_matlab_nearest!(HalfEven)
-        || is_matlab_nearest!(Stochastic);
-    assert!(
-        any,
-        "no shipped mode rounds to nearest with ties toward positive infinity"
-    );
+fn half_up_is_matlab_nearest_and_no_other_shipped_mode_is() {
+    let answers = [
+        answers_like!(TowardZero, MATLAB_NEAREST),
+        answers_like!(Floor, MATLAB_NEAREST),
+        answers_like!(Ceil, MATLAB_NEAREST),
+        answers_like!(HalfUp, MATLAB_NEAREST),
+        answers_like!(HalfEven, MATLAB_NEAREST),
+        answers_like!(Stochastic, MATLAB_NEAREST),
+    ];
+    assert_eq!(answers, [false, false, false, true, false, false]);
+    // And the standards module names it by MATLAB's word.
+    assert!(answers_like!(Nearest, MATLAB_NEAREST));
 }
 
 #[test]
-fn the_gap_is_this_shape_rather_than_a_missing_re_export() {
-    // The catalogued arm above is ignored by default, so on its own it says
-    // nothing to a normal run. This one runs, and it pins why each candidate
-    // fails, so the gap cannot be closed by somebody adding a re-export and
-    // assuming it lines up.
-    type Ceiling = Signature<Integer<8>, Adapt<Ceil, Wrap>>;
-    type Away = Signature<Integer<8>, Adapt<HalfUp, Wrap>>;
-    type Even = Signature<Integer<8>, Adapt<HalfEven, Wrap>>;
+fn no_shipped_mode_is_matlab_round() {
+    // A tie away from zero is not a mode of this crate. The ruling reaches it as
+    // `toward_zero(x + sign(x) q/2)`, which the next arm writes out, so this is
+    // pinned as a fact about the vocabulary rather than catalogued as a hole.
+    let answers = [
+        answers_like!(TowardZero, MATLAB_ROUND),
+        answers_like!(Floor, MATLAB_ROUND),
+        answers_like!(Ceil, MATLAB_ROUND),
+        answers_like!(HalfUp, MATLAB_ROUND),
+        answers_like!(HalfEven, MATLAB_ROUND),
+        answers_like!(Stochastic, MATLAB_ROUND),
+    ];
+    assert_eq!(answers, [false; 6]);
+    // The control: the two rules differ, so the arm above is not the arm before
+    // it with its answer inverted.
+    assert_ne!(MATLAB_NEAREST, MATLAB_ROUND);
+}
 
-    // Ceiling agrees at both ties and is not nearest: it takes the upper
-    // neighbour from a position nine tenths below it.
-    assert_eq!(
-        adapt::<Ceiling>(
-            Exact::between(Slot::at(2), Fraction::of(1, 2)),
-            Dither::UNUSED
-        ),
-        Slot::at(3)
-    );
-    assert_eq!(
-        adapt::<Ceiling>(
-            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
-            Dither::UNUSED
-        ),
-        Slot::at(-2)
-    );
-    assert_eq!(
-        adapt::<Ceiling>(
-            Exact::between(Slot::at(2), Fraction::of(1, 10)),
-            Dither::UNUSED
-        ),
-        Slot::at(3)
-    );
+/// The ties-away alias, written from the public surface alone.
+///
+/// A position `slot + n/d`, with `0 <= n < d`, is negative exactly when `slot`
+/// is. Adding half a quantum toward its sign is a position the constructor
+/// takes directly, `slot + (2n + d)/(2d)` at or above zero and
+/// `slot + (2n - d)/(2d)` below it, and `toward_zero` of that is the alias. The
+/// doubled denominator has to fit the fraction, so this returns nothing where
+/// `2d` does not.
+fn ties_away(slot: i128, n: i64, d: i64) -> Option<i128> {
+    type Zero = Signature<Integer<16>, Adapt<TowardZero, Wrap>>;
+    let twice_d = d.checked_mul(2)?;
+    let twice_n = n.checked_mul(2)?;
+    let num = if slot < 0 { twice_n.checked_sub(d)? } else { twice_n.checked_add(d)? };
+    let shifted = Exact::between(Slot::at(slot), Fraction::of(num, twice_d));
+    Some(adapt::<Zero>(shifted, Dither::UNUSED).index())
+}
 
-    // The shipped nearest-not-to-even mode is nearest and takes the negative tie
-    // away from zero, which is MATLAB's Round rather than its Nearest.
-    assert_eq!(
-        adapt::<Away>(
-            Exact::between(Slot::at(2), Fraction::of(1, 10)),
-            Dither::UNUSED
-        ),
-        Slot::at(2)
-    );
-    assert_eq!(
-        adapt::<Away>(
-            Exact::between(Slot::at(2), Fraction::of(1, 2)),
-            Dither::UNUSED
-        ),
-        Slot::at(3)
-    );
-    assert_eq!(
-        adapt::<Away>(
-            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
-            Dither::UNUSED
-        ),
-        Slot::at(-3)
-    );
+#[test]
+fn a_consumer_can_write_the_ties_away_alias_and_it_is_matlab_round() {
+    // MathWorks' four positions.
+    let round = [
+        ties_away(2, 1, 10),
+        ties_away(2, 9, 10),
+        ties_away(2, 1, 2),
+        ties_away(-3, 1, 2),
+    ];
+    assert_eq!(round, MATLAB_ROUND.map(Some));
 
-    // And the even mode is nearest and takes the positive tie down.
-    assert_eq!(
-        adapt::<Even>(
-            Exact::between(Slot::at(2), Fraction::of(1, 2)),
-            Dither::UNUSED
-        ),
-        Slot::at(2)
-    );
-    assert_eq!(
-        adapt::<Even>(
-            Exact::between(Slot::at(-3), Fraction::of(1, 2)),
-            Dither::UNUSED
-        ),
-        Slot::at(-2)
-    );
+    // Every quarter from `-8` to `8`, against the integer rule for a tie away
+    // from zero, `sign(k) floor((|k| + 2) / 4)` for `x = k/4`, which reads no
+    // arvo code.
+    let mut ties = 0;
+    for k in -32i128 ..= 32 {
+        let (slot, n) = (k.div_euclid(4), k.rem_euclid(4) as i64);
+        let want = k.signum() * ((k.abs() + 2) / 4);
+        assert_eq!(ties_away(slot, n, 4), Some(want), "at {k}/4");
+        ties += usize::from(n == 2);
+    }
+    assert_eq!(ties, 16, "the walk reached every tie from -7.5 to 7.5");
+
+    // The control: the alias differs from `half_up` exactly at a negative tie.
+    type Up = Signature<Integer<16>, Adapt<HalfUp, Wrap>>;
+    let up = |slot: i128, n: i64, d: i64| {
+        adapt::<Up>(
+            Exact::between(Slot::at(slot), Fraction::of(n, d)),
+            Dither::UNUSED,
+        )
+        .index()
+    };
+    assert_eq!(ties_away(-3, 1, 2), Some(-3));
+    assert_eq!(up(-3, 1, 2), -2);
+    assert_eq!(ties_away(2, 1, 2), Some(up(2, 1, 2)));
+    assert_eq!(ties_away(-3, 1, 4), Some(up(-3, 1, 4)));
+}
+
+#[test]
+fn the_alias_cannot_be_written_at_a_denominator_past_half_the_fraction() {
+    // The gap the ruling leaves open, pinned as it stands: the alias doubles the
+    // denominator, so a position whose remainder is over a denominator past
+    // `i64::MAX / 2` has no exact half-quantum shift in the public surface, and
+    // no shipped mode takes the tie away from zero directly.
+    // FIXME: an exact ties-away over every denominator needs either the shift on
+    // the position type or the rule as a mode; the ruling names neither, so the
+    // call is the design's rather than this file's.
+    assert_eq!(ties_away(0, 1, i64::MAX / 2), Some(0));
+    assert_eq!(ties_away(0, 1, i64::MAX / 2 + 1), None);
+    assert_eq!(ties_away(-1, 1, i64::MAX), None);
 }
 
 /// The bound above is reached, so the comparison may not become strict.

@@ -11,7 +11,7 @@
 //! pair, and each of those is one of this crate's coordinates under a different
 //! word.
 //!
-//! **Nothing behind the naming is what makes it honest.** A convention needing a
+//! Nothing behind the naming is what makes it honest. A convention needing a
 //! computation to work would not be one arvo supports badly, it would be a gap in
 //! the primitives, which is what the standards bound is for. So the interesting
 //! output here is a refusal, and both of the ones below are claims about this
@@ -101,20 +101,26 @@ pub type UfiMath<const W: u32, const F: i32, R, O> =
 /// MATLAB's rounding methods, under MATLAB's names.
 ///
 /// Re-exports rather than new types, so the mapping is something the compiler
-/// agrees with rather than a sentence in a document. Four of the six land here.
+/// agrees with rather than a sentence in a document. Five of the six land here.
+/// Nearest is `HalfUp`: MathWorks documents it as ties toward positive infinity,
+/// which is what `half_up` denotes.
 pub mod rounding_method {
-    pub use crate::rounding::{Ceil as Ceiling, Floor, HalfEven as Convergent, TowardZero as Zero};
+    pub use crate::rounding::{
+        Ceil as Ceiling,
+        Floor,
+        HalfEven as Convergent,
+        HalfUp as Nearest,
+        TowardZero as Zero,
+    };
 
-    // FIXME: MATLAB's Nearest, ties toward positive infinity, has no mode here.
-    // This crate names one nearest-not-to-even mode and what it means is open:
-    // `question::which_tie_direction_an_unqualified_nearest_names` says `half_up`
-    // is two operations under a reading nobody has settled. Mapping it either way
-    // closes that inside a design. Unblocked by that row.
-
-    // FIXME: MATLAB's Round, ties toward the greater absolute value, has no mode
-    // here for the same reason, and additionally
-    // `question::is_the_rounding_vocabulary_complete_at_six` treats ties away
-    // from zero as a mode outside the six. Unblocked by that row.
+    // FIXME: MATLAB's Round takes a tie away from zero, which is not one of the
+    // six modes and is not meant to be one: the canon reaches it as an alias,
+    // `TowardZero` applied to the position shifted half a step toward its sign.
+    // A caller can write that shift through `Exact::between` with the remainder
+    // over a doubled denominator, which fits for a denominator up to
+    // `i64::MAX / 2` and not past it, and this crate names no operation forming
+    // the shift exactly at every denominator; unblocked by the design's open
+    // item on where that operation lives.
 }
 
 /// MATLAB's overflow actions, under MATLAB's names.

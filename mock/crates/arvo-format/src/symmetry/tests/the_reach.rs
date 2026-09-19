@@ -288,16 +288,18 @@ fn the_control_a_degenerate_reach_licenses_everything_and_says_so() {
             "{mode:?} refused a reach with no tie and no negative position"
         );
     }
-    // And the conservative reach refuses the three that read something, which is
-    // the other end of the same instrument.
-    let refused = ALL_MODES
-        .iter()
-        .filter(|&&mode| !rounding_is_translation_equivariant(mode, Reach::EVERYTHING).get())
-        .count();
-    assert_eq!(
-        refused, 3,
-        "the conservative reach should refuse exactly the modes that read something"
-    );
+    // And the conservative reach refuses exactly the two that read something,
+    // toward zero its sign and half-even its parity, named rather than counted so
+    // a mode moving between the two groups is reported by name. Half-up reads
+    // nothing besides the residue and is licensed.
+    for &mode in &ALL_MODES {
+        let refused = !rounding_is_translation_equivariant(mode, Reach::EVERYTHING).get();
+        assert_eq!(
+            refused,
+            matches!(mode, Mode::TowardZero | Mode::HalfEven),
+            "{mode:?}: the conservative reach should refuse exactly toward zero and half-even"
+        );
+    }
 }
 
 #[test]

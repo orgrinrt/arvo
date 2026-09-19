@@ -83,12 +83,11 @@ pub enum When {
 /// What a mode reads, when it reads it, and whether it commutes with reflection.
 ///
 /// The third is carried rather than derived from the first two. Over the six
-/// names the vocabulary carries it happens to equal reading something besides the
-/// residue, and that equality is a measured fact about those six rather than a
-/// theorem: a nearest rule whose tie went toward positive infinity would read
-/// nothing beyond the residue and still commute with reflection away from a tie.
-/// Deriving it would put a coincidence into the mechanism, so it is a law with a
-/// test of its own instead.
+/// names the vocabulary carries it equals reading something besides the residue,
+/// and that is half a theorem and half a measurement: a rule that meets a tie and
+/// reads only the residue cannot reflect, and a rule reading the sign need not.
+/// Deriving it would put the measured half into the mechanism, so it is a law
+/// with a test of its own instead.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct Behaviour {
     reads:    Reads,
@@ -117,10 +116,13 @@ impl Behaviour {
 }
 
 /// The classification, one row per name in the closed vocabulary.
+///
+/// `HalfUp` is `floor(x + q/2)`, which reads the residue and nothing else, so it
+/// sits with the directed modes; it fails reflection at a tie and nowhere else.
 #[must_use]
 pub const fn behaviour_of(mode: Mode) -> Behaviour {
     match mode {
-        Mode::Floor | Mode::Ceil | Mode::Stochastic => {
+        Mode::Floor | Mode::Ceil | Mode::HalfUp | Mode::Stochastic => {
             Behaviour {
                 reads:    Reads::Nothing,
                 when:     When::Never,
@@ -131,13 +133,6 @@ pub const fn behaviour_of(mode: Mode) -> Behaviour {
             Behaviour {
                 reads:    Reads::Sign,
                 when:     When::EveryOffGridPosition,
-                reflects: Bool::of(true),
-            }
-        },
-        Mode::HalfUp => {
-            Behaviour {
-                reads:    Reads::Sign,
-                when:     When::AtATie,
                 reflects: Bool::of(true),
             }
         },
@@ -449,6 +444,12 @@ pub const fn adaptation_relocates<S: DeclaredSignature>(reach: Reach) -> Bool {
 }
 
 /// Whether the rounding region commutes with reflection through zero.
+// FIXME: takes no reach, so it answers no in two regions where the map reflects:
+// `HalfUp` over a reach with no tie, and every mode over a reach on the grid.
+// Conservative rather than unsound, the same shape as the parity region above.
+// Expressing it wants this predicate to read a `Reach`, and the stochastic
+// mode's region at a fixed dither depends on the dither, which a reach does not
+// carry; the design names both regions and expresses neither.
 #[must_use]
 pub const fn rounding_is_reflection_equivariant(mode: Mode) -> Bool {
     behaviour_of(mode).reflects()

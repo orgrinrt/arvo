@@ -112,10 +112,10 @@ impl Rounded {
 /// Which slot the rounding region returns for a position.
 ///
 /// Stated over a remainder in `[0, 1)`, so the position is between one slot and
-/// the next and every mode is one comparison. The sign cases live in the modes
-/// that care about sign rather than in the representation, and they read the
-/// sign and parity of the slot the position names, which past the index is not
-/// the slot it pins at.
+/// the next and every mode is one comparison. Two modes read the slot as well as
+/// the remainder, `TowardZero` its sign and `HalfEven` its parity at a tie, and
+/// they read the sign and parity of the slot the position names, which past the
+/// index is not the slot it pins at.
 ///
 /// Visible to the crate and to nothing outside it, because addition's verdict
 /// reads the one offset a rounding adds where that offset is fixed, and reading
@@ -153,16 +153,14 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
                 down
             }
         },
+        // `floor(x + 1/2)`: up exactly when the remainder reaches the midpoint.
+        // It reads the remainder and nothing else, so a tie goes toward positive
+        // infinity at every sign.
         Mode::HalfUp => {
-            if twice > den {
+            if twice >= den {
                 up
-            } else if twice < den {
-                down
-            } else if exact.is_negative() {
-                // A tie on a negative position goes away from zero, which is down.
-                down
             } else {
-                up
+                down
             }
         },
         Mode::HalfEven => {
