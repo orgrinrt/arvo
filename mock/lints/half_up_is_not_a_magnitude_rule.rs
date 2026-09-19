@@ -166,6 +166,7 @@ fn check_tree(mock_dir: &Path) -> Vec<LintError> {
                 text,
                 line: 1,
                 subject: None,
+                doc: false,
             }]
         };
         for passage in read {

@@ -17,15 +17,18 @@ use super::reading::spellings_in;
 /// One passage of prose, the line it starts on, and the spelling of the mode
 /// its item carries where it is an outer doc block on one.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(super) struct Passage {
-    pub(super) text:    String,
-    pub(super) line:    usize,
-    pub(super) subject: Option<&'static str>,
+pub(crate) struct Passage {
+    pub(crate) text:    String,
+    pub(crate) line:    usize,
+    pub(crate) subject: Option<&'static str>,
+    /// Whether it is a doc comment, which is prose rustdoc prints, rather than
+    /// a plain comment, which is a note to whoever opens the file.
+    pub(crate) doc:     bool,
 }
 
 impl Passage {
     /// The line an offset into the text lies on.
-    pub(super) fn line_of(&self, at: usize) -> usize {
+    pub(crate) fn line_of(&self, at: usize) -> usize {
         self.line + self.text[.. at.min(self.text.len())].matches('\n').count()
     }
 }
@@ -46,7 +49,7 @@ struct Run {
 }
 
 /// Every passage of prose in `source`.
-pub(super) fn passages(source: &str) -> Vec<Passage> {
+pub(crate) fn passages(source: &str) -> Vec<Passage> {
     let starts: Vec<usize> = core::iter::once(0)
         .chain(source.match_indices('\n').map(|(i, _)| i + 1))
         .collect();
@@ -92,6 +95,7 @@ pub(super) fn passages(source: &str) -> Vec<Passage> {
                             text: text.to_string(),
                             line,
                             subject: None,
+                            doc: kind != Kind::Plain,
                         });
                     }
                 }
@@ -105,6 +109,7 @@ pub(super) fn passages(source: &str) -> Vec<Passage> {
                     text:    source[i + 2 .. inner_end].to_string(),
                     line:    line_of(i),
                     subject: None,
+                    doc:     false,
                 });
                 i = end;
             },
@@ -131,6 +136,7 @@ fn flush(run: &mut Option<Run>, lines: &[&str], out: &mut Vec<Passage>) {
         text: r.lines.join("\n"),
         line: r.first,
         subject,
+        doc: r.kind != Kind::Plain,
     });
 }
 
