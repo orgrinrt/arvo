@@ -11,7 +11,8 @@
 //! inside the index is fed the same ratio from its own end slot, where the carry
 //! lands as an ordinary slot. A map answering for the position named answers the
 //! two the same, shifted; one answering for a position pinned at the end of the
-//! index does not, under wrapping in the slot and at the bottom in the verdict.
+//! index does not, under wrapping in the slot and under saturation in the
+//! verdict, at both ends.
 
 use notko::Maybe;
 
