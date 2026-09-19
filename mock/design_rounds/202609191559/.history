@@ -1,0 +1,50 @@
+c4c41cdc docs: regenerate FORMAT for the oracle sweep and the token lint
+8a4173bf chore: lock the src changelist for the seventh review repairs
+7eee6980 docs: fill the src changelist for the seventh review repairs
+ef770d3b chore: commit the lockfiles the manifest fixture's crates resolve
+398245b4 fix: read core bindings as tokens and walk use trees
+9822dfd2 test: sweep the applied map against an independent oracle
+70c28310 chore: lock the doc changelist for the seventh review repairs
+afe9826a docs: state the oracle sweep law and the three core forms the lint reads
+83f2df98 docs: open the seventh review's oracle sweep and token lint topic
+3312faee chore: close design round 202609191520
+295b9817 docs: regenerate FORMAT and PRINCIPLES for the sixth review repairs
+59255bae chore: lock src changelist for platform-width shadowing round
+ca00d4b8 fix: enumerate the core shadow and widen the cross-end matrix
+328a6bbf chore: lock the doc changelist for the sixth review repairs
+92409140 docs: narrow the core-shadow claim to the enumerated forms
+2ae39b5e chore: close design round 202609191342
+0790289a docs: regenerate FORMAT.md for the shadowing fixes
+55ca4a7a chore: lock src changelist for platform-width shadowing round
+818baf82 fix: close the core shadow and the cross-end saturation gap
+ab6da190 chore: lock the doc changelist for the fifth review repairs
+b4c93b9d docs: narrow the core shadow claim and file two open items
+09be3c34 topic: open the fifth review's shadowing and cross-end fixes
+4e75b3bb chore: close design round 202609191602
+11fa5dc9 docs: regenerate FORMAT and PRINCIPLES for the fourth review repairs
+ed1be84b chore: lock the src changelist for the fourth review repairs
+2658a874 fix: close the lo-guard hole and the usize shadowing gap
+47b0bcbb chore: open the src changelist for the fourth review repairs
+df700fe2 chore: lock the doc changelist for the fourth review repairs
+585a5575 docs: spell the width core::primitive and check the carry bound
+7ca624a0 docs: write the doc changelist for the fourth review repairs
+94ff6b3f docs: open a round on the lo guard, the carry bound, two comments
+af955a72 docs: regenerate the documents for the third review repairs
+f9320cbe chore: close design round 202609191148
+19705198 chore: lock the src changelist for the third review repairs
+87b46b09 docs: say the pinned carry is reported through the verdict at both ends
+4334bdf4 fix: keep the distance past the index and read each width alias exactly
+2158e504 chore: open the src changelist for the third review repairs
+99fddc79 chore: lock the doc changelist for the third review repairs
+e4588ae9 docs: carry the distance past the index, drop names that are not there
+759e75c1 docs: write the doc changelist for the third review repairs
+7f68251d docs: open a round on the width guard, the carry and absent names
+26bc2743 docs: regenerate the documents from the surfaces and the suite round
+534ab5e1 chore: close design round 202609191043
+a6f1893d chore: lock src changelist for the surfaces and the suite round
+0b46db6d test: pin the carry, move the translation law off zero, drop the arms
+7f6086a0 chore: open the src changelist for the second review repairs
+ecdabd26 chore: lock the doc changelist for the second review repairs
+606c1b96 docs: say what a capacity, a format point and `Bool` are, and where the carry pins
+48db4601 docs: open a round on capacity, format-point and carry claims
+14242859 docs: regenerate the published documents for the rounding-step repairs
