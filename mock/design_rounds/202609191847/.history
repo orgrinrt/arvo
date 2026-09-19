@@ -1,0 +1,50 @@
+b1343e61 chore: lock src changelist for the eleventh review's claim audit
+bd9587d1 docs: name the resisted use forms in the lint doc and regenerate FORMAT
+37aca9a8 chore: lock doc changelist for the eleventh review's claim audit
+75f73ed9 docs: keep internal paths out of FORMAT and scope the use-form claim
+1a305180 test: generate a flipped control for every check the probe arms hold
+09e1041e docs: regenerate FORMAT for the tenth review's claim audit
+e8c4b36c chore: close design round 202609191815
+00a6ece4 chore: lock src changelist for the tenth review's claim audit
+b20544d4 fix: correct the compile-fail count and drop mutation narration
+45042bd3 chore: lock doc changelist for the tenth review's claim audit
+532fab5b docs: correct the manifest-rename and second-sweep prose
+2a55a6c1 test: convert the std arm to a compile-time check, add its control
+0ef75b6f docs: regenerate FORMAT for the ninth review's claim audit
+77177c7a chore: close design round 202609191744
+21bd202c chore: lock src changelist for the ninth review's claim audit
+74c9eb50 fix: restore no_std scope, widen the sweep, drop narration
+37b0c1db chore: lock doc changelist for the ninth review's claim audit
+bfc79c83 docs: restore the no_std scope on the manifest-rename condition
+741372ec chore: close design round 202609191703
+008050db docs: regenerate FORMAT for the eighth review's claim audit
+fc79f997 chore: lock the src changelist for the eighth review's claim audit
+989940b6 docs: fill the src changelist for the eighth review's claim audit
+6a15b994 docs: drop history narration and an unevidenced test claim
+71199f49 docs: name the oracle's two readings taken from the implementation
+bb664153 docs: narrow the lint's claims to the three forms it reads
+35040f54 docs: say what a dither outside zero to one does, and pin it
+60b5f6c8 test: sweep the applied map against the oracle over a wider region
+a92fe45d chore: lock the doc changelist for the eighth review's claim audit
+50c6c20a docs: narrow the design's lint, oracle and rename claims to evidence
+e7641bef test: add the prelude-only manifest rename arms to the core probe
+2d1cd14b docs: open the eighth review's claim audit topic
+a3b78b02 chore: close design round 202609191559
+c4c41cdc docs: regenerate FORMAT for the oracle sweep and the token lint
+8a4173bf chore: lock the src changelist for the seventh review repairs
+7eee6980 docs: fill the src changelist for the seventh review repairs
+ef770d3b chore: commit the lockfiles the manifest fixture's crates resolve
+398245b4 fix: read core bindings as tokens and walk use trees
+9822dfd2 test: sweep the applied map against an independent oracle
+70c28310 chore: lock the doc changelist for the seventh review repairs
+afe9826a docs: state the oracle sweep law and the three core forms the lint reads
+83f2df98 docs: open the seventh review's oracle sweep and token lint topic
+3312faee chore: close design round 202609191520
+295b9817 docs: regenerate FORMAT and PRINCIPLES for the sixth review repairs
+59255bae chore: lock src changelist for platform-width shadowing round
+ca00d4b8 fix: enumerate the core shadow and widen the cross-end matrix
+328a6bbf chore: lock the doc changelist for the sixth review repairs
+92409140 docs: narrow the core-shadow claim to the enumerated forms
+2ae39b5e chore: close design round 202609191342
+0790289a docs: regenerate FORMAT.md for the shadowing fixes
+55ca4a7a chore: lock src changelist for platform-width shadowing round
