@@ -61,14 +61,7 @@ const CLOSING_RULING: &str =
 const AXIS: &str = "rounding";
 
 /// The six, as the ruling spells them.
-const RATIFIED: [&str; 6] = [
-    "toward_zero",
-    "floor",
-    "ceil",
-    "half_up",
-    "half_even",
-    "stochastic",
-];
+const RATIFIED: [&str; 6] = ["toward_zero", "floor", "ceil", "half_up", "half_even", "stochastic"];
 
 /// Values of the axis that are not modes. `exact` names the case where nothing
 /// is discarded, which `dimension::rounding` calls a value of the axis rather
@@ -95,11 +88,8 @@ const RETIRED: [&str; 3] = ["truncate", "trunc", "truncation"];
 const UNDERSPECIFIED: [&str; 1] = ["nearest"];
 
 /// The fields a predicate lives in.
-const PREDICATE_FIELDS: [(&str, &str); 3] = [
-    ("proposal", "predicate"),
-    ("law", "holds"),
-    ("law", "fails"),
-];
+const PREDICATE_FIELDS: [(&str, &str); 3] =
+    [("proposal", "predicate"), ("law", "holds"), ("law", "fails")];
 
 /// The separator entries are joined with.
 const JOIN: &str = ", ";
@@ -109,9 +99,11 @@ const JOIN: &str = ", ";
 enum Standing {
     /// One of the six, spelled as the ruling spells it.
     ///
-    /// About the spelling and not about the operation. The ruling closed which
-    /// names exist and said nothing about what each denotes, so a row lands
-    /// here whether or not the mode it names is settled.
+    /// About the spelling and not about the operation. The vocabulary ruling
+    /// closed which names exist and said nothing about what each denotes; what
+    /// `half_up` denotes was settled later, by
+    /// `ruling::half_up_denotes_ties_toward_positive_infinity`. This standing
+    /// reads neither, so a row lands here on its spelling alone.
     Ratified,
     /// Not a mode: `exact` or `any`.
     NotAMode,
@@ -142,8 +134,8 @@ impl Tool for RoundingVocabulary {
 
     fn args(&self) -> &'static [ArgSpec] {
         &[ArgSpec {
-            name: "mode",
-            required: false,
+            name:        "mode",
+            required:    false,
             description: "report only the rows naming one spelling, by that spelling",
         }]
     }
@@ -218,12 +210,12 @@ impl RoundingVocabulary {
 
 /// One `rounding` entry, and where it was written.
 struct Entry {
-    row: String,
-    field: &'static str,
+    row:      String,
+    field:    &'static str,
     /// The whole values side, as written.
-    values: String,
+    values:   String,
     /// One mode named in it, and how it stands.
-    mode: String,
+    mode:     String,
     standing: Standing,
 }
 
@@ -269,9 +261,9 @@ fn modes_in(values: &str) -> Vec<String> {
     let v = v.strip_prefix('=').map(str::trim).unwrap_or(v);
 
     if let Some(open) = v.find('{')
-        && let Some(close) = v[open..].find('}')
+        && let Some(close) = v[open ..].find('}')
     {
-        return v[open + 1..open + close]
+        return v[open + 1 .. open + close]
             .split(',')
             .map(|m| m.trim().to_string())
             .filter(|m| !m.is_empty())
@@ -281,11 +273,7 @@ fn modes_in(values: &str) -> Vec<String> {
     // second mode, so only the head is read.
     let head = v.split(',').next().unwrap_or(v).trim();
     let head = head.strip_prefix("in").map(str::trim).unwrap_or(head);
-    if head.is_empty() {
-        Vec::new()
-    } else {
-        vec![head.to_string()]
-    }
+    if head.is_empty() { Vec::new() } else { vec![head.to_string()] }
 }
 
 /// How one spelling stands against the ratified set.
@@ -321,11 +309,11 @@ fn classify(mode: &str) -> Standing {
 fn split_entries(joined: &str) -> Vec<&str> {
     let mut out = Vec::new();
     let (mut start, mut at) = (0usize, 0usize);
-    while let Some(found) = joined[at..].find(JOIN) {
+    while let Some(found) = joined[at ..].find(JOIN) {
         let cut = at + found;
-        let after = &joined[cut + JOIN.len()..];
+        let after = &joined[cut + JOIN.len() ..];
         if starts_an_entry(after) {
-            let entry = joined[start..cut].trim();
+            let entry = joined[start .. cut].trim();
             if !entry.is_empty() {
                 out.push(entry);
             }
@@ -333,7 +321,7 @@ fn split_entries(joined: &str) -> Vec<&str> {
         }
         at = cut + JOIN.len();
     }
-    let last = joined[start..].trim();
+    let last = joined[start ..].trim();
     if !last.is_empty() {
         out.push(last);
     }
@@ -371,7 +359,7 @@ fn one(found: &[Entry], mode: &str) -> ToolReport {
         outcome: Outcome::Clean {
             examined: found.len(),
         },
-        output: s,
+        output:  s,
     }
 }
 
@@ -455,14 +443,14 @@ fn report(found: &[Entry]) -> ToolReport {
             outcome: Outcome::Clean {
                 examined: found.len(),
             },
-            output: s,
+            output:  s,
         };
     }
     ToolReport {
         outcome: Outcome::Clean {
             examined: found.len(),
         },
-        output: s,
+        output:  s,
     }
 }
 
