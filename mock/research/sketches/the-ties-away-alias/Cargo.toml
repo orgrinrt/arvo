@@ -1,0 +1,14 @@
+# Its own `[workspace]` table so cargo does not walk up into the mock workspace,
+# as every sibling sketch here does.
+[workspace]
+
+[package]
+name = "the-ties-away-alias"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+description = "Where a consumer can write the ties-away alias against arvo-format, swept against an integer oracle"
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
