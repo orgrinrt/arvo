@@ -700,8 +700,7 @@ pointer width a compilation target has and the widest carrier the placement ladd
 carrier of the index. A slot index and a count of slots are carried as signed 128-bit integers, which
 is what reaching 64 takes: the unsigned 64-bit range ends at `2^64 - 1` and both 64-bit ranges count
 `2^64` slots, and none of those is a signed 64-bit value. Restating the range as a count or with an
-exclusive end, over a signed 64-bit index, reaches 63 and not 64, measured in
-`mock/research/sketches/202609190830_the-slot-coordinate-at-sixty-four/`.
+exclusive end, over a signed 64-bit index, reaches 63 and not 64.
 
 Past 64 nothing here is admitted, although the index's host integer would count further. Running the ladder on
 to 126, where a count of `2^width` stops fitting a signed 128-bit integer, would answer how wide arvo
@@ -1009,9 +1008,8 @@ alias written against a literal width, and on the
 host that is indistinguishable from the right spelling by anything a test reads, so no arm compiled for
 the host could catch it. An arm written as a `#[test]` for another width only runs on a target of that
 width. One written as a free `const _` item under a `cfg` for that width would be evaluated by any build
-at that target, a check included, and `mock/research/202609191140_foreign_target_probes/` pins that for
-the free-item shape; but this repository builds and checks at the host alone, so it would guard nothing on
-the gate.
+at that target, a check included; but this repository builds and checks at the host alone, so it would
+guard nothing on the gate.
 
 So the property is guarded where it lives, in the source text, by two lint arms rather than one. The lint
 `the-platform-width-points-read-the-pointer-width` reads each alias's declaration up to its semicolon,
@@ -1028,10 +1026,13 @@ first is a module named `core`. The second is a `use` item binding the name `cor
 an alias `as core`, an unaliased last segment `core` inside braces or not, or a `self` under a `core`
 segment. The third is an `extern crate` item aliased `as core`.
 
-The leading `::` resists the first two on its own. A module and a `use` bind a name in the module that
-declares them, and a leading-`::` path resolves among the crates rather than among that module's names,
-so these two shadow only the bare spelling `core`, and only in the module that holds them. They are
-refused because another path in that module may be spelled bare. The third is the one that reaches the
+The leading `::` resists, on its own, a module named `core`, a `use` alias `as core`, an unaliased `use`
+whose last segment is `core` outside braces, and a `self` under a `core` segment. A module and a `use`
+bind a name in the module that declares them, and a leading-`::` path resolves among the crates rather
+than among that module's names, so each of these shadows only the bare spelling `core`, and only in the
+module that holds it. They are refused because another path in that module may be spelled bare. The
+lint also refuses an unaliased `core` inside braces beside other names, which the list of what the
+leading `::` resists does not cover. The third is the one that reaches the
 leading-`::` path: an `extern crate self as core` at the crate root makes `::core` name this crate
 itself. A macro expanding to `extern crate self as core` is refused by the compiler already. A
 `Cargo.toml` dependency renamed to the key `core` reaches `::core` the way the third form does. For a
@@ -1047,8 +1048,6 @@ the prelude import exactly as one with no `prelude` module at all is. A dependen
 hijacks the leading-`::` path with no `prelude` module in the renamed crate at all, checked at check
 time the same way the `no_std` dependents' own checks are. This lint reads source only and never sees a
 manifest, so that rename is unguarded.
-`mock/research/202609191400_core_shadowing_probe/` carries an arm for each of these outcomes, run by one
-command.
 
 Both arms run on every commit with no second build. What neither guards is anything beyond the two
 declarations and the three forms: the family laws are the tests', and a glob import bringing in an item
@@ -1217,10 +1216,9 @@ a law stated one tier up with no expression here and no test against it.
 Their mode sets and this crate's do not correspond one for one, and the cardinalities agreeing is a
 coincidence rather than a check. The unsigned row holds over five of six and the signed wrapping row
 over three of six, and so does the region below, over a different set. Both rows name `away from
-zero`, which `cargo mock rounding-vocabulary` reports as outside the six ratified names, and neither
-row names a stochastic decision, which this crate ships. Whether `away from zero` is a further name
-the vocabulary wants or a mode the design does not ship is a canon question and is open; the tool
-exists to make it answerable and is not answered here. So what the region below claims is over the six
+zero`, which is not one of the six names the vocabulary carries, and neither row names a stochastic
+decision, which this crate ships. Whether `away from zero` is a further name the vocabulary wants or a
+mode the design does not ship is open and is not answered here. So what the region below claims is over the six
 this crate ships, and the five those two sets share are where the two can be compared at all. On the
 unsigned row they agree there: the same four commute and half-even does not. On the signed wrapping
 row the comparison turns on whether the domain that row was measured over reaches a tie, which the row
