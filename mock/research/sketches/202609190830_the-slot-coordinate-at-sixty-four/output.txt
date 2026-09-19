@@ -1,0 +1,24 @@
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+== z_an_i64_index_restated.rs target=aarch64-apple-darwin cfg=none exit=0 builds expected=builds as-expected
+== z_an_i64_index_restated.rs target=aarch64-apple-darwin cfg=controls exit=0 builds expected=builds as-expected
+== z_an_i64_index_restated.rs target=aarch64-apple-darwin cfg=signed_64_counted exit=1 refused expected=refused as-expected
+error: aborting due to 1 previous error
+error: literal out of range for `u64`
+== z_an_i64_index_restated.rs target=aarch64-apple-darwin cfg=unsigned_64_counted exit=1 refused expected=refused as-expected
+error: aborting due to 1 previous error
+error: literal out of range for `u64`
+== z_an_i64_index_restated.rs target=aarch64-apple-darwin cfg=unsigned_64_exclusive exit=1 refused expected=refused as-expected
+error: aborting due to 1 previous error
+error: literal out of range for `i64`
+== z_an_i64_index_restated.rs target=aarch64-apple-darwin cfg=signed_64_exclusive exit=1 refused expected=refused as-expected
+error: aborting due to 1 previous error
+error: literal out of range for `i64`
+== y_an_i128_index.rs target=aarch64-apple-darwin cfg=none exit=0 builds expected=builds as-expected
+== y_an_i128_index.rs target=x86_64-unknown-linux-gnu cfg=none exit=0 builds expected=builds as-expected
+== y_an_i128_index.rs target=i686-unknown-linux-gnu cfg=none exit=0 builds expected=builds as-expected
+== y_an_i128_index.rs target=thumbv6m-none-eabi cfg=none exit=0 builds expected=builds as-expected
+== y_an_i128_index.rs target=wasm32-unknown-unknown cfg=none exit=0 builds expected=builds as-expected
+== y_an_i128_index.rs target=aarch64-apple-darwin cfg=past_the_ladder exit=1 refused expected=refused as-expected
+error: aborting due to 4 previous errors
+error: this arithmetic operation will overflow
+error[E0080]: attempt to shift right by `-1_i32`, which would overflow
