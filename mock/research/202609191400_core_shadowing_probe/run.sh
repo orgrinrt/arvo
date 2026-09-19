@@ -61,8 +61,8 @@
 #
 # What no pass shows. Each pass judges an item whole, so a comparison whose two
 # sides cannot differ, joined by `&&` to one that responds, is flagged by none
-# of the three. And a pass checks an item against its declaration, never the
-# declaration against the arm.
+# of the three. And a pass compares an item's outcome with the item's
+# declaration, so a wrong declaration is flagged only where the two disagree.
 #
 # Flagged before any pass, and the arm's passes then skipped: an arm expected
 # to build that holds no item; an item with no comparison; a `const assert`
@@ -116,6 +116,10 @@ harness_self_check() {
   selfcheck checks_nothing "no item" "structure"
   selfcheck no_message "$(code 'assert!(W == 8)'), no message" "structure" --reads 1
   selfcheck an_escape_the_harness_cannot_match "a message holding \`\\n\`" "structure" --reads 1
+  selfcheck an_item_declared_in_neither_list "item 2 in neither list" "structure" --reads 1
+  selfcheck an_item_declared_in_both_lists "item 1 in both lists" "structure" --reads 1 --resists 1
+  selfcheck two_items_sharing_a_message "two items, one message" "structure" --reads 1,2
+  selfcheck declared_to_check_nothing_and_checks "declared \`--checks-nothing\`, holds an item" "structure" --checks-nothing
   selfcheck compares_the_width_with_itself "$(code 'W == W')" "premise" --reads 1
   selfcheck a_true_comparison_before_the_width "$(code '1 == 1 && W == W')" "premise" --reads 1
   selfcheck compares_the_width_with_another_constant "$(code 'W != 7'), the fake width 8" "premise" --reads 1
