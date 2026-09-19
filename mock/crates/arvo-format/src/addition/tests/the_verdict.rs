@@ -38,7 +38,7 @@ use crate::format::Format;
 use crate::overflow::{SHIPPED_POLICIES, Saturate, Wrap};
 use crate::points::{Biased, Integer, UFixed};
 use crate::quantum::Constant;
-use crate::rounding::{ALL_MODES, Floor};
+use crate::rounding::{ALL_MODES, Floor, Mode};
 use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::symmetry::{Reach, completion_is_translation_homomorphic};
 use crate::tests::dispatch::{self, PerFormat, PerSignature};
@@ -269,36 +269,57 @@ fn a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways()
     assert!(cross.whole_licensed > 0 && cross.whole_refused > 0);
     assert!(cross.fractional_licensed > 0 && cross.fractional_refused > 0);
     // The cost of the fractional verdict, pinned per cell so a change in the
-    // verdict or the map is seen and so is where it landed. Rows are the modes in
-    // the order `ALL_MODES` lists them, toward zero, floor, ceil, half up, half
-    // even and stochastic, and columns the policies in the order
-    // `SHIPPED_POLICIES` lists them, wrap, saturate and clamp.
-    //
-    // The first table is every fractional refusal, the second the refusals that
-    // are associative anyway. The four modes that read nothing besides the
-    // residue, floor, ceil, half up and stochastic, have none of the second kind,
-    // so over this cross their verdict is exact both ways at a fractional phase
-    // too. Half up refuses exactly the cells ceil does, since both add a fixed
-    // offset and the offset is all the verdict reads. Every associative refusal
-    // is in a mode reading the sign or the parity, where the offset moves across
-    // the reach and the verdict refuses without asking whether the moving offset
-    // composes anyway.
-    assert_eq!(cross.fractional_refused_by_cell, [
-        [101, 101, 101],
-        [0, 53, 53],
-        [0, 52, 52],
-        [0, 52, 52],
-        [51, 82, 82],
-        [0, 63, 63]
-    ]);
-    assert_eq!(cross.fractional_refused_associative, [
-        [38, 38, 38],
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
-        [17, 22, 22],
-        [0, 0, 0]
-    ]);
+    // verdict or the map is seen and so is where it landed. Columns are the
+    // policies in the order `SHIPPED_POLICIES` lists them, wrap, saturate and
+    // clamp. A row is looked up by its mode rather than written out in the order
+    // `ALL_MODES` happens to list them, so each assertion below says which mode
+    // it is about and a change to that order moves none of them.
+    let index = |mode: Mode| {
+        ALL_MODES
+            .iter()
+            .position(|&m| m == mode)
+            .expect("the mode is one of the six")
+    };
+    let refused = |mode: Mode| cross.fractional_refused_by_cell[index(mode)];
+    let refused_associative = |mode: Mode| cross.fractional_refused_associative[index(mode)];
+
+    // Half up refuses exactly the cells ceil does, since both add a fixed offset
+    // and the offset is all the verdict reads. That is the relation, and it is
+    // asserted as one rather than as a second copy of ceil's numbers, which is
+    // the form that would go on agreeing after the two stopped being one rule.
+    assert_eq!(
+        refused(Mode::HalfUp),
+        refused(Mode::Ceil),
+        "half up and ceil add the same fixed offset, so the verdict reads them alike"
+    );
+    // And the relation says something, because the neighbouring row differs.
+    assert_ne!(refused(Mode::HalfUp), refused(Mode::Floor));
+
+    // The four modes reading nothing besides the residue have no refusal that is
+    // associative anyway, so over this cross their verdict is exact both ways at
+    // a fractional phase too. Asserted over the group, since it is a property of
+    // what they read rather than four separate coincidences.
+    for mode in [Mode::Floor, Mode::Ceil, Mode::HalfUp, Mode::Stochastic] {
+        assert_eq!(
+            refused_associative(mode),
+            [0, 0, 0],
+            "{mode:?} reads nothing besides the residue, so a refusal of its cells \
+             should name a divergent triple"
+        );
+    }
+    // The two reading the sign or the parity do have them, which is what that
+    // group claim is against: the offset moves across the reach and the verdict
+    // refuses without asking whether the moving offset composes anyway. Pinned as
+    // measured, so a change to the verdict or the map is seen.
+    assert_eq!(refused_associative(Mode::TowardZero), [38, 38, 38]);
+    assert_eq!(refused_associative(Mode::HalfEven), [17, 22, 22]);
+
+    // Every fractional refusal, by mode, as measured.
+    assert_eq!(refused(Mode::TowardZero), [101, 101, 101]);
+    assert_eq!(refused(Mode::Floor), [0, 53, 53]);
+    assert_eq!(refused(Mode::Ceil), [0, 52, 52]);
+    assert_eq!(refused(Mode::HalfEven), [51, 82, 82]);
+    assert_eq!(refused(Mode::Stochastic), [0, 63, 63]);
     // A range of one slot is associative whatever the map does, and the verdict
     // licenses every such cell, so the exactness claim above is not resting on
     // the span bound it is stated with.
