@@ -398,3 +398,28 @@ fn control_a_code_span_alone_is_not_a_mention() {
         "away from zero"
     ]);
 }
+
+#[test]
+fn every_reading_is_written_lower_case_so_a_lowered_clause_can_be_searched_for_it() {
+    // Two readers search an already lowered clause for these as written, and a
+    // reading carrying an upper-case letter is found by neither: `readings_in`
+    // would stop seeing it, so the pairing it names goes silent, and
+    // `reading_at` would stop recognising it, so a list item holding it stops
+    // reading as bare and the list escape goes the other way. Nothing in either
+    // says the invariant is there, which is why it is asserted here.
+    let shouting: Vec<&&str> = READINGS
+        .iter()
+        .filter(|r| ***r != *r.to_ascii_lowercase())
+        .collect();
+    assert!(
+        shouting.is_empty(),
+        "a reading has to be lower case to be found in a lowered clause: {shouting:?}"
+    );
+    // The same filter over the spellings, which are matched with their case and
+    // do carry upper-case letters, finds several. Without this the emptiness
+    // above would be a fact about the filter rather than about the readings.
+    assert!(
+        SPELLINGS.iter().any(|s| **s != *s.to_ascii_lowercase()),
+        "the filter finds nothing anywhere, so it says nothing about the readings"
+    );
+}

@@ -21,6 +21,14 @@
 //! pairs its first cell with the others and a clause cut at every `|` would
 //! never see that pairing.
 
+/// Which arm this build breaks, read from `HALF_UP_MUTANT`. The sketch's copy
+/// carries this and the shipped module does not: every switch below is off in
+/// the shipped reader, and `none` is the control that runs this file with all
+/// of them off.
+fn mutant(which: &str) -> bool {
+    std::env::var("HALF_UP_MUTANT").is_ok_and(|v| v == which)
+}
+
 /// Every spelling of the mode's name this repository writes. Matched with case,
 /// and bounded by a character that cannot sit inside an identifier, so a
 /// longer identifier carrying one of them is not a mention of the mode. Java's
@@ -215,7 +223,7 @@ pub(super) fn hits(text: &str, subject: Option<&str>) -> Vec<Hit> {
                 ..hit
             });
         }
-        carried = if clause.ends_with('\n') { None } else { antecedent(clause) };
+        carried = if mutant("nocarry") || clause.ends_with('\n') { None } else { antecedent(clause) };
     }
     out.sort_by_key(|h| h.at);
     out
@@ -302,7 +310,7 @@ fn antecedent(clause: &str) -> Option<&'static str> {
         .match_indices('`')
         .filter(|(i, _)| *i > at + name.len())
         .count();
-    (named_after < 2).then_some(name)
+    (mutant("antecedent") || named_after < 2).then_some(name)
 }
 
 /// Whether the clause opens by pointing back rather than by naming.
@@ -312,7 +320,7 @@ fn opens_with_a_pronoun(lower: &str) -> bool {
         .split(|c: char| !(c.is_ascii_alphanumeric() || c == '\''))
         .next()
         .unwrap_or_default();
-    PRONOUNS.contains(&first)
+    mutant("pronounany") || PRONOUNS.contains(&first)
 }
 
 /// Whether the name and the reading sit in different items of one list.
@@ -324,17 +332,18 @@ fn opens_with_a_pronoun(lower: &str) -> bool {
 /// name's item is not required to be bare: "floor, ceiling, away-from-zero,
 /// nearest-half-up and nearest-half-even give a zero difference" is a list.
 fn listed_apart(lower: &str, segs: &[(usize, &str)], n: usize, r: usize) -> bool {
-    if segs.len() < 3 {
+    if segs.len() < if mutant("twoseg") { 2 } else { 3 } {
         return false;
     }
     let (i, j) = (segment_of(segs, n), segment_of(segs, r));
-    if i == j || !is_bare(segs[j].1, lower, r) {
+    if i == j || !(mutant("nobare") || is_bare(segs[j].1, lower, r)) {
         return false;
     }
-    [j.checked_sub(1), (j + 1 < segs.len()).then_some(j + 1)]
-        .into_iter()
-        .flatten()
-        .any(|k| words_of(segs[k].1) <= 1)
+    mutant("neighbour")
+        || [j.checked_sub(1), (j + 1 < segs.len()).then_some(j + 1)]
+            .into_iter()
+            .flatten()
+            .any(|k| words_of(segs[k].1) <= 1)
 }
 
 /// Whether a segment of the lowered clause holds nothing besides the reading
@@ -380,13 +389,15 @@ fn reading_at(lower: &str, at: usize) -> &'static str {
 /// what a clause contrasting the mode with another mode is, and reading one of
 /// those as a contrast against the mode is how the reading got into prose.
 fn negator_binds(lower: &str, segs: &[(usize, &str)], n: Option<usize>, r: usize) -> bool {
-    if bound_in_segment(lower, segs, r, true) {
+    if bound_in_segment(lower, segs, r, !mutant("readafter")) {
         return true;
     }
     match n {
         Some(n) => {
-            bound_in_segment(lower, segs, n, false)
-                || (r < n && reaches(lower, &lower[r .. n], r, n))
+            bound_in_segment(lower, segs, n, mutant("nameafter"))
+                || (!mutant("nobetween")
+                    && (r < n || mutant("betweenboth"))
+                    && reaches(lower, &lower[r.min(n) .. r.max(n)], r.min(n), r.max(n)))
         },
         // A table cell is read whole: the row's name is in another cell, so
         // there is no segment of its own to bind to.
@@ -420,7 +431,7 @@ fn reaches(lower: &str, span: &str, from: usize, to: usize) -> bool {
 
 /// Whether nothing in `span` turns the sentence back to what it asserts.
 fn no_conjunction(span: &str) -> bool {
-    !CONJUNCTIONS.iter().any(|c| !bounded(span, c).is_empty())
+    mutant("noconj") || !CONJUNCTIONS.iter().any(|c| !bounded(span, c).is_empty())
 }
 
 /// Where every negator in `text` starts, counting a word ending in `n't`.
@@ -505,8 +516,8 @@ pub(super) fn readings_in(lower: &str, segs: &[(usize, &str)]) -> Vec<(usize, &'
     let mut out: Vec<(usize, &'static str)> = READINGS
         .iter()
         .flat_map(|s| bounded(lower, s).into_iter().map(move |at| (at, *s)))
-        .filter(|&(at, s)| s != QUALIFIED || directed(lower, segs, at))
-        .filter(|&(at, s)| !mentioned(lower, at, s))
+        .filter(|&(at, s)| mutant("noqual") || s != QUALIFIED || directed(lower, segs, at))
+        .filter(|&(at, s)| mutant("nomention") || !mentioned(lower, at, s))
         .collect();
     out.sort();
     out
@@ -537,7 +548,7 @@ fn mentioned(lower: &str, at: usize, term: &str) -> bool {
         .chars()
         .rev()
         .collect();
-    MENTIONED.contains(&after.as_str()) || MENTIONED.contains(&before.as_str())
+    mutant("mentionspan") || MENTIONED.contains(&after.as_str()) || MENTIONED.contains(&before.as_str())
 }
 
 /// Whether a direction word stands in front of `at`, in the same segment.

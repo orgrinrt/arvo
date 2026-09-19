@@ -4,7 +4,12 @@ Whether the lint's own suite notices each of its arms being broken. A lint whose
 tests pass with an arm deleted is not testing that arm, and a lint reporting
 nothing over the real tree says as much about a dead arm as about clean prose.
 
-`WORKS`: every one of the 29 mutants is caught.
+`WORKS`: every one of the 28 mutants is caught.
+
+The run is of the reader as it stood at `b8a7ce4b`, which is the revision the
+mutant copies here were taken from. It was rewritten at `df9d286f`, and the arms
+that rewrite added are mutated in `the-half-up-lint-reader-mutants/` rather than
+here: this file is not re-run against a module it no longer matches.
 
 ## How it was run
 

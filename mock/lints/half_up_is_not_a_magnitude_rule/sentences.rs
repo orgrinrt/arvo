@@ -192,6 +192,39 @@ pub(super) const PAIRS: &[Pair] = &[
         differs:  "which clause the mode's name sits in",
         measured: false,
     },
+    Pair {
+        fires:    "`half_up` is a nearest rule that reads nothing and so falls on the translation \
+                  side, where the ties-away rule would fall on the reflection side.",
+        silent:   "`half_up` is a nearest rule that reads nothing and so falls on the translation \
+                  side, where the ties-away alias would fall on the reflection side.",
+        subject:  None,
+        differs:  "whether the negator stands behind the reading in the reading's own segment",
+        measured: false,
+    },
+    Pair {
+        fires:    "The rounding region commutes with reflection for toward zero and half-even, \
+                  and for floor, ceil, half-up or a stochastic decision at a fixed dither.",
+        silent:   "The rounding region commutes with reflection for toward zero and half-even, \
+                  and not for floor, ceil, half-up or a stochastic decision at a fixed dither.",
+        subject:  None,
+        differs:  "whether a negator opens the list the name sits in, behind the reading",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up`, unlike the even rule, sends a tie away from zero.",
+        silent:   "`half_up`, unlike the even rule, never sends a tie away from zero.",
+        subject:  None,
+        differs:  "whether the negator is in the reading's own segment or in an aside between the \
+                  name and the reading",
+        measured: false,
+    },
+    Pair {
+        fires:    "In `{floor, half_up, a tie away from zero, ceil}` the second is wanted.",
+        silent:   "In `{floor, half_up, away from zero, ceil}` the second is wanted.",
+        subject:  None,
+        differs:  "whether the item holding the reading holds anything besides it",
+        measured: false,
+    },
 ];
 
 /// The readings a sentence is refused for, as the reader answers it.
@@ -230,7 +263,7 @@ fn every_pair_fires_on_one_side_and_is_silent_on_the_other() {
 fn the_corpus_holds_what_it_held_and_the_review_measured_eight_of_it() {
     // A count rather than a list, so a pair removed is a failure here rather
     // than a silent narrowing of what the reader is asked.
-    assert_eq!(PAIRS.len(), 21);
+    assert_eq!(PAIRS.len(), 25);
     assert_eq!(PAIRS.iter().filter(|p| p.measured).count(), 8);
 }
 
