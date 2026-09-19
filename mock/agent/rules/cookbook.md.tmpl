@@ -76,9 +76,13 @@ point and holds no value.
 
 ## "I need a bounded integer"
 
-`UFixed<I, F, S>` / `IFixed<I, F, S>` from arvo, parameterised by
-integer width `I`, fractional width `F`, and strategy marker `S`.
-Semantic aliases (`Mass<S>`, `Angle<S>`, etc.) shadow the raw form.
+No numeric value type exists yet. `arvo_format::points::UFixed<BITS, FRAC>`
+and `Integer<BITS>` declare the format a bounded integer would have, and
+they are zero-sized markers that hold no value, so a field or return
+typed as one carries nothing. `IFixed` is not in the tree, and neither
+format takes a strategy parameter. What a value of a format is, is
+`question::what_a_datum_stands_for`, and it is open. Do not invent a
+value type to fill it.
 
 ## "I need to measure size / capacity"
 
@@ -89,24 +93,27 @@ no value, so a field or return typed as one carries nothing. What a value of a
 format is, is `question::what_a_datum_stands_for`, and it is open. Do not
 invent a value type to fill it.
 
-A const-generic capacity is the position
+A capacity is a type-level parameter, the const generic position
 `obligation::a_primitive_for_every_position_a_bare_number_would_take`
 excepts, and even there the bare form is used only where the alternative is
-genuinely painful. No capacity type is built, and the platform-width ruling
-puts one out of its scope; no ruling says whether one should exist.
+genuinely painful. What type spells it, the host's `usize` or a type the
+stack owns, is open: no capacity type is built, the platform-width ruling
+puts one out of its scope, and no ruling says whether one should exist or
+whether a capacity is a case where the alternative is genuinely painful.
 
 ## "I need a float"
 
-`FastFloat` (Hot: no NaN/Inf guards) or `StrictFloat` (Cold: IEEE
-compliant). Never bare `f32` / `f64` in a pub API.
+No float value type exists yet. `arvo_format::points::Floating` declares
+a floating format and holds no value, and `FastFloat` and `StrictFloat`
+are not in the tree. The value half is `question::what_a_datum_stands_for`,
+open. Never bare `f32` / `f64` in a pub API.
 
 ## "I need a predicate-returning function"
 
-Return `Bool` (from `arvo-bits`). `Bool` implements `Try` with
-`Residual = Infallible` so `?` extracts the inner `bool` at zero cost.
-For `if` expressions use `*val.is_zero()` (Deref) or
-`val.is_zero()?`. See
-`arvo/docs/ARVO_NEWTYPE-DEREF.md` for the full rationale.
+Return `Bool` (from `arvo-format`). Combine with `Bool::and`, `Bool::or`
+and `Bool::not`, all `const fn`. For an `if` expression, read the host's
+`bool` back through `Bool::get()`, the declared unwrap door. `Bool` has
+no `Deref` and no `Try` impl.
 
 ## "I need to iterate a bounded source"
 

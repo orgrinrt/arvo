@@ -20,7 +20,7 @@ The first crates are in the tree and they build. `arvo-format` carries the forma
 
 On top of that the industrial conventions people already write against get named directly, so a MATLAB `fi` at a given word length and fraction length, or a `fimath` rounding and overflow choice over one, is written as itself and resolves to a format the crate already had, rather than to a translation somebody does by hand and then has to check. MATLAB is the only convention named so far and the set is open, so the next one is an addition and not a change. Two of its rounding methods have no mode here yet and the source says which and why.
 
-That's the bottom of the stack rather than a usable numeric library, so there's no `UFixed` or `Uint` to reach for yet, and the layers above these are being designed and written as the design settles under them.
+That's the bottom of the stack rather than a usable numeric library, so there's no number to compute with yet. `UFixed` and the other points name a format and hold no value, what a value of one is hasn't been decided, and the layers above these are being designed and written as the design settles under them.
 
 I'd caution against depending on this for anything serious just yet. The api hasn't settled, and neither has the shape above these four: which crates there end up being and which layer owns what are still open, and answering them is the work in progress. If you do want to follow along, the `dev` branch is where things land as they get tested and stable, so a git dep pointed at it will get you the real thing sooner than waiting for a release will.
 

@@ -24,20 +24,22 @@ All three are `#![no_std]` and ship with no platform dependency.
 
 ## Picking primitives
 
-Reach for the exact width: `Uint<3>`, `Uint<14>`, `Int<47>`. The
-`Strategy` parameter defaults to `Warm`. Choose `Hot` for the fast
-release path, `Precise` for saturating semantics, `Cold` for bitpacked
-column-store layouts. The strategy marker is a type-level knob that
-drives container width and codegen; it does not change at runtime.
+Declare the exact width: `UFixed<3, 0>`, `UFixed<14, 0>`,
+`Integer<47>`, not the host bucket above it. The strategy is a marker
+of its own in `arvo-strategy`, not a parameter of the format: `Warm` is
+meant as the default, `Hot` puts speed first, `Precise` accuracy and
+`Cold` footprint, and each binds a placement objective and an
+adaptation at the type level. It does not change at runtime.
 
-Fixed-point arithmetic uses `UFixed<I, F, S>` and `IFixed<I, F, S>`,
-where `I` is integer bit count and `F` is fractional bit count. Floats
-use `FastFloat` and `StrictFloat`. Boolean values use `Bool`. The
-pointer-width formats are `USize` and `ISize`, format points that hold
-no value; what a value of one is has not been decided. A type-level
-capacity is a const generic parameter, the position the primitive
+A numeral is declared by its format: `Integer<BITS>`,
+`UFixed<BITS, FRAC>`, `Biased` and `Floating` in `arvo-format`, and the
+pointer-width `USize` and `ISize`. Each is a zero-sized format point
+that holds no value, and what a value of a format is has not been
+decided, so no numeric value type exists yet. Boolean values use
+`Bool`, and an exact-width bit pattern uses `Bits<N>` from `arvo-bits`.
+A type-level capacity is the const generic position the primitive
 obligation excepts, with the bare form used only where the alternative
-is genuinely painful.
+is genuinely painful; what type spells it is open.
 
 ## Pre-1.0 stability
 
