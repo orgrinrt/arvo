@@ -4,34 +4,49 @@
 //--------------------------------------------------------------------------------------------------
 
 //! Lint: the platform-width points in `arvo-format` are spelled over
-//! `core::primitive::usize::BITS`.
+//! `::core::primitive::usize::BITS`, and nothing in `arvo-format` binds the name
+//! `core` to anything else.
 //!
-//! `USize` and `ISize` are aliases, `UFixed<{ core::primitive::usize::BITS }, 0>`
-//! and `Integer<{ core::primitive::usize::BITS }>`, and what makes each a
+//! `USize` and `ISize` are aliases, `UFixed<{ ::core::primitive::usize::BITS },
+//! 0>` and `Integer<{ ::core::primitive::usize::BITS }>`, and what makes each a
 //! target-bound member of the format family rather than one fixed point is that
 //! it reads the pointer width instead of naming one. `usize::BITS` is the pointer
 //! width by the language's own definition, so the alias is the literal point at
 //! the target's width on every target exactly when it is spelled that way. The
-//! path is absolute and rooted at `core` rather than the bare name, because a
-//! bare `usize` resolves through whatever is in scope and an item named `usize`
-//! declared or imported into the same module would shadow the primitive type at
-//! that path; `core::primitive` is nobody's to declare over.
+//! path carries a leading `::`, rooted at the crate graph rather than at
+//! whatever is in scope, because a bare `usize` resolves through whatever is in
+//! scope and an item named `usize` declared or imported into the same module
+//! would shadow the primitive type at that path, and a bare `core` is the same
+//! failure one level up: a module, an import or an `extern crate` bound to the
+//! name `core` in this crate would shadow the crate root the bare path resolves
+//! through.
 //!
-//! No test run on one host can check that. An alias written as
+//! The leading `::` does not close every way this crate could bind the name
+//! `core`, and it is not asked to alone. `mock/research/202609191400_core_shadowing_probe/`
+//! shows a `mod core` and a `use ... as core` both fail against the
+//! leading-`::` path, and also shows an `extern crate self as core` at the crate
+//! root reaches even `::core`, because that declaration renames the crate root
+//! itself rather than adding a competing name in scope. So this lint carries two
+//! arms: the alias-spelling arm below, and a second arm refusing a `mod core`, a
+//! `use ... as core` or an `extern crate ... as core` declared anywhere in
+//! `arvo-format`, which is what closes the one path the spelling alone does not.
+//!
+//! No test run on one host can check the spelling. An alias written as
 //! `UFixed<64, 0>` answers every question the correct one answers on a 64-bit
-//! host. A const assertion at another pointer width would be evaluated by any
-//! build at that target, a `cargo check` included, but this repository builds
-//! and checks at the host alone, so it would guard nothing on the gate. So the
-//! property is checked where it lives, in the source text, on every commit and
-//! with no second build.
+//! host. A free `const _` item under a `cfg` for another pointer width would be
+//! evaluated by any build at that target, a `cargo check` included, but this
+//! repository builds and checks at the host alone, so it would guard nothing on
+//! the gate. So the property is checked where it lives, in the source text, on
+//! every commit and with no second build.
 //!
 //! Each declaration is read from its name to its semicolon, across lines, with
 //! comments and whitespace dropped and a trailing comma before a closing angle
 //! bracket taken out, and what is left of the right-hand side is compared
-//! exactly: `UFixed<{core::primitive::usize::BITS},0>` for `USize`,
-//! `Integer<{core::primitive::usize::BITS}>` for `ISize`. A right-hand side that
-//! only mentions `usize::BITS` without the `core::primitive` path, in a comment,
-//! inside an expression or over the other alias's family, is a finding.
+//! exactly: `UFixed<{::core::primitive::usize::BITS},0>` for `USize`,
+//! `Integer<{::core::primitive::usize::BITS}>` for `ISize`. A right-hand side
+//! that only mentions `usize::BITS` without the leading-`::` `core::primitive`
+//! path, in a comment, inside an expression or over the other alias's family, is
+//! a finding.
 //!
 //! A missing alias is a finding too. Deleting one would otherwise pass as clean,
 //! and a lint that reports nothing over nothing is the failure it guards.
@@ -47,8 +62,14 @@ const THE_CRATE: &str = "arvo-format";
 /// Each alias, by the text that opens its declaration, and the right-hand side
 /// it has to read once comments and whitespace are gone.
 const THE_ALIASES: &[(&str, &str)] = &[
-    ("pub type USize", "UFixed<{core::primitive::usize::BITS},0>"),
-    ("pub type ISize", "Integer<{core::primitive::usize::BITS}>"),
+    (
+        "pub type USize",
+        "UFixed<{::core::primitive::usize::BITS},0>",
+    ),
+    (
+        "pub type ISize",
+        "Integer<{::core::primitive::usize::BITS}>",
+    ),
 ];
 
 pub fn lint() -> Box<dyn CrateLint> {
@@ -88,6 +109,7 @@ impl CrateLint for ThePlatformWidthPointsReadThePointerWidth {
             .collect();
         verdicts(&files)
             .into_iter()
+            .chain(core_bindings(&files))
             .map(|(path, line, message)| {
                 let mut error = LintError::with_severity(
                     ctx.crate_name.to_string(),
@@ -143,6 +165,92 @@ fn verdicts(files: &[(String, &str)]) -> Vec<(Option<String>, usize, String)> {
         }
     }
     found
+}
+
+/// Whether this crate binds the name `core` to anything of its own, as a path,
+/// a line and a message, over every file.
+///
+/// The leading `::` on the alias spelling resists a `usize` or a `core` bound in
+/// scope, but not a crate reference bound to the name `core` at the crate root:
+/// `extern crate self as core;` renames the crate root itself, which a
+/// leading-`::` path resolves through rather than around. So this is a separate
+/// arm rather than a stronger reading of the same one: a `mod core`, a `use ...
+/// as core` or an `extern crate ... as core`, anywhere in the crate, is a
+/// finding regardless of whether either alias is even in the same file.
+fn core_bindings(files: &[(String, &str)]) -> Vec<(Option<String>, usize, String)> {
+    let mut found = Vec::new();
+    for (path, text) in files {
+        let code = without_comments(text);
+        for at in word_then_word(&code, "mod", "core", &[b'{', b';']) {
+            let line = code[.. at].matches('\n').count() + 1;
+            found.push((
+                Some(path.clone()),
+                line,
+                "declares `mod core`, which shadows the crate `core` for a bare path anywhere \
+                 in scope of it. The platform-width aliases read `::core::primitive::usize::BITS`, \
+                 with the leading `::`, exactly so a module in this crate cannot take over an \
+                 unqualified `core`; a module actually named `core` closes that gap by never \
+                 needing one. Name it something else."
+                    .to_string(),
+            ));
+        }
+        for at in word_then_word(&code, "as", "core", &[b';']) {
+            let line = code[.. at].matches('\n').count() + 1;
+            found.push((
+                Some(path.clone()),
+                line,
+                "binds the name `core` through a `use ... as core` or an `extern crate ... as \
+                 core`. Either one takes over `::core` too: a `use` alias shadows the name in \
+                 scope, and an `extern crate` alias renames the crate root itself, which the \
+                 leading-`::` path on the platform-width aliases resolves through rather than \
+                 around. Alias it to something else."
+                    .to_string(),
+            ));
+        }
+    }
+    found
+}
+
+/// Whether `c` is a word character for the purposes of this lint's boundary
+/// checks: ASCII alphanumeric or underscore.
+fn is_word_char(c: char) -> bool {
+    c.is_ascii_alphanumeric() || c == '_'
+}
+
+/// Every position at which the whole word `after` appears immediately following
+/// the whole word `before`, with only whitespace between them, and with the
+/// first non-whitespace character following `after` one of `terminators`.
+///
+/// `code` is expected already stripped of comments and literals, as
+/// `without_comments` produces. The terminator check is what keeps `as core` from
+/// firing on a cast to a path that merely starts with `core`, such as `x as
+/// core::ffi::c_int`, whose next character after `core` is `:` rather than a
+/// statement's `;`.
+fn word_then_word(code: &str, before: &str, after: &str, terminators: &[u8]) -> Vec<usize> {
+    let mut out = Vec::new();
+    for (at, _) in code.match_indices(before) {
+        let pre = code[.. at].chars().next_back();
+        let post_before = code[at + before.len() ..].chars().next();
+        if pre.is_some_and(is_word_char) || post_before.is_some_and(is_word_char) {
+            continue;
+        }
+        let rest = code[at + before.len() ..].trim_start_matches(char::is_whitespace);
+        let Some(after_after) = rest.strip_prefix(after) else {
+            continue;
+        };
+        if after_after.chars().next().is_some_and(is_word_char) {
+            continue;
+        }
+        let tail = after_after.trim_start_matches(char::is_whitespace);
+        if tail
+            .as_bytes()
+            .first()
+            .is_some_and(|b| terminators.contains(b))
+        {
+            out.push(at);
+        }
+    }
+    out
 }
 
 /// Every declaration of `alias` in `code`, as its byte offset and its right-hand
@@ -304,309 +412,10 @@ fn without_comments(text: &str) -> String {
     out
 }
 
+// The generated lint crate loads this file itself through `#[path]`, at the
+// crate root, so a bare `mod tests;` would look for `tests.rs` beside every
+// other lint file rather than beside this one. The explicit `#[path]` here
+// points it at the right place regardless.
 #[cfg(test)]
-mod tests {
-    use mockspace::testkit::LintFixture;
-
-    use super::*;
-
-    /// The shipped spelling, as `points` carries it.
-    const SHIPPED: &str = "\
-    pub type USize = UFixed<{ core::primitive::usize::BITS }, 0>;
-    pub type ISize = Integer<{ core::primitive::usize::BITS }>;
-";
-
-    fn hits(source: &str) -> Vec<LintError> {
-        let fixture = LintFixture::new(source).with_crate_name("arvo-format", "format");
-        ThePlatformWidthPointsReadThePointerWidth.check(&fixture.ctx())
-    }
-
-    #[test]
-    fn it_answers_to_the_name_the_gate_and_the_config_use() {
-        assert_eq!(ThePlatformWidthPointsReadThePointerWidth.name(), NAME);
-        assert_eq!(NAME, "the-platform-width-points-read-the-pointer-width");
-    }
-
-    #[test]
-    fn it_is_not_declared_off_so_it_runs_at_all() {
-        crate::canon_lint_testkit::assert_not_declared_off(
-            &ThePlatformWidthPointsReadThePointerWidth,
-        );
-    }
-
-    #[test]
-    fn it_reaches_the_pack_the_engine_is_handed() {
-        crate::crate_lint_testkit::assert_registered(NAME);
-    }
-
-    #[test]
-    fn its_findings_carry_its_own_declared_severity() {
-        let errors = hits(
-            "pub type USize = UFixed<64, 0>;\npub type ISize = Integer<{ \
-             core::primitive::usize::BITS }>;\n",
-        );
-        crate::crate_lint_testkit::assert_findings_carry(
-            &ThePlatformWidthPointsReadThePointerWidth,
-            &errors,
-            Severity::HARD_ERROR,
-        );
-    }
-
-    #[test]
-    fn the_control_the_shipped_spelling_is_silent() {
-        assert!(hits(SHIPPED).is_empty(), "{:?}", hits(SHIPPED));
-    }
-
-    #[test]
-    fn a_literal_width_fires_for_each_alias() {
-        for (source, alias) in [
-            (
-                "pub type USize = UFixed<64, 0>;\npub type ISize = Integer<{ \
-                 core::primitive::usize::BITS }>;\n",
-                "USize",
-            ),
-            (
-                "pub type USize = UFixed<{ core::primitive::usize::BITS }, 0>;\npub type ISize = \
-                 Integer<32>;\n",
-                "ISize",
-            ),
-        ] {
-            let errors = hits(source);
-            assert_eq!(errors.len(), 1, "{alias}: {errors:?}");
-            assert!(
-                errors[0].message.contains(alias),
-                "{alias}: {}",
-                errors[0].message
-            );
-        }
-        assert_eq!(
-            hits("pub type USize = UFixed<16, 0>;\npub type ISize = Integer<16>;\n").len(),
-            2
-        );
-    }
-
-    #[test]
-    fn a_width_read_from_somewhere_else_fires() {
-        // `u64::BITS` reads a width and is still a fixed one.
-        let errors = hits(
-            "pub type USize = UFixed<{ u64::BITS }, 0>;\npub type ISize = Integer<{ \
-             core::primitive::usize::BITS }>;\n",
-        );
-        assert_eq!(errors.len(), 1);
-    }
-
-    #[test]
-    fn a_missing_alias_fires() {
-        let errors = hits("pub type USize = UFixed<{ core::primitive::usize::BITS }, 0>;\n");
-        assert_eq!(errors.len(), 1);
-        assert!(errors[0].message.contains("ISize"));
-        assert_eq!(hits("").len(), 2);
-    }
-
-    #[test]
-    fn a_commented_out_alias_is_not_the_alias() {
-        let errors = hits(
-            "// pub type USize = UFixed<{ usize::BITS }, 0>;\npub type ISize = Integer<{ \
-             core::primitive::usize::BITS }>;\n",
-        );
-        assert_eq!(errors.len(), 1);
-        assert!(errors[0].message.contains("not declared"));
-    }
-
-    #[test]
-    fn a_longer_name_is_not_the_alias() {
-        let errors = hits(
-            "pub type USizeLike = UFixed<8, 0>;\npub type ISize = Integer<{ \
-             core::primitive::usize::BITS }>;\n",
-        );
-        assert_eq!(errors.len(), 1);
-        assert!(errors[0].message.contains("not declared"));
-    }
-
-    /// The findings for a source whose `ISize` is the shipped one and whose
-    /// `USize` is `usize_decl`, or the other way round when `on_isize`.
-    fn one_bad(decl: &str, on_isize: bool) -> Vec<LintError> {
-        if on_isize {
-            hits(&format!(
-                "pub type USize = UFixed<{{ core::primitive::usize::BITS }}, 0>;\n{decl}\n"
-            ))
-        } else {
-            hits(&format!(
-                "{decl}\npub type ISize = Integer<{{ core::primitive::usize::BITS }}>;\n"
-            ))
-        }
-    }
-
-    #[test]
-    fn a_literal_width_beside_a_comment_naming_the_pointer_width_fires() {
-        for (decl, on_isize) in [
-            ("pub type USize = UFixed<64, 0>; // usize::BITS", false),
-            ("pub type USize = UFixed<64, 0>; /* usize::BITS */", false),
-            ("pub type ISize = Integer</* usize::BITS */ 64>;", true),
-            ("pub type ISize = Integer<32>; // was { usize::BITS }", true),
-        ] {
-            assert_eq!(one_bad(decl, on_isize).len(), 1, "{decl}");
-        }
-    }
-
-    #[test]
-    fn a_width_that_only_mentions_the_pointer_width_fires() {
-        for (decl, on_isize) in [
-            (
-                "pub type USize = UFixed<{ if usize::BITS == 64 { 64 } else { 32 } }, 0>;",
-                false,
-            ),
-            ("pub type USize = UFixed<{ usize::BITS * 2 }, 0>;", false),
-            ("pub type USize = UFixed<{ usize::BITS }, 1>;", false),
-            ("pub type ISize = Integer<{ usize::BITS - 1 }>;", true),
-            (
-                "pub type ISize = Integer<{ core::cmp::min(usize::BITS, 32) }>;",
-                true,
-            ),
-        ] {
-            assert_eq!(one_bad(decl, on_isize).len(), 1, "{decl}");
-        }
-    }
-
-    #[test]
-    fn an_alias_spelled_with_the_other_point_fires() {
-        // Each alias reads the pointer width and names the wrong point: `USize`
-        // signed, `ISize` unsigned.
-        assert_eq!(
-            one_bad("pub type USize = Integer<{ usize::BITS }>;", false).len(),
-            1
-        );
-        assert_eq!(
-            one_bad("pub type ISize = UFixed<{ usize::BITS }, 0>;", true).len(),
-            1
-        );
-        assert_eq!(
-            hits(
-                "pub type USize = Integer<{ usize::BITS }>;\npub type ISize = UFixed<{ usize::BITS }, \
-                 0>;\n"
-            )
-            .len(),
-            2
-        );
-    }
-
-    #[test]
-    fn a_correct_alias_across_lines_and_around_comments_is_silent() {
-        for source in [
-            "pub type USize =\n    UFixed<{ core::primitive::usize::BITS }, 0>;\npub type ISize \
-             =\n    Integer<{ core::primitive::usize::BITS }>;\n",
-            "pub type USize = UFixed<\n    { core::primitive::usize::BITS },\n    0,\n>;\npub type \
-             ISize = Integer<\n    { core::primitive::usize::BITS },\n>;\n",
-            "pub type USize = UFixed<{ core::primitive::usize::BITS }, 0>; // the pointer \
-             width\npub type ISize = Integer<{core::primitive::usize::BITS}>;\n",
-            "pub type USize = UFixed<{ core::primitive::usize::BITS } /* read */, 0>;\npub type \
-             ISize = Integer<\n    // the pointer width\n    { core::primitive::usize::BITS \
-             }\n>;\n",
-        ] {
-            assert!(hits(source).is_empty(), "{source}: {:?}", hits(source));
-        }
-    }
-
-    #[test]
-    fn a_wrong_alias_across_lines_is_found_at_its_opening_line() {
-        let errors = hits(
-            "pub type USize = UFixed<{ core::primitive::usize::BITS }, 0>;\n\npub type ISize \
-             =\n    Integer<64>;\n",
-        );
-        assert_eq!(errors.len(), 1);
-        assert_eq!(errors[0].line, 3);
-    }
-
-    #[test]
-    fn a_declaration_inside_a_literal_is_not_a_declaration() {
-        for source in [
-            "const S: &str = \"pub type USize = UFixed<64, 0>;\";\n",
-            "const S: &str = r#\"pub type USize = UFixed<64, 0>;\"#;\n",
-            "const S: &[u8] = br\"pub type USize = UFixed<64, 0>;\";\n",
-        ] {
-            let errors = hits(&format!(
-                "{source}pub type ISize = Integer<{{ core::primitive::usize::BITS }}>;\n"
-            ));
-            assert_eq!(errors.len(), 1, "{source}: {errors:?}");
-            assert!(errors[0].message.contains("not declared"), "{source}");
-        }
-    }
-
-    #[test]
-    fn a_comment_marker_inside_a_literal_opens_nothing() {
-        // Were the marker read, the declaration after it would vanish and the
-        // alias would be reported missing; were the quote character read as a
-        // string, the same.
-        for opener in [
-            "const S: &str = \"/*\";",
-            "const S: &str = \"// \\\" /*\";",
-            "const C: char = '\"';",
-            "const C: char = '\\'';",
-            "fn f<'a>(x: &'a str) -> &'a str { x }",
-        ] {
-            let source = format!(
-                "{opener}\npub type USize = UFixed<{{ core::primitive::usize::BITS }}, 0>;\npub \
-                 type ISize = Integer<{{ core::primitive::usize::BITS }}>; /* */\n"
-            );
-            assert!(hits(&source).is_empty(), "{opener}: {:?}", hits(&source));
-            let wrong = source.replace(
-                "UFixed<{ core::primitive::usize::BITS }, 0>",
-                "UFixed<64, 0>",
-            );
-            assert_eq!(hits(&wrong).len(), 1, "{opener}");
-        }
-    }
-
-    #[test]
-    fn a_nested_block_comment_is_dropped_whole() {
-        let errors = hits(
-            "/* outer /* inner */ pub type USize = UFixed<64, 0>; */\npub type USize = \
-             UFixed<{ core::primitive::usize::BITS }, 0>;\npub type ISize = Integer<{ \
-             core::primitive::usize::BITS }>;\n",
-        );
-        assert!(errors.is_empty(), "{errors:?}");
-    }
-
-    #[test]
-    fn stripping_keeps_the_lines_where_they_were() {
-        let text = "a /* x\ny */ b // z\n\"q\nr\" 'c'\n";
-        let stripped = without_comments(text);
-        assert_eq!(stripped.lines().count(), text.lines().count());
-        assert_eq!(stripped.matches('\n').count(), text.matches('\n').count());
-        assert!(stripped.contains(" b "));
-        assert!(!stripped.contains('x') && !stripped.contains('z') && !stripped.contains('q'));
-    }
-
-    #[test]
-    fn it_reads_the_crate_once_rather_than_once_per_file() {
-        assert!(!ThePlatformWidthPointsReadThePointerWidth.per_file());
-    }
-
-    #[test]
-    fn another_crate_is_not_read() {
-        let fixture = LintFixture::new("pub type USize = UFixed<64, 0>;\n")
-            .with_crate_name("arvo-placement", "placement");
-        assert!(
-            ThePlatformWidthPointsReadThePointerWidth
-                .check(&fixture.ctx())
-                .is_empty()
-        );
-    }
-
-    #[test]
-    fn a_module_named_usize_in_scope_still_fires_on_the_bare_spelling() {
-        // A module or item literally named `usize`, declared or brought into scope
-        // in the same file, would take precedence over the primitive type at a bare
-        // `usize::BITS` path, so a build under that shadow could read a `BITS` this
-        // lint never sees. The lint cannot resolve names, but it does not need to:
-        // comparing the text against `core::primitive::usize::BITS` exactly finds
-        // the bare spelling regardless of whether anything in scope shadows it, so
-        // the hole is closed by construction rather than by checking for the shadow.
-        let errors = hits(
-            "mod usize {\n    pub const BITS: u32 = 99;\n}\npub type USize = UFixed<{ usize::BITS \
-             }, 0>;\npub type ISize = Integer<{ core::primitive::usize::BITS }>;\n",
-        );
-        assert_eq!(errors.len(), 1);
-        assert!(errors[0].message.contains("USize"));
-    }
-}
+#[path = "the_platform_width_points_read_the_pointer_width/tests.rs"]
+mod tests;

@@ -1,0 +1,96 @@
+tool: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+== a_mod_core_shadows_the_bare_path
+warning: type `usize` should have an upper camel case name
+ --> a_mod_core_shadows_the_bare_path.rs:9:20
+  |
+9 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+
+== a_use_alias_shadows_the_bare_path
+warning: type `usize` should have an upper camel case name
+ --> a_use_alias_shadows_the_bare_path.rs:8:20
+  |
+8 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+
+== the_leading_double_colon_resists_both_shadows
+warning: type `usize` should have an upper camel case name
+  --> the_leading_double_colon_resists_both_shadows.rs:11:20
+   |
+11 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: type `usize` should have an upper camel case name
+  --> the_leading_double_colon_resists_both_shadows.rs:20:20
+   |
+20 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+
+warning: struct `usize` is never constructed
+  --> the_leading_double_colon_resists_both_shadows.rs:11:20
+   |
+11 |         pub struct usize;
+   |                    ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated constant `BITS` is never used
+  --> the_leading_double_colon_resists_both_shadows.rs:13:23
+   |
+12 |         impl usize {
+   |         ---------- associated constant in this implementation
+13 |             pub const BITS: u32 = 8;
+   |                       ^^^^
+
+warning: struct `usize` is never constructed
+  --> the_leading_double_colon_resists_both_shadows.rs:20:20
+   |
+20 |         pub struct usize;
+   |                    ^^^^^
+
+warning: associated constant `BITS` is never used
+  --> the_leading_double_colon_resists_both_shadows.rs:22:23
+   |
+21 |         impl usize {
+   |         ---------- associated constant in this implementation
+22 |             pub const BITS: u32 = 9;
+   |                       ^^^^
+
+warning: 6 warnings emitted
+
+exit 0
+
+== extern_crate_self_as_core_hijacks_the_absolute_path
+warning: type `usize` should have an upper camel case name
+  --> extern_crate_self_as_core_hijacks_the_absolute_path.rs:12:16
+   |
+12 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+
+== a_bare_mod_usize_confirms_the_original_premise
+exit 0
+
+== the_shipped_spelling_alone_is_silent
+exit 0
+

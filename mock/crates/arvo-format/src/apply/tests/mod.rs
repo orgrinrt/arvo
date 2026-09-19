@@ -419,6 +419,7 @@ mod the_ratio_coordinate;
 
 mod the_broken_maps;
 mod the_carry_past_the_index;
+mod the_cross_end_saturation;
 mod the_edges;
 mod the_far_end_of_the_index;
 mod the_top_of_the_index;

@@ -27,6 +27,7 @@ use super::the_translation_law::{
     WideNegativeReference,
     WideReference,
     WideTop,
+    new_law,
     range_of,
 };
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
@@ -208,6 +209,14 @@ fn the_step_onto_the_lowest_slot_is_in_range_only_where_the_range_starts_there()
     // drops it, admitting the step into any range regardless of where its own
     // bottom sits, which is the shape deleting that conjunct produces.
     let (good, bad) = (shipped_map(), no_lo_guard_onto_the_lowest());
+
+    // The general law first, over the same shape `the_translation_law.rs` runs
+    // for every other broken map: it feeds a range only ever from its own end,
+    // so a defect wrong the same way relative to every range it is fed, which
+    // dropping the `lo == i128::MIN` conjunct is, passes it silently. What
+    // reports it is the cross-end check below, not this law.
+    assert_eq!(new_law(bad), Maybe::Isnt);
+
     let position = Exact::between(Slot::at(i128::MIN), Fraction::of(-1, 4));
     let stepped = round_slot(Mode::Ceil, position, Dither::UNUSED);
     assert_eq!((stepped.down(), stepped.step()), (i128::MIN, 1));

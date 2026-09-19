@@ -112,6 +112,76 @@ pub(super) fn no_step_onto_the_lowest() -> Map {
     }
 }
 
+/// The Saturate/Clamp arm with the near-bottom case narrowed to ranges whose own
+/// lowest slot is `i128::MIN`, the review's `M1`.
+///
+/// `complete_slot`'s own near-bottom test is `rounded.past < 0`, unconditional
+/// on where the range sits: any position carried past the bottom of the index
+/// pins to the range's own lowest slot under Saturate and Clamp, wherever that
+/// range is. This narrows it to `rounded.past < 0 && lo == i128::MIN`, so a
+/// position carried past the bottom, fed into a range whose own bottom is not
+/// `i128::MIN`, falls through to the `else` arm and answers the range's highest
+/// slot instead of its lowest. Every hand test the suite carried before this
+/// round fed such a position only into ranges that do start at `i128::MIN`, so
+/// the mutation passed unnoticed.
+pub(super) fn m1_no_far_lo_guard() -> Map {
+    fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
+        let (lo, hi) = (min.index(), max.index());
+        if r.lands_within(lo, hi) {
+            if r.past != 0 {
+                return min;
+            }
+            return Slot::at(r.down() + r.step());
+        }
+        match policy {
+            Policy::Wrap => complete_slot(policy, r, min, max),
+            Policy::Saturate | Policy::Clamp => {
+                if (r.past < 0 && lo == i128::MIN) || (r.past == 0 && r.down() < lo) {
+                    min
+                } else {
+                    max
+                }
+            },
+        }
+    }
+    Map {
+        complete,
+        leaves: shipped_leaves,
+    }
+}
+
+/// The mirror of `m1_no_far_lo_guard`: the near-top case widened to answer
+/// `min` for a range whose own top is not `i128::MAX`, the review's `M2`.
+///
+/// A position carried past the top of the index, fed into a range whose own
+/// top is not `i128::MAX`, answers the range's lowest slot instead of its
+/// highest.
+pub(super) fn m2_no_far_hi_guard() -> Map {
+    fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
+        let (lo, hi) = (min.index(), max.index());
+        if r.lands_within(lo, hi) {
+            if r.past != 0 {
+                return min;
+            }
+            return Slot::at(r.down() + r.step());
+        }
+        match policy {
+            Policy::Wrap => complete_slot(policy, r, min, max),
+            Policy::Saturate | Policy::Clamp => {
+                if r.past < 0 || (r.past == 0 && r.down() < lo) || (r.past > 0 && hi != i128::MAX) {
+                    min
+                } else {
+                    max
+                }
+            },
+        }
+    }
+    Map {
+        complete,
+        leaves: shipped_leaves,
+    }
+}
+
 /// An overflow verdict whose step onto `i128::MIN` from just under the index is
 /// in range for every range, not only for the one whose own lowest slot is
 /// `i128::MIN`.

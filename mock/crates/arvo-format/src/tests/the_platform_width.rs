@@ -146,8 +146,10 @@ fn an_error_word_is_a_member_exactly_where_the_pointer_is_wide_enough() {
 // No arm per pointer width. Each would assert the alias equals the literal point
 // at the target's width, which holds on every target whenever the alias reads
 // `usize::BITS`, and on the host a literal width in its place is
-// indistinguishable from the right spelling. A const assertion at another width
-// would be evaluated by a build at that target, but this repository builds at
-// the host alone. The lint `the-platform-width-points-read-the-pointer-width`
-// guards the spelling instead, on every commit, comparing each right-hand side
-// exactly with comments and whitespace dropped.
+// indistinguishable from the right spelling. A free `const _` item under a
+// `cfg` for another width would be evaluated by a build at that target, but
+// this repository builds at the host alone. The lint
+// `the-platform-width-points-read-the-pointer-width` guards the spelling
+// instead, on every commit, comparing each right-hand side exactly with
+// comments and whitespace dropped, and separately refuses a `mod core`, a
+// `use ... as core` or an `extern crate ... as core` anywhere in this crate.

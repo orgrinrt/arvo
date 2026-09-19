@@ -345,7 +345,7 @@ fn first_break(
 }
 
 /// The law as the four pairs above feed it.
-fn new_law(map: Map) -> Break {
+pub(super) fn new_law(map: Map) -> Break {
     first_break(
         map,
         range_of::<Reference>(),
