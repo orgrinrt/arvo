@@ -1345,13 +1345,17 @@ verdict: as expected
   | exit 0
   | verdict: as expected, builds
   | 
-  | -- flip pass: selfcheck/a_true_comparison_before_the_width.rs, item 1 (const assert), line 18 flipped to: const _: () = assert!(1 != 1 && W == W, "one is not one, or the width is not itself");
+  | -- flip pass: selfcheck/a_true_comparison_before_the_width.rs, item 1 (const assert), line 19 flipped to: 1 != 1 && W == W,
   | == selfcheck/a_true_comparison_before_the_width.generated_flip_1.rs
   | error[E0080]: evaluation panicked: one is not one, or the width is not itself
   |   --> selfcheck/a_true_comparison_before_the_width.generated_flip_1.rs:18:15
   |    |
-  | 18 | const _: () = assert!(1 != 1 && W == W, "one is not one, or the width is not itself");
-  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 18 |   const _: () = assert!(
+  |    |  _______________^
+  | 19 | |     1 != 1 && W == W,
+  | 20 | |     "one is not one, or the width is not itself"
+  | 21 | | );
+  |    | |_^ evaluation of `_` failed here
   | 
   | error: aborting due to 1 previous error
   | 
