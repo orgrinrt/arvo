@@ -11,13 +11,17 @@ statement below about an arm is either in the table or checked against
 ## The arms, as `run.sh` records them
 
 `arms.md` is the table, written by `run.sh` in the same run that writes
-`run.out`: one row per arm and one per generated control, with what the arm
-checks, what it is expected to do and what it did. The "what it checks" column
-is counted from each arm's source by the same scan that generates the controls,
-so it is not a description anybody wrote. A generated control is the arm with
-one checking item's comparison flipped, `==` to `!=` or the reverse, and it
-counts only when it is refused by that item alone; `run.sh`'s header says how
-that is told.
+`run.out`: one row per arm and one per generated variant, with what the arm
+checks, what it is expected to do and what it did. The item counts in the
+"what it checks" column are made by the same scan that generates the variants;
+which items read the stand-in's width is declared per arm in `run.sh`. A flip
+variant is the arm with one checking item's comparison flipped, `==` to `!=` or
+the reverse, and it counts only when it is refused by that item alone, which
+shows the item is evaluated and decides the build, not that it could fail on
+the arm as written. A premise variant is the arm with the stand-in's width set
+to the host's pointer width, in a copy of the stand-in, and it counts only when
+every item reading that width refuses it, which shows those items depend on
+the width. `run.sh`'s header says how each is told.
 
 ## The fixture
 
@@ -38,15 +42,17 @@ that is told.
 ## What each dependent shows
 
 - `user`, onto `fakecore`, builds, and its two const asserts hold: `W == 8`
-  and `W != usize::BITS`. `run.out` shows both generated controls refused
-  with their own messages.
+  and `W != usize::BITS`. `run.out` shows both flip variants refused with
+  their own messages, and the premise variant refused by both.
 - `user_of_the_crate_with_only_the_prelude`, onto
   `fakecore_with_only_the_prelude`, builds with the same two const asserts
-  holding, and both its generated controls are refused.
+  holding, both its flip variants are refused, and its premise variant is
+  refused by both.
 - `user_of_the_crate_with_an_empty_prelude`, onto
   `fakecore_with_an_empty_prelude`, builds with the same two comparisons
-  written as array lengths, and both its generated controls are refused with
-  `mismatched types` on the flipped line.
+  written as array lengths. Both its flip variants are refused with
+  `mismatched types` on the flipped line, and its premise variant with
+  `mismatched types` on both lines.
 - `user_of_the_crate_with_an_empty_prelude_naming_assert`, onto the same
   stand-in, is refused with ``cannot find macro `assert` in this scope``, so
   there is no `assert!` in scope under the empty prelude.
@@ -61,8 +67,10 @@ that is told.
   scope under the bare prelude either.
 - `a_std_dependent_of_the_crate_without_the_glob`, onto
   `fakecore_without_the_glob`, builds with the same two const asserts
-  holding, and both its generated controls are refused with their own
-  messages.
+  holding. Both its flip variants are refused with their own messages, and
+  its premise variant is refused by both.
+- The four dependents that are refused are refused with the same texts when
+  the premise pass sets their stand-in's width to the host's pointer width.
 
 So four of the eight dependents build, and in each of the four `::core`
 reads the stand-in's 8 rather than the pointer width.

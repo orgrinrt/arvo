@@ -1,4 +1,5 @@
-# The controls `run.sh` generates beside the arms they come from, removed when
+# The variants `run.sh` generates beside the arms they come from, removed when
 # it exits. Named here so an interrupted run leaves nothing untracked.
-/*.flipped_*.rs
-/manifest_rename/*.flipped_*/
+/*.generated_*.rs
+/selfcheck/*.generated_*.rs
+/manifest_rename/*.generated_*/

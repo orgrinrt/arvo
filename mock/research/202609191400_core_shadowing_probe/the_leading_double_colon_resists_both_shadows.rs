@@ -12,7 +12,8 @@
 // `the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs` is the
 // form the leading `::` does not resist, and
 // `the_bare_spelling_without_the_leading_colon_is_shadowed.rs` is the negative
-// control showing this harness can fail.
+// control, this file's read without the leading `::`, which `run.sh` expects
+// refused and records as refused.
 //
 // Outcome: WORKS. Exit 0, and the assertion that the path reads the host's
 // pointer width holds.

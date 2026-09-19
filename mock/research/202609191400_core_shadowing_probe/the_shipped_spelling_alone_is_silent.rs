@@ -1,6 +1,8 @@
 // The positive control: with no shadow declared anywhere in the file, the
-// leading-:: spelling compiles and reads the real pointer width, exactly as the
-// bare spelling did before any of this probe's shadows were introduced.
+// leading-:: spelling resolves and the crate builds. It checks no value. With
+// nothing shadowing `core`, a read through `::core` and a read of the primitive
+// `usize` name the same constant, so a comparison of the two could not fail,
+// and `run.sh` runs this arm as one that builds and holds no check.
 #![no_std]
 
 pub struct W<const B: u32>;
@@ -14,8 +16,3 @@ impl<const B: u32> F for W<B> {
 }
 
 pub type CHECK = W<{ ::core::primitive::usize::BITS }>;
-
-const _: () = assert!(
-    <CHECK as F>::MAX == (1i128 << usize::BITS) - 1,
-    "the leading-:: spelling did not read the host's pointer width"
-);
