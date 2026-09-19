@@ -40,7 +40,14 @@ use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
 use mockspace::{
-    Lint, LintError, LintPack, RegistryView, RepoContext, RepoLint, RowFields, Severity,
+    Lint,
+    LintError,
+    LintPack,
+    RegistryView,
+    RepoContext,
+    RepoLint,
+    RowFields,
+    Severity,
 };
 
 /// A registry holding exactly the rows named, and the reverse edges named.
@@ -187,7 +194,7 @@ pub fn lint_sources() -> Vec<(String, String)> {
                 root.join("mock/lints").join(format!("{stem}.rs")),
                 root.join("mock/tools").join(&name).join("src/lib.rs"),
             ];
-            let text = candidates
+            let mut text = candidates
                 .iter()
                 .find_map(|p| std::fs::read_to_string(p).ok())
                 .unwrap_or_else(|| {
@@ -198,6 +205,23 @@ pub fn lint_sources() -> Vec<(String, String)> {
                          `mock/tools/<name>/`."
                     )
                 });
+            // A lint too big for one file puts its modules in a directory of
+            // its own name, and its tests are usually the first thing to go
+            // there. Those are the lint's own source as much as the entry file
+            // is, so whatever asks a question of this text has to see them:
+            // reading the entry file alone made a lint that splits look like a
+            // lint that never asked, which is a fact about where the `#[path]`
+            // points rather than about what the lint establishes.
+            if let Ok(beside) = std::fs::read_dir(root.join("mock/lints").join(&stem)) {
+                let mut parts: Vec<String> = beside
+                    .flatten()
+                    .map(|e| e.path())
+                    .filter(|p| p.extension().is_some_and(|e| e == "rs"))
+                    .filter_map(|p| std::fs::read_to_string(p).ok())
+                    .collect();
+                parts.sort();
+                text.push_str(&parts.join("\n"));
+            }
             (name, text)
         })
         .collect()
@@ -399,8 +423,8 @@ fn a_lint_naming_the_namespaces_it_reads_agrees_with_the_schema() {
     );
 
     let file = repo_root().join("mock/lints/refusal_owes_an_instead.rs");
-    let text = std::fs::read_to_string(&file)
-        .unwrap_or_else(|e| panic!("read {}: {e}", file.display()));
+    let text =
+        std::fs::read_to_string(&file).unwrap_or_else(|e| panic!("read {}: {e}", file.display()));
     let written: BTreeSet<String> = declared
         .iter()
         .filter(|ns| text.contains(&format!("\"{ns}\"")))
@@ -499,11 +523,8 @@ fn every_registered_lint_asks_whether_it_reaches_the_gate_at_all() {
     // such directory here and there is not going to be one, so the property is
     // checked against the lint files themselves: the three helpers are the
     // three questions, and a file naming none of them has asked none of them.
-    const OWED: [&str; 3] = [
-        "assert_registered",
-        "assert_not_declared_off",
-        "assert_findings_block",
-    ];
+    const OWED: [&str; 3] =
+        ["assert_registered", "assert_not_declared_off", "assert_findings_block"];
 
     // **A lint declared by a tool crate cannot call any of them**, because they
     // live here and it is a different crate. Two of the three are answered by
@@ -557,5 +578,33 @@ fn every_registered_lint_asks_whether_it_reaches_the_gate_at_all() {
          {unasked:?}. Its predicate may be perfect and nothing establishes the \
          engine runs it, which is the state a whole round went by without \
          noticing."
+    );
+}
+
+#[test]
+fn a_lint_that_splits_its_tests_out_is_read_whole() {
+    // The arm above asks each registered lint's own source whether it
+    // establishes that the engine runs it. A lint past the file-size limit puts
+    // its tests in `mock/lints/<stem>/tests.rs`, and reading the entry file
+    // alone reported that lint as never having asked, which is a fact about
+    // where the `#[path]` points. So the composition is asserted here: the text
+    // holds what the sibling file holds, and the entry file does not hold it,
+    // which is what makes this a statement about the composition rather than
+    // about the lint.
+    let stem = "half_up_carries_its_note";
+    let entry = std::fs::read_to_string(repo_root().join("mock/lints").join(format!("{stem}.rs")))
+        .expect("the entry file of a lint this repository ships");
+    let whole = lint_sources()
+        .into_iter()
+        .find(|(name, _)| name == "half-up-carries-its-note")
+        .map(|(_, text)| text)
+        .expect("the lint is registered");
+    assert!(
+        !entry.contains("assert_registered"),
+        "the entry file has taken the helper back, so this says nothing about the composition"
+    );
+    assert!(
+        whole.contains("assert_registered"),
+        "the sibling file's tests are not in what the source of a lint reads as"
     );
 }
