@@ -9,6 +9,12 @@
 //! from arvo. An arm that computed both sides through arvo would assert that
 //! arvo agrees with itself, which passes for the wrong reason and is the failure
 //! this file would be most likely to ship.
+//!
+//! The alias for MATLAB's Round is written in `ties_away` and swept against the
+//! integer rule in `the_ties_away_alias.rs`. What it is asked for here is
+//! MathWorks' four positions and nothing else.
+
+mod ties_away;
 
 use arvo_format::adapt::{Adapt, Signature};
 use arvo_format::apply::{Dither, Exact, Fraction, adapt};
@@ -161,8 +167,16 @@ fn the_fraction_length_is_the_constant_family_rather_than_the_indexed_one() {
 // --- the five MathWorks publishes --------------------------------------------
 
 /// One published example, run under both nearest modes.
+///
+/// `$on_the_bound` says whether this arm's value sits exactly half a unit in the
+/// last printed place away from what MathWorks prints. It is asserted rather than
+/// described, because the comparison below is `<=` and the arm that attains the
+/// bound is the only thing standing between that and a `<` somebody tightens it
+/// to. One arm attains it, `fi(pi,1,8)`, and asserting it here puts the fact in
+/// the arm the comparison lives in rather than in a second test computing the
+/// same literals.
 macro_rules! parity {
-    ($name:ident, $fmt:ty, $f:literal, $stored:literal, $printed_num:literal, $printed_den:literal) => {
+    ($name:ident, $fmt:ty, $f:literal, $stored:literal, $printed_num:literal, $printed_den:literal, $on_the_bound:literal) => {
         #[test]
         fn $name() {
             let position = pi_at($f);
@@ -192,12 +206,7 @@ macro_rules! parity {
             let printed = ($printed_num as i128) * (1i128 << $f);
             // A whole unit in the last printed place, and the halving is the
             // `* 2` on the other side of the comparison rather than a division
-            // here, so the arithmetic stays in exact integers. The name used to
-            // say half, which is worth more than a naming quibble because the
-            // bound is attained exactly on one arm and the `<=` is therefore
-            // load-bearing: `the_bound_is_attained_and_not_merely_respected`
-            // pins that, so nobody reads slack into it and relaxes the
-            // comparison.
+            // here, so the arithmetic stays in exact integers.
             let a_whole_display_unit = 1i128 << $f;
             assert!(
                 (value - printed).abs() * 2 <= a_whole_display_unit,
@@ -205,24 +214,32 @@ macro_rules! parity {
                  MathWorks prints",
                 $printed_num
             );
+            assert_eq!(
+                (value - printed).abs() * 2 == a_whole_display_unit,
+                $on_the_bound,
+                "whether this arm sits on the bound decides whether the comparison \
+                 above may be tightened, so it is asserted rather than assumed"
+            );
         }
     };
 }
 
 // `a = fi(pi)` prints 3.1416 at word length 16, fraction length 13.
-parity!(fi_pi, Fi<16, 13>, 13, 25_736, 31_416, 10_000);
+parity!(fi_pi, Fi<16, 13>, 13, 25_736, 31_416, 10_000, false);
 
 // `a = fi(pi,0)` prints 3.1416 at word length 16, fraction length 14.
-parity!(fi_pi_unsigned, Ufi<16, 14>, 14, 51_472, 31_416, 10_000);
+parity!(fi_pi_unsigned, Ufi<16, 14>, 14, 51_472, 31_416, 10_000, false);
 
-// `a = fi(pi,1,8)` prints 3.1562 at word length 8, fraction length 5.
-parity!(fi_pi_signed_eight, Fi<8, 5>, 5, 101, 31_562, 10_000);
+// `a = fi(pi,1,8)` prints 3.1562 at word length 8, fraction length 5. The value
+// is `101 * 10000 = 1010000` against `31562 * 2^5 = 1009984`, a difference of 16
+// doubled to 32, against a whole display unit of 32. Equal, on the nose.
+parity!(fi_pi_signed_eight, Fi<8, 5>, 5, 101, 31_562, 10_000, true);
 
 // `b = fi(pi,0,8)` prints 3.1406 at word length 8, fraction length 6.
-parity!(fi_pi_unsigned_eight, Ufi<8, 6>, 6, 201, 31_406, 10_000);
+parity!(fi_pi_unsigned_eight, Ufi<8, 6>, 6, 201, 31_406, 10_000, false);
 
 // `a = fi(pi,1,8,3)` prints 3.1250 at word length 8, fraction length 3.
-parity!(fi_pi_fraction_three, Fi<8, 3>, 3, 25, 31_250, 10_000);
+parity!(fi_pi_fraction_three, Fi<8, 3>, 3, 25, 31_250, 10_000, false);
 
 #[test]
 fn the_control_a_wrong_stored_integer_would_be_caught() {
@@ -288,7 +305,7 @@ fn half_up_is_matlab_nearest_and_no_other_shipped_mode_is() {
 #[test]
 fn no_shipped_mode_is_matlab_round() {
     // A tie away from zero is not a mode of this crate. The ruling reaches it as
-    // `toward_zero(x + sign(x) q/2)`, which the next arm writes out, so this is
+    // an alias, which the next arm writes from the public surface, so this is
     // pinned as a fact about the vocabulary rather than catalogued as a hole.
     let answers = [
         answers_like!(TowardZero, MATLAB_ROUND),
@@ -299,108 +316,30 @@ fn no_shipped_mode_is_matlab_round() {
         answers_like!(Stochastic, MATLAB_ROUND),
     ];
     assert_eq!(answers, [false; 6]);
-    // The control: the two rules differ, so the arm above is not the arm before
-    // it with its answer inverted.
-    assert_ne!(MATLAB_NEAREST, MATLAB_ROUND);
-}
-
-/// The ties-away alias, written from the public surface alone.
-///
-/// A position `slot + n/d`, with `0 <= n < d`, is negative exactly when `slot`
-/// is. Adding half a quantum toward its sign is a position the constructor
-/// takes directly, `slot + (2n + d)/(2d)` at or above zero and
-/// `slot + (2n - d)/(2d)` below it, and `toward_zero` of that is the alias. The
-/// doubled denominator has to fit the fraction, so this returns nothing where
-/// `2d` does not.
-fn ties_away(slot: i128, n: i64, d: i64) -> Option<i128> {
-    type Zero = Signature<Integer<16>, Adapt<TowardZero, Wrap>>;
-    let twice_d = d.checked_mul(2)?;
-    let twice_n = n.checked_mul(2)?;
-    let num = if slot < 0 { twice_n.checked_sub(d)? } else { twice_n.checked_add(d)? };
-    let shifted = Exact::between(Slot::at(slot), Fraction::of(num, twice_d));
-    Some(adapt::<Zero>(shifted, Dither::UNUSED).index())
 }
 
 #[test]
-fn a_consumer_can_write_the_ties_away_alias_and_it_is_matlab_round() {
-    // MathWorks' four positions.
-    let round = [
-        ties_away(2, 1, 10),
-        ties_away(2, 9, 10),
-        ties_away(2, 1, 2),
-        ties_away(-3, 1, 2),
+fn both_spellings_of_the_alias_are_matlab_round_at_the_four_positions() {
+    // MathWorks' four positions, against the alias as a consumer writes it. The
+    // two spellings are swept against the integer rule over the whole domain in
+    // `the_ties_away_alias.rs`; what is asserted here is that they answer
+    // MathWorks' own published numbers.
+    type F = Integer<8>;
+    let read_off = [
+        ties_away::select::<F, Wrap>(2, 1, 10),
+        ties_away::select::<F, Wrap>(2, 9, 10),
+        ties_away::select::<F, Wrap>(2, 1, 2),
+        ties_away::select::<F, Wrap>(-3, 1, 2),
     ];
-    assert_eq!(round, MATLAB_ROUND.map(Some));
-
-    // Every quarter from `-8` to `8`, against the integer rule for a tie away
-    // from zero, `sign(k) floor((|k| + 2) / 4)` for `x = k/4`, which reads no
-    // arvo code.
-    let mut ties = 0;
-    for k in -32i128 ..= 32 {
-        let (slot, n) = (k.div_euclid(4), k.rem_euclid(4) as i64);
-        let want = k.signum() * ((k.abs() + 2) / 4);
-        assert_eq!(ties_away(slot, n, 4), Some(want), "at {k}/4");
-        ties += usize::from(n == 2);
-    }
-    assert_eq!(ties, 16, "the walk reached every tie from -7.5 to 7.5");
-
-    // The control: the alias differs from `half_up` exactly at a negative tie.
-    type Up = Signature<Integer<16>, Adapt<HalfUp, Wrap>>;
-    let up = |slot: i128, n: i64, d: i64| {
-        adapt::<Up>(
-            Exact::between(Slot::at(slot), Fraction::of(n, d)),
-            Dither::UNUSED,
-        )
-        .index()
-    };
-    assert_eq!(ties_away(-3, 1, 2), Some(-3));
-    assert_eq!(up(-3, 1, 2), -2);
-    assert_eq!(ties_away(2, 1, 2), Some(up(2, 1, 2)));
-    assert_eq!(ties_away(-3, 1, 4), Some(up(-3, 1, 4)));
-}
-
-#[test]
-fn the_alias_cannot_be_written_at_a_denominator_past_half_the_fraction() {
-    // The gap the ruling leaves open, pinned as it stands: the alias doubles the
-    // denominator, so a position whose remainder is over a denominator past
-    // `i64::MAX / 2` has no exact half-quantum shift in the public surface, and
-    // no shipped mode takes the tie away from zero directly.
-    // FIXME: an exact ties-away over every denominator needs either the shift on
-    // the position type or the rule as a mode; the ruling names neither, so the
-    // call is the design's rather than this file's.
-    assert_eq!(ties_away(0, 1, i64::MAX / 2), Some(0));
-    assert_eq!(ties_away(0, 1, i64::MAX / 2 + 1), None);
-    assert_eq!(ties_away(-1, 1, i64::MAX), None);
-}
-
-/// The bound above is reached, so the comparison may not become strict.
-///
-/// `fi(pi)` at word length 8 and fraction length 5 stores 101, and MathWorks
-/// prints 3.1562. Scaled into exact integers that is `101 * 10000 = 1010000`
-/// against `31562 * 2^5 = 1009984`, a difference of 16, doubled to 32, against a
-/// whole display unit of `2^5 = 32`. Equal, on the nose.
-///
-/// Computed by hand while checking a name, which is exactly the check that
-/// evaporates and leaves the next reader to redo it. Turning `<=` into `<`
-/// fails here and nowhere else in the file.
-#[test]
-fn the_bound_is_attained_and_not_merely_respected() {
-    const F: u32 = 5;
-    const STORED: i128 = 101;
-    const PRINTED_NUM: i128 = 31_562;
-    const PRINTED_DEN: i128 = 10_000;
-
-    let value = STORED * PRINTED_DEN;
-    let printed = PRINTED_NUM * (1i128 << F);
-    let whole = 1i128 << F;
-
-    assert_eq!(
-        (value - printed).abs() * 2,
-        whole,
-        "the tightest arm sits on the bound rather than inside it"
-    );
-    assert!(
-        (value - printed).abs() * 2 >= whole,
-        "and a strict comparison would reject a value MathWorks does print"
-    );
+    assert_eq!(read_off, MATLAB_ROUND);
+    let shifted = [
+        ties_away::shift::<F, Wrap>(2, 1, 10),
+        ties_away::shift::<F, Wrap>(2, 9, 10),
+        ties_away::shift::<F, Wrap>(2, 1, 2),
+        ties_away::shift::<F, Wrap>(-3, 1, 2),
+    ];
+    assert_eq!(shifted, MATLAB_ROUND.map(Some));
+    // The control: the alias is Round and not Nearest, so the four positions
+    // separate the two rules rather than agreeing everywhere.
+    assert_ne!(read_off, MATLAB_NEAREST);
 }
