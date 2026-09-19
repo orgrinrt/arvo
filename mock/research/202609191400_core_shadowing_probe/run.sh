@@ -84,16 +84,28 @@ main() {
   check a_macro_expanded_extern_crate_self_as_core_is_refused refused \
     'macro-expanded `extern crate` items cannot shadow names passed with `--extern`'
 
-  # A dependency renamed to `core` in the manifest reaches it whenever the
-  # renamed crate carries the path the edition's prelude import names: the
-  # real `core` re-exported whole, the real `prelude` module alone, or an empty
-  # hand-written `prelude::rust_2024`. Without that path it stops at the
-  # prelude import.
+  # A dependency renamed to `core` in the manifest reaches it for a `no_std`
+  # dependent whenever the renamed crate carries the path the edition's
+  # prelude import names: the real `core` re-exported whole, the real
+  # `prelude` module alone, or an empty hand-written `prelude::rust_2024`.
+  # Without that path a `no_std` dependent stops at the prelude import, since
+  # that is where the renamed crate is read for its own prelude.
   check_manifest user builds
   check_manifest user_of_the_crate_with_only_the_prelude builds
   check_manifest user_of_the_crate_with_an_empty_prelude builds
   check_manifest user_of_the_crate_without_the_glob refused \
     'cannot resolve a prelude import'
+
+  # The control for the empty-prelude arm above: the same rename, the same
+  # stand-in, and a wrong width asserted through the same array-length trick,
+  # to show that trick can actually fail rather than only ever holding.
+  check_manifest user_of_the_crate_with_an_empty_prelude_and_a_wrong_width \
+    refused 'mismatched types'
+
+  # A std dependent has no such need: its own prelude comes through the name
+  # `std`, not `core`, so the rename still hijacks the leading-`::` path with
+  # no prelude module in the renamed crate at all.
+  check_manifest a_std_dependent_of_the_crate_without_the_glob builds
 
   # The positive control and the negative control.
   check the_shipped_spelling_alone_is_silent builds
