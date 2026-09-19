@@ -20,6 +20,8 @@ use notko::Maybe;
 
 use super::{
     DITHERS,
+    NearTheBottom,
+    NearTheTop,
     Ratio,
     Sums,
     Window,
@@ -45,6 +47,81 @@ use crate::tests::grid::Grid;
 
 // --- totality ------------------------------------------------------------------
 
+/// A sum of slot indices held in two halves, so it is exact past either end of
+/// the index.
+///
+/// The operation computes in the index itself and saturates once where an
+/// operand lies outside the range, so the oracle it is checked against has to
+/// be wider than the index or it would share the saturation it is checking.
+/// The high half is signed and the low half holds the bottom sixty-four bits,
+/// so ordering the pair orders the sums.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct Wide {
+    high: i128,
+    low:  u128,
+}
+
+impl Wide {
+    /// How many bits the low half holds. A function rather than an item
+    /// constant, for the reason `the_ratio_coordinate` gives.
+    fn low_bits() -> u32 {
+        64
+    }
+
+    /// The exact sum of the given indices.
+    fn sum(terms: &[i128]) -> Self {
+        let mask = u128::from(u64::MAX);
+        let (mut high, mut low) = (0i128, 0u128);
+        for &term in terms {
+            high += term >> Self::low_bits();
+            low += term as u128 & mask;
+        }
+        high += (low >> Self::low_bits()) as i128;
+        Self {
+            high,
+            low: low & mask,
+        }
+    }
+
+    /// One index, in the same halves.
+    fn of(index: i128) -> Self {
+        Self::sum(&[index])
+    }
+
+    /// The sum as an index, where the index holds it.
+    fn index(self) -> Maybe<i128> {
+        if i128::from(i64::MIN) <= self.high && self.high <= i128::from(i64::MAX) {
+            Maybe::Is((self.high << Self::low_bits()) | self.low as i128)
+        } else {
+            Maybe::Isnt
+        }
+    }
+}
+
+#[test]
+fn the_wide_sum_is_exact_past_both_ends_of_the_index() {
+    // The ends and their neighbours, where a sum in the index itself overflows.
+    assert_eq!(Wide::sum(&[i128::MAX, 1]).index(), Maybe::Isnt);
+    assert_eq!(Wide::sum(&[i128::MIN, -1]).index(), Maybe::Isnt);
+    assert_eq!(Wide::sum(&[i128::MAX, 1, -1]).index(), Maybe::Is(i128::MAX));
+    assert_eq!(Wide::sum(&[i128::MIN, -1, 1]).index(), Maybe::Is(i128::MIN));
+    assert_eq!(Wide::sum(&[i128::MIN, i128::MAX]).index(), Maybe::Is(-1));
+    assert!(Wide::sum(&[i128::MAX, i128::MAX]) > Wide::of(i128::MAX));
+    assert!(Wide::sum(&[i128::MIN, i128::MIN]) < Wide::of(i128::MIN));
+    assert!(Wide::sum(&[i128::MIN, i128::MIN]) < Wide::sum(&[i128::MIN, i128::MIN, 1]));
+    // Every small sum agrees with the index's own arithmetic, signs mixed.
+    for a in -300i128 .. 300 {
+        for b in [-(1i128 << 64), -1, 0, 1, 1 << 64, i128::MAX / 4] {
+            assert_eq!(Wide::sum(&[a, b]).index(), Maybe::Is(a + b), "{a} + {b}");
+            assert_eq!(
+                Wide::sum(&[a, b]).cmp(&Wide::of(a)),
+                (a + b).cmp(&a),
+                "{a} + {b}"
+            );
+        }
+    }
+}
+
 /// Every fed pair at one signature: the answer is admitted, and where the true
 /// sum decides it, it is the true sum's. Answers how many pairs it checked.
 struct Total;
@@ -55,7 +132,7 @@ impl PerSignature for Total {
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
-        let (lo, hi) = (min.index() as i128, max.index() as i128);
+        let (lo, hi) = (min.index(), max.index());
         let phase = Ratio::phase_of::<S::Format>();
         let policy = overflow_of::<S::Adaptation>();
         let mut checked = 0u64;
@@ -68,9 +145,9 @@ impl PerSignature for Total {
                         "{a:?} + {b:?} adapted to {got:?}, outside [{min:?}, {max:?}]"
                     );
                     checked += 1;
-                    // The true position, in the wide domain, before any rounding.
-                    let wide = (a.index() as i128) + (b.index() as i128) + phase.floor();
-                    let got = got.index() as i128;
+                    // The true position, exact, before any rounding.
+                    let wide = Wide::sum(&[a.index(), b.index(), phase.floor()]);
+                    let got = got.index();
                     let both_members = a.is_within(min, max).get() && b.is_within(min, max).get();
                     match policy {
                         // Rounding returns the slot below the position or the one
@@ -78,17 +155,27 @@ impl PerSignature for Total {
                         // answer whichever the mode picks.
                         Policy::Saturate | Policy::Clamp => {
                             if phase.is_whole() {
-                                assert_eq!(got, wide.clamp(lo, hi), "{a:?} + {b:?}");
-                            } else if wide + 1 < lo {
+                                let clamped = if wide < Wide::of(lo) {
+                                    lo
+                                } else if wide > Wide::of(hi) {
+                                    hi
+                                } else {
+                                    wide.index().expect("a sum inside the range")
+                                };
+                                assert_eq!(got, clamped, "{a:?} + {b:?}");
+                            } else if Wide::sum(&[a.index(), b.index(), phase.floor(), 1])
+                                < Wide::of(lo)
+                            {
                                 assert_eq!(got, lo, "{a:?} + {b:?}");
-                            } else if wide >= hi {
+                            } else if wide >= Wide::of(hi) {
                                 assert_eq!(got, hi, "{a:?} + {b:?}");
                             }
                         },
-                        // For members the wide sum never left the coordinate, so
-                        // the reduction is the true one.
+                        // For members the sum never left the index, so the
+                        // reduction is the true one.
                         Policy::Wrap => {
                             if phase.is_whole() && both_members {
+                                let wide = wide.index().expect("a sum of two members");
                                 assert_eq!(got, lo + (wide - lo).rem_euclid(hi - lo + 1));
                             }
                         },
@@ -118,7 +205,7 @@ impl PerFormat for Walk {
 fn addition_is_total_over_every_admitted_width_mode_and_policy() {
     let mut walk = Walk::default();
     dispatch::every_width(&mut walk);
-    assert_eq!(walk.cells, 62 * 2 * signatures());
+    assert_eq!(walk.cells, 64 * 2 * signatures());
     assert_eq!(
         walk.pairs,
         walk.cells as u64 * 10 * 10 * DITHERS.len() as u64
@@ -128,16 +215,57 @@ fn addition_is_total_over_every_admitted_width_mode_and_policy() {
 #[test]
 fn addition_is_total_at_the_widest_ranges_under_a_fractional_phase() {
     // The widest ranges are where the obligation's margin is smallest, and a
-    // fractional phase is where the rounding can step one slot past the sum.
+    // fractional phase is where the rounding can step one slot past the sum. The
+    // two ranges near the top of the index are where the sum of two members is
+    // closest to leaving it.
     let mut walk = Walk::default();
-    walk.run::<Grid<BinaryRationals, Constant<0>, Signed<62>, 1, 3>>();
-    walk.run::<Grid<BinaryRationals, Constant<0>, Signed<62>, -1, 2>>();
-    walk.run::<Grid<BinaryRationals, Constant<0>, Unsigned<62>, -1, 3>>();
-    walk.run::<Grid<BinaryRationals, Constant<0>, Unsigned<62>, 1, 2>>();
-    assert_eq!(walk.cells, 4 * signatures());
+    walk.run::<Grid<BinaryRationals, Constant<0>, Signed<64>, 1, 3>>();
+    walk.run::<Grid<BinaryRationals, Constant<0>, Signed<64>, -1, 2>>();
+    walk.run::<Grid<BinaryRationals, Constant<0>, Unsigned<64>, -1, 3>>();
+    walk.run::<Grid<BinaryRationals, Constant<0>, Unsigned<64>, 1, 2>>();
+    walk.run::<Grid<BinaryRationals, Constant<0>, NearTheTop, 1, 2>>();
+    walk.run::<Grid<BinaryRationals, Constant<0>, NearTheBottom, 1, 2>>();
+    assert_eq!(walk.cells, 6 * signatures());
     assert_eq!(
         walk.pairs,
         walk.cells as u64 * 10 * 10 * DITHERS.len() as u64
+    );
+}
+
+#[test]
+fn a_sum_past_the_index_saturates_once_so_a_third_term_cannot_bring_it_back() {
+    // Two non-members at the top of the index and a phase whose whole part is
+    // negative. Saturating step by step would pin the first sum at `i128::MAX`
+    // and then take one off it; the design saturates the sum once, and the true
+    // sum is far past the top, so the position is the top itself.
+    type Down = Grid<BinaryRationals, Constant<0>, Signed<4>, -1, 2>;
+    let top = Slot::at(i128::MAX);
+    assert_eq!(sum_position::<Down>(top, top).slot(), top);
+
+    // The mirror at the bottom, with a whole part that is positive.
+    type Up = Grid<BinaryRationals, Constant<0>, Signed<4>, 3, 2>;
+    let bottom = Slot::at(i128::MIN);
+    assert_eq!(sum_position::<Up>(bottom, bottom).slot(), bottom);
+
+    // Where it shows. Saturation and clamping pin both to the range's end, so the
+    // difference is visible only under wrapping. `i128::MAX` is fifteen modulo
+    // sixteen, so into `[-8, 7]` it lands on -8 + (15 + 8) mod 16, which is -1;
+    // the position one below it would have landed on -2.
+    assert_eq!(
+        add::<Signature<Down, Adapt<Floor, Wrap>>>(top, top, Dither::UNUSED),
+        Slot::at(-1)
+    );
+    // And `i128::MIN` is zero modulo sixteen, so it lands on -8 + 8, which is 0;
+    // one above it would have landed on 1.
+    assert_eq!(
+        add::<Signature<Up, Adapt<Floor, Wrap>>>(bottom, bottom, Dither::UNUSED),
+        Slot::ZERO
+    );
+
+    // The control: members sum exactly, with no saturation in reach.
+    assert_eq!(
+        sum_position::<Down>(Slot::at(7), Slot::at(7)).slot(),
+        Slot::at(13)
     );
 }
 

@@ -30,7 +30,7 @@ use core::marker::PhantomData;
 
 use crate::adapt::{Adaptation, Arity, DeclaredSignature, Operation};
 use crate::apply::{Dither, Exact, Fraction, adapt, round_slot};
-use crate::format::Format;
+use crate::format::{Format, greatest_common_divisor};
 use crate::quantum::is_constant_family;
 use crate::rounding::{Mode, Rounding};
 use crate::slots::{Slot, Slots};
@@ -104,8 +104,8 @@ impl<F: Format> Addable<F> {
 }
 
 /// The three components `phase_parts` computes: the whole slot count, and the
-/// reduced remainder as a numerator over a positive denominator, in a domain one
-/// wider than a slot.
+/// reduced remainder as a numerator over a positive denominator, in the slot
+/// index's own integer, which is one domain wider than the phase.
 ///
 /// Named rather than a bare tuple, so the crate declaring a `const` of it holds a
 /// coordinate of its own rather than the host's `i128` in contract position.
@@ -117,7 +117,7 @@ struct PhaseParts {
 }
 
 /// `copies` times the phase, as a whole number of slots and a remainder, one
-/// domain wider than a slot.
+/// domain wider than the phase.
 ///
 /// Answers the whole part, then the remainder's numerator and denominator reduced
 /// to lowest terms. The sign moves onto the numerator before the euclidean
@@ -145,18 +145,6 @@ const fn phase_parts<F: Format>(copies: i128) -> PhaseParts {
     }
 }
 
-/// Euclid's algorithm over a non-negative and a positive operand.
-const fn greatest_common_divisor(a: i128, b: i128) -> i128 {
-    let mut a = a;
-    let mut b = b;
-    while b != 0 {
-        let t = a % b;
-        a = b;
-        b = t;
-    }
-    a
-}
-
 /// Whether the phase's remainder is one an exact position can carry.
 ///
 /// Its reduced denominator has to be a positive value the coordinate holds. It is
@@ -177,6 +165,12 @@ const fn remainder_is_held<F: Format>() -> Bool {
 /// Those positions run from `2 * MIN + k` to `2 * MAX + k` plus the remainder,
 /// where `k` is the phase's whole part, so the top one rounds as far as one slot
 /// above that when the remainder is not zero.
+///
+/// Computed checked, because the sum it asks about is exactly the one that may
+/// not fit, and asking in the index's own integer would overflow while checking.
+/// Every range this crate ships sits so far inside that integer that this holds
+/// for each of them; only a range an outside crate places near either end of it
+/// can fail it.
 const fn sum_is_carried<F: Format>() -> Bool {
     let PhaseParts {
         whole,
@@ -184,34 +178,51 @@ const fn sum_is_carried<F: Format>() -> Bool {
         ..
     } = Addable::<F>::PHASE_PARTS;
     let ceiling = if rem == 0 { whole } else { whole + 1 };
-    let min = <F::Slots as Slots>::MIN.index() as i128;
-    let max = <F::Slots as Slots>::MAX.index() as i128;
-    Bool::of(2 * min + whole >= i64::MIN as i128 && 2 * max + ceiling <= i64::MAX as i128)
+    let min = <F::Slots as Slots>::MIN.index();
+    let max = <F::Slots as Slots>::MAX.index();
+    Bool::of(
+        doubled_plus(min, whole)
+            .and(doubled_plus(max, ceiling))
+            .get(),
+    )
 }
 
-/// A position computed one domain wider, narrowed into the slot coordinate.
+/// Whether `2 * slot + offset` is a value the slot index holds.
+const fn doubled_plus(slot: i128, offset: i128) -> Bool {
+    match slot.checked_mul(2) {
+        Some(twice) => Bool::of(twice.checked_add(offset).is_some()),
+        None => Bool::FALSE,
+    }
+}
+
+/// The sum of three positions, saturated at the ends of the slot index once.
 ///
-/// Saturating at the ends of the coordinate, the same act `Reach` performs on a
-/// bound that leaves it. For two members the obligation keeps every position
-/// inside, so the narrowing is exact there; it moves a value only when an operand
-/// is a slot outside the range.
-const fn saturated(wide: i128) -> Slot {
-    if wide > i64::MAX as i128 {
-        Slot::at(i64::MAX)
-    } else if wide < i64::MIN as i128 {
-        Slot::at(i64::MIN)
+/// The same act `Reach` performs on a bound that leaves it. For two members the
+/// obligation keeps every position inside, so this is the exact sum there; it
+/// moves a value only when an operand is a slot outside the range.
+///
+/// Saturated as one act rather than step by step, since a first sum that
+/// saturates and a third operand that would have brought it back give a wrong
+/// answer. Two operands of opposite sign cannot overflow, so they are added first
+/// and only the last addition can saturate; where all three share a sign,
+/// saturating each step is the same as saturating once.
+const fn saturating_sum(a: i128, b: i128, c: i128) -> i128 {
+    if (a < 0) != (b < 0) {
+        (a + b).saturating_add(c)
+    } else if (a < 0) != (c < 0) {
+        (a + c).saturating_add(b)
     } else {
-        Slot::at(wide as i64)
+        a.saturating_add(b).saturating_add(c)
     }
 }
 
 /// The exact position of the sum of the members at slots `a` and `b`.
 ///
 /// `a + b + phase`, in slot units: the phase's whole part added to the slot, its
-/// fractional part the remainder the rounding region reads. Computed one domain
-/// wider than a slot. For two members that position is exact; for a slot outside
-/// the range there is no member sum, and the wide sum is saturated into the
-/// coordinate so the step still answers.
+/// fractional part the remainder the rounding region reads. Computed in the slot
+/// index's own integer. For two members that position is exact; for a slot
+/// outside the range there is no member sum, and the sum saturates at the ends
+/// of that integer so the step still answers.
 ///
 /// Forces the addition obligation, so a format addition refuses stops the build
 /// here, at check time when the call is bound in a `const` item.
@@ -223,10 +234,10 @@ pub const fn sum_position<F: Format>(a: Slot, b: Slot) -> Exact {
         rem,
         den,
     } = Addable::<F>::PHASE_PARTS;
-    let wide = (a.index() as i128) + (b.index() as i128) + whole;
+    let position = Slot::at(saturating_sum(a.index(), b.index(), whole));
     // The obligation holds the reduced denominator inside the coordinate and the
     // remainder below it, so both narrow exactly.
-    Exact::between(saturated(wide), Fraction::of(rem as i64, den as i64))
+    Exact::between(position, Fraction::of(rem as i64, den as i64))
 }
 
 /// The sum of the members at slots `a` and `b`, adapted under the signature.
@@ -268,20 +279,21 @@ pub const fn is_addable<F: Format>() -> Bool {
 pub const fn addition_reach<S: DeclaredSignature>() -> Reach {
     let () = Addable::<S::Format>::ADMITTED;
     let operands = <Add<S> as Operation>::ARITY.count() as i128;
-    // The cache is settled at one copy, which is `operands - 1` wherever `Add`'s
-    // arity is what it is declared above, two. The assertion is what keeps the
-    // two in step, at compile time, rather than trusting the comment.
-    assert!(operands - 1 == 1, "addition's arity moved away from two");
+    // The cache is settled at one copy, and the sums below are of two operands,
+    // both of which hold wherever `Add`'s arity is what it is declared above,
+    // two. The assertion is what keeps them in step, at compile time, rather
+    // than trusting the comment.
+    assert!(operands == 2, "addition's arity moved away from two");
     let PhaseParts {
         whole,
         rem,
         den,
     } = Addable::<S::Format>::PHASE_PARTS;
-    let min = <<S::Format as Format>::Slots as Slots>::MIN.index() as i128;
-    let max = <<S::Format as Format>::Slots as Slots>::MAX.index() as i128;
+    let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
+    let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
     let reach = Reach::of(
-        saturated(operands * min + whole),
-        saturated(operands * max + whole),
+        Slot::at(saturating_sum(min, min, whole)),
+        Slot::at(saturating_sum(max, max, whole)),
     );
     if rem == 0 {
         reach.on_grid()
@@ -299,11 +311,17 @@ pub const fn addition_reach<S: DeclaredSignature>() -> Reach {
 /// applies, which are a member plus `k`. All on the grid, because at a whole
 /// phase nothing rounds.
 const fn completion_at<S: DeclaredSignature>(k: i128) -> Bool {
-    let min = <<S::Format as Format>::Slots as Slots>::MIN.index() as i128;
-    let max = <<S::Format as Format>::Slots as Slots>::MAX.index() as i128;
-    let reach = Reach::of(saturated(2 * min + k), saturated(2 * max + k))
-        .translated_by(saturated(min + k), saturated(max + k))
-        .on_grid();
+    let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
+    let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
+    let reach = Reach::of(
+        Slot::at(saturating_sum(min, min, k)),
+        Slot::at(saturating_sum(max, max, k)),
+    )
+    .translated_by(
+        Slot::at(saturating_sum(min, k, 0)),
+        Slot::at(saturating_sum(max, k, 0)),
+    )
+    .on_grid();
     completion_is_translation_homomorphic::<S>(reach)
 }
 
@@ -354,7 +372,7 @@ pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
         Exact::between(low, Fraction::of(rem as i64, den as i64)),
         Dither::UNUSED,
     );
-    completion_at::<S>(whole + (rounded - low.index() as i128))
+    completion_at::<S>(whole + (rounded - low.index()))
 }
 
 #[cfg(test)]

@@ -18,7 +18,7 @@
 //! obligation, and each condition is pinned on both sides of its boundary. The
 //! forcing side is the compile-fail cases.
 
-use super::{Ratio, Window, coordinates, members};
+use super::{NearTheBottom, NearTheTop, Ratio, Window, coordinates, members};
 use crate::adapt::{Adapt, Signature};
 use crate::addition::{addition_is_associative, addition_reach, is_addable, sum_position};
 use crate::ambient::{BinaryRationals, DecimalRationals};
@@ -50,7 +50,7 @@ fn value<F: Format>(slot: Slot) -> Ratio {
     let q = quantum::<F>();
     Ratio::phase_of::<F>()
         .times(q)
-        .plus(Ratio::whole(slot.index() as i128).times(q))
+        .plus(Ratio::whole(slot.index()).times(q))
 }
 
 /// The denotation checked at one format, with the value-units step beside it.
@@ -81,7 +81,7 @@ impl PerFormat for Denotation {
                 assert_eq!(got, want, "{a:?} + {b:?} at {:?}", coordinates::<F>());
                 self.pairs += 1;
                 if self.with_mutant {
-                    let slots = Ratio::whole(a.index() as i128 + b.index() as i128);
+                    let slots = Ratio::whole(a.index() + b.index());
                     let mutant: Exact = slots.plus(phase.times(q)).position();
                     if mutant != want {
                         self.mutant_wrong += 1;
@@ -162,10 +162,12 @@ type At<S, const PN: i64, const PD: i64> = Grid<BinaryRationals, Constant<0>, S,
 #[test]
 fn the_obligation_admits_every_shipped_constant_quantum_point() {
     assert!(is_addable::<Integer<1>>().get());
-    assert!(is_addable::<Integer<62>>().get());
-    assert!(is_addable::<UFixed<62, -8>>().get());
-    assert!(is_addable::<Biased<62, 3, 1>>().get());
-    assert!(is_addable::<Biased<62, 0, -7>>().get());
+    assert!(is_addable::<Integer<63>>().get());
+    assert!(is_addable::<Integer<64>>().get());
+    assert!(is_addable::<UFixed<63, -8>>().get());
+    assert!(is_addable::<UFixed<64, -8>>().get());
+    assert!(is_addable::<Biased<64, 3, 1>>().get());
+    assert!(is_addable::<Biased<64, 0, -7>>().get());
 }
 
 #[test]
@@ -189,24 +191,41 @@ fn the_obligation_refuses_a_remainder_the_position_cannot_hold() {
 }
 
 #[test]
+fn every_shipped_range_carries_its_sums_at_every_phase() {
+    // The widest ranges this crate ships, at the phases furthest from zero a
+    // phase can declare. Twice the top of the unsigned 64-bit range plus
+    // `2^63 - 1` is about `2^65`, sixty-odd bits inside the index.
+    assert!(is_addable::<At<Unsigned<64>, { i64::MAX }, 1>>().get());
+    assert!(is_addable::<At<Unsigned<64>, { i64::MIN }, 1>>().get());
+    assert!(is_addable::<At<Signed<64>, { i64::MAX }, 1>>().get());
+    assert!(is_addable::<At<Signed<64>, { i64::MIN }, 1>>().get());
+    // The least value over minus one is 2^63, which the index holds.
+    assert!(is_addable::<At<Signed<64>, { i64::MIN }, -1>>().get());
+    assert!(is_addable::<At<Signed<8>, { i64::MIN }, -1>>().get());
+    // And a fractional phase, whose ceiling is one slot past its whole part.
+    assert!(is_addable::<At<Unsigned<64>, { i64::MAX }, 2>>().get());
+}
+
+#[test]
 fn the_obligation_refuses_a_sum_the_coordinate_cannot_carry_on_both_sides() {
-    // Signed<62>: twice the top is 2^62 - 2, so the largest whole phase that
-    // keeps the top sum in the coordinate is 2^62 + 1.
-    assert!(is_addable::<At<Signed<62>, { (1i64 << 62) + 1 }, 1>>().get());
-    assert!(!is_addable::<At<Signed<62>, { (1i64 << 62) + 2 }, 1>>().get());
-    // Twice the bottom is -2^62, so the least whole phase is -2^62.
-    assert!(is_addable::<At<Signed<62>, { -(1i64 << 62) }, 1>>().get());
-    assert!(!is_addable::<At<Signed<62>, { -(1i64 << 62) - 1 }, 1>>().get());
-    // Unsigned<62>: twice the top is 2^63 - 2, so one whole step fits and two do
-    // not, and a fractional phase rounds a slot past its whole part. Three
-    // halves has the whole part one does, and is refused for the ceiling.
-    assert!(is_addable::<At<Unsigned<62>, 1, 1>>().get());
-    assert!(!is_addable::<At<Unsigned<62>, 2, 1>>().get());
-    assert!(is_addable::<At<Unsigned<62>, 1, 2>>().get());
-    assert!(!is_addable::<At<Unsigned<62>, 3, 2>>().get());
-    // The least value over minus one is 2^63, which the wide domain holds and
-    // the coordinate does not.
-    assert!(!is_addable::<At<Signed<8>, { i64::MIN }, -1>>().get());
+    // Only a range an outside crate places near the index's end reaches the
+    // refusal. Twice the top here is `i128::MAX - 1`, so one whole step fits and
+    // two do not, and a fractional phase rounds a slot past its whole part:
+    // three halves has the whole part one does, and is refused for the ceiling.
+    assert!(is_addable::<At<NearTheTop, 0, 1>>().get());
+    assert!(is_addable::<At<NearTheTop, 1, 1>>().get());
+    assert!(!is_addable::<At<NearTheTop, 2, 1>>().get());
+    assert!(is_addable::<At<NearTheTop, 1, 2>>().get());
+    assert!(!is_addable::<At<NearTheTop, 3, 2>>().get());
+    // Twice the bottom is `i128::MIN`, so no step down fits.
+    assert!(is_addable::<At<NearTheBottom, 0, 1>>().get());
+    assert!(!is_addable::<At<NearTheBottom, -1, 1>>().get());
+    // A negative fractional phase has the whole part below it, so a third below
+    // zero is refused where zero is not.
+    assert!(!is_addable::<At<NearTheBottom, -1, 3>>().get());
+    // And one further in than the bottom window, a step down fits again.
+    assert!(is_addable::<At<Window<{ i128::MIN / 2 + 1 }, { i128::MIN / 2 + 4 }>, -2, 1>>().get());
+    assert!(!is_addable::<At<Window<{ i128::MIN / 2 + 1 }, { i128::MIN / 2 + 4 }>, -3, 1>>().get());
 }
 
 /// The verdicts, bound at check time: none of these forces a refusal, and each
@@ -241,7 +260,7 @@ struct ReachAgainstStep {
 impl PerFormat for ReachAgainstStep {
     fn run<F: Format>(&mut self) {
         let reach = addition_reach::<Signature<F, Adapt<Floor, Saturate>>>();
-        let (mut low, mut high) = (i64::MAX, i64::MIN);
+        let (mut low, mut high) = (i128::MAX, i128::MIN);
         let (mut off, mut tie) = (false, false);
         for a in members::<F>() {
             for b in members::<F>() {
@@ -283,8 +302,13 @@ fn the_reach_is_the_positions_the_step_produces() {
     walk.run::<At<Signed<3>, 5, 4>>();
     walk.run::<At<Signed<3>, -7, 6>>();
     walk.run::<At<Signed<3>, 2, -3>>();
+    // Ranges at the index's ends, where the positions the step produces sit at
+    // the very edge of what it holds.
+    walk.run::<At<NearTheTop, 1, 1>>();
+    walk.run::<At<NearTheTop, 1, 2>>();
+    walk.run::<At<NearTheBottom, 0, 1>>();
 
-    assert_eq!(walk.formats, 5 + 4 * super::phases() as u32 + 3);
+    assert_eq!(walk.formats, 5 + 4 * super::phases() as u32 + 3 + 3);
     // Every grid state is reached, so each branch of the reach's grid state is
     // compared rather than one of them.
     assert!(walk.on_grid > 0 && walk.ties > 0 && walk.off > 0);

@@ -90,7 +90,7 @@ fn the_one_magnitude_predicate<F: Format>() -> Bool {
     }
 }
 
-/// The cancelling slot with the negation taken in the index's own width.
+/// The cancelling slot with the negation taken in the phase's own width.
 ///
 /// What the predicate would compute without the wide intermediate. `i64::MIN`
 /// over one is a writable phase whose cancelling slot is two to the sixty-third,
@@ -100,7 +100,7 @@ const fn the_narrow_cancelling_slot(phase: Phase) -> Slot {
         phase
             .numerator()
             .wrapping_div(phase.denominator())
-            .wrapping_neg(),
+            .wrapping_neg() as i128,
     )
 }
 
@@ -120,7 +120,7 @@ const _CANCELLING_SLOT: Maybe<Slot> = cancelling_slot::<Biased<7, -2, 2>>(Magnit
 const _FOUND_BY_SEARCHING_HIGHER_UP: Bool =
     has_additive_identity::<Grid<BinaryRationals, Shrinking<2>, Signed<8>, 1, 2>>();
 const _SEARCHED_AND_NOT_FOUND: Bool =
-    has_additive_identity::<Grid<BinaryRationals, Shrinking<40>, Signed<62>, 1, 3>>();
+    has_additive_identity::<Grid<BinaryRationals, Shrinking<40>, Signed<64>, 1, 3>>();
 
 #[test]
 fn the_identity_is_decidable_at_const_time_including_the_search() {
@@ -222,19 +222,19 @@ fn the_control_the_matrix_above_contains_both_verdicts() {
 // reachable through the shipped points: three of the four fix the phase at zero
 // over one, and `Biased` fixes the denominator at two.
 //
-// **Solved in the width the coordinates are declared in, the cancellation has two
-// pairs it cannot answer.** The least numerator over minus one overflows the
-// remainder, and that numerator over one produces a quotient whose negation
-// overflows. Both diverge rather than answering, and diverging on the value path
-// is what `ruling::never_a_runtime_check_and_one_lowered_path` forbids. Neither is
+// Solved in the width the phase is declared in, the cancellation has two pairs it
+// cannot answer. The least numerator over minus one overflows the remainder, and
+// that numerator over one produces a quotient whose negation overflows. Both
+// diverge rather than answering, and diverging on the value path is what
+// `ruling::never_a_runtime_check_and_one_lowered_path` forbids. Neither is
 // reachable by a guard placed before the arithmetic, because both are the
 // arithmetic.
 //
 // Carrying the division one width up is what makes them defined, because the only
 // overflowing pair in a signed division is the least value over minus one and the
-// declared width's least value is nowhere near the wider one's. The range check
-// afterwards is what turns a quotient no slot index can hold into `Isnt` rather
-// than into a wrap.
+// phase's least value is nowhere near the wider one's. That wider width is the
+// slot index's own, so both quotients are slots, and a 64-bit range reaches one
+// of them.
 
 #[test]
 fn a_phase_keeps_the_value_it_was_declared_with() {
@@ -266,32 +266,46 @@ fn a_phase_keeps_the_value_it_was_declared_with() {
 #[test]
 fn the_extreme_phase_coordinates_are_answered_rather_than_overflowing() {
     // The least numerator over minus one. The phase is 2^63 quanta and the
-    // cancelling slot is -2^63, which is representable as a slot index. No
-    // admitted slot range reaches it, since the widest is 62 bits, so there is no
+    // cancelling slot is -2^63. `Signed<8>` does not reach it, so there is no
     // identity and the answer is a decided one.
     type MinOverMinusOne = Grid<BinaryRationals, Constant<0>, Signed<8>, { i64::MIN }, -1>;
     assert_eq!(
         cancelling_slot::<MinOverMinusOne>(Magnitude::SMALLEST),
-        Maybe::Is(Slot::at(i64::MIN))
+        Maybe::Is(Slot::at(-(1i128 << 63)))
     );
     assert!(!has_additive_identity::<MinOverMinusOne>().get());
 
-    // The least numerator over one. The cancelling slot would be +2^63, which is
-    // one past what a slot index carries, so it is `Isnt` rather than a wrapped
-    // value landing inside somebody's range.
+    // The widest signed range does reach it, at its own lowest slot, so the same
+    // phase has an identity there. That is a range no slot index narrower than
+    // the one this crate carries could have stated.
+    type MinOverMinusOneAtSixtyFour =
+        Grid<BinaryRationals, Constant<0>, Signed<64>, { i64::MIN }, -1>;
+    assert!(has_additive_identity::<MinOverMinusOneAtSixtyFour>().get());
+
+    // The least numerator over one. The cancelling slot is +2^63, one past what a
+    // 64-bit integer carries and a slot the index holds, so it is that slot
+    // rather than a wrapped value landing inside somebody's range.
     type MinOverOne = Grid<BinaryRationals, Constant<0>, Signed<8>, { i64::MIN }, 1>;
     assert_eq!(
         cancelling_slot::<MinOverOne>(Magnitude::SMALLEST),
-        Maybe::Isnt
+        Maybe::Is(Slot::at(1i128 << 63))
     );
     assert!(!has_additive_identity::<MinOverOne>().get());
+
+    // Neither signed range reaches +2^63, the widest's top being one below it,
+    // and the unsigned 64-bit range does.
+    type MinOverOneSigned = Grid<BinaryRationals, Constant<0>, Signed<64>, { i64::MIN }, 1>;
+    assert!(!has_additive_identity::<MinOverOneSigned>().get());
+    type MinOverOneUnsigned =
+        Grid<UnsignedBinaryRationals, Constant<0>, Unsigned<64>, { i64::MIN }, 1>;
+    assert!(has_additive_identity::<MinOverOneUnsigned>().get());
 
     // The greatest numerator over minus one, which is the same shape without the
     // asymmetry that makes the pair above overflow.
     type MaxOverMinusOne = Grid<BinaryRationals, Constant<0>, Signed<8>, { i64::MAX }, -1>;
     assert_eq!(
         cancelling_slot::<MaxOverMinusOne>(Magnitude::SMALLEST),
-        Maybe::Is(Slot::at(i64::MAX))
+        Maybe::Is(Slot::at(i64::MAX as i128))
     );
     assert!(!has_additive_identity::<MaxOverMinusOne>().get());
 
@@ -323,7 +337,7 @@ fn an_extreme_phase_still_answers_at_every_magnitude() {
     type Growing = Grid<BinaryRationals, Indexed<0, 64>, Signed<8>, { i64::MIN }, -1>;
     assert_eq!(
         cancelling_slot::<Growing>(Magnitude::SMALLEST),
-        Maybe::Is(Slot::at(i64::MIN))
+        Maybe::Is(Slot::at(-(1i128 << 63)))
     );
     assert_eq!(
         cancelling_slot::<Growing>(Magnitude::at(62)),

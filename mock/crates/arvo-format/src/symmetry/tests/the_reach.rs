@@ -334,8 +334,8 @@ fn the_conservative_reach_is_the_widest_thing_a_caller_can_declare() {
     // The saturating add is what keeps that true. Both bounds already sit at the
     // ends of the coordinate, so the union of the positions and the translated
     // positions cannot be reached by adding them.
-    assert_eq!(everything.lowest_rounded_position(), Slot::at(i64::MIN));
-    assert_eq!(everything.highest_rounded_position(), Slot::at(i64::MAX));
+    assert_eq!(everything.lowest_rounded_position(), Slot::at(i128::MIN));
+    assert_eq!(everything.highest_rounded_position(), Slot::at(i128::MAX));
 }
 
 #[test]
@@ -361,4 +361,48 @@ fn a_negative_translation_carries_a_non_negative_position_below_zero() {
     // translation over a reach on the grid is licensed, because the rounding
     // region is never entered and the sign it would read is never read.
     assert!(rounding_is_translation_equivariant(Mode::TowardZero, translated.on_grid()).get());
+}
+
+#[test]
+fn the_reflection_verdict_answers_for_a_range_whose_top_has_no_negation() {
+    // An outside range of one slot at the bottom of the index. Its highest slot
+    // is `i128::MIN`, whose negation the index does not hold, so the comparison
+    // that asks whether the range is its own mirror is taken checked and reads
+    // the overflow as not symmetric. Unchecked, the verdict panics instead of
+    // answering.
+    use crate::adapt::{Adapt, Signature};
+    use crate::ambient::BinaryRationals;
+    use crate::overflow::{Clamp, Saturate};
+    use crate::quantum::Constant;
+    use crate::rounding::Floor;
+    use crate::slots::Slots;
+    use crate::symmetry::completion_is_reflection_equivariant;
+    use crate::tests::grid::Grid;
+    use crate::width::Width;
+
+    struct TheLeastSlot;
+
+    impl Slots for TheLeastSlot {
+        const MAX: Slot = Slot::at(i128::MIN);
+        const MIN: Slot = Slot::at(i128::MIN);
+        const WIDTH: Width = Width::bits(1);
+    }
+
+    type F = Grid<BinaryRationals, Constant<0>, TheLeastSlot, 0, 1>;
+    let everything = Reach::EVERYTHING;
+    assert!(
+        !completion_is_reflection_equivariant::<Signature<F, Adapt<Floor, Saturate>>>(everything)
+            .get()
+    );
+    assert!(
+        !completion_is_reflection_equivariant::<Signature<F, Adapt<Floor, Clamp>>>(everything)
+            .get()
+    );
+
+    // The control: a reach that never leaves the one slot licenses it whatever
+    // the mirror says, so the verdict above is the symmetry half answering.
+    let stays = Reach::of(Slot::at(i128::MIN), Slot::at(i128::MIN)).on_grid();
+    assert!(
+        completion_is_reflection_equivariant::<Signature<F, Adapt<Floor, Saturate>>>(stays).get()
+    );
 }

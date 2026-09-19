@@ -1,0 +1,20 @@
+error[E0080]: evaluation panicked: declared width is wider than 64 bits, the widest pointer width a target has and the widest carrier the placement ladder offers
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<WiderThanTheLadder as arvo_format::Slots>::ADMITTED` failed here
+  |
+ ::: src/slots.rs
+  |
+  | /         assert!(
+  | |             Self::WIDTH.count() <= 64,
+  | |             "declared width is wider than 64 bits, the widest pointer width a target has and the \
+  | |              widest carrier the placement ladder offers"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/slots.rs
+  |
+  |     let () = S::ADMITTED;
+  |              ^^^^^^^^^^^

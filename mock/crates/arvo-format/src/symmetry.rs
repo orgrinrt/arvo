@@ -196,10 +196,10 @@ impl Reach {
     /// because the cost of being wrong is not symmetric: refusing a law that
     /// holds costs a lowering and licensing one that does not costs a result.
     pub const EVERYTHING: Self = Self {
-        position_low:     Slot::at(i64::MIN),
-        position_high:    Slot::at(i64::MAX),
-        translation_low:  Slot::at(i64::MIN),
-        translation_high: Slot::at(i64::MAX),
+        position_low:     Slot::at(i128::MIN),
+        position_high:    Slot::at(i128::MAX),
+        translation_low:  Slot::at(i128::MIN),
+        translation_high: Slot::at(i128::MAX),
         grid:             Residues::WithTies,
     };
 
@@ -459,9 +459,10 @@ pub const fn rounding_is_reflection_equivariant(mode: Mode) -> Bool {
 /// Wrapping does, because negation is an automorphism of the cyclic group it
 /// reduces into. A clamp does where the range is symmetric about zero, and a
 /// two's complement range is not: it carries one more slot below zero than above
-/// it, so its lowest slot has no positive twin to be pinned to. The comparison is
-/// in the wide carrier, because negating the lowest admitted slot is exactly the
-/// arithmetic that would leave the coordinate.
+/// it, so its lowest slot has no positive twin to be pinned to. The negation is
+/// checked, because the highest slot of a range an outside crate places at the
+/// bottom of the index is one whose negation leaves it, and such a range is not
+/// symmetric about zero either way.
 #[must_use]
 pub const fn completion_is_reflection_equivariant<S: DeclaredSignature>(reach: Reach) -> Bool {
     let () = <<S::Format as Format>::Slots as Slots>::ADMITTED;
@@ -470,7 +471,10 @@ pub const fn completion_is_reflection_equivariant<S: DeclaredSignature>(reach: R
     match <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY {
         Policy::Wrap => Bool::of(true),
         Policy::Saturate | Policy::Clamp => {
-            let symmetric = Bool::of((lowest.index() as i128) == -(highest.index() as i128));
+            let symmetric = match highest.index().checked_neg() {
+                Some(negated) => Bool::of(lowest.index() == negated),
+                None => Bool::FALSE,
+            };
             let never_leaves = reach
                 .reaches_below(lowest)
                 .not()

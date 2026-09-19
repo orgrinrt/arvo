@@ -18,8 +18,8 @@
 //! set while every arm present looks reasonable. There is a control below whose
 //! only job is to fail when that happens.
 
-use crate::apply::{round_slot, Dither, Exact, Fraction};
-use crate::rounding::Mode;
+use crate::apply::{Dither, Exact, Fraction, round_slot};
+use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::Slot;
 
 // --- 12. the fraction's own contract, which is why it is a type ------------
@@ -91,11 +91,7 @@ fn error_numerator(r: Fraction, n: i64, d: i64) -> u128 {
     let a = (r.numerator().unsigned_abs() as u128) * (d.unsigned_abs() as u128);
     let b = (n.unsigned_abs() as u128) * (r.denominator().unsigned_abs() as u128);
     if ratio_sign(r.numerator(), d) == ratio_sign(n, r.denominator()) {
-        if a > b {
-            a - b
-        } else {
-            b - a
-        }
+        if a > b { a - b } else { b - a }
     } else {
         a + b
     }
@@ -334,7 +330,7 @@ fn values_to_reduce() -> impl Iterator<Item = i64> {
         1_000_000_006,
         1_000_000_007,
     ];
-    (-64_i64..=64).chain(extremes)
+    (-64_i64 ..= 64).chain(extremes)
 }
 
 /// Whether `n/d` has a form the coordinate holds, decided by reducing the pair
@@ -416,7 +412,7 @@ fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
 
     // And the answer agrees with what `round_slot` decides at the same position,
     // which is the comparison the two were supposed to share.
-    let down = big.slot().index() as i128;
+    let down = big.slot().index();
     assert_eq!(
         round_slot(Mode::HalfEven, big, Dither::UNUSED),
         down + 1,
@@ -432,22 +428,54 @@ fn a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling() {
     assert!(genuine.is_tie().get(), "an ordinary tie stopped being one");
 }
 
-// --- 14. catalogued, and left red ------------------------------------------
+// --- 14. a carry out of the fraction, at both ends of the index ------------
 
 #[test]
-#[ignore = "catalogue: `Exact::between` adds the euclidean carry to the slot index in the \
-            coordinate's own carrier, and a carry past the end of it has nowhere to go inside \
-            `Slot`. `round_slot` widens on the way out, so the map admits a slot one past the \
-            type after `Exact` is built and cannot admit one while it is being built. What a \
-            carry past the coordinate means is a question about the slot coordinate rather than \
-            the ratio, so it is stated here and left red until that coordinate answers it."]
-fn a_carry_past_the_top_of_the_coordinate_still_lands_a_slot() {
-    // The design says every position maps to a slot the format admits, for every
-    // mode and every policy. This position does not reach the map at all.
-    let e = Exact::between(Slot::at(i64::MAX), Fraction::of(9, 4));
-    assert_eq!(
-        e.slot().index(),
-        i64::MAX,
-        "the carry has to land somewhere the coordinate can hold"
-    );
+fn a_carry_past_the_integer_one_size_down_lands_the_slot_it_names() {
+    // The euclidean carry is added to the slot index, which is one integer wider
+    // than the fraction's operands, so a carry past `i64` lands exactly.
+    let up = Exact::between(Slot::at(i64::MAX as i128), Fraction::of(9, 4));
+    assert_eq!(up.slot(), Slot::at(i64::MAX as i128 + 2));
+    assert_eq!(up.part, Fraction::of(1, 4));
+    let down = Exact::between(Slot::at(i64::MIN as i128), Fraction::of(-9, 4));
+    assert_eq!(down.slot(), Slot::at(i64::MIN as i128 - 3));
+    assert_eq!(down.part, Fraction::of(3, 4));
+
+    // The largest carry a fraction can make, both ways, from the index's zero.
+    let most = Exact::between(Slot::ZERO, Fraction::of(i64::MAX, 1));
+    assert_eq!(most.slot(), Slot::at(i64::MAX as i128));
+    let least = Exact::between(Slot::ZERO, Fraction::of(i64::MIN, 1));
+    assert_eq!(least.slot(), Slot::at(i64::MIN as i128));
+}
+
+#[test]
+fn a_carry_past_the_end_of_the_index_saturates_there_and_the_map_still_lands_a_slot() {
+    // The design says a carry past the index's own end saturates there, like
+    // every other position the crate computes, so `between` is total over every
+    // slot and every ratio. The remainder is kept as it was reduced.
+    let up = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
+    assert_eq!(up.slot(), Slot::at(i128::MAX));
+    assert_eq!(up.part, Fraction::of(1, 4));
+    let down = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
+    assert_eq!(down.slot(), Slot::at(i128::MIN));
+    assert_eq!(down.part, Fraction::of(3, 4));
+
+    // One below the end, the carry of one still lands exactly, so the saturation
+    // is reached only by a carry that genuinely leaves the index.
+    let exact = Exact::between(Slot::at(i128::MAX - 1), Fraction::of(5, 4));
+    assert_eq!(exact.slot(), Slot::at(i128::MAX));
+    let exact = Exact::between(Slot::at(i128::MIN + 1), Fraction::of(-3, 4));
+    assert_eq!(exact.slot(), Slot::at(i128::MIN));
+
+    // And the position reaches the map, which lands it in the declared range
+    // under every mode.
+    for mode in ALL_MODES {
+        let rounded = round_slot(mode, up, Dither::at(Fraction::HALF));
+        assert_eq!(rounded, i128::MAX, "{mode:?} left the index at its top");
+        let rounded = round_slot(mode, down, Dither::at(Fraction::HALF));
+        assert!(
+            rounded == i128::MIN || rounded == i128::MIN + 1,
+            "{mode:?} rounded {down:?} to {rounded}"
+        );
+    }
 }

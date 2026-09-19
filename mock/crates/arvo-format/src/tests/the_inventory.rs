@@ -22,13 +22,26 @@
 //! is exactly what a verdict function exists to be able to report on.
 
 use crate::ambient::{Ambient, DecimalRationals, Radix};
-use crate::format::{contains, has_additive_identity, radix, step_exponent, Format, Phase};
+use crate::format::{Format, Phase, contains, has_additive_identity, radix, step_exponent};
 use crate::points::Integer;
 use crate::quantum::{
-    is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount, Quantum,
+    Constant,
+    Exponent,
+    Indexed,
+    Magnitude,
+    MagnitudeCount,
+    Quantum,
+    is_constant_family,
 };
 use crate::slots::{
-    declared_slot_width, slot_count, slot_in_range, Signed, Slot, SlotCount, Slots, Unsigned,
+    Signed,
+    Slot,
+    SlotCount,
+    Slots,
+    Unsigned,
+    declared_slot_width,
+    slot_count,
+    slot_in_range,
 };
 use crate::width::{Bool, Width};
 
@@ -42,6 +55,7 @@ impl Format for Ternary {
     type Ambient = DecimalRationals;
     type Quantum = Constant<-1>;
     type Slots = Signed<3>;
+
     const PHASE: Phase = Phase::ZERO;
 }
 
@@ -79,8 +93,8 @@ struct DoubleStepped;
 
 impl Quantum for DoubleStepped {
     const BASE: Exponent = Exponent::of(-2);
-    const SLOPE: Exponent = Exponent::of(2);
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(4);
+    const SLOPE: Exponent = Exponent::of(2);
 }
 
 /// A slot range nothing here ships: five bits, offset so it is neither of the two
@@ -88,8 +102,8 @@ impl Quantum for DoubleStepped {
 struct OffsetFive;
 
 impl Slots for OffsetFive {
-    const MIN: Slot = Slot::at(-8);
     const MAX: Slot = Slot::at(23);
+    const MIN: Slot = Slot::at(-8);
     const WIDTH: Width = Width::bits(5);
 }
 
@@ -100,6 +114,7 @@ impl Format for WhollyForeign {
     type Ambient = TernaryRationals;
     type Quantum = DoubleStepped;
     type Slots = OffsetFive;
+
     const PHASE: Phase = Phase::of(1, 3);
 }
 
@@ -171,15 +186,15 @@ fn the_control_the_foreign_contract_differs_from_every_shipped_one() {
 /// A slot range declaring more bits than its span needs.
 ///
 /// Admissible on every count: not inverted, its width is in range, and a span of
-/// four sits well inside two to the thirteenth. **Its bounds imply two bits and
-/// its declaration says thirteen**, which is the only shape that separates a width
+/// four sits well inside two to the thirteenth. Its bounds imply two bits and
+/// its declaration says thirteen, which is the only shape that separates a width
 /// that is read from one recovered by counting. Every range this crate ships has
 /// the two agreeing by construction, so no shipped range can.
 struct WiderThanItsSpan;
 
 impl Slots for WiderThanItsSpan {
-    const MIN: Slot = Slot::ZERO;
     const MAX: Slot = Slot::at(3);
+    const MIN: Slot = Slot::ZERO;
     const WIDTH: Width = Width::bits(13);
 }
 
@@ -227,7 +242,11 @@ fn the_declared_width_is_read_rather_than_recovered() {
             )+
         };
     }
-    agree_where_tight!(1, 2, 3, 7, 13, 17, 31, 47, 61, 62);
+    agree_where_tight!(
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
 }
 
 #[test]
@@ -268,8 +287,15 @@ fn every_admitted_width_has_a_coherent_range() {
                         slot_in_range::<Signed<$w>>(Slot::ZERO).get(),
                         "signed {} excludes zero", $w
                     );
-                    assert_eq!(slot_count::<Unsigned<$w>>(), SlotCount::of(1i64 << $w));
-                    assert_eq!(slot_count::<Signed<$w>>(), SlotCount::of(1i64 << $w));
+                    assert_eq!(slot_count::<Unsigned<$w>>(), SlotCount::of(1i128 << $w));
+                    assert_eq!(slot_count::<Signed<$w>>(), SlotCount::of(1i128 << $w));
+                    // The ends, derived here from the 128-bit index rather than
+                    // from the 64-bit shifts the impls are written in, so a wrong
+                    // shift in either spelling disagrees with the other.
+                    assert_eq!(<Unsigned<$w> as Slots>::MIN, Slot::ZERO);
+                    assert_eq!(<Unsigned<$w> as Slots>::MAX, Slot::at((1i128 << $w) - 1));
+                    assert_eq!(<Signed<$w> as Slots>::MIN, Slot::at(-(1i128 << ($w - 1))));
+                    assert_eq!(<Signed<$w> as Slots>::MAX, Slot::at((1i128 << ($w - 1)) - 1));
                 }
             )+
         };
@@ -277,8 +303,28 @@ fn every_admitted_width_has_a_coherent_range() {
     coherent!(
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
         26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
-        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
     );
+}
+
+#[test]
+fn the_ranges_at_the_host_widths_are_the_host_integers_own() {
+    // A third derivation of the ends, from the host's own integer types, at the
+    // four widths that have one. The ladder's widest rung is the unsigned 64-bit
+    // range, whose top no signed 64-bit index holds, which is why the index is
+    // wider than that.
+    macro_rules! host {
+        ($(($w:literal, $u:ty, $i:ty)),+ $(,)?) => {
+            $(
+                assert_eq!(<Unsigned<$w> as Slots>::MIN, Slot::at(<$u>::MIN as i128));
+                assert_eq!(<Unsigned<$w> as Slots>::MAX, Slot::at(<$u>::MAX as i128));
+                assert_eq!(<Signed<$w> as Slots>::MIN, Slot::at(<$i>::MIN as i128));
+                assert_eq!(<Signed<$w> as Slots>::MAX, Slot::at(<$i>::MAX as i128));
+            )+
+        };
+    }
+    host!((8, u8, i8), (16, u16, i16), (32, u32, i32), (64, u64, i64));
+    assert!(<Unsigned<64> as Slots>::MAX.index() > i64::MAX as i128);
 }
 
 #[test]
@@ -288,8 +334,8 @@ fn the_admitted_set_is_the_contiguous_run_the_macro_names() {
     // gap and nothing past the end.
     let widths = crate::slots::ADMITTED_WIDTHS;
     assert_eq!(widths.first(), Some(&Width::bits(1)));
-    assert_eq!(widths.last(), Some(&Width::bits(62)));
-    assert_eq!(widths.len(), 62);
+    assert_eq!(widths.last(), Some(&Width::bits(64)));
+    assert_eq!(widths.len(), 64);
     for (i, w) in widths.iter().enumerate() {
         assert_eq!(
             w.count() as usize,
@@ -301,161 +347,29 @@ fn the_admitted_set_is_the_contiguous_run_the_macro_names() {
 }
 
 #[test]
-fn the_widest_admitted_width_is_where_the_count_stops_fitting() {
-    // Why 62 and not 63, derived rather than restated. The count is two to the
-    // power of the width; at the widest admitted width it fits a signed 64-bit
-    // integer and one above it does not. If somebody widens the impl set without
-    // this being true, this fails.
+fn the_widest_admitted_width_is_the_widest_pointer_width() {
+    // Why 64, derived rather than restated: the ladder has to reach the running
+    // target's pointer width, since that is where the platform-width points sit,
+    // and 64 is the widest a target has. Nothing past it is asked for.
     let widest = crate::slots::ADMITTED_WIDTHS.last().unwrap().count();
-    let at_bound = 1u128 << widest;
-    let one_over = 1u128 << (widest + 1);
     assert!(
-        at_bound <= i64::MAX as u128,
-        "the widest admitted width does not fit, so the impl set is too wide"
+        widest >= usize::BITS,
+        "the running target's pointer width is past the ladder, so `USize` has no range here"
     );
-    assert!(
-        one_over > i64::MAX as u128,
-        "one width past the widest admitted still fits, so the impl set is too narrow"
-    );
-    assert!(slot_count::<Unsigned<62>>().count() > 0);
-    assert_eq!(slot_count::<Unsigned<62>>(), SlotCount::of(at_bound as i64));
+    assert_eq!(widest, 64);
+
+    // At that width both ranges count `2^64` slots, which no 64-bit integer holds
+    // and the count's own integer does.
+    assert_eq!(slot_count::<Unsigned<64>>(), SlotCount::of(1i128 << 64));
+    assert_eq!(slot_count::<Signed<64>>(), SlotCount::of(1i128 << 64));
+    assert!(slot_count::<Unsigned<64>>().count() > u64::MAX as i128);
 }
 
 // --- what an outside implementor owes, and the constructions that do not ----
 
-/// A slot range from outside this crate that does not meet the contract.
-///
-/// A construction from outside this crate, values verbatim, kept permanently
-/// rather than in a scratch file. It **compiles**, which is the point: the trait
-/// is open and nothing stops it being written. What it does not do is pass the law
-/// below, and using it does not build, which the `trybuild` case records.
-struct RogueRange;
+mod the_range_obligation;
 
-impl Slots for RogueRange {
-    const MIN: Slot = Slot::at(4611686018427387904);
-    const MAX: Slot = Slot::at(-4611686018427387905);
-    const WIDTH: Width = Width::bits(63);
-}
-
-/// A width of zero, which admits nothing.
-struct EmptyRange;
-
-impl Slots for EmptyRange {
-    const MIN: Slot = Slot::ZERO;
-    const MAX: Slot = Slot::at(-1);
-    const WIDTH: Width = Width::NONE;
-}
-
-#[test]
-fn the_law_rejects_a_range_that_does_not_meet_the_contract() {
-    // The law returns a verdict, so the wrong construction can be reported on
-    // without forcing the const that refuses it. Asserting that it rejects is the
-    // shape a construction that compiles and is wrong wants.
-    assert!(
-        !crate::slots::is_admissible::<RogueRange>().get(),
-        "an inverted range was admitted, which is the finding returning"
-    );
-    assert!(
-        !crate::slots::is_admissible::<EmptyRange>().get(),
-        "a zero-width range was admitted"
-    );
-}
-
-#[test]
-fn the_law_admits_every_range_this_crate_ships() {
-    // The control. A law that rejected everything would pass the test above and
-    // establish nothing, so it has to accept the shipped set.
-    macro_rules! admits {
-        ($($w:literal),+ $(,)?) => {
-            $(
-                assert!(
-                    crate::slots::is_admissible::<Unsigned<$w>>().get(),
-                    "unsigned {} was refused by the law", $w
-                );
-                assert!(
-                    crate::slots::is_admissible::<Signed<$w>>().get(),
-                    "signed {} was refused by the law", $w
-                );
-            )+
-        };
-    }
-    admits!(
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-        26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
-        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
-    );
-
-    // And the two foreign ranges above, neither of which is a shipped shape and
-    // both of which are admissible, so the law is about the obligations rather
-    // than about the two constructions this crate happens to write.
-    assert!(crate::slots::is_admissible::<OffsetFive>().get());
-    assert!(crate::slots::is_admissible::<WiderThanItsSpan>().get());
-}
-
-#[test]
-fn the_law_separates_the_two_constructions_rather_than_answering_one_way() {
-    // Both directions in one place, so a law stuck at `true` or at `false` fails
-    // here rather than passing one of the two tests above.
-    let shipped = crate::slots::is_admissible::<Unsigned<13>>().get();
-    let rogue = crate::slots::is_admissible::<RogueRange>().get();
-    assert_ne!(
-        shipped, rogue,
-        "the law gives the same verdict to a shipped range and an inverted one"
-    );
-}
-
-/// A range that meets the first three obligations and still cannot be counted.
-///
-/// `MIN <= MAX` holds and the width is in range, so an obligation checking only
-/// those admits it. Its span is 2^63, which is what `slot_count` cannot carry.
-/// Measured before the obligation was strengthened: under `overflow-checks` it
-/// panicked at runtime, and without it `slot_count` returned
-/// `-9223372036854775808`.
-struct SpanTooWide;
-
-impl Slots for SpanTooWide {
-    const MIN: Slot = Slot::at(-4611686018427387904);
-    const MAX: Slot = Slot::at(4611686018427387903);
-    const WIDTH: Width = Width::bits(62);
-}
-
-/// A range whose declared width cannot address it.
-struct WidthTooNarrow;
-
-impl Slots for WidthTooNarrow {
-    const MIN: Slot = Slot::ZERO;
-    const MAX: Slot = Slot::at(1000);
-    const WIDTH: Width = Width::bits(4);
-}
-
-#[test]
-fn the_law_rejects_a_range_that_passes_the_easy_obligations() {
-    // The case a weaker obligation admitted. Kept permanently because it is the
-    // one that looks admissible: nothing about it is inverted and its width is in
-    // range, and it still breaks the only thing the range is for.
-    assert!(
-        !crate::slots::is_admissible::<SpanTooWide>().get(),
-        "a span of 2^63 was admitted, so counting it overflows"
-    );
-    assert!(
-        !crate::slots::is_admissible::<WidthTooNarrow>().get(),
-        "a width that cannot address its own range was admitted"
-    );
-
-    // And the reasons are distinct from the inverted case, so the law is not
-    // rejecting everything that is not a shipped shape.
-    assert!(<SpanTooWide as Slots>::MIN
-        .is_at_most(<SpanTooWide as Slots>::MAX)
-        .get());
-    assert!(<WidthTooNarrow as Slots>::MIN
-        .is_at_most(<WidthTooNarrow as Slots>::MAX)
-        .get());
-
-    // A declaration may be wider than its span and not narrower, which is the
-    // asymmetry the obligation carries: a range addressable by more bits than it
-    // needs is coherent, and one its width cannot address is not.
-    assert!(crate::slots::is_admissible::<WiderThanItsSpan>().get());
-}
+pub(crate) use the_range_obligation::AtTheBottom;
 
 // --- what a quantum law owes, and the constructions that do not --------------
 //
@@ -471,8 +385,8 @@ struct NoMagnitudes;
 
 impl Quantum for NoMagnitudes {
     const BASE: Exponent = Exponent::ZERO;
-    const SLOPE: Exponent = Exponent::ONE;
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(0);
+    const SLOPE: Exponent = Exponent::ONE;
 }
 
 /// A law whose exponent runs past what an exponent carries before its last
@@ -485,8 +399,8 @@ struct ReachRunsOff;
 
 impl Quantum for ReachRunsOff {
     const BASE: Exponent = Exponent::of(i32::MAX - 2);
-    const SLOPE: Exponent = Exponent::ONE;
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(8);
+    const SLOPE: Exponent = Exponent::ONE;
 }
 
 /// A law with more magnitudes than a magnitude index can hold.
@@ -498,8 +412,8 @@ struct MagnitudesBeyondTheIndex;
 
 impl Quantum for MagnitudesBeyondTheIndex {
     const BASE: Exponent = Exponent::ZERO;
-    const SLOPE: Exponent = Exponent::ONE;
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(u32::MAX);
+    const SLOPE: Exponent = Exponent::ONE;
 }
 
 #[test]
@@ -602,32 +516,4 @@ fn the_quantum_law_separates_the_two_constructions_rather_than_answering_one_way
         <MagnitudesBeyondTheIndex as Quantum>::MAGNITUDES.count() >= 1,
         "the wide-count law trips the count condition too, so it separates nothing"
     );
-}
-
-#[test]
-fn the_reach_check_is_wider_than_the_widths_currently_need() {
-    // Why the obligation computes one domain wider than the coordinates ask for.
-    // The worst a caller can declare is a rate at the bottom of the exponent's
-    // range against a count at the top of the magnitude count's, and that lands
-    // inside a signed 64-bit integer with two to the thirty-first to spare.
-    let base = i32::MIN as i128;
-    let slope = i32::MIN as i128;
-    let largest = (u32::MAX as i128) - 1;
-    let worst = base + slope * largest;
-
-    assert!(
-        worst > i64::MIN as i128,
-        "the worst declarable reach does not fit a signed 64-bit integer, so the doc on \
-         `reach_is_representable` is wrong about which way the margin runs"
-    );
-    assert_eq!(
-        (i64::MIN as i128) - worst,
-        -2147483648,
-        "the margin is not the one the doc names"
-    );
-
-    // The margin is an argument over three coordinate widths rather than a
-    // property of the check, which is why the check does not rest on it: one more
-    // magnitude than a count can hold would pass the bottom of that width.
-    assert!(base + slope * (largest + 2) < i64::MIN as i128);
 }

@@ -11,13 +11,12 @@
 //! this file would be most likely to ship.
 
 use arvo_format::adapt::{Adapt, Signature};
-use arvo_format::apply::{adapt, Dither, Exact, Fraction};
+use arvo_format::apply::{Dither, Exact, Fraction, adapt};
 use arvo_format::overflow::Wrap;
 use arvo_format::points::Integer;
 use arvo_format::quantum::Magnitude;
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
 use arvo_format::slots::{Slot, Slots};
-
 use arvo_format::standards::{Fi, FractionLength, Ufi};
 
 /// Pi as an exact rational, to fifteen places.
@@ -33,15 +32,12 @@ const PI_DEN: i128 = 1_000_000_000_000_000;
 ///
 /// Returns the slot below it and the remainder as a rational, which is what the
 /// applied map takes. Computed in `i128` because pi times two to the fourteenth,
-/// scaled by the denominator, leaves `i64`; the two values handed back do not.
+/// scaled by the denominator, leaves `i64`; the remainder handed back does not.
 fn pi_at(f: u32) -> Exact {
     let scaled = PI_NUM * (1i128 << f);
     let slot = scaled / PI_DEN;
     let rem = scaled % PI_DEN;
-    Exact::between(
-        Slot::at(slot as i64),
-        Fraction::of(rem as i64, PI_DEN as i64),
-    )
+    Exact::between(Slot::at(slot), Fraction::of(rem as i64, PI_DEN as i64))
 }
 
 /// Twice the remainder against the denominator, which is the tie test.
@@ -73,7 +69,7 @@ fn the_control_no_parity_arm_reaches_an_overflow_policy() {
     // The same argument for the other axis. Every expected stored integer sits
     // inside its declared range, so the completion region is the identity and no
     // arm below is secretly asserting something about wrapping.
-    let inside = |lo: Slot, hi: Slot, v: i64| v >= lo.index() && v <= hi.index();
+    let inside = |lo: Slot, hi: Slot, v: i128| v >= lo.index() && v <= hi.index();
     assert!(inside(
         <<Fi<16, 13> as arvo_format::format::Format>::Slots as Slots>::MIN,
         <<Fi<16, 13> as arvo_format::format::Format>::Slots as Slots>::MAX,
@@ -115,16 +111,13 @@ fn the_control_the_five_declarations_are_genuinely_different() {
         step_exponent::<Ufi<8, 6>>(Magnitude::SMALLEST),
         step_exponent::<Fi<8, 3>>(Magnitude::SMALLEST),
     ];
-    assert_eq!(
-        exponents,
-        [
-            Exponent::of(-13),
-            Exponent::of(-14),
-            Exponent::of(-5),
-            Exponent::of(-6),
-            Exponent::of(-3),
-        ]
-    );
+    assert_eq!(exponents, [
+        Exponent::of(-13),
+        Exponent::of(-14),
+        Exponent::of(-5),
+        Exponent::of(-6),
+        Exponent::of(-3),
+    ]);
 }
 
 // --- the fraction length is the negation, including below zero ---------------
@@ -155,7 +148,7 @@ fn the_fraction_length_is_the_negated_exponent_at_every_sign() {
 fn the_fraction_length_is_the_constant_family_rather_than_the_indexed_one() {
     // A fixed-point convention has one step. If this were the indexed family the
     // grid would have a step per magnitude, which is a float and not a `fi`.
-    use arvo_format::quantum::{is_constant_family, MagnitudeCount, Quantum};
+    use arvo_format::quantum::{MagnitudeCount, Quantum, is_constant_family};
     assert!(is_constant_family::<FractionLength<13>>().get());
     assert_eq!(
         <FractionLength<13> as Quantum>::MAGNITUDES,

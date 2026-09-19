@@ -36,4 +36,5 @@ mod the_adaptation;
 mod the_coordinates;
 mod the_identity;
 mod the_inventory;
+mod the_platform_width;
 mod the_predicate;

@@ -187,12 +187,17 @@ impl Exact {
     /// refused, because a caller computing an exact result should not have to
     /// carry the invariant. That normalisation is why `Fraction` does not hold the
     /// `[0, 1)` bound itself: holding it there would drop the carry.
+    ///
+    /// The carry is at most `2^63` either way and lands as an ordinary slot
+    /// wherever the index holds the sum. Past the index's own end it saturates
+    /// there, like every other position this crate computes, so `between` is
+    /// total over every slot and every ratio.
     #[must_use]
     pub const fn between(slot: Slot, part: Fraction) -> Self {
         let whole = part.num.div_euclid(part.den);
         let rem = part.num.rem_euclid(part.den);
         Self {
-            slot: Slot::at(slot.index() + whole),
+            slot: Slot::at(slot.index().saturating_add(whole as i128)),
             part: Fraction {
                 num: rem,
                 den: part.den,
@@ -261,13 +266,13 @@ impl Dither {
 #[must_use]
 pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
     if exact.part.num == 0 {
-        return exact.slot.index() as i128;
+        return exact.slot.index();
     }
-    // The exact step happens here, in a carrier wide enough to hold it. A slot
-    // one past `i64::MAX` is a real position and the completion below lands it;
-    // computing it in the target carrier is what made the map wrong.
-    let down = exact.slot.index() as i128;
-    let up = down + 1;
+    // The step up is one slot, in the index's own integer. At that integer's
+    // top it saturates, the act every other position here performs, so the map
+    // stays total at a position an outside range placed there.
+    let down = exact.slot.index();
+    let up = down.saturating_add(1);
     // `2 * num` against `den` decides which side of the midpoint the position is,
     // cross-multiplied in the wide carrier so no operand can leave its type.
     let twice = (exact.part.num as i128) * 2;
@@ -326,19 +331,21 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128
 /// separable rather than one pass that always touches the value.
 #[must_use]
 const fn complete_slot(policy: Policy, slot: i128, min: Slot, max: Slot) -> Slot {
-    let lo = min.index() as i128;
-    let hi = max.index() as i128;
+    let lo = min.index();
+    let hi = max.index();
     if slot >= lo && slot <= hi {
-        // In range, so it fits the target carrier by construction.
-        return Slot::at(slot as i64);
+        return Slot::at(slot);
     }
     match policy {
         Policy::Wrap => {
-            // Every term in the wide carrier. The span of an admitted range fits
-            // an `i64`, and the remainder is below it, so the sum lands in range
-            // and the narrowing cannot lose anything.
+            // An admitted range spans at most `2^64` slots, so the span fits. The
+            // position and the lowest slot are reduced separately before they
+            // are subtracted, because their difference can leave the index when
+            // an outside range sits near one end and the position near the other.
+            // Each reduction is below the span, so the difference and the sum
+            // stay inside the range and the answer is exact at every position.
             let span = hi - lo + 1;
-            Slot::at((lo + (slot - lo).rem_euclid(span)) as i64)
+            Slot::at(lo + (slot.rem_euclid(span) - lo.rem_euclid(span)).rem_euclid(span))
         },
         // `Clamp` is documented as pinning to a declared bound that need not be
         // the range's own end, and the declared signature carries nowhere to put
@@ -405,7 +412,7 @@ pub const fn panic_on_overflow<S: DeclaredSignature>(exact: Exact, dither: Dithe
     let min = <<S::Format as Format>::Slots as Slots>::MIN;
     let max = <<S::Format as Format>::Slots as Slots>::MAX;
     let rounded = round_slot(mode, exact, dither);
-    Bool::of(rounded < min.index() as i128 || rounded > max.index() as i128)
+    Bool::of(rounded < min.index() || rounded > max.index())
 }
 
 #[cfg(test)]
