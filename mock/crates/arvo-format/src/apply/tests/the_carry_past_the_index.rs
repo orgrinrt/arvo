@@ -16,6 +16,7 @@
 
 use notko::Maybe;
 
+use super::the_broken_maps::{no_lo_guard_onto_the_lowest, shipped as shipped_map};
 use super::the_far_end_of_the_index::{BottomOf200, TopOf200};
 use super::the_translation_law::{
     NegativeReference,
@@ -26,14 +27,16 @@ use super::the_translation_law::{
     WideNegativeReference,
     WideReference,
     WideTop,
+    range_of,
 };
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
 use crate::ambient::BinaryRationals;
-use crate::apply::{Dither, Exact, Fraction, adapt, panic_on_overflow};
+use crate::apply::{Dither, Exact, Fraction, adapt, panic_on_overflow, round_slot};
 use crate::format::Format;
-use crate::overflow::{Clamp, Saturate, Wrap};
+use crate::overflow::{Clamp, Policy, Saturate, Wrap};
+use crate::points::Integer;
 use crate::quantum::Constant;
-use crate::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
+use crate::rounding::{Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZero};
 use crate::slots::{Slot, Slots};
 use crate::tests::grid::Grid;
 use crate::tests::the_inventory::{AtTheBottom, AtTheTop};
@@ -192,4 +195,69 @@ fn the_carry_reaches_past_the_index_at_every_distance_it_is_fed() {
         let inside = Exact::between(Slot::at(1255), Fraction::of(4 * k, 4));
         assert_eq!(inside.past, 0);
     }
+}
+
+#[test]
+fn the_step_onto_the_lowest_slot_is_in_range_only_where_the_range_starts_there() {
+    // `lands_within`'s `past < 0` branch admits the step onto `i128::MIN` only
+    // where the range fed to it starts there: `self.past == -1 && self.up.get()
+    // && lo == i128::MIN`. Every hand test that reaches this branch elsewhere
+    // feeds it from a `Bottom`-style range that does start at `i128::MIN`
+    // (the_top_of_the_index.rs:211, :225), so the `lo == i128::MIN` conjunct
+    // itself has never been the thing deciding the answer. `no_lo_guard_onto_the_lowest`
+    // drops it, admitting the step into any range regardless of where its own
+    // bottom sits, which is the shape deleting that conjunct produces.
+    let (good, bad) = (shipped_map(), no_lo_guard_onto_the_lowest());
+    let position = Exact::between(Slot::at(i128::MIN), Fraction::of(-1, 4));
+    let stepped = round_slot(Mode::Ceil, position, Dither::UNUSED);
+    assert_eq!((stepped.down(), stepped.step()), (i128::MIN, 1));
+
+    // Cross-end: fed into ranges sitting at the top of the index, and into a
+    // plain range at neither end.
+    for (min, max) in [
+        range_of::<AtTheTop>(),
+        range_of::<WideTop>(),
+        range_of::<Reference>(),
+        range_of::<NegativeReference>(),
+    ] {
+        assert!((good.leaves)(stepped, min, max), "shipped: {min:?} {max:?}");
+        assert!(!(bad.leaves)(stepped, min, max), "mutant: {min:?} {max:?}");
+    }
+
+    // The positive control: where the range does start at `i128::MIN`, the two
+    // agree, so the broken map is not simply always wrong.
+    let (bottom_min, bottom_max) = range_of::<AtTheBottom>();
+    assert_eq!(
+        (good.leaves)(stepped, bottom_min, bottom_max),
+        (bad.leaves)(stepped, bottom_min, bottom_max)
+    );
+    assert!(!(good.leaves)(stepped, bottom_min, bottom_max));
+}
+
+#[test]
+fn a_step_past_the_bottom_is_out_of_range_where_the_fed_range_does_not_start_there() {
+    // The failure scenario the review names: `Exact::between(Slot::at(i128::MIN),
+    // Fraction::of(-3, 4))` names `MIN - 3/4`, and `Ceil` takes it to `MIN`. Fed
+    // to `Integer<3>` (`[-4, 3]`) under `Wrap`, the range's own bottom is not
+    // `i128::MIN`, so the shipped verdict is out of range and the wrap reduces
+    // `i128::MIN` modulo eight to `0`, which the shipped adaptation answers. A
+    // verdict missing the `lo == i128::MIN` guard calls the same step in range,
+    // which is what a `complete_slot` reading that verdict would then pin at the
+    // range's own bottom, `-4`, instead of wrapping it; `complete_slot` itself is
+    // not mutable per map here, so it is the verdict this test pins as the
+    // catalogued difference, and `the_step_onto_the_lowest_slot_is_in_range_only_where_the_range_starts_there`
+    // is the general law over it.
+    type Wrapped = Signature<Integer<3>, Adapt<Ceil, Wrap>>;
+    let position = Exact::between(Slot::at(i128::MIN), Fraction::of(-3, 4));
+    assert_eq!(adapt::<Wrapped>(position, Dither::UNUSED), Slot::at(0));
+    assert!(panic_on_overflow::<Wrapped>(position, Dither::UNUSED).get());
+
+    let stepped = round_slot(Mode::Ceil, position, Dither::UNUSED);
+    let (min, max) = (Slot::at(-4), Slot::at(3));
+    assert!((shipped_map().leaves)(stepped, min, max));
+    assert_eq!(
+        (shipped_map().complete)(Policy::Wrap, stepped, min, max),
+        Slot::at(0)
+    );
+    assert!(!(no_lo_guard_onto_the_lowest().leaves)(stepped, min, max));
 }

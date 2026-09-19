@@ -222,12 +222,12 @@ pub mod points {
     /// bits and not at 16: a 32-bit unsigned error word is a member only where
     /// the pointer is at least that wide. It is the format and not a value; no
     /// crate here holds a value of any format.
-    pub type USize = UFixed<{ usize::BITS }, 0>;
+    pub type USize = UFixed<{ core::primitive::usize::BITS }, 0>;
 
     /// The signed platform-width point, the two's complement twin of `USize`.
     ///
     /// The same alias at the same width, over the signed slot family.
-    pub type ISize = Integer<{ usize::BITS }>;
+    pub type ISize = Integer<{ core::primitive::usize::BITS }>;
 }
 
 #[cfg(test)]

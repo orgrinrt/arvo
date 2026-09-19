@@ -406,7 +406,13 @@ fn the_law_holds_of_the_shipped_map_and_reports_each_broken_one() {
 
     // A wrap reducing the lowest slot modulo 256 is right at a span of 256 and
     // wrong everywhere else, so the ranges of 256 pass it and the ranges of 200
-    // report it at both ends.
+    // report it at both ends. This is a negative control on the instrument
+    // itself rather than on the shipped map: it shows the law can tell a span
+    // of 200 from a span of 256, which is exactly why the 200-wide references
+    // exist. The 256-wide arm below is expected to stay silent only because
+    // this suite's coverage is 200 and 256; the day another span joins it, this
+    // control's silence on 256 is the same blind spot restated, and it is
+    // expected to start reporting once that coverage widens.
     let bad = reduced_modulo_256();
     assert!(new_law(bad).is());
     let narrow = [

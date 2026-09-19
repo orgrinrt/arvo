@@ -111,3 +111,29 @@ pub(super) fn no_step_onto_the_lowest() -> Map {
         leaves,
     }
 }
+
+/// An overflow verdict whose step onto `i128::MIN` from just under the index is
+/// in range for every range, not only for the one whose own lowest slot is
+/// `i128::MIN`.
+///
+/// The slot half is the shipped one; only the verdict drops the `lo ==
+/// i128::MIN` conjunct `lands_within` carries on its `past < 0` branch, which
+/// is the shape a mutation that deletes that conjunct produces.
+pub(super) fn no_lo_guard_onto_the_lowest() -> Map {
+    fn leaves(r: Rounded, min: Slot, max: Slot) -> bool {
+        let (lo, hi) = (min.index(), max.index());
+        if r.past > 0 {
+            return true;
+        }
+        if r.past < 0 {
+            return !(r.past == -1 && r.up.get());
+        }
+        let from_below = r.down() >= lo || (r.up.get() && r.down() + 1 == lo);
+        let from_above = r.down() < hi || (r.down() == hi && !r.up.get());
+        !(from_below && from_above)
+    }
+    Map {
+        complete: complete_slot,
+        leaves,
+    }
+}

@@ -165,13 +165,18 @@ fn rounding_past_the_top_of_the_index_wraps_the_position_it_names() {
     assert_eq!(adapt::<DownWrap>(e, Dither::UNUSED), Slot::at(-1));
     assert_eq!(adapt::<UpSat>(e, Dither::UNUSED), EDGE_MAX);
 
-    // A carry out of the fraction past either end is where a position does
-    // saturate, and it does so in the constructor: the slot pins at the index's
-    // end. `the_top_of_the_index.rs` pins what the map then does with it.
+    // A carry out of the fraction past either end is where the constructor pins
+    // the slot at the index's end and keeps the distance past it, rather than
+    // saturating: `Exact::between` is not on the list of things that saturate
+    // (DESIGN:818), so the position that reaches the map is still the one named.
+    // `the_ratio_coordinate.rs:453-479` pins the kept distance, and
+    // `the_top_of_the_index.rs` pins what the map then does with the pinned pair.
     let carried = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MAX));
+    assert_eq!(carried.past, 2);
     let carried = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MIN));
+    assert_eq!(carried.past, -3);
 }
 
 #[test]

@@ -207,6 +207,32 @@ fn every_shipped_range_carries_its_sums_at_every_phase() {
 }
 
 #[test]
+fn no_phase_admits_a_range_past_the_doubling_bound_itself() {
+    // DESIGN:813 states the carry obligation keeps every range addition admits
+    // inside `[-2^126, 2^126)`. `doubled_plus` checks `slot.checked_mul(2)`
+    // before it ever adds the phase's `whole` or `ceiling`, so that multiply
+    // alone is the binding constraint: `i128::MAX / 2` is `2^126 - 1`, the
+    // widest a slot index holds doubled, and `i128::MIN / 2` is `-2^126`
+    // exactly. No phase moves either edge outward, only inward, because a
+    // positive `ceiling` or `whole` can still overflow the checked add once
+    // the multiply is already at its own limit (`the_obligation_refuses_a_sum_
+    // the_coordinate_cannot_carry_on_both_sides` pins that narrowing), and a
+    // negative one has no headroom left to spend. Pinned here at the phase
+    // furthest from zero in the direction that would extend the bound if
+    // extending it were possible: `i64::MIN` does not move the top past
+    // `2^126 - 1`, and `i64::MAX` does not move the bottom past `-2^126`.
+    type NearTheFarTop = Window<{ (1i128 << 126) - 4 }, { (1i128 << 126) - 1 }>;
+    type PastTheFarTop = Window<{ (1i128 << 126) - 3 }, { 1i128 << 126 }>;
+    assert!(is_addable::<At<NearTheFarTop, { i64::MIN }, 1>>().get());
+    assert!(!is_addable::<At<PastTheFarTop, { i64::MIN }, 1>>().get());
+
+    type NearTheFarBottom = Window<{ -(1i128 << 126) }, { -(1i128 << 126) + 3 }>;
+    type PastTheFarBottom = Window<{ -(1i128 << 126) - 1 }, { -(1i128 << 126) + 2 }>;
+    assert!(is_addable::<At<NearTheFarBottom, { i64::MAX }, 1>>().get());
+    assert!(!is_addable::<At<PastTheFarBottom, { i64::MAX }, 1>>().get());
+}
+
+#[test]
 fn the_obligation_refuses_a_sum_the_coordinate_cannot_carry_on_both_sides() {
     // Only a range an outside crate places near the index's end reaches the
     // refusal. Twice the top here is `i128::MAX - 1`, so one whole step fits and
