@@ -254,3 +254,50 @@ fn a_dither_at_the_edges_still_selects_between_two_neighbours() {
         adapt::<Edge>(e, Dither::at(Fraction::of(i64::MAX - 1, i64::MAX)))
     );
 }
+
+#[test]
+fn a_dither_below_zero_rounds_as_ceil_and_one_at_or_above_one_as_floor() {
+    // `Dither::at` keeps its ratio as given. The stochastic mode steps up when
+    // the dither is below the remainder, which lies strictly between zero and
+    // one off the grid, so a dither below zero answers as `Ceil` and one at or
+    // above one as `Floor`, at every slot and every remainder. On the grid all
+    // three agree, and the quarters below include it.
+    type Up = Signature<Integer<3>, Adapt<Ceil, Wrap>>;
+    type Either = Signature<Integer<3>, Adapt<Stochastic, Wrap>>;
+    let below = [Fraction::of(-1, 8), Fraction::of(-1, 1), Fraction::of(i64::MIN, 1)];
+    let at_or_above = [Fraction::of(1, 1), Fraction::of(9, 8), Fraction::of(i64::MAX, 1)];
+    for slot in edges() {
+        for quarters in -8 ..= 8 {
+            let e = Exact::between(Slot::at(slot), Fraction::of(quarters, 4));
+            let ceil = adapt::<Up>(e, Dither::UNUSED);
+            let floor = adapt::<Edge>(e, Dither::UNUSED);
+            for d in below {
+                assert_eq!(
+                    adapt::<Either>(e, Dither::at(d)),
+                    ceil,
+                    "{slot} {quarters}/4 under {d:?}"
+                );
+            }
+            for d in at_or_above {
+                assert_eq!(
+                    adapt::<Either>(e, Dither::at(d)),
+                    floor,
+                    "{slot} {quarters}/4 under {d:?}"
+                );
+            }
+        }
+    }
+
+    // The control: inside `[0, 1)` the mode reads the dither, so a quarter past
+    // zero steps down under a half and up under an eighth, and the two
+    // assertions above are not the mode answering one way whatever it is given.
+    let e = Exact::between(Slot::ZERO, Fraction::of(1, 4));
+    assert_eq!(
+        adapt::<Either>(e, Dither::at(Fraction::of(1, 2))),
+        Slot::ZERO
+    );
+    assert_eq!(
+        adapt::<Either>(e, Dither::at(Fraction::of(1, 8))),
+        Slot::at(1)
+    );
+}

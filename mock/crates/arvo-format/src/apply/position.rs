@@ -276,6 +276,13 @@ impl Dither {
     pub const UNUSED: Self = Self(Fraction::ZERO);
 
     /// A dither at `part` of the way between two grid points.
+    ///
+    /// Meant as a ratio in `[0, 1)`, and not normalised into it: `part` is kept
+    /// as given. The stochastic mode steps an off-grid position up exactly when
+    /// the dither is below the position's remainder, which lies strictly
+    /// between zero and one, so a dither below zero steps every off-grid
+    /// position up, as `Ceil` does, and a dither at or above one steps none, as
+    /// `Floor` does. A position on the grid is not moved by any dither.
     #[must_use]
     pub const fn at(part: Fraction) -> Self {
         Self(part)
