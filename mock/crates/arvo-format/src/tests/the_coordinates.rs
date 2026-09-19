@@ -5,8 +5,8 @@
 
 //! What the coordinate types themselves promise.
 //!
-//! Each of these is a law about one of the coordinate types, and each is a
-//! property the contract used to state in a doc comment with nothing holding it.
+//! Each of these is a law about one of the coordinate types that a doc comment
+//! states, held here by a test rather than by the comment alone.
 //! An index is not an extent, and an extent of nothing admits no index at all.
 //!
 //! That the phase and the fraction are two coordinates rather than one ratio

@@ -84,8 +84,8 @@ fn the_control_the_sweep_reaches_both_regions_and_both_sides() {
 // --- 1. the map is total -----------------------------------------------------
 //
 // Over every admitted width of both slot families, at the edges of each range and
-// at the ends of the coordinate, in `totality`. The arm that stood here asserted
-// it at `Integer<5>` alone, which is a law over every format shape measured at one.
+// at the ends of the coordinate, in `totality`. At `Integer<5>` alone it would be a
+// law over every format shape measured at one.
 
 mod totality;
 
@@ -422,5 +422,7 @@ mod the_carry_past_the_index;
 mod the_cross_end_saturation;
 mod the_edges;
 mod the_far_end_of_the_index;
+mod the_oracle;
+mod the_oracle_sweep;
 mod the_top_of_the_index;
 mod the_translation_law;

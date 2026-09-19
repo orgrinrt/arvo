@@ -5,12 +5,10 @@
 
 //! The edges of the slot index, which every arm in the parent stays away from.
 //!
-//! Thirty references to one small window meant the arithmetic could never leave
-//! the index, so the breaking path was never entered and reading the source
-//! against the tests found what running them did not. These arms feed the
-//! index's own ends, and the ends of
-//! the integer one size down, which is where the index used to stop and where a
-//! position is now an ordinary one.
+//! References that all sit in one small window never take the arithmetic out of
+//! the index, so the path that breaks there is never entered. These arms feed
+//! the index's own ends, and the ends of the integer one size down, where a
+//! position is an ordinary one and a narrower index would have stopped.
 
 use super::{MAX5, MIN5};
 use crate::adapt::{Adapt, Signature};
@@ -201,12 +199,11 @@ fn a_dither_at_the_edges_still_selects_between_two_neighbours() {
     // The stochastic mode cross-multiplies, which is the other site that could
     // leave its integer, and this arm is what reaches it.
     //
-    // Two things were wrong with the arm that stood here. It adapted through
-    // `Edge`, which is a `Floor` signature and reads no dither at all, so the
-    // path it is named for was never entered. And it asserted only that the two
-    // answers sat inside the declared window, which under wrapping is true for
-    // every input by construction, so the two dithers agreeing would not have
-    // failed it.
+    // It adapts through a `Stochastic` signature, since `Edge` is a `Floor` one
+    // and reads no dither, so through `Edge` the path this arm is named for is
+    // never entered. And it asserts the two answers differ, since only that they
+    // sit inside the declared window is true under wrapping for every input by
+    // construction, and would not fail if the two dithers agreed.
     //
     // The position is one below the top of the index at a residue one part below
     // one, so both neighbours are slots the index holds, the upper one its very
@@ -250,8 +247,8 @@ fn a_dither_at_the_edges_still_selects_between_two_neighbours() {
         "the comparison stays inside the fraction's integer, so the wide carrier is untested"
     );
 
-    // The control on the signature: the same two dithers through `Edge`, which is
-    // the `Floor` signature this arm used to adapt through, give one answer.
+    // The control on the signature: the same two dithers through `Edge`, the
+    // `Floor` signature over the same format, give one answer.
     assert_eq!(
         adapt::<Edge>(e, Dither::at(Fraction::of(1, i64::MAX))),
         adapt::<Edge>(e, Dither::at(Fraction::of(i64::MAX - 1, i64::MAX)))

@@ -8,9 +8,10 @@
 //! Each broken map differs from the shipped one in one place, so a law that
 //! reports it has seen that place, and one that does not says where its reach
 //! ends. They are kept as maps rather than as edits somebody made once and
-//! reverted, so the laws stay checked against them. The broken wraps are asked
-//! only about positions the index holds, so they read the slot below the
-//! position and not the distance past the index.
+//! reverted, so the laws stay checked against them. The broken wraps read the
+//! slot below the position and not the distance past the index, so past the
+//! index they are wrong for that reason as well as their own, and the oracle
+//! sweep reports each of them at a position the index holds too.
 
 use crate::apply::{Rounded, complete_slot};
 use crate::overflow::Policy;
@@ -121,10 +122,9 @@ pub(super) fn no_step_onto_the_lowest() -> Map {
 /// range is. This narrows it to `rounded.past < 0 && lo == i128::MIN`, so a
 /// position carried past the bottom, fed into a range whose own bottom is not
 /// `i128::MIN`, falls through to the `else` arm and answers the range's highest
-/// slot instead of its lowest. A hand test feeding such a position only into
-/// ranges that do start at `i128::MIN` cannot see this: `the_cross_end_saturation.rs`
-/// is what feeds it a range at the far end instead.
-pub(super) fn m1_no_far_lo_guard() -> Map {
+/// slot instead of its lowest. A test feeding such a position only into ranges
+/// that do start at `i128::MIN` cannot see this, on the grid or off it.
+pub(super) fn past_the_bottom_pins_high_off_the_bottom() -> Map {
     fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
         let (lo, hi) = (min.index(), max.index());
         if r.lands_within(lo, hi) {
@@ -150,13 +150,13 @@ pub(super) fn m1_no_far_lo_guard() -> Map {
     }
 }
 
-/// The mirror of `m1_no_far_lo_guard`: the near-top case widened to answer
-/// `min` for a range whose own top is not `i128::MAX`.
+/// The mirror of `past_the_bottom_pins_high_off_the_bottom`: the near-top case
+/// widened to answer `min` for a range whose own top is not `i128::MAX`.
 ///
 /// A position carried past the top of the index, fed into a range whose own
 /// top is not `i128::MAX`, answers the range's lowest slot instead of its
 /// highest.
-pub(super) fn m2_no_far_hi_guard() -> Map {
+pub(super) fn past_the_top_pins_low_off_the_top() -> Map {
     fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
         let (lo, hi) = (min.index(), max.index());
         if r.lands_within(lo, hi) {
@@ -194,9 +194,9 @@ pub(super) fn m2_no_far_hi_guard() -> Map {
 /// not `i128::MIN`, falls through to the `else` arm and answers the range's
 /// highest slot instead of its lowest. An on-grid position never sets
 /// `rounded.up`, so a matrix fed only whole-slot positions cannot see this
-/// either, the same blind spot `m1_no_far_lo_guard` has for a different
-/// reason.
-pub(super) fn no_far_lo_guard_when_stepped_up() -> Map {
+/// one, where `past_the_bottom_pins_high_off_the_bottom` is wrong on the grid
+/// as well.
+pub(super) fn a_step_up_past_the_bottom_pins_high() -> Map {
     fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
         let (lo, hi) = (min.index(), max.index());
         if r.lands_within(lo, hi) {
@@ -211,6 +211,41 @@ pub(super) fn no_far_lo_guard_when_stepped_up() -> Map {
                 if (r.past < 0 && (lo == i128::MIN || !r.up.get()))
                     || (r.past == 0 && r.down() < lo)
                 {
+                    min
+                } else {
+                    max
+                }
+            },
+        }
+    }
+    Map {
+        complete,
+        leaves: shipped_leaves,
+    }
+}
+
+/// The Saturate/Clamp arm with the one step from just under the index onto
+/// `i128::MIN` sent to the range's highest slot.
+///
+/// The rounded position is then `i128::MIN` itself, below any range whose own
+/// lowest slot is above it, so the shipped arm pins it at that lowest slot.
+/// This reads `rounded.past < 0 && !(rounded.past == -1 && rounded.up.get())`
+/// instead, so exactly that step falls through to the `else` arm. It is wrong
+/// only one slot under the index and only when the rounding steps up, which
+/// is the band a feed starting two slots under the index never reaches.
+pub(super) fn the_step_onto_the_bottom_pins_high() -> Map {
+    fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
+        let (lo, hi) = (min.index(), max.index());
+        if r.lands_within(lo, hi) {
+            if r.past != 0 {
+                return min;
+            }
+            return Slot::at(r.down() + r.step());
+        }
+        match policy {
+            Policy::Wrap => complete_slot(policy, r, min, max),
+            Policy::Saturate | Policy::Clamp => {
+                if (r.past < 0 && !(r.past == -1 && r.up.get())) || (r.past == 0 && r.down() < lo) {
                     min
                 } else {
                     max

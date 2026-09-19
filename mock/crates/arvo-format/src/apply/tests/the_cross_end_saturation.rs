@@ -3,245 +3,36 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Cross-end coverage for the Saturate/Clamp arm of `complete_slot`.
+//! Positions past one end of the index adapted into `Integer<3>`, worked by hand.
 //!
-//! Every carried position fed into every range, cross-end. The carry-past-the-
-//! index suite covers a position carried past one end fed into a range at that
-//! SAME end. What it leaves unguarded is the far side: a position carried past
-//! the bottom of the index, fed into a range sitting at the top, and the
-//! mirror. `complete_slot`'s Saturate/Clamp arm reads `rounded.past < 0` alone
-//! to decide the near-bottom case and `rounded.past > 0` by elimination for the
-//! near-top one, with no read of where the fed range itself sits, which is
-//! what makes that arm correct cross-end in the first place: the decision does
-//! not depend on the range's own position. A mutant reintroducing such a
-//! dependency (`the_broken_maps.rs`'s `m1_no_far_lo_guard`, `m2_no_far_hi_guard`)
-//! passes the whole suite without this file, because every existing hand test
-//! that feeds a carried position also happens to feed a range at the same end.
-//!
-//! Every position here is fed both on the grid, a whole number of slots past
-//! the end, and off it, at a quarter, a half and three quarters of a slot past
-//! it, over every rounding mode and every policy this arm covers: an on-grid
-//! position alone leaves `round_slot`'s remainder-zero branch the only one this
-//! file exercises, which is one of six.
-
-use notko::Maybe;
+//! `Integer<3>`'s range, `[-4, 3]`, sits at neither end of the index, so a
+//! position carried past either end is out of range on the side it left by. The
+//! oracle sweep in `the_oracle_sweep.rs` covers these bands as a whole; the
+//! points here are reduced by hand instead, so they are evidence arrived at
+//! another way rather than a second copy of the sweep. Each answer is checked
+//! against the shipped surface, and where a broken map answers differently at the
+//! same point, that answer is pinned beside it.
 
 use super::the_broken_maps::{
-    Map,
-    m1_no_far_lo_guard,
-    m2_no_far_hi_guard,
-    no_far_lo_guard_when_stepped_up,
+    past_the_bottom_pins_high_off_the_bottom,
+    past_the_top_pins_low_off_the_top,
     shipped,
+    the_step_onto_the_bottom_pins_high,
 };
-use super::the_far_end_of_the_index::{BottomOf200, TopOf200};
-use super::the_translation_law::{WideBottom, WideTop, range_of};
 use crate::adapt::{Adapt, Signature};
 use crate::apply::{Dither, Exact, Fraction, adapt, round_slot};
 use crate::overflow::{Policy, Saturate, Wrap};
 use crate::points::Integer;
-use crate::rounding::{ALL_MODES, Ceil, Floor, Mode};
+use crate::rounding::{Ceil, Floor, Mode};
 use crate::slots::Slot;
-use crate::tests::the_inventory::{AtTheBottom, AtTheTop};
 
-/// The first policy, range and depth at which a break was found, or `Isnt`.
-type Break = Maybe<(Policy, Slot, Slot, i64)>;
-
-/// `Integer<3>`'s own range, `[-4, 3]`, at neither end of the index. Named
-/// directly rather than through the translation law's reference ranges, which
-/// are all wider than this one on purpose.
+/// `Integer<3>`'s own range, `[-4, 3]`.
 fn integer_3() -> (Slot, Slot) {
     (Slot::at(-4), Slot::at(3))
 }
 
-/// A position carried `k` whole slots plus `quarters` quarter-slots past the
-/// bottom of the index, on the grid at `quarters = 0`, per `Exact::between`'s
-/// own carry rule. 1, 2 and 3 are off the grid, a quarter, a half and three
-/// quarters further down.
-fn past_the_bottom_off_grid(k: i64, quarters: i64) -> Exact {
-    Exact::between(Slot::at(i128::MIN), Fraction::of(-(4 * k) - quarters, 4))
-}
-
-/// The mirror of `past_the_bottom_off_grid`, past the top of the index.
-fn past_the_top_off_grid(k: i64, quarters: i64) -> Exact {
-    Exact::between(Slot::at(i128::MAX), Fraction::of(4 * k + quarters, 4))
-}
-
-/// Ranges at the top of the index, none starting at `i128::MIN`, plus a range
-/// at neither end.
-fn ranges_at_the_top() -> [(Slot, Slot); 4] {
-    [
-        range_of::<AtTheTop>(),
-        range_of::<WideTop>(),
-        range_of::<TopOf200>(),
-        integer_3(),
-    ]
-}
-
-/// Ranges at the bottom of the index, none ending at `i128::MAX`, plus a range
-/// at neither end.
-fn ranges_at_the_bottom() -> [(Slot, Slot); 4] {
-    [
-        range_of::<AtTheBottom>(),
-        range_of::<WideBottom>(),
-        range_of::<BottomOf200>(),
-        integer_3(),
-    ]
-}
-
-/// The first policy, range and depth at which `map`'s completion disagrees
-/// with pinning at the range's own lowest slot, over positions carried past
-/// the bottom of the index and fed into ranges at the top.
-fn first_break_from_the_bottom(map: Map) -> Break {
-    for policy in [Policy::Saturate, Policy::Clamp] {
-        for (min, max) in ranges_at_the_top() {
-            for k in 1 ..= 5 {
-                for quarters in 0 ..= 3 {
-                    for mode in ALL_MODES {
-                        let rounded =
-                            round_slot(mode, past_the_bottom_off_grid(k, quarters), Dither::UNUSED);
-                        if (map.complete)(policy, rounded, min, max) != min {
-                            return Maybe::Is((policy, min, max, k));
-                        }
-                    }
-                }
-            }
-        }
-    }
-    Maybe::Isnt
-}
-
-/// The mirror: positions carried past the top, fed into ranges at the bottom,
-/// against the range's own highest slot.
-fn first_break_from_the_top(map: Map) -> Break {
-    for policy in [Policy::Saturate, Policy::Clamp] {
-        for (min, max) in ranges_at_the_bottom() {
-            for k in 1 ..= 5 {
-                for quarters in 0 ..= 3 {
-                    for mode in ALL_MODES {
-                        let rounded =
-                            round_slot(mode, past_the_top_off_grid(k, quarters), Dither::UNUSED);
-                        if (map.complete)(policy, rounded, min, max) != max {
-                            return Maybe::Is((policy, min, max, k));
-                        }
-                    }
-                }
-            }
-        }
-    }
-    Maybe::Isnt
-}
-
-#[test]
-fn the_shipped_map_pins_at_the_near_end_regardless_of_where_the_far_range_sits() {
-    // The positive control: the law reporting the shipped map would be
-    // reporting on its own instrument.
-    assert_eq!(first_break_from_the_bottom(shipped()), Maybe::Isnt);
-    assert_eq!(first_break_from_the_top(shipped()), Maybe::Isnt);
-}
-
-#[test]
-fn the_law_reports_the_missing_far_lo_guard() {
-    assert!(
-        first_break_from_the_bottom(m1_no_far_lo_guard()).is(),
-        "the missing far lo guard was not reported"
-    );
-
-    // The positive control on the mutant itself: at `AtTheBottom`, whose own
-    // lowest slot is `i128::MIN`, the extra conjunct never fires, so the
-    // mutant is not simply always wrong.
-    let (min, max) = range_of::<AtTheBottom>();
-    for k in 1 ..= 5 {
-        for quarters in 0 ..= 3 {
-            for mode in ALL_MODES {
-                let rounded =
-                    round_slot(mode, past_the_bottom_off_grid(k, quarters), Dither::UNUSED);
-                assert_eq!(
-                    (shipped().complete)(Policy::Saturate, rounded, min, max),
-                    (m1_no_far_lo_guard().complete)(Policy::Saturate, rounded, min, max),
-                    "k={k}, quarters={quarters}, {mode:?}"
-                );
-            }
-        }
-    }
-
-    // The mirror direction is untouched by this mutation.
-    assert_eq!(first_break_from_the_top(m1_no_far_lo_guard()), Maybe::Isnt);
-}
-
-#[test]
-fn the_law_reports_the_missing_far_hi_guard() {
-    assert!(
-        first_break_from_the_top(m2_no_far_hi_guard()).is(),
-        "the missing far hi guard was not reported"
-    );
-
-    let (min, max) = range_of::<AtTheTop>();
-    for k in 1 ..= 5 {
-        for quarters in 0 ..= 3 {
-            for mode in ALL_MODES {
-                let rounded = round_slot(mode, past_the_top_off_grid(k, quarters), Dither::UNUSED);
-                assert_eq!(
-                    (shipped().complete)(Policy::Saturate, rounded, min, max),
-                    (m2_no_far_hi_guard().complete)(Policy::Saturate, rounded, min, max),
-                    "k={k}, quarters={quarters}, {mode:?}"
-                );
-            }
-        }
-    }
-
-    assert_eq!(
-        first_break_from_the_bottom(m2_no_far_hi_guard()),
-        Maybe::Isnt
-    );
-}
-
-#[test]
-fn the_law_reports_the_missing_far_lo_guard_when_stepped_up() {
-    // A second, independent way to drop the far-lo guard: conditional on
-    // `rounded.up` rather than on the fed range's own bottom. An on-grid
-    // position never sets `rounded.up` (`round_slot` returns `down` unchanged
-    // when the remainder is zero), so this mutant is invisible to a matrix fed
-    // only whole-slot positions; it needs the off-grid quarters this file's
-    // matrix now feeds.
-    assert!(
-        first_break_from_the_bottom(no_far_lo_guard_when_stepped_up()).is(),
-        "the missing far lo guard (stepped-up variant) was not reported"
-    );
-
-    // The positive control: at `AtTheBottom`, whose own lowest slot is
-    // `i128::MIN`, the extra disjunct is always true, so the mutant is not
-    // simply always wrong there.
-    let (min, max) = range_of::<AtTheBottom>();
-    for k in 1 ..= 5 {
-        for quarters in 0 ..= 3 {
-            for mode in ALL_MODES {
-                let rounded =
-                    round_slot(mode, past_the_bottom_off_grid(k, quarters), Dither::UNUSED);
-                assert_eq!(
-                    (shipped().complete)(Policy::Saturate, rounded, min, max),
-                    (no_far_lo_guard_when_stepped_up().complete)(
-                        Policy::Saturate,
-                        rounded,
-                        min,
-                        max
-                    ),
-                    "k={k}, quarters={quarters}, {mode:?}"
-                );
-            }
-        }
-    }
-
-    assert_eq!(
-        first_break_from_the_top(no_far_lo_guard_when_stepped_up()),
-        Maybe::Isnt
-    );
-}
-
 #[test]
 fn wrap_residues_hand_reduced_off_grid_into_integer_3() {
-    // Hand-reduced Wrap answers for off-grid carried positions, over
-    // `Integer<3>`'s own `[-4, 3]`, span 8, at neither end of the index.
-    //
     // `Exact::between(Slot::at(i128::MIN), Fraction::of(-6, 4))` names a
     // position 1.5 slots below `i128::MIN`. Under `Floor` this rounds down to
     // 2 whole slots below (`i128::MIN` stays the pinned slot, `past = -2`,
@@ -265,11 +56,9 @@ fn wrap_residues_hand_reduced_off_grid_into_integer_3() {
 }
 
 #[test]
-fn the_failure_scenario_the_missing_far_guard_produces() {
-    // `adapt::<Signature<Integer<3>, Adapt<Floor, Saturate>>>(Exact::between(
-    // Slot::at(i128::MIN), Fraction::of(-9, 4)), ..)`: two whole slots past the
-    // bottom and a quarter, into `Integer<3>`, `[-4, 3]`. The shipped map
-    // answers `-4`; `m1_no_far_lo_guard` answers `3`.
+fn two_and_a_quarter_past_either_end_saturates_on_that_side() {
+    // Two whole slots past the bottom and a quarter, into `[-4, 3]`: below the
+    // range, so `-4`. `past_the_bottom_pins_high_off_the_bottom` answers `3`.
     type S = Signature<Integer<3>, Adapt<Floor, Saturate>>;
     let exact = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
     assert_eq!(adapt::<S>(exact, Dither::UNUSED), Slot::at(-4));
@@ -281,11 +70,11 @@ fn the_failure_scenario_the_missing_far_guard_produces() {
         Slot::at(-4)
     );
     assert_eq!(
-        (m1_no_far_lo_guard().complete)(Policy::Saturate, rounded, min, max),
+        (past_the_bottom_pins_high_off_the_bottom().complete)(Policy::Saturate, rounded, min, max),
         Slot::at(3)
     );
 
-    // And the mirror past the top.
+    // And the mirror past the top: above the range, so `3`.
     type Mirror = Signature<Integer<3>, Adapt<Ceil, Saturate>>;
     let up = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(adapt::<Mirror>(up, Dither::UNUSED), Slot::at(3));
@@ -295,7 +84,33 @@ fn the_failure_scenario_the_missing_far_guard_produces() {
         Slot::at(3)
     );
     assert_eq!(
-        (m2_no_far_hi_guard().complete)(Policy::Saturate, rounded_up, min, max),
+        (past_the_top_pins_low_off_the_top().complete)(Policy::Saturate, rounded_up, min, max),
         Slot::at(-4)
+    );
+}
+
+#[test]
+fn a_quarter_under_the_index_ceils_onto_its_bottom_and_saturates_low() {
+    // A quarter under `i128::MIN`, rounded up, is `i128::MIN` itself: one step
+    // from one slot under the index. That is below `[-4, 3]`, so saturation
+    // answers `-4`. `the_step_onto_the_bottom_pins_high` answers `3` here and
+    // nowhere a position two or more slots under the index reaches.
+    type S = Signature<Integer<3>, Adapt<Ceil, Saturate>>;
+    let exact = Exact::between(Slot::at(i128::MIN), Fraction::of(-1, 4));
+    assert_eq!(adapt::<S>(exact, Dither::UNUSED), Slot::at(-4));
+
+    let rounded = round_slot(Mode::Ceil, exact, Dither::UNUSED);
+    assert_eq!(
+        (rounded.past, rounded.down(), rounded.step()),
+        (-1, i128::MIN, 1)
+    );
+    let (min, max) = integer_3();
+    assert_eq!(
+        (the_step_onto_the_bottom_pins_high().complete)(Policy::Saturate, rounded, min, max),
+        Slot::at(3)
+    );
+    assert_eq!(
+        (the_step_onto_the_bottom_pins_high().complete)(Policy::Clamp, rounded, min, max),
+        Slot::at(3)
     );
 }

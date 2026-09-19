@@ -5,10 +5,10 @@
 
 //! The adaptation's two vocabularies, and the open inventory reaching the map.
 //!
-//! What stood here before read declarations back: a mode's constant against the
-//! literal its own impl set, a policy's through one accessor, a counter against
-//! the number of times the test itself incremented it. None of that could fail,
-//! so it is gone rather than improved. What is left can.
+//! Nothing here reads a declaration back: a mode's constant against the literal
+//! its own impl set, a policy's through one accessor, or a counter against the
+//! number of times the test itself incremented it could not fail. Everything
+//! here can.
 //!
 //! The two vocabulary facts are stated as an exhaustive `match` with no wildcard,
 //! so a seventh mode or a fourth policy stops this file compiling, and the sweep
@@ -107,9 +107,9 @@ const MAX5: Slot = Slot::at(15);
 #[test]
 fn the_overflow_inventory_admits_a_member_this_crate_does_not_know_about() {
     // What the name claims is that a policy declared outside this crate reaches
-    // the crate's machinery, so every assertion runs it through the map. The
-    // two read-backs of the declared constant that used to close this arm said
-    // only that a constant holds what its own impl set.
+    // the crate's machinery, so every assertion runs it through the map. A
+    // read-back of the declared constant would say only that a constant holds
+    // what its own impl set.
     type Outside = Signature<Integer<5>, Adapt<Floor, DeclaredBound>>;
     type Ring = Signature<Integer<5>, Adapt<Floor, DeclaredRing>>;
     type Shipped = Signature<Integer<5>, Adapt<Floor, Clamp>>;

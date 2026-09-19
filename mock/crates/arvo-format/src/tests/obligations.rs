@@ -283,7 +283,7 @@ fn every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts() {
 //
 // They pass, and that is what they are for. A route the design admits exists is
 // pinned by an arm that passes while it is open and fails the moment it closes,
-// which is what makes a later round's closing visible rather than silent.
+// which is what makes a later change closing it visible rather than silent.
 //
 // The fixture throughout is `NoDenominator`, declared with the other wrong
 // constructions above, rather than a second declaration of it under a local name.

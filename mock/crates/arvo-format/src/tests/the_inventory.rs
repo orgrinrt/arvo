@@ -201,13 +201,12 @@ impl Slots for WiderThanItsSpan {
 #[test]
 fn the_declared_width_is_read_rather_than_recovered() {
     // The coordinate the declaration stated, not a number counted back out of the
-    // slot bounds. This is what removed the class where a 63-bit declaration
-    // derived a placement of zero bits: no count is formed, so nothing can wrap.
+    // slot bounds. No count is formed, so a 63-bit declaration cannot derive a
+    // placement of zero bits by wrapping.
     //
-    // The previous cut of this arm read `<Unsigned<13> as Slots>::WIDTH ==
-    // Width::bits(13)` against a macro whose body is `Width::bits($w)`, which is
-    // the class the comment two tests down condemns: a constant against the
-    // literal its own definition set.
+    // Reading `<Unsigned<13> as Slots>::WIDTH == Width::bits(13)` instead would
+    // check a macro whose body is `Width::bits($w)` against its own literal, the
+    // class the comment two tests down condemns.
     let declared = declared_slot_width::<WiderThanItsSpan>();
     let recovered = Width::bits(slot_count::<WiderThanItsSpan>().count().ilog2());
 
@@ -252,9 +251,9 @@ fn the_declared_width_is_read_rather_than_recovered() {
 #[test]
 fn every_admitted_width_has_a_coherent_range() {
     // The property the bound is about, asserted over the whole admitted set
-    // rather than about the constant that used to name it. A width whose impl
-    // inverted its own range would fail here, and the previous cut of this file
-    // asserted a constant against its own literal instead, which could not.
+    // rather than about a constant naming it. A width whose impl inverted its
+    // own range fails here, which a constant asserted against its own literal
+    // could not.
     macro_rules! coherent {
         ($($w:literal),+ $(,)?) => {
             $(

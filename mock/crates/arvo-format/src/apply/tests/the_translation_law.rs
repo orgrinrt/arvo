@@ -22,14 +22,7 @@
 
 use notko::Maybe;
 
-use super::the_broken_maps::{
-    Map,
-    anchored_at_zero,
-    no_step_onto_the_lowest,
-    reduced_modulo_256,
-    shipped,
-    subtracts_first,
-};
+use super::the_broken_maps::{Map, anchored_at_zero, reduced_modulo_256, shipped};
 use super::the_far_end_of_the_index::{BottomOf200, TopOf200};
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
 use crate::ambient::BinaryRationals;
@@ -404,32 +397,11 @@ fn the_law_holds_of_the_shipped_map_and_reports_each_broken_one() {
     // report.
     assert!(new_law(anchored_at_zero()).is());
 
-    // A wrap reducing the lowest slot modulo 256 is right at a span of 256 and
-    // wrong everywhere else, so the ranges of 256 pass it and the ranges of 200
-    // report it at both ends. This is a negative control on the instrument
-    // itself rather than on the shipped map: it shows the law can tell a span
-    // of 200 from a span of 256, which is exactly why the 200-wide references
-    // exist. The 256-wide arm below is expected to stay silent only because
-    // this suite's coverage is 200 and 256; the day another span joins it, this
-    // control's silence on 256 is the same blind spot restated, and it is
-    // expected to start reporting once that coverage widens.
+    // A wrap reducing the lowest slot modulo 256 is wrong at any span 256 does
+    // not divide by, and the ranges of 200 report it at both ends, which is
+    // why the 200-wide references exist.
     let bad = reduced_modulo_256();
     assert!(new_law(bad).is());
-    let narrow = [
-        (
-            range_of::<Reference>(),
-            range_of::<AtTheTop>(),
-            narrow_top(),
-        ),
-        (
-            range_of::<NegativeReference>(),
-            range_of::<AtTheBottom>(),
-            narrow_bottom(),
-        ),
-    ];
-    for (reference, moved, bands) in narrow {
-        assert_eq!(first_break(bad, reference, moved, &bands), Maybe::Isnt);
-    }
     let of_200 = [
         (
             range_of::<Reference200>(),
@@ -446,35 +418,8 @@ fn the_law_holds_of_the_shipped_map_and_reports_each_broken_one() {
         assert!(first_break(bad, reference, moved, &bands).is());
     }
 
-    // Subtracting first only goes wrong where the difference leaves the index,
-    // which no translation within one end reaches, so this law cannot see it;
-    // `the_far_end_of_the_index.rs` can. Stated here so nobody reads the law as
-    // covering it.
-    assert_eq!(new_law(subtracts_first()), Maybe::Isnt);
-}
-
-#[test]
-fn a_verdict_missing_the_step_onto_the_lowest_slot_is_the_same_at_both_ends() {
-    // A defect that is itself translation-invariant is invisible to the law
-    // above however it is fed, and a verdict with no step onto the lowest slot is
-    // one: it is wrong in the same place relative to every range. So the law
-    // passes it, and what reports it is the position just under a range's
-    // lowest slot stepping onto it, which the shipped verdict calls in range and
-    // the broken one does not. Every range here with a slot under it.
-    let (good, bad) = (shipped(), no_step_onto_the_lowest());
-    assert_eq!(new_law(bad), Maybe::Isnt);
-    for (min, max) in [
-        range_of::<AtTheTop>(),
-        range_of::<WideTop>(),
-        range_of::<Reference>(),
-        range_of::<NegativeReference>(),
-        range_of::<WideReference>(),
-        range_of::<WideNegativeReference>(),
-    ] {
-        let under = Exact::between(Slot::at(min.index() - 1), Fraction::of(1, 4));
-        let stepped = round_slot(Mode::Ceil, under, Dither::UNUSED);
-        assert!(!(good.leaves)(stepped, min, max));
-        assert!((bad.leaves)(stepped, min, max));
-        assert_eq!((good.complete)(Policy::Wrap, stepped, min, max), min);
-    }
+    // A wrap that subtracts first goes wrong only where the difference leaves
+    // the index, and a verdict with no step onto the lowest slot is wrong in the
+    // same place relative to every range, so neither is what a translation law
+    // is for. The oracle sweep in `the_oracle_sweep.rs` reports both.
 }
