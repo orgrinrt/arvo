@@ -41,18 +41,18 @@ pub struct FractionLength<const F: i32>;
 
 impl<const F: i32> Quantum for FractionLength<F> {
     const BASE: Exponent = Exponent::of(-F);
+    const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
     // The constant family. A fixed-point convention has one step rather than a
     // ladder of them, so nothing moves with magnitude and there is one magnitude
     // to move over.
     const SLOPE: Exponent = Exponent::ZERO;
-    const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
 }
 
 /// A signed MATLAB `fi` of `W` bits at fraction length `F`.
 ///
 /// The bound is the slot range's own, so a word length the ladder does not admit
 /// is refused where it is written. MathWorks documents the word length to 65535
-/// and the ladder stops at 62, so this refuses declarations a consumer writes
+/// and the ladder stops at 64, so this refuses declarations a consumer writes
 /// without thinking about them. That is a gap in the primitives and it is pinned
 /// as a compile-fail case rather than worked around here.
 pub struct Fi<const W: u32, const F: i32>;
@@ -64,6 +64,7 @@ where
     type Ambient = BinaryRationals;
     type Quantum = FractionLength<F>;
     type Slots = Signed<W>;
+
     // Binary-point scaling puts the grid through zero. The coordinate is written
     // rather than assumed, because the same convention's slope-and-bias scaling
     // does not, and that is a different declaration rather than a flag on this
@@ -81,6 +82,7 @@ where
     type Ambient = UnsignedBinaryRationals;
     type Quantum = FractionLength<F>;
     type Slots = Unsigned<W>;
+
     const PHASE: Phase = Phase::ZERO;
 }
 

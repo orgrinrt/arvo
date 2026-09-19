@@ -65,8 +65,8 @@ impl Overflow for Clamp {
 /// and a later member would not be here.
 pub const SHIPPED_POLICIES: [Policy; 3] = [Policy::Wrap, Policy::Saturate, Policy::Clamp];
 
-// Two predicates stood here, `is_monotone` and `is_identity_inside_range`, and
-// they were deleted rather than improved. Each was a `matches!` over this
-// enumeration that no code read, so their tests reached a declaration and
-// stopped. Both properties are now asserted against the applied map in `apply`,
-// where being wrong about arithmetic is possible.
+// No predicate over this enumeration says whether a policy is monotone or the
+// identity inside the range. Such a predicate is a `matches!` that no code reads,
+// and a test of it reaches a declaration and stops. Both properties are asserted
+// against the applied map in `apply`, where being wrong about arithmetic is
+// possible.

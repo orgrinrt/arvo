@@ -9,21 +9,20 @@
 //! phase. A slot is an index, not a value: the value it denotes is the phase plus
 //! the slot times the quantum at its magnitude.
 //!
-//! **That sentence is a type here rather than a note.** `Slot` is the index and
+//! That sentence is a type here rather than a note. `Slot` is the index and
 //! `SlotCount` is how many of them a range admits, and the two do not convert into
 //! each other, so the off-by-one the inclusive bounds below worry about cannot be
 //! written by handing a count where an index was wanted.
 //!
-//! **The declared width is carried rather than recovered.** A declaration of
+//! The declared width is carried rather than recovered. A declaration of
 //! thirteen bits knows it is thirteen bits, and reconstructing that from the slot
 //! bounds by counting is a computation over a quantity nothing needs.
 //!
-//! **The bound on how wide a declaration may be is the set of impls below and not
-//! a check inside a function.** A check is a thing a later edit can delete while
-//! every test at admitted widths stays green, which is what happened to the first
-//! version of this file. An absent impl cannot be deleted.
+//! The bound on how wide a declaration may be is the set of impls below and not
+//! a check inside a function. A check is a thing a later edit can delete while
+//! every test at admitted widths stays green. An absent impl cannot be deleted.
 //!
-//! **That bounds this crate's impls and not the trait, which is open.** A numeral
+//! That bounds this crate's impls and not the trait, which is open. A numeral
 //! wanting a slot range that is neither shipped shape has to be able to supply
 //! one, so nothing here is sealed. What an outside implementor owes is stated on
 //! the trait as `ADMITTED`, and it is checked at compile time rather than asked
@@ -36,9 +35,15 @@ use crate::width::{Bool, Width};
 /// An index and never a value. The value a slot denotes is the phase plus the slot
 /// times the quantum at its magnitude, and nothing in this crate hands one out as
 /// a number in the ambient domain.
+///
+/// Carried in a signed 128-bit integer, because an unsigned 64-bit range ends at
+/// `2^64 - 1` and no signed 64-bit integer holds that. The ranges this crate ships
+/// sit far inside it, so the arithmetic over two of their slots stays exact; a
+/// range an outside crate places near either end is where the checked and the
+/// saturating computations elsewhere in the crate take over.
 #[repr(transparent)]
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
-pub struct Slot(i64);
+pub struct Slot(i128);
 
 impl Slot {
     /// The slot at zero, which is where the additive identity sits on an unbiased
@@ -47,7 +52,7 @@ impl Slot {
 
     /// A slot at an index.
     #[must_use]
-    pub const fn at(index: i64) -> Self {
+    pub const fn at(index: i128) -> Self {
         Self(index)
     }
 
@@ -56,7 +61,7 @@ impl Slot {
     /// The unwrap door, declared as one. `repr(transparent)` and this accessor are
     /// the whole observation surface.
     #[must_use]
-    pub const fn index(self) -> i64 {
+    pub const fn index(self) -> i128 {
         self.0
     }
 
@@ -80,12 +85,12 @@ impl Slot {
 /// index is three, and the two numbers are never interchangeable.
 #[repr(transparent)]
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
-pub struct SlotCount(i64);
+pub struct SlotCount(i128);
 
 impl SlotCount {
     /// A count of slots.
     #[must_use]
-    pub const fn of(count: i64) -> Self {
+    pub const fn of(count: i128) -> Self {
         Self(count)
     }
 
@@ -93,7 +98,7 @@ impl SlotCount {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
-    pub const fn count(self) -> i64 {
+    pub const fn count(self) -> i128 {
         self.0
     }
 }
@@ -103,23 +108,20 @@ impl SlotCount {
 /// Inclusive at both ends, because the alternative is an off-by-one nobody can
 /// see in a const.
 ///
-/// **This crate implements it at widths 1 through 62 and at no other width.**
-/// Slot indices are signed 64-bit and the count of slots is `radix^width`, which
-/// is what runs out first: at 62 bits it is 4611686018427387904 and fits, at 63
-/// it is 9223372036854775808 and does not.
+/// This crate implements it at widths 1 through 64 and at no other width. 64 is
+/// the widest pointer width a target has and the widest carrier the placement
+/// ladder offers; the slot index's own integer would count further and is not
+/// what stops it.
 ///
-/// **The trait is open and an outside crate may implement it.** An earlier
-/// version of this sentence said the impls existed at those widths and nowhere
-/// else, which was false and which nothing enforced. What an implementor owes is
-/// `ADMITTED`, below, and that is checked rather than requested.
+/// The trait is open and an outside crate may implement it. What an implementor
+/// owes is `ADMITTED`, below, and that is checked rather than requested.
 #[diagnostic::on_unimplemented(
     message = "`{Self}` is not an admitted slot range",
     label = "no slot range exists for this width",
-    note = "this crate implements the trait at widths 1 to 62. The count of slots is 2^width, and \
-            2^63 does not fit the signed 64-bit integer a slot index is carried in, so a wider \
-            declaration would invert its own range rather than describe one. The trait is open, so \
-            another crate may implement it at a range of its own; what such an implementor owes is \
-            the `ADMITTED` obligation."
+    note = "this crate implements the trait at widths 1 to 64, the widest pointer width a target \
+            has and the widest carrier the placement ladder offers. The trait is open, so another \
+            crate may implement it at a range of its own; what such an implementor owes is the \
+            `ADMITTED` obligation."
 )]
 pub trait Slots {
     /// The lowest admitted slot index.
@@ -149,14 +151,13 @@ pub trait Slots {
     /// `ruling::never_a_runtime_check_and_one_lowered_path` is satisfied rather
     /// than bent.
     ///
-    /// **It fires at codegen, not at `cargo check`.** A const is evaluated when
-    /// the instantiation is codegened and `check` skips that, so `cargo build`
-    /// refuses and `cargo check` does not. The guarantee is that an inadmissible
-    /// range cannot reach a produced binary; it can reach a passing check. Said
-    /// exactly because an unqualified "refused at compile time" would be the same
-    /// shape as the totality claims this replaced.
+    /// It fires at codegen, not at `cargo check`, where a runtime call forces it.
+    /// A const is evaluated when the instantiation is codegened and `check` skips
+    /// that, so `cargo build` refuses and `cargo check` does not. The guarantee is
+    /// that an inadmissible range cannot reach a produced binary; it can reach a
+    /// passing check.
     ///
-    /// **Where the obligation is forced decides which tool can see the refusal.**
+    /// Where the obligation is forced decides which tool can see the refusal.
     /// A const is evaluated where it is used, so a runtime call reaches it only at
     /// codegen and a `const` item reaches it at check time. A doctest builds a
     /// binary and catches both; a `trybuild` case runs `cargo check` and catches
@@ -185,14 +186,14 @@ pub trait Slots {
     /// with the lower index below the higher one builds.
     ///
     /// ```
-    /// use arvo_format::slots::{slot_in_range, Slot, Slots};
+    /// use arvo_format::slots::{Slot, Slots, slot_in_range};
     /// use arvo_format::width::Width;
     ///
     /// struct Ordered;
     ///
     /// impl Slots for Ordered {
-    ///     const MIN: Slot = Slot::at(-8);
     ///     const MAX: Slot = Slot::at(7);
+    ///     const MIN: Slot = Slot::at(-8);
     ///     const WIDTH: Width = Width::bits(8);
     /// }
     ///
@@ -217,25 +218,33 @@ pub trait Slots {
             "a declared width of zero bits admits no values and is not a slot range"
         );
         assert!(
-            Self::WIDTH.count() <= 62,
-            "declared width is wider than a slot index carries; the count of slots is 2^width and \
-             2^63 does not fit a signed 64-bit integer"
+            Self::WIDTH.count() <= 64,
+            "declared width is wider than 64 bits, the widest pointer width a target has and the \
+             widest carrier the placement ladder offers"
         );
-        // In `i128`, so the obligation cannot overflow while checking that the
-        // thing it is about does not. An earlier version of this checked only
-        // `MIN <= MAX` and the width's range, and admitted a span of 2^63, which
-        // made `slot_count` panic under `overflow-checks` and wrap without it.
+        // The span is computed checked, because an outside range may place its
+        // ends anywhere the index reaches and the difference of two such ends
+        // can leave it. A span the index cannot state is wider than any admitted
+        // width addresses, so the overflow is this refusal and not another one.
+        // No separate condition bounds the count: a width of at most 64 that
+        // addresses the span caps it at `2^64`, which a count holds with room.
         assert!(
-            (Self::MAX.index() as i128) - (Self::MIN.index() as i128) < i64::MAX as i128,
-            "slot range spans more indices than a count can carry, so counting it would overflow"
-        );
-        assert!(
-            (Self::MAX.index() as i128) - (Self::MIN.index() as i128)
-                < (1i128 << Self::WIDTH.count()),
+            width_addresses_span(Self::MIN, Self::MAX, Self::WIDTH),
             "the declared width does not cover the range: the range holds more indices than the \
              width can address"
         );
     };
+}
+
+/// Whether a width addresses every slot between two ends, inclusive.
+///
+/// Asked only of a width already known to be at most 64, so the shift below is
+/// defined; both callers establish that first.
+const fn width_addresses_span(min: Slot, max: Slot, width: Width) -> bool {
+    match max.0.checked_sub(min.0) {
+        Some(span) => span < (1i128 << width.count()),
+        None => false,
+    }
 }
 
 /// Whether a slot range meets what the contract asks of it.
@@ -249,9 +258,8 @@ pub const fn is_admissible<S: Slots>() -> Bool {
     Bool::of(
         S::MIN.index() <= S::MAX.index()
             && S::WIDTH.count() >= 1
-            && S::WIDTH.count() <= 62
-            && (S::MAX.index() as i128) - (S::MIN.index() as i128) < i64::MAX as i128
-            && (S::MAX.index() as i128) - (S::MIN.index() as i128) < (1i128 << S::WIDTH.count()),
+            && S::WIDTH.count() <= 64
+            && width_addresses_span(S::MIN, S::MAX, S::WIDTH),
     )
 }
 
@@ -267,23 +275,24 @@ pub struct Unsigned<const BITS: u32>;
 /// The list is the bound. A width past it does not get an impl, so a use of it is
 /// a trait-bound error rather than a value nobody checked.
 ///
-/// **Adding a width past the bound fails here rather than at some use site**: the
-/// body computes `1i64 << BITS` for the unsigned bound, which overflows at the
-/// definition site at 63 and refuses to compile where somebody added it. Wrapping
-/// that in `Slot::at` does not move the arithmetic, so the property survives the
-/// coordinate having a type.
+/// Adding a width past the bound fails here rather than at some use site: the
+/// ends are shifts of the 64-bit host integers, the signed ones from `i64::MIN`
+/// and `i64::MAX` and the unsigned top from `u64::MAX`, each shifted right by
+/// `64 - width`. At 65 that shift is by a negative amount and refuses to compile
+/// where somebody added it. Written as shifts of the 128-bit index instead, the
+/// same body would build to 126 and the bound would move into a sentence.
 macro_rules! admit_widths {
     ($($w:literal),+ $(,)?) => {
         $(
             impl Slots for Signed<$w> {
-                const MIN: Slot = Slot::at(-(1i64 << ($w - 1)));
-                const MAX: Slot = Slot::at((1i64 << ($w - 1)) - 1);
+                const MIN: Slot = Slot::at((i64::MIN >> (64 - $w)) as i128);
+                const MAX: Slot = Slot::at((i64::MAX >> (64 - $w)) as i128);
                 const WIDTH: Width = Width::bits($w);
             }
 
             impl Slots for Unsigned<$w> {
                 const MIN: Slot = Slot::ZERO;
-                const MAX: Slot = Slot::at((1i64 << $w) - 1);
+                const MAX: Slot = Slot::at((u64::MAX >> (64 - $w)) as i128);
                 const WIDTH: Width = Width::bits($w);
             }
         )+
@@ -297,7 +306,7 @@ macro_rules! admit_widths {
 admit_widths!(
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
     27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
 );
 
 /// Whether a slot index is admitted.
@@ -309,9 +318,10 @@ pub const fn slot_in_range<S: Slots>(slot: Slot) -> Bool {
 
 /// How many slots the range admits.
 ///
-/// Bounded by the impl set: the widest admitted declaration gives `2^62`, which
-/// fits. Nothing derives a width from this, and it is kept because a cardinality
-/// is a real thing to ask a range for.
+/// Bounded by the obligation: an admitted width addresses the span, so the count
+/// is at most `2^64`, which the count's integer holds. Nothing derives a width
+/// from this, and it is kept because a cardinality is a real thing to ask a range
+/// for.
 #[must_use]
 pub const fn slot_count<S: Slots>() -> SlotCount {
     let () = S::ADMITTED;

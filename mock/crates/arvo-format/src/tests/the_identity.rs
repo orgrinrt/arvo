@@ -48,6 +48,7 @@ use crate::width::Bool;
 
 mod the_cancelling_slot;
 mod the_magnitude_range;
+mod the_phase_extremes;
 
 // --- the instruments ---------------------------------------------------------
 
@@ -90,7 +91,7 @@ fn the_one_magnitude_predicate<F: Format>() -> Bool {
     }
 }
 
-/// The cancelling slot with the negation taken in the index's own width.
+/// The cancelling slot with the negation taken in the phase's own width.
 ///
 /// What the predicate would compute without the wide intermediate. `i64::MIN`
 /// over one is a writable phase whose cancelling slot is two to the sixty-third,
@@ -100,7 +101,7 @@ const fn the_narrow_cancelling_slot(phase: Phase) -> Slot {
         phase
             .numerator()
             .wrapping_div(phase.denominator())
-            .wrapping_neg(),
+            .wrapping_neg() as i128,
     )
 }
 
@@ -120,7 +121,7 @@ const _CANCELLING_SLOT: Maybe<Slot> = cancelling_slot::<Biased<7, -2, 2>>(Magnit
 const _FOUND_BY_SEARCHING_HIGHER_UP: Bool =
     has_additive_identity::<Grid<BinaryRationals, Shrinking<2>, Signed<8>, 1, 2>>();
 const _SEARCHED_AND_NOT_FOUND: Bool =
-    has_additive_identity::<Grid<BinaryRationals, Shrinking<40>, Signed<62>, 1, 3>>();
+    has_additive_identity::<Grid<BinaryRationals, Shrinking<40>, Signed<64>, 1, 3>>();
 
 #[test]
 fn the_identity_is_decidable_at_const_time_including_the_search() {
@@ -213,135 +214,6 @@ fn the_control_the_matrix_above_contains_both_verdicts() {
     assert!(!has_additive_identity::<Biased<7, -2, 1>>().get());
     assert!(zero_is_a_member::<Integer<8>>());
     assert!(!zero_is_a_member::<Biased<7, -2, 1>>());
-}
-
-// --- the extremes of the phase coordinates -----------------------------------
-//
-// The phase numerator and denominator are signed 64-bit and nothing bounds them,
-// so the ends of that range are reachable through the open trait. They are not
-// reachable through the shipped points: three of the four fix the phase at zero
-// over one, and `Biased` fixes the denominator at two.
-//
-// **Solved in the width the coordinates are declared in, the cancellation has two
-// pairs it cannot answer.** The least numerator over minus one overflows the
-// remainder, and that numerator over one produces a quotient whose negation
-// overflows. Both diverge rather than answering, and diverging on the value path
-// is what `ruling::never_a_runtime_check_and_one_lowered_path` forbids. Neither is
-// reachable by a guard placed before the arithmetic, because both are the
-// arithmetic.
-//
-// Carrying the division one width up is what makes them defined, because the only
-// overflowing pair in a signed division is the least value over minus one and the
-// declared width's least value is nowhere near the wider one's. The range check
-// afterwards is what turns a quotient no slot index can hold into `Isnt` rather
-// than into a wrap.
-
-#[test]
-fn a_phase_keeps_the_value_it_was_declared_with() {
-    // The coordinate holds the pair rather than a normalisation of it, and these
-    // are the two pairs no normalisation inside the declared width can keep. A
-    // constructor moving the sign to the numerator has to negate the denominator,
-    // which the least value has no room for, so it read both as a denominator of
-    // one and changed the value it was handed.
-    let tiny_negative = Phase::of(3, i64::MIN);
-    assert_eq!(tiny_negative.numerator(), 3);
-    assert_eq!(tiny_negative.denominator(), i64::MIN);
-
-    let large_positive = Phase::of(i64::MIN, -7);
-    assert_eq!(large_positive.numerator(), i64::MIN);
-    assert_eq!(large_positive.denominator(), -7);
-
-    // Neither is a whole number of quanta, which is the question actually asked
-    // of the pair, and the remainder that answers it is taken one width up
-    // because the second pair overflows it in the declared one.
-    assert!(!tiny_negative.is_whole_multiple().get());
-    assert!(!large_positive.is_whole_multiple().get());
-
-    // The control that says the reading is the divisibility rather than the sign:
-    // the same magnitudes with a denominator that divides answer yes.
-    assert!(Phase::of(i64::MIN, -1).is_whole_multiple().get());
-    assert!(Phase::of(i64::MIN, i64::MIN).is_whole_multiple().get());
-}
-
-#[test]
-fn the_extreme_phase_coordinates_are_answered_rather_than_overflowing() {
-    // The least numerator over minus one. The phase is 2^63 quanta and the
-    // cancelling slot is -2^63, which is representable as a slot index. No
-    // admitted slot range reaches it, since the widest is 62 bits, so there is no
-    // identity and the answer is a decided one.
-    type MinOverMinusOne = Grid<BinaryRationals, Constant<0>, Signed<8>, { i64::MIN }, -1>;
-    assert_eq!(
-        cancelling_slot::<MinOverMinusOne>(Magnitude::SMALLEST),
-        Maybe::Is(Slot::at(i64::MIN))
-    );
-    assert!(!has_additive_identity::<MinOverMinusOne>().get());
-
-    // The least numerator over one. The cancelling slot would be +2^63, which is
-    // one past what a slot index carries, so it is `Isnt` rather than a wrapped
-    // value landing inside somebody's range.
-    type MinOverOne = Grid<BinaryRationals, Constant<0>, Signed<8>, { i64::MIN }, 1>;
-    assert_eq!(
-        cancelling_slot::<MinOverOne>(Magnitude::SMALLEST),
-        Maybe::Isnt
-    );
-    assert!(!has_additive_identity::<MinOverOne>().get());
-
-    // The greatest numerator over minus one, which is the same shape without the
-    // asymmetry that makes the pair above overflow.
-    type MaxOverMinusOne = Grid<BinaryRationals, Constant<0>, Signed<8>, { i64::MAX }, -1>;
-    assert_eq!(
-        cancelling_slot::<MaxOverMinusOne>(Magnitude::SMALLEST),
-        Maybe::Is(Slot::at(i64::MAX))
-    );
-    assert!(!has_additive_identity::<MaxOverMinusOne>().get());
-
-    // And the control, which is what keeps the three above from being a function
-    // that answers `Isnt` or an unreachable slot for anything extreme: the two
-    // ends divide to a phase of one, whose cancelling slot is -1 and is in range,
-    // so this one does have an identity.
-    //
-    // **This is the arm a normalising constructor got wrong**, and it got it
-    // wrong in the direction that reads as correct: it turned the pair into a
-    // phase of -2^63 and the identity went away with no diagnostic.
-    type MinOverMin = Grid<BinaryRationals, Constant<0>, Signed<8>, { i64::MIN }, { i64::MIN }>;
-    assert_eq!(
-        cancelling_slot::<MinOverMin>(Magnitude::SMALLEST),
-        Maybe::Is(Slot::at(-1))
-    );
-    assert!(
-        has_additive_identity::<MinOverMin>().get(),
-        "the extreme pair that divides to a phase of one lost its identity"
-    );
-}
-
-#[test]
-fn an_extreme_phase_still_answers_at_every_magnitude() {
-    // The extremes against a moving quantum, because the arms above are all at a
-    // constant one and the scaling that could overflow is the one the magnitude
-    // drives. A growing quantum divides the phase down toward a slot a range can
-    // hold, and from 2^63 that takes 63 magnitudes.
-    type Growing = Grid<BinaryRationals, Indexed<0, 64>, Signed<8>, { i64::MIN }, -1>;
-    assert_eq!(
-        cancelling_slot::<Growing>(Magnitude::SMALLEST),
-        Maybe::Is(Slot::at(i64::MIN))
-    );
-    assert_eq!(
-        cancelling_slot::<Growing>(Magnitude::at(62)),
-        Maybe::Is(Slot::at(-2))
-    );
-    assert_eq!(
-        cancelling_slot::<Growing>(Magnitude::at(63)),
-        Maybe::Is(Slot::at(-1))
-    );
-    assert!(
-        has_additive_identity::<Growing>().get(),
-        "a phase of 2^63 quanta was never divided down into an admitted slot"
-    );
-
-    // The control: the same phase with only one magnitude has nowhere to divide
-    // down to, so the identity is off the grid.
-    type OneMagnitude = Grid<BinaryRationals, Indexed<0, 1>, Signed<8>, { i64::MIN }, -1>;
-    assert!(!has_additive_identity::<OneMagnitude>().get());
 }
 
 // --- the phase through the one shipped point that carries one ----------------

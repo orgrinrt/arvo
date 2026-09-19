@@ -20,7 +20,16 @@
 //! some cells that turn out associative anyway, and that count is pinned so a
 //! change to it is seen rather than absorbed.
 
-use super::{DITHERS, Table, Window, boundary_members, pair_for_sum, phases, signatures};
+use super::{
+    DITHERS,
+    NearTheTop,
+    Table,
+    Window,
+    boundary_members,
+    pair_for_sum,
+    phases,
+    signatures,
+};
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
 use crate::addition::{add, addition_is_associative};
 use crate::ambient::{BinaryRationals, DecimalRationals};
@@ -348,10 +357,12 @@ impl PerSignature for WholePhaseWitness {
             let bc = add::<S>(b, c, Dither::UNUSED);
             add::<S>(ab, c, Dither::UNUSED) != add::<S>(a, bc, Dither::UNUSED)
         };
-        let top = pair_for_sum(min.index(), max.index(), max.index() as i128 + 1)
-            .is_some_and(|(a, b)| diverges(a, b, min));
-        let bottom = pair_for_sum(min.index(), max.index(), min.index() as i128 - 1)
-            .is_some_and(|(a, b)| diverges(a, b, max));
+        let top = max.index().checked_add(1).is_some_and(|sum| {
+            pair_for_sum(min.index(), max.index(), sum).is_some_and(|(a, b)| diverges(a, b, min))
+        });
+        let bottom = min.index().checked_sub(1).is_some_and(|sum| {
+            pair_for_sum(min.index(), max.index(), sum).is_some_and(|(a, b)| diverges(a, b, max))
+        });
         assert!(
             top || bottom,
             "refused cell [{min:?}, {max:?}] named no divergent witness"
@@ -380,19 +391,18 @@ impl PerFormat for WidthWalk {
 fn the_verdict_holds_a_witness_or_a_sample_over_every_admitted_width() {
     let mut walk = WidthWalk::default();
     dispatch::every_width(&mut walk);
-    assert_eq!(walk.formats, 62 * 2);
+    assert_eq!(walk.formats, 64 * 2);
 }
 
 /// The licensed half of the verdict's claim, at the widest ranges under a
 /// fractional phase.
 ///
-/// The same four formats `the_operation.rs`'s
-/// `addition_is_total_at_the_widest_ranges_under_a_fractional_phase` already
-/// carries, since the obligation's own narrowing in `saturated` only has
-/// anything to saturate near the widest admitted range, and the suite never
-/// exercised the verdict there at all. A refused cell is tallied rather than
-/// witnessed: the witness the design names is stated for a whole phase, and
-/// none of these four is one.
+/// The same formats `the_operation.rs`'s
+/// `addition_is_total_at_the_widest_ranges_under_a_fractional_phase` carries:
+/// the widest shipped ranges, and an outside range at the index's top, where the
+/// positions the verdict reasons about sit at the edge of what the index holds.
+/// A refused cell is tallied rather than witnessed: the witness the design names
+/// is stated for a whole phase, and none of these is one.
 struct WidestFractional;
 
 impl PerSignature for WidestFractional {
@@ -411,10 +421,11 @@ impl PerSignature for WidestFractional {
 
 #[test]
 fn the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phase() {
-    type F1 = Grid<BinaryRationals, Constant<0>, Signed<62>, 1, 3>;
-    type F2 = Grid<BinaryRationals, Constant<0>, Signed<62>, -1, 2>;
-    type F3 = Grid<BinaryRationals, Constant<0>, Unsigned<62>, -1, 3>;
-    type F4 = Grid<BinaryRationals, Constant<0>, Unsigned<62>, 1, 2>;
+    type F1 = Grid<BinaryRationals, Constant<0>, Signed<64>, 1, 3>;
+    type F2 = Grid<BinaryRationals, Constant<0>, Signed<64>, -1, 2>;
+    type F3 = Grid<BinaryRationals, Constant<0>, Unsigned<64>, -1, 3>;
+    type F4 = Grid<BinaryRationals, Constant<0>, Unsigned<64>, 1, 2>;
+    type F5 = Grid<BinaryRationals, Constant<0>, NearTheTop, 1, 2>;
     let mut licensed = 0u32;
     let mut cells = 0u32;
     for mode in ALL_MODES {
@@ -424,6 +435,7 @@ fn the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phas
                 dispatch::at::<F2, WidestFractional>(mode, policy, &WidestFractional),
                 dispatch::at::<F3, WidestFractional>(mode, policy, &WidestFractional),
                 dispatch::at::<F4, WidestFractional>(mode, policy, &WidestFractional),
+                dispatch::at::<F5, WidestFractional>(mode, policy, &WidestFractional),
             ] {
                 cells += 1;
                 if is_licensed {
@@ -432,7 +444,7 @@ fn the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phas
             }
         }
     }
-    assert_eq!(cells, 4 * signatures() as u32);
+    assert_eq!(cells, 5 * signatures() as u32);
     assert!(
         licensed > 0,
         "the licensed half of this claim went unchecked"
@@ -472,7 +484,7 @@ fn quantifying_over_the_ambient_domain_refuses_a_format_that_is_associative() {
     // range from above, so the law is refused over a format where it holds.
     let positions = Reach::of(Slot::at(0), Slot::at(30));
     let over_the_ambient = positions
-        .translated_by(Slot::at(i64::MIN), Slot::at(i64::MAX))
+        .translated_by(Slot::at(i128::MIN), Slot::at(i128::MAX))
         .on_grid();
     assert!(!completion_is_translation_homomorphic::<S>(over_the_ambient).get());
     let over_stored = positions.translated_by(Slot::at(0), Slot::at(15)).on_grid();

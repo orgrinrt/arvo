@@ -40,11 +40,10 @@ use crate::width::Bool;
 pub struct Exponent(i32);
 
 impl Exponent {
-    /// The zeroth power, which is the integers' step and a flat law's rate.
-    pub const ZERO: Self = Self(0);
-
     /// One power, which is the rate the magnitude-indexed family runs at.
     pub const ONE: Self = Self(1);
+    /// The zeroth power, which is the integers' step and a flat law's rate.
+    pub const ZERO: Self = Self(0);
 
     /// An exponent from a power.
     #[must_use]
@@ -79,11 +78,7 @@ impl Exponent {
     /// The smaller of two exponents.
     #[must_use]
     pub const fn min(self, other: Self) -> Self {
-        if self.0 < other.0 {
-            self
-        } else {
-            other
-        }
+        if self.0 < other.0 { self } else { other }
     }
 }
 
@@ -160,11 +155,7 @@ impl MagnitudeCount {
     /// nothing and `is_within` says so, which is where that case is answered.
     #[must_use]
     pub const fn largest(self) -> Magnitude {
-        if self.0 == 0 {
-            Magnitude::SMALLEST
-        } else {
-            Magnitude(self.0 - 1)
-        }
+        if self.0 == 0 { Magnitude::SMALLEST } else { Magnitude(self.0 - 1) }
     }
 }
 
@@ -185,14 +176,10 @@ const fn ranges_over_a_magnitude(magnitudes: MagnitudeCount) -> bool {
 /// over: a rate and a count that between them run the exponent past what it holds
 /// describe no quantum at the magnitudes they claim.
 ///
-/// **Computed one domain wider than it has to be, on purpose.** At the current
-/// widths a signed 64-bit integer would hold every product a caller can declare,
-/// with `2^31` to spare at the worst corner, which
-/// `the_reach_check_is_wider_than_the_widths_currently_need` pins. That margin is
-/// an argument over the exact widths of three coordinate types rather than a
-/// property of the check, so widening any one of them would break the narrower
-/// form silently while every test still passed. The slot range's own count
-/// condition is written the same way for the same reason.
+/// Computed in a signed 128-bit integer, wider than the three coordinates need
+/// today, on purpose. Whether a narrower integer would do is an argument over
+/// the exact widths of three coordinate types rather than a property of the
+/// check, so the check does not rest on it.
 const fn reach_is_representable(
     base: Exponent,
     slope: Exponent,
@@ -294,15 +281,19 @@ pub trait Quantum {
     ///
     /// ```
     /// use arvo_format::quantum::{
-    ///     magnitude_in_range, Exponent, Magnitude, MagnitudeCount, Quantum,
+    ///     Exponent,
+    ///     Magnitude,
+    ///     MagnitudeCount,
+    ///     Quantum,
+    ///     magnitude_in_range,
     /// };
     ///
     /// struct OneMagnitude;
     ///
     /// impl Quantum for OneMagnitude {
     ///     const BASE: Exponent = Exponent::ZERO;
-    ///     const SLOPE: Exponent = Exponent::ZERO;
     ///     const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
+    ///     const SLOPE: Exponent = Exponent::ZERO;
     /// }
     ///
     /// fn main() {
@@ -349,8 +340,8 @@ pub struct Constant<const EXP: i32>;
 
 impl<const EXP: i32> Quantum for Constant<EXP> {
     const BASE: Exponent = Exponent::of(EXP);
-    const SLOPE: Exponent = Exponent::ZERO;
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
+    const SLOPE: Exponent = Exponent::ZERO;
 }
 
 /// A step that grows by one exponent per magnitude, which is the floating shape.
@@ -361,8 +352,8 @@ pub struct Indexed<const MIN_EXP: i32, const COUNT: u32>;
 
 impl<const MIN_EXP: i32, const COUNT: u32> Quantum for Indexed<MIN_EXP, COUNT> {
     const BASE: Exponent = Exponent::of(MIN_EXP);
-    const SLOPE: Exponent = Exponent::ONE;
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(COUNT);
+    const SLOPE: Exponent = Exponent::ONE;
 }
 
 /// The exponent of the quantum at a magnitude.

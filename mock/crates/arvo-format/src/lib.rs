@@ -115,7 +115,8 @@ pub use symmetry::{
 };
 pub use width::{Bool, Width};
 
-/// The four points of the parameterisation the canon names, as formats.
+/// The four points of the parameterisation the canon names, as formats, and the
+/// two platform-width points at the target's pointer width.
 ///
 /// Shipped as worked instances of the open inventory rather than as the inventory
 /// itself. A new numeral joins by implementing `Format`, and none of these is
@@ -206,6 +207,27 @@ pub mod points {
 
         const PHASE: Phase = Phase::ZERO;
     }
+
+    /// The unsigned platform-width point: unsigned integers as wide as the
+    /// compilation target's pointer.
+    ///
+    /// An alias rather than a type of its own, because within one compilation it
+    /// is indistinguishable through the `Format` contract from the literal point
+    /// at the same width, and a new type would carry a distinction the concept
+    /// does not have. `usize::BITS` is the pointer width by definition and is
+    /// read rather than chosen per target, so no `cfg` selects it; at 16, 32 and
+    /// 64 bits it names a point the slot ladder admits.
+    ///
+    /// It meets the range an error code at an API position asks for at 32 and 64
+    /// bits and not at 16: a 32-bit unsigned error word is a member only where
+    /// the pointer is at least that wide. It is the format and not a value; no
+    /// crate here holds a value of any format.
+    pub type USize = UFixed<{ ::core::primitive::usize::BITS }, 0>;
+
+    /// The signed platform-width point, the two's complement twin of `USize`.
+    ///
+    /// The same alias at the same width, over the signed slot family.
+    pub type ISize = Integer<{ ::core::primitive::usize::BITS }>;
 }
 
 #[cfg(test)]

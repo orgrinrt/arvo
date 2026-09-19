@@ -1,0 +1,50 @@
+19705198 chore: lock the src changelist for the third review repairs
+87b46b09 docs: say the pinned carry is reported through the verdict at both ends
+4334bdf4 fix: keep the distance past the index and read each width alias exactly
+2158e504 chore: open the src changelist for the third review repairs
+99fddc79 chore: lock the doc changelist for the third review repairs
+e4588ae9 docs: carry the distance past the index, drop names that are not there
+759e75c1 docs: write the doc changelist for the third review repairs
+7f68251d docs: open a round on the width guard, the carry and absent names
+26bc2743 docs: regenerate the documents from the surfaces and the suite round
+534ab5e1 chore: close design round 202609191043
+a6f1893d chore: lock src changelist for the surfaces and the suite round
+0b46db6d test: pin the carry, move the translation law off zero, drop the arms
+7f6086a0 chore: open the src changelist for the second review repairs
+ecdabd26 chore: lock the doc changelist for the second review repairs
+606c1b96 docs: say what a capacity, a format point and `Bool` are, and where the carry pins
+48db4601 docs: open a round on capacity, format-point and carry claims
+14242859 docs: regenerate the published documents for the rounding-step repairs
+731bc8e8 chore: close the rounding-step repair round
+bfbab215 chore: lock the src changelist for the rounding-step repairs
+dc01adc3 refactor: split the over-long suites and add the zero-width control
+19ed65ac chore: lock the reopened doc changelist
+a68e4eac chore: reopen the doc changelist, the cross-target check is no test
+7d737148 fix: carry the rounding step as a flag so the top of the index wraps
+0d0bd2b9 chore: lock the doc changelist for the rounding-step repairs
+69f83692 docs: describe the rounding step as a pair and the points as formats
+846fdcd6 docs: open a round on the rounding step at the top of the index
+6782c3aa docs: regenerate the published documents for the platform-width round
+38eb824a chore: close the platform-width round
+09b13190 chore: lock the src changelist for the platform-width round
+26bce672 feat: add `USize` and `ISize` on a 128-bit slot index
+fc76848b chore: lock the doc changelist for the platform-width round
+ca0fc245 docs: design the platform-width points on a 128-bit slot index
+34d616c9 docs: open the platform-width round with its topic and the slot sketch
+34558620 docs: consolidate the composition contracts across two reads
+65c1634d research: a second read on which operation half_up denotes
+e17c5d3a research: reconcile half_up finding against seat 229
+a6f4a6d9 research: half_up denotes two standards-documented operations
+6ae6cade canon: promote four composition rows on two reads each
+1545b60e feat: add admitted addition on a declared signature
+de3461dc research: a second read on the ten composition proposals
+ed5e0755 266: reconcile against the prior composition-cluster seat
+7d8590c0 266: derive composition contracts cluster blind
+4c6548d6 canon: settle what a platform-width type is
+99f31992 research: a second read on what a platform-width type is
+9d1ab004 265: rewrap two lines of the reconciliation
+d3584bc4 265: reconcile with seat 260 on what a platform-width type is
+32e0b6dd 265: what a platform-width type is, derived cold and built for three pointer widths
+22efc5d0 canon: answer the admitted-obligations row by reshaping it
+6c130503 feat: ship `arvo-bits`, an exact-width bit container
+c45809b1 chore: take the ask tool from muisti under lint-crates

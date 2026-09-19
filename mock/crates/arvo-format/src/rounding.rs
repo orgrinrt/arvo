@@ -95,7 +95,7 @@ pub const ALL_MODES: [Mode; 6] = [
     Mode::Stochastic,
 ];
 
-// Two predicates stood here, `is_deterministic` and `is_directed`, deleted for
-// the same reason as their siblings in `overflow`. Determinism is now measured by
+// No predicate over this enumeration says whether a mode is deterministic or
+// directed, for the same reason as in `overflow`. Determinism is measured by
 // varying the dither the applied map reads, and direction by looking at the slots
 // it returns.

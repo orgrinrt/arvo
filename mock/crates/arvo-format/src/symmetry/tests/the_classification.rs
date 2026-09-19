@@ -36,13 +36,13 @@ use crate::symmetry::{Reads, When, behaviour_of};
 /// reason the ratio coordinate's suite gives: a const here is a coordinate
 /// spelled in the host's own type and the contract lint refuses it in the one
 /// crate otherwise allowed to name one.
-fn band() -> i64 {
+fn band() -> i128 {
     64
 }
 
 /// The rounding region's answer at one position, with the completion measured not
 /// to have fired.
-fn rounded(mode: Mode, slot: i64, num: i64, den: i64, d: Dither) -> i64 {
+fn rounded(mode: Mode, slot: i128, num: i64, den: i64, d: Dither) -> i128 {
     let wrapped = adapt_at(Which::Wide, mode, Policy::Wrap, position(slot, num, den), d);
     let saturated = adapt_at(
         Which::Wide,
@@ -70,13 +70,13 @@ fn rounded(mode: Mode, slot: i64, num: i64, den: i64, d: Dither) -> i64 {
 /// moves its slot and leaves its residue alone, so the region commutes over the
 /// band exactly when the offset it adds is the same at every slot in it, for
 /// every residue.
-fn commutes_over(mode: Mode, negatives: bool, ties: bool, step: i64, d: Dither) -> bool {
+fn commutes_over(mode: Mode, negatives: bool, ties: bool, step: i128, d: Dither) -> bool {
     let low = if negatives { -band() } else { 0 };
     for (num, den) in residues() {
         if !ties && is_tie(num, den) {
             continue;
         }
-        let mut first = 0i64;
+        let mut first = 0i128;
         let mut seen = false;
         let mut slot = low;
         while slot <= band() {

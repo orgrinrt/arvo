@@ -18,13 +18,19 @@
 //! a caller supplies.
 
 use crate::ambient::{Ambient, BinaryRationals, DecimalRationals, Radix, UnsignedBinaryRationals};
-use crate::format::{contains, radix, smallest_step_exponent, Phase};
+use crate::format::{Phase, contains, radix, smallest_step_exponent};
 use crate::points::{Biased, Floating, Integer, UFixed};
 use crate::quantum::{
-    exponent_at, is_constant_family, Constant, Exponent, Indexed, Magnitude, MagnitudeCount,
+    Constant,
+    Exponent,
+    Indexed,
+    Magnitude,
+    MagnitudeCount,
     Quantum,
+    exponent_at,
+    is_constant_family,
 };
-use crate::slots::{slot_count, slot_in_range, Signed, Slot, SlotCount, Unsigned};
+use crate::slots::{Signed, Slot, SlotCount, Unsigned, slot_count, slot_in_range};
 use crate::width::Bool;
 
 // --- the control -------------------------------------------------------------
@@ -77,12 +83,12 @@ macro_rules! sweep_unsigned_widths {
             $(
                 assert_eq!(
                     slot_count::<Unsigned<$w>>(),
-                    SlotCount::of(1i64 << $w),
+                    SlotCount::of(1i128 << $w),
                     "width {} admits the wrong number of slots", $w
                 );
                 assert!(slot_in_range::<Unsigned<$w>>(Slot::ZERO).get());
-                assert!(slot_in_range::<Unsigned<$w>>(Slot::at((1i64 << $w) - 1)).get());
-                assert!(!slot_in_range::<Unsigned<$w>>(Slot::at(1i64 << $w)).get());
+                assert!(slot_in_range::<Unsigned<$w>>(Slot::at((1i128 << $w) - 1)).get());
+                assert!(!slot_in_range::<Unsigned<$w>>(Slot::at(1i128 << $w)).get());
                 assert!(!slot_in_range::<Unsigned<$w>>(Slot::at(-1)).get());
             )+
         }
@@ -96,36 +102,33 @@ macro_rules! sweep_signed_widths {
             $(
                 assert_eq!(
                     slot_count::<Signed<$w>>(),
-                    SlotCount::of(1i64 << $w),
+                    SlotCount::of(1i128 << $w),
                     "width {} admits the wrong number of slots", $w
                 );
                 assert!(slot_in_range::<Signed<$w>>(Slot::ZERO).get());
-                assert!(slot_in_range::<Signed<$w>>(Slot::at(-(1i64 << ($w - 1)))).get());
-                assert!(slot_in_range::<Signed<$w>>(Slot::at((1i64 << ($w - 1)) - 1)).get());
-                assert!(!slot_in_range::<Signed<$w>>(Slot::at(1i64 << ($w - 1))).get());
-                assert!(!slot_in_range::<Signed<$w>>(Slot::at(-(1i64 << ($w - 1)) - 1)).get());
+                assert!(slot_in_range::<Signed<$w>>(Slot::at(-(1i128 << ($w - 1)))).get());
+                assert!(slot_in_range::<Signed<$w>>(Slot::at((1i128 << ($w - 1)) - 1)).get());
+                assert!(!slot_in_range::<Signed<$w>>(Slot::at(1i128 << ($w - 1))).get());
+                assert!(!slot_in_range::<Signed<$w>>(Slot::at(-(1i128 << ($w - 1)) - 1)).get());
             )+
         }
     };
 }
 
-// Every width the design admits, 1 through 62, not the powers of two and not a
+// Every width the design admits, 1 through 64, not the powers of two and not a
 // convenient prefix. The bound is the set of impls `slots` writes, and above it
-// no impl exists, so these are the widths that exist.
-//
-// The previous cut of this stopped at 32 while the ladder reached 64 and this
-// file claimed to run every width the slot ranges admit. The unswept half is
-// where the count overflowed.
+// no impl exists, so these are the widths that exist. The top two are where a
+// signed 64-bit index would have run out, so they are the ones that matter most.
 sweep_unsigned_widths!(
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
     27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
 );
 
 sweep_signed_widths!(
-    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-    28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
-    52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
 );
 
 // --- the two families differ on the quantum law and nowhere else -------------

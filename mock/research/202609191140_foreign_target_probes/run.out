@@ -1,0 +1,25 @@
+tool:   rustc 1.98.0-nightly (57d06900f 2026-05-27)
+target: i686-unknown-linux-gnu
+
+== a_const_assertion_over_a_literal_width 
+error[E0080]: evaluation panicked: the alias is not the 32-bit point
+  --> a_const_assertion_over_a_literal_width.rs:22:15
+   |
+22 |   const _: () = assert!(
+   |  _______________^
+23 | |     <USize as F>::MAX == u32::MAX as i128,
+24 | |     "the alias is not the 32-bit point"
+25 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+
+== a_const_assertion_over_the_pointer_width 
+exit 0
+
+== a_test_arm_over_a_literal_width --test
+exit 0
+

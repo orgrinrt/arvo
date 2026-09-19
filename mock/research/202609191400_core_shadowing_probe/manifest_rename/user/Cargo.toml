@@ -1,0 +1,11 @@
+[package]
+name = "user"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+# The rename under test: the dependency key is `core`, the package is not.
+[dependencies]
+core = { package = "fakecore", path = "../fakecore" }
+
+[workspace]

@@ -61,12 +61,13 @@ impl<const N: u32> Bits<N> {
     /// constructors force the check.
     ///
     /// The bound is not borrowed from `arvo_format::slots::Slots`, whose own
-    /// admitted range stops at sixty-two because a slot index is carried in a
-    /// signed 64-bit integer. This bound stops at sixty-four because the value
-    /// itself is carried in a `u64`, which runs out of capacity there and not
-    /// two bits earlier. The two bounds answer different overflow questions
-    /// and asserting one from the other would cost this crate two widths for
-    /// no reason.
+    /// admitted range also stops at sixty-four, for a different reason: that
+    /// ladder stops at the widest pointer width a target has and the widest
+    /// carrier placement offers. This bound stops at sixty-four because the
+    /// value itself is carried in a `u64`, which runs out of capacity there. The
+    /// two bounds answer different questions and agree on a number, so
+    /// asserting one from the other would tie this crate to a reason that is
+    /// not its own.
     const ADMITTED: () = {
         assert!(
             N >= 1,

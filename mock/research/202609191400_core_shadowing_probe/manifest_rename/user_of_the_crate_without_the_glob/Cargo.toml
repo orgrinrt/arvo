@@ -1,0 +1,10 @@
+[package]
+name = "user_of_the_crate_without_the_glob"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+core = { package = "fakecore_without_the_glob", path = "../fakecore_without_the_glob" }
+
+[workspace]

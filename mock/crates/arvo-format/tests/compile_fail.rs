@@ -15,6 +15,11 @@
 //! asserted from inside a running test. That argument was wrong and this is what
 //! it should have been.
 //!
+//! One pins the width bound on an outside range, which no impl set can hold: a
+//! range from outside this crate is not refused by a missing impl, so the bound
+//! in the obligation is the only thing between a sixty-five-bit declaration and
+//! a crate that treats it as admitted.
+//!
 //! Three of the rest pin what the coordinates buy. Each was well-typed while the
 //! contract was spelled in the host's own types, so none of them could have been
 //! written down before, and each names a way a caller could have been wrong with
@@ -50,6 +55,17 @@
 fn a_width_the_slot_range_cannot_carry_is_refused() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/width_above_the_bound.rs");
+}
+
+/// The width bound on an outside range, which no impl set can hold.
+///
+/// A range from outside this crate is not refused by a missing impl, so the
+/// bound in the obligation is the only thing between a sixty-five-bit
+/// declaration and a crate that treats it as admitted.
+#[test]
+fn a_range_past_the_ladder_is_refused_where_it_is_used() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_range_past_the_ladder_is_refused_where_it_is_used.rs");
 }
 
 #[test]
@@ -93,7 +109,7 @@ fn a_step_law_that_runs_off_the_exponent_is_refused() {
 
 /// The word lengths an industrial convention admits and the ladder does not.
 ///
-/// MathWorks documents a `fi` word length to 65535 and the ladder stops at 62,
+/// MathWorks documents a `fi` word length to 65535 and the ladder stops at 64,
 /// so an ordinary declaration has no format. That refusal is what the standards
 /// bound is for, and a refusal nothing pins can be deleted by accident, so it
 /// lives here rather than in a paragraph.

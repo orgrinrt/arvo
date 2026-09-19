@@ -26,11 +26,11 @@ use crate::tests::dispatch::{self, PerFormat, PerSignature};
 ///
 /// Both ends of the coordinate and one in from each, the two slots either side
 /// of each end of the range and the ends themselves, and zero.
-fn edges(min: Slot, max: Slot) -> impl Iterator<Item = i64> {
+fn edges(min: Slot, max: Slot) -> impl Iterator<Item = i128> {
     let (lo, hi) = (min.index(), max.index());
     [
-        i64::MIN,
-        i64::MIN + 1,
+        i128::MIN,
+        i128::MIN + 1,
         lo - 2,
         lo - 1,
         lo,
@@ -40,8 +40,8 @@ fn edges(min: Slot, max: Slot) -> impl Iterator<Item = i64> {
         hi,
         hi + 1,
         hi + 2,
-        i64::MAX - 1,
-        i64::MAX,
+        i128::MAX - 1,
+        i128::MAX,
     ]
     .into_iter()
 }
@@ -90,7 +90,7 @@ impl PerSignature for Total {
 struct EveryCell {
     cells:       usize,
     positions:   u64,
-    widths_seen: [u32; 64],
+    widths_seen: [u32; 65],
     signed:      u32,
     unsigned:    u32,
 }
@@ -101,7 +101,7 @@ impl PerFormat for EveryCell {
         let max = <F::Slots as Slots>::MAX;
         // The control that the ends of the coordinate are outside the range, so
         // feeding them enters the completion rather than the in-range path.
-        assert!(i64::MIN < min.index() && i64::MAX > max.index());
+        assert!(i128::MIN < min.index() && i128::MAX > max.index());
         self.widths_seen[<F::Slots as Slots>::WIDTH.count() as usize] += 1;
         if min.index() < 0 {
             self.signed += 1;
@@ -122,7 +122,7 @@ fn the_map_is_total_over_every_admitted_width_mode_and_policy() {
     let mut walk = EveryCell {
         cells:       0,
         positions:   0,
-        widths_seen: [0; 64],
+        widths_seen: [0; 65],
         signed:      0,
         unsigned:    0,
     };
@@ -130,7 +130,7 @@ fn the_map_is_total_over_every_admitted_width_mode_and_policy() {
 
     assert_eq!(
         walk.cells,
-        62 * 2 * 6 * 3,
+        64 * 2 * 6 * 3,
         "the walk is not every width of both families under every mode and policy"
     );
     // The walk names its widths from a literal list, so its coverage is checked
@@ -148,8 +148,8 @@ fn the_map_is_total_over_every_admitted_width_mode_and_policy() {
         2 * ADMITTED_WIDTHS.len(),
         "the walk reached a width the ladder does not admit"
     );
-    assert_eq!(walk.signed, 62);
-    assert_eq!(walk.unsigned, 62);
+    assert_eq!(walk.signed, 64);
+    assert_eq!(walk.unsigned, 64);
     assert_eq!(
         walk.positions,
         (walk.cells as u64) * 13 * 6 * 3,

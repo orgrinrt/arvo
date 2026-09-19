@@ -129,9 +129,10 @@ State the problem and the fix. Name the types, values, and operations involved. 
 Error: width out of range
 
 // Good
-Error: UFixed<{I}, {F}> with S = Hot requires I + F <= 64 (Hot
-container is u64 max). Use S = Warm or Precise for wider logical
-width.
+Error: no slot range exists for this width. This crate implements
+the trait at widths 1 to 64. The trait is open, so another crate may
+implement it at a range of its own; what such an implementor owes is
+the `ADMITTED` obligation.
 ```
 
 ## Headings

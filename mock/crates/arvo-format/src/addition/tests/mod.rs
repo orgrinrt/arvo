@@ -51,6 +51,7 @@ macro_rules! every_phase {
 }
 
 mod the_operation;
+mod the_rounding_axis;
 mod the_step;
 mod the_verdict;
 
@@ -78,26 +79,35 @@ const DITHERS: [Dither; 4] = [
 /// each anchored at zero. The verdict is claimed over every range, including
 /// ones that do not contain zero, so this is the family with both ends a
 /// parameter.
-struct Window<const LO: i64, const HI: i64>;
+struct Window<const LO: i128, const HI: i128>;
 
 /// The narrowest width that addresses the slots from `lo` to `hi`.
 ///
 /// What the slot range's obligation asks of the declared width, so every window
 /// the sweeps name is admitted rather than merely declared.
-const fn width_for(lo: i64, hi: i64) -> u32 {
-    let span = (hi as i128) - (lo as i128);
+const fn width_for(lo: i128, hi: i128) -> u32 {
+    let span = hi - lo;
     let mut bits = 1u32;
-    while bits < 62 && span >= (1i128 << bits) {
+    while bits < 64 && span >= (1i128 << bits) {
         bits += 1;
     }
     bits
 }
 
-impl<const LO: i64, const HI: i64> Slots for Window<LO, HI> {
+impl<const LO: i128, const HI: i128> Slots for Window<LO, HI> {
     const MAX: Slot = Slot::at(HI);
     const MIN: Slot = Slot::at(LO);
     const WIDTH: Width = Width::bits(width_for(LO, HI));
 }
+
+/// Four slots whose top is the highest slot twice of which the index still holds.
+///
+/// An outside range where no shipped one sits, so the carry condition and the
+/// saturation of positions are both reachable.
+type NearTheTop = Window<{ i128::MAX / 2 - 3 }, { i128::MAX / 2 }>;
+
+/// Four slots whose bottom is the lowest slot twice of which the index still holds.
+type NearTheBottom = Window<{ i128::MIN / 2 }, { i128::MIN / 2 + 3 }>;
 
 /// Every member of a format's slot range, lowest first.
 fn members<F: Format>() -> impl Iterator<Item = Slot> {
@@ -121,16 +131,16 @@ fn member_count<F: Format>() -> usize {
 pub(super) fn edges(min: Slot, max: Slot) -> [Slot; 10] {
     let (lo, hi) = (min.index(), max.index());
     [
-        i64::MIN,
-        i64::MIN + 1,
-        lo - 1,
+        i128::MIN,
+        i128::MIN + 1,
+        lo.saturating_sub(1),
         lo,
-        lo + 1,
-        hi - 1,
+        lo.saturating_add(1),
+        hi.saturating_sub(1),
         hi,
-        hi + 1,
-        i64::MAX - 1,
-        i64::MAX,
+        hi.saturating_add(1),
+        i128::MAX - 1,
+        i128::MAX,
     ]
     .map(Slot::at)
 }
@@ -158,13 +168,29 @@ pub(super) fn boundary_members(min: Slot, max: Slot) -> [Slot; 4] {
 /// operand at whichever end `sum` sits closer to and let the other carry the
 /// rest, so the pair sits at the end of the range the witness needs rather than
 /// in its middle.
-pub(super) fn pair_for_sum(min: i64, max: i64, sum: i128) -> Maybe<(Slot, Slot)> {
-    let (min, max) = (min as i128, max as i128);
-    if sum < 2 * min || sum > 2 * max {
+///
+/// Asked about sums the index holds, over ranges the sweeps name, so the one
+/// intermediate that could leave the index, twice an end, is compared through
+/// the difference rather than formed.
+pub(super) fn pair_for_sum(min: i128, max: i128, sum: i128) -> Maybe<(Slot, Slot)> {
+    // `sum >= 2 * min` and `sum <= 2 * max`, as `sum - min >= min` and
+    // `sum - max <= max`. Where the difference leaves the index its sign says
+    // which way: past the top when the subtrahend is negative, past the bottom
+    // when it is positive.
+    let above_the_bottom = match sum.checked_sub(min) {
+        Some(rest) => rest >= min,
+        None => min < 0,
+    };
+    let below_the_top = match sum.checked_sub(max) {
+        Some(rest) => rest <= max,
+        None => max > 0,
+    };
+    if !above_the_bottom || !below_the_top {
         return Maybe::Isnt;
     }
-    let (a, b) = if sum <= min + max { (min, sum - min) } else { (max, sum - max) };
-    Maybe::Is((Slot::at(a as i64), Slot::at(b as i64)))
+    let low_half = sum.checked_sub(min).is_some_and(|rest| rest <= max);
+    let (a, b) = if low_half { (min, sum - min) } else { (max, sum - max) };
+    Maybe::Is((Slot::at(a), Slot::at(b)))
 }
 
 /// The declared coordinates of a format, for a failure message.
@@ -299,7 +325,7 @@ impl Ratio {
         let whole = self.floor();
         let rest = Self::of(self.num.rem_euclid(self.den), self.den);
         Exact::between(
-            Slot::at(whole as i64),
+            Slot::at(whole),
             Fraction::of(rest.num as i64, rest.den as i64),
         )
     }
@@ -331,8 +357,8 @@ impl Table {
         let mut sums = [[0u8; 256]; 256];
         for (i, row) in sums.iter_mut().enumerate().take(members) {
             for (j, cell) in row.iter_mut().enumerate().take(members) {
-                let a = Slot::at(min.index() + i as i64);
-                let b = Slot::at(min.index() + j as i64);
+                let a = Slot::at(min.index() + i as i128);
+                let b = Slot::at(min.index() + j as i128);
                 let got = add::<S>(a, b, dither);
                 assert!(
                     got.is_within(min, max).get(),

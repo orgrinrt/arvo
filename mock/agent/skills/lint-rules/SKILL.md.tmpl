@@ -61,12 +61,12 @@ The four `changelist-*` lints are always on and non-negotiable.
 
 ## Forbidden-imports rules
 
-Layer table encoded in `mock/mockspace.toml`
-`[lints.forbidden-imports]`. Example entry:
+Layer table encoded in `mockspace.toml` at the repo root, under
+`[lints.forbidden-imports]`. The entry it carries:
 
 ```toml
 rules = [
-    { scope = "arvo-bits",    forbidden = "arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo)" },
+  { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
 ]
 ```
 

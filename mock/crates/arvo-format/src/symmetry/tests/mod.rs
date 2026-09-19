@@ -214,7 +214,7 @@ fn the_dither() -> Dither {
     dither(1, 2)
 }
 
-fn position(slot: i64, num: i64, den: i64) -> Exact {
+fn position(slot: i128, num: i64, den: i64) -> Exact {
     Exact::between(Slot::at(slot), Fraction::of(num, den))
 }
 

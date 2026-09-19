@@ -19,28 +19,40 @@
 
 mod the_open_inventory;
 
-use crate::objective;
-use crate::{
-    declared_width, derive_shared, derive_sole, narrowest_carrier, Carrier, Carrier16, Carrier32,
-    Carrier64, Carrier8, Objective, Occupancy, Placement, LADDER,
-};
 use arvo_format::overflow::Wrap;
 use arvo_format::points::{Integer, UFixed};
 use arvo_format::rounding::Floor;
 use arvo_format::{Adapt, Signature, Width};
 
+use crate::{
+    Carrier,
+    Carrier8,
+    Carrier16,
+    Carrier32,
+    Carrier64,
+    LADDER,
+    Objective,
+    Occupancy,
+    Placement,
+    declared_width,
+    derive_shared,
+    derive_sole,
+    narrowest_carrier,
+    objective,
+};
+
 type Sig<F> = Signature<F, Adapt<Floor, Wrap>>;
 
 /// Every declared width from one to sixty-four, as widths rather than counts.
 fn every_width() -> impl Iterator<Item = Width> {
-    (1u32..=64).map(Width::bits)
+    (1u32 ..= 64).map(Width::bits)
 }
 
 // --- the control -------------------------------------------------------------
 
 #[test]
 fn the_control_the_ladder_rungs_are_distinct_and_ordered() {
-    for i in 1..LADDER.len() {
+    for i in 1 .. LADDER.len() {
         assert!(
             LADDER[i].covers(LADDER[i - 1]).get() && !LADDER[i].equals(LADDER[i - 1]).get(),
             "the ladder has to be ordered or `narrowest_carrier` is picking arbitrarily"
@@ -86,9 +98,9 @@ fn at_sole_occupancy_the_three_numbers_collapse_to_the_carrier() {
             continue;
         }
         let p = Placement {
-            carrier: c,
-            access: c,
-            stride: c,
+            carrier:   c,
+            access:    c,
+            stride:    c,
             occupancy: Occupancy::Sole,
         };
         assert_eq!(p.carrier, p.access);
@@ -129,11 +141,7 @@ fn carrier_and_access_over_the_ladder() -> impl Iterator<Item = (Width, Width, W
     every_width().filter_map(|w| {
         let c = narrowest_carrier(w);
         let a = narrowest_carrier(w.add(w).less_one());
-        if c.is_none().get() || a.is_none().get() {
-            None
-        } else {
-            Some((w, c, a))
-        }
+        if c.is_none().get() || a.is_none().get() { None } else { Some((w, c, a)) }
     })
 }
 
@@ -337,7 +345,13 @@ macro_rules! objective_sweep {
     };
 }
 
-objective_sweep!(2, 3, 5, 8, 9, 13, 16, 17, 27, 31, 32, 33, 47, 62);
+objective_sweep!(2, 3, 5, 8, 9, 13, 16, 17, 27, 31, 32, 33, 47, 62, 63, 64);
+
+// --- the platform-width points land on the target's pointer-width carrier ----
+
+mod the_platform_width;
+
+// --- the two objectives, compared -------------------------------------------
 
 #[test]
 fn the_two_objectives_derive_two_placements_at_shared_occupancy() {

@@ -1,0 +1,1730 @@
+tool: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+tool: cargo 1.98.0-nightly (fbb61be30 2026-05-26)
+host pointer width, the premise pass's fake width: 64
+
+== a_mod_core_shadows_the_bare_path.rs
+warning: type `usize` should have an upper camel case name
+ --> a_mod_core_shadows_the_bare_path.rs:9:20
+  |
+9 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+verdict: as expected, builds
+
+-- flip pass: a_mod_core_shadows_the_bare_path.rs, item 1 (const assert), line 30 flipped to: const _: () = assert!(<CHECK as F>::MAX != 255, "the shadow did not win");
+== a_mod_core_shadows_the_bare_path.generated_flip_1.rs
+warning: type `usize` should have an upper camel case name
+ --> a_mod_core_shadows_the_bare_path.generated_flip_1.rs:9:20
+  |
+9 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the shadow did not win
+  --> a_mod_core_shadows_the_bare_path.generated_flip_1.rs:30:15
+   |
+30 | const _: () = assert!(<CHECK as F>::MAX != 255, "the shadow did not win");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the shadow did not win
+  due to 1 previous error
+
+-- premise pass: a_mod_core_shadows_the_bare_path.rs, every fake width set to 64, the host's pointer width
+== a_mod_core_shadows_the_bare_path.generated_premise.rs
+warning: type `usize` should have an upper camel case name
+ --> a_mod_core_shadows_the_bare_path.generated_premise.rs:9:20
+  |
+9 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the shadow did not win
+  --> a_mod_core_shadows_the_bare_path.generated_premise.rs:30:15
+   |
+30 | const _: () = assert!(<CHECK as F>::MAX == 255, "the shadow did not win");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the shadow did not win
+  due to 1 previous error
+
+== a_use_alias_shadows_the_bare_path.rs
+warning: type `usize` should have an upper camel case name
+ --> a_use_alias_shadows_the_bare_path.rs:8:20
+  |
+8 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+verdict: as expected, builds
+
+-- flip pass: a_use_alias_shadows_the_bare_path.rs, item 1 (const assert), line 29 flipped to: const _: () = assert!(<CHECK as F>::MAX != 255, "the alias shadow did not win");
+== a_use_alias_shadows_the_bare_path.generated_flip_1.rs
+warning: type `usize` should have an upper camel case name
+ --> a_use_alias_shadows_the_bare_path.generated_flip_1.rs:8:20
+  |
+8 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the alias shadow did not win
+  --> a_use_alias_shadows_the_bare_path.generated_flip_1.rs:29:15
+   |
+29 | const _: () = assert!(<CHECK as F>::MAX != 255, "the alias shadow did not win");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the alias shadow did not win
+  due to 1 previous error
+
+-- premise pass: a_use_alias_shadows_the_bare_path.rs, every fake width set to 64, the host's pointer width
+== a_use_alias_shadows_the_bare_path.generated_premise.rs
+warning: type `usize` should have an upper camel case name
+ --> a_use_alias_shadows_the_bare_path.generated_premise.rs:8:20
+  |
+8 |         pub struct usize;
+  |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+  |
+  = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the alias shadow did not win
+  --> a_use_alias_shadows_the_bare_path.generated_premise.rs:29:15
+   |
+29 | const _: () = assert!(<CHECK as F>::MAX == 255, "the alias shadow did not win");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the alias shadow did not win
+  due to 1 previous error
+
+== a_bare_mod_usize_confirms_the_original_premise.rs
+exit 0
+verdict: as expected, builds
+
+-- flip pass: a_bare_mod_usize_confirms_the_original_premise.rs, item 1 (const assert), line 27 flipped to: <CHECK as F>::MAX != 255,
+== a_bare_mod_usize_confirms_the_original_premise.generated_flip_1.rs
+error[E0080]: evaluation panicked: the bare usize shadow did not win
+  --> a_bare_mod_usize_confirms_the_original_premise.generated_flip_1.rs:26:15
+   |
+26 |   const _: () = assert!(
+   |  _______________^
+27 | |     <CHECK as F>::MAX != 255,
+28 | |     "the bare usize shadow did not win"
+29 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the bare usize shadow did not win
+  due to 1 previous error
+
+-- premise pass: a_bare_mod_usize_confirms_the_original_premise.rs, every fake width set to 64, the host's pointer width
+== a_bare_mod_usize_confirms_the_original_premise.generated_premise.rs
+error[E0080]: evaluation panicked: the bare usize shadow did not win
+  --> a_bare_mod_usize_confirms_the_original_premise.generated_premise.rs:26:15
+   |
+26 |   const _: () = assert!(
+   |  _______________^
+27 | |     <CHECK as F>::MAX == 255,
+28 | |     "the bare usize shadow did not win"
+29 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the bare usize shadow did not win
+  due to 1 previous error
+
+== the_leading_double_colon_resists_both_shadows.rs
+warning: type `usize` should have an upper camel case name
+  --> the_leading_double_colon_resists_both_shadows.rs:24:20
+   |
+24 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: struct `usize` is never constructed
+  --> the_leading_double_colon_resists_both_shadows.rs:24:20
+   |
+24 |         pub struct usize;
+   |                    ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated constant `BITS` is never used
+  --> the_leading_double_colon_resists_both_shadows.rs:26:23
+   |
+25 |         impl usize {
+   |         ---------- associated constant in this implementation
+26 |             pub const BITS: u32 = 8;
+   |                       ^^^^
+
+warning: 3 warnings emitted
+
+exit 0
+verdict: as expected, builds
+
+-- flip pass: the_leading_double_colon_resists_both_shadows.rs, item 1 (const assert), line 44 flipped to: <CHECK as F>::MAX != (1i128 << usize::BITS) - 1,
+== the_leading_double_colon_resists_both_shadows.generated_flip_1.rs
+warning: type `usize` should have an upper camel case name
+  --> the_leading_double_colon_resists_both_shadows.generated_flip_1.rs:24:20
+   |
+24 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path resolved through a shadow
+  --> the_leading_double_colon_resists_both_shadows.generated_flip_1.rs:43:15
+   |
+43 |   const _: () = assert!(
+   |  _______________^
+44 | |     <CHECK as F>::MAX != (1i128 << usize::BITS) - 1,
+45 | |     "the leading-:: path resolved through a shadow"
+46 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through a shadow
+  due to 1 previous error
+
+-- premise pass: the_leading_double_colon_resists_both_shadows.rs, every fake width set to 64, the host's pointer width
+== the_leading_double_colon_resists_both_shadows.generated_premise.rs
+warning: type `usize` should have an upper camel case name
+  --> the_leading_double_colon_resists_both_shadows.generated_premise.rs:24:20
+   |
+24 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: struct `usize` is never constructed
+  --> the_leading_double_colon_resists_both_shadows.generated_premise.rs:24:20
+   |
+24 |         pub struct usize;
+   |                    ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated constant `BITS` is never used
+  --> the_leading_double_colon_resists_both_shadows.generated_premise.rs:26:23
+   |
+25 |         impl usize {
+   |         ---------- associated constant in this implementation
+26 |             pub const BITS: u32 = 64;
+   |                       ^^^^
+
+warning: 3 warnings emitted
+
+exit 0
+verdict: as expected, builds
+  and without:
+    error[E0080]: evaluation panicked: the leading-:: path resolved through a shadow
+
+-- spelling pass: the_leading_double_colon_resists_both_shadows.rs, the leading :: dropped from every ::core:: path
+== the_leading_double_colon_resists_both_shadows.generated_spelling.rs
+warning: type `usize` should have an upper camel case name
+  --> the_leading_double_colon_resists_both_shadows.generated_spelling.rs:24:20
+   |
+24 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path resolved through a shadow
+  --> the_leading_double_colon_resists_both_shadows.generated_spelling.rs:43:15
+   |
+43 |   const _: () = assert!(
+   |  _______________^
+44 | |     <CHECK as F>::MAX == (1i128 << usize::BITS) - 1,
+45 | |     "the leading-:: path resolved through a shadow"
+46 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through a shadow
+  due to 1 previous error
+
+== the_use_alias_does_not_reach_the_leading_colon_path.rs
+warning: type `usize` should have an upper camel case name
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: unused import: `fake as core`
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:22:5
+   |
+22 | use fake as core;
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `usize` is never constructed
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated constant `BITS` is never used
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:17:23
+   |
+16 |         impl usize {
+   |         ---------- associated constant in this implementation
+17 |             pub const BITS: u32 = 9;
+   |                       ^^^^
+
+warning: 4 warnings emitted
+
+exit 0
+verdict: as expected, builds
+
+-- flip pass: the_use_alias_does_not_reach_the_leading_colon_path.rs, item 1 (const assert), line 37 flipped to: <CHECK as F>::MAX != (1i128 << usize::BITS) - 1,
+== the_use_alias_does_not_reach_the_leading_colon_path.generated_flip_1.rs
+warning: type `usize` should have an upper camel case name
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_flip_1.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: unused import: `fake as core`
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_flip_1.rs:22:5
+   |
+22 | use fake as core;
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path resolved through the use-alias shadow
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_flip_1.rs:36:15
+   |
+36 |   const _: () = assert!(
+   |  _______________^
+37 | |     <CHECK as F>::MAX != (1i128 << usize::BITS) - 1,
+38 | |     "the leading-:: path resolved through the use-alias shadow"
+39 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 2 warnings emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through the use-alias shadow
+  due to 1 previous error
+
+-- premise pass: the_use_alias_does_not_reach_the_leading_colon_path.rs, every fake width set to 64, the host's pointer width
+== the_use_alias_does_not_reach_the_leading_colon_path.generated_premise.rs
+warning: type `usize` should have an upper camel case name
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_premise.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: unused import: `fake as core`
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_premise.rs:22:5
+   |
+22 | use fake as core;
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `usize` is never constructed
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_premise.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated constant `BITS` is never used
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_premise.rs:17:23
+   |
+16 |         impl usize {
+   |         ---------- associated constant in this implementation
+17 |             pub const BITS: u32 = 64;
+   |                       ^^^^
+
+warning: 4 warnings emitted
+
+exit 0
+verdict: as expected, builds
+  and without:
+    error[E0080]: evaluation panicked: the leading-:: path resolved through the use-alias shadow
+
+-- spelling pass: the_use_alias_does_not_reach_the_leading_colon_path.rs, the leading :: dropped from every ::core:: path
+== the_use_alias_does_not_reach_the_leading_colon_path.generated_spelling.rs
+warning: type `usize` should have an upper camel case name
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_spelling.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path resolved through the use-alias shadow
+  --> the_use_alias_does_not_reach_the_leading_colon_path.generated_spelling.rs:36:15
+   |
+36 |   const _: () = assert!(
+   |  _______________^
+37 | |     <CHECK as F>::MAX == (1i128 << usize::BITS) - 1,
+38 | |     "the leading-:: path resolved through the use-alias shadow"
+39 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through the use-alias shadow
+  due to 1 previous error
+
+== the_leading_double_colon_resists_an_unaliased_use_of_core.rs
+exit 0
+verdict: as expected, builds
+
+-- flip pass: the_leading_double_colon_resists_an_unaliased_use_of_core.rs, item 1 (const assert), line 30 flipped to: core::primitive::usize::BITS != 9,
+== the_leading_double_colon_resists_an_unaliased_use_of_core.generated_flip_1.rs
+error[E0080]: evaluation panicked: the unaliased `use` did not bind the bare spelling `core`
+  --> the_leading_double_colon_resists_an_unaliased_use_of_core.generated_flip_1.rs:29:15
+   |
+29 |   const _: () = assert!(
+   |  _______________^
+30 | |     core::primitive::usize::BITS != 9,
+31 | |     "the unaliased `use` did not bind the bare spelling `core`"
+32 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the unaliased `use` did not bind the bare spelling `core`
+  due to 1 previous error
+
+-- flip pass: the_leading_double_colon_resists_an_unaliased_use_of_core.rs, item 2 (const assert), line 35 flipped to: ::core::primitive::usize::BITS != usize::BITS,
+== the_leading_double_colon_resists_an_unaliased_use_of_core.generated_flip_2.rs
+error[E0080]: evaluation panicked: the leading-:: path resolved through the unaliased `use` of `core`
+  --> the_leading_double_colon_resists_an_unaliased_use_of_core.generated_flip_2.rs:34:15
+   |
+34 |   const _: () = assert!(
+   |  _______________^
+35 | |     ::core::primitive::usize::BITS != usize::BITS,
+36 | |     "the leading-:: path resolved through the unaliased `use` of `core`"
+37 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through the unaliased `use` of `core`
+  due to 1 previous error
+
+-- premise pass: the_leading_double_colon_resists_an_unaliased_use_of_core.rs, every fake width set to 64, the host's pointer width
+== the_leading_double_colon_resists_an_unaliased_use_of_core.generated_premise.rs
+error[E0080]: evaluation panicked: the unaliased `use` did not bind the bare spelling `core`
+  --> the_leading_double_colon_resists_an_unaliased_use_of_core.generated_premise.rs:29:15
+   |
+29 |   const _: () = assert!(
+   |  _______________^
+30 | |     core::primitive::usize::BITS == 9,
+31 | |     "the unaliased `use` did not bind the bare spelling `core`"
+32 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the unaliased `use` did not bind the bare spelling `core`
+  due to 1 previous error
+  and without:
+    error[E0080]: evaluation panicked: the leading-:: path resolved through the unaliased `use` of `core`
+
+-- spelling pass: the_leading_double_colon_resists_an_unaliased_use_of_core.rs, the leading :: dropped from every ::core:: path
+== the_leading_double_colon_resists_an_unaliased_use_of_core.generated_spelling.rs
+error[E0080]: evaluation panicked: the leading-:: path resolved through the unaliased `use` of `core`
+  --> the_leading_double_colon_resists_an_unaliased_use_of_core.generated_spelling.rs:34:15
+   |
+34 |   const _: () = assert!(
+   |  _______________^
+35 | |     core::primitive::usize::BITS == usize::BITS,
+36 | |     "the leading-:: path resolved through the unaliased `use` of `core`"
+37 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through the unaliased `use` of `core`
+  due to 1 previous error
+  and without:
+    error[E0080]: evaluation panicked: the unaliased `use` did not bind the bare spelling `core`
+
+== the_leading_double_colon_resists_a_self_under_core.rs
+exit 0
+verdict: as expected, builds
+
+-- flip pass: the_leading_double_colon_resists_a_self_under_core.rs, item 1 (const assert), line 30 flipped to: core::primitive::usize::BITS != 9,
+== the_leading_double_colon_resists_a_self_under_core.generated_flip_1.rs
+error[E0080]: evaluation panicked: the `self` under `core` did not bind the bare spelling `core`
+  --> the_leading_double_colon_resists_a_self_under_core.generated_flip_1.rs:29:15
+   |
+29 |   const _: () = assert!(
+   |  _______________^
+30 | |     core::primitive::usize::BITS != 9,
+31 | |     "the `self` under `core` did not bind the bare spelling `core`"
+32 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the `self` under `core` did not bind the bare spelling `core`
+  due to 1 previous error
+
+-- flip pass: the_leading_double_colon_resists_a_self_under_core.rs, item 2 (const assert), line 35 flipped to: ::core::primitive::usize::BITS != usize::BITS,
+== the_leading_double_colon_resists_a_self_under_core.generated_flip_2.rs
+error[E0080]: evaluation panicked: the leading-:: path resolved through the `self` under `core`
+  --> the_leading_double_colon_resists_a_self_under_core.generated_flip_2.rs:34:15
+   |
+34 |   const _: () = assert!(
+   |  _______________^
+35 | |     ::core::primitive::usize::BITS != usize::BITS,
+36 | |     "the leading-:: path resolved through the `self` under `core`"
+37 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through the `self` under `core`
+  due to 1 previous error
+
+-- premise pass: the_leading_double_colon_resists_a_self_under_core.rs, every fake width set to 64, the host's pointer width
+== the_leading_double_colon_resists_a_self_under_core.generated_premise.rs
+error[E0080]: evaluation panicked: the `self` under `core` did not bind the bare spelling `core`
+  --> the_leading_double_colon_resists_a_self_under_core.generated_premise.rs:29:15
+   |
+29 |   const _: () = assert!(
+   |  _______________^
+30 | |     core::primitive::usize::BITS == 9,
+31 | |     "the `self` under `core` did not bind the bare spelling `core`"
+32 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the `self` under `core` did not bind the bare spelling `core`
+  due to 1 previous error
+  and without:
+    error[E0080]: evaluation panicked: the leading-:: path resolved through the `self` under `core`
+
+-- spelling pass: the_leading_double_colon_resists_a_self_under_core.rs, the leading :: dropped from every ::core:: path
+== the_leading_double_colon_resists_a_self_under_core.generated_spelling.rs
+error[E0080]: evaluation panicked: the leading-:: path resolved through the `self` under `core`
+  --> the_leading_double_colon_resists_a_self_under_core.generated_spelling.rs:34:15
+   |
+34 |   const _: () = assert!(
+   |  _______________^
+35 | |     core::primitive::usize::BITS == usize::BITS,
+36 | |     "the leading-:: path resolved through the `self` under `core`"
+37 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path resolved through the `self` under `core`
+  due to 1 previous error
+  and without:
+    error[E0080]: evaluation panicked: the `self` under `core` did not bind the bare spelling `core`
+
+== extern_crate_self_as_core_hijacks_the_absolute_path.rs
+warning: type `usize` should have an upper camel case name
+  --> extern_crate_self_as_core_hijacks_the_absolute_path.rs:12:16
+   |
+12 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+verdict: as expected, builds
+
+-- flip pass: extern_crate_self_as_core_hijacks_the_absolute_path.rs, item 1 (const assert), line 31 flipped to: <CHECK as F>::MAX != 255,
+== extern_crate_self_as_core_hijacks_the_absolute_path.generated_flip_1.rs
+warning: type `usize` should have an upper camel case name
+  --> extern_crate_self_as_core_hijacks_the_absolute_path.generated_flip_1.rs:12:16
+   |
+12 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path was not hijacked by extern crate self as core
+  --> extern_crate_self_as_core_hijacks_the_absolute_path.generated_flip_1.rs:30:15
+   |
+30 |   const _: () = assert!(
+   |  _______________^
+31 | |     <CHECK as F>::MAX != 255,
+32 | |     "the leading-:: path was not hijacked by extern crate self as core"
+33 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path was not hijacked by extern crate self as core
+  due to 1 previous error
+
+-- premise pass: extern_crate_self_as_core_hijacks_the_absolute_path.rs, every fake width set to 64, the host's pointer width
+== extern_crate_self_as_core_hijacks_the_absolute_path.generated_premise.rs
+warning: type `usize` should have an upper camel case name
+  --> extern_crate_self_as_core_hijacks_the_absolute_path.generated_premise.rs:12:16
+   |
+12 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path was not hijacked by extern crate self as core
+  --> extern_crate_self_as_core_hijacks_the_absolute_path.generated_premise.rs:30:15
+   |
+30 |   const _: () = assert!(
+   |  _______________^
+31 | |     <CHECK as F>::MAX == 255,
+32 | |     "the leading-:: path was not hijacked by extern crate self as core"
+33 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path was not hijacked by extern crate self as core
+  due to 1 previous error
+
+== the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs
+warning: type `usize` should have an upper camel case name
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs:22:16
+   |
+22 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+verdict: as expected, builds
+
+-- flip pass: the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs, item 1 (const assert), line 41 flipped to: <CHECK as F>::MAX != 255,
+== the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_flip_1.rs
+warning: type `usize` should have an upper camel case name
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_flip_1.rs:22:16
+   |
+22 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path did not resolve through `extern crate self as r#core`
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_flip_1.rs:40:15
+   |
+40 |   const _: () = assert!(
+   |  _______________^
+41 | |     <CHECK as F>::MAX != 255,
+42 | |     "the leading-:: path did not resolve through `extern crate self as r#core`"
+43 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path did not resolve through `extern crate self as r#core`
+  due to 1 previous error
+
+-- flip pass: the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs, item 2 (const assert), line 46 flipped to: ::core::primitive::usize::BITS == usize::BITS,
+== the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_flip_2.rs
+warning: type `usize` should have an upper camel case name
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_flip_2.rs:22:16
+   |
+22 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path read the host's pointer width, so nothing was hijacked
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_flip_2.rs:45:15
+   |
+45 |   const _: () = assert!(
+   |  _______________^
+46 | |     ::core::primitive::usize::BITS == usize::BITS,
+47 | |     "the leading-:: path read the host's pointer width, so nothing was hijacked"
+48 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path read the host's pointer width, so nothing was hijacked
+  due to 1 previous error
+
+-- premise pass: the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs, every fake width set to 64, the host's pointer width
+== the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_premise.rs
+warning: type `usize` should have an upper camel case name
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_premise.rs:22:16
+   |
+22 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the leading-:: path did not resolve through `extern crate self as r#core`
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_premise.rs:40:15
+   |
+40 |   const _: () = assert!(
+   |  _______________^
+41 | |     <CHECK as F>::MAX == 255,
+42 | |     "the leading-:: path did not resolve through `extern crate self as r#core`"
+43 | | );
+   | |_^ evaluation of `_` failed here
+
+error[E0080]: evaluation panicked: the leading-:: path read the host's pointer width, so nothing was hijacked
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.generated_premise.rs:45:15
+   |
+45 |   const _: () = assert!(
+   |  _______________^
+46 | |     ::core::primitive::usize::BITS != usize::BITS,
+47 | |     "the leading-:: path read the host's pointer width, so nothing was hijacked"
+48 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 2 previous errors; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the leading-:: path did not resolve through `extern crate self as r#core`
+  error[E0080]: evaluation panicked: the leading-:: path read the host's pointer width, so nothing was hijacked
+  due to 2 previous errors
+
+== a_macro_expanded_extern_crate_self_as_core_is_refused.rs
+error: macro-expanded `extern crate` items cannot shadow names passed with `--extern`
+  --> a_macro_expanded_extern_crate_self_as_core_is_refused.rs:13:9
+   |
+13 |         extern crate self as core;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+17 | hijack!();
+   | --------- in this macro invocation
+   |
+   = note: this error originates in the macro `hijack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 1 previous error
+
+exit 1
+verdict: as expected, refused with:
+  macro-expanded `extern crate` items cannot shadow names passed with `--extern`
+
+-- premise pass: a_macro_expanded_extern_crate_self_as_core_is_refused.rs, every fake width set to 64, the host's pointer width
+== a_macro_expanded_extern_crate_self_as_core_is_refused.generated_premise.rs
+error: macro-expanded `extern crate` items cannot shadow names passed with `--extern`
+  --> a_macro_expanded_extern_crate_self_as_core_is_refused.generated_premise.rs:13:9
+   |
+13 |         extern crate self as core;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+17 | hijack!();
+   | --------- in this macro invocation
+   |
+   = note: this error originates in the macro `hijack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: the macro-expanded alias did not take over `::core`
+  --> a_macro_expanded_extern_crate_self_as_core_is_refused.generated_premise.rs:29:15
+   |
+29 |   const _: () = assert!(
+   |  _______________^
+30 | |     W == 8,
+31 | |     "the macro-expanded alias did not take over `::core`"
+32 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  macro-expanded `extern crate` items cannot shadow names passed with `--extern`
+
+== manifest_rename/user
+exit 0
+verdict: as expected, builds
+
+-- flip pass: manifest_rename/user, item 1 (const assert), line 12 flipped to: const _: () = assert!(W != 8, "the manifest rename did not take over `::core`");
+== manifest_rename/user.generated_flip_1
+error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  --> src/lib.rs:12:15
+   |
+12 | const _: () = assert!(W != 8, "the manifest rename did not take over `::core`");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `user` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  due to 1 previous error
+
+-- flip pass: manifest_rename/user, item 2 (const assert), line 14 flipped to: W == usize::BITS,
+== manifest_rename/user.generated_flip_2
+error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  --> src/lib.rs:13:15
+   |
+13 |   const _: () = assert!(
+   |  _______________^
+14 | |     W == usize::BITS,
+15 | |     "the renamed answer is the real pointer width"
+16 | | );
+   | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `user` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  due to 1 previous error
+
+-- premise pass: manifest_rename/user, every fake width set to 64, the host's pointer width
+== manifest_rename/user.generated_premise
+error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  --> src/lib.rs:12:15
+   |
+12 | const _: () = assert!(W == 8, "the manifest rename did not take over `::core`");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  --> src/lib.rs:13:15
+   |
+13 |   const _: () = assert!(
+   |  _______________^
+14 | |     W != usize::BITS,
+15 | |     "the renamed answer is the real pointer width"
+16 | | );
+   | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `user` (lib) due to 2 previous errors
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  due to 2 previous errors
+
+== manifest_rename/user_of_the_crate_with_only_the_prelude
+exit 0
+verdict: as expected, builds
+
+-- flip pass: manifest_rename/user_of_the_crate_with_only_the_prelude, item 1 (const assert), line 12 flipped to: const _: () = assert!(W != 8, "the manifest rename did not take over `::core`");
+== manifest_rename/user_of_the_crate_with_only_the_prelude.generated_flip_1
+error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  --> src/lib.rs:12:15
+   |
+12 | const _: () = assert!(W != 8, "the manifest rename did not take over `::core`");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `user_of_the_crate_with_only_the_prelude` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  due to 1 previous error
+
+-- flip pass: manifest_rename/user_of_the_crate_with_only_the_prelude, item 2 (const assert), line 14 flipped to: W == usize::BITS,
+== manifest_rename/user_of_the_crate_with_only_the_prelude.generated_flip_2
+error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  --> src/lib.rs:13:15
+   |
+13 |   const _: () = assert!(
+   |  _______________^
+14 | |     W == usize::BITS,
+15 | |     "the renamed answer is the real pointer width"
+16 | | );
+   | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `user_of_the_crate_with_only_the_prelude` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  due to 1 previous error
+
+-- premise pass: manifest_rename/user_of_the_crate_with_only_the_prelude, every fake width set to 64, the host's pointer width
+== manifest_rename/user_of_the_crate_with_only_the_prelude.generated_premise
+error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  --> src/lib.rs:12:15
+   |
+12 | const _: () = assert!(W == 8, "the manifest rename did not take over `::core`");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  --> src/lib.rs:13:15
+   |
+13 |   const _: () = assert!(
+   |  _______________^
+14 | |     W != usize::BITS,
+15 | |     "the renamed answer is the real pointer width"
+16 | | );
+   | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `user_of_the_crate_with_only_the_prelude` (lib) due to 2 previous errors
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  due to 2 previous errors
+
+== manifest_rename/user_of_the_crate_with_an_empty_prelude
+exit 0
+verdict: as expected, builds
+
+-- flip pass: manifest_rename/user_of_the_crate_with_an_empty_prelude, item 1 (array length), line 13 flipped to: const _: [(); 1] = [(); (W != 8) as usize];
+== manifest_rename/user_of_the_crate_with_an_empty_prelude.generated_flip_1
+error[E0308]: mismatched types
+  --> src/lib.rs:13:20
+   |
+13 | const _: [(); 1] = [(); (W != 8) as usize];
+   |          -------   ^^^^^^^^^^^^^^^^^^^^^^^ expected an array with a size of 1, found one with a size of 0
+   |          |
+   |          expected because of the type of the constant
+   |
+help: consider specifying the actual array length
+   |
+13 - const _: [(); 1] = [(); (W != 8) as usize];
+13 + const _: [(); 0] = [(); (W != 8) as usize];
+   |
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `user_of_the_crate_with_an_empty_prelude` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  const _: [(); 1] = [(); (W != 8) as usize];
+  error[E0308]: mismatched types
+  due to 1 previous error
+
+-- flip pass: manifest_rename/user_of_the_crate_with_an_empty_prelude, item 2 (array length), line 14 flipped to: const _: [(); 1] = [(); (W == usize::BITS) as usize];
+== manifest_rename/user_of_the_crate_with_an_empty_prelude.generated_flip_2
+error[E0308]: mismatched types
+  --> src/lib.rs:14:20
+   |
+14 | const _: [(); 1] = [(); (W == usize::BITS) as usize];
+   |          -------   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected an array with a size of 1, found one with a size of 0
+   |          |
+   |          expected because of the type of the constant
+   |
+help: consider specifying the actual array length
+   |
+14 - const _: [(); 1] = [(); (W == usize::BITS) as usize];
+14 + const _: [(); 0] = [(); (W == usize::BITS) as usize];
+   |
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `user_of_the_crate_with_an_empty_prelude` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  const _: [(); 1] = [(); (W == usize::BITS) as usize];
+  error[E0308]: mismatched types
+  due to 1 previous error
+
+-- premise pass: manifest_rename/user_of_the_crate_with_an_empty_prelude, every fake width set to 64, the host's pointer width
+== manifest_rename/user_of_the_crate_with_an_empty_prelude.generated_premise
+error[E0308]: mismatched types
+  --> src/lib.rs:13:20
+   |
+13 | const _: [(); 1] = [(); (W == 8) as usize];
+   |          -------   ^^^^^^^^^^^^^^^^^^^^^^^ expected an array with a size of 1, found one with a size of 0
+   |          |
+   |          expected because of the type of the constant
+   |
+help: consider specifying the actual array length
+   |
+13 - const _: [(); 1] = [(); (W == 8) as usize];
+13 + const _: [(); 0] = [(); (W == 8) as usize];
+   |
+
+error[E0308]: mismatched types
+  --> src/lib.rs:14:20
+   |
+14 | const _: [(); 1] = [(); (W != usize::BITS) as usize];
+   |          -------   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected an array with a size of 1, found one with a size of 0
+   |          |
+   |          expected because of the type of the constant
+   |
+help: consider specifying the actual array length
+   |
+14 - const _: [(); 1] = [(); (W != usize::BITS) as usize];
+14 + const _: [(); 0] = [(); (W != usize::BITS) as usize];
+   |
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `user_of_the_crate_with_an_empty_prelude` (lib) due to 2 previous errors
+exit 101
+verdict: as expected, refused with:
+  const _: [(); 1] = [(); (W == 8) as usize];
+  const _: [(); 1] = [(); (W != usize::BITS) as usize];
+  error[E0308]: mismatched types
+  due to 2 previous errors
+
+== manifest_rename/user_of_the_crate_without_the_glob
+error: cannot resolve a prelude import
+
+error: could not compile `user_of_the_crate_without_the_glob` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  cannot resolve a prelude import
+
+-- premise pass: manifest_rename/user_of_the_crate_without_the_glob, every fake width set to 64, the host's pointer width
+== manifest_rename/user_of_the_crate_without_the_glob.generated_premise
+error: cannot resolve a prelude import
+
+error: could not compile `user_of_the_crate_without_the_glob` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  cannot resolve a prelude import
+
+== manifest_rename/user_of_the_crate_with_a_bare_prelude
+error: cannot resolve a prelude import
+
+error: could not compile `user_of_the_crate_with_a_bare_prelude` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  cannot resolve a prelude import
+
+-- premise pass: manifest_rename/user_of_the_crate_with_a_bare_prelude, every fake width set to 64, the host's pointer width
+== manifest_rename/user_of_the_crate_with_a_bare_prelude.generated_premise
+error: cannot resolve a prelude import
+
+error: could not compile `user_of_the_crate_with_a_bare_prelude` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  cannot resolve a prelude import
+
+== manifest_rename/user_of_the_crate_with_an_empty_prelude_naming_assert
+error: cannot find macro `assert` in this scope
+  --> src/lib.rs:11:15
+   |
+11 | const _: () = assert!(true);
+   |               ^^^^^^
+
+error: could not compile `user_of_the_crate_with_an_empty_prelude_naming_assert` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  cannot find macro `assert` in this scope
+
+-- premise pass: manifest_rename/user_of_the_crate_with_an_empty_prelude_naming_assert, every fake width set to 64, the host's pointer width
+== manifest_rename/user_of_the_crate_with_an_empty_prelude_naming_assert.generated_premise
+error: cannot find macro `assert` in this scope
+  --> src/lib.rs:11:15
+   |
+11 | const _: () = assert!(true);
+   |               ^^^^^^
+
+error: could not compile `user_of_the_crate_with_an_empty_prelude_naming_assert` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  cannot find macro `assert` in this scope
+
+== manifest_rename/user_of_the_crate_with_a_bare_prelude_naming_assert
+error: cannot resolve a prelude import
+
+error: cannot find macro `assert` in this scope
+  --> src/lib.rs:11:15
+   |
+11 | const _: () = assert!(true);
+   |               ^^^^^^
+
+error: could not compile `user_of_the_crate_with_a_bare_prelude_naming_assert` (lib) due to 2 previous errors
+exit 101
+verdict: as expected, refused with:
+  cannot resolve a prelude import
+  cannot find macro `assert` in this scope
+
+-- premise pass: manifest_rename/user_of_the_crate_with_a_bare_prelude_naming_assert, every fake width set to 64, the host's pointer width
+== manifest_rename/user_of_the_crate_with_a_bare_prelude_naming_assert.generated_premise
+error: cannot resolve a prelude import
+
+error: cannot find macro `assert` in this scope
+  --> src/lib.rs:11:15
+   |
+11 | const _: () = assert!(true);
+   |               ^^^^^^
+
+error: could not compile `user_of_the_crate_with_a_bare_prelude_naming_assert` (lib) due to 2 previous errors
+exit 101
+verdict: as expected, refused with:
+  cannot resolve a prelude import
+  cannot find macro `assert` in this scope
+
+== manifest_rename/a_std_dependent_of_the_crate_without_the_glob
+exit 0
+verdict: as expected, builds
+
+-- flip pass: manifest_rename/a_std_dependent_of_the_crate_without_the_glob, item 1 (const assert), line 20 flipped to: const _: () = assert!(W != 8, "the manifest rename did not take over `::core`");
+== manifest_rename/a_std_dependent_of_the_crate_without_the_glob.generated_flip_1
+error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  --> src/lib.rs:20:15
+   |
+20 | const _: () = assert!(W != 8, "the manifest rename did not take over `::core`");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `a_std_dependent_of_the_crate_without_the_glob` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  due to 1 previous error
+
+-- flip pass: manifest_rename/a_std_dependent_of_the_crate_without_the_glob, item 2 (const assert), line 22 flipped to: W == usize::BITS,
+== manifest_rename/a_std_dependent_of_the_crate_without_the_glob.generated_flip_2
+error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  --> src/lib.rs:21:15
+   |
+21 |   const _: () = assert!(
+   |  _______________^
+22 | |     W == usize::BITS,
+23 | |     "the renamed answer is the real pointer width"
+24 | | );
+   | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `a_std_dependent_of_the_crate_without_the_glob` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  due to 1 previous error
+
+-- premise pass: manifest_rename/a_std_dependent_of_the_crate_without_the_glob, every fake width set to 64, the host's pointer width
+== manifest_rename/a_std_dependent_of_the_crate_without_the_glob.generated_premise
+error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  --> src/lib.rs:20:15
+   |
+20 | const _: () = assert!(W == 8, "the manifest rename did not take over `::core`");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  --> src/lib.rs:21:15
+   |
+21 |   const _: () = assert!(
+   |  _______________^
+22 | |     W != usize::BITS,
+23 | |     "the renamed answer is the real pointer width"
+24 | | );
+   | |_^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `a_std_dependent_of_the_crate_without_the_glob` (lib) due to 2 previous errors
+exit 101
+verdict: as expected, refused with:
+  error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  error[E0080]: evaluation panicked: the renamed answer is the real pointer width
+  due to 2 previous errors
+
+== the_shipped_spelling_alone_is_silent.rs
+exit 0
+verdict: as expected, builds
+
+== the_bare_spelling_without_the_leading_colon_is_shadowed.rs
+warning: type `usize` should have an upper camel case name
+  --> the_bare_spelling_without_the_leading_colon_is_shadowed.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the bare spelling read the `mod core` shadow's 8 rather than the host's pointer width
+  --> the_bare_spelling_without_the_leading_colon_is_shadowed.rs:36:15
+   |
+36 |   const _: () = assert!(
+   |  _______________^
+37 | |     <CHECK as F>::MAX == (1i128 << usize::BITS) - 1,
+38 | |     "the bare spelling read the `mod core` shadow's 8 rather than the host's pointer width"
+39 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with:
+  the bare spelling read the `mod core` shadow's 8 rather than the host's pointer width
+
+-- premise pass: the_bare_spelling_without_the_leading_colon_is_shadowed.rs, every fake width set to 64, the host's pointer width
+== the_bare_spelling_without_the_leading_colon_is_shadowed.generated_premise.rs
+warning: type `usize` should have an upper camel case name
+  --> the_bare_spelling_without_the_leading_colon_is_shadowed.generated_premise.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
+exit 0
+verdict: as expected, builds
+
+== harness self-check: the arms in selfcheck/, each flagged by exactly the passes it names
+  | == selfcheck/holds_either_way_round.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/holds_either_way_round.rs, item 1 (const assert), line 17 flipped to: const _: () = assert!(W != 8 || true, "holds either way round");
+  | == selfcheck/holds_either_way_round.generated_flip_1.rs
+  | exit 0
+  | verdict: UNEXPECTED, expected refused
+  |   with: error[E0080]: evaluation panicked: holds either way round
+  |   with: due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/holds_either_way_round.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/holds_either_way_round.generated_premise.rs
+  | exit 0
+  | verdict: UNEXPECTED, expected refused
+  |   with: error[E0080]: evaluation panicked: holds either way round
+  |   with: due to 1 previous error
+  | 
+selfcheck/holds_either_way_round.rs: flagged by flip, premise, want flip, premise
+verdict: as expected
+
+  | == selfcheck/checks_nothing.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/checks_nothing.rs: expected to build and checks nothing, so its build shows nothing
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/checks_nothing.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/checks_nothing.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/no_message.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/no_message.rs, item 1 (const assert): no message
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/no_message.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/no_message.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/an_escape_the_harness_cannot_match.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/an_escape_the_harness_cannot_match.rs, item 1 (const assert): a message holding an escape other than \" or \\, which the harness does not match
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/an_escape_the_harness_cannot_match.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/an_escape_the_harness_cannot_match.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/an_item_declared_in_neither_list.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/an_item_declared_in_neither_list.rs, item 2: declared in 0 of --reads and --resists, not in exactly one
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/an_item_declared_in_neither_list.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/an_item_declared_in_neither_list.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/an_item_declared_in_both_lists.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/an_item_declared_in_both_lists.rs, item 1: declared in 2 of --reads and --resists, not in exactly one
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/an_item_declared_in_both_lists.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/an_item_declared_in_both_lists.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/two_items_sharing_a_message.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/two_items_sharing_a_message.rs: two items share a message, so their refusals cannot be told apart
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/two_items_sharing_a_message.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/two_items_sharing_a_message.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/declared_to_check_nothing_and_checks.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/declared_to_check_nothing_and_checks.rs: declared to check nothing, and holds 1 item(s)
+  | verdict: UNEXPECTED
+  | 
+selfcheck/declared_to_check_nothing_and_checks.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/compares_the_width_with_itself.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/compares_the_width_with_itself.rs, item 1 (const assert), line 17 flipped to: const _: () = assert!(W != W, "the shadow's width is not itself");
+  | == selfcheck/compares_the_width_with_itself.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the shadow's width is not itself
+  |   --> selfcheck/compares_the_width_with_itself.generated_flip_1.rs:17:15
+  |    |
+  | 17 | const _: () = assert!(W != W, "the shadow's width is not itself");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the shadow's width is not itself
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/compares_the_width_with_itself.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/compares_the_width_with_itself.generated_premise.rs
+  | exit 0
+  | verdict: UNEXPECTED, expected refused
+  |   with: error[E0080]: evaluation panicked: the shadow's width is not itself
+  |   with: due to 1 previous error
+  | 
+selfcheck/compares_the_width_with_itself.rs: flagged by premise, want premise
+verdict: as expected
+
+  | == selfcheck/a_true_comparison_before_the_width.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/a_true_comparison_before_the_width.rs, item 1 (const assert), line 19 flipped to: 1 != 1 && W == W,
+  | == selfcheck/a_true_comparison_before_the_width.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: one is not one, or the width is not itself
+  |   --> selfcheck/a_true_comparison_before_the_width.generated_flip_1.rs:18:15
+  |    |
+  | 18 |   const _: () = assert!(
+  |    |  _______________^
+  | 19 | |     1 != 1 && W == W,
+  | 20 | |     "one is not one, or the width is not itself"
+  | 21 | | );
+  |    | |_^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: one is not one, or the width is not itself
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/a_true_comparison_before_the_width.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/a_true_comparison_before_the_width.generated_premise.rs
+  | exit 0
+  | verdict: UNEXPECTED, expected refused
+  |   with: error[E0080]: evaluation panicked: one is not one, or the width is not itself
+  |   with: due to 1 previous error
+  | 
+selfcheck/a_true_comparison_before_the_width.rs: flagged by premise, want premise
+verdict: as expected
+
+  | == selfcheck/compares_the_width_with_another_constant.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/compares_the_width_with_another_constant.rs, item 1 (const assert), line 18 flipped to: const _: () = assert!(W == 7, "the shadow's width is 7");
+  | == selfcheck/compares_the_width_with_another_constant.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the shadow's width is 7
+  |   --> selfcheck/compares_the_width_with_another_constant.generated_flip_1.rs:18:15
+  |    |
+  | 18 | const _: () = assert!(W == 7, "the shadow's width is 7");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the shadow's width is 7
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/compares_the_width_with_another_constant.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/compares_the_width_with_another_constant.generated_premise.rs
+  | exit 0
+  | verdict: UNEXPECTED, expected refused
+  |   with: error[E0080]: evaluation panicked: the shadow's width is 7
+  |   with: due to 1 previous error
+  | 
+selfcheck/compares_the_width_with_another_constant.rs: flagged by premise, want premise
+verdict: as expected
+
+  | == selfcheck/a_resisted_read_compared_with_itself.rs
+  | warning: struct `usize` is never constructed
+  |   --> selfcheck/a_resisted_read_compared_with_itself.rs:11:20
+  |    |
+  | 11 |         pub struct usize;
+  |    |                    ^^^^^
+  |    |
+  |    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+  | 
+  | warning: associated constant `BITS` is never used
+  |   --> selfcheck/a_resisted_read_compared_with_itself.rs:13:23
+  |    |
+  | 12 |         impl usize {
+  |    |         ---------- associated constant in this implementation
+  | 13 |             pub const BITS: u32 = 8;
+  |    |                       ^^^^
+  | 
+  | warning: 2 warnings emitted
+  | 
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/a_resisted_read_compared_with_itself.rs, item 1 (const assert), line 20 flipped to: const _: () = assert!(W != W, "the width read past the shadow is not itself");
+  | == selfcheck/a_resisted_read_compared_with_itself.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the width read past the shadow is not itself
+  |   --> selfcheck/a_resisted_read_compared_with_itself.generated_flip_1.rs:20:15
+  |    |
+  | 20 | const _: () = assert!(W != W, "the width read past the shadow is not itself");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the width read past the shadow is not itself
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/a_resisted_read_compared_with_itself.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/a_resisted_read_compared_with_itself.generated_premise.rs
+  | warning: struct `usize` is never constructed
+  |   --> selfcheck/a_resisted_read_compared_with_itself.generated_premise.rs:11:20
+  |    |
+  | 11 |         pub struct usize;
+  |    |                    ^^^^^
+  |    |
+  |    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+  | 
+  | warning: associated constant `BITS` is never used
+  |   --> selfcheck/a_resisted_read_compared_with_itself.generated_premise.rs:13:23
+  |    |
+  | 12 |         impl usize {
+  |    |         ---------- associated constant in this implementation
+  | 13 |             pub const BITS: u32 = 64;
+  |    |                       ^^^^
+  | 
+  | warning: 2 warnings emitted
+  | 
+  | exit 0
+  | verdict: as expected, builds
+  |   and without:
+  |     error[E0080]: evaluation panicked: the width read past the shadow is not itself
+  | 
+  | -- spelling pass: selfcheck/a_resisted_read_compared_with_itself.rs, the leading :: dropped from every ::core:: path
+  | == selfcheck/a_resisted_read_compared_with_itself.generated_spelling.rs
+  | exit 0
+  | verdict: UNEXPECTED, expected refused
+  |   with: error[E0080]: evaluation panicked: the width read past the shadow is not itself
+  |   with: due to 1 previous error
+  | 
+selfcheck/a_resisted_read_compared_with_itself.rs: flagged by spelling, want spelling
+verdict: as expected
+
+  | == selfcheck/the_shipped_spelling_old_assertion.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/the_shipped_spelling_old_assertion.rs, item 1 (const assert), line 21 flipped to: <CHECK as F>::MAX != (1i128 << usize::BITS) - 1,
+  | == selfcheck/the_shipped_spelling_old_assertion.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the leading-:: spelling did not read the host's pointer width
+  |   --> selfcheck/the_shipped_spelling_old_assertion.generated_flip_1.rs:20:15
+  |    |
+  | 20 |   const _: () = assert!(
+  |    |  _______________^
+  | 21 | |     <CHECK as F>::MAX != (1i128 << usize::BITS) - 1,
+  | 22 | |     "the leading-:: spelling did not read the host's pointer width"
+  | 23 | | );
+  |    | |_^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the leading-:: spelling did not read the host's pointer width
+  |   due to 1 previous error
+  | 
+  | == selfcheck/the_shipped_spelling_old_assertion.rs: premise pass, no fake width to set
+  | verdict: UNEXPECTED
+  | 
+  | -- spelling pass: selfcheck/the_shipped_spelling_old_assertion.rs, the leading :: dropped from every ::core:: path
+  | == selfcheck/the_shipped_spelling_old_assertion.generated_spelling.rs
+  | exit 0
+  | verdict: UNEXPECTED, expected refused
+  |   with: error[E0080]: evaluation panicked: the leading-:: spelling did not read the host's pointer width
+  |   with: due to 1 previous error
+  | 
+selfcheck/the_shipped_spelling_old_assertion.rs: flagged by premise, spelling, want premise, spelling
+verdict: as expected
+
+  | == selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.rs, item 1 (const assert), line 19 flipped to: const _: () = assert!(W != 8, "the shadow's width is not 8");
+  | == selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the shadow's width is not 8
+  |   --> selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.generated_flip_1.rs:19:15
+  |    |
+  | 19 | const _: () = assert!(W != 8, "the shadow's width is not 8");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the shadow's width is not 8
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.generated_premise.rs
+  | error[E0080]: evaluation panicked: the shadow's width is not 8
+  |   --> selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.generated_premise.rs:19:15
+  |    |
+  | 19 | const _: () = assert!(W == 8, "the shadow's width is not 8");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: UNEXPECTED, expected builds
+  |   without: error[E0080]: evaluation panicked: the shadow's width is not 8
+  | 
+  | == selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.rs: spelling pass, item 1 read past the fake width and no leading-:: core path to drop
+  | verdict: UNEXPECTED
+  | 
+selfcheck/a_read_of_the_fake_width_declared_as_read_past_it.rs: flagged by premise, spelling, want premise, spelling
+verdict: as expected
+
+  | == selfcheck/a_vacuous_conjunct_beside_a_real_one.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/a_vacuous_conjunct_beside_a_real_one.rs, item 1 (const assert), line 19 flipped to: const _: () = assert!(W != 8 && W == W, "the shadow's width is not 8");
+  | == selfcheck/a_vacuous_conjunct_beside_a_real_one.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the shadow's width is not 8
+  |   --> selfcheck/a_vacuous_conjunct_beside_a_real_one.generated_flip_1.rs:19:15
+  |    |
+  | 19 | const _: () = assert!(W != 8 && W == W, "the shadow's width is not 8");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the shadow's width is not 8
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/a_vacuous_conjunct_beside_a_real_one.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/a_vacuous_conjunct_beside_a_real_one.generated_premise.rs
+  | error[E0080]: evaluation panicked: the shadow's width is not 8
+  |   --> selfcheck/a_vacuous_conjunct_beside_a_real_one.generated_premise.rs:19:15
+  |    |
+  | 19 | const _: () = assert!(W == 8 && W == W, "the shadow's width is not 8");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the shadow's width is not 8
+  |   due to 1 previous error
+  | 
+selfcheck/a_vacuous_conjunct_beside_a_real_one.rs: flagged by none, want none
+verdict: as expected
+
+  | == selfcheck/an_escaped_quote_in_the_message.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/an_escaped_quote_in_the_message.rs, item 1 (const assert), line 18 flipped to: const _: () = assert!(W != 8, "the shadow's \"8\" was not read");
+  | == selfcheck/an_escaped_quote_in_the_message.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the shadow's "8" was not read
+  |   --> selfcheck/an_escaped_quote_in_the_message.generated_flip_1.rs:18:15
+  |    |
+  | 18 | const _: () = assert!(W != 8, "the shadow's \"8\" was not read");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the shadow's "8" was not read
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/an_escaped_quote_in_the_message.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/an_escaped_quote_in_the_message.generated_premise.rs
+  | error[E0080]: evaluation panicked: the shadow's "8" was not read
+  |   --> selfcheck/an_escaped_quote_in_the_message.generated_premise.rs:18:15
+  |    |
+  | 18 | const _: () = assert!(W == 8, "the shadow's \"8\" was not read");
+  |    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the shadow's "8" was not read
+  |   due to 1 previous error
+  | 
+selfcheck/an_escaped_quote_in_the_message.rs: flagged by none, want none
+verdict: as expected
+
+  | == selfcheck/an_equals_sign_in_a_string_before_the_comparison.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | -- flip pass: selfcheck/an_equals_sign_in_a_string_before_the_comparison.rs, item 1 (const assert), line 19 flipped to: "==".len() as u32 + W != 10,
+  | == selfcheck/an_equals_sign_in_a_string_before_the_comparison.generated_flip_1.rs
+  | error[E0080]: evaluation panicked: the width beside a two-byte string was not 8, so W == 8 is false and W != 8
+  |   --> selfcheck/an_equals_sign_in_a_string_before_the_comparison.generated_flip_1.rs:18:15
+  |    |
+  | 18 |   const _: () = assert!(
+  |    |  _______________^
+  | 19 | |     "==".len() as u32 + W != 10,
+  | 20 | |     "the width beside a two-byte string was not 8, so W == 8 is false and W != 8"
+  | 21 | | );
+  |    | |_^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the width beside a two-byte string was not 8, so W == 8 is false and W != 8
+  |   due to 1 previous error
+  | 
+  | -- premise pass: selfcheck/an_equals_sign_in_a_string_before_the_comparison.rs, every fake width set to 64, the host's pointer width
+  | == selfcheck/an_equals_sign_in_a_string_before_the_comparison.generated_premise.rs
+  | error[E0080]: evaluation panicked: the width beside a two-byte string was not 8, so W == 8 is false and W != 8
+  |   --> selfcheck/an_equals_sign_in_a_string_before_the_comparison.generated_premise.rs:18:15
+  |    |
+  | 18 |   const _: () = assert!(
+  |    |  _______________^
+  | 19 | |     "==".len() as u32 + W == 10,
+  | 20 | |     "the width beside a two-byte string was not 8, so W == 8 is false and W != 8"
+  | 21 | | );
+  |    | |_^ evaluation of `_` failed here
+  | 
+  | error: aborting due to 1 previous error
+  | 
+  | For more information about this error, try `rustc --explain E0080`.
+  | exit 1
+  | verdict: as expected, refused with:
+  |   error[E0080]: evaluation panicked: the width beside a two-byte string was not 8, so W == 8 is false and W != 8
+  |   due to 1 previous error
+  | 
+selfcheck/an_equals_sign_in_a_string_before_the_comparison.rs: flagged by none, want none
+verdict: as expected
+
+unexpected outcomes: 0

@@ -1,0 +1,10 @@
+[package]
+name = "user_of_the_crate_with_an_empty_prelude"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+core = { package = "fakecore_with_an_empty_prelude", path = "../fakecore_with_an_empty_prelude" }
+
+[workspace]
