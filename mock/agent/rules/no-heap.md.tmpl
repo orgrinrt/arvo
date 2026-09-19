@@ -22,7 +22,7 @@ is a consequence of this first principle, not a standalone rule.
 - "Format!() into a String" → borrow `&'static str`, or `notko::Str`, or
   write into a caller-provided byte sink.
 - "Box<dyn Trait>" → monomorphise. `impl Trait` or `<T: Trait>`.
-- "HashMap<K, V>" → type-level `Map<K, V, N: Cap>` at
+- "HashMap<K, V>" → type-level `Map<K, V, const N: usize>` at
   `hilavitkutin-api::store`, or `&mut impl KeyValueStore<K, V>`.
 - "extern crate alloc" → WRONG UNIVERSE. Remove it. Reshape the surface.
 

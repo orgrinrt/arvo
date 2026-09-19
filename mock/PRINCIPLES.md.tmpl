@@ -87,7 +87,7 @@ remediation task.
 ### No `.0` field-access on arvo primitives
 
 The no-bare-primitives discipline extends to field-access on arvo
-primitives. Every arvo numeric primitive (USize, Cap, UFixed, IFixed,
+primitives. Every arvo numeric primitive (USize, ISize, UFixed, IFixed,
 FastFloat, StrictFloat, Bits, Mask\<B\> chassis, BitMatrix\<B, N\>
 chassis, Bitfield, plus aliases) ships full const-trait arithmetic via
 `impl const` on `core::ops::*`.
@@ -177,7 +177,10 @@ It shouldn't be an enum. It should be a trait.
 ## Sizes are const at type level
 
 Every container's capacity lives at type level: `Mask64`, `Mask256`,
-`Seq<T, N: Cap>`, `Map<K, V, N: Cap>`. No runtime resize, no runtime
+`Seq<T, const N: usize>`, `Map<K, V, const N: usize>`. A capacity is a
+const generic parameter, the one position where a bare `usize` is
+excepted, and it takes the host's `usize` rather than a stack type
+standing in for it. No runtime resize, no runtime
 grow. If a consumer needs a bigger container, they pick the bigger
 type.
 
@@ -226,7 +229,7 @@ the bare primitive might otherwise appear.
 | `HashMap<K, V>` | `&mut impl KeyValueStore<K, V>` / `Map<K, V, N>` | hilavitkutin-api |
 | `String` owned | `Str` | `hilavitkutin-str` |
 | `&str` non-static | `&'static str` or `Str` | as above |
-| `usize` / `isize` | `USize` / `ISize` / `Cap` / domain newtype | not built yet |
+| `usize` / `isize` | `USize` / `ISize` / domain newtype; a const generic capacity keeps `usize` | `arvo-format`, as format points; no value carries one yet |
 | `u8..u128` / `i8..i128` | `T: Boundable` / `T: NonZeroable` | `notko`; `UFixed` is a format marker and no value carries one yet |
 | `f32` / `f64` | `FastFloat` / `StrictFloat` | not built yet |
 | `bool` | `Bool` | `arvo-format` |

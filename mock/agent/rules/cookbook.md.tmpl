@@ -80,7 +80,9 @@ Semantic aliases (`Mass<S>`, `Angle<S>`, etc.) shadow the raw form.
 
 ## "I need to measure size / capacity"
 
-`USize` (not raw `usize`). `Cap` when used as a const-generic capacity.
+`USize` (not raw `usize`), or `ISize` for a signed one. A const-generic
+capacity is a bare `const N: usize`: that position is the one exception, and
+there is no `Cap` type, by ruling.
 
 ## "I need a float"
 

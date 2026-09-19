@@ -40,14 +40,13 @@ that do not exist yet.
 
 ## Why the width bound is not `arvo_format::slots::Slots`
 
-`Slots` already states a bound that reads almost like this one, admitted at widths one to
-sixty-two. The two bounds are not the same claim and conflating them would have cost this crate two
-widths for no reason. `Slots`'s bound exists because a slot index is carried in a signed 64-bit
-integer, and `2^63` positions do not fit one; that is an index-space overflow. `Bits<N>`'s bound exists
-because the value is carried in a `u64`, which runs out of capacity at `64`, not `62`; that is a
-storage-capacity overflow. A raw 64-bit hash, or a raw 63-bit one, is a value this crate can represent
-exactly and has no structural reason to refuse, so its own bound is asserted independently rather than
-borrowed from a trait answering a different question.
+`Slots` states a bound that reads the same as this one, admitted at widths one to sixty-four. The two
+bounds agree in number and are still not the same claim. `Slots`'s bound is the widest pointer width a
+target has and the widest carrier the placement ladder offers; its slot index sits in a signed 128-bit
+integer that would go on well past it. `Bits<N>`'s bound exists because the value is carried in a
+`u64`, which runs out of capacity at `64`; that is a storage-capacity overflow. Either could move
+without the other having a reason to, so this crate asserts its own bound independently rather than
+borrowing it from a trait answering a different question.
 
 ## The type
 
