@@ -1,0 +1,50 @@
+78dec4c0 chore: lock src changelist for 202609192220_changelist.src.lock.md
+b8a7ce4b feat: refuse prose reading `half_up` as a magnitude rule
+c5ba2b7e test: say the planted ties-away rule is planted, and fix a count
+42e03f37 test: name the rounding tool readings `half_up` and ties away
+d7fd1508 test: record the old `half_up` tie rule planted into `round_slot`
+6a06c1aa fix: round `half_up` ties toward positive infinity
+f6e096fa design: open the half_up src changelist
+c16d573b chore: lock the half_up doc changelist
+7fb1fef4 docs: state half_up as ties toward positive infinity
+c64f1ef9 design: open the doc changelist for half_up
+6f44c698 design: open the half_up ties toward positive infinity round
+05489db5 canon: settle half_up as ties toward positive infinity
+e97f509e research: seat 270 blind read of which operation half_up denotes
+7e2aa51c research: audit two reads of `half_up` and answer it as ties to +inf
+d425aff5 feat: add `USize` and `ISize` on a 128-bit slot index
+34558620 docs: consolidate the composition contracts across two reads
+65c1634d research: a second read on which operation half_up denotes
+e17c5d3a research: reconcile half_up finding against seat 229
+a6f4a6d9 research: half_up denotes two standards-documented operations
+6ae6cade canon: promote four composition rows on two reads each
+1545b60e feat: add admitted addition on a declared signature
+de3461dc research: a second read on the ten composition proposals
+ed5e0755 266: reconcile against the prior composition-cluster seat
+7d8590c0 266: derive composition contracts cluster blind
+4c6548d6 canon: settle what a platform-width type is
+99f31992 research: a second read on what a platform-width type is
+9d1ab004 265: rewrap two lines of the reconciliation
+d3584bc4 265: reconcile with seat 260 on what a platform-width type is
+32e0b6dd 265: what a platform-width type is, derived cold and built for three pointer widths
+22efc5d0 canon: answer the admitted-obligations row by reshaping it
+6c130503 feat: ship `arvo-bits`, an exact-width bit container
+c45809b1 chore: take the ask tool from muisti under lint-crates
+f8d8a9d1 research: seat 264, the door ruling does not reach the unwrap accessor
+fb618b0c fix: bump the five tool locks onto the engine revision they lag, again
+cdab9a22 fix: bump the five tool locks onto the engine revision they lag
+05d0a851 docs: record that the structural-region row is answered, on three reads
+26b14649 feat: state where the adaptation commutes with the grid's symmetries
+b544c82c docs: correct the width seat's hash, which resolves on its own branch
+eb059dec docs: file the question of which operation `half_up` denotes
+3f6b37c1 Merge pull request #125 from orgrinrt/research/whether-a-structural-claim-carries-a-region
+e1b8a98e Merge pull request #124 from orgrinrt/research/what-a-platform-width-type-is-rebased
+e0f64697 Merge pull request #123 from orgrinrt/research/whether-the-fused-result-composes
+84dac759 docs: say which `half_up` the arms name, and what the pairing costs
+5c69b710 docs: move the region seat to 261, and correct what it said about ssh
+102f9d0a docs: move the width seat to 260, and correct the fix it recorded
+764bc72f chore: take the tool manifests and locks as `dev` has them
+84065f75 research: settle whether the 64-bit wall is a wall, and it is not
+776a7fff research: answer q26 by compiling the clause its first option rests on
+cced7740 research: record the probe crate lock without the local patch override
+e583b7e1 research: fix the arm the placement probe doc names, and rebuild its output
