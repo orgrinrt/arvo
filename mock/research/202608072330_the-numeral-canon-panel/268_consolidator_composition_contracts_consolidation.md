@@ -26,12 +26,17 @@ both reads reach. I did not find a fifth research file or a third read that woul
 between "two reads recommend it" and "a ruling lands it"; the mechanism connecting them is outside
 what either input file or the registry states, and I am not asserting one. What I can state is
 that the four ratified rulings' text matches what the two reads independently establish, checked
-clause by clause below, and that `ratified_by = "experts"` is exactly the route
+clause by clause below, with one exception section 4.2 names: one ratified row's own note
+overstates how independent one of its findings is. `ratified_by = "experts"` is exactly the route
 `mockspace.toml`'s own schema names for a proposal that converged and was promoted without
-needing op's individual stamp on each one, a route he set up himself (`ruling::the_panel_finishes_the_canon_without_him`,
-`ratified_by = "op"`, ratified 2026-08-xx, quoted below). So this is not agent output presumed
-wrong; it is a ratified row citing the mechanism that licenses it, and I read it as settled rather
-than as a claim I owe a second opinion on.
+needing op's individual stamp on each one, a route he set up himself:
+`ruling::the_panel_finishes_the_canon_without_him`, `ratified_by = "op"`, ratified 2026-08-31
+(`git log --follow -S 'id = "the_panel_finishes_the_canon_without_him"'` names commit `ea97b411`
+at 2026-08-31 17:56:18 +0300), his own words "Now work autonomously, you don't need me anymore.
+I've given all I can, the canon should be solvable and fully fillable without me from now on with
+all that I've already said." So this is not agent output presumed wrong; it is a ratified row
+citing the mechanism that licenses it, and I read it as settled rather than as a claim I owe a
+second opinion on.
 
 This changes what "promotable" means for the rest of this file. Four of the ten rows are past the
 gate already. My ledger states that as the current fact rather than as a recommendation, and the
@@ -45,7 +50,7 @@ verdict column for the other six is what remains live.
 | `a_composed_expressions_region_is_never_inherited_from_its_parts`: promotable as written | yes | yes | **yes**, and both reran the underlying instrument on their own machines and got 82.7484% and the 32,640-violation mutant figure to the digit. Now ratified, `ruling::a_composed_expressions_region_is_never_inherited_from_its_parts`. |
 | `configuration_is_not_composition_and_a_composite_is_a_primitive`: promotable as written, distinction and closure only | yes | yes | **yes**, both reading `161`'s L28/L29 as two blind arrivals (`110`, `154`). Now ratified, `ruling::configuration_is_not_composition_and_a_predicate_never_transports_for_free`, with the equality clause split into a congruence reading the evidence supports and an adequacy reading it refutes. |
 | `a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none`: not one row, split into an absorption half (near two instances) and an end-to-end half (stays one) | yes, and `#117` reran the absorption sweep itself, 63-and-63 | yes, and `#142` cites `215`'s independent rerun plus its theorem proof of the wrapping half | **yes** on the split call. The absorption half's second instance is `215` in both reads' account, so it is one arrival cited twice rather than two independent findings of a second arrival; both reads say this plainly. Now ratified, absorption half only, `ruling::a_min_plus_top_absorbs_addition_under_saturation_and_never_under_wrapping`. |
-| `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`: welded row, statability half has a second arrival (`240`), list half stays one expert | **no**, `#117` treats the whole row as one_expert and recommends "a second seat" | **yes**, `#142` opened `237` and `240`, which `#117` never opens (checked: `grep -n "237\|240"` against `#117`'s file returns nothing) | **`#142` alone.** `#117`'s section twelve (the reconciliation file) accepts this as something `#142`'s counterpart found that its own file did not, before either file could have read the other's final form, since `#117`'s section twelve was written and committed before `#142` existed. Recorded in `#117`'s own text as agreement reached across the sitting, not as something either read owes retroactively to the other. Now ratified, statability half only, `ruling::a_format_concept_closed_over_v_cross_v_to_v_cannot_state_a_composite_claim`. |
+| `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`: welded row, statability half has a second arrival (`240`), list half stays one expert | **no**, `#117` treats the whole row as one_expert and recommends "a second seat" | **yes**, `#142` opened `237` and `240`, which `#117` never opens (checked: `grep -n "237\|240"` against `#117`'s file returns nothing) | **`#142` alone.** `#117`'s reconciliation section (section twelve, `202609030724_section_twelve_reconciliation_against_195.md`) was committed 2026-09-03, eight days before `#142` existed (committed 2026-09-11), so it cannot have read or accepted anything `#142` found; checked directly, it never mentions `237` or `240`, and its own words on the format row say only that reading it as a convergence with a third file "changes nothing about the row's standing," which is a different claim about a different pairing. `#117` simply does not reach this split; `#142` is the one read that does. Now ratified, statability half only, `ruling::a_format_concept_closed_over_v_cross_v_to_v_cannot_state_a_composite_claim`. |
 | `question::reduction_order_or_associativity` is answered in two incompatible shapes by two rows in this cluster (`splitting_a_reduction...` gives arms over regions, `within_an_unbound_stretch...` gives a single licence over the category) | **yes**, `#117` finds it | **no** in isolation; `#142` states it read `splitting_a_reduction...` alone and missed the cross-row conflict, then credits `#117` for it in its own reconciliation section | **not independent.** One read found it, the other did not reach it separately and says so in its own words. Carried forward as `#117`'s finding, corroborated by `#142` reading and agreeing after the fact, which is support rather than a second arrival. **Still open, in exactly the state both reads describe**: the promoting commit's own message says this conflict "is left for the row that touches it next," and neither proposal row's text has been edited to name it. |
 | The min-plus end-to-end half's own stated control (max-plus as a clean comparison column) is not a control at all, being an artifact of how the source file encodes unreachable predecessors, and the true mechanism is overflow mapping in the direction the reduction discards, which absorption accounts for at only 8.9% (W=3) and 4.0% (W=4) | **yes**, `#117` rebuilt the DAG instrument from the probe's own specification rather than rerunning the committed one | **no**, `#142` read this row in isolation and states plainly it "did not come close to it" | **`#117` alone**, the strongest single result either file produced, and a from-scratch reproduction rather than a rerun. This is now folded into the ratified absorption ruling's own `note`, with the same 8.9%/4.0% figures. The end-to-end half itself stays unpromoted; the correction is recorded so nobody promotes it on the row's old, now-refuted, stated mechanism. |
 | The proof-marker blocker on `a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing` is resolved (`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` settled the marker's spelling) | **yes**, `#117` found this | **no**, `#142`'s own section 2.5 is stale on this point and its reconciliation section explicitly corrects itself against `#117` | **`#117` alone**, and `#142` says so about itself rather than my saying it about `#142`. |
@@ -57,7 +62,7 @@ Ten proposal rows named by either read. Four are now ratified; I state the ratif
 predicate rather than re-deriving it, and name where the ratifying ruling narrowed the proposal's
 own sentence.
 
-### 2.1 `a_composed_expressions_region_is_never_inherited_from_its_parts` — **ratified**
+### 2.1 `a_composed_expressions_region_is_never_inherited_from_its_parts`: **ratified**
 
 `ruling::a_composed_expressions_region_is_never_inherited_from_its_parts`, `rung = "ratified"`,
 `ratified_by = "experts"`. Sentence carried unchanged from the proposal. Evidence: `law::associativity_of_a_composed_saturating_add_and_subtract`,
@@ -76,12 +81,12 @@ rules out.
 
 `holds for: total_width: W = 8, fraction_width: F = 0, signedness: unsigned, overflow_policy:
 saturate (vs. wrap as the negative control), operation: add-sub pair composed, threads: any,
-target_features: any` — the counterexample law's own region, which is what the normative "needs
-its own derivation" claim rests on. The claim itself (the "never" clause) is normative and holds
+target_features: any`. That is the counterexample law's own region, which is what the normative
+"needs its own derivation" claim rests on. The claim itself (the "never" clause) is normative and holds
 over derivation rules rather than over values, so it is not region-bound the way a measured claim
 is; the region above is the counterexample's, not a scope limit on the rule.
 
-### 2.2 `configuration_is_not_composition_and_a_composite_is_a_primitive` — **ratified, narrowed**
+### 2.2 `configuration_is_not_composition_and_a_composite_is_a_primitive`: **ratified, narrowed**
 
 `ruling::configuration_is_not_composition_and_a_predicate_never_transports_for_free`, `rung =
 "ratified"`, `ratified_by = "experts"`. The distinction and the closure carried as written
@@ -108,7 +113,7 @@ constructions both reads' probes checked directly, and at whatever coordinates `
 constructions (product2, complex, dual, interval) ran at, which `110` itself does not state as a
 predicate.
 
-### 2.3 `a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none` — **split; absorption half ratified, end-to-end half not promotable**
+### 2.3 `a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none`: **split; absorption half ratified, end-to-end half not promotable**
 
 `ruling::a_min_plus_top_absorbs_addition_under_saturation_and_never_under_wrapping`, `rung =
 "ratified"`, `ratified_by = "experts"`, absorption half only: unsigned, over every declared
@@ -137,10 +142,14 @@ measured over three overflow policies: wrapping fails both (wrong on 48.08% of 6
 in-range instances), saturation holds both (wrong on none), and wrapping-below-a-reserved-top
 holds absorption but fails monotonicity (wrong on 12.57%). **This row does not carry an
 `obligation` edge to `composition_contracts_above_the_numeral`**, checked directly (`grep` over
-its block finds no `obligation` field), which is exactly what `#117` reports and flags as
-"additive work for whoever next touches this cluster." I am not wiring that edge; it is a
-registry edit and outside what I was asked to do, but a later pass on this cluster should treat
-its absence as a known gap rather than as the monotonicity half being unfiled entirely.
+its block finds no `obligation` field). `#117` reports the same absence, in the same words used
+above; the phrase "additive work for whoever next touches this cluster" is not `#117`'s own,
+though. It is the ratified absorption ruling's own `note` field, naming the
+superseding row as "a real corroborating context for why absorption alone does not close the
+obligation" and stating that wiring the edge is left to whoever next touches this cluster. I am
+not wiring that edge; it is a registry edit and outside what I was asked to do, but a later pass
+on this cluster should treat its absence as a known gap rather than as the monotonicity half
+being unfiled entirely.
 
 Obligation the end-to-end half does not yet license: **"a numeral with an absorbing top is
 sufficient for a min-plus reduction to be correct" is false and is not what the ratified ruling
@@ -153,7 +162,7 @@ signedness: unsigned, overflow_policy: {wrap, saturate}, operation: add, arity: 
 4}, fraction_width: F = 0, signedness: unsigned, overflow_policy: {wrap, saturate, wrap-below-a-
 reserved-top}, operation: add, arity: 2, threads: 1`.
 
-### 2.4 `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws` — **split; statability half ratified, list half not promotable**
+### 2.4 `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`: **split; statability half ratified, list half not promotable**
 
 `ruling::a_format_concept_closed_over_v_cross_v_to_v_cannot_state_a_composite_claim`, `rung =
 "ratified"`, `ratified_by = "experts"`, statability half only: a format concept whose operations
@@ -181,7 +190,7 @@ forcing a retitle now).
 `holds for`: normative, no measured region on either half (definitional/statability content, by
 this panel's own stated practice for concept-defining sentences).
 
-### 2.5 `a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points` — not promotable
+### 2.5 `a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points`: not promotable
 
 Both reads agree: one expert (Stam, `60`), and the row's own `note` says it assumes one of three
 live directions for where a chain lives (D-A/D-B/D-C) and that adoption must not be read as
@@ -194,7 +203,7 @@ since either read; still `standing = "one_expert"`.
 
 `holds for: nothing measured; normative, resting on an unresolved fork.`
 
-### 2.6 `a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator` — not promotable
+### 2.6 `a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator`: not promotable
 
 Both reads agree: one expert (McSherry, `35`), sound probe evidence (four widening formulations
 refused with one diagnosis, four positive arms compiling in the same run). `#142` checked the one
@@ -211,7 +220,7 @@ input; no consumer-facing derivation of it is given) stands too.
 `holds for: toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27), edition 2021, build_profile:
 no feature gates, opt level 3, threads: any (argued rather than swept, per the row's own note).`
 
-### 2.7 `a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing` — not promotable
+### 2.7 `a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing`: not promotable
 
 `#117` found what `#142` missed and `#142`'s own reconciliation corrects itself to match: the
 proof-marker blocker `#142`'s first pass names (`ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked`
@@ -229,7 +238,7 @@ a blind re-derivation of the theorem, and both reads agree it does not cross the
 
 `holds for` (measured half only): `operation: mul, arity: 3, fraction_width: F = 8`.
 
-### 2.8 `no_derivation_reads_the_grid_so_a_composition_may_hold_it_at_run_time` — not promotable
+### 2.8 `no_derivation_reads_the_grid_so_a_composition_may_hold_it_at_run_time`: not promotable
 
 Both reads agree: one expert (Rompf, `43`), sound probe evidence with three negative controls.
 `#142` opened `216_lamport_second_read` and found it explicitly withdraws as a second instance
@@ -244,7 +253,7 @@ operations-vs-derivations fact where the `gap` field, not only the `note`, carri
 `holds for: toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27), edition 2021, build_profile:
 no feature gates anywhere, main arm exit 0, threads: any (equalities decided at compile time).`
 
-### 2.9 `splitting_a_reduction_is_sound_in_three_of_the_four_sign_and_policy_cells` — not promotable, and carries the open Q12 conflict
+### 2.9 `splitting_a_reduction_is_sound_in_three_of_the_four_sign_and_policy_cells`: not promotable, and carries the open Q12 conflict
 
 Both reads agree on standing: one expert (McSherry, `35`), sound probe evidence (three
 sign-and-policy cells at zero disagreement, signed-saturating at 28,336/65,536 at width 4/arity 4
@@ -273,7 +282,7 @@ notice, for whoever does.
 overflow_policy: {wrap, saturate}, operation: add, arity: 2, chain_length: {4, 8}, threads: 1
 (splits computed rather than executed on lanes).`
 
-### 2.10 `within_an_unbound_stretch_the_design_may_select_any_realisation` — not promotable, by a wide margin, blockers stale but unrepaired
+### 2.10 `within_an_unbound_stretch_the_design_may_select_any_realisation`: not promotable, by a wide margin, blockers stale but unrepaired
 
 Both reads agree, and the row's own `note` is unusually blunt about it: standing is recorded as
 `one_expert` but the honest number is zero, the panel's own ledger putting it at zero independent
@@ -359,9 +368,21 @@ design call this ruling round does not make." That stands as written and is not 
 either; a design call, named as such, is outside a consolidation's remit under `do-not-question-
 the-tier-above.md`.
 
-**No conflict found against any other ratified row.** I checked `question::reduction_order_or_associativity`
-by name per the brief and found the Q12 conflict above; I did not find a second standing row in
-tension with anything either read or the four now-ratified rulings state.
+**A ratified row overstates how independent one of its own findings is.**
+`ruling::a_min_plus_top_absorbs_addition_under_saturation_and_never_under_wrapping`'s own `note`
+field says "Both independent readings of this cluster found more
+than the proposal's own `gap` claims about it," naming the max-plus-control artefact and the
+8.9%/4.0% absorption figures. That finding is `#117` alone: section 1's ledger records `#117`
+rebuilding the DAG instrument from the probe's own specification and finding it, and `#142` reads
+the same row in isolation and states plainly it "did not come close to it"
+(`266_lamport_composition_contracts_ten_rows_split_by_predicate.md:338-339`). So the ruling's
+"both independent readings" is one reading, not two, on this specific clause, even though the
+ruling is correctly ratified overall on the absorption half it actually promotes, which does have
+two arrivals. I am not editing the row; the fact stands as a finding about it, not a repair to it.
+
+I checked `question::reduction_order_or_associativity` by name per the brief and found the Q12
+conflict above; beyond that and the overstatement just named, I did not find a second standing
+row in tension with anything either read or the four now-ratified rulings state.
 
 ## 5. What I could not establish
 
