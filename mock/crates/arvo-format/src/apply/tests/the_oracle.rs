@@ -8,18 +8,30 @@
 //! The map carries a position past either end of the index as a pinned slot, a
 //! step and a distance, because the index's own integer is the widest it has.
 //! The oracle does not: it holds the position as an integer two limbs wide, so a
-//! slot eight past `i128::MAX` is an ordinary value to it, and it answers from
-//! what each mode and each policy is documented to do. It never reads `Exact`,
-//! `Rounded`, `round_slot` or `complete_slot`, which is what lets it disagree
-//! with them.
+//! slot eight past `i128::MAX` is an ordinary value to it. It never reads
+//! `Exact`, `Rounded`, `round_slot` or `complete_slot`, which is what lets it
+//! disagree with them about arithmetic.
 //!
 //! Each mode picks between the two neighbours of an off-grid position by the
-//! words its doc gives: the lower or the higher neighbour, the one of smaller
-//! magnitude, the nearer one with a tie going to the larger magnitude or to the
-//! even one, and for the stochastic mode the higher neighbour exactly when the
-//! dither lies below the position's remainder. Saturation and clamping pin to
-//! the end of the range on the side the rounded position left by, and wrapping
-//! reduces its distance from the lowest slot modulo the span.
+//! words the `Mode` rustdoc gives: the lower or the higher neighbour, the one of
+//! smaller magnitude, the nearer one with a tie going to the larger magnitude or
+//! to the even one, and for the stochastic mode the higher neighbour exactly
+//! when the dither lies below the position's remainder. Wrapping reduces the
+//! distance from the lowest slot modulo the span, and saturation pins to the
+//! end of the range on the side the rounded position left by.
+//!
+//! Two of those readings are the implementation's own rather than a meaning the
+//! design settles, so on them the oracle is not independent of the map:
+//!
+//! - `Clamp` is read as `Saturate`. The policy's rustdoc says a clamp pins to a
+//!   declared bound that need not be the range's own end, and a declared
+//!   signature carries nowhere to put that bound, so `complete_slot` pins to
+//!   the range and the oracle does the same. The `Clamp` cells of a sweep check
+//!   that the map makes that collapse, and nothing about a clamp to a bound.
+//! - A `HalfUp` tie goes away from zero, which is what the `Mode` rustdoc in
+//!   `rounding.rs` says. What `half_up` denotes is
+//!   `question::which_operation_half_up_denotes`, open, so the `HalfUp` cells
+//!   check the map against that reading and not against a settled one.
 
 use core::cmp::Ordering;
 
@@ -161,6 +173,8 @@ pub(super) fn rounded(mode: Mode, p: Point, dither: (i64, i64)) -> Wide {
         Mode::Floor => lower,
         Mode::Ceil => higher,
         Mode::TowardZero => smaller_magnitude,
+        // Ties away from zero, the reading `rounding.rs` documents; what
+        // `half_up` denotes is an open question.
         Mode::HalfUp => nearer.unwrap_or(larger_magnitude),
         Mode::HalfEven => nearer.unwrap_or(if lower.is_even() { lower } else { higher }),
         Mode::Stochastic => {
@@ -179,6 +193,8 @@ pub(super) fn completed(policy: Policy, at: Wide, lo: i128, hi: i128) -> (i128, 
     }
     let slot = match policy {
         Policy::Wrap => lo + at.minus(low).rem_euclid(hi - lo + 1),
+        // `Clamp` as `Saturate`, the collapse `complete_slot` makes, taken from
+        // the implementation rather than from the policy's own rustdoc.
         Policy::Saturate | Policy::Clamp => {
             if at.is_below(low) {
                 lo
@@ -286,7 +302,7 @@ fn past_the_index_the_two_limbs_keep_the_value() {
 }
 
 #[test]
-fn the_oracle_reads_each_mode_by_its_words() {
+fn the_oracle_reads_each_mode_as_its_rustdoc_says() {
     let at = |whole: i128, num: i64| {
         Point {
             whole: Wide::of(whole),
@@ -338,7 +354,7 @@ fn the_oracle_reads_each_mode_by_its_words() {
 }
 
 #[test]
-fn the_oracle_completes_by_each_policy_s_words() {
+fn the_oracle_wraps_by_the_span_and_pins_saturate_and_clamp_alike() {
     let under = Wide::of(i128::MIN).minus(Wide::of(1));
     let over = Wide::of(i128::MAX).plus(Wide::of(1));
     // `Integer<3>`, `[-4, 3]`, span 8: `-2^127 - 1` is 7 modulo 8 and `-4` is 4,

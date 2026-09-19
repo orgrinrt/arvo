@@ -11,7 +11,9 @@
 //! the index and from each of its own ends, up to `depth()` whole slots either
 //! way, zero included, at every quarter remainder and under every eighth of a
 //! dither. The slot and the overflow verdict are both compared with what the
-//! oracle computes.
+//! oracle computes. The oracle reads `Clamp` as `Saturate` and a `HalfUp` tie
+//! away from zero, both taken from the implementation, so those cells check
+//! the map against those readings, as `the_oracle.rs` says.
 //!
 //! The sweep runs twice. Through `adapt` and `panic_on_overflow`, at every
 //! declared signature over those ranges, which is the surface. And through a
