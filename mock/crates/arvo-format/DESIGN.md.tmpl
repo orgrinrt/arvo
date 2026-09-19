@@ -1246,8 +1246,8 @@ midpoint, under a signed integer format at two widths and under both overflow po
 positions whose ratio carries past an end of the index. Six wrong spellings are planted and each is
 required to be reported: `half_up` alone, `toward_zero` where `floor` belongs at a tie below zero, a
 zero slot read as negative, the shift always toward positive infinity, the shift composed with `floor`,
-and the shift over a doubled denominator, which is the spelling that cannot be formed over much of the
-domain and is why the crate once recorded a gap the alias does not have.
+and the shift over a doubled denominator, which overflows the ratio's own maximum over much of the
+domain and so cannot be formed there at all.
 
 ## The two symmetries of the grid, and where the map commutes with them
 
