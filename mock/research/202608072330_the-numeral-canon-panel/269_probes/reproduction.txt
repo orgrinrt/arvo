@@ -1,0 +1,26 @@
+# Seat 269's re-runs of the probes it audits
+
+Host aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f 2026-05-27).
+Each probe compiled from the committed source at d425aff5 and run from its own
+directory; stdout compared with the committed output by `diff -q`.
+
+229_probes, each `rustc -O --edition 2015 <probe>.rs`, run inside 229_probes/:
+  a_pairwise_disagreement      exit 0   identical to a_output.txt
+  b_translation_equivariance   exit 0   identical to b_output.txt
+  c_negation_conjugacy         exit 0   identical to c_output.txt
+  d_stochastic_readings        exit 0   identical to d_output.txt
+  e_mean_error                 exit 0   identical to e_output.txt
+  f_every_tie_rule             exit 0   identical to f_output.txt
+  g_stochastic_equivariance    exit 0   identical to g_output.txt
+
+267_probes, `rustc -O a_equivariance_proof.rs`:
+  a_equivariance_proof         exit 0   identical to a_output.txt
+
+228_probes, `rustc --edition 2024 -O p2_fusion_over_both_half_up_readings.rs`:
+  p2                           exit 0   identical to the committed output below
+                                        its six-line header, which the run does
+                                        not print
+
+Reproducing the numbers says the instruments compute what they print. It does
+not say the predicates their authors wrote around them are right; 269 checks
+those separately, and one of 267's is not.

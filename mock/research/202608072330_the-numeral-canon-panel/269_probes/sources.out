@@ -1,0 +1,142 @@
+
+=== https://www.mathworks.com/help/fixedpoint/ref/embedded.fimath.html
+    c3201caf126426b5bdbdfaf6209a4fbb5defe43c5abde902cef87c4bcf07dfd5
+902:Rounding method to use, specified as one of the following:
+903-Nearest
+904- — Round toward nearest. Ties round toward positive
+905- infinity.
+906-Ceiling
+907- — Round toward positive infinity.
+908-Convergent
+909- — Round toward nearest. Ties round to the
+910- nearest even stored integer (least biased).
+911-Zero
+912- — Round toward zero.
+913-Floor
+914- — Round toward negative infinity.
+915-Round
+916- — Round toward nearest. Ties round toward negative
+917- infinity for negative numbers, and toward positive infinity for positive
+918- numbers.
+919-Data Types: 
+
+=== fimath default display
+    c3201caf126426b5bdbdfaf6209a4fbb5defe43c5abde902cef87c4bcf07dfd5
+961: RoundingMethod: Nearest
+962- OverflowAction: Saturate
+--
+1074: RoundingMethod: Nearest
+1075- OverflowAction: Saturate
+--
+1085: RoundingMethod: Nearest
+1086- OverflowAction: Saturate
+  seat 267 quotes this page; its wording, tested:
+  count of "greater absolute value" in c3201caf126426b5bdbdfaf6209a4fbb5defe43c5abde902cef87c4bcf07dfd5: 0
+  count of "closest representable" in c3201caf126426b5bdbdfaf6209a4fbb5defe43c5abde902cef87c4bcf07dfd5: 0
+  count of "rounds ties to the nearest integer" in c3201caf126426b5bdbdfaf6209a4fbb5defe43c5abde902cef87c4bcf07dfd5: 0
+
+=== https://www.mathworks.com/help/fixedpoint/ref/embedded.fi.nearest.html
+    8fed35442f8089dc1853ea33ed1e1c622d6100a38d244c574d465690dca364f4
+204: "description": "The functions convergent, nearest, and round differ in the way they treat values whose least significant digit is 5.",
+205- "thumbnailURL": "../../includes/product/images/doc_center/DefaultImage.png",
+206- "genre": "Live Script",
+207- "isPartOf": {
+208- "@type": "CreativeWork",
+209- "url": "embedded.fi.nearest.html"
+210- },
+211- "identifier": "fixedpoint.CompareRoundingMethodsExample",
+212- "name": "CompareRoundingMethodsExample",
+213- "url": "embedded.fi.nearest.html#mw_5960ad23-36d7-4185-8a3d-79afe6ced371"
+214- }
+215- {
+216- "@context": "http://schema.org",
+--
+237: differ in the way they treat values whose least significant digit is 5.
+238-The 
+239-convergent
+240- function rounds ties to the nearest even integer.
+241-The 
+242-nearest
+243- function rounds ties to the nearest integer toward positive infinity.
+244-The 
+245-round
+246- function rounds ties to the nearest integer with greater absolute value.
+247-This example illustrates these differences for a given input, a.
+248-a = fi([-3.5:3.5]&#39;);
+249-y = [a convergent(a) nearest(a) round(a)]
+
+=== https://www.mathworks.com/help/fixedpoint/ref/embedded.fi.round.html
+    b0ffda2a3bb28bac7a7f47fa2510d45c1566468a25bb70a22c35dbb65175cb9b
+125: rounds values to the nearest integer with greater absolute
+126- value. The rounded value is returned in 
+127-fi
+128- object
+  the one phrase of 267 found nowhere fetched:
+  count of "closest representable" in 8fed35442f8089dc1853ea33ed1e1c622d6100a38d244c574d465690dca364f4: 0
+  count of "closest representable" in b0ffda2a3bb28bac7a7f47fa2510d45c1566468a25bb70a22c35dbb65175cb9b: 0
+
+=== https://en.wikipedia.org/wiki/IEEE_754 (secondary; the standard is not open access)
+    0bd303ba9f316ed279c1e6632a977e729e6dfc61857cf5ef77b96d675f4bb193
+1012:The standard defines five rounding rules. The first two rules round to a nearest value; the others are called 
+1013-directed roundings
+1014-:
+1015-Roundings to nearest
+1016-[
+1017-edit
+1018-]
+1019-Round to nearest, ties to even
+1020-– rounds to the nearest value; if the number falls midway, it is rounded to the nearest value with an even least significant digit.
+1021-Round to nearest, ties away from zero
+1022- (or 
+1023-ties to away
+1024-) 
+1025-– rounds to the nearest value; if the number falls midway, it is rounded to the nearest value above (for positive numbers) or below (for negative numbers).
+1026-At the extremes, a value with a magnitude strictly less than 
+
+=== same
+    0bd303ba9f316ed279c1e6632a977e729e6dfc61857cf5ef77b96d675f4bb193
+1068:"Round to nearest, ties to even" is the default for binary floating point and the recommended default for decimal. "Round to nearest, ties to away" is only required for decimal implementations.
+
+=== https://docs.python.org/3/library/decimal.html
+    2250296fa1776a289b866d9d315d1a28cad1452b08801553af6d13f1b841b17a
+3990:Round to nearest with ties going away from zero.
+
+=== https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/RoundingMode.html
+    dc2b8fa7078c0581090bb1a0e485666657cccc7657fc05c91b94803f82bdf6b6
+137:HALF_UP
+138-HALF_DOWN
+139-HALF_EVEN
+--
+297:HALF_UP
+298-Rounding mode to round towards "nearest neighbor"
+299- unless both neighbors are equidistant, in which case round up.
+--
+544:HALF_UP
+545-public static final
+546-&nbsp;
+--
+549:HALF_UP
+550-Rounding mode to round towards "nearest neighbor"
+551- unless both neighbors are equidistant, in which case round up.
+--
+566:HALF_UP
+567- rounding
+568-5.5
+
+=== same
+    dc2b8fa7078c0581090bb1a0e485666657cccc7657fc05c91b94803f82bdf6b6
+379:Rounding mode to round away from zero. Always increments the
+This mode corresponds to the IEEE 754 rounding-direction  attribute roundTiesToAway. Example: Rounding mode HALF_UP Examples Input Number Input rounded to one digit  with  HALF_UP  rounding 5.5 6 2.5 3 1.6 2 1.1 1 1.0 1 -1.0 -1 -1.1 -1 -1.6 -2 -2.5 -3 -5.5 -6 HALF_DOWN public static final &nbsp; RoundingMode &nbsp; HALF_DO
+
+=== https://en.wikipedia.org/wiki/Rounding
+    601151a2cc03878bfd59c07c06b814efcbf0a6c3cac35b9cb9b29943d11b411f
+803:round half toward positive infinity
+804-), a tie-breaking rule that is widely used in many disciplines.
+805-[
+806-citation needed
+--
+848:round half toward positive infinity
+849-.
+850-[
+851-4
+Some programming languages (such as Java and Python) use "half up" to refer to  round half away from zero  rather than  round half toward positive infinity
