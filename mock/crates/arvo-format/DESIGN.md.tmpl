@@ -927,11 +927,13 @@ laws are stated over `UFixed<W, 0>` and `Integer<W>` at `W` in 16, 32 and 64 on 
 claim about a target-indexed family checked at one target is a claim about one member.
 
 The alias's own arm is per pointer width, and the suite running on one host compiles only that host's.
-A check at a 32-bit target compiles the 32-bit arm, and a check of the library at a 16-bit target
-compiles the alias there. The 16-bit test arms cannot be compiled at all, since a test harness needs
-`std` and no 16-bit target has one, and each is marked where it stands. The two checks that can run
-are one catalogue test, ignored because it drives a second compilation at two foreign targets and
-needs both installed, and it fails when either target stops compiling. No gate runs it yet.
+A check of the tests at a 32-bit target compiles the 32-bit arm, and a check of the library at a 16-bit
+target compiles the alias there. The 16-bit test arms cannot be compiled at all, since a test harness
+needs `std` and no 16-bit target has one. No gate runs either check yet. A test here cannot drive a
+second compilation, because the crates refuse `std::process`, and a repository lint would run two
+foreign-target builds on every commit on every machine, which is a cost the gate configuration has not
+taken on. So every arm no gate compiles carries a `// FIXME:` at the arm, naming the check that would
+compile it, and that list is the record of what is unverified.
 
 The obligation's range is a membership question, asked in both directions: the errno ceiling and the
 GetLastError ceiling are members at 32 and 64, and the second is not at 16.
