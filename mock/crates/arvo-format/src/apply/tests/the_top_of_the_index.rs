@@ -248,8 +248,8 @@ fn a_carry_past_the_index_lands_where_the_named_position_does() {
 #[test]
 fn at_the_bottom_the_step_never_leaves_the_index() {
     // The control. The step up from any slot of a range at the bottom is a slot
-    // the index holds, so this range was right before the repair and has to stay
-    // right after it.
+    // the index holds, unlike the range at the top, so nothing here saturates or
+    // overflows.
     type Up = Signature<Bottom, Adapt<Ceil, Wrap>>;
     let top_of_bottom = Exact::between(Slot::at(i128::MIN + 255), Fraction::of(1, 4));
     assert_eq!(

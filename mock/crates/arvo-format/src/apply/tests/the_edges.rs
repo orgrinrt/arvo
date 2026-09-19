@@ -100,10 +100,8 @@ fn the_oracle_agrees_with_positions_worked_out_by_hand() {
 
 #[test]
 fn adapting_at_the_edges_of_the_index_gives_the_arithmetic_answer() {
-    // Asserted against the oracle, which reaches the answer by another route.
-    // Before the exact step moved to a wide carrier the crate returned a value
-    // inside the range that was simply wrong, which no assertion comparing it to
-    // itself could have caught.
+    // Asserted against the oracle, which reaches the answer by another route,
+    // rather than against a shortcut taken in this function.
     for index in edges() {
         let got = adapt::<Edge>(Exact::on_grid(Slot::at(index)), Dither::UNUSED);
         let want = wrap_of(index, EDGE_MIN, EDGE_MAX);
@@ -260,29 +258,33 @@ fn a_dither_below_zero_rounds_as_ceil_and_one_at_or_above_one_as_floor() {
     // `Dither::at` keeps its ratio as given. The stochastic mode steps up when
     // the dither is below the remainder, which lies strictly between zero and
     // one off the grid, so a dither below zero answers as `Ceil` and one at or
-    // above one as `Floor`, at every slot and every remainder. On the grid all
-    // three agree, and the quarters below include it.
+    // above one as `Floor`, at every slot, at every quarter remainder, and at
+    // the two remainders `apply.rs`'s cross-multiplication reads furthest from
+    // the ones a quarter denominator can name, one over `i64::MAX` and one
+    // under it. On the grid all three agree, and the quarters below include it.
     type Up = Signature<Integer<3>, Adapt<Ceil, Wrap>>;
     type Either = Signature<Integer<3>, Adapt<Stochastic, Wrap>>;
     let below = [Fraction::of(-1, 8), Fraction::of(-1, 1), Fraction::of(i64::MIN, 1)];
     let at_or_above = [Fraction::of(1, 1), Fraction::of(9, 8), Fraction::of(i64::MAX, 1)];
+    let quarter_remainders = (-8 ..= 8).map(|quarters| Fraction::of(quarters, 4));
+    let extreme_remainders = [Fraction::of(1, i64::MAX), Fraction::of(i64::MAX - 1, i64::MAX)];
     for slot in edges() {
-        for quarters in -8 ..= 8 {
-            let e = Exact::between(Slot::at(slot), Fraction::of(quarters, 4));
+        for remainder in quarter_remainders.clone().chain(extreme_remainders) {
+            let e = Exact::between(Slot::at(slot), remainder);
             let ceil = adapt::<Up>(e, Dither::UNUSED);
             let floor = adapt::<Edge>(e, Dither::UNUSED);
             for d in below {
                 assert_eq!(
                     adapt::<Either>(e, Dither::at(d)),
                     ceil,
-                    "{slot} {quarters}/4 under {d:?}"
+                    "{slot} {remainder:?} under {d:?}"
                 );
             }
             for d in at_or_above {
                 assert_eq!(
                     adapt::<Either>(e, Dither::at(d)),
                     floor,
-                    "{slot} {quarters}/4 under {d:?}"
+                    "{slot} {remainder:?} under {d:?}"
                 );
             }
         }

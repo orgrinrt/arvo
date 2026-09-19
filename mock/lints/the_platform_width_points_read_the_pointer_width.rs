@@ -49,11 +49,16 @@
 //! same probe. A macro expanding to `extern crate self as core` is refused by
 //! rustc itself, "macro-expanded `extern crate` items cannot shadow names
 //! passed with `--extern`". A `Cargo.toml` dependency renamed to the key `core`
-//! reaches `::core` as the third form does, as long as the path the edition's
-//! prelude import names, `core::prelude::rust_2024` at edition 2024, resolves
-//! in the renamed crate; an empty hand-written module at that path is enough,
-//! and nothing else of the real `core` is needed. This lint reads `.rs` source
-//! only and never opens a manifest, so that rename is unguarded. So are a glob import
+//! reaches `::core` as the third form does. For a `no_std` crate, which is what
+//! `arvo-format` is, that takes as long as the path the edition's prelude
+//! import names, `core::prelude::rust_2024` at edition 2024, resolves in the
+//! renamed crate; an empty hand-written module at that path is enough, and
+//! nothing else of the real `core` is needed. A dependent carrying no
+//! `#![no_std]` needs none of this, since its own prelude is imported through
+//! the name `std` rather than `core`: the rename still hijacks the
+//! leading-`::` path with no `prelude` module in the renamed crate at all.
+//! This lint reads `.rs` source only and never opens a manifest, so that
+//! rename is unguarded, `no_std` dependent or not. So are a glob import
 //! bringing in an item named `core`, another kind of item named `core`, and a
 //! macro expanding to any of the three forms. A textual lint does not close
 //! Rust name resolution, and this arm is an enumeration rather than a closed

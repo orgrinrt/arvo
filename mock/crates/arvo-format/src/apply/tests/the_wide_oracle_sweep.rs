@@ -10,10 +10,12 @@
 //! remainders, into fifteen ranges. This one feeds distances up to `2^63` past
 //! either end of the index, the furthest `Exact::between` can name, over the
 //! denominators 1, 2, 3, 4, 7 and `i64::MAX`, into ranges one slot wide at zero
-//! and at both ends of the index, the ranges `[0, 2^64 - 1]` and
-//! `[-2^63, 2^63 - 1]`, the `2^64`-slot ranges at both ends of the index, and
-//! `[-4, 3]`. Each position is written from both ends of the index, from each end
-//! of the range, from one past each end of the range, and from zero.
+//! and at `[5, 5]` and at both ends of the index, the ranges `[0, 2^64 - 1]` and
+//! `[-2^63, 2^63 - 1]`, the `2^64`-slot ranges at both ends of the index,
+//! `[-4, 3]`, a 200-slot range off its own span, `[-100, 99]`, and a 256-slot
+//! range, `[1000, 1255]`. Each position is written from both ends of the index,
+//! from each end of the range, from one past each end of the range, and from
+//! zero.
 //!
 //! It runs the shipped map and every broken map `the_broken_maps.rs` keeps over
 //! that region, and runs `adapt` and `panic_on_overflow` at `USize` and `ISize`
@@ -52,7 +54,7 @@ const fn span_64() -> i128 {
 }
 
 /// Every range the map sweep feeds, as its lowest and highest slot.
-fn ranges() -> [(i128, i128); 9] {
+fn ranges() -> [(i128, i128); 11] {
     [
         (0, 0),
         (5, 5),
@@ -63,6 +65,8 @@ fn ranges() -> [(i128, i128); 9] {
         (i128::MAX - span_64() + 1, i128::MAX),
         (i128::MIN, i128::MIN + span_64() - 1),
         (-4, 3),
+        (-100, 99),
+        (1000, 1255),
     ]
 }
 
@@ -87,7 +91,9 @@ fn denominators() -> [i64; 6] {
 }
 
 /// Whole slots from the anchor, out to a quarter of the numerator's range each
-/// way, with the steps a span of 200 or 256 turns on.
+/// way, with the steps one past the span of the 200-slot and 256-slot ranges
+/// `ranges()` feeds, so a wrap reduction that only breaks past such a span is
+/// exercised.
 fn wholes() -> [i64; 17] {
     [
         i64::MIN / 2,

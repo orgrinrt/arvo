@@ -35,10 +35,10 @@ use crate::tests::grid::Grid;
 #[test]
 fn a_phase_keeps_the_value_it_was_declared_with() {
     // The coordinate holds the pair rather than a normalisation of it, and these
-    // are the two pairs no normalisation inside the declared width can keep. A
-    // constructor moving the sign to the numerator has to negate the denominator,
-    // which the least value has no room for, so it read both as a denominator of
-    // one and changed the value it was handed.
+    // are the two pairs no normalisation inside the declared width can keep:
+    // moving the sign to the numerator would negate the denominator, which the
+    // least value has no room for, so the only normalised form available is a
+    // denominator of one, a different position from the one declared.
     let tiny_negative = Phase::of(3, i64::MIN);
     assert_eq!(tiny_negative.numerator(), 3);
     assert_eq!(tiny_negative.denominator(), i64::MIN);

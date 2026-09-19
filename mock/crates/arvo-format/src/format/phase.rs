@@ -44,9 +44,9 @@ impl Phase {
     /// and that is a condition on the format rather than on the pair:
     /// `Format::ADMITTED` refuses it where the coordinates are declared together,
     /// which is the same shape `Slots`, `Quantum` and `Ambient` already carry.
-    /// Reading it as a denominator of one, which an earlier constructor did, is
-    /// the one thing that cannot be right, because one over zero and one over one
-    /// are different positions and only one of them exists.
+    /// Reading it as a denominator of one is the one thing that cannot be
+    /// right, because one over zero and one over one are different positions
+    /// and only one of them exists.
     #[must_use]
     pub const fn of(num: i64, den: i64) -> Self {
         Self {
