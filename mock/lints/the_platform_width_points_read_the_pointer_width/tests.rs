@@ -343,20 +343,137 @@ fn a_core_module_referencing_an_external_file_fires() {
 fn a_use_alias_to_core_fires() {
     let errors = hits(&with_declaration("use crate::fake as core;"));
     assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(errors[0].message.contains("use"));
+    assert!(
+        errors[0].message.contains("use ... as core"),
+        "{}",
+        errors[0].message
+    );
+    // The two forms are told apart by which reason fires, not merely by which
+    // words the message happens to contain: a `use` alias is refused for
+    // shadowing the bare name in scope, never for reaching the leading-`::`
+    // path, which is the `extern crate` reason.
+    assert!(
+        !errors[0].message.contains("renames the crate root"),
+        "{}",
+        errors[0].message
+    );
 }
 
 #[test]
 fn an_extern_crate_alias_to_core_fires() {
     let errors = hits(&with_declaration("extern crate self as core;"));
     assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(errors[0].message.contains("extern crate"));
+    assert!(
+        errors[0].message.contains("extern crate ... as core"),
+        "{}",
+        errors[0].message
+    );
+    assert!(
+        errors[0].message.contains("renames the crate root"),
+        "{}",
+        errors[0].message
+    );
+    assert!(
+        !errors[0].message.contains("use ... as core"),
+        "{}",
+        errors[0].message
+    );
 }
 
 #[test]
 fn an_extern_crate_alias_to_core_from_a_named_crate_fires() {
     let errors = hits(&with_declaration("extern crate somewhere as core;"));
     assert_eq!(errors.len(), 1, "{errors:?}");
+}
+
+#[test]
+fn a_raw_ident_mod_core_fires() {
+    let errors = hits(&with_declaration(
+        "mod r#core {\n    pub const X: u32 = 1;\n}",
+    ));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+    assert!(
+        errors[0].message.contains("mod core"),
+        "{}",
+        errors[0].message
+    );
+}
+
+#[test]
+fn a_raw_ident_extern_crate_self_alias_fires() {
+    let errors = hits(&with_declaration("extern crate self as r#core;"));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+    assert!(
+        errors[0].message.contains("extern crate"),
+        "{}",
+        errors[0].message
+    );
+}
+
+#[test]
+fn a_raw_ident_use_alias_fires() {
+    let errors = hits(&with_declaration("use crate::fake as r#core;"));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+    assert!(
+        errors[0].message.contains("use ... as core"),
+        "{}",
+        errors[0].message
+    );
+}
+
+#[test]
+fn a_braced_use_alias_fires() {
+    // The multiline `#[cfg(target_pointer_width = "32")]` control form review146f
+    // asked for: a cfg-gated extern crate over several lines, plus a braced
+    // `use` alias closing at `,` rather than at `;`.
+    let errors = hits(&with_declaration(
+        "use crate::{fake as core, fake as other};",
+    ));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+    assert!(
+        errors[0].message.contains("use ... as core"),
+        "{}",
+        errors[0].message
+    );
+}
+
+#[test]
+fn a_braced_use_alias_closing_at_the_final_brace_fires() {
+    let errors = hits(&with_declaration("use crate::{other, fake as core};"));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+}
+
+#[test]
+fn a_use_path_ending_bare_in_core_fires() {
+    let errors = hits(&with_declaration("use crate::fake::core;"));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+    assert!(
+        errors[0].message.contains("as the last"),
+        "{}",
+        errors[0].message
+    );
+}
+
+#[test]
+fn a_bare_use_of_core_at_the_crate_root_fires() {
+    let errors = hits(&with_declaration("use core;"));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+}
+
+#[test]
+fn a_multiline_cfg_gated_extern_crate_alias_fires() {
+    let errors = hits(&with_declaration(
+        "#[cfg(target_pointer_width = \"32\")]\nextern crate self as r#core;\n",
+    ));
+    assert_eq!(errors.len(), 1, "{errors:?}");
+}
+
+#[test]
+fn a_use_path_continuing_past_core_is_silent() {
+    // `core` here is a module segment, not the leaf the `use` item binds, so
+    // this is the silent control for `a_use_path_ending_bare_in_core_fires`.
+    let errors = hits(&with_declaration("use crate::core::mem;"));
+    assert!(errors.is_empty(), "{errors:?}");
 }
 
 #[test]
@@ -371,14 +488,6 @@ fn a_core_binding_is_found_regardless_of_which_file_carries_the_aliases() {
         errors.iter().any(|e| e.message.contains("mod core")),
         "{errors:?}"
     );
-}
-
-#[test]
-fn the_control_no_core_binding_present_is_silent() {
-    // The shipped source alone, with neither arm's fixture spliced in, fires
-    // neither: this is the positive control for the alias arm (already covered
-    // above) and the silent control for this arm.
-    assert!(hits(SHIPPED).is_empty());
 }
 
 #[test]

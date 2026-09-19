@@ -210,11 +210,13 @@ fn the_step_onto_the_lowest_slot_is_in_range_only_where_the_range_starts_there()
     // bottom sits, which is the shape deleting that conjunct produces.
     let (good, bad) = (shipped_map(), no_lo_guard_onto_the_lowest());
 
-    // The general law first, over the same shape `the_translation_law.rs` runs
-    // for every other broken map: it feeds a range only ever from its own end,
-    // so a defect wrong the same way relative to every range it is fed, which
-    // dropping the `lo == i128::MIN` conjunct is, passes it silently. What
-    // reports it is the cross-end check below, not this law.
+    // A blind spot in `new_law`, pinned rather than merely left unnoticed: the
+    // general law runs over the same shape `the_translation_law.rs` runs for
+    // every other broken map, feeding a range only ever from its own end, so a
+    // defect wrong the same way relative to every range it is fed, which
+    // dropping the `lo == i128::MIN` conjunct is, passes it silently. This
+    // assertion states that the general law cannot see this particular defect;
+    // what does is the cross-end check below, not this law.
     assert_eq!(new_law(bad), Maybe::Isnt);
 
     let position = Exact::between(Slot::at(i128::MIN), Fraction::of(-1, 4));
@@ -245,7 +247,7 @@ fn the_step_onto_the_lowest_slot_is_in_range_only_where_the_range_starts_there()
 
 #[test]
 fn a_step_past_the_bottom_is_out_of_range_where_the_fed_range_does_not_start_there() {
-    // The failure scenario the review names: `Exact::between(Slot::at(i128::MIN),
+    // The failure scenario this guard exists for: `Exact::between(Slot::at(i128::MIN),
     // Fraction::of(-3, 4))` names `MIN - 3/4`, and `Ceil` takes it to `MIN`. Fed
     // to `Integer<3>` (`[-4, 3]`) under `Wrap`, the range's own bottom is not
     // `i128::MIN`, so the shipped verdict is out of range and the wrap reduces

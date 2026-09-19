@@ -6,8 +6,9 @@
 //! The edges of the slot index, which every arm in the parent stays away from.
 //!
 //! Thirty references to one small window meant the arithmetic could never leave
-//! the index, so the breaking path was never entered and five review passes found
-//! what the suite did not. These arms feed the index's own ends, and the ends of
+//! the index, so the breaking path was never entered and reading the source
+//! against the tests found what running them did not. These arms feed the
+//! index's own ends, and the ends of
 //! the integer one size down, which is where the index used to stop and where a
 //! position is now an ordinary one.
 
