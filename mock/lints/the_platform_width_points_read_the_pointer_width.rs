@@ -4,8 +4,10 @@
 //--------------------------------------------------------------------------------------------------
 
 //! Lint: the platform-width points in `arvo-format` are spelled over
-//! `::core::primitive::usize::BITS`, and nothing in `arvo-format` binds the name
-//! `core` to anything else.
+//! `::core::primitive::usize::BITS`, and no source file in `arvo-format` binds
+//! the name `core` through a module, a `use` item or an `extern crate` alias.
+//! Those three forms are what it reads; the other ways to bind the name are
+//! listed below as unguarded.
 //!
 //! `USize` and `ISize` are aliases, `UFixed<{ ::core::primitive::usize::BITS },
 //! 0>` and `Integer<{ ::core::primitive::usize::BITS }>`, and what makes each a
@@ -47,10 +49,11 @@
 //! same probe. A macro expanding to `extern crate self as core` is refused by
 //! rustc itself, "macro-expanded `extern crate` items cannot shadow names
 //! passed with `--extern`". A `Cargo.toml` dependency renamed to the key `core`
-//! reaches `::core` as the third form does, as long as the renamed crate
-//! re-exports the real `core`'s contents, since the prelude of a `no_std` crate
-//! resolves through the name `core`; this lint reads `.rs` source only and
-//! never opens a manifest, so that rename is unguarded. So are a glob import
+//! reaches `::core` as the third form does, as long as the path the edition's
+//! prelude import names, `core::prelude::rust_2024` at edition 2024, resolves
+//! in the renamed crate; an empty hand-written module at that path is enough,
+//! and nothing else of the real `core` is needed. This lint reads `.rs` source
+//! only and never opens a manifest, so that rename is unguarded. So are a glob import
 //! bringing in an item named `core`, another kind of item named `core`, and a
 //! macro expanding to any of the three forms. A textual lint does not close
 //! Rust name resolution, and this arm is an enumeration rather than a closed
