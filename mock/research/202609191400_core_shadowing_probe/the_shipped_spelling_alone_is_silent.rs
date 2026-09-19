@@ -15,4 +15,7 @@ impl<const B: u32> F for W<B> {
 
 pub type CHECK = W<{ ::core::primitive::usize::BITS }>;
 
-const _: () = assert!(<CHECK as F>::MAX == (1i128 << usize::BITS) - 1);
+const _: () = assert!(
+    <CHECK as F>::MAX == (1i128 << usize::BITS) - 1,
+    "the leading-:: spelling did not read the host's pointer width"
+);

@@ -1,109 +1,93 @@
 # A manifest rename reaches the leading-colon path, and the lint does not see it
 
-Hypothesis: a `Cargo.toml` dependency renamed to the key `core`
-(`core = { package = "fakecore", ... }`) replaces what the name `core`
-resolves to at the crate root, through the dependency graph rather than
-through source, so the leading-`::` path `::core::primitive::usize::BITS`
-reads the renamed crate's `primitive` instead of the real one. Whether the
-same holds under a `[target.'cfg(...)'.dependencies]` table, rather than a
-plain `[dependencies]` table, is not shown by this fixture; no arm exercises
-a target table.
+The question is whether a `Cargo.toml` dependency renamed to the key `core`,
+`core = { package = "fakecore", ... }`, changes what the leading-`::` path
+`::core::primitive::usize::BITS` reads, with nothing in the dependent's source
+binding the name `core`. The fixture answering it is `manifest_rename/`, run by
+`run.sh` with `cargo check --locked` beside the single-file arms, and every
+statement below about an arm is either in the table or checked against
+`run.out` and that arm's source.
 
-The fixture is `manifest_rename/`, thirteen small Cargo packages, each its
-own workspace, five crates standing in for `core` and eight dependents,
-checked by `run.sh` with `cargo check --locked` beside the single-file
-arms. Every stand-in declares its own `primitive` module whose
-`usize::BITS` is 8, and every dependent renames its stand-in to `core` in
-its manifest and reads `::core::primitive::usize::BITS`. The stand-ins
-differ only in what else they carry:
+## The arms, as `run.sh` records them
 
-- `fakecore/` does `pub use core::*;`, the real `core` whole. `user/`
-  depends on it.
-- `fakecore_with_only_the_prelude/` does `pub use core::prelude;`, the
-  real `prelude` module and nothing else of `core`.
-  `user_of_the_crate_with_only_the_prelude/` depends on it.
-- `fakecore_with_an_empty_prelude/` holds nothing of the real `core`, only
-  a hand-written `pub mod prelude { pub mod rust_2024 {} }`.
-  `user_of_the_crate_with_an_empty_prelude/` depends on it, and so does
-  `user_of_the_crate_with_an_empty_prelude_and_a_wrong_width/`, the
-  control for its array-length trick.
-- `fakecore_with_a_bare_prelude/` holds a `pub mod prelude {}` with
-  nothing inside it, no `rust_2024` submodule at all.
-  `user_of_the_crate_with_a_bare_prelude/` depends on it, to isolate
-  whether the exact `rust_2024` path is needed or any `prelude` module
-  satisfies the import.
-- `fakecore_without_the_glob/` carries neither, only the `primitive`
-  module. `user_of_the_crate_without_the_glob/`,
-  `a_std_dependent_of_the_crate_without_the_glob/` and
-  `a_std_dependent_of_the_crate_without_the_glob_and_a_wrong_width/` all
-  depend on it: the first `#![no_std]`, the other two carrying no such
-  attribute, the third the control for the second's checks.
+`arms.md` is the table, written by `run.sh` in the same run that writes
+`run.out`: one row per arm and one per generated control, with what the arm
+checks, what it is expected to do and what it did. The "what it checks" column
+is counted from each arm's source by the same scan that generates the controls,
+so it is not a description anybody wrote. A generated control is the arm with
+one checking item's comparison flipped, `==` to `!=` or the reverse, and it
+counts only when it is refused by that item alone; `run.sh`'s header says how
+that is told.
 
-The `no_std` dependents among the first four stand-ins assert that the
-path reads 8 and that 8 differs from the pointer width read through the
-primitive type `usize`, each as `const _: () = assert!(...)`, evaluated
-at check time. The empty prelude and the bare prelude bring no `assert!`
-into scope beyond what `#![no_std]` still grants through the language
-prelude, so the empty-prelude dependent states the same two checks as
-array lengths, which fail as a length mismatch when false, and the
-wrong-width one asserts a width the renamed crate does not have, to show
-the trick can actually fail. The std dependents assert the same two
-things about the without-the-glob crate the same way the no_std ones do,
-`const _: () = assert!(...)`, since nothing about their prelude is under
-test and a lib crate with no `#![no_std]` still has that form in scope.
+## The fixture
 
-Outcome, as `run.out` records it:
+- Thirteen Cargo packages, each its own workspace: five stand-ins for `core`
+  and eight dependents.
+- Every stand-in declares a `primitive` module whose `usize::BITS` is 8.
+- Every dependent renames one stand-in to the key `core` in its
+  `[dependencies]` table, and no other table.
+- The stand-ins differ in what else they carry: `fakecore` does
+  `pub use core::*;`, `fakecore_with_only_the_prelude` does
+  `pub use core::prelude;`, `fakecore_with_an_empty_prelude` holds
+  `pub mod prelude { pub mod rust_2024 {} }`, `fakecore_with_a_bare_prelude`
+  holds `pub mod prelude {}`, and `fakecore_without_the_glob` holds only
+  `primitive`.
+- Every dependent is at edition 2024, and every one but
+  `a_std_dependent_of_the_crate_without_the_glob` is `#![no_std]`.
 
-- `manifest_rename/user`,
-  `manifest_rename/user_of_the_crate_with_only_the_prelude` and
-  `manifest_rename/user_of_the_crate_with_an_empty_prelude` build, with
-  both checks holding in each. The rename takes over `::core`, and the
-  path reads 8.
-- `manifest_rename/user_of_the_crate_without_the_glob`, `#![no_std]`, is
-  refused with `cannot resolve a prelude import`.
-- `manifest_rename/user_of_the_crate_with_a_bare_prelude`, `#![no_std]`,
-  is refused with the same `cannot resolve a prelude import`: a `prelude`
-  module with nothing in it is refused exactly as an absent `prelude`
-  module is, so the exact `rust_2024` path is what a `no_std` dependent
-  needs rather than any `prelude` module existing.
-- `manifest_rename/a_std_dependent_of_the_crate_without_the_glob`, no
-  `#![no_std]`, builds, with both const assertions holding, against the
-  same renamed crate that refuses the `no_std` dependents above.
-- `manifest_rename/user_of_the_crate_with_an_empty_prelude_and_a_wrong_width`
-  is refused with `mismatched types`: the array-length trick the empty-prelude
-  dependent above relies on does fail when its condition is false.
-- `manifest_rename/a_std_dependent_of_the_crate_without_the_glob_and_a_wrong_width`
-  is refused with the const assertion's own message, "the manifest rename
-  did not take over `::core`": the std dependent's check fails when its
-  condition is false, the same way the no_std dependents' checks do.
+## What each dependent shows
 
-So what the rename needs of a `no_std` dependent is that the path the
-edition's prelude import names, `core::prelude::rust_2024` at edition
-2024, resolves in the renamed crate: a `prelude` module alone is not
-enough, shown by `user_of_the_crate_with_a_bare_prelude`'s refusal. That
-is because a `no_std` crate's own prelude is imported through the name
-`core`, which the rename has just taken over: the renamed crate is read
-for it, and nothing of the real `core`'s contents beyond that exact path
-is needed, an empty module at that path is enough, shown by
-`user_of_the_crate_with_an_empty_prelude`'s build. A std dependent's own
-prelude is imported through the name `std`, not `core`, so it needs none
-of this: the rename still hijacks the leading-`::` path with no `prelude`
-module in the renamed crate at all, shown by
-`a_std_dependent_of_the_crate_without_the_glob`'s build and its wrong-width
-sibling's refusal, both against the very crate that refuses the `no_std`
-dependents above. The fixture runs at edition 2024 only, so what another
-edition's prelude path needs of a `no_std` dependent is not shown here.
+- `user`, onto `fakecore`, builds, and its two const asserts hold: `W == 8`
+  and `W != usize::BITS`. `run.out` shows both generated controls refused
+  with their own messages.
+- `user_of_the_crate_with_only_the_prelude`, onto
+  `fakecore_with_only_the_prelude`, builds with the same two const asserts
+  holding, and both its generated controls are refused.
+- `user_of_the_crate_with_an_empty_prelude`, onto
+  `fakecore_with_an_empty_prelude`, builds with the same two comparisons
+  written as array lengths, and both its generated controls are refused with
+  `mismatched types` on the flipped line.
+- `user_of_the_crate_with_an_empty_prelude_naming_assert`, onto the same
+  stand-in, is refused with ``cannot find macro `assert` in this scope``, so
+  there is no `assert!` in scope under the empty prelude.
+- `user_of_the_crate_without_the_glob`, onto `fakecore_without_the_glob`, is
+  refused with `cannot resolve a prelude import`. It checks no value.
+- `user_of_the_crate_with_a_bare_prelude`, onto
+  `fakecore_with_a_bare_prelude`, is refused with the same
+  `cannot resolve a prelude import`. It checks no value.
+- `user_of_the_crate_with_a_bare_prelude_naming_assert`, onto the same
+  stand-in, is refused with both `cannot resolve a prelude import` and
+  ``cannot find macro `assert` in this scope``, so there is no `assert!` in
+  scope under the bare prelude either.
+- `a_std_dependent_of_the_crate_without_the_glob`, onto
+  `fakecore_without_the_glob`, builds with the same two const asserts
+  holding, and both its generated controls are refused with their own
+  messages.
 
-So the hazard is real for both, and it needs no source form: none of the
-five dependents that build holds any of the three forms the lint reads.
-The lint reads `.rs` source only (`ctx.all_sources`) and never opens a
-`Cargo.toml`, so a manifest rename stays unguarded by it, whether or not
-the dependent is `no_std`. `DESIGN.md.tmpl` and the lint's module doc
-both say so, scoped to `arvo-format`, which is itself `no_std`.
+So four of the eight dependents build, and in each of the four `::core`
+reads the stand-in's 8 rather than the pointer width.
 
-What this unblocks: a manifest-reading check, which would have to refuse
-a dependency key `core` under `[dependencies]`, `[dev-dependencies]`,
-`[build-dependencies]` and every `[target.*]` table, with this fixture as
-its firing case for the plain tables. Whether a `[target.'cfg(...)'.dependencies]`
-rename needs the same check, or reaches the leading-`::` path at all, is
-open until an arm exercises one.
+## What that establishes, and where
+
+At edition 2024, with the rename under `[dependencies]`:
+
+- A `no_std` dependent's build reaches its own source when the renamed crate
+  has a `prelude::rust_2024` path, whether that is the real `core` whole, the
+  real `prelude` module alone, or an empty module at that path.
+- A `no_std` dependent is refused at the prelude import when the renamed crate
+  has no `prelude` module, or a `prelude` module with no `rust_2024` in it.
+- The std dependent builds against the stand-in with no `prelude` module, the
+  one that refuses the `no_std` dependent.
+- None of the four dependents that build holds a module, a `use` item or an
+  `extern crate` item binding the name `core`.
+
+The lint reads `.rs` source only, through `ctx.all_sources`, and never opens a
+`Cargo.toml`, so none of these renames is refused by it.
+
+## Not shown
+
+- A rename under `[dev-dependencies]`, `[build-dependencies]` or a
+  `[target.*.dependencies]` table. No arm has one, so this fixture says
+  nothing about whether any of them reaches `::core`, and so nothing about
+  which tables a manifest-reading check would have to read.
+- Any edition but 2024.

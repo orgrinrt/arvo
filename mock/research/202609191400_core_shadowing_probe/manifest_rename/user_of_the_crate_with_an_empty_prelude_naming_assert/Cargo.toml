@@ -1,5 +1,5 @@
 [package]
-name = "user_of_the_crate_with_an_empty_prelude_and_a_wrong_width"
+name = "user_of_the_crate_with_an_empty_prelude_naming_assert"
 version = "0.0.0"
 edition = "2024"
 publish = false

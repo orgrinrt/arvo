@@ -10,8 +10,9 @@
 //
 // Outcome: WORKS, meaning `cargo check` exits 0, with the leading-`::` path
 // reading the renamed crate's `primitive::usize::BITS`, 8, and no dependence
-// on anything the no_std arms needed. The wrong-width sibling is
-// `a_std_dependent_of_the_crate_without_the_glob_and_a_wrong_width`.
+// on anything the no_std arms needed. `run.sh` derives one control per
+// assertion here, with that assertion's comparison flipped, and expects each
+// refused with that assertion's own message.
 pub const W: u32 = ::core::primitive::usize::BITS;
 
 const _: () = assert!(W == 8, "the manifest rename did not take over `::core`");

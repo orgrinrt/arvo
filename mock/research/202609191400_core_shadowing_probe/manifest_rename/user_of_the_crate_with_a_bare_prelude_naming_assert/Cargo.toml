@@ -1,0 +1,10 @@
+[package]
+name = "user_of_the_crate_with_a_bare_prelude_naming_assert"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+core = { package = "fakecore_with_a_bare_prelude", path = "../fakecore_with_a_bare_prelude" }
+
+[workspace]

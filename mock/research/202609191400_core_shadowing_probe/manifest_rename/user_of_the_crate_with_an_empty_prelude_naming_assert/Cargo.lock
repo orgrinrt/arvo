@@ -7,7 +7,7 @@ name = "fakecore_with_an_empty_prelude"
 version = "0.0.0"
 
 [[package]]
-name = "user_of_the_crate_with_an_empty_prelude_and_a_wrong_width"
+name = "user_of_the_crate_with_an_empty_prelude_naming_assert"
 version = "0.0.0"
 dependencies = [
  "fakecore_with_an_empty_prelude",

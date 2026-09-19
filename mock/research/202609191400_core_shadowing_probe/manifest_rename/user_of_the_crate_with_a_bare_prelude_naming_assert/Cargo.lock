@@ -3,12 +3,12 @@
 version = 4
 
 [[package]]
-name = "a_std_dependent_of_the_crate_without_the_glob_and_a_wrong_width"
+name = "fakecore_with_a_bare_prelude"
 version = "0.0.0"
-dependencies = [
- "fakecore_without_the_glob",
-]
 
 [[package]]
-name = "fakecore_without_the_glob"
+name = "user_of_the_crate_with_a_bare_prelude_naming_assert"
 version = "0.0.0"
+dependencies = [
+ "fakecore_with_a_bare_prelude",
+]
