@@ -1,0 +1,50 @@
+09b13190 chore: lock the src changelist for the platform-width round
+26bce672 feat: add `USize` and `ISize` on a 128-bit slot index
+fc76848b chore: lock the doc changelist for the platform-width round
+ca0fc245 docs: design the platform-width points on a 128-bit slot index
+34d616c9 docs: open the platform-width round with its topic and the slot sketch
+34558620 docs: consolidate the composition contracts across two reads
+65c1634d research: a second read on which operation half_up denotes
+e17c5d3a research: reconcile half_up finding against seat 229
+a6f4a6d9 research: half_up denotes two standards-documented operations
+6ae6cade canon: promote four composition rows on two reads each
+1545b60e feat: add admitted addition on a declared signature
+de3461dc research: a second read on the ten composition proposals
+ed5e0755 266: reconcile against the prior composition-cluster seat
+7d8590c0 266: derive composition contracts cluster blind
+4c6548d6 canon: settle what a platform-width type is
+99f31992 research: a second read on what a platform-width type is
+9d1ab004 265: rewrap two lines of the reconciliation
+d3584bc4 265: reconcile with seat 260 on what a platform-width type is
+32e0b6dd 265: what a platform-width type is, derived cold and built for three pointer widths
+22efc5d0 canon: answer the admitted-obligations row by reshaping it
+6c130503 feat: ship `arvo-bits`, an exact-width bit container
+c45809b1 chore: take the ask tool from muisti under lint-crates
+f8d8a9d1 research: seat 264, the door ruling does not reach the unwrap accessor
+fb618b0c fix: bump the five tool locks onto the engine revision they lag, again
+cdab9a22 fix: bump the five tool locks onto the engine revision they lag
+05d0a851 docs: record that the structural-region row is answered, on three reads
+26b14649 feat: state where the adaptation commutes with the grid's symmetries
+b544c82c docs: correct the width seat's hash, which resolves on its own branch
+eb059dec docs: file the question of which operation `half_up` denotes
+3f6b37c1 Merge pull request #125 from orgrinrt/research/whether-a-structural-claim-carries-a-region
+e1b8a98e Merge pull request #124 from orgrinrt/research/what-a-platform-width-type-is-rebased
+e0f64697 Merge pull request #123 from orgrinrt/research/whether-the-fused-result-composes
+84dac759 docs: say which `half_up` the arms name, and what the pairing costs
+5c69b710 docs: move the region seat to 261, and correct what it said about ssh
+102f9d0a docs: move the width seat to 260, and correct the fix it recorded
+764bc72f chore: take the tool manifests and locks as `dev` has them
+84065f75 research: settle whether the 64-bit wall is a wall, and it is not
+776a7fff research: answer q26 by compiling the clause its first option rests on
+cced7740 research: record the probe crate lock without the local patch override
+e583b7e1 research: fix the arm the placement probe doc names, and rebuild its output
+4139535a research: admit what the sitting settled as retirements and questions
+95b853ea chore: follow the engine pin to `a7dd822` in the five tool locks
+88d34944 chore: move the tool locks onto the engine pin the launcher resolved
+469e1c28 research: answer whether a structural claim carries a region, and second-read 247 through 255
+3ff09851 fix: drop the lint that guarded a crate arvo does not have
+b6dc9a73 research: run the plant through the real gate and date the namespace r5 quantifies over
+1ac3c8de fix: match the engine URL spelling in the five tool manifests
+f4eda4f3 research: drive the predicate lints over six spellings of one structural claim
+855278ae research: answer what 226 asked the next seat, and say where we differ
+26e4bc81 research: measure whether the reachability floor scales with the arrivals it checks
