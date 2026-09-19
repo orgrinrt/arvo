@@ -59,8 +59,8 @@ fn shipped(slot: Slot, part: Fraction) -> Exact {
     Exact::between(slot, part)
 }
 
-/// A constructor that pins the slot at the index's end and drops the distance,
-/// which is what `between` did before it kept one.
+/// A constructor that pins the slot at the index's end and drops the distance
+/// past it, so a position past the index reads as the index's end.
 fn pinned(slot: Slot, part: Fraction) -> Exact {
     let exact = Exact::between(slot, part);
     Exact {

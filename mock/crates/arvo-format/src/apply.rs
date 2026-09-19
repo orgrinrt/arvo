@@ -284,8 +284,8 @@ pub const fn panic_on_inexact(exact: Exact) -> Bool {
 /// before adapting. The dither is the one `adapt` is handed, because the
 /// stochastic mode's rounded slot is a function of it.
 ///
-/// It reads the range without forcing the slot range's obligation, the same as
-/// the slot verdict it replaces did. `adapt` is where that obligation is met.
+/// It reads the range without forcing the slot range's obligation. `adapt` is
+/// where that obligation is met.
 #[must_use]
 pub const fn panic_on_overflow<S: DeclaredSignature>(exact: Exact, dither: Dither) -> Bool {
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;

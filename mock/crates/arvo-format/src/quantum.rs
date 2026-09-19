@@ -179,8 +179,7 @@ const fn ranges_over_a_magnitude(magnitudes: MagnitudeCount) -> bool {
 /// Computed in a signed 128-bit integer, wider than the three coordinates need
 /// today, on purpose. Whether a narrower integer would do is an argument over
 /// the exact widths of three coordinate types rather than a property of the
-/// check, so widening any one of them would break a narrower form silently
-/// while every test still passed.
+/// check, so the check does not rest on it.
 const fn reach_is_representable(
     base: Exponent,
     slope: Exponent,
