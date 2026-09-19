@@ -1311,6 +1311,52 @@ verdict: as expected
 selfcheck/an_escape_the_harness_cannot_match.rs: flagged by structure, want structure
 verdict: as expected
 
+  | == selfcheck/an_item_declared_in_neither_list.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/an_item_declared_in_neither_list.rs, item 2: declared in 0 of --reads and --resists, not in exactly one
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/an_item_declared_in_neither_list.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/an_item_declared_in_neither_list.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/an_item_declared_in_both_lists.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/an_item_declared_in_both_lists.rs, item 1: declared in 2 of --reads and --resists, not in exactly one
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/an_item_declared_in_both_lists.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/an_item_declared_in_both_lists.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/two_items_sharing_a_message.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/two_items_sharing_a_message.rs: two items share a message, so their refusals cannot be told apart
+  | verdict: UNEXPECTED
+  | 
+  | -- selfcheck/two_items_sharing_a_message.rs: passes skipped, since the arm cannot be judged
+  | 
+selfcheck/two_items_sharing_a_message.rs: flagged by structure, want structure
+verdict: as expected
+
+  | == selfcheck/declared_to_check_nothing_and_checks.rs
+  | exit 0
+  | verdict: as expected, builds
+  | 
+  | == selfcheck/declared_to_check_nothing_and_checks.rs: declared to check nothing, and holds 1 item(s)
+  | verdict: UNEXPECTED
+  | 
+selfcheck/declared_to_check_nothing_and_checks.rs: flagged by structure, want structure
+verdict: as expected
+
   | == selfcheck/compares_the_width_with_itself.rs
   | exit 0
   | verdict: as expected, builds

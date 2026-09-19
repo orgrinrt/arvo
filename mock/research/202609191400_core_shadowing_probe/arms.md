@@ -69,6 +69,10 @@
 | harness self-check, `` selfcheck/checks_nothing.rs `` | no item | flagged by structure | flagged by structure |
 | harness self-check, `` selfcheck/no_message.rs `` | `` assert!(W == 8) ``, no message | flagged by structure | flagged by structure |
 | harness self-check, `` selfcheck/an_escape_the_harness_cannot_match.rs `` | a message holding `\n` | flagged by structure | flagged by structure |
+| harness self-check, `` selfcheck/an_item_declared_in_neither_list.rs `` | item 2 in neither list | flagged by structure | flagged by structure |
+| harness self-check, `` selfcheck/an_item_declared_in_both_lists.rs `` | item 1 in both lists | flagged by structure | flagged by structure |
+| harness self-check, `` selfcheck/two_items_sharing_a_message.rs `` | two items, one message | flagged by structure | flagged by structure |
+| harness self-check, `` selfcheck/declared_to_check_nothing_and_checks.rs `` | declared `--checks-nothing`, holds an item | flagged by structure | flagged by structure |
 | harness self-check, `` selfcheck/compares_the_width_with_itself.rs `` | `` W == W `` | flagged by premise | flagged by premise |
 | harness self-check, `` selfcheck/a_true_comparison_before_the_width.rs `` | `` 1 == 1 && W == W `` | flagged by premise | flagged by premise |
 | harness self-check, `` selfcheck/compares_the_width_with_another_constant.rs `` | `` W != 7 ``, the fake width 8 | flagged by premise | flagged by premise |
