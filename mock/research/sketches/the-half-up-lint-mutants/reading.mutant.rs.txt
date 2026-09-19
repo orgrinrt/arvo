@@ -1,0 +1,238 @@
+//! MUTANT BUILD, temporary: every arm below can be broken by `HALF_UP_MUTANT`.
+
+fn m(k: &str) -> bool {
+    std::env::var("HALF_UP_MUTANT").is_ok_and(|v| v == k)
+}
+
+pub(super) const SPELLINGS: &[&str] = &[
+    "half_up", "HalfUp", "half-up", "half up", "Half-up", "Half up", "Half_up",
+];
+
+pub(super) const READINGS: &[&str] = &[
+    "away from zero",
+    "away_from_zero",
+    "away-from-zero",
+    "ties to away",
+    "tiestoaway",
+    "roundtiestoaway",
+    "ties-away",
+    "ties_away",
+    "greater absolute value",
+    "larger absolute value",
+    "greater magnitude",
+    "larger magnitude",
+    "in magnitude",
+    "reads the sign",
+    "sign of the slot",
+    "commutes with reflection",
+    "reflection equivariant",
+    "reflection-equivariant",
+];
+
+pub(super) const NEGATORS: &[&str] = &[
+    "not", "never", "no", "nor", "neither", "unlike", "differs", "differ", "different",
+    "alias", "rather than", "instead", "other than", "against", "versus", "vs", "except",
+];
+
+pub(super) const ELSEWHERE: &[&str] = &[
+    "planted", "wrong", "broken", "defect", "mutant", "mutation", "formerly", "previously",
+    "used to", "old rule", "before the ruling", "no tie", "without a tie", "away from a tie",
+    "reaches no tie",
+];
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(super) struct Hit {
+    pub(super) at:      usize,
+    pub(super) name:    String,
+    pub(super) reading: &'static str,
+}
+
+pub(super) fn hits(text: &str, subject: Option<&str>) -> Vec<Hit> {
+    let mut out = Vec::new();
+    let mut prose = String::with_capacity(text.len());
+    let mut start = 0;
+    for line in text.split_inclusive('\n') {
+        if line.trim_start().starts_with('|') && !m("rowblank") {
+            out.extend(row(line, start, subject));
+            let body = line.trim_end_matches('\n');
+            prose.push_str(&" ".repeat(body.len()));
+            prose.push_str(&line[body.len() ..]);
+        } else {
+            prose.push_str(line);
+        }
+        start += line.len();
+    }
+    for (from, clause) in clauses(&prose) {
+        if let Some(hit) = clause_hit(clause, subject) {
+            out.push(Hit {
+                at: if m("offset") { hit.at } else { from + hit.at },
+                ..hit
+            });
+        }
+    }
+    out.sort_by_key(|h| h.at);
+    out
+}
+
+fn row(line: &str, start: usize, subject: Option<&str>) -> Option<Hit> {
+    if m("row") {
+        return None;
+    }
+    let mut cells = Vec::new();
+    let mut from = 0;
+    for (i, c) in line.char_indices() {
+        if c == '|' {
+            cells.push((from, &line[from .. i]));
+            from = i + 1;
+        }
+    }
+    cells.push((from, &line[from ..]));
+    let mut named = cells.iter().filter(|(_, c)| !c.trim().is_empty());
+    let (_, first) = named.next()?;
+    let name = match spellings_in(first).first() {
+        Some((_, name)) => (*name).to_string(),
+        None => subject?.to_string(),
+    };
+    for (at, cell) in named {
+        let lower = cell.to_ascii_lowercase();
+        if elsewhere(&lower) {
+            continue;
+        }
+        if let Some((r, reading)) = readings_in(&lower).first() {
+            if !negated(&lower, *r) {
+                return Some(Hit {
+                    at: start + at + r,
+                    name,
+                    reading,
+                });
+            }
+        }
+    }
+    None
+}
+
+fn clause_hit(clause: &str, subject: Option<&str>) -> Option<Hit> {
+    let lower = clause.to_ascii_lowercase();
+    let readings = readings_in(&lower);
+    if readings.is_empty() || elsewhere(&lower) {
+        return None;
+    }
+    let mut names: Vec<(usize, &str)> = spellings_in(clause);
+    if let Some(s) = subject.filter(|_| !m("subject")) {
+        names.insert(0, (0, s));
+    }
+    if names.is_empty() || listed_apart(clause, &names, &readings) {
+        return None;
+    }
+    for &(n, name) in &names {
+        for &(r, reading) in &readings {
+            let later = if m("between") { if n < r { n } else { r } } else if n > r { n } else { r };
+            if !negated(&lower, later) {
+                return Some(Hit {
+                    at: r,
+                    name: name.to_string(),
+                    reading,
+                });
+            }
+        }
+    }
+    None
+}
+
+fn listed_apart(clause: &str, names: &[(usize, &str)], readings: &[(usize, &str)]) -> bool {
+    if m("list") {
+        return false;
+    }
+    let cuts: Vec<usize> = clause
+        .char_indices()
+        .filter(|(_, c)| matches!(c, ',' | '{' | '}'))
+        .map(|(i, _)| i)
+        .collect();
+    if cuts.len() < if m("onecomma") { 1 } else { 2 } {
+        return false;
+    }
+    let item = |at: usize| cuts.iter().filter(|&&c| c < at).count();
+    !names
+        .iter()
+        .any(|&(n, _)| readings.iter().any(|&(r, _)| item(n) == item(r)))
+}
+
+fn clauses(text: &str) -> Vec<(usize, &str)> {
+    if m("clause") {
+        return vec![(0, text)];
+    }
+    let bytes = text.as_bytes();
+    let mut out = Vec::new();
+    let mut from = 0;
+    for i in 0 .. bytes.len() {
+        let next = bytes.get(i + 1).copied();
+        let ends = match bytes[i] {
+            b';' => true,
+            b'.' | b':' | b'?' | b'!' => m("dot") || next.is_none_or(|b| b.is_ascii_whitespace()),
+            b'\n' => m("newline")
+                || text[i + 1 ..]
+                    .split('\n')
+                    .next()
+                    .is_some_and(|l| l.trim().is_empty()),
+            _ => false,
+        };
+        if ends {
+            out.push((from, &text[from ..= i]));
+            from = i + 1;
+        }
+    }
+    if from < text.len() {
+        out.push((from, &text[from ..]));
+    }
+    out
+}
+
+pub(super) fn spellings_in(text: &str) -> Vec<(usize, &'static str)> {
+    let mut out: Vec<(usize, &'static str)> = SPELLINGS
+        .iter()
+        .flat_map(|s| bounded(text, s).into_iter().map(move |at| (at, *s)))
+        .collect();
+    out.sort();
+    out
+}
+
+fn readings_in(lower: &str) -> Vec<(usize, &'static str)> {
+    let mut out: Vec<(usize, &'static str)> = READINGS
+        .iter()
+        .flat_map(|s| bounded(lower, s).into_iter().map(move |at| (at, *s)))
+        .collect();
+    out.sort();
+    out
+}
+
+fn negated(lower: &str, until: usize) -> bool {
+    if m("neg") {
+        return false;
+    }
+    let head = &lower[.. until];
+    NEGATORS.iter().any(|n| !bounded(head, n).is_empty())
+        || (!m("nt")
+            && head
+                .split(|c: char| !(c.is_ascii_alphanumeric() || c == '\''))
+                .any(|w| w.ends_with("n't")))
+}
+
+fn elsewhere(lower: &str) -> bool {
+    if m("else") {
+        return false;
+    }
+    ELSEWHERE.iter().any(|m| !bounded(lower, m).is_empty())
+}
+
+fn bounded(hay: &str, needle: &str) -> Vec<usize> {
+    if m("bound") {
+        return hay.match_indices(needle).map(|(at, _)| at).collect();
+    }
+    let ident = |c: Option<char>| c.is_some_and(|c| c.is_alphanumeric() || c == '_');
+    hay.match_indices(needle)
+        .filter(|(at, _)| {
+            !ident(hay[.. *at].chars().next_back()) && !ident(hay[at + needle.len() ..].chars().next())
+        })
+        .map(|(at, _)| at)
+        .collect()
+}
