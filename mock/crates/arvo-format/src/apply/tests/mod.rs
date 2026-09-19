@@ -418,4 +418,6 @@ mod the_ratio_coordinate;
 // --- the edges of the index, which every arm above stays away from ----------
 
 mod the_edges;
+mod the_far_end_of_the_index;
 mod the_top_of_the_index;
+mod the_translation_law;

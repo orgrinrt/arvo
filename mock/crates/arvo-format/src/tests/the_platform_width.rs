@@ -143,47 +143,8 @@ fn an_error_word_is_a_member_exactly_where_the_pointer_is_wide_enough() {
     );
 }
 
-// --- one arm per pointer width, selected by the target -----------------------
-//
-// Each arm names the literal width the alias is on that target. Only one compiles
-// per target, so the arms are checked by building the suite for each, and no gate
-// builds it for any target but the host's.
-
-#[cfg(target_pointer_width = "64")]
-#[test]
-fn on_a_64_bit_target_the_platform_width_points_are_the_64_bit_points() {
-    assert_eq!(
-        USIZE_HIGHEST,
-        <<UFixed<64, 0> as Format>::Slots as Slots>::MAX
-    );
-    assert_eq!(ISIZE_LOWEST, <<Integer<64> as Format>::Slots as Slots>::MIN);
-    assert_eq!(USIZE_HIGHEST, Slot::at(u64::MAX as i128));
-}
-
-// FIXME: compiled only by `cargo check --tests --target i686-unknown-linux-gnu` run
-// by hand; no gate builds the suite at a 32-bit target, and a test here cannot
-// drive that build because the crate refuses `std::process`.
-#[cfg(target_pointer_width = "32")]
-#[test]
-fn on_a_32_bit_target_the_platform_width_points_are_the_32_bit_points() {
-    assert_eq!(
-        USIZE_HIGHEST,
-        <<UFixed<32, 0> as Format>::Slots as Slots>::MAX
-    );
-    assert_eq!(ISIZE_LOWEST, <<Integer<32> as Format>::Slots as Slots>::MIN);
-    assert_eq!(USIZE_HIGHEST, Slot::at(u32::MAX as i128));
-}
-
-// FIXME: never compiled. A test harness needs `std` and no 16-bit target has one,
-// so this arm stays unbuilt until a harness exists there; the library alias alone
-// checks at `msp430-none-elf` with `-Zbuild-std=core`, by hand and in no gate.
-#[cfg(target_pointer_width = "16")]
-#[test]
-fn on_a_16_bit_target_the_platform_width_points_are_the_16_bit_points() {
-    assert_eq!(
-        USIZE_HIGHEST,
-        <<UFixed<16, 0> as Format>::Slots as Slots>::MAX
-    );
-    assert_eq!(ISIZE_LOWEST, <<Integer<16> as Format>::Slots as Slots>::MIN);
-    assert_eq!(USIZE_HIGHEST, Slot::at(u16::MAX as i128));
-}
+// No arm per pointer width. Each would assert the alias equals the literal point
+// at the target's width, which holds on every target whenever the alias reads
+// `usize::BITS`, and a literal width in its place is indistinguishable here from
+// the right spelling. The lint `the-platform-width-points-read-the-pointer-width`
+// guards the spelling instead, on every commit.

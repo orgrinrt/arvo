@@ -15,11 +15,12 @@
 //! A magnitude bound switches off the completion and not the rounding, and a grid
 //! bound does the reverse, which is what two regions of one map predict.
 //!
-//! The exact step is computed in a domain wide enough to hold it, and that
-//! intermediate carries no coordinate type on purpose. It is deliberately wider
-//! than a slot index, it lives inside two private functions, and naming it in the
-//! surface would publish a quantity nothing outside this file has any business
-//! holding.
+//! The exact step is computed in a form wide enough to hold it, and that
+//! intermediate carries no coordinate type on purpose. For rounding it is
+//! `Rounded`, the slot below and a step, which names one position more than a
+//! slot index does. It is visible to this crate, because addition reads the
+//! offset a rounding adds, and to nothing outside it: naming it in the surface
+//! would publish a quantity no consumer has any business holding.
 
 use crate::adapt::{Adaptation, DeclaredSignature};
 use crate::format::Format;
@@ -189,9 +190,14 @@ impl Exact {
     /// `[0, 1)` bound itself: holding it there would drop the carry.
     ///
     /// The carry is at most `2^63` either way and lands as an ordinary slot
-    /// wherever the index holds the sum. Past the index's own end it saturates
-    /// there, like every other position this crate computes, so `between` is
-    /// total over every slot and every ratio.
+    /// wherever the index holds the sum. Where it does not, which is only from a
+    /// slot within `2^63` of either end, this constructor saturates: the slot
+    /// pins at the index's end and the normalised remainder stays. So `between`
+    /// is total over every slot and every ratio, and what it stores there is not
+    /// the position it was asked for. `between(Slot::at(i128::MAX), 9/4)` stores
+    /// `i128::MAX` and a quarter, and everything downstream adapts that, so under
+    /// `Ceil` and `Wrap` over a range ending at `i128::MAX` it lands on the
+    /// range's lowest slot rather than two above it.
     #[must_use]
     pub const fn between(slot: Slot, part: Fraction) -> Self {
         let whole = part.num.div_euclid(part.den);

@@ -165,7 +165,9 @@ fn rounding_past_the_top_of_the_index_wraps_the_position_it_names() {
     assert_eq!(adapt::<DownWrap>(e, Dither::UNUSED), Slot::at(-1));
     assert_eq!(adapt::<UpSat>(e, Dither::UNUSED), EDGE_MAX);
 
-    // A carry out of the fraction past the top saturates the same way.
+    // A carry out of the fraction past either end is where a position does
+    // saturate, and it does so in the constructor: the slot pins at the index's
+    // end. `the_top_of_the_index.rs` pins what the map then does with it.
     let carried = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MAX));
     let carried = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
