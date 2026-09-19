@@ -36,14 +36,16 @@
 //!   included.
 //!
 //! `mock/research/202609191400_core_shadowing_probe/`, run by its `run.sh`,
-//! shows which of these the leading `::` resists on its own. A `mod core` and
-//! a `use` alias to `core` do not reach `::core`: each binds a name in the
-//! module that holds it, and a leading-`::` path resolves among the crates
-//! rather than among that module's names. They shadow only the bare spelling
-//! `core`, in that one module, and are refused because another path there may
-//! be spelled bare. An `extern crate self as core` at the crate root does reach
-//! `::core`, which then names this crate itself, and that is the form the
-//! leading `::` does not resist.
+//! shows which of these the leading `::` resists on its own. A `mod core`, a
+//! `use` alias to `core`, an unaliased `use a::core;` and a `use
+//! a::core::{self};` do not reach `::core`: each binds a name in the module
+//! that holds it, and a leading-`::` path resolves among the crates rather
+//! than among that module's names. They shadow only the bare spelling `core`,
+//! in that one module, and are refused because another path there may be
+//! spelled bare. The braced `use a::{x, core};` has no arm in the probe. An
+//! `extern crate self as core` at the crate root does reach `::core`, which
+//! then names this crate itself, and that is the form the leading `::` does
+//! not resist.
 //!
 //! Two neighbours of the third form are outside this arm and are shown by the
 //! same probe. A macro expanding to `extern crate self as core` is refused by
@@ -59,8 +61,7 @@
 //! needs none of this, since its own prelude is imported through the name
 //! `std` rather than `core`: the rename still hijacks the leading-`::` path
 //! with no `prelude` module in the renamed crate at all, checked at check
-//! time the same way the `no_std` dependents' own checks are, rather than by
-//! a runtime assertion nothing in this fixture ever executes. This lint reads
+//! time the same way the `no_std` dependents' own checks are. This lint reads
 //! `.rs` source only and never opens a manifest, so that
 //! rename is unguarded, `no_std` dependent or not. So are a glob import
 //! bringing in an item named `core`, another kind of item named `core`, and a
