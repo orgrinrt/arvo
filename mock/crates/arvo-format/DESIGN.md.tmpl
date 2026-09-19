@@ -647,6 +647,17 @@ rounding and not completion; a position on the grid and outside the range exerci
 rounding. Both are asserted, because the claim that the map has two regions is a claim that each can be
 reached without the other.
 
+The map agrees, at both ends of the index, with an oracle that shares none of its arithmetic. The oracle
+holds the rounded position as an integer two limbs wide, so a slot past either end of the index is an
+ordinary value to it, applies each mode's and each policy's stated meaning to that integer, and reads
+neither the pair nor the distance the map itself carries. It is swept over every mode and every policy,
+over ranges at the top and the bottom of the index, ranges a few slots in from either end, and ranges at
+neither end, the 200-slot and `2^64`-slot ones among them, and each range is fed positions up to eight
+slots either side of each end of the index and of each end of the range, at every quarter remainder and
+under several dithers, with the slot and the overflow verdict both compared. Every broken map the suite
+keeps is reported by the same sweep, which is what shows its reach rather than only its silence over the
+shipped map.
+
 **An overflow policy declared outside this crate reaches the map.** The inventory is open, so the test
 that means anything runs a policy this crate does not ship through `Adapt`, through `overflow_of` and
 through `adapt` itself, and compares the answer against a shipped policy that decides the same way. A
@@ -967,11 +978,11 @@ claim about a target-indexed family checked at one target is a claim about one m
 
 There is no arm per pointer width. Such an arm would assert that the alias equals the literal point at
 the target's width, and that follows from the alias being spelled over `::core::primitive::usize::BITS`,
-which the language defines as the pointer width: on every target it is true whenever the spelling is, and
-no import or declaration reachable from inside this crate through the four forms the lint named below
-enumerates resolves the leading-`::` path to anything else. That enumeration is not a closed guard on
-the name `core`: a form outside it, and a `Cargo.toml` manifest rename of a dependency to the key `core`
-in particular, is not refused by anything in this crate. The one way the spelling itself fails is an
+which the language defines as the pointer width: on every target it is true whenever the spelling is and
+the leading-`::` path resolves to the real `core`. Whether it does is the shadowing question the lint's
+second arm below answers, and its answer is narrower than every way the name `core` can be bound: a
+`Cargo.toml` manifest rename of a dependency to the key `core` in particular is refused by nothing in this
+crate. The one way the spelling itself fails is an
 alias written against a literal width, and on the
 host that is indistinguishable from the right spelling by anything a test reads, so no arm compiled for
 the host could catch it. An arm written as a `#[test]` for another width only runs on a target of that
@@ -986,23 +997,37 @@ across lines, drops comments and whitespace, and compares what is left of the ri
 `UFixed<{::core::primitive::usize::BITS},0>` for `USize` and `Integer<{::core::primitive::usize::BITS}>`
 for `ISize`. Anything else is a finding, a literal width, a width read from something other than
 `::core::primitive::usize::BITS`, an expression around it and either alias over the other one's family
-among them, and so is either alias missing. Beside it, the same lint refuses four enumerated forms of a
-crate reference bound to the name `core`, declared anywhere in this crate: `mod core`, `use ... as core`,
-`extern crate ... as core`, and `use ...::core;` binding `core` as a path's bare last segment, the raw
-identifier `r#core` included on each. These are what the leading-`::` path does not resist on its own;
-they are not every way this crate could bind the name `core`, only the ones the lint enumerates, and a
-manifest rename of a dependency to the key `core` reaches the same hazard unguarded. Both arms run on
-every commit with no second build. What neither guards is anything beyond the two declarations, the four
-enumerated forms and the name `core`: the family laws are the tests', and a third platform-width alias, a
-`Cargo.toml` rename, or a shadow reached by some other name than the four listed, would each need the
-lint extended to name it.
+among them, and so is either alias missing.
+
+Beside it, the same lint refuses three forms that bind the name `core`, declared anywhere in this crate.
+It reads them as tokens once comments and literals are stripped, so whitespace, a line break or a comment
+between two words changes nothing, and the raw identifier `r#core` counts as `core` in each form. The
+first is a module named `core`. The second is a `use` item binding the name `core` anywhere in its tree:
+an alias `as core`, an unaliased last segment `core` inside braces or not, or a `self` under a `core`
+segment. The third is an `extern crate` item aliased `as core`.
+
+The leading `::` resists the first two on its own. A module and a `use` bind a name in the module that
+declares them, and a leading-`::` path resolves among the crates rather than among that module's names,
+so these two shadow only the bare spelling `core`, and only in the module that holds them. They are
+refused because another path in that module may be spelled bare. The third is the one that reaches the
+leading-`::` path: an `extern crate self as core` at the crate root makes `::core` name this crate
+itself. A macro expanding to `extern crate self as core` is refused by the compiler already. A
+`Cargo.toml` dependency renamed to the key `core` reaches `::core` the way the third form does, as long as
+the renamed crate re-exports the real `core`'s contents, which the prelude of a `no_std` crate resolves
+through; this lint reads source only and never sees a manifest, so that rename is unguarded.
+`mock/research/202609191400_core_shadowing_probe/` carries an arm for each of these outcomes, run by one
+command.
+
+Both arms run on every commit with no second build. What neither guards is anything beyond the two
+declarations and the three forms: the family laws are the tests', and a glob import bringing in an item
+named `core`, another kind of item named `core`, a macro expanding to one of the forms, a manifest rename,
+or a third platform-width alias would each need the lint extended to name it.
 
 The host tests read the aliases against `usize::BITS`, `usize::MAX` and `isize::MIN`, and the family
 laws at 16, 32 and 64 run on the host. With the spelling fixed exactly, rooted at the crate graph by the
-leading `::`, and with the lint refusing the four enumerated forms of a crate reference bound to the name
-`core`, that covers every pointer width the ladder admits and every shadow reached by one of those four
-forms. A shadow reached some other way, a manifest rename foremost, is not covered by anything in this
-crate.
+leading `::`, and with the lint refusing the three forms above, that covers every pointer width the ladder
+admits against every shadow reached through one of those forms. A shadow reached some other way, a
+manifest rename foremost, is not covered by anything in this crate.
 
 The obligation's range is a membership question, asked in both directions: the errno ceiling and the
 GetLastError ceiling are members at 32 and 64, and the second is not at 16.
