@@ -79,8 +79,8 @@ value type to fill it.
 ## "I need to measure size / capacity"
 
 No value type for a pointer-width size exists yet. `arvo_format::points::USize`
-and `ISize` are format points, `UFixed<{ core::primitive::usize::BITS }, 0>` and
-`Integer<{ core::primitive::usize::BITS }>`: zero-sized markers that name the format and hold
+and `ISize` are format points, `UFixed<{ ::core::primitive::usize::BITS }, 0>` and
+`Integer<{ ::core::primitive::usize::BITS }>`: zero-sized markers that name the format and hold
 no value, so a field or return typed as one carries nothing. What a value of a
 format is, is `question::what_a_datum_stands_for`, and it is open. Do not
 invent a value type to fill it.

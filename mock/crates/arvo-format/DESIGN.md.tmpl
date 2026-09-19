@@ -968,9 +968,11 @@ claim about a target-indexed family checked at one target is a claim about one m
 There is no arm per pointer width. Such an arm would assert that the alias equals the literal point at
 the target's width, and that follows from the alias being spelled over `::core::primitive::usize::BITS`,
 which the language defines as the pointer width: on every target it is true whenever the spelling is, and
-no import or declaration reachable from inside this crate resolves the leading-`::` path to anything else,
-short of a crate reference bound to the name `core` at the crate root, which the lint named below refuses
-separately. The one way the spelling itself fails is an alias written against a literal width, and on the
+no import or declaration reachable from inside this crate through the four forms the lint named below
+enumerates resolves the leading-`::` path to anything else. That enumeration is not a closed guard on
+the name `core`: a form outside it, and a `Cargo.toml` manifest rename of a dependency to the key `core`
+in particular, is not refused by anything in this crate. The one way the spelling itself fails is an
+alias written against a literal width, and on the
 host that is indistinguishable from the right spelling by anything a test reads, so no arm compiled for
 the host could catch it. An arm written as a `#[test]` for another width only runs on a target of that
 width. One written as a free `const _` item under a `cfg` for that width would be evaluated by any build
@@ -984,17 +986,23 @@ across lines, drops comments and whitespace, and compares what is left of the ri
 `UFixed<{::core::primitive::usize::BITS},0>` for `USize` and `Integer<{::core::primitive::usize::BITS}>`
 for `ISize`. Anything else is a finding, a literal width, a width read from something other than
 `::core::primitive::usize::BITS`, an expression around it and either alias over the other one's family
-among them, and so is either alias missing. Beside it, the same lint refuses a `mod core`, a `use ... as
-core` or an `extern crate ... as core` declared anywhere in this crate, which is the one case the
-leading-`::` path does not resist on its own. Both arms run on every commit with no second build. What
-neither guards is anything beyond the two declarations and the name `core`: the family laws are the
-tests', and a third platform-width alias, or a shadow reached by some other name, would need the lint to
-name it.
+among them, and so is either alias missing. Beside it, the same lint refuses four enumerated forms of a
+crate reference bound to the name `core`, declared anywhere in this crate: `mod core`, `use ... as core`,
+`extern crate ... as core`, and `use ...::core;` binding `core` as a path's bare last segment, the raw
+identifier `r#core` included on each. These are what the leading-`::` path does not resist on its own;
+they are not every way this crate could bind the name `core`, only the ones the lint enumerates, and a
+manifest rename of a dependency to the key `core` reaches the same hazard unguarded. Both arms run on
+every commit with no second build. What neither guards is anything beyond the two declarations, the four
+enumerated forms and the name `core`: the family laws are the tests', and a third platform-width alias, a
+`Cargo.toml` rename, or a shadow reached by some other name than the four listed, would each need the
+lint extended to name it.
 
 The host tests read the aliases against `usize::BITS`, `usize::MAX` and `isize::MIN`, and the family
 laws at 16, 32 and 64 run on the host. With the spelling fixed exactly, rooted at the crate graph by the
-leading `::`, and with the lint refusing every way this crate could bind the name `core`, that covers
-every pointer width the ladder admits and every shadow this crate could declare against the alias.
+leading `::`, and with the lint refusing the four enumerated forms of a crate reference bound to the name
+`core`, that covers every pointer width the ladder admits and every shadow reached by one of those four
+forms. A shadow reached some other way, a manifest rename foremost, is not covered by anything in this
+crate.
 
 The obligation's range is a membership question, asked in both directions: the errno ceiling and the
 GetLastError ceiling are members at 32 and 64, and the second is not at 16.
@@ -1546,8 +1554,8 @@ left by the time the backend sees it.
 
 ## Open items
 
-Two gaps a review found and this round did not close, catalogued here rather than left in a review
-file nobody reads once it is answered.
+Two gaps this crate does not close, catalogued here rather than left unrecorded once the design
+that would close them exists.
 
 `Exact` carries the distance a position lies past an end of the slot index, `past`, and nothing in this
 crate's public surface reads it. A consumer holding an `Exact` from a public constructor has no way to
