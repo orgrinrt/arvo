@@ -19,16 +19,23 @@
 //! `reading::SPELLINGS`, and in the same clause gives one of the readings in
 //! `reading::READINGS`: a tie sent by the sign or by the magnitude, or a claim
 //! that the mode commutes with reflection. The readings are matched as words, so
-//! a longer identifier carrying one is not one.
+//! a longer identifier carrying one is not one, and `in magnitude` counts only
+//! behind a direction word, since the same two words bound an error in prose
+//! that is about something else entirely.
 //!
-//! Four things let a clause through, and each has a test and a control:
+//! Five things let a clause through, and each has a test and a control:
 //!
-//! - a negator before the later of the two, which makes the pairing a contrast;
+//! - a negator bound to the reading or to the name, which means one sitting in
+//!   that term's own segment of the clause, ahead of it, with no conjunction
+//!   between the two turning the sentence back to what it asserts;
 //! - a marker saying the clause is about another rule, a planted one, a wrong
 //!   one, the one that stood before, or no tie at all;
-//! - a list, two or more of `,`, `{` and `}`, with the name and the reading in
-//!   different items of it;
-//! - the name and the reading in different clauses.
+//! - a list of three items or more, with the name and the reading in different
+//!   items and each of those items holding nothing but its own term;
+//! - the name and the reading in different clauses;
+//! - a clause opening with a pronoun whose antecedent is something else, since
+//!   a sentence contrasting the mode with Java's rule leaves Java's rule named
+//!   last and the pronoun after it points there.
 //!
 //! A table row is read by its first cell: a reading in any other cell is paired
 //! with the name the first cell carries. An outer doc block is read as naming
@@ -40,11 +47,12 @@
 //! design rounds, which are the record of how the question was argued and say
 //! the other reading on purpose; `target/`; the `retirement` namespace, whose
 //! rows quote a retired claim in the words it was written in; a ratified
-//! `ruling`, which is the canon this defends and is not corrected from below; a
-//! `question` row carrying an answer, whose options state both readings; the
-//! `options` of any question, and a row's `quote`, which is op's verbatim. A
-//! column table, whose name sits in a header rather than in the row's first
-//! cell, is not read as a pairing.
+//! `ruling`, which is the canon this defends and is not corrected from below;
+//! the `answered` field of a question, which names both readings in order to say
+//! which one was taken; the `options` of any question, and a row's `quote`,
+//! which is op's verbatim. The rest of an answered question is prose somebody
+//! here wrote and is read like any other. A column table, whose name sits in a
+//! header rather than in the row's first cell, is not read as a pairing.
 //!
 //! A lint rather than a tool, though `mock/tools/rounding-vocabulary` reads the
 //! same vocabulary. That tool declares itself not a lint, since the repair for
@@ -58,9 +66,9 @@ use std::path::{Path, PathBuf};
 use mockspace::{Lint, LintError, RegistryView, RepoContext, RepoLint, Severity};
 
 #[path = "half_up_is_not_a_magnitude_rule/comments.rs"]
-mod comments;
+pub(crate) mod comments;
 #[path = "half_up_is_not_a_magnitude_rule/reading.rs"]
-mod reading;
+pub(crate) mod reading;
 
 use comments::{Passage, passages};
 use reading::{Hit, hits};
@@ -78,6 +86,13 @@ const NOT_READ: &[&str] = &["target", "research", "design_rounds"];
 
 /// Registry fields that hold identifiers, citations, tiers or verbatim words
 /// rather than prose somebody here writes.
+///
+/// `answered` is among them because a question is answered by naming both
+/// readings and saying which one was taken, so that field carries the other
+/// reading on purpose. The rest of an answered question is not exempt: `asks`,
+/// `note` and `because` are written here like any other sentence, and skipping
+/// the whole row, which is what stood before, put every one of them outside the
+/// gate.
 const NOT_PROSE: &[&str] = &[
     "id",
     "keywords",
@@ -91,6 +106,7 @@ const NOT_PROSE: &[&str] = &[
     "rung",
     "key",
     "answers",
+    "answered",
     "evidence",
     "law",
     "ratified_by",
@@ -188,9 +204,7 @@ fn check_registry(registry: &RegistryView) -> Vec<LintError> {
             continue;
         }
         for q in registry.rows_in(ns) {
-            let answered = ns == "question" && registry.field(q, "answered").is_some();
-            let ratified = ns == "ruling" && registry.field(q, "rung") == Some("ratified");
-            if answered || ratified {
+            if ns == "ruling" && registry.field(q, "rung") == Some("ratified") {
                 continue;
             }
             let Some(row) = registry.row(q) else {
@@ -239,9 +253,11 @@ mod tests;
 mod corpus_tests;
 
 #[cfg(test)]
-mod reaches_the_gate {
-    use mockspace::Lint;
+#[path = "half_up_is_not_a_magnitude_rule/sentences.rs"]
+mod sentences;
 
+#[cfg(test)]
+mod reaches_the_gate {
     use super::{HalfUpIsNotAMagnitudeRule, NAME};
     use crate::canon_lint_testkit::{
         assert_findings_block_at,
@@ -275,7 +291,8 @@ mod reaches_the_gate {
 
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
-        assert_eq!(HalfUpIsNotAMagnitudeRule.name(), NAME);
+        // The literal the configuration keys on. Comparing the accessor with the
+        // constant it returns is a sentence about nothing and was one.
         assert_eq!(NAME, "half-up-is-not-a-magnitude-rule");
     }
 

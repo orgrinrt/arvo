@@ -190,7 +190,9 @@ fn control_what_is_not_prose_or_is_the_record_is_not_read() {
                 ("options", BAD),
             ]),
             ("retirement::b", &[("claim", BAD)]),
-            ("question::c", &[("asks", BAD), ("answered", "The first.")]),
+            // The answer names both readings to say which was taken, so the
+            // field is the record. The rest of the row is not.
+            ("question::c", &[("answered", BAD)]),
             ("ruling::d", &[("note", BAD), ("rung", "ratified")]),
         ],
         &[],
@@ -203,6 +205,9 @@ fn an_open_question_and_an_unratified_ruling_are_read() {
     let v = view(
         &[
             ("question::c", &[("asks", BAD)]),
+            // An answered question keeps its prose inside the gate. Skipping
+            // the whole row put `asks`, `note` and `because` outside it.
+            ("question::f", &[("asks", BAD), ("answered", "The first.")]),
             ("ruling::d", &[("note", BAD), ("rung", "stated")]),
             ("ruling::e", &[("note", BAD)]),
         ],
@@ -214,6 +219,7 @@ fn an_open_question_and_an_unratified_ruling_are_read() {
         .collect();
     assert_eq!(at, [
         "`question::c`, field `asks`",
+        "`question::f`, field `asks`",
         "`ruling::d`, field `note`",
         "`ruling::e`, field `note`",
     ]);
