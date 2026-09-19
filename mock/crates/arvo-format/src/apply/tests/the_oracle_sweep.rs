@@ -339,7 +339,8 @@ fn the_feed_reaches_every_band_around_both_ends() {
     // over `Integer<3>`, a range at neither end, and `ShyOfTheBottom`, whose
     // lowest slot has a slot under it inside the index. The ties are counted by
     // sign and by the parity of the slot below, because each planted tie rule
-    // differs from the shipped map in one of those four cells only.
+    // differs from the shipped map in some of those four cells and not in the
+    // others, so a feed missing a cell could miss a rule.
     let mut onto_the_bottom = 0;
     let mut further_under = 0;
     let mut one_over = 0;

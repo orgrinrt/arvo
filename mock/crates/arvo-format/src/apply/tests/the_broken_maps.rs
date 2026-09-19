@@ -313,11 +313,12 @@ fn planted(round: fn(Mode, Exact, Dither) -> Rounded) -> Map {
     }
 }
 
-/// `HalfUp` with a tie sent away from zero: down below zero, up above it.
+/// A planted `HalfUp` that sends a tie away from zero, down below zero and up
+/// above it.
 ///
-/// The rule this crate shipped before the ruling. It differs from the shipped
-/// map at a negative tie and nowhere else, so a sweep reports it only where it
-/// feeds one.
+/// The wrong rule this crate shipped before the ruling. It differs from the
+/// shipped map at a negative tie and nowhere else, so a sweep reports it only
+/// where it feeds one.
 pub(super) fn half_up_ties_away_from_zero() -> Map {
     fn round(mode: Mode, e: Exact, d: Dither) -> Rounded {
         if mode == Mode::HalfUp && e.is_tie().get() {
