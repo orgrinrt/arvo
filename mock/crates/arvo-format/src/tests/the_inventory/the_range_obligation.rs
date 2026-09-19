@@ -37,6 +37,51 @@ impl Slots for EmptyRange {
     const WIDTH: Width = Width::NONE;
 }
 
+/// A width of zero over one slot, ordered and addressed.
+///
+/// `EmptyRange` above is inverted as well as zero-width, so the ordering
+/// condition refuses it on its own and the width condition is never the one
+/// deciding. This one is ordered, and a width of zero addresses its single slot,
+/// since two to the zero is one, so the only condition it fails is that the
+/// width is at least one.
+struct ZeroWidthOverOneSlot;
+
+impl Slots for ZeroWidthOverOneSlot {
+    const MAX: Slot = Slot::ZERO;
+    const MIN: Slot = Slot::ZERO;
+    const WIDTH: Width = Width::NONE;
+}
+
+/// The same single slot at a width of one, which differs from the one above in
+/// the width alone.
+struct OneBitOverOneSlot;
+
+impl Slots for OneBitOverOneSlot {
+    const MAX: Slot = Slot::ZERO;
+    const MIN: Slot = Slot::ZERO;
+    const WIDTH: Width = Width::bits(1);
+}
+
+#[test]
+fn a_width_of_zero_is_refused_even_where_it_addresses_its_span() {
+    assert!(
+        !crate::slots::is_admissible::<ZeroWidthOverOneSlot>().get(),
+        "a zero width over one slot was admitted, so the width's lower bound is not checked"
+    );
+    // The controls. The range is ordered, and the same slot at a width of one is
+    // admitted, so the width is the one thing refusing it. A zero width addresses
+    // the span as well as a width of one does: one slot, and two to the zero is one.
+    assert!(
+        <ZeroWidthOverOneSlot as Slots>::MIN
+            .is_at_most(<ZeroWidthOverOneSlot as Slots>::MAX)
+            .get()
+    );
+    assert!(
+        crate::slots::is_admissible::<OneBitOverOneSlot>().get(),
+        "one slot at a width of one was refused, so the zero-width refusal is not about the width"
+    );
+}
+
 #[test]
 fn the_law_rejects_a_range_that_does_not_meet_the_contract() {
     // The law returns a verdict, so the wrong construction can be reported on

@@ -319,8 +319,9 @@ pub const fn slot_in_range<S: Slots>(slot: Slot) -> Bool {
 /// How many slots the range admits.
 ///
 /// Bounded by the obligation: an admitted width addresses the span, so the count
-/// is at most `2^64`, which the count's integer holds. Nothing derives a width from this, and it is kept because a cardinality
-/// is a real thing to ask a range for.
+/// is at most `2^64`, which the count's integer holds. Nothing derives a width
+/// from this, and it is kept because a cardinality is a real thing to ask a range
+/// for.
 #[must_use]
 pub const fn slot_count<S: Slots>() -> SlotCount {
     let () = S::ADMITTED;

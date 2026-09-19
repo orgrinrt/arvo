@@ -23,7 +23,6 @@ use super::{
     NearTheBottom,
     NearTheTop,
     Ratio,
-    Sums,
     Window,
     at_every_signature,
     coordinates,
@@ -37,10 +36,10 @@ use crate::addition::{add, sum_position};
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::Dither;
 use crate::format::{Format, cancelling_slot, has_additive_identity};
-use crate::overflow::{Policy, SHIPPED_POLICIES, Saturate, Wrap};
+use crate::overflow::{Policy, Saturate, Wrap};
 use crate::points::{Biased, Integer, UFixed};
 use crate::quantum::{Constant, Magnitude};
-use crate::rounding::{ALL_MODES, Floor, Mode};
+use crate::rounding::Floor;
 use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::tests::dispatch::{self, PerFormat, PerSignature};
 use crate::tests::grid::Grid;
@@ -466,54 +465,5 @@ fn a_phase_cancelled_outside_the_range_has_no_identity_and_wrapping_finds_a_neut
 }
 
 // --- the rounding axis ---------------------------------------------------------
-
-/// Every mode's table against the floor's, at one format and every policy.
-#[derive(Default)]
-struct Axis {
-    whole:      u32,
-    fractional: u32,
-}
-
-impl PerFormat for Axis {
-    fn run<F: Format>(&mut self) {
-        let name = coordinates::<F>();
-        let whole = F::PHASE.is_whole_multiple().get();
-        for policy in SHIPPED_POLICIES {
-            let floor = dispatch::at::<F, Sums>(Mode::Floor, policy, &Sums(Dither::UNUSED));
-            if whole {
-                for mode in ALL_MODES {
-                    for dither in DITHERS {
-                        let other = dispatch::at::<F, Sums>(mode, policy, &Sums(dither));
-                        assert!(
-                            other == floor,
-                            "{mode:?} moved a sum at {name:?}, {policy:?}"
-                        );
-                    }
-                }
-            } else {
-                let ceil = dispatch::at::<F, Sums>(Mode::Ceil, policy, &Sums(Dither::UNUSED));
-                assert!(
-                    ceil != floor,
-                    "floor and ceil agree at {name:?}, {policy:?}"
-                );
-            }
-        }
-        if whole {
-            self.whole += 1;
-        } else {
-            self.fractional += 1;
-        }
-    }
-}
-
-#[test]
-fn the_rounding_mode_moves_the_sum_exactly_where_the_phase_is_not_whole() {
-    let mut walk = Axis::default();
-    every_phase!(walk; Signed<4>);
-    every_phase!(walk; Unsigned<4>);
-    every_phase!(walk; Window<-3, 2>);
-    walk.run::<Integer<4>>();
-    walk.run::<Biased<4, 0, 1>>();
-    assert_eq!(walk.whole, 3 * 3 + 1);
-    assert_eq!(walk.fractional, 3 * 3 + 1);
-}
+//
+// In `the_rounding_axis`, beside this file.

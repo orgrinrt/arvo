@@ -51,6 +51,7 @@ macro_rules! every_phase {
 }
 
 mod the_operation;
+mod the_rounding_axis;
 mod the_step;
 mod the_verdict;
 
