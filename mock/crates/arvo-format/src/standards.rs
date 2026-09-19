@@ -104,6 +104,10 @@ pub type UfiMath<const W: u32, const F: i32, R, O> =
 /// agrees with rather than a sentence in a document. Five of the six land here.
 /// Nearest is `HalfUp`: MathWorks documents it as ties toward positive infinity,
 /// which is what `half_up` denotes.
+///
+/// `half_up` sends a tie toward positive infinity whatever the sign, so a tie at
+/// -2.5 goes to -2. It is not the `HALF_UP` of Java or Python, which sends that
+/// tie the other way on the negative side, and that one is MATLAB's Round below.
 pub mod rounding_method {
     pub use crate::rounding::{
         Ceil as Ceiling,
@@ -113,14 +117,19 @@ pub mod rounding_method {
         TowardZero as Zero,
     };
 
-    // FIXME: MATLAB's Round takes a tie away from zero, which is not one of the
-    // six modes and is not meant to be one: the canon reaches it as an alias,
-    // `TowardZero` applied to the position shifted half a step toward its sign.
-    // A caller can write that shift through `Exact::between` with the remainder
-    // over a doubled denominator, which fits for a denominator up to
-    // `i64::MAX / 2` and not past it, and this crate names no operation forming
-    // the shift exactly at every denominator; unblocked by the design's open
-    // item on where that operation lives.
+    // MATLAB's Round takes a tie away from zero. It is not one of the six modes
+    // and is not meant to be one, because the canon reaches it as an alias,
+    // `toward_zero` applied to the position shifted half a step toward its sign.
+    //
+    // A caller writes it from the public surface with no operation this crate
+    // does not already have: `floor` where the position is a tie whose slot is
+    // below zero, `half_up` everywhere else. Below zero a tie away from zero is
+    // a tie downward, which is `floor`, and off a tie every nearest rule agrees.
+    // `Exact::is_tie` and `Exact::slot` are what it reads, so it is available to
+    // a caller holding a position it did not build. `tests/ties_away/mod.rs`
+    // writes it, and `tests/the_ties_away_alias.rs` sweeps it against the
+    // integer rule at both ends of the index, at both parities of the
+    // denominator, and over ratios that carry past the index.
 }
 
 /// MATLAB's overflow actions, under MATLAB's names.

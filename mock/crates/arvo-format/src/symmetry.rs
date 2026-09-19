@@ -119,6 +119,11 @@ impl Behaviour {
 ///
 /// `HalfUp` is `floor(x + q/2)`, which reads the residue and nothing else, so it
 /// sits with the directed modes; it fails reflection at a tie and nowhere else.
+/// The tie goes toward positive infinity at every sign, so a tie at -2.5 goes to
+/// -2, and it is not the `HALF_UP` of Java or Python, which sends that tie the
+/// other way below zero. That reflection failure is why the two differ at all:
+/// the rule away from zero is the reflected one and it reads the sign, which is
+/// a different row of this table.
 #[must_use]
 pub const fn behaviour_of(mode: Mode) -> Behaviour {
     match mode {

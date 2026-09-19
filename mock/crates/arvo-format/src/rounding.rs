@@ -67,6 +67,12 @@ pub struct Floor;
 /// Toward positive infinity.
 pub struct Ceil;
 /// Nearest, a tie toward positive infinity at every sign, `floor(x + q/2)`.
+///
+/// So a tie at -2.5 goes to -2. It is not the `HALF_UP` of Java or Python, which
+/// sends that tie the other way on the negative side; that one is ties away from
+/// zero, and it is reached here by shifting the position half a step away from
+/// zero and rounding toward zero, which is a composition a consumer writes
+/// rather than a mode of this crate.
 pub struct HalfUp;
 /// Nearest, ties to even.
 pub struct HalfEven;
