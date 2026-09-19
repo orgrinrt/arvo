@@ -96,6 +96,13 @@ main() {
   check_manifest user_of_the_crate_without_the_glob refused \
     'cannot resolve a prelude import'
 
+  # The `rust_2024` component in isolation: a `prelude` module with nothing in
+  # it, no `rust_2024` submodule at all, is refused the same way an absent
+  # `prelude` is, so the exact path is what a no_std dependent needs rather
+  # than any `prelude` module existing.
+  check_manifest user_of_the_crate_with_a_bare_prelude refused \
+    'cannot resolve a prelude import'
+
   # The control for the empty-prelude arm above: the same rename, the same
   # stand-in, and a wrong width asserted through the same array-length trick,
   # to show that trick can actually fail rather than only ever holding.
@@ -104,8 +111,16 @@ main() {
 
   # A std dependent has no such need: its own prelude comes through the name
   # `std`, not `core`, so the rename still hijacks the leading-`::` path with
-  # no prelude module in the renamed crate at all.
+  # no prelude module in the renamed crate at all. Its checks are
+  # `const _: () = assert!(...)`, evaluated at check time, not a runtime
+  # assertion in `fn main` that `cargo check` never runs.
   check_manifest a_std_dependent_of_the_crate_without_the_glob builds
+
+  # The control for the arm above: the same rename, the same stand-in, and a
+  # wrong width asserted through the same const-assert trick, to show the
+  # check can actually fail rather than only ever holding.
+  check_manifest a_std_dependent_of_the_crate_without_the_glob_and_a_wrong_width \
+    refused 'the manifest rename did not take over `::core`'
 
   # The positive control and the negative control.
   check the_shipped_spelling_alone_is_silent builds

@@ -165,6 +165,13 @@ error: could not compile `user_of_the_crate_without_the_glob` (lib) due to 1 pre
 exit 101
 verdict: as expected, refused with: cannot resolve a prelude import
 
+== manifest_rename/user_of_the_crate_with_a_bare_prelude
+error: cannot resolve a prelude import
+
+error: could not compile `user_of_the_crate_with_a_bare_prelude` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with: cannot resolve a prelude import
+
 == manifest_rename/user_of_the_crate_with_an_empty_prelude_and_a_wrong_width
 error[E0308]: mismatched types
   --> src/lib.rs:12:20
@@ -188,6 +195,18 @@ verdict: as expected, refused with: mismatched types
 == manifest_rename/a_std_dependent_of_the_crate_without_the_glob
 exit 0
 verdict: as expected, builds
+
+== manifest_rename/a_std_dependent_of_the_crate_without_the_glob_and_a_wrong_width
+error[E0080]: evaluation panicked: the manifest rename did not take over `::core`
+  --> src/lib.rs:10:15
+   |
+10 | const _: () = assert!(W == 9, "the manifest rename did not take over `::core`");
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `a_std_dependent_of_the_crate_without_the_glob_and_a_wrong_width` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with: the manifest rename did not take over `::core`
 
 == the_shipped_spelling_alone_is_silent.rs
 exit 0
