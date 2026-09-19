@@ -1,0 +1,7 @@
+[package]
+name = "fakecore_without_the_glob"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]

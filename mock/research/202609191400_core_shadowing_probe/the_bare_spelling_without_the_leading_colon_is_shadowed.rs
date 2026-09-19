@@ -1,17 +1,13 @@
-// The negative control C4 of review146f asked for: every sibling arm in this
-// directory exits 0, which is what a probe answering "the leading `::` holds"
-// looks like, but is indistinguishable from a probe that checks nothing. This
-// arm shows the harness can fail. It reads the BARE, unqualified spelling
-// `core::primitive::usize::BITS`, with no leading `::`, in the presence of a
-// `mod core` shadow, and asserts the outcome a leading-`::` read would give,
-// which the bare spelling does not give: it resolves through the shadow
-// instead.
+// The negative control: every other arm in this directory that is expected to
+// build does, and a harness that only ever sees exit 0 has not shown it can
+// fail. This arm reads the bare, unqualified spelling
+// `core::primitive::usize::BITS`, with no leading `::`, beside a `mod core`
+// shadow, and asserts what a leading-`::` read would give, the host's pointer
+// width. The bare spelling resolves through the shadow instead and reads 8, so
+// the assertion fails.
 //
-// Outcome: FAILS TO COMPILE, by construction: `assert!` inside a `const _`
-// panics at compile time, which is the failure this arm exists to produce.
-// `cargo build` (or `rustc --edition 2024 --crate-type lib`) on this file
-// alone exits non-zero with "evaluation of constant value failed" pointing at
-// the message below.
+// Outcome: FAILS TO COMPILE, by construction: the `assert!` inside a `const _`
+// panics at compile time with the message below, which `run.sh` checks for.
 #![no_std]
 
 mod core {
@@ -39,7 +35,5 @@ pub type CHECK = W<{ core::primitive::usize::BITS }>;
 
 const _: () = assert!(
     <CHECK as F>::MAX == (1i128 << usize::BITS) - 1,
-    "the bare spelling read the real pointer width rather than the shadow, \
-     which is not what a bare `core` path does in the presence of a `mod \
-     core` declared in the same crate"
+    "the bare spelling read the `mod core` shadow's 8 rather than the host's pointer width"
 );

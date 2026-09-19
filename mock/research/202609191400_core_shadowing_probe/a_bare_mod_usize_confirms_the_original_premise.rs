@@ -1,8 +1,10 @@
-// The control for the mechanism itself, not for this probe's new finding: a
-// bare `mod usize` shadows the bare `usize::BITS` path, which is the hole the
-// fourth review's respelling to `core::primitive::usize::BITS` closed. Kept here
-// so the probe directory shows the original mechanism still holds, beside the
-// two new ones (`core` itself, and `extern crate self`) this probe adds.
+// The control for the mechanism itself: a bare `mod usize` shadows the bare
+// `usize::BITS` path, which is why the aliases are spelled through
+// `core::primitive::usize::BITS` rather than `usize::BITS`. Kept beside the arms
+// about `core` itself so the directory shows the mechanism one level down still
+// holds.
+//
+// Outcome: WORKS. Exit 0, and the shadow's 8 is what the path reads.
 #![no_std]
 
 mod usize {

@@ -1,34 +1,44 @@
-# A manifest rename reaches the same hazard, and no arm here checks it
+# A manifest rename reaches the leading-colon path, and the lint does not see it
 
 Hypothesis: a `Cargo.toml` dependency renamed to the key `core`
-(`core = { package = "fakecore", ... }`, where `fakecore` is a crate
-exporting its own `primitive` module) hijacks the leading-`::` path
-`::core::primitive::usize::BITS` under `cargo check` exactly as `extern
-crate self as core` does, because both replace what the name `core`
-resolves to at the crate root, one through source and one through the
-dependency graph. Under `[target.'cfg(...)'.dependencies]` the rename is
-target-gated too, so it need not even be unconditional to reach a real
-build.
+(`core = { package = "fakecore", ... }`) replaces what the name `core`
+resolves to at the crate root, through the dependency graph rather than
+through source, so the leading-`::` path `::core::primitive::usize::BITS`
+reads the renamed crate's `primitive` instead of the real one. Under
+`[target.'cfg(...)'.dependencies]` the rename is target-gated as well, so
+it need not be unconditional to reach a real build.
 
-This is not a committed arm. A manifest edit is not `.rs` source, so it
-cannot be expressed as a single-file rustc probe alongside its siblings
-in this directory the way the other three forms are; checking it needs
-a real Cargo workspace with its own `Cargo.toml`, `Cargo.lock` and a
-`fakecore` crate, which is a fixture rather than a one-file spike.
-Per `evidence-lives-in-the-repo-or-it-never-happened.md`, an ad-hoc
-spike outside this repository establishes nothing citable, so the
-uncommitted cargo-rename crate this hypothesis was checked against once
-is not named here as evidence, and the hypothesis is stated as a
-hypothesis rather than as a checked result.
+The fixture is `manifest_rename/`, four small Cargo packages, each its own
+workspace, checked by `run.sh` with `cargo check --locked` beside the
+single-file arms:
 
-Outcome: NOT CHECKED IN THIS DIRECTORY. What is settled: this lint reads
-`.rs` source only (`ctx.all_sources`, `mockspace`'s source-file listing)
-and never opens `Cargo.toml`, so a manifest rename is unguarded by this
-lint regardless of whether the hijack itself would succeed. `DESIGN.md.tmpl`
-and the lint's own module doc both say so.
+- `fakecore/` does `pub use core::*;` and then declares its own
+  `primitive` module whose `usize::BITS` is 8.
+- `user/` renames `fakecore` to `core` in its manifest and asserts, in a
+  `const _`, that `::core::primitive::usize::BITS` is 8 and differs from
+  the pointer width read through the primitive type `usize`.
+- `fakecore_without_the_glob/` is the same crate with the glob re-export
+  taken out.
+- `user_of_the_crate_without_the_glob/` renames that one to `core` and
+  reads the same path.
 
-Next step this unblocks: a fixture crate under this repository's own
-`<mock>/research/sketches/` (or a dedicated `Cargo.toml`-bearing probe
-directory) that runs `cargo check` against a `core = { package =
-"fakecore" }` rename and reads whether the build accepts or refuses it,
-turning this hypothesis into a checked result citable elsewhere.
+Outcome, as `run.out` records it:
+
+- `manifest_rename/user` builds. The rename takes over `::core`, and the
+  path reads 8.
+- `manifest_rename/user_of_the_crate_without_the_glob` is refused with
+  `cannot resolve a prelude import`. The compiler reaches the prelude
+  through `core::prelude`, so a crate renamed to `core` has to carry
+  core's contents for the dependent to build at all. The glob re-export
+  is what the hijack needs, and it is also all it needs.
+
+So the hazard is real, and it needs no source form: `user/src/lib.rs`
+holds none of the three forms the lint reads. The lint reads `.rs`
+source only (`ctx.all_sources`) and never opens a `Cargo.toml`, so a
+manifest rename stays unguarded by it. `DESIGN.md.tmpl` and the lint's
+module doc both say so.
+
+What this unblocks: a manifest-reading check, which would have to refuse
+a dependency key `core` under `[dependencies]`, `[dev-dependencies]`,
+`[build-dependencies]` and every `[target.*]` table, with this fixture as
+its firing case.

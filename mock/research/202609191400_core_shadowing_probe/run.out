@@ -1,6 +1,7 @@
 tool: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+tool: cargo 1.98.0-nightly (fbb61be30 2026-05-26)
 
-== a_mod_core_shadows_the_bare_path
+== a_mod_core_shadows_the_bare_path.rs
 warning: type `usize` should have an upper camel case name
  --> a_mod_core_shadows_the_bare_path.rs:9:20
   |
@@ -12,8 +13,9 @@ warning: type `usize` should have an upper camel case name
 warning: 1 warning emitted
 
 exit 0
+verdict: as expected, builds
 
-== a_use_alias_shadows_the_bare_path
+== a_use_alias_shadows_the_bare_path.rs
 warning: type `usize` should have an upper camel case name
  --> a_use_alias_shadows_the_bare_path.rs:8:20
   |
@@ -25,57 +27,81 @@ warning: type `usize` should have an upper camel case name
 warning: 1 warning emitted
 
 exit 0
+verdict: as expected, builds
 
-== the_leading_double_colon_resists_both_shadows
+== a_bare_mod_usize_confirms_the_original_premise.rs
+exit 0
+verdict: as expected, builds
+
+== the_leading_double_colon_resists_both_shadows.rs
 warning: type `usize` should have an upper camel case name
-  --> the_leading_double_colon_resists_both_shadows.rs:11:20
+  --> the_leading_double_colon_resists_both_shadows.rs:23:20
    |
-11 |         pub struct usize;
+23 |         pub struct usize;
    |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
    |
    = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
 
-warning: type `usize` should have an upper camel case name
-  --> the_leading_double_colon_resists_both_shadows.rs:20:20
-   |
-20 |         pub struct usize;
-   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
-
 warning: struct `usize` is never constructed
-  --> the_leading_double_colon_resists_both_shadows.rs:11:20
+  --> the_leading_double_colon_resists_both_shadows.rs:23:20
    |
-11 |         pub struct usize;
+23 |         pub struct usize;
    |                    ^^^^^
    |
    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
 
 warning: associated constant `BITS` is never used
-  --> the_leading_double_colon_resists_both_shadows.rs:13:23
+  --> the_leading_double_colon_resists_both_shadows.rs:25:23
    |
-12 |         impl usize {
+24 |         impl usize {
    |         ---------- associated constant in this implementation
-13 |             pub const BITS: u32 = 8;
+25 |             pub const BITS: u32 = 8;
    |                       ^^^^
 
-warning: struct `usize` is never constructed
-  --> the_leading_double_colon_resists_both_shadows.rs:20:20
-   |
-20 |         pub struct usize;
-   |                    ^^^^^
-
-warning: associated constant `BITS` is never used
-  --> the_leading_double_colon_resists_both_shadows.rs:22:23
-   |
-21 |         impl usize {
-   |         ---------- associated constant in this implementation
-22 |             pub const BITS: u32 = 9;
-   |                       ^^^^
-
-warning: 6 warnings emitted
+warning: 3 warnings emitted
 
 exit 0
+verdict: as expected, builds
 
-== extern_crate_self_as_core_hijacks_the_absolute_path
+== the_use_alias_does_not_reach_the_leading_colon_path.rs
+warning: type `usize` should have an upper camel case name
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: unused import: `fake as core`
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:22:5
+   |
+22 | use fake as core;
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `usize` is never constructed
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated constant `BITS` is never used
+  --> the_use_alias_does_not_reach_the_leading_colon_path.rs:17:23
+   |
+16 |         impl usize {
+   |         ---------- associated constant in this implementation
+17 |             pub const BITS: u32 = 9;
+   |                       ^^^^
+
+warning: 4 warnings emitted
+
+exit 0
+verdict: as expected, builds
+
+== extern_crate_self_as_core_hijacks_the_absolute_path.rs
 warning: type `usize` should have an upper camel case name
   --> extern_crate_self_as_core_hijacks_the_absolute_path.rs:12:16
    |
@@ -87,10 +113,77 @@ warning: type `usize` should have an upper camel case name
 warning: 1 warning emitted
 
 exit 0
+verdict: as expected, builds
 
-== a_bare_mod_usize_confirms_the_original_premise
+== the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs
+warning: type `usize` should have an upper camel case name
+  --> the_raw_ident_extern_crate_self_hijacks_the_leading_colon_path.rs:22:16
+   |
+22 |     pub struct usize;
+   |                ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: 1 warning emitted
+
 exit 0
+verdict: as expected, builds
 
-== the_shipped_spelling_alone_is_silent
+== a_macro_expanded_extern_crate_self_as_core_is_refused.rs
+error: macro-expanded `extern crate` items cannot shadow names passed with `--extern`
+  --> a_macro_expanded_extern_crate_self_as_core_is_refused.rs:13:9
+   |
+13 |         extern crate self as core;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+17 | hijack!();
+   | --------- in this macro invocation
+   |
+   = note: this error originates in the macro `hijack` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 1 previous error
+
+exit 1
+verdict: as expected, refused with: macro-expanded `extern crate` items cannot shadow names passed with `--extern`
+
+== manifest_rename/user
 exit 0
+verdict: as expected, builds
 
+== manifest_rename/user_of_the_crate_without_the_glob
+error: cannot resolve a prelude import
+
+error: could not compile `user_of_the_crate_without_the_glob` (lib) due to 1 previous error
+exit 101
+verdict: as expected, refused with: cannot resolve a prelude import
+
+== the_shipped_spelling_alone_is_silent.rs
+exit 0
+verdict: as expected, builds
+
+== the_bare_spelling_without_the_leading_colon_is_shadowed.rs
+warning: type `usize` should have an upper camel case name
+  --> the_bare_spelling_without_the_leading_colon_is_shadowed.rs:15:20
+   |
+15 |         pub struct usize;
+   |                    ^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Usize`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+error[E0080]: evaluation panicked: the bare spelling read the `mod core` shadow's 8 rather than the host's pointer width
+  --> the_bare_spelling_without_the_leading_colon_is_shadowed.rs:36:15
+   |
+36 |   const _: () = assert!(
+   |  _______________^
+37 | |     <CHECK as F>::MAX == (1i128 << usize::BITS) - 1,
+38 | |     "the bare spelling read the `mod core` shadow's 8 rather than the host's pointer width"
+39 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0080`.
+exit 1
+verdict: as expected, refused with: the bare spelling read the `mod core` shadow's 8 rather than the host's pointer width
+
+unexpected outcomes: 0

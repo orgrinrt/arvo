@@ -3,21 +3,21 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Tests for `the-platform-width-points-read-the-pointer-width`, split out of
-//! the lint file along the 500-line guideline. The alias-spelling arm and the
-//! `core`-binding arm share this fixture and this file.
+//! Tests for `the-platform-width-points-read-the-pointer-width`'s alias-spelling
+//! arm and for what the two arms share. The `core`-binding arm's tests are in
+//! `core_binding_tests.rs` beside this file.
 
 use mockspace::testkit::LintFixture;
 
 use super::*;
 
 /// The shipped spelling, as `points` carries it.
-const SHIPPED: &str = "\
+pub(super) const SHIPPED: &str = "\
     pub type USize = UFixed<{ ::core::primitive::usize::BITS }, 0>;
     pub type ISize = Integer<{ ::core::primitive::usize::BITS }>;
 ";
 
-fn hits(source: &str) -> Vec<LintError> {
+pub(super) fn hits(source: &str) -> Vec<LintError> {
     let fixture = LintFixture::new(source).with_crate_name("arvo-format", "format");
     ThePlatformWidthPointsReadThePointerWidth.check(&fixture.ctx())
 }
@@ -304,224 +304,12 @@ fn a_module_named_usize_in_scope_still_fires_on_the_bare_spelling() {
     // by construction. It is not the general answer to shadowing, which is why
     // `core` itself needs the separate arm below rather than a stronger reading
     // of this same comparison: an item can still bind the name `core`, and the
-    // spelling comparison alone cannot see that, which is what
-    // `a_declared_core_module_fires` and its siblings exist to close.
+    // spelling comparison alone cannot see that, which is what the tests in
+    // `core_binding_tests.rs` cover.
     let errors = hits(
         "mod usize {\n    pub const BITS: u32 = 99;\n}\npub type USize = UFixed<{ usize::BITS \
          }, 0>;\npub type ISize = Integer<{ ::core::primitive::usize::BITS }>;\n",
     );
     assert_eq!(errors.len(), 1);
     assert!(errors[0].message.contains("USize"));
-}
-
-// --- the core-binding arm ----------------------------------------------------
-
-/// A source with the shipped aliases plus one extra declaration spliced in
-/// before them.
-fn with_declaration(decl: &str) -> String {
-    format!("{decl}\n{SHIPPED}")
-}
-
-#[test]
-fn a_declared_core_module_fires() {
-    let errors = hits(&with_declaration(
-        "mod core {\n    pub const X: u32 = 1;\n}",
-    ));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(errors[0].message.contains("mod core"));
-}
-
-#[test]
-fn a_core_module_referencing_an_external_file_fires() {
-    // `mod core;` with no body is the same declaration, spelled for a file this
-    // lint never has to see.
-    let errors = hits(&with_declaration("mod core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-}
-
-#[test]
-fn a_use_alias_to_core_fires() {
-    let errors = hits(&with_declaration("use crate::fake as core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(
-        errors[0].message.contains("use ... as core"),
-        "{}",
-        errors[0].message
-    );
-    // The two forms are told apart by which reason fires, not merely by which
-    // words the message happens to contain: a `use` alias is refused for
-    // shadowing the bare name in scope, never for reaching the leading-`::`
-    // path, which is the `extern crate` reason.
-    assert!(
-        !errors[0].message.contains("renames the crate root"),
-        "{}",
-        errors[0].message
-    );
-}
-
-#[test]
-fn an_extern_crate_alias_to_core_fires() {
-    let errors = hits(&with_declaration("extern crate self as core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(
-        errors[0].message.contains("extern crate ... as core"),
-        "{}",
-        errors[0].message
-    );
-    assert!(
-        errors[0].message.contains("renames the crate root"),
-        "{}",
-        errors[0].message
-    );
-    assert!(
-        !errors[0].message.contains("use ... as core"),
-        "{}",
-        errors[0].message
-    );
-}
-
-#[test]
-fn an_extern_crate_alias_to_core_from_a_named_crate_fires() {
-    let errors = hits(&with_declaration("extern crate somewhere as core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-}
-
-#[test]
-fn a_raw_ident_mod_core_fires() {
-    let errors = hits(&with_declaration(
-        "mod r#core {\n    pub const X: u32 = 1;\n}",
-    ));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(
-        errors[0].message.contains("mod core"),
-        "{}",
-        errors[0].message
-    );
-}
-
-#[test]
-fn a_raw_ident_extern_crate_self_alias_fires() {
-    let errors = hits(&with_declaration("extern crate self as r#core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(
-        errors[0].message.contains("extern crate"),
-        "{}",
-        errors[0].message
-    );
-}
-
-#[test]
-fn a_raw_ident_use_alias_fires() {
-    let errors = hits(&with_declaration("use crate::fake as r#core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(
-        errors[0].message.contains("use ... as core"),
-        "{}",
-        errors[0].message
-    );
-}
-
-#[test]
-fn a_braced_use_alias_fires() {
-    // The multiline `#[cfg(target_pointer_width = "32")]` control form review146f
-    // asked for: a cfg-gated extern crate over several lines, plus a braced
-    // `use` alias closing at `,` rather than at `;`.
-    let errors = hits(&with_declaration(
-        "use crate::{fake as core, fake as other};",
-    ));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(
-        errors[0].message.contains("use ... as core"),
-        "{}",
-        errors[0].message
-    );
-}
-
-#[test]
-fn a_braced_use_alias_closing_at_the_final_brace_fires() {
-    let errors = hits(&with_declaration("use crate::{other, fake as core};"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-}
-
-#[test]
-fn a_use_path_ending_bare_in_core_fires() {
-    let errors = hits(&with_declaration("use crate::fake::core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-    assert!(
-        errors[0].message.contains("as the last"),
-        "{}",
-        errors[0].message
-    );
-}
-
-#[test]
-fn a_bare_use_of_core_at_the_crate_root_fires() {
-    let errors = hits(&with_declaration("use core;"));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-}
-
-#[test]
-fn a_multiline_cfg_gated_extern_crate_alias_fires() {
-    let errors = hits(&with_declaration(
-        "#[cfg(target_pointer_width = \"32\")]\nextern crate self as r#core;\n",
-    ));
-    assert_eq!(errors.len(), 1, "{errors:?}");
-}
-
-#[test]
-fn a_use_path_continuing_past_core_is_silent() {
-    // `core` here is a module segment, not the leaf the `use` item binds, so
-    // this is the silent control for `a_use_path_ending_bare_in_core_fires`.
-    let errors = hits(&with_declaration("use crate::core::mem;"));
-    assert!(errors.is_empty(), "{errors:?}");
-}
-
-#[test]
-fn a_core_binding_is_found_regardless_of_which_file_carries_the_aliases() {
-    // The crate-scoped arm reads every file, so a `mod core` in one file and
-    // the aliases in another still meet.
-    let fixture = LintFixture::new(SHIPPED)
-        .with_crate_name("arvo-format", "format")
-        .with_module("other.rs", "mod core {\n    pub const X: u32 = 1;\n}\n");
-    let errors = ThePlatformWidthPointsReadThePointerWidth.check(&fixture.ctx());
-    assert!(
-        errors.iter().any(|e| e.message.contains("mod core")),
-        "{errors:?}"
-    );
-}
-
-#[test]
-fn a_module_named_something_else_is_silent() {
-    // The word `core` has to be the whole word bound, not a prefix or suffix of
-    // one, and `corelib` is neither `core` the module nor the alias to it.
-    let errors = hits(&with_declaration(
-        "mod corelib {\n    pub const X: u32 = 1;\n}",
-    ));
-    assert!(errors.is_empty(), "{errors:?}");
-}
-
-#[test]
-fn a_use_alias_to_something_else_is_silent() {
-    let errors = hits(&with_declaration("use crate::fake as corelib;"));
-    assert!(errors.is_empty(), "{errors:?}");
-}
-
-#[test]
-fn a_cast_to_a_path_starting_with_core_is_silent() {
-    // `x as core::ffi::c_int` is an ordinary cast to a path that happens to
-    // start with `core`, not a binding of the name `core` to anything, and the
-    // next character after `core` is `:` rather than a statement's `;`, which is
-    // what the terminator check on this arm is for.
-    let errors = hits(&with_declaration(
-        "const fn f(x: i32) -> i32 { x as core::ffi::c_int as i32 }",
-    ));
-    assert!(errors.is_empty(), "{errors:?}");
-}
-
-#[test]
-fn a_mention_of_core_in_a_comment_or_literal_is_silent() {
-    for decl in ["// mod core {}", "const S: &str = \"mod core {}\";", "// use fake as core;"] {
-        let errors = hits(&with_declaration(decl));
-        assert!(errors.is_empty(), "{decl}: {errors:?}");
-    }
 }
