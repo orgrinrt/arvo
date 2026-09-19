@@ -22,12 +22,19 @@ arvo is a fixed-point arithmetic stack. Every numeric primitive
 (`u8` through `u128`, `i8` through `i128`, `f32`, `f64`, `bool`,
 `usize`, `isize`) is replaced by an arvo primitive
 (`UFixed<I, F, S>` / `IFixed<I, F, S>` / `FastFloat` / `StrictFloat`
-/ `Bool` / `USize` / `ISize`) or one of the pre-defined semantic
+/ `Bool`) or one of the pre-defined semantic
 aliases over them (`Byte`, `Word`, `DWord`, `QWord`, `Nibble`, `Bit`
 from arvo-bits). Domain usage drives the type choice: a 28-bit
 content hash isn't "a u32"; it's `ContentHash = Bits<28>`. A node
 index isn't "a usize"; it's `NodeId`. The arvo primitive or a domain
 alias grounded on one, never the bare primitive.
+
+`USize` and `ISize` are not in that list. They are format points in
+`arvo-format`, `UFixed<{ usize::BITS }, 0>` and `Integer<{ usize::BITS }>`,
+zero-sized markers that name a format and hold no value, so a field or
+return typed as one carries nothing. No value type for a pointer-width
+number exists yet: what a value of a format is, is
+`question::what_a_datum_stands_for`, and it is open.
 
 **Scope is physical, not API-visibility.** Bare `u8..u128`, `i8..i128`,
 `f32`, `f64`, `usize`, `isize`, `bool` do not appear anywhere in
@@ -106,7 +113,7 @@ implementation.
 | Category | When | Examples |
 |----------|------|----------|
 | **Trait** | Varying behavior, shared contract | `UArith<BITS>`, `IArith<BITS>`, `BitSequence`, `BitAccess`, `BitLogic`, `Bool: Try` |
-| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `USize`, `ContentHash`, `Array<T, N>`, `Matrix<W, N>` |
+| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `ContentHash`, `Array<T, N>`, `Matrix<W, N>` |
 | **`repr(C)` enum** | Closed set, crosses ABI | `Strategy` markers, `Priority`, `ErrorClass` |
 
 There is no fourth "bare primitive" category. Every numeric identity
@@ -119,7 +126,7 @@ flows through arvo's type system.
 - Arithmetic generic: `<T: UArith<BITS>>` instead of concrete `u8` /
   `u16`
 - Associated types when the implementor chooses concrete storage
-- Newtypes at public boundaries: `USize`, `ISize`, `FastFloat`
+- Newtypes at public boundaries: `FastFloat`, or a domain newtype
 - Scalar returns: `Outcome<T, E>`, `Maybe<T>`, `Just<T>` (from notko)
 
 ## DON'T ✗ (concrete-type leakage, anywhere in source)
@@ -138,7 +145,7 @@ flows through arvo's type system.
 
 | If your code looks like… | Reshape to… |
 |---|---|
-| `fn X() -> usize` | `fn X() -> USize` |
+| `fn X() -> usize` | a domain newtype; not `USize`, which is a format point and holds no value |
 | `fn add(a: u32, b: u32) -> u32` | `fn add<T: UArith<32>>(a: T::T, b: T::T) -> T::T` |
 | `fn lookup(k) -> Option<&V>` | `fn lookup(k) -> Maybe<&V>` |
 | `fn try_x(...) -> Result<T, E>` | `fn try_x(...) -> Outcome<T, E>` |

@@ -712,8 +712,9 @@ delete is generous here, because there was never a check to delete in the first 
 same reason that one was strengthened. The step law is `radix^(BASE + SLOPE * m)`, so a law declaring
 a rate and a count that between them run the exponent past what it carries has not described a
 quantum at every magnitude it claims. The check is done in a domain wide enough to hold the product,
-so the obligation cannot overflow while checking that the thing it is about does not, which is the
-shape the slot range's own count condition already has.
+so the obligation cannot overflow while checking that the thing it is about does not. The slot range's
+span condition gets the same guarantee a different way, by computing the span checked and reading an
+overflow as the refusal.
 
 **What the absence cost is worth naming, since it is what makes the addition more than tidiness.**
 `contains` conjoins the magnitude range, so under a law over no magnitudes nothing is a member.
@@ -796,9 +797,21 @@ obligation whose own arithmetic could leave the integer computes it checked, and
 the refusal it would have been: the slot range's span, addition's carry condition, and the reflection
 comparison that negates the highest slot. A position computed for an operand that is not a member, or
 by a chain of carries, saturates at the integer's ends, the act `Reach` and the addition step already
-perform, so every verb stays total. And the wrap completion reduces the position and the lowest slot
-separately before subtracting, so it answers exactly at every position the integer holds rather than
-at every position within one span of the range.
+perform, so every verb stays total. Those two are the whole list: they are positions no index could
+name, so what reaches the applied map is already the saturated one.
+
+The applied map computes no position that saturates, and the `Saturate` policy is the only place it
+pins anything. Rounding answers with the slot at or below the position and
+whether to step one above it, and it never forms the slot above, because at `i128::MAX` that slot is one
+past the integer. The pair names every position from the integer's lowest to one past its highest,
+which is the whole reach a rounding has. The completion reads the pair as it is: the position is in
+range when the slot below is at least the lowest slot or steps onto it, and at most the highest slot
+without stepping past it; the wrap reduces the slot below and the lowest slot separately, subtracts
+them, adds the step and reduces once more, so every intermediate is under the span and the answer is
+exact at every position rounding can name; and saturation pins to the lowest slot when the slot below
+is under it and to the highest otherwise. `panic_on_overflow` asks the same in-range question of the
+same pair. So a range placed at the top of the index adapts a position just under one past its top
+exactly as a range at zero does.
 
 ### The other three contracts owe the same thing, in the same form
 
@@ -893,13 +906,14 @@ error type, and a format is a declared signature that holds none. No crate here 
 format yet, and what one datum of a numeral stands for is an open question, so the value half is not
 built here and is not answered by this section.
 
-There is no capacity type beside the two points, and none is built. Such a type would name the type of
-a const generic parameter that counts a capacity, which is a coordinate the numeric door carries rather
-than a numeral, and which the primitive obligation excepts from the stack's own types. It is not a
-platform-width type either, whatever it would be called. The only way to put a stack type at that
-position is `adt_const_params`, which this design declines to hand to every crate declaring a format, and
-`an_arvo_type_as_a_const_parameter_is_refused` pins the refusal. A capacity position takes the host's
-`usize`, which is what the exception is for.
+No capacity type is built here. The platform-width ruling puts one outside its own scope: a capacity
+names a different position, a const generic parameter, which the numeric door's ruling answers as a
+coordinate the door carries rather than a numeral, and nothing in either ruling says what type spells
+it. The primitive obligation excepts a const generic parameter from the stack's own types, and even
+there the bare form is used only where the alternative is genuinely painful. Whether a capacity is
+such a position is not answered in this design. The one fact that bears on it here is mechanical: a
+stack type at a const generic position needs `adt_const_params`, which this crate does not enable, and
+`an_arvo_type_as_a_const_parameter_is_refused` pins that refusal for `Width`.
 
 ### The laws the platform-width points owe tests for
 
@@ -909,9 +923,15 @@ both ends, the count, the quantum, the phase and the magnitude count all read ba
 `isize` bounds.
 
 The family is asserted at every pointer width, not at the one the suite happens to run on. The same
-laws are stated over `UFixed<W, 0>` and `Integer<W>` at `W` in 16, 32 and 64 on any host, and the
-alias's own arm is compiled for a target at each of the three pointer widths, since a claim about a
-target-indexed family checked at one target is a claim about one member.
+laws are stated over `UFixed<W, 0>` and `Integer<W>` at `W` in 16, 32 and 64 on any host, since a
+claim about a target-indexed family checked at one target is a claim about one member.
+
+The alias's own arm is per pointer width, and the suite running on one host compiles only that host's.
+A check at a 32-bit target compiles the 32-bit arm, and a check of the library at a 16-bit target
+compiles the alias there. The 16-bit test arms cannot be compiled at all, since a test harness needs
+`std` and no 16-bit target has one, and each is marked where it stands. The two checks that can run
+are one catalogue test, ignored because it drives a second compilation at two foreign targets and
+needs both installed, and it fails when either target stops compiling. No gate runs it yet.
 
 The obligation's range is a membership question, asked in both directions: the errno ceiling and the
 GetLastError ceiling are members at 32 and 64, and the second is not at 16.
@@ -927,10 +947,11 @@ So the map performs the exact step in a domain chosen to hold it, and the adapta
 in the representable set. The step's intermediate is not a slot index and is not required to be one;
 only the answer is.
 
-That is also why the intermediate is not a coordinate and carries no coordinate type. It is a private
-value inside two private functions, it exists to be wider than a `Slot` on purpose, and giving it a
-name in the surface would put a quantity on the public API that nothing outside has any business
-holding.
+That is also why the intermediate is not a coordinate and carries no coordinate type. For rounding it
+is the slot at or below the position and one bit saying whether to step above it, a private pair
+inside the crate's own functions that names one more position than a `Slot` does, on purpose, and
+giving it a name in the surface would put a quantity on the public API that nothing outside has any
+business holding.
 
 **The same reading covers the slot that cancels a phase.** Working out where zero would sit divides an
 offset a caller wrote by its own denominator and negates it, which leaves the range a slot index is
@@ -939,8 +960,11 @@ function that asks. Nothing about it reaches the surface: what comes back is a `
 
 **This is what makes the map total without a check.** Wrapping a very large exact position into a small
 range has a correct answer, and the only reason a design would refuse or guard there is that it chose
-a carrier too narrow for the intermediate. Widening it removes the case rather than catching it, which
-is what the design asks for: no check on the value path, and no arm that only holds under a build flag.
+a carrier too narrow for the intermediate. Carrying the intermediate in a form that holds every
+position the step can reach removes the case rather than catching it, which is what the design asks
+for: no check on the value path, and no arm that only holds under a build flag. For rounding that form
+is the pair above rather than a wider integer, since the step adds at most one slot and one bit is
+all the extra reach it needs.
 
 A guard would have been the wrong answer twice over. Under `overflow-checks` it is a runtime check the
 canon forbids; without it, it is nothing at all, and the wrong value it lets through lands **inside**

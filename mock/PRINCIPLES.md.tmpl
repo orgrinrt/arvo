@@ -87,28 +87,35 @@ remediation task.
 ### No `.0` field-access on arvo primitives
 
 The no-bare-primitives discipline extends to field-access on arvo
-primitives. Every arvo numeric primitive (USize, ISize, UFixed, IFixed,
-FastFloat, StrictFloat, Bits, Mask\<B\> chassis, BitMatrix\<B, N\>
-chassis, Bitfield, plus aliases) ships full const-trait arithmetic via
-`impl const` on `core::ops::*`.
-Consumer code computes on arvo primitives at const time through the
-typed surface (`x + y`, `USize::ONE`, `Mask::<Bits<64, Hot,
+primitives. An arvo numeric value type (IFixed, FastFloat,
+StrictFloat, Bits, Mask\<B\> chassis, BitMatrix\<B, N\> chassis,
+Bitfield, plus aliases) carries its arithmetic as const-trait impls,
+`impl const` on `core::ops::*`, and consumer code computes on it at
+const time through that typed surface (`x + y`, `Mask::<Bits<64, Hot,
 Unsigned>>::empty()`, etc.) without falling back to `.0`
 field-access on the inner primitive.
+
+`USize`, `ISize` and `UFixed` are not in that list, because none of
+them is a value type. They are format points in `arvo-format`,
+zero-sized markers that name a format and hold no value: `USize` is
+`UFixed<{ usize::BITS }, 0>` and `ISize` is `Integer<{ usize::BITS }>`.
+They have no constants, no constructor, no arithmetic and no field to
+read. What a value of a format is, and so what a value type for these
+points would be, is `question::what_a_datum_stands_for`, and that
+question is open.
 
 `x.0` on an arvo primitive is a smell. The alternatives:
 
 - For arithmetic at const time: use the const-trait ops
-  (`impl const Add` etc.) or the inherent constants
-  (`USize::ZERO`, `USize::ONE`, `USize::MAX`).
+  (`impl const Add` etc.) or the type's inherent constants.
 - For boundary unwrap to a raw primitive (FFI, `core::*` APIs that
-  take `usize` directly): use `*x` (the existing `Deref` impl on
-  USize / Bool) or `Transparent::raw(x)` for arbitrary arvo
-  wrappers. Document the boundary use with an inline comment if
-  it's not obvious.
-- For literal construction: `USize(N)` constructor on a tuple
-  struct is fine; the ban is on read-side field-access in
-  arithmetic contexts, not on construction.
+  take a host integer directly): use `*x` (the existing `Deref` impl
+  on Bool) or `Transparent::raw(x)` for arbitrary arvo wrappers.
+  Document the boundary use with an inline comment if it's not
+  obvious.
+- For literal construction: a tuple-struct constructor is fine; the
+  ban is on read-side field-access in arithmetic contexts, not on
+  construction.
 
 A workspace lint forbidding `.0` field-access on arvo primitives
 outside the implementing crate is filed as a follow-up; the
@@ -161,7 +168,7 @@ local or cast expression, falls into one of three categories:
 | Category | When | Examples |
 |----------|------|----------|
 | **Trait** | Varying behavior, shared contract, extensible | arithmetic ops, sinks, platform providers |
-| **Newtype** | Fixed representation, validation at construction | `UFixed<I, F, S>`, `USize`, `Bool`, `ContentHash`, strategy markers |
+| **Newtype** | Fixed representation, validation at construction | `Bool`, `ContentHash`, strategy markers |
 | **`repr(C)` enum** | Closed set, crosses ABI boundary | `Priority`, `ErrorClass` |
 
 There is no fourth "bare primitive" category. Raw `u8`..`u128`,
@@ -178,9 +185,11 @@ It shouldn't be an enum. It should be a trait.
 
 Every container's capacity lives at type level: `Mask64`, `Mask256`,
 `Seq<T, const N: usize>`, `Map<K, V, const N: usize>`. A capacity is a
-const generic parameter, the one position where a bare `usize` is
-excepted, and it takes the host's `usize` rather than a stack type
-standing in for it. No runtime resize, no runtime
+const generic parameter, which is the one position the primitive
+obligation excepts from the stack's own types, and even there the
+bare form is used only where the alternative is genuinely painful. No
+capacity type is built, and whether a capacity is such a position is
+not settled. No runtime resize, no runtime
 grow. If a consumer needs a bigger container, they pick the bigger
 type.
 
@@ -229,7 +238,7 @@ the bare primitive might otherwise appear.
 | `HashMap<K, V>` | `&mut impl KeyValueStore<K, V>` / `Map<K, V, N>` | hilavitkutin-api |
 | `String` owned | `Str` | `hilavitkutin-str` |
 | `&str` non-static | `&'static str` or `Str` | as above |
-| `usize` / `isize` | `USize` / `ISize` / domain newtype; a const generic capacity keeps `usize` | `arvo-format`, as format points; no value carries one yet |
+| `usize` / `isize` | domain newtype; `USize` / `ISize` name the format and no value type of either exists yet; a const generic parameter is the excepted position, bare only where the alternative is genuinely painful | `arvo-format` has the two format points; the value half is `question::what_a_datum_stands_for`, open |
 | `u8..u128` / `i8..i128` | `T: Boundable` / `T: NonZeroable` | `notko`; `UFixed` is a format marker and no value carries one yet |
 | `f32` / `f64` | `FastFloat` / `StrictFloat` | not built yet |
 | `bool` | `Bool` | `arvo-format` |

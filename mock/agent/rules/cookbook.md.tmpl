@@ -67,10 +67,12 @@ index into backing storage.
 
 `arvo_tensor::Array<T, N>` for rank-1, `arvo_tensor::Matrix<W, N>` for
 rank-2 N×N. Both wrap `[T; cap_size(N)]` / `[[W; N]; N]` with
-`get(USize) -> &T` / `set(USize, T)` / `from_fn(|USize| T)` APIs that
-hide the raw-usize indexing. Iterate via standard `for t in &arr { ... }`
-(IntoIterator) or `for (i, t) in arr.enumerated() { ... }` (yields
-typed `USize` indices via the `Enumerator` trait).
+`get(i) -> &T` / `set(i, T)` / `from_fn(|i| T)` APIs that hide the
+raw-usize indexing behind a typed index. Iterate via standard
+`for t in &arr { ... }` (IntoIterator) or
+`for (i, t) in arr.enumerated() { ... }` (yields typed indices via the
+`Enumerator` trait). The index type is not `USize`, which is a format
+point and holds no value.
 
 ## "I need a bounded integer"
 
@@ -80,9 +82,18 @@ Semantic aliases (`Mass<S>`, `Angle<S>`, etc.) shadow the raw form.
 
 ## "I need to measure size / capacity"
 
-`USize` (not raw `usize`), or `ISize` for a signed one. A const-generic
-capacity is a bare `const N: usize`: that position is the one exception, and
-there is no `Cap` type, by ruling.
+No value type for a pointer-width size exists yet. `arvo_format::points::USize`
+and `ISize` are format points, `UFixed<{ usize::BITS }, 0>` and
+`Integer<{ usize::BITS }>`: zero-sized markers that name the format and hold
+no value, so a field or return typed as one carries nothing. What a value of a
+format is, is `question::what_a_datum_stands_for`, and it is open. Do not
+invent a value type to fill it.
+
+A const-generic capacity is the position
+`obligation::a_primitive_for_every_position_a_bare_number_would_take`
+excepts, and even there the bare form is used only where the alternative is
+genuinely painful. No capacity type is built, and the platform-width ruling
+puts one out of its scope; no ruling says whether one should exist.
 
 ## "I need a float"
 

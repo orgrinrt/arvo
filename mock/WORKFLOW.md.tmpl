@@ -32,9 +32,12 @@ drives container width and codegen; it does not change at runtime.
 
 Fixed-point arithmetic uses `UFixed<I, F, S>` and `IFixed<I, F, S>`,
 where `I` is integer bit count and `F` is fractional bit count. Floats
-use `FastFloat` and `StrictFloat`. Boolean values use `Bool`. Pointer-
-width sizes use `USize` and `ISize`, and a type-level capacity is a const
-generic `usize`.
+use `FastFloat` and `StrictFloat`. Boolean values use `Bool`. The
+pointer-width formats are `USize` and `ISize`, format points that hold
+no value; what a value of one is has not been decided. A type-level
+capacity is a const generic parameter, the position the primitive
+obligation excepts, with the bare form used only where the alternative
+is genuinely painful.
 
 ## Pre-1.0 stability
 
