@@ -1,0 +1,12 @@
+PASS  C1 floor: equivariant=true (must be true)
+PASS  C2 ceil: equivariant=true (must be true)
+PASS  C3 broken_floor (control, must be caught non-equivariant): equivariant=false (must be false)
+PASS  C4 half_up (shipped, away from zero): equivariant=false (must be false)
+PASS  C5 half_up (alternate reading, toward positive infinity): equivariant=true (must be true)
+
+position -0.5 (slot -1):
+  floor -1   ceil 0   half_up(away) -1   half_up(+inf) 0
+position 0.5 (slot 0, shifted by 1):
+  floor 0   ceil 1   half_up(away) 1   half_up(+inf) 1
+
+half_up(away): round(-0.5)=-1, round(-0.5)+1=0, round(0.5)=1 -> NOT equivariant
