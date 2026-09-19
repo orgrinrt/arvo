@@ -1,0 +1,15 @@
+# rustc: rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2021 -O, host host: aarch64-apple-darwin
+p270b: wrapping against rounding, quotient-group comparison
+exact points k/16, four wraps either side of the signed W-bit grid
+
+W = 3, 1024 points:  Floor 0  Ceil 0  TowardZero 480  HalfEven 0  HalfUpPosInf 0  HalfUpAway 32
+W = 4, 2048 points:  Floor 0  Ceil 0  TowardZero 960  HalfEven 0  HalfUpPosInf 0  HalfUpAway 64
+W = 5, 4096 points:  Floor 0  Ceil 0  TowardZero 1920  HalfEven 0  HalfUpPosInf 0  HalfUpAway 128
+
+K1 floor commutes on every row: true
+K2 toward_zero fails on every row: true
+K3 the two readings give different counts somewhere: true
+
+the row's `half-up commutes` holds under ties toward +inf: true
+the row's `half-up commutes` holds under ties away from zero: false
+instrument: sound
