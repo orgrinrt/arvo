@@ -40,39 +40,31 @@ Return `T` directly, or `Just<T>` when the signature needs explicit
 
 ## "I need arithmetic that works for Hot / Warm / Cold / Precise"
 
-Take a trait bound: `<T: UArith<BITS>>` for unsigned,
-`<T: IArith<BITS>>` for signed. Caller picks concrete strategy;
-monomorphisation generates the right code per call site.
+No arithmetic trait is in the tree yet, and no value for one to act
+on: what a value of a format is, is `question::what_a_datum_stands_for`,
+and it is open. `arvo-format` names the adaptation an operation applies
+and applies it to a slot, which is not a value. Do not invent an
+arithmetic trait to fill the gap.
 
 ## "I need a bit pattern"
 
-`Mask64` for ≤ 64 bits, `Mask256` for ≤ 256, `BitMatrix<N>` for square
-grids. All from `arvo-bitmask`.
+`arvo_bits::Bits<N>`, an exact-width pattern of `N` bits carried in a
+`u64` and masked to `N` on construction. Nothing wider and nothing
+two-dimensional is in the tree yet.
 
 ## "I need bit-level operations"
 
-Take a trait bound from `arvo-bits`: `T: BitSequence + BitAccess` when
-the consumer scans bits and reads / writes individual positions; add
-`+ BitLogic` when the consumer also needs whole-word OR / AND / NOT /
-XOR (or use `core::ops::{BitOr, BitAnd, BitNot, BitXor}` on the `Hot`
-containers, arvo-bits impls them). Works across `Mask64` / `Mask256`
-/ custom storage.
+No bit-level trait is in the tree yet. What `Bits<N>` has is its own
+inherent `const fn`s, `masked`, `cast` and the unwrap door `raw`.
 
 ## "I need a sparse matrix"
 
-`arvo_sparse::CsrMatrix<T>`. Iterate via provided accessor; never raw
-index into backing storage.
+Nothing in the tree yet.
 
 ## "I need a fixed-size dense array or matrix"
 
-`arvo_tensor::Array<T, N>` for rank-1, `arvo_tensor::Matrix<W, N>` for
-rank-2 N×N. Both wrap `[T; cap_size(N)]` / `[[W; N]; N]` with
-`get(i) -> &T` / `set(i, T)` / `from_fn(|i| T)` APIs that hide the
-raw-usize indexing behind a typed index. Iterate via standard
-`for t in &arr { ... }` (IntoIterator) or
-`for (i, t) in arr.enumerated() { ... }` (yields typed indices via the
-`Enumerator` trait). The index type is not `USize`, which is a format
-point and holds no value.
+Nothing in the tree yet. Whatever indexes one, the index type is not
+`USize`, which is a format point and holds no value.
 
 ## "I need a bounded integer"
 

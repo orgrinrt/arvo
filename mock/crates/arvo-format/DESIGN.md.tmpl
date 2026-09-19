@@ -509,16 +509,21 @@ holds afterwards is in `[0, 1)`, which is what lets the rounding modes be stated
 per sign.
 
 The carry that normalisation moves into the slot is at most `2^63` in either direction, and it lands as
-an ordinary slot wherever the index's host integer holds the sum. Where it does not, the constructor
-saturates: the slot pins at the integer's end and the normalised remainder stays, so `between` is total
-over every slot and every ratio, and what it stores is not the position it was asked for. That happens
-only from a slot within `2^63` of either end, and a range may be admitted there, `i128::MAX` included.
-`between(Slot::at(i128::MAX), 9/4)` names `i128::MAX + 9/4` and stores `i128::MAX + 1/4`;
-`between(Slot::at(i128::MIN), -7/4)` names `i128::MIN - 7/4` and stores `i128::MIN + 1/4`. Everything
-downstream adapts the stored position, so under `Ceil` and `Wrap` over a range ending at `i128::MAX` the
-first answers the range's lowest slot, where the named position would have landed two above it. The
-constructor is one of the sites the index section below lists as saturating positions no index names,
-and not an exception to that list.
+an ordinary slot wherever the index's host integer holds the sum. Where it does not, the slot pins at
+the integer's end and the constructor keeps, beside it, how far past that end the named slot lies, a
+signed count that is zero everywhere else and at most the carry, so it fits the fraction's own
+integer. That happens only from a slot within `2^63` of either end, and a range may be admitted there,
+`i128::MAX` included. `between(Slot::at(i128::MAX), 9/4)` stores the slot `i128::MAX`, two past it and
+a quarter; `between(Slot::at(i128::MIN), -7/4)` stores `i128::MIN`, two below it and a quarter. So
+`between` is total over every slot and every ratio and still names the position it was asked for, and
+the map answers for that position: under `Ceil` and `Wrap` over a range ending at `i128::MAX` the first
+ceils to three past the top and wraps to two above the range's lowest slot, and under `Floor` the second
+floors to two below the bottom, out of range, where a range starting at `i128::MIN` wraps it to 254
+above its lowest slot. `slot()` answers the pinned slot, which is the end of the index for a position
+past it.
+
+Where a position lies past an end, every region reads the pinned slot and the distance together, as
+the index section below says, and none of them forms the named slot.
 
 ### The ratio coordinate is an adaptation too, one tier down
 
@@ -802,25 +807,34 @@ for members is more than sixty bits inside the host integer.
 An outside range can sit near the host integer's end, and there three things hold. A verdict or an
 obligation whose own arithmetic could leave the integer computes it checked, and an overflow reads as
 the refusal it would have been: the slot range's span, addition's carry condition, and the reflection
-comparison that negates the highest slot. A position computed for an operand that is not a member, by a
-chain of carries, or by `Exact::between` carrying a remainder past the integer's end, saturates at the
-integer's ends, the act `Reach`, the addition step and the constructor perform, so every verb stays
-total. Those are the whole list: they are positions no index could name, so what reaches the applied map
-is already the saturated one, and the map's answer is exact for that stored position rather than for
-the one the caller named.
+comparison that negates the highest slot. A position computed for an operand that is not a member, or
+by a chain of carries, saturates at the integer's ends, the act `Reach` and the addition step perform,
+so every verb stays total. Those two are the whole list, and each is a position no member reaches: the
+carry obligation keeps every range addition admits inside `[-2^126, 2^126)`, so a saturated sum lies
+past the same end of the integer as the one named and outside every such range, and the overflow
+verdict is right about it. What the map answers under wrapping is for the saturated position, as the
+section on addition prices.
+
+`Exact::between` is not on that list. A remainder carried past the integer's end pins the slot at the
+end and keeps the distance past it, so the position that reaches the map is the one the caller named.
 
 The applied map computes no position that saturates, and the `Saturate` policy is the only place it
 pins anything. Rounding answers with the slot at or below the position and
 whether to step one above it, and it never forms the slot above, because at `i128::MAX` that slot is one
-past the integer. The pair names every position from the integer's lowest to one past its highest,
-which is the whole reach a rounding has. The completion reads the pair as it is: the position is in
-range when the slot below is at least the lowest slot or steps onto it, and at most the highest slot
-without stepping past it; the wrap reduces the slot below and the lowest slot separately, subtracts
-them, adds the step and reduces once more, so every intermediate is under the span and the answer is
-exact at every position rounding can name; and saturation pins to the lowest slot when the slot below
-is under it and to the highest otherwise. `panic_on_overflow` asks the same in-range question of the
-same pair. So a range placed at the top of the index adapts a position just under one past its top
-exactly as a range at zero does.
+past the integer. It carries the position's distance past an end beside the pair, and reads the named
+slot's sign and parity from the two rather than from the pinned slot. The pair names every position from
+the integer's lowest to one past its highest, and the distance names the rest. The completion reads
+them as they are: a position past the top is out of every range, and one past the bottom is in range
+only where the named slot is one under the integer's lowest, the rounding steps onto it, and the range
+starts there; otherwise the position is in range when the slot below is at least the lowest slot or
+steps onto it, and at most the highest slot without stepping past it. The wrap reduces the slot below,
+the distance and the lowest slot separately, subtracts, adds the step and reduces once more, so every
+intermediate is under a small multiple of the span and the answer is exact at every position either
+can name; and saturation pins to the end a position past the integer lies beyond, and otherwise to the
+lowest slot when the slot below is under it and to the highest when it is not. `panic_on_overflow`
+asks the same in-range question of the same pair and distance. So a range placed at the top of the
+index adapts a position just under one past its top, or past the integer's end, exactly as a range at
+zero does.
 
 ### The other three contracts owe the same thing, in the same form
 
@@ -942,17 +956,23 @@ There is no arm per pointer width. Such an arm would assert that the alias equal
 the target's width, and that follows from the alias being spelled over `usize::BITS`, which the
 language defines as the pointer width: on every target it is true whenever the spelling is. The one way
 it fails is an alias written against a literal width, and on the host that is indistinguishable from the
-right spelling by anything a test reads, so no arm compiled here could catch it, and an arm for another
-width only runs on a target this suite is not run on. A `cargo check` at a foreign target does not help
-either: it type-checks a test's assertions without evaluating them. And a library check at a 16-bit
-target proves nothing about the alias, whose right-hand side is not checked for well-formedness until
-it is used.
+right spelling by anything a test reads, so no arm compiled for the host could catch it. An arm written
+as a `#[test]` for another width only runs on a target of that width. One written as a const assertion
+would be evaluated by any build at that target, a check included, but this repository builds and checks
+at the host alone, so it would guard nothing on the gate.
 
 So the property is guarded where it lives, in the source text. The lint
-`the-platform-width-points-read-the-pointer-width` refuses the two aliases in `points` unless each is
-spelled over `usize::BITS`, on every commit and with no second build. The host tests read the alias
-against `usize::BITS`, `usize::MAX` and `isize::MIN`, and the family laws at 16, 32 and 64 run on the
-host, which together with the spelling cover every pointer width the ladder admits.
+`the-platform-width-points-read-the-pointer-width` reads each alias's declaration up to its semicolon,
+across lines, drops comments and whitespace, and compares what is left of the right-hand side exactly:
+`UFixed<{usize::BITS},0>` for `USize` and `Integer<{usize::BITS}>` for `ISize`. Anything else is a
+finding, a literal width, a width read from something other than `usize::BITS`, an expression around
+it and either alias over the other one's family among them, and so is either alias missing. It runs on
+every commit with no second build. What it does not guard is anything beyond those two declarations:
+the family laws are the tests', and a third platform-width alias would need the lint to name it.
+
+The host tests read the aliases against `usize::BITS`, `usize::MAX` and `isize::MIN`, and the family
+laws at 16, 32 and 64 run on the host. With the spelling fixed exactly, that covers every pointer width
+the ladder admits.
 
 The obligation's range is a membership question, asked in both directions: the errno ceiling and the
 GetLastError ceiling are members at 32 and 64, and the second is not at 16.

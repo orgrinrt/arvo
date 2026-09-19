@@ -23,7 +23,7 @@ is a consequence of this first principle, not a standalone rule.
   write into a caller-provided byte sink.
 - "Box<dyn Trait>" → monomorphise. `impl Trait` or `<T: Trait>`.
 - "HashMap<K, V>" → a store whose capacity is a type-level parameter,
-  or `&mut impl KeyValueStore<K, V>`. The capacity is the const generic
+  such as hilavitkutin-api's `Map<K, V, N>`. The capacity is the const generic
   position the primitive obligation excepts, bare only where the
   alternative is genuinely painful; what type spells it is open, so
   do not write `usize` or a capacity type into it as if it were settled.

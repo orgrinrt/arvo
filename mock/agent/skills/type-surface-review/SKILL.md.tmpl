@@ -30,7 +30,7 @@ Search the proposed signature for these forbidden shapes:
 | `Option<T>` | `notko::Maybe<T>` |
 | `Result<T, E>` | `notko::Outcome<T, E>` (or `notko::Just<T>` on hot paths) |
 | `Vec<T>` | `impl IntoIterator<Item = T>`, `&[T]`, or `&mut impl Collector<T>` |
-| `HashMap<K, V>` | `&mut impl KeyValueStore<K, V>`, or a store with a type-level capacity `N`: the const generic position the primitive obligation excepts, bare only where the alternative is genuinely painful, and what type spells `N` is open |
+| `HashMap<K, V>` | a store with a type-level capacity `N`, such as hilavitkutin-api's `Map<K, V, N>`: the const generic position the primitive obligation excepts, bare only where the alternative is genuinely painful, and what type spells `N` is open |
 | `String`, non-static `&str` | `&'static str` or `hilavitkutin_str::Str` |
 | `usize` | a domain newtype. Not `arvo_format::points::USize`, a zero-sized format point that holds no value; no pointer-width value type exists yet (`question::what_a_datum_stands_for`, open). A const generic parameter is the excepted position, bare only where the alternative is genuinely painful |
 | `u8..u128`, `i8..i128` | a domain newtype or a trait bound. Not `arvo_format::points::UFixed` or `Integer`, zero-sized format points that hold no value; no numeric value type exists yet (`question::what_a_datum_stands_for`, open), and `IFixed` is not in the tree. An exact-width bit pattern is `arvo_bits::Bits<N>` |
@@ -48,7 +48,7 @@ emitter or a bounded store.
 
 If any of these match your proposed signature, STOP:
 
-- Returning `Vec<Error>` or `Vec<T>` → take a `&mut impl Sink<T>`
+- Returning `Vec<Error>` or `Vec<T>` → take a `&mut impl Collector<T>`
   parameter instead.
 - Returning `String` → write into a `&mut impl ByteEmitter` / take
   `&'static str`.

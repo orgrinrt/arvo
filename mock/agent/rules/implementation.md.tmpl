@@ -48,9 +48,9 @@ Two items, and a third keyed on the preset would be the table again.
 
 - No `dyn Trait` anywhere.
 - No `TypeId`, no `std::any::*`.
-- Sub-crates are generic over trait bounds
-  (`BitSequence`, `BitAccess`, `BitLogic`, `TotalOrd`, `Add`, `Sqrt`,
-  `Recip`, `FromConstant`).
+- Sub-crates are generic over trait bounds (`Format`, `Slots`,
+  `Quantum`, `Rounding`, `Overflow` in `arvo-format`, `Carrier` in
+  `arvo-placement`, `Strategy` in `arvo-strategy`).
 - Consumers pick concrete instantiations at the use site. The
   monomorphised function IS the type identity.
 
@@ -72,7 +72,7 @@ Two items, and a third keyed on the preset would be the table again.
 
 ### Sizes are const
 
-Every size lives at type level: `Mask64`, `Mask256`, `Seq<T, N>`,
+Every size lives at type level: `Bits<N>`, `Seq<T, N>`,
 `[W; N]`. No runtime resize. No runtime grow. If you reach for
 `.push(`, `.resize(`, `.extend(`, `Vec::with_capacity`, you are
 solving the wrong problem, either make the size const-generic or

@@ -76,8 +76,4 @@ of arvo fetch it too, for a tool that does nothing at their build
 time, and would block publishing outright, since a registry refuses
 a crate whose dependency resolves to a git source.
 
-`mock/crates/arvo/build.rs` is the one build script that remains. It
-declares the `arvo_fast_math` cfg that hilavitkutin-build's FastMath
-pragma sets, so rustc does not warn on `#[cfg(arvo_fast_math)]`. It
-has nothing to do with the design tooling. A new crate needs no
-build script at all.
+No crate in the tree has a build script, and a new crate needs none.

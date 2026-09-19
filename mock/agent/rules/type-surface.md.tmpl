@@ -104,9 +104,9 @@ from the declared width, and the author does not pick it.
 
 | Category | When | Examples |
 |----------|------|----------|
-| **Trait** | Varying behavior, shared contract | `Format`, `Slots`, `Quantum`, `Rounding`, `Overflow`, `UArith<BITS>`, `IArith<BITS>`, `BitSequence`, `BitAccess`, `BitLogic` |
-| **Newtype** | Fixed rep, validation at construction | `Bool`, `Bits<N>`, `ContentHash`, `Array<T, N>`, `Matrix<W, N>`; not a format point such as `UFixed<BITS, FRAC>`, which holds no value |
-| **`repr(C)` enum** | Closed set, crosses ABI | `Strategy` markers, `Priority`, `ErrorClass` |
+| **Trait** | Varying behavior, shared contract | `Format`, `Slots`, `Quantum`, `Rounding`, `Overflow`, `Carrier`, `Strategy` |
+| **Newtype** | Fixed rep, validation at construction | `Bool`, `Bits<N>`; not a format point such as `UFixed<BITS, FRAC>`, which holds no value |
+| **`repr(C)` enum** | Closed set, crosses ABI | none in the tree yet; the `Strategy` markers are zero-sized structs |
 
 There is no fourth "bare primitive" category. Every numeric identity
 flows through arvo's type system.
@@ -115,8 +115,9 @@ flows through arvo's type system.
 
 - Trait bounds for data flow: `&mut impl Collector<T>`, `impl
   IntoIterator<Item = T>`, `&[T]`
-- Arithmetic generic: `<T: UArith<BITS>>` instead of concrete `u8` /
-  `u16`
+- Arithmetic generic over a trait bound rather than concrete `u8` /
+  `u16`. No arithmetic trait is in the tree yet, because no numeric
+  value type is (`question::what_a_datum_stands_for`, open)
 - Associated types when the implementor chooses concrete storage
 - Newtypes at public boundaries: a domain newtype, `Bool`, or `Bits<N>`
 - Scalar returns: `Outcome<T, E>`, `Maybe<T>`, `Just<T>` (from notko)
@@ -131,25 +132,24 @@ flows through arvo's type system.
   `u32`, `i32`, `u64`: use a domain newtype, `Bool`, `Bits<N>` or a
   trait bound, never a format point in a value position
 - `String` / non-static `&str` in ANY position, use `&'static str` or `hilavitkutin_str::Str`
-- Concrete types when a trait exists: don't write `fn add(a: u32, b:
-  u32) -> u32` when `UArith<32>` is available
+- Concrete types where a trait for the operation exists
 
 ## Red flags, STOP and reshape
 
 | If your code looks like… | Reshape to… |
 |---|---|
 | `fn X() -> usize` | a domain newtype; not `USize`, which is a format point and holds no value |
-| `fn add(a: u32, b: u32) -> u32` | `fn add<T: UArith<32>>(a: T::T, b: T::T) -> T::T` |
+| `fn add(a: u32, b: u32) -> u32` | not bare integers; no arithmetic trait or numeric value type is in the tree yet (`question::what_a_datum_stands_for`, open), so do not invent one to fill it |
 | `fn lookup(k) -> Option<&V>` | `fn lookup(k) -> Maybe<&V>` |
 | `fn try_x(...) -> Result<T, E>` | `fn try_x(...) -> Outcome<T, E>` |
 | `fn sum() -> Vec<T>` | `fn sum<C: Collector<T>>(sink: &mut C) -> Outcome<(), _>` |
 
-## The canonical example: arvo's arithmetic surface
+## The canonical example: arvo's format contracts
 
-arvo's numeric ops are traits (`UArith<BITS>`, `IArith<BITS>`), not
-methods on concrete `u8` / `u16`. Any consumer that does arithmetic
-takes a trait bound and works for Hot/Warm/Cold/Precise strategies
-generically. Callers don't need turbofish; Rust infers.
+A format in arvo is a set of traits (`Format`, `Slots`, `Quantum`,
+`Rounding`, `Overflow`), not a concrete type per width, and every verb
+in `arvo-format` is generic over a declared signature built from them,
+`adapt<S: DeclaredSignature>` among them.
 
 This is the pattern everywhere. The monomorphised function IS the type
 identity; there's no runtime cost compared to the concrete-type
