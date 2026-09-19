@@ -369,7 +369,7 @@ fn the_widest_admitted_width_is_the_widest_pointer_width() {
 
 mod the_range_obligation;
 
-pub(crate) use the_range_obligation::AtTheBottom;
+pub(crate) use the_range_obligation::{AtTheBottom, AtTheTop};
 
 // --- what a quantum law owes, and the constructions that do not --------------
 //

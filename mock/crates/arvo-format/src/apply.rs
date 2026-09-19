@@ -253,6 +253,72 @@ impl Dither {
     }
 }
 
+/// Where the rounding region puts a position: the slot at or below it, and
+/// whether to step one slot above that.
+///
+/// A pair rather than the slot above, because at `i128::MAX` the slot above is
+/// one past the index, and forming it there either overflows or saturates, and a
+/// saturated step is a wrong answer under wrapping and a missed one in the
+/// overflow verdict. The pair names every position from the index's lowest to
+/// one past its highest, which is all the reach a rounding has, so the
+/// completion answers exactly from it with no wider integer.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub(crate) struct Rounded {
+    down: i128,
+    up:   Bool,
+}
+
+impl Rounded {
+    /// A position already on the slot `at`, which rounding leaves where it is.
+    #[must_use]
+    pub(crate) const fn at(at: i128) -> Self {
+        Self {
+            down: at,
+            up:   Bool::FALSE,
+        }
+    }
+
+    /// The slot one above `down`, named without forming it.
+    #[must_use]
+    const fn above(down: i128) -> Self {
+        Self {
+            down,
+            up: Bool::TRUE,
+        }
+    }
+
+    /// The slot at or below the position.
+    #[must_use]
+    pub(crate) const fn down(self) -> i128 {
+        self.down
+    }
+
+    /// The step the rounding adds to `down`, zero or one.
+    #[must_use]
+    pub(crate) const fn step(self) -> i128 {
+        if self.up.get() { 1 } else { 0 }
+    }
+
+    /// Whether the rounded position lies in `[lo, hi]`.
+    ///
+    /// `down + 1` is formed only when `down` is below `lo`, so below the index's
+    /// top, and the upper test compares `down` against `hi` without adding.
+    #[must_use]
+    const fn lands_within(self, lo: i128, hi: i128) -> bool {
+        let from_below = self.down >= lo || (self.up.get() && self.down + 1 == lo);
+        let from_above = self.down < hi || (self.down == hi && !self.up.get());
+        from_below && from_above
+    }
+
+    /// The rounded slot as an index, for a test reading a position the index
+    /// holds. One past the index's top is not one, and asking for it panics.
+    #[cfg(test)]
+    #[must_use]
+    pub(crate) const fn index(self) -> i128 {
+        self.down + self.step()
+    }
+}
+
 /// Which slot the rounding region returns for a position.
 ///
 /// Stated over a remainder in `[0, 1)`, so the position is between `slot` and
@@ -264,15 +330,14 @@ impl Dither {
 /// it through the map rather than restating the six rules is what keeps the two
 /// from disagreeing.
 #[must_use]
-pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128 {
+pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Rounded {
     if exact.part.num == 0 {
-        return exact.slot.index();
+        return Rounded::at(exact.slot.index());
     }
-    // The step up is one slot, in the index's own integer. At that integer's
-    // top it saturates, the act every other position here performs, so the map
-    // stays total at a position an outside range placed there.
-    let down = exact.slot.index();
-    let up = down.saturating_add(1);
+    // The step up is one slot above `down`, carried as a flag and never added,
+    // so the answer is exact at the index's top as it is everywhere else.
+    let down = Rounded::at(exact.slot.index());
+    let up = Rounded::above(exact.slot.index());
     // `2 * num` against `den` decides which side of the midpoint the position is,
     // cross-multiplied in the wide carrier so no operand can leave its type.
     let twice = (exact.part.num as i128) * 2;
@@ -306,7 +371,7 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128
                 up
             } else if twice < den {
                 down
-            } else if down % 2 == 0 {
+            } else if exact.slot.index() % 2 == 0 {
                 down
             } else {
                 up
@@ -330,22 +395,26 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> i128
 /// The identity on a slot already inside it, which is what makes the two regions
 /// separable rather than one pass that always touches the value.
 #[must_use]
-const fn complete_slot(policy: Policy, slot: i128, min: Slot, max: Slot) -> Slot {
+const fn complete_slot(policy: Policy, rounded: Rounded, min: Slot, max: Slot) -> Slot {
     let lo = min.index();
     let hi = max.index();
-    if slot >= lo && slot <= hi {
-        return Slot::at(slot);
+    if rounded.lands_within(lo, hi) {
+        // In range, so the sum is at most `hi` and cannot leave the index.
+        return Slot::at(rounded.down() + rounded.step());
     }
     match policy {
         Policy::Wrap => {
             // An admitted range spans at most `2^64` slots, so the span fits. The
-            // position and the lowest slot are reduced separately before they
-            // are subtracted, because their difference can leave the index when
-            // an outside range sits near one end and the position near the other.
-            // Each reduction is below the span, so the difference and the sum
-            // stay inside the range and the answer is exact at every position.
+            // slot below the position and the lowest slot are reduced separately
+            // before they are subtracted, because their difference can leave the
+            // index when an outside range sits near one end and the position near
+            // the other. Each reduction is below the span, so the difference plus
+            // the step lies in `(-span, span]` and the sum stays inside the range.
+            // The step is added after the reductions rather than to the slot, so
+            // a position one past the index's top wraps exactly too.
             let span = hi - lo + 1;
-            Slot::at(lo + (slot.rem_euclid(span) - lo.rem_euclid(span)).rem_euclid(span))
+            let offset = rounded.down().rem_euclid(span) - lo.rem_euclid(span) + rounded.step();
+            Slot::at(lo + offset.rem_euclid(span))
         },
         // `Clamp` is documented as pinning to a declared bound that need not be
         // the range's own end, and the declared signature carries nowhere to put
@@ -353,8 +422,10 @@ const fn complete_slot(policy: Policy, slot: i128, min: Slot, max: Slot) -> Slot
         // saturation. The two agree here because the coordinate that would
         // separate them is missing, which is the admission rule's own diagnosis
         // rather than a shortcut taken in this function.
+        // Out of range with the slot below under `lo` means the position is under
+        // it too, since a step onto `lo` would have landed in range.
         Policy::Saturate | Policy::Clamp => {
-            if slot < lo {
+            if rounded.down() < lo {
                 min
             } else {
                 max
@@ -411,8 +482,10 @@ pub const fn panic_on_overflow<S: DeclaredSignature>(exact: Exact, dither: Dithe
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     let min = <<S::Format as Format>::Slots as Slots>::MIN;
     let max = <<S::Format as Format>::Slots as Slots>::MAX;
+    // The same in-range question the completion asks, of the same pair, so the
+    // verdict and the map cannot disagree at the index's top.
     let rounded = round_slot(mode, exact, dither);
-    Bool::of(rounded < min.index() || rounded > max.index())
+    Bool::of(!rounded.lands_within(min.index(), max.index()))
 }
 
 #[cfg(test)]

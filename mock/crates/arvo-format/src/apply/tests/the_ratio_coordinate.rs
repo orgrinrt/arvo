@@ -18,7 +18,8 @@
 //! set while every arm present looks reasonable. There is a control below whose
 //! only job is to fail when that happens.
 
-use crate::apply::{Dither, Exact, Fraction, round_slot};
+use super::round_slot;
+use crate::apply::{Dither, Exact, Fraction};
 use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::Slot;
 
@@ -467,11 +468,15 @@ fn a_carry_past_the_end_of_the_index_saturates_there_and_the_map_still_lands_a_s
     let exact = Exact::between(Slot::at(i128::MIN + 1), Fraction::of(-3, 4));
     assert_eq!(exact.slot(), Slot::at(i128::MIN));
 
-    // And the position reaches the map, which lands it in the declared range
-    // under every mode.
+    // And the position reaches the map. At the top, the slot below is the index's
+    // own top under every mode, and only `Ceil` steps past it, a quarter being
+    // under the midpoint and under the half dither. The step is carried rather
+    // than added, so it is not pinned back onto the top.
     for mode in ALL_MODES {
-        let rounded = round_slot(mode, up, Dither::at(Fraction::HALF));
-        assert_eq!(rounded, i128::MAX, "{mode:?} left the index at its top");
+        let rounded = crate::apply::round_slot(mode, up, Dither::at(Fraction::HALF));
+        assert_eq!(rounded.down(), i128::MAX, "{mode:?} moved the slot below");
+        let steps = if matches!(mode, Mode::Ceil) { 1 } else { 0 };
+        assert_eq!(rounded.step(), steps, "{mode:?} at a quarter past the top");
         let rounded = round_slot(mode, down, Dither::at(Fraction::HALF));
         assert!(
             rounded == i128::MIN || rounded == i128::MIN + 1,

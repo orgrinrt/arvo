@@ -146,22 +146,23 @@ fn rounding_one_past_the_integer_one_size_down_lands_the_position_it_names() {
 }
 
 #[test]
-fn rounding_past_the_top_of_the_index_saturates_there_and_wrapping_pays_for_it() {
-    // One past `i128::MAX` is a position the index does not hold. The step up
-    // saturates at the index's end, the act every other position the crate
-    // computes performs, so the map stays total. Under saturation that costs
-    // nothing, because the end is the answer either way. Under wrapping it costs
-    // the one slot the true position would have moved: `i128::MAX` wraps to -1,
-    // and one past it would have wrapped to 0.
+fn rounding_past_the_top_of_the_index_wraps_the_position_it_names() {
+    // One past `i128::MAX` is a position the index does not hold, and rounding
+    // names it anyway, as the slot below and a step. Wrapping it into `[-4, 3]`
+    // is exact: `i128::MAX` is seven modulo eight, so one past it is zero modulo
+    // eight, and it lands on -4 + 4 = 0. `i128::MAX` itself lands on -1, so the
+    // step moved the answer by the one slot it names.
     type UpWrap = Signature<Integer<3>, Adapt<Ceil, Wrap>>;
     type UpSat = Signature<Integer<3>, Adapt<Ceil, Saturate>>;
+    type DownWrap = Signature<Integer<3>, Adapt<Floor, Wrap>>;
     let e = Exact::between(Slot::at(i128::MAX), Fraction::of(1, 4));
-    assert_eq!(adapt::<UpWrap>(e, Dither::UNUSED), Slot::at(-1));
+    assert_eq!(adapt::<UpWrap>(e, Dither::UNUSED), Slot::ZERO);
     assert_ne!(
         adapt::<UpWrap>(e, Dither::UNUSED),
-        Slot::ZERO,
-        "the step reached a position past the index, which it cannot hold"
+        Slot::at(-1),
+        "the step up was pinned at the top of the index, so wrapping lost a slot"
     );
+    assert_eq!(adapt::<DownWrap>(e, Dither::UNUSED), Slot::at(-1));
     assert_eq!(adapt::<UpSat>(e, Dither::UNUSED), EDGE_MAX);
 
     // A carry out of the fraction past the top saturates the same way.

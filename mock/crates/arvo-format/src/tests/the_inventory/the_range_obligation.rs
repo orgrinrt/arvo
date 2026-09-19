@@ -141,7 +141,7 @@ impl Slots for WiderThanTheLadder {
 ///
 /// An outside range placed where the shipped ones never sit. Admissible: ordered,
 /// an admitted width, and a span the width addresses.
-struct AtTheTop;
+pub(crate) struct AtTheTop;
 
 impl Slots for AtTheTop {
     const MAX: Slot = Slot::at(i128::MAX);

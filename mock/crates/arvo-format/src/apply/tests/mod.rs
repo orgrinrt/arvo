@@ -17,19 +17,33 @@
 
 use crate::adapt::{Adapt, Signature};
 use crate::apply::{
+    self,
     Dither,
     Exact,
     Fraction,
+    Rounded,
     adapt,
-    complete_slot,
     panic_on_inexact,
     panic_on_overflow,
-    round_slot,
 };
 use crate::overflow::{Clamp, Policy, SHIPPED_POLICIES, Saturate, Wrap};
 use crate::points::Integer;
 use crate::rounding::{ALL_MODES, Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZero};
 use crate::slots::Slot;
+
+/// The rounded slot as an index.
+///
+/// Every position this file feeds is near zero, so the rounded slot is one the
+/// index holds and reading it as a number loses nothing. The arms at the index's
+/// top, where it is not, read the pair itself in `the_top_of_the_index`.
+fn round_slot(mode: Mode, e: Exact, d: Dither) -> i128 {
+    apply::round_slot(mode, e, d).index()
+}
+
+/// The completion of a position already on the slot `slot`.
+fn complete_slot(policy: Policy, slot: i128, min: Slot, max: Slot) -> Slot {
+    apply::complete_slot(policy, Rounded::at(slot), min, max)
+}
 
 /// Every position from well below a small window to well above it, at every
 /// eighth, so ties and both off-grid sides are covered rather than sampled.
@@ -489,3 +503,4 @@ mod the_ratio_coordinate;
 // --- the edges of the index, which every arm above stays away from ----------
 
 mod the_edges;
+mod the_top_of_the_index;

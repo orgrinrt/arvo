@@ -372,7 +372,9 @@ pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
         Exact::between(low, Fraction::of(rem as i64, den as i64)),
         Dither::UNUSED,
     );
-    completion_at::<S>(whole + (rounded - low.index()))
+    // The offset is the step alone: `low` carries no fraction, so the slot below
+    // the position is `low` itself.
+    completion_at::<S>(whole + (rounded.down() - low.index()) + rounded.step())
 }
 
 #[cfg(test)]
