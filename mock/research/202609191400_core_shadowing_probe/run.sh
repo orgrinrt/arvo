@@ -84,9 +84,14 @@ main() {
   check a_macro_expanded_extern_crate_self_as_core_is_refused refused \
     'macro-expanded `extern crate` items cannot shadow names passed with `--extern`'
 
-  # A dependency renamed to `core` in the manifest reaches it when the renamed
-  # crate re-exports the real `core`, and without that stops at the prelude.
+  # A dependency renamed to `core` in the manifest reaches it whenever the
+  # renamed crate carries the path the edition's prelude import names: the
+  # real `core` re-exported whole, the real `prelude` module alone, or an empty
+  # hand-written `prelude::rust_2024`. Without that path it stops at the
+  # prelude import.
   check_manifest user builds
+  check_manifest user_of_the_crate_with_only_the_prelude builds
+  check_manifest user_of_the_crate_with_an_empty_prelude builds
   check_manifest user_of_the_crate_without_the_glob refused \
     'cannot resolve a prelude import'
 

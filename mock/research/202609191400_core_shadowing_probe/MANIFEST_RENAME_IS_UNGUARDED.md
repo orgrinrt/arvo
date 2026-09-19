@@ -8,32 +8,49 @@ reads the renamed crate's `primitive` instead of the real one. Under
 `[target.'cfg(...)'.dependencies]` the rename is target-gated as well, so
 it need not be unconditional to reach a real build.
 
-The fixture is `manifest_rename/`, four small Cargo packages, each its own
-workspace, checked by `run.sh` with `cargo check --locked` beside the
-single-file arms:
+The fixture is `manifest_rename/`, eight small Cargo packages, each its
+own workspace, four crates standing in for `core` and one dependent of
+each, checked by `run.sh` with `cargo check --locked` beside the
+single-file arms. Every stand-in declares its own `primitive` module whose
+`usize::BITS` is 8, and every dependent renames its stand-in to `core` in
+its manifest and reads `::core::primitive::usize::BITS`. The stand-ins
+differ only in what else they carry:
 
-- `fakecore/` does `pub use core::*;` and then declares its own
-  `primitive` module whose `usize::BITS` is 8.
-- `user/` renames `fakecore` to `core` in its manifest and asserts, in a
-  `const _`, that `::core::primitive::usize::BITS` is 8 and differs from
-  the pointer width read through the primitive type `usize`.
-- `fakecore_without_the_glob/` is the same crate with the glob re-export
-  taken out.
-- `user_of_the_crate_without_the_glob/` renames that one to `core` and
-  reads the same path.
+- `fakecore/` does `pub use core::*;`, the real `core` whole. `user/`
+  depends on it.
+- `fakecore_with_only_the_prelude/` does `pub use core::prelude;`, the
+  real `prelude` module and nothing else of `core`.
+  `user_of_the_crate_with_only_the_prelude/` depends on it.
+- `fakecore_with_an_empty_prelude/` holds nothing of the real `core`, only
+  a hand-written `pub mod prelude { pub mod rust_2024 {} }`.
+  `user_of_the_crate_with_an_empty_prelude/` depends on it.
+- `fakecore_without_the_glob/` carries neither, only the `primitive`
+  module. `user_of_the_crate_without_the_glob/` depends on it.
+
+The first three dependents assert that the path reads 8 and that 8
+differs from the pointer width read through the primitive type `usize`.
+The empty prelude brings no `assert!` into scope, so that dependent
+states the same two checks as array lengths, which fail as a length
+mismatch when false.
 
 Outcome, as `run.out` records it:
 
-- `manifest_rename/user` builds. The rename takes over `::core`, and the
+- `manifest_rename/user`,
+  `manifest_rename/user_of_the_crate_with_only_the_prelude` and
+  `manifest_rename/user_of_the_crate_with_an_empty_prelude` build, with
+  both checks holding in each. The rename takes over `::core`, and the
   path reads 8.
 - `manifest_rename/user_of_the_crate_without_the_glob` is refused with
-  `cannot resolve a prelude import`. The compiler reaches the prelude
-  through `core::prelude`, so a crate renamed to `core` has to carry
-  core's contents for the dependent to build at all. The glob re-export
-  is what the hijack needs, and it is also all it needs.
+  `cannot resolve a prelude import`.
 
-So the hazard is real, and it needs no source form: `user/src/lib.rs`
-holds none of the three forms the lint reads. The lint reads `.rs`
+So what the rename needs is that the path the edition's prelude import
+names, `core::prelude::rust_2024` at edition 2024, resolves in the
+renamed crate. Nothing of the real `core`'s contents is needed: an empty
+module at that path is enough. The fixture runs at edition 2024 only, so
+what another edition's prelude path needs is not shown here.
+
+So the hazard is real, and it needs no source form: none of the three
+dependents that build holds any of the three forms the lint reads. The lint reads `.rs`
 source only (`ctx.all_sources`) and never opens a `Cargo.toml`, so a
 manifest rename stays unguarded by it. `DESIGN.md.tmpl` and the lint's
 module doc both say so.

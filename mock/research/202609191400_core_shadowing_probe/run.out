@@ -150,6 +150,14 @@ verdict: as expected, refused with: macro-expanded `extern crate` items cannot s
 exit 0
 verdict: as expected, builds
 
+== manifest_rename/user_of_the_crate_with_only_the_prelude
+exit 0
+verdict: as expected, builds
+
+== manifest_rename/user_of_the_crate_with_an_empty_prelude
+exit 0
+verdict: as expected, builds
+
 == manifest_rename/user_of_the_crate_without_the_glob
 error: cannot resolve a prelude import
 
