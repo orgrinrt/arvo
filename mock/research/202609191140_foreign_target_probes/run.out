@@ -5,8 +5,12 @@ target: i686-unknown-linux-gnu
 error[E0080]: evaluation panicked: the alias is not the 32-bit point
   --> a_const_assertion_over_a_literal_width.rs:22:15
    |
-22 | const _: () = assert!(<USize as F>::MAX == u32::MAX as i128, "the alias is not the 32-bit point");
-   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+22 |   const _: () = assert!(
+   |  _______________^
+23 | |     <USize as F>::MAX == u32::MAX as i128,
+24 | |     "the alias is not the 32-bit point"
+25 | | );
+   | |_^ evaluation of `_` failed here
 
 error: aborting due to 1 previous error
 
