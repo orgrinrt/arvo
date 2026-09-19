@@ -14,13 +14,21 @@
 //!
 //! No test run on one host can check that. An alias written as
 //! `UFixed<64, 0>` answers every question the correct one answers on a 64-bit
-//! host, and the arm that would tell them apart only runs on a target this suite
-//! is not run on. A `cargo check` at such a target does not help, because it
-//! type-checks an assertion without evaluating it. So the property is checked
-//! where it lives, in the source text, on every commit and with no second build.
+//! host. A const assertion at another pointer width would be evaluated by any
+//! build at that target, a `cargo check` included, but this repository builds
+//! and checks at the host alone, so it would guard nothing on the gate. So the
+//! property is checked where it lives, in the source text, on every commit and
+//! with no second build.
 //!
-//! **A missing alias is a finding too.** Deleting one would otherwise pass as
-//! clean, and a lint that reports nothing over nothing is the failure it guards.
+//! Each declaration is read from its name to its semicolon, across lines, with
+//! comments and whitespace dropped and a trailing comma before a closing angle
+//! bracket taken out, and what is left of the right-hand side is compared
+//! exactly: `UFixed<{usize::BITS},0>` for `USize`, `Integer<{usize::BITS}>` for
+//! `ISize`. A right-hand side that only mentions `usize::BITS`, in a comment,
+//! inside an expression or over the other alias's family, is a finding.
+//!
+//! A missing alias is a finding too. Deleting one would otherwise pass as clean,
+//! and a lint that reports nothing over nothing is the failure it guards.
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
@@ -30,11 +38,12 @@ const NAME: &str = "the-platform-width-points-read-the-pointer-width";
 /// The crate the two aliases are declared in.
 const THE_CRATE: &str = "arvo-format";
 
-/// The declarations this reads, by the text that opens each.
-const THE_ALIASES: &[&str] = &["pub type USize", "pub type ISize"];
-
-/// What each right-hand side has to read.
-const THE_POINTER_WIDTH: &str = "usize::BITS";
+/// Each alias, by the text that opens its declaration, and the right-hand side
+/// it has to read once comments and whitespace are gone.
+const THE_ALIASES: &[(&str, &str)] = &[
+    ("pub type USize", "UFixed<{usize::BITS},0>"),
+    ("pub type ISize", "Integer<{usize::BITS}>"),
+];
 
 pub fn lint() -> Box<dyn CrateLint> {
     Box::new(ThePlatformWidthPointsReadThePointerWidth)
@@ -43,6 +52,12 @@ pub fn lint() -> Box<dyn CrateLint> {
 struct ThePlatformWidthPointsReadThePointerWidth;
 
 impl Lint for ThePlatformWidthPointsReadThePointerWidth {
+    /// Crate-scoped. It reads every file out of `all_sources` itself, and a
+    /// missing alias is a fact about the crate rather than about one file.
+    fn per_file(&self) -> bool {
+        false
+    }
+
     fn name(&self) -> &'static str {
         NAME
     }
@@ -58,15 +73,6 @@ impl CrateLint for ThePlatformWidthPointsReadThePointerWidth {
             return Vec::new();
         }
         if ctx.crate_name != THE_CRATE {
-            return Vec::new();
-        }
-        // The dispatcher hands a source lint the same context once per module
-        // file, and this one reads every file out of `all_sources`, so it runs
-        // on the pass where `source` is the crate root and on no other.
-        let Some(root) = ctx.all_sources.first() else {
-            return Vec::new();
-        };
-        if ctx.source != root.text {
             return Vec::new();
         }
         let files: Vec<(String, &str)> = ctx
@@ -96,30 +102,23 @@ impl CrateLint for ThePlatformWidthPointsReadThePointerWidth {
 /// Split from the context so a test can hand it text directly.
 fn verdicts(files: &[(String, &str)]) -> Vec<(Option<String>, usize, String)> {
     let mut found = Vec::new();
-    for alias in THE_ALIASES {
+    for (alias, want) in THE_ALIASES {
         let mut seen = false;
         for (path, text) in files {
-            for (idx, line) in text.lines().enumerate() {
-                let code = line.trim_start();
-                if code.starts_with("//") || !code.starts_with(alias) {
-                    continue;
-                }
-                // The name must end where the alias text ends, so `USizeLike`
-                // is not read as `USize`.
-                let rest = &code[alias.len() ..];
-                if rest.starts_with(|c: char| c.is_ascii_alphanumeric() || c == '_') {
-                    continue;
-                }
+            let code = without_comments(text);
+            for (at, rhs) in declarations(&code, alias) {
                 seen = true;
-                if !rest.contains(THE_POINTER_WIDTH) {
+                if rhs != *want {
+                    let line = code[.. at].matches('\n').count() + 1;
                     found.push((
                         Some(path.clone()),
-                        idx + 1,
+                        line,
                         format!(
-                            "`{alias}` does not read `{THE_POINTER_WIDTH}`. A platform-width point \
-                             is the literal point at the target's pointer width, and it is that on \
-                             every target only when the width is read rather than written: spell \
-                             it `UFixed<{{ usize::BITS }}, 0>` or `Integer<{{ usize::BITS }}>`."
+                            "`{alias}` reads `{rhs}` where it has to read `{want}`, compared with \
+                             comments and whitespace dropped. A platform-width point is the literal \
+                             point at the target's pointer width, and it is that on every target \
+                             only when the width is read rather than written, over the family the \
+                             alias names: spell it `{want}` and nothing around it."
                         ),
                     ));
                 }
@@ -138,6 +137,165 @@ fn verdicts(files: &[(String, &str)]) -> Vec<(Option<String>, usize, String)> {
         }
     }
     found
+}
+
+/// Every declaration of `alias` in `code`, as its byte offset and its right-hand
+/// side with whitespace dropped and a comma before a closing `>` taken out.
+///
+/// The alias text must stand as whole words, so `USizeLike` is not `USize` and
+/// `xpub type USize` is not a declaration. A declaration with no `=` or no `;`
+/// after it reads as an empty right-hand side, which no alias wants.
+fn declarations(code: &str, alias: &str) -> Vec<(usize, String)> {
+    let is_word = |c: char| c.is_ascii_alphanumeric() || c == '_';
+    let mut out = Vec::new();
+    for (at, _) in code.match_indices(alias) {
+        let before = code[.. at].chars().next_back();
+        let after = code[at + alias.len() ..].chars().next();
+        if before.is_some_and(is_word) || after.is_some_and(is_word) {
+            continue;
+        }
+        let rest = &code[at + alias.len() ..];
+        let end = rest.find(';').unwrap_or(rest.len());
+        let squeezed: String = rest[.. end]
+            .chars()
+            .filter(|c| !c.is_whitespace())
+            .collect();
+        let rhs = squeezed.strip_prefix('=').unwrap_or("").replace(",>", ">");
+        out.push((at, rhs));
+    }
+    out
+}
+
+/// Whether the `r` at `i` opens a raw string rather than ending an identifier:
+/// nothing word-like before it, or a `b` that is itself a word's start.
+fn starts_a_literal(chars: &[char], i: usize) -> bool {
+    let is_word = |c: char| c.is_ascii_alphanumeric() || c == '_';
+    match i.checked_sub(1).map(|p| chars[p]) {
+        None => true,
+        Some('b') => i < 2 || !is_word(chars[i - 2]),
+        Some(p) => !is_word(p),
+    }
+}
+
+/// The text with every comment and the inside of every literal replaced by
+/// spaces, newlines kept, so line numbers read the same as in the source.
+///
+/// Line comments, block comments nested as Rust nests them, strings, raw strings
+/// included, and characters. A literal is blanked so a comment marker inside one
+/// opens nothing and a declaration's text inside one is not a declaration. A
+/// lifetime is told from a character by the quote that closes it.
+fn without_comments(text: &str) -> String {
+    let chars: Vec<char> = text.chars().collect();
+    let mut out = String::with_capacity(text.len());
+    let blank = |c: char| if c == '\n' { '\n' } else { ' ' };
+    let mut i = 0;
+    while i < chars.len() {
+        let c = chars[i];
+        let next = chars.get(i + 1).copied();
+        if c == '/' && next == Some('/') {
+            while i < chars.len() && chars[i] != '\n' {
+                out.push(' ');
+                i += 1;
+            }
+        } else if c == '/' && next == Some('*') {
+            let mut depth = 0;
+            while i < chars.len() {
+                if chars[i] == '/' && chars.get(i + 1) == Some(&'*') {
+                    depth += 1;
+                    out.push_str("  ");
+                    i += 2;
+                } else if chars[i] == '*' && chars.get(i + 1) == Some(&'/') {
+                    depth -= 1;
+                    out.push_str("  ");
+                    i += 2;
+                    if depth == 0 {
+                        break;
+                    }
+                } else {
+                    out.push(blank(chars[i]));
+                    i += 1;
+                }
+            }
+        } else if c == 'r'
+            && starts_a_literal(&chars, i)
+            && (next == Some('"') || next == Some('#'))
+        {
+            // A raw string: `r`, some hashes, a quote, and the same hashes after
+            // the closing quote. Anything else starting with `r#` is an ident.
+            let hashes = chars[i + 1 ..].iter().take_while(|&&h| h == '#').count();
+            if chars.get(i + 1 + hashes) != Some(&'"') {
+                out.push(c);
+                i += 1;
+                continue;
+            }
+            let open = i + 2 + hashes;
+            out.extend(&chars[i .. open]);
+            i = open;
+            while i < chars.len() {
+                let closes = chars[i] == '"'
+                    && chars[i + 1 ..]
+                        .iter()
+                        .take(hashes)
+                        .filter(|&&h| h == '#')
+                        .count()
+                        == hashes;
+                if closes {
+                    out.extend(&chars[i ..= i + hashes]);
+                    i += hashes + 1;
+                    break;
+                }
+                out.push(blank(chars[i]));
+                i += 1;
+            }
+        } else if c == '"' {
+            out.push(c);
+            i += 1;
+            while i < chars.len() {
+                let d = chars[i];
+                i += 1;
+                if d == '"' {
+                    out.push(d);
+                    break;
+                }
+                out.push(blank(d));
+                if d == '\\' && i < chars.len() {
+                    out.push(blank(chars[i]));
+                    i += 1;
+                }
+            }
+        } else if c == '\'' {
+            // `'x'` or `'\n'` and its longer escapes are characters; `'a` with
+            // no closing quote is a lifetime and is copied as it is. The escaped
+            // character may itself be a quote, so after a backslash the search
+            // for the closing one starts past it.
+            let close = if next == Some('\\') {
+                chars
+                    .get(i + 3 ..)
+                    .and_then(|rest| rest.iter().position(|&d| d == '\''))
+                    .map(|p| i + 3 + p)
+            } else if chars.get(i + 2) == Some(&'\'') {
+                Some(i + 2)
+            } else {
+                None
+            };
+            match close {
+                Some(end) => {
+                    out.push('\'');
+                    out.extend(chars[i + 1 .. end].iter().map(|&d| blank(d)));
+                    out.push('\'');
+                    i = end + 1;
+                },
+                None => {
+                    out.push(c);
+                    i += 1;
+                },
+            }
+        } else {
+            out.push(c);
+            i += 1;
+        }
+    }
+    out
 }
 
 #[cfg(test)]
@@ -250,6 +408,159 @@ mod tests {
         );
         assert_eq!(errors.len(), 1);
         assert!(errors[0].message.contains("not declared"));
+    }
+
+    /// The findings for a source whose `ISize` is the shipped one and whose
+    /// `USize` is `usize_decl`, or the other way round when `on_isize`.
+    fn one_bad(decl: &str, on_isize: bool) -> Vec<LintError> {
+        if on_isize {
+            hits(&format!(
+                "pub type USize = UFixed<{{ usize::BITS }}, 0>;\n{decl}\n"
+            ))
+        } else {
+            hits(&format!(
+                "{decl}\npub type ISize = Integer<{{ usize::BITS }}>;\n"
+            ))
+        }
+    }
+
+    #[test]
+    fn a_literal_width_beside_a_comment_naming_the_pointer_width_fires() {
+        for (decl, on_isize) in [
+            ("pub type USize = UFixed<64, 0>; // usize::BITS", false),
+            ("pub type USize = UFixed<64, 0>; /* usize::BITS */", false),
+            ("pub type ISize = Integer</* usize::BITS */ 64>;", true),
+            ("pub type ISize = Integer<32>; // was { usize::BITS }", true),
+        ] {
+            assert_eq!(one_bad(decl, on_isize).len(), 1, "{decl}");
+        }
+    }
+
+    #[test]
+    fn a_width_that_only_mentions_the_pointer_width_fires() {
+        for (decl, on_isize) in [
+            (
+                "pub type USize = UFixed<{ if usize::BITS == 64 { 64 } else { 32 } }, 0>;",
+                false,
+            ),
+            ("pub type USize = UFixed<{ usize::BITS * 2 }, 0>;", false),
+            ("pub type USize = UFixed<{ usize::BITS }, 1>;", false),
+            ("pub type ISize = Integer<{ usize::BITS - 1 }>;", true),
+            (
+                "pub type ISize = Integer<{ core::cmp::min(usize::BITS, 32) }>;",
+                true,
+            ),
+        ] {
+            assert_eq!(one_bad(decl, on_isize).len(), 1, "{decl}");
+        }
+    }
+
+    #[test]
+    fn an_alias_spelled_with_the_other_point_fires() {
+        // Each alias reads the pointer width and names the wrong point: `USize`
+        // signed, `ISize` unsigned.
+        assert_eq!(
+            one_bad("pub type USize = Integer<{ usize::BITS }>;", false).len(),
+            1
+        );
+        assert_eq!(
+            one_bad("pub type ISize = UFixed<{ usize::BITS }, 0>;", true).len(),
+            1
+        );
+        assert_eq!(
+            hits(
+                "pub type USize = Integer<{ usize::BITS }>;\npub type ISize = UFixed<{ usize::BITS }, \
+                 0>;\n"
+            )
+            .len(),
+            2
+        );
+    }
+
+    #[test]
+    fn a_correct_alias_across_lines_and_around_comments_is_silent() {
+        for source in [
+            "pub type USize =\n    UFixed<{ usize::BITS }, 0>;\npub type ISize =\n    Integer<{ \
+             usize::BITS }>;\n",
+            "pub type USize = UFixed<\n    { usize::BITS },\n    0,\n>;\npub type ISize = \
+             Integer<\n    { usize::BITS },\n>;\n",
+            "pub type USize = UFixed<{ usize::BITS }, 0>; // the pointer width\npub type ISize = \
+             Integer<{usize::BITS}>;\n",
+            "pub type USize = UFixed<{ usize::BITS } /* read */, 0>;\npub type ISize = Integer<\n    \
+             // the pointer width\n    { usize::BITS }\n>;\n",
+        ] {
+            assert!(hits(source).is_empty(), "{source}: {:?}", hits(source));
+        }
+    }
+
+    #[test]
+    fn a_wrong_alias_across_lines_is_found_at_its_opening_line() {
+        let errors = hits(
+            "pub type USize = UFixed<{ usize::BITS }, 0>;\n\npub type ISize =\n    Integer<64>;\n",
+        );
+        assert_eq!(errors.len(), 1);
+        assert_eq!(errors[0].line, 3);
+    }
+
+    #[test]
+    fn a_declaration_inside_a_literal_is_not_a_declaration() {
+        for source in [
+            "const S: &str = \"pub type USize = UFixed<64, 0>;\";\n",
+            "const S: &str = r#\"pub type USize = UFixed<64, 0>;\"#;\n",
+            "const S: &[u8] = br\"pub type USize = UFixed<64, 0>;\";\n",
+        ] {
+            let errors = hits(&format!(
+                "{source}pub type ISize = Integer<{{ usize::BITS }}>;\n"
+            ));
+            assert_eq!(errors.len(), 1, "{source}: {errors:?}");
+            assert!(errors[0].message.contains("not declared"), "{source}");
+        }
+    }
+
+    #[test]
+    fn a_comment_marker_inside_a_literal_opens_nothing() {
+        // Were the marker read, the declaration after it would vanish and the
+        // alias would be reported missing; were the quote character read as a
+        // string, the same.
+        for opener in [
+            "const S: &str = \"/*\";",
+            "const S: &str = \"// \\\" /*\";",
+            "const C: char = '\"';",
+            "const C: char = '\\'';",
+            "fn f<'a>(x: &'a str) -> &'a str { x }",
+        ] {
+            let source = format!(
+                "{opener}\npub type USize = UFixed<{{ usize::BITS }}, 0>;\npub type ISize = \
+                 Integer<{{ usize::BITS }}>; /* */\n"
+            );
+            assert!(hits(&source).is_empty(), "{opener}: {:?}", hits(&source));
+            let wrong = source.replace("UFixed<{ usize::BITS }, 0>", "UFixed<64, 0>");
+            assert_eq!(hits(&wrong).len(), 1, "{opener}");
+        }
+    }
+
+    #[test]
+    fn a_nested_block_comment_is_dropped_whole() {
+        let errors = hits(
+            "/* outer /* inner */ pub type USize = UFixed<64, 0>; */\npub type USize = \
+             UFixed<{ usize::BITS }, 0>;\npub type ISize = Integer<{ usize::BITS }>;\n",
+        );
+        assert!(errors.is_empty(), "{errors:?}");
+    }
+
+    #[test]
+    fn stripping_keeps_the_lines_where_they_were() {
+        let text = "a /* x\ny */ b // z\n\"q\nr\" 'c'\n";
+        let stripped = without_comments(text);
+        assert_eq!(stripped.lines().count(), text.lines().count());
+        assert_eq!(stripped.matches('\n').count(), text.matches('\n').count());
+        assert!(stripped.contains(" b "));
+        assert!(!stripped.contains('x') && !stripped.contains('z') && !stripped.contains('q'));
+    }
+
+    #[test]
+    fn it_reads_the_crate_once_rather_than_once_per_file() {
+        assert!(!ThePlatformWidthPointsReadThePointerWidth.per_file());
     }
 
     #[test]

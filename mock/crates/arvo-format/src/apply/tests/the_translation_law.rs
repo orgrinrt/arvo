@@ -17,28 +17,28 @@
 //!
 //! The law is written twice. Once through `adapt` and `panic_on_overflow`, the
 //! surface, over every declared signature. And once as a function of the map it
-//! is asked about, so the broken maps it has to report live here as tests rather
-//! than as edits somebody made once and reverted.
+//! is asked about, so the broken maps in `the_broken_maps.rs` are reported by a
+//! test rather than by edits somebody made once and reverted.
 
 use notko::Maybe;
 
+use super::the_broken_maps::{
+    Map,
+    anchored_at_zero,
+    no_step_onto_the_lowest,
+    reduced_modulo_256,
+    shipped,
+    subtracts_first,
+};
+use super::the_far_end_of_the_index::{BottomOf200, TopOf200};
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
 use crate::ambient::BinaryRationals;
-use crate::apply::{
-    Dither,
-    Exact,
-    Fraction,
-    Rounded,
-    adapt,
-    complete_slot,
-    panic_on_overflow,
-    round_slot,
-};
+use crate::apply::{Dither, Exact, Fraction, adapt, panic_on_overflow, round_slot};
 use crate::format::Format;
 use crate::overflow::{Clamp, Policy, SHIPPED_POLICIES, Saturate, Wrap};
 use crate::quantum::Constant;
 use crate::rounding::{ALL_MODES, Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZero};
-use crate::slots::{Slot, Slots, Unsigned};
+use crate::slots::{Slot, Slots};
 use crate::tests::grid::Grid;
 use crate::tests::the_inventory::{AtTheBottom, AtTheTop};
 use crate::width::Width;
@@ -49,7 +49,7 @@ const fn span_of_64_bits() -> i128 {
 }
 
 /// The reference for the range at the top: 256 slots from 1000.
-struct Reference;
+pub(super) struct Reference;
 
 impl Slots for Reference {
     const MAX: Slot = Slot::at(1255);
@@ -58,7 +58,7 @@ impl Slots for Reference {
 }
 
 /// The reference for the range at the bottom: 256 slots from -2000.
-struct NegativeReference;
+pub(super) struct NegativeReference;
 
 impl Slots for NegativeReference {
     const MAX: Slot = Slot::at(-1745);
@@ -76,7 +76,7 @@ impl Slots for WideTop {
 }
 
 /// Its reference, `2^64` slots from `2^64 + 1000`.
-struct WideReference;
+pub(super) struct WideReference;
 
 impl Slots for WideReference {
     const MAX: Slot = Slot::at(2 * span_of_64_bits() + 999);
@@ -94,12 +94,32 @@ impl Slots for WideBottom {
 }
 
 /// Its reference, `2^64` slots ending at `-2^64 - 1001`.
-struct WideNegativeReference;
+pub(super) struct WideNegativeReference;
 
 impl Slots for WideNegativeReference {
     const MAX: Slot = Slot::at(-span_of_64_bits() - 1001);
     const MIN: Slot = Slot::at(-2 * span_of_64_bits() - 1000);
     const WIDTH: Width = Width::bits(64);
+}
+
+/// The reference for `TopOf200`: 200 slots from 1002, which is 2 modulo 200
+/// where `TopOf200`'s lowest slot is 128.
+pub(super) struct Reference200;
+
+impl Slots for Reference200 {
+    const MAX: Slot = Slot::at(1201);
+    const MIN: Slot = Slot::at(1002);
+    const WIDTH: Width = Width::bits(8);
+}
+
+/// The reference for `BottomOf200`: 200 slots from -1998, which is 2 modulo 200
+/// where `BottomOf200`'s lowest slot is 72.
+pub(super) struct NegativeReference200;
+
+impl Slots for NegativeReference200 {
+    const MAX: Slot = Slot::at(-1799);
+    const MIN: Slot = Slot::at(-1998);
+    const WIDTH: Width = Width::bits(8);
 }
 
 /// A plain integer format over a slot range.
@@ -115,6 +135,16 @@ fn narrow_top() -> [(i128, i128); 1] {
 /// From the lowest slot to 300 past the highest, for the range at the bottom.
 fn narrow_bottom() -> [(i128, i128); 1] {
     [(0, 555)]
+}
+
+/// Below the lowest slot and up to the top of the index, over 200 slots.
+fn top_of_200() -> [(i128, i128); 1] {
+    [(-300, 199)]
+}
+
+/// From the lowest slot to 300 past the highest, over 200 slots.
+fn bottom_of_200() -> [(i128, i128); 1] {
+    [(0, 499)]
 }
 
 /// Around the lowest slot, and the 300 slots up to the top of the index.
@@ -213,11 +243,20 @@ fn the_widest_range_at_the_bottom_adapts_as_its_reference_does() {
 }
 
 #[test]
-fn every_shift_is_even_and_every_reference_is_off_the_span() {
-    // What the law above leans on, checked rather than assumed: an odd shift
-    // would move half-even's even neighbour, and a reference on a multiple of
-    // its span could not tell a wrap from the lowest slot from one from zero.
-    let pairs = [
+fn the_range_of_200_at_the_top_adapts_as_its_reference_does() {
+    // A span that is not a power of two, where a reduction that leans on the
+    // span dividing `2^128` goes wrong and the spans above cannot show it.
+    every_signature!(Reference200, TopOf200, top_of_200());
+}
+
+#[test]
+fn the_range_of_200_at_the_bottom_adapts_as_its_reference_does() {
+    every_signature!(NegativeReference200, BottomOf200, bottom_of_200());
+}
+
+/// Every pair the law is fed, each reference beside the range it is compared with.
+pub(super) fn pairs() -> [((Slot, Slot), (Slot, Slot)); 6] {
+    [
         (range_of::<Reference>(), range_of::<AtTheTop>()),
         (range_of::<NegativeReference>(), range_of::<AtTheBottom>()),
         (range_of::<WideReference>(), range_of::<WideTop>()),
@@ -225,93 +264,35 @@ fn every_shift_is_even_and_every_reference_is_off_the_span() {
             range_of::<WideNegativeReference>(),
             range_of::<WideBottom>(),
         ),
-    ];
-    for (reference, moved) in pairs {
+        (range_of::<Reference200>(), range_of::<TopOf200>()),
+        (
+            range_of::<NegativeReference200>(),
+            range_of::<BottomOf200>(),
+        ),
+    ]
+}
+
+#[test]
+fn every_shift_is_even_and_every_reference_is_off_the_span() {
+    // What the law above leans on, checked rather than assumed: an odd shift
+    // would move half-even's even neighbour, and a reference whose lowest slot
+    // has the moved range's residue modulo the span could not tell a wrap from
+    // the lowest slot from one from zero. Each reference is also off a multiple
+    // of its span, and keeps one sign with the range it is compared with.
+    for (reference, moved) in pairs() {
         let span = moved.1.index() - moved.0.index() + 1;
         assert_eq!(span, reference.1.index() - reference.0.index() + 1);
         assert_eq!((moved.0.index() - reference.0.index()) % 2, 0);
         assert_ne!(reference.0.index().rem_euclid(span), 0);
-        assert_eq!(moved.0.index().rem_euclid(span), 0);
+        assert_ne!(
+            reference.0.index().rem_euclid(span),
+            moved.0.index().rem_euclid(span)
+        );
+        assert_eq!(reference.0.index() < 0, moved.0.index() < 0);
     }
 }
 
-// --- the law as a function of the map, and the maps it has to refuse ---------
-
-/// The two answers of one applied map the law compares.
-#[derive(Clone, Copy)]
-pub(super) struct Map {
-    pub(super) complete: fn(Policy, Rounded, Slot, Slot) -> Slot,
-    pub(super) leaves:   fn(Rounded, Slot, Slot) -> bool,
-}
-
-/// The shipped verdict, as `panic_on_overflow` asks it.
-fn shipped_leaves(r: Rounded, min: Slot, max: Slot) -> bool {
-    !r.lands_within(min.index(), max.index())
-}
-
-/// The map this crate ships.
-pub(super) fn shipped() -> Map {
-    Map {
-        complete: complete_slot,
-        leaves:   shipped_leaves,
-    }
-}
-
-/// A wrap that subtracts the lowest slot before reducing, in the index's own
-/// integer, wrapping where the difference leaves it, which is what the naive
-/// subtraction does in a build without overflow checks.
-pub(super) fn subtracts_first() -> Map {
-    fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
-        let (lo, hi) = (min.index(), max.index());
-        if policy != Policy::Wrap || r.lands_within(lo, hi) {
-            return complete_slot(policy, r, min, max);
-        }
-        let span = hi - lo + 1;
-        Slot::at(
-            lo + r
-                .down()
-                .wrapping_sub(lo)
-                .wrapping_add(r.step())
-                .rem_euclid(span),
-        )
-    }
-    Map {
-        complete,
-        leaves: shipped_leaves,
-    }
-}
-
-/// A wrap reduced from zero rather than from the lowest slot.
-fn anchored_at_zero() -> Map {
-    fn complete(policy: Policy, r: Rounded, min: Slot, max: Slot) -> Slot {
-        let (lo, hi) = (min.index(), max.index());
-        if policy != Policy::Wrap || r.lands_within(lo, hi) {
-            return complete_slot(policy, r, min, max);
-        }
-        let span = hi - lo + 1;
-        Slot::at(lo + (r.down().rem_euclid(span) + r.step()).rem_euclid(span))
-    }
-    Map {
-        complete,
-        leaves: shipped_leaves,
-    }
-}
-
-/// An overflow verdict whose in-range test has no step onto the lowest slot.
-///
-/// The slot half is the shipped one: out of range, every policy sends a step
-/// onto the lowest slot to the lowest slot anyway, so only the verdict can show
-/// the missing branch.
-fn no_step_onto_the_lowest() -> Map {
-    fn leaves(r: Rounded, min: Slot, max: Slot) -> bool {
-        let (lo, hi) = (min.index(), max.index());
-        !(r.down() >= lo && (r.down() < hi || (r.down() == hi && !r.up.get())))
-    }
-    Map {
-        complete: complete_slot,
-        leaves,
-    }
-}
+// --- the law as a function of the map ----------------------------------------
 
 /// Where a map first disagrees with itself shifted, if anywhere.
 type Break = Maybe<(Mode, Policy, i128, Fraction, Dither)>;
@@ -395,13 +376,22 @@ fn new_law(map: Map) -> Break {
             &wide_bottom(),
         )
     })
-}
-
-/// The law as it was fed before: the range at zero, offsets 0 to 255.
-fn old_law(map: Map) -> Break {
-    first_break(map, range_of::<Unsigned<8>>(), range_of::<AtTheTop>(), &[(
-        0, 255,
-    )])
+    .or_else(|| {
+        first_break(
+            map,
+            range_of::<Reference200>(),
+            range_of::<TopOf200>(),
+            &top_of_200(),
+        )
+    })
+    .or_else(|| {
+        first_break(
+            map,
+            range_of::<NegativeReference200>(),
+            range_of::<BottomOf200>(),
+            &bottom_of_200(),
+        )
+    })
 }
 
 #[test]
@@ -409,13 +399,46 @@ fn the_law_holds_of_the_shipped_map_and_reports_each_broken_one() {
     // The positive control first: a law reporting the shipped map would be
     // reporting on its own instrument.
     assert_eq!(new_law(shipped()), Maybe::Isnt);
-    assert_eq!(old_law(shipped()), Maybe::Isnt);
 
-    // A wrap from zero passes the offsets the law used to be fed, where both
-    // ranges sat on a multiple of their span, and the references off the span
-    // report it.
-    assert_eq!(old_law(anchored_at_zero()), Maybe::Isnt);
+    // A wrap from zero, which the references off the moved ranges' residues
+    // report.
     assert!(new_law(anchored_at_zero()).is());
+
+    // A wrap reducing the lowest slot modulo 256 is right at a span of 256 and
+    // wrong everywhere else, so the ranges of 256 pass it and the ranges of 200
+    // report it at both ends.
+    let bad = reduced_modulo_256();
+    assert!(new_law(bad).is());
+    let narrow = [
+        (
+            range_of::<Reference>(),
+            range_of::<AtTheTop>(),
+            narrow_top(),
+        ),
+        (
+            range_of::<NegativeReference>(),
+            range_of::<AtTheBottom>(),
+            narrow_bottom(),
+        ),
+    ];
+    for (reference, moved, bands) in narrow {
+        assert_eq!(first_break(bad, reference, moved, &bands), Maybe::Isnt);
+    }
+    let of_200 = [
+        (
+            range_of::<Reference200>(),
+            range_of::<TopOf200>(),
+            top_of_200(),
+        ),
+        (
+            range_of::<NegativeReference200>(),
+            range_of::<BottomOf200>(),
+            bottom_of_200(),
+        ),
+    ];
+    for (reference, moved, bands) in of_200 {
+        assert!(first_break(bad, reference, moved, &bands).is());
+    }
 
     // Subtracting first only goes wrong where the difference leaves the index,
     // which no translation within one end reaches, so this law cannot see it;

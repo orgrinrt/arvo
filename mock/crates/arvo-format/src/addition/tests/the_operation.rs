@@ -34,7 +34,7 @@ use super::{
 use crate::adapt::{Adapt, DeclaredSignature, Signature, overflow_of};
 use crate::addition::{add, sum_position};
 use crate::ambient::{BinaryRationals, DecimalRationals};
-use crate::apply::Dither;
+use crate::apply::{Dither, panic_on_overflow};
 use crate::format::{Format, cancelling_slot, has_additive_identity};
 use crate::overflow::{Policy, Saturate, Wrap};
 use crate::points::{Biased, Integer, UFixed};
@@ -259,6 +259,23 @@ fn a_sum_past_the_index_saturates_once_so_a_third_term_cannot_bring_it_back() {
     assert_eq!(
         add::<Signature<Up, Adapt<Floor, Wrap>>>(bottom, bottom, Dither::UNUSED),
         Slot::ZERO
+    );
+
+    // The saturated position is still past the range, so the debug verdict
+    // reports both sums whatever the wrap made of them.
+    assert!(
+        panic_on_overflow::<Signature<Down, Adapt<Floor, Wrap>>>(
+            sum_position::<Down>(top, top),
+            Dither::UNUSED
+        )
+        .get()
+    );
+    assert!(
+        panic_on_overflow::<Signature<Up, Adapt<Floor, Wrap>>>(
+            sum_position::<Up>(bottom, bottom),
+            Dither::UNUSED
+        )
+        .get()
     );
 
     // The control: members sum exactly, with no saturation in reach.

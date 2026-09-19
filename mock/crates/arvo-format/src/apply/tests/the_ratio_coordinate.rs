@@ -450,37 +450,51 @@ fn a_carry_past_the_integer_one_size_down_lands_the_slot_it_names() {
 }
 
 #[test]
-fn a_carry_past_the_end_of_the_index_saturates_there_and_the_map_still_lands_a_slot() {
-    // The design says a carry past the index's own end saturates there, like
-    // every other position the crate computes, so `between` is total over every
-    // slot and every ratio. The remainder is kept as it was reduced.
+fn a_carry_past_the_end_of_the_index_pins_the_slot_and_keeps_the_distance() {
+    // The design says a carry past the index's own end pins the slot there and
+    // keeps how far past it the named slot lies, so `between` is total over every
+    // slot and every ratio and still names the position asked for. The remainder
+    // is kept as it was reduced.
     let up = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(up.slot(), Slot::at(i128::MAX));
+    assert_eq!(up.past, 2);
     assert_eq!(up.part, Fraction::of(1, 4));
     let down = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
     assert_eq!(down.slot(), Slot::at(i128::MIN));
+    assert_eq!(down.past, -3);
     assert_eq!(down.part, Fraction::of(3, 4));
 
-    // One below the end, the carry of one still lands exactly, so the saturation
-    // is reached only by a carry that genuinely leaves the index.
-    let exact = Exact::between(Slot::at(i128::MAX - 1), Fraction::of(5, 4));
-    assert_eq!(exact.slot(), Slot::at(i128::MAX));
-    let exact = Exact::between(Slot::at(i128::MIN + 1), Fraction::of(-3, 4));
-    assert_eq!(exact.slot(), Slot::at(i128::MIN));
+    // The largest carry either way, from the end it leaves by: the distance is
+    // the whole carry and fits the fraction's own integer.
+    let most = Exact::between(Slot::at(i128::MAX), Fraction::of(i64::MAX, 1));
+    assert_eq!((most.slot(), most.past), (Slot::at(i128::MAX), i64::MAX));
+    let least = Exact::between(Slot::at(i128::MIN), Fraction::of(i64::MIN, 1));
+    assert_eq!((least.slot(), least.past), (Slot::at(i128::MIN), i64::MIN));
 
-    // And the position reaches the map. At the top, the slot below is the index's
-    // own top under every mode, and only `Ceil` steps past it, a quarter being
-    // under the midpoint and under the half dither. The step is carried rather
-    // than added, so it is not pinned back onto the top.
+    // One below the end, the carry of one still lands exactly with no distance,
+    // so the pin is reached only by a carry that genuinely leaves the index.
+    let exact = Exact::between(Slot::at(i128::MAX - 1), Fraction::of(5, 4));
+    assert_eq!((exact.slot(), exact.past), (Slot::at(i128::MAX), 0));
+    let exact = Exact::between(Slot::at(i128::MIN + 1), Fraction::of(-3, 4));
+    assert_eq!((exact.slot(), exact.past), (Slot::at(i128::MIN), 0));
+
+    // And the position reaches the map with its distance. At the top, the slot
+    // below is the pinned end under every mode and only `Ceil` steps, a quarter
+    // being under the midpoint and under the half dither. At the bottom, three
+    // quarters is over both, so every mode but `Floor` steps, `TowardZero`
+    // because the named slot is negative.
     for mode in ALL_MODES {
         let rounded = crate::apply::round_slot(mode, up, Dither::at(Fraction::HALF));
         assert_eq!(rounded.down(), i128::MAX, "{mode:?} moved the slot below");
         let steps = if matches!(mode, Mode::Ceil) { 1 } else { 0 };
         assert_eq!(rounded.step(), steps, "{mode:?} at a quarter past the top");
-        let rounded = round_slot(mode, down, Dither::at(Fraction::HALF));
-        assert!(
-            rounded == i128::MIN || rounded == i128::MIN + 1,
-            "{mode:?} rounded {down:?} to {rounded}"
+        let rounded = crate::apply::round_slot(mode, down, Dither::at(Fraction::HALF));
+        assert_eq!(rounded.down(), i128::MIN, "{mode:?} moved the slot below");
+        let steps = if matches!(mode, Mode::Floor) { 0 } else { 1 };
+        assert_eq!(
+            rounded.step(),
+            steps,
+            "{mode:?} at three quarters under the bottom"
         );
     }
 }

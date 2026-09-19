@@ -159,62 +159,84 @@ fn a_step_past_the_top_is_reported_as_leaving_the_range() {
 }
 
 #[test]
-fn a_carry_past_the_index_pins_at_the_constructor_and_the_map_adapts_what_is_stored() {
+fn a_carry_past_the_index_lands_where_the_named_position_does() {
     // `9/4` from the top names `i128::MAX + 9/4`, which the index cannot hold.
-    // The constructor pins the slot at `i128::MAX` and keeps the quarter, so the
-    // position stored is `i128::MAX + 1/4`, and that is what the map adapts:
-    // `Ceil` names one past the top and wraps to the lowest slot. The named
-    // position would have ceiled to three past the top and wrapped to two above
-    // the lowest slot, which is the answer this construction does not give.
+    // The slot pins at `i128::MAX` and the constructor keeps the two slots past
+    // it, so the map answers for the position named. Worked by hand over the 256
+    // slots of `AtTheTop`: `Ceil` names three past the top, which is 258 above
+    // the lowest slot and wraps to two above it; `Floor` names two past, which
+    // wraps to one above it. Both leave the range.
     let carried = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MAX));
-    assert_eq!(carried, quarter_past_the_top());
+    assert_ne!(carried, quarter_past_the_top(), "the carry was dropped");
     type Up = Signature<Top, Adapt<Ceil, Wrap>>;
     type Down = Signature<Top, Adapt<Floor, Wrap>>;
-    assert_eq!(adapt::<Up>(carried, Dither::UNUSED), top_lowest());
-    assert_ne!(
+    type UpSat = Signature<Top, Adapt<Ceil, Saturate>>;
+    assert_eq!(
         adapt::<Up>(carried, Dither::UNUSED),
-        Slot::at(top_lowest().index() + 2),
-        "the carry landed where the named position would, so it was not pinned"
+        Slot::at(top_lowest().index() + 2)
     );
-    assert_eq!(adapt::<Down>(carried, Dither::UNUSED), top_highest());
+    assert_eq!(
+        adapt::<Down>(carried, Dither::UNUSED),
+        Slot::at(top_lowest().index() + 1)
+    );
+    assert_eq!(adapt::<UpSat>(carried, Dither::UNUSED), top_highest());
     assert!(panic_on_overflow::<Up>(carried, Dither::UNUSED).get());
+    assert!(panic_on_overflow::<Down>(carried, Dither::UNUSED).get());
 
-    // What was stored is exactly what the same carry from two slots lower
-    // names, and there the carry fits, so the pin is the constructor answering
-    // for a different position. The control: from four slots lower the carry
-    // lands exactly and `Ceil` names the slot the arithmetic says.
-    let fits = Exact::between(Slot::at(i128::MAX - 2), Fraction::of(9, 4));
-    assert_eq!(carried, fits);
+    // Half-even at a tie reads the named slot's parity. `3/2` past the top names
+    // a tie above `i128::MAX + 1`, which is even, so it stays and wraps onto the
+    // lowest slot; the pinned `i128::MAX` is odd and would have stepped. `5/2`
+    // names a tie above `i128::MAX + 2`, odd, so it steps to three past and
+    // wraps to two above the lowest slot.
+    type Even = Signature<Top, Adapt<HalfEven, Wrap>>;
+    let even_tie = Exact::between(Slot::at(i128::MAX), Fraction::of(3, 2));
+    assert_eq!(adapt::<Even>(even_tie, Dither::UNUSED), top_lowest());
+    let odd_tie = Exact::between(Slot::at(i128::MAX), Fraction::of(5, 2));
+    assert_eq!(
+        adapt::<Even>(odd_tie, Dither::UNUSED),
+        Slot::at(top_lowest().index() + 2)
+    );
+
+    // The control: from four slots lower the carry lands inside the index, and
+    // the answers are the same arithmetic, shifted into the range.
     let lower = Exact::between(Slot::at(i128::MAX - 4), Fraction::of(9, 4));
     assert_eq!(lower.slot(), Slot::at(i128::MAX - 2));
     assert_eq!(adapt::<Up>(lower, Dither::UNUSED), Slot::at(i128::MAX - 1));
+    assert!(!panic_on_overflow::<Up>(lower, Dither::UNUSED).get());
 
-    // At the bottom, `-7/4` from `i128::MIN` names `i128::MIN - 7/4` and stores
-    // `i128::MIN + 1/4`. `Floor` adapts the stored one onto `i128::MIN`; the
-    // named one floors to two below it and would wrap to 254 above it.
+    // At the bottom, `-7/4` from `i128::MIN` names `i128::MIN - 7/4`. `Floor`
+    // takes it to two below the index, which leaves `AtTheBottom` and wraps to
+    // 254 above its lowest slot.
     let under = Exact::between(Slot::at(i128::MIN), Fraction::of(-7, 4));
     assert_eq!(under.slot(), Slot::at(i128::MIN));
-    assert_eq!(
-        under,
-        Exact::between(Slot::at(i128::MIN), Fraction::of(1, 4))
-    );
     type Low = Signature<Bottom, Adapt<Floor, Wrap>>;
-    assert_eq!(adapt::<Low>(under, Dither::UNUSED), Slot::at(i128::MIN));
-    assert_ne!(
-        adapt::<Low>(under, Dither::UNUSED),
-        Slot::at(i128::MIN + 254),
-        "the carry landed where the named position would, so it was not pinned"
-    );
-    assert!(!panic_on_overflow::<Low>(under, Dither::UNUSED).get());
-
-    // What was stored is what the same carry from two slots up names, and the
-    // control: from four slots up the carry fits and floors where the
-    // arithmetic says.
+    type LowSat = Signature<Bottom, Adapt<Floor, Saturate>>;
     assert_eq!(
-        under,
-        Exact::between(Slot::at(i128::MIN + 2), Fraction::of(-7, 4))
+        adapt::<Low>(under, Dither::UNUSED),
+        Slot::at(i128::MIN + 254)
     );
+    assert_eq!(adapt::<LowSat>(under, Dither::UNUSED), Slot::at(i128::MIN));
+    assert!(panic_on_overflow::<Low>(under, Dither::UNUSED).get());
+
+    // One slot under the index, a step up lands back on `i128::MIN`, which the
+    // range starts at: in range, and the verdict says so. `Floor` from the same
+    // position stays one under and wraps to the range's top.
+    let just_under = Exact::between(Slot::at(i128::MIN), Fraction::of(-1, 4));
+    type LowUp = Signature<Bottom, Adapt<Ceil, Wrap>>;
+    assert_eq!(
+        adapt::<LowUp>(just_under, Dither::UNUSED),
+        Slot::at(i128::MIN)
+    );
+    assert!(!panic_on_overflow::<LowUp>(just_under, Dither::UNUSED).get());
+    assert_eq!(
+        adapt::<Low>(just_under, Dither::UNUSED),
+        Slot::at(i128::MIN + 255)
+    );
+    assert!(panic_on_overflow::<Low>(just_under, Dither::UNUSED).get());
+
+    // The control: from four slots up the carry fits and floors where the
+    // arithmetic says.
     let inside = Exact::between(Slot::at(i128::MIN + 4), Fraction::of(-7, 4));
     assert_eq!(inside.slot(), Slot::at(i128::MIN + 2));
     assert_eq!(

@@ -15,7 +15,8 @@
 //! would land on the same slot by accident. The ranges of 200 slots are what
 //! can tell the two apart.
 
-use super::the_translation_law::{WideBottom, WideTop, range_of, shipped, subtracts_first};
+use super::the_broken_maps::{shipped, subtracts_first};
+use super::the_translation_law::{WideBottom, WideTop, range_of};
 use crate::adapt::{Adapt, Signature};
 use crate::ambient::BinaryRationals;
 use crate::apply::{Dither, Exact, Fraction, adapt, panic_on_overflow, round_slot};
@@ -28,7 +29,7 @@ use crate::tests::the_inventory::{AtTheBottom, AtTheTop};
 use crate::width::Width;
 
 /// 200 slots ending at the top of the index. Its lowest slot is 128 modulo 200.
-struct TopOf200;
+pub(super) struct TopOf200;
 
 impl Slots for TopOf200 {
     const MAX: Slot = Slot::at(i128::MAX);
@@ -37,7 +38,7 @@ impl Slots for TopOf200 {
 }
 
 /// 200 slots from the bottom of the index. Its lowest slot is 72 modulo 200.
-struct BottomOf200;
+pub(super) struct BottomOf200;
 
 impl Slots for BottomOf200 {
     const MAX: Slot = Slot::at(i128::MIN + 199);
@@ -275,7 +276,7 @@ fn a_wrap_that_subtracts_first_goes_wrong_only_where_the_span_is_not_a_power_of_
     // suite keeps rather than an edit made once and reverted. It agrees with the
     // shipped map at every position inside one end of the index, which is why
     // the translation law cannot report it, and at the far end over the
-    // power-of-two spans, where the saturated difference is congruent to the
+    // power-of-two spans, where the wrapped difference is congruent to the
     // true one. It disagrees over 200 slots at both ends.
     let (good, bad) = (shipped(), subtracts_first());
     let mut disagreed = [false; 9];
