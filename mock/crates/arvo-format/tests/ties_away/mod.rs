@@ -20,6 +20,8 @@
 
 #![allow(dead_code)]
 
+pub mod completion;
+
 use arvo_format::adapt::{Adapt, Signature};
 use arvo_format::apply::{Dither, Exact, Fraction, adapt};
 use arvo_format::format::Format;

@@ -24,6 +24,7 @@ use arvo_format::overflow::{Overflow, Saturate, Wrap};
 use arvo_format::points::Integer;
 use arvo_format::rounding::{Floor, HalfUp, TowardZero};
 use arvo_format::slots::{Slot, Slots};
+use ties_away::completion::{self, complete};
 use ties_away::{at, select, shift, shift_is_formable};
 
 // --- the rule, in integers -----------------------------------------------------
@@ -52,20 +53,6 @@ fn brute_step(slot: i128, n: i64, d: i64) -> i128 {
     let (n, d) = (n as i128, d as i128);
     let twice = 2 * (slot * d + n);
     twice.signum() * ((twice.abs() + d).div_euclid(2 * d)) - slot
-}
-
-/// Where `slot + step` lands after the completion the format declares.
-fn complete(slot: i128, step: i128, lo: i128, hi: i128, wrap: bool) -> i128 {
-    if wrap {
-        let span = hi - lo + 1;
-        (slot.rem_euclid(span) - lo.rem_euclid(span) + step).rem_euclid(span) + lo
-    } else if slot > hi || (slot == hi && step == 1) {
-        hi
-    } else if slot < lo && !(slot == lo - 1 && step == 1) {
-        lo
-    } else {
-        slot + step
-    }
 }
 
 /// The rule over a ratio that carries out of `[0, 1)`, so the position may lie
@@ -276,6 +263,11 @@ fn table() -> [Arms; 4] {
     ]
 }
 
+/// The four ranges the sweep runs over, as the completion arms ask for them.
+fn ranges() -> Vec<(i128, i128, bool)> {
+    table().iter().map(|a| (a.lo, a.hi, a.wrap)).collect()
+}
+
 /// Cells, cells answered wrongly, and cells the spelling could not form.
 fn tally(a: &Arms, spell: Spelling) -> (usize, usize, usize) {
     let (mut cells, mut wrong, mut unformed) = (0, 0, 0);
@@ -313,6 +305,25 @@ fn the_two_statements_of_the_rule_agree_wherever_the_position_fits() {
         }
     }
     assert!(checked > 600, "the control ran over {checked} cells");
+}
+
+#[test]
+fn the_two_statements_of_the_completion_agree_over_every_range_the_sweep_runs() {
+    let cells = completion::agrees(completion::complete, &ranges())
+        .expect("the completion and its rearrangement disagree");
+    assert!(cells > 200, "the agreement ran over {cells} cells");
+}
+
+#[test]
+fn the_control_every_planted_completion_is_reported() {
+    // Without this the arm above is two spellings of one mistake agreeing with
+    // each other, which is what a single-stated completion was.
+    for &(name, spell) in completion::PLANTED {
+        assert!(
+            completion::agrees(spell, &ranges()).is_err(),
+            "the planted completion `{name}` was not reported"
+        );
+    }
 }
 
 #[test]
