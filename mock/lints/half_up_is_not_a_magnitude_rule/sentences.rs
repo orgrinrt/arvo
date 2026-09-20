@@ -314,6 +314,15 @@ pub(super) const PAIRS: &[Pair] = &[
         differs:  "whether the clause states the settled denotation ahead of the reading",
         measured: false,
     },
+    Pair {
+        fires:    "`half_up` adds half a step and floors. Either way a tie goes away from \
+                  zero.",
+        silent:   "`half_up` adds half a step and floors. Toward zero sends a tie away from \
+                  zero.",
+        subject:  None,
+        differs:  "whether the clause after it opens by naming another rule, capitalised",
+        measured: false,
+    },
 ];
 
 /// The readings a sentence is refused for, as the reader answers it.
@@ -352,7 +361,7 @@ fn every_pair_fires_on_one_side_and_is_silent_on_the_other() {
 fn the_corpus_holds_what_it_held_and_the_review_measured_eight_of_it() {
     // A count rather than a list, so a pair removed is a failure here rather
     // than a silent narrowing of what the reader is asked.
-    assert_eq!(PAIRS.len(), 37);
+    assert_eq!(PAIRS.len(), 38);
     assert_eq!(PAIRS.iter().filter(|p| p.measured).count(), 8);
 }
 

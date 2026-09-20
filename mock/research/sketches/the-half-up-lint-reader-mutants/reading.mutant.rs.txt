@@ -21,6 +21,7 @@
 //! pairs its first cell with the others and a clause cut at every `|` would
 //! never see that pairing.
 
+
 /// Which arm this build breaks, read from `HALF_UP_MUTANT`. The sketch's copy
 /// carries this and the shipped module does not: every switch below is off in
 /// the shipped reader, and `none` is the control that runs this file with all
@@ -28,7 +29,6 @@
 fn mutant(which: &str) -> bool {
     std::env::var("HALF_UP_MUTANT").is_ok_and(|v| v == which)
 }
-
 /// Every spelling of the mode's name this repository writes. Matched with case,
 /// and bounded by a character that cannot sit inside an identifier, so a
 /// longer identifier carrying one of them is not a mention of the mode. Java's
@@ -66,6 +66,20 @@ pub(super) const READINGS: &[&str] = &[
 
 /// The reading that only counts behind a direction word.
 pub(super) const QUALIFIED: &str = "in magnitude";
+
+/// What a passage says when it states the settled denotation rather than
+/// mentioning the mode, in the words the ruling states it in.
+///
+/// Read here and by `half-up-carries-its-note`, which is where it was written
+/// first. It is vocabulary about the name, so it sits beside the spellings and
+/// the readings rather than inside one of the two lints that ask about it.
+pub(crate) const DENOTES: &[&str] = &[
+    "toward positive infinity",
+    "towards positive infinity",
+    "to positive infinity",
+    "floor(x + q/2)",
+    "floor(x+q/2)",
+];
 
 /// What has to stand in front of `in magnitude`, in its segment, for those two
 /// words to be about where a tie goes rather than about how big an error is.
@@ -223,7 +237,26 @@ pub(super) fn hits(text: &str, subject: Option<&str>) -> Vec<Hit> {
                 ..hit
             });
         }
-        carried = if mutant("nocarry") || clause.ends_with('\n') { None } else { antecedent(clause) };
+        carried = if mutant("nocarry") || clause.ends_with('\n') {
+            None
+        } else if !spellings_in(clause).is_empty() {
+            antecedent(clause)
+        } else if mutant("nopass") || !names_nothing(clause) {
+            // The clause introduced a subject of its own and it is not this
+            // mode, so nothing it left standing points here.
+            None
+        } else if opens_with_a_pronoun(&clause.to_ascii_lowercase()) {
+            // A pronoun points back and so re-points at what it found, which is
+            // what lets two sentences follow one naming of the mode.
+            carried
+        } else {
+            // The clause named nothing and pointed back at nothing, so the name
+            // stops here. Anaphora has a reach: a name carries to the clause
+            // after the one that gave it, and no further through material that
+            // never mentions it. A passage laying out two readings of a word in
+            // consecutive clauses is what runs past that reach.
+            None
+        };
     }
     out.sort_by_key(|h| h.at);
     out
@@ -278,15 +311,31 @@ fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>
     let names: Vec<(usize, &str)> = if !own.is_empty() {
         own
     } else if opens_with_a_pronoun(&lower) {
-        // The clause is about whatever the one before it left named, and the
-        // item a doc block sits on does not reach past a pronoun.
+        // A pronoun points back explicitly, so where the clause before it left
+        // nothing named the item a doc block sits on does not fill in.
         carried.map(|n| vec![(0, n)]).unwrap_or_default()
+    } else if !mutant("pronounonly") && names_nothing(clause) {
+        // The clause names no rule of its own, so it says what it says about
+        // whatever the clause before it left named, and about the doc block's
+        // item where that is nothing. This is what pairs the name across a
+        // colon, a semicolon, a question mark and a full stop without any of
+        // the four being named here.
+        carried
+            .map(|n| -> &str { n })
+            .or(subject)
+            .map(|n| vec![(0, n)])
+            .unwrap_or_default()
     } else {
-        subject.map(|s| vec![(0, s)]).unwrap_or_default()
+        // Another rule is named here, so the clause is about that one. Neither
+        // the carry nor the doc block's item reaches past it.
+        Vec::new()
     };
     for &(n, name) in &names {
         for &(r, reading) in &readings {
-            if listed_apart(&lower, &segs, n, r) || negator_binds(&lower, &segs, Some(n), r) {
+            if listed_apart(&lower, &segs, n, r)
+                || negator_binds(&lower, &segs, Some(n), r)
+                || denotation_before(&lower, &segs, r)
+            {
                 continue;
             }
             return Some(Hit {
@@ -299,18 +348,150 @@ fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>
     None
 }
 
+/// Every other name a pronoun standing for a rounding rule can point at.
+///
+/// The five names of the six-name vocabulary that are not this mode, the
+/// external constants this repository contrasts the mode with, and MATLAB's
+/// method names for the rules that are not this one. Matched with case and
+/// bounded as a word, exactly as `SPELLINGS` is, which is what keeps the
+/// lower-case English words apart from the identifiers.
+///
+/// MATLAB's `Nearest` is deliberately absent: it is this mode rather than
+/// another one, so a pronoun after it points here.
+pub(super) const OTHER_NAMES: &[&str] = &[
+    "toward_zero",
+    "TowardZero",
+    "toward zero",
+    "floor",
+    "Floor",
+    "ceil",
+    "Ceil",
+    "Ceiling",
+    "half_even",
+    "HalfEven",
+    "half-even",
+    "half even",
+    "Half-even",
+    "Half even",
+    "Half_even",
+    "stochastic",
+    "Stochastic",
+    "HALF_UP",
+    "ROUND_HALF_UP",
+    "roundTiesToAway",
+    "roundTiesToEven",
+    "RoundingMode",
+    "Round",
+    "Fix",
+    "Convergent",
+    // The alias, in the spellings this repository writes it in. A clause naming
+    // it is about it: "`half_up` is `floor(x + q/2)`; the ties-away alias
+    // commutes with reflection and reads the sign at a tie" states both rules
+    // and gives the second reading to the second one.
+    "TiesAwayFromZero",
+    "ties_away",
+    "ties-away",
+    "alias",
+];
+
 /// The name a pronoun opening the next clause points at: the last spelling of
-/// the mode in this clause, where nothing else is named after it.
+/// the mode in this clause, where no other rounding rule is named after it.
+///
+/// Read as a name rather than as a code span. A reader that counted backticks
+/// answered a question about how the author punctuated: `q/2` standing after
+/// the mode took the carry away though no pronoun could mean it, and `HALF_UP`
+/// written without backticks did not though every pronoun after it does.
 fn antecedent(clause: &str) -> Option<&'static str> {
     let (at, name) = *spellings_in(clause).last()?;
-    // A backticked span opening after the spelling is something else being
-    // named, so a pronoun after this clause points at that instead. Two ticks
-    // are one span.
-    let named_after = clause
-        .match_indices('`')
-        .filter(|(i, _)| *i > at + name.len())
-        .count();
-    (mutant("antecedent") || named_after < 2).then_some(name)
+    let after = &clause[at + name.len() ..];
+    if mutant("backtick") {
+        let ticks = after.matches('`').count();
+        return (ticks < 2).then_some(name);
+    }
+    (mutant("noother") || named_in(after).is_empty()).then_some(name)
+}
+
+/// Whether the clause introduces no subject of its own, so what it says is
+/// about whatever the clause before it named.
+///
+/// A subject of its own is a rounding rule named anywhere in the clause, or a
+/// code span opening it. The second is what this reader knows about a subject
+/// it has no vocabulary for: "`arvo-format` then asserted a tie at `-2.5`
+/// giving `-3`, which is away from zero" is about a crate, and a reader that
+/// carried the mode into it reads a record of what was fixed as a claim about
+/// what is.
+fn names_nothing(clause: &str) -> bool {
+    spellings_in(clause).is_empty()
+        && named_in(clause).is_empty()
+        && (mutant("codespan") || !clause.trim_start().starts_with('`'))
+}
+
+/// Where every other rounding rule named in `text` starts, bounded as a word.
+///
+/// Each entry counts as written and with its first character upper-cased, which
+/// is the same name opening a sentence. Without that, "Toward zero reads the
+/// sign of the slot" names no rule, and the clause before it keeps the mode.
+///
+/// The denotation is blanked out first, because it spells `floor` inside
+/// itself: "`half_up` is not floor(x + q/2)" names this mode's own definition
+/// rather than the floor mode, and a reader taking that as another rule loses
+/// the name before the clause that gives it the wrong reading.
+fn named_in(text: &str) -> Vec<usize> {
+    let text = &if mutant("nomask") { text.to_string() } else { without_the_denotation(text) };
+    OTHER_NAMES
+        .iter()
+        .flat_map(|n| {
+            let opened = capitalised(n);
+            let mut at = bounded(text, n);
+            if !mutant("nocap") && opened.as_str() != *n {
+                at.extend(bounded(text, &opened));
+            }
+            at
+        })
+        .collect()
+}
+
+/// `text` with every spelling of the denotation blanked to spaces, so an offset
+/// into the result still names the same place in the original.
+fn without_the_denotation(text: &str) -> String {
+    let lower = text.to_ascii_lowercase();
+    let mut out = text.to_string();
+    for d in DENOTES {
+        for at in bounded(&lower, d) {
+            out.replace_range(at .. at + d.len(), &" ".repeat(d.len()));
+        }
+    }
+    out
+}
+
+/// A name with its first character upper-cased, which is how it is written at
+/// the start of a sentence.
+fn capitalised(name: &str) -> String {
+    let mut chars = name.chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+        None => String::new(),
+    }
+}
+
+/// Whether the clause states the settled denotation ahead of the reading at
+/// `r`, with no negator bound to that statement.
+///
+/// A clause saying the mode sends a tie toward positive infinity is not also
+/// giving it the other reading, so a reading standing after that statement is a
+/// contrast: "a tie goes toward positive infinity at every sign, so `-2.5` goes
+/// to `-2`, where ties away from zero would give `-3`". The statement has to
+/// come first, because the order is what separates a contrast from a clause
+/// that denies the denotation and then asserts the reading.
+fn denotation_before(lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
+    if mutant("nodenote") {
+        return false;
+    }
+    DENOTES
+        .iter()
+        .flat_map(|d| bounded(lower, d))
+        .filter(|d| *d < r)
+        .any(|d| !bound_in_segment(lower, segs, d, false))
 }
 
 /// Whether the clause opens by pointing back rather than by naming.
@@ -548,7 +729,9 @@ fn mentioned(lower: &str, at: usize, term: &str) -> bool {
         .chars()
         .rev()
         .collect();
-    mutant("mentionspan") || MENTIONED.contains(&after.as_str()) || MENTIONED.contains(&before.as_str())
+    mutant("mentionspan")
+        || MENTIONED.contains(&after.as_str())
+        || MENTIONED.contains(&before.as_str())
 }
 
 /// Whether a direction word stands in front of `at`, in the same segment.

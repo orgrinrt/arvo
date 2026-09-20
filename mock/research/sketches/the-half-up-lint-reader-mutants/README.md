@@ -1,14 +1,17 @@
-# The rewritten clause reader, broken arm by arm
+# The clause reader, broken arm by arm
 
-Whether the lint's corpus notices each arm of the rewritten reader being broken.
-The reader that stood before this one was mutated the same way in
+Whether the lint's corpus notices each arm of the reader being broken. The
+reader that stood before the rewrite was mutated the same way in
 `the-half-up-lint-mutants/`, at `b8a7ce4b`, and every arm it had then is covered
-there. This is the arms `df9d286f` added: the antecedent carried across clauses,
-the three ways a negator binds, the two extra conditions on the list escape, and
-the two filters on what counts as a reading. None of them existed when the first
-sketch ran, so none of them was mutated by it.
+there. This one covers the arms the rewrite added at `df9d286f` and the arms the
+anaphora round added on top of them: the antecedent bound to a name rather than
+to a backtick, the reach the carry has across clauses, the clause with a subject
+of its own, the denotation masked out of what counts as another name, the
+sentence-initial spelling of one, and the escape for a clause that states the
+denotation before contrasting with it.
 
-`WORKS`: every one of the 14 mutants is caught, after four that were not.
+`WORKS`: all 21 mutants are caught. One survived the first run and the corpus
+gained the pair that kills it.
 
 ## How it was run
 
@@ -22,15 +25,28 @@ HALF_UP_MUTANT=<name> cargo test --manifest-path mock/target/mockspace-lints/Car
 ```
 
 with `none` as the control, which is the mutant build with every switch off and
-passes. `out/runs.txt` is the raw output, filtered to the failing test names and
-the result line.
+passes at 81 tests. `out/runs.txt` is the raw output, filtered to the failing
+test names and the result line.
+
+Everything except `mutant()` itself is the shipped module byte for byte, so a
+diff of the two files is exactly the list of arms this asks about.
 
 ## The mutants
 
-Anaphora: `nocarry` (nothing is carried from one clause to the next, so a
-pronoun never finds a name), `antecedent` (a spelling is carried even where
-something else is named after it), `pronounany` (every clause is read as opening
-with a pronoun).
+The antecedent and its reach: `backtick` (the carry is refused after two
+backticks, which is what the arm this round replaced did), `noother` (nothing
+in the other-name list defeats the carry), `nocarry` (nothing is carried from
+one clause to the next), `nopass` (a clause naming nothing drops the carry
+rather than passing it on), `pronounonly` (only a clause opening with a pronoun
+consults the carry), `pronounany` (every clause is read as opening with one),
+`codespan` (a clause opening with a code span is read as naming nothing).
+
+What counts as another name: `nocap` (a name is matched only as written in the
+list, so one opening a sentence is missed), `nomask` (the denotation is not
+blanked, so `floor` inside `floor(x + q/2)` reads as the floor mode).
+
+The denotation escape: `nodenote` (a clause stating the denotation before the
+reading is not excused).
 
 The negator's binding: `readafter` (a negator behind the reading in the
 reading's own segment does not count), `nameafter` (one behind the name does
@@ -46,35 +62,29 @@ What counts as a reading: `noqual` (`in magnitude` counts with no direction word
 in front of it), `nomention` (a reading quoted as a name is read as a reading),
 `mentionspan` (any reading inside a code span is read as a mention).
 
-## What the first run found
+## What this run found
 
-Five survivors, and each is a separate thing the corpus was not asking.
+`nocap` survived. The arm it breaks is the one matching an other-name at the
+start of a sentence, and it was put into the reader by watching the lint fire
+over the tree rather than by writing the sentence down, which is the same way
+four arms escaped the previous run. `Toward zero reads the sign of the slot`, in
+`arvo-format/DESIGN.md.tmpl`, was the only thing holding it, and a test suite
+that depends on one sentence of one document staying as it is holds nothing.
 
-`readafter`, `nobetween`, `betweenboth` and `nobare` survived because the
-sentences that drove those four arms into the reader were never written down as
-sentences. Three of the four are prose this repository actually carries, and the
-arms were added by watching the lint fire over the tree rather than by putting
-the sentence in the corpus, so the tree was the only thing holding them. Four
-pairs were added to `sentences.rs`: the alias clause from
-`symmetry/tests/the_classification.rs`, the reflection partition from
-`arvo-format/DESIGN.md.tmpl`, a negator in an aside between the name and the
-reading, and a list item carrying more than the reading it holds. The corpus
-runs to 25 pairs now and kills all four.
+The pair that kills it is `half_up` adding half a step and flooring, followed by
+a clause that either says a tie goes away from zero, which the carry reaches and
+the reader has to refuse, or opens on `Toward zero`, which names another rule and
+stops the carry. The corpus runs to 38 pairs.
 
-`termcase` survived for a different reason and is not in the list above, because
-the arm it broke is gone. `term_at` looked a term up among the spellings and the
-readings, folding case to do it, and it is reached from one place, on a reading's
-own offset, with every reading written in lower case already. The spellings half
-and the folding were both unreachable. It is `reading_at` now, over the readings
-alone, and what made the folding unnecessary is asserted rather than assumed:
-`every_reading_is_written_lower_case_so_a_lowered_clause_can_be_searched_for_it`,
-with the same filter run over the spellings as its control, since those do carry
-upper case and the filter has to find them.
+One mutant from the previous run is gone rather than renamed. `antecedent`
+carried a spelling even where something else was named after it, and the arm it
+broke counted backticks. That arm does not exist now, and `backtick` restores it
+as a mutant so the corpus is asked about the thing that replaced it.
 
 ## What it does not show
 
 That the arms are right about English. It shows each arm is load-bearing for
-some test, not that the word lists are complete: a negator, a marker or a
-direction word missing from a list is a clause this lets through or refuses
-wrongly, and no mutant of the code finds that. The corpus is where that is
-argued, one pair at a time.
+some test, not that the word lists are complete: a negator, a marker, a
+direction word or an other-name missing from a list is a clause this lets
+through or refuses wrongly, and no mutant of the code finds that. The corpus is
+where that is argued, one pair at a time.
