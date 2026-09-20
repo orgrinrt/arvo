@@ -12,7 +12,7 @@
 
 use std::path::Path;
 
-use super::{HalfUpCarriesItsNote, NAME, check};
+use super::{HalfUpCarriesItsNote, MARK, NAME, check};
 use crate::canon_lint_testkit::{
     assert_findings_block_at,
     assert_not_declared_off,
@@ -22,6 +22,7 @@ use crate::canon_lint_testkit::{
     planted_tree,
     view,
 };
+use crate::half_up_is_not_a_magnitude_rule::reading::DENOTES as DENOTATIONS;
 
 /// The note as a page would carry it, in the shortest form that says the thing.
 const NOTE: &str = "This is not the `HALF_UP` of Java or Python: a tie at -2.5 \
@@ -241,6 +242,162 @@ fn a_crates_own_test_file_is_not_a_page_either() {
          a doc comment on a test helper is read by whoever opens the file and \
          by nobody arriving from outside"
     );
+}
+
+/// The slug of the ruling a registry row cites when it states the denotation.
+const RULING: &str = "half_up_denotes_ties_toward_positive_infinity";
+
+/// Each `[[..]]` row of a registry file, as the line it opens on and its text.
+///
+/// The row is the unit because the row is what renders: a reader of a generated
+/// document meets one row as one block, so a citation anywhere in it stands
+/// beside the denotation on the page, and a citation in the row before does not.
+fn rows(text: &str) -> Vec<(usize, String)> {
+    let mut out: Vec<(usize, String)> = Vec::new();
+    for (i, line) in text.lines().enumerate() {
+        if line.starts_with("[[") || out.is_empty() {
+            out.push((i + 1, String::new()));
+        }
+        let last = out.last_mut().expect("a row was just pushed");
+        last.1.push_str(line);
+        last.1.push('\n');
+    }
+    out
+}
+
+/// Every row of a `.toml` under `at` that states the denotation while carrying
+/// neither the note's mark nor the ruling's slug, as `<file>:<line>`.
+fn registry_denotations_without_a_citation(at: &Path) -> Vec<String> {
+    let Ok(entries) = std::fs::read_dir(at) else {
+        return vec![format!("{}: not a directory", at.display())];
+    };
+    let mut files: Vec<_> = entries
+        .flatten()
+        .map(|e| e.path())
+        .filter(|p| p.extension().is_some_and(|x| x == "toml"))
+        .collect();
+    files.sort();
+    let mut out = Vec::new();
+    for path in files {
+        let Ok(text) = std::fs::read_to_string(&path) else {
+            continue;
+        };
+        let name = path
+            .file_name()
+            .unwrap_or_default()
+            .to_string_lossy()
+            .to_string();
+        for (line, row) in rows(&text) {
+            if row.contains(MARK) || row.contains(RULING) {
+                continue;
+            }
+            let lower = row.to_ascii_lowercase();
+            if DENOTATIONS.iter().any(|d| lower.contains(d)) {
+                out.push(format!("{name}:{line}"));
+            }
+        }
+    }
+    out
+}
+
+#[test]
+fn no_registry_row_states_the_denotation_without_citing_the_ruling() {
+    // The module doc argues that the documents generated from the registry are
+    // safely unread, because a row naming the mode is mentioning it and a row
+    // that does state the denotation carries the ruling beside it. That is a
+    // claim about live data, and this is what enforces it. It reads the rows
+    // rather than the documents they render into: the rows are what a person
+    // edits and what git tracks, a generated document for a registry namespace
+    // is a function of them, and the documents themselves are not committed, so
+    // an arm over `docs/` would be green on a fresh clone for the wrong reason.
+    let at = crate::canon_lint_testkit::repo_root().join("mock/registry");
+    let found = registry_denotations_without_a_citation(&at);
+    assert!(
+        found.is_empty(),
+        "a registry row tells a reader what the name means with neither \
+         `{RULING}` nor the note's `{MARK}` anywhere in it, so the document it \
+         renders into says it to a stranger with nothing beside it: {found:?}"
+    );
+}
+
+#[test]
+fn control_a_registry_row_stating_the_denotation_alone_is_reported() {
+    // Walked whole, because a needle in `DENOTATIONS` this cannot see is one the
+    // arm above would pass over in the real rows as well. Three plantings per
+    // needle: the row alone, the row citing the ruling, and the row carrying the
+    // mark. The first must fire and the other two must not, so the arm above
+    // being green is about the rows rather than about an escape that swallows
+    // everything.
+    for d in DENOTATIONS {
+        let alone = planted_tree("note-registry-alone");
+        plant(
+            &alone,
+            "mock/registry/ruling.toml",
+            &format!("[[ruling]]\nnote = \"`half_up` sends a tie {d}.\"\n"),
+        );
+        assert_eq!(
+            registry_denotations_without_a_citation(&alone.join("mock/registry")),
+            vec!["ruling.toml:1".to_string()],
+            "{d}"
+        );
+
+        let cited = planted_tree("note-registry-cited");
+        plant(
+            &cited,
+            "mock/registry/ruling.toml",
+            &format!("[[ruling]]\nnote = \"`half_up` sends a tie {d}, per `{RULING}`.\"\n"),
+        );
+        assert!(
+            registry_denotations_without_a_citation(&cited.join("mock/registry")).is_empty(),
+            "{d}"
+        );
+
+        let marked = planted_tree("note-registry-marked");
+        plant(
+            &marked,
+            "mock/registry/ruling.toml",
+            &format!("[[ruling]]\nnote = \"Not the {MARK} of Java: a tie goes {d}.\"\n"),
+        );
+        assert!(
+            registry_denotations_without_a_citation(&marked.join("mock/registry")).is_empty(),
+            "{d}"
+        );
+    }
+}
+
+#[test]
+fn control_a_citation_in_the_row_before_does_not_reach_the_denotation() {
+    // What keeps the carve-out from widening to the file. A row cites the ruling
+    // and the next row states the denotation with nothing beside it, which on
+    // the page is two blocks with the citation in the wrong one.
+    let dir = planted_tree("note-registry-reach");
+    plant(
+        &dir,
+        "mock/registry/ruling.toml",
+        &format!(
+            "[[ruling]]\nnote = \"See `{RULING}`.\"\n\n[[ruling]]\nnote = \"A tie \
+             goes toward positive infinity.\"\n"
+        ),
+    );
+    assert_eq!(
+        registry_denotations_without_a_citation(&dir.join("mock/registry")),
+        vec!["ruling.toml:4".to_string()]
+    );
+}
+
+#[test]
+fn control_a_registry_row_naming_the_mode_and_no_denotation_is_silent() {
+    // The other half of the module doc's argument: a row naming the mode is
+    // mentioning it, and a mention owes nothing. Without this the arm above
+    // would be satisfied by a reader that fires on the name, which is the
+    // reading the sibling lint applies to a document and not to a row.
+    let dir = planted_tree("note-registry-mention");
+    plant(
+        &dir,
+        "mock/registry/dimension.toml",
+        "[[dimension]]\nvalues = [\"floor\", \"ceil\", \"half_up\", \"half_even\"]\n",
+    );
+    assert!(registry_denotations_without_a_citation(&dir.join("mock/registry")).is_empty());
 }
 
 #[test]

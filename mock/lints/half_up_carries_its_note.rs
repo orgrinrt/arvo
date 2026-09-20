@@ -48,12 +48,18 @@
 //! the template covers them. One per namespace renders from the registry
 //! instead, and several of those name the mode, in predicate axis values and in
 //! the question rows the ruling was the answer to. None of them is telling a
-//! reader what the name means: an axis value is a mention, and the question
-//! rows that do state the denotation cite the ruling by slug in the same
-//! sentence. A row that named the mode and explained it wrongly would be past
-//! this lint, and it would be the canon correcting itself rather than a surface
-//! being fixed, which is the sibling lint's carve-out for a ratified ruling in
-//! its other half.
+//! reader what the name means: an axis value is a mention, and every row that
+//! does state the denotation carries the ruling's slug or the note's mark
+//! somewhere in the row, which is the block a reader meets on the rendered
+//! page. `no_registry_row_states_the_denotation_without_citing_the_ruling` is
+//! what holds that, over the rows rather than over the documents, because the
+//! rows are what git tracks and a document for a registry namespace is a
+//! function of them. The row is the unit rather than the sentence, and the
+//! difference is load-bearing: the ruling's own `says` states the denotation
+//! with the mark three fields further down. A row that named the mode and
+//! explained it wrongly would be past this lint, and it would be the canon
+//! correcting itself rather than a surface being fixed, which is the sibling
+//! lint's carve-out for a ratified ruling in its other half.
 
 use std::path::{Path, PathBuf};
 
