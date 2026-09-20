@@ -225,6 +225,95 @@ pub(super) const PAIRS: &[Pair] = &[
         differs:  "whether the item holding the reading holds anything besides it",
         measured: false,
     },
+    Pair {
+        fires:    "`half_up`: a tie goes away from zero.",
+        silent:   "`half_even`: a tie goes away from zero.",
+        subject:  None,
+        differs:  "which mode the clause before the colon names",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up`; a tie goes away from zero.",
+        silent:   "The alias; a tie goes away from zero.",
+        subject:  None,
+        differs:  "whether the clause before the semicolon names the mode",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up`? a tie goes away from zero.",
+        silent:   "`half_up`? a tie never goes away from zero.",
+        subject:  None,
+        differs:  "a negator in the reading's segment, across a question mark",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is a mode. Ties go away from zero under it.",
+        silent:   "`half_up` is a mode. Ties go away from zero under `Round`.",
+        subject:  None,
+        differs:  "whether the clause carrying the reading names another rule, where neither opens \
+                  with a pronoun",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is a mode. It is nearest. Its tie goes away from zero.",
+        silent:   "`half_up` is a mode. `HalfEven` is another. Its tie goes away from zero.",
+        subject:  None,
+        differs:  "whether the sentence between the name and the pronoun names another rule",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` pairs with `q/2`; it sends a tie away from zero.",
+        silent:   "`half_up` pairs with `HalfEven`; it sends a tie away from zero.",
+        subject:  None,
+        differs:  "whether the code span standing after the name is another rule",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is not Java's rule. It sends a tie away from zero.",
+        silent:   "`half_up` is not Java's HALF_UP. It sends a tie away from zero.",
+        subject:  None,
+        differs:  "whether the other operation is named, with no code span on either side",
+        measured: false,
+    },
+    Pair {
+        fires:    "Nearest. A tie goes away from zero.",
+        silent:   "Nearest. A tie goes away from zero under `HalfEven`.",
+        subject:  Some("HalfUp"),
+        differs:  "whether the clause names another rule, where the doc block's item would otherwise \
+                  reach it",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` goes up. And takes ties away from zero.",
+        silent:   "`half_up` goes up. And `HalfEven` takes ties away from zero.",
+        subject:  None,
+        differs:  "whether the clause after the boundary names another rule",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is a mode. It is read up the number line. A tie goes away from zero.",
+        silent:   "`half_up` is a mode. Read it as up the number line. A tie goes away from zero.",
+        subject:  None,
+        differs:  "whether the clause between the name and the reading points back, which is what \
+                  carries the name past one clause",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is a mode. The crate sends a tie away from zero.",
+        silent:   "`half_up` is a mode. `arvo-format` sends a tie away from zero.",
+        subject:  None,
+        differs:  "whether the clause opens by naming a subject of its own in a code span",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` sends a tie to the nearest slot, where ties away from zero would give \
+                  -3.",
+        silent:   "`half_up` sends a tie toward positive infinity, where ties away from zero would \
+                  give -3.",
+        subject:  None,
+        differs:  "whether the clause states the settled denotation ahead of the reading",
+        measured: false,
+    },
 ];
 
 /// The readings a sentence is refused for, as the reader answers it.
@@ -263,7 +352,7 @@ fn every_pair_fires_on_one_side_and_is_silent_on_the_other() {
 fn the_corpus_holds_what_it_held_and_the_review_measured_eight_of_it() {
     // A count rather than a list, so a pair removed is a failure here rather
     // than a silent narrowing of what the reader is asked.
-    assert_eq!(PAIRS.len(), 25);
+    assert_eq!(PAIRS.len(), 37);
     assert_eq!(PAIRS.iter().filter(|p| p.measured).count(), 8);
 }
 

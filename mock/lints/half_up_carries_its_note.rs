@@ -60,7 +60,7 @@ use std::path::{Path, PathBuf};
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
 use crate::half_up_is_not_a_magnitude_rule::comments::passages;
-use crate::half_up_is_not_a_magnitude_rule::reading::{SPELLINGS, spellings_in};
+use crate::half_up_is_not_a_magnitude_rule::reading::{DENOTES, SPELLINGS, spellings_in};
 
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(HalfUpCarriesItsNote)
@@ -76,16 +76,6 @@ const MARK: &str = "HALF_UP";
 /// Directories under the mock directory that are the record, the build, or a
 /// surface nobody outside this repository reads.
 const NOT_READ: &[&str] = &["target", "research", "design_rounds", "agent"];
-
-/// What a passage says when it is stating the denotation rather than mentioning
-/// the mode, in the words the ruling states it in.
-const DENOTES: &[&str] = &[
-    "toward positive infinity",
-    "towards positive infinity",
-    "to positive infinity",
-    "floor(x + q/2)",
-    "floor(x+q/2)",
-];
 
 struct HalfUpCarriesItsNote;
 
