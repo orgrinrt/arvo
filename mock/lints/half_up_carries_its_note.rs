@@ -162,7 +162,7 @@ fn rustdoc(shown: &str, text: &str) -> Vec<LintError> {
 
 /// Every `.rs` under a crate's own source, and every `.md.tmpl`, outside the
 /// directories this does not read and outside any hidden one.
-fn collect(dir: &Path, out: &mut Vec<PathBuf>) {
+pub(crate) fn collect(dir: &Path, out: &mut Vec<PathBuf>) {
     let Ok(entries) = std::fs::read_dir(dir) else {
         return;
     };
@@ -184,11 +184,20 @@ fn collect(dir: &Path, out: &mut Vec<PathBuf>) {
 /// than a page anybody reads, and a file under a crate's `tests/` is read by
 /// whoever opens it: rustdoc renders neither, so a reader never arrives at one
 /// without already being here.
+///
+/// A crate's tests live under `src/` here as well as beside it, as `tests.rs`
+/// or under a `tests/` directory, and they sit behind `#[cfg(test)]` wherever
+/// they are. Rustdoc does not print those either, so they are excluded on the
+/// same argument rather than on a different one.
 fn is_crate_source(path: &Path, name: &str) -> bool {
     let mut in_crates = false;
     let mut in_source = false;
+    let mut in_tests = false;
     for part in path.components() {
         let part = part.as_os_str().to_string_lossy();
+        if in_source && part == "tests" {
+            in_tests = true;
+        }
         if in_crates && part == "src" {
             in_source = true;
         }
@@ -196,11 +205,11 @@ fn is_crate_source(path: &Path, name: &str) -> bool {
             in_crates = true;
         }
     }
-    name.ends_with(".rs") && in_source
+    name.ends_with(".rs") && in_source && !in_tests && name != "tests.rs"
 }
 
 /// The line an offset lies on, counting from one.
-fn line_of(text: &str, at: usize) -> usize {
+pub(crate) fn line_of(text: &str, at: usize) -> usize {
     1 + text[.. at.min(text.len())].matches('\n').count()
 }
 
