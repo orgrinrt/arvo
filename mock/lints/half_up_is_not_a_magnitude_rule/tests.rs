@@ -381,6 +381,14 @@ fn the_words_that_give_a_reading_are_not_mention_words() {
     for w in ["reading", "readings", "denotes", "means", "meaning"] {
         assert!(!MENTIONED.contains(&w), "{w}");
     }
+    // `value` is not among them, and this walk is what says so rather than
+    // dodging the question: a list that only ever asked about the words already
+    // fixed would go on passing after the next one broke. `value` stays in
+    // `MENTIONED` for the genuine mentions it also has to catch, so a sentence
+    // asserting the reading with `value` as its own predicate is one of the
+    // reader's known-wrong shapes rather than a word this list should gain;
+    // `sentences/catalogue.rs` carries the sentence it costs.
+    assert!(MENTIONED.contains(&"value"), "value");
 }
 
 #[test]

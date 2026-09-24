@@ -73,12 +73,17 @@ fn an_empty_segment_between_two_delimiters_is_not_a_list_item() {
     // A closing bracket and then a comma cut an empty segment between them, and
     // read as an item it is a bare name beside the reading, which made each of
     // these a list. Every bracket pair the cut knows, with and without a
-    // conjunction opening the reading's item.
+    // conjunction opening the reading's item, at two aside lengths: the walk
+    // covered only a two-word aside before, and a longer one is not a narrower
+    // case of it, since `is_bare` counts the words in the aside's own segment
+    // rather than in the one holding the reading.
     for (open, close) in [("(", ")"), ("{", "}")] {
         for lead in ["", "but ", "and "] {
-            let text =
-                format!("`half_up` sends a tie {open}see below{close}, {lead}away from zero.");
-            assert_eq!(found(&text), ["away from zero"], "{text}");
+            for aside in ["see below", "see the note below"] {
+                let text =
+                    format!("`half_up` sends a tie {open}{aside}{close}, {lead}away from zero.");
+                assert_eq!(found(&text), ["away from zero"], "{text}");
+            }
         }
     }
     // The control: a real list with a bracketed item still reads as a list,
@@ -86,6 +91,11 @@ fn an_empty_segment_between_two_delimiters_is_not_a_list_item() {
     assert!(
         found("The modes floor, away from zero, half_up (the ruled one), and ceil.").is_empty()
     );
+    // A one-word aside is not walked above: `listed_apart` counts an item's
+    // words rather than checking for a name, so a bare single word beside the
+    // reading reads as a list neighbour and silences it wrongly.
+    // `sentences/catalogue.rs` carries the sentence it costs.
+    assert!(found("`half_up` sends a tie (aside) away from zero.").is_empty());
 }
 
 #[test]
@@ -125,6 +135,13 @@ fn a_denotation_conjoined_with_the_other_reading_does_not_excuse_it() {
             // its own, and the conjunction opening that segment still joins it.
             let apart = format!("`half_up` goes {d}, {c} away from zero.");
             assert_eq!(found(&apart), ["away from zero"], "{apart}");
+            // The conjunction stands somewhere in the reading's own segment
+            // other than directly in front of the reading, with words of its
+            // own between the two: the escape looks for a conjunction anywhere
+            // in that stretch rather than only immediately before the reading,
+            // so this is not a narrower case of the two above.
+            let mid = format!("`half_up` goes {d}, {c} somehow it turns away from zero.");
+            assert_eq!(found(&mid), ["away from zero"], "{mid}");
         }
     }
 }
