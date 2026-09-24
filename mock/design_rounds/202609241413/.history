@@ -1,0 +1,50 @@
+f89ddd37 chore: lock src changelist for 202609241413
+87683078 test: mutate the half-up reader arm by arm and walk what the corpus held
+523cf149 fix: attribute a reading by its segment and demote the half-up lint
+63b09349 docs: open the src changelist and correct the round's token count
+668b937d chore: lock the doc changelist for the half-up reader round
+341d27ea design: write the doc changelist for the half-up reader round
+c3b3d98f design: open the last round on the half-up reader
+db634837 chore: close design round 202609200239
+2b94e9d3 chore: lock the src changelist for the fix round
+b13301ee design: reconcile the src changelist with what the round landed
+f6f015c1 test: mutate every arm the anaphora round added to the reader
+f049f6e9 test: state the alias sweeps completion twice and plant the wrong ones
+06ed9dfb test: hold the note lints registry carve-out over the real rows
+edfba867 feat: gate the projects history out of published prose
+74ff0fa8 fix: bind the magnitude reader to a name rather than to a backtick
+3165ffa6 design: write the src changelist for the fix round
+3fcf3082 chore: lock the doc changelist for the fix round
+cf10ccf7 docs: say what the spelling cannot form, not what the crate once did
+dc58bd51 design: open the round for the reviews non-blocking findings
+fc71ffb1 fix: drop the stale code claims from three registry rows
+af94ed9a fix: read a lint's split-out tests as part of its source
+de6f6020 chore: close design round 202609200040
+8665662e chore: lock the src changelist for the half_up review round
+b7d0ab15 docs: make the src changelist say what landed
+e4af5253 test: mutate the rewritten reader and pin what survived
+f781595a feat: gate the note that travels with the `half_up` name
+df9d286f fix: bind a negator to what it negates in the half_up lint
+a97be754 test: relate the half up row to ceil instead of copying it
+10444d1f docs: carry the half_up note onto three more rustdoc pages
+28f83440 test: sweep the ties-away alias and free the parity file of it
+dba8f044 docs: write the src changelist for the half_up repair
+7fbb2a82 chore: lock doc changelist for 202609200040_changelist.doc.lock.md
+3287c094 docs: regenerate the format document
+1e8aaa44 docs: state where the ties-away alias can be written
+f49a833c docs: write the doc changelist for the half_up repair
+13145184 docs: open the round fixing the half_up review findings
+ef3737a7 test: sketch where the ties-away alias can be written
+ffcf3c44 fix: drop the claim about code from the half_up ruling's note
+5e64c2ae canon: state what the half_up ruling's note corrects, not the old code
+1f5f6f1d chore: close design round 202609192215
+78dec4c0 chore: lock src changelist for 202609192220_changelist.src.lock.md
+b8a7ce4b feat: refuse prose reading `half_up` as a magnitude rule
+c5ba2b7e test: say the planted ties-away rule is planted, and fix a count
+42e03f37 test: name the rounding tool readings `half_up` and ties away
+d7fd1508 test: record the old `half_up` tie rule planted into `round_slot`
+6a06c1aa fix: round `half_up` ties toward positive infinity
+f6e096fa design: open the half_up src changelist
+c16d573b chore: lock the half_up doc changelist
+7fb1fef4 docs: state half_up as ties toward positive infinity
+c64f1ef9 design: open the doc changelist for half_up
