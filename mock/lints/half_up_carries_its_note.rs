@@ -56,7 +56,7 @@
 //! rows are what git tracks and a document for a registry namespace is a
 //! function of them. The row is the unit rather than the sentence, and the
 //! difference is load-bearing: the ruling's own `says` states the denotation
-//! with the mark three fields further down. A row that named the mode and
+//! and carries the mark itself. A row that named the mode and
 //! explained it wrongly would be past this lint, and it would be the canon
 //! correcting itself rather than a surface being fixed, which is the sibling
 //! lint's carve-out for a ratified ruling in its other half.
