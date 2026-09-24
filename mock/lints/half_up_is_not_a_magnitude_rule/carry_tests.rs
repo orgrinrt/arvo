@@ -133,6 +133,28 @@ fn every_other_name_defeats_the_carry() {
 }
 
 #[test]
+fn every_other_name_opening_a_sentence_capitalised_stops_the_carry() {
+    // The design documents open sentences on a rule's name, bare, and that name
+    // is then capitalised whatever the list spells it as. Every plain name whose
+    // capitalised form differs from the listed one, opening the clause after the
+    // mode's, takes that clause for itself.
+    for n in plain_names() {
+        let opened = cap(n);
+        if opened == n {
+            continue;
+        }
+        let text = format!("`half_up` adds half a step. {opened} sends a tie away from zero.");
+        assert!(found(&text).is_empty(), "{text}");
+    }
+    // The control: a capitalised word that is no rule's name opens the same
+    // clause and the carry reaches through it.
+    assert_eq!(
+        found("`half_up` adds half a step. Either way a tie goes away from zero."),
+        ["away from zero"]
+    );
+}
+
+#[test]
 fn a_name_that_is_not_a_rounding_rule_does_not_defeat_the_carry() {
     // Most of what this repository names in a code span is not something a
     // pronoun standing for a mode could mean. A reader counting backticks lost

@@ -139,6 +139,37 @@ fn control_the_same_sentences_without_the_negator_fire() {
 }
 
 #[test]
+fn every_negator_is_bound_by_where_it_sits_and_not_by_being_between() {
+    // The placements the binding rule separates, each walked over every negator,
+    // each beside the placement it must not be confused with. The corpus has a
+    // pair for each, but a pair is one negator.
+    for n in NEGATORS {
+        // Behind the reading, in the reading's own segment: bound.
+        let behind = format!("`half_up` sends a tie away from zero {n} at all.");
+        assert!(found(&behind).is_empty(), "{behind}");
+        // The same one segment further on: about something else.
+        let past = format!("`half_up` sends a tie away from zero, {n} at all.");
+        assert_eq!(found(&past), ["away from zero"], "{past}");
+        // Between a reading and a name standing after it, opening a list the
+        // name is an item of, where the name's own item holds no negator: bound
+        // by the between rule alone, which is how the design states the
+        // reflection partition.
+        let then_list =
+            format!("A tie goes away from zero, {n} for floor, ceil, `half_up` or the rest.");
+        assert!(found(&then_list).is_empty(), "{then_list}");
+        // Between a name and a reading standing after it, in an aside of its
+        // own: about the aside, which is the contrast the reading got in by.
+        let then_reading = format!("`half_up`, {n} the even rule, sends a tie away from zero.");
+        assert_eq!(found(&then_reading), ["away from zero"], "{then_reading}");
+    }
+    // The control for the list: the same sentence with no negator opening it.
+    assert_eq!(
+        found("A tie goes away from zero, for floor, ceil, `half_up` or the rest."),
+        ["away from zero"]
+    );
+}
+
+#[test]
 fn a_negator_in_another_segment_is_about_that_segment() {
     // The sentence asserts the reading of the mode and denies it of something
     // else. A reader taking any negator before the later of the two reads this

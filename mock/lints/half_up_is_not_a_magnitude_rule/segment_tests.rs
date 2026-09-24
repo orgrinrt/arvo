@@ -12,7 +12,7 @@
 //! delimiter pair and every conjunction in the segments that should not count,
 //! beside a control where the same words stand in the one that does.
 
-use super::reading::{CONJUNCTIONS, DENOTES, hits};
+use super::reading::{CONJUNCTIONS, DENOTES, QUALIFIED, READINGS, hits};
 
 /// The readings found in `text`, as written.
 fn found(text: &str) -> Vec<&'static str> {
@@ -31,6 +31,24 @@ fn control_a_list_with_both_in_one_item_fires() {
         found("rounding: in {floor, half_up away from zero, ceil}"),
         ["away from zero"]
     );
+}
+
+#[test]
+fn every_reading_is_a_list_item_only_where_its_item_holds_nothing_else() {
+    // Every reading as an item of its own beside the mode's item, and the same
+    // item with a word in front of it, which makes it a clause about the item
+    // before it rather than a term in a list.
+    for r in READINGS {
+        let direction = if *r == QUALIFIED { "up " } else { "" };
+        let clause = format!("rounding: in {{floor, half_up, a tie {direction}{r}, ceil}}");
+        assert_eq!(found(&clause), [*r], "{clause}");
+        // The magnitude reading needs a direction word in its own item to be a
+        // reading at all, so its item is never bare and it has no list form.
+        if *r != QUALIFIED {
+            let bare = format!("rounding: in {{floor, half_up, {r}, ceil}}");
+            assert!(found(&bare).is_empty(), "{bare}");
+        }
+    }
 }
 
 #[test]
