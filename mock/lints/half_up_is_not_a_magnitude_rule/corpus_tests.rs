@@ -129,7 +129,6 @@ fn a_doc_comment_a_comment_and_a_template_each_fire_where_they_are() {
             &format!("fn f() {{}}\n/// {BAD}\nfn g() {{}}\n"),
         ),
         ("tools/t/src/lib.rs", &format!("// {BAD}\n")),
-        ("lints/l.rs", &format!("/* {BAD} */\n")),
         ("benches/b/src/lib.rs", &format!("//! {BAD}\n")),
         ("crates/a/DESIGN.md.tmpl", &format!("# A\n\nText.\n{BAD}\n")),
         ("DESIGN.md.tmpl", &format!("{BAD}\n")),
@@ -139,7 +138,6 @@ fn a_doc_comment_a_comment_and_a_template_each_fire_where_they_are() {
         ("benches/b/src/lib.rs".to_string(), 1),
         ("crates/a/DESIGN.md.tmpl".to_string(), 4),
         ("crates/a/src/lib.rs".to_string(), 2),
-        ("lints/l.rs".to_string(), 1),
         ("tools/t/src/lib.rs".to_string(), 1),
     ]);
 }
@@ -151,6 +149,7 @@ fn control_the_record_the_build_a_literal_and_plain_markdown_are_not_read() {
         ("research/sketches/s/src/main.rs", &format!("// {BAD}\n")),
         ("design_rounds/202601010000_topic.md.tmpl", BAD),
         ("target/x/src/lib.rs", &format!("// {BAD}\n")),
+        ("lints/l.rs", &format!("/* {BAD} */\n")),
         (".hidden/a.rs", &format!("// {BAD}\n")),
         ("crates/a/README.md", BAD),
         (

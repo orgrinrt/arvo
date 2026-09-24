@@ -15,10 +15,16 @@
 //!
 //! It warns and does not block, at every gate. The reader under it is wrong in
 //! both directions, on sentences a writer here does write, and a gate that
-//! blocks on a reader known to be wrong refuses true sentences at hard error,
-//! the ruling's own among them. What it gets wrong is stated next, and every
-//! case is a known-red pair in `half_up_is_not_a_magnitude_rule/sentences/catalogue.rs`
-//! rather than a sentence in this paragraph.
+//! blocks on a reader known to be wrong refuses true sentences at hard error.
+//! What it gets wrong is stated next, and every known case is a known-red pair
+//! in `half_up_is_not_a_magnitude_rule/sentences/catalogue.rs` rather than a
+//! sentence in this paragraph. The demotion does not rest on the ruling's own
+//! prose: `check_registry` skips every ratified ruling outright, so the gate
+//! never reads a field of it, the governing ruling's `promotion` included. It
+//! rests on the catalogue's refused-true entries, which are shapes the gate
+//! does read: a clause naming the alias under a name that is also a reading,
+//! and a relative or a clause whose subject is a rule or a seat named in
+//! words.
 //!
 //! The gate is incomplete in both directions.
 //!
@@ -81,7 +87,9 @@
 //! What it does not read: string literals, which are data rather than prose, so
 //! a test planting a violation does not trip it; the research tree and the
 //! design rounds, which are the record of how the question was argued and say
-//! the other reading on purpose; `target/`; the `retirement` namespace, whose
+//! the other reading on purpose; `target/`; `lints/`, this lint's own source
+//! and its siblings', which explain a reading in order to refuse it; the
+//! `retirement` namespace, whose
 //! rows quote a retired claim in the words it was written in; a ratified
 //! `ruling`, which is the canon this defends and is not corrected from below;
 //! the `answered` field of a question, which names both readings in order to say
@@ -120,14 +128,24 @@ const NAME: &str = "half-up-is-not-a-magnitude-rule";
 /// What every finding carries: a warning at every gate, blocking none.
 ///
 /// The reader is incomplete in both directions, as the module doc says, and
-/// refuses a field of the ratified ruling this lint defends. A hard error would
-/// refuse that sentence at every gate. The lint's own default and the severity
-/// its findings carry are this one constant, so the two cannot disagree.
+/// refuses true sentences it has no vocabulary for: a clause naming the alias
+/// under a name that is also a reading, and a relative or a clause whose
+/// subject is a rule or a seat named in words, catalogued in
+/// `half_up_is_not_a_magnitude_rule/sentences/catalogue.rs`. A hard error
+/// would refuse those sentences at every gate. The lint's own default and the
+/// severity its findings carry are this one constant, so the two cannot
+/// disagree.
 const SEVERITY: Severity = Severity::ADVISORY;
 
 /// Directories under the mock directory that are the record rather than the
 /// description, or not source at all.
-const NOT_READ: &[&str] = &["target", "research", "design_rounds"];
+///
+/// `lints` is among them for the same argument as `research` and
+/// `design_rounds`: this lint's own source, and its siblings', explain the
+/// readings a sentence can carry in order to refuse them, which reads as
+/// asserting every one. Reading it here fired on the module doc's own
+/// examples, at every gate, on a clean tree.
+const NOT_READ: &[&str] = &["target", "research", "design_rounds", "lints"];
 
 /// Registry fields that hold identifiers, citations, tiers or verbatim words
 /// rather than prose somebody here writes.
@@ -325,6 +343,7 @@ mod reaches_the_gate {
         ctx_at,
         plant,
         planted_tree,
+        repo_root,
         view,
     };
 
@@ -384,5 +403,22 @@ mod reaches_the_gate {
     #[test]
     fn it_reaches_the_pack_the_engine_is_handed() {
         assert_registered(NAME);
+    }
+
+    #[test]
+    fn no_severity_override_pins_it_to_the_pack_default() {
+        // The `[lints]` snapshot in `catalogues.md` reports this lint at
+        // "pack default", never "set here". A `[lints.half-up-is-not-a-magnitude-rule]`
+        // table in `mockspace.toml` would give this lint a severity this repo
+        // chose, which nothing here asks for: the module doc's whole point is
+        // that ADVISORY is right because the reader is known incomplete, and a
+        // repo override is the shape by which that could quietly drift.
+        let toml = std::fs::read_to_string(repo_root().join("mockspace.toml"))
+            .expect("mockspace.toml at the repo root");
+        assert!(
+            !toml.contains("[lints.half-up-is-not-a-magnitude-rule]"),
+            "mockspace.toml now overrides this lint's severity; the module doc \
+             and this test both assume the pack default governs it"
+        );
     }
 }
