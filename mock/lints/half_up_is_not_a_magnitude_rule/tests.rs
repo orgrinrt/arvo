@@ -3,20 +3,22 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The clause reader, over every spelling, every reading and every escape, each
-//! escape beside the same sentence without it.
+//! The clause reader inside one clause, over every spelling, every reading and
+//! every escape, each escape beside the same sentence without it.
 //!
-//! The sentences a review measured against the reader that stood before this one
+//! What a name carries from one clause to the next, and which rule a reading
+//! is attributed to, are in `carry_tests.rs`. The list and the contrast against
+//! the denotation, the two escapes that read across segments, are in
+//! `segment_tests.rs`. The sentences a review measured against earlier readers
 //! are in `sentences.rs`, paired with their near-twins. What is here is the
-//! vocabulary walked whole: every spelling against every reading, every negator,
-//! every marker, every clause boundary.
+//! vocabulary walked whole: every spelling against every reading, every
+//! negator, every marker, every mention word.
 
 use super::reading::{
-    DENOTES,
     DIRECTIONS,
     ELSEWHERE,
+    MENTIONED,
     NEGATORS,
-    OTHER_NAMES,
     QUALIFIED,
     READINGS,
     SPELLINGS,
@@ -196,180 +198,6 @@ fn a_marker_in_the_next_clause_does_not_reach_back() {
 }
 
 #[test]
-fn a_clause_boundary_separates_the_two_only_where_the_later_clause_names_another_rule() {
-    // A boundary on its own does not separate them. The clause after it names
-    // no rounding rule, so what it says is about the one the clause before it
-    // named, which is how anybody writes a definition after a colon or a second
-    // sentence about the same mode. What does separate them is the later clause
-    // naming a rule of its own.
-    //
-    // The arm this replaces asserted silence for a sentence that continues
-    // past the cut with a bare conjunction and then gives the magnitude
-    // reading. That sentence now fires, which is the finding rather than a
-    // regression, and it is in the corpus as a pair rather than written out
-    // here: this reader reads its own tests, so a sentence written to be
-    // refused belongs where the corpus holds it against its twin.
-    for cut in [". ", "; ", ": ", "? ", "! ", ".\n", ";"] {
-        let other = format!("`half_up` goes up{cut}`HalfEven` takes ties away from zero.");
-        assert!(found(&other).is_empty(), "{other:?}");
-        let alias = format!("`half_up` goes up{cut}ties away from zero is the alias.");
-        assert!(found(&alias).is_empty(), "{alias:?}");
-        // The control. The same cut with nothing else named pairs the two, so
-        // the two silences above are the naming rather than the cut, and a
-        // reader that stopped carrying anything at all would fail here.
-        let carried = format!("`half_up` goes up{cut}ties away from zero is what it does.");
-        assert!(!found(&carried).is_empty(), "{carried:?}");
-    }
-}
-
-#[test]
-fn a_blank_line_starts_afresh_whatever_was_named() {
-    // The one boundary that does separate them on its own, which is why it is
-    // tested apart from the cuts above rather than among them.
-    assert!(found("`half_up` goes up.\n\nties away from zero is what it does.").is_empty());
-    assert!(found("`half_up` goes up.\n\n`HalfEven` takes ties away from zero.").is_empty());
-    // The control: the same two lines with one newline between them carry.
-    assert_eq!(
-        found("`half_up` goes up.\nties away from zero is what it does."),
-        ["away from zero"]
-    );
-}
-
-#[test]
-fn every_other_name_defeats_the_carry() {
-    // A pronoun standing for a rounding rule points at the last rule named, so
-    // each of these standing after the mode takes the carry away. Walked whole
-    // and in both spellings, because the reader this replaces answered a
-    // question about the backticks rather than about the name: it let the
-    // backticked half through and refused the bare half.
-    for n in OTHER_NAMES {
-        for span in ["`", ""] {
-            let text = format!("`half_up` is not {span}{n}{span}. It sends a tie away from zero.");
-            assert!(found(&text).is_empty(), "{text}");
-        }
-    }
-    // The control. The same sentence naming no other rule fires, so the silence
-    // above is the name rather than the shape of the sentence or the negator.
-    assert_eq!(
-        found("`half_up` is not Java's rule. It sends a tie away from zero."),
-        ["away from zero"]
-    );
-}
-
-#[test]
-fn a_name_that_is_not_a_rounding_rule_does_not_defeat_the_carry() {
-    // Most of what this repository names in a code span is not something a
-    // pronoun standing for a mode could mean. A reader counting backticks lost
-    // the carry to every one of these.
-    for span in ["`q/2`", "`Exact::slot`", "`i64::MAX`", "`-2.5 q`"] {
-        let text = format!("`half_up` pairs with {span}; it sends a tie away from zero.");
-        assert_eq!(found(&text), ["away from zero"], "{text}");
-    }
-}
-
-#[test]
-fn the_carry_reaches_across_a_clause_that_names_nothing() {
-    // Anaphora over more than one sentence, which is ordinary prose: the mode
-    // is named once and two sentences follow about it.
-    assert_eq!(
-        found("`half_up` is a mode. It is nearest. Its tie goes away from zero."),
-        ["away from zero"]
-    );
-    // And stops at a clause that names a rule of its own.
-    assert!(
-        found("`half_up` is a mode. `HalfEven` is another. Its tie goes away from zero.")
-            .is_empty()
-    );
-}
-
-#[test]
-fn a_doc_blocks_item_does_not_reach_a_clause_that_names_another_rule() {
-    assert!(
-        hits(
-            "A tie goes away from zero under `HalfEven`.",
-            Some("HalfUp")
-        )
-        .is_empty()
-    );
-    // The control: the same clause naming no rule takes the item.
-    assert_eq!(
-        hits("A tie goes away from zero under it.", Some("HalfUp")).len(),
-        1
-    );
-}
-
-#[test]
-fn a_clause_opening_with_a_pronoun_takes_the_name_the_one_before_it_left() {
-    // The sentence is about the mode and says so once, which is how anybody
-    // writes two sentences about one thing.
-    assert_eq!(
-        found("`half_up` is nearest. Its tie goes away from zero."),
-        ["away from zero"]
-    );
-    assert_eq!(found("`half_up` is nearest. It goes away from zero."), [
-        "away from zero"
-    ]);
-}
-
-#[test]
-fn control_a_pronoun_points_at_whatever_was_named_last() {
-    // The clause before names the other operation last, so the pronoun after it
-    // is about that and not about the mode.
-    assert!(
-        found("`half_up` is not the `HALF_UP` of Java. That one goes away from zero.").is_empty()
-    );
-    // Nothing named at all, so the pronoun points at nothing this reads.
-    assert!(found("A tie at -2.5 goes to -2. It is ties away from zero.").is_empty());
-    // And a clause that opens with a pronoun after a blank line starts afresh.
-    assert!(found("`half_up` is nearest.\n\nIts tie goes away from zero.").is_empty());
-}
-
-#[test]
-fn control_what_is_not_a_boundary_keeps_the_clause_whole() {
-    assert_eq!(found("`half_up` at 2.5 goes away from zero."), [
-        "away from zero"
-    ]);
-    assert_eq!(found("`ruling::half_up` goes away from zero."), [
-        "away from zero"
-    ]);
-    assert_eq!(found("`half_up` sends a tie\naway from zero."), [
-        "away from zero"
-    ]);
-    assert_eq!(found("`half_up`, away from zero."), ["away from zero"]);
-}
-
-#[test]
-fn a_list_with_the_two_in_different_items_is_silent() {
-    assert!(found("rounding: in {floor, ceil, toward_zero, away from zero, half_up}").is_empty());
-    assert!(found("The modes floor, away from zero, and half_up.").is_empty());
-}
-
-#[test]
-fn control_a_list_with_both_in_one_item_fires() {
-    assert_eq!(
-        found("rounding: in {floor, half_up away from zero, ceil}"),
-        ["away from zero"]
-    );
-}
-
-#[test]
-fn control_a_parenthetical_is_not_a_list() {
-    // Two commas, and an item of it carrying a clause rather than a term. The
-    // reader that counted commas let both of these through.
-    assert_eq!(
-        found(
-            "`half_up` rounds to nearest and, for negative inputs, rounds the tie to the \
-               larger magnitude."
-        ),
-        ["larger magnitude"]
-    );
-    assert_eq!(
-        found("For `half_up` the tie at -2.5 goes to -3, away from zero, like Java."),
-        ["away from zero"]
-    );
-}
-
-#[test]
 fn a_subject_names_the_mode_in_every_clause() {
     let h = hits("Nearest, a tie sent away from zero.", Some("HalfUp"));
     assert_eq!(h.len(), 1, "{h:?}");
@@ -492,6 +320,39 @@ fn a_reading_quoted_as_a_name_is_a_mention_rather_than_a_reading() {
 }
 
 #[test]
+fn every_mention_word_on_either_side_of_the_span_makes_it_a_mention() {
+    // Walked whole, after the span and before it, because `mentioned` looks on
+    // both sides and a word list read on one side only is half a list.
+    for w in MENTIONED {
+        let after = format!("`half_up` has the `away from zero` {w} in it.");
+        assert!(found(&after).is_empty(), "{after}");
+        let before = format!("`half_up` has the {w} `away from zero` in it.");
+        assert!(found(&before).is_empty(), "{before}");
+    }
+    // The control: the same two sentences with a word that names what the
+    // sentence gives rather than a piece of a corpus fire, so the silences above
+    // are the word rather than the span.
+    assert_eq!(
+        found("`half_up` has the `away from zero` reading in it."),
+        ["away from zero"]
+    );
+    assert_eq!(
+        found("`half_up` has the reading `away from zero` in it."),
+        ["away from zero"]
+    );
+}
+
+#[test]
+fn the_words_that_give_a_reading_are_not_mention_words() {
+    // The two whose absence the arm above's control rests on. A list that gained
+    // either would let "`half_up` has the reading `away from zero`" through in
+    // the one word that was meant to prove it had not.
+    for w in ["reading", "readings", "denotes", "means", "meaning"] {
+        assert!(!MENTIONED.contains(&w), "{w}");
+    }
+}
+
+#[test]
 fn control_a_code_span_alone_is_not_a_mention() {
     // Without the word saying the span is a name, the clause is asserting it.
     assert_eq!(found("`roundTiesToAway` is what `HalfUp` does."), [
@@ -525,65 +386,4 @@ fn every_reading_is_written_lower_case_so_a_lowered_clause_can_be_searched_for_i
         SPELLINGS.iter().any(|s| **s != *s.to_ascii_lowercase()),
         "the filter finds nothing anywhere, so it says nothing about the readings"
     );
-}
-
-#[test]
-fn a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it() {
-    // Anaphora has a reach. A name reaches the clause after the one that gave
-    // it, and a clause that points back re-points it so the next one has it
-    // too. What it does not do is run through material that never mentions the
-    // mode, which is what a passage laying out two readings of a word does:
-    // `question::which_operation_half_up_denotes` reads its `asks` field that
-    // way, and a reader without this bound refuses the row that asks the
-    // question the ruling answers.
-    assert_eq!(
-        found("`half_up` is a mode. It is read up the number line. A tie goes away from zero."),
-        ["away from zero"]
-    );
-    assert!(
-        found("`half_up` is a mode. Read it as up the number line. A tie goes away from zero.")
-            .is_empty()
-    );
-    // Two clauses of reach is the boundary, so the one-clause case still fires.
-    assert_eq!(found("`half_up` is a mode. A tie goes away from zero."), [
-        "away from zero"
-    ]);
-}
-
-#[test]
-fn a_clause_opening_with_a_code_span_has_a_subject_of_its_own() {
-    // The reader has no vocabulary for most of what this repository names, and
-    // a clause opening by naming one of them is about that thing. The registry
-    // row recording what the crate asserted before the ruling reads this way.
-    assert!(found("`half_up` is a mode. `arvo-format` sends a tie away from zero.").is_empty());
-    // The control: the same clause naming its subject in words rather than in a
-    // code span is not distinguished, and carries.
-    assert_eq!(
-        found("`half_up` is a mode. The crate sends a tie away from zero."),
-        ["away from zero"]
-    );
-}
-
-#[test]
-fn a_clause_stating_the_denotation_is_not_also_giving_the_other_reading() {
-    // Every spelling of the denotation, each ahead of the reading in one
-    // clause, walked whole rather than sampled.
-    for d in DENOTES {
-        let text = format!("`half_up` sends a tie {d}, where ties away from zero would give -3.");
-        assert!(found(&text).is_empty(), "{text}");
-    }
-    // The control: the same sentence without the denotation fires, so the
-    // silence is the statement rather than the shape of the contrast.
-    assert_eq!(
-        found(
-            "`half_up` sends a tie to the nearest slot, where ties away from zero would give -3."
-        ),
-        ["away from zero"]
-    );
-    // And a denied denotation does not excuse the reading that follows it,
-    // which is what keeps the escape from being a way to write the defect.
-    for d in DENOTES {
-        let text = format!("`half_up` is not {d}; a tie goes away from zero.");
-        assert!(!found(&text).is_empty(), "{text}");
-    }
 }

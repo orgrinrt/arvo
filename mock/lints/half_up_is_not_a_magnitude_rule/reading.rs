@@ -17,176 +17,72 @@
 //! beside the near-twin on the other side of the line, which is also where to
 //! read what each rule below is for.
 //!
+//! The segment is also where a reading is attributed. A clause is allowed to
+//! name two rules, and the one it gives the reading to is the one the reading's
+//! own segment is about: the rule that segment names, or, where it names
+//! nothing and binds itself to what stood before it, whatever stood last. That
+//! is the same anaphora the clause cut reads, one level down, and reading it at
+//! only one of the two levels is what let "`half_up` is not Java's `HALF_UP`,
+//! which goes away from zero" be refused while the same sentence with a full
+//! stop in place of the comma went through.
+//!
 //! Table rows are read apart from the clauses, one row at a time, because a row
 //! pairs its first cell with the others and a clause cut at every `|` would
 //! never see that pairing.
+//!
+//! What decides a pairing, and what each decision consults:
+//!
+//! - which rule a clause is about: the names in it, and a pronoun opening it;
+//! - which rule a pronoun opening the next clause points at: the last spelling
+//!   of the mode, where no other rule follows it and the clause does not deny it;
+//! - which rule a reading in that clause is about: the names in its segment,
+//!   and a relative or a pronoun binding that segment to the one before it;
+//! - whether the pairing is denied: where a negator sits relative to the two
+//!   terms, and which conjunctions stand between them;
+//! - whether the clause is about another rule entirely, or states the settled
+//!   denotation and contrasts against it: its own words, in both cases;
+//! - whether the reading is quoted rather than given: a code span, plus a word
+//!   beside it naming a piece of a corpus.
+//!
+//! One of them reads punctuation as a marker of what is named, and it is
+//! written down here because this is the shape that has gone wrong twice:
+//! `names_nothing` takes a clause opening on a code span to be naming a subject
+//! of its own. That is what a code span means, and the reader has no vocabulary
+//! for most of what this repository names, so it is kept. Its cost is real and
+//! is in `sentences/catalogue.rs` as a known-red pair rather than in this
+//! paragraph.
 
-/// Every spelling of the mode's name this repository writes. Matched with case,
-/// and bounded by a character that cannot sit inside an identifier, so a
-/// longer identifier carrying one of them is not a mention of the mode. Java's
-/// and Python's upper-case constant is not among them: it names the other
-/// operation, and saying so is true.
-pub(crate) const SPELLINGS: &[&str] =
-    &["half_up", "HalfUp", "half-up", "half up", "Half-up", "Half up", "Half_up"];
+#[path = "reading/cutting.rs"]
+mod cutting;
+#[path = "reading/escapes.rs"]
+mod escapes;
+#[path = "reading/vocabulary.rs"]
+mod vocabulary;
 
-/// The readings that put a tie by its magnitude or its sign. Matched without
-/// case, with the same bounds.
-///
-/// `in magnitude` is here as a reading of the tie, and a sentence bounding an
-/// error carries the same two words about something else entirely. It counts
-/// only behind one of the direction words below, in its own segment.
-pub(super) const READINGS: &[&str] = &[
-    "away from zero",
-    "away_from_zero",
-    "away-from-zero",
-    "ties to away",
-    "tiestoaway",
-    "roundtiestoaway",
-    "ties-away",
-    "ties_away",
-    "greater absolute value",
-    "larger absolute value",
-    "greater magnitude",
-    "larger magnitude",
-    "in magnitude",
-    "reads the sign",
-    "sign of the slot",
-    "commutes with reflection",
-    "reflection equivariant",
-    "reflection-equivariant",
-];
-
-/// The reading that only counts behind a direction word.
-pub(super) const QUALIFIED: &str = "in magnitude";
-
-/// What a passage says when it states the settled denotation rather than
-/// mentioning the mode, in the words the ruling states it in.
-///
-/// Read here and by `half-up-carries-its-note`, which is where it was written
-/// first. It is vocabulary about the name, so it sits beside the spellings and
-/// the readings rather than inside one of the two lints that ask about it.
-pub(crate) const DENOTES: &[&str] = &[
-    "toward positive infinity",
-    "towards positive infinity",
-    "to positive infinity",
-    "floor(x + q/2)",
-    "floor(x+q/2)",
-];
-
-/// What has to stand in front of `in magnitude`, in its segment, for those two
-/// words to be about where a tie goes rather than about how big an error is.
-pub(super) const DIRECTIONS: &[&str] = &[
-    "up",
-    "upward",
-    "upwards",
-    "down",
-    "away",
-    "outward",
-    "outwards",
-    "larger",
-    "greater",
-    "bigger",
-    "higher",
-    "toward",
-    "towards",
-    "grows",
-    "growing",
-    "increases",
-    "increasing",
-    "rises",
-];
-
-/// Words that turn a pairing into a contrast where they are bound to one of the
-/// two. Matched without case and bounded as a word, and any word ending in
-/// `n't` counts too.
-pub(super) const NEGATORS: &[&str] = &[
-    "not",
-    "never",
-    "no",
-    "nor",
-    "neither",
-    "unlike",
-    "differs",
-    "differ",
-    "different",
-    "alias",
-    "rather than",
-    "instead",
-    "other than",
-    "against",
-    "versus",
-    "vs",
-    "except",
-];
-
-/// Words that end a negator's reach inside one segment, so the clause turns
-/// back to what it asserts. "not the even rule but sends a tie away from zero"
-/// says the thing the reading names.
-pub(super) const CONJUNCTIONS: &[&str] = &[
-    "but", "and", "yet", "though", "although", "while", "whereas", "or", "because", "since", "so",
-];
-
-/// Markers that put a whole clause about some other rule: a planted one, a
-/// wrong one, the one that stood before, or no tie at all. Matched without case
-/// and bounded as a word.
-pub(super) const ELSEWHERE: &[&str] = &[
-    "planted",
-    "wrong",
-    "broken",
-    "defect",
-    "mutant",
-    "mutation",
-    "formerly",
-    "previously",
-    "used to",
-    "old rule",
-    "before the ruling",
-    "no tie",
-    "without a tie",
-    "away from a tie",
-    "reaches no tie",
-];
-
-/// Words that open a clause by pointing back at whatever the clause before it
-/// left named, rather than by naming anything.
-pub(super) const PRONOUNS: &[&str] =
-    &["it", "its", "it's", "this", "that", "these", "those", "they", "their"];
-
-/// Words that may stand in an item of a list beside the term itself, so an item
-/// carrying one of them is still a bare item.
-const FILLER: &[&str] = &["a", "an", "the", "and", "or", "nor", "but", "then", "also", "of"];
-
-/// Words that make a term beside them a name being quoted rather than a reading
-/// being given. A sentence counting the rows whose entries read `away from
-/// zero` is about a corpus of text, and the registry's residue rows are written
-/// that way.
-const MENTIONED: &[&str] = &[
-    "entry",
-    "entries",
-    "spelling",
-    "spellings",
-    "name",
-    "names",
-    "named",
-    "naming",
-    "word",
-    "words",
-    "value",
-    "values",
-    "label",
-    "labels",
-    "row",
-    "rows",
-    "cell",
-    "cells",
-    "column",
-    "columns",
-    "string",
-    "mention",
-    "mentions",
-    "reading",
-    "readings",
-];
+pub(crate) use cutting::bounded;
+use cutting::{clauses, opens_with_a_pronoun, points_back, segment_of, segments};
+use escapes::{
+    denotation_before,
+    directed,
+    elsewhere,
+    listed_apart,
+    mentioned,
+    negated,
+    negator_binds,
+};
+pub(super) use vocabulary::{
+    CONJUNCTIONS,
+    DIRECTIONS,
+    ELSEWHERE,
+    MENTIONED,
+    NEGATORS,
+    OTHER_NAMES,
+    PRONOUNS,
+    QUALIFIED,
+    READINGS,
+    RELATIVES,
+};
+pub(crate) use vocabulary::{DENOTES, SPELLINGS};
 
 /// One pairing the lint refuses: where in the passage, which spelling, which
 /// reading.
@@ -255,7 +151,8 @@ pub(super) fn hits(text: &str, subject: Option<&str>) -> Vec<Hit> {
 }
 
 /// A table row: the first cell is what the row is about, and a reading in any
-/// other cell is paired with it unless that cell contrasts it.
+/// other cell is paired with it unless that cell contrasts it or gives it to a
+/// rule the cell names.
 fn row(line: &str, start: usize, subject: Option<&str>) -> Option<Hit> {
     let mut cells = Vec::new();
     let mut from = 0;
@@ -279,7 +176,9 @@ fn row(line: &str, start: usize, subject: Option<&str>) -> Option<Hit> {
         }
         let segs = segments(&lower);
         if let Some(&(r, reading)) = readings_in(&lower, &segs).first() {
-            if !negator_binds(&lower, &segs, None, r) {
+            if !negator_binds(&lower, &segs, None, r)
+                && !attributed_to_another_rule(cell, &lower, &segs, r)
+            {
                 return Some(Hit {
                     at: start + at + r,
                     name,
@@ -327,6 +226,7 @@ fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>
             if listed_apart(&lower, &segs, n, r)
                 || negator_binds(&lower, &segs, Some(n), r)
                 || denotation_before(&lower, &segs, r)
+                || attributed_to_another_rule(clause, &lower, &segs, r)
             {
                 continue;
             }
@@ -340,61 +240,69 @@ fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>
     None
 }
 
-/// Every other name a pronoun standing for a rounding rule can point at.
+/// Whether the reading at `r` belongs to a rounding rule other than the mode,
+/// by what its own segment is about.
 ///
-/// The five names of the six-name vocabulary that are not this mode, the
-/// external constants this repository contrasts the mode with, and MATLAB's
-/// method names for the rules that are not this one. Matched with case and
-/// bounded as a word, exactly as `SPELLINGS` is, which is what keeps the
-/// lower-case English words apart from the identifiers.
+/// Two ways a segment says so, and both are what the clause cut already does
+/// with a pronoun, one level down:
 ///
-/// MATLAB's `Nearest` is deliberately absent: it is this mode rather than
-/// another one, so a pronoun after it points here.
-pub(super) const OTHER_NAMES: &[&str] = &[
-    "toward_zero",
-    "TowardZero",
-    "toward zero",
-    "floor",
-    "Floor",
-    "ceil",
-    "Ceil",
-    "Ceiling",
-    "half_even",
-    "HalfEven",
-    "half-even",
-    "half even",
-    "Half-even",
-    "Half even",
-    "Half_even",
-    "stochastic",
-    "Stochastic",
-    "HALF_UP",
-    "ROUND_HALF_UP",
-    "roundTiesToAway",
-    "roundTiesToEven",
-    "RoundingMode",
-    "Round",
-    "Fix",
-    "Convergent",
-    // The alias, in the spellings this repository writes it in. A clause naming
-    // it is about it: "`half_up` is `floor(x + q/2)`; the ties-away alias
-    // commutes with reflection and reads the sign at a tie" states both rules
-    // and gives the second reading to the second one.
-    "TiesAwayFromZero",
-    "ties_away",
-    "ties-away",
-    "alias",
-];
+/// - the segment names another rule ahead of the reading, so the reading is
+///   that rule's: "`half_up` is nearest, and `HalfEven` sends a tie away from
+///   zero";
+/// - the segment names nothing and binds itself to what stood before it, and
+///   what stood last is another rule: "`half_up` is not Java's `HALF_UP`, which
+///   goes away from zero", and the same with the relative standing behind an
+///   apposition instead of opening the segment.
+///
+/// A segment that names the mode ahead of the reading settles it the other way
+/// at once, which is what keeps an aside from stealing the pairing: "`half_up`,
+/// like `floor`, sends a tie away from zero" gives the reading to the mode,
+/// because the segment carrying it names nothing, does not bind back, and so
+/// never asks what stood last.
+fn attributed_to_another_rule(clause: &str, lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
+    let from = segs[segment_of(segs, r)].0;
+    let head = &clause[from .. r];
+    if !spellings_in(head).is_empty() {
+        return false;
+    }
+    if !named_in(head).is_empty() {
+        return true;
+    }
+    points_back(&lower[from .. r]) && another_rule_stands_last(clause, from)
+}
+
+/// Whether the last rounding rule named before `at` is one other than the mode.
+fn another_rule_stands_last(clause: &str, at: usize) -> bool {
+    let head = &clause[.. at];
+    match named_in(head).into_iter().max() {
+        None => false,
+        Some(other) => {
+            spellings_in(head)
+                .last()
+                .is_none_or(|&(mine, _)| other > mine)
+        },
+    }
+}
 
 /// The name a pronoun opening the next clause points at: the last spelling of
-/// the mode in this clause, where no other rounding rule is named after it.
+/// the mode in this clause, where no other rounding rule is named after it and
+/// the clause does not deny it.
 ///
 /// Read as a name rather than as a code span. A reader that counted backticks
 /// answered a question about how the author punctuated: `q/2` standing after
 /// the mode took the carry away though no pronoun could mean it, and `HALF_UP`
 /// written without backticks did not though every pronoun after it does.
+///
+/// A denied spelling is not an antecedent. "Ties away from zero is a different
+/// operation and is not `half_up`: it is what IEEE 754's `roundTiesToAway`
+/// computes" has the pronoun meaning the operation, which is what the clause
+/// was about, and the mode is only what it said the operation is not.
 fn antecedent(clause: &str) -> Option<&'static str> {
     let (at, name) = *spellings_in(clause).last()?;
+    let lower = clause.to_ascii_lowercase();
+    if negated(&lower, &segments(&lower), at) {
+        return None;
+    }
     let after = &clause[at + name.len() ..];
     named_in(after).is_empty().then_some(name)
 }
@@ -429,7 +337,7 @@ fn named_in(text: &str) -> Vec<usize> {
     OTHER_NAMES
         .iter()
         .flat_map(|n| {
-            let opened = capitalised(n);
+            let opened = cutting::capitalised(n);
             let mut at = bounded(text, n);
             if opened.as_str() != *n {
                 at.extend(bounded(text, &opened));
@@ -448,217 +356,6 @@ fn without_the_denotation(text: &str) -> String {
         for at in bounded(&lower, d) {
             out.replace_range(at .. at + d.len(), &" ".repeat(d.len()));
         }
-    }
-    out
-}
-
-/// A name with its first character upper-cased, which is how it is written at
-/// the start of a sentence.
-fn capitalised(name: &str) -> String {
-    let mut chars = name.chars();
-    match chars.next() {
-        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
-        None => String::new(),
-    }
-}
-
-/// Whether the clause states the settled denotation ahead of the reading at
-/// `r`, with no negator bound to that statement.
-///
-/// A clause saying the mode sends a tie toward positive infinity is not also
-/// giving it the other reading, so a reading standing after that statement is a
-/// contrast: "a tie goes toward positive infinity at every sign, so `-2.5` goes
-/// to `-2`, where ties away from zero would give `-3`". The statement has to
-/// come first, because the order is what separates a contrast from a clause
-/// that denies the denotation and then asserts the reading.
-fn denotation_before(lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
-    DENOTES
-        .iter()
-        .flat_map(|d| bounded(lower, d))
-        .filter(|d| *d < r)
-        .any(|d| !bound_in_segment(lower, segs, d, false))
-}
-
-/// Whether the clause opens by pointing back rather than by naming.
-fn opens_with_a_pronoun(lower: &str) -> bool {
-    let first = lower
-        .trim_start_matches(|c: char| !c.is_alphanumeric())
-        .split(|c: char| !(c.is_ascii_alphanumeric() || c == '\''))
-        .next()
-        .unwrap_or_default();
-    PRONOUNS.contains(&first)
-}
-
-/// Whether the name and the reading sit in different items of one list.
-///
-/// Three segments or more, since one comma between two things is a sentence.
-/// The reading has to stand alone in its own item, and a neighbouring item has
-/// to be a bare name, which is what makes the run a list rather than a sentence
-/// with an aside in it. The last item of a list runs into the predicate, so the
-/// name's item is not required to be bare: "floor, ceiling, away-from-zero,
-/// nearest-half-up and nearest-half-even give a zero difference" is a list.
-fn listed_apart(lower: &str, segs: &[(usize, &str)], n: usize, r: usize) -> bool {
-    if segs.len() < 3 {
-        return false;
-    }
-    let (i, j) = (segment_of(segs, n), segment_of(segs, r));
-    if i == j || !is_bare(segs[j].1, lower, r) {
-        return false;
-    }
-    [j.checked_sub(1), (j + 1 < segs.len()).then_some(j + 1)]
-        .into_iter()
-        .flatten()
-        .any(|k| words_of(segs[k].1) <= 1)
-}
-
-/// Whether a segment of the lowered clause holds nothing besides the reading
-/// starting at `at`.
-fn is_bare(segment: &str, lower: &str, at: usize) -> bool {
-    words_of(&segment.replacen(reading_at(lower, at), " ", 1)) == 0
-}
-
-/// How many words a segment holds that are not the filler a list item allows.
-fn words_of(text: &str) -> usize {
-    text.split(|c: char| !(c.is_ascii_alphanumeric() || c == '_' || c == '-' || c == '\''))
-        .filter(|w| !w.is_empty() && !FILLER.contains(&w.to_ascii_lowercase().as_str()))
-        .count()
-}
-
-/// The reading starting at `at`, taken longest first because one reading can
-/// open another. A reading is the only thing ever looked up here: a list is
-/// refused on the item holding the reading, and the item holding the name runs
-/// into the predicate, so it is never asked to be bare.
-fn reading_at(lower: &str, at: usize) -> &'static str {
-    READINGS
-        .iter()
-        .filter(|r| lower[at ..].starts_with(**r))
-        .max_by_key(|r| r.len())
-        .copied()
-        .unwrap_or_default()
-}
-
-/// Whether a negator is bound to the reading at `r`, or to the name at `n`.
-///
-/// Three ways it can be, and a conjunction ends its reach in each of them,
-/// because a conjunction turns the sentence back to what it asserts: a clause
-/// denying one reading and then asserting another is asserting the second.
-///
-/// - In the reading's own segment, on either side of it, since a clause naming
-///   the alias carries its escape after the reading as often as before it.
-/// - In the name's own segment, ahead of it.
-/// - Between the two, where the reading comes first, since a negator opening a
-///   list after the assertion takes every name in that list out of it, which is
-///   how the design states the reflection partition.
-///
-/// A negator anywhere else is about something else in the sentence, which is
-/// what a clause contrasting the mode with another mode is, and reading one of
-/// those as a contrast against the mode is how the reading got into prose.
-fn negator_binds(lower: &str, segs: &[(usize, &str)], n: Option<usize>, r: usize) -> bool {
-    if bound_in_segment(lower, segs, r, true) {
-        return true;
-    }
-    match n {
-        Some(n) => {
-            bound_in_segment(lower, segs, n, false)
-                || (r < n && reaches(lower, &lower[r .. n], r, n))
-        },
-        // A table cell is read whole: the row's name is in another cell, so
-        // there is no segment of its own to bind to.
-        None => reaches(lower, &lower[.. r], 0, r),
-    }
-}
-
-/// Whether a negator in `at`'s own segment reaches it. With `after`, one
-/// standing behind the term counts too, which is what the reading wants and the
-/// name does not: a negator behind the name is the sentence denying the reading
-/// of it, and that is the span rule's business rather than this one's.
-fn bound_in_segment(lower: &str, segs: &[(usize, &str)], at: usize, after: bool) -> bool {
-    let (from, segment) = segs[segment_of(segs, at)];
-    negators_in(segment)
-        .into_iter()
-        .map(|p| from + p)
-        .filter(|p| after || *p < at)
-        .any(|p| {
-            let (lo, hi) = if p < at { (p, at) } else { (at, p) };
-            no_conjunction(&lower[lo .. hi])
-        })
-}
-
-/// Whether a negator inside `span` reaches `to`, where `span` starts at `from`.
-fn reaches(lower: &str, span: &str, from: usize, to: usize) -> bool {
-    negators_in(span)
-        .into_iter()
-        .map(|p| from + p)
-        .any(|p| no_conjunction(&lower[p .. to]))
-}
-
-/// Whether nothing in `span` turns the sentence back to what it asserts.
-fn no_conjunction(span: &str) -> bool {
-    !CONJUNCTIONS.iter().any(|c| !bounded(span, c).is_empty())
-}
-
-/// Where every negator in `text` starts, counting a word ending in `n't`.
-fn negators_in(text: &str) -> Vec<usize> {
-    let mut out: Vec<usize> = NEGATORS.iter().flat_map(|n| bounded(text, n)).collect();
-    out.extend(text.match_indices("n't").map(|(at, _)| at).filter(|at| {
-        text[.. *at]
-            .chars()
-            .next_back()
-            .is_some_and(char::is_alphanumeric)
-    }));
-    out.sort_unstable();
-    out
-}
-
-/// Every segment of a clause with the offset it starts at. A segment ends at a
-/// comma or at either side of a bracket, which is what a parenthetical, an
-/// apposition and a list item are all cut by.
-fn segments(clause: &str) -> Vec<(usize, &str)> {
-    let mut out = Vec::new();
-    let mut from = 0;
-    for (i, c) in clause.char_indices() {
-        if matches!(c, ',' | '(' | ')' | '{' | '}') {
-            out.push((from, &clause[from .. i]));
-            from = i + 1;
-        }
-    }
-    out.push((from, &clause[from ..]));
-    out
-}
-
-/// Which segment an offset lies in.
-fn segment_of(segs: &[(usize, &str)], at: usize) -> usize {
-    segs.iter()
-        .rposition(|&(from, _)| from <= at)
-        .unwrap_or_default()
-}
-
-/// Every clause of `text` with the offset it starts at. A clause ends at `;`,
-/// at `.`, `:`, `?` or `!` before whitespace or the end, and at a blank line.
-fn clauses(text: &str) -> Vec<(usize, &str)> {
-    let bytes = text.as_bytes();
-    let mut out = Vec::new();
-    let mut from = 0;
-    for i in 0 .. bytes.len() {
-        let next = bytes.get(i + 1).copied();
-        let ends = match bytes[i] {
-            b';' => true,
-            b'.' | b':' | b'?' | b'!' => next.is_none_or(|b| b.is_ascii_whitespace()),
-            b'\n' => {
-                text[i + 1 ..]
-                    .split('\n')
-                    .next()
-                    .is_some_and(|l| l.trim().is_empty())
-            },
-            _ => false,
-        };
-        if ends {
-            out.push((from, &text[from ..= i]));
-            from = i + 1;
-        }
-    }
-    if from < text.len() {
-        out.push((from, &text[from ..]));
     }
     out
 }
@@ -684,56 +381,4 @@ pub(super) fn readings_in(lower: &str, segs: &[(usize, &str)]) -> Vec<(usize, &'
         .collect();
     out.sort();
     out
-}
-
-/// Whether the reading at `at` is a term being quoted rather than a reading
-/// being given: inside a code span, with a word beside the span that says the
-/// span is a name. A code span on its own is not enough, since a clause saying
-/// the mode does `roundTiesToAway` is asserting exactly the thing this reads
-/// for.
-fn mentioned(lower: &str, at: usize, term: &str) -> bool {
-    let end = at + term.len();
-    if !(lower[.. at].ends_with('`') && lower[end ..].starts_with('`')) {
-        return false;
-    }
-    let ident = |c: char| c.is_ascii_alphanumeric() || c == '_';
-    let after: String = lower[end + 1 ..]
-        .trim_start_matches(|c: char| !ident(c))
-        .chars()
-        .take_while(|c| ident(*c))
-        .collect();
-    let head = lower[.. at - 1].trim_end_matches(|c: char| !ident(c));
-    let before: String = head
-        .chars()
-        .rev()
-        .take_while(|c| ident(*c))
-        .collect::<String>()
-        .chars()
-        .rev()
-        .collect();
-    MENTIONED.contains(&after.as_str()) || MENTIONED.contains(&before.as_str())
-}
-
-/// Whether a direction word stands in front of `at`, in the same segment.
-fn directed(lower: &str, segs: &[(usize, &str)], at: usize) -> bool {
-    let from = segs[segment_of(segs, at)].0;
-    let head = &lower[from .. at];
-    DIRECTIONS.iter().any(|d| !bounded(head, d).is_empty())
-}
-
-/// Whether the clause says it is about some other rule than the shipped one.
-fn elsewhere(lower: &str) -> bool {
-    ELSEWHERE.iter().any(|m| !bounded(lower, m).is_empty())
-}
-
-/// Where `needle` occurs in `hay` with no identifier character on either side.
-pub(super) fn bounded(hay: &str, needle: &str) -> Vec<usize> {
-    let ident = |c: Option<char>| c.is_some_and(|c| c.is_alphanumeric() || c == '_');
-    hay.match_indices(needle)
-        .filter(|(at, _)| {
-            !ident(hay[.. *at].chars().next_back())
-                && !ident(hay[at + needle.len() ..].chars().next())
-        })
-        .map(|(at, _)| at)
-        .collect()
 }

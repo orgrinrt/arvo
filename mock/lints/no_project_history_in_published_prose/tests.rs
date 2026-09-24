@@ -81,6 +81,33 @@ fn every_carve_out_still_names_a_sentence_that_is_in_the_file_it_names() {
 }
 
 #[test]
+fn the_carve_outs_number_four_and_every_place_that_says_so_agrees() {
+    // The number is written three times: the array's length, the module doc
+    // and the doc over the array. Each copy is read here and held to the one
+    // that decides what the lint does, so an edit to one is a failure rather
+    // than a disagreement nobody reports.
+    assert_eq!(EXCUSED.len(), 4, "the array itself");
+    let source = std::fs::read_to_string(
+        repo_root().join("mock/lints/no_project_history_in_published_prose.rs"),
+    )
+    .expect("the lint's own source");
+    assert!(
+        source.contains("//! Four sentences on the surface match the phrase list"),
+        "the module doc no longer says four"
+    );
+    assert!(
+        source.contains("/// Every sentence excused, with the reason. Two of the four are one"),
+        "the array's doc no longer says four"
+    );
+    // The two carve-outs the array's doc says share a document.
+    let shared = EXCUSED
+        .iter()
+        .filter(|e| EXCUSED.iter().filter(|o| o.file == e.file).count() == 2)
+        .count();
+    assert_eq!(shared, 2);
+}
+
+#[test]
 fn every_carve_out_carries_a_reason_a_reader_can_weigh() {
     // A carve-out with no reason is an exemption nobody can argue with, which is
     // the shape this lint was written to refuse in prose.
@@ -131,6 +158,45 @@ fn every_phrase_fires_in_a_document_and_in_rustdoc() {
             "{p}"
         );
     }
+}
+
+#[test]
+fn no_phrase_fires_inside_a_longer_word_on_either_side() {
+    // The same sentences as the arm above, with each phrase glued to a letter
+    // at its head and then at its tail, so the phrase is part of a longer word
+    // and says nothing about this project. Every phrase, both sides, both
+    // surfaces: a bound that holds at one end and not the other is the defect
+    // this arm exists to catch.
+    for p in PHRASES {
+        for glued in [format!("re{p}"), format!("{p}s")] {
+            let dir = planted_tree("history-glued");
+            plant(
+                &dir,
+                "mock/crates/a/DESIGN.md.tmpl",
+                &format!("# A\n\nThe map is total, and it {glued} be partial.\n"),
+            );
+            plant(
+                &dir,
+                "mock/crates/a/src/lib.rs",
+                &format!("//! The map is total, and it {glued} be partial.\n"),
+            );
+            assert!(over(&dir).is_empty(), "{glued}");
+        }
+    }
+}
+
+#[test]
+fn refused_to_in_a_doc_comment_is_not_used_to_and_used_to_is() {
+    // The case the bound was written for, and its control in the same file: the
+    // tail of `refused to` is `used to`, and only the second line says anything
+    // about this project's past.
+    let dir = planted_tree("history-refused");
+    plant(
+        &dir,
+        "mock/crates/a/src/lib.rs",
+        "//! The width is refused to keep the slot exact.\n//! The width used to be free.\n",
+    );
+    assert_eq!(over(&dir), vec!["crates/a/src/lib.rs:2".to_string()]);
 }
 
 #[test]

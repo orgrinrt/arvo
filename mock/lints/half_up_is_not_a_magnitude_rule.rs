@@ -13,6 +13,33 @@
 //! agreed with every other because each had copied the sentence rather than
 //! the ruling. So the sentence is what this refuses.
 //!
+//! It warns and does not block, at every gate. The reader under it is wrong in
+//! both directions, on sentences a writer here does write, and a gate that
+//! blocks on a reader known to be wrong refuses true sentences at hard error,
+//! the ruling's own among them. What it gets wrong is stated next, and every
+//! case is a known-red pair in `half_up_is_not_a_magnitude_rule/sentences/catalogue.rs`
+//! rather than a sentence in this paragraph.
+//!
+//! The gate is incomplete in both directions.
+//!
+//! - It lets through a clause that gives the mode the reading where the clause
+//!   opens on a capitalised word that is also a method's name, `Round`, `Fix`,
+//!   `Ceiling` and the rest, used as an imperative or an ordinary word. It reads
+//!   the word as another rule, because the design documents write those method
+//!   names bare at the head of sentences and nothing lexical tells the two apart.
+//! - It lets through a clause opening on a code span that is not a name, such as
+//!   a number, since a code span opening a clause is the only subject it can
+//!   recognise without a word for it.
+//! - It refuses a clause whose reading belongs to a rule named in words it has
+//!   no vocabulary for, "Java's rule" or "seat 270", because nothing named there
+//!   takes the reading away from the mode named before it. The governing
+//!   ruling's own `promotion` field is one of these.
+//! - It refuses a clause naming the alias beside the mode, where the alias's
+//!   own name is also one of the readings, `roundTiesToAway` and the
+//!   `ties-away` spellings, and no negator says the alias is not the mode.
+//!   "`half_up` is nearest, whereas `roundTiesToAway` goes away from zero" is
+//!   true and is refused.
+//!
 //! It reads every comment and doc comment in a `.rs` file under the mock
 //! directory, every `.md.tmpl` there, and the registry's prose fields, clause by
 //! clause. A clause fires where it names the mode, in any spelling in
@@ -23,7 +50,7 @@
 //! behind a direction word, since the same two words bound an error in prose
 //! that is about something else entirely.
 //!
-//! Five things let a clause through, and each has a test and a control:
+//! What lets a clause through, each with a test and a control:
 //!
 //! - a negator bound to the reading or to the name, which means one sitting in
 //!   that term's own segment of the clause, ahead of it, with no conjunction
@@ -35,7 +62,16 @@
 //! - the name and the reading in different clauses;
 //! - a clause opening with a pronoun whose antecedent is something else, since
 //!   a sentence contrasting the mode with Java's rule leaves Java's rule named
-//!   last and the pronoun after it points there.
+//!   last and the pronoun after it points there, and a sentence denying that
+//!   something is the mode leaves that something as what the pronoun means;
+//! - a reading whose own segment is about another rule, by naming it ahead of
+//!   the reading or by pointing back with a relative or a pronoun where another
+//!   rule stood last;
+//! - the settled denotation stated ahead of the reading, with no conjunction in
+//!   the reading's own segment joining the two, which is a contrast rather than
+//!   a second reading;
+//! - a reading quoted as a term, in a code span with a word beside it naming a
+//!   piece of a corpus.
 //!
 //! A table row is read by its first cell: a reading in any other cell is paired
 //! with the name the first cell carries. An outer doc block is read as naming
@@ -58,8 +94,9 @@
 //! same vocabulary. That tool declares itself not a lint, since the repair for
 //! a row outside the six is an edit nobody can make mechanically, and it reads
 //! the predicates only. This has a state the project refuses to be in and a
-//! repair any writer can make, so it gates, and it reads prose, which the tool
-//! does not open.
+//! repair any writer can make, and it reads prose, which the tool does not
+//! open. That it warns rather than gates is the reader's limit, not a judgement
+//! that the state is acceptable.
 
 use std::path::{Path, PathBuf};
 
@@ -80,6 +117,14 @@ pub fn repo_lint() -> Box<dyn RepoLint> {
 /// The lint's own name, used in its findings and keyed by `[lints.<name>]`.
 const NAME: &str = "half-up-is-not-a-magnitude-rule";
 
+/// What every finding carries: a warning at every gate, blocking none.
+///
+/// The reader is incomplete in both directions, as the module doc says, and
+/// refuses a field of the ratified ruling this lint defends. A hard error would
+/// refuse that sentence at every gate. The lint's own default and the severity
+/// its findings carry are this one constant, so the two cannot disagree.
+const SEVERITY: Severity = Severity::ADVISORY;
+
 /// Directories under the mock directory that are the record rather than the
 /// description, or not source at all.
 const NOT_READ: &[&str] = &["target", "research", "design_rounds"];
@@ -91,8 +136,7 @@ const NOT_READ: &[&str] = &["target", "research", "design_rounds"];
 /// readings and saying which one was taken, so that field carries the other
 /// reading on purpose. The rest of an answered question is not exempt: `asks`,
 /// `note` and `because` are written here like any other sentence, and skipping
-/// the whole row, which is what stood before, put every one of them outside the
-/// gate.
+/// the whole row put every one of them outside the gate.
 const NOT_PROSE: &[&str] = &[
     "id",
     "keywords",
@@ -132,7 +176,7 @@ impl Lint for HalfUpIsNotAMagnitudeRule {
     }
 
     fn default_severity(&self) -> Severity {
-        Severity::HARD_ERROR
+        SEVERITY
     }
 }
 
@@ -225,7 +269,8 @@ fn check_registry(registry: &RegistryView) -> Vec<LintError> {
     out
 }
 
-/// One finding, saying what the ruling settled and what to write instead.
+/// One finding, saying what the ruling settled, what to write instead, and why
+/// it is a warning.
 fn finding(unit: &str, at: &str, line: usize, hit: &Hit) -> LintError {
     let mut e = LintError::with_severity(
         unit.to_string(),
@@ -236,10 +281,13 @@ fn finding(unit: &str, at: &str, line: usize, hit: &Hit) -> LintError {
              `ruling::half_up_denotes_ties_toward_positive_infinity` settles `half_up` as \
              `floor(x + q/2)`, a tie going toward positive infinity at every sign, so it reads \
              nothing of the sign or the magnitude. Say that, or where the clause means ties away \
-             from zero, name that as the alias and say it is not the mode.",
+             from zero, name that as the alias and say it is not the mode. This is a warning: the \
+             reader behind it is wrong in both directions on known sentences, listed in the \
+             module doc of `mock/lints/half_up_is_not_a_magnitude_rule.rs`, so a clause that is \
+             true and still refused is one of those rather than something to rewrite.",
             hit.name, hit.reading
         ),
-        Severity::HARD_ERROR,
+        SEVERITY,
     );
     e.path = Some(at.to_string());
     e
@@ -248,6 +296,14 @@ fn finding(unit: &str, at: &str, line: usize, hit: &Hit) -> LintError {
 #[cfg(test)]
 #[path = "half_up_is_not_a_magnitude_rule/tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "half_up_is_not_a_magnitude_rule/segment_tests.rs"]
+mod segment_tests;
+
+#[cfg(test)]
+#[path = "half_up_is_not_a_magnitude_rule/carry_tests.rs"]
+mod carry_tests;
 
 #[cfg(test)]
 #[path = "half_up_is_not_a_magnitude_rule/corpus_tests.rs"]
@@ -259,9 +315,11 @@ mod sentences;
 
 #[cfg(test)]
 mod reaches_the_gate {
+    use mockspace::{Lint, RepoLint, Severity};
+
     use super::{HalfUpIsNotAMagnitudeRule, NAME};
     use crate::canon_lint_testkit::{
-        assert_findings_block_at,
+        assert_findings_carry_at,
         assert_not_declared_off,
         assert_registered,
         ctx_at,
@@ -271,7 +329,9 @@ mod reaches_the_gate {
     };
 
     #[test]
-    fn its_findings_block_every_gate() {
+    fn its_findings_warn_at_every_gate_and_block_none() {
+        // The literal rather than the constant the lint reads, so moving the
+        // constant back to a blocking severity is a failure here.
         let dir = planted_tree("half-up-severity");
         plant(
             &dir,
@@ -279,9 +339,33 @@ mod reaches_the_gate {
             "// `half_up` takes a tie away from zero.\n",
         );
         let empty = view(&[], &[]);
-        assert_findings_block_at(
+        assert_findings_carry_at(
             &HalfUpIsNotAMagnitudeRule,
             &ctx_at(&dir.join("mock"), &empty),
+            Severity::ADVISORY,
+        );
+        assert_eq!(
+            HalfUpIsNotAMagnitudeRule.default_severity(),
+            Severity::ADVISORY
+        );
+    }
+
+    #[test]
+    fn its_message_says_why_it_warns_and_where_the_reason_is() {
+        let dir = planted_tree("half-up-message");
+        plant(
+            &dir,
+            "mock/crates/a/src/lib.rs",
+            "// `half_up` takes a tie away from zero.\n",
+        );
+        let empty = view(&[], &[]);
+        let found = HalfUpIsNotAMagnitudeRule.check_repo(&ctx_at(&dir.join("mock"), &empty));
+        assert_eq!(found.len(), 1);
+        assert!(found[0].message.contains("This is a warning"));
+        assert!(
+            found[0]
+                .message
+                .contains("mock/lints/half_up_is_not_a_magnitude_rule.rs")
         );
     }
 

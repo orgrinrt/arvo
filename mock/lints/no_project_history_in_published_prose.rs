@@ -26,11 +26,14 @@
 //! registry and the agent surfaces are the record of how the project got here,
 //! which is exactly where this belongs.
 //!
-//! Two sentences on the surface match the phrase list and are not this class.
+//! Four sentences on the surface match the phrase list and are not this class.
 //! They are excused by name in `EXCUSED` below rather than by weakening the
 //! list, and an arm asserts each is still in the file it names, so a carve-out
 //! that has stopped matching its sentence is a finding here rather than a
-//! silent widening.
+//! silent widening. The number is asserted as well as the sentences: it is
+//! written in this paragraph and over the array as well as being the array's
+//! length, and three copies of one number disagree without anything saying so
+//! unless one of them is checked against the others.
 
 use std::path::Path;
 
@@ -38,6 +41,7 @@ use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
 use crate::half_up_carries_its_note::{collect, line_of};
 use crate::half_up_is_not_a_magnitude_rule::comments::passages;
+use crate::half_up_is_not_a_magnitude_rule::reading::bounded;
 
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(NoProjectHistoryInPublishedProse)
@@ -47,9 +51,17 @@ pub fn repo_lint() -> Box<dyn RepoLint> {
 pub(crate) const NAME: &str = "no-project-history-in-published-prose";
 
 /// What a sentence reaches for when it dates a rule or names a past state of
-/// this project. Matched without case, as a substring rather than as a word,
-/// because each is already several words and none is a prefix of an ordinary
-/// one.
+/// this project. Matched without case and bounded as a word.
+///
+/// The bound is load-bearing. Each phrase is several words, but its head can
+/// still sit inside an ordinary word: `used to` is the tail of `refused to`,
+/// `caused to` and `paused to`, and the first is ordinary English in a doc
+/// comment, so an unbounded match refuses a page that says nothing about this
+/// project's past, at hard error. The bound takes that class out without
+/// touching the list.
+///
+/// What a bound cannot answer is the sense of a phrase standing as its own
+/// words, which is what the carve-outs below are for and what they cost.
 pub(crate) const PHRASES: &[&str] = &[
     "used to",
     "formerly",
@@ -78,7 +90,7 @@ pub(crate) struct Excused {
     pub(crate) because:  &'static str,
 }
 
-/// Every sentence excused, with the reason. Two of the three are one document.
+/// Every sentence excused, with the reason. Two of the four are one document.
 pub(crate) const EXCUSED: &[Excused] = &[
     Excused {
         file:     "crates/arvo-format/DESIGN.md.tmpl",
@@ -184,12 +196,13 @@ fn rustdoc(shown: &str, text: &str) -> Vec<LintError> {
     out
 }
 
-/// Where every phrase in `text` starts, with the phrase, matched without case.
+/// Where every phrase in `text` starts, with the phrase, matched without case
+/// and bounded, so a phrase sitting inside a longer word is not one.
 fn found(text: &str) -> Vec<(usize, &'static str)> {
     let lower = text.to_ascii_lowercase();
     let mut out: Vec<(usize, &'static str)> = PHRASES
         .iter()
-        .flat_map(|p| lower.match_indices(p).map(move |(at, _)| (at, *p)))
+        .flat_map(|p| bounded(&lower, p).into_iter().map(move |at| (at, *p)))
         .collect();
     out.sort();
     out
@@ -208,6 +221,7 @@ fn excused(shown: &str, text: &str, line: usize) -> bool {
         .filter_map(|e| text.find(e.sentence).map(|from| (from, e.sentence.len())))
         .any(|(from, len)| (line_of(text, from) ..= line_of(text, from + len)).contains(&line))
 }
+
 /// One finding, saying what to write instead.
 fn finding(at: &str, line: usize, phrase: &'static str) -> LintError {
     let mut e = LintError::with_severity(
