@@ -32,9 +32,12 @@ HALF_UP_MUTANT=<name> cargo test --manifest-path mock/target/mockspace-lints/Car
 and the history mutant under the `no_project_history` filter, then copies the
 shipped files back and touches them so the next build cannot reuse the mutant
 one. `none` is the control under each filter: 102 passed under `half_up`, 15
-under `no_project_history`. `HALF_UP_MUTANT=noattrib` against the restored
-tree passes all 102, which says the restore took. `out/runs.txt` is the raw
-output, filtered to the failing test names and the result line.
+under `no_project_history`, both against the mutant copies with every switch
+left at its shipped arm. The restore itself runs once, in `run.sh`'s exit
+trap, after every mutant in the loop; nothing here re-runs the suite against
+the restored files to check the swap-back took, so that is not a claim this
+sketch makes. `out/runs.txt` is the raw output, filtered to the failing test
+names and the result line.
 
 Everything except the switches is the shipped file byte for byte, so a diff of
 each pair is exactly the list of arms this asks about. One expression is
