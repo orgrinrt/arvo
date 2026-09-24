@@ -45,6 +45,7 @@ use crate::width::{Bool, Width};
 
 mod the_classification;
 mod the_cross;
+mod the_partition;
 mod the_reach;
 
 /// A slot range symmetric about zero, which no shipped format has.
@@ -400,6 +401,78 @@ fn reflection_reach(which: Which) -> Reach {
     let (lo, hi) = bounds(which);
     let span = hi.index() - lo.index() + 1;
     Reach::of(Slot::at(lo.index() - span), Slot::at(hi.index() + span))
+}
+
+// --- the rounding region alone ---------------------------------------------------
+
+/// How far either way a rounding-region band runs.
+///
+/// Small, dense and centred on zero, because the two things a mode can read
+/// besides the residue are the sign of the slot and its parity, and both change
+/// inside a band this size. A function rather than an item constant, for the
+/// reason the ratio coordinate's suite gives.
+fn band() -> i128 {
+    64
+}
+
+/// A rule the rounding-region suites walk.
+///
+/// One of the six shipped names, or a nearest rule planted here that sends a tie
+/// away from zero. That rule is not a mode of this crate; it is the alias the
+/// ruling reaches by `toward_zero(x + sign(x) q/2)`, planted so the suites can
+/// show it lands in a row of the classification no shipped mode fills.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+enum Rule {
+    /// A shipped mode, through `adapt`.
+    Shipped(Mode),
+    /// Nearest, a tie away from zero. Planted, and built out of shipped modes:
+    /// `floor` at a negative tie, `ceil` at a non-negative one, and the nearest
+    /// shipped rule everywhere else.
+    TiesAwayFromZero,
+}
+
+/// The rounding region's answer at one position, with the completion measured not
+/// to have fired.
+///
+/// The range is `Which::Wide`, and wrapping and saturating differ on every value
+/// outside a range and agree on every value inside one, so the two agreeing is
+/// what says no completion fired.
+fn rounded(rule: Rule, slot: i128, num: i64, den: i64, d: Dither) -> i128 {
+    let mode = match rule {
+        Rule::Shipped(mode) => mode,
+        Rule::TiesAwayFromZero => {
+            let e = position(slot, num, den);
+            match (e.is_tie().get(), e.is_negative()) {
+                (true, true) => Mode::Floor,
+                (true, false) => Mode::Ceil,
+                (false, _) => Mode::HalfEven,
+            }
+        },
+    };
+    let wrapped = adapt_at(Which::Wide, mode, Policy::Wrap, position(slot, num, den), d);
+    let saturated = adapt_at(
+        Which::Wide,
+        mode,
+        Policy::Saturate,
+        position(slot, num, den),
+        d,
+    );
+    assert_eq!(
+        wrapped, saturated,
+        "the two policies disagreed at {slot}+{num}/{den}, so the position left the range and \
+         the rounding region is not what was measured"
+    );
+    let (lo, hi) = bounds(Which::Wide);
+    assert!(
+        wrapped.index() > lo.index() && wrapped.index() < hi.index(),
+        "the answer reached a bound of the wide range"
+    );
+    wrapped.index()
+}
+
+/// The six shipped names, as rules.
+fn shipped_rules() -> impl Iterator<Item = Rule> {
+    ALL_MODES.into_iter().map(Rule::Shipped)
 }
 
 // The controls that say what a yes is a claim about, and the reach coordinate's

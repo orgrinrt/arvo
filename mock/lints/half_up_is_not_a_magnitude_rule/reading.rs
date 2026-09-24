@@ -1,0 +1,384 @@
+//--------------------------------------------------------------------------------------------------
+// Copyright (c) 2026                   orgrinrt                 ort@hiisi.digital
+// SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
+//--------------------------------------------------------------------------------------------------
+
+//! Reading one passage of prose for a magnitude reading of the mode's name.
+//!
+//! A passage is cut into clauses, a clause into segments, and the two cuts do
+//! different work. The clause is where a name and a reading are paired at all.
+//! The segment is what an escape is bound to: a negator voids the pairing where
+//! it sits with the reading or with the name, and says nothing where it sits in
+//! another segment of the same sentence, denying something else there. A reader
+//! taking any negator before the later of the two lets a sentence contrasting
+//! the mode with another mode through, and a reader taking any two commas for a
+//! list lets a parenthetical through. Both were measured doing exactly that, on
+//! eight sentences. Those sentences are in `sentences.rs` rather than here, each
+//! beside the near-twin on the other side of the line, which is also where to
+//! read what each rule below is for.
+//!
+//! The segment is also where a reading is attributed. A clause is allowed to
+//! name two rules, and the one it gives the reading to is the one the reading's
+//! own segment is about: the rule that segment names, or, where it names
+//! nothing and binds itself to what stood before it, whatever stood last. That
+//! is the same anaphora the clause cut reads, one level down, and reading it at
+//! only one of the two levels is what let "`half_up` is not Java's `HALF_UP`,
+//! which goes away from zero" be refused while the same sentence with a full
+//! stop in place of the comma went through.
+//!
+//! Table rows are read apart from the clauses, one row at a time, because a row
+//! pairs its first cell with the others and a clause cut at every `|` would
+//! never see that pairing.
+//!
+//! What decides a pairing, and what each decision consults:
+//!
+//! - which rule a clause is about: the names in it, and a pronoun opening it;
+//! - which rule a pronoun opening the next clause points at: the last spelling
+//!   of the mode, where no other rule follows it and the clause does not deny it;
+//! - which rule a reading in that clause is about: the names in its segment,
+//!   and a relative or a pronoun binding that segment to the one before it;
+//! - whether the pairing is denied: where a negator sits relative to the two
+//!   terms, and which conjunctions stand between them;
+//! - whether the clause is about another rule entirely, or states the settled
+//!   denotation and contrasts against it: its own words, in both cases;
+//! - whether the reading is quoted rather than given: a code span, plus a word
+//!   beside it naming a piece of a corpus.
+//!
+//! One of them reads punctuation as a marker of what is named, and it is
+//! written down here because this is the shape that has gone wrong twice:
+//! `names_nothing` takes a clause opening on a code span to be naming a subject
+//! of its own. That is what a code span means, and the reader has no vocabulary
+//! for most of what this repository names, so it is kept. Its cost is real and
+//! is in `sentences/catalogue.rs` as a known-red pair rather than in this
+//! paragraph.
+
+#[path = "reading/cutting.rs"]
+mod cutting;
+#[path = "reading/escapes.rs"]
+mod escapes;
+#[path = "reading/vocabulary.rs"]
+mod vocabulary;
+
+pub(crate) use cutting::bounded;
+use cutting::{clauses, opens_with_a_pronoun, points_back, segment_of, segments};
+use escapes::{
+    denotation_before,
+    directed,
+    elsewhere,
+    listed_apart,
+    mentioned,
+    negated,
+    negator_binds,
+};
+pub(super) use vocabulary::{
+    CONJUNCTIONS,
+    DIRECTIONS,
+    ELSEWHERE,
+    MENTIONED,
+    NEGATORS,
+    OTHER_NAMES,
+    PRONOUNS,
+    QUALIFIED,
+    READINGS,
+    RELATIVES,
+};
+pub(crate) use vocabulary::{DENOTES, SPELLINGS};
+
+/// One pairing the lint refuses: where in the passage, which spelling, which
+/// reading.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(super) struct Hit {
+    pub(super) at:      usize,
+    pub(super) name:    String,
+    pub(super) reading: &'static str,
+}
+
+/// Every refused pairing in `text`. With `subject`, a clause is read as already
+/// naming the mode, which is how a doc block reads when the item it documents is
+/// the mode.
+pub(super) fn hits(text: &str, subject: Option<&str>) -> Vec<Hit> {
+    let mut out = Vec::new();
+    // The prose with every table row blanked to spaces, so offsets still name
+    // the passage and a row ends whatever clause was open, as a blank line does.
+    let mut prose = String::with_capacity(text.len());
+    let mut start = 0;
+    for line in text.split_inclusive('\n') {
+        if line.trim_start().starts_with('|') {
+            out.extend(row(line, start, subject));
+            let body = line.trim_end_matches('\n');
+            prose.push_str(&" ".repeat(body.len()));
+            prose.push_str(&line[body.len() ..]);
+        } else {
+            prose.push_str(line);
+        }
+        start += line.len();
+    }
+    // What a clause opening with a pronoun is about: the last thing the clause
+    // before it named. That is the mode only where the mode is what it named
+    // last, so a sentence contrasting the mode with something else leaves the
+    // something else, and a pronoun after it points there.
+    let mut carried: Option<&'static str> = None;
+    for (from, clause) in clauses(&prose) {
+        if let Some(hit) = clause_hit(clause, subject, carried) {
+            out.push(Hit {
+                at: from + hit.at,
+                ..hit
+            });
+        }
+        carried = if clause.ends_with('\n') {
+            None
+        } else if !spellings_in(clause).is_empty() {
+            antecedent(clause)
+        } else if !names_nothing(clause) {
+            // The clause introduced a subject of its own and it is not this
+            // mode, so nothing it left standing points here.
+            None
+        } else if opens_with_a_pronoun(&clause.to_ascii_lowercase()) {
+            // A pronoun points back and so re-points at what it found, which is
+            // what lets two sentences follow one naming of the mode.
+            carried
+        } else {
+            // The clause named nothing and pointed back at nothing, so the name
+            // stops here. Anaphora has a reach: a name carries to the clause
+            // after the one that gave it, and no further through material that
+            // never mentions it. A passage laying out two readings of a word in
+            // consecutive clauses is what runs past that reach.
+            None
+        };
+    }
+    out.sort_by_key(|h| h.at);
+    out
+}
+
+/// A table row: the first cell is what the row is about, and a reading in any
+/// other cell is paired with it unless that cell contrasts it or gives it to a
+/// rule the cell names.
+fn row(line: &str, start: usize, subject: Option<&str>) -> Option<Hit> {
+    let mut cells = Vec::new();
+    let mut from = 0;
+    for (i, c) in line.char_indices() {
+        if c == '|' {
+            cells.push((from, &line[from .. i]));
+            from = i + 1;
+        }
+    }
+    cells.push((from, &line[from ..]));
+    let mut named = cells.iter().filter(|(_, c)| !c.trim().is_empty());
+    let (_, first) = named.next()?;
+    let name = match spellings_in(first).first() {
+        Some((_, name)) => (*name).to_string(),
+        None => subject?.to_string(),
+    };
+    for (at, cell) in named {
+        let lower = cell.to_ascii_lowercase();
+        if elsewhere(&lower) {
+            continue;
+        }
+        let segs = segments(&lower);
+        if let Some(&(r, reading)) = readings_in(&lower, &segs).first() {
+            if !negator_binds(&lower, &segs, None, r)
+                && !attributed_to_another_rule(cell, &lower, &segs, r)
+            {
+                return Some(Hit {
+                    at: start + at + r,
+                    name,
+                    reading,
+                });
+            }
+        }
+    }
+    None
+}
+
+/// The first refused pairing in one clause.
+fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>) -> Option<Hit> {
+    let lower = clause.to_ascii_lowercase();
+    let segs = segments(&lower);
+    let readings = readings_in(&lower, &segs);
+    if readings.is_empty() || elsewhere(&lower) {
+        return None;
+    }
+    let own: Vec<(usize, &str)> = spellings_in(clause);
+    let names: Vec<(usize, &str)> = if !own.is_empty() {
+        own
+    } else if opens_with_a_pronoun(&lower) {
+        // A pronoun points back explicitly, so where the clause before it left
+        // nothing named the item a doc block sits on does not fill in.
+        carried.map(|n| vec![(0, n)]).unwrap_or_default()
+    } else if names_nothing(clause) {
+        // The clause names no rule of its own, so it says what it says about
+        // whatever the clause before it left named, and about the doc block's
+        // item where that is nothing. This is what pairs the name across a
+        // colon, a semicolon, a question mark and a full stop without any of
+        // the four being named here.
+        carried
+            .map(|n| -> &str { n })
+            .or(subject)
+            .map(|n| vec![(0, n)])
+            .unwrap_or_default()
+    } else {
+        // Another rule is named here, so the clause is about that one. Neither
+        // the carry nor the doc block's item reaches past it.
+        Vec::new()
+    };
+    for &(n, name) in &names {
+        for &(r, reading) in &readings {
+            if listed_apart(&lower, &segs, n, r)
+                || negator_binds(&lower, &segs, Some(n), r)
+                || denotation_before(&lower, &segs, r)
+                || attributed_to_another_rule(clause, &lower, &segs, r)
+            {
+                continue;
+            }
+            return Some(Hit {
+                at: r,
+                name: name.to_string(),
+                reading,
+            });
+        }
+    }
+    None
+}
+
+/// Whether the reading at `r` belongs to a rounding rule other than the mode,
+/// by what its own segment is about.
+///
+/// Two ways a segment says so, and both are what the clause cut already does
+/// with a pronoun, one level down:
+///
+/// - the segment names another rule ahead of the reading, so the reading is
+///   that rule's: "`half_up` is nearest, and `HalfEven` sends a tie away from
+///   zero";
+/// - the segment names nothing and binds itself to what stood before it, and
+///   what stood last is another rule: "`half_up` is not Java's `HALF_UP`, which
+///   goes away from zero", and the same with the relative standing behind an
+///   apposition instead of opening the segment.
+///
+/// A segment that names the mode ahead of the reading settles it the other way
+/// at once, which is what keeps an aside from stealing the pairing: "`half_up`,
+/// like `floor`, sends a tie away from zero" gives the reading to the mode,
+/// because the segment carrying it names nothing, does not bind back, and so
+/// never asks what stood last.
+fn attributed_to_another_rule(clause: &str, lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
+    let from = segs[segment_of(segs, r)].0;
+    let head = &clause[from .. r];
+    if !spellings_in(head).is_empty() {
+        return false;
+    }
+    if !named_in(head).is_empty() {
+        return true;
+    }
+    points_back(&lower[from .. r]) && another_rule_stands_last(clause, from)
+}
+
+/// Whether the last rounding rule named before `at` is one other than the mode.
+fn another_rule_stands_last(clause: &str, at: usize) -> bool {
+    let head = &clause[.. at];
+    match named_in(head).into_iter().max() {
+        None => false,
+        Some(other) => {
+            spellings_in(head)
+                .last()
+                .is_none_or(|&(mine, _)| other > mine)
+        },
+    }
+}
+
+/// The name a pronoun opening the next clause points at: the last spelling of
+/// the mode in this clause, where no other rounding rule is named after it and
+/// the clause does not deny it.
+///
+/// Read as a name rather than as a code span. A reader that counted backticks
+/// answered a question about how the author punctuated: `q/2` standing after
+/// the mode took the carry away though no pronoun could mean it, and `HALF_UP`
+/// written without backticks did not though every pronoun after it does.
+///
+/// A denied spelling is not an antecedent. "Ties away from zero is a different
+/// operation and is not `half_up`: it is what IEEE 754's `roundTiesToAway`
+/// computes" has the pronoun meaning the operation, which is what the clause
+/// was about, and the mode is only what it said the operation is not.
+fn antecedent(clause: &str) -> Option<&'static str> {
+    let (at, name) = *spellings_in(clause).last()?;
+    let lower = clause.to_ascii_lowercase();
+    if negated(&lower, &segments(&lower), at) {
+        return None;
+    }
+    let after = &clause[at + name.len() ..];
+    named_in(after).is_empty().then_some(name)
+}
+
+/// Whether the clause introduces no subject of its own, so what it says is
+/// about whatever the clause before it named.
+///
+/// A subject of its own is a rounding rule named anywhere in the clause, or a
+/// code span opening it. The second is what this reader knows about a subject
+/// it has no vocabulary for: "`arvo-format` then asserted a tie at `-2.5`
+/// giving `-3`, which is away from zero" is about a crate, and a reader that
+/// carried the mode into it reads a record of what was fixed as a claim about
+/// what is.
+fn names_nothing(clause: &str) -> bool {
+    spellings_in(clause).is_empty()
+        && named_in(clause).is_empty()
+        && !clause.trim_start().starts_with('`')
+}
+
+/// Where every other rounding rule named in `text` starts, bounded as a word.
+///
+/// Each entry counts as written and with its first character upper-cased, which
+/// is the same name opening a sentence. Without that, "Toward zero reads the
+/// sign of the slot" names no rule, and the clause before it keeps the mode.
+///
+/// The denotation is blanked out first, because it spells `floor` inside
+/// itself: "`half_up` is not floor(x + q/2)" names this mode's own definition
+/// rather than the floor mode, and a reader taking that as another rule loses
+/// the name before the clause that gives it the wrong reading.
+fn named_in(text: &str) -> Vec<usize> {
+    let text = &without_the_denotation(text);
+    OTHER_NAMES
+        .iter()
+        .flat_map(|n| {
+            let opened = cutting::capitalised(n);
+            let mut at = bounded(text, n);
+            if opened.as_str() != *n {
+                at.extend(bounded(text, &opened));
+            }
+            at
+        })
+        .collect()
+}
+
+/// `text` with every spelling of the denotation blanked to spaces, so an offset
+/// into the result still names the same place in the original.
+fn without_the_denotation(text: &str) -> String {
+    let lower = text.to_ascii_lowercase();
+    let mut out = text.to_string();
+    for d in DENOTES {
+        for at in bounded(&lower, d) {
+            out.replace_range(at .. at + d.len(), &" ".repeat(d.len()));
+        }
+    }
+    out
+}
+
+/// Every spelling of the name in `text`, bounded, with where it starts.
+pub(crate) fn spellings_in(text: &str) -> Vec<(usize, &'static str)> {
+    let mut out: Vec<(usize, &'static str)> = SPELLINGS
+        .iter()
+        .flat_map(|s| bounded(text, s).into_iter().map(move |at| (at, *s)))
+        .collect();
+    out.sort();
+    out
+}
+
+/// Every reading in an already lowered `lower`, bounded, with where it starts.
+/// The qualified one counts only behind a direction word in its own segment.
+pub(super) fn readings_in(lower: &str, segs: &[(usize, &str)]) -> Vec<(usize, &'static str)> {
+    let mut out: Vec<(usize, &'static str)> = READINGS
+        .iter()
+        .flat_map(|s| bounded(lower, s).into_iter().map(move |at| (at, *s)))
+        .filter(|&(at, s)| s != QUALIFIED || directed(lower, segs, at))
+        .filter(|&(at, s)| !mentioned(lower, at, s))
+        .collect();
+    out.sort();
+    out
+}

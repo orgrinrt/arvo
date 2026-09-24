@@ -1,0 +1,200 @@
+== none
+test result: ok. 102 passed; 0 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== backtick
+test half_up_is_not_a_magnitude_rule::carry_tests::a_name_that_is_not_a_rounding_rule_does_not_defeat_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_defeats_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== noother
+test half_up_is_not_a_magnitude_rule::carry_tests::control_a_pronoun_points_at_whatever_was_named_last ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_defeats_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== nocarry
+test half_up_is_not_a_magnitude_rule::carry_tests::a_clause_boundary_separates_the_two_only_where_the_later_clause_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_blank_line_starts_afresh_whatever_was_named ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_clause_opening_with_a_pronoun_takes_the_name_the_one_before_it_left ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_name_that_is_not_a_rounding_rule_does_not_defeat_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_conjunction_opening_a_clause_is_read_past_to_the_pronoun_behind_it ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_negator_ahead_of_the_mode_takes_it_out_of_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_defeats_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_opening_a_sentence_capitalised_stops_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::the_carry_reaches_across_a_clause_that_names_nothing ... FAILED
+test half_up_is_not_a_magnitude_rule::segment_tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::catalogue::every_twin_in_the_catalogue_reads_right ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 88 passed; 14 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== nopass
+test half_up_is_not_a_magnitude_rule::carry_tests::a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_conjunction_opening_a_clause_is_read_past_to_the_pronoun_behind_it ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::the_carry_reaches_across_a_clause_that_names_nothing ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 98 passed; 4 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== pronounonly
+test half_up_is_not_a_magnitude_rule::carry_tests::a_blank_line_starts_afresh_whatever_was_named ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_clause_boundary_separates_the_two_only_where_the_later_clause_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_opening_a_sentence_capitalised_stops_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::segment_tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 95 passed; 7 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.07s
+== pronounany
+test half_up_is_not_a_magnitude_rule::carry_tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_doc_blocks_item_does_not_reach_a_clause_that_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_conjunction_opening_a_clause_is_read_past_to_the_pronoun_behind_it ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::catalogue::every_twin_in_the_catalogue_reads_right ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_subject_names_the_mode_in_every_clause ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_sentence_the_crate_shipped_fires ... FAILED
+test result: FAILED. 95 passed; 7 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== codespan
+test half_up_is_not_a_magnitude_rule::carry_tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::catalogue::every_twin_in_the_catalogue_reads_right ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== nocap
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_opening_a_sentence_capitalised_stops_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== nomask
+test half_up_is_not_a_magnitude_rule::segment_tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::catalogue::every_twin_in_the_catalogue_reads_right ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== nodenote
+test half_up_is_not_a_magnitude_rule::segment_tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::segment_tests::a_conjunction_in_an_earlier_segment_leaves_the_contrast_standing ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== readafter
+test half_up_is_not_a_magnitude_rule::tests::every_negator_is_bound_by_where_it_sits_and_not_by_being_between ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== nameafter
+test half_up_is_not_a_magnitude_rule::tests::a_negator_in_another_segment_is_about_that_segment ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== nobetween
+test half_up_is_not_a_magnitude_rule::tests::every_negator_is_bound_by_where_it_sits_and_not_by_being_between ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.07s
+== betweenboth
+test half_up_is_not_a_magnitude_rule::tests::every_negator_is_bound_by_where_it_sits_and_not_by_being_between ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== noconj
+test half_up_is_not_a_magnitude_rule::tests::a_negator_in_another_segment_is_about_that_segment ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== twoseg
+test half_up_is_not_a_magnitude_rule::carry_tests::control_what_is_not_a_boundary_keeps_the_clause_whole ... FAILED
+test result: FAILED. 101 passed; 1 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== nobare
+test half_up_is_not_a_magnitude_rule::segment_tests::every_reading_is_a_list_item_only_where_its_item_holds_nothing_else ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== neighbour
+test half_up_is_not_a_magnitude_rule::segment_tests::an_empty_segment_between_two_delimiters_is_not_a_list_item ... FAILED
+test half_up_is_not_a_magnitude_rule::segment_tests::control_a_parenthetical_is_not_a_list ... FAILED
+test half_up_is_not_a_magnitude_rule::segment_tests::a_denotation_conjoined_with_the_other_reading_does_not_excuse_it ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 98 passed; 4 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== noqual
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_magnitude_reading_counts_only_behind_a_direction_word ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== nomention
+test half_up_is_not_a_magnitude_rule::tests::a_reading_quoted_as_a_name_is_a_mention_rather_than_a_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_mention_word_on_either_side_of_the_span_makes_it_a_mention ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== mentionspan
+test half_up_is_not_a_magnitude_rule::tests::control_a_code_span_alone_is_not_a_mention ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::an_identifier_carrying_a_spelling_or_a_reading_is_not_one ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_mention_word_on_either_side_of_the_span_makes_it_a_mention ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 98 passed; 4 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== noattrib
+test half_up_is_not_a_magnitude_rule::carry_tests::a_table_cell_attributes_its_reading_the_same_way ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_segment_that_neither_names_nor_points_back_leaves_the_reading_with_the_mode ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_ahead_of_the_reading_in_its_segment_takes_the_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_relative_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 96 passed; 6 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.04s
+== noattribclause
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_ahead_of_the_reading_in_its_segment_takes_the_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_segment_that_neither_names_nor_points_back_leaves_the_reading_with_the_mode ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_relative_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 97 passed; 5 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== noattribrow
+test half_up_is_not_a_magnitude_rule::carry_tests::a_table_cell_attributes_its_reading_the_same_way ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== segmine
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_ahead_of_the_reading_in_its_segment_takes_the_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== segnamed
+test half_up_is_not_a_magnitude_rule::carry_tests::a_table_cell_attributes_its_reading_the_same_way ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_other_name_ahead_of_the_reading_in_its_segment_takes_the_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.07s
+== segback
+test half_up_is_not_a_magnitude_rule::carry_tests::a_table_cell_attributes_its_reading_the_same_way ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_segment_that_neither_names_nor_points_back_leaves_the_reading_with_the_mode ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_relative_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 97 passed; 5 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.04s
+== lastany
+test half_up_is_not_a_magnitude_rule::carry_tests::every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_relative_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.05s
+== negatedante
+test half_up_is_not_a_magnitude_rule::carry_tests::every_negator_ahead_of_the_mode_takes_it_out_of_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== relonly
+test half_up_is_not_a_magnitude_rule::carry_tests::every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== pronounsonly
+test half_up_is_not_a_magnitude_rule::carry_tests::a_table_cell_attributes_its_reading_the_same_way ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::a_segment_that_neither_names_nor_points_back_leaves_the_reading_with_the_mode ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_relative_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 98 passed; 4 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.04s
+== noconjskip
+test half_up_is_not_a_magnitude_rule::carry_tests::every_conjunction_opening_a_clause_is_read_past_to_the_pronoun_behind_it ... FAILED
+test half_up_is_not_a_magnitude_rule::carry_tests::every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== nodenoteconj
+test half_up_is_not_a_magnitude_rule::segment_tests::a_denotation_conjoined_with_the_other_reading_does_not_excuse_it ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== denotewhole
+test half_up_is_not_a_magnitude_rule::segment_tests::a_conjunction_in_an_earlier_segment_leaves_the_contrast_standing ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== emptyneighbour
+test half_up_is_not_a_magnitude_rule::segment_tests::an_empty_segment_between_two_delimiters_is_not_a_list_item ... FAILED
+test half_up_is_not_a_magnitude_rule::segment_tests::a_denotation_conjoined_with_the_other_reading_does_not_excuse_it ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 99 passed; 3 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.06s
+== mentionreading
+test half_up_is_not_a_magnitude_rule::tests::every_mention_word_on_either_side_of_the_span_makes_it_a_mention ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 100 passed; 2 failed; 2 ignored; 0 measured; 739 filtered out; finished in 0.07s
+== none, filter no_project_history
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 828 filtered out; finished in 0.03s
+== unboundedphrases, filter no_project_history
+test no_project_history_in_published_prose::tests::refused_to_in_a_doc_comment_is_not_used_to_and_used_to_is ... FAILED
+test no_project_history_in_published_prose::tests::no_phrase_fires_inside_a_longer_word_on_either_side ... FAILED
+test result: FAILED. 13 passed; 2 failed; 0 ignored; 0 measured; 828 filtered out; finished in 0.03s

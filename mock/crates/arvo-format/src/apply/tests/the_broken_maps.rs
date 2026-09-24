@@ -12,14 +12,22 @@
 //! slot below the position and not the distance past the index, so past the
 //! index they are wrong for that reason as well as their own, and the oracle
 //! sweep reports each of them at a position the index holds too.
+//!
+//! The planted tie rules are broken in the rounding region rather than the
+//! completion, and each differs from the shipped map at a tie only, under the one
+//! mode it plants. The first is the rule this crate shipped for `HalfUp` before
+//! the canon settled what `half_up` denotes, so a sweep that reports it is one
+//! that would have caught that defect.
 
-use crate::apply::{Rounded, complete_slot};
+use crate::apply::{Dither, Exact, Rounded, complete_slot, round_slot};
 use crate::overflow::Policy;
+use crate::rounding::Mode;
 use crate::slots::Slot;
 
-/// The two answers of one applied map the laws compare.
+/// The three answers of one applied map the laws compare.
 #[derive(Clone, Copy)]
 pub(super) struct Map {
+    pub(super) round:    fn(Mode, Exact, Dither) -> Rounded,
     pub(super) complete: fn(Policy, Rounded, Slot, Slot) -> Slot,
     pub(super) leaves:   fn(Rounded, Slot, Slot) -> bool,
 }
@@ -32,6 +40,7 @@ fn shipped_leaves(r: Rounded, min: Slot, max: Slot) -> bool {
 /// The map this crate ships.
 pub(super) fn shipped() -> Map {
     Map {
+        round:    round_slot,
         complete: complete_slot,
         leaves:   shipped_leaves,
     }
@@ -56,6 +65,7 @@ pub(super) fn subtracts_first() -> Map {
         )
     }
     Map {
+        round: round_slot,
         complete,
         leaves: shipped_leaves,
     }
@@ -72,6 +82,7 @@ pub(super) fn anchored_at_zero() -> Map {
         Slot::at(lo + (r.down().rem_euclid(span) + r.step()).rem_euclid(span))
     }
     Map {
+        round: round_slot,
         complete,
         leaves: shipped_leaves,
     }
@@ -92,6 +103,7 @@ pub(super) fn reduced_modulo_256() -> Map {
         Slot::at(lo + offset.rem_euclid(span))
     }
     Map {
+        round: round_slot,
         complete,
         leaves: shipped_leaves,
     }
@@ -108,6 +120,7 @@ pub(super) fn no_step_onto_the_lowest() -> Map {
         !(r.down() >= lo && (r.down() < hi || (r.down() == hi && !r.up.get())))
     }
     Map {
+        round: round_slot,
         complete: complete_slot,
         leaves,
     }
@@ -145,6 +158,7 @@ pub(super) fn past_the_bottom_pins_high_off_the_bottom() -> Map {
         }
     }
     Map {
+        round: round_slot,
         complete,
         leaves: shipped_leaves,
     }
@@ -177,6 +191,7 @@ pub(super) fn past_the_top_pins_low_off_the_top() -> Map {
         }
     }
     Map {
+        round: round_slot,
         complete,
         leaves: shipped_leaves,
     }
@@ -189,9 +204,8 @@ pub(super) fn past_the_top_pins_low_off_the_top() -> Map {
 /// `complete_slot`'s own near-bottom test is `rounded.past < 0`, which does
 /// not read `rounded.up` at all. This narrows it to `rounded.past < 0 &&
 /// (lo == i128::MIN || !rounded.up.get())`, so a position carried past the
-/// bottom whose rounding stepped up (an off-grid position under a mode that
-/// rounds away from the carried end), fed into a range whose own bottom is
-/// not `i128::MIN`, falls through to the `else` arm and answers the range's
+/// bottom whose rounding stepped up, fed into a range whose own bottom is not
+/// `i128::MIN`, falls through to the `else` arm and answers the range's
 /// highest slot instead of its lowest. An on-grid position never sets
 /// `rounded.up`, so a matrix fed only whole-slot positions cannot see this
 /// one, where `past_the_bottom_pins_high_off_the_bottom` is wrong on the grid
@@ -219,6 +233,7 @@ pub(super) fn a_step_up_past_the_bottom_pins_high() -> Map {
         }
     }
     Map {
+        round: round_slot,
         complete,
         leaves: shipped_leaves,
     }
@@ -254,6 +269,7 @@ pub(super) fn the_step_onto_the_bottom_pins_high() -> Map {
         }
     }
     Map {
+        round: round_slot,
         complete,
         leaves: shipped_leaves,
     }
@@ -280,7 +296,97 @@ pub(super) fn no_lo_guard_onto_the_lowest() -> Map {
         !(from_below && from_above)
     }
     Map {
+        round: round_slot,
         complete: complete_slot,
         leaves,
     }
+}
+
+// --- the planted tie rules ------------------------------------------------------
+
+/// The shipped completion and verdict over a planted rounding.
+fn planted(round: fn(Mode, Exact, Dither) -> Rounded) -> Map {
+    Map {
+        round,
+        complete: complete_slot,
+        leaves: shipped_leaves,
+    }
+}
+
+/// A planted `HalfUp` that sends a tie away from zero, down below zero and up
+/// above it.
+///
+/// The wrong rule this crate shipped before the ruling. It differs from the
+/// shipped map at a negative tie and nowhere else, so a sweep reports it only
+/// where it feeds one.
+pub(super) fn half_up_ties_away_from_zero() -> Map {
+    fn round(mode: Mode, e: Exact, d: Dither) -> Rounded {
+        if mode == Mode::HalfUp && e.is_tie().get() {
+            let away = if e.is_negative() { Mode::Floor } else { Mode::Ceil };
+            return round_slot(away, e, d);
+        }
+        round_slot(mode, e, d)
+    }
+    planted(round)
+}
+
+/// `HalfUp` with every tie sent down, which differs at every tie.
+pub(super) fn half_up_ties_down() -> Map {
+    fn round(mode: Mode, e: Exact, d: Dither) -> Rounded {
+        if mode == Mode::HalfUp && e.is_tie().get() {
+            return round_slot(Mode::Floor, e, d);
+        }
+        round_slot(mode, e, d)
+    }
+    planted(round)
+}
+
+/// `HalfUp` with a tie sent toward zero, which differs at a non-negative tie.
+pub(super) fn half_up_ties_toward_zero() -> Map {
+    fn round(mode: Mode, e: Exact, d: Dither) -> Rounded {
+        if mode == Mode::HalfUp && e.is_tie().get() {
+            return round_slot(Mode::TowardZero, e, d);
+        }
+        round_slot(mode, e, d)
+    }
+    planted(round)
+}
+
+/// The neighbour with an odd slot, at a tie.
+fn to_odd(e: Exact, d: Dither) -> Rounded {
+    round_slot(if e.is_even() { Mode::Ceil } else { Mode::Floor }, e, d)
+}
+
+/// `HalfUp` with a tie sent to the odd neighbour, which differs at a tie whose
+/// slot below is odd.
+pub(super) fn half_up_ties_to_odd() -> Map {
+    fn round(mode: Mode, e: Exact, d: Dither) -> Rounded {
+        if mode == Mode::HalfUp && e.is_tie().get() {
+            return to_odd(e, d);
+        }
+        round_slot(mode, e, d)
+    }
+    planted(round)
+}
+
+/// `HalfEven` with a tie sent to the odd neighbour, which differs at every tie.
+pub(super) fn half_even_ties_to_odd() -> Map {
+    fn round(mode: Mode, e: Exact, d: Dither) -> Rounded {
+        if mode == Mode::HalfEven && e.is_tie().get() {
+            return to_odd(e, d);
+        }
+        round_slot(mode, e, d)
+    }
+    planted(round)
+}
+
+/// Every planted tie rule, by name.
+pub(super) fn planted_tie_rules() -> [(&'static str, Map); 5] {
+    [
+        ("half_up_ties_away_from_zero", half_up_ties_away_from_zero()),
+        ("half_up_ties_down", half_up_ties_down()),
+        ("half_up_ties_toward_zero", half_up_ties_toward_zero()),
+        ("half_up_ties_to_odd", half_up_ties_to_odd()),
+        ("half_even_ties_to_odd", half_even_ties_to_odd()),
+    ]
 }

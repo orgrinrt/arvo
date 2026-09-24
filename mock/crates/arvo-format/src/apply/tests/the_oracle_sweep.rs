@@ -11,14 +11,14 @@
 //! the index and from each of its own ends, up to `depth()` whole slots either
 //! way, zero included, at every quarter remainder and under every eighth of a
 //! dither. The slot and the overflow verdict are both compared with what the
-//! oracle computes. The oracle reads `Clamp` as `Saturate` and a `HalfUp` tie
-//! away from zero, both taken from the implementation, so those cells check
-//! the map against those readings, as `the_oracle.rs` says.
+//! oracle computes. The oracle reads `Clamp` as `Saturate`, taken from the
+//! implementation, so those cells check the map against that reading, as
+//! `the_oracle.rs` says; every tie rule it applies is the canon's.
 //!
 //! The sweep runs twice. Through `adapt` and `panic_on_overflow`, at every
 //! declared signature over those ranges, which is the surface. And through a
-//! `Map`, so every broken map `the_broken_maps.rs` keeps is asked the same
-//! questions and has to be reported.
+//! `Map`, so every broken map `the_broken_maps.rs` keeps, the planted tie rules
+//! among them, is asked the same questions and has to be reported.
 
 use notko::Maybe;
 
@@ -30,6 +30,7 @@ use super::the_broken_maps::{
     no_step_onto_the_lowest,
     past_the_bottom_pins_high_off_the_bottom,
     past_the_top_pins_low_off_the_top,
+    planted_tie_rules,
     reduced_modulo_256,
     shipped,
     subtracts_first,
@@ -203,7 +204,8 @@ fn first_disagreement(
 }
 
 /// The first disagreement of `map` with the oracle, over every range, mode and
-/// policy.
+/// policy. The map's own rounding is asked, so a planted tie rule is what the
+/// completion and the verdict see.
 fn map_break(map: Map, held_only: bool) -> Maybe<Case> {
     for range in ranges() {
         let found = first_disagreement(
@@ -212,7 +214,7 @@ fn map_break(map: Map, held_only: bool) -> Maybe<Case> {
             range,
             held_only,
             |mode, policy, e, d| {
-                let rounded = round_slot(mode, e, d);
+                let rounded = (map.round)(mode, e, d);
                 (
                     (map.complete)(policy, rounded, range.0, range.1),
                     (map.leaves)(rounded, range.0, range.1),
@@ -282,11 +284,11 @@ fn the_shipped_map_answers_as_the_oracle_does() {
 #[test]
 fn the_sweep_reports_every_broken_map() {
     // Whether each map is also reported at a position the index holds. The
-    // wraps and the missing step onto the lowest slot are wrong inside the
-    // index; the other five change only a branch reading a distance past it,
-    // so inside the index they are the shipped map, which is what keeps each
-    // of them from being a map that is simply always wrong.
-    let maps: [(&'static str, Map, bool); 9] = [
+    // wraps, the missing step onto the lowest slot and every planted tie rule
+    // are wrong inside the index; the other five change only a branch reading a
+    // distance past it, so inside the index they are the shipped map, which is
+    // what keeps each of them from being a map that is simply always wrong.
+    let completions: [(&'static str, Map, bool); 9] = [
         ("subtracts_first", subtracts_first(), true),
         ("anchored_at_zero", anchored_at_zero(), true),
         ("reduced_modulo_256", reduced_modulo_256(), true),
@@ -317,7 +319,10 @@ fn the_sweep_reports_every_broken_map() {
             false,
         ),
     ];
-    for (name, map, inside) in maps {
+    let ties = planted_tie_rules().map(|(name, map)| (name, map, true));
+    let mut asked = 0;
+    for (name, map, inside) in completions.into_iter().chain(ties) {
+        asked += 1;
         assert!(map_break(map, false).is(), "{name} was not reported");
         assert_eq!(
             map_break(map, true).is(),
@@ -325,23 +330,29 @@ fn the_sweep_reports_every_broken_map() {
             "{name}, inside the index"
         );
     }
+    assert_eq!(asked, 14, "a broken map dropped out of the list");
 }
 
 #[test]
 fn the_feed_reaches_every_band_around_both_ends() {
     // The sweep is only about the ends if its positions are at them. Counted
     // over `Integer<3>`, a range at neither end, and `ShyOfTheBottom`, whose
-    // lowest slot has a slot under it inside the index.
+    // lowest slot has a slot under it inside the index. The ties are counted by
+    // sign and by the parity of the slot below, because each planted tie rule
+    // differs from the shipped map in some of those four cells and not in the
+    // others, so a feed missing a cell could miss a rule.
     let mut onto_the_bottom = 0;
     let mut further_under = 0;
     let mut one_over = 0;
     let mut stepping_over = 0;
     let mut onto_a_lowest_slot = 0;
-    let mut ties = 0;
+    let mut ties = [[0usize; 2]; 2];
     for (lo, hi) in [(-4, 3), (i128::MIN + 4, i128::MIN + 203)] {
         for (anchor, whole, quarter) in feed(lo, hi) {
             let exact = Exact::between(Slot::at(anchor), Fraction::of(4 * whole + quarter, 4));
-            ties += usize::from(exact.is_tie().get());
+            if exact.is_tie().get() {
+                ties[usize::from(exact.is_negative())][usize::from(exact.is_even())] += 1;
+            }
             for mode in ALL_MODES {
                 let r = round_slot(mode, exact, Dither::UNUSED);
                 onto_the_bottom += usize::from(r.past == -1 && r.up.get());
@@ -366,7 +377,10 @@ fn the_feed_reaches_every_band_around_both_ends() {
             onto_a_lowest_slot,
             "the step onto a range's lowest slot inside the index",
         ),
-        (ties, "a tie"),
+        (ties[0][0], "a non-negative tie over an odd slot"),
+        (ties[0][1], "a non-negative tie over an even slot"),
+        (ties[1][0], "a negative tie over an odd slot"),
+        (ties[1][1], "a negative tie over an even slot"),
     ] {
         assert!(count > 0, "the feed never reaches {band}");
     }

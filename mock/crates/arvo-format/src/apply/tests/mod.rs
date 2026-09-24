@@ -266,22 +266,33 @@ fn toward_zero_and_floor_are_measured_to_differ_and_the_witness_is_named() {
 // --- 6. the tie rules, which are why the remainder is a fraction ------------
 
 #[test]
-fn half_up_goes_away_from_zero_on_a_tie_and_half_even_goes_to_the_even_slot() {
-    // Positive tie: away from zero is up.
+fn half_up_goes_toward_positive_infinity_on_a_tie_and_half_even_goes_to_the_even_slot() {
+    // Positive tie: toward positive infinity is up.
     let pos = Exact::between(Slot::at(2), Fraction::HALF);
     assert!(pos.is_tie().get());
     assert_eq!(round_slot(Mode::HalfUp, pos, Dither::UNUSED), 3);
     assert_eq!(round_slot(Mode::HalfEven, pos, Dither::UNUSED), 2);
 
-    // Negative tie: away from zero is down.
+    // Negative tie: toward positive infinity is up too, so `-2.5` goes to `-2`.
+    // This is the cell the note on `half_up` exists for: Java's and Python's
+    // `HALF_UP` would answer `-3`.
     let neg = Exact::between(Slot::at(-3), Fraction::HALF);
     assert!(neg.is_tie().get());
-    assert_eq!(round_slot(Mode::HalfUp, neg, Dither::UNUSED), -3);
+    assert_eq!(round_slot(Mode::HalfUp, neg, Dither::UNUSED), -2);
     assert_eq!(round_slot(Mode::HalfEven, neg, Dither::UNUSED), -2);
 
-    // Odd slot: half-even climbs to the even neighbour.
+    // The tie just under zero, `-0.5`, goes to zero rather than to `-1`.
+    let under_zero = Exact::between(Slot::at(-1), Fraction::HALF);
+    assert_eq!(round_slot(Mode::HalfUp, under_zero, Dither::UNUSED), 0);
+    assert_eq!(round_slot(Mode::HalfEven, under_zero, Dither::UNUSED), 0);
+
+    // Odd slot: half-even climbs to the even neighbour, and at an even slot below
+    // zero it stays, where half-up still climbs.
     let odd = Exact::between(Slot::at(3), Fraction::HALF);
     assert_eq!(round_slot(Mode::HalfEven, odd, Dither::UNUSED), 4);
+    let even_below = Exact::between(Slot::at(-2), Fraction::HALF);
+    assert_eq!(round_slot(Mode::HalfEven, even_below, Dither::UNUSED), -2);
+    assert_eq!(round_slot(Mode::HalfUp, even_below, Dither::UNUSED), -1);
 }
 
 #[test]
@@ -424,6 +435,7 @@ mod the_edges;
 mod the_far_end_of_the_index;
 mod the_oracle;
 mod the_oracle_sweep;
+mod the_tie_sweep;
 mod the_top_of_the_index;
 mod the_translation_law;
 mod the_wide_oracle_sweep;

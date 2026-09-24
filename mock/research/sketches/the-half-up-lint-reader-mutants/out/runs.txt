@@ -1,0 +1,122 @@
+== none
+test result: ok. 81 passed; 0 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.06s
+== backtick
+test half_up_is_not_a_magnitude_rule::tests::a_name_that_is_not_a_rounding_rule_does_not_defeat_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_other_name_defeats_the_carry ... FAILED
+test result: FAILED. 78 passed; 3 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== noother
+test half_up_is_not_a_magnitude_rule::tests::control_a_pronoun_points_at_whatever_was_named_last ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_other_name_defeats_the_carry ... FAILED
+test result: FAILED. 78 passed; 3 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== pronounonly
+test half_up_is_not_a_magnitude_rule::tests::a_clause_boundary_separates_the_two_only_where_the_later_clause_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_blank_line_starts_afresh_whatever_was_named ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_doc_blocks_item_does_not_reach_a_clause_that_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_subject_names_the_mode_in_every_clause ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_sentence_the_crate_shipped_fires ... FAILED
+test result: FAILED. 72 passed; 9 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== nopass
+test half_up_is_not_a_magnitude_rule::tests::a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_carry_reaches_across_a_clause_that_names_nothing ... FAILED
+test result: FAILED. 78 passed; 3 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== nocap
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== nomask
+test half_up_is_not_a_magnitude_rule::tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== nodenote
+test half_up_is_not_a_magnitude_rule::tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 79 passed; 2 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== codespan
+test half_up_is_not_a_magnitude_rule::tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 79 passed; 2 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== nocarry
+test half_up_is_not_a_magnitude_rule::tests::a_blank_line_starts_afresh_whatever_was_named ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_clause_boundary_separates_the_two_only_where_the_later_clause_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_clause_opening_with_a_pronoun_takes_the_name_the_one_before_it_left ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_clause_stating_the_denotation_is_not_also_giving_the_other_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_name_that_is_not_a_rounding_rule_does_not_defeat_the_carry ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_carry_reaches_across_a_clause_that_names_nothing ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_other_name_defeats_the_carry ... FAILED
+test result: FAILED. 71 passed; 10 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== pronounany
+test half_up_is_not_a_magnitude_rule::tests::a_clause_opening_with_a_code_span_has_a_subject_of_its_own ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_clause_boundary_separates_the_two_only_where_the_later_clause_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_doc_blocks_item_does_not_reach_a_clause_that_names_another_rule ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_name_carries_one_clause_and_no_further_unless_a_pronoun_re_points_it ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_subject_names_the_mode_in_every_clause ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_sentence_the_crate_shipped_fires ... FAILED
+test result: FAILED. 74 passed; 7 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== readafter
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== nameafter
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_negator_in_another_segment_is_about_that_segment ... FAILED
+test result: FAILED. 79 passed; 2 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== nobetween
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== betweenboth
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== noconj
+test half_up_is_not_a_magnitude_rule::tests::a_negator_in_another_segment_is_about_that_segment ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 79 passed; 2 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== twoseg
+test half_up_is_not_a_magnitude_rule::tests::control_what_is_not_a_boundary_keeps_the_clause_whole ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== nobare
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== neighbour
+test half_up_is_not_a_magnitude_rule::tests::control_a_parenthetical_is_not_a_list ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 79 passed; 2 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== noqual
+test half_up_is_not_a_magnitude_rule::tests::the_magnitude_reading_counts_only_behind_a_direction_word ... FAILED
+test half_up_is_not_a_magnitude_rule::sentences::every_pair_fires_on_one_side_and_is_silent_on_the_other ... FAILED
+test result: FAILED. 79 passed; 2 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== nomention
+test half_up_is_not_a_magnitude_rule::tests::a_reading_quoted_as_a_name_is_a_mention_rather_than_a_reading ... FAILED
+test result: FAILED. 80 passed; 1 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== mentionspan
+test half_up_is_not_a_magnitude_rule::tests::control_a_code_span_alone_is_not_a_mention ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::an_identifier_carrying_a_spelling_or_a_reading_is_not_one ... FAILED
+test result: FAILED. 79 passed; 2 failed; 0 ignored; 0 measured; 736 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`

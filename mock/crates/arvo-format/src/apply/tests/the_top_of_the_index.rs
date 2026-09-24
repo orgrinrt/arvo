@@ -261,3 +261,40 @@ fn at_the_bottom_the_step_never_leaves_the_index() {
     assert_eq!(adapt::<Up>(first, Dither::UNUSED), Slot::at(i128::MIN + 1));
     assert!(!panic_on_overflow::<Up>(first, Dither::UNUSED).get());
 }
+
+#[test]
+fn half_up_takes_the_tie_under_the_bottom_of_the_index_onto_it() {
+    // `i128::MIN - 1/2` is a tie between one under the index and `i128::MIN`.
+    // `half_up` is `floor(x + 1/2)`, which is `i128::MIN`: the first slot of
+    // `AtTheBottom`, so nothing overflows and nothing wraps. Worked by hand, and
+    // the cell the ruling moved: a tie sent away from zero would have gone to
+    // one under the index, left the range and wrapped to its top.
+    let tie = Exact::between(Slot::at(i128::MIN), Fraction::of(-1, 2));
+    assert!(tie.is_tie().get());
+
+    type Up = Signature<Bottom, Adapt<HalfUp, Wrap>>;
+    type UpSat = Signature<Bottom, Adapt<HalfUp, Saturate>>;
+    assert_eq!(adapt::<Up>(tie, Dither::UNUSED), Slot::at(i128::MIN));
+    assert!(!panic_on_overflow::<Up>(tie, Dither::UNUSED).get());
+    assert_eq!(adapt::<UpSat>(tie, Dither::UNUSED), Slot::at(i128::MIN));
+    assert!(!panic_on_overflow::<UpSat>(tie, Dither::UNUSED).get());
+
+    // `i128::MIN` is even and the slot under it odd, so half-even agrees here,
+    // and toward zero and ceil climb onto it as well.
+    type Even = Signature<Bottom, Adapt<HalfEven, Wrap>>;
+    type Zero = Signature<Bottom, Adapt<TowardZero, Wrap>>;
+    type Ceiling = Signature<Bottom, Adapt<Ceil, Wrap>>;
+    assert_eq!(adapt::<Even>(tie, Dither::UNUSED), Slot::at(i128::MIN));
+    assert_eq!(adapt::<Zero>(tie, Dither::UNUSED), Slot::at(i128::MIN));
+    assert_eq!(adapt::<Ceiling>(tie, Dither::UNUSED), Slot::at(i128::MIN));
+
+    // The control: floor takes the same tie to one under the index, which
+    // leaves the range and wraps to its top, so the arms above are not passing
+    // because nothing at this position can leave.
+    type Down = Signature<Bottom, Adapt<Floor, Wrap>>;
+    assert_eq!(
+        adapt::<Down>(tie, Dither::UNUSED),
+        Slot::at(i128::MIN + 255)
+    );
+    assert!(panic_on_overflow::<Down>(tie, Dither::UNUSED).get());
+}

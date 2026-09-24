@@ -12,26 +12,25 @@
 //! `Exact`, `Rounded`, `round_slot` or `complete_slot`, which is what lets it
 //! disagree with them about arithmetic.
 //!
-//! Each mode picks between the two neighbours of an off-grid position by the
-//! words the `Mode` rustdoc gives: the lower or the higher neighbour, the one of
-//! smaller magnitude, the nearer one with a tie going to the larger magnitude or
-//! to the even one, and for the stochastic mode the higher neighbour exactly
-//! when the dither lies below the position's remainder. Wrapping reduces the
-//! distance from the lowest slot modulo the span, and saturation pins to the
-//! end of the range on the side the rounded position left by.
+//! Each mode is computed from the formula that defines it, over the exact
+//! rational `whole + num / den`, and never by choosing between the two
+//! neighbours of a position the way the map does: `floor(x)`, `ceil(x)`,
+//! `sign(x) floor(|x|)`, `floor(x + 1/2)`, that same value stepped down to the
+//! even neighbour where `x` is a tie and it came out odd, and `ceil(x - d)` for
+//! the stochastic mode at a dither `d` in `[0, 1)`, with a dither below zero read
+//! as `ceil` and one at or above one read as `floor`, which is what `Dither::at`
+//! documents. So every tie rule it applies is the canon's rather than the
+//! implementation's. Wrapping reduces the distance from the lowest slot modulo
+//! the span, and saturation pins to the end of the range on the side the rounded
+//! position left by.
 //!
-//! Two of those readings are the implementation's own rather than a meaning the
-//! design settles, so on them the oracle is not independent of the map:
-//!
-//! - `Clamp` is read as `Saturate`. The policy's rustdoc says a clamp pins to a
-//!   declared bound that need not be the range's own end, and a declared
-//!   signature carries nowhere to put that bound, so `complete_slot` pins to
-//!   the range and the oracle does the same. The `Clamp` cells of a sweep check
-//!   that the map makes that collapse, and nothing about a clamp to a bound.
-//! - A `HalfUp` tie goes away from zero, which is what the `Mode` rustdoc in
-//!   `rounding.rs` says. What `half_up` denotes is
-//!   `question::which_operation_half_up_denotes`, open, so the `HalfUp` cells
-//!   check the map against that reading and not against a settled one.
+//! One reading is the implementation's own rather than a meaning the design
+//! settles, so on it the oracle is not independent of the map. `Clamp` is read as
+//! `Saturate`: the policy's rustdoc says a clamp pins to a declared bound that
+//! need not be the range's own end, and a declared signature carries nowhere to
+//! put that bound, so `complete_slot` pins to the range and the oracle does the
+//! same. The `Clamp` cells of a sweep check that the map makes that collapse, and
+//! nothing about a clamp to a bound.
 
 use core::cmp::Ordering;
 
@@ -103,11 +102,6 @@ impl Wide {
         self.lo % 2 == 0
     }
 
-    /// The magnitude, exactly.
-    pub(super) fn magnitude(self) -> Self {
-        if self.is_negative() { self.negated() } else { self }
-    }
-
     /// The value as an index, where the index holds it.
     pub(super) fn index(self) -> Maybe<i128> {
         Maybe::from(
@@ -151,35 +145,61 @@ pub(super) struct Point {
     pub(super) den:   i64,
 }
 
-/// The slot a mode puts the position on, as the oracle reads the mode.
+/// `floor(whole + n / d)` for a positive `d`, exactly.
 ///
-/// The dither is a ratio in `[0, 1)`, read by the stochastic mode alone.
+/// `div_euclid` by a positive divisor is the floor, so the fraction's own floor
+/// is added to the whole part and nothing about which neighbour is nearer is
+/// asked.
+fn floor_of(whole: Wide, n: i128, d: i128) -> Wide {
+    assert!(d > 0, "a denominator the oracle does not divide by");
+    whole.plus(Wide::of(n.div_euclid(d)))
+}
+
+/// `ceil(whole + n / d)`, as `-floor(-(whole + n / d))`.
+fn ceil_of(whole: Wide, n: i128, d: i128) -> Wide {
+    floor_of(whole.negated(), -n, d).negated()
+}
+
+/// The slot a mode puts the position on, from the formula that defines the mode.
+///
+/// The dither is a ratio over a positive denominator, read by the stochastic mode
+/// alone.
 pub(super) fn rounded(mode: Mode, p: Point, dither: (i64, i64)) -> Wide {
-    if p.num == 0 {
-        return p.whole;
-    }
-    let (lower, higher) = (p.whole, p.whole.plus(Wide::of(1)));
-    // The distances to the two neighbours are `num / den` and `(den - num) / den`.
-    let (to_lower, to_higher) = (p.num, p.den - p.num);
-    let lower_is_smaller = lower.magnitude().is_below(higher.magnitude());
-    let smaller_magnitude = if lower_is_smaller { lower } else { higher };
-    let larger_magnitude = if lower_is_smaller { higher } else { lower };
-    let nearer = match to_lower.cmp(&to_higher) {
-        Ordering::Less => Maybe::Is(lower),
-        Ordering::Greater => Maybe::Is(higher),
-        Ordering::Equal => Maybe::Isnt,
-    };
+    let (whole, n, d) = (p.whole, p.num as i128, p.den as i128);
+    // `x + 1/2`, over the doubled denominator.
+    let (half_n, half_d) = (2 * n + d, 2 * d);
     match mode {
-        Mode::Floor => lower,
-        Mode::Ceil => higher,
-        Mode::TowardZero => smaller_magnitude,
-        // Ties away from zero, the reading `rounding.rs` documents; what
-        // `half_up` denotes is an open question.
-        Mode::HalfUp => nearer.unwrap_or(larger_magnitude),
-        Mode::HalfEven => nearer.unwrap_or(if lower.is_even() { lower } else { higher }),
+        Mode::Floor => floor_of(whole, n, d),
+        Mode::Ceil => ceil_of(whole, n, d),
+        // `sign(x) floor(|x|)`. `x` is negative exactly when its floor is.
+        Mode::TowardZero => {
+            if floor_of(whole, n, d).is_negative() {
+                floor_of(whole.negated(), -n, d).negated()
+            } else {
+                floor_of(whole, n, d)
+            }
+        },
+        Mode::HalfUp => floor_of(whole, half_n, half_d),
+        // `floor(x + 1/2)`, stepped down where `x` is a tie and that came out odd.
+        // A tie is where `x + 1/2` is whole, so the step lands on the even
+        // neighbour, which is the lower one.
+        Mode::HalfEven => {
+            let r = floor_of(whole, half_n, half_d);
+            let tie = half_n.rem_euclid(half_d) == 0;
+            if tie && !r.is_even() { r.minus(Wide::of(1)) } else { r }
+        },
+        // `ceil(x - d)` for a dither in `[0, 1)`, and the two ends `Dither::at`
+        // documents outside it.
         Mode::Stochastic => {
             let (dn, dd) = (dither.0 as i128, dither.1 as i128);
-            if dn * (p.den as i128) < (p.num as i128) * dd { higher } else { lower }
+            assert!(dd > 0, "a dither the oracle does not read");
+            if dn < 0 {
+                ceil_of(whole, n, d)
+            } else if dn >= dd {
+                floor_of(whole, n, d)
+            } else {
+                ceil_of(whole, n * dd - dn * d, d * dd)
+            }
         },
     }
 }
@@ -302,7 +322,11 @@ fn past_the_index_the_two_limbs_keep_the_value() {
 }
 
 #[test]
-fn the_oracle_reads_each_mode_as_its_rustdoc_says() {
+fn the_oracle_reads_each_mode_as_the_canon_formula_says() {
+    // Worked by hand from the formulas, in quarters. The half-up rows are the
+    // ruling's own examples: a tie goes toward positive infinity at every sign,
+    // so `-2.5` goes to `-2` and `-0.5` to `0`, where ties away from zero would
+    // give `-3` and `-1`.
     let at = |whole: i128, num: i64| {
         Point {
             whole: Wide::of(whole),
@@ -311,21 +335,29 @@ fn the_oracle_reads_each_mode_as_its_rustdoc_says() {
         }
     };
     let no = (0, 1);
-    let cases: [(Mode, i128, i64, i128); 14] = [
+    let cases: [(Mode, i128, i64, i128); 22] = [
         (Mode::Floor, -1, 1, -1),
         (Mode::Ceil, -1, 1, 0),
         (Mode::TowardZero, -1, 3, 0),
         (Mode::TowardZero, 2, 3, 2),
+        (Mode::TowardZero, -3, 2, -2),
+        (Mode::TowardZero, 0, 0, 0),
         (Mode::HalfUp, 2, 2, 3),
-        (Mode::HalfUp, -3, 2, -3),
+        (Mode::HalfUp, -3, 2, -2),
+        (Mode::HalfUp, -1, 2, 0),
+        (Mode::HalfUp, 0, 2, 1),
         (Mode::HalfUp, -3, 1, -3),
         (Mode::HalfUp, -3, 3, -2),
         (Mode::HalfEven, 2, 2, 2),
         (Mode::HalfEven, 3, 2, 4),
         (Mode::HalfEven, -3, 2, -2),
+        (Mode::HalfEven, -2, 2, -2),
+        (Mode::HalfEven, -1, 2, 0),
         (Mode::HalfEven, 3, 1, 3),
+        (Mode::HalfEven, 3, 3, 4),
         (Mode::Floor, 5, 0, 5),
         (Mode::Ceil, 5, 0, 5),
+        (Mode::HalfUp, 5, 0, 5),
     ];
     for (mode, whole, num, want) in cases {
         assert_eq!(
@@ -351,6 +383,49 @@ fn the_oracle_reads_each_mode_as_its_rustdoc_says() {
         rounded(Mode::Stochastic, at(0, 0), (0, 8)).index(),
         Maybe::Is(0)
     );
+    // Outside `[0, 1)` the dither is read as `Dither::at` documents it.
+    assert_eq!(
+        rounded(Mode::Stochastic, at(-3, 3), (-1, 8)).index(),
+        Maybe::Is(-2)
+    );
+    assert_eq!(
+        rounded(Mode::Stochastic, at(-3, 3), (8, 8)).index(),
+        Maybe::Is(-3)
+    );
+    assert_eq!(
+        rounded(Mode::Stochastic, at(-3, 0), (-1, 8)).index(),
+        Maybe::Is(-3)
+    );
+}
+
+#[test]
+fn past_the_index_the_formulas_answer_as_they_do_inside_it() {
+    // A tie a half under the index and a half over it, which the map carries as
+    // a pinned slot and a distance and the oracle as an ordinary value.
+    let under = Point {
+        whole: Wide::of(i128::MIN).minus(Wide::of(1)),
+        num:   1,
+        den:   2,
+    };
+    let over = Point {
+        whole: Wide::of(i128::MAX),
+        num:   1,
+        den:   2,
+    };
+    let no = (0, 1);
+    assert_eq!(rounded(Mode::HalfUp, under, no), Wide::of(i128::MIN));
+    assert_eq!(rounded(Mode::HalfEven, under, no), Wide::of(i128::MIN));
+    assert_eq!(rounded(Mode::TowardZero, under, no), Wide::of(i128::MIN));
+    assert_eq!(rounded(Mode::Floor, under, no), under.whole);
+    assert_eq!(
+        rounded(Mode::HalfUp, over, no),
+        Wide::of(i128::MAX).plus(Wide::of(1))
+    );
+    assert_eq!(
+        rounded(Mode::HalfEven, over, no),
+        Wide::of(i128::MAX).plus(Wide::of(1))
+    );
+    assert_eq!(rounded(Mode::TowardZero, over, no), Wide::of(i128::MAX));
 }
 
 #[test]

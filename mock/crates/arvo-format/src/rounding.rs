@@ -14,6 +14,12 @@
 //! which one was meant. Dropping bits off a two's complement value is `Floor` and
 //! it is not `TowardZero`; the note is here so the hardware operation does not get
 //! read back into the name.
+//!
+//! A note travels with `HalfUp` for the same kind of reason. It is `floor(x + q/2)`,
+//! a tie going toward positive infinity whatever the sign, so a tie at `-2.5 q`
+//! goes to `-2 q`. It is not the `HALF_UP` of Java or Python, which sends that tie
+//! the other way; that operation is not one of the six and is reached by shifting
+//! the position half a step away from zero and then rounding with `TowardZero`.
 
 /// What a value between two grid points becomes.
 ///
@@ -41,7 +47,9 @@ pub enum Mode {
     Floor,
     /// Toward positive infinity.
     Ceil,
-    /// To the nearest, and a tie goes away from zero.
+    /// To the nearest, and a tie goes toward positive infinity at every sign,
+    /// `floor(x + q/2)`. Not Java's or Python's `HALF_UP`: a tie at `-2.5 q`
+    /// goes to `-2 q`.
     HalfUp,
     /// To the nearest, and a tie goes to the neighbour with an even slot.
     HalfEven,
@@ -58,7 +66,13 @@ pub struct TowardZero;
 pub struct Floor;
 /// Toward positive infinity.
 pub struct Ceil;
-/// Nearest, ties away from zero.
+/// Nearest, a tie toward positive infinity at every sign, `floor(x + q/2)`.
+///
+/// So a tie at -2.5 goes to -2. It is not the `HALF_UP` of Java or Python, which
+/// sends that tie the other way on the negative side; that one is ties away from
+/// zero, and it is reached here by shifting the position half a step away from
+/// zero and rounding toward zero, which is a composition a consumer writes
+/// rather than a mode of this crate.
 pub struct HalfUp;
 /// Nearest, ties to even.
 pub struct HalfEven;

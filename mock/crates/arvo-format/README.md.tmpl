@@ -19,7 +19,10 @@ The rounding mode says what happens between grid points, and there are six of th
 one of them and does not appear anywhere in this crate, because on a signed domain it names two
 operations that genuinely differ, and a reader coming from the hardware and a reader coming from C
 would each have been sure they knew which. Do note that dropping bits off a two's complement value is
-`floor`, not `toward_zero`.
+`floor`, not `toward_zero`. And `half_up` sends a tie toward positive infinity whatever the sign, so a
+tie at -2.5 goes to -2. It is not the `HALF_UP` of Java or Python, which sends ties the other way on
+the negative side; that one is reached here by shifting half a step away from zero and then rounding
+toward zero.
 
 The overflow policy says what happens outside the range, and that one is open rather than fixed at
 three. Wrapping, saturating and clamping are what is here; another joins by supplying what the concept

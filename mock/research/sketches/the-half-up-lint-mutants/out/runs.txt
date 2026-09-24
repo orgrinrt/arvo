@@ -1,0 +1,152 @@
+== none
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+== rowblank
+test half_up_is_not_a_magnitude_rule::tests::a_row_ends_the_clause_it_interrupts ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::control_a_row_that_contrasts_or_names_something_else_is_silent ... FAILED
+test result: FAILED. 38 passed; 2 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== offset
+test half_up_is_not_a_magnitude_rule::tests::an_offset_counts_from_the_passage_in_a_later_clause_and_a_later_row ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== row
+test half_up_is_not_a_magnitude_rule::tests::a_table_row_pairs_its_first_cell_with_the_others ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::an_offset_counts_from_the_passage_in_a_later_clause_and_a_later_row ... FAILED
+test result: FAILED. 38 passed; 2 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== subject
+test half_up_is_not_a_magnitude_rule::tests::a_subject_names_the_mode_in_every_clause ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_sentence_the_crate_shipped_fires ... FAILED
+test result: FAILED. 38 passed; 2 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.05s
+error: test failed, to rerun pass `--lib`
+== between
+test half_up_is_not_a_magnitude_rule::tests::control_a_subject_still_takes_every_escape ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_negator_before_the_later_of_the_two_lets_it_through ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_rulings_own_note_and_the_crates_own_docs_read_clean ... FAILED
+test result: FAILED. 37 passed; 3 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== list
+test half_up_is_not_a_magnitude_rule::tests::a_list_with_the_two_in_different_items_is_silent ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== onecomma
+test half_up_is_not_a_magnitude_rule::tests::a_subject_names_the_mode_in_every_clause ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::control_what_is_not_a_boundary_keeps_the_clause_whole ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_sentence_the_crate_shipped_fires ... FAILED
+test result: FAILED. 37 passed; 3 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.06s
+error: test failed, to rerun pass `--lib`
+== clause
+test half_up_is_not_a_magnitude_rule::tests::a_marker_in_the_next_clause_does_not_reach_back ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_subject_names_the_mode_in_every_clause ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_row_ends_the_clause_it_interrupts ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_clause_boundary_separates_the_two ... FAILED
+test result: FAILED. 36 passed; 4 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== dot
+test half_up_is_not_a_magnitude_rule::tests::control_what_is_not_a_boundary_keeps_the_clause_whole ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== newline
+test half_up_is_not_a_magnitude_rule::tests::control_what_is_not_a_boundary_keeps_the_clause_whole ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== neg
+test half_up_is_not_a_magnitude_rule::tests::control_a_row_that_contrasts_or_names_something_else_is_silent ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::control_a_subject_still_takes_every_escape ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_negator_before_the_later_of_the_two_lets_it_through ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::the_rulings_own_note_and_the_crates_own_docs_read_clean ... FAILED
+test result: FAILED. 36 passed; 4 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== nt
+test half_up_is_not_a_magnitude_rule::tests::every_negator_before_the_later_of_the_two_lets_it_through ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== else
+test half_up_is_not_a_magnitude_rule::tests::control_a_row_that_contrasts_or_names_something_else_is_silent ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::control_a_subject_still_takes_every_escape ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::every_marker_for_another_rule_lets_the_clause_through ... FAILED
+test result: FAILED. 37 passed; 3 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== bound
+test half_up_is_not_a_magnitude_rule::corpus_tests::control_a_doc_block_over_another_item_takes_nothing ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::a_negator_matched_as_a_word_not_inside_one ... FAILED
+test half_up_is_not_a_magnitude_rule::tests::an_identifier_carrying_a_spelling_or_a_reading_is_not_one ... FAILED
+test result: FAILED. 37 passed; 3 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== lineof
+test half_up_is_not_a_magnitude_rule::corpus_tests::a_line_is_counted_from_the_passage_to_the_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::corpus_tests::a_doc_comment_a_comment_and_a_template_each_fire_where_they_are ... FAILED
+test result: FAILED. 38 passed; 2 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== fourslash
+test half_up_is_not_a_magnitude_rule::corpus_tests::four_slashes_is_a_plain_comment_and_not_a_doc ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.02s
+error: test failed, to rerun pass `--lib`
+== trailing
+test half_up_is_not_a_magnitude_rule::corpus_tests::consecutive_line_comments_of_one_kind_are_one_passage ... FAILED
+test half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose ... FAILED
+test result: FAILED. 38 passed; 2 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== nojoin
+test half_up_is_not_a_magnitude_rule::corpus_tests::a_line_is_counted_from_the_passage_to_the_reading ... FAILED
+test half_up_is_not_a_magnitude_rule::corpus_tests::consecutive_line_comments_of_one_kind_are_one_passage ... FAILED
+test result: FAILED. 38 passed; 2 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== kinds
+test half_up_is_not_a_magnitude_rule::corpus_tests::consecutive_line_comments_of_one_kind_are_one_passage ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== gap
+test half_up_is_not_a_magnitude_rule::corpus_tests::a_gap_or_code_between_comments_splits_them ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== nest
+test half_up_is_not_a_magnitude_rule::corpus_tests::a_block_comment_nests_and_keeps_its_first_line ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== string
+test half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== raw
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+== char
+test half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== nosubject
+test half_up_is_not_a_magnitude_rule::corpus_tests::a_doc_block_takes_the_mode_its_item_names_past_attributes ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== noskip
+test half_up_is_not_a_magnitude_rule::corpus_tests::a_doc_block_takes_the_mode_its_item_names_past_attributes ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== itemcomment
+test half_up_is_not_a_magnitude_rule::corpus_tests::control_a_doc_block_over_another_item_takes_nothing ... FAILED
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== escape
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.05s
+== none (rerun)
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+== raw (rerun)
+test half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose ... FAILED
+thread 'half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose' (60746438) panicked at /Users/orgrinrt/Dev/clause-work/numerics/.worktrees/arvo-halfup-fix/mock/lints/half_up_is_not_a_magnitude_rule/corpus_tests.rs:71:5:
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`
+== escape (rerun)
+test half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose ... FAILED
+thread 'half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose' (60746673) panicked at /Users/orgrinrt/Dev/clause-work/numerics/.worktrees/arvo-halfup-fix/mock/lints/half_up_is_not_a_magnitude_rule/corpus_tests.rs:71:5:
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== string (rerun)
+test half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose ... FAILED
+thread 'half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose' (60746948) panicked at /Users/orgrinrt/Dev/clause-work/numerics/.worktrees/arvo-halfup-fix/mock/lints/half_up_is_not_a_magnitude_rule/corpus_tests.rs:71:5:
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.03s
+error: test failed, to rerun pass `--lib`
+== char (rerun)
+test half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose ... FAILED
+thread 'half_up_is_not_a_magnitude_rule::corpus_tests::nothing_inside_a_literal_is_prose' (60747161) panicked at /Users/orgrinrt/Dev/clause-work/numerics/.worktrees/arvo-halfup-fix/mock/lints/half_up_is_not_a_magnitude_rule/corpus_tests.rs:71:5:
+test result: FAILED. 39 passed; 1 failed; 0 ignored; 0 measured; 723 filtered out; finished in 0.04s
+error: test failed, to rerun pass `--lib`

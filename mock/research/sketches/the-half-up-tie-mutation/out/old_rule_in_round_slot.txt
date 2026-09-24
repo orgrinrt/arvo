@@ -1,0 +1,664 @@
+   Compiling arvo-format v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/arvo-halfup-fix/mock/crates/arvo-format)
+warning: associated function `at` is never used
+  --> crates/arvo-format/src/apply.rs:61:25
+   |
+58 | impl Rounded {
+   | ------------ associated function in this implementation
+...
+61 |     pub(crate) const fn at(at: i128) -> Self {
+   |                         ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `arvo-format` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 58.91s
+     Running unittests src/lib.rs (/Users/orgrinrt/Dev/clause-work/numerics/target/debug/deps/arvo_format-97ee6d7fb63b9be7)
+
+running 227 tests
+test addition::tests::the_operation::a_sum_past_the_index_saturates_once_so_a_third_term_cannot_bring_it_back ... ok
+test addition::tests::the_operation::a_phase_cancelled_outside_the_range_has_no_identity_and_wrapping_finds_a_neutral_slot ... ok
+test addition::tests::the_operation::no_sum_of_two_members_lands_on_a_half_step_grid ... ok
+test addition::tests::the_operation::the_wide_sum_is_exact_past_both_ends_of_the_index ... ok
+test addition::tests::the_operation::the_identitys_slot_is_neutral_wherever_the_format_has_one ... ok
+test addition::tests::the_step::no_phase_admits_a_range_past_the_doubling_bound_itself ... ok
+test addition::tests::the_step::every_shipped_range_carries_its_sums_at_every_phase ... ok
+test addition::tests::the_step::the_obligation_admits_every_shipped_constant_quantum_point ... ok
+test addition::tests::the_step::the_obligation_refuses_a_magnitude_indexed_quantum ... ok
+test addition::tests::the_step::the_obligation_refuses_a_remainder_the_position_cannot_hold ... ok
+test addition::tests::the_step::the_obligation_refuses_a_sum_the_coordinate_cannot_carry_on_both_sides ... ok
+test addition::tests::the_step::the_reach_is_the_positions_the_step_produces ... ok
+test addition::tests::the_step::the_step_the_reach_and_the_verdict_evaluate_at_check_time ... ok
+test addition::tests::the_step::the_exact_step_holds_at_the_largest_denominator_the_remainder_admits ... ok
+test addition::tests::the_verdict::a_rule_keyed_on_signedness_disagrees_with_brute_force_where_the_verdict_does_not ... ok
+test addition::tests::the_verdict::quantifying_over_the_ambient_domain_refuses_a_format_that_is_associative ... ok
+test addition::tests::the_operation::addition_is_total_at_the_widest_ranges_under_a_fractional_phase ... ok
+test addition::tests::the_verdict::the_count_and_the_verdict_do_not_move_with_the_fraction_width_or_the_radix ... ok
+test addition::tests::the_operation::addition_is_exact_where_the_exact_position_is_a_member ... ok
+test addition::tests::the_verdict::the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phase ... FAILED
+test addition::tests::the_rounding_axis::the_rounding_mode_moves_the_sum_exactly_where_the_phase_is_not_whole ... ok
+test apply::tests::a_non_tie_is_decided_by_which_side_of_the_midpoint_it_falls ... ok
+test apply::tests::a_remainder_outside_the_unit_interval_is_normalised_into_the_slot ... ok
+test apply::tests::a_wider_format_admits_what_a_narrower_one_completes_away ... ok
+test apply::tests::clamp_and_saturate_compute_the_same_function_because_a_coordinate_is_missing ... ok
+test apply::tests::each_directed_mode_moves_every_off_grid_position_its_own_way ... ok
+test apply::tests::half_up_goes_toward_positive_infinity_on_a_tie_and_half_even_goes_to_the_even_slot ... FAILED
+test apply::tests::five_modes_ignore_the_dither_and_one_does_not ... ok
+test apply::tests::rounding_happens_before_completion_and_the_order_is_observable ... ok
+test apply::tests::order_transport_is_measured_from_the_map_rather_than_declared ... ok
+test apply::tests::rounding_is_reachable_without_completion_and_completion_without_rounding ... ok
+test apply::tests::the_carry_past_the_index::a_step_past_the_bottom_is_out_of_range_where_the_fed_range_does_not_start_there ... ok
+test addition::tests::the_step::the_exact_step_is_the_sum_of_the_values_read_back_as_a_position ... ok
+test apply::tests::the_carry_past_the_index::the_carry_reaches_past_the_index_at_every_distance_it_is_fed ... ok
+test addition::tests::the_verdict::the_verdict_holds_a_witness_or_a_sample_over_every_admitted_width ... ok
+test apply::tests::the_carry_past_the_index::the_law_reports_a_constructor_that_drops_the_distance ... ok
+test apply::tests::the_control_the_sweep_reaches_both_regions_and_both_sides ... ok
+test apply::tests::the_cross_end_saturation::a_quarter_under_the_index_ceils_onto_its_bottom_and_saturates_low ... ok
+test apply::tests::the_cross_end_saturation::two_and_a_quarter_past_either_end_saturates_on_that_side ... ok
+test apply::tests::the_cross_end_saturation::wrap_residues_hand_reduced_off_grid_into_integer_3 ... ok
+test apply::tests::the_edges::a_dither_at_the_edges_still_selects_between_two_neighbours ... ok
+test apply::tests::the_edges::a_dither_below_zero_rounds_as_ceil_and_one_at_or_above_one_as_floor ... ok
+test apply::tests::the_edges::adapting_at_the_edges_of_the_index_gives_the_arithmetic_answer ... ok
+test apply::tests::the_edges::rounding_one_past_the_integer_one_size_down_lands_the_position_it_names ... ok
+test apply::tests::the_edges::rounding_past_the_top_of_the_index_wraps_the_position_it_names ... ok
+test apply::tests::the_edges::saturating_at_the_edges_pins_to_the_declared_ends ... ok
+test apply::tests::the_edges::the_control_the_edges_are_outside_the_window_the_other_arms_use ... ok
+test apply::tests::the_edges::the_edge_answers_are_the_ones_worked_out_by_hand ... ok
+test apply::tests::the_edges::the_oracle_agrees_with_positions_worked_out_by_hand ... ok
+test apply::tests::the_far_end_of_the_index::a_step_past_the_top_of_the_index_wraps_into_a_range_at_the_bottom ... ok
+test apply::tests::the_far_end_of_the_index::a_wrap_that_subtracts_first_goes_wrong_only_where_the_span_is_not_a_power_of_two ... ok
+test apply::tests::the_far_end_of_the_index::the_bottom_of_the_index_wraps_into_a_range_at_the_top ... ok
+test apply::tests::the_map_is_the_identity_on_a_grid_point_inside_the_window ... ok
+test apply::tests::the_oracle::past_the_index_the_formulas_answer_as_they_do_inside_it ... ok
+test apply::tests::the_oracle::past_the_index_the_two_limbs_keep_the_value ... ok
+test apply::tests::the_oracle::the_oracle_reads_each_mode_as_the_canon_formula_says ... ok
+test apply::tests::the_oracle::the_oracle_wraps_by_the_span_and_pins_saturate_and_clamp_alike ... ok
+test apply::tests::the_oracle::the_two_limbs_agree_with_the_index_wherever_the_index_holds_the_answer ... ok
+test apply::tests::the_oracle_sweep::the_feed_reaches_every_band_around_both_ends ... ok
+test apply::tests::the_oracle_sweep::the_shipped_map_answers_as_the_oracle_does ... FAILED
+test apply::tests::the_oracle_sweep::every_declared_signature_answers_as_the_oracle_does ... FAILED
+test apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map ... FAILED
+test apply::tests::the_panic_verdicts::the_panic_verdicts_report_and_the_crate_stays_total ... ok
+test apply::tests::the_ratio_coordinate::a_carry_past_the_end_of_the_index_pins_the_slot_and_keeps_the_distance ... ok
+test apply::tests::the_carry_past_the_index::past_the_bottom_of_the_index_a_range_adapts_as_its_reference_does ... ok
+test apply::tests::the_ratio_coordinate::a_carry_past_the_integer_one_size_down_lands_the_slot_it_names ... ok
+test apply::tests::the_ratio_coordinate::a_positive_denominator_is_kept_rather_than_replaced ... ok
+test apply::tests::the_ratio_coordinate::a_shared_factor_of_two_cancels_rather_than_saturating ... ok
+test apply::tests::the_ratio_coordinate::a_tie_is_decided_at_a_remainder_that_does_not_survive_doubling ... ok
+test apply::tests::the_ratio_coordinate::the_control_the_matrix_carries_both_parities_against_the_least_value ... ok
+test apply::tests::the_ratio_coordinate::the_saturating_region_is_where_the_other_operand_is_odd ... ok
+test apply::tests::the_ratio_coordinate::the_ratio_coordinate_holds_its_four_properties_over_the_whole_matrix ... ok
+test apply::tests::the_ratio_coordinate::the_predicate_the_properties_partition_on_agrees_with_reduction ... ok
+test apply::tests::the_ratio_coordinate::the_two_pairs_the_old_rule_named_now_keep_their_sign ... ok
+test apply::tests::the_tie_sweep::both_oracles_put_the_negative_half_up_tie_on_the_slot_above ... ok
+test apply::tests::the_tie_sweep::the_tie_feed_names_the_tie_under_the_index_and_the_tie_over_it ... ok
+test apply::tests::the_tie_sweep::the_shipped_map_answers_every_tie_at_both_ends_of_the_index_as_the_oracles_do ... FAILED
+test apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do ... FAILED
+test apply::tests::the_tie_sweep::the_tie_feed_reaches_every_sign_and_parity_and_both_sides_of_every_range ... ok
+test apply::tests::the_top_of_the_index::a_carry_past_the_index_lands_where_the_named_position_does ... ok
+test apply::tests::the_top_of_the_index::a_step_past_the_top_is_reported_as_leaving_the_range ... ok
+test apply::tests::the_top_of_the_index::at_the_bottom_the_step_never_leaves_the_index ... ok
+test apply::tests::the_carry_past_the_index::past_the_top_of_the_index_a_range_adapts_as_its_reference_does ... ok
+test apply::tests::the_top_of_the_index::ceil_just_under_one_past_the_top_wraps_to_the_range_s_lowest_slot ... ok
+test apply::tests::the_top_of_the_index::every_mode_answers_at_the_top_as_it_answers_by_hand ... ok
+test apply::tests::the_top_of_the_index::half_up_takes_the_tie_under_the_bottom_of_the_index_onto_it ... FAILED
+test apply::tests::the_top_of_the_index::saturating_and_clamping_pin_a_step_past_the_top_to_the_top ... ok
+test apply::tests::the_translation_law::every_shift_is_even_and_every_reference_is_off_the_span ... ok
+test apply::tests::the_tie_sweep::the_tie_sweep_reports_every_planted_tie_rule_at_a_tie_of_the_sign_it_breaks ... FAILED
+test apply::tests::the_translation_law::the_range_at_the_bottom_adapts_as_its_reference_does ... ok
+test apply::tests::the_translation_law::the_range_of_200_at_the_bottom_adapts_as_its_reference_does ... ok
+test apply::tests::the_translation_law::the_range_of_200_at_the_top_adapts_as_its_reference_does ... ok
+test apply::tests::the_translation_law::the_range_at_the_top_adapts_as_its_reference_does ... ok
+test apply::tests::the_translation_law::the_widest_range_at_the_bottom_adapts_as_its_reference_does ... ok
+test apply::tests::the_wide_oracle_sweep::the_platform_width_points_answer_as_the_oracle_does ... FAILED
+test apply::tests::the_wide_oracle_sweep::the_wide_feed_reaches_past_either_end_of_the_index_by_more_than_2_to_the_62 ... ok
+test apply::tests::the_wide_oracle_sweep::the_shipped_map_answers_as_the_oracle_does_over_the_wide_region ... FAILED
+test apply::tests::the_translation_law::the_widest_range_at_the_top_adapts_as_its_reference_does ... ok
+test apply::tests::toward_zero_and_floor_are_measured_to_differ_and_the_witness_is_named ... ok
+test apply::tests::two_signatures_differing_only_in_mode_adapt_the_same_position_differently ... ok
+test apply::tests::wrapping_inverts_a_specific_pair_and_the_witness_is_named ... ok
+test symmetry::tests::the_classification::half_up_reads_nothing_and_the_ties_away_rule_reads_the_sign_at_a_tie ... FAILED
+test symmetry::tests::the_classification::no_verdict_here_moves_with_the_dither ... ok
+test symmetry::tests::the_classification::the_classification_of_every_mode_agrees_with_what_the_map_reads ... FAILED
+test symmetry::tests::the_classification::the_control_a_slot_outside_the_wide_range_would_be_caught ... ok
+test symmetry::tests::the_classification::the_control_a_wrong_classification_would_be_caught ... FAILED
+test symmetry::tests::the_classification::the_control_the_derivation_can_tell_the_four_domains_apart ... FAILED
+test symmetry::tests::the_classification::the_control_the_two_symmetries_are_not_the_same_question ... FAILED
+test symmetry::tests::the_classification::the_reflection_fact_of_every_mode_agrees_with_the_map ... FAILED
+test addition::tests::the_operation::addition_commutes_over_every_pair_mode_policy_and_phase ... ok
+test symmetry::tests::the_classification::the_rounded_slot_is_the_position_slot_or_the_one_above_it ... ok
+test symmetry::tests::the_classification::the_two_symmetries_partition_the_six_shipped_names ... ok
+test symmetry::tests::the_cross::a_clamp_on_a_range_with_no_negative_slot_still_breaks_below_it ... ok
+test symmetry::tests::the_cross::a_clamp_on_a_two_s_complement_range_breaks_at_a_named_witness ... ok
+test symmetry::tests::the_cross::a_symmetric_range_is_what_a_clamp_needs_to_reflect ... ok
+test symmetry::tests::the_cross::the_control_every_range_kind_the_predicates_read_is_in_the_cross ... ok
+test symmetry::tests::the_cross::the_map_reflects_exactly_where_the_predicate_says ... FAILED
+test addition::tests::the_verdict::the_counts_the_canon_records_are_reproduced ... ok
+test symmetry::tests::the_cross::wrapping_relocates_and_reflects_over_every_cell_measured ... ok
+test symmetry::tests::the_partition::every_failing_cell_fails_at_a_named_position_another_rule_passes ... FAILED
+test symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says ... FAILED
+test symmetry::tests::the_partition::every_rule_commutes_with_exactly_the_laws_its_formula_says ... FAILED
+test symmetry::tests::the_partition::the_shipped_predicates_at_the_widest_reach_agree_with_the_measured_partition ... FAILED
+test symmetry::tests::the_partition::the_witnesses_answer_as_the_formulas_do ... FAILED
+test symmetry::tests::the_reach::a_negative_translation_carries_a_non_negative_position_below_zero ... ok
+test symmetry::tests::the_reach::a_reach_handed_its_ends_backwards_widens_rather_than_inverting ... ok
+test symmetry::tests::the_reach::a_translation_band_with_no_positive_translation_licenses_a_low_excursion ... ok
+test symmetry::tests::the_reach::an_on_grid_reach_is_strict_at_the_top_and_the_map_agrees ... ok
+test symmetry::tests::the_reach::the_conservative_reach_is_the_widest_thing_a_caller_can_declare ... ok
+test symmetry::tests::the_reach::the_control_a_degenerate_reach_licenses_everything_and_says_so ... ok
+test apply::tests::totality::the_map_is_total_over_every_admitted_width_mode_and_policy ... ok
+test symmetry::tests::the_reach::the_reflection_verdict_answers_for_a_range_whose_top_has_no_negation ... ok
+test tests::obligations::a_coordinate_is_readable_off_the_impl_without_the_obligation_firing ... ok
+test tests::obligations::adapt_forces_the_slot_range_and_not_the_format ... ok
+test tests::obligations::an_implementor_writes_over_the_obligation_and_the_forcing_verb_finds_nothing ... ok
+test tests::obligations::contains_answers_for_a_format_whose_phase_does_not_denote ... ok
+test tests::obligations::every_open_contract_in_this_crate_states_its_obligation_as_a_check ... ok
+test tests::obligations::every_verdict_returns_the_stacks_truth_value_rather_than_the_hosts ... ok
+test tests::obligations::the_ambient_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::obligations::the_format_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::obligations::the_law_admits_every_domain_this_crate_ships ... ok
+test tests::obligations::the_law_admits_every_format_this_crate_ships ... ok
+test tests::obligations::the_law_admits_every_quantum_this_crate_ships ... ok
+test tests::obligations::the_law_rejects_a_format_whose_phase_denominator_is_zero ... ok
+test tests::obligations::the_law_rejects_a_quantum_over_no_magnitudes ... ok
+test tests::obligations::the_law_rejects_a_radix_below_two ... ok
+test tests::obligations::the_law_rejects_a_step_law_that_runs_off_the_exponent ... ok
+test tests::obligations::the_quantum_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::the_adaptation::the_mode_sweep_holds_every_name_exactly_once ... ok
+test tests::the_adaptation::the_overflow_inventory_admits_a_member_this_crate_does_not_know_about ... ok
+test tests::the_adaptation::the_policy_sweep_holds_every_shipped_policy_exactly_once ... ok
+test tests::the_coordinates::an_extent_of_nothing_admits_no_index_at_all ... ok
+test tests::the_coordinates::the_largest_admitted_magnitude_is_one_below_the_count ... ok
+test tests::the_identity::a_fractional_phase_takes_the_additive_identity_off_the_grid ... ok
+test tests::the_identity::a_whole_multiple_phase_keeps_the_identity_at_a_shifted_slot ... ok
+test tests::the_identity::a_zero_phase_puts_the_additive_identity_on_the_grid ... ok
+test tests::the_identity::the_cancelling_slot::a_negative_denominator_is_the_same_phase_with_the_sign_moved ... ok
+test tests::the_identity::the_cancelling_slot::a_phase_no_power_of_the_radix_cancels_has_no_identity_in_any_family ... ok
+test tests::the_identity::the_cancelling_slot::a_whole_phase_keeps_the_identity_in_every_quantum_family ... ok
+test tests::the_identity::the_cancelling_slot::a_whole_phase_whose_cancelling_slot_is_out_of_range_has_no_identity ... ok
+test tests::the_identity::the_cancelling_slot::the_base_exponent_does_not_move_the_cancelling_slot ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_answers_both_ways_rather_than_one ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_is_isnt_where_the_phase_is_fractional_there ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_is_the_negated_multiple_where_one_exists ... ok
+test tests::the_identity::the_cancelling_slot::the_cancelling_slot_moves_with_the_magnitude_in_both_directions ... ok
+test tests::the_identity::the_cancelling_slot::the_identity_law_holds_at_a_radix_other_than_two ... ok
+test tests::the_identity::the_cancelling_slot::the_identity_law_holds_at_every_denominator_rather_than_at_two ... ok
+test tests::the_identity::the_cancelling_slot::the_identity_law_holds_over_both_slot_families ... ok
+test tests::the_identity::the_control_the_matrix_above_contains_both_verdicts ... ok
+test tests::the_identity::the_identity_answer_is_membership_asked_at_zero ... ok
+test tests::the_identity::the_identity_is_decidable_at_const_time_including_the_search ... ok
+test tests::the_identity::the_magnitude_range::a_magnitude_range_past_the_bound_still_finds_what_is_below_it ... ok
+test tests::the_identity::the_magnitude_range::a_phase_scaled_to_the_least_index_value_over_minus_one_answers_isnt ... ok
+test tests::the_identity::the_magnitude_range::a_phase_whose_cancelling_slot_leaves_the_phase_width_answers_where_it_lands ... ok
+test tests::the_identity::the_magnitude_range::a_phase_written_with_a_factor_the_radix_does_not_share_is_found_at_every_magnitude ... ok
+test tests::the_identity::the_magnitude_range::a_whole_phase_out_of_reach_low_down_is_found_at_a_higher_magnitude ... ok
+test tests::the_identity::the_magnitude_range::the_identity_survives_a_shrinking_quantum ... ok
+test tests::the_identity::the_magnitude_range::the_magnitude_the_identity_is_found_at_is_not_always_the_first ... ok
+test tests::the_identity::the_magnitude_range::the_search_bound_is_past_where_a_radix_of_two_can_still_answer ... ok
+test tests::the_identity::the_magnitude_range::the_search_bound_loses_nothing_where_the_quantum_does_not_move ... ok
+test tests::the_identity::the_magnitude_range::the_search_bound_reaches_the_longest_scaling_that_answers ... ok
+test tests::the_identity::the_one_magnitude_predicate_differs_exactly_where_the_quantum_moves ... ok
+test tests::the_identity::the_phase_extremes::a_phase_keeps_the_value_it_was_declared_with ... ok
+test tests::the_identity::the_phase_extremes::an_extreme_phase_still_answers_at_every_magnitude ... ok
+test tests::the_identity::the_phase_extremes::the_extreme_phase_coordinates_are_answered_rather_than_overflowing ... ok
+test tests::the_identity::the_superseded_predicate_differs_exactly_at_a_nonzero_whole_multiple ... ok
+test tests::the_identity::the_two_questions_about_a_phase_are_two_questions ... ok
+test tests::the_inventory::every_admitted_width_has_a_coherent_range ... ok
+test tests::the_inventory::the_admitted_set_is_the_contiguous_run_the_macro_names ... ok
+test tests::the_inventory::the_control_the_foreign_contract_differs_from_every_shipped_one ... ok
+test tests::the_inventory::the_declared_width_is_read_rather_than_recovered ... ok
+test tests::the_inventory::the_format_inventory_admits_a_member_this_crate_does_not_know_about ... ok
+test tests::the_inventory::the_quantum_obligation::the_law_admits_every_quantum_law_this_crate_ships ... ok
+test tests::the_inventory::the_quantum_obligation::the_law_rejects_a_quantum_law_that_does_not_meet_the_contract ... ok
+test tests::the_inventory::the_quantum_obligation::the_quantum_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::the_inventory::the_range_obligation::a_width_of_zero_is_refused_even_where_it_addresses_its_span ... ok
+test tests::the_inventory::the_range_obligation::the_law_admits_a_range_anywhere_the_index_reaches ... ok
+test tests::the_inventory::the_range_obligation::the_law_admits_every_range_this_crate_ships ... ok
+test tests::the_inventory::the_range_obligation::the_law_rejects_a_range_that_does_not_meet_the_contract ... ok
+test tests::the_inventory::the_range_obligation::the_law_rejects_a_range_that_passes_the_easy_obligations ... ok
+test tests::the_inventory::the_range_obligation::the_law_separates_the_two_constructions_rather_than_answering_one_way ... ok
+test tests::the_inventory::the_ranges_at_the_host_widths_are_the_host_integers_own ... ok
+test tests::the_inventory::the_whole_contract_is_supplied_from_outside_and_every_coordinate_reads_back ... ok
+test tests::the_inventory::the_widest_admitted_width_is_the_widest_pointer_width ... ok
+test tests::the_platform_width::an_error_word_is_a_member_exactly_where_the_pointer_is_wide_enough ... ok
+test tests::the_platform_width::the_ends_of_the_platform_width_points_are_members_and_one_past_them_is_not ... ok
+test tests::the_platform_width::the_platform_width_points_are_integers_at_the_pointer_width ... ok
+test tests::the_platform_width::the_platform_width_ranges_are_the_host_pointer_integers_own ... ok
+test tests::the_predicate::a_constant_quantum_does_not_move_with_magnitude_and_an_indexed_one_does ... ok
+test tests::the_predicate::a_phase_carries_the_pair_it_was_declared_with ... ok
+test tests::the_predicate::a_phase_that_names_no_position_is_refused_rather_than_reinterpreted ... ok
+test tests::the_predicate::a_signed_slot_range_is_exactly_what_its_width_declares ... ok
+test tests::the_predicate::an_unsigned_slot_range_is_exactly_what_its_width_declares ... ok
+test tests::the_predicate::membership_is_decidable_at_const_time_for_every_point ... ok
+test tests::the_predicate::signedness_is_a_property_of_the_domain_and_not_of_a_carrier ... ok
+test tests::the_predicate::the_constant_family_has_one_magnitude_and_the_indexed_family_has_many ... ok
+test tests::the_predicate::the_control_the_widths_produce_different_slot_ranges ... ok
+test tests::the_predicate::the_questions_asked_of_a_phase_do_not_read_the_denominators_sign ... ok
+test tests::the_predicate::the_radix_comes_from_the_ambient_domain ... ok
+test tests::the_predicate::the_smallest_step_is_the_smallest_magnitudes_and_nothing_names_it ... ok
+test symmetry::tests::the_reach::the_control_the_cross_reaches_every_case_a_verdict_could_turn_on ... ok
+test symmetry::tests::the_partition::the_control_every_law_separates_the_rules ... ok
+test symmetry::tests::the_cross::neither_region_alone_decides_either_law ... ok
+test addition::tests::the_operation::addition_is_total_over_every_admitted_width_mode_and_policy ... ok
+test apply::tests::the_translation_law::the_law_holds_of_the_shipped_map_and_reports_each_broken_one ... ok
+test apply::tests::the_wide_oracle_sweep::the_wide_sweep_reports_every_broken_map ... ok
+test addition::tests::the_verdict::a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways ... FAILED
+
+failures:
+
+---- addition::tests::the_verdict::the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phase stdout ----
+
+thread 'addition::tests::the_verdict::the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phase' (59416056) panicked at crates/arvo-format/src/addition/tests/the_verdict.rs:326:17:
+assertion `left == right` failed: a licensed cell diverged at Slot(-9223372036854775808) + Slot(-9223372036854775808) + Slot(9223372036854775806), [Slot(-9223372036854775808), Slot(9223372036854775807)]
+  left: Slot(9223372036854775805)
+ right: Slot(9223372036854775804)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- apply::tests::half_up_goes_toward_positive_infinity_on_a_tie_and_half_even_goes_to_the_even_slot stdout ----
+
+thread 'apply::tests::half_up_goes_toward_positive_infinity_on_a_tie_and_half_even_goes_to_the_even_slot' (59416064) panicked at crates/arvo-format/src/apply/tests/mod.rs:281:5:
+assertion `left == right` failed
+  left: -3
+ right: -2
+
+---- apply::tests::the_oracle_sweep::the_shipped_map_answers_as_the_oracle_does stdout ----
+
+thread 'apply::tests::the_oracle_sweep::the_shipped_map_answers_as_the_oracle_does' (59416126) panicked at crates/arvo-format/src/apply/tests/the_oracle_sweep.rs:281:5:
+assertion `left == right` failed
+  left: Is(Case { mode: HalfUp, policy: Wrap, range: (170141183460469231731687303715884105472, 170141183460469231731687303715884105727), anchor: -170141183460469231731687303715884105728, whole: -8, quarter: 2, eighth: 0, got: (170141183460469231731687303715884105720, true), want: (170141183460469231731687303715884105721, true) })
+ right: Isnt
+
+---- apply::tests::the_oracle_sweep::every_declared_signature_answers_as_the_oracle_does stdout ----
+
+thread 'apply::tests::the_oracle_sweep::every_declared_signature_answers_as_the_oracle_does' (59416123) panicked at crates/arvo-format/src/apply/tests/the_oracle_sweep.rs:274:5:
+assertion `left == right` failed: Over < AtTheTop >
+  left: Is(Case { mode: HalfUp, policy: Wrap, range: (170141183460469231731687303715884105472, 170141183460469231731687303715884105727), anchor: -170141183460469231731687303715884105728, whole: -8, quarter: 2, eighth: 0, got: (170141183460469231731687303715884105720, true), want: (170141183460469231731687303715884105721, true) })
+ right: Isnt
+
+---- apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map stdout ----
+
+thread 'apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map' (59416130) panicked at crates/arvo-format/src/apply/tests/the_oracle_sweep.rs:327:9:
+assertion `left == right` failed: past_the_bottom_pins_high_off_the_bottom, inside the index
+  left: true
+ right: false
+
+---- apply::tests::the_tie_sweep::the_shipped_map_answers_every_tie_at_both_ends_of_the_index_as_the_oracles_do stdout ----
+
+thread 'apply::tests::the_tie_sweep::the_shipped_map_answers_every_tie_at_both_ends_of_the_index_as_the_oracles_do' (59416168) panicked at crates/arvo-format/src/apply/tests/the_tie_sweep.rs:346:5:
+assertion `left == right` failed
+  left: Is(Case { mode: HalfUp, policy: Wrap, range: (-170141183460469231731687303715884105728, -170141183460469231731687303715884105713), writing: Writing { anchor: -170141183460469231731687303715884105728, num: 1, den: 2 }, eighth: 0, got: (-170141183460469231731687303715884105728, false), want: (-170141183460469231731687303715884105727, false) })
+ right: Isnt
+
+---- apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do stdout ----
+
+thread 'apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do' (59416167) panicked at crates/arvo-format/src/apply/tests/the_tie_sweep.rs:298:5:
+assertion `left == right` failed
+  left: Is(Case { mode: HalfUp, policy: Wrap, range: (-1, 0), writing: Writing { anchor: -2, num: 1, den: 2 }, eighth: 0, got: (0, true), want: (-1, false) })
+ right: Isnt
+
+---- apply::tests::the_top_of_the_index::half_up_takes_the_tie_under_the_bottom_of_the_index_onto_it stdout ----
+
+thread 'apply::tests::the_top_of_the_index::half_up_takes_the_tie_under_the_bottom_of_the_index_onto_it' (59416181) panicked at crates/arvo-format/src/apply/tests/the_top_of_the_index.rs:277:5:
+assertion `left == right` failed
+  left: Slot(-170141183460469231731687303715884105473)
+ right: Slot(-170141183460469231731687303715884105728)
+
+---- apply::tests::the_tie_sweep::the_tie_sweep_reports_every_planted_tie_rule_at_a_tie_of_the_sign_it_breaks stdout ----
+
+thread 'apply::tests::the_tie_sweep::the_tie_sweep_reports_every_planted_tie_rule_at_a_tie_of_the_sign_it_breaks' (59416173) panicked at crates/arvo-format/src/apply/tests/the_tie_sweep.rs:366:9:
+assertion `left == right` failed: half_even_ties_to_odd reported under another mode
+  left: HalfUp
+ right: HalfEven
+
+---- apply::tests::the_wide_oracle_sweep::the_platform_width_points_answer_as_the_oracle_does stdout ----
+
+thread 'apply::tests::the_wide_oracle_sweep::the_platform_width_points_answer_as_the_oracle_does' (59416436) panicked at crates/arvo-format/src/apply/tests/the_wide_oracle_sweep.rs:275:5:
+assertion `left == right` failed: USize
+  left: Is(Case { mode: HalfUp, policy: Wrap, range: (0, 18446744073709551615), anchor: -170141183460469231731687303715884105728, ratio: (-9223372036854775807, 2), eighth: 0, got: (13835058055282163712, true), want: (13835058055282163713, true) })
+ right: Isnt
+
+---- apply::tests::the_wide_oracle_sweep::the_shipped_map_answers_as_the_oracle_does_over_the_wide_region stdout ----
+
+thread 'apply::tests::the_wide_oracle_sweep::the_shipped_map_answers_as_the_oracle_does_over_the_wide_region' (59416462) panicked at crates/arvo-format/src/apply/tests/the_wide_oracle_sweep.rs:270:5:
+assertion `left == right` failed
+  left: Is(Case { mode: HalfUp, policy: Wrap, range: (0, 0), anchor: 0, ratio: (-1, 2), eighth: 0, got: (0, true), want: (0, false) })
+ right: Isnt
+
+---- symmetry::tests::the_classification::half_up_reads_nothing_and_the_ties_away_rule_reads_the_sign_at_a_tie stdout ----
+
+thread 'symmetry::tests::the_classification::half_up_reads_nothing_and_the_ties_away_rule_reads_the_sign_at_a_tie' (59416523) panicked at crates/arvo-format/src/symmetry/tests/the_classification.rs:140:5:
+assertion `left == right` failed
+  left: Sign
+ right: Nothing
+
+---- symmetry::tests::the_classification::the_classification_of_every_mode_agrees_with_what_the_map_reads stdout ----
+
+thread 'symmetry::tests::the_classification::the_classification_of_every_mode_agrees_with_what_the_map_reads' (59416531) panicked at crates/arvo-format/src/symmetry/tests/the_classification.rs:119:9:
+assertion `left == right` failed: HalfUp is declared to read Nothing and the map disagrees
+  left: Nothing
+ right: Sign
+
+---- symmetry::tests::the_classification::the_control_a_wrong_classification_would_be_caught stdout ----
+
+thread 'symmetry::tests::the_classification::the_control_a_wrong_classification_would_be_caught' (59416540) panicked at crates/arvo-format/src/symmetry/tests/the_classification.rs:176:5:
+assertion `left != right` failed: the derivation cannot tell the ruled half_up from the ties-away alias
+  left: Sign
+ right: Sign
+
+---- symmetry::tests::the_classification::the_control_the_derivation_can_tell_the_four_domains_apart stdout ----
+
+thread 'symmetry::tests::the_classification::the_control_the_derivation_can_tell_the_four_domains_apart' (59416545) panicked at crates/arvo-format/src/symmetry/tests/the_classification.rs:309:5:
+assertion `left == right` failed: the six shipped names produce 4 distinct rows
+  left: 4
+ right: 3
+
+---- symmetry::tests::the_classification::the_control_the_two_symmetries_are_not_the_same_question stdout ----
+
+thread 'symmetry::tests::the_classification::the_control_the_two_symmetries_are_not_the_same_question' (59416549) panicked at crates/arvo-format/src/symmetry/tests/the_classification.rs:239:9:
+assertion `left == right` failed: HalfUp translation
+  left: false
+ right: true
+
+---- symmetry::tests::the_classification::the_reflection_fact_of_every_mode_agrees_with_the_map stdout ----
+
+thread 'symmetry::tests::the_classification::the_reflection_fact_of_every_mode_agrees_with_the_map' (59416556) panicked at crates/arvo-format/src/symmetry/tests/the_classification.rs:186:9:
+assertion `left == right` failed: HalfUp is declared to reflect false and the map disagrees
+  left: false
+ right: true
+
+---- symmetry::tests::the_cross::the_map_reflects_exactly_where_the_predicate_says stdout ----
+
+thread 'symmetry::tests::the_cross::the_map_reflects_exactly_where_the_predicate_says' (59416578) panicked at crates/arvo-format/src/symmetry/tests/the_cross.rs:110:17:
+assertion `left == right` failed: Signed HalfUp Wrap: the predicate says false and the map says true
+  left: false
+ right: true
+
+---- symmetry::tests::the_partition::every_failing_cell_fails_at_a_named_position_another_rule_passes stdout ----
+
+thread 'symmetry::tests::the_partition::every_failing_cell_fails_at_a_named_position_another_rule_passes' (59416590) panicked at crates/arvo-format/src/symmetry/tests/the_partition.rs:253:9:
+Shipped(HalfUp) fails at the witness for Shipped(TowardZero)
+
+---- symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says stdout ----
+
+thread 'symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says' (59416580) panicked at crates/arvo-format/src/symmetry/tests/the_cross.rs:68:21:
+assertion `left == right` failed: Signed HalfUp Wrap Restriction { negative_positions: true, negative_translations: true, grid: WithTies }: the predicate says true and the map says false
+  left: true
+ right: false
+
+---- symmetry::tests::the_partition::every_rule_commutes_with_exactly_the_laws_its_formula_says stdout ----
+
+thread 'symmetry::tests::the_partition::every_rule_commutes_with_exactly_the_laws_its_formula_says' (59416591) panicked at crates/arvo-format/src/symmetry/tests/the_partition.rs:145:13:
+assertion `left == right` failed: Shipped(HalfUp) under OneQuantum
+  left: false
+ right: true
+
+---- symmetry::tests::the_partition::the_shipped_predicates_at_the_widest_reach_agree_with_the_measured_partition stdout ----
+
+thread 'symmetry::tests::the_partition::the_shipped_predicates_at_the_widest_reach_agree_with_the_measured_partition' (59416605) panicked at crates/arvo-format/src/symmetry/tests/the_partition.rs:182:9:
+assertion `left == right` failed: HalfUp translation
+  left: true
+ right: false
+
+---- symmetry::tests::the_partition::the_witnesses_answer_as_the_formulas_do stdout ----
+
+thread 'symmetry::tests::the_partition::the_witnesses_answer_as_the_formulas_do' (59416606) panicked at crates/arvo-format/src/symmetry/tests/the_partition.rs:269:5:
+assertion `left == right` failed
+  left: -1
+ right: 0
+
+---- addition::tests::the_verdict::a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways stdout ----
+
+thread 'addition::tests::the_verdict::a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways' (59416044) panicked at crates/arvo-format/src/addition/tests/the_verdict.rs:262:5:
+assertion `left == right` failed: a licensed cell diverged
+  left: 26
+ right: 0
+
+
+failures:
+    addition::tests::the_verdict::a_licensed_cell_never_diverges_and_a_whole_phase_verdict_is_exact_both_ways
+    addition::tests::the_verdict::the_verdicts_licensed_half_holds_at_the_widest_ranges_under_a_fractional_phase
+    apply::tests::half_up_goes_toward_positive_infinity_on_a_tie_and_half_even_goes_to_the_even_slot
+    apply::tests::the_oracle_sweep::every_declared_signature_answers_as_the_oracle_does
+    apply::tests::the_oracle_sweep::the_shipped_map_answers_as_the_oracle_does
+    apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map
+    apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do
+    apply::tests::the_tie_sweep::the_shipped_map_answers_every_tie_at_both_ends_of_the_index_as_the_oracles_do
+    apply::tests::the_tie_sweep::the_tie_sweep_reports_every_planted_tie_rule_at_a_tie_of_the_sign_it_breaks
+    apply::tests::the_top_of_the_index::half_up_takes_the_tie_under_the_bottom_of_the_index_onto_it
+    apply::tests::the_wide_oracle_sweep::the_platform_width_points_answer_as_the_oracle_does
+    apply::tests::the_wide_oracle_sweep::the_shipped_map_answers_as_the_oracle_does_over_the_wide_region
+    symmetry::tests::the_classification::half_up_reads_nothing_and_the_ties_away_rule_reads_the_sign_at_a_tie
+    symmetry::tests::the_classification::the_classification_of_every_mode_agrees_with_what_the_map_reads
+    symmetry::tests::the_classification::the_control_a_wrong_classification_would_be_caught
+    symmetry::tests::the_classification::the_control_the_derivation_can_tell_the_four_domains_apart
+    symmetry::tests::the_classification::the_control_the_two_symmetries_are_not_the_same_question
+    symmetry::tests::the_classification::the_reflection_fact_of_every_mode_agrees_with_the_map
+    symmetry::tests::the_cross::the_map_reflects_exactly_where_the_predicate_says
+    symmetry::tests::the_cross::the_map_relocates_exactly_where_the_predicate_says
+    symmetry::tests::the_partition::every_failing_cell_fails_at_a_named_position_another_rule_passes
+    symmetry::tests::the_partition::every_rule_commutes_with_exactly_the_laws_its_formula_says
+    symmetry::tests::the_partition::the_shipped_predicates_at_the_widest_reach_agree_with_the_measured_partition
+    symmetry::tests::the_partition::the_witnesses_answer_as_the_formulas_do
+
+test result: FAILED. 203 passed; 24 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.38s
+
+error: test failed, to rerun pass `-p arvo-format --lib`
+     Running tests/compile_fail.rs (/Users/orgrinrt/Dev/clause-work/numerics/target/debug/deps/compile_fail-1d65fa56815c0759)
+
+running 17 tests
+    Checking arvo-format v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/.worktrees/arvo-halfup-fix/mock/crates/arvo-format)
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.61s
+
+
+test [0m[1mtests/ui/width_above_the_bound.rs[0m ... [0m[32mok
+[0m
+
+test a_width_the_slot_range_cannot_carry_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+
+test [0m[1mtests/ui/a_host_integer_is_not_an_operand.rs[0m ... [0m[32mok
+[0m
+
+test a_host_integer_is_not_an_operand ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+
+test [0m[1mtests/ui/a_range_past_the_ladder_is_refused_where_it_is_used.rs[0m ... [0m[32mok
+[0m
+
+test a_range_past_the_ladder_is_refused_where_it_is_used ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+
+test [0m[1mtests/ui/a_host_integer_is_not_a_slot.rs[0m ... [0m[32mok
+[0m
+
+test a_host_integer_at_a_coordinate_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/a_law_over_no_magnitudes_is_refused.rs[0m ... [0m[32mok
+[0m
+
+test a_quantum_law_over_no_magnitudes_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/a_step_law_that_runs_off_the_exponent_is_refused.rs[0m ... [0m[32mok
+[0m
+
+test a_step_law_that_runs_off_the_exponent_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+
+test [0m[1mtests/ui/a_cancelling_phase_reaches_the_slot_range.rs[0m ... [0m[32mok
+[0m
+
+test a_cancelling_phase_reaches_the_slot_range_and_a_non_cancelling_one_does_not ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/a_format_is_not_a_signature.rs[0m ... [0m[32mok
+[0m
+
+test a_format_is_not_a_signature ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/word_length_past_the_ladder.rs[0m ... [0m[32mok
+[0m
+
+test a_word_length_past_the_slot_ladder_is_refused_at_the_declaration ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/addition_over_a_float_is_refused.rs[0m ... [0m[32mok
+[0m
+
+test addition_over_a_float_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/addition_over_a_remainder_the_position_cannot_hold_is_refused.rs[0m ... [0m[32mok
+[0m
+
+test addition_over_a_remainder_the_position_cannot_hold_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+
+test [0m[1mtests/ui/addition_over_an_uncarried_sum_is_refused.rs[0m ... [0m[32mok
+[0m
+
+test addition_over_an_uncarried_sum_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/an_arvo_type_as_a_const_parameter.rs[0m ... [0m[32mok
+[0m
+
+test an_arvo_type_as_a_const_parameter_is_refused ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/an_index_is_not_an_extent.rs[0m ... [0m[32mok
+[0m
+
+test an_index_and_an_extent_do_not_convert_into_each_other ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+
+test [0m[1mtests/ui/cancelling_slot_forces_the_format_obligation.rs[0m ... [0m[32mok
+[0m
+
+test the_cancelling_slot_search_forces_the_format_obligation ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+
+test [0m[1mtests/ui/the_identity_search_forces_the_format_obligation.rs[0m ... [0m[32mok
+[0m
+
+test the_identity_search_forces_the_format_obligation ... ok
+    Checking arvo-format-tests v0.0.0 (/Users/orgrinrt/Dev/clause-work/numerics/target/tests/trybuild/arvo-format)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+
+
+test [0m[1mtests/ui/a_phase_is_not_a_fraction.rs[0m ... [0m[32mok
+[0m
+
+test the_two_ratios_are_two_coordinates ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.32s
+
+     Running tests/matlab_fi_parity.rs (/Users/orgrinrt/Dev/clause-work/numerics/target/debug/deps/matlab_fi_parity-afdf1858b466b48b)
+
+running 16 tests
+test fi_pi ... ok
+test fi_pi_fraction_three ... ok
+test fi_pi_signed_eight ... ok
+test fi_pi_unsigned ... ok
+test fi_pi_unsigned_eight ... ok
+test the_alias_cannot_be_written_at_a_denominator_past_half_the_fraction ... ok
+test a_consumer_can_write_the_ties_away_alias_and_it_is_matlab_round ... FAILED
+test half_up_is_matlab_nearest_and_no_other_shipped_mode_is ... FAILED
+test no_shipped_mode_is_matlab_round ... FAILED
+test the_bound_is_attained_and_not_merely_respected ... ok
+test the_control_a_wrong_stored_integer_would_be_caught ... ok
+test the_control_no_parity_arm_reaches_a_tie ... ok
+test the_control_no_parity_arm_reaches_an_overflow_policy ... ok
+test the_control_the_five_declarations_are_genuinely_different ... ok
+test the_fraction_length_is_the_constant_family_rather_than_the_indexed_one ... ok
+test the_fraction_length_is_the_negated_exponent_at_every_sign ... ok
+
+failures:
+
+---- a_consumer_can_write_the_ties_away_alias_and_it_is_matlab_round stdout ----
+
+thread 'a_consumer_can_write_the_ties_away_alias_and_it_is_matlab_round' (59436754) panicked at crates/arvo-format/tests/matlab_fi_parity.rs:357:5:
+assertion `left == right` failed
+  left: -3
+ right: -2
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- half_up_is_matlab_nearest_and_no_other_shipped_mode_is stdout ----
+
+thread 'half_up_is_matlab_nearest_and_no_other_shipped_mode_is' (59436760) panicked at crates/arvo-format/tests/matlab_fi_parity.rs:283:5:
+assertion `left == right` failed
+  left: [false, false, false, false, false, false]
+ right: [false, false, false, true, false, false]
+
+---- no_shipped_mode_is_matlab_round stdout ----
+
+thread 'no_shipped_mode_is_matlab_round' (59436761) panicked at crates/arvo-format/tests/matlab_fi_parity.rs:301:5:
+assertion `left == right` failed
+  left: [false, false, false, true, false, false]
+ right: [false, false, false, false, false, false]
+
+
+failures:
+    a_consumer_can_write_the_ties_away_alias_and_it_is_matlab_round
+    half_up_is_matlab_nearest_and_no_other_shipped_mode_is
+    no_shipped_mode_is_matlab_round
+
+test result: FAILED. 13 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p arvo-format --test matlab_fi_parity`
+   Doc-tests arvo_format
+
+running 4 tests
+test crates/arvo-format/src/quantum.rs - quantum::Quantum::ADMITTED (line 282) ... ok
+test crates/arvo-format/src/slots.rs - slots::Slots::ADMITTED (line 188) ... ok
+test crates/arvo-format/src/ambient.rs - ambient::Ambient::ADMITTED (line 130) ... ok
+test crates/arvo-format/src/format.rs - format::Format::ADMITTED (line 113) ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 5 tests
+test crates/arvo-format/src/quantum.rs - quantum::Quantum::ADMITTED (line 241) - compile fail ... ok
+test crates/arvo-format/src/quantum.rs - quantum::Quantum::ADMITTED (line 259) - compile fail ... ok
+test crates/arvo-format/src/slots.rs - slots::Slots::ADMITTED (line 167) - compile fail ... ok
+test crates/arvo-format/src/ambient.rs - ambient::Ambient::ADMITTED (line 99) - compile fail ... ok
+test crates/arvo-format/src/format.rs - format::Format::ADMITTED (line 90) - compile fail ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.86s
+
+all doctests ran in 9.40s; merged doctests compilation took 5.92s
+error: 2 targets failed:
+    `-p arvo-format --lib`
+    `-p arvo-format --test matlab_fi_parity`

@@ -4,10 +4,10 @@
 
 use std::collections::BTreeMap;
 
-use mockspace::tool::{Outcome, Tool, ToolContext};
 use mockspace::RegistryView;
+use mockspace::tool::{Outcome, Tool, ToolContext};
 
-use super::{classify, modes_in, RoundingVocabulary, Standing, ALIASES, CLOSING_RULING, RATIFIED};
+use super::{ALIASES, CLOSING_RULING, RATIFIED, RoundingVocabulary, Standing, classify, modes_in};
 
 fn view(rows: &[(&str, &[(&str, &str)])]) -> RegistryView {
     let mut r: BTreeMap<String, BTreeMap<String, String>> = BTreeMap::new();
@@ -27,14 +27,11 @@ fn view(rows: &[(&str, &[(&str, &str)])]) -> RegistryView {
 /// is not about the self-check, because without it every run is inconclusive
 /// and every other assertion would pass for the wrong reason.
 fn ruling() -> (&'static str, &'static [(&'static str, &'static str)]) {
-    (
-        CLOSING_RULING,
-        &[(
-            "says",
-            "The rounding mode vocabulary is `toward_zero`, `floor`, `ceil`, `half_up`, \
+    (CLOSING_RULING, &[(
+        "says",
+        "The rounding mode vocabulary is `toward_zero`, `floor`, `ceil`, `half_up`, \
              `half_even`, `stochastic`.",
-        )],
-    )
+    )])
 }
 
 fn run(rows: &[(&str, &[(&str, &str)])], args: &[&str]) -> (Outcome, String) {
@@ -54,7 +51,9 @@ fn run(rows: &[(&str, &[(&str, &str)])], args: &[&str]) -> (Outcome, String) {
     };
     let rep = RoundingVocabulary.run(&ctx);
     let text = match &rep.outcome {
-        Outcome::Inconclusive { reason } => reason.clone(),
+        Outcome::Inconclusive {
+            reason,
+        } => reason.clone(),
         _ => rep.output.clone(),
     };
     (rep.outcome, text)
@@ -83,13 +82,13 @@ fn a_missing_closing_ruling_stops_the_run_rather_than_reporting_clean() {
     let crates = Default::default();
     let dirs: Vec<std::path::PathBuf> = Vec::new();
     let ctx = ToolContext {
-        mock_dir: std::path::Path::new("."),
-        repo_root: std::path::Path::new("."),
+        mock_dir:   std::path::Path::new("."),
+        repo_root:  std::path::Path::new("."),
         all_crates: &crates,
-        src_dirs: &dirs,
-        args: &[],
-        stdin: None,
-        registry: &v,
+        src_dirs:   &dirs,
+        args:       &[],
+        stdin:      None,
+        registry:   &v,
     };
     let rep = RoundingVocabulary.run(&ctx);
     assert!(matches!(rep.outcome, Outcome::Inconclusive { .. }));
@@ -111,24 +110,26 @@ fn a_ruling_that_dropped_a_name_stops_the_run_and_says_which() {
     let crates = Default::default();
     let dirs: Vec<std::path::PathBuf> = Vec::new();
     let ctx = ToolContext {
-        mock_dir: std::path::Path::new("."),
-        repo_root: std::path::Path::new("."),
+        mock_dir:   std::path::Path::new("."),
+        repo_root:  std::path::Path::new("."),
         all_crates: &crates,
-        src_dirs: &dirs,
-        args: &[],
-        stdin: None,
-        registry: &v,
+        src_dirs:   &dirs,
+        args:       &[],
+        stdin:      None,
+        registry:   &v,
     };
     let rep = RoundingVocabulary.run(&ctx);
     match rep.outcome {
-        Outcome::Inconclusive { reason } => {
+        Outcome::Inconclusive {
+            reason,
+        } => {
             assert!(reason.contains("half_even"), "{reason}");
             assert!(reason.contains("stochastic"), "{reason}");
             assert!(
                 !reason.contains("`floor`"),
                 "names only what is missing: {reason}"
             );
-        }
+        },
         other => panic!("expected a refusal, got {other:?}"),
     }
 }
@@ -195,7 +196,12 @@ fn nearest_alone_is_underspecified_rather_than_an_alias() {
 
 #[test]
 fn a_mode_outside_the_six_is_unknown() {
+    // Ties away from zero is reached as an alias rather than named, so a row
+    // naming it names no member of the six, and it is not a spelling of
+    // `half_up` either.
     assert_eq!(classify("away from zero"), Standing::Unknown);
+    assert_eq!(classify("ties away from zero"), Standing::Unknown);
+    assert_ne!(classify("away from zero"), Standing::Alias("half_up"));
 }
 
 #[test]
@@ -210,10 +216,11 @@ fn classification_ignores_case_and_surrounding_space() {
 
 #[test]
 fn a_set_yields_every_member() {
-    assert_eq!(
-        modes_in("in {floor, ceiling, toward zero}"),
-        ["floor", "ceiling", "toward zero"]
-    );
+    assert_eq!(modes_in("in {floor, ceiling, toward zero}"), [
+        "floor",
+        "ceiling",
+        "toward zero"
+    ]);
 }
 
 #[test]
@@ -223,10 +230,9 @@ fn a_repeated_axis_name_is_stripped_rather_than_read_as_a_mode() {
     // `rounding` itself as outside the six on every one of them.
     assert_eq!(modes_in("rounding = nearest"), ["nearest"]);
     assert_eq!(modes_in("rounding any"), ["any"]);
-    assert_eq!(
-        modes_in("rounding in {truncate, nearest}"),
-        ["truncate", "nearest"]
-    );
+    assert_eq!(modes_in("rounding in {truncate, nearest}"), [
+        "truncate", "nearest"
+    ]);
 }
 
 #[test]
@@ -263,14 +269,14 @@ fn a_canon_with_no_rounding_entry_is_inconclusive_rather_than_clean() {
 fn control_a_canon_spelling_every_mode_correctly_is_clean() {
     let (outcome, out) = run(
         &[
-            (
-                "proposal::a",
-                &[("predicate", "rounding: floor, threads: 1")],
-            ),
-            (
-                "law::b",
-                &[("holds", "rounding: in {toward_zero, half_even}")],
-            ),
+            ("proposal::a", &[(
+                "predicate",
+                "rounding: floor, threads: 1",
+            )]),
+            ("law::b", &[(
+                "holds",
+                "rounding: in {toward_zero, half_even}",
+            )]),
         ],
         &[],
     );
@@ -358,13 +364,10 @@ fn a_predicate_whose_values_carry_the_separator_is_not_cut_in_two() {
     // The shape most real predicates take. A reader splitting on the separator
     // alone would take `half_even}` for an entry and report the row twice.
     let (outcome, out) = run(
-        &[(
-            "law::b",
-            &[(
-                "holds",
-                "signedness: in {unsigned, signed}, rounding: in {floor, half_even}, threads: 1",
-            )],
-        )],
+        &[("law::b", &[(
+            "holds",
+            "signedness: in {unsigned, signed}, rounding: in {floor, half_even}, threads: 1",
+        )])],
         &[],
     );
     assert!(matches!(outcome, Outcome::Clean { .. }), "{out}");
@@ -403,9 +406,11 @@ fn a_spelling_nothing_uses_is_inconclusive_and_says_why() {
         &["stochastic"],
     );
     match outcome {
-        Outcome::Inconclusive { .. } => {
+        Outcome::Inconclusive {
+            ..
+        } => {
             assert!(text.contains("another spelling"), "{text}");
-        }
+        },
         other => panic!("expected inconclusive, got {other:?}"),
     }
 }
@@ -430,15 +435,16 @@ fn every_alias_names_a_target_that_is_one_of_the_six() {
 
 #[test]
 fn the_spellings_blurb_does_not_claim_the_mode_is_settled() {
-    // `nearest-half-up` points at `half_up`, which names two operations on a
-    // signed domain, so a blurb saying the mode is not in doubt is false for
-    // one of the six rows. What licenses the rewrite is that both spellings
-    // name the same thing, whatever that turns out to be.
+    // The rewrite an alias licenses rests on both spellings naming the same
+    // thing, and on nothing about what that thing is. Whether a mode's meaning
+    // is settled is a fact about rulings this tool never reads, so a blurb
+    // saying it is not in doubt would be a claim the instrument cannot back,
+    // true today for `half_up` only because a later ruling happens to say so.
     let (_, out) = run(
-        &[(
-            "proposal::a_row",
-            &[("predicate", "rounding: nearest-half-up")],
-        )],
+        &[("proposal::a_row", &[(
+            "predicate",
+            "rounding: nearest-half-up",
+        )])],
         &[],
     );
     assert!(
@@ -451,7 +457,7 @@ fn the_spellings_blurb_does_not_claim_the_mode_is_settled() {
     );
     assert!(
         !out.contains("not in doubt"),
-        "the blurb claims the mode is settled, which is false at `half_up`: {out}"
+        "the blurb claims a mode is settled, which this tool cannot know: {out}"
     );
 }
 
@@ -464,13 +470,10 @@ fn a_mode_named_outside_the_three_predicate_fields_is_not_seen() {
     // Widening the field list would not reach it either: `establishes` is a
     // sentence and the reader takes `axis: values` entries.
     let (outcome, out) = run(
-        &[(
-            "probe::a_probe_row",
-            &[(
-                "establishes",
-                "the six modes floor, ceiling and nearest-half-up",
-            )],
-        )],
+        &[("probe::a_probe_row", &[(
+            "establishes",
+            "the six modes floor, ceiling and nearest-half-up",
+        )])],
         &[],
     );
     assert!(
@@ -478,39 +481,45 @@ fn a_mode_named_outside_the_three_predicate_fields_is_not_seen() {
         "a prose field was read as a predicate: {out}"
     );
     match outcome {
-        Outcome::Inconclusive { reason } => assert!(
-            reason.contains("no predicate names the `rounding` axis"),
-            "{reason}"
-        ),
+        Outcome::Inconclusive {
+            reason,
+        } => {
+            assert!(
+                reason.contains("no predicate names the `rounding` axis"),
+                "{reason}"
+            )
+        },
         other => panic!("expected inconclusive, got {other:?}"),
     }
 }
 
 // -------------------------------------------------------------------------
-// The fact the spellings blurb is worded around.
+// The fact the spellings blurb and `nearest` are worded around.
 //
 // The tool does no arithmetic and these are not part of it. They are here
-// because the blurb turns on whether a name on the right denotes one
-// operation, and that is checkable rather than a matter of taste. `229`
-// finding 2 and `233` section 8 measured it separately; this reproduces both
-// so the wording rests on something that runs.
+// because two nearest rules differ only at a tie, and the arms below measure
+// where: `half_up` against the ties-away alias, which differ at a negative
+// tie and nowhere else. `229` finding 2 and `233` section 8 measured it
+// separately; this reproduces both so the wording rests on something that
+// runs.
 // -------------------------------------------------------------------------
 
-/// The two readings of `half_up`, over a scaled integer `k` denoting `k / 2^f`.
-mod half_up {
-    /// Ties toward positive infinity: add a half and drop the bits.
-    ///
-    /// `floor(x + 1/2)`, which is what the corpus's own instruments implement
-    /// and what DSP practice calls the asymmetric form.
-    pub fn toward_positive_infinity(k: i64, f: u32) -> i64 {
+/// Two nearest rules over a scaled integer `k` denoting `k / 2^f`.
+mod nearest {
+    /// `half_up`, as `ruling::half_up_denotes_ties_toward_positive_infinity`
+    /// states it: add a half and drop the bits, `floor(x + 1/2)`.
+    pub fn half_up(k: i64, f: u32) -> i64 {
         // Arithmetic shift, so this floors on negatives rather than truncating,
         // and at `f = 0` the half is zero and the whole thing is the identity.
         let half = (1i64 << f) >> 1;
         (k + half) >> f
     }
 
-    /// Ties away from zero, which is IEEE 754's `roundTiesToAway`.
-    pub fn away_from_zero(k: i64, f: u32) -> i64 {
+    /// Ties away from zero, IEEE 754's `roundTiesToAway`.
+    ///
+    /// Not one of the six. The canon reaches it as an alias, `toward_zero`
+    /// applied to the position shifted half a step toward its sign.
+    pub fn ties_away(k: i64, f: u32) -> i64 {
         let half = (1i64 << f) >> 1;
         // Round the magnitude and put the sign back, so a tie steps away from
         // zero in whichever direction the operand already pointed.
@@ -520,17 +529,15 @@ mod half_up {
 }
 
 #[test]
-fn the_two_readings_of_half_up_disagree_on_a_signed_domain() {
+fn half_up_and_ties_away_disagree_on_a_signed_domain() {
     // `229` finding 2 puts the count at `2^(W-1-F)`, which is 64 of 256 at
     // `W = 8, F = 1` and 8 of 256 at `W = 8, F = 4`. The closed form is its
     // measurement rather than one derived here, so agreeing with it is a check
     // against a separately committed sweep.
     for w in [4u32, 6, 8, 10, 12] {
-        for f in 1..w {
+        for f in 1 .. w {
             let disagreeing = signed_domain(w)
-                .filter(|&k| {
-                    half_up::toward_positive_infinity(k, f) != half_up::away_from_zero(k, f)
-                })
+                .filter(|&k| nearest::half_up(k, f) != nearest::ties_away(k, f))
                 .count();
             assert_eq!(disagreeing as u64, 1u64 << (w - 1 - f), "W = {w}, F = {f}");
         }
@@ -538,16 +545,16 @@ fn the_two_readings_of_half_up_disagree_on_a_signed_domain() {
 }
 
 #[test]
-fn control_the_two_readings_agree_on_an_unsigned_domain() {
+fn control_half_up_and_ties_away_agree_on_an_unsigned_domain() {
     // Where the disagreement has no witness. Without this the arm above passes
     // for an implementation that differs everywhere rather than at a signed
     // tie, which is a different claim and not the one the blurb rests on.
     for w in [4u32, 6, 8, 10, 12] {
-        for f in 0..w {
-            for k in 0..(1i64 << w) {
+        for f in 0 .. w {
+            for k in 0 .. (1i64 << w) {
                 assert_eq!(
-                    half_up::toward_positive_infinity(k, f),
-                    half_up::away_from_zero(k, f),
+                    nearest::half_up(k, f),
+                    nearest::ties_away(k, f),
                     "W = {w}, F = {f}, k = {k}"
                 );
             }
@@ -556,13 +563,13 @@ fn control_the_two_readings_agree_on_an_unsigned_domain() {
 }
 
 #[test]
-fn control_the_two_readings_agree_where_no_tie_exists() {
+fn control_half_up_and_ties_away_agree_where_no_tie_exists() {
     // At zero fraction bits nothing is discarded, so there is no tie for a rule
-    // to direct and both readings are the identity.
+    // to direct and both are the identity.
     for w in [4u32, 6, 8, 10, 12] {
         for k in signed_domain(w) {
-            assert_eq!(half_up::toward_positive_infinity(k, 0), k, "W = {w}");
-            assert_eq!(half_up::away_from_zero(k, 0), k, "W = {w}");
+            assert_eq!(nearest::half_up(k, 0), k, "W = {w}");
+            assert_eq!(nearest::ties_away(k, 0), k, "W = {w}");
         }
     }
 }
@@ -571,14 +578,14 @@ fn control_the_two_readings_agree_where_no_tie_exists() {
 fn the_witnesses_two_seats_published_reproduce() {
     // `233` section 8 gives `p = -255, f = 1` at `-127` against `-128`. The
     // round's topic gives `-63` at the same fraction width, which is `-31.5`,
-    // at `-31` against `-32`.
-    assert_eq!(half_up::toward_positive_infinity(-255, 1), -127);
-    assert_eq!(half_up::away_from_zero(-255, 1), -128);
-    assert_eq!(half_up::toward_positive_infinity(-63, 1), -31);
-    assert_eq!(half_up::away_from_zero(-63, 1), -32);
+    // at `-31` against `-32`. The first of each pair is `half_up`.
+    assert_eq!(nearest::half_up(-255, 1), -127);
+    assert_eq!(nearest::ties_away(-255, 1), -128);
+    assert_eq!(nearest::half_up(-63, 1), -31);
+    assert_eq!(nearest::ties_away(-63, 1), -32);
 }
 
 /// Every value of a signed two's complement domain `w` bits wide.
 fn signed_domain(w: u32) -> impl Iterator<Item = i64> {
-    -(1i64 << (w - 1))..(1i64 << (w - 1))
+    -(1i64 << (w - 1)) .. (1i64 << (w - 1))
 }

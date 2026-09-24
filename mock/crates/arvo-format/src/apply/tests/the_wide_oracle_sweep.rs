@@ -18,10 +18,10 @@
 //! zero.
 //!
 //! It runs the shipped map and every broken map `the_broken_maps.rs` keeps over
-//! that region, and runs `adapt` and `panic_on_overflow` at `USize` and `ISize`
-//! under every mode and policy. The oracle's two readings taken from the
-//! implementation, `Clamp` as `Saturate` and a `HalfUp` tie away from zero, hold
-//! here as they do in `the_oracle.rs`.
+//! that region, the planted tie rules among them, and runs `adapt` and
+//! `panic_on_overflow` at `USize` and `ISize` under every mode and policy. The
+//! oracle's one reading taken from the implementation, `Clamp` as `Saturate`,
+//! holds here as it does in `the_oracle.rs`.
 
 use notko::Maybe;
 
@@ -33,6 +33,7 @@ use super::the_broken_maps::{
     no_step_onto_the_lowest,
     past_the_bottom_pins_high_off_the_bottom,
     past_the_top_pins_low_off_the_top,
+    planted_tie_rules,
     reduced_modulo_256,
     shipped,
     subtracts_first,
@@ -205,7 +206,7 @@ fn first_disagreement(
 }
 
 /// The first disagreement of `map` with the oracle over every range, mode and
-/// policy.
+/// policy, through the map's own rounding.
 fn map_break(map: Map) -> Maybe<Case> {
     for (lo, hi) in ranges() {
         let found = first_disagreement(
@@ -213,7 +214,7 @@ fn map_break(map: Map) -> Maybe<Case> {
             &SHIPPED_POLICIES,
             (lo, hi),
             |mode, policy, e, d| {
-                let rounded = round_slot(mode, e, d);
+                let rounded = (map.round)(mode, e, d);
                 (
                     (map.complete)(policy, rounded, Slot::at(lo), Slot::at(hi)),
                     (map.leaves)(rounded, Slot::at(lo), Slot::at(hi)),
@@ -277,7 +278,7 @@ fn the_platform_width_points_answer_as_the_oracle_does() {
 
 #[test]
 fn the_wide_sweep_reports_every_broken_map() {
-    let maps: [(&'static str, Map); 9] = [
+    let completions: [(&'static str, Map); 9] = [
         ("subtracts_first", subtracts_first()),
         ("anchored_at_zero", anchored_at_zero()),
         ("reduced_modulo_256", reduced_modulo_256()),
@@ -300,9 +301,12 @@ fn the_wide_sweep_reports_every_broken_map() {
         ),
         ("no_lo_guard_onto_the_lowest", no_lo_guard_onto_the_lowest()),
     ];
-    for (name, map) in maps {
+    let mut asked = 0;
+    for (name, map) in completions.into_iter().chain(planted_tie_rules()) {
+        asked += 1;
         assert!(map_break(map).is(), "{name} was not reported");
     }
+    assert_eq!(asked, 14, "a broken map dropped out of the list");
 }
 
 #[test]

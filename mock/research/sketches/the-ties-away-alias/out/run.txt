@@ -1,0 +1,42 @@
+
+select over carried ratios, Integer<8>, Wrap: 1768 cells, 429 ties, 0 wrong; half_up_alone 212 wrong
+select over carried ratios, Integer<8>, Saturate: 1768 cells, 429 ties, 0 wrong; half_up_alone 106 wrong
+select over carried ratios, Integer<64>, Wrap: 1768 cells, 429 ties, 0 wrong; half_up_alone 212 wrong
+select over carried ratios, Integer<64>, Saturate: 1768 cells, 429 ties, 0 wrong; half_up_alone 113 wrong
+oracles agree at 644 cells with |slot| <= 3
+
+             shift: 1196 cells, 91 ties, 0 wrong, 2 unformed; first wrong None; first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+            select: 1196 cells, 91 ties, 0 wrong, 0 unformed; first wrong None; first unformed None
+     half_up_alone: 1196 cells, 91 ties, 42 wrong, 0 unformed; first wrong Some((-170141183460469231731687303715884105728, 1, 2, 1, 0)); first unformed None
+ toward_zero_below: 1196 cells, 91 ties, 42 wrong, 0 unformed; first wrong Some((-170141183460469231731687303715884105728, 1, 2, 1, 0)); first unformed None
+  zero_is_negative: 1196 cells, 91 ties, 7 wrong, 0 unformed; first wrong Some((0, 1, 2, 0, 1)); first unformed None
+   shift_up_always: 1196 cells, 91 ties, 249 wrong, 2 unformed; first wrong Some((-170141183460469231731687303715884105728, 0, 2, 1, 0)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+  shift_then_floor: 1196 cells, 91 ties, 222 wrong, 2 unformed; first wrong Some((-170141183460469231731687303715884105728, 0, 2, -1, 0)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+           doubled: 1196 cells, 91 ties, 0 wrong, 548 unformed; first wrong None; first unformed Some((-170141183460469231731687303715884105728, 0, 4611686018427387904))
+
+             shift: 1196 cells, 91 ties, 0 wrong, 2 unformed; first wrong None; first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+            select: 1196 cells, 91 ties, 0 wrong, 0 unformed; first wrong None; first unformed None
+     half_up_alone: 1196 cells, 91 ties, 21 wrong, 0 unformed; first wrong Some((-3, 1, 2, -2, -3)); first unformed None
+ toward_zero_below: 1196 cells, 91 ties, 21 wrong, 0 unformed; first wrong Some((-3, 1, 2, -2, -3)); first unformed None
+  zero_is_negative: 1196 cells, 91 ties, 7 wrong, 0 unformed; first wrong Some((0, 1, 2, 0, 1)); first unformed None
+   shift_up_always: 1196 cells, 91 ties, 117 wrong, 2 unformed; first wrong Some((-3, 0, 2, -2, -3)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+  shift_then_floor: 1196 cells, 91 ties, 111 wrong, 2 unformed; first wrong Some((-3, 0, 2, -4, -3)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+           doubled: 1196 cells, 91 ties, 0 wrong, 548 unformed; first wrong None; first unformed Some((-170141183460469231731687303715884105728, 0, 4611686018427387904))
+
+             shift: 1196 cells, 91 ties, 0 wrong, 2 unformed; first wrong None; first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+            select: 1196 cells, 91 ties, 0 wrong, 0 unformed; first wrong None; first unformed None
+     half_up_alone: 1196 cells, 91 ties, 42 wrong, 0 unformed; first wrong Some((-170141183460469231731687303715884105728, 1, 2, 1, 0)); first unformed None
+ toward_zero_below: 1196 cells, 91 ties, 42 wrong, 0 unformed; first wrong Some((-170141183460469231731687303715884105728, 1, 2, 1, 0)); first unformed None
+  zero_is_negative: 1196 cells, 91 ties, 7 wrong, 0 unformed; first wrong Some((0, 1, 2, 0, 1)); first unformed None
+   shift_up_always: 1196 cells, 91 ties, 249 wrong, 2 unformed; first wrong Some((-170141183460469231731687303715884105728, 0, 2, 1, 0)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+  shift_then_floor: 1196 cells, 91 ties, 222 wrong, 2 unformed; first wrong Some((-170141183460469231731687303715884105728, 0, 2, -1, 0)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+           doubled: 1196 cells, 91 ties, 0 wrong, 548 unformed; first wrong None; first unformed Some((-170141183460469231731687303715884105728, 0, 4611686018427387904))
+
+             shift: 1196 cells, 91 ties, 0 wrong, 2 unformed; first wrong None; first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+            select: 1196 cells, 91 ties, 0 wrong, 0 unformed; first wrong None; first unformed None
+     half_up_alone: 1196 cells, 91 ties, 21 wrong, 0 unformed; first wrong Some((-3, 1, 2, -2, -3)); first unformed None
+ toward_zero_below: 1196 cells, 91 ties, 21 wrong, 0 unformed; first wrong Some((-3, 1, 2, -2, -3)); first unformed None
+  zero_is_negative: 1196 cells, 91 ties, 7 wrong, 0 unformed; first wrong Some((0, 1, 2, 0, 1)); first unformed None
+   shift_up_always: 1196 cells, 91 ties, 117 wrong, 2 unformed; first wrong Some((-3, 0, 2, -2, -3)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+  shift_then_floor: 1196 cells, 91 ties, 111 wrong, 2 unformed; first wrong Some((-3, 0, 2, -4, -3)); first unformed Some((170141183460469231731687303715884105727, 9223372036854775804, 9223372036854775806))
+           doubled: 1196 cells, 91 ties, 0 wrong, 548 unformed; first wrong None; first unformed Some((-170141183460469231731687303715884105728, 0, 4611686018427387904))
