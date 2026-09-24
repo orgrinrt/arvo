@@ -95,8 +95,11 @@ fn every_pair_fires_on_one_side_and_is_silent_on_the_other() {
 #[test]
 fn the_corpus_holds_what_it_held_and_the_review_measured_eight_of_it() {
     // A count rather than a list, so a pair removed is a failure here rather
-    // than a silent narrowing of what the reader is asked.
-    assert_eq!(PAIRS.len(), 53);
+    // than a silent narrowing of what the reader is asked. The fourth review's
+    // three pinned pairs took the count from 53 to 50: each contradicted the
+    // coordinator's settled intent on one side, and that side moved to
+    // `catalogue.rs` rather than staying asserted as correct here.
+    assert_eq!(PAIRS.len(), 50);
     assert_eq!(PAIRS.iter().filter(|p| p.measured).count(), 8);
 }
 

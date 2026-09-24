@@ -175,15 +175,6 @@ pub(super) const PAIRS: &[Pair] = &[
         measured: false,
     },
     Pair {
-        fires:    "`half_up` is a nearest rule that reads nothing and so falls on the translation \
-                  side, where the ties-away rule would fall on the reflection side.",
-        silent:   "`half_up` is a nearest rule that reads nothing and so falls on the translation \
-                  side, where the ties-away alias would fall on the reflection side.",
-        subject:  None,
-        differs:  "whether the negator stands behind the reading in the reading's own segment",
-        measured: false,
-    },
-    Pair {
         fires:    "The rounding region commutes with reflection for toward zero and half-even, \
                   and for floor, ceil, half-up or a stochastic decision at a fixed dither.",
         silent:   "The rounding region commutes with reflection for toward zero and half-even, \
@@ -251,13 +242,6 @@ pub(super) const PAIRS: &[Pair] = &[
         measured: false,
     },
     Pair {
-        fires:    "`half_up` is not Java's rule. It sends a tie away from zero.",
-        silent:   "`half_up` is not Java's HALF_UP. It sends a tie away from zero.",
-        subject:  None,
-        differs:  "whether the other operation is named, with no code span on either side",
-        measured: false,
-    },
-    Pair {
         fires:    "Nearest. A tie goes away from zero.",
         silent:   "Nearest. A tie goes away from zero under `HalfEven`.",
         subject:  Some("HalfUp"),
@@ -278,13 +262,6 @@ pub(super) const PAIRS: &[Pair] = &[
         subject:  None,
         differs:  "whether the clause between the name and the reading points back, which is what \
                   carries the name past one clause",
-        measured: false,
-    },
-    Pair {
-        fires:    "`half_up` is a mode. The crate sends a tie away from zero.",
-        silent:   "`half_up` is a mode. `arvo-format` sends a tie away from zero.",
-        subject:  None,
-        differs:  "whether the clause opens by naming a subject of its own in a code span",
         measured: false,
     },
     Pair {

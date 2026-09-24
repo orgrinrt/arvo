@@ -315,12 +315,10 @@ fn a_clause_opening_with_a_code_span_has_a_subject_of_its_own() {
     // row recording what the crate asserted before the ruling reads this way.
     assert!(found("`half_up` is a mode. `arvo-format` sends a tie away from zero.").is_empty());
     // The same clause naming its subject in words rather than in a code span is
-    // not distinguished, and carries. That is the reader's limit rather than
-    // the intended reading, and the catalogue carries the sentence it costs.
-    assert_eq!(
-        found("`half_up` is a mode. The crate sends a tie away from zero."),
-        ["away from zero"]
-    );
+    // not distinguished, and carries: neither reading is a claim about what the
+    // mode denotes, so both have to stay silent, and this one does not.
+    // `sentences/catalogue.rs` carries the sentence it costs rather than a
+    // watered-down assertion here.
 }
 
 #[test]
