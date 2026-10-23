@@ -200,6 +200,14 @@ commit = "error"
 build = "error"
 push = "error"
 
+# The edge runs from the replacing row to the one it replaces (`supersedes`, on
+# a ruling and on a proposal), so the lint reads it that way round.
+[lints.no-superseded-citation]
+commit = "error"
+build = "error"
+push = "error"
+supersedes_field = "supersedes"
+
 [lints.a-citation-names-a-target]
 commit = "error"
 build = "error"
