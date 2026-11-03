@@ -1,68 +1,26 @@
 # `arvo`
 
-<div align="center" style="text-align: center;">
+> Numeric foundations where the consumer picks the behaviour, `no_std`, no alloc and no platform dependencies.
 
-[![GitHub Stars](https://img.shields.io/github/stars/orgrinrt/arvo.svg)](https://github.com/orgrinrt/arvo/stargazers)
-[![GitHub Issues](https://img.shields.io/github/issues/orgrinrt/arvo.svg)](https://github.com/orgrinrt/arvo/issues)
-![License](https://img.shields.io/github/license/orgrinrt/arvo?color=%23009689)
+`arvo` is a set of crates for numbers whose width and edge behaviour you choose, instead of inheriting them from whatever integer type the hardware happens to have. A value of thirteen bits is thirteen bits, and what happens at its edges, rounding, overflow, saturation, is picked at the call site, so two values of the same nominal shape can act differently because their users wanted different things. Every size is a constant at the type level, which means the choosing is done at compile time and nothing of it is left to run.
 
-> Numeric foundations where the consumer picks the behaviour instead of the container the machine happens to offer. `no_std`, no alloc, no platform deps.
+## Status
 
-</div>
+The bottom of the stack is in the tree and builds. `arvo-bits` is an exact-width bit container, `arvo-format` declares a number's representable set and the adaptation that puts an exact result back onto it, with six rounding modes (`toward_zero`, `floor`, `ceil`, `half_up`, `half_even` and `stochastic`) and the overflow policies, `arvo-placement` works out where a result's bits sit, and `arvo-strategy` binds the presets `Hot`, `Cold`, `Warm` and `Precise` to a placement and an adaptation. MATLAB `fi` and `fimath` declarations can be written as themselves and resolve to a format the crates already have.
 
-`arvo` is about numbers whose behaviour you choose rather than inherit. Ordinary integer types hand you whatever the hardware has lying around, a `u16` when you wanted thirteen bits, and then the wrapping, the rounding and the width are all decided for you by that accident. Here the width is exactly the width you name, and what happens at the edges is a thing you select at the call site, so two values of the same nominal shape can behave differently because their consumers wanted different things from them.
+There is no `UFixed` or `Uint` to reach for yet, the layers above these are still being designed, and the api will move. A git dependency on the `dev` branch gets the current state sooner than a release will. If you want general-purpose numerics today there are established crates that will serve you better, and this one is for the case where exact widths and a chosen behaviour are the point.
 
-Everything is `#![no_std]` with no alloc and no platform dependency, and every size is const at the type level, so the choosing happens at compile time and the branch that picks it is gone by the time anything runs.
+## Used by
 
-## Where this is right now
+[`hilavitkutin`](https://github.com/orgrinrt/hilavitkutin), a pipeline execution engine, and [`vehje`](https://github.com/orgrinrt/vehje), a language toolchain, are the two consumers, and it builds on [`notko`](https://github.com/orgrinrt/notko).
 
-The first crates are in the tree and they build. `arvo-format` carries the format itself, the predicate that says which values a format can represent and the adaptation that puts an exact result back onto them, with the six rounding modes and the overflow policies, and among its points `USize` and `ISize`, which are just the integer formats at whatever width the target's pointer is, written once rather than picked per platform. `arvo-placement` derives where a result goes from what else wants the slot. `arvo-strategy` binds the four presets, `Hot`, `Cold`, `Warm` and `Precise`, to a placement objective and an adaptation, and carries what each is for as prose rather than as a table of behaviours. `arvo-bits` sits beside those three rather than under them, with no dependency of its own: an exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, with masked construction and masked cast between declared widths, and no arithmetic and no sign, because a field a consumer pins to a width and aliases is a different thing from a number.
+## Coding agents
 
-On top of that the industrial conventions people already write against get named directly, so a MATLAB `fi` at a given word length and fraction length, or a `fimath` rounding and overflow choice over one, is written as itself and resolves to a format the crate already had, rather than to a translation somebody does by hand and then has to check. MATLAB is the only convention named so far and the set is open, so the next one is an addition and not a change. One of its rounding methods has no mode here, its `Round`, which takes a tie away from zero, and the source says why and how a caller writes it instead.
-
-That's the bottom of the stack rather than a usable numeric library, so there's no number to compute with yet. `UFixed` and the other points name a format and hold no value, what a value of one is hasn't been decided, and the layers above these are being designed and written as the design settles under them.
-
-I'd caution against depending on this for anything serious just yet. The api hasn't settled, and neither has the shape above these four: which crates there end up being and which layer owns what are still open, and answering them is the work in progress. If you do want to follow along, the `dev` branch is where things land as they get tested and stable, so a git dep pointed at it will get you the real thing sooner than waiting for a release will.
-
-## What has settled
-
-A format is identified by two things, the domain it lives in and the set of values it can actually represent, and that set is a constant of the type rather than something that depends on the data. Membership in it turns out to be one predicate over one parameterisation, with a slot function, a quantum per magnitude and a phase, and integers, fixed point, scaled integers and floats all fall out as points of that same shape rather than as separate families needing separate treatment.
-
-Arithmetic then factors into two halves that are worth keeping apart: the exact operation in the ambient domain, and a named adaptation that puts the result back onto the representable set. The adaptation is a real object with its own laws, not a footnote about rounding, and that's what makes it possible to say which laws survive a given composition and which don't.
-
-Rounding carries six explicit names, `toward_zero`, `floor`, `ceil`, `half_up`, `half_even` and `stochastic`. The familiar `trunc` is deliberately not among them, because on a signed domain it names two different operations and people reliably mean the wrong one of the two. `half_up` sends a tie toward positive infinity whatever the sign, so a tie at -2.5 goes to -2, and it isn't the `HALF_UP` of Java or Python, which sends that tie the other way on the negative side.
-
-The concept is closed and the inventory isn't. A new number system earns its place by supplying what the concept asks of it, so admitting one doesn't mean amending anything.
-
-## What it's for
-
-`arvo` is a library and the value is in what composes on top of it, so it stays usable by anyone rather than being shaped around one caller. The known consumers are [`hilavitkutin`](https://github.com/orgrinrt/hilavitkutin), a pipeline execution engine, and [`vehje`](https://github.com/orgrinrt/vehje), a language toolchain, and they're what drive which surfaces eventually exist. It builds on [`notko`](https://github.com/orgrinrt/notko) for its foundations.
-
-If you want general-purpose numerics today, this probably isn't the right thing, and there are established crates in the ecosystem that will serve you better and are available right now. The reason to want this one is the exact widths and the behaviour being a choice you make, which is a fairly specific thing to want.
-
-## A note on coding agents
-
-We do not recommend using coding agents with this codebase.
-
-The design here is unusual enough that current models tend to reach for the familiar shape instead of the one that's written down, and there isn't yet enough code in the tree to correct the guess for them.
-
-If you still choose to use a coding agent:
-
-- Be aware of the environmental and social impact of large-scale model inference. Minimise agent use where it is not needed. Be responsible.
-- Only use an agent if you yourself understand the architecture. Do not use an agent because you do not understand; you will waste time and energy, both yours and the planet's.
-- This repository provides agent instructions and skills that help, but they do not eliminate the problem. You will still need to correct the agent frequently.
-
-The recommendation stands: do this work yourself unless you know what you are doing and why.
+We don't recommend using coding agents on this codebase. The design is unusual enough that current models reach for the familiar shape instead of the one that is written down, and there is not enough code yet to correct the guess for them. If you use one anyway, understand the architecture first, keep the use to what is needed, and expect to correct it often.
 
 ## Contributing
 
-Feel free to contribute, though do mind that the design is still moving under everything right now, so a large pull request has a real chance of landing against something that changed last week. Throwing in an issue first is the cheaper path if you're unsure. Forks are always a valid choice too and I'd encourage anyone to have their own take on this, just mind the license when you do.
-
-## Support
-
-Whether you use this project, have learned something from it, or just like it, please consider supporting it by buying me a coffee, so I can dedicate more time on open-source projects like this :)
-
-<a href="https://buymeacoffee.com/orgrinrt" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+The design is still moving, so a large pull request can land against something that changed last week, and opening an issue first is cheaper. Forks are welcome, mind the licence.
 
 ## License
 
