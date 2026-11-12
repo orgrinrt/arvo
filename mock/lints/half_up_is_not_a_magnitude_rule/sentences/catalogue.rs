@@ -309,7 +309,7 @@ fn every_twin_in_the_catalogue_reads_right() {
 }
 
 /// `CATALOGUE[i]`'s known-wrong side, isolated so a fix landing on one entry
-/// fails only that entry's test rather than an aggregate covering all
+/// turns only that entry's test green rather than an aggregate covering all
 /// eighteen.
 fn known_wrong(i: usize) -> Vec<String> {
     wrong_sides(std::iter::once(&CATALOGUE[i].pair))
