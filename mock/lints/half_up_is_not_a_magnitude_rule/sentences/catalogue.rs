@@ -8,12 +8,12 @@
 //! These are the directions the gate is incomplete in, and the lint warns
 //! rather than blocks because they exist. Each entry is a pair like the
 //! corpus's, with the side the reader gets wrong named and the other side, the
-//! twin, one it gets right. Every entry owns one test asserting its wrong side
-//! stays wrong, ignored as catalogue so it is red when asked for and does not
-//! fail the suite; a fix landing on one entry fails only that entry's test
-//! rather than an aggregate that would still report red for the other
-//! seventeen. The arm asserting the twins is not ignored, because a twin going
-//! wrong is a regression rather than a known gap.
+//! twin, one it gets right. Every entry owns one test asserting the reading its
+//! wrong side is owed, ignored as catalogue so it is red when asked for and does
+//! not fail the suite; a fix landing on one entry turns only that entry's test
+//! green, where an aggregate would still report red for the other seventeen.
+//! The arm asserting the twins is not ignored, because a twin going wrong is a
+//! regression rather than a known gap.
 //!
 //! The wrong sides say what the reader would have to read that it cannot.
 //! Twelve are clauses it lets through: a capitalised method name used as an
@@ -315,9 +315,10 @@ fn known_wrong(i: usize) -> Vec<String> {
     wrong_sides(std::iter::once(&CATALOGUE[i].pair))
 }
 
-/// One catalogued entry, as a test asserting its known-wrong side stays
-/// wrong. Ignored as catalogue, per entry, so a reader running `--ignored`
-/// sees which specific class is still open rather than one aggregate result.
+/// One catalogued entry, as a test asserting the reading the reader owes on its
+/// known-wrong side. Red while the gap is open, which is what the catalogue
+/// ignore is for, per entry, so a reader running `--ignored` sees which specific
+/// class is still open and a fix turns only its own entry green.
 macro_rules! catalogue_case {
     ($(#[$attr:meta])* $name:ident, $i:expr) => {
         #[test]
@@ -325,9 +326,9 @@ macro_rules! catalogue_case {
         fn $name() {
             let wrong = known_wrong($i);
             assert!(
-                !wrong.is_empty(),
-                "CATALOGUE[{}] now reads right; move it out of the catalogue \
-                 and into the corpus",
+                wrong.is_empty(),
+                "CATALOGUE[{}]'s named side is still read wrong: {wrong:?}. Once it reads \
+                 right, the entry moves out of the catalogue and into the corpus",
                 $i
             );
         }
