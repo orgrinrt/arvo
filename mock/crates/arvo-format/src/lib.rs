@@ -46,6 +46,7 @@ pub mod addition;
 pub mod ambient;
 pub mod apply;
 pub mod format;
+pub mod multiplication;
 pub mod overflow;
 pub mod quantum;
 pub mod rounding;
@@ -102,6 +103,7 @@ pub use format::{
     smallest_step_exponent,
     step_exponent,
 };
+pub use multiplication::{Mul, is_multipliable, mul, product_position};
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
 pub use quantum::{
     Exponent,

@@ -22,7 +22,7 @@
 use notko::Maybe;
 
 use super::steps::{Difference, Sum};
-use super::{DITHERS, Ratio, Table, Window, at_every_signature, coordinates, members};
+use super::{DITHERS, Ratio, Window, at_every_signature, coordinates, members, stepped};
 use crate::adapt::{Adapt, DeclaredSignature, Signature};
 use crate::addition::{difference_position, neg, negation_position, sub, sum_position};
 use crate::ambient::{BinaryRationals, DecimalRationals};
@@ -162,13 +162,13 @@ fn a_difference_is_a_sum_with_the_negation_and_negation_undoes_itself() {
 
 /// How many triples `(a + b) - c` and `a + (b - c)` disagree on under `S`.
 fn composed_divergent<S: DeclaredSignature>() -> u64 {
-    let sums = Table::of_step::<Sum, S>(Dither::UNUSED);
-    let differences = Table::of_step::<Difference, S>(Dither::UNUSED);
+    let sums = stepped::<Sum, S>(Dither::UNUSED);
+    let differences = stepped::<Difference, S>(Dither::UNUSED);
     let mut count = 0u64;
-    for a in 0 .. sums.members {
-        for b in 0 .. sums.members {
+    for a in 0 .. sums.members() {
+        for b in 0 .. sums.members() {
             let ab = sums.at(a, b);
-            for c in 0 .. sums.members {
+            for c in 0 .. sums.members() {
                 if differences.at(ab, c) != sums.at(a, differences.at(b, c)) {
                     count += 1;
                 }

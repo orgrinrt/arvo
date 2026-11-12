@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: multiplication is refused over a phased format: the product of two members sits at (phase + a)(phase + b) * q - phase, which reads the quantum and the phase together, and the step here computes the zero-phase case only
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::multiplication::Multipliable::<arvo_format::points::Biased<8, 0, 1>>::ADMITTED` failed here
+  |
+ ::: src/multiplication.rs
+  |
+  | /         assert!(
+  | |             F::PHASE.is_zero().get(),
+  | |             "multiplication is refused over a phased format: the product of two members sits at \
+  | |              (phase + a)(phase + b) * q - phase, which reads the quantum and the phase together, \
+  | |              and the step here computes the zero-phase case only"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/multiplication.rs
+  |
+  |     let () = Multipliable::<F>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -44,12 +44,18 @@
 //! spelled around: a coordinate type cannot sit in that position, which is why
 //! the declared widths carry a machine integer there and nowhere else.
 //!
-//! The last five pin what addition refuses. Three are its obligation's three
+//! Five pin what addition refuses. Three are its obligation's three
 //! refusals, each bound in a const item so the refusal is reached at check time,
 //! and `is_addable` in the addition suite asks the same three questions from the
 //! side that does not force them. The other two are the shape of the operation:
 //! a format alone where a declared signature goes, and a host integer where a
 //! slot goes.
+//!
+//! The last three pin what multiplication refuses, one pair for each refusal a
+//! shipped declaration can reach: a phase, a magnitude-indexed quantum, and a
+//! range whose products the slot index cannot carry. Each pair is a refused file
+//! and a twin that differs from it in the offending token alone and compiles, so
+//! the refusal is pinned to that token rather than to anything else in the file.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -211,4 +217,31 @@ fn a_format_is_not_a_signature() {
 fn a_host_integer_is_not_an_operand() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_host_integer_is_not_an_operand.rs");
+}
+
+/// Multiplication over a phased format, refused, and the same declaration at
+/// zero phase, admitted.
+#[test]
+fn multiplication_over_a_phased_format_is_refused_and_at_zero_phase_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/multiplication_over_a_phased_format_is_refused.rs");
+    t.pass("tests/ui/multiplication_at_zero_phase_is_admitted.rs");
+}
+
+/// Multiplication over a magnitude-indexed quantum, refused, and over a constant
+/// quantum at the same exponent, admitted.
+#[test]
+fn multiplication_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/multiplication_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/multiplication_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Multiplication over the unsigned 64-bit range, refused because the index
+/// cannot carry its products, and one bit narrower, admitted.
+#[test]
+fn multiplication_over_an_uncarried_product_is_refused_and_one_bit_narrower_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/multiplication_over_an_uncarried_product_is_refused.rs");
+    t.pass("tests/ui/multiplication_one_bit_narrower_is_admitted.rs");
 }
