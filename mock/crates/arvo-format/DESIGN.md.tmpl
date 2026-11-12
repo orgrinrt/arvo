@@ -1756,10 +1756,84 @@ the verdict for all three operations. Every one is a
 `const fn` over associated items or a type, so a consumer gating an arm on the verdict has no branch
 left by the time the backend sees it.
 
+## Multiplication, the product of two members at a binary quantum
+
+The product is admitted by the same rule as the sum, and its exact step is narrower. Two members at a
+constant quantum `q` are `(phase + a) * q` and `(phase + b) * q`, so their product is the member at
+position `(phase + a)(phase + b) * q - phase`. Where addition's quantum dropped out, the product's
+stays in, and with a phase it enters as a polynomial in the phase. The step stated here is the case
+where both of those simplify: radix two and zero phase, where the position is `a * b * 2^e` with `e`
+the quantum's exponent.
+
+### The exact step is a product moved by the exponent
+
+The slots are multiplied in the index's own integer and the product is moved `e` binary places. For
+`e` at or above zero the move is up and the position is on the grid. For `e` below zero it is down,
+and the slot below the position is the product shifted right arithmetically, which is the floor, while
+the remainder is the low `-e` bits over `2^-e`, reduced to lowest terms before it is stored so that the
+position equals the one any other route to the same rational builds. No division is formed.
+
+For a slot that is not a member the step answers anyway, as `sum_position` does: a slot product, or an
+up move, that leaves the index saturates at the end on the product's sign, on the grid.
+
+### What it refuses
+
+One obligation carries five refusals, forced by the exact step and so by the composition, and asked
+without forcing by `is_multipliable`.
+
+A nonzero phase is refused, and the message says why: the position is still a function of the declared
+signature there, but not the one this step computes. A radix other than two is refused, because the
+down move would be a division by a power of that radix and its remainder's denominator would not be a
+power of two. A magnitude-indexed quantum is refused for the reason addition refuses it. A quantum
+exponent below `-62` is refused, because the remainder's denominator is a positive signed 64-bit
+integer and `2^62` is the largest power of two that holds. And a product the slot index cannot carry is
+refused: over a box of slots the extreme products sit at its four corners, so the obligation multiplies
+the corners checked and moves each up by the exponent checked.
+
+That last refusal is where the 64-bit ranges part. The signed 64-bit range's largest product is
+`(-2^63)^2 = 2^126`, which the index holds, so `Integer<64>` is admitted. The unsigned range's top
+corner is `(2^64 - 1)^2`, just under `2^128` and past the index's top, so `UFixed<64, _>` is refused and
+`UFixed<63, _>`, whose top corner is under `2^126`, is admitted. A double-width exact sum at width 64,
+two signed 64-bit products added before either is adapted, reaches `2^127`, one past the index's top.
+Nothing here forms that sum, because each product is adapted before the next operation reads it.
+
+### The operation and the surface
+
+`Mul` is the operation, of arity two. `product_position` is the exact step, `mul` the composition with
+`adapt` under one declared signature with the dither passed through, and `is_multipliable` the verdict.
+The three functions are `const fn`, and the crate root re-exports all four. There is no reach and no
+associativity verdict: the reach serves addition's translation argument, which has no counterpart for
+the product, and a verdict would need a relocation law for multiplication the canon does not state.
+
+### The laws this section owes tests for
+
+The denotation: the two values multiplied with the quantum in and read back as a position, at
+exponents on both sides of zero over both families, with a control that leaves the quantum out and
+has to disagree wherever the exponent is not zero. Every refusal on both sides of its boundary through
+`is_multipliable`, and the three that a consumer most plausibly writes, a phased format, a
+magnitude-indexed quantum and the unsigned 64-bit range, as compile-fail cases each with a twin
+differing in the offending token that compiles. Every member pair at widths one to eight against the
+applied map's oracle fed the exact rational position, every mode and shipped policy, at whole and
+fractional exponents.
+
+And the law rows' cells. Under wrapping, `(a * b) * c == a * (b * c)` holds on the integer grid at
+widths three to eight, signed and unsigned, and fails at a fractional exponent. Under saturation it
+holds unsigned at widths three to eight and fails signed at 28, 160, 780 and 3516 triples at widths
+three to six. `a * (b + c) == (a * b) + (a * c)` holds unsigned under wrapping and under saturation at
+widths three to eight, and fails signed under saturation at widths six and seven.
+
 ## Open items
 
-Four gaps this crate does not close, catalogued here rather than left unrecorded once the design
+Six gaps this crate does not close, catalogued here rather than left unrecorded once the design
 that would close them exists.
+
+The product of a phased format has a position, `(phase + a)(phase + b) * q - phase`, and no step. It
+reads the quantum, so the step would carry the scale the way addition's never had to, and its
+remainder's denominator is the phase's squared times the quantum's.
+
+The product over the unsigned 64-bit range is refused because its top corner leaves the slot index.
+Admitting it is a widening of the slot coordinate past `i128`, which every other computation over a
+slot would then owe too.
 
 The composed law `(a + b) - c == a + (b - c)` has a count and no verdict. One in the shape of
 `addition_is_associative` is a sufficient condition: the relocation law at the sum's reach under
