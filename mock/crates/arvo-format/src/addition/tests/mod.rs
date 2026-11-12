@@ -23,7 +23,6 @@
 use notko::Maybe;
 
 use crate::adapt::DeclaredSignature;
-use crate::addition::add;
 use crate::ambient::{Ambient, Radix};
 use crate::apply::{Dither, Exact, Fraction};
 use crate::format::{Format, Phase};
@@ -50,8 +49,11 @@ macro_rules! every_phase {
     };
 }
 
+mod steps;
 mod the_operation;
 mod the_rounding_axis;
+mod the_signed_laws;
+mod the_signed_oracle;
 mod the_step;
 mod the_verdict;
 
@@ -347,6 +349,13 @@ impl Table {
     /// Requires every answer to be a member, so a table is also a totality check
     /// over the pairs it holds.
     fn of<S: DeclaredSignature>(dither: Dither) -> Self {
+        Self::of_step::<steps::Sum, S>(dither)
+    }
+
+    /// Every pair of members put through the binary step `T` under `S` at
+    /// `dither`, with the same totality requirement.
+    fn of_step<T: steps::Step, S: DeclaredSignature>(dither: Dither) -> Self {
+        assert!(T::NEGATED.len() == 2, "a table holds a binary step");
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
         let members = member_count::<S::Format>();
@@ -359,10 +368,11 @@ impl Table {
             for (j, cell) in row.iter_mut().enumerate().take(members) {
                 let a = Slot::at(min.index() + i as i128);
                 let b = Slot::at(min.index() + j as i128);
-                let got = add::<S>(a, b, dither);
+                let got = T::adapted::<S>(a, b, dither);
                 assert!(
                     got.is_within(min, max).get(),
-                    "{a:?} + {b:?} adapted to {got:?}, outside [{min:?}, {max:?}]"
+                    "{:?} at {a:?}, {b:?} adapted to {got:?}, outside [{min:?}, {max:?}]",
+                    T::NEGATED
                 );
                 *cell = (got.index() - min.index()) as u8;
             }
