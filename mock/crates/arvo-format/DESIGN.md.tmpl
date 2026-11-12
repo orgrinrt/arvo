@@ -1472,12 +1472,13 @@ Addition reads them. Its associativity verdict is the completion half of the rel
 reach addition supplies, and the rounding half decides whether that reading applies at all, so the
 conjunction is written once, here, and the operation gates on it rather than writing it again.
 
-## Addition, the one operation this crate admits
+## Addition, and the signed sums beside it
 
 The admission rule asks one thing of an operation, that it be a function of the declared signature,
 and addition is the operation whose exact step shows most plainly what that means. It reads the phase
 and the slot range and nothing else, so it can be stated here, in the crate that cannot reach a
-carrier, and it could not be stated in any crate that can.
+carrier, and it could not be stated in any crate that can. Negation and subtraction are the same step
+at other signs, and they are stated beside it, in the subsection after the associativity verdict.
 
 It is also what two ratified laws were about before anything computed it. The additive verdict and
 absorption both speak of an addition reduced onto the representable set, and the relocation predicates
@@ -1598,6 +1599,60 @@ and addition is not a translated whole-phase addition. The verdict refuses there
 than a defect, since some of those cells are associative anyway, and the tests count them rather than
 assume there are none.
 
+### Negation and subtraction are the same step at other signs
+
+A signed sum of members, with signs `s_i`, is
+
+```
+sum_i s_i * (phase + a_i) * q = (phase + (sum_i s_i * a_i + (sum_i s_i - 1) * phase)) * q
+```
+
+so its exact position is the signed sum of the slots plus `sum_i s_i - 1` copies of the phase, and the
+quantum and the radix drop out of every one of them for the reason they drop out of addition. Addition
+is the signs `(+1, +1)` and one copy. Negation is `(-1)`: the position `-a - 2 * phase`, minus two
+copies. Subtraction is `(+1, -1)`: the position `a - b - phase`, minus one copy. Nothing else differs,
+so the phase's parts are computed by the same euclidean split at minus one and minus two copies,
+settled once per format beside the one-copy parts, and the position is built from them the way
+`sum_position` builds its own.
+
+`negation_position` and `difference_position` are the exact steps, `neg` and `sub` the compositions
+with `adapt`, and `Neg` and `Sub` the operations, of arity one and two. `neg` takes one slot and `sub`
+two, in the order `a - b`, both under one declared signature and with the dither passed through.
+
+They are admitted exactly where addition is, and `is_addable` is the verdict for all three. Each of the
+obligation's three conditions covers the new steps. The quantum condition is the same condition. The
+reduced denominator of `k` copies of the phase divides the reduced denominator of one copy, because
+`gcd(k * num, den)` is a multiple of `gcd(num, den)`, so a held one-copy remainder means held
+remainders at minus one and minus two. And the carry condition bounds every member inside
+`(-2^126 - 2^62, 2^126 + 2^62)`, since a phase is a pair of signed 64-bit integers and so at most
+`2^63` in magnitude. Negation's positions are a member's negation plus at most `2^64`, sixty bits
+inside the index. Subtraction's are not bounded by that alone: it allows `MAX - MIN` up to
+`2^127 - 1`, and a phase of `-2^63` then puts the top position past the index. The slot range's own
+obligation closes it, because an admitted width is at most 64 bits, so the span is below `2^64` and
+every difference of two members plus the phase stays under `2^64 + 2^63 + 1` in magnitude. `add`
+forces that obligation already, through `adapt`, so `neg` and `sub` refuse exactly the formats `add`
+refuses. `difference_position` forces it itself, being otherwise not exact; it is the one exact step
+whose admission is narrower than `is_addable`, and only over a slot range `add` refuses as well.
+
+For a slot that is not a member the steps saturate once at the ends of the index's host integer, as
+`sum_position` does, so `neg` and `sub` are total over every slot. Negation's slot sum is one
+subtraction. Subtraction's has three terms and is saturated as one act: where `a - b` fits, the
+phase's whole part is added with one saturating add; where it does not, it left on `a`'s side, a
+whole part of the other sign is added to `a` first, which cannot overflow, and `b` is then
+subtracted once, saturating. A whole part on the overflow's own side leaves the answer at the end it
+was already past.
+
+`negation_reach` and `subtraction_reach` are the reaches the steps supply, from `-MAX + k` to
+`-MIN + k` with `k` the whole part of minus two copies of the phase, and from `MIN - MAX + k` to
+`MAX - MIN + k` with `k` the whole part of minus one copy, each with the grid state its remainder
+decides, the way `addition_reach` decides its own. Neither carries a translation.
+
+Neither has an associativity verdict, because neither has the law to keep. Negation is unary.
+Subtraction is not associative in the ambient rationals, where `(a - b) - c` and `a - (b - c)` differ
+by `2 * c`, and absorption decides whether a reduction breaks a law the exact operation keeps. The
+composed law the registry records, `(a + b) - c == a + (b - c)`, does hold in the ambient rationals.
+Its count is reproduced as a test; a verdict for it is not built here (see the open items).
+
 Over every cell the tests cross, a licensed cell never has a divergent triple. At a whole phase the
 verdict is exact in both directions over any range of two slots or more: a range whose top is reachable
 from above by a negative translation has the witness one past the top, and one reachable from below the
@@ -1668,18 +1723,51 @@ sum is not carried, over an outside format whose phase remainder the position ca
 format that is not a declared signature, and with a host integer where a
 slot goes. Each is a compile-fail case with its diagnostic committed.
 
+Negation and subtraction owe the same set, each stated over what its step computes. The exact step is
+the denotation, over the same exponents, radices and phases, values computed with the quantum
+multiplied in. The operation is total over every admitted width of both slot families, at the edges of
+the range and the ends of the coordinate, with the true answer where the true position decides it. It
+is exact where the exact position is a member. Where the format has an identity, subtracting it
+returns the other operand and negating it returns it. The reach is the positions the step produces.
+The steps, the reaches and the verdict evaluate at check time.
+
+Commutativity is replaced by the laws that hold instead. `a - a` is the position of the value zero,
+`-phase`, at every member. Negation is an involution: where the negation of `a` is the member `n`
+exactly, the negation of `n` is `a`. And the difference is the sum with the negation:
+`difference_position(a, b)` equals `sum_position(a, n)` wherever `negation_position(b)` is the member
+`n` exactly.
+
+Both adapted operations agree with exact rational arithmetic exhaustively: at every width from one to
+eight of both slot families, every rounding mode, wrapping and saturation, and every phase the shared
+list names, `neg` of every member and `sub` of every pair equal what an oracle computes from the
+members' values, rounding and completing in its own arithmetic rather than through `adapt`.
+
+The count the canon records for the composed law is reproduced: `(a + b) - c` against `a + (b - c)`,
+eight bits unsigned under saturation at a whole phase, diverges on 13,882,880 of 16,777,216 triples.
+
 ### The surface this section names
 
 `Add` is the operation. `sum_position` is the exact step, `add` the composition, and `is_addable` the
 verdict beside the obligation. `addition_reach` is the reach addition supplies and
-`addition_is_associative` the verdict on where the adapted sum is associative. Every one is a
+`addition_is_associative` the verdict on where the adapted sum is associative. `Neg` and `Sub` are
+the other two operations, `negation_position` and `difference_position` their exact steps, `neg` and
+`sub` their compositions, and `negation_reach` and `subtraction_reach` their reaches; `is_addable` is
+the verdict for all three operations. Every one is a
 `const fn` over associated items or a type, so a consumer gating an arm on the verdict has no branch
 left by the time the backend sees it.
 
 ## Open items
 
-Three gaps this crate does not close, catalogued here rather than left unrecorded once the design
+Four gaps this crate does not close, catalogued here rather than left unrecorded once the design
 that would close them exists.
+
+The composed law `(a + b) - c == a + (b - c)` has a count and no verdict. One in the shape of
+`addition_is_associative` is a sufficient condition: the relocation law at the sum's reach under
+translations from `-MAX - phase` to `-MIN - phase`, together with the relocation law at the
+difference's reach under translations from `MIN + phase` to `MAX + phase`, since both sides are then
+the adaptation of one exact position. At a fractional phase neither translation is a whole number of
+slots, which is the case `addition_is_associative` handles by reading a fixed rounding offset, and
+whether that reading carries over to two different reaches at once is the part not yet worked out.
 
 `Exact` carries the distance a position lies past an end of the slot index, `past`, and nothing in this
 crate's public surface reads it. A consumer holding an `Exact` from a public constructor has no way to
