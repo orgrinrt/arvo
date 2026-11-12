@@ -41,7 +41,7 @@
 //! gating on it would block a commit over a row somebody is mid-way through
 //! repairing.
 
-use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
+use mockspace::tool::{ArgSpec, NotALint, Outcome, Purpose, Tool, ToolContext, ToolReport};
 
 /// The namespace of things the canon has not settled.
 const QUESTION: &str = "question";
@@ -88,14 +88,14 @@ impl Tool for UnaskedQuestions {
         "questions still waiting on op, with the ones a ruling already answered taken out"
     }
 
-    fn not_a_lint(&self) -> NotALint {
-        NotALint::NoFailingCase
+    fn purpose(&self) -> Purpose {
+        Purpose::Check(NotALint::NoFailingCase)
     }
 
     fn args(&self) -> &'static [ArgSpec] {
         &[ArgSpec {
-            name: "key",
-            required: false,
+            name:        "key",
+            required:    false,
             description: "report one question in full, by its slug, before putting it to him",
         }]
     }
@@ -195,7 +195,7 @@ impl UnaskedQuestions {
                 outcome: Outcome::Clean {
                     examined: rows.len(),
                 },
-                output: s,
+                output:  s,
             };
         }
 
@@ -239,7 +239,7 @@ impl UnaskedQuestions {
             outcome: Outcome::Clean {
                 examined: rows.len(),
             },
-            output: s,
+            output:  s,
         }
     }
 
@@ -291,22 +291,26 @@ impl UnaskedQuestions {
         let refs = ctx.registry.referrers(q);
         s.push('\n');
         match refs.len() {
-            0 => s.push_str(
-                "  Nothing references it. Cheapest to be wrong about, and by the \
+            0 => {
+                s.push_str(
+                    "  Nothing references it. Cheapest to be wrong about, and by the \
                  schema's own reading a question that unblocks nothing is one to ask \
                  later or never.\n",
-            ),
+                )
+            },
             n => {
                 s.push_str(&format!("  {n} row(s) reference it:\n"));
                 for r in refs {
                     s.push_str(&format!("    {r}\n"));
                 }
-            }
+            },
         }
 
         ToolReport {
-            outcome: Outcome::Clean { examined: 1 },
-            output: s,
+            outcome: Outcome::Clean {
+                examined: 1,
+            },
+            output:  s,
         }
     }
 }

@@ -172,7 +172,8 @@ fn the_access_width_is_not_a_function_of_the_carrier() {
 #[ignore = "catalogue: the converse independence is not exhibited by this crate's single packing \
             rule. The design states the carrier is not a function of the access width, measured \
             under both packing rules; only one rule ships here, and under it every access width \
-            reaches exactly one carrier. Red until the second packing rule lands."]
+            reaches exactly one carrier. Red until the second packing rule lands; tracked \
+            #arvo_placement_ships_one_packing_rule_so_the_test_that_the_c"]
 fn the_carrier_is_not_a_function_of_the_access_width() {
     // The assertion is the intended behaviour and is not weakened to pass. Under a
     // derivation carrying both packing rules there are two declared widths sharing

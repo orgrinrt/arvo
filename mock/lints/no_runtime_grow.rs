@@ -269,7 +269,8 @@ mod tests {
     #[ignore = "catalogue: a trailing `//` comment on a real line of code \
                 is scanned as code; `let v = w; // could .push( here \
                 later` false-positives; needs tree-sitter-aware scanning \
-                to fix"]
+                to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_read_a_trailing_comment"]
     fn a_trailing_comment_after_real_code_is_wrongly_flagged() {
         let errors = hits("let v = w; // could .push( here later\n");
         assert!(
@@ -281,7 +282,8 @@ mod tests {
     #[test]
     #[ignore = "catalogue: a string literal naming one of the forbidden \
                 patterns false-positives; needs tree-sitter-aware \
-                scanning to fix"]
+                scanning to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
     fn a_string_literal_naming_a_forbidden_pattern_is_wrongly_flagged() {
         let errors = hits("let msg = \"call .push( next\";\n");
         assert!(
@@ -293,7 +295,8 @@ mod tests {
     #[test]
     #[ignore = "catalogue: a block-comment interior line naming one of \
                 the forbidden patterns false-positives; needs \
-                tree-sitter-aware scanning to fix"]
+                tree-sitter-aware scanning to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_on"]
     fn an_interior_line_of_a_block_comment_is_wrongly_flagged() {
         let errors = hits("/*\nv.push(1);\n*/\n");
         assert!(

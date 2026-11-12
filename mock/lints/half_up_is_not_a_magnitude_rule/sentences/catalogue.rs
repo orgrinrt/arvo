@@ -319,9 +319,9 @@ fn known_wrong(i: usize) -> Vec<String> {
 /// wrong. Ignored as catalogue, per entry, so a reader running `--ignored`
 /// sees which specific class is still open rather than one aggregate result.
 macro_rules! catalogue_case {
-    ($name:ident, $i:expr, $reason:expr) => {
+    ($(#[$attr:meta])* $name:ident, $i:expr) => {
         #[test]
-        #[ignore = $reason]
+        $(#[$attr])*
         fn $name() {
             let wrong = known_wrong($i);
             assert!(
@@ -335,104 +335,122 @@ macro_rules! catalogue_case {
 }
 
 catalogue_case!(
+    #[ignore = "catalogue: `Round` opening the clause reads as an imperative rather than the MATLAB method; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_matlab_method_opening_a_clause_is_read_as_an_imperative,
-    0,
-    "catalogue: `Round` opening the clause reads as an imperative rather than the MATLAB method"
+    0
 );
 catalogue_case!(
+    #[ignore = "catalogue: `Fix` opening the clause reads as an imperative rather than the MATLAB method; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_matlab_fix_opening_a_clause_is_read_as_an_imperative,
-    1,
-    "catalogue: `Fix` opening the clause reads as an imperative rather than the MATLAB method"
+    1
 );
 catalogue_case!(
+    #[ignore = "catalogue: `Ceiling` opening an aside reads as the subject that sends the tie; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     ceiling_opening_an_aside_is_read_as_the_clauses_subject,
-    2,
-    "catalogue: `Ceiling` opening an aside reads as the subject that sends the tie"
+    2
 );
 catalogue_case!(
+    #[ignore = "catalogue: `Round` as a verb taking the mode as its object reads as the MATLAB method; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     round_as_a_verb_taking_the_mode_is_read_as_the_method,
-    3,
-    "catalogue: `Round` as a verb taking the mode as its object reads as the MATLAB method"
+    3
 );
 catalogue_case!(
+    #[ignore = "catalogue: a code span value the mode acts on reads as a subject of its own; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_code_span_value_opening_a_clause_is_read_as_a_subject,
-    4,
-    "catalogue: a code span value the mode acts on reads as a subject of its own"
+    4
 );
 catalogue_case!(
+    #[ignore = "catalogue: the alias named in a contrasted segment, under a name that is also a reading, is \
+     refused; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     the_alias_named_under_a_reading_word_is_refused,
-    5,
-    "catalogue: the alias named in a contrasted segment, under a name that is also a reading, is \
-     refused"
+    5
 );
 catalogue_case!(
+    #[ignore = "catalogue: a relative clause binds to a rule named in words rather than to the mode; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_relative_binding_to_a_rule_named_in_words_is_refused,
-    6,
-    "catalogue: a relative clause binds to a rule named in words rather than to the mode"
+    6
 );
 catalogue_case!(
+    #[ignore = "catalogue: the governing ruling's `promotion` opens a clause on a seat number, a subject the \
+     reader has no word for, so the carry reaches it; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_pronoun_after_a_seat_named_promotion_reaches_the_reading,
-    7,
-    "catalogue: the governing ruling's `promotion` opens a clause on a seat number, a subject the \
-     reader has no word for, so the carry reaches it"
+    7
 );
 catalogue_case!(
+    #[ignore = "catalogue: the reading standing last before `rather than` in its own segment is not excused by \
+     the denotation ahead of it; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     the_denotation_standing_last_before_rather_than_does_not_excuse,
-    8,
-    "catalogue: the reading standing last before `rather than` in its own segment is not excused by \
-     the denotation ahead of it"
+    8
 );
 catalogue_case!(
+    #[ignore = "catalogue: a reading following the denotation by a comma introducing a contrast is not excused, \
+     only a bare comma is; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_reading_after_a_contrast_comma_is_not_excused_by_the_denotation,
-    9,
-    "catalogue: a reading following the denotation by a comma introducing a contrast is not excused, \
-     only a bare comma is"
+    9
 );
 catalogue_case!(
+    #[ignore = "catalogue: a one-word aside between the name and the reading reads as a list neighbour; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_one_word_aside_beside_the_reading_reads_as_a_list_neighbour,
-    10,
-    "catalogue: a one-word aside between the name and the reading reads as a list neighbour"
+    10
 );
 catalogue_case!(
+    #[ignore = "catalogue: `toward zero` in ordinary English words, not a code span naming `TowardZero`, is \
+     read as the alias; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     toward_zero_in_ordinary_words_is_read_as_the_alias,
-    11,
-    "catalogue: `toward zero` in ordinary English words, not a code span naming `TowardZero`, is \
-     read as the alias"
+    11
 );
 catalogue_case!(
+    #[ignore = "catalogue: a pronoun opening the clause after a full stop carries to the name standing last \
+     rather than to the sentence's subject; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_pronoun_after_a_full_stop_carries_to_the_wrong_name,
-    12,
-    "catalogue: a pronoun opening the clause after a full stop carries to the name standing last \
-     rather than to the sentence's subject"
+    12
 );
 catalogue_case!(
+    #[ignore = "catalogue: `value` following the span as a predicate the sentence asserts reads as the word \
+     that makes the span a quote; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     value_following_the_span_as_a_predicate_reads_as_a_quoting_word,
-    13,
-    "catalogue: `value` following the span as a predicate the sentence asserts reads as the word \
-     that makes the span a quote"
+    13
 );
 catalogue_case!(
+    #[ignore = "catalogue: a direction word in front of `in magnitude` naming how an error grows is refused as \
+     the tie's own direction; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     a_direction_word_before_in_magnitude_reads_an_errors_growth,
-    14,
-    "catalogue: a direction word in front of `in magnitude` naming how an error grows is refused as \
-     the tie's own direction"
+    14
 );
 catalogue_case!(
+    #[ignore = "catalogue: a segment naming a rule under a word that is also a reading, where the mode names \
+     itself instead, is refused; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     pair_22_the_ties_away_rule_named_in_words_is_refused,
-    15,
-    "catalogue: a segment naming a rule under a word that is also a reading, where the mode names \
-     itself instead, is refused"
+    15
 );
 catalogue_case!(
+    #[ignore = "catalogue: a clause naming its own subject in words rather than in a code span is refused; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     pair_35_the_crate_named_as_subject_is_refused,
-    16,
-    "catalogue: a clause naming its own subject in words rather than in a code span is refused"
+    16
 );
 catalogue_case!(
+    #[ignore = "catalogue: the pronoun `It` after a negated identity named in a code span is not carried, so \
+     the clause it opens is let through; \
+                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
     the_java_pair_it_after_a_negated_identity_lets_through,
-    17,
-    "catalogue: the pronoun `It` after a negated identity named in a code span is not carried, so \
-     the clause it opens is let through"
+    17
 );
 
 /// The repository this file sits in, found from its own path.
@@ -525,7 +543,8 @@ fn control_the_ratified_rows_are_read_and_the_reader_fires_on_a_planted_field() 
 
 #[test]
 #[ignore = "catalogue: the governing ruling's `promotion` opens a clause on a seat number, a \
-            subject the reader has no word for, so the carry reaches it"]
+            subject the reader has no word for, so the carry reaches it; tracked \
+            #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
 fn catalogue_no_ratified_ruling_field_is_refused() {
     let text = std::fs::read_to_string(repo_root().join("mock/registry/ruling.toml"))
         .expect("the ruling file");

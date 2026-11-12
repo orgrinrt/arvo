@@ -42,6 +42,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
+use mockspace::src_layout::RefFiles;
 use mockspace::{
     Lint,
     LintError,
@@ -116,6 +117,9 @@ pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext
     static CRATES: OnceLock<BTreeSet<String>> = OnceLock::new();
     static DIRS: OnceLock<Vec<PathBuf>> = OnceLock::new();
     static STRINGS: OnceLock<Vec<String>> = OnceLock::new();
+    // Planted trees declare no data ref, so the files a ref holds are none, and
+    // a test run keeps no saved verdicts.
+    static REF_FILES: OnceLock<RefFiles> = OnceLock::new();
     RepoContext {
         mock_dir,
         repo_root: mock_dir,
@@ -124,7 +128,9 @@ pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext
         invocation: None,
         canon_paths: STRINGS.get_or_init(Vec::new),
         open_panels: STRINGS.get_or_init(Vec::new),
+        ref_files: REF_FILES.get_or_init(RefFiles::default),
         registry,
+        verdicts: None,
     }
 }
 

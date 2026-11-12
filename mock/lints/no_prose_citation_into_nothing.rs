@@ -133,7 +133,7 @@ use std::path::Path;
 
 use mockspace::{Lint, LintError, RegistryView, RepoContext, RepoLint, Severity};
 
-use crate::panel_corpus::{finding, markdown, panel_dir, shown, LIVING_LEDGERS};
+use crate::panel_corpus::{LIVING_LEDGERS, finding, markdown, panel_dir, shown};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(NoProseCitationIntoNothing)
 }
@@ -192,7 +192,10 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
     let mut out: Vec<LintError> = elided
         .iter()
         .map(|c| {
-            let How::Elided { rows } = c.how else {
+            let How::Elided {
+                rows,
+            } = c.how
+            else {
                 unreachable!("partitioned on this")
             };
             // Both halves are conditioned, because they were not, and the
@@ -276,14 +279,14 @@ fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
 
 /// One citation the prose carries that names no row, and how it was spelled.
 struct Cited {
-    at: String,
+    at:   String,
     line: usize,
     /// What to put in front of a reader, which is not always the token as
     /// scanned: a citation wrapped inside a code span is reported rejoined,
     /// because the rejoined string is the one the author wrote and the one a
     /// search for it will find.
     text: String,
-    how: How,
+    how:  How,
 }
 
 /// How the prose spelled the citation, which decides what failing to resolve
@@ -294,7 +297,9 @@ enum How {
     Whole,
     /// Cut short with a trailing `...`, carrying how many rows the prefix
     /// reaches. Never counted: see [`check`].
-    Elided { rows: usize },
+    Elided {
+        rows: usize,
+    },
 }
 
 /// Every `<namespace>::<slug>` the panel's prose carries that names no row.
@@ -322,10 +327,12 @@ fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<Cited> 
                         continue;
                     }
                     out.push(Cited {
-                        at: at.clone(),
+                        at:   at.clone(),
                         line: n + 1,
                         text: cited,
-                        how: How::Elided { rows },
+                        how:  How::Elided {
+                            rows,
+                        },
                     });
                     continue;
                 }
@@ -333,14 +340,14 @@ fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<Cited> 
                     continue;
                 }
                 out.push(Cited {
-                    at: at.clone(),
+                    at:   at.clone(),
                     line: n + 1,
                     text: if ends_inside_a_code_span(line, &cited) {
                         format!("{cited}{carry}")
                     } else {
                         cited
                     },
-                    how: How::Whole,
+                    how:  How::Whole,
                 });
             }
         }
@@ -377,7 +384,7 @@ fn continues_at_a_word_boundary(id: &str, cited: &str) -> bool {
     if !id.starts_with(cited) {
         return false;
     }
-    cited.ends_with('_') || id[cited.len()..].starts_with('_')
+    cited.ends_with('_') || id[cited.len() ..].starts_with('_')
 }
 
 /// Whether the line stops mid-citation with a code span still open, which is
@@ -398,7 +405,7 @@ fn leading_slug_run(line: &str) -> &str {
     let end = line
         .find(|c: char| !is_slug_byte(c as u8) || !c.is_ascii())
         .unwrap_or(line.len());
-    &line[..end]
+    &line[.. end]
 }
 
 /// Every qualified slug on one line, read to its own boundaries.
@@ -413,13 +420,13 @@ fn tokens(line: &str, namespaces: &[&str]) -> Vec<(String, bool)> {
     let mut out = Vec::new();
     for ns in namespaces {
         let mut from = 0;
-        while let Some(hit) = line[from..].find(&format!("{ns}::")) {
+        while let Some(hit) = line[from ..].find(&format!("{ns}::")) {
             let start = from + hit;
             from = start + ns.len() + 2;
             if start > 0 && is_slug_byte(bytes[start - 1]) {
                 continue;
             }
-            let rest = &line[from..];
+            let rest = &line[from ..];
             let end = rest
                 .find(|c: char| !is_slug_byte(c as u8) || !c.is_ascii())
                 .unwrap_or(rest.len());
@@ -433,8 +440,8 @@ fn tokens(line: &str, namespaces: &[&str]) -> Vec<(String, bool)> {
             // count, since an editor may fold three dots into one character
             // without being asked.
             out.push((
-                format!("{ns}::{}", &rest[..end]),
-                rest[end..].starts_with("...") || rest[end..].starts_with('\u{2026}'),
+                format!("{ns}::{}", &rest[.. end]),
+                rest[end ..].starts_with("...") || rest[end ..].starts_with('\u{2026}'),
             ));
         }
     }
@@ -454,8 +461,13 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        view,
     };
     use crate::panel_corpus::PANEL;
 
@@ -607,10 +619,9 @@ mod tests {
         // not vanish into a passing check.
         let f = findings(
             "prose-cite-underscore",
-            &[(
-                "proposal::a_min_plus_fold_needs_an_absorbing_top",
-                &[("says", "a thing")],
-            )],
+            &[("proposal::a_min_plus_fold_needs_an_absorbing_top", &[(
+                "says", "a thing",
+            )])],
             &[(
                 "42_member.md",
                 "See `proposal::a_min_plus_fold_needs_an_absorbing_top_`.\n",
@@ -648,14 +659,13 @@ mod tests {
         // both resolving. Both namespaces hold a row, so nothing here is caught
         // by the undeclared-namespace arm below.
         let rows: &[(&str, &[(&str, &str)])] = &[
-            (
-                "probe::staged_narrowing_depends_on_its_staging",
-                &[("establishes", "a thing")],
-            ),
-            (
-                "proposal::a_row_so_the_namespace_exists",
-                &[("says", "a thing")],
-            ),
+            ("probe::staged_narrowing_depends_on_its_staging", &[(
+                "establishes",
+                "a thing",
+            )]),
+            ("proposal::a_row_so_the_namespace_exists", &[(
+                "says", "a thing",
+            )]),
         ];
         let f = findings(
             "prose-cite-wrong-ns",
@@ -1045,7 +1055,7 @@ mod tests {
         &[("says", "a thing")],
     )];
     const P_TOP: &[(&str, &[(&str, &str)])] = &[(
-        "proposal::a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none",
+        "proposal::a_min_plus_computation_needs_monotonicity_as_well_as_an_absorbing_top",
         &[("says", "a thing")],
     )];
     const P_LAW: &[(&str, &[(&str, &str)])] = &[(
@@ -1073,7 +1083,7 @@ mod tests {
             P_TOP,
             &[(
                 "42_member.md",
-                "`proposal::a_min_plus_fold_needs_an_absorbing_top_...` says so.\n",
+                "`proposal::a_min_plus_computation_needs_...` says so.\n",
             )],
             0,
         );
