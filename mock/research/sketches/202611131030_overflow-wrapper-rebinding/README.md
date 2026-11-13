@@ -15,7 +15,8 @@ compile question. Nothing about it can be settled by reading.
 
 ## Hypothesis
 
-Four things, each a separate way the shape could fail.
+Four things, each a separate way the shape could fail, and a fifth asked while
+the crates were open.
 
 The substitution is expressible with ordinary associated types and no feature
 gate. The projected signature still satisfies `Sole`, whose blanket impl asserts
@@ -26,6 +27,11 @@ the public surface.
 
 The third was expected to fail and did not. The fourth was expected to be
 trivially true and is the one that failed.
+
+The fifth is whether the MATLAB conventions in `arvo-format::standards` produce
+signatures the value tier admits. Two earlier readings recorded that as
+unestablished, and it costs one declaration to settle, because `Num` demands
+`Sole` of its parameter and refuses what is not admitted.
 
 ## Outcome
 
@@ -55,8 +61,14 @@ position, and `slot`, which reads the coordinate out. So today a consumer can
 name `Saturating<S>` as a type and cannot move a value into it, and the wrapper
 mechanism needs a door that does not exist yet.
 
-That door is a design question rather than a compile one. What it is worth saying
-here is what it cannot be: a free bit copy is correct only because the
+The fifth works. `Signature<Fi<16, 8>, Adapt<Floor, Saturate>>` is admitted, so
+MATLAB's documented default pair produces a value type today, and the standards
+module reaches the value tier without anything new. That is the shortest route to
+a shipped overflow default that follows a parity standard, which is what op's
+words of 13 November ask for.
+
+The door the fourth needs is a design question rather than a compile one. What it
+is worth saying here is what it cannot be: a free bit copy is correct only because the
 substitution leaves the format and therefore the carrier alone, which is a fact
 about this particular substitution and not about re-binding in general. A door
 spelled as a general signature change cannot be a copy.
