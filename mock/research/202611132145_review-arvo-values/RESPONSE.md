@@ -52,6 +52,39 @@ were changed beside it.
     `red-check` finds red on `dev` at `4d6aa22cb271` as well, in a file this branch does not touch.
     It is ticket `arvo_format_inverse_round_trip_underflows_at_width_1`.
 
+## The second reading
+
+`PASS_2.md` read the branch at `a303d07b` and refused it again, on two points about the canon and two
+about the suite. Round 202611132216-pzi4 took all four. Points 5 and 6 above describe the
+accumulator as it stood after the first reading, and the first item here replaces them.
+
+1. `Accumulator` is the first option of `question::which_chain_carrier_ships`, which is open with
+   the panel as its decider. The first reading called that ambiguous and the second misaligned, and
+   neither found it aligned, so the type is off the branch: its module, tests, compile-fail pairs,
+   mutant feature and design section. The source as it stood is at `a303d07b`, and its closed rounds
+   and mutant run stay in the tree. The ticket to op is bumped with this.
+2. `holds_index` was a public verdict on whether a host integer names a member, against
+   `ruling::the_ingest_door_waits_on_a_known_use`. It is private now, and the debug check in
+   `from_index` still asks it. Where that check aborts is shown by a test over every 8-bit host
+   value. This is the first reading of that row against the function, so the question went to op as
+   ticket `is_a_verdict_on_whether_a_host_integer_names_a_member_wanted`.
+3. The oracle sweeps stopped at narrow widths. The quotient is now swept at integer widths 13, 32
+   and 64 and at fixed-point formats of 16, 32 and 64 bits, the conversion from sources of 32 and 64
+   bits over thirteen pairs, and the fractional product at fixed-point formats of 16 and 32 bits, on
+   the edge lattice and seeded members. The named divisors at widths 5 to 8 gained an even one. The
+   fractional product at 64 bits is left out, since the tests' arithmetic is done in 128 bits and has
+   no room to scale that product. Red runs of `mutant-div` and `mutant-convert` against the wide
+   sweeps are in `mock/research/sketches/202611132216-pzi4_value-mutants/`.
+4. The test that asserted nothing is a branch of the test that reruns the binary.
+5. The mutant features: ticket as before.
+6. `from_host` and `host` on `USize` and `ISize` beside `from_index` and `index`: ticket
+   `usize_and_isize_carry_from_host_and_host_beside_from_index_a`. Not taken here.
+7. `252d1ce4` is typed `test:` and changes `src/accumulator.rs`. It is pushed and stays. The file it
+   changed is gone.
+
+The reading asked whether the branch `work/numeral-integers` is dead. It is not this track's, and
+the question is passed to the coordinator with the branch.
+
 ## Beside the findings
 
 The disassembly sketch `mock/research/sketches/202611130342_value-add-disassembly/` repeats two of

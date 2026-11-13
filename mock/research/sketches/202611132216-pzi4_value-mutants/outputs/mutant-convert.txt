@@ -1,0 +1,12 @@
+cargo test -p arvo-numeral --features mutant-convert --test the_conversion a_wide_member
+
+running 1 test
+a_wide_member_converts_as_the_oracle_does_on_the_lattice_and_seeded_members --- FAILED
+
+---- a_wide_member_converts_as_the_oracle_does_on_the_lattice_and_seeded_members ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:172:5:
+assertion `left == right` failed: `convert` disagrees with the oracle on 207110 of 539800 members
+  left: 207110
+ right: 0
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out

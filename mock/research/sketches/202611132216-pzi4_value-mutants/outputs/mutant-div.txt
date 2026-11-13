@@ -1,0 +1,12 @@
+cargo test -p arvo-numeral --features mutant-div --test the_quotient the_quotient_is_the_oracles
+
+running 1 test
+the_quotient_is_the_oracles_on_the_lattice_and_seeded_dividends_up_to_64_bits --- FAILED
+
+---- the_quotient_is_the_oracles_on_the_lattice_and_seeded_dividends_up_to_64_bits ----
+panicked at crates/arvo-numeral/tests/the_quotient.rs:179:5:
+assertion `left == right` failed: `div` disagrees with the oracle on 655250 of 2730960 quotients
+  left: 655250
+ right: 0
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out
