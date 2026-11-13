@@ -1,0 +1,47 @@
+host_i64_saturating_add:
+	leaq	(%rdi,%rsi), %rcx
+	sarq	$63, %rcx
+	movabsq	$-9223372036854775808, %rax
+	xorq	%rcx, %rax
+	addq	%rsi, %rdi
+	cmovnoq	%rdi, %rax
+	retq
+
+host_u64_wrapping_add:
+	leaq	(%rdi,%rsi), %rax
+	retq
+
+i13_saturating:
+	leal	(%rdi,%rsi), %eax
+	movswl	%ax, %ecx
+	cmpl	$-4095, %ecx
+	movl	$61440, %ecx
+	cmovgel	%eax, %ecx
+	movswl	%cx, %eax
+	cmpl	$4095, %eax
+	movl	$4095, %eax
+	cmovll	%ecx, %eax
+	retq
+
+i13_wrapping:
+	addl	%esi, %edi
+	shll	$3, %edi
+	movswl	%di, %eax
+	shrl	$3, %eax
+	retq
+
+u13_saturating:
+	leal	(%rdi,%rsi), %ecx
+	movzwl	%cx, %eax
+	cmpl	$8191, %eax
+	movl	$8191, %eax
+	cmovbl	%ecx, %eax
+	retq
+
+u13_wrapping:
+	leal	(%rdi,%rsi), %eax
+	andl	$8191, %eax
+	retq
+
+i64_saturating = host_i64_saturating_add
+u64_wrapping = host_u64_wrapping_add

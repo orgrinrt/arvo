@@ -1,0 +1,25 @@
+error[E0432]: unresolved import `arvo_numeral::Machine`
+ --> tests/ui/the_machine_integers_by_path_is_refused.rs:3:5
+  |
+3 | use arvo_numeral::Machine;
+  |     ^^^^^^^^^^^^^^^^^^^^^ no `Machine` in the root
+  |
+help: a similar name exists in the module
+  |
+3 - use arvo_numeral::Machine;
+3 + use arvo_numeral::machine;
+  |
+
+error[E0603]: module `machine` is private
+ --> tests/ui/the_machine_integers_by_path_is_refused.rs:4:19
+  |
+4 | use arvo_numeral::machine::Machine as _;
+  |                   ^^^^^^^  ------- trait `Machine` is not publicly re-exported
+  |                   |
+  |                   private module
+  |
+note: the module `machine` is defined here
+ --> src/lib.rs
+  |
+  | mod machine;
+  | ^^^^^^^^^^^

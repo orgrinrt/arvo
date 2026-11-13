@@ -1,0 +1,51 @@
+error[E0080]: evaluation panicked: the slot family's row in `arvo_placement::SoleCarrier` names a container the placement does not derive for its width, and the value would compute in the wrong rung. At sole occupancy the carrier is the narrowest ladder container that holds the declared width
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::Signature<OverMine, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as arvo_numeral::Sole>::ADMITTED` failed here
+  |
+ ::: src/admit.rs
+  |
+  | /         assert!(
+  | |             carrier_agrees::<SlotsOf<S>>().get(),
+  | |             "the slot family's row in `arvo_placement::SoleCarrier` names a container the placement \
+  | |              does not derive for its width, and the value would compute in the wrong rung. At sole \
+  | |              occupancy the carrier is the narrowest ladder container that holds the declared width"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |             let () = S::ADMITTED;
+  |                      ^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  | /         const {
+  | |             let () = S::ADMITTED;
+  | |             assert!(
+  | |                 slot_in_range::<SlotsOf<S>>(Slot::at(V)).get(),
+... |
+  | |             );
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn Num::<Signature<OverMine, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::constant::<300>`
+  --> tests/ui/a_disarmed_row_naming_the_wrong_container_is_refused.rs:39:13
+   |
+39 |     let _ = Num::<Signature<OverMine, Adapt<TowardZero, Wrap>>>::constant::<300>();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^

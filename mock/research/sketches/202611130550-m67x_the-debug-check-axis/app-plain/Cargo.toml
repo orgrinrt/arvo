@@ -1,0 +1,9 @@
+[package]
+name = "app-plain"
+description = "A binary over the consumers, run in a debug build"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+plain-user = { path = "../plain-user" }

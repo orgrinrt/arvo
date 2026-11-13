@@ -95,15 +95,23 @@ as inherent `const fn`s (`Bool::and`, `Bool::or`, `Bool::not`,
 and consumer code goes through those rather than through `.0` on the
 inner primitive.
 
-No numeric value type exists. The format points in `arvo-format`,
-`Integer`, `UFixed`, `Biased`, `Floating`, and the platform-width
-`USize` and `ISize`, are zero-sized markers that name a format and hold
-no value: `USize` is `UFixed<{ ::core::primitive::usize::BITS }, 0>` and `ISize` is
-`Integer<{ ::core::primitive::usize::BITS }>`. They have no constants, no constructor, no
-arithmetic and no field to read, so a field typed as one carries
-nothing. `IFixed`, `FastFloat` and `StrictFloat` are not in the tree.
-What a value of a format is, and so what a numeric value type would be,
-is `question::what_a_datum_stands_for`, and that question is open.
+The format points in `arvo-format`, `Integer`, `UFixed`, `Biased`,
+`Floating`, and the platform-width `USize` and `ISize`, are zero-sized
+markers that name a format and hold no value: `points::USize` is
+`UFixed<{ ::core::primitive::usize::BITS }, 0>` and `points::ISize` is
+`Integer<{ ::core::primitive::usize::BITS }>`. They have no constants,
+no constructor, no arithmetic and no field to read, so a field typed as
+one carries nothing. The value is `arvo-numeral`'s `Num`, one datum of
+a declared signature held alone in the carrier its placement derives,
+for the signatures it admits: integers and fixed point at a constant
+exponent, under wrapping or saturation. Its aliases `Uint`, `Int`,
+`USize` and `ISize` name the integer points, so `arvo_numeral::USize`
+is a value where `arvo_format::points::USize` is a format. No float
+value type exists, and `IFixed`, `FastFloat` and `StrictFloat` are not
+in the tree. A datum of a format is one point of its ambient domain
+(`ruling::a_format_datum_is_one_point_and_a_saturating_end_is_one_point`);
+what a value is at a shared placement, and what a composition's datum
+is, stay open under `question::what_a_datum_stands_for`.
 
 `x.0` on an arvo primitive is a smell. The alternatives:
 
@@ -238,9 +246,9 @@ the bare primitive might otherwise appear.
 | `HashMap<K, V>` | `Map<K, V, N>` | hilavitkutin-api |
 | `String` owned | `Str` | `hilavitkutin-str` |
 | `&str` non-static | `&'static str` or `Str` | as above |
-| `usize` / `isize` | domain newtype; `USize` / `ISize` name the format and no value type of either exists yet; a const generic parameter is the excepted position, bare only where the alternative is genuinely painful | `arvo-format` has the two format points; the value half is `question::what_a_datum_stands_for`, open |
-| `u8..u128` / `i8..i128` | `T: Boundable` / `T: NonZeroable` | `notko`; `Integer` and `UFixed` name formats and hold no value, and no numeric value type exists yet |
-| `f32` / `f64` | no value type exists yet; `Floating` names the format and holds no value | the value half is `question::what_a_datum_stands_for`, open |
+| `usize` / `isize` | domain newtype, or `arvo_numeral::USize` / `ISize` where the value is a platform-width integer; a const generic parameter is the excepted position, bare only where the alternative is genuinely painful | `arvo-numeral` for the value; `arvo-format`'s `points::USize` and `points::ISize` name the format and hold no value |
+| `u8..u128` / `i8..i128` | `Uint<BITS, A>` / `Int<BITS, A>`, or `T: Boundable` / `T: NonZeroable` | `arvo-numeral` for the value, `notko` for the bounds; `Integer` and `UFixed` name formats and hold no value |
+| `f32` / `f64` | no float value type exists yet; `Floating` names the format and holds no value | `arvo-numeral` admits no floating format |
 | `bool` | `Bool` | `arvo-format` |
 
 Escape hatches: std trait method impls whose signatures are fixed by
@@ -269,9 +277,15 @@ stack.
 Every numeric position in the stack is arvo's. What the tree has so
 far is the format a numeral declares, `Integer`, `UFixed`, `Biased`,
 `Floating` and any format another crate adds, each a zero-sized marker
-holding no value; what value carries a format is
-`question::what_a_datum_stands_for`, and it is open, so no numeric
-value type exists yet. Bare Rust primitives (`u8`, `u16`,
+holding no value. A datum of a format is one point of its ambient
+domain (`ruling::a_format_datum_is_one_point_and_a_saturating_end_is_one_point`).
+A type holding one at sole occupancy is what
+`ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`
+and `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`
+presuppose, and `arvo-numeral` holds the integer and fixed points that
+way; that clause as a statement of its own has one cold read and is open. What a composition's datum is, and
+what a value is at a shared placement, stay open under
+`question::what_a_datum_stands_for`. Bare Rust primitives (`u8`, `u16`,
 `u32`, `u64`, `u128`, `i8`, `i16`, `i32`, `i64`, `i128`, `f32`,
 `f64`, `bool`, `usize`, `isize`) effectively do not exist in
 arvo's universe. This is not a preference, not a default, not a

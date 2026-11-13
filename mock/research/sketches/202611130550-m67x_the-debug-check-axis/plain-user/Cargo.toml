@@ -1,0 +1,9 @@
+[package]
+name = "plain-user"
+description = "A consumer that names no feature and wants the default abort"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+value = { path = "../value" }

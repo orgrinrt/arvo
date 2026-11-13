@@ -1,0 +1,10 @@
+[package]
+name = "value"
+description = "A four-bit value with the debug abort chosen two ways: a feasibility probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[features]
+# Arm one: the abort is off for the whole build once any crate names this.
+quiet = []

@@ -1,0 +1,15 @@
+# A consumer of `arvo-numeral` outside its workspace, depending on it with no
+# feature line, that touches every public item. `tests/a_consumer_crate.rs`
+# builds and runs it.
+[package]
+name = "arvo-numeral-consumer"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../arvo-format" }
+arvo-numeral = { path = "../.." }
+
+[workspace]

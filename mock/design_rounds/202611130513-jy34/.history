@@ -1,0 +1,50 @@
+169ce861 chore: lock src changelist 202611130513-jy34
+56182f09 test: take the value mutants again on the surface with no carrier door
+d6d32abf refactor!: keep the carrier inside the value
+cdba5f0a docs: open src changelist 202611130513-jy34
+893e5133 chore: lock doc changelist 202611130513-jy34
+6be3a0b1 docs: keep the value's carrier unnameable and its doors on the slot
+9e295ef1 docs: open the doc changelist for keeping the carrier inside
+d9b457cd docs: file the topic for keeping the carrier inside the value
+f0dca72a docs: regenerate the documents with `arvo-numeral` in them
+af061a61 chore: close design round 202611130501-vt8a
+77fd37dd chore: lock src changelist 202611130509-d8ve
+6814ede1 test: observe the value's assertion, its consumer and each mutant red
+a315a93e docs: reopen the source changelist to land before its lock
+c662ac93 chore: lock doc changelist 202611130501-vt8a
+7e587d70 chore: unlock design round, deprecate src and unlock doc
+7a8895f0 chore: lock src changelist 202611130501-vt8a
+889e4d54 docs: open the source changelist for what the value crate proves
+85255391 chore: lock doc changelist 202611130501-vt8a
+5d84e228 docs: say what the value crate proves and that every crate ships
+d28ea51e docs: open the doc changelist for what the value crate proves
+5efc4eb1 docs: file the topic for what the value crate proves and says
+da9880f5 docs: propose the value type's stances at one expert
+be320b9d chore: close design round 202611130342
+d4b4ca32 chore: lock src changelist 202611130420
+a3305d01 docs: name every type the deprecated changelists carry
+148b0452 docs: give the comparison one subheader per deprecated change
+851b815d feat: ship `arvo-numeral`, a value held in its derived carrier
+51c93e4d docs: reopen the source changelist with the introduction surface
+d2d43ced chore: lock doc changelist 202611130342
+67c9f29e docs: name the surface where the value meets host integers
+06241bfb chore: unlock design round, deprecate src and unlock doc
+fddb1dfe chore: give the reopened source changelist its own id
+a1136d2e docs: reopen the source changelist without the ordering traits
+b973ad01 chore: lock doc changelist 202611130342
+2692aacd docs: leave the ordering traits off the value
+854c99b4 chore: unlock design round, deprecate src and unlock doc
+486d9a88 docs: open the source changelist for the value type
+6f8fef37 chore: lock doc changelist 202611130342
+e2634cd0 docs: carry the `half_up` note in the value's design
+efef7dab docs: design `arvo-numeral`, a value held in its derived carrier
+abe3f038 docs: open the doc changelist for the value type
+595c1be1 docs: file the topic for the value type on the integer points
+7ec50792 feat: teach the oracle negation, subtraction and the product
+e20f1a1d research: sketch a value over the derived carrier with const add
+f2c88600 canon: propose the value stance and the rulings on the old crates
+336d24a1 fix: make arvo dev pass its own commit gate
+d841c5e1 chore: name the `supersedes` edge for `no-superseded-citation`
+a3737551 fix: round `half_up` ties toward positive infinity
+05489db5 canon: settle half_up as ties toward positive infinity
+e97f509e research: seat 270 blind read of which operation half_up denotes
