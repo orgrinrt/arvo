@@ -95,7 +95,18 @@ pub use ambient::{
     UnsignedBinaryRationals,
     is_admissible_ambient,
 };
-pub use apply::{Dither, Exact, Fraction, Remainder, adapt, panic_on_inexact, panic_on_overflow};
+pub use apply::{
+    Dither,
+    Exact,
+    Fraction,
+    Landing,
+    Remainder,
+    Scaled,
+    adapt,
+    land,
+    panic_on_inexact,
+    panic_on_overflow,
+};
 pub use conversion::{Convert, convert, converted_position, is_convertible};
 pub use division::{Div, Divisor, div, is_divisible, quotient_position};
 pub use format::{

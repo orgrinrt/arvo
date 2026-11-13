@@ -47,6 +47,12 @@ impl Wide {
         Self::signed(value < 0, [m as u64, (m >> 64) as u64, 0, 0])
     }
 
+    /// A value of the host's unsigned 128-bit integer, which a denominator is.
+    #[inline]
+    pub(crate) const fn of_unsigned(value: u128) -> Self {
+        Self::signed(false, [value as u64, (value >> 64) as u64, 0, 0])
+    }
+
     /// The value with its sign turned, which always holds.
     #[inline]
     pub(crate) const fn negated(self) -> Self {

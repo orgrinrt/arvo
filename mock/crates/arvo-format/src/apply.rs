@@ -26,10 +26,12 @@
 //! The position the map takes, `Exact`, and the dither one mode reads live in
 //! `position`, and are re-exported here.
 
+mod landing;
 mod position;
 
 use core::cmp::Ordering;
 
+pub use landing::{Landing, Scaled, land};
 pub use position::{Dither, Exact, Fraction, Remainder};
 
 use crate::adapt::{Adaptation, DeclaredSignature};
