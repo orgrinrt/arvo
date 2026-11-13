@@ -26,11 +26,20 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+// One optional gate, off by default. `const_trait_impl` carries the const impl
+// of `notko_hlist::Cardinal` and nothing else: sound, with rough edges that are
+// gaps in its implementation. It is in no public signature, so a consumer
+// naming the value or a list's length needs no gate of its own.
+#![cfg_attr(feature = "hlist-const", feature(const_trait_impl))]
 
 mod accumulator;
 mod admit;
 mod alias;
 mod check;
+#[cfg(feature = "hlist-const")]
+mod count_const_path;
+#[cfg(all(feature = "hlist", not(feature = "hlist-const")))]
+mod count_plain_path;
 mod host;
 mod identity;
 mod machine;

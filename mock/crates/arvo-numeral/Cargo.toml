@@ -10,6 +10,7 @@ readme = "README.md.tmpl"
 arvo-format.workspace = true
 arvo-placement.workspace = true
 notko.workspace = true
+notko-hlist = { workspace = true, optional = true }
 
 # One mutant per rung. Each removes that rung's adaptation onto the declared
 # width, and the equality tests fail while it is on. Off by default
@@ -23,8 +24,18 @@ notko.workspace = true
 # the dividend where the quotient leaves the range, `mutant-convert` reads the
 # source's slot index as the target's, and `mutant-index` sends a negative host
 # integer to the top of an unsigned saturating range. `mutant-accumulator` makes
-# `take` sum the whole slice whatever the capacity.
+# `take` sum the whole slice whatever the capacity. `mutant-count` stops a count
+# at one.
 [features]
+# A value as the count of `notko-hlist`, so a list's length lands in a value.
+# Off by default, and nothing else here turns either on.
+#
+# `hlist` implements `Cardinal` as a plain trait and needs no unstable feature.
+# `hlist-const` implements it as a const trait, which is what makes a length a
+# constant, and enables `const_trait_impl` in this crate for that one impl. A
+# consumer naming the value or the length needs no feature gate of its own.
+hlist = ["dep:notko-hlist"]
+hlist-const = ["hlist", "notko-hlist/const"]
 mutant-8 = []
 mutant-16 = []
 mutant-32 = []
@@ -37,6 +48,7 @@ mutant-div = []
 mutant-convert = []
 mutant-index = []
 mutant-accumulator = []
+mutant-count = []
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"
