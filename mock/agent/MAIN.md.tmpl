@@ -7,14 +7,16 @@ chosen by the consumer rather than by the container the machine happens
 to offer. Everything is `#![no_std]`, no `alloc`, no platform
 dependency, and every size is const at type level.
 
-## The tree holds the bottom three crates and nothing above them
+## The tree holds five crates and nothing above them
 
-`mock/crates/` holds `arvo-format`, `arvo-placement` and `arvo-strategy`,
-and `mock/Cargo.toml` names those three and no others. They were written
-from the canon as it settled under them, so they are what the current
-design has produced so far and they may be read as such. They are also
-the bottom of the stack rather than a usable numeric library, so there is
-no fixed-point or exact-width primitive to reach for yet.
+`mock/crates/` holds `arvo-format`, `arvo-placement`, `arvo-strategy`,
+`arvo-numeral` and `arvo-bits`, and `mock/Cargo.toml` names those five
+and no others. They were written from the canon as it settled under them,
+so they are what the current design has produced so far and they may be
+read as such. `arvo-numeral` holds a value, integers and fixed point with
+their sum and comparison, and `arvo-bits` an exact-width container, so
+there is a primitive to reach for where one of those two serves. There is
+no float value, no capacity type and no algorithm crate yet.
 
 **What is gone is the previous crate layout, and it was removed on
 purpose**, because arvo's canon is being written and the mutation order
@@ -23,7 +25,7 @@ change. **The architecture git remembers is a dead tier.** Do not
 reconstruct it, do not reason from it, and do not treat a name that
 appears in git history as a name the design still uses.
 
-Everything above these three is open: how many crates there are, what
+Everything above these five is open: how many crates there are, what
 they are called, which layer owns what, and whether the layering is the
 right shape at all. An agent that goes looking for the old tree and
 builds on what it finds is reattaching the tier that had to be detached
