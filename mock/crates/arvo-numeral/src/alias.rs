@@ -57,7 +57,7 @@ pub type Int<const BITS: u32, A, C = Abort> =
 /// arithmetic on the declared width, so it gives the same bits on every target.
 /// A sum under a wrapping policy is the same member in any order, and one under
 /// a saturating policy over this signed range is not, so a consumer that splits
-/// a sum declares its order or takes an `Accumulator`, which has none.
+/// a sum declares its order.
 pub type Fix<const BITS: u32, const FRAC: i32, A, C = Abort> =
     Num<Signature<Fixed<BITS, FRAC>, <A as NamesAdaptation<Fixed<BITS, FRAC>>>::Adaptation>, C>;
 

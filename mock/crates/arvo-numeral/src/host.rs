@@ -83,8 +83,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     ///
     /// Equal to `adapted(Exact::on_grid(Slot::at(host)))` for every host value,
     /// and computed at 64 bits. Under the `Abort` check a debug build aborts on
-    /// an index outside the range, which `holds_index` asks ahead; under
-    /// `Quiet` no build does.
+    /// an index outside the range; under `Quiet` no build does.
     #[must_use]
     pub const fn from_index<H: HostInteger>(host: H) -> Self {
         if cfg!(debug_assertions) && const { C::ABORTS.get() } {
@@ -126,9 +125,9 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     }
 
     /// Whether the slot index a host integer names is a member, so `from_index`
-    /// needs no completion.
-    #[must_use]
-    pub const fn holds_index<H: HostInteger>(host: H) -> Bool {
+    /// needs no completion. Private: it is what the debug check asks, and no
+    /// verdict on a host integer is offered to a consumer.
+    const fn holds_index<H: HostInteger>(host: H) -> Bool {
         let () = S::ADMITTED;
         let wide = widen(host);
         let shift = 64 - const { S::WIDTH.count() };

@@ -32,7 +32,6 @@
 // naming the value or a list's length needs no gate of its own.
 #![cfg_attr(feature = "hlist-const", feature(const_trait_impl))]
 
-mod accumulator;
 mod admit;
 mod alias;
 mod check;
@@ -48,7 +47,6 @@ mod num;
 mod ratio;
 mod rung;
 
-pub use accumulator::Accumulator;
 pub use admit::Sole;
 pub use alias::{Fix, ISize, Int, NamesAdaptation, UFix, USize, Uint};
 pub use arvo_format::{Bool, Divisor};

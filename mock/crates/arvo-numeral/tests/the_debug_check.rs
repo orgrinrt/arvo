@@ -4,8 +4,8 @@
 //--------------------------------------------------------------------------------------------------
 
 //! The debug check, observed at each site that carries it: `add`, `sub`, `neg`,
-//! `mul`, `div`, `convert`, `adapted`, `from_index` and an accumulator's
-//! `finish`, under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
+//! `mul`, `div`, `convert`, `adapted` and `from_index`,
+//! under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
 //! result leaves the range, so each of those is a `should_panic` test; each has
 //! a twin under `Quiet` that takes the same input and completes it by the
 //! policy. The check is no part of the signature, so the twins hold the same
@@ -17,7 +17,7 @@ use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::Integer;
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Exact, Signature, Slot};
-use arvo_numeral::{Abort, Accumulator, Divisor, Int, Quiet};
+use arvo_numeral::{Abort, Divisor, Int, Quiet};
 
 type TwoBitsWrap = Signature<Integer<2>, Adapt<TowardZero, Wrap>>;
 type TwoBitsSaturate = Signature<Integer<2>, Adapt<TowardZero, Saturate>>;
@@ -126,47 +126,51 @@ fn from_index_aborts_under_saturate_with_abort_named() {
     let _ = SaturateAborts::from_index(8u64);
 }
 
-type FourWrap = Signature<Integer<4>, Adapt<TowardZero, Wrap>>;
-type FourSaturate = Signature<Integer<4>, Adapt<TowardZero, Saturate>>;
-type SixBits = Signature<Integer<6>, Adapt<TowardZero, Wrap>>;
-
-#[test]
-#[should_panic(expected = "the member leaves the target signature's range")]
-fn finish_aborts_under_wrap_with_the_default_check() {
-    let sevens = [WrapAborts::constant::<7>(); 2];
-    let _ = Accumulator::<FourWrap, SixBits, 2>::of(&sevens).finish();
+/// Whether `from_index` aborts on the host integer, under `Abort`.
+fn aborts_on<T, H: std::panic::UnwindSafe>(door: fn(H) -> T, host: H) -> bool {
+    std::panic::catch_unwind(move || {
+        let _ = door(host);
+    })
+    .is_err()
 }
 
+/// The check inside `from_index` asks a verdict no test can call, so it is
+/// shown where it acts: the door aborts on exactly the host integers that name
+/// no member, for every 8-bit host value and the ends of the 64-bit ones, into
+/// a signed and an unsigned four-bit range.
 #[test]
-#[should_panic(expected = "the member leaves the target signature's range")]
-fn finish_aborts_under_saturate_with_abort_named() {
-    let sevens = [SaturateAborts::constant::<7>(); 2];
-    let _ = Accumulator::<FourSaturate, SixBits, 2, Abort>::of(&sevens).finish();
-}
-
-#[test]
-fn finish_completes_under_quiet_and_abort_passes_a_sum_that_fits() {
-    let sevens = [WrapQuiet::constant::<7>(); 2];
-    let acc = Accumulator::<FourWrap, SixBits, 2, Quiet>::of(&sevens);
-    assert!(!acc.fits().get());
-    assert_eq!(acc.finish().slot().index(), -2);
-    let sevens = [SaturateQuiet::constant::<7>(); 2];
-    let acc = Accumulator::<FourSaturate, SixBits, 2, Quiet>::of(&sevens);
-    assert_eq!(acc.finish().slot().index(), 7);
-
-    // Under `Abort` nothing aborts on the way: the terms pass the range and come
-    // back, and only the finished sum is asked.
-    let terms = [
-        SaturateAborts::constant::<7>(),
-        SaturateAborts::constant::<7>(),
-        SaturateAborts::constant::<-8>(),
-    ];
-    let acc = Accumulator::<FourSaturate, SixBits, 3>::of(&terms);
-    assert_eq!(acc.total().slot().index(), 6);
-    assert_eq!(acc.finish().slot().index(), 6);
-    let (block, rest) = Accumulator::<FourSaturate, SixBits, 2>::take(&terms);
-    assert_eq!(block.total().slot().index(), 14);
-    assert_eq!(rest.len(), 1);
+fn from_index_aborts_on_exactly_the_host_integers_that_name_no_member() {
+    type Unsigned = arvo_numeral::Uint<4, Adapt<TowardZero, Saturate>, Abort>;
+    let mut aborted = 0;
+    for host in i8::MIN ..= i8::MAX {
+        let x = i128::from(host);
+        assert_eq!(
+            aborts_on(SaturateAborts::from_index::<i8>, host),
+            !(-8 ..= 7).contains(&x)
+        );
+        assert_eq!(
+            aborts_on(WrapAborts::from_index::<i8>, host),
+            !(-8 ..= 7).contains(&x)
+        );
+        assert_eq!(
+            aborts_on(Unsigned::from_index::<i8>, host),
+            !(0 ..= 15).contains(&x)
+        );
+        aborted += u32::from(!(-8 ..= 7).contains(&x));
+    }
+    for host in u8::MIN ..= u8::MAX {
+        assert_eq!(aborts_on(SaturateAborts::from_index::<u8>, host), host > 7);
+        assert_eq!(aborts_on(Unsigned::from_index::<u8>, host), host > 15);
+    }
+    assert_eq!(aborted, 240);
+    // The two cases a cast would lose: a negative host into an unsigned range,
+    // and an unsigned host above the signed 64-bit maximum into a signed one.
+    assert!(aborts_on(Unsigned::from_index::<i64>, i64::MIN));
+    assert!(aborts_on(Unsigned::from_index::<i64>, -1));
+    assert!(aborts_on(SaturateAborts::from_index::<u64>, u64::MAX));
+    assert!(aborts_on(SaturateAborts::from_index::<i64>, i64::MIN));
+    assert!(!aborts_on(SaturateAborts::from_index::<i64>, -8));
+    assert!(!aborts_on(Unsigned::from_index::<u64>, 15));
 }
 
 #[test]

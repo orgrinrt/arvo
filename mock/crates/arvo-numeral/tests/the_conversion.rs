@@ -15,7 +15,8 @@
 //! policies and the five modes of the target: between integer widths in both
 //! directions, across the two slot families, from an integer onto a
 //! fixed-point grid and back, and between two fixed-point grids of different
-//! exponents. A few conversions are named beside the sweep with their slots
+//! exponents. Sources of 32 and 64 bits are taken on the edge lattice and
+//! seeded members. A few conversions are named beside the sweep with their slots
 //! written out, so that the suite does not rest on the oracle alone.
 
 mod common;
@@ -25,7 +26,7 @@ use arvo_format::points::{Fixed, Integer, UFixed};
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, TowardZero};
 use arvo_format::{Adapt, DeclaredSignature, Signature};
 use arvo_numeral::{Num, Quiet, Sole};
-use common::{oracle, range, value};
+use common::{SEEDED_PAIRS, SplitMix, lattice, oracle, range, value};
 
 #[derive(Default)]
 struct Counts {
@@ -52,22 +53,58 @@ fn converts<S: Sole, T: Sole>(counts: &mut Counts) {
     }
 }
 
+/// One member of the wide sweep against the oracle.
+fn one_wide<S: Sole, T: Sole>(a: i128, counts: &mut Counts) {
+    let v = value::<S>(a);
+    counts.checked += 1;
+    let expected = oracle::converted::<S, T>(a);
+    if v.convert::<T>().slot().index() != expected.slot {
+        counts.wrong += 1;
+    }
+    assert_eq!(
+        v.fits_convert::<T>().get(),
+        expected.fits,
+        "`fits_convert` at {a}"
+    );
+}
+
+/// The edge lattice of `S` and seeded members of it onto `T`, where the source
+/// is too wide to take every member.
+fn wide_converts<S: Sole, T: Sole>(counts: &mut Counts) {
+    let (min, max) = range::<S>();
+    for &a in lattice::<S>().as_slice() {
+        one_wide::<S, T>(a, counts);
+    }
+    let mut rng = SplitMix::seeded();
+    for _ in 0 .. SEEDED_PAIRS {
+        one_wide::<S, T>(rng.member(min, max), counts);
+    }
+}
+
 /// One source point onto one target point, under both policies and the five
 /// modes of the target. The source's adaptation takes no part in a conversion.
+/// `wide` takes the lattice and seeded members where the plain form takes
+/// every one.
 macro_rules! onto {
-    ($from:ty => $to:ty; $counts:expr) => {{
-        onto!(@modes $from, $to, Wrap, $counts);
-        onto!(@modes $from, $to, Saturate, $counts);
-    }};
-    (@modes $from:ty, $to:ty, $policy:ty, $counts:expr) => {
-        onto!(@one $from, $to, TowardZero, $policy, $counts);
-        onto!(@one $from, $to, Floor, $policy, $counts);
-        onto!(@one $from, $to, Ceil, $policy, $counts);
-        onto!(@one $from, $to, HalfUp, $policy, $counts);
-        onto!(@one $from, $to, HalfEven, $policy, $counts);
+    (wide $from:ty => $to:ty; $counts:expr) => {
+        onto!(@go wide_converts, $from, $to, $counts)
     };
-    (@one $from:ty, $to:ty, $mode:ty, $policy:ty, $counts:expr) => {
-        converts::<Signature<$from, Adapt<TowardZero, Wrap>>, Signature<$to, Adapt<$mode, $policy>>>(
+    ($from:ty => $to:ty; $counts:expr) => {
+        onto!(@go converts, $from, $to, $counts)
+    };
+    (@go $body:ident, $from:ty, $to:ty, $counts:expr) => {{
+        onto!(@modes $body, $from, $to, Wrap, $counts);
+        onto!(@modes $body, $from, $to, Saturate, $counts);
+    }};
+    (@modes $body:ident, $from:ty, $to:ty, $policy:ty, $counts:expr) => {
+        onto!(@one $body, $from, $to, TowardZero, $policy, $counts);
+        onto!(@one $body, $from, $to, Floor, $policy, $counts);
+        onto!(@one $body, $from, $to, Ceil, $policy, $counts);
+        onto!(@one $body, $from, $to, HalfUp, $policy, $counts);
+        onto!(@one $body, $from, $to, HalfEven, $policy, $counts);
+    };
+    (@one $body:ident, $from:ty, $to:ty, $mode:ty, $policy:ty, $counts:expr) => {
+        $body::<Signature<$from, Adapt<TowardZero, Wrap>>, Signature<$to, Adapt<$mode, $policy>>>(
             $counts,
         );
     };
@@ -112,6 +149,33 @@ fn a_fixed_point_member_converts_between_two_exponents() {
     onto!(Fixed<6, -3> => Fixed<8, -5>; &mut c);
     onto!(UFixed<6, -3> => UFixed<6, 3>; &mut c);
     agree(&c, 256 + 64 + 64);
+}
+
+/// Sources of 32 and 64 bits, on the edge lattice and seeded members:
+/// narrowing, widening, across the slot families, and between exponents.
+#[test]
+fn a_wide_member_converts_as_the_oracle_does_on_the_lattice_and_seeded_members() {
+    let mut c = Counts::default();
+    onto!(wide Integer<64> => Integer<32>; &mut c);
+    onto!(wide Integer<32> => Integer<64>; &mut c);
+    onto!(wide Integer<64> => Integer<8>; &mut c);
+    onto!(wide UFixed<64, 0> => Integer<64>; &mut c);
+    onto!(wide Integer<64> => UFixed<64, 0>; &mut c);
+    onto!(wide UFixed<32, 0> => UFixed<16, 0>; &mut c);
+    onto!(wide Integer<64> => Integer<33>; &mut c);
+    onto!(wide Fixed<64, -32> => Fixed<32, -16>; &mut c);
+    onto!(wide Fixed<32, -16> => Fixed<64, -32>; &mut c);
+    onto!(wide Fixed<32, -16> => Integer<32>; &mut c);
+    onto!(wide Integer<32> => Fixed<64, -32>; &mut c);
+    onto!(wide UFixed<32, 4> => UFixed<64, 0>; &mut c);
+    onto!(wide Fixed<64, -32> => Integer<8>; &mut c);
+    assert_eq!(
+        c.wrong, 0,
+        "`convert` disagrees with the oracle on {} of {} members",
+        c.wrong, c.checked
+    );
+    // Thirteen pairs, the seeded members alone, and the ten targets of a pair.
+    assert!(c.checked > 13 * SEEDED_PAIRS as u64 * 10);
 }
 
 /// Every member of `S` onto a signature over its own format, beside `under`.

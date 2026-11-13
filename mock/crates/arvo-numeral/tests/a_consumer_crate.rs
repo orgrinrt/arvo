@@ -41,22 +41,26 @@ fn the_scratch_directory() -> PathBuf {
 /// The line `the_crate_directory_is_read_when_the_test_runs` reads back.
 const RESOLVED: &str = "resolved crate directory: ";
 
-/// Prints the crate directory as this process resolves it. Run on its own by
-/// the test below, in a process whose environment names another directory.
-#[test]
-fn the_crate_directory_as_resolved() {
-    println!("{RESOLVED}{}", the_crate_directory().display());
-}
+/// Set by the test below on the process it starts, and by nothing else.
+const SECOND_RUN: &str = "ARVO_NUMERAL_CONSUMER_TEST_SECOND_RUN";
 
 /// Runs this binary again with another crate directory in its environment and
 /// reads back the one it resolved. A path fixed when the binary was built would
 /// come back as this checkout's, whatever the environment says.
+///
+/// The second run enters this same test, prints what it resolved and returns,
+/// so the binary holds no test that passes without asserting.
 #[test]
 fn the_crate_directory_is_read_when_the_test_runs() {
+    if std::env::var_os(SECOND_RUN).is_some() {
+        println!("{RESOLVED}{}", the_crate_directory().display());
+        return;
+    }
     let elsewhere = the_scratch_directory().join("a-checkout-that-is-not-this-one");
     let binary = std::env::current_exe().expect("the test binary has a path");
     let out = Command::new(binary)
-        .args(["--exact", "the_crate_directory_as_resolved", "--nocapture"])
+        .args(["--exact", "the_crate_directory_is_read_when_the_test_runs", "--nocapture"])
+        .env(SECOND_RUN, "1")
         .env("CARGO_MANIFEST_DIR", &elsewhere)
         .output()
         .expect("the test binary could not be started again");
