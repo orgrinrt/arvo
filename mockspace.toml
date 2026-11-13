@@ -41,9 +41,9 @@ primary_domain_label = "Strategies"
 # actually produces. The five crates in the tree give three depths (0 to
 # 2), and each comment names the crates the graph puts at that depth.
 # The entries for depths 3 to 9 named only crates of the layout removed
-# on 2026-08-08 and are gone with it. The three labels are the old ones
-# and do not describe what now sits at each depth; which labels fit is
-# the coordinator's call, ticket `e29c8e60d390`.
+# on 2026-08-08 and are gone with it.
+# FIXME(e29c8e60d390): the three labels are the old ones and do not
+# describe what now sits at each depth.
 layers = [
   "L0 root",              # arvo-bits, arvo-format
   "L0 strategy",          # arvo-placement
@@ -1182,11 +1182,12 @@ type = "string"
 required = false
 description = "How a row reached `ratified`: what was put to him, the options it was chosen among, and his answer verbatim. Present on a `ratified` row and absent otherwise, which is what separates a blessing from somebody having typed the word. The options belong here because an answer recorded without them says a choice was made and not which one, and that has already sent a settled question back to him. Where he answered something other than what was asked, which is common and is usually the most valuable part, say so: the gap between the question and the answer is a finding about how the question was framed."
 
+# FIXME(bc400834f3a7): the pairing of `stamped_by` and `stamp` is unchecked until arvo pins the lint pack past `cbca5f0`.
 [[registry.namespace.field]]
 name = "stamped_by"
 type = "string"
 required = false
-description = "Which route decided this row on a provisional stamp, where one did: `coordinators` where the three coordinators converged on it, `experts` where two domain experts agreed after a panel stretch. A stamp approves the work depending on the row and is never the final say: he is asked to make it formal and his answer can overturn it. Beside the tier rather than on it, so a stamped row keeps the `rung` it has. A row that is merely unratified carries no stamp; this is for a row a stamp actually decided. Present together with `stamp` or not at all, which `a-provisional-stamp-is-not-a-ratification` checks."
+description = "Which route decided this row on a provisional stamp, where one did: `coordinators` where the three coordinators converged on it, `experts` where two domain experts agreed after a panel stretch. A stamp approves the work depending on the row and is never the final say: he is asked to make it formal and his answer can overturn it. Beside the tier rather than on it, so a stamped row keeps the `rung` it has. A row that is merely unratified carries no stamp; this is for a row a stamp actually decided. Present together with `stamp` or not at all, which `a-provisional-stamp-is-not-a-ratification` in the lint pack checks once arvo takes the pack at a revision that has it."
 values = ["coordinators", "experts"]
 
 [[registry.namespace.field]]
@@ -1446,6 +1447,7 @@ type = "string[]"
 required = false
 description = "The stale sentences, each `<slug>: <sentence copied from that ruling's note>`, one entry per sentence, every slug one named under `corrects_note`."
 
+# FIXME(bc400834f3a7): the pairing of `stamped_by` and `stamp` is unchecked until arvo pins the lint pack past `cbca5f0`.
 [[registry.namespace.field]]
 name = "stamped_by"
 type = "string"

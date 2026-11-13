@@ -56,11 +56,6 @@ const LINT: &str = "no-ruling-supersedes-one-that-outranks-it";
 /// for the one comparison below and ranks nothing else.
 const TIERS: [&str; 4] = ["open", "in_force", "stated", "ratified"];
 
-/// Where a tier sits, or `None` for a spelling the schema has not seen.
-///
-/// An unknown spelling is left alone rather than guessed at. The schema refuses
-/// it by name already, and ranking it here would mean this lint deciding an
-/// order for a value nobody declared.
 /// The edges that retire what they name, whole or in part.
 ///
 /// `amends` retires the sentences it quotes, and a sentence he stamped is no
@@ -68,6 +63,11 @@ const TIERS: [&str; 4] = ["open", "in_force", "stated", "ratified"];
 /// here: it changes a reading and leaves what the target says untouched.
 const EDGES: [&str; 2] = ["supersedes", "amends"];
 
+/// Where a tier sits, or `None` for a spelling the schema has not seen.
+///
+/// An unknown spelling is left alone rather than guessed at. The schema refuses
+/// it by name already, and ranking it here would mean this lint deciding an
+/// order for a value nobody declared.
 fn rank(tier: &str) -> Option<usize> {
     TIERS.iter().position(|known| *known == tier)
 }

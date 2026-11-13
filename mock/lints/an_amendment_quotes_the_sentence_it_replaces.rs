@@ -101,6 +101,26 @@ fn squeeze(s: &str) -> String {
     s.split_whitespace().collect::<Vec<_>>().join(" ")
 }
 
+/// Whether `held` carries `wanted` as one or more whole sentences: the
+/// quotation ends on a sentence's closing mark, and in the target it starts
+/// the text or follows one and ends the text or is followed by a space. Both
+/// are compared with whitespace squeezed and bold markers taken out, since a
+/// note may set a sentence in bold where the quotation does not.
+fn holds_sentence(held: &str, wanted: &str) -> bool {
+    let plain = |s: &str| squeeze(&s.replace("**", ""));
+    let (held, wanted) = (plain(held), plain(wanted));
+    let ends = |c: char| matches!(c, '.' | '?' | '!');
+    if !wanted.ends_with(ends) {
+        return false;
+    }
+    held.match_indices(wanted.as_str()).any(|(i, m)| {
+        let before = held[.. i].trim_end();
+        let after = &held[i + m.len() ..];
+        (before.is_empty() || before.ends_with(|c: char| ends(c) || c == ':'))
+            && (after.is_empty() || after.starts_with(' '))
+    })
+}
+
 impl RepoLint for AnAmendmentQuotesTheSentenceItReplaces {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let reg = ctx.registry();
@@ -146,12 +166,14 @@ impl RepoLint for AnAmendmentQuotesTheSentenceItReplaces {
                     }
                     quoted.push(slug);
                     let target = format!("{target_namespace}::{slug}");
-                    // A target naming no row is the engine's `unknown-row-reference`.
-                    let Some(held) = text(reg, &target, target_field) else {
+                    // A target naming no row is the engine's `unknown-row-reference`. A
+                    // row with the field empty holds no sentence, so it is reported.
+                    if !reg.rows_in(target_namespace).iter().any(|r| *r == target) {
                         continue;
-                    };
+                    }
+                    let held = text(reg, &target, target_field).unwrap_or_default();
                     let wanted = squeeze(sentence);
-                    if wanted.is_empty() || !squeeze(held).contains(&wanted) {
+                    if wanted.is_empty() || !holds_sentence(held, sentence) {
                         out.push(finding(
                             LINT,
                             Some("not-in-target"),
@@ -407,6 +429,53 @@ mod tests {
     fn a_ruling_s_corrects_note_is_not_read() {
         let f = found(&[RATIFIED, ("ruling::other", &[("corrects_note", "held")])]);
         assert!(f.is_empty(), "{f:?}");
+    }
+
+    #[test]
+    fn a_fragment_of_a_sentence_is_not_a_sentence() {
+        let f = found(&[OLD, ("ruling::new", &[("amends", "old"), ("amended", "old: The")])]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("does not hold"), "{f:?}");
+    }
+
+    #[test]
+    fn a_clause_ending_inside_a_sentence_is_not_a_sentence() {
+        let f = found(&[
+            OLD,
+            ("ruling::new", &[
+                ("amends", "old"),
+                ("amended", "old: The second, with a comma."),
+            ]),
+        ]);
+        assert_eq!(f.len(), 1, "{f:?}");
+    }
+
+    #[test]
+    fn control_a_sentence_set_in_bold_in_the_target_matches() {
+        let f = found(&[
+            ("ruling::held", &[
+                ("rung", "ratified"),
+                ("note", "**Bold it is.** Plain after."),
+            ]),
+            ("proposal::fix", &[
+                ("corrects_note", "held"),
+                ("note_said", "held: Bold it is."),
+            ]),
+        ]);
+        assert!(f.is_empty(), "{f:?}");
+    }
+
+    #[test]
+    fn a_correction_of_a_note_the_row_does_not_have_is_reported() {
+        let f = found(&[
+            ("ruling::bare", &[("rung", "ratified"), ("says", "Words.")]),
+            ("proposal::fix", &[
+                ("corrects_note", "bare"),
+                ("note_said", "bare: Never written."),
+            ]),
+        ]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("does not hold"), "{f:?}");
     }
 
     #[test]
