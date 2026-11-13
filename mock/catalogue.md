@@ -14,17 +14,3 @@ last ignore citing it.
   counts a member file and the consolidation over it as two arrivals.
 - arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair: the `half_up` reader gets eighteen
   catalogued sentence pairs wrong on one named side.
-- arvo_s_line_scanning_enforcer_lints_read_a_trailing_comment: the line-scanning enforcer lints read a
-  trailing `//` comment on a line of code as code.
-- arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in: the line-scanning enforcer lints flag a
-  forbidden name inside a string literal.
-- arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_on: the line-scanning enforcer lints flag a
-  forbidden name on an interior line of a block comment.
-- arvo_s_no_alloc_enforcer_misses_a_type_inferred_heap_constru: the no-alloc enforcer misses a
-  type-inferred heap construction with no generic annotation.
-- arvo_s_no_std_enforcer_misses_a_fully_qualified_std_path_use: the no-std enforcer misses a fully
-  qualified `std::` path used outside a `use` statement.
-- arvo_s_write_hook_pairs_lifetime_ticks_as_a_char_literal_and: the write hook pairs lifetime ticks as a
-  char literal and lets a bare primitive through.
-- arvo_s_write_hook_never_reaches_a_bare_primitive_written_as: the write hook never reaches a bare
-  primitive written as a literal suffix.

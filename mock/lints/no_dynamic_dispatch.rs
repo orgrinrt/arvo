@@ -14,12 +14,11 @@
 //!     `any` is not itself an identifier character, so `core::anything`
 //!     does not read as `core::any`.
 //!
-//! **Known gaps**, catalogued as red tests below rather than fixed: a
-//! trailing comment, a string literal, and a block comment interior
-//! line all still false-positive on all three shapes, the same class
-//! of gap `no-std-enforcer` and `no-alloc-enforcer` carry, for the same
-//! reason: no notion of "inside a comment" or "inside a string" beyond
-//! a whole-line `//` prefix.
+//! The shapes are matched over the file's code only: the source as
+//! `code_only_source` returns it, with every comment and string literal
+//! blanked out of the one parse the engine holds. A trailing comment, a
+//! block comment interior line and a message that spells `dyn Trait` are
+//! not uses of it.
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
@@ -76,23 +75,17 @@ impl CrateLint for NoDynamicDispatch {
 
         let mut errors = Vec::new();
 
-        for (idx, line) in ctx.source().lines().enumerate() {
-            let trimmed = line.trim_start();
-
-            // Skip comments wholesale.
-            if trimmed.starts_with("//") {
-                continue;
-            }
-
+        let code = crate::code_only_source::code_only(ctx);
+        for (idx, (line, code_line)) in ctx.source().lines().zip(code.lines()).enumerate() {
             // ` dyn ` (space-delimited to avoid false positives on `dyn`
             // as part of an identifier).
-            let has_dyn = line.contains(" dyn ")
-                || line.contains("&dyn ")
-                || line.contains("&'static dyn ")
-                || line.contains("<dyn ")
-                || line.contains("(dyn ")
-                || line.ends_with(" dyn")
-                || line.trim() == "dyn";
+            let has_dyn = code_line.contains(" dyn ")
+                || code_line.contains("&dyn ")
+                || code_line.contains("&'static dyn ")
+                || code_line.contains("<dyn ")
+                || code_line.contains("(dyn ")
+                || code_line.ends_with(" dyn")
+                || code_line.trim() == "dyn";
 
             if has_dyn {
                 errors.push(LintError::with_severity(
@@ -108,7 +101,7 @@ impl CrateLint for NoDynamicDispatch {
                 continue;
             }
 
-            if contains_whole_word(line, "TypeId") {
+            if contains_whole_word(code_line, "TypeId") {
                 errors.push(LintError::with_severity(
                     ctx.crate_name.to_string(),
                     idx + 1,
@@ -122,7 +115,9 @@ impl CrateLint for NoDynamicDispatch {
                 continue;
             }
 
-            if contains_whole_word(line, "std::any") || contains_whole_word(line, "core::any") {
+            if contains_whole_word(code_line, "std::any")
+                || contains_whole_word(code_line, "core::any")
+            {
                 errors.push(LintError::with_severity(
                     ctx.crate_name.to_string(),
                     idx + 1,
@@ -307,45 +302,42 @@ mod tests {
         );
     }
 
-    // --- catalogued gaps ---------------------------------------------------
+    // --- what only the parse can tell apart --------------------------------
 
+    /// Each arm below has a control beside it: the same shape written in code on
+    /// a line that also carries a comment or a string, which has to keep firing.
+    /// A lint that went quiet on every line with a comment would pass the arm
+    /// and fail the control.
     #[test]
-    #[ignore = "catalogue: a trailing `//` comment on a real line of code \
-                is scanned as code; `let x = 5; // avoid dyn dispatch \
-                here` false-positives; needs tree-sitter-aware scanning \
-                to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_read_a_trailing_comment"]
-    fn a_trailing_comment_after_real_code_is_wrongly_flagged() {
-        let errors = hits("let x = 5; // avoid dyn dispatch here\n");
-        assert!(
-            errors.is_empty(),
-            "a trailing comment mentioning dyn is not a use of it"
-        );
+    fn a_trailing_comment_after_real_code_is_silent() {
+        assert!(hits("let x = 5; // avoid dyn dispatch here\n").is_empty());
+        assert!(hits("let x = 5; // not a TypeId, not std::any\n").is_empty());
     }
 
     #[test]
-    #[ignore = "catalogue: a string literal naming one of the forbidden \
-                shapes false-positives; needs tree-sitter-aware scanning \
-                to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
-    fn a_string_literal_naming_a_forbidden_shape_is_wrongly_flagged() {
-        let errors = hits("let msg = \"expected dyn Trait here\";\n");
-        assert!(
-            errors.is_empty(),
-            "text inside a string literal is not a use of the shape"
-        );
+    fn a_trailing_comment_does_not_hide_the_code_before_it() {
+        assert_eq!(hits("fn f(t: &dyn Trait) {} // fine\n").len(), 1);
     }
 
     #[test]
-    #[ignore = "catalogue: a block-comment interior line naming one of \
-                the forbidden shapes false-positives; needs \
-                tree-sitter-aware scanning to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_on"]
-    fn an_interior_line_of_a_block_comment_is_wrongly_flagged() {
-        let errors = hits("/*\nlet t: &dyn Trait = x;\n*/\n");
-        assert!(
-            errors.is_empty(),
-            "a block-comment interior line should not read as real source"
-        );
+    fn a_string_literal_naming_a_forbidden_shape_is_silent() {
+        assert!(hits("let msg = \"expected dyn Trait here\";\n").is_empty());
+        assert!(hits("let msg = \"no TypeId or core::any\";\n").is_empty());
+    }
+
+    #[test]
+    fn a_string_literal_does_not_hide_the_code_beside_it() {
+        assert_eq!(hits("fn f(t: &dyn Trait) { g(\"a\"); }\n").len(), 1);
+    }
+
+    #[test]
+    fn an_interior_line_of_a_block_comment_is_silent() {
+        assert!(hits("/*\nlet t: &dyn Trait = x;\n*/\n").is_empty());
+        assert!(hits("/*\nuse core::any::TypeId;\n*/\n").is_empty());
+    }
+
+    #[test]
+    fn an_interior_line_of_a_raw_string_is_silent() {
+        assert!(hits("let doc = r#\"\nfn f(t: &dyn Trait) {}\n\"#;\n").is_empty());
     }
 }

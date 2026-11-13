@@ -5,19 +5,19 @@
 //!   * `[T; N]` or custom const-generic `Seq<T, N>` for arrays.
 //!   * Consumer-owned buffers passed in by reference.
 //!
-//! The lint scans every line for tokens, matched at an identifier
-//! boundary so `SmallVec<T, N>` does not read as `Vec<T>` and
-//! `String::from` at column zero (no leading whitespace) is not
-//! missed the way a bare `" String"` substring search would miss it.
+//! The lint reads the file's code and nothing else: the source as
+//! `code_only_source` returns it, with every comment and string literal
+//! blanked out of the one parse the engine holds. Over that it scans
+//! every line for tokens, matched at an identifier boundary so
+//! `SmallVec<T, N>` does not read as `Vec<T>` and `String::from` at
+//! column zero (no leading whitespace) is not missed the way a bare
+//! `" String"` substring search would miss it.
 //!
-//! **Known gaps**, catalogued as red tests below rather than fixed:
-//! a trailing comment on a line of real code and a string literal
-//! naming one of these types both still false-positive, because the
-//! scanner has no notion of "inside a comment" or "inside a string"
-//! beyond a whole-line `//` prefix; and a value-position construction
-//! with no type annotation (`Vec::new()`, `Box::new(x)`) still escapes
-//! detection, because nothing after `Vec` or `Box` other than `<`
-//! is read as the forbidden shape.
+//! A construction that names no generic argument (`Vec::new()`,
+//! `Box::new(x)`) is the forbidden shape as much as `Vec<u8>` is, so the
+//! path `Vec::` and `Box::` reads as a hit too. That match is safe only
+//! because comments and strings are already blanked: a comment or a
+//! message that spells the path is not code.
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
@@ -99,12 +99,9 @@ impl CrateLint for NoAllocEnforcer {
 
         let mut errors = Vec::new();
 
-        for (idx, line) in ctx.source().lines().enumerate() {
-            let trimmed = line.trim_start();
-
-            if trimmed.starts_with("//") {
-                continue;
-            }
+        let code = crate::code_only_source::code_only(ctx);
+        for (idx, (line, code_line)) in ctx.source().lines().zip(code.lines()).enumerate() {
+            let trimmed = code_line.trim_start();
 
             // `use alloc::*` / `use ::alloc::*` / `extern crate alloc`.
             if trimmed.starts_with("use alloc::")
@@ -119,33 +116,31 @@ impl CrateLint for NoAllocEnforcer {
                     "no-alloc-enforcer",
                     format!(
                         "arvo forbids `alloc::*`; use const-sized containers instead: {}",
-                        trimmed.trim_end()
+                        line.trim()
                     ),
                     Severity::HARD_ERROR,
                 ));
                 continue;
             }
 
-            // Type-position Vec / String / Box. Hits both imports
+            // Type-position Vec / String / Box, and the path a construction
+            // with no generic argument is written with. Hits both imports
             // (`use core::vec::Vec`) and field/return types (`Vec<`).
-            let line_body = line;
             let bad_tokens: [(bool, &str); 3] = [
                 (
-                    contains_after_identifier_boundary(line_body, "Vec<"),
+                    contains_after_identifier_boundary(code_line, "Vec<")
+                        || contains_after_identifier_boundary(code_line, "Vec::"),
                     "Vec<T>",
                 ),
-                (contains_whole_word(line_body, "String"), "String"),
+                (contains_whole_word(code_line, "String"), "String"),
                 (
-                    contains_after_identifier_boundary(line_body, "Box<"),
+                    contains_after_identifier_boundary(code_line, "Box<")
+                        || contains_after_identifier_boundary(code_line, "Box::"),
                     "Box<T>",
                 ),
             ];
             for (matched, display) in bad_tokens {
                 if matched {
-                    // Skip doc comments that only mention the type.
-                    if trimmed.starts_with("///") || trimmed.starts_with("//!") {
-                        continue;
-                    }
                     errors.push(LintError::with_severity(
                         ctx.crate_name.to_string(),
                         idx + 1,
@@ -153,7 +148,7 @@ impl CrateLint for NoAllocEnforcer {
                         format!(
                             "arvo forbids `{}` (no alloc); use `[T; N]` or a consumer-owned buffer: {}",
                             display,
-                            line_body.trim_end()
+                            line.trim_end()
                         ),
                         Severity::HARD_ERROR,
                     ));
@@ -346,64 +341,68 @@ mod tests {
         );
     }
 
-    // --- catalogued gaps ---------------------------------------------------
+    // --- what only the parse can tell apart --------------------------------
 
-    /// A trailing comment on a line of real code: the scanner has no
-    /// notion of "the rest of this line is a comment", only "the whole
-    /// trimmed line starts with `//`". Catalogued rather than fixed: it
-    /// needs the `ctx.tree` tree-sitter AST this lint does not use today.
+    /// A trailing comment on a line of real code names the type without using
+    /// it. The control below is the same line with the type written in the
+    /// code part, which has to keep firing, so a lint that went quiet on every
+    /// line carrying a comment would not pass.
     #[test]
-    #[ignore = "catalogue: a trailing `//` comment on a real line of code \
-                is scanned as code; `let n = 1; // returns a Box<T> \
-                eventually` false-positives; needs tree-sitter-aware \
-                scanning to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_read_a_trailing_comment"]
-    fn a_trailing_comment_after_real_code_is_wrongly_flagged() {
-        let errors = hits("let n = 1; // returns a Box<T> eventually\n");
-        assert!(
-            errors.is_empty(),
-            "a trailing comment mentioning the type is not a use of it"
-        );
+    fn a_trailing_comment_after_real_code_is_silent() {
+        assert!(hits("let n = 1; // returns a Box<T> eventually\n").is_empty());
     }
 
-    /// The module doc used to claim string literals are tolerated
-    /// "because the scan only fires on import-like or type-position
-    /// usage"; the code never implemented that, it scanned the whole
-    /// line unconditionally. Catalogued rather than fixed for the same
-    /// reason as the trailing comment above.
     #[test]
-    #[ignore = "catalogue: a string literal naming one of the forbidden \
-                types false-positives; `let msg = \"expected a Vec<T> \
-                here\";` fires; needs tree-sitter-aware scanning to fix; \
-                tracked #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
-    fn a_string_literal_naming_a_forbidden_type_is_wrongly_flagged() {
-        let errors = hits("let msg = \"expected a Vec<T> here\";\n");
-        assert!(
-            errors.is_empty(),
-            "text inside a string literal is not a use of the type"
-        );
+    fn a_trailing_comment_does_not_hide_the_code_before_it() {
+        assert_eq!(hits("let v: Vec<u8> = x; // fine\n").len(), 1);
     }
 
-    /// A value-position construction with no type annotation carries
-    /// neither `Vec<` nor `Box<` anywhere on the line, so it is invisible
-    /// to a lint whose whole match is those two literal substrings. This
-    /// is a real, if narrower, escape: `let v = Vec::new(); v.push(1);`
-    /// never writes the type out. Catalogued rather than fixed: closing
-    /// it means matching `Vec::` / `Box::` too, which reopens the same
-    /// string-literal and trailing-comment classes above for an even
-    /// more common token.
+    /// Text inside a string literal is not a use of the type. The control is
+    /// the type written in code on the same line as a string.
     #[test]
-    #[ignore = "catalogue: a type-inferred construction with no explicit \
-                generic annotation (`Vec::new()`, `Box::new(x)`) is \
-                invisible to this lint; needs a broader match or \
-                tree-sitter-aware scanning to fix; tracked \
-                #arvo_s_no_alloc_enforcer_misses_a_type_inferred_heap_constru"]
-    fn a_type_inferred_construction_with_no_annotation_escapes_detection() {
+    fn a_string_literal_naming_a_forbidden_type_is_silent() {
+        assert!(hits("let msg = \"expected a Vec<T> here\";\n").is_empty());
+    }
+
+    #[test]
+    fn a_string_literal_does_not_hide_the_code_beside_it() {
+        assert_eq!(hits("let v: Vec<u8> = f(\"a\");\n").len(), 1);
+    }
+
+    #[test]
+    fn a_raw_multi_line_string_naming_a_forbidden_type_is_silent() {
+        assert!(hits("let doc = r#\"\nlet v: Vec<u8> = x;\n\"#;\n").is_empty());
+    }
+
+    #[test]
+    fn a_block_comment_interior_line_naming_a_forbidden_type_is_silent() {
+        assert!(hits("/*\nlet v: Vec<u8> = x;\n*/\n").is_empty());
+    }
+
+    /// A construction with no generic argument carries neither `Vec<` nor
+    /// `Box<`, so a match on those two alone never saw it. `let v = Vec::new();
+    /// v.push(1);` never writes the type out.
+    #[test]
+    fn a_type_inferred_construction_with_no_annotation_fires() {
         let errors = hits("let v = Vec::new();\n");
         assert_eq!(
             errors.len(),
             1,
             "Vec::new() is exactly the heap allocation this lint exists to forbid"
         );
+        assert!(errors[0].message.contains("Vec<T>"));
+        let errors = hits("let b = Box::new(x);\n");
+        assert_eq!(errors.len(), 1);
+        assert!(errors[0].message.contains("Box<T>"));
+    }
+
+    /// The controls for the path match: a name that merely ends in a forbidden
+    /// word, and a comment or a message that spells the path.
+    #[test]
+    fn a_path_through_a_lookalike_type_is_silent() {
+        assert!(hits("let v = SmallVec::new();\n").is_empty());
+        assert!(hits("let t = ToolBox::new(x);\n").is_empty());
+        assert!(hits("// build it with Vec::new() when the caller owns it\n").is_empty());
+        assert!(hits("let m = \"call Box::new here\";\n").is_empty());
     }
 }

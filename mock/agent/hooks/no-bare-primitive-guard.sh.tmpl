@@ -12,10 +12,17 @@
 # arvo type, or a domain alias grounded on one, or notko's `Maybe` /
 # `Outcome` / `Just`.
 #
-# A literal suffix is not among them, and this comment said it was.
-# The scan wants a non-identifier byte on each side of the name and a
-# suffix always carries a digit in front of it, so `0u32` goes through.
-# Reaching it wants the parse rather than the line.
+# A literal suffix is among them: `0u32`, `1_usize`, `2.0f64`. The name
+# scan wants a non-identifier byte on each side of the name and a suffix
+# always carries a digit in front of it, so it has a check of its own
+# below.
+#
+# This is a scan of one line and not a parse, and a shell hook cannot be
+# one. It strips what is plainly not code (a char literal, then a string
+# literal with its escapes) before it looks, and it tells a lifetime from
+# a char literal by the char literal's shape: one character or one escape
+# between two ticks. What it cannot see is a string or a comment that runs
+# over more than one line, which the build-time lints read from the parse.
 #
 # One position is excepted, and it is op's own call carried in the
 # canon: the type of a const generic parameter, where the language
@@ -65,6 +72,8 @@ fi
 
 # Primitive tokens we block. Word-boundary matches via grep -w.
 BARE_NUMS='u8|u16|u32|u64|u128|i8|i16|i32|i64|i128|f32|f64|usize|isize|bool'
+# The integer ones, which are the suffixes a hex, binary or octal literal takes.
+INT_SUFFIXES='u8|u16|u32|u64|u128|i8|i16|i32|i64|i128|usize|isize'
 
 # The type of a const generic parameter is the one position that takes a
 # bare primitive, and the canon says so in op's own words at
@@ -101,9 +110,23 @@ while IFS= read -r LINE; do
         '//'* ) continue ;;
     esac
 
-    # Strip simple string literals and char literals from the line so
-    # the scanner doesn't false-positive on primitive names in text.
-    STRIPPED=$(printf '%s' "$LINE" | sed -e 's/"[^"]*"//g' -e "s/'[^']*'//g")
+    # Strip char literals and string literals from the line so the
+    # scanner doesn't false-positive on primitive names in text. Char
+    # literals go first, so a `'"'` does not open a string, and a char
+    # literal is one character or one escape between two ticks: that is
+    # what keeps `<'a, 'b>` from pairing its ticks and swallowing what
+    # sits between the second and the third. A string literal keeps its
+    # escapes, so `"a \" u32"` is one string.
+    STRIPPED=$(printf '%s' "$LINE" | sed -E -e "s/'(\\\\[^']+|[^'\\\\])'//g" -e 's/"([^"\\]|\\.)*"//g')
+
+    # A bare primitive written as a literal suffix. The leading class keeps
+    # an identifier that merely ends in digits (`v0u32`) and a field access
+    # (`x.0`) out of it, hex takes integer suffixes only because `0x1f32`
+    # is a hex number and not a float, and the trailing class is the same
+    # whole-token boundary the name scan below uses.
+    if printf '%s' "$STRIPPED" | grep -qE "(^|[^A-Za-z0-9_.])(0[xX][0-9A-Fa-f_]+($INT_SUFFIXES)|0[bBoO][0-9_]+($INT_SUFFIXES)|[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9_]+)?($INT_SUFFIXES|f32|f64))([^A-Za-z0-9_]|$)"; then
+        deny "arvo has no bare numeric primitive written as a literal suffix (\`0u32\`, \`1_usize\`). Build the value through an arvo type, or a domain alias grounded on one. Line: \`$TRIMMED\`. Escape: \`// lint:allow(no-bare-numeric) reason: ...; tracked: #N\`."
+    fi
 
     # Bare numeric or bool token (word boundary), with the excepted
     # position taken out of the line first.
