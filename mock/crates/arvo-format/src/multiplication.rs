@@ -3,31 +3,36 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The product of two members at a binary quantum.
+//! The product of two members at a constant quantum.
 //!
 //! Two members at a constant quantum `q` are `(phase + a) * q` and
 //! `(phase + b) * q`, so their product is the member at position
-//! `(phase + a)(phase + b) * q - phase`. The sum's quantum dropped out; the
-//! product's stays in. At radix two and zero phase the position is
-//! `a * b * 2^e`, `e` the quantum's exponent: the slots' product moved `e`
-//! binary places, up onto the grid or down with a remainder over `2^-e`. That is
-//! the step this module states, composed with the declared signature's
+//! `(phase + a)(phase + b) * q - phase`, a function of the declared signature at
+//! every phase and radix. With the phase `n / d` in lowest terms, the radix `r`
+//! and the exponent `e`, that position is a numerator over
+//! `D = d^2 r^max(-e, 0)`: `(n + a d)(n + b d) r^max(e, 0)` less the phase's
+//! term `n d r^max(-e, 0)`. The numerator is formed four 64-bit limbs wide and
+//! divided once by `D`, the floor the slot and the residue the remainder. That
+//! is the step this module states, composed with the declared signature's
 //! adaptation the way addition's is.
 //!
-//! One obligation carries five refusals: a nonzero phase, a radix other than
-//! two, a magnitude-indexed quantum, an exponent below `-62`, and a product the
-//! slot index cannot carry. It is forced by the exact step, and `is_multipliable`
-//! asks the same questions without forcing it.
+//! One obligation carries four conditions: a phase that denotes, and three that
+//! are not yet admitted rather than refused, a magnitude-indexed quantum, a `D`
+//! past `2^63 - 1`, and a corner position the slot index does not hold. It is
+//! forced by the exact step, and `is_multipliable` asks the same without forcing
+//! it.
+
+mod wide;
 
 use core::marker::PhantomData;
 
 use notko::Maybe;
+use wide::{Divided, Wide};
 
 use crate::adapt::{Arity, DeclaredSignature, Operation};
-use crate::ambient::Radix;
 use crate::apply::{Dither, Exact, Fraction, adapt};
-use crate::format::{Format, radix};
-use crate::quantum::{Exponent, Quantum, is_constant_family};
+use crate::format::{Format, greatest_common_divisor, radix};
+use crate::quantum::{Quantum, is_constant_family};
 use crate::slots::{Slot, Slots};
 use crate::width::Bool;
 
@@ -43,161 +48,247 @@ impl<S: DeclaredSignature> Operation for Mul<S> {
     const ARITY: Arity = Arity::BINARY;
 }
 
-/// The lowest quantum exponent whose remainder an exact position holds.
-///
-/// The remainder's denominator is `2^-e`, and the fraction carries a positive
-/// signed 64-bit denominator, whose largest power of two is `2^62`.
-const LOWEST_EXPONENT: Exponent = Exponent::of(-62);
-
-/// The widest move up a product of the index's integer can take and stay
-/// nonzero: `1 << 126` is the largest power of two the index holds.
-const WIDEST_MOVE: Exponent = Exponent::of(126);
-
 /// What a format owes the product, checked rather than asked for.
 struct Multipliable<F>(PhantomData<F>);
 
 impl<F: Format> Multipliable<F> {
-    /// The five refusals, in the order `is_multipliable` asks them.
+    /// The four conditions, in the order `is_multipliable` asks them. The phase
+    /// is asserted first because the others read its parts, and a zero
+    /// denominator has none.
     const ADMITTED: () = {
         assert!(
-            F::PHASE.is_zero().get(),
-            "multiplication is refused over a phased format: the product of two members sits at \
-             (phase + a)(phase + b) * q - phase, which reads the quantum and the phase together, \
-             and the step here computes the zero-phase case only"
+            F::PHASE.denotes().get(),
+            "multiplication is refused over a phase whose denominator is zero: such a phase \
+             names no member, so there is no product to position"
         );
-        assert!(
-            is_binary::<F>().get(),
-            "multiplication is refused at a radix other than two: moving the product down by the \
-             quantum's exponent would be a division by a power of that radix, and its remainder's \
-             denominator would not be a power of two"
-        );
+        // FIXME(arvo_product_over_a_magnitude_indexed_quantum_is_a_placehold): the
+        // product is a function of the signature here too. `Exact` and `adapt`
+        // carry no magnitude coordinate to land it at, and no canon row says what
+        // wrapping means on a union of magnitude ranges.
         assert!(
             is_constant_family::<F::Quantum>().get(),
-            "multiplication is refused over a magnitude-indexed quantum: a slot names a different \
-             value at each magnitude, and the applied map carries no magnitude coordinate to land \
-             the product at"
+            "multiplication is not yet admitted over a magnitude-indexed quantum: a slot names a \
+             different value at each magnitude, and the applied map carries no magnitude \
+             coordinate to land the product at yet"
         );
+        // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): the
+        // position is a function of the signature here too, and only its
+        // remainder's denominator is past what a `Fraction` carries.
         assert!(
-            exponent_is_held::<F>().get(),
-            "multiplication is refused at a quantum exponent below -62: the remainder's denominator \
-             is 2^-e, and an exact position carries a positive signed 64-bit denominator, whose \
-             largest power of two is 2^62"
+            matches!(Self::STEP, Maybe::Is(_)),
+            "multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), \
+             with d the phase's reduced denominator, r the radix and e the quantum's exponent, \
+             passes 2^63 - 1: an exact position carries its remainder over a positive signed \
+             64-bit denominator"
         );
+        // FIXME(arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c): the
+        // corner positions are functions of the signature, and only the slot
+        // index's own integer is too narrow to hold them.
         assert!(
             product_is_carried::<F>().get(),
-            "multiplication is refused over this format: the exact product of two members leaves \
-             the slot coordinate, so the position it names is not one a slot index can hold"
+            "multiplication is not yet admitted over this format: the exact product of two \
+             members leaves the slot coordinate, so the position it names is not one a slot \
+             index can hold yet"
         );
     };
-    /// The quantum's exponent, settled once per format.
-    const EXPONENT: Exponent = <F::Quantum as Quantum>::BASE;
+    /// The step's constants, or nothing where the remainder's denominator does
+    /// not fit, settled once per format.
+    const STEP: Maybe<Step> = step::<F>();
 }
 
-/// Whether the format's ambient counts in twos.
-const fn is_binary<F: Format>() -> Bool {
-    let r: Radix = radix::<F>();
-    Bool::of(r.base() == Radix::BINARY.base())
+/// What the step reads of the phase, the radix and the exponent.
+#[derive(Clone, Copy)]
+struct Step {
+    /// `n`, the phase's numerator in lowest terms.
+    numerator:   i128,
+    /// `d`, the phase's denominator in lowest terms, positive.
+    denominator: i128,
+    /// `r^max(e, 0)`, or nothing when it leaves the four limbs, in which case any
+    /// product but zero does too.
+    scale:       Maybe<Wide>,
+    /// `n d r^max(-e, 0)`, the phase's term, at most `2^126` in magnitude.
+    offset:      i128,
+    /// `D = d^2 r^max(-e, 0)`, from one up to `2^63 - 1`.
+    divisor:     u64,
 }
 
-/// Whether the remainder the down move leaves has a denominator a position holds.
-const fn exponent_is_held<F: Format>() -> Bool {
-    Bool::of(Multipliable::<F>::EXPONENT.power() >= LOWEST_EXPONENT.power())
-}
-
-/// `p` moved up `e` places, or nothing when that leaves the index.
-const fn moved_up(p: i128, e: i32) -> Maybe<i128> {
-    if p == 0 {
-        return Maybe::Is(0);
-    }
-    if e > WIDEST_MOVE.power() {
+/// The step's constants for `F`, or nothing where `D` is not a positive signed
+/// 64-bit value.
+///
+/// A zero phase denominator, and a zero radix at a negative exponent, give no
+/// positive `D`, and the radix's own obligation refuses the second. The
+/// fraction's sign moves onto the numerator before it is reduced.
+const fn step<F: Format>() -> Maybe<Step> {
+    let num = F::PHASE.numerator() as i128;
+    let den = F::PHASE.denominator() as i128;
+    if den == 0 {
         return Maybe::Isnt;
     }
-    match p.checked_mul(1i128 << e) {
-        Some(at) => Maybe::Is(at),
-        None => Maybe::Isnt,
-    }
-}
-
-/// The slot product of the corner `(a, b)` moved up by a nonnegative exponent,
-/// or nothing when either step leaves the index.
-const fn corner(a: i128, b: i128, e: i32) -> Maybe<i128> {
-    match a.checked_mul(b) {
-        Some(p) => {
-            if e > 0 {
-                moved_up(p, e)
-            } else {
-                Maybe::Is(p)
+    let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
+    let common = greatest_common_divisor(num.abs(), den);
+    let (n, d) = (num / common, den / common);
+    let r = radix::<F>().base() as u64;
+    let e = <F::Quantum as Quantum>::BASE.power();
+    let (up, down) = if e < 0 { (0, e.unsigned_abs()) } else { (e.unsigned_abs(), 0) };
+    let fall = match Wide::power(r, down) {
+        Maybe::Is(p) => {
+            match p.index() {
+                Maybe::Is(v) => v,
+                Maybe::Isnt => return Maybe::Isnt,
             }
         },
-        None => Maybe::Isnt,
+        Maybe::Isnt => return Maybe::Isnt,
+    };
+    // `d` is at most `2^63`, so `d^2` is at most `2^126` and holds.
+    let divisor = match (d * d).checked_mul(fall) {
+        Some(v) if v > 0 && v <= i64::MAX as i128 => v,
+        _ => return Maybe::Isnt,
+    };
+    Maybe::Is(Step {
+        numerator:   n,
+        denominator: d,
+        scale:       Wide::power(r, up),
+        // `d r^k` is at most `D`, and `|n|` at most `2^63`.
+        offset:      n * (d * fall),
+        divisor:     divisor as u64,
+    })
+}
+
+/// Where the step put a product: past an end of the index on one side, or at a
+/// slot with a remainder over `D`.
+#[derive(Clone, Copy)]
+enum Placed {
+    /// Past the end of the index on the negative side when it says so.
+    Past(bool),
+    /// The floor slot and the remainder's numerator over `D`.
+    At(i128, u64),
+}
+
+/// `n + a d`, one factor of the numerator.
+const fn factor(step: Step, a: i128) -> Maybe<Wide> {
+    match Wide::of(a).times(Wide::of(step.denominator)) {
+        Maybe::Is(ad) => ad.plus(Wide::of(step.numerator)),
+        Maybe::Isnt => Maybe::Isnt,
     }
 }
 
-/// Whether the corner `(a, b)` moved by `e` is one the index holds.
-const fn corner_is_held(a: i128, b: i128, e: i32) -> Bool {
-    Bool::of(matches!(corner(a, b, e), Maybe::Is(_)))
+/// The product of the slots `a` and `b` placed by the step.
+///
+/// The numerator `(n + a d)(n + b d) r^max(e, 0) - n d r^max(-e, 0)` in four
+/// limbs, then its floor over `D`. A numerator that leaves the limbs, or a floor
+/// that leaves the index, is past it on the position's sign; for two members the
+/// obligation has ruled both out.
+const fn placed(step: Step, a: i128, b: i128) -> Placed {
+    let fa = match factor(step, a) {
+        Maybe::Is(f) => f,
+        Maybe::Isnt => return Placed::Past(a < 0),
+    };
+    let fb = match factor(step, b) {
+        Maybe::Is(f) => f,
+        Maybe::Isnt => return Placed::Past(b < 0),
+    };
+    let negative = fa.is_negative().get() != fb.is_negative().get();
+    let product = match fa.times(fb) {
+        Maybe::Is(p) => p,
+        Maybe::Isnt => return Placed::Past(negative),
+    };
+    let scaled = if product.is_zero().get() {
+        product
+    } else {
+        match step.scale {
+            Maybe::Is(s) => {
+                match product.times(s) {
+                    Maybe::Is(p) => p,
+                    Maybe::Isnt => return Placed::Past(negative),
+                }
+            },
+            Maybe::Isnt => return Placed::Past(negative),
+        }
+    };
+    let numerator = match scaled.plus(Wide::of(-step.offset)) {
+        Maybe::Is(x) => x,
+        Maybe::Isnt => return Placed::Past(negative),
+    };
+    let Divided {
+        quotient,
+        remainder,
+    } = numerator.floor_divided(step.divisor);
+    match quotient.index() {
+        Maybe::Is(slot) => Placed::At(slot, remainder),
+        Maybe::Isnt => Placed::Past(quotient.is_negative().get()),
+    }
 }
 
-/// Whether every product of two members, moved by the exponent, is one a slot
-/// index holds.
+/// Whether the corner `(a, b)` is a position the index holds, counted one slot
+/// past its floor when it is not on the grid, since a mode may round it there.
+const fn corner_is_held(step: Step, a: i128, b: i128) -> Bool {
+    match placed(step, a, b) {
+        Placed::Past(_) => Bool::FALSE,
+        Placed::At(slot, remainder) => Bool::of(remainder == 0 || slot < i128::MAX),
+    }
+}
+
+/// Whether every product of two members is a position a slot index holds.
 ///
-/// The extremes of `a * b` over a box of slots sit at its corners, so the four
-/// corners decide it. A down move only shrinks the slot, so only an up move is
-/// checked after the product.
+/// The position is bilinear in the two slots, so over a box of slots it is
+/// extreme at the four corners, and those decide it. Nothing where the
+/// remainder's denominator does not fit.
 const fn product_is_carried<F: Format>() -> Bool {
+    let Maybe::Is(step) = Multipliable::<F>::STEP else {
+        return Bool::FALSE;
+    };
     let min = <F::Slots as Slots>::MIN.index();
     let max = <F::Slots as Slots>::MAX.index();
-    let e = Multipliable::<F>::EXPONENT.power();
     Bool::of(
-        corner_is_held(min, min, e).get()
-            && corner_is_held(min, max, e).get()
-            && corner_is_held(max, min, e).get()
-            && corner_is_held(max, max, e).get(),
+        corner_is_held(step, min, min).get()
+            && corner_is_held(step, min, max).get()
+            && corner_is_held(step, max, min).get()
+            && corner_is_held(step, max, max).get(),
     )
 }
 
-/// The end of the index on the side of a product whose sign is `negative`.
+/// The end of the index on the side of a position whose sign is `negative`.
 const fn saturated(negative: bool) -> Exact {
     Exact::on_grid(Slot::at(if negative { i128::MIN } else { i128::MAX }))
 }
 
+/// The placed product as an exact position, its remainder in lowest terms.
+const fn positioned(step: Step, at: Placed) -> Exact {
+    match at {
+        Placed::Past(negative) => saturated(negative),
+        Placed::At(slot, 0) => Exact::on_grid(Slot::at(slot)),
+        Placed::At(slot, remainder) => {
+            let common = greatest_common_divisor(remainder as i128, step.divisor as i128);
+            // Both are below `D`, which the obligation holds under `2^63`.
+            Exact::between(
+                Slot::at(slot),
+                Fraction::of(
+                    (remainder as i128 / common) as i64,
+                    (step.divisor as i128 / common) as i64,
+                ),
+            )
+        },
+    }
+}
+
 /// The exact position of the product of the members at slots `a` and `b`.
 ///
-/// `a * b * 2^e`, in slot units. Up, on the grid, for `e` at or above zero;
-/// down for `e` below it, the slot the arithmetic shift, which is the floor, and
-/// the remainder the low `-e` bits over `2^-e` in lowest terms. For two members
-/// the position is exact. For a slot outside the range, a product or an up move
-/// that leaves the index saturates at the end on the product's sign, so the step
-/// still answers.
+/// `(phase + a)(phase + b) * q - phase`, in slot units: on the grid, or at the
+/// floor slot with the remainder over `d^2 r^max(-e, 0)` in lowest terms. For two
+/// members the position is exact. For a slot outside the range, a numerator past
+/// the four limbs or a position past the index saturates at the end on the
+/// position's sign, so the step still answers.
 ///
-/// Forces the multiplication obligation, so a format the product refuses stops
-/// the build here, at check time when the call is bound in a `const` item.
+/// Forces the multiplication obligation, so a format the product does not admit
+/// stops the build here, at check time when the call is bound in a `const` item.
 #[must_use]
 pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Multipliable::<F>::ADMITTED;
-    let e = Multipliable::<F>::EXPONENT.power();
-    let (a, b) = (a.index(), b.index());
-    let Some(p) = a.checked_mul(b) else {
-        return saturated((a < 0) != (b < 0));
-    };
-    if e >= 0 {
-        return match moved_up(p, e) {
-            Maybe::Is(at) => Exact::on_grid(Slot::at(at)),
-            Maybe::Isnt => saturated(p < 0),
-        };
+    match Multipliable::<F>::STEP {
+        Maybe::Is(step) => positioned(step, placed(step, a.index(), b.index())),
+        // The obligation above has refused this format already.
+        Maybe::Isnt => saturated(false),
     }
-    let k = -e;
-    let whole = p >> k;
-    let rem = p & ((1i128 << k) - 1);
-    if rem == 0 {
-        return Exact::on_grid(Slot::at(whole));
-    }
-    // Lowest terms: the remainder's trailing zeros come off both halves.
-    let shift = rem.trailing_zeros() as i32;
-    Exact::between(
-        Slot::at(whole),
-        Fraction::of((rem >> shift) as i64, (1i64) << (k - shift)),
-    )
 }
 
 /// The product of the members at slots `a` and `b`, adapted under the signature.
@@ -213,17 +304,24 @@ pub const fn mul<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot
 /// Whether multiplication admits the format, asked without forcing the
 /// obligation.
 ///
-/// The same five conditions in the same order, so a test can hold a format the
-/// product refuses and report on it rather than stop the build.
+/// The same four conditions in the same order, so a test can hold a format the
+/// product does not admit and report on it rather than stop the build.
 #[must_use]
 pub const fn is_multipliable<F: Format>() -> Bool {
-    if !F::PHASE.is_zero().get() || !is_binary::<F>().get() {
-        return Bool::FALSE;
-    }
-    if !is_constant_family::<F::Quantum>().get() || !exponent_is_held::<F>().get() {
+    if !F::PHASE.denotes().get() || !is_constant_family::<F::Quantum>().get() {
         return Bool::FALSE;
     }
     product_is_carried::<F>()
+}
+
+/// The step at slots `a` and `b` without forcing the obligation, for the edge
+/// sweep, which reads the step at formats the obligation does not admit.
+#[cfg(test)]
+const fn unforced_position<F: Format>(a: Slot, b: Slot) -> Maybe<Exact> {
+    match Multipliable::<F>::STEP {
+        Maybe::Is(step) => Maybe::Is(positioned(step, placed(step, a.index(), b.index()))),
+        Maybe::Isnt => Maybe::Isnt,
+    }
 }
 
 #[cfg(test)]

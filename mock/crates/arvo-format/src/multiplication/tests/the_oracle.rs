@@ -6,25 +6,29 @@
 //! The product against the applied map's oracle, at every member pair up to
 //! eight bits.
 //!
-//! The position is the slots' product times the quantum, in `Ratio`, and the
-//! oracle in `apply` rounds and completes it from the canon's formulas. The
-//! adapted product and its overflow verdict have to equal the oracle's at every
-//! pair, mode and shipped policy, with four dithers for the mode that reads one,
-//! at whole and fractional exponents. A planted product that forgets the
-//! quantum is run through the same comparison and has to be reported.
+//! The position is the product of the two values over the quantum, less the
+//! phase, in `Ratio`, and the oracle in `apply` rounds and completes it from the
+//! canon's formulas. The adapted product and its overflow verdict have to equal
+//! the oracle's at every pair, mode and shipped policy, with four dithers for the
+//! mode that reads one, at positive and negative exponents over both families,
+//! at a phase and at radix ten. A planted product that forgets the quantum and
+//! the phase is run through the same comparison and has to be reported.
 
 use core::ops::RangeInclusive;
 
 use super::{At, Ratio, exact_product, members};
 use crate::adapt::{DeclaredSignature, overflow_of, rounding_of};
+use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::tests::the_oracle::{Point, Wide, answer};
 use crate::apply::{Dither, Exact, Fraction, adapt, panic_on_overflow};
 use crate::format::Format;
 use crate::multiplication::{mul, product_position};
 use crate::overflow::SHIPPED_POLICIES;
+use crate::quantum::Constant;
 use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::{Signed, Slots, Unsigned};
 use crate::tests::dispatch::{self, PerFormat, PerSignature};
+use crate::tests::grid::Grid;
 
 /// The quarters the dither is drawn at: four for the mode that reads it, one
 /// for every other.
@@ -135,12 +139,19 @@ fn the_product_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits(
                 walk.run::<At<Signed<$w>, -3>>();
                 walk.run::<At<Unsigned<$w>, -3>>();
                 walk.run::<At<Signed<$w>, 2>>();
+                walk.run::<At<Unsigned<$w>, 2>>();
+                walk.run::<At<Signed<$w>, -1>>();
                 walk.run::<At<Unsigned<$w>, -1>>();
+                walk.run::<Grid<BinaryRationals, Constant<-1>, Signed<$w>, 1, 2>>();
+                walk.run::<Grid<BinaryRationals, Constant<1>, Unsigned<$w>, -1, 3>>();
+                walk.run::<Grid<DecimalRationals, Constant<-1>, Signed<$w>, 0, 1>>();
+                walk.run::<Grid<DecimalRationals, Constant<1>, Unsigned<$w>, 0, 1>>();
+                walk.run::<Grid<DecimalRationals, Constant<-2>, Signed<$w>, 2, 3>>();
             )+
         };
     }
     widths!(1, 2, 3, 4, 5, 6, 7, 8);
-    assert_eq!(walk.formats, 8 * 6);
+    assert_eq!(walk.formats, 8 * 13);
     assert_eq!(walk.checked, walk.owed);
     assert_eq!(walk.wrong, 0);
 }
@@ -175,11 +186,20 @@ fn the_sweep_reports_a_product_that_forgets_the_quantum() {
             w.run::<At<Unsigned<4>, 1>>();
             w
         },
+        {
+            // At a quantum of one, so only the phase is missing.
+            let mut w = Sweep {
+                planted: true,
+                ..Sweep::default()
+            };
+            w.run::<Grid<BinaryRationals, Constant<0>, Signed<4>, 1, 2>>();
+            w
+        },
     ] {
         assert_eq!(planted.checked, planted.owed);
         assert!(
             planted.wrong > 0,
-            "the sweep missed a product without its quantum"
+            "the sweep missed a product without its quantum or its phase"
         );
     }
 }

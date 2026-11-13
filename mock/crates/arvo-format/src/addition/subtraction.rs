@@ -160,12 +160,12 @@ pub const fn subtraction_reach<S: DeclaredSignature>() -> Reach {
 
 /// `a - b + c`, saturated once at the ends of the index's host integer.
 ///
-/// Where `a - b` fits, `c` is added with one saturating add, which is exact when
-/// the sum fits and saturates at the end it passes otherwise. Where it does not,
-/// the difference has passed the end on `a`'s side: a `c` of the other sign is added to `a`
-/// first, which cannot overflow, and `b` is then subtracted once, saturating; a
-/// `c` of `a`'s own sign, or zero, leaves the answer past the end it already
-/// passed.
+/// Where `a - b` fits, `c` is added with one saturating add, which is exact
+/// when the sum fits and saturates at the end it passes otherwise. Where it
+/// does not, the difference has passed the end on `a`'s side: a `c` of the
+/// other sign is added to `a` first, which cannot overflow, and `b` is then
+/// subtracted once, saturating; a `c` of `a`'s own sign, or zero, leaves the
+/// answer past the end it already passed.
 const fn saturating_difference(a: i128, b: i128, c: i128) -> i128 {
     match a.checked_sub(b) {
         Some(d) => d.saturating_add(c),

@@ -81,12 +81,6 @@ macro_rules! at_widths {
 /// An unsigned range of `W` bits at the quantum one.
 type UInt<const W: u32> = UFixed<W, 0>;
 
-/// A range of `W` bits at the quantum a quarter, two fraction bits.
-type Quarters<const W: u32> = At<Signed<W>, -2>;
-
-/// An unsigned range of `W` bits at the quantum a half, one fraction bit.
-type UHalves<const W: u32> = UFixed<W, -1>;
-
 #[test]
 fn wrapping_multiplication_is_associative_on_the_integer_grid_at_widths_three_to_eight() {
     for (wrong, of) in at_widths!(associativity, Wr, Integer; 3, 4, 5, 6, 7, 8) {
@@ -98,16 +92,28 @@ fn wrapping_multiplication_is_associative_on_the_integer_grid_at_widths_three_to
 }
 
 #[test]
-fn wrapping_multiplication_is_not_associative_with_fraction_bits_at_widths_three_to_seven() {
-    for (wrong, of) in at_widths!(associativity, Wr, Quarters; 3, 4, 5, 6, 7) {
-        assert!(wrong > 0, "signed with two fraction bits held, out of {of}");
+fn wrapping_multiplication_is_not_associative_at_any_fraction_width_from_one_to_the_width() {
+    // The row's fails cell is `F > 0`, so every fraction width from one to `W`
+    // is crossed at each width, signed and unsigned.
+    let mut crossed = 0;
+    macro_rules! cross {
+        ($w:literal; $($f:literal),+) => {
+            $(
+                let (wrong, of) = associativity::<Wr<At<Signed<$w>, { -$f }>>>();
+                assert!(wrong > 0, "signed {} bits, {} fraction bits held, out of {of}", $w, $f);
+                let (wrong, of) = associativity::<Wr<UFixed<$w, { -$f }>>>();
+                assert!(wrong > 0, "unsigned {} bits, {} fraction bits held, out of {of}", $w, $f);
+                crossed += 2;
+            )+
+        };
     }
-    for (wrong, of) in at_widths!(associativity, Wr, UHalves; 3, 4, 5, 6, 7) {
-        assert!(
-            wrong > 0,
-            "unsigned with one fraction bit held, out of {of}"
-        );
-    }
+    cross!(3; 1, 2, 3);
+    cross!(4; 1, 2, 3, 4);
+    cross!(5; 1, 2, 3, 4, 5);
+    cross!(6; 1, 2, 3, 4, 5, 6);
+    cross!(7; 1, 2, 3, 4, 5, 6, 7);
+    cross!(8; 1, 2, 3, 4, 5, 6, 7, 8);
+    assert_eq!(crossed, 2 * (3 + 4 + 5 + 6 + 7 + 8));
 }
 
 #[test]

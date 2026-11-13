@@ -1,4 +1,4 @@
-error[E0080]: evaluation panicked: multiplication is refused over this format: the exact product of two members leaves the slot coordinate, so the position it names is not one a slot index can hold
+error[E0080]: evaluation panicked: multiplication is not yet admitted over this format: the exact product of two members leaves the slot coordinate, so the position it names is not one a slot index can hold yet
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
@@ -8,8 +8,9 @@ error[E0080]: evaluation panicked: multiplication is refused over this format: t
   |
   | /         assert!(
   | |             product_is_carried::<F>().get(),
-  | |             "multiplication is refused over this format: the exact product of two members leaves \
-  | |              the slot coordinate, so the position it names is not one a slot index can hold"
+  | |             "multiplication is not yet admitted over this format: the exact product of two \
+  | |              members leaves the slot coordinate, so the position it names is not one a slot \
+  | |              index can hold yet"
   | |         );
   | |_________- in this macro invocation
 

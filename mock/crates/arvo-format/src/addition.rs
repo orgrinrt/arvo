@@ -69,13 +69,19 @@ impl<F: Format> Addable<F> {
     /// The three refusals. The remainder is asserted first because the other two
     /// read the phase's parts, and a zero denominator has none.
     const ADMITTED: () = {
+        // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): a
+        // reduced denominator of 2^63 is a placeholder rather than a refusal by
+        // design, since the sum is a function of the signature there; only the
+        // remainder's denominator is past what a `Fraction` carries. A zero
+        // denominator is refused by design and stays so.
         assert!(
             remainder_is_held::<F>().get(),
             "addition is refused over a phase whose remainder no position can hold: the phase \
              denominator is zero, or its fractional part reduces to a denominator of 2^63, which \
              the remainder of an exact position does not carry"
         );
-        // FIXME: the magnitude-indexed family is refused rather than added, and two
+        // FIXME(arvo_addition_over_a_magnitude_indexed_quantum_is_a_placehol): the
+        // magnitude-indexed family is refused rather than added, and two
         // things unblock it. In the design, `Exact` and `adapt` carry no magnitude
         // coordinate, so a sum whose operands sit at two magnitudes has no position
         // to be handed as; that is a change to the applied map, not to addition. In
