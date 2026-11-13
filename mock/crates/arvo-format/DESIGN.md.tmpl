@@ -520,9 +520,9 @@ map is the identity on it whatever the mode says, which is the first law below.
 Two coordinates meet here and they are kept apart. The ratio a caller hands `Exact::between` is a
 `Fraction`, a signed 64-bit numerator over a positive signed 64-bit denominator, and it may be any ratio
 at all: `Exact` normalises it into the slot, so a caller computing an exact result does not carry the
-remainder invariant. What `Exact` holds afterwards is the remainder, a coordinate of its own and private
-to the crate, a numerator below an unsigned 128-bit denominator. It is in `[0, 1)`, which is what lets
-the rounding modes be stated once rather than once per sign, and it needs no sign for the same reason.
+remainder invariant. What `Exact` holds afterwards is the remainder, `Remainder`, a coordinate of its
+own, a numerator below an unsigned 128-bit denominator. It is in `[0, 1)`, which is what lets the
+rounding modes be stated once rather than once per sign, and it needs no sign for the same reason.
 The caller's ratio lands in it exactly, and a stored remainder compares equal to the `Fraction` it was
 built from.
 
@@ -536,10 +536,13 @@ comparisons formed so nothing overflows: the midpoint test asks `num` against `d
 dither test cross-multiplies a 128-bit term by a 64-bit one into a 192-bit product held in two words
 of the host's unsigned 128-bit integer.
 
-A position with a remainder past what a `Fraction` carries is reached only through an operation's
-exact step. No public constructor takes one, so a consumer computing its own exact position with such a
-remainder has no door to hand it in by. That constructor is additive, beside `between`, and how it
-treats a carry is a decision of its own, so it waits for a consumer that needs it.
+The remainder is public as `Remainder`, and a position over one is built by `Exact::at(slot, part)`, the
+position at `slot` and `part` of the way to the next. `Remainder::of(num, den)` is the remainder `num`
+leaves over `den`, the residue and nothing else, and a zero denominator reads as `Remainder::ZERO` the
+way `Fraction::of` reads one. Nothing carries through this door, because the type is a residue rather
+than a ratio normalised into one, so the position is never past the index. The product, the quotient and
+the conversion build their positions through exactly these two, and an operation written outside the
+crate forms the same positions the same way. `numerator` and `denominator` read the pair back.
 
 The carry that normalisation moves into the slot is at most `2^63` in either direction, and it lands as
 an ordinary slot wherever the index's host integer holds the sum. Where it does not, the slot pins at
@@ -1927,20 +1930,18 @@ one call earlier.
 outside the slot range, and a `B` at which `phase + B` is zero, so a constant zero divisor stops the
 build where the constant is named.
 
-`Divisor::<F>::of(slot)` takes a slot read at run time, and is admitted exactly when `F` has no zero
-member. With the phase `n / d` in lowest terms, `phase + b` is zero only at `b = -n / d`, an integer
-only when `d` is one. So a format has no zero member when its phase denominator is past one, or when
-`-n` lies outside its slot range: a half-offset grid qualifies, and so does a consumer's own slot range
-that starts at one. A plain integer range does not. Dividing two integers read at run time therefore
-needs the consumer to declare the range without the zero, and a format whose range holds the zero
-divides only by constants. That is the compromise of this stance, stated rather than hidden: the type
-carries the property, and a range that holds the zero cannot carry it.
+`Divisor::<F>::of(slot)` takes a slot read at run time, and is admitted exactly where no slot at all
+names the zero. With the phase `n / d` in lowest terms, `phase + b` is zero only at `b = -n / d`, an
+integer only when `d` is one. So where `d` is past one no slot is the zero, member or not, and a
+half-offset grid qualifies. Where `d` is one the slot `-n` exists, and a slot is not typed as a member
+of its format, so `of` would let it through whether or not the range holds it. It is refused there.
 
-`of` takes any slot, a non-member among them, as every operation here does. The one non-member slot
-that is the zero exists only where `d` is one and `-n` lies outside the range, and the step answers
-for it the way it answers for any non-member result past the index, saturating, toward the positive
-end. That is a branch in the step over an input outside the format, the kind the product's step
-already takes, and no validation of a member. `Divisor::slot` reads the slot back.
+So every `Divisor` names a non-zero factor by construction: `constant` refuses the zero and every slot
+outside the range, and `of` exists only where no slot is the zero. The step reads the factor and never
+asks whether it is zero. That is the compromise of this stance, stated rather than hidden: a whole-phase
+format divides only by constants, a plain integer range and a consumer's range that leaves the zero
+out alike. Admitting the second needs a slot typed by membership, under the ticket
+`arvo_a_runtime_divisor_over_a_whole_phase_range_without_the`. `Divisor::slot` reads the slot back.
 
 ### The exact step
 
@@ -1955,7 +1956,8 @@ under `2^191`. Then the shared ending places it.
 ### What it refuses, and what is not yet admitted
 
 One obligation carries four conditions, forced by `quotient_position` and asked without forcing by
-`is_divisible`. Only the first is a refusal by design.
+`is_divisible`, both reading one array of the four verdicts, so the two cannot disagree. Only the first
+is a refusal by design.
 
 A phase whose denominator is zero names no member, and nothing is computed for it.
 
@@ -1996,8 +1998,8 @@ both families, at whole and fractional exponents and at a phase, that places the
 points next to them against the shared wide oracle, and checks the verdict against an independent
 count of them; the quotient positions at the divisor's extremes are those corners. Each condition on
 both sides of its boundary through `is_divisible`, and compile-fail pairs with a twin differing in the
-offending token: a constant divisor at the zero beside one at one, `of` over a format holding a zero
-member beside one that does not, and a magnitude-indexed quantum beside a constant one.
+offending token: a constant divisor at the zero beside one at one, `of` over a whole phase beside the
+same range at a half-offset phase, and a magnitude-indexed quantum beside a constant one.
 
 ## Conversion, one member placed on another signature's grid
 
@@ -2025,7 +2027,8 @@ the same step. `D` is a constant of the pair and the obligation holds it under `
 ### What it refuses, and what is not yet admitted
 
 One obligation carries four conditions, forced by `converted_position` and asked without forcing by
-`is_convertible`. Only the first is a refusal by design.
+`is_convertible`, both reading one array of the four verdicts, so the two cannot disagree. Only the
+first is a refusal by design.
 
 Either phase with a zero denominator names no member, and nothing is computed for it.
 

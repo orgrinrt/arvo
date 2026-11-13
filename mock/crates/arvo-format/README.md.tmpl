@@ -35,8 +35,8 @@ Beside the sum sits the verdict for where the adapted sum is associative, which 
 phase rather than guessing from the sign. The product reads the phase, the radix and the quantum
 together, and is formed wide enough that what it leaves out is a position the slot index or an exact
 remainder cannot hold. The quotient takes its divisor as a type that cannot be zero, either a constant
-the build checks or a slot of a format that has no zero member, so there is no division by zero to
-handle at run time. Floating point formats are not yet admitted by any
+the build checks or a slot of a format in which no slot names the zero, so there is no division by zero
+to handle at run time. Floating point formats are not yet admitted by any
 of them: the applied map has no magnitude coordinate to land a result at, and what wrapping means over
 a union of magnitude ranges is a canon question this crate does not answer.
 
