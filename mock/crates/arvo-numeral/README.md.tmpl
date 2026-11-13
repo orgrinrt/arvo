@@ -1,0 +1,19 @@
+# arvo-numeral
+
+A value of a declared signature, held alone in the carrier its placement derives.
+
+`Num<S>` is one member of a format's representable set, kept in the narrowest machine integer the
+placement gives that signature at sole occupancy. Its sum is the format's own sum, the same slot the
+format's oracle returns for every pair, and its comparison is the members' order. It ships the doors in
+and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and
+`ISize` for the integer points.
+
+Each overflow policy comes in two spellings. Under `Wrap` and `Saturate` a result leaving the range
+asserts in a debug build; under `Wrapping` and `Saturating` the completion is what the operation means
+and nothing asserts.
+
+Builds on `arvo-format` and `arvo-placement`. `no_std`, no allocation, every operation a `const fn`.
+
+## Status
+
+Design phase. The documents are written and the source is being built from them.
