@@ -151,7 +151,7 @@ id = "the_demotion_is_partial_and_the_carve_out_is_a_rule_of_thumb"
 kind = "process"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is the capture of his words `202608311631_arvo-design-bounds-naming.md` in the workspace's store of his responses, line 47."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. He was asked which statements of the closed formalization panel the carve-out for absolutely framed statements reaches, under four options: none, the closed panel is demoted whole; the two he recalls, named by him; every one framed absolute, found by reading; or the carve-out restores currency and not authority. He rejected the premise the four share, that the demotion is total with one exception. His answer, in the capture `202608311631_arvo-design-bounds-naming.md` in the workspace's store of his responses, line 47: \"It's a rule of thumb that absolutes will fit but not itself an absolute. There must be exceptions. But as a general rule. Otherwise yes, demoted a bit, but not entirely. My calls and remarks and statements are still valid for the time, and valuable as precedence\""
 topic = "panel_conduct"
 corrects = ["his_voice_is_demoted_except_where_he_frames_it_absolute"]
 says = "The demotion of his voice is partial rather than total. The absolute-framing carve-out is a rule of thumb rather than a rule, and admits exceptions. His prior calls, remarks and statements stay valid for their time and carry precedent value."
@@ -381,9 +381,7 @@ keywords = ["scope", "extra work", "panel", "bench harness", "upstream", "except
 [[ruling]]
 id = "the_attacker_owes_several_solutions_to_the_party_it_refuted"
 kind = "process"
-rung = "ratified"
-ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is `panel::202608072330_the-numeral-canon-panel::113_op_steer_them_and_make_them_build_it_together`, lines 18 to 23."
+rung = "stated"
 topic = "panel_conduct"
 says = "Attacking is required and stopping at the refutation is not allowed. The attacker proposes several solutions addressed to the party it refuted, so that party can see whether any of them inspires a realisation of its own, and the two work together from there."
 quote = '''
@@ -415,9 +413,7 @@ keywords = ["formalise", "bounds", "holes", "canon candidate", "together", "esta
 [[ruling]]
 id = "steering_the_experts_is_the_coordinators_job"
 kind = "process"
-rung = "ratified"
-ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is `panel::202608072330_the-numeral-canon-panel::113_op_steer_them_and_make_them_build_it_together`, lines 16 to 17."
+rung = "stated"
 topic = "panel_conduct"
 says = "The coordinator steers the experts to the pasture it wants and gives them a push as it dispatches them, making them work together without yes-manning each other."
 quote = '''
@@ -607,9 +603,7 @@ keywords = ["Warm", "native", "primitive", "Rust", "imitation", "mimic", "standi
 [[ruling]]
 id = "the_imitation_is_ergonomics_not_an_arithmetic_boundary"
 kind = "ruling"
-rung = "ratified"
-ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is `panel::202608072330_the-numeral-canon-panel::104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle`, lines 14 to 21."
+rung = "stated"
 topic = "the_strategy_axis"
 says = "At a declared width Rust has no primitive for, the imitation targets neither the declared width nor the container. It is about ergonomics: the experience of using the type, that it is unsurprising and does the expected thing."
 quote = '''
@@ -855,7 +849,7 @@ id = "notko_renames_and_strategy_is_arvos_name"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is `panel::202608072330_the-numeral-canon-panel::105_op_notko_renames`, line 16."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. He was asked which side renames where the name Strategy collides between arvo and notko, under three options: arvo renames; notko renames; or neither, and the canon states the disambiguation. His answer, at `panel::202608072330_the-numeral-canon-panel::105_op_notko_renames`, line 16: \"notko renames\""
 topic = "naming"
 says = "Where the name Strategy collides between arvo and notko, notko is the side that renames."
 quote = '''
@@ -906,7 +900,7 @@ id = "a_predicate_lists_only_what_holds"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is `panel::202608072330_the-numeral-canon-panel::INTENTS`, lines 240 to 243."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. Nothing was put to him and no options were offered: he said it unprompted in the sitting that ratified the intent it specifies, correcting an elaboration of the coordinator's that had a predicate write `unmeasured` on a dimension nobody checked. His words, at `panel::202608072330_the-numeral-canon-panel::INTENTS`, lines 240 to 243: \"unmeasured or unknown does not list in the predicate. It's not known, it's assumed not true until proven true. No adding \"unsure\" into the predicate. Unsure or unmeasured etc explicitly go unstated and implicitly mean not true\""
 topic = "the_predicate_notation"
 says = "Unmeasured and unknown do not go in a predicate. What is not known is assumed not true until proven true, and nothing writes unsure into a predicate. Unsure and unmeasured go unstated, and being unstated implicitly means not true."
 quote = '''
@@ -914,7 +908,7 @@ unmeasured or unknown does not list in the predicate. It's not known, it's assum
 true. No adding "unsure" into the predicate. Unsure or unmeasured etc explicitly go unstated and
 implicitly mean not true
 '''
-note = "Said in the same sitting as the ratified entry, correcting an elaboration of the coordinator's rather than adding to the intent. It replaced a proposal that a predicate should write `unmeasured` on a dimension nobody checked; it should write nothing there. He did not mark it as a separate ratification, so it sits below the entry it specifies."
+note = "Said in the same sitting as the ratified entry, correcting an elaboration of the coordinator's rather than adding to the intent. It replaced a proposal that a predicate should write `unmeasured` on a dimension nobody checked; it should write nothing there. He did not mark it as a separate ratification when he said it, and it is ratified by default from the written history."
 provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i13-the-work-is-predicated-arms-composed-and-a-universal-solution-is-rejected"]
 keywords = ["predicate", "unmeasured", "unknown", "unsure", "unstated", "absent", "not true", "omission"]
 
@@ -923,7 +917,7 @@ id = "the_predicate_is_whatever_is_available_at_const_time"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is `panel::202608072330_the-numeral-canon-panel::83_op_the_predicate_is_whatever_is_const`, lines 5 to 7."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. He was asked whether a value may gate an arm, under two options: it may, at the cost measured for the value-gated form; or it may not, in which case several measured regions are characterisations and not arms. He rejected the fork and picked neither. His answer, at `panel::202608072330_the-numeral-canon-panel::83_op_the_predicate_is_whatever_is_const`, lines 5 to 7: \"Let me just add there that the above collapses to whatever is available at const time: Making the predicates const expressions for example, allows using const functions and pipe in some data that is outside the typestate. However, being const time expressions, typestate is usable there too\""
 topic = "binding_time"
 says = "The admissible category for a predicate is whatever is available at const time. Making the predicates const expressions allows using const functions and piping in data from outside the typestate, and because they are const-time expressions the typestate is usable inside them too."
 quote = '''
@@ -932,7 +926,7 @@ predicates const expressions for example, allows using const functions and pipe 
 outside the typestate. However, being const time expressions, typestate is usable there too
 '''
 because = "The axis is not type against value. It is const-available against not, so the typestate is one source of const-available data rather than the only admissible one."
-note = "He rejected the fork rather than picking a side. The two options were: a value may gate an arm, at the cost measured for the value-gated form that materialises both lowerings and selects between them; or a value may not gate an arm, in which case several measured regions are characterisations rather than arms. Said in his own voice about the meaning of his own ratified entry, and not marked as a separate ratification."
+note = "He rejected the fork rather than picking a side. The two options were: a value may gate an arm, at the cost measured for the value-gated form that materialises both lowerings and selects between them; or a value may not gate an arm, in which case several measured regions are characterisations rather than arms. Said in his own voice about the meaning of his own ratified entry. He did not mark it as a separate ratification when he said it, and it is ratified by default from the written history."
 gap = "What happens to a condition that is genuinely not const-available is not settled. He said what a const predicate may reach and did not say what lies beyond it."
 provenance = ["panel::202608072330_the-numeral-canon-panel::83_op_the_predicate_is_whatever_is_const::#what-he-was-choosing-among"]
 keywords = ["const", "const time", "const expression", "typestate", "trajectory", "predicate", "gate", "arm", "value"]
@@ -1039,7 +1033,7 @@ id = "the_canon_does_not_police_what_shape_a_law_takes"
 kind = "refusal"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is `panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes`, lines 51 to 55."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. He was asked which const-time constructions a law may take, under three options: the strongest const-time construction only; any const-available construction; or leave it to the design tier. He rejected the framing and picked none. His answer, at `panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes`, lines 51 to 55: \"I do not think I get the framing. Monomorphisation and const solving should lead everything to go through one lowered path, that's it. So if a law is a law, it should be expressed so that it actually works, be it typestate or const expressions or whatever. We shouldn't police what kind of laws there are or what shapes they take. The law is defined as makes sense and is applicable in each situation on a case by case basis.\""
 topic = "algebraic_laws"
 key = "I16"
 says = "Monomorphisation and const solving should lead everything through one lowered path, and that is the whole requirement. If a law is a law it should be expressed so that it actually works, be it typestate or const expressions or whatever. What kind of laws there are and what shapes they take is not to be policed; a law is defined as makes sense and is applicable case by case."
@@ -1274,7 +1268,7 @@ id = "the_trait_contract_structure_is_a_primary_paradigm"
 kind = "intent"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is the capture of his words `20260830_2320_arvo-panel-steering-opening.md` in the workspace's store of his responses, line 27."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. Nothing was put to him and no options were offered: it is one of the notes he opened the session of 30 August 2026 with. His words, in the capture `20260830_2320_arvo-panel-steering-opening.md` in the workspace's store of his responses, line 27: \"The trait contract based structure is a primary paradigm we uphold in future too. This allows for the shapes to stick even when the impls are wip, like hilavitkutin currently has\""
 topic = "arvo_identity"
 says = "The trait contract based structure is a primary approach we uphold in future too, because it lets the shapes stick even while the implementations are still work in progress."
 quote = '''
@@ -1555,7 +1549,7 @@ id = "the_standards_bound_starts_at_two_and_reserves_the_rest"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is the capture of his words `202608311631_arvo-design-bounds-naming.md` in the workspace's store of his responses, line 30."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. He was asked which conventions his demand for MATLAB and IEEE 754 compatible aliases covers, under three options: the two he named and nothing else owed; every convention the corpus carries, which adds SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed`; or a named core with the rest declared open. His answer, in the capture `202608311631_arvo-design-bounds-naming.md` in the workspace's store of his responses, line 30: \"Let's start with the two named, and reserve the rest named for future, so it can't close them out\""
 topic = "arvo_identity"
 says = "The parity suite is built against MATLAB `fi`/`fimath` and IEEE 754. The other conventions the corpus carries, SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed`, are reserved rather than excluded."
 quote = '''
@@ -1936,7 +1930,7 @@ id = "every_family_of_the_old_arvo_returns_and_the_shape_is_open"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, with nothing put to him on this row. What shows the row to be his is the capture of his words `202611130816_arvo-overflow-defaults-and-the-canon-double-check-nobody-did.md` in the workspace's store of his responses, line 1162."
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. He was asked what to do with the proposals that say a crate of the old arvo does not return, under three options: supersede them with one row saying every family of the old arvo returns on the current fundamentals; walk them one by one; or leave them as proposals that bind nothing. He took none of the three as put. His answer, in the capture `202611130816_arvo-overflow-defaults-and-the-canon-double-check-nobody-did.md` in the workspace's store of his responses, line 1162: \"I want them to return, in function/feature, but the shape the contracts and traits and default impls etc take are up for a whole rewrite and also the taxonomy. However, definitely arvo terrain to write the actual arithmetic contracts on the standard too…\""
 topic = "arvo_identity"
 says = "Every family the old arvo carried returns in function and in feature. The shape the contracts, the traits and the default implementations take is open to a whole rewrite, and so is the taxonomy. Writing the arithmetic contracts on the standards is arvo's own ground."
 quote = '''
@@ -1961,7 +1955,7 @@ quote = '''
 Also I am not about to answer hundreds of questions about canon rows to be ratified. Most of the designs and such are mine, and what isn't clearly my intent or come originally from me, likely has some written down prose ratifications or direct quotes from me. So what we do is you set a couple of sonnet agents going through the entire research and design as it is/was and you fill in what can be derived there as ratified or my call, fill them as ratified by default from written history. Only those that are clearly not backed by me or actively against the canon otherwise, you bring to me. The rest can be on provisional stamps to begin with
 '''
 because = "Most of the designs are his, and what is not clearly his intent or did not come from him first likely has a ratification of his written down in prose somewhere, or a direct quotation."
-corrects = ["the_panel_finishes_the_canon_without_him"]
-note = "**What it corrects in the row it names** is the reading that nothing may reach him again. That row still holds: a canon question is derived from what he has said and gated by the coordinator. What changes is that a row the written history shows he does not back, or that stands against the canon, is brought to him and no longer only argued among peers.\n\n**The sonnet agents and their number are the vehicle** he named for the reading, and are kept in the quotation for provenance. \"Provisional\" is his word and this schema has no value for it, so a row left provisional keeps the `rung` it had and is named in the research note beside the reading.\n\n**He said it of the canon rows at large**, with the upstream repositories under discussion, and the coordinator carried it to this registry. **A row raised under it** says so in its `ratification` and names the passage that shows the row to be his, since nothing was put to him on that row itself."
+corrects = ["the_panel_finishes_the_canon_without_him", "an_ack_is_not_a_ratification"]
+note = "**What it corrects in `the_panel_finishes_the_canon_without_him`** is that row's last sentence, that nothing is parked awaiting him, and the reading that nothing may reach him again. The rest of that row holds: a canon question is derived from what he has said, argued among peers and gated by the coordinator, and his silence is not permission. What changes is that a row the written history shows he does not back, or that stands against the canon, is brought to him.\n\n**What it corrects in `an_ack_is_not_a_ratification`** is that ratification is reached only when the experts bring him a converged thing. That stays the route for a question still open among the experts, and an opinion he gave on one is still an ack and is not raised under this row. Beside that route there is this one: where the written history shows a row to be his intent or his call, his word here is what ratifies it.\n\n**Neither row is replaced**, which is why the edge is `corrects`: both are still cited for what they hold, and a citation of either could not be written to this row instead. A note that has him no longer available to ask, as the one on `the_demotion_is_partial_and_the_carve_out_is_a_rule_of_thumb` does, is read with this row: he is asked what this row brings to him and nothing else.\n\n**The sonnet agents and their number are the vehicle** he named for the reading, and are kept in the quotation for provenance. \"Provisional\" is his word and this schema has no value for it, so a row left provisional keeps the `rung` it had and is named in the research note beside the reading.\n\n**He said it of the canon rows at large**, with the upstream repositories under discussion, and the coordinator carried it to this registry. **A row raised under it** says so in its `ratification`, with what was put to him when he said the words that show the row to be his and those words quoted, since the row itself was not put to him for ratification."
 provenance = ["mock::research/202611131500_claim-the-rows/NOTES::#his-words"]
 keywords = ["default", "written history", "ratified by default", "provisional", "unratified rows", "sonnet agents", "not backed", "against the canon", "bring to him", "questions"]
