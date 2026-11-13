@@ -60,8 +60,9 @@
 //! them at every gate.
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-use crate::canon_citations::files_cited;
+use crate::canon_citations::{arrivals, consolidation_numbers, files_cited};
 use crate::canon_rows::{finding, text};
+use crate::panel_corpus::{markdown, panel_dir};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(AStandingIsReachableFromWhatItCites {
         ceiling: CEILING,
@@ -103,11 +104,16 @@ impl Lint for AStandingIsReachableFromWhatItCites {
 }
 impl RepoLint for AStandingIsReachableFromWhatItCites {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
+        let panel = markdown(ctx.view(), &panel_dir(ctx.mock_dir));
+        let names = panel
+            .iter()
+            .filter_map(|p| p.file_name().and_then(|n| n.to_str()));
+        let consolidations = consolidation_numbers(names);
         let found: Vec<LintError> = ctx
             .registry()
             .rows_in("proposal")
             .iter()
-            .filter_map(|q| check(ctx.registry(), q))
+            .filter_map(|q| check(ctx.registry(), q, &consolidations))
             .collect();
         if found.len() <= self.ceiling {
             return Vec::new();
@@ -117,24 +123,26 @@ impl RepoLint for AStandingIsReachableFromWhatItCites {
 }
 
 /// One proposal, against the citations its standing would need.
-fn check(reg: &mockspace::RegistryView, q: &str) -> Option<LintError> {
+fn check(reg: &mockspace::RegistryView, q: &str, consolidations: &[u32]) -> Option<LintError> {
     let standing = text(reg, q, "standing")?;
     if !MULTI_ARRIVAL.contains(&standing) {
         return None;
     }
     let files = files_cited(reg, q);
-    if files.len() >= 2 {
+    if arrivals(&files, consolidations) >= 2 {
         return None;
     }
-    let named = files.iter().copied().next().unwrap_or("nothing at all");
+    let named = files.iter().copied().collect::<Vec<_>>().join("`, `");
+    let named = if named.is_empty() { "nothing at all".to_string() } else { named };
     Some(finding(
         LINT,
         None,
         format!(
             "`{q}` sets `standing` to `{standing}`, which asserts more than one independent \
-             arrival, and `provenance` names `{named}` and no second file. One file has one \
-             author, so a reader cannot reach the second arrival from this row. Cite the \
-             files that reached it, or state the standing the citations support."
+             arrival, and `provenance` names `{named}`, which is one arrival: one file has one \
+             author, and a member file with the consolidation over it is one author's account \
+             twice. A reader cannot reach a second arrival from this row. Cite the files that \
+             reached it, or state the standing the citations support."
         ),
     ))
 }
@@ -149,9 +157,13 @@ mod tests {
         assert_not_declared_off,
         assert_registered,
         ctx,
+        ctx_at,
+        plant,
+        planted_tree,
         view,
     };
     use crate::canon_rows::JOIN;
+    use crate::panel_corpus::PANEL;
 
     const ROOT: &str = "panel::202608072330_the-numeral-canon-panel";
 
@@ -163,6 +175,33 @@ mod tests {
 
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         at_a_ceiling_of(0, rows)
+    }
+
+    /// The panel files the sitting-shaped tests plant: two units, each closing
+    /// on its consolidation, and a ledger that belongs to neither.
+    const SITTING: [&str; 6] = [
+        "63_spj_consolidation_the_format_concept.md",
+        "79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md",
+        "90_giesen_consolidation_derived_algebraic_laws.md",
+        "98_second_read.md",
+        "106_giesen_consolidation_the_strategy_axis.md",
+        "AGREEMENTS.md",
+    ];
+
+    /// The same as `findings`, over a panel directory holding `panel`.
+    fn findings_over(panel: &[&str], rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
+        let dir = planted_tree("standing-panel");
+        for file in panel {
+            plant(&dir, &format!("{PANEL}/{file}"), "");
+        }
+        let v = view(rows, &[]);
+        super::AStandingIsReachableFromWhatItCites {
+            ceiling: 0,
+        }
+        .judge(ctx_at(&dir, &v))
+        .into_iter()
+        .map(|e| e.message)
+        .collect()
     }
 
     /// The same, with the ratchet set where a test wants it.
@@ -255,40 +294,27 @@ mod tests {
 
     /// A member file plus the consolidation over that member is one arrival.
     ///
-    /// Two distinct files, so the count passes it, and the second is the first's
-    /// own compression, so the two agree by construction rather than by
-    /// arriving separately.
-    ///
-    /// **Left red on purpose, and the obvious fix is wrong.** Refusing every
-    /// stem carrying `_consolidation` closes this and breaks `cross_topic`,
-    /// whose whole meaning is that two topics arrived without citing each
-    /// other, and whose arrivals are recorded in one consolidation per topic.
-    /// Measured on the committed canon: refusing them wholesale takes the
-    /// population from 29 to 32, and of the three rows that catches, two are
-    /// `cross_topic` citing one consolidation of a topic that is not their own
-    /// alongside the agreements file, so the refusal would take the tier out
-    /// rather than a defect. The third is this very case, a member file and
-    /// the consolidation of its own topic, and the refusal catches it
-    /// correctly. Telling the two apart needs the sitting's file-to-topic map,
-    /// which the citation stem does not carry.
+    /// Two distinct files, so a count of files passes it, and the second is the
+    /// first's own compression, so the two agree by construction rather than by
+    /// arriving separately. Telling that from two topics arriving apart needs
+    /// the sitting's file-to-topic map, which the lint reads off the panel
+    /// directory's numbering: a member belongs to the consolidation that closes
+    /// its unit.
     #[test]
-    #[ignore = "catalogue: a member file and the consolidation over it are counted as two \
-                arrivals. Closing it needs the sitting's file-to-topic map, because refusing \
-                every consolidation would refuse the cross_topic tier itself; tracked \
-                #arvo_s_a_standing_is_reachable_lint_counts_a_member_file_and"]
     fn a_file_and_the_consolidation_over_it_are_one_arrival() {
         let p = cited(&[
             &format!("{ROOT}::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27"),
             &format!("{ROOT}::90_giesen_consolidation_derived_algebraic_laws::127"),
         ]);
-        let f = findings(&[("proposal::a_claim", &[
+        let f = findings_over(&SITTING, &[("proposal::a_claim", &[
             ("standing", "two_experts"),
             ("provenance", &p),
         ])]);
         assert_eq!(f.len(), 1, "a compression is not a second arrival: {f:?}");
+        assert!(f[0].contains("one arrival"), "{}", f[0]);
     }
 
-    /// The control that keeps the arm above honest when it is un-ignored.
+    /// The control that keeps the arm above honest.
     ///
     /// Two consolidations of two different topics are two arrivals, so whatever
     /// closes the arm above must leave this silent. Without it the cheapest fix
@@ -299,7 +325,7 @@ mod tests {
             &format!("{ROOT}::63_spj_consolidation_the_format_concept::120"),
             &format!("{ROOT}::106_giesen_consolidation_the_strategy_axis::360"),
         ]);
-        let f = findings(&[("proposal::a_claim", &[
+        let f = findings_over(&SITTING, &[("proposal::a_claim", &[
             ("standing", "cross_topic"),
             ("provenance", &p),
         ])]);
@@ -307,6 +333,36 @@ mod tests {
             f.is_empty(),
             "two topics arriving separately is what cross_topic names: {f:?}"
         );
+    }
+
+    /// A member of one topic and the consolidation of another did not cite each
+    /// other, so they are two arrivals.
+    #[test]
+    fn control_a_member_and_the_consolidation_of_another_topic_stay_two_arrivals() {
+        let p = cited(&[
+            &format!("{ROOT}::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27"),
+            &format!("{ROOT}::106_giesen_consolidation_the_strategy_axis::360"),
+        ]);
+        let f = findings_over(&SITTING, &[("proposal::a_claim", &[
+            ("standing", "cross_topic"),
+            ("provenance", &p),
+        ])]);
+        assert!(f.is_empty(), "{f:?}");
+    }
+
+    /// Without the panel on disk nothing is known to compress anything, so the
+    /// pair is two files and the lint stays silent rather than guessing.
+    #[test]
+    fn with_no_panel_on_disk_a_pair_is_two_arrivals() {
+        let p = cited(&[
+            &format!("{ROOT}::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27"),
+            &format!("{ROOT}::90_giesen_consolidation_derived_algebraic_laws::127"),
+        ]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
+        assert!(f.is_empty(), "{f:?}");
     }
 
     #[test]

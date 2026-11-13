@@ -8,7 +8,5 @@ last ignore citing it.
 
 - arvo_placement_ships_one_packing_rule_so_the_test_that_the_c: `arvo-placement` ships one packing
   rule, so the test that the carrier is not a function of the access width stays red.
-- arvo_s_a_standing_is_reachable_lint_counts_a_member_file_and: `a-standing-is-reachable-from-what-it-cites`
-  counts a member file and the consolidation over it as two arrivals.
 - arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair: the `half_up` reader gets eighteen
   catalogued sentence pairs wrong on one named side.

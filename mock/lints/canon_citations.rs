@@ -114,6 +114,68 @@ pub fn is_a_consolidation(file: &str) -> bool {
     segments.any(|s| s == "consolidation")
 }
 
+/// The number a panel file is filed under, the digits before its first `_`.
+///
+/// `None` for a ledger, a probe artifact or anything else the panel did not
+/// number.
+pub fn number_of(file: &str) -> Option<u32> {
+    let stem = file.split('_').next()?;
+    if stem.is_empty() || !stem.chars().all(|c| c.is_ascii_digit()) {
+        return None;
+    }
+    stem.parse().ok()
+}
+
+/// The numbers of the topic consolidations among the panel's file names.
+///
+/// Sorted and deduplicated, so [`arrivals`] can ask for the first one at or
+/// after a member.
+pub fn consolidation_numbers<'a>(files: impl IntoIterator<Item = &'a str>) -> Vec<u32> {
+    let mut numbers: Vec<u32> = files
+        .into_iter()
+        .filter(|f| is_a_consolidation(f))
+        .filter_map(number_of)
+        .collect();
+    numbers.sort_unstable();
+    numbers.dedup();
+    numbers
+}
+
+/// How many independent arrivals a set of cited files holds.
+///
+/// Every cited file that is not a consolidation is one arrival, since two
+/// members of one unit (a pair of blind cold derivations, an attacker) reached
+/// their claims separately. A consolidation is one arrival only when none of
+/// its own members is cited beside it: it compresses them, so it agrees with
+/// them by construction and adds no second author. A unit of the panel is the
+/// run of numbered files closing on its consolidation, so a member belongs to
+/// the first consolidation at or after its own number. Two consolidations of
+/// two topics are two arrivals, and so are a member of one topic and the
+/// consolidation of another.
+///
+/// **Where this is wrong.** The rule reads the numbering and nothing else, so a
+/// file written after its topic's consolidation (a later check of it) is filed
+/// under the next topic. That can only absorb a consolidation that was
+/// independent, never invent an arrival, so it errs toward asking for a second
+/// source.
+pub fn arrivals(files: &BTreeSet<&str>, consolidations: &[u32]) -> usize {
+    let unit_of =
+        |f: &str| number_of(f).and_then(|n| consolidations.iter().copied().find(|c| *c >= n));
+    let members: Vec<&str> = files
+        .iter()
+        .copied()
+        .filter(|f| !is_a_consolidation(f))
+        .collect();
+    let absorbed =
+        |c: &str| number_of(c).is_some_and(|n| members.iter().any(|m| unit_of(m) == Some(n)));
+    let lone = files
+        .iter()
+        .copied()
+        .filter(|f| is_a_consolidation(f) && !absorbed(f))
+        .count();
+    members.len() + lone
+}
+
 /// Whether the last segment of a citation is a line number rather than a
 /// heading.
 pub fn is_line_anchor(citation: &str) -> bool {
@@ -271,6 +333,95 @@ mod tests {
         assert!(!is_line_anchor(&format!("{root}::#q41-whether-an-arm")));
         assert!(!is_line_anchor(root));
         assert!(!is_line_anchor(""));
+    }
+
+    const PANEL_FILES: [&str; 6] = [
+        "76_cold_derivation.md",
+        "79_attacking_the_two_cold_derivations.md",
+        "90_giesen_consolidation_derived_algebraic_laws.md",
+        "98_second_read.md",
+        "106_giesen_consolidation_the_strategy_axis.md",
+        "AGREEMENTS.md",
+    ];
+
+    fn set<'a>(files: &[&'a str]) -> BTreeSet<&'a str> {
+        files.iter().copied().collect()
+    }
+
+    #[test]
+    fn a_files_number_is_the_digits_before_its_first_underscore() {
+        assert_eq!(number_of("79_fallin_attacking.md"), Some(79));
+        assert_eq!(number_of("244_orchard_consolidation"), Some(244));
+        assert_eq!(number_of("AGREEMENTS"), None);
+        assert_eq!(number_of("_leading"), None);
+        assert_eq!(number_of("12ab_mixed"), None);
+        assert_eq!(number_of(""), None);
+    }
+
+    #[test]
+    fn the_consolidations_are_read_off_the_file_names_sorted() {
+        let numbers = consolidation_numbers(PANEL_FILES);
+        assert_eq!(numbers, vec![90, 106]);
+        let shuffled = consolidation_numbers([PANEL_FILES[4], PANEL_FILES[2], PANEL_FILES[4]]);
+        assert_eq!(shuffled, vec![90, 106], "sorted and each once");
+    }
+
+    #[test]
+    fn a_member_and_the_consolidation_over_it_are_one_arrival() {
+        let files = set(&["79_attacking_the_two_cold_derivations", "90_giesen_consolidation_x"]);
+        assert_eq!(arrivals(&files, &[90, 106]), 1);
+    }
+
+    /// The control: a refusal of every consolidation would pass the arm above
+    /// and read the same here, so two topics arriving apart must stay two.
+    #[test]
+    fn consolidations_of_two_topics_are_two_arrivals() {
+        let files = set(&["63_spj_consolidation_the_format", "106_giesen_consolidation_axis"]);
+        assert_eq!(arrivals(&files, &[63, 106]), 2);
+    }
+
+    /// The control for the absorption: two blind members of one unit are two
+    /// authors, and the consolidation over them adds none. Filing every file of
+    /// a unit as one arrival would refuse the `two_experts` tier itself.
+    #[test]
+    fn two_members_of_one_unit_stay_two_arrivals_with_their_consolidation_beside_them() {
+        let pair = set(&["65_knuth_derived_cold", "66_dolan_derived_cold"]);
+        assert_eq!(arrivals(&pair, &[74, 90]), 2);
+        let with =
+            set(&["65_knuth_derived_cold", "66_dolan_derived_cold", "74_giesen_consolidation_x"]);
+        assert_eq!(
+            arrivals(&with, &[74, 90]),
+            2,
+            "the consolidation is absorbed"
+        );
+    }
+
+    #[test]
+    fn a_member_of_one_topic_and_the_consolidation_of_another_are_two_arrivals() {
+        let files = set(&["79_attacking", "106_giesen_consolidation_axis"]);
+        assert_eq!(arrivals(&files, &[90, 106]), 2);
+    }
+
+    #[test]
+    fn two_members_of_two_topics_are_two_arrivals() {
+        let files = set(&["76_cold", "98_second_read"]);
+        assert_eq!(arrivals(&files, &[90, 106]), 2);
+    }
+
+    #[test]
+    fn a_file_with_no_number_or_no_consolidation_after_it_is_its_own_arrival() {
+        let files = set(&["AGREEMENTS", "OPTIONS", "300_late"]);
+        assert_eq!(arrivals(&files, &[90, 106]), 3);
+        assert_eq!(
+            arrivals(&set(&["79_a", "80_b"]), &[]),
+            2,
+            "no consolidation known"
+        );
+    }
+
+    #[test]
+    fn an_empty_set_is_no_arrivals() {
+        assert_eq!(arrivals(&BTreeSet::new(), &[90]), 0);
     }
 
     #[test]
