@@ -291,9 +291,12 @@ So the rungs are exhaustive at widths 1 to 12, which covers the 8-bit carrier at
 wider carriers below theirs, and the value type is exhaustive at 1 to 8. Widths 13 to 64 are sampled,
 and every full-width branch of the 16, 32 and 64-bit carriers, the machine's own wrapping or saturating
 add, falls among them: at width 16 alone there are four billion pairs per family and policy.
-One fixed-point signature at a non-zero exponent, `UFixed<8, 3>`, is exhaustive the same way through the
+One fixed-point signature at a non-zero exponent, `UFixed<6, 3>`, is exhaustive the same way through the
 value type: unsigned, as `UFixed` is, both policies, all five modes, every pair, against the oracle.
 The exponent moves no slot, so this is the test that the value reads the slot and never the position.
+Its width sits below its 8-bit carrier's, so the rung's adaptation acts on every sum that leaves the
+range and the 8-bit mutant turns it red; at the carrier's full width the adaptation is the machine's own
+and no mutant of it could.
 
 Widths 9 to 64 run through the value type on an edge lattice, each end of the range and its neighbours,
 zero and its neighbours, and every single-bit value, against the oracle, plus pairs drawn from a seeded
