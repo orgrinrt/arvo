@@ -125,6 +125,30 @@ fn the_one_of_a_format_without_one_is_refused() {
 }
 
 #[test]
+fn an_override_naming_clamp_is_refused() {
+    pair(
+        "an_override_naming_clamp_is_refused",
+        "an_override_naming_saturate_compiles",
+    );
+}
+
+#[test]
+fn an_override_naming_stochastic_is_refused() {
+    pair(
+        "an_override_naming_stochastic_is_refused",
+        "an_override_naming_half_even_compiles",
+    );
+}
+
+#[test]
+fn a_crossing_to_another_format_is_refused() {
+    pair(
+        "a_crossing_to_another_format_is_refused",
+        "a_crossing_to_a_sibling_compiles",
+    );
+}
+
+#[test]
 fn the_carrier_by_projection_is_refused() {
     pair(
         "the_carrier_by_projection_is_refused",

@@ -15,7 +15,7 @@
 use arvo_format::overflow::Overflow;
 use arvo_format::points::{self, Integer, UFixed};
 use arvo_format::rounding::Rounding;
-use arvo_format::{Adapt, Adaptation, Signature};
+use arvo_format::{Adapt, Adaptation, Format, Signature};
 
 use crate::admit::Sole;
 use crate::check::{Abort, DebugCheck};
@@ -27,30 +27,37 @@ use crate::num::Num;
 /// An adaptation names itself. A strategy, once its cell is claimed, names the
 /// adaptation it selects. Open: what names an adaptation in another crate
 /// implements it there.
-pub trait NamesAdaptation {
-    /// The adaptation named.
+///
+/// It names one for the format `F`, since what a default names may depend on
+/// the format: a preset that wraps integers and saturates fixed point is one
+/// type with an impl per region, or one blanket impl where it names a single
+/// adaptation throughout.
+pub trait NamesAdaptation<F: Format> {
+    /// The adaptation named for `F`.
     type Adaptation: Adaptation;
 }
 
-impl<R: Rounding, O: Overflow> NamesAdaptation for Adapt<R, O> {
+impl<F: Format, R: Rounding, O: Overflow> NamesAdaptation<F> for Adapt<R, O> {
     type Adaptation = Self;
 }
 
-/// An unsigned integer of `BITS` bits under the adaptation `A` names.
+/// An unsigned integer of `BITS` bits under the adaptation `A` names for it.
 pub type Uint<const BITS: u32, A, C = Abort> =
-    Num<Signature<UFixed<BITS, 0>, <A as NamesAdaptation>::Adaptation>, C>;
+    Num<Signature<UFixed<BITS, 0>, <A as NamesAdaptation<UFixed<BITS, 0>>>::Adaptation>, C>;
 
-/// A signed integer of `BITS` bits under the adaptation `A` names.
+/// A signed integer of `BITS` bits under the adaptation `A` names for it.
 pub type Int<const BITS: u32, A, C = Abort> =
-    Num<Signature<Integer<BITS>, <A as NamesAdaptation>::Adaptation>, C>;
+    Num<Signature<Integer<BITS>, <A as NamesAdaptation<Integer<BITS>>>::Adaptation>, C>;
 
 /// The unsigned integer at the target's pointer width, under the adaptation `A`
-/// names.
-pub type USize<A, C = Abort> = Num<Signature<points::USize, <A as NamesAdaptation>::Adaptation>, C>;
+/// names for it.
+pub type USize<A, C = Abort> =
+    Num<Signature<points::USize, <A as NamesAdaptation<points::USize>>::Adaptation>, C>;
 
 /// The signed integer at the target's pointer width, under the adaptation `A`
-/// names.
-pub type ISize<A, C = Abort> = Num<Signature<points::ISize, <A as NamesAdaptation>::Adaptation>, C>;
+/// names for it.
+pub type ISize<A, C = Abort> =
+    Num<Signature<points::ISize, <A as NamesAdaptation<points::ISize>>::Adaptation>, C>;
 
 impl<Ad: Adaptation, C: DebugCheck> Num<Signature<points::USize, Ad>, C>
 where

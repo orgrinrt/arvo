@@ -18,7 +18,8 @@ notko.workspace = true
 # One mutant per operation beside them, each breaking that operation where it
 # goes wrong first: the unsigned saturating difference below zero, the signed
 # saturating negation of the lowest member, the saturating product that leaves
-# the machine integer on the negative side.
+# the machine integer on the negative side. `mutant-under` sends the top of the
+# range to the bottom in a crossing to a sibling signature.
 [features]
 mutant-8 = []
 mutant-16 = []
@@ -27,6 +28,7 @@ mutant-64 = []
 mutant-sub = []
 mutant-neg = []
 mutant-mul = []
+mutant-under = []
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"

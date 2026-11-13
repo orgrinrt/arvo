@@ -13,8 +13,9 @@ use core::hash::{Hash, Hasher};
 use std::collections::hash_map::DefaultHasher;
 
 use arvo_format::overflow::{Saturate, Wrap};
+use arvo_format::points::{Integer, UFixed};
 use arvo_format::rounding::{Floor, HalfEven, TowardZero};
-use arvo_format::{Adapt, Exact, Policy, Signature, Slot};
+use arvo_format::{Adapt, Exact, Format, Policy, Signature, Slot, WithOverflow, WithRounding};
 use arvo_numeral::{
     Abort,
     Additive,
@@ -35,12 +36,26 @@ use arvo_numeral::{
 type U13 = Uint<13, Adapt<TowardZero, Wrap>, Quiet>;
 type I7 = Int<7, Adapt<Floor, Saturate>, Quiet>;
 
-/// A name for an adaptation, of this crate's own. What a strategy will be.
+/// A preset of this crate's own, naming an adaptation per format: signed
+/// integers wrap under it and unsigned ones saturate. What a strategy will be.
 struct Rounded;
 
-impl NamesAdaptation for Rounded {
+impl<const BITS: u32> NamesAdaptation<Integer<BITS>> for Rounded
+where
+    Integer<BITS>: Format,
+{
     type Adaptation = Adapt<HalfEven, Wrap>;
 }
+
+impl<const BITS: u32> NamesAdaptation<UFixed<BITS, 0>> for Rounded
+where
+    UFixed<BITS, 0>: Format,
+{
+    type Adaptation = Adapt<HalfEven, Saturate>;
+}
+
+/// An alias of this crate's own whose adaptation carries a default.
+type Count<const BITS: u32, A = Rounded, C = Never> = Uint<BITS, A, C>;
 
 /// A debug check of this crate's own.
 struct Never;
@@ -186,6 +201,42 @@ fn main() {
     assert_eq!(
         core::mem::size_of::<ByName>(),
         core::mem::size_of::<Int<8, Adapt<HalfEven, Wrap>>>()
+    );
+
+    // The same preset names another adaptation for an unsigned integer, and an
+    // alias that defaults to it needs no adaptation written.
+    let (top, one) = (Count::<8>::constant::<255>(), Count::<8>::constant::<1>());
+    assert_eq!(top.add(one).slot().index(), 255);
+    // The default overridden per case, at the type and at a value.
+    type Wrapping8 = Count<8, Adapt<HalfEven, Wrap>>;
+    assert_eq!(
+        Wrapping8::constant::<255>()
+            .add(Wrapping8::constant::<1>())
+            .slot()
+            .index(),
+        0
+    );
+    assert_eq!(
+        top.with_overflow::<Wrap>()
+            .add(one.with_overflow::<Wrap>())
+            .slot()
+            .index(),
+        0
+    );
+    assert_eq!(top.with_rounding::<Floor>().slot(), top.slot());
+
+    // A sibling signature by the aliases, and the crossing to it and back.
+    type Wrapping13 = Signature<UFixed<13, 0>, Adapt<TowardZero, Wrap>>;
+    type Saturating13 = WithOverflow<Wrapping13, Saturate>;
+    type Nearest13 = WithRounding<Saturating13, HalfEven>;
+    let there: Num<Saturating13, Quiet> = SIX.under();
+    assert_eq!(there.slot(), SIX.slot());
+    assert_eq!(there.under::<Nearest13>().under::<Wrapping13>(), SIX);
+    let top13 = U13::constant::<8191>();
+    assert_eq!(top13.add(SIX).slot().index(), 5);
+    assert_eq!(
+        top13.under::<Saturating13>().add(there).slot().index(),
+        8191
     );
 
     // The admission's items, through the traits.

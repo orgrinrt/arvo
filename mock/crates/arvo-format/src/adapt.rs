@@ -39,8 +39,8 @@ pub trait Adaptation {
 pub struct Adapt<R: Rounding, O: Overflow>(core::marker::PhantomData<(R, O)>);
 
 impl<R: Rounding, O: Overflow> Adaptation for Adapt<R, O> {
-    type Rounding = R;
     type Overflow = O;
+    type Rounding = R;
 }
 
 /// The rounding mode an adaptation selects.
@@ -72,9 +72,27 @@ pub trait DeclaredSignature {
 pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
 
 impl<F: Format, A: Adaptation> DeclaredSignature for Signature<F, A> {
-    type Format = F;
     type Adaptation = A;
+    type Format = F;
 }
+
+/// The declared signature `S` with its overflow policy replaced by `O`.
+///
+/// The sibling signature itself, the type reached by writing it out. An alias
+/// carries no bound, so this says nothing of what the result is admitted to:
+/// that is asked of it where it is used, as of any written signature.
+pub type WithOverflow<S, O> = Signature<
+    <S as DeclaredSignature>::Format,
+    Adapt<<<S as DeclaredSignature>::Adaptation as Adaptation>::Rounding, O>,
+>;
+
+/// The declared signature `S` with its rounding mode replaced by `R`.
+///
+/// The sibling signature itself, on the terms `WithOverflow` states.
+pub type WithRounding<S, R> = Signature<
+    <S as DeclaredSignature>::Format,
+    Adapt<R, <<S as DeclaredSignature>::Adaptation as Adaptation>::Overflow>,
+>;
 
 /// How many operands an operation takes.
 ///
@@ -86,11 +104,10 @@ impl<F: Format, A: Adaptation> DeclaredSignature for Signature<F, A> {
 pub struct Arity(u32);
 
 impl Arity {
-    /// One operand.
-    pub const UNARY: Self = Self(1);
-
     /// Two operands.
     pub const BINARY: Self = Self(2);
+    /// One operand.
+    pub const UNARY: Self = Self(1);
 
     /// An arity from a count of operands.
     #[must_use]

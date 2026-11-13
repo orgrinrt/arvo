@@ -11,6 +11,8 @@ use core::hash::{Hash, Hasher};
 use core::marker::PhantomData;
 use core::mem::size_of;
 
+use arvo_format::overflow::Overflow;
+use arvo_format::rounding::Rounding;
 use arvo_format::{
     Bool,
     DeclaredSignature,
@@ -19,6 +21,9 @@ use arvo_format::{
     Format,
     Quantum,
     Slot,
+    Slots,
+    WithOverflow,
+    WithRounding,
     adapt,
     mul as mul_slots,
     panic_on_overflow,
@@ -169,6 +174,54 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// The carrier. The host doors read it.
     pub(crate) const fn carrier(self) -> ReprOf<S> {
         self.0
+    }
+
+    /// The same member held under `T`, a signature over this one's format.
+    ///
+    /// The slot is unchanged and every operation after the crossing is `T`'s.
+    /// The carrier is handed over as it is: its type and its encoding are the
+    /// format's, so the two values are the same bits. Nothing is read of the
+    /// range, and the debug check is kept.
+    ///
+    /// The caller writes `T`'s admission, since this signature's says nothing
+    /// of it. A `T` over another format is a type error here, because its slot
+    /// would have to be rounded or completed onto the other grid.
+    #[must_use]
+    pub const fn under<T>(self) -> Num<T, C>
+    where
+        T: Sole + DeclaredSignature<Format = S::Format>,
+    {
+        if cfg!(feature = "mutant-under")
+            && self.slot().index() == <SlotsOf<S> as Slots>::MAX.index()
+        {
+            return Num::at_index(<SlotsOf<S> as Slots>::MIN.index());
+        }
+        Num::from_carrier(self.0)
+    }
+
+    /// The same member under this signature with its overflow policy replaced
+    /// by `O`: `under` at `WithOverflow<S, O>`.
+    ///
+    /// For a site that names its signature. Code generic over the signature
+    /// takes the target as a parameter and calls `under`.
+    #[must_use]
+    pub const fn with_overflow<O: Overflow>(self) -> Num<WithOverflow<S, O>, C>
+    where
+        WithOverflow<S, O>: Sole + DeclaredSignature<Format = S::Format>,
+    {
+        self.under()
+    }
+
+    /// The same member under this signature with its rounding mode replaced by
+    /// `R`: `under` at `WithRounding<S, R>`.
+    ///
+    /// For a site that names its signature, as `with_overflow` is.
+    #[must_use]
+    pub const fn with_rounding<R: Rounding>(self) -> Num<WithRounding<S, R>, C>
+    where
+        WithRounding<S, R>: Sole + DeclaredSignature<Format = S::Format>,
+    {
+        self.under()
     }
 
     /// The sum under the signature: the slot `arvo_format::add` gives for the

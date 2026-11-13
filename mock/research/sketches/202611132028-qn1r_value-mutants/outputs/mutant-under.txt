@@ -1,0 +1,52 @@
+     Running unittests src/lib.rs
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 43.63s
+     Running tests/band_17_to_32.rs
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.02s
+     Running tests/band_1_to_8.rs
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.43s
+     Running tests/band_33_to_64.rs
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.72s
+     Running tests/band_9_to_16.rs
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.65s
+     Running tests/fixed_point_product.rs
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+     Running tests/the_crossing.rs
+a_fixed_point_member_crosses_as_an_integer_does --- FAILED
+a_preset_names_an_adaptation_per_format_and_an_alias_defaults_to_it --- FAILED
+the_crossing_keeps_the_check_and_asks_it_nothing --- FAILED
+every_member_crosses_to_every_sibling_and_back_at_widths_one_to_eight --- FAILED
+the_value_that_arrives_adds_under_the_policy_it_crossed_into --- FAILED
+the_shorthands_are_the_crossing_at_the_written_sibling --- FAILED
+---- a_fixed_point_member_crosses_as_an_integer_does stdout ----
+panicked at crates/arvo-numeral/tests/the_crossing.rs:34:9:
+assertion `left == right` failed: the crossing moved the member at 31
+  left: -32
+ right: 31
+---- a_preset_names_an_adaptation_per_format_and_an_alias_defaults_to_it stdout ----
+panicked at crates/arvo-numeral/tests/the_crossing.rs:181:5:
+assertion `left == right` failed
+  left: 1
+ right: 255
+---- the_crossing_keeps_the_check_and_asks_it_nothing stdout ----
+panicked at crates/arvo-numeral/tests/the_crossing.rs:135:5:
+assertion `left == right` failed
+  left: 0
+ right: 255
+---- every_member_crosses_to_every_sibling_and_back_at_widths_one_to_eight stdout ----
+panicked at crates/arvo-numeral/tests/the_crossing.rs:34:9:
+assertion `left == right` failed: the crossing moved the member at 0
+  left: -1
+ right: 0
+---- the_value_that_arrives_adds_under_the_policy_it_crossed_into stdout ----
+panicked at crates/arvo-numeral/tests/the_crossing.rs:99:5:
+assertion `left == right` failed
+  left: 1
+ right: 255
+---- the_shorthands_are_the_crossing_at_the_written_sibling stdout ----
+panicked at crates/arvo-numeral/tests/the_crossing.rs:118:9:
+assertion `left == right` failed
+  left: 0
+ right: 255
+test result: FAILED. 0 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_debug_check.rs
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

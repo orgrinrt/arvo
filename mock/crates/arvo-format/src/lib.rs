@@ -66,6 +66,8 @@ pub use adapt::{
     DeclaredSignature,
     Operation,
     Signature,
+    WithOverflow,
+    WithRounding,
     operation_overflow,
     operation_rounding,
     overflow_of,
