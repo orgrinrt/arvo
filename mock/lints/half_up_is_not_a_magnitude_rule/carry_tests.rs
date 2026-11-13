@@ -396,22 +396,6 @@ fn every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last()
 }
 
 #[test]
-fn a_pronoun_opening_a_segment_binds_past_a_rule_the_clause_denies_the_mode_is() {
-    // Within one clause the pronoun is about the mode where the rule standing
-    // last is one the clause says the mode differs from. Across a full stop the
-    // rule standing last takes it, as `every_other_name_defeats_the_carry` says.
-    for n in plain_names() {
-        let denied = format!("`half_up` differs from `{n}`, and it sends a tie away from zero.");
-        assert_eq!(found(&denied), ["away from zero"], "{denied}");
-        // The control: the same rule standing last and not denied takes it.
-        let beside = format!("`half_up` is next to `{n}`, and it sends a tie away from zero.");
-        assert!(found(&beside).is_empty(), "{beside}");
-        let stop = format!("`half_up` differs from `{n}`. It sends a tie away from zero.");
-        assert!(found(&stop).is_empty(), "{stop}");
-    }
-}
-
-#[test]
 fn a_segment_that_neither_names_nor_points_back_leaves_the_reading_with_the_mode() {
     // An aside naming another rule between the mode and the reading does not
     // take the reading: the segment carrying it names nothing and binds nothing.

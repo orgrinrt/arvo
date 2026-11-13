@@ -16,9 +16,14 @@
 use super::vocabulary::{
     ARTICLES,
     CONJUNCTIONS,
+    COUNTED,
     IMPERATIVE_NEXT,
+    IMPERATIVE_PREPOSITIONS,
+    MOTIONS,
     NAME_LEADS,
     OTHER_NAMES,
+    PERSONAL,
+    PRONOUNS,
     RULE_NOUNS,
     SUBJECTS,
 };
@@ -33,7 +38,8 @@ pub(super) fn stands_as_a_name(text: &str, at: usize, form: &str) -> bool {
 }
 
 /// Whether a capitalised ordinary word opening `text` at `at` is an imperative
-/// or a plain word: the word right behind it is one `IMPERATIVE_NEXT` holds.
+/// or a plain word: the word right behind it is one `IMPERATIVE_NEXT` holds, or
+/// one of `IMPERATIVE_PREPOSITIONS` with one of `IMPERATIVE_NEXT` behind that.
 ///
 /// Only a single word with one capital is asked, which is the shape a MATLAB
 /// method name and an English word share. `TowardZero` and `HALF_UP` are never
@@ -42,9 +48,18 @@ fn imperative(text: &str, at: usize, form: &str) -> bool {
     let mut chars = form.chars();
     let ordinary = chars.next().is_some_and(|c| c.is_ascii_uppercase())
         && chars.all(|c| c.is_ascii_lowercase());
-    ordinary
-        && !text[.. at].chars().any(char::is_alphanumeric)
-        && IMPERATIVE_NEXT.contains(&next_word(&text[at + form.len() ..]).as_str())
+    if !ordinary || text[.. at].chars().any(char::is_alphanumeric) {
+        return false;
+    }
+    let rest = &text[at + form.len() ..];
+    let next = next_word(rest);
+    if IMPERATIVE_NEXT.contains(&next.as_str()) {
+        return true;
+    }
+    IMPERATIVE_PREPOSITIONS.contains(&next.as_str()) && {
+        let past = rest.trim_start_matches(char::is_whitespace);
+        IMPERATIVE_NEXT.contains(&next_word(&past[next.len() ..]).as_str())
+    }
 }
 
 /// The word right behind a match, lowered, where only whitespace stands
@@ -73,11 +88,19 @@ fn word_before(text: &str, at: usize) -> Option<String> {
 
 /// Whether the lower-case `toward zero` at `at` is the rule's name: nothing
 /// stands ahead of it but whitespace, a bracket, a comma or a backtick, or the
-/// word ahead of it is one of `NAME_LEADS`.
+/// word ahead of it is one of `NAME_LEADS`, or a gerund naming an operation.
+///
+/// "truncating toward zero" and "rounding toward zero" name the operation by
+/// what it rounds to, as "Round to nearest" does. A gerund of motion is the
+/// exception, since what follows it is where something goes: "a tie going
+/// toward zero", as `MOTIONS` lists them.
 fn toward_zero_names(text: &str, at: usize) -> bool {
     match word_before(text, at) {
         None => true,
-        Some(word) => NAME_LEADS.contains(&word.as_str()),
+        Some(word) => {
+            NAME_LEADS.contains(&word.as_str())
+                || (word.len() > 4 && word.ends_with("ing") && !MOTIONS.contains(&word.as_str()))
+        },
     }
 }
 
@@ -89,14 +112,28 @@ fn toward_zero_names(text: &str, at: usize) -> bool {
 /// about a crate. A bare whole number, which is how the registry names a seat:
 /// "270 read blind". And a noun from `SUBJECTS`, behind an article or not, in
 /// the first two words: "The crate", "The shipped crate", "Seat 270".
+///
+/// Each gives way where the clause points back with a singular `it`, which is
+/// the clause handing what it says to the one thing named before: "Every test
+/// shows it sends a tie away from zero" is about the mode, whatever the test
+/// is. `they` and `them` point at several things, ties or seats, and never at
+/// one mode: "270 read them as going away from zero" stays the seat's. And a
+/// number followed by one of `COUNTED` counts something rather than
+/// naming a seat: "5 of the ties go away from zero".
 pub(super) fn opens_on_a_subject(clause: &str) -> bool {
     let text = clause.trim_start();
+    if text
+        .split(|c: char| !(c.is_ascii_alphanumeric() || c == '\''))
+        .any(|w| matches!(w.to_ascii_lowercase().as_str(), "it" | "it's"))
+    {
+        return false;
+    }
     if let Some(span) = text.strip_prefix('`') {
         return !a_number(span.split('`').next().unwrap_or_default());
     }
     let first = text.split(char::is_whitespace).next().unwrap_or_default();
     if !first.is_empty() && first.bytes().all(|b| b.is_ascii_digit()) {
-        return true;
+        return !COUNTED.contains(&next_word(&text[first.len() ..]).as_str());
     }
     let words: Vec<String> = text
         .split(|c: char| !(c.is_ascii_alphanumeric() || c == '\''))
@@ -114,6 +151,29 @@ pub(super) fn opens_on_a_subject(clause: &str) -> bool {
         .skip(skip)
         .take(2)
         .any(|w| SUBJECTS.contains(&w.as_str()))
+}
+
+/// Whether the lowered `text` holds one of `PERSONAL`, a pronoun that points
+/// back at a thing named before rather than at a clause or a stretch of text.
+pub(super) fn holds_a_personal_pronoun(text: &str) -> bool {
+    text.split(|c: char| !(c.is_ascii_alphanumeric() || c == '\''))
+        .any(|w| PERSONAL.contains(&w))
+}
+
+/// Whether `clause` names a rule in words, by its owner: "Java's rule",
+/// "MATLAB's rounding". The owner is a word that is not a pronoun and not one
+/// of `RULE_NOUNS`, so "its rule" and "the mode's rule" point back at the mode
+/// rather than naming another one.
+pub(super) fn names_a_rule_in_words(clause: &str) -> bool {
+    let lower = clause.to_ascii_lowercase();
+    lower.match_indices("'s ").any(|(at, _)| {
+        let owner = word_before(&lower, at).unwrap_or_default();
+        let owned = next_word(&lower[at + 3 ..]);
+        !owner.is_empty()
+            && !PRONOUNS.contains(&owner.as_str())
+            && !RULE_NOUNS.contains(&owner.as_str())
+            && (RULE_NOUNS.contains(&owned.as_str()) || owned == "rounding")
+    })
 }
 
 /// Whether the body of a code span is a number: a digit first, behind a sign or
@@ -168,6 +228,42 @@ mod tests {
     }
 
     #[test]
+    fn a_method_name_behind_a_preposition_is_an_imperative_only_where_an_object_follows() {
+        assert!(!stands_as_a_name("Round to it and", 0, "Round"));
+        assert!(!stands_as_a_name("Round up the tie", 0, "Round"));
+        assert!(!stands_as_a_name("Round toward every tie", 0, "Round"));
+        assert!(stands_as_a_name("Round to nearest sends", 0, "Round"));
+        assert!(stands_as_a_name("Round toward nearest is", 0, "Round"));
+        assert!(stands_as_a_name("Round to even goes", 0, "Round"));
+    }
+
+    #[test]
+    fn toward_zero_behind_an_operations_gerund_is_the_name_and_behind_a_motion_a_direction() {
+        assert!(stands_as_a_name(
+            "and truncating toward zero sends",
+            15,
+            "toward zero"
+        ));
+        assert!(stands_as_a_name(
+            "Rounding toward zero after",
+            9,
+            "toward zero"
+        ));
+        assert!(!stands_as_a_name(
+            "a tie going toward zero",
+            11,
+            "toward zero"
+        ));
+        assert!(!stands_as_a_name(
+            "keeps moving toward zero",
+            13,
+            "toward zero"
+        ));
+        // Four letters ending in `ing` is a noun, not a gerund.
+        assert!(!stands_as_a_name("a ring toward zero", 7, "toward zero"));
+    }
+
+    #[test]
     fn toward_zero_is_a_name_where_a_noun_phrase_stands() {
         assert!(stands_as_a_name("for toward zero and", 4, "toward zero"));
         assert!(stands_as_a_name("toward zero switches", 0, "toward zero"));
@@ -203,6 +299,10 @@ mod tests {
             "2.5 goes to 3",
             "-3 is away from zero",
             "Either way a tie goes",
+            "Every test shows it sends a tie",
+            "`arvo-format` asserts it is so",
+            "5 of the ties go",
+            "3 out of 4 go",
         ] {
             assert!(!opens_on_a_subject(not), "{not}");
         }

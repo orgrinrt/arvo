@@ -76,11 +76,15 @@ use escapes::{
 };
 pub(super) use vocabulary::{
     CONJUNCTIONS,
+    CONTRASTS,
+    COUNTED,
     DIRECTIONS,
     ELSEWHERE,
     ERRORS,
     IMPERATIVE_NEXT,
+    IMPERATIVE_PREPOSITIONS,
     MENTIONED,
+    MOTIONS,
     NAME_LEADS,
     NEGATORS,
     OTHER_NAMES,
@@ -269,13 +273,12 @@ fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>
 /// because the segment carrying it names nothing, does not bind back, and so
 /// never asks what stood last.
 ///
-/// The relative and the pronoun bind differently, as they do in English. A
-/// relative binds to the nearest thing named, and where the stretch since the
-/// mode's last spelling denies something of the mode, that something is
+/// A relative binds to the nearest thing named, and where the stretch since the
+/// mode's last spelling denies that the mode is something, that something is
 /// another rule whatever words name it: "`half_up` is not Java's rule, which
-/// goes away from zero". A pronoun opening a segment of the same clause binds
-/// past a rule the clause denies the mode is, to the mode: "`half_up` differs
-/// from `floor`, and it sends a tie away from zero" is about the mode.
+/// goes away from zero". Whether a pronoun binds past a rule the clause denies
+/// the mode is, back to the mode, is not settled, inside a clause as across a
+/// stop, and the pronoun takes the last rule named in both.
 fn attributed_to_another_rule(clause: &str, lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
     let from = segs[segment_of(segs, r)].0;
     let head = &clause[from .. r];
@@ -287,27 +290,19 @@ fn attributed_to_another_rule(clause: &str, lower: &str, segs: &[(usize, &str)],
     }
     let stretch = &lower[from .. r];
     if RELATIVES.iter().any(|w| !bounded(stretch, w).is_empty()) {
-        return another_rule_stands_last(clause, lower, segs, from, false)
+        return another_rule_stands_last(clause, from)
             || denied_since_the_mode(clause, lower, from);
     }
-    points_back(stretch) && another_rule_stands_last(clause, lower, segs, from, true)
+    // FIXME(arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi): the
+    // pronoun takes the last rule named, denied or not, until the question
+    // ticket settles which way it binds.
+    points_back(stretch) && another_rule_stands_last(clause, from)
 }
 
 /// Whether the last rounding rule named before `at` is one other than the mode.
-/// With `past_denied`, a rule the clause denies, a negator standing ahead of it
-/// in its own segment, is not counted.
-fn another_rule_stands_last(
-    clause: &str,
-    lower: &str,
-    segs: &[(usize, &str)],
-    at: usize,
-    past_denied: bool,
-) -> bool {
+fn another_rule_stands_last(clause: &str, at: usize) -> bool {
     let head = &clause[.. at];
-    let named = named_in(head)
-        .into_iter()
-        .filter(|&o| !(past_denied && negated(lower, segs, o)))
-        .max();
+    let named = named_in(head).into_iter().max();
     match named {
         None => false,
         Some(other) => {
@@ -323,7 +318,7 @@ fn another_rule_stands_last(
 /// thing denied.
 fn denied_since_the_mode(clause: &str, lower: &str, at: usize) -> bool {
     match spellings_in(&clause[.. at]).last() {
-        Some(&(mine, name)) => denied_since(lower, mine + name.len(), at),
+        Some(&(mine, name)) => denied_since(clause, lower, mine + name.len(), at),
         None => false,
     }
 }
@@ -363,10 +358,13 @@ fn antecedent(clause: &str) -> Option<&'static str> {
 ///
 /// The words for a subject are in `words::opens_on_a_subject`: a code span
 /// that is not a number, a bare whole number, which is how the registry names a
-/// seat, and a noun from `SUBJECTS` behind an article.
+/// seat, and a noun from `SUBJECTS` behind an article. A rule named in words
+/// by its owner, "under Java's rule", is a rule named as much as `HALF_UP` is,
+/// as `words::names_a_rule_in_words` reads it.
 fn names_nothing(clause: &str) -> bool {
     spellings_in(clause).is_empty()
         && named_in(clause).is_empty()
+        && !words::names_a_rule_in_words(clause)
         && !words::opens_on_a_subject(clause)
 }
 
@@ -442,12 +440,15 @@ pub(crate) fn spellings_in(text: &str) -> Vec<(usize, &'static str)> {
 /// the segment's subject and the reading behind it is attributed to it. Where
 /// the segment names the mode, the same spelling is what the mode is said to
 /// be or do, and stays a reading: "`roundTiesToAway` is what `HalfUp` does".
+/// So does a segment pointing back at the mode with a personal pronoun:
+/// "`half_up` is nearest, and ties-away is its rule".
 fn given(text: &str, lower: &str, segs: &[(usize, &str)]) -> Vec<(usize, &'static str)> {
     readings_in(lower, segs)
         .into_iter()
         .filter(|&(r, reading)| {
             let (from, seg) = segs[segment_of(segs, r)];
             !(spellings_in(&text[from .. from + seg.len()]).is_empty()
+                && !words::holds_a_personal_pronoun(seg)
                 && words::a_reading_stands_as_a_name(text, lower, from, r, reading))
         })
         .collect()

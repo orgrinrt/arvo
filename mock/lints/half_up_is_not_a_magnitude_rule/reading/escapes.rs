@@ -15,8 +15,10 @@
 
 use super::cutting::{bounded, segment_of, words_of};
 use super::vocabulary::{
+    ARTICLES,
     CONJUNCTIONS,
     CONTRASTS,
+    COPULAS,
     DENOTES,
     DIRECTIONS,
     ELSEWHERE,
@@ -84,6 +86,9 @@ pub(super) fn negated(lower: &str, segs: &[(usize, &str)], at: usize) -> bool {
 /// is denying the denotation, not the term: "`half_up` sends a tie away from
 /// zero rather than toward positive infinity" asserts the reading and denies the
 /// denotation, so the negator is the denotation's and the reading stands.
+/// Where a copula stands between the two, the reading is the subject of a
+/// denied identity instead and is denied with it: "away from zero is not toward
+/// positive infinity" says the alias is not the mode's denotation.
 fn bound_in_segment(lower: &str, segs: &[(usize, &str)], at: usize, after: bool) -> bool {
     let (from, segment) = segs[segment_of(segs, at)];
     let end = from + segment.len();
@@ -93,7 +98,13 @@ fn bound_in_segment(lower: &str, segs: &[(usize, &str)], at: usize, after: bool)
         .filter(|p| after || *p < at)
         .any(|p| {
             let (lo, hi) = if p < at { (p, at) } else { (at, p) };
-            no_conjunction(&lower[lo .. hi]) && !(p > at && denies_the_denotation(lower, p, end))
+            let identity = || {
+                COPULAS
+                    .iter()
+                    .any(|c| !bounded(&lower[lo .. hi], c).is_empty())
+            };
+            no_conjunction(&lower[lo .. hi])
+                && !(p > at && denies_the_denotation(lower, p, end) && !identity())
         })
 }
 
@@ -109,14 +120,54 @@ fn denies_the_denotation(lower: &str, p: usize, end: usize) -> bool {
 }
 
 /// Whether a negator stands in `lower[start .. to]` with no conjunction between
-/// it and `to`: the stretch denies what it names of whatever stood before it.
+/// it and `to`, and a noun phrase behind it: the stretch denies that the thing
+/// before it is the thing it names.
 ///
 /// What a relative opening the next segment binds to is the last thing named,
 /// and where the stretch denies that thing is the mode, the thing is another
 /// rule whatever words it is named in: "`half_up` is not Java's rule, which
 /// goes away from zero" gives the reading to Java's rule.
-pub(super) fn denied_since(lower: &str, start: usize, to: usize) -> bool {
-    reaches(lower, &lower[start .. to], start, to)
+///
+/// A negator denying a quality or an act names no thing, so the relative binds
+/// to the mode: "`half_up` is not biased, which means a tie goes away from
+/// zero", "`half_up` does not truncate, which sends a tie away from zero". A
+/// noun phrase is told by its first word, as `opens_a_noun_phrase` reads it,
+/// past a `from`, `to` or `than` the negator takes.
+pub(super) fn denied_since(text: &str, lower: &str, start: usize, to: usize) -> bool {
+    negators_in(&lower[start .. to])
+        .into_iter()
+        .map(|p| start + p)
+        .any(|p| no_conjunction(&lower[p .. to]) && opens_a_noun_phrase(text, lower, p, to))
+}
+
+/// Whether what stands behind the negator at `p` opens a noun phrase: an
+/// article, an owner's `'s`, a code span, or a capital.
+fn opens_a_noun_phrase(text: &str, lower: &str, p: usize, to: usize) -> bool {
+    // The word starting at or after `at`, past whitespace, and where it starts.
+    let word = |at: usize| -> (usize, &str) {
+        let past = &lower[at .. to];
+        let start = at + (past.len() - past.trim_start().len());
+        let len = lower[start .. to]
+            .find(|c: char| !(c.is_ascii_alphanumeric() || c == '\'' || c == '-' || c == '_'))
+            .unwrap_or(to - start);
+        (start, &lower[start .. start + len])
+    };
+    // Past the whole negator, which may be several words or the `n't` of one.
+    let negator = NEGATORS
+        .iter()
+        .filter(|n| lower[p .. to].starts_with(*n))
+        .map(|n| n.len())
+        .max()
+        .unwrap_or("n't".len());
+    let (mut at, mut next) = word(p + negator);
+    if matches!(next, "from" | "to" | "than") {
+        (at, next) = word(at + next.len());
+    }
+    let first = text[at ..].chars().next();
+    next.is_empty() && first == Some('`')
+        || ARTICLES.contains(&next)
+        || next.ends_with("'s")
+        || first.is_some_and(|c| c.is_ascii_uppercase())
 }
 
 /// Whether a negator inside `span` reaches `to`, where `span` starts at `from`.

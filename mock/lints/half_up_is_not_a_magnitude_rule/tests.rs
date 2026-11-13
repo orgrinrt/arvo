@@ -392,9 +392,16 @@ fn the_words_that_give_a_reading_are_not_mention_words() {
         let text = format!("`half_up` {verb} the `away from zero` value at a tie.");
         assert_eq!(found(&text), ["away from zero"], "{text}");
     }
-    // The control: the same span and word with a verb of holding is a mention,
-    // and a mention word that names no result is one whatever verb stands ahead.
-    assert!(found("`half_up` holds the `away from zero` value in it.").is_empty());
+    // The other side of the list's edge: the same span and word behind a verb
+    // of holding is a mention, so a holding verb the list took in would fail
+    // here. And a mention word that names no result is one whatever verb
+    // stands ahead.
+    let holding = ["has", "holds", "contains", "lists", "carries", "quotes", "stores"];
+    for verb in holding {
+        assert!(!RESULTS.contains(&verb), "{verb}");
+        let text = format!("`half_up` {verb} the `away from zero` value in it.");
+        assert!(found(&text).is_empty(), "{text}");
+    }
     assert!(found("`half_up` returns the `away from zero` spelling from its rows.").is_empty());
 }
 
