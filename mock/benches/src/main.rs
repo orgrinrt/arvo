@@ -10,7 +10,7 @@
 use std::path::Path;
 use std::process::ExitCode;
 
-use mockspace_bench_core::{routine_bridge, ByteRoutine};
+use mockspace_bench_core::{ByteRoutine, routine_bridge};
 use mockspace_bench_harness::{self as harness, BenchManifest, RoutineSpec, Workload};
 
 fn main() -> ExitCode {
@@ -27,11 +27,14 @@ fn main() -> ExitCode {
     // dispatch measuring one thing destroys the artifact trail of all the
     // others. Six consecutive panel files declined to bench for exactly that
     // reason. `--bench <name>` may repeat; absent, the filter is inert and the
-    // whole manifest runs as before.
+    // whole manifest runs as before. `--only <name>` is the same filter under the
+    // spelling `cargo mock bench run <name>` forwards: the launcher passes `--only`
+    // to a consumer-owned driver, and a driver reading only `--bench` ran every
+    // bench in the manifest for a request naming one.
     let only: Vec<String> = args
         .iter()
         .enumerate()
-        .filter(|(_, a)| a.as_str() == "--bench")
+        .filter(|(_, a)| matches!(a.as_str(), "--bench" | "--only"))
         .filter_map(|(i, _)| args.get(i + 1).cloned())
         .collect();
 
@@ -41,7 +44,7 @@ fn main() -> ExitCode {
         Err(e) => {
             eprintln!("error: {e}");
             return ExitCode::FAILURE;
-        }
+        },
     };
 
     let mock_benches_dir = std::env::current_dir()
@@ -71,7 +74,7 @@ fn main() -> ExitCode {
                 Err(e) => {
                     eprintln!("error: {e}");
                     return ExitCode::FAILURE;
-                }
+                },
             };
             // `BenchManifest::for_size` (mockspace-bench-harness `resolve_variant_path`)
             // already applies the platform dylib prefix/suffix to any extensionless
@@ -89,7 +92,7 @@ fn main() -> ExitCode {
                         config.n
                     );
                     return ExitCode::FAILURE;
-                }
+                },
             };
 
             let csv_path = format!("{}_n{}.csv", bench_name, config.n);
@@ -106,7 +109,7 @@ fn main() -> ExitCode {
                         );
                         eprintln!("hint: run the bench first to produce the csv");
                         return ExitCode::FAILURE;
-                    }
+                    },
                 };
                 if samples.is_empty() {
                     eprintln!(
@@ -180,7 +183,7 @@ fn main() -> ExitCode {
                     Err(e) => {
                         eprintln!("error: bench `{bench_name}` n={}: {e}", config.n);
                         return ExitCode::FAILURE;
-                    }
+                    },
                 };
                 if let Err(e) = harness::write_csv(&result, &csv_path) {
                     eprintln!("error: writing csv: {e}");
@@ -206,13 +209,14 @@ fn main() -> ExitCode {
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_bitpack_carrier_shared::CarrierColumn;
     use bench_bitpack_contend_shared::Contend;
-    use bench_bitpack_wide_shared::Wide;
-    use bench_bitpack_write_contend_shared::WriteContend;
     use bench_bitpack_footprint_shared::FootprintColumn;
     use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
     use bench_bitpack_shared::Column;
+    use bench_bitpack_wide_shared::Wide;
+    use bench_bitpack_write_contend_shared::WriteContend;
     use bench_quantiser_fadd_shared::AddSweep;
     use bench_quantiser_radix_shared::RadixAdd;
+    use bench_satfold_shared::Case as SatFoldCase;
     // `Fiedler` (spectral-bisection) and `Rcm` (structural-decomposition) are
     // not imported: both crates depend on the real `arvo` crate, which the
     // canon-work deletion round removed, and `mock/benches/Cargo.toml` no
@@ -221,7 +225,6 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     // `arvo` crate exists.
     use bench_warm_clamp_shared::Case as ClampCase;
     use bench_warm_container_shared::Case;
-    use bench_satfold_shared::Case as SatFoldCase;
     use bench_wide_rung_shared::Case as WideCase;
 
     let bridge = match (name, n) {
@@ -402,7 +405,6 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("warm-affine-density-w13", 130404) => routine_bridge!(Case<130404>),
         ("warm-affine-density-w13", 130408) => routine_bridge!(Case<130408>),
         ("warm-affine-density-w13", 130416) => routine_bridge!(Case<130416>),
-
 
         // saturating-fold reassociation (file 92): prices `80` section 5.3's and
         // `82` section 9's instructions-per-element ratios as time. One
@@ -605,7 +607,7 @@ fn run_worker(args: &[String]) -> ExitCode {
         None => {
             eprintln!("worker: missing --worker <path>");
             return ExitCode::FAILURE;
-        }
+        },
     };
     let bench_name = get("--bench-name").unwrap_or_default();
     let seed: u64 = get("--seed").and_then(|s| s.parse().ok()).unwrap_or(0);
@@ -629,7 +631,7 @@ fn run_worker(args: &[String]) -> ExitCode {
         None => {
             eprintln!("worker: unsupported n={n} for bench `{bench_name}`");
             return ExitCode::FAILURE;
-        }
+        },
     };
 
     // The validation pass spawns its workers with `--mode validate` and a
@@ -645,7 +647,13 @@ fn run_worker(args: &[String]) -> ExitCode {
             .filter(|s| !s.is_empty())
             .filter_map(|s| s.parse().ok())
             .collect();
-        mockspace_bench_harness::harness::run_worker_validate(&routine, &dylib_path, &seeds, n, threaded);
+        mockspace_bench_harness::harness::run_worker_validate(
+            &routine,
+            &dylib_path,
+            &seeds,
+            n,
+            threaded,
+        );
         return ExitCode::SUCCESS;
     }
 
