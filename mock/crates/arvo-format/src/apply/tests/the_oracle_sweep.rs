@@ -174,7 +174,7 @@ fn first_disagreement(
         let exact = Exact::between(Slot::at(anchor), Fraction::of(4 * whole + quarter, 4));
         let point = Point {
             whole: at,
-            num:   quarter,
+            num:   i128::from(quarter),
             den:   4,
         };
         for eighth in 0 .. 8 {

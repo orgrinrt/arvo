@@ -1,0 +1,22 @@
+error[E0080]: evaluation panicked: conversion is not yet admitted where the remainder's denominator d_F V_F U_T d_T, with d each phase's reduced denominator, U = r^max(e, 0) and V = r^max(-e, 0) per format, passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit denominator
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::conversion::Convertible::<arvo_format::points::UFixed<8, -64>, arvo_format::points::UFixed<8, 64>>::ADMITTED` failed here
+  |
+ ::: src/conversion.rs
+  |
+  | /         assert!(
+  | |             fits.get(),
+  | |             "conversion is not yet admitted where the remainder's denominator d_F V_F U_T d_T, with \
+  | |              d each phase's reduced denominator, U = r^max(e, 0) and V = r^max(-e, 0) per format, \
+  | |              passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \
+  | |              denominator"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/conversion.rs
+  |
+  |     let () = Convertible::<F, T>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

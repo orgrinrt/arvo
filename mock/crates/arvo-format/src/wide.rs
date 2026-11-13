@@ -3,13 +3,15 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! A signed integer four 64-bit limbs wide, for the product's numerator.
+//! A signed integer four 64-bit limbs wide, for an exact step's numerator.
 //!
 //! Sign and magnitude, the magnitude in four limbs, lowest first. It holds only
-//! what the step reads: a product, a sum, a power of the radix, one long division
-//! by a positive 64-bit divisor with the floor, and the narrowing back to the
-//! slot index. Every operation that can leave the four limbs answers `Isnt`
-//! rather than wrapping, and the step reads that as a position past the index.
+//! what an exact step reads: a product, a sum, a negation, a power of the radix,
+//! one division with the floor by a positive divisor below `2^128`, and the
+//! narrowing back to the slot index or to a denominator. Every operation that can
+//! leave the four limbs answers `Isnt` rather than wrapping, and a step reads that
+//! as a position past the index. The crate's, rather than one operation's, because
+//! every exact step past the sum forms its numerator this wide.
 
 use notko::Maybe;
 
@@ -23,15 +25,15 @@ type Magnitude = [u64; 4];
 ///
 /// Zero is never negative, so two equal values compare equal.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(super) struct Wide {
+pub(crate) struct Wide {
     negative:  bool,
     magnitude: Magnitude,
 }
 
 /// A floor division: the quotient, and the remainder from zero up to the divisor.
-pub(super) struct Divided {
-    pub(super) quotient:  Wide,
-    pub(super) remainder: u64,
+pub(crate) struct Divided {
+    pub(crate) quotient:  Wide,
+    pub(crate) remainder: u128,
 }
 
 impl Wide {
@@ -39,9 +41,14 @@ impl Wide {
     const ONE: Self = Self::signed(false, [1, 0, 0, 0]);
 
     /// A value of the slot index's own integer.
-    pub(super) const fn of(value: i128) -> Self {
+    pub(crate) const fn of(value: i128) -> Self {
         let m = value.unsigned_abs();
         Self::signed(value < 0, [m as u64, (m >> 64) as u64, 0, 0])
+    }
+
+    /// The value with its sign turned, which always holds.
+    pub(crate) const fn negated(self) -> Self {
+        Self::signed(!self.negative, self.magnitude)
     }
 
     /// A magnitude with a sign, zero taken as nonnegative.
@@ -54,18 +61,18 @@ impl Wide {
     }
 
     /// Whether the value is below zero.
-    pub(super) const fn is_negative(self) -> Bool {
+    pub(crate) const fn is_negative(self) -> Bool {
         Bool::of(self.negative)
     }
 
     /// Whether the value is zero.
-    pub(super) const fn is_zero(self) -> Bool {
+    pub(crate) const fn is_zero(self) -> Bool {
         let m = self.magnitude;
         Bool::of(m[0] == 0 && m[1] == 0 && m[2] == 0 && m[3] == 0)
     }
 
     /// The product, or nothing when it leaves the four limbs.
-    pub(super) const fn times(self, other: Self) -> Maybe<Self> {
+    pub(crate) const fn times(self, other: Self) -> Maybe<Self> {
         let mut out = [0u64; 8];
         let mut i = 0;
         while i < 4 {
@@ -96,7 +103,7 @@ impl Wide {
     }
 
     /// The sum, or nothing when it leaves the four limbs.
-    pub(super) const fn plus(self, other: Self) -> Maybe<Self> {
+    pub(crate) const fn plus(self, other: Self) -> Maybe<Self> {
         if self.negative == other.negative {
             return match summed(self.magnitude, other.magnitude) {
                 Maybe::Is(m) => Maybe::Is(Self::signed(self.negative, m)),
@@ -122,7 +129,7 @@ impl Wide {
     /// only while a higher bit is left to multiply it in, so a square that leaves
     /// the limbs means the power does: at a base of two or more the power is at
     /// least that square, and at zero or one no square grows.
-    pub(super) const fn power(base: u64, exponent: u32) -> Maybe<Self> {
+    pub(crate) const fn power(base: u64, exponent: u32) -> Maybe<Self> {
         let mut result = Self::ONE;
         let mut square = Self::signed(false, [base, 0, 0, 0]);
         let mut left = exponent;
@@ -146,23 +153,18 @@ impl Wide {
 
     /// The floor of the value over a positive `divisor`, and the remainder.
     ///
-    /// A long division of the four limbs by one, then the floor: below zero with
-    /// a remainder, the quotient's magnitude grows by one and the remainder is
-    /// counted from the other side. That increment cannot leave the limbs, since a
-    /// remainder needs a divisor of two or more and the quotient is then at most
-    /// half the value. A zero divisor is the caller's to refuse.
-    pub(super) const fn floor_divided(self, divisor: u64) -> Divided {
-        let d = divisor as u128;
-        let mut quotient = [0u64; 4];
-        let mut rest: u128 = 0;
-        let mut i = 4;
-        while i > 0 {
-            i -= 1;
-            let current = (rest << 64) | self.magnitude[i] as u128;
-            quotient[i] = (current / d) as u64;
-            rest = current % d;
-        }
-        let rest = rest as u64;
+    /// A long division of the four limbs by one where the divisor is under
+    /// `2^64`, and one bit at a time from the top otherwise, then the floor: below
+    /// zero with a remainder, the quotient's magnitude grows by one and the
+    /// remainder is counted from the other side. That increment cannot leave the
+    /// limbs, since a remainder needs a divisor of two or more and the quotient is
+    /// then at most half the value. A zero divisor is the caller's to refuse.
+    pub(crate) const fn floor_divided(self, divisor: u128) -> Divided {
+        let (quotient, rest) = if divisor >> 64 == 0 {
+            by_one_limb(self.magnitude, divisor as u64)
+        } else {
+            by_two_limbs(self.magnitude, divisor)
+        };
         if self.negative && rest != 0 {
             Divided {
                 quotient:  Self::signed(true, incremented(quotient)),
@@ -177,7 +179,7 @@ impl Wide {
     }
 
     /// The value in the slot index's own integer, or nothing when it is not one.
-    pub(super) const fn index(self) -> Maybe<i128> {
+    pub(crate) const fn index(self) -> Maybe<i128> {
         let m = self.magnitude;
         if m[2] != 0 || m[3] != 0 {
             return Maybe::Isnt;
@@ -194,6 +196,54 @@ impl Wide {
             Maybe::Isnt
         }
     }
+
+    /// The value as the host's unsigned 128-bit integer, or nothing when it is
+    /// below zero or past `2^128 - 1`.
+    pub(crate) const fn unsigned(self) -> Maybe<u128> {
+        let m = self.magnitude;
+        if self.negative || m[2] != 0 || m[3] != 0 {
+            return Maybe::Isnt;
+        }
+        Maybe::Is((m[0] as u128) | ((m[1] as u128) << 64))
+    }
+}
+
+/// A magnitude over a divisor of one limb, limb by limb from the top.
+const fn by_one_limb(m: Magnitude, divisor: u64) -> (Magnitude, u128) {
+    let d = divisor as u128;
+    let mut quotient = [0u64; 4];
+    let mut rest: u128 = 0;
+    let mut i = 4;
+    while i > 0 {
+        i -= 1;
+        let current = (rest << 64) | m[i] as u128;
+        quotient[i] = (current / d) as u64;
+        rest = current % d;
+    }
+    (quotient, rest)
+}
+
+/// A magnitude over a divisor from `2^64` up, one bit at a time from the top.
+///
+/// The running remainder is below the divisor, so doubling it and bringing the
+/// next bit down is below twice the divisor: one bit past the host's word at
+/// most, carried as `over`, and one subtraction brings it back under.
+const fn by_two_limbs(m: Magnitude, divisor: u128) -> (Magnitude, u128) {
+    let mut quotient = [0u64; 4];
+    let mut rest: u128 = 0;
+    let mut bit = 256;
+    while bit > 0 {
+        bit -= 1;
+        let limb = bit / 64;
+        let shift = bit % 64;
+        let over = rest >> 127 == 1;
+        rest = (rest << 1) | ((m[limb] >> shift) & 1) as u128;
+        if over || rest >= divisor {
+            rest = rest.wrapping_sub(divisor);
+            quotient[limb] |= 1 << shift;
+        }
+    }
+    (quotient, rest)
 }
 
 /// Whether magnitude `a` is below `b`.

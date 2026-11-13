@@ -41,8 +41,8 @@ fn point(at: Ratio) -> Point {
     let rest = Ratio::of(at.num.rem_euclid(at.den), at.den);
     Point {
         whole: Wide::of(at.floor()),
-        num:   rest.num as i64,
-        den:   rest.den as i64,
+        num:   rest.num,
+        den:   rest.den,
     }
 }
 

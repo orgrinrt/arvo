@@ -28,7 +28,9 @@
 
 mod position;
 
-pub use position::{Dither, Exact, Fraction};
+use core::cmp::Ordering;
+
+pub use position::{Dither, Exact, Fraction, Remainder};
 
 use crate::adapt::{Adaptation, DeclaredSignature};
 use crate::format::Format;
@@ -128,7 +130,7 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
         up:   Bool::FALSE,
         past: exact.past,
     };
-    if exact.part.num == 0 {
+    if exact.part.is_zero() {
         return down;
     }
     // The step up is one slot above `down`, carried as a flag and never added,
@@ -137,10 +139,9 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
         up: Bool::TRUE,
         ..down
     };
-    // `2 * num` against `den` decides which side of the midpoint the position is,
-    // cross-multiplied in the wide carrier so no operand can leave its type.
-    let twice = (exact.part.num as i128) * 2;
-    let den = exact.part.den as i128;
+    // Which side of the midpoint the position is, read off the remainder in its
+    // own coordinate so no operand can leave its type.
+    let half = exact.part.against_half();
     match mode {
         Mode::Floor => down,
         Mode::Ceil => up,
@@ -157,28 +158,30 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
         // It reads the remainder and nothing else, so a tie goes toward positive
         // infinity at every sign.
         Mode::HalfUp => {
-            if twice >= den {
-                up
-            } else {
+            if matches!(half, Ordering::Less) {
                 down
+            } else {
+                up
             }
         },
         Mode::HalfEven => {
-            if twice > den {
-                up
-            } else if twice < den {
-                down
-            } else if exact.is_even() {
-                down
-            } else {
-                up
+            match half {
+                Ordering::Greater => up,
+                Ordering::Less => down,
+                Ordering::Equal => {
+                    if exact.is_even() {
+                        down
+                    } else {
+                        up
+                    }
+                },
             }
         },
         // Up when the dither falls below the position's offset, which makes the
         // probability of rounding up equal to that offset when the dither is
         // uniform. Cross-multiplied so no division happens.
         Mode::Stochastic => {
-            if (dither.0.num as i128) * den < (exact.part.num as i128) * (dither.0.den as i128) {
+            if exact.part.is_above(dither.0) {
                 up
             } else {
                 down

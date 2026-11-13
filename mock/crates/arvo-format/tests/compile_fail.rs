@@ -65,6 +65,14 @@
 //! `sum_position` over it, since the difference is the one step that forces the
 //! slot range's own obligation. Deleting any of the three forcing lines turns a
 //! case red.
+//!
+//! Five more pairs pin the quotient and the conversion: a constant divisor at the
+//! zero member against one at one, `Divisor::of` over a range that holds the zero
+//! against the same range starting at one, each operation over a
+//! magnitude-indexed quantum against a constant one, and a conversion whose
+//! remainder's denominator is `2^128` against one at `2^127`. After them one file
+//! that has to compile names every item those two operations add from the crate
+//! root, as an outside crate with no feature line would.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -203,15 +211,14 @@ fn addition_over_an_uncarried_sum_is_refused() {
     t.compile_fail("tests/ui/addition_over_an_uncarried_sum_is_refused.rs");
 }
 
-/// Addition over a phase whose remainder no position can hold.
-///
-/// The one refusal the first version of the design missed. The saturation that
-/// is harmless for a ratio moves a position a whole slot, so it is refused
-/// rather than approximated.
+/// Addition over a phase that does not denote, refused by design, and the same
+/// declaration over the least denominator, whose remainder of `2^63` an exact
+/// position holds, admitted.
 #[test]
-fn addition_over_a_remainder_the_position_cannot_hold_is_refused() {
+fn addition_over_a_phase_that_does_not_denote_is_refused_and_one_reduced_to_2_63_admitted() {
     let t = trybuild::TestCases::new();
-    t.compile_fail("tests/ui/addition_over_a_remainder_the_position_cannot_hold_is_refused.rs");
+    t.compile_fail("tests/ui/addition_over_a_phase_that_does_not_denote_is_refused.rs");
+    t.pass("tests/ui/addition_over_a_phase_reduced_to_two_to_the_63_is_admitted.rs");
 }
 
 /// A format where a declared signature goes.
@@ -283,4 +290,58 @@ fn subtraction_over_a_range_past_the_ladder_is_refused_and_addition_over_it_admi
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/subtraction_over_a_range_past_the_ladder_is_refused.rs");
     t.pass("tests/ui/addition_over_a_range_past_the_ladder_is_admitted.rs");
+}
+
+/// A constant divisor at the zero member, refused where the constant is named,
+/// and at one, admitted.
+#[test]
+fn division_by_a_constant_zero_is_refused_and_by_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/division_by_a_constant_zero_is_refused.rs");
+    t.pass("tests/ui/division_by_a_constant_one_is_admitted.rs");
+}
+
+/// A divisor read at run time over a range that leaves the zero out, refused at
+/// a whole phase, where a non-member slot still names the zero, and admitted at
+/// a half-offset phase, where none does.
+#[test]
+fn a_runtime_divisor_is_refused_at_a_whole_phase_and_admitted_at_a_half_offset_one() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_runtime_divisor_over_a_whole_phase_is_refused.rs");
+    t.pass("tests/ui/a_runtime_divisor_over_a_half_offset_phase_is_admitted.rs");
+}
+
+/// Division over a magnitude-indexed quantum, refused, and over a constant
+/// quantum at the same exponent, admitted.
+#[test]
+fn division_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/division_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/division_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Conversion from a magnitude-indexed quantum, refused, and from a constant
+/// quantum at the same exponent, admitted.
+#[test]
+fn conversion_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/conversion_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/conversion_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Conversion whose remainder's denominator is `2^128`, refused, and `2^127`,
+/// admitted.
+#[test]
+fn conversion_over_a_remainder_no_position_holds_is_refused_and_one_it_holds_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/conversion_over_a_remainder_no_position_holds_is_refused.rs");
+    t.pass("tests/ui/conversion_over_a_remainder_a_position_holds_is_admitted.rs");
+}
+
+/// Every item the quotient and the conversion add, reached from the crate root
+/// by an outside crate with no feature line.
+#[test]
+fn the_quotient_and_conversion_surface_is_reached_from_the_root() {
+    let t = trybuild::TestCases::new();
+    t.pass("tests/ui/the_quotient_and_conversion_surface_is_reached_from_the_root.rs");
 }

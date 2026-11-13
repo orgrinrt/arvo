@@ -200,21 +200,24 @@ fn the_difference_step_is_the_difference_of_the_values_read_back_as_a_position()
 
 /// The denotation of `T` at the largest denominator the remainder admits.
 fn the_step_holds_at_the_largest_denominator<T: Step + Default>() {
-    // A denominator of the least value with an even numerator reduces to 2^62,
-    // the largest remainder denominator the position carries. The oracle's
-    // arithmetic carries it in the wide domain throughout. At minus one and
-    // minus two copies the reduced denominator divides it, which is the
+    // A denominator of the least value with an odd numerator reduces to 2^63,
+    // the largest a phase can declare, and with an even one to 2^62. The
+    // oracle's arithmetic carries both in the wide domain throughout. At minus
+    // one and minus two copies the reduced denominator divides it, which is the
     // admission argument for the signed steps, checked here at its edge.
     let mut walk = Denotation::<T>::default();
     walk.run::<Grid<BinaryRationals, Constant<0>, Signed<4>, 2, { i64::MIN }>>();
     walk.run::<Grid<BinaryRationals, Constant<-3>, Signed<4>, -2, { i64::MIN }>>();
     walk.run::<Grid<BinaryRationals, Constant<0>, Signed<4>, { i64::MIN }, { i64::MIN }>>();
     walk.run::<Grid<DecimalRationals, Constant<2>, Unsigned<4>, { i64::MAX - 1 }, { i64::MIN }>>();
-    assert_eq!(walk.formats, 4, "{:?}", T::NEGATED);
+    walk.run::<Grid<BinaryRationals, Constant<0>, Signed<4>, 1, { i64::MIN }>>();
+    walk.run::<Grid<BinaryRationals, Constant<-3>, Unsigned<4>, -3, { i64::MIN }>>();
+    walk.run::<Grid<DecimalRationals, Constant<1>, Signed<4>, { i64::MAX }, { i64::MIN }>>();
+    assert_eq!(walk.formats, 7, "{:?}", T::NEGATED);
     assert_eq!(walk.tuples, walk.owed, "{:?}", T::NEGATED);
     assert_eq!(
         walk.tuples,
-        4 * 16u64.pow(T::NEGATED.len() as u32),
+        7 * 16u64.pow(T::NEGATED.len() as u32),
         "{:?}",
         T::NEGATED
     );
@@ -250,15 +253,16 @@ fn the_obligation_refuses_a_magnitude_indexed_quantum() {
 }
 
 #[test]
-fn the_obligation_refuses_a_remainder_the_position_cannot_hold() {
-    // No denominator at all.
+fn the_obligation_refuses_a_phase_that_does_not_denote_and_holds_every_one_that_does() {
+    // No denominator at all, at any numerator.
     assert!(!is_addable::<At<Signed<8>, 1, 0>>().get());
-    // The least denominator under an odd numerator reduces to 2^63.
-    assert!(!is_addable::<At<Signed<8>, 1, { i64::MIN }>>().get());
-    assert!(!is_addable::<At<Signed<8>, -3, { i64::MIN }>>().get());
-    assert!(!is_addable::<At<Signed<8>, { i64::MAX }, { i64::MIN }>>().get());
-    // The other side of that boundary: an even numerator reduces below it, and
-    // the least value over itself is one.
+    assert!(!is_addable::<At<Signed<8>, 0, 0>>().get());
+    assert!(!is_addable::<At<Signed<8>, { i64::MIN }, 0>>().get());
+    // The least denominator under an odd numerator reduces to 2^63, which the
+    // remainder holds, so every denoting phase is admitted.
+    assert!(is_addable::<At<Signed<8>, 1, { i64::MIN }>>().get());
+    assert!(is_addable::<At<Signed<8>, -3, { i64::MIN }>>().get());
+    assert!(is_addable::<At<Signed<8>, { i64::MAX }, { i64::MIN }>>().get());
     assert!(is_addable::<At<Signed<8>, 2, { i64::MIN }>>().get());
     assert!(is_addable::<At<Signed<8>, { i64::MIN }, { i64::MIN }>>().get());
 }
