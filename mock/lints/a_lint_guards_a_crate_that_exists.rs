@@ -39,12 +39,10 @@
 //! in the tree. Only the early-return comparison against `ctx.crate_name` says
 //! the lint governs that crate and nothing else, so only that is read.
 //!
-//! **Known gap**, catalogued as a red test below rather than fixed: the match
-//! is over raw source with no notion of being inside a comment or a string
-//! beyond a whole-line `//` prefix, so a commented-out gate on a dead crate is
-//! reported and a gate written inside a block comment is too. That is the same
-//! class of gap the source-side scanners in this directory carry, for the same
-//! reason.
+//! **A gate in a comment is not a gate.** The match is over the file with its
+//! comments blanked by `code_only_source`, so a commented-out gate on a dead
+//! crate, in a line comment or a block comment, governs nothing and is not
+//! reported. Literals are left whole, because the crate name is one.
 //!
 //! **A lint rather than a tool.** There is no state of this repository in which
 //! a lint may guard a crate that does not exist, so this refuses rather than
@@ -87,13 +85,14 @@ impl RepoLint for ALintGuardsACrateThatExists {
 /// The comparison has to be against `ctx.crate_name` specifically. A test
 /// helper taking a crate name as an argument is not a gate, and a module doc
 /// naming a crate is not one either, so neither is read.
+///
+/// `source` is the file with its comments blanked (`code_only_source`), so a gate
+/// written in a line comment, a doc comment or a block comment governs nothing
+/// and is not read. Literals stay whole, because the crate name is one.
 fn gated_crates(source: &str) -> BTreeSet<String> {
     let mut found = BTreeSet::new();
     for line in source.lines() {
         let line = line.trim();
-        if line.starts_with("//") {
-            continue;
-        }
         for operator in ["crate_name != \"", "crate_name == \""] {
             let mut rest = line;
             while let Some((_, after)) = rest.split_once(operator) {
@@ -135,10 +134,10 @@ fn check(view: &View, mock_dir: &Path, crates: &BTreeSet<String>) -> Vec<LintErr
         if path.extension().is_none_or(|ext| ext != "rs") {
             continue;
         }
-        let Some(text) = view.text(&path) else {
+        let Some(text) = crate::code_only_source::without_comments(view, &path) else {
             continue;
         };
-        let missing: BTreeSet<String> = gated_crates(text)
+        let missing: BTreeSet<String> = gated_crates(&text)
             .into_iter()
             .filter(|name| !crates.contains(name))
             .collect();
@@ -341,8 +340,6 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "catalogue: a commented-out gate is read as a gate, as the module doc says; \
-                tracked #arvo_s_a_lint_guards_a_crate_that_exists_reads_a_commented_o"]
     fn a_commented_out_gate_is_not_a_rule_and_should_not_be_read_as_one() {
         let body = "impl X { fn f(ctx: &C) {\n    /* if ctx.crate_name != \"arvo-bits\" { \
                     return; } */\n} }\n";
@@ -351,6 +348,36 @@ mod tests {
             through_view(&dir, |v| check(v, &dir, &shipped())).is_empty(),
             "a gate inside a block comment governs nothing, so it is not a finding"
         );
+    }
+
+    /// The same gate as the arm above, commented out each of the other ways, and
+    /// the control that has to keep failing: the gate left live beside a comment.
+    #[test]
+    fn a_gate_commented_out_by_a_line_comment_is_not_read() {
+        let body = "impl X { fn f(ctx: &C) {\n    // if ctx.crate_name != \"arvo-bits\" { \
+                    return; }\n} }\n";
+        let dir = planted_mock("line-commented", &[("dead.rs", body)]);
+        assert!(through_view(&dir, |v| check(v, &dir, &shipped())).is_empty());
+    }
+
+    #[test]
+    fn a_live_gate_with_a_comment_after_it_is_still_a_finding() {
+        let body = "impl X { fn f(ctx: &C) {\n    if ctx.crate_name != \"arvo-bits\" { return; } \
+                    // kept\n} }\n";
+        let dir = planted_mock("live-then-comment", &[("dead.rs", body)]);
+        assert_eq!(
+            through_view(&dir, |v| check(v, &dir, &shipped())).len(),
+            1,
+            "a comment beside a live gate does not hide it"
+        );
+    }
+
+    #[test]
+    fn a_gate_inside_a_multi_line_block_comment_is_not_read() {
+        let body = "impl X { fn f(ctx: &C) {\n    /*\n    if ctx.crate_name != \"arvo-bits\" { \
+                    return; }\n    */\n} }\n";
+        let dir = planted_mock("block-commented", &[("dead.rs", body)]);
+        assert!(through_view(&dir, |v| check(v, &dir, &shipped())).is_empty());
     }
 
     #[test]

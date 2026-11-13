@@ -15,27 +15,43 @@
 //! finding can still quote the original line. A lifetime is not a char
 //! literal in the grammar, so a line carrying `'a` ticks loses nothing.
 
-use mockspace::LintContext;
+use std::path::Path;
 
-/// The node kinds that are never code, and are blanked whole.
-const BLANKED: [&str; 5] = [
-    "line_comment",
-    "block_comment",
-    "string_literal",
-    "raw_string_literal",
-    "char_literal",
-];
+use mockspace::tree_sitter::Tree;
+use mockspace::{LintContext, View};
+
+/// The node kinds of a comment, doc comments included.
+const COMMENTS: [&str; 2] = ["line_comment", "block_comment"];
+
+/// The node kinds of a literal whose text is not code.
+const LITERALS: [&str; 3] = ["string_literal", "raw_string_literal", "char_literal"];
 
 /// The file's source with every comment and literal blanked.
 ///
 /// The result is the same length as `ctx.source()` and breaks lines in the same
 /// places, so `result.lines()` and `ctx.source().lines()` run in step.
 pub fn code_only(ctx: &LintContext) -> String {
-    let mut bytes = ctx.source().as_bytes().to_vec();
-    let mut cursor = ctx.tree().walk();
+    let kinds: Vec<&str> = COMMENTS.iter().chain(&LITERALS).copied().collect();
+    blank(ctx.source(), ctx.tree(), &kinds)
+}
+
+/// A file's source with every comment blanked and its literals left whole.
+///
+/// For a repository lint reading a source file through the view, where the text
+/// of a string is the thing read (a crate name a gate compares against) and a
+/// commented-out line must still not count. `None` where the file cannot be read.
+pub fn without_comments(view: &View, path: impl AsRef<Path>) -> Option<String> {
+    let path = path.as_ref();
+    Some(blank(view.text(path)?, view.rust(path)?, &COMMENTS))
+}
+
+/// The blanking: every node whose kind is in `kinds`, over one tree.
+fn blank(source: &str, tree: &Tree, kinds: &[&str]) -> String {
+    let mut bytes = source.as_bytes().to_vec();
+    let mut cursor = tree.walk();
     'walk: loop {
         let node = cursor.node();
-        if BLANKED.contains(&node.kind()) {
+        if kinds.contains(&node.kind()) {
             for b in &mut bytes[node.start_byte() .. node.end_byte()] {
                 if *b != b'\n' && *b != b'\r' {
                     *b = b' ';
