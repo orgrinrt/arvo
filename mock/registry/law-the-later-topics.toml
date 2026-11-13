@@ -186,7 +186,9 @@ rather than by a named instance.
 The clause that states the three tables as one question carries a predicate \
 naming an accumulator width and an operation set that no `dimension` row \
 declares, so that clause is not written into the canon at all and this row \
-carries only the cell it measured.
+carries only the cell it measured. `dimension::accumulator_width` and \
+`dimension::operation` now declare both axes, so the clause can be written from \
+its source, and it has not been.
 """
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::434",
@@ -223,7 +225,9 @@ over an ambient domain closed under negation, and no `dimension` row declares \
 an axis for the ambient domain, so the region where this law holds has no \
 expressible form in the canon's own notation. That is the single largest gap \
 this port hit: the ambient domain appears in 26 of the 60 predicate spans that \
-could not be ported, and is the sole blocker of 4 of them.
+could not be ported, and is the sole blocker of 4 of them. \
+`dimension::ambient_domain` now declares that axis, so the region can be written \
+from the source predicate, and it has not been.
 
 No witness. The source establishes the failure by existence, one witness, and \
 records that its rate does not carry; the instance itself is not quoted in the \
