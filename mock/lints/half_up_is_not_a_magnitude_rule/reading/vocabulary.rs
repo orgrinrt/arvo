@@ -109,7 +109,19 @@ pub(crate) const NEGATORS: &[&str] = &[
     "versus",
     "vs",
     "except",
+    "as opposed to",
+    "in contrast to",
+    "contrary to",
 ];
+
+/// The copula, whose negation denies an identity rather than an act.
+///
+/// "away from zero is not toward positive infinity" denies that one reading is
+/// the other, where "sends a tie away from zero rather than toward positive
+/// infinity" asserts one and denies the other. And "is not Java's rule" denies
+/// that the mode is a thing, where "does not truncate" denies an act of it.
+pub(crate) const COPULAS: &[&str] =
+    &["is", "are", "was", "were", "be", "isn't", "aren't", "wasn't"];
 
 /// Words that end a negator's reach inside one segment, so the clause turns
 /// back to what it asserts. "not the even rule but sends a tie away from zero"
@@ -148,6 +160,10 @@ pub(crate) const ELSEWHERE: &[&str] = &[
 /// stood before it, rather than by naming anything.
 pub(crate) const PRONOUNS: &[&str] =
     &["it", "its", "it's", "this", "that", "these", "those", "they", "their"];
+
+/// The personal pronouns of `PRONOUNS`: each points back at a thing named
+/// before, where `this` and `that` can point at a clause or open a relative.
+pub(crate) const PERSONAL: &[&str] = &["it", "its", "it's", "they", "their", "them"];
 
 /// Words that bind a segment to the thing the segment before it named, standing
 /// anywhere in the segment rather than only at its head.
@@ -267,15 +283,23 @@ pub(crate) const OTHER_NAMES: &[&str] = &[
 ///
 /// A method opening a sentence is its subject and is followed by a verb:
 /// "Round does", "Floor is", "Ceiling sends". An imperative is followed by its
-/// object or a preposition, and an ordinary word by what it heads: "Round every
-/// tie", "Fix the doc", "Round to it", "Ceiling aside". Every word here is of a
-/// closed class, a determiner, a pronoun, a preposition, or the two words that
-/// set a term aside, so the list does not have to guess at verbs.
+/// object, and an ordinary word by what it heads: "Round every tie", "Fix the
+/// doc", "Ceiling aside". Every word here is of a closed class, a determiner, a
+/// pronoun, or the two words that set a term aside, so the list does not have
+/// to guess at verbs.
 pub(crate) const IMPERATIVE_NEXT: &[&str] = &[
     "the", "a", "an", "every", "each", "all", "any", "it", "them", "this", "that", "these",
-    "those", "its", "their", "to", "toward", "towards", "up", "down", "half", "first", "aside",
-    "apart",
+    "those", "its", "their", "half", "first", "aside", "apart",
 ];
+
+/// Prepositions that, behind a capitalised method name, make it an imperative
+/// only where one of `IMPERATIVE_NEXT` follows them.
+///
+/// "Round to it" is an imperative taking its object behind a preposition, and
+/// "Round to nearest" is MATLAB's method for this mode's alias, named by what it
+/// rounds to. The word behind the preposition tells the two apart: a determiner
+/// or a pronoun opens an object, anything else names the method.
+pub(crate) const IMPERATIVE_PREPOSITIONS: &[&str] = &["to", "toward", "towards", "up", "down"];
 
 /// Words that, standing right ahead of the lower-case `toward zero`, make it
 /// the name of the rule rather than a direction.
@@ -289,6 +313,12 @@ pub(crate) const NAME_LEADS: &[&str] = &[
     "and", "or", "nor", "for", "with", "under", "like", "unlike", "than", "of", "from", "the",
     "is", "are", "was", "be", "not", "never", "isn't", "versus", "vs", "between", "both", "either",
     "neither", "also",
+];
+
+/// Gerunds of motion, behind which the lower-case `toward zero` is where a
+/// thing goes rather than the operation the gerund names.
+pub(crate) const MOTIONS: &[&str] = &[
+    "going", "moving", "heading", "tending", "pointing", "leaning", "sending", "falling",
 ];
 
 /// Nouns that, opening a clause, name a subject of its own other than a
@@ -313,6 +343,14 @@ pub(crate) const SUBJECTS: &[&str] = &[
     "implementation",
     "library",
     "standard",
+];
+
+/// Words that, right behind a bare whole number opening a clause, make it a
+/// count or a quantity rather than the number a seat is named by: "5 of the
+/// ties", "3 out of 4", "2 ties", "10 percent".
+pub(crate) const COUNTED: &[&str] = &[
+    "of", "out", "in", "per", "percent", "times", "or", "more", "fewer", "less", "tie", "ties",
+    "value", "values", "slot", "slots", "step", "steps", "bit", "bits",
 ];
 
 /// Articles a subject noun may stand behind at the head of a clause.

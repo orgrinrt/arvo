@@ -15,13 +15,14 @@
 //! regression rather than a known gap. A pair the reader learns to read moves
 //! to `closed.rs`, with a test of its own.
 //!
-//! Three entries are left. One is not a gap the reader can close alone: a
-//! pronoun after a negated identity across a full stop, which the entry reads
-//! as the sentence's subject and `carry_tests::every_other_name_defeats_the_carry`
-//! reads as the rule standing last, and its ticket holds which of the two
-//! governs. The other two are what remains of two classes the reader now reads
-//! by closed lists: an imperative whose object opens on a word of an open class,
-//! and a subject named in words no list holds.
+//! Four entries are left. Two are not a gap the reader can close alone: a
+//! pronoun after a rule the mode is denied to be, across a full stop and inside
+//! one clause, which the entries read as the sentence's subject and
+//! `carry_tests::every_other_name_defeats_the_carry` reads as the rule standing
+//! last. One question ticket holds which of the two governs, for both. The
+//! other two are what remains of two classes the reader now reads by closed
+//! lists: an imperative whose object opens on a word of an open class, and a
+//! subject named in words no list holds.
 //!
 //! The last arm reads the live registry's ratified rulings, which the lint
 //! itself does not read, and asserts none of their prose is refused. It held
@@ -108,19 +109,35 @@ pub(super) const CATALOGUE: &[Known] = &[
         },
         wrong: Wrong::Refuses,
     },
+    // The same question as the Java pair, inside one clause: whether a pronoun
+    // binds past a rule the clause denies the mode is. It stands under that
+    // pair's question ticket, and the reader takes the rule standing last in
+    // both until the ticket settles it.
+    Known {
+        pair:  Pair {
+            fires:    "`half_up` differs from `floor`, and it sends a tie away from zero.",
+            silent:   "`half_up` differs from `floor`. It sends a tie away from zero.",
+            subject:  None,
+            differs:  "whether the pronoun opens a segment joined by a comma and a conjunction \
+                      within one clause, where the subject governs, or opens the next clause after \
+                      a full stop, where the name standing last does",
+            measured: false,
+        },
+        wrong: Wrong::LetsThrough,
+    },
 ];
 
 #[test]
-fn the_catalogue_holds_three_two_let_through_and_one_refused() {
+fn the_catalogue_holds_four_three_let_through_and_one_refused() {
     // A count, so an entry dropped rather than fixed or deleted is a failure
-    // here. Seventeen of the eighteen it held moved to `closed.rs`, and two
+    // here. Sixteen of the eighteen it held moved to `closed.rs`, and two
     // entries are the residue of the classes two of those closed.
-    assert_eq!(CATALOGUE.len(), 3);
+    assert_eq!(CATALOGUE.len(), 4);
     let through = CATALOGUE
         .iter()
         .filter(|k| matches!(k.wrong, Wrong::LetsThrough))
         .count();
-    assert_eq!(through, 2);
+    assert_eq!(through, 3);
 }
 
 #[test]
@@ -179,6 +196,13 @@ catalogue_case!(
                 tracked #arvo_s_half_up_reader_refuses_a_clause_whose_subject_is_name"]
     a_subject_named_in_words_outside_the_vocabulary_is_refused,
     2
+);
+catalogue_case!(
+    #[ignore = "catalogue: the pronoun `it` opening a segment of the clause that denies the mode is \
+                another rule is read as that rule, the one standing last, which is the same open \
+                call as the Java pair; tracked #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
+    a_pronoun_in_one_clause_after_a_denied_rule_lets_through,
+    3
 );
 
 /// The repository this file sits in, found from its own path.
