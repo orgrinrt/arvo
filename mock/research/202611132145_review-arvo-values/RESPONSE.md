@@ -47,7 +47,8 @@ were changed beside it.
 12. Test names that asserted more than they said, a duplicated assertion and unused imports in seven
     passing compile-fail halves are fixed.
 13. The report claimed two things that did not hold. The release twin of the debug check runs no test
-    in the dev profile and six under `--release`, and the report now says so. The `arvo-format` suite
+    in the dev profile and runs only under `--release`, six then and five since the accumulator's case
+    left it, and the report now says so. The `arvo-format` suite
     has one red, `the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63`, which
     `red-check` finds red on `dev` at `4d6aa22cb271` as well, in a file this branch does not touch.
     It is ticket `arvo_format_inverse_round_trip_underflows_at_width_1`.
@@ -84,6 +85,30 @@ accumulator as it stood after the first reading, and the first item here replace
 
 The reading asked whether the branch `work/numeral-integers` is dead. It is not this track's, and
 the question is passed to the coordinator with the branch.
+
+## The third reading
+
+`PASS_3.md` read the branch at `e4e5b456` and refused it a third time. A branch gets three readings,
+so nothing below was fixed and read again. The branch goes back to the coordinator with this verdict
+and what is left is in tickets.
+
+1. `Num::convert` and `fits_convert` build the second option of
+   `question::whose_reduction_governs_a_lossy_crossing`, which is open with the panel as decider.
+   The registry was asked and the row reads as the reading says. This is one seat's reading and the
+   reading itself calls it ambiguous, since `arvo_format::convert` takes a target signature on `dev`
+   already. Not changed on the branch. Question for op, ticket
+   `does_num_convert_pre_empt_whose_reduction_governs_a_lossy_cr`.
+2. The quotient, the conversion and the fractional product are swept at sampled widths where the
+   bands take every width from 1 to 64. Not changed.
+3. No numeral test names a decimal format, and the tests' arithmetic is binary. Not changed.
+4. The private verdict in `from_index` is observed at four bits only. Not changed. Points 2, 3 and 4
+   are ticket `arvo_numeral_sweeps_div_convert_and_the_fractional_mul_at_sa`.
+5. The mutant features: ticket as before.
+6. The count of the release twin in point 13 above is corrected.
+7. The consumer test's rerun protects the test's own path handling. That is what job 6 asked of it.
+8. The reordering in `arvo-format/src/adapt.rs` came with the two sibling projections the branch
+   added there. Left as it is.
+9. The two merge subjects: as before.
 
 ## Beside the findings
 
