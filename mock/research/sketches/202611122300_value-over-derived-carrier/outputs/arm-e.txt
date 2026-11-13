@@ -1,0 +1,8 @@
+$ cargo check -p arm-e
+error: complex const arguments must be placed inside of a `const` block
+  --> arm-e/src/lib.rs:38:28
+   |
+38 |     type const RUNG: u32 = narrowest_carrier(<Signed<W> as Slots>::WIDTH).count();
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: could not compile `arm-e` (lib) due to 1 previous error

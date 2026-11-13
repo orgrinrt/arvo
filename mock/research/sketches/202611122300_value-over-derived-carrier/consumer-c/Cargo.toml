@@ -1,0 +1,18 @@
+[package]
+name = "consumer-c"
+description = "Arm C's consumer: no feature line"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+arm-c.workspace = true
+arvo-format.workspace = true
+common.workspace = true
+
+[features]
+# Case (3) written with the bound arm C's always-const variant asks for.
+const-bound = ["arm-c/always-const"]
+
+[dev-dependencies]
+trybuild.workspace = true
