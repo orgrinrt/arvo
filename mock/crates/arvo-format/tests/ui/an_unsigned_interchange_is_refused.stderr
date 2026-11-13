@@ -2,7 +2,7 @@ error[E0080]: evaluation panicked: an IEEE 754 significand is sign and magnitude
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
-  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::standards::ieee754::Significand::<arvo_format::UnsignedBinaryRationals, 24>::SIGN_AND_MAGNITUDE` failed here
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::standards::ieee754::Significand<arvo_format::UnsignedBinaryRationals, 24> as arvo_format::Slots>::ADMITTED` failed here
   |
  ::: src/standards/ieee754.rs
   |
@@ -12,18 +12,6 @@ error[E0080]: evaluation panicked: an IEEE 754 significand is sign and magnitude
   | |              below zero; this ambient is unsigned"
   | |         );
   | |_________- in this macro invocation
-
-note: erroneous constant encountered
- --> src/standards/ieee754.rs
-  |
-  |         let () = Self::SIGN_AND_MAGNITUDE;
-  |                  ^^^^^^^^^^^^^^^^^^^^^^^^
-
-note: erroneous constant encountered
- --> src/slots.rs
-  |
-  |             Self::MIN.index() <= Self::MAX.index(),
-  |             ^^^^^^^^^
 
 note: erroneous constant encountered
  --> src/slots.rs

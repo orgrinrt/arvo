@@ -100,23 +100,43 @@ fn decimal64_under_every_direction_is_the_digit_rule() {
     assert_eq!(every_direction::<Decimal64>(DECIMAL64, 0xD64), [0; 5]);
 }
 
+/// Every direction on one format with a wrong mode in its place: each tie rule
+/// as `HalfUp`, each directed mode as its nearest wrong neighbour, toward zero
+/// for the two directions and toward positive for toward zero.
+fn every_direction_planted<F: Format>(f: Standard, seed: u64) -> [usize; 5] {
+    [
+        under::<F, HalfUp>(Direction::TiesToEven, f, seed),
+        under::<F, HalfUp>(Direction::TiesToAway, f, seed),
+        under::<F, RoundTowardZero>(Direction::TowardPositive, f, seed),
+        under::<F, RoundTowardZero>(Direction::TowardNegative, f, seed),
+        under::<F, RoundTowardPositive>(Direction::TowardZero, f, seed),
+    ]
+}
+
 #[test]
 fn a_planted_decimal_direction_is_reported() {
-    assert!(under::<Decimal32, HalfUp>(Direction::TiesToEven, DECIMAL32, 0xD32) > 0);
-    assert!(under::<Decimal32, HalfUp>(Direction::TiesToAway, DECIMAL32, 0xD32) > 0);
-    assert!(under::<Decimal32, RoundTowardZero>(Direction::TowardNegative, DECIMAL32, 0xD32) > 0);
-    assert!(under::<Decimal64, HalfUp>(Direction::TiesToEven, DECIMAL64, 0xD64) > 0);
-    assert!(under::<Decimal64, HalfUp>(Direction::TiesToAway, DECIMAL64, 0xD64) > 0);
-    assert!(under::<Decimal64, RoundTowardPositive>(Direction::TowardZero, DECIMAL64, 0xD64) > 0);
+    for planted in [
+        every_direction_planted::<Decimal32>(DECIMAL32, 0xD32),
+        every_direction_planted::<Decimal64>(DECIMAL64, 0xD64),
+    ] {
+        assert!(planted.iter().all(|&m| m > 0), "{planted:?}");
+    }
 }
 
 #[test]
 fn a_planted_precision_is_reported() {
     // The rule at a precision one short of the format's, so the suite is shown
     // to read the format's numbers and not only its directions.
-    let short = Standard {
-        p: DECIMAL32.p - 1,
-        ..DECIMAL32
+    let short = |f: Standard| {
+        Standard {
+            p: f.p - 1,
+            ..f
+        }
     };
-    assert!(under::<Decimal32, RoundTiesToEven>(Direction::TiesToEven, short, 0xD32) > 0);
+    assert!(
+        under::<Decimal32, RoundTiesToEven>(Direction::TiesToEven, short(DECIMAL32), 0xD32) > 0
+    );
+    assert!(
+        under::<Decimal64, RoundTiesToEven>(Direction::TiesToEven, short(DECIMAL64), 0xD64) > 0
+    );
 }

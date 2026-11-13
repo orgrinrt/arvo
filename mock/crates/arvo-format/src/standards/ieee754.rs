@@ -3,8 +3,7 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! IEEE 754's interchange formats, as one composition at the standard's own
-//! parameters.
+//! IEEE 754's interchange formats, one composition at the standard's numbers.
 //!
 //! The standard states every format by a radix, a precision `p` and a largest
 //! exponent `emax`, with `emin = 1 - emax`. `Interchange` is that statement as a
@@ -12,11 +11,17 @@
 //! the same composition at two ambients. Nothing here is a case of its own: the
 //! formats in the standard's table are aliases at its numbers.
 //!
-//! Three things the standard carries have no member here, and each is a test
-//! rather than a sentence. An infinity, which is its answer past the largest
-//! finite member under round to nearest and under the direction away from zero.
-//! The signed zero, which the value set does not tell from zero. And binary128
-//! and decimal128, whose significands are wider than the slot ladder.
+//! Four things the standard carries have no member or no arm here, and each is a
+//! test and a ticket. An infinity, which is its answer past the largest finite
+//! member under round to nearest and under the direction away from zero. The
+//! signed zero, which the value set does not tell from zero. Binary128 and
+//! decimal128, whose significands are wider than the slot ladder. And an
+//! operation run through both sides, since the operations refuse a floating
+//! format.
+
+// FIXME(arvo_no_arithmetic_runs_through_both_sides_of_the_ieee_754_p): the
+// parity is of the adaptation of a value; a sum, product or quotient over an
+// interchange format waits on a magnitude coordinate in the applied map.
 
 use core::marker::PhantomData;
 
@@ -24,7 +29,7 @@ use crate::ambient::{Ambient, BinaryRationals, DecimalRationals};
 use crate::format::{Format, Phase};
 use crate::quantum::{Exponent, MagnitudeCount, Quantum};
 use crate::slots::{Slot, Slots};
-use crate::width::Width;
+use crate::width::{Bool, Width};
 
 /// The exponent range at precision `P` and largest exponent `EMAX`.
 ///
@@ -46,10 +51,20 @@ impl<const P: u32, const EMAX: u32> Quantum for ExponentRange<P, EMAX> {
 ///
 /// The slot range it names, symmetric at `radix^p - 1`, because the standard's
 /// significand is sign and magnitude rather than two's complement, and declared
-/// one bit wider than the magnitude needs, for the sign. A precision whose bound
-/// passes the slot index saturates at its top, and the width that follows is past
-/// 64 either way, so the range's own obligation refuses it where it is forced.
+/// one bit wider than the magnitude needs, for the sign. Its bounds are
+/// `SignificandBounds`, which carries the slot range's own obligation; this type
+/// adds what sign and magnitude owes, and its `ADMITTED` forces both.
 pub struct Significand<A, const P: u32>(PhantomData<A>);
+
+/// The bounds of a significand, as a slot range under the slot range's own
+/// obligation and nothing further.
+///
+/// A precision whose bound passes the slot index saturates at its top, and the
+/// width that follows is past 64 either way, so the obligation refuses it where
+/// it is forced.
+// FIXME(arvo_binary128_and_decimal128_need_a_slot_ladder_past_64_bit): binary128
+// and decimal128 need 114 bits and are refused here until the ladder widens.
+pub struct SignificandBounds<A, const P: u32>(PhantomData<A>);
 
 /// `radix^p - 1`, or the slot index's top where the power passes it.
 const fn largest_significand(radix: u32, p: u32) -> i128 {
@@ -70,12 +85,26 @@ const fn signed_width_of(largest: i128) -> Width {
     Width::bits(i128::BITS - largest.leading_zeros() + 1)
 }
 
-impl<A: Ambient, const P: u32> Significand<A, P> {
-    /// What a sign and magnitude significand owes beyond a slot range.
-    ///
-    /// Forced by both bounds, so every reader of the range meets it, `adapt`
-    /// and the range predicate included.
-    const SIGN_AND_MAGNITUDE: () = {
+impl<A: Ambient, const P: u32> Slots for SignificandBounds<A, P> {
+    const MAX: Slot = Slot::at(largest_significand(A::RADIX.base(), P));
+    const MIN: Slot = Slot::at(-largest_significand(A::RADIX.base(), P));
+    const WIDTH: Width = signed_width_of(largest_significand(A::RADIX.base(), P));
+}
+
+/// Whether a significand over `A` at precision `P` is sign and magnitude.
+///
+/// The verdict beside the significand's obligation, asking the same question
+/// without forcing it: the ambient carries values below zero, which the
+/// symmetric range names, and the precision holds at least one digit.
+#[must_use]
+pub const fn is_sign_and_magnitude<A: Ambient, const P: u32>() -> Bool {
+    A::SIGNED.and(Bool::of(P >= 1))
+}
+
+impl<A: Ambient, const P: u32> Slots for Significand<A, P> {
+    /// Sign and magnitude first, then the slot range's own obligation over the
+    /// bounds, so both are met wherever the range's obligation is forced.
+    const ADMITTED: () = {
         assert!(
             A::SIGNED.get(),
             "an IEEE 754 significand is sign and magnitude, so its ambient domain must carry values \
@@ -85,19 +114,11 @@ impl<A: Ambient, const P: u32> Significand<A, P> {
             P >= 1,
             "an IEEE 754 significand holds at least one digit; a precision of zero holds only zero"
         );
+        <SignificandBounds<A, P> as Slots>::ADMITTED
     };
-}
-
-impl<A: Ambient, const P: u32> Slots for Significand<A, P> {
-    const MAX: Slot = {
-        let () = Self::SIGN_AND_MAGNITUDE;
-        Slot::at(largest_significand(A::RADIX.base(), P))
-    };
-    const MIN: Slot = {
-        let () = Self::SIGN_AND_MAGNITUDE;
-        Slot::at(-largest_significand(A::RADIX.base(), P))
-    };
-    const WIDTH: Width = signed_width_of(largest_significand(A::RADIX.base(), P));
+    const MAX: Slot = <SignificandBounds<A, P> as Slots>::MAX;
+    const MIN: Slot = <SignificandBounds<A, P> as Slots>::MIN;
+    const WIDTH: Width = <SignificandBounds<A, P> as Slots>::WIDTH;
 }
 
 /// An IEEE 754 interchange format over `A`, at precision `P` and emax `EMAX`.
@@ -106,6 +127,9 @@ impl<A: Ambient, const P: u32> Slots for Significand<A, P> {
 /// the significand, is exactly the standard's finite values: the subnormals are
 /// the smallest magnitude's, with no case naming them, and every normal value is
 /// its own binade's.
+// FIXME(arvo_the_ieee_754_infinities_and_signed_zero_have_no_member): no member
+// stands for an infinity or for the negative zero, so the overflow parity holds
+// only where the standard's answer is finite and a zero is compared as a value.
 pub struct Interchange<A, const P: u32, const EMAX: u32>(PhantomData<A>);
 
 impl<A: Ambient, const P: u32, const EMAX: u32> Format for Interchange<A, P, EMAX> {
@@ -139,8 +163,7 @@ pub type Decimal32 = Decimal<7, 96>;
 /// decimal64: `p = 16`, `emax = 384`.
 pub type Decimal64 = Decimal<16, 384>;
 
-/// A format under a rounding-direction attribute, which is the declared signature
-/// the pair names.
+/// A format under a rounding-direction attribute, as a declared signature.
 ///
 /// The overflow policy is the consumer's. The standard's answer past the largest
 /// finite member is an infinity under round to nearest and under the direction

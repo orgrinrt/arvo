@@ -432,3 +432,33 @@ fn past_the_largest_finite_member_there_is_no_infinity() {
     assert!(!landed.finite);
     assert!(same(2, landed.value, decode16(0x7BFF).unwrap()));
 }
+
+#[test]
+fn the_standards_negative_zero_lands_on_the_one_zero() {
+    // A value below the smallest subnormal's half, from below: the host answers
+    // negative zero, an encoding with its sign set, and the landing answers the
+    // one zero this crate has, compared as a value.
+    let host = ((-1i64) as f64) * pow2(-160);
+    assert_eq!((host as f32).to_bits(), 0x8000_0000);
+    let landed = land::<Attributed<Binary32, RoundTiesToEven, Saturate>>(-1, 1, -160).unwrap();
+    assert!(landed.finite);
+    assert_eq!(landed.value.significand, 0);
+}
+
+#[test]
+fn a_significand_that_is_not_sign_and_magnitude_is_reported_by_its_verdict() {
+    // The verdict beside the obligation answers without forcing it, so the wrong
+    // constructions are reported here rather than refusing the build; the
+    // compile-fail cases show the same constructions refused where used.
+    use arvo_format::ambient::{BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
+    use arvo_format::slots::is_admissible;
+    use arvo_format::standards::ieee754::{Significand, is_sign_and_magnitude};
+    assert!(is_sign_and_magnitude::<BinaryRationals, 24>().get());
+    assert!(is_sign_and_magnitude::<DecimalRationals, 7>().get());
+    assert!(!is_sign_and_magnitude::<UnsignedBinaryRationals, 24>().get());
+    assert!(!is_sign_and_magnitude::<BinaryRationals, 0>().get());
+    // The slot range's own verdict reads the bounds without forcing anything,
+    // and answers only its own obligation.
+    assert!(is_admissible::<Significand<UnsignedBinaryRationals, 24>>().get());
+    assert!(!is_admissible::<Significand<BinaryRationals, 113>>().get());
+}
