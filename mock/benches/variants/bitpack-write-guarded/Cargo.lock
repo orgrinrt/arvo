@@ -28,13 +28,13 @@ dependencies = [
 
 [[package]]
 name = "mockspace-bench-core"
-version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#084e780c729a33ec21ea7e7a3157cdbd86022cf2"
+version = "0.0.0"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#90b53199f8442de8162dfecf160fe0e830146a62"
 
 [[package]]
 name = "mockspace-bench-macro"
-version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#084e780c729a33ec21ea7e7a3157cdbd86022cf2"
+version = "0.0.0"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#90b53199f8442de8162dfecf160fe0e830146a62"
 dependencies = [
  "proc-macro2",
  "quote",

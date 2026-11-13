@@ -24,5 +24,5 @@ crate-type = ["cdylib"]
 [dependencies]
 arvo.workspace = true
 arvo-hash.workspace = true
-mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev", features = ["std"] }
-mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev" }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev" }

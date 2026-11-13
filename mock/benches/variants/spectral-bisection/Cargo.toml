@@ -30,5 +30,5 @@ arvo.workspace = true
 arvo-bitmask.workspace = true
 arvo-tensor.workspace = true
 arvo-spectral.workspace = true
-mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev", features = ["std"] }
-mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev" }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev" }

@@ -11,5 +11,5 @@ crate-type = ["cdylib"]
 
 [dependencies]
 bench-quantiser-fadd-shared = { path = "../quantiser-fadd-shared" }
-mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev", features = ["std"] }
-mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev" }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev" }
