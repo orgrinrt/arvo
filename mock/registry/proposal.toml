@@ -1603,7 +1603,7 @@ predicate = [
   "operation: operations {add, sub, mul}",
   "arity: arity in {2, 3}",
   "threads: threads = 1",
-  "target_features: target features any, by construction, the model is exact integer arithmetic",
+  "target_features: target features any",
 ]
 evidence = ["one_congruence_property_predicts_every_law_verdict"]
 note = """
@@ -1622,6 +1622,12 @@ discarded, so the two modes cannot differ.
 The operand window is the full range because the declared-window cells were \
 run at signed saturating alone; the instrument refuses a declared window under \
 wrapping. Those cells agree too and are outside the rectangle.
+
+The target-features entry carries no warrant token. The model is exact integer \
+arithmetic, which is an argument that no feature can enter, but `construction` \
+obliges an instrument that varied the axis and this one did not, so under \
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` the entry \
+claims the region with no warrant.
 """
 gap = "Necessity is measured over these cells and not derived, so outside them the criterion is known sufficient and not known necessary."
 provenance = [
@@ -1690,7 +1696,7 @@ predicate = [
   "radix: radix = 2",
   "ambient_domain: ambient domain = the rationals on the grid of step 1/32, over the windows -2..=2 and -2..=3",
   "threads: threads = 1",
-  "target_features: target features any, by construction, the instrument is exact rational arithmetic",
+  "target_features: target features any",
 ]
 evidence = ["narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points"]
 answers = ["does_narrowing_compose"]
@@ -1713,6 +1719,12 @@ modes show 8, 16 or 32 disagreements.
 `nearest with ties away from zero` is the instrument's own mode, outside the \
 ratified six, and the pivot family is constructed for the test and is not a mode \
 anybody ships.
+
+The target-features entry carries no warrant token. The instrument is exact \
+rational arithmetic, which is an argument that no feature can enter, but \
+`construction` obliges an instrument that varied the axis and this one did \
+not, so under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` \
+the entry claims the region with no warrant.
 """
 gap = "No width is named. The instrument rounds over bounded windows of exact values and clamps at the window's ends rather than at a declared format's range, so the row states the window and, under the notation, claims nothing at a declared width until a run at one exists. The switch-point argument carries at any width and is not what this row rests on."
 provenance = [
@@ -1777,7 +1789,7 @@ kind = "finding"
 sentence_kind = "measured"
 standing = "one_expert"
 topic = "the_realisation_map"
-says = "A container derivation returning one richer output suffices exactly where that output is a type. Spelled as one associated type with every layout fact a projection of it, it compiles with no feature gate and gives the eight declarations at widths 9 to 16 that share the 16-bit carrier eight distinct outputs. Spelled as one associated constant, which is lossless as information, the carrier type cannot be recovered from it: the compiler refuses it six times, in a type alias with arithmetic, in a type alias with the constant used bare, and in a function's return type, each refusal naming `generic_const_exprs` as the feature that would allow it."
+says = "This is about packaging, not about how many facts the derivation owes. `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule` settles that at shared occupancy it owes three, the carrier, the access width and the stride, and what is measured here is whether those three can travel as one richer output. They can exactly where that output is a type. Spelled as one associated type with the three facts as its projections, it compiles with no feature gate, and at the Cold strategy it gives the eight declarations at widths 9 to 16 that share the 16-bit carrier eight distinct outputs. Spelled as one associated constant, which is lossless as information, the carrier type cannot be recovered from it: the compiler refuses it six times, in a type alias with arithmetic, in a type alias with the constant used bare, and in a function's return type, each refusal naming `generic_const_exprs` as the feature that would allow it."
 because = "The packaging argument in `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover` settles that one output and two are one mechanism; what it leaves is which kind the output must be, and that is decided by what the compiler will build rather than by argument. The value spelling is refused generically, before any width or strategy is chosen, so the refusal is not a sample. The type spelling's separation is shown non-vacuous by a control asserting three false type equalities and seeing all three refused."
 predicate = [
   "total_width: W in {5, 9, 10, 11, 12, 13, 14, 15, 16, 31, 47}",
@@ -1797,7 +1809,9 @@ The two arms were built under different profiles. The compiling files are built 
 with `-O`, so debug assertions are off, and the refused files are type-checked \
 as a library at the compiler's default, where they are on; both arms are \
 decided by the type checker before code generation, which is why the profile, \
-the target and the thread count are written open, but no one profile ran both.
+the target and the thread count are written open, but no one profile ran both. \
+The target and thread entries carry no warrant token: that argument is the \
+only thing behind them and no instrument varied either axis.
 
 Occupancy is shared because the instrument's footprint column is a million \
 values in one allocation. At sole occupancy the axis's own declaration says one \
@@ -1807,7 +1821,7 @@ it too, but nothing here ran that case and the row does not claim it.
 The ten errors in the committed refusal are the six naming the feature and four \
 `E0091` unused-parameter errors that follow from them in the same items.
 """
-gap = "The widths are the ones the instrument declared: the refusal is generic over every width and strategy, the separation is shown only at these. The instrument also asserts that a Hot and a Precise declaration at one width derive the same type; whether two strategies may share a derivation output is the question left in the gap of `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`, and this row does not settle it."
+gap = "The widths are the ones the instrument declared: the refusal is generic over every width and strategy, and the separation, eight distinct outputs at one carrier, is shown at the Cold strategy alone across these widths. Hot, Warm and Precise appear at width 13 only, where Cold and Warm are shown to derive different outputs; the generic impls compile at every width of the product, which is what the predicate's strategy set rests on. The instrument also asserts that a Hot and a Precise declaration at one width derive the same type; whether two strategies may share a derivation output is the question left in the gap of `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`, and this row does not settle it."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::83",
   "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::164",
@@ -2332,12 +2346,12 @@ predicate = [
   "rounding: rounding any, by construction, the predicate reads no rounding mode and no adaptation is applied",
   "overflow_policy: overflow policy any, by construction, same",
   "threads: threads any, by construction, the predicate is a const fn over associated items",
-  "target_features: target features any, by construction, same",
+  "target_features: target features any",
   "toolchain: rustc = 1.98.0-nightly (57d06900f), edition = 2024",
   "build_profile: opt level = 2, debug-assertions = off",
   "occupancy: occupancy any, by construction, no value is placed",
 ]
-note = "**The predicate above is one instrument's and the standing says so.** It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\n**Two instruments do meet, and they meet on the diagnosis rather than on a region.** The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\n**The second arrival is genuine and is the establishing seat's own word.** It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\n**The shipped `has_additive_identity` implements the superseded claim.** Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much.\n\n**The crate was corrected after the two instruments ran.** `has_additive_identity` asks the cancellation question at each admitted magnitude, its tests hold it equal to an enumeration of the set at a whole-step format and at a half-step one among others, and the crate's design states the same, so `shipped` above names the crate the two instruments ran against. The stamped row's phase clause is not corrected, and `question::how_the_stamped_spine_rows_phase_clause_gets_corrected` holds that."
+note = "The predicate above is one instrument's and the standing says so. It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\nTwo instruments do meet, and they meet on the diagnosis rather than on a region. The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\nThe second arrival is genuine and is the establishing seat's own word. It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\nThe shipped `has_additive_identity` implements the superseded claim. Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much.\n\nThe crate was corrected after the two instruments ran. `has_additive_identity` asks the cancellation question at each admitted magnitude, its tests hold it equal to an enumeration of the set at a whole-step format and at a half-step one among others, and the crate's design states the same, so `shipped` above names the crate the two instruments ran against. The stamped row's phase clause is not corrected, and `question::how_the_stamped_spine_rows_phase_clause_gets_corrected` holds that.\n\nThe target-features entry carries no warrant token. The predicate is a const fn over associated items, which is an argument that no feature can enter, but `construction` obliges an instrument that varied the axis and neither instrument here did, so under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` the entry claims the region with no warrant. The rounding, overflow, threads and occupancy entries above still write `by construction` in the old prose spelling and are not respelled here."
 provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
 keywords = ["phase", "additive identity", "whole multiple", "quantum", "biased grid", "half step", "zero on the grid", "affine predicate", "membership"]
 

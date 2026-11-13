@@ -32,7 +32,7 @@ Holds, wrapping: W any; F any; signedness any; ambient domain closed under negat
 
 Holds, saturation: the same with saturating and rounding in {floor, ceil, toward_zero, half_up, half_even}.
 
-These regions are the source's, argued by equivariance. The instrument agrees with them where it ran and does not cover all of them. The new gap on the first row says its fails region names no ambient domain, which leaves the region holding nowhere a domain is defined. Writing one in would be a widening and is left undone.
+The width, fraction-width and signedness regions are the source's, argued by equivariance. The wrapping mode set is not: the source's wrapping arm is every translation-equivariant member, and half-even is not one, so its place in the set is this row's own derivation, that wrapping translates by an even multiple of the quantum, which the sweep agrees with at `W` in {3, 4, 5}. The instrument agrees with them where it ran and does not cover all of them. The new gap on the first row says its fails region names no ambient domain, which leaves the region holding nowhere a domain is defined. Writing one in would be a widening and is left undone.
 
 ## Item 4. `law::the_fused_and_the_stepwise_multiply_add_denote_one_function`
 
@@ -160,3 +160,74 @@ The corrected notes named these instruments, and no row held them, so items 4, 5
 - `toolchain` was named twice in one predicate, and the two entries were merged into one.
 
 No em-dash and no bold appears in any added registry line.
+
+## The pass after the second read
+
+A second reader checked commit `bacbbd77` and agreed with three things: the widening of the fails region under item 1, `sound` as the standing of the three new probe rows, and the u3 domain correction. It also agreed that `ambient_domain` is the axis for the coherence row. Its other findings were fixed in this pass, each by the ratified rows as written. Where two of those rows pull against each other, this section says so rather than choosing.
+
+### Warrant spelling on target features
+
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` spells a warrant as `<axis>: <span>: <token>, <clause>`. It also says a `construction` token obliges the row's `evidence` to name an instrument that varied that axis and found no movement.
+
+Four rows wrote `target features any, by construction, <clause>`:
+
+- `which_operations_a_saturating_map_is_a_homomorphism_for_moves_with_the_ambient_domain`
+- `the_congruence_criterion_decides_every_swept_law_verdict_in_both_directions`
+- `narrowing_composes_exactly_where_the_modes_direction_switches_only_at_coarser_grid_points`
+- the older `proposal.toml` row on the additive identity and the phase
+
+None of their instruments varied target features, so no token is supportable. Each entry now reads `target_features: target features any` with no token, which claims the region and no warrant. Each row's note keeps the construction argument and says why the token is withheld.
+
+The alternative was to drop the entry. The rows would then claim nothing wherever target features exist, which is the strongest negative the notation has, and `ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked` was ratified to stop exactly that reading. If the axis should be dropped instead, it is one line per row.
+
+The older row's rounding, overflow, threads and occupancy entries still use the old prose spelling `by construction`, and they are not respelled here.
+
+### Proof markers
+
+Under the warrant ruling's obligation, the marker `ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked` asks of a proof can sit only on an axis some cited instrument varied.
+
+On `law::quantise_then_reduce_commutes`, the width and signedness entries carry `construction`. `125_probes/p3` varied `W` over {3, 4, 5} and both signednesses, and the quotient verdict did not move (`p3_output.txt` lines 45 to 74). The rounding entry carries `swept`.
+
+On `law::quantise_then_reduce_commutes_under_saturation`, only signedness carries `construction`, because saturation ran at `W = 4` alone. The rounding entry carries `swept`.
+
+On the theorem `no_deterministic_quantisation_is_additive_off_the_grid_on_either_domain_shape`, no instrument varies any of its six open axes. The new probe row `every_deterministic_mode_is_monotone_and_none_is_additive_off_the_grid`, filed for `125_probes/p1`, gives it an `evidence` edge and a `swept` on its rounding entry. p1 runs at one step and one window, so it cannot discharge the marker.
+
+So on F and threads in both laws, on W in the saturation law, and on the theorem's six open axes, the marker is owed and not written. The warrant ruling's own note names this price. What discharges it is a run that varies those axes, such as p1 at several steps for the fraction width. This is a call for the panel, because the two ratified rows cannot both be met on those axes with the instruments committed.
+
+### The output count
+
+`a_single_richer_output_suffices_only_where_it_is_a_type` now says it is about packaging. It cites `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule` for the three facts owed at shared occupancy, the carrier, the access width and the stride, and it gives those three as projections of the one type.
+
+The claim of eight distinct outputs is narrowed to the Cold strategy (`p1_single_type_output.rs` lines 186 to 193). The gap says that Hot, Warm and Precise appear at width 13 alone.
+
+### The coherence row
+
+The domains are named as the grammar names a domain, `the non-negative integers` against `the integers`, and the swept windows `0..=64` and `-64..=64` are the warrant clauses. Both regions add `threads = 1` and `target features = host default`, which the instrument fixes: `56_probes/RUN.md` records a single-threaded `rustc -O` build at the pin.
+
+The parent law `coherence_of_a_reduction_onto_its_induced_operation` gets `evidence = [the_two_law_roles_of_a_reduction_are_independent]`. Its witness figures, 476 and 897, are `q1_output.txt` lines 1 and 4.
+
+`dimension::operand_window` had counted the coherence row as a third row naming the signed declared-non-negative cell, at `W in {4, 5, 6}`. The coherence row named a different cell, and q1 never ran the signed one. The note and `moves` now say two rows, and the note gives the coherence row's own cell and where it is held.
+
+### The relocation row
+
+`a_reduction_relocation_is_free_exactly_where_the_reduction_is_a_congruence` now has chain length `{2, 3}`, because nothing in y4 runs a chain of one. The fraction width, accumulator width and chain length entries each carry a `swept` clause naming which arm ran at which value, and the note names the two combinations that did not run.
+
+The other entries are now in the declared grammar:
+
+- `operation in {multiply-add, sum fold}`
+- `container = an i128 model reduced to the declared width at every step`
+- `target features = host default`
+
+### The u3 row and the probe rows
+
+The u3 proposal's `says` reads "on the non-negative integers" in place of "of one sign". Its domain entry is spelled as on the coherence row, and its gap names the non-positive domain and the domain closed under negation as unrun.
+
+On the probe rows:
+
+- u3: the label mislabel moved from `note` to `defect`, and the control says it is printed and not asserted.
+- q1: the control names the three checkers that fire, monotone, nearest and coherence. The retraction checker is true on every row.
+- y4: the control says it is printed and not asserted. The unrecorded toolchain is its `defect`, since the probe schema has no toolchain field.
+
+### Gate
+
+`cargo mock --lint-only --commit` passes with rc 0, at 798 rows. On the way it refused once on invalid TOML in `law.toml`: a substitution of mine had written the witness text into the parent note. The note was restored from `bacbbd77` with the one sentence appended.

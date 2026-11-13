@@ -205,12 +205,12 @@ keywords = ["fused", "stepwise", "multiply-add", "denotation", "extensional iden
 id = "quantise_then_reduce_commutes"
 statement = "Quantising a value and then reducing it into range gives the same answer as reducing it and then quantising, so the composition order of the two axes is unobservable and a canon need not state it."
 holds = [
-  "total_width: W any",
+  "total_width: W any: construction, wrapping translates by the span, an even multiple of the quantum at every width, so the width enters the argument only as which multiple",
   "fraction_width: F any",
-  "signedness: signedness any",
+  "signedness: signedness any: construction, the argument reads only translation by the span and the grid, and neither depends on where zero sits in the range",
   "ambient_domain: ambient domain closed under negation",
   "overflow_policy: wrapping",
-  "rounding: in {floor, ceil, half_up, half_even}",
+  "rounding: in {floor, ceil, half_up, half_even}: swept, every member the row names, read in the quotient",
   "threads: threads any",
 ]
 fails = [
@@ -231,11 +231,12 @@ floor member alone commutes, measured at zero disagreements against 60, 32 and \
 intermediate representative needs the stronger statement.
 
 The holding region is the wrapping half of the governing revision's commutation \
-predicate, written from it: `W >= 1`, which is every width a format has, `F` \
+predicate, written from it with one derivation of this row's own: `W >= 1`, which is every width a format has, `F` \
 any, signedness any, a domain closed under negation, every \
 translation-equivariant member against wrapping, equality read in the quotient, \
-threads any. Wrapping is translation by the span, an even multiple of the \
-quantum at every width, so half-even commutes with it as floor, ceiling and \
+threads any. The source's mode set is the translation-equivariant members, and \
+half-even is not one; it is in the set here because wrapping is translation by \
+the span, an even multiple of the quantum at every width, so half-even commutes with it as floor, ceiling and \
 half-up do and toward-zero alone does not. The saturating half of the same \
 predicate, every deterministic member against saturation, is \
 `law::quantise_then_reduce_commutes_under_saturation`, split off because one \
@@ -244,6 +245,16 @@ and the mode set. The holding region is the argument's, by equivariance; the \
 cited instrument swept `W in {3, 4, 5}` over exact points at sixteen subquanta \
 per quantum and agrees with it, and its toward-zero arm is the failing region's \
 measurement.
+
+The width and signedness entries carry the proof marker in the spelling of \
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side`, as \
+`ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked` asks of a \
+proof, and the instrument discharges the obligation that spelling carries: it \
+varied the width over three values and the signedness over both, and the \
+quotient verdict did not move. The fraction width and the thread count carry \
+no marker. The instrument counts in quanta, so the fraction width never \
+enters it and is not varied, and nothing varies the thread count, so neither \
+can carry `construction` and each claims its region with no warrant.
 
 The failing region is written exactly as the restoration pass restored it. An \
 earlier revision had written `domain: OPEN` into this predicate and that token \
@@ -272,10 +283,10 @@ statement = "Quantising a value and then saturating it into range gives the same
 holds = [
   "total_width: W any",
   "fraction_width: F any",
-  "signedness: signedness any",
+  "signedness: signedness any: construction, the clamp's endpoints are grid points at either signedness, so which end of the range zero sits at does not enter the argument",
   "ambient_domain: ambient domain closed under negation",
   "overflow_policy: saturating",
-  "rounding: in {floor, ceil, toward_zero, half_up, half_even}",
+  "rounding: in {floor, ceil, toward_zero, half_up, half_even}: swept, every member the row names",
   "threads: threads any",
 ]
 topic = "rounding"
@@ -294,6 +305,15 @@ is the source's `W >= 1`, written as every width. The cited instrument swept \
 `W = 4` saturating at both signednesses, zero mismatches of 497 for each of the \
 five modes, with an artificial boundary-violating mode as the must-fail arm at \
 15 of 497.
+
+Only the signedness entry carries the proof marker, because only signedness \
+was varied by the instrument the marker's spelling obliges, both signednesses \
+with no movement. The width is argued free in the same way and the instrument \
+ran one width, so under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` \
+it cannot carry `construction`; the width, the fraction width and the thread \
+count claim their regions with no warrant, and the marker \
+`ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked` asks of a \
+proof is owed on them until a run varies them.
 """
 gap = "No failing region, because the source states none. The argument needs the clamp's endpoints to be grid points, which the governing revision assumes and does not write as a region entry."
 provenance = [
