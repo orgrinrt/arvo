@@ -1320,9 +1320,12 @@ subnormals at the smallest magnitude with no case naming them. Each derived quan
 count and the bound, is computed in an impl body, the way `FractionLength` computes its negation, so
 nothing sits in a bound.
 
-The shipped `Floating<25, -149, 254>` and `Binary32` hold the same values. Their slot ranges differ at
-one slot, the two's complement end the symmetric range leaves out, and the value it names is a member at
-the next magnitude, so the two sets agree and the parity suite asserts it.
+The shipped `Floating<25, -149, 254>` and `Binary32` share the quantum law and differ at one slot, the
+two's complement end `-2^24` the symmetric range leaves out. Below the top magnitude the value that slot
+names is a member a magnitude up, so the two sets agree there. At the top magnitude it names `-2^128`,
+which binary32 does not hold: the standard rounds it to an infinity. So the shipped point is binary32
+with one extra member, and that one member is why the standard's declaration carries a slot range of its
+own rather than aliasing the point. The parity suite asserts both halves.
 
 ### The rounding directions, and where a result lands
 
