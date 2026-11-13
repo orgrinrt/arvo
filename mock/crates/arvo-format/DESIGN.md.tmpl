@@ -1327,8 +1327,10 @@ carries the slot range's obligation as it is, and the significand's `ADMITTED` f
 obligation and then that one. So `adapt` and the range predicate refuse an unsigned ambient or a
 precision of zero where the format is used, two compile-fail cases show each, and
 `is_sign_and_magnitude` stands beside the obligation as its verdict, asking the same question without
-forcing it. `slots::is_admissible` and `is_admissible_format` answer their own obligations and nothing
-further, so neither sees this one.
+forcing it. The free verdict does not see it: `slots::is_admissible` reads the range alone and never an
+implementor's own `ADMITTED`, so for a significand that is not sign and magnitude it answers true while
+the build is refused where the format is used. That is a gap on the `Slots` contract rather than on
+this standard, and it carries a ticket.
 
 The shipped `Floating<25, -149, 254>` and `Binary32` share the quantum law and differ at one slot, the
 two's complement end `-2^24` the symmetric range leaves out. Below the top magnitude the value that slot
@@ -1377,9 +1379,11 @@ Binary128 and decimal128. Their significands need 114 bits, past the slot ladder
 16383>` and `Decimal<34, 6144>` are refused where the slot range's obligation is forced, with the
 diagnostic it already supplies.
 
-An operation. Addition, multiplication and division each refuse a floating format, since the applied
-map carries no magnitude coordinate, so the parity is of the adaptation of a value and not yet of a sum,
-a product or a quotient run through both sides.
+Putting a value on the format at all. Conversion onto and off an interchange format refuses, and so do
+addition, multiplication and division, since the applied map carries no magnitude coordinate. So the
+landing the parity suites use is the test tree's own search over magnitudes, the parity is of the
+adaptation of a value at the magnitude that search finds, and no sum, product or quotient runs through
+both sides yet. A test asserts all four verdicts false on binary32 and decimal32.
 
 ### Where the IEEE expected side comes from
 
@@ -1394,9 +1398,9 @@ rule, and carry. The rule is written once over any radix, and each format's prec
 range are written into it as the standard's numbers. None of it reads arvo code; a separate arm pins
 the format's own exponent range to those numbers.
 
-The fimath sweep runs at thirteen shapes, signed and unsigned, at word lengths chosen from one to sixty-four
-and at several fraction lengths, positive, zero and negative, with the range and the wrap computed from
-the shape.
+The fimath sweep runs at every word length from one to sixty-four, signed and unsigned, and beside
+those at several fraction lengths, positive, zero and negative, with the range and the wrap computed
+from the shape.
 
 ## The two symmetries of the grid, and where the map commutes with them
 
