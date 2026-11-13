@@ -340,6 +340,16 @@ preference about spelling.** The reason is the section after next.
 `ADMITTED` is a default on each of the four contracts that has one, so an implementor supplies it by
 supplying coordinates that meet it and never writes it out.
 
+Two aliases sit beside `Signature`, `WithOverflow<S, O>` and `WithRounding<S, R>`. Each is the declared
+signature `S` with one coordinate of its adaptation replaced, the overflow policy by `O` or the rounding
+mode by `R`, and its format and the other coordinate kept, read from `S`'s own associated types. The
+result is the sibling signature itself, the type a consumer would have reached by writing it out, so
+nothing about it is new and every function of a signature takes it. An alias carries no bound, and so
+it says nothing about what its result is admitted to: `WithOverflow<S, Clamp>` is a signature wherever
+`S` is one, and whether a sum or a value is admitted over it is asked of it where it is used, as of any
+written signature. No alias is named for one policy, since the overflow axis is open and the two
+shipped names would read as a list.
+
 `Mode` and `Policy` are the two value enumerations a const predicate compares
 against, and `ALL_MODES` and `SHIPPED_POLICIES` are what a test sweeps so a law is
 asserted over the matrix rather than over a remembered subset. `Mode` is closed

@@ -11,7 +11,8 @@ format has one, and the aliases `Uint`, `Int`, `USize` and `ISize` for the integ
 Whether a debug build aborts when a result leaves the range is the consumer's to choose, as a second
 parameter: `Abort` by default, or `Quiet`, where the completion the overflow policy gives is what the
 operation means. Any slot family, overflow policy or rounding mode that declares what the carrier
-arithmetic computes is held, whichever crate it comes from.
+arithmetic computes is held, whichever crate it comes from. A value crosses as it is to a sibling
+signature that differs in its rounding or its overflow, which is how one site overrides either.
 
 Builds on `arvo-format` and `arvo-placement`. `no_std`, no allocation, every operation a `const fn`.
 
