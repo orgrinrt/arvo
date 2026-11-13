@@ -15,7 +15,7 @@ use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::Integer;
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Exact, Signature, Slot};
-use arvo_numeral::{Abort, Divisor, Int, Quiet};
+use arvo_numeral::{Abort, Accumulator, Divisor, Int, Quiet};
 
 type TwoBitsWrap = Signature<Integer<2>, Adapt<TowardZero, Wrap>>;
 type TwoBitsSaturate = Signature<Integer<2>, Adapt<TowardZero, Saturate>>;
@@ -107,6 +107,29 @@ fn div_convert_and_from_index_complete_under_abort_in_release() {
     );
     assert_eq!(WrapAborts::from_index(8i8).slot().index(), -8);
     assert_eq!(SaturateAborts::from_index(8u64).slot().index(), 7);
+}
+
+#[test]
+fn finish_completes_under_abort_in_release() {
+    type FourWrap = Signature<Integer<4>, Adapt<TowardZero, Wrap>>;
+    type FourSaturate = Signature<Integer<4>, Adapt<TowardZero, Saturate>>;
+    type SixBits = Signature<Integer<6>, Adapt<TowardZero, Wrap>>;
+    let sevens = [WrapAborts::constant::<7>(); 2];
+    assert_eq!(
+        Accumulator::<FourWrap, SixBits, 2>::of(&sevens)
+            .finish()
+            .slot()
+            .index(),
+        -2
+    );
+    let sevens = [SaturateAborts::constant::<7>(); 2];
+    assert_eq!(
+        Accumulator::<FourSaturate, SixBits, 2, Abort>::of(&sevens)
+            .finish()
+            .slot()
+            .index(),
+        7
+    );
 }
 
 #[test]

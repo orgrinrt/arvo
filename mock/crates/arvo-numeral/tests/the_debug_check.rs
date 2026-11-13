@@ -4,7 +4,8 @@
 //--------------------------------------------------------------------------------------------------
 
 //! The debug check, observed at each site that carries it: `add`, `sub`, `neg`,
-//! `mul`, `div`, `convert`, `adapted` and `from_index`, under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
+//! `mul`, `div`, `convert`, `adapted`, `from_index` and an accumulator's
+//! `finish`, under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
 //! result leaves the range, so each of those is a `should_panic` test; each has
 //! a twin under `Quiet` that takes the same input and completes it by the
 //! policy. The check is no part of the signature, so the twins hold the same
@@ -16,7 +17,7 @@ use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::Integer;
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Exact, Signature, Slot};
-use arvo_numeral::{Abort, Divisor, Int, Quiet};
+use arvo_numeral::{Abort, Accumulator, Divisor, Int, Quiet};
 
 type TwoBitsWrap = Signature<Integer<2>, Adapt<TowardZero, Wrap>>;
 type TwoBitsSaturate = Signature<Integer<2>, Adapt<TowardZero, Saturate>>;
@@ -123,6 +124,49 @@ fn from_index_aborts_under_wrap_with_the_default_check() {
 #[should_panic(expected = "the host integer names a slot index outside the signature's range")]
 fn from_index_aborts_under_saturate_with_abort_named() {
     let _ = SaturateAborts::from_index(8u64);
+}
+
+type FourWrap = Signature<Integer<4>, Adapt<TowardZero, Wrap>>;
+type FourSaturate = Signature<Integer<4>, Adapt<TowardZero, Saturate>>;
+type SixBits = Signature<Integer<6>, Adapt<TowardZero, Wrap>>;
+
+#[test]
+#[should_panic(expected = "the member leaves the target signature's range")]
+fn finish_aborts_under_wrap_with_the_default_check() {
+    let sevens = [WrapAborts::constant::<7>(); 2];
+    let _ = Accumulator::<FourWrap, SixBits, 2>::of(&sevens).finish();
+}
+
+#[test]
+#[should_panic(expected = "the member leaves the target signature's range")]
+fn finish_aborts_under_saturate_with_abort_named() {
+    let sevens = [SaturateAborts::constant::<7>(); 2];
+    let _ = Accumulator::<FourSaturate, SixBits, 2, Abort>::of(&sevens).finish();
+}
+
+#[test]
+fn finish_completes_under_quiet_and_abort_passes_a_sum_that_fits() {
+    let sevens = [WrapQuiet::constant::<7>(); 2];
+    let acc = Accumulator::<FourWrap, SixBits, 2, Quiet>::of(&sevens);
+    assert!(!acc.fits().get());
+    assert_eq!(acc.finish().slot().index(), -2);
+    let sevens = [SaturateQuiet::constant::<7>(); 2];
+    let acc = Accumulator::<FourSaturate, SixBits, 2, Quiet>::of(&sevens);
+    assert_eq!(acc.finish().slot().index(), 7);
+
+    // Under `Abort` nothing aborts on the way: the terms pass the range and come
+    // back, and only the finished sum is asked.
+    let terms = [
+        SaturateAborts::constant::<7>(),
+        SaturateAborts::constant::<7>(),
+        SaturateAborts::constant::<-8>(),
+    ];
+    let acc = Accumulator::<FourSaturate, SixBits, 3>::of(&terms);
+    assert_eq!(acc.total().slot().index(), 6);
+    assert_eq!(acc.finish().slot().index(), 6);
+    let (block, rest) = Accumulator::<FourSaturate, SixBits, 2>::take(&terms);
+    assert_eq!(block.total().slot().index(), 14);
+    assert_eq!(rest.len(), 1);
 }
 
 #[test]

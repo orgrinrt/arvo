@@ -1,0 +1,34 @@
+error[E0080]: evaluation panicked: `minus` could leave the accumulator's range: the range does not hold every difference of sums at these two capacities. Name an accumulator format that reaches as far below zero as the subtracted sum goes, a signed one over unsigned terms
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_numeral::Accumulator::<arvo_format::Signature<arvo_format::points::UFixed<4, 0>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, arvo_format::Signature<arvo_format::points::UFixed<8, 0>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, 2>::minus::<2, 2>::{constant#0}` failed here
+  |
+ ::: src/accumulator.rs
+  |
+  | /             assert!(
+  | |                 holds::<T>(differences(sums::<S>(A), sums::<S>(B))),
+  | |                 "`minus` could leave the accumulator's range: the range does not hold every \
+  | |                  difference of sums at these two capacities. Name an accumulator format that \
+  | |                  reaches as far below zero as the subtracted sum goes, a signed one over unsigned \
+  | |                  terms"
+  | |             );
+  | |_____________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/accumulator.rs
+  |
+  | /         const {
+  | |             assert!(
+  | |                 holds::<T>(differences(sums::<S>(A), sums::<S>(B))),
+  | |                 "`minus` could leave the accumulator's range: the range does not hold every \
+... |
+  | |             );
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn Accumulator::<Signature<UFixed<4, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, Signature<UFixed<8, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, 2>::minus::<2, 2>`
+  --> tests/ui/a_difference_in_an_unsigned_accumulator_is_refused.rs:14:13
+   |
+14 |     let _ = Accumulator::<Term, Sum, 2>::minus(a, b);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

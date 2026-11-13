@@ -173,6 +173,46 @@ fn an_index_from_a_128_bit_integer_is_refused() {
 }
 
 #[test]
+fn an_accumulator_too_narrow_for_its_capacity_is_refused() {
+    pair(
+        "an_accumulator_too_narrow_for_its_capacity_is_refused",
+        "an_accumulator_wide_enough_for_its_capacity_compiles",
+    );
+}
+
+#[test]
+fn more_terms_than_the_capacity_is_refused() {
+    pair(
+        "more_terms_than_the_capacity_is_refused",
+        "as_many_terms_as_the_capacity_compiles",
+    );
+}
+
+#[test]
+fn a_join_past_the_capacity_is_refused() {
+    pair(
+        "a_join_past_the_capacity_is_refused",
+        "a_join_within_the_capacity_compiles",
+    );
+}
+
+#[test]
+fn an_accumulator_on_another_grid_is_refused() {
+    pair(
+        "an_accumulator_on_another_grid_is_refused",
+        "an_accumulator_on_the_terms_grid_compiles",
+    );
+}
+
+#[test]
+fn a_difference_in_an_unsigned_accumulator_is_refused() {
+    pair(
+        "a_difference_in_an_unsigned_accumulator_is_refused",
+        "a_difference_in_a_signed_accumulator_compiles",
+    );
+}
+
+#[test]
 fn the_carrier_by_projection_is_refused() {
     pair(
         "the_carrier_by_projection_is_refused",

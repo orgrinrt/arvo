@@ -22,7 +22,8 @@ notko.workspace = true
 # range to the bottom in a crossing to a sibling signature. `mutant-div` returns
 # the dividend where the quotient leaves the range, `mutant-convert` reads the
 # source's slot index as the target's, and `mutant-index` sends a negative host
-# integer to the top of an unsigned saturating range.
+# integer to the top of an unsigned saturating range. `mutant-accumulator` makes
+# `take` sum the whole slice whatever the capacity.
 [features]
 mutant-8 = []
 mutant-16 = []
@@ -35,6 +36,7 @@ mutant-under = []
 mutant-div = []
 mutant-convert = []
 mutant-index = []
+mutant-accumulator = []
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"

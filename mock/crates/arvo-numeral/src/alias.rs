@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The integer points under their familiar names.
+//! The integer and fixed-point points under their familiar names.
 //!
 //! Each alias takes what names its adaptation, read through `NamesAdaptation`,
 //! and then the debug check, `Abort` unless named. No adaptation is a default:
@@ -13,7 +13,7 @@
 //! breaking.
 
 use arvo_format::overflow::Overflow;
-use arvo_format::points::{self, Integer, UFixed};
+use arvo_format::points::{self, Fixed, Integer, UFixed};
 use arvo_format::rounding::Rounding;
 use arvo_format::{Adapt, Adaptation, Format, Signature};
 
@@ -48,6 +48,23 @@ pub type Uint<const BITS: u32, A, C = Abort> =
 /// A signed integer of `BITS` bits under the adaptation `A` names for it.
 pub type Int<const BITS: u32, A, C = Abort> =
     Num<Signature<Integer<BITS>, <A as NamesAdaptation<Integer<BITS>>>::Adaptation>, C>;
+
+/// A signed fixed-point value of `BITS` bits with a quantum of two to the
+/// `FRAC`, under the adaptation `A` names for it.
+///
+/// No rounding is a default: the consumer declares it, as
+/// `Fix<32, -16, Adapt<HalfEven, Saturate>>` does. Every operation is integer
+/// arithmetic on the declared width, so it gives the same bits on every target.
+/// A sum under a wrapping policy is the same member in any order, and one under
+/// a saturating policy over this signed range is not, so a consumer that splits
+/// a sum declares its order or takes an `Accumulator`, which has none.
+pub type Fix<const BITS: u32, const FRAC: i32, A, C = Abort> =
+    Num<Signature<Fixed<BITS, FRAC>, <A as NamesAdaptation<Fixed<BITS, FRAC>>>::Adaptation>, C>;
+
+/// An unsigned fixed-point value of `BITS` bits with a quantum of two to the
+/// `FRAC`, under the adaptation `A` names for it.
+pub type UFix<const BITS: u32, const FRAC: i32, A, C = Abort> =
+    Num<Signature<UFixed<BITS, FRAC>, <A as NamesAdaptation<UFixed<BITS, FRAC>>>::Adaptation>, C>;
 
 /// The unsigned integer at the target's pointer width, under the adaptation `A`
 /// names for it.

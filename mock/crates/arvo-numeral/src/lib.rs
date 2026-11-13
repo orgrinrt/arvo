@@ -27,6 +27,7 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+mod accumulator;
 mod admit;
 mod alias;
 mod check;
@@ -38,8 +39,9 @@ mod num;
 mod ratio;
 mod rung;
 
+pub use accumulator::Accumulator;
 pub use admit::Sole;
-pub use alias::{ISize, Int, NamesAdaptation, USize, Uint};
+pub use alias::{Fix, ISize, Int, NamesAdaptation, UFix, USize, Uint};
 pub use arvo_format::{Bool, Divisor};
 pub use check::{Abort, DebugCheck, Quiet};
 pub use host::HostInteger;
