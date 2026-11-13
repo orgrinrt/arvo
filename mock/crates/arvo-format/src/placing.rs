@@ -6,16 +6,19 @@
 //! The ending every exact step past the sum shares.
 //!
 //! The product, the quotient and the conversion each form a numerator in the
-//! four-limb integer over a denominator from one up to `2^128 - 1`, and place it:
-//! the floor is the slot, the residue reduced to lowest terms is the remainder,
-//! and a floor the slot index does not hold is past it on the numerator's sign.
+//! four-limb integer over a positive denominator in the same four limbs, and place
+//! it: the floor is the slot, the residue reduced to lowest terms is the
+//! remainder, and a floor the slot index does not hold is past it on the
+//! numerator's sign. A numerator or denominator the four limbs do not hold is
+//! named apart, as a step the limbs have not formed, because with a denominator
+//! this wide it says nothing about where the position is.
 //! Each starts from the phase in lowest terms and from the radix raised to the
 //! two halves of the quantum's exponent. Those pieces live here, once.
 
 use notko::Maybe;
 
 use crate::apply::{Exact, Remainder};
-use crate::format::{Format, greatest_common_divisor, greatest_common_divisor_unsigned, radix};
+use crate::format::{Format, greatest_common_divisor, radix};
 use crate::quantum::Quantum;
 use crate::slots::Slot;
 use crate::wide::{Divided, Wide};
@@ -79,19 +82,23 @@ pub(crate) const fn times(a: Maybe<Wide>, b: Maybe<Wide>) -> Maybe<Wide> {
     }
 }
 
-/// Where a step put a position: past an end of the index on one side, or at a
-/// slot with a remainder's numerator over the denominator.
+/// Where a step put a position: past an end of the index on one side, not formed
+/// in the four limbs, or at a slot with a remainder's numerator over the
+/// denominator.
 #[derive(Clone, Copy)]
 pub(crate) enum Placed {
     /// Past the end of the index on the negative side when it says so.
     Past(bool),
+    /// A numerator or denominator the four limbs do not hold, for a position
+    /// whose sign is negative when it says so.
+    Unformed(bool),
     /// The floor slot and the remainder's numerator.
-    At(i128, u128),
+    At(i128, Wide),
 }
 
 /// The floor of `numerator` over a positive `divisor`, and its residue.
 #[inline]
-pub(crate) const fn over(numerator: Wide, divisor: u128) -> Placed {
+pub(crate) const fn over(numerator: Wide, divisor: Wide) -> Placed {
     let Divided {
         quotient,
         remainder,
@@ -107,9 +114,16 @@ pub(crate) const fn over(numerator: Wide, divisor: u128) -> Placed {
 #[inline]
 pub(crate) const fn is_held(at: Placed) -> Bool {
     match at {
-        Placed::Past(_) => Bool::FALSE,
-        Placed::At(slot, remainder) => Bool::of(remainder == 0 || slot < i128::MAX),
+        Placed::Past(_) | Placed::Unformed(_) => Bool::FALSE,
+        Placed::At(slot, remainder) => Bool::of(remainder.is_zero().get() || slot < i128::MAX),
     }
+}
+
+/// Whether a step formed its numerator and denominator in the four limbs, which
+/// is asked of a step before whether the index holds what it placed.
+#[inline]
+pub(crate) const fn is_formed(at: Placed) -> Bool {
+    Bool::of(!matches!(at, Placed::Unformed(_)))
 }
 
 /// Whether every verdict of an obligation holds, which is what its verdict
@@ -135,18 +149,16 @@ pub(crate) const fn saturated(negative: bool) -> Exact {
 /// A placed position as an exact one over `divisor`, its remainder in lowest
 /// terms.
 #[inline]
-pub(crate) const fn positioned(divisor: u128, at: Placed) -> Exact {
+pub(crate) const fn positioned(divisor: Wide, at: Placed) -> Exact {
     match at {
-        Placed::Past(negative) => saturated(negative),
-        Placed::At(slot, 0) => Exact::on_grid(Slot::at(slot)),
+        Placed::Past(negative) | Placed::Unformed(negative) => saturated(negative),
         Placed::At(slot, remainder) => {
+            if remainder.is_zero().get() {
+                return Exact::on_grid(Slot::at(slot));
+            }
             // The remainder is below the divisor, so it is already in `[0, 1)`
             // and the position is the floor slot itself.
-            let common = greatest_common_divisor_unsigned(remainder, divisor);
-            Exact::at(
-                Slot::at(slot),
-                Remainder::of(remainder / common, divisor / common),
-            )
+            Exact::at(Slot::at(slot), Remainder::reduced(remainder, divisor))
         },
     }
 }

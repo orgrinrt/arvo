@@ -6,26 +6,26 @@
 //! The product at the edges of every width from nine to 64, where the member
 //! sweep cannot reach and the carry decision is made.
 //!
-//! At each width of both families, at radix two and zero phase over four
+//! At each width of both families, at radix two and zero phase over seven
 //! exponents, at a phase, at radix ten and at both, the verdict is checked
 //! against an independent reading of the four corners, and the step at the
 //! corners and the slots beside them against an oracle in `Big`, which forms the
-//! numerator on a pair of the host's unsigned 128-bit integers and divides it
-//! by an algorithm other than the step's on each side of `2^64`. There the
-//! numerator passes `2^128` and the denominator is not a power of two, or passes
-//! `2^64` at `2^-127` and `10^-38`, so the step's three- and four-limb division
-//! and its division by two limbs are what is compared. The step is read without forcing the obligation, so the formats it
-//! does not admit are swept too, and there a position past the index has to
-//! saturate on its sign. A step that keeps the floor and drops the remainder is
-//! run beside it as the control: it has to be wrong somewhere and never where
-//! the denominator is one.
+//! numerator and the denominator on a pair of the host's unsigned 128-bit
+//! integers and divides one bit at a time. There the numerator passes `2^128`
+//! and the denominator is not a power of two, or passes `2^64` at `2^-127` and
+//! `10^-38` and `2^128` from `2^-128` down to `2^-255`, so the step's division by
+//! one, two, three and four limbs is what is compared. The step is read without
+//! forcing the obligation, so the formats it does not admit are swept too, and
+//! there a position past the index has to saturate on its sign. A step that keeps
+//! the floor and drops the remainder is run beside it as the control: it has to
+//! be wrong somewhere and never where the denominator is one.
 
 use notko::Maybe;
 
 use super::At;
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::{Exact, Fraction, Remainder};
-use crate::format::{Format, greatest_common_divisor_unsigned, radix};
+use crate::format::{Format, radix};
 use crate::multiplication::{is_multipliable, product_position, unforced_position};
 use crate::points::{Integer, UFixed};
 use crate::quantum::{Constant, Quantum};
@@ -66,16 +66,12 @@ fn reading<F: Format>() -> Reading {
     }
 }
 
-/// The denominator `d^2 r^down`, formed in the oracle's own wide integer.
-fn denominator(at: &Reading) -> u128 {
-    let Maybe::Is(den) = Big::of(at.d)
+/// The denominator `d^2 r^down`, formed in the oracle's own wide integer, which
+/// holds it wherever the step forms it.
+fn denominator(at: &Reading) -> Big {
+    Big::of(at.d)
         .times(Big::of(at.d))
         .times(Big::power(at.r, at.down))
-        .unsigned()
-    else {
-        panic!("the sweep stays where d^2 r^down is under 2^128");
-    };
-    den
 }
 
 /// `(phase + a)(phase + b) * q - phase` for the slots `a` and `b`, as the
@@ -89,15 +85,22 @@ fn oracle(at: &Reading, a: i128, b: i128) -> Answer {
         .times(Big::power(at.r, at.up))
         .plus(term);
     let den = denominator(at);
-    let (quotient, rem) = numerator.floor_over(den);
+    let (quotient, rem) = numerator.floor_over_big(den);
     let Maybe::Is(slot) = quotient.index() else {
         return Answer::Past(quotient.is_negative());
     };
-    if rem == 0 {
+    if rem == Big::of(0) {
         return Answer::At(Exact::on_grid(Slot::at(slot)));
     }
-    let g = greatest_common_divisor_unsigned(rem, den);
-    Answer::At(Exact::at(Slot::at(slot), Remainder::of(rem / g, den / g)))
+    // Lowest terms by the oracle's own Euclid, so the step's reduction of a pair
+    // already in lowest terms leaves it as it is.
+    let g = rem.common_divisor(den);
+    let (num, _) = rem.floor_over_big(g);
+    let (den, _) = den.floor_over_big(g);
+    Answer::At(Exact::at(
+        Slot::at(slot),
+        Remainder::reduced(num.wide(), den.wide()),
+    ))
 }
 
 /// The answer as the step reports it: past an end is the end, on the grid.
@@ -169,12 +172,12 @@ impl PerFormat for Edges {
                 let Maybe::Is(got) = unforced_position::<F>(Slot::at(a), Slot::at(b)) else {
                     panic!("the sweep stays where every remainder is held");
                 };
-                assert_eq!(got, want, "{a} * {b} over [{min}, {max}], D = {den}");
+                assert_eq!(got, want, "{a} * {b} over [{min}, {max}], D = {den:?}");
                 self.points += 1;
                 self.past += u64::from(matches!(answer, Answer::Past(_)));
                 if Exact::on_grid(want.slot()) != want {
                     self.floor_wrong += 1;
-                    if den == 1 {
+                    if den == Big::of(1) {
                         self.floor_on_one += 1;
                     }
                 }
@@ -211,8 +214,13 @@ fn the_product_is_exact_and_its_verdict_true_at_the_edges_of_every_width_from_ni
     every_width!(walk; BinaryRationals, 1, 0, 1);
     every_width!(walk; BinaryRationals, -1, 0, 1);
     every_width!(walk; BinaryRationals, -127, 0, 1);
-    assert_eq!(walk.formats, 4 * 56 * 2);
-    assert_eq!(walk.points, 4 * points_per_grid());
+    // Past `2^128`: a divisor of three limbs, of four, and the last exponent the
+    // four limbs form `D` at.
+    every_width!(walk; BinaryRationals, -128, 0, 1);
+    every_width!(walk; BinaryRationals, -200, 0, 1);
+    every_width!(walk; BinaryRationals, -255, 0, 1);
+    assert_eq!(walk.formats, 7 * 56 * 2);
+    assert_eq!(walk.points, 7 * points_per_grid());
     // Held out: the unsigned 64-bit range at zero, and both 64-bit ranges at
     // one. The unsigned 63-bit range at one is held.
     assert_eq!(walk.held_out, 3);
@@ -232,8 +240,10 @@ fn the_product_is_exact_at_a_phase_and_at_radix_ten_at_every_width_from_nine_to_
     every_width!(walk; DecimalRationals, -38, 0, 1);
     every_width!(walk; DecimalRationals, 1, 0, 1);
     every_width!(walk; DecimalRationals, -3, 2, 7);
-    assert_eq!(walk.formats, 6 * 56 * 2);
-    assert_eq!(walk.points, 6 * points_per_grid());
+    // The last exponent at radix ten whose `D` the four limbs form.
+    every_width!(walk; DecimalRationals, -77, 0, 1);
+    assert_eq!(walk.formats, 7 * 56 * 2);
+    assert_eq!(walk.points, 7 * points_per_grid());
     // Some of each: radix ten at `10^1` and a third at the 64-bit unsigned
     // range leave the index, and the rest is admitted.
     assert!(walk.held_out > 0 && walk.held_out < walk.formats);
@@ -282,8 +292,8 @@ fn the_named_edges_are_what_the_obligation_admits() {
             u64::MAX as i128
         ))
     );
-    // At the deepest exponent the remainder holds, the denominator is `2^127`
-    // and the step divides by two limbs.
+    // At `2^-127` the denominator is two limbs, at `2^-128` three, at `2^-200`
+    // and `2^-255` four, the last the limbs form.
     assert_eq!(
         product_position::<UFixed<64, -127>>(top64, top64),
         reported(oracle(
@@ -291,6 +301,44 @@ fn the_named_edges_are_what_the_obligation_admits() {
             u64::MAX as i128,
             u64::MAX as i128
         ))
+    );
+    assert_eq!(
+        product_position::<UFixed<64, -128>>(top64, top64),
+        reported(oracle(
+            &reading::<UFixed<64, -128>>(),
+            u64::MAX as i128,
+            u64::MAX as i128
+        ))
+    );
+    assert_eq!(
+        product_position::<Integer<64>>(min, max),
+        reported(oracle(&reading::<Integer<64>>(), min.index(), max.index()))
+    );
+    type Two200 = Grid<BinaryRationals, Constant<-200>, Signed<64>, 0, 1>;
+    type Last = Grid<BinaryRationals, Constant<-255>, Signed<64>, 0, 1>;
+    type Past = Grid<BinaryRationals, Constant<-256>, Signed<64>, 0, 1>;
+    type DecimalLast = Grid<DecimalRationals, Constant<-77>, Signed<64>, 0, 1>;
+    type DecimalPast = Grid<DecimalRationals, Constant<-78>, Signed<64>, 0, 1>;
+    assert!(is_multipliable::<Two200>().get());
+    assert!(is_multipliable::<Last>().get());
+    assert!(is_multipliable::<DecimalLast>().get());
+    // One step past, `D` leaves the limbs and the step is not formed at all.
+    assert!(!is_multipliable::<Past>().get());
+    assert!(!is_multipliable::<DecimalPast>().get());
+    assert!(matches!(unforced_position::<Past>(min, max), Maybe::Isnt));
+    assert!(matches!(
+        unforced_position::<DecimalPast>(min, max),
+        Maybe::Isnt
+    ));
+    // `MIN * MAX` at `2^-255` lies just below zero: the slot `-1` and a
+    // remainder over four limbs.
+    assert_eq!(
+        product_position::<Last>(min, max),
+        reported(oracle(&reading::<Last>(), min.index(), max.index()))
+    );
+    assert_eq!(
+        product_position::<Two200>(min, min),
+        reported(oracle(&reading::<Two200>(), min.index(), min.index()))
     );
     // The signed 64-bit range at a phase of a third, and at radix ten at
     // `10^-18` and at `10^-38`, all admitted.

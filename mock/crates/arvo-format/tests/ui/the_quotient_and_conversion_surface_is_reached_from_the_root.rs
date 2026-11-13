@@ -52,11 +52,11 @@ fn main() {
         THREE.slot(),
     );
     assert_eq!(BUILT, POSITION);
-    assert_eq!(
+    assert!(matches!(
         (
             Remainder::of(7, 3).numerator(),
             Remainder::of(7, 3).denominator()
         ),
-        (1, 3)
-    );
+        (notko::Maybe::Is(1), notko::Maybe::Is(3))
+    ));
 }
