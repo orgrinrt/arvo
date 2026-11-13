@@ -129,11 +129,14 @@ return `Bool`; `min` and `max` return the value. At a zero phase and a constant 
 to member is monotone, and the carrier is signed exactly where the slot family is, so the carrier's order
 is the members' order and these read the carrier.
 
-`Num` implements `Clone`, `Copy`, `PartialEq`, `Eq`, `PartialOrd`, `Ord`, `Hash` and `Debug` through
-the carrier, written by hand so that `S` itself is not bounded. It implements no operator trait, no
-`Default` and no `From` of a host integer: an operator trait cannot be called in a `const fn`, a default
-would be a policy decided for the consumer, and a conversion from a host integer is the door `from_raw`
-already is, named.
+`Num` implements `Clone`, `Copy`, `PartialEq`, `Eq`, `Hash` and `Debug` through the carrier, written by
+hand so that `S` itself is not bounded. It implements no operator trait beyond equality, no ordering
+trait, no `Default` and no `From` of a host integer. An operator trait cannot be called in a `const fn`,
+so the operations are the inherent ones above. The ordering traits are left out because core's
+`partial_cmp` answers in a bare `Option`, which this workspace refuses in every crate that does not
+introduce fallibility, and `Ord` cannot be had without it; the order is the inherent `cmp`, which a
+consumer passes wherever a comparison is taken. A default would be a policy decided for the consumer,
+and a conversion from a host integer is the door `from_raw` already is, named.
 
 ## Identities
 
