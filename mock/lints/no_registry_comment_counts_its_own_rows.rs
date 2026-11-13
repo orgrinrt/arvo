@@ -104,14 +104,64 @@ fn counts_in_a_comment(line: &str) -> Vec<(&str, String)> {
         .collect()
 }
 
+/// The number words a count is written in, the units and the tens a compound is
+/// built from, and the round numbers.
+const NUMBER_WORDS: [&str; 32] = [
+    "zero",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+    "twenty",
+    "thirty",
+    "forty",
+    "fifty",
+    "sixty",
+    "seventy",
+    "eighty",
+    "ninety",
+    "hundred",
+    "thousand",
+    "dozen",
+    "score",
+    "million",
+];
+
 /// Whether a word is a number a reader would take as a count.
 ///
-/// Digits only. A spelled-out number is not caught, which is stated rather than
-/// hidden: this is a tripwire on the shape that actually recurs, and a reader
-/// who writes "seven rows" in words has gone out of their way.
+/// Digits, or a number word, or a hyphenated compound of them
+/// (`twenty-two`). A count written in words is the same second copy of a fact
+/// as one in digits, and three registry comments were written that way and
+/// passed this lint when it read digits only. `one` is not read as a count:
+/// "one row per crate" and "one entry whose scope" state a shape, not a tally,
+/// and every such comment in the registry did. The digit `1` still is. A
+/// compound spelled with a space
+/// (`twenty two rows`) is caught by its last word, which is a number word on
+/// its own.
 fn is_count(word: &str) -> bool {
     let w = word.trim_matches(|c: char| !c.is_ascii_alphanumeric());
-    !w.is_empty() && w.chars().all(|c| c.is_ascii_digit())
+    if w.is_empty() {
+        return false;
+    }
+    if w.chars().all(|c| c.is_ascii_digit()) {
+        return true;
+    }
+    let lower = w.to_ascii_lowercase();
+    lower.split('-').all(|part| NUMBER_WORDS.contains(&part))
 }
 
 #[cfg(test)]
@@ -186,11 +236,44 @@ mod tests {
         assert!(f.is_empty(), "{f:?}");
     }
 
+    /// The planted case the ticket asks for: three comments counting their rows
+    /// in words passed this lint when it read digits only. It has to fail now.
+    #[test]
+    fn a_count_written_in_words_is_reported() {
+        let f = findings(&[(
+            "a.toml",
+            "# Seventeen rows, spelled out.\n\
+             # There are twenty-two entries below.\n\
+             # About a dozen rows follow.\n\
+             # Twenty two rows in all.\n",
+        )]);
+        assert_eq!(f.len(), 4, "{f:?}");
+        assert!(f[0].1.contains("Seventeen rows"), "{}", f[0].1);
+        assert!(f[1].1.contains("twenty-two entries"), "{}", f[1].1);
+        assert!(f[2].1.contains("dozen rows"), "{}", f[2].1);
+        assert!(f[3].1.contains("two rows"), "{}", f[3].1);
+    }
+
+    /// `one` states a shape and is not a tally, so these stay silent while the
+    /// digit form beside them is still caught.
+    #[test]
+    fn control_one_row_per_crate_is_a_shape_and_one_digit_is_a_count() {
+        let f = findings(&[(
+            "a.toml",
+            "# one row per crate, and one entry whose scope was limited.\n# 1 row below.\n",
+        )]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert_eq!(f[0].0, 2);
+    }
+
+    /// The controls for the arm above: a word that is no number, a hyphenated
+    /// word that is not a compound of numbers, and a number with no noun.
     #[test]
     fn control_a_comment_with_no_number_and_a_number_with_no_noun_are_both_silent() {
         let f = findings(&[(
             "a.toml",
-            "# The axes this registry turns on.\n# Seventeen rows, spelled out.\n# 17 axes.\n",
+            "# The axes this registry turns on.\n# 17 axes.\n# Seventeen axes.\n\
+             # Some rows follow.\n# A well-known rows table.\n# Twenty-odd rows.\n",
         )]);
         assert!(f.is_empty(), "{f:?}");
     }

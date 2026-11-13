@@ -432,7 +432,7 @@ keywords = ["biconditional", "licence", "family", "counterexample", "converse", 
 
 # --- the instruments about this repository's own instruments ---------------
 #
-# Four rows that are not about numerals at all. They are about the harness, the
+# These rows are not about numerals at all. They are about the harness, the
 # test gate and the checkers, and they are here because a `measured` claim
 # citing anything in `mock/benches/` inherits every one of them.
 
