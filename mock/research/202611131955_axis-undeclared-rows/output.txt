@@ -1,0 +1,72 @@
+19 sentence(s) on 16 row(s) say an axis is undeclared, over 1924 sentences and 25 declared dimensions.
+
+dimension::occupancy
+  `note`: The other derived that the container derivation has a different output count on each side of that split, and reported that no declared axis could carry the arms it produces.
+    declared dimensions in the sentence: dimension::container
+
+law::additive_associativity_recovered_under_declared_nonnegative_operand_window
+  `note`: `additive_associativity_under_saturation` records the same cell in a `gap` field, unable to place it on either list because no `dimension` row named the operand window; `operand_window` now does.
+    declared dimensions in the sentence: dimension::ambient_domain, dimension::association, dimension::operand_window, dimension::operation
+
+law::distributivity_recovered_under_declared_nonnegative_operand_window
+  `note`: `distributivity_of_multiplication_over_addition` records the same cell in a `gap` field for the identical reason: no `dimension` row named the operand window until this porting pass added `operand_window`.
+    declared dimensions in the sentence: dimension::ambient_domain, dimension::operand_window, dimension::operation
+
+law::multiplicative_associativity_under_saturation
+  `gap`: It differs from the failing signed cell only in the geometry of the representable range, which no `dimension` row declares, so writing it would put one region on both lists at once.
+    declared dimensions in the sentence: dimension::operand_window, dimension::signedness
+
+law::quantise_then_reduce_commutes
+  `gap`: **The holding region cannot be written.** The commutation predicate is stated over an ambient domain closed under negation, and no `dimension` row declared an axis for the ambient domain when this row was written, so the region where this law holds had no expressible form in the canon's own notation.
+    declared dimensions in the sentence: dimension::ambient_domain
+
+law::the_fused_and_the_stepwise_multiply_add_denote_one_function
+  `gap`: The clause that states the three tables as one question carries a predicate naming an accumulator width and an operation set that no `dimension` row declared when this row was written, so that clause is not written into the canon at all and this row carries only the cell it measured.
+    declared dimensions in the sentence: dimension::accumulator_width, dimension::integer_width, dimension::operation
+
+proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains
+  `note`: **The region is the source's own, minus what is not an axis.** The laws the probe enumerated and the exhaustiveness of the value sweep are instrument parameters rather than situations the world can be in.
+    declared dimensions in the sentence: none
+  `note`: `operand window in {full, declared non-negative}` is dropped because no `dimension` row declares that axis; the sweep covered both of its values, so the written region is narrower than what was established and the absence here is a gap in the vocabulary rather than a claim.
+    declared dimensions in the sentence: dimension::operand_window, dimension::operation, dimension::signedness
+
+proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container
+  `note`: The claim's other half is invariance under change of **encoding**, and no `dimension` row declares an encoding axis, so the predicate above cannot state it.
+    declared dimensions in the sentence: none
+  `note`: An undeclared axis is invisible to the notation rather than absent from it, so the omission is a blind spot rather than a negative claim, and a reader must take the encoding half from the source.
+    declared dimensions in the sentence: dimension::signedness
+
+proposal::a_strategy_is_an_assignment_and_a_weighting
+  `gap`: The closure asymmetry carries a region naming an assignment set, which no `dimension` row declares, so that half of the clause is stated here without its region and cannot be gated on.
+    declared dimensions in the sentence: dimension::signedness
+
+proposal::at_shared_occupancy_no_per_element_footprint_observation_exists
+  `note`: The axis this really wants is occupancy, sole against shared, and no dimension row declares one.
+    declared dimensions in the sentence: dimension::occupancy
+
+proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance
+  `gap`: The property is stated over 'the domain the cell reaches', and no `dimension` row declares an axis for that domain.
+    declared dimensions in the sentence: dimension::ambient_domain, dimension::operation
+
+proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even
+  `note`: **The staging is stated in the sentence and not in the predicate**, because no `dimension` row declares the intermediate fraction width of a staged narrowing.
+    declared dimensions in the sentence: dimension::accumulator_width, dimension::fraction_width, dimension::integer_width
+
+proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy
+  `note`: The sign entry conflates the range's geometry into the signedness axis because no `dimension` row declares the geometry, and the geometry is exactly what the congruence half turns on.
+    declared dimensions in the sentence: dimension::fraction_width, dimension::operand_window, dimension::signedness
+
+proposal::the_realisation_map_has_an_algebraic_character
+  `gap`: The topic's ten remaining clauses all carry regions naming axes the registry does not declare.
+    declared dimensions in the sentence: dimension::operation
+  `note`: What follows from the character is a family of claims about which licence is available where, and none of those is in this file: every one of them is stated over an ambient domain and its closure under negation, and no `dimension` row declared such an axis when this row was written.
+    declared dimensions in the sentence: dimension::ambient_domain
+
+ruling::a_platform_width_type_is_a_target_bound_member_of_the_format_family
+  `note`: **What the region wants and cannot have.** `dimension.toml` declares no axis indexing the compilation target's pointer width, so no predicate anywhere, this one included, can say "holds at 64-bit targets" in the registry's own notation.
+    declared dimensions in the sentence: dimension::integer_width, dimension::target_features
+
+ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side
+  `note`: Two live violations found while deriving this, neither caused by it: a predicate writes `operation: operation any` where `dimension::operation` declares that inadmissible in bold in its own `grammar`, and six values sides bind more than one thing, two packing an undeclared axis inside a legitimate slug and the rest stating two regions on one axis inside one array element.
+    declared dimensions in the sentence: dimension::operation
+
