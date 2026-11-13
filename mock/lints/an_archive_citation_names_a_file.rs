@@ -21,9 +21,9 @@
 //! and the repair is one path.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
-use crate::panel_corpus::{archive_citations, finding, markdown, panel_dir, shown, ARCHIVES};
+use crate::panel_corpus::{ARCHIVES, archive_citations, finding, markdown, panel_dir, shown};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(AnArchiveCitationNamesAFile)
 }
@@ -42,14 +42,14 @@ impl Lint for AnArchiveCitationNamesAFile {
 }
 impl RepoLint for AnArchiveCitationNamesAFile {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&panel_dir(ctx.mock_dir))
+        check(ctx.view(), &panel_dir(ctx.mock_dir))
     }
 }
 
-fn check(dir: &Path) -> Vec<LintError> {
+fn check(view: &View, dir: &Path) -> Vec<LintError> {
     let mut out = Vec::new();
-    for path in markdown(dir) {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+    for path in markdown(view, dir) {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let at = shown(&path, dir);
@@ -60,7 +60,7 @@ fn check(dir: &Path) -> Vec<LintError> {
                     if !file.starts_with("OLD_") {
                         continue; // the dead-spelling lint owns those
                     }
-                    if dir.join(archive.at).join(file).exists() {
+                    if view.exists(dir.join(archive.at).join(file)) {
                         continue;
                     }
                     out.push(finding(
@@ -85,8 +85,14 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        through_view,
+        view,
     };
     use crate::panel_corpus::PANEL;
 
@@ -98,7 +104,7 @@ mod tests {
         for (at, text) in files {
             plant(&panel, at, text);
         }
-        super::check(&panel)
+        through_view(&panel, |v| super::check(v, &panel))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -182,7 +188,12 @@ mod tests {
     #[test]
     fn a_panel_directory_that_is_not_there_is_silent_rather_than_a_panic() {
         let dir = planted_tree("dangling-absent");
-        assert!(super::check(&dir.join("nothing")).is_empty());
+        assert!(
+            through_view(&dir.join("nothing"), |v| {
+                super::check(v, &dir.join("nothing"))
+            })
+            .is_empty()
+        );
     }
 
     #[test]
@@ -196,7 +207,7 @@ mod tests {
         let empty = view(&[], &[]);
         assert_findings_block_at(
             &super::AnArchiveCitationNamesAFile,
-            &ctx_at(&dir.join("mock"), &empty),
+            ctx_at(&dir.join("mock"), &empty),
         );
     }
 

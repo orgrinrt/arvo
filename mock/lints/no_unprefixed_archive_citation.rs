@@ -40,10 +40,16 @@
 //! counting. The numbers are the constants below, where the lint can read them.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::panel_corpus::{
-    archive_citations, finding, markdown, panel_dir, shown, ARCHIVES, LIVING_LEDGERS,
+    ARCHIVES,
+    LIVING_LEDGERS,
+    archive_citations,
+    finding,
+    markdown,
+    panel_dir,
+    shown,
 };
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(NoUnprefixedArchiveCitation)
@@ -83,17 +89,17 @@ impl Lint for NoUnprefixedArchiveCitation {
 }
 impl RepoLint for NoUnprefixedArchiveCitation {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&panel_dir(ctx.mock_dir), CEILING)
+        check(ctx.view(), &panel_dir(ctx.mock_dir), CEILING)
     }
 }
 
 /// One dead citation, with where it sits and what should have been written.
 struct Dead {
-    at: String,
-    line: usize,
-    cited: String,
+    at:      String,
+    line:    usize,
+    cited:   String,
     archive: &'static str,
-    repair: String,
+    repair:  String,
 }
 
 /// Both halves, over one panel directory.
@@ -101,8 +107,8 @@ struct Dead {
 /// `ceiling` is a parameter so a planted tree can drive the ratchet with a
 /// ceiling of zero. A ratchet tested only against the number it was measured
 /// with is a ratchet nobody has seen fire.
-fn check(dir: &Path, ceiling: usize) -> Vec<LintError> {
-    let dead = dead_citations(dir);
+fn check(view: &View, dir: &Path, ceiling: usize) -> Vec<LintError> {
+    let dead = dead_citations(view, dir);
     let (in_ledgers, in_the_record): (Vec<&Dead>, Vec<&Dead>) =
         dead.iter().partition(|d| is_a_living_ledger(&d.at));
 
@@ -149,10 +155,10 @@ fn check(dir: &Path, ceiling: usize) -> Vec<LintError> {
 }
 
 /// Every citation into an archive written without the prefix the rename gave it.
-fn dead_citations(dir: &Path) -> Vec<Dead> {
+fn dead_citations(view: &View, dir: &Path) -> Vec<Dead> {
     let mut out = Vec::new();
-    for path in markdown(dir) {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+    for path in markdown(view, dir) {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let at = shown(&path, dir);
@@ -198,10 +204,16 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        through_view,
+        view,
     };
-    use crate::panel_corpus::{panel_dir, PANEL};
+    use crate::panel_corpus::{PANEL, panel_dir};
 
     /// A panel tree with the files named, and the findings over it.
     ///
@@ -215,7 +227,7 @@ mod tests {
         for (at, text) in files {
             plant(&panel, at, text);
         }
-        super::check(&panel, ceiling)
+        through_view(&panel, |v| super::check(v, &panel, ceiling))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -345,7 +357,12 @@ mod tests {
     #[test]
     fn a_panel_directory_that_is_not_there_is_silent_rather_than_a_panic() {
         let dir = planted_tree("archive-absent");
-        assert!(super::check(&dir.join("nothing"), 0).is_empty());
+        assert!(
+            through_view(&dir.join("nothing"), |v| {
+                super::check(v, &dir.join("nothing"), 0)
+            })
+            .is_empty()
+        );
     }
 
     #[test]
@@ -363,7 +380,7 @@ mod tests {
             panel_dir(&mock).is_dir(),
             "the fixture is where the lint looks"
         );
-        assert_findings_block_at(&super::NoUnprefixedArchiveCitation, &ctx_at(&mock, &empty));
+        assert_findings_block_at(&super::NoUnprefixedArchiveCitation, ctx_at(&mock, &empty));
     }
 
     #[test]

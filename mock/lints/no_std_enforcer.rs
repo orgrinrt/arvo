@@ -43,7 +43,7 @@ impl CrateLint for NoStdEnforcer {
 
         let mut errors = Vec::new();
 
-        for (idx, line) in ctx.source.lines().enumerate() {
+        for (idx, line) in ctx.source().lines().enumerate() {
             let trimmed = line.trim_start();
 
             if trimmed.starts_with("//") {
@@ -235,7 +235,7 @@ mod tests {
     /// That is a fact about the engine's crate-discovery step, not about
     /// this lint: `LintFixture` builds a `LintContext` directly, with no
     /// dependency on any crate existing on disk, and the lint reads only
-    /// `ctx.source`. This lint is fully operative today; its "Scope" line
+    /// `ctx.source()`. This lint is fully operative today; its "Scope" line
     /// is aspirational until the first crate exists to walk.
     #[test]
     fn the_lint_itself_needs_no_crate_tree_on_disk() {

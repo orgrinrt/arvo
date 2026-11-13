@@ -69,15 +69,15 @@ impl Lint for APreconditionComesFromANamespaceThatCanEstablishOne {
 impl RepoLint for APreconditionComesFromANamespaceThatCanEstablishOne {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
-        for ns in ctx.registry.namespaces() {
+        for ns in ctx.registry().namespaces() {
             if SOURCES.contains(&ns) {
                 continue;
             }
-            for q in ctx.registry.rows_in(ns) {
+            for q in ctx.registry().rows_in(ns) {
                 // Presence rather than content, for the same reason as the
                 // untiered-edge lint: a `precondition_for` written and left
                 // empty is exactly as unread as one carrying slugs.
-                if !has(ctx.registry, q, "precondition_for") {
+                if !has(ctx.registry(), q, "precondition_for") {
                     continue;
                 }
                 out.push(finding(
@@ -100,13 +100,18 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
 
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::APreconditionComesFromANamespaceThatCanEstablishOne
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -118,10 +123,10 @@ mod tests {
     fn an_edge_from_a_namespace_that_cannot_establish_one_is_reported() {
         let f = findings(&[
             ("obligation::a_thing", &[("need", "A thing.")]),
-            (
-                "retirement::a_dead_route",
-                &[("claim", "A way."), ("precondition_for", "a_thing")],
-            ),
+            ("retirement::a_dead_route", &[
+                ("claim", "A way."),
+                ("precondition_for", "a_thing"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("retirement"), "{}", f[0]);
@@ -158,10 +163,10 @@ mod tests {
     /// namespace, and the repair is one decision about the row.
     #[test]
     fn a_row_with_several_edges_is_one_finding() {
-        let f = findings(&[(
-            "retirement::a_dead_route",
-            &[("precondition_for", "one_thing, another_thing")],
-        )]);
+        let f = findings(&[("retirement::a_dead_route", &[(
+            "precondition_for",
+            "one_thing, another_thing",
+        )])]);
         assert_eq!(f.len(), 1, "{f:?}");
     }
 
@@ -169,10 +174,10 @@ mod tests {
     #[test]
     fn every_unreadable_namespace_carrying_the_edge_is_reported() {
         let f = findings(&[
-            (
-                "retirement::a_dead_route",
-                &[("precondition_for", "a_thing")],
-            ),
+            ("retirement::a_dead_route", &[(
+                "precondition_for",
+                "a_thing",
+            )]),
             ("ruling::a_call", &[("precondition_for", "a_thing")]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
@@ -185,10 +190,10 @@ mod tests {
     /// canon.
     #[test]
     fn control_an_obligation_edge_is_not_a_precondition() {
-        let f = findings(&[(
-            "retirement::a_dead_route",
-            &[("claim", "A way."), ("obligation", "a_thing")],
-        )]);
+        let f = findings(&[("retirement::a_dead_route", &[
+            ("claim", "A way."),
+            ("obligation", "a_thing"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -200,10 +205,10 @@ mod tests {
     #[test]
     fn its_findings_block_every_gate() {
         let v = view(
-            &[(
-                "retirement::a_dead_route",
-                &[("precondition_for", "a_thing")],
-            )],
+            &[("retirement::a_dead_route", &[(
+                "precondition_for",
+                "a_thing",
+            )])],
             &[],
         );
         assert_findings_block(

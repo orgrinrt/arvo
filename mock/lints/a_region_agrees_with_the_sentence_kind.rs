@@ -61,10 +61,10 @@ impl Lint for ARegionAgreesWithTheSentenceKind {
 impl RepoLint for ARegionAgreesWithTheSentenceKind {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
-        for q in ctx.registry.rows_in(NAMESPACE) {
-            let kind = text(ctx.registry, q, "sentence_kind").unwrap_or("");
+        for q in ctx.registry().rows_in(NAMESPACE) {
+            let kind = text(ctx.registry(), q, "sentence_kind").unwrap_or("");
             let regionless = REGIONLESS.contains(&kind);
-            let has_region = !predicate_entries(ctx.registry, q, "predicate").is_empty();
+            let has_region = !predicate_entries(ctx.registry(), q, "predicate").is_empty();
             if regionless && has_region {
                 out.push(finding(
                     LINT,
@@ -98,7 +98,13 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, findings, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        findings,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -109,7 +115,7 @@ mod tests {
     fn kinds(rows: &[(&str, &[(&str, &str)])]) -> Vec<Option<&'static str>> {
         let v = view(rows, &[]);
         super::ARegionAgreesWithTheSentenceKind
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.finding_kind)
             .collect()
@@ -117,13 +123,10 @@ mod tests {
 
     #[test]
     fn an_imposed_proposition_carrying_a_region_is_reported() {
-        let k = kinds(&[(
-            "proposal::a_firewall",
-            &[
-                ("sentence_kind", "normative"),
-                ("predicate", "fraction_width: 0"),
-            ],
-        )]);
+        let k = kinds(&[("proposal::a_firewall", &[
+            ("sentence_kind", "normative"),
+            ("predicate", "fraction_width: 0"),
+        ])]);
         assert_eq!(
             k,
             [Some("an-imposed-proposition-carries-a-region")],
@@ -133,10 +136,10 @@ mod tests {
 
     #[test]
     fn an_established_claim_with_no_region_is_reported() {
-        let k = kinds(&[(
-            "proposal::a_theorem_with_no_region",
-            &[("sentence_kind", "theorem")],
-        )]);
+        let k = kinds(&[("proposal::a_theorem_with_no_region", &[(
+            "sentence_kind",
+            "theorem",
+        )])]);
         assert_eq!(k, [Some("an-established-claim-carries-no-region")], "{k:?}");
     }
 
@@ -146,22 +149,19 @@ mod tests {
         // imposition does, and both must be silent while the definition
         // carrying one is not.
         let f = found(&[
-            (
-                "proposal::a_stipulation",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::a_stipulation_with_a_region",
-                &[
-                    ("sentence_kind", "definition"),
-                    ("defines", "stretch"),
-                    ("predicate", "fraction_width: 0"),
-                ],
-            ),
-            (
-                "proposal::an_imposed_one",
-                &[("sentence_kind", "normative")],
-            ),
+            ("proposal::a_stipulation", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::a_stipulation_with_a_region", &[
+                ("sentence_kind", "definition"),
+                ("defines", "stretch"),
+                ("predicate", "fraction_width: 0"),
+            ]),
+            ("proposal::an_imposed_one", &[(
+                "sentence_kind",
+                "normative",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("a_stipulation_with_a_region"), "{}", f[0]);
@@ -178,14 +178,14 @@ mod tests {
         // be silent or the arm is reporting the rule rather than a breach of it.
         let region = ["fraction_width: 0", "threads: 1"].join(JOIN);
         let f = found(&[
-            (
-                "proposal::an_imposed_one",
-                &[("sentence_kind", "normative")],
-            ),
-            (
-                "proposal::an_established_one",
-                &[("sentence_kind", "theorem"), ("predicate", &region)],
-            ),
+            ("proposal::an_imposed_one", &[(
+                "sentence_kind",
+                "normative",
+            )]),
+            ("proposal::an_established_one", &[
+                ("sentence_kind", "theorem"),
+                ("predicate", &region),
+            ]),
         ]);
         assert!(f.is_empty(), "{f:?}");
     }
@@ -204,10 +204,10 @@ mod tests {
         // engine writes an empty array as the empty string, so neither reading
         // describes a state a real run produces.
         for blank in ["", " ", "\t", "\n  "] {
-            let f = found(&[(
-                "proposal::p",
-                &[("sentence_kind", "theorem"), ("predicate", blank)],
-            )]);
+            let f = found(&[("proposal::p", &[
+                ("sentence_kind", "theorem"),
+                ("predicate", blank),
+            ])]);
             assert_eq!(f.len(), 1, "{blank:?} passed as a region: {f:?}");
         }
     }
@@ -231,13 +231,10 @@ mod tests {
         // entry. Emptiness is the only question this lint asks, so the two
         // readers agree here; the reader is used anyway, because the day this
         // arm asks anything finer a plain split would be wrong and silent.
-        let f = found(&[(
-            "proposal::p",
-            &[
-                ("sentence_kind", "theorem"),
-                ("predicate", "signedness: signedness in {unsigned, signed}"),
-            ],
-        )]);
+        let f = found(&[("proposal::p", &[
+            ("sentence_kind", "theorem"),
+            ("predicate", "signedness: signedness in {unsigned, signed}"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -254,10 +251,10 @@ mod tests {
     fn every_offending_row_is_reported_rather_than_the_first() {
         let f = found(&[
             ("proposal::a", &[("sentence_kind", "theorem")]),
-            (
-                "proposal::b",
-                &[("sentence_kind", "normative"), ("predicate", "threads: 1")],
-            ),
+            ("proposal::b", &[
+                ("sentence_kind", "normative"),
+                ("predicate", "threads: 1"),
+            ]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
     }

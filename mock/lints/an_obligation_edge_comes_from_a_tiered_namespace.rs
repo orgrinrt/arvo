@@ -75,16 +75,16 @@ impl Lint for AnObligationEdgeComesFromATieredNamespace {
 impl RepoLint for AnObligationEdgeComesFromATieredNamespace {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
-        for ns in ctx.registry.namespaces() {
+        for ns in ctx.registry().namespaces() {
             if TIERED.contains(&ns) {
                 continue;
             }
-            for q in ctx.registry.rows_in(ns) {
+            for q in ctx.registry().rows_in(ns) {
                 // Presence rather than content. A row carrying an `obligation`
                 // written and left empty is exactly as invisible to the
                 // measurement as one carrying slugs, and it is the state a
                 // content test would miss.
-                if !has(ctx.registry, q, "obligation") {
+                if !has(ctx.registry(), q, "obligation") {
                     continue;
                 }
                 out.push(finding(
@@ -108,13 +108,18 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
 
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::AnObligationEdgeComesFromATieredNamespace
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -167,10 +172,10 @@ mod tests {
         let f = findings(&[
             ("obligation::one_thing", &[("need", "A thing.")]),
             ("obligation::another_thing", &[("need", "Another.")]),
-            (
-                "law::some_law",
-                &[("obligation", "one_thing, another_thing")],
-            ),
+            ("law::some_law", &[(
+                "obligation",
+                "one_thing, another_thing",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
     }
@@ -191,10 +196,10 @@ mod tests {
     /// about it.
     #[test]
     fn control_an_obligation_row_is_silent() {
-        let f = findings(&[(
-            "obligation::a_thing",
-            &[("need", "A thing."), ("consumer", "any")],
-        )]);
+        let f = findings(&[("obligation::a_thing", &[
+            ("need", "A thing."),
+            ("consumer", "any"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 

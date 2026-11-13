@@ -32,7 +32,7 @@
 //! every gate.
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-use crate::canon_citations::{is_line_anchor, ledger_named, CITATION_FIELDS};
+use crate::canon_citations::{CITATION_FIELDS, is_line_anchor, ledger_named};
 use crate::canon_rows::{finding, list};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(NoLineCitationIntoALivingLedger)
@@ -56,10 +56,10 @@ impl RepoLint for NoLineCitationIntoALivingLedger {
         // Every row rather than a named list of namespaces. A citation is a
         // citation whichever namespace wrote it, and the fields are the same
         // two everywhere they appear.
-        for ns in ctx.registry.namespaces() {
-            for q in ctx.registry.rows_in(ns) {
+        for ns in ctx.registry().namespaces() {
+            for q in ctx.registry().rows_in(ns) {
                 for field in CITATION_FIELDS {
-                    for citation in list(ctx.registry, q, field) {
+                    for citation in list(ctx.registry(), q, field) {
                         if !is_line_anchor(citation) {
                             continue;
                         }
@@ -90,7 +90,12 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -103,7 +108,7 @@ mod tests {
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::NoLineCitationIntoALivingLedger
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -124,9 +129,7 @@ mod tests {
     /// nothing.
     #[test]
     fn control_a_heading_into_the_same_ledger_is_silent() {
-        let p = cited(&[&format!(
-            "{ROOT}::OPTIONS::#q41-whether-an-arms-predicate-may-read-data"
-        )]);
+        let p = cited(&[&format!("{ROOT}::OPTIONS::#q41-whether-an-arms-predicate-may-read-data")]);
         let f = findings(&[("ruling::a_call", &[("provenance", &p)])]);
         assert!(
             f.is_empty(),
@@ -140,9 +143,7 @@ mod tests {
     /// right about it.
     #[test]
     fn control_a_line_into_a_numbered_member_file_is_silent() {
-        let p = cited(&[&format!(
-            "{ROOT}::109_bellard_the_primitive_derived_cold::156"
-        )]);
+        let p = cited(&[&format!("{ROOT}::109_bellard_the_primitive_derived_cold::156")]);
         let f = findings(&[("ruling::a_call", &[("provenance", &p)])]);
         assert!(f.is_empty(), "{f:?}");
     }

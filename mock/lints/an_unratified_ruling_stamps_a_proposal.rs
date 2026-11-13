@@ -52,13 +52,13 @@ impl Lint for AnUnratifiedRulingStampsAProposal {
 }
 impl RepoLint for AnUnratifiedRulingStampsAProposal {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        ctx.registry
+        ctx.registry()
             .rows_in(NAMESPACE)
             .iter()
-            .filter(|q| !list(ctx.registry, q, "ratifies").is_empty())
-            .filter(|q| text(ctx.registry, q, "rung") != Some(RATIFIED))
+            .filter(|q| !list(ctx.registry(), q, "ratifies").is_empty())
+            .filter(|q| text(ctx.registry(), q, "rung") != Some(RATIFIED))
             .map(|q| {
-                let rung = text(ctx.registry, q, "rung").unwrap_or("(absent)");
+                let rung = text(ctx.registry(), q, "rung").unwrap_or("(absent)");
                 finding(
                     LINT,
                     None,
@@ -77,7 +77,11 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
@@ -87,14 +91,14 @@ mod tests {
     #[test]
     fn a_stamp_from_anything_but_a_ratification_is_reported() {
         let f = found(&[
-            (
-                "ruling::an_ack_that_stamps",
-                &[("rung", "stated"), ("ratifies", "some_claim")],
-            ),
-            (
-                "ruling::a_real_ratification",
-                &[("rung", "ratified"), ("ratifies", "some_other_claim")],
-            ),
+            ("ruling::an_ack_that_stamps", &[
+                ("rung", "stated"),
+                ("ratifies", "some_claim"),
+            ]),
+            ("ruling::a_real_ratification", &[
+                ("rung", "ratified"),
+                ("ratifies", "some_other_claim"),
+            ]),
             ("ruling::an_ack_that_stamps_nothing", &[("rung", "stated")]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
@@ -140,10 +144,10 @@ mod tests {
         // Only `ruling` carries `ratifies`. A lint reading every namespace
         // would be deciding a rule for namespaces it was not written for, and
         // every arm above plants one namespace so none of them can tell.
-        let f = found(&[(
-            "proposal::p",
-            &[("rung", "stated"), ("ratifies", "some_claim")],
-        )]);
+        let f = found(&[("proposal::p", &[
+            ("rung", "stated"),
+            ("ratifies", "some_claim"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 

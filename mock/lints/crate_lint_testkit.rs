@@ -21,7 +21,8 @@
 
 use std::collections::HashMap;
 
-use mockspace::{CrateLint, LintConfig, LintContext, LintError, LintPack, Severity};
+use mockspace::testkit::LintFixture;
+use mockspace::{CrateLint, LintConfig, LintError, LintPack, Severity};
 
 /// The names of every crate lint in the pack the engine is handed.
 ///
@@ -91,16 +92,20 @@ pub fn assert_findings_carry(lint: &dyn CrateLint, findings: &[LintError], expec
 /// is the same override this repo's `mockspace.toml` would produce, built by
 /// hand from the same values rather than read from the file: `from_base`
 /// with the one entry `[lints.<name>]` would resolve to. It exercises the
-/// same `run_with_overrides` restamping path the real gate does, through the
-/// same public [`mockspace::check_crate_with_extra`] entry point.
+/// same restamping path the real gate does, through the runner
+/// [`mockspace::testkit::run`] with a pack holding the one lint.
 pub fn findings_under_override(
-    ctx: &LintContext,
+    fixture: &LintFixture,
     lint: Box<dyn CrateLint>,
     lint_name: &str,
     over: Severity,
 ) -> Vec<LintError> {
     let cfg = LintConfig::from_base(HashMap::from([(lint_name.to_string(), over)]));
-    mockspace::check_crate_with_extra(ctx, false, Some(&cfg), std::slice::from_ref(&lint))
+    let pack = LintPack {
+        crate_lints: vec![lint],
+        ..LintPack::default()
+    };
+    mockspace::testkit::run(std::slice::from_ref(fixture), Some(&cfg), Some(&pack))
         .into_iter()
         .filter(|e| e.lint_name == lint_name)
         .collect()

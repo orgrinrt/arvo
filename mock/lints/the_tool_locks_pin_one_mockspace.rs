@@ -54,7 +54,7 @@
 use std::collections::BTreeMap;
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(TheToolLocksPinOneMockspace)
@@ -78,7 +78,7 @@ impl Lint for TheToolLocksPinOneMockspace {
 }
 impl RepoLint for TheToolLocksPinOneMockspace {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&ctx.mock_dir)
+        check(ctx.view(), &ctx.mock_dir)
     }
 }
 
@@ -132,9 +132,8 @@ enum EnginePin {
 /// rather than a fourth opinion. Read from the manifest and not from the
 /// lockfile beside it, because the `[patch]` there resolves the package to a
 /// checkout path and leaves it with no `source` line at all.
-fn engine_pin(mock_dir: &Path) -> EnginePin {
-    let Ok(manifest) = std::fs::read_to_string(mock_dir.join("target/mockspace-lints/Cargo.toml"))
-    else {
+fn engine_pin(view: &View, mock_dir: &Path) -> EnginePin {
+    let Some(manifest) = view.text(mock_dir.join("target/mockspace-lints/Cargo.toml")) else {
         return EnginePin::Unbuilt;
     };
     manifest
@@ -159,9 +158,9 @@ fn engine_pin(mock_dir: &Path) -> EnginePin {
 /// the likelier shape: `mockspace_branch = "dev"` means the launcher re-resolves
 /// the head periodically, and when it moves no tool lockfile moves with it, so
 /// they stay uniform and stale together.
-fn check(mock_dir: &Path) -> Vec<LintError> {
+fn check(view: &View, mock_dir: &Path) -> Vec<LintError> {
     let mut by_revision: BTreeMap<String, Vec<String>> = BTreeMap::new();
-    match engine_pin(mock_dir) {
+    match engine_pin(view, mock_dir) {
         EnginePin::At(rev) => {
             by_revision
                 .entry(rev)
@@ -174,19 +173,20 @@ fn check(mock_dir: &Path) -> Vec<LintError> {
         EnginePin::Unbuilt | EnginePin::Unpinned => {},
     }
 
-    let Ok(entries) = std::fs::read_dir(mock_dir.join("tools")) else {
+    let tools = mock_dir.join("tools");
+    let Some(entries) = view.list(&tools) else {
         return verdict(by_revision);
     };
 
-    for entry in entries.flatten() {
-        let lock = entry.path().join("Cargo.lock");
-        let Ok(text) = std::fs::read_to_string(&lock) else {
+    for entry in entries.entries() {
+        let lock = tools.join(entry.name()).join("Cargo.lock");
+        let Some(text) = view.text(&lock) else {
             continue;
         };
-        let Some(rev) = revision_in(&text) else {
+        let Some(rev) = revision_in(text) else {
             continue;
         };
-        let tool = entry.file_name().to_string_lossy().to_string();
+        let tool = entry.name().to_string();
         by_revision.entry(rev).or_default().push(tool);
     }
 
@@ -242,12 +242,14 @@ mod tests {
 
     use super::*;
     use crate::canon_lint_testkit::{
+        Judge,
         assert_findings_block_at,
         assert_not_declared_off,
         assert_registered,
         ctx_at,
         plant,
         planted_tree,
+        through_view,
         view,
     };
 
@@ -315,7 +317,7 @@ mod tests {
             ("gamma", Some(lock_at(A))),
         ]);
         assert!(
-            check(&d).is_empty(),
+            through_view(&d, |v| check(v, &d)).is_empty(),
             "three lockfiles agreeing is the state this lint exists to permit"
         );
     }
@@ -326,7 +328,7 @@ mod tests {
             ("alpha", Some(lock_at(A))),
             ("beta", Some(lock_at(B))),
         ]);
-        let f = check(&d);
+        let f = through_view(&d, |v| check(v, &d));
         assert_eq!(f.len(), 1, "one finding for the whole disagreement: {f:?}");
         let m = &f[0].message;
         assert!(
@@ -346,7 +348,7 @@ mod tests {
             ("gamma", Some(lock_at(C))),
             ("delta", Some(lock_at(B))),
         ]);
-        let f = check(&d);
+        let f = through_view(&d, |v| check(v, &d));
         assert_eq!(f.len(), 1, "still one finding: {f:?}");
         let m = &f[0].message;
         assert!(m.contains("3 different revisions"), "{m}");
@@ -369,7 +371,7 @@ mod tests {
             ("gamma", Some(lock_at(A))),
         ]);
         plant_engine(&d, B);
-        let f = check(&d);
+        let f = through_view(&d, |v| check(v, &d));
         assert_eq!(
             f.len(),
             1,
@@ -397,7 +399,7 @@ mod tests {
         ]);
         plant_engine(&d, A);
         assert!(
-            check(&d).is_empty(),
+            through_view(&d, |v| check(v, &d)).is_empty(),
             "agreement across every participant is the state this lint exists to protect"
         );
     }
@@ -414,7 +416,7 @@ mod tests {
             ("beta", Some(lock_at(A))),
         ]);
         assert!(
-            check(&agree).is_empty(),
+            through_view(&agree, |v| check(v, &agree)).is_empty(),
             "a clone nobody has built in cannot be in violation of a pin it has not resolved"
         );
 
@@ -423,7 +425,7 @@ mod tests {
             ("beta", Some(lock_at(B))),
         ]);
         assert_eq!(
-            check(&disagree).len(),
+            through_view(&disagree, |v| check(v, &disagree)).len(),
             1,
             "the pairwise check still has to refuse when the engine is the part that is missing"
         );
@@ -438,12 +440,12 @@ mod tests {
     fn the_engine_revision_comes_from_the_manifest_not_the_lockfile() {
         let d = planted_tree("locks-engine-reader");
         assert!(
-            matches!(engine_pin(&d), EnginePin::Unbuilt),
+            matches!(through_view(&d, |v| engine_pin(v, &d)), EnginePin::Unbuilt),
             "no manifest is no answer, not a wrong one"
         );
         plant_engine(&d, C);
         assert!(
-            matches!(engine_pin(&d), EnginePin::At(ref r) if *r == C.chars().take(7).collect::<String>()),
+            matches!(through_view(&d, |v| engine_pin(v, &d)), EnginePin::At(ref r) if *r == C.chars().take(7).collect::<String>()),
             "the short form has to match what `revision_in` produces, or the two never compare \
              equal and the arm refuses every tree"
         );
@@ -474,12 +476,12 @@ mod tests {
             ),
         );
         assert!(
-            matches!(engine_pin(&d), EnginePin::Unpinned),
+            matches!(through_view(&d, |v| engine_pin(v, &d)), EnginePin::Unpinned),
             "a manifest with no `rev` is a different state from a manifest that is not there, and \
              folding them together is what hid this"
         );
         assert!(
-            check(&d).is_empty(),
+            through_view(&d, |v| check(v, &d)).is_empty(),
             "there is no revision for a tool to agree with, so the pairwise check is the whole of \
              what can be asked here"
         );
@@ -496,7 +498,7 @@ mod tests {
             ("alpha", Some(lock_at(A))),
             ("beta", Some(lock_at(B))),
         ]);
-        let f = check(&d);
+        let f = through_view(&d, |v| check(v, &d));
         assert_eq!(f.len(), 1, "one finding: {f:?}");
         assert_eq!(
             f[0].path.as_deref(),
@@ -513,14 +515,17 @@ mod tests {
     #[test]
     fn a_single_tool_cannot_disagree_with_itself() {
         let d = planted_mock("locks-single", &[("alpha", Some(lock_at(A)))]);
-        assert!(check(&d).is_empty(), "one lockfile is agreement");
+        assert!(
+            through_view(&d, |v| check(v, &d)).is_empty(),
+            "one lockfile is agreement"
+        );
     }
 
     #[test]
     fn no_tools_at_all_passes() {
         let d = planted_mock("locks-none", &[]);
         assert!(
-            check(&d).is_empty(),
+            through_view(&d, |v| check(v, &d)).is_empty(),
             "an empty tools directory pins nothing"
         );
     }
@@ -529,7 +534,10 @@ mod tests {
     fn a_missing_tools_directory_passes() {
         let d = planted_tree("locks-absent");
         assert!(
-            check(&d.join("nothing-here")).is_empty(),
+            through_view(&d.join("nothing-here"), |v| {
+                check(v, &d.join("nothing-here"))
+            })
+            .is_empty(),
             "a repository with no tools directory is not in violation of this"
         );
     }
@@ -542,7 +550,7 @@ mod tests {
             ("gamma", Some(lock_at(A))),
         ]);
         assert!(
-            check(&d).is_empty(),
+            through_view(&d, |v| check(v, &d)).is_empty(),
             "a tool that pins nothing cannot disagree with one that does"
         );
     }
@@ -559,7 +567,7 @@ mod tests {
             ("beta", Some(unrelated.to_string())),
         ]);
         assert!(
-            check(&d).is_empty(),
+            through_view(&d, |v| check(v, &d)).is_empty(),
             "a lockfile without the package contributes no revision"
         );
     }
@@ -583,7 +591,7 @@ mod tests {
             ("beta", Some(lock_at(A))),
         ]);
         assert!(
-            check(&d).is_empty(),
+            through_view(&d, |v| check(v, &d)).is_empty(),
             "the other dependency's revision was read as this package's"
         );
     }
@@ -608,7 +616,7 @@ mod tests {
             ("beta", Some(lock_at(B))),
         ]);
         let empty = view(&[], &[]);
-        let found = TheToolLocksPinOneMockspace.check_repo(&ctx_at(&d, &empty));
+        let found = TheToolLocksPinOneMockspace.judge(ctx_at(&d, &empty));
         assert_eq!(
             found.len(),
             1,
@@ -627,7 +635,7 @@ mod tests {
             ("beta", Some(lock_at(B))),
         ]);
         let empty = view(&[], &[]);
-        assert_findings_block_at(&TheToolLocksPinOneMockspace, &ctx_at(&d, &empty));
+        assert_findings_block_at(&TheToolLocksPinOneMockspace, ctx_at(&d, &empty));
     }
 
     #[test]

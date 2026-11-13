@@ -141,9 +141,9 @@ impl CrateLint for ThePlatformWidthPointsReadThePointerWidth {
             return Vec::new();
         }
         let files: Vec<(String, &str)> = ctx
-            .all_sources
+            .all_sources()
             .iter()
-            .map(|f| (f.rel_path.to_string_lossy().to_string(), f.text.as_str()))
+            .map(|f| (f.rel_path.to_string_lossy().to_string(), f.text))
             .collect();
         verdicts(&files)
             .into_iter()

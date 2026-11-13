@@ -61,7 +61,7 @@ impl Lint for ATermIsDefinedTwice {
 }
 impl RepoLint for ATermIsDefinedTwice {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        let reg = ctx.registry;
+        let reg = ctx.registry();
         let definitions: Vec<&str> = reg
             .rows_in(NAMESPACE)
             .iter()
@@ -116,7 +116,11 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
@@ -126,26 +130,23 @@ mod tests {
     #[test]
     fn one_term_stipulated_twice_is_reported_and_a_supersession_is_not() {
         let f = found(&[
-            (
-                "proposal::the_first_reading",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::a_rival_reading",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::an_older_reading_of_something_else",
-                &[("sentence_kind", "definition"), ("defines", "stretch")],
-            ),
-            (
-                "proposal::the_reading_that_replaced_it",
-                &[
-                    ("sentence_kind", "definition"),
-                    ("defines", "stretch"),
-                    ("supersedes", "an_older_reading_of_something_else"),
-                ],
-            ),
+            ("proposal::the_first_reading", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::a_rival_reading", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::an_older_reading_of_something_else", &[
+                ("sentence_kind", "definition"),
+                ("defines", "stretch"),
+            ]),
+            ("proposal::the_reading_that_replaced_it", &[
+                ("sentence_kind", "definition"),
+                ("defines", "stretch"),
+                ("supersedes", "an_older_reading_of_something_else"),
+            ]),
         ]);
         assert_eq!(
             f.len(),
@@ -167,22 +168,19 @@ mod tests {
         // a checker cannot see from inside: it reports nothing, and nothing is
         // what a clean corpus reports too.
         let f = found(&[
-            (
-                "proposal::the_first_reading",
-                &[("sentence_kind", "definition"), ("defines", "strategy")],
-            ),
-            (
-                "proposal::a_rival_that_replaced_something_else",
-                &[
-                    ("sentence_kind", "definition"),
-                    ("defines", "strategy"),
-                    ("supersedes", "an_unrelated_claim"),
-                ],
-            ),
-            (
-                "proposal::an_unrelated_claim",
-                &[("sentence_kind", "definition"), ("defines", "container")],
-            ),
+            ("proposal::the_first_reading", &[
+                ("sentence_kind", "definition"),
+                ("defines", "strategy"),
+            ]),
+            ("proposal::a_rival_that_replaced_something_else", &[
+                ("sentence_kind", "definition"),
+                ("defines", "strategy"),
+                ("supersedes", "an_unrelated_claim"),
+            ]),
+            ("proposal::an_unrelated_claim", &[
+                ("sentence_kind", "definition"),
+                ("defines", "container"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("strategy"), "{}", f[0]);
@@ -195,22 +193,19 @@ mod tests {
         // a definition would satisfy a check that only asked whether the named
         // slug exists.
         let f = found(&[
-            (
-                "proposal::the_first_reading",
-                &[("sentence_kind", "definition"), ("defines", "strategy")],
-            ),
-            (
-                "proposal::a_rival",
-                &[
-                    ("sentence_kind", "definition"),
-                    ("defines", "strategy"),
-                    ("supersedes", "a_measured_claim"),
-                ],
-            ),
-            (
-                "proposal::a_measured_claim",
-                &[("sentence_kind", "measured"), ("defines", "strategy")],
-            ),
+            ("proposal::the_first_reading", &[
+                ("sentence_kind", "definition"),
+                ("defines", "strategy"),
+            ]),
+            ("proposal::a_rival", &[
+                ("sentence_kind", "definition"),
+                ("defines", "strategy"),
+                ("supersedes", "a_measured_claim"),
+            ]),
+            ("proposal::a_measured_claim", &[
+                ("sentence_kind", "measured"),
+                ("defines", "strategy"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("a_rival"), "{}", f[0]);
@@ -222,18 +217,15 @@ mod tests {
         // would report a pair whose supersession is recorded second, and every
         // arm above plants a single-entry list so none of them can tell.
         let f = found(&[
-            (
-                "proposal::an_older_reading",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::the_replacement",
-                &[
-                    ("sentence_kind", "definition"),
-                    ("defines", "chain"),
-                    ("supersedes", "something_else, an_older_reading"),
-                ],
-            ),
+            ("proposal::an_older_reading", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::the_replacement", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+                ("supersedes", "something_else, an_older_reading"),
+            ]),
         ]);
         assert!(f.is_empty(), "{f:?}");
     }
@@ -256,14 +248,14 @@ mod tests {
         // `defines` is not a stipulation, and a check keyed on the field alone
         // would report the pair.
         let f = found(&[
-            (
-                "proposal::a_stipulation",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::a_measurement_about_chains",
-                &[("sentence_kind", "measured"), ("defines", "chain")],
-            ),
+            ("proposal::a_stipulation", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::a_measurement_about_chains", &[
+                ("sentence_kind", "measured"),
+                ("defines", "chain"),
+            ]),
         ]);
         assert!(f.is_empty(), "{f:?}");
     }
@@ -271,18 +263,18 @@ mod tests {
     #[test]
     fn three_readings_of_one_term_are_one_finding_naming_all_three() {
         let f = found(&[
-            (
-                "proposal::a",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::b",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::c",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
+            ("proposal::a", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::b", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::c", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains('3'), "the count is reported: {}", f[0]);
@@ -294,22 +286,22 @@ mod tests {
     #[test]
     fn two_terms_each_defined_twice_are_two_findings() {
         let f = found(&[
-            (
-                "proposal::a",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::b",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
-            (
-                "proposal::c",
-                &[("sentence_kind", "definition"), ("defines", "stretch")],
-            ),
-            (
-                "proposal::d",
-                &[("sentence_kind", "definition"), ("defines", "stretch")],
-            ),
+            ("proposal::a", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::b", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
+            ("proposal::c", &[
+                ("sentence_kind", "definition"),
+                ("defines", "stretch"),
+            ]),
+            ("proposal::d", &[
+                ("sentence_kind", "definition"),
+                ("defines", "stretch"),
+            ]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
     }
@@ -323,14 +315,14 @@ mod tests {
     fn its_findings_block_every_gate() {
         let v = view(
             &[
-                (
-                    "proposal::a",
-                    &[("sentence_kind", "definition"), ("defines", "chain")],
-                ),
-                (
-                    "proposal::b",
-                    &[("sentence_kind", "definition"), ("defines", "chain")],
-                ),
+                ("proposal::a", &[
+                    ("sentence_kind", "definition"),
+                    ("defines", "chain"),
+                ]),
+                ("proposal::b", &[
+                    ("sentence_kind", "definition"),
+                    ("defines", "chain"),
+                ]),
             ],
             &[],
         );

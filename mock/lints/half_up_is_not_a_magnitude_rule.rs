@@ -108,7 +108,7 @@
 
 use std::path::{Path, PathBuf};
 
-use mockspace::{Lint, LintError, RegistryView, RepoContext, RepoLint, Severity};
+use mockspace::{Entry, Lint, LintError, RegistryView, RepoContext, RepoLint, Severity, View};
 
 #[path = "half_up_is_not_a_magnitude_rule/comments.rs"]
 pub(crate) mod comments;
@@ -200,20 +200,19 @@ impl Lint for HalfUpIsNotAMagnitudeRule {
 
 impl RepoLint for HalfUpIsNotAMagnitudeRule {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        let mut out = check_tree(ctx.mock_dir);
-        out.extend(check_registry(ctx.registry));
+        let mut out = check_tree(ctx.view(), ctx.mock_dir);
+        out.extend(check_registry(ctx.registry()));
         out
     }
 }
 
 /// Every finding in the files under `mock_dir`.
-fn check_tree(mock_dir: &Path) -> Vec<LintError> {
-    let mut files = Vec::new();
-    collect(mock_dir, &mut files);
+fn check_tree(view: &View, mock_dir: &Path) -> Vec<LintError> {
+    let mut files = collect(view, mock_dir);
     files.sort();
     let mut out = Vec::new();
     for path in files {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let shown = path
@@ -222,13 +221,13 @@ fn check_tree(mock_dir: &Path) -> Vec<LintError> {
             .display()
             .to_string();
         let read = if shown.ends_with(".rs") {
-            passages(&text)
+            passages(text)
         } else {
             vec![Passage {
-                text,
-                line: 1,
+                text:    text.to_string(),
+                line:    1,
                 subject: None,
-                doc: false,
+                doc:     false,
             }]
         };
         for passage in read {
@@ -242,21 +241,18 @@ fn check_tree(mock_dir: &Path) -> Vec<LintError> {
 
 /// Every `.rs` and `.md.tmpl` file under `dir`, outside the directories this
 /// does not read and outside any hidden one.
-fn collect(dir: &Path, out: &mut Vec<PathBuf>) {
-    let Ok(entries) = std::fs::read_dir(dir) else {
-        return;
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        let name = entry.file_name().to_string_lossy().to_string();
-        if path.is_dir() {
-            if !(name.starts_with('.') || NOT_READ.contains(&name.as_str())) {
-                collect(&path, out);
-            }
-        } else if name.ends_with(".rs") || name.ends_with(".md.tmpl") {
-            out.push(path);
-        }
-    }
+fn collect(view: &View, dir: &Path) -> Vec<PathBuf> {
+    view.walk(dir, |_, entry| {
+        let name = entry.name();
+        Entry::is_dir(entry) && (name.starts_with('.') || NOT_READ.contains(&name))
+    })
+    .into_iter()
+    .filter(|path| {
+        path.file_name()
+            .map(|n| n.to_string_lossy())
+            .is_some_and(|name| name.ends_with(".rs") || name.ends_with(".md.tmpl"))
+    })
+    .collect()
 }
 
 /// Every finding in the registry's prose fields.
@@ -337,6 +333,7 @@ mod reaches_the_gate {
 
     use super::{HalfUpIsNotAMagnitudeRule, NAME};
     use crate::canon_lint_testkit::{
+        Judge,
         assert_findings_carry_at,
         assert_not_declared_off,
         assert_registered,
@@ -360,7 +357,7 @@ mod reaches_the_gate {
         let empty = view(&[], &[]);
         assert_findings_carry_at(
             &HalfUpIsNotAMagnitudeRule,
-            &ctx_at(&dir.join("mock"), &empty),
+            ctx_at(&dir.join("mock"), &empty),
             Severity::ADVISORY,
         );
         assert_eq!(
@@ -378,7 +375,7 @@ mod reaches_the_gate {
             "// `half_up` takes a tie away from zero.\n",
         );
         let empty = view(&[], &[]);
-        let found = HalfUpIsNotAMagnitudeRule.check_repo(&ctx_at(&dir.join("mock"), &empty));
+        let found = HalfUpIsNotAMagnitudeRule.judge(ctx_at(&dir.join("mock"), &empty));
         assert_eq!(found.len(), 1);
         assert!(found[0].message.contains("This is a warning"));
         assert!(

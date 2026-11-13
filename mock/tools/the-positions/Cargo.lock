@@ -65,12 +65,18 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "mockspace-lint-rules"
 version = "0.0.0"
-source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#6eb87e7219beba0f7ccdcc7bef031c96f041b34f"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#9c36cfa335f4f22f34b04098727c7c80a8fa3da5"
 dependencies = [
+ "mockspace-verdicts",
  "toml",
  "tree-sitter",
  "tree-sitter-rust",
 ]
+
+[[package]]
+name = "mockspace-verdicts"
+version = "0.0.0"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#9c36cfa335f4f22f34b04098727c7c80a8fa3da5"
 
 [[package]]
 name = "proc-macro2"

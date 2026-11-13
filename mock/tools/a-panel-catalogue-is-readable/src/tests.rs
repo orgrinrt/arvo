@@ -8,9 +8,9 @@
 
 use std::path::{Path, PathBuf};
 
-use mockspace::Lint;
+use mockspace::{Lint, LintError, Reading};
 
-use super::{catalogues, check, rows, APanelCatalogueIsReadable};
+use super::{APanelCatalogueIsReadable, catalogues, check, rows};
 
 /// A mock directory with the catalogues named, under the first declared root.
 ///
@@ -31,9 +31,22 @@ fn tree(what: &str, files: &[(&str, &str)]) -> PathBuf {
     dir
 }
 
+/// What the lint finds over one mock directory, through a view of a fresh
+/// reading of it, as the engine hands a lint its view.
+fn over(dir: &Path) -> Vec<LintError> {
+    let reading = Reading::new(dir);
+    check(&reading.view(), dir)
+}
+
+/// The catalogues the walk finds under one mock directory.
+fn listed(dir: &Path) -> Vec<PathBuf> {
+    let reading = Reading::new(dir);
+    catalogues(&reading.view(), dir)
+}
+
 /// The finding kinds one planted tree produces.
 fn kinds(what: &str, files: &[(&str, &str)]) -> Vec<Option<&'static str>> {
-    check(&tree(what, files))
+    over(&tree(what, files))
         .into_iter()
         .map(|e| e.finding_kind)
         .collect()
@@ -44,10 +57,10 @@ const SOUND: &str = "[[item]]\nid = \"a\"\nconfidence = 0.5\n\n[[item]]\nid = \"
 
 #[test]
 fn a_catalogue_that_does_not_parse_is_reported() {
-    let k = kinds(
-        "parse",
-        &[("broken.toml", "[[item]]\nid = \"unterminated\n")],
-    );
+    let k = kinds("parse", &[(
+        "broken.toml",
+        "[[item]]\nid = \"unterminated\n",
+    )]);
     assert_eq!(k, [Some("a-catalogue-does-not-parse")], "{k:?}");
 }
 
@@ -58,10 +71,10 @@ fn control_a_sound_catalogue_is_silent() {
 
 #[test]
 fn a_row_carrying_none_of_the_identity_keys_is_reported() {
-    let k = kinds(
-        "anonymous",
-        &[("c.toml", "[[item]]\nverdict = \"absorbed\"\n")],
-    );
+    let k = kinds("anonymous", &[(
+        "c.toml",
+        "[[item]]\nverdict = \"absorbed\"\n",
+    )]);
     assert_eq!(k, [Some("a-catalogue-row-cannot-be-named")], "{k:?}");
 }
 
@@ -81,10 +94,10 @@ fn every_identity_key_names_a_row_rather_than_only_the_first() {
 
 #[test]
 fn two_rows_claiming_one_id_are_reported() {
-    let k = kinds(
-        "dup",
-        &[("c.toml", "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n")],
-    );
+    let k = kinds("dup", &[(
+        "c.toml",
+        "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n",
+    )]);
     assert_eq!(k, [Some("two-rows-claim-one-identifier")], "{k:?}");
 }
 
@@ -165,7 +178,7 @@ fn a_non_toml_file_beside_a_catalogue_is_not_read_as_one() {
         "not a catalogue at all [[[",
     )
     .expect("a planted note");
-    assert!(check(&dir).is_empty());
+    assert!(over(&dir).is_empty());
 }
 
 #[test]
@@ -187,7 +200,7 @@ fn every_declared_root_is_walked() {
         std::fs::create_dir_all(dir.join(root)).expect("a planted root");
         std::fs::write(dir.join(root).join("c.toml"), SOUND).expect("a planted catalogue");
         assert_eq!(
-            catalogues(&dir).len(),
+            listed(&dir).len(),
             1,
             "`{root}` is a declared root and is not walked"
         );
@@ -196,14 +209,11 @@ fn every_declared_root_is_walked() {
 
 #[test]
 fn several_defects_in_one_tree_are_all_reported() {
-    let k = kinds(
-        "several",
-        &[
-            ("broken.toml", "[[item]]\nid = \"unterminated\n"),
-            ("dup.toml", "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n"),
-            ("conf.toml", "[[item]]\nid = \"b\"\nconfidence = 9\n"),
-        ],
-    );
+    let k = kinds("several", &[
+        ("broken.toml", "[[item]]\nid = \"unterminated\n"),
+        ("dup.toml", "[[item]]\nid = \"a\"\n\n[[item]]\nid = \"a\"\n"),
+        ("conf.toml", "[[item]]\nid = \"b\"\nconfidence = 9\n"),
+    ]);
     assert_eq!(k.len(), 3, "{k:?}");
     assert!(k.contains(&Some("a-catalogue-does-not-parse")), "{k:?}");
     assert!(k.contains(&Some("two-rows-claim-one-identifier")), "{k:?}");
@@ -224,10 +234,10 @@ fn the_reader_finds_the_rows_a_document_holds() {
 fn its_findings_block_every_gate() {
     // The severity that decides a refusal is the one the finding carries, not
     // the one `default_severity` returns.
-    let found = check(&tree(
-        "severity",
-        &[("broken.toml", "[[item]]\nid = \"x\n")],
-    ));
+    let found = over(&tree("severity", &[(
+        "broken.toml",
+        "[[item]]\nid = \"x\n",
+    )]));
     assert!(!found.is_empty(), "nothing was found, so this says nothing");
     for e in &found {
         assert_eq!(

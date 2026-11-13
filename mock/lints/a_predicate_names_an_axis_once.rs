@@ -48,7 +48,7 @@
 //! every gate.
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-use crate::canon_rows::{finding, predicate_entries, split_axis, PREDICATE_FIELDS};
+use crate::canon_rows::{PREDICATE_FIELDS, finding, predicate_entries, split_axis};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(APredicateNamesAnAxisOnce)
 }
@@ -69,9 +69,9 @@ impl RepoLint for APredicateNamesAnAxisOnce {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
         for (namespace, field) in PREDICATE_FIELDS {
-            for q in ctx.registry.rows_in(namespace) {
+            for q in ctx.registry().rows_in(namespace) {
                 let mut seen: Vec<&str> = Vec::new();
-                for entry in predicate_entries(ctx.registry, q, field) {
+                for entry in predicate_entries(ctx.registry(), q, field) {
                     // An entry with no colon is the other lint's report to
                     // make. Reporting it here too would put one defect in two
                     // buckets a severity cannot separate.
@@ -103,7 +103,12 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -114,7 +119,7 @@ mod tests {
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::APredicateNamesAnAxisOnce
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -157,13 +162,10 @@ mod tests {
     /// into one set would report every well-formed law in the canon.
     #[test]
     fn control_one_axis_in_holds_and_in_fails_is_not_a_repeat() {
-        let f = findings(&[(
-            "law::associativity",
-            &[
-                ("holds", "fraction_width: F = 0"),
-                ("fails", "fraction_width: F > 0"),
-            ],
-        )]);
+        let f = findings(&[("law::associativity", &[
+            ("holds", "fraction_width: F = 0"),
+            ("fails", "fraction_width: F > 0"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -211,10 +213,10 @@ mod tests {
     /// A malformed entry is the other lint's report and is skipped here.
     #[test]
     fn control_an_entry_with_no_colon_is_left_to_the_other_lint() {
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("predicate", "mostly small fractions")],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[(
+            "predicate",
+            "mostly small fractions",
+        )])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -223,10 +225,10 @@ mod tests {
     /// would be noise nobody reads.
     #[test]
     fn control_a_keywords_list_is_not_read_as_a_predicate() {
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("keywords", "width, width, signedness")],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[(
+            "keywords",
+            "width, width, signedness",
+        )])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
