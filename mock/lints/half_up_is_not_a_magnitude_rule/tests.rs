@@ -21,6 +21,7 @@ use super::reading::{
     NEGATORS,
     QUALIFIED,
     READINGS,
+    RESULTS,
     SPELLINGS,
     hits,
 };
@@ -384,11 +385,24 @@ fn the_words_that_give_a_reading_are_not_mention_words() {
     // `value` is not among them, and this walk is what says so rather than
     // dodging the question: a list that only ever asked about the words already
     // fixed would go on passing after the next one broke. `value` stays in
-    // `MENTIONED` for the genuine mentions it also has to catch, so a sentence
-    // asserting the reading with `value` as its own predicate is one of the
-    // reader's known-wrong shapes rather than a word this list should gain;
-    // `sentences/catalogue.rs` carries the sentence it costs.
+    // `MENTIONED` for the genuine mentions it also has to catch, and a verb of
+    // giving ahead of the span makes it the thing the mode gives instead.
     assert!(MENTIONED.contains(&"value"), "value");
+    for verb in RESULTS {
+        let text = format!("`half_up` {verb} the `away from zero` value at a tie.");
+        assert_eq!(found(&text), ["away from zero"], "{text}");
+    }
+    // The other side of the list's edge: the same span and word behind a verb
+    // of holding is a mention, so a holding verb the list took in would fail
+    // here. And a mention word that names no result is one whatever verb
+    // stands ahead.
+    let holding = ["has", "holds", "contains", "lists", "carries", "quotes", "stores"];
+    for verb in holding {
+        assert!(!RESULTS.contains(&verb), "{verb}");
+        let text = format!("`half_up` {verb} the `away from zero` value in it.");
+        assert!(found(&text).is_empty(), "{text}");
+    }
+    assert!(found("`half_up` returns the `away from zero` spelling from its rows.").is_empty());
 }
 
 #[test]
