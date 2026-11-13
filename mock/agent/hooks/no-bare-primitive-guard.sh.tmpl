@@ -124,7 +124,7 @@ while IFS= read -r LINE; do
     # (`x.0`) out of it, hex takes integer suffixes only because `0x1f32`
     # is a hex number and not a float, and the trailing class is the same
     # whole-token boundary the name scan below uses.
-    if printf '%s' "$STRIPPED" | grep -qE "(^|[^A-Za-z0-9_.])(0[xX][0-9A-Fa-f_]+($INT_SUFFIXES)|0[bBoO][0-9_]+($INT_SUFFIXES)|[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9_]+)?($INT_SUFFIXES|f32|f64))([^A-Za-z0-9_]|$)"; then
+    if printf '%s' "$STRIPPED" | grep -qE "(^|[^A-Za-z0-9_.]|\.\.)(0[xX][0-9A-Fa-f_]+($INT_SUFFIXES)|0[bBoO][0-9_]+($INT_SUFFIXES)|[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9_]+)?($INT_SUFFIXES|f32|f64))([^A-Za-z0-9_]|$)"; then
         deny "arvo has no bare numeric primitive written as a literal suffix (\`0u32\`, \`1_usize\`). Build the value through an arvo type, or a domain alias grounded on one. Line: \`$TRIMMED\`. Escape: \`// lint:allow(no-bare-numeric) reason: ...; tracked: #N\`."
     fi
 

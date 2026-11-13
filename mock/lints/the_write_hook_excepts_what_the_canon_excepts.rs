@@ -129,6 +129,10 @@ const TABLE: &[(bool, &str)] = &[
     (false, "let n = 1_usize;"),
     (false, "let x = 2.0f64;"),
     (false, "let n = 0xFFu8;"),
+    // A range puts a dot in front of the literal, which the leading class keeps out
+    // so a field access stays out; a range is no field access.
+    (false, "for i in 0..10u32 {}"),
+    (false, "for i in 0..=10_usize {}"),
     // What must stay allowed beside them: a char literal that holds a quote or a
     // primitive's name, a string whose escaped quote has a primitive after it, a
     // hex number that only looks like it carries a float suffix, and an
@@ -138,6 +142,8 @@ const TABLE: &[(bool, &str)] = &[
     (true, "let s = \"escaped \\\" u32\";"),
     (true, "let n = Num::new(0x1f32);"),
     (true, "let v0u32 = Num::ZERO;"),
+    (true, "for i in 0..10 {}"),
+    (true, "let y = pair.0 + 1;"),
     (true, "fn f<'a, 'b>(x: &'a Num, y: &'b Bool) {}"),
 ];
 
@@ -284,6 +290,7 @@ mod tests {
         ctx_at,
         plant,
         planted_tree,
+        repo_root,
         through_view,
         view,
     };
@@ -453,30 +460,9 @@ mod tests {
         assert_findings_block_at(&TheWriteHookExcepts, ctx_at(&root.join("mock"), &empty));
     }
 
-    /// The repository root, found by walking up from the generated lint crate
-    /// until a `mockspace.toml` appears.
-    ///
-    /// The crate this compiles into lives under `mock/target/`, so the root is
-    /// reachable but not at a fixed depth, and an arm wanting the real hook
-    /// rather than a planted one has to find it. Returns `None` rather than
-    /// panicking, so an arm using it reports a skip if the layout ever changes.
-    fn repo_root() -> Option<PathBuf> {
-        let mut dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        loop {
-            if dir.join("mockspace.toml").is_file() && dir.join(HOOK).is_file() {
-                return Some(dir);
-            }
-            if !dir.pop() {
-                return None;
-            }
-        }
-    }
-
     #[test]
     fn a_bare_primitive_between_two_lifetime_ticks_is_still_refused() {
-        let Some(root) = repo_root() else {
-            return;
-        };
+        let root = repo_root();
         let target = root.join(GUARDED);
         let hook = staged(&root);
 
@@ -512,9 +498,7 @@ mod tests {
 
     #[test]
     fn a_literal_suffix_is_still_refused() {
-        let Some(root) = repo_root() else {
-            return;
-        };
+        let root = repo_root();
         let target = root.join(GUARDED);
         let hook = staged(&root);
 
