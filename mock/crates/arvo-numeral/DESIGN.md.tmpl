@@ -449,12 +449,12 @@ range on the way. `Accumulator<S, T, CAP, C>` is the other way to sum: it holds 
 most `CAP` members of `S`, in a value of a second signature `T`, and comes back to a value of `S`
 once, through `S`'s adaptation.
 
-`T` is named by the consumer and checked by the build. Three things are asked, in one constant
-that every function forces. `T`'s format sits on `S`'s grid, the same radix and the same quantum
-exponent, so a member of `S` has the same slot index in `T`. Its range holds `CAP` times each end
-of `S`'s range, so no sum of `CAP` members leaves it. And `CAP` is at least one: at a capacity of
-zero `take` sums nothing and hands back the slice it was given, so a loop over it would not end.
-Where any of the three fails the accumulator is refused as a failed constant. A width written by hand is then sufficient for the declared capacity or does
+`T` is named by the consumer and checked by the build. Two things are asked of it, in one constant
+that every function forces. Its format sits on `S`'s grid, the same radix and the same quantum
+exponent, so a member of `S` has the same slot index in `T`. And its range holds `CAP` times each end
+of `S`'s range, so no sum of `CAP` members leaves it. Where either fails the accumulator is refused
+as a failed constant. A capacity of zero is admitted: it is the accumulator of no terms, which `of`
+gives for an empty array and `plus` joins like any other. A width written by hand is then sufficient for the declared capacity or does
 not compile: an 8-bit unsigned accumulator over 4-bit unsigned terms is admitted at a capacity of
 sixteen, where the largest sum is 240, and refused at thirty-two, where it is 480. That pair is
 `probe::a_runtime_length_fold_compiles_at_every_length_and_computes_at_one` with its second arm
@@ -475,7 +475,8 @@ their shapes. Nothing is counted at run time.
    shorter, and returns the accumulator with the rest of the slice. A slice longer than the capacity
    is summed a block at a time, each block exact, and the consumer says what joins the blocks: the
    signature's `add` on the finished values, or `plus` into a wider accumulator. The split is the
-   operation, and nothing is validated.
+   operation, and nothing is validated. It is refused at build at a capacity of zero, where it would
+   sum nothing and hand back the slice it was given, so that a loop over it would not end.
 4. `plus(a, b)` joins accumulators of capacities `A` and `B` over the same `S` and `T` into one of
    capacity `CAP`, refused at build where `A + B` is above `CAP`.
 5. `minus(a, b)` is the exact difference of two such, as a value of `T`, with its own bound checked
@@ -725,7 +726,8 @@ For the host door: `index::<u8>()` on a signed 8-bit integer beside `index::<i8>
 unsigned integer beside `index::<u16>()`.
 For the accumulator: 8 bits over 4-bit terms at a capacity of thirty-two beside sixteen, `of` with
 more terms than the capacity beside one within it, `plus` past the capacity beside one within it,
-an accumulator on another grid beside one on the terms', and a capacity of zero beside one of one.
+an accumulator on another grid beside one on the terms', and `take` at a capacity of zero beside
+`take` at one.
 The
 admission is shown open from both sides: an outside slot family over part of its width's range is refused
 beside one over the whole range, with its own row in the placement, which is held; an outside policy that
