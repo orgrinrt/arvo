@@ -1,0 +1,340 @@
+# command: objdump -d --disassemble=bench_entry /home/user/target/release/libbench_bitpack_carrier_d16.so (GNU binutils objdump)
+# same arm, build and host as bench_entry.d16.llvm-objdump.txt
+
+/home/user/target/release/libbench_bitpack_carrier_d16.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .text:
+
+0000000000011ae0 <bench_entry>:
+   11ae0:	48 83 ec 18          	sub    $0x18,%rsp
+   11ae4:	49 89 d0             	mov    %rdx,%r8
+   11ae7:	48 8d 41 ff          	lea    -0x1(%rcx),%rax
+   11aeb:	48 89 ca             	mov    %rcx,%rdx
+   11aee:	48 31 c2             	xor    %rax,%rdx
+   11af1:	48 39 c2             	cmp    %rax,%rdx
+   11af4:	0f 86 c1 04 00 00    	jbe    11fbb <bench_entry+0x4db>
+   11afa:	f3 48 0f bc c1       	tzcnt  %rcx,%rax
+   11aff:	48 83 c0 f2          	add    $0xfffffffffffffff2,%rax
+   11b03:	48 83 f8 09          	cmp    $0x9,%rax
+   11b07:	0f 87 ae 04 00 00    	ja     11fbb <bench_entry+0x4db>
+   11b0d:	48 8d 15 5c 25 ff ff 	lea    -0xdaa4(%rip),%rdx        # 4070 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4028>
+   11b14:	48 63 04 82          	movslq (%rdx,%rax,4),%rax
+   11b18:	48 01 d0             	add    %rdx,%rax
+   11b1b:	ff e0                	jmp    *%rax
+   11b1d:	0f ae e8             	lfence
+   11b20:	0f 31                	rdtsc
+   11b22:	89 d1                	mov    %edx,%ecx
+   11b24:	66 0f ef c0          	pxor   %xmm0,%xmm0
+   11b28:	31 d2                	xor    %edx,%edx
+   11b2a:	66 0f 6f 15 2e 25 ff 	movdqa -0xdad2(%rip),%xmm2        # 4060 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4018>
+   11b31:	ff 
+   11b32:	66 0f ef db          	pxor   %xmm3,%xmm3
+   11b36:	66 0f ef c9          	pxor   %xmm1,%xmm1
+   11b3a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+   11b40:	66 0f 6e ac 56 00 00 	movd   0x6000000(%rsi,%rdx,2),%xmm5
+   11b47:	00 06 
+   11b49:	66 0f 6e a4 56 04 00 	movd   0x6000004(%rsi,%rdx,2),%xmm4
+   11b50:	00 06 
+   11b52:	66 0f db ea          	pand   %xmm2,%xmm5
+   11b56:	66 0f db e2          	pand   %xmm2,%xmm4
+   11b5a:	66 0f 61 e8          	punpcklwd %xmm0,%xmm5
+   11b5e:	66 0f 62 e8          	punpckldq %xmm0,%xmm5
+   11b62:	66 0f d4 eb          	paddq  %xmm3,%xmm5
+   11b66:	66 0f 61 e0          	punpcklwd %xmm0,%xmm4
+   11b6a:	66 0f 62 e0          	punpckldq %xmm0,%xmm4
+   11b6e:	66 0f d4 e1          	paddq  %xmm1,%xmm4
+   11b72:	66 0f 6e 9c 56 08 00 	movd   0x6000008(%rsi,%rdx,2),%xmm3
+   11b79:	00 06 
+   11b7b:	66 0f 6e 8c 56 0c 00 	movd   0x600000c(%rsi,%rdx,2),%xmm1
+   11b82:	00 06 
+   11b84:	66 0f db da          	pand   %xmm2,%xmm3
+   11b88:	66 0f db ca          	pand   %xmm2,%xmm1
+   11b8c:	66 0f 61 d8          	punpcklwd %xmm0,%xmm3
+   11b90:	66 0f 62 d8          	punpckldq %xmm0,%xmm3
+   11b94:	66 0f d4 dd          	paddq  %xmm5,%xmm3
+   11b98:	66 0f 61 c8          	punpcklwd %xmm0,%xmm1
+   11b9c:	66 0f 62 c8          	punpckldq %xmm0,%xmm1
+   11ba0:	66 0f d4 cc          	paddq  %xmm4,%xmm1
+   11ba4:	48 83 c2 08          	add    $0x8,%rdx
+   11ba8:	48 81 fa 00 40 00 00 	cmp    $0x4000,%rdx
+   11baf:	75 8f                	jne    11b40 <bench_entry+0x60>
+   11bb1:	66 0f d4 cb          	paddq  %xmm3,%xmm1
+   11bb5:	66 0f 70 c1 ee       	pshufd $0xee,%xmm1,%xmm0
+   11bba:	66 0f d4 c1          	paddq  %xmm1,%xmm0
+   11bbe:	f7 d9                	neg    %ecx
+   11bc0:	48 c1 e1 20          	shl    $0x20,%rcx
+   11bc4:	89 c6                	mov    %eax,%esi
+   11bc6:	66 41 0f d6 00       	movq   %xmm0,(%r8)
+   11bcb:	0f ae e8             	lfence
+   11bce:	0f 31                	rdtsc
+   11bd0:	e9 bb 03 00 00       	jmp    11f90 <bench_entry+0x4b0>
+   11bd5:	0f ae e8             	lfence
+   11bd8:	0f 31                	rdtsc
+   11bda:	89 d1                	mov    %edx,%ecx
+   11bdc:	66 0f ef c0          	pxor   %xmm0,%xmm0
+   11be0:	31 d2                	xor    %edx,%edx
+   11be2:	66 0f 6f 15 76 24 ff 	movdqa -0xdb8a(%rip),%xmm2        # 4060 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4018>
+   11be9:	ff 
+   11bea:	66 0f ef db          	pxor   %xmm3,%xmm3
+   11bee:	66 0f ef c9          	pxor   %xmm1,%xmm1
+   11bf2:	66 66 66 66 66 2e 0f 	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   11bf9:	1f 84 00 00 00 00 00 
+   11c00:	66 0f 6e ac 56 00 00 	movd   0x6000000(%rsi,%rdx,2),%xmm5
+   11c07:	00 06 
+   11c09:	66 0f 6e a4 56 04 00 	movd   0x6000004(%rsi,%rdx,2),%xmm4
+   11c10:	00 06 
+   11c12:	66 0f db ea          	pand   %xmm2,%xmm5
+   11c16:	66 0f db e2          	pand   %xmm2,%xmm4
+   11c1a:	66 0f 61 e8          	punpcklwd %xmm0,%xmm5
+   11c1e:	66 0f 62 e8          	punpckldq %xmm0,%xmm5
+   11c22:	66 0f d4 eb          	paddq  %xmm3,%xmm5
+   11c26:	66 0f 61 e0          	punpcklwd %xmm0,%xmm4
+   11c2a:	66 0f 62 e0          	punpckldq %xmm0,%xmm4
+   11c2e:	66 0f d4 e1          	paddq  %xmm1,%xmm4
+   11c32:	66 0f 6e 9c 56 08 00 	movd   0x6000008(%rsi,%rdx,2),%xmm3
+   11c39:	00 06 
+   11c3b:	66 0f 6e 8c 56 0c 00 	movd   0x600000c(%rsi,%rdx,2),%xmm1
+   11c42:	00 06 
+   11c44:	66 0f db da          	pand   %xmm2,%xmm3
+   11c48:	66 0f db ca          	pand   %xmm2,%xmm1
+   11c4c:	66 0f 61 d8          	punpcklwd %xmm0,%xmm3
+   11c50:	66 0f 62 d8          	punpckldq %xmm0,%xmm3
+   11c54:	66 0f d4 dd          	paddq  %xmm5,%xmm3
+   11c58:	66 0f 61 c8          	punpcklwd %xmm0,%xmm1
+   11c5c:	66 0f 62 c8          	punpckldq %xmm0,%xmm1
+   11c60:	66 0f d4 cc          	paddq  %xmm4,%xmm1
+   11c64:	48 83 c2 08          	add    $0x8,%rdx
+   11c68:	48 81 fa 00 00 20 00 	cmp    $0x200000,%rdx
+   11c6f:	75 8f                	jne    11c00 <bench_entry+0x120>
+   11c71:	66 0f d4 cb          	paddq  %xmm3,%xmm1
+   11c75:	66 0f 70 c1 ee       	pshufd $0xee,%xmm1,%xmm0
+   11c7a:	66 0f d4 c1          	paddq  %xmm1,%xmm0
+   11c7e:	f7 d9                	neg    %ecx
+   11c80:	48 c1 e1 20          	shl    $0x20,%rcx
+   11c84:	89 c6                	mov    %eax,%esi
+   11c86:	66 41 0f d6 00       	movq   %xmm0,(%r8)
+   11c8b:	0f ae e8             	lfence
+   11c8e:	0f 31                	rdtsc
+   11c90:	e9 fb 02 00 00       	jmp    11f90 <bench_entry+0x4b0>
+   11c95:	0f ae e8             	lfence
+   11c98:	0f 31                	rdtsc
+   11c9a:	89 d1                	mov    %edx,%ecx
+   11c9c:	66 0f ef c0          	pxor   %xmm0,%xmm0
+   11ca0:	31 d2                	xor    %edx,%edx
+   11ca2:	66 0f 6f 15 b6 23 ff 	movdqa -0xdc4a(%rip),%xmm2        # 4060 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4018>
+   11ca9:	ff 
+   11caa:	66 0f ef db          	pxor   %xmm3,%xmm3
+   11cae:	66 0f ef c9          	pxor   %xmm1,%xmm1
+   11cb2:	66 66 66 66 66 2e 0f 	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   11cb9:	1f 84 00 00 00 00 00 
+   11cc0:	66 0f 6e ac 56 00 00 	movd   0x6000000(%rsi,%rdx,2),%xmm5
+   11cc7:	00 06 
+   11cc9:	66 0f 6e a4 56 04 00 	movd   0x6000004(%rsi,%rdx,2),%xmm4
+   11cd0:	00 06 
+   11cd2:	66 0f db ea          	pand   %xmm2,%xmm5
+   11cd6:	66 0f db e2          	pand   %xmm2,%xmm4
+   11cda:	66 0f 61 e8          	punpcklwd %xmm0,%xmm5
+   11cde:	66 0f 62 e8          	punpckldq %xmm0,%xmm5
+   11ce2:	66 0f d4 eb          	paddq  %xmm3,%xmm5
+   11ce6:	66 0f 61 e0          	punpcklwd %xmm0,%xmm4
+   11cea:	66 0f 62 e0          	punpckldq %xmm0,%xmm4
+   11cee:	66 0f d4 e1          	paddq  %xmm1,%xmm4
+   11cf2:	66 0f 6e 9c 56 08 00 	movd   0x6000008(%rsi,%rdx,2),%xmm3
+   11cf9:	00 06 
+   11cfb:	66 0f 6e 8c 56 0c 00 	movd   0x600000c(%rsi,%rdx,2),%xmm1
+   11d02:	00 06 
+   11d04:	66 0f db da          	pand   %xmm2,%xmm3
+   11d08:	66 0f db ca          	pand   %xmm2,%xmm1
+   11d0c:	66 0f 61 d8          	punpcklwd %xmm0,%xmm3
+   11d10:	66 0f 62 d8          	punpckldq %xmm0,%xmm3
+   11d14:	66 0f d4 dd          	paddq  %xmm5,%xmm3
+   11d18:	66 0f 61 c8          	punpcklwd %xmm0,%xmm1
+   11d1c:	66 0f 62 c8          	punpckldq %xmm0,%xmm1
+   11d20:	66 0f d4 cc          	paddq  %xmm4,%xmm1
+   11d24:	48 83 c2 08          	add    $0x8,%rdx
+   11d28:	48 81 fa 00 00 02 00 	cmp    $0x20000,%rdx
+   11d2f:	75 8f                	jne    11cc0 <bench_entry+0x1e0>
+   11d31:	66 0f d4 cb          	paddq  %xmm3,%xmm1
+   11d35:	66 0f 70 c1 ee       	pshufd $0xee,%xmm1,%xmm0
+   11d3a:	66 0f d4 c1          	paddq  %xmm1,%xmm0
+   11d3e:	f7 d9                	neg    %ecx
+   11d40:	48 c1 e1 20          	shl    $0x20,%rcx
+   11d44:	89 c6                	mov    %eax,%esi
+   11d46:	66 41 0f d6 00       	movq   %xmm0,(%r8)
+   11d4b:	0f ae e8             	lfence
+   11d4e:	0f 31                	rdtsc
+   11d50:	e9 3b 02 00 00       	jmp    11f90 <bench_entry+0x4b0>
+   11d55:	0f ae e8             	lfence
+   11d58:	0f 31                	rdtsc
+   11d5a:	89 d1                	mov    %edx,%ecx
+   11d5c:	66 0f ef c0          	pxor   %xmm0,%xmm0
+   11d60:	31 d2                	xor    %edx,%edx
+   11d62:	66 0f 6f 15 f6 22 ff 	movdqa -0xdd0a(%rip),%xmm2        # 4060 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4018>
+   11d69:	ff 
+   11d6a:	66 0f ef db          	pxor   %xmm3,%xmm3
+   11d6e:	66 0f ef c9          	pxor   %xmm1,%xmm1
+   11d72:	66 66 66 66 66 2e 0f 	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   11d79:	1f 84 00 00 00 00 00 
+   11d80:	66 0f 6e ac 56 00 00 	movd   0x6000000(%rsi,%rdx,2),%xmm5
+   11d87:	00 06 
+   11d89:	66 0f 6e a4 56 04 00 	movd   0x6000004(%rsi,%rdx,2),%xmm4
+   11d90:	00 06 
+   11d92:	66 0f db ea          	pand   %xmm2,%xmm5
+   11d96:	66 0f db e2          	pand   %xmm2,%xmm4
+   11d9a:	66 0f 61 e8          	punpcklwd %xmm0,%xmm5
+   11d9e:	66 0f 62 e8          	punpckldq %xmm0,%xmm5
+   11da2:	66 0f d4 eb          	paddq  %xmm3,%xmm5
+   11da6:	66 0f 61 e0          	punpcklwd %xmm0,%xmm4
+   11daa:	66 0f 62 e0          	punpckldq %xmm0,%xmm4
+   11dae:	66 0f d4 e1          	paddq  %xmm1,%xmm4
+   11db2:	66 0f 6e 9c 56 08 00 	movd   0x6000008(%rsi,%rdx,2),%xmm3
+   11db9:	00 06 
+   11dbb:	66 0f 6e 8c 56 0c 00 	movd   0x600000c(%rsi,%rdx,2),%xmm1
+   11dc2:	00 06 
+   11dc4:	66 0f db da          	pand   %xmm2,%xmm3
+   11dc8:	66 0f db ca          	pand   %xmm2,%xmm1
+   11dcc:	66 0f 61 d8          	punpcklwd %xmm0,%xmm3
+   11dd0:	66 0f 62 d8          	punpckldq %xmm0,%xmm3
+   11dd4:	66 0f d4 dd          	paddq  %xmm5,%xmm3
+   11dd8:	66 0f 61 c8          	punpcklwd %xmm0,%xmm1
+   11ddc:	66 0f 62 c8          	punpckldq %xmm0,%xmm1
+   11de0:	66 0f d4 cc          	paddq  %xmm4,%xmm1
+   11de4:	48 83 c2 08          	add    $0x8,%rdx
+   11de8:	48 81 fa 00 00 10 00 	cmp    $0x100000,%rdx
+   11def:	75 8f                	jne    11d80 <bench_entry+0x2a0>
+   11df1:	66 0f d4 cb          	paddq  %xmm3,%xmm1
+   11df5:	66 0f 70 c1 ee       	pshufd $0xee,%xmm1,%xmm0
+   11dfa:	66 0f d4 c1          	paddq  %xmm1,%xmm0
+   11dfe:	f7 d9                	neg    %ecx
+   11e00:	48 c1 e1 20          	shl    $0x20,%rcx
+   11e04:	89 c6                	mov    %eax,%esi
+   11e06:	66 41 0f d6 00       	movq   %xmm0,(%r8)
+   11e0b:	0f ae e8             	lfence
+   11e0e:	0f 31                	rdtsc
+   11e10:	e9 7b 01 00 00       	jmp    11f90 <bench_entry+0x4b0>
+   11e15:	0f ae e8             	lfence
+   11e18:	0f 31                	rdtsc
+   11e1a:	89 d1                	mov    %edx,%ecx
+   11e1c:	66 0f ef c0          	pxor   %xmm0,%xmm0
+   11e20:	31 d2                	xor    %edx,%edx
+   11e22:	66 0f 6f 15 36 22 ff 	movdqa -0xddca(%rip),%xmm2        # 4060 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4018>
+   11e29:	ff 
+   11e2a:	66 0f ef db          	pxor   %xmm3,%xmm3
+   11e2e:	66 0f ef c9          	pxor   %xmm1,%xmm1
+   11e32:	66 66 66 66 66 2e 0f 	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   11e39:	1f 84 00 00 00 00 00 
+   11e40:	66 0f 6e ac 56 00 00 	movd   0x6000000(%rsi,%rdx,2),%xmm5
+   11e47:	00 06 
+   11e49:	66 0f 6e a4 56 04 00 	movd   0x6000004(%rsi,%rdx,2),%xmm4
+   11e50:	00 06 
+   11e52:	66 0f db ea          	pand   %xmm2,%xmm5
+   11e56:	66 0f db e2          	pand   %xmm2,%xmm4
+   11e5a:	66 0f 61 e8          	punpcklwd %xmm0,%xmm5
+   11e5e:	66 0f 62 e8          	punpckldq %xmm0,%xmm5
+   11e62:	66 0f d4 eb          	paddq  %xmm3,%xmm5
+   11e66:	66 0f 61 e0          	punpcklwd %xmm0,%xmm4
+   11e6a:	66 0f 62 e0          	punpckldq %xmm0,%xmm4
+   11e6e:	66 0f d4 e1          	paddq  %xmm1,%xmm4
+   11e72:	66 0f 6e 9c 56 08 00 	movd   0x6000008(%rsi,%rdx,2),%xmm3
+   11e79:	00 06 
+   11e7b:	66 0f 6e 8c 56 0c 00 	movd   0x600000c(%rsi,%rdx,2),%xmm1
+   11e82:	00 06 
+   11e84:	66 0f db da          	pand   %xmm2,%xmm3
+   11e88:	66 0f db ca          	pand   %xmm2,%xmm1
+   11e8c:	66 0f 61 d8          	punpcklwd %xmm0,%xmm3
+   11e90:	66 0f 62 d8          	punpckldq %xmm0,%xmm3
+   11e94:	66 0f d4 dd          	paddq  %xmm5,%xmm3
+   11e98:	66 0f 61 c8          	punpcklwd %xmm0,%xmm1
+   11e9c:	66 0f 62 c8          	punpckldq %xmm0,%xmm1
+   11ea0:	66 0f d4 cc          	paddq  %xmm4,%xmm1
+   11ea4:	48 83 c2 08          	add    $0x8,%rdx
+   11ea8:	48 81 fa 00 00 80 00 	cmp    $0x800000,%rdx
+   11eaf:	75 8f                	jne    11e40 <bench_entry+0x360>
+   11eb1:	66 0f d4 cb          	paddq  %xmm3,%xmm1
+   11eb5:	66 0f 70 c1 ee       	pshufd $0xee,%xmm1,%xmm0
+   11eba:	66 0f d4 c1          	paddq  %xmm1,%xmm0
+   11ebe:	f7 d9                	neg    %ecx
+   11ec0:	48 c1 e1 20          	shl    $0x20,%rcx
+   11ec4:	89 c6                	mov    %eax,%esi
+   11ec6:	66 41 0f d6 00       	movq   %xmm0,(%r8)
+   11ecb:	0f ae e8             	lfence
+   11ece:	0f 31                	rdtsc
+   11ed0:	e9 bb 00 00 00       	jmp    11f90 <bench_entry+0x4b0>
+   11ed5:	0f ae e8             	lfence
+   11ed8:	0f 31                	rdtsc
+   11eda:	89 d1                	mov    %edx,%ecx
+   11edc:	66 0f ef c0          	pxor   %xmm0,%xmm0
+   11ee0:	31 d2                	xor    %edx,%edx
+   11ee2:	66 0f 6f 15 76 21 ff 	movdqa -0xde8a(%rip),%xmm2        # 4060 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4018>
+   11ee9:	ff 
+   11eea:	66 0f ef db          	pxor   %xmm3,%xmm3
+   11eee:	66 0f ef c9          	pxor   %xmm1,%xmm1
+   11ef2:	66 66 66 66 66 2e 0f 	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   11ef9:	1f 84 00 00 00 00 00 
+   11f00:	66 0f 6e ac 56 00 00 	movd   0x6000000(%rsi,%rdx,2),%xmm5
+   11f07:	00 06 
+   11f09:	66 0f 6e a4 56 04 00 	movd   0x6000004(%rsi,%rdx,2),%xmm4
+   11f10:	00 06 
+   11f12:	66 0f db ea          	pand   %xmm2,%xmm5
+   11f16:	66 0f db e2          	pand   %xmm2,%xmm4
+   11f1a:	66 0f 61 e8          	punpcklwd %xmm0,%xmm5
+   11f1e:	66 0f 62 e8          	punpckldq %xmm0,%xmm5
+   11f22:	66 0f d4 eb          	paddq  %xmm3,%xmm5
+   11f26:	66 0f 61 e0          	punpcklwd %xmm0,%xmm4
+   11f2a:	66 0f 62 e0          	punpckldq %xmm0,%xmm4
+   11f2e:	66 0f d4 e1          	paddq  %xmm1,%xmm4
+   11f32:	66 0f 6e 9c 56 08 00 	movd   0x6000008(%rsi,%rdx,2),%xmm3
+   11f39:	00 06 
+   11f3b:	66 0f 6e 8c 56 0c 00 	movd   0x600000c(%rsi,%rdx,2),%xmm1
+   11f42:	00 06 
+   11f44:	66 0f db da          	pand   %xmm2,%xmm3
+   11f48:	66 0f db ca          	pand   %xmm2,%xmm1
+   11f4c:	66 0f 61 d8          	punpcklwd %xmm0,%xmm3
+   11f50:	66 0f 62 d8          	punpckldq %xmm0,%xmm3
+   11f54:	66 0f d4 dd          	paddq  %xmm5,%xmm3
+   11f58:	66 0f 61 c8          	punpcklwd %xmm0,%xmm1
+   11f5c:	66 0f 62 c8          	punpckldq %xmm0,%xmm1
+   11f60:	66 0f d4 cc          	paddq  %xmm4,%xmm1
+   11f64:	48 83 c2 08          	add    $0x8,%rdx
+   11f68:	48 81 fa 00 00 40 00 	cmp    $0x400000,%rdx
+   11f6f:	75 8f                	jne    11f00 <bench_entry+0x420>
+   11f71:	66 0f d4 cb          	paddq  %xmm3,%xmm1
+   11f75:	66 0f 70 c1 ee       	pshufd $0xee,%xmm1,%xmm0
+   11f7a:	66 0f d4 c1          	paddq  %xmm1,%xmm0
+   11f7e:	f7 d9                	neg    %ecx
+   11f80:	48 c1 e1 20          	shl    $0x20,%rcx
+   11f84:	89 c6                	mov    %eax,%esi
+   11f86:	66 41 0f d6 00       	movq   %xmm0,(%r8)
+   11f8b:	0f ae e8             	lfence
+   11f8e:	0f 31                	rdtsc
+   11f90:	48 c1 e2 20          	shl    $0x20,%rdx
+   11f94:	89 c0                	mov    %eax,%eax
+   11f96:	48 29 f1             	sub    %rsi,%rcx
+   11f99:	48 01 c1             	add    %rax,%rcx
+   11f9c:	48 01 d1             	add    %rdx,%rcx
+   11f9f:	48 89 0f             	mov    %rcx,(%rdi)
+   11fa2:	66 0f ef c0          	pxor   %xmm0,%xmm0
+   11fa6:	f3 0f 7f 47 08       	movdqu %xmm0,0x8(%rdi)
+   11fab:	48 c7 47 18 00 00 00 	movq   $0x0,0x18(%rdi)
+   11fb2:	00 
+   11fb3:	48 89 f8             	mov    %rdi,%rax
+   11fb6:	48 83 c4 18          	add    $0x18,%rsp
+   11fba:	c3                   	ret
+   11fbb:	48 89 0c 24          	mov    %rcx,(%rsp)
+   11fbf:	48 89 e0             	mov    %rsp,%rax
+   11fc2:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+   11fc7:	48 8b 05 ba aa 03 00 	mov    0x3aaba(%rip),%rax        # 4ca88 <_DYNAMIC+0x218>
+   11fce:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
+   11fd3:	48 8d 3d be 20 ff ff 	lea    -0xdf42(%rip),%rdi        # 4098 <_RNvNtNtNtCskaANe6KdTWL_3std6thread7current2id2ID+0x4050>
+   11fda:	48 8d 15 e7 91 03 00 	lea    0x391e7(%rip),%rdx        # 4b1c8 <__frame_dummy_init_array_entry+0x8>
+   11fe1:	48 8d 74 24 08       	lea    0x8(%rsp),%rsi
+   11fe6:	ff 15 a4 aa 03 00    	call   *0x3aaa4(%rip)        # 4ca90 <_DYNAMIC+0x220>
+   11fec:	0f 0b                	ud2
+   11fee:	ff 15 a4 aa 03 00    	call   *0x3aaa4(%rip)        # 4ca98 <_DYNAMIC+0x228>
+
+Disassembly of section .plt:

@@ -1,0 +1,20 @@
+    Finished `release` profile [optimized] target(s) in 0.20s
+    Finished `release` profile [optimized] target(s) in 0.16s
+warning: 5 variant entries outside variants/ were not rebuilt for this filtered run; their artifacts may be stale. Run without bench names to rebuild everything, or move them under variants/.
+  building bench binary...
+  Validating 5 variants × 100 seeds...
+  Validation OK: all 5 variants passed the routine's own per-variant check and produce identical output
+  Determinism check: 5 variants × 10 seeds...
+  Determinism OK: all 5 variants are deterministic
+  Subprocess sanity: /home/user/arvo/mock/benches/../../../target/release/libbench_bitpack_carrier_packed.so (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (332s elapsed, ~996s left)
+  pass 2/4 cd=0ms... done (660s elapsed, ~660s left)
+  pass 3/4 cd=0ms... done (989s elapsed, ~330s left)
+  pass 4/4 cd=0ms... done (1312s elapsed, ~0s left)
+  Total: 1311.6s
+  CSV: bitpack-carrier-width_n4194304.csv (400 rows)
+  Meta: bitpack-carrier-width_n4194304.meta.json
+  wrote bitpack-carrier-width_n4194304.csv + bitpack-carrier-width_n4194304_findings.md
