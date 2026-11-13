@@ -1899,7 +1899,7 @@ keywords = ["debug abort", "debug check", "overflow", "panic", "cargo feature", 
 
 [[ruling]]
 id = "a_shipped_overflow_default_is_a_generic_overridable_per_case"
-kind = "ruling"
+kind = "intent"
 rung = "stated"
 topic = "overflow_policy"
 says = "The overflow behaviour is not called one way. A default ships and is easy to override per case, spelled as a generic carrying a default, and that default may follow one of the parity standards. Beside it, it may make more sense that a downstream consumer primarily uses the standard-paired implementations of the theory and the contracts."
