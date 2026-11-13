@@ -1,0 +1,12 @@
+[package]
+name = "sketch-ieee754-ties-to-even-through-adapt"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+# A sketch stands alone: it is no member of the mock workspace and builds against
+# the shipped surface of `arvo-format` and nothing else.
+[workspace]
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
