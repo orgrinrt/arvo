@@ -939,7 +939,9 @@ keywords = ["const", "const time", "const expression", "typestate", "trajectory"
 [[ruling]]
 id = "there_is_no_universal_answer_take_the_win_and_gate_it"
 kind = "ruling"
-rung = "stated"
+rung = "ratified"
+ratified_by = "op"
+ratification = "Ratified by default from the written history under `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`; the row was not put to him for ratification. It passed the five-part test on the first and third of three readings made apart, the third in `mock/research/202611132130_eight-rulings-third-read/NOTES.md`. He was asked whether consumers would write a particular declaration, so that the design could decide whether to build the surface at all, and rejected the question. His answer, in `panel::202608072330_the-numeral-canon-panel::88_op_the_intent_is_not_every_clause_and_there_is_no_universal::#4-there-is-no-universal-answer-and-asking-for-one-is-the-anti-pattern`, lines 101 to 107: \"Again, we don't need to settle for one universal solution, it's the anti-pattern I've already named. Case by case.\""
 topic = "the_predicate_notation"
 says = "A question asking which single policy governs a whole category is the anti-pattern he has already named. The answer is case by case: where something is free of soundness issues in one case, guard it with const expressions so it benefits without leaking an unsound premise to anything it does not apply to. Take the win where it applies, gate it out from where it does not."
 quote = '''
