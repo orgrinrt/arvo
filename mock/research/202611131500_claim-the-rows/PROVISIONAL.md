@@ -1,13 +1,15 @@
 # The rows that stand provisionally
 
-Everything the reading neither filled nor sent to him is here. The registry has
-no value that says provisional, so nothing was written onto these rows and each
-one is exactly as it was: a ruling at `stated` is still his direction and binds
-as that, and a proposal still binds nothing. This file is the stamp. A row
-named in it has been read against the written history once, was not found to be
-his in whole, and was not found to be against him or against the canon either,
-so work that leans on it may go on, and what it leans on is a row nobody has
-ratified.
+Everything the reading did not raise is named here. The registry has no value
+that says provisional, so nothing was written onto these rows and each one is
+exactly as it was: a ruling at `stated` is still his direction and binds as
+that, and a proposal still binds nothing. This file is the stamp. A row named
+in it has been read against the written history and was not found to be his in
+whole, standing and unhedged, so work that leans on it may go on, and what it
+leans on is a row nobody has ratified.
+
+Some rows named here also have one sentence or clause the record is against.
+That part is in `FOR-HIM.md`, and the row is provisional apart from it.
 
 The rulings are given with the reason each was left, since for a ruling the
 reason is not the same from row to row. The proposals are given as a list,
@@ -18,22 +20,50 @@ a proposal is his in one sentence, the reader's block in
 
 ## Rulings left at `stated`
 
-### His words on one occasion, made general by the row
-
-`ruling::a_queue_batch_inherits_the_scope_of_the_work_in_flight` rests on a
-rebuke of two questions about another repository put to him in an arvo batch,
-and `ruling::the_option_set_is_not_a_boundary` on his answer to one question
-that the panel was not restricted to the three options shown. In both the
-passage is his and the general rule the row states is the dispatcher's reading
-of it.
+The readers classed fifty-two rulings as his in whole. A row was raised from
+among them only where five things held of it together, on two readings made
+apart, and forty-one were left. The five are that his words on the claim carry
+no hedge of his own, that the row states what he said and not a general rule
+drawn from one answer, that it is something that keeps holding and not an
+instruction for one stretch of the run, that neither the row nor the file
+around the passage marks his words as an ack, and that no later row of his
+corrects it. Thirty-three rows fail one of the five on the first reading and
+are under the headings that name the five, with the row he was asked to bless
+once after them. Eight passed the first reading and not the second, and are
+under the heading on the two readings.
 
 ### His words, hedged by him
 
-`ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case` is built
-on a passage he opens with "I think" and carries on with "perhaps", and
-`ruling::the_panic_bound_names_a_concern_not_a_marker` on "might be never on
-hot". By his own rule speculation he voices in passing is not part of the
-intent, so neither is raised on those words.
+Each of these rests on a passage in which he hedges the claim itself, and by
+his own rule speculation he voices in passing is not part of the intent. What
+is quoted after each is the hedge.
+
+- `ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case`, "I
+  think this shouldn't be called one way".
+- `ruling::the_panic_bound_names_a_concern_not_a_marker`, "might be never on
+  hot".
+- `ruling::validate_means_all_three_readings`, "this isn't a strict call" and
+  "my instinct is".
+- `ruling::the_prior_strategy_split_was_well_enough_defined`, "I think the
+  strategy conceptually was well enough defined".
+- `ruling::the_debug_abort_is_configured_by_the_consumer`, "I'd say this should
+  be".
+- `ruling::which_half_of_the_pair_i9_attaches_to_is_not_his`, "I think the
+  intent is clear".
+- `ruling::the_canon_candidate_is_formalised_and_established_together`, whose
+  joining of more hands is his "with more besides coming in perhaps".
+
+### His words on one occasion, made general by the row
+
+`ruling::a_queue_batch_inherits_the_scope_of_the_work_in_flight` rests on a
+rebuke of two questions about another repository put to him in an arvo batch.
+`ruling::the_option_set_is_not_a_boundary` and
+`ruling::the_selection_criterion_is_what_serves_the_rest_of_arvo` rest on one
+answer to one question, that the panel was not restricted to the three options
+shown and was free to converge on the one that serves the rest of arvo best.
+`ruling::consider_all_options_and_do_not_get_married` rests on "Whatever is
+convenient" said of one choice of shape. In all four the passage is his and
+the general rule the row states is the dispatcher's reading of it.
 
 ### He sent the ratification elsewhere
 
@@ -42,6 +72,24 @@ answer, and when it was put to him for ratification he said the ratification
 goes to the wording that succeeds it, with the lineage blessed. No succeeding
 row stands yet, so this one stays where it is.
 
+### An ack by its own account
+
+`ruling::precise_on_inexact_is_an_arm_question` records "Something along the
+lines of option 3 here", and the row's own note calls it an ack on direction
+and not a ruling, as the file around the passage does. Under
+`ruling::an_ack_is_not_a_ratification` it may not be quoted as though it
+closed the question, so it is not raised.
+
+### Corrected or replaced by a later row of his
+
+`ruling::his_voice_is_demoted_except_where_he_frames_it_absolute` is corrected
+by `ruling::the_demotion_is_partial_and_the_carve_out_is_a_rule_of_thumb`,
+which says the demotion it states as a binary is partial. The later row is
+raised and this one is left, since raising both would ratify the reading he
+corrected. `ruling::warm_behaves_as_a_native_rust_primitive_would` is replaced
+by `ruling::warms_objective_is_the_intuitive_best_choice`, which is ratified,
+and was left out of the reading for that reason.
+
 ### Already binding at another tier
 
 `ruling::the_operating_constraints_are_intents_and_rules` is at `in_force`,
@@ -49,27 +97,90 @@ which binds now and does not wait on anything. His words are behind it. Moving
 it between two binding tiers is no part of filling what was unratified, so it
 is left.
 
-### Instructions for one stretch or one task of the run
+### Instructions for one stretch, one task or one event of the run
 
-These nine are his, and each is an instruction for one stretch or one task of
-the panel's run and not a standing rule of conduct: what the first work is, how
-long the explore mode lasts, when the branch is opened, which statement goes
-into the canon next. Some are discharged, as the conversion to a registry is,
-and as the instruction to carry the cores statement into the canon is, that
-statement being ratified as
+These seventeen are his, and each is an instruction for one stretch or one
+task of the panel's run, or the record of one event in it, and not something
+that keeps holding: what the first work is, how long the explore mode lasts,
+when the branch is opened, how the next unit is picked, what one night's
+stand-in may do, which statement goes into the canon next. Some are
+discharged, as the conversion to a registry is, and as the instruction to
+carry the cores statement into the canon is, that statement being ratified as
 `ruling::arvo_takes_no_stance_on_how_many_cores_it_runs_on`. The others still
 apply to the run they were given for. Raising an instruction of that kind to
-canon would make it read as standing law, so all nine stay his direction.
+canon would make it read as standing law, so all of them stay his direction.
 
 - `ruling::panel_work_only_with_one_named_exception`
 - `ruling::port_what_exists_into_the_registry_then_comb_the_rest`
 - `ruling::the_branch_waits_for_the_canon`
 - `ruling::the_canon_is_settled_in_full_then_he_reviews_it`
+- `ruling::the_canon_must_support_a_full_design_and_impl`
 - `ruling::the_explore_mode_runs_for_the_first_hundred_stretches`
 - `ruling::the_run_continues_topic_after_topic`
+- `ruling::the_next_unit_is_chosen_bottom_up`
 - `ruling::the_canon_converts_to_a_mockspace_registry`
 - `ruling::the_container_derivation_needs_fresh_eyes`
 - `ruling::the_core_adaptation_intent_is_canon_bound`
+- `ruling::the_strategy_descriptions_may_go_into_the_canon`
+- `ruling::the_persona_has_no_authority`
+- `ruling::steer_aggressively_to_convergence_without_rushing_it`
+- `ruling::the_tools_concept_is_the_coordinators_call`
+- `ruling::the_question_was_already_answered_by_an_intent`
+- `ruling::the_standing_rules_are_in_the_rules_directory`
+
+Two of these, the two that have the finished canon go to him for review, also
+appear in `FOR-HIM.md` beside the rows that make his ratification the finish
+line.
+
+`ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` is the
+thirty-third. It passes all five and is not raised, because he was asked once
+to bless it and could not for want of an explanation, and it is in
+`FOR-HIM.md` with the explanation.
+
+### The two readings did not agree
+
+Nineteen rows passed all five on the first reading, and a second reader then
+read those nineteen without the first reading and answered the same five
+questions of each. Eleven came back his in whole with nothing against them and
+were raised. These eight did not. A call about what the canon holds does not
+rest on one reading, so none of them is raised, and each wants a third reading
+before it is taken either way. The second reader's blocks are in
+`SECOND-READ.md`.
+
+`ruling::do_not_escalate_a_measurement_dispute` came back his in two sentences
+and the panel's in the first, that a contested measurement is not a question
+for him. His words are "This is no conflict or case to bring up to me", said of
+one dispute about headroom, and the file that records them calls what the row
+states "the general rule inside that".
+
+`ruling::there_is_no_universal_answer_take_the_win_and_gate_it` came back the
+same way. Its first sentence, that a question asking which single policy
+governs a category is the anti-pattern, is the coordinator's reading of his
+having rejected one such question. His word names the universal solution as
+the anti-pattern and not the asking. The rest of the row is his, and
+`ruling::the_work_is_predicated_arms_composed` carries it ratified.
+
+`ruling::prior_calls_are_a_historical_log_not_calls` came back his in whole
+and hedged by him, in "The answers are likely wrong, and the questions they
+answer, are also probably wrong" and "none of it absolute".
+
+`ruling::the_stack_to_borrow_from_is_wider_than_three_repositories` came back
+his in whole and hedged by him, in "which you may and probably want to loan
+from" and "most of them likely useful or reusable", and as a pointer to where
+to look more than a call.
+
+`ruling::precise_is_accurate_across_chains_not_only_per_operation`,
+`ruling::the_strategy_is_what_makes_an_answer_correct` and
+`ruling::throughput_wins_are_the_speed_first_strategys` came back his in whole,
+with his "we don't ratify these as absolutes, rather, *intent*" set against
+all three, since he said it of the strategy statements. The first of the three
+also has "though don't have to be; Open for discussion and exploration!" in
+the passage it rests on. `ruling::the_strategy_intents_are_not_clear_cut`
+carries that reading of the strategy statements, ratified.
+
+`ruling::what_is_ratifiable_is_the_intent_not_the_concretes` came back his in
+whole and marked by the second reader as being that same statement of his, so
+it stays with the three it is about.
 
 ### His in one sentence and the panel's in another
 
@@ -86,8 +197,7 @@ the test and its limbs are his and the last sentence is the panel's inference
 from his declining six options.
 
 Three more rulings are his in part and against a ratified row in another part,
-and are in `FOR-HIM.md` with
-`ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up`.
+and are in `FOR-HIM.md`.
 
 ## Proposals
 

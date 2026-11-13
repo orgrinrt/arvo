@@ -29,6 +29,13 @@ ratified and says nothing is parked awaiting him, and into
 under which promotion does not wait on him. This row makes his ratification the
 finish line and those two take it away.
 
+Two more rows carry the same expectation and are settled by the same answer.
+`ruling::the_canon_is_settled_in_full_then_he_reviews_it` has him review the
+canon once it is settled in full, and
+`ruling::the_canon_must_support_a_full_design_and_impl` sets what the canon
+has to be before it goes to him for review. Both are his words, and both are
+left at `stated`.
+
 1. The finished canon still gets his read and his stamp as a receipt, and the
    ratified row is amended to say so.
 2. The row is reworded so the finish line is the canon promoted by expert
