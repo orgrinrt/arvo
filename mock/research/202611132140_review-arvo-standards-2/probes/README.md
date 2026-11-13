@@ -23,3 +23,5 @@ Raw results:
 - `--features emax0`: does not compile. `evaluation panicked: a quantum law over
   no magnitudes describes no values, so it is not a step law`, from
   `<ExponentRange<24, 0> as Quantum>::ADMITTED`. Refused, as it should be.
+
+At the job's fix for `770d4d67` the crate lost its `allow(dead_code)`: it builds only under test, imports what its decimal test names (the committed copy did not), declares the two decimal formats itself since the shared module no longer carries them, and adds one planted arm, ties to even checked against the ties-to-away rule, so every variant of the shared module is used. `cargo test` passes its two default tests.

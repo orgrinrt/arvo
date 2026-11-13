@@ -1,13 +1,38 @@
 //! Review round 2 probes at `9e270619`. Ad-hoc quick spikes, not benches.
 //! Raw output is in `README.md` beside this crate.
+//!
+//! The crate is its tests and nothing else, so it builds only under test.
 
-#![allow(dead_code)]
+#![cfg(test)]
 
 #[path = "../../../../crates/arvo-format/tests/ieee754/mod.rs"]
 mod ieee754;
 
 use arvo_format::ambient::UnsignedBinaryRationals;
-use arvo_format::standards::ieee754::Interchange;
+use arvo_format::format::is_admissible_format;
+use arvo_format::overflow::Saturate;
+use arvo_format::standards::ieee754::rounding_direction::{
+    RoundTiesToEven,
+    RoundTowardNegative,
+    RoundTowardPositive,
+    RoundTowardZero,
+};
+use arvo_format::standards::ieee754::{Attributed, Decimal32, Decimal64, Interchange};
+use ieee754::{Direction, Standard, misses};
+
+/// Decimal32 and decimal64 as the standard's table gives them.
+const DECIMAL32: Standard = Standard {
+    radix: 10,
+    p:     7,
+    qmin:  -101,
+    qmax:  90,
+};
+const DECIMAL64: Standard = Standard {
+    radix: 10,
+    p:     16,
+    qmin:  -398,
+    qmax:  369,
+};
 
 type Unsigned = Interchange<UnsignedBinaryRationals, 24, 127>;
 
@@ -49,6 +74,14 @@ fn the_missing_decimal_planted_arms_are_writable_and_miss() {
         },
         0xD64,
     );
+    // Added at `770d4d67` so the shared module compiles here with every variant
+    // used: ties to even checked against the ties-to-away rule must miss.
+    let d32_away_as_even = misses::<Attributed<Decimal32, RoundTiesToEven, Saturate>>(
+        Direction::TiesToAway,
+        DECIMAL32,
+        0xD32,
+    );
+    assert!(d32_away_as_even > 0);
     println!(
         "d32 +inf as zero {d32_pos}, d32 zero as -inf {d32_zero}, d64 +inf as zero {d64_pos}, d64 -inf as +inf {d64_neg}, d64 short p {d64_even_short}"
     );

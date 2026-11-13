@@ -19,12 +19,7 @@
 //! arvo code: a value `c * radix^q` keeps at most `p` digits and no exponent
 //! below the smallest, the dropped part decides the last kept digit by the
 //! direction, and a carry to `radix^p` drops one more. Each format's numbers are
-//! written in as the standard's, in `Standard`.
-//!
-//! `allow(dead_code)` because each file that declares this module uses part of
-//! it, which is a fact about the compilation unit.
-
-#![allow(dead_code)]
+//! written in as the standard's, a `Standard` in the suite that runs it.
 
 use arvo_format::adapt::DeclaredSignature;
 use arvo_format::apply::{Dither, Exact, Remainder, adapt, panic_on_overflow};
@@ -186,27 +181,6 @@ pub struct Standard {
     pub qmin:  i32,
     pub qmax:  i32,
 }
-
-pub const BINARY16: Standard = Standard {
-    radix: 2,
-    p:     11,
-    qmin:  -24,
-    qmax:  5,
-};
-
-pub const DECIMAL32: Standard = Standard {
-    radix: 10,
-    p:     7,
-    qmin:  -101,
-    qmax:  90,
-};
-
-pub const DECIMAL64: Standard = Standard {
-    radix: 10,
-    p:     16,
-    qmin:  -398,
-    qmax:  369,
-};
 
 /// The number of digits of `|c|` in the radix, zero for zero.
 fn digits(r: u32, c: i128) -> u32 {

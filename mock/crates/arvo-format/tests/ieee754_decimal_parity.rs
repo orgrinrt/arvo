@@ -29,7 +29,23 @@ use arvo_format::standards::ieee754::rounding_direction::{
     RoundTowardZero,
 };
 use arvo_format::standards::ieee754::{Attributed, Decimal32, Decimal64};
-use ieee754::{DECIMAL32, DECIMAL64, Direction, Landing, Standard, misses};
+use ieee754::{Direction, Landing, Standard, misses};
+
+/// Decimal32 as the standard's table gives it.
+const DECIMAL32: Standard = Standard {
+    radix: 10,
+    p:     7,
+    qmin:  -101,
+    qmax:  90,
+};
+
+/// Decimal64 as the standard's table gives it.
+const DECIMAL64: Standard = Standard {
+    radix: 10,
+    p:     16,
+    qmin:  -398,
+    qmax:  369,
+};
 
 /// `roundTiesToAway` on a format, through the alias.
 struct TiesToAway<F, O>(core::marker::PhantomData<(F, O)>);

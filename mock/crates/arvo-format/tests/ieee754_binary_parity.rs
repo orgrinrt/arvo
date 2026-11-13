@@ -35,7 +35,15 @@ use arvo_format::standards::ieee754::rounding_direction::{
     RoundTowardZero,
 };
 use arvo_format::standards::ieee754::{Attributed, Binary16, Binary32, Binary64};
-use ieee754::{BINARY16, Direction, Draws, Value, agrees, land, misses, power, same};
+use ieee754::{Direction, Draws, Standard, Value, agrees, land, misses, power, same};
+
+/// Binary16 as the standard's table gives it.
+const BINARY16: Standard = Standard {
+    radix: 2,
+    p:     11,
+    qmin:  -24,
+    qmax:  5,
+};
 
 // --- the host's answers, decoded from their bits ----------------------------------
 
@@ -428,6 +436,9 @@ fn a_planted_binary16_direction_is_reported() {
     assert!(binary16_misses::<RoundTowardZero>(Direction::TowardNegative) > 0);
     assert!(binary16_misses::<RoundTowardNegative>(Direction::TowardPositive) > 0);
     assert!(binary16_misses::<RoundTowardPositive>(Direction::TowardZero) > 0);
+    // The digit rule tells ties to away from ties to even, so the right landing
+    // checked against the other tie rule must miss.
+    assert!(binary16_misses::<RoundTiesToEven>(Direction::TiesToAway) > 0);
 }
 
 // --- the refusals ----------------------------------------------------------------------
