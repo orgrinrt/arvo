@@ -78,6 +78,27 @@ width two members sum without leaving the carrier, so `add` is the machine's wra
 the adaptation onto the declared width. At the carrier's width the machine's own wrapping or saturating
 add is already the answer.
 
+## Where the host integers are named
+
+This crate is where the carriers the placement derives meet the host's machine integers, so it is
+declared beside `arvo-format` and `arvo-bits` as introducing the numeric category, and the
+bare-primitive lints read that declaration as their scope. The declaration covers a named surface and
+nothing else:
+
+1. `Num`'s representation, `S::Repr`, and the map that names it: `Carried`, its rows from `Signed<W>`
+   and `Unsigned<W>` to the ladder carriers, and `Machine` with the bit copy between two of them.
+2. The rung arithmetic, written once per carrier width, and the dispatch onto it by the carrier's size
+   and sign.
+3. The doors to the carrier, `raw` and `from_raw`, and to the host, `from_host` and `host` on `USize`
+   and `ISize`.
+4. The slot index, a bare `i128` in `arvo-format`'s `Slot`, where `constant` takes it as a const
+   parameter and the value is built from one.
+5. The signatures core fixes for the traits `Num` implements, `PartialEq::eq` returning `bool` among
+   them, and the crate's own tests.
+
+Everything else is written in the stack's own types: `Bool` for every predicate, `Width` and `Policy`
+from the signature, `Ordering` for the order, and `Num` itself at every position a consumer sees.
+
 ## The overflow markers
 
 Each value policy has two markers over one `Policy`.
