@@ -216,8 +216,10 @@ The second is the design document. It is 2122 lines, and a part of it tells the 
 crate used to have where a specification would state what the crate does (a reader measured about
 seven percent of the last 1200 lines; I read the first 900 and saw the same habit there). One document
 for one crate cannot be held in the head at that length, the workspace's own rule for a design is that
-it carries no history, and the source it governs is split into files under 500 lines while the design
-is not.
+it carries no history, and the repository sets its own limit at 500 lines and enforces it at commit,
+build and push (`mockspace.toml:107-111`). That limit reaches source and not the design templates, so
+the document governing one crate is four times the length the crate's own files may be. The other four
+crate designs are 365, 268, 189 and 130 lines, so this is one file and not a habit.
 
 The third is one red test. `the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63`
 fails on `dev` with a subtraction overflow inside the test's own sample builder
@@ -290,7 +292,11 @@ Six things in it are going wrong or easy to get wrong. None needs the drawing bo
    `arvo-bits` derives both ordering traits (`mock/crates/arvo-bits/src/lib.rs:49`). The row behind it
    is `proposal::a_value_takes_no_ordering_trait_from_core` at one expert. A value that cannot be a key
    in anything sorted and cannot be passed where a bound says `Ord` will be wrapped by every generic
-   consumer, which is the reinvention the stack exists to prevent.
+   consumer, which is the reinvention the stack exists to prevent. The plan knows this: step 5 is the
+   contracts, and it judges its arms on a consumer with no feature line writing a function generic
+   over a numeral that adds and orders (`mock/research/202611130950_canon-double-check/PLAN.md:210-222`).
+   So the finding is that the shipped design document states the refusal as a decision where it is a
+   gap with a plan behind it.
 4. Four cargo features on the shipped crate remove a carrier width's adaptation, for the mutant tests
    (`mock/crates/arvo-numeral/Cargo.toml:17-20`, read at `mock/crates/arvo-numeral/src/rung.rs:167-179`).
    A feature is unified across a build, which is this design's own argument against using one for the
@@ -344,7 +350,7 @@ ones that would mislead a reader about direction:
 | `mock/PRINCIPLES.md.tmpl:71-73` | The fixed-point and exact-width primitives are not there yet | Forty lines on, the same file describes `Num` |
 | `mock/PRINCIPLES.md.tmpl:295-299` | The lint has not landed | It is in the lint set |
 | `mock/PRINCIPLES.md.tmpl:320-329` | Strategy markers drive width and codegen, and default to `Warm` | They drive nothing a value does, and no alias has a default |
-| The generated agent instructions | The tree holds the bottom three crates and no numeral | Five crates, one value type |
+| `mock/agent/MAIN.md.tmpl:10`, `PREAMBLE.md.tmpl:1` | The tree holds the bottom three crates and no numeral | Five crates, one value type |
 
 The README is the accurate one. It says what exists, what does not, and that this is the bottom of a
 stack and not a usable library (`README.md:19-25`).
@@ -365,10 +371,15 @@ consumer's side, and probes with a standing that includes "uncontrolled" and "de
 honest about what is known than any design corpus I can compare it to, and the canon check found no
 two ratified rows contradicting each other.
 
-What the numbers say about the yield is harder. By a reader's count the registry holds 106 rulings of
-which 39 are ratified, 110 questions of which about 85 have no answer, 159 proposals of which 124 rest
-on one expert, 196 retirements and 116 probes. The design-round directory holds 184 rounds, 71 of them
-in September and by their scope lines almost all edits to one crate's design document. The first round
+What the numbers say about the yield is harder. Counted over `mock/registry/`, the registry holds 777
+rows: 106 rulings (39 ratified, 61 stated, 1 in force, 5 open), 110 questions, 159 proposals of which
+124 rest on one expert and 23 on two, 196 retirements, 116 probes, 25 dimensions, 24 laws, 20 topics
+and 17 obligations. How many of the questions are genuinely open is not a count anybody can take:
+19 carry an answer written into the row, others are answered through a ruling's edge, and the schema
+has no field separating a question somebody is holding from one nobody has reached, which the
+`awaiting-a-ruling` tool says of the rulings in the same words. The design-round directory holds 184
+rounds, 71 of them in September and by their scope lines almost all edits to one crate's design
+document. The first round
 is dated 19 April and the tree was cleared on 8 August. Against that, what a consumer can depend on
 today is one value type with a sum and a comparison. The reader's sorting of the panel's later files
 by title put most of them on the registry and the process and not on numerics.
@@ -381,8 +392,8 @@ the canon check produced a twenty-step plan from the registry alone
 of it (`ruling::the_canon_must_support_a_full_design_and_impl`).
 
 So the reading is that the concept did not need more settling than it had by September, and the months
-between went to making the record of the concept consistent with itself. The eighty-five open
-questions are mostly not blocking anything: the value crate was built across several of them by taking
+between went to making the record of the concept consistent with itself. The open questions are mostly
+not blocking anything: the value crate was built across several of them by taking
 a position and saying so (`mock/crates/arvo-numeral/DESIGN.md.tmpl:110-118`), and that is the pattern
 that works.
 

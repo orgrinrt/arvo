@@ -46,8 +46,8 @@ Four things are going wrong and can be fixed where they stand.
 4. The root documents and the instructions every agent session reads describe a tree two crates
    smaller, with strategy markers that drive code generation. They do not.
 
-The process produced more record than product: 184 design rounds and a registry of nearly 800 rows
-against five small crates, with September spent on 71 rounds of edits to one design document. The
+The process produced more record than product: 184 design rounds and a registry of 777 rows against
+five small crates, with September spent on 71 rounds of edits to one design document. The
 registry itself is good, more honest about what is known than any design record I can compare it to.
 The finding is about order of work, not about the instrument: build, bench and port alongside the
 canon, as the last two days did.
@@ -57,7 +57,8 @@ subtraction and the product on values, a cheap door in and out at the container'
 benches of the value tier on more than one host. hilavitkutin's source unwrapped the old arvo's
 integer in every hot loop, which is the strongest evidence that the doors matter more than the
 families. kaski asks for half to even on the product; in the spike that costs twice a floor's latency
-in exactly the dependent chains a simulation runs, and a half-up arm costs what a floor costs.
+in exactly the dependent chains a simulation runs, while a half-up arm costs about what a floor costs
+and drifts a five-thousandth of what floor drifts.
 
 For generic applications and server daemons, which op asks to be assumed, the tree's own documents say
 they are out of scope, the build needs a nightly compiler through notko's features, and printing,
@@ -140,6 +141,12 @@ the sketches; the bench corpus variant by variant; the registry's counts by name
 the pairs of rows that pull against each other; the research tree and the design rounds by date and
 scope; hilavitkutin, kaski, kirjo, lato, riimu and notko.
 
+Counted by me in pass two, because the verdicts lean on them: every registry namespace, the rungs of
+the rulings and the standings of the proposals, the design rounds by month, the bench manifest's
+entries and the variant crates, and the inline markers in `arvo-format`. The reader's counts came back
+right in each case except its registry total, which was short by the four proposal files and the one
+law file sitting beside the main ones.
+
 Not read at all: the 159 proposal rows and the 196 retirement rows one by one; the 110 question rows
 beyond those the designs cite; the 184 design rounds beyond their dates and scope lines; most of
 `mock/research/` before November; vehje, kolli and tarina; the lint sources under `mock/lints/`; the
@@ -150,9 +157,39 @@ the spike. Nothing else was built or run, and no bench in `mock/benches/` was re
 
 ## What each pass changed
 
-Pass one, this text as first committed, is the reading above and the judgments drawn from it.
+Pass one, committed as `45ead25d`, is the reading above and the judgments drawn from it.
 
-Later passes are recorded here as they finish.
+Pass two went back to the evidence under the sharpest findings and changed five things.
+
+It corrected the worst error in the report. Pass one said subtraction, the product and the quotient
+were steps 4, 5 and 6 of the canon check's plan and that ordering and the capacity type were in no
+step. They are steps 3, 3, 7, 5 and 9, and step 5 judges its arms on exactly the generic function
+over a value that adds and orders which pass one said nobody had planned. The plan is further along
+than pass one credited, and `DOWNSTREAM.md` now says so in three places. The finding that the order
+of work puts the benches and the port last survives, since those are still steps 19 and 20.
+
+It counted what pass one had taken from a reader: every registry namespace, the rungs and the
+standings, the design rounds by month, the bench manifest and its variants, and the inline markers in
+`arvo-format`. Every number came back right except the registry total, which was short because four
+proposal files and one law file sit beside the main ones. The corpus is 777 rows and the bench corpus
+is 49 benches over 94 variant crates and 254 result sets.
+
+It dropped a count nobody can take. Pass one said about 85 of the 110 questions have no answer. The
+schema has no field that separates a question being held from one nobody has reached, so that number
+was a guess dressed as a count, and the text now says what can be said: 19 carry an answer in the row.
+
+It fixed a claim about rounding that read better than the measurement supports. Half up does cost
+about what a floor costs in the spike's chain, and it drifts ten times further than half to even, not
+less, though both are a thousandth of floor's drift.
+
+It tried to turn the nightly claim into a measurement and could not: two hooks between them refuse
+every stable build in a workspace clone, which is ticket `39d402b85f3d`. The claim stays, labelled as
+reasoned.
+
+What pass two did not change: the four marks on any part, the verdict on the strategy binding, the
+reading of the doors, or the summary's shape. The mutant features were re-read at
+`mock/crates/arvo-numeral/src/rung.rs:36-63` and the finding got stronger, since the feature gate sits
+inside the adaptation itself.
 
 ## Tickets
 
@@ -166,6 +203,7 @@ Filed or bumped by this session, in the workspace ticket store.
 | `684a26a63155` | Six markers in `arvo-strategy` and `arvo-format` name no ticket |
 | `fa0b1d97df50` | The saturation guard counts sub-agents that already handed back |
 | `ad67b351e8d9`, `1e8626a64f44` | The stand-up assumes kaski and a coordinator line for a helper elsewhere |
+| `39d402b85f3d` | No way to build a crate on a stable toolchain in a workspace clone |
 
 The findings of this report are not themselves tickets. They are for op and the coordinator to accept
 or refuse first, and a ticket for a refused finding would be noise.

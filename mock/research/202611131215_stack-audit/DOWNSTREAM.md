@@ -38,19 +38,23 @@ every hot loop was supplying a name and no arithmetic. The clearing of 8 August 
 measure of the new tree is not whether it has the old families back but whether hilavitkutin's loops
 can stay inside the value.
 
-What they need to stay inside it is small and is not what the plan builds first. A morsel loop wants a
+What they need to stay inside it is small and most of it is in the plan early. A morsel loop wants a
 platform-sized count that adds, subtracts, multiplies by a small constant, divides rounding up,
-compares, indexes a slice and iterates a range. The new value adds and compares. Subtraction is step 4
-of the plan, the product step 5, the quotient step 6, and indexing and ranges are in no step I found:
-`USize` has a bit-copy door out (`mock/crates/arvo-numeral/src/alias.rs:61-84`), which is the right
-door for indexing, and nothing makes a `Range` of values iterable. Without the last two every loop
-still unwraps.
+compares, indexes a slice and iterates a range. The new value adds and compares. Subtraction, negation
+and the product are step 3 of the canon check's plan and the quotient is step 7
+(`mock/research/202611130950_canon-double-check/PLAN.md:82-101`). Indexing and ranges are in no step I
+found: `USize` has a bit-copy door out (`mock/crates/arvo-numeral/src/alias.rs:61-84`), which is the
+right door for indexing, and nothing makes a range of values iterable. Capacity is step 9, written
+from hilavitkutin's own usage, and that step's own count of it (49 uses of `Capacity`, 17 of `Dim`,
+`PLAN.md:270-276`) is much lower than the reader's count above, so one of the two is counting
+something else and the number wants redoing before the row is written.
 
 The obligations describe the algorithms hilavitkutin's design says it wants (a spectral partition, a
 cost DP, sparse adjacency analyses) and those are large. By the source, none of them is what the
 consumer is waiting for. The bit set is: `obligation::set_operations_over_a_fixed_size_bit_set` is the
-only row with an instruction count in it, the scheduler's access sets are the hottest numeric thing in
-the engine by its own design, and nothing in arvo starts it.
+only row with an instruction count in it, and the scheduler's access sets are the hottest numeric
+thing in the engine by its own design. Nothing in the tree starts it; the plan has it at step 10,
+behind the contracts and the capacity crate.
 
 One number from that repository matters to the strategy question. Its committed night findings of 11
 May, on one Apple M1, put a Q0.32 moving average 11 to 14 percent ahead of `f32`, wrapping about twice
@@ -76,13 +80,13 @@ crate beside it is `f32` and `f64` throughout with markers saying a stack type s
 
 | kaski needs | arvo today | in the plan |
 |---|---|---|
-| Signed fixed point in 64 bits | Only as the MATLAB-named `Fi`; no value of it has been built or timed | Follows from the product at the value tier, step 5 |
-| Saturating add and subtract | Add, with `Saturate`; no subtract | Step 4 |
-| A product with half to even | At the format tier, as an oracle | Step 5 |
-| Division | At the format tier | Step 6 |
+| Signed fixed point in 64 bits | Only as the MATLAB-named `Fi`; no value of it has been built or timed | Step 3, which adds a signed fixed-point point beside `UFixed` |
+| Saturating add and subtract | Add, with `Saturate`; no subtract | Step 3 |
+| A product with half to even | At the format tier, as an oracle | Step 3, exhaustive in all five deterministic modes at six bits |
+| Division | At the format tier | Step 7 |
 | Roots, exponential, logarithm, power | Nothing | Not in the twenty steps; the old families are to return under `ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` |
 | A door to raw bits for save files and hashes | None below pointer width | Named as not here (`mock/crates/arvo-numeral/DESIGN.md.tmpl:359-365`) |
-| Ordering, so a value can be a key and be sorted | Refused by design | Not planned |
+| Ordering, so a value can be a key and be sorted | Refused by the shipped design | Step 5, where order is one of the contracts a consumer bounds on |
 | Vectors of fixed point | Nothing | A higher crate's, per `ruling::arvo_is_a_library_and_the_value_composes_on_top` |
 
 Two things in that table are more than a list of the unbuilt.
@@ -95,9 +99,12 @@ kaski wants it anyway: after 30000 steps of a decay, floor has drifted by 0.078 
 millionth. A simulation that integrates state is the dependent case. So the mode kaski asks for costs
 something real exactly where kaski would use it, and the saturating half-to-even product that the
 `Precise` preset names is the slowest combination measured. This is not a reason to refuse the mode.
-It is the first place the arms concept would earn its keep for a consumer: a half-up arm costs what a
-floor costs and drifts no more than half to even in the spike's one sequence, and whether kaski's
-determinism needs half to even or needs any declared unbiased mode is a question for kaski.
+It is the first place the arms concept would earn its keep for a consumer: in the spike's one
+sequence a half-up arm costs about what a floor costs, 1.7 nanoseconds a step against 1.5, and ends
+0.000014 above the real value where floor ends 0.078 below it and half to even 0.000001 below. So half
+up is within a hundredth of floor's price and a five-thousandth of its error, while being ten times
+further out than half to even. Whether kaski's determinism needs half to even in particular, or any
+declared mode that does not drift one way, is a question for kaski.
 
 The second is a pull between rows. kaski's obligation speaks of half to even as the mode arvo takes by
 default; the canon check's candidates for a shipped default are a floor with saturation or a wrap; and
@@ -127,9 +134,11 @@ Answer: passes in intent. Mark: good as it is, once the two blockers are dealt w
 
 ## A generic application
 
-Op asks that generic applications be assumed. No registry row and no document in the tree names one
-(reader's count over the registry; `mock/PRINCIPLES.md.tmpl:272-275` says "downstream applications"
-once). So this section is my reading of what such a consumer meets, not a check against stated needs.
+Op asks that generic applications be assumed. No registry row names one: a case-insensitive grep over
+`mock/registry/` for a server, a daemon or an application returns two hits, one about a mathematical
+application and one about applying an instrument, and `mock/PRINCIPLES.md.tmpl:272-275` says
+"downstream applications" once in passing. So this section is my reading of what such a consumer
+meets, not a check against stated needs.
 
 What it gets that it cannot get elsewhere is real. Scaled integers at radix ten with a declared
 rounding mode and a declared overflow policy, with the laws that hold computed and not assumed, is
@@ -147,12 +156,19 @@ What it meets first is this.
    features for them (`src/lib.rs:13-17` in that repository; I opened both). So the claim is true of
    arvo's text and false of arvo's build. `obligation::the_unstable_machinery_does_not_reach_a_consumer`
    is written about API surface; a toolchain requirement reaches the consumer harder than any API.
-   Most applications will not take a nightly pin for a number type.
+   Most applications will not take a nightly pin for a number type. The repository pins
+   `nightly-2026-05-28` for its own build (`rust-toolchain.toml`). I could not turn this into a
+   measurement: two hooks between them refuse every stable build in a workspace clone, one because a
+   stable cargo ignores an unstable setting in the shared build directory and one because a build
+   directory of its own is not allowed, which is ticket `39d402b85f3d`. So the claim that a consumer
+   cannot build arvo on stable is reasoned from the feature list, not measured.
 2. No way to print or parse a value. `Debug` exists; `Display`, `FromStr` and a decimal formatter do
    not, and `obligation::debug_output_without_an_allocator` covers only the first.
 3. No bytes. Nothing turns a value into its little-endian bytes or back, and no serialisation trait is
    implemented or planned.
-4. No ordering trait and no operators, as in `DESIGNS.md`.
+4. No ordering trait and no operators, as in `DESIGNS.md`. This one is planned: step 5 of the plan
+   judges its three arms on whether a consumer with no feature line can write a function generic over
+   a numeral that adds, orders and has an additive identity, which is the right test.
 5. No default adaptation, so every type is written with four names.
 6. No promise that the container stays the container across releases.
 
