@@ -1,0 +1,20 @@
+OK      a  ruling::a_predicate_lists_only_what_holds  mock/research/202608072330_the-numeral-canon-panel/INTENTS.md:240-242  hit=2 far=0 miss=0
+OK      split  ruling::do_not_escalate_a_measurement_dispute  mock/research/202608072330_the-numeral-canon-panel/01_op_answers.md:93-101  hit=1 far=0 miss=0
+MISS    a  ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open  op-responses/202611130816_arvo-overflow-defaults-and-the-canon-double-check-nobody-did.md:1162-1162  hit=1 far=0 miss=1
+SHORT   a  ruling::notko_renames_and_strategy_is_arvos_name  mock/research/202608072330_the-numeral-canon-panel/105_op_notko_renames.md:6-16  hit=0 far=0 miss=0
+OK      a  ruling::precise_is_accurate_across_chains_not_only_per_operation  mock/research/202608072330_the-numeral-canon-panel/36_op_the_intent_behind_each_strategy.md:8-17  hit=1 far=0 miss=0
+OK      a  ruling::prior_calls_are_a_historical_log_not_calls  mock/research/202608072330_the-numeral-canon-panel/PRIOR_CALLS.md:14-24  hit=1 far=0 miss=0
+OK      a  ruling::steering_the_experts_is_the_coordinators_job  mock/research/202608072330_the-numeral-canon-panel/113_op_steer_them_and_make_them_build_it_together.md:16-23  hit=1 far=0 miss=0
+OK      a  ruling::the_attacker_owes_several_solutions_to_the_party_it_refuted  mock/research/202608072330_the-numeral-canon-panel/113_op_steer_them_and_make_them_build_it_together.md:18-21  hit=1 far=0 miss=0
+OK      a  ruling::the_canon_does_not_police_what_shape_a_law_takes  mock/research/202608072330_the-numeral-canon-panel/85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md:51-54  hit=1 far=0 miss=0
+OK      a  ruling::the_demotion_is_partial_and_the_carve_out_is_a_rule_of_thumb  mock/research/202608072330_the-numeral-canon-panel/212_op_the_alias_scope_the_demotion_and_observability.md:52-55  hit=1 far=0 miss=0
+MISS    a  ruling::the_imitation_is_ergonomics_not_an_arithmetic_boundary  mock/research/202608072330_the-numeral-canon-panel/104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle.md:21-21  hit=0 far=0 miss=1
+OK      a  ruling::the_predicate_is_whatever_is_available_at_const_time  mock/research/202608072330_the-numeral-canon-panel/83_op_the_predicate_is_whatever_is_const.md:5-7  hit=1 far=0 miss=0
+OK      a  ruling::the_stack_to_borrow_from_is_wider_than_three_repositories  mock/research/202608072330_the-numeral-canon-panel/181_op_the_canon_becomes_a_registry_and_the_contracts_hold.md:35-37  hit=1 far=0 miss=0
+MISS    a  ruling::the_standards_bound_starts_at_two_and_reserves_the_rest  mock/research/202608072330_the-numeral-canon-panel/212_op_the_alias_scope_the_demotion_and_observability.md:24-25  hit=1 far=0 miss=1
+OK      a  ruling::the_strategy_is_what_makes_an_answer_correct  mock/research/202608072330_the-numeral-canon-panel/37_op_warm_imitates_rust_and_strategy_is_not_orthogonal.md:74-75  hit=2 far=0 miss=0
+OK      a  ruling::the_trait_contract_structure_is_a_primary_paradigm  mock/research/202608072330_the-numeral-canon-panel/181_op_the_canon_becomes_a_registry_and_the_contracts_hold.md:38-39  hit=1 far=0 miss=0
+OK      split  ruling::there_is_no_universal_answer_take_the_win_and_gate_it  mock/research/202608072330_the-numeral-canon-panel/88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md:101-107  hit=1 far=0 miss=0
+OK      a  ruling::throughput_wins_are_the_speed_first_strategys  mock/research/202608072330_the-numeral-canon-panel/37_op_warm_imitates_rust_and_strategy_is_not_orthogonal.md:109-110  hit=1 far=0 miss=0
+OK      a  ruling::what_is_ratifiable_is_the_intent_not_the_concretes  mock/research/202608072330_the-numeral-canon-panel/38_op_the_strategies_weigh_measurements_differently.md:93-94  hit=1 far=0 miss=0
+ok=16 bad=3 noevidence=0
