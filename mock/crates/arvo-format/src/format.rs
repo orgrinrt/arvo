@@ -255,7 +255,6 @@ pub(crate) const fn greatest_common_divisor_unsigned(a: u128, b: u128) -> u128 {
 /// Named rather than folded into the predicate below because that predicate is a
 /// conjunction, and a law over the conjunction alone cannot say which half a
 /// failure came from.
-#[must_use]
 pub const fn cancelling_slot<F: Format>(magnitude: Magnitude) -> Maybe<Slot> {
     let () = <F as Format>::ADMITTED;
     let () = <F::Ambient as Ambient>::ADMITTED;

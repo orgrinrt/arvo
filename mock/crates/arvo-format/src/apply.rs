@@ -59,6 +59,7 @@ pub(crate) struct Rounded {
 
 impl Rounded {
     /// A position already on the slot `at`, which rounding leaves where it is.
+    #[cfg(test)]
     #[must_use]
     pub(crate) const fn at(at: i128) -> Self {
         Self {
