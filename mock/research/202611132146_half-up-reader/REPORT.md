@@ -39,7 +39,7 @@ The number is the entry's place in the old `CATALOGUE`. The closed pairs are in 
 | 17 | `It` after a negated identity across a full stop | still ignored, `#arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi` | Unchanged. |
 | arm | No ratified ruling field is refused | closed, `no_ratified_ruling_field_is_refused`, now asserted | Rule 7 reads "270 read blind" as a seat. |
 
-The rows for 0, 3 to 8, 11 and 12 state the reader after a second change on the same branch. The first closed those shapes with lists that reached past them, and nineteen sentences one word away, which the reader before the job read right, read wrong: ten true sentences refused and nine false ones let through. Each is now a pair in `sentences/neighbours.rs`, beside a twin on the other side, with a twentieth for the bare-number count without a pronoun. All twenty read right, and the walks in `shape_tests.rs` now cross each list with words outside it, so a list taking in one word too many fails a walk.
+The rows for 0, 3 to 8, 11 and 12 state the reader after a second change on the same branch. The first closed those shapes with lists that reached past them, and nineteen sentences one word away, which the reader before the job read right, read wrong: ten true sentences refused and nine false ones let through. Each is now a pair in `sentences/neighbours.rs`, beside a twin on the other side, with a twentieth for the bare-number count without a pronoun. All twenty read right (later commits added pairs, and `sentences/neighbours.rs` holds thirty-two at `21db60e8`, all reading right), and the walks in `shape_tests.rs` now cross each list with words outside it, so a list taking in one word too many fails a walk.
 
 ## The one left
 
@@ -53,7 +53,7 @@ Which model the gate reads by is not something the canon settles, so the call is
 
 ## Two entries added
 
-Closing shapes 0 to 3, 7 and 16 left the catalogue with no refused-true entry, and the lint's module doc rests its warning severity on having one. Each fix is a closed list, so each class keeps a residue the lists do not reach. Both residues are now catalogued, each under its own ticket.
+At `c4d665d0`, closing shapes 0 to 3, 7 and 16 left the catalogue with no refused-true entry, and the lint's module doc rests its warning severity on having one. Each fix is a closed list, so each class keeps a residue the lists do not reach. `63095320` added the two below, each under its own ticket. At `21db60e8` the catalogue holds twenty entries, nine let through and eleven refused (`sentences/known.rs`).
 
 | Entry | Pair | Ticket |
 |---|---|---|
@@ -68,19 +68,29 @@ Both were red under `--ignored`, and both twins read right, before they were com
 
 ## After, as reported
 
-- `CARGO_INCREMENTAL=0 cargo test --release half_up`: 139 passed, 0 failed, 4 ignored.
-- `half_up -- --ignored`: 0 passed, 4 failed, the four entries above.
-- The whole pack: 1017 passed, 0 failed, 6 ignored. The other two ignored are the `crate_root_paths` catalogue entries.
-- `cargo mock --lint-only`: all lints passed with 46 warnings, the same 46 lines as before by a sorted diff and none from this lint. The real registry and doc corpus read exactly as before. No touched file is over 500 lines: `catalogue.rs` went from 564 to 282.
+- `CARGO_INCREMENTAL=0 cargo test --release half_up`: 139 passed, 0 failed, 24 ignored.
+- `half_up -- --ignored`: 0 passed, 24 failed, the twenty catalogue entries and four ignored walks.
+- The whole pack: 1017 passed, 0 failed, 26 ignored. The other two ignored are the `crate_root_paths` catalogue entries.
+- `cargo mock --lint-only`: all lints passed with 46 warnings, the same 46 lines as before by a sorted diff and none from this lint. The real registry and doc corpus read exactly as before. No touched file is over 500 lines: the largest touched file is `reading.rs` at 476 lines, and the entries moved to `known.rs` (264 lines), leaving `catalogue.rs` at 369.
 
 The sentences beside each shape are pairs in `sentences/neighbours.rs`, each with a twin on the other side of the line, and the walks in `shape_tests.rs` each walk a list's own words one way and words outside it the other. Each fix is guarded by a pair or a walk that goes red when it is undone, checked one fix at a time in a scratch copy of the lint. The parenthetical walk in `an_empty_segment_between_two_delimiters_is_not_a_list_item` replaces an assertion that had pinned shape 10 silent.
 
 ## Checked on the merged tree
 
-Run on the merge of `630953203386160148484ff20c80863c43165fb4` into `work/arvo-lints`: `cargo mock --lint-only` reports all lints passed; the pack gives 1017 passed, 0 failed, 6 ignored; `-- --ignored` gives 6 failed, the four `half_up` entries and the two `crate_root_paths` entries. These match the figures above.
+Run on the merge of `21db60e83450bb87c2d1dce636c85eb2af09fe5a` into `work/arvo-lints`: `cargo mock --lint-only` reports all lints passed; the pack gives 1017 passed, 0 failed, 26 ignored; `-- --ignored` gives 26 failed, the twenty `half_up` entries, the four ignored walks and the two `crate_root_paths` entries. These match the figures above. At `630953203386160148484ff20c80863c43165fb4` the same runs gave 1017, 0 and 6 ignored.
+
+## After the later commits
+
+The independent reads of `c4d665d0`, `63095320` and `9436c5eb` are in `mock/research/202611132310_half-up-read-1`, `202611132350_half-up-read-2` and `202611140010_half-up-read-3`, each with its dispositions. What they changed:
+
+- Twelve more entries (4 to 15) in `sentences/known.rs`, one ticket per list or shape, with the pronoun ticket holding the entries about `it` and `PERSONAL`. Four more (16 to 19) at `21db60e8`: an alias owner's rule covering a clause that also names the mode, an owner outside the two owner lists, a rule described with an article, and a rule noun behind a preposition.
+- Owners of a named rule are limited to `ALIAS_OWNERS` (Java, Python, IEEE 754, MATLAB and its `fi`, an owner in a code span read bare), so the mode's own authorities (op, the registry, the panel, arvo) are not another rule.
+- An article alone no longer names a rule in `denied_since`; what counts is a code span, a capital, or a rule noun or `rounding`.
+- The rule noun scan stops at the first preposition (`as in under like for with at on`), counts behind one only where the phrase names a rule with `the`, an owner's `'s` or a capital, and skips a comma aside right after the negator. The first form of this stop, as the third read suggested it, refused four true sentences the reader before it left silent, so the committed one is narrower.
+- The module doc and the `SEVERITY` doc state twenty known cases, nine let through and eleven refused.
 
 ## What was not done
 
 - Entry 17 stays open, for the reason above.
-- The two residue entries are open by construction: closing either needs the reader to tell a verb from a noun beyond its closed lists.
+- The twenty catalogue entries are open by construction, under their own tickets and the pronoun question ticket: each closes only when the reader reads past its closed list or shape, and closing one needs the reader to tell a verb from a noun beyond its lists.
 - The severity, the lint configuration and every existing catalogue sentence are as they were.

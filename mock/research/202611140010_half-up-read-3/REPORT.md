@@ -45,3 +45,16 @@ Test gate: failed on setup that helps and on a sampled walk. No tautological tes
 - Files and prose: the largest file is 473 lines. Added lines have no em-dash, en-dash, curly quote, bold or TODO.
 - Commits: subjects are 48 to 65 characters and in form, with no bylines.
 - Unchanged: `SEVERITY` is `ADVISORY`, and `mockspace.toml` and the registry are untouched.
+
+## Dispositions
+
+Answered in `21db60e8`. This was the last read; the branch lands after it with what is left as tickets.
+
+| finding | disposition |
+| --- | --- |
+| 1 | fixed, and narrower than the suggested stop: the stop at the first of `as in under like for with at on` also refused four true sentences the reader before it left silent ("is not slow like Java's rule, which ..."), so a rule noun behind a preposition counts only where the phrase names a rule with `the`, an owner's `'s` or a capital, and a comma aside right after the negator is skipped. The eight sentences fire; three neighbour pairs and a walk over every negator, opener and rule noun; each piece has a mutation check. The one let-through the earlier reader shared ("is not slow in the default mode, which") is entry 19 under its own ticket |
+| 2 | catalogued as entry 16 (let through) with the twin the read names, under its own ticket |
+| 3 | `fi` added with the neighbours and corpus unchanged; the owner walk loops over `ALIAS_OWNERS`, `754` included, bare and in a code span; the outside-owner residue is entry 17 (refused) under its own ticket with an ignored walk; the doc says owners the ruling names as computing ties away |
+| 4 | catalogued as entry 18 (refused) under its own ticket |
+| 5 | the module doc and the `SEVERITY` doc state twenty cases, nine let through and eleven refused; the `described` doc says what it takes |
+| 6 | the half-up report is corrected and has a section for the later commits; the repeated merge subject is left, since the commit is pushed |
