@@ -91,7 +91,8 @@ impl Landing {
 ///
 /// Nothing where no magnitude holds the rounded position: past the top of the
 /// union, and where every position the point names is past the slot index or
-/// carries a remainder over a denominator past `2^128 - 1`.
+/// carries a remainder whose numerator or denominator passes the four limbs,
+/// `2^256 - 1`.
 #[inline]
 pub const fn land<S: DeclaredSignature>(at: Scaled, dither: Dither) -> Maybe<Landing> {
     let () = <<S::Format as Format>::Slots as Slots>::ADMITTED;
@@ -168,8 +169,8 @@ const fn first_candidate<F: Format>(at: Scaled) -> u32 {
 }
 
 /// The point's exact position on the grid of `magnitude`, or nothing where that
-/// position is past the slot index or its remainder's denominator is past
-/// `2^128 - 1`.
+/// position is past the slot index or its remainder is not formed in the four
+/// limbs, past `2^256 - 1`.
 ///
 /// With the phase `p / q` in lowest terms and the shift `t = power - step`, split
 /// as `U = radix^max(t, 0)` and `V = radix^max(-t, 0)`, the position is
@@ -192,13 +193,8 @@ const fn position_at<F: Format>(at: Scaled, phase: Reduced, magnitude: Magnitude
         return Maybe::Isnt;
     };
     let divisor = match den_fall.times(Wide::of(phase.denominator)) {
-        Maybe::Is(v) => {
-            match v.unsigned() {
-                Maybe::Is(u) => u,
-                Maybe::Isnt => return Maybe::Isnt,
-            }
-        },
-        Maybe::Isnt => return Maybe::Isnt,
+        Maybe::Is(v) if !v.is_zero().get() => v,
+        _ => return Maybe::Isnt,
     };
     let Maybe::Is(offset) = den_fall.times(Wide::of(phase.numerator)) else {
         return Maybe::Isnt;
@@ -220,7 +216,7 @@ const fn position_at<F: Format>(at: Scaled, phase: Reduced, magnitude: Magnitude
         return Maybe::Isnt;
     };
     match over(numerator, divisor) {
-        Placed::Past(_) => Maybe::Isnt,
+        Placed::Past(_) | Placed::Unformed(_) => Maybe::Isnt,
         placed => Maybe::Is(positioned(divisor, placed)),
     }
 }

@@ -13,17 +13,16 @@
 //! phase and at radix ten, the verdict is checked against an independent reading
 //! of the eight corners, and the step at every point against an oracle in `Big`,
 //! which forms the numerator and the per-divisor denominator on pairs of the
-//! host's unsigned 128-bit integers and divides by an algorithm other than the
-//! step's. The step is read without forcing the obligation, so the formats it
-//! holds out are swept too, and there a position past the index saturates on its
-//! sign.
+//! host's unsigned 128-bit integers and divides one bit at a time. The step is
+//! read without forcing the obligation, so the formats it holds out are swept
+//! too, and there a position past the index saturates on its sign.
 
 use notko::Maybe;
 
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::{Exact, Remainder};
 use crate::division::{is_divisible, unforced_position};
-use crate::format::{Format, greatest_common_divisor_unsigned, radix};
+use crate::format::{Format, radix};
 use crate::quantum::{Constant, Quantum};
 use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::tests::big::Big;
@@ -81,23 +80,24 @@ fn oracle(at: &Reading, a: i128, b: i128) -> Answer {
         .times(Big::power(at.r, at.down))
         .plus(Big::of(-at.n).times(fb).times(Big::power(at.r, at.up)));
     let flip = if fb.is_negative() { Big::of(-1) } else { Big::of(1) };
-    let Maybe::Is(den) = Big::of(at.d)
+    let den = Big::of(at.d)
         .times(fb)
         .times(flip)
-        .times(Big::power(at.r, at.up))
-        .unsigned()
-    else {
-        return Answer::Past(fa.is_negative() != fb.is_negative());
-    };
-    let (quotient, rem) = numerator.times(flip).floor_over(den);
+        .times(Big::power(at.r, at.up));
+    let (quotient, rem) = numerator.times(flip).floor_over_big(den);
     let Maybe::Is(slot) = quotient.index() else {
         return Answer::Past(quotient.is_negative());
     };
-    if rem == 0 {
+    if rem == Big::of(0) {
         return Answer::At(Exact::on_grid(Slot::at(slot)));
     }
-    let g = greatest_common_divisor_unsigned(rem, den);
-    Answer::At(Exact::at(Slot::at(slot), Remainder::of(rem / g, den / g)))
+    let g = rem.common_divisor(den);
+    let (num, _) = rem.floor_over_big(g);
+    let (den, _) = den.floor_over_big(g);
+    Answer::At(Exact::at(
+        Slot::at(slot),
+        Remainder::reduced(num.wide(), den.wide()),
+    ))
 }
 
 /// The answer as the step reports it: past an end is the end, on the grid.
@@ -163,25 +163,13 @@ fn dividends(min: i128, max: i128) -> impl Iterator<Item = i128> {
     )
 }
 
-/// Whether the oracle holds every one of the eight corners and finds every
-/// member divisor's denominator under `2^128`.
+/// Whether the oracle holds every one of the eight corners.
+///
+/// The sweep stays at exponents where every step is formed in the four limbs,
+/// since the oracle's own integer stops there too; where a step is not formed
+/// is read by name below.
 fn oracle_admits(at: &Reading, min: i128, max: i128) -> bool {
     let (above, below) = pole_neighbours(at);
-    let fits = |b: i128| {
-        let fb = factor(at, b);
-        let flip = if fb.is_negative() { Big::of(-1) } else { Big::of(1) };
-        matches!(
-            Big::of(at.d)
-                .times(fb)
-                .times(flip)
-                .times(Big::power(at.r, at.up))
-                .unsigned(),
-            Maybe::Is(_)
-        )
-    };
-    if !fits(min) || !fits(max) {
-        return false;
-    }
     [min, max, above, below]
         .into_iter()
         .filter(|&b| (min ..= max).contains(&b) && at.n + b * at.d != 0)
@@ -300,4 +288,52 @@ fn the_quotient_by_the_divisor_next_to_the_pole_is_the_largest_position() {
         assert!(x.slot().index().abs() <= 1 << 126, "{b}");
     }
     assert_eq!(pole_neighbours(&reading::<Offset>()), (1, 0));
+}
+
+#[test]
+fn the_denominator_passes_two_to_the_128_and_stops_at_the_four_limbs() {
+    // At zero phase `D = |b| 2^e`, so at `2^192` the 64-bit divisors reach `2^255`
+    // and `(2^64 - 1) 2^192`, both formed, and the quotients sit just around
+    // zero. At `2^193` the largest divisor's `D` leaves the limbs.
+    type Signed192 = Grid<BinaryRationals, Constant<192>, Signed<64>, 0, 1>;
+    type Unsigned192 = Grid<BinaryRationals, Constant<192>, Unsigned<64>, 0, 1>;
+    type Signed193 = Grid<BinaryRationals, Constant<193>, Signed<64>, 0, 1>;
+    type Unsigned193 = Grid<BinaryRationals, Constant<193>, Unsigned<64>, 0, 1>;
+    type Three = Grid<BinaryRationals, Constant<100>, Signed<64>, 0, 1>;
+    assert!(is_divisible::<Signed192>().get());
+    assert!(is_divisible::<Unsigned192>().get());
+    assert!(is_divisible::<Three>().get());
+    assert!(!is_divisible::<Signed193>().get());
+    assert!(!is_divisible::<Unsigned193>().get());
+    let (min, max) = (i128::from(i64::MIN), i128::from(i64::MAX));
+    let top = i128::from(u64::MAX);
+    let mut checked = 0;
+    for (a, b) in [(min, min), (max, min), (min, max), (max, max), (-1, min), (1, -1), (max, 3)] {
+        for (got, at) in [
+            (
+                unforced_position::<Signed192>(Slot::at(a), Slot::at(b)),
+                reading::<Signed192>(),
+            ),
+            (
+                unforced_position::<Three>(Slot::at(a), Slot::at(b)),
+                reading::<Three>(),
+            ),
+        ] {
+            let Maybe::Is(got) = got else { panic!("the phase denotes") };
+            assert_eq!(got, reported(oracle(&at, a, b)), "{a} / {b}");
+            checked += 1;
+        }
+    }
+    for (a, b) in [(top, top), (0, top), (top, 1), (1, top - 1)] {
+        let Maybe::Is(got) = unforced_position::<Unsigned192>(Slot::at(a), Slot::at(b)) else {
+            panic!("the phase denotes")
+        };
+        assert_eq!(
+            got,
+            reported(oracle(&reading::<Unsigned192>(), a, b)),
+            "{a} / {b}"
+        );
+        checked += 1;
+    }
+    assert_eq!(checked, 7 * 2 + 4);
 }

@@ -261,30 +261,40 @@ fn the_obligation_holds_out_a_magnitude_indexed_quantum() {
 }
 
 #[test]
-fn the_obligation_holds_out_a_remainder_the_position_cannot_hold() {
-    // `2^127` and `10^38` are the largest powers the unsigned 128-bit
-    // denominator holds.
+fn the_obligation_holds_out_a_step_the_four_limbs_do_not_form() {
+    // `2^255` and `10^77` are the largest powers the four limbs form.
     assert!(is_multipliable::<At<Signed<4>, -127>>().get());
-    assert!(!is_multipliable::<At<Signed<4>, -128>>().get());
+    assert!(is_multipliable::<At<Signed<4>, -128>>().get());
+    assert!(is_multipliable::<At<Signed<4>, -255>>().get());
+    assert!(!is_multipliable::<At<Signed<4>, -256>>().get());
     assert!(!is_multipliable::<At<Signed<4>, { i32::MIN }>>().get());
     assert!(is_multipliable::<Dec<Signed<4>, -38>>().get());
-    assert!(!is_multipliable::<Dec<Signed<4>, -39>>().get());
+    assert!(is_multipliable::<Dec<Signed<4>, -77>>().get());
+    assert!(!is_multipliable::<Dec<Signed<4>, -78>>().get());
     // The phase's denominator enters squared and is at most `2^63`, so at a
-    // non-negative exponent every phase is held, the least value's included.
+    // non-negative exponent every phase is held, the least value's included,
+    // and at `2^-64` too, where `2^32` squared once reached `2^128`.
     assert!(is_multipliable::<Phased<Signed<4>, 0, 1, { i64::MIN }>>().get());
     assert!(is_multipliable::<Phased<Signed<4>, 3, 1, { i64::MAX }>>().get());
-    // At `2^-64` it is `2^32 - 1` squared that is under `2^64`, and `2^32`
-    // squared that reaches it.
-    assert!(is_multipliable::<Phased<Signed<4>, -64, 1, 4_294_967_295>>().get());
-    assert!(!is_multipliable::<Phased<Signed<4>, -64, 1, 4_294_967_296>>().get());
-    // Reduced first: `2 / 8589934592` is `1 / 2^32`, and
+    assert!(is_multipliable::<Phased<Signed<4>, -64, 1, 4_294_967_296>>().get());
+    assert!(is_multipliable::<Phased<Signed<4>, -64, 1, { i64::MIN }>>().get());
+    // At `2^-130` the least value's `2^63` squared reaches `2^256`, and
+    // `2^63 - 1` squared stays under it.
+    assert!(is_multipliable::<Phased<Signed<4>, -130, 1, { i64::MAX }>>().get());
+    assert!(!is_multipliable::<Phased<Signed<4>, -130, 1, { i64::MIN }>>().get());
+    // Reduced first: `2 / -2^63` is `-1 / 2^62`, and
     // `8589934590 / 8589934590` is a whole slot.
-    assert!(!is_multipliable::<Phased<Signed<4>, -64, 2, 8_589_934_592>>().get());
-    assert!(is_multipliable::<Phased<Signed<4>, -64, 8_589_934_590, 8_589_934_590>>().get());
-    // And it meets the quantum's: a half at `2^-125` is `2^127`, at `2^-126`
-    // `2^128`.
-    assert!(is_multipliable::<Phased<Signed<4>, -125, 1, 2>>().get());
-    assert!(!is_multipliable::<Phased<Signed<4>, -126, 1, 2>>().get());
+    assert!(is_multipliable::<Phased<Signed<4>, -130, 2, { i64::MIN }>>().get());
+    assert!(is_multipliable::<Phased<Signed<4>, -255, 8_589_934_590, 8_589_934_590>>().get());
+    // And it meets the quantum's: a half at `2^-253` is `2^255`, at `2^-254`
+    // `2^256`.
+    assert!(is_multipliable::<Phased<Signed<4>, -253, 1, 2>>().get());
+    assert!(!is_multipliable::<Phased<Signed<4>, -254, 1, 2>>().get());
+    // The phase's term can leave the limbs before `D` does: at `(2^63 - 1) / 2`
+    // and `2^-193`, `D` is `2^195` and the term `(2^63 - 1) 2^194` is past
+    // `2^256`, one place up it is under it.
+    assert!(is_multipliable::<Phased<Signed<4>, -192, { i64::MAX }, 2>>().get());
+    assert!(!is_multipliable::<Phased<Signed<4>, -193, { i64::MAX }, 2>>().get());
 }
 
 #[test]

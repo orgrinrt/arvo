@@ -16,6 +16,8 @@ use notko::Maybe;
 use super::Wide;
 use crate::tests::big::Big;
 
+mod the_wide_divisor;
+
 /// Values through both signs, the limb boundary and the ends of the index.
 fn values() -> [i128; 17] {
     [
@@ -123,7 +125,7 @@ fn the_sum_is_the_host_sum_where_the_host_holds_it() {
 fn the_floor_division_is_the_host_euclidean_division_at_a_positive_divisor() {
     for v in values() {
         for d in divisors() {
-            let got = Wide::of(v).floor_divided(d);
+            let got = floor(Wide::of(v), d);
             let host = v.div_euclid(d as i128);
             assert_eq!(index(got.quotient), host, "{v} / {d}");
             assert_eq!(got.remainder as i128, v.rem_euclid(d as i128), "{v} % {d}");
@@ -171,7 +173,7 @@ fn a_negative_value_floors_past_the_index_and_keeps_its_remainder() {
     let Maybe::Is(p) = Wide::power(2, 200) else { unreachable!() };
     let Maybe::Is(v) = p.times(Wide::of(-1)) else { unreachable!() };
     let Maybe::Is(v) = v.plus(Wide::of(-1)) else { unreachable!() };
-    let got = v.floor_divided(2);
+    let got = floor(v, 2);
     assert_eq!(got.remainder, 1);
     let Maybe::Is(half) = Wide::power(2, 199) else { unreachable!() };
     let Maybe::Is(expected) = half.times(Wide::of(-1)) else { unreachable!() };
@@ -210,7 +212,7 @@ fn a_division_across_three_and_four_limbs_multiplies_back_at_divisors_not_powers
                 i128::MAX as u128 - 2,
                 u128::MAX,
             ] {
-                let got = n.floor_divided(d);
+                let got = floor(n, d);
                 assert!(got.remainder < d, "{radix}^{power} over {d}");
                 assert_eq!(
                     got.remainder,
@@ -241,12 +243,12 @@ fn a_two_limb_division_floors_a_negative_value_and_counts_its_remainder_from_abo
     let Maybe::Is(p) = Wide::power(2, 200) else { unreachable!() };
     let Maybe::Is(v) = p.times(Wide::of(-1)) else { unreachable!() };
     let Maybe::Is(v) = v.plus(Wide::of(-1)) else { unreachable!() };
-    let got = v.floor_divided(u128::MAX);
+    let got = floor(v, u128::MAX);
     assert_eq!(got.remainder, u128::MAX - (1 << 72) - 1);
     assert_eq!(index(got.quotient), -(1i128 << 72) - 1);
     // The positive twin: `2^200 + 1` over the same divisor floors to `2^72`.
     let Maybe::Is(w) = p.plus(Wide::of(1)) else { unreachable!() };
-    let got = w.floor_divided(u128::MAX);
+    let got = floor(w, u128::MAX);
     assert_eq!(got.remainder, (1 << 72) + 1);
     assert_eq!(index(got.quotient), 1i128 << 72);
 }
@@ -284,6 +286,24 @@ fn a_value_narrows_to_a_denominator_exactly_when_it_is_one() {
     assert_eq!(Wide::of(0).negated(), Wide::of(0));
 }
 
+/// The floor of `n` over a divisor the host's unsigned 128-bit integer holds,
+/// with the remainder narrowed back to it, which it always is, being below `d`.
+struct Floor {
+    quotient:  Wide,
+    remainder: u128,
+}
+
+fn floor(n: Wide, d: u128) -> Floor {
+    let got = n.floor_divided(unsigned(d));
+    let Maybe::Is(remainder) = got.remainder.unsigned() else {
+        panic!("{n:?} over {d}: a remainder below the divisor left 128 bits");
+    };
+    Floor {
+        quotient: got.quotient,
+        remainder,
+    }
+}
+
 /// A deterministic stream of 64-bit draws, SplitMix64.
 struct Draws(u64);
 
@@ -308,7 +328,7 @@ fn big_of(negative: bool, m: [u64; 4]) -> Big {
 /// `n` over `d` against the oracle's remainder, and multiplied back.
 fn divides_back(negative: bool, m: [u64; 4], d: u128) {
     let n = Wide::signed(negative, m);
-    let got = n.floor_divided(d);
+    let got = floor(n, d);
     assert!(
         got.remainder < d,
         "{m:?} over {d}: remainder {}",

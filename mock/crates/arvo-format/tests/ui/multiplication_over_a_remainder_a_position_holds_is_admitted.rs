@@ -1,12 +1,11 @@
 // Multiplication over a phase whose remainder no exact position holds, the pair
 // that turns on the phase's denominator.
 //
-// The product of two members at a phase n / d over the quantum 2^-64 sits over
-// the denominator d^2 2^64, and an exact position carries its remainder over an
-// unsigned 128-bit denominator. At d = 2^32 that is 2^128, past it, so the
-// obligation does not admit the format yet. At d = 2^31 it is 2^126 and the same
-// declaration is admitted. The two files differ in the phase's denominator and
-// nothing else.
+// The product of two members at a phase n / d over the quantum 2^-132 sits over
+// the denominator d^2 2^132, and an exact step is formed in four 64-bit limbs.
+// At d = 2^62 that is 2^256, past them, so the obligation does not admit the
+// format yet. At d = 2^61 it is 2^254 and the same declaration is admitted. The
+// two files differ in the phase's denominator and nothing else.
 
 use arvo_format::ambient::BinaryRationals;
 use arvo_format::format::{Format, Phase};
@@ -18,10 +17,10 @@ struct Probe;
 
 impl Format for Probe {
     type Ambient = BinaryRationals;
-    type Quantum = quantum::Constant<-64>;
+    type Quantum = quantum::Constant<-132>;
     type Slots = Signed<8>;
 
-    const PHASE: Phase = Phase::of(1, 1 << 31);
+    const PHASE: Phase = Phase::of(1, 1 << 61);
 }
 
 const _AT: () = {

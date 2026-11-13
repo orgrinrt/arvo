@@ -7,14 +7,18 @@
 //!
 //! Sign and magnitude, the magnitude in four limbs, lowest first. It holds only
 //! what an exact step reads: a product, a sum, a negation, a power of the radix,
-//! one division with the floor by a positive divisor below `2^128`, and the
-//! narrowing back to the slot index or to a denominator. Every operation that can
-//! leave the four limbs answers `Isnt` rather than wrapping, and a step reads that
-//! as a position past the index. The crate's, rather than one operation's, because
-//! every exact step past the sum forms its numerator this wide.
+//! one division with the floor by a positive divisor in the four limbs, the
+//! comparisons a remainder is read by, and the narrowing back to the slot index
+//! or to the host's unsigned integer. Every operation that can leave the four
+//! limbs answers `Isnt` rather than wrapping, and a step reads that as a step not
+//! formed. The crate's, rather than one operation's, because every exact step
+//! past the sum forms its numerator, its denominator and its remainder this wide.
+
+use core::cmp::Ordering;
 
 use notko::Maybe;
 
+use crate::format::greatest_common_divisor_unsigned;
 use crate::width::Bool;
 
 /// A magnitude, four limbs, lowest first. A product of two is formed in eight
@@ -33,7 +37,7 @@ pub(crate) struct Wide {
 /// A floor division: the quotient, and the remainder from zero up to the divisor.
 pub(crate) struct Divided {
     pub(crate) quotient:  Wide,
-    pub(crate) remainder: u128,
+    pub(crate) remainder: Wide,
 }
 
 impl Wide {
@@ -123,7 +127,7 @@ impl Wide {
                 Maybe::Isnt => Maybe::Isnt,
             };
         }
-        if is_below(self.magnitude, other.magnitude).get() {
+        if matches!(ordered(self.magnitude, other.magnitude), Ordering::Less) {
             Maybe::Is(Self::signed(
                 other.negative,
                 lessened(other.magnitude, self.magnitude),
@@ -168,22 +172,35 @@ impl Wide {
     /// The floor of the value over a positive `divisor`, and the remainder.
     ///
     /// A long division of the four limbs by one where the divisor is under
-    /// `2^64`, and by two limbs a quotient limb at a time otherwise, then the floor: below
-    /// zero with a remainder, the quotient's magnitude grows by one and the
-    /// remainder is counted from the other side. That increment cannot leave the
-    /// limbs, since a remainder needs a divisor of two or more and the quotient is
-    /// then at most half the value. A zero divisor is the caller's to refuse.
+    /// `2^64`, and by as many limbs as the divisor has a quotient limb at a time
+    /// otherwise, then the floor: below zero with a remainder, the quotient's
+    /// magnitude grows by one and the remainder is counted from the other side.
+    /// That increment cannot leave the limbs, since a remainder needs a divisor of
+    /// two or more and the quotient is then at most half the value. A divisor that
+    /// is zero or below it is the caller's to refuse.
     #[inline]
-    pub(crate) const fn floor_divided(self, divisor: u128) -> Divided {
-        let (quotient, rest) = if divisor >> 64 == 0 {
-            by_one_limb(self.magnitude, divisor as u64)
+    pub(crate) const fn floor_divided(self, divisor: Self) -> Divided {
+        let v = divisor.magnitude;
+        let limbs = if v[3] != 0 {
+            4
+        } else if v[2] != 0 {
+            3
+        } else if v[1] != 0 {
+            2
         } else {
-            by_two_limbs(self.magnitude, divisor)
+            1
         };
-        if self.negative && rest != 0 {
+        let (quotient, rest) = if limbs == 1 {
+            let (q, r) = by_one_limb(self.magnitude, v[0]);
+            (q, [r as u64, (r >> 64) as u64, 0, 0])
+        } else {
+            by_limbs(self.magnitude, v, limbs)
+        };
+        let rest = Self::signed(false, rest);
+        if self.negative && !rest.is_zero().get() {
             Divided {
                 quotient:  Self::signed(true, incremented(quotient)),
-                remainder: divisor - rest,
+                remainder: Self::signed(false, lessened(v, rest.magnitude)),
             }
         } else {
             Divided {
@@ -211,6 +228,55 @@ impl Wide {
         } else {
             Maybe::Isnt
         }
+    }
+
+    /// The order of two values.
+    #[inline]
+    pub(crate) const fn ordering(self, other: Self) -> Ordering {
+        match (self.negative, other.negative) {
+            (false, true) => Ordering::Greater,
+            (true, false) => Ordering::Less,
+            (false, false) => ordered(self.magnitude, other.magnitude),
+            (true, true) => ordered(other.magnitude, self.magnitude),
+        }
+    }
+
+    /// `self * by` against `other * other_by`, for two values not below zero.
+    ///
+    /// Each product is a four-limb value times one limb, held in five, so neither
+    /// side can leave what it is held in.
+    #[inline]
+    pub(crate) const fn scaled_against(self, by: u64, other: Self, other_by: u64) -> Ordering {
+        let left = scaled(self.magnitude, by);
+        let right = scaled(other.magnitude, other_by);
+        let mut i = 5;
+        while i > 0 {
+            i -= 1;
+            if left[i] != right[i] {
+                return if left[i] < right[i] { Ordering::Less } else { Ordering::Greater };
+            }
+        }
+        Ordering::Equal
+    }
+
+    /// The greatest common divisor of two values not below zero, one of them
+    /// above it.
+    ///
+    /// Euclid's, on the host's 128-bit integer where both fit, which is every pair
+    /// a 128-bit denominator leaves, and on the four limbs otherwise.
+    #[inline]
+    pub(crate) const fn common_divisor(self, other: Self) -> Self {
+        if let (Maybe::Is(a), Maybe::Is(b)) = (self.unsigned(), other.unsigned()) {
+            return Self::of_unsigned(greatest_common_divisor_unsigned(a, b));
+        }
+        let mut a = self;
+        let mut b = other;
+        while !b.is_zero().get() {
+            let rest = a.floor_divided(b).remainder;
+            a = b;
+            b = rest;
+        }
+        a
     }
 
     /// The value as the host's unsigned 128-bit integer, or nothing when it is
@@ -241,84 +307,138 @@ const fn by_one_limb(m: Magnitude, divisor: u64) -> (Magnitude, u128) {
     (quotient, rest)
 }
 
-/// A magnitude over a divisor from `2^64` up, a limb of the quotient at a time.
+/// A magnitude over a divisor of `limbs` limbs, two to four, a limb of the
+/// quotient at a time.
 ///
-/// The schoolbook long division with the divisor normalised, Knuth's algorithm D
-/// at two limbs. Shifting both operands left until the divisor's top bit is set
-/// makes the estimate of each quotient limb from the running remainder's top two
-/// limbs and the divisor's top limb at most two too large, and the test against
-/// the divisor's low limb then corrects it exactly: with a two-limb divisor that
-/// test compares the whole product with the whole partial remainder, so the
-/// multiply and subtract after it never borrows and needs no step back. The
-/// remainder is the last two limbs shifted back down.
+/// The schoolbook long division with the divisor normalised, Knuth's algorithm D.
+/// Shifting both operands left until the divisor's top bit is set makes the
+/// estimate of each quotient limb from the running remainder's top two limbs and
+/// the divisor's top limb at most two too large, and the test against the
+/// divisor's second limb takes it down to at most one too large. At two limbs
+/// that test compares the whole product with the whole partial remainder, so the
+/// estimate is then exact and the subtraction never borrows. From three limbs it
+/// sees only the top of the product, so the subtraction can borrow, and then the
+/// estimate was one too large: the divisor is added back and the limb lowered by
+/// one. The remainder is the bottom `limbs` limbs shifted back down.
 #[inline]
-const fn by_two_limbs(m: Magnitude, divisor: u128) -> (Magnitude, u128) {
-    // Below 64, since the divisor is at least `2^64`.
-    let shift = divisor.leading_zeros();
-    let d = divisor << shift;
-    let high = (d >> 64) as u64 as u128;
-    let low = d as u64 as u128;
+const fn by_limbs(m: Magnitude, divisor: Magnitude, limbs: usize) -> (Magnitude, Magnitude) {
+    // Below 64, since the divisor's top limb is not zero.
+    let shift = divisor[limbs - 1].leading_zeros();
+    let v = shifted_up(divisor, shift);
     let mut u = [0u64; 5];
-    if shift == 0 {
-        u[0] = m[0];
-        u[1] = m[1];
-        u[2] = m[2];
-        u[3] = m[3];
-    } else {
+    let dividend = shifted_up(m, shift);
+    u[0] = dividend[0];
+    u[1] = dividend[1];
+    u[2] = dividend[2];
+    u[3] = dividend[3];
+    if shift != 0 {
         u[4] = m[3] >> (64 - shift);
-        let mut i = 3;
-        while i > 0 {
-            u[i] = (m[i] << shift) | (m[i - 1] >> (64 - shift));
-            i -= 1;
-        }
-        u[0] = m[0] << shift;
     }
+    let high = v[limbs - 1] as u128;
+    let second = v[limbs - 2] as u128;
     let mut quotient = [0u64; 4];
-    let mut j = 3;
+    let mut j = 5 - limbs;
     while j > 0 {
         j -= 1;
-        // The running remainder `u[j + 2], u[j + 1], u[j]` is below `d` times a
-        // limb, so its top limb is at most `high` and the estimate at most one limb
-        // and one past it.
-        let top = ((u[j + 2] as u128) << 64) | u[j + 1] as u128;
+        // The running remainder `u[j + limbs] .. u[j]` is below `v` times a limb,
+        // so its top limb is at most `high` and the estimate at most one limb and
+        // one past it.
+        let top = ((u[j + limbs] as u128) << 64) | u[j + limbs - 1] as u128;
         let mut estimate = top / high;
         let mut rest = top % high;
-        while estimate >> 64 != 0 || estimate * low > ((rest << 64) | u[j] as u128) {
+        while estimate >> 64 != 0 || estimate * second > ((rest << 64) | u[j + limbs - 2] as u128) {
             estimate -= 1;
             rest += high;
             if rest >> 64 != 0 {
                 break;
             }
         }
-        // `estimate` is the quotient limb, so the product is not above the
-        // running remainder and the subtraction leaves the top limb at zero.
-        let p0 = estimate * low;
-        let p1 = estimate * high + (p0 >> 64);
-        let (r0, borrow0) = u[j].overflowing_sub(p0 as u64);
-        let (t1, under1) = u[j + 1].overflowing_sub(p1 as u64);
-        let (r1, under1_again) = t1.overflowing_sub(borrow0 as u64);
-        u[j] = r0;
-        u[j + 1] = r1;
-        u[j + 2] = u[j + 2]
-            .wrapping_sub((p1 >> 64) as u64)
-            .wrapping_sub((under1 || under1_again) as u64);
+        // Subtract `estimate` times `v` from the running remainder, the product
+        // a limb at a time with its carry, the difference with its borrow.
+        let mut carry: u128 = 0;
+        let mut borrow = false;
+        let mut i = 0;
+        while i < limbs {
+            let product = estimate * v[i] as u128 + carry;
+            carry = product >> 64;
+            let (d, under) = u[j + i].overflowing_sub(product as u64);
+            let (d, under_again) = d.overflowing_sub(borrow as u64);
+            u[j + i] = d;
+            borrow = under || under_again;
+            i += 1;
+        }
+        let (d, under) = u[j + limbs].overflowing_sub(carry as u64);
+        let (d, under_again) = d.overflowing_sub(borrow as u64);
+        u[j + limbs] = d;
+        if under || under_again {
+            // One too large: add `v` back, the carry out of the top dropped
+            // because it cancels the borrow that brought us here.
+            estimate -= 1;
+            let mut carry_back = false;
+            let mut i = 0;
+            while i < limbs {
+                let (s, over) = u[j + i].overflowing_add(v[i]);
+                let (s, over_again) = s.overflowing_add(carry_back as u64);
+                u[j + i] = s;
+                carry_back = over || over_again;
+                i += 1;
+            }
+            u[j + limbs] = u[j + limbs].wrapping_add(carry_back as u64);
+        }
         quotient[j] = estimate as u64;
     }
-    let rest = (((u[1] as u128) << 64) | u[0] as u128) >> shift;
+    let mut rest = [0u64; 4];
+    let mut i = 0;
+    while i < limbs {
+        rest[i] = if shift == 0 { u[i] } else { (u[i] >> shift) | (u[i + 1] << (64 - shift)) };
+        i += 1;
+    }
     (quotient, rest)
 }
 
-/// Whether magnitude `a` is below `b`.
+/// The four limbs shifted up by `shift`, below 64, with what passes the top
+/// dropped; the caller keeps it where it needs it.
 #[inline]
-const fn is_below(a: Magnitude, b: Magnitude) -> Bool {
+const fn shifted_up(m: Magnitude, shift: u32) -> Magnitude {
+    if shift == 0 {
+        return m;
+    }
+    [
+        m[0] << shift,
+        (m[1] << shift) | (m[0] >> (64 - shift)),
+        (m[2] << shift) | (m[1] >> (64 - shift)),
+        (m[3] << shift) | (m[2] >> (64 - shift)),
+    ]
+}
+
+/// The order of magnitude `a` against `b`.
+#[inline]
+const fn ordered(a: Magnitude, b: Magnitude) -> Ordering {
     let mut i = 4;
     while i > 0 {
         i -= 1;
         if a[i] != b[i] {
-            return Bool::of(a[i] < b[i]);
+            return if a[i] < b[i] { Ordering::Less } else { Ordering::Greater };
         }
     }
-    Bool::FALSE
+    Ordering::Equal
+}
+
+/// `m * by` in five limbs, which holds it.
+#[inline]
+const fn scaled(m: Magnitude, by: u64) -> [u64; 5] {
+    let mut out = [0u64; 5];
+    let mut carry: u128 = 0;
+    let mut i = 0;
+    while i < 4 {
+        // At most (2^64 - 1)^2 + (2^64 - 1), below 2^128.
+        let t = (m[i] as u128) * (by as u128) + carry;
+        out[i] = t as u64;
+        carry = t >> 64;
+        i += 1;
+    }
+    out[4] = carry as u64;
+    out
 }
 
 /// `a + b`, or nothing when it leaves the four limbs.

@@ -24,6 +24,7 @@ use crate::points::{Biased, Floating, Integer};
 use crate::quantum::{Indexed, MagnitudeCount};
 use crate::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
 use crate::slots::{Signed, Slot};
+use crate::wide::Wide;
 
 /// A law whose step falls with magnitude, so its finest magnitude is its last.
 struct Falling;
@@ -178,12 +179,18 @@ fn walked<S: DeclaredSignature>(
 }
 
 /// A remainder in lowest terms.
+///
+/// The oracle forms its positions in the host's 128-bit integer, so a remainder
+/// that does not read back in it is one the oracle never named.
 fn lowest(r: Remainder) -> (u128, u128) {
-    let (mut a, mut b) = (r.numerator(), r.denominator());
+    let (Maybe::Is(num), Maybe::Is(den)) = (r.numerator(), r.denominator()) else {
+        panic!("{r:?}: a remainder past 128 bits, which this oracle does not form");
+    };
+    let (mut a, mut b) = (num, den);
     while b != 0 {
         (a, b) = (b, a % b);
     }
-    (r.numerator() / a, r.denominator() / a)
+    (num / a, den / a)
 }
 
 /// The same position, compared as a slot and a ratio rather than as a pair.
@@ -356,4 +363,40 @@ fn a_point_past_the_host_integer_s_positions_still_lands() {
         matches!(nearest, Maybe::Is(l) if l.magnitude() == Magnitude::at(3)
         && adapt::<Under<Floating<4, -6, 8>, HalfEven>>(l.exact(), Dither::UNUSED) == Slot::at(4))
     );
+}
+
+#[test]
+fn a_point_whose_denominator_passes_128_bits_still_lands() {
+    // `7 / (2^128 - 1)` at `2^-20` on the integer grid is `D = (2^128 - 1) 2^20`,
+    // and `7` shares no factor with it, so the remainder keeps a denominator past
+    // the host's 128-bit integer: slot zero, a little above it.
+    let point = Scaled::of(7, u128::MAX, Exponent::of(-20));
+    let Maybe::Is(down) = land::<Under<Integer<8>, TowardZero>>(point, Dither::UNUSED) else {
+        panic!("the point is in range at the one magnitude");
+    };
+    let Maybe::Is(up) = land::<Under<Integer<8>, Ceil>>(point, Dither::UNUSED) else {
+        panic!("the point is in range at the one magnitude");
+    };
+    assert_eq!(down.exact().slot(), Slot::ZERO);
+    assert!(!down.exact().is_on_grid().get());
+    assert_eq!(
+        adapt::<Under<Integer<8>, TowardZero>>(down.exact(), Dither::UNUSED),
+        Slot::ZERO
+    );
+    assert_eq!(
+        adapt::<Under<Integer<8>, Ceil>>(up.exact(), Dither::UNUSED),
+        Slot::at(1)
+    );
+    // The pair is `7 / D` in lowest terms, and the accessors hand out neither
+    // half, since the denominator has no host integer to be read back in.
+    let Maybe::Is(scale) = Wide::power(2, 20) else {
+        panic!("the power is formed in the four limbs");
+    };
+    let Maybe::Is(den) = Wide::of_unsigned(u128::MAX).times(scale) else {
+        panic!("the denominator is formed in the four limbs");
+    };
+    let remainder = down.exact().part;
+    assert_eq!(remainder, Remainder::reduced(Wide::of(7), den));
+    assert!(matches!(remainder.numerator(), Maybe::Isnt));
+    assert!(matches!(remainder.denominator(), Maybe::Isnt));
 }
