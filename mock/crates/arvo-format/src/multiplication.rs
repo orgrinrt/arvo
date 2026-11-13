@@ -18,22 +18,20 @@
 //!
 //! One obligation carries four conditions: a phase that denotes, and three that
 //! are not yet admitted rather than refused, a magnitude-indexed quantum, a `D`
-//! past `2^63 - 1`, and a corner position the slot index does not hold. It is
+//! past `2^128 - 1`, and a corner position the slot index does not hold. It is
 //! forced by the exact step, and `is_multipliable` asks the same without forcing
 //! it.
-
-mod wide;
 
 use core::marker::PhantomData;
 
 use notko::Maybe;
-use wide::{Divided, Wide};
 
 use crate::adapt::{Arity, DeclaredSignature, Operation};
-use crate::apply::{Dither, Exact, Fraction, adapt};
-use crate::format::{Format, greatest_common_divisor, radix};
+use crate::apply::{Dither, Exact, Remainder, adapt};
+use crate::format::{Format, greatest_common_divisor, greatest_common_divisor_unsigned, radix};
 use crate::quantum::{Quantum, is_constant_family};
 use crate::slots::{Slot, Slots};
+use crate::wide::{Divided, Wide};
 use crate::width::Bool;
 
 /// Multiplication under one declared signature.
@@ -73,13 +71,14 @@ impl<F: Format> Multipliable<F> {
         );
         // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): the
         // position is a function of the signature here too, and only its
-        // remainder's denominator is past what a `Fraction` carries.
+        // remainder's denominator is past the unsigned 128 bits an exact position
+        // carries it over.
         assert!(
             matches!(Self::STEP, Maybe::Is(_)),
             "multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), \
              with d the phase's reduced denominator, r the radix and e the quantum's exponent, \
-             passes 2^63 - 1: an exact position carries its remainder over a positive signed \
-             64-bit denominator"
+             passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \
+             denominator"
         );
         // FIXME(arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c): the
         // corner positions are functions of the signature, and only the slot
@@ -106,14 +105,13 @@ struct Step {
     /// `r^max(e, 0)`, or nothing when it leaves the four limbs, in which case any
     /// product but zero does too.
     scale:       Maybe<Wide>,
-    /// `n d r^max(-e, 0)`, the phase's term, at most `2^126` in magnitude.
-    offset:      i128,
-    /// `D = d^2 r^max(-e, 0)`, from one up to `2^63 - 1`.
-    divisor:     u64,
+    /// `n d r^max(-e, 0)`, the phase's term, under `2^191` in magnitude.
+    offset:      Wide,
+    /// `D = d^2 r^max(-e, 0)`, from one up to `2^128 - 1`.
+    divisor:     u128,
 }
 
-/// The step's constants for `F`, or nothing where `D` is not a positive signed
-/// 64-bit value.
+/// The step's constants for `F`, or nothing where `D` is past `2^128 - 1`.
 ///
 /// A zero phase denominator, and a zero radix at a negative exponent, give no
 /// positive `D`, and the radix's own obligation refuses the second. The
@@ -130,27 +128,36 @@ const fn step<F: Format>() -> Maybe<Step> {
     let r = radix::<F>().base() as u64;
     let e = <F::Quantum as Quantum>::BASE.power();
     let (up, down) = if e < 0 { (0, e.unsigned_abs()) } else { (e.unsigned_abs(), 0) };
+    // `d r^k`, then `D` as `d` times it. Either leaving the four limbs, or `D`
+    // leaving the host's unsigned 128-bit integer, is a `D` not yet admitted.
     let fall = match Wide::power(r, down) {
-        Maybe::Is(p) => {
-            match p.index() {
-                Maybe::Is(v) => v,
-                Maybe::Isnt => return Maybe::Isnt,
+        Maybe::Is(p) => p,
+        Maybe::Isnt => return Maybe::Isnt,
+    };
+    let lowered = match Wide::of(d).times(fall) {
+        Maybe::Is(v) => v,
+        Maybe::Isnt => return Maybe::Isnt,
+    };
+    let divisor = match Wide::of(d).times(lowered) {
+        Maybe::Is(v) => {
+            match v.unsigned() {
+                Maybe::Is(u) if u > 0 => u,
+                _ => return Maybe::Isnt,
             }
         },
         Maybe::Isnt => return Maybe::Isnt,
     };
-    // `d` is at most `2^63`, so `d^2` is at most `2^126` and holds.
-    let divisor = match (d * d).checked_mul(fall) {
-        Some(v) if v > 0 && v <= i64::MAX as i128 => v,
-        _ => return Maybe::Isnt,
+    // `d r^k` is at most `D`, under `2^128`, and `|n|` at most `2^63`.
+    let offset = match Wide::of(n).times(lowered) {
+        Maybe::Is(v) => v,
+        Maybe::Isnt => return Maybe::Isnt,
     };
     Maybe::Is(Step {
-        numerator:   n,
+        numerator: n,
         denominator: d,
-        scale:       Wide::power(r, up),
-        // `d r^k` is at most `D`, and `|n|` at most `2^63`.
-        offset:      n * (d * fall),
-        divisor:     divisor as u64,
+        scale: Wide::power(r, up),
+        offset,
+        divisor,
     })
 }
 
@@ -161,7 +168,7 @@ enum Placed {
     /// Past the end of the index on the negative side when it says so.
     Past(bool),
     /// The floor slot and the remainder's numerator over `D`.
-    At(i128, u64),
+    At(i128, u128),
 }
 
 /// `n + a d`, one factor of the numerator.
@@ -205,7 +212,7 @@ const fn placed(step: Step, a: i128, b: i128) -> Placed {
             Maybe::Isnt => return Placed::Past(negative),
         }
     };
-    let numerator = match scaled.plus(Wide::of(-step.offset)) {
+    let numerator = match scaled.plus(step.offset.negated()) {
         Maybe::Is(x) => x,
         Maybe::Isnt => return Placed::Past(negative),
     };
@@ -258,14 +265,12 @@ const fn positioned(step: Step, at: Placed) -> Exact {
         Placed::Past(negative) => saturated(negative),
         Placed::At(slot, 0) => Exact::on_grid(Slot::at(slot)),
         Placed::At(slot, remainder) => {
-            let common = greatest_common_divisor(remainder as i128, step.divisor as i128);
-            // Both are below `D`, which the obligation holds under `2^63`.
-            Exact::between(
+            // The remainder is below `D`, so it is already in `[0, 1)` and the
+            // position is the floor slot itself.
+            let common = greatest_common_divisor_unsigned(remainder, step.divisor);
+            Exact::held(
                 Slot::at(slot),
-                Fraction::of(
-                    (remainder as i128 / common) as i64,
-                    (step.divisor as i128 / common) as i64,
-                ),
+                Remainder::within(remainder / common, step.divisor / common),
             )
         },
     }

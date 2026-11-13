@@ -6,10 +6,13 @@
 //! A signed integer below `2^256` in magnitude, on a pair of the host's unsigned
 //! 128-bit integers, for the edge sweep's oracle.
 //!
-//! Written apart from the step's four-limb integer on purpose: another
+//! Written apart from the crate's four-limb integer on purpose: another
 //! representation, a product formed from the 64-bit halves of 128-bit words, and
-//! a division that is bit-serial rather than limb by limb. The two agreeing is
-//! then evidence rather than one algorithm checked against itself. The callers
+//! a division that differs from that integer's on each side of `2^64`, bit-serial
+//! where it divides limb by limb and a search over the quotient where it works a
+//! bit at a time. The two agreeing is then evidence rather than one algorithm
+//! checked against itself. The product's edge sweep reads it, and so does the
+//! four-limb integer's own suite. The callers
 //! keep every value under `2^256`, and a value that would leave it panics rather
 //! than wraps.
 
@@ -17,7 +20,7 @@ use notko::Maybe;
 
 /// A sign and a magnitude `hi * 2^128 + lo`, zero never negative.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(super) struct Big {
+pub(crate) struct Big {
     negative: bool,
     hi:       u128,
     lo:       u128,
@@ -39,9 +42,18 @@ fn widening(a: u128, b: u128) -> (u128, u128) {
     (hi, lo)
 }
 
+/// `(hi * 2^128 + lo) * d` in three 128-bit words, highest first, for `hi`
+/// below `2^64`.
+fn tripled(hi: u128, lo: u128, d: u128) -> (u128, u128, u128) {
+    let (l1, l0) = widening(lo, d);
+    let (h1, h0) = widening(hi, d);
+    let (mid, carry) = l1.overflowing_add(h0);
+    (h1 + u128::from(carry), mid, l0)
+}
+
 impl Big {
     /// A value of the host's signed 128-bit integer.
-    pub(super) fn of(v: i128) -> Self {
+    pub(crate) fn of(v: i128) -> Self {
         Self::signed(v < 0, 0, v.unsigned_abs())
     }
 
@@ -54,12 +66,12 @@ impl Big {
     }
 
     /// Whether the value is below zero.
-    pub(super) fn is_negative(self) -> bool {
+    pub(crate) fn is_negative(self) -> bool {
         self.negative
     }
 
     /// The product.
-    pub(super) fn times(self, other: Self) -> Self {
+    pub(crate) fn times(self, other: Self) -> Self {
         assert!(
             self.hi == 0 || other.hi == 0,
             "the oracle's product passed 2^256"
@@ -75,7 +87,7 @@ impl Big {
     }
 
     /// `r` to the power `k`, by repeated products.
-    pub(super) fn power(r: i128, k: u32) -> Self {
+    pub(crate) fn power(r: i128, k: u32) -> Self {
         (0 .. k).fold(Self::of(1), |acc, _| acc.times(Self::of(r)))
     }
 
@@ -85,7 +97,7 @@ impl Big {
     }
 
     /// The sum.
-    pub(super) fn plus(self, other: Self) -> Self {
+    pub(crate) fn plus(self, other: Self) -> Self {
         if self.negative == other.negative {
             let (lo, carry) = self.lo.overflowing_add(other.lo);
             let hi = self
@@ -101,9 +113,32 @@ impl Big {
         Self::signed(big.negative, hi, lo)
     }
 
-    /// The floor of the value over a positive `d` below `2^127`, and the
-    /// remainder, one bit at a time from the top.
-    pub(super) fn floor_over(self, d: u128) -> (Self, u128) {
+    /// A value of the host's unsigned 128-bit integer.
+    pub(crate) fn of_unsigned(v: u128) -> Self {
+        Self::signed(false, 0, v)
+    }
+
+    /// The floor of the value over a positive `d`, and the remainder.
+    ///
+    /// Below `2^64` one bit at a time from the top, where the step's integer
+    /// divides limb by limb. From `2^64` up, where the step's integer is the one
+    /// working a bit at a time, the quotient is found by search instead: each bit
+    /// from the top is kept where the trial quotient times `d` stays at or below
+    /// the magnitude, which reads only a product and a comparison.
+    pub(crate) fn floor_over(self, d: u128) -> (Self, u128) {
+        assert!(d > 0, "the oracle divides by a positive divisor");
+        let (q_hi, q_lo, rem) =
+            if d < 1 << 64 { self.bitwise_over(d) } else { self.searched_over(d) };
+        let q = Self::signed(self.negative, q_hi, q_lo);
+        if self.negative && rem != 0 {
+            (q.plus(Self::of(-1)), d - rem)
+        } else {
+            (q, rem)
+        }
+    }
+
+    /// The magnitude over `d` below `2^127`, a bit at a time.
+    fn bitwise_over(self, d: u128) -> (u128, u128, u128) {
         let (mut q_hi, mut q_lo, mut rem) = (0u128, 0u128, 0u128);
         for i in (0 .. 256u32).rev() {
             let bit = if i >= 128 { (self.hi >> (i - 128)) & 1 } else { (self.lo >> i) & 1 };
@@ -117,16 +152,39 @@ impl Big {
                 }
             }
         }
-        let q = Self::signed(self.negative, q_hi, q_lo);
-        if self.negative && rem != 0 {
-            (q.plus(Self::of(-1)), d - rem)
-        } else {
-            (q, rem)
+        (q_hi, q_lo, rem)
+    }
+
+    /// The magnitude over `d` from `2^64` up, by search over the quotient's bits.
+    ///
+    /// The quotient is below `2^192`, and a trial times `d` is formed in three
+    /// words, so nothing here can pass what it is held in.
+    fn searched_over(self, d: u128) -> (u128, u128, u128) {
+        let (mut q_hi, mut q_lo) = (0u128, 0u128);
+        for i in (0 .. 192u32).rev() {
+            let (t_hi, t_lo) =
+                if i >= 128 { (q_hi | 1 << (i - 128), q_lo) } else { (q_hi, q_lo | 1 << i) };
+            let (p2, p1, p0) = tripled(t_hi, t_lo, d);
+            if p2 == 0 && (p1, p0) <= (self.hi, self.lo) {
+                (q_hi, q_lo) = (t_hi, t_lo);
+            }
         }
+        let (_, p1, p0) = tripled(q_hi, q_lo, d);
+        let (rem, borrow) = self.lo.overflowing_sub(p0);
+        assert!(
+            self.hi - p1 == u128::from(borrow),
+            "the oracle's remainder is below its divisor"
+        );
+        (q_hi, q_lo, rem)
+    }
+
+    /// The value in the host's unsigned 128-bit integer, or nothing.
+    pub(crate) fn unsigned(self) -> Maybe<u128> {
+        if self.negative || self.hi != 0 { Maybe::Isnt } else { Maybe::Is(self.lo) }
     }
 
     /// The value in the host's signed 128-bit integer, or nothing.
-    pub(super) fn index(self) -> Maybe<i128> {
+    pub(crate) fn index(self) -> Maybe<i128> {
         if self.hi != 0 {
             return Maybe::Isnt;
         }
@@ -171,4 +229,40 @@ fn the_pair_agrees_with_the_host_where_the_host_holds_the_answer() {
     let (q, r) = v.floor_over(3);
     assert_eq!(q.times(Big::of(3)).plus(Big::of(r as i128)), v);
     assert!(matches!(q.index(), Maybe::Isnt));
+}
+
+#[test]
+fn the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64() {
+    // The search reads only a product and a comparison, so where the host holds
+    // the answer it is checked against the host's own division, and past it by
+    // multiplying back, at the divisor's two ends and between.
+    let divisors = [1u128 << 64, (1 << 64) + 1, 3 << 70, i128::MAX as u128, 1 << 127, u128::MAX];
+    for a in [0i128, 1, -1, i128::MAX, i128::MIN, -(1 << 100) - 7] {
+        for d in divisors {
+            let (q, r) = Big::of(a).floor_over(d);
+            assert!(r < d, "{a} % {d}");
+            assert_eq!(
+                q.times(Big::of_unsigned(d)).plus(Big::of_unsigned(r)),
+                Big::of(a),
+                "{a} / {d}"
+            );
+            if let Ok(signed) = i128::try_from(d) {
+                assert!(
+                    matches!(q.index(), Maybe::Is(v) if v == a.div_euclid(signed)),
+                    "{a} / {d}"
+                );
+            }
+        }
+    }
+    for v in [
+        Big::power(2, 255),
+        Big::power(3, 160).plus(Big::of(-1)),
+        Big::power(10, 76).times(Big::of(-1)),
+    ] {
+        for d in divisors {
+            let (q, r) = v.floor_over(d);
+            assert!(r < d);
+            assert_eq!(q.times(Big::of_unsigned(d)).plus(Big::of_unsigned(r)), v);
+        }
+    }
 }

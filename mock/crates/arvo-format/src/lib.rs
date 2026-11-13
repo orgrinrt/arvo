@@ -53,6 +53,7 @@ pub mod rounding;
 pub mod slots;
 pub mod standards;
 pub mod symmetry;
+mod wide;
 pub mod width;
 
 pub use adapt::{

@@ -23,16 +23,16 @@
 //! absorption law the canon states for a reduction onto the representable set
 //! becomes a function of the signature rather than a sweep.
 //!
-//! Three things are held out, and one obligation carries all three: a quantum
-//! that moves with the magnitude, which is not yet admitted, a phase remainder
-//! the position cannot hold, and a sum the slot coordinate cannot carry. The obligation is forced at the three
-//! verbs that compute addition's positions, and `is_addable` asks the same
-//! question without forcing it.
+//! Three things are held out, and one obligation carries all three: a phase that
+//! does not denote, a quantum that moves with the magnitude, which is not yet
+//! admitted, and a sum the slot coordinate cannot carry. The obligation is forced
+//! at the three verbs that compute addition's positions, and `is_addable` asks
+//! the same question without forcing it.
 
 use core::marker::PhantomData;
 
 use crate::adapt::{Adaptation, Arity, DeclaredSignature, Operation};
-use crate::apply::{Dither, Exact, Fraction, adapt, round_slot};
+use crate::apply::{Dither, Exact, Remainder, adapt, round_slot};
 use crate::format::{Format, greatest_common_divisor};
 use crate::quantum::is_constant_family;
 use crate::rounding::{Mode, Rounding};
@@ -66,19 +66,16 @@ impl<S: DeclaredSignature> Operation for Add<S> {
 struct Addable<F>(PhantomData<F>);
 
 impl<F: Format> Addable<F> {
-    /// The three refusals. The remainder is asserted first because the other two
+    /// The three refusals. The phase is asserted first because the other two
     /// read the phase's parts, and a zero denominator has none.
     const ADMITTED: () = {
-        // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): a
-        // reduced denominator of 2^63 is a placeholder rather than a refusal by
-        // design, since the sum is a function of the signature there; only the
-        // remainder's denominator is past what a `Fraction` carries. A zero
-        // denominator is refused by design and stays so.
+        // A refusal by design: a phase over a zero denominator names no member, so
+        // there is no sum to position. Every denoting phase's remainder, reduced to
+        // a denominator of at most 2^63, is one an exact position holds.
         assert!(
-            remainder_is_held::<F>().get(),
-            "addition is refused over a phase whose remainder no position can hold: the phase \
-             denominator is zero, or its fractional part reduces to a denominator of 2^63, which \
-             the remainder of an exact position does not carry"
+            F::PHASE.denotes().get(),
+            "addition is refused over a phase whose denominator is zero: such a phase names no \
+             member, so there is no sum to position"
         );
         // FIXME(arvo_addition_over_a_magnitude_indexed_quantum_is_a_placehol): the
         // magnitude-indexed family is not yet admitted, and two things unblock
@@ -158,20 +155,6 @@ const fn phase_parts<F: Format>(copies: i128) -> PhaseParts {
     }
 }
 
-/// Whether the phase's remainder is one an exact position can carry.
-///
-/// Its reduced denominator has to be a positive value the coordinate holds. It is
-/// not when the denominator is zero, and it is not when a denominator of the
-/// least value meets an odd numerator, whose remainder reduces to a denominator
-/// of `2^63`.
-const fn remainder_is_held<F: Format>() -> Bool {
-    if !F::PHASE.denotes().get() {
-        return Bool::FALSE;
-    }
-    let den = Addable::<F>::PHASE_PARTS.den;
-    Bool::of(den <= i64::MAX as i128)
-}
-
 /// Whether every position the step produces for two members is one a slot
 /// index holds.
 ///
@@ -246,19 +229,21 @@ pub const fn sum_position<F: Format>(a: Slot, b: Slot) -> Exact {
     positioned(saturating_sum(a.index(), b.index(), parts.whole), parts)
 }
 
+/// The parts' remainder in the coordinate an exact position stores it in.
+///
+/// Reduced, non-negative and below a positive denominator of at most `2^63`, so
+/// both narrow exactly and nothing carries into the slot.
+const fn remainder_of(parts: PhaseParts) -> Remainder {
+    Remainder::within(parts.rem as u128, parts.den as u128)
+}
+
 /// The exact position at slot `at`, which already carries the phase parts'
 /// whole part, and their remainder.
 ///
 /// Shared by every step that adds copies of the phase: they differ in the slot
 /// sum and in how many copies, and not in how the position is built from them.
 const fn positioned(at: i128, parts: PhaseParts) -> Exact {
-    // The obligation holds the one-copy reduced denominator inside the
-    // coordinate, and the reduced denominator of any count of copies divides
-    // it, so the denominator and the remainder below it both narrow exactly.
-    Exact::between(
-        Slot::at(at),
-        Fraction::of(parts.rem as i64, parts.den as i64),
-    )
+    Exact::held(Slot::at(at), remainder_of(parts))
 }
 
 /// A reach of whole slots, given the grid state the parts' remainder decides.
@@ -293,7 +278,7 @@ pub const fn add<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot
 /// addition refuses and report on it rather than stop the build.
 #[must_use]
 pub const fn is_addable<F: Format>() -> Bool {
-    if !remainder_is_held::<F>().get() {
+    if !F::PHASE.denotes().get() {
         return Bool::FALSE;
     }
     is_constant_family::<F::Quantum>().and(sum_is_carried::<F>())
@@ -378,11 +363,8 @@ const fn completion_at<S: DeclaredSignature>(k: i128) -> Bool {
 pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
     let () = Addable::<S::Format>::ADMITTED;
     let reach = addition_reach::<S>();
-    let PhaseParts {
-        whole,
-        rem,
-        den,
-    } = Addable::<S::Format>::PHASE_PARTS;
+    let parts = Addable::<S::Format>::PHASE_PARTS;
+    let whole = parts.whole;
     if !reach.reaches_off_the_grid().get() {
         return completion_at::<S>(whole);
     }
@@ -394,11 +376,7 @@ pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
         return completion_at::<S>(whole).and(completion_at::<S>(whole + 1));
     }
     let low = reach.positions_low();
-    let rounded = round_slot(
-        mode,
-        Exact::between(low, Fraction::of(rem as i64, den as i64)),
-        Dither::UNUSED,
-    );
+    let rounded = round_slot(mode, Exact::held(low, remainder_of(parts)), Dither::UNUSED);
     // The offset is the step alone: `low` carries no fraction, so the slot below
     // the position is `low` itself.
     completion_at::<S>(whole + (rounded.down() - low.index()) + rounded.step())

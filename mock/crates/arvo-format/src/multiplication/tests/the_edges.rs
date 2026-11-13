@@ -11,9 +11,10 @@
 //! against an independent reading of the four corners, and the step at the
 //! corners and the slots beside them against an oracle in `Big`, which forms the
 //! numerator on a pair of the host's unsigned 128-bit integers and divides it
-//! one bit at a time. There the numerator passes `2^128` and the denominator is
-//! not a power of two, so the step's three- and four-limb division is what is
-//! compared. The step is read without forcing the obligation, so the formats it
+//! by an algorithm other than the step's on each side of `2^64`. There the
+//! numerator passes `2^128` and the denominator is not a power of two, or passes
+//! `2^64` at `2^-127` and `10^-38`, so the step's three- and four-limb division
+//! and its division by two limbs are what is compared. The step is read without forcing the obligation, so the formats it
 //! does not admit are swept too, and there a position past the index has to
 //! saturate on its sign. A step that keeps the floor and drops the remainder is
 //! run beside it as the control: it has to be wrong somewhere and never where
@@ -22,14 +23,14 @@
 use notko::Maybe;
 
 use super::At;
-use super::big::Big;
 use crate::ambient::{BinaryRationals, DecimalRationals};
-use crate::apply::{Exact, Fraction};
-use crate::format::{Format, greatest_common_divisor, radix};
+use crate::apply::{Exact, Fraction, Remainder};
+use crate::format::{Format, greatest_common_divisor_unsigned, radix};
 use crate::multiplication::{is_multipliable, product_position, unforced_position};
 use crate::points::{Integer, UFixed};
 use crate::quantum::{Constant, Quantum};
 use crate::slots::{Signed, Slot, Slots, Unsigned};
+use crate::tests::big::Big;
 use crate::tests::dispatch::PerFormat;
 use crate::tests::grid::Grid;
 use crate::tests::ratio::Ratio;
@@ -65,12 +66,16 @@ fn reading<F: Format>() -> Reading {
     }
 }
 
-/// The denominator `d^2 r^down`.
+/// The denominator `d^2 r^down`, formed in the oracle's own wide integer.
 fn denominator(at: &Reading) -> u128 {
-    let fall =
-        at.r.checked_pow(at.down)
-            .expect("the sweep stays where r^down holds");
-    (at.d * at.d * fall) as u128
+    let Maybe::Is(den) = Big::of(at.d)
+        .times(Big::of(at.d))
+        .times(Big::power(at.r, at.down))
+        .unsigned()
+    else {
+        panic!("the sweep stays where d^2 r^down is under 2^128");
+    };
+    den
 }
 
 /// `(phase + a)(phase + b) * q - phase` for the slots `a` and `b`, as the
@@ -91,10 +96,10 @@ fn oracle(at: &Reading, a: i128, b: i128) -> Answer {
     if rem == 0 {
         return Answer::At(Exact::on_grid(Slot::at(slot)));
     }
-    let g = greatest_common_divisor(rem as i128, den as i128);
-    Answer::At(Exact::between(
+    let g = greatest_common_divisor_unsigned(rem, den);
+    Answer::At(Exact::held(
         Slot::at(slot),
-        Fraction::of((rem as i128 / g) as i64, (den as i128 / g) as i64),
+        Remainder::within(rem / g, den / g),
     ))
 }
 
@@ -207,7 +212,7 @@ fn the_product_is_exact_and_its_verdict_true_at_the_edges_of_every_width_from_ni
     every_width!(walk; BinaryRationals, 0, 0, 1);
     every_width!(walk; BinaryRationals, 1, 0, 1);
     every_width!(walk; BinaryRationals, -1, 0, 1);
-    every_width!(walk; BinaryRationals, -62, 0, 1);
+    every_width!(walk; BinaryRationals, -127, 0, 1);
     assert_eq!(walk.formats, 4 * 56 * 2);
     assert_eq!(walk.points, 4 * points_per_grid());
     // Held out: the unsigned 64-bit range at zero, and both 64-bit ranges at
@@ -226,10 +231,11 @@ fn the_product_is_exact_at_a_phase_and_at_radix_ten_at_every_width_from_nine_to_
     every_width!(walk; BinaryRationals, 0, 1, 3);
     every_width!(walk; BinaryRationals, -5, -2, 3);
     every_width!(walk; DecimalRationals, -18, 0, 1);
+    every_width!(walk; DecimalRationals, -38, 0, 1);
     every_width!(walk; DecimalRationals, 1, 0, 1);
     every_width!(walk; DecimalRationals, -3, 2, 7);
-    assert_eq!(walk.formats, 5 * 56 * 2);
-    assert_eq!(walk.points, 5 * points_per_grid());
+    assert_eq!(walk.formats, 6 * 56 * 2);
+    assert_eq!(walk.points, 6 * points_per_grid());
     // Some of each: radix ten at `10^1` and a third at the 64-bit unsigned
     // range leave the index, and the rest is admitted.
     assert!(walk.held_out > 0 && walk.held_out < walk.formats);
@@ -278,13 +284,29 @@ fn the_named_edges_are_what_the_obligation_admits() {
             u64::MAX as i128
         ))
     );
+    // At the deepest exponent the remainder holds, the denominator is `2^127`
+    // and the step divides by two limbs.
+    assert_eq!(
+        product_position::<UFixed<64, -127>>(top64, top64),
+        reported(oracle(
+            &reading::<UFixed<64, -127>>(),
+            u64::MAX as i128,
+            u64::MAX as i128
+        ))
+    );
     // The signed 64-bit range at a phase of a third, and at radix ten at
-    // `10^-18`, both admitted.
+    // `10^-18` and at `10^-38`, all admitted.
     type Third = Grid<BinaryRationals, Constant<0>, Signed<64>, 1, 3>;
     type Atto = Grid<DecimalRationals, Constant<-18>, Signed<64>, 0, 1>;
+    type Deepest = Grid<DecimalRationals, Constant<-38>, Signed<64>, 0, 1>;
     assert!(is_multipliable::<Third>().get());
     assert!(is_multipliable::<Atto>().get());
+    assert!(is_multipliable::<Deepest>().get());
     for (a, b) in [(min, min), (min, max), (max, max)] {
+        assert_eq!(
+            product_position::<Deepest>(a, b),
+            reported(oracle(&reading::<Deepest>(), a.index(), b.index()))
+        );
         assert_eq!(
             product_position::<Third>(a, b),
             reported(oracle(&reading::<Third>(), a.index(), b.index()))

@@ -14,6 +14,7 @@
 use notko::Maybe;
 
 use super::Wide;
+use crate::tests::big::Big;
 
 /// Values through both signs, the limb boundary and the ends of the index.
 fn values() -> [i128; 17] {
@@ -38,9 +39,23 @@ fn values() -> [i128; 17] {
     ]
 }
 
-/// Positive divisors, small and up to the largest the step uses.
-fn divisors() -> [u64; 7] {
-    [1, 2, 3, 10, 1 << 32, i64::MAX as u64 - 6, i64::MAX as u64]
+/// Positive divisors, one limb and two, up to the top of the host's signed
+/// 128-bit integer, so the host's own division is the oracle at every one.
+fn divisors() -> [u128; 12] {
+    [
+        1,
+        2,
+        3,
+        10,
+        1 << 32,
+        i64::MAX as u128 - 6,
+        i64::MAX as u128,
+        u64::MAX as u128,
+        1 << 64,
+        (1 << 64) + 1,
+        (3 << 70) + 5,
+        i128::MAX as u128,
+    ]
 }
 
 /// The value narrowed back, which every value of the host's integer has.
@@ -167,8 +182,11 @@ fn a_negative_value_floors_past_the_index_and_keeps_its_remainder() {
 #[test]
 fn a_division_across_three_and_four_limbs_multiplies_back_at_divisors_not_powers_of_two() {
     // Numerators of three and four limbs, each moved off the divisors' grid,
-    // on both signs. Every limb's remainder carries into the one below it,
-    // so a carry dropped anywhere shows in the product read back.
+    // on both signs, over divisors of one limb and of two up to the top of the
+    // host's unsigned 128-bit integer. Every limb's remainder carries into the
+    // one below it, so a carry dropped anywhere shows in the product read back,
+    // and the remainder is checked against the shared wide oracle, whose
+    // division is another algorithm on each side of `2^64`.
     let mut checked = 0;
     for (radix, power) in [(10, 45), (3, 120), (3, 150), (7, 90)] {
         let Maybe::Is(p) = Wide::power(radix, power) else { unreachable!() };
@@ -179,15 +197,32 @@ fn a_division_across_three_and_four_limbs_multiplies_back_at_divisors_not_powers
                 matches!(n.index(), Maybe::Isnt),
                 "{radix}^{power} is past the index"
             );
-            for d in [3, 7, 1_000_000_000_000_000_000, i64::MAX as u64] {
+            let oracle = Big::power(radix as i128, power)
+                .times(Big::of(sign))
+                .plus(Big::of(12_345));
+            for d in [
+                3,
+                7,
+                1_000_000_000_000_000_000,
+                i64::MAX as u128,
+                (1 << 64) + 1,
+                (3 << 70) + 5,
+                i128::MAX as u128 - 2,
+                u128::MAX,
+            ] {
                 let got = n.floor_divided(d);
                 assert!(got.remainder < d, "{radix}^{power} over {d}");
-                let Maybe::Is(back) = got.quotient.times(Wide::of(d as i128)) else {
+                assert_eq!(
+                    got.remainder,
+                    oracle.floor_over(d).1,
+                    "{radix}^{power} over {d}"
+                );
+                let Maybe::Is(back) = got.quotient.times(unsigned(d)) else {
                     panic!(
                         "{radix}^{power} over {d}: the quotient times the divisor left the limbs"
                     );
                 };
-                let Maybe::Is(back) = back.plus(Wide::of(got.remainder as i128)) else {
+                let Maybe::Is(back) = back.plus(unsigned(got.remainder)) else {
                     panic!("{radix}^{power} over {d}: the remainder added left the limbs");
                 };
                 assert_eq!(back, n, "{radix}^{power} over {d}");
@@ -195,5 +230,56 @@ fn a_division_across_three_and_four_limbs_multiplies_back_at_divisors_not_powers
             }
         }
     }
-    assert_eq!(checked, 4 * 2 * 4);
+    assert_eq!(checked, 4 * 2 * 8);
+}
+
+#[test]
+fn a_two_limb_division_floors_a_negative_value_and_counts_its_remainder_from_above() {
+    // `-(2^200) - 1` over `2^128 - 1`, whose quotient and remainder are found
+    // by hand: `2^200 = 2^72 (2^128 - 1) + 2^72`, so `-(2^200) - 1` floors to
+    // `-(2^72) - 1` with remainder `2^128 - 1 - 2^72 - 1`.
+    let Maybe::Is(p) = Wide::power(2, 200) else { unreachable!() };
+    let Maybe::Is(v) = p.times(Wide::of(-1)) else { unreachable!() };
+    let Maybe::Is(v) = v.plus(Wide::of(-1)) else { unreachable!() };
+    let got = v.floor_divided(u128::MAX);
+    assert_eq!(got.remainder, u128::MAX - (1 << 72) - 1);
+    assert_eq!(index(got.quotient), -(1i128 << 72) - 1);
+    // The positive twin: `2^200 + 1` over the same divisor floors to `2^72`.
+    let Maybe::Is(w) = p.plus(Wide::of(1)) else { unreachable!() };
+    let got = w.floor_divided(u128::MAX);
+    assert_eq!(got.remainder, (1 << 72) + 1);
+    assert_eq!(index(got.quotient), 1i128 << 72);
+}
+
+/// A value of the host's unsigned 128-bit integer, built through the signed
+/// entry so the suite reads nothing the step does not.
+fn unsigned(v: u128) -> Wide {
+    let Maybe::Is(half) = Wide::of((v >> 1) as i128).times(Wide::of(2)) else {
+        unreachable!()
+    };
+    let Maybe::Is(whole) = half.plus(Wide::of((v & 1) as i128)) else {
+        unreachable!()
+    };
+    whole
+}
+
+#[test]
+fn a_value_narrows_to_a_denominator_exactly_when_it_is_one() {
+    // The narrowing `D` is read through: every non-negative value under `2^128`
+    // narrows to itself, and below zero or from `2^128` up nothing does.
+    for v in [0u128, 1, u64::MAX as u128, 1 << 64, i128::MAX as u128, 1 << 127, u128::MAX] {
+        assert!(
+            matches!(unsigned(v).unsigned(), Maybe::Is(got) if got == v),
+            "{v}"
+        );
+    }
+    let Maybe::Is(top) = Wide::power(2, 128) else { unreachable!() };
+    assert!(matches!(top.unsigned(), Maybe::Isnt));
+    assert!(matches!(Wide::of(-1).unsigned(), Maybe::Isnt));
+    assert!(matches!(
+        unsigned(u128::MAX).negated().unsigned(),
+        Maybe::Isnt
+    ));
+    assert_eq!(unsigned(u128::MAX).negated().negated(), unsigned(u128::MAX));
+    assert_eq!(Wide::of(0).negated(), Wide::of(0));
 }

@@ -28,6 +28,7 @@
 //! does not have, and it would be the one place in the crate still saying a slot
 //! is a number.
 
+pub(crate) mod big;
 pub(crate) mod dispatch;
 pub(crate) mod grid;
 pub(crate) mod ratio;

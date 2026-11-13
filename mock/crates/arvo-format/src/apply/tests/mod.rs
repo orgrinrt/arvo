@@ -439,3 +439,4 @@ mod the_tie_sweep;
 mod the_top_of_the_index;
 mod the_translation_law;
 mod the_wide_oracle_sweep;
+mod the_wide_remainder;

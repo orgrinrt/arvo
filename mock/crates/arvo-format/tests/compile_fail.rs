@@ -203,15 +203,14 @@ fn addition_over_an_uncarried_sum_is_refused() {
     t.compile_fail("tests/ui/addition_over_an_uncarried_sum_is_refused.rs");
 }
 
-/// Addition over a phase whose remainder no position can hold.
-///
-/// The one refusal the first version of the design missed. The saturation that
-/// is harmless for a ratio moves a position a whole slot, so it is refused
-/// rather than approximated.
+/// Addition over a phase that does not denote, refused by design, and the same
+/// declaration over the least denominator, whose remainder of `2^63` an exact
+/// position holds, admitted.
 #[test]
-fn addition_over_a_remainder_the_position_cannot_hold_is_refused() {
+fn addition_over_a_phase_that_does_not_denote_is_refused_and_one_reduced_to_2_63_admitted() {
     let t = trybuild::TestCases::new();
-    t.compile_fail("tests/ui/addition_over_a_remainder_the_position_cannot_hold_is_refused.rs");
+    t.compile_fail("tests/ui/addition_over_a_phase_that_does_not_denote_is_refused.rs");
+    t.pass("tests/ui/addition_over_a_phase_reduced_to_two_to_the_63_is_admitted.rs");
 }
 
 /// A format where a declared signature goes.
