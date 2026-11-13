@@ -23,7 +23,7 @@
 pub mod completion;
 
 use arvo_format::adapt::{Adapt, Signature};
-use arvo_format::apply::{Dither, Exact, Fraction, adapt};
+use arvo_format::apply::{Dither, Exact, Fraction, adapt, panic_on_overflow};
 use arvo_format::format::Format;
 use arvo_format::overflow::Overflow;
 use arvo_format::rounding::{Floor, HalfUp, TowardZero};
@@ -49,10 +49,20 @@ pub fn select<F: Format, O: Overflow>(slot: i128, n: i64, d: i64) -> i128 {
 
 /// The same spelling over a position the caller already holds.
 pub fn read_off<F: Format, O: Overflow>(x: Exact) -> i128 {
-    if x.is_tie().get() && x.slot().index() < 0 {
+    if is_tie_below_zero(x) {
         adapt::<Signature<F, Adapt<Floor, O>>>(x, Dither::UNUSED).index()
     } else {
         adapt::<Signature<F, Adapt<HalfUp, O>>>(x, Dither::UNUSED).index()
+    }
+}
+
+/// Whether the alias's rounded slot leaves the range: the verdict of whichever
+/// mode `read_off` reads the position by, so the two cannot disagree.
+pub fn overflows<F: Format, O: Overflow>(x: Exact) -> bool {
+    if is_tie_below_zero(x) {
+        panic_on_overflow::<Signature<F, Adapt<Floor, O>>>(x, Dither::UNUSED).get()
+    } else {
+        panic_on_overflow::<Signature<F, Adapt<HalfUp, O>>>(x, Dither::UNUSED).get()
     }
 }
 
@@ -95,4 +105,10 @@ pub fn shift<F: Format, O: Overflow>(slot: i128, n: i64, d: i64) -> Option<i128>
 /// three coordinates rather than as a list of the cells where it cannot.
 pub fn shift_is_formable(slot: i128, n: i64, d: i64) -> bool {
     slot != i128::MAX || d % 2 == 1 || (n as i128) + (d / 2) as i128 <= i64::MAX as i128
+}
+
+/// The one position the alias reads by `floor`: a tie, below zero. The slot's
+/// sign is the position's because the remainder is in `[0, 1)`.
+fn is_tie_below_zero(x: Exact) -> bool {
+    x.is_tie().get() && x.slot().index() < 0
 }

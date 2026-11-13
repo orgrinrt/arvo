@@ -1,0 +1,50 @@
+8c5dc844 chore: lock src changelist 202611132330
+64bb4a57 fix: drop the dead code suppressions from the ieee 754 tests and probe
+1f582edd chore: lock doc changelist 202611132330
+770d4d67 chore: close design round 202611132300
+e879ae18 chore: lock src changelist 202611132300
+9ad9b859 fix: answer the third review of the standard targets
+d98bbead chore: lock doc changelist 202611132300
+49d0a72a docs: answer the third review of the standard targets in the design
+889c4ccb docs: record the third review of the standard targets
+366d2e15 chore: close design round 202611132200
+e159c90c chore: lock src changelist 202611132200
+91f533fb fix: answer the second review of the standard targets
+4131818b chore: lock doc changelist 202611132200
+b847c24b docs: state the second review's fixes to the standard targets
+9e270619 chore: close design round 202611132100
+ec4e2606 chore: lock src changelist 202611132100
+5ef07dca fix: answer the review of the standard targets
+6d7daee1 chore: lock doc changelist 202611132100
+877cd231 docs: state the review fixes to the standard targets
+f0eeb2e3 registry: reword the standards gap now that ieee 754 has its suite
+07e4e979 chore: close design round 202611131910
+57779a66 chore: lock src changelist 202611131910
+41c00767 docs: regenerate the format document for the standard targets
+a6ff8aaf chore: lock doc changelist 202611131910
+613b2445 docs: say binary32 is the shipped float point less one member
+dac1d014 feat: declare ieee 754 from arvo's coordinates with parity suites
+fd9ae0ee chore: lock doc changelist 202611131910
+099c45eb docs: design ieee 754 as one composition at the standard's parameters
+030cf411 docs: open the standard targets round with its ties to even sketch
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
+2c8e5343 feat: add the oracle for fractions and division in arvo-format
+9dfd5339 feat: add the numeral value crate for integers at sole occupancy
+989e02f9 fix: spell git sources one way and show the bench harness runs
+7ec50792 feat: teach the oracle negation, subtraction and the product
+e20f1a1d research: sketch a value over the derived carrier with const add
+f2c88600 canon: propose the value stance and the rulings on the old crates
+336d24a1 fix: make arvo dev pass its own commit gate
+d841c5e1 chore: name the `supersedes` edge for `no-superseded-citation`
+a3737551 fix: round `half_up` ties toward positive infinity
+05489db5 canon: settle half_up as ties toward positive infinity
+e97f509e research: seat 270 blind read of which operation half_up denotes
+7e2aa51c research: audit two reads of `half_up` and answer it as ties to +inf
+d425aff5 feat: add `USize` and `ISize` on a 128-bit slot index

@@ -1,0 +1,14 @@
+[package]
+name = "review2-probes"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+
+[features]
+emax0 = []
+slots_verdict = []

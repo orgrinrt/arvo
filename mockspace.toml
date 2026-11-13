@@ -1187,8 +1187,8 @@ description = "How a row reached `ratified`: what was put to him, the options it
 name = "stamped_by"
 type = "string"
 required = false
-description = "Which route decided this row on a provisional stamp, where one did: `coordinators` where the three coordinators converged on it, `experts` where two domain experts agreed after a panel stretch. A stamp approves the work depending on the row and is never the final say: he is asked to make it formal and his answer can overturn it. Beside the tier rather than on it, so a stamped row keeps the `rung` it has. A row that is merely unratified carries no stamp; this is for a row a stamp actually decided. Present together with `stamp` or not at all, which `a-provisional-stamp-is-not-a-ratification` in the lint pack checks once arvo takes the pack at a revision that has it."
-values = ["coordinators", "experts"]
+description = "Which route decided this row on a provisional stamp, where one did: `coordinators` where the three coordinators converged on it, `experts` where two domain experts agreed after a panel stretch, `maintainer` where he himself directed the row onto a stamp, his passage cited in `stamp`. A stamp approves the work depending on the row and is never the final say: he is asked to make it formal and his answer can overturn it. Beside the tier rather than on it, so a stamped row keeps the `rung` it has. A row that is merely unratified carries no stamp; this is for a row a stamp actually decided. Present together with `stamp` or not at all, which `a-provisional-stamp-is-not-a-ratification` in the lint pack checks once arvo takes the pack at a revision that has it."
+values = ["coordinators", "experts", "maintainer"]
 
 [[registry.namespace.field]]
 name = "stamp"
@@ -1452,8 +1452,8 @@ description = "The stale sentences, each `<slug>: <sentence copied from that rul
 name = "stamped_by"
 type = "string"
 required = false
-description = "Which route decided this proposal on a provisional stamp, where one did: `coordinators` or `experts`, as on a ruling. A stamped proposal is still a proposal and not canon; the stamp says the work depending on it may go on until he answers. A proposal that is merely unratified carries none."
-values = ["coordinators", "experts"]
+description = "Which route decided this proposal on a provisional stamp, where one did: `coordinators`, `experts` or `maintainer`, as on a ruling. A stamped proposal is still a proposal and not canon; the stamp says the work depending on it may go on until he answers. A proposal that is merely unratified carries none."
+values = ["coordinators", "experts", "maintainer"]
 
 [[registry.namespace.field]]
 name = "stamp"

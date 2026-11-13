@@ -16,12 +16,20 @@
 use super::cutting::{bounded, segment_of, words_of};
 use super::vocabulary::{
     CONJUNCTIONS,
+    CONTRASTS,
+    COPULAS,
     DENOTES,
     DIRECTIONS,
     ELSEWHERE,
+    ERRORS,
     MENTIONED,
     NEGATORS,
+    PHRASE_OPENERS,
     READINGS,
+    RESULT_MENTIONS,
+    RESULTS,
+    RULE_NOUNS,
+    TIES,
 };
 
 /// Whether a negator is bound to the reading at `r`, or to the name at `n`.
@@ -74,16 +82,134 @@ pub(super) fn negated(lower: &str, segs: &[(usize, &str)], at: usize) -> bool {
 /// standing behind the term counts too, which is what the reading wants and the
 /// name does not: a negator behind the name is the sentence denying the reading
 /// of it, and that is the span rule's business rather than this one's.
+///
+/// A negator behind the term that has the settled denotation behind it in turn
+/// is denying the denotation, not the term: "`half_up` sends a tie away from
+/// zero rather than toward positive infinity" asserts the reading and denies the
+/// denotation, so the negator is the denotation's and the reading stands.
+/// Where a copula stands between the two, the reading is the subject of a
+/// denied identity instead and is denied with it: "away from zero is not toward
+/// positive infinity" says the alias is not the mode's denotation.
 fn bound_in_segment(lower: &str, segs: &[(usize, &str)], at: usize, after: bool) -> bool {
     let (from, segment) = segs[segment_of(segs, at)];
+    let end = from + segment.len();
     negators_in(segment)
         .into_iter()
         .map(|p| from + p)
         .filter(|p| after || *p < at)
         .any(|p| {
             let (lo, hi) = if p < at { (p, at) } else { (at, p) };
+            let identity = || {
+                COPULAS
+                    .iter()
+                    .any(|c| !bounded(&lower[lo .. hi], c).is_empty())
+            };
             no_conjunction(&lower[lo .. hi])
+                && !(p > at && denies_the_denotation(lower, p, end) && !identity())
         })
+}
+
+/// Whether the negator at `p` is bound to a statement of the settled
+/// denotation standing behind it, opening before `end`, with no conjunction
+/// between. The statement may run past `end`, since `floor(x + q/2)` holds a
+/// bracket and a bracket cuts a segment.
+fn denies_the_denotation(lower: &str, p: usize, end: usize) -> bool {
+    DENOTES
+        .iter()
+        .flat_map(|d| bounded(&lower[p ..], d))
+        .any(|d| p + d < end && no_conjunction(&lower[p .. p + d]))
+}
+
+/// Whether a negator stands in `lower[start .. to]` with no conjunction between
+/// it and `to`, and a rule named behind it: the stretch denies that the thing
+/// before it is the thing it names.
+///
+/// What a relative opening the next segment binds to is the last thing named,
+/// and where the stretch denies that thing is the mode, the thing is another
+/// rule whatever words it is named in: "`half_up` is not Java's rule, which
+/// goes away from zero" gives the reading to Java's rule.
+///
+/// A negator denying a quality or an act names no thing, so the relative binds
+/// to the mode: "`half_up` is not biased, which means a tie goes away from
+/// zero", "`half_up` does not truncate, which sends a tie away from zero", and
+/// so does a description, "is not the slow one, which". What names a rule is
+/// read by `names_a_rule_behind`, past a `from`, `to` or `than` the negator takes.
+pub(super) fn denied_since(text: &str, lower: &str, start: usize, to: usize) -> bool {
+    negators_in(&lower[start .. to])
+        .into_iter()
+        .map(|p| start + p)
+        .any(|p| no_conjunction(&lower[p .. to]) && names_a_rule_behind(text, lower, p, to))
+}
+
+/// Whether what stands behind the negator at `p`, up to `to`, names a rule: it
+/// opens on a code span or a capital, a name; it holds one of `RULE_NOUNS` or
+/// `rounding` before the first of `PHRASE_OPENERS`, a rule described in words;
+/// or it holds one behind that preposition in a phrase that names a rule, with
+/// `the`, an owner's `'s` or a capitalised word.
+///
+/// An article alone is not enough: "is not the slow one, which" denies a
+/// description of the mode and names nothing the relative could mean, where
+/// "is not the truncating rule, which" and "is not symmetric rounding, which"
+/// name a rule. A rule noun behind a preposition with nothing naming it sits in
+/// a phrase about the denial, so "is not slow as a rule, which", "is not slow in
+/// any mode, which" and "does not drift under this rule, which" deny a quality
+/// or an act and the relative binds to the mode, where "is not slow like the
+/// truncating rule, which" and "is not as slow as Java's rule, which" name the
+/// rule the relative binds to. An aside in commas right behind the negator is
+/// passed over, "is not, as a rule, slow, which" against "is not, as a rule,
+/// the truncating rule, which".
+fn names_a_rule_behind(text: &str, lower: &str, p: usize, to: usize) -> bool {
+    // The word starting at or after `at`, past whitespace, and where it starts.
+    let word = |at: usize| -> (usize, &str) {
+        let past = &lower[at .. to];
+        let start = at + (past.len() - past.trim_start().len());
+        let len = lower[start .. to]
+            .find(|c: char| !(c.is_ascii_alphanumeric() || c == '\'' || c == '-' || c == '_'))
+            .unwrap_or(to - start);
+        (start, &lower[start .. start + len])
+    };
+    // Past the whole negator, which may be several words or the `n't` of one.
+    let negator = NEGATORS
+        .iter()
+        .filter(|n| lower[p .. to].starts_with(*n))
+        .map(|n| n.len())
+        .max()
+        .unwrap_or("n't".len());
+    let (mut at, mut next) = word(p + negator);
+    // An aside set off by commas right behind the negator is passed over.
+    if lower[at .. to].starts_with(',') {
+        if let Some(close) = lower[at + 1 .. to].find(',') {
+            (at, next) = word(at + 1 + close + 1);
+        }
+    }
+    if matches!(next, "from" | "to" | "than") {
+        (at, next) = word(at + next.len());
+    }
+    let first = text[at ..].chars().next();
+    let end = PHRASE_OPENERS
+        .iter()
+        .filter_map(|w| bounded(&lower[at .. to], w).first().copied())
+        .min()
+        .map_or(to, |q| at + q);
+    let ruled = |span: &str| {
+        RULE_NOUNS
+            .iter()
+            .chain(&["rounding"])
+            .any(|n| !bounded(span, n).is_empty())
+    };
+    // Behind a preposition a rule noun counts only in a rule named as one: by
+    // `the`, by an owner's `'s`, or by a word opening on a capital or a code span.
+    let phrase = &lower[end .. to];
+    let named = !bounded(phrase, "the").is_empty()
+        || phrase.contains("'s ")
+        || text[end .. to]
+            .split_whitespace()
+            .skip(1)
+            .any(|w| w.starts_with(|c: char| c.is_ascii_uppercase() || c == '`'));
+    next.is_empty() && first == Some('`')
+        || first.is_some_and(|c| c.is_ascii_uppercase())
+        || ruled(&lower[at .. end])
+        || named && ruled(phrase)
 }
 
 /// Whether a negator inside `span` reaches `to`, where `span` starts at `from`.
@@ -131,14 +257,25 @@ fn negators_in(text: &str) -> Vec<usize> {
 /// the two share one, from the segment's start where they do not. A conjunction
 /// in an earlier segment joins two other things, as the "so" and the "and" in
 /// the example do, and says nothing about whether the reading is asserted.
+///
+/// Where the statement stands in an earlier segment, the reading's own segment
+/// also has to open the contrast, with a word from `CONTRASTS` ahead of the
+/// reading. A bare comma between the two is an apposition, which restates the
+/// first as the second: "`half_up` goes toward positive infinity, away from
+/// zero" gives the mode both.
 pub(super) fn denotation_before(lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
     let from = segs[segment_of(segs, r)].0;
+    let contrasted = CONTRASTS
+        .iter()
+        .any(|c| !bounded(&lower[from .. r], c).is_empty());
     DENOTES
         .iter()
         .flat_map(|d| bounded(lower, d))
         .filter(|d| *d < r)
         .any(|d| {
-            !bound_in_segment(lower, segs, d, false) && no_conjunction(&lower[d.max(from) .. r])
+            !bound_in_segment(lower, segs, d, false)
+                && no_conjunction(&lower[d.max(from) .. r])
+                && (d >= from || contrasted)
         })
 }
 
@@ -156,6 +293,11 @@ pub(super) fn denotation_before(lower: &str, segs: &[(usize, &str)], r: usize) -
 /// segment between them, and an empty segment is not an item: counted as one,
 /// it reads as a bare name, and "`half_up` goes floor(x + q/2), but away from
 /// zero" became a list.
+///
+/// A parenthetical is not an item either. A segment that is the whole of one
+/// pair of round brackets is an aside on what stands before it, so the
+/// neighbour is looked for past it: "`half_up` rounds x (a tie) away from zero"
+/// has one item, the sentence, with an aside in it.
 pub(super) fn listed_apart(lower: &str, segs: &[(usize, &str)], n: usize, r: usize) -> bool {
     if segs.len() < 3 {
         return false;
@@ -164,8 +306,13 @@ pub(super) fn listed_apart(lower: &str, segs: &[(usize, &str)], n: usize, r: usi
     if i == j || !is_bare(segs[j].1, lower, r) {
         return false;
     }
-    let holds_text = |k: &usize| !segs[*k].1.trim().is_empty();
-    [(0 .. j).rev().find(holds_text), (j + 1 .. segs.len()).find(holds_text)]
+    let bytes = lower.as_bytes();
+    let bracketed = |k: usize| {
+        let (from, text) = segs[k];
+        from > 0 && bytes[from - 1] == b'(' && bytes.get(from + text.len()) == Some(&b')')
+    };
+    let item = |k: &usize| !segs[*k].1.trim().is_empty() && !bracketed(*k);
+    [(0 .. j).rev().find(item), (j + 1 .. segs.len()).find(item)]
         .into_iter()
         .flatten()
         .any(|k| words_of(segs[k].1) <= 1)
@@ -221,14 +368,32 @@ pub(super) fn mentioned(lower: &str, at: usize, term: &str) -> bool {
         .chars()
         .rev()
         .collect();
-    MENTIONED.contains(&after.as_str()) || MENTIONED.contains(&before.as_str())
+    // `value` names what the mode gives as well as a piece of a corpus, so
+    // ahead of a verb of giving it is the first: "`half_up` returns the `away
+    // from zero` value" asserts the reading.
+    let gives = || {
+        RESULTS
+            .iter()
+            .any(|v| !bounded(&lower[.. at], v).is_empty())
+    };
+    let quotes = |w: &str| MENTIONED.contains(&w) && !(RESULT_MENTIONS.contains(&w) && gives());
+    quotes(&after) || quotes(&before)
 }
 
-/// Whether a direction word stands in front of `at`, in the same segment.
+/// Whether a direction word stands in front of `at`, in the same segment, and
+/// the size it gives a direction to is a tie's.
+///
+/// A direction word ahead of `in magnitude` says where something goes, and what
+/// goes is the nearest noun ahead of it that a size can be about. Where that is
+/// an error rather than a tie, the two words are the error's: "an error that
+/// increases in magnitude with the width" says nothing of where a tie goes.
 pub(super) fn directed(lower: &str, segs: &[(usize, &str)], at: usize) -> bool {
     let from = segs[segment_of(segs, at)].0;
     let head = &lower[from .. at];
+    let last = |words: &[&str]| words.iter().flat_map(|w| bounded(head, w)).max();
+    let errors = last(ERRORS);
     DIRECTIONS.iter().any(|d| !bounded(head, d).is_empty())
+        && (errors.is_none() || last(TIES) > errors)
 }
 
 /// Whether the clause says it is about some other rule than the shipped one.
