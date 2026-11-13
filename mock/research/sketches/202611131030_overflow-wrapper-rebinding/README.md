@@ -10,65 +10,92 @@ C>` is keyed on that signature. So the wrapper cannot be a newtype holding a
 value of some other type. It has to be a type-level function from one signature
 to another, substituting the overflow coordinate and keeping the rest.
 
-Whether that function is writable, and whether its result is still admitted, is a
-compile question. Nothing about it can be settled by reading.
+Whether that function is writable, whether its result is still admitted, and
+whether a value can be moved through it from outside the crate are compile
+questions. Nothing about them can be settled by reading.
 
 ## Hypothesis
 
-Four things, each a separate way the shape could fail, and a fifth asked while
-the crates were open.
+Five things, each a separate way the shape could fail.
 
 The substitution is expressible with ordinary associated types and no feature
-gate. The projected signature still satisfies `Sole`, whose blanket impl asserts
-over the slot family, the policy, the rounding mode, the quantum and the phase. A
-function generic in the starting signature can do the re-binding, which is where
-a normalisation failure would show. And a consumer can write the crossing from
-the public surface.
-
-The third was expected to fail and did not. The fourth was expected to be
-trivially true and is the one that failed.
-
-The fifth is whether the MATLAB conventions in `arvo-format::standards` produce
-signatures the value tier admits. Two earlier readings recorded that as
-unestablished, and it costs one declaration to settle, because `Num` demands
-`Sole` of its parameter and refuses what is not admitted.
+gate, and it re-binds what it says. The projected signature is admitted by
+`Sole`, the same as a written one. The re-binding goes generically, with the
+signature held abstract. A consumer can write the crossing from the public
+surface alone. MATLAB's documented `fimath` default is a signature the value
+tier admits.
 
 ## Outcome
 
-`WORKS` on the first three, `FAILS` on the fourth. `out/run.txt` is the output of
-`cargo run --release` in this directory.
+`WORKS` on all five. `out/run.txt` is the output of `cargo run --release` in
+this directory, and `out/refused-stochastic.txt` and `out/refused-clamp.txt` are
+the compiler's refusals of the two controls under `examples/`, from
+`cargo build --release --example <name>`. All three were produced in the main clone
+with the crates as they are at `326b52f5`, so the paths in them are that
+clone's.
 
 The substitution is one type alias over the two halves of the signature, with no
 feature gate and no trait of its own, because every piece of it is already an
-associated type. The projected signature is admitted: `Sole`'s blanket impl
-discharges for it exactly as for a written one, which follows from the
-substitution leaving the format alone and `Sole` asserting nothing about the
-overflow policy beyond it being wrapping or saturation.
+associated type. It re-binds the coordinate: slot 300, past an unsigned 8-bit
+range, completes as 44 under the wrapper naming `Wrap` and as 255 under the one
+naming `Saturate`, from the same written signature.
+
+The projected signature is admitted, and the admission discriminates. The two
+controls are signatures of the same shape that `Sole` refuses at compile time,
+one for a rounding mode that reads a dither and one where the substitution is
+handed `Clamp`, which the alias itself accepts because it is only a projection.
+Each fails with the admission's own message.
 
 Generically it goes, with one bound the caller has to write out:
 `WithOverflow<S, O>: Sole`. The projection normalises on its own, since the
 `DeclaredSignature` impl on `Signature` is concrete, but normalising is not
 proving the admission. `S: Sole` says nothing about any sibling signature, not
 even one sharing its format, so the obligation does not come along for free. That
-is a real ergonomic cost and it is the thing to design against: a wrapper
-appearing in a consumer's signature drags a bound with it.
+is a cost a wrapper carries into every generic signature it appears in, and it
+is the thing to design against.
 
-What does not work is the crossing itself. `Num::carrier` and
-`Num::from_carrier` are `pub(crate)`, and no public door takes a value of one
-signature and gives one of another. The public doors are `constant`, which builds
-from a literal, `adapted`, which runs the target's adaptation over an exact
-position, and `slot`, which reads the coordinate out. So today a consumer can
-name `Saturating<S>` as a type and cannot move a value into it, and the wrapper
-mechanism needs a door that does not exist yet.
+The crossing is writable from outside the crate as
+`Num::adapted(Exact::on_grid(value.slot()))`: the value's slot, that slot as an
+exact position already on the grid, and the target signature's adaptation over
+it. All three doors are public. The sketch moves 201 from `Wrap` to `Saturate`
+and back and reads the same member each time, and the value that arrives adds
+under the policy it crossed into, 255 and 1 giving 255 where the pair it came
+from gives 0.
 
-The fifth works. `Signature<Fi<16, 8>, Adapt<Floor, Saturate>>` is admitted, so
-MATLAB's documented default pair produces a value type today, and the standards
-module reaches the value tier without anything new. That is the shortest route to
-a shipped overflow default that follows a parity standard, which is what op's
-words of 13 November ask for.
+MATLAB's default is admitted. MathWorks documents the default `fimath` as
+`RoundingMethod: Nearest` and `OverflowAction: Saturate`, and
+`arvo-format::standards` maps Nearest onto `HalfUp`.
+`Signature<Fi<16, 8>, Adapt<Nearest, Saturate>>` builds as a value type and
+saturates at both ends of the signed 16-bit range. The reference page is stored
+in the workspace's fetched store under the title "MathWorks fimath reference:
+fixed-point math settings", fetched on 13 November 2026.
 
-The door the fourth needs is a design question rather than a compile one. What it
-is worth saying here is what it cannot be: a free bit copy is correct only because the
-substitution leaves the format and therefore the carrier alone, which is a fact
-about this particular substitution and not about re-binding in general. A door
-spelled as a general signature change cannot be a copy.
+## What this leaves open
+
+The rounding half of MATLAB's default. The check feeds a slot that is already on
+the grid, so it shows the pair saturating at both ends and never exercises
+`Nearest`. Rounding under that pair is what `tests/matlab_fi_parity.rs` in
+`arvo-format` holds, and the sketch adds nothing to it.
+
+Whether the crossing lowers to a move. Both signatures share a format, so the
+position handed to the adaptation is on the target's grid and inside its range,
+and nothing is rounded or completed. That argues the composition should cost
+nothing, and it is an argument rather than a measurement: a sketch does not
+answer a codegen question, and one that matters goes to the bench harness.
+
+Whether a named door is wanted beside the composition. Three calls in a row is
+writable and is not what a consumer would want to type at every site, and the
+`WithOverflow<S, O>: Sole` bound travels with it. A named crossing between
+sibling signatures is a design question about ergonomics, with a working
+composition under it, and no longer a missing capability.
+
+## What an earlier version of this file said
+
+The first version reported `FAILS` on the crossing, on the ground that
+`Num::carrier` and `Num::from_carrier` are crate-private. That was wrong. The
+arm it rested on never attempted the crossing: it discarded its argument and
+returned a constant. The same version named `Floor` as MATLAB's default
+rounding, which is not what MathWorks documents, and its assertions compared a
+constant with itself. This version replaces all three, and the documents beside
+`OPS-WORDS.md` that repeated the earlier result are corrected in the same
+change.

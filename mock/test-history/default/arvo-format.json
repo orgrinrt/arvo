@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "flavour": "",
+  "member": "arvo-format",
+  "green": null,
+  "tests": {
+    "arvo-format": {
+      "addition::tests::the_signed_oracle::subtraction_answers_as_the_oracle_does_at_every_member_up_to_eight_bits": {
+        "secs": 13.7,
+        "passed": true,
+        "passed_at": "e79f0c995f9baaf8b310be2856bcc2df006579f9220cb57db8017e6be1176b8a"
+      },
+      "apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do": {
+        "secs": 16.6,
+        "passed": true,
+        "passed_at": "e79f0c995f9baaf8b310be2856bcc2df006579f9220cb57db8017e6be1176b8a"
+      },
+      "division::tests::the_oracle::the_quotient_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
+        "secs": 90.0,
+        "passed": true,
+        "passed_at": "e79f0c995f9baaf8b310be2856bcc2df006579f9220cb57db8017e6be1176b8a"
+      },
+      "multiplication::tests::the_oracle::the_product_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
+        "secs": 63.8,
+        "passed": true,
+        "passed_at": "e79f0c995f9baaf8b310be2856bcc2df006579f9220cb57db8017e6be1176b8a"
+      }
+    }
+  },
+  "bins": {
+    "arvo-format::compile_fail": "59c75f07e545250c24510f04493023b07781d3cd57460e95581228d110321bcc",
+    "arvo-format::matlab_fi_parity": "8c6fcbc2e71a0cba63f7097e0547a798659051cbde75977ca45c85158013ee06",
+    "arvo-format::the_ties_away_alias": "62658fad4b2eb23ce245ab9a9024ac8e45254fa787c94a78adac92bd523fa57f"
+  },
+  "red": {
+    "arvo-format": {
+      "at": "e79f0c995f9baaf8b310be2856bcc2df006579f9220cb57db8017e6be1176b8a",
+      "names": [
+        "multiplication::tests::the_inverse_round_trip::the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63"
+      ],
+      "listed": "ade25618caeb2db7"
+    }
+  }
+}
