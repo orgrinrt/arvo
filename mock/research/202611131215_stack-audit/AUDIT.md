@@ -160,7 +160,7 @@ beyond those the designs cite; the 184 design rounds beyond their dates and scop
 `mock/research/` before November; vehje, kolli and tarina; the lint sources under `mock/lints/`; the
 mockspace bench framework itself; the sibling session's hilavitkutin review.
 
-Run by me: `cargo test -p arvo-format` in a debug build (297 pass, one fails, ticket `eae41fda0fd6`);
+Run by me: `cargo test -p arvo-format` in a debug build (297 pass, one fails, ticket `ac0e65731d28`);
 the spike. Nothing else was built or run, and no bench in `mock/benches/` was re-run.
 
 ## What each pass changed
@@ -226,7 +226,9 @@ hilavitkutin verdict line, which still read as though the plan had the order wro
 than at its last two steps. It checked the five files for the style the repository gates on: no
 dashes of either kind, no inline emphasis, none of the banned vocabulary, every file inside the
 500-line limit, with a positive control run on the vocabulary grep. No finding moved, no mark
-changed, and the report rests here.
+changed, and the report rests here. It also found three of the ticket ids in the table below to be
+commit shas rather than ticket ids, carried from earlier in the session, and replaced each with the id
+the ticket tool resolves.
 
 ## Tickets
 
@@ -234,12 +236,12 @@ Filed or bumped by this session, in the workspace ticket store.
 
 | Id | About |
 |---|---|
-| `eae41fda0fd6` | The inverse round-trip test in `arvo-format` fails on `dev` |
-| `fdbc079d46a7` | The pre-commit hook rewrites the consumer crate's lockfile |
+| `ac0e65731d28` | The inverse round-trip test in `arvo-format` fails on `dev` |
+| `9373eef0caef` | The pre-commit hook rewrites the consumer crate's lockfile |
 | `707a2a63027a` | The value-add disassembly sketch is stale against the source |
 | `684a26a63155` | Six markers in `arvo-strategy` and `arvo-format` name no ticket |
 | `fa0b1d97df50` | The saturation guard counts sub-agents that already handed back |
-| `ad67b351e8d9`, `1e8626a64f44` | The stand-up assumes kaski and a coordinator line for a helper elsewhere |
+| `ad67b351e8d9`, `17cf68fcd055` | The stand-up assumes kaski and a coordinator line for a helper elsewhere |
 | `39d402b85f3d` | No way to build a crate on a stable toolchain in a workspace clone |
 
 The findings of this report are not themselves tickets. They are for op and the coordinator to accept

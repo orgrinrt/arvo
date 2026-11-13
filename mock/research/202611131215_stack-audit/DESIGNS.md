@@ -237,7 +237,7 @@ crate designs are 365, 268, 189 and 130 lines, so this is one file and not a hab
 The third is one red test. `the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63`
 fails on `dev` with a subtraction overflow inside the test's own sample builder
 (`mock/crates/arvo-format/src/multiplication/tests/the_inverse_round_trip.rs:37`), which is ticket
-`eae41fda0fd6`. The other 297 tests of the crate pass. Two exhaustive sweeps take over a minute each in
+`ac0e65731d28`. The other 297 tests of the crate pass. Two exhaustive sweeps take over a minute each in
 a debug build, which the slow-test rule wants ticketed and ignored or made fast.
 
 Answer: passes in intent; the three faults can be fixed in place. Mark: good as it is, as an oracle;
