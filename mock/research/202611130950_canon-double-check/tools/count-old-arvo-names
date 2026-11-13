@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Counts what hilavitkutin still imports from the old arvo, at one revision.
+#
+#   count-old-arvo-names <hilavitkutin clone> <rev>
+#
+# Reads the revision with `git grep`, so the clone's checkout does not matter.
+# Three tables: occurrences of each old crate path, the `use` lines that bring in
+# each contract name grouped by the path they come from, and whole-word
+# occurrences of each name. Only `.rs` files under `mock/crates` are read.
+set -euo pipefail
+
+clone=${1:?a hilavitkutin clone}
+rev=${2:?a revision}
+spec=("$rev" -- 'mock/crates/*.rs')
+
+# `git grep` exits 1 on no match, which is a count of zero here and not a failure.
+gg() { git -C "$clone" grep "$@" || [ $? -eq 1 ]; }
+
+echo "# paths, occurrences"
+for path in 'arvo::' 'arvo_tensor::' 'arvo_bitmask::' 'arvo_bits::' 'arvo_hash::' \
+        'arvo_graph::' 'arvo_sparse::' 'arvo_spectral::' 'arvo_comb::' 'arvo_refit::' \
+        'arvo_storage::' 'arvo_strategy::'; do
+    n=$(gg -oh -F "$path" "${spec[@]}" | wc -l)
+    printf '%s\t%s\n' "$n" "$path"
+done
+
+echo "# use lines naming a contract, by the path they import from"
+for name in BitAccess BitLogic BitSequence FromConstant Additive Identity; do
+    gg -h -E "^\s*(pub )?use .*\b$name\b" "${spec[@]}" \
+        | sed -E 's/^\s*(pub )?use //; s/::\{.*//; s/::[A-Za-z_]+( as [A-Za-z_]+)?;.*//; s/;.*//' \
+        | sort | uniq -c | sort -rn \
+        | sed "s/^ *\([0-9]*\) /\1\t$name from /"
+done
+
+echo "# names, whole-word occurrences"
+for name in USize Bool Capacity Additive Hot Bits Dim Identity BitAccess \
+    ConstCapacity Cap BitLogic BitSequence FromConstant; do
+    n=$(gg -ohw "$name" "${spec[@]}" | wc -l)
+    printf '%s\t%s\n' "$n" "$name"
+done

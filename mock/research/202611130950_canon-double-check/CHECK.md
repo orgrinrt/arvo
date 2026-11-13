@@ -1,6 +1,6 @@
 # What the canon says that is no longer true, and what it never settled
 
-This is the second part of job `arvo-canon-check`: the canon read whole at
+This is the second part of job `arvo-canon-check`: the canon read at
 `origin/dev` tip `2c8e5343`, checked for being current and for being consistent
 with itself. `LEDGER.md` beside it says what was read and how deep, which is the
 only thing that bounds the absence claims made here.
@@ -9,16 +9,20 @@ The registry is in good order. Nothing here is a ratified row found wrong on its
 subject. What is found is narrower and ordinary for a canon under construction:
 notes and gap fields that describe a tree the work has since moved past, a schema
 field that half the ratified rows do not carry, a set of design passages that
-were not brought along when the value crate landed, and a handful of one-expert
-proposals that op's own words of 13 November now speak against. Most of the
+were not brought along when the value crate landed, and one clause of a
+one-expert proposal that op's own words of 13 November speak to. Most of the
 repairs are a sentence each.
 
 Two disciplines govern what follows. Rows are named by namespace and slug and
 never by line, because the registry gains rows constantly and a line keeps
 resolving while naming something else. Source is named by `file:line`, which is
 the permitted form for a tree that moves under a git sha. Where a finding says
-the record is silent, that is a claim about the registry, which was read whole,
-and not about the panel corpora, which were not.
+the record is silent, that is a claim about the registry, all fifteen files of
+which have been read in full over two passes as `LEDGER.md` records, and not
+about the panel corpora, which were not read. Sections 1.1 to 1.9 and 2 to 6
+were written on the first pass, when five files had been read as an index.
+Section 1.10 is what the second pass added, and it corrects section 5 in one
+place.
 
 Section 7 says which of the proposed edits were applied here and which
 were only written down. The rule this job works under is that nothing may be
@@ -56,11 +60,16 @@ nothing refuses a row that omits it. Of 39 ratified rulings, 18 omit it:
 `never_a_runtime_check_and_one_lowered_path` and
 `the_overflow_panic_is_permitted_and_bounded`.
 
-Every one of them carries a `ratification` text saying op selected it in one of
-the ratification rounds, so the route is known and only the field is missing. The
+Seventeen of them carry a `ratification` text saying op selected the row in one
+of the ratification rounds, and the eighteenth,
+`ruling::the_work_is_predicated_arms_composed`, has no `ratification` field and
+says in its `note` that he ratified his own two statements in the sitting that
+produced them. So the route is known on all eighteen and only the field is
+missing. The
 value is `op` on all eighteen. The field is the first thing a later reader checks
 when a ratified row turns out wrong, which is the schema's own argument for it,
-so a missing value costs exactly when it matters most.
+so a missing value costs exactly when it matters most. Section 7 says how the
+eighteen were filled and which lint holds the condition.
 
 ### 1.3 The standards obligation's gap is answered on both of its halves
 
@@ -69,15 +78,20 @@ says in its `gap`: "no row says whether the set is those, more, or a core with
 the rest open. The parity suite is also unbuilt: it is a mandate with no
 artifact."
 
-`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest` answers the
-first half in his own words: MATLAB `fi` and `fimath` and IEEE 754 are the two,
+`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest` speaks to the
+first half in his own words, as direction on a `stated` row and not yet as
+canon: MATLAB `fi` and `fimath` and IEEE 754 are the two,
 SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed` are reserved
-rather than excluded. The second half is half true. The MATLAB parity suite is
-built: `mock/crates/arvo-format/tests/matlab_fi_parity.rs` holds ten arms whose
-expected numbers come from the MathWorks reference page rather than from arvo,
-and `mock/crates/arvo-format/tests/the_ties_away_alias.rs` sweeps the Round
-alias. The IEEE 754 half is unbuilt, and no operation admits a floating format,
-so that half of the mandate still has no artifact.
+rather than excluded. The second half is partly true. A first part of the MATLAB suite is built:
+`mock/crates/arvo-format/tests/matlab_fi_parity.rs` holds five `fi` declarations
+of one constant and the documented positions of the nearest modes, with expected
+numbers from the MathWorks reference page rather than from arvo, and
+`mock/crates/arvo-format/tests/the_ties_away_alias.rs` sweeps the Round alias.
+By the file's own controls no parity arm reaches a tie or an overflow action,
+and no arithmetic is run through both, so the wide selection of usages the
+mandate asks for is owed. The IEEE 754 half is unbuilt: addition, multiplication
+and division each refuse a floating format, no parity arm exercises one, and
+that half of the mandate has no artifact.
 
 ### 1.4 The platform-width ruling's region says 64 is refused, and 64 is shipped
 
@@ -99,10 +113,12 @@ more than one that records neither.
 `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`
 says in its note that `arvo-format/DESIGN.md.tmpl:235` states the two-type bound
 and that the design tier changes before the code under it does. At `2c8e5343`
-line 235 of that file is a list of open questions, and the design states the
-position rule the note described as a proposal at line 404: "a bare primitive
-appears only in the constructor and the accessor of a primitive this crate
-defines". The correction the note asks for has happened.
+line 235 of that file is a list of open questions, and under the heading "The
+two primitives, and why they are here" the design now says "They are not the
+bound on what the door carries. A count of types is not the bound at all." The
+position rule the note described as one seat's proposal is there too, at line
+404, "Named here as open rather than adopted". So the correction the note asks
+for has happened, and the design goes exactly as far as the ruling does.
 
 Worth noting beside it: the note cites a living design document by line, which
 this repo's own `no-line-citation-into-a-living-ledger` family of lints forbids
@@ -117,16 +133,24 @@ is, in the canon, pointing at a line whose subject changed under it.
 cannot place is on neither list "because the declared operand window is not a
 declared axis". `dimension::operand_window` exists, and its own note names those
 three rows as the reason it was declared. The same holds for
-`law-the-later-topics::quantise_then_reduce_commutes`, whose gap says "no
+`law::quantise_then_reduce_commutes`, whose gap says "no
 `dimension` row declares an axis for the ambient domain" against
 `dimension::ambient_domain`, and for
-`law-the-later-topics::the_fused_and_the_stepwise_multiply_add_denote_one_function`
+`law::the_fused_and_the_stepwise_multiply_add_denote_one_function`
 against `dimension::accumulator_width`.
 
-These are the most valuable repairs in this section, because each moves a
-measured cell out of a gap and into a `holds` list, which is where a later arm
-can gate on it. The spelling the dimension row's grammar admits is
-`operand window = declared non-negative`.
+Two of the three cells already have a home. `law.toml` carries three rows this
+section first missed, `additive_associativity_recovered_under_declared_nonnegative_operand_window`,
+`multiplicative_associativity_recovered_under_declared_nonnegative_operand_window`
+and `distributivity_recovered_under_declared_nonnegative_operand_window`, each
+holding its cell with `operand_window: declared non-negative` on its `holds`
+list. So the repair for the additive and the distributive gap is a sentence
+saying the axis is declared and naming the row that holds the cell, and nothing
+moves between lists. The coherence cell has no row yet, and the two later-topics
+regions can now be written from their sources and have not been. An earlier
+version of this section proposed moving each cell from `gap` into `holds`, which
+would have duplicated two rows that exist and written three regions this job
+did not derive.
 
 ### 1.7 Two registry files carry comments that count their own rows
 
@@ -160,6 +184,127 @@ it, and it is also the file `canon_paths` is declared in, so a reader who opens
 it to find the canon's address meets a description of a tree that is gone. The
 repair is to list the five crates that exist. This job does not touch severities
 or structural lists in that file, so it is named here and left.
+
+### 1.10 What the full read of the six remaining files found
+
+The second pass read `proposal.toml`, `proposal-the-later-topics.toml`,
+`question.toml`, `probe.toml`, `retirement.toml` and `dimension.toml` row by row.
+It found no ratified row wrong on its subject and nothing that moves a step of
+`PLAN.md` out of order. It found six kinds of sentence that the tree has moved
+past, each searched for across the whole registry after the first instance, with
+TOML line continuations joined first, since a phrase split over a `\` line break
+is invisible to a plain grep and two instances were missed that way on the first
+try.
+
+A note or gap saying an axis is undeclared. The search for the phrasings the
+registry uses for it returns 26 sentences. Twelve are not instances: three in
+the dimension file's own account of itself, two file headers, three probe rows
+reporting a census or a gate, two law rows that were written with the axis in
+hand, one ruling and one `answered` using the word for something else. The
+other fourteen sit on twelve rows. Two law rows were corrected earlier on this
+branch, five name an
+axis that is still undeclared (the range's geometry twice, an encoding axis, the
+assignment set, and the intermediate fraction width of a staged narrowing), and
+one, `proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`,
+names "the domain the cell reaches", which may or may not be
+`dimension::ambient_domain` and is left for a seat that has read its source.
+Three were stale and are amended:
+`proposal::the_realisation_map_has_an_algebraic_character` and
+`proposal::the_realisation_map_factors_into_quantisation_and_range_policy`
+against `dimension::ambient_domain`, and
+`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`
+against `dimension::operand_window`. The twelfth is stale and ratified:
+`proposal::at_shared_occupancy_no_per_element_footprint_observation_exists`
+says "no dimension row declares one" of occupancy, `dimension::occupancy`
+declares it, and `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`
+ratifies the row, so it is written down in section 7 and not touched. Its
+predicate does not name the axis either, and `dimension::occupancy` says of
+itself that a claim not naming it holds nowhere occupancy is defined.
+
+A note saying no `probe` row names its instrument. Four rows and one block
+comment in `proposal.toml` said it, and for each a probe row now cites the very
+file the note names: `97_probes/p2` is
+`probe::one_congruence_property_predicts_every_law_verdict`, `07_probes/p4` is
+`probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points`,
+`47_probes/p1` and its siblings are
+`probe::a_single_richer_output_suffices_only_as_a_type`, and `80_probes/p1a` and
+`p1b` are `probe::a_declared_law_marker_compiles_clean_when_false`. The last is
+the plainest: the row's own `evidence` field cites that probe while its note says
+"`probe.toml` does not exist". A sixth instance is a law row,
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned`,
+whose gap names three instruments and says no `probe` row exists for them, where
+`probe::fusion_under_unsigned_over_six_rounding_modes`,
+`probe::equivariance_is_domain_restricted` and
+`probe::the_false_unsigned_fusion_clause_and_its_repair` now name one each. All
+six are amended, by a sentence naming the probe row, and no `evidence` edge is
+drawn, since drawing one restates what the row claims. A seventh sentence of the
+kind, in the note of
+`ruling::a_composed_expressions_region_is_never_inherited_from_its_parts`, is a
+dated account of what that ruling found and is not stale.
+
+A count of the declared dimensions. `proposal::the_topics_form_a_stack_a_frame_and_the_canons_own_machinery`
+and `question::can_a_claim_about_the_canons_own_structure_carry_a_region` both
+say twenty-one, and the second lists them. There are twenty-five. The four added
+since are `occupancy`, `association`, `leaf_aliasing` and `phase`, none of which
+ranges over the canon's own contents, so the argument both notes make holds and
+each gains a sentence saying so. The other seven lines carrying the word in the
+registry count something else.
+
+The shipped identity predicate. One proposal, one question and two probes say
+the shipped `has_additive_identity` implements the superseded phase claim, and
+`retirement::a_nonzero_phase_removes_the_additive_identity` says the claim still
+stands in the crate's design, rustdoc and a test. The crate was corrected:
+`arvo-format/src/format.rs:358` asks the cancellation question at each admitted
+magnitude, and `arvo-format/src/tests/the_identity.rs:187` holds it equal to an
+enumeration at a whole-step biased format, beside a half-step one a line above.
+All five rows gain a sentence. What has
+not been corrected is the canon: no `ruling` carries `corrects` for the phase
+clause of `proposal::membership_of_the_representable_set_is_one_affine_predicate`
+(the six `corrects` edges in `ruling.toml` name other rows), so
+`question::how_the_stamped_spine_rows_phase_clause_gets_corrected` is open and
+the canon is now the one tier that still states the clause. That question's
+`bound` also cited the retirement under a slug no retirement has, the superseded
+proposal's, and no lint refused it. The slug is corrected and the lint's reach
+is ticket `5b32c44d42c6`. The same ticket carries a second shape the review of
+this branch found, a registry file's stem written as the namespace, which this
+document, the two beside it and one row note carried in sixteen distinct
+citations with the lints green. They are rewritten to the namespaces the rows
+are in.
+
+A probe note that says sound under a field that says otherwise. Eight probe rows
+stand at `uncontrolled`. Three of them,
+`probe::chain_the_third_definition_is_not_observation_bounded`,
+`probe::no_dependent_survives_the_rounding_units_defects` and
+`probe::chain_accuracy_needs_an_intermediate_wider_than_the_operand_type`, open
+their note with "Marked sound". Each stood at `sound` until `796fecfa`, the
+triage that moved nine instruments onto the value, and the note was left as it
+was. Each gains a sentence saying the field governs. No standing changes.
+
+Notes owed and things said of a row that are no longer so. The `answered` of
+`question::did_the_admitted_obligations_answer_the_exposure_question_in_the_design`
+says `question::one_word_or_two_for_is_a_number_system` "stays open and is owed
+a note recording that its first option has already shipped", and the note was
+never written. It is now. `probe::the_axis_gap_is_an_open_row_no_seat_of_the_sitting_cited`
+establishes that a question row carries no `answered`, and the row has one
+since. `retirement::r132_truncation_as_a_mode_name` leaves the naming call "in
+op's queue", and `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names`
+is him making it. The header of `question.toml` says no answer is recorded in
+the file, and nineteen rows carry an `answered`. Each gains a sentence.
+
+One correction to section 5 below. It speaks of two strategy definitions. The
+registry holds five, and a question row is already about three of them:
+`question::which_successor_carries_the_strategy_shape_ratification`, decider
+`panel`, records that op ratified the lineage of
+`ruling::a_strategy_is_a_preset_naming_a_point_with_a_weighting_in_it` and sent
+the ratification to its successor, and asks which of
+`proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting`,
+`proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it`
+and `proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations`
+that successor is, or whether it is a fourth nobody has written. All three stand
+at one expert, and the second supersedes the first. The two section 5 names are
+the two at two experts. So what a strategy is has a blessing waiting on an
+identification, and the seats of `PLAN.md` step 2 take the question row and all
+five texts, where the first version of the plan gave them two.
 
 ## 2. Ratified rows that disagree with each other
 
@@ -207,6 +352,18 @@ carries a `supersedes` edge to the first, which is the mechanism working.
 opposite directions on the same trade and are scoped to different strategies by
 their own text.
 
+One more pair sits across two tiers, a ratified row and a stated one, and the
+later row names the earlier. `ruling::the_overflow_panic_is_permitted_and_bounded`
+makes the panic the go-to on debug builds "in every strategy", and
+`ruling::the_debug_abort_is_configured_by_the_consumer`, his words of
+13 November at `stated`, makes whether a debug build aborts under a declared
+overflow policy the consumer's to configure. The stated row's `because` cites
+the ratified one and says why he was asked: a consumer that saturates or wraps
+by meaning has a debug build that aborts on the meaning. The ratified row asks
+to be read loosely in its own `says`, so the later row narrows it and does not
+contradict it, and `Num<S, C>` with `Abort` as the default is the tree's reading
+of both.
+
 ## 3. Design and principles passages against a ratified row
 
 `mock/PRINCIPLES.md.tmpl` is the file that did not come along when the value
@@ -218,14 +375,31 @@ The rest, each with what it says and what governs it.
 
 `PRINCIPLES.md.tmpl:328` says "Default strategy is `Warm` unless called out, and
 every semantic alias carries a default for its strategy parameter". No alias in
-the tree has a strategy parameter at all: `mock/crates/arvo-numeral/src/alias.rs`
-gives `Uint<BITS, A, C>` and `Int<BITS, A, C>` where `A` is what names an
-adaptation and has no default, and the crate's own design says why, citing
-`ruling::wrap_or_clamp_stays_open_and_both_get_priced`. This one matters more
-than the others because `arvo-numeral`'s design leans on this sentence as its
-authority for the default it intends to add later, so a design derives from a
-passage of another design that the tree contradicts, and no ratified row carries
-the alias rule at all.
+the tree has a strategy parameter: `mock/crates/arvo-numeral/src/alias.rs` gives
+`Uint<BITS, A, C>` and `Int<BITS, A, C>` where `A` is what names an adaptation
+and has no default. Here the principle is the oracle and the tree is what is
+behind it. On 13 November op chose, for arvo's next steps, the option whose
+rework names "aliases keyed on strategy defaulting to `Warm`", and in the same
+round, on `Warm` for integers, the option under which "the slice ships `Warm`
+unclaimed meanwhile and aliases name their adaptation"; both are quoted whole in
+`OPS-WORDS.md`. The tree is at the second of those and not yet at the first, and
+`alias.rs` says so in its own header: reading the parameter through a
+projection "is what lets a strategy name it later, with `Warm` as its default".
+So the sentence stands, and what is owed is the alias keyed on strategy once
+`ruling::wrap_or_clamp_stays_open_and_both_get_priced` is closed, with
+`ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case` now
+beside it. No ratified row carries the alias rule; his chosen option does.
+
+The same option orders the claim before the rework: "claim first (promote the
+datum and value definition by a cold second read and the gate), then rework the
+same branch in one round". The value crate landed as `9dfd5339` with
+`proposal::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`
+still at `one_expert` and no ruling ratifying it, so the claim he put first has
+not been made. That is ticket `9e02318643e1`.
+
+An earlier version of this section called the sentence at line 328 stale because
+the tree has no such alias, which reasons from source against the design he
+chose.
 
 `PRINCIPLES.md.tmpl:295` says the bare-primitive discipline "is enforced by the
 `arvo-types-only` lint (Task #50, shipping via #103)" and that "Until the lint
@@ -380,25 +554,32 @@ His words of 13 November: "I want them to return, in function/feature, but the
 shape the contracts and traits and default impls etc take are up for a whole
 rewrite and also the taxonomy."
 
-Read against each row, the picture is not uniform and the distinction is the
-useful part. A row that says a crate does not return as a crate, and whose
-`instead` re-homes the function elsewhere, agrees with him: the function returns
-and only the taxonomy differs, and he has opened the taxonomy. That covers
-`the_old_storage_crate_is_gone`, `the_old_mask_contracts_crate_is_gone` and
-`the_old_refit_crate_is_gone`, whose `instead` fields put conversion and bit
-access on crates that exist.
+Read against each row, all five agree with him on the function. Each says a
+crate does not return as a crate, and each `instead` re-homes what the crate
+carried: `the_old_storage_crate_is_gone` onto `arvo-bits`, value aliases and
+the capacity crate, `the_old_mask_contracts_crate_is_gone` into the masks crate
+of slice two, `the_old_refit_crate_is_gone` onto `convert` and `cast`,
+`the_old_bit_contracts_crate_is_gone` onto `arvo-bits` and `convert`, with its
+`because` saying `BitAccess`, `BitLogic` and `BitSequence` "return with the masks
+over `arvo-bits`", and `the_old_numeric_contracts_crate_is_gone` onto the value
+crate's compare, `min`, `max` and `constant` doors and a refined divisor. What
+each fixes beyond that is a taxonomy, which crate and which name, and he has
+opened the taxonomy to a whole rewrite, so no row's home is binding.
 
-Two are against him as written. `the_old_bit_contracts_crate_is_gone` says
-flatly "does not return", and the function it carried, the traits a consumer
-bounds generic code on, is the one
-`obligation::the_surface_expressible_as_contracts_before_anything_implements_it`
-demands and `ruling::arvo_is_a_library_and_the_value_composes_on_top` names as
-the selling point. `the_old_numeric_contracts_crate_is_gone` is the sharpest
-case: its `instead` sends absolute value, reciprocal and square root to kaski for
-the first slice, and his sentence ends "However, definitely arvo terrain to write
-the actual arithmetic contracts on the standard too". A row that re-homes arvo's
-arithmetic contracts into a consumer is against his direction on exactly the
-subject he named.
+One clause meets the end of his sentence. `the_old_numeric_contracts_crate_is_gone`
+puts `Abs`, `Recip` and `Sqrt` "with the elementary functions, which stay in
+kaski in slice one", and his sentence ends "However, definitely arvo terrain to
+write the actual arithmetic contracts on the standard too". Those three are
+arithmetic contracts, and for the first slice the row leaves them with a
+consumer. The row does not send arvo's arithmetic contracts to a consumer as a
+whole, and the clause is scoped to one slice, so this is one clause to restate
+and not a row against his direction.
+
+An earlier version of this section called the bit-contracts row and the
+numeric-contracts row "against him as written", on the ground that the first
+re-homed nothing and the second sent the arithmetic contracts to kaski. Both
+readings were wrong against the rows' own `instead` fields, and the proposal in
+section 7 to supersede the bit-contracts row went with them.
 
 This job proposes no edit to their standing, which is forbidden to it, and adds
 his words as a `stated` ruling row instead, which is what makes the five readable
@@ -406,7 +587,12 @@ correctly by the next seat.
 
 ### The two strategy definitions that are each at two experts and disagree
 
-`proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` says a strategy is a
+Section 1.10 corrects this subsection in one respect: the registry holds three
+more definitions at one expert, and
+`question::which_successor_carries_the_strategy_shape_ratification` is already
+about them. What follows is true of the two it names.
+
+`proposal::a_strategy_is_an_assignment_and_a_weighting` says a strategy is a
 pair: an assignment on observable policy axes that fixes the denoted answer, and
 a weighting over cost coordinates that ranges over realisations of it.
 `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`
@@ -427,12 +613,12 @@ the other, so a reader meeting one has no way to know the other exists. The
 repair is a `note` on each, additive and proposed below.
 `ruling::the_strategy_is_what_makes_an_answer_correct` favours the first reading,
 and saying so is the panel's to do rather than this job's. The second reading is not
-without support: `proposal-the-later-topics::no_cost_model_may_move_an_answer`
+without support: `proposal::no_cost_model_may_move_an_answer`
 states its half, and is itself a proposal.
 
 ### One more worth naming
 
-`proposal-the-value-stance::the_first_slice_answers_to_hilavitkutin_and_kaski`
+`proposal::the_first_slice_answers_to_hilavitkutin_and_kaski`
 measures a slice's completeness by two consumers. It is superseded inside its own
 file by `no_row_measures_a_slices_completeness`, and
 `ruling::arvo_is_a_library_and_the_value_composes_on_top` is ratified and names
@@ -466,76 +652,241 @@ search over rows, which is what every brief already assumes exists.
 
 ## 7. The edits, exactly
 
-Applied on this branch, all additive or comment-only, none touching a ratified
-row or any standing.
+The job's rule is that nothing is applied that changes a `ratified` row or any
+row's standing. What follows is in three groups: what the first branch applied,
+what the second applies, and what stays written down for whoever may apply it.
+
+### Applied on the first branch, landed on `dev` as `326b52f5`
 
 One new `ruling` row carrying his 13 November words on the overflow default,
-`a_shipped_overflow_default_is_a_generic_overridable_per_case`, `kind = "intent"`
-at `rung = "stated"`, topic `overflow_policy`. It carries no `answers` edge,
+`a_shipped_overflow_default_is_a_generic_overridable_per_case`, at
+`rung = "stated"`, topic `overflow_policy`. It carries no `answers` edge,
 because it narrows `question::does_warm_wrap_or_clamp` without settling it, and
 an edge would make a live question read as answered.
 
 One new `ruling` row carrying his 13 November words on the old families,
-`every_family_of_the_old_arvo_returns_and_the_shape_is_open`, `kind = "intent"`
-at `rung = "stated"`, topic `arvo_identity`.
+`every_family_of_the_old_arvo_returns_and_the_shape_is_open`, at
+`rung = "stated"`, topic `arvo_identity`.
 
 Three header comments: the paragraph in `ruling.toml` about unset edge fields
 rewritten to say which carry edges now, and the counts dropped from the two
 comments in `dimension.toml` and the one in `topic.toml`.
 
-Proposed and not applied, in the registry's own shapes.
+### Applied on the second branch, after the review
 
-On each of the eighteen ratified rulings in 1.2, add `ratified_by = "op"`.
-Forbidden to this job because it edits a ratified row; mechanical for whoever may.
+On the two rows above. `kind` moves from `intent` to `ruling` on the second,
+since the schema keeps `intent` for a want stated with no question in front of
+it and that row answers a question put with options. The first had been moved
+the same way and is back at `intent`: its own note says it narrows
+`question::does_warm_wrap_or_clamp` without answering it and it carries no
+`answers` edge, so `ruling`, "a question answered", is the one kind the row
+rules out about itself, and `intent` is what dev carries. Three reviewers read
+that call and gave three readings, `ruling` as defensible with a second read
+owed, `intent`, and `refusal` on the ground that the row records the question
+it was said against, so no two agree, the row stays as dev has it, and a blind
+read is owed on ticket `5b9317b53897`. The quote of the first gets back the
+typographic apostrophe of "it’s", which the first branch had straightened while
+saying it kept it. The `says` of the first keeps his hedge, "it might make more
+sense", where it had been written as a settled statement, and the `says` of the
+second loses a gloss of the taxonomy that was this job's reading and not his
+words. The note of the first states the sketch's corrected result, and the note
+of the second the corrected reading of the five refusals in section 5.
 
 On `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
-replace the `gap` with one that says the scope is settled by
-`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`, that the MATLAB
-parity suite is built and names its file, and that the IEEE 754 half is unbuilt
-and blocked on a float value.
+the second paragraph of the `gap` is replaced: on scope it names his direction,
+`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`, as a `stated`
+row and not a ratified one, what is built of the MATLAB half is named with its two files and with what it
+does not reach, and the IEEE 754 half is unbuilt, with the three arithmetic
+operations refusing a floating format and no parity arm exercising one.
 
-On `ruling::a_platform_width_type_is_a_target_bound_member_of_the_format_family`,
-amend the note's region clause to read that `W = 64` was refused by the ladder of
-the day and is established since `d425aff5`, keeping both.
+On `ruling::the_trait_contract_structure_is_a_primary_paradigm`, a `stated`
+row, the note is amended: the lint and the contracts crates it argued from are
+gone, so nothing in the tree enforces the row today.
 
-On `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`,
-amend the note to say the design correction landed, and replace the line citation
-with a heading citation.
+On `law::additive_associativity_under_saturation` and
+`law::distributivity_of_multiplication_over_addition`, the `gap` says the axis
+is declared and names the row that holds the cell. On
+`law::coherence_of_a_reduction_onto_its_induced_operation`, the `gap` says the
+axis is declared and no row holds the cell yet. On
+`law::quantise_then_reduce_commutes` and
+`law::the_fused_and_the_stepwise_multiply_add_denote_one_function`,
+the `gap` says the axes are declared and the region has not been written from
+its source. No `holds` or `fails` list changes.
 
-On `law::additive_associativity_under_saturation`,
-`law::distributivity_of_multiplication_over_addition` and
-`law::coherence_of_a_reduction_onto_its_induced_operation`, move the
-declared-non-negative cell from `gap` into `holds`, spelled
-`operand window = declared non-negative`, as `dimension::operand_window`'s own
-note already specifies. Likewise `quantise_then_reduce_commutes` against
-`dimension::ambient_domain` and
-`the_fused_and_the_stepwise_multiply_add_denote_one_function` against
-`dimension::accumulator_width`.
-
-On `ruling::never_a_runtime_check_and_one_lowered_path`, a `note` naming
-`ruling::the_overflow_panic_is_permitted_and_bounded` and the build bound its
-`because` states, so the absolute reading is not what a reader of this row alone
-takes away.
-
-On `ruling::the_trait_contract_structure_is_a_primary_paradigm`, amend the note:
-the lint and the contracts crates it argues from are gone, so the reason it gives
-for not promoting the row no longer exists.
-
-On `proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` and
+On `proposal::a_strategy_is_an_assignment_and_a_weighting` and
 `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`,
-a `note` on each naming the other and the axis they disagree on.
+a paragraph in the `note` of each naming the other, the axis they disagree on,
+and `probe::the_rationalisable_sections_on_the_committed_carrier_table`, which
+counts the gap between the two definitions. Neither standing changes.
 
-Two new `proposal` rows in `proposal-the-value-stance.toml`, on the model of
-`the_old_comb_crate_answers_to_a_stated_need`, each with a `supersedes` edge.
-One superseding `the_old_bit_contracts_crate_is_gone`: what that crate carried,
-the contracts a consumer bounds bit-level generic code on, returns, and which
-crate holds them under which name is open. One superseding
-`the_old_numeric_contracts_crate_is_gone`: the arithmetic contracts return as
-arvo's own, and none is re-homed in a consumer. Both rest on
-`ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` and on
-hilavitkutin's own imports of those names, counted in `PLAN.md`. They are
-proposed rather than applied because a `supersedes` edge moves the superseded
-row's standing in everything but the field.
+### Applied on the second branch, after the full read
+
+Every one is a sentence added to a `note`, a `gap`, a `why`, a `replacement` or
+a comment, on a row no ruling ratifies. No `says`, predicate, `holds`, `fails`,
+`evidence` or standing changes, and section 1.10 gives the reason for each.
+
+That an axis is declared now: the note and the gap of
+`proposal::the_realisation_map_has_an_algebraic_character`,
+the note of
+`proposal::the_realisation_map_factors_into_quantisation_and_range_policy`,
+and the note of
+`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`.
+
+That a `probe` row names the instrument now: the notes of that same row, of
+`proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`,
+of `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`
+and of `proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing`,
+the block comment above the first three, and the gap of
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned`.
+
+That four axes were declared after the count of twenty-one: the notes of
+`proposal::the_topics_form_a_stack_a_frame_and_the_canons_own_machinery` and
+`question::can_a_claim_about_the_canons_own_structure_carry_a_region`.
+
+That the crate's identity predicate was corrected and the canon's clause was
+not: the note of
+`proposal::the_additive_identity_is_decided_by_the_phase_being_a_whole_multiple_of_the_quantum`,
+the note of `question::how_the_stamped_spine_rows_phase_clause_gets_corrected`,
+a new `note` on each of `probe::the_identity_predicate_swept_against_an_enumeration`
+and `probe::the_shipped_crate_admits_a_whole_step_phase`, and the `replacement`
+of `retirement::a_nonzero_phase_removes_the_additive_identity`. In the `bound`
+of the same question, the retirement's slug is corrected.
+
+That the field governs: the notes of the three `uncontrolled` probe rows 1.10
+names.
+
+The rest: the owed paragraph on the note of
+`question::one_word_or_two_for_is_a_number_system`, a sentence on the note of
+`probe::the_axis_gap_is_an_open_row_no_seat_of_the_sitting_cited`, a sentence on
+the `why` of `retirement::r132_truncation_as_a_mode_name`, and a paragraph in
+the header of `question.toml` saying rows may carry `answered` and `bound`.
+
+### Applied on the second branch, after its own review
+
+The review of the second branch found that the notes amended after the full read
+had been repaired by adding sentences that would go stale in their turn, each
+saying an axis or a `probe` row exists "now" and that the edge or the wider row
+"has not been" written. Twenty-one rows and one file comment are reworded so each note says what
+its row carries and does not carry, with no word that depends on when it is
+read, and the work those notes leave undone is ticket `2cda83cec7ff`. No
+`says`, no predicate, no edge, no `rung` and no standing changes in them, and
+none of the rows is ratified.
+
+Three more come from the same review. The `gap` of
+`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`
+had called the scope settled by a `stated` row, which
+`ruling::an_ack_is_not_a_ratification` does not allow, and it now names that row
+as his direction. The note of
+`ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` had said
+all five refusals agree with him on the function, and it now says four do and
+names the one clause of the fifth that conflicts, with the proposal that
+restates it. And the note of
+`proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`
+cited a row under its file's stem, which is corrected to `proposal::`.
+
+A second review, of the branch as it stood after those, found four more. The
+`gap` of `obligation::the_surface_expressible_as_contracts_before_anything_implements_it`
+still said one place enforces where traits may live, the same claim about the
+same lint that the note of `ruling::the_trait_contract_structure_is_a_primary_paradigm`
+had just been corrected on, and it now says nothing in the tree does. The new
+proposal on the old numeric contracts carried an `obligation` edge to that row,
+which it does not meet, since it says whose three contracts are and states no
+part of the surface as a contract, so the edge is dropped. The `kind` of the
+overflow default row is back at `intent`, as above. And the `gap` of the
+standards obligation had called the MATLAB half of the parity suite built, where
+one constant and the nearest modes' documented positions are built and the
+arithmetic through both is not, so it says what is there and what is owed.
+
+A third review, the last one a branch gets, found six, and four are applied.
+The standards `gap` had said no operation admits a floating format, which the
+tree does not assert of `adapt`, so it says what the tree does assert, that
+addition, multiplication and division each refuse one and no parity arm
+exercises one, and the same sentence is corrected in section 1.3 and in
+`ANSWERS.md`. The surface `gap` had called the lint's crate gone, where
+`arvo-bits` is back in the tree, so it says the crate was not in the tree when
+the lint was dropped. The new proposal on the old numeric contracts moves from
+`kind = "answer"` to `refusal`, with what happens in place of the crate moved
+out of `says` and into `instead`, so the lint that asks a refusal for an
+`instead` reaches it like its four neighbours. And the ratifier lint gets its
+block in `mockspace.toml` at error on every gate, where it had run at its
+built-in severity and was missing from the generated catalogue.
+
+Two are left as tickets. The `kind` of the overflow default row is
+`5b9317b53897`, above. The three stale notes on ratified rows, which he
+declined, are findable only from `ratified-notes.proposal.patch`, and how a
+reader of the registry meets them is `a0d57487df66`. Beside those two, the
+reviewer's scratch probe of `adapt` over a floating format is not evidence and
+is owed as a committed sketch on `85a8ab30a8fc`.
+
+### Written down and not applied
+
+The edits to ratified rows were one patch of twenty-one hunks, changing no
+`says`, no `rung` and no standing. Op was shown them on 13 November and asked
+"Do the eighteen get `ratified_by = "op"` and the three notes their
+corrections?", with the options [All of it] [The eighteen, not the notes]
+[Some are not mine] [Leave them]. He answered "The eighteen, not the notes".
+So the patch was split in two.
+
+The eighteen hunks that add `ratified_by = "op"` to the rows of 1.2 are what he
+took, and they are in the registry. This seat's permission check refused the
+edit twice, ticket `c9e9da26606f`, so another branch applied them and landed on
+`dev` as `b93f42d4`, which this branch has merged, and the patch file that
+carried them is removed with that. The lint that holds the condition is on this
+branch as `a-ratified-ruling-names-its-ratifier`, in `mock/lints/`: a ruling at
+`rung = "ratified"` with no `ratified_by` is refused at commit, build and push.
+It checks the required half only and leaves a `ratified_by` on a row at another
+tier alone, which the schema calls meaningless and not wrong.
+
+`ratified-notes.proposal.patch` holds the three note rewrites he did not take.
+They stay a proposal and nobody applies them on this answer.
+
+One amends the note of
+`ruling::a_platform_width_type_is_a_target_bound_member_of_the_format_family`:
+the region clause reads that `W = 64` was refused by the ladder as it shipped
+when the row was ratified and is established since `d425aff5`, and a closing
+paragraph says the two paragraphs on the 62-bit ceiling describe the
+representation of that day.
+
+One amends the note of
+`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`
+to say the design correction it owed has landed, citing the design's heading
+in place of a line.
+
+One adds a paragraph to the note of
+`ruling::never_a_runtime_check_and_one_lowered_path` naming
+`ruling::the_overflow_panic_is_permitted_and_bounded` and the build bound its
+`because` states.
+
+The `proposal` row this section used to carry as written down is applied now,
+as `proposal::the_old_numeric_contracts_return_as_arvos_own_and_the_crate_does_not`,
+at `one_expert`, on the model of `the_old_comb_crate_answers_to_a_stated_need`
+and with a `supersedes` edge onto `the_old_numeric_contracts_crate_is_gone`. It
+says that the crate does not return and what it carried does, with the
+contracts for absolute value, reciprocal and square root as arvo's own, written
+on the standards, and where the elementary functions behind them are first
+implemented left undecided. It rests on
+`ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` and on the
+one clause section 5 names, and it touches no ratified row. A second reader
+has not seen it.
+
+From the full read, four more things are written down for seats that may do
+them. The note of
+`proposal::at_shared_occupancy_no_per_element_footprint_observation_exists`
+wants the sentence that `dimension::occupancy` is declared, and its predicate
+wants a second reading on whether it should name that axis, the row being
+ratified. The `evidence` edges the amended notes say their rows do not carry are a panel
+seat's to draw, and so are the rows and regions those notes say are not written:
+the general rule on which rounding modes compose across nested grids, the
+measured half of the derivation-output finding, the licence claims and the
+obstruction result over the ambient domain, the commutation region, the clause
+over the accumulator width and the operation set, and the saturating cell over a
+nonnegative window. Ticket `2cda83cec7ff` lists each with the row it sits on. And the phase clause of the stamped
+spine row waits on `question::how_the_stamped_spine_rows_phase_clause_gets_corrected`,
+whose first option is a `ruling` carrying `corrects` on two agreements.
+
+The first version of this section also proposed a row superseding
+`the_old_bit_contracts_crate_is_gone`. That row re-homes what its crate carried,
+so nothing in his answer speaks against it, and the proposal is withdrawn.
 
 ## 8. What is owed by op
 
@@ -551,14 +902,15 @@ are "perhaps following one of the parity standards like matlab or whatever would
 be the sensible default to use", which states the intent, a default that follows
 a parity standard, and hands the choice of which to whoever can tell what is
 sensible. The panel has what it needs: MATLAB is the only standard in scope that
-supplies both halves of a default today, and the sketch shows the value tier
-admits it. The standing question it sits under,
+supplies both halves of a default today, `Nearest` and `Saturate`, and the sketch
+shows the value tier admits that pair. The standing question it sits under,
 `question::does_warm_wrap_or_clamp`, has `panel` as its decider.
 
 What happens to the five live refusals is not a choice either. He answered that
-the families return in function and feature, and the two rows that say otherwise
-are superseded on that answer by whoever may write the superseding rows, which
-section 7 proposes.
+the families return in function and feature, all five rows re-home the function
+their crate carried, and the one clause that leaves three arithmetic contracts
+with a consumer is restated by a one-expert proposal row, as section 7 says,
+and is a second reader's to confirm.
 
 The one thing that is his is the public name, and he has already said when: on
 13 November, among a thin crate named `arvo` that re-exports, no facade with

@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "flavour": "",
+  "member": "arvo-numeral",
+  "green": {
+    "full": "4747555e2f14675ae745543d6587ee863737e70f41a4d5e0331784ed207af791",
+    "own": {
+      "arvo-format": "8f08bcfa53838e59e187aa3111a08688ac03778de411fc9a10d326e3e0e2e351",
+      "arvo-numeral": "128003214c9d1e6eb4bc53a9b090a2de3baea1da7236c35624e621395a3c56b5",
+      "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
+    }
+  },
+  "tests": {
+    "arvo-numeral::compile_fail": {
+      "a_host_integer_where_a_value_goes_is_refused": {
+        "secs": 6.8,
+        "passed": true,
+        "passed_at": "79bbca5b5ce4a3283ec46fbfc4ac4e74333956c6d5d2ed8f7296c3b728289258"
+      }
+    }
+  },
+  "bins": {
+    "arvo-numeral": "5e07e240172d0d2644012e30eb38326c852fda13b0abb57b7342f15951b58b5d",
+    "arvo-numeral::a_consumer_crate": "37aac48d1fdf651814d4603850d3bc356f2770e6069fe4499689295b6b0272b5",
+    "arvo-numeral::band_17_to_32": "8164ee199dea6e75e3567a674a56fbec8b660231d125eead29443974d0bef3b7",
+    "arvo-numeral::band_1_to_8": "b744b9f39319edcfcac8c6b76f140ab205310762f6afb8fd16530d3dbb8b167b",
+    "arvo-numeral::band_33_to_64": "693f7e69faa2fa488045a10f44669b362ec28a6cd5f5feb51e824190a537e83f",
+    "arvo-numeral::band_9_to_16": "f763f789d9a888768c1984ebf8a924098c2d016ec934a51062e56c9042da168a",
+    "arvo-numeral::compile_fail": "79bbca5b5ce4a3283ec46fbfc4ac4e74333956c6d5d2ed8f7296c3b728289258",
+    "arvo-numeral::the_debug_check": "58606b94f96722d118e6e8891a1eb2ac6afff833ef4953a00e338fddc4605b9a",
+    "arvo-numeral::the_debug_check_in_release": "66097ceb29ab5eb1261fb9cb357e59b4ba50e589eb5e543fdddeddc6357eee0d"
+  }
+}

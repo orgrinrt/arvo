@@ -1,9 +1,23 @@
-    Finished `release` profile [optimized] target(s) in 0.07s
+warning: associated function `at` is never used
+  --> /home/user/arvo/mock/crates/arvo-format/src/apply.rs:63:25
+   |
+60 | impl Rounded {
+   | ------------ associated function in this implementation
+...
+63 |     pub(crate) const fn at(at: i128) -> Self {
+   |                         ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `arvo-format` (lib) generated 1 warning
+   Compiling overflow-wrapper-rebinding v0.1.0 (/home/user/arvo/mock/research/sketches/202611131030_overflow-wrapper-rebinding)
+    Finished `release` profile [optimized] target(s) in 0.10s
      Running `/home/user/target/release/overflow-wrapper-rebinding`
-WORKS: the substitution compiles, is admitted, and goes generically
-WORKS: MATLAB `Fi` under `Floor` and `Saturate` is admitted by `Sole`
+WORKS: the substitution compiles and re-binds the overflow (300 is 44 and 255)
+WORKS: the projected signature is admitted, concretely and with `S` abstract
 the generic form needs `WithOverflow<S, O>: Sole` written at the call,
 because `S: Sole` proves nothing about a sibling signature
-FAILS: a consumer cannot write the crossing as a value move:
-`Num::carrier` and `Num::from_carrier` are crate-private, and no
-public door takes a value of one signature and gives one of another
+WORKS: the crossing is `Num::adapted(Exact::on_grid(value.slot()))`,
+three public doors, and the value that arrives adds under the new policy
+WORKS: MATLAB's default, `Fi` under `Nearest` and `Saturate`, is admitted
+the controls under `examples/` do not build: see `out/refused-*.txt`

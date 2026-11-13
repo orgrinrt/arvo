@@ -136,7 +136,7 @@ lives = [
 ]
 control = "None stated in the material read. The instrument counts vocabulary occurrences and normalises per thousand words, and the separation it reports is between 0.27 and 1.50 per thousand, which is wide. What no arm tests is whether the vocabulary count tracks the property: a file could be observation-bounded and say so once. The qualitative half, that the defining sentence says contains rather than bounds, is read rather than counted and is what carries the finding."
 standing = "uncontrolled"
-note = "Marked sound rather than defective on a judgement, and the judgement is that the counted half is corroboration for a claim the quoted sentences establish on their own. A reader who thinks a word-frequency count needs a control before it may be printed beside a definition should read this row as `defective`; the finding does not move either way, because the two definitions are quoted in full beside the counts."
+note = "Marked sound rather than defective on a judgement, and the judgement is that the counted half is corroboration for a claim the quoted sentences establish on their own. A reader who thinks a word-frequency count needs a control before it may be printed beside a definition should read this row as `defective`; the finding does not move either way, because the two definitions are quoted in full beside the counts. The row was filed `sound` and a later triage moved it to `uncontrolled`, the value for an instrument that ran with no case that had to fail, so the field above governs and `sound` in this note is the earlier filing."
 keywords = ["chain", "definition", "observation", "vocabulary", "word frequency", "convergence", "three hats", "independence", "bounded"]
 
 [[probe]]
@@ -322,7 +322,7 @@ lives = [
 ]
 control = "None stated as a must-fail arm. What stands in its place is that the check is a trace rather than a count: each of the four is followed to the clauses that cite it and each clause is opened and read, and the companion instrument checks the surviving predicate against the sweep header the corrected run actually printed rather than against what the clause claims it swept."
 standing = "uncontrolled"
-note = "Marked sound on a judgement. A trace over four named defects has no obvious failing case to plant, since the population is enumerated rather than sampled and the verdict per item is a reading. What would make it defective is if the four were not the whole population, and the count of four comes from the unit's own record rather than from an independent sweep."
+note = "Marked sound on a judgement. A trace over four named defects has no obvious failing case to plant, since the population is enumerated rather than sampled and the verdict per item is a reading. What would make it defective is if the four were not the whole population, and the count of four comes from the unit's own record rather than from an independent sweep. The row was filed `sound` and a later triage moved it to `uncontrolled`, so the field above governs and `sound` in this note is the earlier filing."
 keywords = ["defect", "dependent", "trace", "survives", "half-even", "corrected", "citation", "audit"]
 
 # --- the strategy object and the fusion question, files 139 to 152 ----------
@@ -1081,7 +1081,7 @@ lives = [
 ]
 control = "None was run as a case that had to fail. The two instruments are at different widths and fraction widths by different authors, so what stands in place of a control is that the growth rate agrees across a change of both, which a single-width sweep could not have shown. What neither arm carries is a chain shape on which the width must NOT grow, and without one the linear growth is measured rather than isolated."
 standing = "uncontrolled"
-note = "Marked sound on a judgement and it is one of the two thinnest sound rows here. The agreement across two widths is real corroboration and it is not a control: both instruments could share a modelling assumption about what an intermediate must hold, and nothing in either would report that."
+note = "Marked sound on a judgement and it is one of the two thinnest sound rows here. The agreement across two widths is real corroboration and it is not a control: both instruments could share a modelling assumption about what an intermediate must hold, and nothing in either would report that. The row was filed `sound` and a later triage moved it to `uncontrolled`, so the field above governs and `sound` in this note is the earlier filing."
 keywords = ["chain", "accuracy", "intermediate width", "linear growth", "operand type", "closed", "exactness", "demands", "closure"]
 
 [[probe]]
@@ -1600,6 +1600,7 @@ lives = [
 control = "Three, all stated in the header before the run and all three fired. A mutant of the repair testing only `PHASE_NUM == 0`, which is the shipped predicate, had to be reported as differing from the enumeration, or the sweep never reaches a format where the two can differ. A mutant of the second repair comparing only step and count had to differ from enumerated equality, or the pool holds no two grids at one step and count with different offsets. And the pool had to contain at least one equal pair and one unequal, or the equality decision answers one way regardless of input."
 standing = "sound"
 reproduced = "The diagnosis, not the sweep, is independently reached by `the_shipped_crate_admits_a_whole_step_phase`, which links against the real crate rather than modelling the coordinates. The two share no instrument."
+note = "`shipped` names the predicate as it stood when the sweep ran, which tested the phase numerator against zero. The crate was corrected after this ran and its own tests hold the predicate equal to an enumeration, so the disagreement count is a fact about the predicate this ran against and the property it establishes is unchanged."
 keywords = ["phase", "additive identity", "sweep", "enumeration", "whole multiple", "quantum", "mutant", "coordinate space"]
 
 [[probe]]
@@ -1612,6 +1613,7 @@ lives = [
 control = "A phase-zero format from the same inventory is run as the third arm, so a result reporting no identity everywhere would be visible rather than read as the finding. Two further controls are asserted in the output: that the two biased formats disagree about carrying one, and that neither of them has an additive identity, which is what distinguishes the half-step geometry from the whole-step one."
 standing = "sound"
 reproduced = "Reached independently by `the_identity_predicate_swept_against_an_enumeration`, which models the coordinate space rather than linking the crate, so the two instruments share nothing but the conclusion."
+note = "The crate this was compiled against is the one before the predicate was corrected. Run against the present crate the first half would report the identity present, which is the correction and not a failure of the instrument."
 keywords = ["phase", "additive identity", "biased", "whole step", "half step", "shipped crate", "counterexample", "value one"]
 
 [[probe]]
@@ -1673,7 +1675,7 @@ lives = [
 ]
 control = "Three, all fired. A slug that files of this sitting demonstrably do cite comes back from two of them, so a zero is a fact about the corpus rather than about the search. A slug of the same shape existing nowhere comes back zero in both the registry and the corpus. And the row is required to be present and to carry no `answered`, so what is reported uncited is an open row rather than a settled one."
 standing = "sound"
-note = "Four files of this panel report the same axis gap and none of them cites the row that asks it, which is the mechanism the row's own subject describes from the other side: a question row is reachable from the question it asks only by somebody who already suspects it exists."
+note = "Four files of this panel report the same axis gap and none of them cites the row that asks it, which is the mechanism the row's own subject describes from the other side: a question row is reachable from the question it asks only by somebody who already suspects it exists. The row's `answered` was written after this ran, so the instrument's third control fails on a tree that carries it, and what it establishes holds at the tree it ran on."
 keywords = ["dimension", "axis", "predicate", "canon", "structural claim", "question row", "uncited", "gap"]
 
 [[probe]]
