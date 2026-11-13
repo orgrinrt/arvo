@@ -64,9 +64,30 @@ impl Lint for ARatificationNamesARecordOfHisWords {
     }
 }
 
-/// A capture's file name: a run of digits, then anything, ending `.md`.
+/// A capture's file name, bare: a stamp of eight to twelve digits, optionally
+/// a second run of four (`20260830_2320_`), an underscore and a slug of
+/// lowercase letters, digits and hyphens, ending `.md`. A path is not one,
+/// since a capture is cited by its name in the store and a path with a stamp in
+/// it is a research note of the tree.
 fn is_a_capture(token: &str) -> bool {
-    token.ends_with(".md") && token.starts_with(|c: char| c.is_ascii_digit())
+    let Some(stem) = token.strip_suffix(".md") else {
+        return false;
+    };
+    let digits = |s: &str| !s.is_empty() && s.chars().all(|c| c.is_ascii_digit());
+    let Some((stamp, rest)) = stem.split_once('_') else {
+        return false;
+    };
+    if !digits(stamp) || !(8 ..= 12).contains(&stamp.len()) {
+        return false;
+    }
+    let slug = match rest.split_once('_') {
+        Some((clock, slug)) if clock.len() == 4 && digits(clock) => slug,
+        _ => rest,
+    };
+    !slug.is_empty()
+        && slug
+            .chars()
+            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-')
 }
 
 /// Whether the text names a record: some backticked span is a citation into a
@@ -97,8 +118,8 @@ impl RepoLint for ARatificationNamesARecordOfHisWords {
                     Some("no-record"),
                     format!(
                         "`{q}` claims his word and its `ratification` names no record of it. \
-                         Cite where his words are written, in backticks: the panel or research \
-                         file that records the round (`panel::...`, `mock::...`), or the capture \
+                         Cite where his words are written, in backticks: his own round file in the \
+                         panel tree or `INTENTS` (`panel::...`), or the capture \
                          in the store of his responses by its file name (`<stamp>_<slug>.md`), \
                          with the line."
                     ),
@@ -208,6 +229,29 @@ mod tests {
     fn control_a_row_below_ratified_is_left_alone() {
         let f = found(&[("ruling::r", &[("rung", "stated"), ("ratified_by", "op")])]);
         assert!(f.is_empty(), "{f:?}");
+    }
+
+    #[test]
+    fn a_research_path_with_a_stamp_is_not_a_capture() {
+        let f = his("Read in `202611132130_eight-rulings-third-read/NOTES.md`.");
+        assert_eq!(f.len(), 1, "{f:?}");
+    }
+
+    #[test]
+    fn a_bare_number_is_not_a_capture() {
+        assert_eq!(his("In `1.md`.").len(), 1);
+    }
+
+    #[test]
+    fn control_both_capture_stamp_shapes_pass() {
+        assert!(his("In `202608311355_ruling-batch-arvo.md`, line 28.").is_empty());
+        assert!(his("In `20260830_2320_arvo-panel-steering-opening.md`, line 26.").is_empty());
+    }
+
+    #[test]
+    fn the_advice_names_no_root_the_lint_refuses() {
+        let f = his("Nothing cited.");
+        assert!(!f[0].contains("mock::"), "{}", f[0]);
     }
 
     #[test]

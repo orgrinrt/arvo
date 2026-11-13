@@ -1851,7 +1851,7 @@ predicate = [
   "threads: threads = 1",
 ]
 evidence = ["monotonicity_and_absorption_are_two_properties_and_a_reserved_top_buys_one"]
-note = "**The absorption half was filed and this half was not, and the pair is the point.** The canon carried a row, `a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none`, establishing that the top absorbs under saturation and never under wrapping, whose own `gap` field said monotonicity was measured in the same file and not filed. So the canon stood at exactly the position this measurement rules out: absorption established, monotonicity absent, which is the reserved-top row of the table and is wrong 12.57% of the time. This row fills that `gap` and replaces nothing that row says, so it carries no `supersedes` edge to it: both stand, and the ruling that ratifies the absorption half stands on a row nothing replaces. Reported by a seat replying to an attack on a neighbouring derivation, which found the gap belonged to neither party in the argument."
+note = "The absorption half was filed and this half was not, and the pair is the point. The canon carried a row, `a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none`, establishing that the top absorbs under saturation and never under wrapping, whose own `gap` field said monotonicity was measured in the same file and not filed. So the canon stood at exactly the position this measurement rules out: absorption established, monotonicity absent, which is the reserved-top row of the table and is wrong 12.57% of the time. This row fills that `gap` and replaces nothing that row says, so it carries no `supersedes` edge to it: both stand, and the ruling that ratifies the absorption half stands on a row nothing replaces. Reported by a seat replying to an attack on a neighbouring derivation, which found the gap belonged to neither party in the argument."
 gap = "Unsigned integers only, at two widths, on one thread, over one graph shape of four nodes and six edges. Whether the same separation holds signed, at a non-zero fraction width, or on a larger graph is not established here. The reserved-top policy is not a shipped shape and is in the predicate because it is the only measured point holding one property without the other."
 provenance = ["panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#3-5a-the-two-properties-are-two-and-conflating-them-cost-me-an-option"]
 keywords = ["monotonicity", "absorbing top", "min-plus", "shortest path", "relaxation", "reserved top", "wrapping", "saturation", "two properties", "semiring", "infinity"]
@@ -2270,12 +2270,26 @@ says = "Since `d425aff5` the region and the finding in the note of `ruling::a_pl
 because = "The note's region says `W = 64` is refused by the shipped ladder and its finding says `ADMITTED` refuses past 62; the tree ships 64 and refuses past it, so both figures are a tree that has moved on."
 corrects_note = ["a_platform_width_type_is_a_target_bound_member_of_the_format_family"]
 note_said = [
-  "a_platform_width_type_is_a_target_bound_member_of_the_format_family: `W = 64` refused by the shipped `Slots` ladder and not by this ruling",
-  "a_platform_width_type_is_a_target_bound_member_of_the_format_family: `ADMITTED` then refuses every width past 62 unconditionally regardless of what an implementor declares",
+  "a_platform_width_type_is_a_target_bound_member_of_the_format_family: The region, in the grammar `dimension.toml` admits, which is 260's own table restated in the spelling 265's reconciliation corrects it to (`dimension::operation` and `dimension::strategy` both forbid the bare `any` 260 wrote, and `dimension::build_profile` and `dimension::toolchain` have no `any` form at all): within one compilation, `total_width: W in {16, 32}` established, `W = 64` refused by the shipped `Slots` ladder and not by this ruling; `fraction_width: F = 0`; `signedness: signedness in {unsigned, signed}`; `radix: radix = 2`; `phase: phase = 0`; `operation: membership and cardinality only, no arithmetic run`; `occupancy: occupancy any, by construction`; `threads: threads any, by construction`; `target_features: target features any, by construction`; `toolchain: rustc = 1.98.0-nightly (nightly-2026-05-28), edition = 2024`.",
+  "a_platform_width_type_is_a_target_bound_member_of_the_format_family: `arvo-format/src/slots.rs`'s own `E0277` diagnostic tells an outside implementor the trait is open and that what it owes is the `ADMITTED` obligation; `ADMITTED` then refuses every width past 62 unconditionally regardless of what an implementor declares, so the crate contradicts itself in two sentences about one trait.",
 ]
-note = "He was asked whether to take this and two other note corrections with the eighteen `ratified_by` lines, and answered \"The eighteen, not the notes\", so the ruling is unchanged and this row is where the registry says the note is stale. The two entries under `note_said` are clauses of longer sentences."
+note = "He was asked whether to take this and two other note corrections with the eighteen `ratified_by` lines, and answered \"The eighteen, not the notes\", so the ruling is unchanged and this row is where the registry says the note is stale."
 provenance = [
   "mock::research/202611130950_canon-double-check/CHECK::#14-the-platform-width-rulings-region-says-64-is-refused-and-64-is-shipped",
   "mock::research/202611130950_canon-double-check/CHECK::#written-down-and-not-applied",
 ]
 keywords = ["note", "stale", "platform width", "Slots", "ADMITTED", "64", "USize", "ISize"]
+
+[[proposal]]
+id = "the_written_history_notes_schema_now_has_a_stamp_field"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "panel_conduct"
+says = "A row left provisional as a body keeps the `rung` it had, is named in the research note beside the reading, and carries no stamp. The fields `stamped_by` and `stamp` are for a row a provisional stamp actually decided, by the coordinators converging or two experts agreeing, and name the question ticket that asks him to make it formal."
+because = "The note of `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default` says the schema has no value for a provisional stamp. Since the `stamped_by` and `stamp` fields were added to `ruling` and `proposal`, it has one, and the note now reads as a gap the schema no longer has."
+corrects_note = ["what_the_written_history_shows_to_be_his_is_ratified_by_default"]
+note_said = ["what_the_written_history_shows_to_be_his_is_ratified_by_default: This schema has no value for it, so a row left provisional keeps the `rung` it had and is named in the research note beside the reading."]
+note = "The ruling is ratified and he answered \"The eighteen, not the notes\" when asked whether agents correct the notes of ratified rows, so the correction stands here and the ruling is unchanged."
+provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#on-the-eighteen-ratified-rows-the-same-day"]
+keywords = ["note", "stale", "provisional stamp", "stamped_by", "stamp", "schema"]
