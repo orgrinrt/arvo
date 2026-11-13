@@ -18,7 +18,6 @@ use arvo_format::rounding::{Floor, HalfEven, TowardZero};
 use arvo_format::{Adapt, Exact, Format, Policy, Signature, Slot, WithOverflow, WithRounding};
 use arvo_numeral::{
     Abort,
-    Accumulator,
     Additive,
     Bool,
     DebugCheck,
@@ -110,20 +109,6 @@ type S7 = Signature<Integer<7>, Adapt<Floor, Saturate>>;
 /// a host integer past the top of seven signed bits.
 const QUARTER: I7 = I7::constant::<10>().div(Divisor::constant::<4>());
 const DOOR: I7 = I7::from_index(200u8);
-
-/// Generic over both signatures, the capacity and the check: an array summed
-/// exactly and finished once, in a constant.
-const fn folded<S: Sole, T: Sole, const N: usize, C: DebugCheck>(
-    terms: &[Num<S, C>; N],
-) -> Num<S, C> {
-    Accumulator::<S, T, N, C>::of(terms).finish()
-}
-
-const FOLDED: I7 = folded::<S7, Signature<Integer<9>, Adapt<Floor, Wrap>>, 3, Quiet>(&[
-    I7::constant::<63>(),
-    I7::constant::<7>(),
-    I7::constant::<-64>(),
-]);
 
 /// Generic over the host integer, bounded by `HostInteger` and nothing more: a
 /// host integer in through the door and out again.
@@ -304,7 +289,6 @@ fn main() {
     assert_eq!(U13::from_index(8192u64).slot().index(), 0);
     assert_eq!(I7::from_index(1000i32).slot().index(), 63);
     assert_eq!(I7::from_index(u64::MAX).slot().index(), 63);
-    assert!(U13::holds_index(8191i64).get() && !U13::holds_index(-1i8).get());
     assert_eq!(top13.index::<u16>(), 8191);
     assert_eq!(top13.index::<i64>(), 8191);
     assert_eq!(a.index::<i8>(), -3);
@@ -329,35 +313,6 @@ fn main() {
             .index(),
         0
     );
-
-    // The accumulator: seven bits of terms summed exactly in twelve.
-    type Wide = Signature<Integer<12>, Adapt<Floor, Saturate>>;
-    let terms = [I7::constant::<63>(), I7::constant::<63>(), b, a];
-    let all = Accumulator::<S7, Wide, 8, Quiet>::of(&terms);
-    assert_eq!(all.total().slot().index(), 128);
-    assert!(!all.fits().get());
-    assert_eq!(all.finish().slot().index(), 63);
-    let (block, rest) = Accumulator::<S7, Wide, 3, Quiet>::take(&terms);
-    assert_eq!(block.total().slot().index(), 131);
-    assert_eq!(rest, &[a]);
-    let (last, none) = Accumulator::<S7, Wide, 3, Quiet>::take(rest);
-    assert!(none.is_empty() && last.fits().get());
-    let joined = Accumulator::<S7, Wide, 8, Quiet>::plus(block, last);
-    assert_eq!(joined.total(), all.total());
-    let copied = joined;
-    assert_eq!(Clone::clone(&copied).finish(), all.finish());
-    assert_eq!(
-        Accumulator::<S7, Wide, 3, Quiet>::minus(last, block)
-            .slot()
-            .index(),
-        -134
-    );
-    assert_eq!(
-        Accumulator::<S7, Wide, 8, Quiet>::plus(Accumulator::<S7, Wide, 0, Quiet>::empty(), last)
-            .finish(),
-        a
-    );
-    assert_eq!(FOLDED.slot().index(), 6);
 
     // The admission's items, through the traits.
     type S13 = Signature<arvo_format::points::UFixed<13, 0>, Adapt<TowardZero, Wrap>>;

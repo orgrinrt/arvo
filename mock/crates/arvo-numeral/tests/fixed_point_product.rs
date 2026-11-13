@@ -25,7 +25,7 @@ use arvo_format::points::{Fixed, UFixed};
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, TowardZero};
 use arvo_format::{Adapt, Signature};
 use arvo_numeral::{Identity, Multiplicative, Num, Quiet, Sole};
-use common::{Tally, exhaustive_products, oracle, range, value};
+use common::{Tally, exhaustive_products, lattice_and_seeded_products, oracle, range, value};
 
 #[test]
 fn the_signed_product_at_eighths_is_the_oracles_on_every_pair() {
@@ -53,6 +53,28 @@ fn the_unsigned_product_at_eights_is_the_oracles_on_every_pair() {
     every_mode!(UFixed<6, 3>, Saturate, exhaustive_products, &mut tally);
     assert_eq!(tally.products, 64 * 64 * 10);
     tally.check_products("UFixed<6, 3>");
+}
+
+/// The same at 16 and 32 bits, where a range has too many pairs to take each:
+/// the edge lattice, every pair, and seeded pairs. A product of two 64-bit
+/// slots leaves the tests' wide integer no room to scale, so 64 bits is not
+/// here.
+#[test]
+fn the_product_at_wide_fixed_point_formats_is_the_oracles_on_the_lattice_and_seeded_pairs() {
+    let mut tally = Tally::default();
+    every_mode!(Fixed<16, -8>, Wrap, lattice_and_seeded_products, &mut tally);
+    every_mode!(Fixed<16, -8>, Saturate, lattice_and_seeded_products, &mut tally);
+    every_mode!(UFixed<16, -8>, Wrap, lattice_and_seeded_products, &mut tally);
+    every_mode!(UFixed<16, -8>, Saturate, lattice_and_seeded_products, &mut tally);
+    every_mode!(Fixed<32, -16>, Wrap, lattice_and_seeded_products, &mut tally);
+    every_mode!(Fixed<32, -16>, Saturate, lattice_and_seeded_products, &mut tally);
+    every_mode!(UFixed<32, -16>, Wrap, lattice_and_seeded_products, &mut tally);
+    every_mode!(UFixed<32, -16>, Saturate, lattice_and_seeded_products, &mut tally);
+    every_mode!(UFixed<32, 5>, Wrap, lattice_and_seeded_products, &mut tally);
+    every_mode!(UFixed<32, 5>, Saturate, lattice_and_seeded_products, &mut tally);
+    // Five points, both policies, five modes, and the seeded pairs alone.
+    assert!(tally.products > 5 * 10 * common::SEEDED_PAIRS as u64);
+    tally.check_products("fixed point at 16 and 32 bits");
 }
 
 /// The slot of the product of the members at `a` and `b`.

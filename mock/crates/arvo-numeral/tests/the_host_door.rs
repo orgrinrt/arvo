@@ -8,9 +8,9 @@
 //! `from_index` is checked to be `adapted(Exact::on_grid(Slot::at(host)))` for
 //! each of the ten host integers: every value of the 8-bit ones, every value of
 //! the wider ones within 1024 of zero, both ends of each host integer, and both
-//! ends of the signature's range with their neighbours. `holds_index` is checked
-//! against the format's verdict on the same position, and `index` returns what
-//! `from_index` was given. A few doors are named beside the sweep with their
+//! ends of the signature's range with their neighbours. `index` returns what
+//! `from_index` was given. Where the `Abort` check aborts on a host integer is
+//! `the_debug_check`'s to show. A few doors are named beside the sweep with their
 //! slots written out, so that the suite does not rest on the oracle alone.
 
 mod common;
@@ -18,7 +18,7 @@ mod common;
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{self, Fixed, Integer, UFixed};
 use arvo_format::rounding::TowardZero;
-use arvo_format::{Adapt, Dither, Exact, Signature, Slot, panic_on_overflow};
+use arvo_format::{Adapt, Signature};
 use arvo_numeral::{HostInteger, Int, Num, Quiet, Sole, Uint};
 use common::{lattice, range, value};
 
@@ -45,20 +45,13 @@ macro_rules! host_values {
 
 host_values!(i8, u8, i16, u16, i32, u32, i64, u64, isize, usize);
 
-/// One host value through the door, against the two public doors it stands
-/// for and the format's verdict.
+/// One host value through the door, against the public door it stands for.
 fn door<S: Sole, H: Value>(host: H, doors: &mut u64) {
     let index = host.value();
     assert_eq!(
         Num::<S, Quiet>::from_index(host),
         value::<S>(index),
         "`from_index` is not `adapted` at {index}"
-    );
-    let leaves = panic_on_overflow::<S>(Exact::on_grid(Slot::at(index)), Dither::UNUSED).get();
-    assert_eq!(
-        Num::<S, Quiet>::holds_index(host).get(),
-        !leaves,
-        "`holds_index` disagrees with `panic_on_overflow` at {index}"
     );
     *doors += 1;
 }
@@ -150,7 +143,6 @@ fn out_and_back<S: Sole, H: Value>(out: impl Fn(Num<S, Quiet>) -> H, trips: &mut
             v,
             "the index does not come back in"
         );
-        assert!(Num::<S, Quiet>::holds_index(host).get());
         *trips += 1;
     }
 }
@@ -192,12 +184,9 @@ fn the_named_doors_sit_where_the_policy_puts_them() {
     assert_eq!(U8::<Saturate>::from_index(-1i8).slot().index(), 0);
     assert_eq!(U8::<Saturate>::from_index(i64::MIN).slot().index(), 0);
     assert_eq!(U8::<Wrap>::from_index(-1i8).slot().index(), 255);
-    assert!(!U8::<Wrap>::holds_index(-1i8).get());
     // Past the top.
     assert_eq!(U8::<Saturate>::from_index(300i16).slot().index(), 255);
     assert_eq!(U8::<Wrap>::from_index(300i16).slot().index(), 44);
-    assert!(U8::<Wrap>::holds_index(255u64).get());
-    assert!(!U8::<Wrap>::holds_index(256u64).get());
     // An unsigned host integer above the signed 64-bit maximum into a signed
     // range.
     assert_eq!(I8::<Saturate>::from_index(u64::MAX).slot().index(), 127);
@@ -206,7 +195,6 @@ fn the_named_doors_sit_where_the_policy_puts_them() {
         I64::<Saturate>::from_index(u64::MAX).slot().index(),
         i128::from(i64::MAX)
     );
-    assert!(!I64::<Saturate>::holds_index(u64::MAX).get());
     assert_eq!(I64::<Wrap>::from_index(u64::MAX).slot().index(), -1);
     // The 64-bit ranges at their own width.
     assert_eq!(U64::<Saturate>::from_index(-1i64).slot().index(), 0);
@@ -229,6 +217,4 @@ fn the_door_is_a_constant_where_the_host_integer_is() {
     const TOP: U8<Saturate> = U8::<Saturate>::from_index(1000u32);
     const OUT: u8 = TOP.index::<u8>();
     assert_eq!(OUT, 255);
-    const HELD: bool = U8::<Saturate>::holds_index(1000u32).get();
-    assert!(!HELD);
 }

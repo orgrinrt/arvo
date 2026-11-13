@@ -23,9 +23,7 @@ notko-hlist = { workspace = true, optional = true }
 # range to the bottom in a crossing to a sibling signature. `mutant-div` returns
 # the dividend where the quotient leaves the range, `mutant-convert` reads the
 # source's slot index as the target's, and `mutant-index` sends a negative host
-# integer to the top of an unsigned saturating range. `mutant-accumulator` makes
-# `take` sum the whole slice whatever the capacity. `mutant-count` stops a count
-# at one.
+# integer to the top of an unsigned saturating range. `mutant-count` stops a count at one.
 [features]
 # A value as the count of `notko-hlist`, so a list's length lands in a value.
 # Off by default, and nothing else here turns either on.
@@ -47,7 +45,6 @@ mutant-under = []
 mutant-div = []
 mutant-convert = []
 mutant-index = []
-mutant-accumulator = []
 mutant-count = []
 
 [lints.rust]

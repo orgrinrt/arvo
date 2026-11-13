@@ -91,28 +91,67 @@ fn landed<S: Sole>(num: i128, den: i128) -> Landed {
     }
 }
 
-/// `x` times two to the `power`, as a ratio.
-fn scaled(x: i128, power: i32) -> (i128, i128) {
-    if power >= 0 { (x << power, 1) } else { (x, 1 << -power) }
+/// The magnitude a ratio's terms stay within for `rounded` and `completed` to
+/// stay inside the wide integer: `rounded` doubles a remainder below the
+/// denominator, and `completed` takes a range's end from the rounded value.
+/// The product of two 64-bit slots is at most this, so it fits unscaled.
+const ROOM: u128 = 1 << 126;
+
+/// `num / den` slots landed on `S`, or nothing where the ratio's terms leave
+/// the room this arithmetic has.
+fn landed_in_room<S: Sole>(num: Option<i128>, den: Option<i128>) -> Option<Landed> {
+    let (num, den) = (num?, den?);
+    if num.unsigned_abs() > ROOM || den.unsigned_abs() >= ROOM {
+        return None;
+    }
+    Some(landed::<S>(num, den))
 }
 
-/// The quotient of the members at slots `a` and `b`. The two quanta cancel,
-/// so the quotient is `a / b` as a number, and its slot is that over the
-/// quantum.
+/// `x` times two to the `power`, as a ratio, or nothing where it leaves the
+/// wide integer.
+fn scaled(x: Option<i128>, power: i32) -> (Option<i128>, Option<i128>) {
+    let factor = 1i128.checked_shl(power.unsigned_abs()).filter(|f| *f > 0);
+    if power >= 0 {
+        (x.zip(factor).and_then(|(x, f)| x.checked_mul(f)), Some(1))
+    } else {
+        (x, factor)
+    }
+}
+
+/// The quotient of the members at slots `a` and `b`, or nothing where this
+/// arithmetic has no room for it. The two quanta cancel, so the quotient is
+/// `a / b` as a number, and its slot is that over the quantum.
+pub fn quotient_in_room<S: Sole>(a: i128, b: i128) -> Option<Landed> {
+    let (num, den) = scaled(Some(a), -exponent::<S::Format>());
+    landed_in_room::<S>(num, den.and_then(|d| d.checked_mul(b)))
+}
+
+/// The product of the members at slots `a` and `b`, or nothing where this
+/// arithmetic has no room for it: the slots' product times the quantum
+/// squared, and its slot is that over the quantum once.
+pub fn product_in_room<S: Sole>(a: i128, b: i128) -> Option<Landed> {
+    let (num, den) = scaled(a.checked_mul(b), exponent::<S::Format>());
+    landed_in_room::<S>(num, den)
+}
+
+/// The member at slot `a` of `S`, on the grid of `T`, or nothing where this
+/// arithmetic has no room for it.
+pub fn converted_in_room<S: Sole, T: Sole>(a: i128) -> Option<Landed> {
+    let (num, den) = scaled(Some(a), exponent::<S::Format>() - exponent::<T::Format>());
+    landed_in_room::<T>(num, den)
+}
+
+/// The quotient where the caller knows there is room.
 pub fn quotient<S: Sole>(a: i128, b: i128) -> Landed {
-    let (num, den) = scaled(a, -exponent::<S::Format>());
-    landed::<S>(num, den * b)
+    quotient_in_room::<S>(a, b).expect("the quotient leaves the tests' wide integer")
 }
 
-/// The product of the members at slots `a` and `b`: the slots' product times
-/// the quantum squared, and its slot is that over the quantum once.
+/// The product where the caller knows there is room.
 pub fn product<S: Sole>(a: i128, b: i128) -> Landed {
-    let (num, den) = scaled(a * b, exponent::<S::Format>());
-    landed::<S>(num, den)
+    product_in_room::<S>(a, b).expect("the product leaves the tests' wide integer")
 }
 
-/// The member at slot `a` of `S`, on the grid of `T`.
+/// The conversion where the caller knows there is room.
 pub fn converted<S: Sole, T: Sole>(a: i128) -> Landed {
-    let (num, den) = scaled(a, exponent::<S::Format>() - exponent::<T::Format>());
-    landed::<T>(num, den)
+    converted_in_room::<S, T>(a).expect("the conversion leaves the tests' wide integer")
 }
