@@ -1879,13 +1879,19 @@ the product, and a verdict would need a relocation law for multiplication the ca
 `multiplicative_identity` answers which member is one: its slot, or nothing. It is the question
 `has_additive_identity` answers for zero, asked for one, and it is answered the same way, by working
 out where one would sit and asking whether a member is there. With the phase `n / d` in lowest terms,
-one sits at slot `r^-e - n` where `d` is one and `e` is at or below zero, and at no slot otherwise:
-above zero every member is a multiple of `r^e`, and a phase with a denominator puts every member off
-the whole numbers. The candidate is answered only where it is in the slot range, and where the
+the member at slot `s` is `(n / d + s) r^e`, so one sits at `s = r^-e - n / d` wherever that is a whole
+number, and at no slot otherwise. Written over one denominator that is
+`(d r^max(-e, 0) - n r^max(e, 0)) / (d r^max(e, 0))`, and the function forms it so and takes it only
+where the division leaves no residue. At a zero phase that is slot `r^-e` at exponents at or below
+zero and nothing above. With a phase it is not that simple, and the general form is what keeps the
+function from a rule about the exponent alone: at a phase of a half and exponent one the member at
+slot zero is one. The candidate is answered only where it is in the slot range, and where the
 product's own step, at the candidate against each end of the range, returns that end on the grid. The
 position is affine in the other factor, so the two ends decide it for the whole range, and the answer
-is the step's and not a second derivation beside it. It forces no obligation, so it answers for a
-format the product does not admit, the unsigned 64-bit integer among them. Over a magnitude-indexed
+is the step's and not a second derivation beside it. It does not force the multiplication obligation,
+so it answers for a format the product does not admit, the unsigned 64-bit integer among them. Where
+the step has no constants, the remainder's denominator being past what it carries, one would sit at a
+slot past every range and the answer is nothing. Over a magnitude-indexed
 quantum it answers nothing, a placeholder under the product's own ticket there,
 `arvo_product_over_a_magnitude_indexed_quantum_is_a_placehold`, since a slot alone names no member.
 It is a `const fn` and the crate root re-exports it.
@@ -1923,10 +1929,12 @@ holds unsigned at widths three to eight and fails signed at 28, 160, 780 and 351
 three to six. `a * (b + c) == (a * b) + (a * c)` holds unsigned under wrapping and under saturation at
 widths three to eight, and fails signed under saturation at widths six and seven.
 
-And the identity. Where `multiplicative_identity` answers, the product position of the answer and
-every member is that member, on the grid, and where it answers nothing no member has that property:
-both exhaustive at widths one to six over the signed and the unsigned family, at exponents from minus
-seven to two, at a phase of a half, of one and of minus two, and at radix ten.
+And the identity. The answer of `multiplicative_identity` is the member whose value is one, found by
+walking the range in the suite's own rationals, and nothing where the walk finds none; where it
+answers, the product position of the answer and every member is that member, on the grid. Both are
+exhaustive at widths one to six over the signed and the unsigned family, at exponents from minus seven
+to two, at a phase of a half, of one and of minus two, and at radix ten. The control is a rule that
+reads the exponent alone, which has to be right at a zero phase and wrong at the others.
 
 ## The exact step's ending, shared
 

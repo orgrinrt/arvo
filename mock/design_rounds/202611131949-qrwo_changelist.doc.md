@@ -71,13 +71,19 @@ additions beside what stands and change nothing that stands.
 
 `### The operation and the surface` under multiplication gains `multiplicative_identity`: the slot of
 the member that is one, or nothing. With the phase `n / d` in lowest terms, the radix `r` and the
-exponent `e`, the candidate is slot `r^-e - n` where `d` is one and `e` is at or below zero; it is
-answered only where it is in the slot range and the product's own step, at the candidate against each
-end of the range, returns that end on the grid. It forces no obligation, so it answers for a format the
-product does not admit. Over a magnitude-indexed quantum it answers nothing, under the same ticket as
-the product there. `### The laws this section owes tests for` gains its law: where it answers, the
-product position of the answer and every member is that member, exhaustive at widths 1 to 6 over each
-point family, and where it answers nothing no member has that property at those widths.
+exponent `e`, the candidate is `r^-e - n / d` where that is a whole number; it is answered only where
+it is in the slot range and the product's own step, at the candidate against each end of the range,
+returns that end on the grid. It does not force the multiplication obligation, so it answers for a
+format the product does not admit. Over a magnitude-indexed quantum it answers nothing, under the same
+ticket as the product there. `### The laws this section owes tests for` gains its law: the answer is
+the member whose value is one by a walk of the range in the suite's own rationals, and where it
+answers the product position of the answer and every member is that member, exhaustive at widths 1 to
+6 over both families, with a rule that reads the exponent alone as the control.
+
+This changelist was unlocked once. Its first text, and the topic, put the candidate at `r^-e - n` and
+only where `d` is one and `e` is at or below zero. The identity's own test, whose expected answer is a
+walk of the members' values, refused that: at a phase of a half and exponent one the member at slot
+zero is one. The design now states the general form.
 
 `## The surface this design names` gains `Fixed` in the `Format` row: the signed fixed-point point, an
 alias of `Biased` at a zero phase count, for the reason `USize` is an alias.
