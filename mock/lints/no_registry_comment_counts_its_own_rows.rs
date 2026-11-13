@@ -15,11 +15,11 @@
 //! the number, because the answer is one query away and cannot go stale. So this
 //! reports a count in a comment rather than correcting it.
 //!
-//! **A lint rather than a tool.** The refused state is a comment stating a count
+//! A lint rather than a tool. The refused state is a comment stating a count
 //! of its own file's rows, there is no legitimate reason to write one, and the
 //! repair is deleting a clause.
 //!
-//! **It reads the registry files rather than the registry.** A comment is
+//! It reads the registry files rather than the registry. A comment is
 //! discarded by every parser before a row reaches a lint, so the text is where
 //! this lives. That also makes it the one canon lint whose whole subject
 //! survives in a planted tree, and every arm below drives one.
@@ -34,12 +34,19 @@ pub fn repo_lint() -> Box<dyn RepoLint> {
 
 const NAME: &str = "no-registry-comment-counts-its-own-rows";
 
-/// The nouns a count in a registry comment would be counting.
+/// The nouns any registry file's comment may count its own rows with, singular
+/// then plural. The file's own namespaces are added to these per file: a comment in
+/// `ruling.toml` counting "rulings" counts what the file holds, and one in
+/// `law.toml` saying "two rulings" is counting something else.
 ///
 /// Deliberately narrow. A comment saying "six of the 242 seed files" is counting
 /// something else and is not this lint's business, so the noun has to name what
 /// the file itself holds.
 const COUNTED: [&str; 4] = ["row", "rows", "entry", "entries"];
+
+/// The determiners a place word may follow, so "The four below" counts and "see row
+/// 3 below" and "widths up to 64 follow the same rule" do not.
+const DETERMINERS: [&str; 4] = ["the", "these", "those", "all"];
 
 /// The words that stand for the rows of the file in a count with no noun: "The
 /// four below were not in the sweep", "six follow".
@@ -69,8 +76,9 @@ fn check(view: &View, dir: &Path) -> Vec<LintError> {
             continue;
         };
         let shown = crate::panel_corpus::shown(&path, dir);
+        let own = own_nouns(&text);
         for (n, line) in text.lines().enumerate() {
-            for (count, noun) in counts_in_a_comment(line) {
+            for (count, noun) in counts_in_a_comment(line, &own) {
                 out.push(finding(
                     NAME,
                     &shown,
@@ -88,11 +96,43 @@ fn check(view: &View, dir: &Path) -> Vec<LintError> {
     out
 }
 
+/// The singular and plural of every namespace the file declares with `[[ns]]`.
+fn own_nouns(text: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    for line in text.lines() {
+        let Some(ns) = line
+            .trim()
+            .strip_prefix("[[")
+            .and_then(|l| l.strip_suffix("]]"))
+        else {
+            continue;
+        };
+        let ns = ns.trim();
+        if ns.is_empty() || out.iter().any(|n| n == ns) {
+            continue;
+        }
+        let plural = match ns.strip_suffix('y') {
+            Some(stem) => format!("{stem}ies"),
+            None => format!("{ns}s"),
+        };
+        out.push(ns.to_string());
+        out.push(plural);
+    }
+    out
+}
+
+/// Whether a noun is one of the singular forms: `row`, `entry` and the file's own
+/// namespaces. A singular noun is counted only after the digit `1`, because after
+/// any other number it is the first half of a compound (`two entry points`).
+fn is_singular(noun: &str, own: &[String]) -> bool {
+    matches!(noun, "row" | "entry") || own.iter().step_by(2).any(|n| n == noun)
+}
+
 /// The `<number> <noun>` pairs one line states, where the line is a comment.
 ///
 /// A line whose first non-blank character is not `#` is not a comment and is not
 /// read, which is what keeps a row value reading like a count out of the report.
-fn counts_in_a_comment(line: &str) -> Vec<(&str, String)> {
+fn counts_in_a_comment<'a>(line: &'a str, own: &[String]) -> Vec<(&'a str, String)> {
     let Some(comment) = line.trim_start().strip_prefix('#') else {
         return Vec::new();
     };
@@ -104,7 +144,7 @@ fn counts_in_a_comment(line: &str) -> Vec<(&str, String)> {
         let continues = words.get(i + 1).is_some_and(|w| is_count(w));
         if is_count(words[i])
             && !continues
-            && let Some((at, noun)) = what_is_counted(&words, i)
+            && let Some((at, noun)) = what_is_counted(&words, i, own)
         {
             out.push((words[i], noun));
             i = at;
@@ -118,16 +158,25 @@ fn counts_in_a_comment(line: &str) -> Vec<(&str, String)> {
 /// three words (`17 rows`, `17 new rows`, `fifteen of the rows`), or the place
 /// word that stands for the rows themselves (`the four below`, `six follow`),
 /// with the word index it was found at.
-fn what_is_counted(words: &[&str], from: usize) -> Option<(usize, String)> {
-    let ends_a_clause = |w: &str| w.ends_with([',', ';', ':', '.', ')']);
+fn what_is_counted(words: &[&str], from: usize, own: &[String]) -> Option<(usize, String)> {
+    let ends_a_clause = |w: &str| w.ends_with([',', ';', ':', '.']);
+    let alpha = |w: &str| {
+        w.trim_matches(|c: char| !c.is_ascii_alphabetic())
+            .to_ascii_lowercase()
+    };
+    let opens_or_follows_a_determiner =
+        from == 0 || DETERMINERS.contains(&alpha(words[from - 1]).as_str());
+    let digit_one = words[from].trim_matches(|c: char| !c.is_ascii_alphanumeric()) == "1";
     if ends_a_clause(words[from]) {
         return None;
     }
     for at in from + 1 .. words.len().min(from + 4) {
-        let word = words[at]
-            .trim_matches(|c: char| !c.is_ascii_alphabetic())
-            .to_ascii_lowercase();
-        if COUNTED.contains(&word.as_str()) || (at == from + 1 && PLACE.contains(&word.as_str())) {
+        let word = alpha(words[at]);
+        let is_noun = COUNTED.contains(&word.as_str()) || own.contains(&word);
+        if is_noun && (!is_singular(&word, own) || digit_one) {
+            return Some((at, word));
+        }
+        if at == from + 1 && opens_or_follows_a_determiner && PLACE.contains(&word.as_str()) {
             return Some((at, word));
         }
         if ends_a_clause(words[at]) {
@@ -139,7 +188,7 @@ fn what_is_counted(words: &[&str], from: usize) -> Option<(usize, String)> {
 
 /// The number words a count is written in, the units and the tens a compound is
 /// built from, and the round numbers.
-const NUMBER_WORDS: [&str; 32] = [
+const NUMBER_WORDS: [&str; 31] = [
     "zero",
     "two",
     "three",
@@ -170,7 +219,6 @@ const NUMBER_WORDS: [&str; 32] = [
     "hundred",
     "thousand",
     "dozen",
-    "score",
     "million",
 ];
 
@@ -351,6 +399,47 @@ mod tests {
              # Some rows follow.\n# A well-known rows table.\n# Twenty-odd rows.\n",
         )]);
         assert!(f.is_empty(), "{f:?}");
+    }
+
+    /// A file's own namespace is a noun for what it holds: `ruling.toml` counting
+    /// `rulings` is counting its rows. The same sentence in `law.toml` is counting
+    /// something else, and a plural never turns into a singular match.
+    #[test]
+    fn a_count_of_the_files_own_namespace_is_reported_and_another_files_is_not() {
+        let f = findings(&[
+            (
+                "ruling.toml",
+                "# four rulings below.\n\n[[ruling]]\nid = \"a_ruling_row\"\n",
+            ),
+            (
+                "law.toml",
+                "# four rulings below.\n\n[[law]]\nid = \"a_law_row\"\n",
+            ),
+            (
+                "proposal.toml",
+                "# Nine proposals follow.\n\n[[proposal]]\nid = \"a_claim\"\n",
+            ),
+        ]);
+        assert_eq!(f.len(), 2, "{f:?}");
+        assert!(f.iter().all(|(line, _)| *line == 1), "{f:?}");
+    }
+
+    /// Prose that carries a number and a place word, or a number before an
+    /// ordinary word that happens to be a counted noun's first half, is not a
+    /// count of the file's rows. The comment that does count, beside them, still is.
+    #[test]
+    fn control_a_number_and_a_place_word_in_ordinary_prose_stay_silent() {
+        let f = findings(&[(
+            "a.toml",
+            "# Widths up to 64 follow the same rule.\n\
+             # See row 3 below.\n\
+             # The error stays 3 above the bound.\n\
+             # The two entry points into this file.\n\
+             # The score rows below.\n\
+             # The four below were not in the sweep.\n",
+        )]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert_eq!(f[0].0, 6, "only the last comment counts rows: {f:?}");
     }
 
     #[test]

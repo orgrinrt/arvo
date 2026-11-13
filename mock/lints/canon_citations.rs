@@ -5,7 +5,7 @@
 
 //! Reading the shape of a citation, which four of the canon lints ask about.
 //!
-//! **This file declares no lint.** The engine scans each `mock/lints/*.rs` for
+//! This file declares no lint. The engine scans each `mock/lints/*.rs` for
 //! `lint()`, `cross_lint()`, `repo_lint()` and `message_lint()`, includes the
 //! file as a module either way, and registers only what it found, so a module
 //! defining none of them compiles into the pack and reaches nothing. That is
@@ -20,7 +20,7 @@
 //! resolution cannot see, which is whether an anchor that resolves is telling
 //! the truth.
 //!
-//! **No reverse edges are read here and none would help.** `referrers` is built
+//! No reverse edges are read here and none would help. `referrers` is built
 //! over fields the configuration types as row references, and `provenance` and
 //! `lives` are typed `ref[]`, which points into the research tree rather than
 //! at another row. A citation has no target row for an edge to land on.
@@ -162,7 +162,7 @@ const READ_MARKERS: [&str; 3] = ["**Read end to end", "**Read in full", "**What 
 /// consolidations are left out: a consolidation reads another one as input
 /// without compressing it.
 ///
-/// **Where this is wrong.** A consolidation that names its members somewhere
+/// Where this is wrong. A consolidation that names its members somewhere
 /// else, or in prose with no backticks, has none read here, so a cited member
 /// beside it is no absorption and the pair counts as two arrivals. That errs
 /// toward trusting a second source, which is the direction the tier asks for

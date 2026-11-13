@@ -79,11 +79,12 @@ fn marker_text(line: &str) -> Option<&str> {
         }
     }
     let after = rest.trim_start().strip_prefix("FIXME")?;
-    // A word that merely starts with it (`FIXMEs`, `FIXMEd`) is prose.
+    // A word that merely starts with it (`FIXMEs`, `FIXMEd`, `FIXME_x`) is prose;
+    // any other character ends the word, so `FIXME,` and `FIXME.` are markers.
     after
         .chars()
         .next()
-        .is_none_or(|c| c == '(' || c == ':' || c.is_whitespace())
+        .is_none_or(|c| !c.is_alphanumeric() && c != '_')
         .then_some(after)
 }
 
@@ -197,6 +198,15 @@ mod tests {
         assert_eq!(hits("// FIXME fix this\n").len(), 1);
         assert_eq!(hits("// FIXME: fix this\n").len(), 1);
         assert_eq!(hits("// FIXME\n").len(), 1);
+        assert!(hits("// FIXME_x later.\n").is_empty());
+    }
+
+    /// A marker followed by punctuation other than the colon is still a marker.
+    #[test]
+    fn a_marker_followed_by_other_punctuation_fires() {
+        assert_eq!(hits("// FIXME, fix this.\n").len(), 1);
+        assert_eq!(hits("// FIXME. fix this.\n").len(), 1);
+        assert_eq!(hits("// FIXME-x fix this.\n").len(), 1);
     }
 
     #[test]

@@ -437,6 +437,16 @@ mod tests {
         assert_eq!(std_lines(src), vec![1]);
     }
 
+    /// Aliases are read by name over the whole file, not by what they point to.
+    /// `extern crate self as std` makes `std` the current crate, and a later `std::x()`
+    /// is then not the standard library.
+    #[test]
+    #[ignore = "catalogue: aliases are read by name over the whole file, not by what they point to; tracked #crate_root_paths_reads_a_use_alias_in_one_module_as_the_crat"]
+    fn an_alias_of_self_is_not_the_crate() {
+        let src = "extern crate self as std;\nfn f() { std::x(); }\n";
+        assert_eq!(std_lines(src), Vec::<usize>::new());
+    }
+
     #[test]
     fn a_line_naming_the_crate_twice_is_one_line() {
         assert_eq!(std_lines("fn f() { std::a(); std::b(); }\n"), vec![1]);

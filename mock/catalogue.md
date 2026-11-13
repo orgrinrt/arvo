@@ -10,5 +10,6 @@ last ignore citing it.
   rule, so the test that the carrier is not a function of the access width stays red.
 - arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair: the `half_up` reader gets eighteen
   catalogued sentence pairs wrong on one named side.
-- crate_root_paths_reads_a_use_alias_in_one_module_as_the_crat: `crate_root_paths` collects the aliases of
-  `std` and `alloc` over the whole file, so one module's `use std as s` reads as the crate in another.
+- crate_root_paths_reads_a_use_alias_in_one_module_as_the_crat: `crate_root_paths` reads aliases by name over
+  the whole file, not by what they point to or the module they sit in, so one module's `use std as s`
+  reads as the crate in another, and `extern crate self as std` makes a later `std::x()` a false hit.

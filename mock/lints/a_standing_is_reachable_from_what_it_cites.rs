@@ -19,11 +19,11 @@
 //! The row may still be right. What it cannot be is checked, and a claim nobody
 //! can locate is one nobody can overturn.
 //!
-//! **A necessary condition rather than a sufficient one.** Nothing here can
+//! A necessary condition rather than a sufficient one. Nothing here can
 //! tell whether two authors really arrived separately, and it does not pretend
 //! to. What it establishes is that a reader could go and find out.
 //!
-//! **A lint rather than a tool.** There is a state it refuses: a row claiming
+//! A lint rather than a tool. There is a state it refuses: a row claiming
 //! more arrivals than its citations can carry. The fix is per row and it is
 //! additive, so the answer is not an inventory somebody ranks.
 //!
@@ -37,7 +37,7 @@
 //! establishing files is added one row at a time by whoever is porting that
 //! topic.
 //!
-//! **So the ceiling is carried across and the severity is not touched.** The
+//! So the ceiling is carried across and the severity is not touched. The
 //! alternative considered was declaring the lint at `warn` in `mockspace.toml`,
 //! which states the true thing about the backlog and reports every offending row
 //! at every gate. It was refused on one ground: a warning refuses nothing, so
@@ -79,7 +79,7 @@ pub fn repo_lint() -> Box<dyn RepoLint> {
 
 /// The rows in this state, measured over the committed canon.
 ///
-/// **Lower it as topics are second-read; never raise it.** Under the rule that
+/// Lower it as topics are second-read; never raise it. Under the rule that
 /// two agreeing experts ratify, these are exactly the rows eligible for
 /// promotion, and not one of them names a second source.
 const CEILING: usize = 29;

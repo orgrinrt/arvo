@@ -1,6 +1,6 @@
 //! What a canon lint's own tests are built out of.
 //!
-//! **This file declares no lint.** The engine scans each `mock/lints/*.rs` for
+//! This file declares no lint. The engine scans each `mock/lints/*.rs` for
 //! `lint()`, `cross_lint()`, `repo_lint()` and `message_lint()`, includes the
 //! file as a module either way, and registers only what it found. So a module
 //! that defines none of them compiles into the cdylib alongside the lints and
@@ -10,7 +10,7 @@
 //! Everything here is `#[cfg(test)]`, so a release build of the pack carries an
 //! empty module.
 //!
-//! **What is here serves the registry lints**, which read a [`RegistryView`] and
+//! What is here serves the registry lints, which read a [`RegistryView`] and
 //! nothing else. That view is public and constructible, so such a predicate can
 //! be exercised on a planted registry with no fixture tree, no temporary
 //! directory and no process.
@@ -30,7 +30,7 @@
 //! severity on purpose). The arms asking whether every lint asks these are in
 //! `canon_lint_testkit/tests.rs`.
 //!
-//! **What that leaves uncovered is the shape the loader hands a real predicate.**
+//! What that leaves uncovered is the shape the loader hands a real predicate.
 //! Kamu answers it with a fixture tree run through the gate. This pack does not
 //! have one, so a lint whose predicate disagrees with a real `RegistryView` in
 //! some way a hand-built view does not reproduce would pass here. Said plainly
@@ -118,7 +118,7 @@ pub fn ctx<'a>(registry: &'a RegistryView) -> RepoInput<'a> {
 
 /// The same input with the mock directory pointed at a planted tree.
 ///
-/// **This is what a lint reading the worktree is driven by.** [`ctx`] hardcodes
+/// This is what a lint reading the worktree is driven by. [`ctx`] hardcodes
 /// `.`, which makes it the wrong instrument for one of those: it would walk
 /// whichever directory the test binary happens to be in. A corpus lint builds
 /// its own tree under [`planted_tree`] and hands the path here, so the same
@@ -216,7 +216,7 @@ pub fn findings(lint: &dyn RepoLint, registry: &RegistryView) -> Vec<String> {
 /// file present but unregistered is not silently read as covered, and a lint
 /// registered under a name matching no file fails loudly here rather than being
 /// skipped.
-/// **A repo lint may also be declared by a tool crate, and one is.** The
+/// A repo lint may also be declared by a tool crate, and one is. The
 /// generated pack's manifest is engine-written, so a lint under `mock/lints/`
 /// reaches `std` and the lint-rules crate and nothing else. A check that has to
 /// parse TOML to do its job cannot live there, and
@@ -323,7 +323,7 @@ const SEVERITY_ASKED: [&str; 2] = ["assert_findings_block", "assert_findings_car
 
 /// Every finding this lint produced blocks at every gate.
 ///
-/// **The severity that decides a refusal is the one the finding carries**, put
+/// The severity that decides a refusal is the one the finding carries, put
 /// there by whichever `LintError` constructor the call site used.
 /// [`Lint::default_severity`] is not that value, and asserting on it instead
 /// pins something the engine reads for one purpose only: whether the lint runs
@@ -383,8 +383,8 @@ pub fn assert_findings_carry_at(lint: &dyn RepoLint, ctx: RepoInput, severity: S
 ///
 /// Asserted as "not off" rather than as one exact value, because that is the
 /// whole of what the engine consults here and pinning more would be this test
-/// deciding something the engine does not read. **Blocking is not the stronger
-/// version of this**, however much it reads like one: the severity that decides
+/// deciding something the engine does not read. Blocking is not the stronger
+/// version of this, however much it reads like one: the severity that decides
 /// a refusal is the one the finding carries, which is what
 /// [`assert_findings_block`] measures, and a declared default of `ADVISORY`
 /// changes nothing at any gate.
@@ -399,7 +399,7 @@ pub fn assert_not_declared_off(lint: &dyn Lint) {
 
 /// The repository this pack was built from.
 ///
-/// **Walked at run time rather than taken from `env!`.** The macro bakes the
+/// Walked at run time rather than taken from `env!`. The macro bakes the
 /// directory of whichever tree compiled the binary, the pack builds under
 /// `mock/target/mockspace-lints`, and one target directory is shared across
 /// every worktree cut from a clone, so a baked path answers about whichever
