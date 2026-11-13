@@ -37,14 +37,7 @@ pub fn repo_lint() -> Box<dyn RepoLint> {
 const LINT: &str = "a-row-carries-keywords";
 
 /// The namespaces a reader reaches by searching rather than by reading whole.
-const SEARCHED: [&str; 6] = [
-    "ruling",
-    "proposal",
-    "question",
-    "obligation",
-    "retirement",
-    "probe",
-];
+const SEARCHED: [&str; 6] = ["ruling", "proposal", "question", "obligation", "retirement", "probe"];
 
 struct ARowCarriesKeywords;
 impl Lint for ARowCarriesKeywords {
@@ -60,8 +53,8 @@ impl RepoLint for ARowCarriesKeywords {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         SEARCHED
             .iter()
-            .flat_map(|ns| ctx.registry.rows_in(ns))
-            .filter(|q| list(ctx.registry, q, "keywords").is_empty())
+            .flat_map(|ns| ctx.registry().rows_in(ns))
+            .filter(|q| list(ctx.registry(), q, "keywords").is_empty())
             .map(|q| {
                 finding(
                     LINT,
@@ -81,7 +74,11 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {

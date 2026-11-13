@@ -30,7 +30,7 @@
 //! only by re-running, and every artifact above them is refused.
 use std::path::{Path, PathBuf};
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::canon_rows::finding;
 pub fn repo_lint() -> Box<dyn RepoLint> {
@@ -85,19 +85,19 @@ impl Lint for ACommittedTimingRecordsWhatBuiltIt {
 }
 impl RepoLint for ACommittedTimingRecordsWhatBuiltIt {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        self.check(&ctx.mock_dir.join(BENCHES))
+        self.check(ctx.view(), &ctx.mock_dir.join(BENCHES))
     }
 }
 
 impl ACommittedTimingRecordsWhatBuiltIt {
-    fn check(&self, dir: &Path) -> Vec<LintError> {
-        if !dir.is_dir() {
+    fn check(&self, view: &View, dir: &Path) -> Vec<LintError> {
+        if !view.is_dir(dir) {
             // A project with no bench tree has no timings, which is a
             // legitimate state and not this lint's business. Reporting it would
             // make the pack refuse every repository that has not run a bench.
             return Vec::new();
         }
-        let all = metas(dir);
+        let all = metas(view, dir);
         if all.is_empty() {
             return vec![finding(
                 NAME,
@@ -110,7 +110,7 @@ impl ACommittedTimingRecordsWhatBuiltIt {
             )];
         }
         let mut out = Vec::new();
-        let bare = named(&all, dir, |text| !text.contains(PROFILE));
+        let bare = named(view, &all, dir, |text| !text.contains(PROFILE));
         if bare.len() > self.without_a_profile {
             out.push(finding(
                 NAME,
@@ -125,11 +125,11 @@ impl ACommittedTimingRecordsWhatBuiltIt {
                     bare.len(),
                     all.len(),
                     self.without_a_profile,
-                    &bare[..bare.len().min(8)]
+                    &bare[.. bare.len().min(8)]
                 ),
             ));
         }
-        let dirty = named(&all, dir, |text| text.contains(DIRTY));
+        let dirty = named(view, &all, dir, |text| text.contains(DIRTY));
         if dirty.len() > self.from_a_dirty_tree {
             out.push(finding(
                 NAME,
@@ -142,7 +142,7 @@ impl ACommittedTimingRecordsWhatBuiltIt {
                     dirty.len(),
                     all.len(),
                     self.from_a_dirty_tree,
-                    &dirty[..dirty.len().min(8)]
+                    &dirty[.. dirty.len().min(8)]
                 ),
             ));
         }
@@ -151,33 +151,22 @@ impl ACommittedTimingRecordsWhatBuiltIt {
 }
 
 /// The names of the artifacts whose text satisfies a predicate.
-fn named(all: &[PathBuf], dir: &Path, wanted: impl Fn(&str) -> bool) -> Vec<String> {
+fn named(view: &View, all: &[PathBuf], dir: &Path, wanted: impl Fn(&str) -> bool) -> Vec<String> {
     all.iter()
-        .filter(|p| std::fs::read_to_string(p).is_ok_and(|t| wanted(&t)))
+        .filter(|p| view.text(p).is_some_and(&wanted))
         .map(|p| crate::panel_corpus::shown(p, dir))
         .collect()
 }
 
 /// Every timing metadata artifact under the bench tree, sorted.
-fn metas(dir: &Path) -> Vec<PathBuf> {
-    let mut out = Vec::new();
-    collect(dir, &mut out);
+fn metas(view: &View, dir: &Path) -> Vec<PathBuf> {
+    let mut out: Vec<PathBuf> = view
+        .walk(dir, |_, _| false)
+        .into_iter()
+        .filter(|path| path.to_string_lossy().ends_with(META))
+        .collect();
     out.sort();
     out
-}
-
-fn collect(dir: &Path, out: &mut Vec<PathBuf>) {
-    let Ok(entries) = std::fs::read_dir(dir) else {
-        return;
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            collect(&path, out);
-        } else if path.to_string_lossy().ends_with(META) {
-            out.push(path);
-        }
-    }
 }
 #[cfg(test)]
 mod tests {
@@ -185,8 +174,14 @@ mod tests {
 
     use super::ACommittedTimingRecordsWhatBuiltIt as Timings;
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        through_view,
+        view,
     };
 
     /// A bench tree carrying the artifacts named, and the finding kinds over it.
@@ -201,14 +196,14 @@ mod tests {
         for (at, text) in files {
             plant(&dir, &format!("benches/{at}"), text);
         }
-        Timings {
+        let lint = Timings {
             without_a_profile,
             from_a_dirty_tree,
-        }
-        .check(&dir.join("benches"))
-        .into_iter()
-        .map(|e| e.finding_kind)
-        .collect()
+        };
+        through_view(&dir, |v| lint.check(v, &dir.join("benches")))
+            .into_iter()
+            .map(|e| e.finding_kind)
+            .collect()
     }
 
     /// A meta the tool wrote: it names the profile and a clean commit.
@@ -230,10 +225,9 @@ mod tests {
             [Some("no-build-profile")],
             "one of the two names no profile, and one of the two is from a dirty tree"
         );
-        assert_eq!(
-            kinds("timings-apart2", &files, 1, 0),
-            [Some("from-a-dirty-tree")]
-        );
+        assert_eq!(kinds("timings-apart2", &files, 1, 0), [Some(
+            "from-a-dirty-tree"
+        )]);
     }
 
     #[test]
@@ -271,12 +265,11 @@ mod tests {
         // The other direction, and the one that keeps the pack shippable to a
         // repository that has never run a bench.
         let dir = planted_tree("timings-nobenches");
-        assert!(Timings {
+        let lint = Timings {
             without_a_profile: 0,
             from_a_dirty_tree: 0,
-        }
-        .check(&dir.join("benches"))
-        .is_empty());
+        };
+        assert!(through_view(&dir, |v| lint.check(v, &dir.join("benches"))).is_empty());
     }
 
     #[test]
@@ -284,10 +277,7 @@ mod tests {
         assert_eq!(
             kinds(
                 "timings-nested",
-                &[
-                    ("deep/down/1.meta.json", BARE),
-                    ("deep/down/1.csv", "not a meta"),
-                ],
+                &[("deep/down/1.meta.json", BARE), ("deep/down/1.csv", "not a meta"),],
                 0,
                 usize::MAX,
             ),
@@ -305,7 +295,7 @@ mod tests {
                 without_a_profile: 0,
                 from_a_dirty_tree: 0,
             },
-            &ctx_at(&dir.join("mock"), &empty),
+            ctx_at(&dir.join("mock"), &empty),
         );
     }
 

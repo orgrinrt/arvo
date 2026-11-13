@@ -79,7 +79,7 @@ impl Lint for ALiveRowRestatesARetiredClaim {
 }
 impl RepoLint for ALiveRowRestatesARetiredClaim {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        let reg = ctx.registry;
+        let reg = ctx.registry();
         let retired: Vec<(&str, &str, Vec<String>)> = reg
             .rows_in(RETIREMENTS)
             .iter()
@@ -137,7 +137,11 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
@@ -150,35 +154,26 @@ mod tests {
         // retired subject would be reporting the subject and would be switched
         // off within a day.
         let f = found(&[
-            (
-                "retirement::the_figure_that_matched_no_sweep",
-                &[(
-                    "claim",
-                    "the sweep separates twenty one thousand two hundred and four of thirty two \
+            ("retirement::the_figure_that_matched_no_sweep", &[(
+                "claim",
+                "the sweep separates twenty one thousand two hundred and four of thirty two \
                  thousand seven hundred and sixty eight cells",
-                )],
-            ),
-            (
-                "proposal::carries_it_wholesale",
-                &[(
-                    "says",
-                    "As established, the sweep separates twenty one thousand two hundred and four \
+            )]),
+            ("proposal::carries_it_wholesale", &[(
+                "says",
+                "As established, the sweep separates twenty one thousand two hundred and four \
                  of thirty two thousand seven hundred and sixty eight cells, so the split is \
                  real.",
-                )],
-            ),
-            (
-                "proposal::about_the_same_subject_in_its_own_words",
-                &[(
-                    "says",
-                    "The separating cells were counted directly and the count is far smaller than \
+            )]),
+            ("proposal::about_the_same_subject_in_its_own_words", &[(
+                "says",
+                "The separating cells were counted directly and the count is far smaller than \
                  the one reported.",
-                )],
-            ),
-            (
-                "ruling::an_unrelated_call",
-                &[("says", "The strategy set is not closed at exactly four.")],
-            ),
+            )]),
+            ("ruling::an_unrelated_call", &[(
+                "says",
+                "The strategy set is not closed at exactly four.",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("carries_it_wholesale"), "{}", f[0]);
@@ -193,21 +188,15 @@ mod tests {
     #[test]
     fn a_ruling_is_read_as_well_as_a_proposal() {
         let f = found(&[
-            (
-                "retirement::a_struck_sentence",
-                &[(
-                    "claim",
-                    "the container premise is localised to a single clause of the candidate",
-                )],
-            ),
-            (
-                "ruling::a_call_carrying_it",
-                &[(
-                    "says",
-                    "Given that the container premise is localised to a single clause of the \
+            ("retirement::a_struck_sentence", &[(
+                "claim",
+                "the container premise is localised to a single clause of the candidate",
+            )]),
+            ("ruling::a_call_carrying_it", &[(
+                "says",
+                "Given that the container premise is localised to a single clause of the \
                  candidate, proceed.",
-                )],
-            ),
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("ruling::a_call_carrying_it"), "{}", f[0]);
@@ -219,25 +208,19 @@ mod tests {
         // so anything looser reports a shared subject. The boundary is a test
         // rather than something left to whoever next reads the constant.
         let f = found(&[
-            (
-                "retirement::a_short_one",
-                &[("claim", "the strategies are partially ordered")],
-            ),
-            (
-                "proposal::carries_all_of_it",
-                &[(
-                    "says",
-                    "It follows that the strategies are partially ordered by how many chain laws \
+            ("retirement::a_short_one", &[(
+                "claim",
+                "the strategies are partially ordered",
+            )]),
+            ("proposal::carries_all_of_it", &[(
+                "says",
+                "It follows that the strategies are partially ordered by how many chain laws \
                  each honours.",
-                )],
-            ),
-            (
-                "proposal::carries_part_of_it",
-                &[(
-                    "says",
-                    "The strategies are compared on how many chain laws each honours.",
-                )],
-            ),
+            )]),
+            ("proposal::carries_part_of_it", &[(
+                "says",
+                "The strategies are compared on how many chain laws each honours.",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("carries_all_of_it"), "{}", f[0]);
@@ -247,22 +230,16 @@ mod tests {
     fn a_carry_survives_a_difference_in_punctuation_and_case() {
         // A quotation lifted into prose picks up neither reliably.
         let f = found(&[
-            (
-                "retirement::a_struck_sentence",
-                &[(
-                    "claim",
-                    "A law verdict is established at the widths the instrument reached and no \
+            ("retirement::a_struck_sentence", &[(
+                "claim",
+                "A law verdict is established at the widths the instrument reached and no \
                  further",
-                )],
-            ),
-            (
-                "proposal::carries_it_reformatted",
-                &[(
-                    "says",
-                    "**a law verdict is established at the widths the instrument reached, and no \
+            )]),
+            ("proposal::carries_it_reformatted", &[(
+                "says",
+                "**a law verdict is established at the widths the instrument reached, and no \
                  further.**",
-                )],
-            ),
+            )]),
         ]);
         assert_eq!(
             f.len(),
@@ -297,17 +274,14 @@ mod tests {
         // planted. A floor written as `>` rather than `>=` would silence a real
         // five-word retirement and every arm above would still pass.
         let f = found(&[
-            (
-                "retirement::exactly_five_words",
-                &[("claim", "The strategy set is closed.")],
-            ),
-            (
-                "proposal::carries_it",
-                &[(
-                    "says",
-                    "It was assumed that the strategy set is closed, which op reopened.",
-                )],
-            ),
+            ("retirement::exactly_five_words", &[(
+                "claim",
+                "The strategy set is closed.",
+            )]),
+            ("proposal::carries_it", &[(
+                "says",
+                "It was assumed that the strategy set is closed, which op reopened.",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
     }
@@ -336,10 +310,10 @@ mod tests {
     fn a_retirement_with_no_claim_at_all_reports_nothing() {
         let f = found(&[
             ("retirement::r", &[("why", "it was wrong")]),
-            (
-                "proposal::p",
-                &[("says", "anything at all, at some length, here")],
-            ),
+            ("proposal::p", &[(
+                "says",
+                "anything at all, at some length, here",
+            )]),
         ]);
         assert!(f.is_empty(), "{f:?}");
     }
@@ -347,17 +321,14 @@ mod tests {
     #[test]
     fn a_row_with_no_says_is_not_read() {
         let f = found(&[
-            (
-                "retirement::r",
-                &[("claim", "the strategies are partially ordered by law count")],
-            ),
-            (
-                "proposal::p",
-                &[(
-                    "because",
-                    "the strategies are partially ordered by law count",
-                )],
-            ),
+            ("retirement::r", &[(
+                "claim",
+                "the strategies are partially ordered by law count",
+            )]),
+            ("proposal::p", &[(
+                "because",
+                "the strategies are partially ordered by law count",
+            )]),
         ]);
         assert!(
             f.is_empty(),
@@ -372,21 +343,18 @@ mod tests {
         // the first hit would report half of a row carrying two, and every arm
         // above plants one retirement so none of them can tell.
         let f = found(&[
-            (
-                "retirement::a",
-                &[("claim", "the strategies are partially ordered")],
-            ),
-            (
-                "retirement::b",
-                &[("claim", "the container premise is one clause")],
-            ),
-            (
-                "proposal::p",
-                &[(
-                    "says",
-                    "the strategies are partially ordered and the container premise is one clause",
-                )],
-            ),
+            ("retirement::a", &[(
+                "claim",
+                "the strategies are partially ordered",
+            )]),
+            ("retirement::b", &[(
+                "claim",
+                "the container premise is one clause",
+            )]),
+            ("proposal::p", &[(
+                "says",
+                "the strategies are partially ordered and the container premise is one clause",
+            )]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
         assert!(f.iter().any(|m| m.contains("retirement::a")), "{f:?}");
@@ -398,10 +366,8 @@ mod tests {
         // The message carries the first 120 characters of the claim, so a
         // report over a corpus of long retirements stays readable.
         let long = "a".repeat(40) + " " + &["word"; 60].join(" ");
-        let f = found(&[
-            ("retirement::r", &[("claim", &long)]),
-            ("proposal::p", &[("says", &long)]),
-        ]);
+        let f =
+            found(&[("retirement::r", &[("claim", &long)]), ("proposal::p", &[("says", &long)])]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(
             !f[0].contains(&long),
@@ -419,14 +385,14 @@ mod tests {
     fn its_findings_block_every_gate() {
         let v = view(
             &[
-                (
-                    "retirement::r",
-                    &[("claim", "the strategies are partially ordered")],
-                ),
-                (
-                    "proposal::p",
-                    &[("says", "and the strategies are partially ordered, as above")],
-                ),
+                ("retirement::r", &[(
+                    "claim",
+                    "the strategies are partially ordered",
+                )]),
+                ("proposal::p", &[(
+                    "says",
+                    "and the strategies are partially ordered, as above",
+                )]),
             ],
             &[],
         );

@@ -131,7 +131,7 @@
 //! said rather than done.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RegistryView, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RegistryView, RepoContext, RepoLint, Severity, View};
 
 use crate::panel_corpus::{LIVING_LEDGERS, finding, markdown, panel_dir, shown};
 pub fn repo_lint() -> Box<dyn RepoLint> {
@@ -167,13 +167,18 @@ impl Lint for NoProseCitationIntoNothing {
 }
 impl RepoLint for NoProseCitationIntoNothing {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&panel_dir(ctx.mock_dir), ctx.registry, CEILING)
+        check(
+            ctx.view(),
+            &panel_dir(ctx.mock_dir),
+            ctx.registry(),
+            CEILING,
+        )
     }
 }
 
-fn check(dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
+fn check(view: &View, dir: &Path, reg: &RegistryView, ceiling: usize) -> Vec<LintError> {
     let namespaces: Vec<&str> = reg.namespaces().collect();
-    let found = citations(dir, &namespaces, reg);
+    let found = citations(view, dir, &namespaces, reg);
 
     // An elision never joins a counted population, whichever file it sits in.
     //
@@ -303,10 +308,10 @@ enum How {
 }
 
 /// Every `<namespace>::<slug>` the panel's prose carries that names no row.
-fn citations(dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<Cited> {
+fn citations(view: &View, dir: &Path, namespaces: &[&str], reg: &RegistryView) -> Vec<Cited> {
     let mut out = Vec::new();
-    for path in markdown(dir) {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+    for path in markdown(view, dir) {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let at = shown(&path, dir);
@@ -467,6 +472,7 @@ mod tests {
         ctx_at,
         plant,
         planted_tree,
+        through_view,
         view,
     };
     use crate::panel_corpus::PANEL;
@@ -483,7 +489,7 @@ mod tests {
             plant(&dir, at, text);
         }
         let reg = view(rows, &[]);
-        super::check(&dir, &reg, ceiling)
+        through_view(&dir, |v| super::check(v, &dir, &reg, ceiling))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -811,7 +817,12 @@ mod tests {
     fn a_panel_directory_that_is_not_there_is_silent_rather_than_a_panic() {
         let dir = planted_tree("prose-cite-absent");
         let reg = view(&[("ruling::a_row", &[("says", "a thing")])], &[]);
-        assert!(super::check(&dir.join("nothing"), &reg, 0).is_empty());
+        assert!(
+            through_view(&dir.join("nothing"), |v| {
+                super::check(v, &dir.join("nothing"), &reg, 0)
+            })
+            .is_empty()
+        );
     }
 
     #[test]
@@ -825,7 +836,7 @@ mod tests {
         let reg = view(&[("ruling::a_row", &[("says", "a thing")])], &[]);
         assert_findings_block_at(
             &super::NoProseCitationIntoNothing,
-            &ctx_at(&dir.join("mock"), &reg),
+            ctx_at(&dir.join("mock"), &reg),
         );
     }
 

@@ -62,13 +62,13 @@ impl Lint for ARetirementClaimCanBeFound {
 }
 impl RepoLint for ARetirementClaimCanBeFound {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        ctx.registry
+        ctx.registry()
             .rows_in(NAMESPACE)
             .iter()
             .filter_map(|q| {
                 // `claim` is required, so a row carrying none is the schema's
                 // report and not this one.
-                let claim = text(ctx.registry, q, "claim")?;
+                let claim = text(ctx.registry(), q, "claim")?;
                 let words = normalise(claim).len();
                 if words >= FLOOR {
                     return None;
@@ -93,7 +93,11 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
@@ -104,13 +108,10 @@ mod tests {
     fn a_short_claim_is_reported_and_a_sentence_is_not() {
         let f = found(&[
             ("retirement::an_abbreviation", &[("claim", "No repair.")]),
-            (
-                "retirement::a_sentence",
-                &[(
-                    "claim",
-                    "Two names for one primitive is a compile error with no in-language repair.",
-                )],
-            ),
+            ("retirement::a_sentence", &[(
+                "claim",
+                "Two names for one primitive is a compile error with no in-language repair.",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "only the abbreviation: {f:?}");
         assert!(f[0].contains("an_abbreviation"), "{}", f[0]);
@@ -123,14 +124,14 @@ mod tests {
         // `>=` reports a findable five-word claim and every other arm here
         // still passes.
         let f = found(&[
-            (
-                "retirement::exactly_five_words",
-                &[("claim", "The strategy set is closed.")],
-            ),
-            (
-                "retirement::four_words",
-                &[("claim", "The strategy set moved.")],
-            ),
+            ("retirement::exactly_five_words", &[(
+                "claim",
+                "The strategy set is closed.",
+            )]),
+            ("retirement::four_words", &[(
+                "claim",
+                "The strategy set moved.",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("four_words"), "{}", f[0]);

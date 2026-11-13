@@ -58,15 +58,15 @@ impl Lint for AnImpositionRestsOnNoInstrument {
 }
 impl RepoLint for AnImpositionRestsOnNoInstrument {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        ctx.registry
+        ctx.registry()
             .rows_in("proposal")
             .iter()
             .filter_map(|q| {
-                let kind = text(ctx.registry, q, "sentence_kind")?;
+                let kind = text(ctx.registry(), q, "sentence_kind")?;
                 if !IMPOSED.contains(&kind) {
                     return None;
                 }
-                let evidence = list(ctx.registry, q, "evidence");
+                let evidence = list(ctx.registry(), q, "evidence");
                 if evidence.is_empty() {
                     return None;
                 }
@@ -92,13 +92,18 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
 
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::AnImpositionRestsOnNoInstrument
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -106,13 +111,10 @@ mod tests {
 
     #[test]
     fn a_normative_row_with_evidence_is_reported() {
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[
-                ("sentence_kind", "normative"),
-                ("evidence", "an_instrument"),
-            ],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("sentence_kind", "normative"),
+            ("evidence", "an_instrument"),
+        ])]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("normative"), "{}", f[0]);
         assert!(f[0].contains("an_instrument"), "{}", f[0]);
@@ -125,13 +127,10 @@ mod tests {
     /// and fail this.
     #[test]
     fn a_definition_with_evidence_is_reported() {
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[
-                ("sentence_kind", "definition"),
-                ("evidence", "an_instrument"),
-            ],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("sentence_kind", "definition"),
+            ("evidence", "an_instrument"),
+        ])]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("definition"), "{}", f[0]);
     }
@@ -142,10 +141,10 @@ mod tests {
     /// it, and it would read the same on a clean canon.
     #[test]
     fn control_a_measured_row_with_evidence_is_silent() {
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("sentence_kind", "measured"), ("evidence", "an_instrument")],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("sentence_kind", "measured"),
+            ("evidence", "an_instrument"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -163,10 +162,10 @@ mod tests {
     /// different defect and not this one.
     #[test]
     fn control_an_empty_evidence_list_is_not_an_instrument() {
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("sentence_kind", "normative"), ("evidence", "")],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("sentence_kind", "normative"),
+            ("evidence", ""),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -176,13 +175,10 @@ mod tests {
     /// between the two repairs depends on what the instruments actually are.
     #[test]
     fn every_named_instrument_reaches_the_report() {
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[
-                ("sentence_kind", "normative"),
-                ("evidence", "first_probe, second_probe"),
-            ],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("sentence_kind", "normative"),
+            ("evidence", "first_probe, second_probe"),
+        ])]);
         assert_eq!(f.len(), 1, "one row is one finding: {f:?}");
         assert!(f[0].contains("first_probe"), "{}", f[0]);
         assert!(f[0].contains("second_probe"), "{}", f[0]);
@@ -193,13 +189,10 @@ mod tests {
     /// namespace never answers.
     #[test]
     fn control_a_law_is_not_read_as_a_proposal() {
-        let f = findings(&[(
-            "law::associativity",
-            &[
-                ("sentence_kind", "normative"),
-                ("evidence", "an_instrument"),
-            ],
-        )]);
+        let f = findings(&[("law::associativity", &[
+            ("sentence_kind", "normative"),
+            ("evidence", "an_instrument"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -217,10 +210,10 @@ mod tests {
     #[test]
     fn its_findings_block_every_gate() {
         let v = view(
-            &[(
-                "proposal::a",
-                &[("sentence_kind", "normative"), ("evidence", "a_probe")],
-            )],
+            &[("proposal::a", &[
+                ("sentence_kind", "normative"),
+                ("evidence", "a_probe"),
+            ])],
             &[],
         );
         assert_findings_block(&super::AnImpositionRestsOnNoInstrument, &v);

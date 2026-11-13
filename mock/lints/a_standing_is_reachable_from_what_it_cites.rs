@@ -104,10 +104,10 @@ impl Lint for AStandingIsReachableFromWhatItCites {
 impl RepoLint for AStandingIsReachableFromWhatItCites {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let found: Vec<LintError> = ctx
-            .registry
+            .registry()
             .rows_in("proposal")
             .iter()
-            .filter_map(|q| check(ctx.registry, q))
+            .filter_map(|q| check(ctx.registry(), q))
             .collect();
         if found.len() <= self.ceiling {
             return Vec::new();
@@ -144,6 +144,7 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
+        Judge,
         assert_findings_block,
         assert_not_declared_off,
         assert_registered,
@@ -170,7 +171,7 @@ mod tests {
         super::AStandingIsReachableFromWhatItCites {
             ceiling,
         }
-        .check_repo(&ctx(&v))
+        .judge(ctx(&v))
         .into_iter()
         .map(|e| e.message)
         .collect()

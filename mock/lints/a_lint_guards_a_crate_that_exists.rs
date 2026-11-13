@@ -53,7 +53,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(ALintGuardsACrateThatExists)
@@ -74,7 +74,7 @@ impl Lint for ALintGuardsACrateThatExists {
 }
 impl RepoLint for ALintGuardsACrateThatExists {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&ctx.mock_dir, ctx.all_crates)
+        check(ctx.view(), &ctx.mock_dir, ctx.all_crates())
     }
 }
 
@@ -119,32 +119,33 @@ fn gated_crates(source: &str) -> BTreeSet<String> {
 /// question, and reading its silence as "no crate exists" would turn every
 /// scoped lint in the directory into a finding at once. That is the shape a
 /// false alarm takes here, and it would arrive on every gate in one run.
-fn check(mock_dir: &Path, crates: &BTreeSet<String>) -> Vec<LintError> {
+fn check(view: &View, mock_dir: &Path, crates: &BTreeSet<String>) -> Vec<LintError> {
     if crates.is_empty() {
         return Vec::new();
     }
 
-    let Ok(entries) = std::fs::read_dir(mock_dir.join("lints")) else {
+    let lints = mock_dir.join("lints");
+    let Some(entries) = view.list(&lints) else {
         return Vec::new();
     };
 
     let mut by_file: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
-    for entry in entries.flatten() {
-        let path = entry.path();
+    for entry in entries.entries() {
+        let path = lints.join(entry.name());
         if path.extension().is_none_or(|ext| ext != "rs") {
             continue;
         }
-        let Ok(text) = std::fs::read_to_string(&path) else {
+        let Some(text) = view.text(&path) else {
             continue;
         };
-        let missing: BTreeSet<String> = gated_crates(&text)
+        let missing: BTreeSet<String> = gated_crates(text)
             .into_iter()
             .filter(|name| !crates.contains(name))
             .collect();
         if missing.is_empty() {
             continue;
         }
-        by_file.insert(entry.file_name().to_string_lossy().to_string(), missing);
+        by_file.insert(entry.name().to_string(), missing);
     }
 
     by_file
@@ -191,6 +192,7 @@ mod tests {
         ctx_at,
         plant,
         planted_tree,
+        through_view,
         view,
     };
 
@@ -234,7 +236,7 @@ mod tests {
     #[test]
     fn a_gate_on_a_crate_that_is_gone_is_a_finding() {
         let dir = planted_mock("gone", &[("dead.rs", &gate("arvo-bits"))]);
-        let found = check(&dir, &shipped());
+        let found = through_view(&dir, |v| check(v, &dir, &shipped()));
         assert_eq!(
             found.len(),
             1,
@@ -251,7 +253,7 @@ mod tests {
     fn a_gate_on_a_crate_that_is_here_is_not_a_finding() {
         let dir = planted_mock("here", &[("live.rs", &gate("arvo-format"))]);
         assert!(
-            check(&dir, &shipped()).is_empty(),
+            through_view(&dir, |v| check(v, &dir, &shipped())).is_empty(),
             "a lint scoped to a crate the workspace ships is doing its job"
         );
     }
@@ -261,7 +263,7 @@ mod tests {
         let body = "impl X { fn f(ctx: &C) { if ctx.crate_name == \"arvo-bits\" { g(); } } }\n";
         let dir = planted_mock("equality", &[("dead.rs", body)]);
         assert_eq!(
-            check(&dir, &shipped()).len(),
+            through_view(&dir, |v| check(v, &dir, &shipped())).len(),
             1,
             "`==` scopes a lint exactly as narrowly as `!=` and is read the same way"
         );
@@ -273,7 +275,7 @@ mod tests {
                     { Vec::new() } }\n";
         let dir = planted_mock("unscoped", &[("wide.rs", body)]);
         assert!(
-            check(&dir, &shipped()).is_empty(),
+            through_view(&dir, |v| check(v, &dir, &shipped())).is_empty(),
             "a lint with no crate gate governs every crate and names none"
         );
     }
@@ -284,7 +286,7 @@ mod tests {
                     LintFixture::new(s).with_crate_name(\"arvo-bits\", \"bits\");\n    }\n}\n";
         let dir = planted_mock("fixture", &[("scoped.rs", body)]);
         assert!(
-            check(&dir, &shipped()).is_empty(),
+            through_view(&dir, |v| check(v, &dir, &shipped())).is_empty(),
             "planting a fixture under a name is not a claim that the crate is in the tree"
         );
     }
@@ -296,7 +298,7 @@ mod tests {
                     pub fn f() {}\n";
         let dir = planted_mock("doc", &[("prose.rs", body)]);
         assert!(
-            check(&dir, &shipped()).is_empty(),
+            through_view(&dir, |v| check(v, &dir, &shipped())).is_empty(),
             "prose about a removed crate is a record of it, not a rule over it"
         );
     }
@@ -305,7 +307,7 @@ mod tests {
     fn several_dead_crates_in_one_file_are_one_finding_naming_all_of_them() {
         let body = format!("{}{}", gate("arvo-bits"), gate("arvo-mask"));
         let dir = planted_mock("several", &[("dead.rs", &body)]);
-        let found = check(&dir, &shipped());
+        let found = through_view(&dir, |v| check(v, &dir, &shipped()));
         assert_eq!(
             found.len(),
             1,
@@ -322,7 +324,7 @@ mod tests {
     fn a_context_that_resolved_no_crates_reports_nothing() {
         let dir = planted_mock("empty", &[("dead.rs", &gate("arvo-bits"))]);
         assert!(
-            check(&dir, &BTreeSet::new()).is_empty(),
+            through_view(&dir, |v| check(v, &dir, &BTreeSet::new())).is_empty(),
             "an empty crate set cannot answer the question, and reading it as an answer \
              would refuse every scoped lint at once"
         );
@@ -333,7 +335,7 @@ mod tests {
         let dir = planted_tree("no-lints");
         std::fs::create_dir_all(&dir).expect("a planted tree");
         assert!(
-            check(&dir, &shipped()).is_empty(),
+            through_view(&dir, |v| check(v, &dir, &shipped())).is_empty(),
             "a repository carrying no lints has none that could guard a dead crate"
         );
     }
@@ -346,7 +348,7 @@ mod tests {
                     return; } */\n} }\n";
         let dir = planted_mock("commented", &[("dead.rs", body)]);
         assert!(
-            check(&dir, &shipped()).is_empty(),
+            through_view(&dir, |v| check(v, &dir, &shipped())).is_empty(),
             "a gate inside a block comment governs nothing, so it is not a finding"
         );
     }
@@ -362,7 +364,7 @@ mod tests {
         let crates = shipped();
         let mut ctx = ctx_at(&dir, &registry);
         ctx.all_crates = &crates;
-        assert_findings_block_at(&ALintGuardsACrateThatExists, &ctx);
+        assert_findings_block_at(&ALintGuardsACrateThatExists, ctx);
     }
 
     #[test]

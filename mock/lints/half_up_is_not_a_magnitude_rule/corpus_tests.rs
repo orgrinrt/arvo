@@ -9,7 +9,7 @@
 
 use super::comments::passages;
 use super::{check_registry, check_tree};
-use crate::canon_lint_testkit::{plant, planted_tree, view};
+use crate::canon_lint_testkit::{plant, planted_tree, through_view, view};
 
 /// The passages of `source` as text and first line.
 fn read(source: &str) -> Vec<(String, usize)> {
@@ -113,7 +113,7 @@ fn tree(what: &str, files: &[(&str, &str)]) -> Vec<(String, usize)> {
     for (at, text) in files {
         plant(&dir, at, text);
     }
-    check_tree(&dir)
+    through_view(&dir, |v| check_tree(v, &dir))
         .into_iter()
         .map(|e| (e.path.unwrap_or_default(), e.line))
         .collect()
@@ -162,7 +162,8 @@ fn control_the_record_the_build_a_literal_and_plain_markdown_are_not_read() {
 
 #[test]
 fn a_tree_that_is_not_there_is_silent_rather_than_a_panic() {
-    assert!(check_tree(&planted_tree("half-up-absent").join("nothing")).is_empty());
+    let dir = planted_tree("half-up-absent").join("nothing");
+    assert!(through_view(&dir, |v| check_tree(v, &dir)).is_empty());
 }
 
 #[test]

@@ -78,17 +78,17 @@ impl Lint for NoRulingSupersedesOneThatOutranksIt {
 impl RepoLint for NoRulingSupersedesOneThatOutranksIt {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
-        for q in ctx.registry.rows_in("ruling") {
-            let Some(mine) = text(ctx.registry, q, "rung").and_then(rank) else {
+        for q in ctx.registry().rows_in("ruling") {
+            let Some(mine) = text(ctx.registry(), q, "rung").and_then(rank) else {
                 continue;
             };
-            for target in list(ctx.registry, q, "supersedes") {
+            for target in list(ctx.registry(), q, "supersedes") {
                 let dead = format!("ruling::{target}");
                 // A target naming no ruling row is the engine's
                 // `unknown-row-reference` to report, and answering a question
                 // about a row that does not exist would be this lint
                 // disagreeing with the engine about the same data.
-                let Some(theirs_word) = text(ctx.registry, &dead, "rung") else {
+                let Some(theirs_word) = text(ctx.registry(), &dead, "rung") else {
                     continue;
                 };
                 let Some(theirs) = rank(theirs_word) else {
@@ -97,7 +97,7 @@ impl RepoLint for NoRulingSupersedesOneThatOutranksIt {
                 if theirs <= mine {
                     continue;
                 }
-                let mine_word = text(ctx.registry, q, "rung").unwrap_or("");
+                let mine_word = text(ctx.registry(), q, "rung").unwrap_or("");
                 out.push(finding(
                     LINT,
                     None,
@@ -122,13 +122,18 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
 
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::NoRulingSupersedesOneThatOutranksIt
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -139,10 +144,10 @@ mod tests {
     #[test]
     fn a_stated_ruling_superseding_a_ratified_one_is_reported() {
         let f = findings(&[
-            (
-                "ruling::he_never_stamped_this",
-                &[("rung", "stated"), ("supersedes", "he_stamped_this")],
-            ),
+            ("ruling::he_never_stamped_this", &[
+                ("rung", "stated"),
+                ("supersedes", "he_stamped_this"),
+            ]),
             ("ruling::he_stamped_this", &[("rung", "ratified")]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
@@ -159,15 +164,15 @@ mod tests {
     #[test]
     fn control_a_ratified_ruling_superseding_a_stated_one_is_silent() {
         let f = findings(&[
-            (
-                "ruling::he_stamped_this_later",
-                &[("rung", "ratified"), ("supersedes", "he_only_said_this")],
-            ),
+            ("ruling::he_stamped_this_later", &[
+                ("rung", "ratified"),
+                ("supersedes", "he_only_said_this"),
+            ]),
             ("ruling::he_only_said_this", &[("rung", "stated")]),
-            (
-                "ruling::one_stated_row",
-                &[("rung", "stated"), ("supersedes", "another_stated_row")],
-            ),
+            ("ruling::one_stated_row", &[
+                ("rung", "stated"),
+                ("supersedes", "another_stated_row"),
+            ]),
             ("ruling::another_stated_row", &[("rung", "stated")]),
         ]);
         assert!(f.is_empty(), "{f:?}");
@@ -182,10 +187,10 @@ mod tests {
     fn every_lower_tier_is_reported_against_a_ratified_target() {
         for weaker in ["open", "in_force", "stated"] {
             let f = findings(&[
-                (
-                    "ruling::the_weaker_one",
-                    &[("rung", weaker), ("supersedes", "he_stamped_this")],
-                ),
+                ("ruling::the_weaker_one", &[
+                    ("rung", weaker),
+                    ("supersedes", "he_stamped_this"),
+                ]),
                 ("ruling::he_stamped_this", &[("rung", "ratified")]),
             ]);
             assert_eq!(f.len(), 1, "`{weaker}` was not compared: {f:?}");
@@ -196,13 +201,10 @@ mod tests {
     #[test]
     fn every_offending_edge_in_one_row_is_reported() {
         let f = findings(&[
-            (
-                "ruling::the_weaker_one",
-                &[
-                    ("rung", "in_force"),
-                    ("supersedes", "one_ratified, another_ratified"),
-                ],
-            ),
+            ("ruling::the_weaker_one", &[
+                ("rung", "in_force"),
+                ("supersedes", "one_ratified, another_ratified"),
+            ]),
             ("ruling::one_ratified", &[("rung", "ratified")]),
             ("ruling::another_ratified", &[("rung", "ratified")]),
         ]);
@@ -218,10 +220,10 @@ mod tests {
     #[test]
     fn control_a_corrects_edge_is_not_a_supersession() {
         let f = findings(&[
-            (
-                "ruling::he_never_stamped_this",
-                &[("rung", "stated"), ("corrects", "he_stamped_this")],
-            ),
+            ("ruling::he_never_stamped_this", &[
+                ("rung", "stated"),
+                ("corrects", "he_stamped_this"),
+            ]),
             ("ruling::he_stamped_this", &[("rung", "ratified")]),
         ]);
         assert!(f.is_empty(), "{f:?}");
@@ -230,10 +232,10 @@ mod tests {
     /// A target naming no ruling row is the engine's report to make.
     #[test]
     fn control_an_edge_into_nothing_is_left_to_the_engine() {
-        let f = findings(&[(
-            "ruling::a_call",
-            &[("rung", "stated"), ("supersedes", "no_such_ruling")],
-        )]);
+        let f = findings(&[("ruling::a_call", &[
+            ("rung", "stated"),
+            ("supersedes", "no_such_ruling"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -244,15 +246,15 @@ mod tests {
     #[test]
     fn control_an_unknown_tier_is_not_ranked() {
         let f = findings(&[
-            (
-                "ruling::the_source",
-                &[("rung", "invented"), ("supersedes", "the_target")],
-            ),
+            ("ruling::the_source", &[
+                ("rung", "invented"),
+                ("supersedes", "the_target"),
+            ]),
             ("ruling::the_target", &[("rung", "ratified")]),
-            (
-                "ruling::the_other_source",
-                &[("rung", "stated"), ("supersedes", "the_other_target")],
-            ),
+            ("ruling::the_other_source", &[
+                ("rung", "stated"),
+                ("supersedes", "the_other_target"),
+            ]),
             ("ruling::the_other_target", &[("rung", "invented")]),
         ]);
         assert!(f.is_empty(), "{f:?}");
@@ -264,10 +266,10 @@ mod tests {
     #[test]
     fn control_a_proposal_supersession_is_not_read() {
         let f = findings(&[
-            (
-                "proposal::a_claim",
-                &[("rung", "stated"), ("supersedes", "an_older_claim")],
-            ),
+            ("proposal::a_claim", &[
+                ("rung", "stated"),
+                ("supersedes", "an_older_claim"),
+            ]),
             ("proposal::an_older_claim", &[("rung", "ratified")]),
         ]);
         assert!(f.is_empty(), "{f:?}");
@@ -288,10 +290,10 @@ mod tests {
     fn its_findings_block_every_gate() {
         let v = view(
             &[
-                (
-                    "ruling::weak",
-                    &[("rung", "stated"), ("supersedes", "strong")],
-                ),
+                ("ruling::weak", &[
+                    ("rung", "stated"),
+                    ("supersedes", "strong"),
+                ]),
                 ("ruling::strong", &[("rung", "ratified")]),
             ],
             &[],

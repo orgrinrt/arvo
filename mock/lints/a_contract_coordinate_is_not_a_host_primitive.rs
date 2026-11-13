@@ -89,10 +89,10 @@ impl CrateLint for AContractCoordinateIsNotAHostPrimitive {
         // the sweep on each of those calls would report every violation as many
         // times as the crate has modules, so it runs on the pass where `source`
         // is the crate root and returns nothing on the others.
-        let Some(root) = ctx.all_sources.first() else {
+        let Some(root) = ctx.all_sources().first() else {
             return Vec::new();
         };
-        if ctx.source != root.text {
+        if ctx.source() != root.text {
             return Vec::new();
         }
 
@@ -104,7 +104,7 @@ impl CrateLint for AContractCoordinateIsNotAHostPrimitive {
         // as a claim. The constructions that must stay wrong are wrong about the
         // range they declare rather than about the type they declare it in, so
         // none of them needs the host's own to say what it says.
-        for file in ctx.all_sources {
+        for file in ctx.all_sources() {
             let path = file.rel_path.to_string_lossy().to_string();
             for (idx, line) in file.text.lines().enumerate() {
                 let Some(declared) = const_type_of(line) else {

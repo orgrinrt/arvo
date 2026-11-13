@@ -15,7 +15,7 @@
 //! be exercised on a planted registry with no fixture tree, no temporary
 //! directory and no process.
 //!
-//! [`RepoContext`] also carries `mock_dir` and `repo_root`, and a lint reading
+//! [`RepoInput`] also carries `mock_dir` and `repo_root`, and a lint reading
 //! the worktree through those is driven by a planted tree in its own file
 //! instead: [`ctx`] hardcodes a `mock_dir` of `.` and cannot drive one. The
 //! registry helpers below still apply to it, and [`assert_registered`] and
@@ -43,15 +43,18 @@ use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
 use mockspace::src_layout::RefFiles;
+use mockspace::testkit::check_repo;
 use mockspace::{
     Lint,
     LintError,
     LintPack,
+    Reading,
     RegistryView,
-    RepoContext,
+    RepoInput,
     RepoLint,
     RowFields,
     Severity,
+    View,
 };
 
 #[path = "canon_lint_testkit/tests.rs"]
@@ -86,7 +89,7 @@ pub fn view(rows: &[(&str, &[(&str, &str)])], referrers: &[(&str, &[&str])]) -> 
     RegistryView::new(map, edges)
 }
 
-/// A context carrying that registry and nothing else.
+/// What a lint is handed for that registry and nothing else.
 ///
 /// Every other field is the empty case, and `mock_dir` and `repo_root` are
 /// both `.`, which makes this the wrong instrument for a lint that reads the
@@ -98,12 +101,15 @@ pub fn view(rows: &[(&str, &[(&str, &str)])], referrers: &[(&str, &[&str])]) -> 
 /// The empty case is legitimate for the fields it does cover: arvo's crate tree
 /// is deliberately empty while the canon is written, so a registry lint here
 /// reads the registry or reads nothing.
-pub fn ctx<'a>(registry: &'a RegistryView) -> RepoContext<'a> {
+///
+/// A lint is judged over it by [`Judge::judge`], which builds the context the
+/// engine would hand it, a view of a reading rooted at `repo_root`.
+pub fn ctx<'a>(registry: &'a RegistryView) -> RepoInput<'a> {
     static HERE: OnceLock<PathBuf> = OnceLock::new();
     ctx_at(HERE.get_or_init(|| PathBuf::from(".")), registry)
 }
 
-/// The same context with the mock directory pointed at a planted tree.
+/// The same input with the mock directory pointed at a planted tree.
 ///
 /// **This is what a lint reading the worktree is driven by.** [`ctx`] hardcodes
 /// `.`, which makes it the wrong instrument for one of those: it would walk
@@ -113,14 +119,13 @@ pub fn ctx<'a>(registry: &'a RegistryView) -> RepoContext<'a> {
 ///
 /// `repo_root` is the same path. Nothing here reads both, and pointing them at
 /// two different places would be inventing a layout no real run has.
-pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext<'a> {
+pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoInput<'a> {
     static CRATES: OnceLock<BTreeSet<String>> = OnceLock::new();
     static DIRS: OnceLock<Vec<PathBuf>> = OnceLock::new();
     static STRINGS: OnceLock<Vec<String>> = OnceLock::new();
-    // Planted trees declare no data ref, so the files a ref holds are none, and
-    // a test run keeps no saved verdicts.
+    // Planted trees declare no data ref, so the files a ref holds are none.
     static REF_FILES: OnceLock<RefFiles> = OnceLock::new();
-    RepoContext {
+    RepoInput {
         mock_dir,
         repo_root: mock_dir,
         all_crates: CRATES.get_or_init(BTreeSet::new),
@@ -130,7 +135,28 @@ pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext
         open_panels: STRINGS.get_or_init(Vec::new),
         ref_files: REF_FILES.get_or_init(RefFiles::default),
         registry,
-        verdicts: None,
+    }
+}
+
+/// Judging a repo lint over an input, as the engine judges it with no store.
+///
+/// A [`RepoContext`](mockspace::RepoContext) is the engine's to build, a view
+/// of one reading, so a test hands over the [`RepoInput`] and this builds the
+/// rest through `mockspace::testkit::check_repo`.
+pub trait Judge {
+    /// What the lint finds over `input`.
+    fn judge(&self, input: RepoInput<'_>) -> Vec<LintError>;
+}
+
+impl<T: RepoLint> Judge for T {
+    fn judge(&self, input: RepoInput<'_>) -> Vec<LintError> {
+        check_repo(self, input)
+    }
+}
+
+impl Judge for dyn RepoLint + '_ {
+    fn judge(&self, input: RepoInput<'_>) -> Vec<LintError> {
+        check_repo(self, input)
     }
 }
 
@@ -162,7 +188,7 @@ pub fn plant(dir: &Path, at: &str, text: &str) {
 
 /// What one lint said about one planted registry, as plain strings.
 pub fn findings(lint: &dyn RepoLint, registry: &RegistryView) -> Vec<String> {
-    lint.check_repo(&ctx(registry))
+    lint.judge(ctx(registry))
         .iter()
         .map(LintError::to_string)
         .collect()
@@ -305,7 +331,7 @@ const SEVERITY_ASKED: [&str; 2] = ["assert_findings_block", "assert_findings_car
 /// turned the refusal off with the declared default untouched, and the arm
 /// asserting the declared default stayed green through it.
 pub fn assert_findings_block(lint: &dyn RepoLint, registry: &RegistryView) {
-    assert_findings_block_at(lint, &ctx(registry));
+    assert_findings_block_at(lint, ctx(registry));
 }
 
 /// [`assert_findings_block`] against a context the caller built.
@@ -314,7 +340,7 @@ pub fn assert_findings_block(lint: &dyn RepoLint, registry: &RegistryView) {
 /// [`ctx`] cannot carry, so it calls this with one from [`ctx_at`]. Same
 /// assertion, same reason, and the two share a body so a change to what
 /// "blocks" means cannot reach one and miss the other.
-pub fn assert_findings_block_at(lint: &dyn RepoLint, ctx: &RepoContext) {
+pub fn assert_findings_block_at(lint: &dyn RepoLint, ctx: RepoInput) {
     assert_findings_carry_at(lint, ctx, Severity::HARD_ERROR);
 }
 
@@ -325,8 +351,8 @@ pub fn assert_findings_block_at(lint: &dyn RepoLint, ctx: &RepoContext) {
 /// [`assert_findings_block_at`], naming the severity it chose, so the choice is
 /// a line in its own tests rather than the absence of one. The body is the one
 /// the blocking helper runs.
-pub fn assert_findings_carry_at(lint: &dyn RepoLint, ctx: &RepoContext, severity: Severity) {
-    let found = lint.check_repo(ctx);
+pub fn assert_findings_carry_at(lint: &dyn RepoLint, ctx: RepoInput, severity: Severity) {
+    let found = lint.judge(ctx);
     assert!(
         !found.is_empty(),
         "nothing was found, so this says nothing about what a finding carries"
@@ -458,4 +484,15 @@ fn namespaces_declaring(field: &str) -> Option<BTreeSet<String>> {
         }
     }
     seen_any.then_some(out)
+}
+
+/// What `judge` makes of the tree at `root`, asked through a view of a fresh
+/// reading of it, the way the engine hands a lint its view.
+///
+/// For the predicates a lint's tests call directly over a planted tree, which
+/// take the view the lint reads through rather than reading the disk.
+pub fn through_view<T>(root: &Path, judge: impl FnOnce(&View) -> T) -> T {
+    let reading = Reading::new(root);
+    let view = reading.view();
+    judge(&view)
 }

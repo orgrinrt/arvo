@@ -111,7 +111,7 @@
 //! existed, which is the defect that check was added for.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::canon_rows::finding;
 pub fn repo_lint() -> Box<dyn RepoLint> {
@@ -139,9 +139,9 @@ impl Lint for TheAxisSetIsAppendOnly {
 impl RepoLint for TheAxisSetIsAppendOnly {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         check(
-            &ids_of(ctx.registry.rows_in(NAMESPACE)),
-            ids_ever_declared(ctx.repo_root).as_deref(),
-            &files_declaring(&ctx.mock_dir.join("registry")),
+            &ids_of(ctx.registry().rows_in(NAMESPACE)),
+            ids_ever_declared(ctx.view(), ctx.repo_root).as_deref(),
+            &files_declaring(ctx.view(), &ctx.mock_dir.join("registry")),
         )
     }
 }
@@ -189,12 +189,13 @@ fn check(live: &[String], ever: Option<&[String]>, declaring: &[String]) -> Vec<
                     ),
                 ));
             }
-        }
-        None => out.push(finding(
-            LINT,
-            None,
-            format!(
-                "the history of `{FILE}` could not be read, or could not be established as \
+        },
+        None => {
+            out.push(finding(
+                LINT,
+                None,
+                format!(
+                    "the history of `{FILE}` could not be read, or could not be established as \
                  complete, so the only check on the axis set did not run. Four things reach \
                  this and each has its own repair. Git did not answer, so run this inside a \
                  git checkout with `git` on the path. The clone is shallow or partial, where \
@@ -205,8 +206,9 @@ fn check(live: &[String], ever: Option<&[String]>, declaring: &[String]) -> Vec<
                  cause, since the path is read per commit: run `git log --follow \
                  --name-status -- {FILE}` and the commit with no single path beside it is the \
                  one to look at."
-            ),
-        )),
+                ),
+            ))
+        },
     }
 
     if declaring.len() > 1 || (declaring.len() == 1 && !FILE.ends_with(&declaring[0])) {
@@ -237,29 +239,28 @@ fn check(live: &[String], ever: Option<&[String]>, declaring: &[String]) -> Vec<
 /// file's own path is what a rename changes and the blob does not exist at the
 /// current path in any commit before one. `--name-status` gives the status and
 /// the path the commit had, so a renamed history is walked rather than refused.
-fn ids_ever_declared(repo_root: &Path) -> Option<Vec<String>> {
-    if is_shallow(git(repo_root, &["rev-parse", "--is-shallow-repository"]).as_deref()) {
+fn ids_ever_declared(view: &View, repo_root: &Path) -> Option<Vec<String>> {
+    if is_shallow(git(view, repo_root, &["rev-parse", "--is-shallow-repository"]).as_deref()) {
         return None;
     }
-    let log = git(
-        repo_root,
-        &[
-            "log",
-            "--follow",
-            "--format=C %H",
-            "--name-status",
-            "--",
-            FILE,
-        ],
-    )?;
+    let log = git(view, repo_root, &[
+        "log",
+        "--follow",
+        "--format=C %H",
+        "--name-status",
+        "--",
+        FILE,
+    ])?;
     let blobs: Vec<Option<String>> = visits_in(&log)?
         .iter()
-        .map(|(commit, path)| match path {
-            // The file is absent at this commit because this commit is what
-            // removed it. That is read rather than unread, and an absent file
-            // declares no ids, so it contributes nothing and blocks nothing.
-            None => Some(String::new()),
-            Some(path) => git(repo_root, &["show", &format!("{commit}:{path}")]),
+        .map(|(commit, path)| {
+            match path {
+                // The file is absent at this commit because this commit is what
+                // removed it. That is read rather than unread, and an absent file
+                // declares no ids, so it contributes nothing and blocks nothing.
+                None => Some(String::new()),
+                Some(path) => git(view, repo_root, &["show", &format!("{commit}:{path}")]),
+            }
         })
         .collect();
     ids_across(&blobs)
@@ -368,15 +369,16 @@ fn ids_in(text: &str) -> Vec<String> {
 }
 
 /// The registry files that declare this namespace, by filename.
-fn files_declaring(registry: &Path) -> Vec<String> {
-    let Ok(entries) = std::fs::read_dir(registry) else {
+fn files_declaring(view: &View, registry: &Path) -> Vec<String> {
+    let Some(entries) = view.list(registry) else {
         return Vec::new();
     };
     let mut out: Vec<String> = entries
-        .filter_map(Result::ok)
-        .map(|e| e.path())
+        .entries()
+        .iter()
+        .map(|e| registry.join(e.name()))
         .filter(|p| p.extension().is_some_and(|e| e == "toml"))
-        .filter(|p| std::fs::read_to_string(p).is_ok_and(|t| !ids_in(&t).is_empty()))
+        .filter(|p| view.text(p).is_some_and(|t| !ids_in(t).is_empty()))
         .filter_map(|p| p.file_name().map(|n| n.to_string_lossy().into_owned()))
         .collect();
     out.sort();
@@ -384,23 +386,21 @@ fn files_declaring(registry: &Path) -> Vec<String> {
 }
 
 /// One git invocation, or `None` where it could not be run or did not succeed.
-fn git(repo_root: &Path, args: &[&str]) -> Option<String> {
-    let out = std::process::Command::new("git")
-        .arg("-C")
-        .arg(repo_root)
-        .args(args)
-        .output()
-        .ok()?;
-    out.status
-        .success()
-        .then(|| String::from_utf8_lossy(&out.stdout).into_owned())
+fn git(view: &View, repo_root: &Path, args: &[&str]) -> Option<String> {
+    let answer = view.git_in(repo_root, args);
+    answer
+        .ok()
+        .then(|| String::from_utf8_lossy(answer.stdout()).into_owned())
 }
 #[cfg(test)]
 mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        view,
     };
 
     /// The one file the walk reads, as `files_declaring` reports it.
@@ -418,12 +418,14 @@ mod tests {
 
     #[test]
     fn a_history_agreeing_with_the_rows_is_silent() {
-        assert!(run(
-            &["radix", "signedness"],
-            Some(&["radix", "signedness"]),
-            ONE_FILE
-        )
-        .is_empty());
+        assert!(
+            run(
+                &["radix", "signedness"],
+                Some(&["radix", "signedness"]),
+                ONE_FILE
+            )
+            .is_empty()
+        );
     }
 
     #[test]
@@ -511,11 +513,10 @@ mod tests {
     fn a_second_file_declaring_the_namespace_is_reported() {
         // The premise the walk rests on, checked rather than assumed.
         // `law.toml` has already been split this way once.
-        let f = run(
-            &["radix"],
-            Some(&["radix"]),
-            &["dimension-the-later-axes.toml", "dimension.toml"],
-        );
+        let f = run(&["radix"], Some(&["radix"]), &[
+            "dimension-the-later-axes.toml",
+            "dimension.toml",
+        ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("dimension-the-later-axes.toml"), "{}", f[0]);
         assert!(f[0].contains("unprotected"), "{}", f[0]);
@@ -644,10 +645,18 @@ mod tests {
         // The shape this repository actually has, so the arms above are read
         // as the exceptions they are rather than as the whole function.
         assert_eq!(
-            super::visits_in("C aaa111\n\nM\tmock/registry/dimension.toml\nC bbb222\n\nA\tmock/registry/dimension.toml\n"),
+            super::visits_in(
+                "C aaa111\n\nM\tmock/registry/dimension.toml\nC bbb222\n\nA\tmock/registry/dimension.toml\n"
+            ),
             Some(vec![
-                ("aaa111".to_string(), Some("mock/registry/dimension.toml".to_string())),
-                ("bbb222".to_string(), Some("mock/registry/dimension.toml".to_string())),
+                (
+                    "aaa111".to_string(),
+                    Some("mock/registry/dimension.toml".to_string())
+                ),
+                (
+                    "bbb222".to_string(),
+                    Some("mock/registry/dimension.toml".to_string())
+                ),
             ])
         );
     }
@@ -666,10 +675,7 @@ mod tests {
     fn a_row_in_another_namespace_is_not_an_axis() {
         // The discrimination `ids_of` rests on. A filter written on the slug
         // alone counts `ruling::signedness` as the axis and passes.
-        let rows = vec![
-            "dimension::radix".to_string(),
-            "ruling::signedness".to_string(),
-        ];
+        let rows = vec!["dimension::radix".to_string(), "ruling::signedness".to_string()];
         assert_eq!(super::ids_of(&rows), vec!["radix".to_string()]);
     }
 

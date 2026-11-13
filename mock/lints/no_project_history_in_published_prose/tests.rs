@@ -23,12 +23,13 @@ use crate::canon_lint_testkit::{
     ctx_at,
     plant,
     planted_tree,
+    through_view,
     view,
 };
 
 /// What `check` says about one planted tree, as the paths and lines it names.
 fn over(dir: &Path) -> Vec<String> {
-    check(dir, &dir.join("mock"))
+    through_view(dir, |v| check(v, dir, &dir.join("mock")))
         .into_iter()
         .map(|e| format!("{}:{}", e.path.unwrap_or_default(), e.line))
         .collect()
@@ -128,7 +129,7 @@ fn the_real_tree_is_clean_of_everything_that_is_not_excused() {
     // the review found are gone and nothing else on the surface carries the
     // shape, which is a claim about the tree rather than about a fixture.
     let root = repo_root();
-    let found = check(&root, &root.join("mock"));
+    let found = through_view(&root, |v| check(v, &root, &root.join("mock")));
     let shown: Vec<String> = found
         .iter()
         .map(|e| format!("{}:{}", e.path.clone().unwrap_or_default(), e.line))
@@ -288,7 +289,7 @@ fn its_findings_block_every_gate() {
     let empty = view(&[], &[]);
     assert_findings_block_at(
         &NoProjectHistoryInPublishedProse,
-        &ctx_at(&dir.join("mock"), &empty),
+        ctx_at(&dir.join("mock"), &empty),
     );
 }
 

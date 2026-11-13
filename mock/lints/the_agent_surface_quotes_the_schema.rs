@@ -34,7 +34,7 @@
 //! so this refuses rather than reports.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::canon_rows::finding;
 
@@ -77,7 +77,7 @@ impl Lint for TheAgentSurfaceQuotes {
 impl RepoLint for TheAgentSurfaceQuotes {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let root = ctx.mock_dir.parent().unwrap_or(&ctx.mock_dir).to_path_buf();
-        check(&root)
+        check(ctx.view(), &root)
     }
 }
 
@@ -85,8 +85,8 @@ impl RepoLint for TheAgentSurfaceQuotes {
 ///
 /// Split from the trait impl so a test can point it at a tree it built, and so
 /// the one place that decides is one function.
-fn check(root: &Path) -> Vec<LintError> {
-    let Ok(schema) = std::fs::read_to_string(root.join(SCHEMA)) else {
+fn check(view: &View, root: &Path) -> Vec<LintError> {
+    let Some(schema) = view.text(root.join(SCHEMA)) else {
         return vec![finding(
             NAME,
             Some("the-schema-is-not-there"),
@@ -97,7 +97,7 @@ fn check(root: &Path) -> Vec<LintError> {
             ),
         )];
     };
-    let Some(declared) = declared_description(&schema) else {
+    let Some(declared) = declared_description(schema) else {
         return vec![finding(
             NAME,
             Some("the-field-is-not-declared"),
@@ -108,7 +108,7 @@ fn check(root: &Path) -> Vec<LintError> {
             ),
         )];
     };
-    let Ok(surface) = std::fs::read_to_string(root.join(SURFACE)) else {
+    let Some(surface) = view.text(root.join(SURFACE)) else {
         return vec![finding(
             NAME,
             Some("the-surface-is-not-there"),
@@ -233,12 +233,27 @@ mod tests {
     use mockspace::Lint;
 
     use super::{
-        check, declared_description, flattened, quoted_value, TheAgentSurfaceQuotes, FIELD, NAME,
-        NAMESPACE, SCHEMA, SURFACE,
+        FIELD,
+        NAME,
+        NAMESPACE,
+        SCHEMA,
+        SURFACE,
+        TheAgentSurfaceQuotes,
+        check,
+        declared_description,
+        flattened,
+        quoted_value,
     };
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, repo_root, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        repo_root,
+        through_view,
+        view,
     };
 
     /// The declaration as this repository actually carries it.
@@ -308,7 +323,7 @@ mod tests {
             "  `standing` records how many independent instances back the claim.\n",
         );
         let empty = view(&[], &[]);
-        assert_findings_block_at(&TheAgentSurfaceQuotes, &ctx_at(&dir.join("mock"), &empty));
+        assert_findings_block_at(&TheAgentSurfaceQuotes, ctx_at(&dir.join("mock"), &empty));
     }
 
     #[test]
@@ -319,7 +334,7 @@ mod tests {
             &surface_quoting(DECLARED),
         );
         assert!(
-            check(&dir).is_empty(),
+            through_view(&dir, |v| check(v, &dir)).is_empty(),
             "a wrapped verbatim quotation is the state this lint exists to protect"
         );
     }
@@ -335,7 +350,7 @@ mod tests {
             "  `standing` records how many independent instances back the claim, and\n  \
              a claim with two is still a proposal until a ruling stamps it.\n",
         );
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1);
         assert_eq!(
             out[0].finding_kind,
@@ -358,7 +373,11 @@ mod tests {
             &schema_declaring(NAMESPACE, FIELD, DECLARED),
             &surface_quoting(&mangled),
         );
-        assert_eq!(check(&dir).len(), 1, "a missing clause is a misquotation");
+        assert_eq!(
+            through_view(&dir, |v| check(v, &dir)).len(),
+            1,
+            "a missing clause is a misquotation"
+        );
     }
 
     #[test]
@@ -375,7 +394,11 @@ mod tests {
             ),
             &surface_quoting(DECLARED),
         );
-        assert_eq!(check(&dir).len(), 1, "the copy is stale, not the schema");
+        assert_eq!(
+            through_view(&dir, |v| check(v, &dir)).len(),
+            1,
+            "the copy is stale, not the schema"
+        );
     }
 
     #[test]
@@ -388,14 +411,14 @@ mod tests {
             &schema_declaring(NAMESPACE, FIELD, DECLARED),
             &format!("  in these words: {DECLARED}\n"),
         );
-        assert_eq!(check(&dir).len(), 1);
+        assert_eq!(through_view(&dir, |v| check(v, &dir)).len(), 1);
     }
 
     #[test]
     fn a_missing_schema_is_reported_rather_than_passed() {
         let dir = planted_tree("no-schema");
         plant(&dir, SURFACE, &surface_quoting(DECLARED));
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1);
         assert_eq!(out[0].finding_kind, Some("the-schema-is-not-there"));
     }
@@ -404,7 +427,7 @@ mod tests {
     fn a_missing_surface_is_reported_rather_than_passed() {
         let dir = planted_tree("no-surface");
         plant(&dir, SCHEMA, &schema_declaring(NAMESPACE, FIELD, DECLARED));
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1);
         assert_eq!(out[0].finding_kind, Some("the-surface-is-not-there"));
     }
@@ -416,7 +439,7 @@ mod tests {
             &schema_declaring(NAMESPACE, "footing", DECLARED),
             &surface_quoting(DECLARED),
         );
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1);
         assert_eq!(out[0].finding_kind, Some("the-field-is-not-declared"));
     }
@@ -432,7 +455,7 @@ mod tests {
         schema.push_str(&schema_declaring(NAMESPACE, FIELD, DECLARED));
         let dir = tree_with("two-namespaces", &schema, &surface_quoting(DECLARED));
         assert!(
-            check(&dir).is_empty(),
+            through_view(&dir, |v| check(v, &dir)).is_empty(),
             "the description came from the wrong namespace"
         );
     }
@@ -447,7 +470,7 @@ mod tests {
             schema_declaring(NAMESPACE, "footing", DECLARED)
         );
         let dir = tree_with("stray-table", &schema, &surface_quoting(DECLARED));
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1);
         assert_eq!(out[0].finding_kind, Some("the-field-is-not-declared"));
     }
@@ -506,7 +529,7 @@ mod tests {
     fn the_repository_quotes_its_own_declaration() {
         // The arm that is about this repository rather than about a planted
         // tree, and the one that fires the day somebody rewords the paragraph.
-        let found = check(&repo_root());
+        let found = through_view(&repo_root(), |v| check(v, &repo_root()));
         assert!(
             found.is_empty(),
             "this repository's own agent surface has stopped quoting its schema: {:?}",

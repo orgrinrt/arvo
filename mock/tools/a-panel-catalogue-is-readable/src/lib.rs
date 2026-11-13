@@ -45,7 +45,7 @@
 
 use std::path::{Path, PathBuf};
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 use toml_edit::{DocumentMut, Item, Value};
 
 const NAME: &str = "a-panel-catalogue-is-readable";
@@ -92,19 +92,20 @@ impl Lint for APanelCatalogueIsReadable {
 
 impl RepoLint for APanelCatalogueIsReadable {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(ctx.mock_dir)
+        check(ctx.view(), ctx.mock_dir)
     }
 }
 
 /// Every catalogue under one mock directory, in name order.
-pub fn catalogues(mock_dir: &Path) -> Vec<PathBuf> {
+pub fn catalogues(view: &View, mock_dir: &Path) -> Vec<PathBuf> {
     let mut out = Vec::new();
     for root in ROOTS {
-        let Ok(entries) = std::fs::read_dir(mock_dir.join(root)) else {
+        let dir = mock_dir.join(root);
+        let Some(entries) = view.list(&dir) else {
             continue;
         };
-        for e in entries.flatten() {
-            let p = e.path();
+        for e in entries.entries() {
+            let p = dir.join(e.name());
             if p.extension().is_some_and(|x| x == "toml") {
                 out.push(p);
             }
@@ -146,8 +147,8 @@ fn shown(p: &Path) -> String {
 }
 
 /// The four refusals, over one mock directory.
-pub fn check(mock_dir: &Path) -> Vec<LintError> {
-    let found = catalogues(mock_dir);
+pub fn check(view: &View, mock_dir: &Path) -> Vec<LintError> {
+    let found = catalogues(view, mock_dir);
     if found.is_empty() {
         // Not a clean pass. Three roots and none of them holds a catalogue means
         // either they moved or this walk is looking in the wrong place, and an
@@ -166,7 +167,17 @@ pub fn check(mock_dir: &Path) -> Vec<LintError> {
     let mut out = Vec::new();
     let mut parsed: Vec<(PathBuf, DocumentMut)> = Vec::new();
     for p in found {
-        let text = match std::fs::read_to_string(&p) {
+        // Read through the view, so a saved verdict is asked again when a
+        // catalogue changes. The view hands back bytes or nothing, so the two
+        // ways a read fails are told apart here, in the words `read_to_string`
+        // used for the one that has words.
+        let read = match view.bytes(&p) {
+            None => Err("it could not be opened"),
+            Some(bytes) => {
+                std::str::from_utf8(bytes).map_err(|_| "stream did not contain valid UTF-8")
+            },
+        };
+        let text = match read {
             Ok(t) => t,
             Err(e) => {
                 out.push(finding(
@@ -175,19 +186,21 @@ pub fn check(mock_dir: &Path) -> Vec<LintError> {
                     format!("cannot be read: {e}. Nobody can read it and nothing else says so."),
                 ));
                 continue;
-            }
+            },
         };
         match text.parse::<DocumentMut>() {
             Ok(doc) => parsed.push((p, doc)),
-            Err(e) => out.push(finding(
-                "a-catalogue-does-not-parse",
-                &p,
-                format!(
-                    "does not parse: {e}. Nothing else opens this file, so a stray quote \
+            Err(e) => {
+                out.push(finding(
+                    "a-catalogue-does-not-parse",
+                    &p,
+                    format!(
+                        "does not parse: {e}. Nothing else opens this file, so a stray quote \
                      sits here indefinitely and the seat that reads it instead of \
                      re-sweeping the archive gets nothing."
-                ),
-            )),
+                    ),
+                ))
+            },
         }
     }
 
@@ -247,12 +260,12 @@ fn confidence_out_of_range(t: &toml_edit::Table) -> Option<String> {
     match v.as_value() {
         Some(Value::Float(f)) => {
             let n = *f.value();
-            (!(0.0..=1.0).contains(&n)).then(|| format!("confidence {n}"))
-        }
+            (!(0.0 ..= 1.0).contains(&n)).then(|| format!("confidence {n}"))
+        },
         Some(Value::Integer(i)) => {
             let n = *i.value();
-            (!(0..=1).contains(&n)).then(|| format!("confidence {n}"))
-        }
+            (!(0 ..= 1).contains(&n)).then(|| format!("confidence {n}"))
+        },
         _ => Some("a confidence that is not a number".to_string()),
     }
 }

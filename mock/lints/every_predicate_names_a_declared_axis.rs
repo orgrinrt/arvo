@@ -30,7 +30,7 @@
 //! naming an axis nothing declares, and an axis listed with no values at all.
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-use crate::canon_rows::{finding, predicate_entries, slug, split_axis, PREDICATE_FIELDS};
+use crate::canon_rows::{PREDICATE_FIELDS, finding, predicate_entries, slug, split_axis};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(EveryPredicateNamesADeclaredAxis)
 }
@@ -51,15 +51,15 @@ impl Lint for EveryPredicateNamesADeclaredAxis {
 impl RepoLint for EveryPredicateNamesADeclaredAxis {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let declared: Vec<&str> = ctx
-            .registry
+            .registry()
             .rows_in(DIMENSION)
             .iter()
             .map(|q| slug(q))
             .collect();
         let mut out = Vec::new();
         for (namespace, field) in PREDICATE_FIELDS {
-            for q in ctx.registry.rows_in(namespace) {
-                for entry in predicate_entries(ctx.registry, q, field) {
+            for q in ctx.registry().rows_in(namespace) {
+                for entry in predicate_entries(ctx.registry(), q, field) {
                     out.extend(check(q, field, entry, &declared));
                 }
             }
@@ -112,7 +112,12 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -122,7 +127,7 @@ mod tests {
         use mockspace::RepoLint;
         let v = view(rows, &[]);
         super::EveryPredicateNamesADeclaredAxis
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| (e.finding_kind, e.message))
             .collect()
@@ -138,10 +143,10 @@ mod tests {
     fn an_axis_nothing_declares_is_reported_and_named() {
         let p = predicate(&["fraction_width: 0", "phase_of_the_moon: waxing"]);
         let f = findings(&[
-            (
-                "dimension::fraction_width",
-                &[("what", "bits below the point")],
-            ),
+            ("dimension::fraction_width", &[(
+                "what",
+                "bits below the point",
+            )]),
             ("proposal::a_claim", &[("predicate", &p)]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
@@ -158,10 +163,10 @@ mod tests {
         // in one bucket a severity cannot separate.
         let f = findings(&[
             ("dimension::fraction_width", &[("what", "bits")]),
-            (
-                "proposal::a_claim",
-                &[("predicate", "mostly small fractions")],
-            ),
+            ("proposal::a_claim", &[(
+                "predicate",
+                "mostly small fractions",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert_eq!(f[0].0, Some("entry-is-malformed"), "{f:?}");
@@ -193,13 +198,10 @@ mod tests {
         // Easy to get wrong by wiring the walk to `predicate` alone and never
         // noticing, because a law's `holds` would still be read and every arm
         // above would pass.
-        let f = findings(&[(
-            "law::associativity",
-            &[
-                ("holds", "nothing_declares_this: everywhere"),
-                ("fails", "nor_this: anywhere"),
-            ],
-        )]);
+        let f = findings(&[("law::associativity", &[
+            ("holds", "nothing_declares_this: everywhere"),
+            ("fails", "nor_this: anywhere"),
+        ])]);
         assert_eq!(
             f.len(),
             2,
@@ -218,10 +220,10 @@ mod tests {
         // `keywords` is a list of bare words with no colon in them, so a walker
         // over every array field would report each one as malformed and the
         // report would be noise nobody reads.
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("keywords", "width, signedness, not a predicate entry")],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[(
+            "keywords",
+            "width, signedness, not a predicate entry",
+        )])]);
         assert!(f.is_empty(), "{f:?}");
     }
 

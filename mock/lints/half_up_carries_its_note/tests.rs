@@ -20,6 +20,7 @@ use crate::canon_lint_testkit::{
     ctx_at,
     plant,
     planted_tree,
+    through_view,
     view,
 };
 use crate::half_up_is_not_a_magnitude_rule::reading::DENOTES as DENOTATIONS;
@@ -34,7 +35,7 @@ const DENOTES: &str = "`half_up` sends a tie toward positive infinity.";
 
 /// What `check` says about one planted tree, as the paths and lines it names.
 fn over(dir: &Path) -> Vec<String> {
-    check(dir, &dir.join("mock"))
+    through_view(dir, |v| check(v, dir, &dir.join("mock")))
         .into_iter()
         .map(|e| format!("{}:{}", e.path.unwrap_or_default(), e.line))
         .collect()
@@ -403,7 +404,7 @@ fn control_a_registry_row_naming_the_mode_and_no_denotation_is_silent() {
 #[test]
 fn every_published_surface_in_this_repository_carries_it() {
     let root = crate::canon_lint_testkit::repo_root();
-    let found = check(&root, &root.join("mock"));
+    let found = through_view(&root, |v| check(v, &root, &root.join("mock")));
     assert!(
         found.is_empty(),
         "a surface here names the mode or states the denotation without the \
@@ -420,7 +421,7 @@ fn its_findings_block_every_gate() {
     let dir = planted_tree("note-severity");
     plant(&dir, "mock/crates/a/README.md.tmpl", "It is `half_up`.\n");
     let empty = view(&[], &[]);
-    assert_findings_block_at(&HalfUpCarriesItsNote, &ctx_at(&dir.join("mock"), &empty));
+    assert_findings_block_at(&HalfUpCarriesItsNote, ctx_at(&dir.join("mock"), &empty));
 }
 
 #[test]
