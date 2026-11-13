@@ -2221,3 +2221,61 @@ answers = ["what_the_numeric_introduction_door_may_carry_out"]
 note = "One instance, and it is the half of seat 238's answer that its partner did not reach, so `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon` deliberately carries the coordinate claim and stops short of this. A second independent derivation is what it wants, and the natural instrument is the one seat 238 already built: a checked crate outside the door declaring a format and naming no machine type.\n\n**It is enforceable, which is the part worth checking second.** The current exemption is a crate-name lookup returning a whole-crate skip, so nothing narrower can be expressed without changing the lint pack, and whether the position rule is cheaper to enforce than the exemption it replaces is unmeasured."
 provenance = ["panel::202608072330_the-numeral-canon-panel::238_kiselyov_what_the_door_may_carry_out::#7-how-the-rule-gets-enforced-because-a-rule-nobody-checks-is-a-comment"]
 keywords = ["door", "position", "exemption", "constructor", "accessor", "bare primitive", "primitive introductions", "bound"]
+
+[[proposal]]
+id = "the_no_runtime_check_note_omits_the_debug_panic_it_permits"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "binding_time"
+says = "The note of `ruling::never_a_runtime_check_and_one_lowered_path` is read with `ruling::the_overflow_panic_is_permitted_and_bounded`, which is the exception he has taken under the last clause of `says`: a panic on debug builds for what the typestate cannot catch. Its `because` states the build bound that keeps the two together, that a shipped program still contains no runtime validation, so the absolute reading of this row is about what ships."
+because = "The note ends on the catalogue's tier disagreement and names neither the later ratified exception nor the build bound that reconciles them, so a reader of the note alone takes the absolute for every build. The full read of the registry on `work/registry-repairs` found the two rows ratified side by side with no edge between them."
+corrects_note = ["never_a_runtime_check_and_one_lowered_path"]
+note_said = ["never_a_runtime_check_and_one_lowered_path: The catalogue marks this STATED; by the same test it applies to the operating constraints it arguably reads as in force, since arvo's own repo rules carry it, and that disagreement is recorded here rather than acted on."]
+note = "He was asked whether to take this and two other note corrections with the eighteen `ratified_by` lines, and answered \"The eighteen, not the notes\", so the ruling is unchanged and this row is where the registry says the note is incomplete. The sentence under `note_said` is the one the correction follows."
+provenance = [
+  "mock::research/202611130950_canon-double-check/CHECK::#2-ratified-rows-that-disagree-with-each-other",
+  "mock::research/202611130950_canon-double-check/CHECK::#written-down-and-not-applied",
+]
+keywords = ["note", "stale", "runtime check", "debug panic", "overflow panic", "build bound", "what ships"]
+
+[[proposal]]
+id = "the_numeric_door_notes_design_correction_has_landed"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "operating_constraints"
+says = "The design correction the note of `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon` says is owed was owed when it was ratified, and it has landed. `arvo-format`'s design stated the two-type bound as the crate's own. Under its heading \"The two primitives, and why they are here\" it now says the two are not the bound on what the door carries and that a count of types is not the bound at all, and it names the position rule of seat 238 as open rather than adopted, which is as far as this ruling goes."
+because = "The note points a reader at a line of `arvo-format`'s design that no longer says what the note quotes, and tells them a correction is still to be made when it has been made."
+corrects_note = ["the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon"]
+note_said = [
+  "the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon: A design correction is owed and is not this ruling's to make.",
+  "the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon: `arvo-format/DESIGN.md.tmpl:235` states the two-type bound as the crate's own design, and it is now known to be wrong.",
+  "the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon: The design tier changes before the code under it does.",
+]
+note = "He was asked whether to take this and two other note corrections with the eighteen `ratified_by` lines, and answered \"The eighteen, not the notes\", so the ruling is unchanged and this row is where the registry says the note is stale."
+provenance = [
+  "mock::research/202611130950_canon-double-check/CHECK::#15-the-numeric-door-ruling-says-a-design-correction-is-owed-and-it-has-landed",
+  "mock::research/202611130950_canon-double-check/CHECK::#written-down-and-not-applied",
+]
+keywords = ["note", "stale", "numeric door", "two-type bound", "design correction", "arvo-format"]
+
+[[proposal]]
+id = "the_platform_width_notes_region_predates_the_sixty_four_wide_ladder"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_format"
+says = "Since `d425aff5` the region and the finding in the note of `ruling::a_platform_width_type_is_a_target_bound_member_of_the_format_family` describe the representation of the day. The slot index is a 128-bit integer, the ladder implements widths 1 through 64, and `points::USize` and `points::ISize` sit at the host's pointer width. `ADMITTED` still refuses unconditionally, now past 64, so what the diagnostic tells an outside implementor and what the assertion does are still to be squared."
+because = "The note's region says `W = 64` is refused by the shipped ladder and its finding says `ADMITTED` refuses past 62; the tree ships 64 and refuses past it, so both figures are a tree that has moved on."
+corrects_note = ["a_platform_width_type_is_a_target_bound_member_of_the_format_family"]
+note_said = [
+  "a_platform_width_type_is_a_target_bound_member_of_the_format_family: `W = 64` refused by the shipped `Slots` ladder and not by this ruling",
+  "a_platform_width_type_is_a_target_bound_member_of_the_format_family: `ADMITTED` then refuses every width past 62 unconditionally regardless of what an implementor declares",
+]
+note = "He was asked whether to take this and two other note corrections with the eighteen `ratified_by` lines, and answered \"The eighteen, not the notes\", so the ruling is unchanged and this row is where the registry says the note is stale. The two entries under `note_said` are clauses of longer sentences."
+provenance = [
+  "mock::research/202611130950_canon-double-check/CHECK::#14-the-platform-width-rulings-region-says-64-is-refused-and-64-is-shipped",
+  "mock::research/202611130950_canon-double-check/CHECK::#written-down-and-not-applied",
+]
+keywords = ["note", "stale", "platform width", "Slots", "ADMITTED", "64", "USize", "ISize"]
