@@ -5,15 +5,18 @@ This is the reading record of job `arvo-canon-check`, taken at `origin/dev` tip
 depth, so that every claim in `CHECK.md`, `ANSWERS.md` and `PLAN.md` beside it
 can be checked against a named source rather than taken on trust.
 
-The registry is the canon. Nine of its fifteen files were read in full by the
-seat, the dimension file in part, and five as an index: the two large proposal
-files, the questions, the retirements and the probes. The depth table below says
-which is which. Nothing in the registry was read by a sub-agent. An earlier
-version of this file opened by saying the registry was read whole, every row of
-every file, which its own depth table contradicted, and the three documents
-beside it repeated the sentence. They say now what the table says. The designs
-under `mock/` were read by the seat, two of them not at all, as their table
-says. The corpus around them, the research notes, the closed rounds' topic files,
+The registry is the canon, and all fifteen of its files have now been read in
+full by the seat, in two passes. The first pass read nine in full, the dimension
+file in part, and five as an index: the two large proposal files, the questions,
+the retirements and the probes. The first version of this file opened by saying
+the registry was read whole, which its own depth table contradicted, and a
+review caught it. The second pass, after that review, read the six remaining
+files row by row, every field, and what it found is `CHECK.md` section 1.10 and
+the amendments section 7 lists. The depth table below keeps both passes apart,
+because the findings of the first three documents were written on the first.
+Nothing in the registry was read by a sub-agent. The designs under `mock/` were
+read by the seat, four of the five crate designs whole and the format crate's in
+part, as their table says. The corpus around them, the research notes, the closed rounds' topic files,
 the committed bench findings and the old arvo at the
 revision hilavitkutin pins, is large enough that a full reading of it costs more
 than this job has, so it was transcribed in batches by sonnet sub-agents, each
@@ -59,19 +62,22 @@ Every file under `mock/registry/`. The counts are mechanical, taken at
 Of the 39 ratified rulings, 18 carry no `ratified_by`, which the schema calls
 required on a ratified row. They are listed in `CHECK.md`.
 
-By depth, since the files differ:
+By depth and by pass, since the files differ:
 
-| File | How it was read |
-|---|---|
-| `ruling.toml` | every row in full |
-| `obligation.toml`, `strategy.toml`, `topic.toml` | every row in full |
-| `law.toml`, `law-the-later-topics.toml` | every row in full |
-| `proposal-the-value-stance.toml`, `proposal-the-value-type.toml`, `proposal-the-exact-operations.toml` | every row in full |
-| `dimension.toml` | header and every id and `what` in full; `overflow_policy`, `rounding`, `strategy`, `ambient_domain`, `radix`, `accumulator_width`, `toolchain`, `build_profile`, `operand_window` in full |
-| `proposal.toml`, `proposal-the-later-topics.toml` | every row's id, standing, topic and the opening of its `says`; about a dozen rows in full, named in `CHECK.md` and `ANSWERS.md` where they carry a finding |
-| `question.toml` | every row's id, decider, topic, `answered` and `bound`, plus a derived table of which ruling or proposal carries an `answers` edge to it; `does_warm_wrap_or_clamp` in full |
-| `retirement.toml` | every row's id, kind and claim |
-| `probe.toml` | every row's id and standing |
+| File | First pass | Second pass |
+|---|---|---|
+| `ruling.toml` | every row in full | not reread |
+| `obligation.toml`, `strategy.toml`, `topic.toml` | every row in full | not reread |
+| `law.toml`, `law-the-later-topics.toml` | every row in full | the gaps naming an undeclared axis reread |
+| `proposal-the-value-stance.toml`, `proposal-the-value-type.toml`, `proposal-the-exact-operations.toml` | every row in full | not reread |
+| `dimension.toml` | header and every id and `what`; nine rows in full | every row in full |
+| `proposal.toml`, `proposal-the-later-topics.toml` | every row's id, standing, topic and the opening of its `says`; about a dozen rows in full | every row in full, header and block comments included |
+| `question.toml` | every row's id, decider, topic, `answered` and `bound`; one row in full | every row in full |
+| `retirement.toml` | every row's id, kind and claim | every row in full |
+| `probe.toml` | every row's id and standing | every row in full |
+
+The second pass ran on the branch that carries this file, whose registry is
+`2c8e5343` plus this job's own rows and notes.
 
 The question table is the one derived artifact of this reading worth naming: for
 each of the 110 questions it records the decider, whether the row carries an
@@ -92,8 +98,8 @@ Read by the seat, at `2c8e5343`.
 | `mock/crates/arvo-numeral/DESIGN.md.tmpl` | 365 | whole |
 | `mock/crates/arvo-strategy/DESIGN.md.tmpl` | 189 | whole |
 | `mock/crates/arvo-format/DESIGN.md.tmpl` | 2122 | every heading, and the sections on the spine, the adaptation, the standards and the closing inventory in full |
-| `mock/crates/arvo-placement/DESIGN.md.tmpl` | 268 | not read |
-| `mock/crates/arvo-bits/DESIGN.md.tmpl` | 130 | not read |
+| `mock/crates/arvo-placement/DESIGN.md.tmpl` | 268 | whole, on the second pass |
+| `mock/crates/arvo-bits/DESIGN.md.tmpl` | 130 | whole, on the second pass |
 
 Source was read where a design claim turned on what the tree does: the whole of
 `arvo-numeral/src` except its tests, `arvo-format/src/standards.rs`, and greps
@@ -140,8 +146,10 @@ They are the argument behind the canon rather than the canon, and the registry
 carries their conclusions as rows with `provenance` citations into them, which is
 what was read instead. The cost of reading them whole is several times this job's
 budget. The consequence is stated plainly: where this job says the registry holds
-no row on a subject, that is a claim about the registry to the depth each file
-was read at, and not about the panel files.
+no row on a subject, that is a claim about the registry, every file of which has
+been read in full, and not about the panel files. A sentence of that kind written
+on the first pass was rechecked on the second only where `CHECK.md` section 1.10
+or `PLAN.md` says so.
 
 Also unread: the 254 committed bench findings under `mock/benches`, of which the
 five November ones were read through

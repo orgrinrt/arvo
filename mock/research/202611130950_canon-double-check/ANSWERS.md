@@ -11,9 +11,12 @@ each saying plainly where the record stops.
 The method is the same throughout. A claim about what the design says carries the
 row by namespace and slug, or the passage quoted with its file and line. Where
 the registry holds nothing, the answer says the canon is silent, and silence here
-is a claim about the registry to the depth `LEDGER.md` records for each file,
-five of the fifteen having been read as an index, and not about the two panel
-corpora, which `LEDGER.md` records as unread.
+is a claim about the registry, every file of which has been read in full over
+two passes as `LEDGER.md` records, and not about the two panel corpora, which it
+records as unread. The five answers were written on the first pass, when five
+of the fifteen files had been read as an index. The second pass changed none of
+them, and the one silence the plan leans on, in part d, was searched again
+across every file and is marked there.
 
 Two things are worth saying before the five. The record is in better shape than
 the question implies: every one of the five has substantial material under it,
@@ -338,6 +341,13 @@ rounding-and-overflow pair, and `ruling::the_standard_is_parity_in_output_not_in
 about reproducing a standard's output. Neither is a contract a consumer bounds on,
 and no row proposes one. That silence is not permission, and it is the clearest
 place where his 13 November words ask for something the record has not begun.
+After the full read it was searched for once more: every field of every registry
+file that names a contract together with a standard, MATLAB, IEEE or `fimath`.
+The rows it returns are the two this job added from his words, one clause of
+`ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`
+and the `answered` of `question::the_container_premise`, both of which are about
+the container, and the same search for the word parity finds four files, so the
+zero is a fact about the registry.
 
 One row speaks against the obvious wrong shape, and it is worth having.
 `proposal-the-value-stance::the_old_numeric_contracts_crate_is_gone` sends

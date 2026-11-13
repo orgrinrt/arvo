@@ -17,9 +17,12 @@ Two disciplines govern what follows. Rows are named by namespace and slug and
 never by line, because the registry gains rows constantly and a line keeps
 resolving while naming something else. Source is named by `file:line`, which is
 the permitted form for a tree that moves under a git sha. Where a finding says
-the record is silent, that is a claim about the registry to the depth `LEDGER.md`
-records for each file, five of the fifteen having been read as an index,
-and not about the panel corpora, which were not.
+the record is silent, that is a claim about the registry, all fifteen files of
+which have been read in full over two passes as `LEDGER.md` records, and not
+about the panel corpora, which were not read. Sections 1.1 to 1.9 and 2 to 6
+were written on the first pass, when five files had been read as an index.
+Section 1.10 is what the second pass added, and it corrects section 5 in one
+place.
 
 Section 7 says which of the proposed edits were applied here and which
 were only written down. The rule this job works under is that nothing may be
@@ -171,6 +174,123 @@ it, and it is also the file `canon_paths` is declared in, so a reader who opens
 it to find the canon's address meets a description of a tree that is gone. The
 repair is to list the five crates that exist. This job does not touch severities
 or structural lists in that file, so it is named here and left.
+
+### 1.10 What the full read of the six remaining files found
+
+The second pass read `proposal.toml`, `proposal-the-later-topics.toml`,
+`question.toml`, `probe.toml`, `retirement.toml` and `dimension.toml` row by row.
+It found no ratified row wrong on its subject and nothing that moves a step of
+`PLAN.md` out of order. It found six kinds of sentence that the tree has moved
+past, each searched for across the whole registry after the first instance, with
+TOML line continuations joined first, since a phrase split over a `\` line break
+is invisible to a plain grep and two instances were missed that way on the first
+try.
+
+A note or gap saying an axis is undeclared. The search for the phrasings the
+registry uses for it returns 26 sentences. Twelve are not instances: three in
+the dimension file's own account of itself, two file headers, three probe rows
+reporting a census or a gate, two law rows that were written with the axis in
+hand, one ruling and one `answered` using the word for something else. The
+other fourteen sit on twelve rows. Two law rows were corrected earlier on this
+branch, five name an
+axis that is still undeclared (the range's geometry twice, an encoding axis, the
+assignment set, and the intermediate fraction width of a staged narrowing), and
+one, `proposal-the-later-topics::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`,
+names "the domain the cell reaches", which may or may not be
+`dimension::ambient_domain` and is left for a seat that has read its source.
+Three were stale and are amended:
+`proposal-the-later-topics::the_realisation_map_has_an_algebraic_character` and
+`proposal-the-later-topics::the_realisation_map_factors_into_quantisation_and_range_policy`
+against `dimension::ambient_domain`, and
+`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`
+against `dimension::operand_window`. The twelfth is stale and ratified:
+`proposal-the-later-topics::at_shared_occupancy_no_per_element_footprint_observation_exists`
+says "no dimension row declares one" of occupancy, `dimension::occupancy`
+declares it, and `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`
+ratifies the row, so it is written down in section 7 and not touched. Its
+predicate does not name the axis either, and `dimension::occupancy` says of
+itself that a claim not naming it holds nowhere occupancy is defined.
+
+A note saying no `probe` row names its instrument. Four rows and one block
+comment in `proposal.toml` said it, and for each a probe row now cites the very
+file the note names: `97_probes/p2` is
+`probe::one_congruence_property_predicts_every_law_verdict`, `07_probes/p4` is
+`probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points`,
+`47_probes/p1` and its siblings are
+`probe::a_single_richer_output_suffices_only_as_a_type`, and `80_probes/p1a` and
+`p1b` are `probe::a_declared_law_marker_compiles_clean_when_false`. The last is
+the plainest: the row's own `evidence` field cites that probe while its note says
+"`probe.toml` does not exist". A sixth instance is a law row,
+`law-the-later-topics::fusing_a_multiply_add_preserves_the_answer_under_unsigned`,
+whose gap names three instruments and says no `probe` row exists for them, where
+`probe::fusion_under_unsigned_over_six_rounding_modes`,
+`probe::equivariance_is_domain_restricted` and
+`probe::the_false_unsigned_fusion_clause_and_its_repair` now name one each. All
+six are amended, by a sentence naming the probe row, and no `evidence` edge is
+drawn, since drawing one restates what the row claims. A seventh sentence of the
+kind, in the note of
+`ruling::a_composed_expressions_region_is_never_inherited_from_its_parts`, is a
+dated account of what that ruling found and is not stale.
+
+A count of the declared dimensions. `proposal::the_topics_form_a_stack_a_frame_and_the_canons_own_machinery`
+and `question::can_a_claim_about_the_canons_own_structure_carry_a_region` both
+say twenty-one, and the second lists them. There are twenty-five. The four added
+since are `occupancy`, `association`, `leaf_aliasing` and `phase`, none of which
+ranges over the canon's own contents, so the argument both notes make holds and
+each gains a sentence saying so. The other seven lines carrying the word in the
+registry count something else.
+
+The shipped identity predicate. One proposal, one question and two probes say
+the shipped `has_additive_identity` implements the superseded phase claim, and
+`retirement::a_nonzero_phase_removes_the_additive_identity` says the claim still
+stands in the crate's design, rustdoc and a test. The crate was corrected:
+`arvo-format/src/format.rs:358` asks the cancellation question at each admitted
+magnitude, and `arvo-format/src/tests/the_identity.rs:187` holds it equal to an
+enumeration at a whole-step biased format, beside a half-step one a line above.
+All five rows gain a sentence. What has
+not been corrected is the canon: no `ruling` carries `corrects` for the phase
+clause of `proposal::membership_of_the_representable_set_is_one_affine_predicate`
+(the six `corrects` edges in `ruling.toml` name other rows), so
+`question::how_the_stamped_spine_rows_phase_clause_gets_corrected` is open and
+the canon is now the one tier that still states the clause. That question's
+`bound` also cited the retirement under a slug no retirement has, the superseded
+proposal's, and no lint refused it. The slug is corrected and the lint's reach
+is ticket `5b32c44d42c6`.
+
+A probe note that says sound under a field that says otherwise. Eight probe rows
+stand at `uncontrolled`. Three of them,
+`probe::chain_the_third_definition_is_not_observation_bounded`,
+`probe::no_dependent_survives_the_rounding_units_defects` and
+`probe::chain_accuracy_needs_an_intermediate_wider_than_the_operand_type`, open
+their note with "Marked sound". Each stood at `sound` until `796fecfa`, the
+triage that moved nine instruments onto the value, and the note was left as it
+was. Each gains a sentence saying the field governs. No standing changes.
+
+Notes owed and things said of a row that are no longer so. The `answered` of
+`question::did_the_admitted_obligations_answer_the_exposure_question_in_the_design`
+says `question::one_word_or_two_for_is_a_number_system` "stays open and is owed
+a note recording that its first option has already shipped", and the note was
+never written. It is now. `probe::the_axis_gap_is_an_open_row_no_seat_of_the_sitting_cited`
+establishes that a question row carries no `answered`, and the row has one
+since. `retirement::r132_truncation_as_a_mode_name` leaves the naming call "in
+op's queue", and `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names`
+is him making it. The header of `question.toml` says no answer is recorded in
+the file, and nineteen rows carry an `answered`. Each gains a sentence.
+
+One correction to section 5 below. It speaks of two strategy definitions. The
+registry holds five, and a question row is already about three of them:
+`question::which_successor_carries_the_strategy_shape_ratification`, decider
+`panel`, records that op ratified the lineage of
+`ruling::a_strategy_is_a_preset_naming_a_point_with_a_weighting_in_it` and sent
+the ratification to its successor, and asks which of
+`proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting`,
+`proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it`
+and `proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations`
+that successor is, or whether it is a fourth nobody has written. All three stand
+at one expert, and the second supersedes the first. The two section 5 names are
+the two at two experts. So what a strategy is has a blessing waiting on an
+identification, and the seats of `PLAN.md` step 2 take the question row and all
+five texts, where the first version of the plan gave them two.
 
 ## 2. Ratified rows that disagree with each other
 
@@ -453,6 +573,11 @@ correctly by the next seat.
 
 ### The two strategy definitions that are each at two experts and disagree
 
+Section 1.10 corrects this subsection in one respect: the registry holds three
+more definitions at one expert, and
+`question::which_successor_carries_the_strategy_shape_ratification` is already
+about them. What follows is true of the two it names.
+
 `proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` says a strategy is a
 pair: an assignment on observable policy axes that fixes the denoted answer, and
 a weighting over cost coordinates that ranges over realisations of it.
@@ -571,6 +696,48 @@ a paragraph in the `note` of each naming the other, the axis they disagree on,
 and `probe::the_rationalisable_sections_on_the_committed_carrier_table`, which
 counts the gap between the two definitions. Neither standing changes.
 
+### Applied on the second branch, after the full read
+
+Every one is a sentence added to a `note`, a `gap`, a `why`, a `replacement` or
+a comment, on a row no ruling ratifies. No `says`, predicate, `holds`, `fails`,
+`evidence` or standing changes, and section 1.10 gives the reason for each.
+
+That an axis is declared now: the note and the gap of
+`proposal-the-later-topics::the_realisation_map_has_an_algebraic_character`,
+the note of
+`proposal-the-later-topics::the_realisation_map_factors_into_quantisation_and_range_policy`,
+and the note of
+`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`.
+
+That a `probe` row names the instrument now: the notes of that same row, of
+`proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`,
+of `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`
+and of `proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing`,
+the block comment above the first three, and the gap of
+`law-the-later-topics::fusing_a_multiply_add_preserves_the_answer_under_unsigned`.
+
+That four axes were declared after the count of twenty-one: the notes of
+`proposal::the_topics_form_a_stack_a_frame_and_the_canons_own_machinery` and
+`question::can_a_claim_about_the_canons_own_structure_carry_a_region`.
+
+That the crate's identity predicate was corrected and the canon's clause was
+not: the note of
+`proposal::the_additive_identity_is_decided_by_the_phase_being_a_whole_multiple_of_the_quantum`,
+the note of `question::how_the_stamped_spine_rows_phase_clause_gets_corrected`,
+a new `note` on each of `probe::the_identity_predicate_swept_against_an_enumeration`
+and `probe::the_shipped_crate_admits_a_whole_step_phase`, and the `replacement`
+of `retirement::a_nonzero_phase_removes_the_additive_identity`. In the `bound`
+of the same question, the retirement's slug is corrected.
+
+That the field governs: the notes of the three `uncontrolled` probe rows 1.10
+names.
+
+The rest: the owed paragraph on the note of
+`question::one_word_or_two_for_is_a_number_system`, a sentence on the note of
+`probe::the_axis_gap_is_an_open_row_no_seat_of_the_sitting_cited`, a sentence on
+the `why` of `retirement::r132_truncation_as_a_mode_name`, and a paragraph in
+the header of `question.toml` saying rows may carry `answered` and `bound`.
+
 ### Written down and not applied
 
 The edits to ratified rows are in `ratified-rows.patch` beside this file, as a
@@ -611,6 +778,19 @@ undecided. It rests on
 `ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` and on the
 one clause section 5 names. A `supersedes` edge moves the superseded row's
 standing in everything but the field, so it is a second reader's to write.
+
+From the full read, four more things are written down for seats that may do
+them. The note of
+`proposal-the-later-topics::at_shared_occupancy_no_per_element_footprint_observation_exists`
+wants the sentence that `dimension::occupancy` is declared, and its predicate
+wants a second reading on whether it should name that axis, the row being
+ratified. The `evidence` edges the amended notes call undrawn are a panel seat's to
+draw, and so are the three wider rows those
+notes say could not be written: the general rule on which rounding modes compose
+across nested grids, the measured half of the derivation-output finding, and the
+licence claims over the ambient domain. And the phase clause of the stamped
+spine row waits on `question::how_the_stamped_spine_rows_phase_clause_gets_corrected`,
+whose first option is a `ruling` carrying `corrects` on two agreements.
 
 The first version of this section also proposed a row superseding
 `the_old_bit_contracts_crate_is_gone`. That row re-homes what its crate carried,

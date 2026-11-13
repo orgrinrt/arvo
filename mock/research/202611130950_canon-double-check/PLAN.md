@@ -10,9 +10,15 @@ What changes is what comes first, what is no longer waiting on op, and three
 steps neither plan has.
 
 What this job read in full and what it read as an index is in `LEDGER.md`, file
-by file. The ruling, obligation and law files were read in full, and the two
-large proposal files, the questions, the retirements and the probes as an
-index, with the rows these documents name opened in full.
+by file. The plan was first written with the ruling, obligation and law files
+read in full and the two large proposal files, the questions, the retirements
+and the probes read as an index. Those five and the dimension file have been
+read in full since, row by row. That reading reordered nothing and removed no
+step. What it changed is marked where it lands: the strategy subject of step 2,
+a conflict with the bit crate's design in step 5, the section on the
+coordinator's questions, and under most steps a short list of rows a brief for
+that step has to carry, because each is a route the panel already measured and
+closed or a question the step would otherwise answer by accident.
 
 The plan stands on four things, and a step that cannot name one of them under it
 is not in it. The ratified rows, which are defended. Op's words of 13 November,
@@ -106,7 +112,7 @@ every new public item.
 | 2 | `work/claim-the-value-rows` | none; registry only | nothing | opus medium per seat |
 | 3 | `work/numeral-ring` | `arvo-numeral` | nothing | opus high |
 | 4 | `work/overflow-default-and-override` | `arvo-numeral` | 3 | opus high |
-| 5 | `work/numeral-contracts` | a contracts crate, new; adds impls to `arvo-numeral` and `arvo-bits` | 3, sketch beside it | fable low to shape, opus medium to build |
+| 5 | `work/numeral-contracts` | a contracts crate, new; adds impls to `arvo-numeral`, and holds the impls for `Bits<N>` unless the round reopens the bit crate's design | 3, sketch beside it | fable low to shape, opus medium to build |
 | 6 | `work/standards-through-values` | none; adds to `arvo-numeral` | 4, 5 | sonnet high |
 | 7 | `work/numeral-division` | `arvo-numeral` | 3 | opus high |
 | 8 | `work/numeral-lanes` | none; adds to `arvo-numeral` | 3, 5 | opus high |
@@ -125,9 +131,11 @@ start.
 
 ### 0. The registry repairs
 
-Most of this step is done on the branch that corrects this plan, and `CHECK.md`
-section 7 lists it: the gaps and notes on rows that are not ratified, and the
-corrections to the two rows this job added. Three things are left.
+Most of this step is done, on the branch that corrected this plan and on
+`work/registry-repairs` after it, and `CHECK.md` section 7 lists both: the gaps
+and notes on rows that are not ratified, the corrections to the two rows this
+job added, and the stale sentences the full read found in the six files it
+covered, which section 1.10 counts by class. Five things are left.
 
 The edits to ratified rows, which are `ratified-rows.patch` beside this file:
 `ratified_by = "op"` on the eighteen, and three notes. The patch changes no
@@ -139,11 +147,31 @@ the patch, since it would be red on eighteen rows.
 
 A tool, not a lint, for the other finding: one that lists every row whose `gap`
 or `note` says an axis is undeclared, beside the `dimension` ids, for a reader
-to check. Five rows said it of an axis that is declared and one says it of an
-assignment set that is not, and telling those apart is a judgement, which is
-what a tool reports and a lint cannot gate on. And
+to check. Across the registry twenty-six sentences match the phrase and
+fourteen of them are the claim, on twelve rows: five name an axis that is still
+undeclared, six named one that has been declared since and are amended or
+written down, and one cannot be told from the row. Telling those apart is a
+judgement, which is what a tool reports and a lint cannot gate on. The tool
+joins a TOML string's line continuations before it matches, since a search that
+did not missed two of the fourteen. And
 `no-registry-comment-counts-its-own-rows` passed on three comments that counted
 their rows in words, so its reach is checked and widened.
+
+A lint for the citation the full read found pointing into nothing, ticket
+`5b32c44d42c6`: a `bound` named a slug under `retirement::` that no retirement
+row carries, and `cargo mock check` was green with it in place. Which lint
+should have refused it is not known yet, so the work starts by planting the
+wrong slug back in a `bound`, a `note` and an `answered` and seeing which of the
+three a lint refuses, and it widens the prose-citation lint where none does.
+
+The rounding residue, which is the panel's and is listed here so it is not
+lost: four question rows track predicates that still name a retired or
+unqualified mode, `question::which_of_the_six_a_retired_word_names_on_each_row`,
+`question::which_tie_direction_an_unqualified_nearest_names`,
+`question::is_the_rounding_vocabulary_complete_at_six` and
+`question::what_region_does_a_predicate_naming_no_mode_state`. Two of them close
+by opening the instrument behind each row, which is a reading a helper can do
+and hand to two seats, and `cargo mock rounding-vocabulary` lists the rows.
 
 The red test of ticket `5a78e00a2c9e`, fixed in the test's own sample
 construction, so the readiness check can say READY at all.
@@ -180,12 +208,23 @@ built on at one expert.
 the admission row, `the_debug_check_is_a_parameter_the_consumer_names`, and the
 three rows in `proposal-the-exact-operations.toml`.
 
-One subject is added. The two definitions of a strategy that each stand at two
-experts and disagree, `proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting`
-and `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`,
-go to the same seats, because whether the overflow rule is a declared component
-of a strategy or an effect of its weighting decides whether a strategy can name
-an adaptation at all, and step 4 leans on the answer.
+One subject is added, and the full read widened it. Five proposals say what a
+strategy is. Two stand at two experts and disagree,
+`proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` and
+`proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`.
+Three stand at one expert and postdate the ruling whose lineage op ratified,
+`proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting`,
+`proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it`,
+which supersedes the pair, and
+`proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations`.
+The registry already asks which of the three his ratification of
+`ruling::a_strategy_is_a_preset_naming_a_point_with_a_weighting_in_it` lands
+on, or whether it is a fourth nobody has written, as
+`question::which_successor_carries_the_strategy_shape_ratification`, and gives
+it to the panel. So the subject goes to the same seats as that question and not
+as a choice between two rows, because whether the overflow rule is a declared
+component of a strategy or an effect of its weighting decides whether a
+strategy can name an adaptation at all, and step 4 leans on the answer.
 
 ### 3. The ring operations through the value
 
@@ -237,6 +276,13 @@ intuition. The step lands the mechanism with the default as one line, and a
 compile-fail test that pins what `Uint<8>` with no adaptation means on the day it
 lands.
 
+The rounding half of the default has a question of its own that the step must
+not answer by picking. `question::why_the_default_rounding_position_is_chosen`
+is the panel's and asks whether familiarity or what a mode licenses governs,
+and `dimension::rounding` records under `moves` that the IEEE default is the
+one mode that is not free under either signedness. MATLAB's `Nearest` is a
+candidate under the first option and not a settled default.
+
 It also records the gap `ANSWERS.md` part c found: the format tier's overflow
 axis is open and `Sole` admits two policies. Whether a consumer's own policy is
 admitted to the value tier by supplying its carrier arithmetic is a panel
@@ -260,8 +306,8 @@ that adds, orders and has an additive identity.
 
 Then the contracts, each a trait whose law is the oracle equality: sum,
 difference, product, order, the identities, sign predicates, absolute value,
-construction from a constant, and the bit tier's width, access, logic and
-sequence. Reciprocal and square root are named as contracts with no instance
+construction from a constant, the monotonicity of addition that the algorithm
+families gate on, and the bit tier's width, access, logic and sequence. Reciprocal and square root are named as contracts with no instance
 until division and floats. `Num` and `Bits<N>` are instances, and one outside
 instance in the consumer crate shows the set open.
 
@@ -271,6 +317,32 @@ shape while the implementation behind it is unfinished", which a contract
 declared inside the implementing crate cannot give. So the recommendation to the
 round is one contracts crate below the value crate, with each trait placed by
 the lowest crate that reaches its types. The round may find better and says why.
+
+One conflict with a landed design has to be settled inside the round and is not
+the builder's to settle. `arvo-bits`'s design says `Bits<N>` depends on nothing
+in this workspace, and declines the width accessor `arvo-format` could offer it
+as a second name for something already in scope. So `Bits<N>` cannot implement
+a contract declared in another workspace crate without that design changing,
+and a width contract over it is close to the accessor that design declined. Two routes are open: the contracts
+crate sits above `arvo-bits` and holds the impls for it, which the orphan rule
+allows and which leaves the bit crate's design as it is, or the bit crate's
+design takes a round of its own first. The first changes no landed design and
+is the recommendation, and the table above is written for it.
+
+Three rows bound the surface the contracts are declared over.
+`ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon`
+answers `question::what_the_numeric_introduction_door_may_carry_out`: the door
+carries the coordinate set of the ratified parameterisation in types the stack
+owns, and the ruling says in so many words that it does not say how many types
+that is. So a contract's associated items are typed with the stack's own types,
+and the count of those types is the round's to derive and not to assume. `question::what_the_ingest_row_claims_and_what_turns_on_it`
+is open and the panel's, and a construction contract that validates its input
+would answer it by accident, so construction from a constant stays a compile-time
+door. And the law suite takes its regions from the law rows and not from
+intuition about rings: `retirement::dl_wraps_induced_ring_transfers_to_fractional_formats`,
+`retirement::dl_the_wrap_section_is_a_relabelling_at_every_scale` and
+`retirement::dl_signed_twos_complement_saturating_multiplication_induces_a_semigroup_at_some_width`
+each retire a law a generic suite would otherwise assert over every instance.
 
 This is the widest step in the plan, every family from step 10 on is written
 against it, and an expert seat reads the shape before the build is briefed.
@@ -293,6 +365,12 @@ The IEEE 754 half joins after step 17 and is marked where it is missing, which
 `ruling::the_standard_is_parity_in_output_not_in_the_internals` calls an honest
 hole in a standard rather than a defect in the framework.
 
+Which standards are owed is settled: `question::which_standards_the_alias_obligation_covers`
+carries his answer, the two named as the core and the other three the corpus
+carries reserved and not excluded. `probe::container_premise_standards_alias_adequacy`
+is the instrument that already judged an encoding against both, and its arms
+are the shape the value-tier parity arms follow.
+
 ### 7 and 8. Division, conversion, lanes and the accumulator
 
 The second plan's N4 and N5, unchanged in substance. Division over a divisor
@@ -308,6 +386,19 @@ ahead of `question::which_chain_carrier_ships`. It is one carrier, and step 16 i
 where what a chain guarantees gets stated; the accumulator's design says it is an
 instance and does not close the question.
 
+The accumulator's brief carries what the panel measured about folds, since each
+is a wall the builder would otherwise find again. A fold cannot take a widening
+operation, `probe::a_widening_operation_cannot_be_folded`, and an accumulator
+whose type grows per iteration is retired as unpayable,
+`retirement::dl_growing_an_accumulator_type_per_iteration`. So the shape is a
+closed operation with an accumulator determined separately,
+`proposal::a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator`,
+at one expert. A width written by hand compiles at every length and is right at
+one, `probe::a_runtime_length_fold_compiles_at_every_length_and_computes_at_one`,
+which is the mutant this step's test must kill, and
+`probe::the_accumulator_width_is_the_exact_sum_width_less_one_bit` gives the
+width a signed saturating fold needs at the lengths it measured.
+
 ### 9. Capacity
 
 The second plan's N6. No obligation row asks for it, which that plan noticed and
@@ -317,6 +408,18 @@ by whole-word count `Capacity` 563 times, `Dim` 474, `ConstCapacity` 75 and
 over-reads a name as short as `Cap`, and the script that produced these is
 beside this file for anyone who wants the sites. So the row comes first, in
 hilavitkutin's own terms, then a sketch of the spellings, then the crate.
+
+The sketch starts from three retirements and does not repeat them. The naive
+spelling, the shared carrier answering directly for the backing array, was
+refused four ways and is `retirement::dl_capacity_unification_naive_spelling`.
+The earlier feasibility probe never reached the associated array type, which
+`retirement::dl_feasibility_probe_compiled_the_load_bearing_path` records, so
+each arm of the new sketch has to size a real array. And a count checked at one
+construction door is bypassed by the trait-method route above rank zero,
+`retirement::dl_capacity_checked_at_the_one_construction_door`. A static length
+as a lever on what lanes cost is `retirement::r173_rk_the_static_length_lever`,
+unestablished in either direction, and is cited by nobody as a reason for a
+spelling.
 
 Checks: the obligation row quotes use sites the counting script finds again at
 the revision it names; the sketch commits an outcome for each spelling, judged
@@ -342,6 +445,28 @@ bench family's committed numbers at `1b2796e9` are the comparison for the rerun,
 and a difference either way is written as a finding. And the obligation's own
 `gap` is re-read at the end and either closed or restated.
 
+What gates these crates on a numeral is the place the old tree was wrong and
+the panel measured it. Gating on an associativity fact admits the one preset
+whose recurrences return wrong answers and refuses two that compute correctly,
+`retirement::dl_gate_algorithm_crates_on_addassoc`, whose replacement is a
+monotonicity marker over addition. The instruments are
+`probe::a_dag_dynamic_programme_returns_wrong_answers_on_in_range_instances`,
+`probe::monotonicity_and_absorption_are_two_properties_and_a_reserved_top_buys_one`
+and `probe::the_top_absorbs_under_saturation_and_never_under_wrapping`, with
+`proposal::a_min_plus_computation_needs_monotonicity_as_well_as_an_absorbing_top`
+at one expert over them. A numeral wrapping inside with a reserved absorbing
+top is retired, `retirement::dl_interior_wrapping_with_a_reserved_absorbing_top`.
+Splitting a reduction is sound in three of the four sign-and-policy cells and
+not under signed saturation,
+`probe::which_sign_and_policy_cells_survive_reassociation` and
+`proposal::splitting_a_reduction_is_sound_in_three_of_the_four_sign_and_policy_cells`,
+which any crate that reduces in lanes has to state as a bound.
+`retirement::dl_the_precise_exile_as_the_problem` and
+`retirement::dl_total_ord_makes_no_output_law_expressible` close two framings a
+port from the old bodies would bring back with them. So steps 12, 14 and 15 are
+written against step 5's monotonicity contract and each of their wrong
+instances is one of the measured cells.
+
 ### 16. The composition contracts
 
 Neither earlier plan has this, and it is half of what op says arvo is for.
@@ -353,6 +478,17 @@ already found, each its own row, which is a registry change for seats that may
 make it. Then the contracts for what a chain guarantees, with step 8's
 accumulator as the first instance and the ratified rows on composed regions as
 the law they are checked against.
+
+Four open questions sit under this step and all four are the panel's, so the
+split is read against them and the contracts close none by being written.
+`question::which_chain_carrier_ships` has four options and one of them is a
+composition of carriers. `question::what_a_numeral_guarantees_to_a_fold` asks
+whether the numeral names its structure, its accumulator relation, both or
+neither. `question::reduction_order_or_associativity` asks whether the order is
+specified or associativity required, which is the same fact the lane crates of
+steps 10 to 15 meet. And
+`question::does_a_named_policy_selection_survive_above_the_numeral` decides,
+by its own `unblocks`, what a composition contract may carry.
 
 Checks: the split agreed by two cold reads, each from a worktree cut before the
 other's commit; every contract naming the law row it is checked against; the
@@ -378,6 +514,31 @@ test that fails when the row is broken. For the benches, the harness under
 calibrated repetition, and the CSV and findings committed, with the crossing of
 step 4 as one of the variants.
 
+The bench step inherits four findings about the harness itself, and a number
+from it is worth nothing until each is met. The tree was built with no profile
+declared anywhere, `probe::the_bench_tree_was_built_at_the_undocumented_profile`,
+a row standing at `uncontrolled`, and no committed artifact records the profile
+it was built at, `probe::no_bench_artifact_records_its_build_profile`. No
+committed run cross-checked that its timed arms compute the same answer,
+`probe::bench_corpus_never_validates_its_own_arms`, and 175 of 254 committed
+regions predate the validation gate,
+`probe::most_committed_bench_regions_predate_the_validation_gate`. So the step
+declares its profile, records it in the artifact, and runs with validation on,
+before any wrap-against-saturate figure is read.
+`retirement::r161_r8_the_retirement_of_the_107_second_figure` is the case of
+two correct numbers at two profiles read as a conflict.
+
+Shared placement inherits two. A packed-access gather written as a loop loses
+its instruction shape at width 18,
+`probe::a_packed_access_gather_written_as_a_loop_collapses_at_width_18`, and
+the claim that the shipped suite shows two markers sharing a realisation map is
+retired, `retirement::r210_the_shipped_suite_asserts_two_markers_share_a_realisation_map`:
+what that suite shows is the container invisible to arithmetic under one fixed
+semantics. `arvo-placement`'s design also records that its access ladder runs
+out of native containers at width 123, and leaves that as a bound on the
+derivation under `question::arbitrary_width_demands_in_the_canon`, so the step
+states the widths it covers and does not design around the bound.
+
 ### 20. The port, and the one question that is his
 
 Hilavitkutin's pinned imports replaced family by family. It opens by bringing op
@@ -385,6 +546,15 @@ the public-name question he deferred to this moment, with the import list at
 hilavitkutin `c42d707`: `arvo::` 427 occurrences, `arvo_tensor::` 72,
 `arvo_bitmask::` 24, `arvo_bits::` 13, `arvo_hash::` 5, `arvo_graph::` 5,
 `arvo_sparse::` 4, and 2 each for `arvo_spectral::` and `arvo_refit::`.
+
+Three retirements are about this migration and the port's opening read takes
+them as given. `retirement::dl_facade_migration_route_x` and
+`retirement::dl_facade_migration_route_y` are two routes refused by the
+compiler, and `retirement::dl_the_facade_fix_touches_every_consumer` records
+that the real public break was the call sites naming the three-parameter fixed
+types directly, twenty-one of them when it was measured, with the rest of what
+a consumer writes unaffected. That count was taken on the old tree and is
+recounted at the port.
 
 Checks: hilavitkutin's own suite green after each family, and the counting
 script at zero for each old path once its family is through.
@@ -497,12 +667,21 @@ findings and the two rulings and without the other's text, which cell it names
 and over which formats, and the two would have to name the same cell over the
 same region.
 
-What a strategy is, between the two definitions that each stand at two experts.
-It holds whether a preset can name an adaptation, in step 4. Each read would
-have to take one definition or state a third, say which overflow rule follows
-from it, and say whether
+What a strategy is, which the registry holds as
+`question::which_successor_carries_the_strategy_shape_ratification` over three
+one-expert proposals, with two older definitions at two experts beside them, as
+step 2 lists. It holds whether a preset can name an adaptation, in step 4. Each
+read would have to name one of the five or state a sixth, say which overflow
+rule follows from it, say whether
 `probe::the_rationalisable_sections_on_the_committed_carrier_table` separates
-the two.
+the candidates, and the two would have to name the same row for the
+ratification to land on.
+
+Whether the default rounding position is chosen for familiarity or for what it
+licenses, `question::why_the_default_rounding_position_is_chosen`. It holds the
+rounding half of step 4's one line. Each read would have to take one of the
+row's three options from his stated rule in its `bound`, and say what that
+makes of MATLAB's `Nearest` as a shipped default.
 
 Whether a consumer's own overflow policy is admitted to the value tier. It holds
 nothing built today and decides whether "composable from scratch" reaches past
@@ -536,9 +715,20 @@ would have to pick the same arm.
 
 ### The coordinator's
 
-The three process questions the registry gives it, unanswered and gating how
-every other answer is promoted:
-`question::what_stops_two_files_by_one_persona_reading_as_two_experts`,
-`question::does_a_cold_brief_withhold_rows_the_proposal_author_wrote` and
-`question::is_the_non_terminating_contention_crate_a_defect`. Step 2 runs under
-the first two.
+The first version of this section named three questions and had two of them
+wrong. The registry gives the coordinator three, by `decider`:
+`question::is_the_non_terminating_contention_crate_a_defect`,
+`question::does_the_position_keyed_dither_arm_ship` and
+`question::does_a_consumer_supplied_seed_surface_exist`. Each row's `note` says
+the coordinator answered it in op's stead as derivable, that the answer is not
+written in the row, and that the call carries no authority. None holds a step
+here. The first bears on step 19, since it is about the bench harness, and the
+other two on the rounding arms nothing in this plan builds.
+
+The two process questions that gate how every answer is promoted are the
+panel's and not the coordinator's:
+`question::what_stops_two_files_by_one_persona_reading_as_two_experts` and
+`question::does_a_cold_brief_withhold_rows_the_proposal_author_wrote`. Step 2
+runs under both, and until they close its briefs take the careful side of
+each: two seats of two personas, and a cold brief that says which rows the
+proposal's author wrote.
