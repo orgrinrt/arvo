@@ -279,7 +279,7 @@ instead = "The `slot` and `raw` doors on the value type, and `raw` on `Bits<N>`.
 provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-transparent"]
 keywords = ["arvo-transparent", "Transparent", "ConstDeref", "raw", "old tree", "gone"]
 
-# --- the rows above, superseded against the record ------------------------------
+# --- rows below, each superseding one above, against the record -----------------
 
 [[proposal]]
 id = "the_old_comb_crate_answers_to_a_stated_need"

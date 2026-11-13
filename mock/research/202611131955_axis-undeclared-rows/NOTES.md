@@ -1,6 +1,6 @@
 # Rows saying an axis is undeclared, read against the dimensions declared now
 
-The tool `mock/tools/axis-undeclared-rows` listed nineteen sentences on sixteen
+The tool `mock/tools/axis-undeclared-rows` listed twenty sentences on seventeen
 rows (`output.txt`, over 1924 sentences and 25 declared dimensions). Each row
 was read against the dimension list as it stands and sorted into the four
 classes `CHECK.md` section 1.10 used: still undeclared, declared since, a dated
@@ -57,6 +57,11 @@ the declared-since class are for the registry lane.
 - `dimension::occupancy`: reports what the container derivation said at the time.
 - `proposal::the_realisation_map_has_an_algebraic_character`, `note`: "declared
   such an axis when this row was written".
+- `proposal::the_realisation_map_factors_into_quantisation_and_range_policy`:
+  "nothing declared that axis when this row was written. `dimension::ambient_domain`
+  declares it". Dated, and says itself that the axis is declared now. The tool
+  missed it on the first run because "nothing declared" was not among the cues;
+  the reconciliation below found it.
 
 ## Cannot tell without reading the clauses
 
@@ -77,9 +82,34 @@ the declared-since class are for the registry lane.
 
 ## What the tool does not find
 
-It reads `gap` and `note`, on the twelve phrasings in `CUES`. A row saying the
+It reads `gap` and `note`, on the thirteen phrasings in `CUES`. A row saying the
 same in `answered`, `because` or `says`, or in a phrasing outside the list, is
-invisible to it. The first hand search found twenty-six sentences, fourteen of
-them instances; this finds nineteen over the same two fields, which is a
-difference the other fields and the amendments since account for in part, and
-the two lists were not reconciled sentence by sentence.
+invisible to it.
+
+## Reconciled against the hand search
+
+`canon-double-check/CHECK.md` section 1.10 reports twenty-six sentences, of
+which fourteen on twelve rows were instances. It names ten of the twelve rows:
+the five still undeclared (`law::multiplicative_associativity_under_saturation`,
+`proposal::the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy`,
+`proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container`,
+`proposal::a_strategy_is_an_assignment_and_a_weighting`,
+`proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`),
+`proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`,
+the three amended (`proposal::the_realisation_map_has_an_algebraic_character`,
+`proposal::the_realisation_map_factors_into_quantisation_and_range_policy`,
+`proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`)
+and `proposal::at_shared_occupancy_no_per_element_footprint_observation_exists`.
+All ten are in `output.txt`. Nine were found by the first twelve cues and the
+tenth, the factors row, only after `nothing declared` was added, which is the
+one miss the reconciliation turned up and the test
+`a_sentence_saying_nothing_declared_the_axis_is_found` holds. The other two
+rows are the "two law rows corrected earlier", which section 1.10 does not name;
+the output carries five `law::` rows and the two cannot be told from them
+without the earlier commit.
+
+The twelve non-instances of the hand search were not read again, so the tool's
+extra rows (`dimension::occupancy` and the `ruling::` pair, for example) are not
+compared with them. The edits to the amended rows since the hand search mean a
+sentence the hand search counted may now read differently; the comparison is by
+row, not by sentence.

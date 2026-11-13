@@ -4,8 +4,8 @@
 # whole of its provenance claim, and it becomes canon only when a `ruling` names
 # it under `ratifies`.
 #
-# This said "Nothing does", and it was false: rulings name rows
-# between them, and `ruling::the_format_spine_is_canon` alone ratifies several.
+# This said "Nothing does", and it was false: rulings name rows under `ratifies`,
+# and `ruling::the_format_spine_is_canon` is one that does.
 # **The count is not written here**, because a number in a comment is a second
 # copy of something the registry already answers and this one had gone stale in
 # the direction that matters, telling every reader no row had been stamped.
