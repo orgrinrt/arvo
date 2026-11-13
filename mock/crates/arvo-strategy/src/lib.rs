@@ -25,7 +25,8 @@
 //! Each preset's `Adaptation` is a carried default rather than a settled answer.
 //! `question::does_warm_wrap_or_clamp` is open in the registry and disputes at
 //! least the `Warm` cell; the other three carry the same unproven status. Each
-//! impl below is marked `// FIXME:` at the declaration for exactly this reason.
+//! impl below is marked `// FIXME(<ticket id>):` at the declaration for exactly
+//! this reason.
 
 use arvo_format::Adaptation;
 use arvo_placement::{Objective, ObjectiveKind};
