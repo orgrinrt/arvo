@@ -58,3 +58,21 @@ provenance = [
   "mock::design_rounds/202611130342/202611130342_changelist.doc.lock::#change-the-crates-design-document",
 ]
 keywords = ["ordering", "PartialOrd", "Ord", "partial_cmp", "Option", "cmp", "Ordering", "comparison", "no-bare-option", "fallibility"]
+
+# --- the marker pair above, superseded by the check the consumer names ----------
+
+[[proposal]]
+id = "the_debug_check_is_a_parameter_the_consumer_names"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "overflow_policy"
+supersedes = ["each_overflow_policy_has_an_asserting_and_a_completing_marker"]
+says = "Whether a debug build aborts when an operation leaves the range is a second type parameter of the value, an open trait with one constant, defaulting to the abort, with a quiet instance beside it. The overflow policy states the adaptation only and carries no abort of its own."
+because = "`ruling::the_debug_abort_is_configured_by_the_consumer` names two vehicles, a cargo feature or const, generic or trait configuration. Under a feature, cargo unifies features across a build, so a crate that names no feature has its sum complete once another crate in the same build turns the feature on, and a consumer with no feature line cannot choose; under a type parameter each choice is in the type its consumer spelled, and the default costs a consumer that wants the abort nothing. The superseded row tied the abort to a second marker of each policy, which made the check a property of the policy and doubled every policy to carry it."
+note = "The sketch `202611130550-m67x_the-debug-check-axis` builds both vehicles; `outputs/app-both.txt` shows the feature reaching a crate that never named it."
+provenance = [
+  "mock::research/sketches/202611130550-m67x_the-debug-check-axis/FINDINGS::#what-each-run-shows",
+  "mock::design_rounds/202611130550-m67x/202611130550-m67x_topic.the-value-reads-the-placement-and-chooses-its-check::#what-this-round-is-for",
+]
+keywords = ["debug check", "debug abort", "DebugCheck", "Abort", "Quiet", "type parameter", "cargo feature", "feature unification", "overflow", "Wrap", "Saturate"]

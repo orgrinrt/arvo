@@ -34,8 +34,9 @@ adaptation at the type level. It does not change at runtime.
 A numeral is declared by its format: `Integer<BITS>`,
 `UFixed<BITS, FRAC>`, `Biased` and `Floating` in `arvo-format`, and the
 pointer-width `USize` and `ISize`. Each is a zero-sized format point
-that holds no value, and what a value of a format is has not been
-decided, so no numeric value type exists yet. Boolean values use
+that holds no value. A value of an integer or fixed-point signature is
+`arvo-numeral`'s `Num`, with the aliases `Uint`, `Int`, `USize` and
+`ISize` for the integer points; no float value type exists yet. Boolean values use
 `Bool`, and an exact-width bit pattern uses `Bits<N>` from `arvo-bits`.
 A type-level capacity is the const generic position the primitive
 obligation excepts, with the bare form used only where the alternative
