@@ -60,7 +60,15 @@
 //! them at every gate.
 use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
-use crate::canon_citations::{arrivals, consolidation_numbers, files_cited};
+use crate::canon_citations::{
+    Consolidation,
+    arrivals,
+    consolidation_numbers,
+    files_cited,
+    is_a_consolidation,
+    members_named,
+    number_of,
+};
 use crate::canon_rows::{finding, text};
 use crate::panel_corpus::{markdown, panel_dir};
 pub fn repo_lint() -> Box<dyn RepoLint> {
@@ -105,10 +113,26 @@ impl Lint for AStandingIsReachableFromWhatItCites {
 impl RepoLint for AStandingIsReachableFromWhatItCites {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let panel = markdown(ctx.view(), &panel_dir(ctx.mock_dir));
-        let names = panel
+        let names: Vec<&str> = panel
             .iter()
-            .filter_map(|p| p.file_name().and_then(|n| n.to_str()));
-        let consolidations = consolidation_numbers(names);
+            .filter_map(|p| p.file_name().and_then(|n| n.to_str()))
+            .collect();
+        let numbers = consolidation_numbers(names.iter().copied());
+        let consolidations: Vec<Consolidation> = panel
+            .iter()
+            .filter_map(|p| {
+                let name = p.file_name()?.to_str()?;
+                if !is_a_consolidation(name) {
+                    return None;
+                }
+                let number = number_of(name)?;
+                let text = ctx.view().text(p)?;
+                Some(Consolidation {
+                    number,
+                    members: members_named(&text, number, &numbers),
+                })
+            })
+            .collect();
         let found: Vec<LintError> = ctx
             .registry()
             .rows_in("proposal")
@@ -123,7 +147,11 @@ impl RepoLint for AStandingIsReachableFromWhatItCites {
 }
 
 /// One proposal, against the citations its standing would need.
-fn check(reg: &mockspace::RegistryView, q: &str, consolidations: &[u32]) -> Option<LintError> {
+fn check(
+    reg: &mockspace::RegistryView,
+    q: &str,
+    consolidations: &[Consolidation],
+) -> Option<LintError> {
     let standing = text(reg, q, "standing")?;
     if !MULTI_ARRIVAL.contains(&standing) {
         return None;
@@ -177,22 +205,47 @@ mod tests {
         at_a_ceiling_of(0, rows)
     }
 
-    /// The panel files the sitting-shaped tests plant: two units, each closing
-    /// on its consolidation, and a ledger that belongs to neither.
-    const SITTING: [&str; 6] = [
-        "63_spj_consolidation_the_format_concept.md",
-        "79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md",
-        "90_giesen_consolidation_derived_algebraic_laws.md",
-        "98_second_read.md",
-        "106_giesen_consolidation_the_strategy_axis.md",
-        "AGREEMENTS.md",
+    /// The panel files the sitting-shaped tests plant, each with the text that
+    /// matters here: two units, each closing on a consolidation whose preamble
+    /// names its members, a later check of one of them that no consolidation
+    /// names, and a ledger that belongs to neither.
+    const SITTING: [(&str, &str); 9] = [
+        (
+            "63_spj_consolidation_the_format_concept.md",
+            "# 63. Consolidation\n\n**Position:** members `55`, `56`.\n\n## 1. Body\n",
+        ),
+        (
+            "79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md",
+            "",
+        ),
+        (
+            "90_giesen_consolidation_derived_algebraic_laws.md",
+            "# 90. Consolidation\n\n**Position:** compressed: `76`, `77`, `79`, `80`, and the \
+             consolidation `63` read as input.\n\n## 1. Body\n\nLater `91` is cited here.\n",
+        ),
+        (
+            "91_ringer_entailment_check_on_the_derived_laws_consolidation.md",
+            "",
+        ),
+        ("98_second_read.md", ""),
+        (
+            "106_giesen_consolidation_the_strategy_axis.md",
+            "# 106\n\n**What it compresses.** `93` and `94`, the pair, and `97`, `98`.\n\n## 1. \
+             Body\n",
+        ),
+        ("215_kiselyov_second_read_the_algebraic_laws.md", ""),
+        (
+            "244_orchard_consolidation_admission_and_the_number_system.md",
+            "# 244\n\nThe sitting on admission: `241`, `242` and `243`.\n\n## Gates\n",
+        ),
+        ("AGREEMENTS.md", ""),
     ];
 
     /// The same as `findings`, over a panel directory holding `panel`.
-    fn findings_over(panel: &[&str], rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
+    fn findings_over(panel: &[(&str, &str)], rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let dir = planted_tree("standing-panel");
-        for file in panel {
-            plant(&dir, &format!("{PANEL}/{file}"), "");
+        for (file, text) in panel {
+            plant(&dir, &format!("{PANEL}/{file}"), text);
         }
         let v = view(rows, &[]);
         super::AStandingIsReachableFromWhatItCites {
@@ -297,9 +350,8 @@ mod tests {
     /// Two distinct files, so a count of files passes it, and the second is the
     /// first's own compression, so the two agree by construction rather than by
     /// arriving separately. Telling that from two topics arriving apart needs
-    /// the sitting's file-to-topic map, which the lint reads off the panel
-    /// directory's numbering: a member belongs to the consolidation that closes
-    /// its unit.
+    /// the members a consolidation says it compresses, which the lint reads
+    /// from its own text.
     #[test]
     fn a_file_and_the_consolidation_over_it_are_one_arrival() {
         let p = cited(&[
@@ -342,6 +394,72 @@ mod tests {
         let p = cited(&[
             &format!("{ROOT}::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27"),
             &format!("{ROOT}::106_giesen_consolidation_the_strategy_axis::360"),
+        ]);
+        let f = findings_over(&SITTING, &[("proposal::a_claim", &[
+            ("standing", "cross_topic"),
+            ("provenance", &p),
+        ])]);
+        assert!(f.is_empty(), "{f:?}");
+    }
+
+    /// The first pair the numbering-only reading refused. A check of a
+    /// consolidation is numbered after it, so the numbering filed it under the
+    /// next topic's consolidation and called the pair one arrival. No consolidation
+    /// names the check, so it is a second reading.
+    #[test]
+    fn control_a_later_check_and_the_consolidation_of_the_next_topic_are_two_arrivals() {
+        let p = cited(&[
+            &format!("{ROOT}::91_ringer_entailment_check_on_the_derived_laws_consolidation::40"),
+            &format!("{ROOT}::106_giesen_consolidation_the_strategy_axis::360"),
+        ]);
+        let f = findings_over(&SITTING, &[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
+        assert!(
+            f.is_empty(),
+            "a check no consolidation names is a second arrival: {f:?}"
+        );
+    }
+
+    /// The second pair: a second read numbered before a consolidation that does
+    /// not name it. `215` is absent from what `244` says it compresses.
+    #[test]
+    fn control_a_second_read_the_consolidation_does_not_name_is_a_second_arrival() {
+        let p = cited(&[
+            &format!("{ROOT}::215_kiselyov_second_read_the_algebraic_laws::442"),
+            &format!("{ROOT}::244_orchard_consolidation_admission_and_the_number_system::300"),
+        ]);
+        let f = findings_over(&SITTING, &[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
+        assert!(f.is_empty(), "{f:?}");
+    }
+
+    /// The arm that keeps the two above honest: a member the consolidation does
+    /// name is absorbed, in a unit the numbering alone would also have found and
+    /// in one it would not (`98` closes on `106` by numbering, and `106` names it).
+    #[test]
+    fn a_member_the_consolidation_names_is_absorbed() {
+        let p = cited(&[
+            &format!("{ROOT}::98_second_read::12"),
+            &format!("{ROOT}::106_giesen_consolidation_the_strategy_axis::360"),
+        ]);
+        let f = findings_over(&SITTING, &[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
+        assert_eq!(f.len(), 1, "{f:?}");
+    }
+
+    /// A consolidation reads another as input without compressing it, so a pair
+    /// of two consolidations stays two arrivals even where one names the other.
+    #[test]
+    fn a_consolidation_naming_another_does_not_absorb_it() {
+        let p = cited(&[
+            &format!("{ROOT}::63_spj_consolidation_the_format_concept::120"),
+            &format!("{ROOT}::90_giesen_consolidation_derived_algebraic_laws::127"),
         ]);
         let f = findings_over(&SITTING, &[("proposal::a_claim", &[
             ("standing", "cross_topic"),

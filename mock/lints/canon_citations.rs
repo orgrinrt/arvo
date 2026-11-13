@@ -128,8 +128,8 @@ pub fn number_of(file: &str) -> Option<u32> {
 
 /// The numbers of the topic consolidations among the panel's file names.
 ///
-/// Sorted and deduplicated, so [`arrivals`] can ask for the first one at or
-/// after a member.
+/// Sorted and deduplicated, so [`members_named`] can leave them out of a
+/// consolidation's members.
 pub fn consolidation_numbers<'a>(files: impl IntoIterator<Item = &'a str>) -> Vec<u32> {
     let mut numbers: Vec<u32> = files
         .into_iter()
@@ -141,33 +141,105 @@ pub fn consolidation_numbers<'a>(files: impl IntoIterator<Item = &'a str>) -> Ve
     numbers
 }
 
+/// A topic consolidation and the panel files its own text says it compresses.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Consolidation {
+    pub number:  u32,
+    pub members: BTreeSet<u32>,
+}
+
+/// The paragraph openers after which a consolidation lists what it read.
+const READ_MARKERS: [&str; 3] = ["**Read end to end", "**Read in full", "**What was read"];
+
+/// The panel files a consolidation names as its members, by number.
+///
+/// Read from the consolidation's own text rather than from the numbering. Two
+/// places name them: the preamble before the first `## ` heading, where a
+/// consolidation says what it compresses, and the paragraphs it opens with
+/// `Read end to end`, `Read in full` or `What was read`. A member is a backticked
+/// token opening on a file number (`` `76` ``, `` `51:93-117` ``, `` `16_probes/p5b` ``,
+/// `` `55b` ``). Numbers at or above the consolidation's own and numbers of other
+/// consolidations are left out: a consolidation reads another one as input
+/// without compressing it.
+///
+/// **Where this is wrong.** A consolidation that names its members somewhere
+/// else, or in prose with no backticks, has none read here, so a cited member
+/// beside it is no absorption and the pair counts as two arrivals. That errs
+/// toward trusting a second source, which is the direction the tier asks for
+/// only where the consolidation really did rest on the file; a file it never
+/// named can never be taken for a member.
+pub fn members_named(text: &str, own: u32, other_consolidations: &[u32]) -> BTreeSet<u32> {
+    let mut region = String::new();
+    let mut in_preamble = true;
+    let mut in_read = false;
+    for line in text.lines() {
+        if line.starts_with("## ") {
+            in_preamble = false;
+        }
+        if line.trim().is_empty() {
+            in_read = false;
+        }
+        if READ_MARKERS.iter().any(|m| line.starts_with(m)) {
+            in_read = true;
+        }
+        if in_preamble || in_read {
+            region.push_str(line);
+            region.push('\n');
+        }
+    }
+    region
+        .split('`')
+        .skip(1)
+        .step_by(2)
+        .filter_map(file_number_opening)
+        .filter(|n| *n < own && !other_consolidations.contains(n))
+        .collect()
+}
+
+/// The file number a backticked token opens on, when what follows it is the end
+/// of the token or a separator a file reference uses.
+fn file_number_opening(token: &str) -> Option<u32> {
+    let digits = token.chars().take_while(char::is_ascii_digit).count();
+    if digits == 0 {
+        return None;
+    }
+    let rest = &token[digits ..];
+    let rest = rest
+        .strip_prefix(|c: char| c.is_ascii_lowercase())
+        .unwrap_or(rest);
+    let ends = rest.is_empty() || rest.starts_with(['_', ':', '/', '.', ' ', '-']);
+    if !ends {
+        return None;
+    }
+    token[.. digits].parse().ok()
+}
+
 /// How many independent arrivals a set of cited files holds.
 ///
 /// Every cited file that is not a consolidation is one arrival, since two
 /// members of one unit (a pair of blind cold derivations, an attacker) reached
 /// their claims separately. A consolidation is one arrival only when none of
 /// its own members is cited beside it: it compresses them, so it agrees with
-/// them by construction and adds no second author. A unit of the panel is the
-/// run of numbered files closing on its consolidation, so a member belongs to
-/// the first consolidation at or after its own number. Two consolidations of
+/// them by construction and adds no second author. Which files are its members
+/// is what its own text says, read by [`members_named`]. Two consolidations of
 /// two topics are two arrivals, and so are a member of one topic and the
-/// consolidation of another.
-///
-/// **Where this is wrong.** The rule reads the numbering and nothing else, so a
-/// file written after its topic's consolidation (a later check of it) is filed
-/// under the next topic. That can only absorb a consolidation that was
-/// independent, never invent an arrival, so it errs toward asking for a second
-/// source.
-pub fn arrivals(files: &BTreeSet<&str>, consolidations: &[u32]) -> usize {
-    let unit_of =
-        |f: &str| number_of(f).and_then(|n| consolidations.iter().copied().find(|c| *c >= n));
+/// consolidation of another, and so is a later check of a consolidation, which
+/// no consolidation names.
+pub fn arrivals(files: &BTreeSet<&str>, consolidations: &[Consolidation]) -> usize {
     let members: Vec<&str> = files
         .iter()
         .copied()
         .filter(|f| !is_a_consolidation(f))
         .collect();
-    let absorbed =
-        |c: &str| number_of(c).is_some_and(|n| members.iter().any(|m| unit_of(m) == Some(n)));
+    let absorbed = |c: &str| {
+        let Some(n) = number_of(c) else { return false };
+        let Some(own) = consolidations.iter().find(|k| k.number == n) else {
+            return false;
+        };
+        members
+            .iter()
+            .any(|m| number_of(m).is_some_and(|mn| own.members.contains(&mn)))
+    };
     let lone = files
         .iter()
         .copied()
@@ -366,10 +438,65 @@ mod tests {
         assert_eq!(shuffled, vec![90, 106], "sorted and each once");
     }
 
+    /// The units the arrival arms read against, each naming its members as a
+    /// consolidation's own text does.
+    fn units() -> Vec<Consolidation> {
+        let unit = |number: u32, members: &[u32]| {
+            Consolidation {
+                number,
+                members: members.iter().copied().collect(),
+            }
+        };
+        vec![
+            unit(63, &[55, 56]),
+            unit(74, &[65, 66, 67]),
+            unit(90, &[76, 77, 79, 80]),
+            unit(106, &[93, 94, 97, 98]),
+        ]
+    }
+
+    const PREAMBLE: &str = "# 90. Consolidation\n\n**Position:** members compressed: `76`, \
+        `77` (cold), `79`, `80` (attackers), `51:93-117`, the check `91`, and `74` read as \
+        input.\n\n## 1. Body\n\nThis cites `82` outside the preamble.\n";
+
+    #[test]
+    fn the_preamble_names_the_members_and_the_body_does_not() {
+        let m = members_named(PREAMBLE, 90, &[63, 74, 90, 106]);
+        assert_eq!(m, [51, 76, 77, 79, 80].into_iter().collect(), "{m:?}");
+    }
+
+    /// A number at or above the consolidation's own is a later file, and the
+    /// number of another consolidation is an input it read, not a member.
+    #[test]
+    fn a_later_file_and_another_consolidation_are_not_members() {
+        let m = members_named(PREAMBLE, 90, &[63, 74, 90, 106]);
+        assert!(!m.contains(&91), "a check numbered after it: {m:?}");
+        assert!(!m.contains(&74), "a consolidation read as input: {m:?}");
+    }
+
+    #[test]
+    fn a_read_end_to_end_paragraph_names_members_too() {
+        let text = "# 53\n\nNo members in the preamble.\n\n## 1. Body\n\n**Read end to end:** \
+                    `44`, `45`, `46`, `INTENTS.md`,\n`00_brief.md`.\n\nProse citing `47`.\n";
+        let m = members_named(text, 53, &[53]);
+        assert_eq!(m, [0, 44, 45, 46].into_iter().collect(), "{m:?}");
+    }
+
+    #[test]
+    fn a_token_that_is_a_count_or_a_path_is_no_file_number() {
+        assert_eq!(file_number_opening("76"), Some(76));
+        assert_eq!(file_number_opening("55b"), Some(55));
+        assert_eq!(file_number_opening("16_probes/p5b"), Some(16));
+        assert_eq!(file_number_opening("51:93-117"), Some(51));
+        assert_eq!(file_number_opening("12ab_mixed"), None);
+        assert_eq!(file_number_opening("INTENTS.md"), None);
+        assert_eq!(file_number_opening("300ns"), None);
+    }
+
     #[test]
     fn a_member_and_the_consolidation_over_it_are_one_arrival() {
         let files = set(&["79_attacking_the_two_cold_derivations", "90_giesen_consolidation_x"]);
-        assert_eq!(arrivals(&files, &[90, 106]), 1);
+        assert_eq!(arrivals(&files, &units()), 1);
     }
 
     /// The control: a refusal of every consolidation would pass the arm above
@@ -377,7 +504,7 @@ mod tests {
     #[test]
     fn consolidations_of_two_topics_are_two_arrivals() {
         let files = set(&["63_spj_consolidation_the_format", "106_giesen_consolidation_axis"]);
-        assert_eq!(arrivals(&files, &[63, 106]), 2);
+        assert_eq!(arrivals(&files, &units()), 2);
     }
 
     /// The control for the absorption: two blind members of one unit are two
@@ -386,11 +513,11 @@ mod tests {
     #[test]
     fn two_members_of_one_unit_stay_two_arrivals_with_their_consolidation_beside_them() {
         let pair = set(&["65_knuth_derived_cold", "66_dolan_derived_cold"]);
-        assert_eq!(arrivals(&pair, &[74, 90]), 2);
+        assert_eq!(arrivals(&pair, &units()), 2);
         let with =
             set(&["65_knuth_derived_cold", "66_dolan_derived_cold", "74_giesen_consolidation_x"]);
         assert_eq!(
-            arrivals(&with, &[74, 90]),
+            arrivals(&with, &units()),
             2,
             "the consolidation is absorbed"
         );
@@ -399,19 +526,19 @@ mod tests {
     #[test]
     fn a_member_of_one_topic_and_the_consolidation_of_another_are_two_arrivals() {
         let files = set(&["79_attacking", "106_giesen_consolidation_axis"]);
-        assert_eq!(arrivals(&files, &[90, 106]), 2);
+        assert_eq!(arrivals(&files, &units()), 2);
     }
 
     #[test]
     fn two_members_of_two_topics_are_two_arrivals() {
         let files = set(&["76_cold", "98_second_read"]);
-        assert_eq!(arrivals(&files, &[90, 106]), 2);
+        assert_eq!(arrivals(&files, &units()), 2);
     }
 
     #[test]
     fn a_file_with_no_number_or_no_consolidation_after_it_is_its_own_arrival() {
         let files = set(&["AGREEMENTS", "OPTIONS", "300_late"]);
-        assert_eq!(arrivals(&files, &[90, 106]), 3);
+        assert_eq!(arrivals(&files, &units()), 3);
         assert_eq!(
             arrivals(&set(&["79_a", "80_b"]), &[]),
             2,
@@ -421,7 +548,7 @@ mod tests {
 
     #[test]
     fn an_empty_set_is_no_arrivals() {
-        assert_eq!(arrivals(&BTreeSet::new(), &[90]), 0);
+        assert_eq!(arrivals(&BTreeSet::new(), &units()), 0);
     }
 
     #[test]
