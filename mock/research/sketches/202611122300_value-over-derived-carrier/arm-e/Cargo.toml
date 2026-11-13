@@ -12,3 +12,5 @@ arvo-placement.workspace = true
 [features]
 # The rung's value wrapped in a `const` block, as the first refusal asks.
 const-block = []
+# The brief's `#[type_const]` spelling in place of `type const`.
+attribute-syntax = []

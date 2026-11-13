@@ -36,7 +36,7 @@ use arvo_format::{
 };
 use arvo_placement::derive_sole;
 use arvo_placement::objective::Access;
-pub use lane::{Lane, Machine};
+pub use lane::{Bits, Lane, Machine};
 
 #[doc(hidden)]
 pub mod __private {
@@ -123,7 +123,7 @@ pub trait Carried: Slots {
     type Repr: Machine<Wide = Self::Wide> + Eq + Ord + Hash + Debug + Send + Sync + 'static;
 
     /// The signed machine integer twice the carrier's width.
-    type Wide: Copy + Eq + Ord + Hash + Debug + Send + Sync + 'static;
+    type Wide: Bits + Eq + Ord + Hash + Debug + Send + Sync + 'static;
 }
 
 /// The canonical point a slot family is the slot range of.
@@ -209,7 +209,7 @@ pub trait Sole: DeclaredSignature {
     /// The ladder carrier, from the map.
     type Repr: Machine<Wide = Self::Wide> + Eq + Ord + Hash + Debug + Send + Sync + 'static;
     /// The double-width accumulator.
-    type Wide: Copy + Eq + Ord + Hash + Debug + Send + Sync + 'static;
+    type Wide: Bits + Eq + Ord + Hash + Debug + Send + Sync + 'static;
     /// The declared width.
     const WIDTH: Width;
     /// The overflow policy.

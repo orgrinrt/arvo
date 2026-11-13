@@ -33,12 +33,13 @@ pub trait Lane: Copy + Send + Sync + 'static {
 /// and the tests. The question the arms answer is how a `const fn` reaches the
 /// same operations.
 ///
-/// Sealed: implemented for the eight ladder integers and nothing else. Arm B's
-/// bit copy is sound only while every carrier is one of them, so the closed set
-/// is part of its contract rather than a convenience.
-pub trait Machine: sealed::Sealed + Copy {
+/// Sealed through `Bits`: implemented for the eight ladder integers and nothing
+/// else, with `Wide` one of `Bits` too. Arm B's bit copy is sound only between
+/// two `Bits` of equal size, so the closed set is part of its contract rather
+/// than a convenience.
+pub trait Machine: Bits {
     /// The double-width accumulator.
-    type Wide: Copy + Eq + Debug + Send + Sync + 'static;
+    type Wide: Bits + Eq + Debug + Send + Sync + 'static;
     /// Zero in the accumulator.
     const WIDE_ZERO: Self::Wide;
     /// The carrier's width in bits.
@@ -63,13 +64,28 @@ pub trait Machine: sealed::Sealed + Copy {
     fn narrow(wide: Self::Wide, width: Width, policy: Policy) -> Self;
 }
 
+/// A plain machine integer: the eight ladder carriers and `i128`, their widest
+/// accumulator. Every bit pattern of one is a valid value, which is what makes a
+/// bit copy between two of equal size sound.
+///
+/// Sealed, so the set is exactly these nine.
+pub trait Bits: sealed::Sealed + Copy {}
+
 mod sealed {
     pub trait Sealed {}
 }
 
+macro_rules! bits {
+    ($($t:ty),+) => {$(
+        impl sealed::Sealed for $t {}
+        impl Bits for $t {}
+    )+};
+}
+
+bits!(i8, u8, i16, u16, i32, u32, i64, u64, i128);
+
 macro_rules! machine {
     ($($t:ty, $w:ty, $bits:literal, $signed:literal, $add:path, $adapt:path, $narrow:path;)+) => {$(
-        impl sealed::Sealed for $t {}
         impl Machine for $t {
             type Wide = $w;
             const WIDE_ZERO: $w = 0;

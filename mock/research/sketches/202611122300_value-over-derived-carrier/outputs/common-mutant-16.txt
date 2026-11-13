@@ -1,6 +1,6 @@
 $ cargo test -p common --features mutant-16 --test rungs
    Compiling common v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/common)
-    Finished `test` profile [unoptimized] target(s) in 0.48s
+    Finished `test` profile [unoptimized] target(s) in 0.57s
      Running tests/rungs.rs (/home/user/target/debug/deps/rungs-ca946d1b40556ec7)
 
 running 5 tests
@@ -14,7 +14,7 @@ failures:
 
 ---- rung_16_widths_1_to_8 stdout ----
 
-thread 'rung_16_widths_1_to_8' (564) panicked at common/tests/rungs.rs:54:1:
+thread 'rung_16_widths_1_to_8' (10515) panicked at common/tests/rungs.rs:54:1:
 assertion `left == right` failed: pairs of members the rung's add gets wrong
   left: 130560
  right: 0
@@ -30,7 +30,7 @@ note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose bac
 
 ---- rung_16_widths_9_and_10 stdout ----
 
-thread 'rung_16_widths_9_and_10' (565) panicked at common/tests/rungs.rs:57:1:
+thread 'rung_16_widths_9_and_10' (10516) panicked at common/tests/rungs.rs:57:1:
 assertion `left == right` failed: pairs of members the rung's add gets wrong
   left: 1964544
  right: 0
@@ -49,6 +49,6 @@ failures:
     rung_16_widths_1_to_8
     rung_16_widths_9_and_10
 
-test result: FAILED. 3 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+test result: FAILED. 3 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
 
 error: test failed, to rerun pass `-p common --test rungs`

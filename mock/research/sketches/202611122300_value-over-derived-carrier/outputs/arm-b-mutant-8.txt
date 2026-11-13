@@ -1,6 +1,6 @@
 $ cargo test -p arm-b --features common/mutant-8 --lib
    Compiling arm-b v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-b)
-    Finished `test` profile [unoptimized] target(s) in 1.28s
+    Finished `test` profile [unoptimized] target(s) in 2.23s
      Running unittests src/lib.rs (/home/user/target/debug/deps/arm_b-5271759ee053c88d)
 
 running 2 tests
@@ -11,7 +11,7 @@ failures:
 
 ---- tests::value_add_every_width_over_the_edges stdout ----
 
-thread 'tests::value_add_every_width_over_the_edges' (438) panicked at arm-b/src/lib.rs:107:5:
+thread 'tests::value_add_every_width_over_the_edges' (10389) panicked at arm-b/src/lib.rs:122:5:
 assertion `left == right` failed: pairs of members the value type's add gets wrong
   left: 316
  right: 0
@@ -27,7 +27,7 @@ note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose bac
 
 ---- tests::value_add_widths_1_to_10_exhaustive stdout ----
 
-thread 'tests::value_add_widths_1_to_10_exhaustive' (439) panicked at arm-b/src/lib.rs:107:5:
+thread 'tests::value_add_widths_1_to_10_exhaustive' (10390) panicked at arm-b/src/lib.rs:122:5:
 assertion `left == right` failed: pairs of members the value type's add gets wrong
   left: 32512
  right: 0
@@ -46,6 +46,6 @@ failures:
     tests::value_add_every_width_over_the_edges
     tests::value_add_widths_1_to_10_exhaustive
 
-test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
 
 error: test failed, to rerun pass `-p arm-b --lib`

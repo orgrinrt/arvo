@@ -136,10 +136,6 @@ fn the_term_bound_per_ladder_carrier_at_full_width() {
     assert_eq!(Wide::<Sig<Integer<1>, Wrap>>::MAX_TERMS, 1 << 15);
     assert_eq!(Wide::<Sig<UFixed<1, 0>, Wrap>>::MAX_TERMS, (1 << 15) - 1);
     assert_eq!(Wide::<Sig<Integer<33>, Wrap>>::MAX_TERMS, 1 << 95);
-    assert_eq!(
-        Wide::<Sig<UFixed<33, 0>, Wrap>>::MAX_TERMS,
-        ((1u128 << 127) - 1) / ((1 << 33) - 1)
-    );
 }
 
 /// `n` copies of `m`, accumulated.

@@ -8,4 +8,5 @@ publish.workspace = true
 [dependencies]
 arm-a.workspace = true
 arm-b.workspace = true
+common.workspace = true
 arvo-format.workspace = true

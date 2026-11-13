@@ -15,21 +15,33 @@ use arvo_placement::narrowest_carrier;
 
 /// The rung a slot family lands on, in bits.
 ///
-/// `type const` is this nightly's spelling; the `#[type_const]` attribute is
-/// not known to it (`outputs/arm-e-attribute-syntax.txt`).
+/// `type const` is this nightly's spelling; the `#[type_const]` attribute the
+/// brief named is not known to it (feature `attribute-syntax`,
+/// `outputs/arm-e-attribute-syntax.txt`).
+#[cfg(not(feature = "attribute-syntax"))]
 pub trait RungOf {
     type const RUNG: u32;
+}
+
+/// The brief's spelling, kept so its refusal has a source.
+#[cfg(feature = "attribute-syntax")]
+pub trait RungOf {
+    #[type_const]
+    const RUNG: u32;
 }
 
 impl<const W: u32> RungOf for Signed<W>
 where
     Signed<W>: Slots,
 {
-    #[cfg(not(feature = "const-block"))]
+    #[cfg(not(any(feature = "const-block", feature = "attribute-syntax")))]
     type const RUNG: u32 = narrowest_carrier(<Signed<W> as Slots>::WIDTH).count();
     // The wrapping the first refusal asks for.
     #[cfg(feature = "const-block")]
     type const RUNG: u32 = const { narrowest_carrier(<Signed<W> as Slots>::WIDTH).count() };
+    #[cfg(feature = "attribute-syntax")]
+    #[type_const]
+    const RUNG: u32 = narrowest_carrier(<Signed<W> as Slots>::WIDTH).count();
 }
 
 /// A rung, by its width in bits.

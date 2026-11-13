@@ -1,6 +1,6 @@
 $ cargo test -p arm-a --features common/mutant-32 --lib
    Compiling arm-a v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-a)
-    Finished `test` profile [unoptimized] target(s) in 1.00s
+    Finished `test` profile [unoptimized] target(s) in 1.37s
      Running unittests src/lib.rs (/home/user/target/debug/deps/arm_a-709fa3fe5347146c)
 
 running 2 tests
@@ -11,7 +11,7 @@ failures:
 
 ---- tests::value_add_every_width_over_the_edges stdout ----
 
-thread 'tests::value_add_every_width_over_the_edges' (889) panicked at arm-a/src/lib.rs:123:5:
+thread 'tests::value_add_every_width_over_the_edges' (10841) panicked at arm-a/src/lib.rs:123:5:
 assertion `left == right` failed: pairs of members the value type's add gets wrong
   left: 900
  right: 0

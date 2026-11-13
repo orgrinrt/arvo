@@ -64,7 +64,8 @@ macro_rules! consumer_cases {
         /// only checked.
         pub fn instantiated() -> (i64, u64) {
             // Turbofished: under arm D `S` cannot be inferred from `Num<S>`, a
-            // projection, and the call is refused with E0282 without it.
+            // projection, and the call is refused without it (consumer-d's
+            // `generic_call` pair).
             let a = generic_over_signature::<S40>($num::<S40>::from_raw(1), $num::<S40>::from_raw(2));
             type F = Signature<UFixed<64, -16>, Adapt<TowardZero, Wrap>>;
             let b = generic_over_fraction::<-16>($num::<F>::from_raw(u64::MAX), $num::<F>::from_raw(2));

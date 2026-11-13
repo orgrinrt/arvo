@@ -19,3 +19,6 @@ mutant-8 = []
 mutant-16 = []
 mutant-32 = []
 mutant-64 = []
+# The rung functions without `#[inline]`, for the assembly reading that shows
+# why they carry it.
+outline = []

@@ -30,10 +30,11 @@ macro_rules! wide {
                 type $t = i64;
                 copy::<$t, $w>($body)
             },
-            _ => {
+            8 => {
                 type $t = i128;
                 copy::<$t, $w>($body)
             },
+            _ => unreachable!(),
         }
     };
 }
@@ -91,8 +92,9 @@ impl<S: Sole> Wide<S> {
             (2, false) => copy::<u16, S::Repr>(rung::narrow_u16(copy(self.0), w, p)),
             (4, true) => copy::<i32, S::Repr>(rung::narrow_s32(copy(self.0), w, p)),
             (4, false) => copy::<u32, S::Repr>(rung::narrow_u32(copy(self.0), w, p)),
-            (_, true) => copy::<i64, S::Repr>(rung::narrow_s64(copy(self.0), w, p)),
-            (_, false) => copy::<u64, S::Repr>(rung::narrow_u64(copy(self.0), w, p)),
+            (8, true) => copy::<i64, S::Repr>(rung::narrow_s64(copy(self.0), w, p)),
+            (8, false) => copy::<u64, S::Repr>(rung::narrow_u64(copy(self.0), w, p)),
+            _ => unreachable!(),
         })
     }
 
@@ -114,8 +116,9 @@ impl<S: Sole> Num<S> {
             (2, false) => copy::<i32, S::Wide>(copy::<S::Repr, u16>(self.0) as i32),
             (4, true) => copy::<i64, S::Wide>(copy::<S::Repr, i32>(self.0) as i64),
             (4, false) => copy::<i64, S::Wide>(copy::<S::Repr, u32>(self.0) as i64),
-            (_, true) => copy::<i128, S::Wide>(copy::<S::Repr, i64>(self.0) as i128),
-            (_, false) => copy::<i128, S::Wide>(copy::<S::Repr, u64>(self.0) as i128),
+            (8, true) => copy::<i128, S::Wide>(copy::<S::Repr, i64>(self.0) as i128),
+            (8, false) => copy::<i128, S::Wide>(copy::<S::Repr, u64>(self.0) as i128),
+            _ => unreachable!(),
         })
     }
 }

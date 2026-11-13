@@ -22,7 +22,7 @@ macro_rules! rung {
         /// A signed integer of this rung adapted onto the `width`-bit signed range.
         ///
         /// The step that re-canonicalises a sub-width result. The mutant removes it.
-        #[inline]
+        #[cfg_attr(not(feature = "outline"), inline)]
         #[must_use]
         pub const fn $adapt_s(x: $s, width: Width, policy: Policy) -> $s {
             if cfg!(feature = $mutant) {
@@ -46,7 +46,7 @@ macro_rules! rung {
         }
 
         /// An unsigned integer of this rung adapted onto the `width`-bit unsigned range.
-        #[inline]
+        #[cfg_attr(not(feature = "outline"), inline)]
         #[must_use]
         pub const fn $adapt_u(x: $u, width: Width, policy: Policy) -> $u {
             if cfg!(feature = $mutant) {
@@ -69,7 +69,7 @@ macro_rules! rung {
         ///
         /// Where the width is the rung's own, the sum can leave the rung; the
         /// wrapping and saturating machine adds are then already the answer.
-        #[inline]
+        #[cfg_attr(not(feature = "outline"), inline)]
         #[must_use]
         pub const fn $add_s(a: $s, b: $s, width: Width, policy: Policy) -> $s {
             let sum = match policy {
@@ -80,7 +80,7 @@ macro_rules! rung {
         }
 
         /// The sum of two unsigned members, in this rung.
-        #[inline]
+        #[cfg_attr(not(feature = "outline"), inline)]
         #[must_use]
         pub const fn $add_u(a: $u, b: $u, width: Width, policy: Policy) -> $u {
             let sum = match policy {
@@ -92,7 +92,7 @@ macro_rules! rung {
 
         /// An exact sum held in the double-width integer, adapted onto the
         /// signed range: the one adaptation of an accumulated sum.
-        #[inline]
+        #[cfg_attr(not(feature = "outline"), inline)]
         #[must_use]
         pub const fn $narrow_s(wide: $w, width: Width, policy: Policy) -> $s {
             let shift = $bits - width.count();
@@ -116,7 +116,7 @@ macro_rules! rung {
 
         /// An exact sum held in the double-width integer, adapted onto the
         /// unsigned range.
-        #[inline]
+        #[cfg_attr(not(feature = "outline"), inline)]
         #[must_use]
         pub const fn $narrow_u(wide: $w, width: Width, policy: Policy) -> $u {
             match policy {

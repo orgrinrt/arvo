@@ -1,119 +1,29 @@
+# cargo rustc -p asm-probe --release --lib --features common/outline -- --emit asm, x86_64, default target features; the probe labels and their bodies to retq, and the alias lines. An ad-hoc reading, not a measurement.
 a_i13_sat:
-	pushq	%rbp
-	pushq	%r14
-	pushq	%rbx
-	movl	%esi, %ebx
-	movq	_RNvNtCslSitQqOrpji_6common4rung9adapt_s16@GOTPCREL(%rip), %r14
-	movl	$13, %esi
-	movl	$1, %edx
-	callq	*%r14
-	movl	%eax, %ebp
-	movl	%ebx, %edi
-	movl	$13, %esi
-	movl	$1, %edx
-	callq	*%r14
-	movl	%ebp, %edi
-	movl	%eax, %esi
 	movl	$13, %edx
 	movl	$1, %ecx
-	popq	%rbx
-	popq	%r14
-	popq	%rbp
-	jmpq	*_RNvNtCslSitQqOrpji_6common4rung7add_s16@GOTPCREL(%rip)
-----
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_s16@GOTPCREL(%rip)
 a_i13_wrap:
-	pushq	%rbp
-	pushq	%r14
-	pushq	%rbx
-	movl	%esi, %ebx
-	movq	_RNvNtCslSitQqOrpji_6common4rung9adapt_s16@GOTPCREL(%rip), %r14
-	movl	$13, %esi
-	xorl	%edx, %edx
-	callq	*%r14
-	movl	%eax, %ebp
-	movl	%ebx, %edi
-	movl	$13, %esi
-	xorl	%edx, %edx
-	callq	*%r14
-	movl	%ebp, %edi
-	movl	%eax, %esi
 	movl	$13, %edx
 	xorl	%ecx, %ecx
-	popq	%rbx
-	popq	%r14
-	popq	%rbp
-	jmpq	*_RNvNtCslSitQqOrpji_6common4rung7add_s16@GOTPCREL(%rip)
-----
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_s16@GOTPCREL(%rip)
 a_i64_wrap:
-	pushq	%r15
-	pushq	%r14
-	pushq	%rbx
-	movq	%rsi, %rbx
-	movq	_RNvNtCslSitQqOrpji_6common4rung9adapt_s64@GOTPCREL(%rip), %r15
-	movl	$64, %esi
-	xorl	%edx, %edx
-	callq	*%r15
-	movq	%rax, %r14
-	movq	%rbx, %rdi
-	movl	$64, %esi
-	xorl	%edx, %edx
-	callq	*%r15
-	movq	%r14, %rdi
-	movq	%rax, %rsi
 	movl	$64, %edx
 	xorl	%ecx, %ecx
-	popq	%rbx
-	popq	%r14
-	popq	%r15
-	jmpq	*_RNvNtCslSitQqOrpji_6common4rung7add_s64@GOTPCREL(%rip)
-----
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_s64@GOTPCREL(%rip)
 a_u13_sat:
-	pushq	%rbp
-	pushq	%r14
-	pushq	%rbx
-	movl	%esi, %ebx
-	movq	_RNvNtCslSitQqOrpji_6common4rung9adapt_u16@GOTPCREL(%rip), %r14
-	movl	$13, %esi
-	movl	$1, %edx
-	callq	*%r14
-	movl	%eax, %ebp
-	movl	%ebx, %edi
-	movl	$13, %esi
-	movl	$1, %edx
-	callq	*%r14
-	movl	%ebp, %edi
-	movl	%eax, %esi
 	movl	$13, %edx
 	movl	$1, %ecx
-	popq	%rbx
-	popq	%r14
-	popq	%rbp
-	jmpq	*_RNvNtCslSitQqOrpji_6common4rung7add_u16@GOTPCREL(%rip)
-----
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_u16@GOTPCREL(%rip)
 a_u13_wrap:
-	pushq	%rbp
-	pushq	%r14
-	pushq	%rbx
-	movl	%esi, %ebx
-	movq	_RNvNtCslSitQqOrpji_6common4rung9adapt_u16@GOTPCREL(%rip), %r14
-	movl	$13, %esi
-	xorl	%edx, %edx
-	callq	*%r14
-	movl	%eax, %ebp
-	movl	%ebx, %edi
-	movl	$13, %esi
-	xorl	%edx, %edx
-	callq	*%r14
-	movl	%ebp, %edi
-	movl	%eax, %esi
 	movl	$13, %edx
 	xorl	%ecx, %ecx
-	popq	%rbx
-	popq	%r14
-	popq	%rbp
-	jmpq	*_RNvNtCslSitQqOrpji_6common4rung7add_u16@GOTPCREL(%rip)
-----
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_u16@GOTPCREL(%rip)
 native_i64_wrapping_add:
 	leaq	(%rdi,%rsi), %rax
 	retq
-----
+b_i13_sat = a_i13_sat
+b_i13_wrap = a_i13_wrap
+b_i64_wrap = a_i64_wrap
+b_u13_sat = a_u13_sat
+b_u13_wrap = a_u13_wrap

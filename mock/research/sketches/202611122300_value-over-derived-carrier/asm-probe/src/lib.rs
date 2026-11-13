@@ -2,9 +2,13 @@
 //! at full width 64 under `Wrap` beside native `wrapping_add`, for arms A and B.
 //!
 //! Each probe takes and returns the value type, so what is read is `add` and
-//! nothing that builds its operands.
+//! nothing that builds its operands. `#[unsafe(no_mangle)]` keeps each probe in
+//! the emitted assembly under its plain name, as an exported symbol nothing can
+//! drop or rename; without it the label is the mangled path, and the alias line
+//! showing two probes compiled to the same bytes is far harder to read.
 //!
-//! Read with `cargo rustc -p asm-probe --release --lib -- --emit asm`. An ad-hoc
+//! Read with `cargo rustc -p asm-probe --release --lib -- --emit asm`. With
+//! `--features common/outline` the rung functions lose `#[inline]`. An ad-hoc
 //! reading of one build, `release` profile, x86_64 with the default target
 //! features: nothing here is a measurement.
 

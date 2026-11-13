@@ -1,6 +1,4 @@
-    Checking common v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/common)
-    Checking arm-c v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-c)
-    Checking consumer-c v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/consumer-c)
+$ cargo check -p consumer-c --features const-bound
 error[E0658]: const trait impls are experimental
   --> consumer-c/src/lib.rs:16:50
    |

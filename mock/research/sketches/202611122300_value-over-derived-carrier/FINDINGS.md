@@ -2,9 +2,9 @@
 
 This sketch asks how a number type in arvo holds its value in the carrier the placement derives, and how `add` on it can be a `const fn` written once and still reach every carrier on the ladder. Five arms answer it, each in its own crate. Each arm is used from a consumer crate with no `#![feature]` line, and is checked against `arvo_format::add` as the oracle. Everything is pinned: arvo at `d841c5e19325fc60648cc9a4bb48dcbb8b348df4` (arvo `dev` when the sketch was cut), toolchain `nightly-2026-05-28`, trybuild `=1.0.110`, plus `Cargo.lock`.
 
-The outcome is that arms A, B and D build and pass, arm C is refused in the consumer, and arm E is refused in its own crate. B is the one to build on, because it is the only arm where a function generic over the signature bounds it by `Sole` alone. Its cost is one reviewed `unsafe` bit copy and a sealed carrier set. Its codegen matches A's byte for byte in the one reading taken.
+The outcome is that arms A, B and D build and pass, arm C is refused in the consumer, and arm E is refused in its own crate. B is the one to build on, because it is the only arm where a function generic over the signature bounds it by `Sole` alone. Its cost is one reviewed `unsafe` bit copy, sound only between two plain machine integers of equal size and so bounded on a sealed trait that admits nothing else. Its codegen matches A's byte for byte in the one reading taken.
 
-Every number below has a committed artifact beside it. The assembly is an ad-hoc reading of one build and nothing more. Nothing here is a benchmark.
+Every number below comes from a file in `outputs/` that records the command it ran, or from a committed `.stderr`; `outputs/cargo-test.txt` is the clean run of the whole default suite, trybuild pass twins included. The assembly is an ad-hoc reading of one build and nothing more. Nothing here is a benchmark.
 
 ## The map
 
@@ -29,7 +29,7 @@ error[E0277]: the trait bound `Signed<65>: common::Carried` is not satisfied
 
 `common::rung` is the arithmetic, and a macro expands it once per rung (8, 16, 32, 64) to `adapt_s/u`, `add_s/u` and `narrow_s/u` on the machine integer. `add` stays total, with no assertion, as the coordinator's first correction asked. Wrap is a shift pair for signed and a mask for unsigned. Saturate is a clamp to the width's range inside the carrier. No arm's `add` calls the oracle; the oracle lives in `common::oracle` and only tests read it.
 
-`common/tests/rungs.rs` checks each rung exhaustively against the oracle over every pair of members. Widths 1 to 8 are checked in all four rungs, and widths 9 and 10 in rung 16. Each check covers `Integer<W>` and `UFixed<W, 0>` under `Wrap` and `Saturate`. All pass.
+`common/tests/rungs.rs` checks each rung exhaustively against the oracle over every pair of members. Widths 1 to 8 are checked in all four rungs, and widths 9 and 10 in rung 16. Each check covers `Integer<W>` and `UFixed<W, 0>` under `Wrap` and `Saturate`. All pass. The map never sends a width of 1 to 8 to rungs 32 and 64, so their exhaustive check is on widths they do not carry; the widths they do carry (17 to 64) are reached only by the arms' edge-set pass, never exhaustively.
 
 One mutant per rung (`mutant-8` and the others) makes the rung's `adapt` return its input untouched, and each is killed. The pairs the mutant gets wrong, from `outputs/common-mutant-*.txt`, are 32512 at rung 8, 130560 at each of rungs 16, 32 and 64 over widths 1 to 8, and 1964544 at rung 16 over widths 9 and 10. The same four mutants are also killed through each building arm's own value tests (`outputs/arm-{a,b,d}-mutant-*.txt`). Those tests run the exhaustive pass for widths 1 to 10 plus an edge-set pass for every width 1 to 64.
 
@@ -49,7 +49,7 @@ Arm A puts the carrier in a defaulted second parameter, `Num<S: Sole<Repr = C>, 
 error[E0271]: type mismatch resolving `<Signature<Integer<13>, Adapt<TowardZero, Wrap>> as Sole>::Repr == i32`
 ```
 
-Arm B holds `S::Repr` directly in `Num<S: Sole>(S::Repr)`. A `const fn` body cannot call a trait method on the carrier, so `from_raw` and `add` match on `(size_of::<S::Repr>(), <S::Repr as Machine>::SIGNED)`. Those are constants of the instantiation. Inside the matching arm, the bits move to the machine integer of the same size and signedness by `copy`, the rung's function is called there, and the bits move back. `copy` is the arm's one `unsafe`, a `ptr::read` guarded by an ordinary `assert!` on equal size. The guard cannot be an inline `const` block: every arm of the match is monomorphised, the dead ones included, and a `const` assertion fails in those (`copy::<u64, u32>` at a 32-bit carrier). As an ordinary assertion it is evaluated only on the arm taken, and it folds away. The copy is sound only while every carrier is one of the eight ladder integers, so `common::Machine` is sealed. Case (3) bounds `S: Sole` and nothing else.
+Arm B holds `S::Repr` directly in `Num<S: Sole>(S::Repr)`. A `const fn` body cannot call a trait method on the carrier, so `from_raw` and `add` match on `(size_of::<S::Repr>(), <S::Repr as Machine>::SIGNED)`. Those are constants of the instantiation. Inside the matching arm, the bits move to the machine integer of the same size and signedness by `copy`, the rung's function is called there, and the bits move back. `copy` is the arm's one `unsafe`, a `ptr::read` guarded by an ordinary `assert!` on equal size. The guard cannot be an inline `const` block: every arm of the match is monomorphised, the dead ones included, and a `const` assertion fails in those (`copy::<u64, u32>` at a 32-bit carrier). As an ordinary assertion it is evaluated only on the arm taken, and it folds away. A bit copy is sound only between two types whose every bit pattern is a valid value. So `copy` is bounded `T: Bits, U: Bits`, where `common::Bits` is a sealed trait implemented for the nine plain machine integers (the eight carriers and `i128`) and nothing else. Both `Machine` and its `Wide` are `Bits`. With that bound and the size assertion, `copy` is a safe `const fn` that is sound for every type it accepts. The match names each size, 1, 2, 4 and 8, and ends in `unreachable!()`, so no other size falls through to a 64-bit path. Case (3) bounds `S: Sole` and nothing else.
 
 Arm C is the only arm with a feature, `const_trait_impl`, in the value crate alone. It declares `pub const trait Carrier` with a `const impl` for each of the eight integers, and `add` bounds `S::Repr: [const] Carrier`. The value crate builds, and the consumer is refused both ways (`outputs/arm-c-*.txt`; the long paths are elided as `...` below). With the conditionally-const bound, case (2), `add` in a `const` item, is refused:
 
@@ -73,11 +73,14 @@ error[E0658]: const trait impls are experimental
 
 So arm C cannot give a featureless consumer both a `const` item and a function generic over the signature: the feature leaks into the consumer.
 
-Arm D writes eight concrete types, `NumI8` to `NumU64`, each with its own const `from_raw`, `raw` and `add`. `pub type Num<S> = <<S as Sole>::Repr as ValueOf>::Value<S>;` picks the right one. Cases (1), (2), (4) and (5) build. Case (3) needs `Sole<Repr = i64>`, as in A. Even with that bound, the call refuses to infer `S` through the alias, because `Num<S>` is a projection (`outputs/arm-d-inference-without-turbofish.txt`):
+Arm D writes eight concrete types, `NumI8` to `NumU64`, each with its own const `from_raw`, `raw` and `add`. `pub type Num<S> = <<S as Sole>::Repr as ValueOf>::Value<S>;` picks the right one. Cases (1), (2), (4) and (5) build. Case (3) needs `Sole<Repr = i64>`, as in A. Even with that bound, the call cannot infer `S` through the alias, because `Num<S>` is a projection. `consumer-d/tests/ui/fail/generic_call.stderr` shows this; its twin names `S40`:
 
 ```
-error[E0282]: type annotations needed
+error[E0283]: type annotations needed
+   = note: the type must implement `Sole`
 ```
+
+Inside `consumer_cases`, where the result is used, the same refusal surfaced as E0282 at the use.
 
 So a consumer turbofishes every generic call. The shared `consumer_cases` does that for all arms, and the comment there says why. The `Lane` impl had to name the accumulator as `<$c as Machine>::Wide`. `S::Wide` did not normalise to `i128` through the projection and was refused with E0308.
 
@@ -105,7 +108,7 @@ The help names `generic_const_args`, which is not on the vetted list, so the arm
 
 The five cases are written once, in `common::consumer_cases!`. Each arm's consumer crate expands them with no `#![feature]` line, so what expands is what a consumer writes. Case (1) holds a `Num<S13>` in a struct field. Case (2) is `pub const SUM: Num<S13> = Num::<S13>::from_raw(4000).add(Num::<S13>::from_raw(300));`, which wraps once in 13 bits to `4300 - 8192`. Case (3) is the bound in the table above. Case (4) is generic over `const FRAC: i32` on `UFixed<64, FRAC>` with no bound at all, in every building arm. Case (5) is a kernel generic over `L: Lane` calling `widen`, `wide_add`, `wide_sub` and `narrow`, and it builds in every building arm.
 
-The compile-fail pairs are committed as `.rs` beside a twin differing in one token, with the diagnostic as `.stderr`:
+The compile-fail pairs are committed as `.rs` beside a twin differing in one token, or in one `.push` line for the counts, with the diagnostic as `.stderr`:
 
 | pair | diagnostic | where |
 |---|---|---|
@@ -114,6 +117,12 @@ The compile-fail pairs are committed as `.rs` beside a twin differing in one tok
 | carrier named `i32` against `i16` | E0271 | consumer A |
 | add across `S14` and `S13` | E0308 | consumers A, B |
 | the field `a.0` against `a.raw()` | E0616 | consumers A, B |
+| the map row `i32` against `i16` | E0080 | common |
+| a generic call without and with `::<S40>` | E0283 | consumer D |
+| 129 `Counted` terms of `UFixed<8, 0>` against 128, limit 256 | E0080, the count | consumer B |
+| 257 `Counted` terms of `Integer<8>` against 256, limit 512 | E0080, the count | consumer B |
+| 129 `Counted` terms in a `const` item against 128, limit 256 | E0080, the exact add | consumer B |
+| 128 `Counted` terms against 127, default limit | E0320 | consumer B |
 
 The private field's twin reads through `raw()`, since no single token makes the field reachable. Arm B has no carrier parameter, so the wrong carrier has no pair there.
 
@@ -128,7 +137,13 @@ a_i64_wrap:
 native_i64_wrapping_add = a_i64_wrap
 ```
 
-At 13 bits in 16, signed wrap is an add, `shll $3`, `movswl` and `shrl $3`. Unsigned wrap is `leal` and `andl $8191`. Saturate is a pair of `cmov`s against the range ends. The first reading, without `#[inline]` on the rung functions, is kept beside it (`outputs/asm-release-x86_64-without-inline.txt`). There the non-generic rung functions were not inlined across the crate and B called them through the GOT. `#[inline]` on each rung function is what makes the two arms equal.
+At 13 bits in 16, signed wrap is an add, `shll $3`, `movswl` and `shrl $3`. Unsigned wrap is `leal` and `andl $8191`.
+
+Saturate is two steps. The first is the carrier's own saturating add. For signed, `addw` sets the overflow flag and `cmovnol` picks the wrapped sum over the saturated one built from its sign. For unsigned, `cmovael` picks the sum over 65535 on carry. The second step is two `cmov`s that clamp to the width's range ends, -4096 and 4095, or 8191.
+
+At a width below the carrier the first step is dead. Two 13-bit members sum within 14 bits and never overflow an `i16`, so the `cmovnol` and the four instructions feeding it, or the `cmovael`, are wasted. The real crate can take this: where the width is below the carrier, a saturating add is the wrapping machine add followed by the clamp, which is what `rung::add_*` should emit there.
+
+The reading without `#[inline]` on the rung functions is kept beside it (`outputs/asm-release-x86_64-without-inline.txt`, built with `--features common/outline`). There every probe is a tail jump through the GOT to the rung function in `common`, which is not inlined across the crate. `#[inline]` on each rung function is what makes the two arms equal.
 
 ## The accumulator, on arm B
 
@@ -153,7 +168,7 @@ One term past the bound, what happens depends on where the add runs:
 
 - In a build with overflow checks it panics: `attempt to add with overflow`.
 - In a build without them it wraps silently and `narrow` answers wrong. 257 copies of -128 under signed `Saturate` wrap to 32640 in the register, and `narrow` gives 127, where the oracle gives -128.
-- In const evaluation it is refused at the add: `error[E0080]: attempt to compute 32640_i16 + 255_i16, which would overflow` (`outputs/consumer-b-counted-const-item-129.txt`).
+- In const evaluation it is refused at the add: `error[E0080]: attempt to compute 32640_i16 + 255_i16, which would overflow`. This is shown by `consumer-b/tests/ui/fail/terms_past_the_bound_in_a_const.stderr`, 129 terms of `UFixed<8, 0>` in a `const` item against a twin of 128, with the recursion limit at 256 so no other error fires.
 
 A type-level term count builds under the vetted gates, with no feature at all. `Counted<S, N>` carries `N` as a Peano type (`Zero`, `Succ<N>`). `push` returns `Counted<S, Succ<N>>`. `narrow` holds `const { assert!(N::COUNT <= Wide::<S>::MAX_TERMS, ...) }`. No `generic_const_exprs` is involved: the count is a type and the check is a constant of it. Consumer B uses it in a `const` item (`counted::EDGE`, the edge case above, exactly 0).
 
@@ -163,13 +178,15 @@ The catch is the default `recursion_limit` of 128. The nested type is refused at
 error[E0320]: overflow while adding drop-check rules for `Counted<Signature<UFixed<8, 0>, ...>, Succ<Succ<...>>>`
 ```
 
-The smallest bound on the ladder is 128 (`UFixed<8, 0>`), so at the default limit the count's own check can never fire. With `#![recursion_limit = "256"]` in the consumer, which is stable, the 129th term of `UFixed<8, 0>` is refused by the count (`terms_past_the_bound.stderr`, twin at 128):
+The smallest bound on the ladder is 128 (`UFixed<8, 0>`), so at the default limit the count's own check can never fire. With `#![recursion_limit = "256"]` in the consumer, which is stable, the 129th term of `UFixed<8, 0>` is refused by the count (`terms_past_the_bound.stderr`, twin at 128). With the limit at 512, the 257th term of `Integer<8>` is refused the same way (`signed_terms_past_the_bound.stderr`, twin at 256):
 
 ```
 error[E0080]: evaluation panicked: more terms than the register holds the sum of exactly
 ```
 
-A Peano count therefore guards the 8-bit unsigned rung only once the consumer raises its recursion limit. It cannot reach the other rungs' bounds at any depth a compiler should be asked to nest.
+A Peano count therefore guards a bound only once the consumer raises its recursion limit past it. The two full-width 8-bit bounds were probed, at depths 129 and 257.
+
+Below full width, the 8-bit rung's bounds climb toward 2^15, at `UFixed<1, 0>` and `Integer<1>`. `UFixed<7, 0>` is 258, the same order as the probed cases; the rest of the climb was not probed. The 16-bit rung starts at 2^15 and the wider rungs go far past it. No depth near those was tried, so whether a nesting that deep builds is open. The count covers the bounds at the 8-bit rung's full width and just below it, and nothing past those was shown.
 
 ## Built on, and what it costs
 
@@ -177,8 +194,8 @@ Build on arm B. It is the only arm where a function generic over the signature b
 
 It costs four things:
 
-- the `unsafe` in `copy`, which needs a review and a soundness note;
-- the sealed `Machine` trait, which closes the carrier set to the eight ladder integers and makes that closure part of the contract;
+- the `unsafe` in `copy`, whose precondition is that both sides are plain machine integers of equal size: every bit pattern valid, no padding, no niche. The sketch holds it with a sealed `Bits` bound on both type parameters plus a size assertion. The real crate keeps that bound, or makes `copy` an `unsafe fn` carrying the precondition to each call site, and the review checks that no type outside `Bits` can reach it;
+- the sealed `Bits` and `Machine` traits, which close the carrier set to the eight ladder integers and their accumulators and make that closure part of the contract;
 - a dispatch macro that names all eight rung functions per operation;
 - `#[inline]` on every rung function, without which generic code calls them out of line.
 

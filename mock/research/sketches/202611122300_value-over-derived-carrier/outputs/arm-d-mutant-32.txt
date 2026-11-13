@@ -1,6 +1,6 @@
 $ cargo test -p arm-d --features common/mutant-32 --lib
    Compiling arm-d v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-d)
-    Finished `test` profile [unoptimized] target(s) in 1.05s
+    Finished `test` profile [unoptimized] target(s) in 1.58s
      Running unittests src/lib.rs (/home/user/target/debug/deps/arm_d-29e1015bbb7e04a3)
 
 running 2 tests
@@ -11,7 +11,7 @@ failures:
 
 ---- tests::value_add_every_width_over_the_edges stdout ----
 
-thread 'tests::value_add_every_width_over_the_edges' (1018) panicked at arm-d/src/lib.rs:112:5:
+thread 'tests::value_add_every_width_over_the_edges' (10973) panicked at arm-d/src/lib.rs:112:5:
 assertion `left == right` failed: pairs of members the value type's add gets wrong
   left: 900
  right: 0
@@ -29,6 +29,6 @@ note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose bac
 failures:
     tests::value_add_every_width_over_the_edges
 
-test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
 
 error: test failed, to rerun pass `-p arm-d --lib`

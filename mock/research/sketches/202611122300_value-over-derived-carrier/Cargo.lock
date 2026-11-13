@@ -61,6 +61,7 @@ dependencies = [
  "arm-a",
  "arm-b",
  "arvo-format",
+ "common",
 ]
 
 [[package]]

@@ -12,7 +12,7 @@
 
 use core::mem::size_of;
 
-use common::{Machine, Sole, rung};
+use common::{Bits, Machine, Sole, rung};
 
 pub mod wide;
 
@@ -23,18 +23,20 @@ pub struct Num<S: Sole>(S::Repr);
 
 /// The bits of `x` read as a `U`.
 ///
-/// The only `unsafe` in the arm. Every call is inside the size and signedness
-/// dispatch below, which pairs `T` and `U` of the same size, both plain integers
-/// with every bit pattern valid.
+/// The only `unsafe` in the arm. Both sides are `Bits`, sealed to the nine plain
+/// machine integers, where every bit pattern is a valid value; so a copy between
+/// two of equal size is sound, and the size is asserted. Nothing outside
+/// `common` can name a type this accepts that breaks that.
 ///
 /// The guard cannot be an inline `const` block: every arm of the dispatch is
 /// monomorphised, the dead ones included, and a `const` assertion fails in
 /// those (`copy::<u64, u32>` at a 32-bit carrier). As an ordinary assertion it
 /// is evaluated only on the arm taken, where it holds, and folds away.
-const fn copy<T: Copy, U: Copy>(x: T) -> U {
+const fn copy<T: Bits, U: Bits>(x: T) -> U {
     assert!(size_of::<T>() == size_of::<U>());
-    // SAFETY: same size, both integers, every bit pattern valid; `x` lives
-    // across the read.
+    // SAFETY: `T` and `U` are both `Bits`, plain integers with every bit pattern
+    // valid, and of the same size by the assertion above; `x` lives across the
+    // read.
     unsafe { core::ptr::read((&raw const x).cast::<U>()) }
 }
 
@@ -54,8 +56,9 @@ macro_rules! dispatch {
             (2, false) => copy::<u16, $r>($u16($(copy::<$r, u16>($op),)* $($tail),*)),
             (4, true) => copy::<i32, $r>($s32($(copy::<$r, i32>($op),)* $($tail),*)),
             (4, false) => copy::<u32, $r>($u32($(copy::<$r, u32>($op),)* $($tail),*)),
-            (_, true) => copy::<i64, $r>($s64($(copy::<$r, i64>($op),)* $($tail),*)),
-            (_, false) => copy::<u64, $r>($u64($(copy::<$r, u64>($op),)* $($tail),*)),
+            (8, true) => copy::<i64, $r>($s64($(copy::<$r, i64>($op),)* $($tail),*)),
+            (8, false) => copy::<u64, $r>($u64($(copy::<$r, u64>($op),)* $($tail),*)),
+            _ => unreachable!(),
         }
     };
 }
