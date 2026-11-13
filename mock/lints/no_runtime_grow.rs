@@ -5,6 +5,10 @@
 //! these calls means the container is expected to grow at runtime,
 //! which arvo doesn't support.
 //!
+//! The patterns are matched over the file's code only: the source as
+//! `code_only_source` returns it, with every comment and string literal
+//! blanked out of the one parse the engine holds.
+//!
 //! Severity is `ADVISORY` by default (warn but never block). The
 //! harder `no-alloc-enforcer` lint already rejects `Vec` / `String` /
 //! `Box` outright; this lint exists as a data indicator for reviews:
@@ -56,15 +60,10 @@ impl CrateLint for NoRuntimeGrow {
             ("Vec::with_capacity", "`Vec::with_capacity(...)`"),
         ];
 
-        for (idx, line) in ctx.source().lines().enumerate() {
-            let trimmed = line.trim_start();
-
-            if trimmed.starts_with("//") {
-                continue;
-            }
-
+        let code = crate::code_only_source::code_only(ctx);
+        for (idx, (line, code_line)) in ctx.source().lines().zip(code.lines()).enumerate() {
             for (needle, display) in patterns {
-                if line.contains(needle) {
+                if code_line.contains(needle) {
                     errors.push(LintError::with_severity(
                         ctx.crate_name.to_string(),
                         idx + 1,
@@ -214,11 +213,8 @@ mod tests {
 
     #[test]
     fn a_doc_comment_mentioning_the_patterns_is_silent() {
-        // The comment skip here is a single whole-line `//` check ahead
-        // of the pattern loop, so `///` and `//!` are caught by the
-        // same branch as a plain `//` line; there is no separate
-        // doc-comment carve-out to test the way `no-alloc-enforcer`
-        // needed one.
+        // A doc comment is a comment node like any other, blanked with
+        // them, so there is no separate doc-comment carve-out.
         assert!(hits("/// Never call `.push(` on arvo containers.\n").is_empty());
         assert!(hits("//! `.extend(` is forbidden here too.\n").is_empty());
     }
@@ -263,45 +259,37 @@ mod tests {
         );
     }
 
-    // --- catalogued gaps ---------------------------------------------------
+    // --- what only the parse can tell apart --------------------------------
 
+    /// Each silent arm has a control beside it: the same call in code on a line
+    /// that also carries a comment or a string, which has to keep firing.
     #[test]
-    #[ignore = "catalogue: a trailing `//` comment on a real line of code \
-                is scanned as code; `let v = w; // could .push( here \
-                later` false-positives; needs tree-sitter-aware scanning \
-                to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_read_a_trailing_comment"]
-    fn a_trailing_comment_after_real_code_is_wrongly_flagged() {
-        let errors = hits("let v = w; // could .push( here later\n");
-        assert!(
-            errors.is_empty(),
-            "a trailing comment mentioning the pattern is not a call of it"
-        );
+    fn a_trailing_comment_after_real_code_is_silent() {
+        assert!(hits("let v = w; // could .push( here later\n").is_empty());
     }
 
     #[test]
-    #[ignore = "catalogue: a string literal naming one of the forbidden \
-                patterns false-positives; needs tree-sitter-aware \
-                scanning to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
-    fn a_string_literal_naming_a_forbidden_pattern_is_wrongly_flagged() {
-        let errors = hits("let msg = \"call .push( next\";\n");
-        assert!(
-            errors.is_empty(),
-            "text inside a string literal is not a call of the pattern"
-        );
+    fn a_trailing_comment_does_not_hide_the_call_before_it() {
+        assert_eq!(hits("v.push(1); // fine\n").len(), 1);
     }
 
     #[test]
-    #[ignore = "catalogue: a block-comment interior line naming one of \
-                the forbidden patterns false-positives; needs \
-                tree-sitter-aware scanning to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_on"]
-    fn an_interior_line_of_a_block_comment_is_wrongly_flagged() {
-        let errors = hits("/*\nv.push(1);\n*/\n");
-        assert!(
-            errors.is_empty(),
-            "a block-comment interior line should not read as real source"
-        );
+    fn a_string_literal_naming_a_forbidden_pattern_is_silent() {
+        assert!(hits("let msg = \"call .push( next\";\n").is_empty());
+    }
+
+    #[test]
+    fn a_string_literal_does_not_hide_the_call_beside_it() {
+        assert_eq!(hits("v.push(\"a\");\n").len(), 1);
+    }
+
+    #[test]
+    fn an_interior_line_of_a_block_comment_is_silent() {
+        assert!(hits("/*\nv.push(1);\n*/\n").is_empty());
+    }
+
+    #[test]
+    fn an_interior_line_of_a_raw_string_is_silent() {
+        assert!(hits("let doc = r#\"\nv.extend(o);\n\"#;\n").is_empty());
     }
 }

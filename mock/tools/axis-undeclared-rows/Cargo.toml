@@ -1,0 +1,28 @@
+# Its own workspace root. This crate sits inside the mock workspace directory
+# and is not a member, and cargo refuses that outright: "current package
+# believes it is in a workspace when it is not". Membership is the wrong fix,
+# since it would put a cdylib into the consumer's dependency graph.
+[workspace]
+
+[package]
+name = "arvo-axis-undeclared-rows"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+# The URL spelling has to match the one the engine pins, character for
+# character. Cargo keys a git source by its URL, so a spelling here that
+# differs from the engine's is two copies of the same crate in one graph and
+# a type mismatch across the boundary, with nothing in the error saying so.
+#
+# The engine's spelling is `https://`: `CANONICAL_URL` in cargo-mock, with a
+# test asserting it carries no `git@`, and the generated lint crate keys its
+# `[patch]` on that URL, so a patch collapses only what matches it. An earlier
+# version of this comment named `ssh://` as the engine's, which is what left
+# all five of these wrong and wedged the repo.
+mockspace = { package = "mockspace-lint-rules", git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev" }
+
+[lib]
+crate-type = ["cdylib", "rlib"]
