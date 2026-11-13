@@ -5,7 +5,7 @@ the_named_doors_sit_where_the_policy_puts_them --- FAILED
 every_host_integer_comes_in_as_adapted_at_the_wider_widths --- FAILED
 every_host_integer_comes_in_as_adapted_at_widths_one_to_eight --- FAILED
 ---- the_named_doors_sit_where_the_policy_puts_them stdout ----
-panicked at crates/arvo-numeral/tests/the_host_door.rs:184:5:
+panicked at crates/arvo-numeral/tests/the_host_door.rs:192:5:
 assertion `left == right` failed
   left: 255
  right: 0

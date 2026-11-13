@@ -4,12 +4,12 @@ the_named_conversions_sit_where_arithmetic_puts_them --- FAILED
 a_fixed_point_member_converts_between_two_exponents --- FAILED
 an_integer_converts_onto_a_fixed_point_grid_and_back --- FAILED
 ---- the_conversion_is_a_constant_where_its_operand_is stdout ----
-panicked at crates/arvo-numeral/tests/the_conversion.rs:199:5:
+panicked at crates/arvo-numeral/tests/the_conversion.rs:300:5:
 assertion `left == right` failed
   left: 3
  right: 24
 ---- the_named_conversions_sit_where_arithmetic_puts_them stdout ----
-panicked at crates/arvo-numeral/tests/the_conversion.rs:175:5:
+panicked at crates/arvo-numeral/tests/the_conversion.rs:201:5:
 assertion `left == right` failed
   left: 3
  right: 24

@@ -8,7 +8,7 @@ a_fixed_point_quotient_is_rounded_by_the_mode --- FAILED
 every_member_divides_by_every_member_but_zero_at_widths_one_to_four --- FAILED
 every_member_divides_by_the_named_divisors_at_widths_five_to_eight --- FAILED
 ---- the_named_quotients_sit_where_arithmetic_puts_them stdout ----
-panicked at crates/arvo-numeral/tests/the_quotient.rs:132:5:
+panicked at crates/arvo-numeral/tests/the_quotient.rs:153:5:
 assertion `left == right` failed
   left: -128
  right: 127
