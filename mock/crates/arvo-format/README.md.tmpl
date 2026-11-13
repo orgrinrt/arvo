@@ -33,9 +33,9 @@ the exact result under the declared signature, adapted once. They take and retur
 the format is stated in. Beside the sum sits the verdict for where the adapted sum is associative,
 which reads the range and the phase rather than guessing from the sign. The product reads the phase,
 the radix and the quantum together, and is formed wide enough that what it leaves out is a position
-the slot index or an exact remainder cannot hold. Floating point formats are not yet admitted by any of them: the applied map
-has no magnitude coordinate to land a result at, and what wrapping means over a union of magnitude
-ranges is a canon question this crate does not answer.
+the slot index or an exact remainder cannot hold. Floating point formats are not yet admitted by any
+of them: the applied map has no magnitude coordinate to land a result at, and what wrapping means over
+a union of magnitude ranges is a canon question this crate does not answer.
 
 There is no machine container anywhere in this crate and you cannot reach one from here. Every
 operation is a function of the width you declared, never of whatever the value happens to sit in, and

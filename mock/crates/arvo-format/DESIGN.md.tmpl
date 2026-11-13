@@ -1815,7 +1815,12 @@ A denominator `D` past `2^63 - 1` is not yet admitted, because the remainder of 
 `Fraction` with a positive signed 64-bit denominator. That is the shape of addition's remainder
 condition, which asks the same of the phase's reduced denominator. At zero phase it reads `e >= -62`
 at radix two and `e >= -18` at radix ten, and at exponent zero it admits a phase denominator up to
-`3037000499`. The ticket is `arvo_s_exact_position_carries_no_remainder_denominator_past`.
+`3037000499`. The condition reads the unreduced `D`, so it is conservative. Each member pair's
+remainder is its numerator's residue over `D` reduced, and its denominator is `D` itself wherever that
+residue is coprime to `D`. So where some member pair's residue is coprime to `D` the condition is
+exact, and it holds a format out too early only where no member pair's residue is, every reduced
+remainder then fitting although `D` does not. The ticket is
+`arvo_s_exact_position_carries_no_remainder_denominator_past`.
 
 A product the slot index cannot carry is not yet admitted. The position is bilinear in the two slots,
 so over a box of slots it is extreme at the four corners, and the obligation computes the four corner
@@ -1856,13 +1861,19 @@ ranges, at a phase and at radix ten. Beside it an edge sweep over every width fr
 families, at whole and fractional exponents and at `-62`, which checks the verdict against an
 independent count of the corners and the step at the corners and the points next to them, the
 signed 64-bit `MIN * MIN` and `UFixed<63, 1>` among them, against an oracle that forms the slots'
-product in the host's unsigned 128-bit integer rather than in the step's limbs. The four-limb integer
-gets its own suite against the host's 128-bit arithmetic wherever that holds the answer, and at the
-four-limb boundary on both sides.
+product in the host's unsigned 128-bit integer rather than in the step's limbs. The same sweep runs at
+a phase and at radix ten, at every width from nine to 64 of both families, `Integer<64>` at a phase of
+a third and at radix ten with `e = -18` among them, against an oracle in a wide rational of its own,
+built on pairs of the host's unsigned 128-bit integer, since there the numerator passes `2^128` and
+the division is by a denominator that is not a power of two. The four-limb integer gets its own suite
+against the host's 128-bit arithmetic wherever that holds the answer, at the four-limb boundary on
+both sides, and at divisions whose quotient spans three and four limbs by divisors that are not powers
+of two, checked by multiplying back.
 
 And the law rows' cells. Under wrapping, `(a * b) * c == a * (b * c)` holds on the integer grid at
-widths three to eight, signed and unsigned, and the row's fails cell is `F > 0`, so every fraction
-width from one to `W` is crossed at each of those widths and checked against it. Under saturation it
+widths three to eight, signed and unsigned, and the row's fails cell is `F > 0` at widths three to
+seven, so every fraction width from one to `W` is crossed at each of those widths and checked against
+it. Nothing is asserted at `F > 0` and width eight, which the row does not state. Under saturation it
 holds unsigned at widths three to eight and fails signed at 28, 160, 780 and 3516 triples at widths
 three to six. `a * (b + c) == (a * b) + (a * c)` holds unsigned under wrapping and under saturation at
 widths three to eight, and fails signed under saturation at widths six and seven.
