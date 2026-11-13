@@ -1,0 +1,26 @@
+# Standalone, detached from the arvo mock workspace. An ad-hoc spike for the
+# stack audit under mock/research/202611131215_stack-audit/: every number it
+# prints is an ad-hoc spike and none is a bench result.
+
+[package]
+name = "stack-audit-value-yardsticks"
+description = "An ad-hoc spike: the value's doors, its fold, and a hand-written fixed-point product by rounding mode"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../crates/arvo-numeral" }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+
+[profile.plain]
+inherits = "release"
+lto = false
+codegen-units = 16
+
+[workspace]
