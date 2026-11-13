@@ -1,0 +1,9 @@
+[package]
+name = "arm-b"
+description = "Arm B: the value holds the projected carrier, the body bit-copies it to the matching machine integer"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+common.workspace = true

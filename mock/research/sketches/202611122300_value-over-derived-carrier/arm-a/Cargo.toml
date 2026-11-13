@@ -1,0 +1,9 @@
+[package]
+name = "arm-a"
+description = "Arm A: the carrier a defaulted second type parameter, inherent const fns per ladder carrier, no feature, no unsafe"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+common.workspace = true

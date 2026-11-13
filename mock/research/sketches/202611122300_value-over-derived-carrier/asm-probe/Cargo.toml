@@ -1,0 +1,12 @@
+[package]
+name = "asm-probe"
+description = "Exported instances of add, for reading the emitted assembly: an ad-hoc reading, not a bench"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+arm-a.workspace = true
+arm-b.workspace = true
+common.workspace = true
+arvo-format.workspace = true

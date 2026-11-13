@@ -1,0 +1,29 @@
+# cargo rustc -p asm-probe --release --lib --features common/outline -- --emit asm, x86_64, default target features; the probe labels and their bodies to retq, and the alias lines. An ad-hoc reading, not a measurement.
+a_i13_sat:
+	movl	$13, %edx
+	movl	$1, %ecx
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_s16@GOTPCREL(%rip)
+a_i13_wrap:
+	movl	$13, %edx
+	xorl	%ecx, %ecx
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_s16@GOTPCREL(%rip)
+a_i64_wrap:
+	movl	$64, %edx
+	xorl	%ecx, %ecx
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_s64@GOTPCREL(%rip)
+a_u13_sat:
+	movl	$13, %edx
+	movl	$1, %ecx
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_u16@GOTPCREL(%rip)
+a_u13_wrap:
+	movl	$13, %edx
+	xorl	%ecx, %ecx
+	jmpq	*_RNvNtCs6ZxRQoTDAV3_6common4rung7add_u16@GOTPCREL(%rip)
+native_i64_wrapping_add:
+	leaq	(%rdi,%rsi), %rax
+	retq
+b_i13_sat = a_i13_sat
+b_i13_wrap = a_i13_wrap
+b_i64_wrap = a_i64_wrap
+b_u13_sat = a_u13_sat
+b_u13_wrap = a_u13_wrap

@@ -1,0 +1,23 @@
+error[E0271]: type mismatch resolving `<Signature<Integer<13>, Adapt<TowardZero, Wrap>> as Sole>::Repr == i32`
+  --> tests/ui/fail/carrier_named_wrongly.rs:10:12
+   |
+10 |     let _: Option<Num<S13, i32>> = None;
+   |            ^^^^^^^^^^^^^^^^^^^^^ expected `i32`, found `i16`
+   |
+note: required by a bound in `Num`
+  --> $WORKSPACE/arm-a/src/lib.rs
+   |
+   | pub struct Num<S: Sole<Repr = C>, C = <S as Sole>::Repr>(C, PhantomData<fn() -> S>);
+   |                        ^^^^^^^^ required by this bound in `Num`
+
+error[E0271]: type mismatch resolving `<Signature<Integer<13>, Adapt<TowardZero, Wrap>> as Sole>::Repr == i32`
+  --> tests/ui/fail/carrier_named_wrongly.rs:10:36
+   |
+10 |     let _: Option<Num<S13, i32>> = None;
+   |                                    ^^^^ expected `i32`, found `i16`
+   |
+note: required by a bound in `Num`
+  --> $WORKSPACE/arm-a/src/lib.rs
+   |
+   | pub struct Num<S: Sole<Repr = C>, C = <S as Sole>::Repr>(C, PhantomData<fn() -> S>);
+   |                        ^^^^^^^^ required by this bound in `Num`

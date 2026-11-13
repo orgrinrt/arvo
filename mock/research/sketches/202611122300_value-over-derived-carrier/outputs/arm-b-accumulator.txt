@@ -1,0 +1,28 @@
+$ cargo test -p arm-b --test accumulator -- --nocapture
+
+running 5 tests
+
+thread 'one_term_past_the_bound_panics_with_overflow_checks' (11247) panicked at arm-b/src/wide.rs:72:13:
+attempt to add with overflow
+test stepwise_saturation_fails_at_the_edge_and_depends_on_order ... ok
+test at_the_bound_the_sum_is_exact ... ok
+   0test the_term_bound_per_ladder_carrier_at_full_width ... : ok
+__rustc::rust_begin_unwind
+test one_term_past_the_bound_panics_with_overflow_checks - should panic ... ok
+stepwise signed saturating accumulator wrong in 104352 of 497664
+test narrow_of_four_is_adapt_of_the_exact_sum_in_every_order_at_width_8 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.92s
+
+$ cargo test --release -p arm-b --test accumulator -- --nocapture
+
+running 5 tests
+test at_the_bound_the_sum_is_exact ... ok
+test stepwise_saturation_fails_at_the_edge_and_depends_on_order ... ok
+test the_term_bound_per_ladder_carrier_at_full_width ... ok
+test one_term_past_the_bound_wraps_without_overflow_checks ... ok
+stepwise signed saturating accumulator wrong in 104352 of 497664
+test narrow_of_four_is_adapt_of_the_exact_sum_in_every_order_at_width_8 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+

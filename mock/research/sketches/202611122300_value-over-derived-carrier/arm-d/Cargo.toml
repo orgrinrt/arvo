@@ -1,0 +1,9 @@
+[package]
+name = "arm-d"
+description = "Arm D: one concrete value type per ladder carrier, and an alias through the projection"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+common.workspace = true

@@ -1,0 +1,16 @@
+[package]
+name = "arm-e"
+description = "Arm E: the rung an associated const of the width, a const argument to a four-impl family"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+arvo-format.workspace = true
+arvo-placement.workspace = true
+
+[features]
+# The rung's value wrapped in a `const` block, as the first refusal asks.
+const-block = []
+# The brief's `#[type_const]` spelling in place of `type const`.
+attribute-syntax = []

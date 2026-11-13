@@ -1,0 +1,25 @@
+$ cargo check -p arm-e --features attribute-syntax
+error: cannot find attribute `type_const` in this scope
+  --> arm-e/src/lib.rs:29:7
+   |
+29 |     #[type_const]
+   |       ^^^^^^^^^^
+
+error: cannot find attribute `type_const` in this scope
+  --> arm-e/src/lib.rs:43:7
+   |
+43 |     #[type_const]
+   |       ^^^^^^^^^^
+
+error: use of `const` in the type system not defined as `type const`
+  --> arm-e/src/lib.rs:68:45
+   |
+68 | pub type SignedRepr<const W: u32> = <Rung<{ <Signed<W> as RungOf>::RUNG }> as SignedCarrier>::T;
+   |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: add `type` before `const` for `RungOf::RUNG`
+   |
+30 |     type const RUNG: u32;
+   |     ++++
+
+error: could not compile `arm-e` (lib) due to 3 previous errors

@@ -1,0 +1,36 @@
+error[E0080]: evaluation panicked: more terms than the register holds the sum of exactly
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arm_b::Counted::<arvo_format::Signature<arvo_format::points::Integer<8>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Saturate>>, arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Succ<arm_b::Zero>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>::narrow::{constant#0}` failed here
+  |
+ ::: $WORKSPACE/arm-b/src/wide.rs
+  |
+  | /             assert!(
+  | |                 N::COUNT <= Wide::<S>::MAX_TERMS,
+  | |                 "more terms than the register holds the sum of exactly"
+  | |             )
+  | |_____________- in this macro invocation
+
+note: erroneous constant encountered
+   --> $WORKSPACE/arm-b/src/wide.rs
+    |
+    | /         const {
+    | |             assert!(
+    | |                 N::COUNT <= Wide::<S>::MAX_TERMS,
+    | |                 "more terms than the register holds the sum of exactly"
+    | |             )
+    | |         };
+    | |_________^
+
+note: the above error was encountered while instantiating `fn Counted::<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Saturate>>, Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<arm_b::Zero>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>::narrow`
+   --> tests/ui/fail/signed_terms_past_the_bound.rs:12:5
+    |
+ 12 | /     Counted::<S, Zero>::ZERO
+ 13 | |         .push(m)
+ 14 | |         .push(m)
+ 15 | |         .push(m)
+...   |
+269 | |         .push(m)
+270 | |         .narrow()
+    | |_________________^
