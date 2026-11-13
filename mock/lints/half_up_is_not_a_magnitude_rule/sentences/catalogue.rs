@@ -15,14 +15,16 @@
 //! regression rather than a known gap. A pair the reader learns to read moves
 //! to `closed.rs`, with a test of its own.
 //!
-//! Four entries are left. Two are not a gap the reader can close alone: a
-//! pronoun after a rule the mode is denied to be, across a full stop and inside
-//! one clause, which the entries read as the sentence's subject and
-//! `carry_tests::every_other_name_defeats_the_carry` reads as the rule standing
-//! last. One question ticket holds which of the two governs, for both. The
-//! other two are what remains of two classes the reader now reads by closed
-//! lists: an imperative whose object opens on a word of an open class, and a
-//! subject named in words no list holds.
+//! The entries themselves are in `known.rs`, sixteen of them, and the lint's
+//! module doc names each class. Six are not a gap the reader can close alone:
+//! how a pronoun resolves, which the entries read one way and
+//! `carry_tests::every_other_name_defeats_the_carry` reads the other, and one
+//! question ticket holds which governs. The other ten are what remains of the
+//! classes the reader now reads by closed lists or by a rule over a few words:
+//! an imperative on an open-class object, a subject in words no list holds,
+//! the numbers `COUNTED` reads as counts, a count before a verb, a motion
+//! gerund `MOTIONS` lacks, a gerund saying how the mode is computed, a
+//! predicating copula, and a rule named by a hyphenated phrase alone.
 //!
 //! The last arm reads the live registry's ratified rulings, which the lint
 //! itself does not read, and asserts none of their prose is refused. It held
@@ -39,6 +41,7 @@
 use std::path::{Path, PathBuf};
 
 use super::super::NOT_PROSE;
+use super::known::CATALOGUE;
 use super::{Pair, fires_right, found, silent_right, wrong_sides};
 
 /// Which side of a catalogued pair the reader gets wrong.
@@ -74,70 +77,18 @@ impl Known {
     }
 }
 
-/// Every known wrong reading, with its twin.
-pub(super) const CATALOGUE: &[Known] = &[
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is not Java's `HALF_UP`. It sends a tie away from zero.",
-            silent:   "`half_up` is not the `HALF_UP` of Java. That one goes away from zero.",
-            subject:  None,
-            differs:  "whether the pronoun following a negated identity is `It`, referring to the \
-                      sentence's subject, or `that one`, referring to what the identity denied",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is nearest. Round halfway ties away from zero.",
-            silent:   "`half_up` is nearest. Round sends halfway ties away from zero.",
-            subject:  None,
-            differs:  "whether `Round` opening the clause is an imperative whose object opens on a \
-                      word of an open class, or the method followed by its verb",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is a mode. Its decimal module sends a tie away from zero.",
-            silent:   "`half_up` is a mode. Python's decimal module sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether the clause's subject is the mode's own, by a pronoun, or a thing \
-                      named in words the reader has no noun for",
-            measured: false,
-        },
-        wrong: Wrong::Refuses,
-    },
-    // The same question as the Java pair, inside one clause: whether a pronoun
-    // binds past a rule the clause denies the mode is. It stands under that
-    // pair's question ticket, and the reader takes the rule standing last in
-    // both until the ticket settles it.
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` differs from `floor`, and it sends a tie away from zero.",
-            silent:   "`half_up` differs from `floor`. It sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether the pronoun opens a segment joined by a comma and a conjunction \
-                      within one clause, where the subject governs, or opens the next clause after \
-                      a full stop, where the name standing last does",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-];
-
 #[test]
-fn the_catalogue_holds_four_three_let_through_and_one_refused() {
+fn the_catalogue_holds_sixteen_seven_let_through_and_nine_refused() {
     // A count, so an entry dropped rather than fixed or deleted is a failure
-    // here. Sixteen of the eighteen it held moved to `closed.rs`, and two
-    // entries are the residue of the classes two of those closed.
-    assert_eq!(CATALOGUE.len(), 4);
+    // here. Sixteen of the eighteen it first held moved to `closed.rs`; two
+    // entries are the residue of the classes two of those closed, and the
+    // twelve after them the residue of the lists the reader reads by.
+    assert_eq!(CATALOGUE.len(), 16);
     let through = CATALOGUE
         .iter()
         .filter(|k| matches!(k.wrong, Wrong::LetsThrough))
         .count();
-    assert_eq!(through, 3);
+    assert_eq!(through, 7);
 }
 
 #[test]
@@ -203,6 +154,87 @@ catalogue_case!(
                 call as the Java pair; tracked #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
     a_pronoun_in_one_clause_after_a_denied_rule_lets_through,
     3
+);
+catalogue_case!(
+    #[ignore = "catalogue: a rule named by a hyphenated phrase alone, behind a negator, is read as \
+                a quality, so the relative after it is the mode's and the clause is refused; \
+                tracked #arvo_s_half_up_reader_takes_a_rule_named_only_by_a_hyphenate"]
+    a_rule_named_by_a_hyphenated_phrase_is_read_as_a_quality,
+    4
+);
+catalogue_case!(
+    #[ignore = "catalogue: `it` in a clause opening on a subject is read as the mode, though here \
+                it is what the seat read, the open pronoun call; tracked \
+                #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
+    it_after_a_seat_is_read_as_the_mode,
+    5
+);
+catalogue_case!(
+    #[ignore = "catalogue: `it` in an aside of a subject clause is read as the mode, though it is \
+                the subject, the open pronoun call; tracked \
+                #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
+    it_in_an_aside_of_the_subject_is_read_as_the_mode,
+    6
+);
+catalogue_case!(
+    #[ignore = "catalogue: `it` behind the reading in a subject clause is read as the mode, though \
+                it is the subject, the open pronoun call; tracked \
+                #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
+    it_behind_the_reading_of_a_subject_is_read_as_the_mode,
+    7
+);
+catalogue_case!(
+    #[ignore = "catalogue: a personal pronoun in the alias's segment keeps the alias a reading, \
+                though here the pronoun is the alias, the open pronoun call; tracked \
+                #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
+    a_pronoun_for_the_alias_keeps_it_a_reading,
+    8
+);
+catalogue_case!(
+    #[ignore = "catalogue: a seat number before `in` is read as a count, so the clause carries the \
+                mode and is refused; tracked #arvo_s_half_up_reader_reads_a_bare_number_before_or_or_in_as"]
+    a_seat_before_in_a_place_is_read_as_a_count,
+    9
+);
+catalogue_case!(
+    #[ignore = "catalogue: a seat number before `in` is read as a count, so the clause carries the \
+                mode and is refused; tracked #arvo_s_half_up_reader_reads_a_bare_number_before_or_or_in_as"]
+    a_seat_before_in_its_answer_is_read_as_a_count,
+    10
+);
+catalogue_case!(
+    #[ignore = "catalogue: two seat numbers joined by `or` are read as a count, so the clause \
+                carries the mode and is refused; tracked \
+                #arvo_s_half_up_reader_reads_a_bare_number_before_or_or_in_as"]
+    two_seats_joined_by_or_are_read_as_a_count,
+    11
+);
+catalogue_case!(
+    #[ignore = "catalogue: a bare number before a verb is read as a seat, so a count of ties takes \
+                the clause from the mode; tracked #arvo_s_half_up_reader_reads_a_bare_number_before_a_verb_as_a"]
+    a_count_before_a_verb_is_read_as_a_seat,
+    12
+);
+catalogue_case!(
+    #[ignore = "catalogue: a motion gerund outside `MOTIONS` is read as naming `toward zero`, so \
+                the clause names another rule and is let through; tracked \
+                #arvo_s_half_up_reader_misses_a_motion_gerund_outside_motions"]
+    a_motion_gerund_outside_the_list_names_the_rule,
+    13
+);
+catalogue_case!(
+    #[ignore = "catalogue: a gerund naming `toward zero` takes the relative behind it, though the \
+                clause says the mode is computed that way; tracked \
+                #arvo_s_half_up_reader_reads_a_gerund_naming_toward_zero_befo"]
+    a_relative_after_how_the_mode_is_computed_goes_to_the_gerund,
+    14
+);
+catalogue_case!(
+    #[ignore = "catalogue: a copula before a negator behind the reading is read as a denied \
+                identity even where it predicates a quality; tracked \
+                #arvo_s_half_up_reader_reads_any_copula_before_a_negator_as_a"]
+    a_predicating_copula_is_read_as_an_identity,
+    15
 );
 
 /// The repository this file sits in, found from its own path.

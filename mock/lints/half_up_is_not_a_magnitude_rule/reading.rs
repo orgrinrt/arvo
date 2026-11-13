@@ -276,9 +276,11 @@ fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>
 /// A relative binds to the nearest thing named, and where the stretch since the
 /// mode's last spelling denies that the mode is something, that something is
 /// another rule whatever words name it: "`half_up` is not Java's rule, which
-/// goes away from zero". Whether a pronoun binds past a rule the clause denies
-/// the mode is, back to the mode, is not settled, inside a clause as across a
-/// stop, and the pronoun takes the last rule named in both.
+/// goes away from zero". How a pronoun resolves is one open call, under the
+/// pronoun question ticket. A pronoun opening this segment takes the rule named
+/// last, as one opening a clause does; a pronoun later in the segment is not
+/// asked here, and `words::opens_on_a_subject` and `given` read `it` and the
+/// other personal pronouns their own way, each marked with that ticket.
 fn attributed_to_another_rule(clause: &str, lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
     let from = segs[segment_of(segs, r)].0;
     let head = &clause[from .. r];
@@ -447,6 +449,9 @@ fn given(text: &str, lower: &str, segs: &[(usize, &str)]) -> Vec<(usize, &'stati
         .into_iter()
         .filter(|&(r, reading)| {
             let (from, seg) = segs[segment_of(segs, r)];
+            // FIXME(arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi): a
+            // personal pronoun in the segment is read as the mode, which is one
+            // reading of the open pronoun call.
             !(spellings_in(&text[from .. from + seg.len()]).is_empty()
                 && !words::holds_a_personal_pronoun(seg)
                 && words::a_reading_stands_as_a_name(text, lower, from, r, reading))

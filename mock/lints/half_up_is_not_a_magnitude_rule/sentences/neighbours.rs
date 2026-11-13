@@ -185,6 +185,67 @@ pub(super) const NEIGHBOURS: &[Pair] = &[
         differs:  "the same with no pronoun, the count told by the word behind the number",
         measured: false,
     },
+    // A rule named by its owner: only an owner the ruling gives the alias to
+    // names another rule. The ruled mode's own authorities do not.
+    Pair {
+        fires:    "`half_up` is the ruled mode. Under op's rule a tie goes away from zero.",
+        silent:   "`half_up` is the ruled mode. Under Java's rule a tie goes away from zero.",
+        subject:  None,
+        differs:  "whether the owner of the rule is the ruled mode's own authority or one the \
+                  ruling gives the alias to",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is the ruled mode. By the registry's rule a tie goes away from zero.",
+        silent:   "`half_up` is the ruled mode. By Python's rule a tie goes away from zero.",
+        subject:  None,
+        differs:  "the same, the registry against Python",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is the ruled mode. Per the panel's rule, a tie goes away from zero.",
+        silent:   "`half_up` is the ruled mode. Per IEEE's rule, a tie goes away from zero.",
+        subject:  None,
+        differs:  "the same, the panel against IEEE",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is the ruled mode. Under arvo's rounding a tie goes away from zero.",
+        silent:   "`half_up` is the ruled mode. Under MATLAB's rounding a tie goes away from zero.",
+        subject:  None,
+        differs:  "the same, arvo against MATLAB, with `rounding` for the rule",
+        measured: false,
+    },
+    // A relative after a negator binds to the denied thing only where the
+    // words behind the negator name a rule: an article alone does not.
+    Pair {
+        fires:    "`half_up` is not the slow one, which is why it sends a tie away from zero.",
+        silent:   "`half_up` is not the slow rule, which sends a tie away from zero.",
+        subject:  None,
+        differs:  "whether the article opens a description of the mode or a rule",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is not symmetric, which means a tie goes away from zero.",
+        silent:   "`half_up` is not symmetric rounding, which sends a tie away from zero.",
+        subject:  None,
+        differs:  "whether the denied thing is a quality or a rule named with no article",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is not commercial, which means a tie goes away from zero.",
+        silent:   "`half_up` is not commercial rounding, which sends a tie away from zero.",
+        subject:  None,
+        differs:  "the same with `commercial`",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` isn't symmetric, which means a tie goes away from zero.",
+        silent:   "`half_up` isn't symmetric rounding, which sends a tie away from zero.",
+        subject:  None,
+        differs:  "the same behind `isn't`",
+        measured: false,
+    },
 ];
 
 #[test]
@@ -199,7 +260,7 @@ fn every_neighbour_reads_right_on_both_sides() {
 }
 
 #[test]
-fn the_neighbours_hold_twenty() {
+fn the_neighbours_hold_twenty_eight() {
     // A count, so a neighbour dropped rather than read right is a failure here.
-    assert_eq!(NEIGHBOURS.len(), 20);
+    assert_eq!(NEIGHBOURS.len(), 28);
 }

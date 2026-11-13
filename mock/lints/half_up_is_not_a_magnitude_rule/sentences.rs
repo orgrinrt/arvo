@@ -29,6 +29,8 @@ mod catalogue;
 mod closed;
 #[path = "sentences/corpus.rs"]
 mod corpus;
+#[path = "sentences/known.rs"]
+mod known;
 #[path = "sentences/neighbours.rs"]
 mod neighbours;
 
@@ -126,7 +128,7 @@ fn no_sentence_the_corpus_asserts_is_one_the_catalogue_says_is_wrong() {
     // sentence as a wrong side would be a contradiction each arm passes alone.
     // A catalogue twin, which is a side the reader gets right, may appear in
     // both.
-    for known in catalogue::CATALOGUE {
+    for known in known::CATALOGUE {
         let wrong = known.wrong_side();
         for pair in PAIRS
             .iter()

@@ -14,6 +14,7 @@
 //! `vocabulary.rs`, and none of them decides a pairing on its own.
 
 use super::vocabulary::{
+    ALIAS_OWNERS,
     ARTICLES,
     CONJUNCTIONS,
     COUNTED,
@@ -23,7 +24,6 @@ use super::vocabulary::{
     NAME_LEADS,
     OTHER_NAMES,
     PERSONAL,
-    PRONOUNS,
     RULE_NOUNS,
     SUBJECTS,
 };
@@ -117,11 +117,15 @@ fn toward_zero_names(text: &str, at: usize) -> bool {
 /// the clause handing what it says to the one thing named before: "Every test
 /// shows it sends a tie away from zero" is about the mode, whatever the test
 /// is. `they` and `them` point at several things, ties or seats, and never at
-/// one mode: "270 read them as going away from zero" stays the seat's. And a
+/// one mode: "270 read them as going away from zero" stays the seat's. Both are
+/// readings of the open pronoun call and stand under its ticket. And a
 /// number followed by one of `COUNTED` counts something rather than
 /// naming a seat: "5 of the ties go away from zero".
 pub(super) fn opens_on_a_subject(clause: &str) -> bool {
     let text = clause.trim_start();
+    // FIXME(arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi): `it`
+    // anywhere in the clause is read as the mode, which is one reading of the
+    // open pronoun call; the catalogue holds where it is the subject instead.
     if text
         .split(|c: char| !(c.is_ascii_alphanumeric() || c == '\''))
         .any(|w| matches!(w.to_ascii_lowercase().as_str(), "it" | "it's"))
@@ -161,17 +165,16 @@ pub(super) fn holds_a_personal_pronoun(text: &str) -> bool {
 }
 
 /// Whether `clause` names a rule in words, by its owner: "Java's rule",
-/// "MATLAB's rounding". The owner is a word that is not a pronoun and not one
-/// of `RULE_NOUNS`, so "its rule" and "the mode's rule" point back at the mode
-/// rather than naming another one.
+/// "MATLAB's rounding". The owner is one of `ALIAS_OWNERS`, the parties the
+/// governing ruling gives the alias to. Any other owner is no other rule: "op's
+/// rule", "the registry's rule" and "arvo's rounding" are the ruled mode under
+/// another name, and "its rule" points back at it.
 pub(super) fn names_a_rule_in_words(clause: &str) -> bool {
     let lower = clause.to_ascii_lowercase();
     lower.match_indices("'s ").any(|(at, _)| {
         let owner = word_before(&lower, at).unwrap_or_default();
         let owned = next_word(&lower[at + 3 ..]);
-        !owner.is_empty()
-            && !PRONOUNS.contains(&owner.as_str())
-            && !RULE_NOUNS.contains(&owner.as_str())
+        ALIAS_OWNERS.contains(&owner.as_str())
             && (RULE_NOUNS.contains(&owned.as_str()) || owned == "rounding")
     })
 }

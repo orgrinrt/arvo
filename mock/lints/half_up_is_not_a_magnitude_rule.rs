@@ -17,13 +17,13 @@
 //! both directions, on sentences a writer here does write, and a gate that
 //! blocks on a reader known to be wrong refuses true sentences at hard error.
 //! The known cases are stated next, and each is a known-red pair in
-//! `half_up_is_not_a_magnitude_rule/sentences/catalogue.rs` rather than only a
-//! sentence in this paragraph. The demotion does not rest on the ruling's own
-//! prose: `check_registry` skips every ratified ruling outright, so the gate
-//! never reads a field of it. It rests on the catalogue's one refused-true
-//! entry, a shape the gate does read.
+//! `half_up_is_not_a_magnitude_rule/sentences/known.rs`, under the ticket of the
+//! list or shape it sits on, rather than only a sentence in this paragraph. The
+//! demotion does not rest on the ruling's own prose: `check_registry` skips
+//! every ratified ruling outright, so the gate never reads a field of it. It
+//! rests on the catalogue's refused-true entries, shapes the gate does read.
 //!
-//! Four cases are known, three let through and one refused.
+//! Sixteen cases are known, seven let through and nine refused.
 //!
 //! - It lets through a clause that gives the mode the reading where the clause
 //!   opens on a capitalised word that is also a method's name, `Round`, `Fix`,
@@ -33,18 +33,34 @@
 //!   `aside` or `apart`, or before a preposition with one of those behind it,
 //!   because the design documents write those method names bare at the head of
 //!   sentences, followed by their verb or by what they round to.
-//! - It lets through `It` after a rule the mode is denied to be, across a full
-//!   stop, "`half_up` is not Java's `HALF_UP`. It sends a tie away from zero",
-//!   and `it` opening a segment of the same clause, "`half_up` differs from
-//!   `floor`, and it sends a tie away from zero", reading the pronoun as the
-//!   rule standing last in both. A regression arm asserts that reading for
-//!   every other name, so which of the two governs is held by one question
-//!   ticket rather than by the reader.
+//! - How a pronoun resolves is one open call, held by one question ticket, and
+//!   six entries sit under it. A pronoun opening a clause or a segment after a
+//!   rule the mode is denied to be is read as that rule, the one named last, so
+//!   "`half_up` is not Java's `HALF_UP`. It sends a tie away from zero" and
+//!   "`half_up` differs from `floor`, and it sends a tie away from zero" are let
+//!   through; a regression arm asserts that reading for every other name. `it`
+//!   later in a clause opening on a subject is read as the mode, so where it is
+//!   the subject itself or what the subject read the clause is refused, three
+//!   entries; and a personal pronoun in the alias's segment keeps the alias a
+//!   reading, so where the pronoun is the alias the clause is refused. A pronoun
+//!   later in a segment that opens on no subject is not asked at all: "`half_up`
+//!   differs from `HALF_UP`, and every test shows it sends a tie away from zero"
+//!   fires.
 //! - It refuses a clause whose subject is named in words outside its nouns for
 //!   a subject, "Python's decimal module sends a tie away from zero" after a
-//!   clause naming the mode. An owner's name counts as naming a rule only before
-//!   a noun for one, "Java's rule", "MATLAB's rounding", so nothing there takes
-//!   the clause away from the mode named before it.
+//!   clause naming the mode, since an owner names a rule only where it is one of
+//!   the alias's owners and a rule noun follows; and a clause opening on a seat
+//!   number followed by `or` or `in`, which `COUNTED` reads as a count, three
+//!   entries. It lets through a count followed by a verb, "5 go away from zero",
+//!   read as a seat.
+//! - It lets through a clause naming `toward zero` behind a gerund of motion
+//!   `MOTIONS` does not hold, "instead of drifting toward zero", and one whose
+//!   relative follows a gerund that says how the mode is computed, "adding half
+//!   and then rounding toward zero, which".
+//! - It refuses a relative after a rule denied by a hyphenated phrase alone,
+//!   "is not round-half-away, which", read as a quality; and lets through a
+//!   reading whose copula predicates a quality before a negator, "away from zero
+//!   is right rather than toward positive infinity", read as a denied identity.
 //!
 //! It reads every comment and doc comment in a `.rs` file under the mock
 //! directory, every `.md.tmpl` there, and the registry's prose fields, clause by
@@ -70,13 +86,13 @@
 //!   a sentence contrasting the mode with Java's rule leaves Java's rule named
 //!   last and the pronoun after it points there, and a sentence denying that
 //!   something is the mode leaves that something as what the pronoun means;
-//! - a clause naming another rule, by one of its names or by its owner's,
-//!   "under Java's rule";
+//! - a clause naming another rule, by one of its names or by one of the
+//!   alias's owners, "under Java's rule";
 //! - a reading whose own segment is about another rule, by naming it ahead of
 //!   the reading or by pointing back with a pronoun where another rule stood
 //!   last, or with a relative where another rule stood last or where the mode
-//!   was just denied to be a thing named by a noun phrase, "is not Java's rule,
-//!   which";
+//!   was just denied to be a rule, named or described with a rule noun, "is not
+//!   Java's rule, which", "is not the truncating rule, which";
 //! - the settled denotation stated ahead of the reading, with no conjunction in
 //!   the reading's own segment joining the two and, where the two sit in
 //!   different segments, a contrast word such as `where` opening the reading's,
@@ -132,14 +148,12 @@ const NAME: &str = "half-up-is-not-a-magnitude-rule";
 
 /// What every finding carries: a warning at every gate, blocking none.
 ///
-/// The reader is incomplete in both directions, as the module doc says: it
-/// lets three catalogued shapes through, and refuses one true one it has no
-/// vocabulary for, a clause whose subject is named in words outside its nouns
-/// for a subject. All four are in
-/// `half_up_is_not_a_magnitude_rule/sentences/catalogue.rs`. A hard error
-/// would refuse that true sentence at every gate. The lint's own default and
-/// the severity its findings carry are this one constant, so the two cannot
-/// disagree.
+/// The reader is incomplete in both directions, as the module doc says: of the
+/// sixteen cases catalogued in `half_up_is_not_a_magnitude_rule/sentences/known.rs`
+/// it lets seven false sentences through and refuses nine true ones it has no
+/// vocabulary for. A hard error would refuse those nine at every gate. The
+/// lint's own default and the severity its findings carry are this one
+/// constant, so the two cannot disagree.
 const SEVERITY: Severity = Severity::ADVISORY;
 
 /// Directories under the mock directory that are the record rather than the

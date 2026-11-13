@@ -15,7 +15,6 @@
 
 use super::cutting::{bounded, segment_of, words_of};
 use super::vocabulary::{
-    ARTICLES,
     CONJUNCTIONS,
     CONTRASTS,
     COPULAS,
@@ -28,6 +27,7 @@ use super::vocabulary::{
     READINGS,
     RESULT_MENTIONS,
     RESULTS,
+    RULE_NOUNS,
     TIES,
 };
 
@@ -120,7 +120,7 @@ fn denies_the_denotation(lower: &str, p: usize, end: usize) -> bool {
 }
 
 /// Whether a negator stands in `lower[start .. to]` with no conjunction between
-/// it and `to`, and a noun phrase behind it: the stretch denies that the thing
+/// it and `to`, and a rule named behind it: the stretch denies that the thing
 /// before it is the thing it names.
 ///
 /// What a relative opening the next segment binds to is the last thing named,
@@ -130,19 +130,25 @@ fn denies_the_denotation(lower: &str, p: usize, end: usize) -> bool {
 ///
 /// A negator denying a quality or an act names no thing, so the relative binds
 /// to the mode: "`half_up` is not biased, which means a tie goes away from
-/// zero", "`half_up` does not truncate, which sends a tie away from zero". A
-/// noun phrase is told by its first word, as `opens_a_noun_phrase` reads it,
-/// past a `from`, `to` or `than` the negator takes.
+/// zero", "`half_up` does not truncate, which sends a tie away from zero", and
+/// so does a description, "is not the slow one, which". What names a rule is
+/// read by `names_a_rule_behind`, past a `from`, `to` or `than` the negator takes.
 pub(super) fn denied_since(text: &str, lower: &str, start: usize, to: usize) -> bool {
     negators_in(&lower[start .. to])
         .into_iter()
         .map(|p| start + p)
-        .any(|p| no_conjunction(&lower[p .. to]) && opens_a_noun_phrase(text, lower, p, to))
+        .any(|p| no_conjunction(&lower[p .. to]) && names_a_rule_behind(text, lower, p, to))
 }
 
-/// Whether what stands behind the negator at `p` opens a noun phrase: an
-/// article, an owner's `'s`, a code span, or a capital.
-fn opens_a_noun_phrase(text: &str, lower: &str, p: usize, to: usize) -> bool {
+/// Whether what stands behind the negator at `p`, up to `to`, names a rule: it
+/// opens on a code span or a capital, a name, or it holds one of `RULE_NOUNS`
+/// or `rounding`, a rule described in words.
+///
+/// An article alone is not enough: "is not the slow one, which" denies a
+/// description of the mode and names nothing the relative could mean, where
+/// "is not the truncating rule, which" and "is not symmetric rounding, which"
+/// name a rule.
+fn names_a_rule_behind(text: &str, lower: &str, p: usize, to: usize) -> bool {
     // The word starting at or after `at`, past whitespace, and where it starts.
     let word = |at: usize| -> (usize, &str) {
         let past = &lower[at .. to];
@@ -164,10 +170,13 @@ fn opens_a_noun_phrase(text: &str, lower: &str, p: usize, to: usize) -> bool {
         (at, next) = word(at + next.len());
     }
     let first = text[at ..].chars().next();
+    let described = RULE_NOUNS
+        .iter()
+        .chain(&["rounding"])
+        .any(|n| !bounded(&lower[at .. to], n).is_empty());
     next.is_empty() && first == Some('`')
-        || ARTICLES.contains(&next)
-        || next.ends_with("'s")
         || first.is_some_and(|c| c.is_ascii_uppercase())
+        || described
 }
 
 /// Whether a negator inside `span` reaches `to`, where `span` starts at `from`.

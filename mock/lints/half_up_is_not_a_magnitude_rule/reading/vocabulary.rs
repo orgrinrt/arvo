@@ -353,6 +353,11 @@ pub(crate) const COUNTED: &[&str] = &[
     "value", "values", "slot", "slots", "step", "steps", "bit", "bits",
 ];
 
+/// The owners the governing ruling gives the alias to, lowered: Java, Python,
+/// IEEE 754 and MATLAB. An owner's rule named in words is another rule only
+/// where the owner is one of these.
+pub(crate) const ALIAS_OWNERS: &[&str] = &["java", "python", "ieee", "754", "matlab"];
+
 /// Articles a subject noun may stand behind at the head of a clause.
 pub(crate) const ARTICLES: &[&str] = &["the", "a", "an", "each", "every", "one"];
 

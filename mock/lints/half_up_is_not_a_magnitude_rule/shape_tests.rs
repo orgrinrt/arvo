@@ -188,6 +188,22 @@ fn a_rule_named_by_its_owner_takes_the_clause_and_one_owned_by_the_mode_does_not
         );
         assert_eq!(found(&text), ["away from zero"], "{text}");
     }
+    // The ruled mode's own authorities own no other rule: under their rule the
+    // clause is the mode's, in the same frame where an alias owner's is not.
+    for owner in ["op's", "the registry's", "the panel's", "arvo's", "the ruling's", "the canon's"]
+    {
+        for noun in ["rule", "rounding"] {
+            let own = format!(
+                "`half_up` is the ruled mode. Under {owner} {noun} a tie goes away from zero."
+            );
+            assert_eq!(found(&own), ["away from zero"], "{own}");
+        }
+    }
+    for owner in ["Java's", "Python's", "MATLAB's", "IEEE's"] {
+        let alias =
+            format!("`half_up` is the ruled mode. Under {owner} rule a tie goes away from zero.");
+        assert!(found(&alias).is_empty(), "{alias}");
+    }
     // An owner's thing that is not a rule leaves the clause to the mode.
     for owned in ["table", "example", "test"] {
         let text =
@@ -273,6 +289,17 @@ fn a_relative_after_a_denied_rule_is_the_rules_and_after_a_denied_quality_the_mo
         if OTHER_NAMES.contains(n) {
             continue;
         }
+        // A rule described with no article is a rule, and a description of the
+        // mode with one is not.
+        for rule in ["symmetric rounding", "commercial rounding", "a ties-away rule"] {
+            let text = format!("`half_up` is {n} {rule}, which sends a tie away from zero.");
+            assert!(found(&text).is_empty(), "{text}");
+        }
+        for description in ["the slow one", "a careful choice", "the default"] {
+            let text =
+                format!("`half_up` is {n} {description}, which is why a tie goes away from zero.");
+            assert_eq!(found(&text), ["away from zero"], "{text}");
+        }
         for quality in ["biased", "exact", "signed"] {
             let text =
                 format!("`half_up` is {n} {quality}, which means a tie goes away from zero.");
@@ -306,5 +333,48 @@ fn an_alias_spelling_that_is_a_reading_is_a_name_unless_its_segment_points_back(
         }
         let mode = format!("`half_up` is `{alias}`.");
         assert!(!found(&mode).is_empty(), "{mode}");
+    }
+}
+
+#[test]
+#[ignore = "catalogue: `it` in a clause opening on a subject is read as the mode, so where it is \
+            the subject itself or what the subject read the clause is refused, the open pronoun call; \
+            tracked #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
+fn it_as_the_subjects_own_pronoun_leaves_the_clause_to_the_subject() {
+    for noun in SUBJECTS {
+        for text in [
+            format!("`half_up` is a mode. The {noun}, as it ships, sends a tie away from zero."),
+            format!(
+                "`half_up` is a mode. The {noun} sends a tie away from zero, which it should not."
+            ),
+        ] {
+            assert!(found(&text).is_empty(), "{text}");
+        }
+    }
+}
+
+#[test]
+#[ignore = "catalogue: a seat number before a word `COUNTED` holds is read as a count, so the \
+            clause carries the mode and is refused; tracked \
+            #arvo_s_half_up_reader_reads_a_bare_number_before_or_or_in_as"]
+fn a_seat_number_before_a_counting_word_is_still_a_seat() {
+    for (word, rest) in [
+        ("or", "271 answered"),
+        ("in", "the panel read"),
+        ("in", "its first answer read"),
+    ] {
+        assert!(COUNTED.contains(&word));
+        let text = format!("`half_up` sends ties up. 270 {word} {rest} ties away from zero.");
+        assert!(found(&text).is_empty(), "{text}");
+    }
+}
+
+#[test]
+#[ignore = "catalogue: a bare number before a verb is read as a seat, so a count of ties takes the \
+            clause from the mode; tracked #arvo_s_half_up_reader_reads_a_bare_number_before_a_verb_as_a"]
+fn a_count_before_a_verb_is_still_a_count() {
+    for verb in ["go", "land", "round"] {
+        let text = format!("`half_up` sends ties up. 5 {verb} away from zero.");
+        assert_eq!(found(&text), ["away from zero"], "{text}");
     }
 }
