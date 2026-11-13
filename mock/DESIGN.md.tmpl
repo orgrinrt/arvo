@@ -23,9 +23,11 @@ Monomorphisation is the dispatch. There is no `dyn` and no `TypeId`, and the
 monomorphised function is the type identity.
 
 Everything answerable before the program runs is answered there, in plain
-`const fn`. No crate enables an unstable feature today, so no trait here is a
-`const trait`, and the operations wanted in const context are inherent
-`const fn`s on their types.
+`const fn`. No crate enables an unstable feature as it builds by default, so no
+trait here is a `const trait`, and the operations wanted in const context are
+inherent `const fn`s on their types. One cargo feature of `arvo-numeral`, off
+by default, enables `const_trait_impl` for its const impl of another crate's
+trait, and a consumer of it needs no feature of the toolchain for that.
 
 ## Crate topology
 

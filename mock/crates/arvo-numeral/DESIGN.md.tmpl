@@ -28,6 +28,9 @@ whose rounding the consumer declares.
 `proposal::a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator`, at one expert,
 for the accumulator's shape, built on and not promoted. `question::which_chain_carrier_ships` is open,
 and the accumulator is one instance that does not answer it.
+`obligation::a_platform_sized_unsigned_integer_at_an_api_position` again, for the consumer a value as
+a count is for, and `obligation::the_unstable_machinery_does_not_reach_a_consumer`, for the bound the
+one optional gate is held to.
 
 ## What this crate is
 
@@ -48,9 +51,11 @@ It depends on `arvo-format` and `arvo-placement`, and on `notko` for the `Maybe`
 where it has nothing to name. It adds nothing to the placement. Of the format it reads three things
 that were added there for it, each the format's own to state: which member is one,
 `multiplicative_identity`, a signed fixed-point point, `Fixed`, and the two aliases that replace one
-coordinate of a signature, `WithOverflow` and `WithRounding`. `no_std`, no allocation, no
-unstable feature, every operation a `const fn`, and no cargo feature but the mutants its own tests
-turn on.
+coordinate of a signature, `WithOverflow` and `WithRounding`. `no_std`, no allocation, every operation
+a `const fn`. As it builds by default it has no unstable feature and no dependency beyond those three.
+Its cargo features are the mutants its own tests turn on and two that are purely opt in, `hlist` and
+`hlist-const`, which make a value the count of a type-level list and are described under the count
+below. The second of them enables the one unstable feature this crate can enable.
 
 ## What a value signature admits
 
@@ -373,6 +378,39 @@ members are zero and minus one. A fixed-point format at exponent `-k` has it at 
 range reaches that far. The identity does not force the multiplication obligation, so an unsigned
 64-bit integer has its one although its product is not admitted yet.
 
+## A value as a count
+
+`notko-hlist` is the workspace's type-level list, and it counts a list's cells in a number type of the
+consumer's own through `Cardinal`, a trait of a zero and a successor. Under the feature `hlist`,
+`Num<S, C>` implements `Cardinal` for every `S` and `C`, so a list's length and a position's index
+land in a value. The impl is here because the orphan rule leaves it to the list's crate or the
+value's, and the list has no dependency.
+
+Zero is the additive identity and the successor of a count is its sum with the multiplicative
+identity. So a value counts where its format has a one, in whole members: an integer by its slots, a
+fixed-point value at exponent `-k` by `2^k` slots. A format without a one has no count, and a length
+in it is refused by the identity's own failed constant with the identity's own message. The impl is
+not narrowed to the platform-sized integer or to the unsigned ranges, since which type a list is
+counted in is the consumer's to say at the bound.
+
+The successor is `add`, so a count past the range is completed by the declared overflow policy, and
+under the `Abort` check a debug build aborts on it. Where a length is read as a constant the abort
+happens while the build evaluates it, so under `Abort` a list longer than its count type holds does not
+build.
+
+There are two paths, as the list has two. `hlist` takes the list without its `const` feature and
+implements the trait plainly: nothing in the build is unstable, and a length is a call. `hlist-const`
+turns the list's `const` feature on, which makes `Cardinal` a const trait, implements it with a const
+impl, and enables `const_trait_impl` in this crate for that one impl: a length is a constant. The
+const path exists because a plain impl of a const trait gives no constant, and the constant is what a
+consumer indexing by a list's length wants.
+
+Both features are off by default and nothing in this workspace turns either on. The gate is in no
+public signature. A consumer bounds on the list's own traits and reads a length, as a call or as a
+constant, with no feature attribute of its own, on either path; the const call is made inside the
+list's impl. No trait this crate declares becomes a const trait, and the value's operations stay
+inherent `const fn`s.
+
 ## A value under a sibling signature
 
 Two signatures over one format hold the same members, and differ in what happens to a result that is
@@ -641,6 +679,17 @@ terms of 15 in an 8-bit accumulator total 240, and thirty-two taken at a capacit
 hand-written fold. It turns the capacity tests red, with 224 where 240 and a rest are asked, and its
 red run is committed.
 
+The count has two test targets off one shared module, one per path, each built only under its
+feature. Both read the lengths of lists of zero to four cells and the indices of positions in the
+platform-sized integer, a byte, a signed integer and a fixed-point value, through code generic over
+the signature and the check, and a count past the range under wrapping and under saturation. The const
+target reads the same lengths as constants, one of them as an array's length, and names no feature of
+the toolchain, which is the evidence that a consumer needs no gate. Under `Abort` a count past the
+range aborts in a debug build on the plain path; on the const path it is a compile-fail pair, a list
+of four cells in two bits beside one of three, and a second pair refuses a length in a format without
+a one beside a format with one. `mutant-count` stops a count at one and turns both targets red, and
+its red run is committed.
+
 `law::additive_associativity_under_wrapping` and `law::additive_associativity_under_saturation` are
 reproduced through the value type, with the registry's own counts.
 
@@ -675,7 +724,8 @@ of its own that implements `NamesAdaptation` for two formats and names a differe
 each, and an alias of its own over `Uint` whose adaptation parameter defaults to that preset, which is
 the whole of what shipping a default takes. It overrides one coordinate at a type, through
 `WithOverflow`, and at a value, through `with_overflow`, `with_rounding` and `under`. A test builds and
-runs it, and it asserts what it reads.
+runs it, and it asserts what it reads. It names no feature, so it does not reach the count, whose two
+targets are written as a consumer would write them.
 
 The disassembly of `add` at 13 bits in 16 and at 64 bits beside the host's `wrapping_add` is committed as
 an ad hoc reading, and called that: the bench harness cannot yet commit the disassembly of a named

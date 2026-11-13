@@ -18,6 +18,8 @@ arithmetic computes is held, whichever crate it comes from. A value crosses as i
 signature that differs in its rounding or its overflow, which is how one site overrides either.
 
 Builds on `arvo-format` and `arvo-placement`. `no_std`, no allocation, every operation a `const fn`.
+Behind the feature `hlist`, off by default, a value is a count for the type-level list of
+`notko-hlist`, and `hlist-const` makes a list's length a constant in one.
 
 ## Status
 
