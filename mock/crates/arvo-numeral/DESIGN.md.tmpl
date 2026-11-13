@@ -38,6 +38,8 @@ The format's slot family is on the map, which is `Signed<W>` and `Unsigned<W>` f
 64, through `Carried`. The overflow policy is a `ValuePolicy`: `Wrap`, `Saturate`, `Wrapping` and
 `Saturating`. The rounding mode is a `ValueRounding`: `TowardZero`, `Floor`, `Ceil`, `HalfUp` and
 `HalfEven`. All three traits are sealed, so the set is what this crate can compute and no more.
+`HalfUp` here is the format's `half_up`, a tie toward positive infinity at every sign, and not the
+`HALF_UP` of Java or Python: a tie at -2.5 goes to -2.
 
 On top of those bounds, `Sole::ADMITTED` asserts that the format's quantum is constant and its phase is
 zero. That is where the sum of two members is the member at the sum of their slots, which is what lets
