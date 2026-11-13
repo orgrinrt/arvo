@@ -26,15 +26,14 @@ use crate::quantum::{Exponent, MagnitudeCount, Quantum};
 use crate::slots::{Slot, Slots};
 use crate::width::Width;
 
-/// The exponent range of a format at precision `P` and largest exponent `EMAX`,
-/// as the quantum law it names.
+/// The exponent range at precision `P` and largest exponent `EMAX`.
 ///
-/// The magnitude-indexed family. The smallest step is the radix to
-/// `emin - (p - 1)`, which is `2 - emax - p`, and it rises one exponent per
-/// magnitude up to the step of the top binade, `emax - (p - 1)`, so there are
-/// `2 emax` magnitudes. Both are expressions in the parameters, so both are
-/// computed here in the impl body, where an arbitrary expression is legal, rather
-/// than in a const generic argument, where it is not.
+/// The quantum law it names, the magnitude-indexed family. The smallest step is
+/// the radix to `emin - (p - 1)`, which is `2 - emax - p`, and it rises one
+/// exponent per magnitude up to the step of the top binade, `emax - (p - 1)`, so
+/// there are `2 emax` magnitudes. Both are expressions in the parameters, so both
+/// are computed here in the impl body, where an arbitrary expression is legal,
+/// rather than in a const generic argument, where it is not.
 pub struct ExponentRange<const P: u32, const EMAX: u32>;
 
 impl<const P: u32, const EMAX: u32> Quantum for ExponentRange<P, EMAX> {
@@ -43,14 +42,13 @@ impl<const P: u32, const EMAX: u32> Quantum for ExponentRange<P, EMAX> {
     const SLOPE: Exponent = Exponent::ONE;
 }
 
-/// The significand of a format at precision `P` over the ambient `A`, as the
-/// slot range it names.
+/// The significand at precision `P` over the ambient `A`.
 ///
-/// Symmetric at `radix^p - 1`, because the standard's significand is sign and
-/// magnitude rather than two's complement, and declared one bit wider than the
-/// magnitude needs, for the sign. A precision whose bound passes the slot index
-/// saturates at its top, and the width that follows is past 64 either way, so the
-/// range's own obligation refuses it where it is forced.
+/// The slot range it names, symmetric at `radix^p - 1`, because the standard's
+/// significand is sign and magnitude rather than two's complement, and declared
+/// one bit wider than the magnitude needs, for the sign. A precision whose bound
+/// passes the slot index saturates at its top, and the width that follows is past
+/// 64 either way, so the range's own obligation refuses it where it is forced.
 pub struct Significand<A, const P: u32>(PhantomData<A>);
 
 /// `radix^p - 1`, or the slot index's top where the power passes it.
@@ -72,14 +70,37 @@ const fn signed_width_of(largest: i128) -> Width {
     Width::bits(i128::BITS - largest.leading_zeros() + 1)
 }
 
+impl<A: Ambient, const P: u32> Significand<A, P> {
+    /// What a sign and magnitude significand owes beyond a slot range.
+    ///
+    /// Forced by both bounds, so every reader of the range meets it, `adapt`
+    /// and the range predicate included.
+    const SIGN_AND_MAGNITUDE: () = {
+        assert!(
+            A::SIGNED.get(),
+            "an IEEE 754 significand is sign and magnitude, so its ambient domain must carry values \
+             below zero; this ambient is unsigned"
+        );
+        assert!(
+            P >= 1,
+            "an IEEE 754 significand holds at least one digit; a precision of zero holds only zero"
+        );
+    };
+}
+
 impl<A: Ambient, const P: u32> Slots for Significand<A, P> {
-    const MAX: Slot = Slot::at(largest_significand(A::RADIX.base(), P));
-    const MIN: Slot = Slot::at(-largest_significand(A::RADIX.base(), P));
+    const MAX: Slot = {
+        let () = Self::SIGN_AND_MAGNITUDE;
+        Slot::at(largest_significand(A::RADIX.base(), P))
+    };
+    const MIN: Slot = {
+        let () = Self::SIGN_AND_MAGNITUDE;
+        Slot::at(-largest_significand(A::RADIX.base(), P))
+    };
     const WIDTH: Width = signed_width_of(largest_significand(A::RADIX.base(), P));
 }
 
-/// An IEEE 754 interchange format over the ambient `A`, at precision `P` and
-/// largest exponent `EMAX`.
+/// An IEEE 754 interchange format over `A`, at precision `P` and emax `EMAX`.
 ///
 /// The union over magnitudes of each magnitude's multiples of its step, within
 /// the significand, is exactly the standard's finite values: the subnormals are
@@ -129,14 +150,22 @@ pub type Attributed<F, R, O> = crate::adapt::Signature<F, crate::adapt::Adapt<R,
 
 /// The rounding-direction attributes, under the standard's names.
 ///
-/// Four of the five land on a shipped mode. `roundTiesToAway` is MATLAB's Round
-/// under another name: a tie away from zero is not one of the six modes, and the
-/// canon reaches it as the alias the MATLAB parity suite writes.
+/// Four of the five land on a shipped mode, as type aliases rather than renamed
+/// re-exports: a re-export under another name becomes the path the compiler
+/// prints for the mode, so a consumer of `TowardZero` who never read IEEE 754
+/// would meet `RoundTowardZero` in a diagnostic. `roundTiesToAway` is MATLAB's
+/// Round under another name: a tie away from zero is not one of the six modes,
+/// and the canon reaches it as the alias the MATLAB parity suite writes.
 pub mod rounding_direction {
-    pub use crate::rounding::{
-        Ceil as RoundTowardPositive,
-        Floor as RoundTowardNegative,
-        HalfEven as RoundTiesToEven,
-        TowardZero as RoundTowardZero,
-    };
+    /// `roundTowardPositive`.
+    pub type RoundTowardPositive = crate::rounding::Ceil;
+
+    /// `roundTowardNegative`.
+    pub type RoundTowardNegative = crate::rounding::Floor;
+
+    /// `roundTiesToEven`.
+    pub type RoundTiesToEven = crate::rounding::HalfEven;
+
+    /// `roundTowardZero`.
+    pub type RoundTowardZero = crate::rounding::TowardZero;
 }

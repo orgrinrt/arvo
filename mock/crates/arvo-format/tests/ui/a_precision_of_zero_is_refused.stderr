@@ -1,0 +1,31 @@
+error[E0080]: evaluation panicked: an IEEE 754 significand holds at least one digit; a precision of zero holds only zero
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::standards::ieee754::Significand::<arvo_format::BinaryRationals, 0>::SIGN_AND_MAGNITUDE` failed here
+  |
+ ::: src/standards/ieee754.rs
+  |
+  | /         assert!(
+  | |             P >= 1,
+  | |             "an IEEE 754 significand holds at least one digit; a precision of zero holds only zero"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/standards/ieee754.rs
+  |
+  |         let () = Self::SIGN_AND_MAGNITUDE;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/slots.rs
+  |
+  |             Self::MIN.index() <= Self::MAX.index(),
+  |             ^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/slots.rs
+  |
+  |     let () = S::ADMITTED;
+  |              ^^^^^^^^^^^
