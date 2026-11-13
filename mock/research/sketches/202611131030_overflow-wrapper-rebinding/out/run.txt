@@ -1,0 +1,8 @@
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running `/home/user/target/release/overflow-wrapper-rebinding`
+WORKS: the substitution compiles, is admitted, and goes generically
+the generic form needs `WithOverflow<S, O>: Sole` written at the call,
+because `S: Sole` proves nothing about a sibling signature
+FAILS: a consumer cannot write the crossing as a value move:
+`Num::carrier` and `Num::from_carrier` are crate-private, and no
+public door takes a value of one signature and gives one of another
