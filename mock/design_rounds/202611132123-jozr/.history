@@ -1,0 +1,50 @@
+0ae0b3c8 fix: take the consumer test's paths when the test runs
+da159313 chore: lock doc changelist 202611132123-jozr
+ddef6c1a docs: say the consumer test takes its paths when it runs
+70c3cdef docs: open round 202611132123-jozr on the consumer test's paths
+d94375ad fix: rebuild the `add` disassembly sketch on the current value
+14eef25b chore: close design round 202611132111-ew52
+b292fcc8 docs: commit the red runs of `mutant-count`
+b3dc4d7b feat: implement `Cardinal` of `notko-hlist` for a value
+a691c03a chore: lock doc changelist 202611132111-ew52
+a07dbc8e docs: design a value as the count of `notko-hlist`
+0809ec67 docs: open the round on a value as the count of a type-level list
+dd47015e chore: close design round 202611132057-rtzg
+f27029ed docs: commit the red run of `mutant-accumulator`
+b6825fb4 feat: ship `Fix`, `UFix` and the exact `Accumulator`
+e8f59aca chore: lock doc changelist 202611132057-rtzg
+7be17c39 docs: say `minus` gives a value of the accumulator's signature
+d5609c1b chore: lock doc changelist 202611132057-rtzg
+bbd0ba5f docs: state `Fix`, `UFix` and the exact `Accumulator`
+d22220dd docs: open round 202611132057-rtzg on the lanes and the accumulator
+4beb5c52 chore: close design round 202611132039-hccc
+386e5aad docs: point the mutants' red runs at the formatted test lines
+275b7038 feat: add `div`, `convert` and the host-width door to `Num`
+ac384eb3 chore: lock doc changelist 202611132039-hccc
+4e5f7d1a docs: state `div`, `convert` and the host-width door on `Num`
+e422d42b docs: open round 202611132039-hccc on the quotient and the host door
+bdc6999a chore: close design round 202611132028-qn1r
+17f4aebd feat: cross a value to a sibling signature with `under`
+2c52501f chore: lock doc changelist 202611132028-qn1r
+673a6868 docs: design the crossing `under` and the format-keyed projection
+fe8f074a docs: open round 202611132028-qn1r on the override and the default
+e9f307ee chore: close design round 202611131949-qrwo
+1c691760 feat: add `sub`, `neg` and `mul` to `Num` with the one of a format
+ea1f2242 chore: lock doc changelist 202611131949-qrwo
+dbaf01e0 docs: state the multiplicative identity's slot at every phase
+c1e73879 chore: lock doc changelist 202611131949-qrwo
+250f02eb docs: design `sub`, `neg` and `mul` on the value
+a1cc1bf1 docs: add the doc changelist for the ring operations
+c69e270d docs: open the ring operations round with its topic
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
+2c8e5343 feat: add the oracle for fractions and division in arvo-format
+9dfd5339 feat: add the numeral value crate for integers at sole occupancy
+989e02f9 fix: spell git sources one way and show the bench harness runs
+7ec50792 feat: teach the oracle negation, subtraction and the product
