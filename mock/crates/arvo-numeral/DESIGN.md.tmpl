@@ -724,7 +724,9 @@ of its own that implements `NamesAdaptation` for two formats and names a differe
 each, and an alias of its own over `Uint` whose adaptation parameter defaults to that preset, which is
 the whole of what shipping a default takes. It overrides one coordinate at a type, through
 `WithOverflow`, and at a value, through `with_overflow`, `with_rounding` and `under`. A test builds and
-runs it, and it asserts what it reads. It names no feature, so it does not reach the count, whose two
+runs it, and it asserts what it reads. The test takes the consumer's path and its scratch directory
+when it runs, so a build directory shared between checkouts tests the checkout the run was started
+in. It names no feature, so it does not reach the count, whose two
 targets are written as a consumer would write them.
 
 The disassembly of `add` at 13 bits in 16 and at 64 bits beside the host's `wrapping_add` is committed as
