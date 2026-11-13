@@ -4,7 +4,7 @@
 
 use std::collections::BTreeSet;
 
-use mockspace::LintPack;
+use mockspace::{LintMode, LintPack};
 
 use super::{
     SEVERITY_ASKED,
@@ -231,4 +231,57 @@ fn a_lint_that_splits_its_tests_out_is_read_whole() {
         whole.contains("assert_registered"),
         "the sibling file's tests are not in what the source of a lint reads as"
     );
+}
+
+/// The lints the shared pack registers into this one carry no source file in
+/// this tree, so `lint_sources` leaves them out of the arm above and nothing
+/// there asks what severity they run at. This asks it of the whole pack.
+///
+/// `catalogue-ignore` is the one the catalogue ledger rests on: every `#[ignore]`
+/// here is a catalogue entry only while that lint refuses an ignore the ledger
+/// does not resolve, so a lint declared advisory or off would leave the ledger
+/// unchecked and every other arm passing.
+#[test]
+fn catalogue_ignore_runs_at_a_blocking_severity_at_every_gate() {
+    let mut pack = LintPack::default();
+    crate::__mockspace_collect_lints(&mut pack);
+    let lint = pack
+        .repo_lints
+        .iter()
+        .find(|l| l.name() == "catalogue-ignore")
+        .expect("`catalogue-ignore` is in the pack the engine is handed");
+    let severity = lint.default_severity();
+    for mode in [LintMode::Commit, LintMode::Build, LintMode::Push] {
+        assert!(
+            severity.is_blocking(mode),
+            "`catalogue-ignore` does not block at {mode:?}, so an ignore the ledger does not \
+             resolve would pass that gate"
+        );
+    }
+}
+
+/// The control for the arm above: it has to be able to say a lint does not
+/// block, or it would pass whatever the pack holds.
+#[test]
+fn control_a_lint_that_only_warns_does_not_pass_the_blocking_check() {
+    use mockspace::Severity;
+    assert!(!Severity::ADVISORY.is_blocking(LintMode::Push));
+    assert!(!Severity::BUILD_GATE.is_blocking(LintMode::Commit));
+    assert!(Severity::HARD_ERROR.is_blocking(LintMode::Commit));
+}
+
+/// Every repo lint in the pack, the shared pack's included, is on: none declares
+/// itself off, which is the half of the severity question `lint_sources` cannot
+/// ask of a lint with no source here.
+#[test]
+fn no_repo_lint_in_the_whole_pack_declares_itself_off() {
+    let mut pack = LintPack::default();
+    crate::__mockspace_collect_lints(&mut pack);
+    let off: Vec<&str> = pack
+        .repo_lints
+        .iter()
+        .filter(|l| l.default_severity().is_off())
+        .map(|l| l.name())
+        .collect();
+    assert!(off.is_empty(), "declared off, so never run: {off:?}");
 }

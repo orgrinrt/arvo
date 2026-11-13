@@ -1066,7 +1066,7 @@ mod tests {
         &[("says", "a thing")],
     )];
     const P_TOP: &[(&str, &[(&str, &str)])] = &[(
-        "proposal::a_min_plus_computation_needs_monotonicity_as_well_as_an_absorbing_top",
+        "proposal::a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none", // a superseded row, kept because the corpus elides it
         &[("says", "a thing")],
     )];
     const P_LAW: &[(&str, &[(&str, &str)])] = &[(
@@ -1094,7 +1094,7 @@ mod tests {
             P_TOP,
             &[(
                 "42_member.md",
-                "`proposal::a_min_plus_computation_needs_...` says so.\n",
+                "`proposal::a_min_plus_fold_needs_an_absorbing_top_...` says so.\n",
             )],
             0,
         );
