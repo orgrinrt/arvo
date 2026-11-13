@@ -20,10 +20,12 @@
 # than re-judged here. Where the catalogue's assignment looks wrong the
 # disagreement is in `note` and the assignment is unchanged.
 #
-# `answers`, `obligation`, `ratifies` and `declines` are unset throughout. The
-# namespaces they point into are being populated separately, and a slug naming
-# no row is a hard error. Which question each row would answer is recorded in
-# `179_lamport_porting_ops_rulings_into_the_registry.md`.
+# `answers`, `obligation` and `ratifies` carry edges now; `declines` is still
+# unset throughout. The port left all four empty because the namespaces they
+# point into were being populated separately and a slug naming no row is a hard
+# error, and `179_lamport_porting_ops_rulings_into_the_registry.md` recorded in
+# prose which question each row would answer. Rows written since carry the edge
+# itself, so that file is the record for the ported rows alone.
 
 # --- how his own words are to be read -----------------------------------------
 
@@ -1874,3 +1876,33 @@ because = "`ruling::the_overflow_panic_is_permitted_and_bounded` makes the panic
 note = "He was asked: in a debug build, should an operation abort when it saturates and the type declared saturation as its meaning? The options were [1: marker says it is meant, abort by default, a marker in the type says completion is the meaning and then no abort, both markers shipping from the first landing] [2: always abort, as the ratified row is written, every overflow asserting in debug, declared policy or not] [3: never for a declared policy, a type that declares saturation or wrapping never asserts, only undeclared overflow does] [4: arvo's panel decides]. He answered in his own words, quoted above, and chose none of the four. The intent is that the consumer configures the abort; the two vehicles he names are a proposal, and `proposal::the_debug_check_is_a_parameter_the_consumer_names` is the one the value crate takes. The quote keeps the typographic apostrophe of the capture."
 provenance = ["mock::design_rounds/202611130550-m67x/202611130550-m67x_topic.the-value-reads-the-placement-and-chooses-its-check::#what-this-round-is-for"]
 keywords = ["debug abort", "debug check", "overflow", "panic", "cargo feature", "type parameter", "configurable", "consumer", "Abort", "Quiet"]
+
+# --- the overflow default, and the old families -----------------------------------
+
+[[ruling]]
+id = "a_shipped_overflow_default_is_a_generic_overridable_per_case"
+kind = "intent"
+rung = "stated"
+topic = "overflow_policy"
+says = "The overflow behaviour is not called one way. A default ships and is easy to override per case, spelled as a generic carrying a default, and that default may follow one of the parity standards. Beside it, what a downstream consumer primarily reaches for is the standard-paired implementations of the theory and the contracts."
+quote = '''
+I think this shouldn’t be called one way, but a default arvo may ship that is easy to override per case. Perhaps a value should be returnable wrapped as Saturating<Foo> or Wrapping<Foo> or something as the mechanism? The actual theory already is based on flexible numbers built on arbitrary choices behind the scenes that are composable from scratch if someone wants. On the defaults we build, I say it should be a generic with default perhaps following one of the parity standards like matlab or whatever would be the sensible default to use. And even then it might make more sense to primarily have downstream users use the spec paired impls of the theory and contracts like already designed in arvo (which you would know had someone done the canon double check and ensure it's up to date and sensible etc)
+'''
+because = "`ruling::wrap_or_clamp_stays_open_and_both_get_priced` holds open which of wrap and clamp `Warm` names, in his name, and the value crate's aliases therefore take their adaptation as a parameter with no default. He was asked to close it and declined to close it that way, which leaves the axis open and adds a shipped default above it."
+note = "He was asked what a `Warm` value becomes when it overflows in a release build, with the priced page and the second plan in hand. The options were [a: wraps, integers and fixed point alike] [b: saturates, integers and fixed point alike] [c: integers and platform-width indices wrap, fixed-point quantities saturate] [d: `Warm` names no overflow behaviour, every alias keeps naming its adaptation]. He took none of the four.\n\nThis narrows `question::does_warm_wrap_or_clamp` rather than answering it, so no `answers` edge sits here: what is left for the panel is which standard the default follows and how a per-case override is spelled. The wrapper spelling is floated as a candidate mechanism rather than ordered, and it is a question rather than a sentence in the capture. `mock/research/sketches/202611131030_overflow-wrapper-rebinding/` settles the compile half of it: the re-binding is expressible and admitted, and the crossing it needs has no public door.\n\nThe quote keeps the typographic apostrophe of the capture."
+provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#the-overflow-default"]
+keywords = ["overflow", "default", "generic", "override", "per case", "Saturating", "Wrapping", "wrapper", "parity standard", "MATLAB", "standard-paired", "contracts", "composable"]
+
+[[ruling]]
+id = "every_family_of_the_old_arvo_returns_and_the_shape_is_open"
+kind = "intent"
+rung = "stated"
+topic = "arvo_identity"
+says = "Every family the old arvo carried returns in function and in feature. The shape it returns in, meaning the contracts, the traits and the default implementations, and the taxonomy, meaning which crate holds what and under which name, are open to a whole rewrite. Writing the arithmetic contracts on the standards is arvo's own ground."
+quote = '''
+I want them to return, in function/feature, but the shape the contracts and traits and default impls etc take are up for a whole rewrite and also the taxonomy. However, definitely arvo terrain to write the actual arithmetic contracts on the standard too…
+'''
+because = "Seven rows in `proposal-the-value-stance` say an old crate does not return, all at `one_expert`, two of them already superseded inside that file. He was asked what to do with them and answered about the families rather than about the crates, which is the distinction the rows blur."
+note = "The options were [a: supersede them with one row saying every family of old arvo returns on the current fundamentals, a crate's old name may go] [b: walk the six one by one] [c: leave them as proposals that bind nothing]. He took none of the three as put, and the answer cuts across them: the function returns, the crate name and the home do not survive by default.\n\nRead against the five live refusals, three agree with this already, since their `instead` re-homes the function and only the taxonomy differs: `the_old_storage_crate_is_gone`, `the_old_mask_contracts_crate_is_gone` and `the_old_refit_crate_is_gone`. Two do not: `the_old_bit_contracts_crate_is_gone` re-homes nothing and `the_old_numeric_contracts_crate_is_gone` sends arvo's arithmetic contracts to a consumer, which is what the last clause here names as arvo's own. No standing is changed by this row; the reading is in `mock/research/202611130950_canon-double-check/CHECK.md`.\n\nThe quote keeps the ellipsis of the capture."
+provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#the-old-crates-that-a-row-says-do-not-return"]
+keywords = ["old arvo", "families", "return", "function", "feature", "shape", "taxonomy", "rewrite", "contracts", "traits", "default impls", "arithmetic contracts", "standard"]

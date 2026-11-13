@@ -2,8 +2,8 @@
 #
 # **This set is incomplete and the reason is worth stating before the rows.**
 # It was read off the predicates the corpus writes, and the fullest single one
-# is at `109:156-159`, which names eleven axes in one line. Fifteen of the
-# sixteen rows below cite that one file, which is a member file from topic
+# is at `109:156-159`, which names eleven axes in one line. All but one of the
+# rows from that census cite that one file, which is a member file from topic
 # five's first sitting: it was written before topics six through ten ran, so the
 # axes those topics discovered are not in it and were not in the sweep that
 # produced this file either.
@@ -195,7 +195,7 @@ keywords = ["S", "strategy", "Hot", "Cold", "Warm", "Precise", "preset", "policy
 
 # --- added after the first census, on two independent readings -----------------
 #
-# The four below were not in the sweep that produced this file, because that
+# What follows was not in the sweep that produced this file, because that
 # sweep read one member file from topic five's first sitting and these were
 # discovered by the topics that came after it. Two readers agree they index
 # situations rather than runs, and one of them derived the criterion cold.
