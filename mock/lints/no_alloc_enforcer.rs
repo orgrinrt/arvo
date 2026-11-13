@@ -53,7 +53,7 @@ fn is_ident_byte(b: u8) -> bool {
 fn contains_after_identifier_boundary(line: &str, token: &str) -> bool {
     let bytes = line.as_bytes();
     let mut search_from = 0;
-    while let Some(rel) = line[search_from..].find(token) {
+    while let Some(rel) = line[search_from ..].find(token) {
         let start = search_from + rel;
         let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
         if !before_is_ident {
@@ -75,7 +75,7 @@ fn contains_after_identifier_boundary(line: &str, token: &str) -> bool {
 fn contains_whole_word(line: &str, token: &str) -> bool {
     let bytes = line.as_bytes();
     let mut search_from = 0;
-    while let Some(rel) = line[search_from..].find(token) {
+    while let Some(rel) = line[search_from ..].find(token) {
         let start = search_from + rel;
         let end = start + token.len();
         let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
@@ -356,7 +356,8 @@ mod tests {
     #[ignore = "catalogue: a trailing `//` comment on a real line of code \
                 is scanned as code; `let n = 1; // returns a Box<T> \
                 eventually` false-positives; needs tree-sitter-aware \
-                scanning to fix"]
+                scanning to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_read_a_trailing_comment"]
     fn a_trailing_comment_after_real_code_is_wrongly_flagged() {
         let errors = hits("let n = 1; // returns a Box<T> eventually\n");
         assert!(
@@ -373,7 +374,8 @@ mod tests {
     #[test]
     #[ignore = "catalogue: a string literal naming one of the forbidden \
                 types false-positives; `let msg = \"expected a Vec<T> \
-                here\";` fires; needs tree-sitter-aware scanning to fix"]
+                here\";` fires; needs tree-sitter-aware scanning to fix; \
+                tracked #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
     fn a_string_literal_naming_a_forbidden_type_is_wrongly_flagged() {
         let errors = hits("let msg = \"expected a Vec<T> here\";\n");
         assert!(
@@ -394,7 +396,8 @@ mod tests {
     #[ignore = "catalogue: a type-inferred construction with no explicit \
                 generic annotation (`Vec::new()`, `Box::new(x)`) is \
                 invisible to this lint; needs a broader match or \
-                tree-sitter-aware scanning to fix"]
+                tree-sitter-aware scanning to fix; tracked \
+                #arvo_s_no_alloc_enforcer_misses_a_type_inferred_heap_constru"]
     fn a_type_inferred_construction_with_no_annotation_escapes_detection() {
         let errors = hits("let v = Vec::new();\n");
         assert_eq!(

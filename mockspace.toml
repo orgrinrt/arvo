@@ -1447,6 +1447,12 @@ arvo-format = ["numeric"]
 # own door for the identical reason `arvo-format` has one.
 arvo-bits = ["numeric"]
 
+# Where a catalogued `#[ignore]` reason's `tracked #<id>` resolves. The ids are
+# tickets of the workspace tracker, which this repository's registry does not
+# hold, so each is listed as a row of the one ledger beside the registry.
+[lints.catalogue-ignore]
+ledgers = "mock/catalogue.md"
+
 [lints.the-axis-set-is-append-only]
 commit = "error"
 build = "error"

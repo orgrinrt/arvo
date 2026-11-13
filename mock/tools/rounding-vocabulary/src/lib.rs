@@ -50,7 +50,7 @@
 //! entries and that field is a sentence.
 
 use mockspace::RegistryView;
-use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
+use mockspace::tool::{ArgSpec, NotALint, Outcome, Purpose, Tool, ToolContext, ToolReport};
 
 /// The ruling that closed the vocabulary. Read at run time rather than trusted,
 /// so this tool cannot outlive the row it enforces.
@@ -128,8 +128,8 @@ impl Tool for RoundingVocabulary {
         "rounding modes named in predicates, against the six the canon ratified"
     }
 
-    fn not_a_lint(&self) -> NotALint {
-        NotALint::NoFailingCase
+    fn purpose(&self) -> Purpose {
+        Purpose::Check(NotALint::NoFailingCase)
     }
 
     fn args(&self) -> &'static [ArgSpec] {
