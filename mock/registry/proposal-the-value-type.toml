@@ -1,0 +1,60 @@
+# The value type on the integer points, proposed from the round that shipped
+# `arvo-numeral`. Every row here is a proposal at one expert and none is a
+# ruling: promotion is the coordinator's gate. The reasoning behind each is in
+# the closed round's topic or doc changelist, cited per row.
+
+[[proposal]]
+id = "a_value_admits_a_constant_quantum_a_zero_phase_and_a_deterministic_mode"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_format"
+says = "A value held in a machine carrier admits a format only where the format has a constant quantum and a zero phase, its overflow policy completes by wrapping or by saturation, and its rounding mode is deterministic. Clamp is refused as saturation under another name where no bound is carried, and the stochastic mode is refused because a value has nowhere to carry a dither. Each refusal is at the bound, never at run time."
+because = "At a constant quantum and a zero phase the sum of two slots is the slot of the sum, so the carrier's own integer add is the format's add and the order of the carrier is the order of the slots; anywhere else the carrier would need an offset or a scale it does not hold. The admission is one constant every door forces, so a signature outside it never yields a value and nothing checks it later."
+instead = "A format outside the admission is held by a composition that carries what the carrier cannot: its phase, its quantum, or its dither."
+provenance = [
+  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#what-a-value-signature-admits",
+  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#how-the-value-holds-its-carrier",
+]
+keywords = ["value", "carrier", "admission", "constant quantum", "zero phase", "Sole", "ADMITTED", "Clamp", "Stochastic", "dither", "deterministic rounding", "machine integer"]
+
+[[proposal]]
+id = "each_overflow_policy_has_an_asserting_and_a_completing_marker"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "overflow_policy"
+says = "Each completing overflow policy is spelled twice over one policy constant. The format's own marker asserts in a debug build when an operation or an ingest door leaves the range; the second marker, `Wrapping` or `Saturating`, makes completion by the policy the meaning of the operation and asserts in no profile. The assertion asks a constant verdict beside the total operation and never lives inside it, so in a release build and under the second marker the branch is a constant and clears at lowering."
+because = "The ratified overflow-panic row puts a debug panic on what the typestate cannot catch, and asks to be read loosely and sharpened as the boundaries are found. Shipping both readings keeps the row's letter as the default while the declaration that turns it off sits in the type rather than in a build flag, which is what the one-lowered-path ruling leaves open. The host's `core::num::Wrapping` and `core::num::Saturating` are the precedent for what the second names mean to a reader of Rust."
+note = "The compromise is stated in the topic: a consumer writing the plain marker gets a debug abort on a sum that wraps, one word away from the marker that does not."
+provenance = [
+  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#the-overflow-assertion-and-the-second-marker-of-each-pair",
+]
+keywords = ["overflow", "debug assertion", "panic", "Wrap", "Saturate", "Wrapping", "Saturating", "marker", "verdict", "fits_add", "debug_assertions", "typestate"]
+
+[[proposal]]
+id = "a_missing_identity_is_refused_as_a_failed_constant"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "A value's identity under an operation is one associated constant, computed from the format's own predicate for that identity and asserting it first, so on a format without the identity the constant fails to evaluate with a message naming what is missing. The implementation exists for every admitted signature and the refusal is a failed constant, never a missing implementation."
+because = "Computing the identity from the format's predicate makes it a checked claim rather than a marker an author writes, which is the repair the row on author-written law markers asks for. A failed constant names the missing identity in its message, where a missing implementation would only say a bound is unmet. Associativity stays the format's own verdict and gains no marker beside the identity."
+provenance = [
+  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#identities",
+]
+keywords = ["identity", "Identity", "Additive", "IDENTITY", "failed constant", "has_additive_identity", "law marker", "associativity", "monoid", "zero"]
+
+[[proposal]]
+id = "a_value_takes_no_ordering_trait_from_core"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_primitive"
+says = "A value in a crate that does not introduce fallibility implements neither `PartialOrd` nor `Ord`, because `PartialOrd::partial_cmp` returns a bare `Option` and `Ord` needs `PartialOrd`."
+because = "The bare-option refusal holds in every crate that does not introduce the fallibility category, and an ordering trait from core cannot be implemented without naming one. The order is total over the admitted values, so nothing is lost by reaching it through inherent operations."
+instead = "The value's order is its inherent `cmp`, returning `Ordering`, beside `lt`, `le`, `gt`, `ge`, `min` and `max`, each reading the carrier."
+provenance = [
+  "mock::design_rounds/202611130342/202611130342_changelist.doc.lock::#change-the-crates-design-document",
+]
+keywords = ["ordering", "PartialOrd", "Ord", "partial_cmp", "Option", "cmp", "Ordering", "comparison", "no-bare-option", "fallibility"]
