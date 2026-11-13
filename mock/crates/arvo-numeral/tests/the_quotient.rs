@@ -3,7 +3,12 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The quotient through the value type, against the format's `div`.
+//! The quotient through the value type, against the tests' own arithmetic.
+//!
+//! The value's `div` is the format's `div` called on slots, so the format's
+//! function is not what it is compared with here. The expected slot is the
+//! dividend's slot over the divisor's, scaled onto the grid, rounded by the
+//! mode and completed by the policy, in `common::oracle`.
 //!
 //! A divisor is a constant of its format, so each format names its divisors:
 //! every member but zero at widths 1 to 4, and a named set above that, both
@@ -17,9 +22,9 @@ mod common;
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Fixed, Integer, UFixed};
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, TowardZero};
-use arvo_format::{Adapt, Dither, Signature, Slot, div, panic_on_overflow, quotient_position};
+use arvo_format::{Adapt, Signature};
 use arvo_numeral::{Divisor, Int, Num, Quiet, Sole};
-use common::{range, value};
+use common::{oracle, range, value};
 
 #[derive(Default)]
 struct Counts {
@@ -34,15 +39,14 @@ fn quotients<S: Sole>(by: &[Divisor<S::Format>], counts: &mut Counts) {
         for a in min ..= max {
             let v = value::<S>(a);
             counts.checked += 1;
-            if v.div(b).slot() != div::<S>(Slot::at(a), b, Dither::UNUSED) {
+            let expected = oracle::quotient::<S>(a, b.slot().index());
+            if v.div(b).slot().index() != expected.slot {
                 counts.wrong += 1;
             }
-            let position = quotient_position::<S::Format>(Slot::at(a), b);
-            let leaves = panic_on_overflow::<S>(position, Dither::UNUSED).get();
             assert_eq!(
                 v.fits_div(b).get(),
-                !leaves,
-                "`fits_div` disagrees with `panic_on_overflow` at {a} / {}",
+                expected.fits,
+                "`fits_div` at {a} / {}",
                 b.slot().index()
             );
         }

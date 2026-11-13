@@ -205,6 +205,14 @@ fn an_accumulator_on_another_grid_is_refused() {
 }
 
 #[test]
+fn take_at_a_capacity_of_zero_is_refused() {
+    pair(
+        "take_at_a_capacity_of_zero_is_refused",
+        "take_at_a_capacity_of_one_compiles",
+    );
+}
+
+#[test]
 fn a_difference_in_an_unsigned_accumulator_is_refused() {
     pair(
         "a_difference_in_an_unsigned_accumulator_is_refused",

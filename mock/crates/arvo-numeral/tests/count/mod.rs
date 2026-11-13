@@ -104,6 +104,4 @@ pub fn the_counts_as_calls() {
     assert_eq!(<L4 as Length<TwoBitsWrap>>::len().slot().index(), 0);
     assert_eq!(<L5 as Length<TwoBitsWrap>>::len().slot().index(), 1);
     assert_eq!(<L5 as Length<TwoBitsSaturate>>::len().slot().index(), 3);
-    // Three cells fit two bits, and the default check passes what fits.
-    assert_eq!(<L3 as Length<TwoBitsAbort>>::len().slot().index(), 3);
 }

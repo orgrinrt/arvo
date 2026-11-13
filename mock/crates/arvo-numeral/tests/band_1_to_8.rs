@@ -21,7 +21,8 @@ use arvo_numeral::{Additive, Identity, Int, Multiplicative, Num, Sole, Uint};
 use common::{Tally, exhaustive, exhaustive_products, range, value};
 
 #[test]
-fn every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_pair() {
+fn every_signature_from_1_to_8_bits_adds_subtracts_negates_and_orders_as_the_oracle_does_on_every_pair()
+ {
     let mut tally = Tally::default();
     every_signature_at!(1, exhaustive, &mut tally);
     every_signature_at!(2, exhaustive, &mut tally);
@@ -87,8 +88,8 @@ fn the_multiplicative_identity_is_one_and_moves_no_member() {
 /// members sit at eighths, and every pair still adds and orders as the oracle
 /// says.
 #[test]
-fn a_fixed_point_signature_at_a_non_zero_exponent_adds_and_orders_as_the_oracle_does_on_every_pair()
-{
+fn a_fixed_point_signature_at_a_non_zero_exponent_adds_subtracts_negates_and_orders_as_the_oracle_does_on_every_pair()
+ {
     let mut tally = Tally::default();
     every_mode!(UFixed<6, 3>, Wrap, exhaustive, &mut tally);
     every_mode!(UFixed<6, 3>, Saturate, exhaustive, &mut tally);

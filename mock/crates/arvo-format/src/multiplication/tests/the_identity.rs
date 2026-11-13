@@ -153,6 +153,32 @@ fn a_half_phase_has_a_member_at_one_exactly_at_exponent_one() {
     );
 }
 
+/// Phases whose denominator is three or more, and the decimal radix away from
+/// a zero phase. Nothing is expected of these but the walk's own answer: the
+/// function has to name the member at one wherever the range holds one, and
+/// nothing elsewhere, whatever the phase is.
+#[test]
+fn the_identity_is_the_member_at_one_at_phases_of_any_denominator() {
+    let mut thirds = Identity::default();
+    walk!(thirds, BinaryRationals, 1, 3);
+    walk!(thirds, BinaryRationals, -2, 3);
+    walk!(thirds, BinaryRationals, 3, 4);
+    walk!(thirds, BinaryRationals, 5, 7);
+    assert_eq!(thirds.formats, 480);
+
+    let mut decimal = Identity::default();
+    walk!(decimal, DecimalRationals, 1, 1);
+    walk!(decimal, DecimalRationals, -3, 1);
+    walk!(decimal, DecimalRationals, 1, 2);
+    walk!(decimal, DecimalRationals, 1, 5);
+    walk!(decimal, DecimalRationals, 2, 3);
+    assert_eq!(decimal.formats, 600);
+    // A whole decimal phase leaves members at one, so the answering side of the
+    // law is asked here too.
+    assert!(decimal.with_one > 0 && decimal.without_one > 0);
+    assert!(decimal.products > 0);
+}
+
 #[test]
 fn the_shipped_points_answer() {
     assert_eq!(
