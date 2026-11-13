@@ -53,7 +53,7 @@
 //! words, and what cites it, because a row three others depend on is a different
 //! question from one nothing has been built on.
 
-use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
+use mockspace::tool::{ArgSpec, NotALint, Outcome, Purpose, Tool, ToolContext, ToolReport};
 
 /// The namespace carrying op's statements.
 const RULING: &str = "ruling";
@@ -78,14 +78,14 @@ impl Tool for AwaitingARuling {
         "rows op stated but never ruled on, ordered by what depends on them"
     }
 
-    fn not_a_lint(&self) -> NotALint {
-        NotALint::NoFailingCase
+    fn purpose(&self) -> Purpose {
+        Purpose::Check(NotALint::NoFailingCase)
     }
 
     fn args(&self) -> &'static [ArgSpec] {
         &[ArgSpec {
-            name: "key",
-            required: false,
+            name:        "key",
+            required:    false,
             description: "report one row in full, by its slug, before promoting it",
         }]
     }
@@ -204,19 +204,23 @@ impl AwaitingARuling {
         // abstract.
         let unordered = tied_at_the_bottom(waiting);
         s.push_str(&match unordered {
-            n if n == waiting.len() => "Ordering is by what cites a row, and on \
+            n if n == waiting.len() => {
+                "Ordering is by what cites a row, and on \
                                         this run it ranked nothing: no two rows \
                                         here differ in that count, so what you \
                                         are reading is alphabetical."
-                .to_string(),
-            n => format!(
-                "Ordering is by what cites a row, which is a suggestion and not \
+                    .to_string()
+            },
+            n => {
+                format!(
+                    "Ordering is by what cites a row, which is a suggestion and not \
                  a ranking, and here it reached {} of {}: the other {n} share the \
                  lowest count and stand in slug order rather than in any order \
                  this earned.",
-                waiting.len() - n,
-                waiting.len()
-            ),
+                    waiting.len() - n,
+                    waiting.len()
+                )
+            },
         });
         s.push_str(
             " And retirement is the only blocked state this can see: a row \
@@ -226,8 +230,10 @@ impl AwaitingARuling {
         );
 
         ToolReport {
-            outcome: Outcome::Clean { examined: total },
-            output: s,
+            outcome: Outcome::Clean {
+                examined: total,
+            },
+            output:  s,
         }
     }
 
@@ -257,9 +263,7 @@ impl AwaitingARuling {
             );
         }
 
-        for field in [
-            "topic", "quote", "says", "because", "instead", "note", "gap",
-        ] {
+        for field in ["topic", "quote", "says", "because", "instead", "note", "gap"] {
             if let Some(v) = ctx.registry.field(q, field)
                 && !v.trim().is_empty()
             {
@@ -270,10 +274,12 @@ impl AwaitingARuling {
         let citers = citers(ctx, q);
         s.push('\n');
         match citers.len() {
-            0 => s.push_str(
-                "  Nothing cites it, so it is the cheapest kind to be wrong about: \
+            0 => {
+                s.push_str(
+                    "  Nothing cites it, so it is the cheapest kind to be wrong about: \
                  nothing has been built on it yet.\n",
-            ),
+                )
+            },
             n => {
                 s.push_str(&format!(
                     "  {n} row(s) cite it, and inherit whatever it is wrong about:\n"
@@ -281,7 +287,7 @@ impl AwaitingARuling {
                 for c in &citers {
                     s.push_str(&format!("    {c}\n"));
                 }
-            }
+            },
         }
 
         let later = op_files_after(ctx, q);
@@ -298,8 +304,10 @@ impl AwaitingARuling {
         }
 
         ToolReport {
-            outcome: Outcome::Clean { examined: 1 },
-            output: s,
+            outcome: Outcome::Clean {
+                examined: 1,
+            },
+            output:  s,
         }
     }
 }

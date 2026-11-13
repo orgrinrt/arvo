@@ -52,7 +52,7 @@ fn is_ident_byte(b: u8) -> bool {
 fn contains_whole_word(line: &str, token: &str) -> bool {
     let bytes = line.as_bytes();
     let mut search_from = 0;
-    while let Some(rel) = line[search_from..].find(token) {
+    while let Some(rel) = line[search_from ..].find(token) {
         let start = search_from + rel;
         let end = start + token.len();
         let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
@@ -313,7 +313,8 @@ mod tests {
     #[ignore = "catalogue: a trailing `//` comment on a real line of code \
                 is scanned as code; `let x = 5; // avoid dyn dispatch \
                 here` false-positives; needs tree-sitter-aware scanning \
-                to fix"]
+                to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_read_a_trailing_comment"]
     fn a_trailing_comment_after_real_code_is_wrongly_flagged() {
         let errors = hits("let x = 5; // avoid dyn dispatch here\n");
         assert!(
@@ -325,7 +326,8 @@ mod tests {
     #[test]
     #[ignore = "catalogue: a string literal naming one of the forbidden \
                 shapes false-positives; needs tree-sitter-aware scanning \
-                to fix"]
+                to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
     fn a_string_literal_naming_a_forbidden_shape_is_wrongly_flagged() {
         let errors = hits("let msg = \"expected dyn Trait here\";\n");
         assert!(
@@ -337,7 +339,8 @@ mod tests {
     #[test]
     #[ignore = "catalogue: a block-comment interior line naming one of \
                 the forbidden shapes false-positives; needs \
-                tree-sitter-aware scanning to fix"]
+                tree-sitter-aware scanning to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_on"]
     fn an_interior_line_of_a_block_comment_is_wrongly_flagged() {
         let errors = hits("/*\nlet t: &dyn Trait = x;\n*/\n");
         assert!(
