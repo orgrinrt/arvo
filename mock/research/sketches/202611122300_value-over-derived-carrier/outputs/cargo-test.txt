@@ -1,0 +1,217 @@
+$ cargo test   # from the sketch directory, default members (all but consumer-c and arm-e)
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_a-96c74b821ad45322)
+
+running 2 tests
+test tests::value_add_every_width_over_the_edges ... ok
+test tests::value_add_widths_1_to_10_exhaustive ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_b-a4211bfeb15e777b)
+
+running 2 tests
+test tests::value_add_every_width_over_the_edges ... ok
+test tests::value_add_widths_1_to_10_exhaustive ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+     Running tests/accumulator.rs (/home/user/target/debug/deps/accumulator-fe81b4c20e6f4256)
+
+running 5 tests
+test stepwise_saturation_fails_at_the_edge_and_depends_on_order ... ok
+test the_term_bound_per_ladder_carrier_at_full_width ... ok
+test at_the_bound_the_sum_is_exact ... ok
+test one_term_past_the_bound_panics_with_overflow_checks - should panic ... ok
+test narrow_of_four_is_adapt_of_the_exact_sum_in_every_order_at_width_8 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.72s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_c-3f3c5beb06548db9)
+
+running 2 tests
+test tests::value_add_every_width_over_the_edges ... ok
+test tests::value_add_widths_1_to_10_exhaustive ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_d-f51534d22a074ada)
+
+running 2 tests
+test tests::value_add_every_width_over_the_edges ... ok
+test tests::value_add_widths_1_to_10_exhaustive ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/asm_probe-5efacbfb26fd5e51)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/common-cc9ff65193263c59)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/rungs.rs (/home/user/target/debug/deps/rungs-c828f24a1c927dfe)
+
+running 5 tests
+test rung_16_widths_1_to_8 ... ok
+test rung_64_widths_1_to_8 ... ok
+test rung_32_widths_1_to_8 ... ok
+test rung_8_widths_1_to_8 ... ok
+test rung_16_widths_9_and_10 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+
+     Running tests/ui.rs (/home/user/target/debug/deps/ui-9164a7bc76184894)
+
+running 1 test
+
+
+test tests/ui/fail/wrong_row.rs [should fail to compile] ... ok
+test tests/ui/pass/wrong_row.rs [should pass] ... ok
+
+
+test the_wrong_row_is_refused ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/consumer_a-d0f5193717e7f210)
+
+running 1 test
+test consumer_tests::the_cases_compute ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ui.rs (/home/user/target/debug/deps/ui-9b53d89a2f70b92a)
+
+running 1 test
+
+
+test tests/ui/fail/add_across_signatures.rs [should fail to compile] ... ok
+test tests/ui/fail/carrier_named_wrongly.rs [should fail to compile] ... ok
+test tests/ui/fail/field_from_outside.rs [should fail to compile] ... ok
+test tests/ui/fail/width_0.rs [should fail to compile] ... ok
+test tests/ui/fail/width_65.rs [should fail to compile] ... ok
+test tests/ui/pass/add_across_signatures.rs [should pass] ... ok
+test tests/ui/pass/carrier_named_wrongly.rs [should pass] ... ok
+test tests/ui/pass/field_from_outside.rs [should pass] ... ok
+test tests/ui/pass/width_0.rs [should pass] ... ok
+test tests/ui/pass/width_65.rs [should pass] ... ok
+
+
+test the_pairs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.49s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/consumer_b-8dbee3c7ba478f0e)
+
+running 2 tests
+test consumer_tests::the_cases_compute ... ok
+test counted::tests::the_counted_sum_is_exact_in_a_const_item ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ui.rs (/home/user/target/debug/deps/ui-c7a25a28158ad64f)
+
+running 1 test
+
+
+test tests/ui/fail/add_across_signatures.rs [should fail to compile] ... ok
+test tests/ui/fail/field_from_outside.rs [should fail to compile] ... ok
+test tests/ui/fail/signed_terms_past_the_bound.rs [should fail to compile] ... ok
+test tests/ui/fail/terms_past_the_bound.rs [should fail to compile] ... ok
+test tests/ui/fail/terms_past_the_bound_in_a_const.rs [should fail to compile] ... ok
+test tests/ui/fail/terms_past_the_recursion_limit.rs [should fail to compile] ... ok
+test tests/ui/fail/width_0.rs [should fail to compile] ... ok
+test tests/ui/fail/width_65.rs [should fail to compile] ... ok
+test tests/ui/pass/add_across_signatures.rs [should pass] ... ok
+test tests/ui/pass/field_from_outside.rs [should pass] ... ok
+test tests/ui/pass/signed_terms_past_the_bound.rs [should pass] ... ok
+test tests/ui/pass/terms_past_the_bound.rs [should pass] ... ok
+test tests/ui/pass/terms_past_the_bound_in_a_const.rs [should pass] ... ok
+test tests/ui/pass/terms_past_the_recursion_limit.rs [should pass] ... ok
+test tests/ui/pass/width_0.rs [should pass] ... ok
+test tests/ui/pass/width_65.rs [should pass] ... ok
+
+
+test the_pairs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.95s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/consumer_d-7a2b1091c68762e9)
+
+running 1 test
+test consumer_tests::the_cases_compute ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ui.rs (/home/user/target/debug/deps/ui-afc3958bccc47925)
+
+running 1 test
+
+
+test tests/ui/fail/generic_call.rs [should fail to compile] ... ok
+test tests/ui/pass/generic_call.rs [should pass] ... ok
+
+
+test the_pairs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+
+   Doc-tests arm_a
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arm_b
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arm_c
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arm_d
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests asm_probe
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests common
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests consumer_a
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests consumer_b
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests consumer_d
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

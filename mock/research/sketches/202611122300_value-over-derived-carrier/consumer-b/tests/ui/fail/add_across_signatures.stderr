@@ -1,0 +1,15 @@
+error[E0308]: mismatched types
+  --> tests/ui/fail/add_across_signatures.rs:13:19
+   |
+13 |     let _ = a.add(b);
+   |               --- ^ expected `13`, found `14`
+   |               |
+   |               arguments to this method are incorrect
+   |
+   = note: expected struct `Num<Signature<Integer<13>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`
+              found struct `Num<Signature<Integer<14>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`
+note: method defined here
+  --> $WORKSPACE/arm-b/src/lib.rs
+   |
+   |     pub const fn add(self, rhs: Self) -> Self {
+   |                  ^^^

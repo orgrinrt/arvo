@@ -1,0 +1,5 @@
+error[E0616]: field `0` of struct `Num` is private
+  --> tests/ui/fail/field_from_outside.rs:11:15
+   |
+11 |     let _ = a.0;
+   |               ^ private field

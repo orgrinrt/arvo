@@ -1,0 +1,29 @@
+error[E0080]: attempt to compute `32640_i16 + 255_i16`, which would overflow
+   --> tests/ui/fail/terms_past_the_bound_in_a_const.rs:11:21
+    |
+ 11 |   const SUM: Num<S> = Counted::<S, Zero>::ZERO
+    |  _____________________^
+ 12 | |     .push(Num::from_raw(255))
+ 13 | |     .push(Num::from_raw(255))
+ 14 | |     .push(Num::from_raw(255))
+...   |
+139 | |     .push(Num::from_raw(255))
+140 | |     .push(Num::from_raw(255))
+    | |_____________________________^ evaluation of `SUM` failed inside this call
+    |
+note: inside `Counted::<Signature<UFixed<8, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Saturate>>, Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<Succ<arm_b::Zero>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>::push`
+   --> $WORKSPACE/arm-b/src/wide.rs
+    |
+    |         Counted(self.0.add(member.widen()), core::marker::PhantomData)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: inside `Wide::<Signature<UFixed<8, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Saturate>>>::add`
+   --> $WORKSPACE/arm-b/src/wide.rs
+    |
+    |             copy::<S::Wide, T>(self.0) + copy::<S::Wide, T>(rhs.0)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+
+note: erroneous constant encountered
+   --> tests/ui/fail/terms_past_the_bound_in_a_const.rs:144:13
+    |
+144 |     let _ = SUM;
+    |             ^^^
