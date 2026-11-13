@@ -4,8 +4,8 @@
 # whole of its provenance claim, and it becomes canon only when a `ruling` names
 # it under `ratifies`.
 #
-# This said "Nothing does", and it was false: four rulings name eleven rows
-# between them, and `ruling::the_format_spine_is_canon` alone ratifies three.
+# This said "Nothing does", and it was false: rulings name rows under `ratifies`,
+# and `ruling::the_format_spine_is_canon` is one that does.
 # **The count is not written here**, because a number in a comment is a second
 # copy of something the registry already answers and this one had gone stale in
 # the direction that matters, telling every reader no row had been stamped.
@@ -31,7 +31,7 @@
 # where that axis exists, so several rows below are narrower than their authors
 # meant. The narrowing is faithful to the notation and is an artefact of who was
 # writing. `182` names the instances it found; it is not a complete list, and
-# reading it as one is how two rows carrying the narrowing went unlisted.
+# reading it as one is how the rows carrying the narrowing went unlisted.
 #
 # **A `measured` row names the probe it ran.** The ones that do not sit under a
 # ratchet, the `measured-claim-cites-no-probe` lint, whose own doc
@@ -1344,7 +1344,7 @@ keywords = ["175", "254", "cross-variant validation", "harness", "gate", "dirty"
 
 # --- recovered on a second pass, from the instruments rather than the prose ---
 #
-# The five rows below were in `182` section 5.2's first draft as claims that
+# The rows below were in `182` section 5.2's first draft as claims that
 # could not be predicated, because the consolidation carrying each states no
 # region. Every one of their instruments states its own parameters, in its
 # committed output or in the constants at the top of its source, and the brief's
@@ -1685,7 +1685,7 @@ keywords = ["output", "derivation", "codomain", "packaging", "projection", "carr
 
 # The three predicates that replace the retired criterion.
 #
-# They are three rows rather than one because the sentence they replace was
+# They are separate rows rather than one because the sentence they replace was
 # trying to be three things at once, which is what made it undefinable, and
 # filing them back as one row would rebuild it. They also carry three different
 # standings, stated separately below, and a merged row could only carry the

@@ -25,7 +25,8 @@
 //! Each preset's `Adaptation` is a carried default rather than a settled answer.
 //! `question::does_warm_wrap_or_clamp` is open in the registry and disputes at
 //! least the `Warm` cell; the other three carry the same unproven status. Each
-//! impl below is marked `// FIXME:` at the declaration for exactly this reason.
+//! impl below is marked `// FIXME(<ticket id>):` at the declaration for exactly
+//! this reason.
 
 use arvo_format::Adaptation;
 use arvo_placement::{Objective, ObjectiveKind};
@@ -69,11 +70,12 @@ pub const fn objective_of<S: Strategy>() -> Objective {
 /// and nothing here has found these four wrong. They are instances, not the
 /// inventory.
 pub mod presets {
-    use super::Strategy;
+    use arvo_format::Adapt;
     use arvo_format::overflow::{Saturate, Wrap};
     use arvo_format::rounding::{HalfEven, TowardZero};
-    use arvo_format::Adapt;
     use arvo_placement::objective;
+
+    use super::Strategy;
 
     /// The speed-first binding.
     ///
@@ -84,12 +86,13 @@ pub mod presets {
     /// has set it.
     pub struct Hot;
 
-    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
-    // No overflow_policy/rounding row disputes this specific cell yet; treat it
-    // as unproven the same as the other three until one settles it.
+    // FIXME(arvo_s_four_preset_adaptation_defaults_are_carried_rather_th): Adapt<TowardZero, Wrap>
+    // is a carried default rather than a settled value. No overflow_policy/rounding
+    // row disputes this specific cell yet; treat it as unproven the same as the
+    // other three until one settles it.
     impl Strategy for Hot {
-        type Objective = objective::Access;
         type Adaptation = Adapt<TowardZero, Wrap>;
+        type Objective = objective::Access;
     }
 
     /// The storage-minimising binding.
@@ -102,12 +105,13 @@ pub mod presets {
     /// renamed or resized.
     pub struct Cold;
 
-    // FIXME: Adapt<TowardZero, Wrap> is a carried default rather than a settled value.
-    // No overflow_policy/rounding row disputes this specific cell yet; treat it
-    // as unproven the same as the other three until one settles it.
+    // FIXME(arvo_s_four_preset_adaptation_defaults_are_carried_rather_th): Adapt<TowardZero, Wrap>
+    // is a carried default rather than a settled value. No overflow_policy/rounding
+    // row disputes this specific cell yet; treat it as unproven the same as the
+    // other three until one settles it.
     impl Strategy for Cold {
-        type Objective = objective::Footprint;
         type Adaptation = Adapt<TowardZero, Wrap>;
+        type Objective = objective::Footprint;
     }
 
     /// The accuracy-first binding.
@@ -119,12 +123,13 @@ pub mod presets {
     /// recorded rather than papered over.
     pub struct Precise;
 
-    // FIXME: Adapt<HalfEven, Saturate> is a carried default rather than a settled value.
-    // No overflow_policy/rounding row disputes this specific cell yet; treat it
-    // as unproven the same as the other three until one settles it.
+    // FIXME(arvo_s_four_preset_adaptation_defaults_are_carried_rather_th):
+    // Adapt<HalfEven, Saturate> is a carried default rather than a settled value.
+    // No overflow_policy/rounding row disputes this specific cell yet; treat it as
+    // unproven the same as the other three until one settles it.
     impl Strategy for Precise {
-        type Objective = objective::Access;
         type Adaptation = Adapt<HalfEven, Saturate>;
+        type Objective = objective::Access;
     }
 
     /// The compromise binding, meant as the sensible default.
@@ -136,12 +141,13 @@ pub mod presets {
     /// worse choice.
     pub struct Warm;
 
-    // FIXME: Adapt<HalfEven, Wrap> is a carried default rather than a settled
-    // value. question::does_warm_wrap_or_clamp is open in the registry and
-    // disputes this cell. Do not read it as settled until that question resolves.
+    // FIXME(arvo_s_four_preset_adaptation_defaults_are_carried_rather_th): Adapt<HalfEven, Wrap>
+    // is a carried default rather than a settled value. question::does_warm_wrap_or_clamp
+    // is open in the registry and disputes this cell. Do not read it as settled until
+    // that question resolves.
     impl Strategy for Warm {
-        type Objective = objective::Access;
         type Adaptation = Adapt<HalfEven, Wrap>;
+        type Objective = objective::Access;
     }
 }
 

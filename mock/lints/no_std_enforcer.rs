@@ -4,15 +4,21 @@
 //! dependency. Crates must not import `std::*`. Consumers that need
 //! platform integration pull in their own `std`-bearing crates.
 //!
-//! Scope: every arvo crate under `mock/crates/`. The lint scans raw
-//! source (line by line) to catch imports before they reach the
-//! compile pipeline, which gives a clear arvo-specific message
-//! rather than a generic `unresolved import` error from `no_std` mode.
+//! Scope: every arvo crate under `mock/crates/`. The question is asked of
+//! the one parse the engine holds (`crate_root_paths`), which names a `std`
+//! path, an `extern crate std` and a path through an alias of it by what
+//! the nodes are and not by how a line begins. That gives a clear
+//! arvo-specific message rather than a generic `unresolved import` error
+//! from `no_std` mode.
 //!
-//! **Known gap**: the match is anchored on `use` / `pub use` / `extern
-//! crate`, so a fully qualified call that never imports the path, such
-//! as `std::process::exit(0);`, is invisible to it. See the catalogued
-//! test below.
+//! The path is forbidden wherever it is written: in a `use`, written out
+//! in full in an expression or a type, as `std::process::exit(0);` is,
+//! inside a macro's arguments, and as an `extern crate` declaration
+//! whatever precedes it (`pub extern crate std;`) and whatever it is
+//! aliased to. A `std` that is not the crate root does not match:
+//! `my_std::x` and `facade::std::x` have other roots, and
+//! `extern crate stdx;` names another crate. A leading `::std::` is the
+//! crate root and does.
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
@@ -41,37 +47,23 @@ impl CrateLint for NoStdEnforcer {
             return Vec::new();
         }
 
-        let mut errors = Vec::new();
-
-        for (idx, line) in ctx.source().lines().enumerate() {
-            let trimmed = line.trim_start();
-
-            if trimmed.starts_with("//") {
-                continue;
-            }
-
-            // Match `use std::`, `use ::std::`, `extern crate std`.
-            let hit = trimmed.starts_with("use std::")
-                || trimmed.starts_with("use ::std::")
-                || trimmed.starts_with("pub use std::")
-                || trimmed.starts_with("pub use ::std::")
-                || trimmed.starts_with("extern crate std");
-
-            if hit {
-                errors.push(LintError::with_severity(
+        let lines: Vec<&str> = ctx.source().lines().collect();
+        crate::crate_root_paths::lines_naming(ctx, "std")
+            .into_iter()
+            .map(|line| {
+                LintError::with_severity(
                     ctx.crate_name.to_string(),
-                    idx + 1,
+                    line,
                     "no-std-enforcer",
                     format!(
-                        "arvo is `#![no_std]`; `use std::` is forbidden: {}",
-                        trimmed.trim_end()
+                        "arvo is `#![no_std]`; a `std` path is forbidden, in a `use`, written \
+                         out in full, in a macro's arguments or as `extern crate`: {}",
+                        lines.get(line - 1).map_or("", |l| l.trim())
                     ),
                     Severity::HARD_ERROR,
-                ));
-            }
-        }
-
-        errors
+                )
+            })
+            .collect()
     }
 }
 
@@ -182,11 +174,8 @@ mod tests {
 
     #[test]
     fn a_trailing_comment_after_real_code_is_silent() {
-        // The match is anchored on the trimmed line start, so `use std::`
-        // appearing only after real code on the same line never matches:
-        // this is the one lint of the five that a same-line trailing
-        // comment cannot fool.
         assert!(hits("let x = 1; // see use std::fmt for the analogue\n").is_empty());
+        assert!(hits("let x = 1; // std::process::exit(0) is not allowed\n").is_empty());
     }
 
     // --- proc-macro exemption ------------------------------------------
@@ -228,80 +217,94 @@ mod tests {
         );
     }
 
-    // --- catalogued gaps: line-based scanning has no notion of context -
+    // --- what only the parse can tell apart --------------------------------
 
     /// `mock/crates/` is currently empty (arvo's canon is being written),
     /// so there is nothing for the engine's own crate walk to discover.
     /// That is a fact about the engine's crate-discovery step, not about
     /// this lint: `LintFixture` builds a `LintContext` directly, with no
     /// dependency on any crate existing on disk, and the lint reads only
-    /// `ctx.source()`. This lint is fully operative today; its "Scope" line
-    /// is aspirational until the first crate exists to walk.
+    /// `ctx.source()` and `ctx.tree()`. This lint is fully operative today;
+    /// its "Scope" line is aspirational until the first crate exists to walk.
     #[test]
     fn the_lint_itself_needs_no_crate_tree_on_disk() {
         assert_eq!(hits("use std::fmt;\n").len(), 1);
     }
 
-    /// Measured independently against a committed probe and control in the
-    /// design round that closed alongside this suite: the match is anchored
-    /// on `use` / `pub use` / `extern crate`, so a fully qualified call that
-    /// never imports the path is invisible to it. `std::process::exit(0);`
-    /// is real platform-dependent code this lint exists to forbid, and it
-    /// passes silently. Catalogued rather than fixed: broadening the match
-    /// to catch a bare `std::` occurrence anywhere on a line reopens the
-    /// string-literal and trailing-comment false-positive classes the other
-    /// four lints already carry, which is a real design change rather than
-    /// a one-line correction.
+    /// `std::process::exit(0);` is real platform-dependent code this lint
+    /// exists to forbid, and it never imports the path. The controls are the
+    /// shapes that look like it and are not the crate root.
     #[test]
-    #[ignore = "catalogue: a fully qualified `std::` path used outside a \
-                `use` statement (e.g. `std::process::exit(0);`) is not \
-                matched at all; needs a broader, false-positive-aware match \
-                or tree-sitter-based scanning to fix; tracked \
-                #arvo_s_no_std_enforcer_misses_a_fully_qualified_std_path_use"]
-    fn a_fully_qualified_std_path_outside_a_use_statement_escapes_detection() {
+    fn a_fully_qualified_std_path_outside_a_use_statement_fires() {
         let errors = hits("pub fn abort() {\n    std::process::exit(0);\n}\n");
         assert_eq!(
             errors.len(),
             1,
             "a direct std:: call is exactly the platform dependency this lint exists to forbid"
         );
+        assert_eq!(errors[0].line, 2);
     }
 
-    /// A block comment is never recognised as a comment at all: the skip
-    /// only tests `trimmed.starts_with("//")`. An interior line of a
-    /// `/* ... */` block that happens to start with `use std::` once
-    /// trimmed reads as real source. Catalogued rather than fixed: making
-    /// this lint block-comment-aware needs the `ctx.tree` tree-sitter AST
-    /// this lint does not use today, which is a real redesign rather than
-    /// a one-line correction.
     #[test]
-    #[ignore = "catalogue: block comments are not recognised, so an interior \
-                line of one starting with `use std::` false-positives; needs \
-                tree-sitter-aware scanning to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_on"]
-    fn an_interior_line_of_a_block_comment_is_wrongly_flagged() {
-        let errors = hits("/*\nuse std::fmt;\n*/\n");
-        assert!(
-            errors.is_empty(),
-            "a block-comment interior line should not read as real source"
-        );
+    fn a_fully_qualified_std_path_in_a_type_or_a_leading_colon_path_fires() {
+        assert_eq!(hits("fn f(x: std::fmt::Arguments) {}\n").len(), 1);
+        assert_eq!(hits("let x = ::std::mem::size_of::<T>();\n").len(), 1);
+        assert_eq!(hits("let x = (1, std::cmp::max(a, b));\n").len(), 1);
     }
 
-    /// The line-anchored match has no notion of "inside a string literal":
-    /// a raw multi-line string whose interior line happens to read exactly
-    /// `use std::fmt;` once trimmed is indistinguishable, to a line scan,
-    /// from the same text as real source. Catalogued rather than fixed for
-    /// the same reason as the block comment case above.
     #[test]
-    #[ignore = "catalogue: a raw multi-line string literal whose interior \
-                line reads `use std::...;` once trimmed false-positives; \
-                needs tree-sitter-aware scanning to fix; tracked \
-                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
-    fn an_interior_line_of_a_raw_string_literal_is_wrongly_flagged() {
-        let errors = hits("let example = r#\"\nuse std::fmt;\n\"#;\n");
-        assert!(
-            errors.is_empty(),
-            "text inside a raw string literal is not an import"
-        );
+    fn a_path_that_only_has_std_inside_it_is_silent() {
+        assert!(hits("let x = my_std::helper();\n").is_empty());
+        assert!(hits("let x = facade::std::helper();\n").is_empty());
+        assert!(hits("let x = ministd::helper();\n").is_empty());
+        assert!(hits("fn std_like() {}\n").is_empty());
+    }
+
+    #[test]
+    fn a_std_path_in_a_string_or_a_comment_is_silent() {
+        assert!(hits("let m = \"call std::process::exit here\";\n").is_empty());
+        assert!(hits("// std::process::exit(0) is forbidden\n").is_empty());
+    }
+
+    #[test]
+    fn a_comment_does_not_hide_the_std_path_before_it() {
+        assert_eq!(hits("std::process::exit(0); // gone\n").len(), 1);
+    }
+
+    #[test]
+    fn an_interior_line_of_a_block_comment_is_silent() {
+        assert!(hits("/*\nuse std::fmt;\n*/\n").is_empty());
+    }
+
+    #[test]
+    fn an_interior_line_of_a_raw_string_literal_is_silent() {
+        assert!(hits("let example = r#\"\nuse std::fmt;\n\"#;\n").is_empty());
+    }
+
+    // --- the class, not the instance: what a line scan keyed on how a line begins missed ---
+
+    #[test]
+    fn a_pub_extern_crate_std_fires() {
+        assert_eq!(hits("pub extern crate std;\n").len(), 1);
+        assert_eq!(hits("pub(crate) extern crate std;\n").len(), 1);
+    }
+
+    #[test]
+    fn an_alias_of_std_fires_at_the_declaration_and_at_a_path_through_it() {
+        let errors = hits("pub extern crate std as s;\nfn f() { s::process::exit(0); }\n");
+        assert_eq!(errors.len(), 2, "{errors:?}");
+        assert_eq!(errors[0].line, 1);
+        assert_eq!(errors[1].line, 2);
+    }
+
+    #[test]
+    fn a_path_in_a_macros_arguments_fires() {
+        assert_eq!(hits("fn f() { m!(std::process::id()); }\n").len(), 1);
+    }
+
+    #[test]
+    fn control_extern_crate_of_a_longer_name_is_silent() {
+        assert!(hits("extern crate stdx;\n").is_empty());
+        assert!(hits("fn f() { facade::std::x(); }\n").is_empty());
     }
 }
