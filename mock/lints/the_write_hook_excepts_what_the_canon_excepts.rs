@@ -113,33 +113,39 @@ const TABLE: &[(bool, &str)] = &[
     (false, "fn f<const N: usize>(x: u32) -> Bool { }"),
     (false, "let n = x as u32;"),
     (false, "pub struct Sized(u128);"),
+    // Two shapes the scanner once let through, each with the control beside it
+    // that says the shape did it. An even number of lifetime ticks on one line
+    // was paired as a char literal and swallowed what sat between the second and
+    // third, so a bare primitive between them went unseen; the one-tick
+    // `pub struct T<'a>(&'a u32);` was always denied, and is the control. A
+    // literal suffix carries a digit in front of the name, which the whole-token
+    // scan does not accept as a boundary, so `0u32` and `1_usize` went unseen;
+    // `let n: u32 = 0;` is the control, a named type the scan always reached.
+    (false, "pub struct T<'a>(&'a u32);"),
+    (false, "pub struct S<'a, 'b>(&'a u32, &'b Bool);"),
+    (false, "fn f<'a, 'b>(x: &'a u32, y: &'b Bool) {}"),
+    (false, "let n: u32 = 0;"),
+    (false, "let n = 0u32;"),
+    (false, "let n = 1_usize;"),
+    (false, "let x = 2.0f64;"),
+    (false, "let n = 0xFFu8;"),
+    // A range puts a dot in front of the literal, which the leading class keeps out
+    // so a field access stays out; a range is no field access.
+    (false, "for i in 0..10u32 {}"),
+    (false, "for i in 0..=10_usize {}"),
+    // What must stay allowed beside them: a char literal that holds a quote or a
+    // primitive's name, a string whose escaped quote has a primitive after it, a
+    // hex number that only looks like it carries a float suffix, and an
+    // identifier that ends in what looks like a suffix.
+    (true, "let c = '\"';"),
+    (true, "let c = 'u';"),
+    (true, "let s = \"escaped \\\" u32\";"),
+    (true, "let n = Num::new(0x1f32);"),
+    (true, "let v0u32 = Num::ZERO;"),
+    (true, "for i in 0..10 {}"),
+    (true, "let y = pair.0 + 1;"),
+    (true, "fn f<'a, 'b>(x: &'a Num, y: &'b Bool) {}"),
 ];
-
-// What this table does not reach, said here because a table with no row for a
-// case reads as a case that passes.
-//
-// The scanner strips `'…'` as a char literal, so an even number of lifetime
-// ticks on one line pairs them and everything between the second and third is
-// stripped before the scan. `pub struct S<'a, 'b>(&'a u32, &'b Bool);` is
-// allowed; the one-tick `pub struct T<'a>(&'a u32);` is denied, which is the
-// control saying the ticks did it rather than the shape. A bare primitive in a
-// public tuple-struct field goes through.
-//
-// A literal suffix goes through for a different reason: the scan wants a
-// non-identifier byte on each side of the name and a suffix always carries a
-// digit in front of it, so `0u32` and `1_usize` pass.
-//
-// Neither is a row above, because this table is what the lint gates on and a row
-// expecting a deny would fire on every run rather than catalogue anything. Both
-// are pinned instead as ignored arms against the repository's own template,
-// `a_bare_primitive_between_two_lifetime_ticks_is_still_refused` and
-// `a_literal_suffix_is_still_refused`, each asserting the intended verdict with a
-// control that passes today. They flip green the day the scanner reaches these
-// positions and cannot be lost meanwhile.
-//
-// Neither is fixed here, because both predate the carve-out and have nothing to
-// do with it. Both want the parse rather than the line, and the lint pack
-// catalogues the identical pair on its own side.
 
 struct TheWriteHookExcepts;
 impl Lint for TheWriteHookExcepts {
@@ -284,6 +290,7 @@ mod tests {
         ctx_at,
         plant,
         planted_tree,
+        repo_root,
         through_view,
         view,
     };
@@ -453,38 +460,9 @@ mod tests {
         assert_findings_block_at(&TheWriteHookExcepts, ctx_at(&root.join("mock"), &empty));
     }
 
-    /// The repository root, found by walking up from the generated lint crate
-    /// until a `mockspace.toml` appears.
-    ///
-    /// The crate this compiles into lives under `mock/target/`, so the root is
-    /// reachable but not at a fixed depth, and an arm wanting the real hook
-    /// rather than a planted one has to find it. Returns `None` rather than
-    /// panicking, so an arm using it reports a skip if the layout ever changes.
-    fn repo_root() -> Option<PathBuf> {
-        let mut dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        loop {
-            if dir.join("mockspace.toml").is_file() && dir.join(HOOK).is_file() {
-                return Some(dir);
-            }
-            if !dir.pop() {
-                return None;
-            }
-        }
-    }
-
     #[test]
-    #[ignore = "catalogue: the scanner strips `'…'` as a char literal, so an even \
-                number of lifetime ticks on one line pairs them and swallows what \
-                sits between the second and third. A bare primitive in a public \
-                tuple-struct field or a function parameter goes through. Closing \
-                it wants the parse rather than the line, the same change the \
-                literal suffix wants, and it predates the const generic carve-out \
-                this lint is about; tracked \
-                #arvo_s_write_hook_pairs_lifetime_ticks_as_a_char_literal_and"]
     fn a_bare_primitive_between_two_lifetime_ticks_is_still_refused() {
-        let Some(root) = repo_root() else {
-            return;
-        };
+        let root = repo_root();
         let target = root.join(GUARDED);
         let hook = staged(&root);
 
@@ -519,16 +497,8 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "catalogue: a literal suffix is not reached at all. The scan wants a \
-                non-identifier byte on each side of the name and a suffix always \
-                carries a digit in front of it, so `0u32` and `1_usize` pass. The \
-                hook's own comment claimed the opposite until this round; closing \
-                it wants the parse; tracked \
-                #arvo_s_write_hook_never_reaches_a_bare_primitive_written_as"]
     fn a_literal_suffix_is_still_refused() {
-        let Some(root) = repo_root() else {
-            return;
-        };
+        let root = repo_root();
         let target = root.join(GUARDED);
         let hook = staged(&root);
 

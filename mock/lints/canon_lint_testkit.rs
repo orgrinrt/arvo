@@ -1,6 +1,6 @@
 //! What a canon lint's own tests are built out of.
 //!
-//! **This file declares no lint.** The engine scans each `mock/lints/*.rs` for
+//! This file declares no lint. The engine scans each `mock/lints/*.rs` for
 //! `lint()`, `cross_lint()`, `repo_lint()` and `message_lint()`, includes the
 //! file as a module either way, and registers only what it found. So a module
 //! that defines none of them compiles into the cdylib alongside the lints and
@@ -10,7 +10,7 @@
 //! Everything here is `#[cfg(test)]`, so a release build of the pack carries an
 //! empty module.
 //!
-//! **What is here serves the registry lints**, which read a [`RegistryView`] and
+//! What is here serves the registry lints, which read a [`RegistryView`] and
 //! nothing else. That view is public and constructible, so such a predicate can
 //! be exercised on a planted registry with no fixture tree, no temporary
 //! directory and no process.
@@ -30,7 +30,7 @@
 //! severity on purpose). The arms asking whether every lint asks these are in
 //! `canon_lint_testkit/tests.rs`.
 //!
-//! **What that leaves uncovered is the shape the loader hands a real predicate.**
+//! What that leaves uncovered is the shape the loader hands a real predicate.
 //! Kamu answers it with a fixture tree run through the gate. This pack does not
 //! have one, so a lint whose predicate disagrees with a real `RegistryView` in
 //! some way a hand-built view does not reproduce would pass here. Said plainly
@@ -57,8 +57,15 @@ use mockspace::{
     View,
 };
 
+#[path = "canon_lint_testkit/declared.rs"]
+mod declared;
+#[path = "canon_lint_testkit/severity.rs"]
+mod severity;
 #[path = "canon_lint_testkit/tests.rs"]
 mod tests;
+
+use declared::{declared_lint_files, namespaces_declaring};
+pub use severity::severity_after_config;
 
 /// A registry holding exactly the rows named, and the reverse edges named.
 ///
@@ -111,7 +118,7 @@ pub fn ctx<'a>(registry: &'a RegistryView) -> RepoInput<'a> {
 
 /// The same input with the mock directory pointed at a planted tree.
 ///
-/// **This is what a lint reading the worktree is driven by.** [`ctx`] hardcodes
+/// This is what a lint reading the worktree is driven by. [`ctx`] hardcodes
 /// `.`, which makes it the wrong instrument for one of those: it would walk
 /// whichever directory the test binary happens to be in. A corpus lint builds
 /// its own tree under [`planted_tree`] and hands the path here, so the same
@@ -209,7 +216,7 @@ pub fn findings(lint: &dyn RepoLint, registry: &RegistryView) -> Vec<String> {
 /// file present but unregistered is not silently read as covered, and a lint
 /// registered under a name matching no file fails loudly here rather than being
 /// skipped.
-/// **A repo lint may also be declared by a tool crate, and one is.** The
+/// A repo lint may also be declared by a tool crate, and one is. The
 /// generated pack's manifest is engine-written, so a lint under `mock/lints/`
 /// reaches `std` and the lint-rules crate and nothing else. A check that has to
 /// parse TOML to do its job cannot live there, and
@@ -316,7 +323,7 @@ const SEVERITY_ASKED: [&str; 2] = ["assert_findings_block", "assert_findings_car
 
 /// Every finding this lint produced blocks at every gate.
 ///
-/// **The severity that decides a refusal is the one the finding carries**, put
+/// The severity that decides a refusal is the one the finding carries, put
 /// there by whichever `LintError` constructor the call site used.
 /// [`Lint::default_severity`] is not that value, and asserting on it instead
 /// pins something the engine reads for one purpose only: whether the lint runs
@@ -376,8 +383,8 @@ pub fn assert_findings_carry_at(lint: &dyn RepoLint, ctx: RepoInput, severity: S
 ///
 /// Asserted as "not off" rather than as one exact value, because that is the
 /// whole of what the engine consults here and pinning more would be this test
-/// deciding something the engine does not read. **Blocking is not the stronger
-/// version of this**, however much it reads like one: the severity that decides
+/// deciding something the engine does not read. Blocking is not the stronger
+/// version of this, however much it reads like one: the severity that decides
 /// a refusal is the one the finding carries, which is what
 /// [`assert_findings_block`] measures, and a declared default of `ADVISORY`
 /// changes nothing at any gate.
@@ -392,7 +399,7 @@ pub fn assert_not_declared_off(lint: &dyn Lint) {
 
 /// The repository this pack was built from.
 ///
-/// **Walked at run time rather than taken from `env!`.** The macro bakes the
+/// Walked at run time rather than taken from `env!`. The macro bakes the
 /// directory of whichever tree compiled the binary, the pack builds under
 /// `mock/target/mockspace-lints`, and one target directory is shared across
 /// every worktree cut from a clone, so a baked path answers about whichever
@@ -421,69 +428,6 @@ fn mockspace_root_above(mut dir: PathBuf) -> Option<PathBuf> {
             return None;
         }
     }
-}
-
-/// Every `mock/lints/*.rs` declaring a lint, as the name it should answer to.
-///
-/// The file name is the source, kebab-cased. A lint whose declared `name()`
-/// disagrees with its file is caught by the same set difference that catches
-/// one which never registers, and both are the same defect to a reader looking
-/// for it by either.
-///
-/// **The needle is built rather than written**, because the engine's own scan
-/// over these files is textual and matched this line the first time it was
-/// spelled out, so a file that declares no lint declared one and the cdylib
-/// stopped compiling. It is the scan reporting exactly what it looks for, and
-/// the reason this test can be written at all.
-fn declared_lint_files() -> BTreeSet<String> {
-    let needle = format!("pub fn {}()", "repo_lint");
-    let dir = repo_root().join("mock/lints");
-    std::fs::read_dir(&dir)
-        .unwrap_or_else(|e| panic!("read {}: {e}", dir.display()))
-        .flatten()
-        .map(|e| e.path())
-        .filter(|p| p.extension().is_some_and(|x| x == "rs"))
-        .filter(|p| std::fs::read_to_string(p).is_ok_and(|t| t.contains(&needle)))
-        .filter_map(|p| p.file_stem().and_then(|s| s.to_str()).map(str::to_owned))
-        .map(|s| s.replace('_', "-"))
-        .collect()
-}
-
-/// The namespaces `mockspace.toml` declares a field of this name on.
-///
-/// A text scan rather than a parse, because the generated pack's manifest is
-/// engine-written and no lint file can add a TOML reader to it. The shape it
-/// relies on is the one the file carries and the engine's own loader relies on
-/// too: an array-of-tables header opens a namespace, `key = "..."` on the line
-/// after it names the namespace, and every `name = "..."` after that belongs to
-/// that namespace until the next namespace header.
-///
-/// Returns `None` where the scan found no namespace at all, which means the
-/// shape moved and the scan is measuring nothing rather than reporting a clean
-/// disagreement.
-fn namespaces_declaring(field: &str) -> Option<BTreeSet<String>> {
-    let text = std::fs::read_to_string(repo_root().join("mockspace.toml")).ok()?;
-    let wanted = format!("name = \"{field}\"");
-    let mut seen_any = false;
-    let mut here: Option<String> = None;
-    let mut out = BTreeSet::new();
-    for line in text.lines() {
-        let line = line.trim();
-        if line == "[[registry.namespace]]" {
-            here = None;
-            seen_any = true;
-        } else if here.is_none()
-            && let Some(rest) = line.strip_prefix("key = \"")
-            && let Some(key) = rest.strip_suffix('"')
-        {
-            here = Some(key.to_string());
-        } else if line == wanted
-            && let Some(ns) = &here
-        {
-            out.insert(ns.clone());
-        }
-    }
-    seen_any.then_some(out)
 }
 
 /// What `judge` makes of the tree at `root`, asked through a view of a fresh

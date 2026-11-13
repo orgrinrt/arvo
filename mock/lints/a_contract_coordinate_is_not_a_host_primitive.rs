@@ -36,6 +36,8 @@
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
+use crate::code_only_source::is_ident_byte;
+
 /// The crate the bare-primitive pack skips, which is the one this reads.
 ///
 /// A fixed list rather than a lookup into `[primitive-introductions]`, because
@@ -214,10 +216,6 @@ fn host_primitive_in(declared: &str) -> Option<&'static str> {
         }
     }
     None
-}
-
-fn is_ident_byte(b: u8) -> bool {
-    b.is_ascii_alphanumeric() || b == b'_'
 }
 
 #[cfg(test)]

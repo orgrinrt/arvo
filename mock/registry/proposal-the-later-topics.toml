@@ -560,7 +560,7 @@ keywords = ["membership", "identity", "two criteria", "type", "const-available",
 
 # --- the container premise, seat 210 -----------------------------------------
 #
-# The six below answer `question::the_container_premise` together and none of
+# The rows below answer `question::the_container_premise` together and none of
 # them answers it alone, which is the shape of the answer rather than an
 # accident of filing: the question conflates three observations with three
 # different answers, so a single row saying yes or no would be the fork restated

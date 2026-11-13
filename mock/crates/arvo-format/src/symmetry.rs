@@ -61,7 +61,8 @@ pub enum Reads {
     Sign,
     /// The parity of the slot. Not defeated by any restriction on the sign, and
     /// defeated by translations that are all even.
-    // FIXME: the even-translation region is named here and expressed nowhere.
+    // FIXME(arvo_s_even_translation_parity_region_is_named_and_expressed): the
+    // even-translation region is named here and expressed nowhere.
     // `Reach` carries no parity of the translation band, so
     // `rounding_is_translation_equivariant` has no disjunct for it and answers
     // no on a domain where the law in fact holds. Conservative, so nothing
@@ -218,7 +219,8 @@ pub const fn adaptation_relocates<S: DeclaredSignature>(reach: Reach) -> Bool {
 }
 
 /// Whether the rounding region commutes with reflection through zero.
-// FIXME: takes no reach, so it answers no in two regions where the map reflects:
+// FIXME(arvo_s_reflection_predicate_takes_no_reach_and_answers_no_in): takes no reach,
+// so it answers no in two regions where the map reflects:
 // `HalfUp` over a reach with no tie, and every mode over a reach on the grid.
 // Conservative rather than unsound, the same shape as the parity region above.
 // Expressing it wants this predicate to read a `Reach`, and the stochastic
