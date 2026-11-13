@@ -23,6 +23,7 @@ use arvo_numeral::{
     ISize,
     Identity,
     Int,
+    Multiplicative,
     NamesAdaptation,
     Num,
     Quiet,
@@ -75,6 +76,14 @@ const SIX: U13 = sum(
     U13::constant::<3>(),
 );
 
+/// The ring operations in a constant, wrapping at thirteen bits.
+const DIFFERENCE: U13 = U13::constant::<0>()
+    .sub(U13::constant::<1>())
+    .mul(U13::constant::<3>())
+    .neg()
+    .mul(U13::constant::<2731>())
+    .neg();
+
 fn main() {
     // The doors.
     assert_eq!(SIX, U13::constant::<6>());
@@ -97,6 +106,41 @@ fn main() {
         I7::constant::<63>().add(I7::constant::<1>()).slot().index(),
         63
     );
+    assert_eq!(a.sub(b).slot().index(), -8);
+    assert!(a.fits_sub(b).get());
+    assert!(!I7::constant::<-64>().fits_sub(I7::constant::<1>()).get());
+    assert_eq!(
+        I7::constant::<-64>()
+            .sub(I7::constant::<1>())
+            .slot()
+            .index(),
+        -64
+    );
+    assert_eq!(a.neg().slot().index(), 3);
+    assert!(a.fits_neg().get());
+    assert!(!I7::constant::<-64>().fits_neg().get());
+    assert_eq!(I7::constant::<-64>().neg().slot().index(), 63);
+    assert_eq!(a.mul(b).slot().index(), -15);
+    assert!(a.fits_mul(b).get());
+    assert!(!I7::constant::<-64>().fits_mul(I7::constant::<2>()).get());
+    assert_eq!(
+        I7::constant::<-64>()
+            .mul(I7::constant::<2>())
+            .slot()
+            .index(),
+        -64
+    );
+    assert_eq!(DIFFERENCE.slot().index(), 8191);
+    // A fixed-point product: a half times a half is a quarter, at eighths.
+    type Eighths =
+        Num<Signature<arvo_format::points::Fixed<6, -3>, Adapt<HalfEven, Saturate>>, Quiet>;
+    assert_eq!(
+        Eighths::constant::<4>()
+            .mul(Eighths::constant::<4>())
+            .slot()
+            .index(),
+        2
+    );
     assert_eq!(a.cmp(b), Ordering::Less);
     let eq: Bool = a.eq(a);
     assert!(eq.get());
@@ -114,6 +158,14 @@ fn main() {
     // The identity.
     assert_eq!(<I7 as Identity<Additive>>::IDENTITY.slot().index(), 0);
     assert_eq!(a.add(<I7 as Identity<Additive>>::IDENTITY), a);
+    assert_eq!(<I7 as Identity<Multiplicative>>::IDENTITY.slot().index(), 1);
+    assert_eq!(a.mul(<I7 as Identity<Multiplicative>>::IDENTITY), a);
+    assert_eq!(
+        <Eighths as Identity<Multiplicative>>::IDENTITY
+            .slot()
+            .index(),
+        8
+    );
 
     // The pointer-width aliases and their host doors, under the default check.
     type UHost = USize<Adapt<TowardZero, Wrap>>;

@@ -23,6 +23,7 @@ version = "0.0.0"
 dependencies = [
  "arvo-format",
  "arvo-placement",
+ "notko",
  "trybuild",
 ]
 

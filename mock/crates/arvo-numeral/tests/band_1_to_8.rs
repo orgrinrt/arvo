@@ -6,7 +6,8 @@
 //! Widths 1 to 8 through the value type, held in the 8-bit carrier.
 //!
 //! Exhaustive: every signature over both families, both overflow policies and
-//! every mode, every pair of members, against the oracle. Beside it the two
+//! every mode, every pair of members, against the oracle, for the sum, the
+//! difference, the negation and the product. Beside it the two
 //! associativity laws the registry states, reproduced through the value type
 //! with the registry's own counts.
 
@@ -16,8 +17,8 @@ use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Integer, UFixed};
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Signature, addition_is_associative};
-use arvo_numeral::{Additive, Identity, Int, Num, Sole, Uint};
-use common::{Tally, exhaustive, range, value};
+use arvo_numeral::{Additive, Identity, Int, Multiplicative, Num, Sole, Uint};
+use common::{Tally, exhaustive, exhaustive_products, range, value};
 
 #[test]
 fn every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_pair() {
@@ -31,6 +32,55 @@ fn every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_
     every_signature_at!(7, exhaustive, &mut tally);
     every_signature_at!(8, exhaustive, &mut tally);
     tally.check("widths 1 to 8");
+}
+
+#[test]
+fn every_signature_from_1_to_8_bits_multiplies_as_the_oracle_does_on_every_pair() {
+    let mut tally = Tally::default();
+    every_signature_at!(1, exhaustive_products, &mut tally);
+    every_signature_at!(2, exhaustive_products, &mut tally);
+    every_signature_at!(3, exhaustive_products, &mut tally);
+    every_signature_at!(4, exhaustive_products, &mut tally);
+    every_signature_at!(5, exhaustive_products, &mut tally);
+    every_signature_at!(6, exhaustive_products, &mut tally);
+    every_signature_at!(7, exhaustive_products, &mut tally);
+    every_signature_at!(8, exhaustive_products, &mut tally);
+    tally.check_products("widths 1 to 8");
+}
+
+/// One is slot one of an integer, and multiplying by it moves nothing.
+fn one_moves_nothing<S: Sole>(_: &mut Tally)
+where
+    Num<S, arvo_numeral::Quiet>: Identity<Multiplicative>,
+{
+    let one = <Num<S, arvo_numeral::Quiet> as Identity<Multiplicative>>::IDENTITY;
+    assert_eq!(
+        one.slot().index(),
+        1,
+        "the multiplicative identity is not slot one"
+    );
+    let (min, max) = range::<S>();
+    for a in min ..= max {
+        let v = value::<S>(a);
+        assert_eq!(v.mul(one), v, "multiplying {a} by the identity moved it");
+        assert_eq!(one.mul(v), v, "multiplying the identity by {a} moved it");
+    }
+}
+
+#[test]
+fn the_multiplicative_identity_is_one_and_moves_no_member() {
+    let mut tally = Tally::default();
+    // A one-bit signed integer has no member at one, which is a compile-fail
+    // case; every other width here has.
+    every_mode!(UFixed<1, 0>, Wrap, one_moves_nothing, &mut tally);
+    every_signature_at!(2, one_moves_nothing, &mut tally);
+    every_signature_at!(5, one_moves_nothing, &mut tally);
+    every_signature_at!(8, one_moves_nothing, &mut tally);
+    type I = Int<5, Adapt<TowardZero, Wrap>>;
+    assert_eq!(
+        <I as Identity<Multiplicative>>::IDENTITY,
+        I::constant::<1>()
+    );
 }
 
 /// The value reads the slot and never the position: at a non-zero exponent the

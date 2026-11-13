@@ -9,15 +9,24 @@ readme = "README.md.tmpl"
 [dependencies]
 arvo-format.workspace = true
 arvo-placement.workspace = true
+notko.workspace = true
 
 # One mutant per rung. Each removes that rung's adaptation onto the declared
 # width, and the equality tests fail while it is on. Off by default
 # and never enabled by anything that ships.
+#
+# One mutant per operation beside them, each breaking that operation where it
+# goes wrong first: the unsigned saturating difference below zero, the signed
+# saturating negation of the lowest member, the saturating product that leaves
+# the machine integer on the negative side.
 [features]
 mutant-8 = []
 mutant-16 = []
 mutant-32 = []
 mutant-64 = []
+mutant-sub = []
+mutant-neg = []
+mutant-mul = []
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"

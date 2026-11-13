@@ -1,0 +1,36 @@
+error[E0080]: evaluation panicked: multiplication is not yet admitted over this format: the exact product of two members leaves the slot coordinate, so the position it names is not one a slot index can hold yet
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::multiplication::Multipliable::<arvo_format::points::UFixed<64, 0>>::ADMITTED` failed here
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/multiplication.rs
+  |
+  | /         assert!(
+  | |             product_is_carried::<F>().get(),
+  | |             "multiplication is not yet admitted over this format: the exact product of two \
+  | |              members leaves the slot coordinate, so the position it names is not one a slot \
+  | |              index can hold yet"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> $WORKSPACE/crates/arvo-format/src/multiplication.rs
+  |
+  |     let () = Multipliable::<F>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  | /         const {
+  | |             // Forces the format's multiplication obligation for this signature.
+  | |             let _ = product_position::<S::Format>(Slot::at(0), Slot::at(0));
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn Num::<Signature<UFixed<64, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, Quiet>::mul`
+  --> tests/ui/a_product_over_the_unsigned_64_bit_range_is_refused.rs:10:13
+   |
+10 |     let _ = a.mul(a);
+   |             ^^^^^^^^

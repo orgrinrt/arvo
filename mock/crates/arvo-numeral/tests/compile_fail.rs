@@ -101,6 +101,30 @@ fn the_identity_of_a_format_without_one_is_refused() {
 }
 
 #[test]
+fn a_difference_across_two_signatures_is_refused() {
+    pair(
+        "a_difference_across_two_signatures_is_refused",
+        "a_difference_within_one_signature_compiles",
+    );
+}
+
+#[test]
+fn a_product_over_the_unsigned_64_bit_range_is_refused() {
+    pair(
+        "a_product_over_the_unsigned_64_bit_range_is_refused",
+        "a_product_over_the_unsigned_63_bit_range_compiles",
+    );
+}
+
+#[test]
+fn the_one_of_a_format_without_one_is_refused() {
+    pair(
+        "the_one_of_a_format_without_one_is_refused",
+        "the_one_of_a_format_with_one_compiles",
+    );
+}
+
+#[test]
 fn the_carrier_by_projection_is_refused() {
     pair(
         "the_carrier_by_projection_is_refused",

@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The debug check, observed at each site that carries it: `add` and `adapted`,
-//! under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
+//! The debug check, observed at each site that carries it: `add`, `sub`, `neg`,
+//! `mul` and `adapted`, under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
 //! result leaves the range, so each of those is a `should_panic` test; each has
 //! a twin under `Quiet` that takes the same input and completes it by the
 //! policy. The check is no part of the signature, so the twins hold the same
@@ -47,6 +47,103 @@ fn adapted_aborts_under_wrap_with_the_default_check() {
 #[should_panic(expected = "the position leaves the signature's range")]
 fn adapted_aborts_under_saturate_with_abort_named() {
     let _ = SaturateAborts::adapted(Exact::on_grid(Slot::at(PAST_THE_TOP)));
+}
+
+#[test]
+#[should_panic(expected = "the difference leaves the signature's range")]
+fn sub_aborts_under_wrap_with_the_default_check() {
+    let _ = WrapAborts::constant::<-8>().sub(WrapAborts::constant::<1>());
+}
+
+#[test]
+#[should_panic(expected = "the difference leaves the signature's range")]
+fn sub_aborts_under_saturate_with_abort_named() {
+    let _ = SaturateAborts::constant::<-8>().sub(SaturateAborts::constant::<1>());
+}
+
+#[test]
+#[should_panic(expected = "the negation leaves the signature's range")]
+fn neg_aborts_under_wrap_with_the_default_check() {
+    let _ = WrapAborts::constant::<-8>().neg();
+}
+
+#[test]
+#[should_panic(expected = "the negation leaves the signature's range")]
+fn neg_aborts_under_saturate_with_abort_named() {
+    let _ = SaturateAborts::constant::<-8>().neg();
+}
+
+#[test]
+#[should_panic(expected = "the product leaves the signature's range")]
+fn mul_aborts_under_wrap_with_the_default_check() {
+    let _ = WrapAborts::constant::<4>().mul(WrapAborts::constant::<-3>());
+}
+
+#[test]
+#[should_panic(expected = "the product leaves the signature's range")]
+fn mul_aborts_under_saturate_with_abort_named() {
+    let _ = SaturateAborts::constant::<4>().mul(SaturateAborts::constant::<-3>());
+}
+
+#[test]
+fn sub_neg_and_mul_complete_under_quiet() {
+    assert_eq!(
+        WrapQuiet::constant::<-8>()
+            .sub(WrapQuiet::constant::<1>())
+            .slot()
+            .index(),
+        7
+    );
+    assert_eq!(
+        SaturateQuiet::constant::<-8>()
+            .sub(SaturateQuiet::constant::<1>())
+            .slot()
+            .index(),
+        -8
+    );
+    assert_eq!(WrapQuiet::constant::<-8>().neg().slot().index(), -8);
+    assert_eq!(SaturateQuiet::constant::<-8>().neg().slot().index(), 7);
+    // Minus twelve, which wraps to four and saturates at the bottom.
+    assert_eq!(
+        WrapQuiet::constant::<4>()
+            .mul(WrapQuiet::constant::<-3>())
+            .slot()
+            .index(),
+        4
+    );
+    assert_eq!(
+        SaturateQuiet::constant::<4>()
+            .mul(SaturateQuiet::constant::<-3>())
+            .slot()
+            .index(),
+        -8
+    );
+}
+
+#[test]
+fn abort_does_not_abort_on_a_difference_a_negation_or_a_product_that_fits() {
+    assert_eq!(
+        WrapAborts::constant::<-8>()
+            .sub(WrapAborts::constant::<-1>())
+            .slot()
+            .index(),
+        -7
+    );
+    assert_eq!(SaturateAborts::constant::<7>().neg().slot().index(), -7);
+    assert_eq!(
+        WrapAborts::constant::<-4>()
+            .mul(WrapAborts::constant::<2>())
+            .slot()
+            .index(),
+        -8
+    );
+    assert_eq!(
+        SaturateAborts::constant::<-1>()
+            .mul(SaturateAborts::constant::<-7>())
+            .slot()
+            .index(),
+        7
+    );
 }
 
 #[test]

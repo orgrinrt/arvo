@@ -38,7 +38,12 @@ operation mutants behind `cfg!(feature = ...)`.
 `src/identity.rs`: `Multiplicative` and `Identity<Multiplicative>` for `Num<S, C>`. `src/lib.rs`: the
 re-export of `Multiplicative`.
 
-`Cargo.toml`: the features `mutant-sub`, `mutant-neg` and `mutant-mul`.
+`Cargo.toml`: the features `mutant-sub`, `mutant-neg` and `mutant-mul`, and `notko` as a dependency.
+`multiplicative_identity` answers in `notko`'s `Maybe`, which has no `const` accessor, so reading the
+answer in a constant means naming the type. `notko` is the workspace's foundation crate and already
+reaches this crate through `arvo-format`. The design's sentence naming this crate's dependencies does
+not list it; the next round's doc changelist, which edits the same document, adds it there. The
+consumer crate's lockfile gains the same edge.
 
 `src/tests.rs`: the rungs' three operations against the oracle at the widths the sum is asked at.
 `tests/common/mod.rs` and the band binaries: the three operations and their verdicts through the value

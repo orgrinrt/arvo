@@ -40,6 +40,40 @@ fn adapted_completes_under_abort_in_release() {
 }
 
 #[test]
+fn sub_neg_and_mul_complete_under_abort_in_release() {
+    assert_eq!(
+        WrapAborts::constant::<-8>()
+            .sub(WrapAborts::constant::<1>())
+            .slot()
+            .index(),
+        7
+    );
+    assert_eq!(
+        SaturateAborts::constant::<-8>()
+            .sub(SaturateAborts::constant::<1>())
+            .slot()
+            .index(),
+        -8
+    );
+    assert_eq!(WrapAborts::constant::<-8>().neg().slot().index(), -8);
+    assert_eq!(SaturateAborts::constant::<-8>().neg().slot().index(), 7);
+    assert_eq!(
+        WrapAborts::constant::<4>()
+            .mul(WrapAborts::constant::<-3>())
+            .slot()
+            .index(),
+        4
+    );
+    assert_eq!(
+        SaturateAborts::constant::<4>()
+            .mul(SaturateAborts::constant::<-3>())
+            .slot()
+            .index(),
+        -8
+    );
+}
+
+#[test]
 fn abort_and_quiet_agree_in_release() {
     let a = WrapAborts::constant::<7>().add(WrapAborts::constant::<1>());
     let q = WrapQuiet::constant::<7>().add(WrapQuiet::constant::<1>());
