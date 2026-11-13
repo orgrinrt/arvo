@@ -1,9 +1,10 @@
 # The rows that go to him
 
 These are the rows the reading could not fill from the written history and
-could not leave standing provisionally either, because each one either says
-something he is not on record as saying or stands against a row that is
-already ratified. They are left in the registry exactly as they were. Each is
+could not leave standing provisionally either, because each one says
+something he is not on record as saying, or stands against a row that is
+already ratified, or is one he was asked to ratify and declined as it was put.
+They are left in the registry exactly as they were. Each is
 given here with what it says, what it runs into, and the ways it could be
 settled, so that the answer to each is a choice among real options.
 
@@ -108,10 +109,13 @@ to him as "It becomes your intent".
 
 ### `ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up`
 
-This one is his statement and nothing is against it. It is here because he was
-asked once to bless it and answered that the label he was shown did not explain
-what it was, so he could not bless it or comment on it. It has not been put to
-him again with the explanation.
+This one is his statement, and he was asked once to ratify it and declined. He
+answered that the label he was shown did not explain what it was, so he could
+not bless it or comment on it, and
+`ruling::he_declined_to_bless_the_ingest_row_as_written` records that. A
+default from the written history does not override a refusal the same history
+holds, so the row is not backed by him as it was put and is not raised. It has
+not been put to him again with the explanation.
 
 What the row says is that everything written in this stack ends up behind a C
 ABI sooner or later and that this is no problem for arvo, since whoever writes
@@ -325,3 +329,17 @@ correct it without him.
 
 1. The clause is struck and the observation about the three topics stays.
 2. The clause is restated as the coordinator's call under his criterion.
+
+## How the provisional stamp is carried
+
+This is not a row. He said the rest can be on provisional stamps to begin
+with, and the registry has no value that says provisional, so the rows left
+standing have nothing written on them and are named in `PROVISIONAL.md`. A
+list in a research file is not something the registry's own tools can see, and
+it gives a row no standing it did not have.
+
+1. The schema gains a value for it, and each row left standing carries it.
+2. Each row left standing gets a question ticket of its own, as the workspace
+   rule on a provisional stamp has it.
+3. The list stays as the only mark, and the rows bind as they did before the
+   reading.

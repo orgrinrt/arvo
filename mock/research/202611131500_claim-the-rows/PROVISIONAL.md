@@ -3,10 +3,11 @@
 Everything the reading did not raise is named here. The registry has no value
 that says provisional, so nothing was written onto these rows and each one is
 exactly as it was: a ruling at `stated` is still his direction and binds as
-that, and a proposal still binds nothing. This file is the stamp. A row named
-in it has been read against the written history and was not found to be his in
-whole, standing and unhedged, so work that leans on it may go on, and what it
-leans on is a row nobody has ratified.
+that, and a proposal still binds nothing. Being named here gives a row no
+standing it did not have. What the list records is that the row was read
+against the written history and was not found to be his in whole, standing and
+unhedged. How the provisional stamp he spoke of is to be carried is a question
+for him and is the last entry of `FOR-HIM.md`.
 
 Some rows named here also have one sentence or clause the record is against.
 That part is in `FOR-HIM.md`, and the row is provisional apart from it.
@@ -22,15 +23,18 @@ a proposal is his in one sentence, the reader's block in
 
 The readers classed fifty-two rulings as his in whole. A row was raised from
 among them only where five things held of it together, on two readings made
-apart, and forty-one were left. The five are that his words on the claim carry
-no hedge of his own, that the row states what he said and not a general rule
-drawn from one answer, that it is something that keeps holding and not an
-instruction for one stretch of the run, that neither the row nor the file
-around the passage marks his words as an ack, and that no later row of his
-corrects it. Thirty-three rows fail one of the five on the first reading and
-are under the headings that name the five, with the row he was asked to bless
-once after them. Eight passed the first reading and not the second, and are
-under the heading on the two readings.
+apart, and forty-four were left. The five are that his words on the claim
+carry no hedge of his own, that the row states what he said and not a general
+rule drawn from one answer, that it is something that keeps holding of arvo or
+of what binds and not an instruction to the panel for its run or for one
+stretch of it, that neither the row nor the file around the passage marks his
+words as an ack, and that no later row of his corrects it. Thirty-three rows
+fail one of the five on the first reading and are under the headings that name
+the five, with the row he declined to bless after them. Eight passed the first
+reading and not the second, and are under the heading on the two readings.
+Three passed both readings and were found by a review of the fill to fail a
+part all the same, and each is under the heading for that part, where it says
+so.
 
 ### His words, hedged by him
 
@@ -97,13 +101,14 @@ which binds now and does not wait on anything. His words are behind it. Moving
 it between two binding tiers is no part of filling what was unratified, so it
 is left.
 
-### Instructions for one stretch, one task or one event of the run
+### Instructions to the panel for its run, or for one stretch, task or event of it
 
-These seventeen are his, and each is an instruction for one stretch or one
-task of the panel's run, or the record of one event in it, and not something
-that keeps holding: what the first work is, how long the explore mode lasts,
-when the branch is opened, how the next unit is picked, what one night's
-stand-in may do, which statement goes into the canon next. Some are
+These nineteen are his, and each is an instruction to the panel on how to
+conduct its run, or for one stretch or one task of it, or the record of one
+event in it, and not something that keeps holding of arvo or of what binds:
+what the first work is, how long the explore mode lasts, when the branch is
+opened, how the next unit is picked, how the experts are steered, what one
+night's stand-in may do, which statement goes into the canon next. Some are
 discharged, as the conversion to a registry is, and as the instruction to
 carry the cores statement into the canon is, that statement being ratified as
 `ruling::arvo_takes_no_stance_on_how_many_cores_it_runs_on`. The others still
@@ -127,22 +132,38 @@ canon would make it read as standing law, so all of them stay his direction.
 - `ruling::the_tools_concept_is_the_coordinators_call`
 - `ruling::the_question_was_already_answered_by_an_intent`
 - `ruling::the_standing_rules_are_in_the_rules_directory`
+- `ruling::steering_the_experts_is_the_coordinators_job`
+- `ruling::the_attacker_owes_several_solutions_to_the_party_it_refuted`
+
+The last two passed both readings as standing instructions for the panel's
+rounds. A review of the fill set them beside
+`ruling::steer_aggressively_to_convergence_without_rushing_it`, which is the
+same kind of instruction and was left, and found that the steering row also
+takes one clause from outside the lines it cites. So they are left with it.
+The same review read three rows of this list as standing rules more than
+instructions for a stretch, `ruling::the_persona_has_no_authority`,
+`ruling::the_canon_must_support_a_full_design_and_impl` and
+`ruling::the_standing_rules_are_in_the_rules_directory`, and that is one
+reading against one, so the three stay here and want another.
 
 Two of these, the two that have the finished canon go to him for review, also
 appear in `FOR-HIM.md` beside the rows that make his ratification the finish
 line.
 
 `ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` is the
-thirty-third. It passes all five and is not raised, because he was asked once
-to bless it and could not for want of an explanation, and it is in
-`FOR-HIM.md` with the explanation.
+thirty-third. He was asked to ratify it and declined as it was put, for want of
+an explanation, which `ruling::he_declined_to_bless_the_ingest_row_as_written`
+records. A default from the written history does not override a refusal the
+same history holds, so it is not raised, and it is in `FOR-HIM.md` with the
+explanation.
 
 ### The two readings did not agree
 
 Nineteen rows passed all five on the first reading, and a second reader then
 read those nineteen without the first reading and answered the same five
-questions of each. Eleven came back his in whole with nothing against them and
-were raised. These eight did not. A call about what the canon holds does not
+questions of each. Eleven came back his in whole with nothing against them,
+which are the eight rows that were raised and the three the review moved. The
+eight under this heading did not. A call about what the canon holds does not
 rest on one reading, so none of them is raised, and each wants a third reading
 before it is taken either way. The second reader's blocks are in
 `SECOND-READ.md`.
@@ -195,6 +216,13 @@ standard's operation list is the panel's reading of "internals". In
 `ruling::a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon`
 the test and its limbs are his and the last sentence is the panel's inference
 from his declining six options.
+
+`ruling::the_imitation_is_ergonomics_not_an_arithmetic_boundary` was classed
+his in whole by both readers, and what is his in it is "Neither, it's
+ergonomics". That ergonomics means the experience of using the type, that it is
+unsurprising and does the expected thing, is the panel's wording in the file
+that records the answer. The later words of his that support the wording end
+on "but it's not absolute", which is the hedge that keeps other rows here.
 
 Three more rulings are his in part and against a ratified row in another part,
 and are in `FOR-HIM.md`.
