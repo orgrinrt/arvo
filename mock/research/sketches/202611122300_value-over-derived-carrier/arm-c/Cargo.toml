@@ -1,0 +1,13 @@
+[package]
+name = "arm-c"
+description = "Arm C: a const carrier trait, const_trait_impl in this crate only"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+common.workspace = true
+
+[features]
+# The operations bound `const Carrier` instead of `[const] Carrier`.
+always-const = []

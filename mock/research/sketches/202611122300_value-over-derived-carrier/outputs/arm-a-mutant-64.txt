@@ -1,0 +1,34 @@
+$ cargo test -p arm-a --features common/mutant-64 --lib
+   Compiling arm-a v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-a)
+    Finished `test` profile [unoptimized] target(s) in 1.66s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_a-07229ddc77fc0d23)
+
+running 2 tests
+test tests::value_add_every_width_over_the_edges ... FAILED
+test tests::value_add_widths_1_to_10_exhaustive ... ok
+
+failures:
+
+---- tests::value_add_every_width_over_the_edges stdout ----
+
+thread 'tests::value_add_every_width_over_the_edges' (11102) panicked at arm-a/src/lib.rs:123:5:
+assertion `left == right` failed: pairs of members the value type's add gets wrong
+  left: 1860
+ right: 0
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<usize, usize>
+   4: arm_a::tests::value_add_every_width_over_the_edges
+   5: arm_a::tests::value_add_every_width_over_the_edges::{closure#0}
+   6: <arm_a::tests::value_add_every_width_over_the_edges::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+
+failures:
+    tests::value_add_every_width_over_the_edges
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+error: test failed, to rerun pass `-p arm-a --lib`

@@ -1,0 +1,51 @@
+$ cargo test -p arm-a --features common/mutant-8 --lib
+   Compiling arm-a v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-a)
+    Finished `test` profile [unoptimized] target(s) in 1.44s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_a-93aae3ba4ad6befa)
+
+running 2 tests
+test tests::value_add_every_width_over_the_edges ... FAILED
+test tests::value_add_widths_1_to_10_exhaustive ... FAILED
+
+failures:
+
+---- tests::value_add_every_width_over_the_edges stdout ----
+
+thread 'tests::value_add_every_width_over_the_edges' (10324) panicked at arm-a/src/lib.rs:123:5:
+assertion `left == right` failed: pairs of members the value type's add gets wrong
+  left: 316
+ right: 0
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<usize, usize>
+   4: arm_a::tests::value_add_every_width_over_the_edges
+   5: arm_a::tests::value_add_every_width_over_the_edges::{closure#0}
+   6: <arm_a::tests::value_add_every_width_over_the_edges::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- tests::value_add_widths_1_to_10_exhaustive stdout ----
+
+thread 'tests::value_add_widths_1_to_10_exhaustive' (10325) panicked at arm-a/src/lib.rs:123:5:
+assertion `left == right` failed: pairs of members the value type's add gets wrong
+  left: 32512
+ right: 0
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<usize, usize>
+   4: arm_a::tests::value_add_widths_1_to_10_exhaustive
+   5: arm_a::tests::value_add_widths_1_to_10_exhaustive::{closure#0}
+   6: <arm_a::tests::value_add_widths_1_to_10_exhaustive::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+
+failures:
+    tests::value_add_every_width_over_the_edges
+    tests::value_add_widths_1_to_10_exhaustive
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+error: test failed, to rerun pass `-p arm-a --lib`
