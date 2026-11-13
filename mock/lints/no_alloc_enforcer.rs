@@ -5,9 +5,13 @@
 //!   * `[T; N]` or custom const-generic `Seq<T, N>` for arrays.
 //!   * Consumer-owned buffers passed in by reference.
 //!
-//! The lint reads the file's code and nothing else: the source as
-//! `code_only_source` returns it, with every comment and string literal
-//! blanked out of the one parse the engine holds. Over that it scans
+//! The lint reads the file's code and nothing else. The `alloc` crate is asked
+//! of the one parse the engine holds (`crate_root_paths`): a `use`, a path
+//! written out in full (`alloc::rc::Rc::new`, `alloc::vec![1]`), an
+//! `extern crate` whatever precedes it or is aliased to, and a path in a
+//! macro's arguments, so `extern crate allocator;` is not a hit. The type
+//! tokens are read from the source as `code_only_source` returns it, with
+//! every comment and string literal blanked. Over that it scans
 //! every line for tokens, matched at an identifier boundary so
 //! `SmallVec<T, N>` does not read as `Vec<T>` and `String::from` at
 //! column zero (no leading whitespace) is not missed the way a bare
@@ -20,6 +24,8 @@
 //! message that spells the path is not code.
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
+
+use crate::code_only_source::{contains_after_identifier_boundary, contains_whole_word};
 
 pub fn lint() -> Box<dyn CrateLint> {
     Box::new(NoAllocEnforcer)
@@ -37,57 +43,6 @@ impl Lint for NoAllocEnforcer {
     }
 }
 
-fn is_ident_byte(b: u8) -> bool {
-    b.is_ascii_alphanumeric() || b == b'_'
-}
-
-/// Whether `line` contains `token` at an identifier boundary on its
-/// left side, with nothing checked on its right.
-///
-/// Correct for a token that already ends on a non-identifier character
-/// (`Vec<`, `Box<`): `SmallVec<T, N>` does not match `Vec<` because the
-/// byte before the match (`c` of `Small`) is an identifier byte, while
-/// `let v: Vec<u8>` does match because the byte before it is a space.
-/// Nothing needs checking on the right, because the token's own
-/// trailing `<` is already not an identifier byte.
-fn contains_after_identifier_boundary(line: &str, token: &str) -> bool {
-    let bytes = line.as_bytes();
-    let mut search_from = 0;
-    while let Some(rel) = line[search_from ..].find(token) {
-        let start = search_from + rel;
-        let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
-        if !before_is_ident {
-            return true;
-        }
-        search_from = start + 1;
-    }
-    false
-}
-
-/// Whether `line` contains `token` as a whole identifier: not preceded
-/// and not followed by an identifier byte.
-///
-/// `StringBuilder` and `OwnedString` do not match `String`, because one
-/// side or the other is an identifier byte. `String::from(...)` sitting
-/// at column zero, with nothing before it on the line at all, does
-/// match, which a bare `.contains(" String")` search misses because
-/// there is no leading space to find.
-fn contains_whole_word(line: &str, token: &str) -> bool {
-    let bytes = line.as_bytes();
-    let mut search_from = 0;
-    while let Some(rel) = line[search_from ..].find(token) {
-        let start = search_from + rel;
-        let end = start + token.len();
-        let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
-        let after_is_ident = end < bytes.len() && is_ident_byte(bytes[end]);
-        if !before_is_ident && !after_is_ident {
-            return true;
-        }
-        search_from = start + 1;
-    }
-    false
-}
-
 impl CrateLint for NoAllocEnforcer {
     fn check(&self, ctx: &LintContext) -> Vec<LintError> {
         // `is_proc_macro_crate` does not consider the `lint_proc_macro_source`
@@ -100,16 +55,13 @@ impl CrateLint for NoAllocEnforcer {
         let mut errors = Vec::new();
 
         let code = crate::code_only_source::code_only(ctx);
+        // The `alloc` crate, asked of the parse: a `use`, a path written out in
+        // full (`alloc::rc::Rc::new`, `alloc::vec![1]`), an `extern crate`
+        // whatever precedes it or is aliased to, and a path in a macro's
+        // arguments. A line naming it is reported once and skips the token scan.
+        let alloc_lines = crate::crate_root_paths::lines_naming(ctx, "alloc");
         for (idx, (line, code_line)) in ctx.source().lines().zip(code.lines()).enumerate() {
-            let trimmed = code_line.trim_start();
-
-            // `use alloc::*` / `use ::alloc::*` / `extern crate alloc`.
-            if trimmed.starts_with("use alloc::")
-                || trimmed.starts_with("use ::alloc::")
-                || trimmed.starts_with("pub use alloc::")
-                || trimmed.starts_with("pub use ::alloc::")
-                || trimmed.starts_with("extern crate alloc")
-            {
+            if alloc_lines.binary_search(&(idx + 1)).is_ok() {
                 errors.push(LintError::with_severity(
                     ctx.crate_name.to_string(),
                     idx + 1,
@@ -404,5 +356,35 @@ mod tests {
         assert!(hits("let t = ToolBox::new(x);\n").is_empty());
         assert!(hits("// build it with Vec::new() when the caller owns it\n").is_empty());
         assert!(hits("let m = \"call Box::new here\";\n").is_empty());
+    }
+
+    // --- the class, not the instance: what a line scan keyed on how a line begins missed ---
+
+    #[test]
+    fn a_pub_extern_crate_alloc_fires_and_an_alias_of_it_does_too() {
+        assert_eq!(hits("pub extern crate alloc;\n").len(), 1);
+        assert_eq!(hits("pub extern crate alloc as a;\n").len(), 1);
+    }
+
+    #[test]
+    fn a_path_written_out_in_full_fires_without_any_use() {
+        assert_eq!(hits("fn f() { let _ = alloc::rc::Rc::new(1); }\n").len(), 1);
+        assert_eq!(
+            hits("fn f() { let _ = alloc::sync::Arc::new(1); }\n").len(),
+            1
+        );
+        assert_eq!(hits("fn f() { let _ = alloc::vec![1]; }\n").len(), 1);
+    }
+
+    #[test]
+    fn a_path_through_an_alias_fires() {
+        let errors = hits("extern crate alloc as a;\nfn f() { let _ = a::rc::Rc::new(1); }\n");
+        assert_eq!(errors.len(), 2, "the declaration and the path through it");
+    }
+
+    #[test]
+    fn control_a_different_crate_with_the_prefix_is_silent() {
+        assert!(hits("extern crate allocator;\nuse allocator::Pool;\n").is_empty());
+        assert!(hits("fn f() { facade::alloc::x(); my_alloc::y(); }\n").is_empty());
     }
 }

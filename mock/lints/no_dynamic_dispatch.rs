@@ -22,6 +22,8 @@
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
+use crate::code_only_source::contains_whole_word;
+
 pub fn lint() -> Box<dyn CrateLint> {
     Box::new(NoDynamicDispatch)
 }
@@ -36,32 +38,6 @@ impl Lint for NoDynamicDispatch {
     fn default_severity(&self) -> Severity {
         Severity::HARD_ERROR
     }
-}
-
-fn is_ident_byte(b: u8) -> bool {
-    b.is_ascii_alphanumeric() || b == b'_'
-}
-
-/// Whether `line` contains `token` as a whole identifier or path: not
-/// preceded and not followed by an identifier byte.
-///
-/// `NodeTypeId` does not match `TypeId`, and `core::anything` does not
-/// match `core::any`, because the byte immediately after the match is
-/// an identifier byte in both cases.
-fn contains_whole_word(line: &str, token: &str) -> bool {
-    let bytes = line.as_bytes();
-    let mut search_from = 0;
-    while let Some(rel) = line[search_from ..].find(token) {
-        let start = search_from + rel;
-        let end = start + token.len();
-        let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
-        let after_is_ident = end < bytes.len() && is_ident_byte(bytes[end]);
-        if !before_is_ident && !after_is_ident {
-            return true;
-        }
-        search_from = start + 1;
-    }
-    false
 }
 
 impl CrateLint for NoDynamicDispatch {

@@ -74,11 +74,62 @@ fn blank(source: &str, tree: &Tree, kinds: &[&str]) -> String {
     String::from_utf8(bytes).expect("a blanked node range is a whole number of chars")
 }
 
+/// Whether a byte can be part of an identifier.
+pub fn is_ident_byte(b: u8) -> bool {
+    b.is_ascii_alphanumeric() || b == b'_'
+}
+
+/// Whether `line` contains `token` at an identifier boundary on its left side,
+/// with nothing checked on its right.
+///
+/// Correct for a token that already ends on a non-identifier character (`Vec<`,
+/// `Box<`): `SmallVec<T, N>` does not match `Vec<` because the byte before the
+/// match (`c` of `Small`) is an identifier byte, while `let v: Vec<u8>` does
+/// match because the byte before it is a space. Nothing needs checking on the
+/// right, because the token's own trailing `<` is already not an identifier byte.
+pub fn contains_after_identifier_boundary(line: &str, token: &str) -> bool {
+    let bytes = line.as_bytes();
+    let mut search_from = 0;
+    while let Some(rel) = line[search_from ..].find(token) {
+        let start = search_from + rel;
+        let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
+        if !before_is_ident {
+            return true;
+        }
+        search_from = start + 1;
+    }
+    false
+}
+
+/// Whether `line` contains `token` as a whole identifier or path: not preceded
+/// and not followed by an identifier byte.
+///
+/// `StringBuilder` and `OwnedString` do not match `String`, `NodeTypeId` does
+/// not match `TypeId`, and `core::anything` does not match `core::any`, because
+/// one side or the other is an identifier byte. `String::from(...)` at column
+/// zero, with nothing before it on the line, does match, which a bare
+/// `.contains(" String")` misses because there is no leading space to find.
+pub fn contains_whole_word(line: &str, token: &str) -> bool {
+    let bytes = line.as_bytes();
+    let mut search_from = 0;
+    while let Some(rel) = line[search_from ..].find(token) {
+        let start = search_from + rel;
+        let end = start + token.len();
+        let before_is_ident = start > 0 && is_ident_byte(bytes[start - 1]);
+        let after_is_ident = end < bytes.len() && is_ident_byte(bytes[end]);
+        if !before_is_ident && !after_is_ident {
+            return true;
+        }
+        search_from = start + 1;
+    }
+    false
+}
+
 #[cfg(test)]
 mod tests {
     use mockspace::testkit::LintFixture;
 
-    use super::code_only;
+    use super::{code_only, contains_after_identifier_boundary, contains_whole_word};
 
     fn blanked(source: &str) -> String {
         code_only(&LintFixture::new(source).ctx())
@@ -145,6 +196,28 @@ mod tests {
     fn code_alone_comes_back_unchanged() {
         let source = "fn f(x: Bool) -> Bool {\n    x\n}\n";
         assert_eq!(blanked(source), source);
+    }
+
+    #[test]
+    fn a_whole_word_is_matched_at_both_edges_and_at_column_zero() {
+        assert!(contains_whole_word("String::from(x)", "String"));
+        assert!(contains_whole_word("let s: String;", "String"));
+        assert!(!contains_whole_word("StringBuilder", "String"));
+        assert!(!contains_whole_word("OwnedString", "String"));
+        assert!(!contains_whole_word("core::anything", "core::any"));
+    }
+
+    #[test]
+    fn a_left_boundary_token_ignores_what_follows_it() {
+        assert!(contains_after_identifier_boundary(
+            "let v: Vec<u8>;",
+            "Vec<"
+        ));
+        assert!(!contains_after_identifier_boundary(
+            "SmallVec<T, N>",
+            "Vec<"
+        ));
+        assert!(contains_after_identifier_boundary("Vec::new()", "Vec::"));
     }
 
     #[test]

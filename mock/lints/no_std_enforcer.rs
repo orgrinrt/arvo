@@ -4,18 +4,21 @@
 //! dependency. Crates must not import `std::*`. Consumers that need
 //! platform integration pull in their own `std`-bearing crates.
 //!
-//! Scope: every arvo crate under `mock/crates/`. The lint scans the
-//! file's code (the source as `code_only_source` returns it, with every
-//! comment and string literal blanked out of the one parse the engine
-//! holds) to catch the path before it reaches the compile pipeline,
-//! which gives a clear arvo-specific message rather than a generic
-//! `unresolved import` error from `no_std` mode.
+//! Scope: every arvo crate under `mock/crates/`. The question is asked of
+//! the one parse the engine holds (`crate_root_paths`), which names a `std`
+//! path, an `extern crate std` and a path through an alias of it by what
+//! the nodes are and not by how a line begins. That gives a clear
+//! arvo-specific message rather than a generic `unresolved import` error
+//! from `no_std` mode.
 //!
-//! The path is forbidden wherever it is written: in a `use`, and written
-//! out in full in an expression or a type, as `std::process::exit(0);` is.
-//! A `std` that is not the crate root does not match: `my_std::x` ends in
-//! an identifier byte before it, and `facade::std::x` has a path segment
-//! before it. A leading `::std::` is the crate root and does.
+//! The path is forbidden wherever it is written: in a `use`, written out
+//! in full in an expression or a type, as `std::process::exit(0);` is,
+//! inside a macro's arguments, and as an `extern crate` declaration
+//! whatever precedes it (`pub extern crate std;`) and whatever it is
+//! aliased to. A `std` that is not the crate root does not match:
+//! `my_std::x` and `facade::std::x` have other roots, and
+//! `extern crate stdx;` names another crate. A leading `::std::` is the
+//! crate root and does.
 
 use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
@@ -44,61 +47,24 @@ impl CrateLint for NoStdEnforcer {
             return Vec::new();
         }
 
-        let mut errors = Vec::new();
-
-        let code = crate::code_only_source::code_only(ctx);
-        for (idx, (line, code_line)) in ctx.source().lines().zip(code.lines()).enumerate() {
-            // Match a `std::` path wherever it is written, and `extern crate std`.
-            let hit = names_the_std_crate(code_line)
-                || code_line.trim_start().starts_with("extern crate std");
-
-            if hit {
-                errors.push(LintError::with_severity(
+        let lines: Vec<&str> = ctx.source().lines().collect();
+        crate::crate_root_paths::lines_naming(ctx, "std")
+            .into_iter()
+            .map(|line| {
+                LintError::with_severity(
                     ctx.crate_name.to_string(),
-                    idx + 1,
+                    line,
                     "no-std-enforcer",
                     format!(
-                        "arvo is `#![no_std]`; a `std::` path is forbidden, in a `use` or written \
-                         out in full: {}",
-                        line.trim()
+                        "arvo is `#![no_std]`; a `std` path is forbidden, in a `use`, written \
+                         out in full, in a macro's arguments or as `extern crate`: {}",
+                        lines.get(line - 1).map_or("", |l| l.trim())
                     ),
                     Severity::HARD_ERROR,
-                ));
-            }
-        }
-
-        errors
+                )
+            })
+            .collect()
     }
-}
-
-fn is_ident_byte(b: u8) -> bool {
-    b.is_ascii_alphanumeric() || b == b'_'
-}
-
-/// Whether a line of code writes a path rooted at the `std` crate.
-///
-/// `std::` counts when no identifier byte stands before it (so `my_std::x` and
-/// `ministd::x` do not), and when it is not a segment of a longer path: a `::`
-/// before it is the crate root only where nothing that is part of a path stands
-/// before that (`::std::fmt` does, `facade::std::fmt` does not).
-fn names_the_std_crate(code_line: &str) -> bool {
-    let bytes = code_line.as_bytes();
-    let mut from = 0;
-    while let Some(rel) = code_line[from ..].find("std::") {
-        let start = from + rel;
-        from = start + 1;
-        if start > 0 && is_ident_byte(bytes[start - 1]) {
-            continue;
-        }
-        if start >= 2 && &bytes[start - 2 .. start] == b"::" {
-            let before_colons = start.checked_sub(3).map(|i| bytes[i]);
-            if before_colons.is_some_and(is_ident_byte) {
-                continue;
-            }
-        }
-        return true;
-    }
-    false
 }
 
 #[cfg(test)]
@@ -313,5 +279,32 @@ mod tests {
     #[test]
     fn an_interior_line_of_a_raw_string_literal_is_silent() {
         assert!(hits("let example = r#\"\nuse std::fmt;\n\"#;\n").is_empty());
+    }
+
+    // --- the class, not the instance: what a line scan keyed on how a line begins missed ---
+
+    #[test]
+    fn a_pub_extern_crate_std_fires() {
+        assert_eq!(hits("pub extern crate std;\n").len(), 1);
+        assert_eq!(hits("pub(crate) extern crate std;\n").len(), 1);
+    }
+
+    #[test]
+    fn an_alias_of_std_fires_at_the_declaration_and_at_a_path_through_it() {
+        let errors = hits("pub extern crate std as s;\nfn f() { s::process::exit(0); }\n");
+        assert_eq!(errors.len(), 2, "{errors:?}");
+        assert_eq!(errors[0].line, 1);
+        assert_eq!(errors[1].line, 2);
+    }
+
+    #[test]
+    fn a_path_in_a_macros_arguments_fires() {
+        assert_eq!(hits("fn f() { m!(std::process::id()); }\n").len(), 1);
+    }
+
+    #[test]
+    fn control_extern_crate_of_a_longer_name_is_silent() {
+        assert!(hits("extern crate stdx;\n").is_empty());
+        assert!(hits("fn f() { facade::std::x(); }\n").is_empty());
     }
 }
