@@ -1,0 +1,8 @@
+# Standalone, detached from the arvo mock workspace. Where does the choice of a
+# debug abort on leaving the range sit: a cargo feature of the value crate, or a
+# type parameter with a default? Each member is a crate of its own, so features
+# unify across them the way they do in a consumer's build.
+
+[workspace]
+resolver = "3"
+members = ["value", "plain-user", "quiet-user", "app-plain", "app-both"]

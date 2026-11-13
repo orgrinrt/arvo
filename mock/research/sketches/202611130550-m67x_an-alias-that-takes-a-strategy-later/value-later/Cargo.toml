@@ -1,0 +1,10 @@
+[package]
+name = "value-later"
+description = "The alias as it would ship later: a feasibility probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+arvo-strategy = { path = "../../../../crates/arvo-strategy" }

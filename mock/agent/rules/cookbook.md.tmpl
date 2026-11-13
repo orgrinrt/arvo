@@ -64,26 +64,30 @@ Nothing in the tree yet.
 ## "I need a fixed-size dense array or matrix"
 
 Nothing in the tree yet. Whatever indexes one, the index type is not
-`USize`, which is a format point and holds no value.
+`arvo_format::points::USize`, which is a format point and holds no value;
+a platform-width index value is `arvo_numeral::USize<A>`.
 
 ## "I need a bounded integer"
 
-No numeric value type exists yet. `arvo_format::points::UFixed<BITS, FRAC>`
-and `Integer<BITS>` declare the format a bounded integer would have, and
-they are zero-sized markers that hold no value, so a field or return
-typed as one carries nothing. `IFixed` is not in the tree, and neither
-format takes a strategy parameter. What a value of a format is, is
-`question::what_a_datum_stands_for`, and it is open. Do not invent a
-value type to fill it.
+`arvo_numeral::Uint<BITS, A>` and `Int<BITS, A>`, where `A` names the
+adaptation, `Adapt<R, O>` with `O` wrapping or saturating. Each is a
+`Num` over the format `arvo_format::points::UFixed<BITS, 0>` or
+`Integer<BITS>`, which are zero-sized markers that hold no value, so a
+field or return typed as a format point carries nothing. A fixed-point
+value at a constant exponent is `Num` over its `UFixed<BITS, FRAC>`
+signature. Whether a debug build aborts on a result outside the range is
+the value's second parameter, `Abort` by default or `Quiet`. `IFixed` is
+not in the tree, and no format takes a strategy parameter. Do not write
+a second value type beside `Num`.
 
 ## "I need to measure size / capacity"
 
-No value type for a pointer-width size exists yet. `arvo_format::points::USize`
-and `ISize` are format points, `UFixed<{ ::core::primitive::usize::BITS }, 0>` and
-`Integer<{ ::core::primitive::usize::BITS }>`: zero-sized markers that name the format and hold
-no value, so a field or return typed as one carries nothing. What a value of a
-format is, is `question::what_a_datum_stands_for`, and it is open. Do not
-invent a value type to fill it.
+A pointer-width size value is `arvo_numeral::USize<A>`, and a signed one
+`ISize<A>`, each with `from_host` and `host` doors to the host integer.
+`arvo_format::points::USize` and `ISize` are the format points under them,
+`UFixed<{ ::core::primitive::usize::BITS }, 0>` and
+`Integer<{ ::core::primitive::usize::BITS }>`: zero-sized markers that name the
+format and hold no value, so a field or return typed as one carries nothing.
 
 A capacity is a type-level parameter, the const generic position
 `obligation::a_primitive_for_every_position_a_bare_number_would_take`
@@ -95,10 +99,9 @@ whether a capacity is a case where the alternative is genuinely painful.
 
 ## "I need a float"
 
-No float value type exists yet. `arvo_format::points::Floating` declares
-a floating format and holds no value, and `FastFloat` and `StrictFloat`
-are not in the tree. The value half is `question::what_a_datum_stands_for`,
-open. Never bare `f32` / `f64` in a pub API.
+No float value type exists yet: `arvo-numeral` admits no floating format.
+`arvo_format::points::Floating` declares a floating format and holds no
+value, and `FastFloat` and `StrictFloat` are not in the tree. Never bare `f32` / `f64` in a pub API.
 
 ## "I need a predicate-returning function"
 

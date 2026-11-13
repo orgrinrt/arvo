@@ -1838,3 +1838,39 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::1116",
 ]
 keywords = ["format concept", "composition", "statability", "expressible form", "signature", "chain", "intermediate", "V x V -> V", "welded row", "C10"]
+
+# --- what a datum of a format stands for ---------------------------------------
+
+[[ruling]]
+id = "a_format_datum_is_one_point_and_a_saturating_end_is_one_point"
+kind = "ruling"
+rung = "ratified"
+ratified_by = "experts"
+topic = "the_primitive"
+ratifies = ["a_datum_of_a_format_is_one_point_of_its_ambient_domain"]
+says = "A datum of a format is one point of the format's ambient domain, a member of its representable set. A set-valued datum is a composition's and never a format's. A saturating end of the set is one point: the exact results a saturating adaptation sends to it are that adaptation's fibre, and the adaptation is not part of the format's identity. This answers what a datum stands for for a format's datum only. It does not decide what a composition's datum stands for, what a value is at a shared placement, what a value stores, whether there is one canonical encoding, how many value types there are or in which crate, the question's constructor-level option, or soundness against bestness of a derived numeral."
+promotion = "Two reads of `question::what_a_datum_stands_for`. The first is the value-stance read, whose `proposal::a_datum_of_a_format_is_one_point_of_its_ambient_domain` this ratifies. Its questions reached it already worded toward their answers, as its own note says: part one (b) as \"a type that holds one value at sole occupancy\", and part four's list as \"a datum is a point; a value is the sole occupancy placement of a declared signature; ingest is adaptation\". Each of its answers is argued from the rows it quotes, but the wording it arrived at was the wording it was handed. The second is a cold read, which derived its answer before it opened the first read's proposal file, by its own account; the order is asserted rather than checkable, since it carried no commit while it was written.\n\nThe tier is over the datum clause and nothing past it, as `ruling::two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate` has it and as the coordinator gated it. The two reads reach the datum clause by different routes: the first grounds the saturating end on the spine placing saturation on the named adaptation and on absorption stated as a law, the second on the adaptation being realisation and not part of identity, which excludes the absorbing-top option rather than only not asserting it. The sole-occupancy clause, that a type may hold a datum as a value at sole occupancy, was handed to the first read as a conclusion, so one read derived it cold and it is not ratified here. Both briefs asked about a datum of a format, so the restriction to formats is the dispatchers' on both sides and neither read found it. Both reads are normative and definitional, with no instrument, the region the statability ruling was promoted in."
+because = "Under the settled ratification model the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. The format arm rests on `ruling::the_format_spine_is_canon`, whose identity has two components, the ambient domain and the representable set, and whose factoring is statable only where operand and result are each one point. The set-valued arm rests on `ruling::a_format_concept_closed_over_v_cross_v_to_v_cannot_state_a_composite_claim`, which places intervals and error-carrying values as compositions over formats."
+gap = "Not gated, and still the panel's: a composition's datum, which `ruling::configuration_is_not_composition_and_a_predicate_never_transports_for_free` leaves to each construction; that a type may hold a datum as a value at sole occupancy, as a statement of its own, at one cold read; values at shared placements; what a value stores, a slot or a pattern; one canonical encoding; the count and crate of value types; the question's constructor-level option; soundness against bestness of a derived numeral. A sized type holding one value at sole occupancy is presupposed by `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` and by `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, and that presupposition, not this row, is what a value type at sole occupancy builds on. `proposal::a_value_is_the_sole_occupancy_placement_of_a_declared_signature` is not ratified by this row and stays at one expert."
+note = "The question row carries the answer for the format arm only, and its other arms stay open there. The ratified proposal's own `answers` edge names the whole question; this row's `says` is what bounds it. An earlier wording of this row, on the same branch before it landed, also ratified the sole-occupancy clause; the review that followed found the first read had been handed that clause, and the coordinator narrowed the gate to the datum clause."
+provenance = [
+  "mock::research/202611122300_value-stance-second-read::#a-is-a-datum-of-a-format-one-point-of-the-ambient-domain",
+  "mock::research/202611130520_datum-a-cold-second-read::#4-whether-the-two-reads-close-the-question",
+]
+keywords = ["datum", "point", "ambient domain", "representable set", "member", "saturation", "fibre", "adaptation", "set-valued", "composition", "Q4"]
+
+# --- who chooses the debug abort ------------------------------------------------
+
+[[ruling]]
+id = "the_debug_abort_is_configured_by_the_consumer"
+kind = "intent"
+rung = "stated"
+topic = "overflow_policy"
+says = "Whether a debug build aborts when an operation leaves the range under a declared overflow policy is configurable by the consumer, by a cargo feature or by const, generic or trait configuration. Which of those vehicles is the work's to find."
+quote = '''
+I’d say this should be either a cargo feature or const/generic/trait configurable
+'''
+because = "`ruling::the_overflow_panic_is_permitted_and_bounded` makes the panic the go-to on debug builds for what typestate cannot catch and asks to be read loosely, and a consumer that saturates or wraps by meaning has a debug build that aborts on the meaning. The two experts split on it, and he was asked."
+note = "He was asked: in a debug build, should an operation abort when it saturates and the type declared saturation as its meaning? The options were [1: marker says it is meant, abort by default, a marker in the type says completion is the meaning and then no abort, both markers shipping from the first landing] [2: always abort, as the ratified row is written, every overflow asserting in debug, declared policy or not] [3: never for a declared policy, a type that declares saturation or wrapping never asserts, only undeclared overflow does] [4: arvo's panel decides]. He answered in his own words, quoted above, and chose none of the four. The intent is that the consumer configures the abort; the two vehicles he names are a proposal, and `proposal::the_debug_check_is_a_parameter_the_consumer_names` is the one the value crate takes. The quote keeps the typographic apostrophe of the capture."
+provenance = ["mock::design_rounds/202611130550-m67x/202611130550-m67x_topic.the-value-reads-the-placement-and-chooses-its-check::#what-this-round-is-for"]
+keywords = ["debug abort", "debug check", "overflow", "panic", "cargo feature", "type parameter", "configurable", "consumer", "Abort", "Quiet"]

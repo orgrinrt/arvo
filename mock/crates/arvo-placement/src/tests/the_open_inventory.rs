@@ -27,8 +27,6 @@
 //! are not restated here, because two copies of one rule are two things that can
 //! disagree and only one of them would be the rule.
 
-use crate::objective;
-use crate::{declared_width, derive_shared, derive_sole, narrowest_carrier, Occupancy};
 use arvo_format::ambient::Ambient;
 use arvo_format::format::Format;
 use arvo_format::overflow::Wrap;
@@ -37,6 +35,8 @@ use arvo_format::quantum::{Exponent, MagnitudeCount, Quantum};
 use arvo_format::rounding::Floor;
 use arvo_format::slots::{Slot, Slots};
 use arvo_format::{Adapt, Bool, Phase, Radix, Signature, Width};
+
+use crate::{Occupancy, declared_width, derive_shared, derive_sole, narrowest_carrier, objective};
 
 /// A domain nothing in the stack ships: the rationals at radix seven.
 struct SeptenaryRationals;
@@ -51,8 +51,8 @@ struct TripleStepped;
 
 impl Quantum for TripleStepped {
     const BASE: Exponent = Exponent::of(-5);
-    const SLOPE: Exponent = Exponent::of(3);
     const MAGNITUDES: MagnitudeCount = MagnitudeCount::of(6);
+    const SLOPE: Exponent = Exponent::of(3);
 }
 
 /// A slot range nothing in the stack ships: twenty-seven bits, offset so it is
@@ -60,8 +60,8 @@ impl Quantum for TripleStepped {
 struct OffsetTwentySeven;
 
 impl Slots for OffsetTwentySeven {
-    const MIN: Slot = Slot::at(-1000);
     const MAX: Slot = Slot::at(66108863);
+    const MIN: Slot = Slot::at(-1000);
     const WIDTH: Width = Width::bits(27);
 }
 
@@ -76,6 +76,7 @@ impl Format for Septenary {
     type Ambient = SeptenaryRationals;
     type Quantum = TripleStepped;
     type Slots = OffsetTwentySeven;
+
     const PHASE: Phase = Phase::of(4, 2);
 }
 

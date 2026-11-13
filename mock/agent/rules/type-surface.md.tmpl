@@ -27,13 +27,14 @@ node index isn't "a usize"; it's `NodeId`. Never the bare primitive.
 
 What exists to replace them is narrower than that. The value types are
 `Bool` in `arvo-format` and `Bits<N>` in `arvo-bits`, a truth value
-and an exact-width bit container, neither a numeral. The format points
+and an exact-width bit container, and `Num` in `arvo-numeral`, a value
+of an integer or fixed-point signature, with the aliases `Uint`, `Int`,
+`USize` and `ISize` for the integer points. The format points
 in `arvo-format`, `Integer<BITS>`, `UFixed<BITS, FRAC>`, `Biased`,
 `Floating`, and the platform-width `USize` and `ISize`, are zero-sized
 markers that name a format and hold no value, so a field or return
-typed as one carries nothing. No numeric value type exists yet: what a
-value of a format is, is `question::what_a_datum_stands_for`, and it is
-open. `IFixed`, `FastFloat` and `StrictFloat` are not in the tree.
+typed as one carries nothing. No float value type exists yet, and
+`IFixed`, `FastFloat` and `StrictFloat` are not in the tree.
 
 **Scope is physical, not API-visibility.** Bare `u8..u128`, `i8..i128`,
 `f32`, `f64`, `usize`, `isize`, `bool` do not appear anywhere in
@@ -83,11 +84,11 @@ domain's range: the format of a discriminant with 3 or 4 values is
 value `M` it is `UFixed<ceil(log2(M+1)), 0>`.
 
 That names the format and not a value. `UFixed` is a zero-sized
-marker, so a field typed as `UFixed<2, 0>` stores nothing, and no
-numeric value type exists yet to store one. What exists for a field
-today is `Bool` for a truth value and `Bits<N>` for an opaque bit
-pattern of exactly `N` bits, which is carried in a `u64` and masked to
-`N` on construction.
+marker, so a field typed as `UFixed<2, 0>` stores nothing. The value
+that stores one is `Num<Signature<UFixed<2, 0>, A>>` from `arvo-numeral`,
+or `Uint<2, A>`, held in the narrowest carrier the placement derives.
+Beside it are `Bool` for a truth value and `Bits<N>` for an opaque bit
+pattern of exactly `N` bits.
 
 The author's job is domain accuracy: "how many values does this
 represent?" Which carrier a value lands on is `arvo-placement`'s, read
@@ -105,7 +106,7 @@ from the declared width, and the author does not pick it.
 | Category | When | Examples |
 |----------|------|----------|
 | **Trait** | Varying behavior, shared contract | `Format`, `Slots`, `Quantum`, `Rounding`, `Overflow`, `Carrier`, `Strategy` |
-| **Newtype** | Fixed rep, validation at construction | `Bool`, `Bits<N>`; not a format point such as `UFixed<BITS, FRAC>`, which holds no value |
+| **Newtype** | Fixed rep, validation at construction | `Bool`, `Bits<N>`, `Num<S>`; not a format point such as `UFixed<BITS, FRAC>`, which holds no value |
 | **`repr(C)` enum** | Closed set, crosses ABI | none in the tree yet; the `Strategy` markers are zero-sized structs |
 
 There is no fourth "bare primitive" category. Every numeric identity
@@ -138,7 +139,7 @@ flows through arvo's type system.
 
 | If your code looks like… | Reshape to… |
 |---|---|
-| `fn X() -> usize` | a domain newtype; not `USize`, which is a format point and holds no value |
+| `fn X() -> usize` | a domain newtype, or `arvo_numeral::USize<A>`; not `arvo_format::points::USize`, which is a format point and holds no value |
 | `fn add(a: u32, b: u32) -> u32` | not bare integers; no arithmetic trait or numeric value type is in the tree yet (`question::what_a_datum_stands_for`, open), so do not invent one to fill it |
 | `fn lookup(k) -> Option<&V>` | `fn lookup(k) -> Maybe<&V>` |
 | `fn try_x(...) -> Result<T, E>` | `fn try_x(...) -> Outcome<T, E>` |

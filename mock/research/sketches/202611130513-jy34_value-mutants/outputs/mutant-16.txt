@@ -1,0 +1,47 @@
+     Running unittests src/lib.rs
+test tests::every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+test tests::every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+test tests::every_wide_rung_adds_every_signed_pair_at_widths_nine_to_twelve_as_the_oracle_does ... FAILED
+test tests::every_wide_rung_adds_every_unsigned_pair_at_widths_nine_to_twelve_as_the_oracle_does ... FAILED
+---- tests::every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does stdout ----
+thread 'tests::every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does' panicked at crates/arvo-numeral/src/tests.rs:42:13:
+assertion `left == right` failed: signed, wrapping: the 16-bit rung disagrees with the oracle
+  left: 21845
+ right: 0
+---- tests::every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does stdout ----
+thread 'tests::every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does' panicked at crates/arvo-numeral/src/tests.rs:42:13:
+assertion `left == right` failed: unsigned, wrapping: the 16-bit rung disagrees with the oracle
+  left: 43435
+ right: 0
+---- tests::every_wide_rung_adds_every_signed_pair_at_widths_nine_to_twelve_as_the_oracle_does stdout ----
+thread 'tests::every_wide_rung_adds_every_signed_pair_at_widths_nine_to_twelve_as_the_oracle_does' panicked at crates/arvo-numeral/src/tests.rs:42:13:
+assertion `left == right` failed: signed, wrapping: the 16-bit rung disagrees with the oracle
+  left: 5570560
+ right: 0
+---- tests::every_wide_rung_adds_every_unsigned_pair_at_widths_nine_to_twelve_as_the_oracle_does stdout ----
+thread 'tests::every_wide_rung_adds_every_unsigned_pair_at_widths_nine_to_twelve_as_the_oracle_does' panicked at crates/arvo-numeral/src/tests.rs:42:13:
+assertion `left == right` failed: unsigned, wrapping: the 16-bit rung disagrees with the oracle
+  left: 11137280
+ right: 0
+test result: FAILED. 4 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.66s
+     Running tests/a_consumer_crate.rs
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/band_17_to_32.rs
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+     Running tests/band_1_to_8.rs
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.16s
+     Running tests/band_33_to_64.rs
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.09s
+     Running tests/band_9_to_16.rs
+test every_signature_from_9_to_16_bits_adds_and_orders_as_the_oracle_does ... FAILED
+---- every_signature_from_9_to_16_bits_adds_and_orders_as_the_oracle_does stdout ----
+thread 'every_signature_from_9_to_16_bits_adds_and_orders_as_the_oracle_does' panicked at crates/arvo-numeral/tests/common/mod.rs:58:9:
+assertion `left == right` failed: widths 9 to 16: `add` disagrees with the oracle on 228910 of 711600 pairs
+  left: 228910
+ right: 0
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+     Running tests/compile_fail.rs
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.66s
+     Running tests/the_plain_markers_assert.rs
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

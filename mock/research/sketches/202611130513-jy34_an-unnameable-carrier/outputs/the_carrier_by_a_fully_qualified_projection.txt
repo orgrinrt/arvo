@@ -1,0 +1,9 @@
+error[E0576]: cannot find associated type `Repr` in trait `Sole`
+ --> examples/the_carrier_by_a_fully_qualified_projection.rs:9:31
+  |
+9 | type Carrier = <S13 as Sole>::Repr;
+  |                               ^^^^ not found in `Sole`
+
+For more information about this error, try `rustc --explain E0576`.
+error: could not compile `an-unnameable-carrier` (example "the_carrier_by_a_fully_qualified_projection") due to 1 previous error
+exit=101

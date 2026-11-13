@@ -32,6 +32,10 @@
 
 use arvo_format::{Bool, DeclaredSignature, Format, Slots, Width};
 
+mod sole;
+
+pub use sole::{SoleCarrier, carrier_agrees};
+
 /// Whether a value has its carrier allocation to itself.
 ///
 /// A declared axis rather than a detail, because the footprint is observable on
@@ -81,12 +85,7 @@ impl Carrier for Carrier64 {
 /// bound rather than an oversight: a declared width past the widest entry has no
 /// placement here, and closing that needs a decision about arbitrary widths that
 /// the canon holds open.
-pub const LADDER: [Width; 4] = [
-    Width::bits(8),
-    Width::bits(16),
-    Width::bits(32),
-    Width::bits(64),
-];
+pub const LADDER: [Width; 4] = [Width::bits(8), Width::bits(16), Width::bits(32), Width::bits(64)];
 
 /// What a placement is optimising for.
 ///
@@ -139,11 +138,11 @@ pub mod objective {
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct Placement {
     /// Where the bits live.
-    pub carrier: Width,
+    pub carrier:   Width,
     /// How wide a read reaches. Equal to the carrier at sole occupancy.
-    pub access: Width,
+    pub access:    Width,
     /// How far to the next element. Equal to the carrier at sole occupancy.
-    pub stride: Width,
+    pub stride:    Width,
     /// Which side of the axis this placement is on.
     pub occupancy: Occupancy,
 }
@@ -249,19 +248,23 @@ pub const fn derive_shared<S: DeclaredSignature, O: ObjectiveKind>() -> Placemen
     // An associated const of a generic parameter, so this is a constant once the
     // call is monomorphised and the unselected arm is gone before the backend.
     match O::OBJECTIVE {
-        Objective::Footprint => Placement {
-            carrier,
-            // An element of `declared` bits at an arbitrary offset can span one
-            // more boundary than its width alone suggests.
-            access: narrowest_carrier(declared.add(declared).less_one()),
-            stride: declared,
-            occupancy: Occupancy::Shared,
+        Objective::Footprint => {
+            Placement {
+                carrier,
+                // An element of `declared` bits at an arbitrary offset can span one
+                // more boundary than its width alone suggests.
+                access: narrowest_carrier(declared.add(declared).less_one()),
+                stride: declared,
+                occupancy: Occupancy::Shared,
+            }
         },
-        Objective::Access => Placement {
-            carrier,
-            access: carrier,
-            stride: carrier,
-            occupancy: Occupancy::Shared,
+        Objective::Access => {
+            Placement {
+                carrier,
+                access: carrier,
+                stride: carrier,
+                occupancy: Occupancy::Shared,
+            }
         },
     }
 }

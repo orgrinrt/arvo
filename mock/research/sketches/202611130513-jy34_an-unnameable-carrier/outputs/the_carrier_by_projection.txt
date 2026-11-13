@@ -1,0 +1,25 @@
+error[E0220]: associated type `Repr` not found for `S`
+ --> examples/the_carrier_by_projection.rs:4:27
+  |
+4 | fn carrier<S: Sole>(x: S::Repr) -> S::Repr {
+  |                           ^^^^ there is an associated type `Repr` in the trait `an_unnameable_carrier::sealed::Carried`
+  |
+help: consider further restricting type parameter `S` with trait `Carried`
+  |
+4 | fn carrier<S: Sole + an_unnameable_carrier::sealed::Carried>(x: S::Repr) -> S::Repr {
+  |                    ++++++++++++++++++++++++++++++++++++++++
+
+error[E0220]: associated type `Repr` not found for `S`
+ --> examples/the_carrier_by_projection.rs:4:39
+  |
+4 | fn carrier<S: Sole>(x: S::Repr) -> S::Repr {
+  |                                       ^^^^ there is an associated type `Repr` in the trait `an_unnameable_carrier::sealed::Carried`
+  |
+help: consider further restricting type parameter `S` with trait `Carried`
+  |
+4 | fn carrier<S: Sole + an_unnameable_carrier::sealed::Carried>(x: S::Repr) -> S::Repr {
+  |                    ++++++++++++++++++++++++++++++++++++++++
+
+For more information about this error, try `rustc --explain E0220`.
+error: could not compile `an-unnameable-carrier` (example "the_carrier_by_projection") due to 2 previous errors
+exit=101

@@ -18,6 +18,7 @@
 //! this crate writes itself, in a file the bare-primitive lints read.
 
 mod the_open_inventory;
+mod the_sole_carrier;
 
 use arvo_format::overflow::Wrap;
 use arvo_format::points::{Integer, UFixed};

@@ -1,0 +1,50 @@
+603beaa5 chore: lock src changelist 202611130720-wub5
+285d7164 fix: assert the carrier's agreement in the admission itself
+c803d489 chore: lock doc changelist 202611130720-wub5
+c575ed80 docs: hold the fixed-point test below its carrier's width
+340880c0 chore: unlock design round, deprecate src and unlock doc
+0ab4fc22 chore: lock doc changelist 202611130720-wub5
+1031933e docs: narrow the datum ruling and say a value type exists
+7b865e56 chore: close design round 202611130550-m67x
+7458e214 chore: lock src changelist 202611130550-m67x
+1fad7eb9 feat: read the sole carrier from the placement and choose the check
+3855b3ec chore: lock doc changelist 202611130550-m67x
+caeff0de docs: ratify a format's datum and word the value's open choices
+83bc8c15 docs: read the sole carrier from the placement, parameterise the check
+854b0c5c docs: regenerate the value design without the carrier doors
+6bc99dd2 chore: close design round 202611130513-jy34
+169ce861 chore: lock src changelist 202611130513-jy34
+56182f09 test: take the value mutants again on the surface with no carrier door
+d6d32abf refactor!: keep the carrier inside the value
+cdba5f0a docs: open src changelist 202611130513-jy34
+893e5133 chore: lock doc changelist 202611130513-jy34
+6be3a0b1 docs: keep the value's carrier unnameable and its doors on the slot
+9e295ef1 docs: open the doc changelist for keeping the carrier inside
+d9b457cd docs: file the topic for keeping the carrier inside the value
+f0dca72a docs: regenerate the documents with `arvo-numeral` in them
+af061a61 chore: close design round 202611130501-vt8a
+77fd37dd chore: lock src changelist 202611130509-d8ve
+6814ede1 test: observe the value's assertion, its consumer and each mutant red
+a315a93e docs: reopen the source changelist to land before its lock
+c662ac93 chore: lock doc changelist 202611130501-vt8a
+7e587d70 chore: unlock design round, deprecate src and unlock doc
+7a8895f0 chore: lock src changelist 202611130501-vt8a
+889e4d54 docs: open the source changelist for what the value crate proves
+85255391 chore: lock doc changelist 202611130501-vt8a
+5d84e228 docs: say what the value crate proves and that every crate ships
+d28ea51e docs: open the doc changelist for what the value crate proves
+5efc4eb1 docs: file the topic for what the value crate proves and says
+da9880f5 docs: propose the value type's stances at one expert
+be320b9d chore: close design round 202611130342
+d4b4ca32 chore: lock src changelist 202611130420
+a3305d01 docs: name every type the deprecated changelists carry
+148b0452 docs: give the comparison one subheader per deprecated change
+851b815d feat: ship `arvo-numeral`, a value held in its derived carrier
+51c93e4d docs: reopen the source changelist with the introduction surface
+d2d43ced chore: lock doc changelist 202611130342
+67c9f29e docs: name the surface where the value meets host integers
+06241bfb chore: unlock design round, deprecate src and unlock doc
+fddb1dfe chore: give the reopened source changelist its own id
+a1136d2e docs: reopen the source changelist without the ordering traits
+b973ad01 chore: lock doc changelist 202611130342
+2692aacd docs: leave the ordering traits off the value
