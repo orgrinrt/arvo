@@ -18,7 +18,7 @@
 
 use super::{At, Ratio, Sat, exact_product, members, quantum};
 use crate::ambient::{BinaryRationals, DecimalRationals};
-use crate::apply::{Exact, Fraction};
+use crate::apply::{Exact, Fraction, Remainder};
 use crate::format::Format;
 use crate::multiplication::{is_multipliable, product_position};
 use crate::points::{Biased, Floating, Integer, UFixed};
@@ -120,6 +120,36 @@ fn the_exact_step_reads_the_phase_and_the_radix() {
 
 #[test]
 fn the_exact_step_holds_at_the_largest_remainder_denominator() {
+    // `2^127`, `10^38` and `(2^63)^2` are under `2^128`, so each remainder is
+    // held over its whole denominator, past what a `Fraction` carries. Read
+    // against the value by hand: the rational oracle's own integer cannot form
+    // these, and the edge sweep checks them against the wide one.
+    assert_eq!(
+        product_position::<At<Signed<4>, -127>>(Slot::at(1), Slot::at(1)),
+        Exact::at(Slot::ZERO, Remainder::of(1, 1 << 127))
+    );
+    assert_eq!(
+        product_position::<At<Signed<4>, -127>>(Slot::at(-1), Slot::at(1)),
+        Exact::at(Slot::at(-1), Remainder::of((1 << 127) - 1, 1 << 127))
+    );
+    assert_eq!(
+        product_position::<Dec<Signed<4>, -38>>(Slot::at(3), Slot::at(7)),
+        Exact::at(Slot::ZERO, Remainder::of(21, 10u128.pow(38)))
+    );
+    // A phase of `-1 / 2^63` at exponent zero: one times one is
+    // `((2^63 - 1)^2 + 2^63) / 2^126`, which is `2^126 - 2^63 + 1` over `2^126`,
+    // odd over a power of two and so in lowest terms.
+    assert_eq!(
+        product_position::<Phased<Signed<4>, 0, 1, { i64::MIN }>>(Slot::at(1), Slot::at(1)),
+        Exact::at(
+            Slot::ZERO,
+            Remainder::of((1 << 126) - (1 << 63) + 1, 1 << 126)
+        )
+    );
+}
+
+#[test]
+fn the_exact_step_is_the_denotation_at_the_deepest_formats_the_rational_oracle_forms() {
     let mut walk = Denotation::default();
     walk.run::<At<Signed<4>, -62>>();
     walk.run::<At<Unsigned<4>, -62>>();
@@ -231,24 +261,29 @@ fn the_obligation_holds_out_a_magnitude_indexed_quantum() {
 
 #[test]
 fn the_obligation_holds_out_a_remainder_the_position_cannot_hold() {
-    // `2^62` and `10^18` are the largest powers a positive signed 64-bit value
-    // holds.
-    assert!(is_multipliable::<At<Signed<4>, -62>>().get());
-    assert!(!is_multipliable::<At<Signed<4>, -63>>().get());
+    // `2^127` and `10^38` are the largest powers the unsigned 128-bit
+    // denominator holds.
+    assert!(is_multipliable::<At<Signed<4>, -127>>().get());
+    assert!(!is_multipliable::<At<Signed<4>, -128>>().get());
     assert!(!is_multipliable::<At<Signed<4>, { i32::MIN }>>().get());
-    assert!(is_multipliable::<Dec<Signed<4>, -18>>().get());
-    assert!(!is_multipliable::<Dec<Signed<4>, -19>>().get());
-    // The phase's denominator enters squared: `3037000499^2` is under `2^63`
-    // and `3037000500^2` is past it.
-    assert!(is_multipliable::<Phased<Signed<4>, 0, 1, 3_037_000_499>>().get());
-    assert!(!is_multipliable::<Phased<Signed<4>, 0, 1, 3_037_000_500>>().get());
-    // Reduced first: `2 / 6074001000` is `1 / 3037000500`, and
-    // `6074000998 / 6074000998` is a whole slot.
-    assert!(!is_multipliable::<Phased<Signed<4>, 0, 2, 6_074_001_000>>().get());
-    assert!(is_multipliable::<Phased<Signed<4>, 0, 6_074_000_998, 6_074_000_998>>().get());
-    // And it meets the quantum's: a half at `2^-60` is `2^62`, at `2^-61` `2^63`.
-    assert!(is_multipliable::<Phased<Signed<4>, -60, 1, 2>>().get());
-    assert!(!is_multipliable::<Phased<Signed<4>, -61, 1, 2>>().get());
+    assert!(is_multipliable::<Dec<Signed<4>, -38>>().get());
+    assert!(!is_multipliable::<Dec<Signed<4>, -39>>().get());
+    // The phase's denominator enters squared and is at most `2^63`, so at a
+    // non-negative exponent every phase is held, the least value's included.
+    assert!(is_multipliable::<Phased<Signed<4>, 0, 1, { i64::MIN }>>().get());
+    assert!(is_multipliable::<Phased<Signed<4>, 3, 1, { i64::MAX }>>().get());
+    // At `2^-64` it is `2^32 - 1` squared that is under `2^64`, and `2^32`
+    // squared that reaches it.
+    assert!(is_multipliable::<Phased<Signed<4>, -64, 1, 4_294_967_295>>().get());
+    assert!(!is_multipliable::<Phased<Signed<4>, -64, 1, 4_294_967_296>>().get());
+    // Reduced first: `2 / 8589934592` is `1 / 2^32`, and
+    // `8589934590 / 8589934590` is a whole slot.
+    assert!(!is_multipliable::<Phased<Signed<4>, -64, 2, 8_589_934_592>>().get());
+    assert!(is_multipliable::<Phased<Signed<4>, -64, 8_589_934_590, 8_589_934_590>>().get());
+    // And it meets the quantum's: a half at `2^-125` is `2^127`, at `2^-126`
+    // `2^128`.
+    assert!(is_multipliable::<Phased<Signed<4>, -125, 1, 2>>().get());
+    assert!(!is_multipliable::<Phased<Signed<4>, -126, 1, 2>>().get());
 }
 
 #[test]

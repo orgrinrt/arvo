@@ -1,0 +1,20 @@
+error[E0080]: evaluation panicked: a constant divisor is refused at the format's zero member: phase + B is zero there, and a quotient by zero is not a function of the signature
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::division::ConstantDivisor::<arvo_format::points::Integer<8>, 0>::ADMITTED` failed here
+  |
+ ::: src/division.rs
+  |
+  | /         assert!(
+  | |             !matches!(cancelling_slot::<F>(Magnitude::SMALLEST), Maybe::Is(s) if s.index() == B),
+  | |             "a constant divisor is refused at the format's zero member: phase + B is zero there, and \
+  | |              a quotient by zero is not a function of the signature"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/division.rs
+  |
+  |         let () = ConstantDivisor::<F, B>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

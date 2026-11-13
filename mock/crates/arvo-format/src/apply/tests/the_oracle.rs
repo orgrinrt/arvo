@@ -137,12 +137,13 @@ impl Wide {
     }
 }
 
-/// A position as the oracle reads it: `whole + num / den`, `0 <= num < den`.
+/// A position as the oracle reads it: `whole + num / den`, `0 <= num < den`, with
+/// `den` at most `2^63`, so every cross product below stays inside `i128`.
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct Point {
     pub(crate) whole: Wide,
-    pub(crate) num:   i64,
-    pub(crate) den:   i64,
+    pub(crate) num:   i128,
+    pub(crate) den:   i128,
 }
 
 /// `floor(whole + n / d)` for a positive `d`, exactly.
@@ -165,7 +166,7 @@ fn ceil_of(whole: Wide, n: i128, d: i128) -> Wide {
 /// The dither is a ratio over a positive denominator, read by the stochastic mode
 /// alone.
 pub(crate) fn rounded(mode: Mode, p: Point, dither: (i64, i64)) -> Wide {
-    let (whole, n, d) = (p.whole, p.num as i128, p.den as i128);
+    let (whole, n, d) = (p.whole, p.num, p.den);
     // `x + 1/2`, over the doubled denominator.
     let (half_n, half_d) = (2 * n + d, 2 * d);
     match mode {
@@ -330,8 +331,8 @@ fn the_oracle_reads_each_mode_as_the_canon_formula_says() {
     let at = |whole: i128, num: i64| {
         Point {
             whole: Wide::of(whole),
-            num,
-            den: 4,
+            num:   i128::from(num),
+            den:   4,
         }
     };
     let no = (0, 1);

@@ -201,7 +201,16 @@ const PHASE_DENOMINATOR_WIDTH: Width = Width::bits(i64::BITS - 1);
 const SLOT_INDEX_WIDTH: Width = Width::bits(i128::BITS - 1);
 
 /// Euclid's algorithm over a non-negative and a positive operand.
+///
+/// The slot index's own integer, read through the unsigned one, which is the
+/// algorithm. Every caller passes non-negative operands.
 pub(crate) const fn greatest_common_divisor(a: i128, b: i128) -> i128 {
+    greatest_common_divisor_unsigned(a.unsigned_abs(), b.unsigned_abs()) as i128
+}
+
+/// Euclid's algorithm over the host's unsigned 128-bit integer, for a remainder
+/// over a denominator past what the signed one holds.
+pub(crate) const fn greatest_common_divisor_unsigned(a: u128, b: u128) -> u128 {
     let mut a = a;
     let mut b = b;
     while b != 0 {

@@ -1,0 +1,9 @@
+# Standalone, detached from the arvo mock workspace. Can an alias that names its
+# adaptation today gain a strategy parameter defaulting to `Warm` later without
+# breaking a consumer written against it today? `value-now` is the alias as it
+# ships, `value-later` the same alias with the strategy added, and one consumer
+# source builds against both.
+
+[workspace]
+resolver = "3"
+members = ["value-now", "value-later", "consumer"]

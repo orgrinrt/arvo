@@ -1,0 +1,16 @@
+# Standalone, detached from the arvo mock workspace. Does a value keep its
+# machine carrier where a consumer cannot name the carrier's type? Each file
+# under `examples/` is a crate of its own, so it sees only what the library
+# makes public.
+
+[package]
+name = "an-unnameable-carrier"
+description = "Whether a value can store a carrier no consumer can name: a feasibility probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+
+[workspace]

@@ -1,0 +1,20 @@
+error[E0080]: evaluation panicked: the format has no additive identity: no member adds to every member without moving it, so `Identity<Additive>` has no element to give. A format with a phase has none
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_numeral::Num<arvo_format::Signature<arvo_format::points::Biased<8, 0, 1>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>> as arvo_numeral::Identity<arvo_numeral::Additive>>::IDENTITY` failed here
+  |
+ ::: src/identity.rs
+  |
+  | /         assert!(
+  | |             has_additive_identity::<S::Format>().get(),
+  | |             "the format has no additive identity: no member adds to every member without moving \
+  | |              it, so `Identity<Additive>` has no element to give. A format with a phase has none"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+  --> tests/ui/the_identity_of_a_format_without_one_is_refused.rs:11:9
+   |
+11 |         <Num<Signature<Biased<8, 0, 1>, Adapt<TowardZero, Wrap>>> as Identity<Additive>>::IDENTITY;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

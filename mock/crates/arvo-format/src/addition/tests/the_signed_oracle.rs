@@ -22,7 +22,7 @@
 use core::marker::PhantomData;
 use core::ops::RangeInclusive;
 
-use super::steps::{Difference, Negation, Step, copies, operand_count, operands, signed};
+use super::steps::{Difference, Negation, Step, Sum, copies, operand_count, operands, signed};
 use super::{Ratio, coordinates, edges, signatures};
 use crate::adapt::{DeclaredSignature, overflow_of, rounding_of};
 use crate::addition::{difference_position, sub, subtraction_reach};
@@ -57,8 +57,8 @@ fn point(at: Ratio) -> Point {
     let rest = Ratio::of(at.num.rem_euclid(at.den), at.den);
     Point {
         whole: Wide::of(at.floor()),
-        num:   rest.num as i64,
-        den:   rest.den as i64,
+        num:   rest.num,
+        den:   rest.den,
     }
 }
 
@@ -315,4 +315,32 @@ fn negation_is_total_and_exact_at_the_edges_of_every_admitted_width() {
 #[test]
 fn subtraction_is_total_and_exact_at_the_edges_of_every_admitted_width() {
     at_every_width::<Difference>();
+}
+
+/// `T` over phases whose fractional part reduces to a denominator of `2^63`,
+/// the largest a phase can declare: every member at a small range, and the edges
+/// at both 62-bit ranges, the widest whose sums the rational oracle forms over a
+/// denominator of `2^63`, under every mode and shipped policy.
+fn at_the_least_denominator<T: Step + Default>() {
+    let mut walk = Sweep::<T>::default();
+    walk.run::<Grid<BinaryRationals, Constant<0>, Signed<4>, 1, { i64::MIN }>>();
+    walk.run::<Grid<BinaryRationals, Constant<-2>, Unsigned<4>, -3, { i64::MIN }>>();
+    walk.run::<Grid<BinaryRationals, Constant<0>, Signed<3>, { i64::MAX }, { i64::MIN }>>();
+    let mut edges = Sweep::<T> {
+        edges: true,
+        ..Sweep::default()
+    };
+    edges.run::<Grid<BinaryRationals, Constant<0>, Signed<62>, 1, { i64::MIN }>>();
+    edges.run::<Grid<BinaryRationals, Constant<0>, Unsigned<62>, { i64::MAX }, { i64::MIN }>>();
+    assert_eq!((walk.formats, edges.formats), (3, 2), "{:?}", T::NEGATED);
+    assert_eq!(walk.checked, walk.owed, "{:?}", T::NEGATED);
+    assert_eq!(edges.checked, edges.owed, "{:?}", T::NEGATED);
+    assert!(walk.owed > 0 && edges.owed > 0);
+}
+
+#[test]
+fn every_step_answers_as_the_oracle_does_over_a_phase_reduced_to_two_to_the_63() {
+    at_the_least_denominator::<Sum>();
+    at_the_least_denominator::<Negation>();
+    at_the_least_denominator::<Difference>();
 }

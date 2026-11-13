@@ -127,8 +127,8 @@ impl Writing {
     fn point(self) -> Point {
         Point {
             whole: self.below(),
-            num:   self.num.abs(),
-            den:   self.den,
+            num:   i128::from(self.num.abs()),
+            den:   i128::from(self.den),
         }
     }
 }
