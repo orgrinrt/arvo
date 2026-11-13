@@ -14,127 +14,17 @@
 //! Nothing behind the naming is what makes it honest. A convention needing a
 //! computation to work would not be one arvo supports badly, it would be a gap in
 //! the primitives, which is what the standards bound is for. So the interesting
-//! output here is a refusal, and both of the ones below are claims about this
-//! crate rather than about MATLAB.
+//! output here is a refusal, and each one in these modules is a claim about this
+//! crate rather than about the standard.
+//!
+//! One module per standard. MATLAB and IEEE 754 are the two the parity suite is
+//! built against, and SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C
+//! `ac_fixed` are reserved rather than excluded: one joins as one more module
+//! here, built from the same coordinates.
 //!
 //! These sit beside `points` for the same reason those are there: the concept is
 //! closed and the inventory is open, so an instance joins by supplying the
 //! obligations rather than by amending anything.
 
-use crate::ambient::{BinaryRationals, UnsignedBinaryRationals};
-use crate::format::{Format, Phase};
-use crate::quantum::{Exponent, MagnitudeCount, Quantum};
-use crate::slots::{Signed, Slots, Unsigned};
-
-/// MATLAB's fraction length, as the quantum law it names.
-///
-/// The convention counts fractional bits and this crate carries the exponent of
-/// the step, and the two are negations of each other. Written as
-/// `Constant<{-F}>` that negation is an expression in a const generic argument,
-/// which needs a feature this workspace forbids; written as a law of its own it
-/// is an ordinary associated const in an impl body, where an arbitrary
-/// expression is legal.
-///
-/// `F` is signed because MATLAB's fraction length runs negative, and a negative
-/// one lands on a positive exponent with no case of its own.
-pub struct FractionLength<const F: i32>;
-
-impl<const F: i32> Quantum for FractionLength<F> {
-    const BASE: Exponent = Exponent::of(-F);
-    const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
-    // The constant family. A fixed-point convention has one step rather than a
-    // ladder of them, so nothing moves with magnitude and there is one magnitude
-    // to move over.
-    const SLOPE: Exponent = Exponent::ZERO;
-}
-
-/// A signed MATLAB `fi` of `W` bits at fraction length `F`.
-///
-/// The bound is the slot range's own, so a word length the ladder does not admit
-/// is refused where it is written. MathWorks documents the word length to 65535
-/// and the ladder stops at 64, so this refuses declarations a consumer writes
-/// without thinking about them. That is a gap in the primitives and it is pinned
-/// as a compile-fail case rather than worked around here.
-pub struct Fi<const W: u32, const F: i32>;
-
-impl<const W: u32, const F: i32> Format for Fi<W, F>
-where
-    Signed<W>: Slots,
-{
-    type Ambient = BinaryRationals;
-    type Quantum = FractionLength<F>;
-    type Slots = Signed<W>;
-
-    // Binary-point scaling puts the grid through zero. The coordinate is written
-    // rather than assumed, because the same convention's slope-and-bias scaling
-    // does not, and that is a different declaration rather than a flag on this
-    // one.
-    const PHASE: Phase = Phase::ZERO;
-}
-
-/// An unsigned MATLAB `fi` of `W` bits at fraction length `F`.
-pub struct Ufi<const W: u32, const F: i32>;
-
-impl<const W: u32, const F: i32> Format for Ufi<W, F>
-where
-    Unsigned<W>: Slots,
-{
-    type Ambient = UnsignedBinaryRationals;
-    type Quantum = FractionLength<F>;
-    type Slots = Unsigned<W>;
-
-    const PHASE: Phase = Phase::ZERO;
-}
-
-/// A `fi` under a `fimath`, which is the declared signature the pair names.
-///
-/// The convention's math settings are part of the signature rather than an
-/// argument to an operation, because two settings over one format are two
-/// declared signatures and not one with a switch.
-pub type FiMath<const W: u32, const F: i32, R, O> =
-    crate::adapt::Signature<Fi<W, F>, crate::adapt::Adapt<R, O>>;
-
-/// An unsigned `fi` under a `fimath`.
-pub type UfiMath<const W: u32, const F: i32, R, O> =
-    crate::adapt::Signature<Ufi<W, F>, crate::adapt::Adapt<R, O>>;
-
-/// MATLAB's rounding methods, under MATLAB's names.
-///
-/// Re-exports rather than new types, so the mapping is something the compiler
-/// agrees with rather than a sentence in a document. Five of the six land here.
-/// Nearest is `HalfUp`: MathWorks documents it as ties toward positive infinity,
-/// which is what `half_up` denotes.
-///
-/// `half_up` sends a tie toward positive infinity whatever the sign, so a tie at
-/// -2.5 goes to -2. It is not the `HALF_UP` of Java or Python, which sends that
-/// tie the other way on the negative side, and that one is MATLAB's Round below.
-pub mod rounding_method {
-    pub use crate::rounding::{
-        Ceil as Ceiling,
-        Floor,
-        HalfEven as Convergent,
-        HalfUp as Nearest,
-        TowardZero as Zero,
-    };
-
-    // MATLAB's Round takes a tie away from zero. It is not one of the six modes
-    // and is not meant to be one, because the canon reaches it as an alias,
-    // `toward_zero` applied to the position shifted half a step toward its sign.
-    //
-    // A caller writes it from the public surface with no operation this crate
-    // does not already have: `floor` where the position is a tie whose slot is
-    // below zero, `half_up` everywhere else. Below zero a tie away from zero is
-    // a tie downward, which is `floor`, and off a tie every nearest rule agrees.
-    // `Exact::is_tie` and `Exact::slot` are what it reads, so it is available to
-    // a caller holding a position it did not build. `tests/ties_away/mod.rs`
-    // writes it, and `tests/the_ties_away_alias.rs` sweeps it against the
-    // integer rule at both ends of the index, at both parities of the
-    // denominator, and over ratios that carry past the index.
-}
-
-/// MATLAB's overflow actions, under MATLAB's names.
-///
-/// Both land, so this map is total and nothing here is marked.
-pub mod overflow_action {
-    pub use crate::overflow::{Saturate, Wrap};
-}
+pub mod ieee754;
+pub mod matlab;
