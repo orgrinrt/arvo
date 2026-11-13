@@ -137,10 +137,12 @@ and notes on rows that are not ratified, the corrections to the two rows this
 job added, and the stale sentences the full read found in the six files it
 covered, which section 1.10 counts by class. Five things are left.
 
-The edits to ratified rows, which are `ratified-rows.patch` beside this file:
-`ratified_by = "op"` on the eighteen, and three notes. The patch changes no
-`says`, no `rung` and no standing, and it wants a seat whose brief allows
-editing a ratified row's fields, ticket `c9e9da26606f`. With it goes a lint in
+The edits to ratified rows. Op answered "The eighteen, not the notes" on 13
+November, so `ratified-rows.patch` beside this file is the eighteen
+`ratified_by = "op"` lines and nothing else, and the three notes stay a
+proposal in `ratified-notes.proposal.patch`. The patch changes no `says`, no
+`rung` and no standing, and it wants a seat whose permissions allow editing a
+ratified row's fields, ticket `c9e9da26606f`, since this one was refused twice. With it goes a lint in
 `mock/lints/` refusing a `ratified` ruling that names no `ratified_by`, which
 the schema calls required and declares optional. The lint cannot land before
 the patch, since it would be red on eighteen rows.

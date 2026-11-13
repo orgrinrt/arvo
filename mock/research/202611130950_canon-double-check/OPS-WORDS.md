@@ -177,3 +177,23 @@ and is no looser in typestate or strictness, with no std and no alloc, unless
 behind a feature that is entirely opt in. The last sentence is the one the
 families answer above restates: the old arvo's breadth comes back, on the
 current fundamentals.
+
+## On the eighteen ratified rows, the same day
+
+Asked by the coordinator about 12:00 UTC, after he had chosen "Show me the
+eighteen first" among [Apply it] [Show me the eighteen first] [Only the notes]
+[Leave them] and been shown the list. The record is `briefs/fixup/op-answers-17.md`
+on the channel, and this seat read it there.
+
+The question: "Do the eighteen get `ratified_by = "op"` and the three notes
+their corrections?"
+
+The options: [All of it] [The eighteen, not the notes] [Some are not mine]
+[Leave them]
+
+> The eighteen, not the notes
+
+This job's reading, not his words. The eighteen ratified rulings that carry no
+`ratified_by` take `ratified_by = "op"`, and they are the rows of
+`ratified-rows.patch`. The three note rewrites are not applied and stay a
+proposal, as `ratified-notes.proposal.patch`.

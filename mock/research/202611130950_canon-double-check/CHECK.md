@@ -740,11 +740,22 @@ the header of `question.toml` saying rows may carry `answered` and `bound`.
 
 ### Written down and not applied
 
-The edits to ratified rows are in `ratified-rows.patch` beside this file, as a
-patch `git apply` takes on top of the second branch. It holds twenty-one hunks
-and changes no `says`, no `rung` and no standing.
+The edits to ratified rows were one patch of twenty-one hunks, changing no
+`says`, no `rung` and no standing. Op was shown them on 13 November and asked
+"Do the eighteen get `ratified_by = "op"` and the three notes their
+corrections?", with the options [All of it] [The eighteen, not the notes]
+[Some are not mine] [Leave them]. He answered "The eighteen, not the notes".
+So the patch is now two files beside this one.
 
-Eighteen of them add `ratified_by = "op"` to the rows of 1.2.
+`ratified-rows.patch` holds the eighteen hunks that add `ratified_by = "op"` to
+the rows of 1.2, which is what he took. It is still not applied: this seat's
+permission check refused the edit a second time, after his answer, and that is
+ticket `c9e9da26606f` with the refusal quoted in the status that carries this
+branch. `git apply` takes the file on top of this branch, and the lint refusing
+a ratified ruling with no `ratified_by` lands behind it.
+
+`ratified-notes.proposal.patch` holds the three note rewrites he did not take.
+They stay a proposal and nobody applies them on this answer.
 
 One amends the note of
 `ruling::a_platform_width_type_is_a_target_bound_member_of_the_format_family`:
@@ -763,21 +774,17 @@ One adds a paragraph to the note of
 `ruling::the_overflow_panic_is_permitted_and_bounded` and the build bound its
 `because` states.
 
-The job's seat was asked to apply these as the first step of the plan and its
-permission check refused, on the brief's own rule. That is ticket
-`c9e9da26606f`.
-
-One new `proposal` row is also written down and not applied, for
-`proposal-the-value-stance.toml`, on the model of
-`the_old_comb_crate_answers_to_a_stated_need`, with a `supersedes` edge onto
-`the_old_numeric_contracts_crate_is_gone`. It would say that the crate does not
-return and what it carried does, with the contracts for absolute value,
-reciprocal and square root as arvo's own, written on the standards, and where
-the elementary functions behind them are implemented in the first slice left
-undecided. It rests on
+The `proposal` row this section used to carry as written down is applied now,
+as `proposal-the-value-stance::the_old_numeric_contracts_return_as_arvos_own_and_the_crate_does_not`,
+at `one_expert`, on the model of `the_old_comb_crate_answers_to_a_stated_need`
+and with a `supersedes` edge onto `the_old_numeric_contracts_crate_is_gone`. It
+says that the crate does not return and what it carried does, with the
+contracts for absolute value, reciprocal and square root as arvo's own, written
+on the standards, and where the elementary functions behind them are first
+implemented left undecided. It rests on
 `ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` and on the
-one clause section 5 names. A `supersedes` edge moves the superseded row's
-standing in everything but the field, so it is a second reader's to write.
+one clause section 5 names, and it touches no ratified row. A second reader
+has not seen it.
 
 From the full read, four more things are written down for seats that may do
 them. The note of
@@ -817,7 +824,8 @@ shows the value tier admits that pair. The standing question it sits under,
 What happens to the five live refusals is not a choice either. He answered that
 the families return in function and feature, all five rows re-home the function
 their crate carried, and the one clause that leaves three arithmetic contracts
-with a consumer is a second reader's to restate, as section 7 says.
+with a consumer is restated by a one-expert proposal row, as section 7 says,
+and is a second reader's to confirm.
 
 The one thing that is his is the public name, and he has already said when: on
 13 November, among a thin crate named `arvo` that re-exports, no facade with
