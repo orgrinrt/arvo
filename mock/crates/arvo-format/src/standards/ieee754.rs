@@ -15,13 +15,16 @@
 //! test and a ticket. An infinity, which is its answer past the largest finite
 //! member under round to nearest and under the direction away from zero. The
 //! signed zero, which the value set does not tell from zero. Binary128 and
-//! decimal128, whose significands are wider than the slot ladder. And an
-//! operation run through both sides, since the operations refuse a floating
-//! format.
+//! decimal128, whose significands are wider than the slot ladder. And putting a
+//! value on the format at all, since conversion and the operations refuse a
+//! floating format.
 
 // FIXME(arvo_no_arithmetic_runs_through_both_sides_of_the_ieee_754_p): the
 // parity is of the adaptation of a value; a sum, product or quotient over an
 // interchange format waits on a magnitude coordinate in the applied map.
+// FIXME(arvo_nothing_puts_a_value_onto_an_ieee_754_interchange_forma): conversion
+// onto and off a format here refuses as well, so the parity suites land a value
+// by a search in the test tree.
 
 use core::marker::PhantomData;
 
@@ -56,8 +59,7 @@ impl<const P: u32, const EMAX: u32> Quantum for ExponentRange<P, EMAX> {
 /// adds what sign and magnitude owes, and its `ADMITTED` forces both.
 pub struct Significand<A, const P: u32>(PhantomData<A>);
 
-/// The bounds of a significand, as a slot range under the slot range's own
-/// obligation and nothing further.
+/// The bounds of a significand, under the slot range's own obligation only.
 ///
 /// A precision whose bound passes the slot index saturates at its top, and the
 /// width that follows is past 64 either way, so the obligation refuses it where
@@ -101,6 +103,9 @@ pub const fn is_sign_and_magnitude<A: Ambient, const P: u32>() -> Bool {
     A::SIGNED.and(Bool::of(P >= 1))
 }
 
+// FIXME(arvo_the_slots_verdict_cannot_see_an_overridden_admitted): the free
+// verdict `slots::is_admissible` reads the bounds and not this override, so it
+// answers true for a significand this obligation refuses.
 impl<A: Ambient, const P: u32> Slots for Significand<A, P> {
     /// Sign and magnitude first, then the slot range's own obligation over the
     /// bounds, so both are met wherever the range's obligation is forced.

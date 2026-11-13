@@ -275,6 +275,15 @@ fn a_planted_binary32_direction_is_reported() {
 }
 
 #[test]
+fn a_planted_binary32_format_is_reported() {
+    // A precision one short, and a largest exponent one short, under the right
+    // direction: the host still answers binary32, so each must miss.
+    use arvo_format::standards::ieee754::Binary;
+    assert!(binary32_misses::<Binary<23, 127>, RoundTiesToEven>(Mode::HalfEven) > 0);
+    assert!(binary32_misses::<Binary<24, 126>, RoundTiesToEven>(Mode::HalfEven) > 0);
+}
+
+#[test]
 fn the_shipped_floating_point_is_binary32_but_one_member() {
     // The same sweep over `Floating<25, -149, 254>` misses exactly where its one
     // extra member, the two's complement end `-2^24` at the top magnitude, names
@@ -457,8 +466,33 @@ fn a_significand_that_is_not_sign_and_magnitude_is_reported_by_its_verdict() {
     assert!(is_sign_and_magnitude::<DecimalRationals, 7>().get());
     assert!(!is_sign_and_magnitude::<UnsignedBinaryRationals, 24>().get());
     assert!(!is_sign_and_magnitude::<BinaryRationals, 0>().get());
-    // The slot range's own verdict reads the bounds without forcing anything,
-    // and answers only its own obligation.
-    assert!(is_admissible::<Significand<UnsignedBinaryRationals, 24>>().get());
+    // The slot range's verdict reads the bounds without forcing anything, so it
+    // reports a significand past the ladder. It does not see the sign and
+    // magnitude override, ticket arvo_the_slots_verdict_cannot_see_an_overridden_admitted.
     assert!(!is_admissible::<Significand<BinaryRationals, 113>>().get());
+}
+
+#[test]
+fn nothing_puts_a_value_on_an_interchange_format_yet() {
+    // Conversion and the operations refuse a floating format, ticket
+    // arvo_nothing_puts_a_value_onto_an_ieee_754_interchange_forma. This fails the
+    // day one of them admits an interchange format, and the hole closes with it.
+    // The fixed-point conversion is the control that the verdict can say yes.
+    use arvo_format::addition::is_addable;
+    use arvo_format::conversion::is_convertible;
+    use arvo_format::division::is_divisible;
+    use arvo_format::multiplication::is_multipliable;
+    use arvo_format::standards::ieee754::Decimal32;
+    use arvo_format::standards::matlab::Fi;
+    assert!(is_convertible::<Fi<32, 0>, Fi<16, 0>>().get());
+    assert!(!is_convertible::<Fi<32, 0>, Binary32>().get());
+    assert!(!is_convertible::<Binary32, Fi<32, 0>>().get());
+    assert!(!is_convertible::<Binary16, Binary32>().get());
+    assert!(!is_convertible::<Decimal32, Decimal32>().get());
+    assert!(!is_addable::<Binary32>().get());
+    assert!(!is_addable::<Decimal32>().get());
+    assert!(!is_multipliable::<Binary32>().get());
+    assert!(!is_multipliable::<Decimal32>().get());
+    assert!(!is_divisible::<Binary32>().get());
+    assert!(!is_divisible::<Decimal32>().get());
 }
