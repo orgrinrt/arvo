@@ -58,13 +58,21 @@ What is refused, and why, so that each refusal reads as a decision rather than a
 
 ## How the value holds its carrier
 
-`Num<S: Sole>` is a `repr(transparent)` newtype over `S::Repr`, its field private. `S::Repr` comes from
-the map: `Carried` names the ladder carrier for each slot family, the narrowest of 8, 16, 32 and 64 bits
-that holds the width, signed exactly where the family is. Each row of the map carries a check-time
-assertion that the carrier's size in bits is what `arvo_placement::derive_sole` derives for that
-family's canonical point, so the map cannot drift from the placement it transcribes.
+`Num<S: Sole>` is a `repr(transparent)` newtype over the carrier the map names for the signature's slot
+family, its field private. `Carried` names the ladder carrier for each slot family, the narrowest of 8,
+16, 32 and 64 bits that holds the width, signed exactly where the family is. Each row of the map carries
+a check-time assertion that the carrier's size in bits is what `arvo_placement::derive_sole` derives for
+that family's canonical point, so the map cannot drift from the placement it transcribes.
 
-A `const fn` cannot call a trait method on `S::Repr`. So each operation is written once: it moves the
+The carrier is the placement's output and not a coordinate of the signature, so no consumer can name
+it. `Carried` and `Machine`, the trait the carriers implement, sit in a module the crate does not
+export. `Sole` declares no associated type and reaches the map only through a bound in its own
+supertrait list, `DeclaredSignature<Format: Format<Slots: Carried>>`, which the compiler extends to
+every place `S: Sole` holds. So `Num<S>` is well formed in any code generic over `S: Sole`, while a
+consumer that tries `S::Repr`, a projection on `Sole`, or the map by its path is refused at build. The
+carrier's size stays observable through the host's layout and nothing else.
+
+A `const fn` cannot call a trait method on the carrier. So each operation is written once: it moves the
 bits to the machine integer of the same size and signedness, calls that rung's function, and moves the
 result back. The match it dispatches on is over constants of the instantiation, so one arm survives
 monomorphisation and the backend sees one call. The move is a bit copy and the crate's one `unsafe`. It
@@ -85,14 +93,14 @@ declared beside `arvo-format` and `arvo-bits` as introducing the numeric categor
 bare-primitive lints read that declaration as their scope. The declaration covers a named surface and
 nothing else:
 
-1. `Num`'s representation, `S::Repr`, and the map that names it: `Carried`, its rows from `Signed<W>`
-   and `Unsigned<W>` to the ladder carriers, and `Machine` with the bit copy between two of them.
+1. The carrier map `Carried`, its rows from `Signed<W>` and `Unsigned<W>` to the ladder carriers,
+   `Machine` with the bit copy between two of them, and `Num`'s private field. None of these can be
+   named outside the crate.
 2. The rung arithmetic, written once per carrier width, and the dispatch onto it by the carrier's size
-   and sign.
-3. The doors to the carrier, `raw` and `from_raw`, and to the host, `from_host` and `host` on `USize`
-   and `ISize`.
+   and sign. Private as well.
+3. The doors to the host, `from_host` and `host` on `USize` and `ISize`.
 4. The slot index, a bare `i128` in `arvo-format`'s `Slot`, where `constant` takes it as a const
-   parameter and the value is built from one.
+   parameter, the value is built from one, and `Hash` hashes it.
 5. The signatures core fixes for the traits `Num` implements, `PartialEq::eq` returning `bool` among
    them, and the crate's own tests.
 
@@ -128,16 +136,16 @@ Every door is a `const fn` and every one is total or refused at build. None chec
 `Num::constant::<V>()` takes a slot index as a bare `i128` const parameter and is refused at build, as
 a failed constant, where `V` is not a member. `Num::adapted(exact)` ingests an `arvo_format::Exact`
 through the format's own `adapt`, so a position between two slots is rounded by the signature's mode and
-a position outside the range is completed by its policy. `Num::from_raw(raw)` reads carrier bits as the
-member they name after the rung's adaptation onto the declared width, so it is total over every bit
-pattern, and `from_raw(v.raw())` is `v` for every value.
+a position outside the range is completed by its policy.
 
-`Num::slot` and `Num::raw` are the unwrap doors and say so: `slot` gives the member's `arvo_format::Slot`,
-`raw` the carrier bits, and the carrier is the one place this crate shows a machine integer.
+`Num::slot` is the unwrap door and says so: it gives the member's `arvo_format::Slot`, the coordinate
+the signature declares. No door takes or gives the carrier. A value's bits come in by the declared
+adaptation from an exact point, or as a member by `constant`, and go out as the slot, so every door is a
+function of the declared signature and none of the placement.
 
 `USize` and `ISize` carry two more, `from_host` and `host`, taking and giving the host's `usize` and
-`isize`. Their carrier is the ladder's at the pointer width and every host value is a member, so both
-are bit copies.
+`isize`. Their point is the platform-width member of the format family, so the host's integer is that
+width's own encoding and every host value is a member: both are bit copies, and neither adapts.
 
 ## The operations
 
@@ -150,14 +158,17 @@ return `Bool`; `min` and `max` return the value. At a zero phase and a constant 
 to member is monotone, and the carrier is signed exactly where the slot family is, so the carrier's order
 is the members' order and these read the carrier.
 
-`Num` implements `Clone`, `Copy`, `PartialEq`, `Eq`, `Hash` and `Debug` through the carrier, written by
-hand so that `S` itself is not bounded. It implements no operator trait beyond equality, no ordering
-trait, no `Default` and no `From` of a host integer. An operator trait cannot be called in a `const fn`,
-so the operations are the inherent ones above. The ordering traits are left out because core's
-`partial_cmp` answers in a bare `Option`, which this workspace refuses in every crate that does not
-introduce fallibility, and `Ord` cannot be had without it; the order is the inherent `cmp`, which a
-consumer passes wherever a comparison is taken. A default would be a policy decided for the consumer,
-and a conversion from a host integer is the door `from_raw` already is, named.
+`Num` implements `Clone`, `Copy`, `PartialEq` and `Eq` over the carrier, which is canonical, and `Hash`
+and `Debug` over the slot: `Hash` hashes the slot's index and `Debug` prints the slot, so neither
+depends on the carrier. Each is written by hand so that `S` itself is not bounded. It implements no
+operator trait beyond equality, no ordering trait, no `Default` and no `From` of a host integer. An
+operator trait cannot be called in a `const fn`, so the operations are the inherent ones above. The
+ordering traits are left out because core's `partial_cmp` answers in a bare `Option`, which this
+workspace refuses in every crate that does not introduce fallibility, and `Ord` cannot be had without
+it; the order is the inherent `cmp`, which a consumer passes wherever a comparison is taken. A default
+would be a policy decided for the consumer. The doors in are `constant` and `adapted`, both stated over
+the declared signature, so a conversion from a host integer would be a door the signature does not
+declare.
 
 ## Identities
 
@@ -207,10 +218,10 @@ Widths 9 to 64 run through the value type on an edge lattice, each end of the ra
 zero and its neighbours, and every single-bit value, against the oracle, plus pairs drawn from a seeded
 generator whose seed is committed in the test.
 
-`fits_add` is checked against `panic_on_overflow` on the same pairs. `from_raw(v.raw()) == v`, and
-carrier equality is slot equality.
+`fits_add` is checked against `panic_on_overflow` on the same pairs, `slot` returns the member a value
+was built from, and carrier equality is slot equality.
 
-The debug assertion is observed where it lives. One test per site, `add`, `adapted` and `from_raw`, and
+The debug assertion is observed where it lives. One test per site, `add` and `adapted`, and
 per plain marker, `Wrap` and `Saturate`, gives the site an input that leaves the range and expects the
 site's own message; the panic is the plain markers' specified behaviour in a debug build, so these are
 `#[should_panic]` tests. Each site has a twin under `Wrapping` and `Saturating` taking the same input
@@ -228,12 +239,14 @@ reproduced through the value type, with the registry's own counts.
 Compile-fail pairs under `tests/ui/`, each beside a passing twin that differs in the offending token,
 with the diagnostic committed: width 0 and 65, `constant` of a non-member, the additive identity on a
 format without one, `add` across two signatures, a host integer where a value goes and a value where a
-host integer goes, the field named from outside, `Clamp`, `Stochastic` and a phased format.
+host integer goes, the field named from outside, `Clamp`, `Stochastic` and a phased format. Beside
+them, the routes to the carrier's type: `S::Repr` with `S: Sole`, a projection on `Sole` itself, and
+`Carried` and `Machine` by their paths, each beside a twin naming the slot instead.
 
 A consumer is a crate of its own, outside this workspace, that depends on `arvo-numeral` with no feature
-line and reaches every public item: each type, trait and alias, each associated item of `Sole`,
-`Carried`, `Machine` and `ValuePolicy`, each door and operation, the identity, the host doors of `USize`
-and `ISize`, and the derived traits. A test builds and runs it, and it asserts what it reads.
+line and reaches every public item: each type, trait and alias, each associated item of `Sole` and
+`ValuePolicy`, each door and operation, the identity, the host doors of `USize` and `ISize`, and the
+derived traits. A test builds and runs it, and it asserts what it reads.
 
 The disassembly of `add` at 13 bits in 16 and at 64 bits beside the host's `wrapping_add` is committed as
 an ad hoc reading, and called that: the bench harness cannot yet commit the disassembly of a named
@@ -243,4 +256,6 @@ function.
 
 Subtraction, negation, the product, the exact accumulator and `Lane` are the next round's, and nothing
 here presumes their shape. A value at shared occupancy, packed beside others, is a different placement
-and not this crate's.
+and not this crate's. A door for a value's bits as bits, where a consumer needs one, is an encoding
+stated over the declared width, the shape an exact-width container in `arvo-bits` has, and never the
+carrier; none is here.
