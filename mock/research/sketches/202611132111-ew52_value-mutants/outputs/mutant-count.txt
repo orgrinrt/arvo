@@ -1,0 +1,39 @@
+     Running tests/the_count_without_const.rs, features hlist,mutant-count
+a_length_past_the_range_aborts_under_the_default_check --- FAILED
+the_default_check_passes_a_length_that_fits --- FAILED
+a_length_is_a_call_in_a_value --- FAILED
+---- a_length_past_the_range_aborts_under_the_default_check stdout ----
+note: test did not panic as expected at crates/arvo-numeral/tests/the_count_without_const.rs:34:4
+---- the_default_check_passes_a_length_that_fits stdout ----
+panicked at crates/arvo-numeral/tests/the_count_without_const.rs:26:5:
+assertion `left == right` failed
+  left: 1
+ right: 3
+---- a_length_is_a_call_in_a_value stdout ----
+panicked at crates/arvo-numeral/tests/count/mod.rs:83:9:
+assertion `left == right` failed: the host-width count of 2 cells
+  left: 1
+ right: 2
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_count.rs, features hlist-const,mutant-count
+a_length_is_a_constant_in_a_value --- FAILED
+a_length_is_the_same_as_a_call --- FAILED
+test tests/ui_count/a_length_in_a_format_without_a_one_is_refused.rs [should fail to compile] ... ok
+test tests/ui_count/a_length_in_a_format_with_a_one_compiles.rs [should pass] ... ok
+test tests/ui_count/a_length_past_the_range_under_abort_is_refused.rs [should fail to compile] ... error
+Expected test case to fail to compile, but it succeeded.
+test tests/ui_count/a_length_at_the_end_of_the_range_under_abort_compiles.rs [should pass] ... ok
+a_length_past_the_range_under_abort_is_refused --- FAILED
+---- a_length_is_a_constant_in_a_value stdout ----
+panicked at crates/arvo-numeral/tests/the_count.rs:45:5:
+assertion `left == right` failed
+  left: 1
+ right: 4
+---- a_length_is_the_same_as_a_call stdout ----
+panicked at crates/arvo-numeral/tests/count/mod.rs:83:9:
+assertion `left == right` failed: the host-width count of 2 cells
+  left: 1
+ right: 2
+---- a_length_past_the_range_under_abort_is_refused stdout ----
+1 of 2 tests failed
+test result: FAILED. 1 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
