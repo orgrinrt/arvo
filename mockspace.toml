@@ -270,6 +270,16 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.an-amendment-quotes-the-sentence-it-replaces]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-proposal-supersedes-a-ratified-one]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-term-is-defined-twice]
 commit = "error"
 build = "error"
@@ -1247,6 +1257,18 @@ name = "corrects"
 type = "ruling[]"
 required = false
 description = "Rows whose recorded reading this corrects without replacing what they say. Distinct from superseding: the corrected row still holds, and what changes is what somebody had taken it to mean."
+
+[[registry.namespace.field]]
+name = "amends"
+type = "ruling[]"
+required = false
+description = "Rows of which this replaces one sentence or more and leaves the rest standing. The third edge beside `supersedes` and `corrects`: superseding says the whole row is dead, and correcting says none of what it says changes, while an amendment changes what it says in the sentences named at `amended` and nowhere else. The amended row stays live and is cited for what it still holds; a citation leaning on a replaced sentence is a citation of this row."
+
+[[registry.namespace.field]]
+name = "amended"
+type = "string[]"
+required = false
+description = "For each row named under `amends`, the sentence it replaces, one entry each, written `<slug>: <the sentence>` with the sentence copied from that row's `says` as it stands. Copied rather than described, so a reader sees what no longer holds without opening the other row, and so `an-amendment-quotes-the-sentence-it-replaces` can find it there. Two sentences of one row are two entries."
 
 [[registry.namespace.field]]
 name = "key"
