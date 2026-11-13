@@ -275,9 +275,11 @@ const fn denominator(step: Step, fb: Wide) -> Maybe<u128> {
 /// quotient of the two factors; for a member divisor the obligation has ruled all
 /// three out.
 ///
-/// `b` is never a slot whose factor is zero: every caller passes a `Divisor`'s
-/// slot, or a member `extreme_divisors` has already left the pole out of, so the
-/// denominator below is positive and `over` divides by it.
+/// `b` is never a slot whose factor is zero: the shipped callers pass a
+/// `Divisor`'s slot or a member `extreme_divisors` has already left the pole out
+/// of, and the test-only `unforced_position` is called with slots its sweeps
+/// keep off the pole, so the denominator below is positive and `over` divides by
+/// it.
 const fn placed(step: Step, a: i128, b: i128) -> (Placed, u128) {
     // Both factors are under `2^191`, so neither is lost; the arm is the
     // answer the step gives if one were.
@@ -385,8 +387,7 @@ const fn quotient_is_carried<F: Format>() -> Bool {
 /// floor slot with the remainder over `d |n + b d| r^max(e, 0)` in lowest terms.
 /// For two members the position is exact. For a slot outside the range, a
 /// position past the index, a numerator past the four limbs or a denominator
-/// past `2^128 - 1` saturates at the end on the quotient's sign, and the one
-/// non-member that names the zero saturates toward the positive end.
+/// past `2^128 - 1` saturates at the end on the quotient's sign.
 ///
 /// Forces the division obligation, so a format the quotient does not admit stops
 /// the build here, at check time when the call is bound in a `const` item.
