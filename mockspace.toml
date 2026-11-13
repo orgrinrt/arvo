@@ -1435,6 +1435,18 @@ required = false
 description = "Proposals this replaces. Panels iterate on each other's work within a unit and across units, and a superseded proposal stays as the record of what was tried."
 
 [[registry.namespace.field]]
+name = "corrects_note"
+type = "ruling[]"
+required = false
+description = "Ratified rulings whose `note` has gone stale, which this proposal corrects without editing them. A ratified row is edited only by him, so the correction stands here until he takes it, and `says` gives what the note should say in place of the sentences under `note_said`."
+
+[[registry.namespace.field]]
+name = "note_said"
+type = "string[]"
+required = false
+description = "The stale sentences, each `<slug>: <sentence copied from that ruling's note>`, one entry per sentence, every slug one named under `corrects_note`."
+
+[[registry.namespace.field]]
 name = "stamped_by"
 type = "string"
 required = false

@@ -11,7 +11,12 @@
 //! still hold. `amended` carries the replaced sentence, copied from the target's
 //! `says`, and this holds the two fields to each other.
 //!
-//! Three ways to break it, reported apart because each is fixed differently:
+//! A proposal carries the same pair for a ratified ruling's `note`:
+//! `corrects_note` names the ruling and `note_said` the stale sentence, copied
+//! from its `note`, so the registry says the note is stale while the ruling
+//! stays as he ratified it. The pairs are read by one check.
+//!
+//! Four ways to break it, reported apart because each is fixed differently:
 //!
 //! - `unquoted`: a row named under `amends` with no `amended` entry for it.
 //! - `stray`: an `amended` entry whose slug is not under `amends`, or that has
@@ -20,6 +25,8 @@
 //!   which is a paraphrase, a sentence of another field, or a target since
 //!   edited. Compared with runs of whitespace taken as one space, since a
 //!   TOML string may wrap where the quotation does not.
+//! - `not-ratified`: a note correction on a row that is not ratified, whose
+//!   note is edited in place instead.
 //!
 //! A lint rather than a tool, because there is no legitimate reading of either
 //! state: an amendment that does not say what it amends is an edge with no
@@ -33,15 +40,50 @@ pub fn repo_lint() -> Box<dyn RepoLint> {
 
 const LINT: &str = "an-amendment-quotes-the-sentence-it-replaces";
 
-/// The one namespace carrying the edge.
-const NAMESPACE: &str = "ruling";
+/// One edge that replaces or corrects part of a row, and the field quoting
+/// the part. The two pairs differ only in where they sit and what they quote,
+/// so one check reads both.
+struct Quoting {
+    /// The namespace carrying the edge.
+    namespace:        &'static str,
+    /// The edge, and the field quoting what it is about.
+    edge:             &'static str,
+    quoted:           &'static str,
+    /// The namespace the edge points into, and the field a quotation is
+    /// looked for in.
+    target_namespace: &'static str,
+    target_field:     &'static str,
+    /// What to write where the edge names a row and quotes none of it.
+    unquoted_hint:    &'static str,
+    /// Whether the target must be ratified. A note on any other row is
+    /// edited in place, so a correction standing beside it is a second copy.
+    ratified_only:    bool,
+}
 
-/// The edge, and the field quoting what it replaces.
-const EDGE: &str = "amends";
-const QUOTED: &str = "amended";
-
-/// The target field a quotation is looked for in.
-const SAYS: &str = "says";
+/// `amends` replaces a sentence of a ruling's `says`; `corrects_note` is a
+/// proposal saying a sentence of a ratified ruling's `note` is stale, which
+/// leaves the ruling as he ratified it.
+const QUOTINGS: [Quoting; 2] = [
+    Quoting {
+        namespace:        "ruling",
+        edge:             "amends",
+        quoted:           "amended",
+        target_namespace: "ruling",
+        target_field:     "says",
+        unquoted_hint:    "where it replaces nothing it says, the edge is `corrects`, and where \
+                        it replaces all of it, `supersedes`.",
+        ratified_only:    false,
+    },
+    Quoting {
+        namespace:        "proposal",
+        edge:             "corrects_note",
+        quoted:           "note_said",
+        target_namespace: "ruling",
+        target_field:     "note",
+        unquoted_hint:    "the proposal's `says` gives what the note should say in its place.",
+        ratified_only:    true,
+    },
+];
 
 struct AnAmendmentQuotesTheSentenceItReplaces;
 impl Lint for AnAmendmentQuotesTheSentenceItReplaces {
@@ -63,67 +105,91 @@ impl RepoLint for AnAmendmentQuotesTheSentenceItReplaces {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let reg = ctx.registry();
         let mut out = Vec::new();
-        for q in reg.rows_in(NAMESPACE) {
-            let targets = list(reg, q, EDGE);
-            let entries = text(reg, q, QUOTED).map(split_entries).unwrap_or_default();
-            let mut quoted: Vec<&str> = Vec::new();
-            for entry in &entries {
-                let Some((slug, sentence)) = split_axis(entry) else {
-                    out.push(finding(
-                        LINT,
-                        Some("stray"),
-                        format!(
-                            "`{q}` has an `amended` entry with no `<slug>:` in front of it: \
-                             \"{entry}\". Write it `<slug>: <the sentence>`, the slug one of \
-                             the rows under `amends`."
-                        ),
-                    ));
-                    continue;
-                };
-                if !targets.contains(&slug) {
-                    out.push(finding(
-                        LINT,
-                        Some("stray"),
-                        format!(
-                            "`{q}` quotes a sentence of `{slug}` under `amended`, and `amends` \
-                             does not name `{slug}`. Add it to `amends` where this row replaces \
-                             that sentence, or take the entry out where it does not."
-                        ),
-                    ));
-                    continue;
+        for pair in &QUOTINGS {
+            let Quoting {
+                namespace,
+                edge,
+                quoted: field,
+                target_namespace,
+                target_field,
+                unquoted_hint,
+                ratified_only,
+            } = pair;
+            for q in reg.rows_in(namespace) {
+                let targets = list(reg, q, edge);
+                let entries = text(reg, q, field).map(split_entries).unwrap_or_default();
+                let mut quoted: Vec<&str> = Vec::new();
+                for entry in &entries {
+                    let Some((slug, sentence)) = split_axis(entry) else {
+                        out.push(finding(
+                            LINT,
+                            Some("stray"),
+                            format!(
+                                "`{q}` has a `{field}` entry with no `<slug>:` in front of it: \
+                                 \"{entry}\". Write it `<slug>: <the sentence>`, the slug one of \
+                                 the rows under `{edge}`."
+                            ),
+                        ));
+                        continue;
+                    };
+                    if !targets.contains(&slug) {
+                        out.push(finding(
+                            LINT,
+                            Some("stray"),
+                            format!(
+                                "`{q}` quotes a sentence of `{slug}` under `{field}`, and `{edge}` \
+                                 does not name `{slug}`. Add it to `{edge}` where this row is about \
+                                 that sentence, or take the entry out where it is not."
+                            ),
+                        ));
+                        continue;
+                    }
+                    quoted.push(slug);
+                    let target = format!("{target_namespace}::{slug}");
+                    // A target naming no row is the engine's `unknown-row-reference`.
+                    let Some(held) = text(reg, &target, target_field) else {
+                        continue;
+                    };
+                    let wanted = squeeze(sentence);
+                    if wanted.is_empty() || !squeeze(held).contains(&wanted) {
+                        out.push(finding(
+                            LINT,
+                            Some("not-in-target"),
+                            format!(
+                                "`{q}` quotes \"{sentence}\" from `{slug}`, and that row's \
+                                 `{target_field}` does not hold the sentence. Copy it from \
+                                 `{slug}`'s `{target_field}` as it stands, not a paraphrase of it."
+                            ),
+                        ));
+                    }
                 }
-                quoted.push(slug);
-                let target = format!("{NAMESPACE}::{slug}");
-                // A target naming no row is the engine's `unknown-row-reference`.
-                let Some(says) = text(reg, &target, SAYS) else {
-                    continue;
-                };
-                let wanted = squeeze(sentence);
-                if wanted.is_empty() || !squeeze(says).contains(&wanted) {
-                    out.push(finding(
-                        LINT,
-                        Some("not-in-target"),
-                        format!(
-                            "`{q}` says it replaces \"{sentence}\" in `{slug}`, and that \
-                             row's `says` does not hold the sentence. Copy it from `{slug}`'s \
-                             `says` as it stands, not a paraphrase of it."
-                        ),
-                    ));
-                }
-            }
-            for target in &targets {
-                if !quoted.contains(target) {
-                    out.push(finding(
-                        LINT,
-                        Some("unquoted"),
-                        format!(
-                            "`{q}` names `{target}` under `amends` and quotes none of its \
-                             sentences under `amended`. Add `{target}: <the sentence this \
-                             replaces>`, copied from its `says`; where it replaces nothing it \
-                             says, the edge is `corrects`, and where it replaces all of it, \
-                             `supersedes`."
-                        ),
-                    ));
+                for target in &targets {
+                    let row = format!("{target_namespace}::{target}");
+                    if *ratified_only
+                        && reg.rows_in(target_namespace).iter().any(|r| *r == row)
+                        && text(reg, &row, "rung") != Some("ratified")
+                    {
+                        out.push(finding(
+                            LINT,
+                            Some("not-ratified"),
+                            format!(
+                                "`{q}` names `{target}` under `{edge}`, and `{target}` is not \
+                                 ratified. Edit its `{target_field}` in place; `{edge}` is for a \
+                                 row nobody but him may edit."
+                            ),
+                        ));
+                    }
+                    if !quoted.contains(target) {
+                        out.push(finding(
+                            LINT,
+                            Some("unquoted"),
+                            format!(
+                                "`{q}` names `{target}` under `{edge}` and quotes none of its \
+                                 sentences under `{field}`. Add `{target}: <the sentence>`, \
+                                 copied from its `{target_field}`; {unquoted_hint}"
+                            ),
+                        ));
+                    }
                 }
             }
         }
@@ -280,6 +346,66 @@ mod tests {
             ("amends", "gone"),
             ("amended", "gone: Words."),
         ])]);
+        assert!(f.is_empty(), "{f:?}");
+    }
+
+    const RATIFIED: (&str, &[(&str, &str)]) = ("ruling::held", &[
+        ("rung", "ratified"),
+        ("says", "What he ratified."),
+        ("note", "The tree had two crates. Nothing else is said."),
+    ]);
+
+    #[test]
+    fn control_a_note_correction_quoting_the_note_passes() {
+        let f = found(&[
+            RATIFIED,
+            ("proposal::fix", &[
+                ("corrects_note", "held"),
+                ("note_said", "held: The tree had two crates."),
+            ]),
+        ]);
+        assert!(f.is_empty(), "{f:?}");
+    }
+
+    #[test]
+    fn a_note_correction_quoting_the_says_is_reported() {
+        let f = found(&[
+            RATIFIED,
+            ("proposal::fix", &[
+                ("corrects_note", "held"),
+                ("note_said", "held: What he ratified."),
+            ]),
+        ]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("`note` does not hold"), "{f:?}");
+    }
+
+    #[test]
+    fn a_note_correction_with_no_quotation_is_reported() {
+        let f = found(&[RATIFIED, ("proposal::fix", &[("corrects_note", "held")])]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("quotes none"), "{f:?}");
+    }
+
+    #[test]
+    fn a_note_correction_on_an_unratified_row_is_reported() {
+        let f = found(&[
+            ("ruling::loose", &[
+                ("rung", "stated"),
+                ("note", "Old words."),
+            ]),
+            ("proposal::fix", &[
+                ("corrects_note", "loose"),
+                ("note_said", "loose: Old words."),
+            ]),
+        ]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("is not ratified"), "{f:?}");
+    }
+
+    #[test]
+    fn a_ruling_s_corrects_note_is_not_read() {
+        let f = found(&[RATIFIED, ("ruling::other", &[("corrects_note", "held")])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
