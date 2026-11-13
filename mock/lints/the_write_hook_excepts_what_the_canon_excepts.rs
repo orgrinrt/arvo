@@ -212,9 +212,9 @@ fn check(root: &Path) -> Vec<LintError> {
                          be asked what it does is not one this can check."
                     ),
                 )];
-            }
+            },
             Some(denied) if denied == *excepted => wrong.push((*excepted, *line, denied)),
-            Some(_) => {}
+            Some(_) => {},
         }
     }
 
@@ -293,10 +293,15 @@ mod tests {
 
     use mockspace::Lint;
 
-    use super::{check, verdict, TheWriteHookExcepts, GUARDED, HELPERS, HOOK, NAME, TABLE};
+    use super::{GUARDED, HELPERS, HOOK, NAME, TABLE, TheWriteHookExcepts, check, verdict};
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        view,
     };
 
     /// A tree with a hook template in it, whose scanner is supplied by the caller.
@@ -407,9 +412,10 @@ mod tests {
             denied,
             "every control row has to be reported, not merely one"
         );
-        assert!(out
-            .iter()
-            .all(|e| e.finding_kind == Some("a-refused-position-is-allowed")));
+        assert!(
+            out.iter()
+                .all(|e| e.finding_kind == Some("a-refused-position-is-allowed"))
+        );
     }
 
     #[test]
@@ -482,7 +488,8 @@ mod tests {
                 tuple-struct field or a function parameter goes through. Closing \
                 it wants the parse rather than the line, the same change the \
                 literal suffix wants, and it predates the const generic carve-out \
-                this lint is about"]
+                this lint is about; tracked \
+                #arvo_s_write_hook_pairs_lifetime_ticks_as_a_char_literal_and"]
     fn a_bare_primitive_between_two_lifetime_ticks_is_still_refused() {
         let Some(root) = repo_root() else {
             return;
@@ -515,7 +522,8 @@ mod tests {
                 non-identifier byte on each side of the name and a suffix always \
                 carries a digit in front of it, so `0u32` and `1_usize` pass. The \
                 hook's own comment claimed the opposite until this round; closing \
-                it wants the parse"]
+                it wants the parse; tracked \
+                #arvo_s_write_hook_never_reaches_a_bare_primitive_written_as"]
     fn a_literal_suffix_is_still_refused() {
         let Some(root) = repo_root() else {
             return;

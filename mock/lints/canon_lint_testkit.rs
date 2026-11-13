@@ -42,6 +42,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
+use mockspace::src_layout::RefFiles;
 use mockspace::{
     Lint,
     LintError,
@@ -116,6 +117,9 @@ pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext
     static CRATES: OnceLock<BTreeSet<String>> = OnceLock::new();
     static DIRS: OnceLock<Vec<PathBuf>> = OnceLock::new();
     static STRINGS: OnceLock<Vec<String>> = OnceLock::new();
+    // Planted trees declare no data ref, so the files a ref holds are none, and
+    // a test run keeps no saved verdicts.
+    static REF_FILES: OnceLock<RefFiles> = OnceLock::new();
     RepoContext {
         mock_dir,
         repo_root: mock_dir,
@@ -124,7 +128,9 @@ pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext
         invocation: None,
         canon_paths: STRINGS.get_or_init(Vec::new),
         open_panels: STRINGS.get_or_init(Vec::new),
+        ref_files: REF_FILES.get_or_init(RefFiles::default),
         registry,
+        verdicts: None,
     }
 }
 
@@ -192,7 +198,7 @@ pub fn findings(lint: &dyn RepoLint, registry: &RegistryView) -> Vec<String> {
 /// a way for a repository to declare a dependency for its own lint pack.
 pub fn lint_sources() -> Vec<(String, String)> {
     let root = repo_root();
-    registered_repo_lints()
+    own_repo_lints()
         .into_iter()
         .map(|name| {
             let stem = name.replace('-', "_");
@@ -230,6 +236,27 @@ pub fn lint_sources() -> Vec<(String, String)> {
             }
             (name, text)
         })
+        .collect()
+}
+
+/// The repo lints this repository authors: the pack's, less the ones the
+/// shared `mockspace-extra-lints` pack registers into it.
+///
+/// The shared pack collects into the same `repo_lints` list, so its
+/// `catalogue-ignore` sits beside arvo's own lints there with no source file in
+/// this tree. The question this list answers is about the lints whose source is
+/// here, so the shared pack's are asked of it rather than named by hand.
+fn own_repo_lints() -> Vec<String> {
+    let mut shared = LintPack::default();
+    mockspace_extra_lints::collect(&mut shared);
+    let imported: BTreeSet<String> = shared
+        .repo_lints
+        .iter()
+        .map(|l| l.name().to_string())
+        .collect();
+    registered_repo_lints()
+        .into_iter()
+        .filter(|name| !imported.contains(name))
         .collect()
 }
 
@@ -344,13 +371,29 @@ pub fn assert_not_declared_off(lint: &dyn Lint) {
 /// `mock/target/mockspace-lints`, and one target directory is shared across
 /// every worktree cut from a clone, so a baked path answers about whichever
 /// tree built first, in every other tree, silently.
+///
+/// Where nothing above the working directory is a mockspace repository, which
+/// is the case under `cargo test` run on the pack itself, since cargo runs a
+/// test from the package directory and the pack's package sits in the engine's
+/// cache, the walk starts from this file's own path instead. That path is the
+/// tree whose lint sources this binary compiled, so the answer is the
+/// repository whose lints are under test.
 pub fn repo_root() -> PathBuf {
-    let mut dir = std::env::current_dir().expect("a working directory");
+    let cwd = std::env::current_dir().expect("a working directory");
+    mockspace_root_above(cwd)
+        .or_else(|| mockspace_root_above(PathBuf::from(file!())))
+        .expect("no mockspace.toml above the working directory or above the testkit's own path")
+}
+
+/// The nearest directory at or above `dir` holding a `mockspace.toml`.
+fn mockspace_root_above(mut dir: PathBuf) -> Option<PathBuf> {
     loop {
         if dir.join("mockspace.toml").is_file() {
-            return dir;
+            return Some(dir);
         }
-        assert!(dir.pop(), "no mockspace.toml above the working directory");
+        if !dir.pop() {
+            return None;
+        }
     }
 }
 

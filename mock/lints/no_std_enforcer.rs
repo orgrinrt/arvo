@@ -256,7 +256,8 @@ mod tests {
     #[ignore = "catalogue: a fully qualified `std::` path used outside a \
                 `use` statement (e.g. `std::process::exit(0);`) is not \
                 matched at all; needs a broader, false-positive-aware match \
-                or tree-sitter-based scanning to fix"]
+                or tree-sitter-based scanning to fix; tracked \
+                #arvo_s_no_std_enforcer_misses_a_fully_qualified_std_path_use"]
     fn a_fully_qualified_std_path_outside_a_use_statement_escapes_detection() {
         let errors = hits("pub fn abort() {\n    std::process::exit(0);\n}\n");
         assert_eq!(
@@ -276,7 +277,8 @@ mod tests {
     #[test]
     #[ignore = "catalogue: block comments are not recognised, so an interior \
                 line of one starting with `use std::` false-positives; needs \
-                tree-sitter-aware scanning to fix"]
+                tree-sitter-aware scanning to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_on"]
     fn an_interior_line_of_a_block_comment_is_wrongly_flagged() {
         let errors = hits("/*\nuse std::fmt;\n*/\n");
         assert!(
@@ -293,7 +295,8 @@ mod tests {
     #[test]
     #[ignore = "catalogue: a raw multi-line string literal whose interior \
                 line reads `use std::...;` once trimmed false-positives; \
-                needs tree-sitter-aware scanning to fix"]
+                needs tree-sitter-aware scanning to fix; tracked \
+                #arvo_s_line_scanning_enforcer_lints_flag_a_forbidden_name_in"]
     fn an_interior_line_of_a_raw_string_literal_is_wrongly_flagged() {
         let errors = hits("let example = r#\"\nuse std::fmt;\n\"#;\n");
         assert!(

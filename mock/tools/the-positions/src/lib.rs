@@ -49,7 +49,7 @@ pub mod role;
 pub mod supply;
 pub mod walk;
 
-use mockspace::tool::{ArgSpec, NotALint, Outcome, Tool, ToolContext, ToolReport};
+use mockspace::tool::{ArgSpec, NotALint, Outcome, Purpose, Tool, ToolContext, ToolReport};
 
 use crate::corpus::TreeSpec;
 use crate::kinds::Found;
@@ -65,35 +65,35 @@ impl Tool for ThePositions {
         "every position in a tree where a host primitive sits, by grammatical kind and semantic role"
     }
 
-    fn not_a_lint(&self) -> NotALint {
-        NotALint::TakesAQuestion
+    fn purpose(&self) -> Purpose {
+        Purpose::Check(NotALint::TakesAQuestion)
     }
 
     fn args(&self) -> &'static [ArgSpec] {
         &[
             ArgSpec {
-                name: "tree",
-                required: true,
+                name:        "tree",
+                required:    true,
                 description: "a tree to read, as `<repo-path>@<ref>`; repeatable",
             },
             ArgSpec {
-                name: "--kind",
-                required: false,
+                name:        "--kind",
+                required:    false,
                 description: "list every position of one grammatical kind in full",
             },
             ArgSpec {
-                name: "--role",
-                required: false,
+                name:        "--role",
+                required:    false,
                 description: "list every position of one semantic role in full",
             },
             ArgSpec {
-                name: "--api-only",
-                required: false,
+                name:        "--api-only",
+                required:    false,
                 description: "tally only the positions the obligation is about",
             },
             ArgSpec {
-                name: "--everything",
-                required: false,
+                name:        "--everything",
+                required:    false,
                 description: "list every occurrence, not only the ones at a public API position",
             },
         ]
@@ -142,16 +142,20 @@ impl Tool for ThePositions {
                         outcome: Outcome::Inconclusive {
                             reason: format!("unknown flag `{other}`"),
                         },
-                        output: String::new(),
+                        output:  String::new(),
                     };
-                }
-                other => match TreeSpec::parse(other) {
-                    Ok(spec) => specs.push(spec),
-                    Err(why) => {
-                        return ToolReport {
-                            outcome: Outcome::Inconclusive { reason: why },
-                            output: String::new(),
-                        };
+                },
+                other => {
+                    match TreeSpec::parse(other) {
+                        Ok(spec) => specs.push(spec),
+                        Err(why) => {
+                            return ToolReport {
+                                outcome: Outcome::Inconclusive {
+                                    reason: why,
+                                },
+                                output:  String::new(),
+                            };
+                        },
                     }
                 },
             }
@@ -162,7 +166,7 @@ impl Tool for ThePositions {
                 outcome: Outcome::Inconclusive {
                     reason: "no tree named. Write `<repo-path>@<ref>`, repeatable.".to_string(),
                 },
-                output: String::new(),
+                output:  String::new(),
             };
         }
 
@@ -176,10 +180,12 @@ impl Tool for ThePositions {
                 Ok(h) => h,
                 Err(why) => {
                     return ToolReport {
-                        outcome: Outcome::Inconclusive { reason: why },
-                        output: String::new(),
+                        outcome: Outcome::Inconclusive {
+                            reason: why,
+                        },
+                        output:  String::new(),
                     };
-                }
+                },
             };
             let label = spec.label();
 
@@ -187,19 +193,23 @@ impl Tool for ThePositions {
                 Ok(p) => p,
                 Err(why) => {
                     return ToolReport {
-                        outcome: Outcome::Inconclusive { reason: why },
-                        output: String::new(),
+                        outcome: Outcome::Inconclusive {
+                            reason: why,
+                        },
+                        output:  String::new(),
                     };
-                }
+                },
             };
             let blobs = match corpus::read_all(&spec.repo, &spec.git_ref, &rust_paths) {
                 Ok(b) => b,
                 Err(why) => {
                     return ToolReport {
-                        outcome: Outcome::Inconclusive { reason: why },
-                        output: String::new(),
+                        outcome: Outcome::Inconclusive {
+                            reason: why,
+                        },
+                        output:  String::new(),
                     };
-                }
+                },
             };
             let read = blobs.len();
             for blob in &blobs {
@@ -227,10 +237,12 @@ impl Tool for ThePositions {
                 Ok(p) => p,
                 Err(why) => {
                     return ToolReport {
-                        outcome: Outcome::Inconclusive { reason: why },
-                        output: String::new(),
+                        outcome: Outcome::Inconclusive {
+                            reason: why,
+                        },
+                        output:  String::new(),
                     };
-                }
+                },
             };
             let design_blobs =
                 corpus::read_all(&spec.repo, &spec.git_ref, &design_paths).unwrap_or_default();
@@ -254,7 +266,7 @@ impl Tool for ThePositions {
                              than a corpus that is clean."
                         .to_string(),
                 },
-                output: String::new(),
+                output:  String::new(),
             };
         }
 
@@ -270,7 +282,9 @@ impl Tool for ThePositions {
             want_role.as_deref(),
         );
         ToolReport {
-            outcome: Outcome::Clean { examined },
+            outcome: Outcome::Clean {
+                examined,
+            },
             output,
         }
     }

@@ -63,7 +63,9 @@ use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 use crate::canon_citations::files_cited;
 use crate::canon_rows::{finding, text};
 pub fn repo_lint() -> Box<dyn RepoLint> {
-    Box::new(AStandingIsReachableFromWhatItCites { ceiling: CEILING })
+    Box::new(AStandingIsReachableFromWhatItCites {
+        ceiling: CEILING,
+    })
 }
 
 /// The rows in this state, measured over the committed canon.
@@ -142,7 +144,11 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -161,11 +167,13 @@ mod tests {
     /// The same, with the ratchet set where a test wants it.
     fn at_a_ceiling_of(ceiling: usize, rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
-        super::AStandingIsReachableFromWhatItCites { ceiling }
-            .check_repo(&ctx(&v))
-            .into_iter()
-            .map(|e| e.message)
-            .collect()
+        super::AStandingIsReachableFromWhatItCites {
+            ceiling,
+        }
+        .check_repo(&ctx(&v))
+        .into_iter()
+        .map(|e| e.message)
+        .collect()
     }
 
     #[test]
@@ -175,14 +183,14 @@ mod tests {
         // landed is in the list rather than being a count somebody has to diff.
         let p = cited(&[&format!("{ROOT}::74_giesen_consolidation::614")]);
         let two: [(&str, &[(&str, &str)]); 2] = [
-            (
-                "proposal::a",
-                &[("standing", "two_experts"), ("provenance", &p)],
-            ),
-            (
-                "proposal::b",
-                &[("standing", "cross_topic"), ("provenance", &p)],
-            ),
+            ("proposal::a", &[
+                ("standing", "two_experts"),
+                ("provenance", &p),
+            ]),
+            ("proposal::b", &[
+                ("standing", "cross_topic"),
+                ("provenance", &p),
+            ]),
         ];
         assert!(
             at_a_ceiling_of(2, &two).is_empty(),
@@ -200,13 +208,11 @@ mod tests {
 
     #[test]
     fn a_two_expert_row_citing_one_file_is_reported() {
-        let p = cited(&[&format!(
-            "{ROOT}::74_giesen_consolidation_the_number_system::614"
-        )]);
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("standing", "two_experts"), ("provenance", &p)],
-        )]);
+        let p = cited(&[&format!("{ROOT}::74_giesen_consolidation_the_number_system::614")]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("two_experts"), "{}", f[0]);
         assert!(f[0].contains("proposal::a_claim"), "{}", f[0]);
@@ -223,10 +229,10 @@ mod tests {
             &format!("{ROOT}::65_knuth_number_systems_derived_cold::519"),
             &format!("{ROOT}::66_dolan_number_systems_derived_cold::255"),
         ]);
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("standing", "two_experts"), ("provenance", &p)],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
         assert!(
             f.is_empty(),
             "two files is what a two-expert standing names: {f:?}"
@@ -239,10 +245,10 @@ mod tests {
     fn two_anchors_into_one_file_are_one_source() {
         let one = format!("{ROOT}::74_giesen_consolidation_the_number_system");
         let p = cited(&[&format!("{one}::543"), &format!("{one}::251")]);
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("standing", "two_experts"), ("provenance", &p)],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
         assert_eq!(f.len(), 1, "two anchors into one file is one author: {f:?}");
     }
 
@@ -267,16 +273,17 @@ mod tests {
     #[test]
     #[ignore = "catalogue: a member file and the consolidation over it are counted as two \
                 arrivals. Closing it needs the sitting's file-to-topic map, because refusing \
-                every consolidation would refuse the cross_topic tier itself"]
+                every consolidation would refuse the cross_topic tier itself; tracked \
+                #arvo_s_a_standing_is_reachable_lint_counts_a_member_file_and"]
     fn a_file_and_the_consolidation_over_it_are_one_arrival() {
         let p = cited(&[
             &format!("{ROOT}::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27"),
             &format!("{ROOT}::90_giesen_consolidation_derived_algebraic_laws::127"),
         ]);
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("standing", "two_experts"), ("provenance", &p)],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
         assert_eq!(f.len(), 1, "a compression is not a second arrival: {f:?}");
     }
 
@@ -291,10 +298,10 @@ mod tests {
             &format!("{ROOT}::63_spj_consolidation_the_format_concept::120"),
             &format!("{ROOT}::106_giesen_consolidation_the_strategy_axis::360"),
         ]);
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("standing", "cross_topic"), ("provenance", &p)],
-        )]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "cross_topic"),
+            ("provenance", &p),
+        ])]);
         assert!(
             f.is_empty(),
             "two topics arriving separately is what cross_topic names: {f:?}"
@@ -303,13 +310,11 @@ mod tests {
 
     #[test]
     fn control_a_one_expert_row_citing_one_file_is_silent() {
-        let p = cited(&[&format!(
-            "{ROOT}::67_kiselyov_which_prefix_earns_the_word::613"
-        )]);
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("standing", "one_expert"), ("provenance", &p)],
-        )]);
+        let p = cited(&[&format!("{ROOT}::67_kiselyov_which_prefix_earns_the_word::613")]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "one_expert"),
+            ("provenance", &p),
+        ])]);
         assert!(f.is_empty(), "the ordinary honest row: {f:?}");
     }
 
@@ -317,13 +322,11 @@ mod tests {
     /// it is not inflated by resting on one file and must not be reported.
     #[test]
     fn control_a_contested_row_citing_one_file_is_silent() {
-        let p = cited(&[&format!(
-            "{ROOT}::67_kiselyov_which_prefix_earns_the_word::613"
-        )]);
-        let f = findings(&[(
-            "proposal::a_claim",
-            &[("standing", "contested"), ("provenance", &p)],
-        )]);
+        let p = cited(&[&format!("{ROOT}::67_kiselyov_which_prefix_earns_the_word::613")]);
+        let f = findings(&[("proposal::a_claim", &[
+            ("standing", "contested"),
+            ("provenance", &p),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -334,10 +337,10 @@ mod tests {
     fn all_three_multi_arrival_standings_are_read() {
         let p = cited(&[&format!("{ROOT}::74_giesen_consolidation::614")]);
         for standing in super::MULTI_ARRIVAL {
-            let f = findings(&[(
-                "proposal::a_claim",
-                &[("standing", standing), ("provenance", &p)],
-            )]);
+            let f = findings(&[("proposal::a_claim", &[
+                ("standing", standing),
+                ("provenance", &p),
+            ])]);
             assert_eq!(f.len(), 1, "`{standing}` was not read: {f:?}");
         }
     }
@@ -363,10 +366,10 @@ mod tests {
     #[test]
     fn control_a_ruling_is_not_read_as_a_proposal() {
         let p = cited(&[&format!("{ROOT}::74_giesen_consolidation::614")]);
-        let f = findings(&[(
-            "ruling::a_call",
-            &[("standing", "two_experts"), ("provenance", &p)],
-        )]);
+        let f = findings(&[("ruling::a_call", &[
+            ("standing", "two_experts"),
+            ("provenance", &p),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -388,17 +391,16 @@ mod tests {
         // currently restamps these to a warning is the repository's call about
         // a backlog and does not change what the finding is worth.
         let v = view(
-            &[(
-                "proposal::a",
-                &[
-                    ("standing", "two_experts"),
-                    ("provenance", "panel::one_file"),
-                ],
-            )],
+            &[("proposal::a", &[
+                ("standing", "two_experts"),
+                ("provenance", "panel::one_file"),
+            ])],
             &[],
         );
         assert_findings_block(
-            &super::AStandingIsReachableFromWhatItCites { ceiling: 0 },
+            &super::AStandingIsReachableFromWhatItCites {
+                ceiling: 0,
+            },
             &v,
         );
     }
@@ -413,7 +415,10 @@ mod tests {
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
         assert_eq!(
-            super::AStandingIsReachableFromWhatItCites { ceiling: 0 }.name(),
+            super::AStandingIsReachableFromWhatItCites {
+                ceiling: 0,
+            }
+            .name(),
             "a-standing-is-reachable-from-what-it-cites"
         );
     }

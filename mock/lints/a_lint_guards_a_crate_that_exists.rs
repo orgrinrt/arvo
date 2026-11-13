@@ -339,7 +339,8 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "catalogue: a commented-out gate is read as a gate; tracked in the module doc"]
+    #[ignore = "catalogue: a commented-out gate is read as a gate, as the module doc says; \
+                tracked #arvo_s_a_lint_guards_a_crate_that_exists_reads_a_commented_o"]
     fn a_commented_out_gate_is_not_a_rule_and_should_not_be_read_as_one() {
         let body = "impl X { fn f(ctx: &C) {\n    /* if ctx.crate_name != \"arvo-bits\" { \
                     return; } */\n} }\n";
