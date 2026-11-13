@@ -13,14 +13,18 @@
 //! to something else, and the answer flips. A reader passing a pair by accident
 //! has to be wrong twice in opposite directions.
 //!
-//! Two lists. `corpus.rs` holds the pairs the reader gets right, and every one
+//! Three lists. `corpus.rs` holds the pairs the reader gets right, and every one
 //! of them is asserted. `catalogue.rs` holds the pairs it gets wrong on one
 //! side, each with the side named, and the arm asserting them is ignored as
 //! catalogue rather than failing the suite: those are the directions the gate
 //! is known to be incomplete in, and the lint's module doc names them.
+//! `closed.rs` holds the pairs that stood in the catalogue until the reader
+//! learned to read them, each asserted by a test of its own.
 
 #[path = "sentences/catalogue.rs"]
 mod catalogue;
+#[path = "sentences/closed.rs"]
+mod closed;
 #[path = "sentences/corpus.rs"]
 mod corpus;
 
@@ -120,7 +124,7 @@ fn no_sentence_the_corpus_asserts_is_one_the_catalogue_says_is_wrong() {
     // both.
     for known in catalogue::CATALOGUE {
         let wrong = known.wrong_side();
-        for pair in PAIRS {
+        for pair in PAIRS.iter().chain(closed::CLOSED) {
             assert_ne!(pair.fires, wrong, "{}", pair.differs);
             assert_ne!(pair.silent, wrong, "{}", pair.differs);
         }

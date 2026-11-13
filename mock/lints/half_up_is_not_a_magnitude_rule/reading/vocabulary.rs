@@ -215,15 +215,16 @@ pub(crate) const MENTIONED: &[&str] = &[
 /// another one, so a pronoun after it points here.
 ///
 /// Six of these are an ordinary English word under their capital: `Round`,
-/// `Fix`, `Floor`, `Ceiling`, `Convergent` and `Stochastic`. The collision is
-/// real in both directions and is not repairable from here. This repository's
+/// `Fix`, `Floor`, `Ceiling`, `Convergent` and `Stochastic`. This repository's
 /// own published prose writes each of them bare and capitalised, at the head of
 /// a sentence, meaning the method, and `crates/arvo-format/DESIGN.md.tmpl` does
-/// it in consecutive sentences, so a reader that stopped taking the bare form
-/// as a name would refuse that page. A reader that keeps taking it stays silent
-/// on an imperative that opens the same way. The second is the safe direction
-/// in a gate that refuses, and the sentences it is wrong about are in the
-/// corpus as catalogue pairs rather than only in this paragraph.
+/// it in consecutive sentences, followed by the method's verb. An imperative
+/// opening the same way is followed by its object, so the word right behind
+/// tells the two apart where that word is of a closed class, as
+/// `IMPERATIVE_NEXT` lists. Where the object opens on an adjective or a noun
+/// the name reading stands, which is the safe direction in a gate that refuses,
+/// and the sentence it costs is a catalogue pair rather than only this
+/// paragraph.
 pub(crate) const OTHER_NAMES: &[&str] = &[
     "toward_zero",
     "TowardZero",
@@ -259,3 +260,96 @@ pub(crate) const OTHER_NAMES: &[&str] = &[
     "ties-away",
     "alias",
 ];
+
+/// Words that, standing right behind a capitalised method name opening a
+/// clause, make that word an imperative or an ordinary word rather than the
+/// method.
+///
+/// A method opening a sentence is its subject and is followed by a verb:
+/// "Round does", "Floor is", "Ceiling sends". An imperative is followed by its
+/// object or a preposition, and an ordinary word by what it heads: "Round every
+/// tie", "Fix the doc", "Round to it", "Ceiling aside". Every word here is of a
+/// closed class, a determiner, a pronoun, a preposition, or the two words that
+/// set a term aside, so the list does not have to guess at verbs.
+pub(crate) const IMPERATIVE_NEXT: &[&str] = &[
+    "the", "a", "an", "every", "each", "all", "any", "it", "them", "this", "that", "these",
+    "those", "its", "their", "to", "toward", "towards", "up", "down", "half", "first", "aside",
+    "apart",
+];
+
+/// Words that, standing right ahead of the lower-case `toward zero`, make it
+/// the name of the rule rather than a direction.
+///
+/// A rule's name is a noun phrase, so it stands where one does: after a
+/// conjunction or a preposition that takes a noun, after an article, after a
+/// copula or a negator. A direction stands after a verb or after what moves:
+/// "sends a tie toward zero", "rounds toward zero". A phrase opening the text,
+/// or standing behind a bracket, a comma or a backtick, is read as the name.
+pub(crate) const NAME_LEADS: &[&str] = &[
+    "and", "or", "nor", "for", "with", "under", "like", "unlike", "than", "of", "from", "the",
+    "is", "are", "was", "be", "not", "never", "isn't", "versus", "vs", "between", "both", "either",
+    "neither", "also",
+];
+
+/// Nouns that, opening a clause, name a subject of its own other than a
+/// rounding rule: a crate, a seat of a panel, a review, a test.
+///
+/// A clause opening on one of these is about it, as a clause opening on a code
+/// span is: "The crate sends a tie away from zero" records what a crate did and
+/// "Seat 270 read blind" what a seat did, and neither is a claim about what the
+/// mode denotes.
+pub(crate) const SUBJECTS: &[&str] = &[
+    "crate",
+    "crates",
+    "seat",
+    "seats",
+    "panel",
+    "review",
+    "reviewer",
+    "oracle",
+    "probe",
+    "test",
+    "tests",
+    "implementation",
+    "library",
+    "standard",
+];
+
+/// Articles a subject noun may stand behind at the head of a clause.
+pub(crate) const ARTICLES: &[&str] = &["the", "a", "an", "each", "every", "one"];
+
+/// Nouns that, standing right behind a name that is also a reading, say the
+/// name is being used as a name: "the ties-away rule".
+pub(crate) const RULE_NOUNS: &[&str] = &["rule", "rules", "alias", "mode", "operation", "method"];
+
+/// Words that open a contrast in the reading's own segment, so a reading
+/// standing behind the settled denotation is what the mode is set against
+/// rather than a second thing it does.
+///
+/// "toward positive infinity, where ties away from zero would give -3" sets the
+/// two apart; "toward positive infinity, away from zero" restates the first as
+/// the second, which is the defect in an apposition.
+pub(crate) const CONTRASTS: &[&str] = &["where", "wherever"];
+
+/// Nouns whose size `in magnitude` can be about, other than a tie's.
+pub(crate) const ERRORS: &[&str] =
+    &["error", "errors", "bias", "drift", "difference", "residual", "deviation"];
+
+/// Nouns naming what a tie rule moves, against which `ERRORS` is weighed.
+pub(crate) const TIES: &[&str] = &["tie", "ties"];
+
+/// Verbs that, ahead of a code span, make `value` the thing the mode gives
+/// rather than a word saying the span is quoted.
+///
+/// "`half_up` returns the `away from zero` value at a tie" says what the mode
+/// gives; "`half_up` has the `away from zero` value in it" says what a text
+/// holds. Only `value` and `values` among the mention words name a result as
+/// well as a piece of a corpus, so only they consult this.
+pub(crate) const RESULTS: &[&str] = &[
+    "returns", "return", "returned", "gives", "give", "gave", "yields", "yield", "produces",
+    "produce", "picks", "pick", "chooses", "choose", "takes", "take", "sends", "send", "rounds",
+    "round", "lands", "goes",
+];
+
+/// The mention words that also name a result.
+pub(crate) const RESULT_MENTIONS: &[&str] = &["value", "values"];

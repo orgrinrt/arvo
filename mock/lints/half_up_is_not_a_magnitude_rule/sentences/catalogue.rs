@@ -10,36 +10,24 @@
 //! corpus's, with the side the reader gets wrong named and the other side, the
 //! twin, one it gets right. Every entry owns one test asserting the reading its
 //! wrong side is owed, ignored as catalogue so it is red when asked for and does
-//! not fail the suite; a fix landing on one entry turns only that entry's test
-//! green, where an aggregate would still report red for the other seventeen.
-//! The arm asserting the twins is not ignored, because a twin going wrong is a
-//! regression rather than a known gap.
+//! not fail the suite, each under the ticket that tracks its own shape. The arm
+//! asserting the twins is not ignored, because a twin going wrong is a
+//! regression rather than a known gap. A pair the reader learns to read moves
+//! to `closed.rs`, with a test of its own.
 //!
-//! The wrong sides say what the reader would have to read that it cannot.
-//! Twelve are clauses it lets through: a capitalised method name used as an
-//! imperative or an ordinary word, a clause opening on a code span that is a
-//! number rather than a name, a negator standing behind the reading with no
-//! comma before it, a denotation excusing a reading in a later segment with
-//! only a comma between them, a one-word aside read as a list neighbour, a
-//! lower-case entry in `OTHER_NAMES` matching ordinary English, a pronoun in
-//! one clause resolved to the most recent name rather than to the sentence's
-//! subject, `value` following the reading as a predicate rather than as a
-//! quoting word, and the pronoun after a negated identity named in a code
-//! span. Six are clauses it refuses: the alias named beside the mode under a
-//! name that is also a reading, a relative or a clause whose subject is a
-//! rule or a seat named in words, a direction word in front of `in magnitude`
-//! that names how an error grows rather than where a tie goes, a segment
-//! naming a rule under a word that is also a reading where the mode names
-//! itself instead, and a clause naming its own subject in words rather than
-//! in a code span.
+//! Three entries are left. One is not a gap the reader can close alone: a
+//! pronoun after a negated identity across a full stop, which the entry reads
+//! as the sentence's subject and `carry_tests::every_other_name_defeats_the_carry`
+//! reads as the rule standing last, and its ticket holds which of the two
+//! governs. The other two are what remains of two classes the reader now reads
+//! by closed lists: an imperative whose object opens on a word of an open class,
+//! and a subject named in words no list holds.
 //!
 //! The last arm reads the live registry's ratified rulings, which the lint
-//! itself does not read, and asserts none of their prose is refused. It is
-//! red, on the governing ruling's `promotion` field, and ignored as catalogue.
-//! `check_registry` skips every ratified ruling outright, so the gate never
-//! reads that field: the real reason the demotion stands is the shapes above
-//! that the gate does read, in `mock/lints/half_up_is_not_a_magnitude_rule.rs`'s
-//! own module doc and `SEVERITY` doc.
+//! itself does not read, and asserts none of their prose is refused. It held
+//! the governing ruling's `promotion` field, which opens a clause on a seat's
+//! number, until a clause opening on a bare whole number was read as having a
+//! subject of its own; it is asserted now.
 //!
 //! Test code only: `sentences` is declared under `#[cfg(test)]`, and the
 //! attribute below says so in this file too, where the read-through-the-view
@@ -89,199 +77,6 @@ impl Known {
 pub(super) const CATALOGUE: &[Known] = &[
     Known {
         pair:  Pair {
-            fires:    "`half_up` is nearest. Round every tie away from zero.",
-            silent:   "`half_up` is nearest. MATLAB's Round takes every tie away from zero.",
-            subject:  None,
-            differs:  "whether `Round` opening the clause is an imperative or the MATLAB method",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is the mode. Fix the doc so a tie goes away from zero.",
-            silent:   "`half_up` is the mode. MATLAB's Fix sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether `Fix` opening the clause is an imperative or the MATLAB method",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is the mode. Ceiling aside, a tie goes away from zero.",
-            silent:   "`half_up` is the mode. Ceiling sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether `Ceiling` opens an aside or is the subject that sends the tie",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is nearest. Round to it and a tie goes away from zero.",
-            silent:   "`half_up` is nearest. Round is what goes away from zero.",
-            subject:  None,
-            differs:  "whether `Round` is a verb taking the mode as its object or the method",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is a mode. `-2.5` goes away from zero.",
-            silent:   "`half_up` is a mode. `arvo-format` sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether the code span opening the clause is a value the mode acts on or a \
-                      subject of its own",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is nearest, whereas it goes away from zero.",
-            silent:   "`half_up` is nearest, whereas `roundTiesToAway` goes away from zero.",
-            subject:  None,
-            differs:  "whether the contrasted segment names the alias, under a name that is also a \
-                      reading",
-            measured: false,
-        },
-        wrong: Wrong::Refuses,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is nearest, which goes away from zero.",
-            silent:   "`half_up` is not Java's rule, which goes away from zero.",
-            subject:  None,
-            differs:  "whether the relative binds to the mode or to a rule named in words",
-            measured: false,
-        },
-        wrong: Wrong::Refuses,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up(x) = floor(x + q/2)` is stated first. It then answers ties away \
-                      from zero.",
-            silent:   "Seat 125 stated `half_up(x) = floor(x + q/2)` first. Seat 270 read blind \
-                      and first answered ties away from zero.",
-            subject:  None,
-            differs:  "whether the clause after the naming opens on a pronoun or on a subject named \
-                      in words, which is the shape of the governing ruling's `promotion`",
-            measured: false,
-        },
-        wrong: Wrong::Refuses,
-    },
-    // The seven classes the fourth review found uncatalogued, each a class
-    // rather than the one sentence it happened to look at.
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` sends a tie away from zero rather than toward positive infinity.",
-            silent:   "`half_up` sends a tie toward positive infinity rather than away from zero.",
-            subject:  None,
-            differs:  "whether the reading or the denotation stands last before `rather than` in \
-                      the reading's own segment",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` goes toward positive infinity, away from zero.",
-            silent:   "`half_up` sends a tie toward positive infinity, where ties away from zero \
-                      would give -3.",
-            subject:  None,
-            differs:  "whether the reading follows the denotation by a bare comma or by a comma \
-                      introducing a contrast",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` rounds x (a tie) away from zero.",
-            silent:   "The modes floor, away from zero, half_up (the ruled one), and ceil.",
-            subject:  None,
-            differs:  "whether a one-word aside between the name and the reading is read as a list \
-                      neighbour or the item beside it holds a real list",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` doesn't send a tie toward zero; it sends it away from zero.",
-            silent:   "`half_up` differs from `TowardZero`; it sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether `toward zero` names the alias `TowardZero` in a code span or merely \
-                      uses the ordinary English words",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` differs from `floor`, and it sends a tie away from zero.",
-            silent:   "`half_up` differs from `floor`. It sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether the pronoun opens a segment joined by a comma and a conjunction \
-                      within one clause, where the subject governs, or opens the next clause after \
-                      a full stop, where the name standing last does",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` returns the `away from zero` value at a tie.",
-            silent:   "`half_up` has the `away from zero` value in it.",
-            subject:  None,
-            differs:  "whether `value` follows the span as a predicate the sentence asserts or as a \
-                      word saying the span is quoted",
-            measured: false,
-        },
-        wrong: Wrong::LetsThrough,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` moves a tie up in magnitude.",
-            silent:   "`half_up` has an error that increases in magnitude with the width.",
-            subject:  None,
-            differs:  "whether the direction word stands in front of `in magnitude` as the tie's \
-                      own direction or names how an error grows",
-            measured: false,
-        },
-        wrong: Wrong::Refuses,
-    },
-    // The three pinned pairs the fourth review's blocker 2 settled: the
-    // coordinator's intent for each, moving the side that contradicted it here.
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is a nearest rule that reads nothing and so falls on the \
-                      translation side, where `half_up` itself sends a tie away from zero.",
-            silent:   "`half_up` is a nearest rule that reads nothing and so falls on the \
-                      translation side, where the ties-away rule would fall on the reflection \
-                      side.",
-            subject:  None,
-            differs:  "whether the segment names the mode itself or a rule named by a word that is \
-                      also a reading",
-            measured: false,
-        },
-        wrong: Wrong::Refuses,
-    },
-    Known {
-        pair:  Pair {
-            fires:    "`half_up` is a mode. It sends a tie away from zero.",
-            silent:   "`half_up` is a mode. The crate sends a tie away from zero.",
-            subject:  None,
-            differs:  "whether the clause opens with a pronoun for the mode or names a subject of \
-                      its own in words, neither a claim about what the mode denotes",
-            measured: false,
-        },
-        wrong: Wrong::Refuses,
-    },
-    Known {
-        pair:  Pair {
             fires:    "`half_up` is not Java's `HALF_UP`. It sends a tie away from zero.",
             silent:   "`half_up` is not the `HALF_UP` of Java. That one goes away from zero.",
             subject:  None,
@@ -291,17 +86,41 @@ pub(super) const CATALOGUE: &[Known] = &[
         },
         wrong: Wrong::LetsThrough,
     },
+    Known {
+        pair:  Pair {
+            fires:    "`half_up` is nearest. Round halfway ties away from zero.",
+            silent:   "`half_up` is nearest. Round sends halfway ties away from zero.",
+            subject:  None,
+            differs:  "whether `Round` opening the clause is an imperative whose object opens on a \
+                      word of an open class, or the method followed by its verb",
+            measured: false,
+        },
+        wrong: Wrong::LetsThrough,
+    },
+    Known {
+        pair:  Pair {
+            fires:    "`half_up` is a mode. Its decimal module sends a tie away from zero.",
+            silent:   "`half_up` is a mode. Python's decimal module sends a tie away from zero.",
+            subject:  None,
+            differs:  "whether the clause's subject is the mode's own, by a pronoun, or a thing \
+                      named in words the reader has no noun for",
+            measured: false,
+        },
+        wrong: Wrong::Refuses,
+    },
 ];
 
 #[test]
-fn the_catalogue_holds_eighteen_twelve_let_through_and_six_refused() {
-    // A count, so an entry dropped rather than fixed is a failure here.
-    assert_eq!(CATALOGUE.len(), 18);
+fn the_catalogue_holds_three_two_let_through_and_one_refused() {
+    // A count, so an entry dropped rather than fixed or deleted is a failure
+    // here. Seventeen of the eighteen it held moved to `closed.rs`, and two
+    // entries are the residue of the classes two of those closed.
+    assert_eq!(CATALOGUE.len(), 3);
     let through = CATALOGUE
         .iter()
         .filter(|k| matches!(k.wrong, Wrong::LetsThrough))
         .count();
-    assert_eq!(through, 12);
+    assert_eq!(through, 2);
 }
 
 #[test]
@@ -315,8 +134,7 @@ fn every_twin_in_the_catalogue_reads_right() {
 }
 
 /// `CATALOGUE[i]`'s known-wrong side, isolated so a fix landing on one entry
-/// turns only that entry's test green rather than an aggregate covering all
-/// eighteen.
+/// turns only that entry's test green.
 fn known_wrong(i: usize) -> Vec<String> {
     wrong_sides(std::iter::once(&CATALOGUE[i].pair))
 }
@@ -334,7 +152,7 @@ macro_rules! catalogue_case {
             assert!(
                 wrong.is_empty(),
                 "CATALOGUE[{}]'s named side is still read wrong: {wrong:?}. Once it reads \
-                 right, the entry moves out of the catalogue and into the corpus",
+                 right, the entry moves out of the catalogue and into `closed.rs`",
                 $i
             );
         }
@@ -342,122 +160,25 @@ macro_rules! catalogue_case {
 }
 
 catalogue_case!(
-    #[ignore = "catalogue: `Round` opening the clause reads as an imperative rather than the MATLAB method; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_matlab_method_opening_a_clause_is_read_as_an_imperative,
+    #[ignore = "catalogue: the pronoun `It` after a negated identity named in a code span is read as \
+                the rule standing last, as every_other_name_defeats_the_carry asserts, not as the \
+                sentence's subject; tracked #arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi"]
+    the_java_pair_it_after_a_negated_identity_lets_through,
     0
 );
 catalogue_case!(
-    #[ignore = "catalogue: `Fix` opening the clause reads as an imperative rather than the MATLAB method; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_matlab_fix_opening_a_clause_is_read_as_an_imperative,
+    #[ignore = "catalogue: a capitalised method name opening a clause is read as the method where \
+                the word behind it is of an open class, so an imperative on such an object is let \
+                through; tracked #arvo_s_half_up_reader_reads_a_capitalised_method_name_as_the"]
+    an_imperative_on_an_open_class_object_is_read_as_the_method,
     1
 );
 catalogue_case!(
-    #[ignore = "catalogue: `Ceiling` opening an aside reads as the subject that sends the tie; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    ceiling_opening_an_aside_is_read_as_the_clauses_subject,
+    #[ignore = "catalogue: a clause whose subject is named in words outside `SUBJECTS` and every list \
+                of rules is read as naming nothing, so the mode carries into it and it is refused; \
+                tracked #arvo_s_half_up_reader_refuses_a_clause_whose_subject_is_name"]
+    a_subject_named_in_words_outside_the_vocabulary_is_refused,
     2
-);
-catalogue_case!(
-    #[ignore = "catalogue: `Round` as a verb taking the mode as its object reads as the MATLAB method; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    round_as_a_verb_taking_the_mode_is_read_as_the_method,
-    3
-);
-catalogue_case!(
-    #[ignore = "catalogue: a code span value the mode acts on reads as a subject of its own; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_code_span_value_opening_a_clause_is_read_as_a_subject,
-    4
-);
-catalogue_case!(
-    #[ignore = "catalogue: the alias named in a contrasted segment, under a name that is also a reading, is \
-     refused; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    the_alias_named_under_a_reading_word_is_refused,
-    5
-);
-catalogue_case!(
-    #[ignore = "catalogue: a relative clause binds to a rule named in words rather than to the mode; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_relative_binding_to_a_rule_named_in_words_is_refused,
-    6
-);
-catalogue_case!(
-    #[ignore = "catalogue: the governing ruling's `promotion` opens a clause on a seat number, a subject the \
-     reader has no word for, so the carry reaches it; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_pronoun_after_a_seat_named_promotion_reaches_the_reading,
-    7
-);
-catalogue_case!(
-    #[ignore = "catalogue: the reading standing last before `rather than` in its own segment is not excused by \
-     the denotation ahead of it; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    the_denotation_standing_last_before_rather_than_does_not_excuse,
-    8
-);
-catalogue_case!(
-    #[ignore = "catalogue: a reading following the denotation by a comma introducing a contrast is not excused, \
-     only a bare comma is; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_reading_after_a_contrast_comma_is_not_excused_by_the_denotation,
-    9
-);
-catalogue_case!(
-    #[ignore = "catalogue: a one-word aside between the name and the reading reads as a list neighbour; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_one_word_aside_beside_the_reading_reads_as_a_list_neighbour,
-    10
-);
-catalogue_case!(
-    #[ignore = "catalogue: `toward zero` in ordinary English words, not a code span naming `TowardZero`, is \
-     read as the alias; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    toward_zero_in_ordinary_words_is_read_as_the_alias,
-    11
-);
-catalogue_case!(
-    #[ignore = "catalogue: a pronoun opening the clause after a full stop carries to the name standing last \
-     rather than to the sentence's subject; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_pronoun_after_a_full_stop_carries_to_the_wrong_name,
-    12
-);
-catalogue_case!(
-    #[ignore = "catalogue: `value` following the span as a predicate the sentence asserts reads as the word \
-     that makes the span a quote; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    value_following_the_span_as_a_predicate_reads_as_a_quoting_word,
-    13
-);
-catalogue_case!(
-    #[ignore = "catalogue: a direction word in front of `in magnitude` naming how an error grows is refused as \
-     the tie's own direction; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    a_direction_word_before_in_magnitude_reads_an_errors_growth,
-    14
-);
-catalogue_case!(
-    #[ignore = "catalogue: a segment naming a rule under a word that is also a reading, where the mode names \
-     itself instead, is refused; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    pair_22_the_ties_away_rule_named_in_words_is_refused,
-    15
-);
-catalogue_case!(
-    #[ignore = "catalogue: a clause naming its own subject in words rather than in a code span is refused; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    pair_35_the_crate_named_as_subject_is_refused,
-    16
-);
-catalogue_case!(
-    #[ignore = "catalogue: the pronoun `It` after a negated identity named in a code span is not carried, so \
-     the clause it opens is let through; \
-                tracked #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-    the_java_pair_it_after_a_negated_identity_lets_through,
-    17
 );
 
 /// The repository this file sits in, found from its own path.
@@ -549,10 +270,7 @@ fn control_the_ratified_rows_are_read_and_the_reader_fires_on_a_planted_field() 
 }
 
 #[test]
-#[ignore = "catalogue: the governing ruling's `promotion` opens a clause on a seat number, a \
-            subject the reader has no word for, so the carry reaches it; tracked \
-            #arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair"]
-fn catalogue_no_ratified_ruling_field_is_refused() {
+fn no_ratified_ruling_field_is_refused() {
     let text = std::fs::read_to_string(repo_root().join("mock/registry/ruling.toml"))
         .expect("the ruling file");
     let refused: Vec<String> = ratified_prose(&text)

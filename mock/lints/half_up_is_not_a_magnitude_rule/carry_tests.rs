@@ -314,11 +314,18 @@ fn a_clause_opening_with_a_code_span_has_a_subject_of_its_own() {
     // a clause opening by naming one of them is about that thing. The registry
     // row recording what the crate asserted before the ruling reads this way.
     assert!(found("`half_up` is a mode. `arvo-format` sends a tie away from zero.").is_empty());
-    // The same clause naming its subject in words rather than in a code span is
-    // not distinguished, and carries: neither reading is a claim about what the
-    // mode denotes, so both have to stay silent, and this one does not.
-    // `sentences/catalogue.rs` carries the sentence it costs rather than a
-    // watered-down assertion here.
+    // The same clause naming its subject in words, a crate or a seat, behind an
+    // article or not, or as the bare number the registry names a seat by.
+    for subject in ["The crate", "The shipped crate", "Seat 270", "270"] {
+        let text = format!("`half_up` is a mode. {subject} sends a tie away from zero.");
+        assert!(found(&text).is_empty(), "{text}");
+    }
+    // The control: a code span holding a number is a value the mode acts on,
+    // and a noun that is not a subject of its own leaves the clause to the mode.
+    for opening in ["`-2.5`", "A tie", "-2.5"] {
+        let text = format!("`half_up` is a mode. {opening} goes away from zero.");
+        assert_eq!(found(&text), ["away from zero"], "{text}");
+    }
 }
 
 #[test]
@@ -385,6 +392,22 @@ fn every_pronoun_opening_a_segment_binds_the_reading_to_the_rule_standing_last()
                 format!("Next to `HalfEven` stands `half_up`, {c}{p} sends a tie away from zero.");
             assert_eq!(found(&mode_last), ["away from zero"], "{mode_last}");
         }
+    }
+}
+
+#[test]
+fn a_pronoun_opening_a_segment_binds_past_a_rule_the_clause_denies_the_mode_is() {
+    // Within one clause the pronoun is about the mode where the rule standing
+    // last is one the clause says the mode differs from. Across a full stop the
+    // rule standing last takes it, as `every_other_name_defeats_the_carry` says.
+    for n in plain_names() {
+        let denied = format!("`half_up` differs from `{n}`, and it sends a tie away from zero.");
+        assert_eq!(found(&denied), ["away from zero"], "{denied}");
+        // The control: the same rule standing last and not denied takes it.
+        let beside = format!("`half_up` is next to `{n}`, and it sends a tie away from zero.");
+        assert!(found(&beside).is_empty(), "{beside}");
+        let stop = format!("`half_up` differs from `{n}`. It sends a tie away from zero.");
+        assert!(found(&stop).is_empty(), "{stop}");
     }
 }
 
