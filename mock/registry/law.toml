@@ -381,8 +381,9 @@ fails = [
   "operation: operations {add, mul}",
 ]
 witness = "Signed saturation holds the adaptation laws and fails coherence at 476 chain-divergent triples; the opposite-bound mutant holds neither, at 897."
+evidence = ["the_two_law_roles_of_a_reduction_are_independent"]
 topic = "the_format"
-note = "Coherence is one of two independent law roles: the adaptation laws face the source and are what error transport and order transport consume, coherence faces the target and decides whether the member computes exactly in an induced algebra. All four combinations of the two roles are inhabited, which is why neither family subsumes the other and why expelling wrapping while retaining saturation has no criterion that does not empty the adaptation slot. The width entry is the instrument's own: `56_probes/q1_two_law_families.rs` declares its ranges as `LO = -8, HI = 7` and `ULO = 0, UHI = 15` at the top of the file, which is four bits in both sign domains, and it happens to agree with the cube. The consolidation states no width for it, so a reader working from the consolidation alone has nothing."
+note = "Coherence is one of two independent law roles: the adaptation laws face the source and are what error transport and order transport consume, coherence faces the target and decides whether the member computes exactly in an induced algebra. All four combinations of the two roles are inhabited, which is why neither family subsumes the other and why expelling wrapping while retaining saturation has no criterion that does not empty the adaptation slot. The width entry is the instrument's own: `56_probes/q1_two_law_families.rs` declares its ranges as `LO = -8, HI = 7` and `ULO = 0, UHI = 15` at the top of the file, which is four bits in both sign domains, and it happens to agree with the cube. The consolidation states no width for it, so a reader working from the consolidation alone has nothing. The witness figures are that instrument's, its output's first and fourth rows, and the evidence edge names its probe row; what the edge does not cover is in the gap."
 gap = "The unsigned add-only saturating case over a nonnegative window holds both roles and sits on neither list here, because the coherence check runs over an ambient window of exact values and that window is what separates it. It is `law::coherence_of_unsigned_saturating_addition_holds_where_the_ambient_domain_is_non_negative`, stated over `dimension::ambient_domain`. The holding entries for unsigned wrapping and for unsigned saturating multiplication are not what `probe::the_two_law_roles_of_a_reduction_are_independent` measured, which ran wrapping at signed and the unsigned clamp for addition alone, and no row here says which instrument they rest on."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::219",
@@ -399,18 +400,22 @@ holds = [
   "fraction_width: F = 0",
   "signedness: signedness = unsigned",
   "overflow_policy: overflow policy = saturate",
-  "ambient_domain: ambient domain = the integers in 0..=64",
+  "ambient_domain: ambient domain = the non-negative integers: swept, every pair in 0..=64, past the representable 0..=15 on both operands",
   "operation: operation = add",
   "arity: arity = 2",
+  "threads: threads = 1",
+  "target_features: target features = host default",
 ]
 fails = [
   "total_width: W = 4",
   "fraction_width: F = 0",
   "signedness: signedness = unsigned",
   "overflow_policy: overflow policy = saturate",
-  "ambient_domain: ambient domain = the integers in -64..=64",
+  "ambient_domain: ambient domain = the integers: swept, every pair in -64..=64",
   "operation: operation = add",
   "arity: arity = 2",
+  "threads: threads = 1",
+  "target_features: target features = host default",
 ]
 witness = "`a = -1, b = 1` on the clamp to `0..=15` the instrument defines: `clamp(a + b) = 0` and `clamp(clamp(a) + clamp(b)) = clamp(0 + 1) = 1`. Computed from the committed definition rather than printed by the run, which reports the verdict and no instance."
 evidence = ["the_two_law_roles_of_a_reduction_are_independent"]
@@ -427,8 +432,15 @@ it is written on `ambient_domain` rather than on `operand_window`. The second \
 axis is declared as a sub-range of the format's representable set, and every \
 operand an unsigned format can represent is already non-negative, so on that \
 axis the two arms would read as one value and the failing one could not be \
-written at all. The ambient windows are written as swept, finite, rather than \
-as the non-negative integers the structural reason covers.
+written at all. The domains are named as the axis's grammar names a domain, the \
+non-negative integers against the integers, and the windows the instrument \
+swept are their warrant clauses. Past the holding window the result rests on \
+the one-sided-clamp argument; the failing arm needs only the one window, since \
+a failure is established by a pair.
+
+The instrument is single-threaded integer arithmetic built with `rustc -O` at \
+the pin its run record names, so the thread count and the target features are \
+the ones it fixes.
 """
 gap = "Addition only, at one width. Multiplication under the same one-sided clamp is not measured by the instrument, and the reach of the result past `W = 4` rests on the one-sided-clamp argument rather than on a sweep."
 provenance = [

@@ -1740,9 +1740,10 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::149_probes::y4_one_question_not_three.rs::1",
   "panel::202608072330_the-numeral-canon-panel::149_probes::y4_out.txt::1",
 ]
-control = "Three, stated in the header before the run with predictions W1 to W4. The mutation arm C1, a reduction folding an out-of-range value back by complementing, must fail the congruence test and show a nonzero fusion difference and a visible accumulator in every cell, including the ones where wrapping and saturating are zero, and it does: 2096 and 1434 fusion differences, 1772 and 896 visible. The reach arm C2 counts sequences whose running sum leaves the declared range, 1712 to 3280 per cell, so the zeros are not vacuous. C3 sweeps the congruence test outside the declared range where the other two tests never go, so the three are not one computation under three names."
+control = "Three, stated in the header before the run with predictions W1 to W4. The mutation arm C1, a reduction folding an out-of-range value back by complementing, must fail the congruence test and show a nonzero fusion difference and a visible accumulator in every cell, including the ones where wrapping and saturating are zero, and it does: 2096 and 1434 fusion differences, 1772 and 896 visible. The reach arm C2 counts sequences whose running sum leaves the declared range, 1712 to 3280 per cell, so the zeros are not vacuous. C3 sweeps the congruence test outside the declared range where the other two tests never go, so the three are not one computation under three names. The controls are printed and not asserted: the file sets no exit status on a control that does not fire, so the standing rests on reading the committed output, which shows each one firing."
+defect = "The run records no toolchain. The header's run line is `rustc -O` with no version, and neither the file nor its output pins or prints the compiler, so the figures are tied to no toolchain and a rerun cannot be matched to this one. Found on the second read of the rows that cite it."
 standing = "sound"
-note = "Fusion is measured at F = 1 only and the accumulator at F = 0 only, so the source's `F in {0, 1}` is the union of two arms rather than a grid both ran over. The toolchain is not recorded in the file or its output."
+note = "Fusion is measured at F = 1 only and the accumulator at F = 0 only, so the source's `F in {0, 1}` is the union of two arms rather than a grid both ran over."
 keywords = ["congruence", "reduction", "fusion", "accumulator", "relocation", "one question", "mutation control", "saturating", "wrapping", "multiply-add", "fold"]
 
 [[probe]]
@@ -1752,7 +1753,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::56_probes::q1_two_law_families.rs::1",
   "panel::202608072330_the-numeral-canon-panel::56_probes::q1_output.txt::1",
 ]
-control = "By construction and asserted in the file: every checker must report false on at least one row, monotone and nearest on wrapping and on the mutant, coherence on signed saturation and on the mutant, so four distinct row profiles show each checker firing both ways. The unsigned clamp over the signed window must lose coherence, and it does. The run exits nonzero if any assertion fails, and the output ends `Q1 WORKS`."
+control = "By construction and asserted in the file: three checkers must each report false on at least one row, monotone and nearest on wrapping and on the mutant, coherence on signed saturation and on the mutant, so the four row profiles show those three firing both ways. The retraction checker is true on all four rows and is not one of the controls. The unsigned clamp over the signed window must lose coherence, and it does. The run exits nonzero if any assertion fails, and the output ends `Q1 WORKS`."
 standing = "sound"
 note = "Coherence is tested over pairs from the ambient window, which reaches past the representable set, and chain divergence over triples from the representable set. Unsigned saturating multiplication and unsigned wrapping are not measured here."
 keywords = ["coherence", "adaptation laws", "law roles", "homomorphism", "saturation", "wrapping", "mutant", "ambient window", "non-negative", "four cells"]
@@ -1764,7 +1765,20 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::122_probes::u3_saturation_has_a_deferral_arm_and_i_missed_it.py::1",
   "panel::202608072330_the-numeral-canon-panel::122_probes::u3_output.txt::1",
 ]
-control = "C1: the wrapping rows must be identical on both domains, and they are, zero on every operation, so the saturating rows moving is the map and not the domain's size. The deferral arms carry wrapping beside saturation on the same terms and a signed container whose declarations reach below zero with no subtraction, where the deferral fails on 656 of 968 and 4416 of 5840 cells, so subtraction-freeness suffices only where the reachable set keeps one sign."
+control = "C1: the wrapping rows must be identical on both domains, and they are, zero on every operation, so the saturating rows moving is the map and not the domain's size. The deferral arms carry wrapping beside saturation on the same terms and a signed container whose declarations reach below zero with no subtraction, where the deferral fails on 656 of 968 and 4416 of 5840 cells, so subtraction-freeness suffices only where the reachable set keeps one sign. The controls are printed and not asserted, so the standing rests on reading the committed output, which shows each one firing."
+defect = "The output labels its two domains `0..45` and `-48..48`. The code computes them as `0..=hi+span+1` and `lo-span..=hi+span+1` with `hi = 15`, `lo = 0` and `span = 16`, which is `0..=32` and `-16..=32`, and the pair counts agree with the code and not with the labels: 1089 is 33 squared and 2401 is 49 squared. The labels are hard-coded strings beside the computed bounds and nothing ties the two. Caught by counting the pairs against the bounds on the first read of the rows that cite it. The counts are right and only the labels are wrong, so the figures stand, and the domains in this row are the computed ones."
 standing = "sound"
-note = "Built because an earlier instrument's ambient range started below zero even for an unsigned primitive, so its saturating column had measured a straddling domain and read as the map failing everywhere.\n\nThe output labels its two domains `0..45` and `-48..48`. The code computes them as `0..=hi+span+1` and `lo-span..=hi+span+1` with `hi = 15`, `lo = 0` and `span = 16`, which is `0..=32` and `-16..=32`, and the pair counts agree with the code and not with the labels: 1089 is 33 squared and 2401 is 49 squared. The domains here are the computed ones."
+note = "Built because an earlier instrument's ambient range started below zero even for an unsigned primitive, so its saturating column had measured a straddling domain and read as the map failing everywhere."
 keywords = ["saturation", "homomorphism", "ambient domain", "one-signed", "straddling", "deferral", "discharge check", "subtraction", "wrapping", "licence"]
+
+[[probe]]
+id = "every_deterministic_mode_is_monotone_and_none_is_additive_off_the_grid"
+establishes = "With exact integer arithmetic at sixteen subunits per quantum over the window of -125 to +125 quanta, which is closed under negation, floor, ceil, toward_zero, half_up and half_even are each monotone, and each fails additivity off the grid: 6516, 7344, 7143, 3770 and 3802 of 14884 sampled pairs on the window, and 1665, 1800, 1665, 912 and 920 on its non-negative restriction. None fails on pairs of grid points. One fraction width and one window, with nothing varying the width or the step."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::125_probes::p1_monotone_and_never_additive.py::1",
+  "panel::202608072330_the-numeral-canon-panel::125_probes::p1_output.txt::1",
+]
+control = "Stated in the header before the run. A parity-broken mode had to be reported not monotone, and it is, at 1750 adjacent inversions. Every real mode had to show additivity violations on both the window and its non-negative restriction, and none on grid pairs, which is what keeps the additivity checker from being one that fails everything. The controls are printed and not asserted, so the standing rests on reading the committed output, which shows each one firing."
+standing = "sound"
+note = "It checks instances of the divisibility theorem and of monotonicity and is not where either rests. It runs at one step, so it cannot discharge a `construction` marker on any width or fraction-width entry of the rows that cite it."
+keywords = ["monotone", "additive", "additivity", "rounding", "quantisation", "off the grid", "divisibility", "parity control", "one-signed", "closed under negation"]

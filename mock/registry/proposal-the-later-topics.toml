@@ -238,7 +238,7 @@ kind = "finding"
 sentence_kind = "measured"
 standing = "one_expert"
 topic = "the_realisation_map"
-says = "On an ambient domain of one sign the saturating realisation map is a homomorphism for addition and for multiplication and not for subtraction; on a domain straddling zero it is a homomorphism for none of the three. The wrapping map is a homomorphism for all three on both. So the saturating map's algebraic character is a function of the ambient domain and the wrapping map's is not, at the width measured."
+says = "On the non-negative integers the saturating realisation map is a homomorphism for addition and for multiplication and not for subtraction; on a domain straddling zero it is a homomorphism for none of the three. The wrapping map is a homomorphism for all three on both. So the saturating map's algebraic character is a function of the ambient domain and the wrapping map's is not, at the width measured."
 because = "Reducing both operands before the operation and reducing the exact result after it were compared on every pair of the domain. Under saturation, subtraction fails on 391 of 1089 pairs of the non-negative domain and addition and multiplication on none; on the straddling domain addition fails on 720, subtraction on 751 and multiplication on 256 of 2401. Under wrapping every column on both domains is zero, which is the control: the domains differ in size as well as sign, and the wrapping rows not moving shows the saturating rows move with the map rather than with the sample."
 predicate = [
   "total_width: W = 4",
@@ -249,9 +249,9 @@ predicate = [
   "radix: radix = 2",
   "operation: operation in {add, sub, mul}",
   "arity: arity = 2",
-  "ambient_domain: ambient domain in {the integers in 0..=32, the integers in -16..=32}",
+  "ambient_domain: ambient domain in {the non-negative integers, the integers}: swept, every pair in 0..=32 and every pair in -16..=32",
   "threads: threads = 1",
-  "target_features: target features any, by construction, the instrument is exact integer arithmetic",
+  "target_features: target features any",
 ]
 evidence = ["saturation_has_a_deferral_arm_on_a_one_signed_domain"]
 note = """
@@ -266,8 +266,19 @@ The domains are the ones the instrument computes, `0..=32` and `-16..=32`. \
 Its output labels them `0..45` and `-48..48`, and the pair counts agree with \
 the code and not with the labels; `probe::saturation_has_a_deferral_arm_on_a_one_signed_domain` \
 says so.
+
+The domain entry names the domains and puts the windows that ran in its \
+warrant clause. On the non-negative integers the verdict carries past the \
+window, since every value above the top clamps to it whichever comes first, \
+and the straddling verdict is a failure, which one window establishes.
+
+The target-features entry carries no warrant token. The instrument is exact \
+integer arithmetic, which is an argument that no feature can enter, but \
+`construction` obliges an instrument that varied the axis and nothing here \
+varied it, so under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` \
+the entry claims the region with no warrant.
 """
-gap = "Signed formats are not run on this table, and neither is any width but 4 nor any fraction width but 0. The deferral half of the same instrument, at W in {3, 4} over terms of arity 2 and 3, is stated over declarations and a discharge check that no axis declares, and is not in this row."
+gap = "Signed formats are not run on this table, and neither is any width but 4 nor any fraction width but 0. Of the domain shapes, a non-positive domain and a domain closed under negation, which is the shape the source clause names, are not run: the straddling window `-16..=32` is not closed under negation. The deferral half of the same instrument, at W in {3, 4} over terms of arity 2 and 3, is stated over declarations and a discharge check that no axis declares, and is not in this row."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::397",
   "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::609",
@@ -313,12 +324,13 @@ predicate = [
   "fraction_width: F any",
   "signedness: signedness any",
   "radix: radix any",
-  "rounding: rounding in {floor, ceil, toward_zero, half_up, half_even}",
+  "rounding: rounding in {floor, ceil, toward_zero, half_up, half_even}: swept, every member the row names, on a negation-closed window and its non-negative half",
   "operation: operation = add",
   "ambient_domain: ambient domain in {the rationals, the non-negative rationals}",
   "threads: threads any",
   "target_features: target features any",
 ]
+evidence = ["every_deterministic_mode_is_monotone_and_none_is_additive_off_the_grid"]
 note = """
 A theorem, so its region is where the proof's premises hold rather than where \
 anything ran. The proof uses only that the grid is the multiples of one step, \
@@ -331,11 +343,22 @@ The proof needs no range: it is over the unbounded grid, and the factoring in \
 the quantisation before the range policy. A finite format meets the smallest \
 case wherever its step `q` is representable.
 
-The committed sweep checks the five modes on a window of 250 grid steps at a \
-sixteenth of a step, every mode failing additivity on the window and on its \
-non-negative half and none failing on the grid, at `threads = 1`. It is a \
-check of the theorem's instances, not what the row rests on, and no `probe` \
-row holds it.
+The committed sweep, `probe::every_deterministic_mode_is_monotone_and_none_is_additive_off_the_grid`, \
+checks the five modes on a window of 250 grid steps at a sixteenth of a step, \
+every mode failing additivity on the window and on its non-negative half and \
+none failing on the grid, at `threads = 1`. It is a check of the theorem's \
+instances, not what the row rests on, and the rounding entry's `swept` is its.
+
+`ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked` asks a \
+proof to carry a marker that its argument is width-free, and \
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` spells that \
+marker `construction` and obliges the row's evidence to name an instrument that \
+varied the axis and found no movement. The sweep runs at one step and one \
+window and varies no width, fraction width, radix or signedness, and nothing \
+varies threads or target features, so none of those six entries can carry the \
+marker and each claims its region with no warrant. The marker is owed on them, \
+and what discharges it for the fraction width is the same sweep run at several \
+steps; the second ruling's own note names this price.
 """
 gap = "`stochastic` is outside the region: it is not deterministic and the proof's map is a function. Whether it is additive in expectation is a different property and is not stated here."
 provenance = [
@@ -554,17 +577,17 @@ says = "Relocating a reduction is free exactly where the reduction is a congruen
 because = "The test was stated before the run with its predictions, and a mutation arm makes it a finding rather than an observation: a reduction folding out-of-range values back by complementing fails the congruence test in every cell and shows a fusion difference and a visible accumulator exactly where wrapping and saturating show none, so the congruence is what drives the verdict and not something incidental to the cells. Reach is counted per cell, so the zeros are not vacuous."
 predicate = [
   "total_width: W = 4",
-  "fraction_width: F in {0, 1}",
+  "fraction_width: F in {0, 1}: swept, `F = 1` in the multiply-add and `F = 0` in the fold",
   "signedness: signedness in {unsigned, signed}",
   "overflow_policy: overflow policy in {wrap, saturating}",
   "rounding: rounding = floor",
-  "accumulator_width: accumulator width in {4, 6}",
-  "operation: operations {multiply-add, sum fold}",
+  "accumulator_width: accumulator width in {4, 6}: swept, both in the fold and the declared 4 alone in the multiply-add",
+  "operation: operation in {multiply-add, sum fold}",
   "arity: arity = 3",
-  "chain_length: chain length in {1, 2, 3}",
-  "container: container width = declared width",
+  "chain_length: chain length in {2, 3}: swept, 2 in the multiply-add and 3 in the fold",
+  "container: container = an i128 model reduced to the declared width at every step",
   "threads: threads = 1",
-  "target_features: target features = host",
+  "target_features: target features = host default",
 ]
 law = [
   "the_fused_and_the_stepwise_multiply_add_denote_one_function",
@@ -581,17 +604,20 @@ does not touch, since it holds the rounding fixed in both arms. That half is \
 `W = 6`, and the two regions do not meet, so the one sentence is these two rows \
 read together rather than a row of its own.
 
-The predicate is the source's, transcribed onto the declared axes, with two \
-changes. `fold length = 3` is dropped because the fold is the chain-length-three \
-case the chain entry already names. `rounding = floor` is added from the \
+The predicate is the source's transcribed onto the declared axes and narrowed \
+to what ran. The source's chain lengths were 1 to 3 and nothing runs a chain \
+of one: the multiply-add is two operations and the fold three, so the entry is \
+`{2, 3}`, and the source's `fold length = 3` is the fold's own chain length. `rounding = floor` is added from the \
 instrument, because the source names no rounding and an absent axis claims \
 nothing wherever rounding exists: the product is narrowed by an arithmetic shift \
 at `F = 1`, which is floor, and at `F = 0` floor is the identity on the integers \
 the fold sums. The accumulator widths are the declared width and two bits wider.
 
-The two arms sit at different fraction widths: fusion at `F = 1` and the \
-accumulator at `F = 0`. The predicate is their union as the source writes it, \
-and a reader gating on a cell inside it should check which arm ran there.
+The two arms sit at different cells on three axes, fraction width, \
+accumulator width and chain length, and the region is their union rather than \
+their product. Each of those entries says in its warrant clause which arm ran \
+at which value; a combination no clause names, the multiply-add at accumulator \
+width 6 or the fold at `F = 1`, did not run.
 """
 gap = "One expert, and one instrument at one width. The rounding half's region is `W = 6` and this half's is `W = 4`, so nothing yet measures the whole sentence at one cell."
 provenance = [
