@@ -103,7 +103,8 @@ answerable.
 MATLAB `fi` defaults are documented and the crate already carries both halves of
 them: `Floor` for rounding and `Saturate` for overflow. Both re-export cleanly, so
 a MATLAB parity default is available today as `Adapt<Floor, Saturate>` with
-nothing new written.
+nothing new written, and the fifth arm of the sketch named in part b shows the
+value tier admits it: `Signature<Fi<16, 8>, Adapt<Floor, Saturate>>` passes `Sole`.
 
 IEEE 754's default rounding is round-to-nearest-ties-to-even, which is arvo's
 `half_even`, and it is in the vocabulary. Its overflow behaviour is to infinity

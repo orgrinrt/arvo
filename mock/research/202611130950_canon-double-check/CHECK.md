@@ -20,7 +20,7 @@ the permitted form for a tree that moves under a git sha. Where a finding says
 the record is silent, that is a claim about the registry, which was read whole,
 and not about the panel corpora, which were not.
 
-The last section says which of the proposed edits were applied here and which
+Section 7 says which of the proposed edits were applied here and which
 were only written down. The rule this job works under is that nothing may be
 applied that changes a `ratified` row or any row's standing, so the ones that
 touch a ratified row's own text are proposals and stay proposals.
@@ -163,7 +163,8 @@ or structural lists in that file, so it is named here and left.
 
 ## 2. Ratified rows that disagree with each other
 
-One pair, and it is real rather than verbal.
+None. One pair reads as a contradiction on its `says` fields alone, and the
+record resolves it in a field a reader of the first row never reaches.
 
 `ruling::never_a_runtime_check_and_one_lowered_path` (ratified, his I15) says:
 "Never any runtime checks, ever: invalids are caught at compile time and unused
@@ -176,23 +177,27 @@ typestate, on debug builds, in every strategy rather than only where a native
 primitive is being imitated."
 
 A debug-build panic on overflow is a runtime check by any ordinary reading of the
-phrase, so the second row describes exactly the thing the first forbids, in every
-strategy. The two are reconcilable and the reconciliation is not written down
-anywhere in the registry: either the panic is the blessed exception the first row
-reserves, which is the reading the tree takes, or "runtime check" in the first
-row means a check on a release path and the debug assertion is outside its scope,
-which is the reading the first row's own note gestures at when it separates
-"runtime code exists" from "runtime validation does not".
+phrase, so the second row describes the thing the first forbids. The second row
+answers that itself. Its `because` reads: "The build bound is why it does not
+undermine the never-a-runtime-check intent: a shipped program still contains no
+runtime validation." Its `note` records that the option he took was the one
+worded "the intent bends here, a debug-only panic being the one acceptable
+exception", and his `quote` opens "Option 3 but strategy bound". So the reading
+that governs is written down, in his name: the first row is about what a shipped
+program contains, and the debug panic is the exception he took.
 
-Both readings are his, both are available, and a reader who lands on one row
-without the other gets a wrong answer about what arvo may ship. The repair is a
-`note` on each naming the other and saying which reading governs, which is
-additive and changes neither row's claim. Picking the reading is not this job's
-and not a panel's either: it is a question about what two of his own ratified
-sentences mean together, and it is listed in the questions for him at the end of
-this file.
+What is missing is one direction of the pointer. The first row names neither the
+second row nor the build bound, so a reader who lands on I15 alone gets the
+absolute reading, and the generated agent surface repeats it in that form ("no
+runtime checks, ever"). The repair is a `note` on the first row naming the
+second, which is additive and changes neither claim, and it is proposed in
+section 7 because the row is ratified.
 
-Nothing else contradicts. The nearest candidates resolve on reading.
+An earlier draft of this section, attached to this job's first `working` status,
+called the pair unreconciled and listed it as owed by op. That was wrong, and the
+error was reading `says` against `says` without the `because` under it.
+
+The other near candidates resolve the same way on reading.
 `ruling::each_preset_names_a_stated_intent` and
 `ruling::the_strategy_intents_are_not_clear_cut` are both ratified and say
 opposite-sounding things about how crisp a preset's intent is, and the second
@@ -356,8 +361,7 @@ first than their subject matter suggests.
 
 All 13 of the questions whose decider is `op` carry either an answering ruling or
 an `answered` field. Nothing the registry reserves for him is sitting unanswered
-in it. What is owed by him now is in the last section of this file, and it comes
-from his November words rather than from the question rows.
+in it. Section 8 says what that leaves owed by him, which is nothing now.
 
 ## 5. One-expert proposals against a ratified row or against his words
 
@@ -462,17 +466,22 @@ search over rows, which is what every brief already assumes exists.
 
 ## 7. The edits, exactly
 
-Applied here, both additive, neither touching a ratified row or any standing.
+Applied on this branch, all additive or comment-only, none touching a ratified
+row or any standing.
 
 One new `ruling` row carrying his 13 November words on the overflow default,
-`the_overflow_default_is_a_generic_with_a_default_and_overridable_per_case`, at
-`rung = "stated"`, topic `overflow_policy`, with a `corrects` edge to
-`ruling::wrap_or_clamp_stays_open_and_both_get_priced` and an `answers` edge to
-`question::does_warm_wrap_or_clamp`.
+`a_shipped_overflow_default_is_a_generic_overridable_per_case`, `kind = "intent"`
+at `rung = "stated"`, topic `overflow_policy`. It carries no `answers` edge,
+because it narrows `question::does_warm_wrap_or_clamp` without settling it, and
+an edge would make a live question read as answered.
 
 One new `ruling` row carrying his 13 November words on the old families,
-`every_family_of_the_old_arvo_returns_and_the_shape_is_open`, at
-`rung = "stated"`, topic `arvo_identity`.
+`every_family_of_the_old_arvo_returns_and_the_shape_is_open`, `kind = "intent"`
+at `rung = "stated"`, topic `arvo_identity`.
+
+Three header comments: the paragraph in `ruling.toml` about unset edge fields
+rewritten to say which carry edges now, and the counts dropped from the two
+comments in `dimension.toml` and the one in `topic.toml`.
 
 Proposed and not applied, in the registry's own shapes.
 
@@ -503,39 +512,66 @@ note already specifies. Likewise `quantise_then_reduce_commutes` against
 `the_fused_and_the_stepwise_multiply_add_denote_one_function` against
 `dimension::accumulator_width`.
 
-On `ruling::never_a_runtime_check_and_one_lowered_path` and
-`ruling::the_overflow_panic_is_permitted_and_bounded`, a `note` on each naming
-the other and stating which reading governs, once he or the panel says which.
+On `ruling::never_a_runtime_check_and_one_lowered_path`, a `note` naming
+`ruling::the_overflow_panic_is_permitted_and_bounded` and the build bound its
+`because` states, so the absolute reading is not what a reader of this row alone
+takes away.
+
+On `ruling::the_trait_contract_structure_is_a_primary_paradigm`, amend the note:
+the lint and the contracts crates it argues from are gone, so the reason it gives
+for not promoting the row no longer exists.
 
 On `proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` and
 `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`,
 a `note` on each naming the other and the axis they disagree on.
 
-In `ruling.toml`, rewrite the header paragraph about unset edge fields. In
-`dimension.toml` and `topic.toml`, drop the counts from the two header comments
-rather than correcting them.
+Two new `proposal` rows in `proposal-the-value-stance.toml`, on the model of
+`the_old_comb_crate_answers_to_a_stated_need`, each with a `supersedes` edge.
+One superseding `the_old_bit_contracts_crate_is_gone`: what that crate carried,
+the contracts a consumer bounds bit-level generic code on, returns, and which
+crate holds them under which name is open. One superseding
+`the_old_numeric_contracts_crate_is_gone`: the arithmetic contracts return as
+arvo's own, and none is re-homed in a consumer. Both rest on
+`ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` and on
+hilavitkutin's own imports of those names, counted in `PLAN.md`. They are
+proposed rather than applied because a `supersedes` edge moves the superseded
+row's standing in everything but the field.
 
 ## 8. What is owed by op
 
-Three things, each stated with its options because an answer with no record of
-what it chose among is worth little later.
+Nothing now, and one thing later.
 
-Whether a debug-build overflow panic is the exception
-`ruling::never_a_runtime_check_and_one_lowered_path` reserves for a lead
-designer's blessing, or whether "runtime check" in that ruling means a release
-path and the debug assertion was never in its scope. Options: it is the blessed
-exception, recorded as such on both rows; it was never in scope, recorded as
-such; or the panel derives it from his two sentences without him. This is the
-only place in the canon where two of his own ratified rows say opposite things.
+The first draft of this file listed three. Each was checked again against his
+own words before being handed to him, and none survives as his.
 
-Which parity standard the shipped default follows, since he said the default
-"perhaps following one of the parity standards like matlab or whatever would be
-the sensible default to use". Options: MATLAB `fi` defaults, which the tree
-already models and which name `Floor` and `Saturate`; Rust's own integer
-behaviour, which `ruling::warms_objective_is_the_intuitive_best_choice` calls the
-baseline for intuition and which is wrap in release; or no shipped default until
-a consumer's port says which it wants.
+The runtime-check pair is reconciled in the record, as section 2 now says.
 
-Whether the five live "does not return" rows are superseded wholesale by his
-words or walked one at a time, now that the distinction in section 5 is on the
-table: three of them agree with him already, and two do not.
+Which parity standard a shipped default follows is the work's to find. His words
+are "perhaps following one of the parity standards like matlab or whatever would
+be the sensible default to use", which states the intent, a default that follows
+a parity standard, and hands the choice of which to whoever can tell what is
+sensible. The panel has what it needs: MATLAB is the only standard in scope that
+supplies both halves of a default today, and the sketch shows the value tier
+admits it. The standing question it sits under,
+`question::does_warm_wrap_or_clamp`, has `panel` as its decider.
+
+What happens to the five live refusals is not a choice either. He answered that
+the families return in function and feature, and the two rows that say otherwise
+are superseded on that answer by whoever may write the superseding rows, which
+section 7 proposes.
+
+The one thing that is his is the public name, and he has already said when: on
+13 November, among a thin crate named `arvo` that re-exports, no facade with
+consumers importing the inner crates, and deciding at the port with the import
+list in hand, he answered "Decide at the port". `PLAN.md` carries it on the step
+that ports hilavitkutin, with the import list counted.
+
+The searches behind "nothing now". `cargo mock unasked-questions` is this repo's
+own tool for the question and reports: "13 of 110 questions name op, and 13 of
+those a ruling has already answered. Nothing is waiting on him. Every question
+that names him has an answering ruling." Its control is the count itself, which
+`grep -c 'decider = "op"' mock/registry/question.toml` reproduces at 13.
+`cargo mock awaiting-a-ruling` lists the 61 rows that are his direction recorded
+as an ack, the two added here among them, which is the other half: direction of
+his that no ruling has yet stamped is the panel's to carry, by
+`ruling::the_panel_finishes_the_canon_without_him`.

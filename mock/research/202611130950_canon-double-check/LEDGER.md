@@ -95,6 +95,11 @@ for unstable features and for an IEEE 754 name across every crate. Those reading
 are quoted in `CHECK.md` and `ANSWERS.md` at `file:line`, which is the permitted
 form for source.
 
+Hilavitkutin was read at `c42d707` for two things only: the revision of arvo its
+`mock/Cargo.toml` pins, `1b2796e9`, and a count of the old arvo names its `.rs`
+files under `mock/crates` still import, which `PLAN.md` quotes. Occurrences were
+counted and no use site was read.
+
 ## The corpus around the canon
 
 Transcribed in batches. Each entry in a batch ledger carries the file's date, who
