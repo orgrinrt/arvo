@@ -54,6 +54,7 @@ impl<const P: u32, const EMAX: u32> Quantum for ExponentRange<P, EMAX> {
 pub struct Significand<A, const P: u32>(PhantomData<A>);
 
 /// `radix^p - 1`, or the slot index's top where the power passes it.
+#[inline]
 const fn largest_significand(radix: u32, p: u32) -> i128 {
     let mut power: i128 = 1;
     let mut taken = 0;
@@ -68,6 +69,7 @@ const fn largest_significand(radix: u32, p: u32) -> i128 {
 }
 
 /// The bits a significand bound needs, with one more for the sign.
+#[inline]
 const fn signed_width_of(largest: i128) -> Width {
     Width::bits(i128::BITS - largest.leading_zeros() + 1)
 }

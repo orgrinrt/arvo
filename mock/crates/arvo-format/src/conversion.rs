@@ -121,6 +121,7 @@ struct Step {
 
 /// The step's constants for the pair, or nothing where a phase does not denote
 /// or `D` is past `2^128 - 1`.
+#[inline]
 const fn step<F: Format, T: Format>() -> Maybe<Step> {
     let (Maybe::Is(source), Maybe::Is(target)) = (reduced_phase::<F>(), reduced_phase::<T>())
     else {
@@ -166,6 +167,7 @@ const fn step<F: Format, T: Format>() -> Maybe<Step> {
 /// then its floor over `D`. A numerator that leaves the limbs, or a floor that
 /// leaves the index, is past it on the sign of `n_F + a d_F`; for a member the
 /// obligation has ruled both out.
+#[inline]
 const fn placed(step: Step, a: i128) -> Placed {
     // Under `2^191` in magnitude for any slot, so it is formed; the arm is the
     // answer the step gives if it were not.
@@ -195,6 +197,7 @@ const fn placed(step: Step, a: i128) -> Placed {
 ///
 /// The position is affine and increasing in the slot, so the range's two ends
 /// decide it. Nothing where `D` does not fit.
+#[inline]
 const fn conversion_is_carried<F: Format, T: Format>() -> Bool {
     let Maybe::Is(step) = Convertible::<F, T>::STEP else {
         return Bool::FALSE;
@@ -215,6 +218,7 @@ const fn conversion_is_carried<F: Format, T: Format>() -> Bool {
 /// Forces the conversion obligation, so a pair the conversion does not admit
 /// stops the build here, at check time when the call is bound in a `const` item.
 #[must_use]
+#[inline]
 pub const fn converted_position<F: Format, T: Format>(a: Slot) -> Exact {
     let () = Convertible::<F, T>::ADMITTED;
     match Convertible::<F, T>::STEP {
@@ -230,6 +234,7 @@ pub const fn converted_position<F: Format, T: Format>(a: Slot) -> Exact {
 /// passed through for the one mode that reads it. Total over every slot, with no
 /// check and no panic.
 #[must_use]
+#[inline]
 pub const fn convert<F: Format, S: DeclaredSignature>(a: Slot, dither: Dither) -> Slot {
     adapt::<S>(converted_position::<F, S::Format>(a), dither)
 }
@@ -240,6 +245,7 @@ pub const fn convert<F: Format, S: DeclaredSignature>(a: Slot, dither: Dither) -
 /// The obligation's own verdicts folded, so a test can hold a pair the
 /// conversion does not admit and report on it rather than stop the build.
 #[must_use]
+#[inline]
 pub const fn is_convertible<F: Format, T: Format>() -> Bool {
     all(conditions::<F, T>())
 }
@@ -250,6 +256,7 @@ pub const fn is_convertible<F: Format, T: Format>() -> Bool {
 /// The one place they are stated, read by the obligation and by
 /// `is_convertible`. The last two read the step and answer false where a phase
 /// does not denote.
+#[inline]
 const fn conditions<F: Format, T: Format>() -> [Bool; 4] {
     [
         Bool::of(F::PHASE.denotes().get() && T::PHASE.denotes().get()),

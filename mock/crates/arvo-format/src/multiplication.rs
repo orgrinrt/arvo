@@ -127,6 +127,7 @@ struct Step {
 ///
 /// A zero phase denominator, and a zero radix at a negative exponent, give no
 /// positive `D`, and the radix's own obligation refuses the second.
+#[inline]
 const fn step<F: Format>() -> Maybe<Step> {
     let Maybe::Is(Reduced {
         numerator: n,
@@ -169,6 +170,7 @@ const fn step<F: Format>() -> Maybe<Step> {
 }
 
 /// `n + a d`, one factor of the numerator.
+#[inline]
 const fn factor(step: Step, a: i128) -> Maybe<Wide> {
     match Wide::of(a).times(Wide::of(step.denominator)) {
         Maybe::Is(ad) => ad.plus(Wide::of(step.numerator)),
@@ -182,6 +184,7 @@ const fn factor(step: Step, a: i128) -> Maybe<Wide> {
 /// limbs, then its floor over `D`. A numerator that leaves the limbs, or a floor
 /// that leaves the index, is past it on the position's sign; for two members the
 /// obligation has ruled both out.
+#[inline]
 const fn placed(step: Step, a: i128, b: i128) -> Placed {
     let fa = match factor(step, a) {
         Maybe::Is(f) => f,
@@ -215,6 +218,7 @@ const fn placed(step: Step, a: i128, b: i128) -> Placed {
 /// The position is bilinear in the two slots, so over a box of slots it is
 /// extreme at the four corners, and those decide it. Nothing where the
 /// remainder's denominator does not fit.
+#[inline]
 const fn product_is_carried<F: Format>() -> Bool {
     let Maybe::Is(step) = Multipliable::<F>::STEP else {
         return Bool::FALSE;
@@ -240,6 +244,7 @@ const fn product_is_carried<F: Format>() -> Bool {
 /// Forces the multiplication obligation, so a format the product does not admit
 /// stops the build here, at check time when the call is bound in a `const` item.
 #[must_use]
+#[inline]
 pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Multipliable::<F>::ADMITTED;
     match Multipliable::<F>::STEP {
@@ -255,6 +260,7 @@ pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
 /// through for the one mode that reads it. Total over every pair of slots, with
 /// no check and no panic.
 #[must_use]
+#[inline]
 pub const fn mul<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
     adapt::<S>(product_position::<S::Format>(a, b), dither)
 }
@@ -265,6 +271,7 @@ pub const fn mul<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot
 /// The same four conditions in the same order, so a test can hold a format the
 /// product does not admit and report on it rather than stop the build.
 #[must_use]
+#[inline]
 pub const fn is_multipliable<F: Format>() -> Bool {
     if !F::PHASE.denotes().get() || !is_constant_family::<F::Quantum>().get() {
         return Bool::FALSE;

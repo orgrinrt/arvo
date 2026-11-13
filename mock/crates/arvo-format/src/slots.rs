@@ -52,6 +52,7 @@ impl Slot {
 
     /// A slot at an index.
     #[must_use]
+    #[inline]
     pub const fn at(index: i128) -> Self {
         Self(index)
     }
@@ -61,18 +62,21 @@ impl Slot {
     /// The unwrap door, declared as one. `repr(transparent)` and this accessor are
     /// the whole observation surface.
     #[must_use]
+    #[inline]
     pub const fn index(self) -> i128 {
         self.0
     }
 
     /// Whether this slot is no higher than another.
     #[must_use]
+    #[inline]
     pub const fn is_at_most(self, other: Self) -> Bool {
         Bool::of(self.0 <= other.0)
     }
 
     /// Whether this slot falls between two bounds, inclusive at both ends.
     #[must_use]
+    #[inline]
     pub const fn is_within(self, low: Self, high: Self) -> Bool {
         Bool::of(self.0 >= low.0 && self.0 <= high.0)
     }
@@ -90,6 +94,7 @@ pub struct SlotCount(i128);
 impl SlotCount {
     /// A count of slots.
     #[must_use]
+    #[inline]
     pub const fn of(count: i128) -> Self {
         Self(count)
     }
@@ -98,6 +103,7 @@ impl SlotCount {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn count(self) -> i128 {
         self.0
     }
@@ -240,6 +246,7 @@ pub trait Slots {
 ///
 /// Asked only of a width already known to be at most 64, so the shift below is
 /// defined; both callers establish that first.
+#[inline]
 const fn width_addresses_span(min: Slot, max: Slot, width: Width) -> bool {
     match max.0.checked_sub(min.0) {
         Some(span) => span < (1i128 << width.count()),
@@ -254,6 +261,7 @@ const fn width_addresses_span(min: Slot, max: Slot, width: Width) -> bool {
 /// refuse it. That is what lets the wrong construction live permanently in a test
 /// rather than in a scratch file somebody deletes.
 #[must_use]
+#[inline]
 pub const fn is_admissible<S: Slots>() -> Bool {
     Bool::of(
         S::MIN.index() <= S::MAX.index()
@@ -311,6 +319,7 @@ admit_widths!(
 
 /// Whether a slot index is admitted.
 #[must_use]
+#[inline]
 pub const fn slot_in_range<S: Slots>(slot: Slot) -> Bool {
     let () = S::ADMITTED;
     slot.is_within(S::MIN, S::MAX)
@@ -323,6 +332,7 @@ pub const fn slot_in_range<S: Slots>(slot: Slot) -> Bool {
 /// from this, and it is kept because a cardinality is a real thing to ask a range
 /// for.
 #[must_use]
+#[inline]
 pub const fn slot_count<S: Slots>() -> SlotCount {
     let () = S::ADMITTED;
     SlotCount::of(S::MAX.index() - S::MIN.index() + 1)
@@ -330,6 +340,7 @@ pub const fn slot_count<S: Slots>() -> SlotCount {
 
 /// The width the declaration stated.
 #[must_use]
+#[inline]
 pub const fn declared_slot_width<S: Slots>() -> Width {
     let () = S::ADMITTED;
     S::WIDTH

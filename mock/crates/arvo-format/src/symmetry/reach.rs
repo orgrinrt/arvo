@@ -70,6 +70,7 @@ impl Reach {
     /// The positions an operation reaches, with no translation, off the grid and
     /// with a tie among them.
     #[must_use]
+    #[inline]
     pub const fn of(low: Slot, high: Slot) -> Self {
         let (low, high) = ordered(low, high);
         Self {
@@ -83,6 +84,7 @@ impl Reach {
 
     /// The same reach with the translations an operation applies.
     #[must_use]
+    #[inline]
     pub const fn translated_by(self, low: Slot, high: Slot) -> Self {
         let (low, high) = ordered(low, high);
         Self {
@@ -98,6 +100,7 @@ impl Reach {
     /// of positions that has none leaves it where it was, rather than moving it
     /// off the grid it never left.
     #[must_use]
+    #[inline]
     pub const fn without_ties(self) -> Self {
         let grid = match self.grid {
             Residues::OnGrid => Residues::OnGrid,
@@ -114,6 +117,7 @@ impl Reach {
     /// What an operation declares when its exact positions are whole slots, so
     /// the rounding region is never entered and no mode has anything to read.
     #[must_use]
+    #[inline]
     pub const fn on_grid(self) -> Self {
         Self {
             grid: Residues::OnGrid,
@@ -123,36 +127,42 @@ impl Reach {
 
     /// The lowest exact position, before any translation.
     #[must_use]
+    #[inline]
     pub const fn positions_low(self) -> Slot {
         self.position_low
     }
 
     /// The highest exact position, before any translation.
     #[must_use]
+    #[inline]
     pub const fn positions_high(self) -> Slot {
         self.position_high
     }
 
     /// The lowest translation.
     #[must_use]
+    #[inline]
     pub const fn translations_low(self) -> Slot {
         self.translation_low
     }
 
     /// The highest translation.
     #[must_use]
+    #[inline]
     pub const fn translations_high(self) -> Slot {
         self.translation_high
     }
 
     /// Whether any position is off the grid.
     #[must_use]
+    #[inline]
     pub const fn reaches_off_the_grid(self) -> Bool {
         Bool::of(!matches!(self.grid, Residues::OnGrid))
     }
 
     /// Whether an exactly-half position is among them.
     #[must_use]
+    #[inline]
     pub const fn reaches_a_tie(self) -> Bool {
         Bool::of(matches!(self.grid, Residues::WithTies))
     }
@@ -170,6 +180,7 @@ impl Reach {
     /// conservative reach and a bound that wrapped would answer that the domain
     /// has no negatives.
     #[must_use]
+    #[inline]
     pub const fn lowest_rounded_position(self) -> Slot {
         let shifted = self
             .position_low
@@ -184,6 +195,7 @@ impl Reach {
 
     /// The highest position the rounding region is asked about.
     #[must_use]
+    #[inline]
     pub const fn highest_rounded_position(self) -> Slot {
         let shifted = self
             .position_high
@@ -198,18 +210,21 @@ impl Reach {
 
     /// Whether the rounding region is ever asked about a position below zero.
     #[must_use]
+    #[inline]
     pub const fn reaches_a_negative_position(self) -> Bool {
         Bool::of(self.lowest_rounded_position().index() < 0)
     }
 
     /// Whether a translation can point back down the range.
     #[must_use]
+    #[inline]
     pub const fn reaches_a_negative_translation(self) -> Bool {
         Bool::of(self.translation_low.index() < 0)
     }
 
     /// Whether a translation can point back up it.
     #[must_use]
+    #[inline]
     pub const fn reaches_a_positive_translation(self) -> Bool {
         Bool::of(self.translation_high.index() > 0)
     }
@@ -222,6 +237,7 @@ impl Reach {
     /// excursion sides be derived from the position bounds rather than declared
     /// beside them, and it is a law with a test rather than an assumption.
     #[must_use]
+    #[inline]
     pub const fn reaches_below(self, lowest: Slot) -> Bool {
         Bool::of(self.position_low.index() < lowest.index())
     }
@@ -234,6 +250,7 @@ impl Reach {
     /// itself, so it reaches past only where a position does, and the test is
     /// strict. Reading it inclusively there refuses a relocation the map honours.
     #[must_use]
+    #[inline]
     pub const fn reaches_above(self, highest: Slot) -> Bool {
         if self.reaches_off_the_grid().get() {
             Bool::of(self.position_high.index() >= highest.index())
@@ -246,6 +263,7 @@ impl Reach {
 /// The pair in order, so a reach handed the ends the wrong way round widens
 /// rather than inverting.
 #[must_use]
+#[inline]
 const fn ordered(low: Slot, high: Slot) -> (Slot, Slot) {
     if low.index() <= high.index() { (low, high) } else { (high, low) }
 }
