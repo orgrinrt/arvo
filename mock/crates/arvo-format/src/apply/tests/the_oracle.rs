@@ -49,14 +49,14 @@ const fn limb() -> i128 {
 /// Wide enough that every position within `2^63` of either end of the index,
 /// and every difference of two such, is exact in it.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(super) struct Wide {
+pub(crate) struct Wide {
     hi: i128,
     lo: i128,
 }
 
 impl Wide {
     /// The index value `v`, exactly.
-    pub(super) fn of(v: i128) -> Self {
+    pub(crate) fn of(v: i128) -> Self {
         Self {
             hi: v >> 64,
             lo: v & (limb() - 1),
@@ -64,7 +64,7 @@ impl Wide {
     }
 
     /// The sum, exactly.
-    pub(super) fn plus(self, other: Self) -> Self {
+    pub(crate) fn plus(self, other: Self) -> Self {
         let lo = self.lo + other.lo;
         Self {
             hi: self.hi + other.hi + (lo >> 64),
@@ -73,7 +73,7 @@ impl Wide {
     }
 
     /// The negation, exactly.
-    pub(super) fn negated(self) -> Self {
+    pub(crate) fn negated(self) -> Self {
         if self.lo == 0 {
             Self {
                 hi: -self.hi,
@@ -88,22 +88,22 @@ impl Wide {
     }
 
     /// The difference, exactly.
-    pub(super) fn minus(self, other: Self) -> Self {
+    pub(crate) fn minus(self, other: Self) -> Self {
         self.plus(other.negated())
     }
 
     /// Whether it is below zero.
-    pub(super) fn is_negative(self) -> bool {
+    pub(crate) fn is_negative(self) -> bool {
         self.hi < 0
     }
 
     /// Whether it is even.
-    pub(super) fn is_even(self) -> bool {
+    pub(crate) fn is_even(self) -> bool {
         self.lo % 2 == 0
     }
 
     /// The value as an index, where the index holds it.
-    pub(super) fn index(self) -> Maybe<i128> {
+    pub(crate) fn index(self) -> Maybe<i128> {
         Maybe::from(
             self.hi
                 .checked_mul(limb())
@@ -112,12 +112,12 @@ impl Wide {
     }
 
     /// The order of two values, exactly.
-    pub(super) fn order(self, other: Self) -> Ordering {
+    pub(crate) fn order(self, other: Self) -> Ordering {
         (self.hi, self.lo).cmp(&(other.hi, other.lo))
     }
 
     /// Whether it lies below `other`.
-    pub(super) fn is_below(self, other: Self) -> bool {
+    pub(crate) fn is_below(self, other: Self) -> bool {
         self.order(other) == Ordering::Less
     }
 
@@ -125,7 +125,7 @@ impl Wide {
     ///
     /// Each limb is reduced on its own and the two recombined in an unsigned
     /// 128-bit integer, where a product of two residues below `2^64` fits.
-    pub(super) fn rem_euclid(self, span: i128) -> i128 {
+    pub(crate) fn rem_euclid(self, span: i128) -> i128 {
         assert!(
             0 < span && span <= limb(),
             "a span the oracle does not reduce by"
@@ -139,10 +139,10 @@ impl Wide {
 
 /// A position as the oracle reads it: `whole + num / den`, `0 <= num < den`.
 #[derive(Clone, Copy, Debug)]
-pub(super) struct Point {
-    pub(super) whole: Wide,
-    pub(super) num:   i64,
-    pub(super) den:   i64,
+pub(crate) struct Point {
+    pub(crate) whole: Wide,
+    pub(crate) num:   i64,
+    pub(crate) den:   i64,
 }
 
 /// `floor(whole + n / d)` for a positive `d`, exactly.
@@ -164,7 +164,7 @@ fn ceil_of(whole: Wide, n: i128, d: i128) -> Wide {
 ///
 /// The dither is a ratio over a positive denominator, read by the stochastic mode
 /// alone.
-pub(super) fn rounded(mode: Mode, p: Point, dither: (i64, i64)) -> Wide {
+pub(crate) fn rounded(mode: Mode, p: Point, dither: (i64, i64)) -> Wide {
     let (whole, n, d) = (p.whole, p.num as i128, p.den as i128);
     // `x + 1/2`, over the doubled denominator.
     let (half_n, half_d) = (2 * n + d, 2 * d);
@@ -206,7 +206,7 @@ pub(super) fn rounded(mode: Mode, p: Point, dither: (i64, i64)) -> Wide {
 
 /// The slot the policy returns for a rounded position and a range `[lo, hi]`,
 /// and whether the position left the range.
-pub(super) fn completed(policy: Policy, at: Wide, lo: i128, hi: i128) -> (i128, bool) {
+pub(crate) fn completed(policy: Policy, at: Wide, lo: i128, hi: i128) -> (i128, bool) {
     let (low, high) = (Wide::of(lo), Wide::of(hi));
     if !at.is_below(low) && !high.is_below(at) {
         return (at.index().expect("inside a range the index holds"), false);
@@ -227,7 +227,7 @@ pub(super) fn completed(policy: Policy, at: Wide, lo: i128, hi: i128) -> (i128, 
 }
 
 /// The oracle's answer: the slot, and the overflow verdict.
-pub(super) fn answer(
+pub(crate) fn answer(
     mode: Mode,
     policy: Policy,
     p: Point,

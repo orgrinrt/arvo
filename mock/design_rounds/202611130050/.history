@@ -1,0 +1,50 @@
+8cdd138f chore: lock src changelist 202611130101
+e9a9871f feat: admit the product at every phase and radix of a constant quantum
+0d4fa4e4 chore: lock doc changelist 202611130050
+4f7445ad docs: state the product over any phase and radix of a constant quantum
+fc7f1aed docs: open the round where the product admits what the signature admits
+71856b84 chore: regenerate generated files after merge
+063573e1 Merge remote-tracking branch 'origin/dev' into HEAD
+336d24a1 fix: make arvo dev pass its own commit gate
+80f61c7c chore: close round 202611122320
+1556a225 chore: lock src changelist 202611122321
+7215d388 feat: the product of two members at a binary quantum
+1fbfd205 chore: lock doc changelist 202611122320
+1edc7b03 docs: state the product beside addition
+705d9bd4 docs: open the round for the product
+618f2ab1 chore: close design round 202611122236
+bc370bca chore: lock src changelist 202611122252
+f9d81af2 feat: add negation and subtraction beside addition
+afc772b3 chore: lock doc changelist 202611122236
+0cfa40f9 docs: state negation and subtraction beside addition
+faa66db6 chore: close design round 202611122246
+af1331ac chore: lock src changelist 202611122246
+5d60bf38 chore: commit the regenerated graph and merge drivers
+4cec5676 docs: say what the commit hook folded into the source changes
+56c3d7ae fix: pass the commit gate under the engine's new lints
+3e0ec76b chore: lock doc changelist 202611122246
+db85205f docs: drop a superseded row from arvo-strategy's declared canon
+d841c5e1 chore: name the `supersedes` edge for `no-superseded-citation`
+a3737551 fix: round `half_up` ties toward positive infinity
+05489db5 canon: settle half_up as ties toward positive infinity
+e97f509e research: seat 270 blind read of which operation half_up denotes
+7e2aa51c research: audit two reads of `half_up` and answer it as ties to +inf
+d425aff5 feat: add `USize` and `ISize` on a 128-bit slot index
+34558620 docs: consolidate the composition contracts across two reads
+65c1634d research: a second read on which operation half_up denotes
+e17c5d3a research: reconcile half_up finding against seat 229
+a6f4a6d9 research: half_up denotes two standards-documented operations
+6ae6cade canon: promote four composition rows on two reads each
+1545b60e feat: add admitted addition on a declared signature
+de3461dc research: a second read on the ten composition proposals
+ed5e0755 266: reconcile against the prior composition-cluster seat
+7d8590c0 266: derive composition contracts cluster blind
+4c6548d6 canon: settle what a platform-width type is
+99f31992 research: a second read on what a platform-width type is
+9d1ab004 265: rewrap two lines of the reconciliation
+d3584bc4 265: reconcile with seat 260 on what a platform-width type is
+32e0b6dd 265: what a platform-width type is, derived cold and built for three pointer widths
+22efc5d0 canon: answer the admitted-obligations row by reshaping it
+6c130503 feat: ship `arvo-bits`, an exact-width bit container
+c45809b1 chore: take the ask tool from muisti under lint-crates
+f8d8a9d1 research: seat 264, the door ruling does not reach the unwrap accessor

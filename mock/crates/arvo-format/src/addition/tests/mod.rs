@@ -23,15 +23,16 @@
 use notko::Maybe;
 
 use crate::adapt::DeclaredSignature;
-use crate::addition::add;
 use crate::ambient::{Ambient, Radix};
-use crate::apply::{Dither, Exact, Fraction};
+use crate::apply::{Dither, Fraction};
 use crate::format::{Format, Phase};
 use crate::overflow::SHIPPED_POLICIES;
 use crate::quantum::{Exponent, MagnitudeCount, Quantum};
 use crate::rounding::ALL_MODES;
 use crate::slots::{Slot, Slots};
 use crate::tests::dispatch::{self, PerSignature};
+use crate::tests::ratio::Ratio;
+use crate::tests::table::Table;
 use crate::width::{Bool, Width};
 
 /// Every phase the sweeps cross, at one slot range, run through a walk.
@@ -50,8 +51,11 @@ macro_rules! every_phase {
     };
 }
 
+mod steps;
 mod the_operation;
 mod the_rounding_axis;
+mod the_signed_laws;
+mod the_signed_oracle;
 mod the_step;
 mod the_verdict;
 
@@ -230,169 +234,20 @@ fn at_every_signature<F: Format, P: PerSignature<Out = u64>>(what: &P) -> u64 {
     }
     total
 }
-
-/// A ratio in the wide carrier, in lowest terms with a positive denominator.
-///
-/// The oracle's number type. Nothing in it comes from the step, so a law checked
-/// against it is checked against arithmetic the step did not do.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-struct Ratio {
-    num: i128,
-    den: i128,
+/// Every pair of members added under `S` at `dither`, as a table.
+fn sums<S: DeclaredSignature>(dither: Dither) -> Table {
+    stepped::<steps::Sum, S>(dither)
 }
 
-/// Euclid's algorithm, the oracle's own copy.
-///
-/// Kept apart from the step's on purpose: an oracle sharing the implementation's
-/// reduction would agree with it about any mistake the reduction makes.
-fn common_factor(a: i128, b: i128) -> i128 {
-    let (mut a, mut b) = (a.abs(), b.abs());
-    while b != 0 {
-        let t = a % b;
-        a = b;
-        b = t;
-    }
-    if a == 0 { 1 } else { a }
-}
-
-impl Ratio {
-    /// `num / den`, normalised.
-    fn of(num: i128, den: i128) -> Self {
-        assert!(den != 0, "the oracle was handed a ratio over zero");
-        let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
-        let g = common_factor(num, den);
-        Self {
-            num: num / g,
-            den: den / g,
-        }
-    }
-
-    /// A whole number.
-    fn whole(n: i128) -> Self {
-        Self::of(n, 1)
-    }
-
-    /// The phase a format declares, as the ratio it names.
-    fn phase_of<F: Format>() -> Self {
-        Self::of(F::PHASE.numerator() as i128, F::PHASE.denominator() as i128)
-    }
-
-    /// The sum, over the least common denominator so no product runs away.
-    fn plus(self, other: Self) -> Self {
-        let g = common_factor(self.den, other.den);
-        let den = self.den / g * other.den;
-        Self::of(
-            self.num * (den / self.den) + other.num * (den / other.den),
-            den,
-        )
-    }
-
-    /// The difference.
-    fn minus(self, other: Self) -> Self {
-        self.plus(Self {
-            num: -other.num,
-            den: other.den,
-        })
-    }
-
-    /// The product, with the cross factors taken out first.
-    fn times(self, other: Self) -> Self {
-        let g1 = common_factor(self.num, other.den);
-        let g2 = common_factor(other.num, self.den);
-        Self::of(
-            (self.num / g1) * (other.num / g2),
-            (self.den / g2) * (other.den / g1),
-        )
-    }
-
-    /// The quotient.
-    fn over(self, other: Self) -> Self {
-        self.times(Self::of(other.den, other.num))
-    }
-
-    /// The greatest whole number not above it.
-    fn floor(self) -> i128 {
-        self.num.div_euclid(self.den)
-    }
-
-    /// Whether it is a whole number.
-    fn is_whole(self) -> bool {
-        self.den == 1
-    }
-
-    /// The position a ratio of slots names: the slot below it and the remainder.
-    fn position(self) -> Exact {
-        let whole = self.floor();
-        let rest = Self::of(self.num.rem_euclid(self.den), self.den);
-        Exact::between(
-            Slot::at(whole),
-            Fraction::of(rest.num as i64, rest.den as i64),
-        )
-    }
-}
-
-/// The adapted sum of every pair of members under one signature and dither, as
-/// offsets from the lowest slot.
-///
-/// Sized for the widest format the sweeps run, eight bits.
-#[derive(PartialEq, Eq)]
-struct Table {
-    members: usize,
-    sums:    [[u8; 256]; 256],
-}
-
-impl Table {
-    /// Every pair of members added under `S` at `dither`.
-    ///
-    /// Requires every answer to be a member, so a table is also a totality check
-    /// over the pairs it holds.
-    fn of<S: DeclaredSignature>(dither: Dither) -> Self {
-        let min = <<S::Format as Format>::Slots as Slots>::MIN;
-        let max = <<S::Format as Format>::Slots as Slots>::MAX;
-        let members = member_count::<S::Format>();
-        assert!(
-            members <= 256,
-            "the table holds eight-bit ranges and narrower"
-        );
-        let mut sums = [[0u8; 256]; 256];
-        for (i, row) in sums.iter_mut().enumerate().take(members) {
-            for (j, cell) in row.iter_mut().enumerate().take(members) {
-                let a = Slot::at(min.index() + i as i128);
-                let b = Slot::at(min.index() + j as i128);
-                let got = add::<S>(a, b, dither);
-                assert!(
-                    got.is_within(min, max).get(),
-                    "{a:?} + {b:?} adapted to {got:?}, outside [{min:?}, {max:?}]"
-                );
-                *cell = (got.index() - min.index()) as u8;
-            }
-        }
-        Self {
-            members,
-            sums,
-        }
-    }
-
-    /// The adapted sum of the members at offsets `i` and `j`.
-    fn at(&self, i: usize, j: usize) -> usize {
-        self.sums[i][j] as usize
-    }
-
-    /// How many triples `(a + b) + c` and `a + (b + c)` disagree on.
-    fn divergent(&self) -> u64 {
-        let mut count = 0u64;
-        for a in 0 .. self.members {
-            for b in 0 .. self.members {
-                let ab = self.at(a, b);
-                for c in 0 .. self.members {
-                    if self.at(ab, c) != self.at(a, self.at(b, c)) {
-                        count += 1;
-                    }
-                }
-            }
-        }
-        count
-    }
+/// Every pair of members put through the binary step `T` under `S` at
+/// `dither`, as a table.
+fn stepped<T: steps::Step, S: DeclaredSignature>(dither: Dither) -> Table {
+    assert!(T::NEGATED.len() == 2, "a table holds a binary step");
+    Table::of(
+        <<S::Format as Format>::Slots as Slots>::MIN,
+        <<S::Format as Format>::Slots as Slots>::MAX,
+        |a, b| T::adapted::<S>(a, b, dither),
+    )
 }
 
 /// The table at one signature, for a dispatch.
@@ -402,6 +257,6 @@ impl PerSignature for Sums {
     type Out = Table;
 
     fn run<S: DeclaredSignature>(&self) -> Table {
-        Table::of::<S>(self.0)
+        sums::<S>(self.0)
     }
 }
