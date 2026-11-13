@@ -1,0 +1,50 @@
+4519d8ce chore: lock src changelist 202611132100
+08cb7afe fix: name the marker form in the strategy module doc
+df9dee7a chore: lock doc changelist 202611132059
+4dbb4c02 docs: correct the marker form in the strategy design
+c32a3fab fix: plant the ticket's own comments against the count lint
+c64a94ba docs: record the first self-review of the lint and tool work
+17eb11c6 chore: close design round 202611132036
+5de6e78f chore: lock src changelist 202611132037
+72e9e907 fix: name a ticket at each placeholder marker and refuse bare ones
+24996ba2 chore: lock doc changelist 202611132036
+2a526025 docs: open the round for the fixme markers and their lint
+d76f998c docs: say what two registry comments mean and reconcile the axis notes
+62c2212e fix: close the review findings on the lints and tools
+edda54a8 feat: add the cited-passages-check tool for a reader's blocks
+6a6d913f fix: read std and alloc roots from the parse tree
+9adeee95 fix: assert the config-applied severity of the ledger lint
+646b9cde fix: read a consolidation's members from its own text
+326f359c fix: refuse a range literal suffix in the write hook
+167cd054 feat: add the axis-undeclared-rows tool and its read of the registry
+e30d78f1 fix: read number words in the registry comment-count lint
+afcc7602 feat: refuse a registry row link naming the wrong namespace
+297a0fa2 docs: record the `FIXME` lint that waits on a source changelist
+9f76c4c3 fix: quote the corpus string and assert `catalogue-ignore` blocks
+99a1c395 fix: count a consolidation beside its own member as one arrival
+42c8efd7 fix: stop `a-lint-guards-a-crate-that-exists` reading a commented gate
+513a74d4 fix: read the enforcer lints through one parse
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
+2c8e5343 feat: add the oracle for fractions and division in arvo-format
+9dfd5339 feat: add the numeral value crate for integers at sole occupancy
+989e02f9 fix: spell git sources one way and show the bench harness runs
+7ec50792 feat: teach the oracle negation, subtraction and the product
+e20f1a1d research: sketch a value over the derived carrier with const add
+f2c88600 canon: propose the value stance and the rulings on the old crates
+336d24a1 fix: make arvo dev pass its own commit gate
+d841c5e1 chore: name the `supersedes` edge for `no-superseded-citation`
+a3737551 fix: round `half_up` ties toward positive infinity
+05489db5 canon: settle half_up as ties toward positive infinity
+e97f509e research: seat 270 blind read of which operation half_up denotes
+7e2aa51c research: audit two reads of `half_up` and answer it as ties to +inf
+d425aff5 feat: add `USize` and `ISize` on a 128-bit slot index
+34558620 docs: consolidate the composition contracts across two reads
+65c1634d research: a second read on which operation half_up denotes
+e17c5d3a research: reconcile half_up finding against seat 229

@@ -220,15 +220,71 @@ same reason as the other definitions here: it is stipulated, and the source \
 marks it `Definitional; no predicate`.
 
 What follows from the character is a family of claims about which licence is \
-available where, and none of those is in this file: every one of them is stated \
-over an ambient domain and its closure under negation, and no `dimension` row declared such an axis when this row was written. `dimension::ambient_domain` declares it, and the licence claims are not written in this row.
+available where. This row states the character and none of the licences. One \
+of them is written as a measured row of its own, \
+`proposal::which_operations_a_saturating_map_is_a_homomorphism_for_moves_with_the_ambient_domain`, \
+at the region its instrument ran; the rest are in the gap.
 """
-gap = "The whole of what this character licenses is unported. The topic's ten remaining clauses all carry regions naming axes the registry does not declare. That count was taken before `dimension::ambient_domain` was declared, and the ten are not recounted here against the axes declared after it."
+gap = "Most of what this character licenses is unported. Counted against the axes declared now, `dimension::ambient_domain`, `dimension::radix` and `dimension::toolchain` among them, the source's clauses after this one are nine, 4.2 to 4.10, carrying eleven predicates because 4.5 and 4.7 carry two each. Ten are still blocked on a coordinate no axis declares: 4.2 on the value set's size and an operation set written as containing addition, 4.3 on a construction being an interval, 4.5 on the restrictions in force and on a declared grid step, 4.6 and both halves of 4.7 on term shapes, declarations and the discharge check, 4.8 on term shapes and declarations, 4.9 on dimension and structure constants and declarations, 4.10 on crate type, feature gates, the term and the recursion limit. 4.4 names declared axes only, and is not written at its own predicate: it states saturation over `F in {0, 1, 2}` and both signednesses under a rounding word now outside the vocabulary, and its committed instrument on a one-signed domain ran at `F = 0`, unsigned, only. The measured row the note names carries both its halves at that region, and the wider region is not written."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::379",
   "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::347",
 ]
 keywords = ["realisation map", "algebraic character", "homomorphism", "order-preserving", "monotone", "reduce", "defer", "licence family", "exact result", "value set"]
+
+[[proposal]]
+id = "which_operations_a_saturating_map_is_a_homomorphism_for_moves_with_the_ambient_domain"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "On the non-negative integers the saturating realisation map is a homomorphism for addition and for multiplication and not for subtraction; on a domain straddling zero it is a homomorphism for none of the three. The wrapping map is a homomorphism for all three on both. So the saturating map's algebraic character is a function of the ambient domain and the wrapping map's is not, at the width measured."
+because = "Reducing both operands before the operation and reducing the exact result after it were compared on every pair of the domain. Under saturation, subtraction fails on 391 of 1089 pairs of the non-negative domain and addition and multiplication on none; on the straddling domain addition fails on 720, subtraction on 751 and multiplication on 256 of 2401. Under wrapping every column on both domains is zero, which is the control: the domains differ in size as well as sign, and the wrapping rows not moving shows the saturating rows move with the map rather than with the sample."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy in {saturate, wrap}",
+  "rounding: rounding = exact",
+  "radix: radix = 2",
+  "operation: operation in {add, sub, mul}",
+  "arity: arity = 2",
+  "ambient_domain: ambient domain in {the non-negative integers, the integers}: swept, every pair in 0..=32 and every pair in -16..=32",
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+evidence = ["saturation_has_a_deferral_arm_on_a_one_signed_domain"]
+note = """
+This is the first licence claim under `proposal::the_realisation_map_has_an_algebraic_character` \
+written as a row, and the one with a committed instrument that ran both \
+domain shapes. The candidate's own clause for saturation states it over \
+`F in {0, 1, 2}` and over truncation; the only run on a one-signed domain is \
+this one, at `F = 0`, where nothing is discarded, so the row carries the \
+region that ran rather than the clause's.
+
+The domains are the ones the instrument computes, `0..=32` and `-16..=32`. \
+Its output labels them `0..45` and `-48..48`, and the pair counts agree with \
+the code and not with the labels; `probe::saturation_has_a_deferral_arm_on_a_one_signed_domain` \
+says so.
+
+The domain entry names the domains and puts the windows that ran in its \
+warrant clause. On the non-negative integers the verdict carries past the \
+window, since every value above the top clamps to it whichever comes first, \
+and the straddling verdict is a failure, which one window establishes.
+
+The target-features entry carries no warrant token. The instrument is exact \
+integer arithmetic, which is an argument that no feature can enter, but \
+`construction` obliges an instrument that varied the axis and nothing here \
+varied it, so under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` \
+the entry claims the region with no warrant.
+"""
+gap = "Signed formats are not run on this table, and neither is any width but 4 nor any fraction width but 0. Of the domain shapes, a non-positive domain and a domain closed under negation, which is the shape the source clause names, are not run: the straddling window `-16..=32` is not closed under negation. The deferral half of the same instrument, at W in {3, 4} over terms of arity 2 and 3, is stated over declarations and a discharge check that no axis declares, and is not in this row."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::397",
+  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::609",
+  "panel::202608072330_the-numeral-canon-panel::122_probes::u3_output.txt::5",
+]
+keywords = ["saturation", "wrapping", "homomorphism", "ambient domain", "one-signed", "straddling", "subtraction", "algebraic character", "licence", "reduce"]
 
 # --- rounding -------------------------------------------------------------------
 
@@ -247,12 +303,71 @@ The topic's substance is that the quantisation axis is not a second copy of the 
 range axis: no deterministic quantisation is additive off the grid, on either \
 domain shape, and every deterministic member is order-preserving, so the property \
 pair that classifies the range policy degenerates here in both directions at \
-once. That claim is not in this file, because its region is stated over the \
-ambient domain and nothing declared that axis when this row was written. `dimension::ambient_domain` declares it, and the obstruction result is not a row.
+once. The additive half of that is its own row, \
+`proposal::no_deterministic_quantisation_is_additive_off_the_grid_on_either_domain_shape`, \
+a theorem over the ambient domain with both domain shapes in its region.
 """
-gap = "The obstruction result this definition exists to carry cannot be written as a row. Its region names the ambient domain, and its two halves are claimed and proved separately over the two domain shapes."
+gap = "The order-preserving half of the obstruction, that every deterministic member is monotone, is not written as a row, so the degeneration in both directions is carried by this note and the theorem row together rather than by one claim."
 provenance = ["panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::292"]
 keywords = ["realisation map", "factors", "quantisation", "range policy", "overflow", "disjoint", "quantise then reduce", "modifier", "two axes", "independent"]
+
+[[proposal]]
+id = "no_deterministic_quantisation_is_additive_off_the_grid_on_either_domain_shape"
+kind = "finding"
+sentence_kind = "theorem"
+standing = "one_expert"
+topic = "rounding"
+says = "No quantisation that fixes every grid point is additive, on the rationals or on the non-negative rationals. Every deterministic rounding mode is such a quantisation, so none of them is an additive homomorphism off the grid, on a domain closed under negation and on a one-signed domain alike; on the grid each is the identity and additive trivially. The obstruction is divisibility rather than sign, so restricting the domain's sign does not relieve it, which is where it differs from the range policy's own impossibility result."
+because = "On the rationals: they form a divisible group, the image of a divisible group under a homomorphism is divisible, the grid is a copy of the integers whose only divisible subgroup is zero, and a map fixing the grid has all of the grid in its image. On the non-negative rationals, a monoid, the same is run by hand: additivity gives `Q(x) = n Q(x/n)` for every positive `n`, so `Q(x)` is a grid point divisible by every positive integer, hence zero, against `Q(q) = q`. The smallest case is `Q(q/2) + Q(q/2) = Q(q) = q`, forcing `Q(q/2) = q/2`, which is off the grid; no sign enters."
+predicate = [
+  "integer_width: I any",
+  "fraction_width: F any",
+  "signedness: signedness any",
+  "radix: radix any",
+  "rounding: rounding in {floor, ceil, toward_zero, half_up, half_even}: swept, every member the row names, on a negation-closed window and its non-negative half",
+  "operation: operation = add",
+  "ambient_domain: ambient domain in {the rationals, the non-negative rationals}",
+  "threads: threads any",
+  "target_features: target features any",
+]
+evidence = ["every_deterministic_mode_is_monotone_and_none_is_additive_off_the_grid"]
+note = """
+A theorem, so its region is where the proof's premises hold rather than where \
+anything ran. The proof uses only that the grid is the multiples of one step, \
+so the step's radix and the widths are open, and it is about functions, so \
+threads and target features are open. The two domain shapes are proved \
+separately, by the two arguments in `because`.
+
+The proof needs no range: it is over the unbounded grid, and the factoring in \
+`proposal::the_realisation_map_factors_into_quantisation_and_range_policy` puts \
+the quantisation before the range policy. A finite format meets the smallest \
+case wherever its step `q` is representable.
+
+The committed sweep, `probe::every_deterministic_mode_is_monotone_and_none_is_additive_off_the_grid`, \
+checks the five modes on a window of 250 grid steps at a sixteenth of a step, \
+every mode failing additivity on the window and on its non-negative half and \
+none failing on the grid, at `threads = 1`. It is a check of the theorem's \
+instances, not what the row rests on, and the rounding entry's `swept` is its.
+
+`ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked` asks a \
+proof to carry a marker that its argument is width-free, and \
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` spells that \
+marker `construction` and obliges the row's evidence to name an instrument that \
+varied the axis and found no movement. The sweep runs at one step and one \
+window and varies no width, fraction width, radix or signedness, and nothing \
+varies threads or target features, so none of those six entries can carry the \
+marker and each claims its region with no warrant. The marker is owed on them, \
+and what discharges it for the fraction width is the same sweep run at several \
+steps; the second ruling's own note names this price.
+"""
+gap = "`stochastic` is outside the region: it is not deterministic and the proof's map is a function. Whether it is additive in expectation is a different property and is not stated here."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::303",
+  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::69",
+  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::95",
+  "panel::202608072330_the-numeral-canon-panel::125_probes::p1_output.txt::8",
+]
+keywords = ["quantisation", "rounding", "additive", "homomorphism", "divisible group", "divisibility", "off the grid", "one-signed", "closed under negation", "obstruction", "impossibility"]
 
 # --- the strategy object ---------------------------------------------------------
 
@@ -375,7 +490,7 @@ predicate = [
   "total_width: 6",
   "fraction_width: in 0..=5",
   "signedness: in {unsigned, signed}",
-  "overflow_policy: in {wrap, saturating}",
+  "overflow_policy: in {wrap, saturate}",
   "rounding: in {floor, ceil, toward_zero, away from zero, half_up, half_even}",
   "operation: multiply-add",
   "arity: 3",
@@ -427,7 +542,7 @@ predicate = [
   "total_width: in {4, 6}",
   "fraction_width: in 0..=W-1",
   "signedness: in {unsigned, signed}",
-  "overflow_policy: in {wrap, saturating}",
+  "overflow_policy: in {wrap, saturate}",
   "rounding: toward_zero",
   "operation: multiply-add",
   "arity: 3",
@@ -451,6 +566,65 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::438",
 ]
 keywords = ["fusion", "fused", "stepwise", "denotation", "lowering", "intermediate axis", "exact intermediate", "determinism", "signed saturating", "extensional identity"]
+
+[[proposal]]
+id = "a_reduction_relocation_is_free_exactly_where_the_reduction_is_a_congruence"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_strategy_object"
+says = "Relocating a reduction is free exactly where the reduction is a congruence for what follows it, on the domain the cell reaches. Wrapping at either signedness and saturating at unsigned are congruences, and there fusing a multiply-add and widening a fold's accumulator change no answer; saturating at signed is not, and there both do. So the fusion cell and the accumulator cell are one question, and the congruence test predicts each at four of four."
+because = "The test was stated before the run with its predictions, and a mutation arm makes it a finding rather than an observation: a reduction folding out-of-range values back by complementing fails the congruence test in every cell and shows a fusion difference and a visible accumulator exactly where wrapping and saturating show none, so the congruence is what drives the verdict and not something incidental to the cells. Reach is counted per cell, so the zeros are not vacuous."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F in {0, 1}: swept, `F = 1` in the multiply-add and `F = 0` in the fold",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "rounding: rounding = floor",
+  "accumulator_width: accumulator width in {4, 6}: swept, both in the fold and the declared 4 alone in the multiply-add",
+  "operation: operation in {multiply-add, sum fold}",
+  "arity: arity = 3",
+  "chain_length: chain length in {2, 3}: swept, 2 in the multiply-add and 3 in the fold",
+  "container: container = an i128 model reduced to the declared width at every step",
+  "threads: threads = 1",
+  "target_features: target features = host default",
+]
+law = [
+  "the_fused_and_the_stepwise_multiply_add_denote_one_function",
+  "fusing_a_multiply_add_preserves_the_answer_under_unsigned",
+  "fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping",
+]
+evidence = ["the_fusion_cell_and_the_accumulator_cell_are_one_congruence_question"]
+note = """
+The reduction half of the clause that states the three tables as one \
+question. The clause as the source writes it also says a rounding relocation \
+is free where the rounding is translation equivariant, which this instrument \
+does not touch, since it holds the rounding fixed in both arms. That half is \
+`proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` at \
+`W = 6`, and the two regions do not meet, so the one sentence is these two rows \
+read together rather than a row of its own.
+
+The predicate is the source's transcribed onto the declared axes and narrowed \
+to what ran. The source's chain lengths were 1 to 3 and nothing runs a chain \
+of one: the multiply-add is two operations and the fold three, so the entry is \
+`{2, 3}`, and the source's `fold length = 3` is the fold's own chain length. `rounding = floor` is added from the \
+instrument, because the source names no rounding and an absent axis claims \
+nothing wherever rounding exists: the product is narrowed by an arithmetic shift \
+at `F = 1`, which is floor, and at `F = 0` floor is the identity on the integers \
+the fold sums. The accumulator widths are the declared width and two bits wider.
+
+The two arms sit at different cells on three axes, fraction width, \
+accumulator width and chain length, and the region is their union rather than \
+their product. Each of those entries says in its warrant clause which arm ran \
+at which value; a combination no clause names, the multiply-add at accumulator \
+width 6 or the fold at `F = 1`, did not run.
+"""
+gap = "One expert, and one instrument at one width. The rounding half's region is `W = 6` and this half's is `W = 4`, so nothing yet measures the whole sentence at one cell."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::383",
+  "panel::202608072330_the-numeral-canon-panel::149_lamport_signature_in_part_on_the_strategy_object::409",
+]
+keywords = ["congruence", "reduction", "relocation", "fusion", "accumulator", "one question", "three tables", "multiply-add", "fold", "saturating", "wrapping", "mutation control"]
 
 # --- the chain --------------------------------------------------------------------
 
@@ -560,7 +734,7 @@ keywords = ["membership", "identity", "two criteria", "type", "const-available",
 
 # --- the container premise, seat 210 -----------------------------------------
 #
-# The six below answer `question::the_container_premise` together and none of
+# The rows below answer `question::the_container_premise` together and none of
 # them answers it alone, which is the shape of the answer rather than an
 # accident of filing: the question conflates three observations with three
 # different answers, so a single row saying yes or no would be the fork restated

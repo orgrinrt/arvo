@@ -165,7 +165,7 @@ options = [
 ]
 decider = "panel"
 topic = "overflow_policy"
-note = "Op has declared the ratified table's `Warm` cell stale under his restated intent that Warm behave like native primitives in regular old Rust would; the register records that as direction rather than as an answer to this question, so `decider` is the default. Standing caveat on the evidence: `20` section 1.5's clamp-family arity crossover is self-flagged as contaminated, written after reading a commit subject line carrying its own conclusion, and is owed an independent read that has not run."
+note = "Op has declared the ratified table's `Warm` cell stale under his restated intent that Warm behave like native primitives in regular old Rust would; the register records that as direction rather than as an answer to this question, so `decider` is the default. Standing caveat on the evidence: `20` section 1.5's clamp-family arity crossover is self-flagged as contaminated, written after reading a commit subject line carrying its own conclusion, and is owed an independent read that has not run.\n\nHe answered what `Warm` becomes on overflow in a release build on 13 November, taking none of four options, and `ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case` carries that answer: no one behaviour is called, a default ships as a generic overridable per case, perhaps following a parity standard. It narrows this question and does not close it, so what is left here is which standard the default follows and how the override is spelled."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q6-does-warm-wrap-or-clamp"]
 keywords = ["Warm", "wrap", "clamp", "saturate", "preset table", "headroom", "arity crossover", "interior safety"]
 
@@ -1742,6 +1742,7 @@ unblocks = "Which laws the strategy weighting obeys, and every cell count in the
 note = "Explicitly untested. The linear objective is what every weighting in this panel has assumed, including the source that raises this question, without anyone stating the assumption. Deciding this before the weighting-ceiling counts are treated as settled matters because the two objectives are not two readings of one computation; they produce different laws and every count would have to be recomputed under the log-scale reading."
 provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::#13-2-options-living-in-exactly-one-file-which-is-where-a-consolidation-loses-them"]
 keywords = ["log-scale", "geometric mean", "linear objective", "weighting", "scale-invariant", "units"]
+
 [[question]]
 id = "which_strategys_laws_govern_a_cross_strategy_operation"
 key = "Q66"
@@ -1799,7 +1800,7 @@ keywords = ["strategy", "successor", "lineage", "ratification", "preset", "weigh
 #
 # `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`
 # records an unstated scope in its `gap` field. A gap is not a question, nothing
-# builds a roster from one, and this is the bound now governing the two questions
+# builds a roster from one, and this is the bound now governing the questions
 # four topics defer to, so its own scope being unnamed is what blocks applying it.
 
 [[question]]
@@ -1818,7 +1819,7 @@ note = "Filed because it existed only as a `gap` on an obligation, which no rost
 provenance = ["panel::202608072330_the-numeral-canon-panel::206_op_the_canon_test_and_the_standards_bound::#the-container-premise-and-a-bound-nobody-had-filed"]
 keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "standard", "parity suite", "scope", "adequacy"]
 
-# --- raised by seat 215's second read, which found two rows in one topic at one
+# --- raised by seat 215's second read, which found a pair of rows in one topic at one
 #     standing giving incompatible answers to what a law layer is for
 
 [[question]]

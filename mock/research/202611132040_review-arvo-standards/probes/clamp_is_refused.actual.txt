@@ -1,0 +1,54 @@
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+error[E0080]: evaluation panicked: a value completes a result by wrapping or by saturation. This overflow policy clamps to a bound, and a value has no bound to carry, so with none it is saturation under another name: spell it `Saturate`
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::Signature<arvo_format::points::Integer<8>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Clamp>> as arvo_numeral::Sole>::ADMITTED` failed here
+  |
+ ::: src/admit.rs
+  |
+  | /         assert!(
+  | |             matches!(
+  | |                 <OverflowOf<S> as Overflow>::POLICY,
+  | |                 Policy::Wrap | Policy::Saturate
+... |
+  | |              name: spell it `Saturate`"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |             let () = S::ADMITTED;
+  |                      ^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  | /         const {
+  | |             let () = S::ADMITTED;
+  | |             assert!(
+  | |                 slot_in_range::<SlotsOf<S>>(Slot::at(V)).get(),
+... |
+  | |             );
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn Num::<Signature<Integer<8>, Adapt<RoundTowardZero, arvo_format::overflow::Clamp>>>::constant::<0>`
+ --> tests/ui/clamp_is_refused.rs:8:13
+  |
+8 |     let _ = Int::<8, Adapt<TowardZero, Clamp>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
