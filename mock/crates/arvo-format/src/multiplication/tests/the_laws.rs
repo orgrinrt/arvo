@@ -92,9 +92,10 @@ fn wrapping_multiplication_is_associative_on_the_integer_grid_at_widths_three_to
 }
 
 #[test]
-fn wrapping_multiplication_is_not_associative_at_any_fraction_width_from_one_to_the_width() {
-    // The row's fails cell is `F > 0`, so every fraction width from one to `W`
-    // is crossed at each width, signed and unsigned.
+fn wrapping_multiplication_is_not_associative_at_any_fraction_width_at_widths_three_to_seven() {
+    // The row's fails cell is `F > 0` at widths three to seven, so every
+    // fraction width from one to `W` is crossed at each of them, signed and
+    // unsigned. Width eight is outside the cell, so nothing is asserted there.
     let mut crossed = 0;
     macro_rules! cross {
         ($w:literal; $($f:literal),+) => {
@@ -112,8 +113,7 @@ fn wrapping_multiplication_is_not_associative_at_any_fraction_width_from_one_to_
     cross!(5; 1, 2, 3, 4, 5);
     cross!(6; 1, 2, 3, 4, 5, 6);
     cross!(7; 1, 2, 3, 4, 5, 6, 7);
-    cross!(8; 1, 2, 3, 4, 5, 6, 7, 8);
-    assert_eq!(crossed, 2 * (3 + 4 + 5 + 6 + 7 + 8));
+    assert_eq!(crossed, 2 * (3 + 4 + 5 + 6 + 7));
 }
 
 #[test]

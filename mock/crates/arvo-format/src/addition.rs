@@ -23,9 +23,9 @@
 //! absorption law the canon states for a reduction onto the representable set
 //! becomes a function of the signature rather than a sweep.
 //!
-//! Three things are refused, and one obligation carries all three: a quantum
-//! that moves with the magnitude, a phase remainder the position cannot hold, and
-//! a sum the slot coordinate cannot carry. The obligation is forced at the three
+//! Three things are held out, and one obligation carries all three: a quantum
+//! that moves with the magnitude, which is not yet admitted, a phase remainder
+//! the position cannot hold, and a sum the slot coordinate cannot carry. The obligation is forced at the three
 //! verbs that compute addition's positions, and `is_addable` asks the same
 //! question without forcing it.
 
@@ -81,8 +81,8 @@ impl<F: Format> Addable<F> {
              the remainder of an exact position does not carry"
         );
         // FIXME(arvo_addition_over_a_magnitude_indexed_quantum_is_a_placehol): the
-        // magnitude-indexed family is refused rather than added, and two
-        // things unblock it. In the design, `Exact` and `adapt` carry no magnitude
+        // magnitude-indexed family is not yet admitted, and two things unblock
+        // it. In the design, `Exact` and `adapt` carry no magnitude
         // coordinate, so a sum whose operands sit at two magnitudes has no position
         // to be handed as; that is a change to the applied map, not to addition. In
         // the canon, no row says what wrapping means on a union of magnitude ranges,
@@ -90,9 +90,9 @@ impl<F: Format> Addable<F> {
         // such a set.
         assert!(
             is_constant_family::<F::Quantum>().get(),
-            "addition is refused over a magnitude-indexed quantum: a slot names a different value \
-             at each magnitude, and the applied map carries no magnitude coordinate to land the \
-             sum at"
+            "addition is not yet admitted over a magnitude-indexed quantum: a slot names a \
+             different value at each magnitude, and the applied map carries no magnitude \
+             coordinate to land the sum at"
         );
         assert!(
             sum_is_carried::<F>().get(),

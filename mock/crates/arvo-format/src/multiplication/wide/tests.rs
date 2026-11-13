@@ -163,3 +163,37 @@ fn a_negative_value_floors_past_the_index_and_keeps_its_remainder() {
     let Maybe::Is(expected) = expected.plus(Wide::of(-1)) else { unreachable!() };
     assert_eq!(got.quotient, expected);
 }
+
+#[test]
+fn a_division_across_three_and_four_limbs_multiplies_back_at_divisors_not_powers_of_two() {
+    // Numerators of three and four limbs, each moved off the divisors' grid,
+    // on both signs. Every limb's remainder carries into the one below it,
+    // so a carry dropped anywhere shows in the product read back.
+    let mut checked = 0;
+    for (radix, power) in [(10, 45), (3, 120), (3, 150), (7, 90)] {
+        let Maybe::Is(p) = Wide::power(radix, power) else { unreachable!() };
+        for sign in [1, -1] {
+            let Maybe::Is(n) = p.times(Wide::of(sign)) else { unreachable!() };
+            let Maybe::Is(n) = n.plus(Wide::of(12_345)) else { unreachable!() };
+            assert!(
+                matches!(n.index(), Maybe::Isnt),
+                "{radix}^{power} is past the index"
+            );
+            for d in [3, 7, 1_000_000_000_000_000_000, i64::MAX as u64] {
+                let got = n.floor_divided(d);
+                assert!(got.remainder < d, "{radix}^{power} over {d}");
+                let Maybe::Is(back) = got.quotient.times(Wide::of(d as i128)) else {
+                    panic!(
+                        "{radix}^{power} over {d}: the quotient times the divisor left the limbs"
+                    );
+                };
+                let Maybe::Is(back) = back.plus(Wide::of(got.remainder as i128)) else {
+                    panic!("{radix}^{power} over {d}: the remainder added left the limbs");
+                };
+                assert_eq!(back, n, "{radix}^{power} over {d}");
+                checked += 1;
+            }
+        }
+    }
+    assert_eq!(checked, 4 * 2 * 4);
+}

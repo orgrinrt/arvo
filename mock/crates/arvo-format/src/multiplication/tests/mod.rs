@@ -20,6 +20,7 @@ use crate::slots::{Slot, Slots};
 use crate::tests::grid::Grid;
 use crate::tests::ratio::Ratio;
 
+mod big;
 mod the_edges;
 mod the_laws;
 mod the_oracle;
