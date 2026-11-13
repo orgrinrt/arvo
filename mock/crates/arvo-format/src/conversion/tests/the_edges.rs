@@ -116,6 +116,7 @@ struct Edges {
 }
 
 impl Edges {
+    #[inline(never)]
     fn run<F: Format, T: Format>(&mut self) {
         let min = <F::Slots as Slots>::MIN.index();
         let max = <F::Slots as Slots>::MAX.index();

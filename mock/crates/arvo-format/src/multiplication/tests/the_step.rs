@@ -48,6 +48,7 @@ struct Denotation {
 }
 
 impl PerFormat for Denotation {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let q = quantum::<F>();
         let plain = q == Ratio::whole(1) && Ratio::phase_of::<F>() == Ratio::whole(0);
