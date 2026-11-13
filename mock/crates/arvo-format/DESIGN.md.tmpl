@@ -1338,12 +1338,12 @@ policy stays the consumer's, for the reason the refusals below give.
 
 The standard rounds onto a floating format at the precision the binade allows, and a result rounding up
 out of the top of a binade is the next binade's smallest member. `adapt` takes a position in slots and
-carries no magnitude, so where a result lands is the caller's composition: the finest magnitude at which
-the rounded position lands in the slot range, which is what `panic_on_overflow` answers. A magnitude
-finer than the right one holds the position only past the significand, and a coarser one rounds at a
-step the standard does not, so the finest one in range is the standard's. The parity suite writes this
-over the public surface, as it writes the Round alias, and it is not a mechanism of this crate.
-`mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is where it was first shown.
+carries no magnitude, so where a result lands is `land`'s answer, from the section on landing below: the
+finest magnitude at which the rounded position lands in the slot range, which is what
+`panic_on_overflow` answers at each one. A magnitude finer than the right one holds the position only
+past the significand, and a coarser one rounds at a step the standard does not, so the finest one in
+range is the standard's. `mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is
+where it was first shown.
 
 ### What IEEE 754 meets that this crate does not carry
 
@@ -2158,6 +2158,75 @@ identity at every member. An edge sweep at widths nine to 64 at the two range en
 to them, against the shared wide oracle, with the verdict checked against an independent count. And
 compile-fail pairs: a magnitude-indexed source beside a constant one, and a pair whose denominator
 passes `2^128 - 1` beside one that fits.
+
+## Landing a point on a format's magnitudes
+
+`adapt` lands a position on one slot index, and a magnitude-indexed format is a union of grids, one per
+magnitude, each with the slot range on it. Which grid a value of the ambient domain belongs on is a
+question of its own, asked before `adapt` is, and `land` answers it: the finest magnitude at which the
+value's rounded position is in the slot range, and the exact position on that magnitude's grid. The
+slot is then `adapt` of that position under the same signature and dither, so a landing carries no slot
+of its own that could disagree with the map.
+
+The value is a `Scaled`, `num / den * radix^power`, which names a point of the ambient domain with no
+magnitude in it, in the radix of the format it is landed on. Its denominator is unsigned and is taken the
+way `Remainder::of` takes its own: a zero one names no ratio and reads as zero, so the point is zero.
+
+### The finest grid in range is the nearest member
+
+The quantum concept admits the affine law `radix^(BASE + SLOPE m)` and nothing else, and the ambient's
+obligation admits a radix of two or more. So the step at any magnitude divides the step at every coarser
+one, whichever way the law runs, and the grids nest: every member of a coarser grid is a member of each
+finer one. Rounding a value on the finest grid that holds it is then rounding it to the nearest member of
+the union under the mode, which is what the IEEE parity suites read as the standard's own rounding onto a
+binade, with a carry out of the top of a binade landing on the next magnitude. It follows from the two
+obligations, so `land` checks nothing for it.
+
+A constant quantum is one magnitude, and there `land` is the rounding and the range question alone.
+
+### The position at a magnitude
+
+With the phase `p / q` in lowest terms, the shift `t = power - step` and its two halves
+`U = radix^max(t, 0)` and `V = radix^max(-t, 0)`, the position is `num q U - p den V` over
+`D = den q V`, formed in the four limbs and placed by the ending the exact steps share. `D` is formed
+first, and where it fits `p den V` is under `2^191`, so only the first term can leave the limbs, on the
+sign of `num`. A magnitude whose `D` passes `2^128 - 1`, or whose floor leaves the slot index, holds no
+position.
+
+The rounding and the range question at each magnitude are `panic_on_overflow`'s, so the mode, the
+dither and the stochastic decision are read exactly as `adapt` reads them.
+
+### Where the walk starts
+
+Every magnitude finer than the landing puts the position past the range, and for a binary64 value most
+of them do. With `|num| >= 2^(bits(num) - 1)`, `den < 2^bits(den)` and
+`radix^t >= 2^(t floor(log2 radix))`, a shift at which `t floor(log2 radix) + bits(num) - 1 - bits(den)`
+reaches `max(bits(range), 64) + 2` names a position past twice the largest magnitude the range holds,
+the phase's at most `2^63` slots and the rounding's one slot included. The first magnitude with a
+smaller shift is computed from the law and the walk starts there, so the magnitudes it skips are ones no
+mode could land on.
+
+### What it does not land
+
+Nothing lands past the top magnitude, and nothing lands where no magnitude holds the position. What the
+completion means past the top of a union of magnitude ranges is a canon question, and until a row
+answers it `land` returns nothing there, under `arvo_landing_a_value_on_a_magnitude_indexed_format_is_a_call`.
+The operations do not land their results through it yet: the sum, the product, the quotient and the
+conversion still refuse a magnitude-indexed quantum, for the same canon question and their own tickets.
+
+### The laws this section owes tests for
+
+An oracle that places the value at every magnitude in the host's integer, keeps the magnitudes whose
+rounded position is in range and takes the one with the smallest step, against `land`, every mode, on a
+rising and a falling binary law, a phased law, a decimal law, the constant family, and 64-bit slot
+ranges at shifts where the walk starts within a few magnitudes of the landing. A value past what the
+host integer positions, a zero denominator, and the top magnitude's edge. And the IEEE parity suites'
+own search against `land` over points drawn across each format's exponent range, every direction.
+
+### The surface this section names
+
+`Scaled` and `Scaled::of`, `Landing` with `magnitude` and `exact`, and `land`, all `const fn`, in
+`apply` and re-exported at the crate root.
 
 ## Open items
 
