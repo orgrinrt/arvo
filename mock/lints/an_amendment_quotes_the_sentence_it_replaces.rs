@@ -116,7 +116,7 @@ fn holds_sentence(held: &str, wanted: &str) -> bool {
     held.match_indices(wanted.as_str()).any(|(i, m)| {
         let before = held[.. i].trim_end();
         let after = &held[i + m.len() ..];
-        (before.is_empty() || before.ends_with(|c: char| ends(c) || c == ':'))
+        (before.is_empty() || before.ends_with(ends))
             && (after.is_empty() || after.starts_with(' '))
     })
 }
@@ -448,6 +448,19 @@ mod tests {
             ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
+    }
+
+    #[test]
+    fn the_tail_after_a_colon_is_not_a_sentence() {
+        let f = found(&[
+            ("ruling::old", &[("says", "One rule holds: the tail goes.")]),
+            ("ruling::new", &[
+                ("amends", "old"),
+                ("amended", "old: the tail goes."),
+            ]),
+        ]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(f[0].contains("does not hold"), "{f:?}");
     }
 
     #[test]
