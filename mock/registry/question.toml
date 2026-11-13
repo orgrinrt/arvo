@@ -165,7 +165,7 @@ options = [
 ]
 decider = "panel"
 topic = "overflow_policy"
-note = "Op has declared the ratified table's `Warm` cell stale under his restated intent that Warm behave like native primitives in regular old Rust would; the register records that as direction rather than as an answer to this question, so `decider` is the default. Standing caveat on the evidence: `20` section 1.5's clamp-family arity crossover is self-flagged as contaminated, written after reading a commit subject line carrying its own conclusion, and is owed an independent read that has not run."
+note = "Op has declared the ratified table's `Warm` cell stale under his restated intent that Warm behave like native primitives in regular old Rust would; the register records that as direction rather than as an answer to this question, so `decider` is the default. Standing caveat on the evidence: `20` section 1.5's clamp-family arity crossover is self-flagged as contaminated, written after reading a commit subject line carrying its own conclusion, and is owed an independent read that has not run.\n\nHe answered what `Warm` becomes on overflow in a release build on 13 November, taking none of four options, and `ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case` carries that answer: no one behaviour is called, a default ships as a generic overridable per case, perhaps following a parity standard. It narrows this question and does not close it, so what is left here is which standard the default follows and how the override is spelled."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q6-does-warm-wrap-or-clamp"]
 keywords = ["Warm", "wrap", "clamp", "saturate", "preset table", "headroom", "arity crossover", "interior safety"]
 
