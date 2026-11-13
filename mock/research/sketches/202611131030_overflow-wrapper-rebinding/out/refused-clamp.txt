@@ -1,0 +1,62 @@
+warning: associated function `at` is never used
+  --> /home/user/arvo/mock/crates/arvo-format/src/apply.rs:63:25
+   |
+60 | impl Rounded {
+   | ------------ associated function in this implementation
+...
+63 |     pub(crate) const fn at(at: i128) -> Self {
+   |                         ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `arvo-format` (lib) generated 1 warning
+   Compiling overflow-wrapper-rebinding v0.1.0 (/home/user/arvo/mock/research/sketches/202611131030_overflow-wrapper-rebinding)
+error[E0080]: evaluation panicked: a value completes a result by wrapping or by saturation. This overflow policy clamps to a bound, and a value has no bound to carry, so with none it is saturation under another name: spell it `Saturate`
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::Signature<arvo_format::points::UFixed<8, 0>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Clamp>> as arvo_numeral::Sole>::ADMITTED` failed here
+   |
+  ::: /home/user/arvo/mock/crates/arvo-numeral/src/admit.rs:87:9
+   |
+87 | /         assert!(
+88 | |             matches!(
+89 | |                 <OverflowOf<S> as Overflow>::POLICY,
+90 | |                 Policy::Wrap | Policy::Saturate
+...  |
+94 | |              name: spell it `Saturate`"
+95 | |         );
+   | |_________- in this macro invocation
+
+note: erroneous constant encountered
+   --> /home/user/arvo/mock/crates/arvo-numeral/src/num.rs:110:22
+    |
+110 |             let () = S::ADMITTED;
+    |                      ^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> /home/user/arvo/mock/crates/arvo-numeral/src/num.rs:109:9
+    |
+109 | /         const {
+110 | |             let () = S::ADMITTED;
+111 | |             assert!(
+112 | |                 slot_in_range::<SlotsOf<S>>(Slot::at(V)).get(),
+...   |
+115 | |             );
+116 | |         }
+    | |_________^
+
+note: erroneous constant encountered
+  --> /home/user/arvo/mock/crates/arvo-numeral/src/num.rs:87:18
+   |
+87 |         let () = S::ADMITTED;
+   |                  ^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> /home/user/arvo/mock/crates/arvo-numeral/src/num.rs:162:18
+    |
+162 |         let () = S::ADMITTED;
+    |                  ^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `overflow-wrapper-rebinding` (example "refused_clamp") due to 1 previous error

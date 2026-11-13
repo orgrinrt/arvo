@@ -11,7 +11,8 @@ each saying plainly where the record stops.
 The method is the same throughout. A claim about what the design says carries the
 row by namespace and slug, or the passage quoted with its file and line. Where
 the registry holds nothing, the answer says the canon is silent, and silence here
-is a claim about the registry, which was read whole, and not about the two panel
+is a claim about the registry to the depth `LEDGER.md` records for each file,
+five of the fifteen having been read as an index, and not about the two panel
 corpora, which `LEDGER.md` records as unread.
 
 Two things are worth saying before the five. The record is in better shape than
@@ -100,11 +101,18 @@ Op asked whether the shipped default might follow one of the parity standards.
 The record answers what each standard's default is, which is the half that is
 answerable.
 
-MATLAB `fi` defaults are documented and the crate already carries both halves of
-them: `Floor` for rounding and `Saturate` for overflow. Both re-export cleanly, so
-a MATLAB parity default is available today as `Adapt<Floor, Saturate>` with
-nothing new written, and the fifth arm of the sketch named in part b shows the
-value tier admits it: `Signature<Fi<16, 8>, Adapt<Floor, Saturate>>` passes `Sole`.
+MathWorks documents the default `fimath` as `RoundingMethod: Nearest` and
+`OverflowAction: Saturate`, and the crate already carries both halves:
+`arvo-format/src/standards.rs` re-exports `HalfUp` as MATLAB's `Nearest`, on the
+ground that MathWorks documents its ties as going toward positive infinity, and
+`Saturate` is one of the two overflow actions the module names. So a MATLAB
+parity default is available today as `Adapt<Nearest, Saturate>` with nothing new
+written, and the fifth arm of the sketch named in part b shows the value tier
+admits it: `Signature<Fi<16, 8>, Adapt<Nearest, Saturate>>` passes `Sole` and
+saturates at both ends of its range. The reference page is in the workspace's
+fetched store, fetched on 13 November 2026 under the title "MathWorks fimath
+reference: fixed-point math settings". An earlier version of this section named
+`Floor` as the default rounding, which is not what the page says.
 
 IEEE 754's default rounding is round-to-nearest-ties-to-even, which is arvo's
 `half_even`, and it is in the vocabulary. Its overflow behaviour is to infinity
@@ -165,27 +173,35 @@ coordinate and keeps the rest.
 
 Whether that is writable is a compile question and it was sketched rather than
 reasoned about. `mock/research/sketches/202611131030_overflow-wrapper-rebinding/`
-carries it, and the outcome is WORKS on three counts and FAILS on the fourth.
+carries it, and the outcome is WORKS on every count.
 
 The substitution is one type alias over the two halves of the signature, with no
-feature gate and no trait of its own. The projected signature is still admitted,
-which was the real question: `Sole`'s blanket impl discharges for it exactly as
-for a written signature. It works generically, with one bound the caller has to
-write out, `WithOverflow<S, O>: Sole`, because `S: Sole` proves nothing about a
+feature gate and no trait of its own, and it re-binds what it says: the same
+position past an unsigned 8-bit range completes as 44 under the wrapper naming
+`Wrap` and as 255 under the one naming `Saturate`. The projected signature is
+still admitted, which was the real question: `Sole`'s blanket impl discharges
+for it exactly as for a written signature, and the sketch's two controls show
+the admission refusing a signature of the same shape under a dithered rounding
+and under `Clamp`. It works generically, with one bound the caller has to write
+out, `WithOverflow<S, O>: Sole`, because `S: Sole` proves nothing about a
 sibling signature even one sharing its format. That bound is the ergonomic cost
 and it is the thing to design against, since a wrapper appearing in a consumer's
 signature drags it along.
 
-What fails is the crossing. `Num::carrier` and `Num::from_carrier` are
-crate-private, and no public door takes a value of one signature and gives one of
-another. The public doors are `constant`, `adapted` and `slot`. So a consumer can
-name `Saturating<S>` as a type today and cannot move a value into it. The wrapper
-mechanism needs a door that does not exist, and what that door is is a design
-question rather than a compile one.
+The crossing works too, from the public surface: `Num::adapted(Exact::on_grid(
+value.slot()))` takes a value of one signature and gives the same member under
+its sibling, and the value that arrives adds under the policy it crossed into.
+`Num::carrier` and `Num::from_carrier` are crate-private, which an earlier
+version of this section took for the absence of a door; the three public doors
+`slot`, `on_grid` and `adapted` compose into one. So a consumer can name
+`Saturating<S>` as a type today and can move a value into it.
 
-One thing the sketch settles about that door: a free bit copy is correct here only
-because this particular substitution leaves the format alone and therefore leaves
-the carrier alone. A door spelled as a general signature change cannot be a copy.
+What the sketch leaves open about the crossing is its cost and its spelling.
+Both signatures share a format, so the adaptation has nothing to round or
+complete and the composition ought to lower to a move, which is an argument and
+not a measurement. And three calls in a row with a bound attached is not what a
+consumer wants to type at every site, so whether a named crossing between
+sibling signatures is wanted beside the composition is a design question.
 
 ### What the record says against the wrapper
 
@@ -367,52 +383,70 @@ crate. `arvo-spectral` returns changed in slice two, last of it, over the sparse
 crate. `arvo-hash` returns changed in slice two, its hash width named by the
 consumer and its result carried in `Bits<N>`.
 
-Every one of these has an obligation under it naming a consumer's stated need:
-`ordering_a_directed_acyclic_graph`, `a_sparse_adjacency_a_plan_can_be_built_on`,
-`a_spectral_partition_of_a_dependency_graph`, `a_content_hash`,
-`set_operations_over_a_fixed_size_bit_set`. So the return of this group is owed by
-the obligation namespace independently of any row about the old crate.
+Five of the nine have an obligation under them naming a consumer's stated need:
+`ordering_a_directed_acyclic_graph` under the graph crate,
+`a_sparse_adjacency_a_plan_can_be_built_on` under the sparse one,
+`a_spectral_partition_of_a_dependency_graph` under the spectral one,
+`a_content_hash` under the hash crate and
+`set_operations_over_a_fixed_size_bit_set` under the masks. So the return of
+those five is owed by the obligation namespace independently of any row about
+the old crate. The facade, the bit tier, the strategy bindings and the capacity
+crate have no obligation naming that family one to one among the seventeen.
 
 ### Refused as a crate, with the function re-homed
 
-Three rows say a crate does not return and name where the work goes, and these
-agree with his words once the distinction in `CHECK.md` section 5 is made.
+Five live rows say a crate does not return, and every one of them names where
+the work goes in its `instead`. They agree with his words on the function, and
+differ from them only in fixing a taxonomy his answer holds open.
 
 `arvo-storage` does not return as a crate; it was the bare-primitive layer at the
-bottom of every old chain, and the placement crate is where that work sits now.
-`arvo-mask-contracts` does not return as a crate of its own; it was one trait
-declaration, `MaskOps`. `arvo-refit` does not return; it was a re-export gateway
-for `Narrow` and `Widen`, and head's `cast` is named as its replacement.
-
-`arvo-transparent` is in this group too, and its refusal is already superseded
-inside the file by `the_old_transparent_crates_work_is_each_value_types_own_doors`,
-which says what it carried returns as the doors each value type declares for
-itself, with no general transparency contract beside them and no door giving or
-taking a carrier. That last clause is what the sketch in part b ran into.
-
-### Refused outright, against his words
-
-Two rows say a crate does not return and re-home nothing, and both carry the
-function his second answer names as arvo's own.
+bottom of every old chain, and its row sends `Bits` to `arvo-bits`, `USize` and
+`Bool` to value aliases, `Cap` to the capacity crate and bare integers to const
+generic positions. `arvo-mask-contracts` does not return as a crate of its own;
+it was one trait declaration, `MaskOps`, and the row puts the mask contract in
+the masks crate of slice two. `arvo-refit` does not return; it was a re-export
+gateway for `Narrow` and `Widen`, and the row names `convert` on the value crate
+and `cast` on `Bits<N>`.
 
 `arvo-bits-contracts` held the bit-level trait declarations: `HasBitWidth`,
 `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`, `UBitContainer`,
-`IBitContainer`. That is the contract surface of part d, for the bit tier.
+`IBitContainer`. Its row says the crate does not return and re-homes what it
+carried: its `instead` reads "Bit access on `arvo-bits`, and `convert` on the
+value crate for widening and narrowing", and its `because` says `BitAccess`,
+`BitLogic` and `BitSequence` "return with the masks over `arvo-bits`". That is
+the contract surface of part d, for the bit tier, and the row keeps it.
 
 `arvo-numeric-contracts` held `Abs`, `Recip`, `Sqrt`, `TotalOrd`, `FromConstant`
-and the `Predicate` family. That is the arithmetic contract surface, and its
-`instead` sends the first three to kaski.
+and the `Predicate` family. Its row keeps compare, `min`, `max` and the
+`constant` door on the value crate and a refined divisor for division, and puts
+`Abs`, `Recip` and `Sqrt` "with the elementary functions, which stay in kaski in
+slice one". That one clause is where a live row meets his second answer, which
+names writing the arithmetic contracts on the standards as arvo's own ground:
+the three contracts are arithmetic contracts, and the row leaves them with a
+consumer for the first slice.
 
-`arvo-comb` is the fourth of the original refusals and it is already superseded by
+An earlier version of this section sorted the last two apart from the first
+three, as rows that re-home nothing and stand against his words. That misread
+both rows' `instead`.
+
+`arvo-transparent` was refused the same way, and its refusal is already
+superseded inside the file by
+`the_old_transparent_crates_work_is_each_value_types_own_doors`, which says what
+it carried returns as the doors each value type declares for itself, with no
+general transparency contract beside them and no door giving or taking a
+carrier. The crossing in part b is written through those doors.
+
+`arvo-comb` is the other superseded refusal, by
 `the_old_comb_crate_answers_to_a_stated_need`, which points at
 `obligation::a_cost_dynamic_program` and says its return is owed while leaving
-which crate meets it, under which name, undecided. That supersession is the model
-for what the other two want.
+which crate meets it, under which name, undecided.
 
 ### What this says for the plan
 
-The families sort cleanly into work with an obligation already under it, work
-whose home is a taxonomy question his words have opened, and the contract surface,
-which is both refused by a live row and demanded by two obligations. The last of
-those three is the one to do first, because every algorithm family in the first
-group would be written against it.
+The families sort into work with an obligation already under it, work whose
+home is a taxonomy question his words have opened, and the contract surface,
+which two obligations demand and which the live rows place piecemeal: the bit
+contracts with the masks, the compare and constant doors on the value crate,
+and three arithmetic contracts with a consumer. The contract surface is the one
+to do first, because every algorithm family in the first group would be written
+against it.

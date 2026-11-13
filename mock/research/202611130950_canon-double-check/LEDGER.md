@@ -1,14 +1,20 @@
-# The canon read whole, and what else was read beside it
+# What of the canon was read, to what depth, and what was read beside it
 
 This is the reading record of job `arvo-canon-check`, taken at `origin/dev` tip
 `2c8e5343` on 13 November 2026. It says what was read, by whom, and to what
 depth, so that every claim in `CHECK.md`, `ANSWERS.md` and `PLAN.md` beside it
 can be checked against a named source rather than taken on trust.
 
-The registry is the canon and it was read whole, every row of every file, by the
-seat itself. Nothing in the registry was read by a sub-agent. The designs under
-`mock/` were read by the seat. The corpus around them, the research notes, the
-closed rounds' topic files, the committed bench findings and the old arvo at the
+The registry is the canon. Nine of its fifteen files were read in full by the
+seat, the dimension file in part, and five as an index: the two large proposal
+files, the questions, the retirements and the probes. The depth table below says
+which is which. Nothing in the registry was read by a sub-agent. An earlier
+version of this file opened by saying the registry was read whole, every row of
+every file, which its own depth table contradicted, and the three documents
+beside it repeated the sentence. They say now what the table says. The designs
+under `mock/` were read by the seat, two of them not at all, as their table
+says. The corpus around them, the research notes, the closed rounds' topic files,
+the committed bench findings and the old arvo at the
 revision hilavitkutin pins, is large enough that a full reading of it costs more
 than this job has, so it was transcribed in batches by sonnet sub-agents, each
 told to quote and never paraphrase, with their output committed beside this file
@@ -27,7 +33,7 @@ The second thing is the citation form. Rows are cited by namespace and slug
 rows constantly and a line citation keeps resolving while naming something else.
 The repo's own lints refuse the line form.
 
-## The registry, read whole
+## The registry
 
 Every file under `mock/registry/`. The counts are mechanical, taken at
 `2c8e5343`.
@@ -113,7 +119,16 @@ lines worth quoting, verbatim.
 | `rest` | 117 | the research notes outside the two panels, including the November value-stance and datum reads and the bench-harness findings | `ledger-rest-01.md`, `ledger-rest-02.md` |
 
 The seat spot-checked one file of each batch against its entry and found no
-paraphrase in place of a quotation.
+paraphrase in place of a quotation. Which files it opened was not written down,
+so the spot check cannot be repeated from this record and is worth what an
+unrecorded check is worth. The `old` batches also carry no date per file, since
+every file in them is one tree at one revision, `1b2796e9`.
+
+One reading in the table above failed where it was claimed in full. `law.toml`
+is listed as read row by row, and the first version of `CHECK.md` still proposed
+moving a cell into `holds` that three existing rows already carry. The file was
+read again for the correction, and the miss is the reason the depth of every
+other file is stated here without rounding up.
 
 ## What was not read
 
@@ -125,8 +140,8 @@ They are the argument behind the canon rather than the canon, and the registry
 carries their conclusions as rows with `provenance` citations into them, which is
 what was read instead. The cost of reading them whole is several times this job's
 budget. The consequence is stated plainly: where this job says the registry holds
-no row on a subject, that is a claim about the registry, which was read whole, and
-not about the panel files.
+no row on a subject, that is a claim about the registry to the depth each file
+was read at, and not about the panel files.
 
 Also unread: the 254 committed bench findings under `mock/benches`, of which the
 five November ones were read through
