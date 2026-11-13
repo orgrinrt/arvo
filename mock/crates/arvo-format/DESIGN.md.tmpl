@@ -1943,7 +1943,9 @@ is under `2^127` for any range up to 64 bits and any phase denominator, so the p
 is at least `2^256`, and `D` is under `2^128`, so its position is past the slot index anyway. The
 phase's term `n d r^max(-e, 0)` is at most `2^63` times `D` in magnitude, so under `2^191`, and it is
 formed in the same four limbs. The one division is by `D`, which the obligation holds under `2^128`:
-a long division of four limbs by one where `D` is under `2^64`, and one bit at a time otherwise.
+a long division of four limbs by one where `D` is under `2^64`, and otherwise a long division by two
+limbs with `D` normalised to its top bit, a quotient limb at a time, each limb's estimate from the top
+two limbs corrected against `D`'s low limb, which at two limbs makes it exact before the subtraction.
 
 For a slot that is not a member the step answers anyway, as `sum_position` does: a numerator that
 leaves the four limbs, or a slot that leaves the index, saturates at the end of the index on the
