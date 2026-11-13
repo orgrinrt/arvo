@@ -21,13 +21,12 @@ point `Fixed`, and `multiplicative_identity` with its suite. Nothing that was al
 | `panic_on_overflow` | `const fn panic_on_overflow<S: DeclaredSignature>(Exact, Dither) -> Bool`, true when out of range | `num.rs`, `ratio.rs`: the debug check and `fits` |
 | `mul`, `product_position` | `const fn mul<S: DeclaredSignature>(Slot, Slot, Dither) -> Slot`, `const fn product_position<F: Format>(Slot, Slot) -> Exact` | `num.rs`: the product where it is not a carrier product, and its check |
 | `div`, `quotient_position` | `const fn div<S: DeclaredSignature>(Slot, Divisor<S::Format>, Dither) -> Slot`, `const fn quotient_position<F: Format>(Slot, Divisor<F>) -> Exact` | `ratio.rs` |
-| `convert`, `converted_position` | `const fn convert<F: Format, S: DeclaredSignature>(Slot, Dither) -> Slot`, `const fn converted_position<F: Format, T: Format>(Slot) -> Exact` | `ratio.rs`, and `Accumulator::finish` through it |
+| `convert`, `converted_position` | `const fn convert<F: Format, S: DeclaredSignature>(Slot, Dither) -> Slot`, `const fn converted_position<F: Format, T: Format>(Slot) -> Exact` | `ratio.rs` |
 | `slot_in_range` | `const fn slot_in_range<S: Slots>(Slot) -> Bool` | `num.rs`: the `constant` door |
 | `Exact::on_grid` | `const fn on_grid(Slot) -> Exact` | `host.rs`, `ratio.rs`, `identity.rs` |
 | `Slot::at`, `Slot::index`, `Slot::ZERO` | `const fn at(i128) -> Slot`, `const fn index(self) -> i128` | every module |
 | `has_additive_identity`, `multiplicative_identity` | `const fn has_additive_identity<F: Format>() -> Bool`, `const fn multiplicative_identity<F: Format>() -> Maybe<Slot>` | `identity.rs` |
 | `quantum::is_constant_family` | `const fn is_constant_family<Q: Quantum>() -> Bool` | `admit.rs` |
-| `radix` | `radix::<F>().base()` | `accumulator.rs` |
 | `Dither::UNUSED`, `Bool::of`, `Bool::get`, `Width::count` | constants and accessors | every module |
 
 Read as declared, by their associated items: `DeclaredSignature` (`Format`, `Adaptation`), `Format`
@@ -57,7 +56,7 @@ compare against.
 ## What a slot widening may change
 
 A widening that keeps `Slot::at(i128)` and `Slot::index() -> i128` changes nothing here: `whole_range`
-in `admit.rs` and the accumulator's range sums compute in `i128` and refuse a width past 64. One that
-changes them ports `admit.rs`, `accumulator.rs`, `num.rs`, `ratio.rs`, `host.rs` and `identity.rs` in
+in `admit.rs` computes in `i128` and refuses a width past 64. One that
+changes them ports `admit.rs`, `num.rs`, `ratio.rs`, `host.rs` and `identity.rs` in
 the same branch, and the check is `cargo test -p arvo-numeral` green with each `mutant-*` feature
 still red against its committed run.
