@@ -17,6 +17,11 @@
 # Where a question was answered, `note` says that it was and where, and never
 # which way. What answers a question is a ruling or a proposal naming it, and the
 # edge is drawn from that side.
+#
+# That paragraph describes the port. Rows filed or settled since may carry
+# `answered`, which says which way in the row itself, and `bound`, which says
+# what an answer must stay inside. Where a row has an `answered`, read it before
+# the `note`.
 
 # --- unit two: the format, and the questions carrying op's direction ------------
 
@@ -727,7 +732,7 @@ options = [
 ]
 decider = "panel"
 topic = "the_number_system"
-note = "The file that raised it argues the two questions have different answers, different decidability and an inhabited two-by-two. What would distinguish them: whether the canon ever says something true of a system arvo cannot host, and it already does, since the bounded windows it admits are defined as bounded windows of systems it cannot host."
+note = "The file that raised it argues the two questions have different answers, different decidability and an inhabited two-by-two. What would distinguish them: whether the canon ever says something true of a system arvo cannot host, and it already does, since the bounded windows it admits are defined as bounded windows of systems it cannot host.\n\n**The first option has been taken at the design and code tiers, and no canon row took it.** The `answered` of `question::did_the_admitted_obligations_answer_the_exposure_question_in_the_design` records it: the carrier conditions sit in one const, under one word and one cited licence, with the conditions on the ratified parameterisation, and it says this row is owed a note that says so. This is that note. The row stays open, and an answer taking either other option nukes that part of the design and the code under it."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q31-does-the-canon-use-one-word-or-two-for-is-a-number-system-and-can-arvo-carry-it"]
 keywords = ["number system", "hosting", "admission", "vocabulary", "one word", "two words", "target", "no_std", "dyn", "bounded window"]
 
@@ -1904,7 +1909,7 @@ options = [
 decider = "panel"
 topic = "the_predicate_notation"
 unblocks = "Whether `normative` is currently doing duty for a third thing nobody named, and therefore whether any structural claim in the registry is checkable."
-note = "**Filed rather than left inside one proposal's prose, so something forces it to be revisited.** The twenty-one declared dimensions are integer width, fraction width, total width, signedness, overflow policy, rounding, operation, arity, chain length, container, alignment, access pattern, target features, threads, strategy, ambient domain, radix, accumulator width, toolchain, build profile and operand window. Every one is about a number or a machine.\n\n**So the check that refuses an `argument` carrying no region is right to fire on a structural claim, and the only way past it is to file the claim as something it may not be.** Three rows hit this in one sitting and were refiled `normative`, which is defensible for a claim that imposes an order and wrong for one that reasons its way to a conclusion. The notation gives no way to tell those apart afterwards.\n\nThe second option is not a concession. A canon sentence about how the canon is written may genuinely be governance, in which case nothing is broken and this closes."
+note = "**Filed rather than left inside one proposal's prose, so something forces it to be revisited.** The twenty-one declared dimensions are integer width, fraction width, total width, signedness, overflow policy, rounding, operation, arity, chain length, container, alignment, access pattern, target features, threads, strategy, ambient domain, radix, accumulator width, toolchain, build profile and operand window. Every one is about a number or a machine. Four have been declared since, `occupancy`, `association`, `leaf_aliasing` and `phase`, each about a placement, a term or a grid, so the sentence holds at the larger set.\n\n**So the check that refuses an `argument` carrying no region is right to fire on a structural claim, and the only way past it is to file the claim as something it may not be.** Three rows hit this in one sitting and were refiled `normative`, which is defensible for a claim that imposes an order and wrong for one that reasons its way to a conclusion. The notation gives no way to tell those apart afterwards.\n\nThe second option is not a concession. A canon sentence about how the canon is written may genuinely be governance, in which case nothing is broken and this closes."
 provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#its-standing"]
 keywords = ["predicate", "region", "dimension", "structural", "normative", "definition", "sentence kind", "governance", "notation", "gap"]
 
@@ -2019,7 +2024,7 @@ bound = """
 The row is canon by ratification: `ruling::the_format_spine_is_canon` stamps it, at
 `standing = "two_experts"`. So the correcting act is not a retirement's and is not one
 instrument's, which is what
-`retirement::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity`
+`retirement::a_nonzero_phase_removes_the_additive_identity`
 already records when it names the clause rather than editing it.
 
 The measurement is settled and is not what this asks about.
@@ -2042,6 +2047,9 @@ six words against its threshold of eight, and `awaiting-a-ruling` reports only `
 The shipped code does not wait on this. `has_additive_identity` contradicts the affine
 predicate the same row states one sentence earlier, and that sentence is untouched, so the
 correction to the crate rests on the spine rather than on this question.
+
+The crate has been corrected since, in source, tests and design, and no `ruling` carries
+`corrects` for the clause, so the canon is now the one tier that still states it.
 """
 provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
 keywords = ["phase", "additive identity", "affine predicate", "stamped", "correction", "spine", "whole multiple", "nonzero phase"]

@@ -222,9 +222,11 @@ marks it `Definitional; no predicate`.
 What follows from the character is a family of claims about which licence is \
 available where, and none of those is in this file: every one of them is stated \
 over an ambient domain and its closure under negation, and no `dimension` row \
-declares such an axis.
+declares such an axis. `dimension::ambient_domain` now declares that axis, so \
+the licence claims can be written from their source predicates, and they have \
+not been.
 """
-gap = "The whole of what this character licenses is unported. The topic's ten remaining clauses all carry regions naming axes the registry does not declare."
+gap = "The whole of what this character licenses is unported. The topic's ten remaining clauses all carry regions naming axes the registry does not declare. That count was taken before `dimension::ambient_domain` was declared, and which of the ten another undeclared axis still blocks has not been recounted."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::379",
   "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::347",
@@ -249,7 +251,9 @@ range axis: no deterministic quantisation is additive off the grid, on either \
 domain shape, and every deterministic member is order-preserving, so the property \
 pair that classifies the range policy degenerates here in both directions at \
 once. That claim is not in this file, because its region is stated over the \
-ambient domain and nothing declares that axis.
+ambient domain and nothing declares that axis. `dimension::ambient_domain` now \
+declares it, so the obstruction result can be written from its source \
+predicate, and it has not been.
 """
 gap = "The obstruction result this definition exists to carry cannot be written as a row. Its region names the ambient domain, and its two halves are claimed and proved separately over the two domain shapes."
 provenance = ["panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::292"]

@@ -70,7 +70,11 @@ gap = """
 No witness. The failing region is established as a rate over exhaustive triples \
 rather than by a named instance, so nothing here is reproducible from the row \
 alone. The three instruments are `147_probes`, `149_probes/y2` and \
-`151_probes/v1`; no `probe` row exists to point `evidence` at.
+`151_probes/v1`; no `probe` row exists to point `evidence` at. Three exist \
+now, `probe::fusion_under_unsigned_over_six_rounding_modes`, \
+`probe::equivariance_is_domain_restricted` and \
+`probe::the_false_unsigned_fusion_clause_and_its_repair`, one for each \
+instrument, and the `evidence` edge has not been drawn.
 
 The formulation is one expert's. `151` names its own exposure: the restricted \
 equivariance test was decided over a window its author chose, and a clean sweep \

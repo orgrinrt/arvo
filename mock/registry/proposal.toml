@@ -713,7 +713,7 @@ predicate = [
 ]
 answers = ["how_the_law_inventory_is_named"]
 evidence = ["a_declared_law_marker_compiles_clean_when_false"]
-note = "The predicate is the source's own, verbatim, and it is one of only two in the whole derived-laws consolidation. The instruments are `80_probes/p1a_declared_law_lies.rs` and `p1b_computed_law_refuses.rs`, both committed, and `probe.toml` does not exist for them to be named in. The 24.8% figure has a zero arity-2 control, so the number is not an artefact of the sweep."
+note = "The predicate is the source's own, verbatim, and it is one of only two in the whole derived-laws consolidation. The instruments are `80_probes/p1a_declared_law_lies.rs` and `p1b_computed_law_refuses.rs`, both committed, and `probe.toml` does not exist for them to be named in. It exists now, and `probe::a_declared_law_marker_compiles_clean_when_false`, which this row's `evidence` cites, names both. The 24.8% figure has a zero arity-2 control, so the number is not an artefact of the sweep."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::147",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::153",
@@ -1524,6 +1524,10 @@ keywords = ["admission", "exposure test", "self-collapsed", "ambient domain", "r
 # has no `probe` row, so what is written is the part of the claim its own route
 # establishes rather than the part its sweep confirms. Where that shortens a
 # sentence the `gap` says which half was left out and what blocks it.
+#
+# Each of the three instruments has a `probe` row now, and each row's `note`
+# below names it. The `evidence` edges and the wider sentences they would allow
+# are not drawn here, because a seat that draws one is restating the claim.
 
 [[proposal]]
 id = "a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains"
@@ -1554,7 +1558,9 @@ over twenty-three configurations, zero soundness mismatches and zero \
 conservative mismatches, both directions counted separately on purpose. Its \
 instrument is `97_probes/p2_congruence_predicts_the_laws.py`, committed, and no \
 `probe` row names it, so `evidence` is empty and the figure stays in this note \
-rather than in a `measured` sentence it could not support.
+rather than in a `measured` sentence it could not support. \
+`probe::one_congruence_property_predicts_every_law_verdict` names that \
+instrument now, and the edge from this row to it has not been drawn.
 
 **The region is the source's own, minus what is not an axis.** The laws the \
 probe enumerated and the exhaustiveness of the value sweep are instrument \
@@ -1562,7 +1568,9 @@ parameters rather than situations the world can be in. `operand window in \
 {full, declared non-negative}` is dropped because no `dimension` row declares \
 that axis; the sweep covered both of its values, so the written region is \
 narrower than what was established and the absence here is a gap in the \
-vocabulary rather than a claim.
+vocabulary rather than a claim. `dimension::operand_window` now declares that \
+axis, and the predicate above is left as it was written, because a predicate \
+is never widened in place.
 
 **The quotient route does not depend on the axes written above**, and the region \
 is nonetheless the source's, because a predicate is never widened in place. A \
@@ -1609,7 +1617,10 @@ the pivot on and off the coarse grid, at zero failures on-grid and seven \
 off-grid. That is the sentence a canon would carry. Its instrument is \
 `07_probes/p4_composition_and_forced_adjoint.py`, committed with its output, \
 and no `probe` row names it, so the general form is not writable and what is \
-written is the one instance whose instrument is registered.
+written is the one instance whose instrument is registered. \
+`probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points` \
+names that instrument now, so the general form can be written as a row of its \
+own, and it has not been.
 
 **Three witnesses, which is what the standing rests on**, and they are the cited \
 probe's own: this instrument, an earlier probe's P4 at 500 half-even mismatches \
@@ -1670,7 +1681,10 @@ as information, is refused six times in three syntactic positions, each naming \
 its instruments are `47_probes/p1`, `p1b`, `p2` and `p2b`, all committed with \
 their outputs and errors and five negative controls among the eleven, and no \
 `probe` row names any of them. Marking it as an argument to get it written would \
-be the dodge the evidence gate exists to catch, so it stays out and stays named.
+be the dodge the evidence gate exists to catch, so it stays out and stays named. \
+`probe::a_single_richer_output_suffices_only_as_a_type` names those instruments \
+now, so the measured half can be written as a row of its own, and it has not \
+been.
 
 **The register records a standing disagreement inside the same material** that \
 this does not touch: whether the strategy is an upstream selector the ladder \
@@ -2148,7 +2162,7 @@ standing = "one_expert"
 topic = "canon_form"
 says = "The twenty topics are not one order. Eleven form a stack whose floor is the container premise, then the format, then rounding, overflow policy, the number system and the realisation map on the format, then the primitive on the realisation map and the number system, the strategy axis on rounding, overflow policy and the realisation map, the strategy object on the strategy axis, the algebraic laws on the primitive and the two edge behaviours, and the chain on the laws and the primitive. Four are a frame the stack sits inside rather than on: the operating constraints, arvo's identity, the execution environment and binding time. Four are the canon's own machinery and block nothing in the stack: canon form, the predicate notation, naming and panel conduct. Validation rests on the format and on binding time, which is the one stack topic resting on a frame topic and the edge least likely to survive."
 because = "Op's standing order is to fill the canon from the foundations upward, and the layering that order refers to is recorded nowhere: the `topic` namespace carries no dependency edge, and `unit` records when a subject was argued rather than what it rests on, as its own header says. Without a stated edge set the order is a judgement remade at each dispatch, which drifts without any single call looking wrong."
-note = "**One expert, and it is the coordinator's own derivation, which is the tier most likely to be wrong.** Recorded so dispatch has something stated to follow and something specific to attack. Derived from the `what` sentence of each topic row and nothing else, by one test: can this topic's subject be stated at all without a decision belonging to that one.\n\n**No predicate, because none in this registry can express it.** The coordinates are topics rather than `dimension` rows, exactly as `every_canon_sentence_names_the_prefix_it_quantifies_over` records for its own structural claim.\n\n**Filed `normative` after being written `argument`, and the correction is worth stating because it is forced rather than chosen.** All twenty-one declared dimensions are numeric or machine axes: widths, signedness, rounding, overflow, arity, container, alignment, threads, target features, toolchain, build profile. **None can express a region over the canon's own contents**, so a reasoned structural claim has no way to say where it holds, and the check refusing an `argument` with no region is correct to fire on it. That leaves `normative` and `definition` as the only kinds a structural claim can take, whether or not it was reasoned rather than imposed. **The gap is real and is not closed by this row**: either the dimension vocabulary grows an axis over the canon's own structure, or the notation's two region-free kinds are permanently doing duty for a third thing nobody named.\n\n**The group split is the load-bearing claim rather than the individual edges.** If the frame topics turn out to sit in the stack rather than around it, the order changes for most of the rows beneath them.\n\n**Checkable rather than arguable**: take an edge, read the depending topic's unanswered questions, and see whether any turns on the other's subject. The two most likely to fail are `the_number_system` on `the_format`, which may be closer to independent, and `validation` on `binding_time`.\n\n**The predicate notation is the exception to the machinery group blocking nothing.** Every finding in the stack states its region in it, so a change there rewrites predicates written under the old form, and predicates are append-only so the rewrite is not available. Its two remaining open questions are worth closing ahead of stack work rather than in topic order."
+note = "**One expert, and it is the coordinator's own derivation, which is the tier most likely to be wrong.** Recorded so dispatch has something stated to follow and something specific to attack. Derived from the `what` sentence of each topic row and nothing else, by one test: can this topic's subject be stated at all without a decision belonging to that one.\n\n**No predicate, because none in this registry can express it.** The coordinates are topics rather than `dimension` rows, exactly as `every_canon_sentence_names_the_prefix_it_quantifies_over` records for its own structural claim.\n\n**Filed `normative` after being written `argument`, and the correction is worth stating because it is forced rather than chosen.** All twenty-one declared dimensions are numeric or machine axes: widths, signedness, rounding, overflow, arity, container, alignment, threads, target features, toolchain, build profile. Four axes have been declared since, `occupancy`, `association`, `leaf_aliasing` and `phase`, and each is about a placement, a term or a grid, so the sentence holds at the larger set. **None can express a region over the canon's own contents**, so a reasoned structural claim has no way to say where it holds, and the check refusing an `argument` with no region is correct to fire on it. That leaves `normative` and `definition` as the only kinds a structural claim can take, whether or not it was reasoned rather than imposed. **The gap is real and is not closed by this row**: either the dimension vocabulary grows an axis over the canon's own structure, or the notation's two region-free kinds are permanently doing duty for a third thing nobody named.\n\n**The group split is the load-bearing claim rather than the individual edges.** If the frame topics turn out to sit in the stack rather than around it, the order changes for most of the rows beneath them.\n\n**Checkable rather than arguable**: take an edge, read the depending topic's unanswered questions, and see whether any turns on the other's subject. The two most likely to fail are `the_number_system` on `the_format`, which may be closer to independent, and `validation` on `binding_time`.\n\n**The predicate notation is the exception to the machinery group blocking nothing.** Every finding in the stack states its region in it, so a change there rewrites predicates written under the old form, and predicates are append-only so the rewrite is not available. Its two remaining open questions are worth closing ahead of stack work rather than in topic order."
 provenance = ["panel::202608072330_the-numeral-canon-panel::223_checkpoint_the_topic_layering::#the-stack-bottom-first"]
 keywords = ["topic", "layering", "order", "depends", "rests on", "bottom up", "stack", "frame", "machinery", "dispatch", "container premise", "floor", "dependency"]
 
@@ -2206,7 +2220,7 @@ predicate = [
   "build_profile: opt level = 2, debug-assertions = off",
   "occupancy: occupancy any, by construction, no value is placed",
 ]
-note = "**The predicate above is one instrument's and the standing says so.** It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\n**Two instruments do meet, and they meet on the diagnosis rather than on a region.** The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\n**The second arrival is genuine and is the establishing seat's own word.** It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\n**The shipped `has_additive_identity` implements the superseded claim.** Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much."
+note = "**The predicate above is one instrument's and the standing says so.** It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\n**Two instruments do meet, and they meet on the diagnosis rather than on a region.** The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\n**The second arrival is genuine and is the establishing seat's own word.** It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\n**The shipped `has_additive_identity` implements the superseded claim.** Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much.\n\n**The crate has been corrected since.** `has_additive_identity` now asks the cancellation question at each admitted magnitude, its tests hold it equal to an enumeration of the set at a whole-step format and at a half-step one among others, and the crate's design states the same, so `shipped` above names the crate the two instruments ran against. The stamped row's phase clause is not corrected, and `question::how_the_stamped_spine_rows_phase_clause_gets_corrected` still holds that."
 provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
 keywords = ["phase", "additive identity", "whole multiple", "quantum", "biased grid", "half step", "zero on the grid", "affine predicate", "membership"]
 
