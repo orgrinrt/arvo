@@ -7,7 +7,9 @@ placement gives that signature at sole occupancy. Its sum, difference, negation,
 format's own, the same slot the format's oracle returns for every pair, as is its conversion onto
 another signature, and its comparison is the members' order. It ships the doors in and out, one of
 them for a host integer at its own width, the additive and the multiplicative identity where the
-format has one, and the aliases `Uint`, `Int`, `USize` and `ISize` for the integer points.
+format has one, and the aliases `Uint`, `Int`, `USize` and `ISize` for the integer points with `Fix` and `UFix` for
+the fixed-point ones. `Accumulator` sums up to a declared count of values exactly and comes back to
+a value once.
 
 Whether a debug build aborts when a result leaves the range is the consumer's to choose, as a second
 parameter: `Abort` by default, or `Quiet`, where the completion the overflow policy gives is what the
