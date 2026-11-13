@@ -1,0 +1,43 @@
+diff --git a/mock/lints/code_only_source.rs b/mock/lints/code_only_source.rs
+index 08875406..82c73578 100644
+--- a/mock/lints/code_only_source.rs
++++ b/mock/lints/code_only_source.rs
+@@ -35,6 +35,38 @@ pub fn code_only(ctx: &LintContext) -> String {
+     blank(ctx.source(), ctx.tree(), &kinds)
+ }
+ 
++/// Every line of every comment in the file, with its 1-based line number.
++///
++/// Doc comments and block comments included, each line of a block comment on
++/// its own. A marker written in a string literal is not here, which is the
++/// point: a lint asking what a comment says is asking the one parse, not a
++/// scan for `//`.
++pub fn comment_lines<'a>(ctx: &'a LintContext<'a>) -> Vec<(usize, &'a str)> {
++    let source = ctx.source();
++    let mut out = Vec::new();
++    let mut cursor = ctx.tree().walk();
++    'walk: loop {
++        let node = cursor.node();
++        if COMMENTS.contains(&node.kind()) {
++            let text = &source[node.start_byte() .. node.end_byte()];
++            for (i, line) in text.lines().enumerate() {
++                out.push((node.start_position().row + i + 1, line));
++            }
++        } else if cursor.goto_first_child() {
++            continue;
++        }
++        loop {
++            if cursor.goto_next_sibling() {
++                continue 'walk;
++            }
++            if !cursor.goto_parent() {
++                break 'walk;
++            }
++        }
++    }
++    out
++}
++
+ /// A file's source with every comment blanked and its literals left whole.
+ ///
+ /// For a repository lint reading a source file through the view, where the text
