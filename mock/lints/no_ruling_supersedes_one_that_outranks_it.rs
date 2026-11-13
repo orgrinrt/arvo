@@ -56,6 +56,13 @@ const LINT: &str = "no-ruling-supersedes-one-that-outranks-it";
 /// for the one comparison below and ranks nothing else.
 const TIERS: [&str; 4] = ["open", "in_force", "stated", "ratified"];
 
+/// The edges that retire what they name, whole or in part.
+///
+/// `amends` retires the sentences it quotes, and a sentence he stamped is no
+/// more an unratified row's to retire than the whole row is. `corrects` is not
+/// here: it changes a reading and leaves what the target says untouched.
+const EDGES: [&str; 2] = ["supersedes", "amends"];
+
 /// Where a tier sits, or `None` for a spelling the schema has not seen.
 ///
 /// An unknown spelling is left alone rather than guessed at. The schema refuses
@@ -82,7 +89,12 @@ impl RepoLint for NoRulingSupersedesOneThatOutranksIt {
             let Some(mine) = text(ctx.registry(), q, "rung").and_then(rank) else {
                 continue;
             };
-            for target in list(ctx.registry(), q, "supersedes") {
+            let edges = EDGES.iter().flat_map(|edge| {
+                list(ctx.registry(), q, edge)
+                    .into_iter()
+                    .map(move |t| (*edge, t))
+            });
+            for (edge, target) in edges {
                 let dead = format!("ruling::{target}");
                 // A target naming no ruling row is the engine's
                 // `unknown-row-reference` to report, and answering a question
@@ -102,7 +114,7 @@ impl RepoLint for NoRulingSupersedesOneThatOutranksIt {
                     LINT,
                     None,
                     format!(
-                        "`{q}` sets `rung` to `{mine_word}` and `supersedes` names \
+                        "`{q}` sets `rung` to `{mine_word}` and `{edge}` names \
                          `{target}`, whose `rung` is `{theirs_word}`. This row therefore \
                          reports a decision he stamped as retired, on the authority of one \
                          he did not. Only he retires what he ratified. If this row \
@@ -227,6 +239,23 @@ mod tests {
             ("ruling::he_stamped_this", &[("rung", "ratified")]),
         ]);
         assert!(f.is_empty(), "{f:?}");
+    }
+
+    #[test]
+    fn a_stated_ruling_amending_a_ratified_one_is_reported() {
+        let f = findings(&[
+            ("ruling::he_never_stamped_this", &[
+                ("rung", "stated"),
+                ("amends", "he_stamped_this"),
+            ]),
+            ("ruling::he_stamped_this", &[("rung", "ratified")]),
+        ]);
+        assert_eq!(f.len(), 1, "{f:?}");
+        assert!(
+            f[0].contains("`amends`"),
+            "the report names the edge it read: {}",
+            f[0]
+        );
     }
 
     /// A target naming no ruling row is the engine's report to make.

@@ -155,7 +155,7 @@ holds = [
   "target_features: target features any",
 ]
 fails = [
-  "total_width: W in {6, 7}",
+  "total_width: W in 3..=7",
   "fraction_width: F = 0",
   "signedness: signedness = signed",
   "overflow_policy: overflow policy = saturate",
@@ -164,7 +164,7 @@ fails = [
   "threads: threads = 1",
   "target_features: target features any",
 ]
-witness = "At signed saturating and `F = 0`, two independently written models measure the law failing: `93_probes/p7` gives 47.72% of triples at `W = 7`, and `97_probes/p2` gives 34.52% at `W = 6`. The mechanism is that a one-sided clamp is a congruence and a two-sided one is not."
+witness = "At signed saturating and `F = 0`, two independently written models measure the law failing: `93_probes/p7` at every width it ran, from 23.44% of triples at `W = 3` to 47.72% at `W = 7`, and `97_probes/p2` 34.52% at `W = 4`, the same count p7 gives there. The mechanism is that a one-sided clamp is a congruence and a two-sided one is not."
 topic = "algebraic_laws"
 note = "`F = 0` is necessary and it is not sufficient, and the unqualified form of this sentence is false. The strategy consolidation records that this is the **third** time the qualifier has been lost from the sentence in this panel's own history: it appears unqualified at `35:311` where it originated, at `94:887`, and in the standing workspace rule `arvo-always-optimal-internals.md`, which was a live licence to emit a wrong rewrite until it was corrected during that unit. The unsigned holds region also swept `F in 0..2`; only the `F = 0` slice holds, and the `F > 0` slice is carried by `multiplicative_associativity_under_wrapping`'s fails region, since the mechanism is the same rescale."
 gap = "The signed cell restricted to a declared non-negative operand window is established to hold at `W in {4, 5, 6}` and is on neither list here, the cell being otherwise identical to the failing one. `dimension::operand_window` declares the axis that separates them, and the cell is held by a row of its own, `law::distributivity_recovered_under_declared_nonnegative_operand_window`. The strategy unit records it as its only positive law result and its cleanest region-scoped arm."

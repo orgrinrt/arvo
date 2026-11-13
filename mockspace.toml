@@ -38,30 +38,16 @@ primary_domain_macro = "strategy"
 primary_domain_label = "Strategies"
 
 # Layer labels by depth index, one per depth the dependency graph
-# actually produces. The graph currently has ten depths (0 to 9); the
-# previous list had seven, so depths 7 to 9 rendered as "Other" and
-# "L2 substrate" appeared four times. Fixed as item 3 of D14 in
-# design_rounds/202607290050_topic.the-restructure-widens.md.
-#
-# These describe what occupies each depth, which is computed from real
-# dependency edges. They are deliberately NOT the L0a / L0 / L0.5 / L1
-# / L2 / L3 numbering in mock/DESIGN.md.tmpl, because the two genuinely
-# disagree about structure rather than about naming: the graph puts
-# arvo-hash beside arvo-tensor at depth 6, and arvo-refit beside the
-# algorithm crates at depth 8, where the document calls them L2, L1 and
-# L1. That disagreement is a finding for the restructure round, not
-# something to paper over by relabelling here.
+# actually produces. The five crates in the tree give three depths (0 to
+# 2), and each comment names the crates the graph puts at that depth.
+# The entries for depths 3 to 9 named only crates of the layout removed
+# on 2026-08-08 and are gone with it.
+# FIXME(e29c8e60d390): the three labels are the old ones and do not
+# describe what now sits at each depth.
 layers = [
-  "L0 root",              # arvo-transparent
-  "L0 strategy",          # arvo-strategy
-  "L0 storage",           # arvo-storage
-  "L0.5 bit contracts",   # arvo-bits-contracts
-  "L0.5 contracts",       # arvo-bits, arvo-mask-contracts, arvo-numeric-contracts
-  "unoccupied",           # no crate sits at this depth today
-  "L1 value storage",     # arvo-hash, arvo-tensor
-  "L1 mask storage",      # arvo-bitmask
-  "L2 algorithms",        # arvo-comb, arvo-graph, arvo-refit, arvo-sparse
-  "L3 spectral"           # arvo-spectral
+  "L0 root",              # arvo-bits, arvo-format
+  "L0 strategy",          # arvo-placement
+  "L0 storage",           # arvo-numeral, arvo-strategy
 ]
 
 # Domain kind labels for STRUCTURE.md domain items table
@@ -266,6 +252,21 @@ build = "error"
 push = "error"
 
 [lints.a-ratified-ruling-names-its-ratifier]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-amendment-quotes-the-sentence-it-replaces]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-proposal-supersedes-a-ratified-one]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-ratification-names-a-record-of-his-words]
 commit = "error"
 build = "error"
 push = "error"
@@ -1181,6 +1182,20 @@ type = "string"
 required = false
 description = "How a row reached `ratified`: what was put to him, the options it was chosen among, and his answer verbatim. Present on a `ratified` row and absent otherwise, which is what separates a blessing from somebody having typed the word. The options belong here because an answer recorded without them says a choice was made and not which one, and that has already sent a settled question back to him. Where he answered something other than what was asked, which is common and is usually the most valuable part, say so: the gap between the question and the answer is a finding about how the question was framed."
 
+# FIXME(bc400834f3a7): the pairing of `stamped_by` and `stamp` is unchecked until arvo pins the lint pack past `cbca5f0`.
+[[registry.namespace.field]]
+name = "stamped_by"
+type = "string"
+required = false
+description = "Which route decided this row on a provisional stamp, where one did: `coordinators` where the three coordinators converged on it, `experts` where two domain experts agreed after a panel stretch. A stamp approves the work depending on the row and is never the final say: he is asked to make it formal and his answer can overturn it. Beside the tier rather than on it, so a stamped row keeps the `rung` it has. A row that is merely unratified carries no stamp; this is for a row a stamp actually decided. Present together with `stamp` or not at all, which `a-provisional-stamp-is-not-a-ratification` in the lint pack checks once arvo takes the pack at a revision that has it."
+values = ["coordinators", "experts"]
+
+[[registry.namespace.field]]
+name = "stamp"
+type = "string"
+required = false
+description = "What the stamp decided and why, where it is recorded, and the question ticket asking him to make it formal, named as ticket and the id in backticks. Comes off when a ratified row settles the same thing."
+
 [[registry.namespace.field]]
 name = "topic"
 type = "topic"
@@ -1247,6 +1262,18 @@ name = "corrects"
 type = "ruling[]"
 required = false
 description = "Rows whose recorded reading this corrects without replacing what they say. Distinct from superseding: the corrected row still holds, and what changes is what somebody had taken it to mean."
+
+[[registry.namespace.field]]
+name = "amends"
+type = "ruling[]"
+required = false
+description = "Rows of which this replaces one sentence or more and leaves the rest standing. The third edge beside `supersedes` and `corrects`: superseding says the whole row is dead, and correcting says none of what it says changes, while an amendment changes what it says in the sentences named at `amended` and nowhere else. The amended row stays live and is cited for what it still holds; a citation leaning on a replaced sentence is a citation of this row."
+
+[[registry.namespace.field]]
+name = "amended"
+type = "string[]"
+required = false
+description = "For each row named under `amends`, the sentence it replaces, one entry each, written `<slug>: <the sentence>` with the sentence copied from that row's `says` as it stands. Copied rather than described, so a reader sees what no longer holds without opening the other row, and so `an-amendment-quotes-the-sentence-it-replaces` can find it there. Two sentences of one row are two entries."
 
 [[registry.namespace.field]]
 name = "key"
@@ -1407,6 +1434,32 @@ name = "supersedes"
 type = "proposal[]"
 required = false
 description = "Proposals this replaces. Panels iterate on each other's work within a unit and across units, and a superseded proposal stays as the record of what was tried."
+
+[[registry.namespace.field]]
+name = "corrects_note"
+type = "ruling[]"
+required = false
+description = "Ratified rulings whose `note` has gone stale, which this proposal corrects without editing them. A ratified row is edited only by him, so the correction stands here until he takes it, and `says` gives what the note should say in place of the sentences under `note_said`."
+
+[[registry.namespace.field]]
+name = "note_said"
+type = "string[]"
+required = false
+description = "The stale sentences, each `<slug>: <sentence copied from that ruling's note>`, one entry per sentence, every slug one named under `corrects_note`."
+
+# FIXME(bc400834f3a7): the pairing of `stamped_by` and `stamp` is unchecked until arvo pins the lint pack past `cbca5f0`.
+[[registry.namespace.field]]
+name = "stamped_by"
+type = "string"
+required = false
+description = "Which route decided this proposal on a provisional stamp, where one did: `coordinators` or `experts`, as on a ruling. A stamped proposal is still a proposal and not canon; the stamp says the work depending on it may go on until he answers. A proposal that is merely unratified carries none."
+values = ["coordinators", "experts"]
+
+[[registry.namespace.field]]
+name = "stamp"
+type = "string"
+required = false
+description = "What the stamp decided and why, where it is recorded, and the question ticket asking him to make it formal, named as ticket and the id in backticks. Comes off when a ruling ratifies the proposal."
 
 [[registry.namespace.field]]
 name = "note"
