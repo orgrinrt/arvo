@@ -116,3 +116,138 @@ never a runtime check needs no exception carved into it for ingest.
 
 1. It is ratified as it reads.
 2. It stays his direction and is not canon.
+
+## Proposals
+
+A proposal binds nothing while it is a proposal, so none of these is doing
+harm where it stands. They are here because each one says something the record
+is against, and a row of that kind should not sit beside the provisional ones
+as though the only thing it lacked was a stamp. Where the row it runs into was
+ratified by the experts and not by him, the panel can make the correction
+itself under the standing rule, and that is given as an option.
+
+### `proposal::a_law_is_read_off_the_algebra_and_never_declared`
+
+The row says a law is read off the algebra and never declared, since a declared
+law compiles while false. It began as one seat's candidate, offered and not
+settled, and four later files restate it.
+
+It runs into `ruling::the_canon_does_not_police_what_shape_a_law_takes`, his
+direction, which makes the requirement on a law functional and not structural:
+it has to work, meaning it reaches one lowered path. The row's reasoning agrees
+with that test. The word "never" does not, since it forbids a shape.
+
+1. The row is reworded to the functional form: a law a consumer relies on is
+   one the design can check or derive, and a declared law is not banned as a
+   shape.
+2. The row leaves the canon and becomes a design choice that has to be derived
+   from his functional test.
+3. The row is withdrawn and the ruling stands alone.
+
+### `proposal::no_multiplicative_structure_survives_a_nonzero_fraction_width`
+
+The row says no multiplicative structure survives a nonzero fraction width for
+any policy, sign domain, range or rescale spelling. It was measured over total
+widths three to seven, and its own gate already refused it promotion for
+saying "any range" over a band of five widths.
+
+It runs into `ruling::the_work_is_predicated_arms_composed`, which is ratified:
+a finding holds in the region it was shown in. The mechanism the row gives, that
+the rescale destroys ambient associativity before any reduction acts, is not
+what is refused.
+
+1. The sentence is narrowed to the band it was measured over, with the
+   mechanism kept as the reason.
+2. It is split into the measured claim over its band and the structural
+   argument, the argument carrying its own region and no measured weight.
+3. The wider range is measured and filed as a new claim, and this one is
+   narrowed.
+
+### `proposal::a_value_takes_no_ordering_trait_from_core`
+
+The row says a value in a crate that does not introduce fallibility implements
+neither `PartialOrd` nor `Ord`, because `partial_cmp` returns a bare `Option`.
+It was written in the round that brought the numeral crate in, as a consequence
+of a lint, and there are no words of his on ordering traits anywhere.
+
+It runs into `ruling::warms_objective_is_the_intuitive_best_choice`, ratified,
+under which Rust is the baseline for intuition, and into
+`ruling::the_imitation_is_ergonomics_not_an_arithmetic_boundary`. A numeral
+that cannot be compared with `<` is a departure from that baseline. The guard
+that refuses a bare `Option` also names its own escape for parity with a
+standard trait.
+
+1. The traits are implemented under the guard's escape for parity with a
+   standard trait, and the inherent comparison stays beside them.
+2. The refusal is kept and recorded as a departure from the baseline that he
+   has blessed.
+3. The order is offered through a trait of the stack's own, and parity with
+   the standard traits is a separate decision.
+
+### `proposal::the_old_facade_returns_as_value_aliases_and_no_facade`, its no-facade clause
+
+That the old numerals return is his. The clause that no facade crate returns,
+so a consumer names the crate that owns the thing, settles a question he was
+asked and answered with "Decide at the port". It is the same question as
+arvo's public name at the port, which has four options of its own.
+
+1. The clause is struck and the row says only that the numerals return as
+   aliases of the value crate.
+2. The clause is kept as the working assumption of the first slice, marked as
+   one, with the question held open for the port.
+
+### `proposal::the_old_storage_crate_is_gone`, its width-wrapper clause
+
+The row says the old storage crate does not return as a crate, which his words
+neither back nor refute, since they leave the taxonomy open. The part in
+question is where it sends the width wrappers away in favour of bare integers
+at const generic positions. His sentence is that every family returns in
+function, and his bound on bare integers there is narrower than the row makes
+it: only in const generics, and only where the typed way is truly painful.
+
+1. The row says the width wrappers return in function with their home open, and
+   no longer names bare integers as what stands in for them.
+2. The row states his bound with its exception as he gave it.
+3. He says whether the width wrappers are among the families he wants back.
+
+### `proposal::const_availability_is_the_axis_and_a_trajectory_condition_is_not_an_arm`, its second and third sentences
+
+The first sentence, that a condition available at const time may gate an arm
+whatever it reads, is his. The other two say a condition not available at const
+time may not, and that a trajectory condition known only at runtime stays a
+finding. The file that carries his words says in so many words that they do not
+settle this: he said what a const predicate may reach and not what happens
+beyond it.
+
+1. The row keeps its first sentence and drops the rest.
+2. The second and third sentences become a proposal of their own, derived from
+   `ruling::never_a_runtime_check_and_one_lowered_path`, and go to two
+   independent agreements.
+3. He says whether a condition that is not const-available may gate an arm at
+   all.
+
+### `proposal::the_concepts_edge_is_not_an_order_and_wrapping_is_the_test`, its appeal to his intent
+
+The row says wrapping sits in the kernel of the concept on his four times
+restated intent that a numeral behaves as a native one would. He has since said
+that intent is about ergonomics and is no statement about arithmetic
+boundaries, in `ruling::the_imitation_is_ergonomics_not_an_arithmetic_boundary`.
+The measured part of the row, that no order is compatible with wrapping, does
+not depend on the appeal.
+
+1. The clause is dropped and the measured claim is kept.
+2. Wrapping's place in the kernel is derived again from an intent that does
+   reach arithmetic boundaries, and cited.
+3. Wrapping stays the first test of a proposed boundary as a matter of method,
+   with no appeal to his intent.
+
+### `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`, its last sentence
+
+The last sentence says the number of derived facts that must be available as
+types is at least two. `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`,
+ratified by the experts, answers the same question with two arms and no single
+number: one output at sole occupancy and three at shared.
+
+1. The panel restates the sentence per occupancy and drops the single number.
+2. The panel withdraws the sentence as answered by the ruling and keeps the
+   argument about packaging.
