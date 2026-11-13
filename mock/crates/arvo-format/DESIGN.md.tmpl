@@ -1896,6 +1896,167 @@ holds unsigned at widths three to eight and fails signed at 28, 160, 780 and 351
 three to six. `a * (b + c) == (a * b) + (a * c)` holds unsigned under wrapping and under saturation at
 widths three to eight, and fails signed under saturation at widths six and seven.
 
+## The exact step's ending, shared
+
+The product, the quotient and the conversion each end the same way, so the ending is written once, in
+a crate-private module the three read. Each forms a numerator in the four-limb integer and a
+denominator `D` from one up to `2^128 - 1`. The floor of the numerator over `D` is the slot, and the
+residue over `D`, reduced to lowest terms, is the remainder, or the position is past an end of the
+slot index on the numerator's sign. A numerator that leaves the four limbs is past the index too,
+since `D` is under `2^128`. A corner is held when the index holds its slot, counted one slot past the
+floor when the remainder is not zero, since a rounding mode may take it there. Each operation also
+starts from the phase as `n / d` in lowest terms with `d` positive, which the module reduces once.
+
+## Division, the quotient by a member that is non-zero by type
+
+The quotient is admitted by the same rule as the product. Two members at a constant quantum `q` are
+`(phase + a) q` and `(phase + b) q`, so their quotient is `(phase + a) / (phase + b)`, which is the
+member at position `(phase + a) / ((phase + b) q) - phase`. Wherever `phase + b` is not zero that is a
+function of the declared signature, at every phase and every radix, and at the zero it is not a
+function at all. So the quotient is admitted over a divisor that cannot be zero, and the rest of this
+section is how a divisor gets that property without a check on its value.
+
+### The divisor is a type, and its zero is refused before the program runs
+
+`Divisor<F>` is a slot of `F` that is not the zero member, and it has two constructors. Neither
+inspects a value at run time: `ruling::never_a_runtime_check_and_one_lowered_path` rules out a test on
+the divisor, and a constructor that classifies a slot and answers with a maybe is the same test moved
+one call earlier.
+
+`Divisor::<F>::constant::<B>()` takes the slot as a const parameter. Its obligation refuses a `B`
+outside the slot range, and a `B` at which `phase + B` is zero, so a constant zero divisor stops the
+build where the constant is named.
+
+`Divisor::<F>::of(slot)` takes a slot read at run time, and is admitted exactly when `F` has no zero
+member. With the phase `n / d` in lowest terms, `phase + b` is zero only at `b = -n / d`, an integer
+only when `d` is one. So a format has no zero member when its phase denominator is past one, or when
+`-n` lies outside its slot range: a half-offset grid qualifies, and so does a consumer's own slot range
+that starts at one. A plain integer range does not. Dividing two integers read at run time therefore
+needs the consumer to declare the range without the zero, and a format whose range holds the zero
+divides only by constants. That is the compromise of this stance, stated rather than hidden: the type
+carries the property, and a range that holds the zero cannot carry it.
+
+`of` takes any slot, a non-member among them, as every operation here does. The one non-member slot
+that is the zero exists only where `d` is one and `-n` lies outside the range, and the step answers
+for it the way it answers for any non-member result past the index, saturating, toward the positive
+end. That is a branch in the step over an input outside the format, the kind the product's step
+already takes, and no validation of a member. `Divisor::slot` reads the slot back.
+
+### The exact step
+
+Write `u = r^max(e, 0)` and `v = r^max(-e, 0)`. The position is the numerator
+`d (n + a d) v - n (n + b d) u` over the denominator `d (n + b d) u`, both negated when `n + b d` is
+below zero so that `D` is positive. Unlike the product's, this `D` depends on the divisor, so it is
+formed per call in the four limbs and narrowed to the unsigned 128-bit integer, which the obligation
+guarantees for every member divisor. `d (n + a d) v` is under `2^190` times `v`, and a numerator that
+leaves the limbs is past the index. The phase's term `n (n + b d) u` is at most `2^63` times `D`, so
+under `2^191`. Then the shared ending places it.
+
+### What it refuses, and what is not yet admitted
+
+One obligation carries four conditions, forced by `quotient_position` and asked without forcing by
+`is_divisible`. Only the first is a refusal by design.
+
+A phase whose denominator is zero names no member, and nothing is computed for it.
+
+A magnitude-indexed quantum is not yet admitted, for the reason the product gives: the applied map has
+no magnitude coordinate to land the quotient at. The ticket is
+`arvo_quotient_and_conversion_over_a_magnitude_indexed_quantu`.
+
+A denominator `d |n + b d| u` past `2^128 - 1` at some member divisor is not yet admitted, under the
+remainder coordinate's ticket `arvo_s_exact_position_carries_no_remainder_denominator_past`.
+`|n + b d|` is affine in `b`, so the larger of the two range ends decides it. At zero phase and
+exponent zero every 64-bit range is admitted; at a phase of a third over a 64-bit range the
+denominator is near `3 * 3 * 2^64`, which is admitted too.
+
+A quotient the slot index cannot carry is not yet admitted, under the ticket
+`arvo_quotient_and_conversion_positions_past_the_slot_index`. For a fixed divisor the position is
+affine and monotone in the dividend, and for a fixed dividend it is monotone in the divisor on each
+side of the pole at `b = -n / d`. So its extremes over the member pairs are among eight corners: the
+dividend's two range ends against the divisor's two range ends and the two members nearest the pole,
+the smallest with `n + b d` above zero and the largest with it below. Each corner that is a member is
+placed by the step itself and counted held as the shared ending says. At a negative exponent the
+quotient by a divisor next to the pole grows by `r^-e`, so a narrow range at a fine quantum is the case
+this condition holds out.
+
+### The operation and the surface
+
+`Div` is the operation, of arity two. `Divisor` is the divisor's type. `quotient_position` is the
+exact step, `div` the composition with `adapt` under one declared signature with the dither passed
+through, and `is_divisible` the verdict. The functions are `const fn` and the crate root re-exports
+all of them.
+
+### The laws this section owes tests for
+
+The denotation, at every member pair with a non-zero divisor at widths one to eight against the
+applied map's oracle fed the exact rational position, every mode and shipped policy, at exponents on
+both sides of zero over both families, at a phase and at radix ten, with a planted step that forgets
+the phase's term run through the same machinery and reported. An edge sweep at widths nine to 64 of
+both families, at whole and fractional exponents and at a phase, that places the eight corners and the
+points next to them against the shared wide oracle, and checks the verdict against an independent
+count of them; the quotient positions at the divisor's extremes are those corners. Each condition on
+both sides of its boundary through `is_divisible`, and compile-fail pairs with a twin differing in the
+offending token: a constant divisor at the zero beside one at one, `of` over a format holding a zero
+member beside one that does not, and a magnitude-indexed quantum beside a constant one.
+
+## Conversion, one member placed on another signature's grid
+
+A member of `F` at slot `a` is `(phase_F + a) q_F`, and on the grid of a target format `T` it sits at
+position `(phase_F + a) q_F / q_T - phase_T`. That is a function of the source format and the target
+signature together, at every pair of phases and every pair of radixes, so the conversion is admitted
+by the same rule: one exact step onto the target's grid, and one adaptation under the target's
+signature.
+
+A conversion is one placement, never a chain through a format between the two. Two adaptations round
+twice, and the second reads a value the first has already moved, so a chain is a composition a
+consumer writes from two calls, where the double rounding is visible, rather than something one name
+does inside.
+
+### The exact step
+
+With each phase `n / d` in lowest terms and, per format, `U = r^max(e, 0)` and `V = r^max(-e, 0)`, the
+position is the numerator `(n_F + a d_F) U_F V_T d_T - n_T d_F V_F U_T` over the denominator
+`D = d_F V_F U_T d_T`. The radixes are read separately, so a radix ten source on a radix two target is
+the same step. `D` is a constant of the pair and the obligation holds it under `2^128`.
+`U_F V_T d_T` is formed once, and where it leaves the four limbs any member but the one whose factor
+`n_F + a d_F` is zero is past the index. The target's term `n_T d_F V_F U_T` is at most `2^63` times
+`D`. Then the shared ending places it.
+
+### What it refuses, and what is not yet admitted
+
+One obligation carries four conditions, forced by `converted_position` and asked without forcing by
+`is_convertible`. Only the first is a refusal by design.
+
+Either phase with a zero denominator names no member, and nothing is computed for it.
+
+A magnitude-indexed quantum on either side is not yet admitted, under
+`arvo_quotient_and_conversion_over_a_magnitude_indexed_quantu`.
+
+A denominator `d_F V_F U_T d_T` past `2^128 - 1` is not yet admitted, under
+`arvo_s_exact_position_carries_no_remainder_denominator_past`. At zero phases at radix two this reads
+`max(-e_F, 0) + max(e_T, 0) <= 127`.
+
+A converted member the slot index cannot carry is not yet admitted, under
+`arvo_quotient_and_conversion_positions_past_the_slot_index`. The position is affine and increasing in
+`a`, so the two range ends decide it, each counted one slot past its floor when it is off the grid.
+
+### The operation and the surface
+
+`Convert` is the operation, of arity one, naming the source format beside the target signature it is a
+function of. `converted_position` is the exact step, `convert` the composition with `adapt` under the
+target's signature with the dither passed through, and `is_convertible` the verdict. The functions are
+`const fn` and the crate root re-exports all of them.
+
+### The laws this section owes tests for
+
+Every member of the source at widths one to eight placed on targets at exponents on both sides of the
+source's, across families, between a phase and none, and between radix two and radix ten, against the
+applied map's oracle, every mode and shipped policy. A conversion onto the source's own grid is the
+identity at every member. An edge sweep at widths nine to 64 at the two range ends and the members next
+to them, against the shared wide oracle, with the verdict checked against an independent count. And
+compile-fail pairs: a magnitude-indexed source beside a constant one, and a pair whose denominator
+passes `2^128 - 1` beside one that fits.
+
 ## Open items
 
 Six gaps this crate does not close, catalogued here rather than left unrecorded once the design
