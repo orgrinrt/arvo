@@ -470,7 +470,7 @@ fn report(results: &[BlockResult]) -> ToolReport {
     }
     let count = |v: Verdict| results.iter().filter(|r| r.verdict == v).count();
     s.push_str(&format!(
-        "\n{} block(s): ok={} far={} miss={} unjudged={} noevidence={} nopassage={} noparse={} nofile={}\n",
+        "\n{} block(s): ok={} far={} miss={} unjudged={} noevidence={} nopassage={} noparse={} nofile={}, {} evidence line(s) skipped\n",
         results.len(),
         count(Verdict::Ok),
         count(Verdict::Far),
@@ -480,6 +480,7 @@ fn report(results: &[BlockResult]) -> ToolReport {
         count(Verdict::NoPassage),
         count(Verdict::NoParse),
         count(Verdict::NoFile),
+        results.iter().map(|r| r.skipped).sum::<usize>(),
     ));
     ToolReport::reported(s, results.len())
 }

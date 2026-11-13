@@ -20,7 +20,7 @@
 //! there is. Every gate reports it as passing, because passing and never
 //! running produce the same output.
 //!
-//! **The tier it guards is the thing that makes this worth refusing.** arvo's
+//! The tier it guards is the thing that makes this worth refusing. arvo's
 //! crate layout above the bottom three was removed on purpose, and a lint
 //! enforcing that layout's rules is the removed tier surviving in the one place
 //! nobody reads: it is not a document mentioning a dead crate, it is a rule
@@ -33,18 +33,18 @@
 //! fixed in a separate change, and this one survived that sweep because a lint
 //! is source rather than prose and the sweep was over prose.
 //!
-//! **What this reads is the gate, not every mention of a crate name.** A lint's
+//! What this reads is the gate, not every mention of a crate name. A lint's
 //! module doc names crates freely, its tests plant fixtures with
 //! `with_crate_name("arvo-bits", ...)`, and neither is a claim that the crate is
 //! in the tree. Only the early-return comparison against `ctx.crate_name` says
 //! the lint governs that crate and nothing else, so only that is read.
 //!
-//! **A gate in a comment is not a gate.** The match is over the file with its
+//! A gate in a comment is not a gate. The match is over the file with its
 //! comments blanked by `code_only_source`, so a commented-out gate on a dead
 //! crate, in a line comment or a block comment, governs nothing and is not
 //! reported. Literals are left whole, because the crate name is one.
 //!
-//! **A lint rather than a tool.** There is no state of this repository in which
+//! A lint rather than a tool. There is no state of this repository in which
 //! a lint may guard a crate that does not exist, so this refuses rather than
 //! reports.
 
@@ -113,7 +113,7 @@ fn gated_crates(source: &str) -> BTreeSet<String> {
 /// Split from the trait impl so a test can point it at a tree it built with a
 /// crate set it chose, and so the one place that decides is one function.
 ///
-/// **An empty crate set returns nothing rather than refusing everything.** A
+/// An empty crate set returns nothing rather than refusing everything. A
 /// context that resolved no crates is a context that cannot answer the
 /// question, and reading its silence as "no crate exists" would turn every
 /// scoped lint in the directory into a finding at once. That is the shape a

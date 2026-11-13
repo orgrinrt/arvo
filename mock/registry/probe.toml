@@ -1213,7 +1213,7 @@ keywords = ["answer-differing", "arms", "refutation", "region census", "oracle",
 #
 # Ten instruments sat behind those two derivations with no row naming any of
 # them, so every result in both was unciteable and the `evidence` field of any
-# proposal drawn from them would have had nothing to point at. The five below
+# proposal drawn from them would have had nothing to point at. The ones named below
 # are the ones a claim in this pass rests on.
 
 [[probe]]

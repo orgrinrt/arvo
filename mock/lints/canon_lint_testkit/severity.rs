@@ -12,7 +12,7 @@ use mockspace::{Level, LintMode, Severity};
 /// does not run at that gate while its own default still says it blocks. A test
 /// asserting the default alone passes through exactly that.
 ///
-/// **What is read.** The user layer: a `[lints.<lint>]` table with those three
+/// What is read. The user layer: a `[lints.<lint>]` table with those three
 /// keys, spelled as the engine spells a level. The presets a config may extend
 /// and a `--severity-override` on the command line also apply in the engine and
 /// are not read here, so a result from this is the repository's own config

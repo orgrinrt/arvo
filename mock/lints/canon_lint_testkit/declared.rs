@@ -14,7 +14,7 @@ use super::repo_root;
 /// one which never registers, and both are the same defect to a reader looking
 /// for it by either.
 ///
-/// **The needle is built rather than written**, because the engine's own scan
+/// The needle is built rather than written, because the engine's own scan
 /// over these files is textual and matched this line the first time it was
 /// spelled out, so a file that declares no lint declared one and the cdylib
 /// stopped compiling. It is the scan reporting exactly what it looks for, and

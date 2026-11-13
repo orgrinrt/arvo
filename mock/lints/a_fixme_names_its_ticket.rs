@@ -13,7 +13,7 @@
 //! (`code_only_source::comment_lines`), so a `FIXME` inside a string literal
 //! is never a marker either.
 //!
-//! **What is checked is the shape of the id, not its existence.** A ticket id
+//! What is checked is the shape of the id, not its existence. A ticket id
 //! is a snake_case key of at least twelve characters with an underscore in it,
 //! and the tracker that says whether it resolves is outside this repository, so
 //! a lint here cannot read it. A key that is well formed and names nothing
@@ -78,7 +78,13 @@ fn marker_text(line: &str) -> Option<&str> {
             break;
         }
     }
-    rest.trim_start().strip_prefix("FIXME")
+    let after = rest.trim_start().strip_prefix("FIXME")?;
+    // A word that merely starts with it (`FIXMEs`, `FIXMEd`) is prose.
+    after
+        .chars()
+        .next()
+        .is_none_or(|c| c == '(' || c == ':' || c.is_whitespace())
+        .then_some(after)
 }
 
 /// Whether what follows `FIXME` is `(<ticket id>):`.
@@ -180,6 +186,17 @@ mod tests {
     fn a_comment_mentioning_the_word_further_in_is_prose_and_silent() {
         assert!(hits("//! impl below is marked `// FIXME:` at the declaration.\n").is_empty());
         assert!(hits("// a later FIXME(op) will say.\n").is_empty());
+    }
+
+    /// A word that only starts with the marker is prose, and the bare marker
+    /// beside it still fires.
+    #[test]
+    fn control_a_word_starting_with_the_marker_is_silent_and_the_marker_is_not() {
+        assert!(hits("// FIXMEs here are tracked in the lane.\n").is_empty());
+        assert!(hits("// FIXMEd long ago.\n").is_empty());
+        assert_eq!(hits("// FIXME fix this\n").len(), 1);
+        assert_eq!(hits("// FIXME: fix this\n").len(), 1);
+        assert_eq!(hits("// FIXME\n").len(), 1);
     }
 
     #[test]

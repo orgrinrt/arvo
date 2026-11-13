@@ -9,19 +9,19 @@
 //! (`ctx.tree()`), so the question is what the nodes say and not how the line
 //! happens to start.
 //!
-//! **A hit is one of three things.** An `extern crate` declaration naming the
+//! A hit is one of three things. An `extern crate` declaration naming the
 //! crate, whatever precedes it and whatever it is aliased to. A path whose first
 //! segment is the crate (or an alias a declaration or a `use` gave it), in a
 //! `use`, an expression, a type, a pattern or a macro's own path (`alloc::vec![]`),
 //! with or without a leading `::`. And the same inside a macro's arguments, which
 //! the grammar leaves as raw tokens and a path walk would never reach.
 //!
-//! **A path that merely contains the name is not a hit.** `facade::std::x` has a
+//! A path that merely contains the name is not a hit. `facade::std::x` has a
 //! root of `facade`, `my_std::x` has a root of `my_std`, and `extern crate stdx;`
 //! names a different crate: each is decided by comparing a whole segment, never a
 //! prefix of text.
 //!
-//! **Each line is reported once**, however many nodes on it name the crate.
+//! Each line is reported once, however many nodes on it name the crate.
 
 use std::collections::BTreeSet;
 
@@ -42,19 +42,35 @@ pub fn lines_naming(ctx: &LintContext, krate: &str) -> Vec<usize> {
     let mut names: BTreeSet<String> = BTreeSet::from([krate.to_string()]);
     // Aliases first, so a use above the declaration that gave the alias is still
     // found: `extern crate std as s;` may come after `s::process::exit(0);`.
-    collect_aliases(ctx.tree().root_node(), src, krate, &mut names);
+    // A pass sees the aliases the pass before it found, so `use s as t;` after
+    // `extern crate std as s;` gives `t` too, whichever comes first in the file.
+    loop {
+        let known = names.clone();
+        collect_aliases(ctx.tree().root_node(), src, krate, &known, &mut names);
+        if names.len() == known.len() {
+            break;
+        }
+    }
     let mut lines = BTreeSet::new();
     walk(ctx.tree().root_node(), src, krate, &names, &mut lines);
     lines.into_iter().collect()
 }
 
 fn text<'a>(node: Node, src: &'a [u8]) -> &'a str {
-    node.utf8_text(src).unwrap_or("")
+    let t = node.utf8_text(src).unwrap_or("");
+    // `r#std` names `std`: a raw identifier is the same name with the prefix dropped.
+    t.strip_prefix("r#").unwrap_or(t)
 }
 
 /// The names the crate is known by: its own and every alias a declaration or a
 /// `use` gives it.
-fn collect_aliases(node: Node, src: &[u8], krate: &str, names: &mut BTreeSet<String>) {
+fn collect_aliases(
+    node: Node,
+    src: &[u8],
+    krate: &str,
+    known: &BTreeSet<String>,
+    names: &mut BTreeSet<String>,
+) {
     let aliased = match node.kind() {
         "extern_crate_declaration" => {
             node.child_by_field_name("name")
@@ -63,9 +79,9 @@ fn collect_aliases(node: Node, src: &[u8], krate: &str, names: &mut BTreeSet<Str
         "use_as_clause" => {
             node.child_by_field_name("path").filter(|p| {
                 if p.kind() == "self" {
-                    in_a_list_of_the_crate(node, src, krate)
+                    in_a_list_of_the_crate(node, src, known)
                 } else {
-                    names_the_crate_alone(*p, src, krate) && !is_nested_under_a_path(node)
+                    names_the_crate_alone(*p, src, known) && !is_nested_under_a_path(node)
                 }
             })
         },
@@ -78,19 +94,19 @@ fn collect_aliases(node: Node, src: &[u8], krate: &str, names: &mut BTreeSet<Str
     }
     let mut cursor = node.walk();
     for child in node.children(&mut cursor) {
-        collect_aliases(child, src, krate, names);
+        collect_aliases(child, src, krate, known, names);
     }
 }
 
 /// Whether the path is the crate and nothing more: `std` or `::std`.
-fn names_the_crate_alone(path: Node, src: &[u8], krate: &str) -> bool {
+fn names_the_crate_alone(path: Node, src: &[u8], names: &BTreeSet<String>) -> bool {
     match path.kind() {
-        "identifier" => text(path, src) == krate,
+        "identifier" => names.contains(text(path, src)),
         "scoped_identifier" => {
             path.child_by_field_name("path").is_none()
                 && path
                     .child_by_field_name("name")
-                    .is_some_and(|n| text(n, src) == krate)
+                    .is_some_and(|n| names.contains(text(n, src)))
         },
         _ => false,
     }
@@ -98,14 +114,14 @@ fn names_the_crate_alone(path: Node, src: &[u8], krate: &str) -> bool {
 
 /// Whether the clause sits directly in the braces of `std::{ .. }` or
 /// `::std::{ .. }`, so a `self` in it is the crate itself.
-fn in_a_list_of_the_crate(clause: Node, src: &[u8], krate: &str) -> bool {
+fn in_a_list_of_the_crate(clause: Node, src: &[u8], names: &BTreeSet<String>) -> bool {
     clause
         .parent()
         .filter(|list| list.kind() == "use_list")
         .and_then(|list| list.parent())
         .filter(|outer| outer.kind() == "scoped_use_list" && !is_nested_under_a_path(*outer))
         .and_then(|outer| outer.child_by_field_name("path"))
-        .is_some_and(|path| names_the_crate_alone(path, src, krate))
+        .is_some_and(|path| names_the_crate_alone(path, src, names))
 }
 
 /// Whether the path node stands inside the braces of a use that has a path in
@@ -233,7 +249,7 @@ fn names_a_crate_in_tokens(tree: Node, src: &[u8], names: &BTreeSet<String>) -> 
             && tokens[i - 1].kind() == "::"
             && matches!(
                 tokens[i - 2].kind(),
-                "identifier" | "crate" | "self" | "super"
+                "identifier" | "crate" | "self" | "super" | "metavariable"
             );
         let after_a_member = i >= 1 && tokens[i - 1].kind() == ".";
         !after_a_segment && !after_a_member
@@ -386,6 +402,39 @@ mod tests {
     fn control_a_self_alias_inside_another_crates_braces_is_no_alias() {
         let src = "use other::{self as s};\nfn f() { s::process::exit(0); }\n";
         assert!(std_lines(src).is_empty());
+    }
+
+    #[test]
+    fn a_raw_identifier_names_the_same_crate() {
+        assert_eq!(std_lines("extern crate r#std;\n"), vec![1]);
+        assert_eq!(std_lines("fn f() { r#std::process::exit(0); }\n"), vec![1]);
+        assert_eq!(
+            std_lines("extern crate std as r#s;\nfn f() { s::y(); }\n"),
+            vec![1, 2]
+        );
+    }
+
+    #[test]
+    fn an_alias_of_an_alias_names_the_crate() {
+        let src = "extern crate std as s;\nuse s as t;\nfn f() { t::x(); }\n";
+        assert_eq!(std_lines(src), vec![1, 2, 3]);
+        let reversed = "fn f() { t::x(); }\nuse s as t;\nextern crate std as s;\n";
+        assert_eq!(std_lines(reversed), vec![1, 2, 3]);
+    }
+
+    #[test]
+    fn control_a_macro_metavariable_root_is_no_hit() {
+        let src = "macro_rules! m { ($x:ident) => { $x::std::y() } }\n";
+        assert!(std_lines(src).is_empty());
+    }
+
+    /// An alias is collected over the whole file, so one module's `use std as s`
+    /// reads as the crate in a module where `s` is another crate.
+    #[test]
+    #[ignore = "catalogue: aliases are not scoped to their module; tracked #crate_root_paths_reads_a_use_alias_in_one_module_as_the_crat"]
+    fn an_alias_in_one_module_is_not_the_crate_in_another() {
+        let src = "mod m { use std as s; }\nmod n { use other as s; fn f() { s::x(); } }\n";
+        assert_eq!(std_lines(src), vec![1]);
     }
 
     #[test]

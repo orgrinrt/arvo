@@ -307,3 +307,19 @@ fn control_a_margin_that_is_not_a_number_is_inconclusive() {
         rep.outcome
     );
 }
+
+/// The totals line carries the evidence lines that were left out, so a block that
+/// reads `OK` over one of two files does not hide that the other was never read.
+#[test]
+fn the_totals_count_the_evidence_lines_left_out() {
+    let b = "## proposal::a\nevidence: gone.md:1-2\nevidence: src.md:2\n\
+             passage: \"asks the cancellation question at each admitted magnitude\"\n";
+    let r = verify(b, &read, 0);
+    assert_eq!(r.iter().map(|x| x.skipped).sum::<usize>(), 1);
+    let report = super::report(&r);
+    assert!(
+        report.output.contains("1 evidence line(s) skipped"),
+        "{}",
+        report.output
+    );
+}

@@ -41,6 +41,10 @@ const NAME: &str = "no-registry-comment-counts-its-own-rows";
 /// the file itself holds.
 const COUNTED: [&str; 4] = ["row", "rows", "entry", "entries"];
 
+/// The words that stand for the rows of the file in a count with no noun: "The
+/// four below were not in the sweep", "six follow".
+const PLACE: [&str; 4] = ["below", "above", "follow", "follows"];
+
 struct NoRegistryCommentCountsItsOwnRows;
 impl Lint for NoRegistryCommentCountsItsOwnRows {
     fn name(&self) -> &'static str {
@@ -93,15 +97,44 @@ fn counts_in_a_comment(line: &str) -> Vec<(&str, String)> {
         return Vec::new();
     };
     let words: Vec<&str> = comment.split_whitespace().collect();
-    words
-        .windows(2)
-        .filter_map(|pair| {
-            let noun = pair[1]
-                .trim_matches(|c: char| !c.is_ascii_alphabetic())
-                .to_ascii_lowercase();
-            (is_count(pair[0]) && COUNTED.contains(&noun.as_str())).then(|| (pair[0], noun))
-        })
-        .collect()
+    let mut out = Vec::new();
+    let mut i = 0;
+    while i < words.len() {
+        // A number spelled with a space (`twenty two rows`) is counted from its last word.
+        let continues = words.get(i + 1).is_some_and(|w| is_count(w));
+        if is_count(words[i])
+            && !continues
+            && let Some((at, noun)) = what_is_counted(&words, i)
+        {
+            out.push((words[i], noun));
+            i = at;
+        }
+        i += 1;
+    }
+    out
+}
+
+/// What the number at `words[from]` counts: a noun this lint names within the next
+/// three words (`17 rows`, `17 new rows`, `fifteen of the rows`), or the place
+/// word that stands for the rows themselves (`the four below`, `six follow`),
+/// with the word index it was found at.
+fn what_is_counted(words: &[&str], from: usize) -> Option<(usize, String)> {
+    let ends_a_clause = |w: &str| w.ends_with([',', ';', ':', '.', ')']);
+    if ends_a_clause(words[from]) {
+        return None;
+    }
+    for at in from + 1 .. words.len().min(from + 4) {
+        let word = words[at]
+            .trim_matches(|c: char| !c.is_ascii_alphabetic())
+            .to_ascii_lowercase();
+        if COUNTED.contains(&word.as_str()) || (at == from + 1 && PLACE.contains(&word.as_str())) {
+            return Some((at, word));
+        }
+        if ends_a_clause(words[at]) {
+            return None;
+        }
+    }
+    None
 }
 
 /// The number words a count is written in, the units and the tens a compound is
@@ -146,7 +179,7 @@ const NUMBER_WORDS: [&str; 32] = [
 /// Digits, or a number word, or a hyphenated compound of them
 /// (`twenty-two`). A count written in words is the same second copy of a fact
 /// as one in digits, and three registry comments were written that way and
-/// passed this lint when it read digits only. `one` is not read as a count:
+/// passed this lint when it read digits only. A bare `one` is not read as a count:
 /// "one row per crate" and "one entry whose scope" state a shape, not a tally,
 /// and every such comment in the registry did. The digit `1` still is. A
 /// compound spelled with a space
@@ -161,7 +194,11 @@ fn is_count(word: &str) -> bool {
         return true;
     }
     let lower = w.to_ascii_lowercase();
-    lower.split('-').all(|part| NUMBER_WORDS.contains(&part))
+    let parts: Vec<&str> = lower.split('-').collect();
+    // `one` states a shape alone and is a unit inside a compound: `twenty-one`.
+    parts
+        .iter()
+        .all(|p| NUMBER_WORDS.contains(p) || (parts.len() > 1 && *p == "one"))
 }
 
 #[cfg(test)]
@@ -252,6 +289,44 @@ mod tests {
         assert!(f[1].1.contains("twenty-two entries"), "{}", f[1].1);
         assert!(f[2].1.contains("dozen rows"), "{}", f[2].1);
         assert!(f[3].1.contains("two rows"), "{}", f[3].1);
+    }
+
+    /// The three comments the ticket was filed over, in the words the registry held
+    /// them in before they were reworded. Each says how many rows follow without the
+    /// shape `<number> <noun>` the lint first read, and each has to fail.
+    #[test]
+    fn the_three_comments_the_ticket_names_are_each_reported() {
+        let originals = [
+            "# The six below were added after the first port of op's rulings, which reported\n",
+            "# The four below were not in the sweep that produced this file, because that\n",
+            "# is at `109:156-159`, which names eleven axes in one line. Fifteen of the\n\
+             # sixteen rows below cite that one file, which is a member file from topic\n",
+        ];
+        for text in originals {
+            let f = findings(&[("a.toml", text)]);
+            assert_eq!(f.len(), 1, "{text}: {f:?}");
+        }
+    }
+
+    /// A count with a word between it and the noun, a compound ending in `one`, and a
+    /// place word instead of a noun.
+    #[test]
+    fn a_count_survives_a_word_before_its_noun_and_a_compound_ending_in_one() {
+        let f = findings(&[(
+            "a.toml",
+            "# Twenty-one rows.\n# Seventeen new rows follow.\n# 17 proposal rows below.\n\
+             # The nine above.\n",
+        )]);
+        assert_eq!(f.len(), 4, "{f:?}");
+    }
+
+    #[test]
+    fn control_a_number_that_is_not_counting_this_files_rows_stays_silent() {
+        let f = findings(&[(
+            "a.toml",
+            "# Seven axes below.\n# The first six of these were read.\n# one row per crate.\n",
+        )]);
+        assert!(f.is_empty(), "{f:?}");
     }
 
     /// `one` states a shape and is not a tally, so these stay silent while the

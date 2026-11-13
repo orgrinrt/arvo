@@ -13,19 +13,19 @@
 //! meant was another, and every gate stayed green because the slug half of the
 //! link resolves in some namespace and the namespace half was never asked.
 //!
-//! **Both halves are read.** A backticked span that is exactly `a::b`, with `a`
+//! Both halves are read. A backticked span that is exactly `a::b`, with `a`
 //! a namespace the registry declares, has to name a row of that namespace. Where
 //! it names none and the slug is the id of a row in another namespace, the
 //! finding says which, because that is the wrong-namespace shape and the repair
 //! is to write the namespace the row is in.
 //!
-//! **A registry file stem is not a namespace.** `proposal-the-later-topics` is
+//! A registry file stem is not a namespace. `proposal-the-later-topics` is
 //! a file that holds `proposal` rows, so `proposal-the-later-topics::<slug>`
 //! resolves nowhere, and the engine's own `cargo mock query` refuses it while
 //! the other lints passed. A span whose first segment is a declared namespace
 //! followed by `-` and more words is refused as that.
 //!
-//! **What is not read.** A span of three or more segments is a citation into
+//! What is not read. A span of three or more segments is a citation into
 //! the research tree and is another lint's. A first segment that is no declared
 //! namespace (`panel`, `std`, a crate) names no registry row and says nothing
 //! here. The `quote`, `provenance` and `lives` fields are skipped: the first is

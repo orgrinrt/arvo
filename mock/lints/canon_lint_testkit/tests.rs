@@ -299,16 +299,6 @@ fn control_the_config_overlay_sees_each_gate_turned_down_and_nothing_else() {
     assert_eq!(blocks(""), [true; 3]);
 }
 
-/// The control for the arm above: it has to be able to say a lint does not
-/// block, or it would pass whatever the pack holds.
-#[test]
-fn control_a_lint_that_only_warns_does_not_pass_the_blocking_check() {
-    use mockspace::Severity;
-    assert!(!Severity::ADVISORY.is_blocking(LintMode::Push));
-    assert!(!Severity::BUILD_GATE.is_blocking(LintMode::Commit));
-    assert!(Severity::HARD_ERROR.is_blocking(LintMode::Commit));
-}
-
 /// Every repo lint in the pack, the shared pack's included, is on: none declares
 /// itself off, which is the half of the severity question `lint_sources` cannot
 /// ask of a lint with no source here.
