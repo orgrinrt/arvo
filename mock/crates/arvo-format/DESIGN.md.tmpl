@@ -1197,7 +1197,13 @@ already carries, so it joins the same way any instance does and nothing about th
 to compute something to make it work would not be a convention arvo supports badly; it would be a gap
 in the primitives, which is what the standards bound is there to find: every operation arvo declares
 is a function of the declared width. So the interesting output of this section is its refusals, and
-both of them below are claims about this crate rather than about MATLAB.
+each of them below is a claim about this crate rather than about the standard.
+
+Each standard is a submodule of `standards`: `standards::matlab` and `standards::ieee754`. A reserved
+convention joins as one more module beside them, built the same way from the same coordinates, and
+nothing in either existing module grows for it. The parity suite of each standard is its consistency
+bench and its regression test at once: a change anywhere under it that moves an answer the standard
+documents fails there first.
 
 ### The coordinate map, which is five names for things that exist
 
@@ -1217,7 +1223,7 @@ overflow action.
 convention's math settings are part of the signature rather than an argument: two settings over one
 format are two declared signatures.
 
-MATLAB's property names stay unbackticked. Backticks here mean an item in this source tree, and four
+These live in `standards::matlab`. MATLAB's property names stay unbackticked. Backticks here mean an item in this source tree, and four
 of these are another system's vocabulary that never will be.
 
 The negation is the one place the spelling fights. Written directly it is an expression in a const
@@ -1290,6 +1296,121 @@ required to be reported: `half_up` alone, `toward_zero` where `floor` belongs at
 zero slot read as negative, the shift always toward positive infinity, the shift composed with `floor`,
 and the shift over a doubled denominator, which overflows the ratio's own maximum over much of the
 domain and so cannot be formed there at all.
+
+Every parity arm carries a planted wrong mode or policy, and a test requires the planted arm to be
+reported. An arm that cannot fail asserts nothing, and the planted one is what shows it can. Beside the
+five published declarations, the MATLAB suite sweeps every rounding method and both overflow actions
+against MathWorks' definitions written as integer rules, over positions on and off the ties at both
+signs and past both ends of the range.
+
+### IEEE 754, one composition at the standard's own parameters
+
+IEEE 754 states every interchange format by three parameters: a radix, a precision `p` and a largest
+exponent `emax`, with `emin = 1 - emax`. `Interchange<A, P, EMAX>` is that statement as a format, with
+the radix carried by the ambient domain `A`. Nothing about binary or decimal is a case of its own:
+`Binary<P, EMAX>` and `Decimal<P, EMAX>` are aliases at `BinaryRationals` and `DecimalRationals`, and
+`Binary16`, `Binary32`, `Binary64`, `Decimal32` and `Decimal64` are aliases at the standard's table of
+parameters.
+
+| What IEEE 754 calls it | What carries it |
+|---|---|
+| radix | the ambient domain, `A` |
+| precision, p | `P`, read by the slot range |
+| emax, and emin as `1 - emax` | `EMAX`, read by the quantum law |
+| the significand | `Significand<A, P>`, the slot range |
+| the exponent range | `ExponentRange<P, EMAX>`, the quantum law |
+| rounding-direction attribute | `Rounding` |
+
+The quantum law is the magnitude-indexed family. Its smallest step is `radix^(emin - (p - 1))`, so its
+base exponent is `2 - emax - p`, and it rises one exponent per magnitude over `2 emax` magnitudes, up to
+the step of the top binade. The slot range is the significand, symmetric at `radix^p - 1` and declared
+`p + 1` wide, because the standard's significand is sign and magnitude rather than two's complement. The
+union over magnitudes of each magnitude's multiples is then exactly the standard's finite values, the
+subnormals at the smallest magnitude with no case naming them. Each derived quantity, the base, the
+count and the bound, is computed in an impl body, the way `FractionLength` computes its negation, so
+nothing sits in a bound.
+
+A sign and magnitude significand owes two things the slot range's own obligation does not ask. Its
+ambient carries values below zero, since the symmetric range names them, and its precision is at least
+one digit, since a significand of none holds only zero. The bounds sit on a range of their own, which
+carries the slot range's obligation as it is, and the significand's `ADMITTED` forces its own
+obligation and then that one. So `adapt` and the range predicate refuse an unsigned ambient or a
+precision of zero where the format is used, two compile-fail cases show each, and
+`is_sign_and_magnitude` stands beside the obligation as its verdict, asking the same question without
+forcing it. The free verdict does not see it: `slots::is_admissible` reads the range alone and never an
+implementor's own `ADMITTED`, so for a significand that is not sign and magnitude it answers true while
+the build is refused where the format is used. That is a gap on the `Slots` contract rather than on
+this standard, and it carries a ticket.
+
+The shipped `Floating<25, -149, 254>` and `Binary32` share the quantum law and differ at one slot, the
+two's complement end `-2^24` the symmetric range leaves out. Below the top magnitude the value that slot
+names is a member a magnitude up, so the two sets agree there. At the top magnitude it names `-2^128`,
+which binary32 does not hold: the standard rounds it to an infinity. So the shipped point is binary32
+with one extra member, and that one member is why the standard's declaration carries a slot range of its
+own rather than aliasing the point. The parity suite sweeps the shipped point through the binary32
+arm against the host and asserts that it misses exactly once, at `-2^128`.
+
+### The rounding directions, and where a result lands
+
+Four of the five rounding-direction attributes land on a shipped mode, named under the standard's
+names in `standards::ieee754::rounding_direction` as type aliases: `roundTiesToEven` is `HalfEven`,
+`roundTowardPositive` is `Ceil`, `roundTowardNegative` is `Floor` and `roundTowardZero` is
+`TowardZero`. An alias, because a re-export under another name becomes the path the compiler prints for
+the mode everywhere, and a consumer of `TowardZero` who never read IEEE 754 would meet its name in a
+diagnostic. `roundTiesToAway` is MATLAB's Round under another name, so it is the same alias and has
+no mode; the decimal arms run it through that alias, since the standard requires it of a decimal
+format. `Attributed<F, R, O>` names the declared signature a format and a direction make; the overflow
+policy stays the consumer's, for the reason the refusals below give.
+
+The standard rounds onto a floating format at the precision the binade allows, and a result rounding up
+out of the top of a binade is the next binade's smallest member. `adapt` takes a position in slots and
+carries no magnitude, so where a result lands is the caller's composition: the finest magnitude at which
+the rounded position lands in the slot range, which is what `panic_on_overflow` answers. A magnitude
+finer than the right one holds the position only past the significand, and a coarser one rounds at a
+step the standard does not, so the finest one in range is the standard's. The parity suite writes this
+over the public surface, as it writes the Round alias, and it is not a mechanism of this crate. It is
+written once, over anything that says whether a position overflows and what it reads off as, so a
+declared signature and the ties-away alias land through the same search.
+`mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is where it was first shown.
+
+### What IEEE 754 meets that this crate does not carry
+
+Four holes, each a test and each a ticket the source names where the hole is.
+
+An infinity. Past the largest finite member the standard answers an infinity under round to nearest
+and under the direction away from zero, and the representable set has no member there. So the overflow
+parity holds only where the standard's answer is finite: toward zero, and the directed modes on their
+own side, which saturation meets. That is a gap in the primitives, not a policy.
+
+The signed zero. The value set has one zero, and the standard's negative zero compares equal to it, so
+the arms compare values and say so. A test lands a value the host rounds to negative zero and asserts the one zero.
+
+Binary128 and decimal128. Their significands need 114 bits, past the slot ladder's 64, so `Binary<113,
+16383>` and `Decimal<34, 6144>` are refused where the slot range's obligation is forced, with the
+diagnostic it already supplies.
+
+Putting a value on the format at all. Conversion onto and off an interchange format refuses, and so do
+addition, multiplication and division, since the applied map carries no magnitude coordinate. So the
+landing the parity suites use is the test tree's own search over magnitudes, the parity is of the
+adaptation of a value at the magnitude that search finds, and no sum, product or quotient runs through
+both sides yet. A test asserts all four verdicts false on binary32 and decimal32.
+
+### Where the IEEE expected side comes from
+
+The host's conversion to binary32 and binary64 is round to nearest with ties to even by the language's
+definition, and the directed modes step from it to the neighbour on the wrong side of the exact value,
+by its bits. Both formats run under the four directions the binary formats carry. Binary16 has no host
+type, so it reads two things: the standard's published encodings, decoded from their bits, and the
+standard's digit rule written in integers at radix two, under the same four directions. Decimal has
+neither, so the digit rule is its whole expected side, at radix ten and under all five directions: drop
+the digits past the precision or below the smallest exponent, round the dropped part by the direction's
+rule, and carry. The rule is written once over any radix, and each format's precision and exponent
+range are written into it as the standard's numbers. None of it reads arvo code; a separate arm pins
+the format's own exponent range to those numbers.
+
+The fimath sweep runs at every word length from one to sixty-four, signed and unsigned, and beside
+those at several fraction lengths, positive, zero and negative, with the range and the wrap computed
+from the shape.
 
 ## The two symmetries of the grid, and where the map commutes with them
 

@@ -1,0 +1,130 @@
+//--------------------------------------------------------------------------------------------------
+// Copyright (c) 2026                   orgrinrt                 ort@hiisi.digital
+// SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
+//--------------------------------------------------------------------------------------------------
+
+//! MATLAB's `fi` and `fimath`, under MATLAB's names.
+//!
+//! A fi names a signedness, a word length and a fraction length, and a fimath a
+//! rounding method and an overflow action. Each is one of this crate's
+//! coordinates under a different word. The two refusals, Round having no mode and
+//! word lengths past the slot ladder, are claims about this crate rather than
+//! about MATLAB.
+
+use crate::ambient::{BinaryRationals, UnsignedBinaryRationals};
+use crate::format::{Format, Phase};
+use crate::quantum::{Exponent, MagnitudeCount, Quantum};
+use crate::slots::{Signed, Slots, Unsigned};
+
+/// MATLAB's fraction length, as the quantum law it names.
+///
+/// The convention counts fractional bits and this crate carries the exponent of
+/// the step, and the two are negations of each other. Written as
+/// `Constant<{-F}>` that negation is an expression in a const generic argument,
+/// which needs a feature this workspace forbids; written as a law of its own it
+/// is an ordinary associated const in an impl body, where an arbitrary
+/// expression is legal.
+///
+/// `F` is signed because MATLAB's fraction length runs negative, and a negative
+/// one lands on a positive exponent with no case of its own.
+pub struct FractionLength<const F: i32>;
+
+impl<const F: i32> Quantum for FractionLength<F> {
+    const BASE: Exponent = Exponent::of(-F);
+    const MAGNITUDES: MagnitudeCount = MagnitudeCount::ONE;
+    // The constant family. A fixed-point convention has one step rather than a
+    // ladder of them, so nothing moves with magnitude and there is one magnitude
+    // to move over.
+    const SLOPE: Exponent = Exponent::ZERO;
+}
+
+/// A signed MATLAB `fi` of `W` bits at fraction length `F`.
+///
+/// The bound is the slot range's own, so a word length the ladder does not admit
+/// is refused where it is written. MathWorks documents the word length to 65535
+/// and the ladder stops at 64, so this refuses declarations a consumer writes
+/// without thinking about them. That is a gap in the primitives and it is pinned
+/// as a compile-fail case rather than worked around here.
+pub struct Fi<const W: u32, const F: i32>;
+
+impl<const W: u32, const F: i32> Format for Fi<W, F>
+where
+    Signed<W>: Slots,
+{
+    type Ambient = BinaryRationals;
+    type Quantum = FractionLength<F>;
+    type Slots = Signed<W>;
+
+    // Binary-point scaling puts the grid through zero. The coordinate is written
+    // rather than assumed, because the same convention's slope-and-bias scaling
+    // does not, and that is a different declaration rather than a flag on this
+    // one.
+    const PHASE: Phase = Phase::ZERO;
+}
+
+/// An unsigned MATLAB `fi` of `W` bits at fraction length `F`.
+pub struct Ufi<const W: u32, const F: i32>;
+
+impl<const W: u32, const F: i32> Format for Ufi<W, F>
+where
+    Unsigned<W>: Slots,
+{
+    type Ambient = UnsignedBinaryRationals;
+    type Quantum = FractionLength<F>;
+    type Slots = Unsigned<W>;
+
+    const PHASE: Phase = Phase::ZERO;
+}
+
+/// A `fi` under a `fimath`, which is the declared signature the pair names.
+///
+/// The convention's math settings are part of the signature rather than an
+/// argument to an operation, because two settings over one format are two
+/// declared signatures and not one with a switch.
+pub type FiMath<const W: u32, const F: i32, R, O> =
+    crate::adapt::Signature<Fi<W, F>, crate::adapt::Adapt<R, O>>;
+
+/// An unsigned `fi` under a `fimath`.
+pub type UfiMath<const W: u32, const F: i32, R, O> =
+    crate::adapt::Signature<Ufi<W, F>, crate::adapt::Adapt<R, O>>;
+
+/// MATLAB's rounding methods, under MATLAB's names.
+///
+/// Re-exports rather than new types, so the mapping is something the compiler
+/// agrees with rather than a sentence in a document. Five of the six land here.
+/// Nearest is `HalfUp`: MathWorks documents it as ties toward positive infinity,
+/// which is what `half_up` denotes.
+///
+/// `half_up` sends a tie toward positive infinity whatever the sign, so a tie at
+/// -2.5 goes to -2. It is not the `HALF_UP` of Java or Python, which sends that
+/// tie the other way on the negative side, and that one is MATLAB's Round below.
+pub mod rounding_method {
+    pub use crate::rounding::{
+        Ceil as Ceiling,
+        Floor,
+        HalfEven as Convergent,
+        HalfUp as Nearest,
+        TowardZero as Zero,
+    };
+
+    // MATLAB's Round takes a tie away from zero. It is not one of the six modes
+    // and is not meant to be one, because the canon reaches it as an alias,
+    // `toward_zero` applied to the position shifted half a step toward its sign.
+    //
+    // A caller writes it from the public surface with no operation this crate
+    // does not already have: `floor` where the position is a tie whose slot is
+    // below zero, `half_up` everywhere else. Below zero a tie away from zero is
+    // a tie downward, which is `floor`, and off a tie every nearest rule agrees.
+    // `Exact::is_tie` and `Exact::slot` are what it reads, so it is available to
+    // a caller holding a position it did not build. `tests/ties_away/mod.rs`
+    // writes it, and `tests/the_ties_away_alias.rs` sweeps it against the
+    // integer rule at both ends of the index, at both parities of the
+    // denominator, and over ratios that carry past the index.
+}
+
+/// MATLAB's overflow actions, under MATLAB's names.
+///
+/// Both land, so this map is total and nothing here is marked.
+pub mod overflow_action {
+    pub use crate::overflow::{Saturate, Wrap};
+}

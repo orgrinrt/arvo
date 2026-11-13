@@ -142,6 +142,27 @@ fn a_word_length_past_the_slot_ladder_is_refused_at_the_declaration() {
     t.compile_fail("tests/ui/word_length_past_the_ladder.rs");
 }
 
+/// The IEEE 754 formats whose significand the ladder does not carry.
+///
+/// Binary128 and decimal128 each need 114 bits with the sign. The standard's
+/// own parameters name them, so they are ordinary declarations, and the refusal
+/// is the slot range's width bound met where the significand is used.
+#[test]
+fn the_128_bit_interchange_formats_are_refused_where_used() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/binary128_past_the_ladder.rs");
+    t.compile_fail("tests/ui/decimal128_past_the_ladder.rs");
+}
+
+/// A sign and magnitude significand's own obligation: a signed ambient and a
+/// precision of at least one, each refused where the range is read.
+#[test]
+fn a_significand_that_is_not_sign_and_magnitude_is_refused_where_used() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/an_unsigned_interchange_is_refused.rs");
+    t.compile_fail("tests/ui/a_precision_of_zero_is_refused.rs");
+}
+
 /// Which verbs force the format's own obligation, pinned from the refusing side.
 ///
 /// Three runtime arms pin the routes that reach a value without meeting it, and
