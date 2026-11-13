@@ -1320,20 +1320,30 @@ subnormals at the smallest magnitude with no case naming them. Each derived quan
 count and the bound, is computed in an impl body, the way `FractionLength` computes its negation, so
 nothing sits in a bound.
 
+A sign and magnitude significand owes two things the slot range's own obligation does not ask. Its
+ambient carries values below zero, since the symmetric range names them, and its precision is at least
+one digit, since a significand of none holds only zero. Both are asserted in a const the range's bounds
+force, so `adapt` and every reader of the range refuse an unsigned ambient or a precision of zero where
+the format is used, and two compile-fail cases show each.
+
 The shipped `Floating<25, -149, 254>` and `Binary32` share the quantum law and differ at one slot, the
 two's complement end `-2^24` the symmetric range leaves out. Below the top magnitude the value that slot
 names is a member a magnitude up, so the two sets agree there. At the top magnitude it names `-2^128`,
 which binary32 does not hold: the standard rounds it to an infinity. So the shipped point is binary32
 with one extra member, and that one member is why the standard's declaration carries a slot range of its
-own rather than aliasing the point. The parity suite asserts both halves.
+own rather than aliasing the point. The parity suite sweeps the shipped point through the binary32
+arm against the host and asserts that it misses exactly once, at `-2^128`.
 
 ### The rounding directions, and where a result lands
 
-Four of the five rounding-direction attributes land on a shipped mode, re-exported under the
-standard's names in `standards::ieee754::rounding_direction`: `roundTiesToEven` is `HalfEven`,
+Four of the five rounding-direction attributes land on a shipped mode, named under the standard's
+names in `standards::ieee754::rounding_direction` as type aliases: `roundTiesToEven` is `HalfEven`,
 `roundTowardPositive` is `Ceil`, `roundTowardNegative` is `Floor` and `roundTowardZero` is
-`TowardZero`. `roundTiesToAway` is MATLAB's Round under another name, so it is the same alias and has
-no mode. `Attributed<F, R, O>` names the declared signature a format and a direction make; the overflow
+`TowardZero`. An alias, because a re-export under another name becomes the path the compiler prints for
+the mode everywhere, and a consumer of `TowardZero` who never read IEEE 754 would meet its name in a
+diagnostic. `roundTiesToAway` is MATLAB's Round under another name, so it is the same alias and has
+no mode; the decimal arms run it through that alias, since the standard requires it of a decimal
+format. `Attributed<F, R, O>` names the declared signature a format and a direction make; the overflow
 policy stays the consumer's, for the reason the refusals below give.
 
 The standard rounds onto a floating format at the precision the binade allows, and a result rounding up
@@ -1342,7 +1352,9 @@ carries no magnitude, so where a result lands is the caller's composition: the f
 the rounded position lands in the slot range, which is what `panic_on_overflow` answers. A magnitude
 finer than the right one holds the position only past the significand, and a coarser one rounds at a
 step the standard does not, so the finest one in range is the standard's. The parity suite writes this
-over the public surface, as it writes the Round alias, and it is not a mechanism of this crate.
+over the public surface, as it writes the Round alias, and it is not a mechanism of this crate. It is
+written once, over anything that says whether a position overflows and what it reads off as, so a
+declared signature and the ties-away alias land through the same search.
 `mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is where it was first shown.
 
 ### What IEEE 754 meets that this crate does not carry
@@ -1365,10 +1377,18 @@ diagnostic it already supplies.
 
 The host's conversion to binary32 and binary64 is round to nearest with ties to even by the language's
 definition, and the directed modes step from it to the neighbour on the wrong side of the exact value,
-by its bits. Binary16 has no host type, so its arms read the standard's published encodings, decoded
-from their bits. Decimal has neither, so its expected side is the standard's digit rule written in
-integers: drop the digits past the precision or below the smallest exponent, round the dropped part by
-the direction's rule, and carry. None of the three reads arvo code.
+by its bits. Both formats run under the four directions the binary formats carry. Binary16 has no host
+type, so it reads two things: the standard's published encodings, decoded from their bits, and the
+standard's digit rule written in integers at radix two, under the same four directions. Decimal has
+neither, so the digit rule is its whole expected side, at radix ten and under all five directions: drop
+the digits past the precision or below the smallest exponent, round the dropped part by the direction's
+rule, and carry. The rule is written once over any radix, and each format's precision and exponent
+range are written into it as the standard's numbers. None of it reads arvo code; a separate arm pins
+the format's own exponent range to those numbers.
+
+The fimath sweep runs at a matrix of shapes, signed and unsigned, at word lengths from one to sixty-four
+and at several fraction lengths, positive, zero and negative, with the range and the wrap computed from
+the shape.
 
 ## The two symmetries of the grid, and where the map commutes with them
 
