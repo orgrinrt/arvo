@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: division is not yet admitted over a magnitude-indexed quantum: a slot names a different value at each magnitude, and the applied map carries no magnitude coordinate to land the quotient at yet
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::division::Divisible::<Probe>::ADMITTED` failed here
+  |
+ ::: src/division.rs
+  |
+  | /         assert!(
+  | |             constant.get(),
+  | |             "division is not yet admitted over a magnitude-indexed quantum: a slot names a \
+  | |              different value at each magnitude, and the applied map carries no magnitude \
+  | |              coordinate to land the quotient at yet"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/division.rs
+  |
+  |     let () = Divisible::<F>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^

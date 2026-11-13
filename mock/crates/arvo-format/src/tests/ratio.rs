@@ -10,7 +10,7 @@
 //! law checked against them is checked against arithmetic the operation did
 //! not do. They live here because more than one operation's suite reads them.
 
-use crate::apply::{Exact, Fraction};
+use crate::apply::{Exact, Remainder};
 use crate::format::Format;
 use crate::slots::Slot;
 
@@ -103,13 +103,14 @@ impl Ratio {
         self.den == 1
     }
 
-    /// The position a ratio of slots names: the slot below it and the remainder.
+    /// The position a ratio of slots names: the slot below it and the remainder,
+    /// which is in `[0, 1)` and so carries nothing into the slot.
     pub(crate) fn position(self) -> Exact {
         let whole = self.floor();
         let rest = Self::of(self.num.rem_euclid(self.den), self.den);
-        Exact::between(
+        Exact::at(
             Slot::at(whole),
-            Fraction::of(rest.num as i64, rest.den as i64),
+            Remainder::of(rest.num as u128, rest.den as u128),
         )
     }
 }

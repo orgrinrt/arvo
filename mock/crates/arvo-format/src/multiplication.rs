@@ -18,22 +18,32 @@
 //!
 //! One obligation carries four conditions: a phase that denotes, and three that
 //! are not yet admitted rather than refused, a magnitude-indexed quantum, a `D`
-//! past `2^63 - 1`, and a corner position the slot index does not hold. It is
+//! past `2^128 - 1`, and a corner position the slot index does not hold. It is
 //! forced by the exact step, and `is_multipliable` asks the same without forcing
 //! it.
-
-mod wide;
 
 use core::marker::PhantomData;
 
 use notko::Maybe;
-use wide::{Divided, Wide};
 
 use crate::adapt::{Arity, DeclaredSignature, Operation};
-use crate::apply::{Dither, Exact, Fraction, adapt};
-use crate::format::{Format, greatest_common_divisor, radix};
-use crate::quantum::{Quantum, is_constant_family};
+use crate::apply::{Dither, Exact, adapt};
+use crate::format::Format;
+use crate::placing::{
+    Placed,
+    Powers,
+    Reduced,
+    is_held,
+    over,
+    positioned,
+    powers,
+    reduced_phase,
+    saturated,
+    times,
+};
+use crate::quantum::is_constant_family;
 use crate::slots::{Slot, Slots};
+use crate::wide::Wide;
 use crate::width::Bool;
 
 /// Multiplication under one declared signature.
@@ -73,13 +83,14 @@ impl<F: Format> Multipliable<F> {
         );
         // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): the
         // position is a function of the signature here too, and only its
-        // remainder's denominator is past what a `Fraction` carries.
+        // remainder's denominator is past the unsigned 128 bits an exact position
+        // carries it over.
         assert!(
             matches!(Self::STEP, Maybe::Is(_)),
             "multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), \
              with d the phase's reduced denominator, r the radix and e the quantum's exponent, \
-             passes 2^63 - 1: an exact position carries its remainder over a positive signed \
-             64-bit denominator"
+             passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \
+             denominator"
         );
         // FIXME(arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c): the
         // corner positions are functions of the signature, and only the slot
@@ -106,62 +117,55 @@ struct Step {
     /// `r^max(e, 0)`, or nothing when it leaves the four limbs, in which case any
     /// product but zero does too.
     scale:       Maybe<Wide>,
-    /// `n d r^max(-e, 0)`, the phase's term, at most `2^126` in magnitude.
-    offset:      i128,
-    /// `D = d^2 r^max(-e, 0)`, from one up to `2^63 - 1`.
-    divisor:     u64,
+    /// `n d r^max(-e, 0)`, the phase's term, under `2^191` in magnitude.
+    offset:      Wide,
+    /// `D = d^2 r^max(-e, 0)`, from one up to `2^128 - 1`.
+    divisor:     u128,
 }
 
-/// The step's constants for `F`, or nothing where `D` is not a positive signed
-/// 64-bit value.
+/// The step's constants for `F`, or nothing where `D` is past `2^128 - 1`.
 ///
 /// A zero phase denominator, and a zero radix at a negative exponent, give no
-/// positive `D`, and the radix's own obligation refuses the second. The
-/// fraction's sign moves onto the numerator before it is reduced.
+/// positive `D`, and the radix's own obligation refuses the second.
 const fn step<F: Format>() -> Maybe<Step> {
-    let num = F::PHASE.numerator() as i128;
-    let den = F::PHASE.denominator() as i128;
-    if den == 0 {
+    let Maybe::Is(Reduced {
+        numerator: n,
+        denominator: d,
+    }) = reduced_phase::<F>()
+    else {
         return Maybe::Isnt;
-    }
-    let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
-    let common = greatest_common_divisor(num.abs(), den);
-    let (n, d) = (num / common, den / common);
-    let r = radix::<F>().base() as u64;
-    let e = <F::Quantum as Quantum>::BASE.power();
-    let (up, down) = if e < 0 { (0, e.unsigned_abs()) } else { (e.unsigned_abs(), 0) };
-    let fall = match Wide::power(r, down) {
-        Maybe::Is(p) => {
-            match p.index() {
-                Maybe::Is(v) => v,
-                Maybe::Isnt => return Maybe::Isnt,
+    };
+    let Powers {
+        up,
+        down,
+    } = powers::<F>();
+    // `d r^k`, then `D` as `d` times it. Either leaving the four limbs, or `D`
+    // leaving the host's unsigned 128-bit integer, is a `D` not yet admitted.
+    let lowered = match times(Maybe::Is(Wide::of(d)), down) {
+        Maybe::Is(v) => v,
+        Maybe::Isnt => return Maybe::Isnt,
+    };
+    let divisor = match Wide::of(d).times(lowered) {
+        Maybe::Is(v) => {
+            match v.unsigned() {
+                Maybe::Is(u) if u > 0 => u,
+                _ => return Maybe::Isnt,
             }
         },
         Maybe::Isnt => return Maybe::Isnt,
     };
-    // `d` is at most `2^63`, so `d^2` is at most `2^126` and holds.
-    let divisor = match (d * d).checked_mul(fall) {
-        Some(v) if v > 0 && v <= i64::MAX as i128 => v,
-        _ => return Maybe::Isnt,
+    // `d r^k` is at most `D`, under `2^128`, and `|n|` at most `2^63`.
+    let offset = match Wide::of(n).times(lowered) {
+        Maybe::Is(v) => v,
+        Maybe::Isnt => return Maybe::Isnt,
     };
     Maybe::Is(Step {
-        numerator:   n,
+        numerator: n,
         denominator: d,
-        scale:       Wide::power(r, up),
-        // `d r^k` is at most `D`, and `|n|` at most `2^63`.
-        offset:      n * (d * fall),
-        divisor:     divisor as u64,
+        scale: up,
+        offset,
+        divisor,
     })
-}
-
-/// Where the step put a product: past an end of the index on one side, or at a
-/// slot with a remainder over `D`.
-#[derive(Clone, Copy)]
-enum Placed {
-    /// Past the end of the index on the negative side when it says so.
-    Past(bool),
-    /// The floor slot and the remainder's numerator over `D`.
-    At(i128, u64),
 }
 
 /// `n + a d`, one factor of the numerator.
@@ -195,36 +199,14 @@ const fn placed(step: Step, a: i128, b: i128) -> Placed {
     let scaled = if product.is_zero().get() {
         product
     } else {
-        match step.scale {
-            Maybe::Is(s) => {
-                match product.times(s) {
-                    Maybe::Is(p) => p,
-                    Maybe::Isnt => return Placed::Past(negative),
-                }
-            },
+        match times(Maybe::Is(product), step.scale) {
+            Maybe::Is(p) => p,
             Maybe::Isnt => return Placed::Past(negative),
         }
     };
-    let numerator = match scaled.plus(Wide::of(-step.offset)) {
-        Maybe::Is(x) => x,
-        Maybe::Isnt => return Placed::Past(negative),
-    };
-    let Divided {
-        quotient,
-        remainder,
-    } = numerator.floor_divided(step.divisor);
-    match quotient.index() {
-        Maybe::Is(slot) => Placed::At(slot, remainder),
-        Maybe::Isnt => Placed::Past(quotient.is_negative().get()),
-    }
-}
-
-/// Whether the corner `(a, b)` is a position the index holds, counted one slot
-/// past its floor when it is not on the grid, since a mode may round it there.
-const fn corner_is_held(step: Step, a: i128, b: i128) -> Bool {
-    match placed(step, a, b) {
-        Placed::Past(_) => Bool::FALSE,
-        Placed::At(slot, remainder) => Bool::of(remainder == 0 || slot < i128::MAX),
+    match scaled.plus(step.offset.negated()) {
+        Maybe::Is(numerator) => over(numerator, step.divisor),
+        Maybe::Isnt => Placed::Past(negative),
     }
 }
 
@@ -240,35 +222,11 @@ const fn product_is_carried<F: Format>() -> Bool {
     let min = <F::Slots as Slots>::MIN.index();
     let max = <F::Slots as Slots>::MAX.index();
     Bool::of(
-        corner_is_held(step, min, min).get()
-            && corner_is_held(step, min, max).get()
-            && corner_is_held(step, max, min).get()
-            && corner_is_held(step, max, max).get(),
+        is_held(placed(step, min, min)).get()
+            && is_held(placed(step, min, max)).get()
+            && is_held(placed(step, max, min)).get()
+            && is_held(placed(step, max, max)).get(),
     )
-}
-
-/// The end of the index on the side of a position whose sign is `negative`.
-const fn saturated(negative: bool) -> Exact {
-    Exact::on_grid(Slot::at(if negative { i128::MIN } else { i128::MAX }))
-}
-
-/// The placed product as an exact position, its remainder in lowest terms.
-const fn positioned(step: Step, at: Placed) -> Exact {
-    match at {
-        Placed::Past(negative) => saturated(negative),
-        Placed::At(slot, 0) => Exact::on_grid(Slot::at(slot)),
-        Placed::At(slot, remainder) => {
-            let common = greatest_common_divisor(remainder as i128, step.divisor as i128);
-            // Both are below `D`, which the obligation holds under `2^63`.
-            Exact::between(
-                Slot::at(slot),
-                Fraction::of(
-                    (remainder as i128 / common) as i64,
-                    (step.divisor as i128 / common) as i64,
-                ),
-            )
-        },
-    }
 }
 
 /// The exact position of the product of the members at slots `a` and `b`.
@@ -285,7 +243,7 @@ const fn positioned(step: Step, at: Placed) -> Exact {
 pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Multipliable::<F>::ADMITTED;
     match Multipliable::<F>::STEP {
-        Maybe::Is(step) => positioned(step, placed(step, a.index(), b.index())),
+        Maybe::Is(step) => positioned(step.divisor, placed(step, a.index(), b.index())),
         // The obligation above has refused this format already.
         Maybe::Isnt => saturated(false),
     }
@@ -319,7 +277,7 @@ pub const fn is_multipliable<F: Format>() -> Bool {
 #[cfg(test)]
 const fn unforced_position<F: Format>(a: Slot, b: Slot) -> Maybe<Exact> {
     match Multipliable::<F>::STEP {
-        Maybe::Is(step) => Maybe::Is(positioned(step, placed(step, a.index(), b.index()))),
+        Maybe::Is(step) => Maybe::Is(positioned(step.divisor, placed(step, a.index(), b.index()))),
         Maybe::Isnt => Maybe::Isnt,
     }
 }

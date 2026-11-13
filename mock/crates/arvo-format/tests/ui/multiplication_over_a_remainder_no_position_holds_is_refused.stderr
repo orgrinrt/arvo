@@ -1,4 +1,4 @@
-error[E0080]: evaluation panicked: multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), with d the phase's reduced denominator, r the radix and e the quantum's exponent, passes 2^63 - 1: an exact position carries its remainder over a positive signed 64-bit denominator
+error[E0080]: evaluation panicked: multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), with d the phase's reduced denominator, r the radix and e the quantum's exponent, passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit denominator
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
@@ -10,8 +10,8 @@ error[E0080]: evaluation panicked: multiplication is not yet admitted where the 
   | |             matches!(Self::STEP, Maybe::Is(_)),
   | |             "multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), \
   | |              with d the phase's reduced denominator, r the radix and e the quantum's exponent, \
-  | |              passes 2^63 - 1: an exact position carries its remainder over a positive signed \
-  | |              64-bit denominator"
+  | |              passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \
+  | |              denominator"
   | |         );
   | |_________- in this macro invocation
 

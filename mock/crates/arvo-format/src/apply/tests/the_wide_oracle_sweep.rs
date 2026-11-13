@@ -143,8 +143,8 @@ fn ratios() -> impl Iterator<Item = (i64, i64)> {
 fn point(anchor: i128, num: i64, den: i64) -> Point {
     Point {
         whole: Wide::of(anchor).plus(Wide::of(num.div_euclid(den) as i128)),
-        num: num.rem_euclid(den),
-        den,
+        num:   i128::from(num.rem_euclid(den)),
+        den:   i128::from(den),
     }
 }
 

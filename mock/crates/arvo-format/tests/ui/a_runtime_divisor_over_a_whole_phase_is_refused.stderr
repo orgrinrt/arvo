@@ -1,0 +1,23 @@
+error[E0080]: evaluation panicked: Divisor::of is refused where a slot names the zero, which is wherever the phase's denominator in lowest terms is one: a slot read at run time could be that slot, and telling it apart would be a check on the value. Name the divisor with Divisor::constant, or declare a phase whose denominator is past one
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::division::NoSlotNamesTheZero::<Probe>::ADMITTED` failed here
+  |
+ ::: src/division.rs
+  |
+  |       const ADMITTED: () = assert!(
+  |  __________________________-
+  | |         no_slot_names_the_zero::<F>().get(),
+  | |         "Divisor::of is refused where a slot names the zero, which is wherever the phase's \
+  | |          denominator in lowest terms is one: a slot read at run time could be that slot, and \
+  | |          telling it apart would be a check on the value. Name the divisor with Divisor::constant, \
+  | |          or declare a phase whose denominator is past one"
+  | |     );
+  | |_____- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/division.rs
+  |
+  |         let () = NoSlotNamesTheZero::<F>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
