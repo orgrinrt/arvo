@@ -147,3 +147,11 @@ fn an_outside_policy_that_clamps_is_refused() {
         "an_outside_policy_that_wraps_compiles",
     );
 }
+
+#[test]
+fn a_disarmed_row_naming_the_wrong_container_is_refused() {
+    pair(
+        "a_disarmed_row_naming_the_wrong_container_is_refused",
+        "a_disarmed_row_naming_the_right_container_compiles",
+    );
+}

@@ -14,7 +14,7 @@ use arvo_format::overflow::Overflow;
 use arvo_format::quantum::is_constant_family;
 use arvo_format::rounding::{Mode, Rounding};
 use arvo_format::{Adaptation, Bool, DeclaredSignature, Format, Policy, Slot, Slots, Width};
-use arvo_placement::SoleCarrier;
+use arvo_placement::{SoleCarrier, carrier_agrees};
 
 use crate::map::Held;
 
@@ -42,7 +42,8 @@ pub trait Sole: DeclaredSignature<Format: Format<Slots: SoleCarrier<Carrier: Hel
     ///
     /// The slot range is the whole two's complement or unsigned range of its
     /// width, and the placement's container for it is the one the derivation
-    /// picks. The overflow policy is wrapping or saturation, and the rounding
+    /// picks, asserted here by `carrier_agrees` rather than read through the
+    /// row's own constant, which an outside row may replace. The overflow policy is wrapping or saturation, and the rounding
     /// mode reads no dither. The format's quantum is constant and its phase is
     /// zero, which is where the sum of two members is the member at the sum of
     /// their slots. Every door forces it, so no value of another signature is
@@ -71,7 +72,12 @@ where
 {
     const ADMITTED: () = {
         let () = <SlotsOf<S> as Slots>::ADMITTED;
-        let () = <SlotsOf<S> as SoleCarrier>::ADMITTED;
+        assert!(
+            carrier_agrees::<SlotsOf<S>>().get(),
+            "the slot family's row in `arvo_placement::SoleCarrier` names a container the placement \
+             does not derive for its width, and the value would compute in the wrong rung. At sole \
+             occupancy the carrier is the narrowest ladder container that holds the declared width"
+        );
         assert!(
             whole_range::<SlotsOf<S>>(),
             "a value is held only for a slot range that is the whole signed or unsigned range of its \

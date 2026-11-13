@@ -33,6 +33,18 @@ fn every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_
     tally.check("widths 1 to 8");
 }
 
+/// The value reads the slot and never the position: at a non-zero exponent the
+/// members sit at eighths, and every pair still adds and orders as the oracle
+/// says.
+#[test]
+fn a_fixed_point_signature_at_a_non_zero_exponent_adds_and_orders_as_the_oracle_does_on_every_pair()
+{
+    let mut tally = Tally::default();
+    every_mode!(UFixed<6, 3>, Wrap, exhaustive, &mut tally);
+    every_mode!(UFixed<6, 3>, Saturate, exhaustive, &mut tally);
+    tally.check("UFixed<6, 3>");
+}
+
 /// Triples whose two groupings differ, and the first of them in ascending
 /// order, through the value type.
 fn associativity<S: Sole>() -> (u64, Option<(i128, i128, i128)>) {

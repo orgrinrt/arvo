@@ -14,7 +14,7 @@ error[E0080]: evaluation panicked: the format has no additive identity: no membe
   | |_________- in this macro invocation
 
 note: erroneous constant encountered
-  --> tests/ui/the_identity_of_a_format_without_one_is_refused.rs:10:13
+  --> tests/ui/the_identity_of_a_format_without_one_is_refused.rs:11:9
    |
-10 |     let _ = <Num<Signature<Biased<8, 0, 1>, Adapt<TowardZero, Wrap>>> as Identity<Additive>>::IDENTITY;
-   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+11 |         <Num<Signature<Biased<8, 0, 1>, Adapt<TowardZero, Wrap>>> as Identity<Additive>>::IDENTITY;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,5 +1,9 @@
 # Each rung's mutant, against the tests on the reworked value
 
+Taken again in round 202611130720-wub5, after the fixed-point pass joined the band of widths 1 to 8, the
+release twin of the debug check joined the suite, and a compile-fail pair joined the list; the shape is
+unchanged otherwise.
+
 Outcome: WORKS. Each of the four mutants turns the tests that run through its rung red, and leaves the
 rest green, on the surface where the value reads its container from the placement's `SoleCarrier`, the
 sign from `Sole::SIGNED`, and takes its debug check as a second parameter.
@@ -19,8 +23,8 @@ directory, thread ids and backtraces are dropped.
 
 ## What each run shows
 
-`mutant-8` fails both rung tests at widths 1 to 8, two tests of the band of widths 1 to 8 (the
-exhaustive pass and the saturating associativity counts), and one test of the debug check binary,
+`mutant-8` fails both rung tests at widths 1 to 8, three tests of the band of widths 1 to 8 (the
+exhaustive pass, the fixed-point pass at `UFixed<6, 3>` and the saturating associativity counts), and one test of the debug check binary,
 `add_completes_under_quiet`, whose signature sits at width 4 in the 8-bit carrier. The `Abort` tests
 still fire, because they ask the format's verdict before the rung runs.
 

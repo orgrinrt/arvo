@@ -11,8 +11,9 @@
 //! family names the ladder container its declared width sits in alone.
 //!
 //! The two forms are one derivation. The type is checked against the width the
-//! derivation computes, every row here at check time and an outside row wherever
-//! its obligation is forced, so they cannot drift apart.
+//! derivation computes, every row here at check time. `ADMITTED` is provided, so
+//! an outside row may write one of its own that checks nothing; a crate that
+//! needs the agreement of an outside row asserts `carrier_agrees` itself.
 
 use arvo_format::slots::{Signed, Unsigned};
 use arvo_format::{Bool, Slots};
@@ -37,8 +38,9 @@ pub trait SoleCarrier: Slots {
     /// What an implementor owes, checked rather than asked for: the container is
     /// the one `derive_sole` derives for the declared width.
     ///
-    /// Forced by every row of this crate and by whatever builds a value on an
-    /// outside row, so a row naming another container stops the build there.
+    /// Forced by every row of this crate. An outside row may replace it with a
+    /// constant of its own, so a crate building on an outside row asserts
+    /// `carrier_agrees` where it needs the agreement.
     ///
     /// ```compile_fail
     /// use arvo_format::Width;
