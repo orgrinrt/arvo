@@ -1447,6 +1447,14 @@ arvo-format = ["numeric"]
 # own door for the identical reason `arvo-format` has one.
 arvo-bits = ["numeric"]
 
+# `arvo-numeral` introduces the numeric category a third time, where the
+# carriers the placement derives meet the host's machine integers. The surface
+# it covers is named in its design, `## Where the host integers are named`:
+# `Num`'s representation and the map to it, the rung arithmetic and its
+# dispatch, the doors to the carrier and to the host, and the slot index.
+# Everything else in the crate is written in the stack's own types.
+arvo-numeral = ["numeric"]
+
 # Where a catalogued `#[ignore]` reason's `tracked #<id>` resolves. The ids are
 # tickets of the workspace tracker, which this repository's registry does not
 # hold, so each is listed as a row of the one ledger beside the registry.

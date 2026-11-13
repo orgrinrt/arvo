@@ -1,0 +1,39 @@
+error[E0277]: `arvo_format::rounding::Stochastic` is not a rounding mode a value admits
+ --> tests/ui/stochastic_is_refused.rs:7:13
+  |
+7 |     let _ = Int::<8, Adapt<Stochastic, Wrapping>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `ValueRounding` is not implemented for `arvo_format::rounding::Stochastic`
+  |
+  = note: a value admits `TowardZero`, `Floor`, `Ceil`, `HalfUp` and `HalfEven`; `Stochastic` reads a dither, and a value has nowhere to carry one
+  = help: the following other types implement trait `ValueRounding`:
+            Ceiling
+            Convergent
+            Nearest
+            arvo_format::rounding::Floor
+            arvo_format::rounding::TowardZero
+  = note: required for `Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_numeral::Wrapping>>` to implement `Sole`
+note: required by a bound in `Num`
+ --> src/num.rs
+  |
+  | pub struct Num<S: Sole>(S::Repr);
+  |                   ^^^^ required by this bound in `Num`
+
+error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_numeral::Wrapping>>>`, but its trait bounds were not satisfied
+ --> tests/ui/stochastic_is_refused.rs:7:52
+  |
+7 |     let _ = Int::<8, Adapt<Stochastic, Wrapping>>::constant::<0>();
+  |                                                    ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/rounding.rs
+  |
+  | pub struct Stochastic;
+  | --------------------- doesn't satisfy `arvo_format::rounding::Stochastic: ValueRounding`
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/adapt.rs
+  |
+  | pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
+  | ---------------------------------------------- doesn't satisfy `_: Sole`
+  |
+  = note: the following trait bounds were not satisfied:
+          `arvo_format::rounding::Stochastic: ValueRounding`
+          which is required by `Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_numeral::Wrapping>>: Sole`

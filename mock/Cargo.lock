@@ -18,6 +18,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-numeral"
+version = "0.0.0"
+dependencies = [
+ "arvo-format",
+ "arvo-placement",
+ "trybuild",
+]
+
+[[package]]
 name = "arvo-placement"
 version = "0.0.0"
 dependencies = [

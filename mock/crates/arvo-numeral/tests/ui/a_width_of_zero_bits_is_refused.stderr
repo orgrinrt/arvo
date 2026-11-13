@@ -1,0 +1,53 @@
+warning: unused import: `Int`
+ --> tests/ui/a_width_of_zero_bits_is_refused.rs:4:20
+  |
+4 | use arvo_numeral::{Int, Uint, Wrapping};
+  |                    ^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0277]: no ladder carrier holds the slot family `Unsigned<0>`
+ --> tests/ui/a_width_of_zero_bits_is_refused.rs:7:13
+  |
+7 |     let _ = Uint::<0, Adapt<TowardZero, Wrapping>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Carried` is not implemented for `Unsigned<0>`
+  |
+  = note: a value is held for `Signed<W>` or `Unsigned<W>` with `W` from 1 to 64; zero bits has no slot range and no carrier holds more than 64
+  = help: the following other types implement trait `Carried`:
+            Unsigned<10>
+            Unsigned<11>
+            Unsigned<12>
+            Unsigned<13>
+            Unsigned<14>
+            Unsigned<15>
+            Unsigned<16>
+            Unsigned<17>
+          and $N others
+  = note: required for `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>` to implement `Sole`
+note: required by a bound in `Num`
+ --> src/num.rs
+  |
+  | pub struct Num<S: Sole>(S::Repr);
+  |                   ^^^^ required by this bound in `Num`
+
+error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>`, but its trait bounds were not satisfied
+ --> tests/ui/a_width_of_zero_bits_is_refused.rs:7:53
+  |
+7 |     let _ = Uint::<0, Adapt<TowardZero, Wrapping>>::constant::<0>();
+  |                                                     ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/adapt.rs
+  |
+  | pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
+  | ---------------------------------------------- doesn't satisfy `_: Sole`
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/slots.rs
+  |
+  | pub struct Unsigned<const BITS: u32>;
+  | ------------------------------------ doesn't satisfy `Unsigned<0>: Carried` or `Unsigned<0>: Slots`
+  |
+  = note: the following trait bounds were not satisfied:
+          `Unsigned<0>: Slots`
+          which is required by `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>: Sole`
+          `Unsigned<0>: Carried`
+          which is required by `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>: Sole`

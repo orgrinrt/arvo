@@ -1,0 +1,18 @@
+warning: unused import: `Uint`
+ --> tests/ui/a_value_where_a_host_integer_goes_is_refused.rs:4:25
+  |
+4 | use arvo_numeral::{Int, Uint, Wrapping};
+  |                         ^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0308]: mismatched types
+ --> tests/ui/a_value_where_a_host_integer_goes_is_refused.rs:8:17
+  |
+8 |     let _: i8 = a;
+  |            --   ^ expected `i8`, found `Num<Signature<Integer<8>, ...>>`
+  |            |
+  |            expected due to this
+  |
+  = note: expected type `i8`
+           found struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>`

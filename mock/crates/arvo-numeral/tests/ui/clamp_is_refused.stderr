@@ -1,0 +1,52 @@
+error[E0277]: `arvo_format::overflow::Clamp` is not an overflow policy a value admits
+ --> tests/ui/clamp_is_refused.rs:8:13
+  |
+8 |     let _ = Int::<8, Adapt<TowardZero, Clamp>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `ValuePolicy` is not implemented for `arvo_format::overflow::Clamp`
+  |
+  = note: a value admits `Wrap` and `Saturate`, which assert in a debug build when a result leaves the range, and `Wrapping` and `Saturating`, which never do; `Clamp` with no bound is saturation under another name
+help: the following other types implement trait `ValuePolicy`
+ --> src/admit.rs
+  |
+  |               impl ValuePolicy for $marker {
+  |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |               |
+  |               `arvo_format::overflow::Saturate`
+  |               `arvo_format::overflow::Wrap`
+  |               `arvo_numeral::Saturating`
+  |               `arvo_numeral::Wrapping`
+...
+  | / value_policy! {
+  | |     Wrap => Bool::TRUE,
+  | |     Saturate => Bool::TRUE,
+  | |     Wrapping => Bool::FALSE,
+  | |     Saturating => Bool::FALSE,
+  | | }
+  | |_- in this macro invocation
+  = note: required for `Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Clamp>>` to implement `Sole`
+note: required by a bound in `Num`
+ --> src/num.rs
+  |
+  | pub struct Num<S: Sole>(S::Repr);
+  |                   ^^^^ required by this bound in `Num`
+  = note: this error originates in the macro `value_policy` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Clamp>>>`, but its trait bounds were not satisfied
+ --> tests/ui/clamp_is_refused.rs:8:49
+  |
+8 |     let _ = Int::<8, Adapt<TowardZero, Clamp>>::constant::<0>();
+  |                                                 ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/overflow.rs
+  |
+  | pub struct Clamp;
+  | ---------------- doesn't satisfy `arvo_format::overflow::Clamp: ValuePolicy`
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/adapt.rs
+  |
+  | pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
+  | ---------------------------------------------- doesn't satisfy `_: Sole`
+  |
+  = note: the following trait bounds were not satisfied:
+          `arvo_format::overflow::Clamp: ValuePolicy`
+          which is required by `Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Clamp>>: Sole`
