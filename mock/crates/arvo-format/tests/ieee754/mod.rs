@@ -5,13 +5,12 @@
 
 //! Where a value lands on an IEEE 754 format, written from the public surface.
 //!
-//! `adapt` takes a position in slots and carries no magnitude, so the magnitude
-//! is the caller's: the finest one at which the rounded position lands in the
-//! slot range, which `panic_on_overflow` answers. That is the standard's own
-//! rounding onto a floating format, the nearest member at the precision the
-//! binade allows, with a carry out of a binade answered by the next magnitude.
-//! It is a composition a consumer writes, the way the Round alias is, and it
-//! lives in a module so both parity files read one definition.
+//! `land` names the finest magnitude at which the rounded position lands in the
+//! slot range, and `adapt` the slot there. That is the standard's own rounding
+//! onto a floating format, the nearest member at the precision the binade
+//! allows, with a carry out of a binade answered by the next magnitude, so the
+//! parity suites check `land` itself against the host's arithmetic. It lives in
+//! a module so both parity files read one definition.
 //!
 //! `allow(dead_code)` because each file that declares this module uses part of
 //! it, which is a fact about the compilation unit.
@@ -19,10 +18,11 @@
 #![allow(dead_code)]
 
 use arvo_format::adapt::DeclaredSignature;
-use arvo_format::apply::{Dither, Exact, Remainder, adapt, panic_on_overflow};
+use arvo_format::apply::{Dither, Exact, Remainder, Scaled, adapt};
 use arvo_format::format::{Format, radix, step_exponent};
-use arvo_format::quantum::{Magnitude, Quantum};
+use arvo_format::quantum::{Exponent, Magnitude, Quantum};
 use arvo_format::slots::Slot;
+use notko::Maybe;
 
 /// A value as a significand and an exponent of the format's radix.
 #[derive(Clone, Copy, Debug)]
@@ -72,31 +72,32 @@ fn position(r: u32, num: i128, den: i128, k: i32, s: i32) -> Option<Exact> {
 
 /// `num / den * radix^k`, with `den` positive, landed on the signature's format.
 ///
-/// Returns nothing only where the value cannot be positioned at any magnitude in
-/// the slot index's integer, which the parity inputs never reach and the arms
-/// assert.
+/// The crate's `land` names the magnitude and the position. Past the top of the
+/// union it lands nothing, since what the completion means there is a canon
+/// question, and the suites read that region as the completion's answer at the
+/// top magnitude, which is what a saturating IEEE format gives, so the value is
+/// positioned at that one magnitude and adapted there. Returns nothing only where
+/// the top magnitude cannot position it in the slot index's integer, which the
+/// parity inputs never reach and the arms assert.
 pub fn land<S: DeclaredSignature>(num: i128, den: i128, k: i32) -> Option<Landed> {
-    let r = radix::<S::Format>().base();
-    let count = <<S::Format as Format>::Quantum as Quantum>::MAGNITUDES.count();
-    let mut top = None;
-    for m in 0 .. count {
-        let s = step_exponent::<S::Format>(Magnitude::at(m)).power();
-        let Some(exact) = position(r, num, den, k, s) else {
-            continue;
-        };
-        if !panic_on_overflow::<S>(exact, Dither::UNUSED).get() {
-            let slot = adapt::<S>(exact, Dither::UNUSED);
-            return Some(Landed {
-                value:  Value {
-                    significand: slot.index(),
-                    exponent:    s,
-                },
-                finite: true,
-            });
-        }
-        top = Some((exact, s));
+    let at = Scaled::of(num, den as u128, Exponent::of(k));
+    if let Maybe::Is(landing) = arvo_format::apply::land::<S>(at, Dither::UNUSED) {
+        return Some(Landed {
+            value:  Value {
+                significand: adapt::<S>(landing.exact(), Dither::UNUSED).index(),
+                exponent:    step_exponent::<S::Format>(landing.magnitude()).power(),
+            },
+            finite: true,
+        });
     }
-    let (exact, s) = top?;
+    let q = <<S::Format as Format>::Quantum as Quantum>::MAGNITUDES;
+    let top = if <<S::Format as Format>::Quantum as Quantum>::SLOPE.power() < 0 {
+        Magnitude::at(0)
+    } else {
+        q.largest()
+    };
+    let s = step_exponent::<S::Format>(top).power();
+    let exact = position(radix::<S::Format>().base(), num, den, k, s)?;
     Some(Landed {
         value:  Value {
             significand: adapt::<S>(exact, Dither::UNUSED).index(),
