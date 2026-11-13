@@ -449,11 +449,12 @@ range on the way. `Accumulator<S, T, CAP, C>` is the other way to sum: it holds 
 most `CAP` members of `S`, in a value of a second signature `T`, and comes back to a value of `S`
 once, through `S`'s adaptation.
 
-`T` is named by the consumer and checked by the build. Two things are asked of it, in one constant
-that every function forces. Its format sits on `S`'s grid, the same radix and the same quantum
-exponent, so a member of `S` has the same slot index in `T`. And its range holds `CAP` times each end
-of `S`'s range, so no sum of `CAP` members leaves it. Where either fails the accumulator is refused
-as a failed constant. A width written by hand is then sufficient for the declared capacity or does
+`T` is named by the consumer and checked by the build. Three things are asked, in one constant
+that every function forces. `T`'s format sits on `S`'s grid, the same radix and the same quantum
+exponent, so a member of `S` has the same slot index in `T`. Its range holds `CAP` times each end
+of `S`'s range, so no sum of `CAP` members leaves it. And `CAP` is at least one: at a capacity of
+zero `take` sums nothing and hands back the slice it was given, so a loop over it would not end.
+Where any of the three fails the accumulator is refused as a failed constant. A width written by hand is then sufficient for the declared capacity or does
 not compile: an 8-bit unsigned accumulator over 4-bit unsigned terms is admitted at a capacity of
 sixteen, where the largest sum is 240, and refused at thirty-two, where it is 480. That pair is
 `probe::a_runtime_length_fold_compiles_at_every_length_and_computes_at_one` with its second arm
@@ -501,8 +502,11 @@ cell.
 An accumulator is a value of `T`, so it is at most 64 bits wide. A 64-bit term is admitted at a
 capacity of one and no further, and a wider accumulator needs a carrier the tree does not have.
 
-This is one carrier a chain of operations may use. Which carrier ships for chains is
-`question::which_chain_carrier_ships`, open, and nothing here answers it.
+This is one carrier a chain of operations may use. Which carriers ship for chains is
+`question::which_chain_carrier_ships`, open, and nothing here answers it. Its bound says that several
+carriers, each covering the shapes it is optimal for, is the design, and that each is chosen on what
+it costs at run time. The accumulator carries a capacity and an exact sum and no schedule, so it is a
+type a consumer may reach for under any answer, and it is not offered as the carrier.
 
 ## Aliases
 
@@ -581,16 +585,28 @@ position. Its width sits below its 8-bit carrier's, so the rung's adaptation act
 leaves the range and the 8-bit mutant turns it red; at the carrier's full width the adaptation is the
 machine's own and no mutant of it could.
 
-The difference and the product are proved at every place the sum is, on the same pairs, against the
-format's `sub` and `mul`, and the negation on every member against `neg`: through the value type at
+The difference and the product are proved at every place the sum is, on the same pairs, the
+difference against the format's `sub` and the product against the tests' own arithmetic described
+below, and the negation on every member against `neg`: through the value type at
 widths 1 to 8, in every rung at widths 1 to 8 and in the three wide rungs at 9 to 12, on the edge
 lattice and the seeded pairs above that. The rung product is asked only at exponent zero, which is the
 only place it is called. The unsigned 64-bit integer is left out of the product's pairs, since its
 product is refused, and is the compile-fail case below.
 
+The value computes the sum, the difference, the negation and the product at exponent zero in its
+carrier, and the format computes them on wide slots, so for those the format's function is a second
+computation and agreeing with it is evidence. The product at another exponent, the quotient and the
+conversion are handed to the format's function, and comparing the value with the function it calls
+would show nothing. Those three are proved against arithmetic the tests carry themselves: a quotient
+of two wide integers rounded by a mode, and a completion onto a range by wrapping or by saturation,
+written in the test crate and calling nothing of the format to compute. The mode, the policy, the
+range and the exponent are read from the signature's declarations.
+
 The product is where the exponent does move the slot, so the fixed-point product has a test of its
 own: `Fixed<6, -3>` and `UFixed<6, -3>`, every pair, all five modes and both policies, against the
-oracle, and the same at the positive exponent of `UFixed<6, 3>`. One pair is named in each mode, the
+tests' own arithmetic, the slots' product scaled back onto the grid, and the same at the positive
+exponent of `UFixed<6, 3>`. A control computes the slots' product with no scaling and has to disagree
+with the value somewhere at each of the three formats. One pair is named in each mode, the
 members at slots `-3` and `4` of the signed format, whose product sits at minus one and a half slots:
 a tie below zero, which goes to `-1` toward zero, on the ceiling and under `half_up`, and to `-2` on
 the floor and under `half_even`.
@@ -599,8 +615,9 @@ Widths 9 to 64 run through the value type on an edge lattice, each end of the ra
 zero and its neighbours, and every single-bit value, against the oracle, plus pairs drawn from a seeded
 generator whose seed is committed in the test.
 
-`fits_add`, `fits_sub`, `fits_neg` and `fits_mul` are checked against `panic_on_overflow` of the
-format's own positions on the same pairs, `slot` returns the member a value was built from, and carrier
+`fits_add`, `fits_sub` and `fits_neg` are checked against `panic_on_overflow` of the
+format's own positions on the same pairs. `fits_mul` is that expression in the source, so it is
+checked against whether the tests' own rounded product is in the range. `slot` returns the member a value was built from, and carrier
 equality is slot equality.
 
 The debug check is observed where it acts, `div`, `convert`, `from_index` and the accumulator's `finish` among the sites. One test per site, `add` and `adapted`, and per policy,
@@ -633,18 +650,20 @@ the wrapping signature and the top under the saturating one it crosses into. `mu
 top of the range to the bottom in a crossing, turns these red and leaves every operation's tests green,
 and its red run is committed.
 
-The quotient is proved through the value type against the format's `div`: at widths 1 to 4 for every
+The quotient is proved through the value type against the tests' own arithmetic, the dividend's slot
+over the divisor's scaled onto the grid: at widths 1 to 4 for every
 member divisor but zero, and at widths 5 to 8 for a named set of divisors, both ends of the range,
 one, minus one where the range has it, and an odd one, over both slot families, both policies, the
 five modes and every dividend. `Fixed<6, -3>` and `UFixed<6, -3>` are proved the same way, where the
 quotient's position falls between slots and the mode decides. `fits_div` is checked against
-`panic_on_overflow` of `quotient_position` on the same pairs.
+whether the rounded quotient is in the range, on the same pairs.
 
-The conversion is proved against the format's `convert` on every member of each source: between
+The conversion is proved against the same arithmetic, the member's slot scaled from the source's grid
+onto the target's, on every member of each source: between
 integer widths in both directions, across the two slot families, from an integer onto a fixed-point
 grid and back, and between two fixed-point grids of different exponents, under both policies and the
-five modes of the target. `fits_convert` is checked against `panic_on_overflow` of
-`converted_position`, and a conversion between two signatures over one format equals `under`.
+five modes of the target. `fits_convert` is checked against whether the rounded member is in the
+target's range, and a conversion between two signatures over one format equals `under`.
 
 The host door is proved against `adapted`: at widths 1 to 8, both families and both policies, for
 every `i8` and `u8`, every `i16` and `u16` within 1024 of zero, and the ends of every host integer; at
@@ -665,8 +684,8 @@ it.
 
 The accumulator is proved against the exact sum, computed in the test's own wide integers. Every
 array of three terms at widths 1 to 4 and every array of two at width 5, both slot families, both
-policies of `S`: `total` is the exact sum, `finish` its adaptation by the format's `adapt`, and
-`fits` the format's verdict. Seeded slices of up to 300 terms at widths 8, 13 and 32 the same way.
+policies of `S`: `total` is the exact sum, `finish` its completion onto the terms' range, computed in the test,
+and `fits` whether the sum is in that range. Seeded slices of up to 300 terms at widths 8, 13 and 32 the same way.
 `take` is asked on slices shorter than the capacity, equal to it and longer, and returns the rest it
 did not sum. `plus` and `minus` are checked against the exact sum and difference of their halves,
 `minus` over unsigned terms into a signed `T` among them. One case is named on the signed saturating
@@ -706,7 +725,7 @@ For the host door: `index::<u8>()` on a signed 8-bit integer beside `index::<i8>
 unsigned integer beside `index::<u16>()`.
 For the accumulator: 8 bits over 4-bit terms at a capacity of thirty-two beside sixteen, `of` with
 more terms than the capacity beside one within it, `plus` past the capacity beside one within it,
-and an accumulator on another grid beside one on the terms'.
+an accumulator on another grid beside one on the terms', and a capacity of zero beside one of one.
 The
 admission is shown open from both sides: an outside slot family over part of its width's range is refused
 beside one over the whole range, with its own row in the placement, which is held; an outside policy that
@@ -726,7 +745,10 @@ the whole of what shipping a default takes. It overrides one coordinate at a typ
 `WithOverflow`, and at a value, through `with_overflow`, `with_rounding` and `under`. A test builds and
 runs it, and it asserts what it reads. The test takes the consumer's path and its scratch directory
 when it runs, so a build directory shared between checkouts tests the checkout the run was started
-in. It names no feature, so it does not reach the count, whose two
+in. The scratch directory is the one in the build directory the test binary sits under, found by the
+tag file cargo writes at a build directory's root. A second test runs the test binary again with
+another crate directory in its environment and reads back the path it resolved, which a path fixed at
+build time would not follow. It names no feature, so it does not reach the count, whose two
 targets are written as a consumer would write them.
 
 The disassembly of `add` at 13 bits in 16 and at 64 bits beside the host's `wrapping_add` is committed as
