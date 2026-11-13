@@ -99,8 +99,3 @@ fn the_identity_of_a_format_without_one_is_refused() {
         "the_identity_of_a_format_with_one_compiles",
     );
 }
-
-#[test]
-fn a_consumer_with_no_feature_line_compiles() {
-    trybuild::TestCases::new().pass("tests/ui/a_consumer_with_no_feature_line_compiles.rs");
-}

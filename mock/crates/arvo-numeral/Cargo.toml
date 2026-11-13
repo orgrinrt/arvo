@@ -4,13 +4,14 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "A value of a declared signature, held alone in the carrier its placement derives"
+readme = "README.md.tmpl"
 
 [dependencies]
 arvo-format.workspace = true
 arvo-placement.workspace = true
 
 # One mutant per rung. Each removes that rung's adaptation onto the declared
-# width, and the equality tests expect a mismatch while it is on. Off by default
+# width, and the equality tests fail while it is on. Off by default
 # and never enabled by anything that ships.
 [features]
 mutant-8 = []

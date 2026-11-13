@@ -27,5 +27,5 @@ fn every_signature_from_9_to_16_bits_adds_and_orders_as_the_oracle_does() {
     every_signature_at!(14, lattice_and_seeded, &mut tally);
     every_signature_at!(15, lattice_and_seeded, &mut tally);
     every_signature_at!(16, lattice_and_seeded, &mut tally);
-    tally.check(cfg!(feature = "mutant-16"), "widths 9 to 16");
+    tally.check("widths 9 to 16");
 }

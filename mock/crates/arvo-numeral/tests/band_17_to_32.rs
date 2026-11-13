@@ -35,5 +35,5 @@ fn every_signature_from_17_to_32_bits_adds_and_orders_as_the_oracle_does() {
     every_signature_at!(30, lattice_and_seeded, &mut tally);
     every_signature_at!(31, lattice_and_seeded, &mut tally);
     every_signature_at!(32, lattice_and_seeded, &mut tally);
-    tally.check(cfg!(feature = "mutant-32"), "widths 17 to 32");
+    tally.check("widths 17 to 32");
 }

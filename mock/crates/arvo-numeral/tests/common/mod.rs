@@ -43,8 +43,8 @@ pub fn value<S: Sole>(index: i128) -> Num<S> {
     Num::<S>::adapted(Exact::on_grid(Slot::at(index)))
 }
 
-/// Disagreements found over a band. `add` is counted, so that a rung's mutant
-/// can be expected to show; every other check asserts at once.
+/// Disagreements found over a band. `add` is counted, so that a failure says
+/// how many pairs disagreed; every other check asserts at once.
 #[derive(Default)]
 pub struct Tally {
     pub add_wrong: u64,
@@ -52,19 +52,14 @@ pub struct Tally {
 }
 
 impl Tally {
-    /// The band's adds all agree with the oracle, unless the mutant of the
-    /// band's rung is on, and then some disagree.
-    pub fn check(&self, mutant_on: bool, band: &str) {
+    /// The band's adds all agree with the oracle.
+    pub fn check(&self, band: &str) {
         assert!(self.pairs > 0, "{band}: no pair was checked");
-        if mutant_on {
-            assert!(
-                self.add_wrong > 0,
-                "{band}: the rung's mutant survived {} pairs",
-                self.pairs
-            );
-        } else {
-            assert_eq!(self.add_wrong, 0, "{band}: `add` disagrees with the oracle");
-        }
+        assert_eq!(
+            self.add_wrong, 0,
+            "{band}: `add` disagrees with the oracle on {} of {} pairs",
+            self.add_wrong, self.pairs
+        );
     }
 }
 

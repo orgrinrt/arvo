@@ -4,6 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "An exact-width bit container: masked construction and masked cast, no arithmetic"
+readme = "README.md.tmpl"
 
 [dependencies]
 

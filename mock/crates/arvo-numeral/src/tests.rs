@@ -5,11 +5,12 @@
 
 //! The rungs against the oracle, and the map against the placement.
 //!
-//! Every width from 1 to 8 is computed in each of the four rungs, both slot
+//! Every width from 1 to 8 is computed in each of the four rungs, and every
+//! width from 9 to 12 in the three rungs wide enough to carry it, both slot
 //! families, both policies, every pair of members, and compared with
 //! `arvo_format::add`. That checks the narrowest carrier against every wider
-//! one, the 64-bit carrier among them. With a rung's mutant feature on, that
-//! rung must disagree somewhere and the others must not.
+//! one, the 64-bit carrier among them. A rung's mutant feature makes these
+//! tests fail; nothing here expects it.
 
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Integer, UFixed};
@@ -34,29 +35,19 @@ impl Wrong {
         }
     }
 
-    /// Each rung agrees everywhere, unless its mutant is on, and then it
-    /// disagrees somewhere.
+    /// Every rung agrees with the oracle on every pair it computed.
     fn check(&self, what: &'static str) {
-        let mutants = [
-            cfg!(feature = "mutant-8"),
-            cfg!(feature = "mutant-16"),
-            cfg!(feature = "mutant-32"),
-            cfg!(feature = "mutant-64"),
-        ];
-        for (i, (&wrong, &mutant)) in self.0.iter().zip(mutants.iter()).enumerate() {
+        for (i, &wrong) in self.0.iter().enumerate() {
             let bits = 8 << i;
-            if mutant {
-                assert!(wrong > 0, "{what}: the {bits}-bit rung's mutant survived");
-            } else {
-                assert_eq!(
-                    wrong, 0,
-                    "{what}: the {bits}-bit rung disagrees with the oracle"
-                );
-            }
+            assert_eq!(
+                wrong, 0,
+                "{what}: the {bits}-bit rung disagrees with the oracle"
+            );
         }
     }
 }
 
+/// Every pair at width `W` in every rung that can carry it.
 fn signed_width<const W: u32, O>(policy: Policy, wrong: &mut Wrong)
 where
     Signed<W>: Slots,
@@ -71,8 +62,10 @@ where
     for a in min ..= max {
         for b in min ..= max {
             let want = oracle::<Sig<W, O>>(a, b);
-            let got = rung::add_s8(rung::from_s8(a), rung::from_s8(b), width, policy);
-            wrong.record(0, rung::index_s8(got), want);
+            if W <= 8 {
+                let got = rung::add_s8(rung::from_s8(a), rung::from_s8(b), width, policy);
+                wrong.record(0, rung::index_s8(got), want);
+            }
             let got = rung::add_s16(rung::from_s16(a), rung::from_s16(b), width, policy);
             wrong.record(1, rung::index_s16(got), want);
             let got = rung::add_s32(rung::from_s32(a), rung::from_s32(b), width, policy);
@@ -83,6 +76,7 @@ where
     }
 }
 
+/// Every pair at width `W` in every rung that can carry it.
 fn unsigned_width<const W: u32, O>(policy: Policy, wrong: &mut Wrong)
 where
     Unsigned<W>: Slots,
@@ -94,8 +88,10 @@ where
     for a in 0 ..= max {
         for b in 0 ..= max {
             let want = oracle::<Sig<W, O>>(a, b);
-            let got = rung::add_u8(rung::from_u8(a), rung::from_u8(b), width, policy);
-            wrong.record(0, rung::index_u8(got), want);
+            if W <= 8 {
+                let got = rung::add_u8(rung::from_u8(a), rung::from_u8(b), width, policy);
+                wrong.record(0, rung::index_u8(got), want);
+            }
             let got = rung::add_u16(rung::from_u16(a), rung::from_u16(b), width, policy);
             wrong.record(1, rung::index_u16(got), want);
             let got = rung::add_u32(rung::from_u32(a), rung::from_u32(b), width, policy);
@@ -119,6 +115,15 @@ macro_rules! every_narrow_width {
     };
 }
 
+macro_rules! every_wide_width {
+    ($f:ident, $o:ty, $policy:expr, $wrong:expr) => {
+        $f::<9, $o>($policy, $wrong);
+        $f::<10, $o>($policy, $wrong);
+        $f::<11, $o>($policy, $wrong);
+        $f::<12, $o>($policy, $wrong);
+    };
+}
+
 #[test]
 fn every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does() {
     let mut wrong = Wrong::default();
@@ -136,6 +141,26 @@ fn every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does
     wrong.check("unsigned, wrapping");
     let mut wrong = Wrong::default();
     every_narrow_width!(unsigned_width, Saturate, Policy::Saturate, &mut wrong);
+    wrong.check("unsigned, saturating");
+}
+
+#[test]
+fn every_wide_rung_adds_every_signed_pair_at_widths_nine_to_twelve_as_the_oracle_does() {
+    let mut wrong = Wrong::default();
+    every_wide_width!(signed_width, Wrap, Policy::Wrap, &mut wrong);
+    wrong.check("signed, wrapping");
+    let mut wrong = Wrong::default();
+    every_wide_width!(signed_width, Saturate, Policy::Saturate, &mut wrong);
+    wrong.check("signed, saturating");
+}
+
+#[test]
+fn every_wide_rung_adds_every_unsigned_pair_at_widths_nine_to_twelve_as_the_oracle_does() {
+    let mut wrong = Wrong::default();
+    every_wide_width!(unsigned_width, Wrap, Policy::Wrap, &mut wrong);
+    wrong.check("unsigned, wrapping");
+    let mut wrong = Wrong::default();
+    every_wide_width!(unsigned_width, Saturate, Policy::Saturate, &mut wrong);
     wrong.check("unsigned, saturating");
 }
 

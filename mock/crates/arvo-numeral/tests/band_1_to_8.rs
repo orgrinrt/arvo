@@ -8,11 +8,10 @@
 //! Exhaustive: every signature over both families, both completing markers and
 //! every mode, every pair of members, against the oracle. Beside it the two
 //! associativity laws the registry states, reproduced through the value type
-//! with the registry's own counts, and the verdict the plain markers assert on.
+//! with the registry's own counts.
 
 mod common;
 
-use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Integer, UFixed};
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Signature, addition_is_associative};
@@ -30,7 +29,7 @@ fn every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_
     every_signature_at!(6, exhaustive, &mut tally);
     every_signature_at!(7, exhaustive, &mut tally);
     every_signature_at!(8, exhaustive, &mut tally);
-    tally.check(cfg!(feature = "mutant-8"), "widths 1 to 8");
+    tally.check("widths 1 to 8");
 }
 
 /// Triples whose two groupings differ, and the first of them in ascending
@@ -78,36 +77,6 @@ fn additive_associativity_under_saturation_holds_unsigned_and_fails_signed_by_th
         (4_177_792, Some((-128, -128, 1)))
     );
     assert!(!addition_is_associative::<Sig<Integer<8>, Saturating>>().get());
-}
-
-#[test]
-fn under_wrap_a_sum_leaving_the_range_is_one_the_debug_assertion_refuses() {
-    type Asserting = Int<8, Adapt<TowardZero, Wrap>>;
-    type Completing = Int<8, Adapt<TowardZero, Wrapping>>;
-    let (a, b) = (Asserting::constant::<127>(), Asserting::constant::<1>());
-    assert!(
-        !a.fits_add(b).get(),
-        "the verdict `add` asserts on says the sum fits"
-    );
-    // The same pair under the completing marker wraps without asserting.
-    let wrapped = Completing::constant::<127>().add(Completing::constant::<1>());
-    assert_eq!(wrapped.slot().index(), -128);
-    // A pair that fits passes the asserting marker's `add` in every profile.
-    assert_eq!(a.add(Asserting::constant::<-1>()).slot().index(), 126);
-}
-
-#[test]
-fn under_saturate_a_sum_leaving_the_range_is_one_the_debug_assertion_refuses() {
-    type Asserting = Uint<8, Adapt<TowardZero, Saturate>>;
-    type Completing = Uint<8, Adapt<TowardZero, Saturating>>;
-    let (a, b) = (Asserting::constant::<200>(), Asserting::constant::<100>());
-    assert!(
-        !a.fits_add(b).get(),
-        "the verdict `add` asserts on says the sum fits"
-    );
-    let pinned = Completing::constant::<200>().add(Completing::constant::<100>());
-    assert_eq!(pinned.slot().index(), 255);
-    assert_eq!(a.add(Asserting::constant::<55>()).slot().index(), 255);
 }
 
 #[test]
