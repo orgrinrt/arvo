@@ -137,8 +137,9 @@ is, stay open under `question::what_a_datum_stands_for`.
   take a host integer directly): the type's declared unwrap door,
   `Bool::get()` for a `Bool` and `Bits::raw()` for a `Bits<N>`. A
   `Num` gives its `Slot` through `Num::slot()`, which is the coordinate
-  the format is stated in and not a host integer, and only the two
-  platform-width aliases have a door to one, `USize::host()` and
+  the format is stated in and not a host integer. The host integer
+  behind a coordinate is one door further, `Slot::index()`, and the two
+  platform-width aliases have a door of their own, `USize::host()` and
   `ISize::host()`. Document the boundary use with an inline comment if
   it's not obvious.
 - For literal construction: a tuple-struct constructor is fine; the
@@ -333,8 +334,8 @@ aliases by an adaptation, and `arvo-numeral` does not depend on
 
 `Bool`, `Bits<N>` and `Num`, and the format layer's coordinates and
 counts beside them, are `repr(transparent)` over their host container,
-and the format points are zero-sized. After compilation, arvo
-primitives incur zero overhead beyond their strategy's intended cost.
+and the format points are zero-sized, so each is laid out as the
+container it holds and nothing more.
 
 ## no_std, no alloc
 
@@ -343,17 +344,16 @@ const-sized. Consumers own allocation strategy; arvo never calls out.
 
 ## Strategy markers are load-bearing
 
-A strategy is not decoration. It binds a name to a placement
-objective, which is what the derivation in `arvo-placement` is keyed
-on, and to the adaptation selected per operation, so the marker a
-type comes to carry says what it gives up and what for. It names no
+A strategy is not decoration. As `arvo-strategy` has it today, it
+binds a name to a placement objective, which is what the derivation in
+`arvo-placement` is keyed on, and to an adaptation selection, so the
+marker a type comes to carry says what it gives up and what for. It names no
 implementation and owns none.
 
 Default strategy is `Warm` unless called out, and every semantic
 alias carries a default for its strategy parameter. The tree is short
-of that today: `Uint`, `Int`, `USize` and `ISize` take the adaptation
-as a parameter of their own and have no default, until which
-adaptation the default names for integers is settled.
+of that today, since no alias takes a strategy at all, and which
+adaptation the default names for integers is not settled.
 
 ## Monomorphisation is the dispatch
 

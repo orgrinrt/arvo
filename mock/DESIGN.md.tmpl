@@ -1,6 +1,6 @@
 # arvo. Architecture Design
 
-> Numeric primitives whose behaviour the consumer selects, through
+> Numeric primitives whose behaviour is the consumer's to select, through
 > strategy markers at type level. `#![no_std]`, no alloc. Zero dependency
 > on platform. Designed so every downstream consumer shares one
 > numeric layer.
@@ -8,8 +8,7 @@
 ## Principles
 
 The primitives are parameterised by strategy. A numeral's behaviour is to be
-selected at type level by a strategy, which binds a placement objective and an
-adaptation selection, without runtime dispatch. `Hot`, `Warm`, `Cold` and
+selected at type level by a strategy, without runtime dispatch. `Hot`, `Warm`, `Cold` and
 `Precise` ship as presets and the set is open. No value in the tree takes a
 strategy yet, since `Num` is parameterised by a declared signature and its
 aliases by an adaptation.
@@ -25,8 +24,8 @@ monomorphised function is the type identity.
 
 Everything answerable before the program runs is answered there, in plain
 `const fn`. No crate enables an unstable feature today, so no trait here is a
-`const trait` yet, and the operations wanted in const context are, for now,
-inherent `const fn`s on their types.
+`const trait`, and the operations wanted in const context are inherent
+`const fn`s on their types.
 
 ## Crate topology
 
