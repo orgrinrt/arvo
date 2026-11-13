@@ -197,3 +197,83 @@ This job's reading, not his words. The eighteen ratified rulings that carry no
 `ratified_by` take `ratified_by = "op"`, which landed on `dev` as `b93f42d4`.
 The three note rewrites are not applied and stay a
 proposal, as `ratified-notes.proposal.patch`.
+
+## Three answers at 20:25, the same day
+
+Copied from the capture `202611132021_op-on-this-should-follow-the-same-pattern-as-ctx.md`, lines 34 to 108, with the questions as they were put and the options offered.
+
+### The Warm overflow default, asked again
+
+  ```text
+  arvo: PRINCIPLES.md.tmpl:353-356 states a Warm overflow default that no canon row carries, and four FIXMEs plus the value tier's shipped-default round wait on it. What does Warm do on overflow by default?
+  ```
+
+Options offered:
+
+1. Wrap
+
+   Warm wraps by default; the per-case override picks anything else.
+
+2. Clamp
+
+   Warm saturates by default; the per-case override picks anything else.
+
+3. No default
+
+   Warm ships no overflow default: the consumer names the policy in the type, and leaving it out is a compile error.
+
+4. Typestate decides
+
+   The default falls out of the format's own declared constants (signedness, range kind), composed generically; no single answer for Warm as a whole.
+
+Answered in their own words:
+
+> I have answered this already. Make sure the answers I’ve given have been filed from before.
+
+### Which of the two finish rows stands
+
+  ```text
+  arvo canon: ruling::the_run_ends_at_ratification_or_when_he_clears_it (your August addendum) runs into ruling::the_panel_finishes_the_canon_without_him. Which stands today?
+  ```
+
+Options offered:
+
+1. Panel finishes, I ratify
+
+   The panel finishes the canon without you; its rows stay provisional (stamped) until you ratify them. The August row is demoted.
+
+2. Ends at my ratification
+
+   The August row stands: nothing counts as finished until you ratify or clear it. The panel row is demoted.
+
+3. Both, scoped
+
+   The August row binds only that overnight goal; the panel row is the standing rule. Keep both, each saying its scope.
+
+Chosen:
+
+- Both, scoped
+
+### The ingest door
+
+  ```text
+  arvo: proposal::validation_is_two_acts has a second act, a runtime membership door at ingest for each datum. ruling::never_a_runtime_check_and_one_lowered_path allows one exception that only you bless. Is the ingest door that exception?
+  ```
+
+Options offered:
+
+1. Yes, blessed
+
+   The ingest membership door is the one runtime check arvo has; everything past it is proven.
+
+2. No runtime door
+
+   Validation is compile-time only; data from outside is the consumer's to bring in already typed, and the second act is struck from the proposal.
+
+3. Door, but not arvo's
+
+   A runtime door exists at ingest but belongs to the consumer or a crate above arvo; arvo offers only the typed constructor it calls.
+
+Answered in their own words:
+
+> If it’s a valid use case with known use then sure, we can consider it. However, I am not sure it’s actually ever needed if the typestate works as intended and designed
