@@ -1,0 +1,80 @@
+diff --git a/mock/benches/bench.toml b/mock/benches/bench.toml
+index d4a50d98..e6ad32b5 100644
+--- a/mock/benches/bench.toml
++++ b/mock/benches/bench.toml
+@@ -2026,70 +2026,14 @@ title = "Packed 13-bit against u16, u32 and u64 dense carriers, swept from L1 to
+ workload = "default"
+ master_seed = 0x1234_5678_9ABC_DEF0
+ 
+-[[bench.bitpack-carrier-width.sizes]]
+-n = 16384
+-variants = [
+-    "../target/release/bench_bitpack_carrier_packed",
+-    "../target/release/bench_bitpack_carrier_packed_simd",
+-    "../target/release/bench_bitpack_carrier_d16",
+-    "../target/release/bench_bitpack_carrier_d16_control",
+-    "../target/release/bench_bitpack_carrier_d32",
+-    "../target/release/bench_bitpack_carrier_d64",
+-]
+-
+-[[bench.bitpack-carrier-width.sizes]]
+-n = 131072
+-variants = [
+-    "../target/release/bench_bitpack_carrier_packed",
+-    "../target/release/bench_bitpack_carrier_packed_simd",
+-    "../target/release/bench_bitpack_carrier_d16",
+-    "../target/release/bench_bitpack_carrier_d16_control",
+-    "../target/release/bench_bitpack_carrier_d32",
+-    "../target/release/bench_bitpack_carrier_d64",
+-]
+-
+-[[bench.bitpack-carrier-width.sizes]]
+-n = 1048576
+-variants = [
+-    "../target/release/bench_bitpack_carrier_packed",
+-    "../target/release/bench_bitpack_carrier_packed_simd",
+-    "../target/release/bench_bitpack_carrier_d16",
+-    "../target/release/bench_bitpack_carrier_d16_control",
+-    "../target/release/bench_bitpack_carrier_d32",
+-    "../target/release/bench_bitpack_carrier_d64",
+-]
+-
+-[[bench.bitpack-carrier-width.sizes]]
+-n = 2097152
+-variants = [
+-    "../target/release/bench_bitpack_carrier_packed",
+-    "../target/release/bench_bitpack_carrier_packed_simd",
+-    "../target/release/bench_bitpack_carrier_d16",
+-    "../target/release/bench_bitpack_carrier_d16_control",
+-    "../target/release/bench_bitpack_carrier_d32",
+-    "../target/release/bench_bitpack_carrier_d64",
+-]
+-
+ [[bench.bitpack-carrier-width.sizes]]
+ n = 4194304
+ variants = [
+-    "../target/release/bench_bitpack_carrier_packed",
+-    "../target/release/bench_bitpack_carrier_packed_simd",
+-    "../target/release/bench_bitpack_carrier_d16",
+-    "../target/release/bench_bitpack_carrier_d16_control",
+-    "../target/release/bench_bitpack_carrier_d32",
+-    "../target/release/bench_bitpack_carrier_d64",
+-]
+-
+-[[bench.bitpack-carrier-width.sizes]]
+-n = 8388608
+-variants = [
+-    "../target/release/bench_bitpack_carrier_packed",
+-    "../target/release/bench_bitpack_carrier_packed_simd",
+-    "../target/release/bench_bitpack_carrier_d16",
+-    "../target/release/bench_bitpack_carrier_d16_control",
+-    "../target/release/bench_bitpack_carrier_d32",
+-    "../target/release/bench_bitpack_carrier_d64",
++    "../../../target/release/bench_bitpack_carrier_packed",
++    "../../../target/release/bench_bitpack_carrier_d16",
++    "../../../target/release/bench_bitpack_carrier_d16_control",
++    "../../../target/release/bench_bitpack_carrier_d32",
++    "../../../target/release/bench_bitpack_carrier_d64",
+ ]
+ 
+ [bench.bitpack-contention]

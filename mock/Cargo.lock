@@ -75,7 +75,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "notko"
 version = "0.0.1"
-source = "git+ssh://git@github.com/orgrinrt/notko.git?branch=dev#a30683d7d27a25b005ac0956bbd092dae1566442"
+source = "git+https://github.com/orgrinrt/notko.git?branch=dev#0a13d99a33027ad1314e5da2c036dffab8d061e5"
 
 [[package]]
 name = "proc-macro2"
