@@ -1,0 +1,34 @@
+-- the doors, a column of 4096 host integers in and out
+ingest u13 saturating, value         10.311 ns per element (median),    9.098 (5th percentile)
+ingest u13 saturating, host           1.216 ns per element (median),    1.215 (5th percentile)
+ingest u13 wrapping, value           10.007 ns per element (median),    8.672 (5th percentile)
+ingest u13 wrapping, host             1.218 ns per element (median),    1.215 (5th percentile)
+egress u13, value                     3.848 ns per element (median),    3.338 (5th percentile)
+-- the fold of 4096 members
+fold u13 saturating, value            0.462 ns per element (median),    0.379 (5th percentile)
+fold u13 saturating, host             0.422 ns per element (median),    0.378 (5th percentile)
+fold u13 wrapping, value              0.347 ns per element (median),    0.347 (5th percentile)
+fold u13 wrapping, host               0.347 ns per element (median),    0.347 (5th percentile)
+fold u16 wrapping, value              0.031 ns per element (median),    0.031 (5th percentile)
+fold u16 wrapping, host               0.031 ns per element (median),    0.030 (5th percentile)
+-- the elementwise sum of two columns of 4096
+map u13 saturating, value             0.053 ns per element (median),    0.052 (5th percentile)
+map u13 saturating, host              0.053 ns per element (median),    0.052 (5th percentile)
+-- a Q16.16 product over two columns of 4096, written by hand
+floor, wrap                           0.760 ns per element (median),    0.738 (5th percentile)
+toward_zero, wrap                     1.317 ns per element (median),    0.927 (5th percentile)
+half_up, wrap                         0.820 ns per element (median),    0.812 (5th percentile)
+half_even, wrap                       0.809 ns per element (median),    0.807 (5th percentile)
+floor, saturate                       0.543 ns per element (median),    0.542 (5th percentile)
+half_even, saturate                   0.897 ns per element (median),    0.896 (5th percentile)
+f32 multiply                          0.092 ns per element (median),    0.086 (5th percentile)
+-- a decay of one Q16.16 value, a loop-carried chain of 100000 steps
+decay floor                           1.515 ns per element (median),    1.470 (5th percentile)
+decay toward_zero                     3.357 ns per element (median),    3.153 (5th percentile)
+decay half_up                         1.857 ns per element (median),    1.818 (5th percentile)
+decay half_even                       3.146 ns per element (median),    2.965 (5th percentile)
+decay half_even, saturate             3.919 ns per element (median),    3.240 (5th percentile)
+-- where each mode leaves the decayed value, against the real-valued answer
+steps   1000: real   912.509370  floor   912.501923  toward_zero   912.501923  half_up   912.509293  half_even   912.509293
+steps  10000: real   400.288695  floor   400.238602  toward_zero   400.238602  half_up   400.288498  half_even   400.288498
+steps  30000: real    64.138673  floor    64.060745  toward_zero    64.060745  half_up    64.138687  half_even    64.138672
