@@ -54,6 +54,7 @@ impl AtEveryScale {
 }
 
 impl PerFormat for AtEveryScale {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         self.counts[self.formats] = sums::<Sat<F>>(Dither::UNUSED).divergent();
         self.verdicts[self.formats] = addition_is_associative::<Sat<F>>().get();

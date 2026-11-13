@@ -256,6 +256,7 @@ struct Sums(Dither);
 impl PerSignature for Sums {
     type Out = Table;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Table {
         sums::<S>(self.0)
     }

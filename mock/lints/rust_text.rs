@@ -140,3 +140,152 @@ pub fn without_comments(text: &str) -> String {
     }
     out
 }
+
+/// Whether a crate-relative path is a test module: under a `tests` directory or
+/// a file named `tests.rs`.
+pub fn is_test_path(path: &str) -> bool {
+    let parts: Vec<&str> = path.split(['/', '\\']).collect();
+    let (file, dirs) = parts.split_last().unwrap_or((&"", &[]));
+    *file == "tests.rs" || dirs.contains(&"tests")
+}
+
+pub fn is_word(c: char) -> bool {
+    c.is_ascii_alphanumeric() || c == '_'
+}
+
+/// The offset of every `fn` keyword standing as a whole word.
+pub fn fn_keywords(chars: &[char]) -> Vec<usize> {
+    let mut out = Vec::new();
+    let mut i = 0;
+    while i + 1 < chars.len() {
+        if chars[i] == 'f'
+            && chars[i + 1] == 'n'
+            && (i == 0 || !is_word(chars[i - 1]))
+            && chars.get(i + 2).is_some_and(|c| c.is_whitespace())
+        {
+            out.push(i);
+        }
+        i += 1;
+    }
+    out
+}
+
+/// The identifier after the `fn` keyword, if one follows.
+pub fn name_after(chars: &[char], mut i: usize) -> Option<String> {
+    while i < chars.len() && chars[i].is_whitespace() {
+        i += 1;
+    }
+    let start = i;
+    while i < chars.len() && is_word(chars[i]) {
+        i += 1;
+    }
+    (i > start).then(|| chars[start .. i].iter().collect())
+}
+
+/// Whether the signature from `i` on reaches a `{` before a `;`, outside every
+/// parenthesis, bracket and angle bracket, which is the body. A brace inside an
+/// angle bracket is a const generic argument, and the `>` of a `->` closes
+/// nothing.
+pub fn has_body(chars: &[char], mut i: usize) -> bool {
+    let mut depth = 0i32;
+    while i < chars.len() {
+        match chars[i] {
+            '(' | '[' | '<' => depth += 1,
+            ')' | ']' => depth -= 1,
+            '>' if i > 0 && chars[i - 1] == '-' => {},
+            '>' => depth -= 1,
+            '{' if depth == 0 => return true,
+            ';' if depth == 0 => return false,
+            _ => {},
+        }
+        i += 1;
+    }
+    false
+}
+
+/// Where the item holding the `fn` at `at` starts, and its attributes.
+///
+/// Walks back from the keyword over the qualifiers (`pub` with its restriction,
+/// `const`, `unsafe`, `async`, `extern` with its ABI, `default`) and then over
+/// every `#[...]` directly above them. The start is the first character of the
+/// first qualifier, so the line a finding names is the one a mark goes above.
+pub fn item_head(chars: &[char], at: usize) -> (usize, Vec<String>) {
+    const QUALIFIERS: &[&str] = &["pub", "const", "unsafe", "async", "extern", "default"];
+    let mut start = at;
+    let mut i = at;
+    loop {
+        let mut j = i;
+        while j > 0 && chars[j - 1].is_whitespace() {
+            j -= 1;
+        }
+        if j == 0 {
+            break;
+        }
+        match chars[j - 1] {
+            ')' => {
+                // `pub(crate)` and its kin.
+                let Some(open) = chars[.. j - 1].iter().rposition(|&c| c == '(') else {
+                    break;
+                };
+                i = open;
+            },
+            '"' => {
+                // An ABI string, blanked inside, `extern "C"`.
+                let Some(open) = chars[.. j - 1].iter().rposition(|&c| c == '"') else {
+                    break;
+                };
+                i = open;
+            },
+            c if is_word(c) => {
+                let mut k = j;
+                while k > 0 && is_word(chars[k - 1]) {
+                    k -= 1;
+                }
+                let word: String = chars[k .. j].iter().collect();
+                if !QUALIFIERS.contains(&word.as_str()) {
+                    break;
+                }
+                i = k;
+                start = k;
+            },
+            _ => break,
+        }
+    }
+    let mut attributes = Vec::new();
+    let mut i = start;
+    loop {
+        let mut j = i;
+        while j > 0 && chars[j - 1].is_whitespace() {
+            j -= 1;
+        }
+        if j == 0 || chars[j - 1] != ']' {
+            break;
+        }
+        let mut depth = 0i32;
+        let mut k = j;
+        let mut open = None;
+        while k > 0 {
+            k -= 1;
+            match chars[k] {
+                ']' => depth += 1,
+                '[' => {
+                    depth -= 1;
+                    if depth == 0 {
+                        open = Some(k);
+                        break;
+                    }
+                },
+                _ => {},
+            }
+        }
+        let Some(open) = open else {
+            break;
+        };
+        if open == 0 || chars[open - 1] != '#' {
+            break;
+        }
+        attributes.push(chars[open - 1 .. j].iter().collect());
+        i = open - 1;
+    }
+    (start, attributes)
+}

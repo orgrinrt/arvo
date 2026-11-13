@@ -206,6 +206,7 @@ struct Edges {
 }
 
 impl PerFormat for Edges {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let min = <F::Slots as Slots>::MIN.index();
         let max = <F::Slots as Slots>::MAX.index();

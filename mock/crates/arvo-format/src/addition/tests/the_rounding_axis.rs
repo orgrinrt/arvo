@@ -29,6 +29,7 @@ struct Axis {
 }
 
 impl PerFormat for Axis {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let name = coordinates::<F>();
         let whole = F::PHASE.is_whole_multiple().get();
