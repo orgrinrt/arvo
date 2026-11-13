@@ -1,0 +1,266 @@
+# The value stance and the old tree's crates, proposed from a second read of
+# the ratified rows. Every row here is a proposal at one expert and none is a
+# ruling: promotion is the coordinator's gate. The reading behind each is in
+# `mock/research/202611122300_value-stance-second-read.md`, cited per row.
+
+# --- the value stance ----------------------------------------------------------
+
+[[proposal]]
+id = "a_datum_of_a_format_is_one_point_of_its_ambient_domain"
+kind = "answer"
+sentence_kind = "definition"
+standing = "one_expert"
+topic = "the_primitive"
+defines = "datum"
+says = "A datum of a format is one point of its ambient domain: a member of the format's representable set. A set-valued datum is a composition's datum and never a format's, and the many exact results a saturating adaptation sends to one end of the set are a property of that adaptation, while the end itself stays one point."
+because = "The spine makes a format its ambient domain and a representable set that is a constant of the type, with membership one affine predicate of which integers, fixed point, scaled integers and floats are points, so a member is a point. The statability ruling places intervals, stored-pair rationals and error-carrying values as compositions over formats rather than format instances, which takes the set-valued option out for formats. The min-plus ruling states absorption as a law over representable operands, `top + x = top`, and the spine puts saturation on the named adaptation, so the absorbing behaviour is a restriction on where a fold is sound rather than a denotation, which is the question's first option in its own words."
+answers = ["what_a_datum_stands_for"]
+note = "For formats only. The question's third option, a constructor-level clause, is not excluded by any ratified row, and this row does not exclude it either; it answers the question for a format's datum and leaves a composition's to the composition's own laws. The sub-fork the question's note names, soundness against bestness of a derived numeral, is untouched."
+gap = "What a datum of a composition stands for is the composition's to say, and nothing here says it."
+provenance = ["mock::research/202611122300_value-stance-second-read::#a-is-a-datum-of-a-format-one-point-of-the-ambient-domain"]
+keywords = ["datum", "point", "ambient domain", "representable set", "member", "denotation", "absorbing top", "saturation", "set-valued", "composition", "Q4"]
+
+[[proposal]]
+id = "a_value_is_the_sole_occupancy_placement_of_a_declared_signature"
+kind = "answer"
+sentence_kind = "definition"
+standing = "one_expert"
+topic = "the_primitive"
+defines = "value"
+says = "A value of a declared signature is that signature's sole occupancy placement: one member's slot, held alone in the carrier the placement derivation gives at sole occupancy, in one canonical encoding. Every operation on it is a function of the declared width; the carrier is observable through the host's layout observation and through nothing the design declares."
+because = "The ratified container ruling states that the footprint is observable through the host language's layout observation on a sized type and that the observation exists only where the value is the sole logical occupant of its allocation, which presupposes a sized type holding one value; its ratified fourth proposal makes placement the distinction, one primitive with two placements, so the value type is the sole placement used rather than a second placement beside the derivation. The placement ruling gives the derivation's output at sole occupancy as one carrier. The two obligations ask for exactly this: a platform-sized unsigned integer in a public error type, and a primitive of arvo's own at every position a bare number would take, each of which is a sole occupant."
+obligation = ["a_platform_sized_unsigned_integer_at_an_api_position", "a_primitive_for_every_position_a_bare_number_would_take"]
+note = "The design sentence that no row licenses a numeral value type carrying a stored slot read \"not in this crate\" as \"not licensed\": the format crate is right to forbid a carrier, and the value type belongs to a crate above it. Which ladder rung a declared width takes is not this row's; it is the placement derivation's, and it is frozen by the first release because the layout observation reads it."
+gap = "Shared placement, the packed column, is not covered and waits on the carrier deferral."
+provenance = ["mock::research/202611122300_value-stance-second-read::#b-do-these-rows-license-a-type-that-holds-one-value-at-sole-occupancy"]
+keywords = ["value", "value type", "sole occupancy", "placement", "carrier", "declared signature", "declared width", "layout", "size_of", "canonical encoding", "USize", "primitive"]
+
+[[proposal]]
+id = "ingest_of_a_host_value_is_the_declared_adaptation"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_format"
+says = "A host value enters a format through that format's own declared adaptation, with the identity as the exact step: the host integer or float is a point of the ambient domain and the adaptation is total onto the representable set. No ingest carries a rounding or an overflow rule of its own, and a rejecting constructor is not an ingest."
+because = "The spine factors arithmetic as an exact operation composed with a named total adaptation, and its ratified proposal says an operation that fuses an adaptation invisibly is an operation and an adaptation point wearing one name, to which the model's statements apply only once the two are separated. An ingest with its own clamp or wrap would be that fused case. A rejecting constructor is a runtime check, which the ratified no-runtime-check ruling refuses, and a masking one has no numeric meaning. The derivation is the spine's with the identity as the exact operation, so it states nothing the spine does not already carry."
+note = "Op's own ingest row says arvo may ship casting and conversion helpers and may not use them in place of the consumer. This row is read as consistent with it: the adaptation the ingest applies is the one the consumer declared in the signature, so arvo decides nothing on the consumer's behalf."
+gap = "What ingest does with a host value that is not a point of the ambient domain, a float's NaN or infinity, is not stated, and the ratified rows do not decide it."
+provenance = ["mock::research/202611122300_value-stance-second-read::#c-is-ingest-of-a-host-value-the-declared-adaptation"]
+keywords = ["ingest", "host value", "conversion", "cast", "adaptation", "exact step", "identity", "rounding", "overflow", "runtime check", "constructor"]
+
+[[proposal]]
+id = "the_exact_intermediate_is_named_beside_the_value"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_chain"
+says = "Beside the value type of a declared signature stands an exact accumulator: a name for the exact step's result before the adaptation, with exact addition and subtraction on it, a widening from a value into it, and the signature's own adaptation as its one way back to a value. Its width is the exact result's width under the operations it admits, held in a register wide enough that no admitted step loses a bit."
+because = "The statability ruling says a concept closed over `V x V -> V` has no name for the intermediate a composite claim quantifies over, so a claim about a composite has no expressible form; the spine makes the exact operation and the adaptation two first-class stages, so the intermediate is the exact step's result before the adaptation. Naming it is what makes a composite claim, a sum adapted once rather than per step, statable at all. Kaski's lane asks for that sum: a fold over many quantities whose rounding happens once."
+obligation = ["composition_contracts_above_the_numeral", "a_deterministic_fixed_point_lane_with_declared_rounding"]
+note = "The ratified row licenses the name and does not owe it: its companion list, the width algebra of exact results among it, \"is not promoted by this ruling and stays at one expert\". So the width clause of this row is this row's own and rests on nothing ratified. A reading that the row says the format concept supplies the width algebra and so the value crate owes the accumulator is not what the row says."
+gap = "The width algebra past addition and subtraction, a product or a quotient held exactly, is not stated. Whether a fold's reduction order is specified is `question::reduction_order_or_associativity` and is not answered here."
+provenance = ["mock::research/202611122300_value-stance-second-read::#d-does-the-row-at-1824-license-a-named-exact-intermediate-beside-the-value-type"]
+keywords = ["accumulator", "exact accumulator", "intermediate", "exact result", "widen", "narrow", "composite claim", "statability", "V x V -> V", "fold", "sum", "width algebra"]
+
+[[proposal]]
+id = "the_first_slice_answers_to_hilavitkutin_and_kaski"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The first slice is measured against two consumers' stated needs and no others: hilavitkutin's platform-sized unsigned integer at an API position, its primitive for every position a bare number would take and its exact-width container, and kaski's deterministic fixed-point lane with declared rounding. A slice that meets these is complete; a need neither states is slice two's."
+because = "Both consumers are live and both have written down what they need from arvo, hilavitkutin in its designs and kaski in its canon, where arvo is ruled kaski's one numeric base proxied until ready. The ratified library ruling says the numeral base has to work so the bigger things can be built on it, and the bottom-up row says the next unit is the one that unblocks the most; these two consumers are what is blocked."
+obligation = ["a_platform_sized_unsigned_integer_at_an_api_position", "a_primitive_for_every_position_a_bare_number_would_take", "an_exact_width_container_a_consumer_can_alias_and_pin", "a_deterministic_fixed_point_lane_with_declared_rounding"]
+gap = "hilavitkutin's content hash, its masks and its graph imports are slice two's and are not measured by this slice."
+provenance = ["mock::research/202611122300_value-stance-second-read::#the-value-stance"]
+keywords = ["first slice", "consumer", "hilavitkutin", "kaski", "obligation", "USize", "fixed point", "lane", "demand side"]
+
+# --- the old tree, one row per crate ---------------------------------------------
+#
+# Read at `1b2796e92ad2b8176c2177d72a9cffa161b7b92e`. Import counts are `use`
+# statements under `hilavitkutin/mock/crates` at hilavitkutin `dev` `af823b7`.
+
+[[proposal]]
+id = "the_old_facade_returns_as_value_aliases_and_no_facade"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo` facade returns in slice one changed: its numerals, the integer and fixed-point aliases, the platform-sized index and the boolean, return as aliases of the value crate over declared signatures, and no facade crate returns, so a consumer names the crate that owns the thing. Its floats return changed in slice two."
+because = "It was the most imported crate of the old tree, 243 `use` lines in hilavitkutin, nearly all for `USize`, `Bool` and the strategy markers, so the slice is not usable without its numerals. A facade can be added later without breaking anyone and cannot be removed without breaking everyone."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo"]
+keywords = ["arvo", "facade", "old tree", "USize", "Bool", "Uint", "UFixed", "IFixed", "alias", "slice one", "float"]
+
+[[proposal]]
+id = "the_old_bitmask_crate_returns_changed_in_slice_two"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-bitmask` returns changed in slice two, first of it: `Mask`, `BitMatrix`, `NodeId` and the set-bit iteration over `arvo-bits` and the capacity crate."
+because = "It carries 22 `use` lines in hilavitkutin, the most of anything outside the numerals and capacity, and the masks obligation's single-instruction lowering is part of the need, which wants the value and capacity crates under it first."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-bitmask"]
+keywords = ["arvo-bitmask", "mask", "BitMatrix", "NodeId", "old tree", "slice two"]
+
+[[proposal]]
+id = "the_old_bit_contracts_crate_is_gone"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-bits-contracts` does not return."
+because = "No `use` line under hilavitkutin's `mock/crates` names it, only five in its research sketches, but its `BitAccess`, `BitLogic` and `BitSequence` are still imported through `arvo-bitmask`'s re-export, `BitAccess` on 14 lines, so they return with the masks over `arvo-bits`. Its bit-width and bit-access contracts are what head's `arvo-bits` carries on `Bits<N>` itself, and its widening and narrowing of a numeral is conversion, which is one adaptation onto the target."
+instead = "Bit access on `arvo-bits`, and `convert` on the value crate for widening and narrowing."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-bits-contracts"]
+keywords = ["arvo-bits-contracts", "BitAccess", "Widen", "Narrow", "old tree", "gone"]
+
+[[proposal]]
+id = "the_old_bits_crate_returns_in_slice_one"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-bits` returns in slice one as head's `Bits<N>`, with no strategy parameter, and with `cast` in place of the old narrowing and widening."
+because = "Ten `use` lines in hilavitkutin need it, the 28-bit content hash among them, and the exact-width container obligation is met by it. The strategy parameter on a bit container read nothing in its realisation, so dropping it changes no bit."
+obligation = ["an_exact_width_container_a_consumer_can_alias_and_pin"]
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-bits"]
+keywords = ["arvo-bits", "Bits", "exact width", "cast", "old tree", "slice one"]
+
+[[proposal]]
+id = "the_old_comb_crate_is_gone"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-comb` does not return until a consumer states a need for it."
+because = "No source line in hilavitkutin imports it; it is named only in a manifest and a design. A crate nobody calls has no demand to be measured against."
+instead = "Nothing until a consumer's design or canon states the need, and then a crate written against that need."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-comb"]
+keywords = ["arvo-comb", "bin_pack", "matrix_chain_dp", "old tree", "gone"]
+
+[[proposal]]
+id = "the_old_graph_crate_returns_changed_in_slice_two"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-graph` returns changed in slice two, over the value crate's index type."
+because = "Two `use` lines in hilavitkutin need it, and its functions take and return indices, which are values of the slice."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-graph"]
+keywords = ["arvo-graph", "topo_sort", "spanning_tree", "waist_detect", "old tree", "slice two"]
+
+[[proposal]]
+id = "the_old_hash_crate_returns_changed_in_slice_two"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-hash` returns changed in slice two, its hash width named by the consumer and its result carried in `Bits<N>`."
+because = "Four `use` lines in hilavitkutin need it, and the content-hash obligation asks for a width the consumer names rather than inherits."
+obligation = ["a_content_hash"]
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-hash"]
+keywords = ["arvo-hash", "ContentHash", "xxhash3", "fnv1a", "old tree", "slice two"]
+
+[[proposal]]
+id = "the_old_mask_contracts_crate_is_gone"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-mask-contracts` does not return as a crate of its own."
+because = "No `use` line in hilavitkutin names it, and its one contract has one owner, the masks."
+instead = "The mask contract goes into the masks crate of slice two."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-mask-contracts"]
+keywords = ["arvo-mask-contracts", "MaskOps", "old tree", "gone"]
+
+[[proposal]]
+id = "the_old_numeric_contracts_crate_is_gone"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-numeric-contracts` does not return."
+because = "No `use` line under hilavitkutin's `mock/crates` names it directly, only two in its research sketches, and `FromConstant` is named twice through the facade. Compare and the compile-time constant are the value crate's own operations, and the non-zero predicate is the refined divisor."
+instead = "Compare, `min`, `max` and the `constant` door on the value crate; a refined divisor for division; `Abs`, `Recip` and `Sqrt` with the elementary functions, which stay in kaski in slice one."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-numeric-contracts"]
+keywords = ["arvo-numeric-contracts", "TotalOrd", "FromConstant", "IsNonZero", "Sqrt", "old tree", "gone"]
+
+[[proposal]]
+id = "the_old_refit_crate_is_gone"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-refit` does not return."
+because = "Two `use` lines in hilavitkutin name it, both for widening and narrowing, and a refit between numerals is one adaptation onto the target, which the ingest and conversion proposals already carry."
+instead = "`convert` on the value crate, and `cast` on `Bits<N>`."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-refit"]
+keywords = ["arvo-refit", "Widen", "Narrow", "refit", "conversion", "old tree", "gone"]
+
+[[proposal]]
+id = "the_old_sparse_crate_returns_changed_in_slice_two"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-sparse` returns changed in slice two, over the value crate's index type and the capacity crate."
+because = "Four `use` lines in hilavitkutin need it."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-sparse"]
+keywords = ["arvo-sparse", "Csr", "rcm_reorder", "block_diagonal", "old tree", "slice two"]
+
+[[proposal]]
+id = "the_old_spectral_crate_returns_changed_in_slice_two"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-spectral` returns changed in slice two, last of it, over the sparse crate."
+because = "Two `use` lines in hilavitkutin need it, and it is built on the sparse matrices."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-spectral"]
+keywords = ["arvo-spectral", "fiedler_vector", "laplacian", "spectral_bisection", "old tree", "slice two"]
+
+[[proposal]]
+id = "the_old_storage_crate_is_gone"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-storage` does not return as a crate."
+because = "Its names are the most imported in hilavitkutin through the facade, `USize`, `Bool` and `Cap`, and each now has an owner of its own; the width wrappers go with the bare const generic positions op allowed."
+instead = "`Bits` in `arvo-bits`; `USize` and `Bool` as value aliases; `Cap` in the capacity crate; bare integers at const generic positions."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-storage"]
+keywords = ["arvo-storage", "USize", "Bool", "Cap", "ibits", "fbits", "old tree", "gone"]
+
+[[proposal]]
+id = "the_old_strategy_crate_returns_in_slice_one_as_bindings"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-strategy` returns in slice one changed, as head's `arvo-strategy`: presets bound over a declared signature with their cells unsettled, and the identity markers moved to the value crate."
+because = "Fifty-five `use` lines in hilavitkutin reach it through the facade, mostly `Additive` and `Identity`; the presets are the consumer's vocabulary, and the deferral on how `Warm` overflows stands, so the cells ship unsettled."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-strategy"]
+keywords = ["arvo-strategy", "Hot", "Warm", "Cold", "Additive", "Identity", "preset", "old tree", "slice one"]
+
+[[proposal]]
+id = "the_old_tensor_crate_returns_as_the_capacity_crate"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-tensor` returns changed in slice one as the capacity crate: a count as typestate with its array projection and a const count. Its `Array`, `Matrix` and `Enumerator` return changed in slice two."
+because = "Sixty `use` lines in hilavitkutin need it, nearly all for `Capacity`, `cap_size`, `Dim` and `ConstCapacity`, and hilavitkutin's api crate cannot be written without them."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-tensor"]
+keywords = ["arvo-tensor", "Capacity", "cap_size", "Dim", "ConstCapacity", "capacity", "old tree", "slice one"]
+
+[[proposal]]
+id = "the_old_transparent_crate_is_gone"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-transparent` does not return."
+because = "No `use` line in hilavitkutin names it, and the value type declares its own unwrap doors, so a general transparency contract has nothing left to carry."
+instead = "The `slot` and `raw` doors on the value type, and `raw` on `Bits<N>`."
+provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-transparent"]
+keywords = ["arvo-transparent", "Transparent", "ConstDeref", "raw", "old tree", "gone"]
