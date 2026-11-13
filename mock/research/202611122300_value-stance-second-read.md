@@ -60,9 +60,9 @@ The questions of part one reached this read already worded toward their answers:
 
 ### Status, set against the stance file after the above was written
 
-On (b), CONVERGED. Section 1.5 of the stance file reaches the value type from the same four rulings and the same two obligations, and its item 4 is this read's first quotation. It goes further than the rows in one sentence, "A value type whose representation is the sole occupancy output of the placement derivation is the first placement, used", which this read reaches through the ratified `at_shared_occupancy_no_per_element_footprint_observation_exists` ("one primitive with two placements") rather than by assertion.
+On (b), this read agrees with the stance file. The stance file is unratified, so the agreement is no corroboration of either. Section 1.5 of the stance file reaches the value type from the same four rulings and the same two obligations, and its item 4 is this read's first quotation. It goes further than the rows in one sentence, "A value type whose representation is the sole occupancy output of the placement derivation is the first placement, used", which this read reaches through the ratified `at_shared_occupancy_no_per_element_footprint_observation_exists` ("one primitive with two placements") rather than by assertion.
 
-On (d), CONVERGED with the stance file and with the roadmap's first read of call 10, and against the reading recorded there as K6. Section 1.5 is silent on (d). Elsewhere the stance file uses head's `Exact` (`arvo-format/src/apply/position.rs:158`) as a named exact position at its ingest door and keeps the double-width register of a lane "an internal arm and not a declared coordinate" (its section 3.5), and neither claims the rows owe a declared accumulator. The roadmap's member reads `:1824` as "ratifies only that a `V x V -> V` concept cannot name the intermediate". K6 reads the same row as saying "the format concept supplies the width algebra, so the value crate owes the accumulator", and the row says the opposite of that in its own words: the list naming the width algebra "is not promoted by this ruling and stays at one expert". So an accumulator type is licensed, as a name the rows make necessary for a composite claim and nothing forbids, and it is not owed by them; its width algebra is a proposal's to state.
+On (d), this read agrees with the stance file and with the roadmap's first read of call 10, and disagrees with the reading recorded there as K6. Both documents are unratified, so the agreement is no corroboration; what decides (d) is the wording of `:1824` quoted above. Section 1.5 is silent on (d). Elsewhere the stance file uses head's `Exact` (`arvo-format/src/apply/position.rs:158`) as a named exact position at its ingest door and keeps the double-width register of a lane "an internal arm and not a declared coordinate" (its section 3.5), and neither claims the rows owe a declared accumulator. The roadmap's member reads `:1824` as "ratifies only that a `V x V -> V` concept cannot name the intermediate". K6 reads the same row as saying "the format concept supplies the width algebra, so the value crate owes the accumulator", and the row says the opposite of that in its own words: the list naming the width algebra "is not promoted by this ruling and stays at one expert". So an accumulator type is licensed, as a name the rows make necessary for a composite claim and nothing forbids, and it is not owed by them; its width algebra is a proposal's to state.
 
 ### A second read of call 4: does a debug build abort when a declared-saturating operation saturates
 
@@ -218,7 +218,7 @@ The rows are in `mock/registry/proposal-the-value-stance.toml`, each at `one_exp
 
 ### Kaski's lane
 
-`obligation::a_deterministic_fixed_point_lane_with_declared_rounding` states kaski's need: fixed-point arithmetic whose rounding the consumer declares, half to even on the product for kaski today, computing the same bits on every target the simulation runs on, native and wasm32 among them, because replay and the digest are compared across them. Its quotes are kaski's own canon rows.
+`obligation::a_deterministic_fixed_point_lane_with_declared_rounding` states kaski's need: fixed-point arithmetic whose rounding the consumer declares, half to even on the product for kaski today, usable inside a deterministic shard, which takes integer or fixed point only under a declared reduction order and a pinned build. Its quotes are kaski's own canon rows, the shard's bounds from the `because` of `opaque_work_may_run_in_the_simulation_where_its_result_is_journaled_and_never_run_again`, which states them as ikiuni's. Lane widths and the same bits on every target, native and wasm32 among them, come from the coordinator's brief and from no kaski or ikiuni row, so the row carries them in its `gap` and not in its need.
 
 ### The old tree, crate by crate
 
@@ -230,11 +230,11 @@ Exported the facade: `Uint`, `Int`, `Fixed`, `Signed`, `UFixed`, `IFixed`, `Floa
 
 #### arvo-bitmask
 
-Exported `Mask`, `BitMatrix`, `NodeId`, `SetBitsIter`, `propagate_dirty`, `cap_size`. 22 import lines (`BitAccess` 7, `NodeId` 7, `Mask` 2). Returns changed in slice two, first of it, as masks over `arvo-bits` and the capacity crate.
+Exported `Mask`, `BitMatrix`, `NodeId`, `SetBitsIter`, `propagate_dirty`, `cap_size`, and re-exported `BitAccess`, `BitLogic` and `BitSequence` from `arvo-bits-contracts`. 22 import lines; by name, `BitAccess` 14 (re-exported from `arvo-bits-contracts`), `NodeId` 9, `BitLogic` 6, `BitSequence` 3, `Mask` 1, `BitMatrix` 1. Returns changed in slice two, first of it, as masks over `arvo-bits` and the capacity crate.
 
 #### arvo-bits-contracts
 
-Exported `HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`, `IBitPrim`, `UBitContainer`, `IBitContainer`, `Widen`, `Narrow`, `NarrowFromU64`. 0 import lines. Gone: the bit contracts fold into `arvo-bits` at head, and widening and narrowing of a numeral is conversion, which is adaptation.
+Exported `HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`, `IBitPrim`, `UBitContainer`, `IBitContainer`, `Widen`, `Narrow`, `NarrowFromU64`. 0 import lines under `mock/crates`, 5 in research sketches; reached instead through `arvo-bitmask`'s re-export, 14 lines naming `BitAccess`. Gone: the bit contracts fold into `arvo-bits` at head, and widening and narrowing of a numeral is conversion, which is adaptation.
 
 #### arvo-bits
 
@@ -258,7 +258,7 @@ Exported `MaskOps`. 0 import lines. Gone as a crate of its own; the contract goe
 
 #### arvo-numeric-contracts
 
-Exported `Abs`, `Recip`, `Sqrt`, `TotalOrd`, `FromConstant`, and the predicates `IsZero`, `IsPositive`, `IsNonZero`, `IsNonNegative`, `IsZeroOrPositive`. 0 direct import lines, `FromConstant` reached twice through the facade. Gone: compare and the `constant` door are the value crate's own operations, the non-zero predicate becomes the refined divisor of stance I, and `Sqrt`, `Abs` and `Recip` wait for the elementary functions, which stay in kaski in slice one.
+Exported `Abs`, `Recip`, `Sqrt`, `TotalOrd`, `FromConstant`, and the predicates `IsZero`, `IsPositive`, `IsNonZero`, `IsNonNegative`, `IsZeroOrPositive`. 0 direct import lines under `mock/crates`, 2 in research sketches, `FromConstant` reached twice through the facade. Gone: compare and the `constant` door are the value crate's own operations, the non-zero predicate becomes the refined divisor of stance I, and `Sqrt`, `Abs` and `Recip` wait for the elementary functions, which stay in kaski in slice one.
 
 #### arvo-refit
 
