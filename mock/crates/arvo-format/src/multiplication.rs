@@ -27,11 +27,23 @@ use core::marker::PhantomData;
 use notko::Maybe;
 
 use crate::adapt::{Arity, DeclaredSignature, Operation};
-use crate::apply::{Dither, Exact, Remainder, adapt};
-use crate::format::{Format, greatest_common_divisor, greatest_common_divisor_unsigned, radix};
-use crate::quantum::{Quantum, is_constant_family};
+use crate::apply::{Dither, Exact, adapt};
+use crate::format::Format;
+use crate::placing::{
+    Placed,
+    Powers,
+    Reduced,
+    is_held,
+    over,
+    positioned,
+    powers,
+    reduced_phase,
+    saturated,
+    times,
+};
+use crate::quantum::is_constant_family;
 use crate::slots::{Slot, Slots};
-use crate::wide::{Divided, Wide};
+use crate::wide::Wide;
 use crate::width::Bool;
 
 /// Multiplication under one declared signature.
@@ -114,27 +126,22 @@ struct Step {
 /// The step's constants for `F`, or nothing where `D` is past `2^128 - 1`.
 ///
 /// A zero phase denominator, and a zero radix at a negative exponent, give no
-/// positive `D`, and the radix's own obligation refuses the second. The
-/// fraction's sign moves onto the numerator before it is reduced.
+/// positive `D`, and the radix's own obligation refuses the second.
 const fn step<F: Format>() -> Maybe<Step> {
-    let num = F::PHASE.numerator() as i128;
-    let den = F::PHASE.denominator() as i128;
-    if den == 0 {
+    let Maybe::Is(Reduced {
+        numerator: n,
+        denominator: d,
+    }) = reduced_phase::<F>()
+    else {
         return Maybe::Isnt;
-    }
-    let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
-    let common = greatest_common_divisor(num.abs(), den);
-    let (n, d) = (num / common, den / common);
-    let r = radix::<F>().base() as u64;
-    let e = <F::Quantum as Quantum>::BASE.power();
-    let (up, down) = if e < 0 { (0, e.unsigned_abs()) } else { (e.unsigned_abs(), 0) };
+    };
+    let Powers {
+        up,
+        down,
+    } = powers::<F>();
     // `d r^k`, then `D` as `d` times it. Either leaving the four limbs, or `D`
     // leaving the host's unsigned 128-bit integer, is a `D` not yet admitted.
-    let fall = match Wide::power(r, down) {
-        Maybe::Is(p) => p,
-        Maybe::Isnt => return Maybe::Isnt,
-    };
-    let lowered = match Wide::of(d).times(fall) {
+    let lowered = match times(Maybe::Is(Wide::of(d)), down) {
         Maybe::Is(v) => v,
         Maybe::Isnt => return Maybe::Isnt,
     };
@@ -155,20 +162,10 @@ const fn step<F: Format>() -> Maybe<Step> {
     Maybe::Is(Step {
         numerator: n,
         denominator: d,
-        scale: Wide::power(r, up),
+        scale: up,
         offset,
         divisor,
     })
-}
-
-/// Where the step put a product: past an end of the index on one side, or at a
-/// slot with a remainder over `D`.
-#[derive(Clone, Copy)]
-enum Placed {
-    /// Past the end of the index on the negative side when it says so.
-    Past(bool),
-    /// The floor slot and the remainder's numerator over `D`.
-    At(i128, u128),
 }
 
 /// `n + a d`, one factor of the numerator.
@@ -202,36 +199,14 @@ const fn placed(step: Step, a: i128, b: i128) -> Placed {
     let scaled = if product.is_zero().get() {
         product
     } else {
-        match step.scale {
-            Maybe::Is(s) => {
-                match product.times(s) {
-                    Maybe::Is(p) => p,
-                    Maybe::Isnt => return Placed::Past(negative),
-                }
-            },
+        match times(Maybe::Is(product), step.scale) {
+            Maybe::Is(p) => p,
             Maybe::Isnt => return Placed::Past(negative),
         }
     };
-    let numerator = match scaled.plus(step.offset.negated()) {
-        Maybe::Is(x) => x,
-        Maybe::Isnt => return Placed::Past(negative),
-    };
-    let Divided {
-        quotient,
-        remainder,
-    } = numerator.floor_divided(step.divisor);
-    match quotient.index() {
-        Maybe::Is(slot) => Placed::At(slot, remainder),
-        Maybe::Isnt => Placed::Past(quotient.is_negative().get()),
-    }
-}
-
-/// Whether the corner `(a, b)` is a position the index holds, counted one slot
-/// past its floor when it is not on the grid, since a mode may round it there.
-const fn corner_is_held(step: Step, a: i128, b: i128) -> Bool {
-    match placed(step, a, b) {
-        Placed::Past(_) => Bool::FALSE,
-        Placed::At(slot, remainder) => Bool::of(remainder == 0 || slot < i128::MAX),
+    match scaled.plus(step.offset.negated()) {
+        Maybe::Is(numerator) => over(numerator, step.divisor),
+        Maybe::Isnt => Placed::Past(negative),
     }
 }
 
@@ -247,33 +222,11 @@ const fn product_is_carried<F: Format>() -> Bool {
     let min = <F::Slots as Slots>::MIN.index();
     let max = <F::Slots as Slots>::MAX.index();
     Bool::of(
-        corner_is_held(step, min, min).get()
-            && corner_is_held(step, min, max).get()
-            && corner_is_held(step, max, min).get()
-            && corner_is_held(step, max, max).get(),
+        is_held(placed(step, min, min)).get()
+            && is_held(placed(step, min, max)).get()
+            && is_held(placed(step, max, min)).get()
+            && is_held(placed(step, max, max)).get(),
     )
-}
-
-/// The end of the index on the side of a position whose sign is `negative`.
-const fn saturated(negative: bool) -> Exact {
-    Exact::on_grid(Slot::at(if negative { i128::MIN } else { i128::MAX }))
-}
-
-/// The placed product as an exact position, its remainder in lowest terms.
-const fn positioned(step: Step, at: Placed) -> Exact {
-    match at {
-        Placed::Past(negative) => saturated(negative),
-        Placed::At(slot, 0) => Exact::on_grid(Slot::at(slot)),
-        Placed::At(slot, remainder) => {
-            // The remainder is below `D`, so it is already in `[0, 1)` and the
-            // position is the floor slot itself.
-            let common = greatest_common_divisor_unsigned(remainder, step.divisor);
-            Exact::held(
-                Slot::at(slot),
-                Remainder::within(remainder / common, step.divisor / common),
-            )
-        },
-    }
 }
 
 /// The exact position of the product of the members at slots `a` and `b`.
@@ -290,7 +243,7 @@ const fn positioned(step: Step, at: Placed) -> Exact {
 pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Multipliable::<F>::ADMITTED;
     match Multipliable::<F>::STEP {
-        Maybe::Is(step) => positioned(step, placed(step, a.index(), b.index())),
+        Maybe::Is(step) => positioned(step.divisor, placed(step, a.index(), b.index())),
         // The obligation above has refused this format already.
         Maybe::Isnt => saturated(false),
     }
@@ -324,7 +277,7 @@ pub const fn is_multipliable<F: Format>() -> Bool {
 #[cfg(test)]
 const fn unforced_position<F: Format>(a: Slot, b: Slot) -> Maybe<Exact> {
     match Multipliable::<F>::STEP {
-        Maybe::Is(step) => Maybe::Is(positioned(step, placed(step, a.index(), b.index()))),
+        Maybe::Is(step) => Maybe::Is(positioned(step.divisor, placed(step, a.index(), b.index()))),
         Maybe::Isnt => Maybe::Isnt,
     }
 }

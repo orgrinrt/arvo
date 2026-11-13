@@ -65,6 +65,14 @@
 //! `sum_position` over it, since the difference is the one step that forces the
 //! slot range's own obligation. Deleting any of the three forcing lines turns a
 //! case red.
+//!
+//! Five more pairs pin the quotient and the conversion: a constant divisor at the
+//! zero member against one at one, `Divisor::of` over a range that holds the zero
+//! against the same range starting at one, each operation over a
+//! magnitude-indexed quantum against a constant one, and a conversion whose
+//! remainder's denominator is `2^128` against one at `2^127`. After them one file
+//! that has to compile names every item those two operations add from the crate
+//! root, as an outside crate with no feature line would.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -282,4 +290,57 @@ fn subtraction_over_a_range_past_the_ladder_is_refused_and_addition_over_it_admi
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/subtraction_over_a_range_past_the_ladder_is_refused.rs");
     t.pass("tests/ui/addition_over_a_range_past_the_ladder_is_admitted.rs");
+}
+
+/// A constant divisor at the zero member, refused where the constant is named,
+/// and at one, admitted.
+#[test]
+fn division_by_a_constant_zero_is_refused_and_by_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/division_by_a_constant_zero_is_refused.rs");
+    t.pass("tests/ui/division_by_a_constant_one_is_admitted.rs");
+}
+
+/// A divisor read at run time over a range holding the zero member, refused,
+/// and over the same range starting at one, admitted.
+#[test]
+fn a_runtime_divisor_is_refused_over_a_range_holding_the_zero_and_admitted_without_it() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_runtime_divisor_over_a_range_holding_the_zero_is_refused.rs");
+    t.pass("tests/ui/a_runtime_divisor_over_a_range_without_the_zero_is_admitted.rs");
+}
+
+/// Division over a magnitude-indexed quantum, refused, and over a constant
+/// quantum at the same exponent, admitted.
+#[test]
+fn division_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/division_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/division_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Conversion from a magnitude-indexed quantum, refused, and from a constant
+/// quantum at the same exponent, admitted.
+#[test]
+fn conversion_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/conversion_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/conversion_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Conversion whose remainder's denominator is `2^128`, refused, and `2^127`,
+/// admitted.
+#[test]
+fn conversion_over_a_remainder_no_position_holds_is_refused_and_one_it_holds_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/conversion_over_a_remainder_no_position_holds_is_refused.rs");
+    t.pass("tests/ui/conversion_over_a_remainder_a_position_holds_is_admitted.rs");
+}
+
+/// Every item the quotient and the conversion add, reached from the crate root
+/// by an outside crate with no feature line.
+#[test]
+fn the_quotient_and_conversion_surface_is_reached_from_the_root() {
+    let t = trybuild::TestCases::new();
+    t.pass("tests/ui/the_quotient_and_conversion_surface_is_reached_from_the_root.rs");
 }

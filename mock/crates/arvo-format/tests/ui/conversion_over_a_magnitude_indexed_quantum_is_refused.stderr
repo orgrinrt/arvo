@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: conversion is not yet admitted over a magnitude-indexed quantum on either side: a slot names a different value at each magnitude, and the applied map carries no magnitude coordinate yet
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::conversion::Convertible::<Probe, arvo_format::points::Integer<8>>::ADMITTED` failed here
+  |
+ ::: src/conversion.rs
+  |
+  | /         assert!(
+  | |             is_constant_family::<F::Quantum>().get() && is_constant_family::<T::Quantum>().get(),
+  | |             "conversion is not yet admitted over a magnitude-indexed quantum on either side: a slot \
+  | |              names a different value at each magnitude, and the applied map carries no magnitude \
+  | |              coordinate yet"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/conversion.rs
+  |
+  |     let () = Convertible::<F, T>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

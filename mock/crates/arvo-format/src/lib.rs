@@ -45,9 +45,12 @@ pub mod adapt;
 pub mod addition;
 pub mod ambient;
 pub mod apply;
+pub mod conversion;
+pub mod division;
 pub mod format;
 pub mod multiplication;
 pub mod overflow;
+mod placing;
 pub mod quantum;
 pub mod rounding;
 pub mod slots;
@@ -93,6 +96,8 @@ pub use ambient::{
     is_admissible_ambient,
 };
 pub use apply::{Dither, Exact, Fraction, adapt, panic_on_inexact, panic_on_overflow};
+pub use conversion::{Convert, convert, converted_position, is_convertible};
+pub use division::{Div, Divisor, div, is_divisible, quotient_position};
 pub use format::{
     Format,
     Phase,

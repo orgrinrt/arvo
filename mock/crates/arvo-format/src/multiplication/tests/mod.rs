@@ -21,6 +21,7 @@ use crate::tests::grid::Grid;
 use crate::tests::ratio::Ratio;
 
 mod the_edges;
+mod the_inverse_round_trip;
 mod the_laws;
 mod the_oracle;
 mod the_step;
