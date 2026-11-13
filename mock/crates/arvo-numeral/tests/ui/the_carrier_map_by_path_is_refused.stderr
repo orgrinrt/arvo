@@ -1,0 +1,19 @@
+error[E0432]: unresolved import `arvo_numeral::Carried`
+ --> tests/ui/the_carrier_map_by_path_is_refused.rs:3:5
+  |
+3 | use arvo_numeral::Carried;
+  |     ^^^^^^^^^^^^^^^^^^^^^ no `Carried` in the root
+
+error[E0603]: module `map` is private
+ --> tests/ui/the_carrier_map_by_path_is_refused.rs:4:19
+  |
+4 | use arvo_numeral::map::Carried as _;
+  |                   ^^^  ------- trait `Carried` is not publicly re-exported
+  |                   |
+  |                   private module
+  |
+note: the module `map` is defined here
+ --> src/lib.rs
+  |
+  | mod map;
+  | ^^^^^^^

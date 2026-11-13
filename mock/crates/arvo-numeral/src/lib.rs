@@ -33,8 +33,6 @@ pub use admit::{Saturating, Sole, ValuePolicy, ValueRounding, Wrapping};
 pub use alias::{ISize, Int, USize, Uint};
 pub use arvo_format::Bool;
 pub use identity::{Additive, Identity};
-pub use machine::Machine;
-pub use map::Carried;
 pub use num::Num;
 
 #[cfg(test)]

@@ -72,9 +72,9 @@ pub fn check_value<S: Sole>(a: i128) {
         "the slot door does not return the member"
     );
     assert_eq!(
-        Num::<S>::from_raw(v.raw()),
+        Num::<S>::adapted(Exact::on_grid(v.slot())),
         v,
-        "`from_raw(v.raw())` is not `v`"
+        "the slot door and `adapted` do not round-trip the member"
     );
 }
 

@@ -24,9 +24,13 @@ use arvo_format::{
 
 use crate::admit::Sole;
 use crate::machine::{Machine, copy};
+use crate::map::Carried;
 use crate::rung;
 
 type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
+
+/// The carrier the map names for the signature. Nameable inside this crate only.
+pub(crate) type ReprOf<S> = <SlotsOf<S> as Carried>::Repr;
 
 /// A value of the declared signature `S`: one member of its format, held alone
 /// in the carrier the placement derives at sole occupancy.
@@ -35,7 +39,7 @@ type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
 /// equal exactly when their slots are. Every operation is the format's own on
 /// the slot, computed in the carrier.
 #[repr(transparent)]
-pub struct Num<S: Sole>(S::Repr);
+pub struct Num<S: Sole>(ReprOf<S>);
 
 /// One operation, dispatched on the carrier's size and signedness to the rung
 /// function at that machine integer. The match is over constants of the
@@ -74,7 +78,7 @@ impl<S: Sole> Num<S> {
     const fn at_index(index: i128) -> Self {
         let () = S::ADMITTED;
         Self(dispatch!(
-            S::Repr,
+            ReprOf<S>,
             carrier,
             [
                 rung::from_s8,
@@ -123,46 +127,11 @@ impl<S: Sole> Num<S> {
         Self::at_index(adapt::<S>(exact, Dither::UNUSED).index())
     }
 
-    /// The member the carrier bits name, after the adaptation onto the declared
-    /// width.
-    ///
-    /// Total over every bit pattern; `from_raw(v.raw())` is `v`. Under `Wrap` or
-    /// `Saturate` in a debug build, bits outside the range assert.
-    #[must_use]
-    pub const fn from_raw(raw: S::Repr) -> Self {
-        let () = S::ADMITTED;
-        let member = Self(dispatch!(
-            S::Repr,
-            carrier,
-            [
-                rung::adapt_s8,
-                rung::adapt_u8,
-                rung::adapt_s16,
-                rung::adapt_u16,
-                rung::adapt_s32,
-                rung::adapt_u32,
-                rung::adapt_s64,
-                rung::adapt_u64
-            ],
-            [raw],
-            [const { S::WIDTH.count() }, S::POLICY]
-        ));
-        if cfg!(debug_assertions) && const { S::ASSERTS.get() } {
-            assert!(
-                member.eq(Self(raw)).get(),
-                "the bits name a slot outside the signature's range, and the plain overflow marker \
-                 asserts on that in a debug build. Spell the policy `Wrapping` or `Saturating` \
-                 where the completion is what you mean"
-            );
-        }
-        member
-    }
-
     /// The member's slot. An unwrap door.
     #[must_use]
     pub const fn slot(self) -> Slot {
         Slot::at(dispatch!(
-            S::Repr,
+            ReprOf<S>,
             plain,
             [
                 rung::index_s8,
@@ -179,10 +148,15 @@ impl<S: Sole> Num<S> {
         ))
     }
 
-    /// The carrier bits. An unwrap door, and the one place a machine integer
-    /// shows.
-    #[must_use]
-    pub const fn raw(self) -> S::Repr {
+    /// The value whose carrier is `carrier`. The host doors build on it, where
+    /// every carrier bit pattern is a member.
+    pub(crate) const fn from_carrier(carrier: ReprOf<S>) -> Self {
+        let () = S::ADMITTED;
+        Self(carrier)
+    }
+
+    /// The carrier. The host doors read it.
+    pub(crate) const fn carrier(self) -> ReprOf<S> {
         self.0
     }
 
@@ -203,7 +177,7 @@ impl<S: Sole> Num<S> {
             );
         }
         Self(dispatch!(
-            S::Repr,
+            ReprOf<S>,
             carrier,
             [
                 rung::add_s8,
@@ -231,7 +205,7 @@ impl<S: Sole> Num<S> {
     #[must_use]
     pub const fn cmp(self, rhs: Self) -> Ordering {
         dispatch!(
-            S::Repr,
+            ReprOf<S>,
             plain,
             [
                 rung::cmp_s8,
@@ -291,8 +265,9 @@ impl<S: Sole> Num<S> {
     }
 }
 
-// Written by hand so that `S` itself is not bounded, and through the carrier,
-// which is canonical.
+// Written by hand so that `S` itself is not bounded. Equality reads the carrier,
+// which is canonical; `Hash` and `Debug` read the slot, so neither depends on
+// which carrier the placement derived.
 
 impl<S: Sole> Clone for Num<S> {
     fn clone(&self) -> Self {
@@ -312,12 +287,12 @@ impl<S: Sole> Eq for Num<S> {}
 
 impl<S: Sole> Hash for Num<S> {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.0.hash(state);
+        self.slot().index().hash(state);
     }
 }
 
 impl<S: Sole> fmt::Debug for Num<S> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_tuple("Num").field(&self.0).finish()
+        f.debug_tuple("Num").field(&self.slot()).finish()
     }
 }

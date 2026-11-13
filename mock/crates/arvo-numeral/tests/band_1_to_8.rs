@@ -88,20 +88,6 @@ fn a_constant_is_the_member_it_names() {
 }
 
 #[test]
-fn from_raw_adapts_bits_outside_the_width_by_the_policy() {
-    type W = Uint<4, Adapt<TowardZero, Wrapping>>;
-    type S = Uint<4, Adapt<TowardZero, Saturating>>;
-    assert_eq!(W::from_raw(0x1F).slot().index(), 0xF);
-    assert_eq!(W::from_raw(0x10).slot().index(), 0);
-    assert_eq!(S::from_raw(0x1F).slot().index(), 0xF);
-    type SW = Int<4, Adapt<TowardZero, Wrapping>>;
-    type SS = Int<4, Adapt<TowardZero, Saturating>>;
-    assert_eq!(SW::from_raw(8).slot().index(), -8);
-    assert_eq!(SS::from_raw(8).slot().index(), 7);
-    assert_eq!(SS::from_raw(-9).slot().index(), -8);
-}
-
-#[test]
 fn adapted_rounds_a_position_between_slots_by_the_mode() {
     use arvo_format::rounding::{Ceil, Floor, HalfEven};
     use arvo_format::{Exact, Fraction, Slot};
@@ -152,4 +138,23 @@ fn the_pointer_width_values_carry_every_host_value_through() {
         assert_eq!(ISize::from_host(x).host(), x);
     }
     assert_eq!(USize::from_host(40).add(USize::from_host(2)).host(), 42);
+}
+
+/// What `Hash` writes for a value, through the standard hasher.
+fn hash_of<T: core::hash::Hash>(t: &T) -> u64 {
+    use core::hash::Hasher;
+    let mut h = std::collections::hash_map::DefaultHasher::new();
+    t.hash(&mut h);
+    h.finish()
+}
+
+#[test]
+fn the_hash_and_the_debug_read_the_slot_and_not_the_carrier() {
+    type U = Uint<4, Adapt<TowardZero, Wrapping>>;
+    type I = Int<4, Adapt<TowardZero, Wrapping>>;
+    let (u, i) = (U::constant::<5>(), I::constant::<-3>());
+    assert_eq!(hash_of(&u), hash_of(&u.slot().index()));
+    assert_eq!(hash_of(&i), hash_of(&i.slot().index()));
+    assert_eq!(format!("{u:?}"), format!("Num({:?})", u.slot()));
+    assert_eq!(format!("{i:?}"), format!("Num({:?})", i.slot()));
 }

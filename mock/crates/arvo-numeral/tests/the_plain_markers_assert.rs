@@ -4,13 +4,10 @@
 //--------------------------------------------------------------------------------------------------
 
 //! The debug assertion under the plain overflow markers, observed at each site
-//! that carries it: `add`, `adapted` and `from_raw`, under `Wrap` and under
+//! that carries it: `add` and `adapted`, under `Wrap` and under
 //! `Saturate`. The panic is the specified behaviour in a debug build, so each is
 //! a `should_panic` test, and each site has a twin under the completing markers
 //! that takes the same input, completes it and does not assert.
-//!
-//! The width is 4 in an 8-bit carrier, so the carrier holds bits outside the
-//! range and `from_raw` has something to refuse.
 
 #![cfg(debug_assertions)]
 
@@ -24,9 +21,8 @@ type UnderSaturate = Int<4, Adapt<TowardZero, Saturate>>;
 type UnderWrapping = Int<4, Adapt<TowardZero, Wrapping>>;
 type UnderSaturating = Int<4, Adapt<TowardZero, Saturating>>;
 
-/// One past the top of the signed 4-bit range, as a position and as bits.
+/// One past the top of the signed 4-bit range.
 const PAST_THE_TOP: i128 = 8;
-const PAST_THE_TOP_BITS: i8 = 8;
 
 #[test]
 #[should_panic(expected = "the sum leaves the signature's range")]
@@ -69,26 +65,6 @@ fn adapted_completes_under_the_completing_markers() {
 }
 
 #[test]
-#[should_panic(expected = "the bits name a slot outside the signature's range")]
-fn from_raw_asserts_under_wrap() {
-    let _ = UnderWrap::from_raw(PAST_THE_TOP_BITS);
-}
-
-#[test]
-#[should_panic(expected = "the bits name a slot outside the signature's range")]
-fn from_raw_asserts_under_saturate() {
-    let _ = UnderSaturate::from_raw(PAST_THE_TOP_BITS);
-}
-
-#[test]
-fn from_raw_completes_under_the_completing_markers() {
-    let wrapped = UnderWrapping::from_raw(PAST_THE_TOP_BITS);
-    assert_eq!(wrapped.slot().index(), -8);
-    let saturated = UnderSaturating::from_raw(PAST_THE_TOP_BITS);
-    assert_eq!(saturated.slot().index(), 7);
-}
-
-#[test]
 fn the_plain_markers_do_not_assert_on_what_fits() {
     assert_eq!(
         UnderWrap::constant::<7>()
@@ -110,5 +86,10 @@ fn the_plain_markers_do_not_assert_on_what_fits() {
             .index(),
         7
     );
-    assert_eq!(UnderSaturate::from_raw(-8).slot().index(), -8);
+    assert_eq!(
+        UnderSaturate::adapted(Exact::on_grid(Slot::at(-8)))
+            .slot()
+            .index(),
+        -8
+    );
 }

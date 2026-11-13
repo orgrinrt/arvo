@@ -17,11 +17,9 @@ use arvo_format::{Adapt, Exact, Policy, Signature, Slot};
 use arvo_numeral::{
     Additive,
     Bool,
-    Carried,
     ISize,
     Identity,
     Int,
-    Machine,
     Num,
     Saturating,
     Sole,
@@ -40,18 +38,10 @@ const fn sum<S: Sole>(a: Num<S>, b: Num<S>, c: Num<S>) -> Num<S> {
     a.add(b).add(c)
 }
 
-/// Every associated item of `Sole`, `Carried` and `Machine`, read generically.
-fn carrier_of<S: Sole>() -> (u32, Policy, bool, bool)
-where
-    <S::Format as arvo_format::Format>::Slots: Carried<Repr = S::Repr>,
-{
+/// Every associated item of `Sole`, read generically.
+fn admission_of<S: Sole>() -> (u32, Policy, bool) {
     let () = S::ADMITTED;
-    (
-        S::WIDTH.count(),
-        S::POLICY,
-        S::ASSERTS.get(),
-        <S::Repr as Machine>::SIGNED.get(),
-    )
+    (S::WIDTH.count(), S::POLICY, S::ASSERTS.get())
 }
 
 fn asserts<P: ValuePolicy>() -> bool {
@@ -76,13 +66,14 @@ fn main() {
     // The doors.
     assert_eq!(SIX, U13::constant::<6>());
     assert_eq!(SIX.slot(), Slot::at(6));
-    assert_eq!(U13::from_raw(SIX.raw()), SIX);
+    assert_eq!(U13::adapted(Exact::on_grid(SIX.slot())), SIX);
     assert_eq!(
         U13::adapted(Exact::on_grid(Slot::at(8192))).slot().index(),
         0
     );
-    let raw: u16 = SIX.raw();
-    assert_eq!(raw, 6);
+    // The carrier is observed through the layout and nothing else.
+    assert_eq!(core::mem::size_of::<U13>(), 2);
+    assert_eq!(core::mem::size_of::<I7>(), 1);
 
     // The operations.
     let (a, b) = (I7::constant::<-3>(), I7::constant::<5>());
@@ -118,9 +109,9 @@ fn main() {
 
     // The admission's items, through the traits.
     type S13 = Signature<arvo_format::points::UFixed<13, 0>, Adapt<TowardZero, Wrapping>>;
-    assert_eq!(carrier_of::<S13>(), (13, Policy::Wrap, false, false));
+    assert_eq!(admission_of::<S13>(), (13, Policy::Wrap, false));
     type S7 = Signature<arvo_format::points::Integer<7>, Adapt<Floor, Saturating>>;
-    assert_eq!(carrier_of::<S7>(), (7, Policy::Saturate, false, true));
+    assert_eq!(admission_of::<S7>(), (7, Policy::Saturate, false));
     assert!(asserts::<Wrap>() && asserts::<Saturate>());
     assert!(!asserts::<Wrapping>() && !asserts::<Saturating>());
     admitted::<TowardZero>();

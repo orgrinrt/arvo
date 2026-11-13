@@ -29,13 +29,13 @@ impl USize {
     /// The host's `usize`. Every one is a member, so this is a bit copy.
     #[must_use]
     pub const fn from_host(host: usize) -> Self {
-        Self::from_raw(copy(host))
+        Self::from_carrier(copy(host))
     }
 
     /// The host's `usize`, an unwrap door.
     #[must_use]
     pub const fn host(self) -> usize {
-        copy(self.raw())
+        copy(self.carrier())
     }
 }
 
@@ -43,12 +43,12 @@ impl ISize {
     /// The host's `isize`. Every one is a member, so this is a bit copy.
     #[must_use]
     pub const fn from_host(host: isize) -> Self {
-        Self::from_raw(copy(host))
+        Self::from_carrier(copy(host))
     }
 
     /// The host's `isize`, an unwrap door.
     #[must_use]
     pub const fn host(self) -> isize {
-        copy(self.raw())
+        copy(self.carrier())
     }
 }

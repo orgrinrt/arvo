@@ -62,7 +62,7 @@ fn a_host_integer_where_a_value_goes_is_refused() {
 fn a_value_where_a_host_integer_goes_is_refused() {
     pair(
         "a_value_where_a_host_integer_goes_is_refused",
-        "the_raw_door_where_a_host_integer_goes_compiles",
+        "the_slot_where_a_slot_goes_compiles",
     );
 }
 
@@ -70,7 +70,7 @@ fn a_value_where_a_host_integer_goes_is_refused() {
 fn the_field_named_from_outside_is_refused() {
     pair(
         "the_field_named_from_outside_is_refused",
-        "the_raw_door_named_from_outside_compiles",
+        "the_slot_named_from_outside_compiles",
     );
 }
 
@@ -97,5 +97,37 @@ fn the_identity_of_a_format_without_one_is_refused() {
     pair(
         "the_identity_of_a_format_without_one_is_refused",
         "the_identity_of_a_format_with_one_compiles",
+    );
+}
+
+#[test]
+fn the_carrier_by_projection_is_refused() {
+    pair(
+        "the_carrier_by_projection_is_refused",
+        "the_slot_by_a_generic_consumer_compiles",
+    );
+}
+
+#[test]
+fn the_carrier_by_a_fully_qualified_projection_is_refused() {
+    pair(
+        "the_carrier_by_a_fully_qualified_projection_is_refused",
+        "the_slot_by_a_fully_qualified_path_compiles",
+    );
+}
+
+#[test]
+fn the_carrier_map_by_path_is_refused() {
+    pair(
+        "the_carrier_map_by_path_is_refused",
+        "the_slot_by_path_compiles",
+    );
+}
+
+#[test]
+fn the_machine_integers_by_path_is_refused() {
+    pair(
+        "the_machine_integers_by_path_is_refused",
+        "the_slot_by_path_compiles",
     );
 }

@@ -101,10 +101,7 @@ type RoundingOf<S> = <<S as DeclaredSignature>::Adaptation as Adaptation>::Round
 /// Implemented once, over every signature whose slot family is on the map,
 /// whose overflow policy is a `ValuePolicy` and whose rounding mode is a
 /// `ValueRounding`, so nothing outside this crate implements it.
-pub trait Sole: DeclaredSignature {
-    /// The ladder carrier, from the map.
-    type Repr: crate::Machine;
-
+pub trait Sole: DeclaredSignature<Format: Format<Slots: Carried>> {
     /// The declared width.
     const WIDTH: Width;
 
@@ -127,8 +124,6 @@ where
     OverflowOf<S>: ValuePolicy,
     RoundingOf<S>: ValueRounding,
 {
-    type Repr = <SlotsOf<S> as Carried>::Repr;
-
     const ADMITTED: () = assert!(
         <S::Format as Format>::PHASE.is_zero().get()
             && is_constant_family::<<S::Format as Format>::Quantum>().get(),

@@ -15,7 +15,7 @@ error[E0277]: `arvo_format::rounding::Stochastic` is not a rounding mode a value
 note: required by a bound in `Num`
  --> src/num.rs
   |
-  | pub struct Num<S: Sole>(S::Repr);
+  | pub struct Num<S: Sole>(ReprOf<S>);
   |                   ^^^^ required by this bound in `Num`
 
 error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_numeral::Wrapping>>>`, but its trait bounds were not satisfied

@@ -1,4 +1,4 @@
-// A value is not its carrier; `raw` is the door.
+// A value is not its carrier, and no door gives the carrier; `slot` gives the member.
 use arvo_format::Adapt;
 use arvo_format::rounding::TowardZero;
 use arvo_numeral::{Int, Uint, Wrapping};

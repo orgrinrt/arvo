@@ -27,7 +27,7 @@ help: the following other types implement trait `ValuePolicy`
 note: required by a bound in `Num`
  --> src/num.rs
   |
-  | pub struct Num<S: Sole>(S::Repr);
+  | pub struct Num<S: Sole>(ReprOf<S>);
   |                   ^^^^ required by this bound in `Num`
   = note: this error originates in the macro `value_policy` (in Nightly builds, run with -Z macro-backtrace for more info)
 

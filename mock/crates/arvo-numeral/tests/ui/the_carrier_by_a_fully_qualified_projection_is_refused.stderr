@@ -1,0 +1,5 @@
+error[E0576]: cannot find associated type `Repr` in trait `Sole`
+  --> tests/ui/the_carrier_by_a_fully_qualified_projection_is_refused.rs:10:33
+   |
+10 |     let _: Option<<S8 as Sole>::Repr> = None;
+   |                                 ^^^^ not found in `Sole`

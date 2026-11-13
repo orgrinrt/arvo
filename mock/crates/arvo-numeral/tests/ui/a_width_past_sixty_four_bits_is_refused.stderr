@@ -10,10 +10,10 @@ error[E0277]: no ladder carrier holds the slot family `Signed<65>`
  --> tests/ui/a_width_past_sixty_four_bits_is_refused.rs:7:13
   |
 7 |     let _ = Int::<65, Adapt<TowardZero, Wrapping>>::constant::<0>();
-  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Carried` is not implemented for `Signed<65>`
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `arvo_numeral::map::Carried` is not implemented for `Signed<65>`
   |
   = note: a value is held for `Signed<W>` or `Unsigned<W>` with `W` from 1 to 64; zero bits has no slot range and no carrier holds more than 64
-  = help: the following other types implement trait `Carried`:
+  = help: the following other types implement trait `arvo_numeral::map::Carried`:
             Signed<10>
             Signed<11>
             Signed<12>
@@ -27,7 +27,7 @@ error[E0277]: no ladder carrier holds the slot family `Signed<65>`
 note: required by a bound in `Num`
  --> src/num.rs
   |
-  | pub struct Num<S: Sole>(S::Repr);
+  | pub struct Num<S: Sole>(ReprOf<S>);
   |                   ^^^^ required by this bound in `Num`
 
 error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>`, but its trait bounds were not satisfied
@@ -44,10 +44,10 @@ error[E0599]: the associated function or constant `constant` exists for struct `
  ::: $WORKSPACE/crates/arvo-format/src/slots.rs
   |
   | pub struct Signed<const BITS: u32>;
-  | ---------------------------------- doesn't satisfy `Signed<65>: Carried` or `Signed<65>: Slots`
+  | ---------------------------------- doesn't satisfy `Signed<65>: Slots` or `Signed<65>: arvo_numeral::map::Carried`
   |
   = note: the following trait bounds were not satisfied:
           `Signed<65>: Slots`
           which is required by `Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>: Sole`
-          `Signed<65>: Carried`
+          `Signed<65>: arvo_numeral::map::Carried`
           which is required by `Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>: Sole`
