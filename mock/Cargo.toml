@@ -60,7 +60,7 @@ license = "MPL-2.0"
 # path dependency on any sibling here; it is a leaf parallel to `arvo-format`
 # rather than above or below it, and is listed for the same publishing reason
 # the other three are, not because anything depends on it yet.
-notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false, features = ["const", "try_trait_v2"] }
+notko = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false, features = ["const", "try_trait_v2"] }
 arvo-format = { path = "crates/arvo-format", version = "0.0.0" }
 arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }

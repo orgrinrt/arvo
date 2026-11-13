@@ -9,4 +9,4 @@ name = "bench_warm_container_shared"
 path = "src/lib.rs"
 
 [dependencies]
-mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev", features = ["std"] }

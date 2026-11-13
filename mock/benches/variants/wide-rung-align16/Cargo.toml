@@ -11,5 +11,5 @@ crate-type = ["cdylib"]
 
 [dependencies]
 bench-wide-rung-shared = { path = "../wide-rung-shared" }
-mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
-mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace", branch = "dev" }
