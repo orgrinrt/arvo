@@ -1,0 +1,49 @@
+# Standalone. Detached from the arvo mock workspace so each arm's feature gates
+# are its own and the consumers' absence of one is not masked by inheritance.
+#
+# arvo-format and arvo-placement are pinned by rev: d841c5e1 is arvo `dev` at
+# the time the sketch was cut.
+
+[workspace]
+resolver = "3"
+members = [
+    "common",
+    "arm-a",
+    "consumer-a",
+    "arm-b",
+    "consumer-b",
+    "arm-c",
+    "consumer-c",
+    "arm-d",
+    "consumer-d",
+    "arm-e",
+    "asm-probe",
+]
+# The members that build. consumer-c and arm-e are the refusals the sketch
+# records (outputs/arm-c-*.txt, outputs/arm-e*.txt); `-p` builds them.
+default-members = [
+    "common",
+    "arm-a",
+    "consumer-a",
+    "arm-b",
+    "consumer-b",
+    "arm-c",
+    "arm-d",
+    "consumer-d",
+    "asm-probe",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace.dependencies]
+arvo-format = { git = "ssh://git@github.com/orgrinrt/arvo.git", rev = "d841c5e19325fc60648cc9a4bb48dcbb8b348df4" }
+arvo-placement = { git = "ssh://git@github.com/orgrinrt/arvo.git", rev = "d841c5e19325fc60648cc9a4bb48dcbb8b348df4" }
+trybuild = "=1.0.110"
+common = { path = "common" }
+arm-a = { path = "arm-a" }
+arm-b = { path = "arm-b" }
+arm-c = { path = "arm-c" }
+arm-d = { path = "arm-d" }

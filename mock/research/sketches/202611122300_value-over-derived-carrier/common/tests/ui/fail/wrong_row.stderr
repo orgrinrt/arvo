@@ -1,0 +1,7 @@
+error[E0080]: evaluation panicked: the carrier the map names is not the one the placement derives
+ --> tests/ui/fail/wrong_row.rs:2:1
+  |
+2 | common::assert_carrier!(arvo_format::slots::Signed<13>, i32);
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+  |
+  = note: this error originates in the macro `$crate::panic::panic_2021` which comes from the expansion of the macro `common::assert_carrier` (in Nightly builds, run with -Z macro-backtrace for more info)

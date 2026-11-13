@@ -1,0 +1,37 @@
+$ cargo test -p common --features mutant-64 --test rungs
+   Compiling common v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/common)
+    Finished `test` profile [unoptimized] target(s) in 0.52s
+     Running tests/rungs.rs (/home/user/target/debug/deps/rungs-2a46e88e45ca013e)
+
+running 5 tests
+test rung_32_widths_1_to_8 ... ok
+test rung_16_widths_1_to_8 ... ok
+test rung_8_widths_1_to_8 ... ok
+test rung_64_widths_1_to_8 ... FAILED
+test rung_16_widths_9_and_10 ... ok
+
+failures:
+
+---- rung_64_widths_1_to_8 stdout ----
+
+thread 'rung_64_widths_1_to_8' (1083) panicked at common/tests/rungs.rs:56:1:
+assertion `left == right` failed: pairs of members the rung's add gets wrong
+  left: 130560
+ right: 0
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<usize, usize>
+   4: rungs::rung_64_widths_1_to_8
+   5: rungs::rung_64_widths_1_to_8::{closure#0}
+   6: <rungs::rung_64_widths_1_to_8::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+
+failures:
+    rung_64_widths_1_to_8
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+error: test failed, to rerun pass `-p common --test rungs`

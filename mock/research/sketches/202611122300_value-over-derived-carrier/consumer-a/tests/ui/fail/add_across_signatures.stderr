@@ -1,0 +1,25 @@
+error[E0308]: mismatched types
+  --> tests/ui/fail/add_across_signatures.rs:13:19
+   |
+13 |     let _ = a.add(b);
+   |               --- ^ expected `13`, found `14`
+   |               |
+   |               arguments to this method are incorrect
+   |
+   = note: expected struct `Num<Signature<Integer<13>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, i16>`
+              found struct `Num<Signature<Integer<14>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, i16>`
+note: method defined here
+  --> $WORKSPACE/arm-a/src/lib.rs
+   |
+   |               pub const fn add(self, rhs: Self) -> Self {
+   |                            ^^^
+...
+   | / ops! {
+   | |     i8, rung::add_s8, rung::adapt_s8;
+   | |     u8, rung::add_u8, rung::adapt_u8;
+   | |     i16, rung::add_s16, rung::adapt_s16;
+...  |
+   | |     u64, rung::add_u64, rung::adapt_u64;
+   | | }
+   | |_- in this macro invocation
+   = note: this error originates in the macro `ops` (in Nightly builds, run with -Z macro-backtrace for more info)

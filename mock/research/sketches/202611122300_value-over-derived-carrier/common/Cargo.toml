@@ -1,0 +1,21 @@
+[package]
+name = "common"
+description = "The carrier map, the arithmetic written once per rung, and the Lane trait every arm is tested through"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+arvo-format.workspace = true
+arvo-placement.workspace = true
+
+[dev-dependencies]
+trybuild.workspace = true
+
+[features]
+# One mutant per rung: the step that re-canonicalises a sub-width result is
+# removed in that rung only. Each must be killed by the tests.
+mutant-8 = []
+mutant-16 = []
+mutant-32 = []
+mutant-64 = []

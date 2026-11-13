@@ -1,0 +1,67 @@
+error[E0277]: the trait bound `Signed<65>: common::Carried` is not satisfied
+  --> tests/ui/fail/width_65.rs:10:13
+   |
+10 |     let _ = Num::<S>::from_raw(0);
+   |             ^^^^^^^^ the trait `common::Carried` is not implemented for `Signed<65>`
+   |
+   = help: the following other types implement trait `common::Carried`:
+             Signed<10>
+             Signed<11>
+             Signed<12>
+             Signed<13>
+             Signed<14>
+             Signed<15>
+             Signed<16>
+             Signed<17>
+           and $N others
+   = note: required for `Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>` to implement `common::Sole`
+
+error[E0599]: the associated function or constant `from_raw` exists for struct `Num<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, _>`, but its trait bounds were not satisfied
+   --> tests/ui/fail/width_65.rs:10:23
+    |
+ 10 |     let _ = Num::<S>::from_raw(0);
+    |                       ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+    |
+   ::: /root/.cargo/git/checkouts/arvo-da1db1860201e542/d841c5e/mock/crates/arvo-format/src/adapt.rs:72:1
+    |
+ 72 | pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
+    | ---------------------------------------------- doesn't satisfy 8 bounds
+    |
+   ::: /root/.cargo/git/checkouts/arvo-da1db1860201e542/d841c5e/mock/crates/arvo-format/src/slots.rs:268:1
+    |
+268 | pub struct Signed<const BITS: u32>;
+    | ---------------------------------- doesn't satisfy `Signed<65>: Slots` or `Signed<65>: common::Carried`
+    |
+    = note: the following trait bounds were not satisfied:
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i8`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i8`
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u8`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u8`
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i16`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i16`
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u16`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u16`
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i32`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i32`
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u32`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u32`
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i64`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = i64`
+            `Signed<65>: Slots`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u64`
+            `Signed<65>: common::Carried`
+            which is required by `<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as common::Sole>::Repr = u64`

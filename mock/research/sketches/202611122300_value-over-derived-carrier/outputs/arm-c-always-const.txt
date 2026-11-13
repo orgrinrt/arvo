@@ -1,0 +1,38 @@
+   Compiling arm-c v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-c)
+   Compiling consumer-c v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/consumer-c)
+error[E0277]: the trait bound `<S as Sole>::Repr: const Carrier` is not satisfied
+  --> consumer-c/src/lib.rs:10:1
+   |
+10 | common::consumer_cases!(Num, [common::Sole<Repr: arm_c::Carrier>]);
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: required by a bound in `arm_c::Num::<S>::add`
+  --> arm-c/src/lib.rs:99:18
+   |
+97 |     pub const fn add(self, rhs: Self) -> Self
+   |                  --- required by a bound in this associated function
+98 |     where
+99 |         S::Repr: const Carrier,
+   |                  ^^^^^^^^^^^^^ required by this bound in `Num::<S>::add`
+   = note: this error originates in the macro `common::consumer_cases` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `<S as Sole>::Repr: const Carrier` is not satisfied
+  --> consumer-c/src/lib.rs:10:1
+   |
+10 | common::consumer_cases!(Num, [common::Sole<Repr: arm_c::Carrier>]);
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: required by a bound in `Num::<S>::add`
+  --> arm-c/src/lib.rs:99:18
+   |
+97 |     pub const fn add(self, rhs: Self) -> Self
+   |                  --- required by a bound in this associated function
+98 |     where
+99 |         S::Repr: const Carrier,
+   |                  ^^^^^^^^^^^^^ required by this bound in `Num::<S>::add`
+   = note: this error originates in the macro `common::consumer_cases` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `consumer-c` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `consumer-c` (lib test) due to 1 previous error

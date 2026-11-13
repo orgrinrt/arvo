@@ -1,0 +1,25 @@
+    Checking arm-e v0.0.0 (/home/user/arvo/mock/research/sketches/202611122300_value-over-derived-carrier/arm-e)
+error: cannot find attribute `type_const` in this scope
+  --> arm-e/src/lib.rs:18:7
+   |
+18 |     #[type_const]
+   |       ^^^^^^^^^^
+
+error: cannot find attribute `type_const` in this scope
+  --> arm-e/src/lib.rs:26:7
+   |
+26 |     #[type_const]
+   |       ^^^^^^^^^^
+
+error: use of `const` in the type system not defined as `type const`
+  --> arm-e/src/lib.rs:51:45
+   |
+51 | pub type SignedRepr<const W: u32> = <Rung<{ <Signed<W> as RungOf>::RUNG }> as SignedCarrier>::T;
+   |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: add `type` before `const` for `RungOf::RUNG`
+   |
+19 |     type const RUNG: u32;
+   |     ++++
+
+error: could not compile `arm-e` (lib) due to 3 previous errors
