@@ -48,9 +48,10 @@
 //! written down here because this is the shape that has gone wrong twice:
 //! `names_nothing` takes a clause opening on a code span to be naming a subject
 //! of its own. That is what a code span means, and the reader has no vocabulary
-//! for most of what this repository names, so it is kept. Its cost is real and
-//! is in `sentences/catalogue.rs` as a known-red pair rather than in this
-//! paragraph.
+//! for most of what this repository names, so it is kept, less a span holding a
+//! number, which is a value the mode acts on. A subject named in words is read
+//! only where `SUBJECTS` has its noun; the rest is in `sentences/catalogue.rs`
+//! as a known-red pair rather than in this paragraph.
 
 #[path = "reading/cutting.rs"]
 mod cutting;
@@ -58,10 +59,13 @@ mod cutting;
 mod escapes;
 #[path = "reading/vocabulary.rs"]
 mod vocabulary;
+#[path = "reading/words.rs"]
+mod words;
 
 pub(crate) use cutting::bounded;
 use cutting::{clauses, opens_with_a_pronoun, points_back, segment_of, segments};
 use escapes::{
+    denied_since,
     denotation_before,
     directed,
     elsewhere,
@@ -74,13 +78,18 @@ pub(super) use vocabulary::{
     CONJUNCTIONS,
     DIRECTIONS,
     ELSEWHERE,
+    ERRORS,
+    IMPERATIVE_NEXT,
     MENTIONED,
+    NAME_LEADS,
     NEGATORS,
     OTHER_NAMES,
     PRONOUNS,
     QUALIFIED,
     READINGS,
     RELATIVES,
+    RESULTS,
+    SUBJECTS,
 };
 pub(crate) use vocabulary::{DENOTES, SPELLINGS};
 
@@ -175,7 +184,7 @@ fn row(line: &str, start: usize, subject: Option<&str>) -> Option<Hit> {
             continue;
         }
         let segs = segments(&lower);
-        if let Some(&(r, reading)) = readings_in(&lower, &segs).first() {
+        if let Some(&(r, reading)) = given(cell, &lower, &segs).first() {
             if !negator_binds(&lower, &segs, None, r)
                 && !attributed_to_another_rule(cell, &lower, &segs, r)
             {
@@ -194,7 +203,7 @@ fn row(line: &str, start: usize, subject: Option<&str>) -> Option<Hit> {
 fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>) -> Option<Hit> {
     let lower = clause.to_ascii_lowercase();
     let segs = segments(&lower);
-    let readings = readings_in(&lower, &segs);
+    let readings = given(clause, &lower, &segs);
     if readings.is_empty() || elsewhere(&lower) {
         return None;
     }
@@ -259,6 +268,14 @@ fn clause_hit(clause: &str, subject: Option<&str>, carried: Option<&'static str>
 /// like `floor`, sends a tie away from zero" gives the reading to the mode,
 /// because the segment carrying it names nothing, does not bind back, and so
 /// never asks what stood last.
+///
+/// The relative and the pronoun bind differently, as they do in English. A
+/// relative binds to the nearest thing named, and where the stretch since the
+/// mode's last spelling denies something of the mode, that something is
+/// another rule whatever words name it: "`half_up` is not Java's rule, which
+/// goes away from zero". A pronoun opening a segment of the same clause binds
+/// past a rule the clause denies the mode is, to the mode: "`half_up` differs
+/// from `floor`, and it sends a tie away from zero" is about the mode.
 fn attributed_to_another_rule(clause: &str, lower: &str, segs: &[(usize, &str)], r: usize) -> bool {
     let from = segs[segment_of(segs, r)].0;
     let head = &clause[from .. r];
@@ -268,19 +285,46 @@ fn attributed_to_another_rule(clause: &str, lower: &str, segs: &[(usize, &str)],
     if !named_in(head).is_empty() {
         return true;
     }
-    points_back(&lower[from .. r]) && another_rule_stands_last(clause, from)
+    let stretch = &lower[from .. r];
+    if RELATIVES.iter().any(|w| !bounded(stretch, w).is_empty()) {
+        return another_rule_stands_last(clause, lower, segs, from, false)
+            || denied_since_the_mode(clause, lower, from);
+    }
+    points_back(stretch) && another_rule_stands_last(clause, lower, segs, from, true)
 }
 
 /// Whether the last rounding rule named before `at` is one other than the mode.
-fn another_rule_stands_last(clause: &str, at: usize) -> bool {
+/// With `past_denied`, a rule the clause denies, a negator standing ahead of it
+/// in its own segment, is not counted.
+fn another_rule_stands_last(
+    clause: &str,
+    lower: &str,
+    segs: &[(usize, &str)],
+    at: usize,
+    past_denied: bool,
+) -> bool {
     let head = &clause[.. at];
-    match named_in(head).into_iter().max() {
+    let named = named_in(head)
+        .into_iter()
+        .filter(|&o| !(past_denied && negated(lower, segs, o)))
+        .max();
+    match named {
         None => false,
         Some(other) => {
             spellings_in(head)
                 .last()
                 .is_none_or(|&(mine, _)| other > mine)
         },
+    }
+}
+
+/// Whether the stretch between the mode's last spelling before `at` and `at`
+/// denies something of the mode, so what a relative at `at` binds to is the
+/// thing denied.
+fn denied_since_the_mode(clause: &str, lower: &str, at: usize) -> bool {
+    match spellings_in(&clause[.. at]).last() {
+        Some(&(mine, name)) => denied_since(lower, mine + name.len(), at),
+        None => false,
     }
 }
 
@@ -316,10 +360,14 @@ fn antecedent(clause: &str) -> Option<&'static str> {
 /// giving `-3`, which is away from zero" is about a crate, and a reader that
 /// carried the mode into it reads a record of what was fixed as a claim about
 /// what is.
+///
+/// The words for a subject are in `words::opens_on_a_subject`: a code span
+/// that is not a number, a bare whole number, which is how the registry names a
+/// seat, and a noun from `SUBJECTS` behind an article.
 fn names_nothing(clause: &str) -> bool {
     spellings_in(clause).is_empty()
         && named_in(clause).is_empty()
-        && !clause.trim_start().starts_with('`')
+        && !words::opens_on_a_subject(clause)
 }
 
 /// Where every other rounding rule named in `text` starts, bounded as a word.
@@ -332,18 +380,33 @@ fn names_nothing(clause: &str) -> bool {
 /// itself: "`half_up` is not floor(x + q/2)" names this mode's own definition
 /// rather than the floor mode, and a reader taking that as another rule loses
 /// the name before the clause that gives it the wrong reading.
+///
+/// Some of the forms are also ordinary English, and each is a name only where
+/// it stands as one. A capitalised method name opening the text is the
+/// imperative or the plain word where the next word is one an imperative takes,
+/// as `words::imperative` reads it. The lower-case `toward zero` is the rule
+/// only where a noun phrase stands, as `words::toward_zero_names` reads it.
 fn named_in(text: &str) -> Vec<usize> {
     let text = &without_the_denotation(text);
     OTHER_NAMES
         .iter()
         .flat_map(|n| {
             let opened = cutting::capitalised(n);
-            let mut at = bounded(text, n);
+            let mut at: Vec<(usize, String)> = bounded(text, n)
+                .into_iter()
+                .map(|a| (a, n.to_string()))
+                .collect();
             if opened.as_str() != *n {
-                at.extend(bounded(text, &opened));
+                at.extend(
+                    bounded(text, &opened)
+                        .into_iter()
+                        .map(|a| (a, opened.clone())),
+                );
             }
             at
         })
+        .filter(|(at, form)| words::stands_as_a_name(text, *at, form))
+        .map(|(at, _)| at)
         .collect()
 }
 
@@ -368,6 +431,26 @@ pub(crate) fn spellings_in(text: &str) -> Vec<(usize, &'static str)> {
         .collect();
     out.sort();
     out
+}
+
+/// Every reading `text` gives, which is every reading in it less the ones that
+/// are a rule's name standing as one in a segment that does not name the mode.
+///
+/// The alias's spellings include three that are readings too, and a segment
+/// setting the alias against the mode names it in one of them: "`half_up` is
+/// nearest, whereas `roundTiesToAway` goes away from zero". There the name is
+/// the segment's subject and the reading behind it is attributed to it. Where
+/// the segment names the mode, the same spelling is what the mode is said to
+/// be or do, and stays a reading: "`roundTiesToAway` is what `HalfUp` does".
+fn given(text: &str, lower: &str, segs: &[(usize, &str)]) -> Vec<(usize, &'static str)> {
+    readings_in(lower, segs)
+        .into_iter()
+        .filter(|&(r, reading)| {
+            let (from, seg) = segs[segment_of(segs, r)];
+            !(spellings_in(&text[from .. from + seg.len()]).is_empty()
+                && words::a_reading_stands_as_a_name(text, lower, from, r, reading))
+        })
+        .collect()
 }
 
 /// Every reading in an already lowered `lower`, bounded, with where it starts.
