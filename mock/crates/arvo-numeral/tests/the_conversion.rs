@@ -3,7 +3,13 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The conversion onto another signature, against the format's `convert`.
+//! The conversion onto another signature, against the tests' own arithmetic.
+//!
+//! The value's `convert` is the format's `convert` called on a slot, so the
+//! format's function is not what it is compared with here. The expected slot
+//! is the member's slot scaled from the source's grid onto the target's,
+//! rounded by the target's mode and completed by its policy, in
+//! `common::oracle`.
 //!
 //! Every member of each source is converted onto each target under both
 //! policies and the five modes of the target: between integer widths in both
@@ -17,18 +23,9 @@ mod common;
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Fixed, Integer, UFixed};
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, TowardZero};
-use arvo_format::{
-    Adapt,
-    DeclaredSignature,
-    Dither,
-    Signature,
-    Slot,
-    convert,
-    converted_position,
-    panic_on_overflow,
-};
+use arvo_format::{Adapt, DeclaredSignature, Signature};
 use arvo_numeral::{Num, Quiet, Sole};
-use common::{range, value};
+use common::{oracle, range, value};
 
 #[derive(Default)]
 struct Counts {
@@ -43,15 +40,14 @@ fn converts<S: Sole, T: Sole>(counts: &mut Counts) {
         let v = value::<S>(a);
         counts.checked += 1;
         let there: Num<T, Quiet> = v.convert::<T>();
-        if there.slot() != convert::<S::Format, T>(Slot::at(a), Dither::UNUSED) {
+        let expected = oracle::converted::<S, T>(a);
+        if there.slot().index() != expected.slot {
             counts.wrong += 1;
         }
-        let position = converted_position::<S::Format, T::Format>(Slot::at(a));
-        let leaves = panic_on_overflow::<T>(position, Dither::UNUSED).get();
         assert_eq!(
             v.fits_convert::<T>().get(),
-            !leaves,
-            "`fits_convert` disagrees with `panic_on_overflow` at {a}"
+            expected.fits,
+            "`fits_convert` at {a}"
         );
     }
 }

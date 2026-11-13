@@ -134,8 +134,18 @@ impl<S: Sole, T: Sole, const CAP: usize, C: DebugCheck> Accumulator<S, T, CAP, C
     /// A slice longer than the capacity is summed a block at a time, each block
     /// exact, and what joins the blocks is the caller's to say: the signature's
     /// `add` on the finished values, or `plus` into a wider accumulator.
+    ///
+    /// Refused at build at a capacity of zero, where it would sum nothing and
+    /// hand back the slice it was given.
     #[must_use]
     pub const fn take(terms: &[Num<S, C>]) -> (Self, &[Num<S, C>]) {
+        const {
+            assert!(
+                CAP >= 1,
+                "`take` at a capacity of zero sums nothing and hands back the slice it was given, so \
+                 a loop over it would not end. Name a capacity of at least one"
+            );
+        }
         let count = if cfg!(feature = "mutant-accumulator") || terms.len() < CAP {
             terms.len()
         } else {

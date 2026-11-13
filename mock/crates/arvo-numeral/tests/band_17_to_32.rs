@@ -17,7 +17,7 @@ fn lattice_and_seeded<S: arvo_numeral::Sole>(tally: &mut Tally) {
 }
 
 #[test]
-fn every_signature_from_17_to_32_bits_adds_and_orders_as_the_oracle_does() {
+fn every_signature_from_17_to_32_bits_adds_subtracts_negates_and_orders_as_the_oracle_does() {
     let mut tally = Tally::default();
     every_signature_at!(17, lattice_and_seeded, &mut tally);
     every_signature_at!(18, lattice_and_seeded, &mut tally);

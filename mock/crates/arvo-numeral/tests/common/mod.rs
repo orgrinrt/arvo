@@ -8,6 +8,8 @@
 
 #![allow(dead_code)]
 
+pub mod oracle;
+
 use arvo_format::{
     DeclaredSignature,
     Dither,
@@ -17,11 +19,9 @@ use arvo_format::{
     Slots,
     add,
     difference_position,
-    mul,
     neg,
     negation_position,
     panic_on_overflow,
-    product_position,
     sub,
     sum_position,
 };
@@ -167,22 +167,22 @@ pub fn check_pair<S: Sole>(a: i128, b: i128, tally: &mut Tally) {
     assert_eq!(va.max(vb).slot().index(), a.max(b), "`max` at {a}, {b}");
 }
 
-/// The product of one pair against the oracle, and its verdict against the
-/// format's. Apart from `check_pair` because a signature whose product the
-/// format does not admit has no `mul` to call.
+/// The product of one pair and its verdict, against the tests' own
+/// arithmetic: away from exponent zero the value's product is the format's
+/// function, and `fits_mul` is at every exponent. Apart from `check_pair`
+/// because a signature whose product the format does not admit has no `mul`
+/// to call.
 pub fn check_product<S: Sole>(a: i128, b: i128, tally: &mut Tally) {
     let (va, vb) = (value::<S>(a), value::<S>(b));
-    let (sa, sb) = (Slot::at(a), Slot::at(b));
+    let expected = oracle::product::<S>(a, b);
     tally.products += 1;
-    if va.mul(vb).slot() != mul::<S>(sa, sb, Dither::UNUSED) {
+    if va.mul(vb).slot().index() != expected.slot {
         tally.mul_wrong += 1;
     }
-    let leaves =
-        panic_on_overflow::<S>(product_position::<S::Format>(sa, sb), Dither::UNUSED).get();
     assert_eq!(
         va.fits_mul(vb).get(),
-        !leaves,
-        "`fits_mul` disagrees with `panic_on_overflow` at {a} * {b}"
+        expected.fits,
+        "`fits_mul` at {a} * {b}"
     );
 }
 

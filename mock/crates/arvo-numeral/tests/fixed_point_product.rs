@@ -9,21 +9,23 @@
 //! slots' product: it is scaled by the radix and, below zero, rounded by the
 //! declared mode. Every pair of a signed and an unsigned six-bit format at
 //! eighths, and of an unsigned one at eights, in every mode and both policies,
-//! against the oracle. One pair is named in each mode: a tie below zero.
+//! against the tests' own arithmetic in `common::oracle`, since the value's
+//! product here is the format's function. One pair is named in each mode: a
+//! tie below zero.
 //!
 //! The control is the slots' product completed onto the range, which is what a
 //! product that ignored the exponent would give. It has to disagree with the
-//! oracle somewhere at each of these formats, or the suite would not see a
+//! value somewhere at each of these formats, or the suite would not see a
 //! value that left the exponent out.
 
 mod common;
 
 use arvo_format::overflow::{Saturate, Wrap};
-use arvo_format::points::{Fixed, Integer, UFixed};
+use arvo_format::points::{Fixed, UFixed};
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, TowardZero};
-use arvo_format::{Adapt, DeclaredSignature, Dither, Signature, Slot, mul};
+use arvo_format::{Adapt, Signature};
 use arvo_numeral::{Identity, Multiplicative, Num, Quiet, Sole};
-use common::{Tally, exhaustive_products, range, value};
+use common::{Tally, exhaustive_products, oracle, range, value};
 
 #[test]
 fn the_signed_product_at_eighths_is_the_oracles_on_every_pair() {
@@ -77,20 +79,14 @@ fn a_tie_below_zero_goes_where_each_mode_sends_it() {
     assert_eq!(product::<Sat<P, Floor>>(-5, 4), -3);
 }
 
-/// Pairs on which the slots' product, completed onto the range by the same
-/// signature at exponent zero, differs from the oracle's product.
-fn ignoring_the_exponent_is_wrong_on<S, Z>() -> u64
-where
-    S: Sole,
-    Z: DeclaredSignature,
-{
+/// Pairs on which the slots' product, completed onto the range with no
+/// scaling, differs from the value's product.
+fn ignoring_the_exponent_is_wrong_on<S: Sole>() -> u64 {
     let (min, max) = range::<S>();
     let mut wrong = 0;
     for a in min ..= max {
         for b in min ..= max {
-            let plain = mul::<Z>(Slot::at(a), Slot::at(b), Dither::UNUSED);
-            let scaled = mul::<S>(Slot::at(a), Slot::at(b), Dither::UNUSED);
-            if plain != scaled {
+            if oracle::completed::<S>(a * b) != product::<S>(a, b) {
                 wrong += 1;
             }
         }
@@ -101,9 +97,9 @@ where
 #[test]
 fn a_product_that_ignored_the_exponent_would_be_seen() {
     type A<P> = Signature<P, Adapt<Floor, Saturate>>;
-    assert!(ignoring_the_exponent_is_wrong_on::<A<Fixed<6, -3>>, A<Integer<6>>>() > 0);
-    assert!(ignoring_the_exponent_is_wrong_on::<A<UFixed<6, -3>>, A<UFixed<6, 0>>>() > 0);
-    assert!(ignoring_the_exponent_is_wrong_on::<A<UFixed<6, 3>>, A<UFixed<6, 0>>>() > 0);
+    assert!(ignoring_the_exponent_is_wrong_on::<A<Fixed<6, -3>>>() > 0);
+    assert!(ignoring_the_exponent_is_wrong_on::<A<UFixed<6, -3>>>() > 0);
+    assert!(ignoring_the_exponent_is_wrong_on::<A<UFixed<6, 3>>>() > 0);
 }
 
 /// One at eighths is slot eight, and multiplying by it moves no member in any

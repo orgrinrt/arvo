@@ -18,16 +18,12 @@ mod common;
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Fixed, Integer, UFixed};
 use arvo_format::rounding::{HalfEven, TowardZero};
-use arvo_format::{Adapt, Dither, Exact, Signature, Slot, adapt};
+use arvo_format::{Adapt, Signature};
 use arvo_numeral::{Accumulator, Num, Quiet, Sole};
+use common::oracle::completed;
 use common::{SplitMix, range, value};
 
 type Sig<P, O> = Signature<P, Adapt<TowardZero, O>>;
-
-/// What the terms' signature makes of an exact sum.
-fn completed<S: Sole>(sum: i128) -> i128 {
-    adapt::<S>(Exact::on_grid(Slot::at(sum)), Dither::UNUSED).index()
-}
 
 /// The three readings of one accumulator against the exact sum.
 fn reads<S: Sole, T: Sole, const CAP: usize>(acc: Accumulator<S, T, CAP, Quiet>, sum: i128) {
