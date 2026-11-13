@@ -24,6 +24,7 @@ use super::vocabulary::{
     ERRORS,
     MENTIONED,
     NEGATORS,
+    PHRASE_OPENERS,
     READINGS,
     RESULT_MENTIONS,
     RESULTS,
@@ -141,13 +142,22 @@ pub(super) fn denied_since(text: &str, lower: &str, start: usize, to: usize) -> 
 }
 
 /// Whether what stands behind the negator at `p`, up to `to`, names a rule: it
-/// opens on a code span or a capital, a name, or it holds one of `RULE_NOUNS`
-/// or `rounding`, a rule described in words.
+/// opens on a code span or a capital, a name; it holds one of `RULE_NOUNS` or
+/// `rounding` before the first of `PHRASE_OPENERS`, a rule described in words;
+/// or it holds one behind that preposition in a phrase that names a rule, with
+/// `the`, an owner's `'s` or a capitalised word.
 ///
 /// An article alone is not enough: "is not the slow one, which" denies a
 /// description of the mode and names nothing the relative could mean, where
 /// "is not the truncating rule, which" and "is not symmetric rounding, which"
-/// name a rule.
+/// name a rule. A rule noun behind a preposition with nothing naming it sits in
+/// a phrase about the denial, so "is not slow as a rule, which", "is not slow in
+/// any mode, which" and "does not drift under this rule, which" deny a quality
+/// or an act and the relative binds to the mode, where "is not slow like the
+/// truncating rule, which" and "is not as slow as Java's rule, which" name the
+/// rule the relative binds to. An aside in commas right behind the negator is
+/// passed over, "is not, as a rule, slow, which" against "is not, as a rule,
+/// the truncating rule, which".
 fn names_a_rule_behind(text: &str, lower: &str, p: usize, to: usize) -> bool {
     // The word starting at or after `at`, past whitespace, and where it starts.
     let word = |at: usize| -> (usize, &str) {
@@ -166,17 +176,40 @@ fn names_a_rule_behind(text: &str, lower: &str, p: usize, to: usize) -> bool {
         .max()
         .unwrap_or("n't".len());
     let (mut at, mut next) = word(p + negator);
+    // An aside set off by commas right behind the negator is passed over.
+    if lower[at .. to].starts_with(',') {
+        if let Some(close) = lower[at + 1 .. to].find(',') {
+            (at, next) = word(at + 1 + close + 1);
+        }
+    }
     if matches!(next, "from" | "to" | "than") {
         (at, next) = word(at + next.len());
     }
     let first = text[at ..].chars().next();
-    let described = RULE_NOUNS
+    let end = PHRASE_OPENERS
         .iter()
-        .chain(&["rounding"])
-        .any(|n| !bounded(&lower[at .. to], n).is_empty());
+        .filter_map(|w| bounded(&lower[at .. to], w).first().copied())
+        .min()
+        .map_or(to, |q| at + q);
+    let ruled = |span: &str| {
+        RULE_NOUNS
+            .iter()
+            .chain(&["rounding"])
+            .any(|n| !bounded(span, n).is_empty())
+    };
+    // Behind a preposition a rule noun counts only in a rule named as one: by
+    // `the`, by an owner's `'s`, or by a word opening on a capital or a code span.
+    let phrase = &lower[end .. to];
+    let named = !bounded(phrase, "the").is_empty()
+        || phrase.contains("'s ")
+        || text[end .. to]
+            .split_whitespace()
+            .skip(1)
+            .any(|w| w.starts_with(|c: char| c.is_ascii_uppercase() || c == '`'));
     next.is_empty() && first == Some('`')
         || first.is_some_and(|c| c.is_ascii_uppercase())
-        || described
+        || ruled(&lower[at .. end])
+        || named && ruled(phrase)
 }
 
 /// Whether a negator inside `span` reaches `to`, where `span` starts at `from`.

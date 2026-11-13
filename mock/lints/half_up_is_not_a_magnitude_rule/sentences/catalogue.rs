@@ -15,16 +15,19 @@
 //! regression rather than a known gap. A pair the reader learns to read moves
 //! to `closed.rs`, with a test of its own.
 //!
-//! The entries themselves are in `known.rs`, sixteen of them, and the lint's
+//! The entries themselves are in `known.rs`, twenty of them, and the lint's
 //! module doc names each class. Six are not a gap the reader can close alone:
 //! how a pronoun resolves, which the entries read one way and
 //! `carry_tests::every_other_name_defeats_the_carry` reads the other, and one
-//! question ticket holds which governs. The other ten are what remains of the
-//! classes the reader now reads by closed lists or by a rule over a few words:
-//! an imperative on an open-class object, a subject in words no list holds,
-//! the numbers `COUNTED` reads as counts, a count before a verb, a motion
+//! question ticket holds which governs. The other fourteen are what remains of
+//! the classes the reader now reads by closed lists or by a rule over a few
+//! words: an imperative on an open-class object, a subject in words no list
+//! holds, the numbers `COUNTED` reads as counts, a count before a verb, a motion
 //! gerund `MOTIONS` lacks, a gerund saying how the mode is computed, a
-//! predicating copula, and a rule named by a hyphenated phrase alone.
+//! predicating copula, a rule named by a hyphenated phrase alone, an owner
+//! outside `ALIAS_OWNERS`, an alias owner's rule beside the mode named by a
+//! description, a rule described with an article alone, and the mode named
+//! behind a preposition and `the`.
 //!
 //! The last arm reads the live registry's ratified rulings, which the lint
 //! itself does not read, and asserts none of their prose is refused. It held
@@ -78,17 +81,17 @@ impl Known {
 }
 
 #[test]
-fn the_catalogue_holds_sixteen_seven_let_through_and_nine_refused() {
+fn the_catalogue_holds_twenty_nine_let_through_and_eleven_refused() {
     // A count, so an entry dropped rather than fixed or deleted is a failure
     // here. Sixteen of the eighteen it first held moved to `closed.rs`; two
     // entries are the residue of the classes two of those closed, and the
-    // twelve after them the residue of the lists the reader reads by.
-    assert_eq!(CATALOGUE.len(), 16);
+    // sixteen after them the residue of the lists and shapes the reader reads by.
+    assert_eq!(CATALOGUE.len(), 20);
     let through = CATALOGUE
         .iter()
         .filter(|k| matches!(k.wrong, Wrong::LetsThrough))
         .count();
-    assert_eq!(through, 7);
+    assert_eq!(through, 9);
 }
 
 #[test]
@@ -235,6 +238,34 @@ catalogue_case!(
                 #arvo_s_half_up_reader_reads_any_copula_before_a_negator_as_a"]
     a_predicating_copula_is_read_as_an_identity,
     15
+);
+catalogue_case!(
+    #[ignore = "catalogue: an alias owner's rule named in words takes the clause even where it also \
+                names the mode by a rule noun; tracked \
+                #arvo_s_half_up_reader_lets_an_alias_owner_s_rule_cover_a_cla"]
+    an_owners_rule_beside_the_mode_named_by_a_description_leaves_the_clause_to_the_mode,
+    16
+);
+catalogue_case!(
+    #[ignore = "catalogue: an owner outside `ALIAS_OWNERS` is read as the ruled mode's own, so a \
+                party that computes ties away has its rule refused; tracked \
+                #arvo_s_half_up_reader_reads_an_owner_outside_its_two_lists_a"]
+    an_owner_outside_the_list_is_read_as_the_modes_own,
+    17
+);
+catalogue_case!(
+    #[ignore = "catalogue: a rule described with an article and no rule noun is read as a \
+                description of the mode, so the relative behind it is refused; tracked \
+                #arvo_s_half_up_reader_reads_a_rule_described_with_an_article"]
+    a_rule_described_with_an_article_alone_is_read_as_the_mode,
+    18
+);
+catalogue_case!(
+    #[ignore = "catalogue: a rule noun behind a preposition and `the` is read as another rule even \
+                where it is the mode; tracked \
+                #arvo_s_half_up_reader_reads_a_rule_noun_behind_a_preposition"]
+    a_rule_behind_a_preposition_and_an_article_is_read_as_another,
+    19
 );
 
 /// The repository this file sits in, found from its own path.

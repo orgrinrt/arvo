@@ -75,6 +75,7 @@ use escapes::{
     negator_binds,
 };
 pub(super) use vocabulary::{
+    ALIAS_OWNERS,
     CONJUNCTIONS,
     CONTRASTS,
     COUNTED,
@@ -88,11 +89,13 @@ pub(super) use vocabulary::{
     NAME_LEADS,
     NEGATORS,
     OTHER_NAMES,
+    PHRASE_OPENERS,
     PRONOUNS,
     QUALIFIED,
     READINGS,
     RELATIVES,
     RESULTS,
+    RULE_NOUNS,
     SUBJECTS,
 };
 pub(crate) use vocabulary::{DENOTES, SPELLINGS};

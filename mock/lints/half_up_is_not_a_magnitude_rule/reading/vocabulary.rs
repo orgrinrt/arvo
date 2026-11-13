@@ -353,10 +353,10 @@ pub(crate) const COUNTED: &[&str] = &[
     "value", "values", "slot", "slots", "step", "steps", "bit", "bits",
 ];
 
-/// The owners the governing ruling gives the alias to, lowered: Java, Python,
-/// IEEE 754 and MATLAB. An owner's rule named in words is another rule only
-/// where the owner is one of these.
-pub(crate) const ALIAS_OWNERS: &[&str] = &["java", "python", "ieee", "754", "matlab"];
+/// The owners the governing ruling names as computing ties away, lowered: Java,
+/// Python, IEEE 754, MATLAB and its `fi`. An owner's rule named in words is
+/// another rule only where the owner is one of these.
+pub(crate) const ALIAS_OWNERS: &[&str] = &["java", "python", "ieee", "754", "matlab", "fi"];
 
 /// Articles a subject noun may stand behind at the head of a clause.
 pub(crate) const ARTICLES: &[&str] = &["the", "a", "an", "each", "every", "one"];
@@ -364,6 +364,12 @@ pub(crate) const ARTICLES: &[&str] = &["the", "a", "an", "each", "every", "one"]
 /// Nouns that, standing right behind a name that is also a reading, say the
 /// name is being used as a name: "the ties-away rule".
 pub(crate) const RULE_NOUNS: &[&str] = &["rule", "rules", "alias", "mode", "operation", "method"];
+
+/// Prepositions that end what a negator denies: a rule noun behind one of
+/// these sits in a phrase about the denial rather than naming the thing
+/// denied, "is not, as a rule, slow", "is not slow in any mode".
+pub(crate) const PHRASE_OPENERS: &[&str] =
+    &["as", "in", "under", "like", "for", "with", "at", "on"];
 
 /// Words that open a contrast in the reading's own segment, so a reading
 /// standing behind the settled denotation is what the mode is set against

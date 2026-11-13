@@ -8,8 +8,8 @@
 //!
 //! The data alone, so `catalogue.rs` holds the tests over it. Each entry's
 //! test, ignore reason and ticket are there, at the same index. The entries
-//! after the fourth are the residue of the closed lists the reader reads by,
-//! one or more for each list, under the ticket of that list or shape.
+//! after the fourth are the residue of the closed lists and the shapes the
+//! reader reads by, one or more for each, under the ticket of that list or shape.
 
 #![cfg(test)]
 
@@ -205,6 +205,58 @@ pub(super) const CATALOGUE: &[Known] = &[
             subject:  None,
             differs:  "whether the copula predicates something of the reading or denies that it \
                       is the denotation",
+            measured: false,
+        },
+        wrong: Wrong::LetsThrough,
+    },
+    // 16. The owner rule: an alias owner's rule beside the mode named by a
+    // description.
+    Known {
+        pair:  Pair {
+            fires:    "`half_up` is the ruled mode. Like Java's rule, the mode sends a tie away \
+                      from zero.",
+            silent:   "`half_up` is the ruled mode. Under Java's rule a tie goes away from zero.",
+            subject:  None,
+            differs:  "whether the clause also names the mode, by a rule noun, beside the owner's \
+                      rule",
+            measured: false,
+        },
+        wrong: Wrong::LetsThrough,
+    },
+    // 17. `ALIAS_OWNERS`: an owner outside both the list and the mode's own.
+    Known {
+        pair:  Pair {
+            fires:    "`half_up` is the ruled mode. Under op's rule a tie goes away from zero.",
+            silent:   "`half_up` is the ruled mode. Under Rust's rule a tie goes away from zero.",
+            subject:  None,
+            differs:  "whether the owner is the ruled mode's own authority or a party that \
+                      computes ties away and is not on the list",
+            measured: false,
+        },
+        wrong: Wrong::Refuses,
+    },
+    // 18. The rule-noun check: a rule described with an article and no rule noun.
+    Known {
+        pair:  Pair {
+            fires:    "`half_up` is not the slow one, which sends a tie away from zero.",
+            silent:   "`half_up` is not the one Java uses, which sends a tie away from zero.",
+            subject:  None,
+            differs:  "whether the description behind the article is of the mode or of a rule",
+            measured: false,
+        },
+        wrong: Wrong::Refuses,
+    },
+    // 19. `PHRASE_OPENERS`: a rule noun behind a preposition and `the` that is
+    // the mode itself.
+    Known {
+        pair:  Pair {
+            fires:    "`half_up` is not slow in the default mode, which means a tie goes away from \
+                      zero.",
+            silent:   "`half_up` is not slow like the truncating rule, which sends a tie away from \
+                      zero.",
+            subject:  None,
+            differs:  "whether the rule behind the preposition is the mode or one named apart \
+                      from it",
             measured: false,
         },
         wrong: Wrong::LetsThrough,

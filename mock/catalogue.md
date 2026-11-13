@@ -8,6 +8,9 @@ last ignore citing it.
 
 - arvo_placement_ships_one_packing_rule_so_the_test_that_the_c: `arvo-placement` ships one packing
   rule, so the test that the carrier is not a function of the access width stays red.
+- arvo_s_half_up_reader_lets_an_alias_owner_s_rule_cover_a_cla: the `half_up` reader reads a clause
+  naming the rule of an owner in `ALIAS_OWNERS` as about that rule even where it also names the mode
+  by a rule noun, so the clause is let through.
 - arvo_s_half_up_reader_misses_a_motion_gerund_outside_motions: the `half_up` reader reads a motion
   gerund `MOTIONS` does not hold as naming `toward zero`, so the clause names another rule and is let
   through.
@@ -24,6 +27,15 @@ last ignore citing it.
   pronoun is one open call: one opening a clause or a segment after a rule the mode is denied to be
   takes that rule, `it` later in a clause opening on a subject is the mode, and a personal pronoun in
   an alias's segment keeps the alias a reading. Six catalogue entries contradict a reading of it.
+- arvo_s_half_up_reader_reads_a_rule_described_with_an_article: the `half_up` reader reads a rule
+  described with an article and no rule noun, behind a negator, as a description of the mode, so the
+  relative after it is the mode's and the clause is refused.
+- arvo_s_half_up_reader_reads_a_rule_noun_behind_a_preposition: the `half_up` reader reads a rule
+  noun behind a preposition and `the`, behind a negator, as another rule even where it is the mode,
+  so the relative after it is given away and the clause is let through.
+- arvo_s_half_up_reader_reads_an_owner_outside_its_two_lists_a: the `half_up` reader reads a rule
+  named by an owner outside `ALIAS_OWNERS` as the ruled mode's own, so a party that computes ties
+  away has its rule refused.
 - arvo_s_half_up_reader_reads_any_copula_before_a_negator_as_a: the `half_up` reader reads a copula
   between the reading and a negator as a denied identity even where it predicates a quality.
 - arvo_s_half_up_reader_refuses_a_clause_whose_subject_is_name: the `half_up` reader refuses a clause

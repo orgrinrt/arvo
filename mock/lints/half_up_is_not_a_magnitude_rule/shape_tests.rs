@@ -16,6 +16,7 @@
 //! asserts they are outside the list, so neither half can pass by being empty.
 
 use super::reading::{
+    ALIAS_OWNERS,
     CONTRASTS,
     COUNTED,
     DENOTES,
@@ -26,6 +27,8 @@ use super::reading::{
     NAME_LEADS,
     NEGATORS,
     OTHER_NAMES,
+    PHRASE_OPENERS,
+    RULE_NOUNS,
     SUBJECTS,
     hits,
 };
@@ -199,10 +202,14 @@ fn a_rule_named_by_its_owner_takes_the_clause_and_one_owned_by_the_mode_does_not
             assert_eq!(found(&own), ["away from zero"], "{own}");
         }
     }
-    for owner in ["Java's", "Python's", "MATLAB's", "IEEE's"] {
-        let alias =
-            format!("`half_up` is the ruled mode. Under {owner} rule a tie goes away from zero.");
-        assert!(found(&alias).is_empty(), "{alias}");
+    // Every owner the list holds, bare and in a code span, names another rule.
+    for owner in ALIAS_OWNERS {
+        for spelled in [format!("{}'s", cap(owner)), format!("`{owner}`'s")] {
+            let alias = format!(
+                "`half_up` is the ruled mode. Under {spelled} rule a tie goes away from zero."
+            );
+            assert!(found(&alias).is_empty(), "{alias}");
+        }
     }
     // An owner's thing that is not a rule leaves the clause to the mode.
     for owned in ["table", "example", "test"] {
@@ -305,6 +312,37 @@ fn a_relative_after_a_denied_rule_is_the_rules_and_after_a_denied_quality_the_mo
                 format!("`half_up` is {n} {quality}, which means a tie goes away from zero.");
             assert_eq!(found(&text), ["away from zero"], "{text}");
         }
+        // An aside in commas behind the negator is passed over.
+        for aside in [", as a rule,", ", in practice,"] {
+            let description = format!(
+                "`half_up` is {n}{aside} the slow one, which is why a tie goes away from zero."
+            );
+            assert_eq!(found(&description), ["away from zero"], "{description}");
+            let rule = format!(
+                "`half_up` is {n}{aside} the truncating rule, which sends a tie away from zero."
+            );
+            assert!(found(&rule).is_empty(), "{rule}");
+        }
+        // A rule noun behind a preposition with nothing naming it is a phrase
+        // about the denial; one the phrase names is the rule.
+        for opener in PHRASE_OPENERS {
+            for noun in RULE_NOUNS
+                .iter()
+                .filter(|w| !OTHER_NAMES.contains(w))
+                .chain(&["rounding"])
+            {
+                let phrase = format!(
+                    "`half_up` is {n} slow {opener} this {noun}, which means a tie goes away from zero."
+                );
+                assert_eq!(found(&phrase), ["away from zero"], "{phrase}");
+                for rule in [format!("the truncating {noun}"), format!("Java's {noun}")] {
+                    let named = format!(
+                        "`half_up` is {n} slow {opener} {rule}, which sends a tie away from zero."
+                    );
+                    assert!(found(&named).is_empty(), "{named}");
+                }
+            }
+        }
     }
     for act in ["does not truncate", "never sends a tie down", "has no bias"] {
         let text = format!("`half_up` {act}, which means a tie goes away from zero.");
@@ -376,5 +414,34 @@ fn a_count_before_a_verb_is_still_a_count() {
     for verb in ["go", "land", "round"] {
         let text = format!("`half_up` sends ties up. 5 {verb} away from zero.");
         assert_eq!(found(&text), ["away from zero"], "{text}");
+    }
+}
+
+#[test]
+#[ignore = "catalogue: an owner outside `ALIAS_OWNERS` is read as the ruled mode's own, so a party \
+            that computes ties away has its rule refused; tracked \
+            #arvo_s_half_up_reader_reads_an_owner_outside_its_two_lists_a"]
+fn an_owner_outside_both_sets_owns_another_rule() {
+    for owner in [
+        "Rust's",
+        "C's",
+        "Excel's",
+        "the JDK's",
+        "BigDecimal's",
+        "Java 8's",
+        "Python 3's",
+    ] {
+        let word = owner
+            .trim_end_matches("'s")
+            .rsplit(' ')
+            .next()
+            .unwrap_or_default();
+        assert!(
+            !ALIAS_OWNERS.contains(&word.to_ascii_lowercase().as_str()),
+            "{owner}"
+        );
+        let text =
+            format!("`half_up` is the ruled mode. Under {owner} rule a tie goes away from zero.");
+        assert!(found(&text).is_empty(), "{text}");
     }
 }

@@ -185,14 +185,14 @@ pub(super) const NEIGHBOURS: &[Pair] = &[
         differs:  "the same with no pronoun, the count told by the word behind the number",
         measured: false,
     },
-    // A rule named by its owner: only an owner the ruling gives the alias to
-    // names another rule. The ruled mode's own authorities do not.
+    // A rule named by its owner: only an owner the ruling names as computing
+    // ties away names another rule. The ruled mode's own authorities do not.
     Pair {
         fires:    "`half_up` is the ruled mode. Under op's rule a tie goes away from zero.",
         silent:   "`half_up` is the ruled mode. Under Java's rule a tie goes away from zero.",
         subject:  None,
         differs:  "whether the owner of the rule is the ruled mode's own authority or one the \
-                  ruling gives the alias to",
+                  ruling names as computing ties away",
         measured: false,
     },
     Pair {
@@ -200,6 +200,14 @@ pub(super) const NEIGHBOURS: &[Pair] = &[
         silent:   "`half_up` is the ruled mode. By Python's rule a tie goes away from zero.",
         subject:  None,
         differs:  "the same, the registry against Python",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is the ruled mode. Under the canon's rounding a tie goes away from zero.",
+        silent:   "`half_up` is the ruled mode. Under MATLAB `fi`'s rounding a tie goes away from \
+                  zero.",
+        subject:  None,
+        differs:  "the same with the owner as the ruling writes it, in a code span",
         measured: false,
     },
     Pair {
@@ -246,6 +254,31 @@ pub(super) const NEIGHBOURS: &[Pair] = &[
         differs:  "the same behind `isn't`",
         measured: false,
     },
+    // A rule noun behind a preposition: a phrase about the denial where nothing
+    // names a rule, the rule the relative binds to where something does.
+    Pair {
+        fires:    "`half_up` is not, as a rule, slow, which means a tie goes away from zero.",
+        silent:   "`half_up` is not, as a rule, the truncating rule, which sends a tie away from \
+                  zero.",
+        subject:  None,
+        differs:  "whether the aside is followed by a quality or by a rule",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` is not slow in any mode, which means a tie goes away from zero.",
+        silent:   "`half_up` is not slow like Java's rule, which sends a tie away from zero.",
+        subject:  None,
+        differs:  "whether the phrase behind the preposition names a rule",
+        measured: false,
+    },
+    Pair {
+        fires:    "`half_up` does not drift under this rule, which means a tie goes away from zero.",
+        silent:   "`half_up` does not drift like the truncating rule, which sends a tie away from \
+                  zero.",
+        subject:  None,
+        differs:  "whether the rule behind the preposition is the mode or one named apart from it",
+        measured: false,
+    },
 ];
 
 #[test]
@@ -260,7 +293,7 @@ fn every_neighbour_reads_right_on_both_sides() {
 }
 
 #[test]
-fn the_neighbours_hold_twenty_eight() {
+fn the_neighbours_hold_thirty_two() {
     // A count, so a neighbour dropped rather than read right is a failure here.
-    assert_eq!(NEIGHBOURS.len(), 28);
+    assert_eq!(NEIGHBOURS.len(), 32);
 }

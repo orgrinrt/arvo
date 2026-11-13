@@ -165,14 +165,16 @@ pub(super) fn holds_a_personal_pronoun(text: &str) -> bool {
 }
 
 /// Whether `clause` names a rule in words, by its owner: "Java's rule",
-/// "MATLAB's rounding". The owner is one of `ALIAS_OWNERS`, the parties the
-/// governing ruling gives the alias to. Any other owner is no other rule: "op's
-/// rule", "the registry's rule" and "arvo's rounding" are the ruled mode under
-/// another name, and "its rule" points back at it.
+/// "MATLAB `fi`'s rounding". The owner is one of `ALIAS_OWNERS`, the owners the
+/// governing ruling names as computing ties away, bare or in a code span. Any
+/// other owner is no other rule here: "op's rule", "the registry's rule" and
+/// "arvo's rounding" are the ruled mode under another name, and "its rule"
+/// points back at it.
 pub(super) fn names_a_rule_in_words(clause: &str) -> bool {
     let lower = clause.to_ascii_lowercase();
     lower.match_indices("'s ").any(|(at, _)| {
-        let owner = word_before(&lower, at).unwrap_or_default();
+        let head = lower[.. at].trim_end_matches('`');
+        let owner = word_before(head, head.len()).unwrap_or_default();
         let owned = next_word(&lower[at + 3 ..]);
         ALIAS_OWNERS.contains(&owner.as_str())
             && (RULE_NOUNS.contains(&owned.as_str()) || owned == "rounding")
