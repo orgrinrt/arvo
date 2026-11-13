@@ -6,32 +6,38 @@
 //! A value of a declared signature, held alone in the carrier its placement
 //! derives.
 //!
-//! `Num<S>` is one member of the format of `S`, kept in the narrowest ladder
-//! carrier `arvo_placement::derive_sole` gives the signature. Every operation is
-//! the format's own on the member's slot: the slot of `a.add(b)` is the slot
-//! `arvo_format::add::<S>` returns for the two slots, for every pair of members
-//! of every admitted signature.
+//! `Num<S, C>` is one member of the format of `S`, kept in the machine integer
+//! of the ladder container `arvo_placement::SoleCarrier` names for the
+//! signature's slot family. Every operation is the format's own on the member's
+//! slot: the slot of `a.add(b)` is the slot `arvo_format::add::<S>` returns for
+//! the two slots, for every pair of members of every admitted signature.
 //!
-//! `Sole` says which signatures a value is held for: a slot family of 1 to 64
-//! bits, an overflow policy that is a `ValuePolicy`, a rounding mode that is a
-//! `ValueRounding`, a zero phase and a constant quantum. Each overflow policy
-//! has two spellings: under `Wrap` and `Saturate` a result leaving the range
-//! asserts in a debug build, under `Wrapping` and `Saturating` nothing asserts.
+//! `Sole` says which signatures a value is held for, by checking what a
+//! signature already declares: a slot family whose range is the whole signed or
+//! unsigned range of its width, an overflow policy that wraps or saturates, a
+//! rounding mode that reads no dither, a zero phase and a constant quantum. A
+//! slot family, a policy or a mode of another crate is held on the same terms.
+//!
+//! `C` is the debug check, a separate axis the consumer chooses: under `Abort`,
+//! the default, a debug build aborts when a result leaves the range, and under
+//! `Quiet` no build does.
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
 mod admit;
 mod alias;
+mod check;
 mod identity;
 mod machine;
 mod map;
 mod num;
 mod rung;
 
-pub use admit::{Saturating, Sole, ValuePolicy, ValueRounding, Wrapping};
-pub use alias::{ISize, Int, USize, Uint};
+pub use admit::Sole;
+pub use alias::{ISize, Int, NamesAdaptation, USize, Uint};
 pub use arvo_format::Bool;
+pub use check::{Abort, DebugCheck, Quiet};
 pub use identity::{Additive, Identity};
 pub use num::Num;
 

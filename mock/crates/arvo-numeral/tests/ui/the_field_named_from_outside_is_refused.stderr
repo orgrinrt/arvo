@@ -1,13 +1,13 @@
 warning: unused import: `Uint`
- --> tests/ui/the_field_named_from_outside_is_refused.rs:4:25
+ --> tests/ui/the_field_named_from_outside_is_refused.rs:5:25
   |
-4 | use arvo_numeral::{Int, Uint, Wrapping};
+5 | use arvo_numeral::{Int, Uint};
   |                         ^^^^
   |
   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
 
 error[E0616]: field `0` of struct `Num` is private
- --> tests/ui/the_field_named_from_outside_is_refused.rs:8:15
+ --> tests/ui/the_field_named_from_outside_is_refused.rs:9:15
   |
-8 |     let _ = a.0;
+9 |     let _ = a.0;
   |               ^ private field

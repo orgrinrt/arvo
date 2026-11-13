@@ -9,8 +9,6 @@ use core::fmt::Debug;
 use core::hash::Hash;
 use core::mem::size_of;
 
-use arvo_format::Bool;
-
 mod sealed {
     pub trait Sealed {}
 }
@@ -19,29 +17,18 @@ mod sealed {
 ///
 /// Sealed to the signed and unsigned integers of 8 to 64 bits and the two
 /// pointer-width ones, which is what makes the bit copy sound.
-pub trait Machine: sealed::Sealed + Copy + Eq + Ord + Hash + Debug + Send + Sync + 'static {
-    /// Whether the integer is signed.
-    const SIGNED: Bool;
-}
+pub trait Machine: sealed::Sealed + Copy + Eq + Ord + Hash + Debug + Send + Sync + 'static {}
 
 macro_rules! machine {
-    ($($t:ty => $signed:expr),+ $(,)?) => {
+    ($($t:ty),+ $(,)?) => {
         $(
             impl sealed::Sealed for $t {}
-            impl Machine for $t {
-                const SIGNED: Bool = Bool::of($signed);
-            }
+            impl Machine for $t {}
         )+
     };
 }
 
-machine! {
-    i8 => true, u8 => false,
-    i16 => true, u16 => false,
-    i32 => true, u32 => false,
-    i64 => true, u64 => false,
-    isize => true, usize => false,
-}
+machine! { i8, u8, i16, u16, i32, u32, i64, u64, isize, usize }
 
 /// The bits of `x` read as a `U`.
 ///

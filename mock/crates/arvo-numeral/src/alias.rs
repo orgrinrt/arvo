@@ -4,28 +4,58 @@
 //--------------------------------------------------------------------------------------------------
 
 //! The integer points under their familiar names.
+//!
+//! Each alias takes what names its adaptation, read through `NamesAdaptation`,
+//! and then the debug check, `Abort` unless named. No adaptation is a default:
+//! which one `Warm` names for integers is unclaimed, so the consumer names it.
+//! Reading the parameter through the projection is what lets a strategy name it
+//! later, with `Warm` as its default, without any consumer written today
+//! breaking.
 
-use arvo_format::overflow::Wrap;
+use arvo_format::overflow::Overflow;
 use arvo_format::points::{self, Integer, UFixed};
-use arvo_format::rounding::TowardZero;
-use arvo_format::{Adapt, Signature};
+use arvo_format::rounding::Rounding;
+use arvo_format::{Adapt, Adaptation, Signature};
 
+use crate::admit::Sole;
+use crate::check::{Abort, DebugCheck};
 use crate::machine::copy;
 use crate::num::Num;
 
-/// An unsigned integer of `BITS` bits under the adaptation `A`.
-pub type Uint<const BITS: u32, A> = Num<Signature<UFixed<BITS, 0>, A>>;
+/// A type that names an adaptation, which is what an alias's parameter is.
+///
+/// An adaptation names itself. A strategy, once its cell is claimed, names the
+/// adaptation it selects. Open: what names an adaptation in another crate
+/// implements it there.
+pub trait NamesAdaptation {
+    /// The adaptation named.
+    type Adaptation: Adaptation;
+}
 
-/// A signed integer of `BITS` bits under the adaptation `A`.
-pub type Int<const BITS: u32, A> = Num<Signature<Integer<BITS>, A>>;
+impl<R: Rounding, O: Overflow> NamesAdaptation for Adapt<R, O> {
+    type Adaptation = Self;
+}
 
-/// The unsigned integer at the target's pointer width.
-pub type USize = Num<Signature<points::USize, Adapt<TowardZero, Wrap>>>;
+/// An unsigned integer of `BITS` bits under the adaptation `A` names.
+pub type Uint<const BITS: u32, A, C = Abort> =
+    Num<Signature<UFixed<BITS, 0>, <A as NamesAdaptation>::Adaptation>, C>;
 
-/// The signed integer at the target's pointer width.
-pub type ISize = Num<Signature<points::ISize, Adapt<TowardZero, Wrap>>>;
+/// A signed integer of `BITS` bits under the adaptation `A` names.
+pub type Int<const BITS: u32, A, C = Abort> =
+    Num<Signature<Integer<BITS>, <A as NamesAdaptation>::Adaptation>, C>;
 
-impl USize {
+/// The unsigned integer at the target's pointer width, under the adaptation `A`
+/// names.
+pub type USize<A, C = Abort> = Num<Signature<points::USize, <A as NamesAdaptation>::Adaptation>, C>;
+
+/// The signed integer at the target's pointer width, under the adaptation `A`
+/// names.
+pub type ISize<A, C = Abort> = Num<Signature<points::ISize, <A as NamesAdaptation>::Adaptation>, C>;
+
+impl<Ad: Adaptation, C: DebugCheck> Num<Signature<points::USize, Ad>, C>
+where
+    Signature<points::USize, Ad>: Sole,
+{
     /// The host's `usize`. Every one is a member, so this is a bit copy.
     #[must_use]
     pub const fn from_host(host: usize) -> Self {
@@ -39,7 +69,10 @@ impl USize {
     }
 }
 
-impl ISize {
+impl<Ad: Adaptation, C: DebugCheck> Num<Signature<points::ISize, Ad>, C>
+where
+    Signature<points::ISize, Ad>: Sole,
+{
     /// The host's `isize`. Every one is a member, so this is a bit copy.
     #[must_use]
     pub const fn from_host(host: isize) -> Self {

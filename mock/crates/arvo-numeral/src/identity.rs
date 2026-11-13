@@ -8,6 +8,7 @@
 use arvo_format::has_additive_identity;
 
 use crate::admit::Sole;
+use crate::check::DebugCheck;
 use crate::num::Num;
 
 /// A type with an identity element for the operation `M`.
@@ -22,7 +23,7 @@ pub trait Identity<M> {
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct Additive;
 
-impl<S: Sole> Identity<Additive> for Num<S> {
+impl<S: Sole, C: DebugCheck> Identity<Additive> for Num<S, C> {
     /// Zero, which at a zero phase is slot zero.
     ///
     /// The format's own predicate is asked first, so a format without an

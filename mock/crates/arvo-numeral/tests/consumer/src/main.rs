@@ -5,50 +5,63 @@
 
 //! A consumer of `arvo-numeral` that names no feature of it and reaches every
 //! item it makes public: each type, trait, alias, associated item, door,
-//! operation and derived trait. It builds, runs and asserts what it reads.
+//! operation and derived trait. It builds, runs and asserts what it reads, and
+//! it implements each open trait once from outside.
 
 use core::cmp::Ordering;
 use core::hash::{Hash, Hasher};
 use std::collections::hash_map::DefaultHasher;
 
 use arvo_format::overflow::{Saturate, Wrap};
-use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, TowardZero};
+use arvo_format::rounding::{Floor, HalfEven, TowardZero};
 use arvo_format::{Adapt, Exact, Policy, Signature, Slot};
 use arvo_numeral::{
+    Abort,
     Additive,
     Bool,
+    DebugCheck,
     ISize,
     Identity,
     Int,
+    NamesAdaptation,
     Num,
-    Saturating,
+    Quiet,
     Sole,
     USize,
     Uint,
-    ValuePolicy,
-    ValueRounding,
-    Wrapping,
 };
 
-type U13 = Uint<13, Adapt<TowardZero, Wrapping>>;
-type I7 = Int<7, Adapt<Floor, Saturating>>;
+type U13 = Uint<13, Adapt<TowardZero, Wrap>, Quiet>;
+type I7 = Int<7, Adapt<Floor, Saturate>, Quiet>;
 
-/// Generic over the signature, bounded by `Sole` and nothing more.
-const fn sum<S: Sole>(a: Num<S>, b: Num<S>, c: Num<S>) -> Num<S> {
+/// A name for an adaptation, of this crate's own. What a strategy will be.
+struct Rounded;
+
+impl NamesAdaptation for Rounded {
+    type Adaptation = Adapt<HalfEven, Wrap>;
+}
+
+/// A debug check of this crate's own.
+struct Never;
+
+impl DebugCheck for Never {
+    const ABORTS: Bool = Bool::FALSE;
+}
+
+/// Generic over the signature and the check, bounded by nothing more.
+const fn sum<S: Sole, C: DebugCheck>(a: Num<S, C>, b: Num<S, C>, c: Num<S, C>) -> Num<S, C> {
     a.add(b).add(c)
 }
 
 /// Every associated item of `Sole`, read generically.
 fn admission_of<S: Sole>() -> (u32, Policy, bool) {
     let () = S::ADMITTED;
-    (S::WIDTH.count(), S::POLICY, S::ASSERTS.get())
+    (S::WIDTH.count(), S::POLICY, S::SIGNED.get())
 }
 
-fn asserts<P: ValuePolicy>() -> bool {
-    P::ASSERTS.get()
+fn aborts<C: DebugCheck>() -> bool {
+    C::ABORTS.get()
 }
-
-fn admitted<M: ValueRounding>() {}
 
 fn hash_of<T: Hash>(t: &T) -> u64 {
     let mut h = DefaultHasher::new();
@@ -102,22 +115,32 @@ fn main() {
     assert_eq!(<I7 as Identity<Additive>>::IDENTITY.slot().index(), 0);
     assert_eq!(a.add(<I7 as Identity<Additive>>::IDENTITY), a);
 
-    // The pointer-width aliases and their host doors.
-    assert_eq!(USize::from_host(usize::MAX).host(), usize::MAX);
-    assert_eq!(ISize::from_host(isize::MIN).host(), isize::MIN);
-    assert_eq!(USize::from_host(7).add(USize::from_host(8)).host(), 15);
+    // The pointer-width aliases and their host doors, under the default check.
+    type UHost = USize<Adapt<TowardZero, Wrap>>;
+    type IHost = ISize<Adapt<TowardZero, Wrap>>;
+    assert_eq!(UHost::from_host(usize::MAX).host(), usize::MAX);
+    assert_eq!(IHost::from_host(isize::MIN).host(), isize::MIN);
+    assert_eq!(UHost::from_host(7).add(UHost::from_host(8)).host(), 15);
+
+    // An alias through an outside name for an adaptation, and an outside check.
+    type ByName = Int<8, Rounded, Never>;
+    assert_eq!(
+        ByName::constant::<127>()
+            .add(ByName::constant::<1>())
+            .slot()
+            .index(),
+        -128
+    );
+    assert_eq!(
+        core::mem::size_of::<ByName>(),
+        core::mem::size_of::<Int<8, Adapt<HalfEven, Wrap>>>()
+    );
 
     // The admission's items, through the traits.
-    type S13 = Signature<arvo_format::points::UFixed<13, 0>, Adapt<TowardZero, Wrapping>>;
+    type S13 = Signature<arvo_format::points::UFixed<13, 0>, Adapt<TowardZero, Wrap>>;
     assert_eq!(admission_of::<S13>(), (13, Policy::Wrap, false));
-    type S7 = Signature<arvo_format::points::Integer<7>, Adapt<Floor, Saturating>>;
-    assert_eq!(admission_of::<S7>(), (7, Policy::Saturate, false));
-    assert!(asserts::<Wrap>() && asserts::<Saturate>());
-    assert!(!asserts::<Wrapping>() && !asserts::<Saturating>());
-    admitted::<TowardZero>();
-    admitted::<Floor>();
-    admitted::<Ceil>();
-    admitted::<HalfUp>();
-    admitted::<HalfEven>();
+    type S7 = Signature<arvo_format::points::Integer<7>, Adapt<Floor, Saturate>>;
+    assert_eq!(admission_of::<S7>(), (7, Policy::Saturate, true));
+    assert!(aborts::<Abort>() && !aborts::<Quiet>() && !aborts::<Never>());
     assert!(Bool::of(true).get());
 }

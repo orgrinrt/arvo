@@ -1,19 +1,19 @@
 warning: unused import: `Int`
- --> tests/ui/a_width_of_zero_bits_is_refused.rs:4:20
+ --> tests/ui/a_width_of_zero_bits_is_refused.rs:5:20
   |
-4 | use arvo_numeral::{Int, Uint, Wrapping};
+5 | use arvo_numeral::{Int, Uint};
   |                    ^^^
   |
   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
 
-error[E0277]: no ladder carrier holds the slot family `Unsigned<0>`
- --> tests/ui/a_width_of_zero_bits_is_refused.rs:7:13
+error[E0277]: no ladder container holds the slot family `Unsigned<0>` alone
+ --> tests/ui/a_width_of_zero_bits_is_refused.rs:8:13
   |
-7 |     let _ = Uint::<0, Adapt<TowardZero, Wrapping>>::constant::<0>();
-  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `arvo_numeral::map::Carried` is not implemented for `Unsigned<0>`
+8 |     let _ = Uint::<0, Adapt<TowardZero, Wrap>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `arvo_placement::sole::SoleCarrier` is not implemented for `Unsigned<0>`
   |
-  = note: a value is held for `Signed<W>` or `Unsigned<W>` with `W` from 1 to 64; zero bits has no slot range and no carrier holds more than 64
-  = help: the following other types implement trait `arvo_numeral::map::Carried`:
+  = note: the rows here cover `Signed<W>` and `Unsigned<W>` with `W` from 1 to 64; a slot family of another crate names its container by implementing this trait
+  = help: the following other types implement trait `arvo_placement::sole::SoleCarrier`:
             Unsigned<10>
             Unsigned<11>
             Unsigned<12>
@@ -23,18 +23,18 @@ error[E0277]: no ladder carrier holds the slot family `Unsigned<0>`
             Unsigned<16>
             Unsigned<17>
           and $N others
-  = note: required for `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>` to implement `Sole`
+  = note: required for `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>` to implement `Sole`
 note: required by a bound in `Num`
  --> src/num.rs
   |
-  | pub struct Num<S: Sole>(ReprOf<S>);
+  | pub struct Num<S: Sole, C: DebugCheck = Abort>(ReprOf<S>, PhantomData<C>);
   |                   ^^^^ required by this bound in `Num`
 
-error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>`, but its trait bounds were not satisfied
- --> tests/ui/a_width_of_zero_bits_is_refused.rs:7:53
+error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`, but its trait bounds were not satisfied
+ --> tests/ui/a_width_of_zero_bits_is_refused.rs:8:49
   |
-7 |     let _ = Uint::<0, Adapt<TowardZero, Wrapping>>::constant::<0>();
-  |                                                     ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+8 |     let _ = Uint::<0, Adapt<TowardZero, Wrap>>::constant::<0>();
+  |                                                 ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
   |
  ::: $WORKSPACE/crates/arvo-format/src/adapt.rs
   |
@@ -44,10 +44,10 @@ error[E0599]: the associated function or constant `constant` exists for struct `
  ::: $WORKSPACE/crates/arvo-format/src/slots.rs
   |
   | pub struct Unsigned<const BITS: u32>;
-  | ------------------------------------ doesn't satisfy `Unsigned<0>: Slots` or `Unsigned<0>: arvo_numeral::map::Carried`
+  | ------------------------------------ doesn't satisfy `Unsigned<0>: Slots` or `Unsigned<0>: arvo_placement::sole::SoleCarrier`
   |
   = note: the following trait bounds were not satisfied:
           `Unsigned<0>: Slots`
-          which is required by `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>: Sole`
-          `Unsigned<0>: arvo_numeral::map::Carried`
-          which is required by `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>: Sole`
+          which is required by `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>: Sole`
+          `Unsigned<0>: arvo_placement::sole::SoleCarrier`
+          which is required by `Signature<UFixed<0, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>: Sole`

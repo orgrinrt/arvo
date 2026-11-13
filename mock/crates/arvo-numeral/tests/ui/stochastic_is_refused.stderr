@@ -1,39 +1,50 @@
-error[E0277]: `arvo_format::rounding::Stochastic` is not a rounding mode a value admits
- --> tests/ui/stochastic_is_refused.rs:7:13
+error[E0080]: evaluation panicked: a value rounds by a deterministic mode. This rounding mode reads a dither, and a value has nowhere to carry one
+ --> $RUST/core/src/panic.rs
   |
-7 |     let _ = Int::<8, Adapt<Stochastic, Wrapping>>::constant::<0>();
-  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `ValueRounding` is not implemented for `arvo_format::rounding::Stochastic`
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::Signature<arvo_format::points::Integer<8>, arvo_format::Adapt<arvo_format::rounding::Stochastic, arvo_format::overflow::Wrap>> as arvo_numeral::Sole>::ADMITTED` failed here
   |
-  = note: a value admits `TowardZero`, `Floor`, `Ceil`, `HalfUp` and `HalfEven`; `Stochastic` reads a dither, and a value has nowhere to carry one
-  = help: the following other types implement trait `ValueRounding`:
-            Ceiling
-            Convergent
-            Nearest
-            arvo_format::rounding::Floor
-            arvo_format::rounding::TowardZero
-  = note: required for `Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_numeral::Wrapping>>` to implement `Sole`
-note: required by a bound in `Num`
+ ::: src/admit.rs
+  |
+  | /         assert!(
+  | |             !matches!(<RoundingOf<S> as Rounding>::MODE, Mode::Stochastic),
+  | |             "a value rounds by a deterministic mode. This rounding mode reads a dither, and a value \
+  | |              has nowhere to carry one"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
  --> src/num.rs
   |
-  | pub struct Num<S: Sole>(ReprOf<S>);
-  |                   ^^^^ required by this bound in `Num`
+  |             let () = S::ADMITTED;
+  |                      ^^^^^^^^^^^
 
-error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_numeral::Wrapping>>>`, but its trait bounds were not satisfied
- --> tests/ui/stochastic_is_refused.rs:7:52
+note: erroneous constant encountered
+ --> src/num.rs
   |
-7 |     let _ = Int::<8, Adapt<Stochastic, Wrapping>>::constant::<0>();
-  |                                                    ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+  | /         const {
+  | |             let () = S::ADMITTED;
+  | |             assert!(
+  | |                 slot_in_range::<SlotsOf<S>>(Slot::at(V)).get(),
+... |
+  | |             );
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn Num::<Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_format::overflow::Wrap>>>::constant::<0>`
+ --> tests/ui/stochastic_is_refused.rs:8:13
   |
- ::: $WORKSPACE/crates/arvo-format/src/rounding.rs
+8 |     let _ = Int::<8, Adapt<Stochastic, Wrap>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
   |
-  | pub struct Stochastic;
-  | --------------------- doesn't satisfy `arvo_format::rounding::Stochastic: ValueRounding`
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
   |
- ::: $WORKSPACE/crates/arvo-format/src/adapt.rs
-  |
-  | pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
-  | ---------------------------------------------- doesn't satisfy `_: Sole`
-  |
-  = note: the following trait bounds were not satisfied:
-          `arvo_format::rounding::Stochastic: ValueRounding`
-          which is required by `Signature<Integer<8>, Adapt<arvo_format::rounding::Stochastic, arvo_numeral::Wrapping>>: Sole`
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^

@@ -5,7 +5,7 @@
 
 //! Widths 33 to 64 through the value type, held in the 64-bit carrier: the
 //! edge lattice and seeded pairs of every signature, both families, both
-//! completing markers and every mode, against the oracle.
+//! overflow policies and every mode, against the oracle.
 
 mod common;
 

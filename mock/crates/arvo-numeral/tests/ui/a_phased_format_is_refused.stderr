@@ -2,19 +2,18 @@ error[E0080]: evaluation panicked: a value is held only for a format whose sum o
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
-  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::Signature<arvo_format::points::Biased<8, 0, 1>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>> as arvo_numeral::Sole>::ADMITTED` failed here
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::Signature<arvo_format::points::Biased<8, 0, 1>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as arvo_numeral::Sole>::ADMITTED` failed here
   |
  ::: src/admit.rs
   |
-  |       const ADMITTED: () = assert!(
-  |  __________________________-
-  | |         <S::Format as Format>::PHASE.is_zero().get()
-  | |             && is_constant_family::<<S::Format as Format>::Quantum>().get(),
-  | |         "a value is held only for a format whose sum of two members is on its grid: a zero phase \
-  | |          and a constant quantum. This format has a phase or an indexed quantum, so its sums are \
-  | |          not slot sums; compute them with `arvo_format::add` on slots instead"
-  | |     );
-  | |_____- in this macro invocation
+  | /         assert!(
+  | |             <S::Format as Format>::PHASE.is_zero().get()
+  | |                 && is_constant_family::<<S::Format as Format>::Quantum>().get(),
+  | |             "a value is held only for a format whose sum of two members is on its grid: a zero phase \
+  | |              and a constant quantum. This format has a phase or an indexed quantum, so its sums are \
+  | |              not slot sums; compute them with `arvo_format::add` on slots instead"
+  | |         );
+  | |_________- in this macro invocation
 
 note: erroneous constant encountered
  --> src/num.rs
@@ -34,11 +33,17 @@ note: erroneous constant encountered
   | |         }
   | |_________^
 
-note: the above error was encountered while instantiating `fn Num::<Signature<Biased<8, 0, 1>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>::constant::<0>`
- --> tests/ui/a_phased_format_is_refused.rs:8:13
+note: the above error was encountered while instantiating `fn Num::<Signature<Biased<8, 0, 1>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::constant::<0>`
+ --> tests/ui/a_phased_format_is_refused.rs:9:13
   |
-8 |     let _ = Num::<Signature<Biased<8, 0, 1>, Adapt<TowardZero, Wrapping>>>::constant::<0>();
-  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+9 |     let _ = Num::<Signature<Biased<8, 0, 1>, Adapt<TowardZero, Wrap>>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^
 
 note: erroneous constant encountered
  --> src/num.rs

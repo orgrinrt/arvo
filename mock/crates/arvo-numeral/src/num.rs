@@ -8,6 +8,7 @@
 use core::cmp::Ordering;
 use core::fmt;
 use core::hash::{Hash, Hasher};
+use core::marker::PhantomData;
 use core::mem::size_of;
 
 use arvo_format::{
@@ -21,16 +22,19 @@ use arvo_format::{
     panic_on_overflow,
     slot_in_range,
 };
+use arvo_placement::SoleCarrier;
 
 use crate::admit::Sole;
-use crate::machine::{Machine, copy};
-use crate::map::Carried;
+use crate::check::{Abort, DebugCheck};
+use crate::machine::copy;
+use crate::map::Held;
 use crate::rung;
 
 type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
 
-/// The carrier the map names for the signature. Nameable inside this crate only.
-pub(crate) type ReprOf<S> = <SlotsOf<S> as Carried>::Repr;
+/// The machine integer of the container the placement names for the signature's
+/// slot family. Nameable inside this crate only.
+pub(crate) type ReprOf<S> = <<SlotsOf<S> as SoleCarrier>::Carrier as Held>::Repr;
 
 /// A value of the declared signature `S`: one member of its format, held alone
 /// in the carrier the placement derives at sole occupancy.
@@ -38,30 +42,34 @@ pub(crate) type ReprOf<S> = <SlotsOf<S> as Carried>::Repr;
 /// The carrier is canonical, one member to one bit pattern, so two values are
 /// equal exactly when their slots are. Every operation is the format's own on
 /// the slot, computed in the carrier.
+///
+/// `C` is the debug check, `Abort` unless named: whether a debug build aborts
+/// when a result leaves the range. It is no part of the signature, so two values
+/// of one signature under different checks hold the same member the same way.
 #[repr(transparent)]
-pub struct Num<S: Sole>(ReprOf<S>);
+pub struct Num<S: Sole, C: DebugCheck = Abort>(ReprOf<S>, PhantomData<C>);
 
-/// One operation, dispatched on the carrier's size and signedness to the rung
-/// function at that machine integer. The match is over constants of the
-/// instantiation, so one arm survives monomorphisation.
+/// One operation, dispatched on the carrier's size and the slot range's sign to
+/// the rung function at that machine integer. The match is over constants of
+/// the instantiation, so one arm survives monomorphisation.
 ///
 /// `carrier` moves the rung's result back into the carrier; `plain` returns it
 /// as it is.
 macro_rules! dispatch {
     (
-        $r:ty, $out:ident,
+        $s:ty, $out:ident,
         [$s8:path, $u8:path, $s16:path, $u16:path, $s32:path, $u32:path, $s64:path, $u64:path],
         [$($op:expr),*], [$($tail:expr),*]
     ) => {
-        match const { (size_of::<$r>(), <$r as Machine>::SIGNED.get()) } {
-            (1, true) => dispatch!(@$out i8, $r, $s8($(copy::<$r, i8>($op),)* $($tail),*)),
-            (1, false) => dispatch!(@$out u8, $r, $u8($(copy::<$r, u8>($op),)* $($tail),*)),
-            (2, true) => dispatch!(@$out i16, $r, $s16($(copy::<$r, i16>($op),)* $($tail),*)),
-            (2, false) => dispatch!(@$out u16, $r, $u16($(copy::<$r, u16>($op),)* $($tail),*)),
-            (4, true) => dispatch!(@$out i32, $r, $s32($(copy::<$r, i32>($op),)* $($tail),*)),
-            (4, false) => dispatch!(@$out u32, $r, $u32($(copy::<$r, u32>($op),)* $($tail),*)),
-            (8, true) => dispatch!(@$out i64, $r, $s64($(copy::<$r, i64>($op),)* $($tail),*)),
-            (8, false) => dispatch!(@$out u64, $r, $u64($(copy::<$r, u64>($op),)* $($tail),*)),
+        match const { (size_of::<ReprOf<$s>>(), <$s as Sole>::SIGNED.get()) } {
+            (1, true) => dispatch!(@$out i8, ReprOf<$s>, $s8($(copy::<ReprOf<$s>, i8>($op),)* $($tail),*)),
+            (1, false) => dispatch!(@$out u8, ReprOf<$s>, $u8($(copy::<ReprOf<$s>, u8>($op),)* $($tail),*)),
+            (2, true) => dispatch!(@$out i16, ReprOf<$s>, $s16($(copy::<ReprOf<$s>, i16>($op),)* $($tail),*)),
+            (2, false) => dispatch!(@$out u16, ReprOf<$s>, $u16($(copy::<ReprOf<$s>, u16>($op),)* $($tail),*)),
+            (4, true) => dispatch!(@$out i32, ReprOf<$s>, $s32($(copy::<ReprOf<$s>, i32>($op),)* $($tail),*)),
+            (4, false) => dispatch!(@$out u32, ReprOf<$s>, $u32($(copy::<ReprOf<$s>, u32>($op),)* $($tail),*)),
+            (8, true) => dispatch!(@$out i64, ReprOf<$s>, $s64($(copy::<ReprOf<$s>, i64>($op),)* $($tail),*)),
+            (8, false) => dispatch!(@$out u64, ReprOf<$s>, $u64($(copy::<ReprOf<$s>, u64>($op),)* $($tail),*)),
             _ => unreachable!(),
         }
     };
@@ -73,12 +81,12 @@ macro_rules! dispatch {
     };
 }
 
-impl<S: Sole> Num<S> {
+impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// The value at a member's slot index. The index is a member's.
     const fn at_index(index: i128) -> Self {
         let () = S::ADMITTED;
-        Self(dispatch!(
-            ReprOf<S>,
+        Self::from_carrier(dispatch!(
+            S,
             carrier,
             [
                 rung::from_s8,
@@ -111,17 +119,17 @@ impl<S: Sole> Num<S> {
 
     /// An exact position put onto the format by the signature's own adaptation.
     ///
-    /// Total. Under `Wrap` or `Saturate` in a debug build a position whose
-    /// rounded slot leaves the range asserts; under `Wrapping` or `Saturating`
-    /// it is completed and nothing asserts.
+    /// Total: a position whose rounded slot leaves the range is completed by the
+    /// declared overflow policy. Under the `Abort` check a debug build aborts on
+    /// that instead; under `Quiet` no build does.
     #[must_use]
     pub const fn adapted(exact: Exact) -> Self {
-        if cfg!(debug_assertions) && const { S::ASSERTS.get() } {
+        if cfg!(debug_assertions) && const { C::ABORTS.get() } {
             assert!(
                 !panic_on_overflow::<S>(exact, Dither::UNUSED).get(),
-                "the position leaves the signature's range, and the plain overflow marker asserts on \
-                 that in a debug build. Spell the policy `Wrapping` or `Saturating` where the \
-                 completion is what you mean"
+                "the position leaves the signature's range, and the `Abort` check aborts on that in a \
+                 debug build. Name the `Quiet` check where the completion the overflow policy gives \
+                 is what you mean"
             );
         }
         Self::at_index(adapt::<S>(exact, Dither::UNUSED).index())
@@ -131,7 +139,7 @@ impl<S: Sole> Num<S> {
     #[must_use]
     pub const fn slot(self) -> Slot {
         Slot::at(dispatch!(
-            ReprOf<S>,
+            S,
             plain,
             [
                 rung::index_s8,
@@ -152,7 +160,7 @@ impl<S: Sole> Num<S> {
     /// every carrier bit pattern is a member.
     pub(crate) const fn from_carrier(carrier: ReprOf<S>) -> Self {
         let () = S::ADMITTED;
-        Self(carrier)
+        Self(carrier, PhantomData)
     }
 
     /// The carrier. The host doors read it.
@@ -163,21 +171,21 @@ impl<S: Sole> Num<S> {
     /// The sum under the signature: the slot `arvo_format::add` gives for the
     /// two slots.
     ///
-    /// Total. Under `Wrap` or `Saturate` in a debug build a sum that leaves the
-    /// range asserts, asking `fits_add`; under `Wrapping` or `Saturating` it is
-    /// completed and nothing asserts.
+    /// Total: a sum that leaves the range is completed by the declared overflow
+    /// policy. Under the `Abort` check a debug build aborts on that instead,
+    /// which `fits_add` asks ahead; under `Quiet` no build does.
     #[must_use]
     pub const fn add(self, rhs: Self) -> Self {
-        if cfg!(debug_assertions) && const { S::ASSERTS.get() } {
+        if cfg!(debug_assertions) && const { C::ABORTS.get() } {
             assert!(
                 self.fits_add(rhs).get(),
-                "the sum leaves the signature's range, and the plain overflow marker asserts on that \
-                 in a debug build. Spell the policy `Wrapping` or `Saturating` where the completion \
-                 is what you mean"
+                "the sum leaves the signature's range, and the `Abort` check aborts on that in a debug \
+                 build. Name the `Quiet` check where the completion the overflow policy gives is what \
+                 you mean"
             );
         }
-        Self(dispatch!(
-            ReprOf<S>,
+        Self::from_carrier(dispatch!(
+            S,
             carrier,
             [
                 rung::add_s8,
@@ -205,7 +213,7 @@ impl<S: Sole> Num<S> {
     #[must_use]
     pub const fn cmp(self, rhs: Self) -> Ordering {
         dispatch!(
-            ReprOf<S>,
+            S,
             plain,
             [
                 rung::cmp_s8,
@@ -265,33 +273,33 @@ impl<S: Sole> Num<S> {
     }
 }
 
-// Written by hand so that `S` itself is not bounded. Equality reads the carrier,
-// which is canonical; `Hash` and `Debug` read the slot, so neither depends on
-// which carrier the placement derived.
+// Written by hand so that neither `S` nor `C` is bounded beyond what the value
+// needs. Equality reads the carrier, which is canonical; `Hash` and `Debug` read
+// the slot, so neither depends on which carrier the placement derived.
 
-impl<S: Sole> Clone for Num<S> {
+impl<S: Sole, C: DebugCheck> Clone for Num<S, C> {
     fn clone(&self) -> Self {
         *self
     }
 }
 
-impl<S: Sole> Copy for Num<S> {}
+impl<S: Sole, C: DebugCheck> Copy for Num<S, C> {}
 
-impl<S: Sole> PartialEq for Num<S> {
+impl<S: Sole, C: DebugCheck> PartialEq for Num<S, C> {
     fn eq(&self, other: &Self) -> bool {
         self.0 == other.0
     }
 }
 
-impl<S: Sole> Eq for Num<S> {}
+impl<S: Sole, C: DebugCheck> Eq for Num<S, C> {}
 
-impl<S: Sole> Hash for Num<S> {
+impl<S: Sole, C: DebugCheck> Hash for Num<S, C> {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.slot().index().hash(state);
     }
 }
 
-impl<S: Sole> fmt::Debug for Num<S> {
+impl<S: Sole, C: DebugCheck> fmt::Debug for Num<S, C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_tuple("Num").field(&self.slot()).finish()
     }

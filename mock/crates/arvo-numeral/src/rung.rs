@@ -6,12 +6,12 @@
 //! The arithmetic in one ladder carrier, written once and expanded per rung.
 //!
 //! Every function takes its rung from its name and the declared width from an
-//! argument, independently: the map picks the narrowest rung for a value, and
+//! argument, independently: the placement picks the narrowest rung for a value, and
 //! the tests compute a narrow width in every rung. A value passed in is a member
 //! of the width's range, held in the rung's integer.
 //!
 //! Total over members: no assertion and no panic. `Policy::Clamp` is never
-//! passed, since `ValuePolicy` refuses it on a signature.
+//! passed, since `Sole::ADMITTED` refuses it on a signature.
 
 use core::cmp::Ordering;
 

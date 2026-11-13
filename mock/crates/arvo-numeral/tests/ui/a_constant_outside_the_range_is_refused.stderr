@@ -1,7 +1,7 @@
 warning: unused import: `Int`
- --> tests/ui/a_constant_outside_the_range_is_refused.rs:4:20
+ --> tests/ui/a_constant_outside_the_range_is_refused.rs:5:20
   |
-4 | use arvo_numeral::{Int, Uint, Wrapping};
+5 | use arvo_numeral::{Int, Uint};
   |                    ^^^
   |
   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
@@ -10,7 +10,7 @@ error[E0080]: evaluation panicked: `constant::<V>()` names a slot index outside 
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
-  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_numeral::Num::<arvo_format::Signature<arvo_format::points::UFixed<4, 0>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>::constant::<16>::{constant#0}` failed here
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_numeral::Num::<arvo_format::Signature<arvo_format::points::UFixed<4, 0>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::constant::<16>::{constant#0}` failed here
   |
  ::: src/num.rs
   |
@@ -33,8 +33,8 @@ note: erroneous constant encountered
   | |         }
   | |_________^
 
-note: the above error was encountered while instantiating `fn Num::<Signature<UFixed<4, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>::constant::<16>`
- --> tests/ui/a_constant_outside_the_range_is_refused.rs:7:13
+note: the above error was encountered while instantiating `fn Num::<Signature<UFixed<4, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::constant::<16>`
+ --> tests/ui/a_constant_outside_the_range_is_refused.rs:8:13
   |
-7 |     let _ = Uint::<4, Adapt<TowardZero, Wrapping>>::constant::<16>();
-  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+8 |     let _ = Uint::<4, Adapt<TowardZero, Wrap>>::constant::<16>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

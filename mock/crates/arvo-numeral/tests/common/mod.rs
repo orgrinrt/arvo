@@ -19,7 +19,7 @@ use arvo_format::{
     panic_on_overflow,
     sum_position,
 };
-use arvo_numeral::{Additive, Identity, Num, Sole};
+use arvo_numeral::{Additive, Identity, Num, Quiet, Sole};
 
 /// The seed the band of widths 9 to 64 draws its pairs from. Committed so a
 /// failure reproduces.
@@ -39,8 +39,8 @@ pub fn range<S: Sole>() -> (i128, i128) {
 }
 
 /// The value at a member's slot index, through the ingest door.
-pub fn value<S: Sole>(index: i128) -> Num<S> {
-    Num::<S>::adapted(Exact::on_grid(Slot::at(index)))
+pub fn value<S: Sole>(index: i128) -> Num<S, Quiet> {
+    Num::<S, Quiet>::adapted(Exact::on_grid(Slot::at(index)))
 }
 
 /// Disagreements found over a band. `add` is counted, so that a failure says
@@ -72,7 +72,7 @@ pub fn check_value<S: Sole>(a: i128) {
         "the slot door does not return the member"
     );
     assert_eq!(
-        Num::<S>::adapted(Exact::on_grid(v.slot())),
+        Num::<S, Quiet>::adapted(Exact::on_grid(v.slot())),
         v,
         "the slot door and `adapted` do not round-trip the member"
     );
@@ -114,7 +114,7 @@ pub fn check_pair<S: Sole>(a: i128, b: i128, tally: &mut Tally) {
 
 /// The identity is slot zero, and adding it moves nothing.
 pub fn check_identity<S: Sole>(a: i128) {
-    let zero = <Num<S> as Identity<Additive>>::IDENTITY;
+    let zero = <Num<S, Quiet> as Identity<Additive>>::IDENTITY;
     assert_eq!(
         zero.slot().index(),
         0,
@@ -247,15 +247,15 @@ macro_rules! every_mode {
     }};
 }
 
-/// One width over both families, both completing markers and every mode.
+/// One width over both families, both overflow policies and every mode.
 #[macro_export]
 macro_rules! every_signature_at {
     ($w:literal, $body:ident, $tally:expr) => {{
         use arvo_format::points::{Integer, UFixed};
-        use arvo_numeral::{Saturating, Wrapping};
-        $crate::every_mode!(Integer<$w>, Wrapping, $body, $tally);
-        $crate::every_mode!(Integer<$w>, Saturating, $body, $tally);
-        $crate::every_mode!(UFixed<$w, 0>, Wrapping, $body, $tally);
-        $crate::every_mode!(UFixed<$w, 0>, Saturating, $body, $tally);
+        use arvo_format::overflow::{Saturate, Wrap};
+        $crate::every_mode!(Integer<$w>, Wrap, $body, $tally);
+        $crate::every_mode!(Integer<$w>, Saturate, $body, $tally);
+        $crate::every_mode!(UFixed<$w, 0>, Wrap, $body, $tally);
+        $crate::every_mode!(UFixed<$w, 0>, Saturate, $body, $tally);
     }};
 }

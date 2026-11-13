@@ -1,23 +1,23 @@
 warning: unused import: `Uint`
- --> tests/ui/a_sum_across_two_signatures_is_refused.rs:4:25
+ --> tests/ui/a_sum_across_two_signatures_is_refused.rs:5:25
   |
-4 | use arvo_numeral::{Int, Uint, Wrapping};
+5 | use arvo_numeral::{Int, Uint};
   |                         ^^^^
   |
   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
 
 error[E0308]: mismatched types
- --> tests/ui/a_sum_across_two_signatures_is_refused.rs:9:19
-  |
-9 |     let _ = a.add(b);
-  |               --- ^ expected `8`, found `9`
-  |               |
-  |               arguments to this method are incorrect
-  |
-  = note: expected struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>`
-             found struct `Num<Signature<Integer<9>, Adapt<arvo_format::rounding::TowardZero, arvo_numeral::Wrapping>>>`
+  --> tests/ui/a_sum_across_two_signatures_is_refused.rs:10:19
+   |
+10 |     let _ = a.add(b);
+   |               --- ^ expected `8`, found `9`
+   |               |
+   |               arguments to this method are incorrect
+   |
+   = note: expected struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`
+              found struct `Num<Signature<Integer<9>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`
 note: method defined here
- --> src/num.rs
-  |
-  |     pub const fn add(self, rhs: Self) -> Self {
-  |                  ^^^
+  --> src/num.rs
+   |
+   |     pub const fn add(self, rhs: Self) -> Self {
+   |                  ^^^

@@ -1,0 +1,51 @@
+error[E0080]: evaluation panicked: a value is held only for a slot range that is the whole signed or unsigned range of its width, which is what the carrier arithmetic reduces onto. This range is a part of one, or offset; compute on it with `arvo_format::add` on slots instead
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_format::Signature<OverMine, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>> as arvo_numeral::Sole>::ADMITTED` failed here
+  |
+ ::: src/admit.rs
+  |
+  | /         assert!(
+  | |             whole_range::<SlotsOf<S>>(),
+  | |             "a value is held only for a slot range that is the whole signed or unsigned range of its \
+  | |              width, which is what the carrier arithmetic reduces onto. This range is a part of one, \
+  | |              or offset; compute on it with `arvo_format::add` on slots instead"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |             let () = S::ADMITTED;
+  |                      ^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  | /         const {
+  | |             let () = S::ADMITTED;
+  | |             assert!(
+  | |                 slot_in_range::<SlotsOf<S>>(Slot::at(V)).get(),
+... |
+  | |             );
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn Num::<Signature<OverMine, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::constant::<0>`
+  --> tests/ui/an_outside_slot_family_over_part_of_a_range_is_refused.rs:35:13
+   |
+35 |     let _ = Num::<Signature<OverMine, Adapt<TowardZero, Wrap>>>::constant::<0>();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  |         let () = S::ADMITTED;
+  |                  ^^^^^^^^^^^
