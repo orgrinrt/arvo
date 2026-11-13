@@ -1027,9 +1027,12 @@ are members at a pointer width of 32 or more, and at 16 the second is not. That 
 16-bit targets, stated so nobody reads the obligation as met there.
 
 What this delivers is the format and not a value. The obligation asks for a number usable in a public
-error type, and a format is a declared signature that holds none. No crate here holds a value of any
-format yet, and what one datum of a numeral stands for is an open question, so the value half is not
-built here and is not answered by this section.
+error type, and a format is a declared signature that holds none. The value half is
+{{ crates::arvo-numeral }}, which holds one member of a format's representable set at sole occupancy.
+A format's datum is one point of its ambient domain,
+`ruling::a_format_datum_is_one_point_and_a_saturating_end_is_one_point`, and what a composition's
+datum stands for, what a value stores and how many value types there are stay open, so this section
+answers none of them.
 
 No capacity type is built here. The platform-width ruling puts one outside its own scope, and the
 question it answers says a capacity is the const generic position the primitive obligation excepts.
