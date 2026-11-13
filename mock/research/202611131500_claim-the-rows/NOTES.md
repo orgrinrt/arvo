@@ -44,7 +44,9 @@ The intent in it is three things. What the written history shows to be his is
 filled as ratified by default, with nothing more asked of him. What is clearly
 not backed by him, or is against the canon, is brought to him. Everything else
 stands provisionally. The choice of sonnet agents and of how many is the
-vehicle he named for the reading and is kept for provenance.
+vehicle he named for the reading and is kept for provenance. What a
+provisional stamp is he had said on 2 November 2026, and `PROVISIONAL.md`
+quotes it: it approves the work that depends on it and is never a final say.
 
 The words are carried into the registry as
 `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default`, a
@@ -107,9 +109,10 @@ under the ruling named above and was not put to him for ratification, and then
 says what was put to him when he spoke, with the options, and quotes his
 answer.
 
-Forty-four of the fifty-two were not raised. Thirty-three fail one part of the
-test on the first reading, eight are rows the two readings did not agree on,
-and three are the rows the review moved. All of them are named with their
+Forty-four of the fifty-two were not raised. Thirty fail one part of the test
+on the first reading and three were left then for a reason outside it, eight
+are rows the two readings did not agree on, and three are the rows the review
+moved. All of them are named with their
 reasons in `PROVISIONAL.md`, and one, which he was asked to ratify once and
 declined for want of an explanation, is in `FOR-HIM.md`.
 
@@ -122,6 +125,5 @@ his in one sentence, so all six stand provisionally and still want the two
 independent reads the plan gave them.
 
 `FOR-HIM.md` holds six rulings and fifteen proposals, the proposals under
-twelve headings since four of them turn on one question, and after them the
-question of how the provisional stamp is to be carried. `PROVISIONAL.md` holds
-the rest.
+twelve headings since four of them turn on one question. `PROVISIONAL.md`
+holds the rest, on provisional stamps.

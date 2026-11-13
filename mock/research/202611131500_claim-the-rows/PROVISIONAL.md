@@ -1,13 +1,19 @@
 # The rows that stand provisionally
 
-Everything the reading did not raise is named here. The registry has no value
-that says provisional, so nothing was written onto these rows and each one is
-exactly as it was: a ruling at `stated` is still his direction and binds as
-that, and a proposal still binds nothing. Being named here gives a row no
-standing it did not have. What the list records is that the row was read
-against the written history and was not found to be his in whole, standing and
-unhedged. How the provisional stamp he spoke of is to be carried is a question
-for him and is the last entry of `FOR-HIM.md`.
+Everything the reading did not raise is named here, and by his words of 13
+November these rows are on provisional stamps to begin with. What a stamp of
+that kind is he said on 2 November 2026, in the capture
+`202611022057_overnight-autonomy-and-the-provisional-stamp.md` in the
+workspace's store of his responses: it is "never a final say, just a temporary
+one pending my approval, but still approves the work depending on it". So work
+that leans on a row named here may go on, and what it leans on is a row he has
+not ratified and may still overturn. A stamp otherwise owes him a question of
+its own, and his words of 13 November put the rest on stamps as a body and
+decline to be asked row by row.
+
+The registry has no value that says provisional, so nothing was written onto
+these rows. A ruling at `stated` keeps that `rung` and a proposal keeps its
+standing, and this list is where the stamp is recorded.
 
 Some rows named here also have one sentence or clause the record is against.
 That part is in `FOR-HIM.md`, and the row is provisional apart from it.
@@ -28,9 +34,11 @@ carry no hedge of his own, that the row states what he said and not a general
 rule drawn from one answer, that it is something that keeps holding of arvo or
 of what binds and not an instruction to the panel for its run or for one
 stretch of it, that neither the row nor the file around the passage marks his
-words as an ack, and that no later row of his corrects it. Thirty-three rows
-fail one of the five on the first reading and are under the headings that name
-the five, with the row he declined to bless after them. Eight passed the first
+words as an ack, and that no later row of his corrects it. Thirty rows fail
+one of the five on the first reading and are under the headings that name the parts. Three more were left on the first
+reading for a reason outside the five, and each is under a heading or in a
+paragraph of its own: he sent the ratification of one elsewhere, one already
+binds at another tier, and one he declined to bless as it was put. Eight passed the first
 reading and not the second, and are under the heading on the two readings.
 Three passed both readings and were found by a review of the fill to fail a
 part all the same, and each is under the heading for that part, where it says
@@ -151,7 +159,8 @@ appear in `FOR-HIM.md` beside the rows that make his ratification the finish
 line.
 
 `ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` is the
-thirty-third. He was asked to ratify it and declined as it was put, for want of
+last of the three left for a reason outside the five. He was asked to ratify
+it and declined as it was put, for want of
 an explanation, which `ruling::he_declined_to_bless_the_ingest_row_as_written`
 records. A default from the written history does not override a refusal the
 same history holds, so it is not raised, and it is in `FOR-HIM.md` with the

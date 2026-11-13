@@ -25,10 +25,13 @@ him, or until he clears the goal himself. The words are his, from the addendum
 he put on the overnight goal of the strategy-axis unit in August.
 
 It runs into `ruling::the_panel_finishes_the_canon_without_him`, which is
-ratified and says nothing is parked awaiting him, and into
+ratified and has the remaining canon questions derived from what he has said
+and gated by the coordinator, and into
 `ruling::two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate`,
-under which promotion does not wait on him. This row makes his ratification the
-finish line and those two take it away.
+under which promotion does not wait on him. What his words of 13 November
+bring back to him is a row he does not back or that is against the canon, and
+not the finished canon as a whole. This row makes his ratification the finish
+line and those two take it away.
 
 Two more rows carry the same expectation and are settled by the same answer.
 `ruling::the_canon_is_settled_in_full_then_he_reviews_it` has him review the
@@ -37,8 +40,8 @@ canon once it is settled in full, and
 has to be before it goes to him for review. Both are his words, and both are
 left at `stated`.
 
-1. The finished canon still gets his read and his stamp as a receipt, and the
-   ratified row is amended to say so.
+1. The finished canon still gets his read and his stamp as a receipt, and a
+   new row corrects the ratified one to say so.
 2. The row is reworded so the finish line is the canon promoted by expert
    convergence and gated by the coordinator, and his stamp is not part of it.
 3. The row is demoted to a record of that one overnight goal, which has
@@ -68,14 +71,18 @@ The first sentence, that the work is autonomous because it is already steered
 and commented on at length, is his and nothing is against it. The second says
 questions for him are collected into a batch, kept catalogued in full until he
 is present, and worked around in the meantime. Those are his words too, and
-they stand against the ratified sentence that nothing is parked awaiting him.
+they stand against `ruling::the_panel_finishes_the_canon_without_him`, under
+which a question filed as his is derived from what he has already said and is
+not kept for him. His words of 13 November bring him the rows he does not back
+or that are against the canon, which is narrower than every question.
 
 1. The second sentence is narrowed to questions of intent, direction and broad
    strokes, which the ratified rows still leave his.
 2. The second sentence is dropped as belonging to the August goal, and the
    first is kept.
-3. Both are kept and the ratified row is amended, on the strength of what he
-   said on 12 November about bringing him the questions to settle at the end.
+3. Both are kept and a new row corrects the ratified one, on the strength of
+   what he said on 12 November about bringing him the questions to settle at
+   the end.
 
 ### `ruling::the_canon_is_written_once_at_the_end`, its last clause
 
@@ -329,17 +336,3 @@ correct it without him.
 
 1. The clause is struck and the observation about the three topics stays.
 2. The clause is restated as the coordinator's call under his criterion.
-
-## How the provisional stamp is carried
-
-This is not a row. He said the rest can be on provisional stamps to begin
-with, and the registry has no value that says provisional, so the rows left
-standing have nothing written on them and are named in `PROVISIONAL.md`. A
-list in a research file is not something the registry's own tools can see, and
-it gives a row no standing it did not have.
-
-1. The schema gains a value for it, and each row left standing carries it.
-2. Each row left standing gets a question ticket of its own, as the workspace
-   rule on a provisional stamp has it.
-3. The list stays as the only mark, and the rows bind as they did before the
-   reading.
