@@ -394,7 +394,7 @@ keywords = ["coherence", "homomorphism", "adaptation laws", "law roles", "induce
 
 [[law]]
 id = "coherence_of_unsigned_saturating_addition_holds_where_the_ambient_domain_is_non_negative"
-statement = "The unsigned saturating reduction is coherent for addition, so reducing the operands before adding and reducing once after agree, exactly where the exact values reaching it are non-negative: there only its upper clamp can trigger, and a one-sided clamp is a congruence for addition. Once negative values reach it the lower clamp becomes reachable and coherence fails."
+statement = "The unsigned saturating reduction is coherent for addition, so reducing the operands before adding and reducing once after agree, where the exact values reaching it are non-negative: there only its upper clamp can trigger, and a one-sided clamp is a congruence for addition. Where values of both signs reach it both clamps are reachable and coherence fails. On values that are all non-positive the clamp sends every one to zero and coherence holds trivially; that domain was not run."
 holds = [
   "total_width: W = 4",
   "fraction_width: F = 0",
