@@ -265,6 +265,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.a-ratified-ruling-names-its-ratifier]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-term-is-defined-twice]
 commit = "error"
 build = "error"

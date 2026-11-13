@@ -1,0 +1,37 @@
+# paths, occurrences
+427	arvo::
+72	arvo_tensor::
+24	arvo_bitmask::
+13	arvo_bits::
+5	arvo_hash::
+5	arvo_graph::
+4	arvo_sparse::
+2	arvo_spectral::
+0	arvo_comb::
+2	arvo_refit::
+0	arvo_storage::
+0	arvo_strategy::
+# use lines naming a contract, by the path they import from
+14	BitAccess from arvo_bitmask
+6	BitLogic from arvo_bitmask
+3	BitSequence from arvo_bitmask
+3	FromConstant from arvo::traits
+55	Additive from arvo::strategy
+9	Additive from arvo
+56	Identity from arvo::strategy
+9	Identity from arvo
+# names, whole-word occurrences
+2365	USize
+335	Bool
+563	Capacity
+343	Additive
+87	Hot
+96	Bits
+474	Dim
+352	Identity
+54	BitAccess
+75	ConstCapacity
+38	Cap
+7	BitLogic
+4	BitSequence
+11	FromConstant

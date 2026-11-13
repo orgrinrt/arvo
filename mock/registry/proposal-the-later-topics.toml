@@ -221,10 +221,9 @@ marks it `Definitional; no predicate`.
 
 What follows from the character is a family of claims about which licence is \
 available where, and none of those is in this file: every one of them is stated \
-over an ambient domain and its closure under negation, and no `dimension` row \
-declares such an axis.
+over an ambient domain and its closure under negation, and no `dimension` row declared such an axis when this row was written. `dimension::ambient_domain` declares it, and the licence claims are not written in this row.
 """
-gap = "The whole of what this character licenses is unported. The topic's ten remaining clauses all carry regions naming axes the registry does not declare."
+gap = "The whole of what this character licenses is unported. The topic's ten remaining clauses all carry regions naming axes the registry does not declare. That count was taken before `dimension::ambient_domain` was declared, and the ten are not recounted here against the axes declared after it."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::379",
   "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::347",
@@ -249,7 +248,7 @@ range axis: no deterministic quantisation is additive off the grid, on either \
 domain shape, and every deterministic member is order-preserving, so the property \
 pair that classifies the range policy degenerates here in both directions at \
 once. That claim is not in this file, because its region is stated over the \
-ambient domain and nothing declares that axis.
+ambient domain and nothing declared that axis when this row was written. `dimension::ambient_domain` declares it, and the obstruction result is not a row.
 """
 gap = "The obstruction result this definition exists to carry cannot be written as a row. Its region names the ambient domain, and its two halves are claimed and proved separately over the two domain shapes."
 provenance = ["panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::292"]
@@ -279,6 +278,15 @@ wherever that mechanism does the work they are one instance wearing two hats.
 
 `normative` because the pair is a definition, and the mechanical test is a \
 criterion rather than a measurement.
+
+Read with `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`, \
+which stands at the same standing on the strategy axis and puts the overflow \
+rule elsewhere: there it is an effect of the preference, and here it is an \
+assignment on an observable policy axis, a declared component that fixes the \
+answer. Neither row supersedes the other. \
+`probe::the_rationalisable_sections_on_the_committed_carrier_table` counts the \
+gap between a named section and an argmin under a weighting on the committed \
+table.
 """
 gap = """
 The closure asymmetry carries a region naming an assignment set, which no \

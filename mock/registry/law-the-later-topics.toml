@@ -70,7 +70,7 @@ gap = """
 No witness. The failing region is established as a rate over exhaustive triples \
 rather than by a named instance, so nothing here is reproducible from the row \
 alone. The three instruments are `147_probes`, `149_probes/y2` and \
-`151_probes/v1`; no `probe` row exists to point `evidence` at.
+`151_probes/v1`; `probe::fusion_under_unsigned_over_six_rounding_modes`, `probe::equivariance_is_domain_restricted` and `probe::the_false_unsigned_fusion_clause_and_its_repair` name them, one each, and this row carries no `evidence` edge to any of the three.
 
 The formulation is one expert's. `151` names its own exposure: the restricted \
 equivariance test was decided over a window its author chose, and a clean sweep \
@@ -184,9 +184,7 @@ No witness. The failing cell is established by a count of differing triples \
 rather than by a named instance.
 
 The clause that states the three tables as one question carries a predicate \
-naming an accumulator width and an operation set that no `dimension` row \
-declares, so that clause is not written into the canon at all and this row \
-carries only the cell it measured.
+naming an accumulator width and an operation set that no `dimension` row declared when this row was written, so that clause is not written into the canon at all and this row carries only the cell it measured. `dimension::accumulator_width` and `dimension::operation` declare both axes, and the clause is not written in this row.
 """
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::434",
@@ -219,11 +217,10 @@ was deleted, because unmeasured goes unstated rather than hedged.
 """
 gap = """
 **The holding region cannot be written.** The commutation predicate is stated \
-over an ambient domain closed under negation, and no `dimension` row declares \
-an axis for the ambient domain, so the region where this law holds has no \
-expressible form in the canon's own notation. That is the single largest gap \
+over an ambient domain closed under negation, and no `dimension` row declared an axis for the ambient domain when this row was written, so the region where this law holds had no expressible form in the canon's own notation. That is the single largest gap \
 this port hit: the ambient domain appears in 26 of the 60 predicate spans that \
-could not be ported, and is the sole blocker of 4 of them.
+could not be ported, and is the sole blocker of 4 of them. \
+`dimension::ambient_domain` declares that axis, and the region is not written in this row.
 
 No witness. The source establishes the failure by existence, one witness, and \
 records that its rate does not carry; the instance itself is not quoted in the \
