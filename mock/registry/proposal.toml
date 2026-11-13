@@ -1521,14 +1521,11 @@ keywords = ["admission", "exposure test", "self-collapsed", "ambient domain", "r
 # at it reads as unsettled, and for these it was not: the answer existed and the
 # link did not.
 #
-# Every one of them ran an instrument, and for two of the three that instrument
-# has no `probe` row, so what is written is the part of the claim its own route
-# establishes rather than the part its sweep confirms. Where that shortens a
-# sentence the `gap` says which half was left out and what blocks it.
-#
-# Each of the three instruments has a `probe` row, and each row's `note`
-# below names it. The `evidence` edges and the wider sentences they would allow
-# are not drawn here, because a seat that draws one is restating the claim.
+# Every one of them ran an instrument, and each instrument has a `probe` row.
+# What each row's own route establishes is written in it; where its sweep adds
+# a measured claim the route does not give, that claim is a `measured` row of
+# its own beside it, carrying the `evidence` edge, and the first row's `note`
+# names it.
 
 [[proposal]]
 id = "a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains"
@@ -1550,14 +1547,16 @@ predicate = [
   "target_features: target features any",
 ]
 answers = ["which_route_a_law_verdict_takes_to_closed_form", "how_the_law_inventory_is_named"]
+evidence = ["one_congruence_property_predicts_every_law_verdict"]
 note = """
 **The mark is `theorem` and the reason is the order the source did it in.** The \
 criterion is derived from the quotient construction and the instrument states it \
 before running, so the sweep is a control on a prediction rather than the thing \
-that established it. The sweep is real and is not this row's evidence: 552 cells \
-over twenty-three configurations, zero soundness mismatches and zero \
-conservative mismatches, both directions counted separately on purpose. Its \
-instrument is `97_probes/p2_congruence_predicts_the_laws.py`, committed. `probe::one_congruence_property_predicts_every_law_verdict` names that instrument, this row carries no `evidence` edge to it, and the figure stays in this note rather than in a `measured` sentence.
+that established it, and the `evidence` edge names it as that control. What the \
+sweep measures beyond the proof, that the criterion is also necessary over the \
+cells it ran, is \
+`proposal::the_congruence_criterion_decides_every_swept_law_verdict_in_both_directions`, \
+a `measured` row carrying the figure.
 
 **The region is the source's own, minus what is not an axis.** The laws the \
 probe enumerated and the exhaustiveness of the value sweep are instrument \
@@ -1579,12 +1578,63 @@ general form over every identity. The two were reached in separately dispatched 
 topics and neither cites the other. Somebody who has read both should say \
 whether that is a convergence; this row does not claim the rung.
 """
-gap = "Only the sufficient direction is proved. That the criterion is also necessary, so a law failing it fails in the representable set, is measured at zero conservative mismatches over the 552 cells and is not derived. A design licensing a rewrite needs only the direction proved here; a design refusing one needs the other."
+gap = "Only the sufficient direction is proved. That the criterion is also necessary, so a law failing it fails in the representable set, is measured rather than derived, and stands in `proposal::the_congruence_criterion_decides_every_swept_law_verdict_in_both_directions` over that row's narrower region. A design licensing a rewrite needs only the direction proved here; a design refusing one needs the other."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::97_dolan_the_strategy_space_attacked::705",
   "panel::202608072330_the-numeral-canon-panel::97_dolan_the_strategy_space_attacked::786",
 ]
 keywords = ["congruence", "quotient", "retraction table", "identity", "law verdict", "inherited", "finite table", "infinite family", "structural argument", "F-F", "closed form"]
+
+[[proposal]]
+id = "the_congruence_criterion_decides_every_swept_law_verdict_in_both_directions"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "Over every cell swept, the congruence criterion predicts the measured law verdict in both directions: no law it predicts to hold fails, and no law it predicts to fail holds. So in that region the criterion is necessary as well as sufficient, which the quotient argument alone does not give. The sweep is 552 cells, eight laws at twenty-three configurations at each of three widths, exhaustive over every pair and triple; 480 of them range over the full operand set, which is the region below, and 72 over a declared non-negative window at signed saturating, which agree as well."
+because = "The two mismatch directions are counted apart, so a predictor saying yes everywhere would show as conservative mismatches rather than as a clean sheet, and the prediction rule is written in the instrument's header before the run. Subtraction's associativity and commutativity are in the battery as laws the criterion must predict to fail, because they are not identities of exact arithmetic, and they do."
+predicate = [
+  "total_width: W in {4, 5, 6}",
+  "fraction_width: F in {0, 1, 2}",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "rounding: rounding in {toward_zero, nearest with ties away from zero}",
+  "operand_window: operand window = full range",
+  "operation: operations {add, sub, mul}",
+  "arity: arity in {2, 3}",
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+evidence = ["one_congruence_property_predicts_every_law_verdict"]
+note = """
+The measured half of `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`, \
+which proves the sufficient direction and carried this figure in its note. The \
+figure is read off the instrument's output: 184 cells at each width, zero \
+soundness and zero conservative mismatches at each.
+
+The rounding modes are named from the instrument rather than from its labels. \
+It calls them `truncate` and `nearest`; its code rounds `truncate` toward zero at \
+both signs and breaks a `nearest` tie away from zero. The second is not among the \
+ratified six, which reach it only as an alias, and it coincides with `half_up` on \
+the unsigned cells. At `F = 0` only `truncate` was run, and there no bit is \
+discarded, so the two modes cannot differ.
+
+The operand window is the full range because the declared-window cells were \
+run at signed saturating alone; the instrument refuses a declared window under \
+wrapping. Those cells agree too and are outside the rectangle.
+
+The target-features entry carries no warrant token. The model is exact integer \
+arithmetic, which is an argument that no feature can enter, but `construction` \
+obliges an instrument that varied the axis and this one did not, so under \
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` the entry \
+claims the region with no warrant.
+"""
+gap = "Necessity is measured over these cells and not derived, so outside them the criterion is known sufficient and not known necessary."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::97_dolan_the_strategy_space_attacked::705",
+  "panel::202608072330_the-numeral-canon-panel::97_probes::p2_congruence_predicts_the_laws.out::306",
+]
+keywords = ["congruence", "criterion", "necessary", "sufficient", "law verdict", "soundness mismatch", "conservative mismatch", "552", "quotient", "subtraction control"]
 
 [[proposal]]
 id = "staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even"
@@ -1605,13 +1655,11 @@ predicate = [
 evidence = ["staged_narrowing_depends_on_its_staging"]
 answers = ["does_narrowing_compose"]
 note = """
-**The general rule behind it is in the corpus and cannot be written here.** The \
-adjunction file establishes the characterisation directly: a mode composes \
-across nested grids exactly when its direction switches only at points of the \
-coarser grid, tested by building a family of away-from-pivot modes and moving \
-the pivot on and off the coarse grid, at zero failures on-grid and seven \
-off-grid. That is the sentence a canon would carry. Its instrument is \
-`07_probes/p4_composition_and_forced_adjoint.py`, committed with its output. `probe::narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points` names that instrument, the general form is not a row, and what is written here is the one instance.
+The general rule behind it is its own row, \
+`proposal::narrowing_composes_exactly_where_the_modes_direction_switches_only_at_coarser_grid_points`: \
+a mode composes across nested grids exactly when its direction switches only at \
+points of the coarser grid, measured by moving a pivot on and off the coarse \
+grid. What is written here is the one instance, at the width its own probe ran.
 
 **Three witnesses, which is what the standing rests on**, and they are the cited \
 probe's own: this instrument, an earlier probe's P4 at 500 half-even mismatches \
@@ -1632,6 +1680,58 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::07_orchard_the_adjunction_frame::377",
 ]
 keywords = ["narrowing", "composition", "staged", "round to nearest even", "half even", "directed rounding", "toward zero", "grid", "pivot", "coarser grid", "double rounding"]
+
+[[proposal]]
+id = "narrowing_composes_exactly_where_the_modes_direction_switches_only_at_coarser_grid_points"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "rounding"
+says = "Narrowing through an intermediate grid nested between the exact and the final one gives the same answer as narrowing once exactly when the mode's direction switches only at points of the coarser grid. The directed modes never switch, toward zero and away from zero switch only at zero, which is a point of every grid here, and all four compose; both nearest modes switch at midpoints of coarse cells and neither does. A mode rounding down above a pivot and up below it composes with the pivot at 0, 1 or 2, on the coarse grid, and fails at seven values with the pivot at 1/2, 1/4, 3/4 or 3/2, inside a coarse cell."
+because = "Being an adjoint to the embedding was predicted to be the condition and over-fired: toward zero composes over a signed window though it is no such adjoint. The refinement was then made decidable rather than argued, by a family of modes whose only difference is where the switch sits, so moving the switch on and off the coarse grid is the one thing that varies, and the verdict follows it at every pivot tried. Non-nested grid triples are run beside the nested ones and fail for every mode, so nestedness is doing work rather than decorating a result that holds anyway."
+predicate = [
+  "fraction_width: F = 5",
+  "signedness: signedness = signed",
+  "rounding: rounding in {floor, ceil, toward_zero, away from zero, half_even, nearest with ties away from zero, away from a pivot at 0, 1, 2, 1/2, 1/4, 3/4 or 3/2}",
+  "radix: radix = 2",
+  "ambient_domain: ambient domain = the rationals on the grid of step 1/32, over the windows -2..=2 and -2..=3",
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+evidence = ["narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points"]
+answers = ["does_narrowing_compose"]
+note = """
+This is the general form of `proposal::staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`, \
+which is one instance of it. That row carries the half-even counterexample at the \
+width its own probe ran; this one carries the characterisation it follows from.
+
+The region is where both directions were measured. The six named modes ran \
+at three nested staged narrowings, `F` from 4 through 2 to 0, from 5 through 3 \
+to 1 and from 6 through 4 to 2, over a non-negative window, and at the first two \
+again over `-2..=2`; the pivot family ran once, `F` from 5 through 2 to 0, over \
+`-2..=3`. `F = 5` over a window straddling zero is the cell holding both, and \
+the staging, which no axis declares, is in this note rather than the predicate. \
+The two windows are not a product with the modes: the named modes ran over \
+`-2..=2` and the pivot family over `-2..=3`. \
+On every nested triple the four modes that compose show zero and both nearest \
+modes show 8, 16 or 32 disagreements.
+
+`nearest with ties away from zero` is the instrument's own mode, outside the \
+ratified six, and the pivot family is constructed for the test and is not a mode \
+anybody ships.
+
+The target-features entry carries no warrant token. The instrument is exact \
+rational arithmetic, which is an argument that no feature can enter, but \
+`construction` obliges an instrument that varied the axis and this one did \
+not, so under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` \
+the entry claims the region with no warrant.
+"""
+gap = "No width is named. The instrument rounds over bounded windows of exact values and clamps at the window's ends rather than at a declared format's range, so the row states the window and, under the notation, claims nothing at a declared width until a run at one exists. The switch-point argument carries at any width and is not what this row rests on."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::07_orchard_the_adjunction_frame::362",
+  "panel::202608072330_the-numeral-canon-panel::07_probes::p4.out::59",
+]
+keywords = ["narrowing", "composition", "staged narrowing", "nested grids", "switch point", "pivot", "coarser grid", "directed rounding", "nearest", "double rounding", "adjunction"]
 
 [[proposal]]
 id = "an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover"
@@ -1670,7 +1770,7 @@ that collapse to one carrier, while the value-valued spelling, which is lossless
 as information, is refused six times in three syntactic positions, each naming \
 `generic_const_exprs`, which the panel forbids. That is a compiler measurement, \
 its instruments are `47_probes/p1`, `p1b`, `p2` and `p2b`, all committed with \
-their outputs and errors and five negative controls among the eleven. `probe::a_single_richer_output_suffices_only_as_a_type` names those instruments. Marking the measured half as an argument to get it written would be the dodge the evidence gate exists to catch, so it stays out of this row, and it is not a row of its own.
+their outputs and errors and five negative controls among the eleven. `probe::a_single_richer_output_suffices_only_as_a_type` names those instruments. Marking the measured half as an argument to get it written would be the dodge the evidence gate exists to catch, so it stays out of this row and is written as its own, `proposal::a_single_richer_output_suffices_only_where_it_is_a_type`, which carries the region the instruments ran over.
 
 **The register records a standing disagreement inside the same material** that \
 this does not touch: whether the strategy is an upstream selector the ladder \
@@ -1682,6 +1782,52 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::180",
 ]
 keywords = ["output", "derivation", "codomain", "packaging", "projection", "carrier", "stride", "injectivity", "observation surface", "recoverable", "kind boundary"]
+
+[[proposal]]
+id = "a_single_richer_output_suffices_only_where_it_is_a_type"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "This is about packaging, not about how many facts the derivation owes. `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule` settles that at shared occupancy it owes three, the carrier, the access width and the stride, and what is measured here is whether those three can travel as one richer output. They can exactly where that output is a type. Spelled as one associated type with the three facts as its projections, it compiles with no feature gate, and at the Cold strategy it gives the eight declarations at widths 9 to 16 that share the 16-bit carrier eight distinct outputs. Spelled as one associated constant, which is lossless as information, the carrier type cannot be recovered from it: the compiler refuses it six times, in a type alias with arithmetic, in a type alias with the constant used bare, and in a function's return type, each refusal naming `generic_const_exprs` as the feature that would allow it."
+because = "The packaging argument in `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover` settles that one output and two are one mechanism; what it leaves is which kind the output must be, and that is decided by what the compiler will build rather than by argument. The value spelling is refused generically, before any width or strategy is chosen, so the refusal is not a sample. The type spelling's separation is shown non-vacuous by a control asserting three false type equalities and seeing all three refused."
+predicate = [
+  "total_width: W in {5, 9, 10, 11, 12, 13, 14, 15, 16, 31, 47}",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "strategy: S in {Hot, Warm, Cold, Precise}",
+  "occupancy: occupancy = shared",
+  "container: container in {u8, u16, u32, u64}",
+  "toolchain: rustc = 1.98.0-nightly (57d06900f 2026-05-27), edition = 2021",
+  "build_profile: debug-assertions in {on, off}",
+  "threads: threads any",
+  "target_features: target features any",
+]
+evidence = ["a_single_richer_output_suffices_only_as_a_type"]
+note = """
+The two arms were built under different profiles. The compiling files are built \
+with `-O`, so debug assertions are off, and the refused files are type-checked \
+as a library at the compiler's default, where they are on; both arms are \
+decided by the type checker before code generation, which is why the profile, \
+the target and the thread count are written open, but no one profile ran both. \
+The target and thread entries carry no warrant token: that argument is the \
+only thing behind them and no instrument varied either axis.
+
+Occupancy is shared because the instrument's footprint column is a million \
+values in one allocation. At sole occupancy the axis's own declaration says one \
+output, the carrier, is what the derivation owes, and the type spelling carries \
+it too, but nothing here ran that case and the row does not claim it.
+
+The ten errors in the committed refusal are the six naming the feature and four \
+`E0091` unused-parameter errors that follow from them in the same items.
+"""
+gap = "The widths are the ones the instrument declared: the refusal is generic over every width and strategy, and the separation, eight distinct outputs at one carrier, is shown at the Cold strategy alone across these widths. Hot, Warm and Precise appear at width 13 only, where Cold and Warm are shown to derive different outputs; the generic impls compile at every width of the product, which is what the predicate's strategy set rests on. The instrument also asserts that a Hot and a Precise declaration at one width derive the same type; whether two strategies may share a derivation output is the question left in the gap of `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`, and this row does not settle it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::83",
+  "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::164",
+  "panel::202608072330_the-numeral-canon-panel::47_probes::p2_scalar_single_output_refused.err::1",
+]
+keywords = ["single output", "associated type", "associated const", "value spelling", "type spelling", "generic_const_exprs", "carrier", "refused", "derivation", "container"]
 
 # The three predicates that replace the retired criterion.
 #
@@ -2200,12 +2346,12 @@ predicate = [
   "rounding: rounding any, by construction, the predicate reads no rounding mode and no adaptation is applied",
   "overflow_policy: overflow policy any, by construction, same",
   "threads: threads any, by construction, the predicate is a const fn over associated items",
-  "target_features: target features any, by construction, same",
+  "target_features: target features any",
   "toolchain: rustc = 1.98.0-nightly (57d06900f), edition = 2024",
   "build_profile: opt level = 2, debug-assertions = off",
   "occupancy: occupancy any, by construction, no value is placed",
 ]
-note = "**The predicate above is one instrument's and the standing says so.** It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\n**Two instruments do meet, and they meet on the diagnosis rather than on a region.** The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\n**The second arrival is genuine and is the establishing seat's own word.** It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\n**The shipped `has_additive_identity` implements the superseded claim.** Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much.\n\n**The crate was corrected after the two instruments ran.** `has_additive_identity` asks the cancellation question at each admitted magnitude, its tests hold it equal to an enumeration of the set at a whole-step format and at a half-step one among others, and the crate's design states the same, so `shipped` above names the crate the two instruments ran against. The stamped row's phase clause is not corrected, and `question::how_the_stamped_spine_rows_phase_clause_gets_corrected` holds that."
+note = "The predicate above is one instrument's and the standing says so. It is transcribed from the establishing derivation's own F3 rather than restated, because an earlier draft of this row carried the superseded row's predicate instead: it stated five dimensions at values nothing measured, borrowed a width band from an unrelated finding about wrapping multiplication, and dropped `threads any`, which under the omission rule turns a finding holding at any thread count into one holding nowhere threads exist. Six of its seven dimensions contradicted the file it cites.\n\nTwo instruments do meet, and they meet on the diagnosis rather than on a region. The sweep covers the coordinate space; the direct run fixes width, phase denominator and radix and establishes that the shipped crate admits the counterexample. Their regions do not intersect in a way either could carry alone, so the tier here is the sweep's and the second arrival is recorded rather than counted.\n\nThe second arrival is genuine and is the establishing seat's own word. It derived F3 blind, before opening any withheld file, and on reconciliation filed it as seconded rather than found.\n\nThe shipped `has_additive_identity` implements the superseded claim. Correcting it does not rest on this row's standing: the function contradicts `proposal::membership_of_the_representable_set_is_one_affine_predicate` as a ratified spine row already says it, which is the licence, and this row is the measurement of where and how much.\n\nThe crate was corrected after the two instruments ran. `has_additive_identity` asks the cancellation question at each admitted magnitude, its tests hold it equal to an enumeration of the set at a whole-step format and at a half-step one among others, and the crate's design states the same, so `shipped` above names the crate the two instruments ran against. The stamped row's phase clause is not corrected, and `question::how_the_stamped_spine_rows_phase_clause_gets_corrected` holds that.\n\nThe target-features entry carries no warrant token. The predicate is a const fn over associated items, which is an argument that no feature can enter, but `construction` obliges an instrument that varied the axis and neither instrument here did, so under `ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side` the entry claims the region with no warrant. The rounding, overflow, threads and occupancy entries above still write `by construction` in the old prose spelling and are not respelled here."
 provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
 keywords = ["phase", "additive identity", "whole multiple", "quantum", "biased grid", "half step", "zero on the grid", "affine predicate", "membership"]
 
@@ -2286,10 +2432,30 @@ kind = "answer"
 sentence_kind = "normative"
 standing = "one_expert"
 topic = "panel_conduct"
-says = "A row left provisional as a body keeps the `rung` it had, is named in the research note beside the reading, and carries no stamp. The fields `stamped_by` and `stamp` are for a row a provisional stamp actually decided, by the coordinators converging or two experts agreeing, and name the question ticket that asks him to make it formal."
+says = "A row left provisional as a body keeps the `rung` it had, is named in the research note beside the reading, and carries no stamp. The fields `stamped_by` and `stamp` are for a row a provisional stamp actually decided, by the coordinators converging, two experts agreeing or the maintainer directing it, and name the question ticket that asks him to make it formal."
 because = "The note of `ruling::what_the_written_history_shows_to_be_his_is_ratified_by_default` says the schema has no value for a provisional stamp. Since the `stamped_by` and `stamp` fields were added to `ruling` and `proposal`, it has one, and the note now reads as a gap the schema no longer has."
 corrects_note = ["what_the_written_history_shows_to_be_his_is_ratified_by_default"]
 note_said = ["what_the_written_history_shows_to_be_his_is_ratified_by_default: This schema has no value for it, so a row left provisional keeps the `rung` it had and is named in the research note beside the reading."]
 note = "The ruling is ratified and he answered \"The eighteen, not the notes\" when asked whether agents correct the notes of ratified rows, so the correction stands here and the ruling is unchanged."
 provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#on-the-eighteen-ratified-rows-the-same-day"]
 keywords = ["note", "stale", "provisional stamp", "stamped_by", "stamp", "schema"]
+
+[[proposal]]
+id = "wrapping_is_admitted_exactly_where_the_representable_set_is_one_progression"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "overflow_policy"
+says = "A format admits the wrapping arm exactly where its representable set is one arithmetic progression. A format whose set is not one progression, as a union of magnitude ranges at more than one quantum with a coarser range holding two members always is, does not admit it, under any modulus, phase or rounding mode, and the refusal is made at compile time from the declared signature. Wrapping here is the reduction under which the induced addition is a group, the sense in which the ratified rows use the word."
+because = "Let the representable set have n members, at least three, generating a lattice of step u. A total adaptation that fixes every member, sends every value inside the range to one of its two neighbouring members as each of the six modes does, and has as its fibres the cosets of one subgroup, induces a group that is a quotient of the lattice of order n, so the subgroup is n times the lattice and the adaptation is congruent to the identity modulo n u. Where two neighbouring members s and t have a lattice point between them, either t - s is at most n u and the point s + u is sent to s or t, a nonzero distance below n u away, or t - s exceeds n u and the n or more lattice points between them cover every residue while their images carry two. Both contradict the congruence, so the set has no gap between its ends and is one progression. Conversely, on one progression the residue map moves no in-range value and is the ordinary wrap the constant-quantum rows measured. The modulus is forced, so no other modulus exists to try, and completing before rounding only lengthens the window past n u. A set at more than one quantum with a coarser range holding two members always has a gap, and slots 0 to 3 at quanta 1, 2 and 4 give the instance {0, 1, 2, 3, 4, 6, 8, 12}, where 5 rounds to 4 or 6 and is congruent to no member modulo 8."
+instead = "Saturation, which is defined on any bounded representable set and sends the exact results past an end to that end as one point. Any adaptation a consumer supplies through the open inventory, under its own name and with its own laws, including the residue map onto a set that is a transversal of its lattice modulo its count, which moves in-range values and is not an overflow policy. And modular arithmetic on a format whose set is one progression, reached by converting onto it, where wrapping is defined and its group law holds."
+gap = "The deciding condition, whether the set is one progression, is on no axis `mock/registry/dimension.toml` declares, so this row cannot be stated as a `theorem` with a region. An axis indexing the quantum law, or the progression property directly, would let a theorem row carry the proof with an exact predicate. No committed instrument checks the proof's instances; an exhaustive enumeration of small laws, with a must-fail control on a degenerate law whose set is one progression under a nonzero slope, is owed before promotion. What saturation needs from the applied map at more than one magnitude is design and is not settled here. The second reading, made without the first, adds that the name has no single map off one progression because the candidates disagree (a sum of 12 and 8 on slots -3 to 3, radix 2, slope 1, three magnitudes completes to -8, to -12 or -4, or to 2 or 3); that instance is computed by hand. Tickets: the axis `3c82c008442e`, the instrument `990f0e11c61c`, the crate's slope test `bb82327ee374`."
+note = "The proof rests on two premises read off ratified rows: that wrapping carries the group law, from `ruling::a_min_plus_top_absorbs_addition_under_saturation_and_never_under_wrapping`, whose region is a constant quantum, and that an adaptation sends a value between members to a neighbour, from the six rounding modes as `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` and `ruling::half_up_denotes_ties_toward_positive_infinity` define them. The crate's current test is on the quantum law's slope rather than on the set, so it also refuses degenerate laws whose set is one progression, such as slots 0 and 1 at quanta 1 and 2."
+provenance = [
+  "mock::research/202611132330_wrapping-over-a-union-of-magnitude-ranges/NOTES::#where-the-two-readings-agree",
+  "mock::research/202611132330_wrapping-over-a-union-of-magnitude-ranges/READ-1::#the-derivation",
+  "mock::research/202611132330_wrapping-over-a-union-of-magnitude-ranges/READ-2::#4-the-derivation",
+]
+stamped_by = "experts"
+stamp = "Two experts, each deriving before reading the other, reached that wrapping is fixed only on one progression and refused on a union of magnitude ranges, by a group-law proof and by the candidates disagreeing; recorded in `mock/research/202611132330_wrapping-over-a-union-of-magnitude-ranges/NOTES.md`. Question ticket `29bd8e5f1b6c` asks him to make it formal."
+keywords = ["wrapping", "wrap", "magnitude", "magnitude-indexed", "quantum", "union of ranges", "arithmetic progression", "transversal", "residue", "group", "overflow", "floating point", "refusal", "saturation"]

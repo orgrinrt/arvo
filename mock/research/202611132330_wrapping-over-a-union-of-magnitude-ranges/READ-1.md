@@ -1,0 +1,106 @@
+# Wrapping over a union of magnitude ranges
+
+This read asks what wrapping means for a format whose representable set is a union of magnitude ranges at more than one quantum, the case the three placeholders in `mock/crates/arvo-format` refuse today. It was done read-only in `/home/user/arvo` on `work/arvo-registry-clean`, against the registry as `cargo mock query` returned it on 2026-11-13. This file holds what the brief asks to go in NOTES.md. Its intended home is `mock/research/<stamp>_wrapping-over-a-union-of-magnitude-ranges/NOTES.md`, and the proposed row's provenance points there, so the row cannot land until this note does.
+
+The answer is a refusal derived from a short theorem. Wrapping, as the ratified rows use the word, is a reduction under which the induced addition is a group, and when it is composed with any of the six rounding modes it exists on a representable set exactly when that set is one arithmetic progression. A union of magnitude ranges at more than one quantum is never one progression, so such a format does not admit the wrapping arm, under any modulus, phase or mode. What it is offered instead is in the row.
+
+## The two gates
+
+Canon gate. No ratified row settles the question, and no `open` row reserves it. The open rows near it reserve other calls. `ruling::wrap_or_clamp_stays_open_and_both_get_priced` reserves which of wrap and clamp the `Warm` preset names: "Whether the intuitive-compromise strategy wraps or clamps is not settled." `ruling::the_family_question_wants_the_comparison_first` and `ruling::his_instinct_on_one_family_is_not_to_be_acted_on` reserve whether the numeral space is one family or several. `ruling::the_strategy_set_is_not_closed_at_four` reserves the strategy set. The answer below is a statement about which adaptations one declared representable set admits, inside the ratified parameterisation, so it presumes no family count, no strategy count and no `Warm` choice. `question::where_wrapping_lives` is `decider = panel` and asks where wrapping is filed, a reduction slot or an axis value, which is a different question; nothing here answers it. The canon is silent on wrapping over a union of ranges: I searched the registry for wrap, wrapping, modulo, residue, congruence, cyclic, span, magnitude, exponent, floating, union of, round first and over-range, and every row that defines or measures wrapping does so on a constant quantum.
+
+Evidence gate. The answer rests on a proof, not on a probe, so no committed output is read as evidence for it. The only measured rows it cites, the min-plus absorption ruling and the commutation law, are cited for what wrapping means where they were established, and their regions are quoted from the rows rather than from summaries.
+
+## The code, as code
+
+These are facts about the implementation and say nothing about whether it is right. `sum_position` (`mock/crates/arvo-format/src/addition.rs:226`), `negation_position` and `difference_position` (`mock/crates/arvo-format/src/addition/subtraction.rs:63`, `:88`), `product_position` (`multiplication.rs:243`), `quotient_position` (`division.rs:395`) and `converted_position` (`conversion.rs:218`) each return an `Exact` counted in slots, `a + b + phase` for the sum, with no magnitude coordinate. The refusals sit in the `ADMITTED` consts: `addition.rs:80` to `:93`, `multiplication.rs:76` to `:80`, `division.rs:186` to `:189`, `conversion.rs:76` to `:79`. Each forces `is_constant_family`, which at `quantum.rs:381` to `:384` tests the law's slope alone. So the code refuses by the quantum law, while the answer below refuses by the representable set, and the two differ on degenerate laws: slots `0 ..= 1` at quanta 1 and 2 give the set {0, 1, 2}, one progression under a nonzero slope.
+
+The placeholder comments name two blockers. One is design: `Exact` and `adapt` carry no magnitude coordinate. The other is the canon question this read answers. They are separable, and the answer moves only the second.
+
+## The rows read
+
+Ratified, and what each one is leaned on for.
+
+- `ruling::the_format_spine_is_canon`: "Membership in it is one affine predicate over one parameterisation, of which integers, fixed point, scaled integers and floats are points. Arithmetic on a format is an exact operation in the ambient domain composed with a named total adaptation onto that set, and the adaptation is a first-class object with its own laws. The concept is closed and the inventory of admitted instances is open." Leaned on for the representable set being a constant of the type, for one adaptation per operation, for an adaptation's laws being its own, and for a new adaptation joining by supplying its obligations.
+- `ruling::a_min_plus_top_absorbs_addition_under_saturation_and_never_under_wrapping`: "Under wrapping no element but the additive identity absorbs anything, at every width, because addition modulo `2^n` is a group and `top + x = top` forces `x = 0` by cancellation." Leaned on for what the canon takes wrapping to be: a reduction under which the induced addition is a group, the cyclic group modulo the count. Its region is unsigned, `W in 2..=10`, `F in 0..=W`, all at one quantum.
+- `ruling::the_additive_and_absorption_verdicts_are_canon`: "whether a reduction's induced operation is associative is decided by absorption, quantified over the values the format can hold." Leaned on for laws being read off the reduction over the representable set.
+- `ruling::a_format_datum_is_one_point_and_a_saturating_end_is_one_point`: "A saturating end of the set is one point: the exact results a saturating adaptation sends to it are that adaptation's fibre." Leaned on for saturation being defined on any bounded set, which is what is offered instead.
+- `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` and `ruling::half_up_denotes_ties_toward_positive_infinity`: the six modes, and `half_up` as "rounding to the nearest grid point". Leaned on for every mode sending a value between members to one of its two neighbouring members.
+- `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`: "an operation is admitted exactly when it is a function of the declared signature". Leaned on for the admission condition being decidable from the signature.
+- `ruling::never_a_runtime_check_and_one_lowered_path`: "Never any runtime checks, ever: invalids are caught at compile time." Leaned on for the refusal being a compile-time one.
+- `ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`: "The parity suite is built against MATLAB `fi`/`fimath` and IEEE 754." Leaned on for the standards check below.
+- `ruling::arms_over_regions_are_the_fundamental_heart` and `ruling::the_work_is_predicated_arms_composed`: "Each arm carries a const predicate over the region it holds in." Leaned on for stating the admission as an exact condition rather than a blanket.
+- `ruling::the_canon_does_not_police_what_shape_a_law_takes`: "What kind of laws there are and what shapes they take is not to be policed". Leaned on for the boundary of the refusal: it refuses a name and the laws that go with it, never a consumer's own adaptation.
+- `ruling::the_overflow_panic_is_permitted_and_bounded`: on release, "the guarantee plus an explicit declaration of the mode, saturate or wrap or whatever applies". Leaned on for a declared mode having to be one that exists on the format.
+
+Stated, read as direction.
+
+- `ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case`: "The overflow behaviour is not called one way. A default ships and is easy to override per case". The refusal leaves this intact, since the default and its overrides range over the policies a format admits.
+- `ruling::the_standard_is_parity_in_output_not_in_the_internals`: "A hole in a standard is a `FIXME` and is honest. A hole in the framework is a defect." Leaned on for asking whether the refusal is a hole.
+- `ruling::there_is_no_universal_answer_take_the_win_and_gate_it`: "Take the win where it applies, gate it out from where it does not."
+
+Not canon, read as evidence.
+
+- `proposal::the_realisation_map_is_one_map_with_two_regions` (three_or_more): "rounding between grid points, and completion outside the representable range."
+- `proposal::the_realisation_map_factors_into_quantisation_and_range_policy` (one expert): the two "compose canonically as quantise-then-reduce."
+- `law::quantise_then_reduce_commutes`: "wrapping translates by the span, an even multiple of the quantum at every width".
+- `proposal::a_value_admits_a_constant_quantum_a_zero_phase_and_a_deterministic_mode` (one expert): a carrier-held value completes by wrapping or saturation at a constant quantum only.
+
+No row in `mock/registry/dimension.toml` indexes the quantum law, its slope or its count of magnitudes, and none indexes whether a set is one progression. That decides the row's kind, below.
+
+## The derivation
+
+Two premises, both read off ratified rows. First, wrapping is the reduction under which the induced addition is a group, as the min-plus ruling uses the word. In the constant-quantum rows that is translation by the span, and translation by the span preserves the grid there, so wrapping moves no in-range value and commutes with rounding (`law::quantise_then_reduce_commutes`). Second, an adaptation sends a value lying between two members to one of those two neighbours, which is what each of the six modes is defined to do over a grid.
+
+Theorem. Let `S` be the representable set, `L` the additive group it generates, a lattice of step `u`, and `n` the number of members, at least three, since a set of two or fewer is a progression. Suppose a total adaptation `r` fixes every member, sends every value inside the range to one of its two neighbouring members, and has as its fibres on `L` the cosets of one subgroup. Then `S` is one arithmetic progression.
+
+Proof. `L` is cyclic, so the induced group `(S, r(a + b))` is a quotient of it of order `n`, the subgroup is `nL`, and `r(x)` is congruent to `x` modulo `n u`. Suppose two neighbouring members `s < t` have a lattice point between them. If `t - s` is at most `n u`, the point `s + u` is sent to `s` or to `t`, and it differs from either by a nonzero amount smaller than `n u`, so it is not congruent to its image. If `t - s` exceeds `n u`, it is at least `(n + 1) u`, so there are at least `n` consecutive lattice points strictly between them, covering every residue modulo `n u`, while their images take two values carrying two residues; with `n` at least three that is a contradiction. So no lattice point is missing between the ends of `S`. Conversely, on one progression the residue map modulo the count fixes every in-range value, is the ordinary wrap, and the constant-quantum rows apply to it. The stochastic mode takes a dither as well as a value, and the argument holds at each fixed dither.
+
+The modulus is forced, at `n u`, so there is no other modulus to try. The order of rounding and completion does not rescue it either: wrapping first into a window that holds the range and rounding after still sends in-range points to neighbours, which the theorem already covers, and the window is then longer than `n u`, so the fibres are not cosets of `nL`.
+
+A worked instance shows the shape. Slots `0 ..= 3` at quanta 1, 2 and 4 give {0, 1, 2, 3, 4, 6, 8, 12}, a union of three magnitude ranges, with `u = 1` and `n = 8`. The point 5 lies between 4 and 6 and rounds to one of them, yet the group wrap would have to send it to the member congruent to 5 modulo 8, and none exists. A representable set at more than one quantum, with a coarser range holding two members, always has such a gap. That is the case the tickets name, and floating point is in it.
+
+There is also a cheaper reduction, the residue map `r(x) = the member congruent to x modulo n u`, which is a group reduction wherever `S` happens to be a transversal of `L / nL`. On a set with a gap it sends in-range values to members that are not their neighbours (on {0, 1, 5} it sends 3 to 0), so it is not an overflow policy at all in the sense `topic::overflow_policy` gives the word, "what happens at the edge of a numeral's range". It is a further adaptation, and the open inventory lets a consumer supply it under its own name.
+
+Checked against the standards. As I know them, and not checked against a fetched copy, since the registry holds none: IEEE 754 sends overflow to an infinity or to the largest finite value by rounding attribute, and has no wrapping overflow; MATLAB `fi` offers `Wrap` and `Saturate` on fixed point, a single grid. Parity in output therefore asks for no wrapping on a magnitude-indexed format, and the refusal leaves no hole in either standard. IEEE's infinities are a separate gap, recorded at `proposal::ingest_of_a_host_value_is_the_declared_adaptation`'s `gap`, and untouched here.
+
+## The outcomes, set out symmetrically
+
+The canon determines it outright. For: the spine, the min-plus usage and the rounding vocabulary together leave no freedom, since the theorem shows the group wrap is forced where it exists, and a derivation with no choice in it is what the canon determining a thing means. Against: the min-plus usage is ratified only in a constant-quantum region, and `ruling::a_predicate_lists_only_what_holds` forbids carrying its sentence past that region, so the canon fixes the word's content and does not itself state that the content fails elsewhere. The theorem is a step the canon does not contain.
+
+The canon determines it in a region. For: arms over regions is the shape op named the heart of arvo, and the theorem gives an exact region, the formats whose set is one progression, inside which wrapping is the ordinary wrap. Against: inside the magnitude-indexed formats that region holds only degenerate laws, where the set happens to be one progression, so as an answer about a union of ranges at more than one quantum the region is empty. The region also cannot be written over the declared dimensions, since none indexes the quantum law or progressions, and a predicate omitting the deciding axis would claim the row holds on constant-quantum formats as well, which is false.
+
+Wrapping is not defined there, and the format refuses the arm. For: the theorem shows no adaptation on such a set both carries wrapping's group law and agrees with the declared rounding, so admitting an arm under that name would attach laws that fail. The refusal is a function of the signature and is caught at compile time, IEEE and MATLAB ask for nothing it withholds, and the open inventory keeps every other adaptation available, so nothing is policed. Against: a refusal narrows what the framework expresses, and the stated parity row calls a hole in the framework a defect. The answer to that is that a word with no referent on a set is not a hole, in the way division by zero is not one, provided what is offered instead covers what a consumer could have wanted from it.
+
+The canon does not reach it, and the call is op's. For: naming what a policy means can be read as taste, as the rounding vocabulary was, and two open rows touch overflow policy. Against: neither open row reserves this question, `ruling::the_panel_finishes_the_canon_without_him` puts canon questions to the panel, and the theorem leaves no choice to make, only a result to state. Putting it to him would ask him to rule on arithmetic.
+
+## The answer, as a proposed row
+
+The third outcome. A format admits the wrapping arm exactly where its representable set is one arithmetic progression, so a union of magnitude ranges at more than one quantum does not admit it. The kind is `refusal` at `sentence_kind = "normative"`, with no predicate, because the deciding condition is on an axis `dimension.toml` does not declare, and a predicate naming only the axes it does would read as holding on constant-quantum formats too. The theorem is its `because`, and the `gap` asks for the axis that would let a `theorem` row carry it. It belongs in a new file in `mock/registry/` or in `proposal.toml` beside the overflow rows, at `topic = "overflow_policy"`.
+
+```toml
+[[proposal]]
+id = "wrapping_is_admitted_exactly_where_the_representable_set_is_one_progression"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "overflow_policy"
+says = "A format admits the wrapping arm exactly where its representable set is one arithmetic progression. A format whose set is a union of magnitude ranges at more than one quantum does not admit it, under any modulus, phase or rounding mode, and the refusal is made at compile time from the declared signature. Wrapping here is the reduction under which the induced addition is a group, the sense in which the ratified rows use the word."
+because = "Let the representable set have n members, at least three, generating a lattice of step u. A total adaptation that fixes every member, sends every value inside the range to one of its two neighbouring members as each of the six modes does, and has as its fibres the cosets of one subgroup, induces a group that is a quotient of the lattice of order n, so the subgroup is n times the lattice and the adaptation is congruent to the identity modulo n u. Where two neighbouring members s and t have a lattice point between them, either t - s is at most n u and the point s + u is sent to s or t, a nonzero distance below n u away, or t - s exceeds n u and the n or more lattice points between them cover every residue while their images carry two. Both contradict the congruence, so the set has no gap between its ends and is one progression. Conversely, on one progression the residue map moves no in-range value and is the ordinary wrap the constant-quantum rows measured. The modulus is forced, so no other modulus exists to try, and completing before rounding only lengthens the window past n u. A set at more than one quantum with a coarser range holding two members always has a gap, and slots 0 to 3 at quanta 1, 2 and 4 give the instance {0, 1, 2, 3, 4, 6, 8, 12}, where 5 rounds to 4 or 6 and is congruent to no member modulo 8."
+instead = "Saturation, which is defined on any bounded representable set and sends the exact results past an end to that end as one point. Any adaptation a consumer supplies through the open inventory, under its own name and with its own laws, including the residue map onto a set that is a transversal of its lattice modulo its count, which moves in-range values and is not an overflow policy. And modular arithmetic on a format whose set is one progression, reached by converting onto it, where wrapping is defined and its group law holds."
+gap = "The deciding condition, whether the set is one progression, is on no axis `mock/registry/dimension.toml` declares, so this row cannot be stated as a `theorem` with a region. An axis indexing the quantum law, or the progression property directly, would let a theorem row carry the proof with an exact predicate. No committed instrument checks the proof's instances; an exhaustive enumeration of small laws, with a must-fail control on a degenerate law whose set is one progression under a nonzero slope, is owed before promotion. What saturation needs from the applied map at more than one magnitude is design and is not settled here."
+note = "The proof rests on two premises read off ratified rows: that wrapping carries the group law, from `ruling::a_min_plus_top_absorbs_addition_under_saturation_and_never_under_wrapping`, whose region is a constant quantum, and that an adaptation sends a value between members to a neighbour, from the six rounding modes as `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` and `ruling::half_up_denotes_ties_toward_positive_infinity` define them. The crate's current test is on the quantum law's slope rather than on the set, so it also refuses degenerate laws whose set is one progression, such as slots 0 and 1 at quanta 1 and 2."
+provenance = [
+  "mock::research/<stamp>_wrapping-over-a-union-of-magnitude-ranges/NOTES::#the-derivation",
+]
+keywords = ["wrapping", "wrap", "magnitude", "magnitude-indexed", "quantum", "union of ranges", "arithmetic progression", "transversal", "residue", "group", "overflow", "floating point", "refusal", "saturation"]
+```
+
+## What would change the answer
+
+A ratified or stated row giving wrapping a meaning without the group law, for instance translation by a span followed by rounding, would remove the first premise, and the question would become which such map, with no law to decide it, which is then a design choice and a candidate for the open inventory rather than a refusal.
+
+A row admitting an adaptation that sends in-range values to members other than their neighbours, under the name of an overflow policy, would remove the second premise, and the residue map would become a candidate wrapping on the sets that are transversals.
+
+An enumeration finding a set at more than one quantum, with no gap, outside the degenerate laws, would show the claim that such sets always have a gap is wrong, which the worked instance and the coarse-range argument say cannot happen, though no instrument has checked it.
+
+A declared axis for the quantum law would not change the answer, only its kind: the row would become a `theorem` with a predicate.
