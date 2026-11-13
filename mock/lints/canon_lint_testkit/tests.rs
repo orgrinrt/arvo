@@ -13,6 +13,7 @@ use super::{
     namespaces_declaring,
     registered_repo_lints,
     repo_root,
+    severity_after_config,
 };
 
 #[test]
@@ -233,14 +234,12 @@ fn a_lint_that_splits_its_tests_out_is_read_whole() {
     );
 }
 
-/// The lints the shared pack registers into this one carry no source file in
-/// this tree, so `lint_sources` leaves them out of the arm above and nothing
-/// there asks what severity they run at. This asks it of the whole pack.
+/// The ledger lint's severity as this repository's `mockspace.toml` leaves it,
+/// layered over the lint's own default, blocks at every gate.
 ///
-/// `catalogue-ignore` is the one the catalogue ledger rests on: every `#[ignore]`
-/// here is a catalogue entry only while that lint refuses an ignore the ledger
-/// does not resolve, so a lint declared advisory or off would leave the ledger
-/// unchecked and every other arm passing.
+/// The default alone is not enough. `[lints.catalogue-ignore]` keyed `commit`,
+/// `build` or `push` to `"off"` or `"warn"` turns the gate off while the lint's
+/// own `HARD_ERROR` still reads as blocking, and every other arm keeps passing.
 #[test]
 fn catalogue_ignore_runs_at_a_blocking_severity_at_every_gate() {
     let mut pack = LintPack::default();
@@ -250,14 +249,54 @@ fn catalogue_ignore_runs_at_a_blocking_severity_at_every_gate() {
         .iter()
         .find(|l| l.name() == "catalogue-ignore")
         .expect("`catalogue-ignore` is in the pack the engine is handed");
-    let severity = lint.default_severity();
+    let config = std::fs::read_to_string(repo_root().join("mockspace.toml"))
+        .expect("the repository's mockspace.toml");
+    let severity = severity_after_config(&config, "catalogue-ignore", lint.default_severity());
     for mode in [LintMode::Commit, LintMode::Build, LintMode::Push] {
         assert!(
             severity.is_blocking(mode),
-            "`catalogue-ignore` does not block at {mode:?}, so an ignore the ledger does not \
-             resolve would pass that gate"
+            "`catalogue-ignore` does not block at {mode:?} once `mockspace.toml` is applied, so \
+             an ignore the ledger does not resolve would pass that gate"
         );
     }
+}
+
+/// The cases the arm above must be able to see: each gate keyed down in turn is
+/// caught, and a table for another lint, a comment, or no table at all is not.
+#[test]
+fn control_the_config_overlay_sees_each_gate_turned_down_and_nothing_else() {
+    use mockspace::Severity;
+    let blocks = |cfg: &str| {
+        let s = severity_after_config(cfg, "catalogue-ignore", Severity::HARD_ERROR);
+        [LintMode::Commit, LintMode::Build, LintMode::Push].map(|m| s.is_blocking(m))
+    };
+    for (key, at) in [("commit", 0), ("build", 1), ("push", 2)] {
+        for level in ["off", "warn"] {
+            let cfg = format!("[lints.catalogue-ignore]\n{key} = \"{level}\"\n");
+            let got = blocks(&cfg);
+            let mut want = [true; 3];
+            want[at] = false;
+            assert_eq!(
+                got, want,
+                "`{key} = \"{level}\"` turns exactly that gate down"
+            );
+        }
+    }
+    assert_eq!(
+        blocks("[lints.catalogue-ignore]\ncommit = \"off\" # temporarily\n"),
+        [false, true, true],
+        "a trailing comment is not part of the value"
+    );
+    assert_eq!(
+        blocks("[lints.catalogue-ignore]\nledgers = \"x\"\n"),
+        [true; 3]
+    );
+    assert_eq!(blocks("[lints.other]\npush = \"off\"\n"), [true; 3]);
+    assert_eq!(
+        blocks("[lints.catalogue-ignore]\npush = \"off\"\n[lints.other]\n"),
+        [true, true, false]
+    );
+    assert_eq!(blocks(""), [true; 3]);
 }
 
 /// The control for the arm above: it has to be able to say a lint does not
