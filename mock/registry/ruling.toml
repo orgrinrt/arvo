@@ -1795,7 +1795,7 @@ note = "**Answering beyond the four recorded options is licensed by `ruling::the
 provenance = ["panel::202608072330_the-numeral-canon-panel::260_kiselyov_what_a_platform_width_type_is::#1-the-answer-as-a-composition", "panel::202608072330_the-numeral-canon-panel::260_kiselyov_what_a_platform_width_type_is::#3-the-measurements", "panel::202608072330_the-numeral-canon-panel::265_lattner_what_a_platform_width_type_is::#1-the-answer", "panel::202608072330_the-numeral-canon-panel::265_lattner_what_a_platform_width_type_is::#9-reconciliation-with-seat-260"]
 keywords = ["platform width", "USize", "ISize", "Cap", "storage", "format", "target-indexed family", "pointer width", "binding time", "admission rule", "locus clause", "Slots", "ADMITTED", "axis", "degenerate", "orthogonal axis"]
 
-# --- composition contracts above the numeral: four rulings out of ten proposals ---
+# --- composition contracts above the numeral, and the proposals they were taken from ---
 
 [[ruling]]
 id = "a_composed_expressions_region_is_never_inherited_from_its_parts"
