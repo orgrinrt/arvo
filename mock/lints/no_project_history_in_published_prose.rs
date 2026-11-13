@@ -37,7 +37,7 @@
 
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::half_up_carries_its_note::{collect, line_of};
 use crate::half_up_is_not_a_magnitude_rule::comments::passages;
@@ -136,22 +136,21 @@ impl Lint for NoProjectHistoryInPublishedProse {
 
 impl RepoLint for NoProjectHistoryInPublishedProse {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(ctx.repo_root, ctx.mock_dir)
+        check(ctx.view(), ctx.repo_root, ctx.mock_dir)
     }
 }
 
 /// Every finding over the published surface.
-pub(crate) fn check(repo_root: &Path, mock_dir: &Path) -> Vec<LintError> {
+pub(crate) fn check(view: &View, repo_root: &Path, mock_dir: &Path) -> Vec<LintError> {
     let mut out = Vec::new();
     let readme = repo_root.join("README.md");
-    if let Ok(text) = std::fs::read_to_string(&readme) {
-        out.extend(markdown("README.md", &text));
+    if let Some(text) = view.text(&readme) {
+        out.extend(markdown("README.md", text));
     }
-    let mut files = Vec::new();
-    collect(mock_dir, &mut files);
+    let mut files = collect(view, mock_dir);
     files.sort();
     for path in files {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let shown = path
@@ -160,9 +159,9 @@ pub(crate) fn check(repo_root: &Path, mock_dir: &Path) -> Vec<LintError> {
             .display()
             .to_string();
         if shown.ends_with(".rs") {
-            out.extend(rustdoc(&shown, &text));
+            out.extend(rustdoc(&shown, text));
         } else {
-            out.extend(markdown(&shown, &text));
+            out.extend(markdown(&shown, text));
         }
     }
     out

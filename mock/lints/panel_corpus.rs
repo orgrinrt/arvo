@@ -22,10 +22,9 @@
 //! and the paragraph announcing the count then contained the string it was
 //! counting. The numbers live in the tests, which measure them.
 
-use std::fs;
 use std::path::{Path, PathBuf};
 
-use mockspace::LintError;
+use mockspace::{LintError, View};
 
 /// One finding against a file in the corpus, at the severity that blocks every
 /// gate.
@@ -50,11 +49,11 @@ pub const PANEL: &str = "research/202608072330_the-numeral-canon-panel";
 /// archive and the arms need no absolute path.
 pub struct Archive {
     /// What this archive is called when a report has to name it.
-    pub name: &'static str,
+    pub name:   &'static str,
     /// The string a citation into it begins with.
     pub prefix: &'static str,
     /// Where the files sit, relative to the panel directory.
-    pub at: &'static str,
+    pub at:     &'static str,
 }
 
 /// Every archive the rename covers.
@@ -67,14 +66,14 @@ pub struct Archive {
 /// were written in the dead spelling with nothing reporting any of them.
 pub const ARCHIVES: &[Archive] = &[
     Archive {
-        name: "seed",
+        name:   "seed",
         prefix: "seed/",
-        at: "seed",
+        at:     "seed",
     },
     Archive {
-        name: "closed formalization panel",
+        name:   "closed formalization panel",
         prefix: "formalization-spec-panel/",
-        at: "../202607301300_formalization-spec-panel",
+        at:     "../202607301300_formalization-spec-panel",
     },
 ];
 
@@ -117,37 +116,29 @@ pub fn panel_dir(mock_dir: &Path) -> PathBuf {
 }
 
 /// Every `.md` file under a directory, sorted, so a report is stable.
-pub fn markdown(dir: &Path) -> Vec<PathBuf> {
-    let mut out = Vec::new();
-    collect(dir, &mut out, &["md"]);
-    out.sort();
-    out
+pub fn markdown(view: &View, dir: &Path) -> Vec<PathBuf> {
+    files(view, dir, &["md"])
 }
 
 /// Every committed script under a directory, sorted.
-pub fn scripts(dir: &Path) -> Vec<PathBuf> {
-    let mut out = Vec::new();
-    collect(dir, &mut out, &["sh", "py", "rs", "awk"]);
-    out.sort();
-    out
+pub fn scripts(view: &View, dir: &Path) -> Vec<PathBuf> {
+    files(view, dir, &["sh", "py", "rs", "awk"])
 }
 
-fn collect(dir: &Path, out: &mut Vec<PathBuf>, extensions: &[&str]) {
-    let Ok(entries) = fs::read_dir(dir) else {
-        return;
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            collect(&path, out, extensions);
-        } else if path
-            .extension()
-            .and_then(|e| e.to_str())
-            .is_some_and(|e| extensions.contains(&e))
-        {
-            out.push(path);
-        }
-    }
+/// Every file under a directory whose extension is one of `extensions`, sorted,
+/// walked through the view so a file appearing or going reruns the lint.
+pub fn files(view: &View, dir: &Path, extensions: &[&str]) -> Vec<PathBuf> {
+    let mut out: Vec<PathBuf> = view
+        .walk(dir, |_, _| false)
+        .into_iter()
+        .filter(|path| {
+            path.extension()
+                .and_then(|e| e.to_str())
+                .is_some_and(|e| extensions.contains(&e))
+        })
+        .collect();
+    out.sort();
+    out
 }
 
 /// How a file is named in a report: relative to the tree that was walked.
@@ -171,19 +162,19 @@ pub fn archive_citations(line: &str, prefix: &str) -> Vec<String> {
     let mut out = Vec::new();
     let bytes = line.as_bytes();
     let mut i = 0;
-    while let Some(at) = line[i..].find(prefix) {
+    while let Some(at) = line[i ..].find(prefix) {
         let start = i + at;
         // A prefix that is part of a longer word is somebody else's path.
         if start > 0 && (bytes[start - 1].is_ascii_alphanumeric() || bytes[start - 1] == b'/') {
             i = start + prefix.len();
             continue;
         }
-        let rest = &line[start..];
+        let rest = &line[start ..];
         let end = rest
             .find(".md")
             .map(|e| e + 3)
             .unwrap_or_else(|| rest.find(char::is_whitespace).unwrap_or(rest.len()));
-        let cite = rest[..end].to_string();
+        let cite = rest[.. end].to_string();
         if cite.ends_with(".md") {
             out.push(cite);
         }
@@ -201,16 +192,16 @@ pub fn line_citations(line: &str, extension: &str, stems: &[&str]) -> Vec<String
     let needle = format!("{extension}:");
     let mut out = Vec::new();
     for (at, _) in line.match_indices(&needle) {
-        let after = &line[at + needle.len()..];
+        let after = &line[at + needle.len() ..];
         let digits: String = after.chars().take_while(char::is_ascii_digit).collect();
         if digits.is_empty() {
             continue;
         }
-        let before = &line[..at];
+        let before = &line[.. at];
         let start = before
             .rfind(|c: char| !c.is_ascii_alphanumeric() && c != '-' && c != '_')
             .map_or(0, |i| i + 1);
-        let stem = &before[start..];
+        let stem = &before[start ..];
         // A hyphenated registry file is named for the namespace it opens with,
         // and a ledger carries no hyphen, so taking the leading segment covers
         // both without a second rule.
@@ -275,10 +266,9 @@ mod tests {
     #[test]
     fn a_ledger_line_citation_reads_the_ledger_stems_and_nothing_else() {
         let stems = ledger_stems();
-        assert_eq!(
-            line_citations("see AGREEMENTS.md:120", ".md", &stems),
-            ["AGREEMENTS.md:120"]
-        );
+        assert_eq!(line_citations("see AGREEMENTS.md:120", ".md", &stems), [
+            "AGREEMENTS.md:120"
+        ]);
         // A numbered member file is written once and never edited, which is
         // what makes a line citation into one honest. Reporting those would
         // turn the arm into noise over most of the tree.
@@ -311,8 +301,10 @@ mod tests {
     #[test]
     fn a_walk_over_a_directory_that_is_not_there_is_empty_rather_than_a_panic() {
         let nowhere = Path::new("/nonexistent-tree-for-this-test");
-        assert!(markdown(nowhere).is_empty());
-        assert!(scripts(nowhere).is_empty());
+        let reading = mockspace::Reading::new(nowhere);
+        let view = reading.view();
+        assert!(markdown(&view, nowhere).is_empty());
+        assert!(scripts(&view, nowhere).is_empty());
     }
 
     #[test]

@@ -50,7 +50,9 @@ use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
 use crate::canon_rows::{finding, list, text};
 pub fn repo_lint() -> Box<dyn RepoLint> {
-    Box::new(MeasuredClaimCitesNoProbe { ceiling: CEILING })
+    Box::new(MeasuredClaimCitesNoProbe {
+        ceiling: CEILING,
+    })
 }
 
 const LINT: &str = "measured-claim-cites-no-probe";
@@ -90,15 +92,15 @@ impl Lint for MeasuredClaimCitesNoProbe {
 impl RepoLint for MeasuredClaimCitesNoProbe {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let unwired: Vec<String> = ctx
-            .registry
+            .registry()
             .rows_in(NAMESPACE)
             .iter()
             .filter_map(|q| {
-                let kind = text(ctx.registry, q, "sentence_kind")?;
+                let kind = text(ctx.registry(), q, "sentence_kind")?;
                 if !RAN_SOMETHING.contains(&kind) {
                     return None;
                 }
-                if !list(ctx.registry, q, "evidence").is_empty() {
+                if !list(ctx.registry(), q, "evidence").is_empty() {
                     return None;
                 }
                 Some(format!("{q} ({kind})"))
@@ -129,17 +131,24 @@ mod tests {
 
     use super::MeasuredClaimCitesNoProbe as Unwired;
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
 
     /// The messages one planted registry produces at a given ceiling.
     fn found(rows: &[(&str, &[(&str, &str)])], ceiling: usize) -> Vec<String> {
         let v = view(rows, &[]);
-        Unwired { ceiling }
-            .check_repo(&ctx(&v))
-            .into_iter()
-            .map(|e| e.message)
-            .collect()
+        Unwired {
+            ceiling,
+        }
+        .judge(ctx(&v))
+        .into_iter()
+        .map(|e| e.message)
+        .collect()
     }
 
     /// The rows the report named, recovered from its own text.
@@ -155,14 +164,14 @@ mod tests {
     fn a_measurement_with_no_instrument_is_counted_and_an_argument_is_not() {
         let named = names(&[
             ("proposal::a_bare_number", &[("sentence_kind", "measured")]),
-            (
-                "proposal::a_reasoned_claim",
-                &[("sentence_kind", "argument")],
-            ),
-            (
-                "proposal::a_real_measurement",
-                &[("sentence_kind", "measured"), ("evidence", "the_sweep")],
-            ),
+            ("proposal::a_reasoned_claim", &[(
+                "sentence_kind",
+                "argument",
+            )]),
+            ("proposal::a_real_measurement", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "the_sweep"),
+            ]),
         ]);
         assert!(named.contains("proposal::a_bare_number"), "{named}");
         assert!(!named.contains("a_reasoned_claim"), "{named}");
@@ -179,19 +188,19 @@ mod tests {
         // `measured` alone leaves the arm with no purchase on most of what this
         // corpus ran, and every other arm here would still pass.
         let named = names(&[
-            (
-                "proposal::a_sweep_with_nothing_behind_it",
-                &[("sentence_kind", "enumeration")],
-            ),
-            (
-                "proposal::a_sweep_that_names_its_run",
-                &[("sentence_kind", "enumeration"), ("evidence", "the_walk")],
-            ),
+            ("proposal::a_sweep_with_nothing_behind_it", &[(
+                "sentence_kind",
+                "enumeration",
+            )]),
+            ("proposal::a_sweep_that_names_its_run", &[
+                ("sentence_kind", "enumeration"),
+                ("evidence", "the_walk"),
+            ]),
             ("proposal::a_proof", &[("sentence_kind", "theorem")]),
-            (
-                "proposal::an_imposed_one",
-                &[("sentence_kind", "normative")],
-            ),
+            ("proposal::an_imposed_one", &[(
+                "sentence_kind",
+                "normative",
+            )]),
         ]);
         assert!(named.contains("a_sweep_with_nothing_behind_it"), "{named}");
         assert!(!named.contains("a_sweep_that_names_its_run"), "{named}");
@@ -209,10 +218,10 @@ mod tests {
         // carries the edge and fills it with nothing arrives looking exactly
         // like one that never wrote it. Both are the state this counts.
         for blank in ["", " ", ", ", "  ,  "] {
-            let named = names(&[(
-                "proposal::p",
-                &[("sentence_kind", "measured"), ("evidence", blank)],
-            )]);
+            let named = names(&[("proposal::p", &[
+                ("sentence_kind", "measured"),
+                ("evidence", blank),
+            ])]);
             assert!(
                 named.contains("proposal::p"),
                 "{blank:?} passed as an instrument: {named}"
@@ -251,10 +260,8 @@ mod tests {
         // calls this a ceiling admitting no new arrival, so the population it
         // grandfathers must pass and one more must not.
         let two = [
-            (
-                "proposal::a",
-                &[("sentence_kind", "measured")] as &[(&str, &str)],
-            ),
+            ("proposal::a", &[("sentence_kind", "measured")]
+                as &[(&str, &str)]),
             ("proposal::b", &[("sentence_kind", "measured")]),
         ];
         assert!(found(&two, 2).is_empty(), "two under a ceiling of two");
@@ -268,10 +275,8 @@ mod tests {
         // The off-by-one that decides whether the current corpus commits at
         // all. The canon says the ceiling holds with no headroom, so equal has
         // to pass and greater has to fail.
-        let one = [(
-            "proposal::a",
-            &[("sentence_kind", "measured")] as &[(&str, &str)],
-        )];
+        let one = [("proposal::a", &[("sentence_kind", "measured")]
+            as &[(&str, &str)])];
         assert!(found(&one, 1).is_empty());
         assert_eq!(found(&one, 0).len(), 1);
     }
@@ -284,7 +289,12 @@ mod tests {
     #[test]
     fn its_findings_block_every_gate() {
         let v = view(&[("proposal::p", &[("sentence_kind", "measured")])], &[]);
-        assert_findings_block_at(&Unwired { ceiling: 0 }, &ctx(&v));
+        assert_findings_block_at(
+            &Unwired {
+                ceiling: 0,
+            },
+            ctx(&v),
+        );
     }
 
     #[test]
@@ -303,7 +313,7 @@ mod tests {
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
         assert_eq!(
             Unwired {
-                ceiling: super::CEILING
+                ceiling: super::CEILING,
             }
             .name(),
             "measured-claim-cites-no-probe"

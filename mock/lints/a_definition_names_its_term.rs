@@ -52,11 +52,11 @@ impl Lint for ADefinitionNamesItsTerm {
 }
 impl RepoLint for ADefinitionNamesItsTerm {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        ctx.registry
+        ctx.registry()
             .rows_in(NAMESPACE)
             .iter()
-            .filter(|q| text(ctx.registry, q, "sentence_kind") == Some(DEFINITION))
-            .filter(|q| text(ctx.registry, q, "defines").is_none())
+            .filter(|q| text(ctx.registry(), q, "sentence_kind") == Some(DEFINITION))
+            .filter(|q| text(ctx.registry(), q, "defines").is_none())
             .map(|q| {
                 finding(
                     LINT,
@@ -76,7 +76,11 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
@@ -86,14 +90,14 @@ mod tests {
     #[test]
     fn a_definition_that_says_nothing_about_what_it_defines_is_reported() {
         let f = found(&[
-            (
-                "proposal::a_stipulation_of_nothing",
-                &[("sentence_kind", "definition")],
-            ),
-            (
-                "proposal::a_stipulation_of_something",
-                &[("sentence_kind", "definition"), ("defines", "chain")],
-            ),
+            ("proposal::a_stipulation_of_nothing", &[(
+                "sentence_kind",
+                "definition",
+            )]),
+            ("proposal::a_stipulation_of_something", &[
+                ("sentence_kind", "definition"),
+                ("defines", "chain"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("a_stipulation_of_nothing"), "{}", f[0]);
@@ -105,10 +109,10 @@ mod tests {
         // The field being present is not what was asked for, and a row carrying
         // a blank one tells a reader exactly what a missing one does.
         for blank in ["", " ", "\n", "\t  \n"] {
-            let f = found(&[(
-                "proposal::p",
-                &[("sentence_kind", "definition"), ("defines", blank)],
-            )]);
+            let f = found(&[("proposal::p", &[
+                ("sentence_kind", "definition"),
+                ("defines", blank),
+            ])]);
             assert_eq!(f.len(), 1, "{blank:?} passed as a term: {f:?}");
         }
     }
@@ -118,14 +122,7 @@ mod tests {
         // The whole discrimination. `defines` is optional across the namespace,
         // so a lint keyed on the missing field alone would report nearly all of
         // it, and the arm above would still pass.
-        for kind in [
-            "measured",
-            "normative",
-            "theorem",
-            "argument",
-            "enumeration",
-            "",
-        ] {
+        for kind in ["measured", "normative", "theorem", "argument", "enumeration", ""] {
             let f = found(&[("proposal::p", &[("sentence_kind", kind)])]);
             assert!(f.is_empty(), "{kind:?} was asked for a term: {f:?}");
         }

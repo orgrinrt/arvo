@@ -85,19 +85,19 @@ impl Lint for AMeasurementOwesAUsableInstrument {
 impl RepoLint for AMeasurementOwesAUsableInstrument {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
-        for q in ctx.registry.rows_in(CLAIMS) {
-            let Some(kind) = text(ctx.registry, q, "sentence_kind") else {
+        for q in ctx.registry().rows_in(CLAIMS) {
+            let Some(kind) = text(ctx.registry(), q, "sentence_kind") else {
                 continue;
             };
             if !RAN_SOMETHING.contains(&kind) {
                 continue;
             }
-            for cited in list(ctx.registry, q, "evidence") {
+            for cited in list(ctx.registry(), q, "evidence") {
                 let probe = format!("{INSTRUMENTS}::{cited}");
-                if ctx.registry.row(&probe).is_none() {
+                if ctx.registry().row(&probe).is_none() {
                     continue; // a slug naming no row is the engine's report
                 }
-                let standing = text(ctx.registry, &probe, "standing").unwrap_or("");
+                let standing = text(ctx.registry(), &probe, "standing").unwrap_or("");
                 if let Some(e) = report(q, cited, standing) {
                     out.push(e);
                 }
@@ -134,7 +134,13 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, findings, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        findings,
+        view,
     };
 
     /// The findings with the kind each carries, so an arm can assert which of
@@ -142,7 +148,7 @@ mod tests {
     fn kinds(rows: &[(&str, &[(&str, &str)])]) -> Vec<(Option<&'static str>, String)> {
         let v = view(rows, &[]);
         super::AMeasurementOwesAUsableInstrument
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| (e.finding_kind, e.message))
             .collect()
@@ -155,40 +161,28 @@ mod tests {
     /// The four instruments a corpus holds, planted once and used by the arms
     /// that need them.
     const PROBES: [(&str, &[(&str, &str)]); 4] = [
-        (
-            "probe::the_sound_one",
-            &[
-                ("standing", "sound"),
-                (
-                    "control",
-                    "the wrap arm had to disagree with clamp at width 5, and it fired",
-                ),
-            ],
-        ),
-        (
-            "probe::the_defective_one",
-            &[
-                ("standing", "defective"),
-                (
-                    "control",
-                    "the arm compared two placements of sixteen; no control caught it",
-                ),
-            ],
-        ),
-        (
-            "probe::the_withdrawn_one",
-            &[
-                ("standing", "withdrawn"),
-                ("control", "the author retracted it before reporting"),
-            ],
-        ),
-        (
-            "probe::the_uncontrolled_one",
-            &[
-                ("standing", "uncontrolled"),
-                ("control", "no control was run"),
-            ],
-        ),
+        ("probe::the_sound_one", &[
+            ("standing", "sound"),
+            (
+                "control",
+                "the wrap arm had to disagree with clamp at width 5, and it fired",
+            ),
+        ]),
+        ("probe::the_defective_one", &[
+            ("standing", "defective"),
+            (
+                "control",
+                "the arm compared two placements of sixteen; no control caught it",
+            ),
+        ]),
+        ("probe::the_withdrawn_one", &[
+            ("standing", "withdrawn"),
+            ("control", "the author retracted it before reporting"),
+        ]),
+        ("probe::the_uncontrolled_one", &[
+            ("standing", "uncontrolled"),
+            ("control", "no control was run"),
+        ]),
     ];
 
     fn with_probes(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
@@ -203,38 +197,26 @@ mod tests {
         // not a measurement resting on one. Without the last row an arm keyed
         // on the edge alone would pass every other assertion here.
         let f = with_probes(&[
-            (
-                "proposal::rests_on_the_sound_one",
-                &[("sentence_kind", "measured"), ("evidence", "the_sound_one")],
-            ),
-            (
-                "proposal::rests_on_the_defective_one",
-                &[
-                    ("sentence_kind", "measured"),
-                    ("evidence", "the_defective_one"),
-                ],
-            ),
-            (
-                "proposal::rests_on_the_withdrawn_one",
-                &[
-                    ("sentence_kind", "enumeration"),
-                    ("evidence", "the_withdrawn_one"),
-                ],
-            ),
-            (
-                "proposal::rests_on_the_uncontrolled_one",
-                &[
-                    ("sentence_kind", "measured"),
-                    ("evidence", "the_uncontrolled_one"),
-                ],
-            ),
-            (
-                "proposal::an_argument_citing_a_defective_one",
-                &[
-                    ("sentence_kind", "argument"),
-                    ("evidence", "the_defective_one"),
-                ],
-            ),
+            ("proposal::rests_on_the_sound_one", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "the_sound_one"),
+            ]),
+            ("proposal::rests_on_the_defective_one", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "the_defective_one"),
+            ]),
+            ("proposal::rests_on_the_withdrawn_one", &[
+                ("sentence_kind", "enumeration"),
+                ("evidence", "the_withdrawn_one"),
+            ]),
+            ("proposal::rests_on_the_uncontrolled_one", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "the_uncontrolled_one"),
+            ]),
+            ("proposal::an_argument_citing_a_defective_one", &[
+                ("sentence_kind", "argument"),
+                ("evidence", "the_defective_one"),
+            ]),
         ]);
         assert_eq!(f.len(), 3, "{f:?}");
         for who in [
@@ -264,28 +246,28 @@ mod tests {
         let f = kinds(&[
             ("probe::defective", &[("standing", "defective")]),
             ("probe::uncontrolled", &[("standing", "uncontrolled")]),
-            (
-                "proposal::a",
-                &[("sentence_kind", "measured"), ("evidence", "defective")],
-            ),
-            (
-                "proposal::b",
-                &[("sentence_kind", "measured"), ("evidence", "uncontrolled")],
-            ),
+            ("proposal::a", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "defective"),
+            ]),
+            ("proposal::b", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "uncontrolled"),
+            ]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
         assert!(
-            f.iter().any(
-                |(k, m)| *k == Some("measurement-rests-on-an-uncontrolled-instrument")
+            f.iter().any(|(k, m)| {
+                *k == Some("measurement-rests-on-an-uncontrolled-instrument")
                     && m.contains("proposal::b")
-            ),
+            }),
             "{f:?}"
         );
         assert!(
-            f.iter().any(
-                |(k, m)| *k == Some("measurement-rests-on-an-unusable-instrument")
+            f.iter().any(|(k, m)| {
+                *k == Some("measurement-rests-on-an-unusable-instrument")
                     && m.contains("proposal::a")
-            ),
+            }),
             "{f:?}"
         );
     }
@@ -298,28 +280,22 @@ mod tests {
         const SAME: &str = "None was run as a case that had to fail. Had the arms disagreed it \
                             would have been reported, and they did not.";
         let f = found(&[
-            (
-                "probe::declared_uncontrolled",
-                &[("standing", "uncontrolled"), ("control", SAME)],
-            ),
-            (
-                "probe::declared_sound",
-                &[("standing", "sound"), ("control", SAME)],
-            ),
-            (
-                "proposal::rests_on_the_declared_one",
-                &[
-                    ("sentence_kind", "measured"),
-                    ("evidence", "declared_uncontrolled"),
-                ],
-            ),
-            (
-                "proposal::rests_on_the_undeclared_one",
-                &[
-                    ("sentence_kind", "measured"),
-                    ("evidence", "declared_sound"),
-                ],
-            ),
+            ("probe::declared_uncontrolled", &[
+                ("standing", "uncontrolled"),
+                ("control", SAME),
+            ]),
+            ("probe::declared_sound", &[
+                ("standing", "sound"),
+                ("control", SAME),
+            ]),
+            ("proposal::rests_on_the_declared_one", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "declared_uncontrolled"),
+            ]),
+            ("proposal::rests_on_the_undeclared_one", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "declared_sound"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("rests_on_the_declared_one"), "{}", f[0]);
@@ -331,13 +307,10 @@ mod tests {
         // second opinion here in different words would be two reports of one
         // defect, and a lint that reported an absent row as unusable would fire
         // on every corpus mid-edit.
-        let f = found(&[(
-            "proposal::p",
-            &[
-                ("sentence_kind", "measured"),
-                ("evidence", "nothing_declares_this"),
-            ],
-        )]);
+        let f = found(&[("proposal::p", &[
+            ("sentence_kind", "measured"),
+            ("evidence", "nothing_declares_this"),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -348,10 +321,10 @@ mod tests {
         // would report a row for a defect a different check names.
         let f = found(&[
             ("probe::p", &[("control", "something was run")]),
-            (
-                "proposal::q",
-                &[("sentence_kind", "measured"), ("evidence", "p")],
-            ),
+            ("proposal::q", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "p"),
+            ]),
         ]);
         assert!(f.is_empty(), "{f:?}");
     }
@@ -364,10 +337,10 @@ mod tests {
         let f = found(&[
             ("probe::a", &[("standing", "defective")]),
             ("probe::b", &[("standing", "withdrawn")]),
-            (
-                "proposal::p",
-                &[("sentence_kind", "measured"), ("evidence", "a, b")],
-            ),
+            ("proposal::p", &[
+                ("sentence_kind", "measured"),
+                ("evidence", "a, b"),
+            ]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
         assert!(f.iter().any(|m| m.contains("probe::a")), "{f:?}");
@@ -384,10 +357,10 @@ mod tests {
         let v = view(
             &[
                 ("probe::p", &[("standing", "defective")]),
-                (
-                    "proposal::q",
-                    &[("sentence_kind", "measured"), ("evidence", "p")],
-                ),
+                ("proposal::q", &[
+                    ("sentence_kind", "measured"),
+                    ("evidence", "p"),
+                ]),
             ],
             &[],
         );

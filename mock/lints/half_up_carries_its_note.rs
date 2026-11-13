@@ -63,7 +63,7 @@
 
 use std::path::{Path, PathBuf};
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Entry, Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::half_up_is_not_a_magnitude_rule::comments::passages;
 use crate::half_up_is_not_a_magnitude_rule::reading::{DENOTES, SPELLINGS, spellings_in};
@@ -97,22 +97,21 @@ impl Lint for HalfUpCarriesItsNote {
 
 impl RepoLint for HalfUpCarriesItsNote {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(ctx.repo_root, ctx.mock_dir)
+        check(ctx.view(), ctx.repo_root, ctx.mock_dir)
     }
 }
 
 /// Every finding over the published surface.
-pub(crate) fn check(repo_root: &Path, mock_dir: &Path) -> Vec<LintError> {
+pub(crate) fn check(view: &View, repo_root: &Path, mock_dir: &Path) -> Vec<LintError> {
     let mut out = Vec::new();
     let readme = repo_root.join("README.md");
-    if let Ok(text) = std::fs::read_to_string(&readme) {
-        out.extend(markdown("README.md", &text));
+    if let Some(text) = view.text(&readme) {
+        out.extend(markdown("README.md", text));
     }
-    let mut files = Vec::new();
-    collect(mock_dir, &mut files);
+    let mut files = collect(view, mock_dir);
     files.sort();
     for path in files {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let shown = path
@@ -121,9 +120,9 @@ pub(crate) fn check(repo_root: &Path, mock_dir: &Path) -> Vec<LintError> {
             .display()
             .to_string();
         if shown.ends_with(".rs") {
-            out.extend(rustdoc(&shown, &text));
+            out.extend(rustdoc(&shown, text));
         } else {
-            out.extend(markdown(&shown, &text));
+            out.extend(markdown(&shown, text));
         }
     }
     out
@@ -168,21 +167,20 @@ fn rustdoc(shown: &str, text: &str) -> Vec<LintError> {
 
 /// Every `.rs` under a crate's own source, and every `.md.tmpl`, outside the
 /// directories this does not read and outside any hidden one.
-pub(crate) fn collect(dir: &Path, out: &mut Vec<PathBuf>) {
-    let Ok(entries) = std::fs::read_dir(dir) else {
-        return;
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        let name = entry.file_name().to_string_lossy().to_string();
-        if path.is_dir() {
-            if !(name.starts_with('.') || NOT_READ.contains(&name.as_str())) {
-                collect(&path, out);
-            }
-        } else if name.ends_with(".md.tmpl") || is_crate_source(&path, &name) {
-            out.push(path);
-        }
-    }
+pub(crate) fn collect(view: &View, dir: &Path) -> Vec<PathBuf> {
+    view.walk(dir, |_, entry| {
+        let name = entry.name();
+        Entry::is_dir(entry) && (name.starts_with('.') || NOT_READ.contains(&name))
+    })
+    .into_iter()
+    .filter(|path| {
+        let name = path
+            .file_name()
+            .map(|n| n.to_string_lossy().to_string())
+            .unwrap_or_default();
+        name.ends_with(".md.tmpl") || is_crate_source(path, &name)
+    })
+    .collect()
 }
 
 /// Whether a file is a crate's own library source, which is what rustdoc

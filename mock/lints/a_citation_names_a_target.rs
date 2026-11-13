@@ -58,10 +58,10 @@ impl Lint for ACitationNamesATarget {
 impl RepoLint for ACitationNamesATarget {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
-        for ns in ctx.registry.namespaces() {
-            for q in ctx.registry.rows_in(ns) {
+        for ns in ctx.registry().namespaces() {
+            for q in ctx.registry().rows_in(ns) {
                 for field in CITATION_FIELDS {
-                    for citation in list(ctx.registry, q, field) {
+                    for citation in list(ctx.registry(), q, field) {
                         if citation.split(SEP).count() >= 2 {
                             continue;
                         }
@@ -87,7 +87,12 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -100,7 +105,7 @@ mod tests {
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::ACitationNamesATarget
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -118,13 +123,10 @@ mod tests {
     /// it is the one that looks most like a citation.
     #[test]
     fn a_bare_filename_with_no_root_is_reported() {
-        let f = findings(&[(
-            "ruling::a_call",
-            &[(
-                "provenance",
-                "74_giesen_consolidation_the_number_system_concept",
-            )],
-        )]);
+        let f = findings(&[("ruling::a_call", &[(
+            "provenance",
+            "74_giesen_consolidation_the_number_system_concept",
+        )])]);
         assert_eq!(f.len(), 1, "{f:?}");
     }
 
@@ -133,13 +135,10 @@ mod tests {
     /// on a clean canon, since the canon would then simply carry none.
     #[test]
     fn control_a_root_and_a_path_is_silent() {
-        let f = findings(&[(
-            "ruling::a_call",
-            &[(
-                "provenance",
-                &cited(&[&format!("{ROOT}::109_bellard::156")]),
-            )],
-        )]);
+        let f = findings(&[("ruling::a_call", &[(
+            "provenance",
+            &cited(&[&format!("{ROOT}::109_bellard::156")]),
+        )])]);
         assert!(f.is_empty(), "{f:?}");
     }
 

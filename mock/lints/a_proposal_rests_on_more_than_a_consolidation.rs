@@ -57,7 +57,9 @@ use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 use crate::canon_citations::{files_cited, is_a_consolidation};
 use crate::canon_rows::finding;
 pub fn repo_lint() -> Box<dyn RepoLint> {
-    Box::new(AProposalRestsOnMoreThanAConsolidation { ceiling: CEILING })
+    Box::new(AProposalRestsOnMoreThanAConsolidation {
+        ceiling: CEILING,
+    })
 }
 
 const LINT: &str = "a-proposal-rests-on-more-than-a-consolidation";
@@ -99,11 +101,11 @@ impl RepoLint for AProposalRestsOnMoreThanAConsolidation {
 
 impl AProposalRestsOnMoreThanAConsolidation {
     fn every_offending_row(&self, ctx: &RepoContext) -> Vec<LintError> {
-        ctx.registry
+        ctx.registry()
             .rows_in("proposal")
             .iter()
             .filter_map(|q| {
-                let files = files_cited(ctx.registry, q);
+                let files = files_cited(ctx.registry(), q);
                 // A row citing nothing is the schema's report to make, and an
                 // `all` over an empty set is true, so the emptiness is checked
                 // first rather than left to decide it silently.
@@ -133,7 +135,12 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -152,11 +159,13 @@ mod tests {
     /// The same, with the ratchet set where a test wants it.
     fn at_a_ceiling_of(ceiling: usize, rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
-        super::AProposalRestsOnMoreThanAConsolidation { ceiling }
-            .check_repo(&ctx(&v))
-            .into_iter()
-            .map(|e| e.message)
-            .collect()
+        super::AProposalRestsOnMoreThanAConsolidation {
+            ceiling,
+        }
+        .judge(ctx(&v))
+        .into_iter()
+        .map(|e| e.message)
+        .collect()
     }
 
     #[test]
@@ -165,10 +174,8 @@ mod tests {
         // grandfathered; one above it every row is named, so the one that just
         // landed is in the list rather than being a count somebody has to diff.
         let p = cited(&[&format!("{ROOT}::{CONSOLIDATION}::475")]);
-        let two: [(&str, &[(&str, &str)]); 2] = [
-            ("proposal::a", &[("provenance", &p)]),
-            ("proposal::b", &[("provenance", &p)]),
-        ];
+        let two: [(&str, &[(&str, &str)]); 2] =
+            [("proposal::a", &[("provenance", &p)]), ("proposal::b", &[("provenance", &p)])];
         assert!(
             at_a_ceiling_of(2, &two).is_empty(),
             "two under a ceiling of two"
@@ -200,10 +207,8 @@ mod tests {
     /// claim came from.
     #[test]
     fn control_a_consolidation_beside_its_source_is_silent() {
-        let p = cited(&[
-            &format!("{ROOT}::{CONSOLIDATION}::526"),
-            &format!("{ROOT}::{MEMBER}::399"),
-        ]);
+        let p =
+            cited(&[&format!("{ROOT}::{CONSOLIDATION}::526"), &format!("{ROOT}::{MEMBER}::399")]);
         let f = findings(&[("proposal::a_claim", &[("provenance", &p)])]);
         assert!(
             f.is_empty(),
@@ -227,9 +232,7 @@ mod tests {
 
     #[test]
     fn control_a_row_citing_only_member_files_is_silent() {
-        let p = cited(&[&format!(
-            "{ROOT}::68_leroy_what_the_pipeline_certifies::226"
-        )]);
+        let p = cited(&[&format!("{ROOT}::68_leroy_what_the_pipeline_certifies::226")]);
         let f = findings(&[("proposal::a_claim", &[("provenance", &p)])]);
         assert!(f.is_empty(), "{f:?}");
     }
@@ -276,7 +279,9 @@ mod tests {
         let p = format!("{ROOT}::{CONSOLIDATION}::475");
         let v = view(&[("proposal::a", &[("provenance", &p)])], &[]);
         assert_findings_block(
-            &super::AProposalRestsOnMoreThanAConsolidation { ceiling: 0 },
+            &super::AProposalRestsOnMoreThanAConsolidation {
+                ceiling: 0,
+            },
             &v,
         );
     }
@@ -291,7 +296,10 @@ mod tests {
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
         assert_eq!(
-            super::AProposalRestsOnMoreThanAConsolidation { ceiling: 0 }.name(),
+            super::AProposalRestsOnMoreThanAConsolidation {
+                ceiling: 0,
+            }
+            .name(),
             "a-proposal-rests-on-more-than-a-consolidation"
         );
     }

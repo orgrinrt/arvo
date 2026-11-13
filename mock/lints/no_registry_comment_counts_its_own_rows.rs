@@ -25,9 +25,9 @@
 //! survives in a planted tree, and every arm below drives one.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
-use crate::panel_corpus::finding;
+use crate::panel_corpus::{files, finding};
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(NoRegistryCommentCountsItsOwnRows)
 }
@@ -53,15 +53,15 @@ impl Lint for NoRegistryCommentCountsItsOwnRows {
 }
 impl RepoLint for NoRegistryCommentCountsItsOwnRows {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&ctx.mock_dir.join("registry"))
+        check(ctx.view(), &ctx.mock_dir.join("registry"))
     }
 }
 
 /// Every counting comment under one directory of registry files.
-fn check(dir: &Path) -> Vec<LintError> {
+fn check(view: &View, dir: &Path) -> Vec<LintError> {
     let mut out = Vec::new();
-    for path in toml_files(dir) {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+    for path in files(view, dir, &["toml"]) {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let shown = crate::panel_corpus::shown(&path, dir);
@@ -114,34 +114,19 @@ fn is_count(word: &str) -> bool {
     !w.is_empty() && w.chars().all(|c| c.is_ascii_digit())
 }
 
-/// Every `*.toml` under a directory, sorted, so a report is stable.
-fn toml_files(dir: &Path) -> Vec<std::path::PathBuf> {
-    let mut out = Vec::new();
-    collect(dir, &mut out);
-    out.sort();
-    out
-}
-
-fn collect(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
-    let Ok(entries) = std::fs::read_dir(dir) else {
-        return;
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            collect(&path, out);
-        } else if path.extension().is_some_and(|e| e == "toml") {
-            out.push(path);
-        }
-    }
-}
 #[cfg(test)]
 mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        through_view,
+        view,
     };
 
     /// The messages one planted registry produces, with the line each names.
@@ -150,7 +135,7 @@ mod tests {
         for (at, text) in files {
             plant(&dir, &format!("registry/{at}"), text);
         }
-        super::check(&dir.join("registry"))
+        through_view(&dir, |v| super::check(v, &dir.join("registry")))
             .into_iter()
             .map(|e| (e.line, e.message))
             .collect()
@@ -212,10 +197,8 @@ mod tests {
 
     #[test]
     fn a_nested_registry_file_is_read_and_a_non_toml_file_is_not() {
-        let f = findings(&[
-            ("nested/b.toml", "# 4 rows below.\n"),
-            ("notes.md", "# 9 rows below.\n"),
-        ]);
+        let f =
+            findings(&[("nested/b.toml", "# 4 rows below.\n"), ("notes.md", "# 9 rows below.\n")]);
         assert_eq!(
             f.len(),
             1,
@@ -226,7 +209,7 @@ mod tests {
     #[test]
     fn a_registry_directory_that_is_not_there_is_silent_rather_than_a_panic() {
         let dir = planted_tree("registry-comments-absent");
-        assert!(super::check(&dir.join("registry")).is_empty());
+        assert!(through_view(&dir, |v| super::check(v, &dir.join("registry"))).is_empty());
     }
 
     #[test]
@@ -236,7 +219,7 @@ mod tests {
         let empty = view(&[], &[]);
         assert_findings_block_at(
             &super::NoRegistryCommentCountsItsOwnRows,
-            &ctx_at(&dir, &empty),
+            ctx_at(&dir, &empty),
         );
     }
 

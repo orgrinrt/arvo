@@ -30,9 +30,8 @@
 //! the gate an agent writes through may disagree with the canon, so this refuses
 //! rather than reports.
 use std::path::Path;
-use std::process::{Command, Stdio};
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::canon_rows::finding;
 
@@ -64,23 +63,19 @@ const HELPERS: &str = "{{HOOK_HELPERS}}";
 
 /// The helpers, as much of them as running the scanner needs.
 ///
-/// `_extract` hands back the probe's own path and line, `_scope_or_allow` passes
-/// because the probe names a path inside the guarded tree by construction, and
-/// the two verdicts print a word this can read. Everything after that in the
-/// template is the scanner, which is the part this lint is about.
+/// The probe's path and line arrive as the script's first two arguments,
+/// `_extract` hands them back, `_scope_or_allow` passes because the probe names a
+/// path inside the guarded tree by construction, and the two verdicts print a
+/// word this can read. Everything after that in the template is the scanner,
+/// which is the part this lint is about.
 const STUB: &str = "\
+PROBE_PATH=$1\n\
+PROBE_LINE=$2\n\
 _extract() { case \"$1\" in file_path) printf '%s' \"$PROBE_PATH\" ;; content) printf '%s' \
                 \"$PROBE_LINE\" ;; *) printf '' ;; esac; }\n\
 _scope_or_allow() { return 0; }\n\
 allow() { echo __ALLOW__; exit 0; }\n\
 deny() { echo __DENY__; exit 0; }\n";
-
-/// Where the runnable copy of the template is staged, under generated output.
-///
-/// Inside `mock/target`, which is gitignored, so a run leaves nothing in the
-/// tree. Rewritten on every check rather than cached, because the template is
-/// the thing under test and a cached copy would answer for an older one.
-const SCRATCH: &str = "mock/target/the-write-hook-probe.sh";
 
 /// A file path inside the guarded tree, which the hook needs before it scans.
 ///
@@ -159,7 +154,7 @@ impl Lint for TheWriteHookExcepts {
 impl RepoLint for TheWriteHookExcepts {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let root = ctx.mock_dir.parent().unwrap_or(&ctx.mock_dir).to_path_buf();
-        check(&root)
+        check(ctx.view(), &root)
     }
 }
 
@@ -167,8 +162,8 @@ impl RepoLint for TheWriteHookExcepts {
 ///
 /// Split from the trait impl so a test can point it at a tree it built, and so
 /// the one place that decides is one function.
-fn check(root: &Path) -> Vec<LintError> {
-    let Ok(template) = std::fs::read_to_string(root.join(HOOK)) else {
+fn check(view: &View, root: &Path) -> Vec<LintError> {
+    let Some(template) = view.text(root.join(HOOK)) else {
         return vec![finding(
             NAME,
             Some("the-hook-is-not-there"),
@@ -191,18 +186,12 @@ fn check(root: &Path) -> Vec<LintError> {
         )];
     }
 
-    let Some(runnable) = stage(root) else {
-        return vec![finding(
-            NAME,
-            Some("the-hook-could-not-be-staged"),
-            format!("`{SCRATCH}` could not be written, so the scanner could not be run."),
-        )];
-    };
+    let runnable = stage(template);
 
     let target = root.join(GUARDED);
     let mut wrong = Vec::new();
     for (excepted, line) in TABLE {
-        match verdict(&runnable, &target, line) {
+        match verdict(view, &runnable, root, &target, line) {
             None => {
                 return vec![finding(
                     NAME,
@@ -248,36 +237,30 @@ fn check(root: &Path) -> Vec<LintError> {
         .collect()
 }
 
-/// The template with the helpers stood in for, written where bash can run it.
+/// The template with the helpers stood in for, as the script bash is handed.
 ///
 /// Separate from `check` so an arm testing one verdict can reach a runnable copy
 /// without going through the whole table, and so the substitution has one home.
-fn stage(root: &Path) -> Option<std::path::PathBuf> {
-    let template = std::fs::read_to_string(root.join(HOOK)).ok()?;
-    let runnable = root.join(SCRATCH);
-    std::fs::create_dir_all(runnable.parent()?).ok()?;
-    std::fs::write(&runnable, template.replace(HELPERS, STUB)).ok()?;
-    Some(runnable)
+/// Nothing is written: the script goes to bash as an argument, through the view,
+/// so the run is known by the very text it ran.
+fn stage(template: &str) -> String {
+    template.replace(HELPERS, STUB)
 }
 
 /// Whether the scanner denies one line, or nothing where it could not be asked.
 ///
-/// The line goes in through the environment rather than through the payload the
+/// The line goes in as a positional argument rather than through the payload the
 /// real hook parses, because the stub above is what reads it and the parsing is
 /// mockspace's. So a line holding a quote or a backslash needs no escaping and
 /// there is no payload that can fail to parse, which is the failure that would
 /// otherwise read as an allow on every row at once.
-fn verdict(hook: &Path, target: &Path, line: &str) -> Option<bool> {
-    let out = Command::new("bash")
-        .arg(hook)
-        .env("PROBE_PATH", target)
-        .env("PROBE_LINE", line)
-        .stdin(Stdio::null())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::null())
-        .output()
-        .ok()?;
-    let text = String::from_utf8_lossy(&out.stdout);
+fn verdict(view: &View, hook: &str, root: &Path, target: &Path, line: &str) -> Option<bool> {
+    let target = target.to_string_lossy();
+    let out = view.run("bash", &["-c", hook, "bash", &target, line], root, &[]);
+    if !out.started() {
+        return None;
+    }
+    let text = String::from_utf8_lossy(out.stdout());
     if text.contains("__DENY__") {
         return Some(true);
     }
@@ -289,7 +272,7 @@ fn verdict(hook: &Path, target: &Path, line: &str) -> Option<bool> {
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
+    use std::path::{Path, PathBuf};
 
     use mockspace::Lint;
 
@@ -301,6 +284,7 @@ mod tests {
         ctx_at,
         plant,
         planted_tree,
+        through_view,
         view,
     };
 
@@ -319,13 +303,20 @@ mod tests {
         dir
     }
 
-    /// The runnable copy `check` writes, for an arm calling `verdict` directly.
+    /// The runnable copy `check` hands bash, for an arm calling `verdict` directly.
     ///
     /// The template itself is not runnable: it still carries the helper marker,
     /// and bash on it fails, which `verdict` reports as no answer. Two arms
     /// asserted against the template and got exactly that.
-    fn staged(root: &std::path::Path) -> PathBuf {
-        super::stage(root).expect("the planted template stages")
+    fn staged(root: &Path) -> String {
+        let template =
+            std::fs::read_to_string(root.join(HOOK)).expect("the planted template reads");
+        super::stage(&template)
+    }
+
+    /// What the scanner in `hook` says about one line, asked as `check` asks it.
+    fn ask(root: &Path, hook: &str, target: &Path, line: &str) -> Option<bool> {
+        through_view(root, |v| verdict(v, hook, root, target, line))
     }
 
     /// A scanner that denies exactly the lines whose content matches a needle.
@@ -346,7 +337,7 @@ mod tests {
     #[test]
     fn a_missing_hook_is_reported_rather_than_passed() {
         let dir = planted_tree("no-hook-at-all");
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1, "one finding for the absent hook");
         assert_eq!(out[0].finding_kind, Some("the-hook-is-not-there"));
     }
@@ -359,7 +350,7 @@ mod tests {
         let dir = planted_tree("no-marker");
         plant(&dir, HOOK, "#!/usr/bin/env bash\nexit 0\n");
         plant(&dir, GUARDED, "");
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1);
         assert_eq!(
             out[0].finding_kind,
@@ -382,7 +373,7 @@ mod tests {
         scanner.push_str("esac");
         let dir = tree_with_hook("agrees", &scanner);
         assert!(
-            check(&dir).is_empty(),
+            through_view(&dir, |v| check(v, &dir)).is_empty(),
             "a hook agreeing with the table has nothing to report"
         );
     }
@@ -392,7 +383,7 @@ mod tests {
         // The defect this lint was written for, reproduced: a scanner with no
         // exception denies the parameter along with everything else.
         let dir = tree_with_hook("denies-the-exception", &denies_when_containing("u32"));
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         let kinds: Vec<_> = out.iter().filter_map(|e| e.finding_kind).collect();
         assert!(
             kinds.contains(&"an-excepted-position-is-denied"),
@@ -405,7 +396,7 @@ mod tests {
         // Without this arm the one above passes for a lint that only ever looks
         // at the excepted half, and a gate that refuses nothing would clear it.
         let dir = tree_with_hook("allows-everything", ":");
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         let denied = TABLE.iter().filter(|(excepted, _)| !excepted).count();
         assert_eq!(
             out.len(),
@@ -429,7 +420,7 @@ mod tests {
             &format!("#!/usr/bin/env bash\n{HELPERS}\nexit 0\n"),
         );
         plant(&dir, GUARDED, "");
-        let out = check(&dir);
+        let out = through_view(&dir, |v| check(v, &dir));
         assert_eq!(out.len(), 1);
         assert_eq!(out[0].finding_kind, Some("the-hook-did-not-answer"));
     }
@@ -459,7 +450,7 @@ mod tests {
         // the pack reports clean beside it.
         let root = planted_tree("hook-severity");
         let empty = view(&[], &[]);
-        assert_findings_block_at(&TheWriteHookExcepts, &ctx_at(&root.join("mock"), &empty));
+        assert_findings_block_at(&TheWriteHookExcepts, ctx_at(&root.join("mock"), &empty));
     }
 
     /// The repository root, found by walking up from the generated lint crate
@@ -495,23 +486,33 @@ mod tests {
             return;
         };
         let target = root.join(GUARDED);
-        let hook = super::stage(&root).expect("the repo's own template stages");
+        let hook = staged(&root);
 
         // The control first: one tick alone hides nothing, so a deny here is what
         // says the ticks did it rather than the shape.
         assert_eq!(
-            verdict(&hook, &target, "pub struct T<'a>(&'a u32);"),
+            ask(&root, &hook, &target, "pub struct T<'a>(&'a u32);"),
             Some(true),
             "one lifetime tick leaves the bare primitive visible"
         );
 
         assert_eq!(
-            verdict(&hook, &target, "pub struct S<'a, 'b>(&'a u32, &'b Bool);"),
+            ask(
+                &root,
+                &hook,
+                &target,
+                "pub struct S<'a, 'b>(&'a u32, &'b Bool);"
+            ),
             Some(true),
             "a tuple-struct field between two ticks"
         );
         assert_eq!(
-            verdict(&hook, &target, "fn f<'a, 'b>(x: &'a u32, y: &'b Bool) {}"),
+            ask(
+                &root,
+                &hook,
+                &target,
+                "fn f<'a, 'b>(x: &'a u32, y: &'b Bool) {}"
+            ),
             Some(true),
             "a function parameter between two ticks"
         );
@@ -529,30 +530,30 @@ mod tests {
             return;
         };
         let target = root.join(GUARDED);
-        let hook = super::stage(&root).expect("the repo's own template stages");
+        let hook = staged(&root);
 
         // The control: the same primitive in a position the line scan does reach.
         assert_eq!(
-            verdict(&hook, &target, "let n: u32 = 0;"),
+            ask(&root, &hook, &target, "let n: u32 = 0;"),
             Some(true),
             "a named type is reached, which is what makes the arms below a gap"
         );
 
-        assert_eq!(verdict(&hook, &target, "let n = 0u32;"), Some(true));
-        assert_eq!(verdict(&hook, &target, "let n = 1_usize;"), Some(true));
+        assert_eq!(ask(&root, &hook, &target, "let n = 0u32;"), Some(true));
+        assert_eq!(ask(&root, &hook, &target, "let n = 1_usize;"), Some(true));
     }
 
     #[test]
     fn a_line_carrying_a_quote_reaches_the_scanner_whole() {
-        // The line goes through the environment, so nothing about it has to be
+        // The line goes in as an argument, so nothing about it has to be
         // escaped. Pinned because the earlier shape built a JSON payload, where
         // a quote produced a document that did not parse and therefore an allow
         // on every row at once.
         let dir = tree_with_hook("quoted-line", &denies_when_containing("\"a\\b\""));
         let target = dir.join(GUARDED);
         let hook = staged(&dir);
-        assert_eq!(verdict(&hook, &target, "let s = \"a\\b\";"), Some(true));
-        assert_eq!(verdict(&hook, &target, "let s = 1;"), Some(false));
+        assert_eq!(ask(&dir, &hook, &target, "let s = \"a\\b\";"), Some(true));
+        assert_eq!(ask(&dir, &hook, &target, "let s = 1;"), Some(false));
     }
 
     #[test]
@@ -566,6 +567,6 @@ mod tests {
         );
         let target = dir.join(GUARDED);
         let hook = staged(&dir);
-        assert_eq!(verdict(&hook, &target, "pub struct A(u32);"), Some(false));
+        assert_eq!(ask(&dir, &hook, &target, "pub struct A(u32);"), Some(false));
     }
 }

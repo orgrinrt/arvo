@@ -76,7 +76,7 @@ impl CrateLint for NoDynamicDispatch {
 
         let mut errors = Vec::new();
 
-        for (idx, line) in ctx.source.lines().enumerate() {
+        for (idx, line) in ctx.source().lines().enumerate() {
             let trimmed = line.trim_start();
 
             // Skip comments wholesale.

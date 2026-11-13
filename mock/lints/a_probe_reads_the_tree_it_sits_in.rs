@@ -38,11 +38,13 @@
 //! is what gets refused. Raising the number is not the fix for a failure.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::panel_corpus::{finding, panel_dir, scripts, shown};
 pub fn repo_lint() -> Box<dyn RepoLint> {
-    Box::new(AProbeReadsTheTreeItSitsIn { ceiling: CEILING })
+    Box::new(AProbeReadsTheTreeItSitsIn {
+        ceiling: CEILING,
+    })
 }
 
 const NAME: &str = "a-probe-reads-the-tree-it-sits-in";
@@ -85,14 +87,14 @@ impl Lint for AProbeReadsTheTreeItSitsIn {
 }
 impl RepoLint for AProbeReadsTheTreeItSitsIn {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        self.check(&panel_dir(ctx.mock_dir))
+        self.check(ctx.view(), &panel_dir(ctx.mock_dir))
     }
 }
 
 impl AProbeReadsTheTreeItSitsIn {
-    fn check(&self, dir: &Path) -> Vec<LintError> {
-        let found = offenders(dir);
-        let mut files: Vec<&str> = found.iter().map(|(at, _, _)| at.as_str()).collect();
+    fn check(&self, view: &View, dir: &Path) -> Vec<LintError> {
+        let found = offenders(view, dir);
+        let mut files: Vec<&str> = found.iter().map(|(at, ..)| at.as_str()).collect();
         files.sort_unstable();
         files.dedup();
         if files.len() <= self.ceiling {
@@ -121,10 +123,10 @@ impl AProbeReadsTheTreeItSitsIn {
 }
 
 /// Every committed script naming a home-anchored absolute path, with the path.
-fn offenders(dir: &Path) -> Vec<(String, usize, String)> {
+fn offenders(view: &View, dir: &Path) -> Vec<(String, usize, String)> {
     let mut out = Vec::new();
-    for path in scripts(dir) {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+    for path in scripts(view, dir) {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let at = shown(&path, dir);
@@ -132,7 +134,7 @@ fn offenders(dir: &Path) -> Vec<(String, usize, String)> {
             let Some(found) = line.find(ANCHORED) else {
                 continue;
             };
-            let cited: String = line[found..]
+            let cited: String = line[found ..]
                 .chars()
                 .take_while(|c| !c.is_whitespace() && *c != '"' && *c != '\'' && *c != ')')
                 .collect();
@@ -147,8 +149,14 @@ mod tests {
 
     use super::AProbeReadsTheTreeItSitsIn as Probe;
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        through_view,
+        view,
     };
     use crate::panel_corpus::PANEL;
 
@@ -172,7 +180,7 @@ mod tests {
                 "#!/bin/sh\nroot=$(cd \"$(dirname \"$0\")/../..\" && pwd)\ngrep -r x \"$root\"\n",
             ),
         ]);
-        let found = super::offenders(&dir);
+        let found = through_view(&dir, |v| super::offenders(v, &dir));
         assert_eq!(found.len(), 1, "{found:?}");
         assert!(found[0].0.contains("reads_elsewhere.sh"), "{found:?}");
         assert_eq!(
@@ -185,27 +193,21 @@ mod tests {
     fn control_prose_naming_a_path_is_not_a_script() {
         // The corpus records what it ran, and a finding there would be a
         // finding about the audit trail doing its job.
-        let dir = tree(
-            "probe-prose",
-            &[(
-                "42_notes.md",
-                "It was run against `/Users/somebody/Dev/other-clone/arvo`.\n",
-            )],
-        );
-        assert!(super::offenders(&dir).is_empty());
+        let dir = tree("probe-prose", &[(
+            "42_notes.md",
+            "It was run against `/Users/somebody/Dev/other-clone/arvo`.\n",
+        )]);
+        assert!(through_view(&dir, |v| super::offenders(v, &dir)).is_empty());
     }
 
     #[test]
     fn control_a_relative_path_is_a_different_and_louder_failure() {
-        let dir = tree(
-            "probe-relative",
-            &[(
-                "43_probes/relative.py",
-                "open('../../../mock/registry/dimension.toml')\n",
-            )],
-        );
+        let dir = tree("probe-relative", &[(
+            "43_probes/relative.py",
+            "open('../../../mock/registry/dimension.toml')\n",
+        )]);
         assert!(
-            super::offenders(&dir).is_empty(),
+            through_view(&dir, |v| super::offenders(v, &dir)).is_empty(),
             "a relative path fails loudly where it is wrong, which is the opposite problem"
         );
     }
@@ -216,15 +218,12 @@ mod tests {
         // as long as the other three are unwalked. The panel's probes are
         // written in all of them.
         for ext in ["sh", "py", "rs", "awk"] {
-            let dir = tree(
-                &format!("probe-ext-{ext}"),
-                &[(
-                    &format!("44_probes/reads.{ext}"),
-                    "root=/Users/somebody/Dev/other-clone\n",
-                )],
-            );
+            let dir = tree(&format!("probe-ext-{ext}"), &[(
+                &format!("44_probes/reads.{ext}"),
+                "root=/Users/somebody/Dev/other-clone\n",
+            )]);
             assert_eq!(
-                super::offenders(&dir).len(),
+                through_view(&dir, |v| super::offenders(v, &dir)).len(),
                 1,
                 "a `.{ext}` probe is committed and is not walked"
             );
@@ -235,19 +234,31 @@ mod tests {
     fn the_ratchet_counts_files_rather_than_occurrences() {
         // A single script naming the path on four lines is one probe to repair,
         // and counting occurrences would make one file look like four.
-        let dir = tree(
-            "probe-count",
-            &[(
-                "45_probes/many.sh",
-                "a=/Users/x/one\nb=/Users/x/two\nc=/Users/x/three\nd=/Users/x/four\n",
-            )],
+        let dir = tree("probe-count", &[(
+            "45_probes/many.sh",
+            "a=/Users/x/one\nb=/Users/x/two\nc=/Users/x/three\nd=/Users/x/four\n",
+        )]);
+        assert_eq!(
+            through_view(&dir, |v| super::offenders(v, &dir)).len(),
+            4,
+            "four lines carry one file"
         );
-        assert_eq!(super::offenders(&dir).len(), 4, "four lines carry one file");
         assert!(
-            Probe { ceiling: 1 }.check(&dir).is_empty(),
+            through_view(&dir, |v| {
+                Probe {
+                    ceiling: 1,
+                }
+                .check(v, &dir)
+            })
+            .is_empty(),
             "one file under a ceiling of one is the grandfathered population"
         );
-        let f = Probe { ceiling: 0 }.check(&dir);
+        let f = through_view(&dir, |v| {
+            Probe {
+                ceiling: 0,
+            }
+            .check(v, &dir)
+        });
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].message.contains("1 probe scripts"), "{}", f[0].message);
     }
@@ -255,7 +266,15 @@ mod tests {
     #[test]
     fn a_panel_directory_that_is_not_there_is_silent_rather_than_a_panic() {
         let dir = planted_tree("probe-absent");
-        assert!(Probe { ceiling: 0 }.check(&dir.join("nothing")).is_empty());
+        assert!(
+            through_view(&dir, |v| {
+                Probe {
+                    ceiling: 0,
+                }
+                .check(v, &dir.join("nothing"))
+            })
+            .is_empty()
+        );
     }
 
     #[test]
@@ -271,7 +290,12 @@ mod tests {
             "root=/Users/somebody/Dev/other-clone\n",
         );
         let empty = view(&[], &[]);
-        assert_findings_block_at(&Probe { ceiling: 0 }, &ctx_at(&dir.join("mock"), &empty));
+        assert_findings_block_at(
+            &Probe {
+                ceiling: 0,
+            },
+            ctx_at(&dir.join("mock"), &empty),
+        );
     }
 
     #[test]
@@ -280,7 +304,7 @@ mod tests {
         // arms above measure a ceiling nothing runs at.
         assert_eq!(
             Probe {
-                ceiling: super::CEILING
+                ceiling: super::CEILING,
             }
             .ceiling,
             25
@@ -298,7 +322,7 @@ mod tests {
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
         assert_eq!(
             Probe {
-                ceiling: super::CEILING
+                ceiling: super::CEILING,
             }
             .name(),
             super::NAME

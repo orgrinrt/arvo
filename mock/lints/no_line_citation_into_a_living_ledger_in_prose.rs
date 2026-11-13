@@ -36,10 +36,16 @@
 //! is a report rather than a lie.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::panel_corpus::{
-    finding, ledger_stems, line_citations, markdown, panel_dir, shown, LIVING_LEDGERS,
+    LIVING_LEDGERS,
+    finding,
+    ledger_stems,
+    line_citations,
+    markdown,
+    panel_dir,
+    shown,
 };
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(NoLineCitationIntoALivingLedgerInProse)
@@ -66,16 +72,16 @@ impl Lint for NoLineCitationIntoALivingLedgerInProse {
 }
 impl RepoLint for NoLineCitationIntoALivingLedgerInProse {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(&panel_dir(ctx.mock_dir), CEILING)
+        check(ctx.view(), &panel_dir(ctx.mock_dir), CEILING)
     }
 }
 
-fn check(dir: &Path, ceiling: usize) -> Vec<LintError> {
-    let found = citations(dir);
+fn check(view: &View, dir: &Path, ceiling: usize) -> Vec<LintError> {
+    let found = citations(view, dir);
     let (in_ledgers, in_the_record): (
         Vec<&(String, usize, String)>,
         Vec<&(String, usize, String)>,
-    ) = found.iter().partition(|(at, _, _)| is_a_living_ledger(at));
+    ) = found.iter().partition(|(at, ..)| is_a_living_ledger(at));
 
     let mut out: Vec<LintError> = in_ledgers
         .iter()
@@ -95,7 +101,7 @@ fn check(dir: &Path, ceiling: usize) -> Vec<LintError> {
         .collect();
 
     if in_the_record.len() > ceiling {
-        let mut per_file: Vec<String> = in_the_record.iter().map(|(at, _, _)| at.clone()).collect();
+        let mut per_file: Vec<String> = in_the_record.iter().map(|(at, ..)| at.clone()).collect();
         per_file.sort();
         per_file.dedup();
         out.push(finding(
@@ -116,11 +122,11 @@ fn check(dir: &Path, ceiling: usize) -> Vec<LintError> {
 }
 
 /// Every `<LEDGER>.md:<line>` the panel's prose carries.
-fn citations(dir: &Path) -> Vec<(String, usize, String)> {
+fn citations(view: &View, dir: &Path) -> Vec<(String, usize, String)> {
     let stems = ledger_stems();
     let mut out = Vec::new();
-    for path in markdown(dir) {
-        let Ok(text) = std::fs::read_to_string(&path) else {
+    for path in markdown(view, dir) {
+        let Some(text) = view.text(&path) else {
             continue;
         };
         let at = shown(&path, dir);
@@ -147,8 +153,14 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        through_view,
+        view,
     };
     use crate::panel_corpus::PANEL;
 
@@ -157,7 +169,7 @@ mod tests {
         for (at, text) in files {
             plant(&dir, at, text);
         }
-        super::check(&dir, ceiling)
+        through_view(&dir, |v| super::check(v, &dir, ceiling))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -244,7 +256,12 @@ mod tests {
     #[test]
     fn a_panel_directory_that_is_not_there_is_silent_rather_than_a_panic() {
         let dir = planted_tree("ledger-prose-absent");
-        assert!(super::check(&dir.join("nothing"), 0).is_empty());
+        assert!(
+            through_view(&dir.join("nothing"), |v| {
+                super::check(v, &dir.join("nothing"), 0)
+            })
+            .is_empty()
+        );
     }
 
     #[test]
@@ -258,7 +275,7 @@ mod tests {
         let empty = view(&[], &[]);
         assert_findings_block_at(
             &super::NoLineCitationIntoALivingLedgerInProse,
-            &ctx_at(&dir.join("mock"), &empty),
+            ctx_at(&dir.join("mock"), &empty),
         );
     }
 

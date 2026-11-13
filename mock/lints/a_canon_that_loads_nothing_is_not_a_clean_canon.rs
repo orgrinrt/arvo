@@ -31,9 +31,10 @@
 //! the pack reports clean over nothing.
 use std::path::Path;
 
-use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
+use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity, View};
 
 use crate::canon_rows::finding;
+use crate::panel_corpus::files;
 pub fn repo_lint() -> Box<dyn RepoLint> {
     Box::new(ACanonThatLoadsNothing)
 }
@@ -61,9 +62,9 @@ impl Lint for ACanonThatLoadsNothing {
 impl RepoLint for ACanonThatLoadsNothing {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         check(
-            !ctx.registry.is_empty(),
-            ctx.canon_paths,
-            &files_on_disk(&ctx.mock_dir.join(REGISTRY)),
+            !ctx.registry().is_empty(),
+            ctx.canon_paths(),
+            &files_on_disk(ctx.view(), &ctx.mock_dir.join(REGISTRY)),
         )
     }
 }
@@ -116,32 +117,30 @@ fn check(view_has_rows: bool, canon_paths: &[String], on_disk: &[String]) -> Vec
 /// unreadable directory answers empty, which is the same answer an absent one
 /// gives: both mean this half cannot distinguish anything and the declaration
 /// half decides.
-fn files_on_disk(dir: &Path) -> Vec<String> {
-    let mut out = Vec::new();
-    let Ok(entries) = std::fs::read_dir(dir) else {
-        return out;
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            out.extend(files_on_disk(&path));
-        } else if path.extension().is_some_and(|e| e == "toml") {
-            out.push(
-                path.file_name()
-                    .map(|n| n.to_string_lossy().into_owned())
-                    .unwrap_or_default(),
-            );
-        }
-    }
-    out
+fn files_on_disk(view: &View, dir: &Path) -> Vec<String> {
+    files(view, dir, &["toml"])
+        .iter()
+        .map(|path| {
+            path.file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_default()
+        })
+        .collect()
 }
 #[cfg(test)]
 mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block_at, assert_not_declared_off, assert_registered, ctx_at, plant,
-        planted_tree, view,
+        Judge,
+        assert_findings_block_at,
+        assert_not_declared_off,
+        assert_registered,
+        ctx_at,
+        plant,
+        planted_tree,
+        through_view,
+        view,
     };
 
     fn kinds(found: &[mockspace::LintError]) -> Vec<Option<&'static str>> {
@@ -199,13 +198,13 @@ mod tests {
     fn the_disk_walk_finds_a_nested_file_and_reports_a_missing_directory_as_empty() {
         let dir = planted_tree("canon-load");
         assert!(
-            super::files_on_disk(&dir.join("registry")).is_empty(),
+            through_view(&dir, |v| super::files_on_disk(v, &dir.join("registry"))).is_empty(),
             "a directory that is not there is not a load failure"
         );
         plant(&dir, "registry/ruling.toml", "[[ruling]]\nid = \"a\"\n");
         plant(&dir, "registry/nested/law.toml", "[[law]]\nid = \"b\"\n");
         plant(&dir, "registry/notes.md", "not toml\n");
-        let mut found = super::files_on_disk(&dir.join("registry"));
+        let mut found = through_view(&dir, |v| super::files_on_disk(v, &dir.join("registry")));
         found.sort();
         assert_eq!(
             found,
@@ -222,7 +221,7 @@ mod tests {
         let dir = planted_tree("canon-load-wiring");
         plant(&dir, "registry/ruling.toml", "[[ruling]]\nid = \"a\"\n");
         let empty = view(&[], &[]);
-        let found = super::ACanonThatLoadsNothing.check_repo(&ctx_at(&dir, &empty));
+        let found = super::ACanonThatLoadsNothing.judge(ctx_at(&dir, &empty));
         assert_eq!(
             kinds(&found),
             [Some("the-registry-did-not-load")],
@@ -238,7 +237,7 @@ mod tests {
         let dir = planted_tree("canon-load-severity");
         plant(&dir, "registry/ruling.toml", "[[ruling]]\nid = \"a\"\n");
         let empty = view(&[], &[]);
-        assert_findings_block_at(&super::ACanonThatLoadsNothing, &ctx_at(&dir, &empty));
+        assert_findings_block_at(&super::ACanonThatLoadsNothing, ctx_at(&dir, &empty));
     }
 
     #[test]

@@ -116,7 +116,7 @@ impl Lint for ASettledQuestionDoesNotSitInTheQueue {
 }
 impl RepoLint for ASettledQuestionDoesNotSitInTheQueue {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        let reg = ctx.registry;
+        let reg = ctx.registry();
         let mut out = answers_naming_no_question(reg);
         out.extend(op_deciders_carrying_a_bound(reg));
         out.extend(settled_questions_that_do_not_say_so(reg));
@@ -263,7 +263,12 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
     use crate::canon_rows::JOIN;
 
@@ -271,7 +276,7 @@ mod tests {
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<(Option<&'static str>, String)> {
         let v = view(rows, &[]);
         super::ASettledQuestionDoesNotSitInTheQueue
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| (e.finding_kind, e.message))
             .collect()
@@ -290,10 +295,10 @@ mod tests {
     fn a_ruling_answering_a_question_that_does_not_exist_is_reported() {
         let a = cited(&["a_real_one", "a_ghost"]);
         let f = found(&[
-            (
-                "question::a_real_one",
-                &[("asks", "Is it?"), ("answered", "yes")],
-            ),
+            ("question::a_real_one", &[
+                ("asks", "Is it?"),
+                ("answered", "yes"),
+            ]),
             ("ruling::he_said_so", &[("answers", &a)]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
@@ -308,14 +313,16 @@ mod tests {
 
     #[test]
     fn control_a_ruling_answering_only_real_questions_is_silent() {
-        assert!(kinds(&[
-            (
-                "question::a_real_one",
-                &[("asks", "Is it?"), ("answered", "yes")]
-            ),
-            ("ruling::he_said_so", &[("answers", "a_real_one")]),
-        ])
-        .is_empty());
+        assert!(
+            kinds(&[
+                ("question::a_real_one", &[
+                    ("asks", "Is it?"),
+                    ("answered", "yes")
+                ]),
+                ("ruling::he_said_so", &[("answers", "a_real_one")]),
+            ])
+            .is_empty()
+        );
     }
 
     #[test]
@@ -331,14 +338,11 @@ mod tests {
 
     #[test]
     fn a_question_filed_as_his_while_carrying_a_bound_is_reported() {
-        let f = found(&[(
-            "question::handed_back",
-            &[
-                ("asks", "Which set ships?"),
-                ("decider", "op"),
-                ("bound", "Put to him and returned. Bounded by soundness."),
-            ],
-        )]);
+        let f = found(&[("question::handed_back", &[
+            ("asks", "Which set ships?"),
+            ("decider", "op"),
+            ("bound", "Put to him and returned. Bounded by soundness."),
+        ])]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert_eq!(f[0].0, Some("op-decider-carrying-a-bound"));
     }
@@ -349,26 +353,29 @@ mod tests {
         // simply not been asked yet, and a row carrying a `bound` and naming
         // somebody else is the repair. An arm reporting either would be
         // refusing the namespace rather than checking it.
-        assert!(kinds(&[
-            (
-                "question::not_yet_asked",
-                &[("asks", "?"), ("decider", "op")]
-            ),
-            (
-                "question::handed_on",
-                &[("asks", "?"), ("decider", "panel"), ("bound", "returned")],
-            ),
-        ])
-        .is_empty());
+        assert!(
+            kinds(&[
+                ("question::not_yet_asked", &[
+                    ("asks", "?"),
+                    ("decider", "op")
+                ]),
+                ("question::handed_on", &[
+                    ("asks", "?"),
+                    ("decider", "panel"),
+                    ("bound", "returned")
+                ],),
+            ])
+            .is_empty()
+        );
     }
 
     #[test]
     fn a_question_a_ruling_answers_whose_row_says_nothing_is_reported() {
         let f = found(&[
-            (
-                "question::open_looking",
-                &[("asks", "?"), ("decider", "op")],
-            ),
+            ("question::open_looking", &[
+                ("asks", "?"),
+                ("decider", "op"),
+            ]),
             ("ruling::he_said_so", &[("answers", "open_looking")]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
@@ -412,16 +419,13 @@ mod tests {
         // question registry in ordinary prose, including a row saying the
         // opposite of settled.
         let f = kinds(&[
-            (
-                "question::still_open",
-                &[
-                    ("asks", "?"),
-                    (
-                        "note",
-                        "a further item folds in here rather than being answered on its own",
-                    ),
-                ],
-            ),
+            ("question::still_open", &[
+                ("asks", "?"),
+                (
+                    "note",
+                    "a further item folds in here rather than being answered on its own",
+                ),
+            ]),
             ("ruling::he_said_so", &[("answers", "still_open")]),
         ]);
         assert_eq!(f, [Some("settled-question-reads-as-open")], "{f:?}");
@@ -443,14 +447,14 @@ mod tests {
         // way and every one of them read as open.
         let f = found(&[
             ("question::reached_two_hops", &[("asks", "?")]),
-            (
-                "proposal::a_stamped_claim",
-                &[("answers", "reached_two_hops")],
-            ),
-            (
-                "ruling::the_spine_is_canon",
-                &[("rung", "ratified"), ("ratifies", "a_stamped_claim")],
-            ),
+            ("proposal::a_stamped_claim", &[(
+                "answers",
+                "reached_two_hops",
+            )]),
+            ("ruling::the_spine_is_canon", &[
+                ("rung", "ratified"),
+                ("ratifies", "a_stamped_claim"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert_eq!(f[0].0, Some("settled-question-reads-as-open"));
@@ -471,14 +475,14 @@ mod tests {
         for rung in ["stated", "in_force", "open", ""] {
             let f = kinds(&[
                 ("question::reached_two_hops", &[("asks", "?")]),
-                (
-                    "proposal::a_stamped_claim",
-                    &[("answers", "reached_two_hops")],
-                ),
-                (
-                    "ruling::he_never_stamped_it",
-                    &[("rung", rung), ("ratifies", "a_stamped_claim")],
-                ),
+                ("proposal::a_stamped_claim", &[(
+                    "answers",
+                    "reached_two_hops",
+                )]),
+                ("ruling::he_never_stamped_it", &[
+                    ("rung", rung),
+                    ("ratifies", "a_stamped_claim"),
+                ]),
             ]);
             assert!(f.is_empty(), "`{rung}` settled a question: {f:?}");
         }
@@ -490,11 +494,13 @@ mod tests {
         // it is correct: a proposal does not settle what it names while it is a
         // proposal. Without this arm the second hop would collapse into
         // following every `proposal.answers`, which is the opposite rule.
-        assert!(kinds(&[
-            ("question::still_open", &[("asks", "?")]),
-            ("proposal::a_claim", &[("answers", "still_open")]),
-        ])
-        .is_empty());
+        assert!(
+            kinds(&[
+                ("question::still_open", &[("asks", "?")]),
+                ("proposal::a_claim", &[("answers", "still_open")]),
+            ])
+            .is_empty()
+        );
     }
 
     #[test]
@@ -505,28 +511,27 @@ mod tests {
         let f = found(&[
             ("question::reached_twice", &[("asks", "?")]),
             ("proposal::a_claim", &[("answers", "reached_twice")]),
-            (
-                "ruling::he_said_so",
-                &[
-                    ("rung", "ratified"),
-                    ("answers", "reached_twice"),
-                    ("ratifies", "a_claim"),
-                ],
-            ),
+            ("ruling::he_said_so", &[
+                ("rung", "ratified"),
+                ("answers", "reached_twice"),
+                ("ratifies", "a_claim"),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
     }
 
     #[test]
     fn a_ratifies_edge_naming_no_proposal_reaches_nothing_rather_than_panicking() {
-        assert!(kinds(&[
-            ("question::still_open", &[("asks", "?")]),
-            (
-                "ruling::he_said_so",
-                &[("rung", "ratified"), ("ratifies", "a_ghost")],
-            ),
-        ])
-        .is_empty());
+        assert!(
+            kinds(&[
+                ("question::still_open", &[("asks", "?")]),
+                ("ruling::he_said_so", &[
+                    ("rung", "ratified"),
+                    ("ratifies", "a_ghost")
+                ],),
+            ])
+            .is_empty()
+        );
     }
 
     #[test]
@@ -541,10 +546,10 @@ mod tests {
             ("question::two", &[("asks", "?")]),
             ("proposal::first", &[("answers", "one")]),
             ("proposal::second", &[("answers", "two")]),
-            (
-                "ruling::the_spine_is_canon",
-                &[("rung", "ratified"), ("ratifies", &stamped)],
-            ),
+            ("ruling::the_spine_is_canon", &[
+                ("rung", "ratified"),
+                ("ratifies", &stamped),
+            ]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
         assert!(f.iter().any(|(_, m)| m.contains("question::one")), "{f:?}");
@@ -557,14 +562,15 @@ mod tests {
         // kind, or dropped one of the three walks, is visible here and nowhere
         // else.
         let k = kinds(&[
-            (
-                "question::settled_but_silent",
-                &[("asks", "?"), ("decider", "op"), ("bound", "returned")],
-            ),
-            (
-                "ruling::he_said_so",
-                &[("answers", &cited(&["settled_but_silent", "a_ghost"]))],
-            ),
+            ("question::settled_but_silent", &[
+                ("asks", "?"),
+                ("decider", "op"),
+                ("bound", "returned"),
+            ]),
+            ("ruling::he_said_so", &[(
+                "answers",
+                &cited(&["settled_but_silent", "a_ghost"]),
+            )]),
         ]);
         assert_eq!(k.len(), 3, "{k:?}");
         assert!(k.contains(&Some("answers-names-no-question")), "{k:?}");

@@ -40,6 +40,12 @@
 //! reads that field: the real reason the demotion stands is the shapes above
 //! that the gate does read, in `mock/lints/half_up_is_not_a_magnitude_rule.rs`'s
 //! own module doc and `SEVERITY` doc.
+//!
+//! Test code only: `sentences` is declared under `#[cfg(test)]`, and the
+//! attribute below says so in this file too, where the read-through-the-view
+//! guard looks for it.
+
+#![cfg(test)]
 
 use std::path::{Path, PathBuf};
 

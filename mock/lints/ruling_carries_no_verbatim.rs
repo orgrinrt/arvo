@@ -50,7 +50,9 @@ use mockspace::{Lint, LintError, RepoContext, RepoLint, Severity};
 
 use crate::canon_rows::{finding, text};
 pub fn repo_lint() -> Box<dyn RepoLint> {
-    Box::new(RulingCarriesNoVerbatim { ceiling: CEILING })
+    Box::new(RulingCarriesNoVerbatim {
+        ceiling: CEILING,
+    })
 }
 
 const LINT: &str = "ruling-carries-no-verbatim";
@@ -93,11 +95,11 @@ impl Lint for RulingCarriesNoVerbatim {
 impl RepoLint for RulingCarriesNoVerbatim {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let unquoted: Vec<String> = ctx
-            .registry
+            .registry()
             .rows_in(NAMESPACE)
             .iter()
-            .filter(|q| ctx.registry.field(q, "ratified_by") != Some(NOT_HIS))
-            .filter(|q| text(ctx.registry, q, "quote").is_none())
+            .filter(|q| ctx.registry().field(q, "ratified_by") != Some(NOT_HIS))
+            .filter(|q| text(ctx.registry(), q, "quote").is_none())
             .map(|q| q.to_string())
             .collect();
         if unquoted.len() <= self.ceiling {
@@ -125,12 +127,21 @@ mod tests {
 
     use super::RulingCarriesNoVerbatim as Unquoted;
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     /// The messages one planted registry produces at a given ceiling.
     fn found(rows: &[(&str, &[(&str, &str)])], ceiling: usize) -> Vec<String> {
-        findings(&Unquoted { ceiling }, &view(rows, &[]))
+        findings(
+            &Unquoted {
+                ceiling,
+            },
+            &view(rows, &[]),
+        )
     }
 
     /// The rows the report named, recovered from its own text.
@@ -144,19 +155,19 @@ mod tests {
 
     #[test]
     fn a_ruling_with_a_quote_is_not_reported_and_one_without_is() {
-        let f = found(&[
-            (
-                "ruling::his_own_words",
-                &[
+        let f = found(
+            &[
+                ("ruling::his_own_words", &[
                     ("says", "the strategy set is not closed at four"),
                     ("quote", "the strategy set is not closed at exactly four"),
-                ],
-            ),
-            (
-                "ruling::somebody_elses_words",
-                &[("says", "he took the third option")],
-            ),
-        ], 0);
+                ]),
+                ("ruling::somebody_elses_words", &[(
+                    "says",
+                    "he took the third option",
+                )]),
+            ],
+            0,
+        );
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("ruling::somebody_elses_words"), "{}", f[0]);
         assert!(f[0].contains("quote"), "{}", f[0]);
@@ -168,7 +179,10 @@ mod tests {
         // blank `quote` satisfies a predicate written as "has the field" and
         // tells a reader exactly what a missing one does.
         for blank in ["", " ", "\n", "\t  \n"] {
-            let f = found(&[("ruling::r", &[("says", "something"), ("quote", blank)])], 0);
+            let f = found(
+                &[("ruling::r", &[("says", "something"), ("quote", blank)])],
+                0,
+            );
             assert_eq!(f.len(), 1, "{blank:?} passed as a verbatim");
         }
     }
@@ -179,10 +193,13 @@ mod tests {
         // A row the experts promoted was never a call of his, so there is no
         // verbatim to have lost and reporting it would be the old model still
         // running.
-        let f = found(&[(
-            "ruling::the_experts_promoted_it",
-            &[("says", "something"), ("ratified_by", "experts")],
-        )], 0);
+        let f = found(
+            &[("ruling::the_experts_promoted_it", &[
+                ("says", "something"),
+                ("ratified_by", "experts"),
+            ])],
+            0,
+        );
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -192,7 +209,10 @@ mod tests {
         // "skip anything carrying `ratified_by`" passes the arm above and
         // silently excuses every row that names him in that field.
         for who in ["op", "orgrinrt", ""] {
-            let f = found(&[("ruling::r", &[("says", "something"), ("ratified_by", who)])], 0);
+            let f = found(
+                &[("ruling::r", &[("says", "something"), ("ratified_by", who)])],
+                0,
+            );
             assert_eq!(f.len(), 1, "`ratified_by = {who:?}` was excused: {f:?}");
         }
     }
@@ -202,13 +222,13 @@ mod tests {
         // A proposal has no `quote` by construction: there are no words but the
         // panel's, which is what `says` holds. A lint reading every namespace
         // would report the whole of that one.
-        let f = found(&[(
-            "proposal::a_claim",
-            &[(
+        let f = found(
+            &[("proposal::a_claim", &[(
                 "says",
                 "the partition is derivable without the observability rule",
-            )],
-        )], 0);
+            )])],
+            0,
+        );
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -223,7 +243,10 @@ mod tests {
         assert!(n.contains("ruling::a"), "{n}");
         assert!(n.contains("ruling::b"), "{n}");
         assert!(!n.contains("ruling::c"), "{n}");
-        assert!(n.contains('2'), "the count of what it found is missing: {n}");
+        assert!(
+            n.contains('2'),
+            "the count of what it found is missing: {n}"
+        );
     }
 
     #[test]
@@ -231,10 +254,8 @@ mod tests {
         // The whole point of the ceiling, and the arm the number it ships with
         // never exercises. Two standing rows pass at a ceiling of two; a third
         // arriving turns it red.
-        let two: &[(&str, &[(&str, &str)])] = &[
-            ("ruling::a", &[("says", "one")]),
-            ("ruling::b", &[("says", "two")]),
-        ];
+        let two: &[(&str, &[(&str, &str)])] =
+            &[("ruling::a", &[("says", "one")]), ("ruling::b", &[("says", "two")])];
         assert!(found(two, 2).is_empty(), "the standing rows were refused");
         let three: &[(&str, &[(&str, &str)])] = &[
             ("ruling::a", &[("says", "one")]),
@@ -268,18 +289,28 @@ mod tests {
         // The severity that decides a refusal is the one the FINDING carries,
         // not the one `default_severity` returns.
         let v = view(&[("ruling::r", &[("says", "something")])], &[]);
-        assert_findings_block(&Unquoted { ceiling: 0 }, &v);
+        assert_findings_block(
+            &Unquoted {
+                ceiling: 0,
+            },
+            &v,
+        );
     }
 
     #[test]
     fn it_is_not_declared_off_so_it_runs_at_all() {
-        assert_not_declared_off(&Unquoted { ceiling: super::CEILING });
+        assert_not_declared_off(&Unquoted {
+            ceiling: super::CEILING,
+        });
     }
 
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
         assert_eq!(
-            Unquoted { ceiling: super::CEILING }.name(),
+            Unquoted {
+                ceiling: super::CEILING,
+            }
+            .name(),
             "ruling-carries-no-verbatim"
         );
     }

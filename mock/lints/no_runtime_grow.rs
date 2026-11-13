@@ -56,7 +56,7 @@ impl CrateLint for NoRuntimeGrow {
             ("Vec::with_capacity", "`Vec::with_capacity(...)`"),
         ];
 
-        for (idx, line) in ctx.source.lines().enumerate() {
+        for (idx, line) in ctx.source().lines().enumerate() {
             let trimmed = line.trim_start();
 
             if trimmed.starts_with("//") {
@@ -147,7 +147,7 @@ mod tests {
     fn the_configured_override_in_this_repos_mockspace_toml_makes_it_block() {
         let fixture = LintFixture::new("v.push(1);\n");
         let errors = crate::crate_lint_testkit::findings_under_override(
-            &fixture.ctx(),
+            &fixture,
             Box::new(NoRuntimeGrow),
             "no-runtime-grow",
             Severity::HARD_ERROR,

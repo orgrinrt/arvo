@@ -71,9 +71,9 @@ impl RepoLint for AnObligationEdgeNamesARow {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
         let mut out = Vec::new();
         for ns in BEARING {
-            for q in ctx.registry.rows_in(ns) {
-                for slug in list(ctx.registry, q, "obligation") {
-                    if ctx.registry.row(&format!("obligation::{slug}")).is_some() {
+            for q in ctx.registry().rows_in(ns) {
+                for slug in list(ctx.registry(), q, "obligation") {
+                    if ctx.registry().row(&format!("obligation::{slug}")).is_some() {
                         continue;
                     }
                     out.push(finding(
@@ -97,13 +97,18 @@ mod tests {
     use mockspace::{Lint, RepoLint};
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
+        Judge,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        ctx,
+        view,
     };
 
     fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
         let v = view(rows, &[]);
         super::AnObligationEdgeNamesARow
-            .check_repo(&ctx(&v))
+            .judge(ctx(&v))
             .into_iter()
             .map(|e| e.message)
             .collect()
@@ -113,10 +118,10 @@ mod tests {
     fn an_edge_naming_nothing_is_reported_and_the_real_one_beside_it_is_not() {
         let f = findings(&[
             ("obligation::the_real_one", &[("need", "A thing.")]),
-            (
-                "proposal::a_claim",
-                &[("obligation", "the_real_one, a_slug_that_was_renamed")],
-            ),
+            ("proposal::a_claim", &[(
+                "obligation",
+                "the_real_one, a_slug_that_was_renamed",
+            )]),
         ]);
         assert_eq!(f.len(), 1, "only the orphan: {f:?}");
         assert!(f[0].contains("a_slug_that_was_renamed"), "{}", f[0]);
@@ -164,10 +169,10 @@ mod tests {
     /// Every orphan in one row is reported rather than the first.
     #[test]
     fn every_orphan_in_one_row_is_reported() {
-        let f = findings(&[(
-            "retirement::a_dead_route",
-            &[("obligation", "one_ghost, another_ghost")],
-        )]);
+        let f = findings(&[("retirement::a_dead_route", &[(
+            "obligation",
+            "one_ghost, another_ghost",
+        )])]);
         assert_eq!(f.len(), 2, "{f:?}");
     }
 

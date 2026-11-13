@@ -83,7 +83,7 @@ impl Lint for ANoteDescribesTheRowItSitsOn {
 }
 impl RepoLint for ANoteDescribesTheRowItSitsOn {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        let reg = ctx.registry;
+        let reg = ctx.registry();
         let mut out = Vec::new();
         for namespace in reg.namespaces() {
             for q in reg.rows_in(namespace) {
@@ -113,10 +113,10 @@ impl RepoLint for ANoteDescribesTheRowItSitsOn {
 fn claims_it_is_empty(note: &str, field: &str) -> bool {
     let needle = format!("`{field}`");
     let mut from = 0;
-    while let Some(at) = note[from..].find(&needle) {
+    while let Some(at) = note[from ..].find(&needle) {
         let start = from + at + needle.len();
         let end = ceiling(note, start + WINDOW);
-        if SAYS_EMPTY.iter().any(|p| note[start..end].contains(p)) {
+        if SAYS_EMPTY.iter().any(|p| note[start .. end].contains(p)) {
             return true;
         }
         from = start;
@@ -155,7 +155,11 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
+        assert_findings_block,
+        assert_not_declared_off,
+        assert_registered,
+        findings,
+        view,
     };
 
     fn found(rows: &[(&str, &[(&str, &str)])]) -> Vec<String> {
@@ -167,21 +171,15 @@ mod tests {
         // Both ways round in one input. Without the second row the arm is a ban
         // on notes mentioning a field at all.
         let f = found(&[
-            (
-                "proposal::the_note_is_stale",
-                &[
-                    ("says", "Something."),
-                    ("evidence", "a_probe"),
-                    ("note", "`evidence` is empty, so nobody can check this."),
-                ],
-            ),
-            (
-                "proposal::the_note_is_true",
-                &[
-                    ("says", "Something else."),
-                    ("note", "`evidence` is empty, so nobody can check this."),
-                ],
-            ),
+            ("proposal::the_note_is_stale", &[
+                ("says", "Something."),
+                ("evidence", "a_probe"),
+                ("note", "`evidence` is empty, so nobody can check this."),
+            ]),
+            ("proposal::the_note_is_true", &[
+                ("says", "Something else."),
+                ("note", "`evidence` is empty, so nobody can check this."),
+            ]),
         ]);
         assert_eq!(f.len(), 1, "exactly the stale one: {f:?}");
         assert!(f[0].contains("the_note_is_stale"), "{}", f[0]);
@@ -198,18 +196,15 @@ mod tests {
         // somewhere says the word, which in this corpus is most of them: an
         // empty region, an empty intersection, an empty result being the
         // finding.
-        let f = found(&[(
-            "proposal::a_row_about_empty_regions",
-            &[
-                ("says", "Something."),
-                ("evidence", "a_probe"),
-                (
-                    "note",
-                    "The `evidence` here rests on an instrument whose covered set is empty at \
+        let f = found(&[("proposal::a_row_about_empty_regions", &[
+            ("says", "Something."),
+            ("evidence", "a_probe"),
+            (
+                "note",
+                "The `evidence` here rests on an instrument whose covered set is empty at \
                       width two, and the intersection of the two predicates is empty.",
-                ),
-            ],
-        )]);
+            ),
+        ])]);
         assert!(
             f.is_empty(),
             "a note may say `empty` about the thing a field describes: {f:?}"
@@ -218,19 +213,16 @@ mod tests {
 
     #[test]
     fn a_field_named_far_from_the_phrase_is_not_a_claim_about_it() {
-        let f = found(&[(
-            "proposal::two_separate_clauses",
-            &[
-                ("says", "Something."),
-                ("evidence", "a_probe"),
-                (
-                    "note",
-                    "The `evidence` is one instrument and its author bounded it exactly, \
+        let f = found(&[("proposal::two_separate_clauses", &[
+            ("says", "Something."),
+            ("evidence", "a_probe"),
+            (
+                "note",
+                "The `evidence` is one instrument and its author bounded it exactly, \
                       measured at the widths in its table and no further. The region it \
                       establishes is empty above that.",
-                ),
-            ],
-        )]);
+            ),
+        ])]);
         assert!(
             f.is_empty(),
             "two clauses about two things are not one claim about one: {f:?}"
@@ -242,14 +234,11 @@ mod tests {
         // It reads the row's own field names, so a namespace gaining a field
         // needs no edit here. A word list would have had to gain it too,
         // silently missing it until somebody noticed.
-        let f = found(&[(
-            "retirement::a_route",
-            &[
-                ("claim", "A way."),
-                ("obligation", "a_thing, another_thing"),
-                ("note", "`obligation` is empty on this row."),
-            ],
-        )]);
+        let f = found(&[("retirement::a_route", &[
+            ("claim", "A way."),
+            ("obligation", "a_thing, another_thing"),
+            ("note", "`obligation` is empty on this row."),
+        ])]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("holds 2 entries"), "{}", f[0]);
     }
@@ -261,14 +250,11 @@ mod tests {
         // note lying about a scalar passed. It is the same defect and it is
         // reported, and the count is over the joined value, which for a scalar
         // holding no separator is one.
-        let f = found(&[(
-            "proposal::p",
-            &[
-                ("says", "Something."),
-                ("gap", "the register does not yet carry the scope"),
-                ("note", "`gap` is empty on this row."),
-            ],
-        )]);
+        let f = found(&[("proposal::p", &[
+            ("says", "Something."),
+            ("gap", "the register does not yet carry the scope"),
+            ("note", "`gap` is empty on this row."),
+        ])]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert!(f[0].contains("holds 1 entry"), "{}", f[0]);
     }
@@ -278,13 +264,10 @@ mod tests {
         // The other half of the same claim. A note saying a field is empty,
         // about a field that really holds nothing or is not there at all, is
         // accurate and stays.
-        let f = found(&[(
-            "proposal::p",
-            &[
-                ("says", "Something."),
-                ("note", "`evidence` is empty and `predicate` carries none."),
-            ],
-        )]);
+        let f = found(&[("proposal::p", &[
+            ("says", "Something."),
+            ("note", "`evidence` is empty and `predicate` carries none."),
+        ])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
@@ -293,15 +276,12 @@ mod tests {
         // The walk is over every field the row carries. One that stopped at the
         // first match would report half of a note lying about two fields, and
         // every arm above plants one field so none of them can tell.
-        let f = found(&[(
-            "proposal::p",
-            &[
-                ("says", "Something."),
-                ("evidence", "a_probe"),
-                ("predicate", "threads: 1"),
-                ("note", "`evidence` is empty and `predicate` is empty."),
-            ],
-        )]);
+        let f = found(&[("proposal::p", &[
+            ("says", "Something."),
+            ("evidence", "a_probe"),
+            ("predicate", "threads: 1"),
+            ("note", "`evidence` is empty and `predicate` is empty."),
+        ])]);
         assert_eq!(f.len(), 2, "{f:?}");
         assert!(f.iter().any(|m| m.contains("`evidence`")), "{f:?}");
         assert!(f.iter().any(|m| m.contains("`predicate`")), "{f:?}");
@@ -312,18 +292,15 @@ mod tests {
         // The scan walks every occurrence of the name. One that looked only at
         // the first would miss a note that mentions a field in passing and then
         // lies about it in the next sentence.
-        let f = found(&[(
-            "proposal::p",
-            &[
-                ("says", "Something."),
-                ("evidence", "a_probe"),
-                (
-                    "note",
-                    "The `evidence` was chosen for the width it reached rather than for its \
+        let f = found(&[("proposal::p", &[
+            ("says", "Something."),
+            ("evidence", "a_probe"),
+            (
+                "note",
+                "The `evidence` was chosen for the width it reached rather than for its \
                       arity. `evidence` is empty here.",
-                ),
-            ],
-        )]);
+            ),
+        ])]);
         assert_eq!(f.len(), 1, "{f:?}");
     }
 
@@ -333,14 +310,11 @@ mod tests {
         // pass every arm above.
         for phrase in ["is empty", "are empty", "carries none", "carries nothing"] {
             let note = format!("`evidence` {phrase} on this row.");
-            let f = found(&[(
-                "proposal::p",
-                &[
-                    ("says", "Something."),
-                    ("evidence", "a_probe"),
-                    ("note", &note),
-                ],
-            )]);
+            let f = found(&[("proposal::p", &[
+                ("says", "Something."),
+                ("evidence", "a_probe"),
+                ("note", &note),
+            ])]);
             assert_eq!(f.len(), 1, "{phrase:?} was not read: {f:?}");
         }
     }
@@ -351,14 +325,11 @@ mod tests {
         // characters wider than one byte. A slice landing inside one panics,
         // which on a gate is a lint that reports nothing at all.
         let note = "`evidence` ".to_string() + &"é".repeat(40) + " is empty";
-        let f = found(&[(
-            "proposal::p",
-            &[
-                ("says", "Something."),
-                ("evidence", "a_probe"),
-                ("note", &note),
-            ],
-        )]);
+        let f = found(&[("proposal::p", &[
+            ("says", "Something."),
+            ("evidence", "a_probe"),
+            ("note", &note),
+        ])]);
         assert!(f.is_empty(), "the phrase is far past the window: {f:?}");
     }
 
@@ -373,14 +344,14 @@ mod tests {
         // A note goes stale wherever one is written, so there is no namespace
         // to leave out and none is.
         let f = found(&[
-            (
-                "ruling::r",
-                &[("ratifies", "x"), ("note", "`ratifies` is empty.")],
-            ),
-            (
-                "probe::p",
-                &[("standing", "sound"), ("note", "`standing` is empty.")],
-            ),
+            ("ruling::r", &[
+                ("ratifies", "x"),
+                ("note", "`ratifies` is empty."),
+            ]),
+            ("probe::p", &[
+                ("standing", "sound"),
+                ("note", "`standing` is empty."),
+            ]),
         ]);
         assert_eq!(f.len(), 2, "{f:?}");
     }
@@ -393,10 +364,10 @@ mod tests {
     #[test]
     fn its_findings_block_every_gate() {
         let v = view(
-            &[(
-                "proposal::p",
-                &[("evidence", "a_probe"), ("note", "`evidence` is empty.")],
-            )],
+            &[("proposal::p", &[
+                ("evidence", "a_probe"),
+                ("note", "`evidence` is empty."),
+            ])],
             &[],
         );
         assert_findings_block(&super::ANoteDescribesTheRowItSitsOn, &v);
