@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "flavour": "",
+  "member": "arvo-bits",
+  "green": {
+    "full": "c34442151613aa86a3d5aace5f6cc795a6c9f8282d066f4b2a914a571aeaa91e",
+    "own": {
+      "arvo-bits": "b4a76f7a3c43325eeb95284db2c204a3a26d7587b8a938e193982a3aa825e1ff"
+    }
+  },
+  "tests": {},
+  "bins": {
+    "arvo-bits": "fd97331bab39fe9bf208bfc4a416b54344e4be5eda82224783d84612f17fa285",
+    "arvo-bits::compile_fail": "72e5f9d460227ea27573ff52d4d8e47bd0960f4af08d76c21f1193fe9ce54067"
+  }
+}
