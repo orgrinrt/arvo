@@ -30,7 +30,7 @@ actually bound its generic code on does not exist in any tier.
 ### Which standards the record names
 
 `ruling::the_standards_bound_starts_at_two_and_reserves_the_rest` is op's own,
-and it is the whole answer to scope. Two are in: MATLAB `fi` and `fimath`, and
+at `rung = "stated"`, so it is his direction on scope and not yet canon. Two are in: MATLAB `fi` and `fimath`, and
 IEEE 754. Three are reserved rather than excluded: SystemC `sc_fixed`, Vitis
 `ap_fixed` and Algorithmic C `ac_fixed`. His words in the row's `quote`: "Let's
 start with the two named, and reserve the rest named for future, so it can't
@@ -125,7 +125,7 @@ is about ends rather than about an unbounded point. So IEEE 754 cannot supply an
 overflow default without a design decision arvo has not made, and its rounding
 default can be taken today without one.
 
-That asymmetry is the useful thing: of the two standards op named, one can supply
+That asymmetry is the useful thing: of the two standards his direction starts with, one can supply
 a complete default today and the other can supply half of one.
 
 ## b. How overflow behaviour is chosen, and where a wrapper would sit
@@ -269,7 +269,7 @@ settled. The two two-expert proposals disagree about what a strategy is, as
 holds the membership open. What is settled is the direction: a strategy is
 selected by the consumer, and `ruling::the_strategy_is_what_makes_an_answer_correct`
 fixes that it cannot change the denoted answer in the service of cost.
-`proposal-the-later-topics::no_cost_model_may_move_an_answer` says the same from
+`proposal::no_cost_model_may_move_an_answer` says the same from
 the other side and is a proposal rather than canon.
 
 ### What a consumer writes today
@@ -350,7 +350,7 @@ the container, and the same search for the word parity finds four files, so the
 zero is a fact about the registry.
 
 One row speaks against the obvious wrong shape, and it is worth having.
-`proposal-the-value-stance::the_old_numeric_contracts_crate_is_gone` sends
+`proposal::the_old_numeric_contracts_crate_is_gone` sends
 absolute value, reciprocal and square root to kaski for the first slice. His
 sentence ends "definitely arvo terrain to write the actual arithmetic contracts
 on the standard too", so that re-homing is against his direction, and `CHECK.md`

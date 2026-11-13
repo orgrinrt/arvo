@@ -30,7 +30,9 @@ tier admits.
 `WORKS` on all five. `out/run.txt` is the output of `cargo run --release` in
 this directory, and `out/refused-stochastic.txt` and `out/refused-clamp.txt` are
 the compiler's refusals of the two controls under `examples/`, from
-`cargo build --release --example <name>`.
+`cargo build --release --example <name>`. All three were produced in the main clone
+with the crates as they are at `326b52f5`, so the paths in them are that
+clone's.
 
 The substitution is one type alias over the two halves of the signature, with no
 feature gate and no trait of its own, because every piece of it is already an
@@ -69,6 +71,11 @@ in the workspace's fetched store under the title "MathWorks fimath reference:
 fixed-point math settings", fetched on 13 November 2026.
 
 ## What this leaves open
+
+The rounding half of MATLAB's default. The check feeds a slot that is already on
+the grid, so it shows the pair saturating at both ends and never exercises
+`Nearest`. Rounding under that pair is what `tests/matlab_fi_parity.rs` in
+`arvo-format` holds, and the sketch adds nothing to it.
 
 Whether the crossing lowers to a move. Both signatures share a format, so the
 position handed to the adaptation is on the target's grid and inside its range,

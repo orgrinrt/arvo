@@ -206,13 +206,13 @@ The claim op ordered first, and the second plan's P0, unchanged, because it was
 right: two cold reads, one after the other, each from a worktree cut before the
 other's commit, then the coordinator's gate, over the rows the value crate was
 built on at one expert.
-`proposal-the-value-stance::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`,
+`proposal::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`,
 the admission row, `the_debug_check_is_a_parameter_the_consumer_names`, and the
 three rows in `proposal-the-exact-operations.toml`.
 
 One subject is added, and the full read widened it. Five proposals say what a
 strategy is. Two stand at two experts and disagree,
-`proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` and
+`proposal::a_strategy_is_an_assignment_and_a_weighting` and
 `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`.
 Three stand at one expert and postdate the ruling whose lineage op ratified,
 `proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting`,
@@ -272,11 +272,19 @@ and it is the panel's, with both priced as
 `ruling::wrap_or_clamp_stays_open_and_both_get_priced` asks and as his "Bring me
 both priced" repeats. Two candidates are in scope. MATLAB's documented pair,
 `Nearest` and `Saturate`, is the one complete convention and is admitted today.
-Rust's own release behaviour, wrap, is what
-`ruling::warms_objective_is_the_intuitive_best_choice` calls the baseline for
-intuition. The step lands the mechanism with the default as one line, and a
-compile-fail test that pins what `Uint<8>` with no adaptation means on the day it
-lands.
+Rust's own release behaviour, wrap, is the other, on the reading that it is what
+the intuition of somebody writing Rust mimics.
+`ruling::warms_objective_is_the_intuitive_best_choice` asks for mimicry where it
+is not consistently the worse choice and names neither Rust nor wrap, so that
+reading is this plan's and not the row's.
+
+The step lands the mechanism and stops there. The aliases keep naming their
+adaptation, and the one line that makes `Warm` select an overflow behaviour,
+with the compile-fail test that pins what `Uint<8>` with no adaptation means,
+lands only once the panel's answer to `question::does_warm_wrap_or_clamp` is a
+ruling. The row that holds the question open is at `rung = "open"` and reserves
+the call, so a default written in code before the answer would fill it from
+below.
 
 The rounding half of the default has a question of its own that the step must
 not answer by picking. `question::why_the_default_rounding_position_is_chosen`
@@ -647,7 +655,7 @@ second plan framed them and with nothing in the record since to change them: a
 crate named `arvo` returns and owns the defaulted aliases; no such crate, and
 consumers name the inner crates; a crate named `arvo` that only re-exports; the
 value crate itself is renamed `arvo`. The record: one proposal at one expert,
-`proposal-the-value-stance::the_old_facade_returns_as_value_aliases_and_no_facade`,
+`proposal::the_old_facade_returns_as_value_aliases_and_no_facade`,
 and his "Decide at the port".
 
 That the list is this short is a finding and it was checked rather than assumed.

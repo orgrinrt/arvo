@@ -73,8 +73,9 @@ says in its `gap`: "no row says whether the set is those, more, or a core with
 the rest open. The parity suite is also unbuilt: it is a mandate with no
 artifact."
 
-`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest` answers the
-first half in his own words: MATLAB `fi` and `fimath` and IEEE 754 are the two,
+`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest` speaks to the
+first half in his own words, as direction on a `stated` row and not yet as
+canon: MATLAB `fi` and `fimath` and IEEE 754 are the two,
 SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed` are reserved
 rather than excluded. The second half is half true. The MATLAB parity suite is
 built: `mock/crates/arvo-format/tests/matlab_fi_parity.rs` holds ten arms whose
@@ -123,10 +124,10 @@ is, in the canon, pointing at a line whose subject changed under it.
 cannot place is on neither list "because the declared operand window is not a
 declared axis". `dimension::operand_window` exists, and its own note names those
 three rows as the reason it was declared. The same holds for
-`law-the-later-topics::quantise_then_reduce_commutes`, whose gap says "no
+`law::quantise_then_reduce_commutes`, whose gap says "no
 `dimension` row declares an axis for the ambient domain" against
 `dimension::ambient_domain`, and for
-`law-the-later-topics::the_fused_and_the_stepwise_multiply_add_denote_one_function`
+`law::the_fused_and_the_stepwise_multiply_add_denote_one_function`
 against `dimension::accumulator_width`.
 
 Two of the three cells already have a home. `law.toml` carries three rows this
@@ -195,16 +196,16 @@ other fourteen sit on twelve rows. Two law rows were corrected earlier on this
 branch, five name an
 axis that is still undeclared (the range's geometry twice, an encoding axis, the
 assignment set, and the intermediate fraction width of a staged narrowing), and
-one, `proposal-the-later-topics::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`,
+one, `proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`,
 names "the domain the cell reaches", which may or may not be
 `dimension::ambient_domain` and is left for a seat that has read its source.
 Three were stale and are amended:
-`proposal-the-later-topics::the_realisation_map_has_an_algebraic_character` and
-`proposal-the-later-topics::the_realisation_map_factors_into_quantisation_and_range_policy`
+`proposal::the_realisation_map_has_an_algebraic_character` and
+`proposal::the_realisation_map_factors_into_quantisation_and_range_policy`
 against `dimension::ambient_domain`, and
 `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`
 against `dimension::operand_window`. The twelfth is stale and ratified:
-`proposal-the-later-topics::at_shared_occupancy_no_per_element_footprint_observation_exists`
+`proposal::at_shared_occupancy_no_per_element_footprint_observation_exists`
 says "no dimension row declares one" of occupancy, `dimension::occupancy`
 declares it, and `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`
 ratifies the row, so it is written down in section 7 and not touched. Its
@@ -221,7 +222,7 @@ file the note names: `97_probes/p2` is
 `p1b` are `probe::a_declared_law_marker_compiles_clean_when_false`. The last is
 the plainest: the row's own `evidence` field cites that probe while its note says
 "`probe.toml` does not exist". A sixth instance is a law row,
-`law-the-later-topics::fusing_a_multiply_add_preserves_the_answer_under_unsigned`,
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned`,
 whose gap names three instruments and says no `probe` row exists for them, where
 `probe::fusion_under_unsigned_over_six_rounding_modes`,
 `probe::equivariance_is_domain_restricted` and
@@ -255,7 +256,11 @@ clause of `proposal::membership_of_the_representable_set_is_one_affine_predicate
 the canon is now the one tier that still states the clause. That question's
 `bound` also cited the retirement under a slug no retirement has, the superseded
 proposal's, and no lint refused it. The slug is corrected and the lint's reach
-is ticket `5b32c44d42c6`.
+is ticket `5b32c44d42c6`. The same ticket carries a second shape the review of
+this branch found, a registry file's stem written as the namespace, which this
+document, the two beside it and one row note carried in sixteen distinct
+citations with the lints green. They are rewritten to the namespaces the rows
+are in.
 
 A probe note that says sound under a field that says otherwise. Eight probe rows
 stand at `uncontrolled`. Three of them,
@@ -379,7 +384,7 @@ beside it. No ratified row carries the alias rule; his chosen option does.
 The same option orders the claim before the rework: "claim first (promote the
 datum and value definition by a cold second read and the gate), then rework the
 same branch in one round". The value crate landed as `9dfd5339` with
-`proposal-the-value-stance::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`
+`proposal::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`
 still at `one_expert` and no ruling ratifying it, so the claim he put first has
 not been made. That is ticket `9e02318643e1`.
 
@@ -578,7 +583,7 @@ more definitions at one expert, and
 `question::which_successor_carries_the_strategy_shape_ratification` is already
 about them. What follows is true of the two it names.
 
-`proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` says a strategy is a
+`proposal::a_strategy_is_an_assignment_and_a_weighting` says a strategy is a
 pair: an assignment on observable policy axes that fixes the denoted answer, and
 a weighting over cost coordinates that ranges over realisations of it.
 `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`
@@ -599,12 +604,12 @@ the other, so a reader meeting one has no way to know the other exists. The
 repair is a `note` on each, additive and proposed below.
 `ruling::the_strategy_is_what_makes_an_answer_correct` favours the first reading,
 and saying so is the panel's to do rather than this job's. The second reading is not
-without support: `proposal-the-later-topics::no_cost_model_may_move_an_answer`
+without support: `proposal::no_cost_model_may_move_an_answer`
 states its half, and is itself a proposal.
 
 ### One more worth naming
 
-`proposal-the-value-stance::the_first_slice_answers_to_hilavitkutin_and_kaski`
+`proposal::the_first_slice_answers_to_hilavitkutin_and_kaski`
 measures a slice's completeness by two consumers. It is superseded inside its own
 file by `no_row_measures_a_slices_completeness`, and
 `ruling::arvo_is_a_library_and_the_value_composes_on_top` is ratified and names
@@ -668,11 +673,15 @@ saying it kept it. The `says` of the first keeps his hedge, "it might make more
 sense", where it had been written as a settled statement, and the `says` of the
 second loses a gloss of the taxonomy that was this job's reading and not his
 words. The note of the first states the sketch's corrected result, and the note
-of the second the corrected reading of the five refusals in section 5.
+of the second the corrected reading of the five refusals in section 5. Whether
+`ruling` is the kind for the first, which narrows the question put to him and
+carries no `answers` edge, is a call the reviewer of this branch left to a
+second reader, and the row keeps the kind until one has read it.
 
 On `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
-the second paragraph of the `gap` is replaced: the scope is settled by
-`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`, the MATLAB
+the second paragraph of the `gap` is replaced: on scope it names his direction,
+`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`, as a `stated`
+row and not a ratified one, the MATLAB
 half of the parity suite is built and its two files are named, and the IEEE 754
 half is unbuilt and waits on a float value.
 
@@ -685,12 +694,12 @@ On `law::additive_associativity_under_saturation` and
 is declared and names the row that holds the cell. On
 `law::coherence_of_a_reduction_onto_its_induced_operation`, the `gap` says the
 axis is declared and no row holds the cell yet. On
-`law-the-later-topics::quantise_then_reduce_commutes` and
-`law-the-later-topics::the_fused_and_the_stepwise_multiply_add_denote_one_function`,
+`law::quantise_then_reduce_commutes` and
+`law::the_fused_and_the_stepwise_multiply_add_denote_one_function`,
 the `gap` says the axes are declared and the region has not been written from
 its source. No `holds` or `fails` list changes.
 
-On `proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting` and
+On `proposal::a_strategy_is_an_assignment_and_a_weighting` and
 `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`,
 a paragraph in the `note` of each naming the other, the axis they disagree on,
 and `probe::the_rationalisable_sections_on_the_committed_carrier_table`, which
@@ -703,9 +712,9 @@ a comment, on a row no ruling ratifies. No `says`, predicate, `holds`, `fails`,
 `evidence` or standing changes, and section 1.10 gives the reason for each.
 
 That an axis is declared now: the note and the gap of
-`proposal-the-later-topics::the_realisation_map_has_an_algebraic_character`,
+`proposal::the_realisation_map_has_an_algebraic_character`,
 the note of
-`proposal-the-later-topics::the_realisation_map_factors_into_quantisation_and_range_policy`,
+`proposal::the_realisation_map_factors_into_quantisation_and_range_policy`,
 and the note of
 `proposal::a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`.
 
@@ -714,7 +723,7 @@ That a `probe` row names the instrument now: the notes of that same row, of
 of `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`
 and of `proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing`,
 the block comment above the first three, and the gap of
-`law-the-later-topics::fusing_a_multiply_add_preserves_the_answer_under_unsigned`.
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned`.
 
 That four axes were declared after the count of twenty-one: the notes of
 `proposal::the_topics_form_a_stack_a_frame_and_the_canons_own_machinery` and
@@ -737,6 +746,29 @@ The rest: the owed paragraph on the note of
 `probe::the_axis_gap_is_an_open_row_no_seat_of_the_sitting_cited`, a sentence on
 the `why` of `retirement::r132_truncation_as_a_mode_name`, and a paragraph in
 the header of `question.toml` saying rows may carry `answered` and `bound`.
+
+### Applied on the second branch, after its own review
+
+The review of the second branch found that the notes amended after the full read
+had been repaired by adding sentences that would go stale in their turn, each
+saying an axis or a `probe` row exists "now" and that the edge or the wider row
+"has not been" written. Twenty-one rows and one file comment are reworded so each note says what
+its row carries and does not carry, with no word that depends on when it is
+read, and the work those notes leave undone is ticket `2cda83cec7ff`. No
+`says`, no predicate, no edge, no `rung` and no standing changes in them, and
+none of the rows is ratified.
+
+Three more come from the same review. The `gap` of
+`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`
+had called the scope settled by a `stated` row, which
+`ruling::an_ack_is_not_a_ratification` does not allow, and it now names that row
+as his direction. The note of
+`ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open` had said
+all five refusals agree with him on the function, and it now says four do and
+names the one clause of the fifth that conflicts, with the proposal that
+restates it. And the note of
+`proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`
+cited a row under its file's stem, which is corrected to `proposal::`.
 
 ### Written down and not applied
 
@@ -775,7 +807,7 @@ One adds a paragraph to the note of
 `because` states.
 
 The `proposal` row this section used to carry as written down is applied now,
-as `proposal-the-value-stance::the_old_numeric_contracts_return_as_arvos_own_and_the_crate_does_not`,
+as `proposal::the_old_numeric_contracts_return_as_arvos_own_and_the_crate_does_not`,
 at `one_expert`, on the model of `the_old_comb_crate_answers_to_a_stated_need`
 and with a `supersedes` edge onto `the_old_numeric_contracts_crate_is_gone`. It
 says that the crate does not return and what it carried does, with the
@@ -788,14 +820,16 @@ has not seen it.
 
 From the full read, four more things are written down for seats that may do
 them. The note of
-`proposal-the-later-topics::at_shared_occupancy_no_per_element_footprint_observation_exists`
+`proposal::at_shared_occupancy_no_per_element_footprint_observation_exists`
 wants the sentence that `dimension::occupancy` is declared, and its predicate
 wants a second reading on whether it should name that axis, the row being
-ratified. The `evidence` edges the amended notes call undrawn are a panel seat's to
-draw, and so are the three wider rows those
-notes say could not be written: the general rule on which rounding modes compose
-across nested grids, the measured half of the derivation-output finding, and the
-licence claims over the ambient domain. And the phase clause of the stamped
+ratified. The `evidence` edges the amended notes say their rows do not carry are a panel
+seat's to draw, and so are the rows and regions those notes say are not written:
+the general rule on which rounding modes compose across nested grids, the
+measured half of the derivation-output finding, the licence claims and the
+obstruction result over the ambient domain, the commutation region, the clause
+over the accumulator width and the operation set, and the saturating cell over a
+nonnegative window. Ticket `2cda83cec7ff` lists each with the row it sits on. And the phase clause of the stamped
 spine row waits on `question::how_the_stamped_spine_rows_phase_clause_gets_corrected`,
 whose first option is a `ruling` carrying `corrects` on two agreements.
 
