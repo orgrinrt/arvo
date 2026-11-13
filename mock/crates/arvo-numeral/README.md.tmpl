@@ -3,9 +3,10 @@
 A value of a declared signature, held alone in the carrier its placement derives.
 
 `Num<S>` is one member of a format's representable set, kept in the narrowest machine integer the
-placement gives that signature at sole occupancy. Its sum, difference, negation and product are the
-format's own, the same slot the format's oracle returns for every pair, and its comparison is the
-members' order. It ships the doors in and out, the additive and the multiplicative identity where the
+placement gives that signature at sole occupancy. Its sum, difference, negation, product and quotient are the
+format's own, the same slot the format's oracle returns for every pair, as is its conversion onto
+another signature, and its comparison is the members' order. It ships the doors in and out, one of
+them for a host integer at its own width, the additive and the multiplicative identity where the
 format has one, and the aliases `Uint`, `Int`, `USize` and `ISize` for the integer points.
 
 Whether a debug build aborts when a result leaves the range is the consumer's to choose, as a second
