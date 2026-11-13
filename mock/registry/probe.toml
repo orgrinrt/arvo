@@ -432,7 +432,7 @@ keywords = ["biconditional", "licence", "family", "counterexample", "converse", 
 
 # --- the instruments about this repository's own instruments ---------------
 #
-# Four rows that are not about numerals at all. They are about the harness, the
+# These rows are not about numerals at all. They are about the harness, the
 # test gate and the checkers, and they are here because a `measured` claim
 # citing anything in `mock/benches/` inherits every one of them.
 
@@ -1213,7 +1213,7 @@ keywords = ["answer-differing", "arms", "refutation", "region census", "oracle",
 #
 # Ten instruments sat behind those two derivations with no row naming any of
 # them, so every result in both was unciteable and the `evidence` field of any
-# proposal drawn from them would have had nothing to point at. The five below
+# proposal drawn from them would have had nothing to point at. The ones named below
 # are the ones a claim in this pass rests on.
 
 [[probe]]

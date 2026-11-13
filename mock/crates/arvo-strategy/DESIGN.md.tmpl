@@ -65,8 +65,8 @@ that objective yet, so what the preset is for is stated and what it costs is not
 than a settled answer.** `presets` ships one `Adaptation` per preset, because a Rust associated type
 has to name something, and naming something is not the same as deciding it. Whether `Warm` wraps or
 clamps is open, at `question::does_warm_wrap_or_clamp` under `topic::overflow_policy`. `Warm`'s
-`Adapt<HalfEven, Wrap>` and the other three presets' choices are marked `// FIXME:` at the
-declaration for exactly that reason: carried rather than endorsed, and replaceable by whatever
+`Adapt<HalfEven, Wrap>` and the other three presets' choices are marked `// FIXME(<ticket id>):` at
+the declaration for exactly that reason: carried rather than endorsed, and replaceable by whatever
 `does_warm_wrap_or_clamp` and its neighbours in `overflow_policy` and `rounding` settle, with no edit
 to `Strategy` itself.
 
@@ -182,8 +182,8 @@ intent lives where a reader reads it and nowhere the type system can see.
 
 `Hot`, `Cold`, `Precise` and `Warm` are the presets, in `presets`. They are
 instances of an open concept rather than members of an enumeration, and a consumer
-adding a fifth edits nothing here. **Which overflow mode and rounding mode each
-names is a carried default, marked `// FIXME:` at each impl, and not a settled
-answer**, because `does_warm_wrap_or_clamp` is open at least for `Warm`, and
+adding a fifth edits nothing here. Which overflow mode and rounding mode each
+names is a carried default, marked `// FIXME(<ticket id>):` at each impl, and not a settled
+answer, because `does_warm_wrap_or_clamp` is open at least for `Warm`, and
 filling that in silently inside a design is how an open question gets closed
 where nobody can see it happen.
