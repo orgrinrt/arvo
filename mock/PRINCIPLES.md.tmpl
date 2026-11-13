@@ -13,8 +13,9 @@ name to a placement objective and an adaptation selection.
 
 `arvo-numeral` is the fourth, and it builds on the first two without reaching
 for the strategy binding. It holds a value, one member of a declared signature
-alone in the carrier its placement derives, and whatever it computes is the
-format's own operation on the slot.
+alone in the carrier its placement derives. Its sum is computed in that
+carrier and gives the slot the format's own sum gives, and comparison is its
+own.
 
 `arvo-bits` is the fifth and does not chain with the others: it depends
 on nothing in this workspace and ships one type, `Bits<const N: u32>`, a
@@ -23,8 +24,8 @@ different question from the rest, what bits are held and not what values exist
 or where they sit, so it sits beside `arvo-format` rather than above or below
 it.
 
-There is no facade. A crate re-exporting the five would sit below all of them
-rather than above, and nothing needs one yet.
+There is no facade. A crate re-exporting the five would sit above all of them,
+and nothing needs one yet.
 
 The split is by what a consumer must depend on to say one thing. Declaring
 formats needs `arvo-format` alone; placing them needs `arvo-placement`;
@@ -135,11 +136,11 @@ is, stay open under `question::what_a_datum_stands_for`.
 - For boundary unwrap to a raw primitive (FFI, `core::*` APIs that
   take a host integer directly): the type's declared unwrap door,
   `Bool::get()` for a `Bool` and `Bits::raw()` for a `Bits<N>`. A
-`Num` gives its `Slot` through `Num::slot()`, which is the coordinate
-the format is stated in and not a host integer, and only the two
-platform-width aliases have a door to one, `USize::host()` and
-`ISize::host()`. Document the boundary
-  use with an inline comment if it's not obvious.
+  `Num` gives its `Slot` through `Num::slot()`, which is the coordinate
+  the format is stated in and not a host integer, and only the two
+  platform-width aliases have a door to one, `USize::host()` and
+  `ISize::host()`. Document the boundary use with an inline comment if
+  it's not obvious.
 - For literal construction: a tuple-struct constructor is fine; the
   ban is on read-side field-access in arithmetic contexts, not on
   construction.
@@ -322,15 +323,18 @@ reflexively reach for arvo primitives. They do not accept or return bare
 types at any boundary. None ships on the current base.
 
 Strategy markers are type parameters, not runtime config. They embed
-operational intent into the type system, and the caller picks the
+operational intent into the type system, and the caller is to pick the
 tradeoff at the type level. `Hot`, `Warm`, `Cold` and `Precise` are
 the presets that ship, as implementors of an open concept, so a fifth
-needs no edit to anything already there.
+needs no edit to anything already there. No value in the tree takes a
+strategy yet: `Num` is parameterised by a declared signature and its
+aliases by an adaptation, and `arvo-numeral` does not depend on
+`arvo-strategy`.
 
 `Bool`, `Bits<N>` and `Num`, and the format layer's coordinates and
 counts beside them, are `repr(transparent)` over their host container,
-and the format points are zero-sized. After compilation, arvo primitives incur zero overhead
-beyond their strategy's intended cost.
+and the format points are zero-sized. After compilation, arvo
+primitives incur zero overhead beyond their strategy's intended cost.
 
 ## no_std, no alloc
 
@@ -342,15 +346,14 @@ const-sized. Consumers own allocation strategy; arvo never calls out.
 A strategy is not decoration. It binds a name to a placement
 objective, which is what the derivation in `arvo-placement` is keyed
 on, and to the adaptation selected per operation, so the marker a
-type carries says what it gives up and what for. It names no
+type comes to carry says what it gives up and what for. It names no
 implementation and owns none.
 
-The default is meant to be the strategy whose objective is the
-intuitive best choice, which ships today under the name `Warm`, and
-whether that name survives is as open as the rest of the set. The
-aliases in the tree, `Uint`, `Int`, `USize` and `ISize`, carry no
-default yet: each takes the adaptation as a parameter of its own,
-until what the default selects on overflow is settled.
+Default strategy is `Warm` unless called out, and every semantic
+alias carries a default for its strategy parameter. The tree is short
+of that today: `Uint`, `Int`, `USize` and `ISize` take the adaptation
+as a parameter of their own and have no default, until which
+adaptation the default names for integers is settled.
 
 ## Monomorphisation is the dispatch
 
@@ -366,8 +369,9 @@ devirtualisation; we never pay for dispatch.
 - `arvo-format` declares what values exist and what an adaptation is.
 - `arvo-placement` derives where the bits sit, and reads no adaptation.
 - `arvo-strategy` binds a name to a choice between placements.
-- `arvo-numeral` holds a value of a declared signature, and computes
-  with the format's own operations and nothing of its own.
+- `arvo-numeral` holds a value of a declared signature, with a sum in
+  its carrier that gives the format's own result and a comparison of
+  its own.
 - `arvo-bits` ships one concrete with no contract behind it, because an
   exact-width value at a declared width has one shape rather than an open
   set of them for another crate to supply a second instance of.
