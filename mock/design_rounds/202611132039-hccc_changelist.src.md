@@ -55,7 +55,8 @@ one format.
 under `Quiet`.
 
 `tests/ui/`: `index::<u8>()` on a signed 8-bit integer beside `index::<i8>()`, and on a 9-bit
-unsigned integer beside `index::<u16>()`, each refusal with its diagnostic.
+unsigned integer beside `index::<u16>()`, each refusal with its diagnostic. One pair more than the
+design lists, for the seal it states: `from_index` of a 128-bit integer beside a 64-bit one.
 
 `tests/consumer/`: a quotient by a constant divisor with its verdict, a conversion between an integer
 and a fixed-point signature with its verdict, and the three host functions, with a function generic

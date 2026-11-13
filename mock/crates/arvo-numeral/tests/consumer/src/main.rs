@@ -21,6 +21,8 @@ use arvo_numeral::{
     Additive,
     Bool,
     DebugCheck,
+    Divisor,
+    HostInteger,
     ISize,
     Identity,
     Int,
@@ -98,6 +100,19 @@ const DIFFERENCE: U13 = U13::constant::<0>()
     .neg()
     .mul(U13::constant::<2731>())
     .neg();
+
+type S7 = Signature<Integer<7>, Adapt<Floor, Saturate>>;
+
+/// A quotient and a host integer in a constant: a quarter of ten, floored, and
+/// a host integer past the top of seven signed bits.
+const QUARTER: I7 = I7::constant::<10>().div(Divisor::constant::<4>());
+const DOOR: I7 = I7::from_index(200u8);
+
+/// Generic over the host integer, bounded by `HostInteger` and nothing more: a
+/// host integer in through the door and out again.
+fn round_trip<H: HostInteger>(host: H) -> H {
+    Int::<16, Adapt<TowardZero, Wrap>, Quiet>::from_index(host).index::<H>()
+}
 
 fn main() {
     // The doors.
@@ -239,10 +254,50 @@ fn main() {
         8191
     );
 
+    // The quotient, by a divisor that is a constant of the format.
+    let seven: Divisor<Integer<7>> = Divisor::constant::<7>();
+    assert_eq!(I7::constant::<-50>().div(seven).slot().index(), -8);
+    assert!(I7::constant::<-50>().fits_div(seven).get());
+    let minus_one = Divisor::constant::<-1>();
+    assert!(!I7::constant::<-64>().fits_div(minus_one).get());
+    assert_eq!(I7::constant::<-64>().div(minus_one).slot().index(), 63);
+    assert_eq!(QUARTER.slot().index(), 2);
+
+    // The conversion onto another signature: three is twenty-four eighths, and
+    // a hundred is past the top of the eighths.
+    type EighthsSig = Signature<arvo_format::points::Fixed<6, -3>, Adapt<HalfEven, Saturate>>;
+    assert_eq!(
+        U13::constant::<3>().convert::<EighthsSig>().slot().index(),
+        24
+    );
+    assert!(U13::constant::<3>().fits_convert::<EighthsSig>().get());
+    assert!(!U13::constant::<100>().fits_convert::<EighthsSig>().get());
+    assert_eq!(
+        U13::constant::<100>()
+            .convert::<EighthsSig>()
+            .slot()
+            .index(),
+        31
+    );
+    // One and a half onto the integers, by the target's mode.
+    assert_eq!(Eighths::constant::<12>().convert::<S7>().slot().index(), 1);
+
+    // The door for a host integer, in and out at whichever width is asked.
+    assert_eq!(U13::from_index(8191u16), top13);
+    assert_eq!(U13::from_index(8192u64).slot().index(), 0);
+    assert_eq!(I7::from_index(1000i32).slot().index(), 63);
+    assert_eq!(I7::from_index(u64::MAX).slot().index(), 63);
+    assert!(U13::holds_index(8191i64).get() && !U13::holds_index(-1i8).get());
+    assert_eq!(top13.index::<u16>(), 8191);
+    assert_eq!(top13.index::<i64>(), 8191);
+    assert_eq!(a.index::<i8>(), -3);
+    assert_eq!(round_trip::<i16>(-3), -3);
+    assert_eq!(round_trip::<isize>(40), 40);
+    assert_eq!(DOOR.slot().index(), 63);
+
     // The admission's items, through the traits.
     type S13 = Signature<arvo_format::points::UFixed<13, 0>, Adapt<TowardZero, Wrap>>;
     assert_eq!(admission_of::<S13>(), (13, Policy::Wrap, false));
-    type S7 = Signature<arvo_format::points::Integer<7>, Adapt<Floor, Saturate>>;
     assert_eq!(admission_of::<S7>(), (7, Policy::Saturate, true));
     assert!(aborts::<Abort>() && !aborts::<Quiet>() && !aborts::<Never>());
     assert!(Bool::of(true).get());

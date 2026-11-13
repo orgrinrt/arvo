@@ -19,7 +19,10 @@ notko.workspace = true
 # goes wrong first: the unsigned saturating difference below zero, the signed
 # saturating negation of the lowest member, the saturating product that leaves
 # the machine integer on the negative side. `mutant-under` sends the top of the
-# range to the bottom in a crossing to a sibling signature.
+# range to the bottom in a crossing to a sibling signature. `mutant-div` returns
+# the dividend where the quotient leaves the range, `mutant-convert` reads the
+# source's slot index as the target's, and `mutant-index` sends a negative host
+# integer to the top of an unsigned saturating range.
 [features]
 mutant-8 = []
 mutant-16 = []
@@ -29,6 +32,9 @@ mutant-sub = []
 mutant-neg = []
 mutant-mul = []
 mutant-under = []
+mutant-div = []
+mutant-convert = []
+mutant-index = []
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"

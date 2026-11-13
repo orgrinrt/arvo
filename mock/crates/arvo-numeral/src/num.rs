@@ -38,7 +38,7 @@ use crate::machine::copy;
 use crate::map::Held;
 use crate::rung;
 
-type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
+pub(crate) type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
 
 /// The machine integer of the container the placement names for the signature's
 /// slot family. Nameable inside this crate only.
@@ -91,7 +91,7 @@ macro_rules! dispatch {
 
 impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// The value at a member's slot index. The index is a member's.
-    const fn at_index(index: i128) -> Self {
+    pub(crate) const fn at_index(index: i128) -> Self {
         let () = S::ADMITTED;
         Self::from_carrier(dispatch!(
             S,

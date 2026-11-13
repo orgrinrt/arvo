@@ -1,0 +1,30 @@
+     Running tests/the_conversion.rs
+the_conversion_is_a_constant_where_its_operand_is --- FAILED
+the_named_conversions_sit_where_arithmetic_puts_them --- FAILED
+a_fixed_point_member_converts_between_two_exponents --- FAILED
+an_integer_converts_onto_a_fixed_point_grid_and_back --- FAILED
+---- the_conversion_is_a_constant_where_its_operand_is stdout ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:199:5:
+assertion `left == right` failed
+  left: 3
+ right: 24
+---- the_named_conversions_sit_where_arithmetic_puts_them stdout ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:175:5:
+assertion `left == right` failed
+  left: 3
+ right: 24
+---- a_fixed_point_member_converts_between_two_exponents stdout ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:81:5:
+assertion `left == right` failed: `convert` disagrees with the oracle on 3754 of 3840 members
+  left: 3754
+ right: 0
+---- an_integer_converts_onto_a_fixed_point_grid_and_back stdout ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:81:5:
+assertion `left == right` failed: `convert` disagrees with the oracle on 5352 of 6400 members
+  left: 5352
+ right: 0
+test result: FAILED. 2 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s
+     Running tests/the_host_door.rs
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+     Running tests/the_quotient.rs
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s

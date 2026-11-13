@@ -149,6 +149,30 @@ fn a_crossing_to_another_format_is_refused() {
 }
 
 #[test]
+fn the_index_of_a_signed_range_as_an_unsigned_integer_is_refused() {
+    pair(
+        "the_index_of_a_signed_range_as_an_unsigned_integer_is_refused",
+        "the_index_of_a_signed_range_as_a_signed_integer_compiles",
+    );
+}
+
+#[test]
+fn the_index_of_nine_bits_as_a_byte_is_refused() {
+    pair(
+        "the_index_of_nine_bits_as_a_byte_is_refused",
+        "the_index_of_nine_bits_as_sixteen_compiles",
+    );
+}
+
+#[test]
+fn an_index_from_a_128_bit_integer_is_refused() {
+    pair(
+        "an_index_from_a_128_bit_integer_is_refused",
+        "an_index_from_a_64_bit_integer_compiles",
+    );
+}
+
+#[test]
 fn the_carrier_by_projection_is_refused() {
     pair(
         "the_carrier_by_projection_is_refused",

@@ -11,8 +11,8 @@
 //! signature's slot family. Every operation is the format's own on the member's
 //! slot: the slot of `a.add(b)` is the slot `arvo_format::add::<S>` returns for
 //! the two slots, for every pair of members of every admitted signature, and
-//! `sub`, `neg` and `mul` stand to the format's `sub`, `neg` and `mul` the same
-//! way.
+//! `sub`, `neg`, `mul`, `div` and `convert` stand to the format's functions of
+//! those names the same way.
 //!
 //! `Sole` says which signatures a value is held for, by checking what a
 //! signature already declares: a slot family whose range is the whole signed or
@@ -30,16 +30,19 @@
 mod admit;
 mod alias;
 mod check;
+mod host;
 mod identity;
 mod machine;
 mod map;
 mod num;
+mod ratio;
 mod rung;
 
 pub use admit::Sole;
 pub use alias::{ISize, Int, NamesAdaptation, USize, Uint};
-pub use arvo_format::Bool;
+pub use arvo_format::{Bool, Divisor};
 pub use check::{Abort, DebugCheck, Quiet};
+pub use host::HostInteger;
 pub use identity::{Additive, Identity, Multiplicative};
 pub use num::Num;
 

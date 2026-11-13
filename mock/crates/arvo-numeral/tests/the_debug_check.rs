@@ -4,7 +4,7 @@
 //--------------------------------------------------------------------------------------------------
 
 //! The debug check, observed at each site that carries it: `add`, `sub`, `neg`,
-//! `mul` and `adapted`, under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
+//! `mul`, `div`, `convert`, `adapted` and `from_index`, under `Wrap` and under `Saturate`. Under `Abort` a debug build aborts when a
 //! result leaves the range, so each of those is a `should_panic` test; each has
 //! a twin under `Quiet` that takes the same input and completes it by the
 //! policy. The check is no part of the signature, so the twins hold the same
@@ -13,9 +13,13 @@
 #![cfg(debug_assertions)]
 
 use arvo_format::overflow::{Saturate, Wrap};
+use arvo_format::points::Integer;
 use arvo_format::rounding::TowardZero;
-use arvo_format::{Adapt, Exact, Slot};
-use arvo_numeral::{Abort, Int, Quiet};
+use arvo_format::{Adapt, Exact, Signature, Slot};
+use arvo_numeral::{Abort, Divisor, Int, Quiet};
+
+type TwoBitsWrap = Signature<Integer<2>, Adapt<TowardZero, Wrap>>;
+type TwoBitsSaturate = Signature<Integer<2>, Adapt<TowardZero, Saturate>>;
 
 type WrapAborts = Int<4, Adapt<TowardZero, Wrap>>;
 type SaturateAborts = Int<4, Adapt<TowardZero, Saturate>, Abort>;
@@ -83,6 +87,95 @@ fn mul_aborts_under_wrap_with_the_default_check() {
 #[should_panic(expected = "the product leaves the signature's range")]
 fn mul_aborts_under_saturate_with_abort_named() {
     let _ = SaturateAborts::constant::<4>().mul(SaturateAborts::constant::<-3>());
+}
+
+#[test]
+#[should_panic(expected = "the quotient leaves the signature's range")]
+fn div_aborts_under_wrap_with_the_default_check() {
+    let _ = WrapAborts::constant::<-8>().div(Divisor::constant::<-1>());
+}
+
+#[test]
+#[should_panic(expected = "the quotient leaves the signature's range")]
+fn div_aborts_under_saturate_with_abort_named() {
+    let _ = SaturateAborts::constant::<-8>().div(Divisor::constant::<-1>());
+}
+
+#[test]
+#[should_panic(expected = "the member leaves the target signature's range")]
+fn convert_aborts_onto_a_wrapping_target_with_the_default_check() {
+    let _ = WrapAborts::constant::<7>().convert::<TwoBitsWrap>();
+}
+
+#[test]
+#[should_panic(expected = "the member leaves the target signature's range")]
+fn convert_aborts_onto_a_saturating_target_with_abort_named() {
+    let _ = SaturateAborts::constant::<7>().convert::<TwoBitsSaturate>();
+}
+
+#[test]
+#[should_panic(expected = "the host integer names a slot index outside the signature's range")]
+fn from_index_aborts_under_wrap_with_the_default_check() {
+    let _ = WrapAborts::from_index(8i8);
+}
+
+#[test]
+#[should_panic(expected = "the host integer names a slot index outside the signature's range")]
+fn from_index_aborts_under_saturate_with_abort_named() {
+    let _ = SaturateAborts::from_index(8u64);
+}
+
+#[test]
+fn div_convert_and_from_index_complete_under_quiet() {
+    let minus_one = Divisor::constant::<-1>();
+    assert_eq!(
+        WrapQuiet::constant::<-8>().div(minus_one).slot().index(),
+        -8
+    );
+    assert_eq!(
+        SaturateQuiet::constant::<-8>()
+            .div(minus_one)
+            .slot()
+            .index(),
+        7
+    );
+    // Seven onto two signed bits: the low two bits read as minus one, or the top.
+    assert_eq!(
+        WrapQuiet::constant::<7>()
+            .convert::<TwoBitsWrap>()
+            .slot()
+            .index(),
+        -1
+    );
+    assert_eq!(
+        SaturateQuiet::constant::<7>()
+            .convert::<TwoBitsSaturate>()
+            .slot()
+            .index(),
+        1
+    );
+    assert_eq!(WrapQuiet::from_index(8i8).slot().index(), -8);
+    assert_eq!(SaturateQuiet::from_index(8u64).slot().index(), 7);
+}
+
+#[test]
+fn abort_does_not_abort_on_a_quotient_a_conversion_or_an_index_that_fits() {
+    assert_eq!(
+        WrapAborts::constant::<-7>()
+            .div(Divisor::constant::<-1>())
+            .slot()
+            .index(),
+        7
+    );
+    assert_eq!(
+        SaturateAborts::constant::<1>()
+            .convert::<TwoBitsSaturate>()
+            .slot()
+            .index(),
+        1
+    );
+    assert_eq!(WrapAborts::from_index(-8i64).slot().index(), -8);
+    assert_eq!(SaturateAborts::from_index(7u8).index::<i8>(), 7);
 }
 
 #[test]

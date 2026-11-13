@@ -1,0 +1,24 @@
+     Running tests/the_conversion.rs
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+     Running tests/the_host_door.rs
+the_named_doors_sit_where_the_policy_puts_them --- FAILED
+every_host_integer_comes_in_as_adapted_at_the_wider_widths --- FAILED
+every_host_integer_comes_in_as_adapted_at_widths_one_to_eight --- FAILED
+---- the_named_doors_sit_where_the_policy_puts_them stdout ----
+panicked at crates/arvo-numeral/tests/the_host_door.rs:184:5:
+assertion `left == right` failed
+  left: 255
+ right: 0
+---- every_host_integer_comes_in_as_adapted_at_the_wider_widths stdout ----
+panicked at crates/arvo-numeral/tests/the_host_door.rs:52:5:
+assertion `left == right` failed: `from_index` is not `adapted` at -128
+  left: Num(Slot(511))
+ right: Num(Slot(0))
+---- every_host_integer_comes_in_as_adapted_at_widths_one_to_eight stdout ----
+panicked at crates/arvo-numeral/tests/the_host_door.rs:52:5:
+assertion `left == right` failed: `from_index` is not `adapted` at -128
+  left: Num(Slot(1))
+ right: Num(Slot(0))
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/the_quotient.rs
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
