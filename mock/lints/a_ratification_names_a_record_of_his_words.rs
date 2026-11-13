@@ -69,6 +69,7 @@ impl Lint for ARatificationNamesARecordOfHisWords {
 /// lowercase letters, digits and hyphens, ending `.md`. A path is not one,
 /// since a capture is cited by its name in the store and a path with a stamp in
 /// it is a research note of the tree.
+// FIXME(f3053e2cccec): only the name's shape is checked, not that the capture exists in the store.
 fn is_a_capture(token: &str) -> bool {
     let Some(stem) = token.strip_suffix(".md") else {
         return false;
