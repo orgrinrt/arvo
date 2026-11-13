@@ -177,8 +177,14 @@ and no marker for it is declared here. The multiplicative identity waits for the
 
 `Uint<BITS, A>` is a value of `UFixed<BITS, 0>` under the adaptation `A`, and `Int<BITS, A>` of
 `Integer<BITS>`. `USize` and `ISize` are values of `arvo_format::points::USize` and
-`arvo_format::points::ISize` under `Adapt<TowardZero, Wrap>`. `Bool` is `arvo_format::Bool`, re-exported.
-The const parameters are bare integers.
+`arvo_format::points::ISize` under `Adapt<TowardZero, Wrap>`. The const parameters are bare integers.
+
+`Bool` is `arvo_format::Bool`, re-exported, and not a value over a declared signature. It is the type
+every predicate and verdict returns, the format's and this crate's alike: `eq`, `lt`, `fits_add` and the
+format's own `panic_on_overflow` all give it. A boolean over a one-bit value would be a second type for
+the same thing, and none of those would return it. A one-bit value's sum is also not how a yes or no is
+read: under wrapping it is exclusive or, under saturation it is or. So a consumer finds the boolean
+beside the numerals, and it is the one the stack already answers in.
 
 ## What is proved, and how
 
@@ -188,19 +194,33 @@ band's run is its own and the narrow bands stay quick.
 Widths 1 to 8 are exhaustive: every signature over both slot families, both value policies under the
 non-asserting markers and all five modes, every pair of members, through the value type and checked
 against the oracle. The same widths are computed in each of the four rungs, which is the derived carrier
-checked against every wider one, the 64-bit carrier among them.
+checked against every wider one, the 64-bit carrier among them. Widths 9 to 12 are computed in every
+rung wide enough to carry them, the 16, 32 and 64-bit ones, both slot families, both policies, every
+pair, against the oracle.
 
-Widths 9 to 64 run on an edge lattice, each end of the range and its neighbours, zero and its
-neighbours, and every single-bit value, against the oracle, plus pairs drawn from a seeded generator
-whose seed is committed in the test.
+So the rungs are exhaustive at widths 1 to 12, which covers the 8-bit carrier at its full width and the
+wider carriers below theirs, and the value type is exhaustive at 1 to 8. Widths 13 to 64 are sampled,
+and every full-width branch of the 16, 32 and 64-bit carriers, the machine's own wrapping or saturating
+add, falls among them: at width 16 alone there are four billion pairs per family and policy.
+
+Widths 9 to 64 run through the value type on an edge lattice, each end of the range and its neighbours,
+zero and its neighbours, and every single-bit value, against the oracle, plus pairs drawn from a seeded
+generator whose seed is committed in the test.
 
 `fits_add` is checked against `panic_on_overflow` on the same pairs. `from_raw(v.raw()) == v`, and
-carrier equality is slot equality. One test per plain marker shows through the verdict that the
-asserting spelling would assert on a pair that leaves the range, without a `#[should_panic]`.
+carrier equality is slot equality.
+
+The debug assertion is observed where it lives. One test per site, `add`, `adapted` and `from_raw`, and
+per plain marker, `Wrap` and `Saturate`, gives the site an input that leaves the range and expects the
+site's own message; the panic is the plain markers' specified behaviour in a debug build, so these are
+`#[should_panic]` tests. Each site has a twin under `Wrapping` and `Saturating` taking the same input
+and completing it, and one test shows the plain markers stay quiet on what fits. The binary is compiled
+only under `debug_assertions`, since a release build has no assertion to observe.
 
 One mutant per rung, behind the committed features `mutant-8`, `mutant-16`, `mutant-32` and `mutant-64`,
-removes the rung's adaptation; with the feature on, the equality tests expect a mismatch and fail if
-none is found.
+removes the rung's adaptation. The tests assert agreement with the oracle under every build and expect
+nothing of a mutant, so each mutant turns red the tests that run through its rung and leaves the others
+green. The red output of each mutant's run is committed.
 
 `law::additive_associativity_under_wrapping` and `law::additive_associativity_under_saturation` are
 reproduced through the value type, with the registry's own counts.
@@ -208,8 +228,12 @@ reproduced through the value type, with the registry's own counts.
 Compile-fail pairs under `tests/ui/`, each beside a passing twin that differs in the offending token,
 with the diagnostic committed: width 0 and 65, `constant` of a non-member, the additive identity on a
 format without one, `add` across two signatures, a host integer where a value goes and a value where a
-host integer goes, the field named from outside, `Clamp`, `Stochastic` and a phased format. A consumer
-with no feature line is a passing case.
+host integer goes, the field named from outside, `Clamp`, `Stochastic` and a phased format.
+
+A consumer is a crate of its own, outside this workspace, that depends on `arvo-numeral` with no feature
+line and reaches every public item: each type, trait and alias, each associated item of `Sole`,
+`Carried`, `Machine` and `ValuePolicy`, each door and operation, the identity, the host doors of `USize`
+and `ISize`, and the derived traits. A test builds and runs it, and it asserts what it reads.
 
 The disassembly of `add` at 13 bits in 16 and at 64 bits beside the host's `wrapping_add` is committed as
 an ad hoc reading, and called that: the bench harness cannot yet commit the disassembly of a named
