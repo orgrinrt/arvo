@@ -43,7 +43,8 @@ A new section, `## The exact accumulator`, after `## A value under a sibling sig
 It states the admission, `T` on `S`'s grid and wide enough for `CAP` times each end of `S`'s range,
 refused as a failed constant otherwise, and why `T` is named and checked and not derived. It states
 the functions and how each keeps the capacity: `empty`, `of::<N>`, `take`, `plus`, `minus`, `total`,
-`finish` and `fits`. It states that `finish` is `S`'s adaptation applied once and carries the debug
+`finish` and `fits`. `minus` gives the exact difference as a value of `T` and not an accumulator,
+since a difference is not a sum of members and no capacity bounds it. It states that `finish` is `S`'s adaptation applied once and carries the debug
 check, that `T`'s own adaptation never acts, that the result does not depend on the order of the
 terms, and the limit at a 64-bit carrier. It says the accumulator is one carrier a chain may use and
 does not answer which one ships.

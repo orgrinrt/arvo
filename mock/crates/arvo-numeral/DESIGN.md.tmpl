@@ -439,9 +439,11 @@ their shapes. Nothing is counted at run time.
    operation, and nothing is validated.
 4. `plus(a, b)` joins accumulators of capacities `A` and `B` over the same `S` and `T` into one of
    capacity `CAP`, refused at build where `A + B` is above `CAP`.
-5. `minus(a, b)` is the exact difference of two such, with its own bound checked at build: `T` has to
-   hold `A` times one end of `S`'s range less `B` times the other, which for unsigned terms is below
-   zero.
+5. `minus(a, b)` is the exact difference of two such, as a value of `T`, with its own bound checked
+   at build: `T` has to hold `A` times one end of `S`'s range less `B` times the other, which for
+   unsigned terms is below zero. It gives a value and not an accumulator because a difference is not
+   a sum of members: over unsigned terms it lies outside what any capacity bounds, so nothing more
+   may be added to it under a capacity's name. `convert` takes it onto `S`.
 6. `total()` is the exact sum as a value of `T`.
 7. `finish()` is the sum as a value of `S`, completed by `S`'s overflow policy where it has left
    `S`'s range. It is `convert` from `T` onto `S`, and the grids being one, nothing rounds. Under the
