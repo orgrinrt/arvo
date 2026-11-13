@@ -117,7 +117,7 @@ fn the_order_of_two_values_is_the_sign_of_their_difference() {
         let (sa, sb) = (draws.next() & 1 == 1, draws.next() & 1 == 1);
         let a = [draws.next(), draws.next(), draws.next(), draws.next() >> 1];
         // Every third pair shares its top limbs, so the order is found low.
-        let b = if draws.next() % 3 == 0 {
+        let b = if draws.next().is_multiple_of(3) {
             [draws.next(), a[1], a[2], a[3]]
         } else {
             [draws.next(), draws.next(), draws.next(), draws.next() >> 1]

@@ -213,7 +213,6 @@ impl Remainder {
     /// The unwrap door, declared as one. A remainder an exact step left over a
     /// denominator past `2^128 - 1` has no integer here to be handed out in, and
     /// says so rather than narrowing.
-    #[must_use]
     #[inline]
     pub const fn numerator(self) -> Maybe<u128> {
         match self.den.unsigned() {
@@ -226,7 +225,6 @@ impl Remainder {
     /// unsigned 128-bit integer.
     ///
     /// The second unwrap door, because the pair is what the remainder is.
-    #[must_use]
     #[inline]
     pub const fn denominator(self) -> Maybe<u128> {
         self.den.unsigned()
