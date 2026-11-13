@@ -7,7 +7,7 @@ error[E0080]: evaluation panicked: division is not yet admitted over a magnitude
  ::: src/division.rs
   |
   | /         assert!(
-  | |             is_constant_family::<F::Quantum>().get(),
+  | |             constant.get(),
   | |             "division is not yet admitted over a magnitude-indexed quantum: a slot names a \
   | |              different value at each magnitude, and the applied map carries no magnitude \
   | |              coordinate to land the quotient at yet"

@@ -97,10 +97,7 @@ fn oracle(at: &Reading, a: i128, b: i128) -> Answer {
         return Answer::At(Exact::on_grid(Slot::at(slot)));
     }
     let g = greatest_common_divisor_unsigned(rem, den);
-    Answer::At(Exact::held(
-        Slot::at(slot),
-        Remainder::within(rem / g, den / g),
-    ))
+    Answer::At(Exact::at(Slot::at(slot), Remainder::of(rem / g, den / g)))
 }
 
 /// The answer as the step reports it: past an end is the end, on the grid.

@@ -81,9 +81,9 @@ fn oracle(f: &Reading, t: &Reading, a: i128) -> Maybe<Answer> {
         return Maybe::Is(Answer::At(Exact::on_grid(Slot::at(slot))));
     }
     let g = greatest_common_divisor_unsigned(rem, den);
-    Maybe::Is(Answer::At(Exact::held(
+    Maybe::Is(Answer::At(Exact::at(
         Slot::at(slot),
-        Remainder::within(rem / g, den / g),
+        Remainder::of(rem / g, den / g),
     )))
 }
 

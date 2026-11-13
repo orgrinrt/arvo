@@ -149,33 +149,34 @@ impl Fraction {
 /// Its own coordinate rather than a `Fraction`, because it is always in
 /// `[0, 1)` and needs no sign, and because the denominators an exact step leaves
 /// it over pass what a positive signed 64-bit integer holds: a quotient by a
-/// 64-bit member, and a product's `d^2 r^max(-e, 0)`. Crate-private, so the only
-/// remainders that exist are the ones `Exact::between` and the exact steps build,
-/// and every one of them is in `[0, 1)` over a positive denominator, which is the
-/// whole of what the rounding region reads.
+/// 64-bit member, and a product's `d^2 r^max(-e, 0)`. Every value is in `[0, 1)`
+/// over a positive denominator, since `of` is the only constructor and builds the
+/// residue, and that is the whole of what the rounding region reads.
 ///
 /// Equality is of the pair, not of the ratio, the way `Fraction`'s is, so a
 /// remainder compares equal to the `Fraction` it was built from.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(crate) struct Remainder {
+pub struct Remainder {
     num: u128,
     den: u128,
 }
 
 impl Remainder {
     /// Nothing between the grid points.
-    pub(crate) const ZERO: Self = Self {
+    pub const ZERO: Self = Self {
         num: 0,
         den: 1,
     };
 
-    /// `num` over `den`, for a numerator below the denominator.
+    /// The remainder `num` leaves over `den`.
     ///
-    /// Total, so the invariant holds of every value: a numerator at or past the
-    /// denominator keeps its residue, and a zero denominator reads as `ZERO`, the
-    /// way `Fraction::of` reads one. Every caller in the crate passes a numerator
-    /// below a positive denominator, which is the remainder of its own division.
-    pub(crate) const fn within(num: u128, den: u128) -> Self {
+    /// The residue and nothing else: `of(7, 3)` is a third. A zero denominator
+    /// names no ratio and reads as `ZERO`, the way `Fraction::of` reads one.
+    /// Nothing carries, because this is a residue rather than a ratio normalised
+    /// into one; a ratio whose whole part should move the slot is a `Fraction`,
+    /// handed to `Exact::between`.
+    #[must_use]
+    pub const fn of(num: u128, den: u128) -> Self {
         if den == 0 {
             return Self::ZERO;
         }
@@ -183,6 +184,22 @@ impl Remainder {
             num: num % den,
             den,
         }
+    }
+
+    /// The numerator, below the denominator by construction.
+    ///
+    /// The unwrap door, declared as one.
+    #[must_use]
+    pub const fn numerator(self) -> u128 {
+        self.num
+    }
+
+    /// The denominator, positive by construction.
+    ///
+    /// The second unwrap door, because the pair is what the remainder is.
+    #[must_use]
+    pub const fn denominator(self) -> u128 {
+        self.den
     }
 
     /// Whether there is nothing between the grid points.
@@ -268,15 +285,13 @@ impl Exact {
         }
     }
 
-    /// A position at `slot` and `part` of the way to the next, for an exact step
-    /// whose remainder passes what a `Fraction` carries.
+    /// A position at `slot` and `part` of the way to the next.
     ///
-    /// The remainder is already in `[0, 1)`, so there is no carry and nothing
-    /// past the index.
-    // FIXME(arvo_has_no_public_constructor_for_an_exact_position_whose_r): a
-    // consumer forming its own position over a 64-bit divisor has no door; the
-    // public one waits on how it normalises a carry.
-    pub(crate) const fn held(slot: Slot, part: Remainder) -> Self {
+    /// The door for a remainder past what a `Fraction` carries, and the one every
+    /// exact step past the sum builds through. The remainder is already in
+    /// `[0, 1)`, so there is no carry and nothing past the index.
+    #[must_use]
+    pub const fn at(slot: Slot, part: Remainder) -> Self {
         Self {
             slot,
             part,
@@ -303,7 +318,7 @@ impl Exact {
     pub const fn between(slot: Slot, part: Fraction) -> Self {
         let whole = part.num.div_euclid(part.den);
         // Non-negative and below a positive denominator, so both fit unsigned.
-        let part = Remainder::within(part.num.rem_euclid(part.den) as u128, part.den as u128);
+        let part = Remainder::of(part.num.rem_euclid(part.den) as u128, part.den as u128);
         match slot.index().checked_add(whole as i128) {
             Some(at) => {
                 Self {

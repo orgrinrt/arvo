@@ -7,7 +7,7 @@ error[E0080]: evaluation panicked: conversion is not yet admitted over a magnitu
  ::: src/conversion.rs
   |
   | /         assert!(
-  | |             is_constant_family::<F::Quantum>().get() && is_constant_family::<T::Quantum>().get(),
+  | |             constant.get(),
   | |             "conversion is not yet admitted over a magnitude-indexed quantum on either side: a slot \
   | |              names a different value at each magnitude, and the applied map carries no magnitude \
   | |              coordinate yet"

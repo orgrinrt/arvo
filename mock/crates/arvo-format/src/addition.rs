@@ -234,7 +234,7 @@ pub const fn sum_position<F: Format>(a: Slot, b: Slot) -> Exact {
 /// Reduced, non-negative and below a positive denominator of at most `2^63`, so
 /// both narrow exactly and nothing carries into the slot.
 const fn remainder_of(parts: PhaseParts) -> Remainder {
-    Remainder::within(parts.rem as u128, parts.den as u128)
+    Remainder::of(parts.rem as u128, parts.den as u128)
 }
 
 /// The exact position at slot `at`, which already carries the phase parts'
@@ -243,7 +243,7 @@ const fn remainder_of(parts: PhaseParts) -> Remainder {
 /// Shared by every step that adds copies of the phase: they differ in the slot
 /// sum and in how many copies, and not in how the position is built from them.
 const fn positioned(at: i128, parts: PhaseParts) -> Exact {
-    Exact::held(Slot::at(at), remainder_of(parts))
+    Exact::at(Slot::at(at), remainder_of(parts))
 }
 
 /// A reach of whole slots, given the grid state the parts' remainder decides.
@@ -376,7 +376,7 @@ pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
         return completion_at::<S>(whole).and(completion_at::<S>(whole + 1));
     }
     let low = reach.positions_low();
-    let rounded = round_slot(mode, Exact::held(low, remainder_of(parts)), Dither::UNUSED);
+    let rounded = round_slot(mode, Exact::at(low, remainder_of(parts)), Dither::UNUSED);
     // The offset is the step alone: `low` carries no fraction, so the slot below
     // the position is `low` itself.
     completion_at::<S>(whole + (rounded.down() - low.index()) + rounded.step())

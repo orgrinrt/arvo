@@ -1,10 +1,11 @@
-// A divisor read at run time over a range that holds the zero, the pair that
-// turns on where the range starts.
+// A divisor read at run time over a range that leaves the zero out, the pair
+// that turns on the phase.
 //
-// A slot read at run time could be the zero member, and telling it apart would
-// be a check on the value, so `Divisor::of` is refused over a format that has
-// one. Over the same range starting at one there is no zero member and it is
-// admitted. The two files differ in the range's lowest slot and nothing else.
+// At a whole phase the slot `-n` names the zero whether or not the range holds
+// it, and a slot is not typed as a member, so a slot read at run time could be
+// that one and telling it apart would be a check on the value. `Divisor::of` is
+// refused there. At a half-offset phase no slot names the zero and it is
+// admitted. The two files differ in the phase and nothing else.
 
 use arvo_format::ambient::BinaryRationals;
 use arvo_format::division::Divisor;
@@ -28,7 +29,7 @@ impl Format for Probe {
     type Quantum = Constant<0>;
     type Slots = Range;
 
-    const PHASE: Phase = Phase::ZERO;
+    const PHASE: Phase = Phase::halves(1);
 }
 
 const _DIVISOR: Divisor<Probe> = Divisor::of(Slot::at(7));

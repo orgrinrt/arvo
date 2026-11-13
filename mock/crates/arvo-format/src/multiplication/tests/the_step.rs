@@ -126,24 +126,24 @@ fn the_exact_step_holds_at_the_largest_remainder_denominator() {
     // these, and the edge sweep checks them against the wide one.
     assert_eq!(
         product_position::<At<Signed<4>, -127>>(Slot::at(1), Slot::at(1)),
-        Exact::held(Slot::ZERO, Remainder::within(1, 1 << 127))
+        Exact::at(Slot::ZERO, Remainder::of(1, 1 << 127))
     );
     assert_eq!(
         product_position::<At<Signed<4>, -127>>(Slot::at(-1), Slot::at(1)),
-        Exact::held(Slot::at(-1), Remainder::within((1 << 127) - 1, 1 << 127))
+        Exact::at(Slot::at(-1), Remainder::of((1 << 127) - 1, 1 << 127))
     );
     assert_eq!(
         product_position::<Dec<Signed<4>, -38>>(Slot::at(3), Slot::at(7)),
-        Exact::held(Slot::ZERO, Remainder::within(21, 10u128.pow(38)))
+        Exact::at(Slot::ZERO, Remainder::of(21, 10u128.pow(38)))
     );
     // A phase of `-1 / 2^63` at exponent zero: one times one is
     // `((2^63 - 1)^2 + 2^63) / 2^126`, which is `2^126 - 2^63 + 1` over `2^126`,
     // odd over a power of two and so in lowest terms.
     assert_eq!(
         product_position::<Phased<Signed<4>, 0, 1, { i64::MIN }>>(Slot::at(1), Slot::at(1)),
-        Exact::held(
+        Exact::at(
             Slot::ZERO,
-            Remainder::within((1 << 126) - (1 << 63) + 1, 1 << 126)
+            Remainder::of((1 << 126) - (1 << 63) + 1, 1 << 126)
         )
     );
 }

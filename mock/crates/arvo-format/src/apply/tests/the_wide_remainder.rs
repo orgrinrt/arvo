@@ -92,7 +92,7 @@ fn the_midpoint_test_is_the_exact_comparison_with_half_at_every_width() {
         for num in numerators(den) {
             let want = against_half(num, den);
             assert_eq!(
-                Remainder::within(num, den).against_half(),
+                Remainder::of(num, den).against_half(),
                 want,
                 "{num} / {den}"
             );
@@ -119,7 +119,7 @@ fn the_dither_test_is_the_exact_comparison_at_every_width() {
             for dither in dithers() {
                 let want = dither_is_below(num, den, dither);
                 assert_eq!(
-                    Remainder::within(num, den).is_above(dither),
+                    Remainder::of(num, den).is_above(dither),
                     want,
                     "{dither:?} below {num} / {den}"
                 );
@@ -152,7 +152,7 @@ fn every_mode_rounds_a_wide_remainder_by_its_exact_value() {
     for den in denominators() {
         for num in numerators(den) {
             for dither in dithers() {
-                let exact = Exact::held(slot, Remainder::within(num, den));
+                let exact = Exact::at(slot, Remainder::of(num, den));
                 for &mode in ALL_MODES.iter() {
                     let rounded = apply::round_slot(mode, exact, Dither::at(dither));
                     assert_eq!(rounded.down(), -7);
@@ -181,15 +181,15 @@ fn a_remainder_equals_the_fraction_it_was_built_from_and_no_other() {
     // The pair, not the ratio, the way `Fraction`'s own equality reads.
     assert_ne!(exact.part, Fraction::of(6, 14));
     assert_ne!(exact.part, Fraction::of(-3, 7));
-    assert_eq!(exact.part, Remainder::within(3, 7));
+    assert_eq!(exact.part, Remainder::of(3, 7));
     // A remainder past what a `Fraction` carries equals none of them.
-    assert_ne!(Remainder::within(1, 1 << 64), Fraction::of(1, i64::MAX));
+    assert_ne!(Remainder::of(1, 1 << 64), Fraction::of(1, i64::MAX));
     // A numerator at or past the denominator keeps its residue, and a zero
     // denominator reads as nothing, so every value is in `[0, 1)`.
-    assert_eq!(Remainder::within(9, 4), Remainder::within(1, 4));
+    assert_eq!(Remainder::of(9, 4), Remainder::of(1, 4));
     assert_eq!(
-        Remainder::within(u128::MAX, u128::MAX),
-        Remainder::within(0, u128::MAX)
+        Remainder::of(u128::MAX, u128::MAX),
+        Remainder::of(0, u128::MAX)
     );
-    assert!(Remainder::within(5, 0).is_zero());
+    assert!(Remainder::of(5, 0).is_zero());
 }

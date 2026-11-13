@@ -31,6 +31,7 @@ use crate::placing::{
     Placed,
     Powers,
     Reduced,
+    all,
     is_held,
     over,
     positioned,
@@ -60,11 +61,13 @@ impl<F: Format, S: DeclaredSignature> Operation for Convert<F, S> {
 struct Convertible<F, T>(PhantomData<(F, T)>);
 
 impl<F: Format, T: Format> Convertible<F, T> {
-    /// The four conditions, in the order `is_convertible` asks them. The phases
-    /// are asserted first because the others read their parts.
+    /// The four conditions, each asserted from `conditions`, which
+    /// `is_convertible` folds. The phases are first because the others read
+    /// their parts.
     const ADMITTED: () = {
+        let [denote, constant, fits, carried] = conditions::<F, T>();
         assert!(
-            F::PHASE.denotes().get() && T::PHASE.denotes().get(),
+            denote.get(),
             "conversion is refused where either phase's denominator is zero: such a phase names \
              no member, so there is nothing to place or nowhere to place it"
         );
@@ -72,7 +75,7 @@ impl<F: Format, T: Format> Convertible<F, T> {
         // placement is a function of both formats here too. `Exact` and `adapt`
         // carry no magnitude coordinate to read it from or land it at.
         assert!(
-            is_constant_family::<F::Quantum>().get() && is_constant_family::<T::Quantum>().get(),
+            constant.get(),
             "conversion is not yet admitted over a magnitude-indexed quantum on either side: a slot \
              names a different value at each magnitude, and the applied map carries no magnitude \
              coordinate yet"
@@ -81,7 +84,7 @@ impl<F: Format, T: Format> Convertible<F, T> {
         // position is a function of the pair here too, and only its remainder's
         // denominator is past the unsigned 128 bits it is carried over.
         assert!(
-            matches!(Self::STEP, Maybe::Is(_)),
+            fits.get(),
             "conversion is not yet admitted where the remainder's denominator d_F V_F U_T d_T, with \
              d each phase's reduced denominator, U = r^max(e, 0) and V = r^max(-e, 0) per format, \
              passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \
@@ -91,7 +94,7 @@ impl<F: Format, T: Format> Convertible<F, T> {
         // positions at the range ends are functions of the pair, and only the slot
         // index's own integer is too narrow to hold them.
         assert!(
-            conversion_is_carried::<F, T>().get(),
+            carried.get(),
             "conversion is not yet admitted between these formats: a member at an end of the \
              source's range lands past the slot coordinate on the target's grid, so the position \
              it names is not one a slot index can hold yet"
@@ -234,17 +237,28 @@ pub const fn convert<F: Format, S: DeclaredSignature>(a: Slot, dither: Dither) -
 /// Whether the conversion from `F` onto `T` is admitted, asked without forcing
 /// the obligation.
 ///
-/// The same four conditions in the same order, so a test can hold a pair the
+/// The obligation's own verdicts folded, so a test can hold a pair the
 /// conversion does not admit and report on it rather than stop the build.
 #[must_use]
 pub const fn is_convertible<F: Format, T: Format>() -> Bool {
-    if !F::PHASE.denotes().get() || !T::PHASE.denotes().get() {
-        return Bool::FALSE;
-    }
-    if !is_constant_family::<F::Quantum>().get() || !is_constant_family::<T::Quantum>().get() {
-        return Bool::FALSE;
-    }
-    conversion_is_carried::<F, T>()
+    all(conditions::<F, T>())
+}
+
+/// The obligation's four verdicts, in order: both phases denote, both quanta
+/// are constant, `D` fits, the range ends are carried.
+///
+/// The one place they are stated, read by the obligation and by
+/// `is_convertible`. The last two read the step and answer false where a phase
+/// does not denote.
+const fn conditions<F: Format, T: Format>() -> [Bool; 4] {
+    [
+        Bool::of(F::PHASE.denotes().get() && T::PHASE.denotes().get()),
+        Bool::of(
+            is_constant_family::<F::Quantum>().get() && is_constant_family::<T::Quantum>().get(),
+        ),
+        Bool::of(matches!(Convertible::<F, T>::STEP, Maybe::Is(_))),
+        conversion_is_carried::<F, T>(),
+    ]
 }
 
 /// The step at slot `a` without forcing the obligation, for the edge sweep,

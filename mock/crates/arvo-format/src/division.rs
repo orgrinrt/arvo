@@ -28,11 +28,12 @@ use notko::Maybe;
 
 use crate::adapt::{Arity, DeclaredSignature, Operation};
 use crate::apply::{Dither, Exact, adapt};
-use crate::format::{Format, cancelling_slot, has_additive_identity};
+use crate::format::{Format, cancelling_slot};
 use crate::placing::{
     Placed,
     Powers,
     Reduced,
+    all,
     is_held,
     over,
     positioned,
@@ -61,9 +62,10 @@ impl<S: DeclaredSignature> Operation for Div<S> {
 /// A slot of `F` that is not the format's zero member.
 ///
 /// Built by `constant`, which refuses a zero or out-of-range constant at build
-/// time, or by `of`, which is admitted only over a format that has no zero
-/// member. Neither reads the slot's value to decide anything, so the property is
-/// carried by the type rather than checked at the call.
+/// time, or by `of`, which is admitted only where no slot of the format names the
+/// zero. Neither reads the slot's value to decide anything, so the property is
+/// carried by the type rather than checked at the call, and the step never meets
+/// a zero factor.
 pub struct Divisor<F: Format> {
     slot:   Slot,
     format: PhantomData<F>,
@@ -95,16 +97,32 @@ impl<F: Format, const B: i128> ConstantDivisor<F, B> {
     };
 }
 
-/// What a divisor read at run time owes: a format with no zero member.
-struct NoZeroMember<F>(PhantomData<F>);
+/// What a divisor read at run time owes: a format in which no slot names the
+/// zero.
+///
+/// `phase + b` is zero only at `b = -n / d`, an integer only when the reduced
+/// denominator `d` is one, so past one no slot is the zero, member or not. A slot
+/// is not typed as a member of its format, so at `d = 1` the slot `-n` could be
+/// handed in whether or not the range holds it.
+struct NoSlotNamesTheZero<F>(PhantomData<F>);
 
-impl<F: Format> NoZeroMember<F> {
+impl<F: Format> NoSlotNamesTheZero<F> {
+    // FIXME(arvo_a_runtime_divisor_over_a_whole_phase_range_without_the): a range
+    // that leaves the zero out at a whole phase has no zero member, and only the
+    // slot's lack of a membership type keeps it from dividing by a runtime slot.
     const ADMITTED: () = assert!(
-        !has_additive_identity::<F>().get(),
-        "Divisor::of is refused over a format that has a zero member: a slot read at run time could \
-         be that member, and telling it apart would be a check on the value. Name the divisor with \
-         Divisor::constant, or declare a slot range that leaves the zero out"
+        no_slot_names_the_zero::<F>().get(),
+        "Divisor::of is refused where a slot names the zero, which is wherever the phase's \
+         denominator in lowest terms is one: a slot read at run time could be that slot, and \
+         telling it apart would be a check on the value. Name the divisor with Divisor::constant, \
+         or declare a phase whose denominator is past one"
     );
+}
+
+/// Whether no slot of `F` names the zero: its phase denotes, and its reduced
+/// denominator is past one.
+const fn no_slot_names_the_zero<F: Format>() -> Bool {
+    Bool::of(matches!(reduced_phase::<F>(), Maybe::Is(phase) if phase.denominator > 1))
 }
 
 impl<F: Format> Divisor<F> {
@@ -119,15 +137,14 @@ impl<F: Format> Divisor<F> {
         }
     }
 
-    /// The divisor at `slot`, admitted only over a format with no zero member.
+    /// The divisor at `slot`, admitted only where no slot of `F` names the zero.
     ///
     /// A slot outside the range is taken as every operation here takes one, and
-    /// the step answers for it; the one such slot that names the zero, which
-    /// exists only where the phase's denominator is one, saturates toward the
-    /// positive end.
+    /// the step answers for it as for any position past the index. None of them
+    /// is the zero, so the step never meets one.
     #[must_use]
     pub const fn of(slot: Slot) -> Self {
-        let () = NoZeroMember::<F>::ADMITTED;
+        let () = NoSlotNamesTheZero::<F>::ADMITTED;
         Self {
             slot,
             format: PhantomData,
@@ -155,11 +172,12 @@ impl<F: Format> Divisor<F> {
 struct Divisible<F>(PhantomData<F>);
 
 impl<F: Format> Divisible<F> {
-    /// The four conditions, in the order `is_divisible` asks them. The phase is
-    /// asserted first because the others read its parts.
+    /// The four conditions, each asserted from `conditions`, which `is_divisible`
+    /// folds. The phase is first because the others read its parts.
     const ADMITTED: () = {
+        let [denotes, constant, fits, carried] = conditions::<F>();
         assert!(
-            F::PHASE.denotes().get(),
+            denotes.get(),
             "division is refused over a phase whose denominator is zero: such a phase names no \
              member, so there is no quotient to position"
         );
@@ -167,7 +185,7 @@ impl<F: Format> Divisible<F> {
         // quotient is a function of the signature here too. `Exact` and `adapt`
         // carry no magnitude coordinate to land it at.
         assert!(
-            is_constant_family::<F::Quantum>().get(),
+            constant.get(),
             "division is not yet admitted over a magnitude-indexed quantum: a slot names a \
              different value at each magnitude, and the applied map carries no magnitude \
              coordinate to land the quotient at yet"
@@ -176,7 +194,7 @@ impl<F: Format> Divisible<F> {
         // position is a function of the signature here too, and only its
         // remainder's denominator is past the unsigned 128 bits it is carried over.
         assert!(
-            denominator_fits::<F>().get(),
+            fits.get(),
             "division is not yet admitted where the remainder's denominator d |n + b d| r^max(e, 0), \
              with n / d the reduced phase, b a member divisor, r the radix and e the quantum's \
              exponent, passes 2^128 - 1 at an end of the range: an exact position carries its \
@@ -186,7 +204,7 @@ impl<F: Format> Divisible<F> {
         // corner positions are functions of the signature, and only the slot
         // index's own integer is too narrow to hold them.
         assert!(
-            quotient_is_carried::<F>().get(),
+            carried.get(),
             "division is not yet admitted over this format: the exact quotient of two members \
              leaves the slot coordinate, so the position it names is not one a slot index can \
              hold yet"
@@ -252,19 +270,20 @@ const fn denominator(step: Step, fb: Wide) -> Maybe<u128> {
 ///
 /// The numerator `d (n + a d) v - n (n + b d) u` in four limbs, negated with the
 /// denominator when `n + b d` is below zero, then its floor over the
-/// denominator. A zero divisor factor saturates toward the positive end. A
-/// denominator past `2^128 - 1`, a numerator that leaves the limbs, or a floor
-/// that leaves the index, is past it on the sign of the quotient of the two
-/// factors; for a member divisor the obligation has ruled all three out.
+/// denominator. A denominator past `2^128 - 1`, a numerator that leaves the
+/// limbs, or a floor that leaves the index, is past it on the sign of the
+/// quotient of the two factors; for a member divisor the obligation has ruled all
+/// three out.
+///
+/// `b` is never a slot whose factor is zero: every caller passes a `Divisor`'s
+/// slot, or a member `extreme_divisors` has already left the pole out of, so the
+/// denominator below is positive and `over` divides by it.
 const fn placed(step: Step, a: i128, b: i128) -> (Placed, u128) {
     // Both factors are under `2^191`, so neither is lost; the arm is the
     // answer the step gives if one were.
     let (Maybe::Is(fa), Maybe::Is(fb)) = (factor(step, a), factor(step, b)) else {
         return (Placed::Past(false), 1);
     };
-    if fb.is_zero().get() {
-        return (Placed::Past(false), 1);
-    }
     let flip = fb.is_negative().get();
     let negative = fa.is_negative().get() != flip;
     let Maybe::Is(divisor) = denominator(step, fb) else {
@@ -351,9 +370,10 @@ const fn quotient_is_carried<F: Format>() -> Bool {
     let mut i = 0;
     while i < 4 {
         if let Maybe::Is(b) = divisors[i]
-            && (!is_held(placed(step, min, b).0).get() || !is_held(placed(step, max, b).0).get()) {
-                return Bool::FALSE;
-            }
+            && (!is_held(placed(step, min, b).0).get() || !is_held(placed(step, max, b).0).get())
+        {
+            return Bool::FALSE;
+        }
         i += 1;
     }
     Bool::TRUE
@@ -393,16 +413,27 @@ pub const fn div<S: DeclaredSignature>(a: Slot, b: Divisor<S::Format>, dither: D
     adapt::<S>(quotient_position::<S::Format>(a, b), dither)
 }
 
+/// The obligation's four verdicts, in order: the phase denotes, the quantum is
+/// constant, the denominator fits, the quotient is carried.
+///
+/// The one place they are stated, read by the obligation and by `is_divisible`.
+/// The last two read the step and answer false where the phase does not denote.
+const fn conditions<F: Format>() -> [Bool; 4] {
+    [
+        F::PHASE.denotes(),
+        is_constant_family::<F::Quantum>(),
+        denominator_fits::<F>(),
+        quotient_is_carried::<F>(),
+    ]
+}
+
 /// Whether division admits the format, asked without forcing the obligation.
 ///
-/// The same four conditions in the same order, so a test can hold a format the
+/// The obligation's own verdicts folded, so a test can hold a format the
 /// quotient does not admit and report on it rather than stop the build.
 #[must_use]
 pub const fn is_divisible<F: Format>() -> Bool {
-    if !F::PHASE.denotes().get() || !is_constant_family::<F::Quantum>().get() {
-        return Bool::FALSE;
-    }
-    Bool::of(denominator_fits::<F>().get() && quotient_is_carried::<F>().get())
+    all(conditions::<F>())
 }
 
 /// The step at slots `a` and `b` without forcing the obligation, for the edge

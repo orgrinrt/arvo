@@ -301,13 +301,14 @@ fn division_by_a_constant_zero_is_refused_and_by_a_constant_one_admitted() {
     t.pass("tests/ui/division_by_a_constant_one_is_admitted.rs");
 }
 
-/// A divisor read at run time over a range holding the zero member, refused,
-/// and over the same range starting at one, admitted.
+/// A divisor read at run time over a range that leaves the zero out, refused at
+/// a whole phase, where a non-member slot still names the zero, and admitted at
+/// a half-offset phase, where none does.
 #[test]
-fn a_runtime_divisor_is_refused_over_a_range_holding_the_zero_and_admitted_without_it() {
+fn a_runtime_divisor_is_refused_at_a_whole_phase_and_admitted_at_a_half_offset_one() {
     let t = trybuild::TestCases::new();
-    t.compile_fail("tests/ui/a_runtime_divisor_over_a_range_holding_the_zero_is_refused.rs");
-    t.pass("tests/ui/a_runtime_divisor_over_a_range_without_the_zero_is_admitted.rs");
+    t.compile_fail("tests/ui/a_runtime_divisor_over_a_whole_phase_is_refused.rs");
+    t.pass("tests/ui/a_runtime_divisor_over_a_half_offset_phase_is_admitted.rs");
 }
 
 /// Division over a magnitude-indexed quantum, refused, and over a constant

@@ -30,8 +30,7 @@ mod position;
 
 use core::cmp::Ordering;
 
-pub(crate) use position::Remainder;
-pub use position::{Dither, Exact, Fraction};
+pub use position::{Dither, Exact, Fraction, Remainder};
 
 use crate::adapt::{Adaptation, DeclaredSignature};
 use crate::format::Format;

@@ -3,19 +3,27 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The divisor's two doors, the non-member that names the zero, and every
-//! condition of the quotient's obligation on both sides of its boundary.
+//! The divisor's two doors, where `of` is admitted, and every condition of the
+//! quotient's obligation on both sides of its boundary.
 //!
 //! The refusals themselves are build failures and live in `tests/ui` as pairs;
-//! here each door is used where it is admitted, the zero-member reading is
-//! checked against the oracle's own count of the zero, and each condition is
-//! read through `is_divisible` at a format on each side of where it flips.
+//! here each door is used where it is admitted, the reading `of` is admitted by
+//! is checked against the oracle's own search for a slot whose value is zero,
+//! and each condition is read through `is_divisible` at a format on each side of
+//! where it flips.
+
+use notko::Maybe;
 
 use super::{exact_quotient, members, value};
 use crate::ambient::{BinaryRationals, DecimalRationals};
-use crate::apply::Exact;
-use crate::division::{Divisor, is_divisible, quotient_position};
-use crate::format::{Format, has_additive_identity};
+use crate::division::{
+    Divisor,
+    conditions,
+    is_divisible,
+    no_slot_names_the_zero,
+    quotient_position,
+};
+use crate::format::Format;
 use crate::points::{Floating, Integer, UFixed};
 use crate::quantum::Constant;
 use crate::slots::{Signed, Slot, Slots, Unsigned};
@@ -31,7 +39,8 @@ impl Slots for OneTo255 {
     const WIDTH: Width = Width::bits(8);
 }
 
-/// Integers over `OneTo255`.
+/// Integers over `OneTo255`: no zero member, and the non-member slot zero names
+/// the zero.
 type Positive = Grid<BinaryRationals, Constant<0>, OneTo255, 0, 1>;
 
 /// A half-offset grid, whose members are all odd halves.
@@ -40,20 +49,25 @@ type Halves = Grid<BinaryRationals, Constant<0>, Signed<8>, 1, 2>;
 /// A whole phase of one over the unsigned range, whose zero is the slot `-1`.
 type FromOne = Grid<BinaryRationals, Constant<0>, Unsigned<8>, 1, 1>;
 
-/// Whether the oracle finds a member whose value is zero.
-fn oracle_has_zero<F: Format>() -> bool {
-    members::<F>().any(|s| value::<F>(s).num == 0)
+/// Whether the oracle finds a slot whose value is zero, members and the slots
+/// for the range's own span beyond each end alike. The zero's slot `-n / d` lies
+/// within the phase's whole part of zero, so for every format below the window
+/// holds it wherever it exists.
+fn oracle_finds_a_zero_slot<F: Format>() -> bool {
+    let min = <F::Slots as Slots>::MIN.index();
+    let max = <F::Slots as Slots>::MAX.index();
+    let span = max - min + 1;
+    (min - span ..= max + span).any(|s| value::<F>(Slot::at(s)).num == 0)
 }
 
 #[test]
-fn a_format_has_a_zero_member_exactly_where_the_oracle_finds_one() {
-    // `Divisor::of` reads `has_additive_identity`; the oracle counts values.
+fn of_is_admitted_exactly_where_the_oracle_finds_no_slot_naming_the_zero() {
     macro_rules! check {
         ($($f:ty),+ $(,)?) => {
             $(
                 assert_eq!(
-                    has_additive_identity::<$f>().get(),
-                    oracle_has_zero::<$f>(),
+                    no_slot_names_the_zero::<$f>().get(),
+                    !oracle_finds_a_zero_slot::<$f>(),
                     "{}",
                     stringify!($f)
                 );
@@ -68,18 +82,30 @@ fn a_format_has_a_zero_member_exactly_where_the_oracle_finds_one() {
         UFixed<8, -3>,
         Grid<BinaryRationals, Constant<0>, Signed<8>, -3, 1>,
         Grid<BinaryRationals, Constant<0>, Unsigned<8>, -3, 1>,
+        Grid<BinaryRationals, Constant<0>, Unsigned<8>, 6, 4>,
         Grid<DecimalRationals, Constant<-1>, Unsigned<8>, 2, 3>,
     );
-    assert!(!oracle_has_zero::<Positive>() && !oracle_has_zero::<Halves>());
-    assert!(oracle_has_zero::<Integer<8>>());
+    // A range without a zero member is not enough: its zero slot is a non-member
+    // a runtime slot could still name.
+    assert!(!members::<Positive>().any(|s| value::<Positive>(s).num == 0));
+    assert!(!no_slot_names_the_zero::<Positive>().get());
+    assert!(!no_slot_names_the_zero::<FromOne>().get());
+    assert!(no_slot_names_the_zero::<Halves>().get());
+    // Six quarters reduce to three halves, so the reduced denominator decides.
+    assert!(
+        no_slot_names_the_zero::<Grid<BinaryRationals, Constant<0>, Unsigned<8>, 6, 4>>().get()
+    );
+    assert!(
+        !no_slot_names_the_zero::<Grid<BinaryRationals, Constant<0>, Unsigned<8>, 4, 4>>().get()
+    );
 }
 
 #[test]
 fn both_doors_give_the_quotient_the_oracle_names() {
-    const SEVEN: Divisor<Positive> = Divisor::of(Slot::at(7));
     const HALF: Divisor<Halves> = Divisor::of(Slot::at(-1));
+    const SEVEN: Divisor<Positive> = Divisor::constant::<7>();
     const MINUS_THREE: Divisor<Integer<8>> = Divisor::constant::<-3>();
-    assert_eq!(SEVEN.slot(), Slot::at(7));
+    assert_eq!(HALF.slot(), Slot::at(-1));
     assert_eq!(MINUS_THREE.slot(), Slot::at(-3));
     assert_eq!(
         quotient_position::<Positive>(Slot::at(200), SEVEN),
@@ -101,24 +127,19 @@ fn both_doors_give_the_quotient_the_oracle_names() {
 }
 
 #[test]
-fn the_non_member_that_names_the_zero_saturates_toward_the_positive_end() {
-    // `FromOne` has no zero member, so `of` is admitted, and the slot `-1` is
-    // not a member but is the one slot where `phase + b` is zero.
-    assert!(!has_additive_identity::<FromOne>().get());
-    assert_eq!(value::<FromOne>(Slot::at(-1)).num, 0);
-    let top = Exact::on_grid(Slot::at(i128::MAX));
-    for a in [0, 1, 255] {
-        assert_eq!(
-            quotient_position::<FromOne>(Slot::at(a), Divisor::of(Slot::at(-1))),
-            top,
-            "{a}"
-        );
+fn a_runtime_divisor_outside_the_range_is_placed_as_any_other_slot() {
+    // `of` takes any slot. Over a half-offset grid none names the zero, so a slot
+    // past either end is an ordinary divisor the step places exactly.
+    for b in [-129, 128, 1000, -1000] {
+        let divisor = Divisor::<Halves>::of(Slot::at(b));
+        for a in [-128, 0, 127] {
+            assert_eq!(
+                quotient_position::<Halves>(Slot::at(a), divisor),
+                exact_quotient::<Halves>(Slot::at(a), Slot::at(b)).position(),
+                "{a} / {b}"
+            );
+        }
     }
-    // Its neighbours are ordinary quotients, so only the zero saturates.
-    assert_eq!(
-        quotient_position::<FromOne>(Slot::at(3), Divisor::of(Slot::at(-2))),
-        exact_quotient::<FromOne>(Slot::at(3), Slot::at(-2)).position()
-    );
 }
 
 #[test]
@@ -143,6 +164,36 @@ fn every_condition_flips_at_its_boundary() {
     assert!(!is_divisible::<Grid<BinaryRationals, Constant<-64>, Signed<64>, 0, 1>>().get());
     assert!(is_divisible::<Integer<64>>().get());
     assert!(is_divisible::<UFixed<64, 0>>().get());
+}
+
+#[test]
+fn the_verdict_is_false_exactly_at_the_condition_that_fails() {
+    // Each held-out format fails one condition and holds the ones before it, so
+    // the obligation's first refusal is the one the boundary test names.
+    fn first_failing(verdicts: [Bool; 4]) -> Maybe<usize> {
+        match verdicts.iter().position(|v| !v.get()) {
+            Some(i) => Maybe::Is(i),
+            None => Maybe::Isnt,
+        }
+    }
+    assert_eq!(
+        first_failing(conditions::<
+            Grid<BinaryRationals, Constant<0>, Signed<8>, 1, 0>,
+        >()),
+        Maybe::Is(0)
+    );
+    assert_eq!(
+        first_failing(conditions::<Floating<4, -3, 4>>()),
+        Maybe::Is(1)
+    );
+    assert_eq!(first_failing(conditions::<UFixed<64, 65>>()), Maybe::Is(2));
+    assert_eq!(
+        first_failing(conditions::<
+            Grid<BinaryRationals, Constant<-64>, Signed<64>, 0, 1>,
+        >()),
+        Maybe::Is(3)
+    );
+    assert_eq!(first_failing(conditions::<Integer<64>>()), Maybe::Isnt);
 }
 
 /// Bound in a `const` item, so a format the quotient does not admit is read as

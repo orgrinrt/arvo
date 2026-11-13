@@ -107,6 +107,19 @@ pub(crate) const fn is_held(at: Placed) -> Bool {
     }
 }
 
+/// Whether every verdict of an obligation holds, which is what its verdict
+/// function answers.
+pub(crate) const fn all<const N: usize>(verdicts: [Bool; N]) -> Bool {
+    let mut i = 0;
+    while i < N {
+        if !verdicts[i].get() {
+            return Bool::FALSE;
+        }
+        i += 1;
+    }
+    Bool::TRUE
+}
+
 /// The end of the index on the side of a position whose sign is `negative`.
 pub(crate) const fn saturated(negative: bool) -> Exact {
     Exact::on_grid(Slot::at(if negative { i128::MIN } else { i128::MAX }))
@@ -122,9 +135,9 @@ pub(crate) const fn positioned(divisor: u128, at: Placed) -> Exact {
             // The remainder is below the divisor, so it is already in `[0, 1)`
             // and the position is the floor slot itself.
             let common = greatest_common_divisor_unsigned(remainder, divisor);
-            Exact::held(
+            Exact::at(
                 Slot::at(slot),
-                Remainder::within(remainder / common, divisor / common),
+                Remainder::of(remainder / common, divisor / common),
             )
         },
     }

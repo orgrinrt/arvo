@@ -7,7 +7,7 @@ error[E0080]: evaluation panicked: conversion is not yet admitted where the rema
  ::: src/conversion.rs
   |
   | /         assert!(
-  | |             matches!(Self::STEP, Maybe::Is(_)),
+  | |             fits.get(),
   | |             "conversion is not yet admitted where the remainder's denominator d_F V_F U_T d_T, with \
   | |              d each phase's reduced denominator, U = r^max(e, 0) and V = r^max(-e, 0) per format, \
   | |              passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \

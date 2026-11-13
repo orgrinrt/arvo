@@ -1,6 +1,6 @@
-// Every item the quotient and the conversion add, named from the crate root by
-// a consumer with no feature line, the way `Cargo.toml` of an outside crate
-// names this one.
+// Every item the quotient and the conversion add, and the exact door they build
+// through, named from the crate root by a consumer with no feature line, the way
+// `Cargo.toml` of an outside crate names this one.
 
 use arvo_format::adapt::{Adapt, Arity, Operation, Signature};
 use arvo_format::overflow::Saturate;
@@ -13,6 +13,7 @@ use arvo_format::{
     Div,
     Divisor,
     Exact,
+    Remainder,
     Slot,
     convert,
     converted_position,
@@ -31,6 +32,9 @@ const CONVERTED: Slot = convert::<UFixed<8, -2>, S>(Slot::at(10), Dither::UNUSED
 const PLACED: Exact = converted_position::<UFixed<8, -2>, Integer<8>>(Slot::at(10));
 const DIVISIBLE: Bool = is_divisible::<Integer<8>>();
 const CONVERTIBLE: Bool = is_convertible::<UFixed<8, -2>, Integer<8>>();
+// The door a consumer's own operation builds its position through, the one the
+// quotient builds through: `100 / 3` is 33 and a third.
+const BUILT: Exact = Exact::at(Slot::at(33), Remainder::of(1, 3));
 const ARITIES: (Arity, Arity) = (
     <Div<S> as Operation>::ARITY,
     <Convert<UFixed<8, -2>, S> as Operation>::ARITY,
@@ -46,5 +50,13 @@ fn main() {
         CONVERTIBLE,
         ARITIES,
         THREE.slot(),
+    );
+    assert_eq!(BUILT, POSITION);
+    assert_eq!(
+        (
+            Remainder::of(7, 3).numerator(),
+            Remainder::of(7, 3).denominator()
+        ),
+        (1, 3)
     );
 }

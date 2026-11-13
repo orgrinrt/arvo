@@ -108,9 +108,9 @@ impl Ratio {
     pub(crate) fn position(self) -> Exact {
         let whole = self.floor();
         let rest = Self::of(self.num.rem_euclid(self.den), self.den);
-        Exact::held(
+        Exact::at(
             Slot::at(whole),
-            Remainder::within(rest.num as u128, rest.den as u128),
+            Remainder::of(rest.num as u128, rest.den as u128),
         )
     }
 }
