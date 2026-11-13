@@ -109,8 +109,9 @@ declared mode that does not drift one way, is a question for kaski.
 The second is a pull between rows. kaski's obligation speaks of half to even as the mode arvo takes by
 default; the canon check's candidates for a shipped default are a floor with saturation or a wrap; and
 `ruling::wrap_or_clamp_stays_open_and_both_get_priced` is open. Op's direction of 13 November, that a
-shipped default is a generic a consumer overrides per case, dissolves it, as long as the default is
-not also welded to a strategy name. `DESIGNS.md` takes that up under the strategy axis.
+shipped default is a generic a consumer overrides per case, dissolves it: kaski overrides at the call
+or writes its own binding, and neither needs the shipped default to be the mode kaski wants.
+`DESIGNS.md` takes that up under the strategy axis.
 
 Answer: passes in intent and needs implementation, with the transcendental functions the largest
 unplanned piece. Mark: easy to get wrong but can be right. Right requires the value-tier product to be

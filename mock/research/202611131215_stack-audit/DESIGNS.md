@@ -102,21 +102,22 @@ and the arm behind it worth a factor of 27 to 160 where its law holds, and the c
 turning its sign between two hosts shows that a single answer per category would be wrong on one of
 them (`NUMBERS.md`, the fold and the packing families).
 
-It is also the part with the least built. The only arms in the tree are `derive_sole` and
-`derive_shared`, and the first reads its objective only to discard it
-(`mock/crates/arvo-placement/src/lib.rs:217-229`). No arm is keyed on a target, a width region or a
-length. The mechanism that is to pick between arms that disagree has, by the registry's own row, never
+It is also the part with the least built. Nothing in the tree picks between two implementations by a
+predicate over a region: no arm is keyed on a target, a width band or a length. The nearest thing is
+the placement's pair of derivations, one per occupancy, and the sole one reads its objective only to
+discard it (`mock/crates/arvo-placement/src/lib.rs:217-229`). The mechanism that is to pick between arms that disagree has, by the registry's own row, never
 run on arms that disagree (`probe::the_argmin_mechanism_has_never_run_on_arms_that_disagree`, standing
 uncontrolled; reader's notes). And two costs of "a million small implementations" are not priced
 anywhere: what it does to build time, and how an arm that was right on the machine that measured it is
 kept from being selected on a machine where it is wrong. The second has an answer inside the concept,
 since the target is a declared dimension a predicate may read, and no arm uses it yet.
 
-One of the shared principles pulls against it in so many words. "No fast path alongside a slow path.
-One mechanism per concern" (`mock/PRINCIPLES.md.tmpl:209-213`) comes from the fragment every repository
-shares, and arvo's heart is many paths for one concern, selected statically. The two can be read
-together, since the principle is about two mechanisms that both exist at run time, but the text does
-not say so and a reviewer holding the principle will flag the arms.
+One of the shared principles reads as though it forbade this. "No parallel versioning tables, no
+parallel serialization paths, no fast path alongside a slow path. One mechanism per concern"
+(`mock/PRINCIPLES.md.tmpl:209-213`). Read closely it is about two mechanisms that both exist while the
+program runs, which is not what an arm is, since exactly one arm survives lowering. So there is no
+real conflict, and the file never says so. One sentence there naming the arms as the case it does not
+cover would save a reviewer the detour.
 
 Answer: passes in intent and needs implementation, of the first real arm most of all. Mark: easy to get
 wrong but can be right. Right requires three things: the bench harness on more than one host before
@@ -142,27 +143,39 @@ Against that, the principles say the markers "are not decoration" and drive cont
 codegen (`mock/PRINCIPLES.md.tmpl:320-329`), and the root design opens on them
 (`mock/DESIGN.md.tmpl:3-12`).
 
-There is a question under the placeholders that the open rows circle without stating. A strategy that
-selects the adaptation selects what the arithmetic means: `Hot` wrapping and `Precise` saturating
-return different numbers from the same inputs, and the strategy design says so itself, calling the
-result a different signature (`mock/crates/arvo-strategy/DESIGN.md.tmpl:153-156`). An objective, on
-the other hand, is supposed to change cost and never the answer. Binding both under one name means a
-consumer who changes its performance preference changes its results. Op's direction of 13 November on
-the overflow default (`ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case`: a default
-that is a generic with a default, overridable per case, perhaps following a parity standard) reads
-more naturally if the adaptation default is its own parameter and the strategy keeps to objectives.
-Kaski is the live case: it wants the speed objective with half to even and saturation, which is one
-preset's objective and another's adaptation. The open set rescues it, since kaski can write its own
-binding, and then the four presets are examples and not the vocabulary the documents present them as.
+That a strategy names an adaptation is settled and is op's, so it is defended here rather than
+weighed. `ruling::hot_may_sacrifice_soundness_for_a_proven_meaningful_gain` is ratified and carries
+his words: the strategies "behave differently and have their own purpose, intent, that shapes what
+the answer is", and Hot "can sacrifice soundness, that is its explicit purpose, but it should not
+lose it for nothing, instead, provable meaningful gains". A strategy changing the result is the
+design, not a confusion between cost and meaning, and the soundness side condition holds for every
+strategy but Hot. The shipped binding of a name to an objective and an adaptation is the mechanism
+for exactly that.
 
-The registry agrees that this is unsettled: by a reader's count the strategy axis and the strategy
-object carry seventeen open questions between them, and the canon check found two proposals at two
-experts each that disagree on what a strategy is
-(`mock/research/202611130950_canon-double-check/CHECK.md`).
+What the shipped binding does not carry is the price the same sentence sets. `Hot` takes
+`Adapt<TowardZero, Wrap>` (`mock/crates/arvo-strategy/src/lib.rs:87-93`) and nothing anywhere shows a
+gain bought by it: no probe, no bench on a shipped type, and the ruling's own `gap` field says the
+threshold inside "meaningful" is unset. So the one strategy licensed to give up soundness has given
+it up before anything was measured, which is the half of his sentence that the tree has skipped. This
+is where the value-tier benches would be spent first.
 
-Answer: the intent passes; the binding as shipped goes back to the drawing board on one point, whether
-a strategy names an adaptation at all, and the rest can be fixed in place. Mark: going wrong, in the
-sense that the documents and the tree have drifted apart and the tree is the honest one.
+Op's direction of 13 November fits the binding rather than cutting against it.
+`ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case` asks for a default that ships
+as a generic with a default and is easy to override per case, possibly following a parity standard.
+A strategy supplying that default and a consumer overriding it at a call is one reading of both rows
+at once, and the open question is which standard the default follows and how the override is spelled,
+not whether a strategy may name one. kaski is the live case and the open set serves it: it wants the
+speed objective with half to even and saturation, which is one preset's objective and another's
+adaptation, so it writes its own binding and the four presets are examples rather than a vocabulary.
+
+The registry agrees that the axis is unsettled around the presets: the strategy axis and the strategy
+object carry open questions between them, and the canon check found two proposals at two experts each
+that disagree on what a strategy is (`mock/research/202611130950_canon-double-check/CHECK.md`).
+
+Answer: the intent passes and the binding is ratified; the four presets as they stand can be fixed in
+place, and `Hot`'s unpriced adaptation is the one thing to fix first. Mark: easy to get wrong but can
+be right. Going wrong, separately, is the documents claiming the markers drive width and code
+generation when the value crate does not read them.
 
 ### Parity with the standards
 
@@ -277,9 +290,13 @@ Six things in it are going wrong or easy to get wrong. None needs the drawing bo
    that means a round trip through a 128-bit index and the oracle (`num.rs:108-157`). The design
    defends having no conversion from a host integer as a door the signature does not declare
    (`DESIGN.md.tmpl:227-229`). The semantics of that are right: an ingest must adapt, so it is
-   `adapted`. The route is what costs, and a door that takes the host integer of the carrier's width
-   and applies the declared adaptation as a mask or a clamp is the same function of the declared
-   signature at a fraction of the price. `USize` and `ISize` already have bit-copy doors
+   `adapted`. The route is what costs. `adapted` takes the format's exact position, so the oracle is
+   not an implementation choice there but the type of the argument (`num.rs:126-136`), and the
+   cheap equivalent already exists inside the crate: `rung::adapt_s*` and `adapt_u*` put a host
+   integer of the carrier's width onto the declared width by the declared policy, as a double shift
+   for a wrap and a clamp otherwise (`rung.rs:30-80`), which is the same function of the same
+   signature. It is `pub(crate)`. A door built on it would cost a mask where the present route costs
+   a 128-bit rounding and completion. `USize` and `ISize` already have bit-copy doors
    (`mock/crates/arvo-numeral/src/alias.rs:61-84`); the other widths have none.
 2. `Hash` hashes the 128-bit slot index (`num.rs:296-300`), so a one-byte value feeds a hasher sixteen
    bytes. The reason given, that the hash must not depend on the carrier, is met as well by hashing

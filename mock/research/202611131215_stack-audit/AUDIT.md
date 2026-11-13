@@ -18,15 +18,19 @@ board.
 What exists is early and is narrower than the documents say. A consumer can depend today on one value
 type that adds and compares. The format tier underneath has six operations as an exact oracle. There
 is no subtraction, product or division on values, no fixed-point value anyone has timed, no bit set,
-no float operation, and no arm above the placement.
+no float operation, and nothing anywhere that picks between two implementations by a predicate over a
+region, which is the concept's own heart.
 
-One design decision should go back to the drawing board: a strategy that names an adaptation. As
-shipped, choosing a strategy chooses whether arithmetic wraps or saturates and how it rounds, so a
-consumer changing a performance preference changes its results. Three of the four presets differ in
-nothing else, all four adaptations are marked as placeholders, and the value type does not read a
-strategy at all. Op's direction of 13 November, an overflow default that is a generic the consumer
-overrides per case, fits better if the adaptation default is its own parameter and a strategy keeps to
-cost.
+Nothing in the design goes back to the drawing board. The sharpest finding is narrower than that and
+sits inside a ratified row rather than against it. Op's words are that the strategies "behave
+differently and have their own purpose, intent, that shapes what the answer is", and that Hot may
+sacrifice soundness, but "should not lose it for nothing, instead, provable meaningful gains"
+(`ruling::hot_may_sacrifice_soundness_for_a_proven_meaningful_gain`, ratified). The shipped `Hot`
+has taken the licence and not paid the price: it names a wrapping, rounding-toward-zero adaptation
+with no measurement behind it, on a value tier nobody has benched. Beside that, three of the four
+presets name the same placement objective, that objective changes nothing where a value lives, all
+four adaptations are marked as placeholders, and the value type does not read a strategy at all,
+while the root documents say the markers drive container width and code generation.
 
 Four things are going wrong and can be fixed where they stand.
 
@@ -34,8 +38,10 @@ Four things are going wrong and can be fixed where they stand.
    again goes through 128-bit arithmetic. In this audit's ad-hoc spike on one x86 host that is eight
    to nine nanoseconds against about one for the host's own clamp when the build has no link-time
    optimisation, and a wrap that stays seven times slower with it. The sum itself is the host's sum.
-   The product, the quotient and conversion arrive at the value tier next, and the easy way to write
-   each is to call the oracle.
+   The cheap door is already written and private, since the per-width adaptation the value crate uses
+   for its sum is the same function at the same signature, so this is a door to add rather than an
+   algorithm to find. The product, the quotient and conversion arrive at the value tier next, and the
+   easy way to write each is to call the oracle.
 2. The benches do not measure the tree. Seven months of bench work is 49 registered benches over
    94 variant crates and 254 committed result sets, none of which touches a shipped type, all timed
    on one Apple M1. The one family re-run on
@@ -102,7 +108,9 @@ and are both given because the brief asks for both.
 | Never a run-time check, debug abort by type parameter | Passes in intent | Easy to get wrong but can be right, at untrusted input |
 | Arms over regions | Passes in intent, least built | Easy to get wrong but can be right |
 | Strategy as an intent decided by measurement | Passes in intent | Good as it is |
-| Strategy bound to an adaptation, as shipped | Back to the drawing board on that binding | Going wrong |
+| Strategy bound to an adaptation | Ratified and defended | Good as it is |
+| `Hot`'s adaptation, taken with no gain measured | Can be fixed in place | Going wrong |
+| The four presets, three sharing one objective | Can be fixed in place | Easy to get wrong but can be right |
 | Parity with the standards | Passes in intent, IEEE half unbuilt | Easy to get wrong but can be right |
 | `arvo-format` as an oracle | Passes | Good as it is |
 | `arvo-format` on a run-time path, and its design document's length | Can be fixed in place | Going wrong |
@@ -186,10 +194,31 @@ It tried to turn the nightly claim into a measurement and could not: two hooks b
 every stable build in a workspace clone, which is ticket `39d402b85f3d`. The claim stays, labelled as
 reasoned.
 
-What pass two did not change: the four marks on any part, the verdict on the strategy binding, the
-reading of the doors, or the summary's shape. The mutant features were re-read at
-`mock/crates/arvo-numeral/src/rung.rs:36-63` and the finding got stronger, since the feature gate sits
-inside the adaptation itself.
+What pass two did not change: the four marks on any part, the reading of the doors, or the summary's
+shape. The mutant features were re-read at `mock/crates/arvo-numeral/src/rung.rs:36-63` and the
+finding got stronger, since the feature gate sits inside the adaptation itself.
+
+Pass three attacked the two sharpest calls and overturned one of them.
+
+The report no longer sends anything back to the drawing board. Pass one said a strategy should not
+name an adaptation, because a consumer changing a performance preference would change its results.
+`ruling::hot_may_sacrifice_soundness_for_a_proven_meaningful_gain` is ratified and says the opposite
+in op's own words: the strategies "behave differently and have their own purpose, intent, that shapes
+what the answer is". The binding is the mechanism for a settled intent and is defended here. What
+survives is sharper and sits inside the row: Hot takes its licence to lose soundness without the
+provable gain the same sentence requires, and the row's own gap field says the threshold is unset.
+
+It read the ingest door to the bottom instead of describing it. `adapted` runs the oracle because
+its argument is the oracle's exact position, and the cheap equivalent is already written as the
+crate's own per-width adaptation, private. So the fix is a door, not a design question, and the
+report says that now.
+
+It also softened two overstatements. The shared principle about one mechanism per concern does not
+forbid the arms, since an arm is gone by lowering; the file simply never says so. And "no arm above
+the placement" became the thing actually checked: nothing anywhere picks between two implementations
+by a predicate over a region.
+
+A fourth pass is recorded below when it finishes.
 
 ## Tickets
 
