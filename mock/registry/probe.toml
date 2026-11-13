@@ -1600,7 +1600,7 @@ lives = [
 control = "Three, all stated in the header before the run and all three fired. A mutant of the repair testing only `PHASE_NUM == 0`, which is the shipped predicate, had to be reported as differing from the enumeration, or the sweep never reaches a format where the two can differ. A mutant of the second repair comparing only step and count had to differ from enumerated equality, or the pool holds no two grids at one step and count with different offsets. And the pool had to contain at least one equal pair and one unequal, or the equality decision answers one way regardless of input."
 standing = "sound"
 reproduced = "The diagnosis, not the sweep, is independently reached by `the_shipped_crate_admits_a_whole_step_phase`, which links against the real crate rather than modelling the coordinates. The two share no instrument."
-note = "`shipped` names the predicate as it stood when the sweep ran, which tested the phase numerator against zero. The crate has been corrected since and its own tests now hold the predicate equal to an enumeration, so the disagreement count is a fact about that earlier predicate and the property it establishes is unchanged."
+note = "`shipped` names the predicate as it stood when the sweep ran, which tested the phase numerator against zero. The crate was corrected after this ran and its own tests hold the predicate equal to an enumeration, so the disagreement count is a fact about the predicate this ran against and the property it establishes is unchanged."
 keywords = ["phase", "additive identity", "sweep", "enumeration", "whole multiple", "quantum", "mutant", "coordinate space"]
 
 [[probe]]
@@ -1675,7 +1675,7 @@ lives = [
 ]
 control = "Three, all fired. A slug that files of this sitting demonstrably do cite comes back from two of them, so a zero is a fact about the corpus rather than about the search. A slug of the same shape existing nowhere comes back zero in both the registry and the corpus. And the row is required to be present and to carry no `answered`, so what is reported uncited is an open row rather than a settled one."
 standing = "sound"
-note = "Four files of this panel report the same axis gap and none of them cites the row that asks it, which is the mechanism the row's own subject describes from the other side: a question row is reachable from the question it asks only by somebody who already suspects it exists. The row has an `answered` now, written after this ran, so the instrument's third control would fail on the present tree and what it establishes holds at the tree it ran on."
+note = "Four files of this panel report the same axis gap and none of them cites the row that asks it, which is the mechanism the row's own subject describes from the other side: a question row is reachable from the question it asks only by somebody who already suspects it exists. The row's `answered` was written after this ran, so the instrument's third control fails on a tree that carries it, and what it establishes holds at the tree it ran on."
 keywords = ["dimension", "axis", "predicate", "canon", "structural claim", "question row", "uncited", "gap"]
 
 [[probe]]
