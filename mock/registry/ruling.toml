@@ -621,7 +621,9 @@ supersedes = ["warm_behaves_as_a_native_rust_primitive_would"]
 ratification = '''
 Ratified by op. Asked to ratify the earlier
 `warm_behaves_as_a_native_rust_primitive_would`, he sent the question here
-instead, saying the later wording is the one that holds:
+instead, saying the later wording is the one that holds, in the capture
+`202608311355_ruling-batch-arvo.md` in the workspace's store of his responses,
+line 60:
 
 > I think I have already expanded on this and reworded it better later, so there
 > should already be a ruling, ratified by me, to the same effect, with the
@@ -756,7 +758,9 @@ kind = "intent"
 rung = "ratified"
 ratified_by = "op"
 ratification = '''
-Ratified by op, answering "Yes, ratify as written" to whether the note's reading
+Ratified by op, in the capture `202608311355_ruling-batch-arvo.md` in the
+workspace's store of his responses, line 44, answering "Yes, ratify as written"
+to whether the note's reading
 is right: that the intent is the first sentence only, and that everything from
 "For the most part, they probably agree" onward is provenance rather than intent.
 
@@ -869,6 +873,7 @@ id = "the_work_is_predicated_arms_composed"
 kind = "intent"
 rung = "ratified"
 ratified_by = "op"
+ratification = "Ratified by op on 9 August 2026, ratifying his own two statements in the sitting that produced them, with the instruction that the row mean no more than he said. Nothing was put to him as options: the statements were his, unprompted. Both are recorded verbatim at `panel::202608072330_the-numeral-canon-panel::INTENTS::#i13-the-work-is-predicated-arms-composed-and-a-universal-solution-is-rejected`."
 topic = "the_predicate_notation"
 key = "I13"
 says = "The work is not a generalisation but a set of arms with const predicates, each optimising one nameable region and applying nowhere else, so that everywhere is optimal by construction as a composition of those regions. A universal solution is explicitly rejected: the strategies as a concept make one impossible by premise. Every finding must be predicated, including universal ones, so that where it holds is said exactly rather than assumed."
@@ -982,7 +987,9 @@ says = "Runtime code can exist. Its branching should be done as much as possible
 ratification = '''
 Ratified by op on being asked whether this was `stated` or `in_force`, and he
 took neither option as put: he ratified it and added a bound nobody had asked
-about, because the absolute reading is too strong for what sits downstream.
+about, because the absolute reading is too strong for what sits downstream. His
+words, in the capture `202608311355_ruling-batch-arvo.md` in the workspace's
+store of his responses, line 28:
 
 > This is perhaps too absolute for some things specifically downstream in arvo,
 > the algorithm crates and all. So ratify it with the addendum ", unless there's
@@ -1089,7 +1096,9 @@ says = "Panic is the go-to for what cannot be caught at compile time through the
 ratification = '''
 Ratified by op, in his own words and at his own request kept as loose as he
 stated them. Asked whether "never on release outside of warm" named a concern
-or a marker, he rejected the frame the question was built on:
+or a marker, he rejected the frame the question was built on, in the capture
+`202608311355_ruling-batch-arvo.md` in the workspace's store of his responses,
+line 76:
 
 > It's not the point to imitate, that is stale thinking, and see prior answer.
 > However, panic is the go-to for things that can't be caught on compile time
@@ -1425,6 +1434,7 @@ id = "two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gat
 kind = "process"
 rung = "ratified"
 ratified_by = "op"
+ratification = "Said while ratifying the four format statements, which were put to him as four options and all selected; the question was the format, and he answered it and changed who ratifies in the same message, then sent the correction that the coordinator keeps the gate before any of it was encoded. Nothing about the ratification model itself was put to him as options. His words and the correction are recorded at `panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-format` and the section after it."
 topic = "panel_conduct"
 says = "Panel-derived propositions do not wait on op. Where several experts converge heavily and can reason and spell it out, and the coordinator judges the reasoning, the evidence and the stated region sufficient, the proposition is promoted to canon. That promotion is a ratification and is treated as one, and it is recorded as distinct from a proposition op has stamped. Op's stamp is a marker that he has read it. The experts propose; the coordinator holds the gate; convergence is the bar rather than the trigger."
 quote = '''
@@ -1450,6 +1460,7 @@ id = "an_expert_asks_its_peers_before_it_asks_op"
 kind = "process"
 rung = "ratified"
 ratified_by = "op"
+ratification = "Put to him as three options on parking questions: an expert may file only what is genuinely his; keep the current latitude and let a comb catch the misfiled ones; or an expert never files a question at all. He accepted the first with a condition the options did not carry, that a question goes to the peers first and their heavy convergence is the answer. Recorded with his words at `panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#parking-questions`."
 topic = "panel_conduct"
 says = "An expert that cannot settle something asks the other experts in the panel first. Where they converge heavily, that convergence is the answer and op is not in the loop. He is reached for intent, fundamental design direction and broad strokes, and for nothing else."
 quote = '''
@@ -1469,6 +1480,7 @@ id = "the_format_spine_is_canon"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "both"
+ratification = "Put to him as four options, one per format statement: identity is the ambient domain plus the representable set; membership is one affine predicate; arithmetic factors as an exact operation composed with a named adaptation; the concept is closed while the inventory stays open. He selected all four, stamping them as read and subject to change if the experts later disagree or find a better solution, wording or bound. Recorded with his words at `panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-format`."
 topic = "the_format"
 ratifies = [
   "a_format_is_identified_by_its_ambient_domain_and_its_representable_set",
@@ -1512,6 +1524,7 @@ id = "arms_over_regions_are_the_fundamental_heart"
 kind = "intent"
 rung = "ratified"
 ratified_by = "both"
+ratification = "Put to him as two options: arms with const predicates over the regions where something holds, composed, ratified as canon; or held back for more precise wording first. He took the first, calling it the fundamental heart within arvo. Recorded with his words at `panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-organising-shape`."
 topic = "the_strategy_axis"
 ratifies = ["arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached"]
 says = "The full space is filled by small arms and spans that hold where they are optimal and nowhere else, composed, rather than by one or a few general statements uniform across the dimensions. Each arm carries a const predicate over the region it holds in."
@@ -1657,7 +1670,7 @@ id = "a_proof_and_a_bounded_range_get_markers_the_notation_lacked"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Asked as a four-option question and answered by selecting two of them together: a proof carries a different marker from a measurement, and the bounded whole-container range gets its own spelling. The two options he did not take were a per-file pass restating the missing dimension in each author's own voice, and leaving I13 as it stands with the corpus read literally."
+ratification = "Asked as a four-option question and answered by selecting two of them together: a proof carries a different marker from a measurement, and the bounded whole-container range gets its own spelling. The two options he did not take were a per-file pass restating the missing dimension in each author's own voice, and leaving I13 as it stands with the corpus read literally. The round is recorded with his answer at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-predicate-notation-gains-two-markers`."
 topic = "the_predicate_notation"
 says = "The predicate notation distinguishes three things where it distinguished two. A measurement carries the region it was swept over. A proof carries a marker saying its argument is width-free by construction, rather than being written as a sweep that happened to stop at three widths. A finding established across a bounded whole-container range, exhaustively over every value a container holds, is neither a sample nor a universal and carries its own spelling. The markers apply going forward; no existing file is restated, because the per-file pass was offered and declined."
 because = "Across one topic's four files, 82 findings carried no width universal at all, against eighteen firings of the thread universal and thirty-nine of the target-feature one. Under I13 an absent axis says the finding holds in no situation where that axis exists, so read literally that topic held at no width anywhere in the library, which is not what any of its authors meant. The gap was in the notation rather than in the findings: a width-free argument had no honest spelling, so its authors wrote nothing and the notation read that as the strongest possible negative."
@@ -1671,7 +1684,7 @@ id = "accuracy_is_never_bought_with_performance"
 kind = "intent"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Put as a fork between two readings of the accuracy intent, priced at 15.5x aggregate error and 16x worst case at depth five, with a third option offering both per arm. He selected none of the three and stated the intent below instead."
+ratification = "Put as a fork between two readings of the accuracy intent, priced at 15.5x aggregate error and 16x worst case at depth five, with a third option offering both per arm. He selected none of the three and stated the intent below instead. The round is recorded with his answer at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-accuracy-target-he-refuses-the-trade-rather-than-the-reading`."
 topic = "the_chain"
 says = "Performance is never sacrificed for accuracy. Where something cannot be expressed reliably and accurately enough for general computing without losing performance and efficiency, that is a gap in the solutions rather than a trade to be made, and the work is finding the arm that is both. The precision strategy is the carve-out and it is narrow: it exists for the case where more than usual precision is wanted, and it is not the general answer."
 quote = '''
@@ -1691,7 +1704,7 @@ id = "there_is_no_exchange_rate_because_there_is_no_generalisation"
 kind = "intent"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Put as four candidate exchange rates: lexicographic with no rate, a stated rate per objective, a consumer-supplied rate, or silence. He selected none and stated the patchwork intent below, which rejects the question's premise rather than choosing among its answers."
+ratification = "Put as four candidate exchange rates: lexicographic with no rate, a stated rate per objective, a consumer-supplied rate, or silence. He selected none and stated the patchwork intent below, which rejects the question's premise rather than choosing among its answers. The round is recorded with his answer at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-exchange-rate-there-is-no-rate-because-there-is-no-generalisation`."
 topic = "the_strategy_axis"
 says = "No exchange rate exists between objectives, because a rate is a generalisation over a category and the design rejects those by premise. Each arm carries its own justification, in words, recorded. A win is taken however small the gain and however small the region it applies to; the size of the region is the arm's predicate rather than an argument against it. The intended shape is a million small implementations for different situations, selected by const predicates that choose the most optimal path, with no attempt to generalise across them."
 quote = '''
@@ -1712,7 +1725,7 @@ id = "the_ambiguous_rounding_word_is_retired_for_six_explicit_names"
 kind = "ruling"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Re-asked carrying the ambiguous word, the two operations it names on a signed domain, and the six replacements, after an earlier asking that restated the row title was refused as unanswerable. Three options: retire both spellings for six names; keep `trunc` and define it once as toward-zero; or rename the hardware operation to `bit_drop` and let `floor` cover it. He took the first."
+ratification = "Re-asked carrying the ambiguous word, the two operations it names on a signed domain, and the six replacements, after an earlier asking that restated the row title was refused as unanswerable. Three options: retire both spellings for six names; keep `trunc` and define it once as toward-zero; or rename the hardware operation to `bit_drop` and let `floor` cover it. He took the first. The round is recorded with his answer at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-rounding-vocabulary-retires-the-ambiguous-word`."
 topic = "rounding"
 says = "The rounding mode vocabulary is `toward_zero`, `floor`, `ceil`, `half_up`, `half_even`, `stochastic`. Both spellings of the ambiguous word, `truncation` and `trunc`, are retired. A note records that bit truncation of a two's complement value is floor, so the hardware operation is not read back into the name."
 because = "On a signed domain the retired word named two different operations. Bit-drop measures equal to floor on every row and differs from toward-zero on signed rows only, so a reader coming from the hardware and a reader coming from C would have understood the same word as two operations that genuinely differ."
@@ -1748,7 +1761,7 @@ id = "the_panel_finishes_the_canon_without_him"
 kind = "process"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Sent unprompted, in the middle of the round that answered his last four questions, after months of the panel routing questions to him. No options were offered; he ended his own involvement."
+ratification = "Sent unprompted, in the middle of the round that answered his last four questions, after months of the panel routing questions to him. No options were offered; he ended his own involvement. His words are recorded at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#and-then-he-left`."
 topic = "panel_conduct"
 says = "Every remaining canon question is the panel's. A question filed as op's is now derived from what he has already said, argued among peers, and gated by the coordinator. His absence is not a licence to invent: silence in his corpus is still not permission, and where his words genuinely do not reach a question the answer is derived from the intent inside its spirit and put through two independent agreements. Nothing is parked awaiting him."
 quote = '''
@@ -1948,7 +1961,7 @@ id = "what_the_written_history_shows_to_be_his_is_ratified_by_default"
 kind = "process"
 rung = "ratified"
 ratified_by = "op"
-ratification = "Said unprompted on 13 November 2026, in the session that coordinates the workspace, in the same message that asked whether any design so far wanted rethinking. Nothing was put to him and no options were offered."
+ratification = "Said unprompted on 13 November 2026, in the session that coordinates the workspace, in the same message that asked whether any design so far wanted rethinking. Nothing was put to him and no options were offered. His words are in the capture `202611131156_op-on-aight-tell-me-where-the-work-is-at.md` in the workspace's store of his responses, line 32."
 topic = "panel_conduct"
 says = "He does not answer the unratified rows one at a time. What the research and the designs, as they are and as they were, show to be his intent or his call is filled as ratified by default from the written history. Only a row that is clearly not backed by him, or that is actively against the canon, is brought to him. The rest stands provisionally to begin with."
 quote = '''

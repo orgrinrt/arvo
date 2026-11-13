@@ -280,6 +280,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.a-ratification-names-a-record-of-his-words]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-term-is-defined-twice]
 commit = "error"
 build = "error"
