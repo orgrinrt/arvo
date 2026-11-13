@@ -1,27 +1,28 @@
 # arvo. Architecture Design
 
-> Numeric primitives + analysis algorithms with Hot / Warm / Cold /
-> Precise strategy markers. `#![no_std]`, no alloc. Zero dependency
+> Numeric primitives whose behaviour the consumer selects, through
+> strategy markers at type level. `#![no_std]`, no alloc. Zero dependency
 > on platform. Designed so every downstream consumer shares one
 > numeric layer.
 
 ## Principles
 
-1. **Strategy-parameterised primitives.** Numeric containers declared
-   at type level as `Hot` / `Warm` / `Cold` / `Precise`, driving
-   storage width and codegen choices without runtime dispatch.
-2. **no_std, no alloc.** Every crate is const-sized.
+1. Strategy-parameterised primitives. A numeral's behaviour is selected
+   at type level by a strategy, which binds a placement objective and an
+   adaptation selection, without runtime dispatch. `Hot`, `Warm`, `Cold`
+   and `Precise` ship as presets and the set is open.
+2. no_std, no alloc. Every crate is const-sized.
    Consumers pre-allocate; arvo never calls into an allocator.
-3. **Trait contracts, not concrete types.** Sub-crates generic over
+3. Trait contracts, not concrete types. Crates are generic over
    trait bounds so downstream code picks its own concrete
-   instantiations. Trait declarations live in dedicated contract
-   crates (small transitive dependency footprint per consumer).
-4. **Monomorphisation is the dispatch.** No `dyn`, no `TypeId`. The
+   instantiations. A contract is declared in the crate that introduces
+   its concept, so a consumer depends on no more than what it names.
+4. Monomorphisation is the dispatch. No `dyn`, no `TypeId`. The
    monomorphised function IS the type identity.
-5. **Const-trait-driven.** Every trait whose methods are sensibly
-   callable in const context is `pub const trait` (RFC 3762 line).
-   Trait projections work in const fn bodies; default bodies stay
-   reachable from const generic positions.
+5. Const where it can be. Everything answerable before the program runs
+   is answered there, in plain `const fn`. No crate enables an unstable
+   feature today, so no trait here is a `const trait`, and an operation
+   wanted in const context is an inherent `const fn` on its type.
 
 ## Crate topology
 
@@ -35,7 +36,7 @@ this workspace.
 
 | Crate | What it ships | Depends on |
 |---|---|---|
-| `arvo-format` | The declared signature. The representable set as one affine predicate over a phase, a quantum law and a slot range, of which integers, fixed point, scaled integers and floats are points. The six rounding modes, the overflow policies, the adaptation as the pair of those two, and the map that applies one. Addition, the one admitted operation it ships, with the verdict on where the adapted sum is associative. Introduces the numeric category, so `Width` and `Bool` are defined here. | `notko` |
+| `arvo-format` | The declared signature. The representable set as one affine predicate over a phase, a quantum law and a slot range, of which integers, fixed point, scaled integers and floats are points. The six rounding modes, the overflow policies, the adaptation as the pair of those two, and the map that applies one. Addition, negation, subtraction, multiplication and division, and converting a member onto another declared grid, each the exact result adapted once, with the verdict on where the adapted sum is associative. Introduces the numeric category, so `Width` and `Bool` are defined here. | `notko` |
 | `arvo-placement` | The placement derivation, keyed on occupancy. One output at sole occupancy, the carrier, given also as a type per slot family; three at shared, the carrier and the access width and the stride. No declared operation reads any of them. | `arvo-format` |
 | `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
 | `arvo-numeral` | The value. `Num<S>` holds one member of a declared signature alone in the carrier `arvo-placement` derives at sole occupancy, and its sum is the format's own sum. Comparison, the doors in and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and `ISize`. A debug check the consumer chooses, aborting a debug build by default when a result leaves the range. | `arvo-format`, `arvo-placement` |
@@ -53,8 +54,8 @@ rather than a new row.
 Every crate here is a small set of contracts plus the instances that ship with
 them. `Format`, `Ambient`, `Quantum`, `Slots`, `Rounding`, `Overflow`,
 `Adaptation`, `DeclaredSignature` and `Operation` are contracts; `Integer`,
-`UFixed`, `Biased`, `Floating`, the six modes, the three policies and `Add`
-are instances of them. In `arvo-numeral`, `Sole`, `DebugCheck`, `NamesAdaptation` and
+`UFixed`, `Biased`, `Floating`, the six modes, the three policies and the operations `Add`,
+`Mul`, `Div` and `Convert` are instances of them. In `arvo-numeral`, `Sole`, `DebugCheck`, `NamesAdaptation` and
 `Identity` are contracts, and `Abort`, `Quiet` and `Additive` are instances.
 
 `Bits<const N: u32>` in `arvo-bits` is the one exception to that shape, and
@@ -115,5 +116,3 @@ nothing here ships them.
 ## See also
 
 - Per-crate DESIGN documents for each layer's contracts and concretes.
-- The strategy-bound trilemma deep dive captures the rationale behind
-  the strategy markers and what a strategy bound costs at codegen.
