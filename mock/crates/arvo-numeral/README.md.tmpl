@@ -8,9 +8,10 @@ format's oracle returns for every pair, and its comparison is the members' order
 and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and
 `ISize` for the integer points.
 
-Each overflow policy comes in two spellings. Under `Wrap` and `Saturate` a result leaving the range
-asserts in a debug build; under `Wrapping` and `Saturating` the completion is what the operation means
-and nothing asserts.
+Whether a debug build aborts when a result leaves the range is the consumer's to choose, as a second
+parameter: `Abort` by default, or `Quiet`, where the completion the overflow policy gives is what the
+operation means. Any slot family, overflow policy or rounding mode that declares what the carrier
+arithmetic computes is held, whichever crate it comes from.
 
 Builds on `arvo-format` and `arvo-placement`. `no_std`, no allocation, every operation a `const fn`.
 
