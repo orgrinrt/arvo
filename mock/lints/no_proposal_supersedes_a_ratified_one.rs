@@ -54,6 +54,11 @@ impl RepoLint for NoProposalSupersedesARatifiedOne {
             .collect();
         let mut out = Vec::new();
         for q in reg.rows_in("proposal") {
+            // A proposal a ratified ruling stamps is canon itself, and may retire
+            // what it replaces: that is the repair the finding names.
+            if stamped.iter().any(|(p, _)| *p == slug(q)) {
+                continue;
+            }
             for target in list(reg, q, "supersedes") {
                 for (_, ruling) in stamped.iter().filter(|(p, _)| *p == target) {
                     out.push(finding(
@@ -138,6 +143,21 @@ mod tests {
     #[test]
     fn control_an_empty_registry_is_silent_rather_than_a_panic() {
         assert!(found(&[]).is_empty());
+    }
+
+    #[test]
+    fn control_a_ratified_proposal_may_supersede_a_ratified_one() {
+        // The repair the finding names: a ruling ratifies the new row too.
+        let f = found(&[
+            STAMP,
+            ("ruling::later", &[
+                ("rung", "ratified"),
+                ("ratifies", "new"),
+            ]),
+            ("proposal::old", &[]),
+            ("proposal::new", &[("supersedes", "old")]),
+        ]);
+        assert!(f.is_empty(), "{f:?}");
     }
 
     #[test]
