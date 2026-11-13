@@ -1,0 +1,447 @@
+# Arvo's next steps, rebuilt on the canon read whole
+
+This is the fourth part of job `arvo-canon-check`. It takes what `CHECK.md` found
+stale and what `ANSWERS.md` found answered, and lays arvo's next work out as
+steps a helper can take one at a time. Two plans were written before it,
+`briefs/fixup/arvo-plan-2.md` and `briefs/fixup/map-arvo.md` on the channel, by
+seats that say themselves they did not read the registry whole. Both are tested
+here against the reading, and most of the second plan's steps survive the test.
+What changes is what comes first, what is no longer waiting on op, and three
+steps neither plan has.
+
+The plan stands on four things, and a step that cannot name one of them under it
+is not in it. The ratified rows, which are defended. Op's words of 13 November,
+recorded as `ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case`
+and `ruling::every_family_of_the_old_arvo_returns_and_the_shape_is_open`. The
+obligation namespace, which is the demand side stated in the consumers' own
+terms. And what the tree at `2c8e5343` actually ships, which was run rather than
+read where a step leans on it.
+
+One rule holds across every step: nothing parallel and nothing standing in. The
+oracle for every operation is the one `arvo-format` already ships, an exact
+result adapted once, and a value-tier operation is equal to it or it is wrong. No
+step writes a second arithmetic, a second rounding or a private carrier table,
+and where a family from the old tree returns, its bodies are ported onto the
+contracts and the capacity the earlier steps land, never beside them.
+
+Op chose the order of the first moves himself on 13 November: among claiming
+first and then reworking the branch in one round, contracts first, a short panel,
+and landing as built, he answered "Claim, then rework in one round
+(Recommended)". The rework has landed, as `9dfd5339`. So contracts-first as an
+ordering was put to him and not taken, and this plan does not reopen it: the
+contract surface comes directly after the operations it is a contract of, with
+its sketch running beside them because a sketch overhauls no crate.
+
+## What the reading changes
+
+Nothing in the plan waits on op now. The second plan carried two questions as
+his, the overflow default and the public name, and built N3 and N17 around
+waiting for them. He has answered both: the first in the words the new ruling
+row carries, the second with "Decide at the port". `cargo mock
+unasked-questions` reports "Nothing is waiting on him."
+
+The overflow default is a step rather than a blank. His answer was not one of
+the four options, so the second plan's N3, which leaves the aliases without a
+default "until his answer", is planning for an answer that came in a different
+shape. A default ships, as a generic carrying a default, overridable per case.
+The sketch at `mock/research/sketches/202611131030_overflow-wrapper-rebinding/`
+settles what that takes: the re-binding of a signature's overflow coordinate
+compiles and is admitted, the MATLAB default pair is admitted by the value tier
+today, and the crossing between two sibling signatures has no public door.
+Building that door is step 4.
+
+The contract surface is demanded twice and refused once, and the refusal is the
+row that is wrong. `obligation::the_surface_expressible_as_contracts_before_anything_implements_it`
+and `obligation::composition_contracts_above_the_numeral` ask for it, and
+`proposal-the-value-stance::the_old_bit_contracts_crate_is_gone` and
+`the_old_numeric_contracts_crate_is_gone` say it does not return. Hilavitkutin
+at `c42d707` still imports those names from the old tree: `BitAccess` 14 times,
+`BitLogic` 6, `BitSequence` 3, `FromConstant` 2, `Additive` 27 and `Identity`
+16, counted as occurrences in `.rs` files under its `mock/crates`. A consumer is
+bounding generic code on contracts the two rows say are gone.
+
+The standards reach the value tier already. The second plan puts standards
+through values at N15, behind floats. The MATLAB half needs nothing that is not
+landed, so it moves up beside the default, and only the IEEE 754 half waits.
+
+And the registry and the design documents get their repairs first, because every
+later brief cites them. A helper briefed against a principle that says every
+alias carries a default strategy, in a tree where no alias has a strategy
+parameter, is briefed against a sentence that is false.
+
+## The steps
+
+Each is one helper, one branch, one mockspace round where it touches a crate's
+design or source. The proving checks common to every arithmetic step are not
+repeated below: each operation equal to `arvo-format`'s oracle, exhaustive at
+widths 1 to 8 through the value; one mutant per operation with its red output
+committed; a compile-fail twin for each refusal; and the outside consumer crate
+under `arvo-numeral/tests/consumer`, which builds with no feature line, reaching
+every new public item.
+
+| Step | Branch | Overhauls | Needs | Tier |
+|---|---|---|---|---|
+| 0 | `work/registry-repairs` | none; registry rows and three lints' reach | nothing | sonnet medium |
+| 1 | `work/principles-catch-up` | none; root documents and `mock/agent/` templates | nothing | sonnet high |
+| 2 | `work/claim-the-value-rows` | none; registry only | nothing | opus medium per seat |
+| 3 | `work/numeral-ring` | `arvo-numeral` | nothing | opus high |
+| 4 | `work/overflow-default-and-override` | `arvo-numeral` | 3 | opus high |
+| 5 | `work/numeral-contracts` | a contracts crate, new; adds impls to `arvo-numeral` and `arvo-bits` | 3, sketch beside it | fable low to shape, opus medium to build |
+| 6 | `work/standards-through-values` | none; adds to `arvo-numeral` | 4, 5 | sonnet high |
+| 7 | `work/numeral-division` | `arvo-numeral` | 3 | opus high |
+| 8 | `work/numeral-lanes` | none; adds to `arvo-numeral` | 3, 5 | opus high |
+| 9 | `work/capacity-count` | a capacity crate, new | nothing for the row and sketch | opus medium |
+| 10 | `work/bit-sets` | a bit-set crate, new | 5, 9 | sonnet high |
+| 11 to 15 | one branch each | one crate each, new | 5, 9, 10 | sonnet high; opus medium for spectral |
+| 16 | `work/composition-contracts` | registry first, then the contracts crate | 5, 8 | panel, then opus high |
+| 17 | `work/float-values` | `arvo-numeral`, adds to `arvo-format` | 2, 5 | opus high |
+| 18 | `work/shared-pair` | none; adds to `arvo-numeral` | 3, panel claim | opus high |
+| 19 | `work/value-benches` | none; `mock/benches` | 3, 8 | opus medium |
+| 20 | `work/port-hilavitkutin`, in hilavitkutin | hilavitkutin's imports | 3 to 10 at least | sonnet high after an opus read |
+
+Steps 3, 4 and 7 each overhaul `arvo-numeral` and run one after another. Steps
+0, 1, 2 and 9 touch nothing the others hold and can run beside them from the
+start.
+
+### 0. The registry repairs
+
+Every proposed edit in `CHECK.md` section 7, applied by a seat that may edit a
+ratified row's fields: `ratified_by = "op"` on the eighteen, the two notes and
+the one gap that describe a tree since moved past, the five law and proposal
+cells moved from `gap` into `holds` in the grammar `dimension::operand_window`,
+`ambient_domain` and `accumulator_width` already declare, the pointer from I15 to
+I18, and the two superseding proposal rows for the contract crates.
+
+Two lints go with it, in `mock/lints/`, because each finding is a gotcha that a
+check would have caught. One refuses a `ratified` ruling that names no
+`ratified_by`, which the schema calls required and declares optional. One
+refuses a `gap` sentence that says an axis is undeclared where a `dimension` row
+declares it. And `no-registry-comment-counts-its-own-rows` passed on three
+comments that counted their rows in words, so its reach is checked and widened.
+
+It is done when `cargo mock check` is green on lints, each new lint is shown red
+on the row it was written for before the repair, and the red test of ticket
+`5a78e00a2c9e` is fixed so the readiness check can say READY at all.
+
+### 1. The root documents catch up
+
+A doc round over `mock/PRINCIPLES.md.tmpl`, `mock/DESIGN.md.tmpl` and the banner
+in `mock/agent/`, correcting the passages `CHECK.md` section 3 quotes: four
+crates where there are five, the alias-default sentence no alias obeys, the lint
+described as not yet landed, the fixed-point primitives described as not there,
+principle five's `pub const trait` in a tree with no feature gate, the tagline
+that closes the strategy set at four, and the "bottom three crates" banner every
+generated agent file opens with. Each change named and quoted in the changelist.
+
+The alias-default sentence is the one with a decision inside it and it is not
+this step's to make. It is replaced by what the new ruling row says: a default
+ships as a generic carrying a default. Which default is step 4's.
+
+It is done when the generated `docs/` and `.claude/` agree with the tree, and the
+`design-doc-source-mismatch` lint is green.
+
+### 2. Claim the value rows
+
+The second plan's P0, unchanged, because it was right: two cold reads, one after
+the other, each from a worktree cut before the other's commit, then the
+coordinator's gate, over the rows the value crate was built on at one expert.
+`proposal-the-value-stance::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`,
+the admission row, `the_debug_check_is_a_parameter_the_consumer_names`, and the
+three rows in `proposal-the-exact-operations.toml`.
+
+One subject is added. The two definitions of a strategy that each stand at two
+experts and disagree, `proposal-the-later-topics::a_strategy_is_an_assignment_and_a_weighting`
+and `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`,
+go to the same seats, because whether the overflow rule is a declared component
+of a strategy or an effect of its weighting decides whether a strategy can name
+an adaptation at all, and step 4 leans on the answer.
+
+### 3. The ring operations through the value
+
+The second plan's N1. `sub`, `neg` and `mul` on `Num` as inherent `const fn`,
+each the format's own operation carried through the carrier, with the verdicts
+`fits_sub`, `fits_neg` and `fits_mul` beside them under `DebugCheck`; a signed
+fixed-point point beside `UFixed`; the multiplicative identity computed from the
+format's predicate and refused as a failed constant where it is not a member.
+
+Beyond the common checks: the product exhaustive for a 6-bit signed and unsigned
+fixed-point signature in all five deterministic modes and both policies, and a
+tie at a negative product in each mode, since `half_up` sending a tie toward
+positive infinity whatever the sign is the place a carrier implementation goes
+wrong first.
+
+### 4. The shipped default and the per-case override
+
+New, from his words and the sketch. Three things, in one round because they are
+one feature.
+
+The door: a public crossing between two signatures that share a format and
+differ in adaptation. The sketch shows why it is needed, `Num`'s carrier doors
+being crate-private, and what it may not be: a general signature change cannot be
+a copy, so the door is bounded to sibling signatures, where the carrier is the
+same by construction and the bound says so.
+
+The override: `WithOverflow<S, O>` and its rounding twin as aliases, so a
+consumer writes the re-bound type by naming one coordinate. Whether the spelling
+is the wrapper op floated or the alias is the round's to settle against
+`ruling::configuration_is_not_composition_and_a_predicate_never_transports_for_free`:
+the admission bound does not come along for free, and a spelling that hides it
+states a transport the canon refuses.
+
+The default: the aliases gain a defaulted parameter. MATLAB's documented pair,
+`Floor` and `Saturate`, is the one complete candidate in scope and is admitted
+today; Rust's own release behaviour, wrap, is what
+`ruling::warms_objective_is_the_intuitive_best_choice` calls the baseline for
+intuition. Which of them the default names is the panel's, under
+`question::does_warm_wrap_or_clamp`, with both priced as
+`ruling::wrap_or_clamp_stays_open_and_both_get_priced` asks. The step lands the
+mechanism with the default as one line, and a compile-fail test that pins what
+`Uint<8>` with no adaptation means on the day it lands.
+
+It also records the gap `ANSWERS.md` part c found: the format tier's overflow
+axis is open and `Sole` admits two policies. Whether a consumer's own policy is
+admitted to the value tier by supplying its carrier arithmetic is a panel
+question, listed below, and this step leaves the admission as it is.
+
+Checks: the crossing exhaustive at widths 1 to 8 for every pair of policies and
+shown to be the identity on the slot; a mutant door that crosses formats, refused
+at build; the consumer crate writing an override with no feature line.
+
+### 5. The contracts a consumer bounds on
+
+The step his second answer names as arvo's own ground, and the one both
+obligations ask for. A sketch first, three arms as the second plan has them:
+plain traits beside the inherent `const fn`s, `const trait` behind an opt-in
+feature with the plain traits still present, and `const trait` alone. Each arm
+is judged on one thing, which `obligation::the_unstable_machinery_does_not_reach_a_consumer`
+fixes: a consumer with no feature line builds a function generic over a numeral
+that adds, orders and has an additive identity.
+
+Then the contracts, each a trait whose law is the oracle equality: sum,
+difference, product, order, the identities, sign predicates, absolute value,
+construction from a constant, and the bit tier's width, access, logic and
+sequence. Reciprocal and square root are named as contracts with no instance
+until division and floats. `Num` and `Bits<N>` are instances, and one outside
+instance in the consumer crate shows the set open.
+
+Where they live is taxonomy, which he opened. The obligation's own wording
+decides more than it seems to: a consumer must be able to "build against the
+shape while the implementation behind it is unfinished", which a contract
+declared inside the implementing crate cannot give. So the recommendation to the
+round is one contracts crate below the value crate, with each trait placed by
+the lowest crate that reaches its types. The round may find better and says why.
+
+This is the widest step in the plan, every family from step 10 on is written
+against it, and an expert seat reads the shape before the build is briefed.
+
+Checks: a law suite generic over each contract, run against `Num` and against a
+deliberately wrong outside instance that must fail it; the disassembly of a
+generic sum against the concrete one, committed as an ad hoc reading and called
+that.
+
+### 6. The standards through the value, MATLAB first
+
+The arithmetic contracts on a standard, which the registry is silent on and his
+words ask for. Each standard's convention as a named instance of step 5's
+contracts over step 4's default mechanism: MATLAB's `fi` with its `fimath`
+defaults as value aliases, and the existing parity suite's ten arms run through
+the value and through the contracts as well as through the slot arithmetic, one
+computation by three routes with one expected number from the MathWorks page.
+
+The IEEE 754 half joins after step 17 and is marked where it is missing, which
+`ruling::the_standard_is_parity_in_output_not_in_the_internals` calls an honest
+hole in a standard rather than a defect in the framework.
+
+### 7 and 8. Division, conversion, lanes and the accumulator
+
+The second plan's N4 and N5, unchanged in substance. Division over a divisor
+that cannot be zero by type, the remainder pair and `convert` between two
+admitted signatures, all equal to the oracle `2c8e5343` landed. Then kaski's
+lane, `obligation::a_deterministic_fixed_point_lane_with_declared_rounding`: a
+fixed-point alias under a named rounding with half to even on the product, and
+the exact accumulator beside it, built from a value, exact under addition and
+subtraction, back to a value only through the signature's adaptation.
+
+One correction to N5. It designs the accumulator as "the first chain carrier"
+ahead of `question::which_chain_carrier_ships`. It is one carrier, and step 16 is
+where what a chain guarantees gets stated; the accumulator's design says it is an
+instance and does not close the question.
+
+### 9. Capacity
+
+The second plan's N6. No obligation row asks for it, which that plan noticed and
+this reading confirms, and hilavitkutin uses it more than anything but `USize`
+and `Bool`: `Capacity` 49 times, `Dim` 17, `ConstCapacity` 9, `Cap` 7, and 72
+paths through the old tensor crate. So the row comes first, in hilavitkutin's own
+terms, then a sketch of the spellings, then the crate.
+
+### 10 to 15. Bit sets and the algorithm families
+
+The second plan's N9 to N14: the bit-set contract with `Bits<N>` as its one-word
+instance, then content hash, DAG ordering, sparse structure, spectral partition
+and the cost programs, one crate per obligation, bodies ported from `1b2796e9`
+onto the contracts and the capacity, each with the old tree's bench family rerun
+on the harness. The spectral crate is the one with numerics in it and takes the
+higher tier.
+
+### 16. The composition contracts
+
+Neither earlier plan has this, and it is half of what op says arvo is for.
+`obligation::composition_contracts_above_the_numeral` is one slug carrying four
+demands, by its own `gap`, and nothing in N1 to N17 answers any of them.
+
+Panel work first: the obligation split into the demands two independent readings
+already found, each its own row, which is a registry change for seats that may
+make it. Then the contracts for what a chain guarantees, with step 8's
+accumulator as the first instance and the ratified rows on composed regions as
+the law they are checked against.
+
+### 17 to 19. Floats, shared placement, benches
+
+The second plan's N8, N7 and N16. The float arm closes the IEEE 754 half of step
+6 and answers `obligation::a_build_flag_that_changes_float_semantics`, strict
+against fast as a parameter of the value in the shape `DebugCheck` has. Shared
+placement waits on the panel's claim about values at a shared placement. The
+benches run wrap against saturate through the value, which is the pricing
+`ruling::wrap_or_clamp_stays_open_and_both_get_priced` asks for and what the
+panel needs to name step 4's default.
+
+### 20. The port, and the one question that is his
+
+Hilavitkutin's pinned imports replaced family by family. It opens by bringing op
+the public-name question he deferred to this moment, with the import list:
+`arvo::` 427 occurrences, `arvo_tensor::` 72, `arvo_bitmask::` 24, `arvo_bits::`
+13, and under ten each for hash, graph, sparse, spectral and refit, at
+hilavitkutin `c42d707`.
+
+## Where each old family returns
+
+His words are that every family returns in function and feature. This is the
+whole list, sixteen crates at `1b2796e9`, against the step that returns it.
+
+| Old crate | What it was | Returns in | In what shape |
+|---|---|---|---|
+| `arvo` | the facade and its numerals | 3, 4, 20 | value aliases; the public name decided at the port |
+| `arvo-storage` | the bare-primitive layer | landed | `arvo-placement` holds the carrier derivation |
+| `arvo-transparent` | the transparency trait | 4 | the doors each value type declares, the sibling crossing among them |
+| `arvo-strategy` | the markers and container projection | landed, 2, 4 | presets over a declared signature; cells claimed in 2 |
+| `arvo-bits-contracts` | the bit-level traits | 5 | contracts in the contracts crate |
+| `arvo-bits` | the exact-width container | landed | `Bits<N>`, an instance of 5's contracts |
+| `arvo-mask-contracts` | the one mask trait | 10 | the bit-set contract |
+| `arvo-bitmask` | masks and bit matrices | 10 | a bit-set crate over `arvo-bits` and capacity |
+| `arvo-numeric-contracts` | the arithmetic traits | 5, 6 | arvo's own contracts, with the standards as instances |
+| `arvo-refit` | narrowing and widening | landed, 7 | `cast` on `Bits<N>`, and `convert` between admitted signatures |
+| `arvo-tensor` | capacity, arrays, matrices | 9 | the capacity crate, then its containers |
+| `arvo-hash` | the content hash | 11 | one crate on `obligation::a_content_hash` |
+| `arvo-graph` | DAG algorithms | 12 | one crate on `obligation::ordering_a_directed_acyclic_graph` |
+| `arvo-sparse` | sparse structure | 13 | one crate on `obligation::a_sparse_adjacency_a_plan_can_be_built_on` |
+| `arvo-spectral` | spectral partition | 14 | one crate on `obligation::a_spectral_partition_of_a_dependency_graph` |
+| `arvo-comb` | cost programs | 15 | one crate on `obligation::a_cost_dynamic_program` |
+
+Crate names for everything new are open, as the record decides none of them.
+
+## Where the two earlier plans are wrong
+
+### `arvo-plan-2.md`
+
+It is a good plan and most of its steps are carried above almost as written.
+Six things in it do not survive the reading.
+
+It cites the registry by line throughout, `ruling.toml:1038` and its like, 78
+times. This repo's lints refuse that form because the files gain
+rows constantly, and this job's own two rows have already moved what follows
+them. Every one of those citations has to be re-found by subject before it can be
+trusted, which is the cost the rule exists to prevent.
+
+It treats the overflow default as waiting on op and asks him the four-option
+question again. He answered on 13 November and took none of the four, so N3's
+"no default until his answer" and section 4's Q1 are both overtaken.
+
+N15 names "the MATLAB `fi` and IEEE 754 aliases of `arvo-format/src/standards.rs`".
+That file holds MATLAB alone. `grep -rl IEEE mock/crates/*/src/` returns nothing,
+and the control is the same grep for `Fi`, which finds the file. The IEEE half is
+unbuilt, not waiting to be carried through.
+
+It has no step for composition contracts, which an obligation demands in op's
+name, and none for the override mechanism or the door it needs.
+
+It orders MATLAB parity behind floats, which it does not need.
+
+And by its own section 5 it rests on `arvo-format`'s design unread and on no test
+run. The first matters less than it might, since the root design it used instead
+is accurate on the format crate. The second hid a red: the suite at `2c8e5343`
+fails one test, in the test's own sample construction, ticket `5a78e00a2c9e`.
+
+### `map-arvo.md`
+
+It was written at `989e02f9` against the branch `work/numeral-integers`, before
+the rework op asked for. Its four criticisms of the value crate were right then
+and each is fixed at `2c8e5343`, checked in source: admission is an open check
+over what a signature declares where it was a sealed list
+(`arvo-numeral/src/admit.rs`, the blanket impl of `Sole`); the carrier is read
+from the placement and asserted by `carrier_agrees` where it was a transcribed
+table; the `Wrapping` and `Saturating` marker pair is gone in favour of the
+`DebugCheck` axis; and the platform-width aliases take their adaptation as a
+parameter where they fixed one. Anything briefed from its section 3 today is
+briefed against a crate that no longer has those shapes.
+
+Its section 6 lists as unestablished whether the standards conventions produce
+signatures `Num` admits. They do, and the sketch's fifth arm is the evidence.
+
+Its section 4, on canon the designs state and the registry lacks, was not
+re-derived here and is neither confirmed nor refuted by this reading.
+
+## The questions
+
+### Op's
+
+One, and not now: arvo's public name, at step 20, as he said. Options, as the
+second plan framed them and with nothing in the record since to change them: a
+crate named `arvo` returns and owns the defaulted aliases; no such crate, and
+consumers name the inner crates; a crate named `arvo` that only re-exports; the
+value crate itself is renamed `arvo`. The record: one proposal at one expert,
+`proposal-the-value-stance::the_old_facade_returns_as_value_aliases_and_no_facade`,
+and his "Decide at the port".
+
+That the list is this short is a finding and it was checked rather than assumed.
+`cargo mock unasked-questions`: "13 of 110 questions name op, and 13 of those a
+ruling has already answered. Nothing is waiting on him."
+`ruling::the_panel_finishes_the_canon_without_him` gives every canon question to
+the panel, and each candidate this job first drafted as his turned out answered
+by his own words, as `CHECK.md` section 8 records.
+
+### The panel's
+
+Listed apart, each with the step it holds.
+
+Which adaptation the shipped default names, MATLAB's `Floor` and `Saturate` or
+Rust's wrap, with step 19's pricing; it holds the one line in step 4.
+
+What a strategy is, between the two two-expert definitions; it holds whether a
+preset can name an adaptation, in step 4.
+
+Whether a consumer's own overflow policy is admitted to the value tier, and what
+it supplies to be admitted; it holds nothing built today and decides whether
+"composable from scratch" reaches past the format tier.
+
+How `obligation::composition_contracts_above_the_numeral` splits; it holds step
+16.
+
+`question::which_chain_carrier_ships`; it does not hold step 8 and is closed by
+step 16.
+
+Values at a shared placement; it holds step 18's build.
+
+The float arm's admission, for which no row exists; it holds step 17.
+
+The capacity spelling, after its obligation row; it holds step 9's crate and
+everything from 10 on that sizes a container.
+
+### The coordinator's
+
+The three process questions the registry gives it, unanswered and gating how
+every other answer is promoted:
+`question::what_stops_two_files_by_one_persona_reading_as_two_experts`,
+`question::does_a_cold_brief_withhold_rows_the_proposal_author_wrote` and
+`question::is_the_non_terminating_contention_crate_a_defect`. Step 2 runs under
+the first two.

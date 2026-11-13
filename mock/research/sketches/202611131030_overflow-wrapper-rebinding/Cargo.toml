@@ -1,0 +1,16 @@
+# Its own `[workspace]` table so cargo does not walk up into the mock workspace,
+# as every sibling sketch here does.
+[workspace]
+
+[package]
+name = "overflow-wrapper-rebinding"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+description = "Whether a wrapper can re-bind a declared signature's overflow coordinate and still be admitted"
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../crates/arvo-numeral" }
+arvo-placement = { path = "../../../crates/arvo-placement" }
