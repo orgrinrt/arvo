@@ -1,0 +1,37 @@
+# Stances the format crate's exact operations took where the registry is silent.
+# Every row here is a proposal at one expert and none is a ruling: promotion is
+# the coordinator's gate. Each was taken in a design round, and the round's topic
+# file, which states the stance and its compromise, is cited per row.
+
+[[proposal]]
+id = "an_exact_position_carries_its_remainder_over_an_unsigned_128_bit_denominator"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_format"
+says = "The remainder of an exact position is a coordinate of its own, a numerator below an unsigned 128-bit denominator in `[0, 1)`, rather than the signed 64-bit ratio a caller hands the position. A quotient by any 64-bit member and a product whose remainder denominator is the square of a 64-bit phase denominator then both have a position to land at."
+because = "The remainder is never negative and never reaches one, so a sign and a second 64 bits of numerator were carrying nothing. At 64 unsigned bits the quotient by a 64-bit member fits only at zero phase and exponent zero, and a phase or a positive exponent passes it again; at 128 bits every phase is admitted at a non-negative exponent, the radix two exponent reaches -127, and the quotient by a 64-bit divisor fits at every phase whose denominator times the divisor's span stays under `2^128`. The compromise: the dither comparison is a 192-bit cross product rather than a 128-bit one, and no public constructor takes such a remainder yet, so a consumer forming its own exact position over a 64-bit divisor has no door."
+provenance = ["mock::design_rounds/202611130438/202611130436_topic.the-remainder-carries-a-128-bit-denominator.md::#the-stance-the-remainder-is-its-own-coordinate-unsigned-and-128-bits-wide"]
+keywords = ["remainder", "exact position", "128 bit", "denominator", "quotient", "product", "wide remainder", "dither comparison"]
+
+[[proposal]]
+id = "a_quotient_s_divisor_is_non_zero_by_type"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "validation"
+says = "The quotient of two members is admitted over a divisor whose type cannot hold the zero member. The divisor is named either by a constant the build refuses at the zero or outside the range, or by a slot read at run time of a format that has no zero member, which is a format whose phase denominator is past one or whose range leaves out the slot cancelling the phase. No door classifies a value at run time."
+because = "The quotient is a function of the declared signature wherever the divisor's value is not zero and is no function at the zero, so by the admission rule the zero is what the operation is not admitted over. A test on the divisor's value, or a constructor that classifies a slot and answers with a maybe, is a runtime check, which `ruling::never_a_runtime_check_and_one_lowered_path` rules out. What is left is a type. The compromise: a plain integer range holds the zero, so dividing two integers read at run time needs the consumer to declare a range without it, and a format whose range holds the zero divides only by constants."
+provenance = ["mock::design_rounds/202611130510/202611130509_topic.the-quotient-and-the-conversion.md::#the-quotient-and-why-its-divisor-is-non-zero-by-type"]
+keywords = ["quotient", "division", "divisor", "non-zero", "zero member", "by type", "constant divisor", "runtime check", "admission"]
+
+[[proposal]]
+id = "a_conversion_is_one_placement_onto_the_target_grid"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_chain"
+says = "Converting a member of one format to another is one exact placement onto the target's grid and one adaptation under the target's signature, across any pair of phases and any pair of radixes. A conversion is never a chain through a format between the two."
+because = "The position on the target's grid is a function of the source format and the target signature together, so the admission rule admits it as one step. Two adaptations round twice and the second reads a value the first already moved, so a chain is a composition a consumer writes from two calls, where the double rounding is visible at the call site rather than inside one name. The compromise: a conversion whose denominator, the product of both phases' denominators and both exponents' moves, passes `2^128 - 1` is held out under the remainder coordinate's placeholder rather than routed through an intermediate that would fit."
+provenance = ["mock::design_rounds/202611130510/202611130509_topic.the-quotient-and-the-conversion.md::#the-conversion-one-step-onto-another-grid"]
+keywords = ["conversion", "convert", "placement", "grid", "single step", "double rounding", "radix", "phase", "chain"]
