@@ -1,4 +1,4 @@
-error[E0080]: evaluation panicked: addition is refused over a magnitude-indexed quantum: a slot names a different value at each magnitude, and the applied map carries no magnitude coordinate to land the sum at
+error[E0080]: evaluation panicked: addition is not yet admitted over a magnitude-indexed quantum: a slot names a different value at each magnitude, and the applied map carries no magnitude coordinate to land the sum at
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
@@ -8,9 +8,9 @@ error[E0080]: evaluation panicked: addition is refused over a magnitude-indexed 
   |
   | /         assert!(
   | |             is_constant_family::<F::Quantum>().get(),
-  | |             "addition is refused over a magnitude-indexed quantum: a slot names a different value \
-  | |              at each magnitude, and the applied map carries no magnitude coordinate to land the \
-  | |              sum at"
+  | |             "addition is not yet admitted over a magnitude-indexed quantum: a slot names a \
+  | |              different value at each magnitude, and the applied map carries no magnitude \
+  | |              coordinate to land the sum at"
   | |         );
   | |_________- in this macro invocation
 

@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: addition is not yet admitted over a magnitude-indexed quantum: a slot names a different value at each magnitude, and the applied map carries no magnitude coordinate to land the sum at
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::addition::Addable::<Probe>::ADMITTED` failed here
+  |
+ ::: src/addition.rs
+  |
+  | /         assert!(
+  | |             is_constant_family::<F::Quantum>().get(),
+  | |             "addition is not yet admitted over a magnitude-indexed quantum: a slot names a \
+  | |              different value at each magnitude, and the applied map carries no magnitude \
+  | |              coordinate to land the sum at"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/addition/subtraction.rs
+  |
+  |     let () = Addable::<F>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^

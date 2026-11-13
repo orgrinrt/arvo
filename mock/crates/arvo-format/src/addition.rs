@@ -3,7 +3,10 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Addition, the one operation this crate admits.
+//! Addition, and the negation and subtraction beside it.
+//!
+//! Negation and subtraction are the same step at other signs, in `subtraction`,
+//! and they share this file's obligation, phase parts and grid state.
 //!
 //! The admission rule asks one thing of an operation, that it be a function of
 //! the declared signature, and addition is the operation whose exact step shows
@@ -20,9 +23,9 @@
 //! absorption law the canon states for a reduction onto the representable set
 //! becomes a function of the signature rather than a sweep.
 //!
-//! Three things are refused, and one obligation carries all three: a quantum
-//! that moves with the magnitude, a phase remainder the position cannot hold, and
-//! a sum the slot coordinate cannot carry. The obligation is forced at the three
+//! Three things are held out, and one obligation carries all three: a quantum
+//! that moves with the magnitude, which is not yet admitted, a phase remainder
+//! the position cannot hold, and a sum the slot coordinate cannot carry. The obligation is forced at the three
 //! verbs that compute addition's positions, and `is_addable` asks the same
 //! question without forcing it.
 
@@ -66,14 +69,20 @@ impl<F: Format> Addable<F> {
     /// The three refusals. The remainder is asserted first because the other two
     /// read the phase's parts, and a zero denominator has none.
     const ADMITTED: () = {
+        // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): a
+        // reduced denominator of 2^63 is a placeholder rather than a refusal by
+        // design, since the sum is a function of the signature there; only the
+        // remainder's denominator is past what a `Fraction` carries. A zero
+        // denominator is refused by design and stays so.
         assert!(
             remainder_is_held::<F>().get(),
             "addition is refused over a phase whose remainder no position can hold: the phase \
              denominator is zero, or its fractional part reduces to a denominator of 2^63, which \
              the remainder of an exact position does not carry"
         );
-        // FIXME: the magnitude-indexed family is refused rather than added, and two
-        // things unblock it. In the design, `Exact` and `adapt` carry no magnitude
+        // FIXME(arvo_addition_over_a_magnitude_indexed_quantum_is_a_placehol): the
+        // magnitude-indexed family is not yet admitted, and two things unblock
+        // it. In the design, `Exact` and `adapt` carry no magnitude
         // coordinate, so a sum whose operands sit at two magnitudes has no position
         // to be handed as; that is a change to the applied map, not to addition. In
         // the canon, no row says what wrapping means on a union of magnitude ranges,
@@ -81,9 +90,9 @@ impl<F: Format> Addable<F> {
         // such a set.
         assert!(
             is_constant_family::<F::Quantum>().get(),
-            "addition is refused over a magnitude-indexed quantum: a slot names a different value \
-             at each magnitude, and the applied map carries no magnitude coordinate to land the \
-             sum at"
+            "addition is not yet admitted over a magnitude-indexed quantum: a slot names a \
+             different value at each magnitude, and the applied map carries no magnitude \
+             coordinate to land the sum at"
         );
         assert!(
             sum_is_carried::<F>().get(),
@@ -91,16 +100,20 @@ impl<F: Format> Addable<F> {
              coordinate, so the position it names is not one a slot index can hold"
         );
     };
+    /// `phase_parts::<F>(-1)`, what subtraction adds: `a - b - phase`.
+    const NEGATED_PHASE_PARTS: PhaseParts = phase_parts::<F>(-1);
     /// `phase_parts::<F>(1)`, settled once at monomorphisation rather than run
     /// again by every caller.
     ///
-    /// Every reader of the phase's parts asks at exactly one copy: addition's
-    /// arity is fixed at two, so `addition_reach`'s `ARITY.count() - 1` is one
-    /// wherever `Add` is the operation, and every other reader has always asked
-    /// for one copy outright. The euclidean division and the reduction it runs
-    /// depend on `F` alone, so a consumer touching two positions of the same
-    /// format paid for it twice for no reason a type parameter could not settle.
+    /// Addition's readers ask at exactly one copy: addition's arity is fixed at
+    /// two, so `addition_reach`'s `ARITY.count() - 1` is one wherever `Add` is
+    /// the operation, and every other addition reader has always asked for one
+    /// copy outright. The euclidean division and the reduction it runs depend on
+    /// `F` alone, so a consumer touching two positions of the same format paid
+    /// for it twice for no reason a type parameter could not settle.
     const PHASE_PARTS: PhaseParts = phase_parts::<F>(1);
+    /// `phase_parts::<F>(-2)`, what negation adds: `-a - 2 * phase`.
+    const TWICE_NEGATED_PHASE_PARTS: PhaseParts = phase_parts::<F>(-2);
 }
 
 /// The three components `phase_parts` computes: the whole slot count, and the
@@ -229,15 +242,37 @@ const fn saturating_sum(a: i128, b: i128, c: i128) -> i128 {
 #[must_use]
 pub const fn sum_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Addable::<F>::ADMITTED;
-    let PhaseParts {
-        whole,
-        rem,
-        den,
-    } = Addable::<F>::PHASE_PARTS;
-    let position = Slot::at(saturating_sum(a.index(), b.index(), whole));
-    // The obligation holds the reduced denominator inside the coordinate and the
-    // remainder below it, so both narrow exactly.
-    Exact::between(position, Fraction::of(rem as i64, den as i64))
+    let parts = Addable::<F>::PHASE_PARTS;
+    positioned(saturating_sum(a.index(), b.index(), parts.whole), parts)
+}
+
+/// The exact position at slot `at`, which already carries the phase parts'
+/// whole part, and their remainder.
+///
+/// Shared by every step that adds copies of the phase: they differ in the slot
+/// sum and in how many copies, and not in how the position is built from them.
+const fn positioned(at: i128, parts: PhaseParts) -> Exact {
+    // The obligation holds the one-copy reduced denominator inside the
+    // coordinate, and the reduced denominator of any count of copies divides
+    // it, so the denominator and the remainder below it both narrow exactly.
+    Exact::between(
+        Slot::at(at),
+        Fraction::of(parts.rem as i64, parts.den as i64),
+    )
+}
+
+/// A reach of whole slots, given the grid state the parts' remainder decides.
+///
+/// On the grid when the remainder is zero, at a tie when it is one half, and
+/// off the grid otherwise. Shared by every reach this module supplies.
+const fn graded(reach: Reach, parts: PhaseParts) -> Reach {
+    if parts.rem == 0 {
+        reach.on_grid()
+    } else if 2 * parts.rem == parts.den {
+        reach
+    } else {
+        reach.without_ties()
+    }
 }
 
 /// The sum of the members at slots `a` and `b`, adapted under the signature.
@@ -284,24 +319,16 @@ pub const fn addition_reach<S: DeclaredSignature>() -> Reach {
     // two. The assertion is what keeps them in step, at compile time, rather
     // than trusting the comment.
     assert!(operands == 2, "addition's arity moved away from two");
-    let PhaseParts {
-        whole,
-        rem,
-        den,
-    } = Addable::<S::Format>::PHASE_PARTS;
+    let parts = Addable::<S::Format>::PHASE_PARTS;
     let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
     let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
-    let reach = Reach::of(
-        Slot::at(saturating_sum(min, min, whole)),
-        Slot::at(saturating_sum(max, max, whole)),
-    );
-    if rem == 0 {
-        reach.on_grid()
-    } else if 2 * rem == den {
-        reach
-    } else {
-        reach.without_ties()
-    }
+    graded(
+        Reach::of(
+            Slot::at(saturating_sum(min, min, parts.whole)),
+            Slot::at(saturating_sum(max, max, parts.whole)),
+        ),
+        parts,
+    )
 }
 
 /// The completion half of the relocation law for addition at a whole phase of
@@ -376,6 +403,19 @@ pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
     // the position is `low` itself.
     completion_at::<S>(whole + (rounded.down() - low.index()) + rounded.step())
 }
+
+mod subtraction;
+
+pub use subtraction::{
+    Neg,
+    Sub,
+    difference_position,
+    neg,
+    negation_position,
+    negation_reach,
+    sub,
+    subtraction_reach,
+};
 
 #[cfg(test)]
 mod tests;

@@ -46,6 +46,7 @@ pub mod addition;
 pub mod ambient;
 pub mod apply;
 pub mod format;
+pub mod multiplication;
 pub mod overflow;
 pub mod quantum;
 pub mod rounding;
@@ -66,7 +67,22 @@ pub use adapt::{
     overflow_of,
     rounding_of,
 };
-pub use addition::{Add, add, addition_is_associative, addition_reach, is_addable, sum_position};
+pub use addition::{
+    Add,
+    Neg,
+    Sub,
+    add,
+    addition_is_associative,
+    addition_reach,
+    difference_position,
+    is_addable,
+    neg,
+    negation_position,
+    negation_reach,
+    sub,
+    subtraction_reach,
+    sum_position,
+};
 pub use ambient::{
     Ambient,
     BinaryRationals,
@@ -87,6 +103,7 @@ pub use format::{
     smallest_step_exponent,
     step_exponent,
 };
+pub use multiplication::{Mul, is_multipliable, mul, product_position};
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
 pub use quantum::{
     Exponent,

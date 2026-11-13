@@ -297,4 +297,4 @@ pub const fn panic_on_overflow<S: DeclaredSignature>(exact: Exact, dither: Dithe
 }
 
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;

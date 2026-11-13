@@ -44,12 +44,27 @@
 //! spelled around: a coordinate type cannot sit in that position, which is why
 //! the declared widths carry a machine integer there and nowhere else.
 //!
-//! The last five pin what addition refuses. Three are its obligation's three
+//! Five pin what addition refuses. Three are its obligation's three
 //! refusals, each bound in a const item so the refusal is reached at check time,
 //! and `is_addable` in the addition suite asks the same three questions from the
 //! side that does not force them. The other two are the shape of the operation:
 //! a format alone where a declared signature goes, and a host integer where a
 //! slot goes.
+//!
+//! Three pin what multiplication does not admit, one pair for each condition a
+//! consumer most plausibly reaches: a phase whose remainder denominator no exact
+//! position holds, a magnitude-indexed quantum, and a range whose products the
+//! slot index cannot carry. Each pair is a refused file and a twin that differs
+//! from it in the offending token alone and compiles, so the refusal is pinned
+//! to that token rather than to anything else in the file.
+//!
+//! The last three pin what forces the obligations in negation and subtraction,
+//! in the same pairs: `negation_position` and `difference_position` over a
+//! magnitude-indexed quantum, each against a constant one, and
+//! `difference_position` over an outside range past the ladder against
+//! `sum_position` over it, since the difference is the one step that forces the
+//! slot range's own obligation. Deleting any of the three forcing lines turns a
+//! case red.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -211,4 +226,61 @@ fn a_format_is_not_a_signature() {
 fn a_host_integer_is_not_an_operand() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_host_integer_is_not_an_operand.rs");
+}
+
+/// Multiplication over a phase whose remainder denominator no exact position
+/// holds, not admitted, and the same declaration at half that phase
+/// denominator, admitted.
+#[test]
+fn multiplication_over_a_remainder_no_position_holds_is_refused_and_one_it_holds_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/multiplication_over_a_remainder_no_position_holds_is_refused.rs");
+    t.pass("tests/ui/multiplication_over_a_remainder_a_position_holds_is_admitted.rs");
+}
+
+/// Multiplication over a magnitude-indexed quantum, refused, and over a constant
+/// quantum at the same exponent, admitted.
+#[test]
+fn multiplication_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/multiplication_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/multiplication_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Multiplication over the unsigned 64-bit range, refused because the index
+/// cannot carry its products, and one bit narrower, admitted.
+#[test]
+fn multiplication_over_an_uncarried_product_is_refused_and_one_bit_narrower_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/multiplication_over_an_uncarried_product_is_refused.rs");
+    t.pass("tests/ui/multiplication_one_bit_narrower_is_admitted.rs");
+}
+
+/// Negation over a magnitude-indexed quantum, refused because `negation_position`
+/// forces addition's obligation, and over a constant quantum, admitted.
+#[test]
+fn negation_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/negation_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/negation_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Subtraction over a magnitude-indexed quantum, refused because
+/// `difference_position` forces addition's obligation, and over a constant
+/// quantum, admitted.
+#[test]
+fn subtraction_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/subtraction_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/subtraction_over_a_constant_quantum_is_admitted.rs");
+}
+
+/// Subtraction over an outside range past the ladder, refused because
+/// `difference_position` alone forces the slot range's obligation, and addition
+/// over the same declaration, admitted.
+#[test]
+fn subtraction_over_a_range_past_the_ladder_is_refused_and_addition_over_it_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/subtraction_over_a_range_past_the_ladder_is_refused.rs");
+    t.pass("tests/ui/addition_over_a_range_past_the_ladder_is_admitted.rs");
 }
