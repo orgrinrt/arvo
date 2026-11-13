@@ -1,0 +1,9 @@
+[package]
+name = "quiet-user"
+description = "A consumer that wants completion and no abort, and says so"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+value = { path = "../value", features = ["quiet"] }

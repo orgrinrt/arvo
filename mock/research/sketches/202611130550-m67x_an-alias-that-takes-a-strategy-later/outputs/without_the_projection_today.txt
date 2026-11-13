@@ -1,0 +1,13 @@
+error[E0277]: the trait bound `A: NamesAdaptation` is not satisfied
+  --> consumer/examples/without_the_projection_today.rs:10:30
+   |
+10 | fn generic<A: Adaptation>(v: value::Uint<8, A>) -> value::Uint<8, A> {
+   |                              ^^^^^^^^^^^^^^^^^ the trait `NamesAdaptation` is not implemented for `A`
+   |
+help: consider further restricting type parameter `A` with trait `NamesAdaptation`
+   |
+10 | fn generic<A: Adaptation + value_later::NamesAdaptation>(v: value::Uint<8, A>) -> value::Uint<8, A> {
+   |                          ++++++++++++++++++++++++++++++
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `consumer` (example "without_the_projection_today") due to 1 previous error

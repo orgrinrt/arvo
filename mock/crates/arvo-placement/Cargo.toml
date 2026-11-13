@@ -4,6 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "Where a declared number's bits sit, which no declared operation reads"
+readme = "README.md.tmpl"
 
 [dependencies]
 arvo-format.workspace = true

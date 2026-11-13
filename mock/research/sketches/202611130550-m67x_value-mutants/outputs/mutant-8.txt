@@ -1,0 +1,41 @@
+     Running unittests src/lib.rs
+test tests::every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+test tests::every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+---- tests::every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does stdout ----
+thread 'tests::every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does' panicked at crates/arvo-numeral/src/tests.rs:42:13:
+assertion `left == right` failed: unsigned, wrapping: the 8-bit rung disagrees with the oracle
+---- tests::every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does stdout ----
+thread 'tests::every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does' panicked at crates/arvo-numeral/src/tests.rs:42:13:
+assertion `left == right` failed: signed, wrapping: the 8-bit rung disagrees with the oracle
+test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.33s
+     Running tests/a_consumer_crate.rs
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+     Running tests/band_17_to_32.rs
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+     Running tests/band_1_to_8.rs
+test a_fixed_point_signature_at_a_non_zero_exponent_adds_and_orders_as_the_oracle_does_on_every_pair ... FAILED
+test every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_pair ... FAILED
+test additive_associativity_under_saturation_holds_unsigned_and_fails_signed_by_the_registry_counts ... FAILED
+---- a_fixed_point_signature_at_a_non_zero_exponent_adds_and_orders_as_the_oracle_does_on_every_pair stdout ----
+thread 'a_fixed_point_signature_at_a_non_zero_exponent_adds_and_orders_as_the_oracle_does_on_every_pair' panicked at crates/arvo-numeral/tests/common/mod.rs:58:9:
+assertion `left == right` failed: UFixed<6, 3>: `add` disagrees with the oracle on 20160 of 40960 pairs
+---- every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_pair stdout ----
+thread 'every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_pair' panicked at crates/arvo-numeral/tests/common/mod.rs:58:9:
+assertion `left == right` failed: widths 1 to 8: `add` disagrees with the oracle on 162560 of 1747600 pairs
+---- additive_associativity_under_saturation_holds_unsigned_and_fails_signed_by_the_registry_counts stdout ----
+thread 'additive_associativity_under_saturation_holds_unsigned_and_fails_signed_by_the_registry_counts' panicked at crates/arvo-numeral/tests/band_1_to_8.rs:86:5:
+test result: FAILED. 6 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.02s
+     Running tests/band_33_to_64.rs
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.34s
+     Running tests/band_9_to_16.rs
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+     Running tests/compile_fail.rs
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.93s
+     Running tests/the_debug_check.rs
+test add_completes_under_quiet ... FAILED
+---- add_completes_under_quiet stdout ----
+thread 'add_completes_under_quiet' panicked at crates/arvo-numeral/tests/the_debug_check.rs:55:5:
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+     Running tests/the_debug_check_in_release.rs
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

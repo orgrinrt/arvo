@@ -4,6 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "A name bound to a placement objective and an adaptation selection"
+readme = "README.md.tmpl"
 
 [dependencies]
 arvo-format.workspace = true

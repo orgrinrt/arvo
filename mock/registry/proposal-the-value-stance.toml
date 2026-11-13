@@ -30,7 +30,7 @@ defines = "value"
 says = "A value of a declared signature is that signature's sole occupancy placement: one member's slot, held alone in the carrier the placement derivation gives at sole occupancy, in one canonical encoding. Every operation on it is a function of the declared width; the carrier is observable through the host's layout observation and through nothing the design declares."
 because = "The ratified container ruling states that the footprint is observable through the host language's layout observation on a sized type and that the observation exists only where the value is the sole logical occupant of its allocation, which presupposes a sized type holding one value; its ratified fourth proposal makes placement the distinction, one primitive with two placements, so the value type is the sole placement used rather than a second placement beside the derivation. The placement ruling gives the derivation's output at sole occupancy as one carrier. The two obligations ask for exactly this: a platform-sized unsigned integer in a public error type, and a primitive of arvo's own at every position a bare number would take, each of which is a sole occupant."
 obligation = ["a_platform_sized_unsigned_integer_at_an_api_position", "a_primitive_for_every_position_a_bare_number_would_take"]
-note = "The design sentence that no row licenses a numeral value type carrying a stored slot read \"not in this crate\" as \"not licensed\": the format crate is right to forbid a carrier, and the value type belongs to a crate above it. Which ladder rung a declared width takes is not this row's; it is the placement derivation's, and it is frozen by the first release because the layout observation reads it."
+note = "The design sentence that no row licenses a numeral value type carrying a stored slot read \"not in this crate\" as \"not licensed\": the format crate is right to forbid a carrier, and the value type belongs to a crate above it. Which ladder rung a declared width takes is not this row's; it is the placement derivation's, and it is frozen by the first release because the layout observation reads it. Its `defines = \"value\"` reaches past its own gap: `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` speaks of a value that either is or is not the sole occupant of its allocation, so values exist at shared placements too, and what this row defines is a value type at sole occupancy rather than a value. `ruling::a_format_datum_is_one_point_and_a_saturating_end_is_one_point` ratifies the datum clause for formats only. That a type may hold a datum as a value at sole occupancy is presupposed by `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` and `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, and as a statement of its own it has one cold read; this row stays at one expert, and its slot and one canonical encoding no second read reached."
 gap = "Shared placement, the packed column, is not covered and waits on the carrier deferral."
 provenance = ["mock::research/202611122300_value-stance-second-read::#b-do-these-rows-license-a-type-that-holds-one-value-at-sole-occupancy"]
 keywords = ["value", "value type", "sole occupancy", "placement", "carrier", "declared signature", "declared width", "layout", "size_of", "canonical encoding", "USize", "primitive"]
@@ -264,3 +264,50 @@ because = "No `use` line in hilavitkutin names it, and the value type declares i
 instead = "The `slot` and `raw` doors on the value type, and `raw` on `Bits<N>`."
 provenance = ["mock::research/202611122300_value-stance-second-read::#arvo-transparent"]
 keywords = ["arvo-transparent", "Transparent", "ConstDeref", "raw", "old tree", "gone"]
+
+# --- two rows above, superseded against the record ------------------------------
+
+[[proposal]]
+id = "the_old_comb_crate_answers_to_a_stated_need"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "The old `arvo-comb` answers to a need a consumer has stated, `obligation::a_cost_dynamic_program`, so its return is owed. Which crate meets that need, under which name, and in which order beside the rest of the old breadth, is not decided here."
+because = "The obligation quotes hilavitkutin's design asking for combinatorial grouping over a cost model, a matrix-chain dynamic program and bin packing. A need stated in a consumer's design is stated whether or not a source line calls it yet, so counting import lines was the wrong measure and the superseded row's condition was met before it was written."
+obligation = ["a_cost_dynamic_program"]
+supersedes = ["the_old_comb_crate_is_gone"]
+gap = "The crate, the name and the shape of what returns are open."
+provenance = ["obligation::a_cost_dynamic_program", "mock::research/202611122300_value-stance-second-read::#arvo-comb"]
+keywords = ["arvo-comb", "comb", "dynamic program", "bin packing", "matrix chain", "cost model", "old tree", "demand"]
+
+[[proposal]]
+id = "no_row_measures_a_slices_completeness"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "No proposal row says which consumers a slice is measured against. The demand is the obligation namespace whole, needs from every consumer it names and from op by rule, and the order in which a slice meets them is a plan."
+because = "The obligations hold needs from kolli, tarina and op as well as hilavitkutin and kaski, and `ruling::arvo_is_a_library_and_the_value_composes_on_top` has arvo serve every downstream repository, so a row naming two consumers as the measure of completeness drops the others' needs without a reason: `obligation::the_unstable_machinery_does_not_reach_a_consumer` is kolli's, `obligation::the_algebra_is_legible_enough_to_adopt_without_adopting_half_of_it` tarina's, and `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives` op's by rule."
+instead = "The plan of the work orders the obligations; the registry keeps the obligations."
+supersedes = ["the_first_slice_answers_to_hilavitkutin_and_kaski"]
+provenance = ["ruling::arvo_is_a_library_and_the_value_composes_on_top", "mock::research/202611122300_value-stance-second-read::#the-value-stance"]
+obligation = ["the_unstable_machinery_does_not_reach_a_consumer", "the_algebra_is_legible_enough_to_adopt_without_adopting_half_of_it", "every_standard_convention_expressible_as_an_alias_over_the_primitives", "a_primitive_for_every_position_a_bare_number_would_take"]
+keywords = ["first slice", "slice", "consumer", "obligation", "demand side", "completeness", "plan", "kolli", "tarina"]
+
+# --- the transparency row above, superseded now the raw door is gone ------------
+
+[[proposal]]
+id = "the_old_transparent_crates_work_is_each_value_types_own_doors"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+supersedes = ["the_old_transparent_crate_is_gone"]
+says = "What the old `arvo-transparent` carried returns as the doors each value type declares for itself, and no general transparency contract stands beside them. On the value type that is `slot`, the member's coordinate in its format, and on the platform-sized aliases the doors to and from the host integer. No door gives or takes a value's carrier."
+because = "The superseded row offered a `raw` door on the value type in place of the old crate, and the value type no longer has one: `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` leaves the carrier observable through the host's layout and through nothing the value declares, so a door typed in the carrier would make it declared. The old crate's job, getting at what a typed number holds, returns with the value type that holds it, which is how the old families are to come back."
+provenance = [
+  "mock::research/202611122300_value-stance-second-read::#arvo-transparent",
+  "ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves",
+]
+keywords = ["arvo-transparent", "Transparent", "slot", "host doors", "carrier", "unwrap door", "old tree"]

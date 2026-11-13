@@ -4,6 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "The declared signature of a number: its representable set, and the adaptation onto it"
+readme = "README.md.tmpl"
 
 [dependencies]
 notko.workspace = true

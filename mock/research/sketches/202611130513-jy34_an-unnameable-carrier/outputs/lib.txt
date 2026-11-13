@@ -1,0 +1,1 @@
+cargo check --lib: no warning or error from this crate; exit 0

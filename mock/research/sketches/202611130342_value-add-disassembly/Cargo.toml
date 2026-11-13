@@ -1,0 +1,16 @@
+# Standalone, detached from the arvo mock workspace, so the probe's exported
+# symbols and release build are its own. The value crate is read by path, which
+# is the tree this reading was taken from.
+
+[package]
+name = "value-add-disassembly"
+description = "Exported instances of the value's add, for reading the emitted assembly: an ad hoc reading, not a bench"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../crates/arvo-numeral" }
+
+[workspace]
