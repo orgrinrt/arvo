@@ -584,3 +584,168 @@ a: 0 whole rows; 4 split rows carry an a sentence (3 by delegation to experts-ra
 b: 1 whole row; 3 split rows carry a b sentence
 c: 21 whole rows; all 6 split rows also carry c sentences
 (28 rows: 0 a, 1 b, 21 c, 6 split)
+
+## proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/87_op_the_canon_is_written_once_at_the_end.md:57-76
+passage: "**He declined to pick and gave the criterion instead:** ... **The coordinator's call under that criterion, marked as the coordinator's and open to attack: the strategy axis is next, and topic four follows it.** ... Three topics have now independently reached the same placeholder and stopped at it."
+conflict: mock/research/202608072330_the-numeral-canon-panel/87_op_the_canon_is_written_once_at_the_end.md:57-68 (against the row's `because`, "op then named the strategy axis as the next unit for that reason")
+options: 1. Keep the `says` sentence (the three topics end on the same placeholder) and strike the `because` clause that credits op with naming the unit. 2. Re-source the `because` to 95:7-16, where op set a goal that the coordinator wrote and that covered the strategy-axis unit only, and state that this is op accepting the coordinator's call, not naming the unit. 3. Demote the row to a coordinator's observation with no ratifier claim.
+note: Sentence 1 (`says`) is class c: it is the coordinator's reading of 79, 82 and 84 at 87:70-76, and AGREEMENTS.md section 6 does not list it as a convergence. The `because` clause is class b against the record. Searched 87, 95 and the other `_op_` files and INTENTS.md for op naming the unit; found only the criterion and the goal addendum.
+
+## proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations
+class: b
+evidence: mock/research/202608072330_the-numeral-canon-panel/88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md:20-21
+passage: "Mostly option 1, but a little bit of option 3 with it. Hard to put into words, hopefully you get my meaning here" (option 1 was a preset naming a point in a space of independent axes; option 3 was "nothing but a weighting over measurements", 88:11-16)
+conflict: ruling::arms_over_regions_are_the_fundamental_heart (ratified); 213_op_the_experts_ratify_and_i_read.md:92-95: "We fill the full space, but instead of one or a couple of general statements that are uniform across the dimensions, we have small arms and spans that work where they are optimal, and nowhere else. It's the fundamental heart within arvo." Also ruling::a_strategy_is_a_preset_naming_a_point_with_a_weighting_in_it (stated).
+options: 1. Reduce the row to its one backed clause (strategies weigh measurements, ruling::the_strategies_weigh_measurements_differently, ratified) and drop "a table ... constrained to be explicable by one statement of what matters", which is one general statement over the whole table. 2. Rewrite the row so a strategy is mostly a point in independent axes with a weighting reading mixed in, matching op's words, and file the three-part polarity split as a separate proposal. 3. Keep the row at proposal and answer question::which_successor_carries_the_strategy_shape_ratification against it explicitly (none of the three, or one of the others). 4. Demote the row to argument.
+note: The row is one of three candidate successors that op's 211:60-64 ("the ratification goes for the actual succeeding one rather than this") points at without naming one, so no ratification reaches it. The `says` also makes a strategy purely option 3 ("naming no implementation and owning none"), where op said "mostly option 1". Standing is one_expert and the `because` says it is a synthesis, not independently derived.
+
+## proposal::generation_relocates_the_check_rather_than_removing_it
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/217_op_the_last_round_and_the_panel_finishes_alone.md:67-71
+passage: "This is case by case basis and has to be justified in words that get recorded. Even small wins are wins worth pursuing, however small, and however small a set they apply to. This is the \"patchwork\" approach where we don't even try to generalise, we operate on const predicates that choose the most optimal path always, from a million small different impls for different situations."
+conflict: ruling::there_is_no_exchange_rate_because_there_is_no_generalisation (ratified), against the `instead` ("Generate, and check cone membership of the stated weighting"), which makes a stated weighting over cost coordinates the source of the winner table.
+options: 1. Keep the `says` as a measured finding about a generator (class c) and drop the `instead`, since no generator from a weighting is intended. 2. Keep both and add an explicit scope: the generator and its check apply only inside one arm's region, where the arm states its own justification in words, so no rate is shared across arms. 3. Put to the coordinator whether a consumer-supplied weighting counts as the "rate the consumer supplies" op's 217 option list offered and he did not pick. 4. Demote the `instead` to a note.
+note: Sentence 1 and the counts (0 of 190, 0 of 147, 0 of 152, 489) are class c: no passage of op's speaks to generation of a table, searched 'weighting|winner table|argmin|generated table' over the op files, INTENTS.md and `.data/op-responses/202608311*`. The `instead` is class b only on the reading that a weighting over coordinates is an exchange rate between them; op himself ratified both "They weigh different measurements differently" (38:58) and "no exchange rate", so this is a tension inside his words that needs a call.
+
+## proposal::headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/212_op_the_alias_scope_the_demotion_and_observability.md:82-91
+passage: "the tenth unit's licence clause says everything inside an unobserved stretch is arvo's to choose ... Options he was given: it becomes his intent and is quoted into the catalogue; it stays a workspace rule ...; or the clause is not canon and drops to the design tier. > It becomes your intent"
+note: Sentence 2 (inside a pure ring region the two axes are the resolver's to choose and a strategy need not fix them) is class a as an application of that licence, ruling::the_observability_licence_is_an_intent_and_he_put_it_to_the_panel (stated, not ratified; his pronoun "your" is unglossed). 227:5-9 ("parity in output, not so much the internals") is consistent. Sentence 1 (invisible across +, - and *, visible at a shift, division, saturation or comparison; 0 of 640 and 500 of 640) is a derived and measured claim, class c: no passage of his says it.
+
+## proposal::no_total_join_exists_over_the_observable_axes_so_the_operation_reports
+class: c
+evidence: none found
+passage: ""
+note: Searched 'conservative|join|union|semilattice' over all `_op_` files, INTENTS.md, PRIOR_CALLS.md and `.data/op-responses/202608311*`; only a panel's own text turned up. Nothing in a ratified ruling contradicts it. Whether the operation reports a demand conflict is a design call the row's author makes.
+
+## proposal::what_ships_is_four_arms_with_disjoint_predicates_over_one_generated_artifact_set
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/213_op_the_experts_ratify_and_i_read.md:92-95
+passage: "Option 1 is exactly the paradigm. We fill the full space, but instead of one or a couple of general statements that are uniform across the dimensions, we have small arms and spans that work where they are optimal, and nowhere else. It's the fundamental heart within arvo."
+conflict: ruling::there_is_no_exchange_rate_because_there_is_no_generalisation (ratified; 217:67-71 quoted in the row for generation above), against the first sentence, "Ship the weighting, the cost table, and the winner table generated from them", which ships a single weighting from which every winner follows.
+options: 1. Keep the four disjoint-predicate arms (backed in shape by the ratified arms-over-regions ruling, but the arms are the panel's, not his) and remove the shipped weighting and the generation step, leaving per-arm justifications in words. 2. Keep the weighting inside each arm only, so no weighting spans arms. 3. Ask the coordinator whether the generated artifact set is a mechanism (vehicle, negotiable) or a generalisation (against the intent). 4. Demote to argument.
+note: Only the idea that arms are composed by disjoint const predicates is op's; the four named arms (generate and assert, check without generating, band, change the statistic) are the panel's, class c. The row's own `gap` says the generate-against-check fork was "never attacked at its core". Standing one_expert.
+
+## proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body
+class: c
+evidence: mock/research/202608072330_the-numeral-canon-panel/85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md:22-26
+passage: "Runtime code can exist, it's only that the branching of it should be done as much as possible, with const-time ifs that get erased via monomorphisation and just const time solving and ultimately llvm. Never any runtime checks, ever. We catch invalids on compile time, and unused paths we clear out when lowered. Period."
+note: His words state what must be (one lowered path); the row states a measured fact (nine instructions each, 1438 ns against 1456 ns, a symbol alias). A requirement is not a measurement, so the row is c; it does not conflict with ruling::never_a_runtime_check_and_one_lowered_path (ratified).
+
+## proposal::the_rationalisability_counts_on_the_committed_carrier_table
+class: c
+evidence: none found
+passage: ""
+note: A count over one committed table (72 and 9 of 15625; 63 of 72). Searched 'rationalis|weighting|carrier table' over the op files, INTENTS.md, `.data/op-responses/202608311*`. No passage of his speaks to it, and nothing ratified contradicts a count.
+
+## proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/38_op_the_strategies_weigh_measurements_differently.md:12-18
+passage: "All of them should be decided by measurement, just measuring different things, and, this is I think the mental unlock: They weigh different measurements differently."
+conflict: sentence 2 against mock/research/202608072330_the-numeral-canon-panel/88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md:20-21 ("Mostly option 1, but a little bit of option 3 with it", i.e. mostly a preset naming a point in independent axes) and against ruling::the_overflow_panic_is_permitted_and_bounded (ratified), whose `says` has the overflow mode as "an explicit declaration of the mode, saturate or wrap or whatever applies".
+options: 1. Rewrite sentence 2 so the container, the codegen choice and the overflow rule are declared axes a preset names, with the preference reading mixed in, matching "mostly option 1". 2. Keep sentence 2 as one of two live definitions, beside proposal::a_strategy_is_an_assignment_and_a_weighting, and let the successor question settle it. 3. Move the overflow rule to ruling::wrap_or_clamp_stays_open_and_both_get_priced, which is open, and strike it from this row. 4. Demote the row to argument.
+note: Sentence 1 splits. "A preference over measurements" is class a, backed by the ratified ruling::the_strategies_weigh_measurements_differently; "resolved as an argmin over candidate arms at compile time" is class c (his nearest words, 217:67-71, say const predicates choose the path and that nothing is generalised). Sentence 2 ("effects of that one cause rather than three components of a marker") is class b. Standing two_experts, which is not a ratification.
+
+## proposal::the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent
+class: c
+evidence: none found
+passage: ""
+note: A claim about the committed bench corpus (254 regions, 234 pinned by oracle, 17 columns). Searched 'accuracy|fidelity|oracle|coordinate' over the op files and `.data/op-responses/202608311735_arvo-canon-four-questions.md`. Op's nearest ratified words (217:40-44, "We never sacrifice performance ... we haven't done out job well enough") bear on whether accuracy is ever traded against cost, which this row's `instead` (a scoring hook for accuracy) does not do, so no conflict is shown.
+
+## proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance
+class: c
+evidence: none found
+passage: ""
+note: A property over a swept domain (twelve of twelve cells). Searched 'fus|multiply-add|equivariance' over the op files and `.data/op-responses/`; op's only words on the fused operation, 227:5-9, are about parity in output, not about this property. The row's own `gap` says no dimension row declares the axis it quantifies over.
+
+## proposal::no_cost_model_may_move_an_answer
+class: c
+evidence: mock/research/202608072330_the-numeral-canon-panel/104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle.md:89-90
+passage: "I think the intent is clear and this is impl detail that already had answer: optimal and converged to by experts (plural, iterative)"
+note: Op declined which half of the strategy (policy or weighting) carries "the strategy is what makes an answer correct", so a rule that only the policy half moves an answer is the panel's. The row says it is imposed and three files only endorse it. Tension to watch, not a conflict: ruling::hot_may_sacrifice_soundness_for_a_proven_meaningful_gain (ratified) has speed-first sacrificing soundness as its purpose, which the row must place on the policy side. Searched 'cost model|firewall' over the op files and `.data/op-responses/`.
+
+## proposal::pick_the_policy_before_the_weighting
+class: c
+evidence: none found
+passage: ""
+note: Guidance to a consumer derived from the pair model of proposal::a_strategy_is_an_assignment_and_a_weighting, which no passage of his adopts (see 104:89-90, 211:60-64). Searched 'policy|weighting' over the op files and `.data/op-responses/202608311*`.
+
+## proposal::a_strategy_is_an_assignment_and_a_weighting
+class: c
+evidence: mock/research/202608072330_the-numeral-canon-panel/211_op_the_second_ratification_round.md:60-64
+passage: "Again, on the option 1, I think there's a better wording for that since that one you mention, so the ratification goes for the actual succeeding one rather than this, but the lineage is ratified and blessed thus"
+note: One of three candidate successors that question::which_successor_carries_the_strategy_shape_ratification lists and leaves to the panel; the passage names none. It is compatible with his "Both, and not either" (88:20-21) but is the panel's formalisation of it. The pair's blindness evidence is discounted in the row itself. Standing two_experts: under 213:75-79 that makes it promotable by the coordinator, not ratified, and no ruling names it under `ratifies`.
+
+## proposal::where_fusion_changes_the_answer_it_is_not_a_lowering
+class: c
+evidence: mock/research/202608072330_the-numeral-canon-panel/227_op_the_standard_is_parity_in_output.md:5-9
+passage: "just to note: the standard should be for parity in output, not so much the internals. as long as it matches the logic of the spec, but perhaps achieves it slightly different or unconventional way, that is fine."
+note: His words concern results, not whether a fused arm is a separate denotation or an exact-intermediate axis position. The row's own text says the shared-axis intersection check was not run on it. Standing two_experts, not ratified.
+
+## proposal::a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist
+class: c
+evidence: none found
+passage: ""
+note: An algebraic count (1, 9, 42 sections) on one table, resting on strategies being weightings reaching sections. Searched 'ceiling|coordinate|how many strategies' over the op files; his only words on count, 87:101-105 ("Whether the strategies are four or seventeen or a billion is besides the point of the intent"), do not state this.
+
+## proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/211_op_the_second_ratification_round.md:60-64
+passage: "Again, on the option 1, I think there's a better wording for that since that one you mention, so the ratification goes for the actual succeeding one rather than this, but the lineage is ratified and blessed thus"
+conflict: the last sentence ("The weighting is a support ... together with a rate, the exchange among them ... rates do not join, and where two rates meet the site names one or the operation reports") against ruling::there_is_no_exchange_rate_because_there_is_no_generalisation (ratified); 217:67-71, "we don't even try to generalise, we operate on const predicates that choose the most optimal path always, from a million small different impls for different situations."
+options: 1. Strike the rate half and keep the support half (the demands, which join by union), which op's "they weigh different measurements differently" backs. 2. Keep the rate but state it as a per-arm justification in words, not a shared exchange among coordinates. 3. Ask the coordinator whether a consumer-supplied rate is the option op's 217 list offered and he did not take. 4. Leave the row at proposal and let question::which_successor_carries_the_strategy_shape_ratification pass over it.
+note: Class c for the rest (declared semantics on observable axes, accuracy as a cost coordinate, the closure rule), which carries the panel's derivations and probes (89.081% against 0%; 8,019 chains). It `supersedes` proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting, so the successor question is the live one. The conflict holds on the reading that "a rate, the exchange among them" is an exchange rate between objectives.
+
+## proposal::the_join_over_demands_is_union_and_it_is_free
+class: c
+evidence: none found
+passage: ""
+note: Algebra (free join semilattice, 256 pairs, 4096 triples), plus an argument about the escalation pathology on a flat marker set. Searched 'union|semilattice|escalat|silence' over the op files and `.data/op-responses/`. Standing two_experts, not ratified.
+
+## proposal::the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md:11-21
+passage: "(1) a preset naming a point in a space of independent axes, with the presets being the points worth naming ... > Mostly option 1, but a little bit of option 3 with it. Hard to put into words, hopefully you get my meaning here"
+note: Sentence 1 (named strategies are points in a product) is class a, backed by this answer (ruling::a_strategy_is_a_preset_naming_a_point_with_a_weighting_in_it, stated). Sentence 2 ("A name is a binding rather than a member of a closed set") is class a on 39:8-10 ("the strategy set is not closed at exactly four") and 87:101-105 ("Whether the strategies are four or seventeen or a billion is besides the point of the intent"); op's wording is about count and names being open, so "binding" is the panel's word. "The flat named set is a slice through it" and the counting and alias-symbol evidence (one alias, eight bytes) are class c. Op answered the earlier two-axis versus product question (28 Q5) only with "Same as prior answers", i.e. keep options open. A rung of stated, not ratified.
+
+## proposal::a_quotient_s_divisor_is_non_zero_by_type
+class: c
+evidence: mock/research/202608072330_the-numeral-canon-panel/85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md:22-26
+passage: "Never any runtime checks, ever. We catch invalids on compile time, and unused paths we clear out when lowered. Period."
+note: Consistent with ruling::never_a_runtime_check_and_one_lowered_path (ratified by op, with the addendum "unless there's a justifiable reason that is blessed by a lead designer"), which the row cites, and derived from it plus the admission rule in ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule (ratified by experts). Nothing of his says a divisor is non-zero by type. The two cited design rounds (202611130510, 202611130659) contain no op words (searched for quotes and 'op said|ratif'); op's `.data/op-responses/202611130552` mentions "the zero divisor" only as a kaski canon question to come. The whole-phase-format-divides-only-by-constants compromise is the round's own.
+
+## proposal::a_region_whose_arms_may_differ_is_validated_arm_by_arm_against_its_own_semantics
+class: c
+evidence: none found
+passage: ""
+note: A test-structure claim resting on one bench family. Searched 'arm by arm|oracle|validated' over the op files and `.data/op-responses/`. Compatible with ruling::arms_over_regions_are_the_fundamental_heart (ratified) but no passage of his states it.
+
+## proposal::erasures_guarantee_is_a_conditional_with_a_stated_base
+class: c
+evidence: mock/research/202608072330_the-numeral-canon-panel/88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md:77-80
+passage: "By default, all of the things we write end up in a c abi sooner or later. So this is not a problem. This is something the writer handles by defining the apis with the arvo shapes and generics."
+note: Op's words put the consumer, not arvo, at the boundary where external data becomes typed; the row's claims (four conditions of the erasure theorem, canonicity at interchange necessary but not sufficient, stored bits not self-describing) are the panel's. The not-self-describing fact is kept as true in the ingest ruling's note, which op declined to bless (ruling::he_declined_to_bless_the_ingest_row_as_written, 211 "What arvo is"). Searched 'erasure|canonical|interchange|self-describing' over the op files.
+
+## proposal::validation_is_two_acts_keyed_by_boundary_and_it_validates_maps
+class: split
+evidence: mock/research/202608072330_the-numeral-canon-panel/85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md:22-26
+passage: "Option 1, but I should be clear on this: Runtime code can exist, it's only that the branching of it should be done as much as possible, with const-time ifs that get erased via monomorphisation and just const time solving and ultimately llvm. Never any runtime checks, ever. We catch invalids on compile time, and unused paths we clear out when lowered. Period." (option 1 was compile time only, per type; option 2 was a runtime check at a declared ingest boundary, which he did not take)
+conflict: ruling::never_a_runtime_check_and_one_lowered_path (ratified by op), against the second act ("At ingest, runtime, per datum: bits ... pass a membership door"); also 88:77-86, "a helper is a tool the consumer reaches for, never a door arvo opens for them", and the row's `gap`, which says whether both acts are wanted "is op's and unanswered".
+options: 1. Strike the ingest act and keep only the compile-time, per-type act, which is what he chose. 2. Keep the ingest act as a consumer-side helper arvo ships and never calls (ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up, stated), and say so in the row. 3. Carry the ingest door as a question for the exception clause in the ratified ruling ("a justifiable reason that is blessed by a lead designer"), since that blessing is his alone. 4. Demote the row to argument.
+note: The compile-time act and the last clause ("a declared constant nothing reads is a comment with a type") are class c; they are the panel's mechanism for what he settled as compile time only. ruling::validate_means_all_three_readings (stated) is about which readings validation covers, not when.
+
+## proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing
+class: c
+evidence: mock/research/202608072330_the-numeral-canon-panel/85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md:28-34
+passage: "I do not think I get the framing. Monomorphisation and const solving should lead everything to go through one lowered path, that's it. So if a law is a law, it should be expressed so that it actually works, be it typestate or const expressions or whatever. We shouldn't police what kind of laws there are or what shapes they take."
+note: A measured finding (16,268 of 65,536 vectors) about one construction. His words require that a law actually work and decline to rank constructions; the row does not rank, so no conflict is shown, but nothing of his states the finding. Standing two_experts, not ratified.
+
+a: 0
+b: 1
+c: 15
+split: 8
+
+The 8 split rows are counted apart from a, b and c. Their halves: class a in 3 (headroom, preference over measurements, named strategies), class b in 6 (three topics, generation, four arms, preference over measurements, declared semantics, two acts of validation), and the rest of each split row is class c. Counted by half, a is 3, b is 7 (6 split rows plus the one b row), c is 24 (15 whole rows plus a c half in each of the 8 split rows plus one more c half in the preference row).

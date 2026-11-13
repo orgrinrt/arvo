@@ -180,9 +180,23 @@ The panel's own, with no words of his behind them:
 - `proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container`
 - `proposal::a_lowering_site_holds_the_numerals_full_type`
 - `proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns`
+- `proposal::no_total_join_exists_over_the_observable_axes_so_the_operation_reports`
+- `proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body`
+- `proposal::the_rationalisability_counts_on_the_committed_carrier_table`
+- `proposal::the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent`
+- `proposal::fusing_a_multiply_add_is_free_exactly_at_translation_equivariance`
+- `proposal::no_cost_model_may_move_an_answer`
+- `proposal::pick_the_policy_before_the_weighting`
+- `proposal::a_strategy_is_an_assignment_and_a_weighting`
+- `proposal::where_fusion_changes_the_answer_it_is_not_a_lowering`
+- `proposal::a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist`
+- `proposal::the_join_over_demands_is_union_and_it_is_free`
+- `proposal::a_quotient_s_divisor_is_non_zero_by_type`
+- `proposal::a_region_whose_arms_may_differ_is_validated_arm_by_arm_against_its_own_semantics`
+- `proposal::erasures_guarantee_is_a_conditional_with_a_stated_base`
+- `proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing`
 
-His in one sentence and the panel's in the rest, or his only by way of a
-ruling the experts ratified:
+In one part his or against the record, and the panel's in the rest:
 
 - `proposal::the_old_bitmask_crate_returns_changed_in_slice_two`
 - `proposal::the_old_bits_crate_returns_in_slice_one`
@@ -205,3 +219,15 @@ ruling the experts ratified:
 - `proposal::const_availability_is_the_axis_and_a_trajectory_condition_is_not_an_arm`
 - `proposal::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`
 - `proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`
+- `proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder`
+- `proposal::generation_relocates_the_check_rather_than_removing_it`
+- `proposal::headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region`
+- `proposal::what_ships_is_four_arms_with_disjoint_predicates_over_one_generated_artifact_set`
+- `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`
+- `proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it`
+- `proposal::the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice`
+- `proposal::validation_is_two_acts_keyed_by_boundary_and_it_validates_maps`
+
+Eleven of the rows in this second list have one sentence or clause that the
+record is against, and that part is in `FOR-HIM.md`. The rest of each stands
+with the others here.

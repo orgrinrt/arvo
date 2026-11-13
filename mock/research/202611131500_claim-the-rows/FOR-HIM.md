@@ -251,3 +251,70 @@ number: one output at sole occupancy and three at shared.
 1. The panel restates the sentence per occupancy and drops the single number.
 2. The panel withdraws the sentence as answered by the ruling and keeps the
    argument about packaging.
+
+### Four proposals that have a strategy state a rate, as one question
+
+`proposal::generation_relocates_the_check_rather_than_removing_it`,
+`proposal::what_ships_is_four_arms_with_disjoint_predicates_over_one_generated_artifact_set`,
+`proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it`
+and
+`proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`
+each have a strategy carry a weighting over cost coordinates from which the
+winning arm follows, in one of them spelled as a rate, the exchange among the
+coordinates, and in two of them as a winner table generated from the
+weighting.
+
+`ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`, which
+he ratified, says no exchange rate exists between objectives and each arm
+carries its own justification in words. He also ratified that the strategies
+weigh different measurements differently. Whether these rows are against the
+first depends on whether a weighting a strategy states is an exchange rate, and
+his two sentences pull in different directions on exactly that, so the reader
+would not call it and neither is it called here.
+
+1. A weighting that says which measurements a strategy cares about most is not
+   an exchange rate, the rows stand as proposals, and the open question of
+   which wording succeeds his strategy answer settles between them.
+2. It is one. The rows keep what they say about which measurements matter and
+   lose the rate and the generation of winners from it.
+3. A weighting may exist inside one arm's region as that arm's recorded
+   justification, and none spans arms.
+
+### `proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations`
+
+The row makes a strategy nothing but a weighting, naming no implementation and
+owning none, and has it explain a whole table by one statement of what matters.
+His answer on what a strategy is was "Mostly option 1, but a little bit of
+option 3 with it", where the first option is a preset naming a point in
+independent axes and the third is the pure weighting this row takes whole. One
+statement over the whole table also sits against
+`ruling::arms_over_regions_are_the_fundamental_heart`.
+
+1. The row is cut down to the clause he backs, that strategies weigh
+   measurements, and the rest is dropped.
+2. The row is rewritten so a strategy is mostly a point in independent axes
+   with the weighting mixed in, as he put it.
+3. The row stays a proposal and the question of which wording succeeds his
+   answer is settled against it by name.
+
+### `proposal::validation_is_two_acts_keyed_by_boundary_and_it_validates_maps`, its second act
+
+The row's second act is a membership door at ingest, at runtime, for each
+datum. `ruling::never_a_runtime_check_and_one_lowered_path`, which he ratified,
+has never a runtime check, with one exception that is his alone to bless. The
+row's own gap says whether both acts are wanted is his and unanswered.
+
+1. The ingest act is struck and the compile-time act stays.
+2. The ingest act stays as a helper arvo ships and never calls in the
+   consumer's place.
+3. He blesses the ingest door as the exception the ruling allows for.
+
+### `proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder`, its reason
+
+The row's reason says he then named the strategy axis as the next unit. The
+file it cites has him declining to pick and giving a criterion, and the
+coordinator choosing under it. This is a matter of record and the panel can
+correct it without him.
+
+1. The clause is struck and the observation about the three topics stays.
+2. The clause is restated as the coordinator's call under his criterion.
