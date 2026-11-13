@@ -89,8 +89,9 @@ numbers from the MathWorks reference page rather than from arvo, and
 `mock/crates/arvo-format/tests/the_ties_away_alias.rs` sweeps the Round alias.
 By the file's own controls no parity arm reaches a tie or an overflow action,
 and no arithmetic is run through both, so the wide selection of usages the
-mandate asks for is owed. The IEEE 754 half is unbuilt, and no operation admits a floating format,
-so that half of the mandate still has no artifact.
+mandate asks for is owed. The IEEE 754 half is unbuilt: addition, multiplication
+and division each refuse a floating format, no parity arm exercises one, and
+that half of the mandate has no artifact.
 
 ### 1.4 The platform-width ruling's region says 64 is refused, and 64 is shipped
 
@@ -679,8 +680,11 @@ it and that row answers a question put with options. The first had been moved
 the same way and is back at `intent`: its own note says it narrows
 `question::does_warm_wrap_or_clamp` without answering it and it carries no
 `answers` edge, so `ruling`, "a question answered", is the one kind the row
-rules out about itself, and of the rest `intent` fits the want it states. Two
-reviewers read that call, the first leaving it open and the second deciding it. The quote of the first gets back the
+rules out about itself, and `intent` is what dev carries. Three reviewers read
+that call and gave three readings, `ruling` as defensible with a second read
+owed, `intent`, and `refusal` on the ground that the row records the question
+it was said against, so no two agree, the row stays as dev has it, and a blind
+read is owed on ticket `5b9317b53897`. The quote of the first gets back the
 typographic apostrophe of "it’s", which the first branch had straightened while
 saying it kept it. The `says` of the first keeps his hedge, "it might make more
 sense", where it had been written as a settled statement, and the `says` of the
@@ -692,7 +696,8 @@ On `obligation::every_standard_convention_expressible_as_an_alias_over_the_primi
 the second paragraph of the `gap` is replaced: on scope it names his direction,
 `ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`, as a `stated`
 row and not a ratified one, what is built of the MATLAB half is named with its two files and with what it
-does not reach, and the IEEE 754 half is unbuilt and waits on a float value.
+does not reach, and the IEEE 754 half is unbuilt, with the three arithmetic
+operations refusing a floating format and no parity arm exercising one.
 
 On `ruling::the_trait_contract_structure_is_a_primary_paradigm`, a `stated`
 row, the note is amended: the lint and the contracts crates it argued from are
@@ -791,6 +796,27 @@ overflow default row is back at `intent`, as above. And the `gap` of the
 standards obligation had called the MATLAB half of the parity suite built, where
 one constant and the nearest modes' documented positions are built and the
 arithmetic through both is not, so it says what is there and what is owed.
+
+A third review, the last one a branch gets, found six, and four are applied.
+The standards `gap` had said no operation admits a floating format, which the
+tree does not assert of `adapt`, so it says what the tree does assert, that
+addition, multiplication and division each refuse one and no parity arm
+exercises one, and the same sentence is corrected in section 1.3 and in
+`ANSWERS.md`. The surface `gap` had called the lint's crate gone, where
+`arvo-bits` is back in the tree, so it says the crate was not in the tree when
+the lint was dropped. The new proposal on the old numeric contracts moves from
+`kind = "answer"` to `refusal`, with what happens in place of the crate moved
+out of `says` and into `instead`, so the lint that asks a refusal for an
+`instead` reaches it like its four neighbours. And the ratifier lint gets its
+block in `mockspace.toml` at error on every gate, where it had run at its
+built-in severity and was missing from the generated catalogue.
+
+Two are left as tickets. The `kind` of the overflow default row is
+`5b9317b53897`, above. The three stale notes on ratified rows, which he
+declined, are findable only from `ratified-notes.proposal.patch`, and how a
+reader of the registry meets them is `a0d57487df66`. Beside those two, the
+reviewer's scratch probe of `adapt` over a floating format is not evidence and
+is owed as a committed sketch on `85a8ab30a8fc`.
 
 ### Written down and not applied
 

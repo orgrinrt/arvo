@@ -94,8 +94,9 @@ directly on the overflow question in part b: "A standard covered with marked hol
 holes does not. So the standards are a check on whether the framework is
 exhaustive rather than a gate on shipping." A hole in a standard is a FIXME and
 is honest; a hole in the framework is a defect. The IEEE 754 half is a hole of the
-first kind today: no operation admits a floating format, because the applied map
-has no magnitude coordinate to land a result at, and what wrapping means over a
+first kind today: no arithmetic operation admits a floating format, because the
+applied map has no magnitude coordinate to land a sum, a product or a quotient
+at, and what wrapping means over a
 union of magnitude ranges is an open canon question.
 
 ### What a parity default would be
