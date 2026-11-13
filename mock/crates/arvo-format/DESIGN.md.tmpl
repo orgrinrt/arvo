@@ -1351,8 +1351,11 @@ carries no magnitude, so where a result lands is `land`'s answer, from the secti
 finest magnitude at which the rounded position lands in the slot range, which is what
 `panic_on_overflow` answers at each one. A magnitude finer than the right one holds the position only
 past the significand, and a coarser one rounds at a step the standard does not, so the finest one in
-range is the standard's. `mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is
-where it was first shown.
+range is the standard's. A declared signature lands through `land` itself. The ties-away alias is not
+a declared signature, since it is a shift composed with an adaptation, so the parity suite lands it by
+a search of its own, written over anything that says whether a position overflows and what it reads
+off as. That search is the suite's composition, as the alias is, and not a mechanism of this crate.
+`mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is where it was first shown.
 
 ### What IEEE 754 meets that this crate does not carry
 
