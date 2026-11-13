@@ -1,0 +1,309 @@
+
+/home/user/target/release/libbench_bitpack_carrier_d16.so:	file format elf64-x86-64
+
+Disassembly of section .text:
+
+0000000000010970 <bench_entry>:
+   10970: 48 83 ec 18                  	subq	$0x18, %rsp
+   10974: 49 89 d0                     	movq	%rdx, %r8
+   10977: 48 8d 41 ff                  	leaq	-0x1(%rcx), %rax
+   1097b: 48 89 ca                     	movq	%rcx, %rdx
+   1097e: 48 31 c2                     	xorq	%rax, %rdx
+   10981: 48 39 c2                     	cmpq	%rax, %rdx
+   10984: 0f 86 c1 04 00 00            	jbe	0x10e4b <bench_entry+0x4db>
+   1098a: f3 48 0f bc c1               	tzcntq	%rcx, %rax
+   1098f: 48 83 c0 f2                  	addq	$-0xe, %rax
+   10993: 48 83 f8 09                  	cmpq	$0x9, %rax
+   10997: 0f 87 ae 04 00 00            	ja	0x10e4b <bench_entry+0x4db>
+   1099d: 48 8d 15 5c 2c ff ff         	leaq	-0xd3a4(%rip), %rdx     # 0x3600 <write+0x3600>
+   109a4: 48 63 04 82                  	movslq	(%rdx,%rax,4), %rax
+   109a8: 48 01 d0                     	addq	%rdx, %rax
+   109ab: ff e0                        	jmpq	*%rax
+   109ad: 0f ae e8                     	lfence
+   109b0: 0f 31                        	rdtsc
+   109b2: 89 d1                        	movl	%edx, %ecx
+   109b4: 66 0f ef c0                  	pxor	%xmm0, %xmm0
+   109b8: 31 d2                        	xorl	%edx, %edx
+   109ba: 66 0f 6f 15 6e 2b ff ff      	movdqa	-0xd492(%rip), %xmm2    # 0x3530 <write+0x3530>
+   109c2: 66 0f ef db                  	pxor	%xmm3, %xmm3
+   109c6: 66 0f ef c9                  	pxor	%xmm1, %xmm1
+   109ca: 66 0f 1f 44 00 00            	nopw	(%rax,%rax)
+   109d0: 66 0f 6e ac 56 00 00 00 06   	movd	0x6000000(%rsi,%rdx,2), %xmm5
+   109d9: 66 0f 6e a4 56 04 00 00 06   	movd	0x6000004(%rsi,%rdx,2), %xmm4
+   109e2: 66 0f db ea                  	pand	%xmm2, %xmm5
+   109e6: 66 0f db e2                  	pand	%xmm2, %xmm4
+   109ea: 66 0f 61 e8                  	punpcklwd	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1],xmm5[2],xmm0[2],xmm5[3],xmm0[3]
+   109ee: 66 0f 62 e8                  	punpckldq	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1]
+   109f2: 66 0f d4 eb                  	paddq	%xmm3, %xmm5
+   109f6: 66 0f 61 e0                  	punpcklwd	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1],xmm4[2],xmm0[2],xmm4[3],xmm0[3]
+   109fa: 66 0f 62 e0                  	punpckldq	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1]
+   109fe: 66 0f d4 e1                  	paddq	%xmm1, %xmm4
+   10a02: 66 0f 6e 9c 56 08 00 00 06   	movd	0x6000008(%rsi,%rdx,2), %xmm3
+   10a0b: 66 0f 6e 8c 56 0c 00 00 06   	movd	0x600000c(%rsi,%rdx,2), %xmm1
+   10a14: 66 0f db da                  	pand	%xmm2, %xmm3
+   10a18: 66 0f db ca                  	pand	%xmm2, %xmm1
+   10a1c: 66 0f 61 d8                  	punpcklwd	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1],xmm3[2],xmm0[2],xmm3[3],xmm0[3]
+   10a20: 66 0f 62 d8                  	punpckldq	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1]
+   10a24: 66 0f d4 dd                  	paddq	%xmm5, %xmm3
+   10a28: 66 0f 61 c8                  	punpcklwd	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1],xmm1[2],xmm0[2],xmm1[3],xmm0[3]
+   10a2c: 66 0f 62 c8                  	punpckldq	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1]
+   10a30: 66 0f d4 cc                  	paddq	%xmm4, %xmm1
+   10a34: 48 83 c2 08                  	addq	$0x8, %rdx
+   10a38: 48 81 fa 00 40 00 00         	cmpq	$0x4000, %rdx           # imm = 0x4000
+   10a3f: 75 8f                        	jne	0x109d0 <bench_entry+0x60>
+   10a41: 66 0f d4 cb                  	paddq	%xmm3, %xmm1
+   10a45: 66 0f 70 c1 ee               	pshufd	$0xee, %xmm1, %xmm0     # xmm0 = xmm1[2,3,2,3]
+   10a4a: 66 0f d4 c1                  	paddq	%xmm1, %xmm0
+   10a4e: f7 d9                        	negl	%ecx
+   10a50: 48 c1 e1 20                  	shlq	$0x20, %rcx
+   10a54: 89 c6                        	movl	%eax, %esi
+   10a56: 66 41 0f d6 00               	movq	%xmm0, (%r8)
+   10a5b: 0f ae e8                     	lfence
+   10a5e: 0f 31                        	rdtsc
+   10a60: e9 bb 03 00 00               	jmp	0x10e20 <bench_entry+0x4b0>
+   10a65: 0f ae e8                     	lfence
+   10a68: 0f 31                        	rdtsc
+   10a6a: 89 d1                        	movl	%edx, %ecx
+   10a6c: 66 0f ef c0                  	pxor	%xmm0, %xmm0
+   10a70: 31 d2                        	xorl	%edx, %edx
+   10a72: 66 0f 6f 15 b6 2a ff ff      	movdqa	-0xd54a(%rip), %xmm2    # 0x3530 <write+0x3530>
+   10a7a: 66 0f ef db                  	pxor	%xmm3, %xmm3
+   10a7e: 66 0f ef c9                  	pxor	%xmm1, %xmm1
+   10a82: 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00    	nopw	%cs:(%rax,%rax)
+   10a90: 66 0f 6e ac 56 00 00 00 06   	movd	0x6000000(%rsi,%rdx,2), %xmm5
+   10a99: 66 0f 6e a4 56 04 00 00 06   	movd	0x6000004(%rsi,%rdx,2), %xmm4
+   10aa2: 66 0f db ea                  	pand	%xmm2, %xmm5
+   10aa6: 66 0f db e2                  	pand	%xmm2, %xmm4
+   10aaa: 66 0f 61 e8                  	punpcklwd	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1],xmm5[2],xmm0[2],xmm5[3],xmm0[3]
+   10aae: 66 0f 62 e8                  	punpckldq	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1]
+   10ab2: 66 0f d4 eb                  	paddq	%xmm3, %xmm5
+   10ab6: 66 0f 61 e0                  	punpcklwd	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1],xmm4[2],xmm0[2],xmm4[3],xmm0[3]
+   10aba: 66 0f 62 e0                  	punpckldq	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1]
+   10abe: 66 0f d4 e1                  	paddq	%xmm1, %xmm4
+   10ac2: 66 0f 6e 9c 56 08 00 00 06   	movd	0x6000008(%rsi,%rdx,2), %xmm3
+   10acb: 66 0f 6e 8c 56 0c 00 00 06   	movd	0x600000c(%rsi,%rdx,2), %xmm1
+   10ad4: 66 0f db da                  	pand	%xmm2, %xmm3
+   10ad8: 66 0f db ca                  	pand	%xmm2, %xmm1
+   10adc: 66 0f 61 d8                  	punpcklwd	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1],xmm3[2],xmm0[2],xmm3[3],xmm0[3]
+   10ae0: 66 0f 62 d8                  	punpckldq	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1]
+   10ae4: 66 0f d4 dd                  	paddq	%xmm5, %xmm3
+   10ae8: 66 0f 61 c8                  	punpcklwd	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1],xmm1[2],xmm0[2],xmm1[3],xmm0[3]
+   10aec: 66 0f 62 c8                  	punpckldq	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1]
+   10af0: 66 0f d4 cc                  	paddq	%xmm4, %xmm1
+   10af4: 48 83 c2 08                  	addq	$0x8, %rdx
+   10af8: 48 81 fa 00 00 20 00         	cmpq	$0x200000, %rdx         # imm = 0x200000
+   10aff: 75 8f                        	jne	0x10a90 <bench_entry+0x120>
+   10b01: 66 0f d4 cb                  	paddq	%xmm3, %xmm1
+   10b05: 66 0f 70 c1 ee               	pshufd	$0xee, %xmm1, %xmm0     # xmm0 = xmm1[2,3,2,3]
+   10b0a: 66 0f d4 c1                  	paddq	%xmm1, %xmm0
+   10b0e: f7 d9                        	negl	%ecx
+   10b10: 48 c1 e1 20                  	shlq	$0x20, %rcx
+   10b14: 89 c6                        	movl	%eax, %esi
+   10b16: 66 41 0f d6 00               	movq	%xmm0, (%r8)
+   10b1b: 0f ae e8                     	lfence
+   10b1e: 0f 31                        	rdtsc
+   10b20: e9 fb 02 00 00               	jmp	0x10e20 <bench_entry+0x4b0>
+   10b25: 0f ae e8                     	lfence
+   10b28: 0f 31                        	rdtsc
+   10b2a: 89 d1                        	movl	%edx, %ecx
+   10b2c: 66 0f ef c0                  	pxor	%xmm0, %xmm0
+   10b30: 31 d2                        	xorl	%edx, %edx
+   10b32: 66 0f 6f 15 f6 29 ff ff      	movdqa	-0xd60a(%rip), %xmm2    # 0x3530 <write+0x3530>
+   10b3a: 66 0f ef db                  	pxor	%xmm3, %xmm3
+   10b3e: 66 0f ef c9                  	pxor	%xmm1, %xmm1
+   10b42: 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00    	nopw	%cs:(%rax,%rax)
+   10b50: 66 0f 6e ac 56 00 00 00 06   	movd	0x6000000(%rsi,%rdx,2), %xmm5
+   10b59: 66 0f 6e a4 56 04 00 00 06   	movd	0x6000004(%rsi,%rdx,2), %xmm4
+   10b62: 66 0f db ea                  	pand	%xmm2, %xmm5
+   10b66: 66 0f db e2                  	pand	%xmm2, %xmm4
+   10b6a: 66 0f 61 e8                  	punpcklwd	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1],xmm5[2],xmm0[2],xmm5[3],xmm0[3]
+   10b6e: 66 0f 62 e8                  	punpckldq	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1]
+   10b72: 66 0f d4 eb                  	paddq	%xmm3, %xmm5
+   10b76: 66 0f 61 e0                  	punpcklwd	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1],xmm4[2],xmm0[2],xmm4[3],xmm0[3]
+   10b7a: 66 0f 62 e0                  	punpckldq	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1]
+   10b7e: 66 0f d4 e1                  	paddq	%xmm1, %xmm4
+   10b82: 66 0f 6e 9c 56 08 00 00 06   	movd	0x6000008(%rsi,%rdx,2), %xmm3
+   10b8b: 66 0f 6e 8c 56 0c 00 00 06   	movd	0x600000c(%rsi,%rdx,2), %xmm1
+   10b94: 66 0f db da                  	pand	%xmm2, %xmm3
+   10b98: 66 0f db ca                  	pand	%xmm2, %xmm1
+   10b9c: 66 0f 61 d8                  	punpcklwd	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1],xmm3[2],xmm0[2],xmm3[3],xmm0[3]
+   10ba0: 66 0f 62 d8                  	punpckldq	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1]
+   10ba4: 66 0f d4 dd                  	paddq	%xmm5, %xmm3
+   10ba8: 66 0f 61 c8                  	punpcklwd	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1],xmm1[2],xmm0[2],xmm1[3],xmm0[3]
+   10bac: 66 0f 62 c8                  	punpckldq	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1]
+   10bb0: 66 0f d4 cc                  	paddq	%xmm4, %xmm1
+   10bb4: 48 83 c2 08                  	addq	$0x8, %rdx
+   10bb8: 48 81 fa 00 00 02 00         	cmpq	$0x20000, %rdx          # imm = 0x20000
+   10bbf: 75 8f                        	jne	0x10b50 <bench_entry+0x1e0>
+   10bc1: 66 0f d4 cb                  	paddq	%xmm3, %xmm1
+   10bc5: 66 0f 70 c1 ee               	pshufd	$0xee, %xmm1, %xmm0     # xmm0 = xmm1[2,3,2,3]
+   10bca: 66 0f d4 c1                  	paddq	%xmm1, %xmm0
+   10bce: f7 d9                        	negl	%ecx
+   10bd0: 48 c1 e1 20                  	shlq	$0x20, %rcx
+   10bd4: 89 c6                        	movl	%eax, %esi
+   10bd6: 66 41 0f d6 00               	movq	%xmm0, (%r8)
+   10bdb: 0f ae e8                     	lfence
+   10bde: 0f 31                        	rdtsc
+   10be0: e9 3b 02 00 00               	jmp	0x10e20 <bench_entry+0x4b0>
+   10be5: 0f ae e8                     	lfence
+   10be8: 0f 31                        	rdtsc
+   10bea: 89 d1                        	movl	%edx, %ecx
+   10bec: 66 0f ef c0                  	pxor	%xmm0, %xmm0
+   10bf0: 31 d2                        	xorl	%edx, %edx
+   10bf2: 66 0f 6f 15 36 29 ff ff      	movdqa	-0xd6ca(%rip), %xmm2    # 0x3530 <write+0x3530>
+   10bfa: 66 0f ef db                  	pxor	%xmm3, %xmm3
+   10bfe: 66 0f ef c9                  	pxor	%xmm1, %xmm1
+   10c02: 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00    	nopw	%cs:(%rax,%rax)
+   10c10: 66 0f 6e ac 56 00 00 00 06   	movd	0x6000000(%rsi,%rdx,2), %xmm5
+   10c19: 66 0f 6e a4 56 04 00 00 06   	movd	0x6000004(%rsi,%rdx,2), %xmm4
+   10c22: 66 0f db ea                  	pand	%xmm2, %xmm5
+   10c26: 66 0f db e2                  	pand	%xmm2, %xmm4
+   10c2a: 66 0f 61 e8                  	punpcklwd	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1],xmm5[2],xmm0[2],xmm5[3],xmm0[3]
+   10c2e: 66 0f 62 e8                  	punpckldq	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1]
+   10c32: 66 0f d4 eb                  	paddq	%xmm3, %xmm5
+   10c36: 66 0f 61 e0                  	punpcklwd	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1],xmm4[2],xmm0[2],xmm4[3],xmm0[3]
+   10c3a: 66 0f 62 e0                  	punpckldq	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1]
+   10c3e: 66 0f d4 e1                  	paddq	%xmm1, %xmm4
+   10c42: 66 0f 6e 9c 56 08 00 00 06   	movd	0x6000008(%rsi,%rdx,2), %xmm3
+   10c4b: 66 0f 6e 8c 56 0c 00 00 06   	movd	0x600000c(%rsi,%rdx,2), %xmm1
+   10c54: 66 0f db da                  	pand	%xmm2, %xmm3
+   10c58: 66 0f db ca                  	pand	%xmm2, %xmm1
+   10c5c: 66 0f 61 d8                  	punpcklwd	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1],xmm3[2],xmm0[2],xmm3[3],xmm0[3]
+   10c60: 66 0f 62 d8                  	punpckldq	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1]
+   10c64: 66 0f d4 dd                  	paddq	%xmm5, %xmm3
+   10c68: 66 0f 61 c8                  	punpcklwd	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1],xmm1[2],xmm0[2],xmm1[3],xmm0[3]
+   10c6c: 66 0f 62 c8                  	punpckldq	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1]
+   10c70: 66 0f d4 cc                  	paddq	%xmm4, %xmm1
+   10c74: 48 83 c2 08                  	addq	$0x8, %rdx
+   10c78: 48 81 fa 00 00 10 00         	cmpq	$0x100000, %rdx         # imm = 0x100000
+   10c7f: 75 8f                        	jne	0x10c10 <bench_entry+0x2a0>
+   10c81: 66 0f d4 cb                  	paddq	%xmm3, %xmm1
+   10c85: 66 0f 70 c1 ee               	pshufd	$0xee, %xmm1, %xmm0     # xmm0 = xmm1[2,3,2,3]
+   10c8a: 66 0f d4 c1                  	paddq	%xmm1, %xmm0
+   10c8e: f7 d9                        	negl	%ecx
+   10c90: 48 c1 e1 20                  	shlq	$0x20, %rcx
+   10c94: 89 c6                        	movl	%eax, %esi
+   10c96: 66 41 0f d6 00               	movq	%xmm0, (%r8)
+   10c9b: 0f ae e8                     	lfence
+   10c9e: 0f 31                        	rdtsc
+   10ca0: e9 7b 01 00 00               	jmp	0x10e20 <bench_entry+0x4b0>
+   10ca5: 0f ae e8                     	lfence
+   10ca8: 0f 31                        	rdtsc
+   10caa: 89 d1                        	movl	%edx, %ecx
+   10cac: 66 0f ef c0                  	pxor	%xmm0, %xmm0
+   10cb0: 31 d2                        	xorl	%edx, %edx
+   10cb2: 66 0f 6f 15 76 28 ff ff      	movdqa	-0xd78a(%rip), %xmm2    # 0x3530 <write+0x3530>
+   10cba: 66 0f ef db                  	pxor	%xmm3, %xmm3
+   10cbe: 66 0f ef c9                  	pxor	%xmm1, %xmm1
+   10cc2: 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00    	nopw	%cs:(%rax,%rax)
+   10cd0: 66 0f 6e ac 56 00 00 00 06   	movd	0x6000000(%rsi,%rdx,2), %xmm5
+   10cd9: 66 0f 6e a4 56 04 00 00 06   	movd	0x6000004(%rsi,%rdx,2), %xmm4
+   10ce2: 66 0f db ea                  	pand	%xmm2, %xmm5
+   10ce6: 66 0f db e2                  	pand	%xmm2, %xmm4
+   10cea: 66 0f 61 e8                  	punpcklwd	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1],xmm5[2],xmm0[2],xmm5[3],xmm0[3]
+   10cee: 66 0f 62 e8                  	punpckldq	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1]
+   10cf2: 66 0f d4 eb                  	paddq	%xmm3, %xmm5
+   10cf6: 66 0f 61 e0                  	punpcklwd	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1],xmm4[2],xmm0[2],xmm4[3],xmm0[3]
+   10cfa: 66 0f 62 e0                  	punpckldq	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1]
+   10cfe: 66 0f d4 e1                  	paddq	%xmm1, %xmm4
+   10d02: 66 0f 6e 9c 56 08 00 00 06   	movd	0x6000008(%rsi,%rdx,2), %xmm3
+   10d0b: 66 0f 6e 8c 56 0c 00 00 06   	movd	0x600000c(%rsi,%rdx,2), %xmm1
+   10d14: 66 0f db da                  	pand	%xmm2, %xmm3
+   10d18: 66 0f db ca                  	pand	%xmm2, %xmm1
+   10d1c: 66 0f 61 d8                  	punpcklwd	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1],xmm3[2],xmm0[2],xmm3[3],xmm0[3]
+   10d20: 66 0f 62 d8                  	punpckldq	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1]
+   10d24: 66 0f d4 dd                  	paddq	%xmm5, %xmm3
+   10d28: 66 0f 61 c8                  	punpcklwd	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1],xmm1[2],xmm0[2],xmm1[3],xmm0[3]
+   10d2c: 66 0f 62 c8                  	punpckldq	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1]
+   10d30: 66 0f d4 cc                  	paddq	%xmm4, %xmm1
+   10d34: 48 83 c2 08                  	addq	$0x8, %rdx
+   10d38: 48 81 fa 00 00 80 00         	cmpq	$0x800000, %rdx         # imm = 0x800000
+   10d3f: 75 8f                        	jne	0x10cd0 <bench_entry+0x360>
+   10d41: 66 0f d4 cb                  	paddq	%xmm3, %xmm1
+   10d45: 66 0f 70 c1 ee               	pshufd	$0xee, %xmm1, %xmm0     # xmm0 = xmm1[2,3,2,3]
+   10d4a: 66 0f d4 c1                  	paddq	%xmm1, %xmm0
+   10d4e: f7 d9                        	negl	%ecx
+   10d50: 48 c1 e1 20                  	shlq	$0x20, %rcx
+   10d54: 89 c6                        	movl	%eax, %esi
+   10d56: 66 41 0f d6 00               	movq	%xmm0, (%r8)
+   10d5b: 0f ae e8                     	lfence
+   10d5e: 0f 31                        	rdtsc
+   10d60: e9 bb 00 00 00               	jmp	0x10e20 <bench_entry+0x4b0>
+   10d65: 0f ae e8                     	lfence
+   10d68: 0f 31                        	rdtsc
+   10d6a: 89 d1                        	movl	%edx, %ecx
+   10d6c: 66 0f ef c0                  	pxor	%xmm0, %xmm0
+   10d70: 31 d2                        	xorl	%edx, %edx
+   10d72: 66 0f 6f 15 b6 27 ff ff      	movdqa	-0xd84a(%rip), %xmm2    # 0x3530 <write+0x3530>
+   10d7a: 66 0f ef db                  	pxor	%xmm3, %xmm3
+   10d7e: 66 0f ef c9                  	pxor	%xmm1, %xmm1
+   10d82: 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00    	nopw	%cs:(%rax,%rax)
+   10d90: 66 0f 6e ac 56 00 00 00 06   	movd	0x6000000(%rsi,%rdx,2), %xmm5
+   10d99: 66 0f 6e a4 56 04 00 00 06   	movd	0x6000004(%rsi,%rdx,2), %xmm4
+   10da2: 66 0f db ea                  	pand	%xmm2, %xmm5
+   10da6: 66 0f db e2                  	pand	%xmm2, %xmm4
+   10daa: 66 0f 61 e8                  	punpcklwd	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1],xmm5[2],xmm0[2],xmm5[3],xmm0[3]
+   10dae: 66 0f 62 e8                  	punpckldq	%xmm0, %xmm5    # xmm5 = xmm5[0],xmm0[0],xmm5[1],xmm0[1]
+   10db2: 66 0f d4 eb                  	paddq	%xmm3, %xmm5
+   10db6: 66 0f 61 e0                  	punpcklwd	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1],xmm4[2],xmm0[2],xmm4[3],xmm0[3]
+   10dba: 66 0f 62 e0                  	punpckldq	%xmm0, %xmm4    # xmm4 = xmm4[0],xmm0[0],xmm4[1],xmm0[1]
+   10dbe: 66 0f d4 e1                  	paddq	%xmm1, %xmm4
+   10dc2: 66 0f 6e 9c 56 08 00 00 06   	movd	0x6000008(%rsi,%rdx,2), %xmm3
+   10dcb: 66 0f 6e 8c 56 0c 00 00 06   	movd	0x600000c(%rsi,%rdx,2), %xmm1
+   10dd4: 66 0f db da                  	pand	%xmm2, %xmm3
+   10dd8: 66 0f db ca                  	pand	%xmm2, %xmm1
+   10ddc: 66 0f 61 d8                  	punpcklwd	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1],xmm3[2],xmm0[2],xmm3[3],xmm0[3]
+   10de0: 66 0f 62 d8                  	punpckldq	%xmm0, %xmm3    # xmm3 = xmm3[0],xmm0[0],xmm3[1],xmm0[1]
+   10de4: 66 0f d4 dd                  	paddq	%xmm5, %xmm3
+   10de8: 66 0f 61 c8                  	punpcklwd	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1],xmm1[2],xmm0[2],xmm1[3],xmm0[3]
+   10dec: 66 0f 62 c8                  	punpckldq	%xmm0, %xmm1    # xmm1 = xmm1[0],xmm0[0],xmm1[1],xmm0[1]
+   10df0: 66 0f d4 cc                  	paddq	%xmm4, %xmm1
+   10df4: 48 83 c2 08                  	addq	$0x8, %rdx
+   10df8: 48 81 fa 00 00 40 00         	cmpq	$0x400000, %rdx         # imm = 0x400000
+   10dff: 75 8f                        	jne	0x10d90 <bench_entry+0x420>
+   10e01: 66 0f d4 cb                  	paddq	%xmm3, %xmm1
+   10e05: 66 0f 70 c1 ee               	pshufd	$0xee, %xmm1, %xmm0     # xmm0 = xmm1[2,3,2,3]
+   10e0a: 66 0f d4 c1                  	paddq	%xmm1, %xmm0
+   10e0e: f7 d9                        	negl	%ecx
+   10e10: 48 c1 e1 20                  	shlq	$0x20, %rcx
+   10e14: 89 c6                        	movl	%eax, %esi
+   10e16: 66 41 0f d6 00               	movq	%xmm0, (%r8)
+   10e1b: 0f ae e8                     	lfence
+   10e1e: 0f 31                        	rdtsc
+   10e20: 48 c1 e2 20                  	shlq	$0x20, %rdx
+   10e24: 89 c0                        	movl	%eax, %eax
+   10e26: 48 29 f1                     	subq	%rsi, %rcx
+   10e29: 48 01 c1                     	addq	%rax, %rcx
+   10e2c: 48 01 d1                     	addq	%rdx, %rcx
+   10e2f: 48 89 0f                     	movq	%rcx, (%rdi)
+   10e32: 66 0f ef c0                  	pxor	%xmm0, %xmm0
+   10e36: f3 0f 7f 47 08               	movdqu	%xmm0, 0x8(%rdi)
+   10e3b: 48 c7 47 18 00 00 00 00      	movq	$0x0, 0x18(%rdi)
+   10e43: 48 89 f8                     	movq	%rdi, %rax
+   10e46: 48 83 c4 18                  	addq	$0x18, %rsp
+   10e4a: c3                           	retq
+   10e4b: 48 89 0c 24                  	movq	%rcx, (%rsp)
+   10e4f: 48 89 e0                     	movq	%rsp, %rax
+   10e52: 48 89 44 24 08               	movq	%rax, 0x8(%rsp)
+   10e57: 48 8d 05 32 d5 ff ff         	leaq	-0x2ace(%rip), %rax     # 0xe390 <_RNvXsi_NtNtNtCslfAf2Mv2Tp5_4core3fmt3num3impjNtB9_7Display3fmt>
+   10e5e: 48 89 44 24 10               	movq	%rax, 0x10(%rsp)
+   10e63: 48 8d 3d 6d 5b ff ff         	leaq	-0xa493(%rip), %rdi     # 0x69d7 <_RNvNtNtNtCslfAf2Mv2Tp5_4core7unicode12unicode_data15grapheme_extend17SHORT_OFFSET_RUNS+0x11f>
+   10e6a: 48 8d 15 8f 2e 03 00         	leaq	0x32e8f(%rip), %rdx     # 0x43d00 <write+0x43d00>
+   10e71: 48 8d 74 24 08               	leaq	0x8(%rsp), %rsi
+   10e76: e8 15 c5 ff ff               	callq	0xd390 <_RNvNtCslfAf2Mv2Tp5_4core9panicking9panic_fmt>
+   10e7b: 0f 0b                        	ud2
+   10e7d: e8 b1 ef ff ff               	callq	0xfe33 <_RNvNtCslfAf2Mv2Tp5_4core9panicking19panic_cannot_unwind>
+   10e82: cc                           	int3
+   10e83: cc                           	int3
+   10e84: cc                           	int3
+   10e85: cc                           	int3
+   10e86: cc                           	int3
+   10e87: cc                           	int3
+   10e88: cc                           	int3
+   10e89: cc                           	int3
+   10e8a: cc                           	int3
+   10e8b: cc                           	int3
+   10e8c: cc                           	int3
+   10e8d: cc                           	int3
+   10e8e: cc                           	int3
+   10e8f: cc                           	int3
