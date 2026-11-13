@@ -247,8 +247,9 @@ remainders in the wrap completion (`mock/crates/arvo-format/src/apply.rs`, the w
 A fixed-point product costs about the same in every rounding mode as throughput and twice as much in
 latency for the modes that test a tie or a sign: on a chain, floor 1.5 ns a step, half up 1.7, toward
 zero 3.2, half to even 3.1. The same chain shows floor drifting 0.12 percent low after thirty thousand
-steps of a decay while half up and half to even stay within one part in ten million of the real
-answer.
+steps of a decay, while half up ends three parts in ten million high and half to even two parts in a
+hundred million low. So the unbiased modes buy four orders of magnitude of accuracy over floor, and
+half to even buys one more order over half up for twice half up's latency.
 
 ## Estimates
 

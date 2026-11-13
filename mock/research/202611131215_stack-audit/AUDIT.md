@@ -12,7 +12,7 @@ as an exact step and a named adaptation, behaviour stated over what was declared
 container, invalid constructions refused as failed constants, and many small implementations selected
 at compile time: each of these is sound, each is better than what a consumer gets from the host
 language or from the libraries I can compare it to, and the code written on 12 and 13 November shows
-the canon can carry a real implementation quickly. Nothing in the intent goes back to the drawing
+the canon can carry a real implementation quickly. Nothing in this audit goes back to the drawing
 board.
 
 What exists is early and is narrower than the documents say. A consumer can depend today on one value
@@ -21,8 +21,8 @@ is no subtraction, product or division on values, no fixed-point value anyone ha
 no float operation, and nothing anywhere that picks between two implementations by a predicate over a
 region, which is the concept's own heart.
 
-Nothing in the design goes back to the drawing board. The sharpest finding is narrower than that and
-sits inside a ratified row rather than against it. Op's words are that the strategies "behave
+The sharpest finding sits inside a ratified row rather than against it. Op's words are that the
+strategies "behave
 differently and have their own purpose, intent, that shapes what the answer is", and that Hot may
 sacrifice soundness, but "should not lose it for nothing, instead, provable meaningful gains"
 (`ruling::hot_may_sacrifice_soundness_for_a_proven_meaningful_gain`, ratified). The shipped `Hot`
@@ -42,10 +42,10 @@ Four things are going wrong and can be fixed where they stand.
    for its sum is the same function at the same signature, so this is a door to add rather than an
    algorithm to find. The product, the quotient and conversion arrive at the value tier next, and the
    easy way to write each is to call the oracle.
-2. The benches do not measure the tree. Seven months of bench work is 49 registered benches over
-   94 variant crates and 254 committed result sets, none of which touches a shipped type, all timed
-   on one Apple M1. The one family re-run on
-   an x86 host turned its sign. The registry's rows about cost rest on that.
+2. The benches do not measure the tree. Seven months of bench work is 49 registered benches over 94
+   variant crates and 254 committed result sets, none of which touches a shipped type, all timed on
+   one Apple M1. The one family re-run on an x86 host turned its sign, and the registry's rows about
+   cost rest on the M1 numbers.
 3. The plan measures last. Value benches are step 19 of 20 and the port of the one real consumer is
    step 20. Everything this audit learned by running something was available the day the value type
    landed.
@@ -125,7 +125,7 @@ and are both given because the brief asks for both.
 | Order of work: measuring and porting last | Can be fixed in place | Going wrong |
 | The bench corpus as evidence about arvo | Can be fixed in place | Going wrong |
 | The saturating-fold family | Passes | Good as it is |
-| Fit to hilavitkutin | Needs implementation, in another order | Easy to get wrong but can be right |
+| Fit to hilavitkutin | Needs implementation, and the port brought forward | Easy to get wrong but can be right |
 | Fit to kaski | Needs implementation | Easy to get wrong but can be right |
 | Fit to generic applications and daemons | Intent has two readings | Easy to get wrong but can be right |
 
@@ -218,7 +218,15 @@ forbid the arms, since an arm is gone by lowering; the file simply never says so
 the placement" became the thing actually checked: nothing anywhere picks between two implementations
 by a predicate over a region.
 
-A fourth pass is recorded below when it finishes.
+Pass four read the whole report back against itself and changed nothing that matters. It took out a
+sentence saying twice that nothing goes back to the drawing board, tightened the rounding claim in
+`NUMBERS.md` to the figures the spike actually produced (half up ends three parts in ten million high
+and half to even two parts in a hundred million low, against floor's 0.12 percent), and softened the
+hilavitkutin verdict line, which still read as though the plan had the order wrong throughout rather
+than at its last two steps. It checked the five files for the style the repository gates on: no
+dashes of either kind, no inline emphasis, none of the banned vocabulary, every file inside the
+500-line limit, with a positive control run on the vocabulary grep. No finding moved, no mark
+changed, and the report rests here.
 
 ## Tickets
 
