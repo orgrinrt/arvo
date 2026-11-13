@@ -60,11 +60,16 @@ nothing refuses a row that omits it. Of 39 ratified rulings, 18 omit it:
 `never_a_runtime_check_and_one_lowered_path` and
 `the_overflow_panic_is_permitted_and_bounded`.
 
-Every one of them carries a `ratification` text saying op selected it in one of
-the ratification rounds, so the route is known and only the field is missing. The
+Seventeen of them carry a `ratification` text saying op selected the row in one
+of the ratification rounds, and the eighteenth,
+`ruling::the_work_is_predicated_arms_composed`, has no `ratification` field and
+says in its `note` that he ratified his own two statements in the sitting that
+produced them. So the route is known on all eighteen and only the field is
+missing. The
 value is `op` on all eighteen. The field is the first thing a later reader checks
 when a ratified row turns out wrong, which is the schema's own argument for it,
-so a missing value costs exactly when it matters most.
+so a missing value costs exactly when it matters most. Section 7 says how the
+eighteen were filled and which lint holds the condition.
 
 ### 1.3 The standards obligation's gap is answered on both of its halves
 
@@ -77,11 +82,14 @@ artifact."
 first half in his own words, as direction on a `stated` row and not yet as
 canon: MATLAB `fi` and `fimath` and IEEE 754 are the two,
 SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed` are reserved
-rather than excluded. The second half is half true. The MATLAB parity suite is
-built: `mock/crates/arvo-format/tests/matlab_fi_parity.rs` holds ten arms whose
-expected numbers come from the MathWorks reference page rather than from arvo,
-and `mock/crates/arvo-format/tests/the_ties_away_alias.rs` sweeps the Round
-alias. The IEEE 754 half is unbuilt, and no operation admits a floating format,
+rather than excluded. The second half is partly true. A first part of the MATLAB suite is built:
+`mock/crates/arvo-format/tests/matlab_fi_parity.rs` holds five `fi` declarations
+of one constant and the documented positions of the nearest modes, with expected
+numbers from the MathWorks reference page rather than from arvo, and
+`mock/crates/arvo-format/tests/the_ties_away_alias.rs` sweeps the Round alias.
+By the file's own controls no parity arm reaches a tie or an overflow action,
+and no arithmetic is run through both, so the wide selection of usages the
+mandate asks for is owed. The IEEE 754 half is unbuilt, and no operation admits a floating format,
 so that half of the mandate still has no artifact.
 
 ### 1.4 The platform-width ruling's region says 64 is refused, and 64 is shipped
@@ -665,25 +673,26 @@ comments in `dimension.toml` and the one in `topic.toml`.
 
 ### Applied on the second branch, after the review
 
-On the two rows above. `kind` moves from `intent` to `ruling` on both, since the
-schema keeps `intent` for a want stated with no question in front of it and both
-answer a question put with options. The quote of the first gets back the
+On the two rows above. `kind` moves from `intent` to `ruling` on the second,
+since the schema keeps `intent` for a want stated with no question in front of
+it and that row answers a question put with options. The first had been moved
+the same way and is back at `intent`: its own note says it narrows
+`question::does_warm_wrap_or_clamp` without answering it and it carries no
+`answers` edge, so `ruling`, "a question answered", is the one kind the row
+rules out about itself, and of the rest `intent` fits the want it states. Two
+reviewers read that call, the first leaving it open and the second deciding it. The quote of the first gets back the
 typographic apostrophe of "it’s", which the first branch had straightened while
 saying it kept it. The `says` of the first keeps his hedge, "it might make more
 sense", where it had been written as a settled statement, and the `says` of the
 second loses a gloss of the taxonomy that was this job's reading and not his
 words. The note of the first states the sketch's corrected result, and the note
-of the second the corrected reading of the five refusals in section 5. Whether
-`ruling` is the kind for the first, which narrows the question put to him and
-carries no `answers` edge, is a call the reviewer of this branch left to a
-second reader, and the row keeps the kind until one has read it.
+of the second the corrected reading of the five refusals in section 5.
 
 On `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
 the second paragraph of the `gap` is replaced: on scope it names his direction,
 `ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`, as a `stated`
-row and not a ratified one, the MATLAB
-half of the parity suite is built and its two files are named, and the IEEE 754
-half is unbuilt and waits on a float value.
+row and not a ratified one, what is built of the MATLAB half is named with its two files and with what it
+does not reach, and the IEEE 754 half is unbuilt and waits on a float value.
 
 On `ruling::the_trait_contract_structure_is_a_primary_paradigm`, a `stated`
 row, the note is amended: the lint and the contracts crates it argued from are
@@ -770,6 +779,19 @@ restates it. And the note of
 `proposal::a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin`
 cited a row under its file's stem, which is corrected to `proposal::`.
 
+A second review, of the branch as it stood after those, found four more. The
+`gap` of `obligation::the_surface_expressible_as_contracts_before_anything_implements_it`
+still said one place enforces where traits may live, the same claim about the
+same lint that the note of `ruling::the_trait_contract_structure_is_a_primary_paradigm`
+had just been corrected on, and it now says nothing in the tree does. The new
+proposal on the old numeric contracts carried an `obligation` edge to that row,
+which it does not meet, since it says whose three contracts are and states no
+part of the surface as a contract, so the edge is dropped. The `kind` of the
+overflow default row is back at `intent`, as above. And the `gap` of the
+standards obligation had called the MATLAB half of the parity suite built, where
+one constant and the nearest modes' documented positions are built and the
+arithmetic through both is not, so it says what is there and what is owed.
+
 ### Written down and not applied
 
 The edits to ratified rows were one patch of twenty-one hunks, changing no
@@ -777,14 +799,17 @@ The edits to ratified rows were one patch of twenty-one hunks, changing no
 "Do the eighteen get `ratified_by = "op"` and the three notes their
 corrections?", with the options [All of it] [The eighteen, not the notes]
 [Some are not mine] [Leave them]. He answered "The eighteen, not the notes".
-So the patch is now two files beside this one.
+So the patch was split in two.
 
-`ratified-rows.patch` holds the eighteen hunks that add `ratified_by = "op"` to
-the rows of 1.2, which is what he took. It is still not applied: this seat's
-permission check refused the edit a second time, after his answer, and that is
-ticket `c9e9da26606f` with the refusal quoted in the status that carries this
-branch. `git apply` takes the file on top of this branch, and the lint refusing
-a ratified ruling with no `ratified_by` lands behind it.
+The eighteen hunks that add `ratified_by = "op"` to the rows of 1.2 are what he
+took, and they are in the registry. This seat's permission check refused the
+edit twice, ticket `c9e9da26606f`, so another branch applied them and landed on
+`dev` as `b93f42d4`, which this branch has merged, and the patch file that
+carried them is removed with that. The lint that holds the condition is on this
+branch as `a-ratified-ruling-names-its-ratifier`, in `mock/lints/`: a ruling at
+`rung = "ratified"` with no `ratified_by` is refused at commit, build and push.
+It checks the required half only and leaves a `ratified_by` on a row at another
+tier alone, which the schema calls meaningless and not wrong.
 
 `ratified-notes.proposal.patch` holds the three note rewrites he did not take.
 They stay a proposal and nobody applies them on this answer.

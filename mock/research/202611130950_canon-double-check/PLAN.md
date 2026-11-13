@@ -135,17 +135,14 @@ Most of this step is done, on the branch that corrected this plan and on
 `work/registry-repairs` after it, and `CHECK.md` section 7 lists both: the gaps
 and notes on rows that are not ratified, the corrections to the two rows this
 job added, and the stale sentences the full read found in the six files it
-covered, which section 1.10 counts by class. Five things are left.
+covered, which section 1.10 counts by class. Four things are left.
 
-The edits to ratified rows. Op answered "The eighteen, not the notes" on 13
-November, so `ratified-rows.patch` beside this file is the eighteen
-`ratified_by = "op"` lines and nothing else, and the three notes stay a
-proposal in `ratified-notes.proposal.patch`. The patch changes no `says`, no
-`rung` and no standing, and it wants a seat whose permissions allow editing a
-ratified row's fields, ticket `c9e9da26606f`, since this one was refused twice. With it goes a lint in
-`mock/lints/` refusing a `ratified` ruling that names no `ratified_by`, which
-the schema calls required and declares optional. The lint cannot land before
-the patch, since it would be red on eighteen rows.
+The edits to ratified rows are done as far as he took them. Op answered "The
+eighteen, not the notes" on 13 November, the eighteen `ratified_by = "op"` lines
+are on `dev` as `b93f42d4`, and the three notes stay a proposal in
+`ratified-notes.proposal.patch`. The lint that refuses a `ratified` ruling
+naming no `ratified_by`, which the schema calls required and declares optional,
+is on this branch as `a-ratified-ruling-names-its-ratifier`.
 
 A tool, not a lint, for the other finding: one that lists every row whose `gap`
 or `note` says an axis is undeclared, beside the `dimension` ids, for a reader
@@ -367,7 +364,7 @@ that.
 The arithmetic contracts on a standard, which the registry is silent on and his
 words ask for. Each standard's convention as a named instance of step 5's
 contracts over step 4's default mechanism: MATLAB's `fi` with its `fimath`
-defaults as value aliases, and the existing parity suite's ten arms run through
+defaults as value aliases, and the existing parity arms run through
 the value and through the contracts as well as through the slot arithmetic, one
 computation by three routes with one expected number from the MathWorks page.
 

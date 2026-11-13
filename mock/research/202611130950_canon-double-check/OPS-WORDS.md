@@ -194,6 +194,6 @@ The options: [All of it] [The eighteen, not the notes] [Some are not mine]
 > The eighteen, not the notes
 
 This job's reading, not his words. The eighteen ratified rulings that carry no
-`ratified_by` take `ratified_by = "op"`, and they are the rows of
-`ratified-rows.patch`. The three note rewrites are not applied and stay a
+`ratified_by` take `ratified_by = "op"`, which landed on `dev` as `b93f42d4`.
+The three note rewrites are not applied and stay a
 proposal, as `ratified-notes.proposal.patch`.
