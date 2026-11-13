@@ -132,6 +132,30 @@ fn the_row_argument_narrows_the_report_to_one_row() {
     assert!(one.contains("law::b") && !one.contains("law::a"), "{one}");
 }
 
+/// A row that is not in the registry must not read as a clean registry: the
+/// clean line is a claim about every row, and a typo would print it.
+#[test]
+fn control_a_row_argument_naming_no_row_is_inconclusive_not_clean() {
+    let rows: Rows = &[("law::a", &[("gap", "This axis is undeclared.")])];
+    let (outcome, out) = run(rows, &["law::typo"]);
+    assert!(
+        matches!(outcome, Outcome::Inconclusive { .. }),
+        "{outcome:?}"
+    );
+    assert!(out.contains("no row `law::typo`"), "{out}");
+}
+
+#[test]
+fn a_row_argument_naming_a_row_with_no_candidate_is_clean_for_that_row() {
+    let rows: Rows = &[
+        ("law::a", &[("gap", "This axis is undeclared.")]),
+        ("law::b", &[("gap", "Nothing of the kind.")]),
+    ];
+    let (outcome, out) = run(rows, &["law::b"]);
+    assert!(matches!(outcome, Outcome::Clean { .. }), "{outcome:?}");
+    assert!(out.contains("no sentence"), "{out}");
+}
+
 // --- the controls that must stay silent ---
 
 #[test]
@@ -226,4 +250,22 @@ fn the_cue_and_the_axis_word_are_both_needed() {
     assert!(!says_an_axis_is_undeclared(
         "The axisymmetric result is undeclared"
     ));
+}
+
+/// The positive control against the hand search. `CHECK.md` section 1.10 names
+/// the rows the first hand search found, and this is the sentence of one of
+/// them in the words the registry holds: it says "nothing declared that axis",
+/// a phrasing none of the first twelve cues carried, so the tool listed fifteen
+/// of the sixteen rows the hand search found and missed this one.
+#[test]
+fn a_sentence_saying_nothing_declared_the_axis_is_found() {
+    let (_, out) = run(
+        &[("proposal::a_row", &[(
+            "note",
+            "It leaves out the ambient domain and nothing declared that axis when this \
+             row was written. `dimension::ambient_domain` declares it.",
+        )])],
+        &[],
+    );
+    assert_eq!(count(&out), 1, "{out}");
 }

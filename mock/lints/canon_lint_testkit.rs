@@ -45,10 +45,8 @@ use std::sync::OnceLock;
 use mockspace::src_layout::RefFiles;
 use mockspace::testkit::check_repo;
 use mockspace::{
-    Level,
     Lint,
     LintError,
-    LintMode,
     LintPack,
     Reading,
     RegistryView,
@@ -59,8 +57,15 @@ use mockspace::{
     View,
 };
 
+#[path = "canon_lint_testkit/declared.rs"]
+mod declared;
+#[path = "canon_lint_testkit/severity.rs"]
+mod severity;
 #[path = "canon_lint_testkit/tests.rs"]
 mod tests;
+
+use declared::{declared_lint_files, namespaces_declaring};
+pub use severity::severity_after_config;
 
 /// A registry holding exactly the rows named, and the reverse edges named.
 ///
@@ -413,58 +418,6 @@ pub fn repo_root() -> PathBuf {
         .expect("no mockspace.toml above the working directory or above the testkit's own path")
 }
 
-/// What `[lints.<lint>]` in a `mockspace.toml` text does to a lint's own severity.
-///
-/// The lint's `default_severity` is only the starting point. The config's
-/// `commit`, `build` and `push` keys overlay it one gate at a time, so a lint
-/// declared `HARD_ERROR` and keyed `push = "off"` in the repository's config
-/// does not run at that gate while its own default still says it blocks. A test
-/// asserting the default alone passes through exactly that.
-///
-/// **What is read.** The user layer: a `[lints.<lint>]` table with those three
-/// keys, spelled as the engine spells a level. The presets a config may extend
-/// and a `--severity-override` on the command line also apply in the engine and
-/// are not read here, so a result from this is the repository's own config
-/// layered over the default and nothing more.
-pub fn severity_after_config(config: &str, lint: &str, default: Severity) -> Severity {
-    let header = format!("[lints.{lint}]");
-    let mut level = [
-        default.effective(LintMode::Commit),
-        default.effective(LintMode::Build),
-        default.effective(LintMode::Push),
-    ];
-    let mut inside = false;
-    for line in config.lines().map(str::trim) {
-        if line.starts_with('[') {
-            inside = line == header;
-            continue;
-        }
-        if !inside {
-            continue;
-        }
-        let Some((key, value)) = line.split_once('=') else {
-            continue;
-        };
-        let slot = match key.trim() {
-            "commit" => 0,
-            "build" => 1,
-            "push" => 2,
-            _ => continue,
-        };
-        // A trailing comment after the value is not part of it.
-        let value = value
-            .split('#')
-            .next()
-            .unwrap_or(value)
-            .trim()
-            .trim_matches('"');
-        if let Some(l) = Level::from_str_name(value) {
-            level[slot] = l;
-        }
-    }
-    Severity::new(level[0], level[1], level[2])
-}
-
 /// The nearest directory at or above `dir` holding a `mockspace.toml`.
 fn mockspace_root_above(mut dir: PathBuf) -> Option<PathBuf> {
     loop {
@@ -475,69 +428,6 @@ fn mockspace_root_above(mut dir: PathBuf) -> Option<PathBuf> {
             return None;
         }
     }
-}
-
-/// Every `mock/lints/*.rs` declaring a lint, as the name it should answer to.
-///
-/// The file name is the source, kebab-cased. A lint whose declared `name()`
-/// disagrees with its file is caught by the same set difference that catches
-/// one which never registers, and both are the same defect to a reader looking
-/// for it by either.
-///
-/// **The needle is built rather than written**, because the engine's own scan
-/// over these files is textual and matched this line the first time it was
-/// spelled out, so a file that declares no lint declared one and the cdylib
-/// stopped compiling. It is the scan reporting exactly what it looks for, and
-/// the reason this test can be written at all.
-fn declared_lint_files() -> BTreeSet<String> {
-    let needle = format!("pub fn {}()", "repo_lint");
-    let dir = repo_root().join("mock/lints");
-    std::fs::read_dir(&dir)
-        .unwrap_or_else(|e| panic!("read {}: {e}", dir.display()))
-        .flatten()
-        .map(|e| e.path())
-        .filter(|p| p.extension().is_some_and(|x| x == "rs"))
-        .filter(|p| std::fs::read_to_string(p).is_ok_and(|t| t.contains(&needle)))
-        .filter_map(|p| p.file_stem().and_then(|s| s.to_str()).map(str::to_owned))
-        .map(|s| s.replace('_', "-"))
-        .collect()
-}
-
-/// The namespaces `mockspace.toml` declares a field of this name on.
-///
-/// A text scan rather than a parse, because the generated pack's manifest is
-/// engine-written and no lint file can add a TOML reader to it. The shape it
-/// relies on is the one the file carries and the engine's own loader relies on
-/// too: an array-of-tables header opens a namespace, `key = "..."` on the line
-/// after it names the namespace, and every `name = "..."` after that belongs to
-/// that namespace until the next namespace header.
-///
-/// Returns `None` where the scan found no namespace at all, which means the
-/// shape moved and the scan is measuring nothing rather than reporting a clean
-/// disagreement.
-fn namespaces_declaring(field: &str) -> Option<BTreeSet<String>> {
-    let text = std::fs::read_to_string(repo_root().join("mockspace.toml")).ok()?;
-    let wanted = format!("name = \"{field}\"");
-    let mut seen_any = false;
-    let mut here: Option<String> = None;
-    let mut out = BTreeSet::new();
-    for line in text.lines() {
-        let line = line.trim();
-        if line == "[[registry.namespace]]" {
-            here = None;
-            seen_any = true;
-        } else if here.is_none()
-            && let Some(rest) = line.strip_prefix("key = \"")
-            && let Some(key) = rest.strip_suffix('"')
-        {
-            here = Some(key.to_string());
-        } else if line == wanted
-            && let Some(ns) = &here
-        {
-            out.insert(ns.clone());
-        }
-    }
-    seen_any.then_some(out)
 }
 
 /// What `judge` makes of the tree at `root`, asked through a view of a fresh

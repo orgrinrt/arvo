@@ -61,8 +61,13 @@ fn collect_aliases(node: Node, src: &[u8], krate: &str, names: &mut BTreeSet<Str
                 .filter(|n| text(*n, src) == krate)
         },
         "use_as_clause" => {
-            node.child_by_field_name("path")
-                .filter(|p| p.kind() == "identifier" && text(*p, src) == krate)
+            node.child_by_field_name("path").filter(|p| {
+                if p.kind() == "self" {
+                    in_a_list_of_the_crate(node, src, krate)
+                } else {
+                    names_the_crate_alone(*p, src, krate) && !is_nested_under_a_path(node)
+                }
+            })
         },
         _ => None,
     };
@@ -75,6 +80,53 @@ fn collect_aliases(node: Node, src: &[u8], krate: &str, names: &mut BTreeSet<Str
     for child in node.children(&mut cursor) {
         collect_aliases(child, src, krate, names);
     }
+}
+
+/// Whether the path is the crate and nothing more: `std` or `::std`.
+fn names_the_crate_alone(path: Node, src: &[u8], krate: &str) -> bool {
+    match path.kind() {
+        "identifier" => text(path, src) == krate,
+        "scoped_identifier" => {
+            path.child_by_field_name("path").is_none()
+                && path
+                    .child_by_field_name("name")
+                    .is_some_and(|n| text(n, src) == krate)
+        },
+        _ => false,
+    }
+}
+
+/// Whether the clause sits directly in the braces of `std::{ .. }` or
+/// `::std::{ .. }`, so a `self` in it is the crate itself.
+fn in_a_list_of_the_crate(clause: Node, src: &[u8], krate: &str) -> bool {
+    clause
+        .parent()
+        .filter(|list| list.kind() == "use_list")
+        .and_then(|list| list.parent())
+        .filter(|outer| outer.kind() == "scoped_use_list" && !is_nested_under_a_path(*outer))
+        .and_then(|outer| outer.child_by_field_name("path"))
+        .is_some_and(|path| names_the_crate_alone(path, src, krate))
+}
+
+/// Whether the path node stands inside the braces of a use that has a path in
+/// front of them, `facade::{std}`, so its first segment is not the root.
+///
+/// Braces with nothing in front, `use {std::fmt};` and `use ::{std};`, hold
+/// roots, and so do the braces of `std::{..}` itself, which the walk reaches as
+/// the `scoped_use_list` node and not as a member of a list.
+fn is_nested_under_a_path(node: Node) -> bool {
+    let mut cur = node;
+    while let Some(parent) = cur.parent() {
+        match parent.kind() {
+            "use_list" | "use_as_clause" => cur = parent,
+            "scoped_use_list" => {
+                return parent.child_by_field_name("list") == Some(cur)
+                    && parent.child_by_field_name("path").is_some();
+            },
+            _ => return false,
+        }
+    }
+    false
 }
 
 fn walk(
@@ -91,10 +143,12 @@ fn walk(
         },
         kind if SCOPED.contains(&kind) => {
             !is_a_path_segment_of_a_longer_path(node)
+                && !is_nested_under_a_path(node)
                 && root_segment(node, src).is_some_and(|r| names.contains(r))
         },
         "use_wildcard" => {
             !is_a_path_segment_of_a_longer_path(node)
+                && !is_nested_under_a_path(node)
                 && first_named_child(node)
                     .and_then(|c| root_segment(c, src))
                     .is_some_and(|r| names.contains(r))
@@ -105,7 +159,7 @@ fn walk(
                 matches!(p.kind(), "use_declaration" | "use_list")
                     || (p.kind() == "use_as_clause" && p.child_by_field_name("path") == Some(node))
             });
-            parent_is_a_bare_use && names.contains(text(node, src))
+            parent_is_a_bare_use && !is_nested_under_a_path(node) && names.contains(text(node, src))
         },
         "token_tree" => {
             if names_a_crate_in_tokens(node, src, names) {
@@ -293,6 +347,45 @@ mod tests {
         assert!(std_lines("/// std::process::exit\nfn f() { let s = \"std::fmt\"; }\n").is_empty());
         assert!(std_lines("fn f() { let std = 1; let _ = std + 1; }\n").is_empty());
         assert!(std_lines("fn f(x: Std) -> u8 { 0 }\n").is_empty());
+    }
+
+    /// A name inside the braces of a use that has a path in front of them is a
+    /// member of that path, not a root: `facade::{std}` imports `facade::std`.
+    #[test]
+    fn control_a_name_inside_braces_after_a_path_is_no_hit() {
+        assert!(std_lines("use facade::{std, core};\n").is_empty());
+        assert!(std_lines("use facade::{std::fmt};\n").is_empty());
+        assert!(std_lines("use facade::{a::{std::fmt}};\n").is_empty());
+        assert!(std_lines("use facade::{std::*};\n").is_empty());
+        assert!(std_lines("use facade::{std as s};\nfn f() { s::x(); }\n").is_empty());
+        assert!(alloc_lines("use my_crate::{alloc::Pool, x};\n").is_empty());
+    }
+
+    #[test]
+    fn braces_with_nothing_in_front_hold_roots() {
+        assert_eq!(std_lines("use {std::fmt};\n"), vec![1]);
+        assert_eq!(std_lines("use ::{std};\n"), vec![1]);
+        assert_eq!(std_lines("use std::{fmt, io::{self}};\n"), vec![1]);
+    }
+
+    #[test]
+    fn a_self_alias_inside_the_crates_braces_names_the_crate() {
+        let src = "use std::{self as s};\nfn f() { s::process::exit(0); }\n";
+        assert_eq!(std_lines(src), vec![1, 2]);
+        let rooted = "use ::std::{self as s};\nfn f() { s::process::exit(0); }\n";
+        assert_eq!(std_lines(rooted), vec![1, 2]);
+    }
+
+    #[test]
+    fn a_leading_colon_use_alias_names_the_crate() {
+        let src = "use ::std as s;\nfn f() { s::process::exit(0); }\n";
+        assert_eq!(std_lines(src), vec![1, 2]);
+    }
+
+    #[test]
+    fn control_a_self_alias_inside_another_crates_braces_is_no_alias() {
+        let src = "use other::{self as s};\nfn f() { s::process::exit(0); }\n";
+        assert!(std_lines(src).is_empty());
     }
 
     #[test]

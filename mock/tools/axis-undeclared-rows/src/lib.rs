@@ -46,7 +46,7 @@ const AXIS_WORDS: [&str; 6] =
 /// Phrases saying an axis is not declared, lowercase. Each is a phrasing the
 /// registry has used. A new phrasing is added here, and a row that had it is the
 /// case that goes in the tests.
-const CUES: [&str; 12] = [
+const CUES: [&str; 13] = [
     "undeclared",
     "not declared",
     "isn't declared",
@@ -59,6 +59,7 @@ const CUES: [&str; 12] = [
     "is not an axis",
     "has no axis",
     "no axis for",
+    "nothing declared",
 ];
 
 /// The namespace whose rows are the declared axes.
@@ -107,6 +108,14 @@ impl Tool for AxisUndeclaredRows {
         }
         let (found, examined) = gather(ctx.registry, &declared);
         let wanted = ctx.args.first().copied();
+        if let Some(row) = wanted
+            && ctx.registry.row(row).is_none()
+        {
+            return ToolReport::inconclusive(format!(
+                "the registry has no row `{row}`, so nothing was read for it. Rows are named \
+                 `namespace::slug`."
+            ));
+        }
         let shown: Vec<&Candidate> = found
             .iter()
             .filter(|c| wanted.is_none_or(|w| c.row == w))

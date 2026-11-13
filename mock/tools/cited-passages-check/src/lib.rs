@@ -10,8 +10,14 @@
 //! there. The passage is the one part of the block somebody can check without
 //! rereading the source, and a block whose passage is not in its cited lines is
 //! a reading nobody can trust. The first version of this was a perl script
-//! (`mock/research/202611131500_claim-the-rows/method/verify.pl`); this is the
-//! same check as a tool, so it is asked of any reader's output rather than copied.
+//! (`mock/research/202611131500_claim-the-rows/method/verify.pl`); this is that
+//! check as a tool, asked of any reader's output rather than copied. It is not
+//! the same function. The script read the first `evidence:` line of a block,
+//! widened the lines by 12 by default, cut each quoted run to 70 characters and
+//! took runs of 25 characters or more; this reads every evidence line, widens by
+//! none by default, looks for the whole of each segment and judges segments of
+//! [`MIN_JUDGEABLE`] characters or more. The two were not run on one input, as no
+//! reader output was committed beside the script's results.
 //!
 //! # The block shape it reads
 //!
@@ -116,11 +122,20 @@ impl Tool for CitedPassagesCheck {
             },
         };
         let root = ctx.args.get(1).map_or(ctx.repo_root, |r| Path::new(*r));
-        let margin = ctx
-            .args
-            .get(2)
-            .and_then(|m| m.parse().ok())
-            .unwrap_or(DEFAULT_MARGIN);
+        let margin = match ctx.args.get(2) {
+            None => DEFAULT_MARGIN,
+            Some(m) => {
+                match m.parse() {
+                    Ok(n) => n,
+                    Err(_) => {
+                        return ToolReport::inconclusive(format!(
+                            "the margin `{m}` is not a whole number of lines, so no line window \
+                         was chosen and nothing was checked."
+                        ));
+                    },
+                }
+            },
+        };
         let results = verify(
             &text,
             &|path| std::fs::read_to_string(root.join(path)).ok(),
@@ -148,6 +163,9 @@ pub struct BlockResult {
     pub nowhere:   usize,
     /// The folded text of each segment too short to judge.
     pub short:     Vec<String>,
+    /// Evidence lines left out of the check: not `path:lines`, or a file that
+    /// cannot be read. The block is judged on the lines that remain.
+    pub skipped:   usize,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -159,8 +177,10 @@ pub enum Verdict {
     Miss,
     /// Nothing long enough to judge.
     Unjudged,
-    /// No `evidence:` or no `passage:`.
+    /// No `evidence:`.
     NoEvidence,
+    /// Evidence, and no `passage:` to look for.
+    NoPassage,
     /// An `evidence:` that is not `path:lines`.
     NoParse,
     /// A cited file that cannot be read.
@@ -175,6 +195,7 @@ impl Verdict {
             Verdict::Miss => "MISS",
             Verdict::Unjudged => "UNJUDGED",
             Verdict::NoEvidence => "NOEVID",
+            Verdict::NoPassage => "NOPASS",
             Verdict::NoParse => "NOPARSE",
             Verdict::NoFile => "NOFILE",
         }
@@ -345,21 +366,25 @@ fn check_block(block: &str, read: &dyn Fn(&str) -> Option<String>, margin: usize
             elsewhere: 0,
             nowhere: 0,
             short: Vec::new(),
+            skipped: 0,
         }
-    };
-    let Some(passage) = passage_of(block) else {
-        return blank(Verdict::NoEvidence);
     };
     if evidence.is_empty() {
         return blank(Verdict::NoEvidence);
     }
+    let Some(passage) = passage_of(block) else {
+        return blank(Verdict::NoPassage);
+    };
+    let (mut unparsed, mut unread) = (0usize, 0usize);
     let mut cited = Vec::new();
     for e in &evidence {
         let Some((path, a, z)) = parse_evidence(e) else {
-            return blank(Verdict::NoParse);
+            unparsed += 1;
+            continue;
         };
         let Some(text) = read(&path) else {
-            return blank(Verdict::NoFile);
+            unread += 1;
+            continue;
         };
         let lines: Vec<&str> = text.lines().collect();
         let lo = a.saturating_sub(1 + margin);
@@ -372,6 +397,12 @@ fn check_block(block: &str, read: &dyn Fn(&str) -> Option<String>, margin: usize
         cited.push((fold(&window), fold(&text)));
     }
 
+    let skipped = unparsed + unread;
+    if cited.is_empty() {
+        let mut none = blank(if unread > 0 { Verdict::NoFile } else { Verdict::NoParse });
+        none.skipped = skipped;
+        return none;
+    }
     let (mut in_lines, mut elsewhere, mut nowhere) = (0, 0, 0);
     let mut short = Vec::new();
     for run in runs_of(&passage) {
@@ -405,6 +436,7 @@ fn check_block(block: &str, read: &dyn Fn(&str) -> Option<String>, margin: usize
         elsewhere,
         nowhere,
         short,
+        skipped,
     }
 }
 
@@ -412,7 +444,7 @@ fn report(results: &[BlockResult]) -> ToolReport {
     let mut s = String::new();
     for r in results {
         s.push_str(&format!(
-            "{:<8} {} {}  {}  in={} far={} miss={} short={}\n",
+            "{:<8} {} {}  {}  in={} far={} miss={} short={} skipped={}\n",
             r.verdict.label(),
             r.class.as_deref().unwrap_or("-"),
             r.slug,
@@ -420,7 +452,8 @@ fn report(results: &[BlockResult]) -> ToolReport {
             r.in_lines,
             r.elsewhere,
             r.nowhere,
-            r.short.len()
+            r.short.len(),
+            r.skipped
         ));
     }
     let with_short: Vec<&BlockResult> = results.iter().filter(|r| !r.short.is_empty()).collect();
@@ -437,13 +470,14 @@ fn report(results: &[BlockResult]) -> ToolReport {
     }
     let count = |v: Verdict| results.iter().filter(|r| r.verdict == v).count();
     s.push_str(&format!(
-        "\n{} block(s): ok={} far={} miss={} unjudged={} noevidence={} noparse={} nofile={}\n",
+        "\n{} block(s): ok={} far={} miss={} unjudged={} noevidence={} nopassage={} noparse={} nofile={}\n",
         results.len(),
         count(Verdict::Ok),
         count(Verdict::Far),
         count(Verdict::Miss),
         count(Verdict::Unjudged),
         count(Verdict::NoEvidence),
+        count(Verdict::NoPassage),
         count(Verdict::NoParse),
         count(Verdict::NoFile),
     ));

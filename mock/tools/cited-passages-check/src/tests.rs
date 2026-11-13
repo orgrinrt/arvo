@@ -160,11 +160,11 @@ fn a_passage_with_no_quotes_is_one_run() {
 // --- the blocks that cannot be checked at all ---
 
 #[test]
-fn a_block_with_no_evidence_or_no_passage_says_so() {
+fn a_block_with_no_evidence_or_no_passage_says_which() {
     let no_ev = "## proposal::a\nclass: x\npassage: \"some quoted run here that is long\"\n";
     let no_pass = "## proposal::b\nclass: x\nevidence: src.md:2\n";
     assert_eq!(verify(no_ev, &read, 0)[0].verdict, Verdict::NoEvidence);
-    assert_eq!(verify(no_pass, &read, 0)[0].verdict, Verdict::NoEvidence);
+    assert_eq!(verify(no_pass, &read, 0)[0].verdict, Verdict::NoPassage);
 }
 
 #[test]
@@ -227,4 +227,83 @@ fn a_passage_may_continue_over_lines_until_the_next_key() {
 fn a_toml_line_continuation_in_the_source_is_folded() {
     assert_eq!(fold("a long \\\n   sentence"), "a long sentence");
     assert_eq!(fold("> quoted\n> text"), "quoted text");
+}
+
+// --- an evidence line that cannot be used does not void the others ---
+
+#[test]
+fn an_unparseable_evidence_line_is_skipped_and_the_rest_are_checked() {
+    let b = "## proposal::a\nevidence: not-a-range\nevidence: src.md:2\n\
+             passage: \"asks the cancellation question at each admitted magnitude\"\n";
+    let r = verify(b, &read, 0).remove(0);
+    assert_eq!(r.verdict, Verdict::Ok, "{r:?}");
+    assert_eq!(r.skipped, 1);
+}
+
+#[test]
+fn an_unreadable_file_is_skipped_and_the_rest_are_checked() {
+    let b = "## proposal::a\nevidence: gone.md:1-2\nevidence: src.md:2\n\
+             passage: \"asks the cancellation question at each admitted magnitude\"\n";
+    let r = verify(b, &read, 0).remove(0);
+    assert_eq!(r.verdict, Verdict::Ok, "{r:?}");
+    assert_eq!(r.skipped, 1);
+}
+
+#[test]
+fn control_a_block_whose_every_evidence_line_is_unusable_says_which_way() {
+    let bad = "## proposal::a\nevidence: not-a-range\nevidence: also-not\n\
+               passage: \"some quoted run here that is long\"\n";
+    let r = verify(bad, &read, 0).remove(0);
+    assert_eq!((r.verdict, r.skipped), (Verdict::NoParse, 2));
+    let gone = "## proposal::a\nevidence: not-a-range\nevidence: gone.md:1-2\n\
+                passage: \"some quoted run here that is long\"\n";
+    let r = verify(gone, &read, 0).remove(0);
+    assert_eq!((r.verdict, r.skipped), (Verdict::NoFile, 2));
+}
+
+#[test]
+fn a_block_with_evidence_and_no_passage_is_not_called_evidence_less() {
+    let b = "## proposal::a\nclass: x\nevidence: src.md:2\n";
+    assert_eq!(verify(b, &read, 0)[0].verdict, Verdict::NoPassage);
+}
+
+/// A margin that does not parse must not become zero: a reader who typed
+/// `margin=12` would be checked in the cited lines alone and told so by nothing.
+#[test]
+fn control_a_margin_that_is_not_a_number_is_inconclusive() {
+    use std::collections::BTreeMap;
+
+    use mockspace::RegistryView;
+    use mockspace::tool::{Outcome, Tool, ToolContext};
+
+    let dir = std::env::temp_dir().join(format!("cited-passages-margin-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let out = dir.join("reader.md");
+    std::fs::write(
+        &out,
+        block("src.md:2", "\"some quoted run here that is long\""),
+    )
+    .unwrap();
+    let out_arg = out.to_string_lossy().to_string();
+    let root_arg = dir.to_string_lossy().to_string();
+    let view = RegistryView::new(BTreeMap::new(), BTreeMap::new());
+    let crates = Default::default();
+    let dirs: Vec<std::path::PathBuf> = Vec::new();
+    let args = [out_arg.as_str(), root_arg.as_str(), "twelve"];
+    let ctx = ToolContext {
+        mock_dir:   std::path::Path::new("."),
+        repo_root:  std::path::Path::new("."),
+        all_crates: &crates,
+        src_dirs:   &dirs,
+        args:       &args,
+        stdin:      None,
+        registry:   &view,
+    };
+    let rep = super::CitedPassagesCheck.run(&ctx);
+    std::fs::remove_dir_all(&dir).ok();
+    assert!(
+        matches!(rep.outcome, Outcome::Inconclusive { .. }),
+        "{:?}",
+        rep.outcome
+    );
 }
