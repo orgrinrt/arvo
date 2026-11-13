@@ -23,8 +23,8 @@ use arvo_format::points::Integer;
 use arvo_format::quantum::Magnitude;
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, Stochastic, TowardZero};
 use arvo_format::slots::{Slot, Slots};
-use arvo_format::standards::rounding_method::Nearest;
-use arvo_format::standards::{Fi, FractionLength, Ufi};
+use arvo_format::standards::matlab::rounding_method::Nearest;
+use arvo_format::standards::matlab::{Fi, FractionLength, Ufi};
 
 /// Pi as an exact rational, to fifteen places.
 ///
@@ -254,6 +254,39 @@ fn the_control_a_wrong_stored_integer_would_be_caught() {
         "the map returned the neighbour it should not have"
     );
     assert_ne!(got, Slot::at(24));
+}
+
+/// How many of the five published stored integers a mode misses.
+///
+/// The five arms above under one mode, counted rather than asserted, so a planted
+/// mode can be required to miss.
+macro_rules! published_misses {
+    ($mode:ty) => {{
+        let got = [
+            adapt::<Signature<Fi<16, 13>, Adapt<$mode, Wrap>>>(pi_at(13), Dither::UNUSED),
+            adapt::<Signature<Ufi<16, 14>, Adapt<$mode, Wrap>>>(pi_at(14), Dither::UNUSED),
+            adapt::<Signature<Fi<8, 5>, Adapt<$mode, Wrap>>>(pi_at(5), Dither::UNUSED),
+            adapt::<Signature<Ufi<8, 6>, Adapt<$mode, Wrap>>>(pi_at(6), Dither::UNUSED),
+            adapt::<Signature<Fi<8, 3>, Adapt<$mode, Wrap>>>(pi_at(3), Dither::UNUSED),
+        ];
+        let published = [25_736, 51_472, 101, 201, 25];
+        got.iter()
+            .zip(published)
+            .filter(|(g, p)| g.index() != *p)
+            .count()
+    }};
+}
+
+#[test]
+fn the_planted_directed_modes_miss_the_published_stored_integers() {
+    // The control on the five arms: both nearest modes hit all five, and each
+    // directed mode, planted in their place, misses at least one. Floor and Zero
+    // agree on these positive positions, so both miss the same arms.
+    assert_eq!(published_misses!(HalfUp), 0);
+    assert_eq!(published_misses!(HalfEven), 0);
+    assert_eq!(published_misses!(Floor), 3);
+    assert_eq!(published_misses!(TowardZero), 3);
+    assert_eq!(published_misses!(Ceil), 2);
 }
 
 // --- MATLAB's two nearest rules ------------------------------------------------

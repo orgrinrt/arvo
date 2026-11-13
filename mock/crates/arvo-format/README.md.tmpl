@@ -40,6 +40,13 @@ to handle at run time. Floating point formats are not yet admitted by any
 of them: the applied map has no magnitude coordinate to land a result at, and what wrapping means over
 a union of magnitude ranges is a canon question this crate does not answer.
 
+Two standards are written here as themselves, under `standards`. MATLAB's `fi` and `fimath` are a word
+length and a fraction length over the shipped modes and policies, and IEEE 754's binary16, binary32,
+binary64, decimal32 and decimal64 are one composition at each format's own precision and exponent
+range, with its rounding directions under their own names. Each has a parity suite against the
+standard's own answers. Neither is a mechanism of its own, both are aliases over what the rest of this
+crate already has, and SystemC, Vitis and Algorithmic C are left for later.
+
 There is no machine container anywhere in this crate and you cannot reach one from here. Every
 operation is a function of the width you declared, never of whatever the value happens to sit in, and
 the way that is kept true is that this crate does not depend on the crate that has containers in it.

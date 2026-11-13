@@ -8,7 +8,7 @@
 // `arvo-format` supplies about the ladder.
 
 use arvo_format::format::Format;
-use arvo_format::standards::Fi;
+use arvo_format::standards::matlab::Fi;
 
 fn main() {
     let _ = <Fi<65, 32> as Format>::PHASE;
