@@ -315,6 +315,12 @@ agree on all of them, so no arm over the shipped set could have said which of th
 one is repaired by finding a construction on which the two answers differ, and a design naming only
 the first failure would send a reader to the wrong repair.
 
+A sweep over formats or signatures is a list of calls, one per type, and each type's walk is kept out of
+line. Inlined, a few hundred small monomorphic walks become one function whose counters run as one
+chain through every loop, and the compiler's analysis of that chain recursed past its own stack in an
+optimised build of the suite. Kept out of line, every walk is its own function and the counters pass
+through memory, so a sweep can grow by any number of formats without the build depending on how many.
+
 ## The surface this design names
 
 The concept is closed and the inventory is open, so this table separates the two.
