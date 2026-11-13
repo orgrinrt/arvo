@@ -9,8 +9,11 @@ observable through the host's layout and through nothing the value declares.
 for the debug check, an axis of its own that defaults to the abort.
 `obligation::a_platform_sized_unsigned_integer_at_an_api_position` and
 `obligation::a_primitive_for_every_position_a_bare_number_would_take`, for the aliases.
+`ruling::a_datum_of_a_format_is_one_point_and_a_type_may_hold_one_at_sole_occupancy`, for a value type
+holding one datum at sole occupancy.
 `proposal::a_value_is_the_sole_occupancy_placement_of_a_declared_signature`, at one expert, which this
-crate builds on and does not promote.
+crate builds on and does not promote. Where it says more than that ruling, its slot and its one canonical
+encoding, this crate takes the same choice as its own, under `question::what_a_datum_stands_for`.
 
 ## What this crate is
 
@@ -91,6 +94,15 @@ every place `S: Sole` holds. So `Num<S>` is well formed in any code generic over
 consumer that tries `S::Repr`, a projection on `Sole`, or the map by its path is refused at build. The
 container is the placement's public answer, and the carrier's size stays observable through the host's
 layout and nothing the value declares.
+
+What the value stores, and how, is this crate's choice under a question still open.
+`ruling::a_datum_of_a_format_is_one_point_and_a_type_may_hold_one_at_sole_occupancy` settles that the
+value holds one point of the format's domain; it does not settle that what is stored is the member's
+slot, that one member has one encoding, or that the container a width takes is fixed once a release
+has shipped. Those three stay open under `question::what_a_datum_stands_for`, and this crate takes
+them as its own: it stores the slot, keeps one bit pattern per member so equality is the carrier's, and
+reads its container from the placement, whose layout a consumer can observe and so can come to rely on.
+A later ruling that answers otherwise changes this section and the code beneath it.
 
 A `const fn` cannot call a trait method on the carrier. So each operation is written once: it moves the
 bits to the machine integer of the same size, signed exactly where the slot family is, calls that rung's
@@ -185,7 +197,7 @@ width's own encoding and every host value is a member: both are bit copies, and 
 `Bool`.
 
 `eq` returns `Bool`, and two values are equal exactly when their slots are, because the carrier is
-canonical: one member, one bit pattern. `cmp` returns `core::cmp::Ordering`; `lt`, `le`, `gt` and `ge`
+canonical, one member to one bit pattern, which is the choice `## How the value holds its carrier` names. `cmp` returns `core::cmp::Ordering`; `lt`, `le`, `gt` and `ge`
 return `Bool`; `min` and `max` return the value. At a zero phase and a constant quantum the map from slot
 to member is monotone, and the rung the dispatch takes is signed exactly where the slot family is, so the
 rung's order is the members' order and these read the carrier through it.
@@ -309,6 +321,17 @@ both. A test builds and runs it, and it asserts what it reads.
 The disassembly of `add` at 13 bits in 16 and at 64 bits beside the host's `wrapping_add` is committed as
 an ad hoc reading, and called that: the bench harness cannot yet commit the disassembly of a named
 function.
+
+## The old families this is the base for
+
+The arvo hilavitkutin pins, at `1b2796e9`, held much more than this tree does, and all of it is to come
+back on the current fundamentals. This crate is the base for the families that hold a number: the
+facade's integer, fixed-point and float numerals, the platform-sized and count types of the old storage
+crate, the numeric contracts (absolute value, reciprocal, square root, total order, the sign
+predicates), widening and narrowing, and above those the capacity and tensor types, hashing, the
+sparse and spectral numerics, the graph and the cost dynamic program. Only the integer points are
+here. None of the rest is back yet, and each returns as its own round, at the same strictness: `no_std`,
+no allocation, everything in types and contracts, and a cargo feature only where it is purely opt in.
 
 ## What is not here
 
