@@ -6,7 +6,7 @@
 //! The counts the canon records, reproduced, and shown not to move with the
 //! fraction width or the radix.
 
-use super::super::Table;
+use super::super::sums;
 use super::{Sat, Wr};
 use crate::addition::addition_is_associative;
 use crate::ambient::{BinaryRationals, DecimalRationals};
@@ -20,18 +20,12 @@ use crate::tests::grid::Grid;
 
 #[test]
 fn the_counts_the_canon_records_are_reproduced() {
+    assert_eq!(sums::<Sat<Integer<4>>>(Dither::UNUSED).divergent(), 952);
+    assert_eq!(sums::<Wr<Integer<4>>>(Dither::UNUSED).divergent(), 0);
+    assert_eq!(sums::<Sat<UFixed<4, 0>>>(Dither::UNUSED).divergent(), 0);
+    assert_eq!(sums::<Wr<UFixed<4, 0>>>(Dither::UNUSED).divergent(), 0);
     assert_eq!(
-        Table::of::<Sat<Integer<4>>>(Dither::UNUSED).divergent(),
-        952
-    );
-    assert_eq!(Table::of::<Wr<Integer<4>>>(Dither::UNUSED).divergent(), 0);
-    assert_eq!(
-        Table::of::<Sat<UFixed<4, 0>>>(Dither::UNUSED).divergent(),
-        0
-    );
-    assert_eq!(Table::of::<Wr<UFixed<4, 0>>>(Dither::UNUSED).divergent(), 0);
-    assert_eq!(
-        Table::of::<Sat<Integer<8>>>(Dither::UNUSED).divergent(),
+        sums::<Sat<Integer<8>>>(Dither::UNUSED).divergent(),
         4_177_792
     );
 
@@ -61,7 +55,7 @@ impl AtEveryScale {
 
 impl PerFormat for AtEveryScale {
     fn run<F: Format>(&mut self) {
-        self.counts[self.formats] = Table::of::<Sat<F>>(Dither::UNUSED).divergent();
+        self.counts[self.formats] = sums::<Sat<F>>(Dither::UNUSED).divergent();
         self.verdicts[self.formats] = addition_is_associative::<Sat<F>>().get();
         self.formats += 1;
     }

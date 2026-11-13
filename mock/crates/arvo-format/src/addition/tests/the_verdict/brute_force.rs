@@ -12,7 +12,7 @@
 //! some cells that turn out associative anyway, and that count is pinned so a
 //! change to it is seen rather than absorbed.
 
-use super::super::{DITHERS, Table, Window, phases, signatures};
+use super::super::{DITHERS, Window, phases, signatures, sums};
 use crate::adapt::DeclaredSignature;
 use crate::ambient::BinaryRationals;
 use crate::format::Format;
@@ -33,7 +33,7 @@ impl PerSignature for Cell {
 
     fn run<S: DeclaredSignature>(&self) -> (bool, bool) {
         let licensed = crate::addition::addition_is_associative::<S>().get();
-        let associative = DITHERS.iter().all(|&d| Table::of::<S>(d).divergent() == 0);
+        let associative = DITHERS.iter().all(|&d| sums::<S>(d).divergent() == 0);
         (licensed, associative)
     }
 }

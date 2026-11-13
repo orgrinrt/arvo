@@ -30,6 +30,8 @@
 
 pub(crate) mod dispatch;
 pub(crate) mod grid;
+pub(crate) mod ratio;
+pub(crate) mod table;
 
 mod obligations;
 mod the_adaptation;

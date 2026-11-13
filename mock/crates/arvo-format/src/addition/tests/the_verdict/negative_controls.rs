@@ -6,7 +6,7 @@
 //! Two narrower rules, each disagreeing with brute force where this verdict
 //! does not.
 
-use super::super::{Table, Window};
+use super::super::{Window, sums};
 use super::Sat;
 use crate::addition::addition_is_associative;
 use crate::ambient::BinaryRationals;
@@ -29,12 +29,12 @@ fn a_rule_keyed_on_signedness_disagrees_with_brute_force_where_the_verdict_does_
     // A signed range whose sums leave it on one side only, and whose stored
     // operands never point back up: associative, and the rule says it is not.
     type F = Grid<BinaryRationals, Constant<0>, Window<-4, 0>, 0, 1>;
-    assert_eq!(Table::of::<Sat<F>>(Dither::UNUSED).divergent(), 0);
+    assert_eq!(sums::<Sat<F>>(Dither::UNUSED).divergent(), 0);
     assert!(addition_is_associative::<Sat<F>>().get());
     assert!(!the_signedness_rule::<F>());
     // The control: where the rule is right it agrees, so the disagreement above
     // is about the range and not about the rule never answering yes.
-    assert!(Table::of::<Sat<Integer<4>>>(Dither::UNUSED).divergent() > 0);
+    assert!(sums::<Sat<Integer<4>>>(Dither::UNUSED).divergent() > 0);
     assert!(!the_signedness_rule::<Integer<4>>());
     assert!(the_signedness_rule::<UFixed<4, 0>>());
 }
@@ -42,7 +42,7 @@ fn a_rule_keyed_on_signedness_disagrees_with_brute_force_where_the_verdict_does_
 #[test]
 fn quantifying_over_the_ambient_domain_refuses_a_format_that_is_associative() {
     type S = Sat<UFixed<4, 0>>;
-    assert_eq!(Table::of::<S>(Dither::UNUSED).divergent(), 0);
+    assert_eq!(sums::<S>(Dither::UNUSED).divergent(), 0);
     assert!(addition_is_associative::<S>().get());
     // The same positions, with every translation the coordinate carries rather
     // than the stored operands: a negative translation points back into the
