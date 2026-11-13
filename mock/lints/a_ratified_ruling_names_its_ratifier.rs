@@ -53,8 +53,7 @@ impl RepoLint for ARatifiedRulingNamesItsRatifier {
             .iter()
             .filter(|q| text(ctx.registry(), q, "rung") == Some(RATIFIED))
             .filter(|q| {
-                text(ctx.registry(), q, "ratified_by")
-                    .is_none_or(|by| by.trim().is_empty())
+                text(ctx.registry(), q, "ratified_by").is_none_or(|by| by.trim().is_empty())
             })
             .map(|q| {
                 finding(
@@ -108,10 +107,7 @@ mod tests {
     #[test]
     fn a_ratifier_present_and_blank_names_nobody() {
         for blank in ["", " ", "\n"] {
-            let f = found(&[("ruling::r", &[
-                ("rung", "ratified"),
-                ("ratified_by", blank),
-            ])]);
+            let f = found(&[("ruling::r", &[("rung", "ratified"), ("ratified_by", blank)])]);
             assert_eq!(f.len(), 1, "{blank:?} passed as a ratifier: {f:?}");
         }
     }
@@ -121,10 +117,7 @@ mod tests {
         // An arm keyed on one value would report the rows the experts
         // promoted, which are ratified by a route of their own.
         for by in ["op", "experts", "both"] {
-            let f = found(&[("ruling::r", &[
-                ("rung", "ratified"),
-                ("ratified_by", by),
-            ])]);
+            let f = found(&[("ruling::r", &[("rung", "ratified"), ("ratified_by", by)])]);
             assert!(f.is_empty(), "{by:?} was not read as a ratifier: {f:?}");
         }
     }
@@ -150,10 +143,7 @@ mod tests {
     fn a_ratifier_on_a_row_at_another_tier_is_left_alone() {
         // The schema's word for it is meaningless, and this lint holds the
         // required half only.
-        let f = found(&[("ruling::r", &[
-            ("rung", "stated"),
-            ("ratified_by", "op"),
-        ])]);
+        let f = found(&[("ruling::r", &[("rung", "stated"), ("ratified_by", "op")])]);
         assert!(f.is_empty(), "{f:?}");
     }
 
