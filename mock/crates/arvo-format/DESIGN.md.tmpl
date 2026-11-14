@@ -1372,6 +1372,13 @@ written once, over anything that says whether a position overflows and what it r
 declared signature and the ties-away alias land through the same search.
 `mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is where it was first shown.
 
+The search lands every value below the finest step, however far below. There the floor is 0 or -1, and
+an undithered adaptation reads the remainder only against zero and against a half. Where the scaled
+denominator fits the host's unsigned 128-bit integer the remainder is exact; past it the value is under
+half a step, since twice the numerator is below `2^128`, and the search hands a remainder in the same
+open interval, which keeps both comparisons. So binary64 at `2^-1400` lands on the smallest subnormal
+toward positive and on zero under ties to even, as the standard answers.
+
 ### What IEEE 754 meets that this crate does not carry
 
 Four holes, each a test and each a ticket the source names where the hole is.
@@ -1405,7 +1412,17 @@ neither, so the digit rule is its whole expected side, at radix ten and under al
 the digits past the precision or below the smallest exponent, round the dropped part by the direction's
 rule, and carry. The rule is written once over any radix, and each format's precision and exponent
 range are written into it as the standard's numbers. None of it reads arvo code; a separate arm pins
-the format's own exponent range to those numbers.
+the format's own exponent range to those numbers. The rule reads a dropped unit in the host's unsigned
+128-bit integer, so a significand of `2^126` or more with two to the 127th dropped is read as the half it
+is, and past that integer the dropped part is under half the unit.
+
+The inputs reach from four hundred exponents below the smallest subnormal to past the largest finite
+member: a far value, the significand bound, the first unit past the slot index and one past that, the
+tie at half that unit where the index holds it, and a sweep through the region. Binary16 and decimal
+take them through the shared inputs. Below the smallest subnormal binary32 and binary64 read the digit
+rule rather than the host, in a suite of their own, since the host's conversion of an integer scaled
+that far down is two roundings; it pins binary64 at `2^-1400` and decimal64 at `10^-480`, and a wrong
+direction there misses.
 
 The fimath sweep runs at every word length from one to sixty-four, signed and unsigned, and beside
 those at several fraction lengths, positive, zero and negative, with the range and the wrap computed
