@@ -3,7 +3,7 @@ name = "arvo-digest"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "A digest of explicit bytes at a width the type names: FNV-1a, XXH3, and one switched at a measured length"
+description = "A digest of explicit bytes at a width the type names: FNV-1a and XXH3, not cryptographic"
 readme = "README.md.tmpl"
 
 [dependencies]

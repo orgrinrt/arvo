@@ -3017,6 +3017,9 @@ variants = [
     "../target/release/bench_satfold_seq",
 ]
 
+# FIXME(arvo_format_admits_the_wrapping_product_over_the_unsigned_64): the
+# `digest-fnv1a64` arm builds once `Fnv1a<64>` joins arvo-digest, and this bench
+# runs then; until then it does not build.
 [bench.digest-crossover]
 title = "arvo-digest: FNV-1a against XXH3 (runtime and const paths) over input length, slice length opaque to the optimiser"
 workload = "default"

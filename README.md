@@ -22,7 +22,7 @@ On top of that the industrial conventions people already write against get named
 
 That's still the bottom of the stack rather than a usable numeric library. There is one number to hold, with the ring operations, a quotient, a conversion and comparison on it, no remainder yet, no product over the full unsigned 64 bits yet, and no float. `UFixed` and the other points name a format and hold no value, `Num` is what holds one, and the layers above these are being designed and written as the design settles under them. The old arvo had a lot more in it, and all of that is coming back on top of these.
 
-I'd caution against depending on this for anything serious just yet. The api hasn't settled, and neither has the shape above these five: which crates there end up being and which layer owns what are still open, and answering them is the work in progress. If you do want to follow along, the `dev` branch is where things land as they get tested and stable, so a git dep pointed at it will get you the real thing sooner than waiting for a release will.
+I'd caution against depending on this for anything serious just yet. The api hasn't settled, and neither has the shape above these six: which crates there end up being and which layer owns what are still open, and answering them is the work in progress. If you do want to follow along, the `dev` branch is where things land as they get tested and stable, so a git dep pointed at it will get you the real thing sooner than waiting for a release will.
 
 ## What has settled
 

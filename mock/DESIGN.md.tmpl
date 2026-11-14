@@ -48,7 +48,7 @@ wrapping product FNV-1a multiplies by.
 | `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
 | `arvo-numeral` | The value. `Num<S>` holds one member of a declared signature alone in the carrier `arvo-placement` derives at sole occupancy, and its sum, computed in that carrier, gives the slot the format's own sum gives. Comparison, the doors in and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and `ISize`. A debug check the consumer chooses, aborting a debug build by default when a result leaves the range. | `arvo-format`, `arvo-placement` |
 | `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, and `Bytes`, the host's byte slice walked one `Bits<8>` at a time. Masked construction and masked cast between declared widths, xor at one width, a 128-bit host value split into two halves, no arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | `notko` |
-| `arvo-digest` | A digest of explicit bytes, `Digest<const BITS: u16>` at 32, 64 and 128 bits. FNV-1a at 32 bits and XXH3 at 64 and 128 by name, each with a `const fn` form equal to its runtime one; FNV-1a at 64 bits and a switched digest join once the 64-bit wrapping product is admitted. Narrows into `Bits<N>` at the width a consumer names. Not cryptographic. | `arvo-numeral`, `arvo-bits`, `xxhash-rust` |
+| `arvo-digest` | A digest of explicit bytes, `Digest<const BITS: u16>` at 32, 64 and 128 bits. FNV-1a at 32 bits and XXH3 at 64 and 128 by name, each with a `const fn` form equal to its runtime one; FNV-1a at 64 bits and a switched digest join once the 64-bit wrapping product is admitted. Narrows into `Bits<N>` at the width a consumer names. Not cryptographic. | `arvo-format`, `arvo-numeral`, `arvo-bits`, `notko`, `xxhash-rust` |
 
 The set is open at both ends it can be. A new numeral joins by implementing
 `Format`, a new overflow policy by implementing `Overflow`, and a new strategy by
@@ -100,8 +100,9 @@ than above or below it, because the value it holds and the format that would
 describe a numeral's representable set are answers to different questions, and
 a consumer of one should not be made to compile the other. `arvo-digest`
 depends on `arvo-bits` for the bytes it reads, the container its result is held
-in and the width a consumer narrows it to, and on `arvo-numeral` for the
-wrapping product, so it writes neither the walk's door nor its arithmetic. There is no facade today, and a
+in and the width a consumer narrows it to, on `arvo-numeral` for the
+wrapping product and on `arvo-format` for the adaptation that product is taken
+under, so it writes neither the walk's door nor its arithmetic. There is no facade today, and a
 crate that re-exported the six would sit below all of them rather than above.
 
 ## Consumers
@@ -122,7 +123,7 @@ negation, product, quotient, conversion and comparison, and nothing yet of a
 remainder. `arvo-bits` is new source written from the current canon,
 not a restoration of anything removed, and it answers one piece of what those
 removed crates used to answer, an exact-width container, rather than the rest
-of it. Hashing is `arvo-digest`'s, written from op's answer of 13 November 2026
+of it. Hashing is `arvo-digest`'s, new source
 rather than restored from the removed hash crate, and string identity is not
 shipped here.
 

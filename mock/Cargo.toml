@@ -71,9 +71,11 @@ arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }
 arvo-numeral = { path = "crates/arvo-numeral", version = "0.0.0" }
 arvo-digest = { path = "crates/arvo-digest", version = "0.0.0" }
-# XXH3 for `arvo-digest`, op's choice of 13 November 2026 over twox-hash and a
-# hand-written XXH3: `const fn` paths and SIMD chosen by `cfg(target_feature)`,
-# so nothing is detected at run time. BSL-1.0, allowed in `deny.toml` for it.
+# XXH3 for `arvo-digest`, op's choice of 13 November 2026, with an XXH3 on arvo
+# and notko types benched against it as the follow-up (ticket
+# `bench_an_arvo_and_notko_native_xxh3_against_xxhash_rust_and`): `const fn`
+# paths and SIMD chosen by `cfg(target_feature)`, so nothing is detected at run
+# time. BSL-1.0, allowed in `deny.toml` for it.
 xxhash-rust = { version = "0.8.19", default-features = false, features = ["xxh3", "const_xxh3"] }
 
 # Incremental compilation is off here, deliberately.
