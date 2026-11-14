@@ -77,7 +77,7 @@ Test gate: the full suite is green (`cargo test -p arvo-format --no-fail-fast`, 
 
 The IEEE round and the carried rounds could land on their own. Round `127` needs a new round: the fix in finding 1, the sweep in finding 3, a corrected design sentence and commit text, and then a re-review of that round only.
 
-My spike tests (the `TowardZero`, `HalfEven` and `BottomOf200` cases) are in a scratch copy of the tree, not in the repo: `/tmp/claude-0/-home-user/7c35e2ad-fb65-5898-963d-96f2bad980fd/scratchpad/rb/mock/crates/arvo-format/src/multiplication/tests/spike_wrap.rs`. By the evidence rule they count only once the fixer commits them as the failing tests that come first. The inputs and expected values above are enough to rewrite them.
+My spike tests (the `TowardZero`, `HalfEven` and `BottomOf200` cases) are in a scratch copy of the tree, not in the repo [its path is left out of this record; the cases are committed in round `202611140209`]. By the evidence rule they count only once the fixer commits them as the failing tests that come first. The inputs and expected values above are enough to rewrite them.
 
 What I could not check: release-mode behaviour (finding 2 is arithmetic, not a run), and anything in the carried rounds or the new lints beyond a passing read.
 
