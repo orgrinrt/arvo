@@ -1422,8 +1422,9 @@ which the rule refuses since no input is one.
 The inputs reach from three hundred exponents below the smallest subnormal to past the largest finite
 member: a far value, the significand bound, the first unit past the slot index and one past that, the
 tie at half that unit where the index holds it, and a sweep from twenty-one exponents below the
-smallest subnormal down to one past that first unit; below that the search hands one stand-in, which the
-far points already reach. Binary16 and decimal take them through the shared inputs. Below the smallest
+smallest subnormal down to the lowest exponent whose unit the unsigned 128-bit integer holds, which is the
+first unit past the index at radix two and one above it at radix ten. Below that the search hands one
+stand-in, which the far points reach and no draw does. Binary16 and decimal take them through the shared inputs. Below the smallest
 subnormal binary32 and binary64 read the digit rule rather than the host, in a suite of their own, since
 the host's conversion of an integer scaled that far down is two roundings; it pins binary64 at
 `2^-1400` and decimal64 at `10^-480`, and a wrong direction there misses.
@@ -2027,10 +2028,12 @@ names a position with no policy and keeps it.
 That last condition is where the 64-bit ranges part. The signed 64-bit range's largest position at
 exponent zero is `(-2^63)^2 = 2^126`, which the index holds, so `Integer<64>` is admitted. The unsigned
 range's top corner is `(2^64 - 1)^2`, just under `2^128`, so `UFixed<64, k>` is not yet admitted for
-any `k` at or above zero under saturation or clamping. Under wrapping it is admitted at every `k`, and at
-`k = 0` the corner wraps to 1, as the host's wrapping product on 64 unsigned bits does. At `k = -1` the same corner halves to under `2^127` and rounds up by at most
-one slot, which the index holds, so `UFixed<64, k>` is admitted for every `k` at or below `-1`, and
-`UFixed<63, k>` up to `k = 1`. A double-width exact sum at width 64, two signed 64-bit products added
+any `k` at or above zero under saturation or clamping. Under wrapping it is admitted from `k = 0` to
+`k = 128`, and at `k = 0` the corner wraps to 1, as the host's wrapping product on 64 unsigned bits does.
+At `k = 129` the corner itself, `(2^64 - 1)^2 2^129`, passes `2^256`, so the step is not formed under any
+policy. At `k = -1` the same corner halves to under `2^127` and rounds up by at most one slot, which the
+index holds, so `UFixed<64, k>` is admitted from `k = -255` to `k = -1`, and `UFixed<63, k>` from
+`k = -255` to `k = 1`; below `-255`, `D = 2^-k` passes `2^256 - 1`. A double-width exact sum at width 64, two signed 64-bit products added
 before either is adapted, reaches `2^127`, one past the index's top. Nothing here forms that sum,
 because each product is adapted before the next operation reads it.
 
@@ -2055,10 +2058,13 @@ range at exponent zero, and on that range the saturating and the clamping produc
 wrapping one admitted. The wrapping product on the unsigned 64-bit range at exponent zero and at a
 positive exponent, its top corner and the pairs near both ends against the host's wrapping product on 64
 unsigned bits. The wrapping product past the index under all six modes, at a nonzero phase, on signed
-and unsigned ranges, on ranges at both ends of the index and on an odd and an even count, the pairs at
+and unsigned ranges, on ranges at both ends of the index and on an odd and an even count, crossed so that past
+the index each sign of the floor meets a remainder below, at and above a half, a negative tie on an odd
+count among them, with a count of the pairs in each of those cells asserted rather than claimed; the pairs at
 and beside the corners against a reference that forms the position from the two values in a wide
 integer, rounds it by the mode's own rule and wraps it, reading no step code; and `is_multipliable_under`
-agreeing with what `mul` admits on both sides of its boundary.
+agreeing with what `mul` admits on both sides of its boundary, at `UFixed<64, 128>` and `UFixed<64, 129>`
+under wrapping, and at `UFixed<64, -255>` and `UFixed<64, -256>` under every policy.
 
 Every member pair at widths one to eight against the applied map's oracle fed the exact rational
 position, every mode and shipped policy, at positive and negative exponents over signed and unsigned
