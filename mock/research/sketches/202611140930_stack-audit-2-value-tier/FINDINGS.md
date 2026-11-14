@@ -144,6 +144,27 @@ step twice. `Abort` is the default check (`mock/crates/arvo-numeral/src/num.rs:5
 
 This is with the optimiser on. A plain debug build was not run and will be slower still.
 
+## Five, added in the audit's second pass: the two doors compose into a verdict
+
+The audit's second pass claimed that a consumer can ask whether a host integer names a member with
+the public surface alone, as `Num::from_index(h).index::<H>() == h` under the `Quiet` check. Three
+arms were added to test it and the binary run again in two profiles
+(`outputs/run-release-no-lto-pass-two.txt`, `outputs/run-fat-lto-pass-two.txt`). Both round trips
+are asserted equal to the hand range test on the whole input, which holds members and non-members.
+
+| Arm | no LTO | fat LTO |
+|---|---|---|
+| verdict, round trip, saturating | 1.683 ns | 0.074 ns |
+| verdict, round trip, wrapping | 1.344 ns | 0.095 ns |
+| verdict, hand range test | 0.052 ns | 0.108 ns |
+
+So the composition is exact under both policies, is the hand test under fat LTO, and carries the
+door's call without it, 26 to 32 times the hand test.
+
+The second run's other rows repeat the first within the noise stated above, with one thing to note:
+`from_index` without LTO read 1.39 ns here against 2.28 in the first committed run, so the door's
+gap to the hand arm is 27 to 45 times across the two runs, and the audit quotes that range.
+
 ## What none of this establishes
 
 Anything on aarch64. Any ordering finer than the gaps named. What the fixed-point arms cost when

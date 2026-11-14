@@ -79,44 +79,62 @@ Inside a program this is right and is built right. Every operation is total, an 
 construction is a failed constant at the consumer's line, and the debug abort is a type parameter
 that asks a verdict outside the total operation (`DESIGN.md.tmpl:198-236` of the numeral crate).
 
-At the edge it has moved the wrong way since 13 November, and this is the one place where I find a
-row working against a stated goal. The first audit said the pattern for untrusted input is "ask the
-verdict, then build the value", and that the verdict for a host integer was missing. The verdict now
-exists: `holds_index` says whether a host integer names a member, at 64 bits, as cheaply as it can
-be said (`host.rs:130-140`). It is private, on purpose. The design says "no function says whether a
+At the edge, the first pass of this audit said the design had moved the wrong way and that a stated
+row worked against a stated goal. The second pass takes most of that back; what follows is the
+corrected reading.
+
+The first audit said the pattern for untrusted input is "ask the verdict, then build the value",
+and that the verdict for a host integer was missing. A direct verdict now exists, `holds_index`, at
+64 bits and as cheap as it can be said (`host.rs:127-140`). It is private, on purpose. The design
+says "no function says whether a
 host integer names a member: that would be a membership verdict on a datum from outside, which
 `ruling::the_ingest_door_waits_on_a_known_use` leaves unblessed until a use for it is known"
 (`DESIGN.md.tmpl:267-270`).
 
-The known use arrived the same day. Asked whether arvo serves generic applications and server
-daemons, op answered "Yes, general numerics too" (op-answers-26, 13 November, about 15:30) and,
-asked again, "I've answered already" (op-answers-36). A daemon that reads a length from a socket, an
-application that parses a quantity, a save file kaski loads: each holds a host integer it does not
-trust and must decide what to do before it becomes a value. With no public verdict the consumer has
-three choices. It can call `from_index` and accept silent completion, which for untrusted input is
-the bug. It can call it under `Abort`, which aborts a debug build and completes silently in release.
-Or it can write the range test itself on the bare host integer, in the vocabulary the stack exists
-to remove, restating a bound the type already knows.
+Read alone, that sentence says arvo has nothing for input. It has, by composing the two public
+doors. `from_index` completes by the declared policy and `index` gives the index back and never
+truncates (`host.rs:88`, `:147`), so `Num::from_index(h).index::<H>() == h` is true exactly when
+`h` names a member, under either policy, wherever `H` holds the range. The value must name the `Quiet` check, since under `Abort`
+a debug build aborts first (`host.rs:89-96`). A second public route is the format's `contains` on a
+slot (`mock/crates/arvo-format/src/format.rs:160`). Neither restates a bound the type knows, and
+arvo checks nothing: the consumer asks and branches. The second pass added the round trip to the
+ad-hoc spike to test this: it agrees with a hand range test on every input under both policies, it
+times the same as the hand test under fat link-time optimisation, and in a default release build
+it carries the door's call, 26 to 32 times the hand test.
 
-The row is at rung stated and is not ratified, so this is not a finding against op's word. It is a
-finding that a stated row and op's later answer on scope now pull against each other, with the
-evidence above. Publishing the verdict does not breach the ratified row either: arvo checks nothing
-at run time, the consumer asks a question and branches, which is what
+So op's doubt in the row's own quote, "I am not sure it's actually ever needed if the typestate
+works as intended and designed" (`ruling.toml:1998`), is borne out for ingest further than my first
+pass allowed. A daemon that reads a length from a socket, an application that parses a quantity, a
+save file kaski loads: each can reject in arvo's vocabulary today. What is wrong is smaller and
+still real. The pattern is written nowhere, the one sentence an author finds says no function gives
+the verdict, and op has since confirmed the consumers who will look for it: "Yes, general numerics
+too" (op-answers-26, 13 November), "I've answered already" (op-answers-36).
+
+That the consumer asks and branches is also what
 `ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` (`ruling.toml:1019`) describes.
 
-The same shape sits one step further in. A value cannot be divided by a value, because a divisor
-must be non-zero by type and the format has no door from a slot of a range that holds the zero
-(`DESIGN.md.tmpl:330-335`; the ticket `may_arvo_divide_by_a_signed_divisor_read_at_run_time_of_eith`
-at `mock/crates/arvo-format/src/division.rs:121`). The typestate answer is correct as far as it
-goes. A simulation divides by run-time values constantly, and op's answer for kaski's division by
-zero was "Explicit per call" (op-answers-6). The door from a value to a divisor is again a verdict
-the consumer asks, and it waits on the same row.
+The divisor is one step further in, and there the row does bite. A value cannot be divided by a
+value today (`DESIGN.md.tmpl:330-335`). The design says the membership type for the non-zero slots
+"is the format's to ship, and the value takes it when it lands". It landed two commits before the
+value's operations did: `Member<G>` with `Member::adapted`, total by the applied map, and
+`Divisor::member` from a member of a range that leaves the zero out
+(`mock/crates/arvo-format/src/member.rs:99-114`, `division.rs:172-188`, commit `b687fc01`). That is
+a typestate answer to division by zero with no verdict in it: the run-time slot is completed into a
+zero-free range by a declared policy, so what a zero divisor becomes is written in the type. It is
+op's "Explicit per call" (op-answers-6) to the letter, and it is good. The value does not take it
+yet, so the design's sentence is stale by a day, and through `adapted` it would pay the wide step.
 
-Mark: easy to get wrong but can be right, and at present leaning wrong. Right requires three things:
-the row read against op-answers-26 and the verdict on a host integer made public; a door from a
-value to a divisor on the same pattern; and one paragraph in the numeral design that states the
-pattern for untrusted input by name, so that "never a run-time check" stops reading as "arvo has
-nothing for input".
+A zero-free range lies on one side of zero, so a divisor of either sign has no door at all, and the
+source asks the question itself: "Whether signed division is the known use the runtime membership
+door waits on is the open question" (the ticket at `division.rs:121-125`). kaski's carrier is signed
+and divides by run-time values (`DOWNSTREAM.md`). So a known use is on record in the tree's own
+words, for the one case typestate does not reach, and it has not been put to op.
+
+Mark: easy to get wrong but can be right. Right requires: one paragraph in the numeral design naming
+the pattern for untrusted input (the round trip, or the private verdict published if the round trip
+is not a compare in a default build); the value taking the member divisor on carrier arithmetic;
+and the signed run-time divisor put to op as the known use the row waits on. Wrong looks like
+"never a run-time check" continuing to read as "arvo has nothing for input".
 
 ### Arms over regions, selected by a const predicate
 
@@ -137,8 +155,9 @@ the mechanism the concept rests on is shown working in shipped code, on x86, wit
 
 The same arm shows the hazard the concept has not yet priced. The two sides of that one predicate
 differ by more than two orders of magnitude in the ad-hoc spike: an integer product is the host's,
-0.23 ns, and a fixed-point product, which by hand is 1.1 ns, is about 350 ns. Nothing in the type, the documentation of the alias or the build tells a consumer which side
-an instantiation took. `Fix<32, -16, _>` is offered as "what a consumer with a deterministic lane
+0.23 ns, and a fixed-point product, which by hand is 1.1 ns, is about 350 ns. The numeral design
+says the second arm is slow (`DESIGN.md.tmpl:312-317`). Nothing a consumer meets at the call site
+does: not the type, not the alias's documentation (`alias.rs` has no word on it), not the build. `Fix<32, -16, _>` is offered as "what a consumer with a deterministic lane
 writes" (`DESIGN.md.tmpl:471`) and lands on the slow side with no signal. A design made of many
 small implementations selected silently needs, as part of the design, a way for the consumer to see
 which implementation it got and what that one costs. The registry has the measurement side of this
@@ -251,10 +270,10 @@ findings in turn:
    the slot index, take and give any of ten host integers, never name the carrier, and compute at 64
    bits with the format's exact step off the path (`host.rs:1-11`, `:88-125`, `:147-174`). Under
    fat link-time optimisation `from_index` is the hand clamp or mask in the ad-hoc spike. Without
-   it, it is 35 to 45 times the hand loop, for one reason: `signed` and `unsigned` at
+   it, it is 27 to 45 times the hand loop across two runs, for one reason: `signed` and `unsigned` at
    `host.rs:49-63` are private, not generic and carry no `#[inline]`, so a consumer's loop calls
    into the numeral crate once per element. The assembly is committed with the spike. Two
-   attributes close it, and the gap is known in general: the lint that enforces inlining covers
+   attributes should close it (not tried, since this audit changes no crate), and the gap is known in general: the lint that enforces inlining covers
    `arvo-format` alone and carries a ticket for the other four crates.
 2. `Hash` still hashes the 128-bit slot index (`num.rs:435-439`). Holds, unchanged.
 3. No operator trait and no ordering trait. Holds, and the design now states it at more length
@@ -302,16 +321,21 @@ First, it is the operation the one known consumer is waiting for.
 `obligation::a_deterministic_fixed_point_lane_with_declared_rounding` (`obligation.toml:209`) is
 kaski's row, and the product is the centre of it.
 
-Second, the reason the design gives for not writing the fast arm is at odds with the crate's own
-contract. The reason: "The rounding has one home, the format's applied map, and a second one
+Second, the reason the design gives for not writing the fast arm does not hold up against the
+crate's own contract. The reason: "The rounding has one home, the format's applied map, and a second one
 written here to be quick would be a second arithmetic kept equal to the first by tests alone"
 (`DESIGN.md.tmpl:309-310`). The contract, 260 lines earlier: "The carrier arithmetic is the
 mechanism that meets that equality fast, and it is free to be anything that does"
 (`DESIGN.md.tmpl:52-53`). The sum, the difference, the negation and the integer product are each
 already a second arithmetic kept equal to the first by exhaustive tests and planted mutants, and
-that is the crate's best idea. The rounding of a binary fixed-point product is no different in
-kind: a widening multiply, a shift and a test of the remainder bits, checkable against the oracle
-exhaustively at 8 bits in all five deterministic modes.
+that is the crate's best idea. The design does draw a line: those four only complete, and it is
+rounding that "has one home". But the rung's completion is already a second completion beside the
+format's, and the cure the design names, an adaptation the format ships at the container's width
+(`DESIGN.md.tmpl:314-316`), is itself a second rounding beside the wide one, kept equal to it by
+tests. So the reason given decides which crate holds the fast rounding and not whether there is
+one. The rounding of a binary fixed-point product is a widening multiply, a shift and a test of
+the remainder bits, checkable against the oracle exhaustively at 8 bits in all five deterministic
+modes, in either crate.
 
 Third, nobody had timed it. A debt of a factor of 300 on the consumer's central operation was
 shipped with a ticket and without a number, because the plan puts the first value bench at step 19.
@@ -374,8 +398,12 @@ of the crate that is to pay it. There is also a reason to think the cure does no
 crate as designed: `arvo-format` cannot name a carrier, by the dependency direction that the root
 design calls the point (`mock/DESIGN.md.tmpl:34-38`). An adaptation "at the container's width" is
 either stated over a declared width small enough to fit a machine word, which the format can say,
-or it is carrier arithmetic, which it cannot. Which of the two it is wants deciding before it is
-written.
+or it is carrier arithmetic, which it cannot. The numeral design's one sentence on the cure picks
+the first: the format ships the adaptation and the numeral calls it "with the machine's widening
+product" (`mock/crates/arvo-numeral/DESIGN.md.tmpl:314-316`). That is a workable split. It is
+written in the design of the crate that will not build it, it is in no step of the plan (a search
+of `mock/research/202611130950_canon-double-check/PLAN.md` for the ticket or the phrase finds
+nothing), and it does not say up to what declared width it applies.
 
 The design document is 2424 lines, up from 2122 (`git diff --stat 7e924d0c..HEAD` on the file: 475
 insertions, 173 deletions). The first audit said part of it narrates defects the crate used to
@@ -495,8 +523,9 @@ design-round directory holds 225 rounds, 57 of them dated 12 to 14 November, eve
 the research directory holds some twenty review directories for the night's branches, most with two
 or three passes and most opening on a verdict of do not merge that the next round answered
 (`mock/research/2026111320*` to `2026111406*`). I did not judge them one by one. The reviews found
-real things and the code is better for them. None of them ran the code for time, and the two
-findings above passed through all of them, which says the review asks whether the code matches the
+real things and the code is better for them. None of them ran the code for time: a search of
+`mock/research/` for a figure in nanoseconds or a timer finds no file in a review of the night's
+branches. The two findings above passed through all of them, which says the review asks whether the code matches the
 canon and nobody is asked whether it is fast.
 
 Mark: good as it is for the registry as an instrument and for the canon's ability to carry

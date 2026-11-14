@@ -114,6 +114,15 @@ map1!(ingest_wrap_adapted, u16, U13W, |x| {
     U13W::adapted(Exact::on_grid(Slot::at(x as i128)))
 });
 map1!(ingest_wrap_hand, u16, u16, |x| x & TOP13);
+// Whether a host integer names a member, asked through the two public doors
+// and by hand. Added in the audit's second pass.
+map1!(verdict_round_trip_sat, u16, bool, |x| {
+    U13S::from_index(x).index::<u16>() == x
+});
+map1!(verdict_round_trip_wrap, u16, bool, |x| {
+    U13W::from_index(x).index::<u16>() == x
+});
+map1!(verdict_hand, u16, bool, |x| x <= TOP13);
 map1!(egress_index, U13S, u16, |v| v.index::<u16>());
 map1!(egress_slot, U13S, u16, |v| v.slot().index() as u16);
 map1!(egress_hand, u16, u16, |x| x);
@@ -449,6 +458,23 @@ fn main() {
     });
     time("ingest wrap      hand", FAST, N, || {
         ingest_wrap_hand(black_box(&any16), black_box(&mut out_h))
+    });
+    let mut out_b = vec![false; N];
+    let mut out_c = vec![false; N];
+    verdict_hand(&any16, &mut out_c);
+    verdict_round_trip_sat(&any16, &mut out_b);
+    assert_eq!(out_b, out_c);
+    verdict_round_trip_wrap(&any16, &mut out_b);
+    assert_eq!(out_b, out_c);
+    assert!(out_c.iter().any(|&b| b) && out_c.iter().any(|&b| !b));
+    time("verdict          round trip, saturating", FAST, N, || {
+        verdict_round_trip_sat(black_box(&any16), black_box(&mut out_b))
+    });
+    time("verdict          round trip, wrapping", FAST, N, || {
+        verdict_round_trip_wrap(black_box(&any16), black_box(&mut out_b))
+    });
+    time("verdict          hand range test", FAST, N, || {
+        verdict_hand(black_box(&any16), black_box(&mut out_c))
     });
     time("egress           index::<u16>", FAST, N, || {
         egress_index(black_box(&v13a), black_box(&mut out_h))

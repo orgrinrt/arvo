@@ -128,7 +128,7 @@ What the numbers are and why:
 
 | Result (ad-hoc spike) | Mechanism | How well shown |
 |---|---|---|
-| `from_index` 2.28 ns saturating without LTO, 0.059 with; hand 0.051 to 0.059 | `signed` and `unsigned` at `mock/crates/arvo-numeral/src/host.rs:49-63` are not generic and not marked inline, so a consumer without LTO calls into the numeral crate per element and the loop cannot vectorise | Shown: the committed assembly has the call through the GOT inside the loop |
+| `from_index` 2.28 ns saturating without LTO (1.39 in a second run), 0.059 with; hand 0.051 to 0.059 | `signed` and `unsigned` at `mock/crates/arvo-numeral/src/host.rs:49-63` are not generic and not marked inline, so a consumer without LTO calls into the numeral crate per element and the loop cannot vectorise | Shown: the committed assembly has the call through the GOT inside the loop |
 | `adapted` over an `Exact`: 13 ns saturating, 44 ns wrapping; wrapping stays 21 ns under fat LTO | The format's completion on a 128-bit slot index; for wrap, euclidean remainders at 128 bits | Reasoned from source, as in the first audit; binary not read |
 | add, sub, max, 32-bit wrapping product equal to hand | The rung's arm is the host operator plus a mask or select (`rung.rs:91-100`) | Shown by equal times and, for add, the earlier disassembly sketch |
 | Saturating product at 13 bits in 16: 0.95 ns against 0.24 by hand | The rung calls the 16-bit `overflowing_mul` and branches on the flag (`rung.rs:222-229`); the hand arm widens to 32 bits and clamps, which vectorises | Reasoned from the two sources and the ratio; assembly not read |
@@ -156,8 +156,9 @@ assembly where that differs from what the compiler gives.
 | Sum, difference, negation, order at any width up to 64 | Ratio 1.0 elementwise | Spike; disassembly sketch |
 | Integer product, wrapping, or saturating at the carrier's width | Ratio 1.0 | Spike |
 | Integer product, saturating, below the carrier's width | 4 times slow today; 1.0 once the rung widens and clamps | Spike for today; reasoned for after |
-| Host integer in, `from_index` | 1.0 under fat LTO; 35 to 45 times slow in a default release build; 1.0 in every profile once two functions are marked inline | Spike for the first two; the third is reasoned from the assembly and is the change I am most sure of |
+| Host integer in, `from_index` | 1.0 under fat LTO; 27 to 45 times slow in a default release build across two runs; 1.0 in every profile once two functions are marked inline | Spike for the first two; the third is reasoned from the assembly and is the change I am most sure of |
 | Host integer out, `index` | 1.0 | Spike |
+| Rejecting an untrusted host integer by the round trip through both doors, against a hand range test | 1.0 under fat LTO; 26 to 32 times slow in a default release build until the door is inline | Spike, second-pass rows: 0.074 and 0.095 ns against 0.108 with fat LTO, 1.68 and 1.34 against 0.052 without. Asserted equal to the hand test on every input |
 | A fold below the carrier's width, against assembly that masks or clamps once | 3 to 11 times slow at SSE2 as shipped; 27 to 160 times slow against hand vector code under the clamp-once law on the M1 table; 1.0 once the fold is an arm that may use the law | Spike; `satfold-length-l1_n12000`. The value has no fold, so a consumer's loop over `add` is the slow side |
 | Fixed-point product, quotient by a constant, conversion | 60 to 330 times slow today at Q16.16 in 32 bits | Spike |
 | The same once written on the carrier | 1.0 for floor; for half to even 1.0 as throughput and about twice floor's latency on a dependent chain | Reasoned: the hand arms in the spike are that code and agreed with the oracle on every input; first spike for the latency |

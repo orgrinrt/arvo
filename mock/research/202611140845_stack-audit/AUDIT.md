@@ -27,16 +27,18 @@ a consumer cannot get anywhere else.
 
 The integer half of the value is now the hand code. In the ad-hoc spike the sum, difference,
 product, order and the egress door time the same as what a programmer writes on the host integer,
-at widths below the carrier as well as at it.
+at widths below the carrier as well as at it. The one exception found is a saturating product
+below the carrier's width, four times the hand arm.
 
 The fixed-point half is going wrong, and it is the half the one known consumer waits for. The
 product, the quotient and the conversion run the format's exact step at run time: about 350 ns for
 a Q16.16 product against 1.1 ns by hand in the ad-hoc spike, 60 to 330 times across the three. The
-tree knows the debt and ticketed it; nobody had put a number on it. The design's stated reason for
-not writing the fast arm contradicts the contract the same design opens with and the crate
-already lives by for its other operations. It is fixable in place.
+tree knows the debt and ticketed it; nobody had put a number on it, and the cure the design names
+is in no step of the plan and not in the design of the crate that is to ship it. The reason given
+for not writing a fast rounding beside the oracle does not hold up, since the named cure is one.
+It is fixable in place.
 
-Two smaller things of the same kind landed the same night. The new host door is 35 to 45 times a
+Two smaller things of the same kind landed the same night. The new host door is 27 to 45 times a
 hand clamp in a default release build, because two private functions lack an inline attribute; the
 assembly is committed. And under the default debug check an integer product runs the wide step on
 every call, about 200 times the host's checked product.
@@ -46,12 +48,15 @@ measures last. Value benches are step 19 of 20. No bench file has changed since 
 audit, and no committed bench calls a type that ships. Some twenty review directories were written
 overnight and none ran the code for time.
 
-One stated row now works against a stated goal. Op has said twice that arvo serves general
-numerics, applications and daemons. The verdict a daemon needs for untrusted input, whether a host
-integer names a member, exists in the source and is kept private under
-`ruling::the_ingest_door_waits_on_a_known_use`. The use is now known. The same row holds back a
-divisor from a run-time value, which kaski needs. The row is stated, not ratified; this is a
-tension between a row and op's later answer, reported as a finding and not weighed away.
+At the edge of a program the design is better than its own text says, and better than my first
+pass said. Op has said twice that arvo serves general numerics, applications and daemons. A daemon
+can already reject an untrusted integer in arvo's vocabulary, by sending it through the host door
+and back and comparing, so op's doubt that a run-time membership door is ever needed
+(`ruling::the_ingest_door_waits_on_a_known_use`) holds for ingest. Nothing names that pattern, and
+the design's one sentence on input reads as if arvo had nothing. Division by zero has a typestate
+answer in the format since last night, which the value does not take yet. One case is left where
+the row does bite, and the source asks it in a ticket: a signed divisor read at run time, which is
+what kaski divides by. That is a known use on record and it has not been put to op.
 
 Of the first audit's findings: five are fixed (the doors' design, the mutant features, the root
 documents, the red test, an executable reference for IEEE binary); nine hold; one I withdraw on
@@ -61,8 +66,8 @@ shipped code, `Num::mul`).
 
 What I would do first, in order: write the fixed-point product as carrier arithmetic held to the
 oracle, with its bench in the same change; mark the two door functions inline; put kaski's own
-`Fixed` in that bench as the baseline; read the ingest row against op's answer; change the scope
-sentence in the README.
+`Fixed` in that bench as the baseline; put the signed run-time divisor to op and name the pattern
+for untrusted input; change the scope sentence in the README.
 
 ## Verdicts
 
@@ -71,7 +76,7 @@ sentence in the README.
 | Format spine, constant quantum | good as it is | `DESIGNS.md`, the concept |
 | Format spine, floats | easy to get wrong but can be right: one operation over a magnitude-indexed quantum before anything is designed on the clause | same |
 | Behaviour per declared signature | good as it is | same |
-| Never a run-time check, at the program's edge | easy to get wrong but can be right, leaning wrong: publish the verdict, a divisor from a value, name the pattern | same |
+| Never a run-time check, at the program's edge | easy to get wrong but can be right: name the pattern for untrusted input, take the member divisor, put the signed run-time divisor to op | same |
 | Arms over regions | easy to get wrong but can be right: bench both sides of every shipped arm, let the consumer see which it got | same |
 | Strategy axis | easy to get wrong but can be right: the mode and policy table on two hosts before a preset loses its ticket | same |
 | Parity with the standards | easy to get wrong but can be right: arithmetic through both sides; a committed MATLAB table | same |
@@ -165,4 +170,36 @@ Not done:
 
 ## The passes
 
-Pass one. Everything above and in the four sibling files.
+Pass one (pushed as `382207d6`). The whole report: five files and the spike.
+
+Pass two. I went back to the source for every finding the summary leans on and tried to break it.
+What changed:
+
+- The finding on run-time checks was overstated and is rewritten. Pass one said a consumer with
+  untrusted input had three bad choices and that a stated row worked against a stated goal. Reading
+  `host.rs:88-174` again, the two public doors compose into an exact verdict, and the format has a
+  public `contains`. The row does not block a daemon. The mark lost "leaning wrong". What is left
+  is that the pattern is unnamed.
+- The finding on division by a run-time value was half wrong. Pass one said no door exists. The
+  format has had `Member::adapted` and `Divisor::member` since `b687fc01`; the value does not take
+  them and the numeral design's sentence on it is stale. The case that remains, a signed run-time
+  divisor, is asked in the source's own ticket. `DOWNSTREAM.md` is corrected to match.
+- "The design's reason contradicts its contract" was too strong. The design draws a line between
+  completion and rounding. The argument now is that the cure it names is itself a second rounding,
+  so the reason decides the crate and not the question.
+- "Which crate owns the fast adaptation is undecided" was wrong: the numeral design decides it in
+  one sentence. Corrected to: decided in the wrong crate's design, in no step of the plan.
+- "Nothing tells a consumer which arm it took" now says the design document does and the call site
+  does not.
+- The new claim, that the two doors compose into a verdict, was then tested and not left as
+  reasoning: three arms were added to the ad-hoc spike and it was run again in two profiles. The
+  round trip agrees with a hand range test on every input and times the same under fat LTO. The
+  rerun put the door's gap in a default build at 27 times where the first run had 35 to 45, so the
+  report now quotes 27 to 45.
+- A check name was wrong in the catalogue (`Quiet`, not `Unchecked`).
+- Claims that survived the attack unchanged, with what was rechecked: the two door functions are
+  not inline (`host.rs:49-63`, and the committed assembly); `fits_mul` runs the wide step at every
+  exponent (`num.rs:369-376`, `:409-412`); no bench manifest depends on a shipped crate (a search
+  of every `Cargo.toml` under `mock/benches` for the five crate names finds none); no review of
+  the night carries a timing; the cure for the fixed-point product is unscheduled.
+- No mark moved to a worse one. One moved to a better one.

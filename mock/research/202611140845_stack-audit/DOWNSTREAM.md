@@ -39,11 +39,11 @@ replaced by `Fix<64, -16, _>` today, and what happens if it is.
 | Signed fixed point in 64 bits, fraction 16, 30, 48 | `Fix<BITS, FRAC, A, C>` (`mock/crates/arvo-numeral/src/alias.rs:57-62`) | There |
 | Saturating add and subtract (`fixed.rs:159-169`) | `add`, `sub` under `Saturate`, the host's own in the ad-hoc spike | There, and as fast |
 | A product; floors today (`fixed.rs:171-176`), half to even wanted | `mul` rounds by the declared mode, through the format's wide step | There, correct, and about 300 times the hand product in the ad-hoc spike at 32 bits |
-| Division by a run-time value; zero gives zero silently today (`fixed.rs:72`, `:178`) | `div` takes a `Divisor` that is a constant; no door from a value | Not there |
+| Division by a run-time value; zero gives zero silently today (`fixed.rs:72`, `:178`) | `div` takes a `Divisor`, a constant at the value tier. The format has a door from a member of a zero-free range (`mock/crates/arvo-format/src/division.rs:172-188`) that the value does not take yet, and none for a divisor of either sign | Not there at the value; half built below it |
 | `from_ratio`, `scale` | `div` by a constant, `convert` | Partly, same cost as the product |
 | Integer roots, `exp`, `ln`, `pow` on integers (`fixed.rs:188-241`) | Nothing, and in no step of the plan | Not there |
 | Parse from decimal text (`fixed.rs:84-138`) | Nothing | Not there |
-| Raw bits out and in "for a codec or a hash" (`fixed.rs:147-157`) | `index::<i64>()` and `from_index`; the first is exact, the second completes silently | There for trusted bits; no verdict for a save file |
+| Raw bits out and in "for a codec or a hash" (`fixed.rs:147-157`) | `index::<i64>()` and `from_index`; the first is exact, the second completes silently | There. For a save file the verdict is the round trip through the two doors, which no document names |
 | `Ord`, `Hash`, serde derives (`fixed.rs:41-53`) | Inherent `cmp`; `Hash` over a 128-bit index; no `Ord`, no serde | Half there |
 | A bit set of 256 tags (`kaski-engine-contracts/src/tags.rs:35-40`) | `Bits<N>` to 64 bits, no set operation | Not there |
 | Vectors over a scalar trait (`kaski-vector/src/scalar.rs:66-68`) | Nothing; no contracts crate | Not there |
@@ -77,9 +77,13 @@ design prevents that; `DESIGNS.md` says what is in the way.
 Division by a run-time value is the second gap, and it is a design gap and not only an unbuilt
 one. Op chose "Explicit per call" for the zero divisor (op-answers-6): a divisor type that cannot
 be zero, or a named operation that says what zero gives. arvo's `Divisor` is the first of those and
-is right. What does not exist is the way to get one from a value at run time, since that is a
-verdict on a datum, and the row that holds it back is the same one that holds back the ingest
-verdict (`DESIGNS.md`, on run-time checks).
+is right. The format gained, the same night, the way to get one at run time without a verdict: a
+slot completed into a range that leaves the zero out, by a declared policy, so the type says what a
+zero divisor becomes. The value does not take it yet. And a zero-free range lies on one side of
+zero, so kaski's case, a signed divisor read at run time, has no door, and the source carries the
+question of whether that is the known use the run-time membership row waits on
+(`mock/crates/arvo-format/src/division.rs:121-125`; `DESIGNS.md`, on run-time checks). kaski is
+the answer to that question and nobody has given it.
 
 The transcendental functions are the largest piece nobody has planned. kaski has integer-only
 `exp`, `ln`, `pow` and roots that give the same bits on every machine, and "if it's a numerics
@@ -91,8 +95,8 @@ Mark: easy to get wrong but can be right. The intent and the design answer this 
 than anything else it could pick up: declared rounding, declared overflow, identical bits across
 targets, per-site override. Right requires, in this order: the fixed-point product, quotient and
 conversion as carrier arithmetic; kaski's own carrier used as the baseline in the first value
-bench, since it exists, is tested, and is what kaski keeps if arvo is slower; a divisor from a
-run-time value; `Ord` and a bytes door; and the integer transcendentals given a step.
+bench, since it exists, is tested, and is what kaski keeps if arvo is slower; a signed divisor
+from a run-time value; `Ord` and a bytes door; and the integer transcendentals given a step.
 
 ## hilavitkutin
 
@@ -162,7 +166,8 @@ What it meets first:
 3. No bytes, no serde.
 4. No operator traits and no `Ord`, so no `a + b`, no sorting, no use as a key in an ordered map.
 5. No default adaptation, so the shortest spelling of an integer is `Int<32, Adapt<TowardZero, Wrap>>`.
-6. No verdict on untrusted input (`DESIGNS.md`).
+6. No named way to reject untrusted input. One exists by composing the two host doors and is
+   written nowhere (`DESIGNS.md`).
 7. No value past 64 bits (`mock/crates/arvo-numeral/src/admit.rs:55-58`), so no 128-bit money.
 
 None of the seven is a flaw in the concept. The second, fourth and fifth are the distance between
@@ -178,10 +183,12 @@ that it is in scope: `Display` and parsing for decimal first, because that is wh
 Also in scope. It differs from an application in four ways that touch arvo.
 
 It reads numbers it does not trust, on its hottest path. This is the run-time check finding in
-`DESIGNS.md`, and it is sharper for a daemon than for anyone: the verdict exists, is private, and
-the row that keeps it private waits on a known use that this consumer is. The door itself is now
-cheap in the right build and 35 to 45 times a hand clamp in a default release build, by two
-missing attributes (ad-hoc spike).
+`DESIGNS.md`, and it matters more to a daemon than to anyone. The direct verdict is private. The
+daemon can still reject in arvo's vocabulary, by sending the integer through the door and back and
+comparing, under the `Quiet` check; no document says so, and the design's one sentence on input
+reads as if there were nothing. The door itself is cheap in the right build and 27 to 45 times a
+hand clamp in a default release build, by two missing attributes (ad-hoc spike), and the round
+trip inherits that.
 
 It counts from many threads. Nothing is said of a value in an atomic. A transparent newtype over a
 machine integer is sound to hold in the host's atomic of the same size only if the layout is
@@ -198,7 +205,7 @@ It talks to C and to the network. The transparent layout is right for both. What
 sentence in a design saying which container a signature takes on each target and that it is a
 promise, with a test.
 
-Mark: easy to get wrong but can be right. Right requires the public verdict, the layout promise
+Mark: easy to get wrong but can be right. Right requires the pattern for untrusted input named in the design, the layout promise
 answered, and the door's two attributes. Wrong looks like a daemon author reading "never a run-time
 check", keeping bare integers at the edge, and wrapping into a value only what has already been
 validated by hand.

@@ -1,0 +1,52 @@
+every value arm agrees with its hand arm on the whole input
+-- the doors, 13 bits unsigned, from and to u16
+ingest saturate  from_index                      1.388 ns/elem median     1.342 p5
+ingest saturate  adapted (the wide step)        10.393 ns/elem median    10.358 p5
+ingest saturate  hand                            0.052 ns/elem median     0.052 p5
+ingest wrap      from_index                      1.394 ns/elem median     1.305 p5
+ingest wrap      adapted (the wide step)        35.542 ns/elem median    34.223 p5
+ingest wrap      hand                            0.051 ns/elem median     0.049 p5
+verdict          round trip, saturating          1.683 ns/elem median     1.677 p5
+verdict          round trip, wrapping            1.344 ns/elem median     1.341 p5
+verdict          hand range test                 0.052 ns/elem median     0.052 p5
+egress           index::<u16>                    0.026 ns/elem median     0.025 p5
+egress           slot().index()                  0.026 ns/elem median     0.025 p5
+egress           hand copy                       0.026 ns/elem median     0.025 p5
+-- ring operations at an integer quantum, elementwise
+add u13 saturate value                           0.072 ns/elem median     0.071 p5
+add u13 saturate hand                            0.072 ns/elem median     0.065 p5
+sub u13 saturate value                           0.054 ns/elem median     0.051 p5
+sub u13 saturate hand                            0.051 ns/elem median     0.051 p5
+mul u13 saturate value                           0.921 ns/elem median     0.886 p5
+mul u13 saturate hand                            0.236 ns/elem median     0.232 p5
+mul i32 saturate value                           0.571 ns/elem median     0.553 p5
+mul i32 saturate hand                            0.661 ns/elem median     0.659 p5
+mul i32 wrap     value                           0.239 ns/elem median     0.231 p5
+mul i32 wrap     hand                            0.227 ns/elem median     0.226 p5
+-- the default check, `Abort`; debug assertions are off, so these are the Quiet arms again
+add u13 saturate Abort value                     0.074 ns/elem median     0.074 p5
+add u13 checked hand                             0.413 ns/elem median     0.399 p5
+mul i32 wrap Abort value                         0.219 ns/elem median     0.218 p5
+mul i32 checked hand                             0.219 ns/elem median     0.218 p5
+product Q16.16 half_even saturate Abort value   293.874 ns/elem median   278.262 p5
+-- folds
+sum u13 wrap     value                           0.395 ns/elem median     0.382 p5
+sum u13 wrap     hand, mask each step            0.395 ns/elem median     0.382 p5
+sum u13 wrap     hand, mask once                 0.040 ns/elem median     0.040 p5
+sum u13 saturate value                           0.510 ns/elem median     0.425 p5
+sum u13 saturate hand                            0.415 ns/elem median     0.411 p5
+max i32          value                           0.184 ns/elem median     0.177 p5
+max i32          hand                            0.185 ns/elem median     0.179 p5
+-- Q16.16 in 32 bits: product, quotient by three, conversion to Q8.8
+product half_even saturate value               342.453 ns/elem median   283.222 p5
+product half_even saturate hand                  2.119 ns/elem median     1.712 p5
+product floor wrap        value                330.065 ns/elem median   311.310 p5
+product floor wrap        hand                   0.884 ns/elem median     0.835 p5
+product f32                                      0.171 ns/elem median     0.102 p5
+quotient by 3 half_even   value                242.283 ns/elem median   228.805 p5
+quotient by 3 half_even   hand                   1.896 ns/elem median     1.878 p5
+convert to Q8.8 half_even value                253.036 ns/elem median   221.825 p5
+convert to Q8.8 half_even hand                   2.504 ns/elem median     2.488 p5
+-- a dependent chain: one Q16.16 value decayed 30000 times, per step
+decay half_even saturate value                 282.293 ns/elem median   269.474 p5
+decay half_even saturate hand                    4.568 ns/elem median     4.420 p5
