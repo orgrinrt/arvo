@@ -7,9 +7,10 @@
 //! against the tests' own arithmetic.
 //!
 //! `common::shapes` says what a shape is and which are taken. The exponents
-//! here, per width `w`, are zero, one, minus one, minus half of `w` rounded up,
-//! and the deepest one the format's quotient admits at that width and radix,
-//! which a test in the radix two file holds against the format's own verdict.
+//! here, per width `w`, are the highest the format's quotient admits, zero,
+//! minus one, minus half of `w` rounded up, and the deepest it admits. A test in
+//! each radix file holds the two ends against the format's own verdict at every
+//! width and both ranges, admitted at each and refused one past it.
 //!
 //! The dividends of a signature are every member up to eight bits and the edge
 //! lattice with seeded members above that. Its divisors are constants of its
@@ -51,21 +52,23 @@ fn integer_quotients_at_every_width() {
     shapes.agree("`div`", 64 * 10);
 }
 
-/// The family's last exponent is the last one the format admits: one deeper is
-/// refused, so the sweep ends at the obligation's own edge.
+quotient_edges!(
+    the_binary_family_ends_where_the_quotient_does,
+    2,
+    binary_signed,
+    binary_unsigned
+);
+
+/// A few edges written out, so the edge arithmetic is held to numbers as well
+/// as to the format.
 #[test]
-fn the_deepest_exponent_is_the_last_the_quotient_admits() {
-    use arvo_format::is_divisible;
-    assert!(is_divisible::<binary_signed!(64, -63)>().get());
-    assert!(!is_divisible::<binary_signed!(64, -64)>().get());
-    assert!(is_divisible::<binary_unsigned!(64, -63)>().get());
-    assert!(!is_divisible::<binary_unsigned!(64, -64)>().get());
+fn the_binary_edges_are_where_arithmetic_puts_them() {
     assert_eq!(deep(64, true, 2), -63);
     assert_eq!(deep(64, false, 2), -63);
-    assert!(is_divisible::<decimal_signed!(33, -28)>().get());
-    assert!(!is_divisible::<decimal_signed!(33, -29)>().get());
     assert_eq!(deep(33, true, 10), -28);
-    assert!(is_divisible::<ternary_unsigned!(17, -69)>().get());
-    assert!(!is_divisible::<ternary_unsigned!(17, -70)>().get());
     assert_eq!(deep(17, false, 3), -69);
+    assert_eq!(top(64, true, 2), 64);
+    assert_eq!(top(64, false, 2), 64);
+    assert_eq!(top(1, true, 2), 127);
+    assert_eq!(top(64, true, 10), 19);
 }

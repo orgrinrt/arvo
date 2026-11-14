@@ -44,6 +44,7 @@ mod identity;
 mod machine;
 mod map;
 mod num;
+mod order;
 mod ratio;
 mod rung;
 

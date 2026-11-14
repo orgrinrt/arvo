@@ -8,11 +8,14 @@
 //! Both round a ratio, and the rounding of a ratio lives in the format's
 //! applied map alone, so each is the format's own function called on slots.
 
+use arvo_format::overflow::Saturate;
 use arvo_format::{
     Bool,
     Dither,
     Divisor,
     Exact,
+    Policy,
+    WithOverflow,
     adapt,
     convert as convert_slots,
     converted_position,
@@ -47,7 +50,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
                  is what you mean"
             );
         }
-        if cfg!(feature = "mutant-div") && !self.fits_div(by).get() {
+        if cfg!(arvo_mutant_div) && !self.fits_div(by).get() {
             return self;
         }
         // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
@@ -89,8 +92,13 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
                  overflow policy gives is what you mean"
             );
         }
-        if cfg!(feature = "mutant-convert") {
+        if cfg!(arvo_mutant_convert) {
             return Num::at_index(adapt::<T>(Exact::on_grid(self.slot()), Dither::UNUSED).index());
+        }
+        if cfg!(arvo_mutant_convert_policy) && matches!(S::POLICY, Policy::Saturate) {
+            let saturated =
+                convert_slots::<S::Format, WithOverflow<T, Saturate>>(self.slot(), Dither::UNUSED);
+            return Num::at_index(saturated.index());
         }
         // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
         // member's position on the target grid is a ratio of the two quanta that

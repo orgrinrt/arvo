@@ -23,7 +23,7 @@ impl<S: Sole, C: DebugCheck> Cardinal for Num<S, C> {
     const ZERO: Self = <Self as Identity<Additive>>::IDENTITY;
 
     fn succ(self) -> Self {
-        if cfg!(feature = "mutant-count") && self.slot().index() != 0 {
+        if cfg!(arvo_mutant_count) && self.slot().index() != 0 {
             return self;
         }
         self.add(<Self as Identity<Multiplicative>>::IDENTITY)

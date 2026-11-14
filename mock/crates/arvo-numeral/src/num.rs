@@ -5,7 +5,6 @@
 
 //! The value, its doors and its operations.
 
-use core::cmp::Ordering;
 use core::fmt;
 use core::hash::{Hash, Hasher};
 use core::marker::PhantomData;
@@ -88,6 +87,8 @@ macro_rules! dispatch {
         $e
     };
 }
+
+pub(crate) use dispatch;
 
 impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// The value at a member's slot index. The index is a member's.
@@ -191,9 +192,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     where
         T: Sole + DeclaredSignature<Format = S::Format>,
     {
-        if cfg!(feature = "mutant-under")
-            && self.slot().index() == <SlotsOf<S> as Slots>::MAX.index()
-        {
+        if cfg!(arvo_mutant_under) && self.slot().index() == <SlotsOf<S> as Slots>::MAX.index() {
             return Num::at_index(<SlotsOf<S> as Slots>::MIN.index());
         }
         Num::from_carrier(self.0)
@@ -408,69 +407,6 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     pub const fn fits_mul(self, rhs: Self) -> Bool {
         let position = product_position::<S::Format>(self.slot(), rhs.slot());
         Bool::of(!panic_on_overflow::<S>(position, Dither::UNUSED).get())
-    }
-
-    /// The order of the two members.
-    #[must_use]
-    pub const fn cmp(self, rhs: Self) -> Ordering {
-        dispatch!(
-            S,
-            plain,
-            [
-                rung::cmp_s8,
-                rung::cmp_u8,
-                rung::cmp_s16,
-                rung::cmp_u16,
-                rung::cmp_s32,
-                rung::cmp_u32,
-                rung::cmp_s64,
-                rung::cmp_u64
-            ],
-            [self.0, rhs.0],
-            []
-        )
-    }
-
-    /// Whether the two are the same member.
-    #[must_use]
-    pub const fn eq(self, rhs: Self) -> Bool {
-        Bool::of(matches!(self.cmp(rhs), Ordering::Equal))
-    }
-
-    /// Whether this member is below the other.
-    #[must_use]
-    pub const fn lt(self, rhs: Self) -> Bool {
-        Bool::of(matches!(self.cmp(rhs), Ordering::Less))
-    }
-
-    /// Whether this member is below or at the other.
-    #[must_use]
-    pub const fn le(self, rhs: Self) -> Bool {
-        Bool::of(!matches!(self.cmp(rhs), Ordering::Greater))
-    }
-
-    /// Whether this member is above the other.
-    #[must_use]
-    pub const fn gt(self, rhs: Self) -> Bool {
-        Bool::of(matches!(self.cmp(rhs), Ordering::Greater))
-    }
-
-    /// Whether this member is above or at the other.
-    #[must_use]
-    pub const fn ge(self, rhs: Self) -> Bool {
-        Bool::of(!matches!(self.cmp(rhs), Ordering::Less))
-    }
-
-    /// The lower of the two members.
-    #[must_use]
-    pub const fn min(self, rhs: Self) -> Self {
-        if self.le(rhs).get() { self } else { rhs }
-    }
-
-    /// The higher of the two members.
-    #[must_use]
-    pub const fn max(self, rhs: Self) -> Self {
-        if self.ge(rhs).get() { self } else { rhs }
     }
 }
 

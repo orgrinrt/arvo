@@ -45,6 +45,9 @@ pub struct Shapes {
     /// Members on which a planted wrong expectation disagreed with the value,
     /// where a sweep plants one.
     pub planted:    u64,
+    /// Checks whose expected result left the range and was completed by the
+    /// policy, where a sweep counts them.
+    pub unfit:      u64,
 }
 
 impl Shapes {

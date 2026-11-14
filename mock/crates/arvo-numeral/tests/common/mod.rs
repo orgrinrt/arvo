@@ -9,6 +9,7 @@
 #![allow(dead_code)]
 
 pub mod crossings;
+pub mod edges;
 pub mod exponents;
 pub mod hosts;
 pub mod oracle;

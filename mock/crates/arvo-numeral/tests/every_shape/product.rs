@@ -6,30 +6,14 @@
 // The product sweep's body, included by one test file a radix.
 
 use arvo_numeral::Sole;
-use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, minus_one, pairs, widest};
+use common::edges::{product_deepest as deep, product_highest as top};
+use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, minus_one, pairs};
 use common::{oracle, value};
 
-/// The widest product of two members, as a magnitude.
-const fn widest_product(w: u32, signed: bool) -> u128 {
-    let m = widest(w, signed) as u128;
-    m * m
-}
-
-const HELD: u128 = i128::MAX as u128;
-
-/// The highest exponent up to one at which the widest product is still a
-/// position a slot index holds.
-const fn top(w: u32, signed: bool, radix: i128) -> i32 {
-    let widest = widest_product(w, signed);
-    match widest.checked_mul(radix as u128) {
-        Some(scaled) if scaled <= HELD => 1,
-        _ => whole(w, signed, radix),
-    }
-}
-
-/// The highest exponent up to zero at which it is.
-const fn whole(w: u32, signed: bool, _radix: i128) -> i32 {
-    if widest_product(w, signed) <= HELD { 0 } else { -1 }
+/// The highest exponent up to zero the product admits.
+const fn whole(w: u32, signed: bool, radix: i128) -> i32 {
+    let top = top(w, signed, radix);
+    if top < 0 { top } else { 0 }
 }
 
 /// Minus half the width, rounded up.
@@ -37,19 +21,56 @@ const fn half(w: u32, _signed: bool, _radix: i128) -> i32 {
     -((w as i32 + 1) / 2)
 }
 
-/// Minus the width, or the deepest exponent whose power of the radix an exact
-/// position can carry a remainder over, which is an unsigned 128-bit word.
-const fn deep(w: u32, _signed: bool, radix: i128) -> i32 {
-    let mut power = 1u128;
-    let mut k = 0;
-    while k < w as i32 {
-        match power.checked_mul(radix as u128) {
-            Some(next) => power = next,
-            None => break,
+/// Both ends of the family at one width and radix, held against the format's
+/// verdict on both ranges: admitted at each, refused one past it.
+macro_rules! product_edges_at {
+    ($w:literal, $radix:literal, $signed:ident, $unsigned:ident) => {{
+        $crate::edge!(
+            is_multipliable,
+            $signed,
+            $w,
+            top($w, true, $radix),
+            top($w, true, $radix) + 1,
+            "the product's highest"
+        );
+        $crate::edge!(
+            is_multipliable,
+            $unsigned,
+            $w,
+            top($w, false, $radix),
+            top($w, false, $radix) + 1,
+            "the product's highest"
+        );
+        $crate::edge!(
+            is_multipliable,
+            $signed,
+            $w,
+            deep($w, true, $radix),
+            deep($w, true, $radix) - 1,
+            "the product's deepest"
+        );
+        $crate::edge!(
+            is_multipliable,
+            $unsigned,
+            $w,
+            deep($w, false, $radix),
+            deep($w, false, $radix) - 1,
+            "the product's deepest"
+        );
+    }};
+}
+
+/// The family's ends at every width of one radix family, one test.
+macro_rules! product_edges {
+    ($name:ident, $radix:literal, $signed:ident, $unsigned:ident) => {
+        #[test]
+        fn $name() {
+            widths_1_to_16!(product_edges_at!($radix, $signed, $unsigned));
+            widths_17_to_32!(product_edges_at!($radix, $signed, $unsigned));
+            widths_33_to_48!(product_edges_at!($radix, $signed, $unsigned));
+            widths_49_to_64!(product_edges_at!($radix, $signed, $unsigned));
         }
-        k += 1;
-    }
-    -k
+    };
 }
 
 /// Every pair the sweep takes of `S`.

@@ -22,7 +22,7 @@ use arvo_format::Policy;
 
 macro_rules! rung {
     (
-        bits $bits:literal, mutant $mutant:literal,
+        bits $bits:literal, mutant $mutant:ident,
         $s:ident, $u:ident,
         $adapt_s:ident, $adapt_u:ident,
         $add_s:ident, $add_u:ident,
@@ -40,7 +40,7 @@ macro_rules! rung {
         #[inline]
         #[must_use]
         pub(crate) const fn $adapt_s(x: $s, width: u32, policy: Policy) -> $s {
-            if cfg!(feature = $mutant) {
+            if cfg!($mutant) {
                 return x;
             }
             let shift = $bits - width;
@@ -64,7 +64,7 @@ macro_rules! rung {
         #[inline]
         #[must_use]
         pub(crate) const fn $adapt_u(x: $u, width: u32, policy: Policy) -> $u {
-            if cfg!(feature = $mutant) {
+            if cfg!($mutant) {
                 return x;
             }
             let hi = $u::MAX >> ($bits - width);
@@ -144,7 +144,7 @@ macro_rules! rung {
             match policy {
                 Policy::Wrap => $adapt_u(a.wrapping_sub(b), width, policy),
                 _ => {
-                    if cfg!(feature = "mutant-sub") && a < b {
+                    if cfg!(arvo_mutant_sub) && a < b {
                         return $u::MAX >> ($bits - width);
                     }
                     a.saturating_sub(b)
@@ -167,7 +167,7 @@ macro_rules! rung {
                 match policy {
                     Policy::Wrap => a.wrapping_neg(),
                     _ => {
-                        if cfg!(feature = "mutant-neg") {
+                        if cfg!(arvo_mutant_neg) {
                             return a.wrapping_neg();
                         }
                         a.saturating_neg()
@@ -207,7 +207,7 @@ macro_rules! rung {
                     let (product, left) = a.overflowing_mul(b);
                     if !left {
                         $adapt_s(product, width, policy)
-                    } else if (a < 0) != (b < 0) && !cfg!(feature = "mutant-mul") {
+                    } else if (a < 0) != (b < 0) && !cfg!(arvo_mutant_mul) {
                         $s::MIN >> ($bits - width)
                     } else {
                         $s::MAX >> ($bits - width)
@@ -286,22 +286,22 @@ macro_rules! rung {
 }
 
 rung!(
-    bits 8, mutant "mutant-8", i8, u8,
+    bits 8, mutant arvo_mutant_8, i8, u8,
     adapt_s8, adapt_u8, add_s8, add_u8, sub_s8, sub_u8, neg_s8, neg_u8, mul_s8, mul_u8,
     from_s8, from_u8, index_s8, index_u8, cmp_s8, cmp_u8
 );
 rung!(
-    bits 16, mutant "mutant-16", i16, u16,
+    bits 16, mutant arvo_mutant_16, i16, u16,
     adapt_s16, adapt_u16, add_s16, add_u16, sub_s16, sub_u16, neg_s16, neg_u16, mul_s16, mul_u16,
     from_s16, from_u16, index_s16, index_u16, cmp_s16, cmp_u16
 );
 rung!(
-    bits 32, mutant "mutant-32", i32, u32,
+    bits 32, mutant arvo_mutant_32, i32, u32,
     adapt_s32, adapt_u32, add_s32, add_u32, sub_s32, sub_u32, neg_s32, neg_u32, mul_s32, mul_u32,
     from_s32, from_u32, index_s32, index_u32, cmp_s32, cmp_u32
 );
 rung!(
-    bits 64, mutant "mutant-64", i64, u64,
+    bits 64, mutant arvo_mutant_64, i64, u64,
     adapt_s64, adapt_u64, add_s64, add_u64, sub_s64, sub_u64, neg_s64, neg_u64, mul_s64, mul_u64,
     from_s64, from_u64, index_s64, index_u64, cmp_s64, cmp_u64
 );
