@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The walk law, and the `xor` and `halves` laws `DESIGN.md.tmpl` names.
+//! The walk law and the `halves` law `DESIGN.md.tmpl` names. The `xor` laws are
+//! in the every-width sweep in `crate::tests`, beside the other laws of `Bits`.
 
 use notko::Maybe;
 
@@ -51,35 +52,6 @@ fn the_walk_yields_every_byte_value_in_order() {
 #[should_panic(expected = "byte 1 of the walk")]
 fn a_walk_against_the_wrong_bytes_fails() {
     walk_against(Bytes::of(b"ab"), b"ac");
-}
-
-/// `xor` agrees with the host's xor, is its own inverse and has zero as
-/// identity, at both mask arms and an interior width, over a spread of values.
-#[test]
-fn xor_agrees_with_the_hosts_and_inverts_itself() {
-    let values = [
-        0,
-        1,
-        0x5555_5555_5555_5555,
-        0xAAAA_AAAA_AAAA_AAAA,
-        0x8000_0000_0000_0001,
-        u64::MAX,
-    ];
-    fn at<const N: u32>(values: [u64; 6]) {
-        for a in values {
-            for b in values {
-                let (x, y) = (Bits::<N>::masked(a), Bits::<N>::masked(b));
-                assert_eq!(x.xor(y).raw(), x.raw() ^ y.raw());
-                assert_eq!(x.xor(y).xor(y), x);
-                assert_eq!(x.xor(Bits::<N>::masked(0)), x);
-            }
-        }
-    }
-    at::<1>(values);
-    at::<8>(values);
-    at::<32>(values);
-    at::<63>(values);
-    at::<64>(values);
 }
 
 /// `halves` loses nothing, with only the low half set, only the high half,

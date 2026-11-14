@@ -1,7 +1,9 @@
 //! FNV-1a against the reference values of its authors' test suite.
 //!
 //! The values for the empty string, `"a"` and `"foobar"` are the ones the
-//! FNV reference code prints for those inputs, at 32 and at 64 bits.
+//! FNV reference code prints for those inputs, at 32 bits. The 64-bit FNV-1a
+//! and its values join with ticket
+//! `arvo_format_admits_the_wrapping_product_over_the_unsigned_64`.
 
 use arvo_bits::Bytes;
 use arvo_digest::Fnv1a;
