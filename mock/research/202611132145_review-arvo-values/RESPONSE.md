@@ -110,6 +110,35 @@ and what is left is in tickets.
    added there. Left as it is.
 9. The two merge subjects: as before.
 
+## After the third reading
+
+The branch was taken up again with the third reading's two blockers as the work. What follows replaces
+the "Not changed" answers of points 1 to 4 above.
+
+1. The question was asked of the registry and of the maintainer's captured words first, and neither
+   answers it. Two seats then read it one after the other, the second without the first's file, and
+   both picked the second option, the target's reduction. Their notes are under
+   `mock/research/202611140010_q36-two-readings/`. On that agreement
+   `proposal::a_conversion_is_one_placement_onto_the_target_grid` carries a provisional stamp, the
+   design names the open question and the stamp where it states the conversion, and question ticket
+   `does_the_target_s_reduction_govern_a_lossy_conversion_in_arv` asks the maintainer to make it
+   formal. `Num::convert` is unchanged. The stamp says what the readings ran, a change of width,
+   range and exponent at radix two and widths of 8 bits and under, and that the pick rests on
+   argument above that and between radixes.
+2. The quotient and the product at an exponent other than zero are now swept at every width from 1
+   to 64, both ranges, both policies and the five modes, with a family of five exponents a width that
+   ends at the last one the format admits. The conversion is a law over two shapes and the pairs of
+   all shapes cannot be built, so it is swept four ways, each crossing two coordinates whole: every
+   pair of widths, every pair of exponents at each width, every source signature against every
+   target signature, and every pair of radixes. The design says which pairs no sweep holds. The
+   tests' arithmetic gained a wide integer, so no case is skipped for want of room.
+3. Radix ten and radix three are in every one of those sweeps, on formats the tests declare.
+4. Where `from_index` aborts under `Abort` is observed at every width from 1 to 64, both ranges, both
+   policies and the five modes. The host door against `adapted` is swept the same way.
+
+Point 5 stands as a follow-up on its ticket, and no mutant feature was added: where a sweep needed a
+case that must fail and no existing mutant reaches it, the sweep plants a wrong expectation of its own.
+
 ## Beside the findings
 
 The disassembly sketch `mock/research/sketches/202611130342_value-add-disassembly/` repeats two of
