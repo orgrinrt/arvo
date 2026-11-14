@@ -381,4 +381,6 @@ fn the_landing_refuses_what_it_cannot_land_and_admits_its_twins() {
     t.pass("tests/ui/land_wrapping_a_constant_quantum_is_admitted.rs");
     t.compile_fail("tests/ui/land_on_a_range_not_holding_zero_over_two_magnitudes_is_refused.rs");
     t.pass("tests/ui/land_on_a_range_not_holding_zero_over_one_grid_is_admitted.rs");
+    t.compile_fail("tests/ui/land_over_a_phase_that_names_no_member_is_refused.rs");
+    t.pass("tests/ui/land_over_a_phase_over_a_denominator_is_admitted.rs");
 }

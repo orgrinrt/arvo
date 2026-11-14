@@ -30,16 +30,17 @@ use crate::adapt::{Adaptation, DeclaredSignature};
 use crate::apply::{Dither, Exact, panic_on_overflow};
 use crate::format::{Format, is_one_progression, radix, step_exponent};
 use crate::overflow::{Overflow, Policy};
-use crate::placing::{Reduced, over, positioned, reduced_phase, saturated, times};
+use crate::placing::{Placed, Reduced, admitted_phase, positioned, saturated, times};
 use crate::quantum::{Exponent, Magnitude, Quantum};
 use crate::slots::Slots;
-use crate::wide::Wide;
+use crate::wide::{Divided, Wide};
 
 /// A point of the ambient domain with no magnitude in it: `num / den * radix^power`.
 ///
 /// The denominator is non-zero by its type, so a point always names a ratio and
-/// building one checks nothing.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+/// building one checks nothing. It has no equality: equality of the parts would
+/// call `1/2` and `2/4` different, and nothing here asks whether two points are one.
+#[derive(Clone, Copy, Debug)]
 pub struct Scaled {
     num:   i128,
     den:   NonZeroU128,
@@ -137,38 +138,36 @@ impl<S: DeclaredSignature> Landable<S> {
 /// has one magnitude, so there `land` is the rounding and the range question of
 /// `panic_on_overflow`, and the completion of `adapt` past the range.
 ///
-/// Nothing where the phase names no member, or where the top magnitude's position
-/// is not formed in the four limbs short of being provably past the slot index.
+/// Nothing where the walk meets a magnitude whose position the four limbs neither
+/// form nor show to be past the range, since the point may sit there.
 #[inline]
 pub const fn land<S: DeclaredSignature>(at: Scaled, dither: Dither) -> Maybe<Landing> {
+    let () = <S::Format as Format>::ADMITTED;
     let () = <<S::Format as Format>::Slots as Slots>::ADMITTED;
     let () = Landable::<S>::ADMITTED;
-    let Maybe::Is(phase) = reduced_phase::<S::Format>() else {
+    let Maybe::Is(distance) = distance::<S::Format>(at, admitted_phase::<S::Format>()) else {
         return Maybe::Isnt;
     };
-    let count = <<S::Format as Format>::Quantum as Quantum>::MAGNITUDES.count();
-    let mut i = first_candidate::<S::Format>(at, phase);
-    while i < count {
+    let wraps = matches!(
+        <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY,
+        Policy::Wrap
+    );
+    let last = <<S::Format as Format>::Quantum as Quantum>::MAGNITUDES.count() - 1;
+    let start = first_candidate::<S::Format>(distance);
+    let mut i = if start > last { last } else { start };
+    loop {
         let magnitude = finest_first::<S::Format>(i);
-        if let Maybe::Is(exact) = position_at::<S::Format>(at, phase, magnitude)
-            && !panic_on_overflow::<S>(exact, dither).get()
-        {
+        let Maybe::Is(exact) = position_at::<S::Format>(distance, magnitude, wraps) else {
+            return Maybe::Isnt;
+        };
+        // The top magnitude takes what no finer one holds, past the range or not.
+        if i == last || !panic_on_overflow::<S>(exact, dither).get() {
             return Maybe::Is(Landing {
                 magnitude,
                 exact,
             });
         }
         i += 1;
-    }
-    let top = finest_first::<S::Format>(count - 1);
-    match position_at::<S::Format>(at, phase, top) {
-        Maybe::Is(exact) => {
-            Maybe::Is(Landing {
-                magnitude: top,
-                exact,
-            })
-        },
-        Maybe::Isnt => Maybe::Isnt,
     }
 }
 
@@ -184,22 +183,101 @@ const fn finest_first<F: Format>(i: u32) -> Magnitude {
     }
 }
 
+/// The point's distance from the phase's point, `k / d0` in units of `radix^e`.
+///
+/// One quantity for every magnitude, so it is formed once and no magnitude's
+/// numerator holds two terms that cancel.
+#[derive(Clone, Copy)]
+struct Distance {
+    /// `k`, or the side on which it left the four limbs.
+    k:  Term,
+    /// `d0 = den q`, positive and under `2^191`.
+    d0: Wide,
+    /// `e = min(power, BASE)`, or `power` at a zero phase.
+    e:  i64,
+}
+
+/// A difference formed in the four limbs, or the side it left them on.
+#[derive(Clone, Copy)]
+enum Term {
+    /// The difference.
+    Formed(Wide),
+    /// At least `2^255` in magnitude, negative where it says so: one term left
+    /// the limbs while the other is under `2^255`.
+    Past(bool),
+}
+
+/// `num q radix^(power - e) - p den radix^(BASE - e)` over `den q`, with
+/// `e = min(power, BASE)` and the phase's term left out where it is zero, so a
+/// zero phase never forms a power it does not need. Nothing where both terms
+/// leave the four limbs, since neither then decides the side.
+#[inline]
+const fn distance<F: Format>(at: Scaled, phase: Reduced) -> Maybe<Distance> {
+    let r = radix::<F>().base() as u64;
+    let power = at.power.power() as i64;
+    let base = <F::Quantum as Quantum>::BASE.power() as i64;
+    let phased = phase.numerator != 0;
+    let e = if phased && base < power { base } else { power };
+    let Maybe::Is(d0) = Wide::of_unsigned(at.den.get()).times(Wide::of(phase.denominator)) else {
+        return Maybe::Isnt;
+    };
+    // Zero is zero at every shift, so its power is never formed.
+    let value = if at.num == 0 {
+        Maybe::Is(Wide::of(0))
+    } else {
+        times(
+            Wide::of(at.num).times(Wide::of(phase.denominator)),
+            power_of(r, power - e),
+        )
+    };
+    let offset = if phased {
+        times(
+            Wide::of_unsigned(at.den.get()).times(Wide::of(phase.numerator)),
+            power_of(r, base - e),
+        )
+    } else {
+        Maybe::Is(Wide::of(0))
+    };
+    // A term that left the limbs is at least `2^256`, so against the other under
+    // `2^255` it decides the side: the value's is the numerator's, and the offset
+    // is taken away, so it is negative where the phase is above zero.
+    let k = match (value, offset) {
+        (Maybe::Is(v), Maybe::Is(o)) => {
+            match v.plus(o.negated()) {
+                Maybe::Is(k) => Term::Formed(k),
+                // The two had one sign, and their sum left the limbs on it.
+                Maybe::Isnt => Term::Past(v.is_negative().get()),
+            }
+        },
+        (Maybe::Isnt, Maybe::Is(o)) if under_half(o) => Term::Past(at.num < 0),
+        (Maybe::Is(v), Maybe::Isnt) if under_half(v) => Term::Past(phase.numerator > 0),
+        _ => return Maybe::Isnt,
+    };
+    Maybe::Is(Distance {
+        k,
+        d0,
+        e,
+    })
+}
+
 /// The first magnitude, counted from the finest, whose position could be in range.
 ///
 /// Every finer one puts the point past the slot range whatever the rounding, so it
-/// is not walked. With `n` and `d` the point's numerator and denominator,
-/// `|n| >= 2^(bits(n) - 1)`, `d < 2^bits(d)`, and `radix^t >= 2^(t L)` with `L` the
-/// floor of `log2 radix` for `t >= 0` and its ceiling for `t < 0`, so a shift
-/// `t = power - step` with `t L + bits(n) - 1 - bits(d)` at or above
-/// `max(bits(range), 64) + 2` names a value term past twice the range's largest
-/// magnitude. The phase's term is at most `2^63` slots wherever `BASE - step` is
-/// not above zero, which is every magnitude of a rising law, so with the rounding's
-/// one slot the position is past the range there. A falling law with a phase is
-/// walked from its finest magnitude, where that term is largest.
+/// is not walked. At the magnitude of step `radix^s`, with `m = e - s`, the
+/// position is `k radix^m / d0`, and `|k| >= 2^(bits(k) - 1)`, `d0 < 2^bits(d0)`
+/// and `radix^m >= 2^(m L)` with `L` the floor of `log2 radix` for `m >= 0` and
+/// its ceiling below. So a shift with `m L + bits(k) - 1 - bits(d0)` at or above
+/// `max(bits(range), 64) + 2` names a position past twice the range's largest
+/// magnitude, the rounding's one slot included. A `k` past the limbs counts as 256
+/// bits, fewer than it has. The phase is inside `k`, so this holds on every law.
 #[inline]
-const fn first_candidate<F: Format>(at: Scaled, phase: Reduced) -> u32 {
+const fn first_candidate<F: Format>(distance: Distance) -> u32 {
     let slope = <F::Quantum as Quantum>::SLOPE.power() as i64;
-    if at.num == 0 || slope == 0 || (slope < 0 && phase.numerator != 0) {
+    let k_bits = match distance.k {
+        Term::Formed(k) => k.bits() as i64,
+        Term::Past(_) => 256,
+    };
+    if k_bits == 0 || slope == 0 {
         return 0;
     }
     let reach = {
@@ -212,19 +290,17 @@ const fn first_candidate<F: Format>(at: Scaled, phase: Reduced) -> u32 {
     let r = radix::<F>().base();
     let floor_log = (u32::BITS - 1 - r.leading_zeros()) as i64;
     let ceil_log = if r.is_power_of_two() { floor_log } else { floor_log + 1 };
-    let numerator_bits = (u128::BITS - at.num.unsigned_abs().leading_zeros()) as i64;
-    let denominator_bits = (u128::BITS - at.den.get().leading_zeros()) as i64;
     let finest = step_exponent::<F>(finest_first::<F>(0)).power() as i64;
-    // The smallest shift at which `t L(t)` reaches the bound.
-    let bound = reach + 2 - (numerator_bits - 1 - denominator_bits);
+    // The smallest shift at which `m L(m)` reaches the bound.
+    let bound = reach + 2 - (k_bits - 1 - distance.d0.bits() as i64);
     let least = if bound > 0 {
         (bound + floor_log - 1) / floor_log
     } else {
         -((-bound) / ceil_log)
     };
-    // The `i`-th magnitude's shift is `power - finest - |slope| i`, so the ones
+    // The `i`-th magnitude's shift is `e - finest - |slope| i`, so the ones
     // skipped are those with `|slope| i` at most this.
-    let room = at.power.power() as i64 - finest - least;
+    let room = distance.e - finest - least;
     if room < 0 {
         return 0;
     }
@@ -252,79 +328,82 @@ const fn under_half(value: Wide) -> bool {
     matches!(magnitude.ordering(half), Ordering::Less)
 }
 
-/// The end of the index on one side, where the divisor is under `2^128` and so a
-/// numerator of at least `2^255` puts the position at least `2^127` slots out.
+/// Whether a numerator of at least `2^255` over `divisor` is past the slot range
+/// of `F`: so where the divisor times one more than the range's largest magnitude
+/// is under `2^255`.
 #[inline]
-const fn past(divisor: Wide, negative: bool) -> Maybe<Exact> {
-    match divisor.unsigned() {
-        Maybe::Is(_) => Maybe::Is(saturated(negative)),
-        Maybe::Isnt => Maybe::Isnt,
-    }
+const fn past_the_range<F: Format>(divisor: Wide) -> bool {
+    let lo = <F::Slots as Slots>::MIN.index().unsigned_abs();
+    let hi = <F::Slots as Slots>::MAX.index().unsigned_abs();
+    let reach = if lo > hi { lo } else { hi };
+    matches!(divisor.times(Wide::of_unsigned(reach + 1)), Maybe::Is(v) if under_half(v))
 }
 
-/// The point's exact position on the grid of `magnitude`, the end of the index on
-/// its side where it is past the index, or nothing where it is not formed.
+/// The point's exact position on the grid of `magnitude`, or nothing where the
+/// four limbs neither form it nor show it past the range.
 ///
-/// A member there is `p/q radix^BASE + slot radix^s`, so with `t = power - s` and
-/// `b = BASE - s` the position is `num/den radix^t - p/q radix^b`. Over one
-/// denominator by `c = max(0, -t, -b)`, with `b` left out at a zero phase, it is
-/// `num q radix^(t + c) - p den radix^(b + c)` over `D = den q radix^c`. Where one
-/// term or their difference leaves the four limbs while the rest is under `2^255`
-/// and `D` is under `2^128`, the position is past the index on the side of what
-/// left.
+/// With `m = e - s` for the step `radix^s`, the position is `k radix^max(m, 0)`
+/// over `d0 radix^max(-m, 0)`. Past the index it is the end of the index on its
+/// side, which `adapt` pins at the range's end; under wrapping it is the floor
+/// reduced modulo the range's count onto the range, the remainder kept, since a
+/// wrap reads the residue and the end has lost it.
 #[inline]
-const fn position_at<F: Format>(at: Scaled, phase: Reduced, magnitude: Magnitude) -> Maybe<Exact> {
+const fn position_at<F: Format>(
+    distance: Distance,
+    magnitude: Magnitude,
+    wraps: bool,
+) -> Maybe<Exact> {
     let r = radix::<F>().base() as u64;
-    let s = step_exponent::<F>(magnitude).power() as i64;
-    let t = at.power.power() as i64 - s;
-    let b = <F::Quantum as Quantum>::BASE.power() as i64 - s;
-    let phased = phase.numerator != 0;
-    let mut c = if t < 0 { -t } else { 0 };
-    if phased && -b > c {
-        c = -b;
-    }
-    let divisor = match times(
-        Wide::of_unsigned(at.den.get()).times(Wide::of(phase.denominator)),
-        power_of(r, c),
-    ) {
-        Maybe::Is(v) if !v.is_zero().get() => v,
-        _ => return Maybe::Isnt,
-    };
-    // Zero is zero at every shift, so its power is never formed.
-    let value = if at.num == 0 {
-        Maybe::Is(Wide::of(0))
+    let m = distance.e - step_exponent::<F>(magnitude).power() as i64;
+    let divisor = if m < 0 {
+        match times(Maybe::Is(distance.d0), power_of(r, -m)) {
+            Maybe::Is(v) => v,
+            Maybe::Isnt => return Maybe::Isnt,
+        }
     } else {
-        times(
-            Wide::of(at.num).times(Wide::of(phase.denominator)),
-            power_of(r, t + c),
-        )
+        distance.d0
     };
-    let offset = if phased {
-        times(
-            Wide::of_unsigned(at.den.get()).times(Wide::of(phase.numerator)),
-            power_of(r, b + c),
-        )
-    } else {
-        Maybe::Is(Wide::of(0))
+    let numerator = match distance.k {
+        Term::Formed(k) if m > 0 => times(Maybe::Is(k), power_of(r, m)),
+        Term::Formed(k) => Maybe::Is(k),
+        Term::Past(negative) => {
+            return if !wraps && past_the_range::<F>(divisor) {
+                Maybe::Is(saturated(negative))
+            } else {
+                Maybe::Isnt
+            };
+        },
     };
-    // A term that left the limbs is at least `2^256`, so against the other under
-    // `2^255` it decides the sign: the value's is the numerator's, and the offset
-    // is taken away, so it is negative where the phase is above zero.
-    let numerator = match (value, offset) {
-        (Maybe::Is(v), Maybe::Is(o)) => {
-            match v.plus(o.negated()) {
-                Maybe::Is(n) => n,
-                // The two had one sign, and their sum left the limbs on it.
-                Maybe::Isnt => return past(divisor, v.is_negative().get()),
+    let Maybe::Is(numerator) = numerator else {
+        // `k radix^m` left the limbs, so it is at least `2^256` on `k`'s side.
+        let negative = matches!(distance.k, Term::Formed(k) if k.is_negative().get());
+        return if !wraps && past_the_range::<F>(divisor) {
+            Maybe::Is(saturated(negative))
+        } else {
+            Maybe::Isnt
+        };
+    };
+    let Divided {
+        quotient,
+        remainder,
+    } = numerator.floor_divided(divisor);
+    match quotient.index() {
+        Maybe::Is(slot) => Maybe::Is(positioned(divisor, Placed::At(slot, remainder))),
+        Maybe::Isnt if !wraps => Maybe::Is(saturated(quotient.is_negative().get())),
+        Maybe::Isnt => {
+            let lo = <F::Slots as Slots>::MIN.index();
+            let count = <F::Slots as Slots>::MAX.index() - lo + 1;
+            let Maybe::Is(shifted) = quotient.plus(Wide::of(-lo)) else {
+                return Maybe::Isnt;
+            };
+            match shifted.floor_divided(Wide::of(count)).remainder.index() {
+                Maybe::Is(residue) => {
+                    Maybe::Is(positioned(divisor, Placed::At(lo + residue, remainder)))
+                },
+                Maybe::Isnt => Maybe::Isnt,
             }
         },
-        (Maybe::Isnt, Maybe::Is(o)) if under_half(o) => return past(divisor, at.num < 0),
-        (Maybe::Is(v), Maybe::Isnt) if under_half(v) => {
-            return past(divisor, phase.numerator > 0);
-        },
-        _ => return Maybe::Isnt,
-    };
-    Maybe::Is(positioned(divisor, over(numerator, divisor)))
+    }
 }
 
 #[cfg(test)]

@@ -81,6 +81,18 @@ fn a_falling_law_s_top_magnitude_is_its_first() {
         read::<Under<FallingFour, Floor>>(-1000, 3),
         Maybe::Is((top, Slot::at(-8)))
     );
+    assert_eq!(
+        read::<Clamped<FallingFour, TowardZero>>(16, 0),
+        Maybe::Is((top, Slot::at(7)))
+    );
+    assert_eq!(
+        read::<Clamped<FallingFour, Ceil>>(-18, 0),
+        Maybe::Is((top, Slot::at(-8)))
+    );
+    assert_eq!(
+        read::<Clamped<FallingFour, Floor>>(-1000, 3),
+        Maybe::Is((top, Slot::at(-8)))
+    );
 }
 
 #[test]

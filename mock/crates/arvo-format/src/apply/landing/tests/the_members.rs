@@ -14,7 +14,7 @@
 use super::*;
 
 /// How many members of `F` land anywhere but on themselves, under the mode `R`.
-fn strays<F: Format, R: crate::rounding::Rounding>() -> usize
+fn strays<F: Format, R: crate::rounding::Rounding>(dither: Dither) -> usize
 where
     Under<F, R>: DeclaredSignature<Format = F>,
 {
@@ -64,10 +64,7 @@ where
                 }
             }
             let (at, slot) = want.expect("a member is held at its own magnitude");
-            let got = land::<Under<F, R>>(
-                Scaled::of(num, nz(q as u128), Exponent::of(e)),
-                Dither::UNUSED,
-            );
+            let got = land::<Under<F, R>>(Scaled::of(num, nz(q as u128), Exponent::of(e)), dither);
             let lands = matches!(got, Maybe::Is(l) if l.magnitude() == at
                 && l.exact() == Exact::on_grid(Slot::at(slot)));
             wrong += usize::from(!lands);
@@ -76,17 +73,33 @@ where
     wrong
 }
 
+/// How many members of `F` stray, summed over every mode, the stochastic one at
+/// three dithers.
+macro_rules! strays_in_every_mode {
+    ($format:ty) => {{
+        let mut total = strays::<$format, TowardZero>(Dither::UNUSED);
+        total += strays::<$format, Floor>(Dither::UNUSED);
+        total += strays::<$format, Ceil>(Dither::UNUSED);
+        total += strays::<$format, HalfUp>(Dither::UNUSED);
+        total += strays::<$format, HalfEven>(Dither::UNUSED);
+        for dither in
+            [Dither::UNUSED, Dither::at(Fraction::of(1, 3)), Dither::at(Fraction::of(2, 3))]
+        {
+            total += strays::<$format, Stochastic>(dither);
+        }
+        total
+    }};
+}
+
 #[test]
 fn every_member_of_a_phased_law_lands_on_itself() {
-    assert_eq!(strays::<PhasedFour, TowardZero>(), 0);
-    assert_eq!(strays::<PhasedFour, HalfEven>(), 0);
-    assert_eq!(strays::<FallingPhased, TowardZero>(), 0);
-    assert_eq!(strays::<FallingPhased, Ceil>(), 0);
+    assert_eq!(strays_in_every_mode!(PhasedFour), 0);
+    assert_eq!(strays_in_every_mode!(FallingPhased), 0);
 }
 
 #[test]
 fn every_member_of_a_law_through_zero_lands_on_itself() {
-    assert_eq!(strays::<Floating<4, -6, 8>, Floor>(), 0);
-    assert_eq!(strays::<FallingFour, HalfUp>(), 0);
-    assert_eq!(strays::<DecimalFive, HalfEven>(), 0);
+    assert_eq!(strays_in_every_mode!(Floating<4, -6, 8>), 0);
+    assert_eq!(strays_in_every_mode!(FallingFour), 0);
+    assert_eq!(strays_in_every_mode!(DecimalFive), 0);
 }

@@ -34,6 +34,7 @@ use crate::slots::{Signed, Slot};
 use crate::wide::{Divided, Wide};
 
 mod past_the_ends;
+mod the_limits;
 mod the_members;
 mod the_one_progression;
 mod the_walk_start;
@@ -137,6 +138,15 @@ enum Formed {
     Unknown,
 }
 
+/// A quantity read in the four limbs: formed, at least `2^255` on a known side,
+/// or neither.
+#[derive(Clone, Copy)]
+enum Read {
+    Formed(Wide),
+    Past(bool),
+    Unknown,
+}
+
 /// `num * a * r^e` in the four limbs, with `e` at least zero.
 fn term(r: u64, num: Wide, a: Wide, e: i32) -> Maybe<Wide> {
     match (num.times(a), Wide::power(r, e as u32)) {
@@ -156,9 +166,13 @@ fn small(v: Wide) -> bool {
 
 /// The point's position at `magnitude`, from the membership predicate.
 ///
-/// `x - phase radix^BASE = slot radix^s`, each term written over the least of the
-/// three exponents `e`, so every power is a whole one: the position is
-/// `num q r^(k - e) - p den r^(BASE - e)` over `den q r^(s - e)`.
+/// `x - phase radix^BASE = slot radix^s`. The left side is one quantity, the
+/// point's distance from the phase's point, written over `den q` in units of
+/// `radix^e` with `e` the lesser of `k` and `BASE`, so its powers are whole:
+/// `num q r^(k - e) - p den r^(BASE - e)`. At the step `radix^s` it is scaled by
+/// `radix^(e - s)`, onto the numerator or the denominator by its sign. A numerator
+/// of at least `2^255` is past the range where the divisor times one more than the
+/// range's largest magnitude is under `2^255`; the rest it cannot form is unknown.
 fn placed<F: Format>(num: i128, den: u128, k: i32, magnitude: Magnitude) -> Formed {
     let r = radix::<F>().base() as u64;
     let (mut p, mut q) = (F::PHASE.numerator() as i128, F::PHASE.denominator() as i128);
@@ -166,39 +180,67 @@ fn placed<F: Format>(num: i128, den: u128, k: i32, magnitude: Magnitude) -> Form
         (p, q) = (-p, -q);
     }
     let base = <F::Quantum as Quantum>::BASE.power();
-    let s = step_exponent::<F>(magnitude).power();
-    let e = if p == 0 { k.min(s) } else { k.min(s).min(base) };
-    let Maybe::Is(d) = term(r, Wide::of_unsigned(den), Wide::of(q), s - e) else {
+    let e = if p == 0 { k } else { k.min(base) };
+    let shift = e - step_exponent::<F>(magnitude).power();
+    let Maybe::Is(divisor) = term(r, Wide::of_unsigned(den), Wide::of(q), (-shift).max(0)) else {
         return Formed::Unknown;
     };
+    let reach = <F::Slots as Slots>::MIN
+        .index()
+        .unsigned_abs()
+        .max(<F::Slots as Slots>::MAX.index().unsigned_abs());
+    let past_the_range =
+        matches!(divisor.times(Wide::of_unsigned(reach + 1)), Maybe::Is(v) if small(v));
     let value = term(r, Wide::of(num), Wide::of(q), k - e);
     let offset = if p == 0 {
         Maybe::Is(Wide::of(0))
     } else {
         term(r, Wide::of(p), Wide::of_unsigned(den), base - e)
     };
-    let narrow = matches!(d.unsigned(), Maybe::Is(_));
-    let n = match (value, offset) {
+    // The distance, or the side of one at least `2^255` where a side is known.
+    let distance = match (value, offset) {
         (Maybe::Is(v), Maybe::Is(o)) => {
             match v.plus(o.negated()) {
-                Maybe::Is(n) => n,
-                Maybe::Isnt if narrow => return Formed::Past(v.is_negative().get()),
-                Maybe::Isnt => return Formed::Unknown,
+                Maybe::Is(distance) => Read::Formed(distance),
+                Maybe::Isnt => Read::Past(v.is_negative().get()),
             }
         },
-        (Maybe::Isnt, Maybe::Is(o)) if narrow && small(o) && num != 0 => {
-            return Formed::Past(num < 0);
+        (Maybe::Isnt, Maybe::Is(o)) if small(o) && num != 0 => Read::Past(num < 0),
+        (Maybe::Is(v), Maybe::Isnt) if small(v) => Read::Past(p > 0),
+        _ => Read::Unknown,
+    };
+    let numerator = match distance {
+        Read::Formed(distance) if distance.is_zero().get() => Read::Formed(distance),
+        Read::Formed(distance) => {
+            match Wide::power(r, shift.max(0) as u32) {
+                Maybe::Is(scale) => {
+                    match distance.times(scale) {
+                        Maybe::Is(n) => Read::Formed(n),
+                        Maybe::Isnt => Read::Past(distance.is_negative().get()),
+                    }
+                },
+                Maybe::Isnt => Read::Past(distance.is_negative().get()),
+            }
         },
-        (Maybe::Is(v), Maybe::Isnt) if narrow && small(v) => return Formed::Past(p > 0),
-        _ => return Formed::Unknown,
+        other => other,
+    };
+    let n = match numerator {
+        Read::Formed(n) => n,
+        Read::Past(negative) if past_the_range => return Formed::Past(negative),
+        Read::Past(_) | Read::Unknown => return Formed::Unknown,
     };
     let Divided {
         quotient,
         remainder,
-    } = n.floor_divided(d);
+    } = n.floor_divided(divisor);
     match quotient.index() {
         Maybe::Is(slot) if remainder.is_zero().get() => Formed::At(Exact::on_grid(Slot::at(slot))),
-        Maybe::Is(slot) => Formed::At(Exact::at(Slot::at(slot), Remainder::reduced(remainder, d))),
+        Maybe::Is(slot) => {
+            Formed::At(Exact::at(
+                Slot::at(slot),
+                Remainder::reduced(remainder, divisor),
+            ))
+        },
         Maybe::Isnt => Formed::Past(quotient.is_negative().get()),
     }
 }
@@ -210,11 +252,13 @@ enum Want {
     At(Magnitude, Exact),
     /// Past an end: the top magnitude's position, which `adapt` pins.
     Top(Magnitude, Exact),
+    /// Nowhere: a magnitude the four limbs cannot read comes before any that holds
+    /// the point, or the top cannot be read and none holds it.
+    Nothing,
 }
 
-/// Where the oracle lands the point, or `Isnt` where a magnitude it cannot place
-/// could change its answer.
-fn walked<S: DeclaredSignature>(num: i128, den: u128, k: i32, dither: Dither) -> Maybe<Want> {
+/// Where the oracle lands the point.
+fn walked<S: DeclaredSignature>(num: i128, den: u128, k: i32, dither: Dither) -> Want {
     let count = <<S::Format as Format>::Quantum as Quantum>::MAGNITUDES.count();
     let mut best: Maybe<(i32, Magnitude, Exact)> = Maybe::Isnt;
     let mut unknown: Maybe<i32> = Maybe::Isnt;
@@ -238,16 +282,13 @@ fn walked<S: DeclaredSignature>(num: i128, den: u128, k: i32, dither: Dither) ->
     }
     match (best, unknown) {
         // A magnitude the oracle cannot place matters only where it is finer.
-        (Maybe::Is((s, ..)), Maybe::Is(u)) if u < s => Maybe::Isnt,
-        (Maybe::Is((_, m, e)), _) => Maybe::Is(Want::At(m, e)),
-        (Maybe::Isnt, Maybe::Is(_)) => Maybe::Isnt,
-        (Maybe::Isnt, Maybe::Isnt) => {
+        (Maybe::Is((s, ..)), Maybe::Is(u)) if u < s => Want::Nothing,
+        (Maybe::Is((_, m, e)), _) => Want::At(m, e),
+        (Maybe::Isnt, _) => {
             match top {
-                Maybe::Is((_, m, Formed::At(e))) => Maybe::Is(Want::Top(m, e)),
-                Maybe::Is((_, m, Formed::Past(negative))) => {
-                    Maybe::Is(Want::Top(m, saturated(negative)))
-                },
-                _ => Maybe::Isnt,
+                Maybe::Is((_, m, Formed::At(e))) => Want::Top(m, e),
+                Maybe::Is((_, m, Formed::Past(negative))) => Want::Top(m, saturated(negative)),
+                _ => Want::Nothing,
             }
         },
     }
@@ -308,7 +349,7 @@ impl Points for Far {
     }
 }
 
-/// The same numerators over the shifts a phased decimal law of 50 magnitudes
+/// The same numerators over the shifts a phased decimal law of 30 magnitudes
 /// forms in the four limbs: its denominator carries `10^(s - BASE)`, so a span
 /// of 300 magnitudes holds no position past the 77th.
 struct Near;
@@ -319,16 +360,14 @@ impl Points for Near {
     }
 }
 
-/// How many points land elsewhere than the oracle says, under `S`. At least half
-/// of the points are ones the oracle places, so a sweep it cannot read fails.
+/// How many points land elsewhere than the oracle says, under `S`. Every point is
+/// counted, the ones the oracle lands nowhere against `land` landing nothing, and
+/// at most half of them are those, so a sweep the four limbs cannot read fails.
 fn misses<S: DeclaredSignature, P: Points>(dither: Dither) -> usize {
-    let (mut wrong, mut placed, mut all) = (0, 0, 0);
+    let (mut wrong, mut nowhere, mut all) = (0, 0, 0);
     P::each(|num, den, k| {
         all += 1;
-        let Maybe::Is(want) = walked::<S>(num, den, k, dither) else {
-            return;
-        };
-        placed += 1;
+        let want = walked::<S>(num, den, k, dither);
         let got = land::<S>(Scaled::of(num, nz(den), Exponent::of(k)), dither);
         let agrees = match (got, want) {
             (Maybe::Is(l), Want::At(m, e)) => {
@@ -341,13 +380,15 @@ fn misses<S: DeclaredSignature, P: Points>(dither: Dither) -> usize {
             (Maybe::Is(l), Want::Top(m, e)) => {
                 l.magnitude() == m && adapt::<S>(l.exact(), dither) == adapt::<S>(e, dither)
             },
-            (Maybe::Isnt, _) => false,
+            (Maybe::Isnt, Want::Nothing) => true,
+            (Maybe::Isnt, _) | (Maybe::Is(_), Want::Nothing) => false,
         };
+        nowhere += usize::from(matches!(want, Want::Nothing));
         wrong += usize::from(!agrees);
     });
     assert!(
-        placed * 2 >= all,
-        "the oracle placed {placed} of {all} points"
+        nowhere * 2 <= all,
+        "the oracle lands {nowhere} of {all} points nowhere"
     );
     wrong
 }
@@ -438,40 +479,4 @@ fn a_point_past_the_host_integer_s_positions_still_lands() {
         matches!(nearest, Maybe::Is(l) if l.magnitude() == Magnitude::at(3)
         && adapt::<Under<Floating<4, -6, 8>, HalfEven>>(l.exact(), Dither::UNUSED) == Slot::at(4))
     );
-}
-
-#[test]
-fn a_point_whose_denominator_passes_128_bits_still_lands() {
-    // `7 / (2^128 - 1)` at `2^-20` on the integer grid is `D = (2^128 - 1) 2^20`,
-    // and `7` shares no factor with it, so the remainder keeps a denominator past
-    // the host's 128-bit integer: slot zero, a little above it.
-    let point = Scaled::of(7, nz(u128::MAX), Exponent::of(-20));
-    let Maybe::Is(down) = land::<Under<Integer<8>, TowardZero>>(point, Dither::UNUSED) else {
-        panic!("the point is in range at the one magnitude");
-    };
-    let Maybe::Is(up) = land::<Under<Integer<8>, Ceil>>(point, Dither::UNUSED) else {
-        panic!("the point is in range at the one magnitude");
-    };
-    assert_eq!(down.exact().slot(), Slot::ZERO);
-    assert!(!down.exact().is_on_grid().get());
-    assert_eq!(
-        adapt::<Under<Integer<8>, TowardZero>>(down.exact(), Dither::UNUSED),
-        Slot::ZERO
-    );
-    assert_eq!(
-        adapt::<Under<Integer<8>, Ceil>>(up.exact(), Dither::UNUSED),
-        Slot::at(1)
-    );
-    // The pair is `7 / D` in lowest terms, and the accessors hand out neither
-    // half, since the denominator has no host integer to be read back in.
-    let Maybe::Is(scale) = Wide::power(2, 20) else {
-        panic!("the power is formed in the four limbs");
-    };
-    let Maybe::Is(den) = Wide::of_unsigned(u128::MAX).times(scale) else {
-        panic!("the denominator is formed in the four limbs");
-    };
-    let remainder = down.exact().part;
-    assert_eq!(remainder, Remainder::reduced(Wide::of(7), den));
-    assert!(matches!(remainder.numerator(), Maybe::Isnt));
-    assert!(matches!(remainder.denominator(), Maybe::Isnt));
 }

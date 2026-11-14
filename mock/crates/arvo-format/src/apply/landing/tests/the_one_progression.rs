@@ -32,6 +32,8 @@ law!(Two, 2, 1);
 law!(Three, 3, 1);
 law!(TwoByFour, 2, 2);
 law!(ThreeByFour, 3, 2);
+law!(FallingTwo, 2, -1);
+law!(FallingThree, 3, -1);
 
 macro_rules! range {
     ($name:ident, $min:literal, $max:literal, $width:literal) => {
@@ -47,6 +49,8 @@ macro_rules! range {
 
 range!(Around, -1, 1, 2);
 range!(One, 1, 1, 1);
+range!(MinusOne, -1, -1, 1);
+range!(BelowZero, -2, -1, 2);
 
 macro_rules! set {
     ($name:ident, $quantum:ty, $slots:ty) => {
@@ -71,6 +75,29 @@ set!(BitThree, Three, Unsigned<1>);
 set!(TwoBitsThree, Three, Unsigned<2>);
 set!(AroundThree, Three, Around);
 set!(Floats, Indexed<-4, 6>, Signed<4>);
+set!(BitFallingTwo, FallingTwo, Unsigned<1>);
+set!(BitFallingThree, FallingThree, Unsigned<1>);
+set!(MinusOneTwo, Two, MinusOne);
+set!(MinusOneThree, Three, MinusOne);
+set!(BelowZeroTwo, Two, BelowZero);
+
+/// A decimal set: the same slots over the same law hold other members.
+macro_rules! decimal {
+    ($name:ident, $quantum:ty, $slots:ty) => {
+        struct $name;
+
+        impl Format for $name {
+            type Ambient = DecimalRationals;
+            type Quantum = $quantum;
+            type Slots = $slots;
+
+            const PHASE: Phase = Phase::ZERO;
+        }
+    };
+}
+
+decimal!(DecimalBitTwo, Two, Unsigned<1>);
+decimal!(DecimalOneTwo, Two, One);
 
 /// Whether the members of `F`, written out in finest steps, are equally spaced.
 fn written_out<F: Format>() -> bool {
@@ -146,4 +173,38 @@ fn a_set_with_a_gap_is_not_one_progression() {
     ] {
         assert!(!written);
     }
+}
+
+#[test]
+fn a_falling_law_is_read_as_the_rising_one_it_mirrors() {
+    // Two magnitudes a factor of two apart hold `{0, 1}` and `{0, 2}` in finest
+    // steps, whichever way the step runs, and three add a gap at 3.
+    assert!(is_one_progression::<BitFallingTwo>().get());
+    assert!(!is_constant_family::<FallingTwo>().get());
+    assert!(written_out::<BitFallingTwo>());
+    assert!(!is_one_progression::<BitFallingThree>().get());
+    assert!(!written_out::<BitFallingThree>());
+}
+
+#[test]
+fn the_radix_decides_whether_the_steps_meet() {
+    // In tenths the bit holds `{0, 1, 10}`, where in halves it held `{0, 1, 2}`.
+    assert!(is_one_progression::<BitTwo>().get());
+    assert!(!is_one_progression::<DecimalBitTwo>().get());
+    assert!(!written_out::<DecimalBitTwo>());
+    // Two members are one progression in any radix.
+    assert!(is_one_progression::<DecimalOneTwo>().get());
+    assert!(written_out::<DecimalOneTwo>());
+}
+
+#[test]
+fn a_range_on_one_side_of_zero_is_one_progression_only_while_it_holds_two_members() {
+    // `{-1, -2}` over two magnitudes, `{-1, -2, -4}` over three, and
+    // `{-1, -2, -4}` again from the two slots `-2` and `-1` over two.
+    assert!(is_one_progression::<MinusOneTwo>().get());
+    assert!(written_out::<MinusOneTwo>());
+    assert!(!is_one_progression::<MinusOneThree>().get());
+    assert!(!written_out::<MinusOneThree>());
+    assert!(!is_one_progression::<BelowZeroTwo>().get());
+    assert!(!written_out::<BelowZeroTwo>());
 }

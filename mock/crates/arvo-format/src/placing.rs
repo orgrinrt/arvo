@@ -38,17 +38,31 @@ pub(crate) struct Reduced {
 /// The fraction's sign moves onto the numerator before it is reduced.
 #[inline]
 pub(crate) const fn reduced_phase<F: Format>() -> Maybe<Reduced> {
-    let num = F::PHASE.numerator() as i128;
-    let den = F::PHASE.denominator() as i128;
-    if den == 0 {
+    if !F::PHASE.denotes().get() {
         return Maybe::Isnt;
     }
+    Maybe::Is(reduced::<F>())
+}
+
+/// The phase of `F` in lowest terms, for a step that has forced `F`'s admission,
+/// so the denominator is not zero and nothing is asked of it.
+#[inline]
+pub(crate) const fn admitted_phase<F: Format>() -> Reduced {
+    let () = <F as Format>::ADMITTED;
+    reduced::<F>()
+}
+
+/// The reduction itself, over a denominator the caller knows is not zero.
+#[inline]
+const fn reduced<F: Format>() -> Reduced {
+    let num = F::PHASE.numerator() as i128;
+    let den = F::PHASE.denominator() as i128;
     let (num, den) = if den < 0 { (-num, -den) } else { (num, den) };
     let common = greatest_common_divisor(num.abs(), den);
-    Maybe::Is(Reduced {
+    Reduced {
         numerator:   num / common,
         denominator: den / common,
-    })
+    }
 }
 
 /// The radix of `F` raised to the two halves of its quantum's exponent `e`.

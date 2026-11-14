@@ -27,7 +27,7 @@ use arvo_format::adapt::DeclaredSignature;
 use arvo_format::apply::{Dither, Exact, Remainder, Scaled, adapt, panic_on_overflow};
 use arvo_format::format::{Format, radix, step_exponent};
 use arvo_format::quantum::{Exponent, Magnitude, Quantum};
-use arvo_format::slots::Slot;
+use arvo_format::slots::{Slot, Slots};
 use notko::Maybe;
 
 /// A value as a significand and an exponent of the format's radix.
@@ -76,17 +76,20 @@ pub trait Landing {
     ///
     /// The search, finest magnitude first, for the first one at which the
     /// position does not overflow, and the top magnitude's answer as the overflow
-    /// region where none holds it. Returns nothing only where the value cannot be
-    /// positioned at any magnitude in the slot index's integer, which the parity
-    /// inputs never reach and the arms assert.
+    /// region where none holds it. A magnitude whose position the index cannot hold
+    /// is passed only where it is provably past the range, and otherwise the search
+    /// ends with nothing, as `land` does, which the parity inputs never reach and
+    /// the arms assert.
     fn landed(num: i128, den: i128, k: i32) -> Option<Landed> {
         let r = radix::<Self::Format>().base();
         let count = <<Self::Format as Format>::Quantum as Quantum>::MAGNITUDES.count();
         let mut top = None;
         for m in 0 .. count {
             let s = step_exponent::<Self::Format>(Magnitude::at(m)).power();
-            let Some(exact) = position(r, num, den, k, s) else {
-                continue;
+            let exact = match position::<Self::Format>(r, num, den, k, s) {
+                Positioned::At(exact) => exact,
+                Positioned::Past => continue,
+                Positioned::Unknown => return None,
             };
             if !Self::overflows(exact) {
                 return Some(Landed {
@@ -142,16 +145,44 @@ impl<S: DeclaredSignature> Landing for S {
     }
 }
 
-/// The position of `num / den * radix^k` on the grid of step `radix^s`, or
-/// nothing where the scaled numerator or denominator leaves the index.
-fn position(r: u32, num: i128, den: i128, k: i32, s: i32) -> Option<Exact> {
+/// Where `num / den * radix^k` sits on the grid of step `radix^s`.
+enum Positioned {
+    /// At this position.
+    At(Exact),
+    /// Past the slot range: the scaled numerator left the index while the
+    /// denominator times the range's largest magnitude plus one did not.
+    Past,
+    /// Neither formed nor provably past.
+    Unknown,
+}
+
+/// The position of `num / den * radix^k` on the grid of step `radix^s`, from
+/// the index of `F`.
+fn position<F: Format>(r: u32, num: i128, den: i128, k: i32, s: i32) -> Positioned {
     let shift = k - s;
-    let (n, d) = if shift >= 0 {
-        (num.checked_mul(power(r, shift as u32)?)?, den)
+    let formed = if shift >= 0 {
+        power(r, shift as u32)
+            .and_then(|scale| num.checked_mul(scale))
+            .map(|n| (n, den))
     } else {
-        (num, den.checked_mul(power(r, (-shift) as u32)?)?)
+        power(r, (-shift) as u32)
+            .and_then(|scale| den.checked_mul(scale))
+            .map(|d| (num, d))
     };
-    Some(Exact::at(
+    let Some((n, d)) = formed else {
+        let reach = <F::Slots as Slots>::MIN
+            .index()
+            .unsigned_abs()
+            .max(<F::Slots as Slots>::MAX.index().unsigned_abs());
+        // A numerator that left the index is at least `2^127` in magnitude.
+        let past = shift >= 0
+            && num != 0
+            && (den as u128)
+                .checked_mul(reach + 1)
+                .is_some_and(|bound| bound <= 1 << 127);
+        return if past { Positioned::Past } else { Positioned::Unknown };
+    };
+    Positioned::At(Exact::at(
         Slot::at(n.div_euclid(d)),
         Remainder::of(n.rem_euclid(d) as u128, d as u128),
     ))

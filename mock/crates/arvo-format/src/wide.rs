@@ -86,6 +86,20 @@ impl Wide {
         Bool::of(m[0] == 0 && m[1] == 0 && m[2] == 0 && m[3] == 0)
     }
 
+    /// How many bits the magnitude takes, zero for zero.
+    #[inline]
+    pub(crate) const fn bits(self) -> u32 {
+        let mut i = 4;
+        while i > 0 {
+            i -= 1;
+            let limb = self.magnitude[i];
+            if limb != 0 {
+                return i as u32 * 64 + (u64::BITS - limb.leading_zeros());
+            }
+        }
+        0
+    }
+
     /// The product, or nothing when it leaves the four limbs.
     #[inline]
     pub(crate) const fn times(self, other: Self) -> Maybe<Self> {
