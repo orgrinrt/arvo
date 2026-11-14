@@ -283,3 +283,113 @@ fn a_value_narrows_to_a_denominator_exactly_when_it_is_one() {
     assert_eq!(unsigned(u128::MAX).negated().negated(), unsigned(u128::MAX));
     assert_eq!(Wide::of(0).negated(), Wide::of(0));
 }
+
+/// A deterministic stream of 64-bit draws, SplitMix64.
+struct Draws(u64);
+
+impl Draws {
+    fn next(&mut self) -> u64 {
+        self.0 = self.0.wrapping_add(0x9E37_79B9_7F4A_7C15);
+        let mut z = self.0;
+        z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+        z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+        z ^ (z >> 31)
+    }
+}
+
+/// The oracle's value of four limbs with a sign.
+fn big_of(negative: bool, m: [u64; 4]) -> Big {
+    let low = Big::of_unsigned((m[0] as u128) | ((m[1] as u128) << 64));
+    let high = Big::of_unsigned((m[2] as u128) | ((m[3] as u128) << 64));
+    let v = high.times(Big::power(2, 128)).plus(low);
+    if negative { v.times(Big::of(-1)) } else { v }
+}
+
+/// `n` over `d` against the oracle's remainder, and multiplied back.
+fn divides_back(negative: bool, m: [u64; 4], d: u128) {
+    let n = Wide::signed(negative, m);
+    let got = n.floor_divided(d);
+    assert!(
+        got.remainder < d,
+        "{m:?} over {d}: remainder {}",
+        got.remainder
+    );
+    assert_eq!(
+        got.remainder,
+        big_of(negative, m).floor_over(d).1,
+        "{negative} {m:?} over {d}"
+    );
+    // On magnitudes, since a floored negative quotient times the divisor can pass
+    // `-2^256` where the dividend does not: `|n| = |q| d - (d - r)` below zero with a
+    // remainder, and `|q| d + r` otherwise.
+    let size = Wide::signed(false, got.quotient.magnitude);
+    let (size, rest) = if negative && got.remainder != 0 {
+        let Maybe::Is(less) = size.plus(Wide::of(-1)) else { unreachable!() };
+        (less, d - got.remainder)
+    } else {
+        (size, got.remainder)
+    };
+    let Maybe::Is(back) = size.times(unsigned(d)) else {
+        panic!("{negative} {m:?} over {d}: the quotient times the divisor left the limbs");
+    };
+    let Maybe::Is(back) = back.plus(unsigned(rest)) else {
+        panic!("{negative} {m:?} over {d}: the remainder added left the limbs");
+    };
+    assert_eq!(back, Wide::signed(false, m), "{negative} {m:?} over {d}");
+    assert_eq!(
+        got.quotient.negative,
+        negative && !got.quotient.is_zero().get()
+    );
+}
+
+#[test]
+fn a_two_limb_division_is_the_oracle_s_at_every_normalisation_and_at_the_estimate_s_edges() {
+    // Divisors with their top bit at every position from 127 down to 64, so every
+    // normalisation shift from 0 to 63, beside the two ends of the two-limb range
+    // and a divisor whose low limb is zero.
+    let mut draws = Draws(0x0D1F_0002);
+    let mut divisors = [0u128; 64 + 5];
+    for (shift, slot) in divisors[.. 64].iter_mut().enumerate() {
+        let d = ((draws.next() as u128) << 64 | draws.next() as u128) | 1 << 127;
+        *slot = d >> shift;
+    }
+    divisors[64 ..].copy_from_slice(&[
+        1 << 64,
+        (1 << 64) + 1,
+        1 << 127,
+        u128::MAX,
+        u128::MAX << 64,
+    ]);
+    let mut checked = 0;
+    for d in divisors {
+        assert!(d >> 64 != 0);
+        for _ in 0 .. 16 {
+            let m = [draws.next(), draws.next(), draws.next(), draws.next()];
+            divides_back(draws.next() & 1 == 1, m, d);
+            checked += 1;
+        }
+        // The largest dividend, where each estimate starts at its highest.
+        for negative in [false, true] {
+            divides_back(negative, [u64::MAX; 4], d);
+            divides_back(negative, [0, 0, 0, u64::MAX], d);
+            checked += 2;
+        }
+        // A quotient limb of `B - 1` at each place, plus the largest remainder,
+        // where the running remainder's top limb meets the divisor's and the
+        // estimate is corrected down.
+        for place in 0 .. 3 {
+            let mut q = [0u64; 4];
+            q[place] = u64::MAX;
+            let Maybe::Is(product) = Wide::signed(false, q).times(unsigned(d)) else {
+                continue;
+            };
+            let Maybe::Is(n) = product.plus(unsigned(d - 1)) else {
+                continue;
+            };
+            divides_back(false, n.magnitude, d);
+            divides_back(true, n.magnitude, d);
+            checked += 2;
+        }
+    }
+    assert!(checked >= 69 * 20, "{checked}");
+}

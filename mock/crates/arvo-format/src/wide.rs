@@ -162,7 +162,7 @@ impl Wide {
     /// The floor of the value over a positive `divisor`, and the remainder.
     ///
     /// A long division of the four limbs by one where the divisor is under
-    /// `2^64`, and one bit at a time from the top otherwise, then the floor: below
+    /// `2^64`, and by two limbs a quotient limb at a time otherwise, then the floor: below
     /// zero with a remainder, the quotient's magnitude grows by one and the
     /// remainder is counted from the other side. That increment cannot leave the
     /// limbs, since a remainder needs a divisor of two or more and the quotient is
@@ -235,27 +235,70 @@ const fn by_one_limb(m: Magnitude, divisor: u64) -> (Magnitude, u128) {
     (quotient, rest)
 }
 
-/// A magnitude over a divisor from `2^64` up, one bit at a time from the top.
+/// A magnitude over a divisor from `2^64` up, a limb of the quotient at a time.
 ///
-/// The running remainder is below the divisor, so doubling it and bringing the
-/// next bit down is below twice the divisor: one bit past the host's word at
-/// most, carried as `over`, and one subtraction brings it back under.
+/// The schoolbook long division with the divisor normalised, Knuth's algorithm D
+/// at two limbs. Shifting both operands left until the divisor's top bit is set
+/// makes the estimate of each quotient limb from the running remainder's top two
+/// limbs and the divisor's top limb at most two too large, and the test against
+/// the divisor's low limb then corrects it exactly: with a two-limb divisor that
+/// test compares the whole product with the whole partial remainder, so the
+/// multiply and subtract after it never borrows and needs no step back. The
+/// remainder is the last two limbs shifted back down.
 #[inline]
 const fn by_two_limbs(m: Magnitude, divisor: u128) -> (Magnitude, u128) {
-    let mut quotient = [0u64; 4];
-    let mut rest: u128 = 0;
-    let mut bit = 256;
-    while bit > 0 {
-        bit -= 1;
-        let limb = bit / 64;
-        let shift = bit % 64;
-        let over = rest >> 127 == 1;
-        rest = (rest << 1) | ((m[limb] >> shift) & 1) as u128;
-        if over || rest >= divisor {
-            rest = rest.wrapping_sub(divisor);
-            quotient[limb] |= 1 << shift;
+    // Below 64, since the divisor is at least `2^64`.
+    let shift = divisor.leading_zeros();
+    let d = divisor << shift;
+    let high = (d >> 64) as u64 as u128;
+    let low = d as u64 as u128;
+    let mut u = [0u64; 5];
+    if shift == 0 {
+        u[0] = m[0];
+        u[1] = m[1];
+        u[2] = m[2];
+        u[3] = m[3];
+    } else {
+        u[4] = m[3] >> (64 - shift);
+        let mut i = 3;
+        while i > 0 {
+            u[i] = (m[i] << shift) | (m[i - 1] >> (64 - shift));
+            i -= 1;
         }
+        u[0] = m[0] << shift;
     }
+    let mut quotient = [0u64; 4];
+    let mut j = 3;
+    while j > 0 {
+        j -= 1;
+        // The running remainder `u[j + 2], u[j + 1], u[j]` is below `d` times a
+        // limb, so its top limb is at most `high` and the estimate at most one limb
+        // and one past it.
+        let top = ((u[j + 2] as u128) << 64) | u[j + 1] as u128;
+        let mut estimate = top / high;
+        let mut rest = top % high;
+        while estimate >> 64 != 0 || estimate * low > ((rest << 64) | u[j] as u128) {
+            estimate -= 1;
+            rest += high;
+            if rest >> 64 != 0 {
+                break;
+            }
+        }
+        // `estimate` is the quotient limb, so the product is not above the
+        // running remainder and the subtraction leaves the top limb at zero.
+        let p0 = estimate * low;
+        let p1 = estimate * high + (p0 >> 64);
+        let (r0, borrow0) = u[j].overflowing_sub(p0 as u64);
+        let (t1, under1) = u[j + 1].overflowing_sub(p1 as u64);
+        let (r1, under1_again) = t1.overflowing_sub(borrow0 as u64);
+        u[j] = r0;
+        u[j + 1] = r1;
+        u[j + 2] = u[j + 2]
+            .wrapping_sub((p1 >> 64) as u64)
+            .wrapping_sub((under1 || under1_again) as u64);
+        quotient[j] = estimate as u64;
+    }
+    let rest = (((u[1] as u128) << 64) | u[0] as u128) >> shift;
     (quotient, rest)
 }
 
