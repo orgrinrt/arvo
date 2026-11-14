@@ -1,0 +1,20 @@
+cargo test -p arvo-numeral --features mutant-convert --test the_conversion_under_every_source_signature
+running 5 tests
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test no_source_signature_moves_a_binary_conversion ... FAILED
+test no_source_signature_moves_a_ternary_conversion ... FAILED
+test no_source_signature_moves_a_decimal_conversion ... FAILED
+thread 'no_source_signature_moves_a_binary_conversion' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 3054380 of 3235900 checks
+  left: 3054380
+ right: 0
+thread 'no_source_signature_moves_a_ternary_conversion' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 3103400 of 3225700 checks
+  left: 3103400
+ right: 0
+thread 'no_source_signature_moves_a_decimal_conversion' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 3126700 of 3201400 checks
+  left: 3126700
+ right: 0
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.84s

@@ -34,7 +34,20 @@ pub const fn half(w: u32, signed: bool, radix: i128) -> i32 {
     if half > deep { half } else { deep }
 }
 
-pub use super::shapes::{minus_one, one, zero};
+/// The exponent zero, as the family names it.
+pub const fn zero(w: u32, signed: bool, radix: i128) -> i32 {
+    super::shapes::zero(w, signed, radix)
+}
+
+/// The exponent one.
+pub const fn one(w: u32, signed: bool, radix: i128) -> i32 {
+    super::shapes::one(w, signed, radix)
+}
+
+/// The exponent minus one.
+pub const fn minus_one(w: u32, signed: bool, radix: i128) -> i32 {
+    super::shapes::minus_one(w, signed, radix)
+}
 
 /// One source signature at one exponent onto each exponent of the target's
 /// family, on one target range, under every adaptation of the target.

@@ -1,0 +1,37 @@
+cargo test -p arvo-numeral --features mutant-index --test the_host_door
+running 10 tests
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test every_host_integer_comes_in_as_adapted_at_the_platform_and_fixed_points ... FAILED
+test every_host_integer_comes_in_as_adapted_at_widths_17_to_32 ... FAILED
+test the_door_is_a_constant_where_the_host_integer_is ... ok
+test every_host_integer_comes_in_as_adapted_at_widths_33_to_48 ... FAILED
+test every_host_integer_comes_in_as_adapted_at_widths_1_to_16 ... FAILED
+test the_named_doors_sit_where_the_policy_puts_them ... FAILED
+test the_index_goes_out_in_every_host_integer_the_range_fits_at_every_width ... ok
+test every_host_integer_comes_in_as_adapted_at_widths_49_to_64 ... FAILED
+thread 'every_host_integer_comes_in_as_adapted_at_the_platform_and_fixed_points' panicked at crates/arvo-numeral/tests/the_host_door.rs:32:9:
+assertion `left == right` failed: `from_index` is not `adapted` at -128
+  left: Num(Slot(18446744073709551615))
+ right: Num(Slot(0))
+thread 'every_host_integer_comes_in_as_adapted_at_widths_17_to_32' panicked at crates/arvo-numeral/tests/the_host_door.rs:32:9:
+assertion `left == right` failed: `from_index` is not `adapted` at -128
+  left: Num(Slot(131071))
+ right: Num(Slot(0))
+thread 'every_host_integer_comes_in_as_adapted_at_widths_33_to_48' panicked at crates/arvo-numeral/tests/the_host_door.rs:32:9:
+assertion `left == right` failed: `from_index` is not `adapted` at -128
+  left: Num(Slot(8589934591))
+ right: Num(Slot(0))
+thread 'every_host_integer_comes_in_as_adapted_at_widths_1_to_16' panicked at crates/arvo-numeral/tests/the_host_door.rs:32:9:
+assertion `left == right` failed: `from_index` is not `adapted` at -128
+  left: Num(Slot(1))
+ right: Num(Slot(0))
+thread 'the_named_doors_sit_where_the_policy_puts_them' panicked at crates/arvo-numeral/tests/the_host_door.rs:191:5:
+assertion `left == right` failed
+  left: 255
+ right: 0
+thread 'every_host_integer_comes_in_as_adapted_at_widths_49_to_64' panicked at crates/arvo-numeral/tests/the_host_door.rs:32:9:
+assertion `left == right` failed: `from_index` is not `adapted` at -128
+  left: Num(Slot(562949953421311))
+ right: Num(Slot(0))
+test result: FAILED. 4 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
