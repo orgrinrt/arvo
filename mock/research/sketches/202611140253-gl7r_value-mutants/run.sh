@@ -26,7 +26,12 @@ run arvo_mutant_convert arvo_mutant_convert --test the_conversion
 run arvo_mutant_index arvo_mutant_index --test the_host_door
 run arvo_mutant_count arvo_mutant_count --features hlist-const --test the_count
 run arvo_mutant_count_without_const arvo_mutant_count --features hlist --test the_count_without_const
-run arvo_mutant_convert_policy arvo_mutant_convert_policy \
-  --test the_conversion_under_every_source_signature_past_the_range \
+# Every conversion sweep of the crate, one `--test` a binary.
+conversions=()
+for t in "$here"/../../../crates/arvo-numeral/tests/the_conversion*.rs; do
+  conversions+=(--test "$(basename "$t" .rs)")
+done
+run arvo_mutant_convert_policy arvo_mutant_convert_policy "${conversions[@]}"
+run arvo_mutant_convert_mode arvo_mutant_convert_mode \
   --test the_conversion_under_every_source_signature \
-  --test the_conversion_at_the_positive_edge_binary
+  --test the_conversion_under_every_source_signature_past_the_range

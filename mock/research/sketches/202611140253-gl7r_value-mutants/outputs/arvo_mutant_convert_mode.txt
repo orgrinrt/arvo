@@ -1,0 +1,13 @@
+RUSTFLAGS=--cfg arvo_mutant_convert_mode cargo test -p arvo-numeral --no-fail-fast --test the_conversion_under_every_source_signature --test the_conversion_under_every_source_signature_past_the_range
+     Running tests/the_conversion_under_every_source_signature.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature-203245d069660704)
+test no_source_mode_moves_a_binary_conversion ... FAILED
+test no_source_mode_moves_a_ternary_conversion ... FAILED
+test no_source_mode_moves_a_decimal_conversion ... FAILED
+failures:
+failures:
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.76s
+error: test failed, to rerun pass `-p arvo-numeral --test the_conversion_under_every_source_signature`
+     Running tests/the_conversion_under_every_source_signature_past_the_range.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature_past_the_range-a08f389dc58c8dd5)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.84s
+error: 1 target failed:
+exit 101

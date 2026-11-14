@@ -1,15 +1,47 @@
-RUSTFLAGS=--cfg arvo_mutant_convert_policy cargo test -p arvo-numeral --no-fail-fast --test the_conversion_under_every_source_signature_past_the_range --test the_conversion_under_every_source_signature --test the_conversion_at_the_positive_edge_binary
+RUSTFLAGS=--cfg arvo_mutant_convert_policy cargo test -p arvo-numeral --no-fail-fast --test the_conversion --test the_conversion_at_every_exponent_binary --test the_conversion_at_every_exponent_binary_wide --test the_conversion_at_every_exponent_decimal --test the_conversion_at_every_exponent_decimal_wide --test the_conversion_at_every_exponent_ternary --test the_conversion_at_every_exponent_ternary_wide --test the_conversion_at_every_width_binary --test the_conversion_at_every_width_binary_rounded --test the_conversion_at_every_width_decimal --test the_conversion_at_every_width_decimal_rounded --test the_conversion_at_every_width_ternary --test the_conversion_at_every_width_ternary_rounded --test the_conversion_at_the_positive_edge_binary --test the_conversion_at_the_positive_edge_decimal --test the_conversion_at_the_positive_edge_ternary --test the_conversion_between_radixes --test the_conversion_under_every_source_signature --test the_conversion_under_every_source_signature_past_the_range
+     Running tests/the_conversion.rs (/home/user/target/debug/deps/the_conversion-89369219fe0a0b4f)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+     Running tests/the_conversion_at_every_exponent_binary.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_binary-a770bab2a619a0dc)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.41s
+     Running tests/the_conversion_at_every_exponent_binary_wide.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_binary_wide-f6cb9dbd5f1b5f9f)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.47s
+     Running tests/the_conversion_at_every_exponent_decimal.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_decimal-1e922ac5d393915b)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.09s
+     Running tests/the_conversion_at_every_exponent_decimal_wide.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_decimal_wide-5fbd71142e8870bd)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.15s
+     Running tests/the_conversion_at_every_exponent_ternary.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_ternary-15e977c3761a4fca)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.16s
+     Running tests/the_conversion_at_every_exponent_ternary_wide.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_ternary_wide-d02bc1a659c2c344)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.07s
+     Running tests/the_conversion_at_every_width_binary.rs (/home/user/target/debug/deps/the_conversion_at_every_width_binary-42eb30a2f324293c)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.21s
+     Running tests/the_conversion_at_every_width_binary_rounded.rs (/home/user/target/debug/deps/the_conversion_at_every_width_binary_rounded-c363091b871e657c)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.51s
+     Running tests/the_conversion_at_every_width_decimal.rs (/home/user/target/debug/deps/the_conversion_at_every_width_decimal-5f9e7bf0f2980e59)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.57s
+     Running tests/the_conversion_at_every_width_decimal_rounded.rs (/home/user/target/debug/deps/the_conversion_at_every_width_decimal_rounded-bc73ceecd66d5668)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.71s
+     Running tests/the_conversion_at_every_width_ternary.rs (/home/user/target/debug/deps/the_conversion_at_every_width_ternary-9779a9bf33e15e71)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.48s
+     Running tests/the_conversion_at_every_width_ternary_rounded.rs (/home/user/target/debug/deps/the_conversion_at_every_width_ternary_rounded-e8e3e8940f37bbf0)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.45s
      Running tests/the_conversion_at_the_positive_edge_binary.rs (/home/user/target/debug/deps/the_conversion_at_the_positive_edge_binary-56ab4add68c5aacb)
-test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.10s
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.97s
+     Running tests/the_conversion_at_the_positive_edge_decimal.rs (/home/user/target/debug/deps/the_conversion_at_the_positive_edge_decimal-ca9545a4e9b2f48e)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.51s
+     Running tests/the_conversion_at_the_positive_edge_ternary.rs (/home/user/target/debug/deps/the_conversion_at_the_positive_edge_ternary-645a00b3c9ee0d94)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.58s
+     Running tests/the_conversion_between_radixes.rs (/home/user/target/debug/deps/the_conversion_between_radixes-df7b02704212f851)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
      Running tests/the_conversion_under_every_source_signature.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature-7b6b55ad57f2c28e)
 test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.79s
      Running tests/the_conversion_under_every_source_signature_past_the_range.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature_past_the_range-4f76882288bd2e25)
 test no_source_policy_moves_a_ternary_conversion ... FAILED
-test no_source_policy_moves_a_binary_conversion ... FAILED
 test no_source_policy_moves_a_decimal_conversion ... FAILED
+test no_source_policy_moves_a_binary_conversion ... FAILED
 failures:
 failures:
-test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.78s
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.80s
 error: test failed, to rerun pass `-p arvo-numeral --test the_conversion_under_every_source_signature_past_the_range`
 error: 1 target failed:
 exit 101

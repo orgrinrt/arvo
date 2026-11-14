@@ -7,7 +7,7 @@ saturates. This sketch holds one red run of each flag, to show that every flag s
 tests red under the new spelling, and that the new mutant is seen by the sweep it was written for and
 by no other.
 
-Outcome: WORKS. Every one of the thirteen flags fails the tests that name its operation.
+Outcome: WORKS. Every one of the fourteen flags fails the tests that name its operation.
 
 ## How it was run
 
@@ -38,7 +38,22 @@ the target's range there and the policy is never consulted, and so does
 `the_conversion_at_the_positive_edge_binary`, whose sources wrap. This is the gap the round closes: on
 the step alone the source's policy could not be seen.
 
+## The policy over every conversion sweep, and the mode
+
+Round `202611140356` runs `arvo_mutant_convert_policy` again over all 19 conversion binaries, each
+`tests/the_conversion*.rs`, so that its passing the rest is a record rather than a check by hand. It
+turns the three tests of `the_conversion_under_every_source_signature_past_the_range` red and nothing
+else: every other conversion binary passes whole under it.
+
+The same round adds `arvo_mutant_convert_mode`, which rounds the conversion by the source's mode in
+place of the target's. Over the two binaries under every source signature it turns the three tests of
+the step from minus one onto zero red, `the_conversion_under_every_source_signature`, and passes the
+step from zero onto minus one, where the target's grid is the finer and nothing is rounded. The policy
+mutant is seen by its own step and by no other conversion sweep, the mode mutant by its own step of
+the two it was run over.
+
 ## Predicate
 
-holds for: the flags named above, `arvo-numeral` at `3ba8f280`, the debug profile, `x86_64` Linux,
-the nightly the repository pins; each flag against the tests its output names and no others.
+holds for: the flags named above, `arvo-numeral` at `3ba8f280` for the first thirteen runs and in round
+`202611140356` for the policy over every conversion binary and for the mode, the debug profile, `x86_64`
+Linux, the nightly the repository pins; each flag against the tests its output names and no others.

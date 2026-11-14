@@ -9,6 +9,8 @@ use core::fmt::Debug;
 use core::hash::Hash;
 use core::mem::size_of;
 
+use arvo_format::Bool;
+
 mod sealed {
     pub trait Sealed {}
 }
@@ -21,7 +23,7 @@ pub trait Machine: sealed::Sealed + Copy + Eq + Ord + Hash + Debug + Send + Sync
     /// Whether the integer is a signed one. The host door dispatches on it
     /// beside the size.
     #[doc(hidden)]
-    const SIGNED: bool;
+    const SIGNED: Bool;
 }
 
 macro_rules! machine {
@@ -29,7 +31,7 @@ macro_rules! machine {
         $(
             impl sealed::Sealed for $t {}
             impl Machine for $t {
-                const SIGNED: bool = $signed;
+                const SIGNED: Bool = Bool::of($signed);
             }
         )+
     };

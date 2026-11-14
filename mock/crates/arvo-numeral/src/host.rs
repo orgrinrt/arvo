@@ -64,7 +64,7 @@ const fn unsigned(x: u64) -> Wide {
 
 /// The host integer widened. One arm survives monomorphisation.
 const fn widen<H: HostInteger>(host: H) -> Wide {
-    match const { (size_of::<H>(), H::SIGNED) } {
+    match const { (size_of::<H>(), H::SIGNED.get()) } {
         (1, true) => signed(copy::<H, i8>(host) as i64),
         (1, false) => unsigned(copy::<H, u8>(host) as u64),
         (2, true) => signed(copy::<H, i16>(host) as i64),
@@ -147,7 +147,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     pub const fn index<H: HostInteger>(self) -> H {
         const {
             let bits = 8 * size_of::<H>() as u32;
-            let (lowest, highest) = if H::SIGNED {
+            let (lowest, highest) = if H::SIGNED.get() {
                 (-(1i128 << (bits - 1)), (1i128 << (bits - 1)) - 1)
             } else {
                 (0, (1i128 << bits) - 1)
@@ -160,7 +160,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
             );
         }
         let index = self.slot().index();
-        match const { (size_of::<H>(), H::SIGNED) } {
+        match const { (size_of::<H>(), H::SIGNED.get()) } {
             (1, true) => copy::<i8, H>(index as i8),
             (1, false) => copy::<u8, H>(index as u8),
             (2, true) => copy::<i16, H>(index as i16),

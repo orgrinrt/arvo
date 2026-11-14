@@ -33,7 +33,7 @@ unsafe_op_in_unsafe_fn = "forbid"
 unexpected_cfgs = { level = "warn", check-cfg = [
   "cfg(arvo_mutant_8, arvo_mutant_16, arvo_mutant_32, arvo_mutant_64)",
   "cfg(arvo_mutant_sub, arvo_mutant_neg, arvo_mutant_mul, arvo_mutant_under)",
-  "cfg(arvo_mutant_div, arvo_mutant_convert, arvo_mutant_convert_policy)",
+  "cfg(arvo_mutant_div, arvo_mutant_convert, arvo_mutant_convert_policy, arvo_mutant_convert_mode)",
   "cfg(arvo_mutant_index, arvo_mutant_count)",
 ] }
 
