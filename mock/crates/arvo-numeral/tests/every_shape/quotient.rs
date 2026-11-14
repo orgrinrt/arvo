@@ -7,8 +7,8 @@
 
 use arvo_format::Format;
 use arvo_numeral::{Divisor, Sole};
-use common::edges::quotient_highest as top;
-use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, members, minus_one, widest, zero};
+use common::edges::{quotient_deepest as deep, quotient_highest as top};
+use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, members, minus_one, zero};
 use common::{oracle, value};
 
 /// The slot of the number one at a radix and an exponent, or one where the
@@ -109,20 +109,6 @@ macro_rules! unsigned {
         ]);
         every_adaptation!($format, quotients(&by, $shapes));
     }};
-}
-
-/// The deepest exponent the format's quotient admits at a range of `w` bits:
-/// minus the largest `k` at which the widest member times the radix to the
-/// `k` is still a position a slot index holds, since a quotient by the slot
-/// one is the dividend's slot times the radix to the `k`.
-const fn deep(w: u32, signed: bool, radix: i128) -> i32 {
-    let mut at = widest(w, signed);
-    let mut k = 0;
-    while at <= i128::MAX / radix {
-        at *= radix;
-        k += 1;
-    }
-    -k
 }
 
 /// Minus half the width rounded up, or the deepest exponent where that is

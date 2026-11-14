@@ -39,6 +39,7 @@ use crate::rounding::{Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZer
 use crate::slots::{Slot, Slots};
 use crate::tests::grid::Grid;
 use crate::tests::the_inventory::{AtTheBottom, AtTheTop};
+use crate::wide::Wide;
 
 /// A plain integer format over a slot range.
 type Over<S> = Grid<BinaryRationals, Constant<0>, S, 0, 1>;
@@ -54,19 +55,16 @@ fn dithers() -> [Dither; 3] {
     [Dither::UNUSED, Dither::at(Fraction::of(1, 8)), Dither::at(Fraction::of(5, 8))]
 }
 
-/// The shipped constructor, which keeps the distance past the index.
+/// The shipped constructor, which keeps the floor whole in four limbs.
 fn shipped(slot: Slot, part: Fraction) -> Exact {
     Exact::between(slot, part)
 }
 
-/// A constructor that pins the slot at the index's end and drops the distance
-/// past it, so a position past the index reads as the index's end.
+/// A constructor that narrows the floor to the index, pinned at its end, so a
+/// position past the index reads as the index's end.
 fn pinned(slot: Slot, part: Fraction) -> Exact {
     let exact = Exact::between(slot, part);
-    Exact {
-        past: 0,
-        ..exact
-    }
+    Exact::floored(Wide::of(exact.slot().index()), exact.part)
 }
 
 /// The law with the shipped constructor.
@@ -188,11 +186,17 @@ fn the_carry_reaches_past_the_index_at_every_distance_it_is_fed() {
     // them. Every one of them is, and the reference's are not.
     for k in 1 ..= reach() {
         let up = Exact::between(Slot::at(i128::MAX), Fraction::of(4 * k, 4));
-        assert_eq!((up.slot(), up.past), (Slot::at(i128::MAX), k));
+        assert_eq!(
+            (up.slot(), up.floor()),
+            (Slot::at(i128::MAX), Wide::of_sum(i128::MAX, k.into()))
+        );
         let down = Exact::between(Slot::at(i128::MIN), Fraction::of(-4 * k, 4));
-        assert_eq!((down.slot(), down.past), (Slot::at(i128::MIN), -k));
+        assert_eq!(
+            (down.slot(), down.floor()),
+            (Slot::at(i128::MIN), Wide::of_sum(i128::MIN, -i128::from(k)))
+        );
         let inside = Exact::between(Slot::at(1255), Fraction::of(4 * k, 4));
-        assert_eq!(inside.past, 0);
+        assert_eq!(inside.floor(), Wide::of_sum(1255, k.into()));
     }
 }
 

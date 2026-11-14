@@ -109,10 +109,10 @@ fn a_difference_across_two_signatures_is_refused() {
 }
 
 #[test]
-fn a_product_over_the_unsigned_64_bit_range_is_refused() {
+fn a_product_past_the_four_limbs_is_refused() {
     pair(
-        "a_product_over_the_unsigned_64_bit_range_is_refused",
-        "a_product_over_the_unsigned_63_bit_range_compiles",
+        "a_product_past_the_four_limbs_is_refused",
+        "a_product_inside_the_four_limbs_compiles",
     );
 }
 

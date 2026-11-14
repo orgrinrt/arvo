@@ -41,17 +41,18 @@ product_edges!(
 );
 
 /// A few edges written out, so the edge arithmetic is held to numbers as well
-/// as to the format: the unsigned 64-bit product leaves the slot index at
-/// exponent zero, the signed one holds at zero, a one-bit range holds to two
-/// to the 126th, and the remainder's denominator ends at two to the 255th, the
-/// last power of two four 64-bit limbs hold.
+/// as to the format: the square of the widest member times the radix to the
+/// highest exponent fits the four limbs, so the unsigned 64-bit product reaches
+/// two to the 128th and a one-bit range two to the 255th, and the remainder's
+/// denominator ends at two to the 255th, the last power of two four 64-bit
+/// limbs hold.
 #[test]
 fn the_binary_edges_are_where_arithmetic_puts_them() {
-    assert_eq!(top(64, false, 2), -1);
-    assert_eq!(top(64, true, 2), 0);
-    assert_eq!(top(63, true, 2), 2);
-    assert_eq!(top(8, true, 2), 112);
-    assert_eq!(top(1, true, 2), 126);
-    assert_eq!(top(1, false, 2), 126);
+    assert_eq!(top(64, false, 2), 128);
+    assert_eq!(top(64, true, 2), 129);
+    assert_eq!(top(63, true, 2), 131);
+    assert_eq!(top(8, true, 2), 241);
+    assert_eq!(top(1, true, 2), 255);
+    assert_eq!(top(1, false, 2), 255);
     assert_eq!(deep(64, true, 2), -255);
 }

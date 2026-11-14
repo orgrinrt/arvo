@@ -63,10 +63,10 @@ quotient_edges!(
 /// as to the format.
 #[test]
 fn the_binary_edges_are_where_arithmetic_puts_them() {
-    assert_eq!(deep(64, true, 2), -63);
-    assert_eq!(deep(64, false, 2), -63);
-    assert_eq!(deep(33, true, 10), -28);
-    assert_eq!(deep(17, false, 3), -69);
+    assert_eq!(deep(64, true, 2), -192);
+    assert_eq!(deep(64, false, 2), -192);
+    assert_eq!(deep(33, true, 10), -67);
+    assert_eq!(deep(17, false, 3), -150);
     assert_eq!(top(64, true, 2), 192);
     assert_eq!(top(64, false, 2), 192);
     assert_eq!(top(1, true, 2), 255);

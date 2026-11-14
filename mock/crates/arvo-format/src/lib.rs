@@ -111,14 +111,7 @@ pub use format::{
     smallest_step_exponent,
     step_exponent,
 };
-pub use multiplication::{
-    Mul,
-    is_multipliable,
-    is_multipliable_under,
-    mul,
-    multiplicative_identity,
-    product_position,
-};
+pub use multiplication::{Mul, is_multipliable, mul, multiplicative_identity, product_position};
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
 pub use quantum::{
     Exponent,

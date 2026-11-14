@@ -14,16 +14,11 @@
 /// The deepest exponent a target of `w` bits takes from a source of `w` bits at
 /// exponent one: minus the largest `k` at which the widest member of the width,
 /// the top of the unsigned range, times the radix to the `k + 1` is still a
-/// position a slot index holds. The same on either range, so that every pair of
-/// ranges is admitted.
+/// position the four limbs hold. The same on either range, so that every pair
+/// of ranges is admitted.
 pub const fn deep(w: u32, _signed: bool, radix: i128) -> i32 {
-    let mut at = ((1i128 << w) - 1) * radix;
-    let mut k = 0;
-    while at <= i128::MAX / radix {
-        at *= radix;
-        k += 1;
-    }
-    -k
+    let top = ((1u128 << w) - 1) * radix as u128;
+    -super::edges::four_limb_bound(top, radix)
 }
 
 /// Minus half the width rounded up, or the deepest exponent where that is
@@ -34,7 +29,20 @@ pub const fn half(w: u32, signed: bool, radix: i128) -> i32 {
     if half > deep { half } else { deep }
 }
 
-pub use super::shapes::{minus_one, one, zero};
+/// The exponent zero, as the family names it.
+pub const fn zero(w: u32, signed: bool, radix: i128) -> i32 {
+    super::shapes::zero(w, signed, radix)
+}
+
+/// The exponent one.
+pub const fn one(w: u32, signed: bool, radix: i128) -> i32 {
+    super::shapes::one(w, signed, radix)
+}
+
+/// The exponent minus one.
+pub const fn minus_one(w: u32, signed: bool, radix: i128) -> i32 {
+    super::shapes::minus_one(w, signed, radix)
+}
 
 /// One source signature at one exponent onto each exponent of the target's
 /// family, on one target range, under every adaptation of the target.

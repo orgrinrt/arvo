@@ -9,18 +9,17 @@
 //! Every format a sweep takes has a zero phase and a constant quantum, so a
 //! member at slot `a` and exponent `e` is `a r^e`, and an exact position is a
 //! ratio of integers over a power of the radix. The format admits an operation
-//! where that ratio's denominator fits the integer it forms the step in, and
-//! every position it can name at the ends of a range is one a signed 128-bit
-//! slot index holds. The product, the quotient and the conversion form theirs
-//! four 64-bit limbs wide. Each edge below is the last exponent at which both
-//! hold, found from the members' own magnitudes, and the sweeps hold it against
+//! where that ratio's numerator and denominator fit four 64-bit limbs, the
+//! integer it forms the product, the quotient and the conversion in and carries
+//! a position's floor in. Each edge below is the last exponent at which that
+//! holds, found from the members' own magnitudes, and the sweeps hold it against
 //! the format's verdict: admitted at the edge, refused one past it.
 
 use super::shapes::widest;
 
 /// The largest `k` at least zero at which `m radix^k` is still an unsigned
 /// integer four 64-bit limbs wide, for an `m` other than zero.
-const fn four_limb_bound(m: u128, radix: i128) -> i32 {
+pub const fn four_limb_bound(m: u128, radix: i128) -> i32 {
     let mut limbs = [m as u64, (m >> 64) as u64, 0, 0];
     let mut k = 0;
     loop {
@@ -41,40 +40,14 @@ const fn four_limb_bound(m: u128, radix: i128) -> i32 {
     }
 }
 
-/// The largest `k` at least zero at which `m radix^k` is at most `limit`, or
-/// minus one where `m` itself is past it. Zero bounds nothing, and is answered
-/// with the largest `k` there is.
-const fn scaled_bound(m: u128, radix: i128, limit: u128) -> i32 {
-    if m > limit {
-        return -1;
-    }
-    if m == 0 {
-        return i32::MAX;
-    }
-    let mut at = m;
-    let mut k = 0;
-    while let Some(next) = at.checked_mul(radix as u128) {
-        if next > limit {
-            break;
-        }
-        at = next;
-        k += 1;
-    }
-    k
-}
-
 /// The highest exponent the product admits at a range of `w` bits.
 ///
 /// At an exponent `e` of zero or more the product of the members at `a` and `b`
-/// is at slot `a b r^e`, on the grid, and the largest in magnitude is the
-/// square of the widest member. Where that is past the slot index at zero the
-/// highest is minus one, where a remainder takes the excess.
+/// is at slot `a b r^e`, on the grid, and its numerator is largest in magnitude
+/// at the square of the widest member, which has to fit the four limbs.
 pub const fn product_highest(w: u32, signed: bool, radix: i128) -> i32 {
     let m = widest(w, signed) as u128;
-    match m.checked_mul(m) {
-        Some(square) => scaled_bound(square, radix, i128::MAX as u128),
-        None => -1,
-    }
+    four_limb_bound(m * m, radix)
 }
 
 /// The deepest exponent the product admits: the remainder's denominator is the
@@ -92,18 +65,20 @@ pub const fn quotient_highest(w: u32, signed: bool, radix: i128) -> i32 {
     four_limb_bound(widest(w, signed) as u128, radix)
 }
 
+/// The deepest exponent the quotient admits at a range of `w` bits: a quotient
+/// by the slot one is the dividend's slot times the radix to minus the
+/// exponent, at its largest at the widest member, and that position has to fit
+/// the four limbs the format carries a position's floor in.
+pub const fn quotient_deepest(w: u32, signed: bool, radix: i128) -> i32 {
+    -four_limb_bound(widest(w, signed) as u128, radix)
+}
+
 /// The highest exponent a source of `w` bits converts from onto exponent zero:
 /// each end of its range lands at its slot times the radix to the exponent,
-/// which has to be a slot the index holds, the lowest signed member down to
-/// minus two to the 127.
+/// which has to fit the four limbs the format carries a position's floor in,
+/// the lowest signed member the larger in magnitude.
 pub const fn source_highest(w: u32, signed: bool, radix: i128) -> i32 {
-    if signed {
-        let low = scaled_bound(1u128 << (w - 1), radix, 1u128 << 127);
-        let high = scaled_bound((1u128 << (w - 1)) - 1, radix, i128::MAX as u128);
-        if low < high { low } else { high }
-    } else {
-        scaled_bound(widest(w, false) as u128, radix, i128::MAX as u128)
-    }
+    four_limb_bound(widest(w, signed) as u128, radix)
 }
 
 /// The highest exponent a target converts onto from exponent zero: the

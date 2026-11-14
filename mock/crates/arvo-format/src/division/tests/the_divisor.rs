@@ -160,10 +160,11 @@ fn every_condition_flips_at_its_boundary() {
     // A phase of a third over the unsigned 64-bit range: `3 (1 + 3 b)` near
     // `9 * 2^64` fits.
     assert!(is_divisible::<Grid<BinaryRationals, Constant<0>, Unsigned<64>, 1, 3>>().get());
-    // The slot index, at the divisor next to the pole: `MIN / -1` scaled by
-    // `2^63` is `2^126`, and by `2^64` it is `2^127`, one past the index.
+    // No condition reads the slot index: at the divisor next to the pole,
+    // `MIN / -1` scaled by `2^63` is `2^126`, and by `2^64` it is `2^127`, one
+    // past the index, and both are admitted.
     assert!(is_divisible::<Grid<BinaryRationals, Constant<-63>, Signed<64>, 0, 1>>().get());
-    assert!(!is_divisible::<Grid<BinaryRationals, Constant<-64>, Signed<64>, 0, 1>>().get());
+    assert!(is_divisible::<Grid<BinaryRationals, Constant<-64>, Signed<64>, 0, 1>>().get());
     assert!(is_divisible::<Integer<64>>().get());
     assert!(is_divisible::<UFixed<64, 0>>().get());
 }
@@ -172,7 +173,7 @@ fn every_condition_flips_at_its_boundary() {
 fn the_verdict_is_false_exactly_at_the_condition_that_fails() {
     // Each held-out format fails one condition and holds the ones before it, so
     // the obligation's first refusal is the one the boundary test names.
-    fn first_failing(verdicts: [Bool; 4]) -> Maybe<usize> {
+    fn first_failing(verdicts: [Bool; 3]) -> Maybe<usize> {
         match verdicts.iter().position(|v| !v.get()) {
             Some(i) => Maybe::Is(i),
             None => Maybe::Isnt,
@@ -189,15 +190,9 @@ fn the_verdict_is_false_exactly_at_the_condition_that_fails() {
         Maybe::Is(1)
     );
     assert_eq!(first_failing(conditions::<UFixed<64, 193>>()), Maybe::Is(2));
-    assert_eq!(
-        first_failing(conditions::<
-            Grid<BinaryRationals, Constant<-64>, Signed<64>, 0, 1>,
-        >()),
-        Maybe::Is(3)
-    );
     assert_eq!(first_failing(conditions::<Integer<64>>()), Maybe::Isnt);
 }
 
 /// Bound in a `const` item, so a format the quotient does not admit is read as
 /// a verdict rather than a build failure.
-const _HELD_OUT: Bool = is_divisible::<Grid<BinaryRationals, Constant<-64>, Signed<64>, 0, 1>>();
+const _HELD_OUT: Bool = is_divisible::<UFixed<64, 193>>();

@@ -384,5 +384,5 @@ fn the_deepest_exponent_of_the_sweeps_is_the_last_the_conversion_admits() {
     edge!(binary_unsigned, binary_signed, 2; 1, 16, 17, 33, 64);
     edge!(decimal_unsigned, decimal_signed, 10; 1, 16, 17, 33, 64);
     edge!(ternary_unsigned, ternary_unsigned, 3; 1, 16, 17, 33, 64);
-    assert_eq!(deep(64, false, 2), -62);
+    assert_eq!(deep(64, false, 2), -191);
 }

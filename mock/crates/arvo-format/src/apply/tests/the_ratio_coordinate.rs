@@ -22,6 +22,7 @@ use super::round_slot;
 use crate::apply::{Dither, Exact, Fraction};
 use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::Slot;
+use crate::wide::Wide;
 
 // --- 12. the fraction's own contract, which is why it is a type ------------
 
@@ -450,46 +451,64 @@ fn a_carry_past_the_integer_one_size_down_lands_the_slot_it_names() {
 }
 
 #[test]
-fn a_carry_past_the_end_of_the_index_pins_the_slot_and_keeps_the_distance() {
-    // The design says a carry past the index's own end pins the slot there and
-    // keeps how far past it the named slot lies, so `between` is total over every
-    // slot and every ratio and still names the position asked for. The remainder
-    // is kept as it was reduced.
+fn a_carry_past_the_end_of_the_index_keeps_the_whole_floor() {
+    // The design says a carry past the index's own end keeps the whole floor in
+    // four limbs, so `between` is total over every slot and every ratio and still
+    // names the position asked for, and `slot()` answers the index's end there.
+    // The remainder is kept as it was reduced.
     let up = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(up.slot(), Slot::at(i128::MAX));
-    assert_eq!(up.past, 2);
+    assert_eq!(up.floor(), Wide::of_sum(i128::MAX, 2));
     assert_eq!(up.part, Fraction::of(1, 4));
     let down = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
     assert_eq!(down.slot(), Slot::at(i128::MIN));
-    assert_eq!(down.past, -3);
+    assert_eq!(down.floor(), Wide::of_sum(i128::MIN, -3));
     assert_eq!(down.part, Fraction::of(3, 4));
 
-    // The largest carry either way, from the end it leaves by: the distance is
-    // the whole carry and fits the fraction's own integer.
+    // The largest carry either way, from the end it leaves by: the floor is the
+    // end and the whole carry.
     let most = Exact::between(Slot::at(i128::MAX), Fraction::of(i64::MAX, 1));
-    assert_eq!((most.slot(), most.past), (Slot::at(i128::MAX), i64::MAX));
+    assert_eq!(
+        (most.slot(), most.floor()),
+        (
+            Slot::at(i128::MAX),
+            Wide::of_sum(i128::MAX, i64::MAX.into())
+        )
+    );
     let least = Exact::between(Slot::at(i128::MIN), Fraction::of(i64::MIN, 1));
-    assert_eq!((least.slot(), least.past), (Slot::at(i128::MIN), i64::MIN));
+    assert_eq!(
+        (least.slot(), least.floor()),
+        (
+            Slot::at(i128::MIN),
+            Wide::of_sum(i128::MIN, i64::MIN.into())
+        )
+    );
 
-    // One below the end, the carry of one still lands exactly with no distance,
-    // so the pin is reached only by a carry that genuinely leaves the index.
+    // One below the end, the carry of one lands on the end itself, a floor the
+    // index holds.
     let exact = Exact::between(Slot::at(i128::MAX - 1), Fraction::of(5, 4));
-    assert_eq!((exact.slot(), exact.past), (Slot::at(i128::MAX), 0));
+    assert_eq!(
+        (exact.slot(), exact.floor()),
+        (Slot::at(i128::MAX), Wide::of(i128::MAX))
+    );
     let exact = Exact::between(Slot::at(i128::MIN + 1), Fraction::of(-3, 4));
-    assert_eq!((exact.slot(), exact.past), (Slot::at(i128::MIN), 0));
+    assert_eq!(
+        (exact.slot(), exact.floor()),
+        (Slot::at(i128::MIN), Wide::of(i128::MIN))
+    );
 
-    // And the position reaches the map with its distance. At the top, the slot
-    // below is the pinned end under every mode and only `Ceil` steps, a quarter
-    // being under the midpoint and under the half dither. At the bottom, three
-    // quarters is over both, so every mode but `Floor` steps, `TowardZero`
-    // because the named slot is negative.
+    // And the position reaches the map with its floor. At the top, the floor is
+    // two past the end under every mode and only `Ceil` steps, a quarter being
+    // under the midpoint and under the half dither. At the bottom, three quarters
+    // is over both, so every mode but `Floor` steps, `TowardZero` because the
+    // named slot is negative.
     for mode in ALL_MODES {
         let rounded = crate::apply::round_slot(mode, up, Dither::at(Fraction::HALF));
-        assert_eq!(rounded.down(), i128::MAX, "{mode:?} moved the slot below");
+        assert_eq!(rounded.down, up.floor(), "{mode:?} moved the floor");
         let steps = if matches!(mode, Mode::Ceil) { 1 } else { 0 };
         assert_eq!(rounded.step(), steps, "{mode:?} at a quarter past the top");
         let rounded = crate::apply::round_slot(mode, down, Dither::at(Fraction::HALF));
-        assert_eq!(rounded.down(), i128::MIN, "{mode:?} moved the slot below");
+        assert_eq!(rounded.down, down.floor(), "{mode:?} moved the floor");
         let steps = if matches!(mode, Mode::Floor) { 0 } else { 1 };
         assert_eq!(
             rounded.step(),

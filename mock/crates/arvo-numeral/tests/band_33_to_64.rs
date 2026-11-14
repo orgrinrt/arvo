@@ -54,13 +54,8 @@ fn every_signature_from_33_to_64_bits_adds_subtracts_negates_and_orders_as_the_o
     tally.check("widths 33 to 64");
 }
 
-/// The unsigned 64-bit integer is left out: the format does not hold its
-/// product's exact position yet, so the value has none to call, and `tests/ui`
-/// holds the refusal.
 #[test]
-fn every_signature_from_33_to_64_bits_but_the_unsigned_64_multiplies_as_the_oracle_does() {
-    use arvo_format::overflow::{Saturate, Wrap};
-    use arvo_format::points::Integer;
+fn every_signature_from_33_to_64_bits_multiplies_as_the_oracle_does() {
     let mut tally = Tally::default();
     every_signature_at!(33, lattice_and_seeded_products, &mut tally);
     every_signature_at!(34, lattice_and_seeded_products, &mut tally);
@@ -93,12 +88,6 @@ fn every_signature_from_33_to_64_bits_but_the_unsigned_64_multiplies_as_the_orac
     every_signature_at!(61, lattice_and_seeded_products, &mut tally);
     every_signature_at!(62, lattice_and_seeded_products, &mut tally);
     every_signature_at!(63, lattice_and_seeded_products, &mut tally);
-    every_mode!(Integer<64>, Wrap, lattice_and_seeded_products, &mut tally);
-    every_mode!(
-        Integer<64>,
-        Saturate,
-        lattice_and_seeded_products,
-        &mut tally
-    );
+    every_signature_at!(64, lattice_and_seeded_products, &mut tally);
     tally.check_products("widths 33 to 64");
 }
