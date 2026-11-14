@@ -27,6 +27,10 @@ abort, and `proposal::the_debug_check_is_a_parameter_the_consumer_names`, at one
 whose rounding the consumer declares.
 `question::which_chain_carrier_ships` is open and the call is the panel's, so this crate ships no
 carrier for a chain of operations, the named accumulator among them.
+`question::whose_reduction_governs_a_lossy_crossing` is open, and the conversion takes its second
+option, the target's, on the provisional stamp
+`proposal::a_conversion_is_one_placement_onto_the_target_grid` carries. The conversion says below what
+the stamp rests on.
 `ruling::the_ingest_door_waits_on_a_known_use`, for why no public verdict on a host integer is
 shipped.
 `obligation::a_platform_sized_unsigned_integer_at_an_api_position` again, for the consumer a value as
@@ -335,6 +339,17 @@ member is placed on `T`'s grid by `T`'s rounding and completed by `T`'s policy, 
 `fits_convert::<T>()` is its verdict. Where the two formats are one, `convert` gives what `under`
 gives, and `under` stays the door for that case because it moves the carrier and computes nothing.
 
+Whose mode and policy decide a conversion that loses something is
+`question::whose_reduction_governs_a_lossy_crossing`, and it is open. The target's deciding is its second
+option, and it is built here on a provisional stamp, two readings made one without the other that both
+picked it, recorded on `proposal::a_conversion_is_one_placement_onto_the_target_grid`. A stamp is not a
+ratification: the answer is still owed, and an answer other than the target's takes this operation back
+to the design. What the two readings ran is a change of width, of range and of exponent at radix two
+and widths of 8 bits and under; above that, and between two radixes, the choice rests on their argument,
+which reads neither. A site that wants another mode or policy than `T`'s converts onto a sibling of
+`T` that carries it and crosses to `T` with `under`, which moves nothing, so the choice is named in a
+type at the site and no conversion takes a mode as an argument.
+
 `eq` returns `Bool`, and two values are equal exactly when their slots are, because the carrier is
 canonical, one member to one bit pattern, which is the choice `## How the value holds its carrier` names. `cmp` returns `core::cmp::Ordering`; `lt`, `le`, `gt` and `ge`
 return `Bool`; `min` and `max` return the value. At a zero phase and a constant quantum the map from slot
@@ -565,6 +580,11 @@ one that the two checks hold the same member in the same size. The binary is com
 `debug_assertions`, since a release build has no abort to observe. Its release twin, compiled only without
 `debug_assertions` and run by `cargo test --release`, takes the same inputs under `Abort` and shows them
 completed by the policy, since the check is a constant branch that clears there.
+The door's check asks a verdict on the host integer that is not public, so it is observed at every
+width from 1 to 64, both ranges, both policies and the five modes: `from_index` under `Abort` aborts on
+exactly the host integers that name no member, for the 8-bit and the 64-bit host integers of each sign,
+at every value within 16 of zero, both ends of the host integer and both ends of the range with their
+neighbours.
 
 One mutant per rung, behind the committed features `mutant-8`, `mutant-16`, `mutant-32` and `mutant-64`,
 removes the rung's adaptation. The tests assert agreement with the oracle under every build and expect
@@ -587,34 +607,66 @@ top of the range to the bottom in a crossing, turns these red and leaves every o
 and its red run is committed.
 
 The quotient is proved through the value type against the tests' own arithmetic, the dividend's slot
-over the divisor's scaled onto the grid: at widths 1 to 4 for every
-member divisor but zero, and at widths 5 to 8 for a named set of divisors, both ends of the range,
-one, minus one where the range has it, an odd one and an even one, so that a quotient lands on a tie
-in both slot families, over both policies, the five modes and every dividend. `Fixed<6, -3>` and
-`UFixed<6, -3>` are proved the same way, where the quotient's position falls between slots and the
-mode decides. `fits_div` is checked against whether the rounded quotient is in the range, on the
-same pairs.
+over the divisor's scaled onto the grid: at widths 1 to 4 for every member divisor but zero, in both
+slot families, over both policies, the five modes and every dividend. A few quotients over
+`Fixed<6, -3>` are named with their slots written out, where the position falls between slots and the
+mode decides, so the suite does not rest on the tests' arithmetic alone. `fits_div` is checked against
+whether the rounded quotient is in the range, on the same pairs.
 
-Above 8 bits the three delegated operations are proved on the edge lattice and the seeded pairs the
-bands use, against the same arithmetic: the quotient at integer widths 13, 32 and 64 and at
-fixed-point formats of 16, 32 and 64 bits, the fractional product at fixed-point formats of 16 and
-32 bits, and the conversion from sources of 32 and 64 bits narrowing, widening, across the slot
-families and between exponents. The tests' arithmetic is done in a 128-bit integer, so a case whose
-exact intermediate would leave it is skipped and counted, and each sweep asserts how many it
-compared. The fractional product at 64 bits is left out for that reason, since two 64-bit slots
-multiplied leave no room to scale.
+The three delegated operations are then proved at every shape a value is held for. A shape is a width
+from 1 to 64, a signed or an unsigned range, the wrapping or the saturating policy, one of the five
+modes, a radix and an exponent. The radixes are two, on the shipped fixed points, and ten and three,
+on formats the tests declare the way a crate outside the format's would, three being the radix that
+shares no factor with the carrier's. The exponents are a family of five per width and radix whose last
+member is the last exponent the format admits for that operation there, and a test per operation holds
+that end against the format's own verdict, admitted at it and refused one past it. Each width band of
+sixteen at each radix is one test and asserts the 1600 signatures it ran, so a width or a shape that
+dropped out of a macro would fail the count. The integer point, a format of its own beside the fixed
+point at exponent zero, is taken at every width for the quotient as well.
 
-The conversion is proved against the same arithmetic, the member's slot scaled from the source's grid
-onto the target's, on every member of each source: between
-integer widths in both directions, across the two slot families, from an integer onto a fixed-point
-grid and back, and between two fixed-point grids of different exponents, under both policies and the
-five modes of the target. `fits_convert` is checked against whether the rounded member is in the
-target's range, and a conversion between two signatures over one format equals `under`.
+The members a signature is run at are every member where the range has 256 or fewer, and above that
+the edge lattice with 192 members drawn from the seeded generator. A dividend meets ten constant
+divisors over a signed range and six over an unsigned one: the ends of the range, one, two and three
+with their negations, an odd slot a third of the way up, and the slot of the number one. A product is
+taken on every pair up to six bits and above that on the lattice against the ends and the neighbours of
+zero, with seeded pairs.
 
-The host door is proved against `adapted`: at widths 1 to 8, both families and both policies, for
-every `i8` and `u8`, every `i16` and `u16` within 1024 of zero, and the ends of every host integer; at
-the wider widths on the ends of the range, their neighbours, and the ends of each host integer.
-`index` returns what `from_index` was given for every member, in every host integer the range fits.
+The tests' arithmetic forms a ratio in the host's 128-bit integer where its terms fit, and in the wide
+integer of the format's own suites where they do not, so no case is skipped for want of room. The wide
+integer is shared with the format's tests as a file and is not the format's library code. One test
+holds the two ways against each other on ratios both can form, across the modes and both policies.
+
+The conversion is a law over two shapes, and the pairs of all shapes run to millions a radix, past what
+a build can instantiate. So it is proved on four sweeps, each crossing two coordinates whole, and each
+says what it holds fixed. Between every pair of widths: a source of each width and range onto a target
+of each width and range, 16384 pairs of formats a radix, under both policies of the target, once with
+both sides at exponent zero, where no mode acts and the policy decides every member the target does
+not hold, and once from exponent minus one onto zero under `HalfEven`, where the mode decides most
+members. Each pair of a width matrix also holds the wrapping value against the saturating expectation,
+a planted wrong answer, and requires it to disagree wherever a member leaves the target's range, so
+the matrix is shown to see the policy on every pair that loses something. Between every pair of
+exponents: at each width and each pair of ranges, each exponent of a
+family of five on the source against each on the target, under the ten signatures of the target; the
+family's last member is the deepest exponent a conversion from exponent one admits at that width, and a
+test holds that end against the format's verdict. Under every source signature: at each width and on
+each range, the ten signatures of the source onto the ten of the target across one step of exponent,
+which is where a result that read the source's mode or policy would disagree. Between every pair of
+radixes: at each width and pair of ranges, each ordered pair of two, ten and three, both sides at
+exponent minus one, under the ten signatures of the target. What no sweep holds is a pair differing in
+width and in exponent at once under the modes other than `HalfEven`, or in width and in radix at once.
+Thirteen named pairs of 32 and 64 bits change the width and the exponent together under all ten
+signatures, and narrow sources are taken whole between the integer and the fixed points. Each pair of a
+sweep is run at the source's members as above and at the source slots that land on, half a slot from
+and a slot from zero and each end of the target's range. `fits_convert` is checked against whether the
+rounded member is in the target's range on the same members, and a conversion between two signatures
+over one format equals `under`.
+
+The host door is proved against `adapted` at every width from 1 to 64, both ranges, both policies and
+the five modes, for each of the ten host integers: every value within 1024 of zero that the host
+integer has, which is all of an 8-bit one, both ends of the host integer with their neighbours, and
+both ends of the signature's range with theirs. `index` returns what `from_index` was given on the edge
+lattice at every width, in every host integer the range fits, and the lists of host integers per width
+are whole, a host integer left out being one the build refuses there.
 
 `mutant-div` returns the dividend where the quotient leaves the range, which is what the machine's
 wrapping quotient gives for the lowest signed member over minus one. `mutant-convert` reads the

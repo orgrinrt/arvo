@@ -1,0 +1,11 @@
+warning: associated function `at` is never used
+  --> /home/user/.worktrees/q36-seat-2/mock/crates/arvo-format/src/apply.rs:63:25
+   |
+60 | impl Rounded {
+   | ------------ associated function in this implementation
+...
+63 |     pub(crate) const fn at(at: i128) -> Self {
+   |                         ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+

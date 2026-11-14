@@ -1,0 +1,7 @@
+source selection changes the answer on 0/256 members
+onto a saturating target the answer is the clamp on 256/256
+onto a wrapping target the answer is the residue on 256/256
+option 1 and option 2, both written from the one door, differ on 226/256
+option 3, half-even named at the site between two floor endpoints, differs from both on 112/256
+7 arrived under the source's kind, then 7 + 1 in the target is 7
+every assertion held
