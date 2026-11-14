@@ -557,8 +557,9 @@ denominator reads as `Remainder::ZERO` the way `Fraction::of` reads one. Nothing
 door, because the type is a residue rather than a ratio normalised into one, so the position is never
 past the index. The product, the quotient and the conversion build their positions through `Exact::at`
 too, over a remainder formed the same way in the four limbs, so an operation written outside the crate
-forms the same positions wherever its remainder fits 128 bits. `numerator` and `denominator` read the
-pair back in that integer where it holds them, and nothing where it does not.
+forms the same positions wherever its remainder fits 128 bits. Nothing reads the pair back out: `Exact`
+hands no remainder out, so a caller only ever holds the pair it passed in, and what a consumer observes
+of a remainder is what the position answers, `is_on_grid` and `is_tie`, and what `adapt` makes of it.
 
 The carry that normalisation moves into the slot is at most `2^63` in either direction, and it lands as
 an ordinary slot wherever the index's host integer holds the sum. Where it does not, the slot pins at
