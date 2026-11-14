@@ -1375,8 +1375,9 @@ declared signature and the ties-away alias land through the same search.
 
 The search lands every value below the finest step, however far below. There the floor is 0 or -1, and
 an undithered adaptation reads the remainder only against zero and against a half. Where the scaled
-denominator fits the host's unsigned 128-bit integer the remainder is exact; past it the value is under
-half a step, since twice the numerator is below `2^128`, and the search hands a remainder in the same
+denominator fits the host's unsigned 128-bit integer the remainder is exact, a band only radix two has,
+since ten to the 38th is under the index's top and ten to the 39th past the unsigned integer; past it the
+value is under half a step, since twice the numerator is below `2^128`, and the search hands a remainder in the same
 open interval, which keeps both comparisons. So binary64 at `2^-1400` lands on the smallest subnormal
 toward positive and on zero under ties to even, as the standard answers.
 
@@ -1415,15 +1416,17 @@ rule, and carry. The rule is written once over any radix, and each format's prec
 range are written into it as the standard's numbers. None of it reads arvo code; a separate arm pins
 the format's own exponent range to those numbers. The rule reads a dropped unit in the host's unsigned
 128-bit integer, so a significand of `2^126` or more with two to the 127th dropped is read as the half it
-is, and past that integer the dropped part is under half the unit.
+is, and past that integer the dropped part is under half the unit, a significand of `-2^127` excepted,
+which the rule refuses since no input is one.
 
-The inputs reach from four hundred exponents below the smallest subnormal to past the largest finite
+The inputs reach from three hundred exponents below the smallest subnormal to past the largest finite
 member: a far value, the significand bound, the first unit past the slot index and one past that, the
-tie at half that unit where the index holds it, and a sweep through the region. Binary16 and decimal
-take them through the shared inputs. Below the smallest subnormal binary32 and binary64 read the digit
-rule rather than the host, in a suite of their own, since the host's conversion of an integer scaled
-that far down is two roundings; it pins binary64 at `2^-1400` and decimal64 at `10^-480`, and a wrong
-direction there misses.
+tie at half that unit where the index holds it, and a sweep from twenty-one exponents below the
+smallest subnormal down to one past that first unit; below that the search hands one stand-in, which the
+far points already reach. Binary16 and decimal take them through the shared inputs. Below the smallest
+subnormal binary32 and binary64 read the digit rule rather than the host, in a suite of their own, since
+the host's conversion of an integer scaled that far down is two roundings; it pins binary64 at
+`2^-1400` and decimal64 at `10^-480`, and a wrong direction there misses.
 
 The fimath sweep runs at every word length from one to sixty-four, signed and unsigned, and beside
 those at several fraction lengths, positive, zero and negative, with the range and the wrap computed
@@ -2012,10 +2015,14 @@ so over a box of slots it is extreme at the four corners, and the obligation com
 positions with the step itself, each counted as far as one slot past where it sits when it is not on
 the grid, since a rounding mode may take it there. The ticket is
 `arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c`. Wrapping does not need that condition.
-It reads the floor modulo the range's count, and the remainder, both of which the step forms in its four
-limbs past the index too, so `mul` reduces a floor past the index onto the range before `adapt` and asks
-the condition only of a signature that does not wrap. `product_position` names a position with no policy
-and keeps it.
+What it reads of a position past the index is the floor's class modulo the range's count, the remainder,
+and, for the modes that read them, the floor's sign and its parity: toward zero reads the sign, and half
+to even the parity on a tie. The step forms the floor and the remainder in its four limbs past the index
+too, so `mul` hands `adapt` the floor reduced modulo twice the count, kept on its own side of zero, which
+keeps all three and which the index holds, an admitted range spanning at most `2^64` slots. `adapt` then
+rounds it as it would the true floor and wraps the result onto the range. The condition is asked only of
+a signature that does not wrap, and `is_multipliable_under` asks it without forcing it. `product_position`
+names a position with no policy and keeps it.
 
 That last condition is where the 64-bit ranges part. The signed 64-bit range's largest position at
 exponent zero is `(-2^63)^2 = 2^126`, which the index holds, so `Integer<64>` is admitted. The unsigned
@@ -2030,8 +2037,9 @@ because each product is adapted before the next operation reads it.
 ### The operation and the surface
 
 `Mul` is the operation, of arity two. `product_position` is the exact step, `mul` the composition with
-`adapt` under one declared signature with the dither passed through, and `is_multipliable` the verdict.
-The three functions are `const fn`, and the crate root re-exports all four. There is no reach and no
+`adapt` under one declared signature with the dither passed through, `is_multipliable` the verdict on a
+format, and `is_multipliable_under` the verdict on a declared signature, the one `mul` forces. The four
+functions are `const fn`, and the crate root re-exports all five. There is no reach and no
 associativity verdict: the reach serves addition's translation argument, which has no counterpart for
 the product, and a verdict would need a relocation law for multiplication the canon does not state.
 
@@ -2043,9 +2051,14 @@ control that leaves the quantum out and has to disagree wherever the quantum is 
 condition on both sides of its boundary through `is_multipliable`, and the ones a consumer most
 plausibly writes as compile-fail cases each with a twin differing in the offending token that
 compiles: a phase whose step leaves the four limbs, a magnitude-indexed quantum and the unsigned 64-bit
-range at exponent zero, and on that range the saturating product refused beside the wrapping one
-admitted. The wrapping product on the unsigned 64-bit range at exponent zero and at a positive exponent,
-its top corner and the pairs near both ends against the host's wrapping product on 64 unsigned bits.
+range at exponent zero, and on that range the saturating and the clamping product each refused beside the
+wrapping one admitted. The wrapping product on the unsigned 64-bit range at exponent zero and at a
+positive exponent, its top corner and the pairs near both ends against the host's wrapping product on 64
+unsigned bits. The wrapping product past the index under all six modes, at a nonzero phase, on signed
+and unsigned ranges, on ranges at both ends of the index and on an odd and an even count, the pairs at
+and beside the corners against a reference that forms the position from the two values in a wide
+integer, rounds it by the mode's own rule and wraps it, reading no step code; and `is_multipliable_under`
+agreeing with what `mul` admits on both sides of its boundary.
 
 Every member pair at widths one to eight against the applied map's oracle fed the exact rational
 position, every mode and shipped policy, at positive and negative exponents over signed and unsigned
@@ -2082,8 +2095,8 @@ a crate-private module the three read. Each forms a numerator in the four-limb i
 denominator `D` from one up to `2^256 - 1` in the same four limbs. The floor of the numerator over `D`
 is the slot, and the residue over `D`, reduced to lowest terms, is the remainder, or the position is
 past an end of the slot index on the numerator's sign, its floor and residue kept. Wrapping reads that
-floor modulo the range's count, so the module reduces it onto the range once, for every step that wraps
-past the index. A numerator that leaves the four limbs is a
+floor modulo the range's count, and rounding reads its sign and parity, so the module reduces it once,
+modulo twice the count on its own side of zero, for every step that wraps past the index. A numerator that leaves the four limbs is a
 step not formed, which the module names apart from a position past the index, since with `D` that wide
 such a numerator can still name a slot the index holds. A corner is formed when its numerator is, and
 held when the index holds its slot, counted one slot past the floor when the remainder is not zero,
