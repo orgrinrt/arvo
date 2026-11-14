@@ -65,6 +65,7 @@ struct Total;
 impl PerSignature for Total {
     type Out = u64;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
@@ -96,6 +97,7 @@ struct EveryCell {
 }
 
 impl PerFormat for EveryCell {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let min = <F::Slots as Slots>::MIN;
         let max = <F::Slots as Slots>::MAX;

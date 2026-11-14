@@ -15,6 +15,7 @@
 //! writes, since a tie away from zero is not one of this crate's modes.
 
 mod ieee754;
+mod ieee754_sweep;
 mod ties_away;
 
 use arvo_format::apply::Exact;
@@ -29,7 +30,8 @@ use arvo_format::standards::ieee754::rounding_direction::{
     RoundTowardZero,
 };
 use arvo_format::standards::ieee754::{Attributed, Decimal32, Decimal64};
-use ieee754::{Direction, Landing, Standard, misses};
+use ieee754::{Direction, Landing, Standard};
+use ieee754_sweep::misses;
 
 /// Decimal32 as the standard's table gives it.
 const DECIMAL32: Standard = Standard {

@@ -237,6 +237,7 @@ struct Surface {
 impl PerSignature for Surface {
     type Out = Maybe<Case>;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Maybe<Case> {
         first_disagreement(
             &[self.mode],

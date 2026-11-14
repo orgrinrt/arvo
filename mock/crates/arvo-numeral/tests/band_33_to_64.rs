@@ -54,8 +54,9 @@ fn every_signature_from_33_to_64_bits_adds_subtracts_negates_and_orders_as_the_o
     tally.check("widths 33 to 64");
 }
 
-/// The unsigned 64-bit integer is left out: the format does not admit its
-/// product yet, so the value has none to call, and `tests/ui` holds the refusal.
+/// The unsigned 64-bit integer is left out: the format does not hold its
+/// product's exact position yet, so the value has none to call, and `tests/ui`
+/// holds the refusal.
 #[test]
 fn every_signature_from_33_to_64_bits_but_the_unsigned_64_multiplies_as_the_oracle_does() {
     use arvo_format::overflow::{Saturate, Wrap};

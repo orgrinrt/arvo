@@ -178,11 +178,6 @@ impl Big {
         (q_hi, q_lo, rem)
     }
 
-    /// The value in the host's unsigned 128-bit integer, or nothing.
-    pub(crate) fn unsigned(self) -> Maybe<u128> {
-        if self.negative || self.hi != 0 { Maybe::Isnt } else { Maybe::Is(self.lo) }
-    }
-
     /// The value in the host's signed 128-bit integer, or nothing.
     pub(crate) fn index(self) -> Maybe<i128> {
         if self.hi != 0 {
@@ -194,6 +189,70 @@ impl Big {
             (true, Err(_)) if self.lo == i128::MIN.unsigned_abs() => Maybe::Is(i128::MIN),
             _ => Maybe::Isnt,
         }
+    }
+
+    /// The floor of the value over a positive `d` of any size the oracle holds,
+    /// and the remainder.
+    ///
+    /// One bit at a time from the top, shifting the running remainder up and
+    /// taking `d` off it wherever it reaches `d`. A bit shifted out of the top
+    /// word is kept beside it, so the remainder, below `2 d`, is never lost.
+    pub(crate) fn floor_over_big(self, d: Self) -> (Self, Self) {
+        assert!(
+            !d.negative && (d.hi | d.lo) != 0,
+            "the oracle divides by a positive divisor"
+        );
+        let (mut q_hi, mut q_lo) = (0u128, 0u128);
+        let (mut r_hi, mut r_lo) = (0u128, 0u128);
+        for i in (0 .. 256u32).rev() {
+            let bit = if i >= 128 { (self.hi >> (i - 128)) & 1 } else { (self.lo >> i) & 1 };
+            let over = r_hi >> 127 == 1;
+            r_hi = (r_hi << 1) | (r_lo >> 127);
+            r_lo = (r_lo << 1) | bit;
+            if over || (r_hi, r_lo) >= (d.hi, d.lo) {
+                let (lo, borrow) = r_lo.overflowing_sub(d.lo);
+                r_hi = r_hi.wrapping_sub(d.hi).wrapping_sub(u128::from(borrow));
+                r_lo = lo;
+                if i >= 128 {
+                    q_hi |= 1 << (i - 128);
+                } else {
+                    q_lo |= 1 << i;
+                }
+            }
+        }
+        let q = Self::signed(self.negative, q_hi, q_lo);
+        let r = Self::signed(false, r_hi, r_lo);
+        if self.negative && (r_hi | r_lo) != 0 {
+            (q.plus(Self::of(-1)), d.plus(r.negated()))
+        } else {
+            (q, r)
+        }
+    }
+
+    /// The value with its sign turned.
+    pub(crate) fn negated(self) -> Self {
+        Self::signed(!self.negative, self.hi, self.lo)
+    }
+
+    /// The greatest common divisor of two values not below zero, one above it.
+    pub(crate) fn common_divisor(self, other: Self) -> Self {
+        let (mut a, mut b) = (self, other);
+        while (b.hi | b.lo) != 0 {
+            let rest = a.floor_over_big(b).1;
+            a = b;
+            b = rest;
+        }
+        a
+    }
+
+    /// The value as four limbs, lowest first, and its sign.
+    pub(crate) fn limbs(self) -> (bool, [u64; 4]) {
+        (self.negative, [
+            self.lo as u64,
+            (self.lo >> 64) as u64,
+            self.hi as u64,
+            (self.hi >> 64) as u64,
+        ])
     }
 }
 

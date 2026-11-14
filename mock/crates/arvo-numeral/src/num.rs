@@ -356,12 +356,17 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// build aborts on a product that leaves the range, which `fits_mul` asks
     /// ahead; under `Quiet` no build does.
     ///
-    /// Refused at build where the format's product is not admitted, with the
-    /// format's own message. The unsigned 64-bit integer is among those today.
+    /// Refused at build where the format does not hold the product's exact
+    /// position, with the format's own message. The unsigned 64-bit integer is
+    /// among those today, although the format's `mul` admits it under wrapping.
     #[must_use]
     pub const fn mul(self, rhs: Self) -> Self {
         const {
-            // Forces the format's multiplication obligation for this signature.
+            // Forces the format's multiplication obligation for this signature,
+            // the one `fits_mul` reads the exact position under.
+            // FIXME(value_s_product_admits_the_unsigned_64_bit_wrapping_product): the
+            // format's `mul` admits a wrapping product past the slot index, and the
+            // value takes it once the format holds the exact position there.
             let _ = product_position::<S::Format>(Slot::at(0), Slot::at(0));
         }
         if cfg!(debug_assertions) && const { C::ABORTS.get() } {

@@ -24,7 +24,7 @@ note: erroneous constant encountered
  --> src/num.rs
   |
   | /         const {
-  | |             // Forces the format's multiplication obligation for this signature.
+... |
   | |             let _ = product_position::<S::Format>(Slot::at(0), Slot::at(0));
   | |         }
   | |_________^

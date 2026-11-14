@@ -128,6 +128,7 @@ struct Total;
 impl PerSignature for Total {
     type Out = u64;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
@@ -194,6 +195,7 @@ struct Walk {
 }
 
 impl PerFormat for Walk {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         self.pairs += at_every_signature::<F, Total>(&Total);
         self.cells += signatures();
@@ -293,6 +295,7 @@ struct Commutes;
 impl PerSignature for Commutes {
     type Out = u64;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
@@ -326,6 +329,7 @@ struct CommutesAt {
 }
 
 impl PerFormat for CommutesAt {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         self.checked += at_every_signature::<F, Commutes>(&Commutes);
         let fed = (member_count::<F>() + 10) as u64;
@@ -352,6 +356,7 @@ struct Exactness;
 impl PerSignature for Exactness {
     type Out = u64;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
@@ -379,6 +384,7 @@ struct ExactAt {
 }
 
 impl PerFormat for ExactAt {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let exact = at_every_signature::<F, Exactness>(&Exactness);
         if F::PHASE.is_whole_multiple().get() {
@@ -410,6 +416,7 @@ struct Neutral(Slot);
 impl PerSignature for Neutral {
     type Out = u64;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let mut checked = 0u64;
         for a in members::<S::Format>() {

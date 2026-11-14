@@ -243,6 +243,7 @@ struct Surface {
 impl PerSignature for Surface {
     type Out = Maybe<Case>;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Maybe<Case> {
         let range = (
             <<S::Format as Format>::Slots as Slots>::MIN.index(),
@@ -262,6 +263,7 @@ struct EveryWidth {
 }
 
 impl PerFormat for EveryWidth {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let (lo, hi) = (
             <F::Slots as Slots>::MIN.index(),

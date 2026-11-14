@@ -315,6 +315,12 @@ agree on all of them, so no arm over the shipped set could have said which of th
 one is repaired by finding a construction on which the two answers differ, and a design naming only
 the first failure would send a reader to the wrong repair.
 
+A sweep over formats or signatures is a list of calls, one per type, and each type's walk is kept out of
+line. Inlined, a few hundred small monomorphic walks become one function whose counters run as one
+chain through every loop, and the compiler's analysis of that chain recursed past its own stack in an
+optimised build of the suite. Kept out of line, every walk is its own function and the counters pass
+through memory, so a sweep can grow by any number of formats without the build depending on how many.
+
 ## The surface this design names
 
 The concept is closed and the inventory is open, so this table separates the two.
@@ -538,7 +544,7 @@ Two coordinates meet here and they are kept apart. The ratio a caller hands `Exa
 `Fraction`, a signed 64-bit numerator over a positive signed 64-bit denominator, and it may be any ratio
 at all: `Exact` normalises it into the slot, so a caller computing an exact result does not carry the
 remainder invariant. What `Exact` holds afterwards is the remainder, `Remainder`, a coordinate of its
-own, a numerator below an unsigned 128-bit denominator. It is in `[0, 1)`, which is what lets the
+own, a numerator below a positive denominator, both four 64-bit limbs wide. It is in `[0, 1)`, which is what lets the
 rounding modes be stated once rather than once per sign, and it needs no sign for the same reason.
 The caller's ratio lands in it exactly, and a stored remainder compares equal to the `Fraction` it was
 built from.
@@ -546,20 +552,24 @@ built from.
 The remainder is wider than the ratio because an operation's exact step needs it to be. A quotient by a
 member of a 64-bit format has a remainder over that member, up to `2^64 - 1` for the unsigned range and
 `2^63` for the signed one, and neither is a positive signed 64-bit value. A product's remainder is over
-`d^2 r^max(-e, 0)`, and the square of a phase denominator alone reaches `2^126`. At 128 bits both have a
-position wherever the format's span and phase keep the denominator under `2^128`, which every 64-bit
-format at zero phase and a non-negative exponent does. Reading it costs the rounding region two
-comparisons formed so nothing overflows: the midpoint test asks `num` against `den - num`, and the
-dither test cross-multiplies a 128-bit term by a 64-bit one into a 192-bit product held in two words
-of the host's unsigned 128-bit integer.
+`d^2 r^max(-e, 0)`, and the square of a phase denominator alone reaches `2^126`, beside which a negative
+exponent at radix two adds a bit per step. The four limbs are the width the exact steps form their
+numerators in, so a denominator any step forms is one the remainder carries, and what an operation
+holds out is a step whose numerator or denominator leaves those limbs rather than a remainder too
+narrow to store what it formed. Reading it costs the rounding region two comparisons formed so
+nothing overflows: the midpoint test asks `num` against `den - num`, and the dither test
+cross-multiplies a four-limb term by a 64-bit one into a product held in five limbs.
 
 The remainder is public as `Remainder`, and a position over one is built by `Exact::at(slot, part)`, the
 position at `slot` and `part` of the way to the next. `Remainder::of(num, den)` is the remainder `num`
-leaves over `den`, the residue and nothing else, and a zero denominator reads as `Remainder::ZERO` the
-way `Fraction::of` reads one. Nothing carries through this door, because the type is a residue rather
-than a ratio normalised into one, so the position is never past the index. The product, the quotient and
-the conversion build their positions through exactly these two, and an operation written outside the
-crate forms the same positions the same way. `numerator` and `denominator` read the pair back.
+leaves over `den`, both of the host's unsigned 128-bit integer, the residue and nothing else, and a zero
+denominator reads as `Remainder::ZERO` the way `Fraction::of` reads one. Nothing carries through this
+door, because the type is a residue rather than a ratio normalised into one, so the position is never
+past the index. The product, the quotient and the conversion build their positions through `Exact::at`
+too, over a remainder formed the same way in the four limbs, so an operation written outside the crate
+forms the same positions wherever its remainder fits 128 bits. Nothing reads the pair back out: `Exact`
+hands no remainder out, so a caller only ever holds the pair it passed in, and what a consumer observes
+of a remainder is what the position answers, `is_on_grid` and `is_tie`, and what `adapt` makes of it.
 
 The carry that normalisation moves into the slot is at most `2^63` in either direction, and it lands as
 an ordinary slot wherever the index's host integer holds the sum. Where it does not, the slot pins at
@@ -1373,6 +1383,14 @@ written once, over anything that says whether a position overflows and what it r
 declared signature and the ties-away alias land through the same search.
 `mock/research/sketches/202611131910_ieee754-ties-to-even-through-adapt/` is where it was first shown.
 
+The search lands every value below the finest step, however far below. There the floor is 0 or -1, and
+an undithered adaptation reads the remainder only against zero and against a half. Where the scaled
+denominator fits the host's unsigned 128-bit integer the remainder is exact, a band only radix two has,
+since ten to the 38th is under the index's top and ten to the 39th past the unsigned integer; past it the
+value is under half a step, since twice the numerator is below `2^128`, and the search hands a remainder in the same
+open interval, which keeps both comparisons. So binary64 at `2^-1400` lands on the smallest subnormal
+toward positive and on zero under ties to even, as the standard answers.
+
 ### What IEEE 754 meets that this crate does not carry
 
 Four holes, each a test and each a ticket the source names where the hole is.
@@ -1406,7 +1424,20 @@ neither, so the digit rule is its whole expected side, at radix ten and under al
 the digits past the precision or below the smallest exponent, round the dropped part by the direction's
 rule, and carry. The rule is written once over any radix, and each format's precision and exponent
 range are written into it as the standard's numbers. None of it reads arvo code; a separate arm pins
-the format's own exponent range to those numbers.
+the format's own exponent range to those numbers. The rule reads a dropped unit in the host's unsigned
+128-bit integer, so a significand of `2^126` or more with two to the 127th dropped is read as the half it
+is, and past that integer the dropped part is under half the unit, a significand of `-2^127` excepted,
+which the rule refuses since no input is one.
+
+The inputs reach from three hundred exponents below the smallest subnormal to past the largest finite
+member: a far value, the significand bound, the first unit past the slot index and one past that, the
+tie at half that unit where the index holds it, and a sweep from twenty-one exponents below the
+smallest subnormal down to the lowest exponent whose unit the unsigned 128-bit integer holds, which is the
+first unit past the index at radix two and one above it at radix ten. Below that the search hands one
+stand-in, which the far points reach and no draw does. Binary16 and decimal take them through the shared inputs. Below the smallest
+subnormal binary32 and binary64 read the digit rule rather than the host, in a suite of their own, since
+the host's conversion of an integer scaled that far down is two roundings; it pins binary64 at
+`2^-1400` and decimal64 at `10^-480`, and a wrong direction there misses.
 
 The fimath sweep runs at every word length from one to sixty-four, signed and unsigned, and beside
 those at several fraction lengths, positive, zero and negative, with the range and the wrap computed
@@ -1701,7 +1732,7 @@ obligation carries the condition itself rather than forcing the format's, so the
 keeps exactly the two force sites the section on obligations names. This is a refusal by design. Every
 phase that denotes has a remainder the position holds: a declared denominator is at most `2^63` in
 magnitude, a denominator of the least value with an odd numerator reduces to exactly `2^63`, and the
-stored remainder's unsigned 128-bit denominator carries it. The position is built in that coordinate
+stored remainder's four-limb denominator carries it. The position is built in that coordinate
 directly and never through a `Fraction`, whose saturation of such a ratio is right for a ratio and
 would land the position a whole slot off.
 
@@ -1949,11 +1980,16 @@ product moved up by `2^e`, or down with a remainder over `2^-e`.
 
 The numerator is formed in an integer four 64-bit limbs wide, private to the crate. A factor `n + a d`
 is under `2^127` for any range up to 64 bits and any phase denominator, so the product of two is under
-`2^254`, and the move up by `r^e` stays exact until it leaves 256 bits. A numerator that leaves them
-is at least `2^256`, and `D` is under `2^128`, so its position is past the slot index anyway. The
-phase's term `n d r^max(-e, 0)` is at most `2^63` times `D` in magnitude, so under `2^191`, and it is
-formed in the same four limbs. The one division is by `D`, which the obligation holds under `2^128`:
-a long division of four limbs by one where `D` is under `2^64`, and one bit at a time otherwise.
+`2^254`, and the move up by `r^e` stays exact until it leaves 256 bits. `D` is formed in the same four
+limbs, so it reaches `2^256 - 1`, and a numerator that leaves them is then not a position past the
+index but a step not formed: the step names it apart, and the obligation asks it. The phase's term
+`n d r^max(-e, 0)` is at most `2^63` times `D` in magnitude, and it is formed in the same four limbs
+or the step is not formed. The one division is by `D`: a long division of four limbs by one where
+`D` is under `2^64`, and otherwise Knuth's long division by as many limbs as `D` has, `D` normalised
+to its top bit, a quotient limb at a time, each limb's estimate from the running remainder's top two
+limbs corrected against `D`'s second limb. At two limbs that correction makes the estimate exact. At
+three and four it can still be one too many, the subtraction then borrows, and one `D` is added back.
+The remainder is that residue in the same four limbs.
 
 For a slot that is not a member the step answers anyway, as `sum_position` does: a numerator that
 leaves the four limbs, or a slot that leaves the index, saturates at the end of the index on the
@@ -1961,8 +1997,9 @@ position's sign, on the grid.
 
 ### What it refuses, and what is not yet admitted
 
-One obligation carries four conditions, forced by the exact step and so by the composition, and asked
-without forcing by `is_multipliable`. Only the first is a refusal by design. The other three are
+One obligation on the format carries four conditions, forced by the exact step and asked without forcing
+by `is_multipliable`. The composition forces the same conditions on its declared signature, the fourth
+only where the signature does not wrap. Only the first is a refusal by design. The other three are
 products that are functions of the signature and that this crate does not carry yet, each a declared
 placeholder: the assert carries a `FIXME` citing its ticket, and the message says not yet and why.
 
@@ -1973,37 +2010,49 @@ A magnitude-indexed quantum is not yet admitted, for the reason addition does no
 on a union of magnitude ranges. The ticket is
 `arvo_product_over_a_magnitude_indexed_quantum_is_a_placehold`.
 
-A denominator `D` past `2^128 - 1` is not yet admitted, because the remainder of an exact position
-carries an unsigned 128-bit denominator. At zero phase it reads `e >= -127` at radix two and
-`e >= -38` at radix ten. A phase denominator enters squared and is at most `2^63`, so at a
-non-negative exponent every phase is admitted, and at `e = -64` at radix two a phase denominator up to
-`2^32 - 1` is. The condition reads the unreduced `D`, so it is conservative. Each member pair's
-remainder is its numerator's residue over `D` reduced, and its denominator is `D` itself wherever that
-residue is coprime to `D`. So where some member pair's residue is coprime to `D` the condition is
-exact, and it holds a format out too early only where no member pair's residue is, every reduced
-remainder then fitting although `D` does not. The ticket is
-`arvo_s_exact_position_carries_no_remainder_denominator_past`.
+A step not formed in the four limbs is not yet admitted: `D` or the phase's term past `2^256 - 1`, or
+the numerator at a corner of the range past it. At zero phase `D` is `r^max(-e, 0)`, so it reads
+`e >= -255` at radix two and `e >= -77` at radix ten. A phase denominator enters squared and is at most
+`2^63`, so at radix two every phase's `D` is formed down to `e = -129`, and the phase's term, up to
+`2^63` times `D`, can leave the limbs before `D` does at a phase whose numerator is large. Every
+intermediate of the numerator is bilinear in the two slots, so its magnitude over a box of slots is
+greatest at a corner, and the obligation forms the numerator at the four corners with the step itself.
+The remainder each pair stores is its residue over `D` in lowest terms, in the same four limbs, so a
+format the condition admits has every product's remainder. The ticket is
+`arvo_s_exact_position_carries_no_remainder_denominator_past`, narrowed to that.
 
 A product the slot index cannot carry is not yet admitted. The position is bilinear in the two slots,
 so over a box of slots it is extreme at the four corners, and the obligation computes the four corner
 positions with the step itself, each counted as far as one slot past where it sits when it is not on
 the grid, since a rounding mode may take it there. The ticket is
-`arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c`.
+`arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c`. Wrapping does not need that condition.
+What it reads of a position past the index is the floor's class modulo the range's count, the remainder,
+and, for the modes that read them, the floor's sign and its parity: toward zero reads the sign, and half
+to even the parity on a tie. The step forms the floor and the remainder in its four limbs past the index
+too, so `mul` hands `adapt` the floor reduced modulo twice the count, kept on its own side of zero, which
+keeps all three and which the index holds, an admitted range spanning at most `2^64` slots. `adapt` then
+rounds it as it would the true floor and wraps the result onto the range. The condition is asked only of
+a signature that does not wrap, and `is_multipliable_under` asks it without forcing it. `product_position`
+names a position with no policy and keeps it.
 
 That last condition is where the 64-bit ranges part. The signed 64-bit range's largest position at
 exponent zero is `(-2^63)^2 = 2^126`, which the index holds, so `Integer<64>` is admitted. The unsigned
 range's top corner is `(2^64 - 1)^2`, just under `2^128`, so `UFixed<64, k>` is not yet admitted for
-any `k` at or above zero. At `k = -1` the same corner halves to under `2^127` and rounds up by at most
-one slot, which the index holds, so `UFixed<64, k>` is admitted for every `k` at or below `-1`, and
-`UFixed<63, k>` up to `k = 1`. A double-width exact sum at width 64, two signed 64-bit products added
+any `k` at or above zero under saturation or clamping. Under wrapping it is admitted from `k = 0` to
+`k = 128`, and at `k = 0` the corner wraps to 1, as the host's wrapping product on 64 unsigned bits does.
+At `k = 129` the corner itself, `(2^64 - 1)^2 2^129`, passes `2^256`, so the step is not formed under any
+policy. At `k = -1` the same corner halves to under `2^127` and rounds up by at most one slot, which the
+index holds, so `UFixed<64, k>` is admitted from `k = -255` to `k = -1`, and `UFixed<63, k>` from
+`k = -255` to `k = 1`; below `-255`, `D = 2^-k` passes `2^256 - 1`. A double-width exact sum at width 64, two signed 64-bit products added
 before either is adapted, reaches `2^127`, one past the index's top. Nothing here forms that sum,
 because each product is adapted before the next operation reads it.
 
 ### The operation and the surface
 
 `Mul` is the operation, of arity two. `product_position` is the exact step, `mul` the composition with
-`adapt` under one declared signature with the dither passed through, and `is_multipliable` the verdict.
-The three functions are `const fn`, and the crate root re-exports all four. There is no reach and no
+`adapt` under one declared signature with the dither passed through, `is_multipliable` the verdict on a
+format, and `is_multipliable_under` the verdict on a declared signature, the one `mul` forces. The four
+functions are `const fn`, and the crate root re-exports all five. There is no reach and no
 associativity verdict: the reach serves addition's translation argument, which has no counterpart for
 the product, and a verdict would need a relocation law for multiplication the canon does not state.
 
@@ -2034,8 +2083,18 @@ position, at exponents on both sides of zero over both families, at a phase and 
 control that leaves the quantum out and has to disagree wherever the quantum is not one. Every
 condition on both sides of its boundary through `is_multipliable`, and the ones a consumer most
 plausibly writes as compile-fail cases each with a twin differing in the offending token that
-compiles: a phase whose denominator passes the remainder, a magnitude-indexed quantum and the unsigned
-64-bit range at exponent zero.
+compiles: a phase whose step leaves the four limbs, a magnitude-indexed quantum and the unsigned 64-bit
+range at exponent zero, and on that range the saturating and the clamping product each refused beside the
+wrapping one admitted. The wrapping product on the unsigned 64-bit range at exponent zero and at a
+positive exponent, its top corner and the pairs near both ends against the host's wrapping product on 64
+unsigned bits. The wrapping product past the index under all six modes, at a nonzero phase, on signed
+and unsigned ranges, on ranges at both ends of the index and on an odd and an even count, crossed so that past
+the index each sign of the floor meets a remainder below, at and above a half, a negative tie on an odd
+count among them, with a count of the pairs in each of those cells asserted rather than claimed; the pairs at
+and beside the corners against a reference that forms the position from the two values in a wide
+integer, rounds it by the mode's own rule and wraps it, reading no step code; and `is_multipliable_under`
+agreeing with what `mul` admits on both sides of its boundary, at `UFixed<64, 128>` and `UFixed<64, 129>`
+under wrapping, and at `UFixed<64, -255>` and `UFixed<64, -256>` under every policy.
 
 Every member pair at widths one to eight against the applied map's oracle fed the exact rational
 position, every mode and shipped policy, at positive and negative exponents over signed and unsigned
@@ -2047,10 +2106,15 @@ product in the host's unsigned 128-bit integer rather than in the step's limbs. 
 a phase and at radix ten, at every width from nine to 64 of both families, `Integer<64>` at a phase of
 a third and at radix ten with `e = -18` among them, against an oracle in a wide rational of its own,
 built on pairs of the host's unsigned 128-bit integer, since there the numerator passes `2^128` and
-the division is by a denominator that is not a power of two. The four-limb integer gets its own suite
-against the host's 128-bit arithmetic wherever that holds the answer, at the four-limb boundary on
-both sides, and at divisions whose quotient spans three and four limbs by divisors that are not powers
-of two, checked by multiplying back.
+the division is by a denominator that is not a power of two. Where `D` passes `2^128`, at radix two
+below `e = -127` down to the last exponent the four limbs form and one past it, the step at the corners
+is checked against the shared wide oracle and the verdict on both sides of that last exponent. The
+four-limb integer gets its own suite against the host's 128-bit arithmetic wherever that holds the
+answer, at the four-limb boundary on both sides, and at divisions whose quotient spans three and four
+limbs by divisors that are not powers of two, checked by multiplying back. Divisions by divisors of
+three and four limbs at every normalisation are checked against the oracle's bit-serial division, the
+add-back included, and so are the order of two values, the comparison of two scaled values whose
+products pass the four limbs, and the common divisor.
 
 And the law rows' cells. Under wrapping, `(a * b) * c == a * (b * c)` holds on the integer grid at
 widths three to eight, signed and unsigned, and the row's fails cell is `F > 0` at widths three to
@@ -2071,12 +2135,16 @@ reads the exponent alone, which has to be right at a zero phase and wrong at the
 
 The product, the quotient and the conversion each end the same way, so the ending is written once, in
 a crate-private module the three read. Each forms a numerator in the four-limb integer and a
-denominator `D` from one up to `2^128 - 1`. The floor of the numerator over `D` is the slot, and the
-residue over `D`, reduced to lowest terms, is the remainder, or the position is past an end of the
-slot index on the numerator's sign. A numerator that leaves the four limbs is past the index too,
-since `D` is under `2^128`. A corner is held when the index holds its slot, counted one slot past the
-floor when the remainder is not zero, since a rounding mode may take it there. Each operation also
-starts from the phase as `n / d` in lowest terms with `d` positive, which the module reduces once.
+denominator `D` from one up to `2^256 - 1` in the same four limbs. The floor of the numerator over `D`
+is the slot, and the residue over `D`, reduced to lowest terms, is the remainder, or the position is
+past an end of the slot index on the numerator's sign, its floor and residue kept. Wrapping reads that
+floor modulo the range's count, and rounding reads its sign and parity, so the module reduces it once,
+modulo twice the count on its own side of zero, for every step that wraps past the index. A numerator that leaves the four limbs is a
+step not formed, which the module names apart from a position past the index, since with `D` that wide
+such a numerator can still name a slot the index holds. A corner is formed when its numerator is, and
+held when the index holds its slot, counted one slot past the floor when the remainder is not zero,
+since a rounding mode may take it there. Each operation also starts from the phase as `n / d` in lowest
+terms with `d` positive, which the module reduces once.
 
 ## Division, the quotient by a member that is non-zero by type
 
@@ -2116,10 +2184,9 @@ out alike. Admitting the second needs a slot typed by membership, under the tick
 Write `u = r^max(e, 0)` and `v = r^max(-e, 0)`. The position is the numerator
 `d (n + a d) v - n (n + b d) u` over the denominator `d (n + b d) u`, both negated when `n + b d` is
 below zero so that `D` is positive. Unlike the product's, this `D` depends on the divisor, so it is
-formed per call in the four limbs and narrowed to the unsigned 128-bit integer, which the obligation
-guarantees for every member divisor. `d (n + a d) v` is under `2^190` times `v`, and a numerator that
-leaves the limbs is past the index. The phase's term `n (n + b d) u` is at most `2^63` times `D`, so
-under `2^191`. Then the shared ending places it.
+formed per call in the four limbs, which the obligation guarantees for every member divisor.
+`d (n + a d) v` is under `2^190` times `v`, the phase's term `n (n + b d) u` is at most `2^63` times
+`D`, and a numerator that leaves the limbs is a step not formed. Then the shared ending places it.
 
 ### What it refuses, and what is not yet admitted
 
@@ -2133,11 +2200,13 @@ A magnitude-indexed quantum is not yet admitted, for the reason the product give
 no magnitude coordinate to land the quotient at. The ticket is
 `arvo_quotient_and_conversion_over_a_magnitude_indexed_quantu`.
 
-A denominator `d |n + b d| u` past `2^128 - 1` at some member divisor is not yet admitted, under the
-remainder coordinate's ticket `arvo_s_exact_position_carries_no_remainder_denominator_past`.
-`|n + b d|` is affine in `b`, so the larger of the two range ends decides it. At zero phase and
-exponent zero every 64-bit range is admitted; at a phase of a third over a 64-bit range the
-denominator is near `3 * 3 * 2^64`, which is admitted too.
+A step not formed in the four limbs at some member pair is not yet admitted, under the remainder
+coordinate's ticket `arvo_s_exact_position_carries_no_remainder_denominator_past`: a denominator
+`d |n + b d| u` past `2^256 - 1` at some member divisor, or a numerator past it at some pair.
+`|n + b d|` is affine in `b`, so the two range ends decide the denominator, and each of the
+numerator's two terms is affine in one slot, so its magnitude over the box of slots is greatest at one
+of the four corners the range ends make. The divisors next to the pole do not enter, since the
+numerator divides by nothing.
 
 A quotient the slot index cannot carry is not yet admitted, under the ticket
 `arvo_quotient_and_conversion_positions_past_the_slot_index`. For a fixed divisor the position is
@@ -2187,10 +2256,10 @@ does inside.
 With each phase `n / d` in lowest terms and, per format, `U = r^max(e, 0)` and `V = r^max(-e, 0)`, the
 position is the numerator `(n_F + a d_F) U_F V_T d_T - n_T d_F V_F U_T` over the denominator
 `D = d_F V_F U_T d_T`. The radixes are read separately, so a radix ten source on a radix two target is
-the same step. `D` is a constant of the pair and the obligation holds it under `2^128`.
-`U_F V_T d_T` is formed once, and where it leaves the four limbs any member but the one whose factor
-`n_F + a d_F` is zero is past the index. The target's term `n_T d_F V_F U_T` is at most `2^63` times
-`D`. Then the shared ending places it.
+the same step. `D` is a constant of the pair, formed in the four limbs. `U_F V_T d_T` is formed once,
+and where it leaves the four limbs any member but the one whose factor `n_F + a d_F` is zero is a step
+not formed. The target's term `n_T d_F V_F U_T` is at most `2^63` times `D`, formed in the same limbs
+or the step is not. Then the shared ending places it.
 
 ### What it refuses, and what is not yet admitted
 
@@ -2203,9 +2272,11 @@ Either phase with a zero denominator names no member, and nothing is computed fo
 A magnitude-indexed quantum on either side is not yet admitted, under
 `arvo_quotient_and_conversion_over_a_magnitude_indexed_quantu`.
 
-A denominator `d_F V_F U_T d_T` past `2^128 - 1` is not yet admitted, under
-`arvo_s_exact_position_carries_no_remainder_denominator_past`. At zero phases at radix two this reads
-`max(-e_F, 0) + max(e_T, 0) <= 127`.
+A step not formed in the four limbs is not yet admitted, under
+`arvo_s_exact_position_carries_no_remainder_denominator_past`: `D = d_F V_F U_T d_T` or the target's
+term past `2^256 - 1`, or the numerator at either end of the source's range past it, which bounds
+every member's since the numerator is affine in the slot. At zero phases at radix two the denominator
+reads `max(-e_F, 0) + max(e_T, 0) <= 255`.
 
 A converted member the slot index cannot carry is not yet admitted, under
 `arvo_quotient_and_conversion_positions_past_the_slot_index`. The position is affine and increasing in
@@ -2226,24 +2297,26 @@ applied map's oracle, every mode and shipped policy. A conversion onto the sourc
 identity at every member. An edge sweep at widths nine to 64 at the two range ends and the members next
 to them, against the shared wide oracle, with the verdict checked against an independent count. And
 compile-fail pairs: a magnitude-indexed source beside a constant one, and a pair whose denominator
-passes `2^128 - 1` beside one that fits.
+passes `2^256 - 1` beside one that fits.
 
 ## Open items
 
 Six gaps this crate does not close, catalogued here rather than left unrecorded once the design
 that would close them exists.
 
-The product over the unsigned 64-bit range at an exponent at or above zero is not yet admitted
-because its top corner leaves the slot index. Admitting it is a widening of the slot coordinate past
+The product over the unsigned 64-bit range at an exponent at or above zero is not yet admitted under
+saturation or clamping, nor through `product_position`, because its top corner leaves the slot index.
+Under wrapping `mul` admits it, reading the floor's residue rather than a wider slot. Saturation and
+clamping are sound by the same reading, a floor past the index being past the range on its side, and
+are task `44c483a9f0d5`. A position past the index itself is a widening of the slot coordinate past
 `i128`, which every other computation over a slot would then owe too.
 
-A position whose remainder passes what a `Fraction` carries is reached only through an operation's
-exact step. `Exact::between` takes a caller's `Fraction`, and no public constructor takes a remainder
-over an unsigned 128-bit denominator, so a consumer forming its own exact position over a 64-bit
-divisor has no door to hand it in by. A constructor beside `between` would close it, and whether it
-normalises a carry and how far past the index a carry may land is a decision of its own, left until a
-consumer asks for it. The product whose remainder denominator passes `2^128 - 1` stays held out under
-the same coordinate.
+A position whose remainder passes the host's unsigned 128-bit integer is reached only through an
+operation's exact step. `Exact::at(slot, Remainder::of(num, den))` is the door for a remainder up to
+`2^128 - 1`, and a wider one has none, because the crate has no public four-limb integer to take it in.
+Whether it gets one, and whether a door beside `at` normalises a carry and how far past the index a
+carry may land, are decisions of their own, left until a consumer asks for them. A step whose numerator
+or denominator passes `2^256 - 1` stays held out under `arvo_s_exact_position_carries_no_remainder_denominator_past`.
 
 The composed law `(a + b) - c == a + (b - c)` has a count and no verdict. One in the shape of
 `addition_is_associative` is a sufficient condition: the relocation law at the sum's reach under
