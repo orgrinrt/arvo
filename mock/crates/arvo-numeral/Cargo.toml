@@ -12,18 +12,6 @@ arvo-placement.workspace = true
 notko.workspace = true
 notko-hlist = { workspace = true, optional = true }
 
-# One mutant per rung. Each removes that rung's adaptation onto the declared
-# width, and the equality tests fail while it is on. Off by default
-# and never enabled by anything that ships.
-#
-# One mutant per operation beside them, each breaking that operation where it
-# goes wrong first: the unsigned saturating difference below zero, the signed
-# saturating negation of the lowest member, the saturating product that leaves
-# the machine integer on the negative side. `mutant-under` sends the top of the
-# range to the bottom in a crossing to a sibling signature. `mutant-div` returns
-# the dividend where the quotient leaves the range, `mutant-convert` reads the
-# source's slot index as the target's, and `mutant-index` sends a negative host
-# integer to the top of an unsigned saturating range. `mutant-count` stops a count at one.
 [features]
 # A value as the count of `notko-hlist`, so a list's length lands in a value.
 # Off by default, and nothing else here turns either on.
@@ -34,21 +22,20 @@ notko-hlist = { workspace = true, optional = true }
 # consumer naming the value or the length needs no feature gate of its own.
 hlist = ["dep:notko-hlist"]
 hlist-const = ["hlist", "notko-hlist/const"]
-mutant-8 = []
-mutant-16 = []
-mutant-32 = []
-mutant-64 = []
-mutant-sub = []
-mutant-neg = []
-mutant-mul = []
-mutant-under = []
-mutant-div = []
-mutant-convert = []
-mutant-index = []
-mutant-count = []
 
+# The mutants the tests turn on are compiler flags, set only by the build at the
+# top with `RUSTFLAGS="--cfg arvo_mutant_<name>"`, never features: a feature is
+# unified across a build, and one crate turning a mutant on would change every
+# other crate's arithmetic. Each flag breaks one place where its operation goes
+# wrong first, and is declared here so a misspelt one is reported.
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"
+unexpected_cfgs = { level = "warn", check-cfg = [
+  "cfg(arvo_mutant_8, arvo_mutant_16, arvo_mutant_32, arvo_mutant_64)",
+  "cfg(arvo_mutant_sub, arvo_mutant_neg, arvo_mutant_mul, arvo_mutant_under)",
+  "cfg(arvo_mutant_div, arvo_mutant_convert, arvo_mutant_convert_policy)",
+  "cfg(arvo_mutant_index, arvo_mutant_count)",
+] }
 
 [dev-dependencies]
 trybuild = "1"

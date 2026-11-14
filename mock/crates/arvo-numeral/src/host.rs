@@ -112,7 +112,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
                 Policy::Wrap => rung::adapt_u64(wide.bits, width, Policy::Wrap),
                 policy => {
                     let x = if wide.negative {
-                        if cfg!(feature = "mutant-index") { u64::MAX } else { 0 }
+                        if cfg!(arvo_mutant_index) { u64::MAX } else { 0 }
                     } else {
                         wide.bits
                     };

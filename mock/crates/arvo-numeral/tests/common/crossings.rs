@@ -105,7 +105,11 @@ impl Crossing {
         }
         for &a in members.iter().chain(&edges) {
             shapes.checked += 1;
-            if (self.got)(a) != (self.want)(a) {
+            let want = (self.want)(a);
+            if !want.fits {
+                shapes.unfit += 1;
+            }
+            if (self.got)(a) != want {
                 shapes.wrong += 1;
             }
         }

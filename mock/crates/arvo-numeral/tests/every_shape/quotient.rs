@@ -7,7 +7,8 @@
 
 use arvo_format::Format;
 use arvo_numeral::{Divisor, Sole};
-use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, members, minus_one, one, widest, zero};
+use common::edges::quotient_highest as top;
+use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, members, minus_one, widest, zero};
 use common::{oracle, value};
 
 /// The slot of the number one at a radix and an exponent, or one where the
@@ -132,6 +133,58 @@ const fn half(w: u32, signed: bool, radix: i128) -> i32 {
     if half > deep { half } else { deep }
 }
 
+/// Both ends of the family at one width and radix, held against the format's
+/// verdict on both ranges: admitted at each, refused one past it.
+macro_rules! quotient_edges_at {
+    ($w:literal, $radix:literal, $signed:ident, $unsigned:ident) => {{
+        $crate::edge!(
+            is_divisible,
+            $signed,
+            $w,
+            top($w, true, $radix),
+            top($w, true, $radix) + 1,
+            "the quotient's highest"
+        );
+        $crate::edge!(
+            is_divisible,
+            $unsigned,
+            $w,
+            top($w, false, $radix),
+            top($w, false, $radix) + 1,
+            "the quotient's highest"
+        );
+        $crate::edge!(
+            is_divisible,
+            $signed,
+            $w,
+            deep($w, true, $radix),
+            deep($w, true, $radix) - 1,
+            "the quotient's deepest"
+        );
+        $crate::edge!(
+            is_divisible,
+            $unsigned,
+            $w,
+            deep($w, false, $radix),
+            deep($w, false, $radix) - 1,
+            "the quotient's deepest"
+        );
+    }};
+}
+
+/// The family's ends at every width of one radix family, one test.
+macro_rules! quotient_edges {
+    ($name:ident, $radix:literal, $signed:ident, $unsigned:ident) => {
+        #[test]
+        fn $name() {
+            widths_1_to_16!(quotient_edges_at!($radix, $signed, $unsigned));
+            widths_17_to_32!(quotient_edges_at!($radix, $signed, $unsigned));
+            widths_33_to_48!(quotient_edges_at!($radix, $signed, $unsigned));
+            widths_49_to_64!(quotient_edges_at!($radix, $signed, $unsigned));
+        }
+    };
+}
+
 /// One format's quotients under every adaptation.
 macro_rules! quotients_of {
     (signed, $format:ty, $w:literal, $radix:literal, $e:expr, ($shapes:expr)) => {
@@ -149,7 +202,7 @@ macro_rules! band {
         fn $name() {
             let mut shapes = Shapes::default();
             $widths!($at!(
-                [zero, one, minus_one, half, deep],
+                [top, zero, minus_one, half, deep],
                 quotients_of,
                 (&mut shapes)
             ));

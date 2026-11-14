@@ -10,10 +10,10 @@
 //! the product is the carrier's and the bands hold it at the integer points;
 //! here it is taken at every radix and at the exponents where it is the
 //! format's function as well. The exponents, per width `w`, are the highest
-//! one up to one that the format's product admits, the highest up to zero,
-//! minus one, minus half of `w` rounded up, and minus `w`, where the range is a
-//! pure fraction, or the deepest the radix has a denominator for. A test in the
-//! radix two file holds the two ends against the format's own verdict.
+//! the format's product admits, the highest up to zero, minus one, minus half
+//! of `w` rounded up, and the deepest the format's product admits. A test in
+//! each radix file holds the two ends against the format's own verdict at
+//! every width and both ranges, admitted at each and refused one past it.
 //!
 //! The pairs of a signature are every pair up to six bits, and above that the
 //! edge lattice against the ends and the neighbours of zero with seeded pairs.
@@ -33,24 +33,24 @@ bands!(
     binary_products_at_widths_49_to_64
 );
 
-/// The family's ends are the obligation's own: one past either is refused.
+product_edges!(
+    the_binary_family_ends_where_the_product_does,
+    2,
+    binary_signed,
+    binary_unsigned
+);
+
+/// A few edges written out, so the edge arithmetic is held to numbers as well
+/// as to the format: the unsigned 64-bit product leaves the slot index at
+/// exponent zero, the signed one holds at zero, a one-bit range holds to two
+/// to the 126th, and the remainder's denominator ends at two to the 127th.
 #[test]
-fn the_end_exponents_are_the_last_the_product_admits() {
-    use arvo_format::is_multipliable;
-    // The unsigned 64-bit product leaves the slot index at exponent zero.
-    assert_eq!(whole(64, false, 2), -1);
-    assert!(is_multipliable::<binary_unsigned!(64, -1)>().get());
-    assert!(!is_multipliable::<binary_unsigned!(64, 0)>().get());
-    // The signed one holds at zero and not at one.
+fn the_binary_edges_are_where_arithmetic_puts_them() {
+    assert_eq!(top(64, false, 2), -1);
     assert_eq!(top(64, true, 2), 0);
-    assert!(is_multipliable::<binary_signed!(64, 0)>().get());
-    assert!(!is_multipliable::<binary_signed!(64, 1)>().get());
-    assert_eq!(top(63, true, 2), 1);
-    assert!(is_multipliable::<binary_signed!(63, 1)>().get());
-    // A decimal denominator ends at ten to the thirty-eighth.
-    assert_eq!(deep(64, true, 10), -38);
-    assert!(is_multipliable::<decimal_signed!(64, -38)>().get());
-    assert!(!is_multipliable::<decimal_signed!(64, -39)>().get());
-    assert_eq!(deep(64, false, 3), -64);
-    assert!(is_multipliable::<ternary_unsigned!(64, -64)>().get());
+    assert_eq!(top(63, true, 2), 2);
+    assert_eq!(top(8, true, 2), 112);
+    assert_eq!(top(1, true, 2), 126);
+    assert_eq!(top(1, false, 2), 126);
+    assert_eq!(deep(64, true, 2), -127);
 }

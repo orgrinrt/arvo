@@ -11,7 +11,7 @@
 //! `arvo_format::add`, and the same for the difference, the negation and the
 //! product at exponent zero against `sub`, `neg` and `mul`. That checks the
 //! narrowest carrier against every wider one, the 64-bit carrier among them. A
-//! rung's mutant feature makes these tests fail, and so does an operation's;
+//! rung's mutant flag makes these tests fail, and so does an operation's;
 //! nothing here expects either.
 
 use arvo_format::overflow::{Saturate, Wrap};
