@@ -72,6 +72,7 @@ pub struct Divisor<F: Format> {
 }
 
 impl<F: Format> Clone for Divisor<F> {
+    #[inline]
     fn clone(&self) -> Self {
         *self
     }
@@ -121,6 +122,7 @@ impl<F: Format> NoSlotNamesTheZero<F> {
 
 /// Whether no slot of `F` names the zero: its phase denotes, and its reduced
 /// denominator is past one.
+#[inline]
 const fn no_slot_names_the_zero<F: Format>() -> Bool {
     Bool::of(matches!(reduced_phase::<F>(), Maybe::Is(phase) if phase.denominator > 1))
 }
@@ -129,6 +131,7 @@ impl<F: Format> Divisor<F> {
     /// The divisor at the constant slot `B`, refused at build time when `B` is
     /// outside the range or is the zero member.
     #[must_use]
+    #[inline]
     pub const fn constant<const B: i128>() -> Self {
         let () = ConstantDivisor::<F, B>::ADMITTED;
         Self {
@@ -143,6 +146,7 @@ impl<F: Format> Divisor<F> {
     /// the step answers for it as for any position past the index. None of them
     /// is the zero, so the step never meets one.
     #[must_use]
+    #[inline]
     pub const fn of(slot: Slot) -> Self {
         let () = NoSlotNamesTheZero::<F>::ADMITTED;
         Self {
@@ -153,6 +157,7 @@ impl<F: Format> Divisor<F> {
 
     /// The slot the divisor sits at.
     #[must_use]
+    #[inline]
     pub const fn slot(self) -> Slot {
         self.slot
     }
@@ -224,6 +229,7 @@ struct Step {
 }
 
 /// The step's constants for `F`, or nothing where the phase does not denote.
+#[inline]
 const fn step<F: Format>() -> Maybe<Step> {
     match reduced_phase::<F>() {
         Maybe::Is(phase) => {
@@ -237,6 +243,7 @@ const fn step<F: Format>() -> Maybe<Step> {
 }
 
 /// `n + a d`, the factor a slot brings, under `2^191` in magnitude for any slot.
+#[inline]
 const fn factor(step: Step, a: i128) -> Maybe<Wide> {
     match Wide::of(a).times(Wide::of(step.phase.denominator)) {
         Maybe::Is(ad) => ad.plus(Wide::of(step.phase.numerator)),
@@ -246,12 +253,14 @@ const fn factor(step: Step, a: i128) -> Maybe<Wide> {
 
 /// Whether the slot `b` is a divisor the step can place by: its factor is
 /// formed and is not zero.
+#[inline]
 const fn is_nonzero(step: Step, b: i128) -> bool {
     matches!(factor(step, b), Maybe::Is(f) if !f.is_zero().get())
 }
 
 /// `d |n + b d| u`, the denominator over the divisor's factor `fb`, or nothing
 /// when it passes `2^128 - 1`. Zero where the factor is.
+#[inline]
 const fn denominator(step: Step, fb: Wide) -> Maybe<u128> {
     let magnitude = if fb.is_negative().get() { fb.negated() } else { fb };
     match times(
@@ -280,6 +289,7 @@ const fn denominator(step: Step, fb: Wide) -> Maybe<u128> {
 /// of, and the test-only `unforced_position` is called with slots its sweeps
 /// keep off the pole, so the denominator below is positive and `over` divides by
 /// it.
+#[inline]
 const fn placed(step: Step, a: i128, b: i128) -> (Placed, u128) {
     // Both factors are under `2^191`, so neither is lost; the arm is the
     // answer the step gives if one were.
@@ -318,6 +328,7 @@ const fn placed(step: Step, a: i128, b: i128) -> (Placed, u128) {
 ///
 /// `|n + b d|` is affine in `b`, so the larger of the range's two ends decides
 /// it. Nothing where the phase does not denote.
+#[inline]
 const fn denominator_fits<F: Format>() -> Bool {
     let Maybe::Is(step) = Divisible::<F>::STEP else {
         return Bool::FALSE;
@@ -328,6 +339,7 @@ const fn denominator_fits<F: Format>() -> Bool {
 }
 
 /// Whether the denominator at the divisor slot `b` fits.
+#[inline]
 const fn fits_at(step: Step, b: i128) -> bool {
     match factor(step, b) {
         Maybe::Is(fb) => matches!(denominator(step, fb), Maybe::Is(_)),
@@ -338,6 +350,7 @@ const fn fits_at(step: Step, b: i128) -> bool {
 /// The member divisors the quotient is extreme at: the range's two ends and the
 /// members nearest the pole on each side, each skipped when it is not in range
 /// or is the zero member.
+#[inline]
 const fn extreme_divisors(step: Step, min: i128, max: i128) -> [Maybe<i128>; 4] {
     let (n, d) = (step.phase.numerator, step.phase.denominator);
     // The smallest `b` with `n + b d` above zero, and the largest with it below.
@@ -362,6 +375,7 @@ const fn extreme_divisors(step: Step, min: i128, max: i128) -> [Maybe<i128>; 4] 
 /// For a fixed divisor the position is affine in the dividend, and for a fixed
 /// dividend it is monotone in the divisor on each side of the pole, so the eight
 /// corners `extreme_divisors` names against the dividend's two ends decide it.
+#[inline]
 const fn quotient_is_carried<F: Format>() -> Bool {
     let Maybe::Is(step) = Divisible::<F>::STEP else {
         return Bool::FALSE;
@@ -392,6 +406,7 @@ const fn quotient_is_carried<F: Format>() -> Bool {
 /// Forces the division obligation, so a format the quotient does not admit stops
 /// the build here, at check time when the call is bound in a `const` item.
 #[must_use]
+#[inline]
 pub const fn quotient_position<F: Format>(a: Slot, b: Divisor<F>) -> Exact {
     let () = Divisible::<F>::ADMITTED;
     match Divisible::<F>::STEP {
@@ -410,6 +425,7 @@ pub const fn quotient_position<F: Format>(a: Slot, b: Divisor<F>) -> Exact {
 /// through for the one mode that reads it. Total over every slot and every
 /// divisor, with no check and no panic.
 #[must_use]
+#[inline]
 pub const fn div<S: DeclaredSignature>(a: Slot, b: Divisor<S::Format>, dither: Dither) -> Slot {
     adapt::<S>(quotient_position::<S::Format>(a, b), dither)
 }
@@ -419,6 +435,7 @@ pub const fn div<S: DeclaredSignature>(a: Slot, b: Divisor<S::Format>, dither: D
 ///
 /// The one place they are stated, read by the obligation and by `is_divisible`.
 /// The last two read the step and answer false where the phase does not denote.
+#[inline]
 const fn conditions<F: Format>() -> [Bool; 4] {
     [
         F::PHASE.denotes(),
@@ -433,6 +450,7 @@ const fn conditions<F: Format>() -> [Bool; 4] {
 /// The obligation's own verdicts folded, so a test can hold a format the
 /// quotient does not admit and report on it rather than stop the build.
 #[must_use]
+#[inline]
 pub const fn is_divisible<F: Format>() -> Bool {
     all(conditions::<F>())
 }

@@ -33,6 +33,7 @@ pub(crate) struct Reduced {
 /// The phase of `F` in lowest terms, or nothing when it does not denote.
 ///
 /// The fraction's sign moves onto the numerator before it is reduced.
+#[inline]
 pub(crate) const fn reduced_phase<F: Format>() -> Maybe<Reduced> {
     let num = F::PHASE.numerator() as i128;
     let den = F::PHASE.denominator() as i128;
@@ -57,6 +58,7 @@ pub(crate) struct Powers {
 }
 
 /// `U` and `V` for `F`, read off its constant quantum's exponent.
+#[inline]
 pub(crate) const fn powers<F: Format>() -> Powers {
     let r = radix::<F>().base() as u64;
     let e = <F::Quantum as Quantum>::BASE.power();
@@ -69,6 +71,7 @@ pub(crate) const fn powers<F: Format>() -> Powers {
 
 /// The product of two values in the four limbs, where either being lost loses
 /// the product.
+#[inline]
 pub(crate) const fn times(a: Maybe<Wide>, b: Maybe<Wide>) -> Maybe<Wide> {
     match (a, b) {
         (Maybe::Is(a), Maybe::Is(b)) => a.times(b),
@@ -87,6 +90,7 @@ pub(crate) enum Placed {
 }
 
 /// The floor of `numerator` over a positive `divisor`, and its residue.
+#[inline]
 pub(crate) const fn over(numerator: Wide, divisor: u128) -> Placed {
     let Divided {
         quotient,
@@ -100,6 +104,7 @@ pub(crate) const fn over(numerator: Wide, divisor: u128) -> Placed {
 
 /// Whether the index holds a placed position, counted one slot past its floor
 /// when it is not on the grid, since a mode may round it there.
+#[inline]
 pub(crate) const fn is_held(at: Placed) -> Bool {
     match at {
         Placed::Past(_) => Bool::FALSE,
@@ -109,6 +114,7 @@ pub(crate) const fn is_held(at: Placed) -> Bool {
 
 /// Whether every verdict of an obligation holds, which is what its verdict
 /// function answers.
+#[inline]
 pub(crate) const fn all<const N: usize>(verdicts: [Bool; N]) -> Bool {
     let mut i = 0;
     while i < N {
@@ -121,12 +127,14 @@ pub(crate) const fn all<const N: usize>(verdicts: [Bool; N]) -> Bool {
 }
 
 /// The end of the index on the side of a position whose sign is `negative`.
+#[inline]
 pub(crate) const fn saturated(negative: bool) -> Exact {
     Exact::on_grid(Slot::at(if negative { i128::MIN } else { i128::MAX }))
 }
 
 /// A placed position as an exact one over `divisor`, its remainder in lowest
 /// terms.
+#[inline]
 pub(crate) const fn positioned(divisor: u128, at: Placed) -> Exact {
     match at {
         Placed::Past(negative) => saturated(negative),

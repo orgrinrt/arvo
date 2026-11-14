@@ -47,6 +47,7 @@ impl Exponent {
 
     /// An exponent from a power.
     #[must_use]
+    #[inline]
     pub const fn of(power: i32) -> Self {
         Self(power)
     }
@@ -55,6 +56,7 @@ impl Exponent {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn power(self) -> i32 {
         self.0
     }
@@ -71,12 +73,14 @@ impl Exponent {
     /// where either narrowing bites, so there is no check here and nothing to
     /// catch at runtime.
     #[must_use]
+    #[inline]
     pub const fn advanced(self, rate: Self, magnitude: Magnitude) -> Self {
         Self(self.0 + rate.0 * (magnitude.0 as i32))
     }
 
     /// The smaller of two exponents.
     #[must_use]
+    #[inline]
     pub const fn min(self, other: Self) -> Self {
         if self.0 < other.0 { self } else { other }
     }
@@ -98,6 +102,7 @@ impl Magnitude {
 
     /// A magnitude at an index.
     #[must_use]
+    #[inline]
     pub const fn at(index: u32) -> Self {
         Self(index)
     }
@@ -106,6 +111,7 @@ impl Magnitude {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn index(self) -> u32 {
         self.0
     }
@@ -115,6 +121,7 @@ impl Magnitude {
     /// The index-against-extent comparison, written once here rather than at every
     /// site that would otherwise have to remember which side the equality falls on.
     #[must_use]
+    #[inline]
     pub const fn is_within(self, count: MagnitudeCount) -> Bool {
         Bool::of(self.0 < count.0)
     }
@@ -136,6 +143,7 @@ impl MagnitudeCount {
 
     /// A count of magnitudes.
     #[must_use]
+    #[inline]
     pub const fn of(count: u32) -> Self {
         Self(count)
     }
@@ -144,6 +152,7 @@ impl MagnitudeCount {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn count(self) -> u32 {
         self.0
     }
@@ -154,6 +163,7 @@ impl MagnitudeCount {
     /// rather than wrapping to the largest one there is. An extent of zero admits
     /// nothing and `is_within` says so, which is where that case is answered.
     #[must_use]
+    #[inline]
     pub const fn largest(self) -> Magnitude {
         if self.0 == 0 { Magnitude::SMALLEST } else { Magnitude(self.0 - 1) }
     }
@@ -165,6 +175,7 @@ impl MagnitudeCount {
 /// reports. Written over the coordinate rather than over the type, so the
 /// obligation can call it without the trait needing a `Sized` bound it has no
 /// other reason to carry.
+#[inline]
 const fn ranges_over_a_magnitude(magnitudes: MagnitudeCount) -> bool {
     magnitudes.count() >= 1
 }
@@ -180,6 +191,7 @@ const fn ranges_over_a_magnitude(magnitudes: MagnitudeCount) -> bool {
 /// today, on purpose. Whether a narrower integer would do is an argument over
 /// the exact widths of three coordinate types rather than a property of the
 /// check, so the check does not rest on it.
+#[inline]
 const fn reach_is_representable(
     base: Exponent,
     slope: Exponent,
@@ -325,6 +337,7 @@ pub trait Quantum {
 /// refuse it. That is what lets the wrong construction live permanently in a test
 /// rather than in a scratch file somebody deletes.
 #[must_use]
+#[inline]
 pub const fn is_admissible_quantum<Q: Quantum>() -> Bool {
     Bool::of(
         ranges_over_a_magnitude(Q::MAGNITUDES)
@@ -361,6 +374,7 @@ impl<const MIN_EXP: i32, const COUNT: u32> Quantum for Indexed<MIN_EXP, COUNT> {
 /// Free rather than a trait method so it is callable at stage zero without the
 /// trait having to be const.
 #[must_use]
+#[inline]
 pub const fn exponent_at<Q: Quantum>(magnitude: Magnitude) -> Exponent {
     let () = Q::ADMITTED;
     Q::BASE.advanced(Q::SLOPE, magnitude)
@@ -368,6 +382,7 @@ pub const fn exponent_at<Q: Quantum>(magnitude: Magnitude) -> Exponent {
 
 /// Whether a magnitude is one the law ranges over.
 #[must_use]
+#[inline]
 pub const fn magnitude_in_range<Q: Quantum>(magnitude: Magnitude) -> Bool {
     let () = Q::ADMITTED;
     magnitude.is_within(Q::MAGNITUDES)
@@ -378,6 +393,7 @@ pub const fn magnitude_in_range<Q: Quantum>(magnitude: Magnitude) -> Bool {
 /// This is the axis the two families differ on and the only one, so a claim about
 /// one family is a claim predicated on this.
 #[must_use]
+#[inline]
 pub const fn is_constant_family<Q: Quantum>() -> Bool {
     let () = Q::ADMITTED;
     Bool::of(Q::SLOPE.power() == Exponent::ZERO.power())

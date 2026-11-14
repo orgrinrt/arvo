@@ -41,17 +41,20 @@ impl Wide {
     const ONE: Self = Self::signed(false, [1, 0, 0, 0]);
 
     /// A value of the slot index's own integer.
+    #[inline]
     pub(crate) const fn of(value: i128) -> Self {
         let m = value.unsigned_abs();
         Self::signed(value < 0, [m as u64, (m >> 64) as u64, 0, 0])
     }
 
     /// The value with its sign turned, which always holds.
+    #[inline]
     pub(crate) const fn negated(self) -> Self {
         Self::signed(!self.negative, self.magnitude)
     }
 
     /// A magnitude with a sign, zero taken as nonnegative.
+    #[inline]
     const fn signed(negative: bool, magnitude: Magnitude) -> Self {
         let zero = magnitude[0] == 0 && magnitude[1] == 0 && magnitude[2] == 0 && magnitude[3] == 0;
         Self {
@@ -61,17 +64,20 @@ impl Wide {
     }
 
     /// Whether the value is below zero.
+    #[inline]
     pub(crate) const fn is_negative(self) -> Bool {
         Bool::of(self.negative)
     }
 
     /// Whether the value is zero.
+    #[inline]
     pub(crate) const fn is_zero(self) -> Bool {
         let m = self.magnitude;
         Bool::of(m[0] == 0 && m[1] == 0 && m[2] == 0 && m[3] == 0)
     }
 
     /// The product, or nothing when it leaves the four limbs.
+    #[inline]
     pub(crate) const fn times(self, other: Self) -> Maybe<Self> {
         let mut out = [0u64; 8];
         let mut i = 0;
@@ -103,6 +109,7 @@ impl Wide {
     }
 
     /// The sum, or nothing when it leaves the four limbs.
+    #[inline]
     pub(crate) const fn plus(self, other: Self) -> Maybe<Self> {
         if self.negative == other.negative {
             return match summed(self.magnitude, other.magnitude) {
@@ -129,6 +136,7 @@ impl Wide {
     /// only while a higher bit is left to multiply it in, so a square that leaves
     /// the limbs means the power does: at a base of two or more the power is at
     /// least that square, and at zero or one no square grows.
+    #[inline]
     pub(crate) const fn power(base: u64, exponent: u32) -> Maybe<Self> {
         let mut result = Self::ONE;
         let mut square = Self::signed(false, [base, 0, 0, 0]);
@@ -159,6 +167,7 @@ impl Wide {
     /// remainder is counted from the other side. That increment cannot leave the
     /// limbs, since a remainder needs a divisor of two or more and the quotient is
     /// then at most half the value. A zero divisor is the caller's to refuse.
+    #[inline]
     pub(crate) const fn floor_divided(self, divisor: u128) -> Divided {
         let (quotient, rest) = if divisor >> 64 == 0 {
             by_one_limb(self.magnitude, divisor as u64)
@@ -179,6 +188,7 @@ impl Wide {
     }
 
     /// The value in the slot index's own integer, or nothing when it is not one.
+    #[inline]
     pub(crate) const fn index(self) -> Maybe<i128> {
         let m = self.magnitude;
         if m[2] != 0 || m[3] != 0 {
@@ -199,6 +209,7 @@ impl Wide {
 
     /// The value as the host's unsigned 128-bit integer, or nothing when it is
     /// below zero or past `2^128 - 1`.
+    #[inline]
     pub(crate) const fn unsigned(self) -> Maybe<u128> {
         let m = self.magnitude;
         if self.negative || m[2] != 0 || m[3] != 0 {
@@ -209,6 +220,7 @@ impl Wide {
 }
 
 /// A magnitude over a divisor of one limb, limb by limb from the top.
+#[inline]
 const fn by_one_limb(m: Magnitude, divisor: u64) -> (Magnitude, u128) {
     let d = divisor as u128;
     let mut quotient = [0u64; 4];
@@ -228,6 +240,7 @@ const fn by_one_limb(m: Magnitude, divisor: u64) -> (Magnitude, u128) {
 /// The running remainder is below the divisor, so doubling it and bringing the
 /// next bit down is below twice the divisor: one bit past the host's word at
 /// most, carried as `over`, and one subtraction brings it back under.
+#[inline]
 const fn by_two_limbs(m: Magnitude, divisor: u128) -> (Magnitude, u128) {
     let mut quotient = [0u64; 4];
     let mut rest: u128 = 0;
@@ -247,6 +260,7 @@ const fn by_two_limbs(m: Magnitude, divisor: u128) -> (Magnitude, u128) {
 }
 
 /// Whether magnitude `a` is below `b`.
+#[inline]
 const fn is_below(a: Magnitude, b: Magnitude) -> Bool {
     let mut i = 4;
     while i > 0 {
@@ -259,6 +273,7 @@ const fn is_below(a: Magnitude, b: Magnitude) -> Bool {
 }
 
 /// `a + b`, or nothing when it leaves the four limbs.
+#[inline]
 const fn summed(a: Magnitude, b: Magnitude) -> Maybe<Magnitude> {
     let mut out = [0u64; 4];
     let mut carry = 0u128;
@@ -273,6 +288,7 @@ const fn summed(a: Magnitude, b: Magnitude) -> Maybe<Magnitude> {
 }
 
 /// `a - b`, where `b` is not above `a`.
+#[inline]
 const fn lessened(a: Magnitude, b: Magnitude) -> Magnitude {
     let mut out = [0u64; 4];
     let mut borrow = 0u64;
@@ -288,6 +304,7 @@ const fn lessened(a: Magnitude, b: Magnitude) -> Magnitude {
 }
 
 /// `m + 1`, where `m` is below the top of the four limbs.
+#[inline]
 const fn incremented(m: Magnitude) -> Magnitude {
     let mut out = m;
     let mut i = 0;
