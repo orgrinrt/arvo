@@ -28,6 +28,7 @@
 mod admit;
 mod alias;
 mod check;
+pub mod host;
 mod identity;
 mod machine;
 mod map;
@@ -38,6 +39,7 @@ pub use admit::Sole;
 pub use alias::{ISize, Int, NamesAdaptation, USize, Uint};
 pub use arvo_format::Bool;
 pub use check::{Abort, DebugCheck, Quiet};
+pub use host::{At, Byte, Bytes, HostWord, Word};
 pub use identity::{Additive, Identity};
 pub use num::Num;
 

@@ -1,0 +1,25 @@
+//! `digest-crossover`: `Xxh3::<64>::of_const` called at run time.
+//!
+//! What the const path costs when it runs as ordinary code, which is the
+//! price of `Digest::<64>::of_const` on a slice the compiler did not see. The
+//! slice goes through `black_box` for the reason the FNV-1a arm gives.
+
+use core::hint::black_box;
+
+use arvo_digest::Xxh3;
+use arvo_numeral::Bytes;
+use mockspace_bench_core::{FfiBenchCall, timed};
+use mockspace_bench_macro::bench_variant;
+
+#[bench_variant(
+    "digest-xxh3-64-const",
+    sizes = [1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256]
+)]
+fn run<const N: usize>(input: &[u8; N], output: &mut [u8; 8]) -> FfiBenchCall {
+    timed! {
+        run {
+            let bytes: &[u8] = black_box(&input[..]);
+            *output = Xxh3::<64>::of_const(Bytes::of(bytes)).raw().host().to_le_bytes();
+        }
+    }
+}

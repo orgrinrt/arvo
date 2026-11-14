@@ -234,6 +234,25 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("fnv1a-vs-xxhash3", 1024) => routine_bridge!(ByteRoutine<1024, 8, true>),
         ("fnv1a-vs-xxhash3", 4096) => routine_bridge!(ByteRoutine<4096, 8, true>),
 
+        // arvo-digest's crossover: FNV-1a against XXH3's two paths. The arms
+        // compute different functions, so the routine is marked may-differ.
+        ("digest-crossover", 1) => routine_bridge!(ByteRoutine<1, 8, true>),
+        ("digest-crossover", 2) => routine_bridge!(ByteRoutine<2, 8, true>),
+        ("digest-crossover", 3) => routine_bridge!(ByteRoutine<3, 8, true>),
+        ("digest-crossover", 4) => routine_bridge!(ByteRoutine<4, 8, true>),
+        ("digest-crossover", 6) => routine_bridge!(ByteRoutine<6, 8, true>),
+        ("digest-crossover", 8) => routine_bridge!(ByteRoutine<8, 8, true>),
+        ("digest-crossover", 12) => routine_bridge!(ByteRoutine<12, 8, true>),
+        ("digest-crossover", 16) => routine_bridge!(ByteRoutine<16, 8, true>),
+        ("digest-crossover", 24) => routine_bridge!(ByteRoutine<24, 8, true>),
+        ("digest-crossover", 32) => routine_bridge!(ByteRoutine<32, 8, true>),
+        ("digest-crossover", 48) => routine_bridge!(ByteRoutine<48, 8, true>),
+        ("digest-crossover", 64) => routine_bridge!(ByteRoutine<64, 8, true>),
+        ("digest-crossover", 96) => routine_bridge!(ByteRoutine<96, 8, true>),
+        ("digest-crossover", 128) => routine_bridge!(ByteRoutine<128, 8, true>),
+        ("digest-crossover", 192) => routine_bridge!(ByteRoutine<192, 8, true>),
+        ("digest-crossover", 256) => routine_bridge!(ByteRoutine<256, 8, true>),
+
         // graph bench: RCM over BitMatrix-shaped input.
         // ("structural-decomposition", 16 | 32 | 64) => routine_bridge!(Rcm<N>),
         // disabled: see the comment above and in Cargo.toml.

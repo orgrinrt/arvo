@@ -28,6 +28,7 @@ members = [
     "crates/arvo-strategy",
     "crates/arvo-bits",
     "crates/arvo-numeral",
+    "crates/arvo-digest",
 ]
 # `benches` (and every crate under `benches/variants/`) is excluded rather than
 # listed as a member. The deletion commit that emptied `members` above (929c46ed)
@@ -66,6 +67,11 @@ arvo-format = { path = "crates/arvo-format", version = "0.0.0" }
 arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }
 arvo-numeral = { path = "crates/arvo-numeral", version = "0.0.0" }
+arvo-digest = { path = "crates/arvo-digest", version = "0.0.0" }
+# XXH3 for `arvo-digest`, op's choice of 13 November 2026 over twox-hash and a
+# hand-written XXH3: `const fn` paths and SIMD chosen by `cfg(target_feature)`,
+# so nothing is detected at run time. BSL-1.0, allowed in `deny.toml` for it.
+xxhash-rust = { version = "0.8.19", default-features = false, features = ["xxh3", "const_xxh3"] }
 
 # Incremental compilation is off here, deliberately.
 #

@@ -3016,3 +3016,140 @@ variants = [
     "../target/release/bench_satfold_gate_false",
     "../target/release/bench_satfold_seq",
 ]
+
+[bench.digest-crossover]
+title = "arvo-digest: FNV-1a against XXH3 (runtime and const paths) over input length, slice length opaque to the optimiser"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+# FNV-1a and XXH3 are different functions, so the arms do not agree and
+# cross-validation is off by design. Each arm is checked against its reference
+# vectors by the crate's own tests, and the two XXH3 arms agree with each other
+# there at every length up to 1100.
+
+[[bench.digest-crossover.sizes]]
+n = 1
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 2
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 3
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 4
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 6
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 8
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 12
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 16
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 24
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 32
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 48
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 64
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 96
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 128
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 192
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]
+
+[[bench.digest-crossover.sizes]]
+n = 256
+variants = [
+    "variants/digest-fnv1a64/target/release/bench_digest_fnv1a64",
+    "variants/digest-xxh3-64/target/release/bench_digest_xxh3_64",
+    "variants/digest-xxh3-64-const/target/release/bench_digest_xxh3_64_const",
+]

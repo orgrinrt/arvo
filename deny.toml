@@ -27,6 +27,10 @@ ignore = []
 allow = [
     "MIT",
     "Apache-2.0",
+    # xxhash-rust, which `arvo-digest` takes for XXH3. Op allowed it on 13
+    # November 2026, after the comparison he asked for: permissive, no notice
+    # owed in a binary, compatible with MPL-2.0 and AGPL-3.0.
+    "BSL-1.0",
     "BSD-2-Clause",
     "BSD-3-Clause",
     "CC0-1.0",

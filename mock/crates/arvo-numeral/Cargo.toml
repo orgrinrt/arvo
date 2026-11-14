@@ -9,6 +9,7 @@ readme = "README.md.tmpl"
 [dependencies]
 arvo-format.workspace = true
 arvo-placement.workspace = true
+notko.workspace = true
 
 # One mutant per rung. Each removes that rung's adaptation onto the declared
 # width, and the equality tests fail while it is on. Off by default
