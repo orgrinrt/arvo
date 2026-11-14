@@ -13,7 +13,9 @@
 //! half to even by the floor's parity, stochastic against the dither) and wraps
 //! the result onto the range modulo its count. The formats are the region the
 //! wrapping admission covers: a nonzero phase, signed and unsigned ranges, ranges
-//! at both ends of the index, and odd and even counts.
+//! at both ends of the index, and odd and even counts, crossed so that past the
+//! index each sign of the floor meets a remainder below, at and above a half,
+//! which a count of the pairs in each cell asserts.
 
 use notko::Maybe;
 
@@ -57,6 +59,21 @@ type ThirdPhased = Grid<BinaryRationals, Constant<2>, Unsigned<64>, 1, 3>;
 type AtTheTop = Grid<BinaryRationals, Constant<-1>, Top199, 0, 1>;
 type AtTheBottom = Grid<BinaryRationals, Constant<0>, BottomOf200, 0, 1>;
 type QuarterAcross = Grid<BinaryRationals, Constant<5>, OddAcrossZero, 1, 4>;
+
+/// `-(2^63 - 1)` to `2^63 - 1`: an odd count across zero, nearly the whole
+/// 64-bit width, so a product of opposite signs passes the index below zero.
+struct OddWide;
+
+impl Slots for OddWide {
+    const MAX: Slot = Slot::at((1 << 63) - 1);
+    const MIN: Slot = Slot::at(-((1 << 63) - 1));
+    const WIDTH: Width = Width::bits(64);
+}
+
+type OddHalves = Grid<BinaryRationals, Constant<2>, OddWide, 1, 2>;
+type OddQuarters = Grid<BinaryRationals, Constant<3>, OddWide, 1, 4>;
+type BottomHalves = Grid<BinaryRationals, Constant<-1>, BottomOf200, 0, 1>;
+type BottomQuarters = Grid<BinaryRationals, Constant<-2>, BottomOf200, 0, 1>;
 
 type Wr<F, R> = Signature<F, Adapt<R, Wrap>>;
 
@@ -179,6 +196,84 @@ fn the_wrapping_product_is_the_reference_under_every_mode() {
         [0; 8],
         "odd count across zero"
     );
+    assert_eq!(
+        every_mode::<OddHalves>(),
+        [0; 8],
+        "odd and wide, phase one half"
+    );
+    assert_eq!(
+        every_mode::<OddQuarters>(),
+        [0; 8],
+        "odd and wide, phase one quarter"
+    );
+    assert_eq!(
+        every_mode::<BottomHalves>(),
+        [0; 8],
+        "at the bottom, in halves"
+    );
+    assert_eq!(
+        every_mode::<BottomQuarters>(),
+        [0; 8],
+        "at the bottom, in quarters"
+    );
+}
+
+/// The pairs of a format whose product lies past the index off the grid,
+/// counted by the remainder against a half (below, at, above), first for a
+/// floor at or above zero and then for one below it.
+fn cells<F: Format>() -> [usize; 6] {
+    let (n, d, qn, qd) = parts::<F>();
+    let mut cells = [0; 6];
+    for a in slots::<F>() {
+        for b in slots::<F>() {
+            let fa = Big::of(a).times(d).plus(n);
+            let fb = Big::of(b).times(d).plus(n);
+            let num = fa.times(fb).times(qn).plus(n.times(d).times(qd).negated());
+            let den = d.times(d).times(qd);
+            let (floor, rest) = num.floor_over_big(den);
+            if is_zero(rest) || matches!(floor.index(), Maybe::Is(_)) {
+                continue;
+            }
+            let against_half = rest.plus(rest).plus(den.negated());
+            let side = if against_half.is_negative() {
+                0
+            } else if is_zero(against_half) {
+                1
+            } else {
+                2
+            };
+            let below_zero = if floor.is_negative() { 3 } else { 0 };
+            cells[side + below_zero] += 1;
+        }
+    }
+    cells
+}
+
+#[test]
+fn the_sweep_reaches_every_sign_and_side_of_a_half_past_the_index() {
+    let swept = [
+        cells::<HalfPhased>(),
+        cells::<ThirdPhased>(),
+        cells::<AtTheTop>(),
+        cells::<AtTheBottom>(),
+        cells::<QuarterAcross>(),
+        cells::<OddHalves>(),
+        cells::<OddQuarters>(),
+        cells::<BottomHalves>(),
+        cells::<BottomQuarters>(),
+    ];
+    for cell in 0 .. 6 {
+        assert!(
+            swept.iter().any(|c| c[cell] > 0),
+            "cell {cell} is not reached"
+        );
+    }
+    // A negative tie on an odd count, the cell the floor's negative side is
+    // kept for.
+    assert!(cells::<OddHalves>()[4] > 0);
+    // The case that has to fail: the range at the bottom of the index at
+    // exponent zero has no position off the grid, so it reaches no cell.
+    assert_eq!(cells::<AtTheBottom>(), [0; 6]);
 }
 
 #[test]
