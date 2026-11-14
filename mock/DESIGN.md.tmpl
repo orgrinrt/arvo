@@ -23,9 +23,11 @@ Monomorphisation is the dispatch. There is no `dyn` and no `TypeId`, and the
 monomorphised function is the type identity.
 
 Everything answerable before the program runs is answered there, in plain
-`const fn`. No crate enables an unstable feature today, so no trait here is a
-`const trait`, and the operations wanted in const context are inherent
-`const fn`s on their types.
+`const fn`. No crate enables an unstable feature as it builds by default, so no
+trait here is a `const trait`, and the operations wanted in const context are
+inherent `const fn`s on their types. One cargo feature of `arvo-numeral`, off
+by default, enables `const_trait_impl` for its const impl of another crate's
+trait, and a consumer of it needs no feature of the toolchain for that.
 
 ## Crate topology
 
@@ -115,8 +117,9 @@ vehje, used crates that no longer exist.** Those crates were removed on
 base. A downstream repository pinning this branch gets the crates above and
 nothing else, and that is the honest statement of what is available rather than
 of what is planned. `arvo-numeral` is the first value type on the current base:
-integers and the other constant-quantum points, with their sum and comparison,
-and nothing yet of subtraction or the product. `arvo-bits` is new source written from the current canon,
+integers and the other constant-quantum points, with their sum, difference,
+negation, product, quotient, conversion and comparison, and nothing yet of a
+remainder. `arvo-bits` is new source written from the current canon,
 not a restoration of anything removed, and it answers one piece of what those
 removed crates used to answer, an exact-width container, rather than the rest
 of it. Hashing is `arvo-digest`'s, written from op's answer of 13 November 2026

@@ -324,7 +324,7 @@ them with no edit to anything below.
 
 | Contract | What an implementor supplies | Shipped members |
 |---|---|---|
-| `Format` | `Ambient`, `Quantum`, `Slots`, `PHASE`, a `Phase`, and `ADMITTED` | `Integer`, `UFixed`, `Biased`, `Floating`, and the platform-width `USize` and `ISize`, in `points` |
+| `Format` | `Ambient`, `Quantum`, `Slots`, `PHASE`, a `Phase`, and `ADMITTED` | `Integer`, `UFixed`, `Biased`, `Floating`, the signed fixed-point `Fixed`, and the platform-width `USize` and `ISize`, in `points` |
 | `Ambient` | `RADIX`, a `Radix`, `SIGNED`, a `Bool`, and `ADMITTED` | `BinaryRationals`, `UnsignedBinaryRationals`, `DecimalRationals` |
 | `Quantum` | `BASE` and `SLOPE`, both an `Exponent`, `MAGNITUDES`, a `MagnitudeCount`, the affine step law, and `ADMITTED` | `Constant`, `Indexed` |
 | `Slots` | `MIN` and `MAX`, both a `Slot`, inclusive, `WIDTH`, a `Width`, and `ADMITTED` | `Signed`, `Unsigned` |
@@ -339,6 +339,16 @@ preference about spelling.** The reason is the section after next.
 
 `ADMITTED` is a default on each of the four contracts that has one, so an implementor supplies it by
 supplying coordinates that meet it and never writes it out.
+
+Two aliases sit beside `Signature`, `WithOverflow<S, O>` and `WithRounding<S, R>`. Each is the declared
+signature `S` with one coordinate of its adaptation replaced, the overflow policy by `O` or the rounding
+mode by `R`, and its format and the other coordinate kept, read from `S`'s own associated types. The
+result is the sibling signature itself, the type a consumer would have reached by writing it out, so
+nothing about it is new and every function of a signature takes it. An alias carries no bound, and so
+it says nothing about what its result is admitted to: `WithOverflow<S, Clamp>` is a signature wherever
+`S` is one, and whether a sum or a value is admitted over it is asked of it where it is used, as of any
+written signature. No alias is named for one policy, since the overflow axis is open and the two
+shipped names would read as a list.
 
 `Mode` and `Policy` are the two value enumerations a const predicate compares
 against, and `ALL_MODES` and `SHIPPED_POLICIES` are what a test sweeps so a law is
@@ -1997,6 +2007,26 @@ The three functions are `const fn`, and the crate root re-exports all four. Ther
 associativity verdict: the reach serves addition's translation argument, which has no counterpart for
 the product, and a verdict would need a relocation law for multiplication the canon does not state.
 
+`multiplicative_identity` answers which member is one: its slot, or nothing. It is the question
+`has_additive_identity` answers for zero, asked for one, and it is answered the same way, by working
+out where one would sit and asking whether a member is there. With the phase `n / d` in lowest terms,
+the member at slot `s` is `(n / d + s) r^e`, so one sits at `s = r^-e - n / d` wherever that is a whole
+number, and at no slot otherwise. Written over one denominator that is
+`(d r^max(-e, 0) - n r^max(e, 0)) / (d r^max(e, 0))`, and the function forms it so and takes it only
+where the division leaves no residue. At a zero phase that is slot `r^-e` at exponents at or below
+zero and nothing above. With a phase it is not that simple, and the general form is what keeps the
+function from a rule about the exponent alone: at a phase of a half and exponent one the member at
+slot zero is one. The candidate is answered only where it is in the slot range, and where the
+product's own step, at the candidate against each end of the range, returns that end on the grid. The
+position is affine in the other factor, so the two ends decide it for the whole range, and the answer
+is the step's and not a second derivation beside it. It does not force the multiplication obligation,
+so it answers for a format the product does not admit, the unsigned 64-bit integer among them. Where
+the step has no constants, the remainder's denominator being past what it carries, one would sit at a
+slot past every range and the answer is nothing. Over a magnitude-indexed
+quantum it answers nothing, a placeholder under the product's own ticket there,
+`arvo_product_over_a_magnitude_indexed_quantum_is_a_placehold`, since a slot alone names no member.
+It is a `const fn` and the crate root re-exports it.
+
 ### The laws this section owes tests for
 
 The denotation: the two values multiplied with the quantum and the phase in and read back as a
@@ -2029,6 +2059,13 @@ it. Nothing is asserted at `F > 0` and width eight, which the row does not state
 holds unsigned at widths three to eight and fails signed at 28, 160, 780 and 3516 triples at widths
 three to six. `a * (b + c) == (a * b) + (a * c)` holds unsigned under wrapping and under saturation at
 widths three to eight, and fails signed under saturation at widths six and seven.
+
+And the identity. The answer of `multiplicative_identity` is the member whose value is one, found by
+walking the range in the suite's own rationals, and nothing where the walk finds none; where it
+answers, the product position of the answer and every member is that member, on the grid. Both are
+exhaustive at widths one to six over the signed and the unsigned family, at exponents from minus seven
+to two, at a phase of a half, of one and of minus two, and at radix ten. The control is a rule that
+reads the exponent alone, which has to be right at a zero phase and wrong at the others.
 
 ## The exact step's ending, shared
 

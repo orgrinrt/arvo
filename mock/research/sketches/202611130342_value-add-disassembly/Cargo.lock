@@ -15,6 +15,7 @@ version = "0.0.0"
 dependencies = [
  "arvo-format",
  "arvo-placement",
+ "notko",
 ]
 
 [[package]]
@@ -27,7 +28,7 @@ dependencies = [
 [[package]]
 name = "notko"
 version = "0.0.1"
-source = "git+ssh://git@github.com/orgrinrt/notko.git?branch=dev#8a74dbcda7fbee2d2e57b47474a3b1e6d08650ed"
+source = "git+https://github.com/orgrinrt/notko.git?branch=dev#8a74dbcda7fbee2d2e57b47474a3b1e6d08650ed"
 
 [[package]]
 name = "value-add-disassembly"

@@ -9,7 +9,7 @@
 
 mod common;
 
-use common::{Tally, on_the_lattice, seeded};
+use common::{Tally, lattice_and_seeded_products, on_the_lattice, seeded};
 
 fn lattice_and_seeded<S: arvo_numeral::Sole>(tally: &mut Tally) {
     on_the_lattice::<S>(tally);
@@ -17,7 +17,7 @@ fn lattice_and_seeded<S: arvo_numeral::Sole>(tally: &mut Tally) {
 }
 
 #[test]
-fn every_signature_from_17_to_32_bits_adds_and_orders_as_the_oracle_does() {
+fn every_signature_from_17_to_32_bits_adds_subtracts_negates_and_orders_as_the_oracle_does() {
     let mut tally = Tally::default();
     every_signature_at!(17, lattice_and_seeded, &mut tally);
     every_signature_at!(18, lattice_and_seeded, &mut tally);
@@ -36,4 +36,26 @@ fn every_signature_from_17_to_32_bits_adds_and_orders_as_the_oracle_does() {
     every_signature_at!(31, lattice_and_seeded, &mut tally);
     every_signature_at!(32, lattice_and_seeded, &mut tally);
     tally.check("widths 17 to 32");
+}
+
+#[test]
+fn every_signature_from_17_to_32_bits_multiplies_as_the_oracle_does() {
+    let mut tally = Tally::default();
+    every_signature_at!(17, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(18, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(19, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(20, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(21, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(22, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(23, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(24, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(25, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(26, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(27, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(28, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(29, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(30, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(31, lattice_and_seeded_products, &mut tally);
+    every_signature_at!(32, lattice_and_seeded_products, &mut tally);
+    tally.check_products("widths 17 to 32");
 }

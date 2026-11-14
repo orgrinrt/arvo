@@ -101,6 +101,78 @@ fn the_identity_of_a_format_without_one_is_refused() {
 }
 
 #[test]
+fn a_difference_across_two_signatures_is_refused() {
+    pair(
+        "a_difference_across_two_signatures_is_refused",
+        "a_difference_within_one_signature_compiles",
+    );
+}
+
+#[test]
+fn a_product_over_the_unsigned_64_bit_range_is_refused() {
+    pair(
+        "a_product_over_the_unsigned_64_bit_range_is_refused",
+        "a_product_over_the_unsigned_63_bit_range_compiles",
+    );
+}
+
+#[test]
+fn the_one_of_a_format_without_one_is_refused() {
+    pair(
+        "the_one_of_a_format_without_one_is_refused",
+        "the_one_of_a_format_with_one_compiles",
+    );
+}
+
+#[test]
+fn an_override_naming_clamp_is_refused() {
+    pair(
+        "an_override_naming_clamp_is_refused",
+        "an_override_naming_saturate_compiles",
+    );
+}
+
+#[test]
+fn an_override_naming_stochastic_is_refused() {
+    pair(
+        "an_override_naming_stochastic_is_refused",
+        "an_override_naming_half_even_compiles",
+    );
+}
+
+#[test]
+fn a_crossing_to_another_format_is_refused() {
+    pair(
+        "a_crossing_to_another_format_is_refused",
+        "a_crossing_to_a_sibling_compiles",
+    );
+}
+
+#[test]
+fn the_index_of_a_signed_range_as_an_unsigned_integer_is_refused() {
+    pair(
+        "the_index_of_a_signed_range_as_an_unsigned_integer_is_refused",
+        "the_index_of_a_signed_range_as_a_signed_integer_compiles",
+    );
+}
+
+#[test]
+fn the_index_of_nine_bits_as_a_byte_is_refused() {
+    pair(
+        "the_index_of_nine_bits_as_a_byte_is_refused",
+        "the_index_of_nine_bits_as_sixteen_compiles",
+    );
+}
+
+#[test]
+fn an_index_from_a_128_bit_integer_is_refused() {
+    pair(
+        "an_index_from_a_128_bit_integer_is_refused",
+        "an_index_from_a_64_bit_integer_compiles",
+    );
+}
+
+#[test]
 fn the_carrier_by_projection_is_refused() {
     pair(
         "the_carrier_by_projection_is_refused",

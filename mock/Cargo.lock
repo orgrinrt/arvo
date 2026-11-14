@@ -37,6 +37,7 @@ dependencies = [
  "arvo-format",
  "arvo-placement",
  "notko",
+ "notko-hlist",
  "trybuild",
 ]
 
@@ -98,7 +99,12 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "notko"
 version = "0.0.1"
-source = "git+https://github.com/orgrinrt/notko.git?branch=dev#0a13d99a33027ad1314e5da2c036dffab8d061e5"
+source = "git+https://github.com/orgrinrt/notko.git?branch=dev#8a74dbcda7fbee2d2e57b47474a3b1e6d08650ed"
+
+[[package]]
+name = "notko-hlist"
+version = "0.0.1"
+source = "git+https://github.com/orgrinrt/notko.git?branch=dev#8a74dbcda7fbee2d2e57b47474a3b1e6d08650ed"
 
 [[package]]
 name = "proc-macro2"

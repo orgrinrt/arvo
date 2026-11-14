@@ -1,0 +1,48 @@
+     Running unittests src/lib.rs
+tests::every_rung_subtracts_negates_and_multiplies_unsigned_at_widths_one_to_eight_as_the_oracle_does --- FAILED
+tests::every_wide_rung_subtracts_negates_and_multiplies_unsigned_at_widths_nine_to_twelve_as_the_oracle_does --- FAILED
+---- tests::every_rung_subtracts_negates_and_multiplies_unsigned_at_widths_one_to_eight_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/src/tests.rs:61:13:
+assertion `left == right` failed: unsigned, saturating: the 8-bit rung disagrees with the oracle on the difference
+  left: 43435
+ right: 0
+---- tests::every_wide_rung_subtracts_negates_and_multiplies_unsigned_at_widths_nine_to_twelve_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/src/tests.rs:61:13:
+assertion `left == right` failed: unsigned, saturating: the 16-bit rung disagrees with the oracle on the difference
+  left: 11137280
+ right: 0
+test result: FAILED. 10 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.90s
+     Running tests/band_17_to_32.rs
+every_signature_from_17_to_32_bits_adds_and_orders_as_the_oracle_does --- FAILED
+---- every_signature_from_17_to_32_bits_adds_and_orders_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:75:9:
+assertion `left == right` failed: widths 17 to 32: `sub` disagrees with the oracle on 196545 of 1616480 pairs
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.93s
+     Running tests/band_1_to_8.rs
+a_fixed_point_signature_at_a_non_zero_exponent_adds_and_orders_as_the_oracle_does_on_every_pair --- FAILED
+every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_pair --- FAILED
+---- a_fixed_point_signature_at_a_non_zero_exponent_adds_and_orders_as_the_oracle_does_on_every_pair stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:75:9:
+assertion `left == right` failed: UFixed<6, 3>: `sub` disagrees with the oracle on 10080 of 40960 pairs
+---- every_signature_from_1_to_8_bits_adds_and_orders_as_the_oracle_does_on_every_pair stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:75:9:
+assertion `left == right` failed: widths 1 to 8: `sub` disagrees with the oracle on 217175 of 1747600 pairs
+test result: FAILED. 9 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.62s
+     Running tests/band_33_to_64.rs
+every_signature_from_33_to_64_bits_adds_and_orders_as_the_oracle_does --- FAILED
+---- every_signature_from_33_to_64_bits_adds_and_orders_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:75:9:
+assertion `left == right` failed: widths 33 to 64: `sub` disagrees with the oracle on 549100 of 4579520 pairs
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.37s
+     Running tests/band_9_to_16.rs
+every_signature_from_9_to_16_bits_adds_and_orders_as_the_oracle_does --- FAILED
+---- every_signature_from_9_to_16_bits_adds_and_orders_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:75:9:
+assertion `left == right` failed: widths 9 to 16: `sub` disagrees with the oracle on 86720 of 711600 pairs
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.65s
+     Running tests/fixed_point_product.rs
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+     Running tests/the_debug_check.rs
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_debug_check_in_release.rs
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
