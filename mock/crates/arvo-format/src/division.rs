@@ -261,8 +261,10 @@ impl<F: Format> Divisor<F> {
         }
     }
 
-    /// The divisor at a member of `G`, admitted only where `G` sits on `F`'s grid
-    /// inside `F`'s range and no member of `G` names the zero.
+    /// The divisor at a member of `G`.
+    ///
+    /// Admitted only where `G` sits on `F`'s grid inside `F`'s range and no member
+    /// of `G` names the zero.
     ///
     /// With `G` as `F` it is a whole-phase format whose range leaves the zero out,
     /// dividing by its own slots read at run time. Nothing is read of the member's

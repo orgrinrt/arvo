@@ -43,8 +43,14 @@ fn value<F: Format>(slot: Slot) -> Ratio {
 /// The exact position the quotient of two members names: the quotient of their
 /// values over the quantum, less the phase, as a rational.
 fn exact_quotient<F: Format>(a: Slot, b: Slot) -> Ratio {
+    quotient_by::<F>(a, value::<F>(b))
+}
+
+/// The exact position the member `a` of `F` over the value `by` names, wherever
+/// the divisor's value was read from.
+fn quotient_by<F: Format>(a: Slot, by: Ratio) -> Ratio {
     value::<F>(a)
-        .over(value::<F>(b))
+        .over(by)
         .over(quantum::<F>())
         .minus(Ratio::phase_of::<F>())
 }

@@ -74,10 +74,13 @@
 //! that has to compile names every item those two operations add from the crate
 //! root, as an outside crate with no feature line would.
 //!
-//! Two more pin the member: a member constant one past the top against one at
-//! the top, and `Divisor::member` from a range holding its zero slot, from
-//! another radix, exponent or phase and from a range past the divisor's, each
-//! against the zero-free range on the divisor's grid.
+//! Five more pin the member: a member constant one past the top against one at
+//! the top and one below the bottom against one at the bottom, the adapted door
+//! over a magnitude-indexed quantum against a constant one, the constant door
+//! over a phase that does not denote against a half, and `Divisor::member` from
+//! a range holding its zero slot, from another radix, exponent or phase and from
+//! a range past the divisor's, each against the zero-free range on the
+//! divisor's grid.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -351,6 +354,27 @@ fn a_member_constant_past_the_top_is_refused_and_at_the_top_admitted() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_member_constant_past_the_top_is_refused.rs");
     t.pass("tests/ui/a_member_constant_at_the_top_is_admitted.rs");
+}
+
+/// A member constant one below the bottom of its range, refused where the
+/// constant is named, and at the bottom, admitted.
+#[test]
+fn a_member_constant_below_the_bottom_is_refused_and_at_the_bottom_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_constant_below_the_bottom_is_refused.rs");
+    t.pass("tests/ui/a_member_constant_at_the_bottom_is_admitted.rs");
+}
+
+/// What both member doors owe of the format, one pair per door: the adapted door
+/// over a magnitude-indexed quantum against a constant one, and the constant door
+/// over a phase that does not denote against a half.
+#[test]
+fn a_member_is_refused_over_a_magnitude_indexed_quantum_or_a_phase_that_does_not_denote() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/a_member_over_a_constant_quantum_is_admitted.rs");
+    t.compile_fail("tests/ui/a_member_over_a_phase_that_does_not_denote_is_refused.rs");
+    t.pass("tests/ui/a_member_over_a_half_phase_is_admitted.rs");
 }
 
 /// A divisor taken from a member of a second format, refused for each condition

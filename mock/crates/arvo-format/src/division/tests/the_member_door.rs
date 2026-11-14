@@ -9,12 +9,17 @@
 //!
 //! The divisors are reached through the doors a consumer has, a member adapted
 //! at its own slot on the grid and then `Divisor::member`, never `assumed`. The
+//! oracle divides by the value the slot has in the divisor's own format, and the
+//! sweep asserts it equal to the value the same slot has in the dividend's, so
+//! the grid claim the door rests on is checked rather than assumed. Every
+//! admitted pair of the table is swept, a negative exponent and radix ten among
+//! them. The zero column is checked against a search over every member. The
 //! refusals themselves are build failures and live in `tests/ui` as pairs.
 
 use core::marker::PhantomData;
 
-use super::members;
 use super::the_oracle::{Tally, pair};
+use super::{members, value};
 use crate::adapt::{DeclaredSignature, Signature};
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::{Dither, Exact};
@@ -73,8 +78,17 @@ type FromOne = Grid<BinaryRationals, Constant<0>, Unsigned<8>, 1, 1>;
 /// The same phase over the signed range, which holds the slot `-1`.
 type SignedFromOne = Grid<BinaryRationals, Constant<0>, Signed<8>, 1, 1>;
 
+/// The bytes in steps of a quarter, a negative exponent.
+type ByteInQuarters = Grid<BinaryRationals, Constant<-2>, Unsigned<8>, 0, 1>;
+/// `OneTo255` in steps of a quarter.
+type PositiveInQuarters = Grid<BinaryRationals, Constant<-2>, OneTo255, 0, 1>;
+/// The bytes in tenths, at radix ten.
+type ByteInTenths = Grid<DecimalRationals, Constant<-1>, Unsigned<8>, 0, 1>;
+/// `OneTo255` in tenths.
+type PositiveInTenths = Grid<DecimalRationals, Constant<-1>, OneTo255, 0, 1>;
+
 /// The quotient of every member of `S`'s format by every member of `G`, each
-/// reached as a consumer reaches it, against the oracle.
+/// reached as a consumer reaches it, against the oracle fed `G`'s value.
 struct ByMembers<G>(PhantomData<G>);
 
 impl<G: Format> PerSignature for ByMembers<G> {
@@ -90,16 +104,26 @@ impl<G: Format> PerSignature for ByMembers<G> {
             );
             let divisor = Divisor::<S::Format>::member(member);
             assert_eq!(divisor.slot(), b, "the member door moved the divisor");
+            let by = value::<G>(b);
+            assert_eq!(
+                by,
+                value::<S::Format>(b),
+                "the slot {b:?} denotes another value in the divisor's format than in the dividend's"
+            );
             for a in members::<S::Format>() {
-                tally.add(pair::<S>(a, divisor, false));
+                tally.add(pair::<S>(a, divisor, by, false));
             }
         }
         tally
     }
 }
 
-/// Every mode and shipped policy at `F`, divided by every member of `G`.
-fn sweep<F: Format, G: Format>() -> (Tally, u64) {
+/// Every mode and shipped policy at `F`, divided by every member of `G`, and
+/// nothing wrong at any of them.
+///
+/// Each cell checks every pair once, and the stochastic mode's three cells at
+/// four dithers each, so the count is fixed by the two ranges alone.
+fn swept<F: Format, G: Format>() {
     assert!(
         is_divisible::<F>().get(),
         "the sweep runs at admitted formats only"
@@ -116,24 +140,40 @@ fn sweep<F: Format, G: Format>() -> (Tally, u64) {
             cells += 1;
         }
     }
-    (tally, cells)
+    assert_eq!(cells, 6 * 3);
+    let pairs = (members::<F>().count() * members::<G>().count()) as u64;
+    assert_eq!(tally.checked, pairs * (5 * 3 + 4 * 3));
+    assert_eq!(tally.wrong, 0);
 }
 
 #[test]
 fn a_zero_free_range_divides_by_its_own_members_as_the_oracle_does() {
-    let (tally, cells) = sweep::<Positive, Positive>();
-    assert_eq!(cells, 6 * 3);
-    // 255 dividends by 255 divisors in each cell, the stochastic mode's at four
-    // dithers.
-    assert_eq!(tally.checked, 255 * 255 * (5 * 3 + 4 * 3));
-    assert_eq!(tally.wrong, 0);
+    swept::<Positive, Positive>();
 }
 
 #[test]
 fn a_byte_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does() {
-    let (tally, _) = sweep::<Byte, Positive>();
-    assert_eq!(tally.checked, 256 * 255 * (5 * 3 + 4 * 3));
-    assert_eq!(tally.wrong, 0);
+    swept::<Byte, Positive>();
+}
+
+#[test]
+fn a_phase_divides_by_the_members_of_its_unreduced_spelling_as_the_oracle_does() {
+    swept::<Biased, Quarters>();
+}
+
+#[test]
+fn a_whole_phase_divides_by_its_own_members_as_the_oracle_does() {
+    swept::<FromOne, FromOne>();
+}
+
+#[test]
+fn a_negative_exponent_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does() {
+    swept::<ByteInQuarters, PositiveInQuarters>();
+}
+
+#[test]
+fn radix_ten_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does() {
+    swept::<ByteInTenths, PositiveInTenths>();
 }
 
 /// One way of answering the door's five conditions.
@@ -188,14 +228,35 @@ impl Verdict for NoInside {
     }
 }
 
-/// How many of the stated pairs `V` answers otherwise than the table.
+/// The stated pairs, handed to the macro named.
 ///
 /// Each row is a pair and the five answers stated by hand from the two
 /// declarations: the radix, the constant exponent, the reduced phase, the range
-/// inside, and no member of the second naming the zero.
+/// inside, and no member of the second naming the zero. The rows answering true
+/// throughout are the pairs the sweeps above divide.
+macro_rules! the_table {
+    ($then:ident) => {
+        $then! {
+            Byte, Positive => [true, true, true, true, true];
+            Positive, Positive => [true, true, true, true, true];
+            Biased, Quarters => [true, true, true, true, true];
+            FromOne, FromOne => [true, true, true, true, true];
+            ByteInQuarters, PositiveInQuarters => [true, true, true, true, true];
+            ByteInTenths, PositiveInTenths => [true, true, true, true, true];
+            Byte, Byte => [true, true, true, true, false];
+            Byte, Decimal => [false, true, true, true, true];
+            Byte, Halves => [true, false, true, true, true];
+            Byte, Biased => [true, true, false, true, true];
+            Byte, Wider => [true, true, true, false, true];
+            FromOne, SignedFromOne => [true, true, true, false, false];
+        }
+    };
+}
+
+/// How many of the stated pairs `V` answers otherwise than the table.
 fn disagreements<V: Verdict>() -> usize {
     let mut wrong = 0;
-    macro_rules! table {
+    macro_rules! compare {
         ($($f:ty, $g:ty => [$($want:literal),+];)+) => {
             $(
                 let got = V::conditions::<$f, $g>().map(Bool::get);
@@ -203,41 +264,60 @@ fn disagreements<V: Verdict>() -> usize {
             )+
         };
     }
-    table! {
-        Byte, Positive => [true, true, true, true, true];
-        Positive, Positive => [true, true, true, true, true];
-        Byte, Byte => [true, true, true, true, false];
-        Byte, Decimal => [false, true, true, true, true];
-        Byte, Halves => [true, false, true, true, true];
-        Byte, Biased => [true, true, false, true, true];
-        Biased, Quarters => [true, true, true, true, true];
-        Byte, Wider => [true, true, true, false, true];
-        FromOne, FromOne => [true, true, true, true, true];
-        FromOne, SignedFromOne => [true, true, true, false, false];
-    }
+    the_table!(compare);
     wrong
 }
 
 #[test]
 fn each_condition_of_the_door_reads_as_stated_on_both_sides() {
     assert_eq!(disagreements::<Shipped>(), 0);
-    // The table's own control: every condition flips in at least one row, so a
-    // verdict answering true everywhere is not mistaken for the shipped one.
-    let flips = [
-        (member_conditions::<Byte, Decimal>(), 0),
-        (member_conditions::<Byte, Halves>(), 1),
-        (member_conditions::<Byte, Biased>(), 2),
-        (member_conditions::<Byte, Wider>(), 3),
-        (member_conditions::<Byte, Byte>(), 4),
+    // The table's own control, read from its literals: every condition is
+    // stated false in a row where every other is stated true, so a verdict
+    // answering true everywhere, or a condition standing in for another, does
+    // not agree with it.
+    macro_rules! stated {
+        ($($f:ty, $g:ty => [$($want:literal),+];)+) => {
+            [$([$($want),+]),+]
+        };
+    }
+    let rows: &[[bool; 5]] = &the_table!(stated);
+    for condition in 0 .. 5 {
+        let alone = rows.iter().any(|row| {
+            row.iter()
+                .enumerate()
+                .all(|(i, &stated)| stated == (i != condition))
+        });
+        assert!(alone, "no row states condition {condition} false alone");
+    }
+}
+
+#[test]
+fn the_zero_column_agrees_with_a_search_over_every_member() {
+    // The hand statement is checked against the search beside it, at every
+    // format the table names.
+    fn agrees<G: Format>() -> bool {
+        no_member_names_the_zero::<G>().get() == members::<G>().all(|b| value::<G>(b).num != 0)
+    }
+    let every = [
+        agrees::<Byte>(),
+        agrees::<Positive>(),
+        agrees::<Decimal>(),
+        agrees::<Halves>(),
+        agrees::<Biased>(),
+        agrees::<Quarters>(),
+        agrees::<Wider>(),
+        agrees::<FromOne>(),
+        agrees::<SignedFromOne>(),
+        agrees::<ByteInQuarters>(),
+        agrees::<PositiveInQuarters>(),
+        agrees::<ByteInTenths>(),
+        agrees::<PositiveInTenths>(),
     ];
-    for (row, condition) in flips {
-        assert!(!row[condition].get(), "condition {condition} does not flip");
-        let others = row
-            .iter()
-            .enumerate()
-            .filter(|&(i, c)| i != condition && !c.get())
-            .count();
-        assert_eq!(others, 0, "a row flips more than condition {condition}");
+    for (at, agreed) in every.into_iter().enumerate() {
+        assert!(
+            agreed,
+            "the zero check disagrees with the search at format {at}"
+        );
     }
 }
 

@@ -14,10 +14,10 @@
 //! coordinate, so the completion is entered from just outside and from as far
 //! outside as a slot can be.
 //!
-//! The member's adapted door is the same map returned as a `Member`, so the walk
-//! reads it beside `adapt` at every fed position and requires the two to agree,
-//! and places every slot of the fed edges that lies in range on itself through
-//! it, at every mode and policy.
+//! The member's adapted door is walked the same way: at every fed position its
+//! slot is asserted in range and equal to the map's, and every slot of the fed
+//! edges that lies in range is placed on itself through it, at every mode and
+//! policy.
 
 use crate::adapt::DeclaredSignature;
 use crate::apply::{Dither, Exact, Fraction, adapt};
@@ -81,10 +81,14 @@ impl PerSignature for Total {
                 for d in dithers() {
                     let e = Exact::between(Slot::at(slot), Fraction::of(num, den));
                     let got = adapt::<S>(e, d);
+                    let member = Member::<S::Format>::adapted::<S>(e, d).slot();
+                    assert!(
+                        member.is_within(min, max).get(),
+                        "the member {member:?} is outside [{min:?}, {max:?}] adapting {e:?} with {d:?}"
+                    );
                     assert_eq!(
-                        Member::<S::Format>::adapted::<S>(e, d).slot(),
-                        got,
-                        "the member door and the map disagree adapting {e:?} with {d:?}"
+                        member, got,
+                        "the member door and the map disagree adapting {e:?}"
                     );
                     assert!(
                         got.is_within(min, max).get(),

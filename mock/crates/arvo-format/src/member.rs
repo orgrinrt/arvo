@@ -7,9 +7,10 @@
 //!
 //! A `Slot` is an index shared by every format and says nothing about any range.
 //! `Member<F>` is a slot of `F`'s range, with a private field and two doors, and
-//! neither door reads a value at run time to decide anything. `constant` refuses
-//! a slot outside the range at build time; `adapted` is the applied map, which
-//! lands in range by its totality at every mode, policy and admitted shape. No
+//! neither door reads a value at run time to decide anything. Both refuse a format
+//! whose phase does not denote or whose quantum is not constant. `constant`
+//! refuses a slot outside the range at build time; `adapted` is the applied map,
+//! which lands in range by its totality at every mode, policy and admitted shape. No
 //! door classifies a slot read at run time, since that would be a runtime test
 //! of membership.
 //!
@@ -21,6 +22,7 @@ use core::marker::PhantomData;
 use crate::adapt::DeclaredSignature;
 use crate::apply::{Dither, Exact, adapt};
 use crate::format::Format;
+use crate::quantum::is_constant_family;
 use crate::slots::{Slot, slot_in_range};
 
 /// A slot of `F`'s range.
@@ -42,6 +44,25 @@ impl<F: Format> Clone for Member<F> {
 
 impl<F: Format> Copy for Member<F> {}
 
+/// What a format owes before either door builds a member of it.
+///
+/// The format's own obligation, so its phase denotes, and a constant quantum,
+/// since membership over a magnitude-indexed one is a slot and a magnitude and a
+/// member holds a slot alone.
+struct MemberOf<F>(PhantomData<F>);
+
+impl<F: Format> MemberOf<F> {
+    const ADMITTED: () = {
+        let () = <F as Format>::ADMITTED;
+        assert!(
+            is_constant_family::<F::Quantum>().get(),
+            "a member is refused over a magnitude-indexed quantum: membership there is a slot and a \
+             magnitude, and a member holds the slot alone. Declare the format over a constant \
+             quantum"
+        );
+    };
+}
+
 /// What a constant member owes, checked rather than asked for.
 struct ConstantMember<F, const B: i128>(PhantomData<F>);
 
@@ -55,11 +76,14 @@ impl<F: Format, const B: i128> ConstantMember<F, B> {
 }
 
 impl<F: Format> Member<F> {
-    /// The member at the constant slot `B`, refused at build time when `B` is
-    /// outside the range.
+    /// The member at the constant slot `B`.
+    ///
+    /// Refused at build time when `B` is outside the range, or where the format's
+    /// phase does not denote or its quantum is not constant.
     #[must_use]
     #[inline]
     pub const fn constant<const B: i128>() -> Self {
+        let () = MemberOf::<F>::ADMITTED;
         let () = ConstantMember::<F, B>::ADMITTED;
         Self {
             slot:   Slot::at(B),
@@ -67,16 +91,17 @@ impl<F: Format> Member<F> {
         }
     }
 
-    /// The member `adapt` places `exact` at under `S`, with the dither passed
-    /// through for the one mode that reads it.
+    /// The member `adapt` places `exact` at under `S`.
     ///
-    /// In range by the map's totality, so nothing is checked. A slot already on
-    /// the grid and in range reaches its member at `Exact::on_grid`, which every
-    /// mode and policy places on itself. Like `adapt`, it serves a
-    /// constant-exponent quantum only.
+    /// The dither is passed through for the one mode that reads it. In range by
+    /// the map's totality, so nothing is checked. A slot already on the grid and
+    /// in range reaches its member at `Exact::on_grid`, which every mode and policy
+    /// places on itself. Refused at build time where the format's phase does not
+    /// denote or its quantum is not constant.
     #[must_use]
     #[inline]
     pub const fn adapted<S: DeclaredSignature<Format = F>>(exact: Exact, dither: Dither) -> Self {
+        let () = MemberOf::<F>::ADMITTED;
         Self {
             slot:   adapt::<S>(exact, dither),
             format: PhantomData,
@@ -88,16 +113,6 @@ impl<F: Format> Member<F> {
     #[inline]
     pub const fn slot(self) -> Slot {
         self.slot
-    }
-
-    /// A member at `slot` with no obligation, for the planted constant door the
-    /// perimeter check has to report.
-    #[cfg(test)]
-    pub(crate) const fn assumed(slot: Slot) -> Self {
-        Self {
-            slot,
-            format: PhantomData,
-        }
     }
 }
 

@@ -1,0 +1,27 @@
+error[E0080]: evaluation panicked: a member is refused over a magnitude-indexed quantum: membership there is a slot and a magnitude, and a member holds the slot alone. Declare the format over a constant quantum
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::member::MemberOf::<Probe>::ADMITTED` failed here
+  |
+ ::: src/member.rs
+  |
+  | /         assert!(
+  | |             is_constant_family::<F::Quantum>().get(),
+  | |             "a member is refused over a magnitude-indexed quantum: membership there is a slot and a \
+  | |              magnitude, and a member holds the slot alone. Declare the format over a constant \
+  | |              quantum"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/member.rs
+  |
+  |         let () = MemberOf::<F>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_member_over_a_magnitude_indexed_quantum_is_refused.rs:33:13
+   |
+33 |     let _ = MEMBER.slot();
+   |             ^^^^^^

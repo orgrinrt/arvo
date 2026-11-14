@@ -16,7 +16,7 @@
 
 use core::ops::RangeInclusive;
 
-use super::{divisors, exact_quotient, members, quantum, value};
+use super::{divisors, members, quantum, quotient_by, value};
 use crate::adapt::{DeclaredSignature, overflow_of, rounding_of};
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::tests::the_oracle::{Point, Wide, answer};
@@ -63,12 +63,17 @@ impl Tally {
 }
 
 /// The quotient of the member `a` by `divisor` under `S`, at every dither its
-/// mode reads, against the oracle fed the exact rational position. `planted`
+/// mode reads, against the oracle fed the exact rational position.
+///
+/// The oracle divides by `by`, the divisor's value read from the format the
+/// caller took it from, so a door that admits a slot of another format whose
+/// value differs is caught rather than assumed away. `planted`
 /// swaps the step for the quotient of the values over the quantum with the
 /// phase's term left in, and counts rather than stops.
 pub(super) fn pair<S: DeclaredSignature>(
     a: Slot,
     divisor: Divisor<S::Format>,
+    by: Ratio,
     planted: bool,
 ) -> Tally {
     let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
@@ -76,10 +81,10 @@ pub(super) fn pair<S: DeclaredSignature>(
     let mode = rounding_of::<S::Adaptation>();
     let policy = overflow_of::<S::Adaptation>();
     let b = divisor.slot();
-    let at = point(exact_quotient::<S::Format>(a, b));
+    let at = point(quotient_by::<S::Format>(a, by));
     let exact: Exact = if planted {
         value::<S::Format>(a)
-            .over(value::<S::Format>(b))
+            .over(by)
             .over(quantum::<S::Format>())
             .position()
     } else {
@@ -116,7 +121,12 @@ impl PerSignature for EveryPair {
         let mut tally = Tally::default();
         for a in members::<S::Format>() {
             for b in divisors::<S::Format>() {
-                tally.add(pair::<S>(a, Divisor::<S::Format>::assumed(b), self.planted));
+                tally.add(pair::<S>(
+                    a,
+                    Divisor::<S::Format>::assumed(b),
+                    value::<S::Format>(b),
+                    self.planted,
+                ));
             }
         }
         tally
