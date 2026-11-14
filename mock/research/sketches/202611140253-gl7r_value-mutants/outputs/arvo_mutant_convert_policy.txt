@@ -1,0 +1,15 @@
+RUSTFLAGS=--cfg arvo_mutant_convert_policy cargo test -p arvo-numeral --no-fail-fast --test the_conversion_under_every_source_signature_past_the_range --test the_conversion_under_every_source_signature --test the_conversion_at_the_positive_edge_binary
+     Running tests/the_conversion_at_the_positive_edge_binary.rs (/home/user/target/debug/deps/the_conversion_at_the_positive_edge_binary-56ab4add68c5aacb)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.10s
+     Running tests/the_conversion_under_every_source_signature.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature-7b6b55ad57f2c28e)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.79s
+     Running tests/the_conversion_under_every_source_signature_past_the_range.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature_past_the_range-4f76882288bd2e25)
+test no_source_policy_moves_a_ternary_conversion ... FAILED
+test no_source_policy_moves_a_binary_conversion ... FAILED
+test no_source_policy_moves_a_decimal_conversion ... FAILED
+failures:
+failures:
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.78s
+error: test failed, to rerun pass `-p arvo-numeral --test the_conversion_under_every_source_signature_past_the_range`
+error: 1 target failed:
+exit 101

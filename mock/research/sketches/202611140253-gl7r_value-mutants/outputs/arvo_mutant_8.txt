@@ -1,0 +1,12 @@
+RUSTFLAGS=--cfg arvo_mutant_8 cargo test -p arvo-numeral --no-fail-fast --lib
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_numeral-a3048042be86871d)
+test tests::every_rung_adds_every_signed_pair_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+test tests::every_rung_adds_every_unsigned_pair_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+test tests::every_rung_subtracts_negates_and_multiplies_unsigned_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+test tests::every_rung_subtracts_negates_and_multiplies_signed_at_widths_one_to_eight_as_the_oracle_does ... FAILED
+failures:
+failures:
+test result: FAILED. 8 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 38.99s
+error: test failed, to rerun pass `-p arvo-numeral --lib`
+error: 1 target failed:
+exit 101
