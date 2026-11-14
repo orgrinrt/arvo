@@ -1,4 +1,4 @@
-error[E0080]: evaluation panicked: Divisor::member is refused unless both formats have one constant exponent and it is the same: a slot of the member's format names a value off the divisor format's grid
+error[E0080]: evaluation panicked: Divisor::member is refused from a format whose quantum is not constant or is another value: slot b names (phase + b) q, so another q is another value than the same slot of the divisor format. The radixes may differ where r^e is one value on both sides, as at exponent zero. A pair whose powers leave the four limbs is not formed, and is refused as well
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
@@ -7,9 +7,11 @@ error[E0080]: evaluation panicked: Divisor::member is refused unless both format
  ::: src/division.rs
   |
   | /         assert!(
-  | |             exponent.get(),
-  | |             "Divisor::member is refused unless both formats have one constant exponent and it is \
-  | |              the same: a slot of the member's format names a value off the divisor format's grid"
+  | |             quantum.get(),
+  | |             "Divisor::member is refused from a format whose quantum is not constant or is another \
+  | |              value: slot b names (phase + b) q, so another q is another value than the same slot of \
+... |
+  | |              as well"
   | |         );
   | |_________- in this macro invocation
 

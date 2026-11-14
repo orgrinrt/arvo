@@ -1,9 +1,10 @@
-// The same range at radix ten, refused: its slots name values off the bytes' grid.
+// The slots 1 to 255 in tenths beside the bytes in halves, refused: the two
+// quanta are another value.
 //
-// A divisor taken from a member of a second format `G` beside `UFixed<8, 0>`,
-// the bytes. The pair that turns on one token of `G`: every refused file
-// differs from `a_member_divisor_from_a_zero_free_range_on_the_grid_is_admitted`
-// in one place, and that file names `Member` from the crate root.
+// A divisor taken from a member of a second format `G` beside `UFixed<8, -1>`,
+// the bytes in halves. The pair turns on the radix of `G` alone: at exponent
+// `-1` radix ten steps in tenths and radix two in halves, so the two files
+// differ in the ambient `G` names and nothing else.
 
 use arvo_format::format::{Format, Phase};
 use arvo_format::points::UFixed;
@@ -24,13 +25,13 @@ struct G;
 
 impl Format for G {
     type Ambient = arvo_format::ambient::DecimalRationals;
-    type Quantum = Constant<0>;
+    type Quantum = Constant<-1>;
     type Slots = Range;
 
     const PHASE: Phase = Phase::of(0, 1);
 }
 
-const DIVISOR: Divisor<UFixed<8, 0>> = Divisor::member(Member::<G>::constant::<7>());
+const DIVISOR: Divisor<UFixed<8, -1>> = Divisor::member(Member::<G>::constant::<7>());
 
 fn main() {
     let _ = DIVISOR.slot();

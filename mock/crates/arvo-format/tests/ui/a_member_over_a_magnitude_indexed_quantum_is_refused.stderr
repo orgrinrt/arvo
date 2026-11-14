@@ -21,7 +21,7 @@ note: erroneous constant encountered
   |                  ^^^^^^^^^^^^^^^^^^^^^^^
 
 note: erroneous constant encountered
-  --> tests/ui/a_member_over_a_magnitude_indexed_quantum_is_refused.rs:33:13
+  --> tests/ui/a_member_over_a_magnitude_indexed_quantum_is_refused.rs:32:13
    |
-33 |     let _ = MEMBER.slot();
+32 |     let _ = MEMBER.slot();
    |             ^^^^^^

@@ -24,13 +24,14 @@
 //! is forced by the exact step, and `is_divisible` asks the same without forcing
 //! it.
 
+use core::cmp::Ordering;
 use core::marker::PhantomData;
 
 use notko::Maybe;
 
 use crate::adapt::{Arity, DeclaredSignature, Operation};
 use crate::apply::{Dither, Exact, adapt};
-use crate::format::{Format, cancelling_slot, radix};
+use crate::format::{Format, cancelling_slot};
 use crate::member::Member;
 use crate::placing::{
     Placed,
@@ -44,7 +45,7 @@ use crate::placing::{
     saturated,
     times,
 };
-use crate::quantum::{Magnitude, Quantum, is_constant_family};
+use crate::quantum::{Magnitude, is_constant_family};
 use crate::slots::{Slot, Slots, slot_in_range};
 use crate::wide::Wide;
 use crate::width::Bool;
@@ -112,6 +113,11 @@ impl<F: Format, const B: i128> ConstantDivisor<F, B> {
 struct NoSlotNamesTheZero<F>(PhantomData<F>);
 
 impl<F: Format> NoSlotNamesTheZero<F> {
+    // FIXME(may_arvo_divide_by_a_signed_divisor_read_at_run_time_of_eith): a divisor
+    // read at run time that may be either sign, over a whole-phase range holding
+    // the zero, has no door here or through `member`, since a zero-free range lies
+    // on one side of its zero slot. Whether signed division is the known use the
+    // runtime membership door waits on is the open question.
     const ADMITTED: () = assert!(
         no_slot_names_the_zero::<F>().get(),
         "Divisor::of is refused where a slot names the zero, which is wherever the phase's \
@@ -132,23 +138,21 @@ const fn no_slot_names_the_zero<F: Format>() -> Bool {
 /// What a divisor taken from a member of `G` owes: `G` sits on `F`'s grid inside
 /// `F`'s range, and no member of `G` names the zero.
 ///
-/// The grid is the radix, the constant exponent and the reduced phase, so a slot
-/// of `G` denotes the value the same slot of `F` does. Inside the range, the
-/// divisor is a member of `F` too, so the quotient is exact.
+/// The grid is one constant quantum and one reduced phase, so slot `b` of `G`
+/// denotes the value `(phase + b) q` slot `b` of `F` does, whichever the radixes.
+/// Inside the range, the divisor is a member of `F` too, so the quotient is exact.
 struct MemberDivisor<F, G>(PhantomData<(F, G)>);
 
 impl<F: Format, G: Format> MemberDivisor<F, G> {
     const ADMITTED: () = {
-        let [radix, exponent, phase, inside, zero_free] = member_conditions::<F, G>();
+        let [quantum, phase, inside, zero_free] = member_conditions::<F, G>();
         assert!(
-            radix.get(),
-            "Divisor::member is refused from a format of another radix: its slot names a value off \
-             the divisor format's grid"
-        );
-        assert!(
-            exponent.get(),
-            "Divisor::member is refused unless both formats have one constant exponent and it is \
-             the same: a slot of the member's format names a value off the divisor format's grid"
+            quantum.get(),
+            "Divisor::member is refused from a format whose quantum is not constant or is another \
+             value: slot b names (phase + b) q, so another q is another value than the same slot of \
+             the divisor format. The radixes may differ where r^e is one value on both sides, as at \
+             exponent zero. A pair whose powers leave the four limbs is not formed, and is refused \
+             as well"
         );
         assert!(
             phase.get(),
@@ -169,31 +173,36 @@ impl<F: Format, G: Format> MemberDivisor<F, G> {
     };
 }
 
-/// The member door's five verdicts, in order: the radix, the constant exponent,
-/// the reduced phase, `G`'s range inside `F`'s, and no member of `G` naming the
-/// zero.
+/// The member door's four verdicts, in order: one quantum, the reduced phase,
+/// `G`'s range inside `F`'s, and no member of `G` naming the zero.
 ///
 /// The one place they are stated, read by the obligation and by the door's
 /// suite, which reads each without forcing the const that refuses it.
 #[inline]
-const fn member_conditions<F: Format, G: Format>() -> [Bool; 5] {
+const fn member_conditions<F: Format, G: Format>() -> [Bool; 4] {
     [
-        radix::<F>().equals(radix::<G>()),
-        same_constant_exponent::<F, G>(),
+        one_quantum::<F, G>(),
         same_phase::<F, G>(),
         range_inside::<F, G>(),
         no_member_names_the_zero::<G>(),
     ]
 }
 
-/// Whether both quanta are constant at one exponent.
+/// Whether both quanta are constant and one value.
+///
+/// `r^e` is `U / V` with `U = r^max(e, 0)` and `V = r^max(-e, 0)`, so the two are
+/// one value where `U_F V_G = U_G V_F`, whichever the radixes. A side whose powers
+/// or product leave the four limbs answers false, as a pair not formed.
 #[inline]
-const fn same_constant_exponent<F: Format, G: Format>() -> Bool {
-    Bool::of(
-        is_constant_family::<F::Quantum>().get()
-            && is_constant_family::<G::Quantum>().get()
-            && <F::Quantum as Quantum>::BASE.power() == <G::Quantum as Quantum>::BASE.power(),
-    )
+const fn one_quantum<F: Format, G: Format>() -> Bool {
+    if !(is_constant_family::<F::Quantum>().get() && is_constant_family::<G::Quantum>().get()) {
+        return Bool::FALSE;
+    }
+    let (f, g) = (powers::<F>(), powers::<G>());
+    Bool::of(matches!(
+        (times(f.up, g.down), times(g.up, f.down)),
+        (Maybe::Is(left), Maybe::Is(right)) if matches!(left.ordering(right), Ordering::Equal)
+    ))
 }
 
 /// Whether both phases denote and are one ratio in lowest terms.
@@ -248,9 +257,10 @@ impl<F: Format> Divisor<F> {
 
     /// The divisor at `slot`, admitted only where no slot of `F` names the zero.
     ///
-    /// A slot outside the range is taken as every operation here takes one, and
-    /// the step positions it as it positions any slot. None of them
-    /// is the zero, so the step never meets one.
+    /// A slot outside the range is taken as every operation here takes one. The
+    /// step positions it, and a divisor past the range can take the quotient past
+    /// the exact step, which saturates there. None of the slots is the zero, so the
+    /// step never meets one.
     #[must_use]
     #[inline]
     pub const fn of(slot: Slot) -> Self {

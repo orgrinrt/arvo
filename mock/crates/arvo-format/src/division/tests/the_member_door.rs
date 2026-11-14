@@ -12,8 +12,9 @@
 //! oracle divides by the value the slot has in the divisor's own format, and the
 //! sweep asserts it equal to the value the same slot has in the dividend's, so
 //! the grid claim the door rests on is checked rather than assumed. Every
-//! admitted pair of the table is swept, a negative exponent and radix ten among
-//! them. The zero column is checked against a search over every member. The
+//! admitted pair of the table is swept, a negative exponent, radix ten, radix ten
+//! sharing the bytes' grid at exponent zero, and both sides of a signed byte
+//! among them. The zero column is checked against a search over every member. The
 //! refusals themselves are build failures and live in `tests/ui` as pairs.
 
 use core::marker::PhantomData;
@@ -23,18 +24,11 @@ use super::{members, value};
 use crate::adapt::{DeclaredSignature, Signature};
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::{Dither, Exact};
-use crate::division::{
-    Divisor,
-    is_divisible,
-    member_conditions,
-    no_member_names_the_zero,
-    range_inside,
-    same_phase,
-};
+use crate::division::{Divisor, is_divisible, member_conditions, no_member_names_the_zero};
 use crate::format::{Format, radix};
 use crate::member::Member;
 use crate::overflow::SHIPPED_POLICIES;
-use crate::quantum::{Constant, is_constant_family};
+use crate::quantum::{Constant, Quantum, is_constant_family};
 use crate::rounding::ALL_MODES;
 use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::tests::dispatch::{self, PerSignature};
@@ -86,6 +80,31 @@ type PositiveInQuarters = Grid<BinaryRationals, Constant<-2>, OneTo255, 0, 1>;
 type ByteInTenths = Grid<DecimalRationals, Constant<-1>, Unsigned<8>, 0, 1>;
 /// `OneTo255` in tenths.
 type PositiveInTenths = Grid<DecimalRationals, Constant<-1>, OneTo255, 0, 1>;
+
+/// The slots one to 127, the positive side of a signed byte.
+struct OneTo127;
+
+impl Slots for OneTo127 {
+    const MAX: Slot = Slot::at(127);
+    const MIN: Slot = Slot::at(1);
+    const WIDTH: Width = Width::bits(8);
+}
+
+/// The slots `-128` to `-1`, the negative side of a signed byte.
+struct DownFromMinusOne;
+
+impl Slots for DownFromMinusOne {
+    const MAX: Slot = Slot::at(-1);
+    const MIN: Slot = Slot::at(-128);
+    const WIDTH: Width = Width::bits(8);
+}
+
+/// Signed integers over the 8-bit range, a plain integer range holding its zero.
+type SignedByte = Grid<BinaryRationals, Constant<0>, Signed<8>, 0, 1>;
+/// Integers over `OneTo127`.
+type UpTo127 = Grid<BinaryRationals, Constant<0>, OneTo127, 0, 1>;
+/// Integers over `DownFromMinusOne`, a zero-free range below the zero.
+type Negatives = Grid<BinaryRationals, Constant<0>, DownFromMinusOne, 0, 1>;
 
 /// The quotient of every member of `S`'s format by every member of `G`, each
 /// reached as a consumer reaches it, against the oracle fed `G`'s value.
@@ -176,16 +195,31 @@ fn radix_ten_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does() {
     swept::<ByteInTenths, PositiveInTenths>();
 }
 
-/// One way of answering the door's five conditions.
+#[test]
+fn the_bytes_divide_by_a_range_at_radix_ten_on_their_grid_as_the_oracle_does() {
+    swept::<Byte, Decimal>();
+}
+
+#[test]
+fn a_signed_byte_divides_by_the_members_of_its_positive_side_as_the_oracle_does() {
+    swept::<SignedByte, UpTo127>();
+}
+
+#[test]
+fn a_signed_byte_divides_by_the_members_of_its_negative_side_as_the_oracle_does() {
+    swept::<SignedByte, Negatives>();
+}
+
+/// One way of answering the door's four conditions.
 trait Verdict {
-    fn conditions<F: Format, G: Format>() -> [Bool; 5];
+    fn conditions<F: Format, G: Format>() -> [Bool; 4];
 }
 
 /// The verdict the door ships.
 struct Shipped;
 
 impl Verdict for Shipped {
-    fn conditions<F: Format, G: Format>() -> [Bool; 5] {
+    fn conditions<F: Format, G: Format>() -> [Bool; 4] {
         member_conditions::<F, G>()
     }
 }
@@ -194,27 +228,38 @@ impl Verdict for Shipped {
 struct ZeroOfTheDivisorsFormat;
 
 impl Verdict for ZeroOfTheDivisorsFormat {
-    fn conditions<F: Format, G: Format>() -> [Bool; 5] {
-        let [radix, exponent, phase, inside, _] = member_conditions::<F, G>();
-        [radix, exponent, phase, inside, no_member_names_the_zero::<F>()]
+    fn conditions<F: Format, G: Format>() -> [Bool; 4] {
+        let [quantum, phase, inside, _] = member_conditions::<F, G>();
+        [quantum, phase, inside, no_member_names_the_zero::<F>()]
     }
 }
 
-/// A grid comparison that asks both quanta to be constant and never compares
-/// their exponents.
-struct NoExponent;
+/// Whether both quanta are constant at one exponent, the radix aside.
+fn constant_at_one_exponent<F: Format, G: Format>() -> bool {
+    is_constant_family::<F::Quantum>().get()
+        && is_constant_family::<G::Quantum>().get()
+        && <F::Quantum as Quantum>::BASE.power() == <G::Quantum as Quantum>::BASE.power()
+}
 
-impl Verdict for NoExponent {
-    fn conditions<F: Format, G: Format>() -> [Bool; 5] {
-        let constant =
-            is_constant_family::<F::Quantum>().get() && is_constant_family::<G::Quantum>().get();
-        [
-            radix::<F>().equals(radix::<G>()),
-            Bool::of(constant),
-            same_phase::<F, G>(),
-            range_inside::<F, G>(),
-            no_member_names_the_zero::<G>(),
-        ]
+/// A grid comparison that reads the radix and the exponent apart, and so
+/// refuses radixes that share a quantum.
+struct RadixAndExponentApart;
+
+impl Verdict for RadixAndExponentApart {
+    fn conditions<F: Format, G: Format>() -> [Bool; 4] {
+        let [_, phase, inside, zero_free] = member_conditions::<F, G>();
+        let grid = radix::<F>().equals(radix::<G>()).get() && constant_at_one_exponent::<F, G>();
+        [Bool::of(grid), phase, inside, zero_free]
+    }
+}
+
+/// A grid comparison that reads the exponent and never the radix.
+struct NoRadix;
+
+impl Verdict for NoRadix {
+    fn conditions<F: Format, G: Format>() -> [Bool; 4] {
+        let [_, phase, inside, zero_free] = member_conditions::<F, G>();
+        [Bool::of(constant_at_one_exponent::<F, G>()), phase, inside, zero_free]
     }
 }
 
@@ -222,33 +267,37 @@ impl Verdict for NoExponent {
 struct NoInside;
 
 impl Verdict for NoInside {
-    fn conditions<F: Format, G: Format>() -> [Bool; 5] {
-        let [radix, exponent, phase, _, zero_free] = member_conditions::<F, G>();
-        [radix, exponent, phase, Bool::TRUE, zero_free]
+    fn conditions<F: Format, G: Format>() -> [Bool; 4] {
+        let [quantum, phase, _, zero_free] = member_conditions::<F, G>();
+        [quantum, phase, Bool::TRUE, zero_free]
     }
 }
 
 /// The stated pairs, handed to the macro named.
 ///
-/// Each row is a pair and the five answers stated by hand from the two
-/// declarations: the radix, the constant exponent, the reduced phase, the range
-/// inside, and no member of the second naming the zero. The rows answering true
-/// throughout are the pairs the sweeps above divide.
+/// Each row is a pair and the four answers stated by hand from the two
+/// declarations: one constant quantum, the reduced phase, the range inside, and
+/// no member of the second naming the zero. The rows answering true throughout
+/// are the pairs the sweeps above divide.
 macro_rules! the_table {
     ($then:ident) => {
         $then! {
-            Byte, Positive => [true, true, true, true, true];
-            Positive, Positive => [true, true, true, true, true];
-            Biased, Quarters => [true, true, true, true, true];
-            FromOne, FromOne => [true, true, true, true, true];
-            ByteInQuarters, PositiveInQuarters => [true, true, true, true, true];
-            ByteInTenths, PositiveInTenths => [true, true, true, true, true];
-            Byte, Byte => [true, true, true, true, false];
-            Byte, Decimal => [false, true, true, true, true];
-            Byte, Halves => [true, false, true, true, true];
-            Byte, Biased => [true, true, false, true, true];
-            Byte, Wider => [true, true, true, false, true];
-            FromOne, SignedFromOne => [true, true, true, false, false];
+            Byte, Positive => [true, true, true, true];
+            Positive, Positive => [true, true, true, true];
+            Byte, Decimal => [true, true, true, true];
+            Biased, Quarters => [true, true, true, true];
+            FromOne, FromOne => [true, true, true, true];
+            ByteInQuarters, PositiveInQuarters => [true, true, true, true];
+            ByteInTenths, PositiveInTenths => [true, true, true, true];
+            SignedByte, UpTo127 => [true, true, true, true];
+            SignedByte, Negatives => [true, true, true, true];
+            Byte, Halves => [false, true, true, true];
+            Halves, PositiveInTenths => [false, true, true, true];
+            Byte, Biased => [true, false, true, true];
+            Byte, Wider => [true, true, false, true];
+            Byte, Byte => [true, true, true, false];
+            SignedByte, SignedByte => [true, true, true, false];
+            FromOne, SignedFromOne => [true, true, false, false];
         }
     };
 }
@@ -280,8 +329,8 @@ fn each_condition_of_the_door_reads_as_stated_on_both_sides() {
             [$([$($want),+]),+]
         };
     }
-    let rows: &[[bool; 5]] = &the_table!(stated);
-    for condition in 0 .. 5 {
+    let rows: &[[bool; 4]] = &the_table!(stated);
+    for condition in 0 .. 4 {
         let alone = rows.iter().any(|row| {
             row.iter()
                 .enumerate()
@@ -312,6 +361,9 @@ fn the_zero_column_agrees_with_a_search_over_every_member() {
         agrees::<PositiveInQuarters>(),
         agrees::<ByteInTenths>(),
         agrees::<PositiveInTenths>(),
+        agrees::<SignedByte>(),
+        agrees::<UpTo127>(),
+        agrees::<Negatives>(),
     ];
     for (at, agreed) in every.into_iter().enumerate() {
         assert!(
@@ -328,8 +380,12 @@ fn the_table_reports_each_planted_verdict() {
         "the table missed a zero check that reads the divisor's own range"
     );
     assert!(
-        disagreements::<NoExponent>() > 0,
-        "the table missed a grid comparison without the exponent"
+        disagreements::<RadixAndExponentApart>() > 0,
+        "the table missed a grid comparison that refuses radixes sharing a quantum"
+    );
+    assert!(
+        disagreements::<NoRadix>() > 0,
+        "the table missed a grid comparison without the radix"
     );
     assert!(
         disagreements::<NoInside>() > 0,
