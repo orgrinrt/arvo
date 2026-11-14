@@ -1,0 +1,28 @@
+error[E0080]: evaluation panicked: Divisor::member is refused from a format whose quantum is not constant or is another value: slot b names (phase + b) q, so another q is another value than the same slot of the divisor format. The radixes may differ where r^e is one value on both sides, as at exponent zero. A pair whose powers leave the four limbs is not formed, and is refused as well
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::division::member_door::MemberDivisor::<arvo_format::points::UFixed<8, 0>, G>::ADMITTED` failed here
+  |
+ ::: src/division/member_door.rs
+  |
+  | /         assert!(
+  | |             quantum.get(),
+  | |             "Divisor::member is refused from a format whose quantum is not constant or is another \
+  | |              value: slot b names (phase + b) q, so another q is another value than the same slot of \
+... |
+  | |              as well"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/division.rs
+  |
+  |         let () = MemberDivisor::<F, G>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_member_divisor_from_an_exponent_above_zero_is_refused.rs:37:13
+   |
+37 |     let _ = DIVISOR.slot();
+   |             ^^^^^^^

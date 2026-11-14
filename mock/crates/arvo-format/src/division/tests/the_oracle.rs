@@ -16,7 +16,7 @@
 
 use core::ops::RangeInclusive;
 
-use super::{divisors, exact_quotient, members, quantum, value};
+use super::{divisors, members, quantum, quotient_by, value};
 use crate::adapt::{DeclaredSignature, overflow_of, rounding_of};
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::tests::the_oracle::{Point, Wide, answer};
@@ -26,7 +26,7 @@ use crate::format::Format;
 use crate::overflow::SHIPPED_POLICIES;
 use crate::quantum::Constant;
 use crate::rounding::{ALL_MODES, Mode};
-use crate::slots::{Signed, Slots, Unsigned};
+use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::tests::dispatch::{self, PerFormat, PerSignature};
 use crate::tests::grid::Grid;
 use crate::tests::ratio::Ratio;
@@ -49,14 +49,66 @@ fn point(at: Ratio) -> Point {
 
 /// What a sweep found.
 #[derive(Clone, Copy, Default)]
-struct Tally {
-    checked: u64,
-    wrong:   u64,
+pub(super) struct Tally {
+    pub(super) checked: u64,
+    pub(super) wrong:   u64,
 }
 
-/// Every pair at one signature against the oracle. `planted` swaps the step for
-/// the quotient of the values over the quantum with the phase's term left in,
-/// and counts rather than stops.
+impl Tally {
+    /// Fold another tally into this one.
+    pub(super) fn add(&mut self, other: Self) {
+        self.checked += other.checked;
+        self.wrong += other.wrong;
+    }
+}
+
+/// The quotient of the member `a` by `divisor` under `S`, at every dither its
+/// mode reads, against the oracle fed the exact rational position.
+///
+/// The oracle divides by `by`, the divisor's value read from the format the
+/// caller took it from, so a door that admits a slot of another format whose
+/// value differs is caught rather than assumed away. `planted`
+/// swaps the step for the quotient of the values over the quantum with the
+/// phase's term left in, and counts rather than stops.
+pub(super) fn pair<S: DeclaredSignature>(
+    a: Slot,
+    divisor: Divisor<S::Format>,
+    by: Ratio,
+    planted: bool,
+) -> Tally {
+    let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
+    let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
+    let mode = rounding_of::<S::Adaptation>();
+    let policy = overflow_of::<S::Adaptation>();
+    let b = divisor.slot();
+    let at = point(quotient_by::<S::Format>(a, by));
+    let exact: Exact = if planted {
+        value::<S::Format>(a)
+            .over(by)
+            .over(quantum::<S::Format>())
+            .position()
+    } else {
+        quotient_position::<S::Format>(a, divisor)
+    };
+    let mut tally = Tally::default();
+    for quarter in quarters(mode) {
+        let dither = Dither::at(Fraction::of(quarter, 4));
+        let want = answer(mode, policy, at, (quarter, 4), min, max);
+        let slot = if planted { adapt::<S>(exact, dither) } else { div::<S>(a, divisor, dither) };
+        let got = (slot.index(), panic_on_overflow::<S>(exact, dither).get());
+        if !planted {
+            assert_eq!(
+                got, want,
+                "{a:?} / {b:?} under {mode:?}, {policy:?}, dither {quarter}/4, over [{min}, {max}]"
+            );
+        }
+        tally.checked += 1;
+        tally.wrong += u64::from(got != want);
+    }
+    tally
+}
+
+/// Every pair at one signature against the oracle, through `pair`.
 struct EveryPair {
     planted: bool,
 }
@@ -66,41 +118,15 @@ impl PerSignature for EveryPair {
 
     #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Tally {
-        let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
-        let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
-        let mode = rounding_of::<S::Adaptation>();
-        let policy = overflow_of::<S::Adaptation>();
         let mut tally = Tally::default();
         for a in members::<S::Format>() {
             for b in divisors::<S::Format>() {
-                let at = point(exact_quotient::<S::Format>(a, b));
-                let divisor = Divisor::<S::Format>::assumed(b);
-                let exact: Exact = if self.planted {
-                    value::<S::Format>(a)
-                        .over(value::<S::Format>(b))
-                        .over(quantum::<S::Format>())
-                        .position()
-                } else {
-                    quotient_position::<S::Format>(a, divisor)
-                };
-                for quarter in quarters(mode) {
-                    let dither = Dither::at(Fraction::of(quarter, 4));
-                    let want = answer(mode, policy, at, (quarter, 4), min, max);
-                    let slot = if self.planted {
-                        adapt::<S>(exact, dither)
-                    } else {
-                        div::<S>(a, divisor, dither)
-                    };
-                    let got = (slot.index(), panic_on_overflow::<S>(exact, dither).get());
-                    if !self.planted {
-                        assert_eq!(
-                            got, want,
-                            "{a:?} / {b:?} under {mode:?}, {policy:?}, dither {quarter}/4, over [{min}, {max}]"
-                        );
-                    }
-                    tally.checked += 1;
-                    tally.wrong += u64::from(got != want);
-                }
+                tally.add(pair::<S>(
+                    a,
+                    Divisor::<S::Format>::assumed(b),
+                    value::<S::Format>(b),
+                    self.planted,
+                ));
             }
         }
         tally

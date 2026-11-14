@@ -1,0 +1,32 @@
+error[E0080]: evaluation panicked: a phase denominator of zero names no position on the grid, so the phase does not denote a value the set could contain
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<Probe as arvo_format::Format>::ADMITTED` failed here
+  |
+ ::: src/format.rs
+  |
+  | /         assert!(
+  | |             Self::PHASE.denotes().get(),
+  | |             "a phase denominator of zero names no position on the grid, so the phase does not \
+  | |              denote a value the set could contain"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/member.rs
+  |
+  |         let () = <F as Format>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/member.rs
+  |
+  |         let () = MemberOf::<F>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_member_over_a_phase_that_does_not_denote_is_refused.rs:25:13
+   |
+25 |     let _ = MEMBER.slot();
+   |             ^^^^^^

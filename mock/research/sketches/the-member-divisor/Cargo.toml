@@ -1,0 +1,21 @@
+# Its own `[workspace]` table so it is a standalone tree and cargo does not walk
+# up into the mock workspace. It depends on nothing: the question is whether the
+# two doors compile on the pinned toolchain, which arvo-format's crate-private
+# verdicts would only hide.
+[workspace]
+
+[package]
+name = "the-member-divisor"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[features]
+# Each plants one construction the build must refuse.
+past-the-top = []
+zero-in-range = []
+other-exponent = []
+other-phase = []
+other-radix = []
+wider-range = []

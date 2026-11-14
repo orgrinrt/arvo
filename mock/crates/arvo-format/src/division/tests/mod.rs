@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The quotient's suite: the divisor's two doors and the conditions, the oracle
+//! The quotient's suite: the divisor's doors and the conditions, the member door
+//! against the oracle with its verdict table, the oracle
 //! sweep up to eight bits with its planted step, and the edge sweep at widths
 //! nine to 64 that places the quotient at the divisor's extremes.
 //!
@@ -18,6 +19,7 @@ use crate::tests::ratio::Ratio;
 mod the_divisor;
 mod the_edges;
 mod the_far_quotient;
+mod the_member_door;
 mod the_oracle;
 
 /// The quantum of a constant format, `r^e`.
@@ -41,8 +43,14 @@ fn value<F: Format>(slot: Slot) -> Ratio {
 /// The exact position the quotient of two members names: the quotient of their
 /// values over the quantum, less the phase, as a rational.
 fn exact_quotient<F: Format>(a: Slot, b: Slot) -> Ratio {
+    quotient_by::<F>(a, value::<F>(b))
+}
+
+/// The exact position the member `a` of `F` over the value `by` names, wherever
+/// the divisor's value was read from.
+fn quotient_by<F: Format>(a: Slot, by: Ratio) -> Ratio {
     value::<F>(a)
-        .over(value::<F>(b))
+        .over(by)
         .over(quantum::<F>())
         .minus(Ratio::phase_of::<F>())
 }
