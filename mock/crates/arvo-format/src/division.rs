@@ -12,7 +12,7 @@
 //! wherever `phase + b` is not zero. With the phase `n / d` in lowest terms,
 //! `u = r^max(e, 0)` and `v = r^max(-e, 0)`, that position is the numerator
 //! `d (n + a d) v - n (n + b d) u` over `d (n + b d) u`, both negated when
-//! `n + b d` is below zero. The divisor is a `Divisor`, whose two constructors
+//! `n + b d` is below zero. The divisor is a `Divisor`, whose three constructors
 //! keep the zero out before the program runs, so the step is never asked to
 //! divide by it.
 //!
@@ -30,7 +30,8 @@ use notko::Maybe;
 
 use crate::adapt::{Arity, DeclaredSignature, Operation};
 use crate::apply::{Dither, Exact, adapt};
-use crate::format::{Format, cancelling_slot};
+use crate::format::{Format, cancelling_slot, radix};
+use crate::member::Member;
 use crate::placing::{
     Placed,
     Powers,
@@ -43,7 +44,7 @@ use crate::placing::{
     saturated,
     times,
 };
-use crate::quantum::{Magnitude, is_constant_family};
+use crate::quantum::{Magnitude, Quantum, is_constant_family};
 use crate::slots::{Slot, Slots, slot_in_range};
 use crate::wide::Wide;
 use crate::width::Bool;
@@ -63,8 +64,9 @@ impl<S: DeclaredSignature> Operation for Div<S> {
 /// A slot of `F` that is not the format's zero member.
 ///
 /// Built by `constant`, which refuses a zero or out-of-range constant at build
-/// time, or by `of`, which is admitted only where no slot of the format names the
-/// zero. Neither reads the slot's value to decide anything, so the property is
+/// time, by `of`, which is admitted only where no slot of the format names the
+/// zero, or by `member`, which is admitted only where no member of its range
+/// names the zero. None reads the slot's value to decide anything, so the property is
 /// carried by the type rather than checked at the call, and the step never meets
 /// a zero factor.
 pub struct Divisor<F: Format> {
@@ -105,19 +107,18 @@ impl<F: Format, const B: i128> ConstantDivisor<F, B> {
 /// `phase + b` is zero only at `b = -n / d`, an integer only when the reduced
 /// denominator `d` is one, so past one no slot is the zero, member or not. A slot
 /// is not typed as a member of its format, so at `d = 1` the slot `-n` could be
-/// handed in whether or not the range holds it.
+/// handed in whether or not the range holds it, and `member` is the door for such
+/// a range.
 struct NoSlotNamesTheZero<F>(PhantomData<F>);
 
 impl<F: Format> NoSlotNamesTheZero<F> {
-    // FIXME(arvo_a_runtime_divisor_over_a_whole_phase_range_without_the): a range
-    // that leaves the zero out at a whole phase has no zero member, and only the
-    // slot's lack of a membership type keeps it from dividing by a runtime slot.
     const ADMITTED: () = assert!(
         no_slot_names_the_zero::<F>().get(),
         "Divisor::of is refused where a slot names the zero, which is wherever the phase's \
          denominator in lowest terms is one: a slot read at run time could be that slot, and \
          telling it apart would be a check on the value. Name the divisor with Divisor::constant, \
-         or declare a phase whose denominator is past one"
+         take it with Divisor::member from a range on this grid that leaves the zero out, or \
+         declare a phase whose denominator is past one"
     );
 }
 
@@ -126,6 +127,110 @@ impl<F: Format> NoSlotNamesTheZero<F> {
 #[inline]
 const fn no_slot_names_the_zero<F: Format>() -> Bool {
     Bool::of(matches!(reduced_phase::<F>(), Maybe::Is(phase) if phase.denominator > 1))
+}
+
+/// What a divisor taken from a member of `G` owes: `G` sits on `F`'s grid inside
+/// `F`'s range, and no member of `G` names the zero.
+///
+/// The grid is the radix, the constant exponent and the reduced phase, so a slot
+/// of `G` denotes the value the same slot of `F` does. Inside the range, the
+/// divisor is a member of `F` too, so the quotient is exact.
+struct MemberDivisor<F, G>(PhantomData<(F, G)>);
+
+impl<F: Format, G: Format> MemberDivisor<F, G> {
+    const ADMITTED: () = {
+        let [radix, exponent, phase, inside, zero_free] = member_conditions::<F, G>();
+        assert!(
+            radix.get(),
+            "Divisor::member is refused from a format of another radix: its slot names a value off \
+             the divisor format's grid"
+        );
+        assert!(
+            exponent.get(),
+            "Divisor::member is refused unless both formats have one constant exponent and it is \
+             the same: a slot of the member's format names a value off the divisor format's grid"
+        );
+        assert!(
+            phase.get(),
+            "Divisor::member is refused from a format of another reduced phase, or one whose phase \
+             does not denote: its slot names a value off the divisor format's grid"
+        );
+        assert!(
+            inside.get(),
+            "Divisor::member is refused from a range wider than the divisor format's: a divisor past \
+             that range takes the quotient past the exact step, which saturates there"
+        );
+        assert!(
+            zero_free.get(),
+            "Divisor::member is refused from a range that holds its zero slot: a member read at run \
+             time could be that slot. Declare a range that leaves the slot -n out, n / 1 being the \
+             reduced phase, or name the divisor with Divisor::constant"
+        );
+    };
+}
+
+/// The member door's five verdicts, in order: the radix, the constant exponent,
+/// the reduced phase, `G`'s range inside `F`'s, and no member of `G` naming the
+/// zero.
+///
+/// The one place they are stated, read by the obligation and by the door's
+/// suite, which reads each without forcing the const that refuses it.
+#[inline]
+const fn member_conditions<F: Format, G: Format>() -> [Bool; 5] {
+    [
+        radix::<F>().equals(radix::<G>()),
+        same_constant_exponent::<F, G>(),
+        same_phase::<F, G>(),
+        range_inside::<F, G>(),
+        no_member_names_the_zero::<G>(),
+    ]
+}
+
+/// Whether both quanta are constant at one exponent.
+#[inline]
+const fn same_constant_exponent<F: Format, G: Format>() -> Bool {
+    Bool::of(
+        is_constant_family::<F::Quantum>().get()
+            && is_constant_family::<G::Quantum>().get()
+            && <F::Quantum as Quantum>::BASE.power() == <G::Quantum as Quantum>::BASE.power(),
+    )
+}
+
+/// Whether both phases denote and are one ratio in lowest terms.
+#[inline]
+const fn same_phase<F: Format, G: Format>() -> Bool {
+    Bool::of(matches!(
+        (reduced_phase::<F>(), reduced_phase::<G>()),
+        (Maybe::Is(f), Maybe::Is(g))
+            if f.numerator == g.numerator && f.denominator == g.denominator
+    ))
+}
+
+/// Whether `G`'s slot range lies inside `F`'s.
+#[inline]
+const fn range_inside<F: Format, G: Format>() -> Bool {
+    let (f_min, f_max) = (
+        <F::Slots as Slots>::MIN.index(),
+        <F::Slots as Slots>::MAX.index(),
+    );
+    let (g_min, g_max) = (
+        <G::Slots as Slots>::MIN.index(),
+        <G::Slots as Slots>::MAX.index(),
+    );
+    Bool::of(g_min >= f_min && g_max <= f_max)
+}
+
+/// Whether no member of `G` names the zero: its phase denotes, and either its
+/// reduced denominator is past one or, at a whole phase `n / 1`, the slot `-n` is
+/// outside its range.
+#[inline]
+const fn no_member_names_the_zero<G: Format>() -> Bool {
+    Bool::of(match reduced_phase::<G>() {
+        Maybe::Is(phase) => {
+            phase.denominator > 1 || !slot_in_range::<G::Slots>(Slot::at(-phase.numerator)).get()
+        },
+        Maybe::Isnt => false,
+    })
 }
 
 impl<F: Format> Divisor<F> {
@@ -152,6 +257,22 @@ impl<F: Format> Divisor<F> {
         let () = NoSlotNamesTheZero::<F>::ADMITTED;
         Self {
             slot,
+            format: PhantomData,
+        }
+    }
+
+    /// The divisor at a member of `G`, admitted only where `G` sits on `F`'s grid
+    /// inside `F`'s range and no member of `G` names the zero.
+    ///
+    /// With `G` as `F` it is a whole-phase format whose range leaves the zero out,
+    /// dividing by its own slots read at run time. Nothing is read of the member's
+    /// value: the obligation is over the two formats alone.
+    #[must_use]
+    #[inline]
+    pub const fn member<G: Format>(member: Member<G>) -> Self {
+        let () = MemberDivisor::<F, G>::ADMITTED;
+        Self {
+            slot:   member.slot(),
             format: PhantomData,
         }
     }

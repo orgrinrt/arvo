@@ -13,10 +13,16 @@
 //! families, and at each one feeds the edges of the range and the ends of the
 //! coordinate, so the completion is entered from just outside and from as far
 //! outside as a slot can be.
+//!
+//! The member's adapted door is the same map returned as a `Member`, so the walk
+//! reads it beside `adapt` at every fed position and requires the two to agree,
+//! and places every slot of the fed edges that lies in range on itself through
+//! it, at every mode and policy.
 
 use crate::adapt::DeclaredSignature;
 use crate::apply::{Dither, Exact, Fraction, adapt};
 use crate::format::Format;
+use crate::member::Member;
 use crate::overflow::SHIPPED_POLICIES;
 use crate::rounding::ALL_MODES;
 use crate::slots::{ADMITTED_WIDTHS, Slot, Slots};
@@ -75,12 +81,28 @@ impl PerSignature for Total {
                 for d in dithers() {
                     let e = Exact::between(Slot::at(slot), Fraction::of(num, den));
                     let got = adapt::<S>(e, d);
+                    assert_eq!(
+                        Member::<S::Format>::adapted::<S>(e, d).slot(),
+                        got,
+                        "the member door and the map disagree adapting {e:?} with {d:?}"
+                    );
                     assert!(
                         got.is_within(min, max).get(),
                         "{got:?} is outside [{min:?}, {max:?}] adapting {e:?} with {d:?}"
                     );
                     checked += 1;
                 }
+            }
+        }
+        for slot in edges(min, max).filter(|&s| Slot::at(s).is_within(min, max).get()) {
+            for d in dithers() {
+                let on = Member::<S::Format>::adapted::<S>(Exact::on_grid(Slot::at(slot)), d);
+                assert_eq!(
+                    on.slot(),
+                    Slot::at(slot),
+                    "a member on the grid moved under {d:?}"
+                );
+                checked += 1;
             }
         }
         checked
@@ -121,6 +143,9 @@ impl PerFormat for EveryCell {
 
 #[test]
 fn the_map_is_total_over_every_admitted_width_mode_and_policy() {
+    // Every cell feeds 13 slots at 6 residues under 3 dithers through the map,
+    // and the 5 of those slots that lie in range on the grid under the 3 dithers
+    // through the member door.
     let mut walk = EveryCell {
         cells:       0,
         positions:   0,
@@ -154,7 +179,7 @@ fn the_map_is_total_over_every_admitted_width_mode_and_policy() {
     assert_eq!(walk.unsigned, 64);
     assert_eq!(
         walk.positions,
-        (walk.cells as u64) * 13 * 6 * 3,
+        (walk.cells as u64) * (13 * 6 * 3 + 5 * 3),
         "a cell checked fewer positions than it was fed"
     );
 }

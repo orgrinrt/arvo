@@ -73,6 +73,11 @@
 //! remainder's denominator is `2^128` against one at `2^127`. After them one file
 //! that has to compile names every item those two operations add from the crate
 //! root, as an outside crate with no feature line would.
+//!
+//! Two more pin the member: a member constant one past the top against one at
+//! the top, and `Divisor::member` from a range holding its zero slot, from
+//! another radix, exponent or phase and from a range past the divisor's, each
+//! against the zero-free range on the divisor's grid.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -337,6 +342,29 @@ fn a_runtime_divisor_is_refused_at_a_whole_phase_and_admitted_at_a_half_offset_o
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_runtime_divisor_over_a_whole_phase_is_refused.rs");
     t.pass("tests/ui/a_runtime_divisor_over_a_half_offset_phase_is_admitted.rs");
+}
+
+/// A member constant one past the top of its range, refused where the constant
+/// is named, and at the top, admitted.
+#[test]
+fn a_member_constant_past_the_top_is_refused_and_at_the_top_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_constant_past_the_top_is_refused.rs");
+    t.pass("tests/ui/a_member_constant_at_the_top_is_admitted.rs");
+}
+
+/// A divisor taken from a member of a second format, refused for each condition
+/// of the door, each file one token from the zero-free range on the divisor's
+/// grid, which is admitted.
+#[test]
+fn a_member_divisor_is_refused_off_the_grid_past_the_range_or_over_its_zero() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_divisor_from_a_range_holding_its_zero_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_another_radix_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_another_exponent_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_another_phase_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_a_range_past_the_divisors_is_refused.rs");
+    t.pass("tests/ui/a_member_divisor_from_a_zero_free_range_on_the_grid_is_admitted.rs");
 }
 
 /// Division over a magnitude-indexed quantum, refused, and over a constant
