@@ -1,4 +1,4 @@
-error[E0080]: evaluation panicked: Divisor::of is refused where a slot names the zero, which is wherever the phase's denominator in lowest terms is one: a slot read at run time could be that slot, and telling it apart would be a check on the value. Name the divisor with Divisor::constant, or declare a phase whose denominator is past one
+error[E0080]: evaluation panicked: Divisor::of is refused where a slot names the zero, which is wherever the phase's denominator in lowest terms is one: a slot read at run time could be that slot, and telling it apart would be a check on the value. Name the divisor with Divisor::constant, take it with Divisor::member from a range on this grid that leaves the zero out, or declare a phase whose denominator is past one
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
@@ -11,8 +11,8 @@ error[E0080]: evaluation panicked: Divisor::of is refused where a slot names the
   | |         no_slot_names_the_zero::<F>().get(),
   | |         "Divisor::of is refused where a slot names the zero, which is wherever the phase's \
   | |          denominator in lowest terms is one: a slot read at run time could be that slot, and \
-  | |          telling it apart would be a check on the value. Name the divisor with Divisor::constant, \
-  | |          or declare a phase whose denominator is past one"
+... |
+  | |          declare a phase whose denominator is past one"
   | |     );
   | |_____- in this macro invocation
 

@@ -12,7 +12,7 @@
 //! wherever `phase + b` is not zero. With the phase `n / d` in lowest terms,
 //! `u = r^max(e, 0)` and `v = r^max(-e, 0)`, that position is the numerator
 //! `d (n + a d) v - n (n + b d) u` over `d (n + b d) u`, both negated when
-//! `n + b d` is below zero. The divisor is a `Divisor`, whose two constructors
+//! `n + b d` is below zero. The divisor is a `Divisor`, whose three constructors
 //! keep the zero out before the program runs, so the step is never asked to
 //! divide by it.
 //!
@@ -31,6 +31,7 @@ use notko::Maybe;
 use crate::adapt::{Arity, DeclaredSignature, Operation};
 use crate::apply::{Dither, Exact, adapt};
 use crate::format::{Format, cancelling_slot};
+use crate::member::Member;
 use crate::placing::{
     Placed,
     Powers,
@@ -48,6 +49,12 @@ use crate::slots::{Slot, Slots, slot_in_range};
 use crate::wide::Wide;
 use crate::width::Bool;
 
+mod member_door;
+
+use member_door::MemberDivisor;
+#[cfg(test)]
+use member_door::{member_conditions, no_member_names_the_zero};
+
 /// Division under one declared signature.
 ///
 /// It names the signature it is a function of and its arity, two, and carries
@@ -63,8 +70,9 @@ impl<S: DeclaredSignature> Operation for Div<S> {
 /// A slot of `F` that is not the format's zero member.
 ///
 /// Built by `constant`, which refuses a zero or out-of-range constant at build
-/// time, or by `of`, which is admitted only where no slot of the format names the
-/// zero. Neither reads the slot's value to decide anything, so the property is
+/// time, by `of`, which is admitted only where no slot of the format names the
+/// zero, or by `member`, which is admitted only where no member of its range
+/// names the zero. None reads the slot's value to decide anything, so the property is
 /// carried by the type rather than checked at the call, and the step never meets
 /// a zero factor.
 pub struct Divisor<F: Format> {
@@ -105,19 +113,23 @@ impl<F: Format, const B: i128> ConstantDivisor<F, B> {
 /// `phase + b` is zero only at `b = -n / d`, an integer only when the reduced
 /// denominator `d` is one, so past one no slot is the zero, member or not. A slot
 /// is not typed as a member of its format, so at `d = 1` the slot `-n` could be
-/// handed in whether or not the range holds it.
+/// handed in whether or not the range holds it, and `member` is the door for such
+/// a range.
 struct NoSlotNamesTheZero<F>(PhantomData<F>);
 
 impl<F: Format> NoSlotNamesTheZero<F> {
-    // FIXME(arvo_a_runtime_divisor_over_a_whole_phase_range_without_the): a range
-    // that leaves the zero out at a whole phase has no zero member, and only the
-    // slot's lack of a membership type keeps it from dividing by a runtime slot.
+    // FIXME(may_arvo_divide_by_a_signed_divisor_read_at_run_time_of_eith): a divisor
+    // read at run time that may be either sign, over a whole-phase range holding
+    // the zero, has no door here or through `member`, since a zero-free range lies
+    // on one side of its zero slot. Whether signed division is the known use the
+    // runtime membership door waits on is the open question.
     const ADMITTED: () = assert!(
         no_slot_names_the_zero::<F>().get(),
         "Divisor::of is refused where a slot names the zero, which is wherever the phase's \
          denominator in lowest terms is one: a slot read at run time could be that slot, and \
          telling it apart would be a check on the value. Name the divisor with Divisor::constant, \
-         or declare a phase whose denominator is past one"
+         take it with Divisor::member from a range on this grid that leaves the zero out, or \
+         declare a phase whose denominator is past one"
     );
 }
 
@@ -143,15 +155,34 @@ impl<F: Format> Divisor<F> {
 
     /// The divisor at `slot`, admitted only where no slot of `F` names the zero.
     ///
-    /// A slot outside the range is taken as every operation here takes one, and
-    /// the step positions it as it positions any slot. None of them
-    /// is the zero, so the step never meets one.
+    /// A slot outside the range is taken as every operation here takes one. The
+    /// step positions it, and a divisor past the range can take the quotient past
+    /// the exact step, which saturates there. None of the slots is the zero, so the
+    /// step never meets one.
     #[must_use]
     #[inline]
     pub const fn of(slot: Slot) -> Self {
         let () = NoSlotNamesTheZero::<F>::ADMITTED;
         Self {
             slot,
+            format: PhantomData,
+        }
+    }
+
+    /// The divisor at a member of `G`.
+    ///
+    /// Admitted only where `G` sits on `F`'s grid inside `F`'s range and no member
+    /// of `G` names the zero.
+    ///
+    /// With `G` as `F` it is a whole-phase format whose range leaves the zero out,
+    /// dividing by its own slots read at run time. Nothing is read of the member's
+    /// value: the obligation is over the two formats alone.
+    #[must_use]
+    #[inline]
+    pub const fn member<G: Format>(member: Member<G>) -> Self {
+        let () = MemberDivisor::<F, G>::ADMITTED;
+        Self {
+            slot:   member.slot(),
             format: PhantomData,
         }
     }

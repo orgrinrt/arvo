@@ -1,0 +1,28 @@
+error[E0080]: evaluation panicked: a constant member is refused outside the format's slot range: such a slot is not a member of this format. Name a slot from MIN to MAX, or reach a position outside the range through Member::adapted, which places it by the signature's policy
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::member::ConstantMember::<arvo_format::points::UFixed<8, 0>, -1>::ADMITTED` failed here
+  |
+ ::: src/member.rs
+  |
+  |       const ADMITTED: () = assert!(
+  |  __________________________-
+  | |         slot_in_range::<F::Slots>(Slot::at(B)).get(),
+  | |         "a constant member is refused outside the format's slot range: such a slot is not a member \
+  | |          of this format. Name a slot from MIN to MAX, or reach a position outside the range through \
+  | |          Member::adapted, which places it by the signature's policy"
+  | |     );
+  | |_____- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/member.rs
+  |
+  |         let () = ConstantMember::<F, B>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_member_constant_below_the_bottom_is_refused.rs:11:13
+   |
+11 |     let _ = BOTTOM.slot();
+   |             ^^^^^^

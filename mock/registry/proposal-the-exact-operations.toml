@@ -35,3 +35,47 @@ says = "Converting a member of one format to another is one exact placement onto
 because = "The position on the target's grid is a function of the source format and the target signature together, so the admission rule admits it as one step. Two adaptations round twice and the second reads a value the first already moved, so a chain is a composition a consumer writes from two calls, where the double rounding is visible at the call site rather than inside one name. The compromise: a conversion whose denominator, the product of both phases' denominators and both exponents' moves, passes `2^128 - 1` is held out under the remainder coordinate's placeholder rather than routed through an intermediate that would fit."
 provenance = ["mock::design_rounds/202611130510/202611130509_topic.the-quotient-and-the-conversion.md::#the-conversion-one-step-onto-another-grid"]
 keywords = ["conversion", "convert", "placement", "grid", "single step", "double rounding", "radix", "phase", "chain"]
+
+[[proposal]]
+id = "a_quotient_s_divisor_is_non_zero_by_type_and_a_member_divides_at_a_whole_phase"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "validation"
+says = "The quotient of two members is admitted over a divisor whose type cannot hold the zero member, named through one of three doors: a constant the build refuses at the zero or outside the range; a slot read at run time of a format in which no slot names the zero, a format whose phase denominator in lowest terms is past one; or a member of a second format on the same grid, the same radix, constant exponent and reduced phase, whose range lies inside the divisor format's and holds no member naming the zero. No door classifies a value at run time, and the step never meets a zero factor."
+because = "The quotient is a function of the declared signature wherever the divisor's value is not zero and is no function at the zero, so by the admission rule the zero is what the operation is not admitted over. A test on the divisor's value, or a constructor that classifies a slot and answers with a maybe, is a runtime check, which `ruling::never_a_runtime_check_and_one_lowered_path` rules out. A bare slot is not typed by membership, so at a whole phase the one slot naming the zero is reachable through `of` whether or not the range holds it; a member is typed by its range, so a range that leaves the zero out divides at run time through its members. Its range lying inside the divisor format's keeps the quotient exact, since a divisor past the range leaves the exact step."
+supersedes = ["a_quotient_s_divisor_is_non_zero_by_type"]
+note = """
+The superseded row's says and because stand, except for its compromise, that a \
+whole-phase format divides only by constants until a slot can be typed by \
+membership. The member is that typing, so this row restates the stance with the \
+third door and without the compromise.
+"""
+provenance = [
+  "mock::design_rounds/202611140438/202611140438_topic.a-member-is-a-type.md::#a-member-is-a-type-and-the-divisor-takes-one",
+  "mock::design_rounds/202611140438/202611140438_topic.a-member-is-a-type.md::#the-members-range-lies-inside-the-divisors",
+]
+keywords = ["quotient", "division", "divisor", "non-zero", "zero member", "by type", "member", "member door", "whole phase", "runtime check", "admission"]
+
+[[proposal]]
+id = "a_quotient_s_divisor_is_non_zero_by_type_and_a_member_divides_on_one_quantum"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "validation"
+says = "The quotient of two members is admitted over a divisor whose type cannot hold the zero member, named through one of three doors: a constant the build refuses at the zero or outside the range; a slot read at run time of a format in which no slot names the zero, a format whose phase denominator in lowest terms is past one; or a member of a second format on the same grid, one constant quantum and one reduced phase, whose range lies inside the divisor format's and holds no member naming the zero. No door classifies a value at run time, and the step never meets a zero factor. A divisor read at run time that may be either sign, over a whole-phase range holding the zero, has no door."
+because = "The quotient is a function of the declared signature wherever the divisor's value is not zero and is no function at the zero, so by the admission rule the zero is what the operation is not admitted over. A test on the divisor's value, or a constructor that classifies a slot and answers with a maybe, is a runtime check, which `ruling::never_a_runtime_check_and_one_lowered_path` rules out. A bare slot is not typed by membership, so at a whole phase the one slot naming the zero is reachable through `of` whether or not the range holds it; a member is typed by its range, so a range that leaves the zero out divides at run time through its members. Slot `b` denotes `(phase + b) q` in either format, so one quantum and one phase are what make the member's value the divisor format's, whatever the radixes. Its range lying inside the divisor format's keeps the quotient exact, since a divisor past the range leaves the exact step. A slot range is one interval, so a zero-free range at a whole phase lies on one side of its zero slot, and a divisor of either sign needs the run-time classification `ruling::the_ingest_door_waits_on_a_known_use` holds back."
+supersedes = ["a_quotient_s_divisor_is_non_zero_by_type_and_a_member_divides_at_a_whole_phase"]
+note = """
+The superseded row's says and because stand with two corrections. Its grid was \
+the same radix, constant exponent and reduced phase, which refuses formats that \
+share a grid across radixes, at exponent zero among them; the grid is one quantum \
+and one phase. Its note said the compromise was removed, and it is narrowed: \
+signed division by a divisor read at run time of either sign still has no door, \
+which is put to op as an open question.
+"""
+provenance = [
+  "panel::202611140602_review-arvo-format-member-2/REVIEW.md::#findings",
+  "mock::design_rounds/202611140438/202611140438_topic.a-member-is-a-type.md::#a-member-is-a-type-and-the-divisor-takes-one",
+]
+keywords = ["quotient", "division", "divisor", "non-zero", "zero member", "by type", "member", "member door", "one quantum", "grid", "signed division", "runtime check", "admission"]

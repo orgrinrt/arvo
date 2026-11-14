@@ -48,6 +48,7 @@ pub mod apply;
 pub mod conversion;
 pub mod division;
 pub mod format;
+pub mod member;
 pub mod multiplication;
 pub mod overflow;
 mod placing;
@@ -109,6 +110,7 @@ pub use format::{
     smallest_step_exponent,
     step_exponent,
 };
+pub use member::Member;
 pub use multiplication::{Mul, is_multipliable, mul, product_position};
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
 pub use quantum::{

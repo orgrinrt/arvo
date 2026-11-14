@@ -1,0 +1,50 @@
+d870e0b0 chore: lock src changelist 202611140630
+4d98d03a test: sample the member door grid above zero and across a slot
+002b9aa0 chore: lock doc changelist 202611140630
+284ae222 docs: sample the member door grid above zero and across a slot
+928b3c7b docs: add the topic on sampling the grid above exponent zero
+cc3a272c chore: regenerate generated files
+f44c87f0 chore: close design round 202611140603
+717a137d chore: lock src changelist 202611140603
+ca0981b2 feat: admit a member divisor on one quantum and sweep both signs
+c0b37a08 chore: lock doc changelist 202611140603
+ee6f9eac docs: make the member door one quantum and state the signed gap
+473146c5 docs: add the topic that the grid is one quantum
+42ef3d5e chore: merge dev, which carries the slot the member already holds
+280e3a2a feat: carry the exact position's floor in four limbs
+68f70d7e chore: regenerate generated files
+44773b9d chore: close design round 202611140537
+4e641911 chore: lock src changelist 202611140537
+d4026518 feat: force the member obligation and sweep the door by divisor values
+82d7965a chore: lock doc changelist 202611140537
+c0200378 docs: answer the member review in the design and the registry
+02f2525a docs: open round 202611140537, the member review
+306512ea chore: close design round 202611140438
+f28846b7 chore: lock src changelist 202611140438
+4639a01f chore: regenerate generated files after merge
+aa6ed505 chore: merge the slot branch, now on dev
+6f80ce21 chore: merge dev, which carries the base slot already holds
+804d5857 feat: add the member type and the divisor's member door
+ccb4c239 feat: admit the wrapping product and the cleared format rounds
+ccb504a6 chore: lock doc changelist 202611140438
+e6ba3b86 docs: design the member type and the divisor's member door
+a4d77d3d docs: ask that a member divisor's range lie inside its format's
+5dfa03d4 docs: open round 202611140438, a member is a type
+41d16857 chore: merge the reviewed base's ieee module split
+7fbef5df chore: close design round 202611140422
+5f013209 chore: lock src changelist 202611140422
+62fdc9f9 test: give each ieee 754 suite only what it reads, with no allow
+4ff0f77f chore: lock doc changelist 202611140422
+c70500f5 docs: open round 202611140422, the ieee module without the allow
+362f11bb docs: regenerate the format document
+ef21996b chore: close design round 202611140402
+8b5f86ec chore: lock src changelist 202611140402
+3ac613c9 fix: answer the slot review in range, at far floors and in the limbs
+07eabfbc chore: lock doc changelist 202611140402
+730cbb2c docs: design completion in range and the oracle past four limbs
+15c7e176 docs: open round 202611140402, the slot review
+1ed363f9 docs: regenerate the format document
+1a8f82ce chore: close design round 202611140345
+82c34045 chore: lock src changelist 202611140345
+22a86984 test: hold the product's admission at the step's edges
+111c8ae0 chore: lock doc changelist 202611140345

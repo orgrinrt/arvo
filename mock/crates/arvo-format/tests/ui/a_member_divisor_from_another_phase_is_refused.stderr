@@ -1,0 +1,26 @@
+error[E0080]: evaluation panicked: Divisor::member is refused from a format of another reduced phase, or one whose phase does not denote: its slot names a value off the divisor format's grid
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::division::member_door::MemberDivisor::<arvo_format::points::UFixed<8, 0>, G>::ADMITTED` failed here
+  |
+ ::: src/division/member_door.rs
+  |
+  | /         assert!(
+  | |             phase.get(),
+  | |             "Divisor::member is refused from a format of another reduced phase, or one whose phase \
+  | |              does not denote: its slot names a value off the divisor format's grid"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/division.rs
+  |
+  |         let () = MemberDivisor::<F, G>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_member_divisor_from_another_phase_is_refused.rs:36:13
+   |
+36 |     let _ = DIVISOR.slot();
+   |             ^^^^^^^
