@@ -8,8 +8,41 @@ last ignore citing it.
 
 - arvo_placement_ships_one_packing_rule_so_the_test_that_the_c: `arvo-placement` ships one packing
   rule, so the test that the carrier is not a function of the access width stays red.
-- arvo_s_half_up_reader_gets_eighteen_catalogued_sentence_pair: the `half_up` reader gets eighteen
-  catalogued sentence pairs wrong on one named side.
+- arvo_s_half_up_reader_lets_an_alias_owner_s_rule_cover_a_cla: the `half_up` reader reads a clause
+  naming the rule of an owner in `ALIAS_OWNERS` as about that rule even where it also names the mode
+  by a rule noun, so the clause is let through.
+- arvo_s_half_up_reader_misses_a_motion_gerund_outside_motions: the `half_up` reader reads a motion
+  gerund `MOTIONS` does not hold as naming `toward zero`, so the clause names another rule and is let
+  through.
+- arvo_s_half_up_reader_reads_a_bare_number_before_a_verb_as_a: the `half_up` reader reads a bare
+  number before a verb as a seat, so a count of ties takes the clause from the mode.
+- arvo_s_half_up_reader_reads_a_bare_number_before_or_or_in_as: the `half_up` reader reads a seat
+  number before `or` or `in` as a count, so the clause carries the mode and is refused.
+- arvo_s_half_up_reader_reads_a_capitalised_method_name_as_the: the `half_up` reader reads a
+  capitalised method name opening a clause as the method before a word of an open class, so an
+  imperative on such an object is let through.
+- arvo_s_half_up_reader_reads_a_gerund_naming_toward_zero_befo: the `half_up` reader gives a relative
+  to a gerund naming `toward zero` even where the clause says the mode is computed that way.
+- arvo_s_half_up_reader_reads_a_pronoun_after_a_negated_identi: how the `half_up` reader resolves a
+  pronoun is one open call: one opening a clause or a segment after a rule the mode is denied to be
+  takes that rule, `it` later in a clause opening on a subject is the mode, and a personal pronoun in
+  an alias's segment keeps the alias a reading. Six catalogue entries contradict a reading of it.
+- arvo_s_half_up_reader_reads_a_rule_described_with_an_article: the `half_up` reader reads a rule
+  described with an article and no rule noun, behind a negator, as a description of the mode, so the
+  relative after it is the mode's and the clause is refused.
+- arvo_s_half_up_reader_reads_a_rule_noun_behind_a_preposition: the `half_up` reader reads a rule
+  noun behind a preposition and `the`, behind a negator, as another rule even where it is the mode,
+  so the relative after it is given away and the clause is let through.
+- arvo_s_half_up_reader_reads_an_owner_outside_its_two_lists_a: the `half_up` reader reads a rule
+  named by an owner outside `ALIAS_OWNERS` as the ruled mode's own, so a party that computes ties
+  away has its rule refused.
+- arvo_s_half_up_reader_reads_any_copula_before_a_negator_as_a: the `half_up` reader reads a copula
+  between the reading and a negator as a denied identity even where it predicates a quality.
+- arvo_s_half_up_reader_refuses_a_clause_whose_subject_is_name: the `half_up` reader refuses a clause
+  whose subject is named in words outside its nouns for a subject, since the mode carries into it.
+- arvo_s_half_up_reader_takes_a_rule_named_only_by_a_hyphenate: the `half_up` reader reads a rule
+  named by a hyphenated phrase alone, behind a negator, as a quality, so the relative after it is the
+  mode's and the clause is refused.
 - crate_root_paths_reads_a_use_alias_in_one_module_as_the_crat: `crate_root_paths` reads aliases by name over
   the whole file, not by what they point to or the module they sit in, so one module's `use std as s`
   reads as the crate in another, and `extern crate self as std` makes a later `std::x()` a false hit.

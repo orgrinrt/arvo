@@ -91,11 +91,17 @@ fn an_empty_segment_between_two_delimiters_is_not_a_list_item() {
     assert!(
         found("The modes floor, away from zero, half_up (the ruled one), and ceil.").is_empty()
     );
-    // A one-word aside is not walked above: `listed_apart` counts an item's
-    // words rather than checking for a name, so a bare single word beside the
-    // reading reads as a list neighbour and silences it wrongly.
-    // `sentences/catalogue.rs` carries the sentence it costs.
-    assert!(found("`half_up` sends a tie (aside) away from zero.").is_empty());
+    // A one-word aside, and an aside of a few words, standing in round brackets
+    // between the name and the reading: a parenthetical is not a list item, so
+    // the neighbour is looked for past it and the sentence is one item.
+    for aside in ["aside", "a tie", "see the note"] {
+        let text = format!("`half_up` sends x ({aside}) away from zero.");
+        assert_eq!(found(&text), ["away from zero"], "{text}");
+    }
+    // The control: the same one word as a comma-cut item beside the reading is
+    // a list neighbour, so the silence of a real list is the commas and not the
+    // word count.
+    assert!(found("The modes floor, away from zero, aside, and half_up.").is_empty());
 }
 
 #[test]
