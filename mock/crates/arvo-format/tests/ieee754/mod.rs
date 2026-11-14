@@ -259,7 +259,7 @@ fn round_off(dir: Direction, r: u32, c: i128, drop: u32) -> i128 {
     // still reaches is read rather than taken for more than twice `|c|`.
     let Some(unit) = unsigned_power(r, drop) else {
         // Everything is dropped and what is dropped is less than half a unit,
-        // since `2 |c|` is at most `2^128` and the unit is past that.
+        // since `2 |c|` is below `2^128` and the unit is past that.
         return match dir {
             Direction::TowardPositive if c > 0 => 1,
             Direction::TowardNegative if c < 0 => -1,
@@ -395,6 +395,16 @@ pub fn inputs(f: Standard, seed: u64) -> Vec<(i128, i32)> {
     v
 }
 
+/// The lowest exponent whose unit below the smallest subnormal the unsigned
+/// 128-bit integer holds: the first unit past the slot index at radix two, one
+/// above it at radix ten. Below it the search hands its stand-in.
+pub fn held_below(f: Standard) -> i32 {
+    let past = (1 ..)
+        .find(|&e| unsigned_power(f.radix, e).is_none())
+        .unwrap();
+    f.qmin - past as i32 + 1
+}
+
 /// Inputs below the smallest subnormal, as far as the slot index's integer and
 /// past: the scaled denominator past the index, past the unsigned 128-bit
 /// integer, and the tie at the first unit past the index where it is written.
@@ -431,7 +441,10 @@ pub fn underflow(f: Standard, seed: u64) -> Vec<(i128, i32)> {
     let mut d = Draws::seeded(seed ^ 0x5EED_0000_0000_0001);
     for _ in 0 .. 500 {
         let c = d.within(-999_999_999_999_999_999, 999_999_999_999_999_999) as i128;
-        v.push((c, d.within((below - 1) as i64, (f.qmin - 21) as i64) as i32));
+        v.push((
+            c,
+            d.within(held_below(f) as i64, (f.qmin - 21) as i64) as i32,
+        ));
     }
     v
 }

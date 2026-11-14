@@ -81,8 +81,34 @@ fn the_signature_verdict_turns_on_the_policy_past_the_index() {
         is_multipliable_under::<Signature<UFixed<64, -1>, Adapt<TowardZero, Saturate>>>().get()
     );
     assert!(is_multipliable_under::<Signature<UFixed<64, -1>, Adapt<TowardZero, Clamp>>>().get());
-    // A condition every product owes refuses under wrapping too: a phase whose
-    // step leaves the four limbs.
+    // A condition every product owes refuses under wrapping too: an exponent
+    // whose `D = 2^300` leaves the four limbs.
     assert!(!is_multipliable_under::<Signature<UFixed<64, -300>, Adapt<TowardZero, Wrap>>>().get());
     assert!(!crate::multiplication::is_multipliable::<UFixed<64, -300>>().get());
+}
+
+#[test]
+fn the_admission_ends_where_the_step_stops_forming() {
+    use crate::multiplication::{is_multipliable, is_multipliable_under};
+    use crate::overflow::Saturate;
+    // Under wrapping the top corner `(2^64 - 1)^2 2^k` is formed up to `k = 128`
+    // and passes `2^256` at `k = 129`.
+    assert!(is_multipliable_under::<Wrapped<128>>().get());
+    assert!(!is_multipliable_under::<Wrapped<129>>().get());
+    // Below zero `D = 2^-k` is formed down to `k = -255` and passes `2^256 - 1`
+    // at `k = -256`, under every policy.
+    assert!(is_multipliable::<UFixed<64, -255>>().get());
+    assert!(!is_multipliable::<UFixed<64, -256>>().get());
+    assert!(is_multipliable_under::<Wrapped<-255>>().get());
+    assert!(!is_multipliable_under::<Wrapped<-256>>().get());
+    assert!(
+        is_multipliable_under::<Signature<UFixed<64, -255>, Adapt<TowardZero, Saturate>>>().get()
+    );
+    assert!(
+        !is_multipliable_under::<Signature<UFixed<64, -256>, Adapt<TowardZero, Saturate>>>().get()
+    );
+    // The narrower range is held at every exponent from `-255` to 1.
+    assert!(is_multipliable::<UFixed<63, 1>>().get());
+    assert!(!is_multipliable::<UFixed<63, 2>>().get());
+    assert!(is_multipliable::<UFixed<63, -255>>().get());
 }

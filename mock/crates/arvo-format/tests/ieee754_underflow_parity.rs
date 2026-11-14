@@ -12,10 +12,11 @@
 //! as it is for binary16 and decimal everywhere. The inputs are the shared
 //! `ieee754::underflow`: a far value, the significand bound, the first unit past
 //! the slot index and one past that, the tie at half that unit where the index
-//! holds it, and a sweep from twenty-one exponents below the smallest subnormal to one
-//! past the first unit past the index. The standard's answer there is the
-//! smallest subnormal on the side the direction rounds away to, and zero
-//! otherwise.
+//! holds it, and a sweep from twenty-one exponents below the smallest subnormal
+//! down to the lowest exponent whose unit the unsigned 128-bit integer holds,
+//! below which the search hands its stand-in and only the far points reach. The
+//! standard's answer there is the smallest subnormal on the side the direction
+//! rounds away to, and zero otherwise.
 
 mod ieee754;
 
@@ -29,7 +30,7 @@ use arvo_format::standards::ieee754::rounding_direction::{
     RoundTowardZero,
 };
 use arvo_format::standards::ieee754::{Attributed, Binary32, Binary64, Decimal64};
-use ieee754::{Direction, Landed, Standard, Value, land, misses_over, underflow};
+use ieee754::{Direction, Landed, Standard, Value, held_below, land, misses_over, underflow};
 
 /// Binary32 as the standard's table gives it.
 const BINARY32: Standard = Standard {
@@ -156,4 +157,32 @@ fn a_wrong_direction_below_the_smallest_subnormal_is_reported() {
     assert!(
         below::<Decimal64, RoundTowardZero>(Direction::TowardPositive, DECIMAL64, 0xD64_0000) > 0
     );
+}
+
+/// `radix^e` in the host's unsigned 128-bit integer, or nothing past it, written
+/// here rather than read from the shared module so the bound is checked from
+/// outside it.
+fn unit(radix: u32, e: i32) -> Option<u128> {
+    (0 .. e).try_fold(1_u128, |p, _| p.checked_mul(u128::from(radix)))
+}
+
+#[test]
+fn no_draw_falls_where_the_search_hands_its_stand_in() {
+    // The bound is the last exponent whose unit the unsigned 128-bit integer
+    // holds: `2^127` at radix two, `10^38` at radix ten.
+    assert_eq!(held_below(BINARY64), BINARY64.qmin - 127);
+    assert_eq!(held_below(DECIMAL64), DECIMAL64.qmin - 38);
+    for f in [BINARY32, BINARY64, DECIMAL64] {
+        let bound = held_below(f);
+        assert!(unit(f.radix, f.qmin - bound).is_some());
+        assert!(unit(f.radix, f.qmin - bound + 1).is_none());
+        for seed in [0, 1, 0x6464_0000, 0xDEC0_0064] {
+            let inputs = underflow(f, seed);
+            let draws = &inputs[inputs.len() - 500 ..];
+            assert!(draws.iter().all(|&(_, q)| q >= bound), "{} {seed}", f.radix);
+            // The case that has to fail: the far points are below the bound,
+            // so the check can see an input on the stand-in.
+            assert!(inputs.iter().any(|&(_, q)| q < bound), "{} {seed}", f.radix);
+        }
+    }
 }

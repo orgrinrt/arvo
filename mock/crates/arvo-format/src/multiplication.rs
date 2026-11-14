@@ -19,9 +19,11 @@
 //! One obligation carries four conditions: a phase that denotes, and three that
 //! are not yet admitted rather than refused, a magnitude-indexed quantum, a step
 //! whose `D` or corner numerators pass the four limbs, and a corner position the
-//! slot index does not hold. It is
-//! forced by the exact step, and `is_multipliable` asks the same without forcing
-//! it.
+//! slot index does not hold. It is forced by the exact step, and
+//! `is_multipliable` asks the same without forcing it. A second obligation, over
+//! the signature, asks the last condition only of a policy that does not wrap,
+//! since wrapping reads the floor past the index; it is forced by `mul`, and
+//! `is_multipliable_under` asks it without forcing it.
 
 use core::marker::PhantomData;
 
@@ -312,10 +314,10 @@ pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
 /// through for the one mode that reads it. Total over every pair of slots, with
 /// no check and no panic.
 ///
-/// Under a wrapping policy a floor past the slot index is reduced modulo the
-/// range's count onto the range before `adapt` reads it, so the signature is
-/// admitted where the index does not carry every position, as on the unsigned
-/// 64-bit range at an exponent at or above zero.
+/// Under a wrapping policy a floor past the slot index is reduced modulo twice
+/// the range's count, kept on its own side of zero, before `adapt` reads it, so
+/// the signature is admitted where the index does not carry every position, as
+/// on the unsigned 64-bit range at exponents from 0 to 128.
 #[must_use]
 #[inline]
 pub const fn mul<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
