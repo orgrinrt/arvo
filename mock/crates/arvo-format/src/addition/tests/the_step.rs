@@ -89,6 +89,7 @@ struct Denotation<T> {
 }
 
 impl<T: Step> PerFormat for Denotation<T> {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let q = quantum::<F>();
         let phase = Ratio::phase_of::<F>();
@@ -381,6 +382,7 @@ struct ReachAgainstStep<T> {
 }
 
 impl<T: Step> PerFormat for ReachAgainstStep<T> {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let reach = T::reach::<Signature<F, Adapt<Floor, Saturate>>>();
         let (mut low, mut high) = (i128::MAX, i128::MIN);

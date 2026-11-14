@@ -52,11 +52,14 @@ fn main() {
         THREE.slot(),
     );
     assert_eq!(BUILT, POSITION);
-    assert_eq!(
-        (
-            Remainder::of(7, 3).numerator(),
-            Remainder::of(7, 3).denominator()
-        ),
-        (1, 3)
+    // A third is neither a tie nor on the grid, a half is a tie, and a zero
+    // denominator names no ratio and reads as on the grid.
+    let third = Exact::at(Slot::ZERO, Remainder::of(7, 3));
+    assert!(!third.is_tie().get() && !third.is_on_grid().get());
+    assert!(Exact::at(Slot::ZERO, Remainder::of(1, 2)).is_tie().get());
+    assert!(
+        Exact::at(Slot::ZERO, Remainder::of(5, 0))
+            .is_on_grid()
+            .get()
     );
 }

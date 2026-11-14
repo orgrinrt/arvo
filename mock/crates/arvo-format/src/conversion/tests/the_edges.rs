@@ -18,7 +18,7 @@ use notko::Maybe;
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::{Exact, Remainder};
 use crate::conversion::{converted_position, is_convertible, unforced_position};
-use crate::format::{Format, greatest_common_divisor_unsigned, radix};
+use crate::format::{Format, radix};
 use crate::quantum::{Constant, Quantum};
 use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::tests::big::Big;
@@ -58,14 +58,11 @@ fn reading<F: Format>() -> Reading {
 
 /// `(n_F + a d_F) U_F V_T d_T - n_T d_F V_F U_T` over `d_F V_F U_T d_T`, floored
 /// by `Big`'s own division: an exact position, or past the index on its sign.
-/// Nothing where the denominator passes `2^128 - 1`.
-fn oracle(f: &Reading, t: &Reading, a: i128) -> Maybe<Answer> {
+fn oracle(f: &Reading, t: &Reading, a: i128) -> Answer {
     let fall = Big::of(f.d)
         .times(Big::power(f.r, f.down))
         .times(Big::power(t.r, t.up));
-    let Maybe::Is(den) = fall.times(Big::of(t.d)).unsigned() else {
-        return Maybe::Isnt;
-    };
+    let den = fall.times(Big::of(t.d));
     let numerator = Big::of(a)
         .times(Big::of(f.d))
         .plus(Big::of(f.n))
@@ -73,18 +70,20 @@ fn oracle(f: &Reading, t: &Reading, a: i128) -> Maybe<Answer> {
         .times(Big::power(t.r, t.down))
         .times(Big::of(t.d))
         .plus(Big::of(-t.n).times(fall));
-    let (quotient, rem) = numerator.floor_over(den);
+    let (quotient, rem) = numerator.floor_over_big(den);
     let Maybe::Is(slot) = quotient.index() else {
-        return Maybe::Is(Answer::Past(quotient.is_negative()));
+        return Answer::Past(quotient.is_negative());
     };
-    if rem == 0 {
-        return Maybe::Is(Answer::At(Exact::on_grid(Slot::at(slot))));
+    if rem == Big::of(0) {
+        return Answer::At(Exact::on_grid(Slot::at(slot)));
     }
-    let g = greatest_common_divisor_unsigned(rem, den);
-    Maybe::Is(Answer::At(Exact::at(
+    let g = rem.common_divisor(den);
+    let (num, _) = rem.floor_over_big(g);
+    let (den, _) = den.floor_over_big(g);
+    Answer::At(Exact::at(
         Slot::at(slot),
-        Remainder::of(rem / g, den / g),
-    )))
+        Remainder::reduced(num.wide(), den.wide()),
+    ))
 }
 
 /// The answer as the step reports it: past an end is the end, on the grid.
@@ -116,18 +115,13 @@ struct Edges {
 }
 
 impl Edges {
+    #[inline(never)]
     fn run<F: Format, T: Format>(&mut self) {
         let min = <F::Slots as Slots>::MIN.index();
         let max = <F::Slots as Slots>::MAX.index();
         let (f, t) = (reading::<F>(), reading::<T>());
         self.pairs += 1;
-        let Maybe::Is(low) = oracle(&f, &t, min) else {
-            panic!("the sweep stays where the denominator fits");
-        };
-        let Maybe::Is(high) = oracle(&f, &t, max) else {
-            panic!("the sweep stays where the denominator fits");
-        };
-        let admitted = held(low) && held(high);
+        let admitted = held(oracle(&f, &t, min)) && held(oracle(&f, &t, max));
         assert_eq!(is_convertible::<F, T>().get(), admitted, "[{min}, {max}]");
         self.held_out += u64::from(!admitted);
         let all = [min, min + 1, -1, 0, 1, max - 1, max];
@@ -136,9 +130,7 @@ impl Edges {
             if !(min ..= max).contains(&a) || all[.. i].contains(&a) {
                 continue;
             }
-            let Maybe::Is(answer) = oracle(&f, &t, a) else {
-                panic!("the sweep stays where the denominator fits");
-            };
+            let answer = oracle(&f, &t, a);
             let Maybe::Is(got) = unforced_position::<F, T>(Slot::at(a)) else {
                 panic!("the step's constants are formed where the oracle's are");
             };
@@ -177,7 +169,9 @@ fn the_conversion_is_exact_and_its_verdict_true_at_the_ends_of_every_width_from_
     every_width!(walk; BinaryRationals, 0, 1, 3 => Grid<BinaryRationals, Constant<-2>, Signed<64>, -1, 7>);
     every_width!(walk; DecimalRationals, -18, 0, 1 => Target<-60>);
     every_width!(walk; BinaryRationals, -30, 0, 1 => Grid<DecimalRationals, Constant<-9>, Signed<64>, 2, 3>);
-    assert_eq!(walk.pairs, 6 * 56 * 2);
+    // `D = 2^240`, a divisor of four limbs.
+    every_width!(walk; BinaryRationals, -200, 0, 1 => Target<40>);
+    assert_eq!(walk.pairs, 7 * 56 * 2);
     // Held out: the unsigned 64-bit range onto `2^-64`, whose top lands at
     // `2^128 - 2^64`; the signed range's ends land at `-2^127` and under `2^127`.
     assert_eq!(walk.held_out, 1);
@@ -192,4 +186,61 @@ fn the_ends_land_where_the_oracle_puts_them_at_the_deepest_target() {
     assert_eq!(bottom, Exact::on_grid(Slot::at(i128::MIN)));
     let top = converted_position::<Source, Target<-64>>(Slot::at(i128::from(i64::MAX)));
     assert_eq!(top, Exact::on_grid(Slot::at((i128::from(i64::MAX)) << 64)));
+}
+
+#[test]
+fn the_denominator_stops_at_the_four_limbs() {
+    // From `2^-128` onto `2^127` the denominator is `2^255`, and onto `2^128` it
+    // is `2^256`, which the four limbs do not form.
+    type Source = Grid<BinaryRationals, Constant<-128>, Unsigned<8>, 0, 1>;
+    type Last = Grid<BinaryRationals, Constant<127>, Unsigned<8>, 0, 1>;
+    type Past = Grid<BinaryRationals, Constant<128>, Unsigned<8>, 0, 1>;
+    assert!(is_convertible::<Source, Last>().get());
+    assert!(!is_convertible::<Source, Past>().get());
+    assert!(matches!(
+        unforced_position::<Source, Past>(Slot::at(1)),
+        Maybe::Isnt
+    ));
+    let (f, t) = (reading::<Source>(), reading::<Last>());
+    for a in [0, 1, 2, 3, 128, 255] {
+        assert_eq!(
+            converted_position::<Source, Last>(Slot::at(a)),
+            reported(oracle(&f, &t, a)),
+            "{a}"
+        );
+    }
+    // `255 / 2^255` is already in lowest terms, and `128 / 2^255` is `1 / 2^248`.
+    assert!(
+        !converted_position::<Source, Last>(Slot::at(255))
+            .is_on_grid()
+            .get()
+    );
+}
+
+#[test]
+fn a_numerator_past_the_four_limbs_is_a_step_not_formed_rather_than_past_the_index() {
+    // From the unsigned 64-bit range at `2^e` onto the integers, `D` is one and
+    // the top member's numerator is `(2^64 - 1) 2^e`: formed at `e = 192`, where
+    // the position only leaves the index, and not at `193`, where the step is
+    // what fails first.
+    fn first_failing(verdicts: [crate::width::Bool; 4]) -> Maybe<usize> {
+        match verdicts.iter().position(|v| !v.get()) {
+            Some(i) => Maybe::Is(i),
+            None => Maybe::Isnt,
+        }
+    }
+    type Integers = Grid<BinaryRationals, Constant<0>, Signed<64>, 0, 1>;
+    type Formed = Grid<BinaryRationals, Constant<192>, Unsigned<64>, 0, 1>;
+    type Unformed = Grid<BinaryRationals, Constant<193>, Unsigned<64>, 0, 1>;
+    assert!(first_failing(crate::conversion::conditions::<Formed, Integers>()) == Maybe::Is(3));
+    assert!(first_failing(crate::conversion::conditions::<Unformed, Integers>()) == Maybe::Is(2));
+    // Both saturate at the top all the same, the step answering for a member
+    // the obligation holds out.
+    let top = Slot::at(i128::from(u64::MAX));
+    for got in [
+        unforced_position::<Formed, Integers>(top),
+        unforced_position::<Unformed, Integers>(top),
+    ] {
+        assert!(matches!(got, Maybe::Is(x) if x == Exact::on_grid(Slot::at(i128::MAX))));
+    }
 }

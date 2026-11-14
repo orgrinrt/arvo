@@ -12,7 +12,10 @@
 
 use core::cmp::Ordering;
 
+use notko::Maybe;
+
 use crate::slots::Slot;
+use crate::wide::Wide;
 use crate::width::Bool;
 
 /// A ratio with a positive denominator.
@@ -68,6 +71,7 @@ impl Fraction {
     /// **A zero denominator is neither region.** It names no ratio at all, so
     /// there is nothing for an answer to be near, and it reads as `ZERO`.
     #[must_use]
+    #[inline]
     pub const fn of(num: i64, den: i64) -> Self {
         if den > 0 {
             return Self {
@@ -124,6 +128,7 @@ impl Fraction {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn numerator(self) -> i64 {
         self.num
     }
@@ -132,40 +137,48 @@ impl Fraction {
     ///
     /// The second unwrap door, because the pair is what the ratio is.
     #[must_use]
+    #[inline]
     pub const fn denominator(self) -> i64 {
         self.den
     }
 
     /// Whether the ratio is nothing at all.
     #[must_use]
+    #[inline]
     pub const fn is_zero(self) -> Bool {
         Bool::of(self.num == 0)
     }
 }
 
-/// The remainder an exact position stores: a numerator below an unsigned 128-bit
-/// denominator.
+/// The remainder an exact position stores: a numerator below a positive
+/// denominator, both carried in four 64-bit limbs.
 ///
 /// Its own coordinate rather than a `Fraction`, because it is always in
 /// `[0, 1)` and needs no sign, and because the denominators an exact step leaves
 /// it over pass what a positive signed 64-bit integer holds: a quotient by a
-/// 64-bit member, and a product's `d^2 r^max(-e, 0)`. Every value is in `[0, 1)`
-/// over a positive denominator, since `of` is the only constructor and builds the
-/// residue, and that is the whole of what the rounding region reads.
+/// 64-bit member, and a product's `d^2 r^max(-e, 0)`, which passes `2^128` at a
+/// binary exponent below `-128`. Every value is in `[0, 1)` over a positive
+/// denominator, since `of` and the crate's own exact steps are the only
+/// constructors and each builds a residue, and that is the whole of what the
+/// rounding region reads.
+///
+/// Nothing reads the pair back out. `Exact` hands no remainder out, so what a
+/// consumer observes of one is what the position answers, `is_on_grid` and
+/// `is_tie`, and what `adapt` makes of it.
 ///
 /// Equality is of the pair, not of the ratio, the way `Fraction`'s is, so a
 /// remainder compares equal to the `Fraction` it was built from.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct Remainder {
-    num: u128,
-    den: u128,
+    num: Wide,
+    den: Wide,
 }
 
 impl Remainder {
     /// Nothing between the grid points.
     pub const ZERO: Self = Self {
-        num: 0,
-        den: 1,
+        num: Wide::of_unsigned(0),
+        den: Wide::of_unsigned(1),
     };
 
     /// The remainder `num` leaves over `den`.
@@ -176,80 +189,70 @@ impl Remainder {
     /// into one; a ratio whose whole part should move the slot is a `Fraction`,
     /// handed to `Exact::between`.
     #[must_use]
+    #[inline]
     pub const fn of(num: u128, den: u128) -> Self {
         if den == 0 {
             return Self::ZERO;
         }
         Self {
-            num: num % den,
-            den,
+            num: Wide::of_unsigned(num % den),
+            den: Wide::of_unsigned(den),
         }
     }
 
-    /// The numerator, below the denominator by construction.
-    ///
-    /// The unwrap door, declared as one.
-    #[must_use]
-    pub const fn numerator(self) -> u128 {
-        self.num
-    }
-
-    /// The denominator, positive by construction.
-    ///
-    /// The second unwrap door, because the pair is what the remainder is.
-    #[must_use]
-    pub const fn denominator(self) -> u128 {
-        self.den
+    /// The residue `num` over `den` in lowest terms, for an exact step whose
+    /// floor division has left `num` below the positive `den`.
+    #[inline]
+    pub(crate) const fn reduced(num: Wide, den: Wide) -> Self {
+        let common = num.common_divisor(den);
+        Self {
+            num: num.floor_divided(common).quotient,
+            den: den.floor_divided(common).quotient,
+        }
     }
 
     /// Whether there is nothing between the grid points.
+    #[inline]
     pub(crate) const fn is_zero(self) -> bool {
-        self.num == 0
+        self.num.is_zero().get()
     }
 
     /// Which side of the midpoint the remainder is: `num` against `den - num`,
-    /// which cannot leave the coordinate.
+    /// which cannot leave the limbs.
+    #[inline]
     pub(crate) const fn against_half(self) -> Ordering {
-        let rest = self.den - self.num;
-        if self.num < rest {
-            Ordering::Less
-        } else if self.num > rest {
-            Ordering::Greater
-        } else {
-            Ordering::Equal
+        match self.den.plus(self.num.negated()) {
+            Maybe::Is(rest) => self.num.ordering(rest),
+            // `num` is below `den`, so the difference is positive and formed.
+            Maybe::Isnt => Ordering::Less,
         }
     }
 
     /// Whether `dither` is below the remainder.
     ///
     /// A dither below zero is below every remainder, zero included. Otherwise the
-    /// two are cross-multiplied, a 64-bit term by a 128-bit one on each side, in
-    /// a 192-bit product held in two words, so no operand leaves its type.
+    /// two are cross-multiplied, a 64-bit term by a four-limb one on each side, in
+    /// five limbs, so no operand leaves what it is held in.
+    #[inline]
     pub(crate) const fn is_above(self, dither: Fraction) -> bool {
         if dither.num < 0 {
             return true;
         }
-        let left = widened(dither.num as u64, self.den);
-        let right = widened(dither.den as u64, self.num);
-        left.0 < right.0 || (left.0 == right.0 && left.1 < right.1)
+        matches!(
+            self.den
+                .scaled_against(dither.num as u64, self.num, dither.den as u64),
+            Ordering::Less
+        )
     }
 }
 
 impl PartialEq<Fraction> for Remainder {
+    #[inline]
     fn eq(&self, other: &Fraction) -> bool {
-        other.num >= 0 && self.num == other.num as u128 && self.den == other.den as u128
+        other.num >= 0
+            && self.num == Wide::of(other.num as i128)
+            && self.den == Wide::of(other.den as i128)
     }
-}
-
-/// `a * b` in two words of the host's unsigned 128-bit integer, highest first.
-///
-/// `b` splits into its 64-bit halves, and each half times `a` is under `2^128`.
-const fn widened(a: u64, b: u128) -> (u128, u128) {
-    let a = a as u128;
-    let low = a * (b & (u64::MAX as u128));
-    let high = a * (b >> 64);
-    let (lo, carry) = low.overflowing_add(high << 64);
-    ((high >> 64) + carry as u128, lo)
 }
 
 /// An exact result, in the format's own coordinates.
@@ -260,7 +263,7 @@ const fn widened(a: u64, b: u128) -> (u128, u128) {
 /// testable rather than a matter of what the host's arithmetic happened to do.
 ///
 /// The remainder is in `[0, 1)`: its numerator is non-negative and less than its
-/// denominator, which is unsigned and 128 bits wide. A position is therefore
+/// denominator, which is positive and four limbs wide. A position is therefore
 /// always between one slot and the next, which is what lets the rounding modes be
 /// stated once rather than once per sign.
 ///
@@ -277,6 +280,7 @@ pub struct Exact {
 impl Exact {
     /// A position already on the grid.
     #[must_use]
+    #[inline]
     pub const fn on_grid(slot: Slot) -> Self {
         Self {
             slot,
@@ -291,6 +295,7 @@ impl Exact {
     /// exact step past the sum builds through. The remainder is already in
     /// `[0, 1)`, so there is no carry and nothing past the index.
     #[must_use]
+    #[inline]
     pub const fn at(slot: Slot, part: Remainder) -> Self {
         Self {
             slot,
@@ -315,6 +320,7 @@ impl Exact {
     /// `between(Slot::at(i128::MAX), 9/4)` is the slot `i128::MAX`, two past it,
     /// and a quarter.
     #[must_use]
+    #[inline]
     pub const fn between(slot: Slot, part: Fraction) -> Self {
         let whole = part.num.div_euclid(part.den);
         // Non-negative and below a positive denominator, so both fit unsigned.
@@ -343,12 +349,14 @@ impl Exact {
     /// The slot the position sits on or just above, or for a position past an
     /// end of the index, that end.
     #[must_use]
+    #[inline]
     pub const fn slot(self) -> Slot {
         self.slot
     }
 
     /// Whether the position is exactly on a grid point.
     #[must_use]
+    #[inline]
     pub const fn is_on_grid(self) -> Bool {
         Bool::of(self.part.is_zero())
     }
@@ -358,6 +366,7 @@ impl Exact {
     /// The remainder's own midpoint test, which is what `round_slot` reads too,
     /// so the verdict and the map cannot disagree.
     #[must_use]
+    #[inline]
     pub const fn is_tie(self) -> Bool {
         Bool::of(matches!(self.part.against_half(), Ordering::Equal))
     }
@@ -366,6 +375,7 @@ impl Exact {
     ///
     /// Past an end of the index it is the end's sign, and otherwise the slot's.
     #[must_use]
+    #[inline]
     pub(crate) const fn is_negative(self) -> bool {
         if self.past == 0 { self.slot.index() < 0 } else { self.past < 0 }
     }
@@ -375,6 +385,7 @@ impl Exact {
     /// The pinned slot's parity and the distance's together, reduced one at a
     /// time so nothing is formed past the index.
     #[must_use]
+    #[inline]
     pub(crate) const fn is_even(self) -> bool {
         (self.slot.index().rem_euclid(2) + (self.past as i128).rem_euclid(2)) % 2 == 0
     }
@@ -405,6 +416,7 @@ impl Dither {
     /// position up, as `Ceil` does, and a dither at or above one steps none, as
     /// `Floor` does. A position on the grid is not moved by any dither.
     #[must_use]
+    #[inline]
     pub const fn at(part: Fraction) -> Self {
         Self(part)
     }

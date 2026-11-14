@@ -109,6 +109,7 @@ struct Adapting {
 impl PerSignature for Adapting {
     type Out = Slot;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Slot {
         adapt::<S>(self.exact, self.dither)
     }
@@ -119,6 +120,7 @@ struct Relocates(Reach);
 impl PerSignature for Relocates {
     type Out = Bool;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Bool {
         adaptation_relocates::<S>(self.0)
     }
@@ -129,6 +131,7 @@ struct Reflects(Reach);
 impl PerSignature for Reflects {
     type Out = Bool;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Bool {
         adaptation_reflects::<S>(self.0)
     }
@@ -139,6 +142,7 @@ struct CompletionRelocates(Reach);
 impl PerSignature for CompletionRelocates {
     type Out = Bool;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Bool {
         completion_is_translation_homomorphic::<S>(self.0)
     }
@@ -149,6 +153,7 @@ struct CompletionReflects(Reach);
 impl PerSignature for CompletionReflects {
     type Out = Bool;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Bool {
         completion_is_reflection_equivariant::<S>(self.0)
     }

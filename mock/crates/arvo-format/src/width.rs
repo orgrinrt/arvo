@@ -40,6 +40,7 @@ impl Width {
 
     /// A width from a count of bits.
     #[must_use]
+    #[inline]
     pub const fn bits(n: u32) -> Self {
         Self(n)
     }
@@ -50,36 +51,42 @@ impl Width {
     /// are the whole observation surface, so the invariant this type carries is
     /// what its constructors establish and nothing widens it.
     #[must_use]
+    #[inline]
     pub const fn count(self) -> u32 {
         self.0
     }
 
     /// Whether this width is the absent one.
     #[must_use]
+    #[inline]
     pub const fn is_none(self) -> Bool {
         Bool::of(self.0 == 0)
     }
 
     /// Whether this width covers another.
     #[must_use]
+    #[inline]
     pub const fn covers(self, other: Self) -> Bool {
         Bool::of(self.0 >= other.0)
     }
 
     /// The sum of two widths.
     #[must_use]
+    #[inline]
     pub const fn add(self, other: Self) -> Self {
         Self(self.0 + other.0)
     }
 
     /// This width less one bit, saturating at none.
     #[must_use]
+    #[inline]
     pub const fn less_one(self) -> Self {
         if self.0 == 0 { Self(0) } else { Self(self.0 - 1) }
     }
 
     /// Whether two widths are the same.
     #[must_use]
+    #[inline]
     pub const fn equals(self, other: Self) -> Bool {
         Bool::of(self.0 == other.0)
     }
@@ -102,6 +109,7 @@ impl Bool {
 
     /// A truth value from the host's.
     #[must_use]
+    #[inline]
     pub const fn of(b: bool) -> Self {
         Self(b)
     }
@@ -110,24 +118,28 @@ impl Bool {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn get(self) -> bool {
         self.0
     }
 
     /// Both.
     #[must_use]
+    #[inline]
     pub const fn and(self, other: Self) -> Self {
         Self(self.0 && other.0)
     }
 
     /// Either.
     #[must_use]
+    #[inline]
     pub const fn or(self, other: Self) -> Self {
         Self(self.0 || other.0)
     }
 
     /// The opposite.
     #[must_use]
+    #[inline]
     pub const fn not(self) -> Self {
         Self(!self.0)
     }

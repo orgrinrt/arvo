@@ -69,6 +69,7 @@ pub struct Significand<A, const P: u32>(PhantomData<A>);
 pub struct SignificandBounds<A, const P: u32>(PhantomData<A>);
 
 /// `radix^p - 1`, or the slot index's top where the power passes it.
+#[inline]
 const fn largest_significand(radix: u32, p: u32) -> i128 {
     let mut power: i128 = 1;
     let mut taken = 0;
@@ -83,6 +84,7 @@ const fn largest_significand(radix: u32, p: u32) -> i128 {
 }
 
 /// The bits a significand bound needs, with one more for the sign.
+#[inline]
 const fn signed_width_of(largest: i128) -> Width {
     Width::bits(i128::BITS - largest.leading_zeros() + 1)
 }
@@ -99,6 +101,7 @@ impl<A: Ambient, const P: u32> Slots for SignificandBounds<A, P> {
 /// without forcing it: the ambient carries values below zero, which the
 /// symmetric range names, and the precision holds at least one digit.
 #[must_use]
+#[inline]
 pub const fn is_sign_and_magnitude<A: Ambient, const P: u32>() -> Bool {
     A::SIGNED.and(Bool::of(P >= 1))
 }

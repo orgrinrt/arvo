@@ -92,7 +92,7 @@ fn error_numerator(r: Fraction, n: i64, d: i64) -> u128 {
     let a = (r.numerator().unsigned_abs() as u128) * (d.unsigned_abs() as u128);
     let b = (n.unsigned_abs() as u128) * (r.denominator().unsigned_abs() as u128);
     if ratio_sign(r.numerator(), d) == ratio_sign(n, r.denominator()) {
-        if a > b { a - b } else { b - a }
+        a.abs_diff(b)
     } else {
         a + b
     }

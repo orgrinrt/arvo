@@ -16,9 +16,9 @@
 //!
 //! One obligation carries four conditions: both phases denote, and three that
 //! are not yet admitted rather than refused, a magnitude-indexed quantum on
-//! either side, a `D` past `2^128 - 1`, and a range end the slot index does not
-//! hold on the target's grid. It is forced by the exact step, and
-//! `is_convertible` asks the same without forcing it.
+//! either side, a step whose `D` or range-end numerators pass the four limbs, and
+//! a range end the slot index does not hold on the target's grid. It is forced by
+//! the exact step, and `is_convertible` asks the same without forcing it.
 
 use core::marker::PhantomData;
 
@@ -32,6 +32,7 @@ use crate::placing::{
     Powers,
     Reduced,
     all,
+    is_formed,
     is_held,
     over,
     positioned,
@@ -81,14 +82,14 @@ impl<F: Format, T: Format> Convertible<F, T> {
              coordinate yet"
         );
         // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): the
-        // position is a function of the pair here too, and only its remainder's
-        // denominator is past the unsigned 128 bits it is carried over.
+        // position is a function of the pair here too, and only the four limbs its
+        // numerator and denominator are formed in are too narrow.
         assert!(
             fits.get(),
             "conversion is not yet admitted where the remainder's denominator d_F V_F U_T d_T, with \
              d each phase's reduced denominator, U = r^max(e, 0) and V = r^max(-e, 0) per format, \
-             passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \
-             denominator"
+             or the numerator at an end of the source's range, passes 2^256 - 1: an exact step is \
+             formed in four 64-bit limbs"
         );
         // FIXME(arvo_quotient_and_conversion_positions_past_the_slot_index): the
         // positions at the range ends are functions of the pair, and only the slot
@@ -100,8 +101,8 @@ impl<F: Format, T: Format> Convertible<F, T> {
              it names is not one a slot index can hold yet"
         );
     };
-    /// The step's constants, or nothing where a phase does not denote or `D`
-    /// does not fit, settled once per pair.
+    /// The step's constants, or nothing where a phase does not denote or `D` or
+    /// the target's phase term leaves the four limbs, settled once per pair.
     const STEP: Maybe<Step> = step::<F, T>();
 }
 
@@ -115,12 +116,13 @@ struct Step {
     scale:   Maybe<Wide>,
     /// `n_T d_F V_F U_T`, the target's phase term, at most `2^63` times `D`.
     offset:  Wide,
-    /// `D = d_F V_F U_T d_T`, from one up to `2^128 - 1`.
-    divisor: u128,
+    /// `D = d_F V_F U_T d_T`, positive and in the four limbs.
+    divisor: Wide,
 }
 
 /// The step's constants for the pair, or nothing where a phase does not denote
-/// or `D` is past `2^128 - 1`.
+/// or `D` or the target's phase term leaves the four limbs.
+#[inline]
 const fn step<F: Format, T: Format>() -> Maybe<Step> {
     let (Maybe::Is(source), Maybe::Is(target)) = (reduced_phase::<F>(), reduced_phase::<T>())
     else {
@@ -140,15 +142,11 @@ const fn step<F: Format, T: Format>() -> Maybe<Step> {
         return Maybe::Isnt;
     };
     let divisor = match fall.times(Wide::of(target.denominator)) {
-        Maybe::Is(v) => {
-            match v.unsigned() {
-                Maybe::Is(u) if u > 0 => u,
-                _ => return Maybe::Isnt,
-            }
-        },
-        Maybe::Isnt => return Maybe::Isnt,
+        Maybe::Is(v) if !v.is_zero().get() => v,
+        _ => return Maybe::Isnt,
     };
-    // `d_F V_F U_T` is at most `D`, under `2^128`, and `|n_T|` at most `2^63`.
+    // `d_F V_F U_T` is at most `D` and `|n_T|` at most `2^63`, and their product
+    // leaving the limbs is a step not formed.
     let Maybe::Is(offset) = Wide::of(target.numerator).times(fall) else {
         return Maybe::Isnt;
     };
@@ -163,9 +161,10 @@ const fn step<F: Format, T: Format>() -> Maybe<Step> {
 /// The member at slot `a` placed on the target's grid by the step.
 ///
 /// The numerator `(n_F + a d_F) U_F V_T d_T - n_T d_F V_F U_T` in four limbs,
-/// then its floor over `D`. A numerator that leaves the limbs, or a floor that
-/// leaves the index, is past it on the sign of `n_F + a d_F`; for a member the
-/// obligation has ruled both out.
+/// then its floor over `D`. A numerator that leaves the limbs is a step not
+/// formed, and a floor that leaves the index is past it, each on the sign of
+/// `n_F + a d_F`; for a member the obligation has ruled both out.
+#[inline]
 const fn placed(step: Step, a: i128) -> Placed {
     // Under `2^191` in magnitude for any slot, so it is formed; the arm is the
     // answer the step gives if it were not.
@@ -173,7 +172,7 @@ const fn placed(step: Step, a: i128) -> Placed {
         Maybe::Is(ad) => ad.plus(Wide::of(step.source.numerator)),
         Maybe::Isnt => Maybe::Isnt,
     }) else {
-        return Placed::Past(a < 0);
+        return Placed::Unformed(a < 0);
     };
     let negative = fa.is_negative().get();
     let scaled = if fa.is_zero().get() {
@@ -181,20 +180,34 @@ const fn placed(step: Step, a: i128) -> Placed {
     } else {
         match times(Maybe::Is(fa), step.scale) {
             Maybe::Is(p) => p,
-            Maybe::Isnt => return Placed::Past(negative),
+            Maybe::Isnt => return Placed::Unformed(negative),
         }
     };
     match scaled.plus(step.offset.negated()) {
         Maybe::Is(numerator) => over(numerator, step.divisor),
-        Maybe::Isnt => Placed::Past(negative),
+        Maybe::Isnt => Placed::Unformed(negative),
     }
+}
+
+/// Whether the step is formed at every member of the source: `D` and the
+/// target's phase term in the four limbs, and the numerator at the range's two
+/// ends, which bound every other member's since it is affine in the slot.
+#[inline]
+const fn conversion_is_formed<F: Format, T: Format>() -> Bool {
+    let Maybe::Is(step) = Convertible::<F, T>::STEP else {
+        return Bool::FALSE;
+    };
+    let min = <F::Slots as Slots>::MIN.index();
+    let max = <F::Slots as Slots>::MAX.index();
+    Bool::of(is_formed(placed(step, min)).get() && is_formed(placed(step, max)).get())
 }
 
 /// Whether every member of the source lands at a position a slot index holds on
 /// the target's grid.
 ///
 /// The position is affine and increasing in the slot, so the range's two ends
-/// decide it. Nothing where `D` does not fit.
+/// decide it. Nothing where the step is not formed.
+#[inline]
 const fn conversion_is_carried<F: Format, T: Format>() -> Bool {
     let Maybe::Is(step) = Convertible::<F, T>::STEP else {
         return Bool::FALSE;
@@ -215,6 +228,7 @@ const fn conversion_is_carried<F: Format, T: Format>() -> Bool {
 /// Forces the conversion obligation, so a pair the conversion does not admit
 /// stops the build here, at check time when the call is bound in a `const` item.
 #[must_use]
+#[inline]
 pub const fn converted_position<F: Format, T: Format>(a: Slot) -> Exact {
     let () = Convertible::<F, T>::ADMITTED;
     match Convertible::<F, T>::STEP {
@@ -230,6 +244,7 @@ pub const fn converted_position<F: Format, T: Format>(a: Slot) -> Exact {
 /// passed through for the one mode that reads it. Total over every slot, with no
 /// check and no panic.
 #[must_use]
+#[inline]
 pub const fn convert<F: Format, S: DeclaredSignature>(a: Slot, dither: Dither) -> Slot {
     adapt::<S>(converted_position::<F, S::Format>(a), dither)
 }
@@ -240,23 +255,25 @@ pub const fn convert<F: Format, S: DeclaredSignature>(a: Slot, dither: Dither) -
 /// The obligation's own verdicts folded, so a test can hold a pair the
 /// conversion does not admit and report on it rather than stop the build.
 #[must_use]
+#[inline]
 pub const fn is_convertible<F: Format, T: Format>() -> Bool {
     all(conditions::<F, T>())
 }
 
 /// The obligation's four verdicts, in order: both phases denote, both quanta
-/// are constant, `D` fits, the range ends are carried.
+/// are constant, the step is formed, the range ends are carried.
 ///
 /// The one place they are stated, read by the obligation and by
 /// `is_convertible`. The last two read the step and answer false where a phase
 /// does not denote.
+#[inline]
 const fn conditions<F: Format, T: Format>() -> [Bool; 4] {
     [
         Bool::of(F::PHASE.denotes().get() && T::PHASE.denotes().get()),
         Bool::of(
             is_constant_family::<F::Quantum>().get() && is_constant_family::<T::Quantum>().get(),
         ),
-        Bool::of(matches!(Convertible::<F, T>::STEP, Maybe::Is(_))),
+        conversion_is_formed::<F, T>(),
         conversion_is_carried::<F, T>(),
     ]
 }

@@ -120,6 +120,7 @@ struct EveryMember<T> {
 impl<T: Step> PerSignature for EveryMember<T> {
     type Out = Tally;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Tally {
         operands::<T, S::Format>()
             .map(|(a, b)| agrees::<T, S>(a, b, self.strict))
@@ -134,6 +135,7 @@ struct AtTheEdges<T>(PhantomData<T>);
 impl<T: Step> PerSignature for AtTheEdges<T> {
     type Out = u64;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
@@ -179,6 +181,7 @@ struct Sweep<T> {
 }
 
 impl<T: Step> PerFormat for Sweep<T> {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         self.formats += 1;
         for mode in ALL_MODES {

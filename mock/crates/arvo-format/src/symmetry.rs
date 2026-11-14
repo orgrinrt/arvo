@@ -103,18 +103,21 @@ pub struct Behaviour {
 impl Behaviour {
     /// What it reads besides the residue.
     #[must_use]
+    #[inline]
     pub const fn reads(self) -> Reads {
         self.reads
     }
 
     /// When it reads it.
     #[must_use]
+    #[inline]
     pub const fn when(self) -> When {
         self.when
     }
 
     /// Whether the rounding region commutes with reflection through zero.
     #[must_use]
+    #[inline]
     pub const fn reflects(self) -> Bool {
         self.reflects
     }
@@ -130,6 +133,7 @@ impl Behaviour {
 /// the rule away from zero is the reflected one and it reads the sign, which is
 /// a different row of this table.
 #[must_use]
+#[inline]
 pub const fn behaviour_of(mode: Mode) -> Behaviour {
     match mode {
         Mode::Floor | Mode::Ceil | Mode::HalfUp | Mode::Stochastic => {
@@ -163,6 +167,7 @@ pub const fn behaviour_of(mode: Mode) -> Behaviour {
 /// or what it reads is the sign and no position it is asked about is negative, or
 /// no position is off the grid, so the region is never entered at all.
 #[must_use]
+#[inline]
 pub const fn rounding_is_translation_equivariant(mode: Mode, reach: Reach) -> Bool {
     let behaviour = behaviour_of(mode);
     let reads_nothing = Bool::of(matches!(behaviour.reads(), Reads::Nothing));
@@ -185,6 +190,7 @@ pub const fn rounding_is_translation_equivariant(mode: Mode, reach: Reach) -> Bo
 /// bound a value went, and the law fails exactly where a translation could have
 /// pointed back at the range from the side the excursion left on.
 #[must_use]
+#[inline]
 pub const fn completion_is_translation_homomorphic<S: DeclaredSignature>(reach: Reach) -> Bool {
     let () = <<S::Format as Format>::Slots as Slots>::ADMITTED;
     let lowest = <<S::Format as Format>::Slots as Slots>::MIN;
@@ -212,6 +218,7 @@ pub const fn completion_is_translation_homomorphic<S: DeclaredSignature>(reach: 
 /// operation is this predicate read at the positions and translations that
 /// operation reaches.
 #[must_use]
+#[inline]
 pub const fn adaptation_relocates<S: DeclaredSignature>(reach: Reach) -> Bool {
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     rounding_is_translation_equivariant(mode, reach)
@@ -227,6 +234,7 @@ pub const fn adaptation_relocates<S: DeclaredSignature>(reach: Reach) -> Bool {
 // mode's region at a fixed dither depends on the dither, which a reach does not
 // carry; the design names both regions and expresses neither.
 #[must_use]
+#[inline]
 pub const fn rounding_is_reflection_equivariant(mode: Mode) -> Bool {
     behaviour_of(mode).reflects()
 }
@@ -241,6 +249,7 @@ pub const fn rounding_is_reflection_equivariant(mode: Mode) -> Bool {
 /// bottom of the index is one whose negation leaves it, and such a range is not
 /// symmetric about zero either way.
 #[must_use]
+#[inline]
 pub const fn completion_is_reflection_equivariant<S: DeclaredSignature>(reach: Reach) -> Bool {
     let () = <<S::Format as Format>::Slots as Slots>::ADMITTED;
     let lowest = <<S::Format as Format>::Slots as Slots>::MIN;
@@ -267,6 +276,7 @@ pub const fn completion_is_reflection_equivariant<S: DeclaredSignature>(reach: R
 /// The same conjunction one symmetry over, which is what says the two laws are
 /// one shape read at the grid's two symmetries rather than two mechanisms.
 #[must_use]
+#[inline]
 pub const fn adaptation_reflects<S: DeclaredSignature>(reach: Reach) -> Bool {
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     rounding_is_reflection_equivariant(mode).and(completion_is_reflection_equivariant::<S>(reach))

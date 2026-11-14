@@ -134,6 +134,7 @@ struct PhaseParts {
 /// division, so the remainder is in `[0, 1)` whichever sign the pair was
 /// declared with. A zero denominator has no parts and answers zeros, which
 /// nothing reads: the obligation and `is_addable` refuse such a phase first.
+#[inline]
 const fn phase_parts<F: Format>(copies: i128) -> PhaseParts {
     let num = (F::PHASE.numerator() as i128) * copies;
     let den = F::PHASE.denominator() as i128;
@@ -167,6 +168,7 @@ const fn phase_parts<F: Format>(copies: i128) -> PhaseParts {
 /// Every range this crate ships sits so far inside that integer that this holds
 /// for each of them; only a range an outside crate places near either end of it
 /// can fail it.
+#[inline]
 const fn sum_is_carried<F: Format>() -> Bool {
     let PhaseParts {
         whole,
@@ -184,6 +186,7 @@ const fn sum_is_carried<F: Format>() -> Bool {
 }
 
 /// Whether `2 * slot + offset` is a value the slot index holds.
+#[inline]
 const fn doubled_plus(slot: i128, offset: i128) -> Bool {
     match slot.checked_mul(2) {
         Some(twice) => Bool::of(twice.checked_add(offset).is_some()),
@@ -202,6 +205,7 @@ const fn doubled_plus(slot: i128, offset: i128) -> Bool {
 /// answer. Two operands of opposite sign cannot overflow, so they are added first
 /// and only the last addition can saturate; where all three share a sign,
 /// saturating each step is the same as saturating once.
+#[inline]
 const fn saturating_sum(a: i128, b: i128, c: i128) -> i128 {
     if (a < 0) != (b < 0) {
         (a + b).saturating_add(c)
@@ -223,6 +227,7 @@ const fn saturating_sum(a: i128, b: i128, c: i128) -> i128 {
 /// Forces the addition obligation, so a format addition refuses stops the build
 /// here, at check time when the call is bound in a `const` item.
 #[must_use]
+#[inline]
 pub const fn sum_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Addable::<F>::ADMITTED;
     let parts = Addable::<F>::PHASE_PARTS;
@@ -233,6 +238,7 @@ pub const fn sum_position<F: Format>(a: Slot, b: Slot) -> Exact {
 ///
 /// Reduced, non-negative and below a positive denominator of at most `2^63`, so
 /// both narrow exactly and nothing carries into the slot.
+#[inline]
 const fn remainder_of(parts: PhaseParts) -> Remainder {
     Remainder::of(parts.rem as u128, parts.den as u128)
 }
@@ -242,6 +248,7 @@ const fn remainder_of(parts: PhaseParts) -> Remainder {
 ///
 /// Shared by every step that adds copies of the phase: they differ in the slot
 /// sum and in how many copies, and not in how the position is built from them.
+#[inline]
 const fn positioned(at: i128, parts: PhaseParts) -> Exact {
     Exact::at(Slot::at(at), remainder_of(parts))
 }
@@ -250,6 +257,7 @@ const fn positioned(at: i128, parts: PhaseParts) -> Exact {
 ///
 /// On the grid when the remainder is zero, at a tie when it is one half, and
 /// off the grid otherwise. Shared by every reach this module supplies.
+#[inline]
 const fn graded(reach: Reach, parts: PhaseParts) -> Reach {
     if parts.rem == 0 {
         reach.on_grid()
@@ -268,6 +276,7 @@ const fn graded(reach: Reach, parts: PhaseParts) -> Reach {
 /// caller wanting the debug panic asks `panic_on_overflow` about
 /// `sum_position(a, b)` with the same dither.
 #[must_use]
+#[inline]
 pub const fn add<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
     adapt::<S>(sum_position::<S::Format>(a, b), dither)
 }
@@ -277,6 +286,7 @@ pub const fn add<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot
 /// The same three conditions, in the same order, so a test can hold a format
 /// addition refuses and report on it rather than stop the build.
 #[must_use]
+#[inline]
 pub const fn is_addable<F: Format>() -> Bool {
     if !F::PHASE.denotes().get() {
         return Bool::FALSE;
@@ -296,6 +306,7 @@ pub const fn is_addable<F: Format>() -> Bool {
 /// slots and is not something `Reach` can hold, so the verdict below states the
 /// translations itself.
 #[must_use]
+#[inline]
 pub const fn addition_reach<S: DeclaredSignature>() -> Reach {
     let () = Addable::<S::Format>::ADMITTED;
     let operands = <Add<S> as Operation>::ARITY.count() as i128;
@@ -322,6 +333,7 @@ pub const fn addition_reach<S: DeclaredSignature>() -> Reach {
 /// The positions two members sum to, and the translations the second step
 /// applies, which are a member plus `k`. All on the grid, because at a whole
 /// phase nothing rounds.
+#[inline]
 const fn completion_at<S: DeclaredSignature>(k: i128) -> Bool {
     let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
     let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
@@ -360,6 +372,7 @@ const fn completion_at<S: DeclaredSignature>(k: i128) -> Bool {
 /// the verdict refuses. That is a cost rather than a defect: some of those
 /// formats are associative anyway.
 #[must_use]
+#[inline]
 pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
     let () = Addable::<S::Format>::ADMITTED;
     let reach = addition_reach::<S>();
