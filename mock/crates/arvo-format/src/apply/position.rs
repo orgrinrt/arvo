@@ -162,6 +162,10 @@ impl Fraction {
 /// constructors and each builds a residue, and that is the whole of what the
 /// rounding region reads.
 ///
+/// Nothing reads the pair back out. `Exact` hands no remainder out, so what a
+/// consumer observes of one is what the position answers, `is_on_grid` and
+/// `is_tie`, and what `adapt` makes of it.
+///
 /// Equality is of the pair, not of the ratio, the way `Fraction`'s is, so a
 /// remainder compares equal to the `Fraction` it was built from.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -205,29 +209,6 @@ impl Remainder {
             num: num.floor_divided(common).quotient,
             den: den.floor_divided(common).quotient,
         }
-    }
-
-    /// The numerator, below the denominator by construction, where it fits the
-    /// host's unsigned 128-bit integer.
-    ///
-    /// The unwrap door, declared as one. A remainder an exact step left over a
-    /// denominator past `2^128 - 1` has no integer here to be handed out in, and
-    /// says so rather than narrowing.
-    #[inline]
-    pub const fn numerator(self) -> Maybe<u128> {
-        match self.den.unsigned() {
-            Maybe::Is(_) => self.num.unsigned(),
-            Maybe::Isnt => Maybe::Isnt,
-        }
-    }
-
-    /// The denominator, positive by construction, where it fits the host's
-    /// unsigned 128-bit integer.
-    ///
-    /// The second unwrap door, because the pair is what the remainder is.
-    #[inline]
-    pub const fn denominator(self) -> Maybe<u128> {
-        self.den.unsigned()
     }
 
     /// Whether there is nothing between the grid points.

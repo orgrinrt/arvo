@@ -3,17 +3,19 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Parity below the smallest subnormal, on the formats whose other suites read
-//! the host.
+//! Parity below the smallest subnormal, swept on the binary formats whose other
+//! suites read the host, and pinned at one point on decimal64, whose own suite
+//! already sweeps these inputs.
 //!
 //! The host's conversion of an integer scaled that far down is two roundings, so
 //! the expected side here is the standard's digit rule in integers, `ieee754::rule`,
 //! as it is for binary16 and decimal everywhere. The inputs are the shared
 //! `ieee754::underflow`: a far value, the significand bound, the first unit past
 //! the slot index and one past that, the tie at half that unit where the index
-//! holds it, and a sweep from four hundred exponents below the smallest
-//! subnormal. The standard's answer there is the smallest subnormal on the side
-//! the direction rounds away to, and zero otherwise.
+//! holds it, and a sweep from twenty-one exponents below the smallest subnormal to one
+//! past the first unit past the index. The standard's answer there is the
+//! smallest subnormal on the side the direction rounds away to, and zero
+//! otherwise.
 
 mod ieee754;
 
@@ -86,11 +88,6 @@ fn binary32_below_the_smallest_subnormal_is_the_digit_rule() {
 #[test]
 fn binary64_below_the_smallest_subnormal_is_the_digit_rule() {
     assert_eq!(every_direction::<Binary64>(BINARY64, 0x6464_0000), [0; 4]);
-}
-
-#[test]
-fn decimal64_below_the_smallest_subnormal_is_the_digit_rule() {
-    assert_eq!(every_direction::<Decimal64>(DECIMAL64, 0xD64_0000), [0; 4]);
 }
 
 #[test]

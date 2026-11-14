@@ -65,3 +65,24 @@ fn every_pair_near_the_ends_wraps_as_the_host_s_product_does() {
     assert_eq!(strays::<3>(), 0);
     assert_eq!(strays::<63>(), 0);
 }
+
+#[test]
+fn the_signature_verdict_turns_on_the_policy_past_the_index() {
+    use crate::multiplication::is_multipliable_under;
+    use crate::overflow::{Clamp, Saturate};
+    // The unsigned 64-bit range at exponent zero: admitted under wrapping only.
+    assert!(is_multipliable_under::<Wrapped<0>>().get());
+    assert!(
+        !is_multipliable_under::<Signature<UFixed<64, 0>, Adapt<TowardZero, Saturate>>>().get()
+    );
+    assert!(!is_multipliable_under::<Signature<UFixed<64, 0>, Adapt<TowardZero, Clamp>>>().get());
+    // One step down the exponent the corner is carried, so every policy is admitted.
+    assert!(
+        is_multipliable_under::<Signature<UFixed<64, -1>, Adapt<TowardZero, Saturate>>>().get()
+    );
+    assert!(is_multipliable_under::<Signature<UFixed<64, -1>, Adapt<TowardZero, Clamp>>>().get());
+    // A condition every product owes refuses under wrapping too: a phase whose
+    // step leaves the four limbs.
+    assert!(!is_multipliable_under::<Signature<UFixed<64, -300>, Adapt<TowardZero, Wrap>>>().get());
+    assert!(!crate::multiplication::is_multipliable::<UFixed<64, -300>>().get());
+}

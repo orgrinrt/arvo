@@ -166,27 +166,46 @@ pub(crate) const fn positioned(divisor: Wide, at: Placed) -> Exact {
 }
 
 /// A placed position as wrapping reads it, over `divisor`: a floor past the index
-/// reduced modulo the range's count onto the range, its remainder kept, and
-/// nothing for a step not formed.
+/// reduced modulo twice the range's count on its own side of zero, its remainder
+/// kept, and nothing for a step not formed.
 ///
-/// Wrapping reads the floor's residue and the remainder and nothing else, and
-/// rounding one slot up from the reduced floor is rounding one slot up from the
-/// true one, which `adapt` wraps from the top to the bottom as it wraps any
-/// position past the range. So a position past the index needs no wider slot.
+/// Rounding adds 0 or 1 to the floor, by the remainder, the dither, the floor's
+/// sign (toward zero) and its parity (half to even on a tie), and wrapping reads
+/// the result modulo the count. A floor reduced modulo twice the count into
+/// `[0, 2 count)`, or into `[-2 count, 0)` when it is negative, keeps all of
+/// those, so `adapt` rounds it as it would the true floor and wraps the result
+/// onto the range. An admitted range spans at most `2^64` slots, so the reduced
+/// floor is under `2^65` in magnitude and the index holds it.
 #[inline]
 pub(crate) const fn wrapped<S: Slots>(divisor: Wide, at: Placed) -> Maybe<Exact> {
     match at {
         Placed::At(..) => Maybe::Is(positioned(divisor, at)),
         Placed::Unformed(_) => Maybe::Isnt,
         Placed::Past(floor, remainder) => {
-            let lo = S::MIN.index();
-            let count = S::MAX.index() - lo + 1;
-            let Maybe::Is(shifted) = floor.plus(Wide::of(-lo)) else {
+            let span = Wide::of(S::MAX.index()).plus(Wide::of(S::MIN.index()).negated());
+            let Maybe::Is(count) = (match span {
+                Maybe::Is(span) => span.plus(Wide::of(1)),
+                Maybe::Isnt => Maybe::Isnt,
+            }) else {
                 return Maybe::Isnt;
             };
-            match shifted.floor_divided(Wide::of(count)).remainder.index() {
-                Maybe::Is(residue) => {
-                    Maybe::Is(positioned(divisor, Placed::At(lo + residue, remainder)))
+            let Maybe::Is(twice) = count.plus(count) else {
+                return Maybe::Isnt;
+            };
+            let residue = floor.floor_divided(twice).remainder;
+            let kept = if floor.is_negative().get() {
+                residue.plus(twice.negated())
+            } else {
+                Maybe::Is(residue)
+            };
+            match kept {
+                Maybe::Is(kept) => {
+                    match kept.index() {
+                        Maybe::Is(slot) => {
+                            Maybe::Is(positioned(divisor, Placed::At(slot, remainder)))
+                        },
+                        Maybe::Isnt => Maybe::Isnt,
+                    }
                 },
                 Maybe::Isnt => Maybe::Isnt,
             }

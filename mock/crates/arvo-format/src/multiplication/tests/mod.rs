@@ -25,6 +25,7 @@ mod the_inverse_round_trip;
 mod the_laws;
 mod the_oracle;
 mod the_step;
+mod the_wrap_by_every_mode;
 mod the_wrap_past_the_index;
 
 /// A binary format over `S` at the quantum `2^E` and zero phase.

@@ -116,8 +116,9 @@ impl<F: Format> Multipliable<F> {
 
 /// What a declared signature owes the composed product: the format's three
 /// conditions, and the slot index carrying every position only where the policy
-/// does not wrap, since wrapping reads a floor past the index modulo the range's
-/// count and the step forms that floor in its four limbs.
+/// does not wrap, since wrapping reads a floor past the index modulo twice the
+/// range's count, on its own side of zero, and the step forms that floor in its
+/// four limbs.
 struct MultipliableUnder<S>(PhantomData<S>);
 
 impl<S: DeclaredSignature> MultipliableUnder<S> {
@@ -133,7 +134,7 @@ impl<S: DeclaredSignature> MultipliableUnder<S> {
             "multiplication is not yet admitted over this format under a policy that does not \
              wrap: the exact product of two members leaves the slot coordinate, so the position \
              it names is not one a slot index can hold yet; under wrapping it is admitted, \
-             since wrapping reads only the floor modulo the range's count"
+             since wrapping reads the floor modulo twice the range's count"
         );
     };
 }
@@ -348,6 +349,24 @@ pub const fn is_multipliable<F: Format>() -> Bool {
         return Bool::FALSE;
     }
     Bool::of(product_is_formed::<F>().get() && product_is_carried::<F>().get())
+}
+
+/// Whether `mul` admits the declared signature, asked without forcing the
+/// obligation.
+///
+/// The format's three conditions, and the slot index carrying every position
+/// only where the policy does not wrap, in the order `mul` forces them.
+#[must_use]
+#[inline]
+pub const fn is_multipliable_under<S: DeclaredSignature>() -> Bool {
+    let phase = <S::Format as Format>::PHASE;
+    if !phase.denotes().get() || !is_constant_family::<<S::Format as Format>::Quantum>().get() {
+        return Bool::FALSE;
+    }
+    Bool::of(
+        product_is_formed::<S::Format>().get()
+            && (wraps::<S>().get() || product_is_carried::<S::Format>().get()),
+    )
 }
 
 /// The step at slots `a` and `b` without forcing the obligation, for the edge

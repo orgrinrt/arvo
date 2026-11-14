@@ -249,6 +249,12 @@ fn digits(r: u32, c: i128) -> u32 {
 /// `c` divided by `radix^drop` under a direction, the standard's way: the kept
 /// digits and the dropped part against half of what was dropped.
 fn round_off(dir: Direction, r: u32, c: i128, drop: u32) -> i128 {
+    // The kept digits are read back as a signed significand, and `-2^127` has no
+    // positive counterpart, so the rule refuses it rather than wrap.
+    assert!(
+        c != i128::MIN,
+        "the digit rule refuses a significand of -2^127"
+    );
     // In the unsigned 128-bit integer, so a unit past the index whose half `|c|`
     // still reaches is read rather than taken for more than twice `|c|`.
     let Some(unit) = unsigned_power(r, drop) else {
@@ -425,10 +431,7 @@ pub fn underflow(f: Standard, seed: u64) -> Vec<(i128, i32)> {
     let mut d = Draws::seeded(seed ^ 0x5EED_0000_0000_0001);
     for _ in 0 .. 500 {
         let c = d.within(-999_999_999_999_999_999, 999_999_999_999_999_999) as i128;
-        v.push((
-            c,
-            d.within((f.qmin - 400) as i64, (f.qmin - 21) as i64) as i32,
-        ));
+        v.push((c, d.within((below - 1) as i64, (f.qmin - 21) as i64) as i32));
     }
     v
 }
