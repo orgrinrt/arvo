@@ -20,18 +20,23 @@
 //! `Map`, so every broken map `the_broken_maps.rs` keeps, the planted tie rules
 //! among them, is asked the same questions and has to be reported.
 
+use core::cmp::Ordering;
+
 use notko::Maybe;
 
 use super::the_broken_maps::{
     Map,
     a_step_up_past_the_bottom_pins_high,
     anchored_at_zero,
+    half_even_reads_a_narrowed_parity,
+    narrows_the_floor,
     no_lo_guard_onto_the_lowest,
     no_step_onto_the_lowest,
     past_the_bottom_pins_high_off_the_bottom,
     past_the_top_pins_low_off_the_top,
     planted_tie_rules,
     reduced_modulo_256,
+    saturates_past_the_index,
     shipped,
     subtracts_first,
     the_step_onto_the_bottom_pins_high,
@@ -60,6 +65,7 @@ use crate::slots::{Slot, Slots};
 use crate::tests::dispatch::{self, PerSignature};
 use crate::tests::grid::Grid;
 use crate::tests::the_inventory::{AtTheBottom, AtTheTop};
+use crate::wide::Wide as Limbs;
 use crate::width::Width;
 
 /// A plain integer format over a slot range.
@@ -286,10 +292,10 @@ fn the_shipped_map_answers_as_the_oracle_does() {
 fn the_sweep_reports_every_broken_map() {
     // Whether each map is also reported at a position the index holds. The
     // wraps, the missing step onto the lowest slot and every planted tie rule
-    // are wrong inside the index; the other five change only a branch reading a
-    // distance past it, so inside the index they are the shipped map, which is
+    // are wrong inside the index; the other eight change only a branch reading a
+    // floor past it, so inside the index they are the shipped map, which is
     // what keeps each of them from being a map that is simply always wrong.
-    let completions: [(&'static str, Map, bool); 9] = [
+    let completions: [(&'static str, Map, bool); 12] = [
         ("subtracts_first", subtracts_first(), true),
         ("anchored_at_zero", anchored_at_zero(), true),
         ("reduced_modulo_256", reduced_modulo_256(), true),
@@ -319,6 +325,17 @@ fn the_sweep_reports_every_broken_map() {
             no_lo_guard_onto_the_lowest(),
             false,
         ),
+        ("narrows_the_floor", narrows_the_floor(), false),
+        (
+            "saturates_past_the_index",
+            saturates_past_the_index(),
+            false,
+        ),
+        (
+            "half_even_reads_a_narrowed_parity",
+            half_even_reads_a_narrowed_parity(),
+            false,
+        ),
     ];
     let ties = planted_tie_rules().map(|(name, map)| (name, map, true));
     let mut asked = 0;
@@ -331,7 +348,7 @@ fn the_sweep_reports_every_broken_map() {
             "{name}, inside the index"
         );
     }
-    assert_eq!(asked, 14, "a broken map dropped out of the list");
+    assert_eq!(asked, 17, "a broken map dropped out of the list");
 }
 
 #[test]
@@ -356,12 +373,13 @@ fn the_feed_reaches_every_band_around_both_ends() {
             }
             for mode in ALL_MODES {
                 let r = round_slot(mode, exact, Dither::UNUSED);
-                onto_the_bottom += usize::from(r.past == -1 && r.up.get());
-                further_under += usize::from(r.past <= -2);
-                one_over += usize::from(r.past == 1);
-                stepping_over += usize::from(r.past == 0 && r.down() == i128::MAX && r.up.get());
+                let below = r.down.ordering(Limbs::of_sum(i128::MIN, -1));
+                onto_the_bottom += usize::from(below == Ordering::Equal && r.up.get());
+                further_under += usize::from(below == Ordering::Less);
+                one_over += usize::from(r.down == Limbs::of_sum(i128::MAX, 1));
+                stepping_over += usize::from(r.down == Limbs::of(i128::MAX) && r.up.get());
                 onto_a_lowest_slot += usize::from(
-                    r.past == 0 && r.up.get() && r.down() == i128::MIN + 3 && lo == i128::MIN + 4,
+                    r.up.get() && r.down == Limbs::of(i128::MIN + 3) && lo == i128::MIN + 4,
                 );
             }
         }

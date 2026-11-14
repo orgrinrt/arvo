@@ -16,11 +16,13 @@
 //! keep the zero out before the program runs, so the step is never asked to
 //! divide by it.
 //!
-//! One obligation carries four conditions: a phase that denotes, and three that
-//! are not yet admitted rather than refused, a magnitude-indexed quantum, a step
-//! whose denominator or corner numerators pass the four limbs, and a corner
-//! position the slot index does not hold. It is forced by the exact step, and `is_divisible`
-//! asks the same without forcing it.
+//! One obligation carries three conditions: a phase that denotes, and two that
+//! are not yet admitted rather than refused, a magnitude-indexed quantum and a
+//! step whose denominator or corner numerators pass the four limbs. A position
+//! past the slot index is no condition: the step holds its floor in the four
+//! limbs and `adapt` wraps, saturates or clamps it by that floor. The obligation
+//! is forced by the exact step, and `is_divisible` asks the same without forcing
+//! it.
 
 use core::marker::PhantomData;
 
@@ -34,7 +36,6 @@ use crate::placing::{
     Powers,
     Reduced,
     all,
-    is_held,
     over,
     positioned,
     powers,
@@ -143,7 +144,7 @@ impl<F: Format> Divisor<F> {
     /// The divisor at `slot`, admitted only where no slot of `F` names the zero.
     ///
     /// A slot outside the range is taken as every operation here takes one, and
-    /// the step answers for it as for any position past the index. None of them
+    /// the step positions it as it positions any slot. None of them
     /// is the zero, so the step never meets one.
     #[must_use]
     #[inline]
@@ -177,10 +178,10 @@ impl<F: Format> Divisor<F> {
 struct Divisible<F>(PhantomData<F>);
 
 impl<F: Format> Divisible<F> {
-    /// The four conditions, each asserted from `conditions`, which `is_divisible`
+    /// The three conditions, each asserted from `conditions`, which `is_divisible`
     /// folds. The phase is first because the others read its parts.
     const ADMITTED: () = {
-        let [denotes, constant, fits, carried] = conditions::<F>();
+        let [denotes, constant, fits] = conditions::<F>();
         assert!(
             denotes.get(),
             "division is refused over a phase whose denominator is zero: such a phase names no \
@@ -204,15 +205,6 @@ impl<F: Format> Divisible<F> {
              with n / d the reduced phase, b a member divisor, r the radix and e the quantum's \
              exponent, or the numerator at a corner of the range, passes 2^256 - 1: an exact step is \
              formed in four 64-bit limbs"
-        );
-        // FIXME(arvo_quotient_and_conversion_positions_past_the_slot_index): the
-        // corner positions are functions of the signature, and only the slot
-        // index's own integer is too narrow to hold them.
-        assert!(
-            carried.get(),
-            "division is not yet admitted over this format: the exact quotient of two members \
-             leaves the slot coordinate, so the position it names is not one a slot index can \
-             hold yet"
         );
     };
     /// The step's constants, or nothing where the phase does not denote.
@@ -249,13 +241,6 @@ const fn factor(step: Step, a: i128) -> Maybe<Wide> {
         Maybe::Is(ad) => ad.plus(Wide::of(step.phase.numerator)),
         Maybe::Isnt => Maybe::Isnt,
     }
-}
-
-/// Whether the slot `b` is a divisor the step can place by: its factor is
-/// formed and is not zero.
-#[inline]
-const fn is_nonzero(step: Step, b: i128) -> bool {
-    matches!(factor(step, b), Maybe::Is(f) if !f.is_zero().get())
 }
 
 /// `d |n + b d| u`, the denominator over the divisor's factor `fb`, or nothing
@@ -300,13 +285,11 @@ const fn numerator(step: Step, fa: Wide, fb: Wide) -> Maybe<Wide> {
 /// The numerator `d (n + a d) v - n (n + b d) u` in four limbs, negated with the
 /// denominator when `n + b d` is below zero, then its floor over the
 /// denominator. A denominator or a numerator that leaves the limbs is a step not
-/// formed, and a floor that leaves the index is past it, each on the sign of the
-/// quotient of the two factors; for a member divisor the obligation has ruled all
-/// three out.
+/// formed, on the sign of the quotient of the two factors; for a member divisor
+/// the obligation has ruled both out, and the floor is held whole in the limbs.
 ///
 /// `b` is never a slot whose factor is zero: the shipped callers pass a
-/// `Divisor`'s slot or a member `extreme_divisors` has already left the pole out
-/// of, and the test-only `unforced_position` is called with slots its sweeps
+/// `Divisor`'s slot, and the test-only `unforced_position` is called with slots its sweeps
 /// keep off the pole, so the denominator below is positive and `over` divides by
 /// it.
 #[inline]
@@ -367,60 +350,12 @@ const fn quotient_is_formed<F: Format>() -> Bool {
     Bool::TRUE
 }
 
-/// The member divisors the quotient is extreme at: the range's two ends and the
-/// members nearest the pole on each side, each skipped when it is not in range
-/// or is the zero member.
-#[inline]
-const fn extreme_divisors(step: Step, min: i128, max: i128) -> [Maybe<i128>; 4] {
-    let (n, d) = (step.phase.numerator, step.phase.denominator);
-    // The smallest `b` with `n + b d` above zero, and the largest with it below.
-    let above = (-n).div_euclid(d) + 1;
-    let below = -(n.div_euclid(d)) - 1;
-    let candidates = [min, max, above, below];
-    let mut out = [Maybe::Isnt; 4];
-    let mut i = 0;
-    while i < 4 {
-        let b = candidates[i];
-        if b >= min && b <= max && is_nonzero(step, b) {
-            out[i] = Maybe::Is(b);
-        }
-        i += 1;
-    }
-    out
-}
-
-/// Whether every quotient of two members with a non-zero divisor is a position
-/// a slot index holds.
-///
-/// For a fixed divisor the position is affine in the dividend, and for a fixed
-/// dividend it is monotone in the divisor on each side of the pole, so the eight
-/// corners `extreme_divisors` names against the dividend's two ends decide it.
-#[inline]
-const fn quotient_is_carried<F: Format>() -> Bool {
-    let Maybe::Is(step) = Divisible::<F>::STEP else {
-        return Bool::FALSE;
-    };
-    let min = <F::Slots as Slots>::MIN.index();
-    let max = <F::Slots as Slots>::MAX.index();
-    let divisors = extreme_divisors(step, min, max);
-    let mut i = 0;
-    while i < 4 {
-        if let Maybe::Is(b) = divisors[i]
-            && (!is_held(placed(step, min, b).0).get() || !is_held(placed(step, max, b).0).get())
-        {
-            return Bool::FALSE;
-        }
-        i += 1;
-    }
-    Bool::TRUE
-}
-
 /// The exact position of the quotient of the member at slot `a` by `b`.
 ///
 /// `(phase + a) / ((phase + b) q) - phase`, in slot units: on the grid, or at the
 /// floor slot with the remainder over `d |n + b d| r^max(e, 0)` in lowest terms.
-/// For two members the position is exact. For a slot outside the range, a
-/// position past the index, or a numerator or denominator past the four limbs,
+/// For two members the position is exact, past the slot index too. A numerator or
+/// denominator past the four limbs, which only a slot outside the range reaches,
 /// saturates at the end on the quotient's sign.
 ///
 /// Forces the division obligation, so a format the quotient does not admit stops
@@ -450,18 +385,17 @@ pub const fn div<S: DeclaredSignature>(a: Slot, b: Divisor<S::Format>, dither: D
     adapt::<S>(quotient_position::<S::Format>(a, b), dither)
 }
 
-/// The obligation's four verdicts, in order: the phase denotes, the quantum is
-/// constant, the step is formed, the quotient is carried.
+/// The obligation's three verdicts, in order: the phase denotes, the quantum is
+/// constant, the step is formed.
 ///
 /// The one place they are stated, read by the obligation and by `is_divisible`.
-/// The last two read the step and answer false where the phase does not denote.
+/// The last reads the step and answers false where the phase does not denote.
 #[inline]
-const fn conditions<F: Format>() -> [Bool; 4] {
+const fn conditions<F: Format>() -> [Bool; 3] {
     [
         F::PHASE.denotes(),
         is_constant_family::<F::Quantum>(),
         quotient_is_formed::<F>(),
-        quotient_is_carried::<F>(),
     ]
 }
 

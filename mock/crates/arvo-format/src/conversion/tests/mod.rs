@@ -16,6 +16,7 @@ use crate::slots::{Slot, Slots};
 use crate::tests::ratio::Ratio;
 
 mod the_edges;
+mod the_far_conversion;
 mod the_oracle;
 
 /// The quantum of a constant format, `r^e`.

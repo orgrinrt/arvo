@@ -23,18 +23,23 @@
 //! oracle's one reading taken from the implementation, `Clamp` as `Saturate`,
 //! holds here as it does in `the_oracle.rs`.
 
+use core::cmp::Ordering;
+
 use notko::Maybe;
 
 use super::the_broken_maps::{
     Map,
     a_step_up_past_the_bottom_pins_high,
     anchored_at_zero,
+    half_even_reads_a_narrowed_parity,
+    narrows_the_floor,
     no_lo_guard_onto_the_lowest,
     no_step_onto_the_lowest,
     past_the_bottom_pins_high_off_the_bottom,
     past_the_top_pins_low_off_the_top,
     planted_tie_rules,
     reduced_modulo_256,
+    saturates_past_the_index,
     shipped,
     subtracts_first,
     the_step_onto_the_bottom_pins_high,
@@ -48,6 +53,7 @@ use crate::points::{ISize, USize};
 use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::{Slot, Slots};
 use crate::tests::dispatch::{self, PerSignature};
+use crate::wide::Wide as Limbs;
 
 /// `2^64`.
 const fn span_64() -> i128 {
@@ -279,7 +285,7 @@ fn the_platform_width_points_answer_as_the_oracle_does() {
 
 #[test]
 fn the_wide_sweep_reports_every_broken_map() {
-    let completions: [(&'static str, Map); 9] = [
+    let completions: [(&'static str, Map); 12] = [
         ("subtracts_first", subtracts_first()),
         ("anchored_at_zero", anchored_at_zero()),
         ("reduced_modulo_256", reduced_modulo_256()),
@@ -301,19 +307,25 @@ fn the_wide_sweep_reports_every_broken_map() {
             the_step_onto_the_bottom_pins_high(),
         ),
         ("no_lo_guard_onto_the_lowest", no_lo_guard_onto_the_lowest()),
+        ("narrows_the_floor", narrows_the_floor()),
+        ("saturates_past_the_index", saturates_past_the_index()),
+        (
+            "half_even_reads_a_narrowed_parity",
+            half_even_reads_a_narrowed_parity(),
+        ),
     ];
     let mut asked = 0;
     for (name, map) in completions.into_iter().chain(planted_tie_rules()) {
         asked += 1;
         assert!(map_break(map).is(), "{name} was not reported");
     }
-    assert_eq!(asked, 14, "a broken map dropped out of the list");
+    assert_eq!(asked, 17, "a broken map dropped out of the list");
 }
 
 #[test]
 fn the_wide_feed_reaches_past_either_end_of_the_index_by_more_than_2_to_the_62() {
     // The sweep is only about the far region if its positions are in it.
-    // Counted as the distance `round_slot` carries past the index, over every
+    // Counted as the floor `round_slot` returns against the index's ends, over every
     // anchor of `[-4, 3]` and every ratio, under `Floor`.
     let far = 1i64 << 62;
     let (mut above, mut below, mut odd_denominator) = (0, 0, 0);
@@ -324,8 +336,12 @@ fn the_wide_feed_reaches_past_either_end_of_the_index_by_more_than_2_to_the_62()
                 Exact::between(Slot::at(anchor), Fraction::of(num, den)),
                 Dither::UNUSED,
             );
-            above += usize::from(r.past > far);
-            below += usize::from(r.past < -far);
+            above += usize::from(
+                r.down.ordering(Limbs::of_sum(i128::MAX, i128::from(far))) == Ordering::Greater,
+            );
+            below += usize::from(
+                r.down.ordering(Limbs::of_sum(i128::MIN, -i128::from(far))) == Ordering::Less,
+            );
             odd_denominator += usize::from(den == 7 && num.rem_euclid(den) != 0);
         }
     }

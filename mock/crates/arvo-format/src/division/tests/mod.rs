@@ -17,6 +17,7 @@ use crate::tests::ratio::Ratio;
 
 mod the_divisor;
 mod the_edges;
+mod the_far_quotient;
 mod the_oracle;
 
 /// The quantum of a constant format, `r^e`.

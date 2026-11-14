@@ -57,6 +57,44 @@ impl Wide {
         Self::signed(false, [value as u64, (value >> 64) as u64, 0, 0])
     }
 
+    /// The sum of two values of the slot index's own integer, which the four limbs
+    /// always hold.
+    ///
+    /// Of opposite signs the sum is inside the integer already; of one sign its
+    /// magnitude is at most `2^128`, one bit into the third limb.
+    #[inline]
+    pub(crate) const fn of_sum(a: i128, b: i128) -> Self {
+        if (a < 0) != (b < 0) {
+            return Self::of(a + b);
+        }
+        let (low, carry) = a.unsigned_abs().overflowing_add(b.unsigned_abs());
+        Self::signed(a < 0, [low as u64, (low >> 64) as u64, carry as u64, 0])
+    }
+
+    /// The end of the four limbs on the side of a value whose sign is `negative`,
+    /// `2^256 - 1` in magnitude.
+    #[inline]
+    pub(crate) const fn end(negative: bool) -> Self {
+        Self::signed(negative, [u64::MAX; 4])
+    }
+
+    /// The value modulo a positive `modulus` of the slot index's own integer, from
+    /// zero up to below it.
+    ///
+    /// The floor division's remainder, which is below the modulus and so is read
+    /// back from its two low limbs.
+    #[inline]
+    pub(crate) const fn residue(self, modulus: i128) -> i128 {
+        let m = self.floor_divided(Self::of(modulus)).remainder.magnitude;
+        ((m[0] as u128) | ((m[1] as u128) << 64)) as i128
+    }
+
+    /// Whether the value is even, read off its lowest limb.
+    #[inline]
+    pub(crate) const fn is_even(self) -> Bool {
+        Bool::of(self.magnitude[0] & 1 == 0)
+    }
+
     /// The value with its sign turned, which always holds.
     #[inline]
     pub(crate) const fn negated(self) -> Self {

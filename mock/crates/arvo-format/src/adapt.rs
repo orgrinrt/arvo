@@ -19,7 +19,6 @@
 use crate::format::Format;
 use crate::overflow::{Overflow, Policy};
 use crate::rounding::{Mode, Rounding};
-use crate::width::Bool;
 
 /// A total map from the ambient domain onto a representable set.
 ///
@@ -143,15 +142,4 @@ pub const fn operation_rounding<Op: Operation>() -> Mode {
 #[inline]
 pub const fn operation_overflow<Op: Operation>() -> Policy {
     overflow_of::<<Op::Signature as DeclaredSignature>::Adaptation>()
-}
-
-/// Whether the signature's overflow policy wraps, which the steps that read a
-/// position past the index ask before reducing it onto the range.
-#[must_use]
-#[inline]
-pub(crate) const fn wraps<S: DeclaredSignature>() -> Bool {
-    Bool::of(matches!(
-        <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY,
-        Policy::Wrap
-    ))
 }

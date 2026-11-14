@@ -25,6 +25,7 @@ use crate::overflow::{Policy, Saturate, Wrap};
 use crate::points::Integer;
 use crate::rounding::{Ceil, Floor, Mode};
 use crate::slots::Slot;
+use crate::wide::Wide;
 
 /// `Integer<3>`'s own range, `[-4, 3]`.
 fn integer_3() -> (Slot, Slot) {
@@ -101,8 +102,8 @@ fn a_quarter_under_the_index_ceils_onto_its_bottom_and_saturates_low() {
 
     let rounded = round_slot(Mode::Ceil, exact, Dither::UNUSED);
     assert_eq!(
-        (rounded.past, rounded.down(), rounded.step()),
-        (-1, i128::MIN, 1)
+        (rounded.down, rounded.step()),
+        (Wide::of_sum(i128::MIN, -1), 1)
     );
     let (min, max) = integer_3();
     assert_eq!(

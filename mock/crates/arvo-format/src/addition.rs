@@ -390,9 +390,9 @@ pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
     }
     let low = reach.positions_low();
     let rounded = round_slot(mode, Exact::at(low, remainder_of(parts)), Dither::UNUSED);
-    // The offset is the step alone: `low` carries no fraction, so the slot below
+    // The offset is the step alone: `low` carries no fraction, so the floor of
     // the position is `low` itself.
-    completion_at::<S>(whole + (rounded.down() - low.index()) + rounded.step())
+    completion_at::<S>(whole + rounded.step())
 }
 
 mod subtraction;
