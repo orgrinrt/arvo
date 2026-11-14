@@ -3,10 +3,10 @@
   "flavour": "",
   "member": "arvo-numeral",
   "green": {
-    "full": "bb0ec76a7c799de19155ee625bc40cefd029883ba6aad0bc77ae542b46f6b72c",
+    "full": "69bf5b545b336cd386e00f85199b7961e597cbefbb68ef71b1ff64ac630f8dad",
     "own": {
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
-      "arvo-numeral": "79ac08094fbe2a82586658a2e3eb7462bdf30fae94550eb9beff38cdb6f77ee1",
+      "arvo-numeral": "2b51e1e09d06aa69f2b1563947c61fcd81cb372cb4268d24ee92cf06cfb31f60",
       "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
     }
   },
@@ -37,12 +37,12 @@
       "additive_associativity_under_saturation_holds_unsigned_and_fails_signed_by_the_registry_counts": {
         "secs": 6.1,
         "passed": true,
-        "passed_at": "5e732217548ebf91b05e73f041ad3c14fdcdf83e1c6c1176d6c3b68267b358f5"
+        "passed_at": "5eb639e91e9a96b08c5a0a20f9e2e19012bb132e4a644cb147b89d5b5305ba51"
       },
       "additive_associativity_under_wrapping_holds_at_4_and_8_bits_of_both_signs": {
         "secs": 6.0,
         "passed": true,
-        "passed_at": "5e732217548ebf91b05e73f041ad3c14fdcdf83e1c6c1176d6c3b68267b358f5"
+        "passed_at": "5eb639e91e9a96b08c5a0a20f9e2e19012bb132e4a644cb147b89d5b5305ba51"
       }
     },
     "arvo-numeral::band_33_to_64": {
@@ -50,13 +50,6 @@
         "secs": 5.4,
         "passed": true,
         "passed_at": "2ebb86f2638f752bda6c31dcbca9ad0db45208be8871a9b5b85003db9ebd49c8"
-      }
-    },
-    "arvo-numeral::compile_fail": {
-      "a_width_past_sixty_four_bits_is_refused": {
-        "secs": 6.3,
-        "passed": true,
-        "passed_at": "2aa8c72d951ed4272e4d86fb48fbd4eb56aa1c2e2ef3c555679ea320be4ea19b"
       }
     },
     "arvo-numeral::the_conversion_at_every_exponent_binary": {
@@ -411,14 +404,14 @@
   },
   "bins": {
     "arvo-numeral": "acab1dba1972d8c015a053813a072bcdb641c956304a18b3e537f641659ca4e6",
-    "arvo-numeral::a_consumer_crate": "d4dd688a9ce671002ca14dc4f68fbf304a6020da00f89798ffc0cc23968c5440",
+    "arvo-numeral::a_consumer_crate": "39de62c5baebeda317d4966fa9ff55c3e428280e159c62cb5ce744c79b8c6ef6",
     "arvo-numeral::band_17_to_32": "f498e097fbead17f9172650d8d812999bf64ddb072e866ec73ab7a2c397692a9",
-    "arvo-numeral::band_1_to_8": "5e732217548ebf91b05e73f041ad3c14fdcdf83e1c6c1176d6c3b68267b358f5",
+    "arvo-numeral::band_1_to_8": "5eb639e91e9a96b08c5a0a20f9e2e19012bb132e4a644cb147b89d5b5305ba51",
     "arvo-numeral::band_33_to_64": "2ebb86f2638f752bda6c31dcbca9ad0db45208be8871a9b5b85003db9ebd49c8",
     "arvo-numeral::band_9_to_16": "166fb3e8d5dde54bb393a838dbf0ade610ebc4ce81760738d8735dc9691d7e4b",
-    "arvo-numeral::compile_fail": "2aa8c72d951ed4272e4d86fb48fbd4eb56aa1c2e2ef3c555679ea320be4ea19b",
-    "arvo-numeral::fixed_point_product": "59d976d5ffc71a1b1f609405f9180172a5df10956a6c49b1500ba1ee557a0c6a",
-    "arvo-numeral::the_conversion": "f5fc72e4a5cfe1195d39a81c16f0fa5e323bbb5a8f7aa5ee13aedbfde3279e6f",
+    "arvo-numeral::compile_fail": "5b02b13ccaf48430d86d3a458b175ab18ddf0bf71c1a609d1359b8b2127f377d",
+    "arvo-numeral::fixed_point_product": "36f04df544475e25a02852b97bf441a4d7cf874f63a889f46922304f4a96b721",
+    "arvo-numeral::the_conversion": "35b0f50b04587fa2ff82aa56cd3761efbbfa908d41f8e85cf60e80008c35d8c5",
     "arvo-numeral::the_conversion_at_every_exponent_binary": "c7390f627f51e9fcaf3c86d1163eeaebc9ea0f485fd0162d41274cdcfe470135",
     "arvo-numeral::the_conversion_at_every_exponent_binary_wide": "42230d2da3efeeb3a428d3e5a908b6c5e8c61be9806e9ecc14c95bc04f676c74",
     "arvo-numeral::the_conversion_at_every_exponent_decimal": "a449584fdd181971f65e38b602618f6ee14d49907a208be613c1ea12106a7328",
@@ -437,19 +430,19 @@
     "arvo-numeral::the_conversion_between_radixes": "ea92669e708ca6e4a8c5f2648b10ebc358499bab85079dbdf4277fe7e684242a",
     "arvo-numeral::the_conversion_under_every_source_signature": "a1e742f408f1dec1506f6d7b52c8cbc8c4d7fd777e5c77ff34d0d845ef161269",
     "arvo-numeral::the_conversion_under_every_source_signature_past_the_range": "a61559896b98d7a009d04817395b5012e582d9274e22cb0a95d50d2371b3d483",
-    "arvo-numeral::the_count": "83a3bedc85882849c11645dae60af014f26b7ed366e804a157f48f8d9e483429",
-    "arvo-numeral::the_count_without_const": "c6fe87e56c530d3ec2fbdde8f542ad44f67cc8057646e90443d338b7b70e18bd",
+    "arvo-numeral::the_count": "c19b933d29259c94a51eb0d57eaf04fd4e3decf79c5fa9b386968a1eaac0808e",
+    "arvo-numeral::the_count_without_const": "8494264380dfdb777b8378b7e2f17ed680e3eb0693445187db6026bc7b58785e",
     "arvo-numeral::the_crossing": "2374c7da5677bfff531961a4dba2f645d4b291dd05bbfb861c3fd97e42eef24c",
-    "arvo-numeral::the_debug_check": "47e44760cf131944c03ca609264d74a979886aa15b3bb3480113a5918b6917b6",
+    "arvo-numeral::the_debug_check": "de83978d9067a2118d02be0ab5e1d48299dd7fefe2cd215d71e17e6f20fccbc7",
     "arvo-numeral::the_debug_check_at_every_width": "7cfab07dbfffde30ca2ab0395b39a9d8641331e2ff73be6e8742a399e2fb5c7c",
-    "arvo-numeral::the_debug_check_in_release": "d611e6b5dadb06d924021fefb8260f6793189283eee0d53673731950ada5b167",
+    "arvo-numeral::the_debug_check_in_release": "ef02006370392ea596272532a85d4fce10b3fd1cc9d45db34d2b7684e35defd3",
     "arvo-numeral::the_host_door": "b4df3f7e5c011b9fcd0e2fddd2fcd806eb8c961d827353c7e7304c7abdeed0d7",
-    "arvo-numeral::the_lane": "7681f2a57641dd1ccce651a7a47bff562e01d0368bad416642d3c70ef6e189e0",
+    "arvo-numeral::the_lane": "32eea36845c604b65d83eb729559edd8cba4d5b83f0adee71505452efe372bef",
     "arvo-numeral::the_oracle": "bd632325aaf31eb79800423094545387f9378874f0f93d5285b7fecda1804e80",
     "arvo-numeral::the_product_at_every_shape_binary": "bc06efb727bf46d6d0c115a9ea7090891e0dbf9f14c509a0405cf556aea7bef4",
     "arvo-numeral::the_product_at_every_shape_decimal": "0398d74b846b9d60ba202e7b4caa3fa2c2f2a0115a9a92e37e0cde2075338efa",
     "arvo-numeral::the_product_at_every_shape_ternary": "dfcbfcc0b26da8948935665f1bca22fd0a1d39b5e98d5f2f95b6ae5b8fe68959",
-    "arvo-numeral::the_quotient": "dd57a6a642fbc454e4137334d64640edb2a1b90830bf8b6cd87702b364fb9e60",
+    "arvo-numeral::the_quotient": "46133c1e64f4544d0ed69fa128d191cf1825a2999e497f949922b64237beb296",
     "arvo-numeral::the_quotient_at_every_shape_binary": "0c7df8f99589ac49aab35fb96cccdbc6d52f7cccfcc6f24f12625df14ddfbca2",
     "arvo-numeral::the_quotient_at_every_shape_decimal": "91dca2b93aa53fbbad4eda94b3c33c40fdf21e6d9c0566c53686b5f95a1b7cd6",
     "arvo-numeral::the_quotient_at_every_shape_ternary": "755a0fc689da872aad855d1b435bf03e94f97cbc8b19e6eeebb2438a551378d5"
