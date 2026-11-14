@@ -12,9 +12,13 @@
 #![cfg(not(debug_assertions))]
 
 use arvo_format::overflow::{Saturate, Wrap};
+use arvo_format::points::Integer;
 use arvo_format::rounding::TowardZero;
-use arvo_format::{Adapt, Exact, Slot};
-use arvo_numeral::{Abort, Int, Quiet};
+use arvo_format::{Adapt, Exact, Signature, Slot};
+use arvo_numeral::{Abort, Divisor, Int, Quiet};
+
+type TwoBitsWrap = Signature<Integer<2>, Adapt<TowardZero, Wrap>>;
+type TwoBitsSaturate = Signature<Integer<2>, Adapt<TowardZero, Saturate>>;
 
 type WrapAborts = Int<4, Adapt<TowardZero, Wrap>>;
 type SaturateAborts = Int<4, Adapt<TowardZero, Saturate>, Abort>;
@@ -37,6 +41,72 @@ fn adapted_completes_under_abort_in_release() {
     assert_eq!(wrapped.slot().index(), -8);
     let saturated = SaturateAborts::adapted(Exact::on_grid(Slot::at(PAST_THE_TOP)));
     assert_eq!(saturated.slot().index(), 7);
+}
+
+#[test]
+fn sub_neg_and_mul_complete_under_abort_in_release() {
+    assert_eq!(
+        WrapAborts::constant::<-8>()
+            .sub(WrapAborts::constant::<1>())
+            .slot()
+            .index(),
+        7
+    );
+    assert_eq!(
+        SaturateAborts::constant::<-8>()
+            .sub(SaturateAborts::constant::<1>())
+            .slot()
+            .index(),
+        -8
+    );
+    assert_eq!(WrapAborts::constant::<-8>().neg().slot().index(), -8);
+    assert_eq!(SaturateAborts::constant::<-8>().neg().slot().index(), 7);
+    assert_eq!(
+        WrapAborts::constant::<4>()
+            .mul(WrapAborts::constant::<-3>())
+            .slot()
+            .index(),
+        4
+    );
+    assert_eq!(
+        SaturateAborts::constant::<4>()
+            .mul(SaturateAborts::constant::<-3>())
+            .slot()
+            .index(),
+        -8
+    );
+}
+
+#[test]
+fn div_convert_and_from_index_complete_under_abort_in_release() {
+    let minus_one = Divisor::constant::<-1>();
+    assert_eq!(
+        WrapAborts::constant::<-8>().div(minus_one).slot().index(),
+        -8
+    );
+    assert_eq!(
+        SaturateAborts::constant::<-8>()
+            .div(minus_one)
+            .slot()
+            .index(),
+        7
+    );
+    assert_eq!(
+        WrapAborts::constant::<7>()
+            .convert::<TwoBitsWrap>()
+            .slot()
+            .index(),
+        -1
+    );
+    assert_eq!(
+        SaturateAborts::constant::<7>()
+            .convert::<TwoBitsSaturate>()
+            .slot()
+            .index(),
+        1
+    );
+    assert_eq!(WrapAborts::from_index(8i8).slot().index(), -8);
+    assert_eq!(SaturateAborts::from_index(8u64).slot().index(), 7);
 }
 
 #[test]

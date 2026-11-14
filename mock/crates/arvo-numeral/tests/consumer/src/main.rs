@@ -13,20 +13,26 @@ use core::hash::{Hash, Hasher};
 use std::collections::hash_map::DefaultHasher;
 
 use arvo_format::overflow::{Saturate, Wrap};
+use arvo_format::points::{Integer, UFixed};
 use arvo_format::rounding::{Floor, HalfEven, TowardZero};
-use arvo_format::{Adapt, Exact, Policy, Signature, Slot};
+use arvo_format::{Adapt, Exact, Format, Policy, Signature, Slot, WithOverflow, WithRounding};
 use arvo_numeral::{
     Abort,
     Additive,
     Bool,
     DebugCheck,
+    Divisor,
+    Fix,
+    HostInteger,
     ISize,
     Identity,
     Int,
+    Multiplicative,
     NamesAdaptation,
     Num,
     Quiet,
     Sole,
+    UFix,
     USize,
     Uint,
 };
@@ -34,12 +40,26 @@ use arvo_numeral::{
 type U13 = Uint<13, Adapt<TowardZero, Wrap>, Quiet>;
 type I7 = Int<7, Adapt<Floor, Saturate>, Quiet>;
 
-/// A name for an adaptation, of this crate's own. What a strategy will be.
+/// A preset of this crate's own, naming an adaptation per format: signed
+/// integers wrap under it and unsigned ones saturate. What a strategy will be.
 struct Rounded;
 
-impl NamesAdaptation for Rounded {
+impl<const BITS: u32> NamesAdaptation<Integer<BITS>> for Rounded
+where
+    Integer<BITS>: Format,
+{
     type Adaptation = Adapt<HalfEven, Wrap>;
 }
+
+impl<const BITS: u32> NamesAdaptation<UFixed<BITS, 0>> for Rounded
+where
+    UFixed<BITS, 0>: Format,
+{
+    type Adaptation = Adapt<HalfEven, Saturate>;
+}
+
+/// An alias of this crate's own whose adaptation carries a default.
+type Count<const BITS: u32, A = Rounded, C = Never> = Uint<BITS, A, C>;
 
 /// A debug check of this crate's own.
 struct Never;
@@ -75,6 +95,27 @@ const SIX: U13 = sum(
     U13::constant::<3>(),
 );
 
+/// The ring operations in a constant, wrapping at thirteen bits.
+const DIFFERENCE: U13 = U13::constant::<0>()
+    .sub(U13::constant::<1>())
+    .mul(U13::constant::<3>())
+    .neg()
+    .mul(U13::constant::<2731>())
+    .neg();
+
+type S7 = Signature<Integer<7>, Adapt<Floor, Saturate>>;
+
+/// A quotient and a host integer in a constant: a quarter of ten, floored, and
+/// a host integer past the top of seven signed bits.
+const QUARTER: I7 = I7::constant::<10>().div(Divisor::constant::<4>());
+const DOOR: I7 = I7::from_index(200u8);
+
+/// Generic over the host integer, bounded by `HostInteger` and nothing more: a
+/// host integer in through the door and out again.
+fn round_trip<H: HostInteger>(host: H) -> H {
+    Int::<16, Adapt<TowardZero, Wrap>, Quiet>::from_index(host).index::<H>()
+}
+
 fn main() {
     // The doors.
     assert_eq!(SIX, U13::constant::<6>());
@@ -97,6 +138,41 @@ fn main() {
         I7::constant::<63>().add(I7::constant::<1>()).slot().index(),
         63
     );
+    assert_eq!(a.sub(b).slot().index(), -8);
+    assert!(a.fits_sub(b).get());
+    assert!(!I7::constant::<-64>().fits_sub(I7::constant::<1>()).get());
+    assert_eq!(
+        I7::constant::<-64>()
+            .sub(I7::constant::<1>())
+            .slot()
+            .index(),
+        -64
+    );
+    assert_eq!(a.neg().slot().index(), 3);
+    assert!(a.fits_neg().get());
+    assert!(!I7::constant::<-64>().fits_neg().get());
+    assert_eq!(I7::constant::<-64>().neg().slot().index(), 63);
+    assert_eq!(a.mul(b).slot().index(), -15);
+    assert!(a.fits_mul(b).get());
+    assert!(!I7::constant::<-64>().fits_mul(I7::constant::<2>()).get());
+    assert_eq!(
+        I7::constant::<-64>()
+            .mul(I7::constant::<2>())
+            .slot()
+            .index(),
+        -64
+    );
+    assert_eq!(DIFFERENCE.slot().index(), 8191);
+    // A fixed-point product: a half times a half is a quarter, at eighths.
+    type Eighths =
+        Num<Signature<arvo_format::points::Fixed<6, -3>, Adapt<HalfEven, Saturate>>, Quiet>;
+    assert_eq!(
+        Eighths::constant::<4>()
+            .mul(Eighths::constant::<4>())
+            .slot()
+            .index(),
+        2
+    );
     assert_eq!(a.cmp(b), Ordering::Less);
     let eq: Bool = a.eq(a);
     assert!(eq.get());
@@ -114,6 +190,14 @@ fn main() {
     // The identity.
     assert_eq!(<I7 as Identity<Additive>>::IDENTITY.slot().index(), 0);
     assert_eq!(a.add(<I7 as Identity<Additive>>::IDENTITY), a);
+    assert_eq!(<I7 as Identity<Multiplicative>>::IDENTITY.slot().index(), 1);
+    assert_eq!(a.mul(<I7 as Identity<Multiplicative>>::IDENTITY), a);
+    assert_eq!(
+        <Eighths as Identity<Multiplicative>>::IDENTITY
+            .slot()
+            .index(),
+        8
+    );
 
     // The pointer-width aliases and their host doors, under the default check.
     type UHost = USize<Adapt<TowardZero, Wrap>>;
@@ -136,10 +220,103 @@ fn main() {
         core::mem::size_of::<Int<8, Adapt<HalfEven, Wrap>>>()
     );
 
+    // The same preset names another adaptation for an unsigned integer, and an
+    // alias that defaults to it needs no adaptation written.
+    let (top, one) = (Count::<8>::constant::<255>(), Count::<8>::constant::<1>());
+    assert_eq!(top.add(one).slot().index(), 255);
+    // The default overridden per case, at the type and at a value.
+    type Wrapping8 = Count<8, Adapt<HalfEven, Wrap>>;
+    assert_eq!(
+        Wrapping8::constant::<255>()
+            .add(Wrapping8::constant::<1>())
+            .slot()
+            .index(),
+        0
+    );
+    assert_eq!(
+        top.with_overflow::<Wrap>()
+            .add(one.with_overflow::<Wrap>())
+            .slot()
+            .index(),
+        0
+    );
+    assert_eq!(top.with_rounding::<Floor>().slot(), top.slot());
+
+    // A sibling signature by the aliases, and the crossing to it and back.
+    type Wrapping13 = Signature<UFixed<13, 0>, Adapt<TowardZero, Wrap>>;
+    type Saturating13 = WithOverflow<Wrapping13, Saturate>;
+    type Nearest13 = WithRounding<Saturating13, HalfEven>;
+    let there: Num<Saturating13, Quiet> = SIX.under();
+    assert_eq!(there.slot(), SIX.slot());
+    assert_eq!(there.under::<Nearest13>().under::<Wrapping13>(), SIX);
+    let top13 = U13::constant::<8191>();
+    assert_eq!(top13.add(SIX).slot().index(), 5);
+    assert_eq!(
+        top13.under::<Saturating13>().add(there).slot().index(),
+        8191
+    );
+
+    // The quotient, by a divisor that is a constant of the format.
+    let seven: Divisor<Integer<7>> = Divisor::constant::<7>();
+    assert_eq!(I7::constant::<-50>().div(seven).slot().index(), -8);
+    assert!(I7::constant::<-50>().fits_div(seven).get());
+    let minus_one = Divisor::constant::<-1>();
+    assert!(!I7::constant::<-64>().fits_div(minus_one).get());
+    assert_eq!(I7::constant::<-64>().div(minus_one).slot().index(), 63);
+    assert_eq!(QUARTER.slot().index(), 2);
+
+    // The conversion onto another signature: three is twenty-four eighths, and
+    // a hundred is past the top of the eighths.
+    type EighthsSig = Signature<arvo_format::points::Fixed<6, -3>, Adapt<HalfEven, Saturate>>;
+    assert_eq!(
+        U13::constant::<3>().convert::<EighthsSig>().slot().index(),
+        24
+    );
+    assert!(U13::constant::<3>().fits_convert::<EighthsSig>().get());
+    assert!(!U13::constant::<100>().fits_convert::<EighthsSig>().get());
+    assert_eq!(
+        U13::constant::<100>()
+            .convert::<EighthsSig>()
+            .slot()
+            .index(),
+        31
+    );
+    // One and a half onto the integers, by the target's mode.
+    assert_eq!(Eighths::constant::<12>().convert::<S7>().slot().index(), 1);
+
+    // The door for a host integer, in and out at whichever width is asked.
+    assert_eq!(U13::from_index(8191u16), top13);
+    assert_eq!(U13::from_index(8192u64).slot().index(), 0);
+    assert_eq!(I7::from_index(1000i32).slot().index(), 63);
+    assert_eq!(I7::from_index(u64::MAX).slot().index(), 63);
+    assert_eq!(top13.index::<u16>(), 8191);
+    assert_eq!(top13.index::<i64>(), 8191);
+    assert_eq!(a.index::<i8>(), -3);
+    assert_eq!(round_trip::<i16>(-3), -3);
+    assert_eq!(round_trip::<isize>(40), 40);
+    assert_eq!(DOOR.slot().index(), 63);
+
+    // The fixed-point aliases: a lane at sixteen fraction bits, half to even.
+    type Lane = Fix<32, -16, Adapt<HalfEven, Saturate>>;
+    assert_eq!(
+        Lane::constant::<98304>()
+            .mul(Lane::constant::<32768>())
+            .slot()
+            .index(),
+        49152
+    );
+    type Share = UFix<8, -8, Adapt<Floor, Wrap>, Quiet>;
+    assert_eq!(
+        Share::constant::<128>()
+            .add(Share::constant::<128>())
+            .slot()
+            .index(),
+        0
+    );
+
     // The admission's items, through the traits.
     type S13 = Signature<arvo_format::points::UFixed<13, 0>, Adapt<TowardZero, Wrap>>;
     assert_eq!(admission_of::<S13>(), (13, Policy::Wrap, false));
-    type S7 = Signature<arvo_format::points::Integer<7>, Adapt<Floor, Saturate>>;
     assert_eq!(admission_of::<S7>(), (7, Policy::Saturate, true));
     assert!(aborts::<Abort>() && !aborts::<Quiet>() && !aborts::<Never>());
     assert!(Bool::of(true).get());

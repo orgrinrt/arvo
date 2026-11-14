@@ -25,20 +25,23 @@
         "passed": true,
         "passed_at": "e79f0c995f9baaf8b310be2856bcc2df006579f9220cb57db8017e6be1176b8a"
       }
+    },
+    "arvo-format::compile_fail": {
+      "a_format_is_not_a_signature": {
+        "secs": 7.1,
+        "passed": true,
+        "passed_at": "f10ccead55c3a7f3ce544a6adbc3a6a95c99581a5e6954c51e1d85be48cef770"
+      },
+      "a_host_integer_is_not_an_operand": {
+        "secs": 8.1,
+        "passed": true,
+        "passed_at": "f10ccead55c3a7f3ce544a6adbc3a6a95c99581a5e6954c51e1d85be48cef770"
+      }
     }
   },
   "bins": {
-    "arvo-format::compile_fail": "59c75f07e545250c24510f04493023b07781d3cd57460e95581228d110321bcc",
-    "arvo-format::matlab_fi_parity": "8c6fcbc2e71a0cba63f7097e0547a798659051cbde75977ca45c85158013ee06",
-    "arvo-format::the_ties_away_alias": "62658fad4b2eb23ce245ab9a9024ac8e45254fa787c94a78adac92bd523fa57f"
-  },
-  "red": {
-    "arvo-format": {
-      "at": "e79f0c995f9baaf8b310be2856bcc2df006579f9220cb57db8017e6be1176b8a",
-      "names": [
-        "multiplication::tests::the_inverse_round_trip::the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63"
-      ],
-      "listed": "ade25618caeb2db7"
-    }
+    "arvo-format::compile_fail": "f10ccead55c3a7f3ce544a6adbc3a6a95c99581a5e6954c51e1d85be48cef770",
+    "arvo-format::matlab_fi_parity": "e766aae96c56e5a0ed102cd9b269085930a093b8afeeed2d911ae609216f80e4",
+    "arvo-format::the_ties_away_alias": "946a20060c48f6e839fd412d1f1c11b0238addaf84d71a024260099e5bd4026a"
   }
 }

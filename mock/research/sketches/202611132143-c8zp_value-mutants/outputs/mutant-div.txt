@@ -1,0 +1,33 @@
+cargo test -p arvo-numeral --features mutant-div --test the_quotient
+
+running 5 tests
+the_named_quotients_sit_where_arithmetic_puts_them --- FAILED
+every_member_divides_by_every_member_but_zero_at_widths_one_to_four --- FAILED
+a_fixed_point_quotient_is_rounded_by_the_mode --- FAILED
+every_member_divides_by_the_named_divisors_at_widths_five_to_eight --- FAILED
+
+---- the_named_quotients_sit_where_arithmetic_puts_them ----
+panicked at crates/arvo-numeral/tests/the_quotient.rs:157:5:
+assertion `left == right` failed
+  left: -128
+ right: 127
+
+---- every_member_divides_by_every_member_but_zero_at_widths_one_to_four ----
+panicked at crates/arvo-numeral/tests/the_quotient.rs:73:5:
+assertion `left == right` failed: `div` disagrees with the oracle on 20 of 6200 quotients
+  left: 20
+ right: 0
+
+---- a_fixed_point_quotient_is_rounded_by_the_mode ----
+panicked at crates/arvo-numeral/tests/the_quotient.rs:73:5:
+assertion `left == right` failed: `div` disagrees with the oracle on 2454 of 7040 quotients
+  left: 2454
+ right: 0
+
+---- every_member_divides_by_the_named_divisors_at_widths_five_to_eight ----
+panicked at crates/arvo-numeral/tests/the_quotient.rs:73:5:
+assertion `left == right` failed: `div` disagrees with the oracle on 20 of 38400 quotients
+  left: 20
+ right: 0
+
+test result: FAILED. 1 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out

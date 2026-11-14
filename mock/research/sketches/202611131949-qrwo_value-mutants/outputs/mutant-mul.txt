@@ -1,0 +1,44 @@
+     Running unittests src/lib.rs
+tests::every_rung_subtracts_negates_and_multiplies_signed_at_widths_one_to_eight_as_the_oracle_does --- FAILED
+tests::every_wide_rung_subtracts_negates_and_multiplies_signed_at_widths_nine_to_twelve_as_the_oracle_does --- FAILED
+---- tests::every_rung_subtracts_negates_and_multiplies_signed_at_widths_one_to_eight_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/src/tests.rs:61:13:
+assertion `left == right` failed: signed, saturating: the 8-bit rung disagrees with the oracle on the product
+  left: 39590
+ right: 0
+---- tests::every_wide_rung_subtracts_negates_and_multiplies_signed_at_widths_nine_to_twelve_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/src/tests.rs:61:13:
+assertion `left == right` failed: signed, saturating: the 16-bit rung disagrees with the oracle on the product
+  left: 10151944
+ right: 0
+test result: FAILED. 10 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.10s
+     Running tests/band_17_to_32.rs
+every_signature_from_17_to_32_bits_multiplies_as_the_oracle_does --- FAILED
+---- every_signature_from_17_to_32_bits_multiplies_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:90:9:
+assertion `left == right` failed: widths 17 to 32: `mul` disagrees with the oracle on 156995 of 1616480 pairs
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.78s
+     Running tests/band_1_to_8.rs
+every_signature_from_1_to_8_bits_multiplies_as_the_oracle_does_on_every_pair --- FAILED
+---- every_signature_from_1_to_8_bits_multiplies_as_the_oracle_does_on_every_pair stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:90:9:
+assertion `left == right` failed: widths 1 to 8: `mul` disagrees with the oracle on 197950 of 1747600 pairs
+test result: FAILED. 10 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.38s
+     Running tests/band_33_to_64.rs
+every_signature_from_33_to_64_bits_but_the_unsigned_64_multiplies_as_the_oracle_does --- FAILED
+---- every_signature_from_33_to_64_bits_but_the_unsigned_64_multiplies_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:90:9:
+assertion `left == right` failed: widths 33 to 64: `mul` disagrees with the oracle on 345430 of 4492320 pairs
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.36s
+     Running tests/band_9_to_16.rs
+every_signature_from_9_to_16_bits_multiplies_as_the_oracle_does --- FAILED
+---- every_signature_from_9_to_16_bits_multiplies_as_the_oracle_does stdout ----
+panicked at crates/arvo-numeral/tests/common/mod.rs:90:9:
+assertion `left == right` failed: widths 9 to 16: `mul` disagrees with the oracle on 69870 of 711600 pairs
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.85s
+     Running tests/fixed_point_product.rs
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+     Running tests/the_debug_check.rs
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_debug_check_in_release.rs
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

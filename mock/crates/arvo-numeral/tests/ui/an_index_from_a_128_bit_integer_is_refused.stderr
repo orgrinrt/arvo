@@ -1,0 +1,23 @@
+error[E0277]: the trait bound `i128: HostInteger` is not satisfied
+ --> tests/ui/an_index_from_a_128_bit_integer_is_refused.rs:8:60
+  |
+8 |     let _ = Uint::<9, Adapt<TowardZero, Wrap>>::from_index(1i128);
+  |             ---------------------------------------------- ^^^^^ the trait `HostInteger` is not implemented for `i128`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the following other types implement trait `HostInteger`:
+            i16
+            i32
+            i64
+            i8
+            isize
+            u16
+            u32
+            u64
+          and $N others
+note: required by a bound in `arvo_numeral::host::<impl Num<S, C>>::from_index`
+ --> src/host.rs
+  |
+  |     pub const fn from_index<H: HostInteger>(host: H) -> Self {
+  |                                ^^^^^^^^^^^ required by this bound in `arvo_numeral::host::<impl Num<S, C>>::from_index`

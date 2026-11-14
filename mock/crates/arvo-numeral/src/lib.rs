@@ -10,7 +10,9 @@
 //! of the ladder container `arvo_placement::SoleCarrier` names for the
 //! signature's slot family. Every operation is the format's own on the member's
 //! slot: the slot of `a.add(b)` is the slot `arvo_format::add::<S>` returns for
-//! the two slots, for every pair of members of every admitted signature.
+//! the two slots, for every pair of members of every admitted signature, and
+//! `sub`, `neg`, `mul`, `div` and `convert` stand to the format's functions of
+//! those names the same way.
 //!
 //! `Sole` says which signatures a value is held for, by checking what a
 //! signature already declares: a slot family whose range is the whole signed or
@@ -24,23 +26,33 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+// One optional gate, off by default. `const_trait_impl` carries the const impl
+// of `notko_hlist::Cardinal` and nothing else: sound, with rough edges that are
+// gaps in its implementation. It is in no public signature, so a consumer
+// naming the value or a list's length needs no gate of its own.
+#![cfg_attr(feature = "hlist-const", feature(const_trait_impl))]
 
 mod admit;
 mod alias;
 mod check;
-pub mod host;
+#[cfg(feature = "hlist-const")]
+mod count_const_path;
+#[cfg(all(feature = "hlist", not(feature = "hlist-const")))]
+mod count_plain_path;
+mod host;
 mod identity;
 mod machine;
 mod map;
 mod num;
+mod ratio;
 mod rung;
 
 pub use admit::Sole;
-pub use alias::{ISize, Int, NamesAdaptation, USize, Uint};
-pub use arvo_format::Bool;
+pub use alias::{Fix, ISize, Int, NamesAdaptation, UFix, USize, Uint};
+pub use arvo_format::{Bool, Divisor};
 pub use check::{Abort, DebugCheck, Quiet};
-pub use host::{At, Byte, Bytes, HostWord, Word};
-pub use identity::{Additive, Identity};
+pub use host::{At, Byte, Bytes, HostInteger, HostWord, Word};
+pub use identity::{Additive, Identity, Multiplicative};
 pub use num::Num;
 
 #[cfg(test)]

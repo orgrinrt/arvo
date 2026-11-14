@@ -11,15 +11,23 @@ use core::hash::{Hash, Hasher};
 use core::marker::PhantomData;
 use core::mem::size_of;
 
+use arvo_format::overflow::Overflow;
+use arvo_format::rounding::Rounding;
 use arvo_format::{
     Bool,
     DeclaredSignature,
     Dither,
     Exact,
     Format,
+    Quantum,
     Slot,
+    Slots,
+    WithOverflow,
+    WithRounding,
     adapt,
+    mul as mul_slots,
     panic_on_overflow,
+    product_position,
     slot_in_range,
 };
 use arvo_placement::SoleCarrier;
@@ -30,7 +38,7 @@ use crate::machine::copy;
 use crate::map::Held;
 use crate::rung;
 
-type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
+pub(crate) type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
 
 /// The machine integer of the container the placement names for the signature's
 /// slot family. Nameable inside this crate only.
@@ -83,7 +91,7 @@ macro_rules! dispatch {
 
 impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// The value at a member's slot index. The index is a member's.
-    const fn at_index(index: i128) -> Self {
+    pub(crate) const fn at_index(index: i128) -> Self {
         let () = S::ADMITTED;
         Self::from_carrier(dispatch!(
             S,
@@ -168,6 +176,54 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
         self.0
     }
 
+    /// The same member held under `T`, a signature over this one's format.
+    ///
+    /// The slot is unchanged and every operation after the crossing is `T`'s.
+    /// The carrier is handed over as it is: its type and its encoding are the
+    /// format's, so the two values are the same bits. Nothing is read of the
+    /// range, and the debug check is kept.
+    ///
+    /// The caller writes `T`'s admission, since this signature's says nothing
+    /// of it. A `T` over another format is a type error here, because its slot
+    /// would have to be rounded or completed onto the other grid.
+    #[must_use]
+    pub const fn under<T>(self) -> Num<T, C>
+    where
+        T: Sole + DeclaredSignature<Format = S::Format>,
+    {
+        if cfg!(feature = "mutant-under")
+            && self.slot().index() == <SlotsOf<S> as Slots>::MAX.index()
+        {
+            return Num::at_index(<SlotsOf<S> as Slots>::MIN.index());
+        }
+        Num::from_carrier(self.0)
+    }
+
+    /// The same member under this signature with its overflow policy replaced
+    /// by `O`: `under` at `WithOverflow<S, O>`.
+    ///
+    /// For a site that names its signature. Code generic over the signature
+    /// takes the target as a parameter and calls `under`.
+    #[must_use]
+    pub const fn with_overflow<O: Overflow>(self) -> Num<WithOverflow<S, O>, C>
+    where
+        WithOverflow<S, O>: Sole + DeclaredSignature<Format = S::Format>,
+    {
+        self.under()
+    }
+
+    /// The same member under this signature with its rounding mode replaced by
+    /// `R`: `under` at `WithRounding<S, R>`.
+    ///
+    /// For a site that names its signature, as `with_overflow` is.
+    #[must_use]
+    pub const fn with_rounding<R: Rounding>(self) -> Num<WithRounding<S, R>, C>
+    where
+        WithRounding<S, R>: Sole + DeclaredSignature<Format = S::Format>,
+    {
+        self.under()
+    }
+
     /// The sum under the signature: the slot `arvo_format::add` gives for the
     /// two slots.
     ///
@@ -207,6 +263,151 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     #[must_use]
     pub const fn fits_add(self, rhs: Self) -> Bool {
         slot_in_range::<SlotsOf<S>>(Slot::at(self.slot().index() + rhs.slot().index()))
+    }
+
+    /// The difference under the signature: the slot `arvo_format::sub` gives
+    /// for the two slots.
+    ///
+    /// Total: a difference that leaves the range is completed by the declared
+    /// overflow policy. Under the `Abort` check a debug build aborts on that
+    /// instead, which `fits_sub` asks ahead; under `Quiet` no build does.
+    #[must_use]
+    pub const fn sub(self, rhs: Self) -> Self {
+        if cfg!(debug_assertions) && const { C::ABORTS.get() } {
+            assert!(
+                self.fits_sub(rhs).get(),
+                "the difference leaves the signature's range, and the `Abort` check aborts on that in \
+                 a debug build. Name the `Quiet` check where the completion the overflow policy gives \
+                 is what you mean"
+            );
+        }
+        Self::from_carrier(dispatch!(
+            S,
+            carrier,
+            [
+                rung::sub_s8,
+                rung::sub_u8,
+                rung::sub_s16,
+                rung::sub_u16,
+                rung::sub_s32,
+                rung::sub_u32,
+                rung::sub_s64,
+                rung::sub_u64
+            ],
+            [self.0, rhs.0],
+            [const { S::WIDTH.count() }, S::POLICY]
+        ))
+    }
+
+    /// Whether the exact difference of the two members is a member, so `sub`
+    /// needs no completion.
+    #[must_use]
+    pub const fn fits_sub(self, rhs: Self) -> Bool {
+        slot_in_range::<SlotsOf<S>>(Slot::at(self.slot().index() - rhs.slot().index()))
+    }
+
+    /// The negation under the signature: the slot `arvo_format::neg` gives for
+    /// the slot.
+    ///
+    /// Total: a negation that leaves the range is completed by the declared
+    /// overflow policy, which over an unsigned range is every member's but
+    /// zero's. Under the `Abort` check a debug build aborts on that instead,
+    /// which `fits_neg` asks ahead; under `Quiet` no build does.
+    #[must_use]
+    pub const fn neg(self) -> Self {
+        if cfg!(debug_assertions) && const { C::ABORTS.get() } {
+            assert!(
+                self.fits_neg().get(),
+                "the negation leaves the signature's range, and the `Abort` check aborts on that in a \
+                 debug build. Name the `Quiet` check where the completion the overflow policy gives \
+                 is what you mean"
+            );
+        }
+        Self::from_carrier(dispatch!(
+            S,
+            carrier,
+            [
+                rung::neg_s8,
+                rung::neg_u8,
+                rung::neg_s16,
+                rung::neg_u16,
+                rung::neg_s32,
+                rung::neg_u32,
+                rung::neg_s64,
+                rung::neg_u64
+            ],
+            [self.0],
+            [const { S::WIDTH.count() }, S::POLICY]
+        ))
+    }
+
+    /// Whether the exact negation of the member is a member, so `neg` needs no
+    /// completion.
+    #[must_use]
+    pub const fn fits_neg(self) -> Bool {
+        slot_in_range::<SlotsOf<S>>(Slot::at(-self.slot().index()))
+    }
+
+    /// The product under the signature: the slot `arvo_format::mul` gives for
+    /// the two slots.
+    ///
+    /// Total: a product that leaves the range is completed by the declared
+    /// overflow policy, and at a fractional quantum one between two members is
+    /// rounded by the declared mode first. Under the `Abort` check a debug
+    /// build aborts on a product that leaves the range, which `fits_mul` asks
+    /// ahead; under `Quiet` no build does.
+    ///
+    /// Refused at build where the format's product is not admitted, with the
+    /// format's own message. The unsigned 64-bit integer is among those today.
+    #[must_use]
+    pub const fn mul(self, rhs: Self) -> Self {
+        const {
+            // Forces the format's multiplication obligation for this signature.
+            let _ = product_position::<S::Format>(Slot::at(0), Slot::at(0));
+        }
+        if cfg!(debug_assertions) && const { C::ABORTS.get() } {
+            assert!(
+                self.fits_mul(rhs).get(),
+                "the product leaves the signature's range, and the `Abort` check aborts on that in a \
+                 debug build. Name the `Quiet` check where the completion the overflow policy gives \
+                 is what you mean"
+            );
+        }
+        // At a quantum exponent of zero the members' product sits at the slots'
+        // product, on the grid, and only the completion acts.
+        if const { <<S::Format as Format>::Quantum as Quantum>::BASE.power() == 0 } {
+            Self::from_carrier(dispatch!(
+                S,
+                carrier,
+                [
+                    rung::mul_s8,
+                    rung::mul_u8,
+                    rung::mul_s16,
+                    rung::mul_u16,
+                    rung::mul_s32,
+                    rung::mul_u32,
+                    rung::mul_s64,
+                    rung::mul_u64
+                ],
+                [self.0, rhs.0],
+                [const { S::WIDTH.count() }, S::POLICY]
+            ))
+        } else {
+            // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
+            // position is scaled by the radix and rounded by the mode, and the
+            // rounding lives in the format's applied map alone. Its step is four
+            // limbs wide. When the format ships the adaptation at the container's
+            // width this becomes the machine's widening product and one call.
+            Self::at_index(mul_slots::<S>(self.slot(), rhs.slot(), Dither::UNUSED).index())
+        }
+    }
+
+    /// Whether the product of the two members needs no completion: the slot the
+    /// declared mode rounds its exact position to is a member.
+    #[must_use]
+    pub const fn fits_mul(self, rhs: Self) -> Bool {
+        let position = product_position::<S::Format>(self.slot(), rhs.slot());
+        Bool::of(!panic_on_overflow::<S>(position, Dither::UNUSED).get())
     }
 
     /// The order of the two members.
