@@ -157,6 +157,11 @@ fn a_wrong_direction_below_the_smallest_subnormal_is_reported() {
     assert!(
         below::<Decimal64, RoundTowardZero>(Direction::TowardPositive, DECIMAL64, 0xD64_0000) > 0
     );
+    // Ties to away, which decimal carries and the binary formats do not, rounds
+    // these to zero, so toward positive landed in its place misses too.
+    assert!(
+        below::<Decimal64, RoundTowardPositive>(Direction::TiesToAway, DECIMAL64, 0xD64_0000) > 0
+    );
 }
 
 /// `radix^e` in the host's unsigned 128-bit integer, or nothing past it, written
