@@ -19,7 +19,7 @@ note: erroneous constant encountered
   |
   | /         const {
   | |             let bits = 8 * size_of::<H>() as u32;
-  | |             let (lowest, highest) = if H::SIGNED {
+  | |             let (lowest, highest) = if H::SIGNED.get() {
   | |                 (-(1i128 << (bits - 1)), (1i128 << (bits - 1)) - 1)
 ... |
   | |             );

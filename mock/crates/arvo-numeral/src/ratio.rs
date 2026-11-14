@@ -10,12 +10,14 @@
 
 use arvo_format::overflow::Saturate;
 use arvo_format::{
+    Adaptation,
     Bool,
     Dither,
     Divisor,
     Exact,
     Policy,
     WithOverflow,
+    WithRounding,
     adapt,
     convert as convert_slots,
     converted_position,
@@ -99,6 +101,13 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
             let saturated =
                 convert_slots::<S::Format, WithOverflow<T, Saturate>>(self.slot(), Dither::UNUSED);
             return Num::at_index(saturated.index());
+        }
+        if cfg!(arvo_mutant_convert_mode) {
+            let rounded = convert_slots::<
+                S::Format,
+                WithRounding<T, <S::Adaptation as Adaptation>::Rounding>,
+            >(self.slot(), Dither::UNUSED);
+            return Num::at_index(rounded.index());
         }
         // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
         // member's position on the target grid is a ratio of the two quanta that
