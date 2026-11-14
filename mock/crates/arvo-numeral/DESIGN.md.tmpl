@@ -58,9 +58,10 @@ that were added there for it, each the format's own to state: which member is on
 `multiplicative_identity`, a signed fixed-point point, `Fixed`, and the two aliases that replace one
 coordinate of a signature, `WithOverflow` and `WithRounding`. `no_std`, no allocation, every operation
 a `const fn`. As it builds by default it has no unstable feature and no dependency beyond those three.
-Its cargo features are the mutants its own tests turn on and two that are purely opt in, `hlist` and
-`hlist-const`, which make a value the count of a type-level list and are described under the count
-below. The second of them enables the one unstable feature this crate can enable.
+Its cargo features are two, both purely opt in, `hlist` and `hlist-const`, which make a value the count
+of a type-level list and are described under the count below. The second of them enables the one
+unstable feature this crate can enable. The mutants its own tests turn on are not features but
+configuration flags of the compiler, described under what is proved.
 
 ## What a value signature admits
 
@@ -586,15 +587,23 @@ exactly the host integers that name no member, for the 8-bit and the 64-bit host
 at every value within 16 of zero, both ends of the host integer and both ends of the range with their
 neighbours.
 
-One mutant per rung, behind the committed features `mutant-8`, `mutant-16`, `mutant-32` and `mutant-64`,
+A mutant is a configuration flag of the compiler named `arvo_mutant_<name>`, and a mutant run sets one
+with `RUSTFLAGS="--cfg arvo_mutant_<name>"`. It is a flag and not a cargo feature for the reason the
+debug check is a parameter and not a feature: a feature is unified across a build, so a crate anywhere in
+a consumer's build that turned a mutant on would change the arithmetic of every other crate under
+signatures it never touched. A flag is set only by whoever runs the build at the top, and no manifest
+can set it for a dependency. The manifest declares every flag to the compiler's configuration check, so
+a misspelt one is reported rather than building the crate unmutated.
+
+One mutant per rung, `arvo_mutant_8`, `arvo_mutant_16`, `arvo_mutant_32` and `arvo_mutant_64`,
 removes the rung's adaptation. The tests assert agreement with the oracle under every build and expect
 nothing of a mutant, so each mutant turns red the tests that run through its rung and leaves the others
 green. The red output of each mutant's run is committed.
 
-One mutant per operation beside those, each the place that operation goes wrong first. `mutant-sub`
+One mutant per operation beside those, each the place that operation goes wrong first. `arvo_mutant_sub`
 pins the unsigned saturating difference below zero to the top of the range where the format gives
-zero. `mutant-neg` leaves the lowest signed member where it is under saturation at the carrier's
-width, where the format gives the highest. `mutant-mul` pins a saturating product that leaves the
+zero. `arvo_mutant_neg` leaves the lowest signed member where it is under saturation at the carrier's
+width, where the format gives the highest. `arvo_mutant_mul` pins a saturating product that leaves the
 machine integer to the top whatever its sign. Each turns its own operation's tests red and leaves the
 other operations green, and each red run is committed.
 
@@ -602,7 +611,7 @@ The crossing is exhaustive through the value type at widths 1 to 8 over both slo
 ordered pair of the two policies and every ordered pair of the five modes, every member crosses to the
 same slot, equals the value the three public doors build under the target, and crosses back to the
 value it left. One case is named, the top of an unsigned 8-bit range and one, whose sum is zero under
-the wrapping signature and the top under the saturating one it crosses into. `mutant-under` sends the
+the wrapping signature and the top under the saturating one it crosses into. `arvo_mutant_under` sends the
 top of the range to the bottom in a crossing, turns these red and leaves every operation's tests green,
 and its red run is committed.
 
@@ -617,9 +626,13 @@ The three delegated operations are then proved at every shape a value is held fo
 from 1 to 64, a signed or an unsigned range, the wrapping or the saturating policy, one of the five
 modes, a radix and an exponent. The radixes are two, on the shipped fixed points, and ten and three,
 on formats the tests declare the way a crate outside the format's would, three being the radix that
-shares no factor with the carrier's. The exponents are a family of five per width and radix whose last
-member is the last exponent the format admits for that operation there, and a test per operation holds
-that end against the format's own verdict, admitted at it and refused one past it. Each width band of
+shares no factor with the carrier's. The exponents are a family of five per width and radix whose two
+ends are the last exponents the format admits for that operation there, the highest and the deepest,
+and a test per operation holds both ends against the format's own verdict at every width, both ranges
+and the three radixes, admitted at each and refused one past it. The product's highest is the highest
+exponent at which every product of two members is a position a slot index holds, and the quotient's the
+highest at which the remainder's denominator fits at both ends of the range; the tests compute each in
+their own arithmetic and do not read it from the format. Each width band of
 sixteen at each radix is one test and asserts the 1600 signatures it ran, so a width or a shape that
 dropped out of a macro would fail the count. The integer point, a format of its own beside the fixed
 point at exponent zero, is taken at every width for the quotient as well.
@@ -637,7 +650,7 @@ integer is shared with the format's tests as a file and is not the format's libr
 holds the two ways against each other on ratios both can form, across the modes and both policies.
 
 The conversion is a law over two shapes, and the pairs of all shapes run to millions a radix, past what
-a build can instantiate. So it is proved on four sweeps, each crossing two coordinates whole, and each
+a build can instantiate. So it is proved on five sweeps, each crossing two coordinates whole, and each
 says what it holds fixed. Between every pair of widths: a source of each width and range onto a target
 of each width and range, 16384 pairs of formats a radix, under both policies of the target, once with
 both sides at exponent zero, where no mode acts and the policy decides every member the target does
@@ -648,9 +661,19 @@ the matrix is shown to see the policy on every pair that loses something. Betwee
 exponents: at each width and each pair of ranges, each exponent of a
 family of five on the source against each on the target, under the ten signatures of the target; the
 family's last member is the deepest exponent a conversion from exponent one admits at that width, and a
-test holds that end against the format's verdict. Under every source signature: at each width and on
-each range, the ten signatures of the source onto the ten of the target across one step of exponent,
-which is where a result that read the source's mode or policy would disagree. Between every pair of
+test holds that end against the format's verdict. At the positive edge: at each width, radix and pair
+of ranges, the source at the highest exponent at which both ends of its range land on positions a slot
+index holds, onto a target at exponent zero, and a source at exponent zero onto the target at the
+highest exponent at which the remainder's denominator fits, under the ten signatures of the target; a
+test holds both edges against the format's verdict at every width, both ranges and the three radixes,
+admitted at each and refused one past it. Under every source signature: at each width and on each
+range, the ten signatures of the source onto the ten of the target across two steps of exponent. From
+minus one onto zero the mode decides and no member leaves the range, so a result that read the source's
+mode would disagree there. From zero onto minus one every member past the target's range on either end
+is completed by the policy, so a result that read the source's policy would disagree there.
+`arvo_mutant_convert_policy` completes by saturation wherever the source's policy is saturation and by
+the target's otherwise; it passes every other sweep, turns this one red, and its red run is committed.
+Between every pair of
 radixes: at each width and pair of ranges, each ordered pair of two, ten and three, both sides at
 exponent minus one, under the ten signatures of the target. What no sweep holds is a pair differing in
 width and in exponent at once under the modes other than `HalfEven`, or in width and in radix at once.
@@ -668,9 +691,9 @@ both ends of the signature's range with theirs. `index` returns what `from_index
 lattice at every width, in every host integer the range fits, and the lists of host integers per width
 are whole, a host integer left out being one the build refuses there.
 
-`mutant-div` returns the dividend where the quotient leaves the range, which is what the machine's
-wrapping quotient gives for the lowest signed member over minus one. `mutant-convert` reads the
-source's slot index as the target's and so drops the two exponents. `mutant-index` makes the saturating door
+`arvo_mutant_div` returns the dividend where the quotient leaves the range, which is what the machine's
+wrapping quotient gives for the lowest signed member over minus one. `arvo_mutant_convert` reads the
+source's slot index as the target's and so drops the two exponents. `arvo_mutant_index` makes the saturating door
 send a negative host integer to the top of an unsigned range, which is what a comparison done after a
 cast gives. Each turns its own tests red and leaves the others green, and each red run is committed.
 
@@ -687,7 +710,7 @@ target reads the same lengths as constants, one of them as an array's length, an
 the toolchain, which is the evidence that a consumer needs no gate. Under `Abort` a count past the
 range aborts in a debug build on the plain path; on the const path it is a compile-fail pair, a list
 of four cells in two bits beside one of three, and a second pair refuses a length in a format without
-a one beside a format with one. `mutant-count` stops a count at one and turns both targets red, and
+a one beside a format with one. `arvo_mutant_count` stops a count at one and turns both targets red, and
 its red run is committed.
 
 `law::additive_associativity_under_wrapping` and `law::additive_associativity_under_saturation` are
