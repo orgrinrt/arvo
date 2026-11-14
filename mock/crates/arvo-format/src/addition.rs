@@ -91,6 +91,10 @@ impl<F: Format> Addable<F> {
              different value at each magnitude, and the applied map carries no magnitude \
              coordinate to land the sum at"
         );
+        // FIXME(arvo_addition_s_sum_past_the_slot_index_could_ride_the_four): the sum
+        // is refused where the index cannot hold it, a condition of the carrier the
+        // product, the quotient and conversion no longer have; the sum's floor
+        // could be formed in the four limbs as theirs is.
         assert!(
             sum_is_carried::<F>().get(),
             "addition is refused over this format: the exact sum of two members leaves the slot \

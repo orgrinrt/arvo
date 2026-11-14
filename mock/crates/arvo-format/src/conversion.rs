@@ -104,7 +104,7 @@ struct Step {
     /// The source's phase in lowest terms.
     source:  Reduced,
     /// `U_F V_T d_T`, or nothing when it leaves the four limbs, in which case any
-    /// member whose factor is not zero is past the index.
+    /// member whose factor is not zero is a step not formed.
     scale:   Maybe<Wide>,
     /// `n_T d_F V_F U_T`, the target's phase term, at most `2^63` times `D`.
     offset:  Wide,
@@ -153,9 +153,9 @@ const fn step<F: Format, T: Format>() -> Maybe<Step> {
 /// The member at slot `a` placed on the target's grid by the step.
 ///
 /// The numerator `(n_F + a d_F) U_F V_T d_T - n_T d_F V_F U_T` in four limbs,
-/// then its floor over `D`. A numerator that leaves the limbs is a step not
-/// formed, and a floor that leaves the index is past it, each on the sign of
-/// `n_F + a d_F`; for a member the obligation has ruled both out.
+/// then its floor over `D`, which is held in the four limbs wherever it falls. A
+/// numerator that leaves the limbs is a step not formed, on the sign of
+/// `n_F + a d_F`; for a member the obligation has ruled that out.
 #[inline]
 const fn placed(step: Step, a: i128) -> Placed {
     // Under `2^191` in magnitude for any slot, so it is formed; the arm is the

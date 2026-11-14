@@ -170,10 +170,11 @@ fn rounding_past_the_top_of_the_index_wraps_the_position_it_names() {
     // `the_top_of_the_index.rs` pins what the map then does with the floor.
     let carried = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MAX));
-    assert_eq!(carried.floor(), Wide::of_sum(i128::MAX, 2));
+    // `2^127 + 1` and `-(2^127 + 3)`, as literal limbs.
+    assert_eq!(carried.floor(), Wide::of_limbs(false, [1, 1 << 63, 0, 0]));
     let carried = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MIN));
-    assert_eq!(carried.floor(), Wide::of_sum(i128::MIN, -3));
+    assert_eq!(carried.floor(), Wide::of_limbs(true, [3, 1 << 63, 0, 0]));
 }
 
 #[test]

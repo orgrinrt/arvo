@@ -16,8 +16,6 @@
 //! The conditions are asked through `is_multipliable`, each on both sides of its
 //! boundary. The forcing side is the compile-fail cases.
 
-use notko::Maybe;
-
 use super::{At, Ratio, Sat, exact_product, members, quantum};
 use crate::ambient::{BinaryRationals, DecimalRationals};
 use crate::apply::{Exact, Fraction, Remainder};
@@ -198,30 +196,32 @@ fn a_position_past_the_index_is_exact_and_past_the_limbs_saturates() {
     type F = Integer<8>;
     let top = Slot::at(i128::MAX);
     let bottom = Slot::at(i128::MIN);
-    let whole = |a: i128, b: i128| {
-        let Maybe::Is(at) = Wide::of(a).times(Wide::of(b)) else { unreachable!() };
-        Exact::floored(at, Remainder::ZERO)
-    };
+    // Each product worked by hand and written as its sign and its limbs, lowest
+    // first, so the four-limb product under test does not form what it is held to.
+    let whole = |negative, limbs| Exact::floored(Wide::of_limbs(negative, limbs), Remainder::ZERO);
+    let (top_limb, bit_62_less_one) = (u64::MAX, (1 << 62) - 1);
     // Two slots outside the range, multiplied whole: the floor is held in four
     // limbs, and `slot()` answers the index's end on the product's side.
     let up = product_position::<F>(top, top);
-    assert_eq!(up, whole(i128::MAX, i128::MAX));
+    // `(2^127 - 1)^2 = 2^254 - 2^128 + 1`.
+    assert_eq!(up, whole(false, [1, 0, top_limb, bit_62_less_one]));
     assert_eq!(up.slot(), top);
     assert_eq!(
         product_position::<F>(bottom, bottom),
-        whole(i128::MIN, i128::MIN)
+        whole(false, [0, 0, 0, 1 << 62])
     );
     let down = product_position::<F>(top, bottom);
-    assert_eq!(down, whole(i128::MAX, i128::MIN));
+    // `-(2^127 - 1) 2^127 = -(2^254 - 2^127)`.
+    assert_eq!(down, whole(true, [0, 1 << 63, top_limb, bit_62_less_one]));
     assert_eq!(down.slot(), bottom);
     assert_eq!(
         product_position::<F>(Slot::at(-2), top),
-        whole(-2, i128::MAX)
+        whole(true, [top_limb - 1, top_limb, 0, 0])
     );
     // Moved up past the index on a positive exponent, the same way.
     assert_eq!(
         product_position::<At<Signed<8>, 4>>(Slot::at(i128::MAX / 4), Slot::at(2)),
-        whole(i128::MAX / 4, 32)
+        whole(false, [0u64.wrapping_sub(32), top_limb, 3, 0])
     );
     // Past the four limbs, `-2^200` moved up `2^124`, saturated at the limbs' end
     // on the product's sign.
@@ -240,11 +240,8 @@ fn a_position_past_the_index_is_exact_and_past_the_limbs_saturates() {
     );
     // At a phase of a half, `(MIN + 1/2)(MAX + 1/2) - 1/2` is `MIN MAX - 3/4`:
     // the factors past the index are read exactly on their sign, and the floor
-    // is one under the whole product with a quarter over it.
-    let Maybe::Is(product) = Wide::of(i128::MIN).times(Wide::of(i128::MAX)) else {
-        unreachable!()
-    };
-    let Maybe::Is(floor) = product.plus(Wide::of(-1)) else { unreachable!() };
+    // is one under the whole product with a quarter over it, `-(2^254 - 2^127 + 1)`.
+    let floor = Wide::of_limbs(true, [1, 1 << 63, top_limb, bit_62_less_one]);
     assert_eq!(
         product_position::<Biased<8, 0, 1>>(bottom, top),
         Exact::floored(floor, Remainder::reduced(Wide::of(1), Wide::of(4)))

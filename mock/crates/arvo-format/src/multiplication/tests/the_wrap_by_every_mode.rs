@@ -11,11 +11,11 @@
 //! product sits at `((a d + n)(b d + n) q - n d) / d^2` in slots. It floors that
 //! ratio, rounds it by the mode's own rule (toward zero by the position's sign,
 //! half to even by the floor's parity, stochastic against the dither) and wraps
-//! the result onto the range modulo its count. The formats are the region the
-//! wrapping admission covers: a nonzero phase, signed and unsigned ranges, ranges
-//! at both ends of the index, and odd and even counts, crossed so that past the
-//! index each sign of the floor meets a remainder below, at and above a half,
-//! which a count of the pairs in each cell asserts.
+//! the result onto the range modulo its count. The formats cross what the wrap
+//! reads, a nonzero phase, signed and unsigned ranges, ranges at both ends of the
+//! index, and odd and even counts, so that past the index each sign of the floor
+//! meets a remainder below, at and above a half, which a count of the pairs in
+//! each cell asserts.
 
 use notko::Maybe;
 

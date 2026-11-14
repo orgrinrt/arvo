@@ -169,9 +169,9 @@ const fn factor(step: Step, a: i128) -> Maybe<Wide> {
 /// The product of the slots `a` and `b` placed by the step.
 ///
 /// The numerator `(n + a d)(n + b d) r^max(e, 0) - n d r^max(-e, 0)` in four
-/// limbs, then its floor over `D`. A numerator that leaves the limbs is a step
-/// not formed, and a floor that leaves the index is past it, each on the
-/// position's sign; for two members the obligation has ruled both out.
+/// limbs, then its floor over `D`, which is held in the four limbs wherever it
+/// falls. A numerator that leaves the limbs is a step not formed, on the
+/// position's sign; for two members the obligation has ruled that out.
 #[inline]
 const fn placed(step: Step, a: i128, b: i128) -> Placed {
     // Each factor is under `2^191` in magnitude for any slot, so it is formed;

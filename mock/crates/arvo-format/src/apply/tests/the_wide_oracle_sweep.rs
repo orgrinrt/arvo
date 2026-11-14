@@ -17,6 +17,11 @@
 //! from each end of the range, from one past each end of the range, and from
 //! zero.
 //!
+//! Beside those it feeds the floors a formed step reaches past where
+//! `Exact::between` can name: `±2^128`, `±2^192` and `±2^255` with the same
+//! remainders over the same denominators, and `±(2^256 - 1)` on the grid, every
+//! one into every range.
+//!
 //! It runs the shipped map and every broken map `the_broken_maps.rs` keeps over
 //! that region, the planted tie rules among them, and runs `adapt` and
 //! `panic_on_overflow` at `USize` and `ISize` under every mode and policy. The
@@ -46,12 +51,13 @@ use super::the_broken_maps::{
 };
 use super::the_oracle::{Point, Wide, answer};
 use crate::adapt::DeclaredSignature;
-use crate::apply::{Dither, Exact, Fraction, adapt, panic_on_overflow, round_slot};
+use crate::apply::{Dither, Exact, Fraction, Remainder, adapt, panic_on_overflow, round_slot};
 use crate::format::Format;
 use crate::overflow::{Policy, SHIPPED_POLICIES};
 use crate::points::{ISize, USize};
 use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::{Slot, Slots};
+use crate::tests::big::Big;
 use crate::tests::dispatch::{self, PerSignature};
 use crate::wide::Wide as Limbs;
 
@@ -154,6 +160,78 @@ fn point(anchor: i128, num: i64, den: i64) -> Point {
     }
 }
 
+/// The floors past the index a formed step reaches, named, and whether a
+/// remainder is written beside them: `±2^128`, `±2^192` and `±2^255` with one,
+/// and `±(2^256 - 1)` on the grid only, since a step whose remainder is not
+/// zero has a floor of at most `2^255`.
+fn far_floors() -> [(&'static str, Big, bool); 8] {
+    let up = |k| Big::power(2, k);
+    let end = up(255).plus(up(255).plus(Big::of(-1)));
+    [
+        ("2^128", up(128), true),
+        ("-2^128", up(128).negated(), true),
+        ("2^192", up(192), true),
+        ("-2^192", up(192).negated(), true),
+        ("2^255", up(255), true),
+        ("-2^255", up(255).negated(), true),
+        ("2^256 - 1", end, false),
+        ("-(2^256 - 1)", end.negated(), false),
+    ]
+}
+
+/// Where a case's position was written from.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+enum Origin {
+    /// `anchor + num / den`.
+    Anchor(i128, (i64, i64)),
+    /// A named far floor and `num / den` past it, `num` below `den`.
+    Far(&'static str, (i64, i64)),
+}
+
+/// Every position written from an anchor of `[lo, hi]`.
+fn near(lo: i128, hi: i128) -> impl Iterator<Item = (Origin, Exact, Point)> {
+    anchors(lo, hi).into_iter().flat_map(|anchor| {
+        ratios().map(move |(num, den)| {
+            (
+                Origin::Anchor(anchor, (num, den)),
+                Exact::between(Slot::at(anchor), Fraction::of(num, den)),
+                point(anchor, num, den),
+            )
+        })
+    })
+}
+
+/// Every position at a far floor: at the remainders zero, one, half the
+/// denominator and one under it, over each denominator, where the floor takes
+/// a remainder, and the floor alone where it does not.
+fn far() -> impl Iterator<Item = (Origin, Exact, Point)> {
+    far_floors()
+        .into_iter()
+        .flat_map(|(name, floor, off_grid)| {
+            denominators().into_iter().flat_map(move |den| {
+                let remainders = [0, 1, den / 2, den - 1];
+                (0 .. remainders.len())
+                    .filter(move |&i| {
+                        remainders[i] < den && !remainders[.. i].contains(&remainders[i])
+                    })
+                    .map(move |i| remainders[i])
+                    .filter(move |&num| off_grid || (num == 0 && den == 1))
+                    .map(move |num| {
+                        let part = Remainder::reduced(Limbs::of(num.into()), Limbs::of(den.into()));
+                        (
+                            Origin::Far(name, (num, den)),
+                            Exact::floored(floor.wide(), part),
+                            Point {
+                                whole: Wide::of_big(floor),
+                                num:   num.into(),
+                                den:   den.into(),
+                            },
+                        )
+                    })
+            })
+        })
+}
+
 /// The dithers, in eighths.
 fn eighths() -> [i64; 4] {
     [0, 1, 3, 7]
@@ -166,8 +244,7 @@ struct Case {
     mode:   Mode,
     policy: Policy,
     range:  (i128, i128),
-    anchor: i128,
-    ratio:  (i64, i64),
+    origin: Origin,
     eighth: i64,
     got:    (i128, bool),
     want:   (i128, bool),
@@ -181,28 +258,23 @@ fn first_disagreement(
     (lo, hi): (i128, i128),
     ask: impl Fn(Mode, Policy, Exact, Dither) -> (Slot, bool),
 ) -> Maybe<Case> {
-    for anchor in anchors(lo, hi) {
-        for (num, den) in ratios() {
-            let exact = Exact::between(Slot::at(anchor), Fraction::of(num, den));
-            let p = point(anchor, num, den);
-            for eighth in eighths() {
-                let dither = Dither::at(Fraction::of(eighth, 8));
-                for &mode in modes {
-                    for &policy in policies {
-                        let want = answer(mode, policy, p, (eighth, 8), lo, hi);
-                        let (slot, leaves) = ask(mode, policy, exact, dither);
-                        if (slot.index(), leaves) != want {
-                            return Maybe::Is(Case {
-                                mode,
-                                policy,
-                                range: (lo, hi),
-                                anchor,
-                                ratio: (num, den),
-                                eighth,
-                                got: (slot.index(), leaves),
-                                want,
-                            });
-                        }
+    for (origin, exact, p) in near(lo, hi).chain(far()) {
+        for eighth in eighths() {
+            let dither = Dither::at(Fraction::of(eighth, 8));
+            for &mode in modes {
+                for &policy in policies {
+                    let want = answer(mode, policy, p, (eighth, 8), lo, hi);
+                    let (slot, leaves) = ask(mode, policy, exact, dither);
+                    if (slot.index(), leaves) != want {
+                        return Maybe::Is(Case {
+                            mode,
+                            policy,
+                            range: (lo, hi),
+                            origin,
+                            eighth,
+                            got: (slot.index(), leaves),
+                            want,
+                        });
                     }
                 }
             }
@@ -350,5 +422,31 @@ fn the_wide_feed_reaches_past_either_end_of_the_index_by_more_than_2_to_the_62()
     assert!(
         odd_denominator > 0,
         "the feed never writes an off-grid seventh"
+    );
+}
+
+#[test]
+fn the_far_feed_reaches_the_floors_a_formed_step_reaches() {
+    // Counted as the floor and the step `round_slot` returns under `Ceil`, which
+    // steps up wherever a remainder was written, against the four-limb
+    // integer's two ends and against `±2^255` formed as a power of two.
+    let half = |negative| {
+        let Maybe::Is(v) = Limbs::power(2, 255) else { unreachable!() };
+        if negative { v.negated() } else { v }
+    };
+    let (mut ends, mut halves_off_grid) = (0, 0);
+    for (_, exact, _) in far() {
+        let r = round_slot(Mode::Ceil, exact, Dither::UNUSED);
+        ends += usize::from(r.down == Limbs::end(false) || r.down == Limbs::end(true));
+        halves_off_grid +=
+            usize::from((r.down == half(false) || r.down == half(true)) && r.step() == 1);
+    }
+    assert_eq!(
+        ends, 2,
+        "the feed does not reach both ends of the four limbs"
+    );
+    assert!(
+        halves_off_grid >= 2,
+        "the feed writes no remainder past 2^255"
     );
 }

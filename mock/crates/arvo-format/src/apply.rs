@@ -30,7 +30,6 @@ mod position;
 
 use core::cmp::Ordering;
 
-#[cfg(test)]
 use notko::Maybe;
 pub use position::{Dither, Exact, Fraction, Remainder};
 
@@ -102,12 +101,26 @@ impl Rounded {
     /// is far past it. Each reduction is below the span, so the difference plus
     /// the step lies in `(-span, span]` and the last reduction lands it inside
     /// the range. The step is added after the reductions rather than to the
-    /// floor. For a position in range this is the rounded slot itself.
+    /// floor.
     #[must_use]
     #[inline]
     const fn reduced(self, lo: i128, span: i128) -> Slot {
         let offset = self.down.residue(span) - lo.rem_euclid(span) + self.step();
         Slot::at(lo + offset.rem_euclid(span))
+    }
+
+    /// The rounded slot of a position `lands_within` has put in range.
+    ///
+    /// In range the floor lies in `[lo - 1, hi]`, which the index holds except
+    /// one under its own bottom, and that floor is in range only stepping onto
+    /// `i128::MIN`. At `hi` the step is zero, so the sum stays in the index.
+    #[must_use]
+    #[inline]
+    const fn landed(self) -> Slot {
+        match self.down.index() {
+            Maybe::Is(floor) => Slot::at(floor + self.step()),
+            Maybe::Isnt => Slot::at(i128::MIN),
+        }
     }
 
     /// The rounded slot as an index, for a test reading a position the index
@@ -218,7 +231,7 @@ const fn complete_slot(policy: Policy, rounded: Rounded, min: Slot, max: Slot) -
     // An admitted range spans at most `2^64` slots, so the span fits.
     let span = hi - lo + 1;
     if rounded.lands_within(lo, hi) {
-        return rounded.reduced(lo, span);
+        return rounded.landed();
     }
     match policy {
         Policy::Wrap => rounded.reduced(lo, span),
