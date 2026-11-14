@@ -38,7 +38,8 @@ remainder cannot hold. The quotient takes its divisor as a type that cannot be z
 the build checks or a slot of a format in which no slot names the zero, so there is no division by zero
 to handle at run time. Floating point formats are not yet admitted by any
 of them: the applied map has no magnitude coordinate to land a result at. A value is landed on one by
-`land`, which saturates or clamps past the ends and refuses wrapping on a set that is not one progression.
+`land`, which saturates or clamps past the ends, wraps only on one grid, and refuses at compile time a
+slot range not holding zero over more than one magnitude.
 
 Two standards are written here as themselves, under `standards`. MATLAB's `fi` and `fimath` are a word
 length and a fraction length over the shipped modes and policies, and IEEE 754's binary16, binary32,

@@ -2227,7 +2227,12 @@ of its own that could disagree with the map.
 
 The value is a `Scaled`, `num / den * radix^power`, which names a point of the ambient domain with no
 magnitude in it, in the radix of the format it is landed on. Its denominator is a `NonZeroU128`, so a
-point always names a ratio and building one checks nothing.
+point always names a ratio and building one checks nothing. Two points compare by nothing: equality of
+the parts would call `1/2` and `2/4` different, and no step here asks whether two points are one.
+
+`land` forces `Format::ADMITTED`, so a phase over a zero denominator, which names no member, is refused
+when the signature is built and never reached at run time, under
+`ruling::never_a_runtime_check_and_one_lowered_path`.
 
 ### The finest grid in range is the nearest member
 
@@ -2254,16 +2259,23 @@ A constant quantum is one magnitude, and there `land` is the rounding and the ra
 
 A member at the magnitude whose step is `radix^s` is `p/q radix^BASE + slot radix^s`, with the phase
 `p / q` in lowest terms and in units of the magnitude-zero quantum, as `Format` states it. So the
-position of the point there is `num/den radix^t - p/q radix^b`, with `t = power - s` and
-`b = BASE - s`. The two terms are brought over one denominator by `c = max(0, -t, -b)`, with `b` left
-out where `p` is zero so that a zero phase never forms a power it does not need: the position is
-`num q radix^(t + c) - p den radix^(b + c)` over `D = den q radix^c`, formed in the four limbs and placed
-by the ending the exact steps share. A position whose floor leaves the slot index is past the range at
-that magnitude. A magnitude whose `D` passes `2^256 - 1` holds no position. One whose numerator passes it
-holds no position either, unless the numerator is provably past the index: where one term or their
-difference leaves the limbs while what else is formed is under `2^255`, and `D` is under `2^128`, the
-numerator is at least `2^255` in magnitude and the position at least `2^127` slots out, on the side of
-the term that left.
+position of the point there is its distance from the phase's point, `num/den radix^power - p/q
+radix^BASE`, over `radix^s`. That distance is one quantity for every magnitude, and it is formed once:
+with `e = min(power, BASE)`, or `power` where `p` is zero so that a zero phase never forms a power it
+does not need, it is `K = num q radix^(power - e) - p den radix^(BASE - e)` over `D0 = den q`, in units
+of `radix^e`. At the magnitude of step `radix^s`, with `m = e - s`, the position is `K radix^max(m, 0)`
+over `D0 radix^max(-m, 0)`, formed in the four limbs and placed by the ending the exact steps share. No
+numerator holds two terms that cancel, so a point near the phase's point on a fine grid is as formable
+as one near zero.
+
+A position whose floor leaves the slot index is past the range at that magnitude. Where `K` leaves the
+limbs, one of its terms left while the other is under `2^255`, so `K` is at least `2^255` in magnitude
+on that term's side; where a numerator `K radix^m` leaves them, it is at least `2^256`. Either is past the
+range at the magnitude where the divisor times one more than the range's largest magnitude is under
+`2^255`, on that side. A position neither formed nor so provably past is one the four limbs cannot read,
+which is the limit of the four-limb remainder under
+`arvo_s_exact_position_carries_no_remainder_denominator_past`. The walk ends there with nothing: the
+point may sit at that magnitude, and a coarser one is then not the finest in range.
 
 The rounding and the range question at each magnitude are `panic_on_overflow`'s, so the mode, the
 dither and the stochastic decision are read exactly as `adapt` reads them.
@@ -2271,15 +2283,14 @@ dither and the stochastic decision are read exactly as `adapt` reads them.
 ### Where the walk starts
 
 Every magnitude finer than the landing puts the position past the range, and for a binary64 value most
-of them do. With `|num| >= 2^(bits(num) - 1)`, `den < 2^bits(den)`, and `radix^t >= 2^(t L)` where `L`
-is `floor(log2 radix)` for `t >= 0` and `ceil(log2 radix)` for `t < 0`, a shift at which
-`t L + bits(num) - 1 - bits(den)` reaches `max(bits(range), 64) + 2` names a value term past twice the
-largest magnitude the range holds. That is past the range with the phase's term and the rounding's one
-slot included wherever the phase's term is at most `2^63` slots, which holds where `b <= 0` at every
-magnitude skipped: where the phase is zero, or the law rises, since then `b = -SLOPE m`. The smallest
-such shift is computed from the law in closed form and the walk starts at the first magnitude below it,
-so the magnitudes it skips are ones no mode could land on. A falling law with a nonzero phase is walked
-from its finest magnitude, since there `b` is positive and the phase's term grows with it.
+of them do. With `|K| >= 2^(bits(K) - 1)`, `D0 < 2^bits(D0)`, and `radix^m >= 2^(m L)` where `L` is
+`floor(log2 radix)` for `m >= 0` and `ceil(log2 radix)` for `m < 0`, a shift at which
+`m L + bits(K) - 1 - bits(D0)` reaches `max(bits(range), 64) + 2` names a position past twice the
+largest magnitude the range holds, the rounding's one slot included. A `K` past the limbs counts as 256
+bits, which is less than it has. The phase is inside `K`, so the bound holds on every law, rising,
+falling and phased alike. The smallest such shift is computed from the law in closed form and the walk
+starts at the first magnitude below it, so the magnitudes it skips are ones no mode could land on. A zero
+`K` is the phase's own point, slot zero at every magnitude, and is walked from the finest.
 
 ### Past the ends of the union
 
@@ -2291,17 +2302,23 @@ stamped by experts.
 Saturation and clamping are defined on any bounded set, and send a point past an end to that end. Both
 ends of the union sit on the top magnitude, the coarsest, where the slot range's own ends are the
 union's, since the range holds zero. So `land` hands the position at the top magnitude to `adapt`, which
-pins it there, and a position the top magnitude cannot form short of the past-the-index bound above
-lands nothing.
+pins it there, and one past the index there pins at the end of its side. A position the top magnitude
+cannot read lands nothing.
 
 Wrapping is admitted exactly where the representable set is one arithmetic progression, and is refused
 at compile time from the declared signature everywhere else. `is_one_progression` asks that of the set,
-where `is_constant_family` asks of the law's slope only. A constant quantum is one progression. A
+where `is_constant_family` asks of the law's slope only, and it names that refusal. Admission is
+narrower for now: the one-grid test beside it, a zero slope or a single magnitude, implies one
+progression, and it is what admits wrapping until the case below is built. A constant quantum is one progression. A
 magnitude-indexed set is one where each coarser magnitude adds at most its one next member at each end of
 what the finer ones hold, with a one-slot range one where it has at most two members. That holds only
 degenerately, over at most two magnitudes with slots within -1 to 1, such as slots 0 to 1 at quanta 1
 and 2, which hold 0, 1 and 2. On a constant quantum the position past the range is its one magnitude's,
-and `adapt` wraps it as on any grid. On a magnitude-indexed one-progression set the wrap is in the
+and `adapt` wraps it as on any grid. Wrapping reads the residue modulo the range's count, which a
+position pinned at the end of the index has lost, so where the floor is past the index and the policy
+wraps, `land` reduces the floor modulo the count onto the range, keeping the remainder, before `adapt`
+reads it: `2^130` on four signed bits wraps to slot 0. A floor the four limbs do not hold has no known
+residue, and wrapping it lands nothing. On a magnitude-indexed one-progression set the wrap is in the
 flattened progression, modulo its count of finest steps, and not in the top magnitude's slot range that
 `adapt` reads, so landing at the top and adapting would wrap to the wrong member; that is not built, and
 `land` refuses it at compile time as not yet admitted, under
@@ -2314,22 +2331,27 @@ question of wrapping.
 
 ### The laws this section owes tests for
 
-An oracle written from the membership predicate, which places the value at every magnitude in the
-host's integer as `(x - phase radix^BASE) / radix^s` over the least exponent of the three, keeps the
-magnitudes whose rounded position is in range and takes the one with the smallest step, against `land`,
-every mode, on a rising and a falling binary law, a phased law on each, a decimal law, the constant
-family, and 64-bit slot ranges at shifts where the walk starts within a few magnitudes of the landing,
-numerators past 100 bits on the decimal ones included. Every member of a phased format, rising and
-falling, landed exactly, on the grid at the finest magnitude holding it, which reads no position formula.
-The two points the first review reproduced: `21/32` on the phased rising law, and `2^126` on the 64-bit
-decimal range. A value past what the host integer positions, and past each end under saturation and
-clamping, on a rising and a falling law, including one whose top position leaves the four limbs. Wrapping
-past the range on a constant quantum. `is_one_progression` on a constant quantum, on the two degenerate
-one-progression laws with a nonzero slope (slots 0 to 1 at quanta 1 and 2, slots -1 to 1 at radix two
-over two magnitudes) as the case the slope test gets wrong, on a one-slot range over two and three
-magnitudes, and on slots 0 to 3 at quanta 1, 2 and 4, which is not one. Compile-fail pairs: wrapping on
-a set that is not one progression, wrapping on a magnitude-indexed one-progression set, and a slot range
-not holding zero over two magnitudes, each beside its admitted twin. And the IEEE parity suites land
+An oracle written from the membership predicate, which forms the point's distance from the phase's point
+once and places it at every magnitude in the four limbs, keeps the magnitudes whose rounded position is
+in range and takes the one with the smallest step, against `land`, every mode, on a rising and a falling
+binary law, a phased law on each, a decimal law, the constant family, and 64-bit slot ranges at shifts
+where the walk starts within a few magnitudes of the landing, numerators past 100 bits on the decimal
+ones included. Where it meets a magnitude it cannot place before any that holds the point, it expects
+nothing from `land`, so no point is left out of the count. Every member of a phased format, rising and
+falling, landed exactly under every mode, on the grid at the finest magnitude holding it, which reads no
+position formula. Three points the walk once missed: `21/32` on the phased rising law, `2^126` on the
+64-bit decimal range, and `1/2 + 1/(2^128 + 2)` on a falling law of 300 magnitudes with a phase, which
+lands at magnitude 135 on slot 127. A falling phased law whose members sit `2^99` from zero, landed from
+its finest magnitude. A value past what the host integer positions, and past each end under saturation
+and clamping, on a rising and a falling law, including one whose top position leaves the four limbs.
+Nothing at `2^-256` on eight signed bits, whose remainder the four limbs cannot hold. Wrapping past the
+range on a constant quantum, `2^130` included. `is_one_progression` on a constant quantum, on the two
+degenerate one-progression laws with a nonzero slope (slots 0 to 1 at quanta 1 and 2, slots -1 to 1 at
+radix two over two magnitudes) as the case the slope test gets wrong, on a one-slot range over two and
+three magnitudes, on slots 0 to 3 at quanta 1, 2 and 4, which is not one, and on a falling law, a decimal
+law and a range on one side of zero. Compile-fail pairs: wrapping on a set that is not one progression,
+wrapping on a magnitude-indexed one-progression set, a slot range not holding zero over two magnitudes,
+and a phase over a zero denominator, each beside its admitted twin. And the IEEE parity suites land
 through `land` itself, the overflow region included, so the host's IEEE arithmetic checks it over points
 drawn across each format's exponent range, every direction.
 
