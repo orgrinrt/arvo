@@ -20,12 +20,6 @@
 //! below the smallest, the dropped part decides the last kept digit by the
 //! direction, and a carry to `radix^p` drops one more. Each format's numbers are
 //! written in as the standard's, a `Standard` in the suite that runs it.
-//!
-//! It is compiled into three test targets and each uses part of it, so the
-//! allow below is about the compilation unit rather than about anything here
-//! being unused.
-
-#![allow(dead_code)]
 
 use arvo_format::adapt::DeclaredSignature;
 use arvo_format::apply::{Dither, Exact, Remainder, adapt, panic_on_overflow};
@@ -358,43 +352,6 @@ pub fn rule(dir: Direction, f: Standard, c: i128, q: i32) -> Option<Value> {
     })
 }
 
-/// Inputs as `c * radix^q`: structured ties and carries, then a sweep from below
-/// the smallest subnormal to past the largest finite member, with a tie drawn
-/// beside every value.
-pub fn inputs(f: Standard, seed: u64) -> Vec<(i128, i32)> {
-    let r = f.radix as i128;
-    let half = r / 2;
-    let top = power(f.radix, f.p).unwrap();
-    let mut v = vec![
-        (top * r + half, 0),
-        (top * r + r + half, 0),
-        (top * r * r - half, 0),
-        (-(top * r + half), 0),
-        (-(top * r + r + half), 0),
-        (half, f.qmin - 1),
-        (r + half, f.qmin - 1),
-        (-(2 * r + half), f.qmin - 1),
-        (top * r - 1, f.qmax),
-        (top - 1, f.qmax),
-        (top * r - half, f.qmax - 1),
-    ];
-    let mut d = Draws::seeded(seed);
-    for _ in 0 .. 3000 {
-        let c = d.within(-999_999_999_999_999_999, 999_999_999_999_999_999) as i128;
-        let q = d.within((f.qmin - 20) as i64, (f.qmax + 2) as i64) as i32;
-        v.push((c, q));
-        // A tie: a full significand, one more digit, and half the radix.
-        let s = d.within(power(f.radix, f.p - 1).unwrap() as i64, (top - 1) as i64) as i128;
-        let sign = if d.next() & 1 == 0 { 1 } else { -1 };
-        v.push((
-            sign * (s * r + half),
-            d.within((f.qmin - 1) as i64, (f.qmax - 1) as i64) as i32,
-        ));
-    }
-    v.extend(underflow(f, seed));
-    v
-}
-
 /// The lowest exponent whose unit below the smallest subnormal the unsigned
 /// 128-bit integer holds: the first unit past the slot index at radix two, one
 /// above it at radix ten. Below it the search hands its stand-in.
@@ -447,11 +404,6 @@ pub fn underflow(f: Standard, seed: u64) -> Vec<(i128, i32)> {
         ));
     }
     v
-}
-
-/// How many inputs a landing answers differently from the rule.
-pub fn misses<L: Landing>(dir: Direction, f: Standard, seed: u64) -> usize {
-    misses_over::<L>(dir, f, inputs(f, seed))
 }
 
 /// How many of the given inputs a landing answers differently from the rule.
