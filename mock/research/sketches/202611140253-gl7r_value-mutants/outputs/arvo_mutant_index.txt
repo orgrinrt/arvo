@@ -1,0 +1,14 @@
+RUSTFLAGS=--cfg arvo_mutant_index cargo test -p arvo-numeral --no-fail-fast --test the_host_door
+     Running tests/the_host_door.rs (/home/user/target/debug/deps/the_host_door-53ffd0534b7507d3)
+test every_host_integer_comes_in_as_adapted_at_the_platform_and_fixed_points ... FAILED
+test every_host_integer_comes_in_as_adapted_at_widths_1_to_16 ... FAILED
+test every_host_integer_comes_in_as_adapted_at_widths_17_to_32 ... FAILED
+test every_host_integer_comes_in_as_adapted_at_widths_33_to_48 ... FAILED
+test the_named_doors_sit_where_the_policy_puts_them ... FAILED
+test every_host_integer_comes_in_as_adapted_at_widths_49_to_64 ... FAILED
+failures:
+failures:
+test result: FAILED. 4 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+error: test failed, to rerun pass `-p arvo-numeral --test the_host_door`
+error: 1 target failed:
+exit 101

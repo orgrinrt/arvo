@@ -1,0 +1,13 @@
+RUSTFLAGS=--cfg arvo_mutant_convert cargo test -p arvo-numeral --no-fail-fast --test the_conversion
+     Running tests/the_conversion.rs (/home/user/target/debug/deps/the_conversion-ebe43f71307d30c1)
+test a_fixed_point_member_converts_between_two_exponents ... FAILED
+test an_integer_converts_onto_a_fixed_point_grid_and_back ... FAILED
+test the_conversion_is_a_constant_where_its_operand_is ... FAILED
+test the_named_conversions_sit_where_arithmetic_puts_them ... FAILED
+test a_wide_member_converts_as_the_oracle_does_on_the_lattice_and_seeded_members ... FAILED
+failures:
+failures:
+test result: FAILED. 5 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+error: test failed, to rerun pass `-p arvo-numeral --test the_conversion`
+error: 1 target failed:
+exit 101

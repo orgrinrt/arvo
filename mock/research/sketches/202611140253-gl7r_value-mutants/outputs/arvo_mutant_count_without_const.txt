@@ -1,0 +1,11 @@
+RUSTFLAGS=--cfg arvo_mutant_count cargo test -p arvo-numeral --no-fail-fast --features hlist --test the_count_without_const
+     Running tests/the_count_without_const.rs (/home/user/target/debug/deps/the_count_without_const-cb16f5023dd1bfc4)
+test a_length_past_the_range_aborts_under_the_default_check - should panic ... FAILED
+test a_length_is_a_call_in_a_value ... FAILED
+test the_default_check_passes_a_length_that_fits ... FAILED
+failures:
+failures:
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+error: test failed, to rerun pass `-p arvo-numeral --test the_count_without_const`
+error: 1 target failed:
+exit 101
