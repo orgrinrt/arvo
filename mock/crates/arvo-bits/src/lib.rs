@@ -17,10 +17,12 @@
 //! This crate introduces the numeric category a second time, the way
 //! `arvo_format` does for its own reasons: the crate that defines a value at an
 //! exact width cannot express itself in types that do not exist yet, so `u64`
-//! appears here as the one door this crate owns. Every crate above this one
+//! appears here as the door this crate owns, with the host's 128-bit integer
+//! at `halves` and its byte slice at `Bytes`. Every crate above this one
 //! uses `Bits` and is checked normally.
 //!
-//! It depends on nothing in this workspace. `arvo_format`'s own design states
+//! It depends on nothing in this workspace, and on notko, the foundation under
+//! the stack, for the `Maybe` a byte run's walk returns. `arvo_format`'s own design states
 //! plainly that a format is not a container and holds no machine carrier;
 //! `arvo_placement`'s own design derives placement metadata and is checked
 //! against ever holding a host primitive itself. Neither crate can hold a
@@ -128,7 +130,35 @@ impl<const N: u32> Bits<N> {
     pub const fn cast<const M: u32>(self) -> Bits<M> {
         Bits::<M>::masked(self.raw())
     }
+
+    /// The bitwise exclusive or of two values at this width.
+    ///
+    /// A bit operation and not arithmetic: no bit of the result depends on any
+    /// other bit position, so nothing carries and there is no overflow policy to
+    /// choose. Both sides are within `N` bits, so the result is too and needs
+    /// no mask. A consumer xoring two widths casts one of them first.
+    #[must_use]
+    pub const fn xor(self, other: Self) -> Self {
+        Self(self.0 ^ other.0)
+    }
 }
+
+impl Bits<64> {
+    /// A 128-bit host value split into its low half and its high half, in
+    /// that order.
+    ///
+    /// The carrier stops at sixty-four bits, so a wider value is held as an
+    /// array of carriers, and this is the door where the host's 128-bit
+    /// integer meets that array. Total, and nothing is lost: the two halves
+    /// hold every bit of `raw` between them.
+    #[must_use]
+    pub const fn halves(raw: u128) -> [Self; 2] {
+        [Self::masked(raw as u64), Self::masked((raw >> 64) as u64)]
+    }
+}
+
+mod bytes;
+pub use bytes::Bytes;
 
 #[cfg(test)]
 mod tests;

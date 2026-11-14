@@ -3,10 +3,11 @@ name = "arvo-bits"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "An exact-width bit container: masked construction and masked cast, no arithmetic"
+description = "An exact-width bit container: masked construction, masked cast and xor, and a byte run, no arithmetic"
 readme = "README.md.tmpl"
 
 [dependencies]
+notko.workspace = true
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"

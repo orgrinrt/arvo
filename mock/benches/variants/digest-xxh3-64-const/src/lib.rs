@@ -6,8 +6,8 @@
 
 use core::hint::black_box;
 
+use arvo_bits::Bytes;
 use arvo_digest::Xxh3;
-use arvo_numeral::Bytes;
 use mockspace_bench_core::{FfiBenchCall, timed};
 use mockspace_bench_macro::bench_variant;
 
@@ -19,7 +19,7 @@ fn run<const N: usize>(input: &[u8; N], output: &mut [u8; 8]) -> FfiBenchCall {
     timed! {
         run {
             let bytes: &[u8] = black_box(&input[..]);
-            *output = Xxh3::<64>::of_const(Bytes::of(bytes)).raw().host().to_le_bytes();
+            *output = Xxh3::<64>::of_const(Bytes::of(bytes)).raw().raw().to_le_bytes();
         }
     }
 }

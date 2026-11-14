@@ -5,7 +5,7 @@
 
 //! XXH3 at 64 and 128 bits, through xxhash-rust.
 
-use arvo_numeral::{Bytes, Word};
+use arvo_bits::{Bits, Bytes};
 
 use crate::Digest;
 
@@ -22,13 +22,13 @@ impl Xxh3<64> {
     #[must_use]
     #[inline]
     pub fn of(bytes: Bytes<'_>) -> Digest<64> {
-        Digest::from_raw(Word::of(xxhash_rust::xxh3::xxh3_64(bytes.host())))
+        Digest::from_raw(Bits::masked(xxhash_rust::xxh3::xxh3_64(bytes.host())))
     }
 
     /// The 64 bit XXH3 digest of `bytes`, in const context.
     #[must_use]
     pub const fn of_const(bytes: Bytes<'_>) -> Digest<64> {
-        Digest::from_raw(Word::of(xxhash_rust::const_xxh3::xxh3_64(bytes.host())))
+        Digest::from_raw(Bits::masked(xxhash_rust::const_xxh3::xxh3_64(bytes.host())))
     }
 }
 
@@ -37,12 +37,14 @@ impl Xxh3<128> {
     #[must_use]
     #[inline]
     pub fn of(bytes: Bytes<'_>) -> Digest<128> {
-        Digest::from_raw(Word::of(xxhash_rust::xxh3::xxh3_128(bytes.host())))
+        Digest::from_raw(Bits::halves(xxhash_rust::xxh3::xxh3_128(bytes.host())))
     }
 
     /// The 128 bit XXH3 digest of `bytes`, in const context.
     #[must_use]
     pub const fn of_const(bytes: Bytes<'_>) -> Digest<128> {
-        Digest::from_raw(Word::of(xxhash_rust::const_xxh3::xxh3_128(bytes.host())))
+        Digest::from_raw(Bits::halves(xxhash_rust::const_xxh3::xxh3_128(
+            bytes.host(),
+        )))
     }
 }

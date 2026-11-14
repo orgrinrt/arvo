@@ -7,8 +7,10 @@
 
 use core::hint::black_box;
 
+use arvo_bits::Bytes;
+// FIXME(arvo_format_admits_the_wrapping_product_over_the_unsigned_64): this variant
+// builds once `Fnv1a<64>` joins; the `digest-crossover` bench waits on it.
 use arvo_digest::Fnv1a;
-use arvo_numeral::Bytes;
 use mockspace_bench_core::{FfiBenchCall, timed};
 use mockspace_bench_macro::bench_variant;
 
@@ -20,7 +22,7 @@ fn run<const N: usize>(input: &[u8; N], output: &mut [u8; 8]) -> FfiBenchCall {
     timed! {
         run {
             let bytes: &[u8] = black_box(&input[..]);
-            *output = Fnv1a::<64>::of(Bytes::of(bytes)).raw().host().to_le_bytes();
+            *output = Fnv1a::<64>::of(Bytes::of(bytes)).raw().raw().to_le_bytes();
         }
     }
 }

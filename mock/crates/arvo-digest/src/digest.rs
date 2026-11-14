@@ -6,7 +6,6 @@
 //! The result type, and the widths it exists at.
 
 use arvo_bits::Bits;
-use arvo_numeral::Word;
 
 /// A digest width, as a type.
 ///
@@ -22,25 +21,26 @@ mod sealed {
     impl DigestWidth for super::Width<128> {}
 }
 
-/// The host word a digest of a given width is held in.
+/// The container a digest of a given width is held in.
 ///
 /// Implemented for `Width<32>`, `Width<64>` and `Width<128>` and sealed, so
 /// `Digest<BITS>` at any other width is not a type.
 pub trait Carrier: sealed::DigestWidth {
-    /// The `arvo_numeral::Word` exactly as wide as the digest.
+    /// The `arvo_bits` container exactly as wide as the digest: one `Bits` up to
+    /// sixty-four bits, and two `Bits<64>`, low half first, at 128.
     type Raw: Copy + Eq + core::fmt::Debug;
 }
 
 impl Carrier for Width<32> {
-    type Raw = Word<32>;
+    type Raw = Bits<32>;
 }
 
 impl Carrier for Width<64> {
-    type Raw = Word<64>;
+    type Raw = Bits<64>;
 }
 
 impl Carrier for Width<128> {
-    type Raw = Word<128>;
+    type Raw = [Bits<64>; 2];
 }
 
 /// A digest, `BITS` wide.
@@ -62,7 +62,7 @@ where
         Self(raw)
     }
 
-    /// The digest as its host word, the one door out.
+    /// The digest in its container, the one door out.
     #[must_use]
     pub const fn raw(self) -> <Width<BITS> as Carrier>::Raw {
         self.0
@@ -72,22 +72,22 @@ where
 impl Digest<32> {
     /// The low `N` bits, at the width a consumer names.
     ///
-    /// The masked cast `arvo-bits` owns. `N` wider than 32 is refused when
-    /// this function is instantiated.
+    /// `Bits::cast`, the masked cast `arvo-bits` owns. `N` wider than 32 is
+    /// refused when this function is instantiated.
     #[must_use]
     pub const fn bits<const N: u32>(self) -> Bits<N> {
         const { assert!(N <= 32, "a 32 bit digest has no bits above 32 to give") };
-        Bits::<N>::masked(self.0.widen().host())
+        self.0.cast::<N>()
     }
 }
 
 impl Digest<64> {
     /// The low `N` bits, at the width a consumer names.
     ///
-    /// The masked cast `arvo-bits` owns. `Bits` holds at most 64 bits, so
+    /// `Bits::cast`, the masked cast `arvo-bits` owns. `Bits` holds at most 64 bits, so
     /// every `N` it admits fits a 64 bit digest.
     #[must_use]
     pub const fn bits<const N: u32>(self) -> Bits<N> {
-        Bits::<N>::masked(self.0.host())
+        self.0.cast::<N>()
     }
 }

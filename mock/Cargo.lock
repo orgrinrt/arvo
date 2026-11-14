@@ -6,6 +6,7 @@ version = 4
 name = "arvo-bits"
 version = "0.0.0"
 dependencies = [
+ "notko",
  "trybuild",
 ]
 
@@ -14,6 +15,7 @@ name = "arvo-digest"
 version = "0.0.0"
 dependencies = [
  "arvo-bits",
+ "arvo-format",
  "arvo-numeral",
  "notko",
  "trybuild",

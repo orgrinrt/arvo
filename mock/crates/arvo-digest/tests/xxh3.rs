@@ -8,8 +8,14 @@
 //! each side of every class boundary: 0, 1 to 3, 4 to 8, 9 to 16, 17 to 128,
 //! 129 to 240, and the long path from 241 on, across a stripe and a block.
 
+use arvo_bits::{Bits, Bytes};
 use arvo_digest::Xxh3;
-use arvo_numeral::Bytes;
+
+/// A 128 bit digest's two halves joined back into the host's integer, low
+/// half first, the way the vectors state it.
+const fn joined([low, high]: [Bits<64>; 2]) -> u128 {
+    ((high.raw() as u128) << 64) | low.raw() as u128
+}
 
 const PRIME32: u64 = 2_654_435_761;
 const PRIME64: u64 = 11_400_714_785_074_694_797;
@@ -70,12 +76,12 @@ fn check_64(table: &[(usize, u64)]) {
     for &(len, want) in table {
         let bytes = &BUFFER[.. len];
         assert_eq!(
-            Xxh3::<64>::of(Bytes::of(bytes)).raw().host(),
+            Xxh3::<64>::of(Bytes::of(bytes)).raw().raw(),
             want,
             "XXH3 64 runtime, length {len}"
         );
         assert_eq!(
-            Xxh3::<64>::of_const(Bytes::of(bytes)).raw().host(),
+            Xxh3::<64>::of_const(Bytes::of(bytes)).raw().raw(),
             want,
             "XXH3 64 const, length {len}"
         );
@@ -87,12 +93,12 @@ fn check_128(table: &[(usize, u64, u64)]) {
         let bytes = &BUFFER[.. len];
         let want = (u128::from(high) << 64) | u128::from(low);
         assert_eq!(
-            Xxh3::<128>::of(Bytes::of(bytes)).raw().host(),
+            joined(Xxh3::<128>::of(Bytes::of(bytes)).raw()),
             want,
             "XXH3 128 runtime, length {len}"
         );
         assert_eq!(
-            Xxh3::<128>::of_const(Bytes::of(bytes)).raw().host(),
+            joined(Xxh3::<128>::of_const(Bytes::of(bytes)).raw()),
             want,
             "XXH3 128 const, length {len}"
         );
@@ -124,10 +130,8 @@ fn the_sanity_buffer_is_the_reference_one() {
 fn the_const_path_runs_in_const_context() {
     const LONG: u64 = Xxh3::<64>::of_const(Bytes::of(BUFFER.split_at(1024).0))
         .raw()
-        .host();
-    const SHORT: u128 = Xxh3::<128>::of_const(Bytes::of(BUFFER.split_at(17).0))
-        .raw()
-        .host();
+        .raw();
+    const SHORT: u128 = joined(Xxh3::<128>::of_const(Bytes::of(BUFFER.split_at(17).0)).raw());
     assert_eq!(LONG, 0xDD85_C9B5_C110_9C5C);
     assert_eq!(
         SHORT,
