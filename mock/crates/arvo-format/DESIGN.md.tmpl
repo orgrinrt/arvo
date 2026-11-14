@@ -2003,38 +2003,16 @@ format the condition admits has every product's remainder. The ticket is
 A formed step has a position, so the product is admitted wherever its step is formed. The exact
 position's floor is held in the four limbs, and a numerator there over a `D` of at least one has its
 floor there too; where the remainder is not zero `D` is at least two, so the floor is at most half the
-limbs' reach and the step a rounding adds fits. Nothing about the slot index enters: `Integer<64>`, whose
-largest position at exponent zero is `(-2^63)^2 = 2^126`, and `UFixed<64, k>` at every `k`, whose top
-corner at `k = 0` is `(2^64 - 1)^2`, just under `2^128`, are admitted under every policy. At `k = 0` under
-wrapping that corner wraps to 1, as the host's wrapping product on 64 unsigned bits does, and under
-saturation it pins to the range's top. A double-width exact sum at width 64, two signed 64-bit products
-added before either is adapted, would reach `2^127`; nothing here forms that sum, because each product
-is adapted before the next operation reads it.
-A product the slot index cannot carry is not yet admitted. The position is bilinear in the two slots,
-so over a box of slots it is extreme at the four corners, and the obligation computes the four corner
-positions with the step itself, each counted as far as one slot past where it sits when it is not on
-the grid, since a rounding mode may take it there. The ticket is
-`arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c`. Wrapping does not need that condition.
-What it reads of a position past the index is the floor's class modulo the range's count, the remainder,
-and, for the modes that read them, the floor's sign and its parity: toward zero reads the sign, and half
-to even the parity on a tie. The step forms the floor and the remainder in its four limbs past the index
-too, so `mul` hands `adapt` the floor reduced modulo twice the count, kept on its own side of zero, which
-keeps all three and which the index holds, an admitted range spanning at most `2^64` slots. `adapt` then
-rounds it as it would the true floor and wraps the result onto the range. The condition is asked only of
-a signature that does not wrap, and `is_multipliable_under` asks it without forcing it. `product_position`
-names a position with no policy and keeps it.
-
-That last condition is where the 64-bit ranges part. The signed 64-bit range's largest position at
-exponent zero is `(-2^63)^2 = 2^126`, which the index holds, so `Integer<64>` is admitted. The unsigned
-range's top corner is `(2^64 - 1)^2`, just under `2^128`, so `UFixed<64, k>` is not yet admitted for
-any `k` at or above zero under saturation or clamping. Under wrapping it is admitted from `k = 0` to
-`k = 128`, and at `k = 0` the corner wraps to 1, as the host's wrapping product on 64 unsigned bits does.
-At `k = 129` the corner itself, `(2^64 - 1)^2 2^129`, passes `2^256`, so the step is not formed under any
-policy. At `k = -1` the same corner halves to under `2^127` and rounds up by at most one slot, which the
-index holds, so `UFixed<64, k>` is admitted from `k = -255` to `k = -1`, and `UFixed<63, k>` from
-`k = -255` to `k = 1`; below `-255`, `D = 2^-k` passes `2^256 - 1`. A double-width exact sum at width 64, two signed 64-bit products added
-before either is adapted, reaches `2^127`, one past the index's top. Nothing here forms that sum,
-because each product is adapted before the next operation reads it.
+limbs' reach and the step a rounding adds fits. Nothing about the slot index enters, so where the step is
+formed is the same under every policy. `Integer<64>`, whose largest position at exponent zero is
+`(-2^63)^2 = 2^126`, is admitted. `UFixed<64, k>` is admitted from `k = -255` to `k = 128`: its top corner
+at `k = 0` is `(2^64 - 1)^2`, just under `2^128`, which under wrapping wraps to 1, as the host's wrapping
+product on 64 unsigned bits does, and under saturation pins to the range's top; at `k = 129` that corner,
+`(2^64 - 1)^2 2^129`, passes `2^256`, and below `k = -255` the step's `D = 2^-k` passes `2^256 - 1`, so
+neither step is formed. `UFixed<63, k>`, whose corner is a quarter the size, is admitted from `k = -255`
+to `k = 130`. A double-width exact sum at width 64, two signed 64-bit products added before either is
+adapted, would reach `2^127`; nothing here forms that sum, because each product is adapted before the next
+operation reads it.
 
 ### The operation and the surface
 
@@ -2062,10 +2040,9 @@ count among them, with a count of the pairs in each of those cells asserted rath
 and beside the corners against a reference that forms the position from the two values in a wide
 integer, rounds it by the mode's own rule and wraps it, reading no step code. The saturating product on
 the unsigned 64-bit range at exponent zero pinning a corner past `2^127` to the range's top, and the
-inverse round trip at width 64 through `mul`.
-integer, rounds it by the mode's own rule and wraps it, reading no step code; and `is_multipliable_under`
-agreeing with what `mul` admits on both sides of its boundary, at `UFixed<64, 128>` and `UFixed<64, 129>`
-under wrapping, and at `UFixed<64, -255>` and `UFixed<64, -256>` under every policy.
+inverse round trip at width 64 through `mul`. `is_multipliable` on both sides of where the step stops
+forming, at `UFixed<64, 128>` and `UFixed<64, 129>`, at `UFixed<64, -255>` and `UFixed<64, -256>`, and at
+`UFixed<63, 130>` and `UFixed<63, 131>`, with `mul` admitted under every policy at each admitted edge.
 
 Every member pair at widths one to eight against the applied map's oracle fed the exact rational
 position, every mode and shipped policy, at positive and negative exponents over signed and unsigned
