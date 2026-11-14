@@ -2,13 +2,14 @@
 
 A digest of explicit bytes, at a width the type names. Not cryptographic.
 
-Two algorithms by name, `Fnv1a` at 32 and 64 bits and `Xxh3` at 64 and 128 bits, and one switched
-digest, `Digest::<64>::of`, which runs FNV-1a on short input and XXH3 from a measured length on. Every
-path has a `const fn` form that gives the same value as the runtime one, and a digest narrows into
-`arvo_bits::Bits<N>` when the width a consumer pins it to is smaller.
+Two algorithms by name, `Fnv1a` at 32 bits and `Xxh3` at 64 and 128 bits. Every path has a `const fn`
+form that gives the same value as the runtime one, and a digest narrows into `arvo_bits::Bits<N>` when
+the width a consumer pins it to is smaller. FNV-1a at 64 bits and a switched digest, FNV-1a on short
+input and XXH3 from a measured length on, join once the 64-bit wrapping product is admitted below.
 
-Input is `arvo_numeral::Bytes` and the digest a host `Word` from the same crate, so no host integer is
-named here. Depends on `arvo-numeral`, `arvo-bits` and on `xxhash-rust` for XXH3. `no_std`, no allocation.
+Input is `arvo_bits::Bytes` and the digest is held in `arvo_bits::Bits`, with FNV-1a's product taken
+from `arvo-numeral`, so no host integer is named here. Depends on `arvo-numeral`, `arvo-bits` and on
+`xxhash-rust` for XXH3. `no_std`, no allocation.
 
 ## Status
 
