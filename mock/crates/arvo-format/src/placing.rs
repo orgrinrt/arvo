@@ -20,7 +20,7 @@ use notko::Maybe;
 use crate::apply::{Exact, Remainder};
 use crate::format::{Format, greatest_common_divisor, radix};
 use crate::quantum::Quantum;
-use crate::slots::Slot;
+use crate::slots::{Slot, Slots};
 use crate::wide::{Divided, Wide};
 use crate::width::Bool;
 
@@ -101,8 +101,9 @@ pub(crate) const fn times(a: Maybe<Wide>, b: Maybe<Wide>) -> Maybe<Wide> {
 /// denominator.
 #[derive(Clone, Copy)]
 pub(crate) enum Placed {
-    /// Past the end of the index on the negative side when it says so.
-    Past(bool),
+    /// Past an end of the index: the floor and the residue over the divisor, both
+    /// in the four limbs, the side the floor's sign.
+    Past(Wide, Wide),
     /// A numerator or denominator the four limbs do not hold, for a position
     /// whose sign is negative when it says so.
     Unformed(bool),
@@ -119,7 +120,7 @@ pub(crate) const fn over(numerator: Wide, divisor: Wide) -> Placed {
     } = numerator.floor_divided(divisor);
     match quotient.index() {
         Maybe::Is(slot) => Placed::At(slot, remainder),
-        Maybe::Isnt => Placed::Past(quotient.is_negative().get()),
+        Maybe::Isnt => Placed::Past(quotient, remainder),
     }
 }
 
@@ -128,7 +129,7 @@ pub(crate) const fn over(numerator: Wide, divisor: Wide) -> Placed {
 #[inline]
 pub(crate) const fn is_held(at: Placed) -> Bool {
     match at {
-        Placed::Past(_) | Placed::Unformed(_) => Bool::FALSE,
+        Placed::Past(..) | Placed::Unformed(_) => Bool::FALSE,
         Placed::At(slot, remainder) => Bool::of(remainder.is_zero().get() || slot < i128::MAX),
     }
 }
@@ -165,7 +166,8 @@ pub(crate) const fn saturated(negative: bool) -> Exact {
 #[inline]
 pub(crate) const fn positioned(divisor: Wide, at: Placed) -> Exact {
     match at {
-        Placed::Past(negative) | Placed::Unformed(negative) => saturated(negative),
+        Placed::Past(floor, _) => saturated(floor.is_negative().get()),
+        Placed::Unformed(negative) => saturated(negative),
         Placed::At(slot, remainder) => {
             if remainder.is_zero().get() {
                 return Exact::on_grid(Slot::at(slot));
@@ -173,6 +175,35 @@ pub(crate) const fn positioned(divisor: Wide, at: Placed) -> Exact {
             // The remainder is below the divisor, so it is already in `[0, 1)`
             // and the position is the floor slot itself.
             Exact::at(Slot::at(slot), Remainder::reduced(remainder, divisor))
+        },
+    }
+}
+
+/// A placed position as wrapping reads it, over `divisor`: a floor past the index
+/// reduced modulo the range's count onto the range, its remainder kept, and
+/// nothing for a step not formed.
+///
+/// Wrapping reads the floor's residue and the remainder and nothing else, and
+/// rounding one slot up from the reduced floor is rounding one slot up from the
+/// true one, which `adapt` wraps from the top to the bottom as it wraps any
+/// position past the range. So a position past the index needs no wider slot.
+#[inline]
+pub(crate) const fn wrapped<S: Slots>(divisor: Wide, at: Placed) -> Maybe<Exact> {
+    match at {
+        Placed::At(..) => Maybe::Is(positioned(divisor, at)),
+        Placed::Unformed(_) => Maybe::Isnt,
+        Placed::Past(floor, remainder) => {
+            let lo = S::MIN.index();
+            let count = S::MAX.index() - lo + 1;
+            let Maybe::Is(shifted) = floor.plus(Wide::of(-lo)) else {
+                return Maybe::Isnt;
+            };
+            match shifted.floor_divided(Wide::of(count)).remainder.index() {
+                Maybe::Is(residue) => {
+                    Maybe::Is(positioned(divisor, Placed::At(lo + residue, remainder)))
+                },
+                Maybe::Isnt => Maybe::Isnt,
+            }
         },
     }
 }

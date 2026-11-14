@@ -26,14 +26,13 @@ use core::num::NonZeroU128;
 
 use notko::Maybe;
 
-use crate::adapt::{Adaptation, DeclaredSignature};
+use crate::adapt::{DeclaredSignature, wraps};
 use crate::apply::{Dither, Exact, panic_on_overflow};
 use crate::format::{Format, is_one_progression, radix, step_exponent};
-use crate::overflow::{Overflow, Policy};
-use crate::placing::{Placed, Reduced, admitted_phase, positioned, saturated, times};
+use crate::placing::{Reduced, admitted_phase, over, positioned, saturated, times, wrapped};
 use crate::quantum::{Exponent, Magnitude, Quantum};
 use crate::slots::Slots;
-use crate::wide::{Divided, Wide};
+use crate::wide::Wide;
 
 /// A point of the ambient domain with no magnitude in it: `num / den * radix^power`.
 ///
@@ -107,10 +106,7 @@ impl<S: DeclaredSignature> Landable<S> {
              hold zero: the union of its magnitude ranges can have a gap between two magnitudes, \
              and no one grid there carries the mode's tie or dither"
         );
-        let wraps = matches!(
-            <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY,
-            Policy::Wrap
-        );
+        let wraps = wraps::<S>().get();
         assert!(
             !wraps || is_one_progression::<S::Format>().get(),
             "wrapping is refused on a format whose representable set is not one arithmetic \
@@ -148,10 +144,7 @@ pub const fn land<S: DeclaredSignature>(at: Scaled, dither: Dither) -> Maybe<Lan
     let Maybe::Is(distance) = distance::<S::Format>(at, admitted_phase::<S::Format>()) else {
         return Maybe::Isnt;
     };
-    let wraps = matches!(
-        <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY,
-        Policy::Wrap
-    );
+    let wraps = wraps::<S>().get();
     let last = <<S::Format as Format>::Quantum as Quantum>::MAGNITUDES.count() - 1;
     let start = first_candidate::<S::Format>(distance);
     let mut i = if start > last { last } else { start };
@@ -383,26 +376,11 @@ const fn position_at<F: Format>(
             Maybe::Isnt
         };
     };
-    let Divided {
-        quotient,
-        remainder,
-    } = numerator.floor_divided(divisor);
-    match quotient.index() {
-        Maybe::Is(slot) => Maybe::Is(positioned(divisor, Placed::At(slot, remainder))),
-        Maybe::Isnt if !wraps => Maybe::Is(saturated(quotient.is_negative().get())),
-        Maybe::Isnt => {
-            let lo = <F::Slots as Slots>::MIN.index();
-            let count = <F::Slots as Slots>::MAX.index() - lo + 1;
-            let Maybe::Is(shifted) = quotient.plus(Wide::of(-lo)) else {
-                return Maybe::Isnt;
-            };
-            match shifted.floor_divided(Wide::of(count)).remainder.index() {
-                Maybe::Is(residue) => {
-                    Maybe::Is(positioned(divisor, Placed::At(lo + residue, remainder)))
-                },
-                Maybe::Isnt => Maybe::Isnt,
-            }
-        },
+    let at = over(numerator, divisor);
+    if wraps {
+        wrapped::<F::Slots>(divisor, at)
+    } else {
+        Maybe::Is(positioned(divisor, at))
     }
 }
 
