@@ -33,12 +33,12 @@ member onto another declared grid, and each is built exactly that way: the exact
 declared signature, adapted once. They take and return slots, the coordinate the format is stated in.
 Beside the sum sits the verdict for where the adapted sum is associative, which reads the range and the
 phase rather than guessing from the sign. The product reads the phase, the radix and the quantum
-together, and is formed wide enough that what it leaves out is a step its four 64-bit limbs do not
-form. The quotient takes its divisor as a type that cannot be zero, either a constant
-the build checks or a slot of a format in which no slot names the zero, so there is no division by zero
-to handle at run time. Floating point formats are not yet admitted by any
-of them: the applied map has no magnitude coordinate to land a result at, and what wrapping means over
-a union of magnitude ranges is a canon question this crate does not answer.
+together, and is formed exactly up to `2^256`, so what it leaves out is a step past that. The
+quotient takes its divisor as a type that cannot be zero, either a constant the build checks or a slot
+of a format in which no slot names the zero, so there is no division by zero to handle at run time.
+Floating point formats are not yet admitted by any of them: the applied map has no magnitude
+coordinate to land a result at, and what wrapping means over a union of magnitude ranges is a canon
+question this crate does not answer.
 
 Two standards are written here as themselves, under `standards`. MATLAB's `fi` and `fimath` are a word
 length and a fraction length over the shipped modes and policies, and IEEE 754's binary16, binary32,
