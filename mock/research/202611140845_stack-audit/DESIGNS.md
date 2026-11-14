@@ -40,7 +40,7 @@ carries tickets saying no arithmetic runs through both sides of the IEEE parity
 interchange format (`arvo_nothing_puts_a_value_onto_an_ieee_754_interchange_forma`), the infinities
 and the signed zero have no member (`arvo_the_ieee_754_infinities_and_signed_zero_have_no_member`),
 and sum, product, quotient, conversion and the member type each refuse a quantum indexed by
-magnitude (five tickets; `grep -rn "FIXME(" mock/crates/arvo-format/src`). The honest state is that
+magnitude (four tickets covering the five; `grep -rn "FIXME(" mock/crates/arvo-format/src`). The honest state is that
 the grid of a float is expressed and the float is not. Whether a signed zero, two infinities and
 the values that are not numbers fit one affine predicate over a domain is the test, and it has not
 been run.
@@ -416,7 +416,7 @@ of their own as the numeral's proof now is.
 Inlining is now enforced here by a lint, `every-function-the-format-ships-is-inline`, which found
 209 functions unmarked when it was written (design round `202611132043-aun1`, reader's notes). The
 lint covers this crate only, and its own header carries a ticket for the other four
-(`mock/lints/every_function_the_format_ships_is_inline.rs:31-33`). The host door's two unmarked
+(`mock/lints/every_function_the_format_ships_is_inline.rs:33-34`). The host door's two unmarked
 functions in `arvo-numeral` are that ticket's first measured case.
 
 Mark: good as it is, as an oracle and as the home of the standards' declarations. Going wrong as
@@ -475,17 +475,20 @@ What remains is small, with one exception.
 
 | Where | What it says | What is true |
 |---|---|---|
-| `README.md:41` | General-purpose numerics "probably isn't the right thing" | Op: "Yes, general numerics too" (op-answers-26) |
-| `README.md:39` | Known consumers are hilavitkutin and vehje | kaski is the consumer with an obligation row of its own |
+| `README.md:39` | The known consumers are hilavitkutin and vehje, "and they're what drive which surfaces eventually exist" | kaski has an obligation row of its own; op: "Yes, general numerics too" (op-answers-26) |
+| `README.md:41` | For general-purpose numerics "today, this probably isn't the right thing" | True of today. Nothing beside it says general numerics is intended |
 | `mock/PRINCIPLES.md.tmpl:16-18` | The value's sum and comparison | Six operations and the order |
 | `mock/PRINCIPLES.md.tmpl:126-128` | Aliases `Uint`, `Int`, `USize`, `ISize` | `Fix` and `UFix` as well (`alias.rs:57-66`) |
 | `mock/DESIGN.md.tmpl:99-100` | A facade "would sit below all of them" | `mock/PRINCIPLES.md.tmpl:27-28` says above |
 | `mock/DESIGN.md.tmpl:65` | `Additive` is the instance of `Identity` | `Multiplicative` too (`identity.rs:39-41`) |
 
-The exception is the first row. The scope sentence a stranger reads first says the opposite of what
-op has now said twice.
+The exception is the first two rows taken together. My first two passes said the README states
+the opposite of op's answer. Read again in the third, line 41 is a statement about today and is
+true, and the README's account of the present state (`README.md:19-25`) is current and candid. What
+is out of date is line 39: who drives the surfaces. A stranger reading the two lines concludes
+that general numerics is not intended, and op has said twice that it is.
 
-Mark: good as it is, with the scope sentence to change.
+Mark: good as it is, with one sentence of intent to add.
 
 ## The canon and the way the work is run
 
@@ -506,7 +509,8 @@ canon as it stood.
 The first audit's three process findings, now:
 
 The plan measures last. Holds, and the night proved what it costs. Value benches are still step 19
-and the port step 20 (`PLAN.md:125-126`). No file under `mock/benches/` has changed since before
+and the port step 20 (`PLAN.md:125-126`). The plan's own table lists the benches as needing steps 3
+and 8 only, so nothing but the order keeps them late. No file under `mock/benches/` has changed since before
 the first audit (`git diff --stat 7e924d0c..HEAD -- mock/benches` is empty). Two things landed
 overnight that fifteen minutes of timing would have caught on the day: the host door's missing
 inline, and the size of the fixed-point product's debt. Both were found here by an ad-hoc spike of

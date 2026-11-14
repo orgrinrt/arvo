@@ -22,7 +22,8 @@ The direction is right and nothing is back to the drawing board. The concept (a 
 and a representable set, an operation is an exact step and a declared adaptation, behaviour is
 stated over the declared signature, the container is a separate derivation) carried six new
 operations, two standards and the host doors in one night without one row of the spine being
-amended. That is the best evidence so far that the factoring is sound, and it is the part of arvo
+amended (the rulings file changed by eight rungs raised and two rows reworded, neither a spine
+row). That is the best evidence so far that the factoring is sound, and it is the part of arvo
 a consumer cannot get anywhere else.
 
 The integer half of the value is now the hand code. In the ad-hoc spike the sum, difference,
@@ -67,7 +68,7 @@ shipped code, `Num::mul`).
 What I would do first, in order: write the fixed-point product as carrier arithmetic held to the
 oracle, with its bench in the same change; mark the two door functions inline; put kaski's own
 `Fixed` in that bench as the baseline; put the signed run-time divisor to op and name the pattern
-for untrusted input; change the scope sentence in the README.
+for untrusted input; say in the README that general numerics is intended.
 
 ## Verdicts
 
@@ -89,7 +90,7 @@ for untrusted input; change the scope sentence in the README.
 | `arvo-placement`, shared | easy to get wrong but can be right | same |
 | `arvo-strategy` presets | easy to get wrong but can be right | same |
 | `arvo-bits` | good as a register field; going wrong as a table field, fixable in place | same |
-| Root documents | good as it is, with the scope sentence to change | same |
+| Root documents | good as it is, with one sentence of intent to add | same |
 | Registry as an instrument | good as it is | same |
 | Order of work (measure last, consumer not ported) | going wrong, fixable in place | same |
 | Bench corpus as an instrument | going wrong, fixable in place | `NUMBERS.md` |
@@ -120,7 +121,7 @@ for untrusted input; change the scope sentence in the README.
 | `Hot` as shipped is going wrong | Finding kept, mark changed: a ticketed placeholder nothing reads | `mock/crates/arvo-strategy/src/lib.rs:89-92` |
 | Three presets bind one objective; no value takes a strategy | Holds | `lib.rs:95`, `:132`, `:150`; `mock/DESIGN.md.tmpl:47` |
 | `Bits<N>` is a `u64` at every width, no set operation | Holds | `mock/crates/arvo-bits/src/lib.rs:48-50` |
-| Root documents describe a tree that is gone | Fixed, but for the scope sentence | `f939933f`; `README.md:41` |
+| Root documents describe a tree that is gone | Fixed; the README is current on the present state and silent on the intent for general numerics | `f939933f`; `README.md:19-25`, `:39-41` |
 | The benches measure no shipped type | Holds | `mock/registry/probe.toml:1309`; no bench file changed |
 | The plan measures last | Holds | `mock/research/202611130950_canon-double-check/PLAN.md:125-126` |
 | The consumer is consulted through documents | Holds | hilavitkutin pins the old arvo (`DOWNSTREAM.md`) |
@@ -141,6 +142,11 @@ Read whole by me:
 - `mock/research/202611130200_bench-harness-at-head/FINDINGS.md`; both spikes' findings.
 
 Read in part by me:
+- `arvo-format`'s `member.rs` whole and `division.rs:112-198` again, in the second pass.
+- kaski's `kaski-engine-carrier/src/fixed.rs:34-75` and `:156-185`, and hilavitkutin's
+  `dispatch/morsel.rs:44-101`, in the third pass, to check the reader.
+- `README.md:17-43` again in the third pass, and the diff of the rulings file since the first
+  audit for changed text and rungs.
 - `arvo-format` source: `apply.rs`, `multiplication.rs:60-394`, `division.rs:64-198`, the
   multiply, divide and common-divisor parts of `wide.rs`. Not its other modules, not its tests.
 - `PLAN.md` of the canon double check: lines 98 to 232 and 505 to 568.
@@ -167,6 +173,8 @@ Not done:
 - A reader sent over the bench corpus did not report in time; `NUMBERS.md` does not rest on it.
 - `cargo mock canon` was not used; rows were found by search.
 - hilavitkutin's and notko's own audits of today were not read.
+- The readers did not get a worktree each, as the workspace asks. An isolated worktree came up on
+  an old `main` and could not be moved, so they read this audit's worktree and wrote nothing.
 
 ## The passes
 
@@ -203,3 +211,23 @@ What changed:
   of every `Cargo.toml` under `mock/benches` for the five crate names finds none); no review of
   the night carries a timing; the cure for the fixed-point product is unscheduled.
 - No mark moved to a worse one. One moved to a better one.
+
+Pass three (after `c37d1574`). I took the claims that rested on a reader or on my memory and
+opened the source for each. What changed:
+
+- The README finding shrank. Passes one and two said its scope sentence contradicts op. Line 41 is
+  a true statement about today; what is missing is a sentence of intent, and line 39 on who drives
+  the surfaces is the stale one. The root documents' mark is reworded to match.
+- The plan lists the value benches as needing steps 3 and 8 only. Added, since it means the order
+  and not a dependency keeps them at step 19.
+- hilavitkutin's morsel loop also asks whether a count is a multiple of an interval, and arvo has
+  no remainder. Added to its table.
+- kaski's carrier still says arvo has no value type to swap to. Added.
+- Small corrections: four tickets, not five, cover the refusals over a magnitude-indexed quantum;
+  the inline lint's ticket is at lines 33 to 34.
+- Rechecked and unchanged: kaski's `Fixed` is as the reader said (a 64-bit carrier, saturating sum,
+  a flooring product through 128 bits, zero for a zero divisor); the morsel loop unwraps to host
+  arithmetic; `Hash` hashes the slot index; steps 4, 5, 10, 19 and 20 of the plan are where cited;
+  the IEEE and magnitude tickets exist under the names given; no spine row was amended overnight.
+- No mark changed. Nothing in the summary changed but the README clause. I count this as a pass
+  that changed nothing that matters, and stop here.

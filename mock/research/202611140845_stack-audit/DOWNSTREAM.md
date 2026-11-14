@@ -8,7 +8,12 @@ op asks to be assumed, a generic application and a server daemon. notko is last.
 What is said here of another repository's source comes from a reader's notes unless it says I
 opened the file; the reader worked from `Read` on paths, most of its searches in those repositories
 were refused, and it says its kaski evidence is sampled. Paths into other repositories are at their
-`dev` on 14 November 2026 and are given so a reader can open them. Ad-hoc spike figures are from
+`dev` on 14 November 2026 and are given so a reader can open them. In the third pass I opened two
+of them myself, kaski's `fixed.rs` (lines 34 to 75 and 156 to 185) and hilavitkutin's `morsel.rs`
+(lines 44 to 101), and the rows that cite those lines are first hand. One thing the reader did not
+report: kaski's carrier still carries the comment that arvo has "no value type that holds a
+number, so there is nothing to swap to yet" (`fixed.rs:36-39`), which stopped being true last
+night. Ad-hoc spike figures are from
 `mock/research/sketches/202611140930_stack-audit-2-value-tier/`, one shared x86_64 host.
 
 One thing changed under this whole file since the first audit. The first audit ended on a question
@@ -118,6 +123,7 @@ ago:
 | Compare, minimum, maximum | `cmp`, `lt`, `min`, `max` (`order.rs:14-82`) |
 | To index a slice | `host()` (`alias.rs:79-90`), a bit copy |
 | Divide rounding up | Not directly: `div` takes a constant divisor and rounds by the declared mode |
+| Whether a count is a multiple of an interval (`morsel.rs:99`) | Nothing: no remainder (`README.md:23`) |
 | To iterate a range of values | Nothing |
 | A bit set with and, not, test | Nothing (`obligation::set_operations_over_a_fixed_size_bit_set`, `obligation.toml:25`) |
 | Capacity as a type-level size | Nothing; step 9 |
@@ -143,7 +149,8 @@ of the algorithm families.
 
 ## A generic application
 
-In scope by op's answer above. The README still says otherwise (`README.md:41`).
+In scope by op's answer above. The README says truthfully that this is not the library for it
+today (`README.md:41`) and does not say that it is meant to become one (`README.md:39`).
 
 What it gets that it cannot get elsewhere is unchanged from the first audit and is real: scaled
 integers at any radix with declared rounding and overflow and computed laws, which is what money
@@ -174,7 +181,7 @@ None of the seven is a flaw in the concept. The second, fourth and fifth are the
 a foundation and a library and are what op called "the everyday surface". The plan's step 5, the
 contracts a consumer bounds on, covers the fourth; the rest are in no step.
 
-Mark: easy to get wrong but can be right. Right requires the scope sentence changed, the notko
+Mark: easy to get wrong but can be right. Right requires the intent said in the README, the notko
 feature line tried without the two features, and the everyday surface given steps in the plan now
 that it is in scope: `Display` and parsing for decimal first, because that is where arvo is alone.
 
