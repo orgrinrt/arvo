@@ -2269,16 +2269,20 @@ policy, against the applied map's oracle. The door's verdict is read on both sid
 conditions, one quantum, the phase, the range lying inside and the zero slot lying outside it, without
 forcing the const that refuses it, against a table stated from the declarations; the table has a row on
 the false side of each condition alone, read from its stated answers, and its zero column is checked
-against the oracle's search for a member whose value is zero at every format it names. Planted verdicts
-run through the same table and are reported: a zero check that reads `F`'s range rather than `G`'s, a
-grid comparison that reads the radix and the exponent apart and so refuses radix ten at exponent zero, one
-that reads the exponent and drops the radix, and one that drops the range lying inside. Compile-fail
-pairs with a twin differing in the offending token: a member constant one past the top beside one at the
-top, and one below the bottom beside one at the bottom; a member over a magnitude-indexed quantum beside
-a constant one, and over a phase whose denominator is zero beside a half; `member` from a range holding
-its zero slot, from another exponent, another phase and a range past the divisor's, each beside the
-zero-free range on the divisor's grid, which also admits the same range at radix ten; and `member` from
-a range in tenths beside a divisor in halves, refused, beside the same range in halves, admitted.
+against the oracle's search for a member whose value is zero at every format it names. The quantum is
+sampled on both sides of exponent zero, a range at exponent one beside the bytes among the rows, so both
+halves `U` and `V` move, and the phase is sampled at a whole slot apart, the whole phase of one beside the
+bytes, as well as at a half. Planted verdicts run through the same table and are reported: a zero check
+that reads `F`'s range rather than `G`'s, a grid comparison that reads the radix and the exponent apart
+and so refuses radix ten at exponent zero, one that reads the exponent and drops the radix, one that
+compares the `V` halves alone, a phase comparison modulo a whole slot, and one that drops the range lying
+inside. Compile-fail pairs with a twin differing in the offending token: a member constant one past the
+top beside one at the top, and one below the bottom beside one at the bottom; a member over a
+magnitude-indexed quantum beside a constant one, and over a phase whose denominator is zero beside a half;
+`member` from a range holding its zero slot, from another exponent below zero and one above it, another
+phase by a half and by a whole slot, and a range past the divisor's, each beside the zero-free range on the
+divisor's grid, which also admits the same range at radix ten; and `member` from a range in tenths beside a
+divisor in halves, refused, beside the same range in halves, admitted.
 
 ## Conversion, one member placed on another signature's grid
 
