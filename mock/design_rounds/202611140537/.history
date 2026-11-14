@@ -1,0 +1,50 @@
+4e641911 chore: lock src changelist 202611140537
+d4026518 feat: force the member obligation and sweep the door by divisor values
+82d7965a chore: lock doc changelist 202611140537
+c0200378 docs: answer the member review in the design and the registry
+02f2525a docs: open round 202611140537, the member review
+306512ea chore: close design round 202611140438
+f28846b7 chore: lock src changelist 202611140438
+4639a01f chore: regenerate generated files after merge
+aa6ed505 chore: merge the slot branch, now on dev
+6f80ce21 chore: merge dev, which carries the base slot already holds
+804d5857 feat: add the member type and the divisor's member door
+ccb4c239 feat: admit the wrapping product and the cleared format rounds
+ccb504a6 chore: lock doc changelist 202611140438
+e6ba3b86 docs: design the member type and the divisor's member door
+a4d77d3d docs: ask that a member divisor's range lie inside its format's
+5dfa03d4 docs: open round 202611140438, a member is a type
+41d16857 chore: merge the reviewed base's ieee module split
+7fbef5df chore: close design round 202611140422
+5f013209 chore: lock src changelist 202611140422
+62fdc9f9 test: give each ieee 754 suite only what it reads, with no allow
+4ff0f77f chore: lock doc changelist 202611140422
+c70500f5 docs: open round 202611140422, the ieee module without the allow
+362f11bb docs: regenerate the format document
+ef21996b chore: close design round 202611140402
+8b5f86ec chore: lock src changelist 202611140402
+3ac613c9 fix: answer the slot review in range, at far floors and in the limbs
+07eabfbc chore: lock doc changelist 202611140402
+730cbb2c docs: design completion in range and the oracle past four limbs
+15c7e176 docs: open round 202611140402, the slot review
+1ed363f9 docs: regenerate the format document
+1a8f82ce chore: close design round 202611140345
+82c34045 chore: lock src changelist 202611140345
+22a86984 test: hold the product's admission at the step's edges
+111c8ae0 chore: lock doc changelist 202611140345
+136c0a6a docs: state the product's range once the base is merged
+2911d57d docs: open round 202611140345, the reviewed base on the four-limb floor
+b5f2e83b Merge branch 'work/arvo-format-base' into work/arvo-format-slot
+22f0c963 docs: regenerate the format document
+9f566ef7 chore: close design round 202611140332
+9595aa0d chore: lock src changelist 202611140332
+8862b14b test: cross the wrapping sweep and bound the underflow draws
+b7323f07 chore: lock doc changelist 202611140332
+5a4172d7 docs: correct the wrapping range and the sweeps the review named
+84982f8f docs: open round 202611140332, the second base review
+9d2c86e2 docs: regenerate the format document
+ae73953a chore: close design round 202611140239
+79e52f60 chore: lock src changelist 202611140239
+27feea32 feat: hold the exact position's floor in four limbs
+d8245fdf chore: lock doc changelist 202611140239
+42c9501c docs: design the exact position's floor in four limbs

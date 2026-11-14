@@ -73,6 +73,16 @@
 //! remainder's denominator is `2^128` against one at `2^127`. After them one file
 //! that has to compile names every item those two operations add from the crate
 //! root, as an outside crate with no feature line would.
+//!
+//! Five more pin the member: a member constant one past the top against one at
+//! the top and one below the bottom against one at the bottom, the adapted door
+//! over a magnitude-indexed quantum against a constant one, the constant door
+//! over a phase that does not denote against a half, and `Divisor::member` from
+//! a range holding its zero slot, from an exponent below zero and one above it,
+//! from a phase a half and a whole slot apart and from a range past the
+//! divisor's, each against the zero-free range on the divisor's grid,
+//! with the same range at radix ten admitted beside it, and from a range in
+//! tenths against one in halves beside a divisor in halves.
 
 #[test]
 fn a_width_the_slot_range_cannot_carry_is_refused() {
@@ -337,6 +347,56 @@ fn a_runtime_divisor_is_refused_at_a_whole_phase_and_admitted_at_a_half_offset_o
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_runtime_divisor_over_a_whole_phase_is_refused.rs");
     t.pass("tests/ui/a_runtime_divisor_over_a_half_offset_phase_is_admitted.rs");
+}
+
+/// A member constant one past the top of its range, refused where the constant
+/// is named, and at the top, admitted.
+#[test]
+fn a_member_constant_past_the_top_is_refused_and_at_the_top_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_constant_past_the_top_is_refused.rs");
+    t.pass("tests/ui/a_member_constant_at_the_top_is_admitted.rs");
+}
+
+/// A member constant one below the bottom of its range, refused where the
+/// constant is named, and at the bottom, admitted.
+#[test]
+fn a_member_constant_below_the_bottom_is_refused_and_at_the_bottom_admitted() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_constant_below_the_bottom_is_refused.rs");
+    t.pass("tests/ui/a_member_constant_at_the_bottom_is_admitted.rs");
+}
+
+/// What both member doors owe of the format, one pair per door: the adapted door
+/// over a magnitude-indexed quantum against a constant one, and the constant door
+/// over a phase that does not denote against a half.
+#[test]
+fn a_member_is_refused_over_a_magnitude_indexed_quantum_or_a_phase_that_does_not_denote() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_over_a_magnitude_indexed_quantum_is_refused.rs");
+    t.pass("tests/ui/a_member_over_a_constant_quantum_is_admitted.rs");
+    t.compile_fail("tests/ui/a_member_over_a_phase_that_does_not_denote_is_refused.rs");
+    t.pass("tests/ui/a_member_over_a_half_phase_is_admitted.rs");
+}
+
+/// A divisor taken from a member of a second format, refused for each condition
+/// of the door, each file one token from the zero-free range on the divisor's
+/// grid, which is admitted, as is the same range at radix ten, where at exponent
+/// zero the quantum is one. The radix is refused where it moves the quantum: a
+/// range in tenths beside a divisor in halves, beside the same range in halves.
+#[test]
+fn a_member_divisor_is_refused_off_the_grid_past_the_range_or_over_its_zero() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_member_divisor_from_a_range_holding_its_zero_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_another_exponent_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_an_exponent_above_zero_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_another_phase_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_a_phase_a_whole_slot_apart_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_a_range_past_the_divisors_is_refused.rs");
+    t.pass("tests/ui/a_member_divisor_from_a_zero_free_range_on_the_grid_is_admitted.rs");
+    t.pass("tests/ui/a_member_divisor_from_another_radix_at_exponent_zero_is_admitted.rs");
+    t.compile_fail("tests/ui/a_member_divisor_in_tenths_beside_halves_is_refused.rs");
+    t.pass("tests/ui/a_member_divisor_in_halves_beside_halves_is_admitted.rs");
 }
 
 /// Division over a magnitude-indexed quantum, refused, and over a constant
