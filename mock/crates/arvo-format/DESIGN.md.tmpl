@@ -2168,8 +2168,13 @@ and the member door is where such a range divides.
 
 `Divisor::<F>::member::<G>(m)` takes a `Member<G>`, whichever door it came through, and is admitted at
 build time where `G` sits on `F`'s grid inside `F`'s range and no member of `G` names the zero. On the
-grid means the same radix, the same constant exponent and the same reduced phase, so slot `b` of `G`
-denotes the value slot `b` of `F` does. Inside the range means `G`'s `MIN` and `MAX` lie within `F`'s,
+grid means one quantum and the same reduced phase, so slot `b` of `G` denotes the value
+`(phase + b) q` slot `b` of `F` does. The quantum is `r^e` and both must be constant; with
+`U = r^max(e, 0)` and `V = r^max(-e, 0)` for each format, the two are one value where
+`U_F V_G = U_G V_F`, read in the four limbs from the same pieces the product, the quotient and the
+conversion place with. So radix ten and radix two share a grid at exponent zero, where every quantum is
+one, and do not at exponent `-1`. A pair whose powers leave the four limbs is refused as not formed, and
+the message says so rather than calling the grids different. Inside the range means `G`'s `MIN` and `MAX` lie within `F`'s,
 so the divisor is a member of `F` as well and the quotient is exact, as it is for two members of `F`
 and is not for a slot past the range. No member of `G` names the zero where the phase is not whole, or
 where it is whole, `n / 1`, and the slot `-n` lies outside `G`'s range. With `G` as `F` that is a
@@ -2184,6 +2189,13 @@ range is. The step reads the factor and never asks whether it is zero. A whole-p
 holds the zero, a plain integer range among them, divides at run time by a member of a zero-free range
 of the consumer's declaring on its grid, and never by a bare `Slot`, which could be the zero.
 `Divisor::slot` reads the slot back.
+
+That narrows the case where only a constant divides, and does not close it. A slot range is one interval,
+so a zero-free range at a whole phase lies wholly on one side of its zero slot: a member of `1` to `127`
+or of `-128` to `-1` divides a signed byte, and a divisor read at run time that may be either sign, the
+ordinary signed quotient, has no door. Reaching it means classifying a slot read at run time as not the
+zero, which is the runtime membership door the canon holds back until a known use is shown. Whether
+signed division is that use is an open question this crate does not answer.
 
 ### The exact step
 
@@ -2245,24 +2257,28 @@ sign, against the shared wide oracle, which is where the floor's parity and sign
 index.
 
 The member door owes its own. Every pair of formats the door admits in its table is swept: the slots 1
-to 255 on a byte's grid divided by its own members and the bytes divided by them, a half-offset byte
-range divided by a range at the same phase in quarters, a whole phase of one over the bytes divided by
-its own members, and a byte range in quarters and one at radix ten each divided by a zero-free range on
-its grid. Each divisor is reached as a consumer reaches it, a member `adapted` at `Exact::on_grid` and
+to 255 on a byte's grid divided by its own members and the bytes divided by them, the bytes divided by
+the same range at radix ten and exponent zero, a half-offset byte range divided by a range at the same
+phase in quarters, a whole phase of one over the bytes divided by its own members, a byte range in
+quarters and one at radix ten each divided by a zero-free range on its grid, and a signed byte divided by
+the members of `1` to `127` and by those of `-128` to `-1`, the last reaching the step where `n + b d` is
+below zero. Each divisor is reached as a consumer reaches it, a member `adapted` at `Exact::on_grid` and
 then `member`; the oracle reads the divisor's value from `G`, and that value is asserted equal to `F`'s
 at the same slot, which is the grid claim the door rests on. Every member pair, every mode and shipped
 policy, against the applied map's oracle. The door's verdict is read on both sides of each of its
-conditions, the radix, the exponent, the phase, the range lying inside and the zero slot lying outside
-it, without forcing the const that refuses it, against a table stated from the declarations; the table
-has a row on the false side of each condition alone, and its zero column is checked against the oracle's
-search for a member whose value is zero. Planted verdicts run through the same table and are reported:
-a zero check that reads `F`'s range rather than `G`'s, a grid comparison that drops the exponent, and
-one that drops the range lying inside. Compile-fail pairs with a twin differing in the offending token:
-a member constant one past the top beside one at the top, and one below the bottom beside one at the
-bottom; a member over a magnitude-indexed quantum beside a constant one, and over a phase whose
-denominator is zero beside a half; and `member` from a range holding its zero slot, from another radix,
-another exponent, another phase and a range past the divisor's, each beside the zero-free range on the
-divisor's grid.
+conditions, one quantum, the phase, the range lying inside and the zero slot lying outside it, without
+forcing the const that refuses it, against a table stated from the declarations; the table has a row on
+the false side of each condition alone, read from its stated answers, and its zero column is checked
+against the oracle's search for a member whose value is zero at every format it names. Planted verdicts
+run through the same table and are reported: a zero check that reads `F`'s range rather than `G`'s, a
+grid comparison that reads the radix and the exponent apart and so refuses radix ten at exponent zero, one
+that reads the exponent and drops the radix, and one that drops the range lying inside. Compile-fail
+pairs with a twin differing in the offending token: a member constant one past the top beside one at the
+top, and one below the bottom beside one at the bottom; a member over a magnitude-indexed quantum beside
+a constant one, and over a phase whose denominator is zero beside a half; `member` from a range holding
+its zero slot, from another exponent, another phase and a range past the divisor's, each beside the
+zero-free range on the divisor's grid, which also admits the same range at radix ten; and `member` from
+a range in tenths beside a divisor in halves, refused, beside the same range in halves, admitted.
 
 ## Conversion, one member placed on another signature's grid
 
