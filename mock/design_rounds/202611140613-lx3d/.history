@@ -1,0 +1,50 @@
+5393440d chore: lock src changelist 202611140613-lx3d
+bc0585a1 chore: merge dev with the four-limb floor into work/arvo-values-next
+8b263553 chore: open the src changelist of round 202611140613-lx3d
+e1f98043 chore: lock doc changelist 202611140613-lx3d
+e87c9cad docs: let the value's product take the unsigned 64-bit range
+fbd6b65d docs: record the third review of the value branch
+67a48e54 chore: close design round 202611140522-sa3m
+b26ffeef chore: lock src changelist 202611140522-sa3m
+a8f9af22 chore: merge dev with the four-limb steps into work/arvo-values
+280e3a2a feat: carry the exact position's floor in four limbs
+96f555ee chore: open the src changelist of round 202611140522-sa3m
+65ef365d chore: lock doc changelist 202611140522-sa3m
+db0a5ba3 docs: say which product obligation the value forces
+ccb4c239 feat: admit the wrapping product and the cleared format rounds
+cc68b442 chore: close design round 202611140447
+09c91048 chore: lock src changelist 202611140447
+f9b46488 docs: regenerate the arvo-numeral page with the proof link
+a95ca40a chore: lock doc changelist 202611140447
+3346dfa2 docs: name the arvo-numeral proof page by its link
+92346731 chore: close design round 202611140356
+d0392227 chore: lock src changelist 202611140356
+c5b78ed4 docs: regenerate the arvo-numeral pages and add the proof page
+cdfd69e5 chore: record the arvo-numeral test run after the mode mutant
+88a0dc20 feat: add the source mode mutant and hold the host sign as a `Bool`
+7ef0f821 chore: lock doc changelist 202611140356
+f1edc514 docs: move the proof of arvo-numeral to a page and name the mode mutant
+3090eb98 docs: open round 202611140356 on the mode mutant and the proof page
+fddcc733 chore: close design round 202611140253
+29505bd6 chore: lock src changelist 202611140253
+026be9eb chore: record the arvo-numeral test run after the positive ends
+fee6af41 test: record a red run of every value mutant under its flag
+e1f54af8 feat: turn the mutants into flags and sweep the families' positive ends
+aefe433e chore: lock doc changelist 202611140253
+3a17dcc1 docs: state the mutants as flags and the families' positive ends
+4b9d1c8d docs: open round 202611140253 on the source policy and positive ends
+9b737dd3 chore: close design round 202611140020
+07f91020 chore: lock src changelist 202611140114
+e69c19b9 chore: record the arvo-numeral test run at every shape
+72b472f9 test: run the quotient, product, conversion and door at every shape
+94b7d567 chore: lock doc changelist 202611140020
+e0bbe509 docs: state the conversion's open question and what the sweeps prove
+6c8dab86 chore: regenerate generated files after merge
+a62db28b chore: merge dev into the values branch
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+1c03040a docs: record the third reading of `work/arvo-values` and what is left
+ac51c383 chore: close design round 202611132216-pzi4
+d65bcc9b docs: commit the mutant runs against the wide sweeps, and what changed
+26b27ada refactor!: take `Accumulator` and the public `holds_index` out

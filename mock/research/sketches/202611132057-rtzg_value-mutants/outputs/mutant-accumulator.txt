@@ -1,0 +1,20 @@
+     Running tests/the_accumulator.rs
+an_accumulated_sum_is_a_constant --- FAILED
+take_sums_a_block_and_hands_back_the_rest --- FAILED
+the_capacity_bounds_what_a_slice_puts_in --- FAILED
+---- an_accumulated_sum_is_a_constant stdout ----
+panicked at crates/arvo-numeral/tests/the_accumulator.rs:309:5:
+assertion `left == right` failed
+  left: 110
+ right: 200
+---- take_sums_a_block_and_hands_back_the_rest stdout ----
+panicked at crates/arvo-numeral/tests/the_accumulator.rs:35:5:
+assertion `left == right` failed: `total` is not the sum
+  left: 0
+ right: -4
+---- the_capacity_bounds_what_a_slice_puts_in stdout ----
+panicked at crates/arvo-numeral/tests/the_accumulator.rs:280:5:
+assertion `left == right` failed
+  left: 224
+ right: 240
+test result: FAILED. 7 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s

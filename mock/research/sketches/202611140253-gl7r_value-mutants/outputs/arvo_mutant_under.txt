@@ -1,0 +1,14 @@
+RUSTFLAGS=--cfg arvo_mutant_under cargo test -p arvo-numeral --no-fail-fast --test the_crossing
+     Running tests/the_crossing.rs (/home/user/target/debug/deps/the_crossing-a988045643d94c4e)
+test a_fixed_point_member_crosses_as_an_integer_does ... FAILED
+test every_member_crosses_to_every_sibling_and_back_at_widths_one_to_eight ... FAILED
+test the_crossing_keeps_the_check_and_asks_it_nothing ... FAILED
+test the_value_that_arrives_adds_under_the_policy_it_crossed_into ... FAILED
+test a_preset_names_an_adaptation_per_format_and_an_alias_defaults_to_it ... FAILED
+test the_shorthands_are_the_crossing_at_the_written_sibling ... FAILED
+failures:
+failures:
+test result: FAILED. 2 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+error: test failed, to rerun pass `-p arvo-numeral --test the_crossing`
+error: 1 target failed:
+exit 101

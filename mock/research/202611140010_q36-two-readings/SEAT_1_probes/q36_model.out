@@ -1,0 +1,118 @@
+== E1. the measured cell and its neighbours: wrap against saturate at one crossing ==
+cell            lossy  divergent  lossy-and-agreeing
+ i8f0 -> i4f0     240       226       14   of 256
+ u8f0 -> u4f0     240       225       15   of 256
+ i8f0 -> u8f0     128       128        0   of 256
+ u8f0 -> i8f0     128       128        0   of 256
+ i8f0 -> u4f0     240       225       15   of 256
+ u8f0 -> i4f0     248       233       15   of 256
+ i8f0 -> i7f0     128       128        0   of 256
+ i8f0 -> i2f0     252       190       62   of 256
+ i4f0 -> i8f0       0         0        0   of 16
+ i6f0 -> i3f0      56        50        6   of 64
+
+== E2. is a lossless step inert? S -> M -> T against S -> T, M's set containing S's ==
+option 1: each crossing takes its SOURCE's policy. option 2: its TARGET's.
+ S=i8f0 M=i8f0 T=i4f0  (overflow policies pS,pM,pT; rounding floor)
+   pS=wrap pM=wrap pT=wrap   option1 differs on   0/256   option2 differs on   0/256
+   pS=wrap pM=wrap pT=sat    option1 differs on   0/256   option2 differs on   0/256
+   pS=wrap pM=sat  pT=wrap   option1 differs on 226/256   option2 differs on   0/256
+   pS=wrap pM=sat  pT=sat    option1 differs on 226/256   option2 differs on   0/256
+   pS=sat  pM=wrap pT=wrap   option1 differs on 226/256   option2 differs on   0/256
+   pS=sat  pM=wrap pT=sat    option1 differs on 226/256   option2 differs on   0/256
+   pS=sat  pM=sat  pT=wrap   option1 differs on   0/256   option2 differs on   0/256
+   pS=sat  pM=sat  pT=sat    option1 differs on   0/256   option2 differs on   0/256
+ S=i8f0 M=i12f0 T=i4f0  (overflow policies pS,pM,pT; rounding floor)
+   pS=wrap pM=wrap pT=wrap   option1 differs on   0/256   option2 differs on   0/256
+   pS=wrap pM=wrap pT=sat    option1 differs on   0/256   option2 differs on   0/256
+   pS=wrap pM=sat  pT=wrap   option1 differs on 226/256   option2 differs on   0/256
+   pS=wrap pM=sat  pT=sat    option1 differs on 226/256   option2 differs on   0/256
+   pS=sat  pM=wrap pT=wrap   option1 differs on 226/256   option2 differs on   0/256
+   pS=sat  pM=wrap pT=sat    option1 differs on 226/256   option2 differs on   0/256
+   pS=sat  pM=sat  pT=wrap   option1 differs on   0/256   option2 differs on   0/256
+   pS=sat  pM=sat  pT=sat    option1 differs on   0/256   option2 differs on   0/256
+
+== E3. the factoring: T's own operation against exact-in-a-wider-format-then-cross ==
+a (op)_T b := adapt_T(exact a op b). The exact result is held losslessly in W, then crossed W -> T.
+ integers, T=i4f0, W=i10f0
+   W=(floor    ,wrap) T=(floor    ,wrap)   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+   W=(floor    ,wrap) T=(floor    ,sat )   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(floor    ,wrap) T=(half_even,wrap)   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+   W=(floor    ,wrap) T=(half_even,sat )   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(floor    ,sat ) T=(floor    ,wrap)   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(floor    ,sat ) T=(floor    ,sat )   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+   W=(floor    ,sat ) T=(half_even,wrap)   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(floor    ,sat ) T=(half_even,sat )   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+   W=(half_up  ,wrap) T=(half_even,wrap)   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+   W=(half_up  ,wrap) T=(half_even,sat )   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(half_up  ,sat ) T=(half_even,wrap)   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(half_up  ,sat ) T=(half_even,sat )   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+   W=(half_even,wrap) T=(floor    ,wrap)   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+   W=(half_even,wrap) T=(floor    ,sat )   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(half_even,sat ) T=(floor    ,wrap)   add: opt1    64 opt2     0 of 256   mul: opt1   145 opt2     0 of 256
+   W=(half_even,sat ) T=(floor    ,sat )   add: opt1     0 opt2     0 of 256   mul: opt1     0 opt2     0 of 256
+ fixed point, T=i6f2, W=i14f4
+   W=(floor    ,wrap) T=(floor    ,wrap)   add: opt1     0 opt2     0 of 4096   mul: opt1     0 opt2     0 of 4096
+   W=(floor    ,wrap) T=(floor    ,sat )   add: opt1  1024 opt2     0 of 4096   mul: opt1  2493 opt2     0 of 4096
+   W=(floor    ,wrap) T=(half_even,wrap)   add: opt1     0 opt2     0 of 4096   mul: opt1  1024 opt2     0 of 4096
+   W=(floor    ,wrap) T=(half_even,sat )   add: opt1  1024 opt2     0 of 4096   mul: opt1  2873 opt2     0 of 4096
+   W=(floor    ,sat ) T=(floor    ,wrap)   add: opt1  1024 opt2     0 of 4096   mul: opt1  2493 opt2     0 of 4096
+   W=(floor    ,sat ) T=(floor    ,sat )   add: opt1     0 opt2     0 of 4096   mul: opt1     0 opt2     0 of 4096
+   W=(floor    ,sat ) T=(half_even,wrap)   add: opt1  1024 opt2     0 of 4096   mul: opt1  2881 opt2     0 of 4096
+   W=(floor    ,sat ) T=(half_even,sat )   add: opt1     0 opt2     0 of 4096   mul: opt1   380 opt2     0 of 4096
+   W=(half_up  ,wrap) T=(half_even,wrap)   add: opt1     0 opt2     0 of 4096   mul: opt1   512 opt2     0 of 4096
+   W=(half_up  ,wrap) T=(half_even,sat )   add: opt1  1024 opt2     0 of 4096   mul: opt1  2693 opt2     0 of 4096
+   W=(half_up  ,sat ) T=(half_even,wrap)   add: opt1  1024 opt2     0 of 4096   mul: opt1  2697 opt2     0 of 4096
+   W=(half_up  ,sat ) T=(half_even,sat )   add: opt1     0 opt2     0 of 4096   mul: opt1   196 opt2     0 of 4096
+   W=(half_even,wrap) T=(floor    ,wrap)   add: opt1     0 opt2     0 of 4096   mul: opt1  1024 opt2     0 of 4096
+   W=(half_even,wrap) T=(floor    ,sat )   add: opt1  1024 opt2     0 of 4096   mul: opt1  2881 opt2     0 of 4096
+   W=(half_even,sat ) T=(floor    ,wrap)   add: opt1  1024 opt2     0 of 4096   mul: opt1  2873 opt2     0 of 4096
+   W=(half_even,sat ) T=(floor    ,sat )   add: opt1     0 opt2     0 of 4096   mul: opt1   380 opt2     0 of 4096
+
+== E4. is the crossing a homomorphism for addition? h(a +_S b) = h(a) +_T h(b), i8 -> i4, 65536 pairs ==
+   S adds by wrap  T adds by wrap  crossing by wrap  holds on 65536/65536   option 1 and option 2
+   S adds by wrap  T adds by wrap  crossing by sat   holds on   918/65536   neither endpoint (site-named only)
+   S adds by wrap  T adds by sat   crossing by wrap  holds on 49152/65536   option 1
+   S adds by wrap  T adds by sat   crossing by sat   holds on 16992/65536   option 2
+   S adds by sat   T adds by wrap  crossing by wrap  holds on 50056/65536   option 2
+   S adds by sat   T adds by wrap  crossing by sat   holds on   912/65536   option 1
+   S adds by sat   T adds by sat   crossing by wrap  holds on 37740/65536   neither endpoint (site-named only)
+   S adds by sat   T adds by sat   crossing by sat   holds on 33376/65536   option 1 and option 2
+
+== E5. one policy throughout, a lossy intermediate: S -> M -> T against S -> T ==
+ nested grids and nested ranges: S=i8f4 M=i6f2 T=i4f0
+   (toward_zero,wrap)  chain differs from direct on   0/256
+   (toward_zero,sat )  chain differs from direct on   0/256
+   (floor      ,wrap)  chain differs from direct on   0/256
+   (floor      ,sat )  chain differs from direct on   0/256
+   (ceil       ,wrap)  chain differs from direct on   0/256
+   (ceil       ,sat )  chain differs from direct on   0/256
+   (half_up    ,wrap)  chain differs from direct on  32/256
+   (half_up    ,sat )  chain differs from direct on  30/256
+   (half_even  ,wrap)  chain differs from direct on  32/256
+   (half_even  ,sat )  chain differs from direct on  30/256
+ intermediate narrower in range than the target: S=i8f4 M=i4f3 T=i6f1
+   (floor      ,wrap)  chain differs from direct on 224/256
+   (floor      ,sat )  chain differs from direct on 224/256
+   (half_even  ,wrap)  chain differs from direct on 228/256
+   (half_even  ,sat )  chain differs from direct on 219/256
+ mixed policies, lossy intermediate, S=i8f0 M=i6f0 T=i4f0 (rounding floor): neither endpoint rule composes
+   pS=wrap pM=wrap pT=wrap   option1 differs on   0/256   option2 differs on   0/256
+   pS=wrap pM=wrap pT=sat    option1 differs on   0/256   option2 differs on 142/256
+   pS=wrap pM=sat  pT=wrap   option1 differs on 184/256   option2 differs on 180/256
+   pS=wrap pM=sat  pT=sat    option1 differs on 184/256   option2 differs on   0/256
+   pS=sat  pM=wrap pT=wrap   option1 differs on 238/256   option2 differs on   0/256
+   pS=sat  pM=wrap pT=sat    option1 differs on 238/256   option2 differs on 142/256
+   pS=sat  pM=sat  pT=wrap   option1 differs on   0/256   option2 differs on 180/256
+   pS=sat  pM=sat  pT=sat    option1 differs on   0/256   option2 differs on   0/256
+
+== E6. 'the reduction' has two components: how many functions do the endpoints offer? ==
+   i8f2(floor,wrap) -> i4f0(half_even,sat): 4 distinct endpoint-derived functions [['round:S complete:S'], ['round:S complete:T'], ['round:T complete:S'], ['round:T complete:T']]; 10 distinct over all 10 modelled policies
+   i8f2(toward_zero,sat) -> i4f0(half_up,wrap): 4 distinct endpoint-derived functions [['round:S complete:S'], ['round:S complete:T'], ['round:T complete:S'], ['round:T complete:T']]; 10 distinct over all 10 modelled policies
+   i8f2(floor,wrap) -> i4f0(floor,sat): 2 distinct endpoint-derived functions [['round:S complete:S', 'round:T complete:S'], ['round:S complete:T', 'round:T complete:T']]; 10 distinct over all 10 modelled policies
+   i8f2(floor,wrap) -> i4f0(ceil,wrap): 2 distinct endpoint-derived functions [['round:S complete:S', 'round:S complete:T'], ['round:T complete:S', 'round:T complete:T']]; 10 distinct over all 10 modelled policies
+
+== E7. sweep: divergence of wrap from saturate is confined to the lossy set, widths 1..8, all four signedness pairs ==
+   cells 256, in-range values on which the two completions differ: 0
+== E8. sweep of E2 over widths: S=i_m, M=i_m relabelled, T=i_n, n<m<=8: option 2 inert everywhere? ==
+   cells 224: option 1 total differing values 8576, option 2 total differing values 0

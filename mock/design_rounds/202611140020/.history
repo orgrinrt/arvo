@@ -1,0 +1,50 @@
+526b86e9 chore: lock src changelist 202611140114
+dd8be963 chore: record the arvo-numeral test run at every shape
+c97a1af5 test: run the quotient, product, conversion and door at every shape
+c81fde62 chore: lock doc changelist 202611140020
+a8c65b64 docs: state the conversion's open question and what the sweeps prove
+fc087e6c chore: regenerate generated files after merge
+e33c0c13 Merge remote-tracking branch 'origin/dev' into work/arvo-values
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+2b413b50 docs: commit the third reading of `work/arvo-values` and what is left
+e4e5b456 chore: close design round 202611132216-pzi4
+911daba0 docs: commit the mutant runs against the wide sweeps, and what changed
+b83d3c9b refactor!: take `Accumulator` and the public `holds_index` out
+660aa16d chore: lock doc changelist 202611132216-pzi4
+c849ec3e docs: take the accumulator and `holds_index` out of the numeral design
+9c6c0434 docs: open the round that takes the accumulator and `holds_index` out
+8e46316d docs: commit the second reading of `work/arvo-values` by a fresh seat
+a303d07b chore: close design round 202611132143-c8zp
+1f27fce0 docs: commit the mutant runs against the new oracle and border calls
+252d1ce4 test: check the delegated operations against the tests' own arithmetic
+9b59c4df chore: lock doc changelist 202611132143-c8zp
+109c29c9 docs: refuse `take` at a capacity of zero, keep the empty accumulator
+6c4cc936 docs: prove the delegated operations against the tests' own arithmetic
+7baae856 docs: open round 202611132143-c8zp on an oracle the tests carry
+e962cfbd docs: say what the value does now in the readme and the root design
+ff8aeffa docs: commit the first reading of `work/arvo-values` by a fresh seat
+9a3d5149 Merge remote-tracking branch 'origin/dev' into work/arvo-values
+4d6aa22c feat: give the registry its amendment edge and stamp fields
+ae4efecb Merge remote-tracking branch 'origin/dev' into work/arvo-values
+7b8ebba4 chore: close design round 202611132123-jozr
+0ae0b3c8 fix: take the consumer test's paths when the test runs
+da159313 chore: lock doc changelist 202611132123-jozr
+ddef6c1a docs: say the consumer test takes its paths when it runs
+70c3cdef docs: open round 202611132123-jozr on the consumer test's paths
+d94375ad fix: rebuild the `add` disassembly sketch on the current value
+9ba397c4 fix: read the lints through one parse and add the registry tools
+14eef25b chore: close design round 202611132111-ew52
+b292fcc8 docs: commit the red runs of `mutant-count`
+b3dc4d7b feat: implement `Cardinal` of `notko-hlist` for a value
+a691c03a chore: lock doc changelist 202611132111-ew52
+a07dbc8e docs: design a value as the count of `notko-hlist`
+0809ec67 docs: open the round on a value as the count of a type-level list
+dd47015e chore: close design round 202611132057-rtzg
+f27029ed docs: commit the red run of `mutant-accumulator`
+b6825fb4 feat: ship `Fix`, `UFix` and the exact `Accumulator`
+e8f59aca chore: lock doc changelist 202611132057-rtzg
+7be17c39 docs: say `minus` gives a value of the accumulator's signature
+d5609c1b chore: lock doc changelist 202611132057-rtzg
+bbd0ba5f docs: state `Fix`, `UFix` and the exact `Accumulator`

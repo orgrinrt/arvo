@@ -1,0 +1,31 @@
+cargo test -p arvo-numeral --features mutant-div --test the_quotient_at_every_shape_binary
+running 8 tests
+test binary_quotients_at_widths_1_to_16 ... FAILED
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test binary_quotients_at_widths_17_to_32 ... FAILED
+test the_deepest_exponent_is_the_last_the_quotient_admits ... ok
+test binary_quotients_at_widths_33_to_48 ... FAILED
+test integer_quotients_at_every_width ... FAILED
+test binary_quotients_at_widths_49_to_64 ... FAILED
+thread 'binary_quotients_at_widths_1_to_16' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `div` disagrees with the oracle on 558799 of 1758400 checks
+  left: 558799
+ right: 0
+thread 'binary_quotients_at_widths_17_to_32' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `div` disagrees with the oracle on 912958 of 2854400 checks
+  left: 912958
+ right: 0
+thread 'binary_quotients_at_widths_33_to_48' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `div` disagrees with the oracle on 963851 of 3059200 checks
+  left: 963851
+ right: 0
+thread 'integer_quotients_at_every_width' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `div` disagrees with the oracle on 365 of 1375400 checks
+  left: 365
+ right: 0
+thread 'binary_quotients_at_widths_49_to_64' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `div` disagrees with the oracle on 973282 of 3264000 checks
+  left: 973282
+ right: 0
+test result: FAILED. 3 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.65s

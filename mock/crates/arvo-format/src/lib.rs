@@ -67,6 +67,8 @@ pub use adapt::{
     DeclaredSignature,
     Operation,
     Signature,
+    WithOverflow,
+    WithRounding,
     operation_overflow,
     operation_rounding,
     overflow_of,
@@ -111,7 +113,7 @@ pub use format::{
     step_exponent,
 };
 pub use member::Member;
-pub use multiplication::{Mul, is_multipliable, mul, product_position};
+pub use multiplication::{Mul, is_multipliable, mul, multiplicative_identity, product_position};
 pub use overflow::{Overflow, Policy, SHIPPED_POLICIES};
 pub use quantum::{
     Exponent,
@@ -213,6 +215,15 @@ pub mod points {
 
         const PHASE: Phase = Phase::halves(HALF_STEPS);
     }
+
+    /// Signed fixed point of `BITS` bits with the quantum at exponent `FRAC`,
+    /// the signed twin of `UFixed`.
+    ///
+    /// An alias of `Biased` at a phase count of zero rather than a type of its
+    /// own, for the reason `USize` is one: through the `Format` contract the two
+    /// are indistinguishable, and a new type would carry a distinction the
+    /// concept does not have.
+    pub type Fixed<const BITS: u32, const FRAC: i32> = Biased<BITS, FRAC, 0>;
 
     /// A floating point: the magnitude-indexed family.
     ///

@@ -8,6 +8,21 @@
 
 #![allow(dead_code)]
 
+pub mod crossings;
+pub mod edges;
+pub mod exponents;
+pub mod hosts;
+pub mod oracle;
+pub mod points;
+pub mod shapes;
+pub mod widths;
+
+/// The wide integer of `arvo-format`'s own suites, read where it is kept so
+/// that there is one of it. It is a test file of that crate and no part of its
+/// surface, which is why it is reached by path.
+#[path = "../../../arvo-format/src/tests/big.rs"]
+pub mod big;
+
 use arvo_format::{
     DeclaredSignature,
     Dither,
@@ -16,7 +31,11 @@ use arvo_format::{
     Slot,
     Slots,
     add,
+    difference_position,
+    neg,
+    negation_position,
     panic_on_overflow,
+    sub,
     sum_position,
 };
 use arvo_numeral::{Additive, Identity, Num, Quiet, Sole};
@@ -43,29 +62,67 @@ pub fn value<S: Sole>(index: i128) -> Num<S, Quiet> {
     Num::<S, Quiet>::adapted(Exact::on_grid(Slot::at(index)))
 }
 
-/// Disagreements found over a band. `add` is counted, so that a failure says
-/// how many pairs disagreed; every other check asserts at once.
+/// Disagreements found over a band. The four operations are counted, so that a
+/// failure says how many disagreed; every other check asserts at once.
 #[derive(Default)]
 pub struct Tally {
     pub add_wrong: u64,
+    pub sub_wrong: u64,
+    pub neg_wrong: u64,
+    pub mul_wrong: u64,
     pub pairs:     u64,
+    pub members:   u64,
+    pub products:  u64,
 }
 
 impl Tally {
-    /// The band's adds all agree with the oracle.
+    /// The band's sums, differences and negations all agree with the oracle.
     pub fn check(&self, band: &str) {
         assert!(self.pairs > 0, "{band}: no pair was checked");
+        assert!(self.members > 0, "{band}: no member was negated");
         assert_eq!(
             self.add_wrong, 0,
             "{band}: `add` disagrees with the oracle on {} of {} pairs",
             self.add_wrong, self.pairs
         );
+        assert_eq!(
+            self.sub_wrong, 0,
+            "{band}: `sub` disagrees with the oracle on {} of {} pairs",
+            self.sub_wrong, self.pairs
+        );
+        assert_eq!(
+            self.neg_wrong, 0,
+            "{band}: `neg` disagrees with the oracle on {} of {} members",
+            self.neg_wrong, self.members
+        );
+    }
+
+    /// The band's products all agree with the oracle.
+    pub fn check_products(&self, band: &str) {
+        assert!(self.products > 0, "{band}: no product was checked");
+        assert_eq!(
+            self.mul_wrong, 0,
+            "{band}: `mul` disagrees with the oracle on {} of {} pairs",
+            self.mul_wrong, self.products
+        );
     }
 }
 
-/// Everything one value is owed on its own.
-pub fn check_value<S: Sole>(a: i128) {
+/// Everything one value is owed on its own: the doors, and the negation
+/// against the oracle with its verdict against the format's.
+pub fn check_value<S: Sole>(a: i128, tally: &mut Tally) {
     let v = value::<S>(a);
+    tally.members += 1;
+    if v.neg().slot() != neg::<S>(Slot::at(a), Dither::UNUSED) {
+        tally.neg_wrong += 1;
+    }
+    let leaves =
+        panic_on_overflow::<S>(negation_position::<S::Format>(Slot::at(a)), Dither::UNUSED).get();
+    assert_eq!(
+        v.fits_neg().get(),
+        !leaves,
+        "`fits_neg` disagrees with `panic_on_overflow` at -{a}"
+    );
     assert_eq!(
         v.slot().index(),
         a,
@@ -96,6 +153,17 @@ pub fn check_pair<S: Sole>(a: i128, b: i128, tally: &mut Tally) {
         "`fits_add` disagrees with `panic_on_overflow` at {a} + {b}"
     );
 
+    if va.sub(vb).slot() != sub::<S>(sa, sb, Dither::UNUSED) {
+        tally.sub_wrong += 1;
+    }
+    let leaves =
+        panic_on_overflow::<S>(difference_position::<S::Format>(sa, sb), Dither::UNUSED).get();
+    assert_eq!(
+        va.fits_sub(vb).get(),
+        !leaves,
+        "`fits_sub` disagrees with `panic_on_overflow` at {a} - {b}"
+    );
+
     let order = a.cmp(&b);
     assert_eq!(va.cmp(vb), order, "`cmp` at {a}, {b}");
     assert_eq!(va.eq(vb).get(), order.is_eq(), "`eq` at {a}, {b}");
@@ -110,6 +178,51 @@ pub fn check_pair<S: Sole>(a: i128, b: i128, tally: &mut Tally) {
     assert_eq!(va.ge(vb).get(), order.is_ge(), "`ge` at {a}, {b}");
     assert_eq!(va.min(vb).slot().index(), a.min(b), "`min` at {a}, {b}");
     assert_eq!(va.max(vb).slot().index(), a.max(b), "`max` at {a}, {b}");
+}
+
+/// The product of one pair and its verdict, against the tests' own
+/// arithmetic: away from exponent zero the value's product is the format's
+/// function, and `fits_mul` is at every exponent. Apart from `check_pair`
+/// because a signature whose product the format does not admit has no `mul`
+/// to call.
+pub fn check_product<S: Sole>(a: i128, b: i128, tally: &mut Tally) {
+    let (va, vb) = (value::<S>(a), value::<S>(b));
+    let expected = oracle::product::<S>(a, b);
+    tally.products += 1;
+    if va.mul(vb).slot().index() != expected.slot {
+        tally.mul_wrong += 1;
+    }
+    assert_eq!(
+        va.fits_mul(vb).get(),
+        expected.fits,
+        "`fits_mul` at {a} * {b}"
+    );
+}
+
+/// Every pair of members' product, exhaustively.
+pub fn exhaustive_products<S: Sole>(tally: &mut Tally) {
+    let (min, max) = range::<S>();
+    for a in min ..= max {
+        for b in min ..= max {
+            check_product::<S>(a, b, tally);
+        }
+    }
+}
+
+/// The edge lattice's products, every pair, and the seeded pairs' products.
+pub fn lattice_and_seeded_products<S: Sole>(tally: &mut Tally) {
+    let l = lattice::<S>();
+    for &a in l.as_slice() {
+        for &b in l.as_slice() {
+            check_product::<S>(a, b, tally);
+        }
+    }
+    let (min, max) = range::<S>();
+    let mut rng = SplitMix::seeded();
+    for _ in 0 .. SEEDED_PAIRS {
+        let (a, b) = (rng.member(min, max), rng.member(min, max));
+        check_product::<S>(a, b, tally);
+    }
 }
 
 /// The identity is slot zero, and adding it moves nothing.
@@ -129,7 +242,7 @@ pub fn check_identity<S: Sole>(a: i128) {
 pub fn exhaustive<S: Sole>(tally: &mut Tally) {
     let (min, max) = range::<S>();
     for a in min ..= max {
-        check_value::<S>(a);
+        check_value::<S>(a, tally);
         check_identity::<S>(a);
         for b in min ..= max {
             check_pair::<S>(a, b, tally);
@@ -190,7 +303,7 @@ pub fn lattice<S: Sole>() -> Lattice {
 pub fn on_the_lattice<S: Sole>(tally: &mut Tally) {
     let l = lattice::<S>();
     for &a in l.as_slice() {
-        check_value::<S>(a);
+        check_value::<S>(a, tally);
         check_identity::<S>(a);
         for &b in l.as_slice() {
             check_pair::<S>(a, b, tally);

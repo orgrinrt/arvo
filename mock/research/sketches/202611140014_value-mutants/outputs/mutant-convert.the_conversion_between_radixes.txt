@@ -1,0 +1,35 @@
+cargo test -p arvo-numeral --features mutant-convert --test the_conversion_between_radixes
+running 8 tests
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test decimal_onto_ternary ... FAILED
+test decimal_onto_binary ... FAILED
+test binary_onto_decimal ... FAILED
+test binary_onto_ternary ... FAILED
+test ternary_onto_binary ... FAILED
+test ternary_onto_decimal ... FAILED
+thread 'decimal_onto_ternary' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 585831 of 647480 checks
+  left: 585831
+ right: 0
+thread 'decimal_onto_binary' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 591763 of 645910 checks
+  left: 591763
+ right: 0
+thread 'binary_onto_decimal' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 578015 of 698680 checks
+  left: 578015
+ right: 0
+thread 'binary_onto_ternary' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 549107 of 689280 checks
+  left: 549107
+ right: 0
+thread 'ternary_onto_binary' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 540752 of 660420 checks
+  left: 540752
+ right: 0
+thread 'ternary_onto_decimal' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 581730 of 698630 checks
+  left: 581730
+ right: 0
+test result: FAILED. 2 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.23s

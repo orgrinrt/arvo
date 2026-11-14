@@ -9,18 +9,33 @@ readme = "README.md.tmpl"
 [dependencies]
 arvo-format.workspace = true
 arvo-placement.workspace = true
+notko.workspace = true
+notko-hlist = { workspace = true, optional = true }
 
-# One mutant per rung. Each removes that rung's adaptation onto the declared
-# width, and the equality tests fail while it is on. Off by default
-# and never enabled by anything that ships.
 [features]
-mutant-8 = []
-mutant-16 = []
-mutant-32 = []
-mutant-64 = []
+# A value as the count of `notko-hlist`, so a list's length lands in a value.
+# Off by default, and nothing else here turns either on.
+#
+# `hlist` implements `Cardinal` as a plain trait and needs no unstable feature.
+# `hlist-const` implements it as a const trait, which is what makes a length a
+# constant, and enables `const_trait_impl` in this crate for that one impl. A
+# consumer naming the value or the length needs no feature gate of its own.
+hlist = ["dep:notko-hlist"]
+hlist-const = ["hlist", "notko-hlist/const"]
 
+# The mutants the tests turn on are compiler flags, set only by the build at the
+# top with `RUSTFLAGS="--cfg arvo_mutant_<name>"`, never features: a feature is
+# unified across a build, and one crate turning a mutant on would change every
+# other crate's arithmetic. Each flag breaks one place where its operation goes
+# wrong first, and is declared here so a misspelt one is reported.
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"
+unexpected_cfgs = { level = "warn", check-cfg = [
+  "cfg(arvo_mutant_8, arvo_mutant_16, arvo_mutant_32, arvo_mutant_64)",
+  "cfg(arvo_mutant_sub, arvo_mutant_neg, arvo_mutant_mul, arvo_mutant_under)",
+  "cfg(arvo_mutant_div, arvo_mutant_convert, arvo_mutant_convert_policy, arvo_mutant_convert_mode)",
+  "cfg(arvo_mutant_index, arvo_mutant_count)",
+] }
 
 [dev-dependencies]
 trybuild = "1"

@@ -18,8 +18,6 @@
 
 use notko::Maybe;
 
-use crate::wide::Wide;
-
 /// A sign and a magnitude `hi * 2^128 + lo`, zero never negative.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub(crate) struct Big {
@@ -245,19 +243,6 @@ impl Big {
             b = rest;
         }
         a
-    }
-
-    /// The value as the step's four-limb integer, built from its two 128-bit
-    /// halves by a product and a sum, so nothing of the step's division is read.
-    pub(crate) fn wide(self) -> Wide {
-        let Maybe::Is(shift) = Wide::power(2, 128) else { unreachable!() };
-        let Maybe::Is(high) = Wide::of_unsigned(self.hi).times(shift) else {
-            unreachable!("a magnitude under 2^256 has a high half under 2^128")
-        };
-        let Maybe::Is(whole) = high.plus(Wide::of_unsigned(self.lo)) else {
-            unreachable!("a magnitude under 2^256 is formed in four limbs")
-        };
-        if self.negative { whole.negated() } else { whole }
     }
 
     /// The value as four limbs, lowest first, and its sign.
