@@ -7,7 +7,8 @@ digest, `Digest::<64>::of`, which runs FNV-1a on short input and XXH3 from a mea
 path has a `const fn` form that gives the same value as the runtime one, and a digest narrows into
 `arvo_bits::Bits<N>` when the width a consumer pins it to is smaller.
 
-Depends on `arvo-bits` and on `xxhash-rust` for XXH3. `no_std`, no allocation.
+Input is `arvo_numeral::Bytes` and the digest a host `Word` from the same crate, so no host integer is
+named here. Depends on `arvo-numeral`, `arvo-bits` and on `xxhash-rust` for XXH3. `no_std`, no allocation.
 
 ## Status
 

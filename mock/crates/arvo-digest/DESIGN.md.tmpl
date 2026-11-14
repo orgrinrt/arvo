@@ -22,11 +22,11 @@ input can make either collide. A consumer that needs resistance to that takes a 
 
 `Digest<const BITS: u16>` holds a digest at its algorithm's output width. The widths are the ones the
 marker `Width<BITS>` implements the sealed trait `Carrier` for, 32, 64 and 128, and `Carrier` names the
-host integer each is held in. Any other width does not exist as a type, so asking for one is a compile
-error and never a check at run time.
+`arvo_numeral::Word` each is held in, the host word of that width. Any other width does not exist
+as a type, so asking for one is a compile error and never a check at run time.
 
-`raw()` returns the host integer, the one declared door out, the same shape `Bits::raw` has. A digest
-compares for equality and copies; it has no ordering, because the order of two digests means nothing.
+`raw()` returns that `Word`, and a consumer that needs the host's integer takes it from the word's own
+`host` door, so the digest names no host integer itself. A digest compares for equality and copies; it has no ordering, because the order of two digests means nothing.
 
 `bits::<N>()` on `Digest<32>` and `Digest<64>` is the obligation's named width: a masked cast into
 `arvo_bits::Bits<N>`, keeping the low `N` bits. Both algorithms spread their output across every bit,
@@ -35,9 +35,11 @@ than a second one here. `N` wider than the digest is refused when the function i
 
 ## The input
 
-Every entry point takes `&[u8]`. That is where the host's byte image enters the stack, and it is a door
-in the same sense as `Bits::masked` taking a host integer: arvo has no byte-view type, and a digest of
-the host's bytes is a function of exactly those bytes.
+Every entry point takes `arvo_numeral::Bytes`, a borrowed run of the host's bytes. The host's byte
+image enters the stack at that type's door in `arvo-numeral`, the introducing crate where host integers
+meet the stack's own types, and nowhere in this crate: not in its surface and not in its internals.
+FNV-1a walks the run with `Bytes::split_first` over `Word` arithmetic, and the call into xxhash-rust
+takes `Bytes::host` and hands its result to `Word::of`.
 
 The crate neither implements nor accepts `core::hash::Hash`. That trait feeds a slice's length as a
 `usize`, so the same value hashes differently on a 32 bit and a 64 bit target, which is the
