@@ -1,0 +1,50 @@
+5bb910db chore: lock src changelist 202611140156
+3450728b test: land the ieee suites below the smallest subnormal
+b9d03f5c chore: lock doc changelist 202611140156
+94576713 docs: open round 202611140156, ieee suites below the subnormals
+c580a6ae chore: close design round 202611140127
+91b67614 chore: lock src changelist 202611140127
+53d41c81 feat: admit the wrapping product past the slot index
+26fe9359 chore: lock doc changelist 202611140127
+194cf92b docs: admit the wrapping product past the slot index
+81afc16c chore: close design round 202611132240-c5qc
+3580e323 chore: lock src changelist 202611132240-c5qc
+09bd8060 fix: clear the clippy findings the four-limb remainder brought
+477119de feat: carry the remainder over four limbs
+f0d45bfb chore: lock doc changelist 202611132240-c5qc
+04ab077a docs: open round 202611132240-c5qc, carry the remainder over four limbs
+00fefe03 chore: close design round 202611132223-c27b
+62e8fceb chore: lock src changelist 202611132223-c27b
+26d94452 test: keep each sweep's walk out of line
+9127ea38 chore: lock doc changelist 202611132223-c27b
+2a732730 docs: open round 202611132223-c27b, a sweep keeps each walk out of line
+caf00182 chore: close design round 202611132142-jb7q
+a97b4f11 chore: lock src changelist 202611132142-jb7q
+7e8aedef refactor: divide by two limbs a quotient limb at a time
+b406bf17 chore: lock doc changelist 202611132142-jb7q
+b3948cf2 docs: design the two-limb division a quotient limb at a time
+f8592622 chore: lock and close design round 202611132043-aun1
+c920748f refactor: mark every function `arvo-format` ships inline, with a lint
+9e01790e chore: lock doc changelist 202611132043-aun1
+f9026b16 docs: open round 202611132043-aun1 on inlining what the format ships
+c132e50a chore: close design round 202611132037-ouou
+d9e329fa chore: lock src changelist 202611132037-ouou
+640783ab fix: clear the four clippy warnings `arvo-format` carries
+4b8017c3 chore: lock doc changelist 202611132037-ouou
+3f0a14f6 docs: open round 202611132037-ouou on the warnings arvo-format carries
+dd2ab4ff chore: close design round 202611132031-li8r
+08402149 chore: lock src changelist 202611132031-li8r
+48012e48 fix: saturate the inverse sweep below the top so width one runs
+10b210a1 chore: lock doc changelist 202611132031-li8r
+60bcc895 docs: open round 202611132031-li8r on the inverse sweep at width one
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+4d6aa22c feat: give the registry its amendment edge and stamp fields
+9ba397c4 fix: read the lints through one parse and add the registry tools
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
