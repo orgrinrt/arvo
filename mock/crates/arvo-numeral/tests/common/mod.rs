@@ -8,7 +8,19 @@
 
 #![allow(dead_code)]
 
+pub mod crossings;
+pub mod exponents;
+pub mod hosts;
 pub mod oracle;
+pub mod points;
+pub mod shapes;
+pub mod widths;
+
+/// The wide integer of `arvo-format`'s own suites, read where it is kept so
+/// that there is one of it. It is a test file of that crate and no part of its
+/// surface, which is why it is reached by path.
+#[path = "../../../arvo-format/src/tests/big.rs"]
+pub mod big;
 
 use arvo_format::{
     DeclaredSignature,

@@ -9,18 +9,23 @@
 //! The quotient, the conversion and the product at a quantum exponent other
 //! than zero are the format's function called on slots, so that function
 //! cannot be what they are checked against. What is here computes the same
-//! results from the members' values in wide integers: a quotient of two
-//! integers rounded by a mode, and a completion onto a range. It reads what a
-//! signature declares, its mode, policy, range and exponent, and calls nothing
-//! of the format to compute.
+//! results from the members' values: a ratio of two integers rounded by a mode,
+//! and a completion onto a range. It reads what a signature declares, its mode,
+//! policy, range, radix and exponent, and calls nothing of the format to
+//! compute.
 //!
-//! Every format the tests name is binary, which `exponent` asserts.
+//! A ratio is formed in the host's 128-bit integer where its terms fit there,
+//! and in the wide integer of the format's own suites where they do not, so no
+//! shape is left out for want of room. `the_oracle.rs` holds the two against
+//! each other where both answer.
 
 use arvo_format::overflow::{Overflow, Policy};
 use arvo_format::rounding::{Mode, Rounding};
 use arvo_format::{Adaptation, DeclaredSignature, Format, Quantum, radix};
 use arvo_numeral::Sole;
+use notko::Maybe;
 
+use super::big::Big;
 use super::range;
 
 /// The rounding mode the signature declares.
@@ -37,10 +42,29 @@ fn saturates<S: DeclaredSignature>() -> bool {
     )
 }
 
-/// The quantum's exponent of a binary format: a slot is that power of two.
-fn exponent<F: Format>() -> i32 {
-    assert_eq!(radix::<F>().base(), 2, "the tests' arithmetic is binary");
-    <F::Quantum as Quantum>::BASE.power()
+/// A power of a radix, the quantum of a format or its inverse.
+#[derive(Clone, Copy)]
+pub struct Scale {
+    pub radix: u32,
+    pub power: i32,
+}
+
+impl Scale {
+    /// The quantum of the format: a slot is its radix to this power.
+    pub fn of<F: Format>() -> Self {
+        Self {
+            radix: radix::<F>().base(),
+            power: <F::Quantum as Quantum>::BASE.power(),
+        }
+    }
+
+    /// One over this scale.
+    pub fn inverse(self) -> Self {
+        Self {
+            radix: self.radix,
+            power: -self.power,
+        }
+    }
 }
 
 /// `num / den` rounded to an integer by the mode.
@@ -76,13 +100,38 @@ pub fn completed<S: Sole>(x: i128) -> i128 {
 
 /// What an operation gives: the slot of its result, and whether the rounded
 /// result was a member before any completion.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct Landed {
     pub slot: i128,
     pub fits: bool,
 }
 
-/// `num / den` slots landed on `S`: rounded by its mode, then completed.
-fn landed<S: Sole>(num: i128, den: i128) -> Landed {
+/// The magnitude a ratio's terms stay within for `rounded` and `completed` to
+/// stay inside the host's integer: `rounded` doubles a remainder below the
+/// denominator, and `completed` takes a range's end from the rounded value.
+const ROOM: u128 = 1 << 126;
+
+/// The product of the factors and of each scale's side of the ratio, in the
+/// host's integer, or nothing where a term leaves the room it has.
+fn terms_in_room(factors: &[i128], divisor: i128, scales: &[Scale]) -> Option<(i128, i128)> {
+    let mut num = 1i128;
+    for &f in factors {
+        num = num.checked_mul(f)?;
+    }
+    let mut den = divisor;
+    for s in scales {
+        let by = i128::from(s.radix).checked_pow(s.power.unsigned_abs())?;
+        if s.power >= 0 {
+            num = num.checked_mul(by)?;
+        } else {
+            den = den.checked_mul(by)?;
+        }
+    }
+    (num.unsigned_abs() <= ROOM && den.unsigned_abs() < ROOM).then_some((num, den))
+}
+
+/// `num / den` landed on `S` in the host's integer.
+fn landed_in_room<S: Sole>(num: i128, den: i128) -> Landed {
     let (min, max) = range::<S>();
     let at = rounded(num, den, mode::<S>());
     Landed {
@@ -91,67 +140,96 @@ fn landed<S: Sole>(num: i128, den: i128) -> Landed {
     }
 }
 
-/// The magnitude a ratio's terms stay within for `rounded` and `completed` to
-/// stay inside the wide integer: `rounded` doubles a remainder below the
-/// denominator, and `completed` takes a range's end from the rounded value.
-/// The product of two 64-bit slots is at most this, so it fits unscaled.
-const ROOM: u128 = 1 << 126;
-
-/// `num / den` slots landed on `S`, or nothing where the ratio's terms leave
-/// the room this arithmetic has.
-fn landed_in_room<S: Sole>(num: Option<i128>, den: Option<i128>) -> Option<Landed> {
-    let (num, den) = (num?, den?);
-    if num.unsigned_abs() > ROOM || den.unsigned_abs() >= ROOM {
-        return None;
+/// The same ratio landed on `S` in the wide integer. The denominator stays in
+/// an unsigned 128-bit word, which is what the format's exact position carries
+/// a remainder over, so a ratio past that is one the format does not admit.
+fn landed_wide<S: Sole>(factors: &[i128], divisor: i128, scales: &[Scale]) -> Landed {
+    let mut num = Big::of(if divisor < 0 { -1 } else { 1 });
+    for &f in factors {
+        num = num.times(Big::of(f));
     }
-    Some(landed::<S>(num, den))
-}
-
-/// `x` times two to the `power`, as a ratio, or nothing where it leaves the
-/// wide integer.
-fn scaled(x: Option<i128>, power: i32) -> (Option<i128>, Option<i128>) {
-    let factor = 1i128.checked_shl(power.unsigned_abs()).filter(|f| *f > 0);
-    if power >= 0 {
-        (x.zip(factor).and_then(|(x, f)| x.checked_mul(f)), Some(1))
+    let mut den = divisor.unsigned_abs();
+    for s in scales {
+        if s.power >= 0 {
+            num = num.times(Big::power(i128::from(s.radix), s.power.unsigned_abs()));
+        } else {
+            den = u128::from(s.radix)
+                .checked_pow(s.power.unsigned_abs())
+                .and_then(|by| den.checked_mul(by))
+                .expect("the ratio's denominator passes the unsigned 128-bit word");
+        }
+    }
+    let (floor, rest) = num.floor_over(den);
+    let up = rest != 0
+        && match mode::<S>() {
+            Mode::Floor => false,
+            Mode::Ceil => true,
+            Mode::TowardZero => floor.is_negative(),
+            Mode::HalfUp => rest >= den - rest,
+            Mode::HalfEven => {
+                rest > den - rest || (rest == den - rest && floor.floor_over(2).1 == 1)
+            },
+            Mode::Stochastic => unreachable!("a value admits no stochastic mode"),
+        };
+    let at = if up { floor.plus(Big::of(1)) } else { floor };
+    let (min, max) = range::<S>();
+    let fits = matches!(at.index(), Maybe::Is(i) if i >= min && i <= max);
+    let slot = if saturates::<S>() {
+        match at.index() {
+            Maybe::Is(i) => i.clamp(min, max),
+            Maybe::Isnt if at.is_negative() => min,
+            Maybe::Isnt => max,
+        }
     } else {
-        (x, factor)
+        let span = (max - min) as u128 + 1;
+        min + at.plus(Big::of(-min)).floor_over(span).1 as i128
+    };
+    Landed {
+        slot,
+        fits,
     }
 }
 
-/// The quotient of the members at slots `a` and `b`, or nothing where this
-/// arithmetic has no room for it. The two quanta cancel, so the quotient is
-/// `a / b` as a number, and its slot is that over the quantum.
-pub fn quotient_in_room<S: Sole>(a: i128, b: i128) -> Option<Landed> {
-    let (num, den) = scaled(Some(a), -exponent::<S::Format>());
-    landed_in_room::<S>(num, den.and_then(|d| d.checked_mul(b)))
+/// The product of the factors times the scales, over the divisor, landed on
+/// `S`: rounded by its mode, then completed by its policy.
+fn landed<S: Sole>(factors: &[i128], divisor: i128, scales: &[Scale]) -> Landed {
+    assert!(divisor != 0, "a ratio over zero");
+    match terms_in_room(factors, divisor, scales) {
+        Some((num, den)) => landed_in_room::<S>(num, den),
+        None => landed_wide::<S>(factors, divisor, scales),
+    }
 }
 
-/// The product of the members at slots `a` and `b`, or nothing where this
-/// arithmetic has no room for it: the slots' product times the quantum
-/// squared, and its slot is that over the quantum once.
-pub fn product_in_room<S: Sole>(a: i128, b: i128) -> Option<Landed> {
-    let (num, den) = scaled(a.checked_mul(b), exponent::<S::Format>());
-    landed_in_room::<S>(num, den)
+/// Both ways of landing one ratio, where the host's integer has room for it.
+pub fn landed_both_ways<S: Sole>(
+    factors: &[i128],
+    divisor: i128,
+    scales: &[Scale],
+) -> Option<(Landed, Landed)> {
+    let (num, den) = terms_in_room(factors, divisor, scales)?;
+    Some((
+        landed_in_room::<S>(num, den),
+        landed_wide::<S>(factors, divisor, scales),
+    ))
 }
 
-/// The member at slot `a` of `S`, on the grid of `T`, or nothing where this
-/// arithmetic has no room for it.
-pub fn converted_in_room<S: Sole, T: Sole>(a: i128) -> Option<Landed> {
-    let (num, den) = scaled(Some(a), exponent::<S::Format>() - exponent::<T::Format>());
-    landed_in_room::<T>(num, den)
-}
-
-/// The quotient where the caller knows there is room.
+/// The quotient of the members at slots `a` and `b`. The two quanta cancel, so
+/// the quotient is `a / b` as a number, and its slot is that over the quantum.
 pub fn quotient<S: Sole>(a: i128, b: i128) -> Landed {
-    quotient_in_room::<S>(a, b).expect("the quotient leaves the tests' wide integer")
+    landed::<S>(&[a], b, &[Scale::of::<S::Format>().inverse()])
 }
 
-/// The product where the caller knows there is room.
+/// The product of the members at slots `a` and `b`: the slots' product times
+/// the quantum squared, and its slot is that over the quantum once.
 pub fn product<S: Sole>(a: i128, b: i128) -> Landed {
-    product_in_room::<S>(a, b).expect("the product leaves the tests' wide integer")
+    landed::<S>(&[a, b], 1, &[Scale::of::<S::Format>()])
 }
 
-/// The conversion where the caller knows there is room.
+/// The member at slot `a` of `S`, on the grid of `T`: the slot times the
+/// source's quantum over the target's, whatever the two radixes are.
 pub fn converted<S: Sole, T: Sole>(a: i128) -> Landed {
-    converted_in_room::<S, T>(a).expect("the conversion leaves the tests' wide integer")
+    landed::<T>(&[a], 1, &[
+        Scale::of::<S::Format>(),
+        Scale::of::<T::Format>().inverse(),
+    ])
 }
