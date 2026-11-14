@@ -78,8 +78,9 @@
 //! the top and one below the bottom against one at the bottom, the adapted door
 //! over a magnitude-indexed quantum against a constant one, the constant door
 //! over a phase that does not denote against a half, and `Divisor::member` from
-//! a range holding its zero slot, from another exponent or phase and from a range
-//! past the divisor's, each against the zero-free range on the divisor's grid,
+//! a range holding its zero slot, from an exponent below zero and one above it,
+//! from a phase a half and a whole slot apart and from a range past the
+//! divisor's, each against the zero-free range on the divisor's grid,
 //! with the same range at radix ten admitted beside it, and from a range in
 //! tenths against one in halves beside a divisor in halves.
 
@@ -388,7 +389,9 @@ fn a_member_divisor_is_refused_off_the_grid_past_the_range_or_over_its_zero() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_member_divisor_from_a_range_holding_its_zero_is_refused.rs");
     t.compile_fail("tests/ui/a_member_divisor_from_another_exponent_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_an_exponent_above_zero_is_refused.rs");
     t.compile_fail("tests/ui/a_member_divisor_from_another_phase_is_refused.rs");
+    t.compile_fail("tests/ui/a_member_divisor_from_a_phase_a_whole_slot_apart_is_refused.rs");
     t.compile_fail("tests/ui/a_member_divisor_from_a_range_past_the_divisors_is_refused.rs");
     t.pass("tests/ui/a_member_divisor_from_a_zero_free_range_on_the_grid_is_admitted.rs");
     t.pass("tests/ui/a_member_divisor_from_another_radix_at_exponent_zero_is_admitted.rs");

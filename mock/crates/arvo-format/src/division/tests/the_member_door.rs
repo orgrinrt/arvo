@@ -33,6 +33,7 @@ use crate::rounding::ALL_MODES;
 use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::tests::dispatch::{self, PerSignature};
 use crate::tests::grid::Grid;
+use crate::tests::ratio::Ratio;
 use crate::width::{Bool, Width};
 
 /// The slots one to 255, a consumer's range that leaves the zero out.
@@ -105,6 +106,8 @@ type SignedByte = Grid<BinaryRationals, Constant<0>, Signed<8>, 0, 1>;
 type UpTo127 = Grid<BinaryRationals, Constant<0>, OneTo127, 0, 1>;
 /// Integers over `DownFromMinusOne`, a zero-free range below the zero.
 type Negatives = Grid<BinaryRationals, Constant<0>, DownFromMinusOne, 0, 1>;
+/// `OneTo255` at exponent one, where slot `b` names `2b`.
+type Doubled = Grid<BinaryRationals, Constant<1>, OneTo255, 0, 1>;
 
 /// The quotient of every member of `S`'s format by every member of `G`, each
 /// reached as a consumer reaches it, against the oracle fed `G`'s value.
@@ -263,6 +266,36 @@ impl Verdict for NoRadix {
     }
 }
 
+/// `V = r^max(-e, 0)` for a constant quantum, as a whole number.
+fn v_half<F: Format>() -> i128 {
+    let r = radix::<F>().base() as i128;
+    r.pow(<F::Quantum as Quantum>::BASE.power().min(0).unsigned_abs())
+}
+
+/// A quantum comparison that reads the `V` halves alone, blind to `U`.
+struct VHalvesAlone;
+
+impl Verdict for VHalvesAlone {
+    fn conditions<F: Format, G: Format>() -> [Bool; 4] {
+        let [_, phase, inside, zero_free] = member_conditions::<F, G>();
+        let constant =
+            is_constant_family::<F::Quantum>().get() && is_constant_family::<G::Quantum>().get();
+        [Bool::of(constant && v_half::<F>() == v_half::<G>()), phase, inside, zero_free]
+    }
+}
+
+/// A phase comparison modulo a whole slot, which takes a grid as a set of points.
+struct PhaseModuloASlot;
+
+impl Verdict for PhaseModuloASlot {
+    fn conditions<F: Format, G: Format>() -> [Bool; 4] {
+        let [quantum, _, inside, zero_free] = member_conditions::<F, G>();
+        let (f, g) = (Ratio::phase_of::<F>(), Ratio::phase_of::<G>());
+        let phase = f.den == g.den && (f.num - g.num) % f.den == 0;
+        [quantum, Bool::of(phase), inside, zero_free]
+    }
+}
+
 /// A verdict that drops the range lying inside.
 struct NoInside;
 
@@ -293,7 +326,9 @@ macro_rules! the_table {
             SignedByte, Negatives => [true, true, true, true];
             Byte, Halves => [false, true, true, true];
             Halves, PositiveInTenths => [false, true, true, true];
+            Byte, Doubled => [false, true, true, true];
             Byte, Biased => [true, false, true, true];
+            Byte, FromOne => [true, false, true, true];
             Byte, Wider => [true, true, false, true];
             Byte, Byte => [true, true, true, false];
             SignedByte, SignedByte => [true, true, true, false];
@@ -364,6 +399,7 @@ fn the_zero_column_agrees_with_a_search_over_every_member() {
         agrees::<SignedByte>(),
         agrees::<UpTo127>(),
         agrees::<Negatives>(),
+        agrees::<Doubled>(),
     ];
     for (at, agreed) in every.into_iter().enumerate() {
         assert!(
@@ -386,6 +422,14 @@ fn the_table_reports_each_planted_verdict() {
     assert!(
         disagreements::<NoRadix>() > 0,
         "the table missed a grid comparison without the radix"
+    );
+    assert!(
+        disagreements::<VHalvesAlone>() > 0,
+        "the table missed a quantum comparison blind to exponents above zero"
+    );
+    assert!(
+        disagreements::<PhaseModuloASlot>() > 0,
+        "the table missed a phase comparison modulo a whole slot"
     );
     assert!(
         disagreements::<NoInside>() > 0,

@@ -1,4 +1,4 @@
-error[E0080]: evaluation panicked: a member is refused over a magnitude-indexed quantum: membership there is a slot and a magnitude, and a member holds the slot alone. Declare the format over a constant quantum
+error[E0080]: evaluation panicked: a member over a magnitude-indexed quantum is not yet admitted: membership there is a slot and a magnitude, and the applied map has no magnitude coordinate to land a member at yet. Declare the format over a constant quantum for now
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
@@ -8,9 +8,9 @@ error[E0080]: evaluation panicked: a member is refused over a magnitude-indexed 
   |
   | /         assert!(
   | |             is_constant_family::<F::Quantum>().get(),
-  | |             "a member is refused over a magnitude-indexed quantum: membership there is a slot and a \
-  | |              magnitude, and a member holds the slot alone. Declare the format over a constant \
-  | |              quantum"
+  | |             "a member over a magnitude-indexed quantum is not yet admitted: membership there is a slot \
+  | |              and a magnitude, and the applied map has no magnitude coordinate to land a member at \
+  | |              yet. Declare the format over a constant quantum for now"
   | |         );
   | |_________- in this macro invocation
 

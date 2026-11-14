@@ -2,9 +2,9 @@ error[E0080]: evaluation panicked: Divisor::member is refused from a format whos
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
-  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::division::MemberDivisor::<arvo_format::points::UFixed<8, -1>, G>::ADMITTED` failed here
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::division::member_door::MemberDivisor::<arvo_format::points::UFixed<8, -1>, G>::ADMITTED` failed here
   |
- ::: src/division.rs
+ ::: src/division/member_door.rs
   |
   | /         assert!(
   | |             quantum.get(),
