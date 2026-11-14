@@ -1,0 +1,26 @@
+# Standalone, detached from the arvo mock workspace. An ad-hoc spike for the
+# second stack audit under mock/research/202611140845_stack-audit/: every number
+# it prints is an ad-hoc spike and none is a bench result.
+
+[package]
+name = "stack-audit-2-value-tier"
+description = "An ad-hoc spike: the value tier's doors, ring operations, fixed-point product, quotient and conversion beside hand-written code"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../crates/arvo-numeral" }
+
+# `release` is what a consumer gets with no profile line of its own: no LTO,
+# sixteen codegen units. `fat` is the whole program optimised together.
+[profile.release]
+opt-level = 3
+
+[profile.fat]
+inherits = "release"
+lto = "fat"
+codegen-units = 1
+
+[workspace]

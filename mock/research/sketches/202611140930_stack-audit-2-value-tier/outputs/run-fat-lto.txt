@@ -1,0 +1,43 @@
+every value arm agrees with its hand arm on the whole input
+-- the doors, 13 bits unsigned, from and to u16
+ingest saturate  from_index                      0.061 ns/elem median     0.051 p5
+ingest saturate  adapted (the wide step)         0.061 ns/elem median     0.061 p5
+ingest saturate  hand                            0.061 ns/elem median     0.061 p5
+ingest wrap      from_index                      0.037 ns/elem median     0.036 p5
+ingest wrap      adapted (the wide step)        20.304 ns/elem median    18.401 p5
+ingest wrap      hand                            0.039 ns/elem median     0.038 p5
+egress           index::<u16>                    0.022 ns/elem median     0.020 p5
+egress           slot().index()                  0.021 ns/elem median     0.020 p5
+egress           hand copy                       0.021 ns/elem median     0.020 p5
+-- ring operations at an integer quantum, elementwise
+add u13 saturate value                           0.057 ns/elem median     0.057 p5
+add u13 saturate hand                            0.063 ns/elem median     0.063 p5
+sub u13 saturate value                           0.045 ns/elem median     0.044 p5
+sub u13 saturate hand                            0.049 ns/elem median     0.045 p5
+mul u13 saturate value                           0.811 ns/elem median     0.804 p5
+mul u13 saturate hand                            0.226 ns/elem median     0.224 p5
+mul i32 saturate value                           0.553 ns/elem median     0.551 p5
+mul i32 saturate hand                            0.661 ns/elem median     0.658 p5
+mul i32 wrap     value                           0.218 ns/elem median     0.211 p5
+mul i32 wrap     hand                            0.211 ns/elem median     0.210 p5
+-- folds
+sum u13 wrap     value                           0.108 ns/elem median     0.107 p5
+sum u13 wrap     hand, mask each step            0.108 ns/elem median     0.107 p5
+sum u13 wrap     hand, mask once                 0.039 ns/elem median     0.038 p5
+sum u13 saturate value                           0.413 ns/elem median     0.399 p5
+sum u13 saturate hand                            0.400 ns/elem median     0.397 p5
+max i32          value                           0.179 ns/elem median     0.175 p5
+max i32          hand                            0.180 ns/elem median     0.177 p5
+-- Q16.16 in 32 bits: product, quotient by three, conversion to Q8.8
+product half_even saturate value               281.247 ns/elem median   244.830 p5
+product half_even saturate hand                  0.993 ns/elem median     0.981 p5
+product floor wrap        value                256.488 ns/elem median   247.304 p5
+product floor wrap        hand                   0.834 ns/elem median     0.808 p5
+product f32                                      0.095 ns/elem median     0.092 p5
+quotient by 3 half_even   value                222.888 ns/elem median   205.194 p5
+quotient by 3 half_even   hand                   1.845 ns/elem median     1.831 p5
+convert to Q8.8 half_even value                211.672 ns/elem median   188.901 p5
+convert to Q8.8 half_even hand                   2.413 ns/elem median     2.197 p5
+-- a dependent chain: one Q16.16 value decayed 30000 times, per step
+decay half_even saturate value                 268.986 ns/elem median   241.031 p5
+decay half_even saturate hand                    4.568 ns/elem median     4.329 p5
