@@ -78,13 +78,11 @@ impl<F: Format> Addable<F> {
              member, so there is no sum to position"
         );
         // FIXME(arvo_addition_over_a_magnitude_indexed_quantum_is_a_placehol): the
-        // magnitude-indexed family is not yet admitted, and two things unblock
-        // it. In the design, `Exact` and `adapt` carry no magnitude
-        // coordinate, so a sum whose operands sit at two magnitudes has no position
-        // to be handed as; that is a change to the applied map, not to addition. In
-        // the canon, no row says what wrapping means on a union of magnitude ranges,
-        // and `where_wrapping_lives` classifies wrapping rather than defining it on
-        // such a set.
+        // magnitude-indexed family is not yet admitted. `Exact` and `adapt` carry no
+        // magnitude coordinate, so a sum whose operands sit at two magnitudes has no
+        // position to be handed as; that is a change to the applied map, not to
+        // addition. The completion on a union of magnitude ranges is the wrapping
+        // row's, saturation to the end and wrapping only on one progression.
         assert!(
             is_constant_family::<F::Quantum>().get(),
             "addition is not yet admitted over a magnitude-indexed quantum: a slot names a \

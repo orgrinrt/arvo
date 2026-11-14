@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: wrapping is not yet admitted on a magnitude-indexed format whose set is one progression: the wrap is modulo the progression's count of finest steps, not the top magnitude's slot range that the adaptation reads
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::apply::landing::Landable::<arvo_format::Signature<Probe, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::ADMITTED` failed here
+  |
+ ::: src/apply/landing.rs
+  |
+  | /         assert!(
+  | |             !wraps || one_grid,
+  | |             "wrapping is not yet admitted on a magnitude-indexed format whose set is one \
+  | |              progression: the wrap is modulo the progression's count of finest steps, not the top \
+  | |              magnitude's slot range that the adaptation reads"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/apply/landing.rs
+  |
+  |     let () = Landable::<S>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^

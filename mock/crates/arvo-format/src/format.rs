@@ -38,8 +38,10 @@ use crate::slots::{Slot, Slots, slot_in_range};
 use crate::width::{Bool, Width};
 
 mod phase;
+mod progression;
 
 pub use phase::Phase;
+pub use progression::is_one_progression;
 
 /// A representable set, together with the domain it sits in.
 ///

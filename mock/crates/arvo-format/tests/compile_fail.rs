@@ -366,3 +366,19 @@ fn the_quotient_and_conversion_surface_is_reached_from_the_root() {
     let t = trybuild::TestCases::new();
     t.pass("tests/ui/the_quotient_and_conversion_surface_is_reached_from_the_root.rs");
 }
+
+/// Wrapping on a floating format is refused and saturating it admitted, wrapping
+/// on a one-progression set over two magnitudes is not yet admitted and on one
+/// grid it is, and a slot range not holding zero is not yet admitted over two
+/// magnitudes and is on one grid: the landing's three refusals, each beside the
+/// twin that differs in one token.
+#[test]
+fn the_landing_refuses_what_it_cannot_land_and_admits_its_twins() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/land_wrapping_a_set_that_is_not_one_progression_is_refused.rs");
+    t.pass("tests/ui/land_saturating_a_set_that_is_not_one_progression_is_admitted.rs");
+    t.compile_fail("tests/ui/land_wrapping_a_magnitude_indexed_progression_is_refused.rs");
+    t.pass("tests/ui/land_wrapping_a_constant_quantum_is_admitted.rs");
+    t.compile_fail("tests/ui/land_on_a_range_not_holding_zero_over_two_magnitudes_is_refused.rs");
+    t.pass("tests/ui/land_on_a_range_not_holding_zero_over_one_grid_is_admitted.rs");
+}

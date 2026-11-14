@@ -116,6 +116,7 @@ pub use format::{
     contains,
     has_additive_identity,
     is_admissible_format,
+    is_one_progression,
     radix,
     smallest_step_exponent,
     step_exponent,

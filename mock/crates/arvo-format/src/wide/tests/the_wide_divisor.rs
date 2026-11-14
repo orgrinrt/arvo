@@ -92,6 +92,7 @@ fn a_quotient_limb_of_the_base_less_one_is_found_at_three_limbs() {
     // `(B - 1) d + d - 1`, where the running remainder's top limb meets the
     // divisor's and the estimate starts at its highest.
     let mut draws = Draws(0x0D1F_0004);
+    let mut checked = 0;
     for top in [128, 150, 191, 192] {
         let d = divisor_topped_at(&mut draws, top);
         let Maybe::Is(product) =
@@ -107,7 +108,14 @@ fn a_quotient_limb_of_the_base_less_one_is_found_at_three_limbs() {
         };
         agrees(false, n.magnitude, d);
         agrees(true, n.magnitude, d);
+        checked += 1;
     }
+    // A divisor topped at 192 bits times `B - 1` leaves the four limbs, so that
+    // one is skipped; the other three are the cases the test is for.
+    assert_eq!(
+        checked, 3,
+        "a case left the four limbs that the test meant to check"
+    );
 }
 
 #[test]

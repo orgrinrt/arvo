@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: wrapping is refused on a format whose representable set is not one arithmetic progression: a union of magnitude ranges at more than one quantum has a gap, so no reduction of it is a group; saturate or clamp instead
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::apply::landing::Landable::<arvo_format::Signature<arvo_format::points::Floating<4, -6, 8>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::ADMITTED` failed here
+  |
+ ::: src/apply/landing.rs
+  |
+  | /         assert!(
+  | |             !wraps || is_one_progression::<S::Format>().get(),
+  | |             "wrapping is refused on a format whose representable set is not one arithmetic \
+  | |              progression: a union of magnitude ranges at more than one quantum has a gap, so no \
+  | |              reduction of it is a group; saturate or clamp instead"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/apply/landing.rs
+  |
+  |     let () = Landable::<S>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^

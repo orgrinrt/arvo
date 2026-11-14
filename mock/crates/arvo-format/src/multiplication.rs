@@ -75,8 +75,8 @@ impl<F: Format> Multipliable<F> {
         );
         // FIXME(arvo_product_over_a_magnitude_indexed_quantum_is_a_placehold): the
         // product is a function of the signature here too. `Exact` and `adapt`
-        // carry no magnitude coordinate to land it at, and no canon row says what
-        // wrapping means on a union of magnitude ranges.
+        // carry no magnitude coordinate to land it at. The completion on a union of
+        // magnitude ranges is the wrapping row's, which `land` reads.
         assert!(
             is_constant_family::<F::Quantum>().get(),
             "multiplication is not yet admitted over a magnitude-indexed quantum: a slot names a \

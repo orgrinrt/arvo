@@ -21,6 +21,8 @@
 //! direction, and a carry to `radix^p` drops one more. Each format's numbers are
 //! written in as the standard's, a `Standard` in the suite that runs it.
 
+use core::num::NonZeroU128;
+
 use arvo_format::adapt::DeclaredSignature;
 use arvo_format::apply::{Dither, Exact, Remainder, Scaled, adapt, panic_on_overflow};
 use arvo_format::format::{Format, radix, step_exponent};
@@ -120,36 +122,22 @@ impl<S: DeclaredSignature> Landing for S {
         adapt::<S>(exact, Dither::UNUSED).index()
     }
 
-    /// `land` names the magnitude and the position. Past the top of the union it
-    /// lands nothing, since what the completion means there is a canon question,
-    /// and the suites read that region as the completion's answer at the top
-    /// magnitude, which is what a saturating IEEE format gives, so the value is
-    /// positioned at that one magnitude and adapted there.
+    /// `land` names the magnitude and the position, the top magnitude's past an
+    /// end, so the region past the largest finite member is read from whether
+    /// that position is in range, which is the overflow region.
     fn landed(num: i128, den: i128, k: i32) -> Option<Landed> {
-        let at = Scaled::of(num, den as u128, Exponent::of(k));
-        if let Maybe::Is(landing) = arvo_format::apply::land::<S>(at, Dither::UNUSED) {
-            return Some(Landed {
-                value:  Value {
-                    significand: Self::read_off(landing.exact()),
-                    exponent:    step_exponent::<S::Format>(landing.magnitude()).power(),
-                },
-                finite: true,
-            });
-        }
-        let quantum = <<S::Format as Format>::Quantum as Quantum>::MAGNITUDES;
-        let top = if <<S::Format as Format>::Quantum as Quantum>::SLOPE.power() < 0 {
-            Magnitude::at(0)
-        } else {
-            quantum.largest()
+        let den = NonZeroU128::new(den as u128)?;
+        let Maybe::Is(landing) =
+            arvo_format::apply::land::<S>(Scaled::of(num, den, Exponent::of(k)), Dither::UNUSED)
+        else {
+            return None;
         };
-        let s = step_exponent::<S::Format>(top).power();
-        let exact = position(radix::<S::Format>().base(), num, den, k, s)?;
         Some(Landed {
             value:  Value {
-                significand: Self::read_off(exact),
-                exponent:    s,
+                significand: Self::read_off(landing.exact()),
+                exponent:    step_exponent::<S::Format>(landing.magnitude()).power(),
             },
-            finite: false,
+            finite: !Self::overflows(landing.exact()),
         })
     }
 }
