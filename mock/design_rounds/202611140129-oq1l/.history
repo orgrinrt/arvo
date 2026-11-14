@@ -1,0 +1,50 @@
+7fd283ff chore: lock src changelist 202611140129-oq1l
+893b93dd Merge remote-tracking branch 'origin/work/arvo-digest' into digest-b1b
+4a20044c Merge remote-tracking branch 'origin/work/arvo-values' into digest-b1b
+e19aa3dd chore: close design round 202611140020
+526b86e9 chore: lock src changelist 202611140114
+dd8be963 chore: record the arvo-numeral test run at every shape
+051f27b1 refactor: move the digest onto arvo-bits and the numeral product
+5afcbaf2 chore: lock doc changelist 202611140129-oq1l
+9e9ef225 docs: design the digest on the operations its owners have
+746c770c Merge remote-tracking branch 'origin/work/arvo-values' into digest-b1
+70bdd0dd docs: regenerate the documents for the digest crate
+80894e15 chore: close design round 202611140014-l3t2
+4aa78050 chore: lock src changelist 202611140014-l3t2
+b55950a8 docs: compare the source changelist with the one it replaces
+8511c62d feat: add `arvo-digest` and the host door in `arvo-numeral`
+c97a1af5 test: run the quotient, product, conversion and door at every shape
+c81fde62 chore: lock doc changelist 202611140020
+a8c65b64 docs: state the conversion's open question and what the sweeps prove
+ba2a27a2 docs: write the digest round's second source changelist
+83707a41 chore: lock doc changelist 202611140014-l3t2
+0c6ecc5a docs: take the digest's bytes and words through `arvo-numeral`
+8dfb4946 chore: unlock design round, deprecate src and unlock doc
+b01777d7 docs: write the digest round's source changelist
+b55e79f8 chore: lock doc changelist 202611140014-l3t2
+6c5dbff8 docs: design the digest crate and count it among the crates
+d671a4e8 docs: write the digest round's doc changelist
+f3307c81 docs: open the digest round with its topic
+fc087e6c chore: regenerate generated files after merge
+e33c0c13 Merge remote-tracking branch 'origin/dev' into work/arvo-values
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+2b413b50 docs: commit the third reading of `work/arvo-values` and what is left
+e4e5b456 chore: close design round 202611132216-pzi4
+911daba0 docs: commit the mutant runs against the wide sweeps, and what changed
+b83d3c9b refactor!: take `Accumulator` and the public `holds_index` out
+660aa16d chore: lock doc changelist 202611132216-pzi4
+c849ec3e docs: take the accumulator and `holds_index` out of the numeral design
+9c6c0434 docs: open the round that takes the accumulator and `holds_index` out
+8e46316d docs: commit the second reading of `work/arvo-values` by a fresh seat
+a303d07b chore: close design round 202611132143-c8zp
+1f27fce0 docs: commit the mutant runs against the new oracle and border calls
+252d1ce4 test: check the delegated operations against the tests' own arithmetic
+9b59c4df chore: lock doc changelist 202611132143-c8zp
+109c29c9 docs: refuse `take` at a capacity of zero, keep the empty accumulator
+6c4cc936 docs: prove the delegated operations against the tests' own arithmetic
+7baae856 docs: open round 202611132143-c8zp on an oracle the tests carry
+e962cfbd docs: say what the value does now in the readme and the root design
+ff8aeffa docs: commit the first reading of `work/arvo-values` by a fresh seat
+9a3d5149 Merge remote-tracking branch 'origin/dev' into work/arvo-values
