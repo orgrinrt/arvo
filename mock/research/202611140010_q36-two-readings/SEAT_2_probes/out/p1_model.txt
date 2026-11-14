@@ -1,0 +1,50 @@
+== A. the measured cell: signed 8 bits onto signed 4 bits, wrap against saturate
+differ 226/256, lossy 240, lossy yet agreeing 14, inside the target and differing 0
+control, widening 4 onto 8: differ 0/16
+== B. signedness at one width: signed 8 bits onto unsigned 8 bits
+differ 128/256 (every negative member: wrap gives v + 256, saturate gives 0)
+== C. composition of overflow crossings, A onto B onto C against A onto C
+-- signed 8, 6, 4
+A=Wrap B=Wrap C=Wrap: source's rule composes true (0 wrong), target's rule composes true (0 wrong)
+A=Wrap B=Wrap C=Sat: source's rule composes true (0 wrong), target's rule composes false (142 wrong)
+A=Wrap B=Sat C=Wrap: source's rule composes false (184 wrong), target's rule composes false (180 wrong)
+A=Wrap B=Sat C=Sat: source's rule composes false (184 wrong), target's rule composes true (0 wrong)
+A=Sat B=Wrap C=Wrap: source's rule composes false (238 wrong), target's rule composes true (0 wrong)
+A=Sat B=Wrap C=Sat: source's rule composes false (238 wrong), target's rule composes false (142 wrong)
+A=Sat B=Sat C=Wrap: source's rule composes true (0 wrong), target's rule composes false (180 wrong)
+A=Sat B=Sat C=Sat: source's rule composes true (0 wrong), target's rule composes true (0 wrong)
+source's rule composes at 4/8 assignments, target's at 4/8
+one kind named for the whole path composes at 2/2
+-- unsigned 8, 6, 4
+A=Wrap B=Wrap C=Wrap: source's rule composes true (0 wrong), target's rule composes true (0 wrong)
+A=Wrap B=Wrap C=Sat: source's rule composes true (0 wrong), target's rule composes false (45 wrong)
+A=Wrap B=Sat C=Wrap: source's rule composes false (180 wrong), target's rule composes false (180 wrong)
+A=Wrap B=Sat C=Sat: source's rule composes false (180 wrong), target's rule composes true (0 wrong)
+A=Sat B=Wrap C=Wrap: source's rule composes false (45 wrong), target's rule composes true (0 wrong)
+A=Sat B=Wrap C=Sat: source's rule composes false (45 wrong), target's rule composes false (45 wrong)
+A=Sat B=Sat C=Wrap: source's rule composes true (0 wrong), target's rule composes false (180 wrong)
+A=Sat B=Sat C=Sat: source's rule composes true (0 wrong), target's rule composes true (0 wrong)
+source's rule composes at 4/8 assignments, target's at 4/8
+one kind named for the whole path composes at 2/2
+control, wrap through a ten-member window: composes false (216 wrong)
+== D. composition of rounding crossings, quantum 1/32 onto 1/8 onto 1/2
+source's rule composes at 15/125 assignments, target's at 20/125
+source's rule, the (first, second) mode pairs that compose to the first: [(TowardZero, TowardZero), (Floor, Floor), (Ceil, Ceil)]
+target's rule, the (first, second) mode pairs that compose to the second: [(TowardZero, TowardZero), (Floor, Floor), (Floor, HalfUp), (Ceil, Ceil)]
+one mode named for the whole path composes for: [TowardZero, Floor, Ceil]
+HalfUp first witness: slot -122 at 1/32 goes to -7 in two steps and -8 in one
+HalfEven first witness: slot -119 at 1/32 goes to -8 in two steps and -7 in one
+== E. widen, multiply exactly, narrow back, against the spine's one adaptation
+the wide system's reduction fired on 0 of 512 (product, kind) cases
+wide=Wrap result=Wrap: source's rule misses the spine's product on 0/256 pairs, target's on 0/256 (analytic)
+wide=Wrap result=Sat: source's rule misses the spine's product on 145/256 pairs, target's on 0/256 (analytic)
+wide=Sat result=Wrap: source's rule misses the spine's product on 145/256 pairs, target's on 0/256 (analytic)
+wide=Sat result=Sat: source's rule misses the spine's product on 0/256 pairs, target's on 0/256 (analytic)
+== F. an interval at quantum 1/8 crossing onto the integers
+one mode for both components, TowardZero: not an enclosure on 3045/3321, enclosing but loose on 0
+one mode for both components, Floor: not an enclosure on 2870/3321, enclosing but loose on 0
+one mode for both components, Ceil: not an enclosure on 2870/3321, enclosing but loose on 0
+one mode for both components, HalfUp: not an enclosure on 2210/3321, enclosing but loose on 0
+one mode for both components, HalfEven: not an enclosure on 2220/3321, enclosing but loose on 0
+floor below and ceil above: not an enclosure on 0/3321, loose on 0
+== every assertion held
