@@ -10,12 +10,12 @@
 //! two ends, the two members nearest the pole on each side and the members
 //! beside those, against dividends at and beside the range's ends and around
 //! zero. At each width of both families, at radix two over four exponents, at a
-//! phase and at radix ten, the verdict is checked against an independent reading
-//! of the eight corners, and the step at every point against an oracle in `Big`,
+//! phase and at radix ten, the verdict is checked to admit every format, whose
+//! corners the oracle forms, and the step at every point against an oracle in `Big`,
 //! which forms the numerator and the per-divisor denominator on pairs of the
 //! host's unsigned 128-bit integers and divides one bit at a time. The step is
-//! read without forcing the obligation, so the formats it holds out are swept
-//! too, and there a position past the index saturates on its sign.
+//! read without forcing the obligation, and a position past the slot index is
+//! compared exactly, its floor whole in the four limbs.
 
 use notko::Maybe;
 
@@ -29,15 +29,6 @@ use crate::tests::big::Big;
 use crate::tests::dispatch::PerFormat;
 use crate::tests::grid::Grid;
 use crate::tests::ratio::Ratio;
-
-/// Where the oracle puts a quotient.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-enum Answer {
-    /// Past the end of the index, on the negative side when it says so.
-    Past(bool),
-    /// A position the index holds.
-    At(Exact),
-}
 
 /// The oracle's reading of `F`: the phase in lowest terms, the radix, and the
 /// moves up and down.
@@ -68,8 +59,9 @@ fn factor(at: &Reading, s: i128) -> Big {
 
 /// `(phase + a) / ((phase + b) q) - phase` as the numerator
 /// `d (n + a d) r^down - n (n + b d) r^up` over `d (n + b d) r^up`, the sign
-/// moved onto the numerator, floored by `Big`'s own division.
-fn oracle(at: &Reading, a: i128, b: i128) -> Answer {
+/// moved onto the numerator, floored by `Big`'s own division into the exact
+/// position, its floor whole.
+fn oracle(at: &Reading, a: i128, b: i128) -> Exact {
     let (fa, fb) = (factor(at, a), factor(at, b));
     assert!(
         fb != Big::of(0),
@@ -85,29 +77,13 @@ fn oracle(at: &Reading, a: i128, b: i128) -> Answer {
         .times(flip)
         .times(Big::power(at.r, at.up));
     let (quotient, rem) = numerator.times(flip).floor_over_big(den);
-    let Maybe::Is(slot) = quotient.index() else {
-        return Answer::Past(quotient.is_negative());
-    };
     if rem == Big::of(0) {
-        return Answer::At(Exact::on_grid(Slot::at(slot)));
+        return Exact::floored(quotient.wide(), Remainder::ZERO);
     }
     let g = rem.common_divisor(den);
     let (num, _) = rem.floor_over_big(g);
     let (den, _) = den.floor_over_big(g);
-    Answer::At(Exact::at(
-        Slot::at(slot),
-        Remainder::reduced(num.wide(), den.wide()),
-    ))
-}
-
-/// The answer as the step reports it: past an end is the end, on the grid.
-fn reported(answer: Answer) -> Exact {
-    match answer {
-        Answer::Past(negative) => {
-            Exact::on_grid(Slot::at(if negative { i128::MIN } else { i128::MAX }))
-        },
-        Answer::At(at) => at,
-    }
+    Exact::floored(quotient.wide(), Remainder::reduced(num.wide(), den.wide()))
 }
 
 /// The members nearest the pole: the smallest with `n + b d` above zero and the
@@ -163,31 +139,10 @@ fn dividends(min: i128, max: i128) -> impl Iterator<Item = i128> {
     )
 }
 
-/// Whether the oracle holds every one of the eight corners.
-///
-/// The sweep stays at exponents where every step is formed in the four limbs,
-/// since the oracle's own integer stops there too; where a step is not formed
-/// is read by name below.
-fn oracle_admits(at: &Reading, min: i128, max: i128) -> bool {
-    let (above, below) = pole_neighbours(at);
-    [min, max, above, below]
-        .into_iter()
-        .filter(|&b| (min ..= max).contains(&b) && at.n + b * at.d != 0)
-        .all(|b| {
-            [min, max].into_iter().all(|a| {
-                match oracle(at, a, b) {
-                    Answer::Past(_) => false,
-                    Answer::At(x) => x.is_on_grid().get() || x.slot().index() < i128::MAX,
-                }
-            })
-        })
-}
-
 /// What the sweep found.
 #[derive(Default)]
 struct Edges {
     formats:  u64,
-    held_out: u64,
     points:   u64,
     past:     u64,
     off_grid: u64,
@@ -200,10 +155,8 @@ impl PerFormat for Edges {
         let max = <F::Slots as Slots>::MAX.index();
         let at = reading::<F>();
         self.formats += 1;
-        let admitted = oracle_admits(&at, min, max);
-        assert_eq!(
+        assert!(
             is_divisible::<F>().get(),
-            admitted,
             "[{min}, {max}] at phase {}/{}, radix {}, up {}, down {}",
             at.n,
             at.d,
@@ -211,17 +164,15 @@ impl PerFormat for Edges {
             at.up,
             at.down
         );
-        self.held_out += u64::from(!admitted);
         for b in divisors(&at, min, max) {
             for a in dividends(min, max) {
-                let answer = oracle(&at, a, b);
-                let want = reported(answer);
+                let want = oracle(&at, a, b);
                 let Maybe::Is(got) = unforced_position::<F>(Slot::at(a), Slot::at(b)) else {
                     panic!("the sweep stays where the phase denotes");
                 };
                 assert_eq!(got, want, "{a} / {b} over [{min}, {max}]");
                 self.points += 1;
-                self.past += u64::from(matches!(answer, Answer::Past(_)));
+                self.past += u64::from(want.floor().index().isnt());
                 self.off_grid += u64::from(!want.is_on_grid().get());
             }
         }
@@ -256,9 +207,8 @@ fn the_quotient_is_exact_at_the_divisor_s_extremes_at_every_width_from_nine_to_6
     every_width!(walk; DecimalRationals, -2, 0, 1);
     every_width!(walk; DecimalRationals, 3, 2, 3);
     assert_eq!(walk.formats, 8 * 56 * 2);
-    // Held out at `2^-64`: the signed 64-bit range at `MIN / -1`, and the
-    // unsigned 64-bit range at `MAX / 1`; the unsigned 63-bit range is held.
-    assert_eq!(walk.held_out, 2);
+    // At `2^-64` the signed 64-bit range at `MIN / -1` and the unsigned 64-bit
+    // range at `MAX / 1` land past the slot index, and are admitted.
     assert!(walk.points > walk.formats * 20);
     assert!(walk.past > 0, "no point reached past the index");
     assert!(
@@ -320,7 +270,7 @@ fn the_denominator_passes_two_to_the_128_and_stops_at_the_four_limbs() {
             ),
         ] {
             let Maybe::Is(got) = got else { panic!("the phase denotes") };
-            assert_eq!(got, reported(oracle(&at, a, b)), "{a} / {b}");
+            assert_eq!(got, oracle(&at, a, b), "{a} / {b}");
             checked += 1;
         }
     }
@@ -328,11 +278,7 @@ fn the_denominator_passes_two_to_the_128_and_stops_at_the_four_limbs() {
         let Maybe::Is(got) = unforced_position::<Unsigned192>(Slot::at(a), Slot::at(b)) else {
             panic!("the phase denotes")
         };
-        assert_eq!(
-            got,
-            reported(oracle(&reading::<Unsigned192>(), a, b)),
-            "{a} / {b}"
-        );
+        assert_eq!(got, oracle(&reading::<Unsigned192>(), a, b), "{a} / {b}");
         checked += 1;
     }
     assert_eq!(checked, 7 * 2 + 4);

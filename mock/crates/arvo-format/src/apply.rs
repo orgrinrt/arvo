@@ -17,8 +17,8 @@
 //!
 //! The exact step is computed in a form wide enough to hold it, and that
 //! intermediate carries no coordinate type on purpose. For rounding it is
-//! `Rounded`, the slot below, a step, and the distance past the index, which
-//! names more positions than a slot index does. It is visible to this crate,
+//! `Rounded`, the position's floor in four limbs and a step, which names more
+//! positions than a slot index does. It is visible to this crate,
 //! because addition reads the offset a rounding adds, and to nothing outside it:
 //! naming it in the surface would publish a quantity no consumer has any
 //! business holding.
@@ -30,6 +30,7 @@ mod position;
 
 use core::cmp::Ordering;
 
+use notko::Maybe;
 pub use position::{Dither, Exact, Fraction, Remainder};
 
 use crate::adapt::{Adaptation, DeclaredSignature};
@@ -37,24 +38,22 @@ use crate::format::Format;
 use crate::overflow::{Overflow, Policy};
 use crate::rounding::{Mode, Rounding};
 use crate::slots::{Slot, Slots};
+use crate::wide::Wide;
 use crate::width::Bool;
 
-/// Where the rounding region puts a position: the slot at or below it, whether
-/// to step one slot above that, and how far past the index the slot below lies.
+/// Where the rounding region puts a position: its floor, and whether to step one
+/// slot above it.
 ///
-/// A pair rather than the slot above, because at `i128::MAX` the slot above is
-/// one past the index, and forming it there either overflows or saturates, and a
-/// saturated step is a wrong answer under wrapping and a missed one in the
-/// overflow verdict. The pair names every position from the index's lowest to
-/// one past its highest, which is all the reach a rounding has from a position
-/// the index holds. A position carried past the index keeps its distance here,
-/// with `down` the end it lies past, so the completion answers exactly from the
-/// three with no wider integer.
+/// The floor in the four limbs rather than the slot above, because the floor of
+/// a position past the index is not a slot, and the slot above the index's top
+/// is not one either. Forming either in the index would overflow or saturate,
+/// and a saturated step is a wrong answer under wrapping and a missed one in the
+/// overflow verdict. The pair names every position a formed step reaches, so the
+/// completion answers exactly from the two.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub(crate) struct Rounded {
-    down: i128,
+    down: Wide,
     up:   Bool,
-    past: i64,
 }
 
 impl Rounded {
@@ -63,20 +62,12 @@ impl Rounded {
     #[must_use]
     pub(crate) const fn at(at: i128) -> Self {
         Self {
-            down: at,
+            down: Wide::of(at),
             up:   Bool::FALSE,
-            past: 0,
         }
     }
 
-    /// The slot at or below the position, or the end of the index it lies past.
-    #[must_use]
-    #[inline]
-    pub(crate) const fn down(self) -> i128 {
-        self.down
-    }
-
-    /// The step the rounding adds to `down`, zero or one.
+    /// The step the rounding adds to the floor, zero or one.
     #[must_use]
     #[inline]
     pub(crate) const fn step(self) -> i128 {
@@ -85,43 +76,77 @@ impl Rounded {
 
     /// Whether the rounded position lies in `[lo, hi]`.
     ///
-    /// Past the top of the index nothing is in range. Past the bottom the one
-    /// position that is, is the slot one under the index stepping up onto
-    /// `i128::MIN`, and only for a range starting there. Inside the index,
-    /// `down + 1` is formed only when `down` is below `lo`, so below the index's
-    /// top, and the upper test compares `down` against `hi` without adding.
+    /// From below the floor is at least `lo`, or one under it and stepping onto
+    /// it; from above it is under `hi`, or at `hi` without stepping past it.
+    /// Nothing is added to the floor, and `lo - 1` is formed in the four limbs.
     #[must_use]
     #[inline]
     const fn lands_within(self, lo: i128, hi: i128) -> bool {
-        if self.past > 0 {
-            return false;
-        }
-        if self.past < 0 {
-            return self.past == -1 && self.up.get() && lo == i128::MIN;
-        }
-        let from_below = self.down >= lo || (self.up.get() && self.down + 1 == lo);
-        let from_above = self.down < hi || (self.down == hi && !self.up.get());
+        let under = Wide::of_sum(lo, -1);
+        let from_below = !matches!(self.down.ordering(Wide::of(lo)), Ordering::Less)
+            || (self.up.get() && matches!(self.down.ordering(under), Ordering::Equal));
+        let from_above = match self.down.ordering(Wide::of(hi)) {
+            Ordering::Less => true,
+            Ordering::Equal => !self.up.get(),
+            Ordering::Greater => false,
+        };
         from_below && from_above
     }
 
+    /// The rounded position reduced onto `[lo, lo + span)`.
+    ///
+    /// An admitted range spans at most `2^64` slots, so the span fits the index.
+    /// The floor and the lowest slot are reduced separately before they are
+    /// combined, because their difference can leave the index when the position
+    /// is far past it. Each reduction is below the span, so the difference plus
+    /// the step lies in `(-span, span]` and the last reduction lands it inside
+    /// the range. The step is added after the reductions rather than to the
+    /// floor.
+    #[must_use]
+    #[inline]
+    const fn reduced(self, lo: i128, span: i128) -> Slot {
+        let offset = self.down.residue(span) - lo.rem_euclid(span) + self.step();
+        Slot::at(lo + offset.rem_euclid(span))
+    }
+
+    /// The rounded slot of a position `lands_within` has put in range.
+    ///
+    /// In range the floor lies in `[lo - 1, hi]`, which the index holds except
+    /// one under its own bottom, and that floor is in range only stepping onto
+    /// `i128::MIN`. At `hi` the step is zero, so the sum stays in the index.
+    #[must_use]
+    #[inline]
+    const fn landed(self) -> Slot {
+        match self.down.index() {
+            Maybe::Is(floor) => Slot::at(floor + self.step()),
+            Maybe::Isnt => Slot::at(i128::MIN),
+        }
+    }
+
     /// The rounded slot as an index, for a test reading a position the index
-    /// holds. One past the index's top is not one, and asking for it panics, and
-    /// so does asking for a position carried past the index.
+    /// holds. A position the index does not hold is not one, and asking for it
+    /// panics.
     #[cfg(test)]
     #[must_use]
     pub(crate) const fn index(self) -> i128 {
-        assert!(self.past == 0, "a position past the index has no index");
-        self.down + self.step()
+        match Wide::of_sum(0, self.step()).plus(self.down) {
+            Maybe::Is(at) => {
+                match at.index() {
+                    Maybe::Is(at) => at,
+                    Maybe::Isnt => panic!("a position past the index has no index"),
+                }
+            },
+            Maybe::Isnt => panic!("a position past the index has no index"),
+        }
     }
 }
 
 /// Which slot the rounding region returns for a position.
 ///
 /// Stated over a remainder in `[0, 1)`, so the position is between one slot and
-/// the next and every mode is one comparison. Two modes read the slot as well as
-/// the remainder, `TowardZero` its sign and `HalfEven` its parity at a tie, and
-/// they read the sign and parity of the slot the position names, which past the
-/// index is not the slot it pins at.
+/// the next and every mode is one comparison. Two modes read the floor as well
+/// as the remainder, `TowardZero` its sign and `HalfEven` its parity at a tie,
+/// and both read the floor itself, in the four limbs.
 ///
 /// Visible to the crate and to nothing outside it, because addition's verdict
 /// reads the one offset a rounding adds where that offset is fixed, and reading
@@ -131,15 +156,14 @@ impl Rounded {
 #[inline]
 pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Rounded {
     let down = Rounded {
-        down: exact.slot.index(),
+        down: exact.floor(),
         up:   Bool::FALSE,
-        past: exact.past,
     };
     if exact.part.is_zero() {
         return down;
     }
-    // The step up is one slot above `down`, carried as a flag and never added,
-    // so the answer is exact at the index's top as it is everywhere else.
+    // The step up is one slot above the floor, carried as a flag and never added,
+    // so the answer is exact past the index as it is everywhere else.
     let up = Rounded {
         up: Bool::TRUE,
         ..down
@@ -150,8 +174,8 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
     match mode {
         Mode::Floor => down,
         Mode::Ceil => up,
-        // The position is negative exactly when the slot it names is, because
-        // the remainder is non-negative and less than one.
+        // The position is negative exactly when its floor is, because the
+        // remainder is non-negative and less than one.
         Mode::TowardZero => {
             if exact.is_negative() {
                 up
@@ -204,44 +228,23 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
 const fn complete_slot(policy: Policy, rounded: Rounded, min: Slot, max: Slot) -> Slot {
     let lo = min.index();
     let hi = max.index();
+    // An admitted range spans at most `2^64` slots, so the span fits.
+    let span = hi - lo + 1;
     if rounded.lands_within(lo, hi) {
-        // In range, so the position is inside the index. Past the bottom that is
-        // the one step onto `i128::MIN`, which is `lo`; otherwise the sum is at
-        // most `hi` and cannot leave the index.
-        if rounded.past != 0 {
-            return min;
-        }
-        return Slot::at(rounded.down() + rounded.step());
+        return rounded.landed();
     }
     match policy {
-        Policy::Wrap => {
-            // An admitted range spans at most `2^64` slots, so the span fits. The
-            // slot below the position, its distance past the index and the lowest
-            // slot are reduced separately before they are combined, because their
-            // difference can leave the index when an outside range sits near one
-            // end and the position near the other, or past it. Each reduction is
-            // below the span, so the sum plus the step lies in `(-span, 2 * span]`
-            // and the last reduction lands it inside the range. The step is added
-            // after the reductions rather than to the slot, so a position one past
-            // the index's top wraps exactly too.
-            let span = hi - lo + 1;
-            let offset = rounded.down().rem_euclid(span) + (rounded.past as i128).rem_euclid(span)
-                - lo.rem_euclid(span)
-                + rounded.step();
-            Slot::at(lo + offset.rem_euclid(span))
-        },
+        Policy::Wrap => rounded.reduced(lo, span),
         // `Clamp` is documented as pinning to a declared bound that need not be
         // the range's own end, and the declared signature carries nowhere to put
         // that bound. With no bound to read it pins to the range, which is
         // saturation. The two agree here because the coordinate that would
         // separate them is missing, which is the admission rule's own diagnosis
         // rather than a shortcut taken in this function.
-        // A position past the index lies beyond the end on its distance's side.
-        // Otherwise, out of range with the slot below under `lo` means the
-        // position is under it too, since a step onto `lo` would have landed in
-        // range.
+        // Out of range with the floor under `lo` means the position is under it
+        // too, since a step onto `lo` would have landed in range.
         Policy::Saturate | Policy::Clamp => {
-            if rounded.past < 0 || (rounded.past == 0 && rounded.down() < lo) {
+            if matches!(rounded.down.ordering(Wide::of(lo)), Ordering::Less) {
                 min
             } else {
                 max
@@ -301,9 +304,8 @@ pub const fn panic_on_overflow<S: DeclaredSignature>(exact: Exact, dither: Dithe
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     let min = <<S::Format as Format>::Slots as Slots>::MIN;
     let max = <<S::Format as Format>::Slots as Slots>::MAX;
-    // The same in-range question the completion asks, of the same pair and the
-    // same distance, so the verdict and the map cannot disagree at either end of
-    // the index.
+    // The same in-range question the completion asks, of the same floor and
+    // step, so the verdict and the map cannot disagree anywhere past the index.
     let rounded = round_slot(mode, exact, dither);
     Bool::of(!rounded.lands_within(min.index(), max.index()))
 }

@@ -20,6 +20,7 @@ use crate::apply::{self, Dither, Exact, Fraction, Remainder};
 use crate::rounding::{ALL_MODES, Mode};
 use crate::slots::Slot;
 use crate::tests::big::Big;
+use crate::wide::Wide;
 
 /// Denominators from the smallest past one to the top of the coordinate.
 fn denominators() -> [u128; 8] {
@@ -155,7 +156,7 @@ fn every_mode_rounds_a_wide_remainder_by_its_exact_value() {
                 let exact = Exact::at(slot, Remainder::of(num, den));
                 for &mode in ALL_MODES.iter() {
                     let rounded = apply::round_slot(mode, exact, Dither::at(dither));
-                    assert_eq!(rounded.down(), -7);
+                    assert_eq!(rounded.down, Wide::of(-7));
                     let half = against_half(num, den);
                     let up = num != 0
                         && match mode {

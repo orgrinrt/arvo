@@ -6,9 +6,8 @@
 //! What the applied map takes: an exact position, and the dither one mode reads.
 //!
 //! A position is a slot and a remainder within one step, both in the format's
-//! own coordinates. Where a carry takes the slot past an end of the index, the
-//! slot pins at that end and the distance past it is kept beside it, so the
-//! position is still the one named.
+//! own coordinates. The slot is held as a floor in four limbs, so a carry or an
+//! exact step past an end of the index still names the position it reached.
 
 use core::cmp::Ordering;
 
@@ -257,7 +256,7 @@ impl PartialEq<Fraction> for Remainder {
 
 /// An exact result, in the format's own coordinates.
 ///
-/// The value is `phase + (slot + past + remainder) * quantum(magnitude)`. The
+/// The value is `phase + (floor + remainder) * quantum(magnitude)`. The
 /// remainder is carried as a ratio rather than as an approximation so that an
 /// exactly-half position is representable, which is what makes a tie rule
 /// testable rather than a matter of what the host's arithmetic happened to do.
@@ -267,14 +266,13 @@ impl PartialEq<Fraction> for Remainder {
 /// always between one slot and the next, which is what lets the rounding modes be
 /// stated once rather than once per sign.
 ///
-/// `past` is how far beyond the end of the index the named slot lies, and it is
-/// zero for every position the index holds. Where it is not, `slot` is the end it
-/// lies past, above it for a positive distance and below it for a negative one.
+/// The floor is held in the four limbs the exact steps form it in, so it names
+/// every position a formed step or a carry reaches, the index's own integer and
+/// far past it. A slot is the floor only where the index holds it.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct Exact {
-    pub(super) slot: Slot,
-    pub(super) part: Remainder,
-    pub(super) past: i64,
+    pub(super) floor: Wide,
+    pub(super) part:  Remainder,
 }
 
 impl Exact {
@@ -283,24 +281,32 @@ impl Exact {
     #[inline]
     pub const fn on_grid(slot: Slot) -> Self {
         Self {
-            slot,
-            part: Remainder::ZERO,
-            past: 0,
+            floor: Wide::of(slot.index()),
+            part:  Remainder::ZERO,
         }
     }
 
     /// A position at `slot` and `part` of the way to the next.
     ///
-    /// The door for a remainder past what a `Fraction` carries, and the one every
-    /// exact step past the sum builds through. The remainder is already in
-    /// `[0, 1)`, so there is no carry and nothing past the index.
+    /// The door for a remainder past what a `Fraction` carries. The remainder is
+    /// already in `[0, 1)`, so there is no carry.
     #[must_use]
     #[inline]
     pub const fn at(slot: Slot, part: Remainder) -> Self {
         Self {
-            slot,
+            floor: Wide::of(slot.index()),
             part,
-            past: 0,
+        }
+    }
+
+    /// A position at a floor an exact step formed in the four limbs, and `part`
+    /// of the way to the next.
+    #[must_use]
+    #[inline]
+    pub(crate) const fn floored(floor: Wide, part: Remainder) -> Self {
+        Self {
+            floor,
+            part,
         }
     }
 
@@ -311,38 +317,19 @@ impl Exact {
     /// carry the invariant. That normalisation is why `Fraction` does not hold the
     /// `[0, 1)` bound itself: holding it there would drop the carry.
     ///
-    /// The carry is at most `2^63` either way and lands as an ordinary slot
-    /// wherever the index holds the sum. Where it does not, which is only from a
-    /// slot within `2^63` of either end, the slot pins at that end and the
-    /// distance past it is kept, which is at most the carry and so fits the
-    /// fraction's own integer. So `between` is total over every slot and every
-    /// ratio and names the position it was asked for:
-    /// `between(Slot::at(i128::MAX), 9/4)` is the slot `i128::MAX`, two past it,
-    /// and a quarter.
+    /// The carry is at most `2^63` either way and lands in the floor as an
+    /// ordinary sum, from any slot, so `between` is total over every slot and
+    /// every ratio and names the position it was asked for:
+    /// `between(Slot::at(i128::MAX), 9/4)` is two past `i128::MAX` and a quarter.
     #[must_use]
     #[inline]
     pub const fn between(slot: Slot, part: Fraction) -> Self {
         let whole = part.num.div_euclid(part.den);
         // Non-negative and below a positive denominator, so both fit unsigned.
         let part = Remainder::of(part.num.rem_euclid(part.den) as u128, part.den as u128);
-        match slot.index().checked_add(whole as i128) {
-            Some(at) => {
-                Self {
-                    slot: Slot::at(at),
-                    part,
-                    past: 0,
-                }
-            },
-            // The sum left the index, so it left through the end on the carry's
-            // side, and the distance past that end is at most the carry.
-            None => {
-                let end = if whole > 0 { i128::MAX } else { i128::MIN };
-                Self {
-                    slot: Slot::at(end),
-                    part,
-                    past: ((slot.index() - end) + whole as i128) as i64,
-                }
-            },
+        Self {
+            floor: Wide::of_sum(slot.index(), whole as i128),
+            part,
         }
     }
 
@@ -351,7 +338,12 @@ impl Exact {
     #[must_use]
     #[inline]
     pub const fn slot(self) -> Slot {
-        self.slot
+        match self.floor.index() {
+            Maybe::Is(at) => Slot::at(at),
+            Maybe::Isnt => {
+                Slot::at(if self.floor.is_negative().get() { i128::MIN } else { i128::MAX })
+            },
+        }
     }
 
     /// Whether the position is exactly on a grid point.
@@ -371,23 +363,26 @@ impl Exact {
         Bool::of(matches!(self.part.against_half(), Ordering::Equal))
     }
 
-    /// Whether the slot the position names is below zero.
-    ///
-    /// Past an end of the index it is the end's sign, and otherwise the slot's.
+    /// The floor, in the four limbs.
+    #[must_use]
+    #[inline]
+    pub(crate) const fn floor(self) -> Wide {
+        self.floor
+    }
+
+    /// Whether the floor is below zero, which is whether the position is, since
+    /// the remainder is non-negative and less than one.
     #[must_use]
     #[inline]
     pub(crate) const fn is_negative(self) -> bool {
-        if self.past == 0 { self.slot.index() < 0 } else { self.past < 0 }
+        self.floor.is_negative().get()
     }
 
-    /// Whether the slot the position names is even.
-    ///
-    /// The pinned slot's parity and the distance's together, reduced one at a
-    /// time so nothing is formed past the index.
+    /// Whether the floor is even.
     #[must_use]
     #[inline]
     pub(crate) const fn is_even(self) -> bool {
-        (self.slot.index().rem_euclid(2) + (self.past as i128).rem_euclid(2)) % 2 == 0
+        self.floor.is_even().get()
     }
 }
 

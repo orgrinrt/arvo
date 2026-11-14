@@ -14,11 +14,13 @@
 //! need not share one. It is one placement, never a chain through a format
 //! between the two, so the result is rounded once.
 //!
-//! One obligation carries four conditions: both phases denote, and three that
-//! are not yet admitted rather than refused, a magnitude-indexed quantum on
-//! either side, a step whose `D` or range-end numerators pass the four limbs, and
-//! a range end the slot index does not hold on the target's grid. It is forced by
-//! the exact step, and `is_convertible` asks the same without forcing it.
+//! One obligation carries three conditions: both phases denote, and two that are
+//! not yet admitted rather than refused, a magnitude-indexed quantum on either
+//! side and a step whose `D` or range-end numerators pass the four limbs. A
+//! position past the slot index on the target's grid is no condition: the step
+//! holds its floor in the four limbs and `adapt` wraps, saturates or clamps it by
+//! that floor. The obligation is forced by the exact step, and `is_convertible`
+//! asks the same without forcing it.
 
 use core::marker::PhantomData;
 
@@ -33,7 +35,6 @@ use crate::placing::{
     Reduced,
     all,
     is_formed,
-    is_held,
     over,
     positioned,
     powers,
@@ -62,11 +63,11 @@ impl<F: Format, S: DeclaredSignature> Operation for Convert<F, S> {
 struct Convertible<F, T>(PhantomData<(F, T)>);
 
 impl<F: Format, T: Format> Convertible<F, T> {
-    /// The four conditions, each asserted from `conditions`, which
+    /// The three conditions, each asserted from `conditions`, which
     /// `is_convertible` folds. The phases are first because the others read
     /// their parts.
     const ADMITTED: () = {
-        let [denote, constant, fits, carried] = conditions::<F, T>();
+        let [denote, constant, fits] = conditions::<F, T>();
         assert!(
             denote.get(),
             "conversion is refused where either phase's denominator is zero: such a phase names \
@@ -91,15 +92,6 @@ impl<F: Format, T: Format> Convertible<F, T> {
              or the numerator at an end of the source's range, passes 2^256 - 1: an exact step is \
              formed in four 64-bit limbs"
         );
-        // FIXME(arvo_quotient_and_conversion_positions_past_the_slot_index): the
-        // positions at the range ends are functions of the pair, and only the slot
-        // index's own integer is too narrow to hold them.
-        assert!(
-            carried.get(),
-            "conversion is not yet admitted between these formats: a member at an end of the \
-             source's range lands past the slot coordinate on the target's grid, so the position \
-             it names is not one a slot index can hold yet"
-        );
     };
     /// The step's constants, or nothing where a phase does not denote or `D` or
     /// the target's phase term leaves the four limbs, settled once per pair.
@@ -112,7 +104,7 @@ struct Step {
     /// The source's phase in lowest terms.
     source:  Reduced,
     /// `U_F V_T d_T`, or nothing when it leaves the four limbs, in which case any
-    /// member whose factor is not zero is past the index.
+    /// member whose factor is not zero is a step not formed.
     scale:   Maybe<Wide>,
     /// `n_T d_F V_F U_T`, the target's phase term, at most `2^63` times `D`.
     offset:  Wide,
@@ -161,9 +153,9 @@ const fn step<F: Format, T: Format>() -> Maybe<Step> {
 /// The member at slot `a` placed on the target's grid by the step.
 ///
 /// The numerator `(n_F + a d_F) U_F V_T d_T - n_T d_F V_F U_T` in four limbs,
-/// then its floor over `D`. A numerator that leaves the limbs is a step not
-/// formed, and a floor that leaves the index is past it, each on the sign of
-/// `n_F + a d_F`; for a member the obligation has ruled both out.
+/// then its floor over `D`, which is held in the four limbs wherever it falls. A
+/// numerator that leaves the limbs is a step not formed, on the sign of
+/// `n_F + a d_F`; for a member the obligation has ruled that out.
 #[inline]
 const fn placed(step: Step, a: i128) -> Placed {
     // Under `2^191` in magnitude for any slot, so it is formed; the arm is the
@@ -202,28 +194,14 @@ const fn conversion_is_formed<F: Format, T: Format>() -> Bool {
     Bool::of(is_formed(placed(step, min)).get() && is_formed(placed(step, max)).get())
 }
 
-/// Whether every member of the source lands at a position a slot index holds on
-/// the target's grid.
-///
-/// The position is affine and increasing in the slot, so the range's two ends
-/// decide it. Nothing where the step is not formed.
-#[inline]
-const fn conversion_is_carried<F: Format, T: Format>() -> Bool {
-    let Maybe::Is(step) = Convertible::<F, T>::STEP else {
-        return Bool::FALSE;
-    };
-    let min = <F::Slots as Slots>::MIN.index();
-    let max = <F::Slots as Slots>::MAX.index();
-    Bool::of(is_held(placed(step, min)).get() && is_held(placed(step, max)).get())
-}
-
 /// The exact position of the member of `F` at slot `a` on the grid of `T`.
 ///
 /// `(phase_F + a) q_F / q_T - phase_T`, in the target's slot units: on its grid,
 /// or at the floor slot with the remainder over `d_F V_F U_T d_T` in lowest
-/// terms. For a member the position is exact. For a slot outside the source's
-/// range, a numerator past the four limbs or a position past the index saturates
-/// at the end on the position's sign, so the step still answers.
+/// terms. For a member the position is exact, past the slot index too. A
+/// numerator past the four limbs, which only a slot outside the source's range
+/// reaches, saturates at the end on the position's sign, so the step still
+/// answers.
 ///
 /// Forces the conversion obligation, so a pair the conversion does not admit
 /// stops the build here, at check time when the call is bound in a `const` item.
@@ -260,21 +238,20 @@ pub const fn is_convertible<F: Format, T: Format>() -> Bool {
     all(conditions::<F, T>())
 }
 
-/// The obligation's four verdicts, in order: both phases denote, both quanta
-/// are constant, the step is formed, the range ends are carried.
+/// The obligation's three verdicts, in order: both phases denote, both quanta
+/// are constant, the step is formed.
 ///
 /// The one place they are stated, read by the obligation and by
-/// `is_convertible`. The last two read the step and answer false where a phase
+/// `is_convertible`. The last reads the step and answers false where a phase
 /// does not denote.
 #[inline]
-const fn conditions<F: Format, T: Format>() -> [Bool; 4] {
+const fn conditions<F: Format, T: Format>() -> [Bool; 3] {
     [
         Bool::of(F::PHASE.denotes().get() && T::PHASE.denotes().get()),
         Bool::of(
             is_constant_family::<F::Quantum>().get() && is_constant_family::<T::Quantum>().get(),
         ),
         conversion_is_formed::<F, T>(),
-        conversion_is_carried::<F, T>(),
     ]
 }
 

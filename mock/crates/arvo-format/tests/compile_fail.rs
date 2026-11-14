@@ -275,17 +275,20 @@ fn multiplication_over_a_magnitude_indexed_quantum_is_refused_and_a_constant_one
     t.pass("tests/ui/multiplication_over_a_constant_quantum_is_admitted.rs");
 }
 
-/// Multiplication over the unsigned 64-bit range, refused because the index
-/// cannot carry its products, and one bit narrower, admitted; and under
-/// saturation and clamping refused beside the wrapping product, admitted.
+/// Multiplication over the unsigned 64-bit range, whose top corner is past the
+/// slot index, admitted exactly and under saturation, clamping and wrapping;
+/// and the quotient and the conversion past the index, admitted. No obligation
+/// reads the index, so a refusal here would be a condition the design does not
+/// have.
 #[test]
-fn multiplication_over_an_uncarried_product_is_refused_and_one_bit_narrower_admitted() {
+fn a_position_past_the_slot_index_is_admitted_under_every_policy() {
     let t = trybuild::TestCases::new();
-    t.compile_fail("tests/ui/multiplication_over_an_uncarried_product_is_refused.rs");
-    t.pass("tests/ui/multiplication_one_bit_narrower_is_admitted.rs");
-    t.compile_fail("tests/ui/multiplication_saturating_past_the_index_is_refused.rs");
-    t.compile_fail("tests/ui/multiplication_clamping_past_the_index_is_refused.rs");
+    t.pass("tests/ui/multiplication_over_the_unsigned_64_bit_range_is_admitted.rs");
+    t.pass("tests/ui/multiplication_saturating_past_the_index_is_admitted.rs");
+    t.pass("tests/ui/multiplication_clamping_past_the_index_is_admitted.rs");
     t.pass("tests/ui/multiplication_wrapping_past_the_index_is_admitted.rs");
+    t.pass("tests/ui/division_past_the_slot_index_is_admitted.rs");
+    t.pass("tests/ui/conversion_past_the_slot_index_is_admitted.rs");
 }
 
 /// Negation over a magnitude-indexed quantum, refused because `negation_position`
