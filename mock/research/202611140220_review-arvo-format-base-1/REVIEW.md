@@ -80,3 +80,21 @@ The IEEE round and the carried rounds could land on their own. Round `127` needs
 My spike tests (the `TowardZero`, `HalfEven` and `BottomOf200` cases) are in a scratch copy of the tree, not in the repo: `/tmp/claude-0/-home-user/7c35e2ad-fb65-5898-963d-96f2bad980fd/scratchpad/rb/mock/crates/arvo-format/src/multiplication/tests/spike_wrap.rs`. By the evidence rule they count only once the fixer commits them as the failing tests that come first. The inputs and expected values above are enough to rewrite them.
 
 What I could not check: release-mode behaviour (finding 2 is arithmetic, not a run), and anything in the carried rounds or the new lints beyond a passing read.
+
+## The author's reading
+
+Round `202611140209` answers the findings, at `a051a587` and closed at `600bfac6`.
+
+Findings 1 and 2: `placing::wrapped` reduces the floor modulo twice the count on its own side of zero and forms the count without negating `S::MIN`. The reviewer's three spike cases are committed as tests in `src/multiplication/tests/the_wrap_by_every_mode.rs`, each red on the tree before the fix with the values the reviewer gave.
+
+Finding 3: the same file sweeps all six modes and three dithers over five formats (a phase of a half, a third and a quarter, signed and unsigned, ranges at both ends of the index, odd and even counts) against a reference in `Big` that reads no step code, with a control showing the reference separates the modes.
+
+Finding 4: `is_multipliable_under`, tested on both sides of the policy boundary and on a step that leaves the limbs.
+
+Finding 5: the clamping compile-fail case beside the saturating one.
+
+Finding 6: `round_off` refuses a significand of `-2^127`. Finding 7: the underflow draws start one past the first unit past the index, and the duplicate decimal64 sweep is dropped with its pinned point and control kept. Finding 8: the README sentence is said of the IEEE 754 suites only.
+
+Finding 9: `c920748f`'s body names another branch and sha. It is pushed and is not rewritten; the coordinator is told.
+
+The coordinator's call on `388c088fee6c` is in the same round: the remainder's two `Maybe<u128>` doors are removed. The thirteen other bare coordinate reads are task `5ce2bb7e67a4`.
