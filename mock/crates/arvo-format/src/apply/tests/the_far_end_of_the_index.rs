@@ -298,3 +298,27 @@ fn a_wrap_that_subtracts_first_goes_wrong_only_where_the_span_is_not_a_power_of_
         assert_eq!(disagreed[i], want, "case {i}, {which}");
     }
 }
+
+#[test]
+fn a_floor_one_under_the_bottom_of_the_index_steps_onto_it_in_range() {
+    use crate::apply::complete_slot;
+    use crate::apply::position::Remainder;
+    use crate::wide::Wide;
+    // The one in-range floor the index does not hold: `i128::MIN - 1`, a half
+    // under the bottom slot of a range starting there.
+    let half_under = Exact::floored(
+        Wide::of_sum(i128::MIN, -1),
+        Remainder::reduced(Wide::of(1), Wide::of(2)),
+    );
+    let (lo, hi) = (Slot::at(i128::MIN), Slot::at(i128::MIN + 3));
+    for policy in SHIPPED_POLICIES {
+        // Stepping up lands on the bottom, in range, under every policy.
+        let up = round_slot(Mode::Ceil, half_under, Dither::UNUSED);
+        assert_eq!(complete_slot(policy, up, lo, hi), lo, "{policy:?}");
+    }
+    // The case that has to fail: not stepping, the floor is out of range, so
+    // wrapping takes it to the top of the four slots and saturating to the bottom.
+    let down = round_slot(Mode::Floor, half_under, Dither::UNUSED);
+    assert_eq!(complete_slot(Policy::Wrap, down, lo, hi), hi);
+    assert_eq!(complete_slot(Policy::Saturate, down, lo, hi), lo);
+}

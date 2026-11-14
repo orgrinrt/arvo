@@ -91,6 +91,10 @@ impl<F: Format> Addable<F> {
              different value at each magnitude, and the applied map carries no magnitude \
              coordinate to land the sum at"
         );
+        // FIXME(arvo_addition_s_sum_past_the_slot_index_could_ride_the_four): the sum
+        // is refused where the index cannot hold it, a condition of the carrier the
+        // product, the quotient and conversion no longer have; the sum's floor
+        // could be formed in the four limbs as theirs is.
         assert!(
             sum_is_carried::<F>().get(),
             "addition is refused over this format: the exact sum of two members leaves the slot \
@@ -390,9 +394,9 @@ pub const fn addition_is_associative<S: DeclaredSignature>() -> Bool {
     }
     let low = reach.positions_low();
     let rounded = round_slot(mode, Exact::at(low, remainder_of(parts)), Dither::UNUSED);
-    // The offset is the step alone: `low` carries no fraction, so the slot below
+    // The offset is the step alone: `low` carries no fraction, so the floor of
     // the position is `low` itself.
-    completion_at::<S>(whole + (rounded.down() - low.index()) + rounded.step())
+    completion_at::<S>(whole + rounded.step())
 }
 
 mod subtraction;

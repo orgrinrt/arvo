@@ -6,11 +6,11 @@
 //! The conversion at the ends of every source width from nine to 64.
 //!
 //! The position is affine and increasing in the slot, so the range's ends are
-//! where the carry decision is made. At each source width of both families onto
+//! where the step is decided to be formed. At each source width of both families onto
 //! 64-bit targets at several exponents, at phases on both sides and between
-//! radix ten and radix two, the verdict is checked against an independent
-//! reading of the two ends, and the step at and beside the ends and around zero
-//! against an oracle in `Big`. The step is read without forcing the obligation,
+//! radix ten and radix two, the verdict is checked to admit every pair, which an
+//! oracle in `Big` forming both ends confirms, and the step at and beside the
+//! ends and around zero against that oracle, past the slot index too. The step is read without forcing the obligation,
 //! so the pairs it holds out are swept too.
 
 use notko::Maybe;
@@ -24,15 +24,7 @@ use crate::slots::{Signed, Slot, Slots, Unsigned};
 use crate::tests::big::Big;
 use crate::tests::grid::Grid;
 use crate::tests::ratio::Ratio;
-
-/// Where the oracle puts a converted member.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-enum Answer {
-    /// Past the end of the index, on the negative side when it says so.
-    Past(bool),
-    /// A position the index holds.
-    At(Exact),
-}
+use crate::wide::Wide;
 
 /// The oracle's reading of one format: the phase in lowest terms, the radix,
 /// and the moves up and down.
@@ -57,8 +49,8 @@ fn reading<F: Format>() -> Reading {
 }
 
 /// `(n_F + a d_F) U_F V_T d_T - n_T d_F V_F U_T` over `d_F V_F U_T d_T`, floored
-/// by `Big`'s own division: an exact position, or past the index on its sign.
-fn oracle(f: &Reading, t: &Reading, a: i128) -> Answer {
+/// by `Big`'s own division into the exact position, its floor whole.
+fn oracle(f: &Reading, t: &Reading, a: i128) -> Exact {
     let fall = Big::of(f.d)
         .times(Big::power(f.r, f.down))
         .times(Big::power(t.r, t.up));
@@ -71,45 +63,19 @@ fn oracle(f: &Reading, t: &Reading, a: i128) -> Answer {
         .times(Big::of(t.d))
         .plus(Big::of(-t.n).times(fall));
     let (quotient, rem) = numerator.floor_over_big(den);
-    let Maybe::Is(slot) = quotient.index() else {
-        return Answer::Past(quotient.is_negative());
-    };
     if rem == Big::of(0) {
-        return Answer::At(Exact::on_grid(Slot::at(slot)));
+        return Exact::floored(quotient.wide(), Remainder::ZERO);
     }
     let g = rem.common_divisor(den);
     let (num, _) = rem.floor_over_big(g);
     let (den, _) = den.floor_over_big(g);
-    Answer::At(Exact::at(
-        Slot::at(slot),
-        Remainder::reduced(num.wide(), den.wide()),
-    ))
-}
-
-/// The answer as the step reports it: past an end is the end, on the grid.
-fn reported(answer: Answer) -> Exact {
-    match answer {
-        Answer::Past(negative) => {
-            Exact::on_grid(Slot::at(if negative { i128::MIN } else { i128::MAX }))
-        },
-        Answer::At(at) => at,
-    }
-}
-
-/// Whether the oracle holds the position, one slot past its floor included when
-/// it is not on the grid.
-fn held(answer: Answer) -> bool {
-    match answer {
-        Answer::Past(_) => false,
-        Answer::At(x) => x.is_on_grid().get() || x.slot().index() < i128::MAX,
-    }
+    Exact::floored(quotient.wide(), Remainder::reduced(num.wide(), den.wide()))
 }
 
 /// What the sweep found.
 #[derive(Default)]
 struct Edges {
     pairs:    u64,
-    held_out: u64,
     points:   u64,
     off_grid: u64,
 }
@@ -121,9 +87,7 @@ impl Edges {
         let max = <F::Slots as Slots>::MAX.index();
         let (f, t) = (reading::<F>(), reading::<T>());
         self.pairs += 1;
-        let admitted = held(oracle(&f, &t, min)) && held(oracle(&f, &t, max));
-        assert_eq!(is_convertible::<F, T>().get(), admitted, "[{min}, {max}]");
-        self.held_out += u64::from(!admitted);
+        assert!(is_convertible::<F, T>().get(), "[{min}, {max}]");
         let all = [min, min + 1, -1, 0, 1, max - 1, max];
         for i in 0 .. all.len() {
             let a = all[i];
@@ -134,7 +98,7 @@ impl Edges {
             let Maybe::Is(got) = unforced_position::<F, T>(Slot::at(a)) else {
                 panic!("the step's constants are formed where the oracle's are");
             };
-            assert_eq!(got, reported(answer), "{a} over [{min}, {max}]");
+            assert_eq!(got, answer, "{a} over [{min}, {max}]");
             self.points += 1;
             self.off_grid += u64::from(!got.is_on_grid().get());
         }
@@ -172,9 +136,8 @@ fn the_conversion_is_exact_and_its_verdict_true_at_the_ends_of_every_width_from_
     // `D = 2^240`, a divisor of four limbs.
     every_width!(walk; BinaryRationals, -200, 0, 1 => Target<40>);
     assert_eq!(walk.pairs, 7 * 56 * 2);
-    // Held out: the unsigned 64-bit range onto `2^-64`, whose top lands at
-    // `2^128 - 2^64`; the signed range's ends land at `-2^127` and under `2^127`.
-    assert_eq!(walk.held_out, 1);
+    // The unsigned 64-bit range onto `2^-64` is among them, its top landing at
+    // `2^128 - 2^64`, past the slot index, and admitted.
     assert!(walk.points > walk.pairs * 5);
     assert!(walk.off_grid > 0, "no remainder was exercised");
 }
@@ -205,7 +168,7 @@ fn the_denominator_stops_at_the_four_limbs() {
     for a in [0, 1, 2, 3, 128, 255] {
         assert_eq!(
             converted_position::<Source, Last>(Slot::at(a)),
-            reported(oracle(&f, &t, a)),
+            oracle(&f, &t, a),
             "{a}"
         );
     }
@@ -221,9 +184,9 @@ fn the_denominator_stops_at_the_four_limbs() {
 fn a_numerator_past_the_four_limbs_is_a_step_not_formed_rather_than_past_the_index() {
     // From the unsigned 64-bit range at `2^e` onto the integers, `D` is one and
     // the top member's numerator is `(2^64 - 1) 2^e`: formed at `e = 192`, where
-    // the position only leaves the index, and not at `193`, where the step is
-    // what fails first.
-    fn first_failing(verdicts: [crate::width::Bool; 4]) -> Maybe<usize> {
+    // the position leaves the index and is admitted all the same, and not at
+    // `193`, where the step is what fails.
+    fn first_failing(verdicts: [crate::width::Bool; 3]) -> Maybe<usize> {
         match verdicts.iter().position(|v| !v.get()) {
             Some(i) => Maybe::Is(i),
             None => Maybe::Isnt,
@@ -232,15 +195,19 @@ fn a_numerator_past_the_four_limbs_is_a_step_not_formed_rather_than_past_the_ind
     type Integers = Grid<BinaryRationals, Constant<0>, Signed<64>, 0, 1>;
     type Formed = Grid<BinaryRationals, Constant<192>, Unsigned<64>, 0, 1>;
     type Unformed = Grid<BinaryRationals, Constant<193>, Unsigned<64>, 0, 1>;
-    assert!(first_failing(crate::conversion::conditions::<Formed, Integers>()) == Maybe::Is(3));
+    assert!(first_failing(crate::conversion::conditions::<Formed, Integers>()) == Maybe::Isnt);
     assert!(first_failing(crate::conversion::conditions::<Unformed, Integers>()) == Maybe::Is(2));
-    // Both saturate at the top all the same, the step answering for a member
-    // the obligation holds out.
+    // The formed one lands its top exactly, past the index. The unformed one
+    // saturates at the end of the four limbs, the step answering for a member the
+    // obligation holds out.
     let top = Slot::at(i128::from(u64::MAX));
-    for got in [
+    let (f, t) = (reading::<Formed>(), reading::<Integers>());
+    assert!(matches!(
         unforced_position::<Formed, Integers>(top),
+        Maybe::Is(x) if x == oracle(&f, &t, top.index())
+    ));
+    assert!(matches!(
         unforced_position::<Unformed, Integers>(top),
-    ] {
-        assert!(matches!(got, Maybe::Is(x) if x == Exact::on_grid(Slot::at(i128::MAX))));
-    }
+        Maybe::Is(x) if x == Exact::floored(Wide::end(false), Remainder::ZERO)
+    ));
 }

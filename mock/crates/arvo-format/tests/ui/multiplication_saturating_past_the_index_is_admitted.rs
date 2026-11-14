@@ -1,10 +1,9 @@
-// The product over the unsigned 64-bit range under saturation, refused, the pair
-// that turns on the overflow policy.
+// The product over the unsigned 64-bit range under saturation, admitted, one of
+// three that differ in the policy and nothing else.
 //
-// The top corner (2^64 - 1)^2 is past the slot index. Wrapping reads that
-// floor modulo twice the range's count, which the step forms, so the wrapping
-// product is admitted; under saturation the product is not yet admitted. The two
-// files differ in the policy and nothing else.
+// The top corner (2^64 - 1)^2 is past the slot index. The step holds its floor
+// in four limbs, so `adapt` reads that floor under every policy, and no policy
+// turns the obligation.
 
 use arvo_format::adapt::{Adapt, Signature};
 use arvo_format::apply::Dither;

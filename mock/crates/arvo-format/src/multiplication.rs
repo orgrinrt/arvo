@@ -12,24 +12,22 @@
 //! and the exponent `e`, that position is a numerator over
 //! `D = d^2 r^max(-e, 0)`: `(n + a d)(n + b d) r^max(e, 0)` less the phase's
 //! term `n d r^max(-e, 0)`. The numerator is formed four 64-bit limbs wide and
-//! divided once by `D`, the floor the slot and the residue the remainder. That
+//! divided once by `D`, the floor the position's and the residue the remainder. That
 //! is the step this module states, composed with the declared signature's
 //! adaptation the way addition's is.
 //!
-//! One obligation carries four conditions: a phase that denotes, and three that
-//! are not yet admitted rather than refused, a magnitude-indexed quantum, a step
-//! whose `D` or corner numerators pass the four limbs, and a corner position the
-//! slot index does not hold. It is forced by the exact step, and
-//! `is_multipliable` asks the same without forcing it. A second obligation, over
-//! the signature, asks the last condition only of a policy that does not wrap,
-//! since wrapping reads the floor past the index; it is forced by `mul`, and
-//! `is_multipliable_under` asks it without forcing it.
+//! One obligation carries three conditions: a phase that denotes, and two that
+//! are not yet admitted rather than refused, a magnitude-indexed quantum and a
+//! step whose `D` or corner numerators pass the four limbs. A formed step has a
+//! position wherever its floor is, so nothing about the slot index is asked. It
+//! is forced by the exact step and by the composition, and `is_multipliable`
+//! asks the same without forcing it.
 
 use core::marker::PhantomData;
 
 use notko::Maybe;
 
-use crate::adapt::{Arity, DeclaredSignature, Operation, wraps};
+use crate::adapt::{Arity, DeclaredSignature, Operation};
 use crate::apply::{Dither, Exact, adapt};
 use crate::format::Format;
 use crate::placing::{
@@ -37,14 +35,12 @@ use crate::placing::{
     Powers,
     Reduced,
     is_formed,
-    is_held,
     over,
     positioned,
     powers,
     reduced_phase,
     saturated,
     times,
-    wrapped,
 };
 use crate::quantum::is_constant_family;
 use crate::slots::{Slot, Slots};
@@ -67,24 +63,10 @@ impl<S: DeclaredSignature> Operation for Mul<S> {
 struct Multipliable<F>(PhantomData<F>);
 
 impl<F: Format> Multipliable<F> {
-    /// The four conditions, in the order `is_multipliable` asks them: the three
-    /// every product owes, then whether the slot index carries every position.
+    /// The three conditions, in the order `is_multipliable` asks them. The phase
+    /// is asserted first because the others read its parts, and a zero
+    /// denominator has none.
     const ADMITTED: () = {
-        let () = Self::FORMED;
-        // FIXME(arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c): the
-        // corner positions are functions of the signature, and only the slot
-        // index's own integer is too narrow to hold them.
-        assert!(
-            product_is_carried::<F>().get(),
-            "multiplication is not yet admitted over this format: the exact product of two \
-             members leaves the slot coordinate, so the position it names is not one a slot \
-             index can hold yet"
-        );
-    };
-    /// The three conditions every product owes, whatever its policy. The phase is
-    /// asserted first because the others read its parts, and a zero denominator
-    /// has none.
-    const FORMED: () = {
         assert!(
             F::PHASE.denotes().get(),
             "multiplication is refused over a phase whose denominator is zero: such a phase \
@@ -114,31 +96,6 @@ impl<F: Format> Multipliable<F> {
     /// The step's constants, or nothing where `D` or the phase's term leaves the
     /// four limbs, settled once per format.
     const STEP: Maybe<Step> = step::<F>();
-}
-
-/// What a declared signature owes the composed product: the format's three
-/// conditions, and the slot index carrying every position only where the policy
-/// does not wrap, since wrapping reads a floor past the index modulo twice the
-/// range's count, on its own side of zero, and the step forms that floor in its
-/// four limbs.
-struct MultipliableUnder<S>(PhantomData<S>);
-
-impl<S: DeclaredSignature> MultipliableUnder<S> {
-    /// The format's three conditions, then the carried one unless the policy
-    /// wraps.
-    const ADMITTED: () = {
-        let () = Multipliable::<S::Format>::FORMED;
-        // FIXME(arvo_format_admits_the_saturating_and_clamping_product_past): a floor
-        // past the index is past the range on its side, so saturation and clamping
-        // could read it as wrapping does; only wrapping was asked for.
-        assert!(
-            wraps::<S>().get() || product_is_carried::<S::Format>().get(),
-            "multiplication is not yet admitted over this format under a policy that does not \
-             wrap: the exact product of two members leaves the slot coordinate, so the position \
-             it names is not one a slot index can hold yet; under wrapping it is admitted, \
-             since wrapping reads the floor modulo twice the range's count"
-        );
-    };
 }
 
 /// What the step reads of the phase, the radix and the exponent.
@@ -212,9 +169,9 @@ const fn factor(step: Step, a: i128) -> Maybe<Wide> {
 /// The product of the slots `a` and `b` placed by the step.
 ///
 /// The numerator `(n + a d)(n + b d) r^max(e, 0) - n d r^max(-e, 0)` in four
-/// limbs, then its floor over `D`. A numerator that leaves the limbs is a step
-/// not formed, and a floor that leaves the index is past it, each on the
-/// position's sign; for two members the obligation has ruled both out.
+/// limbs, then its floor over `D`, which is held in the four limbs wherever it
+/// falls. A numerator that leaves the limbs is a step not formed, on the
+/// position's sign; for two members the obligation has ruled that out.
 #[inline]
 const fn placed(step: Step, a: i128, b: i128) -> Placed {
     // Each factor is under `2^191` in magnitude for any slot, so it is formed;
@@ -267,32 +224,12 @@ const fn product_is_formed<F: Format>() -> Bool {
     )
 }
 
-/// Whether every product of two members is a position a slot index holds.
-///
-/// The position is bilinear in the two slots, so over a box of slots it is
-/// extreme at the four corners, and those decide it. Nothing where the step is
-/// not formed.
-#[inline]
-const fn product_is_carried<F: Format>() -> Bool {
-    let Maybe::Is(step) = Multipliable::<F>::STEP else {
-        return Bool::FALSE;
-    };
-    let min = <F::Slots as Slots>::MIN.index();
-    let max = <F::Slots as Slots>::MAX.index();
-    Bool::of(
-        is_held(placed(step, min, min)).get()
-            && is_held(placed(step, min, max)).get()
-            && is_held(placed(step, max, min)).get()
-            && is_held(placed(step, max, max)).get(),
-    )
-}
-
 /// The exact position of the product of the members at slots `a` and `b`.
 ///
 /// `(phase + a)(phase + b) * q - phase`, in slot units: on the grid, or at the
 /// floor slot with the remainder over `d^2 r^max(-e, 0)` in lowest terms. For two
-/// members the position is exact. For a slot outside the range, a numerator past
-/// the four limbs or a position past the index saturates at the end on the
+/// members the position is exact, wherever it is. For a slot outside the range, a
+/// numerator past the four limbs saturates at the end of the limbs on the
 /// position's sign, so the step still answers.
 ///
 /// Forces the multiplication obligation, so a format the product does not admit
@@ -314,35 +251,27 @@ pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
 /// through for the one mode that reads it. Total over every pair of slots, with
 /// no check and no panic.
 ///
-/// Under a wrapping policy a floor past the slot index is reduced modulo twice
-/// the range's count, kept on its own side of zero, before `adapt` reads it, so
-/// the signature is admitted where the index does not carry every position, as
-/// on the unsigned 64-bit range at exponents from 0 to 128.
+/// The position's floor is held in four limbs, so a product past the slot index
+/// is still one position, and `adapt` wraps, saturates or clamps it by its own
+/// floor, as on the unsigned 64-bit range at exponents from 0 to 128.
 #[must_use]
 #[inline]
 pub const fn mul<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
-    let () = MultipliableUnder::<S>::ADMITTED;
+    let () = Multipliable::<S::Format>::ADMITTED;
     let Maybe::Is(step) = Multipliable::<S::Format>::STEP else {
         // The obligation above has refused this format already.
         return adapt::<S>(saturated(false), dither);
     };
-    let at = placed(step, a.index(), b.index());
-    let exact = if wraps::<S>().get() {
-        match wrapped::<<S::Format as Format>::Slots>(step.divisor, at) {
-            Maybe::Is(exact) => exact,
-            // A step not formed, which only a slot that is not a member reaches.
-            Maybe::Isnt => positioned(step.divisor, at),
-        }
-    } else {
-        positioned(step.divisor, at)
-    };
-    adapt::<S>(exact, dither)
+    adapt::<S>(
+        positioned(step.divisor, placed(step, a.index(), b.index())),
+        dither,
+    )
 }
 
 /// Whether multiplication admits the format, asked without forcing the
 /// obligation.
 ///
-/// The same four conditions in the same order, so a test can hold a format the
+/// The same three conditions in the same order, so a test can hold a format the
 /// product does not admit and report on it rather than stop the build.
 #[must_use]
 #[inline]
@@ -350,25 +279,7 @@ pub const fn is_multipliable<F: Format>() -> Bool {
     if !F::PHASE.denotes().get() || !is_constant_family::<F::Quantum>().get() {
         return Bool::FALSE;
     }
-    Bool::of(product_is_formed::<F>().get() && product_is_carried::<F>().get())
-}
-
-/// Whether `mul` admits the declared signature, asked without forcing the
-/// obligation.
-///
-/// The format's three conditions, and the slot index carrying every position
-/// only where the policy does not wrap, in the order `mul` forces them.
-#[must_use]
-#[inline]
-pub const fn is_multipliable_under<S: DeclaredSignature>() -> Bool {
-    let phase = <S::Format as Format>::PHASE;
-    if !phase.denotes().get() || !is_constant_family::<<S::Format as Format>::Quantum>().get() {
-        return Bool::FALSE;
-    }
-    Bool::of(
-        product_is_formed::<S::Format>().get()
-            && (wraps::<S>().get() || product_is_carried::<S::Format>().get()),
-    )
+    product_is_formed::<F>()
 }
 
 /// The step at slots `a` and `b` without forcing the obligation, for the edge

@@ -17,6 +17,7 @@ use crate::overflow::{Saturate, Wrap};
 use crate::points::Integer;
 use crate::rounding::{Ceil, Floor, Stochastic};
 use crate::slots::Slot;
+use crate::wide::Wide;
 
 /// The wrapping answer, computed without the index's own subtraction.
 ///
@@ -162,18 +163,18 @@ fn rounding_past_the_top_of_the_index_wraps_the_position_it_names() {
     assert_eq!(adapt::<DownWrap>(e, Dither::UNUSED), Slot::at(-1));
     assert_eq!(adapt::<UpSat>(e, Dither::UNUSED), EDGE_MAX);
 
-    // A carry out of the fraction past either end is where the constructor pins
-    // the slot at the index's end and keeps the distance past it, rather than
-    // saturating: `Exact::between` is not on the list of things that saturate
-    // (DESIGN:818), so the position that reaches the map is still the one named.
-    // `the_ratio_coordinate.rs:453-479` pins the kept distance, and
-    // `the_top_of_the_index.rs` pins what the map then does with the pinned pair.
+    // A carry out of the fraction past either end keeps the whole floor in four
+    // limbs rather than saturating: `Exact::between` is not one of the things
+    // that saturate, so the position that reaches the map is still the one
+    // named. `slot()` answers the index's end there, and
+    // `the_top_of_the_index.rs` pins what the map then does with the floor.
     let carried = Exact::between(Slot::at(i128::MAX), Fraction::of(9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MAX));
-    assert_eq!(carried.past, 2);
+    // `2^127 + 1` and `-(2^127 + 3)`, as literal limbs.
+    assert_eq!(carried.floor(), Wide::of_limbs(false, [1, 1 << 63, 0, 0]));
     let carried = Exact::between(Slot::at(i128::MIN), Fraction::of(-9, 4));
     assert_eq!(carried.slot(), Slot::at(i128::MIN));
-    assert_eq!(carried.past, -3);
+    assert_eq!(carried.floor(), Wide::of_limbs(true, [3, 1 << 63, 0, 0]));
 }
 
 #[test]

@@ -11,9 +11,8 @@
 //! width from one to 65 and false at 128. Both constants are the slots their
 //! values wrap to at the width. Every member is checked at widths one to 20, and
 //! past that the ends, the slots beside them and a stride of members through
-//! the range. The unsigned 64-bit range at exponent zero is held out by the
-//! product's slot-coordinate placeholder, and no range past 64 bits exists here,
-//! so the cells at 64, 65 and 128 are not reached; the ticket
+//! the range, up to the unsigned 64-bit range. No range past 64 bits exists
+//! here, so the cells at 65 and 128 are not reached; the ticket
 //! `arvo_law_the_multiplicative_inverse_round_trip_is_unreachabl` carries them.
 //!
 //! The cases that have to fail: the same round trip through zero, which is no
@@ -74,7 +73,7 @@ where
 }
 
 #[test]
-fn the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63() {
+fn the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_64() {
     // The 64-bit multiplicative inverse of three.
     let inv3 = 0xAAAA_AAAA_AAAA_AAABu128;
     macro_rules! widths {
@@ -98,8 +97,6 @@ fn the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63() {
     widths!(
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
         26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
-        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
     );
-    // The first width the row states that this crate cannot carry.
-    assert!(!is_multipliable::<UFixed<64, 0>>().get());
 }

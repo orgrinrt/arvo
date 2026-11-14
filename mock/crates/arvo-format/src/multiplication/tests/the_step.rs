@@ -26,6 +26,7 @@ use crate::quantum::Constant;
 use crate::slots::{Signed, Slot, Unsigned};
 use crate::tests::dispatch::PerFormat;
 use crate::tests::grid::Grid;
+use crate::wide::Wide;
 use crate::width::Bool;
 
 /// A decimal format over `S` at the quantum `10^E` and zero phase.
@@ -191,26 +192,42 @@ fn a_negative_product_moved_down_floors_and_reduces_its_remainder() {
 }
 
 #[test]
-fn a_position_past_the_index_saturates_on_its_sign() {
+fn a_position_past_the_index_is_exact_and_past_the_limbs_saturates() {
     type F = Integer<8>;
     let top = Slot::at(i128::MAX);
     let bottom = Slot::at(i128::MIN);
-    assert_eq!(product_position::<F>(top, top), Exact::on_grid(top));
-    assert_eq!(product_position::<F>(bottom, bottom), Exact::on_grid(top));
-    assert_eq!(product_position::<F>(top, bottom), Exact::on_grid(bottom));
+    // Each product worked by hand and written as its sign and its limbs, lowest
+    // first, so the four-limb product under test does not form what it is held to.
+    let whole = |negative, limbs| Exact::floored(Wide::of_limbs(negative, limbs), Remainder::ZERO);
+    let (top_limb, bit_62_less_one) = (u64::MAX, (1 << 62) - 1);
+    // Two slots outside the range, multiplied whole: the floor is held in four
+    // limbs, and `slot()` answers the index's end on the product's side.
+    let up = product_position::<F>(top, top);
+    // `(2^127 - 1)^2 = 2^254 - 2^128 + 1`.
+    assert_eq!(up, whole(false, [1, 0, top_limb, bit_62_less_one]));
+    assert_eq!(up.slot(), top);
+    assert_eq!(
+        product_position::<F>(bottom, bottom),
+        whole(false, [0, 0, 0, 1 << 62])
+    );
+    let down = product_position::<F>(top, bottom);
+    // `-(2^127 - 1) 2^127 = -(2^254 - 2^127)`.
+    assert_eq!(down, whole(true, [0, 1 << 63, top_limb, bit_62_less_one]));
+    assert_eq!(down.slot(), bottom);
     assert_eq!(
         product_position::<F>(Slot::at(-2), top),
-        Exact::on_grid(bottom)
+        whole(true, [top_limb - 1, top_limb, 0, 0])
     );
     // Moved up past the index on a positive exponent, the same way.
     assert_eq!(
         product_position::<At<Signed<8>, 4>>(Slot::at(i128::MAX / 4), Slot::at(2)),
-        Exact::on_grid(top)
+        whole(false, [0u64.wrapping_sub(32), top_limb, 3, 0])
     );
-    // Past the four limbs, `-2^200` moved up `2^124`, still on the sign.
+    // Past the four limbs, `-2^200` moved up `2^124`, saturated at the limbs' end
+    // on the product's sign.
     assert_eq!(
         product_position::<At<Signed<2>, 124>>(Slot::at(-(1 << 100)), Slot::at(1 << 100)),
-        Exact::on_grid(bottom)
+        Exact::floored(Wide::end(true), Remainder::ZERO)
     );
     // And a zero product stays zero however far it moves.
     assert_eq!(
@@ -221,10 +238,13 @@ fn a_position_past_the_index_saturates_on_its_sign() {
         product_position::<At<Signed<2>, 124>>(Slot::ZERO, top),
         Exact::on_grid(Slot::ZERO)
     );
-    // At a phase, the factors past the index are still read on their sign.
+    // At a phase of a half, `(MIN + 1/2)(MAX + 1/2) - 1/2` is `MIN MAX - 3/4`:
+    // the factors past the index are read exactly on their sign, and the floor
+    // is one under the whole product with a quarter over it, `-(2^254 - 2^127 + 1)`.
+    let floor = Wide::of_limbs(true, [1, 1 << 63, top_limb, bit_62_less_one]);
     assert_eq!(
         product_position::<Biased<8, 0, 1>>(bottom, top),
-        Exact::on_grid(bottom)
+        Exact::floored(floor, Remainder::reduced(Wide::of(1), Wide::of(4)))
     );
 }
 
@@ -298,26 +318,25 @@ fn the_obligation_holds_out_a_step_the_four_limbs_do_not_form() {
 }
 
 #[test]
-fn the_obligation_holds_out_a_product_the_index_cannot_carry() {
-    // The signed 64-bit range's largest product is 2^126.
+fn the_obligation_reads_nothing_of_the_slot_index() {
+    // The signed 64-bit range's largest product is 2^126, and the unsigned
+    // one's top corner is just under 2^128 at exponent zero, past the index; both
+    // are admitted, and so is every move of them the four limbs form.
     assert!(is_multipliable::<Integer<64>>().get());
-    // The unsigned one's top corner is just under 2^128 at exponent zero, and
-    // under 2^127 once it moves down one place.
-    assert!(!is_multipliable::<UFixed<64, 0>>().get());
+    assert!(is_multipliable::<UFixed<64, 0>>().get());
     assert!(is_multipliable::<UFixed<64, -1>>().get());
-    assert!(is_multipliable::<UFixed<64, -62>>().get());
-    assert!(is_multipliable::<UFixed<63, 0>>().get());
-    // An up move counts: 2^126 moved one place is past the index, and the
-    // unsigned 63-bit corner moved one place is under 2^127.
-    assert!(!is_multipliable::<At<Signed<64>, 1>>().get());
-    assert!(is_multipliable::<UFixed<63, 1>>().get());
-    assert!(!is_multipliable::<UFixed<63, 2>>().get());
-    // A move wider than the index holds out any range with a nonzero corner, at
-    // either radix.
-    assert!(!is_multipliable::<At<Signed<2>, 127>>().get());
-    assert!(is_multipliable::<At<Signed<2>, 124>>().get());
-    assert!(is_multipliable::<Dec<Signed<2>, 37>>().get());
-    assert!(!is_multipliable::<Dec<Signed<2>, 38>>().get());
+    assert!(is_multipliable::<UFixed<64, 1>>().get());
+    assert!(is_multipliable::<At<Signed<64>, 1>>().get());
+    assert!(is_multipliable::<UFixed<63, 2>>().get());
+    // The numerator is what bounds an up move: the corner `4 2^e` is formed in
+    // the four limbs at `e = 253` and not at `254`, and `4 10^e` at `76` and not
+    // at `77`.
+    assert!(is_multipliable::<At<Signed<2>, 127>>().get());
+    assert!(is_multipliable::<At<Signed<2>, 253>>().get());
+    assert!(!is_multipliable::<At<Signed<2>, 254>>().get());
+    assert!(is_multipliable::<Dec<Signed<2>, 38>>().get());
+    assert!(is_multipliable::<Dec<Signed<2>, 76>>().get());
+    assert!(!is_multipliable::<Dec<Signed<2>, 77>>().get());
 }
 
 /// The verdict and the step, bound at check time.

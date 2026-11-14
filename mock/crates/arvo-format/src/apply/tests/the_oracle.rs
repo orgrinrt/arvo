@@ -5,10 +5,10 @@
 
 //! An oracle for the applied map that shares none of its arithmetic.
 //!
-//! The map carries a position past either end of the index as a pinned slot, a
-//! step and a distance, because the index's own integer is the widest it has.
-//! The oracle does not: it holds the position as an integer two limbs wide, so a
-//! slot eight past `i128::MAX` is an ordinary value to it. It never reads
+//! The map carries a position as a floor in its four-limb integer and a step.
+//! The oracle holds it in the shared wide oracle instead, a signed integer below
+//! `2^256` on a pair of the host's unsigned 128-bit integers, so every floor the
+//! map is handed is an ordinary value to it. It never reads
 //! `Exact`, `Rounded`, `round_slot` or `complete_slot`, which is what lets it
 //! disagree with them about arithmetic.
 //!
@@ -20,9 +20,9 @@
 //! the stochastic mode at a dither `d` in `[0, 1)`, with a dither below zero read
 //! as `ceil` and one at or above one read as `floor`, which is what `Dither::at`
 //! documents. So every tie rule it applies is the canon's rather than the
-//! implementation's. Wrapping reduces the distance from the lowest slot modulo
-//! the span, and saturation pins to the end of the range on the side the rounded
-//! position left by.
+//! implementation's. Wrapping reduces the position modulo the span, then its
+//! distance from the lowest slot, and saturation pins to the end of the range
+//! on the side the rounded position left by.
 //!
 //! One reading is the implementation's own rather than a meaning the design
 //! settles, so on it the oracle is not independent of the map. `Clamp` is read as
@@ -38,53 +38,46 @@ use notko::Maybe;
 
 use crate::overflow::Policy;
 use crate::rounding::Mode;
+use crate::tests::big::Big;
 
-/// `2^64`, the weight of the high limb.
+/// `2^64`, where a 64-bit limb carries, which the samples straddle.
 const fn limb() -> i128 {
     1 << 64
 }
 
-/// An integer two limbs wide, `hi * 2^64 + lo`, with `lo` in `[0, 2^64)`.
+/// The oracle's integer: the shared wide oracle, a signed integer below `2^256`
+/// in magnitude on a pair of the host's unsigned 128-bit integers.
 ///
-/// Wide enough that every position within `2^63` of either end of the index,
-/// and every difference of two such, is exact in it.
+/// Wide enough for every floor a formed step reaches, and written apart from the
+/// map's four-limb integer, so the two agreeing is evidence rather than one
+/// algorithm checked against itself.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(crate) struct Wide {
-    hi: i128,
-    lo: i128,
-}
+pub(crate) struct Wide(Big);
 
 impl Wide {
     /// The index value `v`, exactly.
     pub(crate) fn of(v: i128) -> Self {
-        Self {
-            hi: v >> 64,
-            lo: v & (limb() - 1),
-        }
+        Self(Big::of(v))
+    }
+
+    /// A value of the shared wide oracle.
+    pub(crate) fn of_big(v: Big) -> Self {
+        Self(v)
+    }
+
+    /// The value as the map's four-limb integer, to hand the map the same floor.
+    pub(crate) fn wide(self) -> crate::wide::Wide {
+        self.0.wide()
     }
 
     /// The sum, exactly.
     pub(crate) fn plus(self, other: Self) -> Self {
-        let lo = self.lo + other.lo;
-        Self {
-            hi: self.hi + other.hi + (lo >> 64),
-            lo: lo & (limb() - 1),
-        }
+        Self(self.0.plus(other.0))
     }
 
-    /// The negation, exactly.
+    /// The value negated.
     pub(crate) fn negated(self) -> Self {
-        if self.lo == 0 {
-            Self {
-                hi: -self.hi,
-                lo: 0,
-            }
-        } else {
-            Self {
-                hi: -self.hi - 1,
-                lo: limb() - self.lo,
-            }
-        }
+        Self(self.0.negated())
     }
 
     /// The difference, exactly.
@@ -94,26 +87,36 @@ impl Wide {
 
     /// Whether it is below zero.
     pub(crate) fn is_negative(self) -> bool {
-        self.hi < 0
+        self.0.is_negative()
     }
 
     /// Whether it is even.
     pub(crate) fn is_even(self) -> bool {
-        self.lo % 2 == 0
+        self.rem_euclid(2) == 0
     }
 
     /// The value as an index, where the index holds it.
     pub(crate) fn index(self) -> Maybe<i128> {
-        Maybe::from(
-            self.hi
-                .checked_mul(limb())
-                .and_then(|high| high.checked_add(self.lo)),
-        )
+        self.0.index()
     }
 
-    /// The order of two values, exactly.
+    /// The order of two values, exactly: by their signs where they differ, and by
+    /// the sign of their difference where they share one, which then stays below
+    /// `2^256`.
     pub(crate) fn order(self, other: Self) -> Ordering {
-        (self.hi, self.lo).cmp(&(other.hi, other.lo))
+        match (self.is_negative(), other.is_negative()) {
+            (true, false) => return Ordering::Less,
+            (false, true) => return Ordering::Greater,
+            _ => {},
+        }
+        let difference = self.minus(other);
+        if difference.is_negative() {
+            Ordering::Less
+        } else if difference == Self::of(0) {
+            Ordering::Equal
+        } else {
+            Ordering::Greater
+        }
     }
 
     /// Whether it lies below `other`.
@@ -121,19 +124,10 @@ impl Wide {
         self.order(other) == Ordering::Less
     }
 
-    /// The least non-negative residue modulo `span`, for a span in `[1, 2^64]`.
-    ///
-    /// Each limb is reduced on its own and the two recombined in an unsigned
-    /// 128-bit integer, where a product of two residues below `2^64` fits.
+    /// The least non-negative residue modulo `span`, for a positive span.
     pub(crate) fn rem_euclid(self, span: i128) -> i128 {
-        assert!(
-            0 < span && span <= limb(),
-            "a span the oracle does not reduce by"
-        );
-        let s = span as u128;
-        let high = self.hi.rem_euclid(span) as u128;
-        let weight = (limb() as u128) % s;
-        (((high * weight) % s + (self.lo as u128) % s) % s) as i128
+        assert!(span > 0, "a span the oracle does not reduce by");
+        self.0.floor_over(span as u128).1 as i128
     }
 }
 
@@ -213,7 +207,12 @@ pub(crate) fn completed(policy: Policy, at: Wide, lo: i128, hi: i128) -> (i128, 
         return (at.index().expect("inside a range the index holds"), false);
     }
     let slot = match policy {
-        Policy::Wrap => lo + at.minus(low).rem_euclid(hi - lo + 1),
+        // Reduced before the lowest slot is subtracted, so nothing formed here
+        // leaves `2^256` for a position at either end of it.
+        Policy::Wrap => {
+            let span = hi - lo + 1;
+            lo + Wide::of(at.rem_euclid(span)).minus(low).rem_euclid(span)
+        },
         // `Clamp` as `Saturate`, the collapse `complete_slot` makes, taken from
         // the implementation rather than from the policy's own rustdoc.
         Policy::Saturate | Policy::Clamp => {
@@ -266,7 +265,7 @@ fn samples() -> [i128; 17] {
 }
 
 #[test]
-fn the_two_limbs_agree_with_the_index_wherever_the_index_holds_the_answer() {
+fn the_oracle_s_integer_agrees_with_the_index_wherever_the_index_holds_the_answer() {
     for a in samples() {
         assert_eq!(Wide::of(a).index(), Maybe::Is(a), "{a}");
         assert_eq!(Wide::of(a).is_negative(), a < 0, "{a}");
@@ -296,7 +295,7 @@ fn the_two_limbs_agree_with_the_index_wherever_the_index_holds_the_answer() {
 }
 
 #[test]
-fn past_the_index_the_two_limbs_keep_the_value() {
+fn past_the_index_the_oracle_s_integer_keeps_the_value() {
     // One under the bottom and one over the top are values the index does not
     // hold, and each is found by its own residues, worked by hand: `2^127` is a
     // multiple of 8, it is 128 modulo 200 and so `-2^127` is 72, and the two
@@ -320,6 +319,36 @@ fn past_the_index_the_two_limbs_keep_the_value() {
         under.negated().minus(Wide::of(i128::MAX)).index(),
         Maybe::Is(2)
     );
+}
+
+/// `2^255` and `2^256 - 1` in the oracle's integer.
+fn far() -> (Wide, Wide) {
+    let half = Big::power(2, 255);
+    (
+        Wide::of_big(half),
+        Wide::of_big(half.plus(half.plus(Big::of(-1)))),
+    )
+}
+
+#[test]
+fn the_oracle_s_integer_holds_every_floor_a_formed_step_reaches() {
+    // Worked by hand: `2^255` is 0 modulo 8 and, since `2^20` is 1 modulo 25,
+    // `2^15 = 18` modulo 25, so 168 modulo 200; `2^256 - 1` is then 7 and 135.
+    let (half, end) = far();
+    assert_eq!((half.rem_euclid(8), half.rem_euclid(200)), (0, 168));
+    assert_eq!((end.rem_euclid(8), end.rem_euclid(200)), (7, 135));
+    assert_eq!(end.negated().rem_euclid(200), 65);
+    assert_eq!(end.negated().rem_euclid(1 << 64), 1);
+    assert!(half.is_even() && !end.is_even() && !end.negated().is_even());
+    assert!(end.negated().is_below(half.negated()) && half.is_below(end));
+    // Across the sign the difference would pass `2^256`, so the order is read off
+    // the signs.
+    assert!(end.negated().is_below(end) && !end.is_below(end.negated()));
+    assert!(Wide::of(-1).is_below(end) && end.negated().is_below(Wide::of(0)));
+    assert_eq!(end.minus(half).minus(half), Wide::of(-1));
+    // Handed to the map as the same value at both ends of its four limbs.
+    assert_eq!(end.wide(), crate::wide::Wide::end(false));
+    assert_eq!(end.negated().wide(), crate::wide::Wide::end(true));
 }
 
 #[test]
@@ -402,7 +431,7 @@ fn the_oracle_reads_each_mode_as_the_canon_formula_says() {
 #[test]
 fn past_the_index_the_formulas_answer_as_they_do_inside_it() {
     // A tie a half under the index and a half over it, which the map carries as
-    // a pinned slot and a distance and the oracle as an ordinary value.
+    // a floor in its four limbs and the oracle as an ordinary value.
     let under = Point {
         whole: Wide::of(i128::MIN).minus(Wide::of(1)),
         num:   1,

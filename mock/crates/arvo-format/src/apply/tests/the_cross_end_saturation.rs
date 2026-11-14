@@ -25,6 +25,7 @@ use crate::overflow::{Policy, Saturate, Wrap};
 use crate::points::Integer;
 use crate::rounding::{Ceil, Floor, Mode};
 use crate::slots::Slot;
+use crate::wide::Wide;
 
 /// `Integer<3>`'s own range, `[-4, 3]`.
 fn integer_3() -> (Slot, Slot) {
@@ -34,12 +35,11 @@ fn integer_3() -> (Slot, Slot) {
 #[test]
 fn wrap_residues_hand_reduced_off_grid_into_integer_3() {
     // `Exact::between(Slot::at(i128::MIN), Fraction::of(-6, 4))` names a
-    // position 1.5 slots below `i128::MIN`. Under `Floor` this rounds down to
-    // 2 whole slots below (`i128::MIN` stays the pinned slot, `past = -2`,
-    // `step = 0`). Reduced by hand: `i128::MIN` is exactly divisible by the
-    // span 8, so `i128::MIN.rem_euclid(8) = 0`; `(-2i128).rem_euclid(8) = 6`;
-    // `(-4i128).rem_euclid(8) = 4` (the range's own lowest slot, `-4`); the
-    // offset is `0 + 6 - 4 + 0 = 2`, and the answer is `lo + 2 = -2`.
+    // position 1.5 slots below `i128::MIN`. Under `Floor` its floor is
+    // `i128::MIN - 2`, held in four limbs, and the step is zero. Reduced by hand:
+    // `i128::MIN` is divisible by the span 8, so the floor is 6 modulo 8; its
+    // distance from the range's lowest slot `-4` is then `6 + 4 = 10`, which is 2
+    // modulo 8, and the answer is `lo + 2 = -2`.
     type Bottom = Signature<Integer<3>, Adapt<Floor, Wrap>>;
     let bottom = Exact::between(Slot::at(i128::MIN), Fraction::of(-6, 4));
     assert_eq!(adapt::<Bottom>(bottom, Dither::UNUSED), Slot::at(-2));
@@ -101,8 +101,8 @@ fn a_quarter_under_the_index_ceils_onto_its_bottom_and_saturates_low() {
 
     let rounded = round_slot(Mode::Ceil, exact, Dither::UNUSED);
     assert_eq!(
-        (rounded.past, rounded.down(), rounded.step()),
-        (-1, i128::MIN, 1)
+        (rounded.down, rounded.step()),
+        (Wide::of_sum(i128::MIN, -1), 1)
     );
     let (min, max) = integer_3();
     assert_eq!(
