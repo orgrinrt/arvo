@@ -9,8 +9,6 @@
 //! Nothing here names a feature of the toolchain. A consumer counts in a value
 //! through these bounds and no gate of its own.
 
-#![allow(dead_code)]
-
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::Integer;
 use arvo_format::rounding::{HalfEven, TowardZero};
@@ -39,7 +37,6 @@ pub type Byte = Uint<8, Adapt<TowardZero, Saturate>>;
 pub type Signed = Int<7, Adapt<TowardZero, Wrap>, Quiet>;
 pub type TwoBitsWrap = Uint<2, Adapt<TowardZero, Wrap>, Quiet>;
 pub type TwoBitsSaturate = Uint<2, Adapt<TowardZero, Saturate>, Quiet>;
-pub type TwoBitsAbort = Uint<2, Adapt<TowardZero, Wrap>>;
 /// Eighths, where one is the slot at eight.
 pub type Eighths = Fix<8, -3, Adapt<HalfEven, Saturate>>;
 

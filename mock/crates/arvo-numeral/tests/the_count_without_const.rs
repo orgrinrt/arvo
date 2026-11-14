@@ -13,8 +13,17 @@
 
 mod count;
 
-use count::{L3, L4, TwoBitsAbort, the_counts_as_calls};
+use arvo_format::Adapt;
+use arvo_format::overflow::Wrap;
+use arvo_format::rounding::TowardZero;
+use arvo_numeral::Uint;
+use count::{L3, L4, the_counts_as_calls};
 use notko_hlist::Length;
+
+/// Two bits under the default check, which aborts in a debug build where a
+/// count leaves the range. Only the plain path reads it, where a length is a
+/// call.
+type TwoBitsAbort = Uint<2, Adapt<TowardZero, Wrap>>;
 
 #[test]
 fn a_length_is_a_call_in_a_value() {
