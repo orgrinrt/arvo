@@ -1,0 +1,50 @@
+8b5f86ec chore: lock src changelist 202611140402
+3ac613c9 fix: answer the slot review in range, at far floors and in the limbs
+07eabfbc chore: lock doc changelist 202611140402
+730cbb2c docs: design completion in range and the oracle past four limbs
+15c7e176 docs: open round 202611140402, the slot review
+1ed363f9 docs: regenerate the format document
+1a8f82ce chore: close design round 202611140345
+82c34045 chore: lock src changelist 202611140345
+22a86984 test: hold the product's admission at the step's edges
+111c8ae0 chore: lock doc changelist 202611140345
+136c0a6a docs: state the product's range once the base is merged
+2911d57d docs: open round 202611140345, the reviewed base on the four-limb floor
+b5f2e83b Merge branch 'work/arvo-format-base' into work/arvo-format-slot
+22f0c963 docs: regenerate the format document
+9f566ef7 chore: close design round 202611140332
+9595aa0d chore: lock src changelist 202611140332
+8862b14b test: cross the wrapping sweep and bound the underflow draws
+b7323f07 chore: lock doc changelist 202611140332
+5a4172d7 docs: correct the wrapping range and the sweeps the review named
+84982f8f docs: open round 202611140332, the second base review
+9d2c86e2 docs: regenerate the format document
+ae73953a chore: close design round 202611140239
+79e52f60 chore: lock src changelist 202611140239
+27feea32 feat: hold the exact position's floor in four limbs
+d8245fdf chore: lock doc changelist 202611140239
+42c9501c docs: design the exact position's floor in four limbs
+017e5997 docs: open round 202611140239, the position takes four limbs
+f384696f docs: record the author's reading of the base review
+600bfac6 docs: regenerate the format document
+1f2a5c7c chore: close design round 202611140209
+b57a833e chore: lock src changelist 202611140209
+a051a587 fix: wrap the product from its own floor's sign and parity
+142da767 chore: lock doc changelist 202611140209
+f4f50034 docs: design the wrapping product's floor kept by sign and parity
+26a739fe docs: open round 202611140209, the remainder has no unwrap door
+4deec7e0 docs: keep the format branch's review records and slot plan
+5948a757 docs: regenerate the format document
+638fa987 chore: close design round 202611140156
+5bb910db chore: lock src changelist 202611140156
+3450728b test: land the ieee suites below the smallest subnormal
+b9d03f5c chore: lock doc changelist 202611140156
+94576713 docs: open round 202611140156, ieee suites below the subnormals
+c580a6ae chore: close design round 202611140127
+91b67614 chore: lock src changelist 202611140127
+53d41c81 feat: admit the wrapping product past the slot index
+26fe9359 chore: lock doc changelist 202611140127
+194cf92b docs: admit the wrapping product past the slot index
+81afc16c chore: close design round 202611132240-c5qc
+3580e323 chore: lock src changelist 202611132240-c5qc
+09bd8060 fix: clear the clippy findings the four-limb remainder brought
