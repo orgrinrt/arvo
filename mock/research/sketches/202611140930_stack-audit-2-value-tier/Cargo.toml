@@ -23,4 +23,11 @@ inherits = "release"
 lto = "fat"
 codegen-units = 1
 
+# The optimiser on and the debug assertions on, so the default `Abort` check is
+# live and its cost is read apart from an unoptimised build's.
+[profile.checked]
+inherits = "release"
+debug-assertions = true
+overflow-checks = true
+
 [workspace]

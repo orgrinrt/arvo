@@ -23,6 +23,12 @@ type I32W = Int<32, Adapt<TowardZero, Wrap>, Quiet>;
 type QHS = Fix<32, -16, Adapt<HalfEven, Saturate>, Quiet>;
 type QFW = Fix<32, -16, Adapt<Floor, Wrap>, Quiet>;
 type Q8HS = Fix<16, -8, Adapt<HalfEven, Saturate>, Quiet>;
+// The same signatures under the default check, `Abort`. In a build with debug
+// assertions each operation asks its verdict first; elsewhere they are the
+// `Quiet` arms again.
+type U13SA = Uint<13, Adapt<TowardZero, Saturate>>;
+type I32WA = Int<32, Adapt<TowardZero, Wrap>>;
+type QHSA = Fix<32, -16, Adapt<HalfEven, Saturate>>;
 type QFormat = arvo_format::points::Fixed<32, -16>;
 
 const N: usize = 4096;
@@ -129,6 +135,18 @@ map2!(mul_i32s_value, I32S, |x, y| x.mul(y));
 map2!(mul_i32s_hand, i32, |x, y| x.saturating_mul(y));
 map2!(mul_i32w_value, I32W, |x, y| x.mul(y));
 map2!(mul_i32w_hand, i32, |x, y| x.wrapping_mul(y));
+
+// The default check. The hand arms are the host's own operators, which a build
+// with overflow checks on makes panic where the value's `Abort` does.
+map2!(add_u13_abort_value, U13SA, |x, y| x.add(y));
+map2!(add_u13_abort_hand, u16, |x, y| {
+    let s = x + y;
+    assert!(s <= TOP13);
+    s
+});
+map2!(mul_i32_abort_value, I32WA, |x, y| x.mul(y));
+map2!(mul_i32_abort_hand, i32, |x, y| x * y);
+map2!(qmul_abort_value, QHSA, |x, y| x.mul(y));
 
 // The folds.
 fold!(sum_u13w_value, U13W, U13W::constant::<0>(), |acc, x| {
@@ -489,6 +507,59 @@ fn main() {
     time("mul i32 wrap     hand", FAST, N, || {
         mul_i32w_hand(black_box(&i32a), black_box(&i32b), black_box(&mut out_i32))
     });
+
+    // Members small enough that nothing leaves the range, so no arm aborts.
+    let lo13a: Vec<u16> = (0 .. N).map(|_| draw(4000) as u16).collect();
+    let lo13b: Vec<u16> = (0 .. N).map(|_| draw(4000) as u16).collect();
+    let lo32a: Vec<i32> = (0 .. N).map(|_| draw(1 << 15) as i32).collect();
+    let lo32b: Vec<i32> = (0 .. N).map(|_| draw(1 << 15) as i32).collect();
+    let alo13a: Vec<U13SA> = lo13a.iter().map(|&x| U13SA::from_index(x)).collect();
+    let alo13b: Vec<U13SA> = lo13b.iter().map(|&x| U13SA::from_index(x)).collect();
+    let alo32a: Vec<I32WA> = lo32a.iter().map(|&x| I32WA::from_index(x)).collect();
+    let alo32b: Vec<I32WA> = lo32b.iter().map(|&x| I32WA::from_index(x)).collect();
+    let aqa: Vec<QHSA> = qa.iter().map(|&x| QHSA::from_index(x)).collect();
+    let aqb: Vec<QHSA> = qb.iter().map(|&x| QHSA::from_index(x)).collect();
+    let mut out_a13 = vec![U13SA::constant::<0>(); N];
+    let mut out_a32 = vec![I32WA::constant::<0>(); N];
+    let mut out_aq = vec![QHSA::constant::<0>(); N];
+    println!(
+        "-- the default check, `Abort`; debug assertions are {}",
+        if cfg!(debug_assertions) {
+            "ON"
+        } else {
+            "off, so these are the Quiet arms again"
+        }
+    );
+    time("add u13 saturate Abort value", SLOW, N, || {
+        add_u13_abort_value(
+            black_box(&alo13a),
+            black_box(&alo13b),
+            black_box(&mut out_a13),
+        )
+    });
+    time("add u13 checked hand", FAST, N, || {
+        add_u13_abort_hand(black_box(&lo13a), black_box(&lo13b), black_box(&mut out_h))
+    });
+    time("mul i32 wrap Abort value", SLOW, N, || {
+        mul_i32_abort_value(
+            black_box(&alo32a),
+            black_box(&alo32b),
+            black_box(&mut out_a32),
+        )
+    });
+    time("mul i32 checked hand", FAST, N, || {
+        mul_i32_abort_hand(
+            black_box(&lo32a),
+            black_box(&lo32b),
+            black_box(&mut out_i32),
+        )
+    });
+    time(
+        "product Q16.16 half_even saturate Abort value",
+        SLOW,
+        N,
+        || qmul_abort_value(black_box(&aqa), black_box(&aqb), black_box(&mut out_aq)),
+    );
 
     println!("-- folds");
     time("sum u13 wrap     value", FAST, N, || {
