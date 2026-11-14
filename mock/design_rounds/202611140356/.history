@@ -1,0 +1,50 @@
+0636f2fb chore: lock src changelist 202611140356
+c33374b5 docs: regenerate the arvo-numeral pages and add the proof page
+5a9a7235 chore: record the arvo-numeral test run after the mode mutant
+aeca913c feat: add the source mode mutant and hold the host sign as a `Bool`
+7c0504db chore: lock doc changelist 202611140356
+facc03cf docs: move the proof of arvo-numeral to a page and name the mode mutant
+c81936ea docs: open round 202611140356 on the mode mutant and the proof page
+a24b331b chore: close design round 202611140253
+709522a2 chore: lock src changelist 202611140253
+a347a043 chore: record the arvo-numeral test run after the positive ends
+3910ef34 test: record a red run of every value mutant under its flag
+3ba8f280 feat: turn the mutants into flags and sweep the families' positive ends
+9b1fba79 chore: lock doc changelist 202611140253
+d61e2b2a docs: state the mutants as flags and the families' positive ends
+8b21f702 docs: open round 202611140253 on the source policy and positive ends
+e19aa3dd chore: close design round 202611140020
+526b86e9 chore: lock src changelist 202611140114
+dd8be963 chore: record the arvo-numeral test run at every shape
+c97a1af5 test: run the quotient, product, conversion and door at every shape
+c81fde62 chore: lock doc changelist 202611140020
+a8c65b64 docs: state the conversion's open question and what the sweeps prove
+fc087e6c chore: regenerate generated files after merge
+e33c0c13 Merge remote-tracking branch 'origin/dev' into work/arvo-values
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+2b413b50 docs: commit the third reading of `work/arvo-values` and what is left
+e4e5b456 chore: close design round 202611132216-pzi4
+911daba0 docs: commit the mutant runs against the wide sweeps, and what changed
+b83d3c9b refactor!: take `Accumulator` and the public `holds_index` out
+660aa16d chore: lock doc changelist 202611132216-pzi4
+c849ec3e docs: take the accumulator and `holds_index` out of the numeral design
+9c6c0434 docs: open the round that takes the accumulator and `holds_index` out
+8e46316d docs: commit the second reading of `work/arvo-values` by a fresh seat
+a303d07b chore: close design round 202611132143-c8zp
+1f27fce0 docs: commit the mutant runs against the new oracle and border calls
+252d1ce4 test: check the delegated operations against the tests' own arithmetic
+9b59c4df chore: lock doc changelist 202611132143-c8zp
+109c29c9 docs: refuse `take` at a capacity of zero, keep the empty accumulator
+6c4cc936 docs: prove the delegated operations against the tests' own arithmetic
+7baae856 docs: open round 202611132143-c8zp on an oracle the tests carry
+e962cfbd docs: say what the value does now in the readme and the root design
+ff8aeffa docs: commit the first reading of `work/arvo-values` by a fresh seat
+9a3d5149 Merge remote-tracking branch 'origin/dev' into work/arvo-values
+4d6aa22c feat: give the registry its amendment edge and stamp fields
+ae4efecb Merge remote-tracking branch 'origin/dev' into work/arvo-values
+7b8ebba4 chore: close design round 202611132123-jozr
+0ae0b3c8 fix: take the consumer test's paths when the test runs
+da159313 chore: lock doc changelist 202611132123-jozr
+ddef6c1a docs: say the consumer test takes its paths when it runs
