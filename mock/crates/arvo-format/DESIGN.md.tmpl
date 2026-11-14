@@ -1965,8 +1965,9 @@ position's sign, on the grid.
 
 ### What it refuses, and what is not yet admitted
 
-One obligation carries four conditions, forced by the exact step and so by the composition, and asked
-without forcing by `is_multipliable`. Only the first is a refusal by design. The other three are
+One obligation on the format carries four conditions, forced by the exact step and asked without forcing
+by `is_multipliable`. The composition forces the same conditions on its declared signature, the fourth
+only where the signature does not wrap. Only the first is a refusal by design. The other three are
 products that are functions of the signature and that this crate does not carry yet, each a declared
 placeholder: the assert carries a `FIXME` citing its ticket, and the message says not yet and why.
 
@@ -1992,12 +1993,17 @@ A product the slot index cannot carry is not yet admitted. The position is bilin
 so over a box of slots it is extreme at the four corners, and the obligation computes the four corner
 positions with the step itself, each counted as far as one slot past where it sits when it is not on
 the grid, since a rounding mode may take it there. The ticket is
-`arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c`.
+`arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c`. Wrapping does not need that condition.
+It reads the floor modulo the range's count, and the remainder, both of which the step forms in its four
+limbs past the index too, so `mul` reduces a floor past the index onto the range before `adapt` and asks
+the condition only of a signature that does not wrap. `product_position` names a position with no policy
+and keeps it.
 
 That last condition is where the 64-bit ranges part. The signed 64-bit range's largest position at
 exponent zero is `(-2^63)^2 = 2^126`, which the index holds, so `Integer<64>` is admitted. The unsigned
 range's top corner is `(2^64 - 1)^2`, just under `2^128`, so `UFixed<64, k>` is not yet admitted for
-any `k` at or above zero. At `k = -1` the same corner halves to under `2^127` and rounds up by at most
+any `k` at or above zero under saturation or clamping. Under wrapping it is admitted at every `k`, and at
+`k = 0` the corner wraps to 1, as the host's wrapping product on 64 unsigned bits does. At `k = -1` the same corner halves to under `2^127` and rounds up by at most
 one slot, which the index holds, so `UFixed<64, k>` is admitted for every `k` at or below `-1`, and
 `UFixed<63, k>` up to `k = 1`. A double-width exact sum at width 64, two signed 64-bit products added
 before either is adapted, reaches `2^127`, one past the index's top. Nothing here forms that sum,
@@ -2019,7 +2025,9 @@ control that leaves the quantum out and has to disagree wherever the quantum is 
 condition on both sides of its boundary through `is_multipliable`, and the ones a consumer most
 plausibly writes as compile-fail cases each with a twin differing in the offending token that
 compiles: a phase whose step leaves the four limbs, a magnitude-indexed quantum and the unsigned 64-bit
-range at exponent zero.
+range at exponent zero, and on that range the saturating product refused beside the wrapping one
+admitted. The wrapping product on the unsigned 64-bit range at exponent zero and at a positive exponent,
+its top corner and the pairs near both ends against the host's wrapping product on 64 unsigned bits.
 
 Every member pair at widths one to eight against the applied map's oracle fed the exact rational
 position, every mode and shipped policy, at positive and negative exponents over signed and unsigned
@@ -2055,7 +2063,9 @@ The product, the quotient and the conversion each end the same way, so the endin
 a crate-private module the three read. Each forms a numerator in the four-limb integer and a
 denominator `D` from one up to `2^256 - 1` in the same four limbs. The floor of the numerator over `D`
 is the slot, and the residue over `D`, reduced to lowest terms, is the remainder, or the position is
-past an end of the slot index on the numerator's sign. A numerator that leaves the four limbs is a
+past an end of the slot index on the numerator's sign, its floor and residue kept. Wrapping reads that
+floor modulo the range's count, so the module reduces it onto the range once, for every step that wraps
+past the index. A numerator that leaves the four limbs is a
 step not formed, which the module names apart from a position past the index, since with `D` that wide
 such a numerator can still name a slot the index holds. A corner is formed when its numerator is, and
 held when the index holds its slot, counted one slot past the floor when the remainder is not zero,
@@ -2220,8 +2230,11 @@ passes `2^256 - 1` beside one that fits.
 Six gaps this crate does not close, catalogued here rather than left unrecorded once the design
 that would close them exists.
 
-The product over the unsigned 64-bit range at an exponent at or above zero is not yet admitted
-because its top corner leaves the slot index. Admitting it is a widening of the slot coordinate past
+The product over the unsigned 64-bit range at an exponent at or above zero is not yet admitted under
+saturation or clamping, nor through `product_position`, because its top corner leaves the slot index.
+Under wrapping `mul` admits it, reading the floor's residue rather than a wider slot. Saturation and
+clamping are sound by the same reading, a floor past the index being past the range on its side, and
+are task `44c483a9f0d5`. A position past the index itself is a widening of the slot coordinate past
 `i128`, which every other computation over a slot would then owe too.
 
 A position whose remainder passes the host's unsigned 128-bit integer is reached only through an
