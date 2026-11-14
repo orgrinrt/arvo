@@ -5,8 +5,8 @@
 //! a constant exponent, the reduced phase and the slot range. `Member<F>` has a
 //! private slot and, here, only its const door, since the adapted door is `adapt`
 //! and asks nothing new of the language. The divisor door takes a member of `G`
-//! and is admitted where `G` sits on `F`'s grid and no member of `G` names the
-//! zero.
+//! and is admitted where `G` sits on `F`'s grid inside `F`'s range and no member
+//! of `G` names the zero.
 
 #![no_std]
 
@@ -78,6 +78,10 @@ impl<F: Format, G: Format> OnTheGrid<F, G> {
             "a member divisor from another phase"
         );
         assert!(
+            G::MIN >= F::MIN && G::MAX <= F::MAX,
+            "a member divisor from a range wider than the divisor's format"
+        );
+        assert!(
             !names_the_zero::<G>(),
             "a member divisor over a range that holds the zero"
         );
@@ -138,6 +142,16 @@ impl Format for Biased {
     const RADIX: u32 = 2;
 }
 
+/// Slots 1 to 65535 on the byte's grid, a range past the byte's.
+pub struct Wider;
+impl Format for Wider {
+    const EXPONENT: i32 = 0;
+    const MAX: i128 = 65535;
+    const MIN: i128 = 1;
+    const PHASE: (i128, i128) = (0, 1);
+    const RADIX: u32 = 2;
+}
+
 /// Slots 1 to 255 at radix ten.
 pub struct Decimal;
 impl Format for Decimal {
@@ -167,6 +181,9 @@ pub const OTHER_EXPONENT: i128 = Divisor::<Byte>::member(Member::<Halves>::const
 
 #[cfg(feature = "other-phase")]
 pub const OTHER_PHASE: i128 = Divisor::<Byte>::member(Member::<Biased>::constant::<7>()).slot();
+
+#[cfg(feature = "wider-range")]
+pub const WIDER_RANGE: i128 = Divisor::<Byte>::member(Member::<Wider>::constant::<7>()).slot();
 
 #[cfg(feature = "other-radix")]
 pub const OTHER_RADIX: i128 = Divisor::<Byte>::member(Member::<Decimal>::constant::<7>()).slot();
