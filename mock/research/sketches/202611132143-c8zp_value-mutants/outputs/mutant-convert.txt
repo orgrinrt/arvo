@@ -1,0 +1,33 @@
+cargo test -p arvo-numeral --features mutant-convert --test the_conversion
+
+running 6 tests
+the_conversion_is_a_constant_where_its_operand_is --- FAILED
+the_named_conversions_sit_where_arithmetic_puts_them --- FAILED
+a_fixed_point_member_converts_between_two_exponents --- FAILED
+an_integer_converts_onto_a_fixed_point_grid_and_back --- FAILED
+
+---- the_conversion_is_a_constant_where_its_operand_is ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:296:5:
+assertion `left == right` failed
+  left: 3
+ right: 24
+
+---- the_named_conversions_sit_where_arithmetic_puts_them ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:197:5:
+assertion `left == right` failed
+  left: 3
+ right: 24
+
+---- a_fixed_point_member_converts_between_two_exponents ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:77:5:
+assertion `left == right` failed: `convert` disagrees with the oracle on 3754 of 3840 members
+  left: 3754
+ right: 0
+
+---- an_integer_converts_onto_a_fixed_point_grid_and_back ----
+panicked at crates/arvo-numeral/tests/the_conversion.rs:77:5:
+assertion `left == right` failed: `convert` disagrees with the oracle on 5352 of 6400 members
+  left: 5352
+ right: 0
+
+test result: FAILED. 2 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out

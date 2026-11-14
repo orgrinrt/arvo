@@ -1,0 +1,12 @@
+RUSTFLAGS=--cfg arvo_mutant_count cargo test -p arvo-numeral --no-fail-fast --features hlist-const --test the_count
+     Running tests/the_count.rs (/home/user/target/debug/deps/the_count-338506a55caa76b1)
+test a_length_is_the_same_as_a_call ... FAILED
+test a_length_is_a_constant_in_a_value ... FAILED
+test [0m[1mtests/ui_count/a_length_in_a_format_without_a_one_is_refused.rs[0m [should fail to compile] ... [0m[32mok
+test [0m[1mtests/ui_count/a_length_past_the_range_under_abort_is_refused.rs[0m [should fail to compile] ... [0m[32mok
+failures:
+failures:
+test result: FAILED. 2 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s
+error: test failed, to rerun pass `-p arvo-numeral --test the_count`
+error: 1 target failed:
+exit 101

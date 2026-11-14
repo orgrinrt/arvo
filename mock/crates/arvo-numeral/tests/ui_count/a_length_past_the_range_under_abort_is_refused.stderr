@@ -1,0 +1,32 @@
+error[E0080]: evaluation panicked: the sum leaves the signature's range, and the `Abort` check aborts on that in a debug build. Name the `Quiet` check where the completion the overflow policy gives is what you mean
+  --> /root/.cargo/git/checkouts/notko-f6f26a62b445f4df/8a74dbc/notko-hlist/src/length_const_path.rs:68:20
+   |
+68 |     const LEN: N = <T as Length<N>>::LEN.succ();
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<notko_hlist::Cons<(), notko_hlist::Cons<(), notko_hlist::Cons<(), notko_hlist::Cons<(), notko_hlist::Empty>>>> as notko_hlist::Length<arvo_numeral::Num<arvo_format::Signature<arvo_format::points::UFixed<2, 0>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>>>::LEN` failed inside this call
+   |
+note: inside `arvo_numeral::count_const_path::<impl Cardinal for Num<Signature<UFixed<2, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>>::succ`
+  --> src/count_const_path.rs
+   |
+   |         self.add(<Self as Identity<Multiplicative>>::IDENTITY)
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: inside `Num::<Signature<UFixed<2, 0>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>::add`
+  --> $RUST/core/src/panic.rs
+   |
+   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+   |
+  ::: src/num.rs
+   |
+   | /             assert!(
+   | |                 self.fits_add(rhs).get(),
+   | |                 "the sum leaves the signature's range, and the `Abort` check aborts on that in a debug \
+   | |                  build. Name the `Quiet` check where the completion the overflow policy gives is what \
+   | |                  you mean"
+   | |             );
+   | |_____________- in this macro invocation
+
+note: erroneous constant encountered
+  --> tests/ui_count/a_length_past_the_range_under_abort_is_refused.rs:13:13
+   |
+13 |     let _ = <Four as Length<Count>>::LEN;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

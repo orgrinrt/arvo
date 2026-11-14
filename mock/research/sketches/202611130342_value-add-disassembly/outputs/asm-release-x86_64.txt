@@ -45,3 +45,5 @@ u13_wrapping:
 
 i64_saturating = host_i64_saturating_add
 u64_wrapping = host_u64_wrapping_add
+u64_wrapping_under_abort = host_u64_wrapping_add
+i13_saturating_under_abort = i13_saturating

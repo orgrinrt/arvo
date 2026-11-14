@@ -13,7 +13,15 @@ the assembler directives dropped.
 
 ## What the reading shows
 
-`outputs/asm-release-x86_64.txt` is the reading of the tree as committed. At the full width the value's
+`outputs/asm-release-x86_64.txt` is the reading of the tree as committed, taken again on 13 November
+2026 after the policies became `Wrap` and `Saturate` of `arvo-format` and the value gained its check
+parameter. The instructions of the six first probes came out the same as in the reading before that
+change. The probes are under the `Quiet` check, and two are repeated under `Abort`, the default:
+`u64_wrapping_under_abort` is emitted as an alias of `host_u64_wrapping_add` and
+`i13_saturating_under_abort` as an alias of `i13_saturating`, so in this profile the check leaves no
+instruction in those two. The other four were not repeated under `Abort`.
+
+At the full width the value's
 add is the host's: `u64_wrapping` is emitted as an alias of `host_u64_wrapping_add`, a single `lea`, and
 `i64_saturating` as an alias of `host_i64_saturating_add`, the overflow-flag select the host's
 `saturating_add` lowers to. The two compile to the same bytes, so nothing of the dispatch, the bit copy

@@ -1,0 +1,26 @@
+cargo test -p arvo-numeral --features mutant-mul --test the_product_at_every_shape_binary
+running 7 tests
+test binary_products_at_widths_1_to_16 ... FAILED
+test binary_products_at_widths_17_to_32 ... FAILED
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test the_end_exponents_are_the_last_the_product_admits ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test binary_products_at_widths_33_to_48 ... FAILED
+test binary_products_at_widths_49_to_64 ... FAILED
+thread 'binary_products_at_widths_1_to_16' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `mul` disagrees with the oracle on 13250 of 967500 checks
+  left: 13250
+ right: 0
+thread 'binary_products_at_widths_17_to_32' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `mul` disagrees with the oracle on 13690 of 944800 checks
+  left: 13690
+ right: 0
+thread 'binary_products_at_widths_33_to_48' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `mul` disagrees with the oracle on 13610 of 1277600 checks
+  left: 13610
+ right: 0
+thread 'binary_products_at_widths_49_to_64' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `mul` disagrees with the oracle on 26560 of 1610400 checks
+  left: 26560
+ right: 0
+test result: FAILED. 3 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.06s

@@ -1,0 +1,44 @@
+error[E0080]: evaluation panicked: multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), with d the phase's reduced denominator, r the radix and e the quantum's exponent, or the numerator at a corner of the range, passes 2^256 - 1: an exact step is formed in four 64-bit limbs
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_format::multiplication::Multipliable::<arvo_format::points::UFixed<8, -256>>::ADMITTED` failed here
+  |
+ ::: $WORKSPACE/crates/arvo-format/src/multiplication.rs
+  |
+  | /         assert!(
+  | |             product_is_formed::<F>().get(),
+  | |             "multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), \
+  | |              with d the phase's reduced denominator, r the radix and e the quantum's exponent, \
+  | |              or the numerator at a corner of the range, passes 2^256 - 1: an exact step is formed \
+  | |              in four 64-bit limbs"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> $WORKSPACE/crates/arvo-format/src/multiplication.rs
+  |
+  |     let () = Multipliable::<F>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/num.rs
+  |
+  | /         const {
+  | |             // Forces the format's multiplication obligation for this signature,
+  | |             // the one `fits_mul` reads the exact position under.
+  | |             let _ = product_position::<S::Format>(Slot::at(0), Slot::at(0));
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn Num::<Signature<UFixed<8, -256>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, Quiet>::mul`
+  --> tests/ui/a_product_past_the_four_limbs_is_refused.rs:10:13
+   |
+10 |     let _ = a.mul(a);
+   |             ^^^^^^^^
+
+note: erroneous constant encountered
+ --> $WORKSPACE/crates/arvo-format/src/multiplication.rs
+  |
+  |     let () = Multipliable::<S::Format>::ADMITTED;
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

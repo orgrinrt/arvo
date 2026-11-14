@@ -1,0 +1,33 @@
+error[E0080]: evaluation panicked: `index::<H>()` names a host integer that does not hold every slot index of the signature's range. Name one that does: a wider one, or one of the range's sign
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_numeral::host::<impl arvo_numeral::Num<arvo_format::Signature<arvo_format::points::Integer<8>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>>::index::<u8>::{constant#0}` failed here
+  |
+ ::: src/host.rs
+  |
+  | /             assert!(
+  | |                 <SlotsOf<S> as Slots>::MIN.index() >= lowest
+  | |                     && <SlotsOf<S> as Slots>::MAX.index() <= highest,
+  | |                 "`index::<H>()` names a host integer that does not hold every slot index of the \
+  | |                  signature's range. Name one that does: a wider one, or one of the range's sign"
+  | |             );
+  | |_____________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/host.rs
+  |
+  | /         const {
+  | |             let bits = 8 * size_of::<H>() as u32;
+  | |             let (lowest, highest) = if H::SIGNED.get() {
+  | |                 (-(1i128 << (bits - 1)), (1i128 << (bits - 1)) - 1)
+... |
+  | |             );
+  | |         }
+  | |_________^
+
+note: the above error was encountered while instantiating `fn arvo_numeral::host::<impl Num<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>>::index::<u8>`
+ --> tests/ui/the_index_of_a_signed_range_as_an_unsigned_integer_is_refused.rs:9:13
+  |
+9 |     let _ = a.index::<u8>();
+  |             ^^^^^^^^^^^^^^^

@@ -62,6 +62,9 @@ license = "MPL-2.0"
 # rather than above or below it, and is listed for the same publishing reason
 # the other three are, not because anything depends on it yet.
 notko = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false, features = ["const", "try_trait_v2"] }
+# The type-level list of the same repository, for the one optional impl
+# `arvo-numeral` carries of its count trait. Nothing takes it by default.
+notko-hlist = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false }
 arvo-format = { path = "crates/arvo-format", version = "0.0.0" }
 arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }

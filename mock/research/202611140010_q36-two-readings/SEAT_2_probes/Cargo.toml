@@ -1,0 +1,16 @@
+# Its own `[workspace]` table so cargo does not walk up into the mock workspace.
+# A spike: it checks the claims SEAT_2.md cites it for and nothing else. Its
+# names, shapes and the cells it happens to instantiate are scaffolding.
+[workspace]
+
+[package]
+name = "q36-seat-2-probes"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+description = "Spikes for the seat 2 reading of Q36, whose reduction governs a lossy crossing"
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../crates/arvo-numeral" }

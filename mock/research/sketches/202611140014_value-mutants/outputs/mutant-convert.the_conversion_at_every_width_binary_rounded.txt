@@ -1,0 +1,25 @@
+cargo test -p arvo-numeral --features mutant-convert --test the_conversion_at_every_width_binary_rounded
+running 6 tests
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test from_widths_1_to_16 ... FAILED
+test from_widths_17_to_32 ... FAILED
+test from_widths_33_to_48 ... FAILED
+test from_widths_49_to_64 ... FAILED
+thread 'from_widths_1_to_16' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 1214987 of 1461008 checks
+  left: 1214987
+ right: 0
+thread 'from_widths_17_to_32' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 1710489 of 2218352 checks
+  left: 1710489
+ right: 0
+thread 'from_widths_33_to_48' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 1626791 of 2387824 checks
+  left: 1626791
+ right: 0
+thread 'from_widths_49_to_64' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 1510805 of 2557296 checks
+  left: 1510805
+ right: 0
+test result: FAILED. 2 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.51s

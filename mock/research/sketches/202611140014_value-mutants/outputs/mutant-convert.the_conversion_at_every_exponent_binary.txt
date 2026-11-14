@@ -1,0 +1,15 @@
+cargo test -p arvo-numeral --features mutant-convert --test the_conversion_at_every_exponent_binary
+running 4 tests
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test exponents_at_widths_1_to_16 ... FAILED
+test exponents_at_widths_17_to_32 ... FAILED
+thread 'exponents_at_widths_1_to_16' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 1901722 of 2911000 checks
+  left: 1901722
+ right: 0
+thread 'exponents_at_widths_17_to_32' panicked at crates/arvo-numeral/tests/common/shapes.rs:53:9:
+assertion `left == right` failed: `convert` disagrees with the oracle on 2943692 of 4296000 checks
+  left: 2943692
+ right: 0
+test result: FAILED. 2 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.75s

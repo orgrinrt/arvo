@@ -1,0 +1,9 @@
+cargo test -p arvo-numeral --features mutant-convert --test the_conversion_at_every_width_binary
+running 6 tests
+test common::big::the_pair_agrees_with_the_host_where_the_host_holds_the_answer ... ok
+test common::big::the_search_agrees_with_the_host_and_multiplies_back_from_two_to_the_64 ... ok
+test from_widths_1_to_16 ... ok
+test from_widths_17_to_32 ... ok
+test from_widths_33_to_48 ... ok
+test from_widths_49_to_64 ... ok
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.37s

@@ -78,6 +78,24 @@ impl<F: Format, A: Adaptation> DeclaredSignature for Signature<F, A> {
     type Format = F;
 }
 
+/// The declared signature `S` with its overflow policy replaced by `O`.
+///
+/// The sibling signature itself, the type reached by writing it out. An alias
+/// carries no bound, so this says nothing of what the result is admitted to:
+/// that is asked of it where it is used, as of any written signature.
+pub type WithOverflow<S, O> = Signature<
+    <S as DeclaredSignature>::Format,
+    Adapt<<<S as DeclaredSignature>::Adaptation as Adaptation>::Rounding, O>,
+>;
+
+/// The declared signature `S` with its rounding mode replaced by `R`.
+///
+/// The sibling signature itself, on the terms `WithOverflow` states.
+pub type WithRounding<S, R> = Signature<
+    <S as DeclaredSignature>::Format,
+    Adapt<R, <<S as DeclaredSignature>::Adaptation as Adaptation>::Overflow>,
+>;
+
 /// How many operands an operation takes.
 ///
 /// A count, and the only coordinate an operation carries beside the signature it

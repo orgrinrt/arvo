@@ -43,8 +43,8 @@ use crate::placing::{
     times,
 };
 use crate::quantum::is_constant_family;
-use crate::slots::{Slot, Slots};
-use crate::wide::Wide;
+use crate::slots::{Slot, Slots, slot_in_range};
+use crate::wide::{Divided, Wide};
 use crate::width::Bool;
 
 /// Multiplication under one declared signature.
@@ -280,6 +280,104 @@ pub const fn is_multipliable<F: Format>() -> Bool {
         return Bool::FALSE;
     }
     product_is_formed::<F>()
+}
+
+/// The slot of the member that is one, or nothing where no member is.
+///
+/// The question `has_additive_identity` answers for zero, asked for one. With
+/// the phase `n / d` in lowest terms, the radix `r` and the exponent `e`, the
+/// member at slot `s` is `(n / d + s) r^e`, so one sits at `r^-e - n / d`
+/// wherever that is whole. It is formed over one denominator,
+/// `(d r^max(-e, 0) - n r^max(e, 0)) / (d r^max(e, 0))`, and taken where the
+/// division leaves no residue. At a zero phase that is slot `r^-e` at an
+/// exponent at or below zero and nothing above it.
+///
+/// The candidate is answered only where it is a member and the product's own
+/// step, at the candidate against each end of the range, returns that end on the
+/// grid. The position is affine in the other factor, so the two ends decide it
+/// for every member between them.
+///
+/// Does not force the multiplication obligation, so it answers for a format
+/// whose product is not admitted.
+#[must_use]
+#[inline]
+pub const fn multiplicative_identity<F: Format>() -> Maybe<Slot> {
+    if !F::PHASE.denotes().get() {
+        return Maybe::Isnt;
+    }
+    // FIXME(arvo_product_over_a_magnitude_indexed_quantum_is_a_placehold): one is a
+    // member of a floating format, at a slot and a magnitude. A slot alone does
+    // not name it, and nothing here carries the magnitude yet.
+    if !is_constant_family::<F::Quantum>().get() {
+        return Maybe::Isnt;
+    }
+    // The step has no constants only where `D` or the phase's term leaves the
+    // four limbs, at an exponent below zero. There `r^-e - n / d` is whole only
+    // at `d` one, where `D` is `r^-e` and past every slot index.
+    let Maybe::Is(step) = Multipliable::<F>::STEP else {
+        return Maybe::Isnt;
+    };
+    // `d r^max(-e, 0)`, the divisor over `d`. Past the index it is `r^-e` at a
+    // `d` of one again, since at an exponent at or above zero it is `d` itself.
+    let Maybe::Is(lowered) = step
+        .divisor
+        .floor_divided(Wide::of(step.denominator))
+        .quotient
+        .index()
+    else {
+        return Maybe::Isnt;
+    };
+    // `r^max(e, 0)`. The slot is whole only where it divides `d`, so one that
+    // leaves the limbs, or takes `n` or `d` out of them with it, names no slot.
+    let Maybe::Is(raised) = step.scale else {
+        return Maybe::Isnt;
+    };
+    let Maybe::Is(phase_term) = Wide::of(step.numerator).times(raised) else {
+        return Maybe::Isnt;
+    };
+    let Maybe::Is(numerator) = Wide::of(lowered).plus(phase_term.negated()) else {
+        return Maybe::Isnt;
+    };
+    let divisor = match Wide::of(step.denominator).times(raised) {
+        Maybe::Is(wide) if !wide.is_zero().get() && !wide.is_negative().get() => wide,
+        _ => return Maybe::Isnt,
+    };
+    let Divided {
+        quotient,
+        remainder,
+    } = numerator.floor_divided(divisor);
+    if !remainder.is_zero().get() {
+        return Maybe::Isnt;
+    }
+    let Maybe::Is(candidate) = quotient.index() else {
+        return Maybe::Isnt;
+    };
+    if !slot_in_range::<F::Slots>(Slot::at(candidate)).get() {
+        return Maybe::Isnt;
+    }
+    let min = <F::Slots as Slots>::MIN.index();
+    let max = <F::Slots as Slots>::MAX.index();
+    if lands_on(placed(step, candidate, min), min).get()
+        && lands_on(placed(step, candidate, max), max).get()
+    {
+        Maybe::Is(Slot::at(candidate))
+    } else {
+        Maybe::Isnt
+    }
+}
+
+/// Whether a placed position is on the grid at `slot`: its floor is that slot and
+/// it leaves no remainder.
+#[inline]
+const fn lands_on(at: Placed, slot: i128) -> Bool {
+    match at {
+        Placed::At(floor, rest) => {
+            Bool::of(
+                matches!(floor.index(), Maybe::Is(index) if index == slot) && rest.is_zero().get(),
+            )
+        },
+        _ => Bool::FALSE,
+    }
 }
 
 /// The step at slots `a` and `b` without forcing the obligation, for the edge

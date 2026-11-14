@@ -1,0 +1,27 @@
+error[E0080]: evaluation panicked: the format has no multiplicative identity: no member is one, so `Identity<Multiplicative>` has no element to give. A format whose quantum's exponent is above zero has none, and neither has one whose range stops short of the slot one sits at
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<arvo_numeral::Num<arvo_format::Signature<arvo_format::points::UFixed<6, 3>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>> as arvo_numeral::Identity<arvo_numeral::Multiplicative>>::IDENTITY` failed here
+  |
+ ::: src/identity.rs
+  |
+  | /                 panic!(
+  | |                     "the format has no multiplicative identity: no member is one, so \
+  | |                      `Identity<Multiplicative>` has no element to give. A format whose quantum's \
+  | |                      exponent is above zero has none, and neither has one whose range stops short \
+  | |                      of the slot one sits at"
+  | |                 )
+  | |_________________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/count_const_path.rs
+  |
+  |         self.add(<Self as Identity<Multiplicative>>::IDENTITY)
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui_count/a_length_in_a_format_without_a_one_is_refused.rs:12:13
+   |
+12 |     let _ = <One as Length<Count>>::LEN;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^

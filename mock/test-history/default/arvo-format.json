@@ -3,47 +3,105 @@
   "flavour": "",
   "member": "arvo-format",
   "green": {
-    "full": "ea6419badbcd29a7ba47443f7ee207f8a32db22e2db73da9f918c17a2a0678f5",
+    "full": "fe525b5cc86b5530f558ffbf0019cae210aff67b352cc02682f86a523accfc18",
     "own": {
-      "arvo-format": "e7f0688e6016371caf13401f2f5a0b7db1e3fdf11abeae589d3d74b27d70c31e"
+      "arvo-format": "efe3fbc94b546d190de576f3fc5f14566fa5b46cd952e9003ca8ad06f483f73b"
     }
   },
   "tests": {
     "arvo-format": {
       "addition::tests::the_signed_oracle::subtraction_answers_as_the_oracle_does_at_every_member_up_to_eight_bits": {
-        "secs": 13.7,
+        "secs": 42.4,
         "passed": true,
-        "passed_at": "82a433664085101e36b6c254234b60bf48ec1199474312a84c7670f56c5c079d"
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map": {
+        "secs": 8.5,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
       },
       "apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do": {
-        "secs": 16.6,
+        "secs": 85.0,
         "passed": true,
-        "passed_at": "82a433664085101e36b6c254234b60bf48ec1199474312a84c7670f56c5c079d"
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "apply::tests::the_wide_oracle_sweep::the_wide_sweep_reports_every_broken_map": {
+        "secs": 13.6,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "division::tests::the_member_door::a_byte_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
+        "secs": 6.6,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "division::tests::the_member_door::a_negative_exponent_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
+        "secs": 7.0,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "division::tests::the_member_door::a_phase_divides_by_the_members_of_its_unreduced_spelling_as_the_oracle_does": {
+        "secs": 7.6,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "division::tests::the_member_door::a_whole_phase_divides_by_its_own_members_as_the_oracle_does": {
+        "secs": 7.4,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "division::tests::the_member_door::a_zero_free_range_divides_by_its_own_members_as_the_oracle_does": {
+        "secs": 7.9,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "division::tests::the_member_door::radix_ten_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
+        "secs": 7.1,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      },
+      "division::tests::the_member_door::the_bytes_divide_by_a_range_at_radix_ten_on_their_grid_as_the_oracle_does": {
+        "secs": 6.9,
+        "passed": true,
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
       },
       "division::tests::the_oracle::the_quotient_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
         "secs": 90.0,
         "passed": true,
-        "passed_at": "82a433664085101e36b6c254234b60bf48ec1199474312a84c7670f56c5c079d"
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
       },
-      "multiplication::tests::the_inverse_round_trip::the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63": {
-        "secs": 9.5,
+      "multiplication::tests::the_inverse_round_trip::the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_64": {
+        "secs": 12.0,
         "passed": true,
-        "passed_at": "82a433664085101e36b6c254234b60bf48ec1199474312a84c7670f56c5c079d"
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
       },
       "multiplication::tests::the_oracle::the_product_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
-        "secs": 63.8,
+        "secs": 120.9,
         "passed": true,
-        "passed_at": "82a433664085101e36b6c254234b60bf48ec1199474312a84c7670f56c5c079d"
+        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+      }
+    },
+    "arvo-format::compile_fail": {
+      "a_format_is_not_a_signature": {
+        "secs": 5.1,
+        "passed": true,
+        "passed_at": "8783b3420eca9a5e422fa99c46c95b94561df6fd29f2b00034cd3bee5cac0f76"
+      },
+      "a_member_is_refused_over_a_magnitude_indexed_quantum_or_a_phase_that_does_not_denote": {
+        "secs": 8.2,
+        "passed": true,
+        "passed_at": "8783b3420eca9a5e422fa99c46c95b94561df6fd29f2b00034cd3bee5cac0f76"
       }
     }
   },
   "bins": {
-    "arvo-format": "82a433664085101e36b6c254234b60bf48ec1199474312a84c7670f56c5c079d",
-    "arvo-format::compile_fail": "9a30cc345241537bd1e3134bc7e6c5c60f14e11c050b701e54b07bca0598a175",
-    "arvo-format::ieee754_binary_parity": "f1039d840e77297dc854a1813cd4e94028f8c5894151b2d882f47e42c9b40335",
-    "arvo-format::ieee754_decimal_parity": "214a34038f300278ec0da509e528e7639011c21065aa570d6b7f65d9602409a9",
-    "arvo-format::matlab_fi_parity": "b563667dd9a2d0fd38bb4849ce6495b5a88cf6409ef4de41c41c74d0907c2586",
-    "arvo-format::matlab_fimath_parity": "ef986f590afd4f9692ab46b7db82a379cdbb6773ff20c74fee83b759e2d5a600",
-    "arvo-format::the_ties_away_alias": "e3b9b568be736a39062ae1ce36d1889ab23ad292846d61d1c0519b368c6e352b"
+    "arvo-format": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3",
+    "arvo-format::compile_fail": "8783b3420eca9a5e422fa99c46c95b94561df6fd29f2b00034cd3bee5cac0f76",
+    "arvo-format::ieee754_binary_parity": "6aa31d5c4749e39c9377001fcbe68e6187e83d268fe3a46ddb61b904557717ef",
+    "arvo-format::ieee754_decimal_parity": "838dd426d79a22db047338542e28c2868556d0fb8f5399f3b51d5e0238197909",
+    "arvo-format::ieee754_underflow_parity": "8ee9c8d54277af0e21486a9074f0b87c4c2f2f978ddea0767b7f2153b7434dc4",
+    "arvo-format::matlab_fi_parity": "2c4b3a0afa2e477a7ef3c2f15dc3645fab5a2b2c65e74dbfb77bfcf14845a759",
+    "arvo-format::matlab_fimath_parity": "c10b470f5a2b2fb11205bd690f6a060b7569a024c2a18a73d980826a4df1dd5f",
+    "arvo-format::the_ties_away_alias": "12315706bff9d777c6207fbe80e0c77fea38e0d804d3a96928bffd162d71e8ae"
   }
 }
