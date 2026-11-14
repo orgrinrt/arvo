@@ -1,0 +1,22 @@
+== default
+exit 0
+== past-the-top
+error[E0080]: evaluation panicked: a member constant outside the range
+36 | |         "a member constant outside the range"
+error: could not compile `the-member-divisor` (lib) due to 1 previous error
+== zero-in-range
+error[E0080]: evaluation panicked: a member divisor over a range that holds the zero
+82 | |             "a member divisor over a range that holds the zero"
+error: could not compile `the-member-divisor` (lib) due to 1 previous error
+== other-exponent
+error[E0080]: evaluation panicked: a member divisor from another exponent
+74 | |             "a member divisor from another exponent"
+error: could not compile `the-member-divisor` (lib) due to 1 previous error
+== other-phase
+error[E0080]: evaluation panicked: a member divisor from another phase
+78 | |             "a member divisor from another phase"
+error: could not compile `the-member-divisor` (lib) due to 1 previous error
+== other-radix
+error[E0080]: evaluation panicked: a member divisor from another radix
+71 |         assert!(F::RADIX == G::RADIX, "a member divisor from another radix");
+error: could not compile `the-member-divisor` (lib) due to 1 previous error
