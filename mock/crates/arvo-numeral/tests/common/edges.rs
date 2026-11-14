@@ -9,23 +9,36 @@
 //! Every format a sweep takes has a zero phase and a constant quantum, so a
 //! member at slot `a` and exponent `e` is `a r^e`, and an exact position is a
 //! ratio of integers over a power of the radix. The format admits an operation
-//! where that ratio's denominator fits an unsigned 128-bit integer and every
-//! position it can name at the ends of a range is one a signed 128-bit slot
-//! index holds. Each edge below is the last exponent at which both hold, found
-//! from the members' own magnitudes, and the sweeps hold it against the format's
-//! verdict: admitted at the edge, refused one past it.
+//! where that ratio's denominator fits the integer it forms the step in, and
+//! every position it can name at the ends of a range is one a signed 128-bit
+//! slot index holds. The product, the quotient and the conversion form theirs
+//! four 64-bit limbs wide. Each edge below is the last exponent at which both
+//! hold, found from the members' own magnitudes, and the sweeps hold it against
+//! the format's verdict: admitted at the edge, refused one past it.
 
 use super::shapes::widest;
 
-/// The largest `k` at which `radix^k` is still an unsigned 128-bit integer.
-pub const fn power_bound(radix: i128) -> i32 {
-    let mut power = 1u128;
+/// The largest `k` at least zero at which `m radix^k` is still an unsigned
+/// integer four 64-bit limbs wide, for an `m` other than zero.
+const fn four_limb_bound(m: u128, radix: i128) -> i32 {
+    let mut limbs = [m as u64, (m >> 64) as u64, 0, 0];
     let mut k = 0;
-    while let Some(next) = power.checked_mul(radix as u128) {
-        power = next;
+    loop {
+        let mut next = [0u64; 4];
+        let mut carry: u128 = 0;
+        let mut i = 0;
+        while i < 4 {
+            let t = limbs[i] as u128 * radix as u128 + carry;
+            next[i] = t as u64;
+            carry = t >> 64;
+            i += 1;
+        }
+        if carry != 0 {
+            return k;
+        }
+        limbs = next;
         k += 1;
     }
-    k
 }
 
 /// The largest `k` at least zero at which `m radix^k` is at most `limit`, or
@@ -65,18 +78,18 @@ pub const fn product_highest(w: u32, signed: bool, radix: i128) -> i32 {
 }
 
 /// The deepest exponent the product admits: the remainder's denominator is the
-/// radix to minus the exponent, and nothing else bounds it, so the same at
-/// every width and range.
+/// radix to minus the exponent, four limbs wide, and nothing else bounds it, so
+/// the same at every width and range.
 pub const fn product_deepest(_w: u32, _signed: bool, radix: i128) -> i32 {
-    -power_bound(radix)
+    -four_limb_bound(1, radix)
 }
 
 /// The highest exponent the quotient admits at a range of `w` bits: the
 /// remainder's denominator is the divisor's slot times the radix to the
-/// exponent, at its largest at the widest member, and the quotient itself only
-/// shrinks.
+/// exponent, four limbs wide and at its largest at the widest member, and the
+/// quotient itself only shrinks.
 pub const fn quotient_highest(w: u32, signed: bool, radix: i128) -> i32 {
-    scaled_bound(widest(w, signed) as u128, radix, u128::MAX)
+    four_limb_bound(widest(w, signed) as u128, radix)
 }
 
 /// The highest exponent a source of `w` bits converts from onto exponent zero:
@@ -94,10 +107,10 @@ pub const fn source_highest(w: u32, signed: bool, radix: i128) -> i32 {
 }
 
 /// The highest exponent a target converts onto from exponent zero: the
-/// remainder's denominator is the radix to the exponent, and every member only
-/// shrinks, so the same at every width and range.
+/// remainder's denominator is the radix to the exponent, four limbs wide, and
+/// every member only shrinks, so the same at every width and range.
 pub const fn target_highest(_w: u32, _signed: bool, radix: i128) -> i32 {
-    power_bound(radix)
+    four_limb_bound(1, radix)
 }
 
 /// An operation's verdict at one exponent and the next past it, the first

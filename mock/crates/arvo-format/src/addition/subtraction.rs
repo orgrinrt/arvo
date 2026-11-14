@@ -60,6 +60,7 @@ impl<S: DeclaredSignature> Operation for Sub<S> {
 ///
 /// Forces the addition obligation, the one `is_addable` reports on.
 #[must_use]
+#[inline]
 pub const fn negation_position<F: Format>(a: Slot) -> Exact {
     let () = Addable::<F>::ADMITTED;
     let parts = Addable::<F>::TWICE_NEGATED_PHASE_PARTS;
@@ -71,6 +72,7 @@ pub const fn negation_position<F: Format>(a: Slot) -> Exact {
 /// The exact step, then `adapt` under the same signature, with the dither passed
 /// through. Total over every slot, with no check and no panic, as `add` is.
 #[must_use]
+#[inline]
 pub const fn neg<S: DeclaredSignature>(a: Slot, dither: Dither) -> Slot {
     adapt::<S>(negation_position::<S::Format>(a), dither)
 }
@@ -85,6 +87,7 @@ pub const fn neg<S: DeclaredSignature>(a: Slot, dither: Dither) -> Slot {
 /// is exact. For a slot outside the range the three-term sum saturates once at
 /// the ends of the index's host integer.
 #[must_use]
+#[inline]
 pub const fn difference_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Addable::<F>::ADMITTED;
     let () = <F::Slots as Slots>::ADMITTED;
@@ -103,6 +106,7 @@ pub const fn difference_position<F: Format>(a: Slot, b: Slot) -> Exact {
 /// forces the slot range's obligation already, so `sub` refuses exactly the
 /// formats `add` refuses.
 #[must_use]
+#[inline]
 pub const fn sub<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
     adapt::<S>(difference_position::<S::Format>(a, b), dither)
 }
@@ -112,6 +116,7 @@ pub const fn sub<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot
 /// From `-MAX + k` to `-MIN + k` in slots, `k` the whole part of minus two copies
 /// of the phase, with the grid state that remainder decides. No translation.
 #[must_use]
+#[inline]
 pub const fn negation_reach<S: DeclaredSignature>() -> Reach {
     let () = Addable::<S::Format>::ADMITTED;
     // The cache is settled at minus two copies, which is one operand's signed
@@ -139,6 +144,7 @@ pub const fn negation_reach<S: DeclaredSignature>() -> Reach {
 /// one copy of the phase, with the grid state that remainder decides. No
 /// translation.
 #[must_use]
+#[inline]
 pub const fn subtraction_reach<S: DeclaredSignature>() -> Reach {
     let () = Addable::<S::Format>::ADMITTED;
     let () = <<S::Format as Format>::Slots as Slots>::ADMITTED;
@@ -166,6 +172,7 @@ pub const fn subtraction_reach<S: DeclaredSignature>() -> Reach {
 /// other sign is added to `a` first, which cannot overflow, and `b` is then
 /// subtracted once, saturating; a `c` of `a`'s own sign, or zero, leaves the
 /// answer past the end it already passed.
+#[inline]
 const fn saturating_difference(a: i128, b: i128, c: i128) -> i128 {
     match a.checked_sub(b) {
         Some(d) => d.saturating_add(c),

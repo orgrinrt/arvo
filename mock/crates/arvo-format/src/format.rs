@@ -146,6 +146,7 @@ pub trait Format {
 /// The verdict form, so a construction that compiles and is wrong can be reported
 /// on without forcing the const that would refuse it.
 #[must_use]
+#[inline]
 pub const fn is_admissible_format<F: Format>() -> Bool {
     F::PHASE.denotes()
 }
@@ -155,6 +156,7 @@ pub const fn is_admissible_format<F: Format>() -> Bool {
 /// The affine predicate, evaluated. Free rather than a method so it is reachable
 /// at stage zero without the trait being const.
 #[must_use]
+#[inline]
 pub const fn contains<F: Format>(slot: Slot, magnitude: Magnitude) -> Bool {
     magnitude_in_range::<F::Quantum>(magnitude).and(slot_in_range::<F::Slots>(slot))
 }
@@ -204,12 +206,14 @@ const SLOT_INDEX_WIDTH: Width = Width::bits(i128::BITS - 1);
 ///
 /// The slot index's own integer, read through the unsigned one, which is the
 /// algorithm. Every caller passes non-negative operands.
+#[inline]
 pub(crate) const fn greatest_common_divisor(a: i128, b: i128) -> i128 {
     greatest_common_divisor_unsigned(a.unsigned_abs(), b.unsigned_abs()) as i128
 }
 
 /// Euclid's algorithm over the host's unsigned 128-bit integer, for a remainder
 /// over a denominator past what the signed one holds.
+#[inline]
 pub(crate) const fn greatest_common_divisor_unsigned(a: u128, b: u128) -> u128 {
     let mut a = a;
     let mut b = b;
@@ -255,7 +259,7 @@ pub(crate) const fn greatest_common_divisor_unsigned(a: u128, b: u128) -> u128 {
 /// Named rather than folded into the predicate below because that predicate is a
 /// conjunction, and a law over the conjunction alone cannot say which half a
 /// failure came from.
-#[must_use]
+#[inline]
 pub const fn cancelling_slot<F: Format>(magnitude: Magnitude) -> Maybe<Slot> {
     let () = <F as Format>::ADMITTED;
     let () = <F::Ambient as Ambient>::ADMITTED;
@@ -355,6 +359,7 @@ pub const fn cancelling_slot<F: Format>(magnitude: Magnitude) -> Maybe<Slot> {
 /// identity included. A denominator of zero names no position and is answered as
 /// no identity rather than divided by.
 #[must_use]
+#[inline]
 pub const fn has_additive_identity<F: Format>() -> Bool {
     let () = <F as Format>::ADMITTED;
     let () = <F::Quantum as Quantum>::ADMITTED;
@@ -384,12 +389,14 @@ pub const fn has_additive_identity<F: Format>() -> Bool {
 
 /// The exponent of the step at a magnitude, for the format's quantum law.
 #[must_use]
+#[inline]
 pub const fn step_exponent<F: Format>(magnitude: Magnitude) -> Exponent {
     exponent_at::<F::Quantum>(magnitude)
 }
 
 /// The radix the format's ambient domain counts in.
 #[must_use]
+#[inline]
 pub const fn radix<F: Format>() -> Radix {
     let () = <F::Ambient as Ambient>::ADMITTED;
     <F::Ambient as Ambient>::RADIX
@@ -402,6 +409,7 @@ pub const fn radix<F: Format>() -> Radix {
 /// admits are exactly those the floating conventions call subnormal. Nothing
 /// names them and no branch selects them.
 #[must_use]
+#[inline]
 pub const fn smallest_step_exponent<F: Format>() -> Exponent {
     let last = <F::Quantum as Quantum>::MAGNITUDES.largest();
     let at_zero = exponent_at::<F::Quantum>(Magnitude::SMALLEST);

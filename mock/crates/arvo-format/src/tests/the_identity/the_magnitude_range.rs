@@ -153,10 +153,10 @@ fn the_magnitude_the_identity_is_found_at_is_not_always_the_first() {
     // what did it, which is why the count is asserted rather than assumed.
     let mut answering = 0;
     for index in 0 .. <Indexed<0, 4> as Quantum>::MAGNITUDES.count() {
-        if let Maybe::Is(slot) = cancelling_slot::<Growing>(Magnitude::at(index)) {
-            if slot_in_range::<Signed<2>>(slot).get() {
-                answering += 1;
-            }
+        if let Maybe::Is(slot) = cancelling_slot::<Growing>(Magnitude::at(index))
+            && slot_in_range::<Signed<2>>(slot).get()
+        {
+            answering += 1;
         }
     }
     assert_eq!(

@@ -26,12 +26,12 @@ pub struct Radix(u32);
 impl Radix {
     /// Base two.
     pub const BINARY: Self = Self(2);
-
     /// Base ten.
     pub const DECIMAL: Self = Self(10);
 
     /// A radix from a base.
     #[must_use]
+    #[inline]
     pub const fn of(base: u32) -> Self {
         Self(base)
     }
@@ -41,12 +41,14 @@ impl Radix {
     /// The unwrap door, declared as one. `repr(transparent)` and this accessor are
     /// the whole observation surface.
     #[must_use]
+    #[inline]
     pub const fn base(self) -> u32 {
         self.0
     }
 
     /// Whether two domains count in the same base.
     #[must_use]
+    #[inline]
     pub const fn equals(self, other: Self) -> Bool {
         Bool::of(self.0 == other.0)
     }
@@ -58,6 +60,7 @@ impl Radix {
     /// At one the step never changes with the exponent, so every magnitude names
     /// the same value; at zero the quantum is not a number at a negative exponent.
     #[must_use]
+    #[inline]
     pub const fn is_positional(self) -> Bool {
         Bool::of(self.0 >= 2)
     }
@@ -129,7 +132,7 @@ pub trait Ambient {
     ///
     /// ```
     /// use arvo_format::ambient::{Ambient, Radix};
-    /// use arvo_format::format::{radix, Format, Phase};
+    /// use arvo_format::format::{Format, Phase, radix};
     /// use arvo_format::quantum::Constant;
     /// use arvo_format::slots::Signed;
     /// use arvo_format::width::Bool;
@@ -147,6 +150,7 @@ pub trait Ambient {
     ///     type Ambient = Binary;
     ///     type Quantum = Constant<0>;
     ///     type Slots = Signed<8>;
+    ///
     ///     const PHASE: Phase = Phase::ZERO;
     /// }
     ///
@@ -172,6 +176,7 @@ pub trait Ambient {
 /// refuse it. That is what lets the wrong construction live permanently in a test
 /// rather than in a scratch file somebody deletes.
 #[must_use]
+#[inline]
 pub const fn is_admissible_ambient<A: Ambient>() -> Bool {
     A::RADIX.is_positional()
 }

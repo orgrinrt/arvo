@@ -59,6 +59,7 @@ pub(crate) struct Rounded {
 
 impl Rounded {
     /// A position already on the slot `at`, which rounding leaves where it is.
+    #[cfg(test)]
     #[must_use]
     pub(crate) const fn at(at: i128) -> Self {
         Self {
@@ -70,12 +71,14 @@ impl Rounded {
 
     /// The slot at or below the position, or the end of the index it lies past.
     #[must_use]
+    #[inline]
     pub(crate) const fn down(self) -> i128 {
         self.down
     }
 
     /// The step the rounding adds to `down`, zero or one.
     #[must_use]
+    #[inline]
     pub(crate) const fn step(self) -> i128 {
         if self.up.get() { 1 } else { 0 }
     }
@@ -88,6 +91,7 @@ impl Rounded {
     /// `down + 1` is formed only when `down` is below `lo`, so below the index's
     /// top, and the upper test compares `down` against `hi` without adding.
     #[must_use]
+    #[inline]
     const fn lands_within(self, lo: i128, hi: i128) -> bool {
         if self.past > 0 {
             return false;
@@ -124,6 +128,7 @@ impl Rounded {
 /// it through the map rather than restating the six rules is what keeps the two
 /// from disagreeing.
 #[must_use]
+#[inline]
 pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Rounded {
     let down = Rounded {
         down: exact.slot.index(),
@@ -195,6 +200,7 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
 /// The identity on a slot already inside it, which is what makes the two regions
 /// separable rather than one pass that always touches the value.
 #[must_use]
+#[inline]
 const fn complete_slot(policy: Policy, rounded: Rounded, min: Slot, max: Slot) -> Slot {
     let lo = min.index();
     let hi = max.index();
@@ -250,6 +256,7 @@ const fn complete_slot(policy: Policy, rounded: Rounded, min: Slot, max: Slot) -
 /// every policy. That totality is what makes an adaptation a member of the slot
 /// the factoring names, and it is why a panic is not one.
 #[must_use]
+#[inline]
 pub const fn adapt<S: DeclaredSignature>(exact: Exact, dither: Dither) -> Slot {
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     let policy = <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY;
@@ -272,6 +279,7 @@ pub const fn adapt<S: DeclaredSignature>(exact: Exact, dither: Dither) -> Slot {
 /// may appear in a dev build of a speed-first strategy is not settled. Sharpening
 /// it here would answer that question in the wrong place.
 #[must_use]
+#[inline]
 pub const fn panic_on_inexact(exact: Exact) -> Bool {
     exact.is_on_grid().not()
 }
@@ -288,6 +296,7 @@ pub const fn panic_on_inexact(exact: Exact) -> Bool {
 /// It reads the range without forcing the slot range's obligation. `adapt` is
 /// where that obligation is met.
 #[must_use]
+#[inline]
 pub const fn panic_on_overflow<S: DeclaredSignature>(exact: Exact, dither: Dither) -> Bool {
     let mode = <<S::Adaptation as Adaptation>::Rounding as Rounding>::MODE;
     let min = <<S::Format as Format>::Slots as Slots>::MIN;

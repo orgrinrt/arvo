@@ -64,6 +64,7 @@ struct EveryPair {
 impl PerSignature for EveryPair {
     type Out = Tally;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Tally {
         let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
         let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
@@ -117,6 +118,7 @@ struct Sweep {
 }
 
 impl PerFormat for Sweep {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         assert!(
             is_divisible::<F>().get(),

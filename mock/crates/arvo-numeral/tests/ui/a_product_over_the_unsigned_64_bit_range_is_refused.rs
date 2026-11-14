@@ -1,5 +1,5 @@
-// The format does not admit the product over the unsigned 64-bit range yet,
-// so the value has none there. The refusal is the format's own.
+// The format does not hold the product's exact position over the unsigned 64-bit
+// range yet, so the value has no product there. The refusal is the format's own.
 use arvo_format::Adapt;
 use arvo_format::overflow::Wrap;
 use arvo_format::rounding::TowardZero;

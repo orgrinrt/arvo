@@ -16,9 +16,10 @@
 //! so the cells at 64, 65 and 128 are not reached; the ticket
 //! `arvo_law_the_multiplicative_inverse_round_trip_is_unreachabl` carries them.
 //!
-//! The case that has to fail: the same round trip through the inverse plus two,
-//! which is not an inverse at any width from two up, has to break somewhere at
-//! each of those widths.
+//! The cases that have to fail: the same round trip through zero, which is no
+//! inverse at any width, has to break at every width from one up, and through
+//! the inverse plus two, which is not an inverse at any width from two up, has
+//! to break somewhere at each of those widths.
 
 use super::Wr;
 use crate::apply::Dither;
@@ -34,9 +35,20 @@ fn members(width: u32) -> impl Iterator<Item = u128> {
     let stride = (top / 4093).max(1) as usize;
     (0 .. every)
         .chain(
-            [0, 1, 2, 3, top / 3, top / 3 + 1, top - 2, top - 1, top]
-                .into_iter()
-                .filter(move |&x| x <= top),
+            // Saturating below the top, so width one keeps its two members.
+            [
+                0,
+                1,
+                2,
+                3,
+                top / 3,
+                top / 3 + 1,
+                top.saturating_sub(2),
+                top.saturating_sub(1),
+                top,
+            ]
+            .into_iter()
+            .filter(move |&x| x <= top),
         )
         .chain((0 ..= top).step_by(stride).take(strided))
 }
@@ -72,6 +84,10 @@ fn the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_63() {
                 let (wrong, checked) = broken::<$w>(inv3);
                 assert_eq!(wrong, 0, "width {}", $w);
                 assert!(checked >= 2, "width {}", $w);
+                // Zero is no inverse at any width, so this breaks at `x = 1` from width one up.
+                let (through_zero, _) = broken::<$w>(0);
+                assert!(through_zero > 0, "zero round-tripped at width {}", $w);
+                // Every odd constant is the inverse of three modulo two, so this arm starts at two.
                 if $w >= 2 {
                     let (planted, _) = broken::<$w>(inv3 + 2);
                     assert!(planted > 0, "a non-inverse round-tripped at width {}", $w);

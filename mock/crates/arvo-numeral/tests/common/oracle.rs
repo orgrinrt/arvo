@@ -140,34 +140,37 @@ fn landed_in_room<S: Sole>(num: i128, den: i128) -> Landed {
     }
 }
 
-/// The same ratio landed on `S` in the wide integer. The denominator stays in
-/// an unsigned 128-bit word, which is what the format's exact position carries
-/// a remainder over, so a ratio past that is one the format does not admit.
+/// The same ratio landed on `S` in the wide integer, the denominator as wide as
+/// the numerator. The format forms the product's and the quotient's step four
+/// 64-bit limbs wide, so a denominator below `2^256` is one it can admit.
 fn landed_wide<S: Sole>(factors: &[i128], divisor: i128, scales: &[Scale]) -> Landed {
     let mut num = Big::of(if divisor < 0 { -1 } else { 1 });
     for &f in factors {
         num = num.times(Big::of(f));
     }
-    let mut den = divisor.unsigned_abs();
+    let mut den = Big::of_unsigned(divisor.unsigned_abs());
     for s in scales {
+        let by = Big::power(i128::from(s.radix), s.power.unsigned_abs());
         if s.power >= 0 {
-            num = num.times(Big::power(i128::from(s.radix), s.power.unsigned_abs()));
+            num = num.times(by);
         } else {
-            den = u128::from(s.radix)
-                .checked_pow(s.power.unsigned_abs())
-                .and_then(|by| den.checked_mul(by))
-                .expect("the ratio's denominator passes the unsigned 128-bit word");
+            den = den.times(by);
         }
     }
-    let (floor, rest) = num.floor_over(den);
-    let up = rest != 0
+    let (floor, rest) = num.floor_over_big(den);
+    // The remainder against its complement in the denominator: below zero
+    // where the remainder is the smaller, zero at the tie.
+    let against = rest.plus(den.plus(rest.negated()).negated());
+    let zero = Big::of(0);
+    let up = rest != zero
         && match mode::<S>() {
             Mode::Floor => false,
             Mode::Ceil => true,
             Mode::TowardZero => floor.is_negative(),
-            Mode::HalfUp => rest >= den - rest,
+            Mode::HalfUp => !against.is_negative(),
             Mode::HalfEven => {
-                rest > den - rest || (rest == den - rest && floor.floor_over(2).1 == 1)
+                (!against.is_negative() && against != zero)
+                    || (against == zero && floor.floor_over(2).1 == 1)
             },
             Mode::Stochastic => unreachable!("a value admits no stochastic mode"),
         };

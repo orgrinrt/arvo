@@ -17,9 +17,9 @@
 //! divide by it.
 //!
 //! One obligation carries four conditions: a phase that denotes, and three that
-//! are not yet admitted rather than refused, a magnitude-indexed quantum, a
-//! denominator past `2^128 - 1` at a member divisor, and a corner position the
-//! slot index does not hold. It is forced by the exact step, and `is_divisible`
+//! are not yet admitted rather than refused, a magnitude-indexed quantum, a step
+//! whose denominator or corner numerators pass the four limbs, and a corner
+//! position the slot index does not hold. It is forced by the exact step, and `is_divisible`
 //! asks the same without forcing it.
 
 use core::marker::PhantomData;
@@ -72,6 +72,7 @@ pub struct Divisor<F: Format> {
 }
 
 impl<F: Format> Clone for Divisor<F> {
+    #[inline]
     fn clone(&self) -> Self {
         *self
     }
@@ -121,6 +122,7 @@ impl<F: Format> NoSlotNamesTheZero<F> {
 
 /// Whether no slot of `F` names the zero: its phase denotes, and its reduced
 /// denominator is past one.
+#[inline]
 const fn no_slot_names_the_zero<F: Format>() -> Bool {
     Bool::of(matches!(reduced_phase::<F>(), Maybe::Is(phase) if phase.denominator > 1))
 }
@@ -129,6 +131,7 @@ impl<F: Format> Divisor<F> {
     /// The divisor at the constant slot `B`, refused at build time when `B` is
     /// outside the range or is the zero member.
     #[must_use]
+    #[inline]
     pub const fn constant<const B: i128>() -> Self {
         let () = ConstantDivisor::<F, B>::ADMITTED;
         Self {
@@ -143,6 +146,7 @@ impl<F: Format> Divisor<F> {
     /// the step answers for it as for any position past the index. None of them
     /// is the zero, so the step never meets one.
     #[must_use]
+    #[inline]
     pub const fn of(slot: Slot) -> Self {
         let () = NoSlotNamesTheZero::<F>::ADMITTED;
         Self {
@@ -153,6 +157,7 @@ impl<F: Format> Divisor<F> {
 
     /// The slot the divisor sits at.
     #[must_use]
+    #[inline]
     pub const fn slot(self) -> Slot {
         self.slot
     }
@@ -192,13 +197,13 @@ impl<F: Format> Divisible<F> {
         );
         // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): the
         // position is a function of the signature here too, and only its
-        // remainder's denominator is past the unsigned 128 bits it is carried over.
+        // numerator and denominator are past the four limbs they are formed in.
         assert!(
             fits.get(),
             "division is not yet admitted where the remainder's denominator d |n + b d| r^max(e, 0), \
              with n / d the reduced phase, b a member divisor, r the radix and e the quantum's \
-             exponent, passes 2^128 - 1 at an end of the range: an exact position carries its \
-             remainder over an unsigned 128-bit denominator"
+             exponent, or the numerator at a corner of the range, passes 2^256 - 1: an exact step is \
+             formed in four 64-bit limbs"
         );
         // FIXME(arvo_quotient_and_conversion_positions_past_the_slot_index): the
         // corner positions are functions of the signature, and only the slot
@@ -224,6 +229,7 @@ struct Step {
 }
 
 /// The step's constants for `F`, or nothing where the phase does not denote.
+#[inline]
 const fn step<F: Format>() -> Maybe<Step> {
     match reduced_phase::<F>() {
         Maybe::Is(phase) => {
@@ -237,6 +243,7 @@ const fn step<F: Format>() -> Maybe<Step> {
 }
 
 /// `n + a d`, the factor a slot brings, under `2^191` in magnitude for any slot.
+#[inline]
 const fn factor(step: Step, a: i128) -> Maybe<Wide> {
     match Wide::of(a).times(Wide::of(step.phase.denominator)) {
         Maybe::Is(ad) => ad.plus(Wide::of(step.phase.numerator)),
@@ -246,51 +253,29 @@ const fn factor(step: Step, a: i128) -> Maybe<Wide> {
 
 /// Whether the slot `b` is a divisor the step can place by: its factor is
 /// formed and is not zero.
+#[inline]
 const fn is_nonzero(step: Step, b: i128) -> bool {
     matches!(factor(step, b), Maybe::Is(f) if !f.is_zero().get())
 }
 
 /// `d |n + b d| u`, the denominator over the divisor's factor `fb`, or nothing
-/// when it passes `2^128 - 1`. Zero where the factor is.
-const fn denominator(step: Step, fb: Wide) -> Maybe<u128> {
+/// when it leaves the four limbs. Zero where the factor is.
+#[inline]
+const fn denominator(step: Step, fb: Wide) -> Maybe<Wide> {
     let magnitude = if fb.is_negative().get() { fb.negated() } else { fb };
-    match times(
+    times(
         times(
             Maybe::Is(Wide::of(step.phase.denominator)),
             Maybe::Is(magnitude),
         ),
         step.powers.up,
-    ) {
-        Maybe::Is(v) => v.unsigned(),
-        Maybe::Isnt => Maybe::Isnt,
-    }
+    )
 }
 
-/// The quotient of the slots `a` and `b` placed by the step.
-///
-/// The numerator `d (n + a d) v - n (n + b d) u` in four limbs, negated with the
-/// denominator when `n + b d` is below zero, then its floor over the
-/// denominator. A denominator past `2^128 - 1`, a numerator that leaves the
-/// limbs, or a floor that leaves the index, is past it on the sign of the
-/// quotient of the two factors; for a member divisor the obligation has ruled all
-/// three out.
-///
-/// `b` is never a slot whose factor is zero: the shipped callers pass a
-/// `Divisor`'s slot or a member `extreme_divisors` has already left the pole out
-/// of, and the test-only `unforced_position` is called with slots its sweeps
-/// keep off the pole, so the denominator below is positive and `over` divides by
-/// it.
-const fn placed(step: Step, a: i128, b: i128) -> (Placed, u128) {
-    // Both factors are under `2^191`, so neither is lost; the arm is the
-    // answer the step gives if one were.
-    let (Maybe::Is(fa), Maybe::Is(fb)) = (factor(step, a), factor(step, b)) else {
-        return (Placed::Past(false), 1);
-    };
-    let flip = fb.is_negative().get();
-    let negative = fa.is_negative().get() != flip;
-    let Maybe::Is(divisor) = denominator(step, fb) else {
-        return (Placed::Past(negative), 1);
-    };
+/// `d (n + a d) v - n (n + b d) u` over the two factors, or nothing when it or
+/// either of its terms leaves the four limbs.
+#[inline]
+const fn numerator(step: Step, fa: Wide, fb: Wide) -> Maybe<Wide> {
     let first = if fa.is_zero().get() {
         Maybe::Is(fa)
     } else {
@@ -299,45 +284,93 @@ const fn placed(step: Step, a: i128, b: i128) -> (Placed, u128) {
             step.powers.down,
         )
     };
-    // `|n (n + b d) u|` is at most `2^63` times the denominator, so it is formed.
+    // `|n (n + b d) u|` is at most `2^63` times the denominator.
     let second = times(
         times(Maybe::Is(Wide::of(step.phase.numerator)), Maybe::Is(fb)),
         step.powers.up,
     );
-    let numerator = match (first, second) {
+    match (first, second) {
         (Maybe::Is(x), Maybe::Is(y)) => x.plus(y.negated()),
         _ => Maybe::Isnt,
-    };
-    match numerator {
-        Maybe::Is(x) => (over(if flip { x.negated() } else { x }, divisor), divisor),
-        Maybe::Isnt => (Placed::Past(negative), 1),
     }
 }
 
-/// Whether the denominator fits at every member divisor.
+/// The quotient of the slots `a` and `b` placed by the step.
 ///
-/// `|n + b d|` is affine in `b`, so the larger of the range's two ends decides
-/// it. Nothing where the phase does not denote.
-const fn denominator_fits<F: Format>() -> Bool {
+/// The numerator `d (n + a d) v - n (n + b d) u` in four limbs, negated with the
+/// denominator when `n + b d` is below zero, then its floor over the
+/// denominator. A denominator or a numerator that leaves the limbs is a step not
+/// formed, and a floor that leaves the index is past it, each on the sign of the
+/// quotient of the two factors; for a member divisor the obligation has ruled all
+/// three out.
+///
+/// `b` is never a slot whose factor is zero: the shipped callers pass a
+/// `Divisor`'s slot or a member `extreme_divisors` has already left the pole out
+/// of, and the test-only `unforced_position` is called with slots its sweeps
+/// keep off the pole, so the denominator below is positive and `over` divides by
+/// it.
+#[inline]
+const fn placed(step: Step, a: i128, b: i128) -> (Placed, Wide) {
+    let one = Wide::of_unsigned(1);
+    // Both factors are under `2^191`, so neither is lost; the arm is the
+    // answer the step gives if one were.
+    let (Maybe::Is(fa), Maybe::Is(fb)) = (factor(step, a), factor(step, b)) else {
+        return (Placed::Unformed(false), one);
+    };
+    let flip = fb.is_negative().get();
+    let negative = fa.is_negative().get() != flip;
+    let Maybe::Is(divisor) = denominator(step, fb) else {
+        return (Placed::Unformed(negative), one);
+    };
+    match numerator(step, fa, fb) {
+        Maybe::Is(x) => (over(if flip { x.negated() } else { x }, divisor), divisor),
+        Maybe::Isnt => (Placed::Unformed(negative), one),
+    }
+}
+
+/// Whether the step is formed at every pair of members: the denominator at
+/// every member divisor, and the numerator at every pair.
+///
+/// `|n + b d|` is affine in `b`, so the range's two ends decide the
+/// denominator, and each term of the numerator is affine in one slot, so the
+/// numerator's magnitude over the box of slots is greatest at a corner, the
+/// pole's corners included, since the numerator divides by nothing. Nothing
+/// where the phase does not denote.
+#[inline]
+const fn quotient_is_formed<F: Format>() -> Bool {
     let Maybe::Is(step) = Divisible::<F>::STEP else {
         return Bool::FALSE;
     };
     let min = <F::Slots as Slots>::MIN.index();
     let max = <F::Slots as Slots>::MAX.index();
-    Bool::of(fits_at(step, min) && fits_at(step, max))
-}
-
-/// Whether the denominator at the divisor slot `b` fits.
-const fn fits_at(step: Step, b: i128) -> bool {
-    match factor(step, b) {
-        Maybe::Is(fb) => matches!(denominator(step, fb), Maybe::Is(_)),
-        Maybe::Isnt => false,
+    let ends = [min, max];
+    let mut i = 0;
+    while i < 2 {
+        let Maybe::Is(fb) = factor(step, ends[i]) else {
+            return Bool::FALSE;
+        };
+        if matches!(denominator(step, fb), Maybe::Isnt) {
+            return Bool::FALSE;
+        }
+        let mut j = 0;
+        while j < 2 {
+            let Maybe::Is(fa) = factor(step, ends[j]) else {
+                return Bool::FALSE;
+            };
+            if matches!(numerator(step, fa, fb), Maybe::Isnt) {
+                return Bool::FALSE;
+            }
+            j += 1;
+        }
+        i += 1;
     }
+    Bool::TRUE
 }
 
 /// The member divisors the quotient is extreme at: the range's two ends and the
 /// members nearest the pole on each side, each skipped when it is not in range
 /// or is the zero member.
+#[inline]
 const fn extreme_divisors(step: Step, min: i128, max: i128) -> [Maybe<i128>; 4] {
     let (n, d) = (step.phase.numerator, step.phase.denominator);
     // The smallest `b` with `n + b d` above zero, and the largest with it below.
@@ -362,6 +395,7 @@ const fn extreme_divisors(step: Step, min: i128, max: i128) -> [Maybe<i128>; 4] 
 /// For a fixed divisor the position is affine in the dividend, and for a fixed
 /// dividend it is monotone in the divisor on each side of the pole, so the eight
 /// corners `extreme_divisors` names against the dividend's two ends decide it.
+#[inline]
 const fn quotient_is_carried<F: Format>() -> Bool {
     let Maybe::Is(step) = Divisible::<F>::STEP else {
         return Bool::FALSE;
@@ -386,12 +420,13 @@ const fn quotient_is_carried<F: Format>() -> Bool {
 /// `(phase + a) / ((phase + b) q) - phase`, in slot units: on the grid, or at the
 /// floor slot with the remainder over `d |n + b d| r^max(e, 0)` in lowest terms.
 /// For two members the position is exact. For a slot outside the range, a
-/// position past the index, a numerator past the four limbs or a denominator
-/// past `2^128 - 1` saturates at the end on the quotient's sign.
+/// position past the index, or a numerator or denominator past the four limbs,
+/// saturates at the end on the quotient's sign.
 ///
 /// Forces the division obligation, so a format the quotient does not admit stops
 /// the build here, at check time when the call is bound in a `const` item.
 #[must_use]
+#[inline]
 pub const fn quotient_position<F: Format>(a: Slot, b: Divisor<F>) -> Exact {
     let () = Divisible::<F>::ADMITTED;
     match Divisible::<F>::STEP {
@@ -410,20 +445,22 @@ pub const fn quotient_position<F: Format>(a: Slot, b: Divisor<F>) -> Exact {
 /// through for the one mode that reads it. Total over every slot and every
 /// divisor, with no check and no panic.
 #[must_use]
+#[inline]
 pub const fn div<S: DeclaredSignature>(a: Slot, b: Divisor<S::Format>, dither: Dither) -> Slot {
     adapt::<S>(quotient_position::<S::Format>(a, b), dither)
 }
 
 /// The obligation's four verdicts, in order: the phase denotes, the quantum is
-/// constant, the denominator fits, the quotient is carried.
+/// constant, the step is formed, the quotient is carried.
 ///
 /// The one place they are stated, read by the obligation and by `is_divisible`.
 /// The last two read the step and answer false where the phase does not denote.
+#[inline]
 const fn conditions<F: Format>() -> [Bool; 4] {
     [
         F::PHASE.denotes(),
         is_constant_family::<F::Quantum>(),
-        denominator_fits::<F>(),
+        quotient_is_formed::<F>(),
         quotient_is_carried::<F>(),
     ]
 }
@@ -433,6 +470,7 @@ const fn conditions<F: Format>() -> [Bool; 4] {
 /// The obligation's own verdicts folded, so a test can hold a format the
 /// quotient does not admit and report on it rather than stop the build.
 #[must_use]
+#[inline]
 pub const fn is_divisible<F: Format>() -> Bool {
     all(conditions::<F>())
 }

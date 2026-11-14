@@ -62,6 +62,7 @@ fn exponent_only<F: Format>() -> Maybe<Slot> {
 }
 
 impl PerFormat for Identity {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         self.formats += 1;
         let want = member_at_one::<F>();

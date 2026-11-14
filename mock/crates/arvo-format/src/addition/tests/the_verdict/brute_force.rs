@@ -31,6 +31,7 @@ struct Cell;
 impl PerSignature for Cell {
     type Out = (bool, bool);
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> (bool, bool) {
         let licensed = crate::addition::addition_is_associative::<S>().get();
         let associative = DITHERS.iter().all(|&d| sums::<S>(d).divergent() == 0);
@@ -54,6 +55,7 @@ struct Cross {
 }
 
 impl PerFormat for Cross {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let whole = F::PHASE.is_whole_multiple().get();
         let span = <F::Slots as Slots>::MAX.index() - <F::Slots as Slots>::MIN.index();

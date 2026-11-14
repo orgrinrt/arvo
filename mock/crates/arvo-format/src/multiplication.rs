@@ -17,22 +17,26 @@
 //! adaptation the way addition's is.
 //!
 //! One obligation carries four conditions: a phase that denotes, and three that
-//! are not yet admitted rather than refused, a magnitude-indexed quantum, a `D`
-//! past `2^128 - 1`, and a corner position the slot index does not hold. It is
-//! forced by the exact step, and `is_multipliable` asks the same without forcing
-//! it.
+//! are not yet admitted rather than refused, a magnitude-indexed quantum, a step
+//! whose `D` or corner numerators pass the four limbs, and a corner position the
+//! slot index does not hold. It is forced by the exact step, and
+//! `is_multipliable` asks the same without forcing it. A second obligation, over
+//! the signature, asks the last condition only of a policy that does not wrap,
+//! since wrapping reads the floor past the index; it is forced by `mul`, and
+//! `is_multipliable_under` asks it without forcing it.
 
 use core::marker::PhantomData;
 
 use notko::Maybe;
 
-use crate::adapt::{Arity, DeclaredSignature, Operation};
+use crate::adapt::{Arity, DeclaredSignature, Operation, wraps};
 use crate::apply::{Dither, Exact, adapt};
 use crate::format::Format;
 use crate::placing::{
     Placed,
     Powers,
     Reduced,
+    is_formed,
     is_held,
     over,
     positioned,
@@ -40,6 +44,7 @@ use crate::placing::{
     reduced_phase,
     saturated,
     times,
+    wrapped,
 };
 use crate::quantum::is_constant_family;
 use crate::slots::{Slot, Slots, slot_in_range};
@@ -62,10 +67,24 @@ impl<S: DeclaredSignature> Operation for Mul<S> {
 struct Multipliable<F>(PhantomData<F>);
 
 impl<F: Format> Multipliable<F> {
-    /// The four conditions, in the order `is_multipliable` asks them. The phase
-    /// is asserted first because the others read its parts, and a zero
-    /// denominator has none.
+    /// The four conditions, in the order `is_multipliable` asks them: the three
+    /// every product owes, then whether the slot index carries every position.
     const ADMITTED: () = {
+        let () = Self::FORMED;
+        // FIXME(arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c): the
+        // corner positions are functions of the signature, and only the slot
+        // index's own integer is too narrow to hold them.
+        assert!(
+            product_is_carried::<F>().get(),
+            "multiplication is not yet admitted over this format: the exact product of two \
+             members leaves the slot coordinate, so the position it names is not one a slot \
+             index can hold yet"
+        );
+    };
+    /// The three conditions every product owes, whatever its policy. The phase is
+    /// asserted first because the others read its parts, and a zero denominator
+    /// has none.
+    const FORMED: () = {
         assert!(
             F::PHASE.denotes().get(),
             "multiplication is refused over a phase whose denominator is zero: such a phase \
@@ -82,29 +101,44 @@ impl<F: Format> Multipliable<F> {
              coordinate to land the product at yet"
         );
         // FIXME(arvo_s_exact_position_carries_no_remainder_denominator_past): the
-        // position is a function of the signature here too, and only its
-        // remainder's denominator is past the unsigned 128 bits an exact position
-        // carries it over.
+        // position is a function of the signature here too, and only the four
+        // limbs its numerator and denominator are formed in are too narrow.
         assert!(
-            matches!(Self::STEP, Maybe::Is(_)),
+            product_is_formed::<F>().get(),
             "multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), \
              with d the phase's reduced denominator, r the radix and e the quantum's exponent, \
-             passes 2^128 - 1: an exact position carries its remainder over an unsigned 128-bit \
-             denominator"
-        );
-        // FIXME(arvo_s_product_over_the_unsigned_64_bit_range_needs_a_slot_c): the
-        // corner positions are functions of the signature, and only the slot
-        // index's own integer is too narrow to hold them.
-        assert!(
-            product_is_carried::<F>().get(),
-            "multiplication is not yet admitted over this format: the exact product of two \
-             members leaves the slot coordinate, so the position it names is not one a slot \
-             index can hold yet"
+             or the numerator at a corner of the range, passes 2^256 - 1: an exact step is formed \
+             in four 64-bit limbs"
         );
     };
-    /// The step's constants, or nothing where the remainder's denominator does
-    /// not fit, settled once per format.
+    /// The step's constants, or nothing where `D` or the phase's term leaves the
+    /// four limbs, settled once per format.
     const STEP: Maybe<Step> = step::<F>();
+}
+
+/// What a declared signature owes the composed product: the format's three
+/// conditions, and the slot index carrying every position only where the policy
+/// does not wrap, since wrapping reads a floor past the index modulo twice the
+/// range's count, on its own side of zero, and the step forms that floor in its
+/// four limbs.
+struct MultipliableUnder<S>(PhantomData<S>);
+
+impl<S: DeclaredSignature> MultipliableUnder<S> {
+    /// The format's three conditions, then the carried one unless the policy
+    /// wraps.
+    const ADMITTED: () = {
+        let () = Multipliable::<S::Format>::FORMED;
+        // FIXME(arvo_format_admits_the_saturating_and_clamping_product_past): a floor
+        // past the index is past the range on its side, so saturation and clamping
+        // could read it as wrapping does; only wrapping was asked for.
+        assert!(
+            wraps::<S>().get() || product_is_carried::<S::Format>().get(),
+            "multiplication is not yet admitted over this format under a policy that does not \
+             wrap: the exact product of two members leaves the slot coordinate, so the position \
+             it names is not one a slot index can hold yet; under wrapping it is admitted, \
+             since wrapping reads the floor modulo twice the range's count"
+        );
+    };
 }
 
 /// What the step reads of the phase, the radix and the exponent.
@@ -117,16 +151,18 @@ struct Step {
     /// `r^max(e, 0)`, or nothing when it leaves the four limbs, in which case any
     /// product but zero does too.
     scale:       Maybe<Wide>,
-    /// `n d r^max(-e, 0)`, the phase's term, under `2^191` in magnitude.
+    /// `n d r^max(-e, 0)`, the phase's term, at most `2^63` times `D`.
     offset:      Wide,
-    /// `D = d^2 r^max(-e, 0)`, from one up to `2^128 - 1`.
-    divisor:     u128,
+    /// `D = d^2 r^max(-e, 0)`, positive and in the four limbs.
+    divisor:     Wide,
 }
 
-/// The step's constants for `F`, or nothing where `D` is past `2^128 - 1`.
+/// The step's constants for `F`, or nothing where `D` or the phase's term
+/// leaves the four limbs.
 ///
 /// A zero phase denominator, and a zero radix at a negative exponent, give no
 /// positive `D`, and the radix's own obligation refuses the second.
+#[inline]
 const fn step<F: Format>() -> Maybe<Step> {
     let Maybe::Is(Reduced {
         numerator: n,
@@ -139,22 +175,18 @@ const fn step<F: Format>() -> Maybe<Step> {
         up,
         down,
     } = powers::<F>();
-    // `d r^k`, then `D` as `d` times it. Either leaving the four limbs, or `D`
-    // leaving the host's unsigned 128-bit integer, is a `D` not yet admitted.
+    // `d r^k`, then `D` as `d` times it. Either leaving the four limbs is a `D`
+    // not yet admitted.
     let lowered = match times(Maybe::Is(Wide::of(d)), down) {
         Maybe::Is(v) => v,
         Maybe::Isnt => return Maybe::Isnt,
     };
     let divisor = match Wide::of(d).times(lowered) {
-        Maybe::Is(v) => {
-            match v.unsigned() {
-                Maybe::Is(u) if u > 0 => u,
-                _ => return Maybe::Isnt,
-            }
-        },
-        Maybe::Isnt => return Maybe::Isnt,
+        Maybe::Is(v) if !v.is_zero().get() => v,
+        _ => return Maybe::Isnt,
     };
-    // `d r^k` is at most `D`, under `2^128`, and `|n|` at most `2^63`.
+    // `d r^k` is at most `D` and `|n|` at most `2^63`, and their product leaving
+    // the limbs is a step not formed.
     let offset = match Wide::of(n).times(lowered) {
         Maybe::Is(v) => v,
         Maybe::Isnt => return Maybe::Isnt,
@@ -169,6 +201,7 @@ const fn step<F: Format>() -> Maybe<Step> {
 }
 
 /// `n + a d`, one factor of the numerator.
+#[inline]
 const fn factor(step: Step, a: i128) -> Maybe<Wide> {
     match Wide::of(a).times(Wide::of(step.denominator)) {
         Maybe::Is(ad) => ad.plus(Wide::of(step.numerator)),
@@ -179,42 +212,67 @@ const fn factor(step: Step, a: i128) -> Maybe<Wide> {
 /// The product of the slots `a` and `b` placed by the step.
 ///
 /// The numerator `(n + a d)(n + b d) r^max(e, 0) - n d r^max(-e, 0)` in four
-/// limbs, then its floor over `D`. A numerator that leaves the limbs, or a floor
-/// that leaves the index, is past it on the position's sign; for two members the
-/// obligation has ruled both out.
+/// limbs, then its floor over `D`. A numerator that leaves the limbs is a step
+/// not formed, and a floor that leaves the index is past it, each on the
+/// position's sign; for two members the obligation has ruled both out.
+#[inline]
 const fn placed(step: Step, a: i128, b: i128) -> Placed {
+    // Each factor is under `2^191` in magnitude for any slot, so it is formed;
+    // the arms are the answer the step gives if one were not.
     let fa = match factor(step, a) {
         Maybe::Is(f) => f,
-        Maybe::Isnt => return Placed::Past(a < 0),
+        Maybe::Isnt => return Placed::Unformed(a < 0),
     };
     let fb = match factor(step, b) {
         Maybe::Is(f) => f,
-        Maybe::Isnt => return Placed::Past(b < 0),
+        Maybe::Isnt => return Placed::Unformed(b < 0),
     };
     let negative = fa.is_negative().get() != fb.is_negative().get();
     let product = match fa.times(fb) {
         Maybe::Is(p) => p,
-        Maybe::Isnt => return Placed::Past(negative),
+        Maybe::Isnt => return Placed::Unformed(negative),
     };
     let scaled = if product.is_zero().get() {
         product
     } else {
         match times(Maybe::Is(product), step.scale) {
             Maybe::Is(p) => p,
-            Maybe::Isnt => return Placed::Past(negative),
+            Maybe::Isnt => return Placed::Unformed(negative),
         }
     };
     match scaled.plus(step.offset.negated()) {
         Maybe::Is(numerator) => over(numerator, step.divisor),
-        Maybe::Isnt => Placed::Past(negative),
+        Maybe::Isnt => Placed::Unformed(negative),
     }
+}
+
+/// Whether the step is formed at every pair of members: `D` and the phase's
+/// term in the four limbs, and the numerator at each of the four corners.
+///
+/// Every intermediate of the numerator, and the numerator itself, is bilinear in
+/// the two slots, so its magnitude over a box of slots is greatest at a corner,
+/// and the corners forming means every pair does.
+#[inline]
+const fn product_is_formed<F: Format>() -> Bool {
+    let Maybe::Is(step) = Multipliable::<F>::STEP else {
+        return Bool::FALSE;
+    };
+    let min = <F::Slots as Slots>::MIN.index();
+    let max = <F::Slots as Slots>::MAX.index();
+    Bool::of(
+        is_formed(placed(step, min, min)).get()
+            && is_formed(placed(step, min, max)).get()
+            && is_formed(placed(step, max, min)).get()
+            && is_formed(placed(step, max, max)).get(),
+    )
 }
 
 /// Whether every product of two members is a position a slot index holds.
 ///
 /// The position is bilinear in the two slots, so over a box of slots it is
-/// extreme at the four corners, and those decide it. Nothing where the
-/// remainder's denominator does not fit.
+/// extreme at the four corners, and those decide it. Nothing where the step is
+/// not formed.
+#[inline]
 const fn product_is_carried<F: Format>() -> Bool {
     let Maybe::Is(step) = Multipliable::<F>::STEP else {
         return Bool::FALSE;
@@ -240,6 +298,7 @@ const fn product_is_carried<F: Format>() -> Bool {
 /// Forces the multiplication obligation, so a format the product does not admit
 /// stops the build here, at check time when the call is bound in a `const` item.
 #[must_use]
+#[inline]
 pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
     let () = Multipliable::<F>::ADMITTED;
     match Multipliable::<F>::STEP {
@@ -254,9 +313,30 @@ pub const fn product_position<F: Format>(a: Slot, b: Slot) -> Exact {
 /// The exact step, then `adapt` under the same signature, with the dither passed
 /// through for the one mode that reads it. Total over every pair of slots, with
 /// no check and no panic.
+///
+/// Under a wrapping policy a floor past the slot index is reduced modulo twice
+/// the range's count, kept on its own side of zero, before `adapt` reads it, so
+/// the signature is admitted where the index does not carry every position, as
+/// on the unsigned 64-bit range at exponents from 0 to 128.
 #[must_use]
+#[inline]
 pub const fn mul<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot {
-    adapt::<S>(product_position::<S::Format>(a, b), dither)
+    let () = MultipliableUnder::<S>::ADMITTED;
+    let Maybe::Is(step) = Multipliable::<S::Format>::STEP else {
+        // The obligation above has refused this format already.
+        return adapt::<S>(saturated(false), dither);
+    };
+    let at = placed(step, a.index(), b.index());
+    let exact = if wraps::<S>().get() {
+        match wrapped::<<S::Format as Format>::Slots>(step.divisor, at) {
+            Maybe::Is(exact) => exact,
+            // A step not formed, which only a slot that is not a member reaches.
+            Maybe::Isnt => positioned(step.divisor, at),
+        }
+    } else {
+        positioned(step.divisor, at)
+    };
+    adapt::<S>(exact, dither)
 }
 
 /// Whether multiplication admits the format, asked without forcing the
@@ -265,11 +345,30 @@ pub const fn mul<S: DeclaredSignature>(a: Slot, b: Slot, dither: Dither) -> Slot
 /// The same four conditions in the same order, so a test can hold a format the
 /// product does not admit and report on it rather than stop the build.
 #[must_use]
+#[inline]
 pub const fn is_multipliable<F: Format>() -> Bool {
     if !F::PHASE.denotes().get() || !is_constant_family::<F::Quantum>().get() {
         return Bool::FALSE;
     }
-    product_is_carried::<F>()
+    Bool::of(product_is_formed::<F>().get() && product_is_carried::<F>().get())
+}
+
+/// Whether `mul` admits the declared signature, asked without forcing the
+/// obligation.
+///
+/// The format's three conditions, and the slot index carrying every position
+/// only where the policy does not wrap, in the order `mul` forces them.
+#[must_use]
+#[inline]
+pub const fn is_multipliable_under<S: DeclaredSignature>() -> Bool {
+    let phase = <S::Format as Format>::PHASE;
+    if !phase.denotes().get() || !is_constant_family::<<S::Format as Format>::Quantum>().get() {
+        return Bool::FALSE;
+    }
+    Bool::of(
+        product_is_formed::<S::Format>().get()
+            && (wraps::<S>().get() || product_is_carried::<S::Format>().get()),
+    )
 }
 
 /// The slot of the member that is one, or nothing where no member is.
@@ -290,6 +389,7 @@ pub const fn is_multipliable<F: Format>() -> Bool {
 /// Does not force the multiplication obligation, so it answers for a format
 /// whose product is not admitted.
 #[must_use]
+#[inline]
 pub const fn multiplicative_identity<F: Format>() -> Maybe<Slot> {
     if !F::PHASE.denotes().get() {
         return Maybe::Isnt;
@@ -300,18 +400,22 @@ pub const fn multiplicative_identity<F: Format>() -> Maybe<Slot> {
     if !is_constant_family::<F::Quantum>().get() {
         return Maybe::Isnt;
     }
-    // The step has no constants only where `d^2 r^-e` is past `2^128` at an
-    // exponent below zero. There `r^-e - n / d` is whole only at `d` one, and
-    // then it is past every slot index.
+    // The step has no constants only where `D` or the phase's term leaves the
+    // four limbs, at an exponent below zero. There `r^-e - n / d` is whole only
+    // at `d` one, where `D` is `r^-e` and past every slot index.
     let Maybe::Is(step) = Multipliable::<F>::STEP else {
         return Maybe::Isnt;
     };
     // `d r^max(-e, 0)`, the divisor over `d`. Past the index it is `r^-e` at a
     // `d` of one again, since at an exponent at or above zero it is `d` itself.
-    let lowered = step.divisor / step.denominator.unsigned_abs();
-    if lowered > i128::MAX.unsigned_abs() {
+    let Maybe::Is(lowered) = step
+        .divisor
+        .floor_divided(Wide::of(step.denominator))
+        .quotient
+        .index()
+    else {
         return Maybe::Isnt;
-    }
+    };
     // `r^max(e, 0)`. The slot is whole only where it divides `d`, so one that
     // leaves the limbs, or takes `n` or `d` out of them with it, names no slot.
     let Maybe::Is(raised) = step.scale else {
@@ -320,23 +424,18 @@ pub const fn multiplicative_identity<F: Format>() -> Maybe<Slot> {
     let Maybe::Is(phase_term) = Wide::of(step.numerator).times(raised) else {
         return Maybe::Isnt;
     };
-    let Maybe::Is(numerator) = Wide::of(lowered as i128).plus(phase_term.negated()) else {
+    let Maybe::Is(numerator) = Wide::of(lowered).plus(phase_term.negated()) else {
         return Maybe::Isnt;
     };
     let divisor = match Wide::of(step.denominator).times(raised) {
-        Maybe::Is(wide) => {
-            match wide.unsigned() {
-                Maybe::Is(divisor) if divisor > 0 => divisor,
-                _ => return Maybe::Isnt,
-            }
-        },
-        Maybe::Isnt => return Maybe::Isnt,
+        Maybe::Is(wide) if !wide.is_zero().get() && !wide.is_negative().get() => wide,
+        _ => return Maybe::Isnt,
     };
     let Divided {
         quotient,
         remainder,
     } = numerator.floor_divided(divisor);
-    if remainder != 0 {
+    if !remainder.is_zero().get() {
         return Maybe::Isnt;
     }
     let Maybe::Is(candidate) = quotient.index() else {
@@ -347,8 +446,8 @@ pub const fn multiplicative_identity<F: Format>() -> Maybe<Slot> {
     }
     let min = <F::Slots as Slots>::MIN.index();
     let max = <F::Slots as Slots>::MAX.index();
-    let keeps_min = matches!(placed(step, candidate, min), Placed::At(slot, 0) if slot == min);
-    let keeps_max = matches!(placed(step, candidate, max), Placed::At(slot, 0) if slot == max);
+    let keeps_min = matches!(placed(step, candidate, min), Placed::At(slot, rest) if slot == min && rest.is_zero().get());
+    let keeps_max = matches!(placed(step, candidate, max), Placed::At(slot, rest) if slot == max && rest.is_zero().get());
     if keeps_min && keeps_max {
         Maybe::Is(Slot::at(candidate))
     } else {

@@ -64,6 +64,7 @@ struct WholePhaseWitness;
 impl PerSignature for WholePhaseWitness {
     type Out = ();
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
@@ -96,6 +97,7 @@ struct WidthWalk {
 }
 
 impl PerFormat for WidthWalk {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         for mode in ALL_MODES {
             for policy in SHIPPED_POLICIES {
@@ -127,6 +129,7 @@ struct WidestFractional;
 impl PerSignature for WidestFractional {
     type Out = bool;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> bool {
         let min = <<S::Format as Format>::Slots as Slots>::MIN;
         let max = <<S::Format as Format>::Slots as Slots>::MAX;
