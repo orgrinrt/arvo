@@ -45,6 +45,7 @@ struct Neutral(Slot);
 impl PerSignature for Neutral {
     type Out = u64;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> u64 {
         let mut checked = 0u64;
         for dither in DITHERS {
@@ -95,6 +96,7 @@ struct ExactLaws {
 }
 
 impl PerFormat for ExactLaws {
+    #[inline(never)]
     fn run<F: Format>(&mut self) {
         let min = <F::Slots as Slots>::MIN;
         let max = <F::Slots as Slots>::MAX;

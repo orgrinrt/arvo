@@ -1,0 +1,50 @@
+74dd1c31 chore: lock src changelist 202611132223-c27b
+c216e26c test: keep each sweep's walk out of line
+c1a9b3f2 chore: lock doc changelist 202611132223-c27b
+e5a39521 docs: open round 202611132223-c27b, a sweep keeps each walk out of line
+30acd486 chore: close design round 202611132142-jb7q
+451b3f25 chore: lock src changelist 202611132142-jb7q
+65ae8c57 perf: divide by two limbs a quotient limb at a time
+f1680dfb chore: lock doc changelist 202611132142-jb7q
+1c658883 docs: design the two-limb division a quotient limb at a time
+eb004390 chore: close design round 202611132120-sknb
+837210e7 chore: lock src changelist 202611132120-sknb
+cf9cd9bb feat: land a point on the finest magnitude of a format in range
+b232d101 chore: lock doc changelist 202611132120-sknb
+7e7cfbe8 docs: design the landing of a point on a format's magnitudes
+5e6df5c3 chore: lock and close design round 202611132043-aun1
+d0efc772 perf: mark every function `arvo-format` ships inline, with a lint
+74bb2847 chore: lock doc changelist 202611132043-aun1
+8d86af55 docs: open round 202611132043-aun1 on inlining what the format ships
+0dc89a82 chore: close design round 202611132037-ouou
+fe43cfbf chore: lock src changelist 202611132037-ouou
+0f64581a fix: clear the four clippy warnings `arvo-format` carries
+e7bb0f57 chore: lock doc changelist 202611132037-ouou
+25ec9124 docs: open round 202611132037-ouou on the warnings arvo-format carries
+ea4fbd5a chore: close design round 202611132031-li8r
+6209b647 chore: lock src changelist 202611132031-li8r
+14b13e70 fix: saturate the inverse sweep below the top so width one runs
+db01d46e chore: lock doc changelist 202611132031-li8r
+560cb02d docs: open round 202611132031-li8r on the inverse sweep at width one
+f0eeb2e3 registry: reword the standards gap now that ieee 754 has its suite
+07e4e979 chore: close design round 202611131910
+57779a66 chore: lock src changelist 202611131910
+41c00767 docs: regenerate the format document for the standard targets
+a6ff8aaf chore: lock doc changelist 202611131910
+613b2445 docs: say binary32 is the shipped float point less one member
+dac1d014 feat: declare ieee 754 from arvo's coordinates with parity suites
+fd9ae0ee chore: lock doc changelist 202611131910
+099c45eb docs: design ieee 754 as one composition at the standard's parameters
+030cf411 docs: open the standard targets round with its ties to even sketch
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
+2c8e5343 feat: add the oracle for fractions and division in arvo-format
+9dfd5339 feat: add the numeral value crate for integers at sole occupancy
+989e02f9 fix: spell git sources one way and show the bench harness runs
+7ec50792 feat: teach the oracle negation, subtraction and the product

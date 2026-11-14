@@ -48,6 +48,7 @@ impl Phase {
     /// right, because one over zero and one over one are different positions
     /// and only one of them exists.
     #[must_use]
+    #[inline]
     pub const fn of(num: i64, den: i64) -> Self {
         Self {
             num,
@@ -57,6 +58,7 @@ impl Phase {
 
     /// A phase counted in half steps, which is the biased grid's shape.
     #[must_use]
+    #[inline]
     pub const fn halves(num: i64) -> Self {
         Self {
             num,
@@ -68,6 +70,7 @@ impl Phase {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn numerator(self) -> i64 {
         self.num
     }
@@ -77,6 +80,7 @@ impl Phase {
     /// The second unwrap door. Two, rather than one, because the pair is what the
     /// coordinate is and handing back a single number would mean dividing.
     #[must_use]
+    #[inline]
     pub const fn denominator(self) -> i64 {
         self.den
     }
@@ -87,6 +91,7 @@ impl Phase {
     /// the obligation and the verdict read the same predicate rather than
     /// restating it.
     #[must_use]
+    #[inline]
     pub const fn denotes(self) -> Bool {
         Bool::of(self.den != 0)
     }
@@ -97,6 +102,7 @@ impl Phase {
     /// below. A grid at zero has zero on it at slot zero; a grid one whole step
     /// along has zero on it one slot down, and this answers no about the second.
     #[must_use]
+    #[inline]
     pub const fn is_zero(self) -> Bool {
         Bool::of(self.num == 0)
     }
@@ -118,6 +124,7 @@ impl Phase {
     /// minus one overflows a remainder taken in the declared width, and it is a
     /// pair an implementor can write.
     #[must_use]
+    #[inline]
     pub const fn is_whole_multiple(self) -> Bool {
         if self.den == 0 {
             return Bool::FALSE;

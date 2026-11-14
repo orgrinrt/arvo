@@ -66,6 +66,7 @@ struct EveryMember<F> {
 impl<F: Format> PerSignature for EveryMember<F> {
     type Out = Tally;
 
+    #[inline(never)]
     fn run<S: DeclaredSignature>(&self) -> Tally {
         let min = <<S::Format as Format>::Slots as Slots>::MIN.index();
         let max = <<S::Format as Format>::Slots as Slots>::MAX.index();
@@ -113,6 +114,7 @@ struct Sweep {
 }
 
 impl Sweep {
+    #[inline(never)]
     fn run<F: Format, T: Format>(&mut self) {
         assert!(
             is_convertible::<F, T>().get(),

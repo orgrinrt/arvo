@@ -20,6 +20,7 @@
 //! the signed-zero refusal stated where it is used.
 
 mod ieee754;
+mod ieee754_sweep;
 
 use core::cmp::Ordering;
 
@@ -35,7 +36,8 @@ use arvo_format::standards::ieee754::rounding_direction::{
     RoundTowardZero,
 };
 use arvo_format::standards::ieee754::{Attributed, Binary16, Binary32, Binary64};
-use ieee754::{Direction, Draws, Standard, Value, agrees, land, misses, power, same};
+use ieee754::{Direction, Draws, Standard, Value, agrees, land, power, same};
+use ieee754_sweep::misses;
 
 /// Binary16 as the standard's table gives it.
 const BINARY16: Standard = Standard {

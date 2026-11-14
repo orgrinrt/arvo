@@ -12,7 +12,7 @@
 //! `r#` taken off and marked raw: it matches `core` as `core` does, and it never
 //! matches a keyword, since `r#use` names something rather than opening an item.
 
-use super::without_comments;
+use crate::rust_text::without_comments;
 
 /// What kind of token a piece of stripped source is.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]

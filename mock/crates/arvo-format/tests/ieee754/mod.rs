@@ -58,6 +58,18 @@ pub fn power(radix: u32, e: u32) -> Option<i128> {
     Some(p)
 }
 
+/// `radix^e` in the host's unsigned 128-bit integer, or nothing past it.
+fn unsigned_power(radix: u32, e: u32) -> Option<u128> {
+    if e > 128 {
+        return None;
+    }
+    let mut p: u128 = 1;
+    for _ in 0 .. e {
+        p = p.checked_mul(radix as u128)?;
+    }
+    Some(p)
+}
+
 // --- the landing -----------------------------------------------------------------------
 
 /// What lands a position on one magnitude's grid: whether it leaves the range,
@@ -84,25 +96,60 @@ impl<S: DeclaredSignature> Landing for S {
 }
 
 /// The position of `num / den * radix^k` on the grid of step `radix^s`, or
-/// nothing where the scaled numerator or denominator leaves the index.
+/// nothing where the scaled numerator leaves the index.
+///
+/// A scaled denominator past the index is a value less than one step from zero,
+/// so its floor is 0 or -1. Where the denominator still fits the host's unsigned
+/// 128-bit integer the remainder is exact. Past that the value is under half a
+/// step, since `2 |num|` is below `2^128`, and the remainder is a stand-in in the
+/// same open interval, `(0, 1/2)` or `(1/2, 1)`, which keeps every comparison an
+/// undithered adaptation makes of it: against zero and against a half.
 fn position(r: u32, num: i128, den: i128, k: i32, s: i32) -> Option<Exact> {
     let shift = k - s;
-    let (n, d) = if shift >= 0 {
-        (num.checked_mul(power(r, shift as u32)?)?, den)
-    } else {
-        (num, den.checked_mul(power(r, (-shift) as u32)?)?)
+    if shift >= 0 {
+        let n = num.checked_mul(power(r, shift as u32)?)?;
+        return Some(Exact::at(
+            Slot::at(n.div_euclid(den)),
+            Remainder::of(n.rem_euclid(den) as u128, den as u128),
+        ));
+    }
+    let scaled = unsigned_power(r, (-shift) as u32).and_then(|p| (den as u128).checked_mul(p));
+    if let Some(d) = scaled.filter(|&d| d <= i128::MAX as u128) {
+        let d = d as i128;
+        return Some(Exact::at(
+            Slot::at(num.div_euclid(d)),
+            Remainder::of(num.rem_euclid(d) as u128, d as u128),
+        ));
+    }
+    let (num_part, den_part) = match scaled {
+        Some(d) => {
+            (
+                if num < 0 { d - num.unsigned_abs() } else { num as u128 },
+                d,
+            )
+        },
+        None => {
+            assert!(
+                num != i128::MIN,
+                "the inputs keep the numerator above the index's floor"
+            );
+            let below_half = if num == 0 { 0 } else { 1 };
+            let part = if num < 0 { u128::MAX - 1 } else { below_half };
+            (part, u128::MAX)
+        },
     };
     Some(Exact::at(
-        Slot::at(n.div_euclid(d)),
-        Remainder::of(n.rem_euclid(d) as u128, d as u128),
+        Slot::at(if num < 0 { -1 } else { 0 }),
+        Remainder::of(num_part, den_part),
     ))
 }
 
 /// `num / den * radix^k`, with `den` positive, landed on the format.
 ///
-/// Returns nothing only where the value cannot be positioned at any magnitude in
-/// the slot index's integer, which the parity inputs never reach and the arms
-/// assert.
+/// Returns nothing only where the value cannot be positioned at any magnitude,
+/// its scaled numerator past the index at the coarsest one, which the parity
+/// inputs never reach and the arms assert. A value below the finest step lands
+/// there, however far below it is.
 pub fn land<L: Landing>(num: i128, den: i128, k: i32) -> Option<Landed> {
     let r = arvo_format::format::radix::<L::Format>().base();
     let count = <<L::Format as Format>::Quantum as Quantum>::MAGNITUDES.count();
@@ -196,23 +243,32 @@ fn digits(r: u32, c: i128) -> u32 {
 /// `c` divided by `radix^drop` under a direction, the standard's way: the kept
 /// digits and the dropped part against half of what was dropped.
 fn round_off(dir: Direction, r: u32, c: i128, drop: u32) -> i128 {
-    let Some(unit) = power(r, drop) else {
+    // The kept digits are read back as a signed significand, and `-2^127` has no
+    // positive counterpart, so the rule refuses it rather than wrap.
+    assert!(
+        c != i128::MIN,
+        "the digit rule refuses a significand of -2^127"
+    );
+    // In the unsigned 128-bit integer, so a unit past the index whose half `|c|`
+    // still reaches is read rather than taken for more than twice `|c|`.
+    let Some(unit) = unsigned_power(r, drop) else {
         // Everything is dropped and what is dropped is less than half a unit,
-        // since `|c|` is below `2^127`.
+        // since `2 |c|` is below `2^128` and the unit is past that.
         return match dir {
             Direction::TowardPositive if c > 0 => 1,
             Direction::TowardNegative if c < 0 => -1,
             _ => 0,
         };
     };
-    let kept = c / unit;
-    let rest = c - kept * unit;
+    let magnitude = c.unsigned_abs();
+    let kept = (magnitude / unit) as i128 * c.signum();
+    let rest = magnitude % unit;
     if rest == 0 {
         return kept;
     }
     let toward_zero = kept;
     let away = kept + c.signum();
-    let half = (rest.abs() * 2).cmp(&unit);
+    let half = rest.cmp(&(unit - rest));
     match dir {
         Direction::TowardZero => toward_zero,
         Direction::TowardPositive => {
@@ -296,45 +352,63 @@ pub fn rule(dir: Direction, f: Standard, c: i128, q: i32) -> Option<Value> {
     })
 }
 
-/// Inputs as `c * radix^q`: structured ties and carries, then a sweep from below
-/// the smallest subnormal to past the largest finite member, with a tie drawn
-/// beside every value.
-pub fn inputs(f: Standard, seed: u64) -> Vec<(i128, i32)> {
-    let r = f.radix as i128;
-    let half = r / 2;
+/// The lowest exponent whose unit below the smallest subnormal the unsigned
+/// 128-bit integer holds: the first unit past the slot index at radix two, one
+/// above it at radix ten. Below it the search hands its stand-in.
+pub fn held_below(f: Standard) -> i32 {
+    let past = (1 ..)
+        .find(|&e| unsigned_power(f.radix, e).is_none())
+        .unwrap();
+    f.qmin - past as i32 + 1
+}
+
+/// Inputs below the smallest subnormal, as far as the slot index's integer and
+/// past: the scaled denominator past the index, past the unsigned 128-bit
+/// integer, and the tie at the first unit past the index where it is written.
+///
+/// The standard's answer there is the smallest subnormal or zero by the
+/// direction, so a landing that answers nothing, or that misreads the dropped
+/// part against a half, misses here.
+pub fn underflow(f: Standard, seed: u64) -> Vec<(i128, i32)> {
     let top = power(f.radix, f.p).unwrap();
+    // The first exponent whose power of the radix is past the index.
+    let past = (1 ..).find(|&e| power(f.radix, e).is_none()).unwrap();
+    let below = f.qmin - past as i32;
     let mut v = vec![
-        (top * r + half, 0),
-        (top * r + r + half, 0),
-        (top * r * r - half, 0),
-        (-(top * r + half), 0),
-        (-(top * r + r + half), 0),
-        (half, f.qmin - 1),
-        (r + half, f.qmin - 1),
-        (-(2 * r + half), f.qmin - 1),
-        (top * r - 1, f.qmax),
-        (top - 1, f.qmax),
-        (top * r - half, f.qmax - 1),
+        (1, f.qmin - 300),
+        (-1, f.qmin - 300),
+        (top - 1, f.qmin - 300),
+        (-(top - 1), f.qmin - 300),
+        (i128::MAX, below),
+        (-i128::MAX, below),
+        (i128::MAX, below - 1),
+        (-i128::MAX, below - 1),
+        (1, below),
+        (-1, below - 1),
     ];
-    let mut d = Draws::seeded(seed);
-    for _ in 0 .. 3000 {
+    // Half the first unit past the index, and its neighbours, where the index
+    // holds it: two to the 126th in binary, nothing in decimal.
+    if let Some(half) = power(f.radix, past - 1).and_then(|p| p.checked_mul((f.radix / 2) as i128))
+    {
+        for c in [half - 1, half, half + 1] {
+            v.push((c, below));
+            v.push((-c, below));
+        }
+    }
+    let mut d = Draws::seeded(seed ^ 0x5EED_0000_0000_0001);
+    for _ in 0 .. 500 {
         let c = d.within(-999_999_999_999_999_999, 999_999_999_999_999_999) as i128;
-        let q = d.within((f.qmin - 20) as i64, (f.qmax + 2) as i64) as i32;
-        v.push((c, q));
-        // A tie: a full significand, one more digit, and half the radix.
-        let s = d.within(power(f.radix, f.p - 1).unwrap() as i64, (top - 1) as i64) as i128;
-        let sign = if d.next() & 1 == 0 { 1 } else { -1 };
         v.push((
-            sign * (s * r + half),
-            d.within((f.qmin - 1) as i64, (f.qmax - 1) as i64) as i32,
+            c,
+            d.within(held_below(f) as i64, (f.qmin - 21) as i64) as i32,
         ));
     }
     v
 }
 
-/// How many inputs a landing answers differently from the rule.
-pub fn misses<L: Landing>(dir: Direction, f: Standard, seed: u64) -> usize {
-    inputs(f, seed)
+/// How many of the given inputs a landing answers differently from the rule.
+pub fn misses_over<L: Landing>(dir: Direction, f: Standard, inputs: Vec<(i128, i32)>) -> usize {
+    inputs
         .into_iter()
         .filter(|&(c, q)| !agrees(f.radix, land::<L>(c, 1, q), rule(dir, f, c, q)))
         .count()

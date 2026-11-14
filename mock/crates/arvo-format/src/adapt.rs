@@ -19,6 +19,7 @@
 use crate::format::Format;
 use crate::overflow::{Overflow, Policy};
 use crate::rounding::{Mode, Rounding};
+use crate::width::Bool;
 
 /// A total map from the ambient domain onto a representable set.
 ///
@@ -39,18 +40,20 @@ pub trait Adaptation {
 pub struct Adapt<R: Rounding, O: Overflow>(core::marker::PhantomData<(R, O)>);
 
 impl<R: Rounding, O: Overflow> Adaptation for Adapt<R, O> {
-    type Rounding = R;
     type Overflow = O;
+    type Rounding = R;
 }
 
 /// The rounding mode an adaptation selects.
 #[must_use]
+#[inline]
 pub const fn rounding_of<A: Adaptation>() -> Mode {
     <A::Rounding as Rounding>::MODE
 }
 
 /// The overflow policy an adaptation selects.
 #[must_use]
+#[inline]
 pub const fn overflow_of<A: Adaptation>() -> Policy {
     <A::Overflow as Overflow>::POLICY
 }
@@ -72,8 +75,8 @@ pub trait DeclaredSignature {
 pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
 
 impl<F: Format, A: Adaptation> DeclaredSignature for Signature<F, A> {
-    type Format = F;
     type Adaptation = A;
+    type Format = F;
 }
 
 /// How many operands an operation takes.
@@ -86,14 +89,14 @@ impl<F: Format, A: Adaptation> DeclaredSignature for Signature<F, A> {
 pub struct Arity(u32);
 
 impl Arity {
+    /// Two operands.
+    pub const BINARY: Self = Self(2);
     /// One operand.
     pub const UNARY: Self = Self(1);
 
-    /// Two operands.
-    pub const BINARY: Self = Self(2);
-
     /// An arity from a count of operands.
     #[must_use]
+    #[inline]
     pub const fn of(operands: u32) -> Self {
         Self(operands)
     }
@@ -102,6 +105,7 @@ impl Arity {
     ///
     /// The unwrap door, declared as one.
     #[must_use]
+    #[inline]
     pub const fn count(self) -> u32 {
         self.0
     }
@@ -129,12 +133,25 @@ pub trait Operation {
 /// The rounding mode an operation's signature selects, reached through the
 /// signature rather than around it.
 #[must_use]
+#[inline]
 pub const fn operation_rounding<Op: Operation>() -> Mode {
     rounding_of::<<Op::Signature as DeclaredSignature>::Adaptation>()
 }
 
 /// The overflow policy an operation's signature selects.
 #[must_use]
+#[inline]
 pub const fn operation_overflow<Op: Operation>() -> Policy {
     overflow_of::<<Op::Signature as DeclaredSignature>::Adaptation>()
+}
+
+/// Whether the signature's overflow policy wraps, which the steps that read a
+/// position past the index ask before reducing it onto the range.
+#[must_use]
+#[inline]
+pub(crate) const fn wraps<S: DeclaredSignature>() -> Bool {
+    Bool::of(matches!(
+        <<S::Adaptation as Adaptation>::Overflow as Overflow>::POLICY,
+        Policy::Wrap
+    ))
 }

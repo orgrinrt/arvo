@@ -150,11 +150,13 @@ fn every_condition_flips_at_its_boundary() {
     // A magnitude-indexed quantum, beside the constant one.
     assert!(!is_divisible::<Floating<4, -3, 4>>().get());
     assert!(is_divisible::<UFixed<4, -3>>().get());
-    // The denominator `|b| 2^e` at the range's far end: `(2^64 - 1) 2^64` fits
-    // and `2^63 2^65` does not, where every corner is a small position.
-    assert!(is_divisible::<UFixed<64, 64>>().get());
-    assert!(!is_divisible::<UFixed<64, 65>>().get());
-    assert!(!is_divisible::<Grid<BinaryRationals, Constant<65>, Signed<64>, 0, 1>>().get());
+    // The denominator `|b| 2^e` at the range's far end: `(2^64 - 1) 2^192` is
+    // formed in the four limbs and `2^63 2^193` is not, where every corner is a
+    // small position.
+    assert!(is_divisible::<UFixed<64, 192>>().get());
+    assert!(!is_divisible::<UFixed<64, 193>>().get());
+    assert!(is_divisible::<Grid<BinaryRationals, Constant<192>, Signed<64>, 0, 1>>().get());
+    assert!(!is_divisible::<Grid<BinaryRationals, Constant<193>, Signed<64>, 0, 1>>().get());
     // A phase of a third over the unsigned 64-bit range: `3 (1 + 3 b)` near
     // `9 * 2^64` fits.
     assert!(is_divisible::<Grid<BinaryRationals, Constant<0>, Unsigned<64>, 1, 3>>().get());
@@ -186,7 +188,7 @@ fn the_verdict_is_false_exactly_at_the_condition_that_fails() {
         first_failing(conditions::<Floating<4, -3, 4>>()),
         Maybe::Is(1)
     );
-    assert_eq!(first_failing(conditions::<UFixed<64, 65>>()), Maybe::Is(2));
+    assert_eq!(first_failing(conditions::<UFixed<64, 193>>()), Maybe::Is(2));
     assert_eq!(
         first_failing(conditions::<
             Grid<BinaryRationals, Constant<-64>, Signed<64>, 0, 1>,
