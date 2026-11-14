@@ -27,3 +27,9 @@ the slots 1 to 65535, a range past the byte's.
 What this does not show: the adapted door, which is `adapt` and asks nothing new of the language, and
 anything about cost. Whether the pair obligation stays cheap to compile across many format pairs was not
 measured.
+
+Superseded in one respect, 2026-11-14: the sketch's door reads the radix and the exponent apart, so it
+refuses radix ten at exponent zero beside the bytes, where every quantum is one and the slots name the same
+values. The shipped door compares one quantum, `U_F V_G = U_G V_F`, and admits that pair (round
+`202611140603`). What the sketch shows, that the door can be built as a const obligation over two formats,
+does not rest on its radix rule.
