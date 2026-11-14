@@ -37,8 +37,8 @@ difference against the format's `sub` and the product against the tests' own ari
 below, and the negation on every member against `neg`: through the value type at
 widths 1 to 8, in every rung at widths 1 to 8 and in the three wide rungs at 9 to 12, on the edge
 lattice and the seeded pairs above that. The rung product is asked only at exponent zero, which is the
-only place it is called. The unsigned 64-bit integer is left out of the product's pairs, since its
-product is refused, and is the compile-fail case below.
+only place it is called. The unsigned 64-bit integer is left out of the product's pairs, since the
+value's product is refused there, and is the compile-fail case below.
 
 The value computes the sum, the difference, the negation and the product at exponent zero in its
 carrier, and the format computes them on wide slots, so for those the format's function is a second
