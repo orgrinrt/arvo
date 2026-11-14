@@ -11,13 +11,17 @@
 //! rounded by the target's mode and completed by its policy, in
 //! `common::oracle`.
 //!
-//! Every member of each source is converted onto each target under both
-//! policies and the five modes of the target: between integer widths in both
-//! directions, across the two slot families, from an integer onto a
+//! Every member of each narrow source is converted onto each target under
+//! both policies and the five modes of the target: between integer widths in
+//! both directions, across the two slot families, from an integer onto a
 //! fixed-point grid and back, and between two fixed-point grids of different
-//! exponents. Sources of 32 and 64 bits are taken on the edge lattice and
-//! seeded members. A few conversions are named beside the sweep with their slots
-//! written out, so that the suite does not rest on the oracle alone.
+//! exponents. Thirteen pairs of 32 and 64 bits are taken on the edge lattice
+//! and seeded members, several of them changing the width and the exponent in
+//! one conversion, which the sweeps named `the_conversion_at_every_*` and
+//! `the_conversion_between_radixes` do not: those cross the widths, the
+//! exponents, the source signatures and the radixes two coordinates at a
+//! time. A few conversions are named with their slots written out, so that the
+//! suite does not rest on the oracle alone.
 
 mod common;
 
@@ -358,4 +362,27 @@ fn the_named_conversions_sit_where_arithmetic_puts_them() {
 fn the_conversion_is_a_constant_where_its_operand_is() {
     const THREE: Num<Sig<Fixed<6, -3>, HalfEven, Saturate>, Quiet> = I8::constant::<3>().convert();
     assert_eq!(THREE.slot().index(), 24);
+}
+
+/// The exponent sweeps end at the deepest exponent a conversion from exponent
+/// one admits at a width: the format admits it there and refuses one deeper,
+/// from the unsigned range, the wider of the two.
+#[test]
+fn the_deepest_exponent_of_the_sweeps_is_the_last_the_conversion_admits() {
+    use arvo_format::is_convertible;
+    use common::exponents::deep;
+    macro_rules! edge {
+        ($source:ident, $target:ident, $radix:literal; $($w:literal),+) => {
+            $({
+                const DEEP: i32 = deep($w, false, $radix);
+                const PAST: i32 = DEEP - 1;
+                assert!(is_convertible::<$source!($w, 1), $target!($w, DEEP)>().get());
+                assert!(!is_convertible::<$source!($w, 1), $target!($w, PAST)>().get());
+            })+
+        };
+    }
+    edge!(binary_unsigned, binary_signed, 2; 1, 16, 17, 33, 64);
+    edge!(decimal_unsigned, decimal_signed, 10; 1, 16, 17, 33, 64);
+    edge!(ternary_unsigned, ternary_unsigned, 3; 1, 16, 17, 33, 64);
+    assert_eq!(deep(64, false, 2), -62);
 }
