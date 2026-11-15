@@ -67,3 +67,13 @@ Worked here: the arvo half of `arvo_and_hilavitkutin_benches_still_use_the_legac
 ## Left undone
 
 The x86_64 vector kernels are owed, under `arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64`. The satfold spreads on the M1 need an aarch64 host to check the arms' output and disassembly, under `arvo_satfold_field_spreads_on_the_m1_are_55x_to_140x`. The lint half of `a_fixme_in_a_toml_file_names_its_ticket_and_the_four_bench_m`, a check over TOML comments, is not bench work and stays with that ticket. The hilavitkutin halves of the legacy-sections and timer tickets are hilavitkutin's. The legacy sections path in mockspace can go once hilavitkutin is ported too, under `arvo_and_hilavitkutin_benches_still_use_the_legacy_sections`.
+
+## Review fixes
+
+A `pr-reviewer-senior` review returned merge after fixes. Three of its findings were taken here; the fourth, the workspace's `tools/bench-run/suites.tsv`, was handled on a workspace branch, and the fifth, that no design round covers this, needs none because benches sit outside the per-crate round scope.
+
+The finding that the aarch64-only arms time scalar code on x86_64 under unchanged names was declined by op, and the stand-ins and their names stay as they are. His words: "If the code has no simd path for a specific target then that's entirely valid and critical to have result. As it stands, the vectorising IS worthless on that target. The bench works as intended and results are exactly what we want. Once the bench fixes that and adds the simd path, then the results reflect that win and again, it's all as intended". No ticket for a per-arm target predicate was filed.
+
+`the_offset_column_is_actually_offset` in `support/satfold-shared` allocated a `Buf` only to add its address to `key_off(7010)`. The allocation's alignment is what `Layout::new::<Buf>()` promises, so the test now asserts `key_off(7010) % 64 == 1` directly, and a const assertion beside `Buf` holds `align_of::<Buf>() == 64` at compile time.
+
+Two live surfaces still named the removed `mock/benches/variants/` directory: the not-shipped fixture in `mock/tools/the-positions/src/tests/spec.rs`, now `mock/benches/x/arms/a/src/lib.rs`, and the note of one `question` row in `mock/registry/question.toml`, which now points at `mock/benches/satfold/arms/` and `mock/benches/warm-clamp/arms/`. Three occurrences in two files were fixed, and a grep over the tracked tree outside the dated record finds none left. The 456 occurrences under `mock/design_rounds/` (34 in 17 files) and `mock/research/` (422 in 153 files) are closed rounds and dated research describing the tree as it stood, and stay as written.
