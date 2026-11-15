@@ -328,17 +328,53 @@ Generated from the runs under `results/`, one directory per run at `<bench>/<cel
 
 ## bitpack-sequential-sum/bitpack-sequential-sum_n16384
 
+### linux-x86_64-c4-container-intel, 1 run(s)
+
+Latest: `20261115T134932Z-ab7fcd71`
+
+| variant | median | vs best |
+|---|---|---|
+| bitpack-aligned-seq | 10.57 us | 3.39x |
+| bitpack-native-seq | 3.11 us | 1.00x |
+| bitpack-zeropad-seq | 10.57 us | 3.39x |
+
+- [20261115T134932Z-ab7fcd71](bitpack-sequential-sum/bitpack-sequential-sum_n16384/linux-x86_64-c4-container-intel/20261115T134932Z-ab7fcd71/report.md)
+
 ### macos-aarch64-c8-bare-apple, 1 run(s)
 
 - [20260804T114415Z-25f736b-dirty](bitpack-sequential-sum/bitpack-sequential-sum_n16384/macos-aarch64-c8-bare-apple/20260804T114415Z-25f736b-dirty/report.md)
 
 ## bitpack-sequential-sum/bitpack-sequential-sum_n256
 
+### linux-x86_64-c4-container-intel, 1 run(s)
+
+Latest: `20261115T134932Z-ab7fcd71`
+
+| variant | median | vs best |
+|---|---|---|
+| bitpack-aligned-seq | 172 ns | 2.32x |
+| bitpack-native-seq | 74 ns | 1.00x |
+| bitpack-zeropad-seq | 203 ns | 2.74x |
+
+- [20261115T134932Z-ab7fcd71](bitpack-sequential-sum/bitpack-sequential-sum_n256/linux-x86_64-c4-container-intel/20261115T134932Z-ab7fcd71/report.md)
+
 ### macos-aarch64-c8-bare-apple, 1 run(s)
 
 - [20260804T114412Z-25f736b-dirty](bitpack-sequential-sum/bitpack-sequential-sum_n256/macos-aarch64-c8-bare-apple/20260804T114412Z-25f736b-dirty/report.md)
 
 ## bitpack-sequential-sum/bitpack-sequential-sum_n4096
+
+### linux-x86_64-c4-container-intel, 1 run(s)
+
+Latest: `20261115T134932Z-ab7fcd71`
+
+| variant | median | vs best |
+|---|---|---|
+| bitpack-aligned-seq | 2.50 us | 2.94x |
+| bitpack-native-seq | 851 ns | 1.00x |
+| bitpack-zeropad-seq | 2.87 us | 3.37x |
+
+- [20261115T134932Z-ab7fcd71](bitpack-sequential-sum/bitpack-sequential-sum_n4096/linux-x86_64-c4-container-intel/20261115T134932Z-ab7fcd71/report.md)
 
 ### macos-aarch64-c8-bare-apple, 1 run(s)
 
