@@ -1672,7 +1672,7 @@ options = [
 decider = "measurement"
 topic = "the_strategy_object"
 unblocks = "Whether the accumulator clause of the strategy-object statement carries a schedule dimension."
-note = "Decided by whether any consumer kernel has a fixed declarable accumulation order. The source notes `satfold-*` and `warm-clamp-*` under `mock/benches/variants/` already carry accumulator arms, so the answer is a computation over committed artifacts rather than a new measurement."
+note = "Decided by whether any consumer kernel has a fixed declarable accumulation order. The source notes `satfold-*` and `warm-clamp-*` under `mock/benches/satfold/arms/` and `mock/benches/warm-clamp/arms/` already carry accumulator arms, so the answer is a computation over committed artifacts rather than a new measurement."
 provenance = ["panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-7-contested-each-with-what-would-decide-it"]
 keywords = ["accumulator", "schedule", "conservative", "strategy object", "kernel", "accumulation order"]
 
