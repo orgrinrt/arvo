@@ -1,0 +1,49 @@
+every value arm agrees with its hand arm on the whole input
+-- the doors, 13 bits unsigned, from and to u16
+ingest saturate  from_index                      2.203 ns/elem median     1.676 p5
+ingest saturate  adapted (the wide step)        11.863 ns/elem median    11.206 p5
+ingest saturate  hand                            0.051 ns/elem median     0.051 p5
+ingest wrap      from_index                      2.194 ns/elem median     1.673 p5
+ingest wrap      adapted (the wide step)        43.600 ns/elem median    40.492 p5
+ingest wrap      hand                            0.038 ns/elem median     0.038 p5
+egress           index::<u16>                    0.024 ns/elem median     0.023 p5
+egress           slot().index()                  0.024 ns/elem median     0.023 p5
+egress           hand copy                       0.024 ns/elem median     0.023 p5
+-- ring operations at an integer quantum, elementwise
+add u13 saturate value                           0.067 ns/elem median     0.067 p5
+add u13 saturate hand                            0.839 ns/elem median     0.806 p5
+sub u13 saturate value                           0.052 ns/elem median     0.052 p5
+sub u13 saturate hand                            0.052 ns/elem median     0.052 p5
+mul u13 saturate value                           0.950 ns/elem median     0.916 p5
+mul u13 saturate hand                            0.236 ns/elem median     0.233 p5
+mul i32 saturate value                           0.616 ns/elem median     0.573 p5
+mul i32 saturate hand                            1.358 ns/elem median     1.017 p5
+mul i32 wrap     value                           0.292 ns/elem median     0.253 p5
+mul i32 wrap     hand                            0.284 ns/elem median     0.246 p5
+-- the default check, `Abort`; debug assertions are ON
+add u13 saturate Abort value                     1.292 ns/elem median     0.924 p5
+add u13 checked hand                             0.890 ns/elem median     0.674 p5
+mul i32 wrap Abort value                       217.707 ns/elem median   201.062 p5
+mul i32 checked hand                             1.051 ns/elem median     0.845 p5
+product Q16.16 half_even saturate Abort value   737.674 ns/elem median   658.115 p5
+-- folds
+sum u13 wrap     value                           0.386 ns/elem median     0.376 p5
+sum u13 wrap     hand, mask each step            0.385 ns/elem median     0.375 p5
+sum u13 wrap     hand, mask once                 0.065 ns/elem median     0.062 p5
+sum u13 saturate value                           0.567 ns/elem median     0.513 p5
+sum u13 saturate hand                            2.034 ns/elem median     1.364 p5
+max i32          value                           0.239 ns/elem median     0.202 p5
+max i32          hand                            0.239 ns/elem median     0.202 p5
+-- Q16.16 in 32 bits: product, quotient by three, conversion to Q8.8
+product half_even saturate value               470.071 ns/elem median   428.917 p5
+product half_even saturate hand                  2.628 ns/elem median     1.903 p5
+product floor wrap        value                332.352 ns/elem median   305.989 p5
+product floor wrap        hand                   0.839 ns/elem median     0.835 p5
+product f32                                      0.099 ns/elem median     0.095 p5
+quotient by 3 half_even   value                292.388 ns/elem median   273.495 p5
+quotient by 3 half_even   hand                   2.435 ns/elem median     1.885 p5
+convert to Q8.8 half_even value                284.261 ns/elem median   260.243 p5
+convert to Q8.8 half_even hand                   3.145 ns/elem median     2.497 p5
+-- a dependent chain: one Q16.16 value decayed 30000 times, per step
+decay half_even saturate value                 327.007 ns/elem median   311.281 p5
+decay half_even saturate hand                    5.401 ns/elem median     5.070 p5
