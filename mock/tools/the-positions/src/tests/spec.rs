@@ -82,7 +82,7 @@ fn a_crates_own_src_ships_and_everything_beside_it_does_not() {
     for path in [
         "mock/crates/kolli/tests/examples.rs",
         "mock/crates/kolli/examples/ask.rs",
-        "mock/benches/variants/a/src/lib.rs",
+        "mock/benches/x/arms/a/src/lib.rs",
         "mock/research/sketches/x/src/lib.rs",
         "mock/research/202608072330_the-numeral-canon-panel/238_probes/x.rs",
         "mock/tools/the-positions/src/lib.rs",
@@ -103,7 +103,7 @@ fn the_control_the_shipped_rule_actually_discriminates() {
     // differs in one component and must differ in the answer.
     assert!(is_shipped("mock/crates/a/src/lib.rs"));
     assert!(!is_shipped("mock/crates/a/tests/lib.rs"));
-    assert!(!is_shipped("mock/benches/variants/a/src/lib.rs"));
+    assert!(!is_shipped("mock/benches/x/arms/a/src/lib.rs"));
     assert!(!is_shipped("mock/research/sketches/a/src/lib.rs"));
 }
 

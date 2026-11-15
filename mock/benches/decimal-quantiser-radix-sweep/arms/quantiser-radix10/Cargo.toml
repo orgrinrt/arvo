@@ -1,0 +1,15 @@
+[package]
+name = "bench-quantiser-radix10"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "quantiser_radix10"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-quantiser-radix-shared = { path = "../../../support/quantiser-radix-shared" }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev" }

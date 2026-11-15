@@ -1,0 +1,155 @@
+title = "Clamping fold and chain: the shipped doubled container against minimum storage"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+
+[sweep.arity-w8]
+title = "Clamping fold at 8 bits, arity 2 / 4 / 8 / 16: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    80010,
+    80020,
+    80030,
+    80040,
+]
+
+[sweep.arity-w13]
+title = "Clamping fold at 13 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    130010,
+    130020,
+    130030,
+    130040,
+    130060,
+    130080,
+]
+
+[sweep.arity-w16]
+title = "Clamping fold at 16 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    160010,
+    160020,
+    160030,
+    160040,
+    160060,
+    160080,
+]
+
+[sweep.arity-w32]
+title = "Clamping fold at 32 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    320010,
+    320020,
+    320030,
+    320040,
+    320060,
+    320080,
+]
+
+[sweep.arity-w60]
+title = "Clamping fold at 60 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    600010,
+    600020,
+    600030,
+    600040,
+    600060,
+    600080,
+]
+
+[sweep.arity-w64]
+title = "Clamping fold at 64 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    640010,
+    640020,
+    640030,
+    640040,
+    640060,
+    640080,
+]
+
+[sweep.chain-l1]
+title = "Elementwise clamping chain of four steps, width swept: what the doubled container costs when no fold accumulator is involved"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    80001,
+    130001,
+    160001,
+    320001,
+    600001,
+    640001,
+]
+
+[sweep.arity-l2]
+title = "Clamping fold at arity 16, 1048576 elements: the same fork with both containers crossing this host's L2"
+arms = [
+    "warm-clamp-head",
+    "warm-clamp-minimum",
+    "warm-clamp-min-lanes",
+    "warm-clamp-acc64",
+    "warm-clamp-accfit",
+    "warm-clamp-accfit-dyn",
+]
+points = [
+    81040,
+    131040,
+    161040,
+    321040,
+    601040,
+    641040,
+]

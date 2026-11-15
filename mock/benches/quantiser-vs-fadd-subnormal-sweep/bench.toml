@@ -1,0 +1,17 @@
+title = "Round-first software quantiser add vs native hardware fadd, subnormal fraction swept"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+arms = [
+    "quantiser-fadd-software",
+    "quantiser-fadd-hardware",
+]
+points = [
+    0,
+    10,
+    25,
+    50,
+    75,
+    100,
+]

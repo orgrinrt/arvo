@@ -1,0 +1,53 @@
+title = "Packed 13-bit write against a dense u16 write under thread contention"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+# Variants spawn their own threads inside the timed run block, so the worker's
+# P-core self-pin is skipped (a spawned thread never inherits it and pinning
+# only the coordinator would skew the workload). The variant crate pins every
+# participating thread itself instead, coordinator included, so the measurement
+# is of the memory system rather than of the scheduler.
+threaded = true
+
+[sweep.safe]
+title = "Packed 13-bit write against a dense u16 write, column split 1, 2 and 4 ways, every internal boundary period-aligned"
+master_seed = 0x1234_5678_9ABC_DEF1
+threaded = true
+arms = [
+    "bitpack-write-dense",
+    "bitpack-write-aligned",
+    "bitpack-write-windowed",
+]
+points = [
+    655361,  # n = 65,536 elements, 1 thread(s)
+    655362,  # n = 65,536 elements, 2 thread(s)
+    655364,  # n = 65,536 elements, 4 thread(s)
+    20971521,  # n = 2,097,152 elements, 1 thread(s)
+    20971522,  # n = 2,097,152 elements, 2 thread(s)
+    20971524,  # n = 2,097,152 elements, 4 thread(s)
+]
+
+[sweep.race]
+# bitpack-write-unsound is dropped at the threaded rows: it disagrees with the ground truth
+# on 2/100 validation seeds at the n=655342 row (its log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+title = "Packed 13-bit write against a dense u16 write, column split 1, 2 and 4 ways, every internal boundary deliberately misaligned"
+master_seed = 0x1234_5678_9ABC_DEF2
+threaded = true
+arms = [
+    "bitpack-write-dense",
+    "bitpack-write-unsound",
+    "bitpack-write-guarded",
+]
+points = [
+    655341,  # n = 65,534 elements, 1 thread(s)
+    { n = 655342, variants = ["bitpack-write-dense", "bitpack-write-guarded"] },  # n = 65,534 elements, 2 thread(s)
+    { n = 655344, variants = ["bitpack-write-dense", "bitpack-write-guarded"] },  # n = 65,534 elements, 4 thread(s)
+    20971501,  # n = 2,097,150 elements, 1 thread(s)
+    { n = 20971502, variants = ["bitpack-write-dense", "bitpack-write-guarded"] },  # n = 2,097,150 elements, 2 thread(s)
+    { n = 20971504, variants = ["bitpack-write-dense", "bitpack-write-guarded"] },  # n = 2,097,150 elements, 4 thread(s)
+]

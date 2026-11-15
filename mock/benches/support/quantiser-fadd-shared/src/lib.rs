@@ -99,9 +99,8 @@ fn one_operand(rng: &mut SplitMix64, subnormal: bool) -> f32 {
 
 /// `AddSweep<PCT>`: `Routine` whose input is `N` operand pairs, `PCT` percent of which
 /// (by pair, both operands drawn subnormal together) are subnormal. `PCT` is a
-/// compile-time dispatch parameter (matches `sizes` in `bench.toml`) rather than a
-/// runtime knob, per the harness's own per-N monomorphisation shape (`Fiedler<N>`,
-/// `Rcm<N>` in the sibling variant crates use the same pattern for their own size axis).
+/// compile-time dispatch parameter, matching the `points` of its bench's `bench.toml`, rather
+/// than a runtime knob, per the harness's own per-point monomorphisation shape.
 pub struct AddSweep<const PCT: usize>;
 
 impl<const PCT: usize> Routine for AddSweep<PCT> {

@@ -19,7 +19,7 @@
 //! Bench infrastructure, not shipping arvo source: no `#![no_std]`, `std` used
 //! freely.
 
-use bench_bitpack_carrier_shared::{LOGICAL_BITS, MASK13, Sum, sum_d16};
+use bench_bitpack_carrier_shared::{LOGICAL_BITS, MASK13, Plan13, Sum, sum_d16};
 use bench_bitpack_plan_shared::{pack, sum_naive};
 use mockspace_bench_core::Routine;
 
@@ -82,7 +82,6 @@ pub unsafe fn kern_d16(base: *const u8, lo: usize, hi: usize) -> u64 {
 
 /// # Safety
 /// As [`kern_d16`].
-#[cfg(target_arch = "aarch64")]
 pub unsafe fn kern_d16_padal(base: *const u8, lo: usize, hi: usize) -> u64 {
     let col = unsafe { &*(base as *const Layout) };
     unsafe { bench_bitpack_contend_shared::sum_d16_padal(&col.d16[lo .. hi], hi - lo) }
@@ -90,7 +89,6 @@ pub unsafe fn kern_d16_padal(base: *const u8, lo: usize, hi: usize) -> u64 {
 
 /// # Safety
 /// As [`kern_d16`], and `lo` is a multiple of the packed period.
-#[cfg(target_arch = "aarch64")]
 pub unsafe fn kern_pipe4(base: *const u8, lo: usize, hi: usize) -> u64 {
     let col = unsafe { &*(base as *const Layout) };
     let byte_lo = (lo * LOGICAL_BITS) / 8;

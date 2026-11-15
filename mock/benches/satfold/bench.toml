@@ -1,0 +1,137 @@
+title = "Saturating fold reassociation: which arm folds a u8 column fastest, and what the licence is worth"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+
+[sweep.length-l1]
+title = "Saturating fold reassociation, reduction length swept, 32 KiB column: the fold as written against the idiomatic iterator form, against the licensed arm whose bounds are unprovable, against the licensed arm with the bounds proof, against the 64-element unroll with a tree combine, against the bounds proof with no law, against hand-written NEON, against the licensed arm with the length known at compile time"
+arms = [
+    "satfold-seq",
+    "satfold-iterfold",
+    "satfold-lanes4-idx",
+    "satfold-lanes16",
+    "satfold-lanes64",
+    "satfold-nolaw",
+    "satfold-neon",
+    "satfold-neon8",
+    "satfold-lanes16-constl",
+]
+points = [
+    1000,  # L = 8, column 32 KiB, L1-resident, aligned, saturating
+    2000,  # L = 15, column 32 KiB, L1-resident, aligned, saturating
+    3000,  # L = 16, column 32 KiB, L1-resident, aligned, saturating
+    4000,  # L = 17, column 32 KiB, L1-resident, aligned, saturating
+    5000,  # L = 32, column 32 KiB, L1-resident, aligned, saturating
+    6000,  # L = 63, column 32 KiB, L1-resident, aligned, saturating
+    7000,  # L = 64, column 32 KiB, L1-resident, aligned, saturating
+    8000,  # L = 65, column 32 KiB, L1-resident, aligned, saturating
+    9000,  # L = 128, column 32 KiB, L1-resident, aligned, saturating
+    10000,  # L = 256, column 32 KiB, L1-resident, aligned, saturating
+    11000,  # L = 1024, column 32 KiB, L1-resident, aligned, saturating
+    12000,  # L = 4096, column 32 KiB, L1-resident, aligned, saturating
+]
+
+[sweep.length-l1-wrap]
+title = "The identical arms over wrapping addition, which the backend may reassociate with no help from any typestate: the ceiling every saturating arm is measured against"
+arms = [
+    "satfold-seq",
+    "satfold-iterfold",
+    "satfold-lanes4-idx",
+    "satfold-lanes16",
+    "satfold-lanes64",
+    "satfold-nolaw",
+    "satfold-neon",
+    "satfold-neon8",
+    "satfold-lanes16-constl",
+]
+points = [
+    1001,  # L = 8, column 32 KiB, L1-resident, aligned, wrapping
+    3001,  # L = 16, column 32 KiB, L1-resident, aligned, wrapping
+    7001,  # L = 64, column 32 KiB, L1-resident, aligned, wrapping
+    10001,  # L = 256, column 32 KiB, L1-resident, aligned, wrapping
+    12001,  # L = 4096, column 32 KiB, L1-resident, aligned, wrapping
+]
+
+[sweep.align-l1]
+title = "The same arms with the column start offset by one byte from a 64-byte boundary: what the licensed vector arms cost when the load stream is not aligned"
+arms = [
+    "satfold-seq",
+    "satfold-iterfold",
+    "satfold-lanes4-idx",
+    "satfold-lanes16",
+    "satfold-lanes64",
+    "satfold-nolaw",
+    "satfold-neon",
+    "satfold-lanes16-constl",
+]
+points = [
+    3010,  # L = 16, column 32 KiB, L1-resident, offset by one byte, saturating
+    7010,  # L = 64, column 32 KiB, L1-resident, offset by one byte, saturating
+    10010,  # L = 256, column 32 KiB, L1-resident, offset by one byte, saturating
+    12010,  # L = 4096, column 32 KiB, L1-resident, offset by one byte, saturating
+]
+
+[sweep.length-dram]
+title = "The same arms over a 16 MiB column, past every cache level on this host: what the reassociation is worth once the load stream is the binding constraint"
+arms = [
+    "satfold-seq",
+    "satfold-iterfold",
+    "satfold-lanes4-idx",
+    "satfold-lanes16",
+    "satfold-lanes64",
+    "satfold-nolaw",
+    "satfold-neon",
+    "satfold-lanes16-constl",
+]
+points = [
+    3100,  # L = 16, column 16 MiB, past L2, aligned, saturating
+    7100,  # L = 64, column 16 MiB, past L2, aligned, saturating
+]
+
+[sweep.length-dram-long]
+title = "The same arms at the longest reduction length over a 16 MiB column: the row where the hand-written arm reaches the load-bandwidth ceiling on the small column, so it is the row where a working set past every cache level can cap it"
+arms = [
+    "satfold-seq",
+    "satfold-iterfold",
+    "satfold-lanes4-idx",
+    "satfold-lanes16",
+    "satfold-lanes64",
+    "satfold-nolaw",
+    "satfold-neon",
+    "satfold-lanes16-constl",
+]
+points = [
+    12100,  # L = 4096, column 16 MiB, past L2, aligned, saturating
+]
+
+[sweep.length-dram-wrap]
+title = "The wrapping ceiling over the same 16 MiB column"
+arms = [
+    "satfold-seq",
+    "satfold-iterfold",
+    "satfold-lanes4-idx",
+    "satfold-lanes16",
+    "satfold-lanes64",
+    "satfold-nolaw",
+    "satfold-neon",
+    "satfold-lanes16-constl",
+]
+points = [
+    12101,  # L = 4096, column 16 MiB, past L2, aligned, wrapping
+]
+
+[sweep.const-gate]
+title = "Does a const gate erase in time: the licensed arm reached directly, the same arm reached through a const verdict computed by an exhaustive sweep in a const fn, and the same gate over a law that is false so it selects the fallback"
+arms = [
+    "satfold-lanes16",
+    "satfold-lanes16-3",
+    "satfold-gate-true",
+    "satfold-gate-false",
+    "satfold-seq",
+]
+points = [
+    7000,  # L = 64, column 32 KiB L1-resident, aligned, saturating
+    10000,  # L = 256, column 32 KiB L1-resident, aligned, saturating
+    12000,  # L = 4096, column 32 KiB L1-resident, aligned, saturating
+]
