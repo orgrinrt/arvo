@@ -5,7 +5,7 @@ edition = "2024"
 publish = false
 
 [dependencies]
-bench-warm-container-shared = { path = "../../../../benches/variants/warm-container-shared" }
+bench-warm-container-shared = { path = "../../../../benches/support/warm-container-shared" }
 mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
 libc = "0.2"
 
