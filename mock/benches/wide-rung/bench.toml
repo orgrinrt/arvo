@@ -1,0 +1,116 @@
+# The wide rung (panel file 22). Five arms per row, all computing the identical
+# value. `ragged` is the byte-exact payload the ratified rule assigns to Cold
+# and Precise; `ragged-overread` is the same payload read with whole-limb loads
+# that reach into the neighbour; `wordround` is the whole-64-bit-limb payload
+# the rule assigns to Hot and Warm; `wordround-alias` is the same stride from a
+# different expression, kept as a noise-floor control; `align16` is the
+# vector-aligned baseline. The size field is a key: W*1000 + NC*100 + D,
+# decoded by `bench-wide-rung-shared`'s `key_w` / `key_nc` / `key_d`. NC 0 is
+# 2048 elements, NC 1 is 458752. Every swept width is above the 128-bit native
+# rung, which no other bench in this directory reaches.
+title = "Wide rung payload shapes above the 128-bit native rung"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+
+[sweep.width-l1]
+title = "Wide rung, payload-shape sweep, cache-resident (2048 elements, 3 ops/element)"
+arms = [
+    "wide-rung-ragged",
+    "wide-rung-ragged-overread",
+    "wide-rung-wordround",
+    "wide-rung-wordround-alias",
+    "wide-rung-align16",
+]
+points = [
+    129003,
+    160003,
+    192003,
+    200003,
+    232003,
+    256003,
+]
+
+[sweep.width-l2]
+title = "Wide rung, payload-shape sweep, 458752 elements (3 ops/element, past L2 for the wide strides)"
+arms = [
+    "wide-rung-ragged",
+    "wide-rung-ragged-overread",
+    "wide-rung-wordround",
+    "wide-rung-wordround-alias",
+    "wide-rung-align16",
+]
+points = [
+    129103,
+    160103,
+    192103,
+    200103,
+    232103,
+    256103,
+]
+
+[sweep.density-w200]
+title = "Wide rung at the ratified numeral (W=200), operation-count sweep, cache-resident"
+arms = [
+    "wide-rung-ragged",
+    "wide-rung-ragged-overread",
+    "wide-rung-wordround",
+    "wide-rung-wordround-alias",
+    "wide-rung-align16",
+]
+points = [
+    200001,
+    200002,
+    200004,
+    200008,
+]
+
+# The bare column walk past L2 (panel file 22, section 5). One wide operation
+# per element, which is the highest byte-to-work ratio this transform reaches.
+# The D=3 sweep above runs at 8 to 12 GB/s against this host's roughly 60, so
+# it is issue-bound on the limb arithmetic and a footprint difference cannot
+# show as throughput there. This section is the same six widths with the
+# arithmetic removed, which is the only shape in which the ragged payload's
+# fewer bytes can pay.
+[sweep.walk-l2]
+title = "Wide rung, bare column walk, 458752 elements (1 wide op/element, past L2)"
+arms = [
+    "wide-rung-ragged",
+    "wide-rung-ragged-overread",
+    "wide-rung-wordround",
+    "wide-rung-wordround-alias",
+    "wide-rung-align16",
+]
+points = [
+    129100,
+    160100,
+    192100,
+    200100,
+    232100,
+    256100,
+]
+
+# The bare column walk, cache-resident (panel file 22, section 6). Same six
+# widths and same one-operation transform as wide-rung-walk-l2, at 2048
+# elements so every arm fits L1. It is the discriminator: the l2 walk shows a
+# reproducible width-dependent baseline that instruction count, run order and
+# loaded-byte contiguity all fail to explain, and if that pattern survives in
+# cache it is not a memory-system effect at all.
+[sweep.walk-l1]
+title = "Wide rung, bare column walk, 2048 elements (1 wide op/element, cache-resident)"
+arms = [
+    "wide-rung-ragged",
+    "wide-rung-ragged-overread",
+    "wide-rung-wordround",
+    "wide-rung-wordround-alias",
+    "wide-rung-align16",
+]
+points = [
+    129000,
+    160000,
+    192000,
+    200000,
+    232000,
+    256000,
+]

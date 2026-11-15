@@ -50,7 +50,6 @@ pub unsafe fn kern_packed(base: *const u8, lo: usize, hi: usize) -> u64 {
 /// # Safety
 /// See [`SliceKernel`]. `lo` must be a multiple of the packed period so the
 /// slice starts on a byte boundary.
-#[cfg(target_arch = "aarch64")]
 pub unsafe fn kern_packed_simd(base: *const u8, lo: usize, hi: usize) -> u64 {
     let col = unsafe { &*(base as *const Layout) };
     let byte_lo = (lo * LOGICAL_BITS) / 8;
@@ -130,6 +129,19 @@ pub unsafe fn sum_padal_pipe2<K: bench_bitpack_plan_shared::Packing>(buf: &[u8],
     total
 }
 
+/// Off aarch64 there is no NEON kernel, so this runs the scalar code the arm is
+/// measured against and the arm reads as a second noise floor on that host, the
+/// same stand-in `bench-satfold-shared`'s `Neon` takes.
+///
+/// # Safety
+/// As the aarch64 kernel of the same name.
+// FIXME(arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64): an x86_64 vector kernel is owed here.
+#[cfg(not(target_arch = "aarch64"))]
+#[inline(always)]
+pub unsafe fn sum_padal_pipe2<K: bench_bitpack_plan_shared::Packing>(buf: &[u8], n: usize) -> u64 {
+    unsafe { bench_bitpack_plan_shared::sum_windowed::<K>(buf, n) }
+}
+
 /// The pairwise-accumulate decode with four independent accumulators.
 ///
 /// # Safety
@@ -179,9 +191,21 @@ pub unsafe fn sum_padal_pipe4<K: bench_bitpack_plan_shared::Packing>(buf: &[u8],
     total
 }
 
+/// Off aarch64 there is no NEON kernel, so this runs the scalar code the arm is
+/// measured against and the arm reads as a second noise floor on that host, the
+/// same stand-in `bench-satfold-shared`'s `Neon` takes.
+///
+/// # Safety
+/// As the aarch64 kernel of the same name.
+// FIXME(arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64): an x86_64 vector kernel is owed here.
+#[cfg(not(target_arch = "aarch64"))]
+#[inline(always)]
+pub unsafe fn sum_padal_pipe4<K: bench_bitpack_plan_shared::Packing>(buf: &[u8], n: usize) -> u64 {
+    unsafe { bench_bitpack_plan_shared::sum_windowed::<K>(buf, n) }
+}
+
 /// # Safety
 /// See [`SliceKernel`]. `lo` must be a multiple of the packed period.
-#[cfg(target_arch = "aarch64")]
 pub unsafe fn kern_packed_pipe2(base: *const u8, lo: usize, hi: usize) -> u64 {
     let col = unsafe { &*(base as *const Layout) };
     let byte_lo = (lo * LOGICAL_BITS) / 8;
@@ -190,7 +214,6 @@ pub unsafe fn kern_packed_pipe2(base: *const u8, lo: usize, hi: usize) -> u64 {
 
 /// # Safety
 /// See [`SliceKernel`]. `lo` must be a multiple of the packed period.
-#[cfg(target_arch = "aarch64")]
 pub unsafe fn kern_packed_pipe4(base: *const u8, lo: usize, hi: usize) -> u64 {
     let col = unsafe { &*(base as *const Layout) };
     let byte_lo = (lo * LOGICAL_BITS) / 8;
@@ -328,6 +351,19 @@ pub unsafe fn sum_d16_padal(vals: &[u16], n: usize) -> u64 {
     }
 }
 
+/// Off aarch64 there is no NEON kernel, so this runs the scalar code the arm is
+/// measured against and the arm reads as a second noise floor on that host, the
+/// same stand-in `bench-satfold-shared`'s `Neon` takes.
+///
+/// # Safety
+/// As the aarch64 kernel of the same name.
+// FIXME(arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64): an x86_64 vector kernel is owed here.
+#[cfg(not(target_arch = "aarch64"))]
+#[inline(always)]
+pub unsafe fn sum_d16_padal(vals: &[u16], n: usize) -> u64 {
+    sum_d16(vals, n)
+}
+
 /// The `u32` dense read with pairwise accumulation and four accumulators.
 ///
 /// `vpadalq_u32` folds four 32-bit lanes into two 64-bit lanes, which cannot
@@ -374,9 +410,21 @@ pub unsafe fn sum_d32_padal(vals: &[u32], n: usize) -> u64 {
     }
 }
 
+/// Off aarch64 there is no NEON kernel, so this runs the scalar code the arm is
+/// measured against and the arm reads as a second noise floor on that host, the
+/// same stand-in `bench-satfold-shared`'s `Neon` takes.
+///
+/// # Safety
+/// As the aarch64 kernel of the same name.
+// FIXME(arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64): an x86_64 vector kernel is owed here.
+#[cfg(not(target_arch = "aarch64"))]
+#[inline(always)]
+pub unsafe fn sum_d32_padal(vals: &[u32], n: usize) -> u64 {
+    sum_d32(vals, n)
+}
+
 /// # Safety
 /// See [`crate::SliceKernel`].
-#[cfg(target_arch = "aarch64")]
 pub unsafe fn kern_d16_padal(base: *const u8, lo: usize, hi: usize) -> u64 {
     let col = unsafe { &*(base as *const Layout) };
     unsafe { sum_d16_padal(&col.d16[lo .. hi], hi - lo) }
@@ -384,7 +432,6 @@ pub unsafe fn kern_d16_padal(base: *const u8, lo: usize, hi: usize) -> u64 {
 
 /// # Safety
 /// See [`crate::SliceKernel`].
-#[cfg(target_arch = "aarch64")]
 pub unsafe fn kern_d32_padal(base: *const u8, lo: usize, hi: usize) -> u64 {
     let col = unsafe { &*(base as *const Layout) };
     unsafe { sum_d32_padal(&col.d32[lo .. hi], hi - lo) }

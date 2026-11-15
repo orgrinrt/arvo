@@ -1,0 +1,194 @@
+# The container fork (panel file 141). Four arms per row, all computing the
+# identical value: `headroom` is the shipped rule (rung(rung_bits(W)+1)),
+# `minimum` is the deletion, `plusone` is rung(W+1) kept as an aliasing
+# control, `native` is plain Rust primitive arithmetic with the projection
+# written once. The size field is a key: W*10000 + NC*1000 + OP*100 + D,
+# decoded by `bench-warm-container-shared`'s `key_w` / `key_nc` / `key_op` /
+# `key_d`. NC 0 is 8192 elements, NC 1 is 1048576. OP 0 is wrapping (Warm),
+# OP 1 is saturating (Precise). D is operations per element.
+title = "Container fork: the shipped headroom rule against minimum storage, its aliasing control and native arithmetic"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+
+[sweep.width-l1]
+title = "Container fork, declared-width sweep, cache-resident (8192 elements, 3 ops/element, wrapping)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+    "warm-container-lanes-deferred",
+]
+points = [
+    80003,
+    130003,
+    160003,
+    320003,
+    600003,
+    640003,
+]
+
+[sweep.width-l2]
+title = "Container fork, declared-width sweep, 1048576 elements (3 ops/element, wrapping)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+]
+points = [
+    81003,
+    131003,
+    161003,
+    321003,
+    601003,
+    641003,
+]
+
+[sweep.density-w13]
+title = "Container fork, operation-density sweep at 13 bits (8192 elements, wrapping)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+    "warm-container-lanes-deferred",
+]
+points = [
+    130001,
+    130002,
+    130004,
+    130008,
+    130016,
+]
+
+[sweep.density-w64]
+title = "Container fork, operation-density sweep at 64 bits (8192 elements, wrapping)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+]
+points = [
+    640001,
+    640002,
+    640004,
+    640008,
+    640016,
+]
+
+[sweep.precise-width-l1]
+title = "Container fork under saturating semantics, declared-width sweep (8192 elements, 3 ops/element)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+]
+points = [
+    80103,
+    130103,
+    160103,
+    320103,
+    600103,
+    640103,
+]
+
+[sweep.elementwise-width-l1]
+title = "Container fork, elementwise transform with no loop-carried value, declared-width sweep (8192 elements, 4 ops/element, wrapping)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+]
+points = [
+    80204,
+    130204,
+    160204,
+    320204,
+    600204,
+    640204,
+]
+
+[sweep.precise-elementwise-width-l1]
+title = "Container fork under saturating semantics, elementwise, declared-width sweep (8192 elements, 4 ops/element)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+]
+points = [
+    80304,
+    130304,
+    160304,
+    320304,
+    600304,
+    640304,
+]
+
+[sweep.affine-collapse-l1]
+title = "Wrapping reduction whose steps are all affine: what the interior projection prevents the optimiser from doing (8192 elements, 3 ops/element)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+    "warm-container-lanes-deferred",
+]
+points = [
+    80403,
+    130403,
+    160403,
+    320403,
+    600403,
+    640403,
+]
+
+[sweep.precise-widening-theorem-l1]
+title = "Saturating accumulation of a W-bit column into a 64-bit accumulator, with and without the theorem that the saturation cannot occur (8192 elements)"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+    "warm-container-lanes-deferred",
+]
+points = [
+    80501,
+    130501,
+    160501,
+    320501,
+    600501,
+    640501,
+]
+
+[sweep.affine-density-w13]
+title = "Affine-only wrapping reduction at 13 bits, operation-density swept: how much of the deferred form's advantage is the optimiser collapsing the chain rather than the mask being gone"
+arms = [
+    "warm-container-headroom",
+    "warm-container-minimum",
+    "warm-container-plusone",
+    "warm-container-native",
+    "warm-container-kernel",
+    "warm-container-lanes-deferred",
+]
+points = [
+    130401,
+    130402,
+    130404,
+    130408,
+    130416,
+]

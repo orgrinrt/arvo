@@ -704,6 +704,10 @@ pub struct Buf {
     pub bytes: [u8; BUF_BYTES],
 }
 
+// An offset key's start sits `key_off` bytes past a 64-byte boundary only
+// while a `Buf` starts on one, and the offset-column test leans on that.
+const _: () = assert!(core::mem::align_of::<Buf>() == 64);
+
 pub struct Case<const KEY: usize>;
 
 #[repr(C)]
@@ -984,6 +988,20 @@ pub mod arms {
 mod tests {
     use super::*;
 
+    /// The bytes `build_bytes` returns, in a buffer aligned as `Buf` is, which is
+    /// the input the harness hands an arm. A `Vec<u8>` carries no such alignment,
+    /// so reading one in place as `&Buf` is undefined and a debug build aborts on it.
+    fn as_buf(bytes: &[u8]) -> std::boxed::Box<Buf> {
+        let layout = std::alloc::Layout::new::<Buf>();
+        // SAFETY: `Buf` is plain bytes, so all-zero is a valid value of it.
+        let p = unsafe { std::alloc::alloc_zeroed(layout) } as *mut Buf;
+        assert!(!p.is_null(), "allocating one `Buf` failed");
+        // SAFETY: `p` was allocated with `Buf`'s own layout just above.
+        let mut b = unsafe { std::boxed::Box::from_raw(p) };
+        b.bytes.copy_from_slice(bytes);
+        b
+    }
+
     /// Every kernel computes the same value as the oracle, at every declared
     /// reduction length, for both operators. This is the check that makes a
     /// timing comparison mean anything, and it runs without the harness.
@@ -995,7 +1013,8 @@ mod tests {
                 let bytes = build_bytes(key, 0xDEAD_BEEF ^ li as u64);
                 let n = key_n(key);
                 let off = key_off(key);
-                let buf: &Buf = unsafe { &*(bytes.as_ptr() as *const Buf) };
+                let boxed = as_buf(&bytes);
+                let buf: &Buf = &boxed;
                 let want = oracle(&bytes[off .. off + n], l, op).value;
                 assert_eq!(arms::seq(key, buf), want, "seq l={l} op={op}");
                 assert_eq!(arms::iterfold(key, buf), want, "iterfold l={l} op={op}");
@@ -1227,11 +1246,13 @@ mod tests {
             aligned[0], offset[1],
             "the offset row did not shift the fill"
         );
-        let ptr_off = offset.as_ptr() as usize;
+        // The arm reads the column out of a `Buf`, which starts on a 64-byte
+        // boundary (asserted at compile time beside it), so the start it sees is
+        // one byte past a boundary exactly when the offset is.
         assert_eq!(
-            ptr_off % 64,
-            0,
-            "the buffer allocation is not 64-byte aligned"
+            key_off(7010) % 64,
+            1,
+            "the offset column does not start one byte past a boundary"
         );
     }
 

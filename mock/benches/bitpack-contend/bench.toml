@@ -1,0 +1,74 @@
+title = "Packed 13-bit against dense carriers, read under thread contention"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+# Variants spawn their own threads inside the timed run block, so the worker's
+# P-core self-pin is skipped (a spawned thread never inherits it and pinning
+# only the coordinator would skew the workload). The variant crate pins every
+# participating thread itself instead, coordinator included, so the measurement
+# is of the memory system rather than of the scheduler.
+threaded = true
+
+[sweep.contention]
+title = "Packed 13-bit against u16, u32 and u64 carriers with one column split 1, 2 and 4 ways"
+threaded = true
+arms = [
+    "bitpack-contend-d16",
+    "bitpack-contend-d16-control",
+    "bitpack-contend-d32",
+    "bitpack-contend-d64",
+    "bitpack-contend-packed",
+    "bitpack-contend-packed-simd",
+]
+points = [
+    163841,  # n = 16,384 elements, 1 thread(s)
+    163842,  # n = 16,384 elements, 2 thread(s)
+    163844,  # n = 16,384 elements, 4 thread(s)
+    10485761,  # n = 1,048,576 elements, 1 thread(s)
+    10485762,  # n = 1,048,576 elements, 2 thread(s)
+    10485764,  # n = 1,048,576 elements, 4 thread(s)
+    41943041,  # n = 4,194,304 elements, 1 thread(s)
+    41943042,  # n = 4,194,304 elements, 2 thread(s)
+    41943044,  # n = 4,194,304 elements, 4 thread(s)
+    83886081,  # n = 8,388,608 elements, 1 thread(s)
+    83886082,  # n = 8,388,608 elements, 2 thread(s)
+    83886084,  # n = 8,388,608 elements, 4 thread(s)
+]
+
+[sweep.decode]
+title = "The packed decode with one, two and four accumulators, against the u16 carrier, at one and four threads"
+threaded = true
+arms = [
+    "bitpack-contend-d16",
+    "bitpack-contend-d16-control",
+    "bitpack-contend-packed-simd",
+    "bitpack-contend-pipe2",
+    "bitpack-contend-pipe4",
+]
+points = [
+    163841,  # n = 16,384 elements, 1 thread(s)
+    163844,  # n = 16,384 elements, 4 thread(s)
+    41943041,  # n = 4,194,304 elements, 1 thread(s)
+    41943044,  # n = 4,194,304 elements, 4 thread(s)
+    83886081,  # n = 8,388,608 elements, 1 thread(s)
+    83886084,  # n = 8,388,608 elements, 4 thread(s)
+]
+
+[sweep.best]
+title = "Both sides attacked: pairwise-accumulate dense carriers against the unrolled packed decode, at one and four threads"
+threaded = true
+arms = [
+    "bitpack-contend-d16",
+    "bitpack-contend-d16-padal",
+    "bitpack-contend-d32",
+    "bitpack-contend-d32-padal",
+    "bitpack-contend-packed-simd",
+    "bitpack-contend-pipe4",
+]
+points = [
+    41943041,  # n = 4,194,304 elements, 1 thread(s)
+    41943044,  # n = 4,194,304 elements, 4 thread(s)
+    83886081,  # n = 8,388,608 elements, 1 thread(s)
+    83886084,  # n = 8,388,608 elements, 4 thread(s)
+]
