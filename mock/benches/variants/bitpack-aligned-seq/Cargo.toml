@@ -10,6 +10,6 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-bench-bitpack-shared = { path = "../bitpack-shared" }
+bench-bitpack-shared = { path = "../../support/bitpack-shared" }
 mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
 mockspace-bench-macro = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev" }

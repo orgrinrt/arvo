@@ -45,8 +45,12 @@ const NAME: &str = "a-committed-timing-records-what-built-it";
 /// Where the harness leaves its artifacts, relative to the mock directory.
 const BENCHES: &str = "benches";
 
-/// The suffix the harness gives a timing's metadata.
-const META: &str = ".meta.json";
+/// Where the runs sit inside the bench tree: one directory per run, at
+/// `results/<bench>/<sweep>_n<point>/<machine class>/<run>/`.
+const RESULTS: &str = "results";
+
+/// The name the harness gives a run's metadata, inside its run directory.
+const META: &str = "meta.json";
 
 /// The key a meta carries when the tool recorded the profile.
 const PROFILE: &str = "\"build_profile\"";
@@ -103,9 +107,10 @@ impl ACommittedTimingRecordsWhatBuiltIt {
                 NAME,
                 Some("no-artifacts-to-read"),
                 format!(
-                    "`mock/{BENCHES}` exists and holds no `*{META}` artifact, so both counts \
-                     below are over an empty population and certify nothing. Either the \
-                     harness has never run here, or the walk is reading the wrong tree."
+                    "`mock/{BENCHES}` exists and its `{RESULTS}/` holds no run `{META}`, so \
+                     both counts below are over an empty population and certify nothing. \
+                     Either the harness has never run here, or the walk is reading the wrong \
+                     tree."
                 ),
             )];
         }
@@ -158,12 +163,16 @@ fn named(view: &View, all: &[PathBuf], dir: &Path, wanted: impl Fn(&str) -> bool
         .collect()
 }
 
-/// Every timing metadata artifact under the bench tree, sorted.
+/// Every run's metadata under the bench tree's `results/`, sorted.
+///
+/// A meta anywhere else sits in a layout the builtin lint
+/// `bench-results-live-in-the-harness-layout` refuses, so it is that lint's
+/// finding and not a timing counted here.
 fn metas(view: &View, dir: &Path) -> Vec<PathBuf> {
     let mut out: Vec<PathBuf> = view
-        .walk(dir, |_, _| false)
+        .walk(&dir.join(RESULTS), |_, _| false)
         .into_iter()
-        .filter(|path| path.to_string_lossy().ends_with(META))
+        .filter(|path| path.file_name().is_some_and(|name| name == META))
         .collect();
     out.sort();
     out
@@ -212,6 +221,26 @@ mod tests {
     /// A meta from before the tool recorded either.
     const BARE: &str = r#"{"cpu":"x","git_commit":"abc1234-dirty"}"#;
 
+    /// Two runs of one cell on one machine class, where the harness writes them.
+    const R1: &str = "results/a/a_n1/c/r1/meta.json";
+    const R2: &str = "results/a/a_n1/c/r2/meta.json";
+
+    #[test]
+    fn a_meta_outside_the_run_layout_is_not_a_timing_read_here() {
+        // The two shapes the harness wrote before the run layout: a cell's meta
+        // at the bench root, and one flat under its bench. Both are the builtin
+        // layout lint's finding, so neither may stand in for a run here, and a
+        // tree holding only them has nothing for the ceilings to count.
+        let files = [("a_n1.meta.json", BARE), ("results/a/a_n1.meta.json", BARE)];
+        assert_eq!(kinds("timings-old-layout", &files, 0, 0), [Some(
+            "no-artifacts-to-read"
+        )]);
+        // Control: the same meta in a run directory is read and counted.
+        assert_eq!(kinds("timings-old-layout2", &[(R1, BARE)], 1, 0), [Some(
+            "from-a-dirty-tree"
+        )]);
+    }
+
     #[test]
     fn the_two_properties_are_read_apart_rather_than_together() {
         // The discrimination. One artifact carries both defects and one carries
@@ -219,7 +248,7 @@ mod tests {
         // under one of the two kinds. The arms this replaced asserted that a
         // string literal contained a substring visible in the literal, which
         // cannot fail and established nothing about the walk.
-        let files = [("a/1.meta.json", COMPLETE), ("a/2.meta.json", BARE)];
+        let files = [(R1, COMPLETE), (R2, BARE)];
         assert_eq!(
             kinds("timings-apart", &files, 0, 1),
             [Some("no-build-profile")],
@@ -232,12 +261,12 @@ mod tests {
 
     #[test]
     fn control_a_complete_artifact_is_reported_under_neither() {
-        assert!(kinds("timings-complete", &[("a/1.meta.json", COMPLETE)], 0, 0).is_empty());
+        assert!(kinds("timings-complete", &[(R1, COMPLETE)], 0, 0).is_empty());
     }
 
     #[test]
     fn both_ceilings_fire_together_where_both_are_exceeded() {
-        let files = [("a/1.meta.json", BARE), ("a/2.meta.json", BARE)];
+        let files = [(R1, BARE), (R2, BARE)];
         let k = kinds("timings-both", &files, 0, 0);
         assert_eq!(k.len(), 2, "{k:?}");
         assert!(k.contains(&Some("no-build-profile")), "{k:?}");
@@ -277,7 +306,10 @@ mod tests {
         assert_eq!(
             kinds(
                 "timings-nested",
-                &[("deep/down/1.meta.json", BARE), ("deep/down/1.csv", "not a meta"),],
+                &[
+                    ("results/deep/deep_n1/c/r/meta.json", BARE),
+                    ("results/deep/deep_n1/c/r/samples.csv", "not a meta"),
+                ],
                 0,
                 usize::MAX,
             ),
@@ -288,7 +320,7 @@ mod tests {
     #[test]
     fn its_findings_block_every_gate() {
         let dir = planted_tree("timings-severity");
-        plant(&dir, "mock/benches/a/1.meta.json", BARE);
+        plant(&dir, "mock/benches/results/a/a_n1/c/r1/meta.json", BARE);
         let empty = view(&[], &[]);
         assert_findings_block_at(
             &Timings {

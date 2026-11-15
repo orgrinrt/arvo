@@ -10,6 +10,9 @@
 # the current crates, and an arm invented to make a manifest parse measures
 # nothing. What was missing was that nothing said any of this, which is what this
 # marker is.
+#
+# The timing `main` it carried beside the arm went when the generated driver
+# became the only bench runner; what it printed stays where the research cites it.
 [package]
 name = "bench-spectral-bisection"
 version = "0.0.0"
@@ -20,10 +23,6 @@ publish = false
 name = "bench_spectral_bisection"
 path = "src/lib.rs"
 crate-type = ["cdylib", "rlib"]
-
-[[bin]]
-name = "bench-spectral-bisection"
-path = "src/main.rs"
 
 [dependencies]
 arvo.workspace = true
