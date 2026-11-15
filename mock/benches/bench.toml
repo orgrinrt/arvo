@@ -157,6 +157,12 @@ variants = [
     "../target/release/bench_quantiser_radix10",
 ]
 
+# The byte dispatch serves only the hash bench; every other cell is served by the routine the hooks
+# library (`src/lib.rs`) names for it.
+[dispatch]
+out = 8
+points = [64, 256, 1024, 4096]
+
 [timing]
 passes = 4
 runs_per_pass = 1000

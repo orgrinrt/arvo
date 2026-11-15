@@ -21,10 +21,6 @@ name = "bench_spectral_bisection"
 path = "src/lib.rs"
 crate-type = ["cdylib", "rlib"]
 
-[[bin]]
-name = "bench-spectral-bisection"
-path = "src/main.rs"
-
 [dependencies]
 arvo.workspace = true
 arvo-bitmask.workspace = true

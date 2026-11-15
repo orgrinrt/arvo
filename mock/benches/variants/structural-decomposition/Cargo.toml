@@ -21,10 +21,6 @@ name = "bench_structural_decomposition"
 path = "src/lib.rs"
 crate-type = ["cdylib", "rlib"]
 
-[[bin]]
-name = "bench-structural-decomposition"
-path = "src/main.rs"
-
 [dependencies]
 arvo.workspace = true
 arvo-bitmask.workspace = true

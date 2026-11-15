@@ -45,8 +45,9 @@ const NAME: &str = "a-committed-timing-records-what-built-it";
 /// Where the harness leaves its artifacts, relative to the mock directory.
 const BENCHES: &str = "benches";
 
-/// The suffix the harness gives a timing's metadata.
-const META: &str = ".meta.json";
+/// The name the harness gives a timing's metadata in a run directory
+/// (`results/<bench>/<cell>/<machine class>/<run>/meta.json`).
+const META: &str = "meta.json";
 
 /// The key a meta carries when the tool recorded the profile.
 const PROFILE: &str = "\"build_profile\"";
@@ -103,7 +104,7 @@ impl ACommittedTimingRecordsWhatBuiltIt {
                 NAME,
                 Some("no-artifacts-to-read"),
                 format!(
-                    "`mock/{BENCHES}` exists and holds no `*{META}` artifact, so both counts \
+                    "`mock/{BENCHES}` exists and holds no `{META}` artifact, so both counts \
                      below are over an empty population and certify nothing. Either the \
                      harness has never run here, or the walk is reading the wrong tree."
                 ),
@@ -163,7 +164,7 @@ fn metas(view: &View, dir: &Path) -> Vec<PathBuf> {
     let mut out: Vec<PathBuf> = view
         .walk(dir, |_, _| false)
         .into_iter()
-        .filter(|path| path.to_string_lossy().ends_with(META))
+        .filter(|path| path.file_name().is_some_and(|name| name == META))
         .collect();
     out.sort();
     out
@@ -219,7 +220,7 @@ mod tests {
         // under one of the two kinds. The arms this replaced asserted that a
         // string literal contained a substring visible in the literal, which
         // cannot fail and established nothing about the walk.
-        let files = [("a/1.meta.json", COMPLETE), ("a/2.meta.json", BARE)];
+        let files = [("a/1/meta.json", COMPLETE), ("a/2/meta.json", BARE)];
         assert_eq!(
             kinds("timings-apart", &files, 0, 1),
             [Some("no-build-profile")],
@@ -232,12 +233,12 @@ mod tests {
 
     #[test]
     fn control_a_complete_artifact_is_reported_under_neither() {
-        assert!(kinds("timings-complete", &[("a/1.meta.json", COMPLETE)], 0, 0).is_empty());
+        assert!(kinds("timings-complete", &[("a/1/meta.json", COMPLETE)], 0, 0).is_empty());
     }
 
     #[test]
     fn both_ceilings_fire_together_where_both_are_exceeded() {
-        let files = [("a/1.meta.json", BARE), ("a/2.meta.json", BARE)];
+        let files = [("a/1/meta.json", BARE), ("a/2/meta.json", BARE)];
         let k = kinds("timings-both", &files, 0, 0);
         assert_eq!(k.len(), 2, "{k:?}");
         assert!(k.contains(&Some("no-build-profile")), "{k:?}");
@@ -277,7 +278,7 @@ mod tests {
         assert_eq!(
             kinds(
                 "timings-nested",
-                &[("deep/down/1.meta.json", BARE), ("deep/down/1.csv", "not a meta"),],
+                &[("deep/down/1/meta.json", BARE), ("deep/down/1.csv", "not a meta"),],
                 0,
                 usize::MAX,
             ),
@@ -288,7 +289,7 @@ mod tests {
     #[test]
     fn its_findings_block_every_gate() {
         let dir = planted_tree("timings-severity");
-        plant(&dir, "mock/benches/a/1.meta.json", BARE);
+        plant(&dir, "mock/benches/a/1/meta.json", BARE);
         let empty = view(&[], &[]);
         assert_findings_block_at(
             &Timings {
