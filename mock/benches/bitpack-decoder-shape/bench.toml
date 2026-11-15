@@ -1,0 +1,17 @@
+title = "Layout::Bitpacked decoder shape: index-driven vs plan-driven, across the L1 boundary"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+arms = [
+    "bitpack-plan-native",
+    "bitpack-plan-naive",
+    "bitpack-plan-windowed",
+    "bitpack-plan-simd",
+]
+points = [
+    16384,
+    65536,
+    98304,
+    262144,
+]

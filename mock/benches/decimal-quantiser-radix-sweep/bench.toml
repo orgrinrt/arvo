@@ -1,0 +1,17 @@
+title = "Quantiser cost by radix: decimal32 against binary32, exponent spread swept"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+# The two arms are two formats, decimal32 and binary32, rounding to different
+# precisions, so their outputs differ by design; each is checked on its own.
+may_differ = true
+required = true
+arms = [
+    "quantiser-radix2",
+    "quantiser-radix10",
+]
+points = [
+    0,
+    2,
+    8,
+    20,
+]

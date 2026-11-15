@@ -1386,48 +1386,37 @@ mod tests {
         }
     }
 
-    /// Diagnostic, not a bench: an ad-hoc quick spike with no substance, kept
-    /// only long enough to answer whether the lane-parallel saturating fold
-    /// executes at all at the sizes the harness reports single-digit
-    /// nanoseconds for.
-    ///
-    /// The first version of this check reported zero nanoseconds and was
-    /// wrong: it exclusive-ored the result into a sink an even number of
-    /// times, so the sink was provably zero and the whole loop was dead.
-    /// `black_box` on both ends is what makes the call observable.
+    /// The lane-parallel saturating fold reads the whole column. Its value
+    /// equals the serial fold's, and moving one element moves it by exactly
+    /// that much, at the first element, in a middle chunk and in the
+    /// remainder past the last whole chunk. A fold that skipped any part of
+    /// the column, or whose loop was dead, cannot do that. The inputs stay
+    /// far below the limit, so no step clamps and the sum is exact.
     #[test]
-    fn diag_sat_lanes_actually_runs() {
-        use std::hint::black_box;
-        let n = 8192usize;
-        let vals: std::vec::Vec<u64> = (0 .. n as u64)
-            .map(|i| i.wrapping_mul(2654435761))
-            .collect();
-        let k = <u64 as Carrier>::from_u128(operand_for(64));
-        let reps = 1001usize;
-
-        let t0 = std::time::Instant::now();
-        let mut a = 0u64;
-        for _ in 0 .. reps {
-            a = a.wrapping_add(run_sat_lanes::<u64, 64, 3>(black_box(&vals), black_box(k)));
-        }
-        black_box(a);
-        let lanes = t0.elapsed().as_nanos() as f64 / reps as f64;
-
-        let t1 = std::time::Instant::now();
-        let mut b = 0u64;
-        for _ in 0 .. reps {
-            b = b.wrapping_add(run_sat::<u64, 64, 3>(black_box(&vals), black_box(k)));
-        }
-        black_box(b);
-        let serial = t1.elapsed().as_nanos() as f64 / reps as f64;
-
-        std::eprintln!("lanes {lanes:.0} ns   serial {serial:.0} ns   a={a} b={b}");
-        assert_eq!(a, b, "the two folds must agree");
-        assert!(
-            lanes > 100.0,
-            "the lane-parallel fold returned in {lanes:.0} ns for {n} elements, \
-             which is not enough time to touch them; the loop is not running"
+    fn the_lane_parallel_fold_reads_the_whole_column() {
+        let n = 8195usize;
+        let mut vals: std::vec::Vec<u64> = (0 .. n as u64).map(|i| (i * 7919) % 4096).collect();
+        let k = 3u64;
+        let base = run_sat_lanes::<u64, 64, 3>(&vals, k);
+        assert_eq!(
+            base,
+            run_sat::<u64, 64, 3>(&vals, k),
+            "the two folds must agree"
         );
+        let exact: u64 = vals.iter().map(|&x| x + k).sum();
+        assert_eq!(
+            base, exact,
+            "no step clamps at these inputs, so the fold is the plain sum"
+        );
+        for &at in &[0usize, n / 2, n - 1] {
+            vals[at] += 1;
+            assert_eq!(
+                run_sat_lanes::<u64, 64, 3>(&vals, k),
+                base + 1,
+                "element {at} moved by one and the fold did not follow it"
+            );
+            vals[at] -= 1;
+        }
     }
 
     #[test]

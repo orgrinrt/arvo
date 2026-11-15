@@ -531,6 +531,19 @@ pub unsafe fn sum_simd<K: Packing>(buf: &[u8], n: usize) -> u64 {
     }
 }
 
+/// Off aarch64 there is no NEON kernel, so this runs the scalar code the arm is
+/// measured against and the arm reads as a second noise floor on that host, the
+/// same stand-in `bench-satfold-shared`'s `Neon` takes.
+///
+/// # Safety
+/// As the aarch64 kernel of the same name.
+// FIXME(arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64): an x86_64 vector kernel is owed here.
+#[cfg(not(target_arch = "aarch64"))]
+#[inline(always)]
+pub unsafe fn sum_simd<K: Packing>(buf: &[u8], n: usize) -> u64 {
+    unsafe { sum_windowed::<K>(buf, n) }
+}
+
 /// Vector decode feeding the heavier per-element kernel.
 ///
 /// # Safety
@@ -555,6 +568,19 @@ pub unsafe fn mac_simd<K: Packing>(buf: &[u8], n: usize) -> u64 {
         }
         s
     }
+}
+
+/// Off aarch64 there is no NEON kernel, so this runs the scalar code the arm is
+/// measured against and the arm reads as a second noise floor on that host, the
+/// same stand-in `bench-satfold-shared`'s `Neon` takes.
+///
+/// # Safety
+/// As the aarch64 kernel of the same name.
+// FIXME(arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64): an x86_64 vector kernel is owed here.
+#[cfg(not(target_arch = "aarch64"))]
+#[inline(always)]
+pub unsafe fn mac_simd<K: Packing>(buf: &[u8], n: usize) -> u64 {
+    unsafe { mac_windowed::<K>(buf, n) }
 }
 
 #[cfg(test)]

@@ -29,7 +29,7 @@ members = [
     "crates/arvo-bits",
     "crates/arvo-numeral",
 ]
-# `benches` (and every crate under `benches/variants/`) is excluded rather than
+# `benches` (and every arm and support crate under it) is excluded rather than
 # listed as a member. The deletion commit that emptied `members` above (929c46ed)
 # dropped every `benches*` entry along with the crate list, even though its own
 # message says the bench tree stays and its artifacts are committed evidence the
