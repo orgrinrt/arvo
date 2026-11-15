@@ -1,0 +1,15 @@
+title = "Layout::Bitpacked reading, sequential column sum: byte-aligned slot vs zero-inter-value-padding"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+arms = [
+    "bitpack-native-seq",
+    "bitpack-aligned-seq",
+    "bitpack-zeropad-seq",
+]
+points = [
+    256,
+    4096,
+    16384,
+]

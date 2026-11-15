@@ -487,6 +487,19 @@ pub unsafe fn sum_simd_padal<K: Packing>(buf: &[u8], n: usize) -> u64 {
     total
 }
 
+/// Off aarch64 there is no NEON kernel, so this runs the scalar code the arm is
+/// measured against and the arm reads as a second noise floor on that host, the
+/// same stand-in `bench-satfold-shared`'s `Neon` takes.
+///
+/// # Safety
+/// As the aarch64 kernel of the same name.
+// FIXME(arvo_bench_simd_arms_measure_a_scalar_stand_in_off_aarch64): an x86_64 vector kernel is owed here.
+#[cfg(not(target_arch = "aarch64"))]
+#[inline(always)]
+pub unsafe fn sum_simd_padal<K: bench_bitpack_plan_shared::Packing>(buf: &[u8], n: usize) -> u64 {
+    unsafe { bench_bitpack_plan_shared::sum_windowed::<K>(buf, n) }
+}
+
 #[cfg(test)]
 mod simd_tests {
     use super::*;

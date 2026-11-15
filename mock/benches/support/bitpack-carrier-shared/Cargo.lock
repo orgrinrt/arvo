@@ -20,4 +20,4 @@ dependencies = [
 [[package]]
 name = "mockspace-bench-core"
 version = "0.0.0"
-source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#90b53199f8442de8162dfecf160fe0e830146a62"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#09bc0887a11098eab306fcd281b1a0009f09edb2"

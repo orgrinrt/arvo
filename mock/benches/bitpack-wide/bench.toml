@@ -1,0 +1,25 @@
+# Variants spawn their own threads inside the timed run block, so the worker's
+# P-core self-pin is skipped (a spawned thread never inherits it and pinning
+# only the coordinator would skew the workload). The variant crate pins every
+# participating thread itself instead, coordinator included, so the measurement
+# is of the memory system rather than of the scheduler.
+title = "Packed 13-bit against the u16 carrier with both columns several times past a 12 MB L2, at one and four threads"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+threaded = true
+arms = [
+    "bitpack-wide-d16",
+    "bitpack-wide-d16-control",
+    "bitpack-wide-d16-padal",
+    "bitpack-wide-pipe4",
+]
+points = [
+    83886081,  # n = 8,388,608 elements, 1 thread(s); u16 region 16 MiB, packed 13 MiB
+    83886084,  # n = 8,388,608 elements, 4 thread(s); u16 region 16 MiB, packed 13 MiB
+    167772161,  # n = 16,777,216 elements, 1 thread(s); u16 region 32 MiB, packed 26 MiB
+    167772164,  # n = 16,777,216 elements, 4 thread(s); u16 region 32 MiB, packed 26 MiB
+    335544321,  # n = 33,554,432 elements, 1 thread(s); u16 region 64 MiB, packed 52 MiB
+    335544324,  # n = 33,554,432 elements, 4 thread(s); u16 region 64 MiB, packed 52 MiB
+]
