@@ -704,6 +704,10 @@ pub struct Buf {
     pub bytes: [u8; BUF_BYTES],
 }
 
+// An offset key's start sits `key_off` bytes past a 64-byte boundary only
+// while a `Buf` starts on one, and the offset-column test leans on that.
+const _: () = assert!(core::mem::align_of::<Buf>() == 64);
+
 pub struct Case<const KEY: usize>;
 
 #[repr(C)]
@@ -1242,11 +1246,11 @@ mod tests {
             aligned[0], offset[1],
             "the offset row did not shift the fill"
         );
-        // The arm reads the column out of a `Buf`, so the start it sees is one
-        // byte past a 64-byte boundary there, whatever the `Vec` here is aligned to.
-        let start = as_buf(&offset).bytes.as_ptr() as usize + key_off(7010);
+        // The arm reads the column out of a `Buf`, which starts on a 64-byte
+        // boundary (asserted at compile time beside it), so the start it sees is
+        // one byte past a boundary exactly when the offset is.
         assert_eq!(
-            start % 64,
+            key_off(7010) % 64,
             1,
             "the offset column does not start one byte past a boundary"
         );
