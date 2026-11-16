@@ -1524,3 +1524,9 @@ ledgers = "mock/catalogue.md"
 commit = "error"
 build = "error"
 push = "error"
+
+# The commit types this repository uses, beyond mockspace's defaults (feat, fix, refactor, docs,
+# test, chore, bench, release). The builtin `commit-subject` gate refuses a type that is not listed, so a new
+# type is added here and nowhere else.
+[lints.commit-subject]
+extra_types = "research,panel,probe,canon,registry,style,merge"
