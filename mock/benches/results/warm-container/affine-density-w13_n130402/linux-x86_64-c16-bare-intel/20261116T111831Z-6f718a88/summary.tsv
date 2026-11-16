@@ -1,0 +1,7 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794828255	6f718a88	affine-density-w13_n130402	warm-container-headroom	130402	warm	4290.2	4290.2	4966.5
+1794828255	6f718a88	affine-density-w13_n130402	warm-container-kernel	130402	warm	1523.0	1523.0	1596.2
+1794828255	6f718a88	affine-density-w13_n130402	warm-container-lanes-deferred	130402	warm	1768.5	1768.5	1889.5
+1794828255	6f718a88	affine-density-w13_n130402	warm-container-minimum	130402	warm	4400.6	4400.6	4634.5
+1794828255	6f718a88	affine-density-w13_n130402	warm-container-native	130402	warm	1828.6	1828.6	1893.5
+1794828255	6f718a88	affine-density-w13_n130402	warm-container-plusone	130402	warm	4312.2	4312.2	4726.4

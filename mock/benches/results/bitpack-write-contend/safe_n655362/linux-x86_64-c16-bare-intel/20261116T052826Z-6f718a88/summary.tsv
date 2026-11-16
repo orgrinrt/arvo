@@ -1,0 +1,4 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794807092	6f718a88	safe_n655362	bitpack-write-aligned	655362	warm	169905.0	169905.0	170212.4
+1794807092	6f718a88	safe_n655362	bitpack-write-dense	655362	warm	15761.8	15761.8	19998.3
+1794807092	6f718a88	safe_n655362	bitpack-write-windowed	655362	warm	134282.4	134282.4	139212.6

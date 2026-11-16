@@ -1,0 +1,7 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794810812	6f718a88	precise-widening-theorem-l1_n600501	warm-container-headroom	600501	warm	2701.4	2701.4	4187.9
+1794810812	6f718a88	precise-widening-theorem-l1_n600501	warm-container-kernel	600501	warm	2920.1	2920.1	3168.5
+1794810812	6f718a88	precise-widening-theorem-l1_n600501	warm-container-lanes-deferred	600501	warm	3276.6	3276.6	3282.2
+1794810812	6f718a88	precise-widening-theorem-l1_n600501	warm-container-minimum	600501	warm	3939.1	3939.1	4360.2
+1794810812	6f718a88	precise-widening-theorem-l1_n600501	warm-container-native	600501	warm	3426.3	3426.3	3435.8
+1794810812	6f718a88	precise-widening-theorem-l1_n600501	warm-container-plusone	600501	warm	2662.2	2662.2	4079.1
