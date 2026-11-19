@@ -9,6 +9,8 @@ error[E0308]: mismatched types
 note: associated function defined here
   --> src/apply/position.rs
    |
+   | impl Exact {
+...
    |     pub const fn between(slot: Slot, part: Fraction) -> Self {
    |                  ^^^^^^^
 

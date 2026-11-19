@@ -6,6 +6,9 @@ error[E0080]: evaluation panicked: a quantum law over no magnitudes describes no
   |
  ::: src/quantum.rs
   |
+  |   pub trait Quantum {
+...
+  |       const ADMITTED: () = {
   | /         assert!(
   | |             ranges_over_a_magnitude(Self::MAGNITUDES),
   | |             "a quantum law over no magnitudes describes no values, so it is not a step law"

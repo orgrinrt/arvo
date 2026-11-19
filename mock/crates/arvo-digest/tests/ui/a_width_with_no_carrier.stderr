@@ -19,33 +19,17 @@ note: required by a bound in `Digest`
  --> src/digest.rs
   |
   | pub struct Digest<const BITS: u32>(<Output<BITS> as Carrier>::Raw)
-  |            ------ required by a bound in this struct
   | where
   |     Output<BITS>: Carrier;
   |                   ^^^^^^^ required by this bound in `Digest`
 
-error[E0277]: the trait bound `arvo_digest::Output<96>: Carrier` is not satisfied in `Digest<96>`
+error[E0277]: the size for values of type `Digest<96>` cannot be known at compilation time
  --> tests/ui/a_width_with_no_carrier.rs:5:13
   |
 5 | fn takes(_: Digest<96>) {}
-  |             ^^^^^^^^^^ within `Digest<96>`, the trait `Carrier` is not implemented for `arvo_digest::Output<96>`
+  |             ^^^^^^^^^^ doesn't have a size known at compile-time
   |
-help: the following other types implement trait `Carrier`
- --> src/digest.rs
-  |
-  | impl Carrier for Output<32> {
-  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_digest::Output<32>`
-...
-  | impl Carrier for Output<64> {
-  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_digest::Output<64>`
-...
-  | impl Carrier for Output<128> {
-  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_digest::Output<128>`
-note: required because it appears within the type `Digest<96>`
- --> src/digest.rs
-  |
-  | pub struct Digest<const BITS: u32>(<Output<BITS> as Carrier>::Raw)
-  |            ^^^^^^
+  = help: the trait `Sized` is not implemented for `Digest<96>`
   = help: unsized fn params are gated as an unstable feature
 help: function arguments must have a statically known size, borrowed types always have a known size
   |

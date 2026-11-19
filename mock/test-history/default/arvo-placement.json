@@ -3,14 +3,14 @@
   "flavour": "",
   "member": "arvo-placement",
   "green": {
-    "full": "e519dff3a1fe003dc7ad3e0a4828ccc904112557ba79d991eb7f5a8014754939",
+    "full": "e94a158f6bb3131ad1d3423b79fa05cc26be00c9f1d71582be179f594118b5fb",
     "own": {
-      "arvo-format": "90779a6d1af436c1416309ea0fae4fed4762b8466631bb6baef6ff0676647fcb",
+      "arvo-format": "b60e96816db2385e2c6d0b1ea2de690949e81a67de94db73c8dd6fea61dabc7d",
       "arvo-placement": "5c804a56b70253f976295f9c6b881b6461993428a7f9e98b728cf814378ad7e5"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-placement": "1dd07edcfcaf81793eac42525e28efb947b99dd2c0e30bfed8978635889f30f8"
+    "arvo-placement": "cd0f54eb0ce6e377a9283bc1ab68b59755171319ee3f62bd3e003c8b81c1698e"
   }
 }

@@ -2,7 +2,9 @@ error[E0432]: unresolved import `arvo_numeral::Machine`
  --> tests/ui/the_machine_integers_by_path_is_refused.rs:3:5
   |
 3 | use arvo_numeral::Machine;
-  |     ^^^^^^^^^^^^^^^^^^^^^ no `Machine` in the root
+  |     ^^^^^^^^^^^^^^-------
+  |                   |
+  |                   no `Machine` in the root
   |
 help: a similar name exists in the module
   |

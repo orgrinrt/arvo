@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: conversion is not yet admitted over a magnitu
   |
  ::: src/conversion.rs
   |
+  |   impl<F: Format, T: Format> Convertible<F, T> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             constant.get(),
   | |             "conversion is not yet admitted over a magnitude-indexed quantum on either side: a slot \

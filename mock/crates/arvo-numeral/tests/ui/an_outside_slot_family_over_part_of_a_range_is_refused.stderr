@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: a value is held only for a slot range that is
   |
  ::: src/admit.rs
   |
+  |   impl<S> Sole for S
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             whole_range::<SlotsOf<S>>(),
   | |             "a value is held only for a slot range that is the whole signed or unsigned range of its \

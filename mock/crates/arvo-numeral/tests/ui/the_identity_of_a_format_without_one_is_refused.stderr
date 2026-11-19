@@ -6,6 +6,9 @@ error[E0080]: evaluation panicked: the format has no additive identity: no membe
   |
  ::: src/identity.rs
   |
+  |   impl<S: Sole, C: DebugCheck> Identity<Additive> for Num<S, C> {
+...
+  |       const IDENTITY: Self = {
   | /         assert!(
   | |             has_additive_identity::<S::Format>().get(),
   | |             "the format has no additive identity: no member adds to every member without moving \
