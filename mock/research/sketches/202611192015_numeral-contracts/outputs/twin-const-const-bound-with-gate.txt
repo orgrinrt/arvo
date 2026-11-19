@@ -1,0 +1,4 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 5 packages to latest Rust 1.98.0-nightly compatible versions
+   Compiling twin-const-const-bound-with-gate v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/twins/const-const-bound-with-gate)
+    Finished `dev` profile [unoptimized] target(s) in 0.44s

@@ -1,0 +1,50 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 5 packages to latest Rust 1.98.0-nightly compatible versions
+   Compiling arm-opt v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-opt)
+   Compiling twin-opt-off-const-bound-with-gate v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/twins/opt-off-const-bound-with-gate)
+error: `[const]` can only be applied to `const` traits
+  --> src/lib.rs:10:30
+   |
+10 | pub const fn sum_in_const<T: [const] Sum + Zero + Copy>(a: T, b: T) -> T {
+   |                              ^^^^^^^ can't be applied to `arm_opt::Sum`
+   |
+note: `arm_opt::Sum` can't be used with `[const]` because it isn't `const`
+  --> /home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-opt/src/plain_path.rs:8:1
+   |
+ 8 | pub trait Sum: Sized {
+   | ^^^^^^^^^^^^^^^^^^^^
+
+error[E0015]: cannot call non-const method `<T as arm_opt::Sum>::sum` in constant functions
+  --> src/lib.rs:11:13
+   |
+11 |     T::ZERO.sum(a).sum(b)
+   |             ^^^^^^
+   |
+note: method `sum` is not const because trait `Sum` is not const
+  --> /home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-opt/src/plain_path.rs:8:1
+   |
+ 8 | pub trait Sum: Sized {
+   | ^^^^^^^^^^^^^^^^^^^^ this trait is not const
+ 9 |     /// The sum.
+10 |     fn sum(self, rhs: Self) -> Self;
+   |     -------------------------------- this method is not const
+   = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const method `<T as arm_opt::Sum>::sum` in constant functions
+  --> src/lib.rs:11:20
+   |
+11 |     T::ZERO.sum(a).sum(b)
+   |                    ^^^^^^
+   |
+note: method `sum` is not const because trait `Sum` is not const
+  --> /home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-opt/src/plain_path.rs:8:1
+   |
+ 8 | pub trait Sum: Sized {
+   | ^^^^^^^^^^^^^^^^^^^^ this trait is not const
+ 9 |     /// The sum.
+10 |     fn sum(self, rhs: Self) -> Self;
+   |     -------------------------------- this method is not const
+   = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+For more information about this error, try `rustc --explain E0015`.
+error: could not compile `twin-opt-off-const-bound-with-gate` (lib) due to 3 previous errors
