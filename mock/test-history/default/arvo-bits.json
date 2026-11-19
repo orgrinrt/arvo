@@ -3,14 +3,14 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "c34442151613aa86a3d5aace5f6cc795a6c9f8282d066f4b2a914a571aeaa91e",
+    "full": "eac1bc2987d9d05f0107314de929e6d06e9ad55395bacb854f483630e2fe23fd",
     "own": {
-      "arvo-bits": "b4a76f7a3c43325eeb95284db2c204a3a26d7587b8a938e193982a3aa825e1ff"
+      "arvo-bits": "738ea6b76959c864194e2270ff749f5be3de75e211e12509a5aa507453def1d0"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-bits": "fd97331bab39fe9bf208bfc4a416b54344e4be5eda82224783d84612f17fa285",
-    "arvo-bits::compile_fail": "72e5f9d460227ea27573ff52d4d8e47bd0960f4af08d76c21f1193fe9ce54067"
+    "arvo-bits": "daae3f58f00e95b3dd09056ed95c8990e34755c8ff8eb345cf57ee8880dd2b6f",
+    "arvo-bits::compile_fail": "0ff41fb50e3e18321f820d918be76f35da9903e9a9d56f07156760a97c013394"
   }
 }

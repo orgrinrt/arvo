@@ -3,7 +3,7 @@
   "flavour": "",
   "member": "arvo-format",
   "green": {
-    "full": "fe525b5cc86b5530f558ffbf0019cae210aff67b352cc02682f86a523accfc18",
+    "full": "b5c5da1dfa7da68ed46f3513cdf97b1c0d26f716ab833596ca566ce32a8f5494",
     "own": {
       "arvo-format": "efe3fbc94b546d190de576f3fc5f14566fa5b46cd952e9003ca8ad06f483f73b"
     }
@@ -11,97 +11,107 @@
   "tests": {
     "arvo-format": {
       "addition::tests::the_signed_oracle::subtraction_answers_as_the_oracle_does_at_every_member_up_to_eight_bits": {
-        "secs": 42.4,
+        "secs": 70.8,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map": {
-        "secs": 8.5,
+        "secs": 15.9,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do": {
         "secs": 85.0,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
+      },
+      "apply::tests::the_wide_oracle_sweep::the_shipped_map_answers_as_the_oracle_does_over_the_wide_region": {
+        "secs": 8.6,
+        "passed": true,
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "apply::tests::the_wide_oracle_sweep::the_wide_sweep_reports_every_broken_map": {
         "secs": 13.6,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_member_door::a_byte_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
-        "secs": 6.6,
+        "secs": 12.6,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_member_door::a_negative_exponent_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
-        "secs": 7.0,
+        "secs": 13.1,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_member_door::a_phase_divides_by_the_members_of_its_unreduced_spelling_as_the_oracle_does": {
-        "secs": 7.6,
+        "secs": 12.9,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
+      },
+      "division::tests::the_member_door::a_signed_byte_divides_by_the_members_of_its_negative_side_as_the_oracle_does": {
+        "secs": 5.5,
+        "passed": true,
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
+      },
+      "division::tests::the_member_door::a_signed_byte_divides_by_the_members_of_its_positive_side_as_the_oracle_does": {
+        "secs": 6.0,
+        "passed": true,
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_member_door::a_whole_phase_divides_by_its_own_members_as_the_oracle_does": {
-        "secs": 7.4,
+        "secs": 12.6,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_member_door::a_zero_free_range_divides_by_its_own_members_as_the_oracle_does": {
-        "secs": 7.9,
+        "secs": 12.7,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_member_door::radix_ten_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
-        "secs": 7.1,
+        "secs": 11.3,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_member_door::the_bytes_divide_by_a_range_at_radix_ten_on_their_grid_as_the_oracle_does": {
-        "secs": 6.9,
+        "secs": 10.7,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "division::tests::the_oracle::the_quotient_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
-        "secs": 90.0,
+        "secs": 164.0,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "multiplication::tests::the_inverse_round_trip::the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_64": {
         "secs": 12.0,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       },
       "multiplication::tests::the_oracle::the_product_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
         "secs": 120.9,
         "passed": true,
-        "passed_at": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3"
+        "passed_at": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645"
       }
     },
     "arvo-format::compile_fail": {
-      "a_format_is_not_a_signature": {
-        "secs": 5.1,
+      "a_member_constant_below_the_bottom_is_refused_and_at_the_bottom_admitted": {
+        "secs": 10.4,
         "passed": true,
-        "passed_at": "8783b3420eca9a5e422fa99c46c95b94561df6fd29f2b00034cd3bee5cac0f76"
-      },
-      "a_member_is_refused_over_a_magnitude_indexed_quantum_or_a_phase_that_does_not_denote": {
-        "secs": 8.2,
-        "passed": true,
-        "passed_at": "8783b3420eca9a5e422fa99c46c95b94561df6fd29f2b00034cd3bee5cac0f76"
+        "passed_at": "8246d19e170670cd2839c95ff294d476da3c31a8080e21282f5b3eafa68894f8"
       }
     }
   },
   "bins": {
-    "arvo-format": "8f6e34db348033b4acf84d828e6f636c4daab8b6792e6968a462eac7778670b3",
-    "arvo-format::compile_fail": "8783b3420eca9a5e422fa99c46c95b94561df6fd29f2b00034cd3bee5cac0f76",
-    "arvo-format::ieee754_binary_parity": "6aa31d5c4749e39c9377001fcbe68e6187e83d268fe3a46ddb61b904557717ef",
-    "arvo-format::ieee754_decimal_parity": "838dd426d79a22db047338542e28c2868556d0fb8f5399f3b51d5e0238197909",
-    "arvo-format::ieee754_underflow_parity": "8ee9c8d54277af0e21486a9074f0b87c4c2f2f978ddea0767b7f2153b7434dc4",
-    "arvo-format::matlab_fi_parity": "2c4b3a0afa2e477a7ef3c2f15dc3645fab5a2b2c65e74dbfb77bfcf14845a759",
-    "arvo-format::matlab_fimath_parity": "c10b470f5a2b2fb11205bd690f6a060b7569a024c2a18a73d980826a4df1dd5f",
-    "arvo-format::the_ties_away_alias": "12315706bff9d777c6207fbe80e0c77fea38e0d804d3a96928bffd162d71e8ae"
+    "arvo-format": "85c5c8490f6d0da20861292be9fc3067333815d2bc29f2aa89aa4d05f05ad645",
+    "arvo-format::compile_fail": "8246d19e170670cd2839c95ff294d476da3c31a8080e21282f5b3eafa68894f8",
+    "arvo-format::ieee754_binary_parity": "77ce1fa5fa816f6ff57cc2239122cc16f220251b89b3640cc437a3c23bc9363b",
+    "arvo-format::ieee754_decimal_parity": "bbca14d137e3273946a9cd7ef0036e15ff9ac286ebd07b2164d0445d8fa671b9",
+    "arvo-format::ieee754_underflow_parity": "faf4ae716ca59d3db06d104ce0f9e425d021595ca3a12b81b2dafbb98dceeb24",
+    "arvo-format::matlab_fi_parity": "8ed55ad55e41d9e2d8f3a779abc841c9d0b69b7a5b956363cce0f42b62b3e05b",
+    "arvo-format::matlab_fimath_parity": "6a5b39b999aaa15ab9cce3ca4e12a2e311931aa2391842e0c0eeb9ccf80b9a70",
+    "arvo-format::the_ties_away_alias": "4d989c8df5f162d6837c8baeb2441ba3a59272ee30f15a176e67e7283d75f9eb"
   }
 }

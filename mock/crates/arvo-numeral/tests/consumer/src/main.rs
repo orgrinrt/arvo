@@ -12,22 +12,20 @@ use core::cmp::Ordering;
 use core::hash::{Hash, Hasher};
 use std::collections::hash_map::DefaultHasher;
 
+use arvo_contracts::{Additive, Identity, Multiplicative};
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Integer, UFixed};
 use arvo_format::rounding::{Floor, HalfEven, TowardZero};
 use arvo_format::{Adapt, Exact, Format, Policy, Signature, Slot, WithOverflow, WithRounding};
 use arvo_numeral::{
     Abort,
-    Additive,
     Bool,
     DebugCheck,
     Divisor,
     Fix,
     HostInteger,
     ISize,
-    Identity,
     Int,
-    Multiplicative,
     NamesAdaptation,
     Num,
     Quiet,
