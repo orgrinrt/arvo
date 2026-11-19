@@ -1,0 +1,17 @@
+# arvo-digest
+
+A digest of explicit bytes, at a width the type names. Not cryptographic.
+
+Two algorithms by name, `Fnv1a` at 32 and 64 bits and `Xxh3` at 64 and 128 bits. Every path has a
+`const fn` form that gives the same value as the runtime one, and a digest narrows into
+`arvo_bits::Bits<N>` when the width a consumer pins it to is smaller. A switched digest, FNV-1a on
+short input and XXH3 from a measured length on, joins once that length is measured.
+
+Input is `arvo_bits::Bytes` and the digest is held in `arvo_bits::Bits`, with FNV-1a's product taken
+from `arvo-numeral`, so no host integer is named here. Depends on `arvo-format`, `arvo-numeral`, `arvo-bits`,
+notko, and `xxhash-rust` for XXH3 behind the `xxh3` feature, off by default. `no_std`, no allocation.
+
+## Status
+
+Unreleased, at 0.0.0. The source implements what is described here and its tests pass, and the surface
+may still change before a first release.
