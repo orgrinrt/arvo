@@ -1,0 +1,15 @@
+[package]
+name = "arm-opt"
+description = "Arm two: the same traits, const behind an opt-in feature and plain without it"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+arvo-numeral.workspace = true
+
+[features]
+# Declares the contracts as const traits and enables `const_trait_impl` in this
+# crate only. Off by default.
+const = []

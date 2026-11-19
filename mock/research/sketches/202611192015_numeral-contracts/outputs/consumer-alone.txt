@@ -1,0 +1,9 @@
+== cargo test -p consumer-plain
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+== cargo test -p consumer-opt-off
+   Compiling arm-opt v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-opt)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+== cargo test -p consumer-opt-on
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+== cargo test -p consumer-const
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

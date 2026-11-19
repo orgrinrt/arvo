@@ -1,0 +1,32 @@
+# Three arms of the contracts a consumer bounds on, each judged by one test that
+# `obligation::the_unstable_machinery_does_not_reach_a_consumer` fixes: a consumer
+# crate with no feature line builds a function generic over a numeral that adds,
+# orders and has an additive identity.
+#
+# Detached from the arvo mock workspace, so each arm builds on its own terms. The
+# value crate is read by path. The compile-fail twins under `twins/` are
+# standalone crates outside this workspace, built one by one, because a member
+# that refuses would stop every other member's build.
+
+[workspace]
+resolver = "3"
+members = [
+    "arm-plain",
+    "arm-opt",
+    "arm-const",
+    "consumer-plain",
+    "consumer-opt-off",
+    "consumer-opt-on",
+    "consumer-const",
+]
+exclude = ["twins"]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[workspace.dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../crates/arvo-numeral" }
