@@ -1,0 +1,38 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 5 packages to latest Rust 1.98.0-nightly compatible versions
+   Compiling arm-plain v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-plain)
+   Compiling twin-plain-generic-const-fn v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/twins/plain-generic-const-fn)
+error[E0015]: cannot call non-const method `<T as arm_plain::Sum>::sum` in constant functions
+  --> src/lib.rs:8:13
+   |
+ 8 |     T::ZERO.sum(a).sum(b)
+   |             ^^^^^^
+   |
+note: method `sum` is not const because trait `Sum` is not const
+  --> /home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-plain/src/lib.rs:14:1
+   |
+14 | pub trait Sum: Sized {
+   | ^^^^^^^^^^^^^^^^^^^^ this trait is not const
+15 |     /// The sum.
+16 |     fn sum(self, rhs: Self) -> Self;
+   |     -------------------------------- this method is not const
+   = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const method `<T as arm_plain::Sum>::sum` in constant functions
+  --> src/lib.rs:8:20
+   |
+ 8 |     T::ZERO.sum(a).sum(b)
+   |                    ^^^^^^
+   |
+note: method `sum` is not const because trait `Sum` is not const
+  --> /home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-plain/src/lib.rs:14:1
+   |
+14 | pub trait Sum: Sized {
+   | ^^^^^^^^^^^^^^^^^^^^ this trait is not const
+15 |     /// The sum.
+16 |     fn sum(self, rhs: Self) -> Self;
+   |     -------------------------------- this method is not const
+   = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+For more information about this error, try `rustc --explain E0015`.
+error: could not compile `twin-plain-generic-const-fn` (lib) due to 2 previous errors

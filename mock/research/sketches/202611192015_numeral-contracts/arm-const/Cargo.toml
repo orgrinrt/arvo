@@ -1,0 +1,10 @@
+[package]
+name = "arm-const"
+description = "Arm three: const traits alone"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+arvo-numeral.workspace = true

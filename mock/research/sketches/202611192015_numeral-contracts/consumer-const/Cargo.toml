@@ -1,0 +1,12 @@
+[package]
+name = "consumer-const"
+description = "A consumer with no feature line, against arm-const"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+arvo-format.workspace = true
+arvo-numeral.workspace = true
+arm-const = { path = "../arm-const" }

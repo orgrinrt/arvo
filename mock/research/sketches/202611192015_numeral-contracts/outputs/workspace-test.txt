@@ -1,0 +1,106 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 4 packages to latest Rust 1.98.0-nightly compatible versions
+   Compiling notko v0.0.1 (https://github.com/orgrinrt/notko.git?branch=dev#15a95316)
+   Compiling arvo-format v0.0.0 (/home/user/arvo/mock/crates/arvo-format)
+   Compiling arvo-placement v0.0.0 (/home/user/arvo/mock/crates/arvo-placement)
+   Compiling arvo-numeral v0.0.0 (/home/user/arvo/mock/crates/arvo-numeral)
+   Compiling arm-opt v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-opt)
+   Compiling arm-const v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-const)
+   Compiling arm-plain v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/arm-plain)
+   Compiling consumer-const v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/consumer-const)
+   Compiling consumer-opt-off v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/consumer-opt-off)
+   Compiling consumer-opt-on v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/consumer-opt-on)
+   Compiling consumer-plain v0.0.0 (/home/user/arvo/mock/research/sketches/202611192015_numeral-contracts/consumer-plain)
+    Finished `test` profile [unoptimized] target(s) in 1.75s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_const-0265b92ae958cd81)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_opt-845d6cf677734258)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arm_plain-ab2cd2818da8a8c5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/consumer_const-3b4b250bcc99bc1f)
+
+running 2 tests
+test tests::the_value_runs_through_the_contract ... ok
+test tests::the_outside_instance_runs_through_the_contract ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/consumer_opt_off-b1f2efe67378ad7f)
+
+running 2 tests
+test tests::the_value_runs_through_the_contract ... ok
+test tests::the_outside_instance_runs_through_the_contract ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/consumer_opt_on-b1fd83da176c373b)
+
+running 2 tests
+test tests::the_value_runs_through_the_contract ... ok
+test tests::the_outside_instance_runs_through_the_contract ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/home/user/target/debug/deps/consumer_plain-7114ddcd4f7c149e)
+
+running 2 tests
+test tests::the_value_runs_through_the_contract ... ok
+test tests::the_outside_instance_runs_through_the_contract ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arm_const
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arm_opt
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests arm_plain
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests consumer_const
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests consumer_opt_off
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests consumer_opt_on
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests consumer_plain
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
