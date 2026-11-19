@@ -26,7 +26,7 @@ mod digest;
 mod fnv1a;
 mod xxh3;
 
-pub use digest::{Carrier, Digest, Width};
+pub use digest::{Carrier, Digest, Output};
 pub use fnv1a::Fnv1a;
 pub use xxh3::Xxh3;
 

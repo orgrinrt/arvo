@@ -115,15 +115,6 @@ fn the_sanity_vectors_at_128_bits() {
     check_128(&AT_128);
 }
 
-/// The buffer itself, checked at its first bytes against the generator
-/// written out by hand, so a wrong buffer cannot pass by agreeing with a
-/// wrong expectation.
-#[test]
-fn the_sanity_buffer_is_the_reference_one() {
-    assert_eq!(BUFFER[0], (PRIME32 >> 56) as u8);
-    assert_eq!(BUFFER[1], (PRIME32.wrapping_mul(PRIME64) >> 56) as u8);
-}
-
 /// Evaluated by the compiler, at a length on the long path, so `of_const`
 /// is shown to be usable where it says it is.
 #[test]

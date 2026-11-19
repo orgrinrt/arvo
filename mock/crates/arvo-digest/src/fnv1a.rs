@@ -12,7 +12,7 @@ use arvo_format::rounding::TowardZero;
 use arvo_numeral::{Quiet, Uint};
 use notko::Maybe;
 
-use crate::Digest;
+use crate::{Carrier, Digest, Output};
 
 /// FNV-1a, `BITS` wide.
 ///
@@ -26,7 +26,9 @@ use crate::Digest;
 /// xor is `Bits::xor`. The state crosses between the two through
 /// `Num::index` and `Num::from_index`, the host integer between them
 /// inferred from `Bits` rather than named.
-pub struct Fnv1a<const BITS: u16>;
+pub struct Fnv1a<const BITS: u32>
+where
+    Output<BITS>: Carrier;
 
 /// The walk over the bytes, written once and instantiated at each width:
 /// the width, its state type, its offset basis and its prime are what differ.

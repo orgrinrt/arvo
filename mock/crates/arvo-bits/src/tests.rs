@@ -199,8 +199,8 @@ macro_rules! every_width {
         }
 
         /// The `xor` laws at every admitted width: it agrees with the host's xor,
-        /// is its own inverse, and has the zero value as its identity, over every
-        /// pair of the probes.
+        /// is its own inverse, has the zero value as its identity, commutes and
+        /// associates, over every pair and every triple of the probes.
         #[test]
         fn xor_agrees_with_the_hosts_and_inverts_itself_everywhere() {
             let probes: [u64; 8] = [
@@ -221,6 +221,11 @@ macro_rules! every_width {
                         assert_eq!(x.xor(y).raw() & !mask_by_folding($n), 0, "at N = {}", $n);
                         assert_eq!(x.xor(y).xor(y), x, "at N = {}", $n);
                         assert_eq!(x.xor(Bits::<$n>::masked(0)), x, "at N = {}", $n);
+                        assert_eq!(x.xor(y), y.xor(x), "commutes at N = {}", $n);
+                        for c in probes {
+                            let z = Bits::<$n>::masked(c);
+                            assert_eq!(x.xor(y).xor(z), x.xor(y.xor(z)), "associates at N = {}", $n);
+                        }
                     }
                 }
             )*

@@ -12,34 +12,34 @@ use arvo_bits::Bits;
 /// It carries nothing at run time. Its one job is to be the thing
 /// [`Carrier`] is implemented for, so that the widths a digest exists at are
 /// a closed fact the compiler checks rather than a value checked later.
-pub struct Width<const BITS: u16>;
+pub struct Output<const BITS: u32>;
 
 mod sealed {
-    pub trait DigestWidth {}
-    impl DigestWidth for super::Width<32> {}
-    impl DigestWidth for super::Width<64> {}
-    impl DigestWidth for super::Width<128> {}
+    pub trait OutputWidth {}
+    impl OutputWidth for super::Output<32> {}
+    impl OutputWidth for super::Output<64> {}
+    impl OutputWidth for super::Output<128> {}
 }
 
 /// The container a digest of a given width is held in.
 ///
-/// Implemented for `Width<32>`, `Width<64>` and `Width<128>` and sealed, so
+/// Implemented for `Output<32>`, `Output<64>` and `Output<128>` and sealed, so
 /// `Digest<BITS>` at any other width is not a type.
-pub trait Carrier: sealed::DigestWidth {
+pub trait Carrier: sealed::OutputWidth {
     /// The `arvo_bits` container exactly as wide as the digest: one `Bits` up to
     /// sixty-four bits, and two `Bits<64>`, low half first, at 128.
     type Raw: Copy + Eq + core::fmt::Debug;
 }
 
-impl Carrier for Width<32> {
+impl Carrier for Output<32> {
     type Raw = Bits<32>;
 }
 
-impl Carrier for Width<64> {
+impl Carrier for Output<64> {
     type Raw = Bits<64>;
 }
 
-impl Carrier for Width<128> {
+impl Carrier for Output<128> {
     type Raw = [Bits<64>; 2];
 }
 
@@ -49,22 +49,22 @@ impl Carrier for Width<128> {
 /// order of two digests means nothing.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(transparent)]
-pub struct Digest<const BITS: u16>(<Width<BITS> as Carrier>::Raw)
+pub struct Digest<const BITS: u32>(<Output<BITS> as Carrier>::Raw)
 where
-    Width<BITS>: Carrier;
+    Output<BITS>: Carrier;
 
-impl<const BITS: u16> Digest<BITS>
+impl<const BITS: u32> Digest<BITS>
 where
-    Width<BITS>: Carrier,
+    Output<BITS>: Carrier,
 {
     /// Wraps a value an algorithm in this crate computed.
-    pub(crate) const fn from_raw(raw: <Width<BITS> as Carrier>::Raw) -> Self {
+    pub(crate) const fn from_raw(raw: <Output<BITS> as Carrier>::Raw) -> Self {
         Self(raw)
     }
 
     /// The digest in its container, the one door out.
     #[must_use]
-    pub const fn raw(self) -> <Width<BITS> as Carrier>::Raw {
+    pub const fn raw(self) -> <Output<BITS> as Carrier>::Raw {
         self.0
     }
 }

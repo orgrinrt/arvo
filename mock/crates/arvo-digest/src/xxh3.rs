@@ -7,7 +7,7 @@
 
 use arvo_bits::{Bits, Bytes};
 
-use crate::Digest;
+use crate::{Carrier, Digest, Output};
 
 /// XXH3, `BITS` wide, with the default secret and no seed.
 ///
@@ -15,7 +15,9 @@ use crate::Digest;
 /// runs xxhash-rust's runtime path, whose SIMD width `cfg(target_feature)`
 /// picked when this crate was compiled. `of_const` runs its `const fn` path.
 /// The two give the same value for the same bytes.
-pub struct Xxh3<const BITS: u16>;
+pub struct Xxh3<const BITS: u32>
+where
+    Output<BITS>: Carrier;
 
 impl Xxh3<64> {
     /// The 64 bit XXH3 digest of `bytes`, on the runtime path.
