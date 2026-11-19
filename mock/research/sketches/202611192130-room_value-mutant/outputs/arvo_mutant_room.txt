@@ -1,0 +1,32 @@
+RUSTFLAGS=--cfg arvo_mutant_room cargo test -p arvo-numeral --no-fail-fast --test the_quotient --test the_quotient_by_a_value --test fixed_point_product --test the_conversion
+     Running tests/fixed_point_product.rs (/home/user/target/debug/deps/fixed_point_product-90c7096660f8cc64)
+test the_signed_product_at_eighths_is_the_oracles_on_every_pair ... FAILED
+test a_tie_below_zero_goes_where_each_mode_sends_it ... FAILED
+failures:
+failures:
+test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+error: test failed, to rerun pass `-p arvo-numeral --test fixed_point_product`
+     Running tests/the_conversion.rs (/home/user/target/debug/deps/the_conversion-6afc6dc26644d891)
+test a_fixed_point_member_converts_between_two_exponents ... FAILED
+test an_integer_converts_onto_a_fixed_point_grid_and_back ... FAILED
+test the_named_conversions_sit_where_arithmetic_puts_them ... FAILED
+test a_wide_member_converts_as_the_oracle_does_on_the_lattice_and_seeded_members ... FAILED
+failures:
+failures:
+test result: FAILED. 6 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+error: test failed, to rerun pass `-p arvo-numeral --test the_conversion`
+     Running tests/the_quotient.rs (/home/user/target/debug/deps/the_quotient-211f4212793486d0)
+test the_named_quotients_sit_where_arithmetic_puts_them ... FAILED
+test every_member_divides_by_every_member_but_zero_at_widths_one_to_four ... FAILED
+failures:
+failures:
+test result: FAILED. 3 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+error: test failed, to rerun pass `-p arvo-numeral --test the_quotient`
+     Running tests/the_quotient_by_a_value.rs (/home/user/target/debug/deps/the_quotient_by_a_value-910c1d84664bc442)
+test a_value_divides_by_a_value_read_at_run_time_at_three_exponents ... FAILED
+failures:
+failures:
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.28s
+error: test failed, to rerun pass `-p arvo-numeral --test the_quotient_by_a_value`
+error: 4 targets failed:
+exit 101
