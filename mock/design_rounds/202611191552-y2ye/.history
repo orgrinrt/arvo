@@ -1,0 +1,50 @@
+6a185fb8 chore: lock src changelist 202611191552-y2ye
+e3202031 fix: count digest widths in `u32` and port the crossover arms
+df99c40c docs: write the src changelist of round 202611191552-y2ye
+d1769b4e chore: lock doc changelist 202611191552-y2ye
+7525b009 docs: count digest widths in `u32` and port the crossover arms
+0c7ce219 docs: open round 202611191552-y2ye on the digest's first review
+ec0dc80c research: record what became of each stranded arvo branch
+d0e18de7 chore: close design round 202611191340-whma
+ac7be2ab chore: lock src changelist 202611191340-whma
+c33e0581 feat: add `arvo-digest` with FNV-1a at 32 and 64 bits and XXH3
+45b71df5 docs: write the src changelist of round 202611191340-whma
+3d1653a6 chore: lock doc changelist 202611191340-whma
+a00881fd docs: design `arvo-digest` on dev with FNV-1a at 64 bits
+8c377eb0 docs: open round 202611191340-whma, the digest lands on dev
+d1e2b9b7 docs: land the closed `land` rounds from `work/arvo-format`
+3d95d776 docs: land the closed digest rounds from `work/arvo-digest`
+80e5afac chore: configure the `commit-subject` gate
+6f718a88 refactor: port the benches to arms and sweeps under the harness
+f76108d6 fix: point the p3 probe at the moved warm container support crate
+8ed016a7 docs: land the second stack audit
+fac2c6aa docs: land the first stack audit
+130295d7 bench: regenerate the results index over every run on dev
+3b9aa53d bench: drop the false dirty mark from the 14 november run names
+1f860a90 bench: land the linux results of 14 november
+da169bec bench: record a linux container run of bitpack-sequential-sum
+7479a2c6 refactor: run the benches on the generated driver in the run layout
+8babe497 research: port channel documents into the research dir
+28d03718 research: land the second stack audit
+d0161800 feat: build the value tier's ring operations and default doors
+b687fc01 feat: add the member type and a member divisor on one quantum
+280e3a2a feat: carry the exact position's floor in four limbs
+ccb4c239 feat: admit the wrapping product and the cleared format rounds
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+4d6aa22c feat: give the registry its amendment edge and stamp fields
+9ba397c4 fix: read the lints through one parse and add the registry tools
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
+2c8e5343 feat: add the oracle for fractions and division in arvo-format
+9dfd5339 feat: add the numeral value crate for integers at sole occupancy
+989e02f9 fix: spell git sources one way and show the bench harness runs
+7ec50792 feat: teach the oracle negation, subtraction and the product
+e20f1a1d research: sketch a value over the derived carrier with const add

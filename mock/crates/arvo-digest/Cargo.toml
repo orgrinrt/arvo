@@ -1,0 +1,26 @@
+[package]
+name = "arvo-digest"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "A digest of explicit bytes at a width the type names: FNV-1a and XXH3, not cryptographic"
+readme = "README.md.tmpl"
+
+[dependencies]
+arvo-format.workspace = true
+arvo-numeral.workspace = true
+arvo-bits.workspace = true
+notko.workspace = true
+xxhash-rust = { workspace = true, optional = true }
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "forbid"
+
+[features]
+# XXH3 through xxhash-rust, the one dependency outside the stack. Off by default.
+xxh3 = ["dep:xxhash-rust"]
+
+[dev-dependencies]
+# The crate's own tests run with XXH3 on.
+arvo-digest = { path = ".", features = ["xxh3"] }
+trybuild = "1"

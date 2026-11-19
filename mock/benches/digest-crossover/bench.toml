@@ -1,0 +1,12 @@
+# The digest crossover (arvo-digest, the switched digest). Three arms over one
+# run of bytes per point: FNV-1a at 64 bits, XXH3 at 64 bits on xxhash-rust's
+# runtime path, and the same on its const path. The crossover is the shortest
+# length from which the runtime XXH3 arm is faster than FNV-1a at every
+# measured length, each with an interval that excludes zero. The points are
+# the lengths, in bytes: short, where FNV-1a's one multiply per byte is
+# expected to win, through 256, past XXH3's short-input classes.
+title = "FNV-1a against XXH3 at 64 bits, by input length"
+workload = "default"
+arms = ["digest-fnv1a64", "digest-xxh3-64", "digest-xxh3-64-const"]
+baseline = "digest-fnv1a64"
+points = [1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256]

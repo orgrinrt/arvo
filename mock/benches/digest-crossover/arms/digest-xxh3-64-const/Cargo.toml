@@ -1,0 +1,15 @@
+[package]
+name = "bench-digest-xxh3-64-const"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "digest_xxh3_64_const"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+arvo-bits = { path = "../../../../crates/arvo-bits" }
+arvo-digest = { path = "../../../../crates/arvo-digest", features = ["xxh3"] }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }

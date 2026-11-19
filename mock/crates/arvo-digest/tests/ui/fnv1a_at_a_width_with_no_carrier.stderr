@@ -1,0 +1,25 @@
+error[E0277]: the trait bound `arvo_digest::Output<96>: Carrier` is not satisfied
+ --> tests/ui/fnv1a_at_a_width_with_no_carrier.rs:5:13
+  |
+5 | fn takes(_: Fnv1a<96>) {}
+  |             ^^^^^^^^^ the trait `Carrier` is not implemented for `arvo_digest::Output<96>`
+  |
+help: the following other types implement trait `Carrier`
+ --> src/digest.rs
+  |
+  | impl Carrier for Output<32> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_digest::Output<32>`
+...
+  | impl Carrier for Output<64> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_digest::Output<64>`
+...
+  | impl Carrier for Output<128> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_digest::Output<128>`
+note: required by a bound in `Fnv1a`
+ --> src/fnv1a.rs
+  |
+  | pub struct Fnv1a<const BITS: u32>
+  |            ----- required by a bound in this struct
+  | where
+  |     Output<BITS>: Carrier;
+  |                   ^^^^^^^ required by this bound in `Fnv1a`

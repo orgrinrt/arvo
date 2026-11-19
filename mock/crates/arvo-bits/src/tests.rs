@@ -198,6 +198,39 @@ macro_rules! every_width {
             )*
         }
 
+        /// The `xor` laws at every admitted width: it agrees with the host's xor,
+        /// is its own inverse, has the zero value as its identity, commutes and
+        /// associates, over every pair and every triple of the probes.
+        #[test]
+        fn xor_agrees_with_the_hosts_and_inverts_itself_everywhere() {
+            let probes: [u64; 8] = [
+                0,
+                1,
+                u64::MAX,
+                u64::MAX - 1,
+                0x5555_5555_5555_5555,
+                0xAAAA_AAAA_AAAA_AAAA,
+                0x8000_0000_0000_0000,
+                0x0123_4567_89AB_CDEF,
+            ];
+            $(
+                for a in probes {
+                    for b in probes {
+                        let (x, y) = (Bits::<$n>::masked(a), Bits::<$n>::masked(b));
+                        assert_eq!(x.xor(y).raw(), x.raw() ^ y.raw(), "at N = {}", $n);
+                        assert_eq!(x.xor(y).raw() & !mask_by_folding($n), 0, "at N = {}", $n);
+                        assert_eq!(x.xor(y).xor(y), x, "at N = {}", $n);
+                        assert_eq!(x.xor(Bits::<$n>::masked(0)), x, "at N = {}", $n);
+                        assert_eq!(x.xor(y), y.xor(x), "commutes at N = {}", $n);
+                        for c in probes {
+                            let z = Bits::<$n>::masked(c);
+                            assert_eq!(x.xor(y).xor(z), x.xor(y.xor(z)), "associates at N = {}", $n);
+                        }
+                    }
+                }
+            )*
+        }
+
         /// A cast to every admitted width from every admitted width, all four
         /// thousand and ninety-six pairs, each over eight probes, against the
         /// oracle. Widening keeps every bit and narrowing drops exactly those
