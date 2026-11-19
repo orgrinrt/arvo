@@ -1,0 +1,50 @@
+== cargo check
+    Finished `dev` profile [unoptimized] target(s) in 0.01s
+exit 0
+== cargo build
+   Compiling constant-bound-check v0.0.0 (/home/user/.worktrees/shape-reading/mock/research/sketches/202611192130_numeral-contracts-reading/constant-bound-check)
+error[E0080]: evaluation panicked: `constant::<V>()` names a slot index outside the signature's range. Pick a member, or ingest the position with `adapted`, which completes it by the declared policy
+   --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+    |
+ 62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_numeral::Num::<arvo_format::Signature<arvo_format::points::Integer<8>, arvo_format::Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Saturate>>, arvo_numeral::Quiet>::constant::<300>::{constant#0}` failed here
+    |
+   ::: /home/user/.worktrees/shape-reading/mock/crates/arvo-numeral/src/num.rs:120:13
+    |
+120 | /             assert!(
+121 | |                 slot_in_range::<SlotsOf<S>>(Slot::at(V)).get(),
+122 | |                 "`constant::<V>()` names a slot index outside the signature's range. Pick a member, \
+123 | |                  or ingest the position with `adapted`, which completes it by the declared policy"
+124 | |             );
+    | |_____________- in this macro invocation
+
+note: erroneous constant encountered
+   --> /home/user/.worktrees/shape-reading/mock/crates/arvo-numeral/src/num.rs:118:9
+    |
+118 | /         const {
+119 | |             let () = S::ADMITTED;
+120 | |             assert!(
+121 | |                 slot_in_range::<SlotsOf<S>>(Slot::at(V)).get(),
+...   |
+124 | |             );
+125 | |         }
+    | |_________^
+
+note: erroneous constant encountered
+  --> src/lib.rs:26:5
+   |
+26 |     T::MEMBER
+   |     ^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn three_hundred::<Num<Signature<Integer<8>, Adapt<..., ...>>, ...>>`
+  --> src/lib.rs:31:5
+   |
+31 |     three_hundred::<I8>()
+   |     ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: the full name for the type has been written to '/home/user/target/debug/deps/constant_bound_check-6ec0eeee4fa67a56.long-type-11135937570679131580.txt'
+   = note: consider using `--verbose` to print the full type name to the console
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `constant-bound-check` (lib) due to 1 previous error
+exit 101

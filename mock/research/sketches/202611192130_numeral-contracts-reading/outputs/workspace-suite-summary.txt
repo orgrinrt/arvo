@@ -1,0 +1,135 @@
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_bits-60f6599e6b366c4f)
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+     Running tests/compile_fail.rs (/home/user/target/debug/deps/compile_fail-0c7fc2b7da148f58)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_digest-b8bbde98c40f8bae)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/bits.rs (/home/user/target/debug/deps/bits-c9d3cb398b1ce304)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/fnv1a.rs (/home/user/target/debug/deps/fnv1a-7e2b2cdee0ee367e)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+     Running tests/refused.rs (/home/user/target/debug/deps/refused-3f9889f920f0977f)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.15s
+     Running tests/xxh3.rs (/home/user/target/debug/deps/xxh3-f9247fda65e7de9d)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_format-453a1241593409c3)
+test result: ok. 348 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 241.36s
+     Running tests/compile_fail.rs (/home/user/target/debug/deps/compile_fail-cc11ab6d499bdd14)
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.78s
+     Running tests/ieee754_binary_parity.rs (/home/user/target/debug/deps/ieee754_binary_parity-3a802343aece721f)
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.55s
+     Running tests/ieee754_decimal_parity.rs (/home/user/target/debug/deps/ieee754_decimal_parity-f8069826da573422)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.56s
+     Running tests/ieee754_underflow_parity.rs (/home/user/target/debug/deps/ieee754_underflow_parity-4a1f26be6c8a4997)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+     Running tests/matlab_fi_parity.rs (/home/user/target/debug/deps/matlab_fi_parity-660221278ef2dfa0)
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/matlab_fimath_parity.rs (/home/user/target/debug/deps/matlab_fimath_parity-e29eb294a8211b79)
+test result: ok. 268 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+     Running tests/the_ties_away_alias.rs (/home/user/target/debug/deps/the_ties_away_alias-c1c8a9c4695f6b97)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_numeral-8d7c730612aa44d6)
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 72.42s
+     Running tests/a_consumer_crate.rs (/home/user/target/debug/deps/a_consumer_crate-04c3b77d3d607595)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+     Running tests/band_17_to_32.rs (/home/user/target/debug/deps/band_17_to_32-e9b462470ea39be2)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.80s
+     Running tests/band_1_to_8.rs (/home/user/target/debug/deps/band_1_to_8-a6bd04605ee61031)
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.44s
+     Running tests/band_33_to_64.rs (/home/user/target/debug/deps/band_33_to_64-34f0976f9401e510)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.29s
+     Running tests/band_9_to_16.rs (/home/user/target/debug/deps/band_9_to_16-ea18786e58fb60d8)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.33s
+     Running tests/compile_fail.rs (/home/user/target/debug/deps/compile_fail-61f913a97aae7e55)
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.81s
+     Running tests/fixed_point_product.rs (/home/user/target/debug/deps/fixed_point_product-aab534d7965804c5)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+     Running tests/the_conversion.rs (/home/user/target/debug/deps/the_conversion-ce685c49b7c855ce)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.43s
+     Running tests/the_conversion_at_every_exponent_binary.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_binary-7e73ac8bd55a5b3c)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 46.85s
+     Running tests/the_conversion_at_every_exponent_binary_wide.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_binary_wide-09b527e7caaabd0f)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 52.36s
+     Running tests/the_conversion_at_every_exponent_decimal.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_decimal-988658541b3d3998)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.78s
+     Running tests/the_conversion_at_every_exponent_decimal_wide.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_decimal_wide-4347cc6810923271)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 42.91s
+     Running tests/the_conversion_at_every_exponent_ternary.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_ternary-8e4c2f5eeb40be7e)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 38.57s
+     Running tests/the_conversion_at_every_exponent_ternary_wide.rs (/home/user/target/debug/deps/the_conversion_at_every_exponent_ternary_wide-9ae17635be258d1a)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 44.62s
+     Running tests/the_conversion_at_every_width_binary.rs (/home/user/target/debug/deps/the_conversion_at_every_width_binary-40d0ab72c1701f03)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.09s
+     Running tests/the_conversion_at_every_width_binary_rounded.rs (/home/user/target/debug/deps/the_conversion_at_every_width_binary_rounded-99680b622a9dab93)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.70s
+     Running tests/the_conversion_at_every_width_decimal.rs (/home/user/target/debug/deps/the_conversion_at_every_width_decimal-b055f5d90c5c19c5)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.21s
+     Running tests/the_conversion_at_every_width_decimal_rounded.rs (/home/user/target/debug/deps/the_conversion_at_every_width_decimal_rounded-0c20431850996c04)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.16s
+     Running tests/the_conversion_at_every_width_ternary.rs (/home/user/target/debug/deps/the_conversion_at_every_width_ternary-da04cb0e5f519ccf)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.00s
+     Running tests/the_conversion_at_every_width_ternary_rounded.rs (/home/user/target/debug/deps/the_conversion_at_every_width_ternary_rounded-bd27062ecc06e5d1)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.28s
+     Running tests/the_conversion_at_the_positive_edge_binary.rs (/home/user/target/debug/deps/the_conversion_at_the_positive_edge_binary-476cffc6972205d9)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.63s
+     Running tests/the_conversion_at_the_positive_edge_decimal.rs (/home/user/target/debug/deps/the_conversion_at_the_positive_edge_decimal-dfb3bc89f015c3d0)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.16s
+     Running tests/the_conversion_at_the_positive_edge_ternary.rs (/home/user/target/debug/deps/the_conversion_at_the_positive_edge_ternary-2a5f2ee6f4e9f53a)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.96s
+     Running tests/the_conversion_between_radixes.rs (/home/user/target/debug/deps/the_conversion_between_radixes-b8c3f928fbf95031)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.92s
+     Running tests/the_conversion_under_every_source_signature.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature-da78317f82e0660e)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.13s
+     Running tests/the_conversion_under_every_source_signature_past_the_range.rs (/home/user/target/debug/deps/the_conversion_under_every_source_signature_past_the_range-b1299b36b1d43979)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.78s
+     Running tests/the_count.rs (/home/user/target/debug/deps/the_count-70555acb21f1d9bd)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_count_without_const.rs (/home/user/target/debug/deps/the_count_without_const-f5b32834d66f021e)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_crossing.rs (/home/user/target/debug/deps/the_crossing-9f1ddc5174c0eaf8)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/the_debug_check.rs (/home/user/target/debug/deps/the_debug_check-44f7e7355cb1bbbc)
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+     Running tests/the_debug_check_at_every_width.rs (/home/user/target/debug/deps/the_debug_check_at_every_width-3ae145f065a5475f)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.52s
+     Running tests/the_debug_check_in_release.rs (/home/user/target/debug/deps/the_debug_check_in_release-32cb3098c4b29829)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_host_door.rs (/home/user/target/debug/deps/the_host_door-03272287306ee0b5)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.35s
+     Running tests/the_lane.rs (/home/user/target/debug/deps/the_lane-44bb58375edff885)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/the_oracle.rs (/home/user/target/debug/deps/the_oracle-222908e270b5e49e)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.58s
+     Running tests/the_product_at_every_shape_binary.rs (/home/user/target/debug/deps/the_product_at_every_shape_binary-235a4b8ccd53719d)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.44s
+     Running tests/the_product_at_every_shape_decimal.rs (/home/user/target/debug/deps/the_product_at_every_shape_decimal-1be0dbd1d07fab91)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.15s
+     Running tests/the_product_at_every_shape_ternary.rs (/home/user/target/debug/deps/the_product_at_every_shape_ternary-62ae7a0dd4c5d811)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.69s
+     Running tests/the_quotient.rs (/home/user/target/debug/deps/the_quotient-450bd307ca7f3443)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/the_quotient_at_every_shape_binary.rs (/home/user/target/debug/deps/the_quotient_at_every_shape_binary-987fe03a3f975b44)
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 51.93s
+     Running tests/the_quotient_at_every_shape_decimal.rs (/home/user/target/debug/deps/the_quotient_at_every_shape_decimal-ec4b6f6654d553fc)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 46.51s
+     Running tests/the_quotient_at_every_shape_ternary.rs (/home/user/target/debug/deps/the_quotient_at_every_shape_ternary-7f43b4bcb86b5d62)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 45.45s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_placement-14ac0a4637128cd4)
+test result: ok. 24 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_strategy-f400df30c3d42dbd)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   Doc-tests arvo_bits
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   Doc-tests arvo_digest
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   Doc-tests arvo_format
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+   Doc-tests arvo_numeral
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   Doc-tests arvo_placement
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+   Doc-tests arvo_strategy
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+EXIT 0

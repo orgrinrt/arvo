@@ -1,0 +1,4 @@
+    Finished `release` profile [optimized] target(s) in 0.01s
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running `/home/user/target/release/law-regions`
+exit 0
