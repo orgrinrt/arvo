@@ -74,8 +74,21 @@ bench run that has not been made. The branch's three `digest-crossover` arms, in
 the 64-bit reference values included; `cargo deny check licenses` could not run (ticket
 `lazy_tool_cannot_install_cargo_deny_in_a_helper_container`).
 
-Tickets `arvo_has_two_width_vocabularies_u16_for_a_digest_and_u32_for` and
-`arvo_digest_s_digest_does_not_derive_hash_while_bits_does`, from the branch's review, stay open on
-what landed. Ticket `arvo_format_admits_the_wrapping_product_over_the_unsigned_64` is met on `dev` by
+Ticket `arvo_has_two_width_vocabularies_u16_for_a_digest_and_u32_for` is met by `e3202031`, where
+the digest counts its widths in `u32`, and waits on the coordinator to close it. Ticket
+`arvo_digest_s_digest_does_not_derive_hash_while_bits_does`, from the branch's review, stays open on
+what landed.
+
+## The reviews of the landing
+
+Three fresh passes read `work/arvo-stranded`: `REVIEW_1.md` at `ec0dc80c`, `REVIEW_2.md` at `50ebd78a`
+and `REVIEW_3.md` at `c7730375`, each merge after fixes. Rounds `202611191552-y2ye` and
+`202611191608-le48` answer the first two. Of the third's two blockers, the XXH3 suite was run on the
+two further SIMD paths this host has, on top of the SSE2 default, both green (6 tests each), under
+`RUSTFLAGS="-C target-feature=+avx2"` and `+avx512f`, with
+`cargo test --manifest-path mock/Cargo.toml -p arvo-digest --test xxh3`. Scalar, NEON and wasm are not
+run, and the canon declaration of the design and a ruling row for op's xxhash call are left; those
+and the third pass's other findings are follow-up tickets, after the third pass, as the landing rule
+has it. Ticket `arvo_format_admits_the_wrapping_product_over_the_unsigned_64` is met on `dev` by
 `d0161800` (closed ticket `value_s_product_admits_the_unsigned_64_bit_wrapping_product`), and nothing
 cites it any more.
