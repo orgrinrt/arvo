@@ -8,9 +8,9 @@ design sits under and stays compliant with regardless of how its own open questi
 
 ## What this crate is
 
-One type, `Bits<const N: u32>`, holding a value known to be exactly `N` bits wide. It is not a numeral:
-there is no sign, no ambient domain, no quantum, no rounding, no arithmetic operation anywhere in this
-crate. It is the mechanical fact of a value at a declared width, with the ability to be constructed
+One type, `Bits<const N: u32>`, holding a value known to be exactly `N` bits wide, and `Bytes<'a>`, the
+host's byte slice that is walked into it. It is not a numeral: there is no sign, no ambient domain, no
+quantum, no rounding, no arithmetic operation anywhere in this crate. It is the mechanical fact of a value at a declared width, with the ability to be constructed
 from a wider host value by masking and cast to a different declared width by masking again.
 
 The crate exists because of a gap between what the obligation asks for and what the two crates below
@@ -33,8 +33,9 @@ the constant itself buys nothing, because nothing in this design erases `N`: the
 knowing `N` at the same scope. A width accessor mirroring a const generic parameter a caller already
 has in hand is not a capability, it is a second name for one already in scope.
 
-So `Bits<N>` depends on nothing in this workspace. It is a leaf crate structurally parallel to
-`arvo-format`, not built on top of it, and it needs its own primitive door for the identical reason
+So `Bits<N>` depends on nothing in this workspace. Its one dependency is notko, the foundation under
+the whole stack and no member of this workspace, for the `Maybe` that `Bytes::split_first` returns. It is a leaf crate
+structurally parallel to `arvo-format`, not built on top of it, and it needs its own primitive door for the identical reason
 `arvo-format` has one: the crate that defines a value at an exact width cannot express itself in types
 that do not exist yet.
 
@@ -82,6 +83,29 @@ bit, because the wider mask is a strict superset of the narrower one. Narrowing 
 bits above `M`, which is exactly what a masked cast at a boundary the consumer controls already means
 in the consumer's own vocabulary, and is not a defect this design tries to prevent.
 
+`Bits::<N>::xor(self, other: Self) -> Self` is the bitwise exclusive or of two values at one width. It is
+a bit operation and not arithmetic: no bit of the result depends on any other bit position, so nothing
+carries, nothing overflows and there is no policy to choose. The result is already within `N` bits, so
+it needs no mask. Both sides are one width; a consumer xoring two widths casts one first, which keeps
+the choice of width the consumer's.
+
+`Bits::<64>::halves(raw: u128) -> [Bits<64>; 2]` splits a 128-bit host value into its low half and its
+high half, in that order. A value wider than the carrier is held as an array of carriers rather than
+as a wider `Bits`, because the carrier stops at sixty-four, and this door is where the host's 128-bit
+integer meets that array.
+
+## The byte run: `Bytes<'a>`
+
+`Bytes<'a>` is a borrowed run of the host's bytes, `repr(transparent)` over `&'a [u8]`. It is the door
+the host's byte image enters the stack by, and it sits in this crate because this crate already
+introduces the container a byte is read into. `Bytes::of(&'a [u8])` wraps the slice and `Bytes::host`
+gives it back, for the one place a host contract needs it, such as a library taking a slice.
+
+A run is walked by `split_first`, which returns `notko::Maybe<(Bits<8>, Bytes<'a>)>`: the first byte
+and the rest, or `Isnt` when the run is empty. Walking needs no index type and no length, and the walk
+is a `const fn`, so a digest over it can be. Nothing here asks a run's length; a consumer that needs
+it at a boundary adds the question with its use.
+
 ## What the ruling constrains, and how this design stays inside it without resolving it
 
 `ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` carries op's words that arvo may
@@ -96,7 +120,7 @@ consumer did not decide themselves.
 
 ## What this crate does not ship
 
-No hashing algorithm, no `arvo-hash` crate, no `ContentHash` alias, no `rkyv::Archive` implementation.
+No hashing algorithm (`arvo-digest` holds those, built on this crate), no `arvo-hash` crate, no `ContentHash` alias, no `rkyv::Archive` implementation.
 The obligation asks for a container a consumer can "alias under its own name," which is the consumer
 doing the aliasing; nothing here pre-empts that by shipping a domain alias of its own. A downstream
 crate wanting `pub type ContentHash = arvo_bits::Bits<28>;` writes exactly that line, in its own crate,
@@ -104,8 +128,10 @@ whenever it wants it.
 
 ## The surface this design names
 
-`Bits<const N: u32>` is the whole public type. `masked` constructs, `raw` reads the value back at its
-natural host width, `cast` reinterprets at a different declared width. `Clone`, `Copy`, `PartialEq`,
+`Bits<const N: u32>` and `Bytes<'a>` are the whole public surface. `masked` constructs, `raw` reads the
+value back at its natural host width, `cast` reinterprets at a different declared width, `xor` combines
+two values at one width, and `halves` splits a 128-bit host value. `Bytes` has `of`, `host` and
+`split_first`, and derives `Clone`, `Copy`, `PartialEq`, `Eq` and `Debug`. `Clone`, `Copy`, `PartialEq`,
 `Eq`, `PartialOrd`, `Ord`, `Hash`, `Debug` are derived, matching the derive set `arvo_format::Width` and
 `arvo_format::slots::Slot` already carry, with `Hash` added because a consumer using this as a lookup
 key (a content hash into a string table, named directly in the obligation's own `why`) needs it.
@@ -128,3 +154,13 @@ Bits::<M>::masked(b.raw())` for every `b: Bits<N>` and every admitted `M`, inclu
 `N` outside `1..=64` is refused at `cargo build`, not at `cargo check`. Pinned as a `trybuild`
 `compile_fail` case at `N == 0` and at `N == 65`, mirroring `arvo_format::slots`'s own
 `width_above_the_bound.rs`.
+
+`xor` stays within `N` bits and agrees with the host's xor: `a.xor(b).raw() == a.raw() ^ b.raw()`.
+It is its own inverse, `a.xor(b).xor(b) == a`, and xoring with the zero value is the identity.
+
+`halves` loses nothing: the low half is the low sixty-four bits of `raw`, the high half the rest, and
+the two shifted and ored back give `raw`, over values with only the low half set, only the high half
+set, both, and neither.
+
+`split_first` walks a run in order and ends: walking `Bytes::of(s)` to `Isnt` yields exactly the bytes
+of `s`, each as a `Bits<8>`, for the empty run and for a run of every byte value.
