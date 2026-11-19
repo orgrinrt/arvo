@@ -15,6 +15,7 @@ name = "arvo-digest"
 version = "0.0.0"
 dependencies = [
  "arvo-bits",
+ "arvo-digest",
  "arvo-format",
  "arvo-numeral",
  "notko",

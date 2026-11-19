@@ -11,5 +11,5 @@ crate-type = ["cdylib"]
 
 [dependencies]
 arvo-bits = { path = "../../../../crates/arvo-bits" }
-arvo-digest = { path = "../../../../crates/arvo-digest" }
+arvo-digest = { path = "../../../../crates/arvo-digest", features = ["xxh3"] }
 mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }

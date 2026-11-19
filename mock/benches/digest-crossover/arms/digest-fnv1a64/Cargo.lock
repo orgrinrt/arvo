@@ -17,7 +17,6 @@ dependencies = [
  "arvo-format",
  "arvo-numeral",
  "notko",
- "xxhash-rust",
 ]
 
 [[package]]
@@ -61,9 +60,3 @@ source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#6d7acb69
 name = "notko"
 version = "0.0.1"
 source = "git+https://github.com/orgrinrt/notko.git?branch=dev#1b2a572310e2a5b5176ded1e2361efb7226f37fa"
-
-[[package]]
-name = "xxhash-rust"
-version = "0.8.21"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40de123dbb523ebcc00d61ec01840ad192578afc378d859f3429caa38308fad5"

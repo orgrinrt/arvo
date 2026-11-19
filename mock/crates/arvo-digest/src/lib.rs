@@ -24,10 +24,12 @@
 
 mod digest;
 mod fnv1a;
+#[cfg(feature = "xxh3")]
 mod xxh3;
 
 pub use digest::{Carrier, Digest, Output};
 pub use fnv1a::Fnv1a;
+#[cfg(feature = "xxh3")]
 pub use xxh3::Xxh3;
 
 // FIXME(the_switched_64_bit_digest_and_its_crossover_bench_in_the_ha): the switched

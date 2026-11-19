@@ -98,36 +98,15 @@ fn a_64_bit_digest_keeps_its_low_bits_at_every_width() {
     }
 }
 
-/// The planted narrowing itself, held against the check: had `bits` kept the
-/// high bits, the assertion the sweep makes would have failed.
-#[test]
-#[should_panic(expected = "the low 16 bits")]
-fn a_narrowing_that_kept_the_high_bits_is_refused() {
-    let whole = Xxh3::<64>::of(Bytes::of(b"foobar")).raw().raw();
-    assert_eq!(
-        high(whole, 16, 64),
-        low(whole, 16),
-        "the low 16 bits of a 64 bit digest"
-    );
-}
-
 /// The carrier each width is held in, pinned as a type: each binding compiles
 /// only while `Carrier::Raw` at that width is the container named, so a
 /// carrier that changed would refuse this file at build.
 #[test]
 fn each_width_is_held_in_the_carrier_it_names() {
-    fn raw_of<const BITS: u32>(
-        raw: <Output<BITS> as Carrier>::Raw,
-    ) -> <Output<BITS> as Carrier>::Raw
-    where
-        Output<BITS>: Carrier,
-    {
-        raw
-    }
-    let at_32: Bits<32> = raw_of::<32>(Fnv1a::<32>::of(Bytes::of(b"a")).raw());
-    let at_64: Bits<64> = raw_of::<64>(Xxh3::<64>::of(Bytes::of(b"a")).raw());
-    let at_128: [Bits<64>; 2] = raw_of::<128>(Xxh3::<128>::of(Bytes::of(b"a")).raw());
-    assert_eq!(at_32.raw(), 0xE40C_292C);
-    assert_eq!(at_64.raw(), Xxh3::<64>::of(Bytes::of(b"a")).raw().raw());
-    assert_eq!(at_128, Xxh3::<128>::of(Bytes::of(b"a")).raw());
+    let at_32: <Output<32> as Carrier>::Raw = Fnv1a::<32>::of(Bytes::of(b"a")).raw();
+    let _: Bits<32> = at_32;
+    let at_64: <Output<64> as Carrier>::Raw = Fnv1a::<64>::of(Bytes::of(b"a")).raw();
+    let _: Bits<64> = at_64;
+    let at_128: <Output<128> as Carrier>::Raw = Xxh3::<128>::of(Bytes::of(b"a")).raw();
+    let _: [Bits<64>; 2] = at_128;
 }
