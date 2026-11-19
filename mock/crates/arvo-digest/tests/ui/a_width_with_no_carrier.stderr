@@ -1,0 +1,53 @@
+error[E0277]: the trait bound `Width<96>: Carrier` is not satisfied
+ --> tests/ui/a_width_with_no_carrier.rs:5:13
+  |
+5 | fn takes(_: Digest<96>) {}
+  |             ^^^^^^^^^^ the trait `Carrier` is not implemented for `Width<96>`
+  |
+help: the following other types implement trait `Carrier`
+ --> src/digest.rs
+  |
+  | impl Carrier for Width<32> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^ `Width<32>`
+...
+  | impl Carrier for Width<64> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^ `Width<64>`
+...
+  | impl Carrier for Width<128> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Width<128>`
+note: required by a bound in `Digest`
+ --> src/digest.rs
+  |
+  | pub struct Digest<const BITS: u16>(<Width<BITS> as Carrier>::Raw)
+  |            ------ required by a bound in this struct
+  | where
+  |     Width<BITS>: Carrier;
+  |                  ^^^^^^^ required by this bound in `Digest`
+
+error[E0277]: the trait bound `Width<96>: Carrier` is not satisfied in `Digest<96>`
+ --> tests/ui/a_width_with_no_carrier.rs:5:13
+  |
+5 | fn takes(_: Digest<96>) {}
+  |             ^^^^^^^^^^ within `Digest<96>`, the trait `Carrier` is not implemented for `Width<96>`
+  |
+help: the following other types implement trait `Carrier`
+ --> src/digest.rs
+  |
+  | impl Carrier for Width<32> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^ `Width<32>`
+...
+  | impl Carrier for Width<64> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^ `Width<64>`
+...
+  | impl Carrier for Width<128> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Width<128>`
+note: required because it appears within the type `Digest<96>`
+ --> src/digest.rs
+  |
+  | pub struct Digest<const BITS: u16>(<Width<BITS> as Carrier>::Raw)
+  |            ^^^^^^
+  = help: unsized fn params are gated as an unstable feature
+help: function arguments must have a statically known size, borrowed types always have a known size
+  |
+5 | fn takes(_: &Digest<96>) {}
+  |             +

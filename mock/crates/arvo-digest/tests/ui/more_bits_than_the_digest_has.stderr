@@ -1,0 +1,16 @@
+error[E0080]: evaluation panicked: a 32 bit digest has no bits above 32 to give
+ --> $RUST/core/src/panic.rs
+  |
+  |         $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_digest::Digest::<32>::bits::<40>::{constant#0}` failed here
+  |
+ ::: src/digest.rs
+  |
+  |         const { assert!(N <= 32, "a 32 bit digest has no bits above 32 to give") };
+  |                 ---------------------------------------------------------------- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/digest.rs
+  |
+  |         const { assert!(N <= 32, "a 32 bit digest has no bits above 32 to give") };
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
