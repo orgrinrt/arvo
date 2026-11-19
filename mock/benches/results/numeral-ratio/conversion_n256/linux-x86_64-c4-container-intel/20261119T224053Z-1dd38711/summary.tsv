@@ -1,0 +1,4 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795128135	1dd38711	conversion_n256	numeral_ratio_conversion_hand	256	warm	112.0	112.0	112.2
+1795128135	1dd38711	conversion_n256	numeral_ratio_conversion_room	256	warm	177.3	177.3	177.6
+1795128135	1dd38711	conversion_n256	numeral_ratio_conversion_wide	256	warm	8356.2	8356.2	8390.5
