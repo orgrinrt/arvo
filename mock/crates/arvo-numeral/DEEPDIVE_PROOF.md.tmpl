@@ -187,8 +187,8 @@ both ends of the signature's range with theirs. `index` returns what `from_index
 lattice at every width, in every host integer the range fits, and the lists of host integers per width
 are whole, a host integer left out being one the build refuses there.
 
-The format forms the product, the quotient and the conversion in the host's 128-bit integer where the
-bound over the range holds, and in its four limbs where it does not, so the shapes above run both: every
+The product, the quotient and the conversion are formed in the host's 128-bit integer where the bound
+over the range holds, and by the format's four-limb step where it does not, so the shapes above run both: every
 width up to 8 and most of the wider ones on the first, the deepest and the highest exponents of the
 64-bit widths on the second. The suites are the same for the two, which is the point, since equality
 with the oracle is what either owes. One test divides a value by a value read at run time, through
@@ -199,7 +199,7 @@ members of the 8-bit ranges at three exponents, against the oracle.
 wrapping quotient gives for the lowest signed member over minus one. `arvo_mutant_convert` reads the
 source's slot index as the target's and so drops the two exponents. `arvo_mutant_index` makes the saturating door
 send a negative host integer to the top of an unsigned range, which is what a comparison done after a
-cast gives. `arvo_mutant_host`, a flag of the format's, floors a negative ratio in the host's integer to the
+cast gives. `arvo_mutant_room` floors a negative ratio in the host's integer to the
 negated quotient with no step down, which is the floor of a cast toward zero, and the quotient, product
 and conversion suites go red on it. Each turns its own tests red and leaves the others green, and each red run is committed.
 

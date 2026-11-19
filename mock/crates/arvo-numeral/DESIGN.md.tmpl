@@ -305,17 +305,23 @@ and `e` the quantum's exponent, and what that asks of the value depends on `e` a
    product is carrier arithmetic, the rung's. Every integer takes this arm, the platform-width ones
    among them.
 2. At any other `e` the position is the slots' product moved up by `r^e`, or divided by `r^-e` with a
-   remainder that the rounding mode decides. The product is `arvo_format::mul` on the two slots,
-   called as it stands. The rounding has one home, the format's applied map, and a second one written
-   here to be quick would be a second arithmetic kept equal to the first by tests alone.
+   remainder that the rounding mode decides. The value forms that position, its floor and its residue,
+   and the format's applied map, `adapt`, rounds and completes it under the signature, so the rounding
+   keeps its one home and only the placing of the ratio is done here.
 
 Which arm an instantiation takes is a constant of it, read from the quantum's exponent, so one arm
-survives monomorphisation. The second arm runs the format's exact step, which the format forms in the
-host's 128-bit integer wherever every product of two members fits there, and four 64-bit limbs wide
-only where one does not. So every product at a negative exponent, at every width a value has and
-the 64-bit ones among them, is one 128-bit division. The quotient and the conversion below go through the format's
-step in the same way, and for the same reason: the rounding of a ratio has one home, and so does the
-placing of one.
+survives monomorphisation. The second arm forms the position in the host's 128-bit integer, where the
+bound over the range holds: the largest numerator two members reach and the denominator fit its
+unsigned 128-bit integer and their quotient is below `2^127`, so the floor and the slot under it are in the index.
+That bound reads the range, the radix and the exponent and nothing of a member, so it is a constant
+too. Where it does not hold the position is the format's own exact step, `arvo_format::mul` on the two
+slots, formed four 64-bit limbs wide. So every product at a negative exponent, at every width a value
+has and the 64-bit ones among them, is one 128-bit division. The format cannot take that arm itself:
+its step is total over every slot, members or not, and a slot that is not a member can pass any bound
+over the range, so an arm there would be a test of the operands at run time. A value holds only members,
+which is what lets the bound be a constant here. The quotient and the conversion below are formed the
+same way, by one ratio the three share.
+
 
 `mul` forces the format's multiplication obligation, the one `product_position` forces, as a constant
 of the instantiation, in both arms. So a product the format does not admit is refused at build with
