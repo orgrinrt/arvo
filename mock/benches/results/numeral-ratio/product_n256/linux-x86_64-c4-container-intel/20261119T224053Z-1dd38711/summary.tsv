@@ -1,0 +1,4 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795128215	1dd38711	product_n256	numeral_ratio_product_hand	256	warm	153.0	153.0	153.6
+1795128215	1dd38711	product_n256	numeral_ratio_product_room	256	warm	171.5	171.5	172.2
+1795128215	1dd38711	product_n256	numeral_ratio_product_wide	256	warm	10920.1	10920.1	11042.3
