@@ -1,0 +1,31 @@
+# The value's quotient, product and conversion with the ratio formed in the
+# host's 128-bit integer (`room`), against the same operation on the format's
+# four-limb step (`wide`, what the value called before), against the operation
+# a consumer writes on the machine's integers (`hand`, the baseline). The
+# signature is `Fixed<16, -8>` under half-even and saturation; the quotient's
+# divisor is read at run time through a member of the positive slots. The
+# input is 4-byte records, two `i16` slot indices, and the output one `i16`
+# per record. See `support/numeral-ratio-shared`.
+title = "The value's ratio in the host integer, against the four limbs and the hand version"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+may_differ = false
+required = true
+
+[sweep.quotient]
+title = "The quotient of a 16-bit fixed point by a value read at run time, 64 records"
+arms = ["numeral-ratio-quotient-hand", "numeral-ratio-quotient-room", "numeral-ratio-quotient-wide"]
+baseline = "numeral_ratio_quotient_hand"
+points = [256]
+
+[sweep.product]
+title = "The product of two 16-bit fixed points at exponent -8, 64 records"
+arms = ["numeral-ratio-product-hand", "numeral-ratio-product-room", "numeral-ratio-product-wide"]
+baseline = "numeral_ratio_product_hand"
+points = [256]
+
+[sweep.conversion]
+title = "A 16-bit fixed point at exponent -8 onto exponent -4, 64 records"
+arms = ["numeral-ratio-conversion-hand", "numeral-ratio-conversion-room", "numeral-ratio-conversion-wide"]
+baseline = "numeral_ratio_conversion_hand"
+points = [256]
