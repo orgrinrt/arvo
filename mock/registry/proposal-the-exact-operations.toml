@@ -82,3 +82,33 @@ provenance = [
   "mock::design_rounds/202611140438/202611140438_topic.a-member-is-a-type.md::#a-member-is-a-type-and-the-divisor-takes-one",
 ]
 keywords = ["quotient", "division", "divisor", "non-zero", "zero member", "by type", "member", "member door", "one quantum", "grid", "signed division", "runtime check", "admission"]
+
+[[proposal]]
+id = "a_remainder_is_the_dividend_less_the_divisor_times_an_integer_rounding_of_their_quotient"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_format"
+says = "A remainder is `r = a - b n`, with `n` an integer rounding of the exact quotient `a / b` and `b` a divisor non-zero by type through the quotient's own doors. Within one format of constant quantum and whole phase, `r` is exact and on the grid at every radix, exponent, signedness, rounding and policy: its slot is the integer remainder of the value indices shifted by the phase, which reads neither the radix nor the exponent, so the adaptation's rounding never acts and only its completion does, exactly where that slot leaves the range. `|r| < |b|` under every rounding of the count and `|r| <= |b| / 2` under the nearest ones; a non-zero `r` takes the dividend's sign under `toward_zero`, the divisor's under `floor` and the opposite under `ceil`. The Euclidean remainder is `floor` by a positive divisor and `ceil` by a negative one, and at a whole phase every divisor door fixes that sign at build. The axis that decides exactness is the phase, not the exponent."
+because = "For `a - b n` to stay on a grid of quantum `Q` for every divisor, `b n` must be a multiple of `Q` at the divisor `Q` itself, which forces `n` to be an integer; a count on the operands' own grid at a negative exponent puts `b n` on the grid of `Q^2`. At a whole phase `b n` is then a whole number of quanta and `r` lies on the dividend's coset. Both seats derived this cold and each swept it in a sketch over the exact rationals, with planted twins that went red: an exponent-only rule is wrong at 306 of 720 formats, and a quotient taken on the grid or a sign taken from the dividend fails its own check."
+provenance = [
+  "panel::202611192115_the-remainder-panel::fabian-giesen::52",
+  "panel::202611192115_the-remainder-panel::fabian-giesen::84",
+  "panel::202611192115_the-remainder-panel::donald-knuth::130",
+  "panel::202611192115_the-remainder-panel::donald-knuth::208",
+]
+keywords = ["remainder", "rem", "modulus", "fmod", "euclid", "integer count", "whole phase", "quotient", "divisor", "exact"]
+
+[[proposal]]
+id = "the_remainder_is_an_operation_of_the_format_because_no_composition_of_the_shipped_ones_reaches_it"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_format"
+says = "The remainder ships as an operation of the format, beside the quotient, read through the value by equality as every other operation is, and not as a consumer composition of the quotient, the product and the difference. The filed option keyed on a zero exponent alone is drawn on the wrong axis and is not the remainder away from that exponent."
+because = "Through the shipped quotient the count is rounded twice, onto the grid and then onto the integers, which misses under the nearest modes at an even radix and under every mode at a positive exponent; forming `a - b n` on the operands' signature completes the intermediate product under saturation where the remainder itself is in range, so it fails for every mode but `toward_zero`, the mechanism the fused-result ruling records for saturation. A consumer recomputing on integers one bit wider reaches it only at a zero phase and is a reimplementation, not a composition. Both standards in scope carry a remainder, so by the parity ruling a hole here is a defect of the framework."
+provenance = [
+  "panel::202611192115_the-remainder-panel::fabian-giesen::98",
+  "panel::202611192115_the-remainder-panel::donald-knuth::241",
+]
+keywords = ["remainder", "composition", "double rounding", "saturation", "option c", "locus", "format", "parity", "ieee 754", "matlab mod"]
