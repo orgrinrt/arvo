@@ -2176,6 +2176,23 @@ position: nothing is said about the slot index, since the map reads the floor wh
 formed when its numerator is. Each operation also starts from the phase as `n / d` in lowest
 terms with `d` positive, which the module reduces once.
 
+At a zero phase and a constant quantum the three steps are ratios of slot products and powers of the
+radix. With `u = r^max(e, 0)` and `v = r^max(-e, 0)`, the product of the members at `a` and `b` sits at
+`a b u / v`, the quotient of `a` by the divisor at `b` at `a v / (b u)`, and the member of `F` at `a` on
+`T`'s grid at `a u_F v_T / (v_F u_T)`. Where the largest numerator a member reaches and the smallest
+denominator are both in the host's unsigned 128-bit integer and their quotient is below `2^127`, the
+step is formed there instead: the magnitudes apart from the sign, one division, the floor taken toward
+negative infinity on the sign, and the residue reduced by a greatest common divisor in the same integer.
+A residue of nothing is stored as `Remainder::ZERO`, so the position is the one the four limbs build.
+The bound reads the range, the radix and the exponent and nothing of a member, so it is a constant of
+the format, or of the pair for the conversion, and each instantiation lowers to one of the two. A value
+at the widths up to 64 takes the first for every product at a negative exponent, every quotient at a
+radix-two exponent above `-63` and every conversion whose scaled range stays under `2^127`.
+
+The two are one step, so the law they owe is equality: the host's position equals the four limbs' at
+every pair of members of every format the bound admits, shown on both sides of the bound by the same
+suites, and the bound itself is shown true one exponent inside its edge and false one past it.
+)
 ## Division, the quotient by a member that is non-zero by type
 
 The quotient is admitted by the same rule as the product. Two members at a constant quantum `q` are
