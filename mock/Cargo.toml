@@ -71,7 +71,9 @@ arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }
 arvo-numeral = { path = "crates/arvo-numeral", version = "0.0.0" }
 arvo-digest = { path = "crates/arvo-digest", version = "0.0.0" }
-# XXH3 for `arvo-digest`, op's choice of 13 November 2026, with an XXH3 on arvo
+# XXH3 for `arvo-digest`, behind its default-off `xxh3` feature. Op's choice of
+# 13 November 2026 (clause-dev
+# `.data/op-responses/202611131704_op-on-option-1-i-love-zig-as-much-as.md`), with an XXH3 on arvo
 # and notko types benched against it as the follow-up (ticket
 # `bench_an_arvo_and_notko_native_xxh3_against_xxhash_rust_and`): `const fn`
 # paths and SIMD chosen by `cfg(target_feature)`, so nothing is detected at run

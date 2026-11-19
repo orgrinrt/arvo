@@ -112,4 +112,4 @@ narrowing is checked at every `N` from 1 to 32 on a 32 bit digest and from 1 to 
 against a narrowing that kept the high bits instead.
 
 `Fnv1a<BITS>` and `Xxh3<BITS>` are bounded on `Output<BITS>: Carrier`, so neither names a width the
-digest has no container for, and compile-fail cases show `Fnv1a<96>` and `Xxh3<32>` refused.
+digest has no container for, and compile-fail cases show `Fnv1a<96>` and `Xxh3<96>` refused. `Xxh3<32>` is a type, since 32 bits has a carrier, and has no `of`.
