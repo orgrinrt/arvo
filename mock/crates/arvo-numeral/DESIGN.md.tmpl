@@ -310,11 +310,12 @@ and `e` the quantum's exponent, and what that asks of the value depends on `e` a
    here to be quick would be a second arithmetic kept equal to the first by tests alone.
 
 Which arm an instantiation takes is a constant of it, read from the quantum's exponent, so one arm
-survives monomorphisation. The second arm runs the format's exact step, which is formed four 64-bit
-limbs wide, and is slow for it. The cure is the format's to ship, an adaptation computed at the
-container's width that this crate calls with the machine's widening product, and until it exists the
-call carries a `FIXME` naming its ticket. The quotient and the conversion below go through the same
-step under the same marker, and for the same reason: the rounding of a ratio has one home.
+survives monomorphisation. The second arm runs the format's exact step, which the format forms in the
+host's 128-bit integer wherever every product of two members fits there, and four 64-bit limbs wide
+only where one does not. So every product at a negative exponent, at every width a value has and
+the 64-bit ones among them, is one 128-bit division. The quotient and the conversion below go through the format's
+step in the same way, and for the same reason: the rounding of a ratio has one home, and so does the
+placing of one.
 
 `mul` forces the format's multiplication obligation, the one `product_position` forces, as a constant
 of the instantiation, in both arms. So a product the format does not admit is refused at build with
@@ -327,12 +328,14 @@ index, and the unsigned 64-bit integer multiplies under every policy the way eve
 `div` is the quotient, total, equal to the format's `div` on every member and every divisor, with
 `fits_div` its verdict. The divisor is `Divisor`, the format's own type, re-exported, taken over the
 value's format. That it is not zero is the format's guarantee, carried by the type, and nothing here
-states it a second time. A divisor is a constant today, `Divisor::constant::<B>()`. The format's
-other constructor takes a run-time slot only over a format in which no slot names the zero, and every
-format a value is admitted over has the zero in its range, so a value cannot yet be divided by a
-value. The membership type for the non-zero slots is the format's to ship, and the value takes it when
-it lands. The format ships no remainder as an operation either, so there is none here: a remainder
-defined in this crate would be a behaviour the value states on its own.
+states it a second time. A divisor is a constant, `Divisor::constant::<B>()`, or a member of a second format on the value's grid
+whose range leaves the zero out, `Divisor::member`. The second is how a value is divided by a value read
+at run time: the caller names that format, lands the value's slot in it with `Member::adapted`, which is
+in range by its totality, and the divisor is never zero because no member of that format is. A zero the
+caller's own data can reach is the caller's branch, taken before the divisor is formed, since what a
+zero means there is the caller's and not a behaviour of the value. No remainder is here: the canon has
+no row on one, and what it is at a fractional exponent, where `a - b q` is off the grid, is
+`what_a_remainder_over_a_fractional_arvo_format_is_beside_the`.
 
 `convert::<T>()` takes a value of `S` to a value of any `T: Sole`, with the debug check kept. The
 member is placed on `T`'s grid by `T`'s rounding and completed by `T`'s policy, which is the format's
@@ -537,13 +540,9 @@ no allocation, everything in types and contracts, and a cargo feature only where
 A carrier for a chain of operations is not here, an exact accumulator of a long sum among them: which
 ones ship is `question::which_chain_carrier_ships`, and it is open. A verdict on whether a host
 integer names a member is not here either, for the reason given at the doors.
-The remainder is not here because the format ships none, and a quotient by a value is not here because
-the format has no divisor built from a slot of a range that holds the zero; each is the format's to
-ship and has its ticket. The default itself is not here: no alias selects an
+The remainder is not here, for the reason given at the quotient. The default itself is not here: no alias selects an
 adaptation until the two open questions are answered, and the line that does lands with the answer. A
-crossing between the two debug checks on one signature is not here either. The adaptation at the container's width, which would
-take the fractional product, the quotient and the conversion off the format's wide step, is
-`arvo-format`'s to write and is not here. A value at shared occupancy, packed beside others, is a different placement
+crossing between the two debug checks on one signature is not here either. A value at shared occupancy, packed beside others, is a different placement
 and not this crate's. A door for a value's bits as bits, where a consumer needs one, is an encoding
 stated over the declared width, the shape an exact-width container in `arvo-bits` has, and never the
 carrier; none is here.
