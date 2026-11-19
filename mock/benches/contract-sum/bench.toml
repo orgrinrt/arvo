@@ -1,0 +1,13 @@
+# One bench: one question, one set of competing arms. The directory
+# name is the bench's name, so the fields sit at the top level with
+# no wrapper table. Sweeps are optional ([sweep.<name>] sections,
+# each with its own points and overrides); without them the points
+# here make a single default sweep named after the bench. Declared
+# roles: `baseline = "arm"` selects the arm every delta is computed
+# against; `floor = "arm"` a null-cost arm subtracted from every arm
+# first.
+
+title = "The sum through the Sum contract against Num::add, an ad hoc disassembly reading"
+workload = "default"
+arms = ["contract-sum-generic", "contract-sum-concrete"]
+points = [64, 256]

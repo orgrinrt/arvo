@@ -1,0 +1,20 @@
+# `sum_i8_wrap` of arm `contract-sum-concrete` of bench `contract-sum`
+# library: libcontract_sum_concrete.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261119T232204Z-5beb5a4f-dirty
+
+000000000000cb50 <sum_i8_wrap>:
+    cb50:      	leal	(%rsi,%rdi), %eax
+    cb53:      	retq
+    cb54:      	int3
+    cb55:      	int3
+    cb56:      	int3
+    cb57:      	int3
+    cb58:      	int3
+    cb59:      	int3
+    cb5a:      	int3
+    cb5b:      	int3
+    cb5c:      	int3
+    cb5d:      	int3
+    cb5e:      	int3
+    cb5f:      	int3
