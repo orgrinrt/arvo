@@ -66,9 +66,11 @@ older value tier beside the digest. Its two rounds were on `dev` already as the 
 Round `202611191340-whma` takes the digest's own changes, everything the branch changed after it
 merged `c97a1af5`, onto `dev`, adds `Fnv1a<64>` now that the 64-bit wrapping product is admitted, and
 leaves the switched digest under a FIXME naming ticket
-`the_switched_64_bit_digest_and_its_crossover_bench_in_the_ha`, since its crossover is measured by a
-bench the harness `dev` carries does not have yet. The branch's bench variants are in the retired
-`variants/` layout and do not land. `cargo test -p arvo-digest -p arvo-bits` passes on the branch,
+`the_switched_64_bit_digest_and_its_crossover_bench_in_the_ha`, since its crossover is taken from a
+bench run that has not been made. The branch's three `digest-crossover` arms, in the retired
+`variants/` layout, are ported into the harness as `mock/benches/digest-crossover/` in round
+`202611191552-y2ye`. Op's xxhash call is clause-dev
+`.data/op-responses/202611131704_op-on-option-1-i-love-zig-as-much-as.md`. `cargo test -p arvo-digest -p arvo-bits` passes on the branch,
 the 64-bit reference values included; `cargo deny check licenses` could not run (ticket
 `lazy_tool_cannot_install_cargo_deny_in_a_helper_container`).
 

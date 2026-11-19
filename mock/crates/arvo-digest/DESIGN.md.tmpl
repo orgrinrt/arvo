@@ -18,8 +18,9 @@ input can make either collide. A consumer that needs resistance to that takes a 
 
 ## The result: `Digest<BITS>`
 
-`Digest<const BITS: u16>` holds a digest at its algorithm's output width. The widths are the ones the
-marker `Width<BITS>` implements the sealed trait `Carrier` for, 32, 64 and 128, and `Carrier` names the
+`Digest<const BITS: u32>` holds a digest at its algorithm's output width, counted in `u32` as every
+bit width in the stack is. The widths are the ones the marker `Output<BITS>` implements the sealed
+trait `Carrier` for, 32, 64 and 128, and `Carrier` names the
 container each is held in: `arvo_bits::Bits<32>`, `Bits<64>`, and `[Bits<64>; 2]` at 128, low half first,
 since a `Bits` stops at sixty-four. Any other width does not exist
 as a type, so asking for one is a compile error and never a check at run time.
@@ -103,4 +104,9 @@ The XXH3 suite checks xxHash's own sanity vectors, over its generated test buffe
 from each of the algorithm's length classes, at 64 and at 128 bits. Each suite carries one planted
 wrong vector that is shown failing. The const and runtime paths are compared over the same lengths, and
 the switched digest, when it joins, is checked against the 64-bit FNV-1a one byte below the crossover
-and against `Xxh3<64>` at it. The carriers are checked at the width each names, `halves` included.
+and against `Xxh3<64>` at it. The carriers are pinned at all three widths, `halves` included, and the
+narrowing is checked at every `N` from 1 to 32 on a 32 bit digest and from 1 to 64 on a 64 bit one,
+against a narrowing that kept the high bits instead.
+
+`Fnv1a<BITS>` and `Xxh3<BITS>` are bounded on `Output<BITS>: Carrier`, so neither names a width the
+digest has no container for.
