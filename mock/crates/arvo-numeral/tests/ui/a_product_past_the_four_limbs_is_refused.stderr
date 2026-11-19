@@ -36,9 +36,3 @@ note: the above error was encountered while instantiating `fn Num::<Signature<UF
    |
 10 |     let _ = a.mul(a);
    |             ^^^^^^^^
-
-note: erroneous constant encountered
- --> $WORKSPACE/crates/arvo-format/src/multiplication.rs
-  |
-  |     let () = Multipliable::<S::Format>::ADMITTED;
-  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
