@@ -53,7 +53,6 @@ pub use alias::{Fix, ISize, Int, NamesAdaptation, UFix, USize, Uint};
 pub use arvo_format::{Bool, Divisor};
 pub use check::{Abort, DebugCheck, Quiet};
 pub use host::HostInteger;
-pub use identity::{Additive, Identity, Multiplicative};
 pub use num::Num;
 
 #[cfg(test)]

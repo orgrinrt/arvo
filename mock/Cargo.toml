@@ -24,6 +24,7 @@
 resolver = "2"
 members = [
     "crates/arvo-format",
+    "crates/arvo-contracts",
     "crates/arvo-placement",
     "crates/arvo-strategy",
     "crates/arvo-bits",
@@ -66,6 +67,7 @@ notko = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version
 # `arvo-numeral` carries of its count trait. Nothing takes it by default.
 notko-hlist = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false }
 arvo-format = { path = "crates/arvo-format", version = "0.0.0" }
+arvo-contracts = { path = "crates/arvo-contracts", version = "0.0.0" }
 arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }
 arvo-numeral = { path = "crates/arvo-numeral", version = "0.0.0" }
