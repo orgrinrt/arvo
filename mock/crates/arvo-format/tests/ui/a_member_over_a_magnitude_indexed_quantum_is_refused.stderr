@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: a member over a magnitude-indexed quantum is 
   |
  ::: src/member.rs
   |
+  |   impl<F: Format> MemberOf<F> {
+...
+  |       const ADMITTED: () = {
+  |           let () = <F as Format>::ADMITTED;
   | /         assert!(
   | |             is_constant_family::<F::Quantum>().get(),
   | |             "a member over a magnitude-indexed quantum is not yet admitted: membership there is a slot \

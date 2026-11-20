@@ -9,8 +9,9 @@ error[E0271]: type mismatch resolving `<Signature<Integer<9>, Adapt<TowardZero, 
 note: required by a bound in `Num::<S, C>::under`
   --> src/num.rs
    |
+   | impl<S: Sole, C: DebugCheck> Num<S, C> {
+...
    |     pub const fn under<T>(self) -> Num<T, C>
-   |                  ----- required by a bound in this associated function
    |     where
    |         T: Sole + DeclaredSignature<Format = S::Format>,
    |                                     ^^^^^^^^^^^^^^^^^^ required by this bound in `Num::<S, C>::under`

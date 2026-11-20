@@ -6,6 +6,9 @@ error[E0080]: evaluation panicked: a phase denominator of zero names no position
   |
  ::: src/format.rs
   |
+  |   pub trait Format {
+...
+  |       const ADMITTED: () = {
   | /         assert!(
   | |             Self::PHASE.denotes().get(),
   | |             "a phase denominator of zero names no position on the grid, so the phase does not \

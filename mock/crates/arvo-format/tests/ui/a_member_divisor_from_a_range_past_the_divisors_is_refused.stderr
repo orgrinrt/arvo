@@ -6,6 +6,9 @@ error[E0080]: evaluation panicked: Divisor::member is refused from a range wider
   |
  ::: src/division/member_door.rs
   |
+  |   impl<F: Format, G: Format> MemberDivisor<F, G> {
+  |       pub(super) const ADMITTED: () = {
+...
   | /         assert!(
   | |             inside.get(),
   | |             "Divisor::member is refused from a range wider than the divisor format's: a divisor past \

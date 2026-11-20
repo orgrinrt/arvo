@@ -213,6 +213,14 @@ fn an_outside_slot_family_over_part_of_a_range_is_refused() {
 }
 
 #[test]
+fn an_outside_slot_family_with_no_container_is_refused() {
+    pair(
+        "an_outside_slot_family_with_no_container_is_refused",
+        "an_outside_slot_family_over_a_whole_range_compiles",
+    );
+}
+
+#[test]
 fn an_outside_policy_that_clamps_is_refused() {
     pair(
         "an_outside_policy_that_clamps_is_refused",

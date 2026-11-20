@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: multiplication is not yet admitted where the 
   |
  ::: $WORKSPACE/crates/arvo-format/src/multiplication.rs
   |
+  |   impl<F: Format> Multipliable<F> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             product_is_formed::<F>().get(),
   | |             "multiplication is not yet admitted where the remainder's denominator d^2 r^max(-e, 0), \

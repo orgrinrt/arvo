@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: addition is refused over a phase whose denomi
   |
  ::: src/addition.rs
   |
+  |   impl<F: Format> Addable<F> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             F::PHASE.denotes().get(),
   | |             "addition is refused over a phase whose denominator is zero: such a phase names no \

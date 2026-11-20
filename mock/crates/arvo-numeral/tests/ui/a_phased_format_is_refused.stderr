@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: a value is held only for a format whose sum o
   |
  ::: src/admit.rs
   |
+  |   impl<S> Sole for S
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             <S::Format as Format>::PHASE.is_zero().get()
   | |                 && is_constant_family::<<S::Format as Format>::Quantum>().get(),

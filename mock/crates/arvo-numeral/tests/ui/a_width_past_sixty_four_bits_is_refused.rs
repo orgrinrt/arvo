@@ -1,4 +1,4 @@
-// No ladder carrier holds sixty-five bits.
+// No slot range exists at sixty-five bits, so `Slots` is refused before any carrier is asked.
 use arvo_format::Adapt;
 use arvo_format::overflow::Wrap;
 use arvo_format::rounding::TowardZero;

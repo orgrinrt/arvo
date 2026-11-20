@@ -6,6 +6,9 @@ error[E0080]: evaluation panicked: Divisor::member is refused from a format of a
   |
  ::: src/division/member_door.rs
   |
+  |   impl<F: Format, G: Format> MemberDivisor<F, G> {
+  |       pub(super) const ADMITTED: () = {
+...
   | /         assert!(
   | |             phase.get(),
   | |             "Divisor::member is refused from a format of another reduced phase, or one whose phase \

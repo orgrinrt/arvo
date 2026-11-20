@@ -19,7 +19,6 @@ note: required by a bound in `Fnv1a`
  --> src/fnv1a.rs
   |
   | pub struct Fnv1a<const BITS: u32>
-  |            ----- required by a bound in this struct
   | where
   |     Output<BITS>: Carrier;
   |                   ^^^^^^^ required by this bound in `Fnv1a`
