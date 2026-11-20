@@ -19,8 +19,8 @@ mod common;
 use arvo_format::overflow::Wrap;
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Signature};
-use common::edges::host_bound;
-use common::shapes::{Shapes, widest};
+use common::edges::{host_bound, widest};
+use common::shapes::Shapes;
 
 /// The deepest target exponent the value converts onto in the host's integer
 /// from a source of `w` bits at exponent zero.
