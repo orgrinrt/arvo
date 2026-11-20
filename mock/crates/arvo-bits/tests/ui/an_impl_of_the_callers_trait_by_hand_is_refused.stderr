@@ -1,0 +1,9 @@
+error[E0119]: conflicting implementations of trait `BitAccess` for type `Pair`
+  --> tests/ui/an_impl_of_the_callers_trait_by_hand_is_refused.rs:27:1
+   |
+27 | impl BitAccess for Pair {
+   | ^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: conflicting implementation in crate `arvo_bits`:
+           - impl<B> BitAccess for B
+             where B: BitAccessAt;

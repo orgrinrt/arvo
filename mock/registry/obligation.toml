@@ -99,6 +99,16 @@ provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_
 keywords = ["exact width", "Bits", "28 bit", "container", "alias", "newtype", "content hash", "serialisation", "on disk", "byte layout", "conversion"]
 
 [[obligation]]
+id = "a_word_divided_into_named_fields_of_declared_widths"
+need = "A word of a declared total width divided into named fields of declared widths, each field read and written in a constant, a field one bit wide carried as a bit of its own type rather than as a number, the field widths summing to the word's width checked when the consumer builds, and the whole word converted to and from the exact-width container of its width at no cost."
+consumer = "hilavitkutin"
+quote = "`SymLayout` generates per-field accessors (`kind()`, `id()`, `flag()`), setters, and per-field mask constants. (hilavitkutin, `mock/crates/hilavitkutin-sym/DESIGN.md.tmpl`, on `dev`)"
+why = "Its identity handle is one 32-bit word holding a 28-bit id, a 3-bit kind and a 1-bit flag, and the same design calls a shape a wire format: persisted handles outlive any build, so the layout is fixed when the consumer builds and a field one bit too narrow or two fields sharing a bit has to be refused then rather than found in a stored id. The handle is compared and hashed as its raw bits and persisted as them, which is why the conversion to the container is part of the need and why its cost is. The flag is a flag, read as true or false, and the consumer types it as a bit and not as a one-bit number. The sites are the two layout declarations in `hilavitkutin-sym/src/handle.rs`, the default shape and the wide-tag one, and the field width projection in `hilavitkutin-sym/src/shape.rs`, on `dev`, where it is written today with the removed tree's field macro."
+topic = "the_format"
+provenance = ["panel::202611200533_packed-word::REPORT::#the-demand-hilavitkutin-states"]
+keywords = ["packed word", "bit field", "named field", "field width", "layout", "handle", "wire format", "one bit", "flag", "tiling", "container", "conversion"]
+
+[[obligation]]
 id = "a_count_fixed_at_build_that_sizes_arrays_from_generic_code"
 need = "A count fixed when the consumer builds, carried as a type, that sizes a real array from code generic over the count; many such counts bundled as the associated types of one parameter; one count's array nested inside another's with no product of the two computed; the count itself readable in a constant, for a bound, a comparison or a byte total; and all of it with no feature line in the consumer. The live number of elements in use is the consumer's, a runtime value bounded by the count, and not part of this need."
 consumer = "hilavitkutin"

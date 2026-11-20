@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: division is not yet admitted over a magnitude
   |
  ::: src/division.rs
   |
+  |   impl<F: Format> Divisible<F> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             constant.get(),
   | |             "division is not yet admitted over a magnitude-indexed quantum: a slot names a \

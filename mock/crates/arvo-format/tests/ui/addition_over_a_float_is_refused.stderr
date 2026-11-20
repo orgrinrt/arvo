@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: addition is not yet admitted over a magnitude
   |
  ::: src/addition.rs
   |
+  |   impl<F: Format> Addable<F> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             is_constant_family::<F::Quantum>().get(),
   | |             "addition is not yet admitted over a magnitude-indexed quantum: a slot names a \

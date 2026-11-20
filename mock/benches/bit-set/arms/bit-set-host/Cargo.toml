@@ -1,0 +1,13 @@
+[package]
+name = "bench-bit-set-host"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bit_set_host"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }

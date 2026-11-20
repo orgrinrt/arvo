@@ -1,0 +1,37 @@
+   Compiling packed-word-const-reach v0.0.0 (/home/user/arvo/mock/research/sketches/202611200614_packed-word-const-reach)
+error[E0080]: evaluation panicked: the field widths of a packed word do not sum to the width of its container
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `packed_word_const_reach::Word::<Short>::TILED` failed here
+   |
+  ::: src/lib.rs:95:23
+   |
+95 |       const TILED: () = assert!(
+   |  _______________________-
+96 | |         <L::Fields as Fields>::SUM.equals(<L::Container as Lane>::WIDTH).get(),
+97 | |         "the field widths of a packed word do not sum to the width of its container"
+98 | |     );
+   | |_____- in this macro invocation
+
+note: erroneous constant encountered
+   --> src/lib.rs:101:18
+    |
+101 |         let () = Self::TILED;
+    |                  ^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn packed_word_const_reach::Word::<Short>::of`
+  --> examples/refused_short.rs:20:13
+   |
+20 |     let w = Word::<Short>::of(Bits::masked(0));
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> src/lib.rs:113:18
+    |
+113 |         let () = Self::TILED;
+    |                  ^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `packed-word-const-reach` (example "refused_short") due to 1 previous error
+exit 101

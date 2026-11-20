@@ -1,0 +1,192 @@
+== a_bit_at_one_of_one_bit_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_bit_at_one_of_one_bit_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_bit_at_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_bit_at_sixty_four_of_sixty_four_bits_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_bit_at_the_largest_index_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_bit_at_the_largest_index_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_bit_at_the_width_through_the_trait_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_bit_at_the_width_through_the_trait_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_call_of_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_call_of_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_call_of_rotate_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_call_of_rotate_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_call_of_shift_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_call_of_shift_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_call_of_with_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_container_of_its_own_past_its_width_in_a_constant_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_container_of_its_own_past_its_width_in_a_constant_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_container_of_its_own_past_its_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_container_of_its_own_past_its_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_generic_call_of_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_generic_call_of_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_generic_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_generic_call_of_rotate_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_generic_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_generic_call_of_rotate_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_generic_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_generic_call_of_shift_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_generic_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_generic_call_of_shift_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_generic_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_generic_call_of_with_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_rotation_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_rotation_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_rotation_down_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_rotation_down_by_sixty_four_of_sixty_four_bits_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_rotation_down_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_rotation_down_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_rotation_up_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_rotation_up_by_sixty_four_of_sixty_four_bits_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_shift_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_shift_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_shift_down_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_shift_down_by_sixty_four_of_sixty_four_bits_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_shift_down_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_shift_down_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_shift_down_past_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_shift_down_past_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_shift_up_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_shift_up_by_sixty_four_of_sixty_four_bits_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_written_bit_at_one_of_one_bit_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_written_bit_at_one_of_one_bit_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_written_bit_at_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_written_bit_at_sixty_four_of_sixty_four_bits_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_written_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_written_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_bit_at_one_of_one_bit_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_bit_at_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_bit_at_the_largest_index_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_bit_at_the_largest_index_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_bit_at_the_width_through_the_trait_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_container_of_its_own_past_its_width_in_a_constant_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_container_of_its_own_past_its_width_in_a_constant_is_refused") due to 1 previous error
+error[E0080]: index out of bounds: the length is 2 but the index is 2
+exit 101
+== a_container_of_its_own_past_its_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_rotation_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_rotation_down_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_rotation_down_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_rotation_up_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_shift_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_shift_down_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_shift_down_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_shift_down_past_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+error: could not compile `bit-tier-index-mutant-after-second-review` (example "a_shift_down_past_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+exit 101
+== a_shift_up_by_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_written_bit_at_one_of_one_bit_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_written_bit_at_sixty_four_of_sixty_four_bits_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_written_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0

@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: addition is refused over this format: the exa
   |
  ::: src/addition.rs
   |
+  |   impl<F: Format> Addable<F> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             sum_is_carried::<F>().get(),
   | |             "addition is refused over this format: the exact sum of two members leaves the slot \

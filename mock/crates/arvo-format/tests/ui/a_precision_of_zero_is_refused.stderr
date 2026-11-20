@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: an IEEE 754 significand holds at least one di
   |
  ::: src/standards/ieee754.rs
   |
+  |   impl<A: Ambient, const P: u32> Slots for Significand<A, P> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             P >= 1,
   | |             "an IEEE 754 significand holds at least one digit; a precision of zero holds only zero"

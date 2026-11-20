@@ -1,0 +1,37 @@
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Within::<arvo_bits::Bits<8>, 8>::NEW` failed here
+  |
+ ::: src/tier.rs
+  |
+  |   impl<B: BitWidth, const I: u32> Within<B, I> {
+...
+  |       pub const NEW: Self = {
+  |           let width = B::WIDTH.count();
+  | /         assert!(
+  | |             if cfg!(arvo_mutant_bits_index) { I <= width } else { I < width },
+  | |             "a bit index or a shift amount at or past the container's declared width; bits are \
+  | |              counted from zero at the low bit, so the last index of a container `w` bits wide is \
+  | |              `w - 1`, and a shift or rotation by `w` or more is no move within the width"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/tier.rs
+  |
+  |         self.rotate_up_by(Within::<Self, K>::NEW)
+  |                           ^^^^^^^^^^^^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn <Bits<8> as BitSequence>::rotate_up::<8>`
+ --> tests/ui/a_generic_call_of_rotate_up_at_the_width_is_refused.rs:6:13
+  |
+6 |     let _ = b.rotate_up::<8>();
+  |             ^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/ops.rs
+  |
+  |         let _ = Within::<Self, K>::NEW;
+  |                 ^^^^^^^^^^^^^^^^^^^^^^

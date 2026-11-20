@@ -1,0 +1,8 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 1 package to latest Rust 1.98.0-nightly compatible version
+      Adding notko-hlist v0.0.1 (https://github.com/orgrinrt/notko.git?branch=dev#33593901)
+   Compiling notko-hlist v0.0.1 (https://github.com/orgrinrt/notko.git?branch=dev#33593901)
+   Compiling packed-word-const-reach v0.0.0 (/home/user/arvo/mock/research/sketches/202611200614_packed-word-const-reach)
+    Finished `dev` profile [unoptimized] target(s) in 0.69s
+     Running `/home/user/target/debug/examples/derived`
+exit 0

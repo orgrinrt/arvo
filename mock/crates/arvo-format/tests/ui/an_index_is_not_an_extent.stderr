@@ -9,6 +9,8 @@ error[E0308]: mismatched types
 note: method defined here
   --> src/quantum.rs
    |
+   | impl Magnitude {
+...
    |     pub const fn is_within(self, count: MagnitudeCount) -> Bool {
    |                  ^^^^^^^^^
 

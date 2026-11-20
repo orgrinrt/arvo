@@ -1,0 +1,28 @@
+error[E0080]: evaluation panicked: a field read or written through a word whose layout does not list it
+   --> /rustc/57d06900fd7d9ee06d3a7f323bb77f17ab3cfaf8/library/core/src/panic.rs:62:8
+    |
+    = note: evaluation of `packed_word::Listed::<Stray>::NEW` failed here
+    |
+   ::: src/lib.rs:116:21
+    |
+116 |       const NEW: () = assert!(
+    |  _____________________-
+117 | |         <<F::Layout as Layout>::Fields as Holds<F>>::HOLDS,
+118 | |         "a field read or written through a word whose layout does not list it"
+119 | |     );
+    | |_____- in this macro invocation
+
+note: erroneous constant encountered
+   --> src/lib.rs:196:18
+    |
+196 |         let () = Listed::<F>::NEW;
+    |                  ^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> examples/unlisted.rs:41:13
+   |
+41 |     let _ = S;
+   |             ^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `packed-word` (example "unlisted") due to 1 previous error

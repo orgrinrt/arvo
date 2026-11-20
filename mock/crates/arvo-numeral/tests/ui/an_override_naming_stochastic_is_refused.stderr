@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: a value rounds by a deterministic mode. This 
   |
  ::: src/admit.rs
   |
+  |   impl<S> Sole for S
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             !matches!(<RoundingOf<S> as Rounding>::MODE, Mode::Stochastic),
   | |             "a value rounds by a deterministic mode. This rounding mode reads a dither, and a value \
