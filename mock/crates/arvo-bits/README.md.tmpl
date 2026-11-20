@@ -7,8 +7,13 @@ masks whatever you hand it down to the low `N` bits rather than rejecting anythi
 nothing to reject: a bit pattern of the wrong width is not an invalid value, it is a value with some
 bits you asked to be dropped. Casting to a different width is the same masking at a different bound,
 so widening never loses a bit and narrowing loses exactly the ones above the new width, on purpose.
-Two values of one width xor, which carries nothing between bits, and a 128-bit host value splits into
-two 64-bit halves.
+A 128-bit host value splits into two 64-bit halves.
+
+Over that value sit the bit operations: read or write one bit, `and`, `or`, `xor` and `not` at one
+width, ask whether any bit is set, and shift or rotate within the width, the index or the amount a
+constant that the build refuses past the width. Each is a `const fn` on `Bits`, and each comes again as
+a trait, `BitWidth`, `BitAccess`, `BitLogic` and `BitSequence`, for code generic over whichever bit
+container the caller holds; inside such code the width is `BitWidth::WIDTH`.
 
 This is the shape a consumer wants when a value's width is pinned by something arvo does not own, a
 disk format, a wire format, a hash function's output size, and the consumer needs to name that exact
@@ -18,7 +23,8 @@ when a consumer's conversion happens; both stay the consumer's.
 
 `Bytes<'a>` is the host's byte slice entering the stack, walked one `Bits<8>` at a time.
 
-No workspace dependencies, and notko for `Maybe`. `no_std`, no allocation, sizes const.
+Builds on `arvo-format` for `Bool` and `Width`, and on notko for `Maybe`. `no_std`, no allocation,
+sizes const.
 
 ## Status
 
