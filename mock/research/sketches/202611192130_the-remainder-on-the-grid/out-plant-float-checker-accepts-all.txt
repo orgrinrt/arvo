@@ -1,0 +1,82 @@
+   Compiling the-remainder-on-the-grid v0.0.0 (/home/user/.worktrees/remainder-seat-2/mock/research/sketches/202611192130_the-remainder-on-the-grid)
+    Finished `release` profile [optimized] target(s) in 0.73s
+     Running `/home/user/target/release/the-remainder-on-the-grid`
+== one: whole phase, constant quantum, radix 2, 3, 10, e -3..=2, phase 0, 1, -2, w 1..=5
+TowardZero: Tally { pairs: 141876, off_grid: 0, slot_formula: 0, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 53162, b_agrees: 58869, b_departs: 83007, b_departs_at_zero: 0 }
+Floor: Tally { pairs: 141876, off_grid: 0, slot_formula: 0, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 62783, b_agrees: 66676, b_departs: 75200, b_departs_at_zero: 0 }
+Ceil: Tally { pairs: 141876, off_grid: 0, slot_formula: 0, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 65562, b_agrees: 56510, b_departs: 85366, b_departs_at_zero: 0 }
+HalfUp: Tally { pairs: 141876, off_grid: 0, slot_formula: 0, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 63409, b_agrees: 60027, b_departs: 81849, b_departs_at_zero: 0 }
+HalfEven: Tally { pairs: 141876, off_grid: 0, slot_formula: 0, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 62301, b_agrees: 60652, b_departs: 81224, b_departs_at_zero: 0 }
+StochasticDown: Tally { pairs: 141876, off_grid: 0, slot_formula: 0, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 62783, b_agrees: 66676, b_departs: 75200, b_departs_at_zero: 0 }
+StochasticUp: Tally { pairs: 141876, off_grid: 0, slot_formula: 0, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 65562, b_agrees: 56510, b_departs: 85366, b_departs_at_zero: 0 }
+pairs whose remainder leaves the slot range, by mode and family (zero member or not):
+  Ceil unsigned: 56070
+  HalfUp unsigned: 27252
+  HalfEven unsigned: 25092
+  StochasticUp unsigned: 56070
+  TowardZero unsigned: 3654
+  Floor unsigned: 3654
+  StochasticDown unsigned: 3654
+  TowardZero signed: 198
+  Floor signed: 198
+  Ceil signed: 1116
+  HalfUp signed: 396
+  HalfEven signed: 324
+  StochasticDown signed: 198
+  StochasticUp signed: 1116
+== the integer quotient's span, phase zero
+  w 1 signed true: max |q| {1}
+  w 1 signed false: max |q| {1}
+  w 2 signed true: max |q| {2}
+  w 2 signed false: max |q| {3}
+  w 3 signed true: max |q| {4}
+  w 3 signed false: max |q| {7}
+  w 4 signed true: max |q| {8}
+  w 4 signed false: max |q| {15}
+  w 5 signed true: max |q| {16}
+  w 5 signed false: max |q| {31}
+  w 6 signed true: max |q| {32}
+  w 6 signed false: max |q| {63}
+  Fix<8,-4>: 7.9375 / 0.0625 gives q 127, r Q { n: 0, d: 1 }; q at position Q { n: 2032, d: 1 }
+== two: fractional phase
+  on the grid 254208, off it 433248
+== three: the integer quotient through the grid's quotient, phase zero
+  radix 2 e -3 (-8, 7): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e -3 (0, 15): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 5), (HalfEven, 5), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e -3 (-128, 127): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 3425), (HalfEven, 3456), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e -3 (0, 255): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 3690), (HalfEven, 3670), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e -1 (-8, 7): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 43), (HalfEven, 34), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e -1 (0, 15): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 50), (HalfEven, 41), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e -1 (-128, 127): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 15470), (HalfEven, 15476), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e -1 (0, 255): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 16503), (HalfEven, 15854), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -1 (-8, 7): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -1 (0, 15): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 3), (HalfEven, 3), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -1 (-128, 127): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 2649), (HalfEven, 2608), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -1 (0, 255): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 2890), (HalfEven, 2837), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -2 (-8, 7): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -2 (0, 15): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -2 (-128, 127): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 56), (HalfEven, 56), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 10 e -2 (0, 255): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 142), (HalfEven, 142), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 3 e -2 (-8, 7): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 3 e -2 (0, 15): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 3 e -2 (-128, 127): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 3 e -2 (0, 255): [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+  radix 2 e 1 (-128, 127): [(TowardZero, 22777), (Floor, 32688), (Ceil, 32688), (HalfUp, 34956), (HalfEven, 34355), (StochasticDown, 32688), (StochasticUp, 32688)]
+  radix 2 e 1 (0, 255): [(TowardZero, 22652), (Floor, 22652), (Ceil, 42556), (HalfUp, 34927), (HalfEven, 34546), (StochasticDown, 22652), (StochasticUp, 42556)]
+  radix 10 e 1 (-128, 127): [(TowardZero, 32273), (Floor, 48371), (Ceil, 48371), (HalfUp, 48370), (HalfEven, 48187), (StochasticDown, 48371), (StochasticUp, 48371)]
+  radix 10 e 1 (0, 255): [(TowardZero, 32145), (Floor, 32145), (Ceil, 64459), (HalfUp, 48370), (HalfEven, 48208), (StochasticDown, 32145), (StochasticUp, 64459)]
+== four: a - (b q) composed on the operands' signature, phase zero, every mode
+  saturate: [(TowardZero, 0), (Floor, 464), (Ceil, 360), (HalfUp, 196), (HalfEven, 220), (StochasticDown, 464), (StochasticUp, 360)]
+  wrap: [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]
+== five: the Euclidean remainder by a divisor of one sign
+  3906 pairs agree
+== six: magnitude-indexed quantum, toy floats
+  radix 2 p 2 e -2..=2, 23 members: [(TowardZero, 0), (Floor, 0), (Ceil, 0), (HalfUp, 0), (HalfEven, 0), (StochasticDown, 0), (StochasticUp, 0)]; sums not members 0
+
+thread 'main' (23484) panicked at src/main.rs:618:9:
+the membership check accepts every sum, so it is blind
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: the_remainder_on_the_grid::main
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.

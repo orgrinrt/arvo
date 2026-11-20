@@ -241,11 +241,6 @@ macro_rules! ternary_at {
     };
 }
 
-/// The widest magnitude of a range of `w` bits.
-pub const fn widest(w: u32, signed: bool) -> i128 {
-    if signed { 1i128 << (w - 1) } else { (1i128 << w) - 1 }
-}
-
 /// The exponent zero, at every shape.
 pub const fn zero(_w: u32, _signed: bool, _radix: i128) -> i32 {
     0
@@ -261,8 +256,8 @@ pub const fn minus_one(_w: u32, _signed: bool, _radix: i128) -> i32 {
     -1
 }
 
-/// Sixteen widths, two ranges, five exponents and the ten adaptations.
-pub const SIGNATURES_OF_A_BAND: u64 = 16 * 2 * 5 * 10;
+/// Sixteen widths, two ranges, six exponents and the ten adaptations.
+pub const SIGNATURES_OF_A_BAND: u64 = 16 * 2 * 6 * 10;
 
 /// The pairs a sweep over every shape takes of one signature: every pair up
 /// to six bits, and above that the edge lattice against the ends of the range

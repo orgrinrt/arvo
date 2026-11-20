@@ -1,0 +1,14 @@
+[package]
+name = "bench-numeral-ratio-product-wide"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "numeral_ratio_product_wide"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-numeral-ratio-shared = { path = "../../../support/numeral-ratio-shared" }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }

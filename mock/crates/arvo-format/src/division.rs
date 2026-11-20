@@ -206,12 +206,12 @@ impl<F: Format> Divisor<F> {
 }
 
 /// What a format owes the quotient, checked rather than asked for.
-struct Divisible<F>(PhantomData<F>);
+pub(crate) struct Divisible<F>(PhantomData<F>);
 
 impl<F: Format> Divisible<F> {
     /// The three conditions, each asserted from `conditions`, which `is_divisible`
     /// folds. The phase is first because the others read its parts.
-    const ADMITTED: () = {
+    pub(crate) const ADMITTED: () = {
         let [denotes, constant, fits] = conditions::<F>();
         assert!(
             denotes.get(),

@@ -2149,3 +2149,37 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::254_leijen_the_exposure_list_is_derived_not_chosen::737",
 ]
 keywords = ["exposure", "admission contract", "ADMITTED", "obligations", "well-formedness", "design tier", "reserved", "mutation order", "radix", "magnitudes"]
+
+[[question]]
+id = "what_rounds_a_remainder_s_integer_count"
+asks = "A remainder rounds the exact quotient onto the integers before it subtracts. Is that rounding the declared signature's mode, or a convention the remainder operation names for itself?"
+options = [
+  "The signature's mode. A site wanting another convention crosses to a sibling signature first, and each standard's remainder is that crossing with the mode fixed. Cost: an operation's exact step reads the coordinate of its adaptation, and a site whose other operations want their own mode must cross and cross back.",
+  "A convention of the operation, drawn from the six modes, so the remainder is six operations each a function of the declared signature. Cost: one more parameter at the call, and the mode and the convention can differ in one expression.",
+]
+decider = "panel"
+topic = "the_format"
+note = "The two seats of the remainder panel agree on everything in `proposal::a_remainder_is_the_dividend_less_the_divisor_times_an_integer_rounding_of_their_quotient` and split here: the first seat takes the second option and marks it as the one call it made without a row, and the second takes the first, argued from the admission rule, and marks a different reading as its own, the landing of the pair's quotient. Within that row's region the adaptation never rounds, so either option gives the same remainder for the same count rounding; the split decides the public entry, not the exact step, which takes the count's rounding as a parameter under both."
+provenance = [
+  "panel::202611192115_the-remainder-panel::fabian-giesen::74",
+  "panel::202611192115_the-remainder-panel::donald-knuth::186",
+]
+keywords = ["remainder", "count", "convention", "mode", "rounding", "signature", "sibling signature", "fmod", "ieee remainder"]
+
+[[question]]
+id = "where_a_remainder_is_admitted_past_one_format_at_a_whole_phase"
+asks = "Past one format at a whole phase, is the remainder admitted at a fractional phase, across a divisor of another format, and how is its integer count handed out?"
+options = [
+  "Admitted at a fractional phase, the off-grid remainder placed by the signature, and across formats wherever every divisor value lies on the dividend's quantum lattice; the count is handed out exact, never adapted.",
+  "Not yet admitted at a fractional phase, since rounding the remainder onto the grid and restricting the count to multiples of the phase denominator are two realisations that disagree; one format only; the count lands on an integer signature the caller names, refused at build where its grid does not hold the integers; where the count leaves that signature, the region waits on `question::whose_reduction_governs_a_lossy_crossing`.",
+]
+decider = "panel"
+topic = "the_format"
+note = "The first option is one seat's, the second the other's; they diverge on three coupled points and agree that the magnitude-indexed family waits on the quotient's own ticket. A design may build the one-format whole-phase operation without settling any of them."
+provenance = [
+  "panel::202611192115_the-remainder-panel::fabian-giesen::92",
+  "panel::202611192115_the-remainder-panel::fabian-giesen::94",
+  "panel::202611192115_the-remainder-panel::donald-knuth::173",
+  "panel::202611192115_the-remainder-panel::donald-knuth::213",
+]
+keywords = ["remainder", "fractional phase", "cross format", "count", "divrem", "lattice", "admission"]

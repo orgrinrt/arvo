@@ -1,0 +1,50 @@
+e8a0cb2a chore: lock src changelist 202611200021
+531269a3 test: hold the room arm at its edge and every landing of a divisor
+755dc9df chore: lock doc changelist 202611200019
+68054405 docs: state the room bound as it is and regenerate the numeral docs
+cf14848b docs: attribute the remainder rows to the seat that said each part
+51ef3a67 docs: record the remainder panel and what its two seats agree on
+0a756e56 chore: close design round 202611192051
+f7e0b015 chore: lock src changelist 202611192056
+8a9e5162 docs: name the run and the baseline fix in the src changelist
+fa793181 test: record the numeral-ratio run and what it decides
+1dd38711 test: add the numeral-ratio bench of the host ratio against the hand
+6a1b8e58 test: add the room mutant to the value mutant sketch
+18b923ae feat: form the host ratio in the value and divide by a landed member
+bf594289 chore: lock doc changelist 202611192051
+644e606c docs: move the host-integer arm to the value and reopen the doc cl
+bfeab0e7 chore: lock doc changelist 202611192051
+fd2c3975 docs: design the host-integer exact step and the quotient by a value
+f5bee87f docs: sketch and shape the numeral contracts
+38d78396 feat: land `arvo-digest` and decide the stranded arvo branches
+3d95d776 docs: land the closed digest rounds from `work/arvo-digest`
+80e5afac chore: configure the `commit-subject` gate
+6f718a88 refactor: port the benches to arms and sweeps under the harness
+f76108d6 fix: point the p3 probe at the moved warm container support crate
+8ed016a7 docs: land the second stack audit
+fac2c6aa docs: land the first stack audit
+130295d7 bench: regenerate the results index over every run on dev
+3b9aa53d bench: drop the false dirty mark from the 14 november run names
+1f860a90 bench: land the linux results of 14 november
+da169bec bench: record a linux container run of bitpack-sequential-sum
+7479a2c6 refactor: run the benches on the generated driver in the run layout
+8babe497 research: port channel documents into the research dir
+28d03718 research: land the second stack audit
+d0161800 feat: build the value tier's ring operations and default doors
+b687fc01 feat: add the member type and a member divisor on one quantum
+280e3a2a feat: carry the exact position's floor in four limbs
+ccb4c239 feat: admit the wrapping product and the cleared format rounds
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+4d6aa22c feat: give the registry its amendment edge and stamp fields
+9ba397c4 fix: read the lints through one parse and add the registry tools
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
+2c8e5343 feat: add the oracle for fractions and division in arvo-format

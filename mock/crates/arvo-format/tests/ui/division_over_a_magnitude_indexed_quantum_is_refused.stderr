@@ -8,7 +8,7 @@ error[E0080]: evaluation panicked: division is not yet admitted over a magnitude
   |
   |   impl<F: Format> Divisible<F> {
 ...
-  |       const ADMITTED: () = {
+  |       pub(crate) const ADMITTED: () = {
 ...
   | /         assert!(
   | |             constant.get(),

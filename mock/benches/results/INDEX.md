@@ -680,6 +680,48 @@ Latest: `20261115T134932Z-ab7fcd71`
 
 - [20260804T113654Z-25f736b-dirty](fnv1a-vs-xxhash3/fnv1a-vs-xxhash3_n64/macos-aarch64-c8-bare-apple/20260804T113654Z-25f736b-dirty/report.md)
 
+## numeral-ratio/conversion_n256
+
+### linux-x86_64-c4-container-intel, 1 run(s)
+
+Latest: `20261119T224053Z-1dd38711`
+
+| variant | median | vs best |
+|---|---|---|
+| numeral_ratio_conversion_hand | 112 ns | 1.00x |
+| numeral_ratio_conversion_room | 177 ns | 1.58x |
+| numeral_ratio_conversion_wide | 8.36 us | 74.61x |
+
+- [20261119T224053Z-1dd38711](numeral-ratio/conversion_n256/linux-x86_64-c4-container-intel/20261119T224053Z-1dd38711/report.md)
+
+## numeral-ratio/product_n256
+
+### linux-x86_64-c4-container-intel, 1 run(s)
+
+Latest: `20261119T224053Z-1dd38711`
+
+| variant | median | vs best |
+|---|---|---|
+| numeral_ratio_product_hand | 153 ns | 1.00x |
+| numeral_ratio_product_room | 172 ns | 1.12x |
+| numeral_ratio_product_wide | 10.92 us | 71.37x |
+
+- [20261119T224053Z-1dd38711](numeral-ratio/product_n256/linux-x86_64-c4-container-intel/20261119T224053Z-1dd38711/report.md)
+
+## numeral-ratio/quotient_n256
+
+### linux-x86_64-c4-container-intel, 1 run(s)
+
+Latest: `20261119T224053Z-1dd38711`
+
+| variant | median | vs best |
+|---|---|---|
+| numeral_ratio_quotient_hand | 153 ns | 1.00x |
+| numeral_ratio_quotient_room | 1.37 us | 9.01x |
+| numeral_ratio_quotient_wide | 12.10 us | 79.28x |
+
+- [20261119T224053Z-1dd38711](numeral-ratio/quotient_n256/linux-x86_64-c4-container-intel/20261119T224053Z-1dd38711/report.md)
+
 ## quantiser-vs-fadd-subnormal-sweep/quantiser-vs-fadd-subnormal-sweep_n0
 
 ### linux-x86_64-c16-bare-intel, 1 run(s)

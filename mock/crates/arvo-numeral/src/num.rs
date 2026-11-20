@@ -18,13 +18,13 @@ use arvo_format::{
     Dither,
     Exact,
     Format,
+    Member,
     Quantum,
     Slot,
     Slots,
     WithOverflow,
     WithRounding,
     adapt,
-    mul as mul_slots,
     panic_on_overflow,
     product_position,
     slot_in_range,
@@ -163,6 +163,14 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
             [self.0],
             []
         ))
+    }
+
+    /// The member's slot as the format's `Member`, landed on the grid, where it
+    /// sits on itself. What the format's steps over members take.
+    #[must_use]
+    #[inline]
+    pub(crate) const fn member(self) -> Member<S::Format> {
+        Member::<S::Format>::landed::<S>(self.slot())
     }
 
     /// The value whose carrier is `carrier`. The host doors build on it, where
@@ -394,12 +402,11 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
                 [const { S::WIDTH.count() }, S::POLICY]
             ))
         } else {
-            // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
-            // position is scaled by the radix and rounded by the mode, and the
-            // rounding lives in the format's applied map alone. Its step is four
-            // limbs wide. When the format ships the adaptation at the container's
-            // width this becomes the machine's widening product and one call.
-            Self::at_index(mul_slots::<S>(self.slot(), rhs.slot(), Dither::UNUSED).index())
+            // Elsewhere the position is scaled by the radix and rounded by the
+            // mode: formed by the format's step over members, rounded and
+            // completed by its map.
+            let position = self.member().product(rhs.member());
+            Self::at_index(adapt::<S>(position, Dither::UNUSED).index())
         }
     }
 
@@ -407,7 +414,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// declared mode rounds its exact position to is a member.
     #[must_use]
     pub const fn fits_mul(self, rhs: Self) -> Bool {
-        let position = product_position::<S::Format>(self.slot(), rhs.slot());
+        let position = self.member().product(rhs.member());
         Bool::of(!panic_on_overflow::<S>(position, Dither::UNUSED).get())
     }
 }

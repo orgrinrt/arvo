@@ -14,8 +14,15 @@
 //! a position's floor in. Each edge below is the last exponent at which that
 //! holds, found from the members' own magnitudes, and the sweeps hold it against
 //! the format's verdict: admitted at the edge, refused one past it.
+//!
+//! The format's step over members forms the position in the host's integer up
+//! to the edges `host_bound` and `power_bound` give, and its own tests hold its
+//! bound there.
 
-use super::shapes::widest;
+/// The widest magnitude of a range of `w` bits.
+pub const fn widest(w: u32, signed: bool) -> i128 {
+    if signed { 1i128 << (w - 1) } else { (1i128 << w) - 1 }
+}
 
 /// The largest `k` at least zero at which `m radix^k` is still an unsigned
 /// integer four 64-bit limbs wide, for an `m` other than zero.
@@ -86,6 +93,58 @@ pub const fn source_highest(w: u32, signed: bool, radix: i128) -> i32 {
 /// every member only shrinks, so the same at every width and range.
 pub const fn target_highest(_w: u32, _signed: bool, radix: i128) -> i32 {
     four_limb_bound(1, radix)
+}
+
+/// The largest `k` at least zero at which `m radix^k` is still below `2^127`,
+/// for an `m` other than zero: the bound under which the format's step forms a
+/// position in the host's 128-bit integer rather than in the format's four limbs.
+pub const fn host_bound(m: u128, radix: i128) -> i32 {
+    let mut at = m;
+    let mut k = 0;
+    loop {
+        match at.checked_mul(radix as u128) {
+            Some(next) if next < 1u128 << 127 => {
+                at = next;
+                k += 1;
+            },
+            _ => return k,
+        }
+    }
+}
+
+/// The largest `k` at which `radix^k` is still a 128-bit unsigned integer.
+pub const fn power_bound(radix: i128) -> i32 {
+    let mut at = 1u128;
+    let mut k = 0;
+    loop {
+        match at.checked_mul(radix as u128) {
+            Some(next) => {
+                at = next;
+                k += 1;
+            },
+            None => return k,
+        }
+    }
+}
+
+/// The deepest exponent at which the format's step forms the quotient in the host's
+/// integer, or the format's deepest where that is nearer zero: a quotient by the
+/// slot one is the widest member times the radix to minus the exponent, which
+/// has to stay below `2^127`. One past it the format's four limbs take over.
+pub const fn quotient_room(w: u32, signed: bool, radix: i128) -> i32 {
+    let room = -host_bound(widest(w, signed) as u128, radix);
+    let deep = quotient_deepest(w, signed, radix);
+    if room > deep { room } else { deep }
+}
+
+/// The deepest exponent at which the format's step forms the product in the host's
+/// integer, or the format's deepest where that is nearer zero: the radix to
+/// minus the exponent has to be a 128-bit integer, and the square of any member
+/// up to 64 bits over it then stays below `2^127`.
+pub const fn product_room(w: u32, signed: bool, radix: i128) -> i32 {
+    let room = -power_bound(radix);
+    let deep = product_deepest(w, signed, radix);
+    if room > deep { room } else { deep }
 }
 
 /// An operation's verdict at one exponent and the next past it, the first
