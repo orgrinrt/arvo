@@ -3,15 +3,15 @@
   "flavour": "",
   "member": "arvo-strategy",
   "green": {
-    "full": "374bf80ccd44e0d6c6d4655304fc1e8b7874b94e8d1202fbd02218b60195cbff",
+    "full": "e7a2f3ad3f2aaec310e2ea9eb86b552922a2684e0cba087fc7546d64e00c87e3",
     "own": {
-      "arvo-format": "90779a6d1af436c1416309ea0fae4fed4762b8466631bb6baef6ff0676647fcb",
+      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
       "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3",
-      "arvo-strategy": "e2bf40a557c118c287beaa5db838be8a15e0794125768466292e22ecfc002d42"
+      "arvo-strategy": "987f7d20725280f2a9fde5c37828cbc6c8726f34b8358fb34dc2e917fd189c96"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-strategy": "6043347ec6fa0653a606b6f86467c7f148aa10b4272b4247b2e960a8768cd433"
+    "arvo-strategy": "d425ffc145be32f8c9d3133dbc188221174c66a96c3c4450fedbc69063a32a10"
   }
 }

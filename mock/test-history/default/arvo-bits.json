@@ -3,14 +3,37 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "c34442151613aa86a3d5aace5f6cc795a6c9f8282d066f4b2a914a571aeaa91e",
+    "full": "805a4d6a7f3733a1cb21ccf6941f9f61855e6f07cd25af17efe591184dbdff05",
     "own": {
-      "arvo-bits": "b4a76f7a3c43325eeb95284db2c204a3a26d7587b8a938e193982a3aa825e1ff"
+      "arvo-bits": "738ea6b76959c864194e2270ff749f5be3de75e211e12509a5aa507453def1d0"
     }
   },
-  "tests": {},
+  "tests": {
+    "arvo-bits::compile_fail": {
+      "a_cast_past_sixty_four_bits_is_refused": {
+        "secs": 9.4,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      },
+      "a_cast_to_zero_bits_is_refused": {
+        "secs": 8.3,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      },
+      "a_width_of_zero_bits_is_refused": {
+        "secs": 10.1,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      },
+      "a_width_past_sixty_four_bits_is_refused": {
+        "secs": 10.5,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      }
+    }
+  },
   "bins": {
-    "arvo-bits": "fd97331bab39fe9bf208bfc4a416b54344e4be5eda82224783d84612f17fa285",
-    "arvo-bits::compile_fail": "72e5f9d460227ea27573ff52d4d8e47bd0960f4af08d76c21f1193fe9ce54067"
+    "arvo-bits": "581fbfec78b8d9b6bdd55d289f1caf5d146f8c397540ad801cb20d5777ca5e12",
+    "arvo-bits::compile_fail": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
   }
 }
