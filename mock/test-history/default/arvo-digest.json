@@ -3,9 +3,9 @@
   "flavour": "",
   "member": "arvo-digest",
   "green": {
-    "full": "e83bafa71d0de414452f5e4229e61be96372b3007b8f59bbb3e8c14094584308",
+    "full": "318cd419ff14aca888afeec82dbcdbfe6e80b8685bb939e8418bec0b4fd72f84",
     "own": {
-      "arvo-bits": "67b2836735b5cd1990b918779f8beb1c7ecab94d17236be22800aae4ee762eed",
+      "arvo-bits": "663f9c54dc3cbd583e7946c84297deeeabc672c50aab02798dfe9a226abdc365",
       "arvo-digest": "79fa18cfd52362730d5a579fb312eb6b0769e47a7a568cc7596ecdb44a55cb1d",
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
       "arvo-numeral": "533f96e036e22c59d8bcaba8a18fd2a4d7ad6903b6035bd4c1af15a4fa99435f",
@@ -14,10 +14,10 @@
   },
   "tests": {},
   "bins": {
-    "arvo-digest": "563f9b8eab50dda22f917106ed3af208dab2b1d699c1448b6ae1353bd8f13904",
-    "arvo-digest::bits": "2005615766da384c69a9794a18c5fec85b8aa209b030e1f5e3d3bb4f203da4ec",
-    "arvo-digest::fnv1a": "b201e3ca35df5485ca2999822976eca4b2c60289592384e8b1b93e49bcde15c4",
-    "arvo-digest::refused": "f87ab2ac1c62b01c5ba04828ec316a4d723ffc2a2b069c98f7d047e94e9c5568",
-    "arvo-digest::xxh3": "12dd05232ada278bde2d01f9cf007ed626326c681ec48d0ec4483886325624b1"
+    "arvo-digest": "84fd02c61a49c4dda1d8c5e0d66951dccd873edaea98b5346ba20a32730f9cd1",
+    "arvo-digest::bits": "fae9f5a89eb0f33094b27126b4d18fb3383c4bc619d14197a0c176f8ecbb4223",
+    "arvo-digest::fnv1a": "4d092d50d88e3d1988fe7eca299ee1c977f0a0dcac8b7e3a7d67ce5e4328158d",
+    "arvo-digest::refused": "c925a1a9137e2f6d58fed24d90c8f52fbebbcf858be81537db2b3610e9154802",
+    "arvo-digest::xxh3": "0c8f7b9db15d9f5013bacedbbf8a7ecce5035708dd03ebe083450a082fcd37aa"
   }
 }

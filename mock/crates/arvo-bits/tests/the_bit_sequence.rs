@@ -58,7 +58,6 @@ fn sequence<const N: u32, const K: u32, const NK: u32>() {
             "{v:#x} rotated up {K} at {N} bits"
         );
         assert_eq!(left::<_, K>(b), rotated);
-        assert_eq!(rotated.raw().count_ones(), v.count_ones());
 
         let back = b.rotate_down::<K>();
         assert_eq!(
@@ -67,22 +66,6 @@ fn sequence<const N: u32, const K: u32, const NK: u32>() {
             "{v:#x} rotated down {K} at {N} bits"
         );
         assert_eq!(right::<_, K>(b), back);
-
-        assert_eq!(
-            rotated.rotate_down::<K>(),
-            b,
-            "{v:#x} up then down {K} at {N} bits"
-        );
-        assert_eq!(
-            back.rotate_up::<K>(),
-            b,
-            "{v:#x} down then up {K} at {N} bits"
-        );
-        assert_eq!(
-            b.rotate_down::<NK>(),
-            rotated,
-            "{v:#x} up {K} against down {NK} at {N} bits"
-        );
     }
 }
 

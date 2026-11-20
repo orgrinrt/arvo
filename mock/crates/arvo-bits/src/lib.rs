@@ -19,7 +19,7 @@
 //! the width, each an inherent `const fn` and each again behind the traits
 //! `BitWidth`, `BitAccess`, `BitLogic` and `BitSequence`, for code generic over
 //! the container. An index or an amount at or past the width is refused at
-//! build.
+//! build, by the tier, once for every container.
 //!
 //! This crate introduces the numeric category a second time, the way
 //! `arvo_format` does for its own reasons: the crate that defines a value at an
@@ -161,7 +161,7 @@ mod ops;
 mod tier;
 
 pub use bytes::Bytes;
-pub use tier::{BitAccess, BitLogic, BitSequence, BitWidth};
+pub use tier::{BitAccess, BitAccessAt, BitLogic, BitSequence, BitSequenceBy, BitWidth, Within};
 
 #[cfg(test)]
 mod tests;

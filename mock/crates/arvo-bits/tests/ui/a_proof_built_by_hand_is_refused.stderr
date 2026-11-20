@@ -1,0 +1,11 @@
+error[E0423]: cannot initialize a tuple struct which contains private fields
+ --> tests/ui/a_proof_built_by_hand_is_refused.rs:9:46
+  |
+9 |     let _ = Bits::<8>::masked(1).bit_at::<9>(Within(PhantomData));
+  |                                              ^^^^^^
+  |
+note: constructor is not visible here due to private fields
+ --> src/tier.rs
+  |
+  | pub struct Within<B, const I: u32>(PhantomData<B>);
+  |                                    ^^^^^^^^^^^^^^ private field

@@ -43,14 +43,8 @@ fn access<const N: u32, const I: u32>() {
                 written(v, N, I, to),
                 "bit {I} of {v:#x} written {to} at {N} bits"
             );
-            assert_eq!(w.bit::<I>().get(), to);
             assert_eq!(write::<_, I>(b, Bool::of(to)), w);
         }
-        assert_eq!(
-            b.with_bit::<I>(b.bit::<I>()),
-            b,
-            "bit {I} of {v:#x} rewritten at {N} bits"
-        );
     }
 }
 

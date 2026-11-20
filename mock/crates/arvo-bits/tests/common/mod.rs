@@ -45,13 +45,6 @@ pub fn values(n: u32) -> Vec<u64> {
     out
 }
 
-/// A small set of values for a law over three operands at width `n`: every
-/// value up to four bits, and above that the first sixteen of `values`.
-pub fn few(n: u32) -> Vec<u64> {
-    let all = values(n);
-    if n <= 4 { all } else { all.into_iter().take(16).collect() }
-}
-
 /// Bit `j` of `v` moved to place `(j + k) mod n`, one bit at a time: a
 /// rotation up by `k` within `n` bits, written without a shift of the whole
 /// value so it is not the crate's own formula.

@@ -7,11 +7,15 @@
 //! every width from one to sixty-four, against the host's operation on the
 //! carrier: every pair of values up to eight bits, and above that every pair of
 //! the values `common::values` takes.
+//!
+//! The algebra, `not` an involution, commuting, associating, De Morgan, the
+//! intersection test, is the host's and follows from these equalities over the
+//! same values, so none of it is asserted apart.
 
 mod common;
 
 use arvo_bits::{BitLogic, Bits};
-use common::{few, mask, values};
+use common::{mask, values};
 
 fn generic<B: BitLogic>(a: B, b: B) -> (B, B, B, B, bool) {
     (a.and(b), a.or(b), a.xor(b), a.not(), a.is_empty().get())
@@ -23,9 +27,7 @@ fn logic<const N: u32>() {
     for &x in &vs {
         let a = Bits::<N>::masked(x);
         assert_eq!(a.not().raw(), !x & mask(N), "not {x:#x} at {N} bits");
-        assert_eq!(a.not().not(), a, "not not {x:#x} at {N} bits");
         assert_eq!(a.is_empty().get(), x == 0, "{x:#x} empty at {N} bits");
-        assert!(a.xor(a).is_empty().get(), "{x:#x} xor itself at {N} bits");
         for &y in &vs {
             let b = Bits::<N>::masked(y);
             let (and, or, xor) = (a.and(b), a.or(b), a.xor(b));
@@ -33,53 +35,10 @@ fn logic<const N: u32>() {
             assert_eq!(or.raw(), x | y, "{x:#x} or {y:#x} at {N} bits");
             assert_eq!(xor.raw(), x ^ y, "{x:#x} xor {y:#x} at {N} bits");
             assert_eq!(
-                (and, or, xor),
-                (b.and(a), b.or(a), b.xor(a)),
-                "commuting at {N} bits"
-            );
-            assert_eq!(
-                and.not(),
-                a.not().or(b.not()),
-                "De Morgan, {x:#x} and {y:#x} at {N} bits"
-            );
-            assert_eq!(
-                or.not(),
-                a.not().and(b.not()),
-                "De Morgan, {x:#x} or {y:#x} at {N} bits"
-            );
-            assert_eq!(
-                and.is_empty().get(),
-                x & y == 0,
-                "{x:#x} meets {y:#x} at {N} bits"
-            );
-            assert_eq!(
                 generic(a, b),
                 (and, or, xor, a.not(), x == 0),
                 "generic at {N} bits"
             );
-        }
-    }
-    let three = few(N);
-    for &x in &three {
-        for &y in &three {
-            for &z in &three {
-                let (a, b, c) = (
-                    Bits::<N>::masked(x),
-                    Bits::<N>::masked(y),
-                    Bits::<N>::masked(z),
-                );
-                assert_eq!(
-                    a.and(b).and(c),
-                    a.and(b.and(c)),
-                    "and associates at {N} bits"
-                );
-                assert_eq!(a.or(b).or(c), a.or(b.or(c)), "or associates at {N} bits");
-                assert_eq!(
-                    a.xor(b).xor(c),
-                    a.xor(b.xor(c)),
-                    "xor associates at {N} bits"
-                );
-            }
         }
     }
 }

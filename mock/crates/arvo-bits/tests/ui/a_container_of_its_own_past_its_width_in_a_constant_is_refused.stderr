@@ -1,0 +1,27 @@
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Within::<Pair, 128>::NEW` failed here
+  |
+ ::: src/tier.rs
+  |
+  | /         assert!(
+  | |             if cfg!(arvo_mutant_bits_index) { I <= width } else { I < width },
+  | |             "a bit index or a shift amount at or past the container's declared width; bits are \
+  | |              counted from zero at the low bit, so the last index of a container `w` bits wide is \
+  | |              `w - 1`, and a shift or rotation by `w` or more is no move within the width"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/tier.rs
+  |
+  |         self.bit_at(Within::<Self, I>::NEW)
+  |                     ^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_container_of_its_own_past_its_width_in_a_constant_is_refused.rs:33:13
+   |
+33 |     let _ = PAST;
+   |             ^^^^

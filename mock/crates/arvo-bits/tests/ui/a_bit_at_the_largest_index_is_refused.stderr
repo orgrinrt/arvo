@@ -1,0 +1,27 @@
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the container's declared width; bits are counted from zero at the low bit, so the last index of a container `w` bits wide is `w - 1`, and a shift or rotation by `w` or more is no move within the width
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Within::<arvo_bits::Bits<8>, u32::MAX>::NEW` failed here
+  |
+ ::: src/tier.rs
+  |
+  | /         assert!(
+  | |             if cfg!(arvo_mutant_bits_index) { I <= width } else { I < width },
+  | |             "a bit index or a shift amount at or past the container's declared width; bits are \
+  | |              counted from zero at the low bit, so the last index of a container `w` bits wide is \
+  | |              `w - 1`, and a shift or rotation by `w` or more is no move within the width"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/ops.rs
+  |
+  |         let _ = Within::<Self, I>::NEW;
+  |                 ^^^^^^^^^^^^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn arvo_bits::ops::<impl Bits<8>>::bit::<u32::MAX>`
+ --> tests/ui/a_bit_at_the_largest_index_is_refused.rs:6:13
+  |
+6 |     let _ = Bits::<8>::masked(1).bit::<{ u32::MAX }>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
