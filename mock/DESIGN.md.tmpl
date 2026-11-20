@@ -47,7 +47,9 @@ wrapping product FNV-1a multiplies by. The seventh, `arvo-contracts`, sits direc
 bridge-home rule would put its contracts in `arvo-format`, the lowest crate
 reaching their types; they sit in a crate of their own because a contract a
 value implements is not the subject of the crate that declares the signature,
-following `proposal::a_value_contract_is_not_the_format_crates_subject`.
+following `proposal::a_value_contract_is_not_the_format_crates_subject`. The
+eighth, `arvo-capacity`, sits on `arvo-numeral`, whose platform-sized integer
+its count is read in.
 
 | Crate | What it ships | Depends on |
 |---|---|---|
@@ -58,6 +60,7 @@ following `proposal::a_value_contract_is_not_the_format_crates_subject`.
 | `arvo-numeral` | The value. `Num<S>` holds one member of a declared signature alone in the carrier `arvo-placement` derives at sole occupancy, and its sum, computed in that carrier, gives the slot the format's own sum gives. Comparison, the doors in and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and `ISize`. A debug check the consumer chooses, aborting a debug build by default when a result leaves the range. | `arvo-format`, `arvo-placement`, `arvo-contracts` |
 | `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, and `Bytes`, the host's byte slice walked one `Bits<8>` at a time. Masked construction and masked cast between declared widths, xor at one width, a 128-bit host value split into two halves, no arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | `notko` |
 | `arvo-digest` | A digest of explicit bytes, `Digest<const BITS: u32>` at 32, 64 and 128 bits. FNV-1a at 32 and 64 bits and XXH3 at 64 and 128 by name, each with a `const fn` form equal to its runtime one; a switched digest joins once its crossover is measured. Narrows into `Bits<N>` at the width a consumer names. Not cryptographic. | `arvo-format`, `arvo-numeral`, `arvo-bits`, `notko`, `xxhash-rust` |
+| `arvo-capacity` | A count fixed when the consumer builds, carried as a type. `Capacity` projects an array of exactly its count, read and written as a slice, and `Dim<N>` is the capacity of `N` elements; capacities bundle under one parameter and nest with no product computed, and `count` reads one in a constant as a `USize` under the adaptation the consumer names. Sealed to `Dim<N>` while that question is open. | `arvo-format`, `arvo-numeral` |
 
 The set is open at both ends it can be. A new numeral joins by implementing
 `Format`, a new overflow policy by implementing `Overflow`, and a new strategy by
@@ -123,6 +126,9 @@ in and the width a consumer narrows it to, on `arvo-numeral` for the
 wrapping product and on `arvo-format` for the adaptation that product is taken
 under, so it writes neither the walk's door nor its arithmetic. There is no facade today, and a
 crate that re-exported the seven would sit below all of them rather than above.
+`arvo-capacity` depends on `arvo-numeral` for the integer a count is read in and
+on `arvo-format` for the adaptation it is read under, and on nothing that holds
+an array, since the array it projects is the language's own.
 
 ## Consumers
 
@@ -143,8 +149,9 @@ remainder. `arvo-bits` is new source written from the current canon,
 not a restoration of anything removed, and it answers one piece of what those
 removed crates used to answer, an exact-width container, rather than the rest
 of it. Hashing is `arvo-digest`'s, new source
-rather than restored from the removed hash crate, and string identity is not
-shipped here.
+rather than restored from the removed hash crate. A count fixed at build that sizes
+arrays is `arvo-capacity`'s, new source carrying a count as a type rather than restoring
+the removed tensor crate, and string identity is not shipped here.
 
 ## See also
 

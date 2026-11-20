@@ -2,15 +2,7 @@
   "version": 2,
   "flavour": "",
   "member": "arvo-placement",
-  "green": {
-    "full": "50ab5f113b5a876c69002333917a23a87cf3b7262c00f3282eab2a87f63f7de1",
-    "own": {
-      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
-      "arvo-placement": "5c804a56b70253f976295f9c6b881b6461993428a7f9e98b728cf814378ad7e5"
-    }
-  },
+  "green": null,
   "tests": {},
-  "bins": {
-    "arvo-placement": "aa052aa06deba088d7dee9addb839465af4b7b539aa47037612b199b81727f95"
-  }
+  "bins": {}
 }

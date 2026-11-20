@@ -1,0 +1,3 @@
+$ cargo run -q -p consumer --example run
+WORKS: default sum=32647 cores=8; small sum=13 cores=2; window count=4
+exit 0

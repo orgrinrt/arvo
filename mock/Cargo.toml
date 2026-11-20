@@ -30,6 +30,7 @@ members = [
     "crates/arvo-bits",
     "crates/arvo-numeral",
     "crates/arvo-digest",
+    "crates/arvo-capacity",
 ]
 # `benches` (and every arm and support crate under it) is excluded rather than
 # listed as a member. The deletion commit that emptied `members` above (929c46ed)
@@ -72,6 +73,7 @@ arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }
 arvo-numeral = { path = "crates/arvo-numeral", version = "0.0.0" }
 arvo-digest = { path = "crates/arvo-digest", version = "0.0.0" }
+arvo-capacity = { path = "crates/arvo-capacity", version = "0.0.0" }
 # XXH3 for `arvo-digest`, behind its default-off `xxh3` feature. Op's choice of
 # 13 November 2026 (clause-dev
 # `.data/op-responses/202611131704_op-on-option-1-i-love-zig-as-much-as.md`), with an XXH3 on arvo

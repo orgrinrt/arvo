@@ -1,0 +1,14 @@
+[package]
+name = "capacity"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+description = "Arm A of the capacity spellings: a count as a type with its array projection and a const count"
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../../crates/arvo-numeral" }
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(capacity_mutant)"] }

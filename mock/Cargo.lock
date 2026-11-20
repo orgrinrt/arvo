@@ -11,6 +11,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-capacity"
+version = "0.0.0"
+dependencies = [
+ "arvo-format",
+ "arvo-numeral",
+ "trybuild",
+]
+
+[[package]]
 name = "arvo-contracts"
 version = "0.0.0"
 dependencies = [

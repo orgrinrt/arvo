@@ -1,0 +1,16 @@
+# arvo-capacity
+
+A count fixed when the consumer builds, carried as a type, that sizes real arrays from code generic over it.
+
+`Capacity` projects an array of exactly its count, which generic code reads and writes as a slice, and
+`Dim<N>` is the capacity of `N` elements. Many capacities bundle as the associated types of one
+parameter, one nests inside another with no product computed, and `count` reads a capacity's count in a
+constant as an `arvo_numeral::USize` under the adaptation the consumer names. Nothing about it needs a
+feature line in the consumer.
+
+Builds on `arvo-format` and `arvo-numeral`. `no_std`, no allocation, nothing at run time but the arrays.
+
+## Status
+
+Unreleased, at 0.0.0. The source implements what is described here and its tests pass, and the surface
+may still change before a first release.

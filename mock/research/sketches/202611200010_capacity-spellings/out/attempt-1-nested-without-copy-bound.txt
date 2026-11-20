@@ -1,0 +1,21 @@
+$ cargo run -q --manifest-path mock/research/sketches/202611200010_capacity-spellings/Cargo.toml -p consumer --example run
+error[E0277]: the trait bound `<<D as PlanDims>::AccumsPerCore as capacity::sealed::Capacity>::Array<u32>: Copy` is not satisfied
+  --> consumer/src/lib.rs:76:49
+   |
+76 |         publish: <D::Cores as Capacity>::filled(<D::AccumsPerCore as Capacity>::filled(0)),
+   |                  ------------------------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Copy` is not implemented for `<<D as PlanDims>::AccumsPerCore as capacity::sealed::Capacity>::Array<u32>`
+   |                  |
+   |                  required by a bound introduced by this call
+   |
+note: required by a bound in `capacity::sealed::Capacity::filled`
+  --> capacity/src/lib.rs:51:22
+   |
+51 |         fn filled<T: Copy>(value: T) -> Self::Array<T>;
+   |                      ^^^^ required by this bound in `Capacity::filled`
+help: consider further restricting the associated type
+   |
+70 | pub fn build_and_walk<D: PlanDims>() -> (u32, usize) where <<D as PlanDims>::AccumsPerCore as capacity::sealed::Capacity>::Array<u32>: Copy {
+   |                                                      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `consumer` (lib) due to 1 previous error
