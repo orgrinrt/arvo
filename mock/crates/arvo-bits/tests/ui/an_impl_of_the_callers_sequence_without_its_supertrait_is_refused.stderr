@@ -1,0 +1,21 @@
+error[E0277]: the trait bound `Pair: BitSequenceBy` is not satisfied
+  --> tests/ui/an_impl_of_the_callers_sequence_without_its_supertrait_is_refused.rs:15:22
+   |
+15 | impl BitSequence for Pair {
+   |                      ^^^^ unsatisfied trait bound
+   |
+help: the trait `BitSequenceBy` is not implemented for `Pair`
+  --> tests/ui/an_impl_of_the_callers_sequence_without_its_supertrait_is_refused.rs:9:1
+   |
+ 9 | struct Pair([Bits<64>; 2]);
+   | ^^^^^^^^^^^
+help: the trait `BitSequenceBy` is implemented for `Bits<N>`
+  --> src/tier.rs
+   |
+   | const impl<const N: u32> BitSequenceBy for Bits<N> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `BitSequence`
+  --> src/tier.rs
+   |
+   | pub const trait BitSequence: BitSequenceBy {
+   |                              ^^^^^^^^^^^^^ required by this bound in `BitSequence`

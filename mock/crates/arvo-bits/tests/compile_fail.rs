@@ -92,6 +92,8 @@ const REFUSED: &[&str] = &[
     "a_container_of_its_own_shifted_past_its_width_is_refused",
     "an_impl_of_the_callers_sequence_by_hand_is_refused",
     "an_impl_of_the_callers_trait_without_its_supertrait_is_refused",
+    "an_impl_of_the_callers_sequence_without_its_supertrait_is_refused",
+    "the_container_the_proof_is_held_against_is_not_send",
     "a_proof_carried_to_a_narrower_container_is_refused",
 ];
 

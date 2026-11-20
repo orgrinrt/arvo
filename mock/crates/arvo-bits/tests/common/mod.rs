@@ -45,13 +45,13 @@ pub fn values(n: u32) -> Vec<u64> {
     out
 }
 
-/// Bit `j` of `v` moved to place `(j + k) mod n`, one bit at a time: a
+/// Bit `j` of `v`, read by `bit_of`, moved to place `(j + k) mod n`, one bit at a time: a
 /// rotation up by `k` within `n` bits, written without a shift of the whole
 /// value so it is not the crate's own formula.
 pub fn rotated_up(v: u64, n: u32, k: u32) -> u64 {
     let mut out = 0;
     for j in 0 .. n {
-        if (v >> j) & 1 == 1 {
+        if bit_of(v, j) {
             out |= 1u64 << ((j + k) % n);
         }
     }
@@ -59,12 +59,12 @@ pub fn rotated_up(v: u64, n: u32, k: u32) -> u64 {
 }
 
 /// `v` at width `n` with bit `i` set to `to`, built one bit at a time: bit
-/// `i` from `to`, every other bit `j` from bit `j` of `v`, so it is not the
+/// `i` from `to`, every other bit `j` from bit `j` of `v` read by `bit_of`, so it is not the
 /// crate's own mask and or.
 pub fn written(v: u64, n: u32, i: u32, to: bool) -> u64 {
     let mut out = 0;
     for j in 0 .. n {
-        let set = if j == i { to } else { (v >> j) & 1 == 1 };
+        let set = if j == i { to } else { bit_of(v, j) };
         if set {
             out |= 1u64 << j;
         }
