@@ -22,7 +22,15 @@ consumer keeps, bounded by the capacity, and it is not this crate's.
 `Capacity` carries a count as typestate. Its associated type `Array<T>` is an array of exactly the
 count's length of `T`, bounded by `AsRef<[T]>` and `AsMut<[T]>`, so generic code reads and writes it as
 a slice and walks it by the slice's own length. `filled(value)` gives the array with every element
-`value`, for any `T: Copy`.
+`value`, for any `T: Copy`. `filled_with(f)` gives the array whose elements are the values `f` returns,
+called once per element in order from the first, for any `T`, so an element that is not `Copy`, or an
+inner array, is built in place. It passes no index: every use the crate was written for ignores one, and
+a consumer that wants one counts in the closure under the adaptation it picks, where an index passed
+from here would be a bare `usize` or an adaptation chosen for the consumer.
+
+Neither is `const`. Both are trait methods, and a trait method is `const` only under an unstable
+feature this crate does not take. A const arm behind an opt-in feature, as `arvo-numeral` carries for
+its own, is a follow-up.
 
 A bundle of dimensions is a trait of the consumer's whose associated types are each bounded by
 `Capacity`, so one type parameter sizes every structure a component holds:
@@ -40,26 +48,22 @@ struct Plan<D: PlanDims> {
 
 Nesting is a projection inside a projection, `<Cores as Capacity>::Array<<Accums as Capacity>::Array<T>>`.
 No product of the two counts is computed anywhere, so nothing here asks the toolchain for arithmetic on
-a generic constant.
-
-One residue is the consumer's to state. An array of a `Copy` element is `Copy`, but a trait cannot say
-that its projection is `Copy` for every capacity, so generic code that copies a nested inner array says
-`<Inner as Capacity>::Array<T>: Copy` where it does. The bound is satisfied by every capacity there is;
-it is only that the compiler has to be told at the site.
+a generic constant. The outer array is built as `Outer::filled_with(|| Inner::filled(value))`, so
+nothing about the inner array has to be `Copy`.
 
 The trait is sealed: `Dim<N>` is its one implementor. Sealed, the array a capacity projects and the
 count it reports both come from the one `N`, so they cannot disagree. Open, another crate could
 implement it with an array of four and a count of eight, the build would accept it, and generic code
 bounding a walk by the count would read past the array; the sketch this crate was chosen from measured
 exactly that. Whether the trait stays sealed is an open question, and the seal carries a marker naming
-it. Unsealing later breaks no consumer, where sealing later would.
+it. An implementation from outside is refused with a message naming `Dim<N>` as the capacity to use and
+the question the seal stands under. Unsealing later breaks no consumer, where sealing later would.
 
 ## The marker: `Dim<N>`
 
 `Dim<const N: usize>` is the capacity of `N` elements, for every `N`. `N` is the one bare integer in
 the surface, at a const generic parameter, which is where the stack admits one. A consumer declares its
-budget there, once: `type Units = Dim<256>`. A `Dim` sized by anything the build cannot evaluate is
-refused by the compiler, since `N` is a const parameter.
+budget there, once: `type Units = Dim<256>`.
 
 ## The count: `count`
 
@@ -84,8 +88,11 @@ an array from it.
 
 A consumer crate outside the workspace, depending on this one with no feature line, bundles three
 capacities under one parameter, sizes a plan by them alone and nested, fills and walks it in generic
-code, and checks at build that every count read in a constant equals its array's length. Compile-fail
-pairs, each beside a twin that builds, show that an implementation of `Capacity` from outside is refused
-where `Dim<N>` used from outside is not, and that a `Dim` sized by a run-time value is refused where one
-sized by a constant is not. The agreement between array and count is asserted over a spread of counts,
-and the committed run under `--cfg capacity_mutant`, where the count is one past the array, is red.
+code, and checks at build that every count read in a constant equals its array's length. A compile-fail
+pair, beside a twin that builds, shows that an implementation of `Capacity` from outside is refused
+where `Dim<N>` used from outside is not, and the refusal names `Dim<N>` and the open question the seal
+stands under. The agreement between array and count is asserted over a spread of counts, `filled_with`
+is asserted to call its closure once per element in order for an element that is not `Copy`, and the
+count is read at zero, one and the largest host `usize` under every rounding mode and overflow policy
+that admits `USize`, under both checks. The committed run under `--cfg arvo_mutant_capacity_count`,
+where the count is one past the array, turns red every test that reads the count.
