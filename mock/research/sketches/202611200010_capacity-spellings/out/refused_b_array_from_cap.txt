@@ -1,0 +1,12 @@
+$ cargo run -q -p consumer --example refused_b_array_from_cap
+error: generic parameters may not be used in const operations
+  --> consumer/examples/refused_b_array_from_cap.rs:13:37
+   |
+13 | pub struct Seq<T, const N: Cap>([T; N.get()]);
+   |                                     ^ cannot perform const operation using `N`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `N`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: could not compile `consumer` (example "refused_b_array_from_cap") due to 1 previous error
+exit 101

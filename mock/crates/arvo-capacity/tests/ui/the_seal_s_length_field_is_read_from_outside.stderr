@@ -1,0 +1,5 @@
+error[E0616]: field `0` of struct `arvo_capacity::capacity::seal::Len` is private
+  --> tests/ui/the_seal_s_length_field_is_read_from_outside.rs:11:12
+   |
+11 |     C::LEN.0.host()
+   |            ^ private field

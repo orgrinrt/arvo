@@ -1,0 +1,9 @@
+[package]
+name = "value-cap"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+description = "Arm B of the capacity spellings: the count as a value at a const generic position"
+
+[dependencies]

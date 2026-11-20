@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "flavour": "",
+  "member": "arvo-digest",
+  "green": {
+    "full": "819c7bd5c09d1d28b2fcaaccd8aa45e71d1f73edf7a8650ec803084ea62d7643",
+    "own": {
+      "arvo-bits": "39ea28e3e9844103f78b778e486997ca817ad3dfedab9d027d3c87e32019dcd4",
+      "arvo-digest": "79fa18cfd52362730d5a579fb312eb6b0769e47a7a568cc7596ecdb44a55cb1d",
+      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
+      "arvo-numeral": "533f96e036e22c59d8bcaba8a18fd2a4d7ad6903b6035bd4c1af15a4fa99435f",
+      "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
+    }
+  },
+  "tests": {},
+  "bins": {
+    "arvo-digest": "d1fc5bef0397720e41c34ec6e6c07010a67acc16fb5bf7c86acd29af431a7d70",
+    "arvo-digest::bits": "2282816d4360a4e770a659ff08206a2f2ca9fd23da6b412b3b4fc00308bf207e",
+    "arvo-digest::fnv1a": "4669758c9c4663084cf5bdc7d855ab7572ef4c2daba79499e8b7daa64f327f9c",
+    "arvo-digest::refused": "9db721d0c36dac6dfcef5a23ef5c3201ef83b19a844623141129e32627480886",
+    "arvo-digest::xxh3": "c3e3c87143b164dfd1d70c915aedd7ec4bede0fa326650691ef09cb1b8f7fc3f"
+  }
+}

@@ -1,0 +1,5 @@
+# Its own `[workspace]` table so cargo does not walk up into the mock workspace,
+# as every sibling sketch here does.
+[workspace]
+members = ["capacity", "value-cap", "consumer"]
+resolver = "3"

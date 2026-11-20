@@ -1,0 +1,54 @@
+$ cargo run -q -p consumer --example refused_a_sealed_outside_impl
+error[E0277]: the trait bound `Liar: sealed::seal::Sealed` is not satisfied
+  --> consumer/examples/refused_a_sealed_outside_impl.rs:12:19
+   |
+12 | impl Capacity for Liar {
+   |                   ^^^^ unsatisfied trait bound
+   |
+help: the trait `sealed::seal::Sealed` is not implemented for `Liar`
+  --> consumer/examples/refused_a_sealed_outside_impl.rs:10:1
+   |
+10 | pub struct Liar;
+   | ^^^^^^^^^^^^^^^
+help: the trait `sealed::seal::Sealed` is implemented for `Dim<N>`
+  --> capacity/src/lib.rs:42:5
+   |
+42 |     impl<const N: usize> seal::Sealed for Dim<N> {}
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `capacity::sealed::Capacity`
+  --> capacity/src/lib.rs:45:25
+   |
+45 |     pub trait Capacity: seal::Sealed {
+   |                         ^^^^^^^^^^^^ required by this bound in `Capacity`
+   = note: `Capacity` is a "sealed trait", because to implement it you also need to implement `capacity::sealed::seal::Sealed`, which is not accessible; this is usually done to force you to use one of the provided types that already implement it
+   = help: the following type implements the trait:
+             capacity::Dim<N>
+
+error[E0277]: the trait bound `Liar: sealed::seal::Sealed` is not satisfied
+  --> consumer/examples/refused_a_sealed_outside_impl.rs:23:13
+   |
+23 |     let _ = Liar::COUNT.host();
+   |             ^^^^ unsatisfied trait bound
+   |
+help: the trait `sealed::seal::Sealed` is not implemented for `Liar`
+  --> consumer/examples/refused_a_sealed_outside_impl.rs:10:1
+   |
+10 | pub struct Liar;
+   | ^^^^^^^^^^^^^^^
+help: the trait `sealed::seal::Sealed` is implemented for `Dim<N>`
+  --> capacity/src/lib.rs:42:5
+   |
+42 |     impl<const N: usize> seal::Sealed for Dim<N> {}
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `capacity::sealed::Capacity::COUNT`
+  --> capacity/src/lib.rs:45:25
+   |
+45 |     pub trait Capacity: seal::Sealed {
+   |                         ^^^^^^^^^^^^ required by this bound in `Capacity::COUNT`
+...
+49 |         const COUNT: Count;
+   |               ----- required by a bound in this associated constant
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `consumer` (example "refused_a_sealed_outside_impl") due to 2 previous errors
+exit 101
