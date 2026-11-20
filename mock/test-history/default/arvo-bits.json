@@ -3,19 +3,19 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "ac2ac2f91356771f4b9691bb0a102ad27d984897b46e34a37681cbf967ccd8ea",
+    "full": "408f0da16eb060ab2eaf7aece137c269b000feb2f3280adae1841b305392fa8a",
     "own": {
-      "arvo-bits": "0d391dad55ca427f5e675dd30dea2461b5cd17076ad7fb36d950bff062ff90ee",
+      "arvo-bits": "6268e66e3c31d4d944fa2a742947e3e19d37eec575cfef76fad558de1030f7d9",
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe"
     }
   },
   "tests": {},
   "bins": {
     "arvo-bits": "a0c08ffcbf6acdb51fd901ab845cfe8b122850d81b5f7091d196602b0304716a",
-    "arvo-bits::compile_fail": "b5344082d62ce7c73137506aff6062453b036b637c8f0e7032b913b4571685db",
-    "arvo-bits::the_bit_access": "72cfba725b3c0e666ba3243876072b524070692feafee7457094ded2c05794bb",
-    "arvo-bits::the_bit_logic": "c0ab05f85c7d16a61db04c3584d56f20023521c65809d148315d323985d381fa",
-    "arvo-bits::the_bit_sequence": "709937d6768c6f09467dbcfb6ad5515d52ff9a9966926ad3c6765a0871e686e8",
-    "arvo-bits::the_bit_tier_in_a_constant": "4e8725135aeff2daf4c3a30280ad9cb8fbfa0ad0d5b03217fba425843ac2c4a4"
+    "arvo-bits::compile_fail": "c0e096fc632e443bcc72310769a4cd11f8e4f8566f29e173d157e6e6b4919d89",
+    "arvo-bits::the_bit_access": "c6fd3a4042c6b25d06c85945d17a18975e1fe7539ddc1164b1d18ff938f8966b",
+    "arvo-bits::the_bit_logic": "073ec424652c231e4a2b21ecb2ae7d7779d3a87078e9164d76a605779bc5e1d5",
+    "arvo-bits::the_bit_sequence": "bfdee45e7387c7e992421f571a026aa003eff983c2b779004acdd61ef3557664",
+    "arvo-bits::the_bit_tier_in_a_constant": "41fc5c88041d265bf315b18468b0ddd6cc484f02100cddd2abb9df85a8ee81a7"
   }
 }
