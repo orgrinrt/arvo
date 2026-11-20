@@ -1,0 +1,16 @@
+# Its own `[workspace]` table so it is a standalone tree and cargo does not walk
+# up into the mock workspace. It depends on nothing: every claim is checked
+# against exact rationals formed here, so no arvo step is the oracle for itself.
+[workspace]
+
+[package]
+name = "the-remainder-on-the-grid"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[features]
+# Each plants one wrong remainder the sweeps must report.
+plant-quotient-on-the-grid = []
+plant-sign-of-the-dividend = []
+plant-float-checker-accepts-all = []
