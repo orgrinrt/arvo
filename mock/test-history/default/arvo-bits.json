@@ -3,6 +3,29 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": null,
-  "tests": {},
+  "tests": {
+    "arvo-bits::compile_fail": {
+      "a_cast_past_sixty_four_bits_is_refused": {
+        "secs": 9.4,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      },
+      "a_cast_to_zero_bits_is_refused": {
+        "secs": 8.3,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      },
+      "a_width_of_zero_bits_is_refused": {
+        "secs": 10.1,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      },
+      "a_width_past_sixty_four_bits_is_refused": {
+        "secs": 10.5,
+        "passed": true,
+        "passed_at": "2fa6510a1c48d0479a52e949f53fcb5e45e02346554930a2b481318bdcea857c"
+      }
+    }
+  },
   "bins": {}
 }
