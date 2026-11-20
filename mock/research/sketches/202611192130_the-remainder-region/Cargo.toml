@@ -1,0 +1,24 @@
+# Where a remainder is exact, where it is completed, and where the two
+# alternatives to it break. Detached from the arvo mock workspace; the format
+# crate is read by path so the option-b and option-c arms run arvo's own
+# shipped `div`, `mul`, `sub`, `convert` and `adapt`.
+#
+# Run from this directory: `cargo run --release`. The binary asserts every
+# prediction and every planted control, and prints the tallies that
+# `outputs/run.txt` records.
+
+[workspace]
+resolver = "3"
+
+[package]
+name = "remainder-region"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }
+
+[profile.release]
+opt-level = 3
+debug = false
