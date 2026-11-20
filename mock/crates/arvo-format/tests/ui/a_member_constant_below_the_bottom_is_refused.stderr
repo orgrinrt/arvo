@@ -6,6 +6,7 @@ error[E0080]: evaluation panicked: a constant member is refused outside the form
   |
  ::: src/member.rs
   |
+  |   impl<F: Format, const B: i128> ConstantMember<F, B> {
   |       const ADMITTED: () = assert!(
   |  __________________________-
   | |         slot_in_range::<F::Slots>(Slot::at(B)).get(),

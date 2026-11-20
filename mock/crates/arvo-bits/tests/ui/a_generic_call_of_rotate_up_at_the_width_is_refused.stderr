@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: a bit index or a shift amount at or past the 
   |
  ::: src/tier.rs
   |
+  |   impl<B: BitWidth, const I: u32> Within<B, I> {
+...
+  |       pub const NEW: Self = {
+  |           let width = B::WIDTH.count();
   | /         assert!(
   | |             if cfg!(arvo_mutant_bits_index) { I <= width } else { I < width },
   | |             "a bit index or a shift amount at or past the container's declared width; bits are \

@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: declared width is wider than a u64 carries; t
   |
  ::: src/lib.rs
   |
+  |   impl<const N: u32> Bits<N> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             N <= 64,
   | |             "declared width is wider than a u64 carries; the value itself is stored in one, and \

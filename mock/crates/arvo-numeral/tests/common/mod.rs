@@ -23,6 +23,7 @@ pub mod widths;
 #[path = "../../../arvo-format/src/tests/big.rs"]
 pub mod big;
 
+use arvo_contracts::{Additive, Identity};
 use arvo_format::{
     DeclaredSignature,
     Dither,
@@ -38,7 +39,7 @@ use arvo_format::{
     sub,
     sum_position,
 };
-use arvo_numeral::{Additive, Identity, Num, Quiet, Sole};
+use arvo_numeral::{Num, Quiet, Sole};
 
 /// The seed the band of widths 9 to 64 draws its pairs from. Committed so a
 /// failure reproduces.

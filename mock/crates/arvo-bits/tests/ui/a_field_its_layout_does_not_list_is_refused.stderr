@@ -1,41 +1,18 @@
 error[E0277]: `Cons<Id, Cons<Flag, notko_hlist::Empty>>` has no place for `Other`
-  --> tests/ui/a_field_its_layout_does_not_list_is_refused.rs:34:61
+  --> tests/ui/a_field_its_layout_does_not_list_is_refused.rs:34:65
    |
 34 | const OTHER: Bits<31> = Word::<Handle>::of(Bits::masked(0)).get(Other);
-   |                                                             ^^^ the trait `PlaceOf<Other, There<There<_>>>` is not implemented for `Cons<Id, Cons<Flag, notko_hlist::Empty>>`
+   |                                                             --- ^^^^^ the trait `PlaceOf<Other, _>` is not implemented for `Cons<Id, Cons<Flag, notko_hlist::Empty>>`
+   |                                                             |
+   |                                                             required by a bound introduced by this call
    |
    = note: A member is at `Here` when it is the head of a `Cons`, and at `There<P>` when the tail holds it at `P`. The usual cause is a member the list does not hold. If the compiler reports `type annotations needed` instead, the list holds the member at more than one place. If it reports `overflow evaluating the requirement`, the walk is one step per cell and the list is deeper than the default recursion limit, so the crate root wants `#![recursion_limit = "1024"]`.
 note: required by a bound in `Word::<L>::get`
   --> src/word.rs
    |
+   | impl<L: Layout> Word<L> {
+...
    |     pub const fn get<F: Field, P: Place>(self, _field: F) -> F::Value
-   |                  --- required by a bound in this associated function
    |     where
    |         L::Fields: PlaceOf<F, P> + Below<P>,
    |                    ^^^^^^^^^^^^^ required by this bound in `Word::<L>::get`
-
-error[E0277]: the trait bound `notko_hlist::Empty: Below<_>` is not satisfied
-  --> tests/ui/a_field_its_layout_does_not_list_is_refused.rs:34:61
-   |
-34 | const OTHER: Bits<31> = Word::<Handle>::of(Bits::masked(0)).get(Other);
-   |                                                             ^^^ the trait `Below<_>` is not implemented for `notko_hlist::Empty`
-   |
-help: `Cons<H, T>` implements trait `Below<P>`
-  --> src/word.rs
-   |
-   | impl<H: Field, T: Fields> Below<Here> for Cons<H, T> {
-   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Below<Here>`
-...
-   | impl<H: Field, P: Place, T: Below<P>> Below<There<P>> for Cons<H, T> {
-   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Below<There<P>>`
-   = note: required for `Cons<Flag, notko_hlist::Empty>` to implement `Below<There<_>>`
-   = note: 1 redundant requirement hidden
-   = note: required for `Cons<Id, Cons<Flag, notko_hlist::Empty>>` to implement `Below<There<There<_>>>`
-note: required by a bound in `Word::<L>::get`
-  --> src/word.rs
-   |
-   |     pub const fn get<F: Field, P: Place>(self, _field: F) -> F::Value
-   |                  --- required by a bound in this associated function
-   |     where
-   |         L::Fields: PlaceOf<F, P> + Below<P>,
-   |                                    ^^^^^^^^ required by this bound in `Word::<L>::get`

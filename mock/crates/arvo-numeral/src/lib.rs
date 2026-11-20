@@ -26,15 +26,17 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
-// One optional gate, off by default. `const_trait_impl` carries the const impl
-// of `notko_hlist::Cardinal` and nothing else: sound, with rough edges that are
-// gaps in its implementation. It is in no public signature, so a consumer
-// naming the value or a list's length needs no gate of its own.
-#![cfg_attr(feature = "hlist-const", feature(const_trait_impl))]
+// One gate, on as the crate builds by default. `const_trait_impl` carries the
+// const impls of the contracts in `arvo-contracts` and, under `hlist-const`, of
+// `notko_hlist::Cardinal`: sound, with rough edges that are gaps in its
+// implementation. A consumer naming the value, bounding on a contract or reading
+// a list's length needs no gate of its own.
+#![feature(const_trait_impl)]
 
 mod admit;
 mod alias;
 mod check;
+mod contracts;
 #[cfg(feature = "hlist-const")]
 mod count_const_path;
 #[cfg(all(feature = "hlist", not(feature = "hlist-const")))]
@@ -53,7 +55,6 @@ pub use alias::{Fix, ISize, Int, NamesAdaptation, UFix, USize, Uint};
 pub use arvo_format::{Bool, Divisor};
 pub use check::{Abort, DebugCheck, Quiet};
 pub use host::HostInteger;
-pub use identity::{Additive, Identity, Multiplicative};
 pub use num::Num;
 
 #[cfg(test)]

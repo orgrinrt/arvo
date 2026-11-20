@@ -2,20 +2,7 @@
   "version": 2,
   "flavour": "",
   "member": "arvo-capacity",
-  "green": {
-    "full": "805f5888ae8de58af75474e356dd8e4e5d1e337be46ceeaf62a61c5c98e0d70f",
-    "own": {
-      "arvo-capacity": "1b90955b6ad62440be73e41e2103c8cb7b603245f07b57211b31c46d2d5764af",
-      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
-      "arvo-numeral": "533f96e036e22c59d8bcaba8a18fd2a4d7ad6903b6035bd4c1af15a4fa99435f",
-      "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
-    }
-  },
+  "green": null,
   "tests": {},
-  "bins": {
-    "arvo-capacity": "6131e5e37eddf4a164f39cbe0608b8e375ce5702bf3bb15f305056f82b93c137",
-    "arvo-capacity::a_consumer_crate": "a31edc92888a7abbb92f6994f73081d4749e1034dcecfb2f3db072aaa6ae1231",
-    "arvo-capacity::agreement": "8c68b5f0db56fd1b7ade1f8693bdc1f100ecf3b580be94f81d2fd9ee7db9d997",
-    "arvo-capacity::compile_fail": "9c812086620030f66442fe25cbcc8806a2d98f9dd57919cc9188e09435b77ecd"
-  }
+  "bins": {}
 }

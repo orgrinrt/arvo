@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: declared width is wider than 64 bits, the wid
   |
  ::: src/slots.rs
   |
+  |   pub trait Slots {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             Self::WIDTH.count() <= 64,
   | |             "declared width is wider than 64 bits, the widest pointer width a target has and the \

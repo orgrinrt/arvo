@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: the slot family's row in `arvo_placement::Sol
   |
  ::: src/admit.rs
   |
+  |   impl<S> Sole for S
+...
+  |       const ADMITTED: () = {
+  |           let () = <SlotsOf<S> as Slots>::ADMITTED;
   | /         assert!(
   | |             carrier_agrees::<SlotsOf<S>>().get(),
   | |             "the slot family's row in `arvo_placement::SoleCarrier` names a container the placement \

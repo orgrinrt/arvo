@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: conversion is not yet admitted where the rema
   |
  ::: src/conversion.rs
   |
+  |   impl<F: Format, T: Format> Convertible<F, T> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             fits.get(),
   | |             "conversion is not yet admitted where the remainder's denominator d_F V_F U_T d_T, with \

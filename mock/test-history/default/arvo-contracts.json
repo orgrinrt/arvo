@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "flavour": "",
+  "member": "arvo-contracts",
+  "green": {
+    "full": "51dd4b34aa685500c23e6af08a7e516ffdccb7c58b732053f82c1c107eec5ec9",
+    "own": {
+      "arvo-contracts": "ac5035dc7203af9b03b56ac8e340171839dee5c58ab76f94af1e6cc81a8d9d72",
+      "arvo-format": "b60e96816db2385e2c6d0b1ea2de690949e81a67de94db73c8dd6fea61dabc7d"
+    }
+  },
+  "tests": {},
+  "bins": {
+    "arvo-contracts": "088340b04465530dd34b81d97f1304e64a3395bd1c7b2191894d054f89851457"
+  }
+}

@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: the field widths of a packed word do not sum 
   |
  ::: src/word.rs
   |
+  |   impl<L: Layout> Word<L> {
+  |       /// Refused at build where the fields do not tile the container exactly.
+  |       const TILED: () = {
+...
   | /         assert!(
   | |             <L::Fields as Fields>::SUM.equals(width).get(),
   | |             "the field widths of a packed word do not sum to the width of its container; a bit \

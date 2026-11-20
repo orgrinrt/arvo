@@ -1,6 +1,7 @@
 error[E0080]: evaluation panicked: a field of a packed word is zero bits wide or wider than sixty-four; its value's `Lane::WIDTH` must be one to sixty-four
  --> src/word.rs
   |
+  | impl<H: Field, T: Fields> Fields for Cons<H, T> {
   |     const SUM: Width = field_width::<H>().add(T::SUM);
   |                        ^^^^^^^^^^^^^^^^^^ evaluation of `<notko_hlist::Cons<Big, notko_hlist::Empty> as arvo_bits::Fields>::SUM` failed inside this call
   |

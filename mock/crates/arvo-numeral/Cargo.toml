@@ -8,6 +8,7 @@ readme = "README.md.tmpl"
 
 [dependencies]
 arvo-format.workspace = true
+arvo-contracts.workspace = true
 arvo-placement.workspace = true
 notko.workspace = true
 notko-hlist = { workspace = true, optional = true }

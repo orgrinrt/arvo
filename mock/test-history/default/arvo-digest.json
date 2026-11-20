@@ -3,21 +3,22 @@
   "flavour": "",
   "member": "arvo-digest",
   "green": {
-    "full": "318cd419ff14aca888afeec82dbcdbfe6e80b8685bb939e8418bec0b4fd72f84",
+    "full": "8b74f2b538fa5ea2e8c1247174c0bcafb7ab18b60bfbe1cd51c6ecd0f577c1a9",
     "own": {
-      "arvo-bits": "663f9c54dc3cbd583e7946c84297deeeabc672c50aab02798dfe9a226abdc365",
-      "arvo-digest": "79fa18cfd52362730d5a579fb312eb6b0769e47a7a568cc7596ecdb44a55cb1d",
-      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
-      "arvo-numeral": "533f96e036e22c59d8bcaba8a18fd2a4d7ad6903b6035bd4c1af15a4fa99435f",
+      "arvo-bits": "b9a0e83513cb0898e4b0d1703a03561d74f3f13b9ae7ffa9983f72f2003a5ca2",
+      "arvo-contracts": "914bc2d55083275bd3f76882893831dde87947ff4e9447dab77cbc64655a5548",
+      "arvo-digest": "cd6fdd810b3d567eea533dcc20cbe892cdc0a669c2fec85f2e1c9b74e22c6e21",
+      "arvo-format": "b60e96816db2385e2c6d0b1ea2de690949e81a67de94db73c8dd6fea61dabc7d",
+      "arvo-numeral": "999624699bfb412c207f14395cd8feca0cd112eee78bae0479d5e02e865d6743",
       "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-digest": "84fd02c61a49c4dda1d8c5e0d66951dccd873edaea98b5346ba20a32730f9cd1",
-    "arvo-digest::bits": "fae9f5a89eb0f33094b27126b4d18fb3383c4bc619d14197a0c176f8ecbb4223",
-    "arvo-digest::fnv1a": "4d092d50d88e3d1988fe7eca299ee1c977f0a0dcac8b7e3a7d67ce5e4328158d",
-    "arvo-digest::refused": "c925a1a9137e2f6d58fed24d90c8f52fbebbcf858be81537db2b3610e9154802",
-    "arvo-digest::xxh3": "0c8f7b9db15d9f5013bacedbbf8a7ecce5035708dd03ebe083450a082fcd37aa"
+    "arvo-digest": "c5231bcfa89551cac7b708f31acdda53da87b80f5ffcecbaaa20aeb8772af37a",
+    "arvo-digest::bits": "e71ac9b38839bf73f4c0ef54b3c7a0b6c03fd1e32d49dd57de58f520e16bcd24",
+    "arvo-digest::fnv1a": "0386fad7a68db667731a80543867b987a55c06f1670e0131fbc5d346748b6355",
+    "arvo-digest::refused": "e867ca4b552d7908e8fbd5bf304dde0a29d966a65bf8d10d95079f67025c59fd",
+    "arvo-digest::xxh3": "15478b9cd57ebaa737bcef4184ce154a30a77ebd89d1c1446c28565433045415"
   }
 }

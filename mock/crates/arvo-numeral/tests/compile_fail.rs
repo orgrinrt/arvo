@@ -213,6 +213,14 @@ fn an_outside_slot_family_over_part_of_a_range_is_refused() {
 }
 
 #[test]
+fn an_outside_slot_family_with_no_container_is_refused() {
+    pair(
+        "an_outside_slot_family_with_no_container_is_refused",
+        "an_outside_slot_family_over_a_whole_range_compiles",
+    );
+}
+
+#[test]
 fn an_outside_policy_that_clamps_is_refused() {
     pair(
         "an_outside_policy_that_clamps_is_refused",
@@ -225,5 +233,21 @@ fn a_disarmed_row_naming_the_wrong_container_is_refused() {
     pair(
         "a_disarmed_row_naming_the_wrong_container_is_refused",
         "a_disarmed_row_naming_the_right_container_compiles",
+    );
+}
+
+#[test]
+fn a_wrapping_value_at_a_monotone_bound_is_refused() {
+    pair(
+        "a_wrapping_value_at_a_monotone_bound_is_refused",
+        "a_saturating_value_at_a_monotone_bound_compiles",
+    );
+}
+
+#[test]
+fn a_constant_contract_past_the_range_is_refused() {
+    pair(
+        "a_constant_contract_past_the_range_is_refused",
+        "a_constant_contract_at_the_end_of_the_range_compiles",
     );
 }

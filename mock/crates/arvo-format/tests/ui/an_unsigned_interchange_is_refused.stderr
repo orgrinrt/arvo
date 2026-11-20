@@ -6,6 +6,9 @@ error[E0080]: evaluation panicked: an IEEE 754 significand is sign and magnitude
   |
  ::: src/standards/ieee754.rs
   |
+  |   impl<A: Ambient, const P: u32> Slots for Significand<A, P> {
+...
+  |       const ADMITTED: () = {
   | /         assert!(
   | |             A::SIGNED.get(),
   | |             "an IEEE 754 significand is sign and magnitude, so its ambient domain must carry values \
