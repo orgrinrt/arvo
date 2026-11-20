@@ -1,0 +1,176 @@
+$ RUSTFLAGS="--cfg arvo_mutant_capacity_count" cargo test -p arvo-capacity   (in mock/, round 202611200102-e4xa)
+     Running unittests src/lib.rs (/home/user/target/debug/deps/arvo_capacity-70a3467cd4af65d9)
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/a_consumer_crate.rs (/home/user/target/debug/deps/a_consumer_crate-4478b4beef8b66a8)
+running 2 tests
+test the_consumer_locks_the_notko_the_workspace_builds ... ok
+test a_consumer_with_no_feature_line_builds_and_runs ... FAILED
+failures:
+---- a_consumer_with_no_feature_line_builds_and_runs stdout ----
+thread 'a_consumer_with_no_feature_line_builds_and_runs' (3563) panicked at crates/arvo-capacity/tests/a_consumer_crate.rs:59:5:
+the consumer crate did not build and run:
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> src/main.rs:57:9
+   |
+57 | /         assert!(
+58 | |             core::mem::size_of::<C::Array<u8>>() == count::<C, A, Abort>().host(),
+59 | |             "the capacity's array and its count disagree",
+60 | |         );
+   | |_________^ evaluation of `agrees::<arvo_capacity::Dim<256>>::{constant#0}` failed here
+note: erroneous constant encountered
+  --> src/main.rs:56:5
+   |
+56 | /     const {
+57 | |         assert!(
+58 | |             core::mem::size_of::<C::Array<u8>>() == count::<C, A, Abort>().host(),
+59 | |             "the capacity's array and its count disagree",
+60 | |         );
+61 | |     }
+   | |_____^
+note: the above error was encountered while instantiating `fn agrees::<Dim<256>>`
+  --> src/main.rs:75:5
+   |
+75 |     agrees::<D::Units>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> src/main.rs:57:9
+   |
+57 | /         assert!(
+58 | |             core::mem::size_of::<C::Array<u8>>() == count::<C, A, Abort>().host(),
+59 | |             "the capacity's array and its count disagree",
+60 | |         );
+   | |_________^ evaluation of `agrees::<arvo_capacity::Dim<8>>::{constant#0}` failed here
+note: the above error was encountered while instantiating `fn agrees::<Dim<8>>`
+  --> src/main.rs:76:5
+   |
+76 |     agrees::<D::Cores>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> src/main.rs:57:9
+   |
+57 | /         assert!(
+58 | |             core::mem::size_of::<C::Array<u8>>() == count::<C, A, Abort>().host(),
+59 | |             "the capacity's array and its count disagree",
+60 | |         );
+   | |_________^ evaluation of `agrees::<arvo_capacity::Dim<16>>::{constant#0}` failed here
+note: the above error was encountered while instantiating `fn agrees::<Dim<16>>`
+  --> src/main.rs:77:5
+   |
+77 |     agrees::<D::AccumsPerCore>();
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> src/main.rs:57:9
+   |
+57 | /         assert!(
+58 | |             core::mem::size_of::<C::Array<u8>>() == count::<C, A, Abort>().host(),
+59 | |             "the capacity's array and its count disagree",
+60 | |         );
+   | |_________^ evaluation of `agrees::<arvo_capacity::Dim<4>>::{constant#0}` failed here
+note: the above error was encountered while instantiating `fn agrees::<Dim<4>>`
+  --> src/main.rs:75:5
+   |
+75 |     agrees::<D::Units>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> src/main.rs:57:9
+   |
+57 | /         assert!(
+58 | |             core::mem::size_of::<C::Array<u8>>() == count::<C, A, Abort>().host(),
+59 | |             "the capacity's array and its count disagree",
+60 | |         );
+   | |_________^ evaluation of `agrees::<arvo_capacity::Dim<2>>::{constant#0}` failed here
+note: the above error was encountered while instantiating `fn agrees::<Dim<2>>`
+  --> src/main.rs:76:5
+   |
+76 |     agrees::<D::Cores>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> src/main.rs:57:9
+   |
+57 | /         assert!(
+58 | |             core::mem::size_of::<C::Array<u8>>() == count::<C, A, Abort>().host(),
+59 | |             "the capacity's array and its count disagree",
+60 | |         );
+   | |_________^ evaluation of `agrees::<arvo_capacity::Dim<3>>::{constant#0}` failed here
+note: the above error was encountered while instantiating `fn agrees::<Dim<3>>`
+  --> src/main.rs:77:5
+   |
+77 |     agrees::<D::AccumsPerCore>();
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `arvo-capacity-consumer` (bin "arvo-capacity-consumer") due to 6 previous errors
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: a_consumer_crate::a_consumer_with_no_feature_line_builds_and_runs
+   3: a_consumer_crate::a_consumer_with_no_feature_line_builds_and_runs::{closure#0}
+   4: <a_consumer_crate::a_consumer_with_no_feature_line_builds_and_runs::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+failures:
+    a_consumer_with_no_feature_line_builds_and_runs
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+error: test failed, to rerun pass `-p arvo-capacity --test a_consumer_crate`
+     Running tests/agreement.rs (/home/user/target/debug/deps/agreement-aa5c026e471e5ea6)
+running 6 tests
+test a_nested_array_of_a_non_copy_element_is_built_in_place ... ok
+test a_filled_array_holds_its_value_in_every_element ... ok
+test filled_with_calls_its_closure_once_per_element_in_order ... ok
+test a_nested_projection_is_outer_by_inner_with_no_product_computed ... ok
+test the_array_and_the_count_agree_over_a_spread_of_counts ... FAILED
+test the_count_holds_at_its_edges_under_every_adaptation_and_check ... FAILED
+failures:
+---- the_array_and_the_count_agree_over_a_spread_of_counts stdout ----
+thread 'the_array_and_the_count_agree_over_a_spread_of_counts' (3586) panicked at crates/arvo-capacity/tests/agreement.rs:46:5:
+assertion `left == right` failed: the count of Dim<0> is not 0
+  left: 1
+ right: 0
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<usize, usize>
+   4: agreement::the_array_and_the_count_agree_over_a_spread_of_counts
+   5: agreement::the_array_and_the_count_agree_over_a_spread_of_counts::{closure#0}
+   6: <agreement::the_array_and_the_count_agree_over_a_spread_of_counts::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+---- the_count_holds_at_its_edges_under_every_adaptation_and_check stdout ----
+thread 'the_count_holds_at_its_edges_under_every_adaptation_and_check' (3587) panicked at crates/arvo-capacity/tests/agreement.rs:142:5:
+assertion `left == right` failed
+  left: (1, 2, 0)
+ right: (0, 1, 18446744073709551615)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<(usize, usize, usize), (usize, usize, usize)>
+   4: agreement::the_count_holds_at_its_edges_under_every_adaptation_and_check
+   5: agreement::the_count_holds_at_its_edges_under_every_adaptation_and_check::{closure#0}
+   6: <agreement::the_count_holds_at_its_edges_under_every_adaptation_and_check::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+failures:
+    the_array_and_the_count_agree_over_a_spread_of_counts
+    the_count_holds_at_its_edges_under_every_adaptation_and_check
+test result: FAILED. 4 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+error: test failed, to rerun pass `-p arvo-capacity --test agreement`
+     Running tests/compile_fail.rs (/home/user/target/debug/deps/compile_fail-cc6431a2a06e7068)
+running 3 tests
+test tests/ui/a_dim_is_constructed.rs [should fail to compile] ... ok
+test tests/ui/a_dim_is_named_as_a_type.rs [should pass] ... ok
+
+test a_dim_cannot_be_constructed ... ok
+test tests/ui/an_outside_impl_of_capacity_is_refused.rs [should fail to compile] ... ok
+test tests/ui/dim_used_from_outside_compiles.rs [should pass] ... ok
+
+test an_outside_impl_of_capacity_is_refused ... ok
+test tests/ui/the_seal_s_length_is_read_from_outside.rs [should fail to compile] ... ok
+test tests/ui/the_count_is_read_through_count.rs [should pass] ... ok
+
+test the_seal_s_length_cannot_be_read_from_outside ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+   Doc-tests arvo_capacity
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+error: 2 targets failed:
+    `-p arvo-capacity --test a_consumer_crate`
+    `-p arvo-capacity --test agreement`

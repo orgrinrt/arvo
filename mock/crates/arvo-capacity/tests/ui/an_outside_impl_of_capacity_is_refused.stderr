@@ -1,0 +1,25 @@
+error[E0277]: `Liar` is not a capacity: `Capacity` is implemented for `Dim<N>` alone
+  --> tests/ui/an_outside_impl_of_capacity_is_refused.rs:12:19
+   |
+12 | impl Capacity for Liar {
+   |                   ^^^^ not `Dim<N>`
+   |
+help: the trait `arvo_capacity::capacity::seal::Sealed` is not implemented for `Liar`
+  --> tests/ui/an_outside_impl_of_capacity_is_refused.rs:10:1
+   |
+10 | struct Liar;
+   | ^^^^^^^^^^^
+   = note: name the count as `Dim<N>`; whether the trait stays sealed is an open question
+help: the trait `arvo_capacity::capacity::seal::Sealed` is implemented for `Dim<N>`
+  --> src/capacity.rs
+   |
+   | impl<const N: usize> seal::Sealed for Dim<N> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `Capacity`
+  --> src/capacity.rs
+   |
+   | pub trait Capacity: seal::Sealed {
+   |                     ^^^^^^^^^^^^ required by this bound in `Capacity`
+   = note: `Capacity` is a "sealed trait", because to implement it you also need to implement `arvo_capacity::capacity::seal::Sealed`, which is not accessible; this is usually done to force you to use one of the provided types that already implement it
+   = help: the following type implements the trait:
+             arvo_capacity::Dim<N>

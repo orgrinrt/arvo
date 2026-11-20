@@ -1,0 +1,3 @@
+$ cargo run -q -p consumer --example arm_c_bare_const
+WORKS: arm C sum=13
+exit 0

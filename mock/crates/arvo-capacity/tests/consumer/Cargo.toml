@@ -1,0 +1,16 @@
+# A consumer of `arvo-capacity` outside its workspace, depending on it with no
+# feature line, written the way hilavitkutin uses a capacity.
+# `tests/a_consumer_crate.rs` builds and runs it.
+[package]
+name = "arvo-capacity-consumer"
+version = "0.0.0"
+edition = "2024"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../arvo-format" }
+arvo-numeral = { path = "../../../arvo-numeral" }
+arvo-capacity = { path = "../.." }
+
+[workspace]

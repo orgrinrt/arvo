@@ -1,0 +1,40 @@
+$ RUSTFLAGS="--cfg arvo_mutant_capacity_count" cargo test -p arvo-capacity --test agreement   (in mock/, round 202611200029-bfwv)
+running 4 tests
+test a_filled_array_holds_its_value_in_every_element ... ok
+test a_nested_projection_is_outer_by_inner_with_no_product_computed ... ok
+test the_count_reads_in_a_constant ... FAILED
+test the_array_and_the_count_agree_over_a_spread_of_counts ... FAILED
+failures:
+---- the_count_reads_in_a_constant stdout ----
+thread 'the_count_reads_in_a_constant' panicked at crates/arvo-capacity/tests/agreement.rs:55:5:
+assertion `left == right` failed
+  left: 257
+ right: 256
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<usize, usize>
+   4: agreement::the_count_reads_in_a_constant
+   5: agreement::the_count_reads_in_a_constant::{closure#0}
+   6: <agreement::the_count_reads_in_a_constant::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+---- the_array_and_the_count_agree_over_a_spread_of_counts stdout ----
+thread 'the_array_and_the_count_agree_over_a_spread_of_counts' panicked at crates/arvo-capacity/tests/agreement.rs:46:5:
+assertion `left == right` failed: the count of Dim<0> is not 0
+  left: 1
+ right: 0
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<usize, usize>
+   4: agreement::the_array_and_the_count_agree_over_a_spread_of_counts
+   5: agreement::the_array_and_the_count_agree_over_a_spread_of_counts::{closure#0}
+   6: <agreement::the_array_and_the_count_agree_over_a_spread_of_counts::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+failures:
+    the_array_and_the_count_agree_over_a_spread_of_counts
+    the_count_reads_in_a_constant
+test result: FAILED. 2 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished
+error: test failed, to rerun pass `-p arvo-capacity --test agreement`

@@ -1,0 +1,3 @@
+$ cargo run -q -p consumer --example open_a_count_disagrees
+BUILDS: open Liar array length=4 count=8; last element by count=None
+exit 0

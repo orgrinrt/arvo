@@ -1,0 +1,21 @@
+$ cargo run -q -p consumer --example refused_c_bundled_const
+error: generic parameters may not be used in const operations
+  --> consumer/examples/refused_c_bundled_const.rs:14:22
+   |
+14 |     pub order: [u32; D::UNITS],
+   |                      ^ cannot perform const operation using `D`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error[E0392]: type parameter `D` is never used
+  --> consumer/examples/refused_c_bundled_const.rs:13:17
+   |
+13 | pub struct Plan<D: Dims> {
+   |                 ^ unused type parameter
+   |
+   = help: consider removing `D`, referring to it in a field, or using a marker such as `PhantomData`
+
+For more information about this error, try `rustc --explain E0392`.
+error: could not compile `consumer` (example "refused_c_bundled_const") due to 2 previous errors
+exit 101

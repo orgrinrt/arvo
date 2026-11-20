@@ -1,0 +1,10 @@
+error[E0624]: method `get` is private
+  --> tests/ui/the_seal_s_length_is_read_from_outside.rs:11:12
+   |
+11 |     C::LEN.get().host()
+   |            ^^^ private method
+   |
+  ::: src/capacity.rs
+   |
+   |         pub(crate) const fn get(self) -> Held {
+   |         ------------------------------------- private method defined here
