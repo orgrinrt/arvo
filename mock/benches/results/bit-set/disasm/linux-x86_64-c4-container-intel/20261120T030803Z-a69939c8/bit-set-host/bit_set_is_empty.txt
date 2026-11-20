@@ -1,0 +1,18 @@
+# `bit_set_is_empty` of arm `bit-set-host` of bench `bit-set`
+# library: libbit_set_host.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261120T030803Z-a69939c8
+
+000000000000cc70 <bit_set_is_empty>:
+    cc70:      	testq	%rdi, %rdi
+    cc73:      	sete	%al
+    cc76:      	retq
+    cc77:      	int3
+    cc78:      	int3
+    cc79:      	int3
+    cc7a:      	int3
+    cc7b:      	int3
+    cc7c:      	int3
+    cc7d:      	int3
+    cc7e:      	int3
+    cc7f:      	int3

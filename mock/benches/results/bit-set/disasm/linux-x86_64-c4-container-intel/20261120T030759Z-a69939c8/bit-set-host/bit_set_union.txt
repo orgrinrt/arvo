@@ -1,0 +1,9 @@
+# `bit_set_union` of arm `bit-set-host` of bench `bit-set`
+# library: libbit_set_host.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261120T030759Z-a69939c8
+
+000000000000cc90 <bit_set_union>:
+    cc90:      	movq	%rdi, %rax
+    cc93:      	orq	%rsi, %rax
+    cc96:      	retq
