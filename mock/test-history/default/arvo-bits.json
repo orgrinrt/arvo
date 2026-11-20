@@ -2,7 +2,15 @@
   "version": 2,
   "flavour": "",
   "member": "arvo-bits",
-  "green": null,
+  "green": {
+    "full": "daa443c04001b2fa449061e08efd1a2b24bd53e9c54283e87fca52ebedcc25f3",
+    "own": {
+      "arvo-bits": "23c2328f9f1025ffeee347be5d813c4618bbff75e37f3341a0a9153d7598a5ef"
+    }
+  },
   "tests": {},
-  "bins": {}
+  "bins": {
+    "arvo-bits": "38fd13a8a52e80e75763ea3f1b8b5565607760733df81f8e36cf5162f757501a",
+    "arvo-bits::compile_fail": "5f12a242905d3a6076f467ab9401b7bc0cc53bd972a0d965fb5b2d19ecf01d95"
+  }
 }
