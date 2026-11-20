@@ -11,7 +11,8 @@
 //! here it is taken at every radix and at the exponents where it is the
 //! format's function as well. The exponents, per width `w`, are the highest
 //! the format's product admits, the highest up to zero, minus one, minus half
-//! of `w` rounded up, and the deepest the format's product admits. A test in
+//! of `w` rounded up, the deepest at which the value forms the product in the
+//! host's integer, and the deepest the format's product admits. A test in
 //! each radix file holds the two ends against the format's own verdict at
 //! every width and both ranges, admitted at each and refused one past it.
 //!

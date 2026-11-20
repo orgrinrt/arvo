@@ -13,8 +13,9 @@
 //! branch on before, as a site whose zero has an outcome of its own does. Here
 //! the branch only counts the zero, so that the sweep is seen to take it.
 //!
-//! Every member of the 8-bit ranges divides by every value of the divisor's
-//! range, at three exponents, under the ten adaptations.
+//! Every member of the 8-bit ranges divides by every other value of its range,
+//! landed in a divisor range that holds it or one it passes, at three
+//! exponents, under the ten adaptations.
 
 mod common;
 
@@ -29,7 +30,16 @@ use arvo_format::{Adapt, Dither, Exact, Member, Signature};
 use arvo_numeral::{Divisor, Num, Quiet, Sole};
 use common::{oracle, range, value};
 
-/// The slots 1 to 127, inside both 8-bit ranges.
+/// The slots 1 to 255, the unsigned 8-bit range less the zero.
+struct Unsigned;
+
+impl Slots for Unsigned {
+    const MAX: Slot = Slot::at(255);
+    const MIN: Slot = Slot::at(1);
+    const WIDTH: Width = Width::bits(8);
+}
+
+/// The slots 1 to 127, the positive half of the signed 8-bit range.
 struct Positive;
 
 impl Slots for Positive {
@@ -63,11 +73,15 @@ struct Counts {
     checked: u64,
     wrong:   u64,
     zeros:   u64,
+    landed:  u64,
+    passed:  u64,
     first:   Option<(i128, i128, i128, i128, bool, bool)>,
 }
 
-/// Every member of `S` over every value of `S` the divisor's range `G` takes,
-/// the zero branched on first.
+/// Every member of `S` over every value of `S` landed in the divisor's range `G`,
+/// the zero branched on first. A value past `G` lands at the end of `G` it
+/// passed, which is the saturation the landing names, and the quotient is by
+/// that slot.
 fn by_values<S: Sole, G: Format>(counts: &mut Counts) {
     let (min, max) = range::<S>();
     for n in min ..= max {
@@ -79,17 +93,21 @@ fn by_values<S: Sole, G: Format>(counts: &mut Counts) {
         }
         let g_min = <G::Slots as Slots>::MIN.index();
         let g_max = <G::Slots as Slots>::MAX.index();
-        if n < g_min || n > g_max {
-            continue;
-        }
         let member = Member::<G>::adapted::<Signature<G, Adapt<HalfEven, Saturate>>>(
             Exact::on_grid(read.slot()),
             Dither::UNUSED,
         );
+        let lands = n.clamp(g_min, g_max);
+        if lands != n {
+            counts.passed += 1;
+        }
+        if member.slot().index() != lands {
+            counts.landed += 1;
+        }
         let by = Divisor::<S::Format>::member(member);
         for a in min ..= max {
             counts.checked += 1;
-            let expected = oracle::quotient::<S>(a, n);
+            let expected = oracle::quotient::<S>(a, lands);
             let dividend = value::<S>(a);
             let got = dividend.div(by);
             let fits = dividend.fits_div(by).get();
@@ -110,6 +128,7 @@ fn a_value_divides_by_a_value_read_at_run_time_at_three_exponents() {
     macro_rules! sweep {
         ($e:literal) => {{
             fn unsigned<S: Sole>(c: &mut Counts) {
+                by_values::<S, Beside<Unsigned, $e>>(c);
                 by_values::<S, Beside<Positive, $e>>(c);
             }
             fn signed<S: Sole>(c: &mut Counts) {
@@ -128,13 +147,21 @@ fn a_value_divides_by_a_value_read_at_run_time_at_three_exponents() {
         "`div` by a member divisor disagrees with the oracle on {} of {} quotients, the first (a, b, got, expected, fits, expected fits) {:?}",
         c.wrong, c.checked, c.first
     );
-    // Unsigned: 127 divisors by 256 dividends. Signed: 255 divisors by 256,
-    // the positive range once and the negative once.
+    // Each range: 255 divisors by 256 dividends, unsigned onto 1 to 255 and onto
+    // 1 to 127, signed onto the positive half and the negative.
+    assert_eq!(c.checked, 3 * 10 * 4 * 255 * 256, "the sweep's size");
+    // The zero is met once a pass, and the branch keeps it off the divisor.
+    assert_eq!(c.zeros, 3 * 10 * 4, "the zero branch");
+    // Every landing is the end of the range it passed, or the value itself.
     assert_eq!(
-        c.checked,
-        3 * 10 * (127 * 256 + 255 * 256),
-        "the sweep's size"
+        c.landed, 0,
+        "`Member::adapted` lands a value off the saturation"
     );
-    // The zero is met once a signature, and the branch keeps it off the divisor.
-    assert_eq!(c.zeros, 3 * 10 * (1 + 2), "the zero branch");
+    // Past the range: 128 unsigned onto 1 to 127, the 128 negatives onto the
+    // positive half, the 127 positives onto the negative.
+    assert_eq!(
+        c.passed,
+        3 * 10 * (128 + 128 + 127),
+        "the values landed from past the range"
+    );
 }
