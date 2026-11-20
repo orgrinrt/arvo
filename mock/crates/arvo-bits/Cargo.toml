@@ -17,6 +17,7 @@ unexpected_cfgs = { level = "warn", check-cfg = [
   "cfg(arvo_mutant_bits_shift, arvo_mutant_bits_rotate)",
   "cfg(arvo_mutant_bits_bit, arvo_mutant_bits_and, arvo_mutant_bits_or, arvo_mutant_bits_xor)",
   "cfg(arvo_mutant_bits_is_empty, arvo_mutant_bits_shift_down, arvo_mutant_bits_rotate_down)",
+  "cfg(arvo_mutant_bits_word_get, arvo_mutant_bits_word_with)",
 ] }
 
 [dev-dependencies]

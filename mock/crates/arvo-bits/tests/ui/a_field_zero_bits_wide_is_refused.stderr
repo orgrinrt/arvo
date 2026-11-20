@@ -1,0 +1,38 @@
+error[E0080]: evaluation panicked: a field of a packed word is zero bits wide or wider than sixty-four; its value's `Lane::WIDTH` must be one to sixty-four
+ --> src/word.rs
+  |
+  |         Bool::of(placed(H::BELOW, <H::Value as Lane>::WIDTH).raw() & T::COVER.raw() != 0)
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<(Empty, (Id, ())) as arvo_bits::Fields>::OVERLAP` failed inside this call
+  |
+note: inside `arvo_bits::word::placed`
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+  |
+ ::: src/word.rs
+  |
+  | /     assert!(
+  | |         width.count() >= 1 && width.count() <= 64,
+  | |         "a field of a packed word is zero bits wide or wider than sixty-four; its value's \
+  | |          `Lane::WIDTH` must be one to sixty-four"
+  | |     );
+  | |_____- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |             !<L::Fields as Fields>::OVERLAP.get(),
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |         let () = Self::TILED;
+  |                  ^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn Word::<Handle>::of`
+  --> tests/ui/a_field_zero_bits_wide_is_refused.rs:46:13
+   |
+46 |     let _ = Word::<Handle>::of(Bits::masked(0)).bits();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

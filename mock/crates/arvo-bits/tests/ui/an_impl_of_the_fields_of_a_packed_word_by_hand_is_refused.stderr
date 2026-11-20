@@ -1,0 +1,54 @@
+error[E0277]: the trait bound `Liar: arvo_bits::word::sealed::Sealed` is not satisfied
+  --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:14:17
+   |
+14 | impl Fields for Liar {
+   |                 ^^^^ unsatisfied trait bound
+   |
+help: the trait `arvo_bits::word::sealed::Sealed` is not implemented for `Liar`
+  --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:12:1
+   |
+12 | struct Liar;
+   | ^^^^^^^^^^^
+help: the following other types implement trait `arvo_bits::word::sealed::Sealed`
+  --> src/word.rs
+   |
+   |     impl Sealed for () {}
+   |     ^^^^^^^^^^^^^^^^^^ `()`
+   |
+   |     impl<H: Field, T: Sealed> Sealed for (H, T) {}
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `(H, T)`
+note: required by a bound in `Fields`
+  --> src/word.rs
+   |
+   | pub trait Fields: sealed::Sealed {
+   |                   ^^^^^^^^^^^^^^ required by this bound in `Fields`
+   = note: `Fields` is a "sealed trait", because to implement it you also need to implement `arvo_bits::word::sealed::Sealed`, which is not accessible; this is usually done to force you to use one of the provided types that already implement it
+   = help: the following types implement the trait:
+             ()
+             (H, T)
+
+error[E0277]: the trait bound `Liar: arvo_bits::word::sealed::Sealed` is not satisfied
+  --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:22:19
+   |
+22 |     type Fields = Liar;
+   |                   ^^^^ unsatisfied trait bound
+   |
+help: the trait `arvo_bits::word::sealed::Sealed` is not implemented for `Liar`
+  --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:12:1
+   |
+12 | struct Liar;
+   | ^^^^^^^^^^^
+help: the following other types implement trait `arvo_bits::word::sealed::Sealed`
+  --> src/word.rs
+   |
+   |     impl Sealed for () {}
+   |     ^^^^^^^^^^^^^^^^^^ `()`
+   |
+   |     impl<H: Field, T: Sealed> Sealed for (H, T) {}
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `(H, T)`
+   = note: required for `<Handle as arvo_bits::Layout>::Fields` to implement `Fields`
+note: required by a bound in `arvo_bits::Layout::Fields`
+  --> src/word.rs
+   |
+   |     type Fields: Fields;
+   |                  ^^^^^^ required by this bound in `Layout::Fields`

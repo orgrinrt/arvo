@@ -4,8 +4,9 @@
 //--------------------------------------------------------------------------------------------------
 
 //! The packed word's laws, over a 32-bit handle of a 28-bit id, a 3-bit kind
-//! and a one-bit flag, and over its wide-tag twin of 26, 5 and 1, each layout
-//! listing its fields out of their bit order.
+//! and a one-bit flag, over its wide-tag twin of 26, 5 and 1, and over two
+//! 64-bit words, one field the whole width and a one-bit field at each edge of
+//! the carrier, each layout listing its fields out of their bit order.
 
 #![feature(const_trait_impl)]
 
@@ -74,7 +75,62 @@ impl Field for WideFlag {
 /// bit, and the two alternations, which a field moved by one bit cannot read back.
 const PATTERNS: [u64; 4] = [0, u64::MAX, 0xaaaa_aaaa_aaaa_aaaa, 0x5555_5555_5555_5555];
 
-/// The bits field `F` takes in its 32-bit word.
+/// The whole of a 64-bit word as one field.
+struct Whole;
+struct All;
+
+impl Layout for Whole {
+    type Container = Bits<64>;
+    type Fields = (All, ());
+}
+
+impl Field for All {
+    type Layout = Whole;
+    type Value = Bits<64>;
+    const BELOW: Width = Width::bits(0);
+}
+
+/// A 64-bit word with a one-bit field at each edge of the carrier and a 62-bit
+/// field between them, listed out of their bit order.
+struct Edges;
+struct Bottom;
+struct Middle;
+struct Top;
+
+impl Layout for Edges {
+    type Container = Bits<64>;
+    type Fields = (Middle, (Top, (Bottom, ())));
+}
+
+impl Field for Bottom {
+    type Layout = Edges;
+    type Value = Bool;
+    const BELOW: Width = Width::bits(0);
+}
+
+impl Field for Middle {
+    type Layout = Edges;
+    type Value = Bits<62>;
+    const BELOW: Width = Width::bits(1);
+}
+
+impl Field for Top {
+    type Layout = Edges;
+    type Value = Bool;
+    const BELOW: Width = Width::bits(63);
+}
+
+/// A second name for the handle's id: a marker at the id's place and width,
+/// which the layout does not list by this name.
+struct Alias;
+
+impl Field for Alias {
+    type Layout = Handle;
+    type Value = Bits<28>;
+    const BELOW: Width = Width::bits(0);
+}
+
+/// The bits field `F` takes in its word.
 fn span<F: Field>() -> u64 {
     let w = <F::Value as Lane>::WIDTH.count();
     (u64::MAX >> (64 - w)) << F::BELOW.count()
@@ -84,20 +140,20 @@ fn span<F: Field>() -> u64 {
 /// reads back and that nothing outside it moved.
 fn round_trips<L, F>()
 where
-    L: Layout<Container = Bits<32>>,
+    L: Layout,
     F: Field<Layout = L>,
     F::Value: PartialEq + Debug,
     L::Fields: Holds<F>,
 {
     for start in PATTERNS {
-        let word = Word::<L>::of(Bits::masked(start));
+        let word = Word::<L>::of(L::Container::from_low(Bits::masked(start)));
         for pattern in PATTERNS {
             let to = F::Value::from_low(Bits::masked(pattern));
             let written = word.with::<F>(to);
             assert_eq!(written.get::<F>(), to, "start {start:#x}, pattern {pattern:#x}");
             assert_eq!(
-                written.bits().raw() & !span::<F>(),
-                word.bits().raw() & !span::<F>(),
+                written.bits().low().raw() & !span::<F>(),
+                word.bits().low().raw() & !span::<F>(),
                 "writing a field moved a bit outside it, start {start:#x}, pattern {pattern:#x}"
             );
         }
@@ -116,6 +172,45 @@ fn each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_e
     round_trips::<Wide, WideId>();
     round_trips::<Wide, WideKind>();
     round_trips::<Wide, WideFlag>();
+}
+
+#[test]
+fn each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else() {
+    round_trips::<Whole, All>();
+    round_trips::<Edges, Bottom>();
+    round_trips::<Edges, Middle>();
+    round_trips::<Edges, Top>();
+}
+
+#[test]
+fn the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it() {
+    let word = Word::<Edges>::of(Bits::masked(0))
+        .with::<Top>(Bool::TRUE)
+        .with::<Middle>(Bits::masked(0x1234_5678_9abc_def0));
+    assert_eq!(word.bits().raw(), 0x8000_0000_0000_0000 | (0x1234_5678_9abc_def0 << 1));
+    let word = word.with::<Bottom>(Bool::TRUE);
+    assert_eq!(word.bits().raw() & 1, 1);
+    let parts = Word::<Edges>::of(Bits::masked(0x8000_0000_0000_0001));
+    assert!(parts.get::<Top>().get());
+    assert!(parts.get::<Bottom>().get());
+    assert_eq!(parts.get::<Middle>().raw(), 0);
+    let middle = Word::<Edges>::of(Bits::masked(0x7fff_ffff_ffff_fffe));
+    assert!(!middle.get::<Top>().get());
+    assert!(!middle.get::<Bottom>().get());
+    assert_eq!(middle.get::<Middle>().raw(), 0x3fff_ffff_ffff_ffff);
+    let whole = Word::<Whole>::of(Bits::masked(u64::MAX)).with::<All>(Bits::masked(0x5555));
+    assert_eq!(whole.bits().raw(), 0x5555);
+    assert_eq!(Word::<Whole>::of(Bits::masked(u64::MAX)).get::<All>().raw(), u64::MAX);
+}
+
+#[test]
+fn a_marker_at_a_listed_fields_place_reads_and_writes_that_field() {
+    for start in PATTERNS {
+        let word = Word::<Handle>::of(Bits::masked(start));
+        assert_eq!(word.get::<Alias>(), word.get::<Id>());
+        let written = word.with::<Alias>(Bits::masked(0x0123_4567));
+        assert_eq!(written, word.with::<Id>(Bits::masked(0x0123_4567)));
+    }
 }
 
 #[test]
@@ -172,6 +267,13 @@ const ID: Bits<28> = HANDLE.get::<Id>();
 const KIND: Bits<3> = HANDLE.get::<Kind>();
 const FLAG: Bool = HANDLE.get::<Flag>();
 const RAW: Bits<32> = HANDLE.bits();
+const EDGES: Word<Edges> = Word::<Edges>::of(Bits::masked(0))
+    .with::<Top>(Bool::TRUE)
+    .with::<Bottom>(Bool::TRUE)
+    .with::<Middle>(Bits::masked(0x2aaa_aaaa_aaaa_aaaa));
+const TOP: Bool = EDGES.get::<Top>();
+const MIDDLE: Bits<62> = EDGES.get::<Middle>();
+const ALL: Bits<64> = Word::<Whole>::of(Bits::masked(0)).with::<All>(Bits::masked(u64::MAX)).get::<All>();
 
 #[test]
 fn every_read_and_write_evaluates_in_a_constant() {
@@ -179,6 +281,10 @@ fn every_read_and_write_evaluates_in_a_constant() {
     assert_eq!(KIND.raw(), 5);
     assert!(FLAG.get());
     assert_eq!(RAW.raw(), 0xdabc_def1);
+    assert!(TOP.get());
+    assert_eq!(MIDDLE.raw(), 0x2aaa_aaaa_aaaa_aaaa);
+    assert_eq!(EDGES.bits().raw(), 0xd555_5555_5555_5555);
+    assert_eq!(ALL.raw(), u64::MAX);
 }
 
 #[test]

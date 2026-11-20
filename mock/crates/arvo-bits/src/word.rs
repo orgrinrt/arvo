@@ -15,7 +15,13 @@
 //! The layout is checked at build and nowhere else: every entry point forces a
 //! `const` item asserting that the fields share no bit, sum to the container's
 //! width and cover it, and a read or a write forces one more asserting that the
-//! layout lists the field. Nothing is checked at run time.
+//! layout lists the field. Nothing is checked at run time. A width of zero or
+//! past sixty-four, and a field reaching past bit sixty-four, are refused
+//! before any shift is worked out.
+//!
+//! What the checks read of the list comes from `Fields` and `Holds`, sealed:
+//! a consumer names them in a bound and cannot implement them, so no list
+//! claims a sum, a union or an overlap its fields do not have.
 
 use core::marker::PhantomData;
 
@@ -91,16 +97,49 @@ pub trait Layout {
 }
 
 /// The bits a field takes, as a mask over the sixty-four-bit carrier.
+///
+/// Callers reach it only through `placed`, which has refused every width and
+/// place the shifts below cannot take.
 const fn span(below: Width, width: Width) -> Bits<64> {
     let low = u64::MAX >> (64 - width.count());
     Bits::<64>::masked(low << below.count())
 }
 
+/// The bits a field of `width` at `below` takes, refused at build where the
+/// field has no bits or does not fit the sixty-four-bit carrier.
+const fn placed(below: Width, width: Width) -> Bits<64> {
+    assert!(
+        width.count() >= 1 && width.count() <= 64,
+        "a field of a packed word is zero bits wide or wider than sixty-four; its value's \
+         `Lane::WIDTH` must be one to sixty-four"
+    );
+    assert!(
+        below.count() <= 64 - width.count(),
+        "a field of a packed word reaches past bit sixty-four; its `BELOW` and its width must \
+         sum to sixty-four at most"
+    );
+    span(below, width)
+}
+
+/// The seal on the list traits: implemented for `()` and `(H, T)` here and,
+/// being unnameable outside this crate, nowhere else.
+mod sealed {
+    use super::Field;
+
+    /// A list of fields, as only this crate can build one.
+    pub trait Sealed {}
+
+    impl Sealed for () {}
+
+    impl<H: Field, T: Sealed> Sealed for (H, T) {}
+}
+
 /// A list of fields, folded into what the tiling check reads.
 ///
-/// Implemented for `()` and for `(H, T)` with `H` a field and `T` a list, and
-/// by nothing else a consumer needs to write.
-pub trait Fields {
+/// Sealed: implemented for `()` and for `(H, T)` with `H` a field and `T` a
+/// list, and by nothing outside this crate, so no list claims a sum, a union
+/// or an overlap its fields do not have.
+pub trait Fields: sealed::Sealed {
     /// The field widths summed.
     const SUM: Width;
 
@@ -120,15 +159,19 @@ impl Fields for () {
 impl<H: Field, T: Fields> Fields for (H, T) {
     const SUM: Width = <H::Value as Lane>::WIDTH.add(T::SUM);
     const COVER: Bits<64> =
-        Bits::<64>::masked(span(H::BELOW, <H::Value as Lane>::WIDTH).raw() | T::COVER.raw());
-    const OVERLAP: Bool = Bool::of(span(H::BELOW, <H::Value as Lane>::WIDTH).raw() & T::COVER.raw() != 0)
-        .or(T::OVERLAP);
+        Bits::<64>::masked(placed(H::BELOW, <H::Value as Lane>::WIDTH).raw() | T::COVER.raw());
+    const OVERLAP: Bool =
+        Bool::of(placed(H::BELOW, <H::Value as Lane>::WIDTH).raw() & T::COVER.raw() != 0)
+            .or(T::OVERLAP);
 }
 
 /// Whether a list holds a field at the place and width of `F`.
 ///
-/// Implemented for `()` and for `(H, T)`, beside `Fields`.
-pub trait Holds<F: Field> {
+/// A marker at the place and width of a listed field is that field under a
+/// second name, and reads and writes the same bits. Sealed like `Fields`, and
+/// named in the bound on `Word::get` and `Word::with`, so code generic over a
+/// field writes `L::Fields: Holds<F>`.
+pub trait Holds<F: Field>: sealed::Sealed {
     /// Whether it does.
     const HOLDS: Bool;
 }
@@ -172,6 +215,11 @@ impl<L: Layout> Word<L> {
     const TILED: () = {
         let width = <L::Container as Lane>::WIDTH;
         assert!(
+            width.count() >= 1 && width.count() <= 64,
+            "the container of a packed word is zero bits wide or wider than sixty-four; its \
+             `Lane::WIDTH` must be one to sixty-four"
+        );
+        assert!(
             !<L::Fields as Fields>::OVERLAP.get(),
             "two fields of a packed word share a bit; each field's `BELOW` and width must leave \
              every other field's bits alone"
@@ -210,7 +258,10 @@ impl<L: Layout> Word<L> {
     {
         let () = Self::TILED;
         let () = Listed::<F>::NEW;
-        F::Value::from_low(Bits::<64>::masked(self.0.low().raw() >> F::BELOW.count()))
+        let down = self.0.low().raw() >> F::BELOW.count();
+        // The mutant `arvo_mutant_bits_word_get` reads the field one bit up.
+        let down = if cfg!(arvo_mutant_bits_word_get) { down >> 1 } else { down };
+        F::Value::from_low(Bits::<64>::masked(down))
     }
 
     /// The word with the field `F` replaced by `to`, every other bit kept.
@@ -223,8 +274,15 @@ impl<L: Layout> Word<L> {
     {
         let () = Self::TILED;
         let () = Listed::<F>::NEW;
-        let kept = self.0.low().raw() & !span(F::BELOW, <F::Value as Lane>::WIDTH).raw();
-        let put = to.low().raw() << F::BELOW.count();
+        let field = span(F::BELOW, <F::Value as Lane>::WIDTH).raw();
+        // The mutant `arvo_mutant_bits_word_with` keeps the field's old bits.
+        let kept = if cfg!(arvo_mutant_bits_word_with) {
+            self.0.low().raw()
+        } else {
+            self.0.low().raw() & !field
+        };
+        // Masked, so a value leaving bits set above its width reaches no other field.
+        let put = (to.low().raw() << F::BELOW.count()) & field;
         Self(L::Container::from_low(Bits::<64>::masked(kept | put)))
     }
 }

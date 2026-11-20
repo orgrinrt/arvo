@@ -3,20 +3,20 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "b14d80625504b85848b5423169485410c8a77e9d48672851d174c46a74c9054c",
+    "full": "3a1fb0fe71e3d9e88e340079ca322ffea19530e39fb12d59c521f7fb2063a165",
     "own": {
-      "arvo-bits": "18d426e1d2678ea3d573f57024c4669b61e874d0369232c4e7c86a4abc236003",
+      "arvo-bits": "d38f42f67c86c9ce2626fe1db2c11fcd3c166fc5883046c39140d55014aa55f5",
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-bits": "b318ff6a41bff199ab2e9b1648008ee15aad3f55de70561b8361979942d42bf2",
-    "arvo-bits::compile_fail": "347fdcd581ad256c6319fcd42dd1a4483426cc6c98166594a008358ba299d4f5",
-    "arvo-bits::the_bit_access": "09edaa284a84f23436e0aed81daac47ebe91741d24668841bf9e0fbe6ab24d54",
-    "arvo-bits::the_bit_logic": "a721c52248be775009696323184917a98639695f31cf762198c0cc7d5d96429c",
-    "arvo-bits::the_bit_sequence": "977da4007eac719221058b099f3c6f2d5e14738fc852eb07c502aff8072aaf57",
-    "arvo-bits::the_bit_tier_in_a_constant": "e4be785ec67057957eb6022ade454a2249c51d312a71c9bfd2ffb18ecae9fbdf",
-    "arvo-bits::the_packed_word": "21382d7cd7dba51d46ea8b6275cbd2f39aa1a4503005fa55e12e3608c28129dd"
+    "arvo-bits": "feb2e3d5ef7bc3c4dc37ce09158612cdb961c8fee80323b80de60b1e80f49866",
+    "arvo-bits::compile_fail": "be99f8a0ae9c43caeb66bbaeb0091d1062452ab4ec22e45d68250bd8d4e17764",
+    "arvo-bits::the_bit_access": "13b361a9425fb8362957ea54d220e80347b1e84eaed4756f2be44508802a7d43",
+    "arvo-bits::the_bit_logic": "83b5690525817cdc28c8683f84651d60a8d59739b2512000ba11f3889be8fb97",
+    "arvo-bits::the_bit_sequence": "3017e5118afda3f96fb3e15654793e47555aa31695fc1f24c3d106baec0c99b1",
+    "arvo-bits::the_bit_tier_in_a_constant": "a6835f58757d71226509ba1b4e10e153340a706ac36d68c1a44409c5d64c6433",
+    "arvo-bits::the_packed_word": "ff13e56d8dedfd76bc943da9d982cf336c0d16392eb66f7046e8aee91d4907ae"
   }
 }
