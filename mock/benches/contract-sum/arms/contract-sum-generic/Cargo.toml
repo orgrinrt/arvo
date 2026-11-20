@@ -1,0 +1,17 @@
+# The `generic` arm of the contract-sum disassembly reading.
+[package]
+name = "bench-contract-sum-generic"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "contract_sum_generic"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+arvo-contracts = { path = "../../../../crates/arvo-contracts" }
+arvo-format = { path = "../../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../../crates/arvo-numeral" }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }

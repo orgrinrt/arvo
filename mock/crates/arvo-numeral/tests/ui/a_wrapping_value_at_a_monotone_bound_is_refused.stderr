@@ -1,0 +1,19 @@
+error[E0277]: the trait bound `arvo_format::overflow::Wrap: MonotoneCompletion` is not satisfied
+  --> tests/ui/a_wrapping_value_at_a_monotone_bound_is_refused.rs:17:29
+   |
+17 |     let _ = keeps_the_order(Int::<8, Adapt<TowardZero, Wrap>, Quiet>::constant::<1>());
+   |             --------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `MonotoneCompletion` is not implemented for `arvo_format::overflow::Wrap`
+   |             |
+   |             required by a bound introduced by this call
+   |
+help: the trait `MonotoneCompletion` is implemented for `arvo_format::overflow::Saturate`
+  --> $WORKSPACE/crates/arvo-contracts/src/monotone.rs
+   |
+   | impl MonotoneCompletion for Saturate {}
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: required for `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>, Quiet>` to implement `MonotoneSum`
+note: required by a bound in `keeps_the_order`
+  --> tests/ui/a_wrapping_value_at_a_monotone_bound_is_refused.rs:12:23
+   |
+12 | fn keeps_the_order<T: MonotoneSum>(t: T) -> T {
+   |                       ^^^^^^^^^^^ required by this bound in `keeps_the_order`

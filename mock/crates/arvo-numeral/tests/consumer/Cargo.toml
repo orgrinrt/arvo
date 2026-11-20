@@ -9,6 +9,7 @@ license = "MPL-2.0"
 publish = false
 
 [dependencies]
+arvo-contracts = { path = "../../../arvo-contracts" }
 arvo-format = { path = "../../../arvo-format" }
 arvo-numeral = { path = "../.." }
 

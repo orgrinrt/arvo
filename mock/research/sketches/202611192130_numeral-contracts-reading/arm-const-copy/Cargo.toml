@@ -1,0 +1,12 @@
+# A byte-identical copy of the first sketch's `arm-const/src/lib.rs` with its
+# manifest made standalone, because that crate inherits its package fields from
+# its own sketch workspace and cargo would not resolve the inheritance when it
+# was reached two path hops away. `run.sh` diffs the two sources.
+[package]
+name = "arm-const"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-numeral = { path = "../../../../crates/arvo-numeral" }

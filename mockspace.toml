@@ -38,15 +38,16 @@ primary_domain_macro = "strategy"
 primary_domain_label = "Strategies"
 
 # Layer labels by depth index, one per depth the dependency graph
-# actually produces. The five crates in the tree give three depths (0 to
-# 2), and each comment names the crates the graph puts at that depth.
+# actually produces. The eight crates in the tree give four depths (0 to
+# 3), and each comment names the crates the graph puts at that depth.
+# Depth 3 holds `arvo-digest` and `arvo-capacity` and has no label yet.
 # The entries for depths 3 to 9 named only crates of the layout removed
 # on 2026-08-08 and are gone with it.
 # FIXME(e29c8e60d390): the three labels are the old ones and do not
 # describe what now sits at each depth.
 layers = [
   "L0 root",              # arvo-bits, arvo-format
-  "L0 strategy",          # arvo-placement
+  "L0 strategy",          # arvo-contracts, arvo-placement
   "L0 storage",           # arvo-numeral, arvo-strategy
 ]
 
