@@ -1,0 +1,50 @@
+4bdbfa80 chore: lock src changelist 202611200102-e4xa
+8e8b0cff fix: hide the capacity length and give `Dim` no values
+d982df9d chore: lock doc changelist 202611200102-e4xa
+e6f91dee docs: amend the capacity design after its second review
+6ba12030 docs: regenerate the capacity document
+a319671a chore: close design round 202611200049-ol81
+2070be96 chore: lock src changelist 202611200049-ol81
+25595780 feat: build a capacity's array from a closure and name the seal
+91c6f794 chore: lock doc changelist 202611200049-ol81
+705bb5ae docs: amend the capacity design after its first review
+b664e365 docs: regenerate the documents for `arvo-capacity`
+2c726333 chore: close design round 202611200029-bfwv
+ced4ed85 chore: lock src changelist 202611200029-bfwv
+33c60e80 feat: add `arvo-capacity`, a count fixed at build carried as a type
+e9b2e335 chore: lock doc changelist 202611200029-bfwv
+639e989c docs: design the capacity crate
+9f2001c5 docs: add the capacity obligation in hilavitkutin's own terms
+fcb300a1 docs: sketch the capacity spellings from an outside consumer
+f5bee87f docs: sketch and shape the numeral contracts
+38d78396 feat: land `arvo-digest` and decide the stranded arvo branches
+3d95d776 docs: land the closed digest rounds from `work/arvo-digest`
+80e5afac chore: configure the `commit-subject` gate
+6f718a88 refactor: port the benches to arms and sweeps under the harness
+f76108d6 fix: point the p3 probe at the moved warm container support crate
+8ed016a7 docs: land the second stack audit
+fac2c6aa docs: land the first stack audit
+130295d7 bench: regenerate the results index over every run on dev
+3b9aa53d bench: drop the false dirty mark from the 14 november run names
+1f860a90 bench: land the linux results of 14 november
+da169bec bench: record a linux container run of bitpack-sequential-sum
+7479a2c6 refactor: run the benches on the generated driver in the run layout
+8babe497 research: port channel documents into the research dir
+28d03718 research: land the second stack audit
+d0161800 feat: build the value tier's ring operations and default doors
+b687fc01 feat: add the member type and a member divisor on one quantum
+280e3a2a feat: carry the exact position's floor in four limbs
+ccb4c239 feat: admit the wrapping product and the cleared format rounds
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+4d6aa22c feat: give the registry its amendment edge and stamp fields
+9ba397c4 fix: read the lints through one parse and add the registry tools
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
