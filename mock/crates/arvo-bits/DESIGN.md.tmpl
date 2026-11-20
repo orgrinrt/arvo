@@ -7,7 +7,8 @@ contracts return in function, here, with their shape written fresh.
 `obligation::set_operations_over_a_fixed_size_bit_set`, whose intersection, union and emptiness test the
 bit tier carries up to sixty-four bits. `obligation::a_word_divided_into_named_fields_of_declared_widths`,
 which the packed word meets. `ruling::never_a_runtime_check_and_one_lowered_path`, for an
-index or an amount past the width being refused at build rather than checked. And
+index or an amount past the width a container declares being refused at build rather than
+checked. And
 `ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up`, the `stated` rung this design sits
 under and stays compliant with regardless of how its own open question,
 `question::what_the_ingest_row_claims_and_what_turns_on_it`, eventually resolves.
@@ -132,12 +133,21 @@ zeros. `rotate_up::<const K: u32>(self) -> Self` and `rotate_down::<const K: u32
 the same way and bring what leaves one end in at the other, within `N` bits rather than within the
 carrier, so a rotation of a `Bits<28>` wraps at bit twenty-seven. An amount of zero is the identity.
 
-An index `I` or an amount `K` at or past the width is refused at build, by the tier, once, for every
-container. `Within<B, const I: u32>` is the proof that `I` is below the width of the container `B`. Its
-one field is private and its one maker is the constant `NEW`, which asserts `I < B::WIDTH.count()`;
-asserted inside a `const` item, it is evaluated where it is named, so the refusal is `E0080` at
-`cargo build` through a call at run time, through a `const fn` generic over the tier and through an
-ordinary generic function alike. Nothing is checked at run time.
+An index `I` or an amount `K` at or past the width a container declares is refused at build, by the
+tier, once, for every container. `Within<B, const I: u32>` is the proof that `I` is below the width `B`
+declares in `BitWidth::WIDTH`. Its one field is private and its one maker is the constant `NEW`, which
+asserts `I < B::WIDTH.count()`; asserted inside a `const` item, it is evaluated where it is named, so the
+refusal is `E0080` at `cargo build` through a call at run time, through a `const fn` generic over the
+tier and through an ordinary generic function alike. Nothing is checked at run time.
+
+The proof is invariant in its container: its field is `PhantomData<fn(B) -> B>`. A proof covariant in
+`B` would follow a subtyping coercion, so two containers related by subtyping, one wide and one narrow,
+would let a proof made for the wide one index the narrow one past its width; the invariant field makes
+that a type mismatch, `E0308`. The same field makes the proof `Send` and `Sync` whatever `B` is, so its
+auto traits do not follow the container's. That the width a container declares is the width its storage
+holds is the implementor's to keep, as the arithmetic of an inherent method is; for `Bits<N>` it is `N`.
+`mock/research/sketches/202611200810_a-proof-across-a-subtyping-coercion/` holds the covariant proof
+building and indexing past the width, and the invariant one refused.
 
 `BitAccess` and `BitSequence` each have two sides. The side an implementor writes takes the proof:
 `BitAccessAt` has `bit_at::<const I: u32>(self, at: Within<Self, I>) -> Bool` and
@@ -288,7 +298,7 @@ reinterprets at a different declared width, and `halves` splits a 128-bit host v
 `with_bit`, `and`, `or`, `xor`, `not`, `is_empty`, `shift_up`, `shift_down`, `rotate_up` and
 `rotate_down` are inherent `const fn`s, and `BitWidth`, `BitAccessAt`, `BitLogic` and `BitSequenceBy`
 are implemented for every `Bits<N>`, with `BitAccess` and `BitSequence` coming from their one impl each.
-`Within` has `NEW` and nothing else, and derives nothing. `Clone`, `Copy`, `PartialEq`, `Eq`,
+`Within` has `NEW` and nothing else, derives nothing, and is invariant in its container. `Clone`, `Copy`, `PartialEq`, `Eq`,
 `PartialOrd`, `Ord`, `Hash`, `Debug` are derived on `Bits`, matching the derive set
 `arvo_format::Width` and `arvo_format::slots::Slot` already carry, with `Hash` added because a consumer
 using this as a lookup key (a content hash into a string table, named directly in the obligation's own
@@ -333,14 +343,14 @@ that over values at the edges of the width, every single bit, and seeded ones.
 `WIDTH` counts the bits the full mask sets: `Bits::<N>::masked(u64::MAX).raw()` has `WIDTH.count()`
 bits set.
 
-`bit::<I>` is bit `I` of `raw`. `with_bit::<I>(to)` equals the value built one bit at a time with bit
+`bit::<I>` is bit `I` of `raw`, read one bit at a time by dividing by a power of two rather than by the host's shift. `with_bit::<I>(to)` equals the value built one bit at a time with bit
 `I` from `to` and every other bit from the value.
 
 `and`, `or` and `xor` equal the host's on `raw`, `not` is the host's complement masked to `N` bits, and
 `is_empty` is true exactly at zero.
 
-`shift_up::<K>` is the host's left shift by `K` masked to `N` bits, and `shift_down::<K>` the host's
-right shift by `K`. `rotate_up::<K>` equals the value built one bit at a time with bit `(j + K) mod N`
+`shift_up::<K>` and `shift_down::<K>` equal the value built one bit at a time, bit `j + K` or `j - K`
+from bit `j`, and the bits that leave the width dropped. `rotate_up::<K>` equals the value built one bit at a time with bit `(j + K) mod N`
 from bit `j`, and `rotate_down::<K>` equals `rotate_up` by `N - K`, or the value itself at `K` zero,
 built the same way.
 
@@ -350,7 +360,8 @@ its inverse, is the host's, and over the values the tests take it follows from t
 None of it can fail where they hold, so none is tested apart.
 
 Each trait method agrees with its inherent method, through a function generic over the trait, and the
-tier evaluates in a constant through a `const fn` generic over `[const]` bounds.
+tier evaluates in a constant through a `const fn` generic over `[const]` bounds, every one of its eleven
+operations.
 
 An index or an amount at or past the width is refused at `cargo build`, pinned as `trybuild`
 `compile_fail` cases: at `Bits<8>` and index eight for each of the six methods taking one, in a
@@ -359,7 +370,10 @@ function generic over the method's trait; at the edges of the width, `Bits<1>` a
 and `with_bit`, `Bits<64>` at sixty-four for all six; and past the width, `bit::<{ u32::MAX }>` and
 `shift_down::<9>` at `Bits<8>`. A container written in the case with no assertion of its own is refused
 past its width in a call at run time and through a `[const]` bound in a constant, and an impl of
-`BitAccess` by hand and a `Within` built by hand are refused. Two cases that must compile sit with them,
+`BitAccess` by hand and a `Within` built by hand are refused. A container of its own is refused past
+its width for a shift at run time as well, an impl of `BitSequence` by hand and an impl of `BitAccess` on
+a type with no `BitAccessAt` are refused, and a proof made for a wide container and carried to a narrow
+one it is a subtype of is refused with `E0308`. Two cases that must compile sit with them,
 every index below the width of `Bits<N>` and that container at its last index, which makes `trybuild`
 build rather than check, so the refusals at run time are the ones `cargo build` gives.
 

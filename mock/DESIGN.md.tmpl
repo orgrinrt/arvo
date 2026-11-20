@@ -26,11 +26,15 @@ Everything answerable before the program runs is answered there, in plain
 `const fn`. The operations wanted in const context are inherent `const fn`s on
 their types. The contracts a numeral satisfies are const traits in
 `arvo-contracts`, which with `arvo-numeral`, implementing them, takes
-`const_trait_impl` as it builds by default; no other crate enables an unstable
+`const_trait_impl` as it builds by default. `arvo-bits` takes it too, for the const
+traits of its bit tier and its packed word. No other crate enables an unstable
 feature by default, and one cargo feature of `arvo-numeral`, off by default,
 enables the same gate for its const impl of another crate's trait. A consumer
-bounding on a contract or naming a value needs no feature of the toolchain for
-any of it, per `obligation::the_unstable_machinery_does_not_reach_a_consumer`.
+bounding on a contract, naming a value or calling an inherent method or the tier
+from an ordinary function needs no feature of the toolchain for any of it, per
+`obligation::the_unstable_machinery_does_not_reach_a_consumer`; only code
+evaluating a const trait through a `[const]` bound in a `const fn` of its own, or
+writing a `const impl` of one, enables the gate itself, where it asks for that.
 
 ## Crate topology
 
@@ -58,7 +62,7 @@ its count is read in.
 | `arvo-placement` | The placement derivation, keyed on occupancy. One output at sole occupancy, the carrier, given also as a type per slot family; three at shared, the carrier and the access width and the stride. No declared operation reads any of them. | `arvo-format` |
 | `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
 | `arvo-numeral` | The value. `Num<S>` holds one member of a declared signature alone in the carrier `arvo-placement` derives at sole occupancy, and its sum, computed in that carrier, gives the slot the format's own sum gives. Comparison, the doors in and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and `ISize`. A debug check the consumer chooses, aborting a debug build by default when a result leaves the range. | `arvo-format`, `arvo-placement`, `arvo-contracts` |
-| `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, and `Bytes`, the host's byte slice walked one `Bits<8>` at a time. Masked construction and masked cast between declared widths, a 128-bit host value split into two halves, and the bit tier: one bit read and written, `and`, `or`, `xor`, `not` and the emptiness test at one width, shifts and rotations within it, each a `const fn` and each again behind the traits `BitWidth`, `BitAccess`, `BitLogic` and `BitSequence`, whose refusal of an index past the width the tier owns for every container. The packed word, `Word<L>`, a word of named fields of declared widths listed from the low bit up, each read and written in a constant, a one-bit field read as `Bool`, and a layout whose widths do not sum to the word's refused at build. No arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | `arvo-format`, `notko`, `notko-hlist` |
+| `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, and `Bytes`, the host's byte slice walked one `Bits<8>` at a time. Masked construction and masked cast between declared widths, a 128-bit host value split into two halves, and the bit tier: one bit read and written, `and`, `or`, `xor`, `not` and the emptiness test at one width, shifts and rotations within it, each a `const fn` and each again behind the traits `BitWidth`, `BitAccess`, `BitLogic` and `BitSequence`, whose refusal of an index past the width a container declares the tier owns, with the proof `Within`, for every container. The packed word, `Word<L>`, a word of named fields of declared widths listed from the low bit up, each read and written in a constant, a one-bit field read as `Bool`, and a layout whose widths do not sum to the word's refused at build. No arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | `arvo-format`, `notko`, `notko-hlist` |
 | `arvo-digest` | A digest of explicit bytes, `Digest<const BITS: u32>` at 32, 64 and 128 bits. FNV-1a at 32 and 64 bits and XXH3 at 64 and 128 by name, each with a `const fn` form equal to its runtime one; a switched digest joins once its crossover is measured. Narrows into `Bits<N>` at the width a consumer names. Not cryptographic. | `arvo-format`, `arvo-numeral`, `arvo-bits`, `notko`, `xxhash-rust` |
 | `arvo-capacity` | A count fixed when the consumer builds, carried as a type. `Capacity` projects an array of exactly its count, read and written as a slice, and `Dim<N>` is the capacity of `N` elements; capacities bundle under one parameter and nest with no product computed, and `count` reads one in a constant as a `USize` under the adaptation the consumer names. Sealed to `Dim<N>` while that question is open. | `arvo-format`, `arvo-numeral` |
 
@@ -86,7 +90,7 @@ can be one on the same terms.
 
 In `arvo-bits`, `BitWidth`, `BitAccessAt`, `BitAccess`, `BitLogic`, `BitSequenceBy` and
 `BitSequence` are contracts and `Bits<const N: u32>` is their instance, with `Within` the proof the
-tier makes for an index below the width. The container itself has
+tier makes for an index below the width a container declares. The container itself has
 no contract behind it, because an exact-width value at a declared width has one
 shape, and a second implementation would not be a new instance of a concept, it
 would be a second definition of the same fact. What a second container shares
