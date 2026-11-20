@@ -72,6 +72,37 @@ pub fn written(v: u64, n: u32, i: u32, to: bool) -> u64 {
     out
 }
 
+/// Bit `i` of `v`, read by division: whether `v` divided by `2^i` is odd. No
+/// shift, so it is not the crate's own formula.
+pub fn bit_of(v: u64, i: u32) -> bool {
+    let mut power: u128 = 1;
+    for _ in 0 .. i {
+        power *= 2;
+    }
+    (v as u128 / power) % 2 == 1
+}
+
+/// `v` at width `n` shifted by `k` toward the high bit (`up`) or the low bit,
+/// built one bit at a time: the bits are walked from the low end by division,
+/// each placed `k` above or below where it was, and a bit leaving the width is
+/// dropped. No shift of the whole value, so it is not the crate's own formula.
+pub fn shifted(v: u64, n: u32, k: u32, up: bool) -> u64 {
+    let mut out = 0u64;
+    let mut rest = v as u128;
+    for j in 0 .. n {
+        let set = rest % 2 == 1;
+        rest /= 2;
+        let to = if up { j.checked_add(k) } else { j.checked_sub(k) };
+        if let Some(to) = to
+            && set
+            && to < n
+        {
+            out |= 1u64 << to;
+        }
+    }
+    out
+}
+
 /// Calls `$cb!(N K NK)` for every width `N` from one to sixty-four and every
 /// index or amount `K` below it, with `NK` the amount `(N - K) mod N` a
 /// rotation down takes to equal the rotation up by `K`.

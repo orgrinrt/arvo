@@ -1,0 +1,9 @@
+error[E0119]: conflicting implementations of trait `BitSequence` for type `Pair`
+  --> tests/ui/an_impl_of_the_callers_sequence_by_hand_is_refused.rs:32:1
+   |
+32 | impl BitSequence for Pair {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: conflicting implementation in crate `arvo_bits`:
+           - impl<B> BitSequence for B
+             where B: BitSequenceBy;

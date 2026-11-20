@@ -4,8 +4,8 @@
 //--------------------------------------------------------------------------------------------------
 
 //! `BitSequence` and the inherent shifts and rotations, at every amount below
-//! every width from one to sixty-four, against the host's shift and a rotation
-//! moved one bit at a time.
+//! every width from one to sixty-four, against shifts and rotations moved one
+//! bit at a time.
 //!
 //! Each amount is a const generic, so `common::every_index` expands one call
 //! per width and amount rather than looping. The third parameter is `N - K`,
@@ -15,7 +15,7 @@
 mod common;
 
 use arvo_bits::{BitSequence, Bits};
-use common::{every_index, mask, rotated_up, values};
+use common::{every_index, rotated_up, shifted, values};
 
 fn up<B: BitSequence, const K: u32>(b: B) -> B {
     b.shift_up::<K>()
@@ -42,13 +42,17 @@ fn sequence<const N: u32, const K: u32, const NK: u32>() {
         let shifted_up = b.shift_up::<K>();
         assert_eq!(
             shifted_up.raw(),
-            (v << K) & mask(N),
+            shifted(v, N, K, true),
             "{v:#x} up {K} at {N} bits"
         );
         assert_eq!(up::<_, K>(b), shifted_up);
 
         let shifted_down = b.shift_down::<K>();
-        assert_eq!(shifted_down.raw(), v >> K, "{v:#x} down {K} at {N} bits");
+        assert_eq!(
+            shifted_down.raw(),
+            shifted(v, N, K, false),
+            "{v:#x} down {K} at {N} bits"
+        );
         assert_eq!(down::<_, K>(b), shifted_down);
 
         let rotated = b.rotate_up::<K>();

@@ -133,6 +133,14 @@ commit = "error"
 build = "error"
 push = "error"
 
+# It refuses a name `the-positions` files as gone from arvo that a crate's
+# `lib.rs` exports, so the report cannot count a shipped type as pointing at
+# nothing once the name ships again.
+[lints.a-name-filed-as-gone-is-exported-by-no-crate]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- arvo canon lints (mock/lints/*.rs, registry side) ---------------------
 #
 # These read `mock/registry/` rather than source, so they implement `RepoLint`

@@ -18,8 +18,8 @@
 //! `not` and the emptiness test at one width, and shifts and rotations within
 //! the width, each an inherent `const fn` and each again behind the traits
 //! `BitWidth`, `BitAccess`, `BitLogic` and `BitSequence`, for code generic over
-//! the container. An index or an amount at or past the width is refused at
-//! build, by the tier, once for every container.
+//! the container. An index or an amount at or past the width a container
+//! declares is refused at build, by the tier, once for every container.
 //!
 //! Beside the tier, `Word<L>` is a word of named fields of declared widths held
 //! in a container, listed from the low bit up, each field read and replaced in

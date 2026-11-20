@@ -89,6 +89,10 @@ const REFUSED: &[&str] = &[
     "a_field_sixty_five_bits_wide_is_refused",
     "a_container_zero_bits_wide_is_refused",
     "a_container_sixty_five_bits_wide_is_refused",
+    "a_container_of_its_own_shifted_past_its_width_is_refused",
+    "an_impl_of_the_callers_sequence_by_hand_is_refused",
+    "an_impl_of_the_callers_trait_without_its_supertrait_is_refused",
+    "a_proof_carried_to_a_narrower_container_is_refused",
 ];
 
 #[test]

@@ -4,8 +4,8 @@
 //--------------------------------------------------------------------------------------------------
 
 //! `BitAccess` and the inherent `bit` and `with_bit`, at every index of every
-//! width from one to sixty-four, against the host's own bit of the carrier and
-//! a value written one bit at a time.
+//! width from one to sixty-four, against a bit read by division and a value
+//! written one bit at a time.
 //!
 //! Each index is a const generic, so `common::every_index` expands one call per
 //! width and index rather than looping.
@@ -14,7 +14,7 @@ mod common;
 
 use arvo_bits::{BitAccess, Bits};
 use arvo_format::Bool;
-use common::{every_index, values, written};
+use common::{bit_of, every_index, values, written};
 
 fn read<B: BitAccess, const I: u32>(b: B) -> Bool {
     b.bit::<I>()
@@ -29,7 +29,7 @@ fn write<B: BitAccess, const I: u32>(b: B, to: Bool) -> B {
 fn access<const N: u32, const I: u32>() {
     for v in values(N) {
         let b = Bits::<N>::masked(v);
-        let set = (v >> I) & 1 == 1;
+        let set = bit_of(v, I);
         assert_eq!(b.bit::<I>().get(), set, "bit {I} of {v:#x} at {N} bits");
         assert_eq!(
             read::<_, I>(b).get(),

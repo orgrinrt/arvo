@@ -11,12 +11,12 @@
 //! an ordinary generic function needs nothing. Another container, an array of
 //! `Bits<64>` for a wider set among them, implements these in its own crate.
 //!
-//! The tier refuses an index or an amount at or past a container's width, once,
-//! for every container. An implementor writes `BitAccessAt` and `BitSequenceBy`,
+//! The tier refuses an index or an amount at or past the width a container
+//! declares, once, for every container. An implementor writes `BitAccessAt` and `BitSequenceBy`,
 //! whose methods take a `Within` proof that only `Within::NEW` makes, and a
 //! caller names `BitAccess` and `BitSequence`, each implemented once over every
 //! implementor, making the proof. An impl of either by hand does not build, so
-//! no container can take an index past its width.
+//! no container can take an index past the width it declares.
 
 use core::marker::PhantomData;
 
@@ -33,13 +33,18 @@ pub const trait BitWidth {
     const WIDTH: Width;
 }
 
-/// A proof that the index or amount `I` is below the width of the container `B`.
+/// A proof that the index or amount `I` is below the width `B` declares.
 ///
 /// Made only by `NEW`, which asserts it inside a `const` item, so naming
 /// `Within::<B, I>::NEW` with `I` at or past `B::WIDTH` is refused at
 /// `cargo build`, through a call at run time and through anything generic that
 /// reaches it alike. Nothing is checked at run time.
-pub struct Within<B, const I: u32>(PhantomData<B>);
+///
+/// Invariant in `B`, so a proof made for one container does not follow a
+/// subtyping coercion to another, which may declare a narrower width. The
+/// field is also `Send` and `Sync` whatever `B` is, so the proof's auto traits
+/// do not follow the container's.
+pub struct Within<B, const I: u32>(PhantomData<fn(B) -> B>);
 
 impl<B: BitWidth, const I: u32> Within<B, I> {
     /// The proof, refused at build where `I` is not below `B::WIDTH`.

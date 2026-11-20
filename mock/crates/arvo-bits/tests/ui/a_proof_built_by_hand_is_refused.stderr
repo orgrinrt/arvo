@@ -8,5 +8,5 @@ error[E0423]: cannot initialize a tuple struct which contains private fields
 note: constructor is not visible here due to private fields
  --> src/tier.rs
   |
-  | pub struct Within<B, const I: u32>(PhantomData<B>);
-  |                                    ^^^^^^^^^^^^^^ private field
+  | pub struct Within<B, const I: u32>(PhantomData<fn(B) -> B>);
+  |                                    ^^^^^^^^^^^^^^^^^^^^^^^ private field

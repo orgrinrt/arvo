@@ -31,6 +31,35 @@ const TOP_SET: Bool = top_after_rotation(Bits::<28>::masked(1 << 27));
 const TOP_CLEAR: Bool = top_after_rotation(Bits::<28>::masked(1 << 26));
 const ALIGNED: Bits<32> = Bits::<32>::masked(13 + 3).and(Bits::<32>::masked(3).not());
 
+/// What `every` gives: each of the eleven operations once, in the order the tier
+/// declares them.
+type Every<B> = (Bool, B, B, B, B, B, Bool, B, B, B, B);
+
+/// Every operation of the tier, through `[const]` bounds alone.
+const fn every<B: [const] BitAccess + [const] BitLogic + [const] BitSequence>(
+    a: B,
+    b: B,
+) -> Every<B> {
+    (
+        a.bit::<1>(),
+        a.with_bit::<0>(Bool::TRUE),
+        a.and(b),
+        a.or(b),
+        a.xor(b),
+        a.not(),
+        a.is_empty(),
+        a.shift_up::<3>(),
+        a.shift_down::<3>(),
+        a.rotate_up::<3>(),
+        a.rotate_down::<3>(),
+    )
+}
+
+const EVERY: Every<Bits<8>> = every(
+    Bits::<8>::masked(0b1011_0010),
+    Bits::<8>::masked(0b0110_0110),
+);
+
 #[test]
 fn the_tier_evaluates_in_a_constant() {
     assert!(MEETS.get());
@@ -38,6 +67,22 @@ fn the_tier_evaluates_in_a_constant() {
     assert!(TOP_SET.get());
     assert!(!TOP_CLEAR.get());
     assert_eq!(ALIGNED.raw(), 16);
+}
+
+#[test]
+fn every_operation_of_the_tier_evaluates_in_a_constant() {
+    let (bit, with_bit, and, or, xor, not, is_empty, up, down, rotated_up, rotated_down) = EVERY;
+    assert!(bit.get());
+    assert_eq!(with_bit.raw(), 0b1011_0011);
+    assert_eq!(and.raw(), 0b0010_0010);
+    assert_eq!(or.raw(), 0b1111_0110);
+    assert_eq!(xor.raw(), 0b1101_0100);
+    assert_eq!(not.raw(), 0b0100_1101);
+    assert!(!is_empty.get());
+    assert_eq!(up.raw(), 0b1001_0000);
+    assert_eq!(down.raw(), 0b0001_0110);
+    assert_eq!(rotated_up.raw(), 0b1001_0101);
+    assert_eq!(rotated_down.raw(), 0b0101_0110);
 }
 
 /// Whether the width `Bits<N>` gives back through the tier counts the bits its

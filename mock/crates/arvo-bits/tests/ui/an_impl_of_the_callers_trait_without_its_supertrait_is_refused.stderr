@@ -1,0 +1,21 @@
+error[E0277]: the trait bound `Pair: BitAccessAt` is not satisfied
+  --> tests/ui/an_impl_of_the_callers_trait_without_its_supertrait_is_refused.rs:14:20
+   |
+14 | impl BitAccess for Pair {
+   |                    ^^^^ unsatisfied trait bound
+   |
+help: the trait `BitAccessAt` is not implemented for `Pair`
+  --> tests/ui/an_impl_of_the_callers_trait_without_its_supertrait_is_refused.rs:8:1
+   |
+ 8 | struct Pair([Bits<64>; 2]);
+   | ^^^^^^^^^^^
+help: the trait `BitAccessAt` is implemented for `Bits<N>`
+  --> src/tier.rs
+   |
+   | const impl<const N: u32> BitAccessAt for Bits<N> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `BitAccess`
+  --> src/tier.rs
+   |
+   | pub const trait BitAccess: BitAccessAt {
+   |                            ^^^^^^^^^^^ required by this bound in `BitAccess`

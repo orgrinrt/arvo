@@ -26,14 +26,14 @@
 //! fallibility carriers rather than numerals, and they are counted separately,
 //! because a position holding one is a position that already went through the
 //! stack even though no number is involved. And the list carries the arvo names
-//! that exist **now**: the crate tree that held `UFixed`, `IFixed`, `FastFloat`,
-//! `StrictFloat`, `Cap` and `Bits` was deleted, so those names are on the list
-//! and currently match nothing, which is itself worth seeing.
+//! that exist **now**: the crate tree that held `IFixed`, `FastFloat`, `StrictFloat`
+//! and `Cap` was deleted, so those names are on the gone list and match nothing
+//! arvo has, which is itself worth seeing.
 
-/// What arvo exports today, read off the three crates' own `lib.rs` on `dev`.
+/// What arvo exports today, read off the crates' own `lib.rs` on `dev`.
 ///
-/// `arvo-format`, `arvo-placement` and `arvo-strategy`, and nothing else,
-/// because nothing else is there.
+/// Not every name each crate exports: the ones a consumer's position is likely to
+/// carry, and every name that was once filed as gone and ships again.
 pub const ARVO_SHIPPED: &[&str] = &[
     // arvo-format
     "Width",
@@ -80,6 +80,16 @@ pub const ARVO_SHIPPED: &[&str] = &[
     "Warm",
     "Cold",
     "Precise",
+    // arvo-numeral, and arvo-format's `slots`
+    "USize",
+    "Unsigned",
+    // arvo-bits
+    "Bits",
+    "BitWidth",
+    "BitAccess",
+    // arvo-capacity
+    "Capacity",
+    "Dim",
 ];
 
 /// Names consumers write as arvo's that arvo no longer has.
@@ -91,36 +101,16 @@ pub const ARVO_SHIPPED: &[&str] = &[
 /// arvo list does, makes the obligation look 85 percent met when most of the 85
 /// does not resolve.
 ///
-/// Established by reading the three shipped `lib.rs` files against what the
-/// consumers import; `hilavitkutin` alone writes `use arvo::USize`,
-/// `use arvo::Cap`, `use arvo::{Bits, Hot, Unsigned}`, `use arvo_bits::Bits`,
-/// `use arvo_bitmask::BitAccess` and `use arvo_tensor::{cap_size, Capacity, Dim}`.
-pub const ARVO_GONE: &[&str] = &[
-    "USize",
-    "Cap",
-    "Capacity",
-    "Bits",
-    "BitPrim",
-    "BitWidth",
-    "BitAccess",
-    "ContentHash",
-    "IFixed",
-    "FastFloat",
-    "StrictFloat",
-    "UWire",
-    "Dim",
-    "Unsigned",
-];
+/// Established by reading the shipped `lib.rs` files against what the consumers
+/// import; `hilavitkutin` alone writes `use arvo::Cap` and the rest. A name here
+/// that a crate's `lib.rs` exports is refused by the lint
+/// `a-name-filed-as-gone-is-exported-by-no-crate`, so the list cannot keep a
+/// name after it ships again.
+pub const ARVO_GONE: &[&str] =
+    &["Cap", "BitPrim", "ContentHash", "IFixed", "FastFloat", "StrictFloat", "UWire"];
 
 /// notko's carriers, which are not numerals and are still the stack's own.
-pub const NOTKO: &[&str] = &[
-    "Just",
-    "Maybe",
-    "Outcome",
-    "Boundable",
-    "NonZeroable",
-    "Lent",
-];
+pub const NOTKO: &[&str] = &["Just", "Maybe", "Outcome", "Boundable", "NonZeroable", "Lent"];
 
 /// Which side of the supply a type name is on, or `None` if it is not the
 /// stack's at all.

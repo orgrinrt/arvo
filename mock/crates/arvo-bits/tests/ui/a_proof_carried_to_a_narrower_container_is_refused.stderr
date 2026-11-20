@@ -1,0 +1,8 @@
+error[E0308]: mismatched types
+  --> tests/ui/a_proof_carried_to_a_narrower_container_is_refused.rs:23:55
+   |
+23 |     let _narrow: Within<Wrap<fn(&'static ())>, 100> = wide;
+   |                                                       ^^^^ one type is more general than the other
+   |
+   = note: expected struct `Within<Wrap<fn(&())>, 100>`
+              found struct `Within<Wrap<for<'a> fn(&'a ())>, 100>`
