@@ -24,7 +24,6 @@ use arvo_format::{
     WithOverflow,
     WithRounding,
     adapt,
-    mul as mul_slots,
     panic_on_overflow,
     product_position,
     slot_in_range,
@@ -35,7 +34,7 @@ use crate::admit::Sole;
 use crate::check::{Abort, DebugCheck};
 use crate::machine::copy;
 use crate::map::Held;
-use crate::rung;
+use crate::{room, rung};
 
 pub(crate) type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
 
@@ -394,12 +393,10 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
                 [const { S::WIDTH.count() }, S::POLICY]
             ))
         } else {
-            // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
-            // position is scaled by the radix and rounded by the mode, and the
-            // rounding lives in the format's applied map alone. Its step is four
-            // limbs wide. When the format ships the adaptation at the container's
-            // width this becomes the machine's widening product and one call.
-            Self::at_index(mul_slots::<S>(self.slot(), rhs.slot(), Dither::UNUSED).index())
+            // Elsewhere the position is scaled by the radix and rounded by the
+            // mode: formed in `room`, rounded and completed by the format's map.
+            let position = room::product::<S::Format>(self.slot(), rhs.slot());
+            Self::at_index(adapt::<S>(position, Dither::UNUSED).index())
         }
     }
 
@@ -407,7 +404,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// declared mode rounds its exact position to is a member.
     #[must_use]
     pub const fn fits_mul(self, rhs: Self) -> Bool {
-        let position = product_position::<S::Format>(self.slot(), rhs.slot());
+        let position = room::product::<S::Format>(self.slot(), rhs.slot());
         Bool::of(!panic_on_overflow::<S>(position, Dither::UNUSED).get())
     }
 }

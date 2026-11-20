@@ -5,8 +5,9 @@
 
 //! The quotient and the conversion onto another signature.
 //!
-//! Both round a ratio, and the rounding of a ratio lives in the format's
-//! applied map alone, so each is the format's own function called on slots.
+//! Both place a member at a ratio and round it. The ratio is formed in `room`,
+//! in the host's integer where the range leaves room and by the format's own
+//! step elsewhere, and the rounding is the format's applied map, `adapt`.
 
 use arvo_format::overflow::Saturate;
 use arvo_format::{
@@ -20,15 +21,13 @@ use arvo_format::{
     WithRounding,
     adapt,
     convert as convert_slots,
-    converted_position,
-    div as div_slots,
     panic_on_overflow,
-    quotient_position,
 };
 
 use crate::admit::Sole;
 use crate::check::DebugCheck;
 use crate::num::Num;
+use crate::room;
 
 impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// The quotient under the signature: the slot `arvo_format::div` gives for
@@ -55,19 +54,16 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
         if cfg!(arvo_mutant_div) && !self.fits_div(by).get() {
             return self;
         }
-        // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
-        // quotient's position is a ratio the mode rounds, and the rounding lives
-        // in the format's applied map alone. Its step is four limbs wide. When the
-        // format ships the adaptation at the container's width this becomes the
-        // scaled dividend, the divisor and one call.
-        Self::at_index(div_slots::<S>(self.slot(), by, Dither::UNUSED).index())
+        Self::at_index(
+            adapt::<S>(room::quotient::<S::Format>(self.slot(), by), Dither::UNUSED).index(),
+        )
     }
 
     /// Whether the quotient needs no completion: the slot the declared mode
     /// rounds its exact position to is a member.
     #[must_use]
     pub const fn fits_div(self, by: Divisor<S::Format>) -> Bool {
-        let position = quotient_position::<S::Format>(self.slot(), by);
+        let position = room::quotient::<S::Format>(self.slot(), by);
         Bool::of(!panic_on_overflow::<S>(position, Dither::UNUSED).get())
     }
 
@@ -109,19 +105,15 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
             >(self.slot(), Dither::UNUSED);
             return Num::at_index(rounded.index());
         }
-        // FIXME(arvo_numeral_s_fixed_point_product_goes_through_the_128_bit): the
-        // member's position on the target grid is a ratio of the two quanta that
-        // the target's mode rounds, in the format's applied map. Its step is four
-        // limbs wide. When the format ships the adaptation at the container's
-        // width this becomes the slot, the two scales and one call.
-        Num::at_index(convert_slots::<S::Format, T>(self.slot(), Dither::UNUSED).index())
+        let position = room::converted::<S::Format, T::Format>(self.slot());
+        Num::at_index(adapt::<T>(position, Dither::UNUSED).index())
     }
 
     /// Whether the conversion onto `T` needs no completion: the slot `T`'s mode
     /// rounds the member's position to is a member of `T`.
     #[must_use]
     pub const fn fits_convert<T: Sole>(self) -> Bool {
-        let position = converted_position::<S::Format, T::Format>(self.slot());
+        let position = room::converted::<S::Format, T::Format>(self.slot());
         Bool::of(!panic_on_overflow::<T>(position, Dither::UNUSED).get())
     }
 }
