@@ -30,10 +30,12 @@
 //! and `Cap` was deleted, so those names are on the gone list and match nothing
 //! arvo has, which is itself worth seeing.
 
-/// What arvo exports today, read off the crates' own `lib.rs` on `dev`.
+/// What arvo exports today, at a crate root or through a public module.
 ///
 /// Not every name each crate exports: the ones a consumer's position is likely to
-/// carry, and every name that was once filed as gone and ships again.
+/// carry, and every name that was once filed as gone and ships again. The lint
+/// `a-supply-list-agrees-with-what-the-crates-export` refuses a name here that no
+/// crate exports.
 pub const ARVO_SHIPPED: &[&str] = &[
     // arvo-format
     "Width",
@@ -101,10 +103,10 @@ pub const ARVO_SHIPPED: &[&str] = &[
 /// arvo list does, makes the obligation look 85 percent met when most of the 85
 /// does not resolve.
 ///
-/// Established by reading the shipped `lib.rs` files against what the consumers
+/// Established by reading what the crates export against what the consumers
 /// import; `hilavitkutin` alone writes `use arvo::Cap` and the rest. A name here
-/// that a crate's `lib.rs` exports is refused by the lint
-/// `a-name-filed-as-gone-is-exported-by-no-crate`, so the list cannot keep a
+/// that a crate exports is refused by the lint
+/// `a-supply-list-agrees-with-what-the-crates-export`, so the list cannot keep a
 /// name after it ships again.
 pub const ARVO_GONE: &[&str] =
     &["Cap", "BitPrim", "ContentHash", "IFixed", "FastFloat", "StrictFloat", "UWire"];

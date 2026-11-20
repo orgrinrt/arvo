@@ -77,16 +77,6 @@ pub fn without_comments(view: &View, path: impl AsRef<Path>) -> Option<String> {
     Some(blank(view.text(path)?, view.rust(path)?, &COMMENTS))
 }
 
-/// A file's source with every comment and literal blanked, read through the view.
-///
-/// `code_only` for a repository lint: a name in a string or a comment is not
-/// code naming it. `None` where the file cannot be read.
-pub fn code_only_at(view: &View, path: impl AsRef<Path>) -> Option<String> {
-    let path = path.as_ref();
-    let kinds: Vec<&str> = COMMENTS.iter().chain(&LITERALS).copied().collect();
-    Some(blank(view.text(path)?, view.rust(path)?, &kinds))
-}
-
 /// The blanking: every node whose kind is in `kinds`, over one tree.
 fn blank(source: &str, tree: &Tree, kinds: &[&str]) -> String {
     let mut bytes = source.as_bytes().to_vec();

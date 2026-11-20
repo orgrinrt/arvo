@@ -133,10 +133,10 @@ commit = "error"
 build = "error"
 push = "error"
 
-# It refuses a name `the-positions` files as gone from arvo that a crate's
-# `lib.rs` exports, so the report cannot count a shipped type as pointing at
-# nothing once the name ships again.
-[lints.a-name-filed-as-gone-is-exported-by-no-crate]
+# It holds `the-positions` supply lists against the crate roots both ways: no
+# name filed as gone is exported by a `lib.rs`, and every name filed as shipped
+# is, so the report counts neither side wrongly once a name moves.
+[lints.a-supply-list-agrees-with-what-the-crates-export]
 commit = "error"
 build = "error"
 push = "error"

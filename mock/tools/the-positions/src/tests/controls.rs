@@ -256,22 +256,6 @@ fn a_name_arvo_no_longer_exports_is_its_own_answer_and_not_supply() {
     // are not there.
     assert_eq!(supplier("Cap"), Some("gone"));
     assert_eq!(supplier("BitPrim"), Some("gone"));
-    // The names that were filed as gone and ship again are supply, and a name
-    // that ships cannot stay on the gone list: the lint
-    // `a-name-filed-as-gone-is-exported-by-no-crate` refuses it.
-    for name in ["USize", "Unsigned", "Bits", "BitWidth", "BitAccess", "Capacity", "Dim"] {
-        assert_eq!(supplier(name), Some("arvo"), "`{name}` ships again");
-    }
-}
-
-#[test]
-fn the_control_the_names_arvo_does_export_are_supply() {
-    use crate::supply::supplier;
-    // Read off the three shipped `lib.rs` files. If these came back `gone` the
-    // split would be a claim that arvo exports nothing.
-    for name in ["Width", "Bool", "Format", "Quantum", "Placement", "Strategy", "Hot"] {
-        assert_eq!(supplier(name), Some("arvo"), "`{name}` is exported today");
-    }
 }
 
 #[test]
