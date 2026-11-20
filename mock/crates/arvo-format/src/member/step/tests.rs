@@ -202,6 +202,163 @@ fn the_64_bit_corners_are_the_slot_steps_position_either_side_of_the_edge() {
 }
 
 #[test]
+fn the_64_bit_corners_at_radix_ten_and_three_are_the_slot_steps_position() {
+    // The 128-bit division at the radixes the six-bit sweep only reaches with
+    // terms that fit 64 bits: either side of the quotient's edge in each range,
+    // and at the product's. Past the product's edge both sides are the slot
+    // step, and the remainders' cross product `same` reads passes four limbs.
+    ring_at_the_corners::<Ten<Signed<64>, -1>, Ten<Signed<64>, -2>, Ten<Signed<64>, 0>>(
+        "decimal signed at -1",
+    );
+    ring_at_the_corners::<UTen<Unsigned<64>, -1>, UTen<Unsigned<64>, -2>, UTen<Unsigned<64>, 0>>(
+        "decimal unsigned at -1",
+    );
+    ring_at_the_corners::<Ten<Signed<64>, -19>, Ten<Signed<64>, -20>, Ten<Signed<64>, -18>>(
+        "decimal signed at -19, the quotient's edge",
+    );
+    ring_at_the_corners::<Ten<Signed<64>, -20>, Ten<Signed<64>, -21>, Ten<Signed<64>, -19>>(
+        "decimal signed at -20, the quotient past its edge",
+    );
+    ring_at_the_corners::<UTen<Unsigned<64>, -18>, UTen<Unsigned<64>, -19>, UTen<Unsigned<64>, -17>>(
+        "decimal unsigned at -18, the quotient's edge",
+    );
+    ring_at_the_corners::<Ten<Signed<64>, -38>, Ten<Signed<64>, -39>, Ten<Signed<64>, -37>>(
+        "decimal signed at -38, the product's edge",
+    );
+    ring_at_the_corners::<Three<Signed<64>, -1>, Three<Signed<64>, -2>, Three<Signed<64>, 0>>(
+        "ternary signed at -1",
+    );
+    ring_at_the_corners::<
+        UThree<Unsigned<64>, -1>,
+        UThree<Unsigned<64>, -2>,
+        UThree<Unsigned<64>, 0>,
+    >("ternary unsigned at -1");
+    ring_at_the_corners::<Three<Signed<64>, -40>, Three<Signed<64>, -41>, Three<Signed<64>, -39>>(
+        "ternary signed at -40, the quotient's edge",
+    );
+    ring_at_the_corners::<
+        UThree<Unsigned<64>, -40>,
+        UThree<Unsigned<64>, -41>,
+        UThree<Unsigned<64>, -39>,
+    >("ternary unsigned at -40, the quotient past its edge");
+    ring_at_the_corners::<Three<Signed<64>, -80>, Three<Signed<64>, -81>, Three<Signed<64>, -79>>(
+        "ternary signed at -80, the product's edge",
+    );
+}
+
+/// The edges in arithmetic of the tests' own, apart from the step's.
+mod edge {
+    /// The widest magnitude of a range of `w` bits.
+    pub const fn widest(w: u32, signed: bool) -> u128 {
+        if signed { 1 << (w - 1) } else { (1 << w) - 1 }
+    }
+
+    /// The largest `k` at which `m radix^k` is still below `2^127`, for an `m`
+    /// other than zero.
+    pub const fn below_2_127(m: u128, radix: u128) -> i32 {
+        let mut at = m;
+        let mut k = 0;
+        loop {
+            match at.checked_mul(radix) {
+                Some(next) if next < 1 << 127 => {
+                    at = next;
+                    k += 1;
+                },
+                _ => return k,
+            }
+        }
+    }
+
+    /// The largest `k` at which `radix^k` is still a 128-bit unsigned integer.
+    pub const fn power_of(radix: u128) -> i32 {
+        let mut at = 1u128;
+        let mut k = 0;
+        loop {
+            match at.checked_mul(radix) {
+                Some(next) => {
+                    at = next;
+                    k += 1;
+                },
+                None => return k,
+            }
+        }
+    }
+}
+
+/// Where the product leaves the host's integer: where `r^-e` leaves 128 bits.
+macro_rules! product_edge {
+    ($radix:literal) => {
+        -edge::power_of($radix)
+    };
+}
+
+/// Where the quotient and the conversion leave the host's integer: where the
+/// widest member times `r^-e` reaches `2^127`.
+macro_rules! host_edge {
+    ($w:literal, $signed:literal, $radix:literal) => {
+        -edge::below_2_127(edge::widest($w, $signed), $radix)
+    };
+}
+
+/// The product, the quotient and the conversion from exponent zero, each
+/// taking the host's integer at the last exponent the tests' arithmetic puts
+/// inside it and not one past it, over one ambient and range.
+///
+/// The product's denominator is `r^-e` and the square of a member up to 64
+/// bits over it stays below `2^127`, so its edge is where the power leaves 128
+/// bits. The quotient's numerator and the conversion's scaled range are the
+/// widest member times `r^-e`, which has to stay below `2^127`.
+macro_rules! at_the_edge {
+    ($ambient:ty, $slots:ident, $w:literal, $signed:literal, $radix:literal) => {{
+        let p = product_edge!($radix);
+        let q = host_edge!($w, $signed, $radix);
+        type At<const E: i32> = Scaled<$ambient, $slots<$w>, E>;
+        let at = ($w, $signed, $radix);
+        assert!(
+            Sides::<At<{ product_edge!($radix) }>>::PRODUCT.get(),
+            "product refused at {p}, {at:?}"
+        );
+        assert!(
+            !Sides::<At<{ product_edge!($radix) - 1 }>>::PRODUCT.get(),
+            "product past {p}, {at:?}"
+        );
+        assert!(
+            Sides::<At<{ host_edge!($w, $signed, $radix) }>>::QUOTIENT.get(),
+            "quotient refused at {q}, {at:?}"
+        );
+        assert!(
+            !Sides::<At<{ host_edge!($w, $signed, $radix) - 1 }>>::QUOTIENT.get(),
+            "quotient past {q}, {at:?}"
+        );
+        assert!(
+            Crossing::<At<0>, At<{ host_edge!($w, $signed, $radix) }>>::HOLDS.get(),
+            "conversion refused at {q}, {at:?}"
+        );
+        assert!(
+            !Crossing::<At<0>, At<{ host_edge!($w, $signed, $radix) - 1 }>>::HOLDS.get(),
+            "conversion past {q}, {at:?}"
+        );
+    }};
+}
+
+/// Both ranges of each width at the three radixes.
+macro_rules! at_width {
+    ($($w:literal),*) => {$(
+        at_the_edge!(BinaryRationals, Signed, $w, true, 2);
+        at_the_edge!(UnsignedBinaryRationals, Unsigned, $w, false, 2);
+        at_the_edge!(DecimalRationals, Signed, $w, true, 10);
+        at_the_edge!(UnsignedDecimalRationals, Unsigned, $w, false, 10);
+        at_the_edge!(TernaryRationals, Signed, $w, true, 3);
+        at_the_edge!(UnsignedTernaryRationals, Unsigned, $w, false, 3);
+    )*};
+}
+
+#[test]
+fn the_bound_holds_at_its_edge_and_not_past_it_at_every_radix_and_width() {
+    at_width!(1, 8, 16, 32, 63, 64);
+}
+
+#[test]
 fn the_host_arm_stops_where_the_bound_does_at_radix_two() {
     // The square of a 64-bit member over `2^127` stays below `2^127`, so the
     // product holds down to where the power itself passes 128 bits.
@@ -275,6 +432,13 @@ fn the_terms_take_the_64_bit_division_where_they_fit_it_and_not_past() {
 
 /// `landed` against `adapted` at a position on the grid, under `S`, over the
 /// slots around both ends, around zero and far past either.
+///
+/// `adapt` hands a rounded position whose floor the index holds to the same
+/// `complete_index` that `landed` calls, so this does not test the completion,
+/// which the applied map's oracle suites hold. It holds the hand-off: that
+/// rounding a position on the grid moves it nowhere, and that the guard on the
+/// floor plus the step sends the slots far past either end the way `landed`
+/// sends them.
 fn lands_as_adapted<F: Format, S: DeclaredSignature<Format = F>>(
     what: &'static str,
     policy: &'static str,
@@ -299,7 +463,7 @@ fn under_each_policy<F: Format>(what: &'static str) {
 }
 
 #[test]
-fn a_slot_landed_is_the_member_adapted_places_it_at() {
+fn a_slot_landed_takes_the_completion_adapt_hands_a_position_on_the_grid() {
     under_each_policy::<Fixed<1, 0>>("signed at 1 bit");
     under_each_policy::<UFixed<1, 0>>("unsigned at 1 bit");
     under_each_policy::<Fixed<6, 0>>("signed at 6 bits");

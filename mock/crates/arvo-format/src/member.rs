@@ -104,8 +104,9 @@ impl<F: Format> Member<F> {
     ///
     /// The dither is passed through for the one mode that reads it. In range by
     /// the map's totality, so nothing is checked. A slot on the grid reaches its
-    /// member through `landed`, which skips the rounding. Refused at build time where the format's phase does not
-    /// denote, and not yet admitted where its quantum is not constant.
+    /// member through `landed`, which skips the rounding. Refused at build time
+    /// where the format's phase does not denote, and not yet admitted where its
+    /// quantum is not constant.
     #[must_use]
     #[inline]
     pub const fn adapted<S: DeclaredSignature<Format = F>>(exact: Exact, dither: Dither) -> Self {

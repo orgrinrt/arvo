@@ -3,9 +3,11 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The exact step over members: a slot landed on the grid, and the product, the
-//! quotient and the conversion of members, formed in the host's 128-bit integer
-//! where the range leaves room for it.
+//! The exact step over members, in the host's integer where it fits.
+//!
+//! A slot landed on the grid, and the product, the quotient and the conversion
+//! of members, each formed in the host's 128-bit integer where the range leaves
+//! room for it.
 //!
 //! At a zero phase and a constant quantum each of the three sits at a ratio of
 //! slot products and powers of the radix. With `u = r^max(e, 0)` and
