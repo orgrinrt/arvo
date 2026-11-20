@@ -8,7 +8,7 @@ error[E0080]: evaluation panicked: multiplication is not yet admitted where the 
   |
   |   impl<F: Format> Multipliable<F> {
 ...
-  |       const ADMITTED: () = {
+  |       pub(crate) const ADMITTED: () = {
 ...
   | /         assert!(
   | |             product_is_formed::<F>().get(),
@@ -40,3 +40,9 @@ note: the above error was encountered while instantiating `fn Num::<Signature<UF
    |
 10 |     let _ = a.mul(a);
    |             ^^^^^^^^
+
+note: erroneous constant encountered
+ --> $WORKSPACE/crates/arvo-format/src/member/step.rs
+  |
+  |         let () = Multipliable::<F>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^

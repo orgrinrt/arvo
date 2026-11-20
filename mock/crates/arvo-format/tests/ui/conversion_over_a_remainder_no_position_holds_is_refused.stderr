@@ -8,7 +8,7 @@ error[E0080]: evaluation panicked: conversion is not yet admitted where the rema
   |
   |   impl<F: Format, T: Format> Convertible<F, T> {
 ...
-  |       const ADMITTED: () = {
+  |       pub(crate) const ADMITTED: () = {
 ...
   | /         assert!(
   | |             fits.get(),
