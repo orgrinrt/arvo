@@ -14,8 +14,14 @@
 //! a position's floor in. Each edge below is the last exponent at which that
 //! holds, found from the members' own magnitudes, and the sweeps hold it against
 //! the format's verdict: admitted at the edge, refused one past it.
+//!
+//! The file stands alone, so `room.rs`'s `bound` module takes it by path and
+//! holds the value's own predicates against the same edges.
 
-use super::shapes::widest;
+/// The widest magnitude of a range of `w` bits.
+pub const fn widest(w: u32, signed: bool) -> i128 {
+    if signed { 1i128 << (w - 1) } else { (1i128 << w) - 1 }
+}
 
 /// The largest `k` at least zero at which `m radix^k` is still an unsigned
 /// integer four 64-bit limbs wide, for an `m` other than zero.
