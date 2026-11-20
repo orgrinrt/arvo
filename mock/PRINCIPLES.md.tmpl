@@ -2,7 +2,7 @@
 
 
 ## Topology
-Five crates. `arvo-format`, `arvo-placement` and `arvo-strategy` chain by
+Seven crates. `arvo-format`, `arvo-placement` and `arvo-strategy` chain by
 dependency, and that direction carries the design. `arvo-format` declares what
 values exist: the representable set as one affine predicate, the six rounding
 modes, the overflow policies, the adaptation as the pair of those two, and the
@@ -24,7 +24,15 @@ different question from the rest, what bits are held and not what values exist
 or where they sit, so it sits beside `arvo-format` rather than above or below
 it.
 
-There is no facade. A crate re-exporting the five would sit above all of them,
+`arvo-contracts` is the sixth and sits directly above `arvo-format`, depending on
+it alone. It holds the contracts a numeral satisfies, as const traits, so a
+crate that needs to bound a value by what it can do names `arvo-contracts`
+without naming a value. `arvo-numeral` implements them.
+
+`arvo-digest` is the seventh. It holds a digest of explicit bytes, and builds
+on `arvo-format`, `arvo-numeral` and `arvo-bits`.
+
+There is no facade. A crate re-exporting the seven would sit above all of them,
 and nothing needs one yet.
 
 The split is by what a consumer must depend on to say one thing. Declaring
