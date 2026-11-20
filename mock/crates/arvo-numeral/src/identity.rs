@@ -3,26 +3,16 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! Identities, computed from the format's own predicate.
+//! The two identities of a value, computed from the format's own predicate. The contract and its
+//! two markers are `arvo-contracts`'s.
 
+use arvo_contracts::{Additive, Identity, Multiplicative};
 use arvo_format::{Exact, has_additive_identity, multiplicative_identity};
 use notko::Maybe;
 
 use crate::admit::Sole;
 use crate::check::DebugCheck;
 use crate::num::Num;
-
-/// A type with an identity element for the operation `M`.
-///
-/// The call shape is `<T as Identity<M>>::IDENTITY`.
-pub trait Identity<M> {
-    /// The identity element.
-    const IDENTITY: Self;
-}
-
-/// Addition, as the operation an identity is named for.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
-pub struct Additive;
 
 impl<S: Sole, C: DebugCheck> Identity<Additive> for Num<S, C> {
     /// Zero, which at a zero phase is slot zero.
@@ -39,10 +29,6 @@ impl<S: Sole, C: DebugCheck> Identity<Additive> for Num<S, C> {
         Num::constant::<0>()
     };
 }
-
-/// Multiplication, as the operation an identity is named for.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
-pub struct Multiplicative;
 
 impl<S: Sole, C: DebugCheck> Identity<Multiplicative> for Num<S, C> {
     /// One, at the slot the format names for it.

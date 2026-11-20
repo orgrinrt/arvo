@@ -1,0 +1,240 @@
+cell   W=1 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (0, 1, 1)
+cell   W=1 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (-1, 0, -1)
+cell   W=1 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=1 F=0 signed   saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=1 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (0, 1, 1)
+cell   W=1 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (-1, 0, -1)
+cell   W=1 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=1 F=0 signed   saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=1 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (0, 1, 1)
+cell   W=1 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (-1, 0, -1)
+cell   W=1 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=1 F=1 signed   saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=1 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (0, 1, 1)
+cell   W=1 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 1 first (-1, 0, -1)
+cell   W=1 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=1 F=1 signed   saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=2 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 10 first (0, 1, 3)
+cell   W=2 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 10 first (-2, -1, -1)
+cell   W=2 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=2 F=0 signed   saturate TowardZero add_assoc=FAILS 10 first (-2, -2, 1) mul_assoc=FAILS 4 first (-2, -2, -1) add_monotone=holds
+cell   W=2 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 10 first (0, 1, 3)
+cell   W=2 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 10 first (-2, -1, -1)
+cell   W=2 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=2 F=0 signed   saturate HalfEven   add_assoc=FAILS 10 first (-2, -2, 1) mul_assoc=FAILS 4 first (-2, -2, -1) add_monotone=holds
+cell   W=2 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 2 first (1, 3, 3) add_monotone=FAILS 10 first (0, 1, 3)
+cell   W=2 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 4 first (-2, -2, -1) add_monotone=FAILS 10 first (-2, -1, -1)
+cell   W=2 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=2 F=1 signed   saturate TowardZero add_assoc=FAILS 10 first (-2, -2, 1) mul_assoc=FAILS 4 first (-2, -2, -1) add_monotone=holds
+cell   W=2 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 4 first (1, 1, 3) add_monotone=FAILS 10 first (0, 1, 3)
+cell   W=2 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 4 first (-2, -2, -1) add_monotone=FAILS 10 first (-2, -1, -1)
+cell   W=2 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 4 first (1, 1, 3) add_monotone=holds
+cell   W=2 F=1 signed   saturate HalfEven   add_assoc=FAILS 10 first (-2, -2, 1) mul_assoc=FAILS 4 first (-2, -2, -1) add_monotone=holds
+cell   W=2 F=2 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 2 first (2, 3, 3) add_monotone=FAILS 10 first (0, 1, 3)
+cell   W=2 F=2 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 10 first (-2, -1, -1)
+cell   W=2 F=2 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 2 first (2, 3, 3) add_monotone=holds
+cell   W=2 F=2 signed   saturate TowardZero add_assoc=FAILS 10 first (-2, -2, 1) mul_assoc=holds add_monotone=holds
+cell   W=2 F=2 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 4 first (1, 3, 3) add_monotone=FAILS 10 first (0, 1, 3)
+cell   W=2 F=2 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 10 first (-2, -1, -1)
+cell   W=2 F=2 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 4 first (1, 3, 3) add_monotone=holds
+cell   W=2 F=2 signed   saturate HalfEven   add_assoc=FAILS 10 first (-2, -2, 1) mul_assoc=holds add_monotone=holds
+cell   W=3 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=3 F=0 signed   saturate TowardZero add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=FAILS 28 first (-4, -4, -1) add_monotone=holds
+cell   W=3 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=3 F=0 signed   saturate HalfEven   add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=FAILS 28 first (-4, -4, -1) add_monotone=holds
+cell   W=3 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 144 first (1, 1, 4) add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 84 first (-4, -4, -3) add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 64 first (1, 1, 4) add_monotone=holds
+cell   W=3 F=1 signed   saturate TowardZero add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=FAILS 60 first (-4, -4, -2) add_monotone=holds
+cell   W=3 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 152 first (1, 1, 3) add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 100 first (-4, -4, -3) add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 64 first (1, 1, 3) add_monotone=holds
+cell   W=3 F=1 signed   saturate HalfEven   add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=FAILS 76 first (-4, -4, -2) add_monotone=holds
+cell   W=3 F=2 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 82 first (1, 3, 6) add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=2 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 28 first (-4, -4, -3) add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=2 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 48 first (1, 3, 6) add_monotone=holds
+cell   W=3 F=2 signed   saturate TowardZero add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=FAILS 28 first (-4, -4, -3) add_monotone=holds
+cell   W=3 F=2 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 116 first (1, 2, 6) add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=2 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 44 first (-4, -4, -3) add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=2 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 82 first (1, 2, 6) add_monotone=holds
+cell   W=3 F=2 signed   saturate HalfEven   add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=FAILS 36 first (-4, -4, -3) add_monotone=holds
+cell   W=3 F=3 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 44 first (2, 5, 7) add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=3 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=3 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 44 first (2, 5, 7) add_monotone=holds
+cell   W=3 F=3 signed   saturate TowardZero add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=holds add_monotone=holds
+cell   W=3 F=3 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 58 first (1, 5, 5) add_monotone=FAILS 84 first (0, 1, 7)
+cell   W=3 F=3 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 8 first (-4, -3, -3) add_monotone=FAILS 84 first (-4, -3, -1)
+cell   W=3 F=3 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 58 first (1, 5, 5) add_monotone=holds
+cell   W=3 F=3 signed   saturate HalfEven   add_assoc=FAILS 108 first (-4, -4, 1) mul_assoc=FAILS 8 first (-4, -3, -3) add_monotone=holds
+cell   W=4 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=4 F=0 signed   saturate TowardZero add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 160 first (-8, -8, -1) add_monotone=holds
+cell   W=4 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=4 F=0 signed   saturate HalfEven   add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 160 first (-8, -8, -1) add_monotone=holds
+cell   W=4 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1712 first (1, 1, 4) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1460 first (-8, -7, -7) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 398 first (1, 1, 4) add_monotone=holds
+cell   W=4 F=1 signed   saturate TowardZero add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 704 first (-8, -8, -2) add_monotone=holds
+cell   W=4 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1744 first (1, 1, 3) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1532 first (-8, -7, -7) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 404 first (1, 1, 3) add_monotone=holds
+cell   W=4 F=1 signed   saturate HalfEven   add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 740 first (-8, -8, -2) add_monotone=holds
+cell   W=4 F=2 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1996 first (1, 2, 8) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=2 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1064 first (-8, -8, -7) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=2 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 878 first (1, 2, 8) add_monotone=holds
+cell   W=4 F=2 signed   saturate TowardZero add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 708 first (-8, -8, -4) add_monotone=holds
+cell   W=4 F=2 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 2090 first (1, 1, 11) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=2 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1296 first (-8, -8, -7) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=2 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 938 first (1, 1, 11) add_monotone=holds
+cell   W=4 F=2 signed   saturate HalfEven   add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 888 first (-8, -8, -4) add_monotone=holds
+cell   W=4 F=3 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1284 first (1, 5, 13) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=3 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 380 first (-8, -8, -7) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=3 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 884 first (1, 5, 13) add_monotone=holds
+cell   W=4 F=3 signed   saturate TowardZero add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 380 first (-8, -8, -7) add_monotone=holds
+cell   W=4 F=3 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1434 first (1, 3, 13) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=3 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 492 first (-8, -8, -7) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=3 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 1044 first (1, 3, 13) add_monotone=holds
+cell   W=4 F=3 signed   saturate HalfEven   add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 476 first (-8, -8, -7) add_monotone=holds
+cell   W=4 F=4 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 564 first (2, 9, 15) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=4 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 32 first (-8, -7, -5) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=4 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 564 first (2, 9, 15) add_monotone=holds
+cell   W=4 F=4 signed   saturate TowardZero add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 32 first (-8, -7, -5) add_monotone=holds
+cell   W=4 F=4 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 604 first (1, 9, 9) add_monotone=FAILS 680 first (0, 1, 15)
+cell   W=4 F=4 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 208 first (-8, -7, -3) add_monotone=FAILS 680 first (-8, -7, -1)
+cell   W=4 F=4 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 604 first (1, 9, 9) add_monotone=holds
+cell   W=4 F=4 signed   saturate HalfEven   add_assoc=FAILS 952 first (-8, -8, 1) mul_assoc=FAILS 208 first (-8, -7, -3) add_monotone=holds
+cell   W=5 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=5 F=0 signed   saturate TowardZero add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 780 first (-16, -16, -1) add_monotone=holds
+cell   W=5 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=5 F=0 signed   saturate HalfEven   add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 780 first (-16, -16, -1) add_monotone=holds
+cell   W=5 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 15840 first (1, 1, 4) add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 15132 first (-16, -15, -15) add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 1892 first (1, 1, 4) add_monotone=holds
+cell   W=5 F=1 signed   saturate TowardZero add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 4080 first (-16, -16, -2) add_monotone=holds
+cell   W=5 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 15968 first (1, 1, 3) add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 15340 first (-16, -15, -15) add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 1898 first (1, 1, 3) add_monotone=holds
+cell   W=5 F=1 signed   saturate HalfEven   add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 4124 first (-16, -16, -2) add_monotone=holds
+cell   W=5 F=3 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 20756 first (1, 3, 22) add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=3 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 12192 first (-16, -16, -15) add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=3 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 9522 first (1, 3, 22) add_monotone=holds
+cell   W=5 F=3 signed   saturate TowardZero add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 8632 first (-16, -16, -8) add_monotone=holds
+cell   W=5 F=3 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 20996 first (1, 2, 19) add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=3 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 13040 first (-16, -16, -15) add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=3 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 9654 first (1, 2, 19) add_monotone=holds
+cell   W=5 F=3 signed   saturate HalfEven   add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 9464 first (-16, -16, -8) add_monotone=holds
+cell   W=5 F=5 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 5942 first (2, 17, 31) add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=5 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1072 first (-16, -15, -13) add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=5 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 5942 first (2, 17, 31) add_monotone=holds
+cell   W=5 F=5 signed   saturate TowardZero add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 1072 first (-16, -15, -13) add_monotone=holds
+cell   W=5 F=5 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 5406 first (1, 17, 17) add_monotone=FAILS 5456 first (0, 1, 31)
+cell   W=5 F=5 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 2256 first (-16, -15, -11) add_monotone=FAILS 5456 first (-16, -15, -1)
+cell   W=5 F=5 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 5406 first (1, 17, 17) add_monotone=holds
+cell   W=5 F=5 signed   saturate HalfEven   add_assoc=FAILS 7920 first (-16, -16, 1) mul_assoc=FAILS 2256 first (-16, -15, -11) add_monotone=holds
+cell   W=6 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=6 F=0 signed   saturate TowardZero add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 3516 first (-32, -32, -1) add_monotone=holds
+cell   W=6 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=6 F=0 signed   saturate HalfEven   add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 3516 first (-32, -32, -1) add_monotone=holds
+cell   W=6 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 137472 first (1, 1, 4) add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 135468 first (-32, -31, -31) add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 8054 first (1, 1, 4) add_monotone=holds
+cell   W=6 F=1 signed   saturate TowardZero add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 18752 first (-32, -32, -2) add_monotone=holds
+cell   W=6 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 137984 first (1, 1, 3) add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 134380 first (-32, -31, -31) add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 8052 first (1, 1, 3) add_monotone=holds
+cell   W=6 F=1 signed   saturate HalfEven   add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 18828 first (-32, -32, -2) add_monotone=holds
+cell   W=6 F=3 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 208686 first (1, 2, 32) add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=3 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 176392 first (-32, -32, -31) add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=3 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 53032 first (1, 2, 32) add_monotone=holds
+cell   W=6 F=3 signed   saturate TowardZero add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 81120 first (-32, -32, -8) add_monotone=holds
+cell   W=6 F=3 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 209634 first (1, 1, 37) add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=3 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 177432 first (-32, -32, -31) add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=3 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 53258 first (1, 1, 37) add_monotone=holds
+cell   W=6 F=3 signed   saturate HalfEven   add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 82128 first (-32, -32, -8) add_monotone=holds
+cell   W=6 F=6 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 54304 first (2, 33, 63) add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=6 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 16104 first (-32, -31, -29) add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=6 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 54304 first (2, 33, 63) add_monotone=holds
+cell   W=6 F=6 signed   saturate TowardZero add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 16104 first (-32, -31, -29) add_monotone=holds
+cell   W=6 F=6 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 45598 first (1, 33, 33) add_monotone=FAILS 43680 first (0, 1, 63)
+cell   W=6 F=6 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 21912 first (-32, -31, -27) add_monotone=FAILS 43680 first (-32, -31, -1)
+cell   W=6 F=6 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 45598 first (1, 33, 33) add_monotone=holds
+cell   W=6 F=6 signed   saturate HalfEven   add_assoc=FAILS 64480 first (-32, -32, 1) mul_assoc=FAILS 21912 first (-32, -31, -27) add_monotone=holds
+cell   W=7 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=7 F=0 signed   saturate TowardZero add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 15036 first (-64, -64, -1) add_monotone=holds
+cell   W=7 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=7 F=0 signed   saturate HalfEven   add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 15036 first (-64, -64, -1) add_monotone=holds
+cell   W=7 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1134784 first (1, 1, 4) add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1150620 first (-64, -63, -63) add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 32948 first (1, 1, 4) add_monotone=holds
+cell   W=7 F=1 signed   saturate TowardZero add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 79544 first (-64, -64, -2) add_monotone=holds
+cell   W=7 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1136832 first (1, 1, 3) add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1130732 first (-64, -63, -63) add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 32964 first (1, 1, 3) add_monotone=holds
+cell   W=7 F=1 signed   saturate HalfEven   add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 79596 first (-64, -64, -2) add_monotone=holds
+cell   W=7 F=4 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1813668 first (1, 3, 86) add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=4 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1547456 first (-64, -64, -63) add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=4 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 473520 first (1, 3, 86) add_monotone=holds
+cell   W=7 F=4 signed   saturate TowardZero add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 726676 first (-64, -64, -16) add_monotone=holds
+cell   W=7 F=4 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1811868 first (1, 2, 69) add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=4 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1541688 first (-64, -64, -63) add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=4 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 471192 first (1, 2, 69) add_monotone=holds
+cell   W=7 F=4 signed   saturate HalfEven   add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 722792 first (-64, -64, -16) add_monotone=holds
+cell   W=7 F=7 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 468232 first (2, 65, 127) add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=7 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 172336 first (-64, -63, -61) add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=7 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 468232 first (2, 65, 127) add_monotone=holds
+cell   W=7 F=7 signed   saturate TowardZero add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 172336 first (-64, -63, -61) add_monotone=holds
+cell   W=7 F=7 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 375448 first (1, 65, 65) add_monotone=FAILS 349504 first (0, 1, 127)
+cell   W=7 F=7 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 183880 first (-64, -63, -59) add_monotone=FAILS 349504 first (-64, -63, -1)
+cell   W=7 F=7 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 375448 first (1, 65, 65) add_monotone=holds
+cell   W=7 F=7 signed   saturate HalfEven   add_assoc=FAILS 520128 first (-64, -64, 1) mul_assoc=FAILS 183880 first (-64, -63, -59) add_monotone=holds
+cell   W=8 F=0 unsigned wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=0 signed   wrap     TowardZero add_assoc=holds mul_assoc=holds add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=0 unsigned saturate TowardZero add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=8 F=0 signed   saturate TowardZero add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 62476 first (-128, -128, -1) add_monotone=holds
+cell   W=8 F=0 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=0 signed   wrap     HalfEven   add_assoc=holds mul_assoc=holds add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=0 unsigned saturate HalfEven   add_assoc=holds mul_assoc=holds add_monotone=holds
+cell   W=8 F=0 signed   saturate HalfEven   add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 62476 first (-128, -128, -1) add_monotone=holds
+cell   W=8 F=1 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 9270976 first (1, 1, 4) add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=1 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 9426764 first (-128, -127, -127) add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=1 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 132464 first (1, 1, 4) add_monotone=holds
+cell   W=8 F=1 signed   saturate TowardZero add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 325832 first (-128, -128, -2) add_monotone=holds
+cell   W=8 F=1 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 9279168 first (1, 1, 3) add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=1 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 9216316 first (-128, -127, -127) add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=1 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 132484 first (1, 1, 3) add_monotone=holds
+cell   W=8 F=1 signed   saturate HalfEven   add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 325988 first (-128, -128, -2) add_monotone=holds
+cell   W=8 F=4 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 15601714 first (1, 2, 128) add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=4 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 14713960 first (-128, -128, -127) add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=4 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 2097706 first (1, 2, 128) add_monotone=holds
+cell   W=8 F=4 signed   saturate TowardZero add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 3861940 first (-128, -128, -16) add_monotone=holds
+cell   W=8 F=4 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 15597480 first (1, 1, 137) add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=4 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 14664976 first (-128, -128, -127) add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=4 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 2091214 first (1, 1, 137) add_monotone=holds
+cell   W=8 F=4 signed   saturate HalfEven   add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 3841944 first (-128, -128, -16) add_monotone=holds
+cell   W=8 F=8 unsigned wrap     TowardZero add_assoc=holds mul_assoc=FAILS 3884798 first (2, 129, 255) add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=8 signed   wrap     TowardZero add_assoc=holds mul_assoc=FAILS 1648552 first (-128, -127, -125) add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=8 unsigned saturate TowardZero add_assoc=holds mul_assoc=FAILS 3884798 first (2, 129, 255) add_monotone=holds
+cell   W=8 F=8 signed   saturate TowardZero add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 1648552 first (-128, -127, -125) add_monotone=holds
+cell   W=8 F=8 unsigned wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 3049276 first (1, 129, 129) add_monotone=FAILS 2796160 first (0, 1, 255)
+cell   W=8 F=8 signed   wrap     HalfEven   add_assoc=holds mul_assoc=FAILS 1514968 first (-128, -127, -123) add_monotone=FAILS 2796160 first (-128, -127, -1)
+cell   W=8 F=8 unsigned saturate HalfEven   add_assoc=holds mul_assoc=FAILS 3049276 first (1, 129, 129) add_monotone=holds
+cell   W=8 F=8 signed   saturate HalfEven   add_assoc=FAILS 4177792 first (-128, -128, 1) mul_assoc=FAILS 1514968 first (-128, -127, -123) add_monotone=holds

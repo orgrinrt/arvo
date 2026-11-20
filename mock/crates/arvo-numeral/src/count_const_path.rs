@@ -8,11 +8,11 @@
 //! A file of its own because `const impl` is refused at parse time without its
 //! feature, before any `cfg` on the item is read.
 
+use arvo_contracts::{Additive, Identity, Multiplicative};
 use notko_hlist::Cardinal;
 
 use crate::admit::Sole;
 use crate::check::DebugCheck;
-use crate::identity::{Additive, Identity, Multiplicative};
 use crate::num::Num;
 
 /// A value counts from its zero by its one.

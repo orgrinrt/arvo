@@ -23,15 +23,18 @@ Monomorphisation is the dispatch. There is no `dyn` and no `TypeId`, and the
 monomorphised function is the type identity.
 
 Everything answerable before the program runs is answered there, in plain
-`const fn`. No crate enables an unstable feature as it builds by default, so no
-trait here is a `const trait`, and the operations wanted in const context are
-inherent `const fn`s on their types. One cargo feature of `arvo-numeral`, off
-by default, enables `const_trait_impl` for its const impl of another crate's
-trait, and a consumer of it needs no feature of the toolchain for that.
+`const fn`. The operations wanted in const context are inherent `const fn`s on
+their types. The contracts a numeral satisfies are const traits in
+`arvo-contracts`, which with `arvo-numeral`, implementing them, takes
+`const_trait_impl` as it builds by default; no other crate enables an unstable
+feature by default, and one cargo feature of `arvo-numeral`, off by default,
+enables the same gate for its const impl of another crate's trait. A consumer
+bounding on a contract or naming a value needs no feature of the toolchain for
+any of it, per `obligation::the_unstable_machinery_does_not_reach_a_consumer`.
 
 ## Crate topology
 
-Seven crates. Four of them chain by dependency, and the dependency direction is
+Eight crates. Four of them chain by dependency, and the dependency direction is
 what enforces the design rather than a rule asking for it: `arvo-format` cannot
 name a carrier because it does not depend on the crate that has one, which is
 how "every operation is a function of the declared width and never of the
@@ -39,15 +42,22 @@ machine carrier" stays true under later edits. The fifth, `arvo-bits`, sits
 parallel to `arvo-format` rather than in the chain, depending on nothing in
 this workspace. The sixth, `arvo-digest`, sits on `arvo-bits`, whose door its bytes come
 through and whose container holds its result, and on `arvo-numeral`, whose
-wrapping product FNV-1a multiplies by. The seventh, `arvo-capacity`, sits on
-`arvo-numeral`, whose platform-sized integer its count is read in.
+wrapping product FNV-1a multiplies by. The seventh, `arvo-contracts`, sits directly above
+`arvo-format` and below `arvo-numeral`, depending on `arvo-format` alone. The
+bridge-home rule would put its contracts in `arvo-format`, the lowest crate
+reaching their types; they sit in a crate of their own because a contract a
+value implements is not the subject of the crate that declares the signature,
+following `proposal::a_value_contract_is_not_the_format_crates_subject`. The
+eighth, `arvo-capacity`, sits on `arvo-numeral`, whose platform-sized integer
+its count is read in.
 
 | Crate | What it ships | Depends on |
 |---|---|---|
 | `arvo-format` | The declared signature. The representable set as one affine predicate over a phase, a quantum law and a slot range, of which integers, fixed point, scaled integers and floats are points. The six rounding modes, the overflow policies, the adaptation as the pair of those two, and the map that applies one. Addition, negation, subtraction, multiplication and division, and converting a member onto another declared grid, each the exact result adapted once, with the verdict on where the adapted sum is associative. Introduces the numeric category, so `Width` and `Bool` are defined here. | `notko` |
+| `arvo-contracts` | The contracts a numeral satisfies, as const traits: sum, difference and product with their `fits` predicates, the order, the additive and multiplicative identity, sign, magnitude, the member at a constant slot, the monotone sum selected by the overflow policy, and the reciprocal and square root named with no instance. A consumer bounding on one depends on this crate alone. | `arvo-format` |
 | `arvo-placement` | The placement derivation, keyed on occupancy. One output at sole occupancy, the carrier, given also as a type per slot family; three at shared, the carrier and the access width and the stride. No declared operation reads any of them. | `arvo-format` |
 | `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
-| `arvo-numeral` | The value. `Num<S>` holds one member of a declared signature alone in the carrier `arvo-placement` derives at sole occupancy, and its sum, computed in that carrier, gives the slot the format's own sum gives. Comparison, the doors in and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and `ISize`. A debug check the consumer chooses, aborting a debug build by default when a result leaves the range. | `arvo-format`, `arvo-placement` |
+| `arvo-numeral` | The value. `Num<S>` holds one member of a declared signature alone in the carrier `arvo-placement` derives at sole occupancy, and its sum, computed in that carrier, gives the slot the format's own sum gives. Comparison, the doors in and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and `ISize`. A debug check the consumer chooses, aborting a debug build by default when a result leaves the range. | `arvo-format`, `arvo-placement`, `arvo-contracts` |
 | `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, and `Bytes`, the host's byte slice walked one `Bits<8>` at a time. Masked construction and masked cast between declared widths, xor at one width, a 128-bit host value split into two halves, no arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | `notko` |
 | `arvo-digest` | A digest of explicit bytes, `Digest<const BITS: u32>` at 32, 64 and 128 bits. FNV-1a at 32 and 64 bits and XXH3 at 64 and 128 by name, each with a `const fn` form equal to its runtime one; a switched digest joins once its crossover is measured. Narrows into `Bits<N>` at the width a consumer names. Not cryptographic. | `arvo-format`, `arvo-numeral`, `arvo-bits`, `notko`, `xxhash-rust` |
 | `arvo-capacity` | A count fixed when the consumer builds, carried as a type. `Capacity` projects an array of exactly its count, read and written as a slice, and `Dim<N>` is the capacity of `N` elements; capacities bundle under one parameter and nest with no product computed, and `count` reads one in a constant as a `USize` under the adaptation the consumer names. Sealed to `Dim<N>` while that question is open. | `arvo-format`, `arvo-numeral` |
@@ -66,8 +76,13 @@ them. `Format`, `Ambient`, `Quantum`, `Slots`, `Rounding`, `Overflow`,
 `Adaptation`, `DeclaredSignature` and `Operation` are contracts; `Integer`,
 `UFixed`, `Biased`, `Floating`, the six modes, the three policies and the
 operations `Add`, `Neg`, `Sub`, `Mul`, `Div` and `Convert` are instances of
-them. In `arvo-numeral`, `Sole`, `DebugCheck`, `NamesAdaptation` and `Identity`
-are contracts, and `Abort`, `Quiet` and `Additive` are instances.
+them. In `arvo-numeral`, `Sole`, `DebugCheck` and `NamesAdaptation` are contracts,
+and `Abort` and `Quiet` are instances. `arvo-contracts` declares the contracts
+a numeral satisfies, `Sum`, `Difference`, `Product`, `Order`, `Identity`, `Sign`,
+`Magnitude`, `Constant`, `MonotoneSum`, `MonotoneCompletion`, `Reciprocal` and
+`SquareRoot`, with `Additive` and `Multiplicative` its instances of an identity's
+kind; `Num` is the instance of every numeric contract, and a consumer's own type
+can be one on the same terms.
 
 `Bits<const N: u32>` in `arvo-bits` is the one exception to that shape, and
 naming it as one is worth a sentence rather than leaving it to look like an
@@ -79,7 +94,9 @@ concept, it would be a second definition of the same fact.
 The reason the split falls this way is what a consumer has to depend on to say
 one thing. Stating what values exist needs `arvo-format` and nothing else.
 Stating where they sit needs `arvo-placement` on top of it. Choosing between
-placements needs `arvo-strategy` on top of both. Holding a value and computing
+placements needs `arvo-strategy` on top of both. Writing code generic over a numeral needs `arvo-contracts` and nothing
+above `arvo-format`, so it builds against the shape before or without any
+instance. Holding a value and computing
 with it needs `arvo-numeral`, which builds on the first two and not on the
 strategy binding. Saying the same thing in an
 industrial convention's own words is still stating what values exist, so it needs
@@ -95,8 +112,11 @@ Strictly upward within the chain, and it carries a design constraint
 rather than a convention. `arvo-format` has no workspace dependency, so nothing
 in it can mention a carrier; `arvo-placement` depends on it and derives one;
 `arvo-strategy` depends on both and binds a name to a choice between them.
-`arvo-numeral` depends on the first two and holds a value in the carrier the
-placement derives, reading the format for everything it computes.
+`arvo-contracts` depends on `arvo-format` alone and declares the contracts a
+numeral satisfies, so code generic over a numeral compiles no carrier.
+`arvo-numeral` depends on the first two and on `arvo-contracts`, holds a value
+in the carrier the placement derives, reading the format for everything it
+computes, and implements every contract for it.
 `arvo-bits` depends on none of them: it sits beside `arvo-format` rather
 than above or below it, because the value it holds and the format that would
 describe a numeral's representable set are answers to different questions, and
@@ -105,7 +125,7 @@ depends on `arvo-bits` for the bytes it reads, the container its result is held
 in and the width a consumer narrows it to, on `arvo-numeral` for the
 wrapping product and on `arvo-format` for the adaptation that product is taken
 under, so it writes neither the walk's door nor its arithmetic. There is no facade today, and a
-crate that re-exported the seven would sit below all of them rather than above.
+crate that re-exported the eight would sit below all of them rather than above.
 `arvo-capacity` depends on `arvo-numeral` for the integer a count is read in and
 on `arvo-format` for the adaptation it is read under, and on nothing that holds
 an array, since the array it projects is the language's own.

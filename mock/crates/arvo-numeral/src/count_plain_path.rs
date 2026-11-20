@@ -5,11 +5,11 @@
 
 //! The value as a count, where the count trait is a plain trait.
 
+use arvo_contracts::{Additive, Identity, Multiplicative};
 use notko_hlist::Cardinal;
 
 use crate::admit::Sole;
 use crate::check::DebugCheck;
-use crate::identity::{Additive, Identity, Multiplicative};
 use crate::num::Num;
 
 /// A value counts from its zero by its one.

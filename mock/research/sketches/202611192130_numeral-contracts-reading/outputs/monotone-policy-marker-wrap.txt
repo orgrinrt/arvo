@@ -1,0 +1,34 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 4 packages to latest Rust 1.98.0-nightly compatible versions
+   Compiling monotone-policy-marker-wrap v0.0.0 (/home/user/.worktrees/shape-reading/mock/research/sketches/202611192130_numeral-contracts-reading/monotone-policy-marker-wrap)
+error[E0277]: the trait bound `arvo_format::overflow::Wrap: MonotoneCompletion` is not satisfied
+  --> src/lib.rs:25:20
+   |
+25 |     needs_monotone(x)
+   |     -------------- ^ the trait `MonotoneCompletion` is not implemented for `arvo_format::overflow::Wrap`
+   |     |
+   |     required by a bound introduced by this call
+   |
+help: the trait `MonotoneCompletion` is implemented for `arvo_format::overflow::Saturate`
+  --> src/lib.rs:10:1
+   |
+10 | impl MonotoneCompletion for Saturate {}
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required for `Num<Signature<Integer<8>, Adapt<TowardZero, Wrap>>, Quiet>` to implement `MonotoneSum`
+  --> src/lib.rs:13:30
+   |
+13 | impl<S: Sole, C: DebugCheck> MonotoneSum for Num<S, C> where
+   |                              ^^^^^^^^^^^     ^^^^^^^^^
+14 |     <<S as DeclaredSignature>::Adaptation as Adaptation>::Overflow: MonotoneCompletion
+   |                                                                     ------------------ unsatisfied trait bound introduced here
+note: required by a bound in `needs_monotone`
+  --> src/lib.rs:20:26
+   |
+20 | pub fn needs_monotone<T: MonotoneSum>(t: T) -> T {
+   |                          ^^^^^^^^^^^ required by this bound in `needs_monotone`
+   = note: the full name for the type has been written to '/home/user/target/debug/deps/monotone_policy_marker_wrap-6373ef83e2c70a45.long-type-2770539323115578600.txt'
+   = note: consider using `--verbose` to print the full type name to the console
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `monotone-policy-marker-wrap` (lib) due to 1 previous error
+exit 101

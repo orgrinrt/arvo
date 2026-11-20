@@ -20,11 +20,12 @@
 
 mod common;
 
+use arvo_contracts::{Identity, Multiplicative};
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Fixed, UFixed};
 use arvo_format::rounding::{Ceil, Floor, HalfEven, HalfUp, TowardZero};
 use arvo_format::{Adapt, Signature};
-use arvo_numeral::{Identity, Multiplicative, Num, Quiet, Sole};
+use arvo_numeral::{Num, Quiet, Sole};
 use common::{Tally, exhaustive_products, oracle, range, value};
 
 #[test]

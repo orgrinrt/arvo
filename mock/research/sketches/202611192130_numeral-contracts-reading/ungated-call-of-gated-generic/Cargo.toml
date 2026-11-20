@@ -1,0 +1,12 @@
+[package]
+name = "ungated-call-of-gated-generic"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../../crates/arvo-numeral" }
+gated-const-eval = { path = "../gated-const-eval" }
+
+[workspace]

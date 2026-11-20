@@ -1,0 +1,24 @@
+# `sum_i8_saturate` of arm `contract-sum-concrete` of bench `contract-sum`
+# library: libcontract_sum_concrete.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261119T232200Z-5beb5a4f-dirty
+
+000000000000cb30 <sum_i8_saturate>:
+    cb30:      	leal	(%rdi,%rsi), %eax
+    cb33:      	sarb	$0x7, %al
+    cb36:      	addb	$-0x80, %al
+    cb38:      	addb	%sil, %dil
+    cb3b:      	movzbl	%dil, %ecx
+    cb3f:      	movzbl	%al, %eax
+    cb42:      	cmovnol	%ecx, %eax
+    cb45:      	retq
+    cb46:      	int3
+    cb47:      	int3
+    cb48:      	int3
+    cb49:      	int3
+    cb4a:      	int3
+    cb4b:      	int3
+    cb4c:      	int3
+    cb4d:      	int3
+    cb4e:      	int3
+    cb4f:      	int3

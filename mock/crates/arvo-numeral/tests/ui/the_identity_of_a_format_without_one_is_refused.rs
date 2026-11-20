@@ -1,10 +1,11 @@
 // A half-step phase has no member that adds to every member without moving
 // it. The identity's own assertion fires first, naming that.
+use arvo_contracts::{Additive, Identity};
 use arvo_format::overflow::Wrap;
 use arvo_format::points::Biased;
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Signature};
-use arvo_numeral::{Additive, Identity, Num};
+use arvo_numeral::Num;
 
 fn main() {
     let _ =
