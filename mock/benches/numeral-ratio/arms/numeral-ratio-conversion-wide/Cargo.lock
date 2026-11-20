@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "arvo-contracts"
+version = "0.0.0"
+dependencies = [
+ "arvo-format",
+]
+
+[[package]]
 name = "arvo-format"
 version = "0.0.0"
 dependencies = [
@@ -13,6 +20,7 @@ dependencies = [
 name = "arvo-numeral"
 version = "0.0.0"
 dependencies = [
+ "arvo-contracts",
  "arvo-format",
  "arvo-placement",
  "notko",

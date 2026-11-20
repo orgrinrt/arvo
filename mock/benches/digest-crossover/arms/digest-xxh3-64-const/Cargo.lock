@@ -8,6 +8,7 @@ version = "0.0.0"
 dependencies = [
  "arvo-format",
  "notko",
+ "notko-hlist",
 ]
 
 [[package]]
@@ -69,7 +70,12 @@ source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#6d7acb69
 [[package]]
 name = "notko"
 version = "0.0.1"
-source = "git+https://github.com/orgrinrt/notko.git?branch=dev#1b2a572310e2a5b5176ded1e2361efb7226f37fa"
+source = "git+https://github.com/orgrinrt/notko.git?branch=dev#2a5857073f50819a976f479f0642bbcd652eaead"
+
+[[package]]
+name = "notko-hlist"
+version = "0.0.1"
+source = "git+https://github.com/orgrinrt/notko.git?branch=dev#2a5857073f50819a976f479f0642bbcd652eaead"
 
 [[package]]
 name = "xxhash-rust"
