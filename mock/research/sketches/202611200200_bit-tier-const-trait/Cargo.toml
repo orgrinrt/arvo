@@ -1,0 +1,10 @@
+[workspace]
+
+[package]
+name = "bit-tier-const-trait"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../crates/arvo-format" }

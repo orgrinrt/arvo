@@ -1,0 +1,19 @@
+# Standalone, detached from the arvo mock workspace. Does a word of a declared
+# width divided into named fields of declared widths build over `arvo-bits` on
+# the pinned nightly, with every field read and written in a constant, a one-bit
+# field typed as a bit, and a layout whose widths do not tile the word refused at
+# build? Each file under `examples/` is a crate of its own, so it sees only what
+# the library makes public.
+
+[package]
+name = "packed-word"
+description = "Whether a packed word of named fields builds over the bit container: a feasibility probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-bits = { path = "../../../crates/arvo-bits" }
+arvo-format = { path = "../../../crates/arvo-format" }
+
+[workspace]

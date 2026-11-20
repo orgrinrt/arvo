@@ -1,0 +1,90 @@
+# The index refusal cases of `arvo-bits`' `compile_fail.rs`, built as examples
+# of this crate rather than through trybuild, which drops `RUSTFLAGS` from its
+# own build and so cannot see a mutant set by a `cfg`.
+[workspace]
+
+[package]
+name = "bit-tier-index-mutant-after-review"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-bits = { path = "../../../../crates/arvo-bits" }
+arvo-format = { path = "../../../../crates/arvo-format" }
+
+[[example]]
+name = "a_bit_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_bit_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_written_bit_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_written_bit_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_shift_by_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_shift_by_the_width_is_refused.rs"
+
+[[example]]
+name = "a_shift_down_by_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_shift_down_by_the_width_is_refused.rs"
+
+[[example]]
+name = "a_rotation_by_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_rotation_by_the_width_is_refused.rs"
+
+[[example]]
+name = "a_rotation_down_by_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_rotation_down_by_the_width_is_refused.rs"
+
+[[example]]
+name = "a_bit_at_the_width_through_the_trait_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_bit_at_the_width_through_the_trait_is_refused.rs"
+
+[[example]]
+name = "a_call_of_bit_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_call_of_bit_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_call_of_with_bit_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_call_of_with_bit_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_call_of_shift_up_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_call_of_shift_up_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_call_of_shift_down_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_call_of_shift_down_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_call_of_rotate_up_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_call_of_rotate_up_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_call_of_rotate_down_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_call_of_rotate_down_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_generic_call_of_bit_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_generic_call_of_bit_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_generic_call_of_with_bit_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_generic_call_of_with_bit_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_generic_call_of_shift_up_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_generic_call_of_shift_up_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_generic_call_of_shift_down_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_generic_call_of_shift_down_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_generic_call_of_rotate_up_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_generic_call_of_rotate_up_at_the_width_is_refused.rs"
+
+[[example]]
+name = "a_generic_call_of_rotate_down_at_the_width_is_refused"
+path = "../../../../crates/arvo-bits/tests/ui/a_generic_call_of_rotate_down_at_the_width_is_refused.rs"

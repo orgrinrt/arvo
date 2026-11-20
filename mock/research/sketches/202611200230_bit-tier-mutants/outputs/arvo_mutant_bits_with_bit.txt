@@ -1,0 +1,9 @@
+RUSTFLAGS=--cfg arvo_mutant_bits_with_bit cargo test -p arvo-bits --no-fail-fast --test the_bit_access
+     Running tests/the_bit_access.rs (/home/user/target/debug/deps/the_bit_access-7bc34ce9b1ab87c1)
+test every_bit_of_every_value_reads_and_writes_as_the_hosts ... FAILED
+failures:
+failures:
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+error: test failed, to rerun pass `-p arvo-bits --test the_bit_access`
+error: 1 target failed:
+exit 101

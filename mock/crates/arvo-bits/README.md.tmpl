@@ -1,26 +1,12 @@
 # arvo-bits
 
-An exact-width bit container and a borrowed run of bytes. Not a numeral, not a format, no arithmetic.
+An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, with its bit operations
+as `const fn`s and as a tier of traits, the packed word `Word<L>` of named fields over it, and `Bytes<'a>`,
+the host's byte slice walked one `Bits<8>` at a time. Not a numeral and no arithmetic.
 
-`Bits<const N: u32>` holds a value known to be `N` bits wide, from one bit to sixty-four. Construction
-masks whatever you hand it down to the low `N` bits rather than rejecting anything, because there is
-nothing to reject: a bit pattern of the wrong width is not an invalid value, it is a value with some
-bits you asked to be dropped. Casting to a different width is the same masking at a different bound,
-so widening never loses a bit and narrowing loses exactly the ones above the new width, on purpose.
-Two values of one width xor, which carries nothing between bits, and a 128-bit host value splits into
-two 64-bit halves.
-
-This is the shape a consumer wants when a value's width is pinned by something arvo does not own, a
-disk format, a wire format, a hash function's output size, and the consumer needs to name that exact
-width, alias it under their own type, and convert it to whatever wider or narrower width their
-boundary demands, on their own terms. Nothing here validates external bytes and nothing here decides
-when a consumer's conversion happens; both stay the consumer's.
-
-`Bytes<'a>` is the host's byte slice entering the stack, walked one `Bits<8>` at a time.
-
-No workspace dependencies, and notko for `Maybe`. `no_std`, no allocation, sizes const.
+Builds on `arvo-format` for `Bool` and `Width`, on notko for `Maybe` and on `notko-hlist` for a layout's
+list of fields. `arvo-digest` builds on it. `no_std`, no allocation.
 
 ## Status
 
-Unreleased, at 0.0.0. The source implements what is described here and its tests pass, and the surface
-may still change before a first release.
+Unreleased, at 0.0.0. The surface may still change before a first release.

@@ -1,0 +1,14 @@
+== b1_bit_1 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b1_with_1 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b64_bit_64 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b64_rot_64 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b64_rotdown_64 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b64_shift_64 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b64_with_64 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b8_bit_max exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== b8_shift_9 exit 101 :: error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+== wide_in_a_constant exit 0 :: ok
+== wide_in_a_constant_past exit 101 :: error[E0080]: evaluation panicked: index at or past the width
+== wide_last_builds exit 0 :: ok
+== wide_past_refused exit 101 :: error[E0080]: evaluation panicked: index at or past the width
+== wide_token_forged exit 101 :: error[E0080]: evaluation panicked: index at or past the width

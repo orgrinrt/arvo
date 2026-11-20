@@ -1,0 +1,13 @@
+# The guard owned by the tier, sealed: the caller's trait is implemented once
+# over the implementor's, so no container can skip the refusal.
+[workspace]
+
+[package]
+name = "bit-tier-guard-sealed"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-bits = { path = "../../../../crates/arvo-bits" }
+arvo-format = { path = "../../../../crates/arvo-format" }

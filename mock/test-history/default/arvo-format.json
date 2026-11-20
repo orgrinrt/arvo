@@ -2,12 +2,7 @@
   "version": 2,
   "flavour": "",
   "member": "arvo-format",
-  "green": {
-    "full": "f703e2857c9b6455643f686e3f2811afd3ed823cf890dde81c0b347ef02f560b",
-    "own": {
-      "arvo-format": "9291adbbebcc08e85b37a0307c19bf6a7dcb479a8a037e33fa4c800e0c7a162e"
-    }
-  },
+  "green": null,
   "tests": {
     "arvo-format": {
       "addition::tests::the_signed_oracle::subtraction_answers_as_the_oracle_does_at_every_member_up_to_eight_bits": {
@@ -87,10 +82,20 @@
       }
     },
     "arvo-format::compile_fail": {
+      "a_format_is_not_a_signature": {
+        "secs": 5.1,
+        "passed": true,
+        "passed_at": "d11322656f396294842828fd0dd360da9d28b8381c1867b15d22b12f2a973def"
+      },
       "a_member_constant_past_the_top_is_refused_and_at_the_top_admitted": {
         "secs": 7.4,
         "passed": true,
         "passed_at": "0f508bb95c5dab612e365078d7b9236648c992d6b7a42eda23b95c6d26dc242a"
+      },
+      "a_step_law_that_runs_off_the_exponent_is_refused": {
+        "secs": 6.7,
+        "passed": true,
+        "passed_at": "d11322656f396294842828fd0dd360da9d28b8381c1867b15d22b12f2a973def"
       },
       "an_arvo_type_as_a_const_parameter_is_refused": {
         "secs": 6.2,
@@ -99,14 +104,5 @@
       }
     }
   },
-  "bins": {
-    "arvo-format": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae",
-    "arvo-format::compile_fail": "0f508bb95c5dab612e365078d7b9236648c992d6b7a42eda23b95c6d26dc242a",
-    "arvo-format::ieee754_binary_parity": "e1101bf763145a19c6a4e7a7be0621859d84e22a7d9a8971cc9ffaa3f0453820",
-    "arvo-format::ieee754_decimal_parity": "9f4e2f7d3078e18949704dcae144d12cd5c8c9e94b4363fa0a556fafb8b431cc",
-    "arvo-format::ieee754_underflow_parity": "1fc9740df4db5af611ce10aa69f52f2065173414e1ce166ae6dc77bc65389759",
-    "arvo-format::matlab_fi_parity": "b0882ef489fe958fc20a6407d9f8b7c9debdb30359a3a933497bbc146c6d78f6",
-    "arvo-format::matlab_fimath_parity": "16ef710d6d13b2384aa26facc3276157948aa9984e9b470ef24efe9dbed523d0",
-    "arvo-format::the_ties_away_alias": "59a97f8505e498951af1448f31ccd07ca5a69f9936601c5055edac87b75cef84"
-  }
+  "bins": {}
 }

@@ -1,0 +1,15 @@
+RUSTFLAGS=--cfg arvo_mutant_bits_rotate_down cargo test -p arvo-bits --no-fail-fast --test the_bit_sequence --test the_bit_tier_in_a_constant
+     Running tests/the_bit_sequence.rs (/home/user/target/debug/deps/the_bit_sequence-f870019988d39002)
+test every_amount_below_every_width_shifts_and_rotates_as_the_host ... FAILED
+failures:
+thread 'every_amount_below_every_width_shifts_and_rotates_as_the_host' (27812) panicked at crates/arvo-bits/tests/the_bit_sequence.rs:63:9:
+assertion `left == right` failed: 0x1 rotated down 1 at 2 bits
+  left: 0
+ right: 2
+failures:
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+error: test failed, to rerun pass `-p arvo-bits --test the_bit_sequence`
+     Running tests/the_bit_tier_in_a_constant.rs (/home/user/target/debug/deps/the_bit_tier_in_a_constant-d0cd6c5c1f173cf8)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+error: 1 target failed:
+exit 101

@@ -1,0 +1,56 @@
+error[E0277]: the trait bound `Liar: arvo_bits::word::sealed::ListOfFields` is not satisfied
+  --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:17:19
+   |
+17 |     type Fields = Liar;
+   |                   ^^^^ unsatisfied trait bound
+   |
+help: the trait `arvo_bits::word::sealed::ListOfFields` is not implemented for `Liar`
+  --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:7:1
+   |
+ 7 | struct Liar;
+   | ^^^^^^^^^^^
+help: the following other types implement trait `arvo_bits::word::sealed::ListOfFields`
+  --> src/word.rs
+   |
+   |     impl ListOfFields for Empty {}
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `notko_hlist::list::Empty`
+   |
+   |     impl<H: Field, T: ListOfFields> ListOfFields for Cons<H, T> {}
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `notko_hlist::list::Cons<H, T>`
+   = note: required for `<Handle as arvo_bits::Layout>::Fields` to implement `Fields`
+note: required by a bound in `arvo_bits::Layout::Fields`
+  --> src/word.rs
+   |
+   | pub trait Layout {
+...
+   |     type Fields: Fields;
+   |                  ^^^^^^ required by this bound in `Layout::Fields`
+
+error[E0277]: the trait bound `Liar: arvo_bits::word::sealed::ListOfFields` is not satisfied
+ --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:9:17
+  |
+9 | impl Fields for Liar {
+  |                 ^^^^ unsatisfied trait bound
+  |
+help: the trait `arvo_bits::word::sealed::ListOfFields` is not implemented for `Liar`
+ --> tests/ui/an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused.rs:7:1
+  |
+7 | struct Liar;
+  | ^^^^^^^^^^^
+help: the following other types implement trait `arvo_bits::word::sealed::ListOfFields`
+ --> src/word.rs
+  |
+  |     impl ListOfFields for Empty {}
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `notko_hlist::list::Empty`
+  |
+  |     impl<H: Field, T: ListOfFields> ListOfFields for Cons<H, T> {}
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `notko_hlist::list::Cons<H, T>`
+note: required by a bound in `Fields`
+ --> src/word.rs
+  |
+  | pub trait Fields: sealed::ListOfFields {
+  |                   ^^^^^^^^^^^^^^^^^^^^ required by this bound in `Fields`
+  = note: `Fields` is a "sealed trait", because to implement it you also need to implement `arvo_bits::word::sealed::ListOfFields`, which is not accessible; this is usually done to force you to use one of the provided types that already implement it
+  = help: the following types implement the trait:
+            notko_hlist::list::Empty
+            notko_hlist::list::Cons<H, T>

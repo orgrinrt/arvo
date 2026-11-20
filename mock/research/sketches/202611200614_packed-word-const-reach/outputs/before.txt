@@ -1,0 +1,42 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 3 packages to latest Rust 1.98.0-nightly compatible versions
+   Compiling notko v0.0.1 (https://github.com/orgrinrt/notko.git?branch=dev#33593901)
+   Compiling arvo-format v0.0.0 (/home/user/arvo/mock/crates/arvo-format)
+   Compiling arvo-bits v0.0.0 (/home/user/arvo/mock/crates/arvo-bits)
+   Compiling packed-word-const-reach v0.0.0 (/home/user/arvo/mock/research/sketches/202611200614_packed-word-const-reach)
+error[E0658]: cannot call conditionally-const method `Word::<Handle>::with::<Kind>` in constants
+  --> examples/no_gates.rs:36:6
+   |
+36 |     .with::<Kind>(Bits::masked(5))
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: see issue #143874 <https://github.com/rust-lang/rust/issues/143874> for more information
+   = help: add `#![feature(const_trait_impl)]` to the crate attributes to enable
+   = note: this compiler was built on 2026-05-27; consider upgrading it if it is out of date
+
+error[E0658]: cannot call conditionally-const method `Word::<Handle>::with::<Flag>` in constants
+  --> examples/no_gates.rs:37:6
+   |
+37 |     .with::<Flag>(Bool::TRUE);
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: see issue #143874 <https://github.com/rust-lang/rust/issues/143874> for more information
+   = help: add `#![feature(const_trait_impl)]` to the crate attributes to enable
+   = note: this compiler was built on 2026-05-27; consider upgrading it if it is out of date
+
+error[E0658]: cannot call conditionally-const method `Word::<Handle>::get::<Kind>` in constants
+  --> examples/no_gates.rs:39:25
+   |
+39 | const KIND: Bits<3> = H.get::<Kind>();
+   |                         ^^^^^^^^^^^^^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: see issue #143874 <https://github.com/rust-lang/rust/issues/143874> for more information
+   = help: add `#![feature(const_trait_impl)]` to the crate attributes to enable
+   = note: this compiler was built on 2026-05-27; consider upgrading it if it is out of date
+
+For more information about this error, try `rustc --explain E0658`.
+error: could not compile `packed-word-const-reach` (example "no_gates") due to 3 previous errors
+exit 101

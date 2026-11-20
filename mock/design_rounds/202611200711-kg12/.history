@@ -1,0 +1,50 @@
+d3ba7001 chore: lock src changelist 202611200711-kg12
+cef424b2 docs: add src changelist for round kg12
+5e266bef chore: lock doc changelist 202611200711-kg12
+e2262cd5 docs: cut the arvo-bits readme to its rule
+8ac5a2dd docs: open round for the arvo-bits readme length
+44172596 chore: merge dev into work/arvo-packed-word
+11eeeb93 chore: close design round 202611200643-l28d
+26507ee7 chore: lock src changelist 202611200643-l28d
+916ff875 test: state the packed word lane contract over raw values
+f72eccb3 docs: add src changelist 202611200643-l28d
+fd141e3c chore: lock doc changelist 202611200643-l28d
+98db0292 docs: open design round 202611200643-l28d for the lane contract tests
+329f787e chore: close design round 202611200616-o8z9
+810fdd80 chore: lock src changelist 202611200616-o8z9
+d09d1b8a docs: record the derived packed word in its report
+7a9fee0b docs: rerun the packed word's mutants over the derived shape
+b0ee37f6 docs: record the derived packed word's disassembly
+cf70c6a1 chore: lock the packed word arm's list dependency
+581274ba feat: derive the packed word's field positions from its list
+f9b2dfc2 docs: write the src changelist deriving the packed word's positions
+e209ecc1 chore: lock doc changelist 202611200616-o8z9
+a6867b79 docs: derive the packed word's positions from its list
+e4c82eaf docs: open the round deriving the packed word's positions
+d822058e docs: sketch the packed word's derived positions and const reach
+020f43b6 docs: add the second seat's read of the packed word
+3bec4838 chore: close design round 202611200556-vw98
+567e8b18 chore: lock src changelist 202611200556-vw98
+f8010ae9 docs: record the packed word's clean disassembly and review answers
+774a9ced fix: seal the packed word's list and refuse widths past the carrier
+543c334c docs: src changelist sealing the packed word's list traits
+7df80768 chore: lock doc changelist 202611200556-vw98
+24c56495 docs: seal the packed word's list traits rather than hide them
+bca2b8ee docs: src changelist for the packed word after its first review
+ff8a5867 chore: lock doc changelist 202611200556-vw98
+751bd1b1 docs: seal the packed word's checks and widen its laws in `arvo-bits`
+8c0c79b6 docs: changelist for the packed word after its first review
+c1bfd92d docs: open the round answering the packed word's first review
+f7a54b1e chore: move arvo to the bumped nightly
+0c8ffe54 chore: close design round 202611200533-wwxt
+a5eef8fe chore: lock src changelist 202611200533-wwxt
+adf89a0a feat: add a packed word of named fields to arvo-bits
+192d5e77 docs: write the src changelist for the packed word
+59aa6c9c chore: lock doc changelist 202611200533-wwxt
+20d58a91 docs: design a packed word of named fields in arvo-bits
+66a7ce19 docs: write the doc changelist for the packed word
+b10bba5d docs: open the round for a packed word of named fields
+919c1ebe docs: sketch a packed word of named fields over the bit container
+1fd4d78e docs: regenerate the bit tier documents for its sealed guard
+403b6dfd chore: close design round 202611200402
+f5d81565 chore: lock src changelist 202611200406
