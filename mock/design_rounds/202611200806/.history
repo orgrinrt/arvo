@@ -1,0 +1,50 @@
+56488e8d chore: lock src changelist 202611201441
+4d3aa401 chore: record the test history and the arms lockfiles
+b7dcdbd5 test: seal the sequence branch and hold the proof outside its container
+09e3a47a fix: hold the supply lists against the crate exports both ways
+69a0172f chore: lock doc changelist 202611200806
+7e90cbe8 docs: name the sequence impl with no `BitSequenceBy` among the refusals
+d0ba8b2a chore: unlock design round, deprecate src and unlock doc
+ce4be9f1 feat: make the bit proof invariant and keep the gone list honest
+a5eb31dc chore: lock doc changelist 202611200806
+d978c989 docs: design the bit proof invariant in its container
+1ebc896b docs: sketch a bit proof carried across a subtyping coercion
+dbba9f48 docs: land the third bits review and open its topic
+3c78ee81 feat: add the packed word and the bit tier to arvo-bits
+f7a54b1e chore: move arvo to the bumped nightly
+6def8831 feat: add the numeral value contracts crate
+d15dd473 feat: add `arvo-capacity`, a count fixed at build as a type
+f5bee87f docs: sketch and shape the numeral contracts
+38d78396 feat: land `arvo-digest` and decide the stranded arvo branches
+3d95d776 docs: land the closed digest rounds from `work/arvo-digest`
+80e5afac chore: configure the `commit-subject` gate
+6f718a88 refactor: port the benches to arms and sweeps under the harness
+f76108d6 fix: point the p3 probe at the moved warm container support crate
+8ed016a7 docs: land the second stack audit
+fac2c6aa docs: land the first stack audit
+130295d7 bench: regenerate the results index over every run on dev
+3b9aa53d bench: drop the false dirty mark from the 14 november run names
+1f860a90 bench: land the linux results of 14 november
+da169bec bench: record a linux container run of bitpack-sequential-sum
+7479a2c6 refactor: run the benches on the generated driver in the run layout
+8babe497 research: port channel documents into the research dir
+28d03718 research: land the second stack audit
+d0161800 feat: build the value tier's ring operations and default doors
+b687fc01 feat: add the member type and a member divisor on one quantum
+280e3a2a feat: carry the exact position's floor in four limbs
+ccb4c239 feat: admit the wrapping product and the cleared format rounds
+3865b39a fix: close the catalogued shapes of the half_up reader
+9bbc8145 feat: draw the remaining registry edges and the wrapping refusal
+085033a4 feat: build the matlab and ieee 754 targets from the fundamentals
+4d6aa22c feat: give the registry its amendment edge and stamp fields
+9ba397c4 fix: read the lints through one parse and add the registry tools
+faec24c6 registry: name op as ratifier on the ratified rulings
+2737f742 registry: ratify the eight rulings the history shows to be his
+f939933f docs: bring the root documents up to the five crates
+0dc63874 registry: correct the landed canon double check
+7e924d0c docs: audit arvo as part of the stack
+b93f42d4 registry: name op as ratifier on eighteen ratified rulings
+326b52f5 docs: record the canon double check and its plan
+6dd6f7ad chore: port the lints to the one view of the tree
+2c8e5343 feat: add the oracle for fractions and division in arvo-format
+9dfd5339 feat: add the numeral value crate for integers at sole occupancy
