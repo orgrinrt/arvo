@@ -93,16 +93,21 @@ fn filled_with_calls_its_closure_once_per_element_in_order() {
 }
 
 #[test]
-fn a_nested_array_of_a_non_copy_element_is_built_in_place() {
-    let grid = <Dim<2> as Capacity>::filled_with(|| <Dim<3> as Capacity>::filled_with(|| Made(4)));
-    assert_eq!(grid.as_ref().len(), 2);
-    assert!(grid.as_ref().iter().all(|row| row.as_ref().len() == 3));
-    assert!(
-        grid.as_ref()
-            .iter()
-            .flat_map(|row| row.as_ref())
-            .all(|m| m.0 == 4)
+fn a_nested_filled_with_makes_its_elements_row_by_row_in_order() {
+    let mut next = 0u32;
+    let grid = <Dim<2> as Capacity>::filled_with(|| {
+        <Dim<3> as Capacity>::filled_with(|| {
+            next += 1;
+            Made(next)
+        })
+    });
+    assert_eq!(
+        next, 6,
+        "the inner closure was called {next} times for six elements"
     );
+    let rows: [[u32; 3]; 2] =
+        core::array::from_fn(|r| core::array::from_fn(|c| grid.as_ref()[r].as_ref()[c].0));
+    assert_eq!(rows, [[1, 2, 3], [4, 5, 6]]);
 }
 
 /// The count at zero, one and the host's largest `usize`, under one rounding

@@ -32,6 +32,14 @@ fn the_seal_s_length_cannot_be_read_from_outside() {
 }
 
 #[test]
+fn the_seal_s_length_field_cannot_be_read_from_outside() {
+    pair(
+        "the_seal_s_length_field_is_read_from_outside",
+        "the_count_is_read_through_count",
+    );
+}
+
+#[test]
 fn a_dim_cannot_be_constructed() {
     pair("a_dim_is_constructed", "a_dim_is_named_as_a_type");
 }

@@ -13,6 +13,7 @@
 //! of `N` elements, and [`count`] reads a capacity's count in a constant.
 
 #![no_std]
+#![forbid(unsafe_code)]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
 mod capacity;

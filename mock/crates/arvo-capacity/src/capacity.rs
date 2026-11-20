@@ -24,7 +24,8 @@ pub(crate) mod seal {
     /// The length a capacity holds, readable by this crate alone.
     ///
     /// The field and the reader are private, so `C::LEN` can be named through
-    /// the seal but not read, and `count` is the one way to the number.
+    /// the seal but not read, and no bare integer or adaptation this crate
+    /// chose sits at a public position. `count` is this crate's reader of it.
     pub struct Len(Held);
 
     impl Len {
