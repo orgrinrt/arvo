@@ -1,0 +1,135 @@
+$ RUSTFLAGS="--cfg capacity_mutant" cargo run -q -p consumer --example run
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `consumer::agrees::<capacity::Dim<256>>::{constant#0}` failed here
+   |
+  ::: consumer/src/lib.rs:61:9
+   |
+61 | /         assert!(
+62 | |             core::mem::size_of::<C::Array<u8>>() == C::COUNT.host(),
+63 | |             "the capacity's array and its count disagree",
+64 | |         );
+   | |_________- in this macro invocation
+
+note: erroneous constant encountered
+  --> consumer/src/lib.rs:60:5
+   |
+60 | /     const {
+61 | |         assert!(
+62 | |             core::mem::size_of::<C::Array<u8>>() == C::COUNT.host(),
+63 | |             "the capacity's array and its count disagree",
+64 | |         );
+65 | |     }
+   | |_____^
+
+note: the above error was encountered while instantiating `fn agrees::<capacity::Dim<256>>`
+  --> consumer/src/lib.rs:79:5
+   |
+79 |     agrees::<D::Units>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `consumer::agrees::<capacity::Dim<8>>::{constant#0}` failed here
+   |
+  ::: consumer/src/lib.rs:61:9
+   |
+61 | /         assert!(
+62 | |             core::mem::size_of::<C::Array<u8>>() == C::COUNT.host(),
+63 | |             "the capacity's array and its count disagree",
+64 | |         );
+   | |_________- in this macro invocation
+
+note: the above error was encountered while instantiating `fn agrees::<capacity::Dim<8>>`
+  --> consumer/src/lib.rs:80:5
+   |
+80 |     agrees::<D::Cores>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `consumer::agrees::<capacity::Dim<16>>::{constant#0}` failed here
+   |
+  ::: consumer/src/lib.rs:61:9
+   |
+61 | /         assert!(
+62 | |             core::mem::size_of::<C::Array<u8>>() == C::COUNT.host(),
+63 | |             "the capacity's array and its count disagree",
+64 | |         );
+   | |_________- in this macro invocation
+
+note: the above error was encountered while instantiating `fn agrees::<capacity::Dim<16>>`
+  --> consumer/src/lib.rs:81:5
+   |
+81 |     agrees::<D::AccumsPerCore>();
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `consumer::agrees::<capacity::Dim<4>>::{constant#0}` failed here
+   |
+  ::: consumer/src/lib.rs:61:9
+   |
+61 | /         assert!(
+62 | |             core::mem::size_of::<C::Array<u8>>() == C::COUNT.host(),
+63 | |             "the capacity's array and its count disagree",
+64 | |         );
+   | |_________- in this macro invocation
+
+note: the above error was encountered while instantiating `fn agrees::<capacity::Dim<4>>`
+  --> consumer/src/lib.rs:79:5
+   |
+79 |     agrees::<D::Units>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `consumer::agrees::<capacity::Dim<2>>::{constant#0}` failed here
+   |
+  ::: consumer/src/lib.rs:61:9
+   |
+61 | /         assert!(
+62 | |             core::mem::size_of::<C::Array<u8>>() == C::COUNT.host(),
+63 | |             "the capacity's array and its count disagree",
+64 | |         );
+   | |_________- in this macro invocation
+
+note: the above error was encountered while instantiating `fn agrees::<capacity::Dim<2>>`
+  --> consumer/src/lib.rs:80:5
+   |
+80 |     agrees::<D::Cores>();
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+error[E0080]: evaluation panicked: the capacity's array and its count disagree
+  --> /root/.rustup/toolchains/nightly-2026-05-28-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs:62:9
+   |
+62 |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `consumer::agrees::<capacity::Dim<3>>::{constant#0}` failed here
+   |
+  ::: consumer/src/lib.rs:61:9
+   |
+61 | /         assert!(
+62 | |             core::mem::size_of::<C::Array<u8>>() == C::COUNT.host(),
+63 | |             "the capacity's array and its count disagree",
+64 | |         );
+   | |_________- in this macro invocation
+
+note: the above error was encountered while instantiating `fn agrees::<capacity::Dim<3>>`
+  --> consumer/src/lib.rs:81:5
+   |
+81 |     agrees::<D::AccumsPerCore>();
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `consumer` (example "run") due to 6 previous errors
+exit 101

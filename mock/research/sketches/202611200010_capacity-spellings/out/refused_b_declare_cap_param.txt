@@ -1,0 +1,15 @@
+$ cargo run -q -p consumer --example refused_b_declare_cap_param
+error: `Cap` is forbidden as the type of a const generic parameter
+  --> consumer/examples/refused_b_declare_cap_param.rs:10:30
+   |
+10 | pub struct Reach<T, const N: Cap>(core::marker::PhantomData<T>);
+   |                              ^^^
+   |
+   = note: the only supported types are integers, `bool`, and `char`
+help: add `#![feature(min_adt_const_params)]` to the crate attributes to enable more complex and user defined types
+   |
+ 8 + #![feature(min_adt_const_params)]
+   |
+
+error: could not compile `consumer` (example "refused_b_declare_cap_param") due to 1 previous error
+exit 101

@@ -1,0 +1,24 @@
+$ cargo run -q -p consumer --example refused_a_runtime_count
+error[E0435]: attempt to use a non-constant value in a constant
+  --> consumer/examples/refused_a_runtime_count.rs:11:10
+   |
+10 | fn sized(n: usize) -> usize {
+   |          - this would need to be a `const`
+11 |     <Dim<n> as Capacity>::COUNT.host()
+   |          ^
+
+error[E0747]: unresolved item provided when a constant was expected
+  --> consumer/examples/refused_a_runtime_count.rs:11:10
+   |
+11 |     <Dim<n> as Capacity>::COUNT.host()
+   |          ^
+   |
+help: if this generic argument was intended as a const parameter, surround it with braces
+   |
+11 |     <Dim<{ n }> as Capacity>::COUNT.host()
+   |          +   +
+
+Some errors have detailed explanations: E0435, E0747.
+For more information about an error, try `rustc --explain E0435`.
+error: could not compile `consumer` (example "refused_a_runtime_count") due to 2 previous errors
+exit 101
