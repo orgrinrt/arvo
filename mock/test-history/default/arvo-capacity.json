@@ -3,9 +3,9 @@
   "flavour": "",
   "member": "arvo-capacity",
   "green": {
-    "full": "3580b102c1d0f1969994c439f7a1ae3e6e45522c40f6dc2e0a5b6e8fe7e3e0e6",
+    "full": "530a033d60b4a8710afd5d753f72005751aa3ab41b4ed2a0b027488a606ab3cd",
     "own": {
-      "arvo-capacity": "1f80110232f03cf29964fb1b1978f8d5665cd14e8e2228835fb843d1b5cbcc83",
+      "arvo-capacity": "8ea578c6761cdbdb565b4b1f4ac0bab12710cb47e6d1ca19caf0cc73cca1dd64",
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
       "arvo-numeral": "533f96e036e22c59d8bcaba8a18fd2a4d7ad6903b6035bd4c1af15a4fa99435f",
       "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
@@ -14,8 +14,8 @@
   "tests": {},
   "bins": {
     "arvo-capacity": "b89211d7e5b4706f374e2d44122a2a219cefef33875a7382e6d779d496de1be2",
-    "arvo-capacity::a_consumer_crate": "331c2a9d5197f86fdb2237e630b97645632c3c747d1f4a74aa7f3112607898d9",
+    "arvo-capacity::a_consumer_crate": "e8ce384c165aee7e4b41a5cedae8c1d1f88c8de9b449bf8e73192f194ef89c81",
     "arvo-capacity::agreement": "3bc6b4785a4f0a1042b893a6ae667ef308c1b0764ca7aa34652bd3dada95d740",
-    "arvo-capacity::compile_fail": "c681d59563e1b35839234aa9e007489a2d20446b5313413bc685eb3bca7e9c17"
+    "arvo-capacity::compile_fail": "fbddfbc14792733eb646020fe544cfef80d8df1d2e71081726a775beaf6b8a6c"
   }
 }
