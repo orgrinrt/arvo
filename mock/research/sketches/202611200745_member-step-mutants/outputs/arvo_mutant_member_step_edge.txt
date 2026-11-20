@@ -1,0 +1,30 @@
+member::step::tests::the_64_bit_corners_are_the_slot_steps_position_either_side_of_the_edge --- FAILED
+member::step::tests::the_host_arm_stops_where_the_bound_does_at_radix_ten_and_three --- FAILED
+member::step::tests::the_host_arm_stops_where_the_bound_does_at_radix_two --- FAILED
+..
+failures:
+
+--
+thread 'member::step::tests::the_64_bit_corners_are_the_slot_steps_position_either_side_of_the_edge' (16077) panicked at crates/arvo-format/src/member/step/tests.rs:88:13:
+unsigned at 0 at the corners: product of (18446744073709551614, 18446744073709551614)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+--
+thread 'member::step::tests::the_host_arm_stops_where_the_bound_does_at_radix_ten_and_three' (16078) panicked at crates/arvo-format/src/member/step/tests.rs:247:5:
+assertion failed: !Sides::<UTen<Unsigned<64>, 0>>::PRODUCT.get()
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+--
+thread 'member::step::tests::the_host_arm_stops_where_the_bound_does_at_radix_two' (16083) panicked at crates/arvo-format/src/member/step/tests.rs:216:5:
+assertion failed: !Sides::<UFixed<64, 0>>::PRODUCT.get()
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+--
+test result: FAILED. 3 passed; 3 failed; 0 ignored; 0 measured; 348 filtered out; finished in 0.42s
+
+error: test failed, to rerun pass `-p arvo-format --lib`
+error: 1 target failed:
+    `-p arvo-format --lib`
+exit 101

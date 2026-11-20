@@ -1,0 +1,22 @@
+member::step::tests::the_64_bit_corners_are_the_slot_steps_position_either_side_of_the_edge --- FAILED
+member::step::tests::every_pair_at_six_bits_is_the_slot_steps_position --- FAILED
+
+failures:
+
+--
+thread 'member::step::tests::the_64_bit_corners_are_the_slot_steps_position_either_side_of_the_edge' (17689) panicked at crates/arvo-format/src/member/step/tests.rs:95:17:
+signed at -1 at the corners: quotient of (-9223372036854775808, 9223372036854775806)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+--
+thread 'member::step::tests::every_pair_at_six_bits_is_the_slot_steps_position' (17688) panicked at crates/arvo-format/src/member/step/tests.rs:95:17:
+BinaryRationals at -5: quotient of (-32, 3)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+--
+test result: FAILED. 4 passed; 2 failed; 0 ignored; 0 measured; 348 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `-p arvo-format --lib`
+error: 1 target failed:
+    `-p arvo-format --lib`
+exit 101
