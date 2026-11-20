@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: multiplication is not yet admitted over a mag
   |
  ::: src/multiplication.rs
   |
+  |   impl<F: Format> Multipliable<F> {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             is_constant_family::<F::Quantum>().get(),
   | |             "multiplication is not yet admitted over a magnitude-indexed quantum: a slot names a \

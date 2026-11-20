@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: the format has no multiplicative identity: no
   |
  ::: src/identity.rs
   |
+  |   impl<S: Sole, C: DebugCheck> Identity<Multiplicative> for Num<S, C> {
+...
+  |       const IDENTITY: Self = {
+...
   | /                 panic!(
   | |                     "the format has no multiplicative identity: no member is one, so \
   | |                      `Identity<Multiplicative>` has no element to give. A format whose quantum's \

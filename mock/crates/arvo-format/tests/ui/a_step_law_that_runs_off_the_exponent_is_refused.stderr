@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: the step law runs its exponent past what an e
   |
  ::: src/quantum.rs
   |
+  |   pub trait Quantum {
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             reach_is_representable(Self::BASE, Self::SLOPE, Self::MAGNITUDES),
   | |             "the step law runs its exponent past what an exponent carries before reaching its \
