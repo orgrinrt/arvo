@@ -21,6 +21,11 @@
 //! the container. An index or an amount at or past the width is refused at
 //! build, by the tier, once for every container.
 //!
+//! Beside the tier, `Word<L>` is a word of named fields of declared widths held
+//! in a container, each field read and replaced in a constant, a one-bit field
+//! read as `Bool`, and a layout whose fields do not tile the word refused at
+//! build.
+//!
 //! This crate introduces the numeric category a second time, the way
 //! `arvo_format` does for its own reasons: the crate that defines a value at an
 //! exact width cannot express itself in types that do not exist yet, so `u64`
@@ -159,9 +164,11 @@ impl Bits<64> {
 mod bytes;
 mod ops;
 mod tier;
+mod word;
 
 pub use bytes::Bytes;
 pub use tier::{BitAccess, BitAccessAt, BitLogic, BitSequence, BitSequenceBy, BitWidth, Within};
+pub use word::{Field, Fields, Holds, Lane, Layout, Word};
 
 #[cfg(test)]
 mod tests;

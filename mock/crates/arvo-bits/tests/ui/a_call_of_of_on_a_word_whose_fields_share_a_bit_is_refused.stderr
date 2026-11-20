@@ -1,0 +1,26 @@
+error[E0080]: evaluation panicked: two fields of a packed word share a bit; each field's `BELOW` and width must leave every other field's bits alone
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Word::<Handle>::TILED` failed here
+  |
+ ::: src/word.rs
+  |
+  | /         assert!(
+  | |             !<L::Fields as Fields>::OVERLAP.get(),
+  | |             "two fields of a packed word share a bit; each field's `BELOW` and width must leave \
+  | |              every other field's bits alone"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |         let () = Self::TILED;
+  |                  ^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn Word::<Handle>::of`
+  --> tests/ui/a_call_of_of_on_a_word_whose_fields_share_a_bit_is_refused.rs:29:13
+   |
+29 |     let _ = Word::<Handle>::of(Bits::masked(0)).bits();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

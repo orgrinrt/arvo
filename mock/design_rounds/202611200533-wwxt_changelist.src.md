@@ -20,7 +20,7 @@ ADD: the word's laws, as the design's laws section states them, over the handle 
 
 ## `mock/crates/arvo-bits/tests/ui/` and `tests/compile_fail.rs`
 
-ADD: `a_packed_word_whose_fields_fall_short_is_refused`, `a_packed_word_whose_fields_share_a_bit_is_refused`, `a_field_its_layout_does_not_list_is_refused`, each in a constant, and `a_call_of_get_on_a_short_word_is_refused`, `a_call_of_with_on_a_field_not_listed_is_refused`, each a call at run time, with their `.stderr`; and `a_packed_word_that_tiles_builds` among the cases that must build. Each named in `REFUSED` or `BUILT`.
+ADD: `a_packed_word_whose_fields_fall_short_is_refused`, `a_packed_word_whose_fields_share_a_bit_is_refused`, `a_field_its_layout_does_not_list_is_refused`, each in a constant, and `a_call_of_get_on_a_short_word_is_refused`, `a_call_of_of_on_a_word_whose_fields_share_a_bit_is_refused`, `a_call_of_with_on_a_field_not_listed_is_refused`, each a call at run time, with their `.stderr`; and `a_packed_word_that_tiles_builds` among the cases that must build. Each named in `REFUSED` or `BUILT`.
 
 ## `mock/benches/packed-word/`
 

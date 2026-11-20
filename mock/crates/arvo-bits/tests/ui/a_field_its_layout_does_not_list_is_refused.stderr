@@ -1,0 +1,27 @@
+error[E0080]: evaluation panicked: a field read or written through a word whose layout does not list it; add the field's marker to the layout's `Fields`, or read it through the word it was declared for
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::word::Listed::<Stray>::NEW` failed here
+  |
+ ::: src/word.rs
+  |
+  |       const NEW: () = assert!(
+  |  _____________________-
+  | |         <<F::Layout as Layout>::Fields as Holds<F>>::HOLDS.get(),
+  | |         "a field read or written through a word whose layout does not list it; add the field's \
+  | |          marker to the layout's `Fields`, or read it through the word it was declared for"
+  | |     );
+  | |_____- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |         let () = Listed::<F>::NEW;
+  |                  ^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_field_its_layout_does_not_list_is_refused.rs:40:13
+   |
+40 |     let _ = STRAY;
+   |             ^^^^^

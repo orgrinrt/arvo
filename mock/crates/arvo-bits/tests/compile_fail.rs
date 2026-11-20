@@ -36,6 +36,7 @@
 const BUILT: &[&str] = &[
     "every_index_below_the_width_builds",
     "a_container_of_its_own_builds_below_its_width",
+    "a_packed_word_that_tiles_builds",
 ];
 
 const REFUSED: &[&str] = &[
@@ -78,6 +79,12 @@ const REFUSED: &[&str] = &[
     "a_container_of_its_own_past_its_width_in_a_constant_is_refused",
     "an_impl_of_the_callers_trait_by_hand_is_refused",
     "a_proof_built_by_hand_is_refused",
+    "a_packed_word_whose_fields_fall_short_is_refused",
+    "a_call_of_get_on_a_short_word_is_refused",
+    "a_packed_word_whose_fields_share_a_bit_is_refused",
+    "a_call_of_of_on_a_word_whose_fields_share_a_bit_is_refused",
+    "a_field_its_layout_does_not_list_is_refused",
+    "a_call_of_with_on_a_field_not_listed_is_refused",
 ];
 
 #[test]
