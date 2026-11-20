@@ -1,14 +1,15 @@
-error[E0277]: the trait bound `Liar: arvo_capacity::capacity::seal::Sealed` is not satisfied
+error[E0277]: `Liar` is not a capacity: `Capacity` is implemented for `Dim<N>` alone
   --> tests/ui/an_outside_impl_of_capacity_is_refused.rs:12:19
    |
 12 | impl Capacity for Liar {
-   |                   ^^^^ unsatisfied trait bound
+   |                   ^^^^ not `Dim<N>`
    |
 help: the trait `arvo_capacity::capacity::seal::Sealed` is not implemented for `Liar`
   --> tests/ui/an_outside_impl_of_capacity_is_refused.rs:10:1
    |
 10 | struct Liar;
    | ^^^^^^^^^^^
+   = note: name the count as `Dim<N>`; the trait is sealed while the question `is_arvo_s_capacity_trait_sealed_to_its_one_marker` is open
 help: the trait `arvo_capacity::capacity::seal::Sealed` is implemented for `Dim<N>`
   --> src/capacity.rs
    |

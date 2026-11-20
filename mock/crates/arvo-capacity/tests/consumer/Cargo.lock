@@ -45,4 +45,4 @@ dependencies = [
 [[package]]
 name = "notko"
 version = "0.0.1"
-source = "git+https://github.com/orgrinrt/notko.git?branch=dev#15a95316a6defda96a73524a05345260365e10bd"
+source = "git+https://github.com/orgrinrt/notko.git?branch=dev#8a74dbcda7fbee2d2e57b47474a3b1e6d08650ed"

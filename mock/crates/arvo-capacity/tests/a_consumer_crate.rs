@@ -13,6 +13,11 @@
 //! Both paths are taken when the test runs. A build directory shared between
 //! checkouts of this repository hands one test binary to all of them, so a
 //! path read at build time would name the checkout that built it first.
+//!
+//! The harness is `arvo-numeral`'s, whose own test proves the crate directory
+//! is read at run time; it is not run twice.
+// FIXME(extract_the_consumer_crate_test_harness_shared_by_arvo_numer): one
+// harness for both crates, once it can move out of `arvo-numeral`.
 
 use std::path::PathBuf;
 use std::process::Command;
@@ -38,42 +43,6 @@ fn the_scratch_directory() -> PathBuf {
     root.join("tmp")
 }
 
-/// The line `the_crate_directory_is_read_when_the_test_runs` reads back.
-const RESOLVED: &str = "resolved crate directory: ";
-
-/// Set by the test below on the process it starts, and by nothing else.
-const SECOND_RUN: &str = "ARVO_CAPACITY_CONSUMER_TEST_SECOND_RUN";
-
-/// Runs this binary again with another crate directory in its environment and
-/// reads back the one it resolved. A path fixed when the binary was built would
-/// come back as this checkout's, whatever the environment says.
-///
-/// The second run enters this same test, prints what it resolved and returns,
-/// so the binary holds no test that passes without asserting.
-#[test]
-fn the_crate_directory_is_read_when_the_test_runs() {
-    if std::env::var_os(SECOND_RUN).is_some() {
-        println!("{RESOLVED}{}", the_crate_directory().display());
-        return;
-    }
-    let elsewhere = the_scratch_directory().join("a-checkout-that-is-not-this-one");
-    let binary = std::env::current_exe().expect("the test binary has a path");
-    let out = Command::new(binary)
-        .args(["--exact", "the_crate_directory_is_read_when_the_test_runs", "--nocapture"])
-        .env(SECOND_RUN, "1")
-        .env("CARGO_MANIFEST_DIR", &elsewhere)
-        .output()
-        .expect("the test binary could not be started again");
-    assert!(out.status.success(), "the second run failed");
-    let printed = String::from_utf8_lossy(&out.stdout);
-    let resolved = printed
-        .lines()
-        .find_map(|line| line.strip_prefix(RESOLVED))
-        .expect("the second run printed no resolved directory");
-    assert_eq!(PathBuf::from(resolved), elsewhere);
-    assert_ne!(elsewhere, the_crate_directory());
-}
-
 #[test]
 fn a_consumer_with_no_feature_line_builds_and_runs() {
     let manifest = the_crate_directory().join("tests/consumer/Cargo.toml");
@@ -93,4 +62,33 @@ fn a_consumer_with_no_feature_line_builds_and_runs() {
         String::from_utf8_lossy(&out.stdout),
         String::from_utf8_lossy(&out.stderr)
     );
+}
+
+/// The `source` line of the package `name` in a lockfile's text.
+fn locked_source(lock: &str, name: &str) -> Option<String> {
+    let header = format!("name = \"{name}\"");
+    let mut lines = lock.lines();
+    while let Some(line) = lines.next() {
+        if line == header {
+            return lines
+                .take_while(|l| !l.is_empty())
+                .find_map(|l| l.strip_prefix("source = "))
+                .map(str::to_owned);
+        }
+    }
+    None
+}
+
+/// The consumer builds `--locked`, so its notko must be the one the workspace
+/// builds, or the test checks this crate against a notko nothing else uses.
+#[test]
+fn the_consumer_locks_the_notko_the_workspace_builds() {
+    let read = |path: PathBuf| {
+        std::fs::read_to_string(&path).unwrap_or_else(|e| panic!("{path:?} unreadable: {e}"))
+    };
+    let consumer = read(the_crate_directory().join("tests/consumer/Cargo.lock"));
+    let workspace = read(the_crate_directory().join("../../Cargo.lock"));
+    let pinned = locked_source(&consumer, "notko").expect("the consumer locks no notko");
+    assert_eq!(Some(pinned), locked_source(&workspace, "notko"));
+    assert_eq!(locked_source(&consumer, "no-such-crate"), None);
 }

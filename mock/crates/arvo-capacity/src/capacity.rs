@@ -24,6 +24,11 @@ pub(crate) mod seal {
     ///
     /// The length is here rather than on `Capacity` so no host integer is
     /// public, and so the array and the count come from the one `N`.
+    #[diagnostic::on_unimplemented(
+        message = "`{Self}` is not a capacity: `Capacity` is implemented for `Dim<N>` alone",
+        label = "not `Dim<N>`",
+        note = "name the count as `Dim<N>`; the trait is sealed while the question `is_arvo_s_capacity_trait_sealed_to_its_one_marker` is open"
+    )]
     pub trait Sealed {
         /// The number of elements, the `N` of `Dim<N>`.
         const LEN: Len;
@@ -35,16 +40,14 @@ impl<const N: usize> seal::Sealed for Dim<N> {
     const LEN: seal::Len = seal::Len::from_host(N);
     // The mutant: a count one past the array, which the agreement tests refuse.
     #[cfg(arvo_mutant_capacity_count)]
-    const LEN: seal::Len = seal::Len::from_host(N + 1);
+    const LEN: seal::Len = seal::Len::from_host(N.wrapping_add(1));
 }
 
 /// A count carried as typestate, with the array it sizes.
 ///
 /// `Array<T>` is an array of exactly the count's length, read and written as
 /// a slice. Nesting is a projection inside a projection, and no product of two
-/// counts is computed. Generic code that copies a nested inner array states
-/// `<Inner as Capacity>::Array<T>: Copy` at the site, since the trait cannot
-/// say it for every capacity.
+/// counts is computed; the outer array is built with `filled_with`.
 ///
 /// The perimeter: `Dim<N>` is the only implementor, so for every capacity the
 /// array's length and the count `count` reads are the same `N`.
@@ -56,6 +59,12 @@ pub trait Capacity: seal::Sealed {
 
     /// The array with every element `value`.
     fn filled<T: Copy>(value: T) -> Self::Array<T>;
+
+    /// The array whose elements are the values `f` returns, one call per
+    /// element, in order from the first.
+    ///
+    /// No index is passed; a consumer that wants one counts in the closure.
+    fn filled_with<T, F: FnMut() -> T>(f: F) -> Self::Array<T>;
 }
 
 impl<const N: usize> Capacity for Dim<N> {
@@ -63,5 +72,9 @@ impl<const N: usize> Capacity for Dim<N> {
 
     fn filled<T: Copy>(value: T) -> [T; N] {
         [value; N]
+    }
+
+    fn filled_with<T, F: FnMut() -> T>(mut f: F) -> [T; N] {
+        core::array::from_fn(|_| f())
     }
 }

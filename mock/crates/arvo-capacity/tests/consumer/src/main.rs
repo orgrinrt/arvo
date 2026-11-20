@@ -48,7 +48,7 @@ impl PlanDims for SmallPlanDims {
 struct Plan<D: PlanDims> {
     order:   <D::Units as Capacity>::Array<u32>,
     publish: <D::Cores as Capacity>::Array<<D::AccumsPerCore as Capacity>::Array<u32>>,
-    live:    usize,
+    live:    USize<A>,
 }
 
 /// The count and the array's length agree, checked where the build evaluates it.
@@ -69,25 +69,22 @@ const fn order_bytes<D: PlanDims>() -> usize {
 /// Builds a plan in generic code, fills it through the slice bridge, and
 /// returns its order's sum, the nested cell written, and the outer count.
 ///
-/// The `where` clause is the residue the nested projection carries: the outer
-/// array is filled by copying an inner one.
-fn build_and_walk<D: PlanDims>() -> (u32, u32, USize<A>)
-where
-    <D::AccumsPerCore as Capacity>::Array<u32>: Copy,
-{
+/// The nested array is built from a closure, so nothing about the inner array
+/// has to be `Copy`.
+fn build_and_walk<D: PlanDims>() -> (u32, u32, USize<A>) {
     agrees::<D::Units>();
     agrees::<D::Cores>();
     agrees::<D::AccumsPerCore>();
     let mut plan = Plan::<D> {
         order:   D::Units::filled(0),
-        publish: D::Cores::filled(D::AccumsPerCore::filled(0)),
-        live:    0,
+        publish: D::Cores::filled_with(|| D::AccumsPerCore::filled(0)),
+        live:    USize::<A>::from_host(0),
     };
     for (i, slot) in plan.order.as_mut().iter_mut().enumerate() {
         *slot = i as u32;
-        plan.live += 1;
+        plan.live = plan.live.add(USize::<A>::from_host(1));
     }
-    assert_eq!(plan.live, plan.order.as_ref().len());
+    assert_eq!(plan.live.host(), plan.order.as_ref().len());
     let last_core = plan.publish.as_ref().len() - 1;
     let last_accum = plan.publish.as_ref()[last_core].as_ref().len() - 1;
     plan.publish.as_mut()[last_core].as_mut()[last_accum] = 7;
@@ -112,7 +109,7 @@ fn main() {
     assert_eq!(DEFAULT_ORDER_BYTES, 1024);
     assert_eq!(
         core::mem::size_of::<Plan<DefaultPlanDims>>(),
-        256 * 4 + 8 * 16 * 4 + core::mem::size_of::<usize>(),
+        256 * 4 + 8 * 16 * 4 + core::mem::size_of::<USize<A>>(),
     );
     println!("default and small plans built and walked; counts agree with their arrays");
 }

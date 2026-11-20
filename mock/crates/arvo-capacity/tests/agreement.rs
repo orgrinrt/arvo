@@ -8,7 +8,7 @@
 //! the numbers either side of them to one past a page of `u16`, the projected
 //! array holds exactly as many elements as the count says, for an element of
 //! one byte and of several. Under `--cfg arvo_mutant_capacity_count` the count
-//! is one past the array, and every case below fails.
+//! is one past the array, and every test here that reads the count fails.
 
 use arvo_capacity::{Capacity, Dim, count};
 use arvo_format::Adapt;
@@ -75,4 +75,80 @@ fn a_nested_projection_is_outer_by_inner_with_no_product_computed() {
     assert_eq!(grid.as_ref()[2].as_ref()[3], 7);
     assert_eq!(grid.as_ref()[1].as_ref()[3], 0);
     assert_eq!(core::mem::size_of_val(&grid), 3 * 4 * 2);
+}
+
+/// An element that is not `Copy`, numbering itself in the order it was made.
+struct Made(u32);
+
+#[test]
+fn filled_with_calls_its_closure_once_per_element_in_order() {
+    let mut next = 0u32;
+    let made = <Dim<6> as Capacity>::filled_with(|| {
+        next += 1;
+        Made(next)
+    });
+    assert_eq!(
+        next, 6,
+        "the closure was called {next} times for six elements"
+    );
+    let order: [u32; 6] = core::array::from_fn(|i| made.as_ref()[i].0);
+    assert_eq!(order, [1, 2, 3, 4, 5, 6]);
+    let mut calls = 0u32;
+    let none = <Dim<0> as Capacity>::filled_with(|| {
+        calls += 1;
+        Made(calls)
+    });
+    assert!(none.as_ref().is_empty());
+    assert_eq!(calls, 0, "the empty capacity called its closure");
+}
+
+#[test]
+fn a_nested_array_of_a_non_copy_element_is_built_in_place() {
+    let grid = <Dim<2> as Capacity>::filled_with(|| <Dim<3> as Capacity>::filled_with(|| Made(4)));
+    assert_eq!(grid.as_ref().len(), 2);
+    assert!(grid.as_ref().iter().all(|row| row.as_ref().len() == 3));
+    assert!(
+        grid.as_ref()
+            .iter()
+            .flat_map(|row| row.as_ref())
+            .all(|m| m.0 == 4)
+    );
+}
+
+/// The count at zero, one and the host's largest `usize`, under one rounding
+/// mode, one overflow policy and one check, read in a constant.
+///
+/// `Clamp` and `Stochastic` are left out because `USize` refuses them at build:
+/// a value has no bound to clamp to and nowhere to carry a dither.
+macro_rules! edges {
+    ($r:ty, $o:ty, $k:ty) => {{
+        type Ad = arvo_format::Adapt<$r, $o>;
+        const ZERO: usize = count::<Dim<0>, Ad, $k>().host();
+        const ONE: usize = count::<Dim<1>, Ad, $k>().host();
+        const TOP: usize = count::<Dim<{ usize::MAX }>, Ad, $k>().host();
+        assert_eq!((ZERO, ONE, TOP), (0, 1, usize::MAX));
+    }};
+}
+
+macro_rules! every_policy {
+    ($r:ty, $k:ty) => {
+        edges!($r, arvo_format::overflow::Wrap, $k);
+        edges!($r, arvo_format::overflow::Saturate, $k);
+    };
+}
+
+macro_rules! every_mode {
+    ($k:ty) => {
+        every_policy!(arvo_format::rounding::TowardZero, $k);
+        every_policy!(arvo_format::rounding::Floor, $k);
+        every_policy!(arvo_format::rounding::Ceil, $k);
+        every_policy!(arvo_format::rounding::HalfUp, $k);
+        every_policy!(arvo_format::rounding::HalfEven, $k);
+    };
+}
+
+#[test]
+fn the_count_holds_at_its_edges_under_every_adaptation_and_check() {
+    every_mode!(Quiet);
+    every_mode!(arvo_numeral::Abort);
 }

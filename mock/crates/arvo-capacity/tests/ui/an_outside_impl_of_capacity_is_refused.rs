@@ -15,6 +15,10 @@ impl Capacity for Liar {
     fn filled<T: Copy>(value: T) -> [T; 4] {
         [value; 4]
     }
+
+    fn filled_with<T, F: FnMut() -> T>(mut f: F) -> [T; 4] {
+        [f(), f(), f(), f()]
+    }
 }
 
 fn main() {}
