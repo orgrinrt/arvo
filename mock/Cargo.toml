@@ -24,11 +24,13 @@
 resolver = "2"
 members = [
     "crates/arvo-format",
+    "crates/arvo-contracts",
     "crates/arvo-placement",
     "crates/arvo-strategy",
     "crates/arvo-bits",
     "crates/arvo-numeral",
     "crates/arvo-digest",
+    "crates/arvo-capacity",
 ]
 # `benches` (and every arm and support crate under it) is excluded rather than
 # listed as a member. The deletion commit that emptied `members` above (929c46ed)
@@ -60,17 +62,18 @@ license = "MPL-2.0"
 # notko's is its own, from `notko/mock/Cargo.toml`. The arvo ones match
 # `workspace.package.version` above and move with it. `arvo-bits` carries no
 # path dependency on any sibling here; it is a leaf parallel to `arvo-format`
-# rather than above or below it, and is listed for the same publishing reason
-# the other three are, not because anything depends on it yet.
+# rather than above or below it, and `arvo-digest` depends on it.
 notko = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false, features = ["const", "try_trait_v2"] }
 # The type-level list of the same repository, for the one optional impl
 # `arvo-numeral` carries of its count trait. Nothing takes it by default.
 notko-hlist = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false }
 arvo-format = { path = "crates/arvo-format", version = "0.0.0" }
+arvo-contracts = { path = "crates/arvo-contracts", version = "0.0.0" }
 arvo-placement = { path = "crates/arvo-placement", version = "0.0.0" }
 arvo-bits = { path = "crates/arvo-bits", version = "0.0.0" }
 arvo-numeral = { path = "crates/arvo-numeral", version = "0.0.0" }
 arvo-digest = { path = "crates/arvo-digest", version = "0.0.0" }
+arvo-capacity = { path = "crates/arvo-capacity", version = "0.0.0" }
 # XXH3 for `arvo-digest`, behind its default-off `xxh3` feature. Op's choice of
 # 13 November 2026 (clause-dev
 # `.data/op-responses/202611131704_op-on-option-1-i-love-zig-as-much-as.md`), with an XXH3 on arvo

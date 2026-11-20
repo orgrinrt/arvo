@@ -8,5 +8,5 @@
 title = "FNV-1a against XXH3 at 64 bits, by input length"
 workload = "default"
 arms = ["digest-fnv1a64", "digest-xxh3-64", "digest-xxh3-64-const"]
-baseline = "digest-fnv1a64"
+baseline = "digest_fnv1a64"
 points = [1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256]

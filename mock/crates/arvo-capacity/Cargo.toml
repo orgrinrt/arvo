@@ -1,0 +1,18 @@
+[package]
+name = "arvo-capacity"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "A count fixed at build, carried as a type, that sizes arrays from generic code"
+readme = "README.md.tmpl"
+
+[dependencies]
+arvo-format.workspace = true
+arvo-numeral.workspace = true
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "forbid"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(arvo_mutant_capacity_count)"] }
+
+[dev-dependencies]
+trybuild = "1"

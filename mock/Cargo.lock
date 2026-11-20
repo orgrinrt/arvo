@@ -11,6 +11,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-capacity"
+version = "0.0.0"
+dependencies = [
+ "arvo-format",
+ "arvo-numeral",
+ "trybuild",
+]
+
+[[package]]
+name = "arvo-contracts"
+version = "0.0.0"
+dependencies = [
+ "arvo-format",
+ "trybuild",
+]
+
+[[package]]
 name = "arvo-digest"
 version = "0.0.0"
 dependencies = [
@@ -35,6 +52,7 @@ dependencies = [
 name = "arvo-numeral"
 version = "0.0.0"
 dependencies = [
+ "arvo-contracts",
  "arvo-format",
  "arvo-placement",
  "notko",

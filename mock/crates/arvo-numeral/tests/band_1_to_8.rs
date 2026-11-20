@@ -13,11 +13,12 @@
 
 mod common;
 
+use arvo_contracts::{Additive, Identity, Multiplicative};
 use arvo_format::overflow::{Saturate, Wrap};
 use arvo_format::points::{Integer, UFixed};
 use arvo_format::rounding::TowardZero;
 use arvo_format::{Adapt, Signature, addition_is_associative};
-use arvo_numeral::{Additive, Identity, Int, Multiplicative, Num, Sole, Uint};
+use arvo_numeral::{Int, Num, Sole, Uint};
 use common::{Tally, exhaustive, exhaustive_products, range, value};
 
 #[test]

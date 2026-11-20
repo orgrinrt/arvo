@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "flavour": "",
+  "member": "arvo-capacity",
+  "green": {
+    "full": "f5bdd436a864bbe61a4c3a5146068cc6bd827fa964ac56fe65b1650fe32ad0d9",
+    "own": {
+      "arvo-capacity": "4cd21ad35ea0611217a1775d0bbb6d5c4b5f3eea6efa00919098c6e00ff8a88d",
+      "arvo-contracts": "914bc2d55083275bd3f76882893831dde87947ff4e9447dab77cbc64655a5548",
+      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
+      "arvo-numeral": "999624699bfb412c207f14395cd8feca0cd112eee78bae0479d5e02e865d6743",
+      "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
+    }
+  },
+  "tests": {},
+  "bins": {
+    "arvo-capacity": "471838798f62af7bcac843e5a7787794a0aa60ebb86dfe5b1fb9988636678c6d",
+    "arvo-capacity::a_consumer_crate": "4f674323191fcd8b4ae5bf82310fc9304c5d7dcd46dc4aa4b4ad81969a100c22",
+    "arvo-capacity::agreement": "ae470f55f9fc32edf55fcbc8e39a5fc9f8e8e96e87643a0681461e6d95f2e3e6",
+    "arvo-capacity::compile_fail": "90f57d98f129a4cbebc5a6c76eafbbae8cabd28e1f9029f587ebca15025ca51b"
+  }
+}

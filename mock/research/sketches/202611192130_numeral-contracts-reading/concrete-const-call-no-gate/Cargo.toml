@@ -1,0 +1,12 @@
+[package]
+name = "concrete-const-call-no-gate"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-format = { path = "../../../../crates/arvo-format" }
+arvo-numeral = { path = "../../../../crates/arvo-numeral" }
+arm-const = { path = "../../202611192015_numeral-contracts/arm-const" }
+
+[workspace]
