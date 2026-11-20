@@ -269,11 +269,17 @@ mod bound {
     use super::{Crossing, Sides};
 
     #[test]
-    fn the_product_is_formed_here_at_every_negative_exponent_of_the_64_bit_widths() {
+    fn the_product_is_formed_here_down_to_where_the_radix_power_passes_128_bits() {
+        // `2^127` is the last power of two a 128-bit integer holds, and the
+        // square of any 64-bit member over it stays below `2^127`.
         assert!(Sides::<Fixed<64, -1>>::PRODUCT);
         assert!(Sides::<UFixed<64, -1>>::PRODUCT);
-        assert!(Sides::<Fixed<64, -64>>::PRODUCT);
-        assert!(Sides::<UFixed<64, -64>>::PRODUCT);
+        assert!(Sides::<Fixed<64, -127>>::PRODUCT);
+        assert!(Sides::<UFixed<64, -127>>::PRODUCT);
+        assert!(!Sides::<Fixed<64, -128>>::PRODUCT);
+        assert!(!Sides::<UFixed<64, -128>>::PRODUCT);
+        assert!(Sides::<Fixed<8, -127>>::PRODUCT);
+        assert!(!Sides::<Fixed<8, -128>>::PRODUCT);
     }
 
     #[test]
