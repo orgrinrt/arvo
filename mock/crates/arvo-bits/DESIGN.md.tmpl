@@ -64,8 +64,9 @@ Bits<const N: u32>(u64)
 constant, asserted inside a `const` item and forced by every public constructor and cast, the same
 codegen-forced-assert shape `arvo_format::slots::Slots::ADMITTED` already uses: the assertion is
 evaluated where the const is used, so a call reaches it at codegen and `cargo build` refuses a bad `N`
-where `cargo check` would not have. `ADMITTED` needs no public visibility here, unlike on `Slots`;
-`Bits<N>` is a concrete type, and only its own constructors force the check.
+where `cargo check` would not have. `ADMITTED` stays private, unlike on `Slots`:
+it is how `Bits<N>` meets its own bound, and every door onto the type forces it, the width the tier
+gives back included.
 
 Construction masks. `Bits::<N>::masked(raw: u64) -> Self` is a bitwise AND against a precomputed mask
 and nothing else, total by construction: there is no input it rejects, because there is no invalid
@@ -98,7 +99,8 @@ Four traits, declared here and implemented here for `Bits<N>`. They are the cont
 which is why they sit with the container rather than with the format whose `Bool` and `Width` they
 answer in: `arvo-format` holds formats and states it is not a container, and a container's contract
 declared there would contradict it. Another container, an array of `Bits<64>` for a wider set among
-them, implements the same traits in its own crate.
+them, implements the same traits in its own crate, and owes the refusal stated below for every
+implementor.
 
 Every operation is an inherent `const fn` on `Bits<N>`, and each trait is a `const` trait whose impl
 for `Bits<N>` calls the inherent method and does nothing else. A consumer naming `Bits<N>` calls the
@@ -107,13 +109,14 @@ method and needs no feature of the toolchain; a consumer generic over the tier e
 nothing. `mock/research/sketches/202611200200_bit-tier-const-trait/` holds the shape building on the
 pinned nightly.
 
-`BitWidth` carries `const WIDTH: Width`, the declared width, `Width::bits(N)` for `Bits<N>`.
+`BitWidth` carries `const WIDTH: Width`, the declared width, `Width::bits(N)` for `Bits<N>`, given only
+after `ADMITTED` is forced, so the width of `Bits<0>` or `Bits<65>` is refused like the type itself.
 
 `BitAccess` reads and writes one bit, with `BitWidth` as its supertrait. `bit::<const I: u32>(self) ->
 Bool` is whether bit `I` is set, counting from the low bit at zero. `with_bit::<const I: u32>(self, to:
 Bool) -> Self` is the same value with bit `I` set to `to` and every other bit as it was.
 
-`BitLogic` is the logic of two values at one width. `and`, `or` and `xor` take `(self, other: Self) ->
+`BitLogic` is the logic of two values at one width, with `BitWidth` as its supertrait. `and`, `or` and `xor` take `(self, other: Self) ->
 Self` and `not` takes `(self) -> Self`, each the host's bitwise operation held within `N` bits: `not`
 masks, since the host's complement sets the bits above the width, and the other three need no mask,
 since both operands are already within it. `is_empty(self) -> Bool` is whether no bit is set. No bit of
@@ -121,7 +124,8 @@ any of these depends on another bit position, so nothing carries and there is no
 Both sides are one width, and a consumer combining two widths casts one first, which keeps the choice
 of width the consumer's.
 
-`BitSequence` moves the bits within the width, by an amount that is a const generic.
+`BitSequence` moves the bits within the width, by an amount that is a const generic, with `BitWidth` as
+its supertrait.
 `shift_up::<const K: u32>(self) -> Self` and `shift_down::<const K: u32>(self) -> Self` move every bit
 `K` places toward the high bit and toward the low bit, dropping what leaves the width and bringing in
 zeros. `rotate_up::<const K: u32>(self) -> Self` and `rotate_down::<const K: u32>(self) -> Self` move
@@ -132,6 +136,12 @@ An index `I` or an amount `K` at or past `N` is refused at build. A private `con
 index asserts it, forced inside the inherent method, the shape `ADMITTED` has, so the refusal is
 `E0080` at `cargo build` through the inherent method, through a `const fn` generic over the trait and
 through an ordinary generic function alike. Nothing is checked at run time.
+
+The refusal is an obligation each implementor owes rather than something a trait can enforce: an
+implementor of `BitAccess` or `BitSequence` refuses at build an index or an amount at or past its
+`WIDTH`, by an assertion of its own over its own width, and holds it with refusal cases of its own.
+`Bits<N>`'s assertion stays private, since it is stated over `Bits<N>`'s bound and nothing of that is
+another container's.
 
 The intersection test `obligation::set_operations_over_a_fixed_size_bit_set` names is
 `a.and(b).is_empty()`, union is `or`, and the emptiness test is `is_empty`. On the 64-bit carrier the
@@ -208,9 +218,9 @@ shift-overflow case explicitly rather than relying on `1u64 << 64` not panicking
 `cast` composes with `masked` rather than adding a second rule: `b.cast::<M>() ==
 Bits::<M>::masked(b.raw())` for every `b: Bits<N>` and every admitted `M`, including `M == N`.
 
-`N` outside `1..=64` is refused at `cargo build`, not at `cargo check`. Pinned as a `trybuild`
-`compile_fail` case at `N == 0` and at `N == 65`, mirroring `arvo_format::slots`'s own
-`width_above_the_bound.rs`.
+`N` outside `1..=64` is refused at `cargo build`, not at `cargo check`. Pinned as `trybuild`
+`compile_fail` cases at `N == 0` and at `N == 65`, through `masked`, through `cast` and through
+`BitWidth::WIDTH`, mirroring `arvo_format::slots`'s own `width_above_the_bound.rs`.
 
 `halves` loses nothing: the low half is the low sixty-four bits of `raw`, the high half the rest, and
 the two shifted and ored back give `raw`, over values with only the low half set, only the high half
@@ -219,11 +229,13 @@ set, both, and neither.
 `split_first` walks a run in order and ends: walking `Bytes::of(s)` to `Isnt` yields exactly the bytes
 of `s`, each as a `Bits<8>`, for the empty run and for a run of every byte value.
 
-The tier's laws are stated against the host's own operation on the carrier, and are tested for every
-value, index and amount at every width up to eight, and at the widths above over values at the edges of
-the width and seeded ones.
+The tier's laws are stated against the host's own operation on the carrier, or against a value built
+one bit at a time where the host has no operation of the same meaning, and are tested at every width
+from one to sixty-four and every index and amount below it: for every value up to eight bits, and above
+that over values at the edges of the width, every single bit, and seeded ones.
 
-`WIDTH` is `N`.
+`WIDTH` counts the bits the full mask sets: `Bits::<N>::masked(u64::MAX).raw()` has `WIDTH.count()`
+bits set.
 
 `bit::<I>` is bit `I` of `raw`. `with_bit::<I>(to)` reads back `to` at `I` and leaves every other bit as
 it was, and writing a bit to what it already is gives the value back.
@@ -241,6 +253,15 @@ given.
 Each trait method agrees with its inherent method, through a function generic over the trait, and the
 tier evaluates in a constant through a `const fn` generic over `[const]` bounds.
 
-An index or an amount at `N` is refused at `cargo build`, pinned as `trybuild` `compile_fail` cases:
-`bit`, `with_bit`, a shift and a rotation through the inherent method, and `bit` through a function
-generic over `BitAccess`.
+An index or an amount at `N` is refused at `cargo build`, pinned as `trybuild` `compile_fail` cases for
+each of the six methods taking one, in a constant, in a call at run time through the inherent method, and
+in a call at run time through a function generic over the method's trait. One case that must compile
+sits with them, which makes `trybuild` build rather than check, so the refusals at run time are the ones
+`cargo build` gives.
+
+Five mutant flags, each off unless a build sets it with `--cfg`, put a wrong operation in the source
+for the tests to catch: `arvo_mutant_bits_index` admits an index or an amount equal to the width,
+`arvo_mutant_bits_with_bit` writes a bit without clearing it first, `arvo_mutant_bits_not` keeps the
+carrier's bits above the width in the complement, `arvo_mutant_bits_shift` keeps what a shift up moves
+past the width, and `arvo_mutant_bits_rotate` rotates within the carrier rather than within the width.
+Each turns its tests red, recorded under `mock/research/sketches/`.
