@@ -226,6 +226,13 @@ pub(crate) const fn round_slot(mode: Mode, exact: Exact, dither: Dither) -> Roun
 #[must_use]
 #[inline]
 const fn complete_slot(policy: Policy, rounded: Rounded, min: Slot, max: Slot) -> Slot {
+    // A rounded slot the index holds is completed in the index, by the one
+    // function a slot on the grid is completed by as well.
+    if let Maybe::Is(floor) = rounded.down.index()
+        && let Some(at) = floor.checked_add(rounded.step())
+    {
+        return complete_index(policy, at, min, max);
+    }
     let lo = min.index();
     let hi = max.index();
     // An admitted range spans at most `2^64` slots, so the span fits.
@@ -245,6 +252,36 @@ const fn complete_slot(policy: Policy, rounded: Rounded, min: Slot, max: Slot) -
         // too, since a step onto `lo` would have landed in range.
         Policy::Saturate | Policy::Clamp => {
             if matches!(rounded.down.ordering(Wide::of(lo)), Ordering::Less) {
+                min
+            } else {
+                max
+            }
+        },
+    }
+}
+
+/// Which slot the completion region returns for a slot the index holds.
+///
+/// The identity inside the range. Under wrapping the slot and the lowest slot are
+/// reduced by the span separately before they are combined, since their
+/// difference can leave the index; an admitted range spans at most `2^64` slots,
+/// so the span fits. Saturation and clamping pin to the nearer end, for the
+/// reason `complete_slot` gives.
+#[must_use]
+#[inline]
+pub(crate) const fn complete_index(policy: Policy, at: i128, min: Slot, max: Slot) -> Slot {
+    let lo = min.index();
+    let hi = max.index();
+    if lo <= at && at <= hi {
+        return Slot::at(at);
+    }
+    match policy {
+        Policy::Wrap => {
+            let span = hi - lo + 1;
+            Slot::at(lo + (at.rem_euclid(span) - lo.rem_euclid(span)).rem_euclid(span))
+        },
+        Policy::Saturate | Policy::Clamp => {
+            if at < lo {
                 min
             } else {
                 max

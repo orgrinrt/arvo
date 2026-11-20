@@ -121,14 +121,15 @@ The three delegated operations are then proved at every shape a value is held fo
 from 1 to 64, a signed or an unsigned range, the wrapping or the saturating policy, one of the five
 modes, a radix and an exponent. The radixes are two, on the shipped fixed points, and ten and three,
 on formats the tests declare the way a crate outside the format's would, three being the radix that
-shares no factor with the carrier's. The exponents are a family of five per width and radix whose two
+shares no factor with the carrier's. The exponents are a family of six per width and radix whose two
 ends are the last exponents the format admits for that operation there, the highest and the deepest,
+with the deepest at which the value forms the position in the host's integer among the four between,
 and a test per operation holds both ends against the format's own verdict at every width, both ranges
 and the three radixes, admitted at each and refused one past it. The product's highest is the highest
 exponent at which every corner numerator fits the four 64-bit limbs the format forms it in, and the
 quotient's the highest at which the remainder's denominator fits there at both ends of the range; the
 tests compute each in their own arithmetic and do not read it from the format. Each width band of
-sixteen at each radix is one test and asserts the 1600 signatures it ran, so a width or a shape that
+sixteen at each radix is one test and asserts the 1920 signatures it ran, so a width or a shape that
 dropped out of a macro would fail the count. The integer point, a format of its own beside the fixed
 point at exponent zero, is taken at every width for the quotient as well.
 
@@ -187,11 +188,30 @@ both ends of the signature's range with theirs. `index` returns what `from_index
 lattice at every width, in every host integer the range fits, and the lists of host integers per width
 are whole, a host integer left out being one the build refuses there.
 
+The product, the quotient and the conversion are the format's steps over members, which form the position
+in the host's 128-bit integer where the bound over the range holds, and by the format's four-limb step
+where it does not, so the shapes above run both.
+At every width the highest and the deepest exponent of each family take the four limbs, since a term of
+the ratio passes 128 bits there, and so does the product at exponent zero of the unsigned 64-bit
+range, whose widest member squared reaches `2^127`. The exponents between, zero, minus one, minus half the
+width and the last exponent inside the bound, take the host's integer, with both ends of the range among
+the operands. The format's own tests of the step hold the three predicates at the last exponent inside the
+bound and the first past it, and the step against the slot step's position, since the suites here cannot
+tell the arms apart. The conversion takes that edge in a test of its own, from exponent zero at 32
+and 64 bits onto the last exponent inside the bound and the first past it, both ranges each side, the
+three radixes and the ten signatures of the target. The suites are the same for the two arms, which is
+the point, since equality with the oracle is what either owes. One test divides a value by a value read
+at run time, through `Divisor::member` over a format on the value's grid whose range leaves the zero
+out: every member of the 8-bit ranges by every other value of its range, landed in a divisor range that
+holds it or one it passes, at three exponents, against the oracle, each landing checked to be the value
+or the end of the range it passed.
+
 `arvo_mutant_div` returns the dividend where the quotient leaves the range, which is what the machine's
 wrapping quotient gives for the lowest signed member over minus one. `arvo_mutant_convert` reads the
 source's slot index as the target's and so drops the two exponents. `arvo_mutant_index` makes the saturating door
 send a negative host integer to the top of an unsigned range, which is what a comparison done after a
-cast gives. Each turns its own tests red and leaves the others green, and each red run is committed.
+cast gives. The flags of the step itself, `arvo_mutant_member_step` and `arvo_mutant_member_step_edge`,
+are the format's, and its red runs are its own. Each turns its own tests red and leaves the others green, and each red run is committed.
 
 The fixed-point aliases are checked to be the written types. One product is named through `Fix`: a
 half times three eighths, at eighths, sits at one and a half slots, and is slot 2 under `HalfEven`

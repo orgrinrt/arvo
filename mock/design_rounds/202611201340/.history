@@ -1,0 +1,50 @@
+3905f438 chore: lock src changelist 202611201341
+9a4f8966 docs: say the ratio bench timed deleted code and map the replayed shas
+23275be0 test: hold the member step bound at its edge above a zero exponent
+4a6f4c19 chore: lock doc changelist 202611201340
+380abdb2 docs: hold the member step's bound above a zero exponent
+d0a3d0b5 docs: add the first review of the member step to the research
+1aee528e test: record the suites at the member step
+a28bd4cd chore: close design round 202611200735
+5f9b1b5e chore: lock src changelist 202611200739
+6a1f3f2d test: hold the step's bound at every width and its 128-bit division
+325d035f chore: resolve the bench arms' lockfiles with arvo-contracts
+6c44396e test: run the member step's two flags red and regenerate its ui output
+dccc3a19 feat: form the exact step over members in the format, not the value
+f6d6eb89 chore: lock doc changelist 202611200735
+457a9c04 docs: design the exact step over members and call it from the value
+571d17f2 docs: open the topic on the exact step over members
+46029f8d Merge remote-tracking branch 'origin/dev' into work/arvo-numeral-exact-step
+d1dc33d6 chore: close design round 202611200116
+827c4b03 chore: lock src changelist 202611200117
+84038865 test: hold the room's predicates at their edge at every radix
+daf7fb3d chore: lock doc changelist 202611200116
+ac223d0e docs: say what the format lacks for the room arm and who takes it
+09b750cc docs: open the topic on the second review's findings
+d0c43424 docs: add the first review of the numeral operations to the research
+24e44561 chore: close design round 202611200019
+4bc69b47 chore: lock src changelist 202611200021
+e382b82f test: hold the room arm at its edge and every landing of a divisor
+0bd1ec48 chore: lock doc changelist 202611200019
+a5f3c874 docs: state the room bound as it is and regenerate the numeral docs
+9f6d0bae docs: attribute each remainder row to the derivation that stated it
+ae06c0a9 docs: record the remainder panel and where its proposals agree
+18f76cfa chore: close design round 202611192051
+2b2fb3bc chore: lock src changelist 202611192056
+27b85cb6 docs: name the run and the baseline fix in the src changelist
+ffe2274b test: record the numeral-ratio run and what it decides
+de9690e0 test: add the numeral-ratio bench of the host ratio against the hand
+d445767f test: add the room mutant to the value mutant sketch
+359edbd6 feat: form the host ratio in the value and divide by a landed member
+b3863a51 chore: lock doc changelist 202611192051
+0a2b21aa docs: design the host-integer arm in the value
+d5d774c3 chore: lock doc changelist 202611192051
+7c3ea54d docs: design the host-integer exact step and the quotient by a value
+3c78ee81 feat: add the packed word and the bit tier to arvo-bits
+f7a54b1e chore: move arvo to the bumped nightly
+6def8831 feat: add the numeral value contracts crate
+d15dd473 feat: add `arvo-capacity`, a count fixed at build as a type
+f5bee87f docs: sketch and shape the numeral contracts
+38d78396 feat: land `arvo-digest` and decide the stranded arvo branches
+3d95d776 docs: land the closed digest rounds from `work/arvo-digest`
+80e5afac chore: configure the `commit-subject` gate

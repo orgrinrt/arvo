@@ -416,3 +416,23 @@ impl Dither {
         Self(part)
     }
 }
+
+#[cfg(test)]
+impl Exact {
+    /// Whether two positions are one: the same floor, and remainders of one
+    /// ratio, since a remainder formed by a step is not reduced.
+    #[inline]
+    pub(crate) fn same(self, other: Self) -> bool {
+        let across = (
+            self.part.num.times(other.part.den),
+            other.part.num.times(self.part.den),
+        );
+        match across {
+            (Maybe::Is(a), Maybe::Is(b)) => {
+                matches!(self.floor.ordering(other.floor), Ordering::Equal)
+                    && matches!(a.ordering(b), Ordering::Equal)
+            },
+            _ => panic!("a remainder's cross product passes the four limbs"),
+        }
+    }
+}

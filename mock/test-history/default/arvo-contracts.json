@@ -3,14 +3,14 @@
   "flavour": "",
   "member": "arvo-contracts",
   "green": {
-    "full": "51dd4b34aa685500c23e6af08a7e516ffdccb7c58b732053f82c1c107eec5ec9",
+    "full": "119336bfefee2adf08b319cc34e0db11abdd909d451278ad3c4ae0139f71dd4a",
     "own": {
       "arvo-contracts": "ac5035dc7203af9b03b56ac8e340171839dee5c58ab76f94af1e6cc81a8d9d72",
-      "arvo-format": "b60e96816db2385e2c6d0b1ea2de690949e81a67de94db73c8dd6fea61dabc7d"
+      "arvo-format": "4cbfd5fbc6d5f9c7b91c923970e7f1e32e096e711e1a7a47e3182b1647996aeb"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-contracts": "088340b04465530dd34b81d97f1304e64a3395bd1c7b2191894d054f89851457"
+    "arvo-contracts": "ea91500899f564eeb388bc22b8322972978e208af3e61fcbbe136899d6e5a80a"
   }
 }

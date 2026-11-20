@@ -7,7 +7,7 @@
 
 use arvo_format::Format;
 use arvo_numeral::{Divisor, Sole};
-use common::edges::{quotient_deepest as deep, quotient_highest as top};
+use common::edges::{quotient_deepest as deep, quotient_highest as top, quotient_room as room};
 use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, members, minus_one, zero};
 use common::{oracle, value};
 
@@ -188,7 +188,7 @@ macro_rules! band {
         fn $name() {
             let mut shapes = Shapes::default();
             $widths!($at!(
-                [top, zero, minus_one, half, deep],
+                [top, zero, minus_one, half, room, deep],
                 quotients_of,
                 (&mut shapes)
             ));

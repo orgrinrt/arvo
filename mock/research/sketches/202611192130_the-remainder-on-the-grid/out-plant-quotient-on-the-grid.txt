@@ -1,0 +1,38 @@
+   Compiling the-remainder-on-the-grid v0.0.0 (/home/user/.worktrees/remainder-seat-2/mock/research/sketches/202611192130_the-remainder-on-the-grid)
+    Finished `release` profile [optimized] target(s) in 0.79s
+     Running `/home/user/target/release/the-remainder-on-the-grid`
+== one: whole phase, constant quantum, radix 2, 3, 10, e -3..=2, phase 0, 1, -2, w 1..=5
+TowardZero: Tally { pairs: 141876, off_grid: 69012, slot_formula: 31482, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 34571, b_agrees: 35658, b_departs: 37206, b_departs_at_zero: 1680 }
+Floor: Tally { pairs: 141876, off_grid: 70254, slot_formula: 31698, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 34773, b_agrees: 36389, b_departs: 35233, b_departs_at_zero: 1686 }
+Ceil: Tally { pairs: 141876, off_grid: 71532, slot_formula: 31914, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 34078, b_agrees: 35034, b_departs: 35310, b_departs_at_zero: 1704 }
+HalfUp: Tally { pairs: 141876, off_grid: 77778, slot_formula: 29142, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 31930, b_agrees: 32725, b_departs: 31373, b_departs_at_zero: 1545 }
+HalfEven: Tally { pairs: 141876, off_grid: 77778, slot_formula: 28890, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 31930, b_agrees: 32867, b_departs: 31231, b_departs_at_zero: 1533 }
+StochasticDown: Tally { pairs: 141876, off_grid: 70254, slot_formula: 31698, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 34773, b_agrees: 36389, b_departs: 35233, b_departs_at_zero: 1686 }
+StochasticUp: Tally { pairs: 141876, off_grid: 71532, slot_formula: 31914, past_bound: 0, wrong_sign: 0, out_of_range: 0, quotient_on_s: 34078, b_agrees: 35034, b_departs: 35310, b_departs_at_zero: 1704 }
+pairs whose remainder leaves the slot range, by mode and family (zero member or not):
+  Ceil unsigned: 13482
+  StochasticUp unsigned: 13482
+  HalfUp unsigned: 9720
+  HalfEven unsigned: 9288
+  TowardZero unsigned: 7344
+  Floor unsigned: 7344
+  StochasticDown unsigned: 7344
+  TowardZero signed: 288
+  Floor signed: 288
+  Ceil signed: 288
+  HalfUp signed: 288
+  HalfEven signed: 288
+  StochasticDown signed: 288
+  StochasticUp signed: 288
+
+thread 'main' (23424) panicked at src/main.rs:327:9:
+assertion `left == right` failed: TowardZero: a remainder off the grid at a whole phase
+  left: 69012
+ right: 0
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<u64, u64>
+   4: the_remainder_on_the_grid::main
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
