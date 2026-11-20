@@ -31,8 +31,9 @@ the C boundary the exports have, which an inlined use folds into a branch or a f
 
 ## What it decides, and what it does not
 
-holds for: `N = 64`, x86-64, the bench harness's release profile, each operation called across a C
-boundary. It says the tier adds nothing over the host integer at sixty-four bits on this target, and that
+holds for: `N = 64`, `x86_64-unknown-linux-gnu` with its default target features (no `target-cpu` or
+`target-feature` set), toolchain `nightly-2026-05-28`, the bench harness's release profile, each operation
+called across a C boundary. It says the tier adds nothing over the host integer at sixty-four bits on this target, and that
 the obligation's one-instruction lowering holds there for all three operations.
 
 It says nothing of a set of 256 bits, which this crate does not hold and whose one-instruction lowering is
