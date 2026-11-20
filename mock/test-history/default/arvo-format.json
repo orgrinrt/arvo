@@ -2,107 +2,138 @@
   "version": 2,
   "flavour": "",
   "member": "arvo-format",
-  "green": null,
+  "green": {
+    "full": "bbae992ae519bcc91b0697766749af6a9a0dd0cc43ad9b796407d1eeca84bba0",
+    "own": {
+      "arvo-format": "9291adbbebcc08e85b37a0307c19bf6a7dcb479a8a037e33fa4c800e0c7a162e"
+    }
+  },
   "tests": {
     "arvo-format": {
       "addition::tests::the_signed_oracle::subtraction_answers_as_the_oracle_does_at_every_member_up_to_eight_bits": {
-        "secs": 42.4,
+        "secs": 79.8,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map": {
         "secs": 11.7,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do": {
-        "secs": 85.0,
+        "secs": 162.6,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "apply::tests::the_wide_oracle_sweep::the_shipped_map_answers_as_the_oracle_does_over_the_wide_region": {
-        "secs": 5.3,
+        "secs": 8.8,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "apply::tests::the_wide_oracle_sweep::the_wide_sweep_reports_every_broken_map": {
-        "secs": 13.6,
+        "secs": 23.2,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_member_door::a_byte_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
-        "secs": 6.6,
+        "secs": 12.5,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_member_door::a_negative_exponent_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
-        "secs": 7.0,
+        "secs": 12.2,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_member_door::a_phase_divides_by_the_members_of_its_unreduced_spelling_as_the_oracle_does": {
-        "secs": 7.6,
+        "secs": 11.7,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
+      },
+      "division::tests::the_member_door::a_signed_byte_divides_by_the_members_of_its_negative_side_as_the_oracle_does": {
+        "secs": 5.2,
+        "passed": true,
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
+      },
+      "division::tests::the_member_door::a_signed_byte_divides_by_the_members_of_its_positive_side_as_the_oracle_does": {
+        "secs": 5.4,
+        "passed": true,
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_member_door::a_whole_phase_divides_by_its_own_members_as_the_oracle_does": {
         "secs": 10.7,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_member_door::a_zero_free_range_divides_by_its_own_members_as_the_oracle_does": {
         "secs": 10.6,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_member_door::radix_ten_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
         "secs": 10.1,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_member_door::the_bytes_divide_by_a_range_at_radix_ten_on_their_grid_as_the_oracle_does": {
-        "secs": 6.9,
+        "secs": 12.3,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "division::tests::the_oracle::the_quotient_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
         "secs": 165.3,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "multiplication::tests::the_inverse_round_trip::the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_64": {
-        "secs": 12.0,
+        "secs": 20.3,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       },
       "multiplication::tests::the_oracle::the_product_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
-        "secs": 120.9,
+        "secs": 211.2,
         "passed": true,
-        "passed_at": "52ce25da0f85a7fdc5503b8ea0bff5a3d2ac5b0c3d2494d935fe43a1cb2af4ae"
+        "passed_at": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b"
       }
     },
     "arvo-format::compile_fail": {
       "a_format_is_not_a_signature": {
         "secs": 5.1,
         "passed": true,
-        "passed_at": "d11322656f396294842828fd0dd360da9d28b8381c1867b15d22b12f2a973def"
+        "passed_at": "90e4b5932988532483f6505b449183ec147bec0f53b63d07bb616cb326ea00a2"
       },
-      "a_member_constant_past_the_top_is_refused_and_at_the_top_admitted": {
-        "secs": 7.4,
+      "a_position_past_the_slot_index_is_admitted_under_every_policy": {
+        "secs": 10.5,
         "passed": true,
-        "passed_at": "0f508bb95c5dab612e365078d7b9236648c992d6b7a42eda23b95c6d26dc242a"
+        "passed_at": "90e4b5932988532483f6505b449183ec147bec0f53b63d07bb616cb326ea00a2"
       },
-      "a_step_law_that_runs_off_the_exponent_is_refused": {
-        "secs": 6.7,
+      "multiplication_over_a_remainder_no_position_holds_is_refused_and_one_it_holds_admitted": {
+        "secs": 5.7,
         "passed": true,
-        "passed_at": "d11322656f396294842828fd0dd360da9d28b8381c1867b15d22b12f2a973def"
+        "passed_at": "90e4b5932988532483f6505b449183ec147bec0f53b63d07bb616cb326ea00a2"
+      }
+    },
+    "arvo-format::ieee754_binary_parity": {
+      "a_planted_binary64_direction_is_reported": {
+        "secs": 6.0,
+        "passed": true,
+        "passed_at": "53f13f64ac5754516e6f76eb4219810f15863f833cf827fb0936b64b625d32ae"
       },
-      "an_arvo_type_as_a_const_parameter_is_refused": {
-        "secs": 6.2,
+      "binary64_under_every_direction_is_the_host": {
+        "secs": 6.3,
         "passed": true,
-        "passed_at": "0f508bb95c5dab612e365078d7b9236648c992d6b7a42eda23b95c6d26dc242a"
+        "passed_at": "53f13f64ac5754516e6f76eb4219810f15863f833cf827fb0936b64b625d32ae"
       }
     }
   },
-  "bins": {}
+  "bins": {
+    "arvo-format": "795564fbd97be2ce532a91089479616aab2e490f9af0f81f72b60c7c35c2fb3b",
+    "arvo-format::compile_fail": "90e4b5932988532483f6505b449183ec147bec0f53b63d07bb616cb326ea00a2",
+    "arvo-format::ieee754_binary_parity": "53f13f64ac5754516e6f76eb4219810f15863f833cf827fb0936b64b625d32ae",
+    "arvo-format::ieee754_decimal_parity": "86d807055b0ec9be432de3f0eec9f18a1387324a0b92d5583729d3a511cc1c97",
+    "arvo-format::ieee754_underflow_parity": "3e1003c153908babe51317437f74443589f96d6d3d37528be80fb34d4b195733",
+    "arvo-format::matlab_fi_parity": "3f56b30bc14f1fcef31faefb83a43d028f7495073e96f5a5b00622cc95b4c02b",
+    "arvo-format::matlab_fimath_parity": "a81c70180dc1e4eefc3a378a8e9c7b6d3d95a0d95810e301a4475b15e13f81d9",
+    "arvo-format::the_ties_away_alias": "c312678fa635742d26f33e048964aee834a739fb95024531ff29921bd5879ff1"
+  }
 }

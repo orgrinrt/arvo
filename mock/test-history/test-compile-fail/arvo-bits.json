@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "flavour": "--test compile_fail",
+  "member": "arvo-bits",
+  "green": {
+    "full": "969497f77e1fcf4ed7d884cbd21d5a248306a0d1d92635e91df4baa677762ea2",
+    "own": {
+      "arvo-bits": "285441c41de59abcc2960bc807bab6cbe88df2edb9946b753e1253e4f8c28db2",
+      "arvo-format": "b60e96816db2385e2c6d0b1ea2de690949e81a67de94db73c8dd6fea61dabc7d"
+    }
+  },
+  "tests": {
+    "arvo-bits::compile_fail": {
+      "what_must_not_compile_is_refused_at_build": {
+        "secs": 6.4,
+        "passed": true,
+        "passed_at": "c927a7e752359a7964385f72ef394f049093bc0ba09b67c4272d6db43a020980"
+      }
+    }
+  },
+  "bins": {
+    "arvo-bits::compile_fail": "c927a7e752359a7964385f72ef394f049093bc0ba09b67c4272d6db43a020980"
+  }
+}
