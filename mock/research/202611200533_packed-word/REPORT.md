@@ -28,7 +28,9 @@ So the need, stated without a mechanism: a word of a declared total width divide
 
 The registry has no row on a word divided into fields. Its nearest terms are the lens and shared placement, `proposal::the_lens_degenerates_to_an_ordinary_value_at_sole_occupancy` and `proposal::at_shared_occupancy_no_per_element_footprint_observation_exists`, both proposals at one expert, and the value-stance row's gap that the packed column waits on the carrier deferral. The packed word is not that case, since every field is read out into a value of its own at sole occupancy, and the round says so in its topic and builds nothing on those rows. `cargo mock already-said` from kaski's root found "packed" in no row and "bit field" in none; arvo carries no such tool of its own.
 
-So placement and shape were the canon's silence, and went to stack-coord for a stamp by two independent seats on 20 November, with the sketch. Stack-coord dispatched a blind second seat and told the job to proceed on its shape. The four calls put to it: the word in `arvo-bits` beside the tier, `tier.rs` untouched; the marker-type shape of `Layout`, `Field` with `BELOW` and `Word<L>`; the one-bit field as `arvo_format::Bool`; and `Lane` as the one contract of container and field value. What the second seat returns, and the question ticket to op that follows a stamp, are stack-coord's.
+So placement and shape were the canon's silence, and went to stack-coord for a stamp by two independent seats on 20 November, with the sketch. Stack-coord dispatched a blind second seat and told the job to proceed on its shape. The four calls put to it: the word in `arvo-bits` beside the tier, `tier.rs` untouched; the marker-type shape of `Layout`, `Field` with `BELOW` and `Word<L>`; the one-bit field as `arvo_format::Bool`; and `Lane` as the one contract of container and field value.
+
+The second seat's read is committed as `mock/research/sketches/202611200520_packed-word/SEAT-2.md`. The two seats agreed on placement, on one contract for the container and every field value, on `Bool` for a one-bit field with `Bits<1>` kept for a one-bit code, on `const` reads and writes and on nothing checked at run time, and stack-coord holds that as a provisional stamp and files the question ticket to op. They differed on where a field's position comes from and on whether the accessors are const for a consumer with no feature line, and stack-coord gave both to this job to settle by argument and a committed sketch. `mock/research/sketches/202611200614_packed-word-const-reach/` settles both for the second seat's shape, and round `202611200616-o8z9` carries it, as the section on that round says. The row was kept: it quotes hilavitkutin's own words, which is what the second seat asked of a recorded need.
 
 ## The round
 
@@ -36,15 +38,15 @@ Round `202611200533-wwxt`, on `work/arvo-packed-word`, cut from `work/arvo-bits-
 
 ## Tests
 
-After round `202611200556-vw98`, `cargo mock test -p arvo-bits --cheap` is green: the ten law tests of `the_packed_word`, over the 32-bit handle, its wide twin and two 64-bit words, and `compile_fail` with ten cases of the word among its own (nine refused at build, one that must build), on `nightly-2026-05-28`.
+After round `202611200616-o8z9`, `cargo mock test -p arvo-bits --cheap` is green on `nightly-2026-05-28`. There are eleven law tests in `the_packed_word`, over the 32-bit handle, its wide twin, two 64-bit words, every container width from one to sixty-four, and one field listed in two layouts. `the_packed_word_with_no_gates` is a test crate with no feature line that writes and reads the handle in constants. `compile_fail` has twelve cases of the word among its own: eleven refused and one that must build.
 
-Two mutant flags in `src/word.rs`, run against the law tests in `mock/research/sketches/202611200603_packed-word-mutants/`: a read one bit up turns seven of the ten red, a write that keeps the field's old bits four. The first round's two hand mutants, run and undone without a record, are not cited.
+Two mutant flags in `src/word.rs` were run against the law tests in `mock/research/sketches/202611200603_packed-word-mutants/`. A read one bit up turns nine of the eleven red, and a write that keeps the field's old bits turns five red. The first round's two hand mutants were run and undone without a record, so they are not cited.
 
 The new `trybuild` fixtures were first written in a container whose `rust-src` was recorded as installed with no files, so rustc printed no source lines for `core` and every fixture of the tier mismatched as well. The tier's 37 were put back from `HEAD` untouched, `rust-src` reinstalled, and only the seven new ones blessed (ticket `4f5fbcf49470`).
 
 ## What it lowers to
 
-`cargo mock bench disasm packed-word <arm> <symbol>` over the bench `mock/benches/packed-word/`, both arms in release as the harness builds them, `x86_64` in this container (`linux-x86_64-c4-container-intel`), `nightly-2026-05-28`, each an `extern "C"` function taking and returning the host's `u32`. The records cited are the runs stamped `774a9ced`, from a clean tree at the source commit of round `202611200556-vw98`, under `mock/benches/results/packed-word/disasm/`. The first round's runs, stamped `192d5e77-dirty`, stay beside them and are not cited, since nothing shows which source they built.
+`cargo mock bench disasm packed-word <arm> <symbol>` over the bench `mock/benches/packed-word/`, both arms in release as the harness builds them, `x86_64` in this container (`linux-x86_64-c4-container-intel`), `nightly-2026-05-28`, each an `extern "C"` function taking and returning the host's `u32`. The records cited are under `mock/benches/results/packed-word/disasm/`, each from a clean tree: the runs stamped `774a9ced` are from the source of round `202611200556-vw98`, and those stamped `cf70c6a1` are from the source of round `202611200616-o8z9`. Both rounds' `Word` arm lowers to the same instructions, so the read's added mask compiles away. The first round's runs, stamped `192d5e77-dirty`, stay beside them and are not cited, since nothing shows which source they built.
 
 | Operation | `packed-word-host`, by hand | `packed-word-word`, through `Word` |
 |---|---|---|
@@ -66,6 +68,26 @@ A senior review of the branch at `0c8ffe54` returned merge after fixes. Round `2
 A width of zero or past sixty-four, and a field reaching past bit sixty-four, are refused by assertions of their own before any shift, with cases for a field of zero bits and a field past bit sixty-four; before, they failed as an overflowing shift. A write now masks what `low` gives to the field's bits. The laws are tested over two 64-bit words as well as the 32-bit ones. The mutants and the disassembly are as above.
 
 Two commit subjects of the first round, `adf89a0a` and `20d58a91`, name `arvo-bits` without backticks; they are pushed and stay as they are.
+
+## The second seat and the second review, and the round that answered them
+
+Round `202611200616-o8z9` replaced the declared positions with derived ones, as the second seat proposed. A field names only `Value`. A layout names its container and a `notko_hlist` list of field markers from the low bit up. A field's position is the sum of the widths listed before it.
+
+`Field::BELOW`, `Holds`, `COVER` and `OVERLAP` were there to keep declared positions agreeing with the widths, and they went with them. Two fields sharing a bit, and a field past its container, can no longer be written. Membership is `notko_hlist::PlaceOf`, by type. A field's own width and the container's are asserted to be one to sixty-four, because `Lane` is open. The one remaining check is the widths summing to exactly the container's width.
+
+The const bound moved off the accessors onto `Field::Value` and `Layout::Container`. The sketch records the accessors refused with `E0658` from a crate with no feature line before the change, and building after it.
+
+A second senior review of the branch at `3bec4838`, pass two of three, returned merge after fixes. The round answers its findings as follows:
+
+- The untested refusals of overlap, cover and a field past bit sixty-four are no longer states the shape can hold.
+- The width and container refusals each have their own case, at zero and at sixty-five.
+- The laws run over every container width.
+- The alias of another value type, and the field of another layout, are gone with `BELOW`, because membership is by type.
+- `get` masks what it moves down.
+- `README.md` and `mock/DESIGN.md.tmpl` name the word.
+- The obligation row cites hilavitkutin's items rather than their lines.
+
+The review's own probes in the scratchpad were never committed, and are not cited here.
 
 ## Problems ticketed
 
