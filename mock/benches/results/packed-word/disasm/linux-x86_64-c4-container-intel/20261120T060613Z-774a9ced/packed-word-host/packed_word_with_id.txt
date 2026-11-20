@@ -1,0 +1,10 @@
+# `packed_word_with_id` of arm `packed-word-host` of bench `packed-word`
+# library: libpacked_word_host.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261120T060613Z-774a9ced
+
+000000000000cdd0 <packed_word_with_id>:
+    cdd0:      	andl	$0xf0000000, %edi       # imm = 0xF0000000
+    cdd6:      	andl	$0xfffffff, %esi        # imm = 0xFFFFFFF
+    cddc:      	leal	(%rsi,%rdi), %eax
+    cddf:      	retq

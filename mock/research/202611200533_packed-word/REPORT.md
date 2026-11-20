@@ -36,24 +36,36 @@ Round `202611200533-wwxt`, on `work/arvo-packed-word`, cut from `work/arvo-bits-
 
 ## Tests
 
-`cargo mock test -p arvo-bits --cheap`: 31 run, 31 passed, the seven of `the_packed_word` and `compile_fail` with seven new cases among them (six refused at build, one that must build), on `nightly-2026-05-28`.
+After round `202611200556-vw98`, `cargo mock test -p arvo-bits --cheap` is green: the ten law tests of `the_packed_word`, over the 32-bit handle, its wide twin and two 64-bit words, and `compile_fail` with ten cases of the word among its own (nine refused at build, one that must build), on `nightly-2026-05-28`.
 
-Two hand mutants of `src/word.rs`, each run and undone. A read moved up by one bit turned five of the seven law tests red. A write that keeps the field's old bits turned the two round-trip tests red; the test of other fields reading as they did stays green under it, as it must, since that mutant moves no other field.
+Two mutant flags in `src/word.rs`, run against the law tests in `mock/research/sketches/202611200603_packed-word-mutants/`: a read one bit up turns seven of the ten red, a write that keeps the field's old bits four. The first round's two hand mutants, run and undone without a record, are not cited.
 
 The new `trybuild` fixtures were first written in a container whose `rust-src` was recorded as installed with no files, so rustc printed no source lines for `core` and every fixture of the tier mismatched as well. The tier's 37 were put back from `HEAD` untouched, `rust-src` reinstalled, and only the seven new ones blessed (ticket `4f5fbcf49470`).
 
 ## What it lowers to
 
-`cargo mock bench disasm packed-word <arm> <symbol>` over the bench `mock/benches/packed-word/`, both arms in release as the harness builds them, `x86_64` in this container (`linux-x86_64-c4-container-intel`), `nightly-2026-05-28`, each an `extern "C"` function taking and returning the host's `u32`. Records under `mock/benches/results/packed-word/disasm/`.
+`cargo mock bench disasm packed-word <arm> <symbol>` over the bench `mock/benches/packed-word/`, both arms in release as the harness builds them, `x86_64` in this container (`linux-x86_64-c4-container-intel`), `nightly-2026-05-28`, each an `extern "C"` function taking and returning the host's `u32`. The records cited are the runs stamped `774a9ced`, from a clean tree at the source commit of round `202611200556-vw98`, under `mock/benches/results/packed-word/disasm/`. The first round's runs, stamped `192d5e77-dirty`, stay beside them and are not cited, since nothing shows which source they built.
 
 | Operation | `packed-word-host`, by hand | `packed-word-word`, through `Word` |
 |---|---|---|
-| round trip `of` then `bits` | `mov`, `ret` | `mov`, `ret` |
+| round trip `of` then `bits` | `mov`, `ret` | the same |
 | the 3-bit kind read | `mov`, `shr $28`, `and $7`, `ret` | the same |
-| the 28-bit id written | `and $0xf0000000`, `and $0xfffffff`, `lea`, `ret` | the same |
+| the 28-bit id written | `and $0xf0000000`, `and $0xfffffff`, `lea`, `ret` | `and $0xfffffff`, `and $0xf0000000`, `lea`, `ret` |
 | the one-bit flag read | `mov`, `shr $31`, `ret` | the same |
 
-Instruction for instruction the same in all four. Nothing is claimed for another target, another width or a debug build, and nothing was timed.
+Three are the same instruction for instruction. The id write is the same three instructions with the two independent `and`s in the other order and `lea`'s operands swapped. Nothing is claimed for another target, another width or a debug build, and nothing was timed.
+
+## The first review, and the round that answered it
+
+A senior review of the branch at `0c8ffe54` returned merge after fixes. Round `202611200556-vw98` answered it, finding by finding.
+
+`Fields` and `Holds` were public and open, so a consumer's own list could claim any sum, union and overlap and switch every refusal off. Both are now sealed by a private supertrait, nameable in a bound and implemented for `()` and `(H, T)` alone, and the design names them. Making them unnameable was tried first and undone in the round, because a function generic over a field could then not write the bound `get` and `with` need.
+
+`Holds` matches a field by place and width, which the design had described as refusing every unlisted marker. The design now says a marker at a listed field's place and width is that field under a second name, and a test pins it reading and writing the same bits. Matching by marker type would need a type identity the crate cannot compare without an index the caller names.
+
+A width of zero or past sixty-four, and a field reaching past bit sixty-four, are refused by assertions of their own before any shift, with cases for a field of zero bits and a field past bit sixty-four; before, they failed as an overflowing shift. A write now masks what `low` gives to the field's bits. The laws are tested over two 64-bit words as well as the 32-bit ones. The mutants and the disassembly are as above.
+
+Two commit subjects of the first round, `adf89a0a` and `20d58a91`, name `arvo-bits` without backticks; they are pushed and stay as they are.
 
 ## Problems ticketed
 
