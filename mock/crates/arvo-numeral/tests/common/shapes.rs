@@ -241,11 +241,6 @@ macro_rules! ternary_at {
     };
 }
 
-/// The widest magnitude of a range of `w` bits.
-pub const fn widest(w: u32, signed: bool) -> i128 {
-    if signed { 1i128 << (w - 1) } else { (1i128 << w) - 1 }
-}
-
 /// The exponent zero, at every shape.
 pub const fn zero(_w: u32, _signed: bool, _radix: i128) -> i32 {
     0

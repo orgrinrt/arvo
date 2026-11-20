@@ -117,6 +117,9 @@ const fn times(a: Maybe<u128>, b: Maybe<u128>) -> Maybe<u128> {
 /// `den` is formed here: both are held and their quotient is below `2^127`.
 const fn holds(num: Maybe<u128>, den: Maybe<u128>) -> bool {
     match (num, den) {
+        // The mutant admits a quotient up to `2^128`, one radix power past the
+        // edge at radix two, where the floor no longer fits the index.
+        (Maybe::Is(_), Maybe::Is(den)) if cfg!(arvo_mutant_room_edge) => den > 0,
         (Maybe::Is(num), Maybe::Is(den)) => den > 0 && num / den < (1u128 << 127),
         _ => false,
     }
@@ -260,13 +263,99 @@ pub(crate) const fn converted<F: Format, T: Format>(a: Slot) -> Exact {
     }
 }
 
+/// The edges in the tests' own arithmetic, the file the shape suites read.
+#[cfg(test)]
+#[path = "../tests/common/edges.rs"]
+#[allow(dead_code)]
+mod edges;
+
+/// The radix-ten and radix-three ambients and the format over them that the
+/// suites declare, read where they are kept.
+#[cfg(test)]
+#[path = "../tests/common/points.rs"]
+mod points;
+
 #[cfg(test)]
 mod bound {
     //! The bound shown true one exponent inside its edge and false one past it.
 
+    use arvo_format::ambient::{BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
     use arvo_format::points::{Fixed, UFixed};
+    use arvo_format::slots::{Signed, Unsigned};
 
-    use super::{Crossing, Sides};
+    use super::points::{
+        Scaled,
+        TernaryRationals,
+        UnsignedDecimalRationals,
+        UnsignedTernaryRationals,
+    };
+    use super::{Crossing, Sides, edges};
+
+    /// The product, the quotient and the conversion from exponent zero, each
+    /// formed here at the last exponent the tests' arithmetic puts inside the
+    /// host's integer and not one past it, over one ambient and range.
+    macro_rules! at_the_edge {
+        ($ambient:ty, $slots:ident, $w:literal, $signed:literal, $radix:literal) => {{
+            const P: i32 = edges::product_room($w, $signed, $radix);
+            const Q: i32 = edges::quotient_room($w, $signed, $radix);
+            const C: i32 = -edges::host_bound(edges::widest($w, $signed) as u128, $radix);
+            type At<const E: i32> = Scaled<$ambient, $slots<$w>, E>;
+            let at = ($w, $signed, $radix);
+            assert!(
+                Sides::<At<P>>::PRODUCT,
+                "product refused at its edge {}, {:?}",
+                P,
+                at
+            );
+            assert!(
+                !Sides::<At<{ P - 1 }>>::PRODUCT,
+                "product past its edge {}, {:?}",
+                P,
+                at
+            );
+            assert!(
+                Sides::<At<Q>>::QUOTIENT,
+                "quotient refused at its edge {}, {:?}",
+                Q,
+                at
+            );
+            assert!(
+                !Sides::<At<{ Q - 1 }>>::QUOTIENT,
+                "quotient past its edge {}, {:?}",
+                Q,
+                at
+            );
+            assert!(
+                Crossing::<At<0>, At<C>>::HOLDS,
+                "conversion refused at its edge {}, {:?}",
+                C,
+                at
+            );
+            assert!(
+                !Crossing::<At<0>, At<{ C - 1 }>>::HOLDS,
+                "conversion past its edge {}, {:?}",
+                C,
+                at
+            );
+        }};
+    }
+
+    /// Both ranges of one width at the three radixes.
+    macro_rules! at_width {
+        ($($w:literal),*) => {$(
+            at_the_edge!(BinaryRationals, Signed, $w, true, 2);
+            at_the_edge!(UnsignedBinaryRationals, Unsigned, $w, false, 2);
+            at_the_edge!(DecimalRationals, Signed, $w, true, 10);
+            at_the_edge!(UnsignedDecimalRationals, Unsigned, $w, false, 10);
+            at_the_edge!(TernaryRationals, Signed, $w, true, 3);
+            at_the_edge!(UnsignedTernaryRationals, Unsigned, $w, false, 3);
+        )*};
+    }
+
+    #[test]
+    fn the_three_are_formed_here_to_the_rooms_edge_at_every_radix() {
+        at_width!(8, 16, 32, 64);
+    }
 
     #[test]
     fn the_product_is_formed_here_down_to_where_the_radix_power_passes_128_bits() {

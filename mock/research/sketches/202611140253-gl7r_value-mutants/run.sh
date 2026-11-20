@@ -43,3 +43,6 @@ run arvo_mutant_convert_mode arvo_mutant_convert_mode \
 # the quotient, the product or the conversion through it.
 run arvo_mutant_room arvo_mutant_room --test the_quotient --test the_quotient_by_a_value \
   --test fixed_point_product --test the_conversion
+# The bound of the ratio formed in the host's integer, admitted one radix power too far:
+# the predicates at their edge and the conversion across it.
+run arvo_mutant_room_edge arvo_mutant_room_edge --lib --test the_conversion_at_the_room_edge
