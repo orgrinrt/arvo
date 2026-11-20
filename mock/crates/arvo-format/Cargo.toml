@@ -11,6 +11,11 @@ notko.workspace = true
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"
+# The member step's red runs, `RUSTFLAGS="--cfg arvo_mutant_<name>"`: one flag breaks
+# the floor of a negative ratio, the other moves the bound past its edge.
+unexpected_cfgs = { level = "warn", check-cfg = [
+  "cfg(arvo_mutant_member_step, arvo_mutant_member_step_edge)",
+] }
 
 [dev-dependencies]
 trybuild = "1"

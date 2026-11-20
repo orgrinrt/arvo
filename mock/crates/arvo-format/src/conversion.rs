@@ -60,13 +60,13 @@ impl<F: Format, S: DeclaredSignature> Operation for Convert<F, S> {
 }
 
 /// What a pair of formats owes the conversion, checked rather than asked for.
-struct Convertible<F, T>(PhantomData<(F, T)>);
+pub(crate) struct Convertible<F, T>(PhantomData<(F, T)>);
 
 impl<F: Format, T: Format> Convertible<F, T> {
     /// The three conditions, each asserted from `conditions`, which
     /// `is_convertible` folds. The phases are first because the others read
     /// their parts.
-    const ADMITTED: () = {
+    pub(crate) const ADMITTED: () = {
         let [denote, constant, fits] = conditions::<F, T>();
         assert!(
             denote.get(),

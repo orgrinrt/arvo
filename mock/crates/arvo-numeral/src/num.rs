@@ -18,6 +18,7 @@ use arvo_format::{
     Dither,
     Exact,
     Format,
+    Member,
     Quantum,
     Slot,
     Slots,
@@ -34,7 +35,7 @@ use crate::admit::Sole;
 use crate::check::{Abort, DebugCheck};
 use crate::machine::copy;
 use crate::map::Held;
-use crate::{room, rung};
+use crate::rung;
 
 pub(crate) type SlotsOf<S> = <<S as DeclaredSignature>::Format as Format>::Slots;
 
@@ -162,6 +163,14 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
             [self.0],
             []
         ))
+    }
+
+    /// The member's slot as the format's `Member`, landed on the grid, where it
+    /// sits on itself. What the format's steps over members take.
+    #[must_use]
+    #[inline]
+    pub(crate) const fn member(self) -> Member<S::Format> {
+        Member::<S::Format>::landed::<S>(self.slot())
     }
 
     /// The value whose carrier is `carrier`. The host doors build on it, where
@@ -394,8 +403,9 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
             ))
         } else {
             // Elsewhere the position is scaled by the radix and rounded by the
-            // mode: formed in `room`, rounded and completed by the format's map.
-            let position = room::product::<S::Format>(self.slot(), rhs.slot());
+            // mode: formed by the format's step over members, rounded and
+            // completed by its map.
+            let position = self.member().product(rhs.member());
             Self::at_index(adapt::<S>(position, Dither::UNUSED).index())
         }
     }
@@ -404,7 +414,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// declared mode rounds its exact position to is a member.
     #[must_use]
     pub const fn fits_mul(self, rhs: Self) -> Bool {
-        let position = room::product::<S::Format>(self.slot(), rhs.slot());
+        let position = self.member().product(rhs.member());
         Bool::of(!panic_on_overflow::<S>(position, Dither::UNUSED).get())
     }
 }

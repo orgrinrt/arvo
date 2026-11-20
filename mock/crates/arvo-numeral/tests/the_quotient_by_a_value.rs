@@ -8,7 +8,7 @@
 //!
 //! The divisor is a member of a second format on the dividend's grid whose
 //! range leaves the zero out. The value read at run time is landed there by
-//! `Member::adapted`, which is in range by its totality and reads nothing to
+//! `Member::landed`, which is in range by its totality and reads nothing to
 //! decide anything, and `Divisor::member` takes it. The zero is the caller's to
 //! branch on before, as a site whose zero has an outcome of its own does. Here
 //! the branch only counts the zero, so that the sweep is seen to take it.
@@ -26,7 +26,7 @@ use arvo_format::quantum::Constant;
 use arvo_format::rounding::HalfEven;
 use arvo_format::slots::{Slot, Slots};
 use arvo_format::width::Width;
-use arvo_format::{Adapt, Dither, Exact, Member, Signature};
+use arvo_format::{Adapt, Member, Signature};
 use arvo_numeral::{Divisor, Num, Quiet, Sole};
 use common::{oracle, range, value};
 
@@ -93,10 +93,7 @@ fn by_values<S: Sole, G: Format>(counts: &mut Counts) {
         }
         let g_min = <G::Slots as Slots>::MIN.index();
         let g_max = <G::Slots as Slots>::MAX.index();
-        let member = Member::<G>::adapted::<Signature<G, Adapt<HalfEven, Saturate>>>(
-            Exact::on_grid(read.slot()),
-            Dither::UNUSED,
-        );
+        let member = Member::<G>::landed::<Signature<G, Adapt<HalfEven, Saturate>>>(read.slot());
         let lands = n.clamp(g_min, g_max);
         if lands != n {
             counts.passed += 1;
@@ -155,7 +152,7 @@ fn a_value_divides_by_a_value_read_at_run_time_at_three_exponents() {
     // Every landing is the end of the range it passed, or the value itself.
     assert_eq!(
         c.landed, 0,
-        "`Member::adapted` lands a value off the saturation"
+        "`Member::landed` lands a value off the saturation"
     );
     // Past the range: 128 unsigned onto 1 to 127, the 128 negatives onto the
     // positive half, the 127 positives onto the negative.

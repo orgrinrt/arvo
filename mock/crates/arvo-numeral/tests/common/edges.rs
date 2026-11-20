@@ -15,8 +15,9 @@
 //! holds, found from the members' own magnitudes, and the sweeps hold it against
 //! the format's verdict: admitted at the edge, refused one past it.
 //!
-//! The file stands alone, so `room.rs`'s `bound` module takes it by path and
-//! holds the value's own predicates against the same edges.
+//! The format's step over members forms the position in the host's integer up
+//! to the edges `host_bound` and `power_bound` give, and its own tests hold its
+//! bound there.
 
 /// The widest magnitude of a range of `w` bits.
 pub const fn widest(w: u32, signed: bool) -> i128 {
@@ -95,8 +96,8 @@ pub const fn target_highest(_w: u32, _signed: bool, radix: i128) -> i32 {
 }
 
 /// The largest `k` at least zero at which `m radix^k` is still below `2^127`,
-/// for an `m` other than zero: the bound under which the value forms a position
-/// in the host's 128-bit integer rather than in the format's four limbs.
+/// for an `m` other than zero: the bound under which the format's step forms a
+/// position in the host's 128-bit integer rather than in the format's four limbs.
 pub const fn host_bound(m: u128, radix: i128) -> i32 {
     let mut at = m;
     let mut k = 0;
@@ -126,7 +127,7 @@ pub const fn power_bound(radix: i128) -> i32 {
     }
 }
 
-/// The deepest exponent at which the value forms the quotient in the host's
+/// The deepest exponent at which the format's step forms the quotient in the host's
 /// integer, or the format's deepest where that is nearer zero: a quotient by the
 /// slot one is the widest member times the radix to minus the exponent, which
 /// has to stay below `2^127`. One past it the format's four limbs take over.
@@ -136,7 +137,7 @@ pub const fn quotient_room(w: u32, signed: bool, radix: i128) -> i32 {
     if room > deep { room } else { deep }
 }
 
-/// The deepest exponent at which the value forms the product in the host's
+/// The deepest exponent at which the format's step forms the product in the host's
 /// integer, or the format's deepest where that is nearer zero: the radix to
 /// minus the exponent has to be a 128-bit integer, and the square of any member
 /// up to 64 bits over it then stays below `2^127`.

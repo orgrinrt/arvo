@@ -5,9 +5,10 @@
 
 //! The quotient and the conversion onto another signature.
 //!
-//! Both place a member at a ratio and round it. The ratio is formed in `room`,
-//! in the host's integer where the range leaves room and by the format's own
-//! step elsewhere, and the rounding is the format's applied map, `adapt`.
+//! Both place a member at a ratio and round it. The position is the format's
+//! step over members, `Member::quotient` and `Member::converted`, which forms it
+//! in the host's integer where the range leaves room and by the slot step
+//! elsewhere, and the rounding is the format's applied map, `adapt`.
 
 use arvo_format::overflow::Saturate;
 use arvo_format::{
@@ -27,7 +28,6 @@ use arvo_format::{
 use crate::admit::Sole;
 use crate::check::DebugCheck;
 use crate::num::Num;
-use crate::room;
 
 impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// The quotient under the signature: the slot `arvo_format::div` gives for
@@ -54,16 +54,14 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
         if cfg!(arvo_mutant_div) && !self.fits_div(by).get() {
             return self;
         }
-        Self::at_index(
-            adapt::<S>(room::quotient::<S::Format>(self.slot(), by), Dither::UNUSED).index(),
-        )
+        Self::at_index(adapt::<S>(self.member().quotient(by), Dither::UNUSED).index())
     }
 
     /// Whether the quotient needs no completion: the slot the declared mode
     /// rounds its exact position to is a member.
     #[must_use]
     pub const fn fits_div(self, by: Divisor<S::Format>) -> Bool {
-        let position = room::quotient::<S::Format>(self.slot(), by);
+        let position = self.member().quotient(by);
         Bool::of(!panic_on_overflow::<S>(position, Dither::UNUSED).get())
     }
 
@@ -105,7 +103,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
             >(self.slot(), Dither::UNUSED);
             return Num::at_index(rounded.index());
         }
-        let position = room::converted::<S::Format, T::Format>(self.slot());
+        let position = self.member().converted::<T::Format>();
         Num::at_index(adapt::<T>(position, Dither::UNUSED).index())
     }
 
@@ -113,7 +111,7 @@ impl<S: Sole, C: DebugCheck> Num<S, C> {
     /// rounds the member's position to is a member of `T`.
     #[must_use]
     pub const fn fits_convert<T: Sole>(self) -> Bool {
-        let position = room::converted::<S::Format, T::Format>(self.slot());
+        let position = self.member().converted::<T::Format>();
         Bool::of(!panic_on_overflow::<T>(position, Dither::UNUSED).get())
     }
 }

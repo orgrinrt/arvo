@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! The conversion at the edge of the room the value forms it in, against the
-//! tests' own arithmetic.
+//! The conversion at the edge of the room the format's step forms it in,
+//! against the tests' own arithmetic.
 //!
-//! From exponent zero onto a deeper exponent, the value forms the position in
-//! the host's 128-bit integer while the source's widest member times the radix
-//! to minus the target's exponent stays below `2^127`, and the format's four
-//! limbs take it one exponent past. Each radix is taken at 32 and 64 bits from
+//! From exponent zero onto a deeper exponent, the format's step over members
+//! forms the position in the host's 128-bit integer while the source's widest
+//! member times the radix to minus the target's exponent stays below `2^127`,
+//! and the format's four limbs take it one exponent past. Each radix is taken at 32 and 64 bits from
 //! both source ranges onto both target ranges, at the last exponent inside the
 //! room and the first past it, under every adaptation of the target. The
 //! members of a source include both ends of its range.
@@ -22,7 +22,7 @@ use arvo_format::{Adapt, Signature};
 use common::edges::{host_bound, widest};
 use common::shapes::Shapes;
 
-/// The deepest target exponent the value converts onto in the host's integer
+/// The deepest target exponent the format's step converts onto in the host's integer
 /// from a source of `w` bits at exponent zero.
 const fn room(w: u32, signed: bool, radix: i128) -> i32 {
     -host_bound(widest(w, signed) as u128, radix)
