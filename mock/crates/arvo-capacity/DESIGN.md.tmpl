@@ -1,0 +1,91 @@
+# `arvo-capacity`: a count fixed at build, carried as a type
+
+Canon this design declares: `obligation::a_count_fixed_at_build_that_sizes_arrays_from_generic_code`,
+a count fixed when the consumer builds that sizes real arrays from code generic over it, many of them
+bundled under one parameter, nested without a product, readable in a constant, and none of it needing
+a feature line in the consumer. The row is a proposal awaiting op's word, and this crate is built on it
+meanwhile. No ruling places a capacity crate in arvo or says whether its trait is sealed.
+
+## What this crate is
+
+A capacity is a number of elements fixed when the consumer builds, and the consumer names it once, as
+a type. Code generic over that type sizes arrays by it without ever naming a length, so the same
+generic code serves a budget of four and a budget of four thousand, and the budget is changed in one
+place. Nothing here is a value at run time: there is no capacity to construct, nothing grows, and a
+count that is not a constant cannot be written.
+
+How many elements are in use at a given moment is a different number. It is a run-time value the
+consumer keeps, bounded by the capacity, and it is not this crate's.
+
+## The trait: `Capacity`
+
+`Capacity` carries a count as typestate. Its associated type `Array<T>` is an array of exactly the
+count's length of `T`, bounded by `AsRef<[T]>` and `AsMut<[T]>`, so generic code reads and writes it as
+a slice and walks it by the slice's own length. `filled(value)` gives the array with every element
+`value`, for any `T: Copy`.
+
+A bundle of dimensions is a trait of the consumer's whose associated types are each bounded by
+`Capacity`, so one type parameter sizes every structure a component holds:
+
+```rust
+trait PlanDims {
+    type Units: Capacity;
+    type Cores: Capacity;
+}
+
+struct Plan<D: PlanDims> {
+    order: <D::Units as Capacity>::Array<u32>,
+}
+```
+
+Nesting is a projection inside a projection, `<Cores as Capacity>::Array<<Accums as Capacity>::Array<T>>`.
+No product of the two counts is computed anywhere, so nothing here asks the toolchain for arithmetic on
+a generic constant.
+
+One residue is the consumer's to state. An array of a `Copy` element is `Copy`, but a trait cannot say
+that its projection is `Copy` for every capacity, so generic code that copies a nested inner array says
+`<Inner as Capacity>::Array<T>: Copy` where it does. The bound is satisfied by every capacity there is;
+it is only that the compiler has to be told at the site.
+
+The trait is sealed: `Dim<N>` is its one implementor. Sealed, the array a capacity projects and the
+count it reports both come from the one `N`, so they cannot disagree. Open, another crate could
+implement it with an array of four and a count of eight, the build would accept it, and generic code
+bounding a walk by the count would read past the array; the sketch this crate was chosen from measured
+exactly that. Whether the trait stays sealed is an open question, and the seal carries a marker naming
+it. Unsealing later breaks no consumer, where sealing later would.
+
+## The marker: `Dim<N>`
+
+`Dim<const N: usize>` is the capacity of `N` elements, for every `N`. `N` is the one bare integer in
+the surface, at a const generic parameter, which is where the stack admits one. A consumer declares its
+budget there, once: `type Units = Dim<256>`. A `Dim` sized by anything the build cannot evaluate is
+refused by the compiler, since `N` is a const parameter.
+
+## The count: `count`
+
+`count::<C, A, K>()` is the count of the capacity `C` as `arvo_numeral::USize<A, K>`, the stack's
+platform-sized unsigned integer under the adaptation `A` names and the check `K`. It is a `const fn`,
+so the count is read in a constant: for a bound, a comparison, or a byte total.
+
+The crate picks no adaptation for the count. Reading it is a bit copy of a value every pointer width
+holds, so nothing is adapted here, and how the count is completed in the consumer's later arithmetic
+is the consumer's to say at the call. The length behind the count is held where only this crate reaches
+it, so no host integer is public.
+
+## What this crate does not hold
+
+A count chosen at run time is not here, and neither is a container that keeps how many of its elements
+are live: the first is not a capacity, and the second is a collection, which belongs to the crate that
+holds one. A count carried as a value of a const parameter rather than as a type is not here either,
+since a consumer would need an unstable feature to declare such a parameter and a forbidden one to size
+an array from it.
+
+## Tests
+
+A consumer crate outside the workspace, depending on this one with no feature line, bundles three
+capacities under one parameter, sizes a plan by them alone and nested, fills and walks it in generic
+code, and checks at build that every count read in a constant equals its array's length. Compile-fail
+pairs, each beside a twin that builds, show that an implementation of `Capacity` from outside is refused
+where `Dim<N>` used from outside is not, and that a `Dim` sized by a run-time value is refused where one
+sized by a constant is not. The agreement between array and count is asserted over a spread of counts,
+and the committed run under `--cfg capacity_mutant`, where the count is one past the array, is red.
