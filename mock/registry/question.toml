@@ -2159,7 +2159,7 @@ options = [
 ]
 decider = "panel"
 topic = "the_format"
-note = "The two seats of the remainder panel agree on everything in `proposal::a_remainder_is_the_dividend_less_the_divisor_times_an_integer_rounding_of_their_quotient` and split here, each marking its own side as the call it made without a row. Within that row's region the adaptation never rounds, so either option gives the same remainder for the same count rounding; the split decides the public entry, not the exact step, which takes the count's rounding as a parameter under both."
+note = "The two seats of the remainder panel agree on everything in `proposal::a_remainder_is_the_dividend_less_the_divisor_times_an_integer_rounding_of_their_quotient` and split here: the first seat takes the second option and marks it as the one call it made without a row, and the second takes the first, argued from the admission rule, and marks a different reading as its own, the landing of the pair's quotient. Within that row's region the adaptation never rounds, so either option gives the same remainder for the same count rounding; the split decides the public entry, not the exact step, which takes the count's rounding as a parameter under both."
 provenance = [
   "panel::202611192115_the-remainder-panel::fabian-giesen::74",
   "panel::202611192115_the-remainder-panel::donald-knuth::186",
@@ -2171,7 +2171,7 @@ id = "where_a_remainder_is_admitted_past_one_format_at_a_whole_phase"
 asks = "Past one format at a whole phase, is the remainder admitted at a fractional phase, across a divisor of another format, and how is its integer count handed out?"
 options = [
   "Admitted at a fractional phase, the off-grid remainder placed by the signature, and across formats wherever every divisor value lies on the dividend's quantum lattice; the count is handed out exact, never adapted.",
-  "Not yet admitted at a fractional phase, since rounding the remainder onto the grid and restricting the count to multiples of the phase denominator are two realisations that disagree; one format only; the count lands on an integer signature the caller names, refused at build where its grid does not hold the integers.",
+  "Not yet admitted at a fractional phase, since rounding the remainder onto the grid and restricting the count to multiples of the phase denominator are two realisations that disagree; one format only; the count lands on an integer signature the caller names, refused at build where its grid does not hold the integers; where the count leaves that signature, the region waits on `question::whose_reduction_governs_a_lossy_crossing`.",
 ]
 decider = "panel"
 topic = "the_format"

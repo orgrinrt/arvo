@@ -2,7 +2,22 @@
   "version": 2,
   "flavour": "",
   "member": "arvo-digest",
-  "green": null,
+  "green": {
+    "full": "71d98c3720e2f9d91f5859a9441eb09cce3545822a41438ab5242988d66a0908",
+    "own": {
+      "arvo-bits": "39ea28e3e9844103f78b778e486997ca817ad3dfedab9d027d3c87e32019dcd4",
+      "arvo-digest": "79fa18cfd52362730d5a579fb312eb6b0769e47a7a568cc7596ecdb44a55cb1d",
+      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
+      "arvo-numeral": "40051c9afdd6a225ecde1f7d037bfef85ddde75b949aae9f99d7da2d0137cdca",
+      "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3"
+    }
+  },
   "tests": {},
-  "bins": {}
+  "bins": {
+    "arvo-digest": "8fac2c0a422e28bc2748173071cd360308e5e70c238b5fe869371bf846555bcf",
+    "arvo-digest::bits": "d4a429e4ee2c4be3de0bd662477b1e8ba9c80683ef6f29ff51df876ad2def87e",
+    "arvo-digest::fnv1a": "13b34cb79972f9df9534e69abb8309f075f62f0adc69d67855ce0237efd89d64",
+    "arvo-digest::refused": "ea5b977313009605a159667b72bcf8e099b9d44ceedc1d61a5402d3b453b2aac",
+    "arvo-digest::xxh3": "159205ccd79ea7a9d01ca034ad0ccd19339d5f40744efdf88e47734b6b03a801"
+  }
 }
