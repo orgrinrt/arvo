@@ -6,7 +6,7 @@
 // The product sweep's body, included by one test file a radix.
 
 use arvo_numeral::Sole;
-use common::edges::{product_deepest as deep, product_highest as top};
+use common::edges::{product_deepest as deep, product_highest as top, product_room as room};
 use common::shapes::{SIGNATURES_OF_A_BAND, Shapes, minus_one, pairs};
 use common::{oracle, value};
 
@@ -105,7 +105,7 @@ macro_rules! band {
         fn $name() {
             let mut shapes = Shapes::default();
             $widths!($at!(
-                [top, whole, minus_one, half, deep],
+                [top, whole, minus_one, half, room, deep],
                 products_of,
                 (&mut shapes)
             ));

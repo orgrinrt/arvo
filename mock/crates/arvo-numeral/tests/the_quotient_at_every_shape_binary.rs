@@ -8,7 +8,8 @@
 //!
 //! `common::shapes` says what a shape is and which are taken. The exponents
 //! here, per width `w`, are the highest the format's quotient admits, zero,
-//! minus one, minus half of `w` rounded up, and the deepest it admits. A test in
+//! minus one, minus half of `w` rounded up, the deepest at which the value forms
+//! the quotient in the host's integer, and the deepest it admits. A test in
 //! each radix file holds the two ends against the format's own verdict at every
 //! width and both ranges, admitted at each and refused one past it.
 //!
