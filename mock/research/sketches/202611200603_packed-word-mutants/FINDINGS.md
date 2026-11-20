@@ -16,16 +16,20 @@ flag: neither flag touches a refusal, and `trybuild` removes `RUSTFLAGS` from it
 
 ## What the runs show
 
-| Flag | What it breaks | Red, of ten | Exit |
-|---|---|---|---|
-| `arvo_mutant_bits_word_get` | reads a field from one bit above its `BELOW` | seven: the three read-back tests, the two that pin raw bits, the constant test and the other-fields test | 101 |
-| `arvo_mutant_bits_word_with` | writes a field without clearing its old bits | four: the three read-back tests and the 64-bit edges test | 101 |
+The outputs were taken again by round `202611200616-o8z9`, after the word's positions came to be derived
+from its list and the law tests gained every container width from one to sixty-four and a field listed
+in two layouts. The flags sit at the same points of the read and the write.
 
-The three tests the read mutant leaves green are the round trip of `of` and `bits`, the agreement of
-`Lane` with `cast`, and the alias test, which compares two reads that move the same way. None of them
-reads a field against an expected value.
+| Flag | What it breaks | Red, of eleven | Exit |
+|---|---|---|---|
+| `arvo_mutant_bits_word_get` | reads a field from one bit above its position | nine: the three read-back tests, the width matrix, the two that pin the handle's and the edges' raw bits, the two-layouts test, the constant test and the other-fields test | 101 |
+| `arvo_mutant_bits_word_with` | writes a field without clearing its old bits | five: the three read-back tests, the width matrix and the 64-bit edges test | 101 |
+
+The two tests the read mutant leaves green are the round trip of `of` and `bits` and the agreement of
+`Lane` with `cast`. Neither reads a field against an expected value.
 
 The write mutant leaves the other-fields test green, as it must: a write that keeps the field's old bits
-moves no bit outside the field. It also leaves the constant test and the 32-bit raw-bits test green,
-because both build their words up from zero, where an or and a cleared write agree; the 64-bit edges test
-writes over a word with bits already set where it reads, and catches it.
+moves no bit outside the field. It also leaves the constant test, the handle's raw-bits test and the
+two-layouts test green, because each builds its words up from zero, where an or and a cleared write
+agree; the read-back tests, the width matrix and the 64-bit edges test write over words with bits
+already set where they read, and catch it.
