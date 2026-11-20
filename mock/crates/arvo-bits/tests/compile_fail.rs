@@ -17,6 +17,10 @@
 //! `masked` forces it directly; `cast` forces it only by delegating to
 //! `masked` at the target width, so its refusal is one delegation away from
 //! disappearing under a refactor that nothing else would notice.
+//!
+//! An index or an amount at the width is refused the same way, by an assertion
+//! each bit operation forces itself, and the trait carries it by calling the
+//! inherent method; the last case holds that delegation.
 
 #[test]
 fn a_width_of_zero_bits_is_refused() {
@@ -40,4 +44,34 @@ fn a_cast_to_zero_bits_is_refused() {
 fn a_cast_past_sixty_four_bits_is_refused() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/a_cast_past_sixty_four_bits_is_refused.rs");
+}
+
+#[test]
+fn a_bit_at_the_width_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_bit_at_the_width_is_refused.rs");
+}
+
+#[test]
+fn a_written_bit_at_the_width_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_written_bit_at_the_width_is_refused.rs");
+}
+
+#[test]
+fn a_shift_by_the_width_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_shift_by_the_width_is_refused.rs");
+}
+
+#[test]
+fn a_rotation_by_the_width_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_rotation_by_the_width_is_refused.rs");
+}
+
+#[test]
+fn a_bit_at_the_width_through_the_trait_is_refused() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/ui/a_bit_at_the_width_through_the_trait_is_refused.rs");
 }

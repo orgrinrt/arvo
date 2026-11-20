@@ -3,7 +3,7 @@
   "flavour": "",
   "member": "arvo-strategy",
   "green": {
-    "full": "96b1fa357cfb601081fcaee0bcb0352c77913a1408193e91f1962102b61a07a7",
+    "full": "e043a2af7ebd0139d6581c78e5af7dcf2e791bac887e5422ede6677bf94ba908",
     "own": {
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe",
       "arvo-placement": "205c6d399250974d51ab9892ab5c9d92355f4078a7bb67807dd887003755f5c3",
@@ -12,6 +12,6 @@
   },
   "tests": {},
   "bins": {
-    "arvo-strategy": "e7930bac5446c70a970eda87224af1d8a955c771cefbe4452dcd59704c51037a"
+    "arvo-strategy": "f92f34ee44990885dc5f7a894757c97ed51fad78412131219ecebca696c7cbe4"
   }
 }

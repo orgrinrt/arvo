@@ -3,7 +3,7 @@
   "flavour": "",
   "member": "arvo-format",
   "green": {
-    "full": "e8de670ac0a3cf9850d95b5a8f959a35fa15e46f2bb5336fd9d79312b9cdff45",
+    "full": "a6346d81a3489fe7098c5f7c69f59adf0035a5ea972a08ee908243775024f2b3",
     "own": {
       "arvo-format": "efe3fbc94b546d190de576f3fc5f14566fa5b46cd952e9003ca8ad06f483f73b"
     }
@@ -13,95 +13,100 @@
       "addition::tests::the_signed_oracle::subtraction_answers_as_the_oracle_does_at_every_member_up_to_eight_bits": {
         "secs": 42.4,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "apply::tests::the_oracle_sweep::the_sweep_reports_every_broken_map": {
-        "secs": 8.5,
+        "secs": 11.1,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "apply::tests::the_tie_sweep::every_admitted_width_answers_every_tie_as_the_oracles_do": {
         "secs": 85.0,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "apply::tests::the_wide_oracle_sweep::the_shipped_map_answers_as_the_oracle_does_over_the_wide_region": {
         "secs": 5.3,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "apply::tests::the_wide_oracle_sweep::the_wide_sweep_reports_every_broken_map": {
         "secs": 13.6,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_member_door::a_byte_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
         "secs": 6.6,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_member_door::a_negative_exponent_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
         "secs": 7.0,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_member_door::a_phase_divides_by_the_members_of_its_unreduced_spelling_as_the_oracle_does": {
         "secs": 7.6,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_member_door::a_whole_phase_divides_by_its_own_members_as_the_oracle_does": {
         "secs": 7.4,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_member_door::a_zero_free_range_divides_by_its_own_members_as_the_oracle_does": {
         "secs": 7.9,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_member_door::radix_ten_divides_by_the_members_of_a_zero_free_range_as_the_oracle_does": {
         "secs": 7.1,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_member_door::the_bytes_divide_by_a_range_at_radix_ten_on_their_grid_as_the_oracle_does": {
         "secs": 6.9,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "division::tests::the_oracle::the_quotient_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
         "secs": 90.0,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "multiplication::tests::the_inverse_round_trip::the_inverse_of_three_round_trips_at_every_unsigned_width_from_one_to_64": {
         "secs": 12.0,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       },
       "multiplication::tests::the_oracle::the_product_answers_as_the_oracle_does_at_every_member_pair_up_to_eight_bits": {
         "secs": 120.9,
         "passed": true,
-        "passed_at": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1"
+        "passed_at": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2"
       }
     },
     "arvo-format::compile_fail": {
       "a_format_is_not_a_signature": {
         "secs": 5.1,
         "passed": true,
-        "passed_at": "09573513678e598d21a069ca07a4eedab7a98f08d3169b9fc805c13c35f67a4e"
+        "passed_at": "d11322656f396294842828fd0dd360da9d28b8381c1867b15d22b12f2a973def"
+      },
+      "a_step_law_that_runs_off_the_exponent_is_refused": {
+        "secs": 6.7,
+        "passed": true,
+        "passed_at": "d11322656f396294842828fd0dd360da9d28b8381c1867b15d22b12f2a973def"
       }
     }
   },
   "bins": {
-    "arvo-format": "3a53d063d5dbc3cdfef174396623e3883c5fe4a3d6852cd8eda48ee537572ef1",
-    "arvo-format::compile_fail": "09573513678e598d21a069ca07a4eedab7a98f08d3169b9fc805c13c35f67a4e",
-    "arvo-format::ieee754_binary_parity": "2eda50bdf5b3db11d44c6bc1d9f5fd0a2bd73d426b7e527cd6f7b1b2b210149f",
-    "arvo-format::ieee754_decimal_parity": "1695ec95e58d7d21aafe0691839a3cd27d3bbf70e9a2ecc75ad8da9e4d690866",
-    "arvo-format::ieee754_underflow_parity": "93a4badff044f1e7ca02a85faf0072469c69db70ed2b2f698a552a3f1ed0fb58",
-    "arvo-format::matlab_fi_parity": "6b53d0c83da4657c63197d48f53a0dcc29dda0476812c28a19fd4bd9789e9802",
-    "arvo-format::matlab_fimath_parity": "cdf6385c1f01114654dba17690eef263a92c5d3476c0d3eeea4ff514f3fe4fa2",
-    "arvo-format::the_ties_away_alias": "6aba2ffbf7baafca4544ff49edfc8370ee5658d5464b9b606221412bfb7b11da"
+    "arvo-format": "4f41b5eb901b8048a494ffcfb5a4ee03784ceb9d84320865e738f42ad879d4f2",
+    "arvo-format::compile_fail": "d11322656f396294842828fd0dd360da9d28b8381c1867b15d22b12f2a973def",
+    "arvo-format::ieee754_binary_parity": "7682beeb4f1d5157093b055c219fb4037d98cc097b9c35a5428dafa06ea2ca21",
+    "arvo-format::ieee754_decimal_parity": "11bd30cda103dafdd06699fb45683e7450f3b54245d762abb316c2420c89a8d5",
+    "arvo-format::ieee754_underflow_parity": "f573f787187cb0f366056e17482249c97a2922f8f5640fa701fd7cc360dd7de3",
+    "arvo-format::matlab_fi_parity": "80e05903aa3fa02d15f0d167a10f8d3905a67372e5cd35b3310167e773be5372",
+    "arvo-format::matlab_fimath_parity": "ad25b518ee3ca843ae06ba8eac66c4e75611e09144e54050f72528d1f93081b6",
+    "arvo-format::the_ties_away_alias": "013f6d6d3f0f87a9f07c00f5042309dff87b9a7c4b2369f3977e314975212f25"
   }
 }

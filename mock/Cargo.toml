@@ -59,10 +59,7 @@ license = "MPL-2.0"
 # every publishable crate that pulls one in.
 #
 # notko's is its own, from `notko/mock/Cargo.toml`. The arvo ones match
-# `workspace.package.version` above and move with it. `arvo-bits` carries no
-# path dependency on any sibling here; it is a leaf parallel to `arvo-format`
-# rather than above or below it, and is listed for the same publishing reason
-# the other three are, not because anything depends on it yet.
+# `workspace.package.version` above and move with it.
 notko = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", version = "0.0.1", default-features = false, features = ["const", "try_trait_v2"] }
 # The type-level list of the same repository, for the one optional impl
 # `arvo-numeral` carries of its count trait. Nothing takes it by default.

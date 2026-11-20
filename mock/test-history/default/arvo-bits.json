@@ -3,14 +3,19 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "e401cb085bd07db6ebdefadedf03d7a724b6bb99c028fb42ce7523574f6380cd",
+    "full": "3c3d8e7d718590df51dc76d6a2193a23b22d67ae14f3d2f0b2afe3a1ea6ad2a7",
     "own": {
-      "arvo-bits": "738ea6b76959c864194e2270ff749f5be3de75e211e12509a5aa507453def1d0"
+      "arvo-bits": "e029de8d37b3c7b65df91a9dcab4d41e827a45e7252cda885b2fa26efa726615",
+      "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-bits": "315f6b2881fd014c5422d937d76ddfb6cbe72284f4cd9b7199f8dd8f98528775",
-    "arvo-bits::compile_fail": "c85c103bfa00dc7dcac7cda16666f5692a5971d17e1e82b83d6eea4e764760e9"
+    "arvo-bits": "450d4bdaabaa95c3c615b775c5bd2637be33d4337b94a973e9b33ea6a3b156e2",
+    "arvo-bits::compile_fail": "8e1322d196bab77443859c6622ddb628230cf8abeabb5efb54a407cbe3a05c3d",
+    "arvo-bits::the_bit_access": "d7bd6eed0e1f8490f048164373a90a54d17b50de2dafb892795a7164cbf536fb",
+    "arvo-bits::the_bit_logic": "f953502b2a5eeff434ab31148150282b12cf92e315c74116a3b4bca258823db7",
+    "arvo-bits::the_bit_sequence": "744f0b229d1e9686c6e483acc2e1929769b9f0350e23e64199ab0f4e8dc0aa46",
+    "arvo-bits::the_bit_tier_in_a_constant": "0c777df7f6488bf410696250d47ea48f5ed6130597fbfb9864d85fcbb83583e5"
   }
 }

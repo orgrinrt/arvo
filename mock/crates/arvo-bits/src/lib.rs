@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MPL-2.0     https://mozilla.org/MPL/2.0        contact@hiisi.digital
 //--------------------------------------------------------------------------------------------------
 
-//! A value at an exact declared width, and nothing else.
+//! A value at an exact declared width, and the bit operations over it.
 //!
 //! `obligation::an_exact_width_container_a_consumer_can_alias_and_pin` asks for
 //! a container a consumer can name at their own boundary, where the width is
@@ -14,6 +14,13 @@
 //! value known to be exactly `N` bits wide, constructed from a wider host value
 //! by masking and cast to a different declared width by masking again.
 //!
+//! Over it sits the bit tier: one bit read and written, `and`, `or`, `xor`,
+//! `not` and the emptiness test at one width, and shifts and rotations within
+//! the width, each an inherent `const fn` and each again behind the traits
+//! `BitWidth`, `BitAccess`, `BitLogic` and `BitSequence`, for code generic over
+//! the container. An index or an amount at or past the width is refused at
+//! build.
+//!
 //! This crate introduces the numeric category a second time, the way
 //! `arvo_format` does for its own reasons: the crate that defines a value at an
 //! exact width cannot express itself in types that do not exist yet, so `u64`
@@ -21,8 +28,9 @@
 //! at `halves` and its byte slice at `Bytes`. Every crate above this one
 //! uses `Bits` and is checked normally.
 //!
-//! It depends on nothing in this workspace, and on notko, the foundation under
-//! the stack, for the `Maybe` a byte run's walk returns. `arvo_format`'s own design states
+//! It depends on `arvo_format` for the `Bool` and the `Width` the bit tier
+//! answers in, and on notko, the foundation under the stack, for the `Maybe` a
+//! byte run's walk returns. `arvo_format`'s own design states
 //! plainly that a format is not a container and holds no machine carrier;
 //! `arvo_placement`'s own design derives placement metadata and is checked
 //! against ever holding a host primitive itself. Neither crate can hold a
@@ -38,6 +46,7 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![feature(const_trait_impl)]
 
 /// A value known to be exactly `N` bits wide, for `N` from one to sixty-four.
 ///
@@ -130,17 +139,6 @@ impl<const N: u32> Bits<N> {
     pub const fn cast<const M: u32>(self) -> Bits<M> {
         Bits::<M>::masked(self.raw())
     }
-
-    /// The bitwise exclusive or of two values at this width.
-    ///
-    /// A bit operation and not arithmetic: no bit of the result depends on any
-    /// other bit position, so nothing carries and there is no overflow policy to
-    /// choose. Both sides are within `N` bits, so the result is too and needs
-    /// no mask. A consumer xoring two widths casts one of them first.
-    #[must_use]
-    pub const fn xor(self, other: Self) -> Self {
-        Self(self.0 ^ other.0)
-    }
 }
 
 impl Bits<64> {
@@ -158,7 +156,11 @@ impl Bits<64> {
 }
 
 mod bytes;
+mod ops;
+mod tier;
+
 pub use bytes::Bytes;
+pub use tier::{BitAccess, BitLogic, BitSequence, BitWidth};
 
 #[cfg(test)]
 mod tests;
