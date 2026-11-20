@@ -1,0 +1,17 @@
+# The packed word of `arvo-bits` against the same handle written by hand on the
+# host's 32-bit integer: a 28-bit id, a 3-bit kind and a one-bit flag, the
+# layout of hilavitkutin's identity handle, for
+# `obligation::a_word_divided_into_named_fields_of_declared_widths`. The
+# evidence this bench exists for is the disassembly of the four exported
+# operations of each arm, the round trip to the container, a field read, a
+# field write and the one-bit read, which `cargo mock bench disasm` writes under
+# `results/packed-word/disasm/`; the timing over records of a word and a value
+# is the same question asked of a loop. The points are lengths in bytes, eight
+# to a record.
+title = "A packed word of named fields, through Word and by hand on the host integer"
+workload = "default"
+arms = ["packed-word-host", "packed-word-word"]
+baseline = "packed_word_host"
+points = [64, 256]
+may_differ = false
+required = true

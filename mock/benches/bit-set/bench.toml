@@ -1,0 +1,14 @@
+# Whether two 64-bit sets meet, the intersection test of
+# `obligation::set_operations_over_a_fixed_size_bit_set`, through the bit tier
+# of `arvo-bits` and in the host's own integer. The evidence this bench exists
+# for is the disassembly of the three exported operations of each arm, which
+# `cargo mock bench disasm` writes under `results/bit-set/disasm/`; the timing
+# over records of two sets is the same question asked of a loop. The points
+# are lengths in bytes, sixteen to a record.
+title = "Whether two 64-bit sets meet, through the bit tier and on the host integer"
+workload = "default"
+arms = ["bit-set-host", "bit-set-tier"]
+baseline = "bit_set_host"
+points = [64, 256]
+may_differ = false
+required = true

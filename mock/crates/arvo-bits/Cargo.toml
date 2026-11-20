@@ -3,14 +3,23 @@ name = "arvo-bits"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "An exact-width bit container: masked construction, masked cast and xor, and a byte run, no arithmetic"
+description = "An exact-width bit container with its bit operations: masked construction and cast, one bit, the logic, shifts and rotations, a word of named fields, and a byte run, no arithmetic"
 readme = "README.md.tmpl"
 
 [dependencies]
+arvo-format.workspace = true
 notko.workspace = true
+notko-hlist.workspace = true
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"
+unexpected_cfgs = { level = "warn", check-cfg = [
+  "cfg(arvo_mutant_bits_index, arvo_mutant_bits_with_bit, arvo_mutant_bits_not)",
+  "cfg(arvo_mutant_bits_shift, arvo_mutant_bits_rotate)",
+  "cfg(arvo_mutant_bits_bit, arvo_mutant_bits_and, arvo_mutant_bits_or, arvo_mutant_bits_xor)",
+  "cfg(arvo_mutant_bits_is_empty, arvo_mutant_bits_shift_down, arvo_mutant_bits_rotate_down)",
+  "cfg(arvo_mutant_bits_word_get, arvo_mutant_bits_word_with)",
+] }
 
 [dev-dependencies]
 trybuild = "1"

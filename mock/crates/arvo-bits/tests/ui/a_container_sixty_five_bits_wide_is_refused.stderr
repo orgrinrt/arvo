@@ -1,0 +1,30 @@
+error[E0080]: evaluation panicked: the container of a packed word is zero bits wide or wider than sixty-four; its `Lane::WIDTH` must be one to sixty-four
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Word::<Over>::TILED` failed here
+  |
+ ::: src/word.rs
+  |
+  |   impl<L: Layout> Word<L> {
+  |       /// Refused at build where the fields do not tile the container exactly.
+  |       const TILED: () = {
+  |           let width = <L::Container as Lane>::WIDTH;
+  | /         assert!(
+  | |             width.count() >= 1 && width.count() <= 64,
+  | |             "the container of a packed word is zero bits wide or wider than sixty-four; its \
+  | |              `Lane::WIDTH` must be one to sixty-four"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |         let () = Self::TILED;
+  |                  ^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn Word::<Over>::of`
+  --> tests/ui/a_container_sixty_five_bits_wide_is_refused.rs:46:13
+   |
+46 |     let _ = Word::<Over>::of(Wider).bits();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^

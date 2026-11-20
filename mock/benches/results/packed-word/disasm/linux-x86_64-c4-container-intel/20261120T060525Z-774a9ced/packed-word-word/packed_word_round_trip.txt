@@ -1,0 +1,21 @@
+# `packed_word_round_trip` of arm `packed-word-word` of bench `packed-word`
+# library: libpacked_word_word.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261120T060525Z-774a9ced
+
+000000000000cdd0 <packed_word_round_trip>:
+    cdd0:      	movl	%edi, %eax
+    cdd2:      	retq
+    cdd3:      	int3
+    cdd4:      	int3
+    cdd5:      	int3
+    cdd6:      	int3
+    cdd7:      	int3
+    cdd8:      	int3
+    cdd9:      	int3
+    cdda:      	int3
+    cddb:      	int3
+    cddc:      	int3
+    cddd:      	int3
+    cdde:      	int3
+    cddf:      	int3

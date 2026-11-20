@@ -1,0 +1,23 @@
+RUSTFLAGS=--cfg arvo_mutant_bits_bit cargo test -p arvo-bits --no-fail-fast --test the_bit_access --test the_bit_tier_in_a_constant
+     Running tests/the_bit_access.rs (/home/user/target/debug/deps/the_bit_access-1a95aaf0f75578d3)
+test every_bit_of_every_value_reads_and_writes_as_the_hosts ... FAILED
+failures:
+thread 'every_bit_of_every_value_reads_and_writes_as_the_hosts' (8563) panicked at crates/arvo-bits/tests/the_bit_access.rs:33:9:
+assertion `left == right` failed: bit 0 of 0x2 at 2 bits
+  left: true
+ right: false
+failures:
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+error: test failed, to rerun pass `-p arvo-bits --test the_bit_access`
+     Running tests/the_bit_tier_in_a_constant.rs (/home/user/target/debug/deps/the_bit_tier_in_a_constant-e733f3226e69549f)
+test the_tier_evaluates_in_a_constant ... FAILED
+failures:
+thread 'the_tier_evaluates_in_a_constant' (8688) panicked at crates/arvo-bits/tests/the_bit_tier_in_a_constant.rs:39:5:
+assertion failed: !TOP_CLEAR.get()
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+failures:
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+error: test failed, to rerun pass `-p arvo-bits --test the_bit_tier_in_a_constant`
+error: 2 targets failed:
+exit 101

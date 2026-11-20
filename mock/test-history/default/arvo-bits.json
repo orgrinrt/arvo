@@ -3,14 +3,29 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "daa443c04001b2fa449061e08efd1a2b24bd53e9c54283e87fca52ebedcc25f3",
+    "full": "c70f4315824312a2e8c69d4d7171a763176335ca90ee543965a7f114168ee8c6",
     "own": {
-      "arvo-bits": "23c2328f9f1025ffeee347be5d813c4618bbff75e37f3341a0a9153d7598a5ef"
+      "arvo-bits": "137992890fa86a4040ac50f3ee155df4806d92222f2a08b998c3341d32177d36",
+      "arvo-format": "b60e96816db2385e2c6d0b1ea2de690949e81a67de94db73c8dd6fea61dabc7d"
     }
   },
-  "tests": {},
+  "tests": {
+    "arvo-bits::compile_fail": {
+      "what_must_not_compile_is_refused_at_build": {
+        "secs": 5.0,
+        "passed": true,
+        "passed_at": "9ab8b1c4d99de83d9fd5930af04c4b5dce9f470ec449cd07994c66fb04a30b54"
+      }
+    }
+  },
   "bins": {
-    "arvo-bits": "38fd13a8a52e80e75763ea3f1b8b5565607760733df81f8e36cf5162f757501a",
-    "arvo-bits::compile_fail": "5f12a242905d3a6076f467ab9401b7bc0cc53bd972a0d965fb5b2d19ecf01d95"
+    "arvo-bits": "a4e41858ba0ca56b144fbd766d5787535560ffe0fa5a39c6eadfa817a1901546",
+    "arvo-bits::compile_fail": "9ab8b1c4d99de83d9fd5930af04c4b5dce9f470ec449cd07994c66fb04a30b54",
+    "arvo-bits::the_bit_access": "d5f085d9d7e993c526ed379599b84e9ca10ff9bb91ce3cde85dbaeec4cca24d2",
+    "arvo-bits::the_bit_logic": "12b227c4343fc3c46013acff63c5384fc5e77fb67859800015a50400d7585ceb",
+    "arvo-bits::the_bit_sequence": "4f3112636dd373769c54a2235b58d4564dd6a52ae7ca48e34e9ea334421f501e",
+    "arvo-bits::the_bit_tier_in_a_constant": "21501aca2016e55c91d0db25da73d53bb8ef5167b7f7cb0a32f3f918a8be3158",
+    "arvo-bits::the_packed_word": "1d5d423d8a69109bee0f1d4d494c32cf0d8c44279cbff99957640a206cd98d2b",
+    "arvo-bits::the_packed_word_with_no_gates": "8f635e74e1ec5716076482689b4a4636623d186f387781a609202a2cccff2755"
   }
 }

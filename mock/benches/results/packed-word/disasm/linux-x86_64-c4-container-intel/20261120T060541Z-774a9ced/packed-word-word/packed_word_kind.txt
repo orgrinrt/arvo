@@ -1,0 +1,17 @@
+# `packed_word_kind` of arm `packed-word-word` of bench `packed-word`
+# library: libpacked_word_word.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261120T060541Z-774a9ced
+
+000000000000cdc0 <packed_word_kind>:
+    cdc0:      	movl	%edi, %eax
+    cdc2:      	shrl	$0x1c, %eax
+    cdc5:      	andl	$0x7, %eax
+    cdc8:      	retq
+    cdc9:      	int3
+    cdca:      	int3
+    cdcb:      	int3
+    cdcc:      	int3
+    cdcd:      	int3
+    cdce:      	int3
+    cdcf:      	int3

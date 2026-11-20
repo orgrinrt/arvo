@@ -39,8 +39,8 @@ what enforces the design rather than a rule asking for it: `arvo-format` cannot
 name a carrier because it does not depend on the crate that has one, which is
 how "every operation is a function of the declared width and never of the
 machine carrier" stays true under later edits. The fifth, `arvo-bits`, sits
-parallel to `arvo-format` rather than in the chain, depending on nothing in
-this workspace. The sixth, `arvo-digest`, sits on `arvo-bits`, whose door its bytes come
+above `arvo-format` and beside `arvo-placement`, off the chain, on `arvo-format`, whose truth value
+and count of bits its bit operations answer in, and on notko and `notko-hlist`, whose list a packed word's layout is. The sixth, `arvo-digest`, sits on `arvo-bits`, whose door its bytes come
 through and whose container holds its result, and on `arvo-numeral`, whose
 wrapping product FNV-1a multiplies by. The seventh, `arvo-contracts`, sits directly above
 `arvo-format` and below `arvo-numeral`, depending on `arvo-format` alone. The
@@ -58,7 +58,7 @@ its count is read in.
 | `arvo-placement` | The placement derivation, keyed on occupancy. One output at sole occupancy, the carrier, given also as a type per slot family; three at shared, the carrier and the access width and the stride. No declared operation reads any of them. | `arvo-format` |
 | `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
 | `arvo-numeral` | The value. `Num<S>` holds one member of a declared signature alone in the carrier `arvo-placement` derives at sole occupancy, and its sum, computed in that carrier, gives the slot the format's own sum gives. Comparison, the doors in and out, the additive identity where the format has one, and the aliases `Uint`, `Int`, `USize` and `ISize`. A debug check the consumer chooses, aborting a debug build by default when a result leaves the range. | `arvo-format`, `arvo-placement`, `arvo-contracts` |
-| `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, and `Bytes`, the host's byte slice walked one `Bits<8>` at a time. Masked construction and masked cast between declared widths, xor at one width, a 128-bit host value split into two halves, no arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | `notko` |
+| `arvo-bits` | An exact-width bit container, `Bits<const N: u32>` for `N` from one to sixty-four, and `Bytes`, the host's byte slice walked one `Bits<8>` at a time. Masked construction and masked cast between declared widths, a 128-bit host value split into two halves, and the bit tier: one bit read and written, `and`, `or`, `xor`, `not` and the emptiness test at one width, shifts and rotations within it, each a `const fn` and each again behind the traits `BitWidth`, `BitAccess`, `BitLogic` and `BitSequence`, whose refusal of an index past the width the tier owns for every container. The packed word, `Word<L>`, a word of named fields of declared widths listed from the low bit up, each read and written in a constant, a one-bit field read as `Bool`, and a layout whose widths do not sum to the word's refused at build. No arithmetic, no sign. Introduces the numeric category a second time, so `Bits` is defined here rather than reaching into `arvo-format` for it. | `arvo-format`, `notko`, `notko-hlist` |
 | `arvo-digest` | A digest of explicit bytes, `Digest<const BITS: u32>` at 32, 64 and 128 bits. FNV-1a at 32 and 64 bits and XXH3 at 64 and 128 by name, each with a `const fn` form equal to its runtime one; a switched digest joins once its crossover is measured. Narrows into `Bits<N>` at the width a consumer names. Not cryptographic. | `arvo-format`, `arvo-numeral`, `arvo-bits`, `notko`, `xxhash-rust` |
 | `arvo-capacity` | A count fixed when the consumer builds, carried as a type. `Capacity` projects an array of exactly its count, read and written as a slice, and `Dim<N>` is the capacity of `N` elements; capacities bundle under one parameter and nest with no product computed, and `count` reads one in a constant as a `USize` under the adaptation the consumer names. Sealed to `Dim<N>` while that question is open. | `arvo-format`, `arvo-numeral` |
 
@@ -84,12 +84,17 @@ a numeral satisfies, `Sum`, `Difference`, `Product`, `Order`, `Identity`, `Sign`
 kind; `Num` is the instance of every numeric contract, and a consumer's own type
 can be one on the same terms.
 
-`Bits<const N: u32>` in `arvo-bits` is the one exception to that shape, and
-naming it as one is worth a sentence rather than leaving it to look like an
-oversight. There is no open contract behind it, because there is nothing for
-an outside crate to implement: an exact-width value at a declared width has
-one shape, and a second implementation would not be a new instance of a
-concept, it would be a second definition of the same fact.
+In `arvo-bits`, `BitWidth`, `BitAccessAt`, `BitAccess`, `BitLogic`, `BitSequenceBy` and
+`BitSequence` are contracts and `Bits<const N: u32>` is their instance, with `Within` the proof the
+tier makes for an index below the width. The container itself has
+no contract behind it, because an exact-width value at a declared width has one
+shape, and a second implementation would not be a new instance of a concept, it
+would be a second definition of the same fact. What a second container shares
+with it is the bit operations, so those are the contracts, and an array of
+`Bits<64>` holding a wider set implements them in the crate that holds it.
+The packed word adds a contract the container and every field value share, `Lane`,
+and two a consumer implements, `Layout` and `Field`; `Word<L>` is the word of
+a layout, and `Fields` and `Below<P>` are the sealed folds over its list.
 
 The reason the split falls this way is what a consumer has to depend on to say
 one thing. Stating what values exist needs `arvo-format` and nothing else.
@@ -102,9 +107,9 @@ strategy binding. Saying the same thing in an
 industrial convention's own words is still stating what values exist, so it needs
 `arvo-format` and nothing else, and the conventions ship there beside the
 parameterisation points. A consumer that only declares formats never compiles a
-carrier ladder. Naming a value at an exact width needs `arvo-bits` and nothing
-else either, including not `arvo-format`: the two answer different questions
-and a consumer wanting only one of them should not compile the other.
+carrier ladder. Naming a value at an exact width needs `arvo-bits`, and under
+it `arvo-format` for the truth value and the count of bits the bit operations
+answer in, and nothing of the placement, the strategy binding or the value.
 
 ## Dependency direction
 
@@ -117,10 +122,10 @@ numeral satisfies, so code generic over a numeral compiles no carrier.
 `arvo-numeral` depends on the first two and on `arvo-contracts`, holds a value
 in the carrier the placement derives, reading the format for everything it
 computes, and implements every contract for it.
-`arvo-bits` depends on none of them: it sits beside `arvo-format` rather
-than above or below it, because the value it holds and the format that would
-describe a numeral's representable set are answers to different questions, and
-a consumer of one should not be made to compile the other. `arvo-digest`
+`arvo-bits` depends on `arvo-format` for `Bool` and `Width`, on notko for
+`Maybe` and on `notko-hlist` for the list a layout's fields are, and on nothing that derives or holds a carrier: the value it holds and the format that
+would describe a numeral's representable set are answers to different
+questions, so it takes the format's vocabulary and none of its formats. `arvo-digest`
 depends on `arvo-bits` for the bytes it reads, the container its result is held
 in and the width a consumer narrows it to, on `arvo-numeral` for the
 wrapping product and on `arvo-format` for the adaptation that product is taken
@@ -137,8 +142,8 @@ here. What it is built for is the algorithm crates every downstream repository
 uses, and the contracts for things that compose into units bigger than numerals
 alone. The numeral base has to work first, which is what the crates above are.
 
-**The consumers named in earlier versions of this document, hilavitkutin and
-vehje, used crates that no longer exist.** Those crates were removed on
+The consumers named in earlier versions of this document, hilavitkutin and
+vehje, used crates that no longer exist. Those crates were removed on
 2026-08-08 and the surfaces they offered have not been rebuilt on the current
 base. A downstream repository pinning this branch gets the crates above and
 nothing else, and that is the honest statement of what is available rather than

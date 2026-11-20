@@ -1,0 +1,16 @@
+[package]
+name = "bench-packed-word-word"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "packed_word_word"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+arvo-bits = { path = "../../../../crates/arvo-bits" }
+arvo-format = { path = "../../../../crates/arvo-format" }
+notko-hlist = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", default-features = false }
+mockspace-bench-core = { git = "https://github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
