@@ -82,13 +82,24 @@ A second senior review of the branch at `3bec4838`, pass two of three, returned 
 - The untested refusals of overlap, cover and a field past bit sixty-four are no longer states the shape can hold.
 - The width and container refusals each have their own case, at zero and at sixty-five.
 - The laws run over every container width.
-- The alias of another value type, and the field of another layout, are gone with `BELOW`, because membership is by type.
+- The alias of another value type is gone with `BELOW`, because membership is by type. A field listed in two layouts is now intended rather than refused: it sits at its own place in each, and a test pins it.
 - `get` masks what it moves down.
 - `README.md` and `mock/DESIGN.md.tmpl` name the word.
 - The obligation row cites hilavitkutin's items rather than their lines.
 
 The review's own probes in the scratchpad were never committed, and are not cited here.
 
+## The third review, and what was left
+
+A third senior review of the branch at `329f787e`, the last of three, returned merge after fixes with two blockers. `docs/BITS.md` and `docs/DESIGN.md` had not been regenerated after the templates changed, and now are. The test that compared `Lane` for `Bits` and `Bool` against the expressions of its own impl bodies is gone: the width matrix now states the contract over raw values at every width from one to sixty-four, a test states it for `Bool`, and a consumer `Lane` four bits wide that keeps and hands back every bit shows the masks in `get` and `with` keeping it inside its field. Taking either mask out turned that test red and nothing else, run by hand and undone; it is not a mutant flag yet.
+
+What the review raised and the branch leaves as follow-ups, each ticketed below:
+
+- An open container `Lane` whose `from_low` keeps bits above its declared `WIDTH` lets `with` carry them into the stored word, so two words reading equal at every field compare unequal. Either `with` and `of` mask to the container's width, or the design states that tiling holds over an honest `Lane::WIDTH`; neither is decided here, and the `Lane` laws are prose on the trait with no check.
+- The design's sentence that a consumer implementing `Lane` for its own value type needs the gate in its own crate meets `obligation::the_unstable_machinery_does_not_reach_a_consumer`, and whether implementing a trait counts as naming it is the canon's call, not this job's.
+- A field listed twice is pinned at `get` only, not at `with`, and the no-gates crate does not call `get` from generic code.
+- Round `202611200616-o8z9` replaced the outputs of the mutant sketch in place instead of superseding the sketch.
+
 ## Problems ticketed
 
-`ac412c811f0d`, the stand-up could not render arvo's agent files from a clone scoped to kaski. `3457a32e273c`, `cargo mock check` in arvo built every member's tests and filled the disk at 40.6 GB. `4f5fbcf49470`, the bootstrap left `rust-src` listed with no files.
+`ac412c811f0d`, the stand-up could not render arvo's agent files from a clone scoped to kaski. `3457a32e273c`, `cargo mock check` in arvo built every member's tests and filled the disk at 40.6 GB. `4f5fbcf49470`, the bootstrap left `rust-src` listed with no files. `ea6b50a08352`, the third review's follow-ups. `87985acb423f`, the question to op on whether implementing an arvo trait counts as naming its types.

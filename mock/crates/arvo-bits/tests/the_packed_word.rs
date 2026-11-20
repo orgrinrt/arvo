@@ -201,6 +201,11 @@ fn each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_not
 fn whole_at<const N: u32>() {
     let mask = u64::MAX >> (64 - N);
     round_trips::<Whole<N>, _, _>(All::<N>);
+    for pattern in PATTERNS.into_iter().chain([1, 2, 1 << 63]) {
+        // The `Lane` contract over raw values: the low `N` bits kept, none above.
+        let lane = <Bits<N> as Lane>::from_low(Bits::masked(pattern));
+        assert_eq!(lane.low().raw(), pattern & mask, "width {N}, pattern {pattern:#x}");
+    }
     for pattern in PATTERNS {
         let whole = Word::<Whole<N>>::of(Bits::masked(0)).with(All::<N>, Bits::masked(pattern));
         assert_eq!(whole.bits().raw(), pattern & mask, "width {N}, pattern {pattern:#x}");
@@ -350,16 +355,57 @@ fn every_read_and_write_evaluates_in_a_constant() {
 }
 
 #[test]
-fn a_lane_agrees_with_cast_and_with_bit_zero() {
+fn a_bool_lane_reads_bit_zero_and_writes_nothing_above_it() {
     for raw in PATTERNS.into_iter().chain([1, 2, 0x8000_0000_0000_0000]) {
-        let low = Bits::<64>::masked(raw);
-        assert_eq!(<Bits<28> as Lane>::from_low(low), low.cast::<28>());
-        assert_eq!(<Bits<28> as Lane>::from_low(low).low(), low.cast::<28>().cast::<64>());
-        assert_eq!(<Bits<64> as Lane>::from_low(low), low);
-        assert_eq!(<Bool as Lane>::from_low(low), low.bit::<0>());
-        let bit = low.bit::<0>();
-        assert_eq!(bit.low(), Bits::<64>::masked(0).with_bit::<0>(bit));
+        let bit = <Bool as Lane>::from_low(Bits::masked(raw));
+        assert_eq!(bit.get(), raw & 1 == 1, "pattern {raw:#x}");
+        assert_eq!(bit.low().raw(), raw & 1, "pattern {raw:#x}");
     }
-    assert_eq!(<Bool as Lane>::WIDTH, Width::bits(1));
-    assert_eq!(<Bits<28> as Lane>::WIDTH, Width::bits(28));
+}
+
+/// A consumer's value four bits wide that keeps every bit it is given and
+/// hands every bit back, so only the word's own masks keep it in its field.
+#[derive(Clone, Copy)]
+struct Leaky(Bits<64>);
+
+const impl Lane for Leaky {
+    const WIDTH: Width = Width::bits(4);
+
+    fn from_low(low: Bits<64>) -> Self {
+        Leaky(low)
+    }
+
+    fn low(self) -> Bits<64> {
+        self.0
+    }
+}
+
+#[derive(Clone, Copy)]
+struct Nibble;
+
+impl Field for Nibble {
+    type Value = Leaky;
+}
+
+#[derive(Clone, Copy)]
+struct Rest;
+
+impl Field for Rest {
+    type Value = Bits<60>;
+}
+
+struct Nibbles;
+
+impl Layout for Nibbles {
+    type Container = Bits<64>;
+    type Fields = Cons<Nibble, Cons<Rest, Empty>>;
+}
+
+#[test]
+fn a_value_leaking_bits_above_its_width_reaches_no_other_field() {
+    let written = Word::<Nibbles>::of(Bits::masked(0)).with(Nibble, Leaky(Bits::masked(u64::MAX)));
+    assert_eq!(written.bits().raw(), 0xf);
+    assert_eq!(written.get(Rest).raw(), 0);
+    let read = Word::<Nibbles>::of(Bits::masked(u64::MAX)).get(Nibble);
+    assert_eq!(read.0.raw(), 0xf);
 }
