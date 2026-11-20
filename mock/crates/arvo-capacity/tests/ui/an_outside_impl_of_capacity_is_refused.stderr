@@ -9,7 +9,7 @@ help: the trait `arvo_capacity::capacity::seal::Sealed` is not implemented for `
    |
 10 | struct Liar;
    | ^^^^^^^^^^^
-   = note: name the count as `Dim<N>`; the trait is sealed while the question `is_arvo_s_capacity_trait_sealed_to_its_one_marker` is open
+   = note: name the count as `Dim<N>`; whether the trait stays sealed is an open question
 help: the trait `arvo_capacity::capacity::seal::Sealed` is implemented for `Dim<N>`
   --> src/capacity.rs
    |

@@ -1,0 +1,5 @@
+error[E0423]: expected value, found enum `Dim`
+  --> tests/ui/a_dim_is_constructed.rs:10:13
+   |
+10 |     let _ = Dim::<4>;
+   |             ^^^^^^^^

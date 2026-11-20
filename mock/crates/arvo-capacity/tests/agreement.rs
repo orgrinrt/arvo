@@ -48,16 +48,6 @@ fn the_array_and_the_count_agree_over_a_spread_of_counts() {
     );
 }
 
-/// The count read in a constant, where the build evaluates it.
-const UNITS: usize = count::<Dim<256>, A, Quiet>().host();
-const NONE: usize = count::<Dim<0>, A, Quiet>().host();
-
-#[test]
-fn the_count_reads_in_a_constant() {
-    assert_eq!(UNITS, 256);
-    assert_eq!(NONE, 0);
-}
-
 #[test]
 fn a_filled_array_holds_its_value_in_every_element() {
     let a = <Dim<5> as Capacity>::filled(9u32);

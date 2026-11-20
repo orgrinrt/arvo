@@ -7,8 +7,9 @@
 /// The capacity of `N` elements.
 ///
 /// `N` is the one bare integer in the surface, at a const generic parameter.
-/// A consumer declares its budget here once, as `type Units = Dim<256>`.
-pub struct Dim<const N: usize>;
+/// A consumer declares its budget here once, as `type Units = Dim<256>`. It has
+/// no values: a capacity is named, never constructed.
+pub enum Dim<const N: usize> {}
 
 pub(crate) mod seal {
     use arvo_format::Adapt;
@@ -16,18 +17,41 @@ pub(crate) mod seal {
     use arvo_format::rounding::TowardZero;
     use arvo_numeral::{Quiet, USize};
 
-    /// The type the length is held in. Nothing is computed on it here, so its
-    /// adaptation is never applied; `count` hands it on under the consumer's.
-    pub type Len = USize<Adapt<TowardZero, Wrap>, Quiet>;
+    /// The integer the length is held in. Nothing is computed on it here, so
+    /// its adaptation is never applied; `count` hands it on under the consumer's.
+    pub(crate) type Held = USize<Adapt<TowardZero, Wrap>, Quiet>;
+
+    /// The length a capacity holds, readable by this crate alone.
+    ///
+    /// The field and the reader are private, so `C::LEN` can be named through
+    /// the seal but not read, and `count` is the one way to the number.
+    pub struct Len(Held);
+
+    impl Len {
+        /// The length of `Dim<N>`.
+        pub(crate) const fn of<const N: usize>() -> Self {
+            #[cfg(not(arvo_mutant_capacity_count))]
+            let n = N;
+            // The mutant: a count one past the array, which the tests reading it refuse.
+            #[cfg(arvo_mutant_capacity_count)]
+            let n = N.wrapping_add(1);
+            Self(Held::from_host(n))
+        }
+
+        /// The length as the integer it is held in.
+        pub(crate) const fn get(self) -> Held {
+            self.0
+        }
+    }
 
     /// Admits `Dim<N>` alone, and holds the length the count is read from.
     ///
-    /// The length is here rather than on `Capacity` so no host integer is
-    /// public, and so the array and the count come from the one `N`.
+    /// The length is here rather than on `Capacity` so the array and the count
+    /// come from the one `N`.
     #[diagnostic::on_unimplemented(
         message = "`{Self}` is not a capacity: `Capacity` is implemented for `Dim<N>` alone",
         label = "not `Dim<N>`",
-        note = "name the count as `Dim<N>`; the trait is sealed while the question `is_arvo_s_capacity_trait_sealed_to_its_one_marker` is open"
+        note = "name the count as `Dim<N>`; whether the trait stays sealed is an open question"
     )]
     pub trait Sealed {
         /// The number of elements, the `N` of `Dim<N>`.
@@ -36,11 +60,7 @@ pub(crate) mod seal {
 }
 
 impl<const N: usize> seal::Sealed for Dim<N> {
-    #[cfg(not(arvo_mutant_capacity_count))]
-    const LEN: seal::Len = seal::Len::from_host(N);
-    // The mutant: a count one past the array, which the agreement tests refuse.
-    #[cfg(arvo_mutant_capacity_count)]
-    const LEN: seal::Len = seal::Len::from_host(N.wrapping_add(1));
+    const LEN: seal::Len = seal::Len::of::<N>();
 }
 
 /// A count carried as typestate, with the array it sizes.
@@ -57,11 +77,12 @@ pub trait Capacity: seal::Sealed {
     /// An array of exactly the count's length of `T`.
     type Array<T>: AsRef<[T]> + AsMut<[T]>;
 
+    // FIXME(give_arvo_capacity_s_filled_and_filled_with_an_opt_in_const): neither
+    // constructor is `const`, which a trait method is only under `const_trait_impl`.
     /// The array with every element `value`.
     fn filled<T: Copy>(value: T) -> Self::Array<T>;
 
-    /// The array whose elements are the values `f` returns, one call per
-    /// element, in order from the first.
+    /// The array of the values `f` returns, one call per element, in order.
     ///
     /// No index is passed; a consumer that wants one counts in the closure.
     fn filled_with<T, F: FnMut() -> T>(f: F) -> Self::Array<T>;
