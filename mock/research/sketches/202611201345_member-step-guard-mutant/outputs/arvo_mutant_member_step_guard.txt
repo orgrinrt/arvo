@@ -1,0 +1,16 @@
+member::step::tests::the_bound_holds_at_its_edge_and_not_past_it_at_every_radix_and_width --- FAILED
+.
+failures:
+
+--
+thread 'member::step::tests::the_bound_holds_at_its_edge_and_not_past_it_at_every_radix_and_width' (19253) panicked at crates/arvo-format/src/member/step/tests.rs:437:5:
+quotient past 120, (8, true, 2)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+--
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 348 filtered out; finished in 0.53s
+
+error: test failed, to rerun pass `-p arvo-format --lib`
+error: 1 target failed:
+    `-p arvo-format --lib`
+exit 101

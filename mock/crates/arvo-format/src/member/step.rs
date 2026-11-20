@@ -36,11 +36,13 @@ use crate::adapt::{Adaptation, DeclaredSignature};
 use crate::apply::{Exact, Remainder, complete_index};
 use crate::conversion::{Convertible, converted_position};
 use crate::division::{Divisible, Divisor, quotient_position};
-use crate::format::{Format, radix};
+use crate::format::Format;
 use crate::multiplication::{Multipliable, product_position};
 use crate::overflow::Overflow;
-use crate::quantum::{Quantum, is_constant_family};
+use crate::placing::{Powers, powers};
+use crate::quantum::is_constant_family;
 use crate::slots::{Slot, Slots};
+use crate::wide::Wide;
 use crate::width::Bool;
 
 /// A ratio of two magnitudes in slot units, and the sign of the ratio. The
@@ -111,21 +113,21 @@ impl Term {
             Maybe::Isnt => Self::ONE,
         }
     }
-}
 
-/// The radix to the power `k`, or nothing where it passes 128 bits.
-#[inline]
-const fn power(radix: u128, k: u32) -> Maybe<Term> {
-    let mut at = 1u128;
-    let mut i = 0;
-    while i < k {
-        match at.checked_mul(radix) {
-            Some(next) => at = next,
-            None => return Maybe::Isnt,
+    /// A power the four limbs hold, as the host's unsigned integer, or nothing
+    /// where it is lost or passes `2^128 - 1`.
+    #[inline(always)]
+    const fn narrowed(power: Maybe<Wide>) -> Maybe<Self> {
+        match power {
+            Maybe::Is(power) => {
+                match power.unsigned() {
+                    Maybe::Is(at) => Maybe::Is(Self(at)),
+                    Maybe::Isnt => Maybe::Isnt,
+                }
+            },
+            Maybe::Isnt => Maybe::Isnt,
         }
-        i += 1;
     }
-    Maybe::Is(Term(at))
 }
 
 /// The product of two magnitudes, or nothing where either is lost or the
@@ -177,15 +179,14 @@ impl<F: Format> Sides<F> {
     /// Whether the phase is zero and the quantum constant, which the ratio
     /// presumes.
     const PLAIN: Bool = F::PHASE.is_zero().and(is_constant_family::<F::Quantum>());
-    /// `u` and `v`, the radix to the two halves of the quantum's exponent.
+    /// `u` and `v`, the radix to the two halves of the quantum's exponent, as the
+    /// slot steps read them, in the host's unsigned integer.
     const POWERS: (Maybe<Term>, Maybe<Term>) = {
-        let r = radix::<F>().base() as u128;
-        let e = <F::Quantum as Quantum>::BASE.power();
-        if e >= 0 {
-            (power(r, e.unsigned_abs()), Maybe::Is(Term::ONE))
-        } else {
-            (Maybe::Is(Term::ONE), power(r, e.unsigned_abs()))
-        }
+        let Powers {
+            up,
+            down,
+        } = powers::<F>();
+        (Term::narrowed(up), Term::narrowed(down))
     };
     /// Whether the product of two members is formed here.
     pub(super) const PRODUCT: Bool = Self::PLAIN.and(holds(
@@ -197,12 +198,16 @@ impl<F: Format> Sides<F> {
         times(times(Self::REACH, Self::REACH), Self::POWERS.0),
         Self::POWERS.1,
     );
-    /// Whether the quotient of a member by a divisor in the range is formed here.
+    /// Whether the quotient of a member by a divisor in the range is formed here:
+    /// its largest denominator, the widest member times `u`, is held, and the
+    /// ratio is below `2^127`.
     pub(super) const QUOTIENT: Bool = Self::PLAIN
-        .and(Bool::of(matches!(
-            times(Self::REACH, Self::POWERS.0),
-            Maybe::Is(_)
-        )))
+        // The mutant drops the check on the denominator, which above a zero
+        // exponent is the only part of the bound that can fail.
+        .and(Bool::of(
+            cfg!(arvo_mutant_member_step_guard)
+                || matches!(times(Self::REACH, Self::POWERS.0), Maybe::Is(_)),
+        ))
         .and(holds(times(Self::REACH, Self::POWERS.1), Self::POWERS.0));
     /// Whether the quotient's terms fit 64 bits.
     pub(super) const QUOTIENT_NARROW: Bool = narrow(

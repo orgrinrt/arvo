@@ -271,7 +271,26 @@ mod edge {
 
     /// The largest `k` at which `radix^k` is still a 128-bit unsigned integer.
     pub const fn power_of(radix: u128) -> i32 {
-        let mut at = 1u128;
+        held(1, radix)
+    }
+
+    /// The largest `k` at or above zero at which the square of `m` times
+    /// `radix^k` is below `2^127`, or -1 where the square alone is not.
+    pub const fn square_below_2_127(m: u128, radix: u128) -> i32 {
+        match m.checked_mul(m) {
+            Some(square) if square < 1 << 127 => below_2_127(square, radix),
+            _ => -1,
+        }
+    }
+
+    /// `k`, or zero where `k` is below it.
+    pub const fn at_least_zero(k: i32) -> i32 {
+        if k < 0 { 0 } else { k }
+    }
+
+    /// The largest `k` at which `m radix^k` is still a 128-bit unsigned integer.
+    pub const fn held(m: u128, radix: u128) -> i32 {
+        let mut at = m;
         let mut k = 0;
         loop {
             match at.checked_mul(radix) {
@@ -337,6 +356,66 @@ macro_rules! at_the_edge {
         assert!(
             !Crossing::<At<0>, At<{ host_edge!($w, $signed, $radix) - 1 }>>::HOLDS.get(),
             "conversion past {q}, {at:?}"
+        );
+        above_zero!($ambient, $slots, $w, $signed, $radix);
+    }};
+}
+
+/// The same three bounds from exponent zero upward, where `u = r^e` and `v` is one.
+///
+/// The product's numerator is the square of the widest member times `r^e`,
+/// which has to stay below `2^127`; a range whose square is not already there
+/// at zero takes the four limbs at every exponent above it. The quotient's
+/// denominator is the widest member times `r^e`, which has to stay a 128-bit
+/// integer, while its ratio, at most the widest member, stays below `2^127`.
+/// The conversion from `e` onto zero scales by `r^e`, which the widest member
+/// times it has to keep below `2^127`, and the conversion from zero onto `e`
+/// divides by `r^e`, which has to stay a 128-bit integer.
+macro_rules! above_zero {
+    ($ambient:ty, $slots:ident, $w:literal, $signed:literal, $radix:literal) => {{
+        type At<const E: i32> = Scaled<$ambient, $slots<$w>, E>;
+        let at = ($w, $signed, $radix);
+        let p = edge::square_below_2_127(edge::widest($w, $signed), $radix);
+        assert_eq!(
+            Sides::<At<{
+                edge::at_least_zero(edge::square_below_2_127(edge::widest($w, $signed), $radix))
+            }>>::PRODUCT.get(),
+            p >= 0,
+            "product above zero at {p}, {at:?}"
+        );
+        assert!(
+            !Sides::<At<{ edge::square_below_2_127(edge::widest($w, $signed), $radix) + 1 }>>::PRODUCT
+                .get(),
+            "product past {p} above zero, {at:?}"
+        );
+        let q = edge::held(edge::widest($w, $signed), $radix);
+        assert!(
+            Sides::<At<{ edge::held(edge::widest($w, $signed), $radix) }>>::QUOTIENT.get(),
+            "quotient refused at {q}, {at:?}"
+        );
+        assert!(
+            !Sides::<At<{ edge::held(edge::widest($w, $signed), $radix) + 1 }>>::QUOTIENT.get(),
+            "quotient past {q}, {at:?}"
+        );
+        let c = edge::below_2_127(edge::widest($w, $signed), $radix);
+        assert!(
+            Crossing::<At<{ edge::below_2_127(edge::widest($w, $signed), $radix) }>, At<0>>::HOLDS
+                .get(),
+            "conversion onto zero refused from {c}, {at:?}"
+        );
+        assert!(
+            !Crossing::<At<{ edge::below_2_127(edge::widest($w, $signed), $radix) + 1 }>, At<0>>::HOLDS
+                .get(),
+            "conversion onto zero past {c}, {at:?}"
+        );
+        let d = edge::power_of($radix);
+        assert!(
+            Crossing::<At<0>, At<{ edge::power_of($radix) }>>::HOLDS.get(),
+            "conversion onto {d} refused, {at:?}"
+        );
+        assert!(
+            !Crossing::<At<0>, At<{ edge::power_of($radix) + 1 }>>::HOLDS.get(),
+            "conversion onto {d} past, {at:?}"
         );
     }};
 }
