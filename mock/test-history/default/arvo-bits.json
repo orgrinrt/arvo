@@ -3,19 +3,19 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "3c3d8e7d718590df51dc76d6a2193a23b22d67ae14f3d2f0b2afe3a1ea6ad2a7",
+    "full": "ac2ac2f91356771f4b9691bb0a102ad27d984897b46e34a37681cbf967ccd8ea",
     "own": {
-      "arvo-bits": "e029de8d37b3c7b65df91a9dcab4d41e827a45e7252cda885b2fa26efa726615",
+      "arvo-bits": "0d391dad55ca427f5e675dd30dea2461b5cd17076ad7fb36d950bff062ff90ee",
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-bits": "450d4bdaabaa95c3c615b775c5bd2637be33d4337b94a973e9b33ea6a3b156e2",
-    "arvo-bits::compile_fail": "8e1322d196bab77443859c6622ddb628230cf8abeabb5efb54a407cbe3a05c3d",
-    "arvo-bits::the_bit_access": "d7bd6eed0e1f8490f048164373a90a54d17b50de2dafb892795a7164cbf536fb",
-    "arvo-bits::the_bit_logic": "f953502b2a5eeff434ab31148150282b12cf92e315c74116a3b4bca258823db7",
-    "arvo-bits::the_bit_sequence": "744f0b229d1e9686c6e483acc2e1929769b9f0350e23e64199ab0f4e8dc0aa46",
-    "arvo-bits::the_bit_tier_in_a_constant": "0c777df7f6488bf410696250d47ea48f5ed6130597fbfb9864d85fcbb83583e5"
+    "arvo-bits": "a0c08ffcbf6acdb51fd901ab845cfe8b122850d81b5f7091d196602b0304716a",
+    "arvo-bits::compile_fail": "b5344082d62ce7c73137506aff6062453b036b637c8f0e7032b913b4571685db",
+    "arvo-bits::the_bit_access": "72cfba725b3c0e666ba3243876072b524070692feafee7457094ded2c05794bb",
+    "arvo-bits::the_bit_logic": "c0ab05f85c7d16a61db04c3584d56f20023521c65809d148315d323985d381fa",
+    "arvo-bits::the_bit_sequence": "709937d6768c6f09467dbcfb6ad5515d52ff9a9966926ad3c6765a0871e686e8",
+    "arvo-bits::the_bit_tier_in_a_constant": "4e8725135aeff2daf4c3a30280ad9cb8fbfa0ad0d5b03217fba425843ac2c4a4"
   }
 }

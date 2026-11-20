@@ -1,0 +1,28 @@
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::ops::Within::<8, 8>::ADMITTED` failed here
+  |
+ ::: src/ops.rs
+  |
+  |       const ADMITTED: () = assert!(
+  |  __________________________-
+  | |         if cfg!(arvo_mutant_bits_index) { I <= N } else { I < N },
+  | |         "a bit index or a shift amount at or past the declared width; bits are counted from zero \
+  | |          at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` \
+  | |          or more is no move within the width"
+  | |     );
+  | |_____- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/ops.rs
+  |
+  |         let () = Within::<N, I>::ADMITTED;
+  |                  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn arvo_bits::ops::<impl Bits<8>>::bit::<8>`
+ --> tests/ui/a_call_of_bit_at_the_width_is_refused.rs:7:13
+  |
+7 |     let _ = b.bit::<8>();
+  |             ^^^^^^^^^^^^

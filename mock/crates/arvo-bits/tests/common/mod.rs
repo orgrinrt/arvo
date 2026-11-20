@@ -6,7 +6,7 @@
 //! What the bit tier's sweeps share: the mask of a width in the host's own
 //! arithmetic, and the values a sweep takes at a width.
 
-#![allow(dead_code)]
+#![allow(dead_code, unused_macros)]
 
 /// The low `n` bits set, computed in 128 bits so the full width needs no case of
 /// its own here, unlike in the crate.
@@ -65,6 +65,55 @@ pub fn rotated_up(v: u64, n: u32, k: u32) -> u64 {
     out
 }
 
-/// The widths the sweeps over an index or an amount take every index or
-/// amount at.
-pub const WIDTHS: [u32; 13] = [1, 2, 3, 4, 5, 6, 7, 8, 16, 28, 32, 63, 64];
+/// `v` at width `n` with bit `i` set to `to`, built one bit at a time: bit
+/// `i` from `to`, every other bit `j` from bit `j` of `v`, so it is not the
+/// crate's own mask and or.
+pub fn written(v: u64, n: u32, i: u32, to: bool) -> u64 {
+    let mut out = 0;
+    for j in 0 .. n {
+        let set = if j == i { to } else { (v >> j) & 1 == 1 };
+        if set {
+            out |= 1u64 << j;
+        }
+    }
+    out
+}
+
+/// Calls `$cb!(N K NK)` for every width `N` from one to sixty-four and every
+/// index or amount `K` below it, with `NK` the amount `(N - K) mod N` a
+/// rotation down takes to equal the rotation up by `K`.
+///
+/// Each index is a const generic, so the calls are expanded rather than looped.
+/// The walk adds one index per width: at width `N` the indices from one up are
+/// the last width's and `N - 1`, and their `NK` are `N - 1` and the last
+/// width's, in the opposite order.
+macro_rules! every_index {
+    ($cb:ident) => {
+        $cb!(1 0 0);
+        $crate::common::triangle!(
+            $cb; [] [];
+            (2 1) (3 2) (4 3) (5 4) (6 5) (7 6) (8 7) (9 8) (10 9) (11 10)
+            (12 11) (13 12) (14 13) (15 14) (16 15) (17 16) (18 17) (19 18) (20 19) (21 20)
+            (22 21) (23 22) (24 23) (25 24) (26 25) (27 26) (28 27) (29 28) (30 29) (31 30)
+            (32 31) (33 32) (34 33) (35 34) (36 35) (37 36) (38 37) (39 38) (40 39) (41 40)
+            (42 41) (43 42) (44 43) (45 44) (46 45) (47 46) (48 47) (49 48) (50 49) (51 50)
+            (52 51) (53 52) (54 53) (55 54) (56 55) (57 56) (58 57) (59 58) (60 59) (61 60)
+            (62 61) (63 62) (64 63)
+        );
+    };
+}
+
+macro_rules! triangle {
+    (@emit $cb:ident $n:literal; [$($k:literal)*] [$($nk:literal)*]) => {
+        $( $cb!($n $k $nk); )*
+    };
+    ($cb:ident; [$($k:literal)*] [$($nk:literal)*];) => {};
+    ($cb:ident; [$($k:literal)*] [$($nk:literal)*]; ($n:literal $i:literal) $($rest:tt)*) => {
+        $cb!($n 0 0);
+        $crate::common::triangle!(@emit $cb $n; [$($k)* $i] [$i $($nk)*]);
+        $crate::common::triangle!($cb; [$($k)* $i] [$i $($nk)*]; $($rest)*);
+    };
+}
+
+#[allow(unused_imports)]
+pub(crate) use {every_index, triangle};

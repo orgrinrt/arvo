@@ -67,9 +67,10 @@ impl<const N: u32> Bits<N> {
     /// evaluated where this constant is used, so a call reaches it at codegen
     /// and `cargo build` refuses a bad `N` where `cargo check` would not have.
     /// The same shape `arvo_format::slots::Slots::ADMITTED` uses, narrowed to
-    /// a private inherent constant because there is no outside implementor of
-    /// anything here: `Bits<N>` is a concrete type, and only its own
-    /// constructors force the check.
+    /// a private inherent constant: it is how `Bits<N>` meets its own bound, and
+    /// every door onto the type forces it, `BitWidth::WIDTH` included. Another
+    /// container implementing the tier meets its bound by an assertion of its
+    /// own, since nothing of this carrier is its.
     ///
     /// The bound is not borrowed from `arvo_format::slots::Slots`, whose own
     /// admitted range also stops at sixty-four, for a different reason: that

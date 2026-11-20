@@ -4,7 +4,7 @@
 //--------------------------------------------------------------------------------------------------
 
 //! The tier through `const fn`s generic over `[const]` bounds, evaluated in
-//! constants, and `BitWidth::WIDTH` at every width.
+//! constants, and `BitWidth::WIDTH` at every width against the full mask.
 
 #![feature(const_trait_impl)]
 
@@ -40,12 +40,20 @@ fn the_tier_evaluates_in_a_constant() {
     assert_eq!(ALIGNED.raw(), 16);
 }
 
+/// Whether the width `Bits<N>` gives back through the tier counts the bits its
+/// full mask sets, which the mask computes from `N` without reading `WIDTH`.
+const fn the_full_mask_has_the_width<const N: u32>() -> bool {
+    Bits::<N>::masked(u64::MAX).raw().count_ones() == width_of::<Bits<N>>().count()
+}
+
 macro_rules! widths {
-    ($($n:literal)+) => { $( assert_eq!(width_of::<Bits<$n>>(), Width::bits($n)); )+ };
+    ($($n:literal)+) => {
+        $( assert!(const { the_full_mask_has_the_width::<$n>() }, "the full mask at {} bits", $n); )+
+    };
 }
 
 #[test]
-fn the_width_is_the_declared_one() {
+fn the_width_counts_the_bits_of_the_full_mask() {
     widths!(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32);
     widths!(33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60);
     widths!(61 62 63 64);

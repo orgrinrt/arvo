@@ -2,8 +2,9 @@
 //!
 //! `bit_set_meet`, `bit_set_union` and `bit_set_is_empty` are the three
 //! operations `obligation::set_operations_over_a_fixed_size_bit_set` names,
-//! each through a function generic over `BitLogic` at `Bits<64>`, exported by
-//! name so `cargo mock bench disasm` reads what each lowers to.
+//! `meet` through a function generic over `BitLogic` and `union` and
+//! `is_empty` as `BitLogic`'s methods called on `Bits<64>` by name, each
+//! exported by name so `cargo mock bench disasm` reads what each lowers to.
 
 use core::hint::black_box;
 
