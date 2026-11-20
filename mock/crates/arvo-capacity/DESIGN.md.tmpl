@@ -57,7 +57,8 @@ implement it with an array of four and a count of eight, the build would accept 
 bounding a walk by the count would read past the array; the sketch this crate was chosen from measured
 exactly that. Whether the trait stays sealed is an open question, and the seal carries a marker naming
 it. An implementation from outside is refused with a message naming `Dim<N>` as the capacity to use and
-saying that whether the trait stays sealed is open. Unsealing later breaks no consumer, where sealing later would.
+saying that whether the trait stays sealed is open. Unsealing later breaks no consumer, where sealing
+later would.
 
 ## The marker: `Dim<N>`
 
@@ -75,8 +76,9 @@ so the count is read in a constant: for a bound, a comparison, or a byte total.
 The crate picks no adaptation for the count. Reading it is a bit copy of a value every pointer width
 holds, so nothing is adapted here, and how the count is completed in the consumer's later arithmetic
 is the consumer's to say at the call. The length behind the count is held in a type of the crate's whose
-field and reader are private, so it can be named through the seal but not read, no host integer is
-public, and `count` is the one way to the number.
+field and reader are private, so it can be named through the seal but not read, and no bare integer or
+adaptation the crate chose sits at a public position. `count` is the crate's reader of it; generic code
+can still see `N` as the length of an array it projects, which is the same number by construction.
 
 ## What this crate does not hold
 
@@ -93,8 +95,10 @@ capacities under one parameter, sizes a plan by them alone and nested, fills and
 code, and checks at build that every count read in a constant equals its array's length. Compile-fail
 pairs, each beside a twin that builds, show that an implementation of `Capacity` from outside is refused
 where `Dim<N>` used from outside is not, with a refusal naming `Dim<N>`; that the seal's length cannot be
-read from outside where `count` reads it; and that `Dim<4>` cannot be constructed where it can be named. The agreement between array and count is asserted over a spread of counts, `filled_with`
-is asserted to call its closure once per element in order for an element that is not `Copy`, and the
+read from outside, by its field or its reader, where `count` reads it; and that `Dim<4>` cannot be
+constructed where it can be named. The agreement between array and count is asserted over a spread of
+counts, `filled_with` is asserted to call its closure once per element in order for an element that is
+not `Copy`, nested as well as alone, and the
 count is read at zero, one and the largest host `usize` under every rounding mode and overflow policy
 that admits `USize`, under both checks. The committed run under `--cfg arvo_mutant_capacity_count`,
 where the count is one past the array, turns red every test that reads the count, over the whole crate.
