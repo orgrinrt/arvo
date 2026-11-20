@@ -19,7 +19,6 @@ note: required by a bound in `Xxh3`
  --> src/xxh3.rs
   |
   | pub struct Xxh3<const BITS: u32>
-  |            ---- required by a bound in this struct
   | where
   |     Output<BITS>: Carrier;
   |                   ^^^^^^^ required by this bound in `Xxh3`

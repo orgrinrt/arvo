@@ -1,0 +1,18 @@
+# Standalone, detached from the arvo mock workspace. Can a consumer crate with no
+# feature line read and write a field of a packed word inside a constant? Each
+# file under `examples/` is a crate of its own with no `#![feature]`, so it sees
+# what a consumer on the pinned nightly sees and nothing more.
+
+[package]
+name = "packed-word-const-reach"
+description = "Whether a consumer with no feature gates reaches the packed word's accessors in a constant: a feasibility probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+arvo-bits = { path = "../../../crates/arvo-bits" }
+arvo-format = { path = "../../../crates/arvo-format" }
+notko-hlist = { git = "https://github.com/orgrinrt/notko.git", branch = "dev", default-features = false }
+
+[workspace]

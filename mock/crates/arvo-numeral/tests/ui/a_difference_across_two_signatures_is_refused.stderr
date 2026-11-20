@@ -6,10 +6,12 @@ error[E0308]: mismatched types
    |               |
    |               arguments to this method are incorrect
    |
-   = note: expected struct `Num<Signature<Integer<8>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`
-              found struct `Num<Signature<Integer<9>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`
+   = note: expected struct `Num<Signature<Integer<8>, Adapt<TowardZero, Wrap>>>`
+              found struct `Num<Signature<Integer<9>, Adapt<TowardZero, Wrap>>>`
 note: method defined here
   --> src/num.rs
    |
+   | impl<S: Sole, C: DebugCheck> Num<S, C> {
+...
    |     pub const fn sub(self, rhs: Self) -> Self {
    |                  ^^^

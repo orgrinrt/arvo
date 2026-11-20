@@ -1,0 +1,177 @@
+    Finished `test` profile [unoptimized] target(s) in 5.79s
+     Running tests/the_packed_word.rs (/home/user/target/debug/deps/the_packed_word-c5c63c6c80367170)
+
+running 11 tests
+test each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_else ... FAILED
+test each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else ... FAILED
+test each_field_of_the_handle_reads_back_what_was_written_and_moves_nothing_else ... FAILED
+test every_read_and_write_evaluates_in_a_constant ... FAILED
+test one_field_listed_in_two_layouts_reads_and_writes_at_its_place_in_each ... FAILED
+test the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it ... FAILED
+test every_container_width_from_one_to_sixty_four_holds_its_fields_where_the_list_puts_them ... FAILED
+test the_handle_holds_each_field_where_its_layout_puts_it ... FAILED
+test writing_one_field_leaves_the_others_reading_as_they_did ... FAILED
+
+failures:
+
+---- each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_else stdout ----
+
+thread 'each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_else' (5955) panicked at crates/arvo-bits/tests/the_packed_word.rs:168:13:
+assertion `left == right` failed: start 0x0, pattern 0xffffffffffffffff
+  left: Bits(33554431)
+ right: Bits(67108863)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<arvo_bits::Bits<26>, arvo_bits::Bits<26>>
+   4: the_packed_word::round_trips::<the_packed_word::Wide, the_packed_word::WideId, notko_hlist::position::Here>
+   5: the_packed_word::each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_else
+   6: the_packed_word::each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_else::{closure#0}
+   7: <the_packed_word::each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_else::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else stdout ----
+
+thread 'each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else' (5953) panicked at crates/arvo-bits/tests/the_packed_word.rs:168:13:
+assertion `left == right` failed: start 0x0, pattern 0xffffffffffffffff
+  left: Bits(9223372036854775807)
+ right: Bits(18446744073709551615)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<arvo_bits::Bits<64>, arvo_bits::Bits<64>>
+   4: the_packed_word::round_trips::<the_packed_word::Whole<64>, the_packed_word::All<64>, notko_hlist::position::Here>
+   5: the_packed_word::each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else
+   6: the_packed_word::each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else::{closure#0}
+   7: <the_packed_word::each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- each_field_of_the_handle_reads_back_what_was_written_and_moves_nothing_else stdout ----
+
+thread 'each_field_of_the_handle_reads_back_what_was_written_and_moves_nothing_else' (5954) panicked at crates/arvo-bits/tests/the_packed_word.rs:168:13:
+assertion `left == right` failed: start 0x0, pattern 0xffffffffffffffff
+  left: Bits(134217727)
+ right: Bits(268435455)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<arvo_bits::Bits<28>, arvo_bits::Bits<28>>
+   4: the_packed_word::round_trips::<the_packed_word::Handle, the_packed_word::Id, notko_hlist::position::Here>
+   5: the_packed_word::each_field_of_the_handle_reads_back_what_was_written_and_moves_nothing_else
+   6: the_packed_word::each_field_of_the_handle_reads_back_what_was_written_and_moves_nothing_else::{closure#0}
+   7: <the_packed_word::each_field_of_the_handle_reads_back_what_was_written_and_moves_nothing_else::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- every_read_and_write_evaluates_in_a_constant stdout ----
+
+thread 'every_read_and_write_evaluates_in_a_constant' (5957) panicked at crates/arvo-bits/tests/the_packed_word.rs:342:5:
+assertion `left == right` failed
+  left: 224292728
+ right: 180150001
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<u64, u64>
+   4: the_packed_word::every_read_and_write_evaluates_in_a_constant
+   5: the_packed_word::every_read_and_write_evaluates_in_a_constant::{closure#0}
+   6: <the_packed_word::every_read_and_write_evaluates_in_a_constant::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- one_field_listed_in_two_layouts_reads_and_writes_at_its_place_in_each stdout ----
+
+thread 'one_field_listed_in_two_layouts_reads_and_writes_at_its_place_in_each' (5959) panicked at crates/arvo-bits/tests/the_packed_word.rs:270:5:
+assertion failed: Word::<Handle>::of(Bits::masked(0x8000_0000)).get(Flag).get()
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::panic
+   3: the_packed_word::one_field_listed_in_two_layouts_reads_and_writes_at_its_place_in_each
+   4: the_packed_word::one_field_listed_in_two_layouts_reads_and_writes_at_its_place_in_each::{closure#0}
+   5: <the_packed_word::one_field_listed_in_two_layouts_reads_and_writes_at_its_place_in_each::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it stdout ----
+
+thread 'the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it' (5960) panicked at crates/arvo-bits/tests/the_packed_word.rs:253:5:
+assertion failed: parts.get(Top).get()
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::panic
+   3: the_packed_word::the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it
+   4: the_packed_word::the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it::{closure#0}
+   5: <the_packed_word::the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- every_container_width_from_one_to_sixty_four_holds_its_fields_where_the_list_puts_them stdout ----
+
+thread 'every_container_width_from_one_to_sixty_four_holds_its_fields_where_the_list_puts_them' (5956) panicked at crates/arvo-bits/tests/the_packed_word.rs:168:13:
+assertion `left == right` failed: start 0x0, pattern 0xffffffffffffffff
+  left: Bits(0)
+ right: Bits(1)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<arvo_bits::Bits<1>, arvo_bits::Bits<1>>
+   4: the_packed_word::round_trips::<the_packed_word::Whole<1>, the_packed_word::All<1>, notko_hlist::position::Here>
+   5: the_packed_word::whole_at::<1>
+   6: the_packed_word::every_container_width_from_one_to_sixty_four_holds_its_fields_where_the_list_puts_them
+   7: the_packed_word::every_container_width_from_one_to_sixty_four_holds_its_fields_where_the_list_puts_them::{closure#0}
+   8: <the_packed_word::every_container_width_from_one_to_sixty_four_holds_its_fields_where_the_list_puts_them::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- the_handle_holds_each_field_where_its_layout_puts_it stdout ----
+
+thread 'the_handle_holds_each_field_where_its_layout_puts_it' (5961) panicked at crates/arvo-bits/tests/the_packed_word.rs:312:5:
+assertion `left == right` failed
+  left: 224292728
+ right: 180150001
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<u64, u64>
+   4: the_packed_word::the_handle_holds_each_field_where_its_layout_puts_it
+   5: the_packed_word::the_handle_holds_each_field_where_its_layout_puts_it::{closure#0}
+   6: <the_packed_word::the_handle_holds_each_field_where_its_layout_puts_it::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- writing_one_field_leaves_the_others_reading_as_they_did stdout ----
+
+thread 'writing_one_field_leaves_the_others_reading_as_they_did' (5962) panicked at crates/arvo-bits/tests/the_packed_word.rs:282:13:
+assertion `left == right` failed
+  left: Bits(134217728)
+ right: Bits(0)
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::panicking::assert_failed_inner
+   3: core::panicking::assert_failed::<arvo_bits::Bits<28>, arvo_bits::Bits<28>>
+   4: the_packed_word::writing_one_field_leaves_the_others_reading_as_they_did
+   5: the_packed_word::writing_one_field_leaves_the_others_reading_as_they_did::{closure#0}
+   6: <the_packed_word::writing_one_field_leaves_the_others_reading_as_they_did::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+
+failures:
+    each_field_of_a_sixty_four_bit_word_reads_back_what_was_written_and_moves_nothing_else
+    each_field_of_the_handle_reads_back_what_was_written_and_moves_nothing_else
+    each_field_of_the_wide_handle_reads_back_what_was_written_and_moves_nothing_else
+    every_container_width_from_one_to_sixty_four_holds_its_fields_where_the_list_puts_them
+    every_read_and_write_evaluates_in_a_constant
+    one_field_listed_in_two_layouts_reads_and_writes_at_its_place_in_each
+    the_edges_of_a_sixty_four_bit_word_hold_each_field_where_its_layout_puts_it
+    the_handle_holds_each_field_where_its_layout_puts_it
+    writing_one_field_leaves_the_others_reading_as_they_did
+
+test result: FAILED. 2 passed; 9 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+error: test failed, to rerun pass `-p arvo-bits --test the_packed_word`
+error: 1 target failed:
+    `-p arvo-bits --test the_packed_word`
+exit 101

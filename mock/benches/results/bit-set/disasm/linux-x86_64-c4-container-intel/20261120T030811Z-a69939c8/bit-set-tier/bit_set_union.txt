@@ -1,0 +1,18 @@
+# `bit_set_union` of arm `bit-set-tier` of bench `bit-set`
+# library: libbit_set_tier.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261120T030811Z-a69939c8
+
+000000000000cc90 <bit_set_union>:
+    cc90:      	movq	%rdi, %rax
+    cc93:      	orq	%rsi, %rax
+    cc96:      	retq
+    cc97:      	int3
+    cc98:      	int3
+    cc99:      	int3
+    cc9a:      	int3
+    cc9b:      	int3
+    cc9c:      	int3
+    cc9d:      	int3
+    cc9e:      	int3
+    cc9f:      	int3

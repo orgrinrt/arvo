@@ -6,6 +6,10 @@ error[E0080]: evaluation panicked: a value completes a result by wrapping or by 
   |
  ::: src/admit.rs
   |
+  |   impl<S> Sole for S
+...
+  |       const ADMITTED: () = {
+...
   | /         assert!(
   | |             matches!(
   | |                 <OverflowOf<S> as Overflow>::POLICY,

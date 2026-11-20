@@ -1,0 +1,19 @@
+# `packed_word_flag` of arm `packed-word-host` of bench `packed-word`
+# library: libpacked_word_host.so
+# tool: /usr/bin/llvm-objdump (Llvm)
+# machine class: linux-x86_64-c4-container-intel, run: 20261120T060620Z-774a9ced
+
+000000000000cda0 <packed_word_flag>:
+    cda0:      	movl	%edi, %eax
+    cda2:      	shrl	$0x1f, %eax
+    cda5:      	retq
+    cda6:      	int3
+    cda7:      	int3
+    cda8:      	int3
+    cda9:      	int3
+    cdaa:      	int3
+    cdab:      	int3
+    cdac:      	int3
+    cdad:      	int3
+    cdae:      	int3
+    cdaf:      	int3

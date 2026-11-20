@@ -1,5 +1,7 @@
-error[E0423]: expected value, found enum `Dim`
+error[E0423]: cannot find value `Dim` in this scope
   --> tests/ui/a_dim_is_constructed.rs:10:13
    |
 10 |     let _ = Dim::<4>;
-   |             ^^^^^^^^
+   |             ^^^
+   |
+   = note: an enum named `Dim` exists in another namespace

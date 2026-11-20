@@ -1,0 +1,27 @@
+error[E0080]: evaluation panicked: two fields of a packed word share a bit
+   --> /rustc/57d06900fd7d9ee06d3a7f323bb77f17ab3cfaf8/library/core/src/panic.rs:62:8
+    |
+    = note: evaluation of `packed_word::Word::<Handle>::TILED` failed here
+    |
+   ::: src/lib.rs:161:9
+    |
+161 | /         assert!(
+162 | |             !<L::Fields as Fields>::OVERLAP,
+163 | |             "two fields of a packed word share a bit"
+164 | |         );
+    | |_________- in this macro invocation
+
+note: erroneous constant encountered
+   --> src/lib.rs:179:18
+    |
+179 |         let () = Self::TILED;
+    |                  ^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> examples/overlap.rs:34:13
+   |
+34 |     let _ = K;
+   |             ^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `packed-word` (example "overlap") due to 1 previous error

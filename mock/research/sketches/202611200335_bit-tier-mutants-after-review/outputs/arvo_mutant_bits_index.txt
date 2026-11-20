@@ -1,0 +1,114 @@
+== a_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_written_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_written_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_shift_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_shift_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_shift_down_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_shift_down_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_rotation_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_rotation_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_rotation_down_by_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_rotation_down_by_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_bit_at_the_width_through_the_trait_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_bit_at_the_width_through_the_trait_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_call_of_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_call_of_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_call_of_with_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_call_of_shift_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_call_of_shift_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_call_of_rotate_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_call_of_rotate_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_generic_call_of_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_generic_call_of_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_generic_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_generic_call_of_with_bit_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_generic_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_generic_call_of_shift_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_generic_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_generic_call_of_shift_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_generic_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_generic_call_of_rotate_up_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_generic_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS=''
+error: could not compile `bit-tier-index-mutant-after-review` (example "a_generic_call_of_rotate_down_at_the_width_is_refused") due to 1 previous error
+error[E0080]: evaluation panicked: a bit index or a shift amount at or past the declared width; bits are counted from zero at the low bit, so the last index of `Bits<N>` is `N - 1`, and a shift or rotation by `N` or more is no move within the width
+exit 101
+== a_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_written_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_shift_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_shift_down_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_rotation_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_rotation_down_by_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_bit_at_the_width_through_the_trait_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_with_bit_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_shift_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_shift_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_rotate_up_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0
+== a_generic_call_of_rotate_down_at_the_width_is_refused, RUSTFLAGS='--cfg arvo_mutant_bits_index'
+exit 0

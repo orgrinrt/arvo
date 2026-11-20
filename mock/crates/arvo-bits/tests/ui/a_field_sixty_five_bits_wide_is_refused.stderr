@@ -1,0 +1,39 @@
+error[E0080]: evaluation panicked: a field of a packed word is zero bits wide or wider than sixty-four; its value's `Lane::WIDTH` must be one to sixty-four
+ --> src/word.rs
+  |
+  | impl<H: Field, T: Fields> Fields for Cons<H, T> {
+  |     const SUM: Width = field_width::<H>().add(T::SUM);
+  |                        ^^^^^^^^^^^^^^^^^^ evaluation of `<notko_hlist::Cons<Big, notko_hlist::Empty> as arvo_bits::Fields>::SUM` failed inside this call
+  |
+note: inside `arvo_bits::word::field_width::<Big>`
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+  |
+ ::: src/word.rs
+  |
+  | /     assert!(
+  | |         width.count() >= 1 && width.count() <= 64,
+  | |         "a field of a packed word is zero bits wide or wider than sixty-four; its value's \
+  | |          `Lane::WIDTH` must be one to sixty-four"
+  | |     );
+  | |_____- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |             <L::Fields as Fields>::SUM.equals(width).get(),
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |         let () = Self::TILED;
+  |                  ^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn Word::<Word64>::of`
+  --> tests/ui/a_field_sixty_five_bits_wide_is_refused.rs:41:13
+   |
+41 |     let _ = Word::<Word64>::of(Bits::masked(0)).bits();
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

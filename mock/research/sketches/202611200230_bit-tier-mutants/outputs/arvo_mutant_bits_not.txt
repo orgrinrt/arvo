@@ -1,0 +1,11 @@
+RUSTFLAGS=--cfg arvo_mutant_bits_not cargo test -p arvo-bits --no-fail-fast --test the_bit_logic --test the_bit_tier_in_a_constant
+     Running tests/the_bit_logic.rs (/home/user/target/debug/deps/the_bit_logic-0944f2370eb698b6)
+test the_logic_is_the_hosts_within_every_width ... FAILED
+failures:
+failures:
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+error: test failed, to rerun pass `-p arvo-bits --test the_bit_logic`
+     Running tests/the_bit_tier_in_a_constant.rs (/home/user/target/debug/deps/the_bit_tier_in_a_constant-183f592491717f46)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+error: 1 target failed:
+exit 101

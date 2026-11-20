@@ -1,0 +1,30 @@
+error[E0080]: evaluation panicked: the field widths of a packed word do not sum to the width of its container; a bit no field reads is still a field, so declare it as one
+ --> $RUST/core/src/panic.rs
+  |
+  |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Word::<Short>::TILED` failed here
+  |
+ ::: src/word.rs
+  |
+  |   impl<L: Layout> Word<L> {
+  |       /// Refused at build where the fields do not tile the container exactly.
+  |       const TILED: () = {
+...
+  | /         assert!(
+  | |             <L::Fields as Fields>::SUM.equals(width).get(),
+  | |             "the field widths of a packed word do not sum to the width of its container; a bit \
+  | |              no field reads is still a field, so declare it as one"
+  | |         );
+  | |_________- in this macro invocation
+
+note: erroneous constant encountered
+ --> src/word.rs
+  |
+  |         let () = Self::TILED;
+  |                  ^^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> tests/ui/a_packed_word_whose_fields_fall_short_is_refused.rs:30:13
+   |
+30 |     let _ = KIND;
+   |             ^^^^

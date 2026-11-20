@@ -6,14 +6,15 @@ warning: unused import: `Uint`
   |
   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
 
-error[E0277]: no ladder container holds the slot family `Signed<65>` alone
+error[E0277]: `Signed<65>` is not an admitted slot range
  --> tests/ui/a_width_past_sixty_four_bits_is_refused.rs:8:13
   |
 8 |     let _ = Int::<65, Adapt<TowardZero, Wrap>>::constant::<0>();
-  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `arvo_placement::sole::SoleCarrier` is not implemented for `Signed<65>`
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
   |
-  = note: the rows here cover `Signed<W>` and `Unsigned<W>` with `W` from 1 to 64; a slot family of another crate names its container by implementing this trait
-  = help: the following other types implement trait `arvo_placement::sole::SoleCarrier`:
+  = help: the trait `Slots` is not implemented for `Signed<65>`
+  = note: this crate implements the trait at widths 1 to 64, the widest pointer width a target has and the widest carrier the placement ladder offers. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+  = help: the following other types implement trait `Slots`:
             Signed<10>
             Signed<11>
             Signed<12>
@@ -23,31 +24,46 @@ error[E0277]: no ladder container holds the slot family `Signed<65>` alone
             Signed<16>
             Signed<17>
           and $N others
-  = note: required for `Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>` to implement `Sole`
-note: required by a bound in `Num`
- --> src/num.rs
-  |
-  | pub struct Num<S: Sole, C: DebugCheck = Abort>(ReprOf<S>, PhantomData<C>);
-  |                   ^^^^ required by this bound in `Num`
+  = note: required for `Integer<65>` to implement `Format`
+  = note: required for `Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>` to implement `NamesAdaptation<Integer<65>>`
 
-error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>>`, but its trait bounds were not satisfied
+error[E0277]: `Signed<65>` is not an admitted slot range
+ --> tests/ui/a_width_past_sixty_four_bits_is_refused.rs:8:13
+  |
+8 |     let _ = Int::<65, Adapt<TowardZero, Wrap>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no slot range exists for this width
+  |
+  = help: the trait `Slots` is not implemented for `Signed<65>`
+  = note: this crate implements the trait at widths 1 to 64, the widest pointer width a target has and the widest carrier the placement ladder offers. The trait is open, so another crate may implement it at a range of its own; what such an implementor owes is the `ADMITTED` obligation.
+  = help: the following other types implement trait `Slots`:
+            Signed<10>
+            Signed<11>
+            Signed<12>
+            Signed<13>
+            Signed<14>
+            Signed<15>
+            Signed<16>
+            Signed<17>
+          and $N others
+  = note: required for `Integer<65>` to implement `Format`
+  = note: required for `Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>` to implement `NamesAdaptation<Integer<65>>`
+
+error: the type `Num<Signature<Integer<65>, <Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap> as NamesAdaptation<Integer<65>>>::Adaptation>>` is not well-formed
+ --> tests/ui/a_width_past_sixty_four_bits_is_refused.rs:8:13
+  |
+8 |     let _ = Int::<65, Adapt<TowardZero, Wrap>>::constant::<0>();
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: the associated function or constant `constant` exists for struct `Num<Signature<Integer<65>, _>>`, but its trait bounds were not satisfied
  --> tests/ui/a_width_past_sixty_four_bits_is_refused.rs:8:49
   |
 8 |     let _ = Int::<65, Adapt<TowardZero, Wrap>>::constant::<0>();
-  |                                                 ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+  |                                                 ^^^^^^^^ associated function or constant cannot be called on `Num<Signature<Integer<65>, _>>` due to unsatisfied trait bounds
   |
  ::: $WORKSPACE/crates/arvo-format/src/adapt.rs
   |
   | pub struct Signature<F: Format, A: Adaptation>(core::marker::PhantomData<(F, A)>);
-  | ---------------------------------------------- doesn't satisfy `_: Sole`
-  |
- ::: $WORKSPACE/crates/arvo-format/src/slots.rs
-  |
-  | pub struct Signed<const BITS: u32>;
-  | ---------------------------------- doesn't satisfy `Signed<65>: Slots` or `Signed<65>: arvo_placement::sole::SoleCarrier`
+  | ---------------------------------------------- doesn't satisfy `Signature<Integer<65>, _>: Sole`
   |
   = note: the following trait bounds were not satisfied:
-          `Signed<65>: Slots`
-          which is required by `Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>: Sole`
-          `Signed<65>: arvo_placement::sole::SoleCarrier`
-          which is required by `Signature<Integer<65>, Adapt<arvo_format::rounding::TowardZero, arvo_format::overflow::Wrap>>: Sole`
+          `Signature<Integer<65>, _>: Sole`

@@ -1,0 +1,6 @@
+    Updating git repository `https://github.com/orgrinrt/notko.git`
+     Locking 2 packages to latest Rust 1.98.0-nightly compatible versions
+   Compiling arvo-format v0.0.0 (/home/user/.worktrees/arvo-bits/mock/crates/arvo-format)
+   Compiling bit-tier-const-trait v0.0.0 (/home/user/.worktrees/arvo-bits/mock/research/sketches/202611200200_bit-tier-const-trait)
+    Finished `dev` profile [unoptimized] target(s) in 0.76s
+exit 0

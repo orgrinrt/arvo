@@ -1,0 +1,8 @@
+== caller_trait_by_hand_refused exit 101 :: error[E0119]: conflicting implementations of trait `bit_tier_guard_sealed::BitAccess` for type `Mine`
+== caller_trait_without_implementor_refused exit 101 :: error[E0277]: the trait bound `Bare: BitAccessAt` is not satisfied
+== in_a_constant_builds exit 0 :: ok
+== in_a_constant_past_refused exit 101 :: error[E0080]: evaluation panicked: an index or an amount at or past the width
+== proof_by_hand_refused exit 101 :: error[E0423]: cannot initialize a tuple struct which contains private fields
+== wide_generic_past_refused exit 101 :: error[E0080]: evaluation panicked: an index or an amount at or past the width
+== wide_last_builds exit 0 :: ok
+== wide_past_refused exit 101 :: error[E0080]: evaluation panicked: an index or an amount at or past the width
