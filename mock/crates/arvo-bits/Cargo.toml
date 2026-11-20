@@ -3,7 +3,7 @@ name = "arvo-bits"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "An exact-width bit container with its bit operations: masked construction and cast, one bit, the logic, shifts and rotations, and a byte run, no arithmetic"
+description = "An exact-width bit container with its bit operations: masked construction and cast, one bit, the logic, shifts and rotations, a word of named fields, and a byte run, no arithmetic"
 readme = "README.md.tmpl"
 
 [dependencies]

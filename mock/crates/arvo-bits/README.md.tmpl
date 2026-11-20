@@ -6,7 +6,9 @@ An exact-width bit container and a borrowed run of bytes. Not a numeral, not a f
 something arvo does not own. Construction and casting mask rather than reject. One bit read or written,
 `and`, `or`, `xor`, `not`, the emptiness test, shifts and rotations are `const fn`s on `Bits` and again a
 tier of traits for code generic over the container, and the tier refuses at build an index past the width
-of any container. `Bytes<'a>` is the host's byte slice, walked one `Bits<8>` at a time.
+of any container. `Word<L>` is a word of named fields of declared widths over `Bits`, each field read
+and written in a constant and a one-bit field read as `Bool`, and a layout whose fields do not tile the
+word is refused at build. `Bytes<'a>` is the host's byte slice, walked one `Bits<8>` at a time.
 
 Builds on `arvo-format` for `Bool` and `Width`, and on notko for `Maybe`. `no_std`, no allocation.
 
