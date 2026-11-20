@@ -371,8 +371,9 @@ and `with_bit`, `Bits<64>` at sixty-four for all six; and past the width, `bit::
 `shift_down::<9>` at `Bits<8>`. A container written in the case with no assertion of its own is refused
 past its width in a call at run time and through a `[const]` bound in a constant, and an impl of
 `BitAccess` by hand and a `Within` built by hand are refused. A container of its own is refused past
-its width for a shift at run time as well, an impl of `BitSequence` by hand and an impl of `BitAccess` on
-a type with no `BitAccessAt` are refused, and a proof made for a wide container and carried to a narrow
+its width for a shift at run time as well, an impl of `BitSequence` by hand, an impl of `BitAccess` on
+a type with no `BitAccessAt` and an impl of `BitSequence` on a type with no `BitSequenceBy` are
+refused, and a proof made for a wide container and carried to a narrow
 one it is a subtype of is refused with `E0308`. Two cases that must compile sit with them,
 every index below the width of `Bits<N>` and that container at its last index, which makes `trybuild`
 build rather than check, so the refusals at run time are the ones `cargo build` gives.
