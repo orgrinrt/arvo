@@ -1082,9 +1082,13 @@ range inside it, and `Divisor::of` is refused where the phase is whole.
 The two arms are a second formation of one position, so the law the step owes is equality with the slot
 step's position, the floor and the remainder's ratio, and its tests hold it over every pair of members at
 six bits in both ranges, at radix two, ten and three and four exponents, and over the 64-bit corners
-either side of each edge. The bound itself is held at its edge at the three radixes. Two mutant flags,
-`arvo_mutant_member_step` and `arvo_mutant_member_step_edge`, break the negative floor and move the bound
-past its edge.
+either side of each edge. The bound itself is held at its edge at the three radixes, in both ranges at
+one, eight, sixteen, 32, 63 and 64 bits, below a zero exponent and above it, with each edge worked out in
+the tests' own arithmetic. Above zero the quotient's edge is where its largest denominator, the widest
+member times `u`, leaves the 128-bit integer, so the check on that denominator is held there. The step
+reads `u` and `v` from the same derivation of the radix's powers the slot steps read. Three mutant flags,
+`arvo_mutant_member_step`, `arvo_mutant_member_step_edge` and `arvo_mutant_member_step_guard`, break the
+negative floor, move the bound past its edge, and drop the check on the quotient's denominator.
 
 ## The platform-width points, which are ordinary points at a width the target supplies
 
